@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 /****************************************************************************
  *                                                                          *
- *   Copyright (c) 2023 Ondsel <development@ondsel.com>                     *
+ *   Copyright (c) 2024 Ondsel <development@ondsel.com>                     *
  *                                                                          *
  *   This file is part of FreeCAD.                                          *
  *                                                                          *
@@ -21,55 +21,61 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#ifndef ASSEMBLYGUI_VIEWPROVIDER_ViewProviderAssemblyLink_H
+#define ASSEMBLYGUI_VIEWPROVIDER_ViewProviderAssemblyLink_H
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
+#include <QCoreApplication>
 
-#include "AssemblyObject.h"
-#include "AssemblyLink.h"
-#include "BomObject.h"
-#include "BomGroup.h"
-#include "JointGroup.h"
-#include "ViewGroup.h"
-#include "SimulationGroup.h"
+#include <Mod/Assembly/AssemblyGlobal.h>
+
+#include <Gui/ViewProviderPart.h>
 
 
-namespace Assembly
+namespace AssemblyGui
 {
-extern PyObject* initModule();
-}
 
-/* Python entry */
-PyMOD_INIT_FUNC(AssemblyApp)
+class AssemblyGuiExport ViewProviderAssemblyLink: public Gui::ViewProviderPart
 {
-    // load dependent module
-    try {
-        Base::Interpreter().runString("import Part");
-        Base::Interpreter().runString("import Spreadsheet");
-    }
-    catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(nullptr);
-    }
+    Q_DECLARE_TR_FUNCTIONS(AssemblyGui::ViewProviderAssemblyLink)
+    PROPERTY_HEADER_WITH_OVERRIDE(AssemblyGui::ViewProviderAssemblyLink);
 
-    PyObject* mod = Assembly::initModule();
-    Base::Console().Log("Loading Assembly module... done\n");
+public:
+    ViewProviderAssemblyLink();
+    ~ViewProviderAssemblyLink() override;
 
+    /// deliver the icon shown in the tree view. Override from ViewProvider.h
+    QIcon getIcon() const override;
 
-    // NOTE: To finish the initialization of our own type objects we must
-    // call PyType_Ready, otherwise we run into a segmentation fault, later on.
-    // This function is responsible for adding inherited slots from a type's base class.
+    bool setEdit(int ModNum) override;
 
-    Assembly::AssemblyObject ::init();
-    Assembly::AssemblyLink ::init();
-    Assembly::BomObject ::init();
+    bool doubleClicked() override;
 
-    Assembly::BomGroup ::init();
-    Assembly::JointGroup ::init();
-    Assembly::ViewGroup ::init();
-    Assembly::SimulationGroup ::init();
+    // When the assembly link is deleted, we delete all its content as well.
+    bool onDelete(const std::vector<std::string>& subNames) override;
 
-    PyMOD_Return(mod);
-}
+    // Prevent deletion of the link assembly's content.
+    bool canDelete(App::DocumentObject*) const override
+    {
+        return false;
+    };
+
+    // Prevent drag/drop of objects within the assembly link.
+    bool canDragObjects() const override
+    {
+        return false;
+    };
+    bool canDropObjects() const override
+    {
+        return false;
+    };
+    bool canDragAndDropObject(App::DocumentObject*) const override
+    {
+        return false;
+    };
+
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
+};
+
+}  // namespace AssemblyGui
+
+#endif  // ASSEMBLYGUI_VIEWPROVIDER_ViewProviderAssemblyLink_H
