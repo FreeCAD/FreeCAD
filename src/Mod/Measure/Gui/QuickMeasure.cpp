@@ -120,7 +120,7 @@ bool QuickMeasure::isObjAcceptable(App::DocumentObject* obj)
 
     std::string vpType = obj->getViewProviderName();
     auto* vp = Gui::Application::Instance->getViewProvider(obj);
-    return !(vpType == "SketcherGui::ViewProviderSketch" && vp->isEditing());
+    return !(vpType == "SketcherGui::ViewProviderSketch" && vp && vp->isEditing());
 }
 
 void QuickMeasure::addSelectionToMeasurement()
