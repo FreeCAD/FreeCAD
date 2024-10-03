@@ -39,8 +39,8 @@ namespace sp = std::placeholders;
 
 /* TRANSLATOR Gui::TaskView::TaskAppearance */
 
-TaskAppearance::TaskAppearance(QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("document-new"),tr("Appearance"),true, parent)
+TaskAppearance::TaskAppearance(QWidget* parent)
+    : TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Appearance"), true, parent)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
@@ -55,11 +55,10 @@ TaskAppearance::TaskAppearance(QWidget *parent)
     this->groupLayout()->addWidget(proxy);
     Gui::Selection().Attach(this);
 
-    //NOLINTBEGIN
-    this->connectChangedObject =
-    Gui::Application::Instance->signalChangedObject.connect(std::bind
-        (&TaskAppearance::slotChangedObject, this, sp::_1, sp::_2));
-    //NOLINTEND
+    // NOLINTBEGIN
+    this->connectChangedObject = Gui::Application::Instance->signalChangedObject.connect(
+        std::bind(&TaskAppearance::slotChangedObject, this, sp::_1, sp::_2));
+    // NOLINTEND
 }
 
 TaskAppearance::~TaskAppearance()
@@ -71,6 +70,7 @@ TaskAppearance::~TaskAppearance()
 
 void TaskAppearance::setupConnections()
 {
+    // clang-format off
 #if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
     connect(ui->changeMode, qOverload<const QString&>(&QComboBox::activated),
             this, &TaskAppearance::onChangeModeActivated);
@@ -88,9 +88,10 @@ void TaskAppearance::setupConnections()
             this, &TaskAppearance::onPointSizeValueChanged);
     connect(ui->spinLineWidth, qOverload<int>(&QSpinBox::valueChanged),
             this, &TaskAppearance::onLineWidthValueChanged);
+    // clang-format on
 }
 
-void TaskAppearance::changeEvent(QEvent *e)
+void TaskAppearance::changeEvent(QEvent* e)
 {
     TaskBox::changeEvent(e);
     if (e->type() == QEvent::LanguageChange) {
@@ -99,14 +100,14 @@ void TaskAppearance::changeEvent(QEvent *e)
 }
 
 /// @cond DOXERR
-void TaskAppearance::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
+void TaskAppearance::OnChange(Gui::SelectionSingleton::SubjectType& rCaller,
                               Gui::SelectionSingleton::MessageType Reason)
 {
-    Q_UNUSED(rCaller); 
-    if (Reason.Type == SelectionChanges::AddSelection ||
-        Reason.Type == SelectionChanges::RmvSelection ||
-        Reason.Type == SelectionChanges::SetSelection ||
-        Reason.Type == SelectionChanges::ClrSelection) {
+    Q_UNUSED(rCaller);
+    if (Reason.Type == SelectionChanges::AddSelection
+        || Reason.Type == SelectionChanges::RmvSelection
+        || Reason.Type == SelectionChanges::SetSelection
+        || Reason.Type == SelectionChanges::ClrSelection) {
         std::vector<Gui::ViewProvider*> views = getSelection();
         setDisplayModes(views);
         setPointSize(views);
@@ -116,14 +117,14 @@ void TaskAppearance::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
 }
 /// @endcond
 
-void TaskAppearance::slotChangedObject(const Gui::ViewProvider& obj,
-                                       const App::Property& prop)
+void TaskAppearance::slotChangedObject(const Gui::ViewProvider& obj, const App::Property& prop)
 {
     // This method gets called if a property of any view provider is changed.
     // We pick out all the properties for which we need to update this dialog.
     const std::vector<Gui::ViewProvider*> Provider = getSelection();
-    auto vp = std::find_if
-        (Provider.begin(), Provider.end(), [&obj](Gui::ViewProvider* v) { return v == &obj; });
+    auto vp = std::find_if(Provider.begin(), Provider.end(), [&obj](Gui::ViewProvider* v) {
+        return v == &obj;
+    });
 
     if (vp != Provider.end()) {
         std::string prop_name = obj.getPropertyName(&prop);
@@ -161,7 +162,7 @@ void TaskAppearance::onChangeModeActivated(const QString& s)
 {
     Gui::WaitCursor wc;
     std::vector<Gui::ViewProvider*> Provider = getSelection();
-    for (const auto & It : Provider) {
+    for (const auto& It : Provider) {
         App::Property* prop = It->getPropertyByName("DisplayMode");
         if (prop && prop->is<App::PropertyEnumeration>()) {
             auto Display = static_cast<App::PropertyEnumeration*>(prop);
@@ -170,9 +171,9 @@ void TaskAppearance::onChangeModeActivated(const QString& s)
     }
 }
 
-void TaskAppearance::onChangePlotActivated(const QString&s)
+void TaskAppearance::onChangePlotActivated(const QString& s)
 {
-    Base::Console().Log("Plot = %s\n",(const char*)s.toLatin1());
+    Base::Console().Log("Plot = %s\n", (const char*)s.toLatin1());
 }
 
 /**
@@ -181,7 +182,7 @@ void TaskAppearance::onChangePlotActivated(const QString&s)
 void TaskAppearance::onTransparencyValueChanged(int transparency)
 {
     std::vector<Gui::ViewProvider*> Provider = getSelection();
-    for (const auto & It : Provider) {
+    for (const auto& It : Provider) {
         App::Property* prop = It->getPropertyByName("Transparency");
         if (prop && prop->isDerivedFrom<App::PropertyInteger>()) {
             auto Transparency = static_cast<App::PropertyInteger*>(prop);
@@ -196,7 +197,7 @@ void TaskAppearance::onTransparencyValueChanged(int transparency)
 void TaskAppearance::onPointSizeValueChanged(int pointsize)
 {
     std::vector<Gui::ViewProvider*> Provider = getSelection();
-    for (const auto & It : Provider) {
+    for (const auto& It : Provider) {
         App::Property* prop = It->getPropertyByName("PointSize");
         if (prop && prop->isDerivedFrom<App::PropertyFloat>()) {
             auto PointSize = static_cast<App::PropertyFloat*>(prop);
@@ -211,7 +212,7 @@ void TaskAppearance::onPointSizeValueChanged(int pointsize)
 void TaskAppearance::onLineWidthValueChanged(int linewidth)
 {
     std::vector<Gui::ViewProvider*> Provider = getSelection();
-    for (const auto & It : Provider) {
+    for (const auto& It : Provider) {
         App::Property* prop = It->getPropertyByName("LineWidth");
         if (prop && prop->isDerivedFrom<App::PropertyFloat>()) {
             auto LineWidth = static_cast<App::PropertyFloat*>(prop);
@@ -227,17 +228,20 @@ void TaskAppearance::setDisplayModes(const std::vector<Gui::ViewProvider*>& view
         App::Property* prop = (*it)->getPropertyByName("DisplayMode");
         if (prop && prop->is<App::PropertyEnumeration>()) {
             auto display = static_cast<App::PropertyEnumeration*>(prop);
-            if (!display->hasEnums())
+            if (!display->hasEnums()) {
                 return;
+            }
             std::vector<std::string> value = display->getEnumVector();
             if (it == views.begin()) {
-                for (const auto & jt : value)
+                for (const auto& jt : value) {
                     commonModes << QLatin1String(jt.c_str());
+                }
             }
             else {
-                for (const auto & jt : value) {
-                    if (commonModes.contains(QLatin1String(jt.c_str())))
+                for (const auto& jt : value) {
+                    if (commonModes.contains(QLatin1String(jt.c_str()))) {
                         modes << QLatin1String(jt.c_str());
+                    }
                 }
 
                 commonModes = modes;
@@ -268,7 +272,7 @@ void TaskAppearance::setDisplayModes(const std::vector<Gui::ViewProvider*>& view
 void TaskAppearance::setPointSize(const std::vector<Gui::ViewProvider*>& views)
 {
     bool pointSize = false;
-    for (const auto & view : views) {
+    for (const auto& view : views) {
         App::Property* prop = view->getPropertyByName("PointSize");
         if (prop && prop->isDerivedFrom<App::PropertyFloat>()) {
             bool blocked = ui->spinPointSize->blockSignals(true);
@@ -285,7 +289,7 @@ void TaskAppearance::setPointSize(const std::vector<Gui::ViewProvider*>& views)
 void TaskAppearance::setLineWidth(const std::vector<Gui::ViewProvider*>& views)
 {
     bool lineWidth = false;
-    for (const auto & view : views) {
+    for (const auto& view : views) {
         App::Property* prop = view->getPropertyByName("LineWidth");
         if (prop && prop->isDerivedFrom<App::PropertyFloat>()) {
             bool blocked = ui->spinLineWidth->blockSignals(true);
@@ -302,7 +306,7 @@ void TaskAppearance::setLineWidth(const std::vector<Gui::ViewProvider*>& views)
 void TaskAppearance::setTransparency(const std::vector<Gui::ViewProvider*>& views)
 {
     bool transparency = false;
-    for (const auto & view : views) {
+    for (const auto& view : views) {
         App::Property* prop = view->getPropertyByName("Transparency");
         if (prop && prop->isDerivedFrom<App::PropertyInteger>()) {
             bool blocked = ui->spinTransparency->blockSignals(true);
@@ -323,9 +327,12 @@ std::vector<Gui::ViewProvider*> TaskAppearance::getSelection() const
 
     // get the complete selection
     std::vector<SelectionSingleton::SelObj> sel = Selection().getCompleteSelection();
-    for (const auto & it : sel) {
-        Gui::ViewProvider* view = Application::Instance->getDocument(it.pDoc)->getViewProvider(it.pObject);
-        if (view) views.push_back(view);
+    for (const auto& it : sel) {
+        Gui::ViewProvider* view =
+            Application::Instance->getDocument(it.pDoc)->getViewProvider(it.pObject);
+        if (view) {
+            views.push_back(view);
+        }
     }
 
     return views;

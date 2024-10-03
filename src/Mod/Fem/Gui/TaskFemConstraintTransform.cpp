@@ -88,18 +88,22 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(
     connect(ui->rb_rect, &QRadioButton::clicked, this, &TaskFemConstraintTransform::Rect);
     connect(ui->rb_cylin, &QRadioButton::clicked, this, &TaskFemConstraintTransform::Cyl);
 
-    connect(ui->sp_X,
+    connect(ui->spb_rot_axis_x,
+            qOverload<double>(&DoubleSpinBox::valueChanged),
+            this,
+            &TaskFemConstraintTransform::xAxisChanged);
+    connect(ui->spb_rot_axis_y,
+            qOverload<double>(&DoubleSpinBox::valueChanged),
+            this,
+            &TaskFemConstraintTransform::yAxisChanged);
+    connect(ui->spb_rot_axis_z,
+            qOverload<double>(&DoubleSpinBox::valueChanged),
+            this,
+            &TaskFemConstraintTransform::zAxisChanged);
+    connect(ui->qsb_rot_angle,
             qOverload<double>(&QuantitySpinBox::valueChanged),
             this,
-            &TaskFemConstraintTransform::x_Changed);
-    connect(ui->sp_Y,
-            qOverload<double>(&QuantitySpinBox::valueChanged),
-            this,
-            &TaskFemConstraintTransform::y_Changed);
-    connect(ui->sp_Z,
-            qOverload<double>(&QuantitySpinBox::valueChanged),
-            this,
-            &TaskFemConstraintTransform::z_Changed);
+            &TaskFemConstraintTransform::angleChanged);
 
     // Get the feature data
     Fem::ConstraintTransform* pcConstraint =
@@ -109,9 +113,33 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
     // Fill data into dialog elements
-    ui->sp_X->setValue(pcConstraint->X_rot.getQuantityValue());
-    ui->sp_Y->setValue(pcConstraint->Y_rot.getQuantityValue());
-    ui->sp_Z->setValue(pcConstraint->Z_rot.getQuantityValue());
+    Base::Vector3d axis;
+    double angle;
+    pcConstraint->Rotation.getValue().getValue(axis, angle);
+    ui->spb_rot_axis_x->setValue(axis.x);
+    ui->spb_rot_axis_y->setValue(axis.y);
+    ui->spb_rot_axis_z->setValue(axis.z);
+    Base::Quantity rotAngle(angle, QString::fromUtf8("rad"));
+    ui->qsb_rot_angle->setValue(rotAngle.getValueAs(Base::Quantity::Degree));
+
+    ui->spb_rot_axis_x->bind(
+        App::ObjectIdentifier::parse(pcConstraint, std::string("Rotation.Axis.x")));
+    ui->spb_rot_axis_y->bind(
+        App::ObjectIdentifier::parse(pcConstraint, std::string("Rotation.Axis.y")));
+    ui->spb_rot_axis_z->bind(
+        App::ObjectIdentifier::parse(pcConstraint, std::string("Rotation.Axis.z")));
+    ui->qsb_rot_angle->bind(
+        App::ObjectIdentifier::parse(pcConstraint, std::string("Rotation.Angle")));
+
+    ui->spb_rot_axis_x->setMinimum(-FLOAT_MAX);
+    ui->spb_rot_axis_x->setMaximum(FLOAT_MAX);
+    ui->spb_rot_axis_y->setMinimum(-FLOAT_MAX);
+    ui->spb_rot_axis_y->setMaximum(FLOAT_MAX);
+    ui->spb_rot_axis_z->setMinimum(-FLOAT_MAX);
+    ui->spb_rot_axis_z->setMaximum(FLOAT_MAX);
+    ui->qsb_rot_angle->setMinimum(-FLOAT_MAX);
+    ui->qsb_rot_angle->setMaximum(FLOAT_MAX);
+
     std::string transform_type = pcConstraint->TransformType.getValueAsString();
     if (transform_type == "Rectangular") {
         ui->sw_transform->setCurrentIndex(0);
@@ -167,11 +195,6 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(
             this,
             &TaskFemConstraintTransform::removeFromSelection);
 
-    // Bind input fields to properties
-    ui->sp_X->bind(pcConstraint->X_rot);
-    ui->sp_Y->bind(pcConstraint->Y_rot);
-    ui->sp_Z->bind(pcConstraint->Z_rot);
-
     updateUI();
 
     if ((p == 0) && (!Objects.empty())) {
@@ -199,43 +222,40 @@ void TaskFemConstraintTransform::updateUI()
     }
 }
 
-void TaskFemConstraintTransform::x_Changed(int i)
+void TaskFemConstraintTransform::xAxisChanged(double x)
 {
+    (void)x;
+    Base::Rotation rot = getRotation();
     Fem::ConstraintTransform* pcConstraint =
         static_cast<Fem::ConstraintTransform*>(ConstraintView->getObject());
-    double x = i;
-    pcConstraint->X_rot.setValue(x);
-    std::string name = ConstraintView->getObject()->getNameInDocument();
-    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.X_rot = %f", name.c_str(), x);
-    std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
-    std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
-    pcConstraint->References.setValues(Objects, SubElements);
+    pcConstraint->Rotation.setValue(rot);
 }
 
-void TaskFemConstraintTransform::y_Changed(int i)
+void TaskFemConstraintTransform::yAxisChanged(double y)
 {
+    (void)y;
+    Base::Rotation rot = getRotation();
     Fem::ConstraintTransform* pcConstraint =
         static_cast<Fem::ConstraintTransform*>(ConstraintView->getObject());
-    double y = i;
-    pcConstraint->Y_rot.setValue(y);
-    std::string name = ConstraintView->getObject()->getNameInDocument();
-    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Y_rot = %f", name.c_str(), y);
-    std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
-    std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
-    pcConstraint->References.setValues(Objects, SubElements);
+    pcConstraint->Rotation.setValue(rot);
 }
 
-void TaskFemConstraintTransform::z_Changed(int i)
+void TaskFemConstraintTransform::zAxisChanged(double z)
 {
+    (void)z;
+    Base::Rotation rot = getRotation();
     Fem::ConstraintTransform* pcConstraint =
         static_cast<Fem::ConstraintTransform*>(ConstraintView->getObject());
-    double z = i;
-    pcConstraint->Z_rot.setValue(z);
-    std::string name = ConstraintView->getObject()->getNameInDocument();
-    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Z_rot = %f", name.c_str(), z);
-    std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
-    std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
-    pcConstraint->References.setValues(Objects, SubElements);
+    pcConstraint->Rotation.setValue(rot);
+}
+
+void TaskFemConstraintTransform::angleChanged(double a)
+{
+    (void)a;
+    Base::Rotation rot = getRotation();
+    Fem::ConstraintTransform* pcConstraint =
+        static_cast<Fem::ConstraintTransform*>(ConstraintView->getObject());
+    pcConstraint->Rotation.setValue(rot);
 }
 
 void TaskFemConstraintTransform::Rect()
@@ -258,9 +278,6 @@ void TaskFemConstraintTransform::Rect()
 void TaskFemConstraintTransform::Cyl()
 {
     ui->sw_transform->setCurrentIndex(1);
-    ui->sp_X->setValue(0);
-    ui->sp_Y->setValue(0);
-    ui->sp_Z->setValue(0);
     std::string name = ConstraintView->getObject()->getNameInDocument();
     Gui::Command::doCommand(Gui::Command::Doc,
                             "App.ActiveDocument.%s.TransformType = %s",
@@ -391,35 +408,15 @@ void TaskFemConstraintTransform::addToSelection()
     updateUI();
     if (ui->rb_rect->isChecked()) {
         Base::Vector3d normal = pcConstraint->NormalDirection.getValue();
-        double n = normal.x;
-        double m = normal.y;
-        double l = normal.z;
-        // about Z-axis
-        double about_z;
-        double mag_norm_z = sqrt(n * n + m * m);  // normal vector mapped onto XY plane
-        if (mag_norm_z == 0) {
-            about_z = 0;
-        }
-        else {
-            about_z = (-1 * (acos(m / mag_norm_z) * 180 / M_PI) + 180);
-        }
-        if (n > 0) {
-            about_z = about_z * (-1);
-        }
-        // rotation to ZY plane
-        double m_p = n * sin(about_z * M_PI / 180) + m * cos(about_z * M_PI / 180);
-        double l_p = l;
-        // about X-axis
-        double about_x;
-        double mag_norm_x = sqrt(m_p * m_p + l_p * l_p);
-        if (mag_norm_x == 0) {
-            about_x = 0;
-        }
-        else {
-            about_x = -(acos(l_p / mag_norm_x) * 180 / M_PI);  // rotation to the Z axis
-        }
-        ui->sp_X->setValue(round(about_x));
-        ui->sp_Z->setValue(round(about_z));
+        Base::Rotation rot(Base::Vector3d(0, 0, 1), normal);
+        Base::Vector3d axis;
+        double angle;
+        rot.getValue(axis, angle);
+        ui->spb_rot_axis_x->setValue(axis.x);
+        ui->spb_rot_axis_y->setValue(axis.y);
+        ui->spb_rot_axis_z->setValue(axis.z);
+        Base::Quantity rotAngle(angle, QString::fromUtf8("rad"));
+        ui->qsb_rot_angle->setValue(rotAngle.getValueAs(Base::Quantity::Degree));
     }
 }
 
@@ -475,9 +472,10 @@ void TaskFemConstraintTransform::removeFromSelection()
     }
     pcConstraint->References.setValues(Objects, SubElements);
     updateUI();
-    ui->sp_X->setValue(0);
-    ui->sp_Y->setValue(0);
-    ui->sp_Z->setValue(0);
+    ui->spb_rot_axis_x->setValue(0);
+    ui->spb_rot_axis_y->setValue(0);
+    ui->spb_rot_axis_z->setValue(1);
+    ui->qsb_rot_angle->setValue(0);
 }
 
 const std::string TaskFemConstraintTransform::getReferences() const
@@ -488,6 +486,16 @@ const std::string TaskFemConstraintTransform::getReferences() const
         items.push_back(ui->lw_Rect->item(r)->text().toStdString());
     }
     return TaskFemConstraint::getReferences(items);
+}
+
+Base::Rotation TaskFemConstraintTransform::getRotation() const
+{
+    double x = ui->spb_rot_axis_x->value();
+    double y = ui->spb_rot_axis_y->value();
+    double z = ui->spb_rot_axis_z->value();
+    double angle = ui->qsb_rot_angle->value().getValueAs(Base::Quantity::Radian);
+
+    return Base::Rotation(Base::Vector3d(x, y, z), angle);
 }
 
 void TaskFemConstraintTransform::onReferenceDeleted()
@@ -535,19 +543,6 @@ else:\n\
         + showConstr + ".NameDispl = []\n";
 }
 
-std::string TaskFemConstraintTransform::get_X_rot() const
-{
-    return ui->sp_X->value().getSafeUserString().toStdString();
-}
-std::string TaskFemConstraintTransform::get_Y_rot() const
-{
-    return ui->sp_Y->value().getSafeUserString().toStdString();
-}
-std::string TaskFemConstraintTransform::get_Z_rot() const
-{
-    return ui->sp_Z->value().getSafeUserString().toStdString();
-}
-
 std::string TaskFemConstraintTransform::get_transform_type() const
 {
     std::string transform;
@@ -558,11 +553,6 @@ std::string TaskFemConstraintTransform::get_transform_type() const
         transform = "\"Cylindrical\"";
     }
     return transform;
-}
-
-bool TaskFemConstraintTransform::event(QEvent* e)
-{
-    return TaskFemConstraint::KeyEvent(e);
 }
 
 void TaskFemConstraintTransform::changeEvent(QEvent*)
@@ -584,21 +574,6 @@ TaskDlgFemConstraintTransform::TaskDlgFemConstraintTransform(
 
 //==== calls from the TaskView ===============================================================
 
-void TaskDlgFemConstraintTransform::open()
-{
-    // a transaction is already open at creation time of the panel
-    if (!Gui::Command::hasPendingCommand()) {
-        QString msg = QObject::tr("Local coordinate system");
-        Gui::Command::openCommand((const char*)msg.toUtf8());
-        ConstraintView->setVisible(true);
-        Gui::Command::doCommand(
-            Gui::Command::Doc,
-            ViewProviderFemConstraint::gethideMeshShowPartStr(
-                (static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument())
-                .c_str());  // OvG: Hide meshes and show parts
-    }
-}
-
 bool TaskDlgFemConstraintTransform::accept()
 {
     /* Note: */
@@ -607,27 +582,23 @@ bool TaskDlgFemConstraintTransform::accept()
         static_cast<const TaskFemConstraintTransform*>(parameter);
 
     try {
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.X_rot = \"%s\"",
-                                name.c_str(),
-                                parameters->get_X_rot().c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.Y_rot = \"%s\"",
-                                name.c_str(),
-                                parameters->get_Y_rot().c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.Z_rot = \"%s\"",
-                                name.c_str(),
-                                parameters->get_Z_rot().c_str());
+        Base::Rotation rot = parameters->getRotation();
+        Base::Vector3d axis;
+        double angle;
+        rot.getValue(axis, angle);
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.ActiveDocument.%s.Rotation = App.Rotation(App.Vector(%f,% f, %f), Radian=%f)",
+            name.c_str(),
+            axis.x,
+            axis.y,
+            axis.z,
+            angle);
+
         Gui::Command::doCommand(Gui::Command::Doc,
                                 "App.ActiveDocument.%s.TransformType = %s",
                                 name.c_str(),
                                 parameters->get_transform_type().c_str());
-        std::string scale = parameters->getScale();  // OvG: determine modified scale
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.Scale = %s",
-                                name.c_str(),
-                                scale.c_str());  // OvG: implement modified scale
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
@@ -635,15 +606,6 @@ bool TaskDlgFemConstraintTransform::accept()
     }
     /* */
     return TaskDlgFemConstraint::accept();
-}
-
-bool TaskDlgFemConstraintTransform::reject()
-{
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-    Gui::Command::updateActive();
-
-    return true;
 }
 
 #include "moc_TaskFemConstraintTransform.cpp"

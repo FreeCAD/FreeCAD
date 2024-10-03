@@ -51,18 +51,18 @@ def write_meshdata_constraint(f, femobj, force_obj, ccxwriter):
     # be careful with raising the tolerance, a big load would have an impact
     # but compared to the real direction the impact would be small again
     for ref_shape in femobj["NodeLoadTable"]:
-        f.write("** {}\n".format(ref_shape[0]))
+        f.write(f"** {ref_shape[0]}\n")
         for n in sorted(ref_shape[1]):
             node_load = ref_shape[1][n]
             # the loads in ref_shape[1][n] are without unit
             if abs(direction_vec.x) > dir_zero_tol:
-                v1 = "{}".format(direction_vec.x * node_load)
-                f.write("{},1,{}\n".format(n, v1))
+                v1 = f"{(direction_vec.x * node_load).Value:.13G}"
+                f.write(f"{n},1,{v1}\n")
             if abs(direction_vec.y) > dir_zero_tol:
-                v2 = "{}".format(direction_vec.y * node_load)
-                f.write("{},2,{}\n".format(n, v2))
+                v2 = f"{(direction_vec.y * node_load).Value:.13G}"
+                f.write(f"{n},2,{v2}\n")
             if abs(direction_vec.z) > dir_zero_tol:
-                v3 = "{}".format(direction_vec.z * node_load)
-                f.write("{},3,{}\n".format(n, v3))
+                v3 = f"{(direction_vec.z * node_load).Value:.13G}"
+                f.write(f"{n},3,{v3}\n")
         f.write("\n")
     f.write("\n")

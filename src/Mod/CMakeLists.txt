@@ -2,9 +2,9 @@ if(BUILD_ADDONMGR)
   add_subdirectory(AddonManager)
 endif(BUILD_ADDONMGR)
 
-if(BUILD_ARCH)
-  add_subdirectory(Arch)
-endif(BUILD_ARCH)
+if(BUILD_BIM)
+  add_subdirectory(BIM)
+endif(BUILD_BIM)
 
 if(BUILD_ASSEMBLY)
   add_subdirectory(Assembly)
@@ -70,9 +70,9 @@ if(BUILD_PART_DESIGN)
   add_subdirectory(PartDesign)
 endif(BUILD_PART_DESIGN)
 
-if(BUILD_PATH)
-    add_subdirectory(Path)
-endif(BUILD_PATH)
+if(BUILD_CAM)
+    add_subdirectory(CAM)
+endif(BUILD_CAM)
 
 if(BUILD_PLOT)
   add_subdirectory(Plot)
@@ -115,15 +115,18 @@ if(BUILD_SPREADSHEET)
 endif(BUILD_SPREADSHEET)
 
 if(BUILD_START)
-  add_subdirectory(Start)
+    add_subdirectory(Start)
 endif(BUILD_START)
 
 if(BUILD_SURFACE)
   add_subdirectory(Surface)
 endif(BUILD_SURFACE)
 
-if(BUILD_TECHDRAW)
+if(BUILD_MEASURE)
     add_subdirectory(Measure)
+endif(BUILD_MEASURE)
+
+if(BUILD_TECHDRAW)
     add_subdirectory(TechDraw)
 endif(BUILD_TECHDRAW)
 
@@ -138,5 +141,5 @@ if(BUILD_TUX)
 endif(BUILD_TUX)
 
 if(BUILD_WEB)
-  add_subdirectory(Web)
+    add_subdirectory(Web)
 endif(BUILD_WEB)

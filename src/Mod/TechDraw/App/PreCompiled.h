@@ -47,12 +47,16 @@
 // boost
 #include <boost/graph/boyer_myrvold_planar_test.hpp>
 #include <boost/graph/is_kuratowski_subgraph.hpp>
+#include <boost/random.hpp>
 #include <boost_regex.hpp>
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
 
 // Qt
+#include <QApplication>
+#include <QCollator>
+#include <QDateTime>
 #include <QDomDocument>
 #include <QFile>
 #include <QLocale>

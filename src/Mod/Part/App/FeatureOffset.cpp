@@ -28,6 +28,7 @@
 #include <App/Link.h>
 
 #include "FeatureOffset.h"
+#include <App/Document.h>
 
 
 using namespace Part;
@@ -83,13 +84,13 @@ App::DocumentObjectExecReturn *Offset::execute()
     bool inter = Intersection.getValue();
     bool self = SelfIntersection.getValue();
     short mode = (short)Mode.getValue();
-    short join = (short)Join.getValue();
     bool fill = Fill.getValue();
-    const TopoShape& shape = Feature::getShape(source);
-    if (fabs(offset) > 2*tol)
-        this->Shape.setValue(shape.makeOffsetShape(offset, tol, inter, self, mode, join, fill));
-    else
-        this->Shape.setValue(shape);
+    auto shape = Feature::getTopoShape(source);
+    if(shape.isNull())
+        return new App::DocumentObjectExecReturn("Invalid source link");
+    auto join = static_cast<JoinType>(Join.getValue());
+    this->Shape.setValue(TopoShape(0).makeElementOffset(
+        shape,offset,tol,inter,self,mode,join,fill ? FillType::fill : FillType::noFill));
     return App::DocumentObject::StdReturn;
 }
 

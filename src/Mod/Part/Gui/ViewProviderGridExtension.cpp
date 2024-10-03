@@ -551,7 +551,7 @@ bool ViewProviderGridExtension::extensionHandleChangedPropertyType(Base::XMLRead
         return true;
     }
 
-    return false;
+    return Gui::ViewProviderExtension::extensionHandleChangedPropertyType(reader, TypeName, prop);
 }
 
 namespace Gui {

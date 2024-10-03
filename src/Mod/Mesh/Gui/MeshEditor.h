@@ -81,6 +81,8 @@ public:
     SoCoordinate3* pcCoords;
     SoFaceSet* pcFaces;
     SoFCMeshPickNode* pcMeshPick;
+
+    FC_DISABLE_COPY_MOVE(ViewProviderFace)
 };
 
 /**
@@ -112,6 +114,8 @@ private:
 
 private:
     ViewProviderFace* faceView;
+
+    Q_DISABLE_COPY_MOVE(MeshFaceAddition)
 };
 
 class MeshGuiExport MeshHoleFiller
@@ -179,6 +183,8 @@ private:
     TBoundary myPolygon;
     MeshHoleFiller& myHoleFiller;
     Connection myConnection;
+
+    Q_DISABLE_COPY_MOVE(MeshFillHole)
 };
 
 }  // namespace MeshGui

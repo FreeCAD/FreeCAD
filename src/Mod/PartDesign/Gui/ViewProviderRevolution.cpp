@@ -36,7 +36,7 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderRevolution,PartDesignGui::ViewProvide
 
 ViewProviderRevolution::ViewProviderRevolution()
 {
-    sPixmap = "Tree_PartDesign_Revolution.svg";
+    sPixmap = "PartDesign_Revolution.svg";
 }
 
 ViewProviderRevolution::~ViewProviderRevolution() = default;

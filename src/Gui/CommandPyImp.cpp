@@ -274,10 +274,10 @@ PyObject* CommandPy::getAction(PyObject *args)
         if (group) {
             const auto actions = group->actions();
             for (auto a : actions)
-                list.append(wrap.fromQObject(a));
+                list.append(wrap.fromQAction(a));
         }
         else if (action) {
-            list.append(wrap.fromQObject(action->action()));
+            list.append(wrap.fromQAction(action->action()));
         }
 
         return Py::new_reference_to(list);

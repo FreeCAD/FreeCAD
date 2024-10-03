@@ -87,7 +87,6 @@ public:
 
 private:
     ElementColors* widget;
-    TaskView::TaskBox* taskbox;
 };
 
 } //namespace Gui

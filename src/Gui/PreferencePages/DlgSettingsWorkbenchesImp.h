@@ -56,7 +56,6 @@ public:
 protected Q_SLOTS:
     void wbToggled(const QString& wbName, bool enabled);
     void wbItemMoved();
-    void onWbSelectorChanged(int index);
     void onStartWbChanged(int index);
     void onWbByTabToggled(bool val);
 
@@ -72,6 +71,7 @@ private:
 
     void saveWorkbenchSelector();
     void loadWorkbenchSelector();
+    void translateWorkbenchSelector();
 
 
     std::vector<std::string> _backgroundAutoloadedModules;

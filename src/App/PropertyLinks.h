@@ -28,6 +28,9 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <unordered_set>
+#include <unordered_map>
+
 #include "Property.h"
 
 namespace Base {
@@ -38,6 +41,8 @@ namespace App
 {
 class DocumentObject;
 class Document;
+class GeoFeature;
+class SubObjectT;
 
 class DocInfo;
 using DocInfoPtr = std::shared_ptr<DocInfo>;
@@ -99,7 +104,7 @@ class AppExport PropertyLinkBase : public Property, public ScopedLink
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    using ShadowSub = std::pair<std::string,std::string>;
+    using ShadowSub = ElementNamePair;
 
     PropertyLinkBase();
     ~PropertyLinkBase() override;
@@ -177,6 +182,19 @@ public:
      */
     virtual void getLinks(std::vector<App::DocumentObject *> &objs,
             bool all=false, std::vector<std::string> *subs=nullptr, bool newStyle=true) const = 0;
+
+    /** Obtain identifiers from this link property that link to a given object
+     * @param identifiers: holds the returned identifier to reference the given object
+     * @param obj: the referenced object
+     * @param subname: optional subname reference
+     * @param all: if true, then return all the references regardless of
+     *             this LinkScope. If false, then return only if the LinkScope
+     *             is not hidden.
+     */
+    virtual void getLinksTo(std::vector<App::ObjectIdentifier> &identifiers,
+                            App::DocumentObject *obj,
+                            const char *subname=nullptr,
+                            bool all=false) const = 0;
 
     /** Called to reset this link property
      *
@@ -262,7 +280,7 @@ public:
 
     /// Helper function to return a map of linked object and its subname references
     void getLinkedElements(std::map<App::DocumentObject*, std::vector<std::string> > &elements,
-            bool newStyle=true, bool all=true) const
+            bool newStyle=true, bool all=false) const
     {
         std::vector<App::DocumentObject*> ret;
         std::vector<std::string> subs;
@@ -275,7 +293,7 @@ public:
 
     /// Helper function to return a map of linked object and its subname references
     std::map<App::DocumentObject*, std::vector<std::string> >
-        linkedElements(bool newStyle=true, bool all=true) const
+        linkedElements(bool newStyle=true, bool all=false) const
     {
         std::map<App::DocumentObject*, std::vector<std::string> > ret;
         getLinkedElements(ret,newStyle,all);
@@ -346,6 +364,8 @@ public:
     /// Update all element references in all link properties of \a feature
     static void updateElementReferences(DocumentObject *feature, bool reverse=false);
 
+    /// Obtain link properties that contain element references to a given object
+    static const std::unordered_set<PropertyLinkBase*>& getElementReferences(DocumentObject *);
 
     /** Helper function for update individual element reference
      *
@@ -538,12 +558,20 @@ public:
         LinkAllowPartial,
         LinkRestoreLabel,
         LinkSyncSubObject, // used by DlgPropertyLink
+        LinkNewElement, // return new element name in getPyObject
+        LinkSilentRestore, // do not report error on restore (e.g. missing external link)
     };
     inline bool testFlag(int flag) const {
         return _Flags.test((std::size_t)flag);
     }
 
     virtual void setAllowPartial(bool enable) { (void)enable; }
+
+    void setReturnNewElement(bool enable);
+
+    void setSilentRestore(bool enable);
+
+    boost::signals2::signal<void(const std::string &, const std::string &)> signalUpdateElementReference;
 
 protected:
     void hasSetValue() override;
@@ -553,6 +581,13 @@ protected:
     inline void setFlag(int flag, bool value=true) {
         _Flags.set((std::size_t)flag,value);
     }
+
+    void _getLinksTo(
+            std::vector<App::ObjectIdentifier> &identifiers,
+            App::DocumentObject *obj,
+            const char *subname,
+            const std::vector<std::string> &subs,
+            const std::vector<PropertyLinkBase::ShadowSub> &shadows) const;
 
 private:
     std::set<std::string> _LabelRefs;
@@ -622,6 +657,11 @@ public:
 
     void getLinks(std::vector<App::DocumentObject *> &objs,
             bool all=false, std::vector<std::string> *subs=nullptr, bool newStyle=true) const override;
+
+    void getLinksTo(std::vector<App::ObjectIdentifier> &identifiers,
+                    App::DocumentObject *obj,
+                    const char *subname=nullptr,
+                    bool all=false) const override;
 
     void breakLink(App::DocumentObject *obj, bool clear) override;
 
@@ -713,6 +753,11 @@ public:
     void getLinks(std::vector<App::DocumentObject *> &objs,
             bool all=false, std::vector<std::string> *subs=nullptr, bool newStyle=true) const override;
 
+    void getLinksTo(std::vector<App::ObjectIdentifier> &identifiers,
+                    App::DocumentObject *obj,
+                    const char *subname=nullptr,
+                    bool all=false) const override;
+
     void breakLink(App::DocumentObject *obj, bool clear) override;
 
     bool adjustLink(const std::set<App::DocumentObject *> &inList) override;
@@ -720,11 +765,8 @@ public:
     Property *CopyOnLinkReplace(const App::DocumentObject *parent,
             App::DocumentObject *oldObj, App::DocumentObject *newObj) const override;
 
-    DocumentObject *find(const std::string &, int *pindex=nullptr) const;
-    DocumentObject *find(const char *sub, int *pindex=nullptr) const {
-        if(!sub) return nullptr;
-        return find(std::string(sub),pindex);
-    }
+    DocumentObject *findUsingMap(const std::string &, int *pindex=nullptr) const;
+    DocumentObject *find(const char *sub, int *pindex=nullptr) const;
 
 protected:
     DocumentObject *getPyValue(PyObject *item) const override;
@@ -853,6 +895,11 @@ public:
 
     void getLinks(std::vector<App::DocumentObject *> &objs,
             bool all=false, std::vector<std::string> *subs=nullptr, bool newStyle=true) const override;
+
+    void getLinksTo(std::vector<App::ObjectIdentifier> &identifiers,
+                    App::DocumentObject *obj,
+                    const char *subname=nullptr,
+                    bool all=false) const override;
 
     void breakLink(App::DocumentObject *obj, bool clear) override;
 
@@ -1001,6 +1048,11 @@ public:
     void getLinks(std::vector<App::DocumentObject *> &objs,
             bool all=false, std::vector<std::string> *subs=nullptr, bool newStyle=true) const override;
 
+    void getLinksTo(std::vector<App::ObjectIdentifier> &identifiers,
+                    App::DocumentObject *obj,
+                    const char *subname=nullptr,
+                    bool all=false) const override;
+
     void breakLink(App::DocumentObject *obj, bool clear) override;
 
     bool adjustLink(const std::set<App::DocumentObject *> &inList) override;
@@ -1124,6 +1176,11 @@ public:
     void getLinks(std::vector<App::DocumentObject *> &objs,
             bool all=false, std::vector<std::string> *subs=nullptr, bool newStyle=true) const override;
 
+    void getLinksTo(std::vector<App::ObjectIdentifier> &identifiers,
+                    App::DocumentObject *obj,
+                    const char *subname=nullptr,
+                    bool all=false) const override;
+
     bool adjustLink(const std::set<App::DocumentObject *> &inList) override;
 
     const std::vector<std::string>& getSubValues() const {
@@ -1169,6 +1226,7 @@ protected:
     std::vector<ShadowSub> _ShadowSubList;
     std::vector<int> _mapped;
     PropertyLinkBase *parentProp;
+    mutable std::string tmpShadow;
 };
 
 
@@ -1190,6 +1248,14 @@ public:
     { return "Gui::PropertyEditor::PropertyLinkItem"; }
 };
 
+/** The PropertyXLinkSub that is hidden from dependency checking
+ */
+class AppExport PropertyXLinkSubHidden : public PropertyXLinkSub
+{
+    TYPESYSTEM_HEADER();
+public:
+    PropertyXLinkSubHidden() { _pcScope = LinkScope::Hidden; }
+};
 
 /** Link to one or more (sub)object(s) of one or more object(s) from the same or different document
  */
@@ -1198,10 +1264,10 @@ class AppExport PropertyXLinkSubList: public PropertyLinkBase
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
+public:
     using atomic_change = typename AtomicPropertyChangeInterface<PropertyXLinkSubList>::AtomicPropertyChange;
     friend atomic_change;
 
-public:
     PropertyXLinkSubList();
     ~PropertyXLinkSubList() override;
 
@@ -1285,6 +1351,11 @@ public:
     void getLinks(std::vector<App::DocumentObject *> &objs,
             bool all=false, std::vector<std::string> *subs=nullptr, bool newStyle=true) const override;
 
+    void getLinksTo(std::vector<App::ObjectIdentifier> &identifiers,
+                    App::DocumentObject *obj,
+                    const char *subname=nullptr,
+                    bool all=false) const override;
+
     void breakLink(App::DocumentObject *obj, bool clear) override;
 
     bool adjustLink(const std::set<App::DocumentObject *> &inList) override;
@@ -1299,6 +1370,14 @@ public:
     void aboutToSetChildValue(Property &) override;
 
     void setSyncSubObject(bool enable);
+
+protected:
+    void _getLinksToList(
+        std::vector<App::ObjectIdentifier> &identifiers,
+        App::DocumentObject *obj,
+        const char *subname,
+        const std::vector<std::string> &subs,
+        const std::vector<PropertyLinkBase::ShadowSub> &shadows) const;
 
 protected:
     std::list<PropertyXLinkSub> _Links;
@@ -1351,6 +1430,8 @@ protected:
     virtual void onRemoveDep(App::DocumentObject *) {}
     void updateDeps(std::map<DocumentObject*,bool> &&newDeps);
     void clearDeps();
+
+    void _onBreakLink(App::DocumentObject *obj);
 
 protected:
     std::map<App::DocumentObject*,bool> _Deps;

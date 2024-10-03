@@ -24,6 +24,7 @@
 
 #ifndef _PreComp_
 #include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoDepthBuffer.h>
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
 #include <Inventor/nodes/SoIndexedLineSet.h>
@@ -31,8 +32,11 @@
 #include <Inventor/nodes/SoIndexedTriangleStripSet.h>
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoNormal.h>
+#include <Inventor/nodes/SoPolygonOffset.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoShapeHints.h>
+#include <Inventor/nodes/SoSwitch.h>
+#include <Inventor/nodes/SoTransparencyType.h>
 #include <functional>
 
 #include <vtkCellArray.h>
@@ -55,6 +59,7 @@
 #include <Gui/Selection.h>
 #include <Gui/SelectionObject.h>
 #include <Gui/SoFCColorBar.h>
+#include <Gui/SoFCColorBarNotifier.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
@@ -139,6 +144,8 @@ private:
 
 // ----------------------------------------------------------------------------
 
+App::PropertyFloatConstraint::Constraints ViewProviderFemPostObject::sizeRange = {1.0, 64.0, 1.0};
+
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostObject, Gui::ViewProviderDocumentObject)
 
 ViewProviderFemPostObject::ViewProviderFemPostObject()
@@ -154,11 +161,36 @@ ViewProviderFemPostObject::ViewProviderFemPostObject()
                       "Coloring",
                       App::Prop_None,
                       "Select what to show for a vector field");
-    ADD_PROPERTY(Transparency, (0));
+    ADD_PROPERTY_TYPE(Transparency,
+                      (0),
+                      "Object Style",
+                      App::Prop_None,
+                      "Set object transparency.");
+    ADD_PROPERTY_TYPE(EdgeColor,
+                      (0.0f, 0.0f, 0.0f),
+                      "Object Style",
+                      App::Prop_None,
+                      "Set wireframe line color.");
+    ADD_PROPERTY_TYPE(PlainColorEdgeOnSurface,
+                      (false),
+                      "Object Style",
+                      App::Prop_None,
+                      "Use plain color for edges on surface.");
+    ADD_PROPERTY_TYPE(LineWidth, (1), "Object Style", App::Prop_None, "Set wireframe line width.");
+    ADD_PROPERTY_TYPE(PointSize, (3), "Object Style", App::Prop_None, "Set node point size.");
+
+
+    LineWidth.setConstraints(&sizeRange);
+    PointSize.setConstraints(&sizeRange);
 
     sPixmap = "fem-femmesh-from-shape";
 
     // create the subnodes which do the visualization work
+    m_transpType = new SoTransparencyType();
+    m_transpType->ref();
+    m_transpType->value = SoTransparencyType::BLEND;
+    m_depthBuffer = new SoDepthBuffer();
+    m_depthBuffer->ref();
     m_shapeHints = new SoShapeHints();
     m_shapeHints->ref();
     m_shapeHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
@@ -167,8 +199,12 @@ ViewProviderFemPostObject::ViewProviderFemPostObject()
     m_coordinates->ref();
     m_materialBinding = new SoMaterialBinding();
     m_materialBinding->ref();
+    m_switchMatEdges = new SoSwitch();
+    m_switchMatEdges->ref();
     m_material = new SoMaterial();
     m_material->ref();
+    m_matPlainEdges = new SoMaterial();
+    m_matPlainEdges->ref();
     m_normalBinding = new SoNormalBinding();
     m_normalBinding->ref();
     m_normals = new SoNormal();
@@ -183,8 +219,10 @@ ViewProviderFemPostObject::ViewProviderFemPostObject()
     m_lines->ref();
     m_drawStyle = new SoDrawStyle();
     m_drawStyle->ref();
-    m_drawStyle->lineWidth.setValue(2);
-    m_drawStyle->pointSize.setValue(3);
+    m_drawStyle->lineWidth.setValue(LineWidth.getValue());
+    m_drawStyle->pointSize.setValue(PointSize.getValue());
+    m_sepMarkerLine = new SoSeparator();
+    m_sepMarkerLine->ref();
     m_separator = new SoSeparator();
     m_separator->ref();
 
@@ -196,6 +234,7 @@ ViewProviderFemPostObject::ViewProviderFemPostObject()
     m_colorRoot->addChild(m_colorStyle);
     m_colorBar = new Gui::SoFCColorBar;
     m_colorBar->Attach(this);
+    Gui::SoFCColorBarNotifier::instance().attach(m_colorBar);
     m_colorBar->ref();
 
     // create the vtk algorithms we use for visualisation
@@ -221,6 +260,8 @@ ViewProviderFemPostObject::ViewProviderFemPostObject()
 ViewProviderFemPostObject::~ViewProviderFemPostObject()
 {
     FemPostObjectSelectionObserver::instance().unregisterFemPostObject(this);
+    m_transpType->unref();
+    m_depthBuffer->unref();
     m_shapeHints->unref();
     m_coordinates->unref();
     m_materialBinding->unref();
@@ -231,42 +272,58 @@ ViewProviderFemPostObject::~ViewProviderFemPostObject()
     m_triangleStrips->unref();
     m_markers->unref();
     m_lines->unref();
+    m_sepMarkerLine->unref();
     m_separator->unref();
     m_material->unref();
-    m_colorBar->Detach(this);
-    m_colorBar->unref();
+    m_matPlainEdges->unref();
+    m_switchMatEdges->unref();
+    deleteColorBar();
     m_colorStyle->unref();
     m_colorRoot->unref();
+}
+
+void ViewProviderFemPostObject::deleteColorBar()
+{
+    Gui::SoFCColorBarNotifier::instance().detach(m_colorBar);
+    m_colorBar->Detach(this);
+    m_colorBar->unref();
 }
 
 void ViewProviderFemPostObject::attach(App::DocumentObject* pcObj)
 {
     ViewProviderDocumentObject::attach(pcObj);
 
+    m_switchMatEdges->addChild(m_material);
+    m_switchMatEdges->addChild(m_matPlainEdges);
+    // marker and line nodes
+    m_sepMarkerLine->addChild(m_transpType);
+    m_sepMarkerLine->addChild(m_depthBuffer);
+    m_sepMarkerLine->addChild(m_drawStyle);
+    m_sepMarkerLine->addChild(m_materialBinding);
+    m_sepMarkerLine->addChild(m_switchMatEdges);
+    m_sepMarkerLine->addChild(m_coordinates);
+    m_sepMarkerLine->addChild(m_markers);
+    m_sepMarkerLine->addChild(m_lines);
+
     // face nodes
+    SoPolygonOffset* offset = new SoPolygonOffset();
     m_separator->addChild(m_shapeHints);
-    m_separator->addChild(m_drawStyle);
     m_separator->addChild(m_materialBinding);
     m_separator->addChild(m_material);
     m_separator->addChild(m_coordinates);
-    m_separator->addChild(m_markers);
-    m_separator->addChild(m_lines);
+    m_separator->addChild(m_sepMarkerLine);
+    m_separator->addChild(offset);
     m_separator->addChild(m_faces);
 
     // Check for an already existing color bar
     Gui::SoFCColorBar* pcBar =
-        ((Gui::SoFCColorBar*)findFrontRootOfType(Gui::SoFCColorBar::getClassTypeId()));
+        static_cast<Gui::SoFCColorBar*>(findFrontRootOfType(Gui::SoFCColorBar::getClassTypeId()));
     if (pcBar) {
-        float fMin = m_colorBar->getMinValue();
-        float fMax = m_colorBar->getMaxValue();
-
         // Attach to the foreign color bar and delete our own bar
         pcBar->Attach(this);
         pcBar->ref();
-        pcBar->setRange(fMin, fMax, 3);
         pcBar->Notify(0);
-        m_colorBar->Detach(this);
-        m_colorBar->unref();
+        deleteColorBar();
         m_colorBar = pcBar;
     }
 
@@ -318,11 +375,11 @@ std::vector<std::string> ViewProviderFemPostObject::getDisplayModes() const
     std::vector<std::string> StrList;
     StrList.emplace_back("Outline");
     StrList.emplace_back("Nodes");
-    // StrList.emplace_back("Nodes (surface only)"); somehow this filter does not work
     StrList.emplace_back("Surface");
     StrList.emplace_back("Surface with Edges");
     StrList.emplace_back("Wireframe");
     StrList.emplace_back("Wireframe (surface only)");
+    StrList.emplace_back("Nodes (surface only)");
     return StrList;
 }
 
@@ -441,7 +498,6 @@ void ViewProviderFemPostObject::update3D()
 
     // write out point data if any
     WritePointData(points, normals, tcoords);
-    WriteTransparency();
     bool ResetColorBarRange = false;
     WriteColorData(ResetColorBarRange);
 
@@ -561,12 +617,27 @@ void ViewProviderFemPostObject::WritePointData(vtkPoints* points,
     }
 }
 
-void ViewProviderFemPostObject::setRangeOfColorBar(double min, double max)
+void ViewProviderFemPostObject::setRangeOfColorBar(float min, float max)
 {
     try {
+        // setRange expects max value greater than min value.
+        // A typical case is max equal to min, so machine epsilon
+        // is used to overwrite and differentiate both values
         if (min >= max) {
-            min = max - 10 * std::numeric_limits<double>::epsilon();
-            max = max + 10 * std::numeric_limits<double>::epsilon();
+            static constexpr float eps = std::numeric_limits<float>::epsilon();
+            if (max > 0) {
+                min = max * (1 - eps);
+                max = max * (1 + eps);
+            }
+            else if (max < 0) {
+                min = max * (1 + eps);
+                max = max * (1 - eps);
+            }
+            else {
+                static constexpr float minF = std::numeric_limits<float>::min();
+                min = -1 * minF;
+                max = minF;
+            }
         }
         m_colorBar->setRange(min, max);
     }
@@ -616,17 +687,23 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange)
     if (ResetColorBarRange) {
         double range[2];
         data->GetRange(range, component);
-        setRangeOfColorBar(range[0], range[1]);
+        setRangeOfColorBar(static_cast<float>(range[0]), static_cast<float>(range[1]));
     }
 
-    m_material->diffuseColor.setNum(pd->GetNumberOfPoints());
+    vtkIdType numPts = pd->GetNumberOfPoints();
+    m_material->diffuseColor.setNum(numPts);
+    m_matPlainEdges->diffuseColor.setNum(numPts);
     SbColor* diffcol = m_material->diffuseColor.startEditing();
+    SbColor* edgeDiffcol = m_matPlainEdges->diffuseColor.startEditing();
 
     float overallTransp = Transparency.getValue() / 100.0f;
-    m_material->transparency.setNum(pd->GetNumberOfPoints());
+    m_material->transparency.setNum(numPts);
+    m_matPlainEdges->transparency.setNum(numPts);
     float* transp = m_material->transparency.startEditing();
-
-    for (int i = 0; i < pd->GetNumberOfPoints(); i++) {
+    float* edgeTransp = m_matPlainEdges->transparency.startEditing();
+    App::Color c;
+    App::Color cEdge = EdgeColor.getValue();
+    for (int i = 0; i < numPts; i++) {
 
         double value = 0;
         if (component >= 0) {
@@ -640,13 +717,17 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange)
             value = std::sqrt(value);
         }
 
-        App::Color c = m_colorBar->getColor(value);
+        c = m_colorBar->getColor(value);
         diffcol[i].setValue(c.r, c.g, c.b);
         transp[i] = std::max(c.a, overallTransp);
+        edgeDiffcol[i].setValue(cEdge.r, cEdge.g, cEdge.b);
+        edgeTransp[i] = std::max(cEdge.a, overallTransp);
     }
 
     m_material->diffuseColor.finishEditing();
     m_material->transparency.finishEditing();
+    m_matPlainEdges->diffuseColor.finishEditing();
+    m_matPlainEdges->transparency.finishEditing();
     m_materialBinding->value = SoMaterialBinding::PER_VERTEX_INDEXED;
 
     // In order to apply the transparency changes the shape nodes must be touched
@@ -656,9 +737,23 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange)
 
 void ViewProviderFemPostObject::WriteTransparency()
 {
-    float trans = float(Transparency.getValue()) / 100.0;
-    m_material->transparency.setValue(trans);
+    float trans = static_cast<float>(Transparency.getValue()) / 100.0;
+    float* value = m_material->transparency.startEditing();
+    float* edgeValue = m_matPlainEdges->transparency.startEditing();
+    // m_material and m_matPlainEdges field containers have same size
+    for (int i = 0; i < m_material->transparency.getNum(); ++i) {
+        value[i] = trans;
+        edgeValue[i] = trans;
+    }
+    m_material->transparency.finishEditing();
+    m_matPlainEdges->transparency.finishEditing();
 
+    if (Transparency.getValue() > 99) {
+        m_depthBuffer->test.setValue(false);
+    }
+    else {
+        m_depthBuffer->test.setValue(true);
+    }
     // In order to apply the transparency changes the shape nodes must be touched
     m_faces->touch();
     m_triangleStrips->touch();
@@ -736,11 +831,13 @@ void ViewProviderFemPostObject::filterArtifacts(vtkDataSet* dset)
             m_surface->SetInputData(dset);
         }
     }
+
+    m_blockPropertyChanges = false;
+
     // restore initial vsibility
     if (!visibility) {
         this->Visibility.setValue(visibility);
     }
-    m_blockPropertyChanges = false;
 }
 
 bool ViewProviderFemPostObject::setupPipeline()
@@ -817,14 +914,32 @@ void ViewProviderFemPostObject::onChanged(const App::Property* prop)
     if (prop == &Field && setupPipeline()) {
         updateProperties();
         WriteColorData(ResetColorBarRange);
-        WriteTransparency();
     }
     else if (prop == &VectorMode && setupPipeline()) {
         WriteColorData(ResetColorBarRange);
-        WriteTransparency();
     }
     else if (prop == &Transparency) {
         WriteTransparency();
+    }
+    else if (prop == &LineWidth) {
+        m_drawStyle->lineWidth.setValue(LineWidth.getValue());
+    }
+    else if (prop == &PointSize) {
+        m_drawStyle->pointSize.setValue(PointSize.getValue());
+    }
+    else if (prop == &EdgeColor && setupPipeline()) {
+        App::Color c = EdgeColor.getValue();
+        SbColor* edgeColor = m_matPlainEdges->diffuseColor.startEditing();
+        for (int i = 0; i < m_matPlainEdges->diffuseColor.getNum(); ++i) {
+            edgeColor[i].setValue(c.r, c.g, c.b);
+        }
+        m_matPlainEdges->diffuseColor.finishEditing();
+    }
+    else if (prop == &PlainColorEdgeOnSurface || prop == &DisplayMode) {
+        bool plainColor = PlainColorEdgeOnSurface.getValue()
+            && (strcmp("Surface with Edges", DisplayMode.getValueAsString()) == 0);
+        int child = plainColor ? 1 : 0;
+        m_switchMatEdges->whichChild.setValue(child);
     }
 
     ViewProviderDocumentObject::onChanged(prop);
@@ -832,17 +947,6 @@ void ViewProviderFemPostObject::onChanged(const App::Property* prop)
 
 bool ViewProviderFemPostObject::doubleClicked()
 {
-    // work around for a problem in VTK implementation:
-    // https://forum.freecad.org/viewtopic.php?t=10587&start=130#p125688
-    // check if backlight is enabled
-    ParameterGrp::handle hGrp =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    bool isBackLightEnabled = hGrp->GetBool("EnableBacklight", false);
-    if (!isBackLightEnabled) {
-        Base::Console().Error("Backlight is not enabled. Due to a VTK implementation problem you "
-                              "really should consider to enable backlight in FreeCAD display "
-                              "preferences if you work with VTK post processing.\n");
-    }
     // set edit
     Gui::Application::Instance->activeDocument()->setEdit(this, (int)ViewProvider::Default);
     return true;

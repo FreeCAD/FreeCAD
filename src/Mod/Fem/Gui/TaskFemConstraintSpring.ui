@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="lbl_info">
      <property name="text">
-      <string>Select multiple face(s), click Add or Remove</string>
+      <string>Click Add or Remove and select face(s)</string>
      </property>
     </widget>
    </item>
@@ -62,7 +62,7 @@
      <property name="maximumSize">
       <size>
        <width>16777215</width>
-       <height>75</height>
+       <height>215</height>
       </size>
      </property>
     </widget>

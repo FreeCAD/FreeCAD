@@ -27,6 +27,14 @@
 
 #include <QColor>
 
+class QColor;
+class QString;
+
+namespace App
+{
+class Color;
+}
+
 class QFont;
 class QString;
 
@@ -57,14 +65,13 @@ static App::Color  dimColor();
 static QColor      dimQColor();
 static App::Color  pageColor();
 static QColor      pageQColor();
+static App::Color  breaklineColor();
+static QColor      breaklineQColor();
 
 static int         dimArrowStyle();
 static double      dimArrowSize();
 
 static double      edgeFuzz();
-
-static Qt::PenStyle  sectionLineStyle();
-static bool          sectionLineMarks();
 
 static QString     weldingDirectory();
 
@@ -81,6 +88,9 @@ static QColor       lightenColor(QColor orig);
 
 static double       templateClickBoxSize();
 static QColor       templateClickBoxColor();
+
+static int          get3dMarkerSize();
+
 };
 
 } //end namespace TechDrawGui

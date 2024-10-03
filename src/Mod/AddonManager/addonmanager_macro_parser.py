@@ -22,12 +22,13 @@
 # ***************************************************************************
 
 """Contains the parser class for extracting metadata from a FreeCAD macro"""
+import datetime
 
 # pylint: disable=too-few-public-methods
 
 import io
 import re
-from typing import Any, Tuple
+from typing import Any, Tuple, Optional
 
 try:
     from PySide import QtCore
@@ -200,7 +201,7 @@ class MacroParser:
     def _cleanup_comment(self):
         """Remove HTML from the comment line, and truncate it at 512 characters."""
 
-        self.parse_results["comment"] = re.sub("<.*?>", "", self.parse_results["comment"])
+        self.parse_results["comment"] = re.sub(r"<.*?>", "", self.parse_results["comment"])
         if len(self.parse_results["comment"]) > 512:
             self.parse_results["comment"] = self.parse_results["comment"][:511] + "…"
 

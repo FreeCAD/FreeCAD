@@ -101,10 +101,9 @@ private:
 
                 centerPoint = onSketchPos;
 
-                if (seekAutoConstraint(sugConstraints[0], onSketchPos, Base::Vector2d(0.f, 0.f))) {
-                    renderSuggestConstraintsCursor(sugConstraints[0]);
-                    return;
-                }
+                seekAndRenderAutoConstraint(sugConstraints[0],
+                                            onSketchPos,
+                                            Base::Vector2d(0.f, 0.f));
             } break;
             case SelectMode::SeekSecond: {
                 toolWidgetManager.drawDirectionAtCursor(onSketchPos, centerPoint);
@@ -116,10 +115,9 @@ private:
 
                 CreateAndDrawShapeGeometry();
 
-                if (seekAutoConstraint(sugConstraints[1], onSketchPos, Base::Vector2d(0.f, 0.f))) {
-                    renderSuggestConstraintsCursor(sugConstraints[1]);
-                    return;
-                }
+                seekAndRenderAutoConstraint(sugConstraints[1],
+                                            onSketchPos,
+                                            Base::Vector2d(0.f, 0.f));
             } break;
             case SelectMode::SeekThird: {
                 endPoint = centerPoint + (onSketchPos - centerPoint).Normalize() * radius;
@@ -144,10 +142,9 @@ private:
 
                 toolWidgetManager.drawDoubleAtCursor(onSketchPos, arcAngle, Base::Unit::Angle);
 
-                if (seekAutoConstraint(sugConstraints[2], onSketchPos, Base::Vector2d(0.0, 0.0))) {
-                    renderSuggestConstraintsCursor(sugConstraints[2]);
-                    return;
-                }
+                seekAndRenderAutoConstraint(sugConstraints[2],
+                                            onSketchPos,
+                                            Base::Vector2d(0.0, 0.0));
             } break;
             case SelectMode::SeekFourth: {
 
@@ -546,7 +543,8 @@ template<>
 void DSHArcSlotController::configureToolWidget()
 {
     if (!init) {  // Code to be executed only upon initialisation
-        QStringList names = {QStringLiteral("Arc ends"), QStringLiteral("Flat ends")};
+        QStringList names = {QApplication::translate("Sketcher_CreateArcSlot", "Arc ends"),
+                             QApplication::translate("Sketcher_CreateArcSlot", "Flat ends")};
         toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
 
         if (isConstructionMode()) {

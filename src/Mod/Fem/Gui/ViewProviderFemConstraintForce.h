@@ -44,6 +44,9 @@ public:
 
 protected:
     bool setEdit(int ModNum) override;
+    void transformSymbol(const Base::Vector3d& point,
+                         const Base::Vector3d& normal,
+                         SbMatrix& mat) const override;
 
 private:
     /// Direction of the force

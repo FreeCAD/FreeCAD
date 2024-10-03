@@ -73,14 +73,8 @@ class DraftTool:
         self.commitList = []
 
     def IsActive(self):
-        """Return True when this command should be available.
-
-        It is `True` when there is a document.
-        """
-        if Gui.ActiveDocument:
-            return True
-        else:
-            return False
+        """Return True when this command should be available."""
+        return bool(gui_utils.get_3d_view())
 
     def Activated(self, name="None", is_subtool=False):
         """Execute when the command is called.
@@ -128,6 +122,7 @@ class DraftTool:
         self.pos = []
         self.support = None
         self.ui = Gui.draftToolBar
+        self.ui.mouse = True  # reset mouse movement
         self.ui.sourceCmd = self
         self.view = gui_utils.get_3d_view()
         self.wp = WorkingPlane.get_working_plane()

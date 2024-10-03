@@ -49,7 +49,9 @@
 #include <boost/math/special_functions/fpclassify.hpp>
 
 #ifdef FC_OS_WIN32
+#ifndef NOMINMAX
 #define NOMINMAX
+#endif
 #include <windows.h>
 #endif
 

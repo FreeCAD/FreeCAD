@@ -588,7 +588,7 @@ class DraftModification(unittest.TestCase):
 
         obj = Draft.make_clone(box1)
         obj.MapMode = "ObjectXY"
-        obj.Support = [(box2, ("",))]
+        obj.AttachmentSupport = [(box2, ("",))]
         App.ActiveDocument.recompute()
 
         box1.Length = 1

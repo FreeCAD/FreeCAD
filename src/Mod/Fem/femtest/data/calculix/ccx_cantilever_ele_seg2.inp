@@ -61,7 +61,7 @@
 
 
 ** Edge elements
-*Element, TYPE=B31, ELSET=Eedges
+*Element, TYPE=B31R, ELSET=Eedges
 1, 1, 3
 2, 3, 4
 3, 4, 5
@@ -187,6 +187,9 @@ Eedges
 *NSET,NSET=ConstraintFixed
 1,
 
+** Physical constants for SI(mm) unit system with Kelvins
+*PHYSICAL CONSTANTS, ABSOLUTE ZERO=0, STEFAN BOLTZMANN=5.670374419e-11
+
 ***********************************************************
 ** Materials
 ** see information about units at file end
@@ -200,11 +203,11 @@ Eedges
 ** Sections
 *BEAM SECTION, ELSET=M0B0RstdD0, MATERIAL=MechanicalMaterial, SECTION=RECT
 1000,1000
--0, 1, 0
+0, 1, -0
 
 ***********************************************************
 ** At least one step is needed to run an CalculiX analysis of FreeCAD
-*STEP
+*STEP, INC=2000
 *STATIC
 
 
@@ -225,13 +228,13 @@ ConstraintFixed,6
 *CLOAD
 ** ConstraintForce
 ** node load on shape: CantileverLine:Vertex2
-2,3,-9000000.0
+2,3,-9000000
 
 
 
 ***********************************************************
 ** Outputs --> frd file
-*NODE FILE, OUTPUT=2d
+*NODE FILE, OUTPUT=3d
 U
 *EL FILE
 S, E
@@ -240,9 +243,9 @@ S, E
 *NODE PRINT, NSET=ConstraintFixed, TOTALS=ONLY
 RF
 
-
+*OUTPUT, FREQUENCY=1
 ***********************************************************
-*END STEP 
+*END STEP
 
 ***********************************************************
 ** CalculiX Input file

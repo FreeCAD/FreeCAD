@@ -411,7 +411,7 @@ Common sizes are 128, 256 and 512</string>
          <string>Add the program logo to the generated thumbnail</string>
         </property>
         <property name="checked">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>AddThumbnailLogo</cstring>
@@ -698,7 +698,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</string>
          <string>URL describing more about the license</string>
         </property>
         <property name="text">
-         <string notr="true">http://en.wikipedia.org/wiki/All_rights_reserved</string>
+         <string notr="true">https://en.wikipedia.org/wiki/All_rights_reserved</string>
         </property>
         <property name="readOnly">
          <bool>false</bool>

@@ -148,7 +148,7 @@ class AddonInstallerGUI(QtCore.QObject):
                 "<p>"
                 + translate(
                     "AddonsInstaller",
-                    "This addon requires Python packages that are not installed, and cannot be installed automatically. To use this workbench you must install the following Python packages manually:",
+                    "This addon requires Python packages that are not installed, and cannot be installed automatically. To use this addon you must install the following Python packages manually:",
                 )
                 + "</p><ul>"
             )
@@ -209,7 +209,6 @@ class AddonInstallerGUI(QtCore.QObject):
         self.dependency_dialog = FreeCADGui.PySideUic.loadUi(
             os.path.join(os.path.dirname(__file__), "dependency_resolution_dialog.ui")
         )
-        self.dependency_dialog.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
 
         for addon in missing.external_addons:
             self.dependency_dialog.listWidgetAddons.addItem(addon)
@@ -243,7 +242,7 @@ class AddonInstallerGUI(QtCore.QObject):
                 translate("AddonsInstaller", "Incompatible Python version"),
                 translate(
                     "AddonsInstaller",
-                    "This Addon (or one if its dependencies) requires Python {}.{}, and your system is running {}.{}. Installation cancelled.",
+                    "This Addon (or one of its dependencies) requires Python {}.{}, and your system is running {}.{}. Installation cancelled.",
                 ).format(
                     missing.python_min_version["major"],
                     missing.python_min_version["minor"],
@@ -364,9 +363,10 @@ class AddonInstallerGUI(QtCore.QObject):
             translate("AddonsInstaller", "Cannot execute pip"),
             translate(
                 "AddonsInstaller",
-                "Failed to execute pip, which may be missing from your Python installation. Please ensure your system has pip installed and try again. The failed command was: ",
+                "Failed to execute pip, which may be missing from your Python installation. Please ensure your system "
+                "has pip installed and try again. The failed command was:",
             )
-            + f"\n\n{command}\n\n"
+            + f" \n\n{command}\n\n"
             + translate(
                 "AddonsInstaller",
                 "Continue with installation of {} anyway?",
@@ -554,7 +554,6 @@ class MacroInstallerGUI(QtCore.QObject):
             add_toolbar_button_dialog = FreeCADGui.PySideUic.loadUi(
                 os.path.join(os.path.dirname(__file__), "add_toolbar_button_dialog.ui")
             )
-            add_toolbar_button_dialog.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
             add_toolbar_button_dialog.buttonYes.clicked.connect(self._install_toolbar_button)
             add_toolbar_button_dialog.buttonNever.clicked.connect(
                 lambda: self.addon_params.SetBool("dontShowAddMacroButtonDialog", True)
@@ -590,7 +589,6 @@ class MacroInstallerGUI(QtCore.QObject):
             select_toolbar_dialog = FreeCADGui.PySideUic.loadUi(
                 os.path.join(os.path.dirname(__file__), "select_toolbar_dialog.ui")
             )
-            select_toolbar_dialog.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
 
             select_toolbar_dialog.comboBox.clear()
 

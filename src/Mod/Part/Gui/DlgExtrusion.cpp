@@ -143,6 +143,7 @@ DlgExtrusion::~DlgExtrusion()
 
 void DlgExtrusion::setupConnections()
 {
+    // clang-format off
     connect(ui->rbDirModeCustom, &QRadioButton::toggled,
             this, &DlgExtrusion::onDirModeCustomToggled);
     connect(ui->rbDirModeEdge, &QRadioButton::toggled,
@@ -161,6 +162,7 @@ void DlgExtrusion::setupConnections()
             this, &DlgExtrusion::onCheckSymmetricToggled);
     connect(ui->txtLink, &QLineEdit::textChanged,
             this, &DlgExtrusion::onTextLinkTextChanged);
+    // clang-format on
 }
 
 void DlgExtrusion::changeEvent(QEvent *e)
@@ -481,7 +483,7 @@ void DlgExtrusion::apply()
 
             this->writeParametersToFeature(*newObj, sourceObj);
 
-            Gui::Command::copyVisual(newObj, "ShapeColor", sourceObj);
+            Gui::Command::copyVisual(newObj, "ShapeAppearance", sourceObj);
             Gui::Command::copyVisual(newObj, "LineColor", sourceObj);
             Gui::Command::copyVisual(newObj, "PointColor", sourceObj);
 
@@ -754,11 +756,7 @@ void DlgExtrusion::writeParametersToFeature(App::DocumentObject &feature, App::D
 TaskExtrusion::TaskExtrusion()
 {
     widget = new DlgExtrusion();
-    taskbox = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("Part_Extrude"),
-        widget->windowTitle(), true, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(Gui::BitmapFactory().pixmap("Part_Extrude"), widget);
 }
 
 bool TaskExtrusion::accept()

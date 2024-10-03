@@ -60,17 +60,52 @@ public:
     /** @name methods override feature */
     //@{
     short mustExecute() const override;
+    void setupObject() override;
+
+    const char* getViewProviderName() const override {
+        return "PartDesignGui::ViewProviderExtrude";
+    }
     //@}
 
 protected:
-    Base::Vector3d computeDirection(const Base::Vector3d& sketchVector);
+    Base::Vector3d computeDirection(const Base::Vector3d& sketchVector, bool inverse);
     bool hasTaperedAngle() const;
+
+
+    /// Options for buildExtrusion()
+    enum class ExtrudeOption
+    {
+        MakeFace = 1,
+        MakeFuse = 2,
+        LegacyPocket = 4,
+        InverseDirection = 8,
+    };
+
+    using ExtrudeOptions = Base::Flags<ExtrudeOption>;
+
+    App::DocumentObjectExecReturn* buildExtrusion(ExtrudeOptions options);
+
+    /**
+     * generate an open shell from a given shape
+     * by removing the farthest face from the sketchshape in the direction
+     * if farthest is nearest (circular) then return the initial shape
+     */
+    TopoShape makeShellFromUpToShape(TopoShape shape, TopoShape sketchshape, gp_Dir dir);
 
     /**
       * Generates an extrusion of the input sketchshape and stores it in the given \a prism
       */
     void generatePrism(TopoDS_Shape& prism,
                        const TopoDS_Shape& sketchshape,
+                       const std::string& method,
+                       const gp_Dir& direction,
+                       const double L,
+                       const double L2,
+                       const bool midplane,
+                       const bool reversed);
+
+    void generatePrism(TopoShape& prism,
+                       TopoShape sketchshape,
                        const std::string& method,
                        const gp_Dir& direction,
                        const double L,
@@ -120,5 +155,6 @@ protected:
 
 } //namespace PartDesign
 
+ENABLE_BITMASK_OPERATORS(PartDesign::FeatureExtrude::ExtrudeOption)
 
 #endif // PARTDESIGN_FEATURE_EXTRUDE_H

@@ -66,7 +66,7 @@ def linkSubList_convertToOldStyle(references):
                 result.append((tup[0], subname))
             if len(tup[1]) == 0:
                 result.append((tup[0], ''))
-        elif isinstance(tup[1],basestring):
+        elif isinstance(tup[1],str):
             # old style references, no conversion required
             result.append(tup)
     return result
@@ -306,7 +306,7 @@ class AttachmentEditorTaskPanel(FrozenClass):
 
     # task dialog handling
     def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Ok) | int(QtGui.QDialogButtonBox.Cancel)| int(QtGui.QDialogButtonBox.Apply)
+        return QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel | QtGui.QDialogButtonBox.Apply
 
     def clicked(self,button):
         if button == QtGui.QDialogButtonBox.Apply:

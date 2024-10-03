@@ -6,17 +6,17 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="69"/>
       <source>Standard (mm, kg, s, °)</source>
-      <translation type="unfinished">Standard (mm, kg, s, °)</translation>
+      <translation>Standard (mm, kg, s, °)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="71"/>
       <source>MKS (m, kg, s, °)</source>
-      <translation type="unfinished">MKS (m, kg, s, °)</translation>
+      <translation>MKS (m, kg, s, °)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="73"/>
       <source>US customary (in, lb)</source>
-      <translation>Unités de mesure américaines (in, lb)</translation>
+      <translation>Unités des États-Unis (in, lb)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="75"/>
@@ -31,17 +31,17 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="79"/>
       <source>Building US (ft-in, sqft, cft)</source>
-      <translation>Construction US (ft-in, sqft, cft)</translation>
+      <translation>Construction états-unienne (ft-in, sqft, cft)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="81"/>
-      <source>Metric small parts &amp; CNC(mm, mm/min)</source>
-      <translation>Petites pièces métriques &amp; CNC (mm, mm/min)</translation>
+      <source>Metric small parts &amp; CNC (mm, mm/min)</source>
+      <translation>Métrique, petites pièces &amp; CNC (mm, mm/min)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="83"/>
       <source>Imperial for Civil Eng (ft, ft/s)</source>
-      <translation type="unfinished">Imperial for Civil Eng (ft, ft/s)</translation>
+      <translation>Impérial pour le génie civil (ft, ft/s)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="85"/>
@@ -56,7 +56,7 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="89"/>
       <source>Unknown schema</source>
-      <translation>Schéma inconnu</translation>
+      <translation>Système inconnu</translation>
     </message>
   </context>
 </TS>

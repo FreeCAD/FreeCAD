@@ -34,14 +34,16 @@ def get_information():
         "meshtype": "edge",
         "meshelement": "Seg3",
         "constraints": ["fixed", "force"],
-        "solvers": ["calculix", "ccxtools"],
+        "solvers": ["ccxtools"],
         "material": "solid",
-        "equations": ["mechanical"]
+        "equations": ["mechanical"],
     }
 
 
 def get_explanation(header=""):
-    return header + """
+    return (
+        header
+        + """
 
 To run the example from Python console use:
 from femexamples.ccx_cantilever_beam_pipe import setup
@@ -77,6 +79,7 @@ CalculiX FEM max deflection:
 - Delta ca. 1.0 %
 
 """
+    )
 
 
 def setup(doc=None, solvertype="ccxtools"):

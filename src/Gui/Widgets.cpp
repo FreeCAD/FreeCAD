@@ -1069,7 +1069,7 @@ LabelButton::LabelButton (QWidget * parent)
     layout->addWidget(label);
 
     button = new QPushButton(QLatin1String("..."), this);
-#if defined (Q_OS_MAC)
+#if defined (Q_OS_MACOS)
     button->setAttribute(Qt::WA_LayoutUsesWidgetRect); // layout size from QMacStyle was not correct
 #endif
     layout->addWidget(button);
@@ -1356,9 +1356,10 @@ void PropertyListEditor::highlightCurrentLine()
     if (!isReadOnly()) {
         QTextEdit::ExtraSelection selection;
 
-        QColor lineColor = QColor(Qt::yellow).lighter(160);
+        QPalette palette = style()->standardPalette();
+        selection.format.setBackground(palette.highlight().color());
+        selection.format.setForeground(palette.highlightedText().color());
 
-        selection.format.setBackground(lineColor);
         selection.format.setProperty(QTextFormat::FullWidthSelection, true);
         selection.cursor = textCursor();
         selection.cursor.clearSelection();
@@ -1456,7 +1457,7 @@ LabelEditor::LabelEditor (QWidget * parent)
             this, &LabelEditor::validateText);
 
     button = new QPushButton(QLatin1String("..."), this);
-#if defined (Q_OS_MAC)
+#if defined (Q_OS_MACOS)
     button->setAttribute(Qt::WA_LayoutUsesWidgetRect); // layout size from QMacStyle was not correct
 #endif
     layout->addWidget(button);
@@ -1714,7 +1715,7 @@ ButtonGroup::ButtonGroup(QObject *parent)
     QButtonGroup::setExclusive(false);
 
     connect(this, qOverload<QAbstractButton *>(&QButtonGroup::buttonClicked),
-            [=](QAbstractButton *button) {
+            [this](QAbstractButton *button) {
         if (exclusive()) {
             const auto btns = buttons();
             for (auto btn : btns) {

@@ -73,10 +73,12 @@ LoftWidget::LoftWidget(QWidget* parent)
     d->ui.selector->setAvailableLabel(tr("Available profiles"));
     d->ui.selector->setSelectedLabel(tr("Selected profiles"));
 
+    // clang-format off
     connect(d->ui.selector->availableTreeWidget(), &QTreeWidget::currentItemChanged,
             this, &LoftWidget::onCurrentItemChanged);
     connect(d->ui.selector->selectedTreeWidget(), &QTreeWidget::currentItemChanged,
             this, &LoftWidget::onCurrentItemChanged);
+    // clang-format on
 
     findShapes();
 }
@@ -135,10 +137,11 @@ void LoftWidget::findShapes()
             }
         }
 
-        if (shape.ShapeType() == TopAbs_FACE ||
+        if (!shape.Infinite() && 
+            (shape.ShapeType() == TopAbs_FACE ||
             shape.ShapeType() == TopAbs_WIRE ||
             shape.ShapeType() == TopAbs_EDGE ||
-            shape.ShapeType() == TopAbs_VERTEX) {
+            shape.ShapeType() == TopAbs_VERTEX)) {
             QString label = QString::fromUtf8(obj->Label.getValue());
             QString name = QString::fromLatin1(obj->getNameInDocument());
             QTreeWidgetItem* child = new QTreeWidgetItem();
@@ -248,11 +251,7 @@ void LoftWidget::changeEvent(QEvent *e)
 TaskLoft::TaskLoft()
 {
     widget = new LoftWidget();
-    taskbox = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("Part_Loft"),
-        widget->windowTitle(), true, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(Gui::BitmapFactory().pixmap("Part_Loft"), widget);
 }
 
 TaskLoft::~TaskLoft() = default;

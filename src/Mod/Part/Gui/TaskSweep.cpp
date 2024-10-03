@@ -132,12 +132,14 @@ SweepWidget::SweepWidget(QWidget* parent)
     d->ui.selector->setSelectedLabel(tr("Selected profiles"));
     d->ui.labelPath->clear();
 
+    // clang-format off
     connect(d->ui.buttonPath, &QPushButton::toggled,
             this, &SweepWidget::onButtonPathToggled);
     connect(d->ui.selector->availableTreeWidget(), &QTreeWidget::currentItemChanged,
             this, &SweepWidget::onCurrentItemChanged);
     connect(d->ui.selector->selectedTreeWidget(), &QTreeWidget::currentItemChanged,
             this, &SweepWidget::onCurrentItemChanged);
+    // clang-format on
 
     findShapes();
 }
@@ -197,10 +199,11 @@ void SweepWidget::findShapes()
             }
         }
 
-        if (shape.ShapeType() == TopAbs_FACE ||
+        if (!shape.Infinite() && 
+            (shape.ShapeType() == TopAbs_FACE ||
             shape.ShapeType() == TopAbs_WIRE ||
             shape.ShapeType() == TopAbs_EDGE ||
-            shape.ShapeType() == TopAbs_VERTEX) {
+            shape.ShapeType() == TopAbs_VERTEX)) {
             QString label = QString::fromUtf8(obj->Label.getValue());
             QString name = QString::fromLatin1(obj->getNameInDocument());
 
@@ -462,11 +465,7 @@ void SweepWidget::changeEvent(QEvent *e)
 TaskSweep::TaskSweep() : label(nullptr)
 {
     widget = new SweepWidget();
-    taskbox = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("Part_Sweep"),
-        widget->windowTitle(), true, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(Gui::BitmapFactory().pixmap("Part_Sweep"), widget);
 }
 
 TaskSweep::~TaskSweep()

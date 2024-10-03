@@ -41,14 +41,16 @@ def get_information():
         "meshtype": "face",
         "meshelement": "Tria6",
         "constraints": ["force", "fixed"],
-        "solvers": ["calculix", "ccxtools"],
+        "solvers": ["ccxtools"],
         "material": "solid",
-        "equations": ["mechanical"]
+        "equations": ["mechanical"],
     }
 
 
 def get_explanation(header=""):
-    return header + """
+    return (
+        header
+        + """
 
 To run the example from Python console use:
 from femexamples.square_pipe_end_twisted_nodeforces import setup
@@ -59,6 +61,7 @@ See forum topic post:
 ...
 
 """
+    )
 
 
 def setup(doc=None, solvertype="ccxtools"):
@@ -201,17 +204,15 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
 
     # solver
-    if solvertype == "calculix":
-        solver_obj = ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
-    elif solvertype == "ccxtools":
-        solver_obj = ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
-        solver_obj.WorkingDir = u""
+    if solvertype == "ccxtools":
+        solver_obj = ObjectsFem.makeSolverCalculiXCcxTools(doc, "CalculiXCcxTools")
+        solver_obj.WorkingDir = ""
     else:
         FreeCAD.Console.PrintWarning(
             "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
-    if solvertype == "calculix" or solvertype == "ccxtools":
+    if solvertype == "ccxtools":
         solver_obj.SplitInputWriter = False
         solver_obj.AnalysisType = "static"
         solver_obj.GeometricalNonlinearity = "linear"
@@ -283,7 +284,8 @@ def setup(doc=None, solvertype="ccxtools"):
         (geofixes_obj, "Vertex45"),
         (geofixes_obj, "Vertex27"),
         (geofixes_obj, "Vertex2"),
-        (geofixes_obj, "Vertex25")]
+        (geofixes_obj, "Vertex25"),
+    ]
     analysis.addObject(con_fixed)
 
     # con_force1
@@ -309,7 +311,8 @@ def setup(doc=None, solvertype="ccxtools"):
         (geoforces_obj, "Vertex21"),
         (geoforces_obj, "Vertex22"),
         (geoforces_obj, "Vertex23"),
-        (geoforces_obj, "Vertex24"), ]
+        (geoforces_obj, "Vertex24"),
+    ]
     con_force3.Force = "27777.78 N"
     con_force3.Direction = (geom_obj, ["Edge9"])
     con_force3.Reversed = False
@@ -322,7 +325,8 @@ def setup(doc=None, solvertype="ccxtools"):
         (geoforces_obj, "Vertex10"),
         (geoforces_obj, "Vertex11"),
         (geoforces_obj, "Vertex12"),
-        (geoforces_obj, "Vertex13"), ]
+        (geoforces_obj, "Vertex13"),
+    ]
     con_force4.Force = "27777.78 N"
     con_force4.Direction = (geom_obj, ["Edge3"])
     con_force4.Reversed = False
@@ -336,7 +340,8 @@ def setup(doc=None, solvertype="ccxtools"):
         (geoforces_obj, "Vertex45"),
         (geoforces_obj, "Vertex46"),
         (geoforces_obj, "Vertex47"),
-        (geoforces_obj, "Vertex48"), ]
+        (geoforces_obj, "Vertex48"),
+    ]
     con_force5.Force = "66666.67 N"
     con_force5.Direction = (geom_obj, ["Edge9"])
     con_force5.Reversed = False
@@ -350,7 +355,8 @@ def setup(doc=None, solvertype="ccxtools"):
         (geoforces_obj, "Vertex33"),
         (geoforces_obj, "Vertex34"),
         (geoforces_obj, "Vertex35"),
-        (geoforces_obj, "Vertex36"), ]
+        (geoforces_obj, "Vertex36"),
+    ]
     con_force6.Force = "66666.67 N"
     con_force6.Direction = (geom_obj, ["Edge3"])
     con_force6.Reversed = False
@@ -379,7 +385,8 @@ def setup(doc=None, solvertype="ccxtools"):
         (geoforces_obj, "Vertex4"),
         (geoforces_obj, "Vertex5"),
         (geoforces_obj, "Vertex6"),
-        (geoforces_obj, "Vertex7"), ]
+        (geoforces_obj, "Vertex7"),
+    ]
     con_force9.Force = "27777.78 N"
     con_force9.Direction = (geom_obj, ["Edge11"])
     con_force9.Reversed = False
@@ -392,7 +399,8 @@ def setup(doc=None, solvertype="ccxtools"):
         (geoforces_obj, "Vertex16"),
         (geoforces_obj, "Vertex17"),
         (geoforces_obj, "Vertex18"),
-        (geoforces_obj, "Vertex19"), ]
+        (geoforces_obj, "Vertex19"),
+    ]
     con_force10.Force = "27777.78 N"
     con_force10.Direction = (geom_obj, ["Edge6"])
     con_force10.Reversed = False
@@ -406,7 +414,8 @@ def setup(doc=None, solvertype="ccxtools"):
         (geoforces_obj, "Vertex27"),
         (geoforces_obj, "Vertex28"),
         (geoforces_obj, "Vertex29"),
-        (geoforces_obj, "Vertex30"), ]
+        (geoforces_obj, "Vertex30"),
+    ]
     con_force11.Force = "66666.67 N"
     con_force11.Direction = (geom_obj, ["Edge11"])
     con_force11.Reversed = False
@@ -420,7 +429,8 @@ def setup(doc=None, solvertype="ccxtools"):
         (geoforces_obj, "Vertex39"),
         (geoforces_obj, "Vertex40"),
         (geoforces_obj, "Vertex41"),
-        (geoforces_obj, "Vertex42"), ]
+        (geoforces_obj, "Vertex42"),
+    ]
     con_force12.Force = "66666.67 N"
     con_force12.Direction = (geom_obj, ["Edge6"])
     con_force12.Reversed = False
@@ -428,6 +438,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # mesh
     from .meshes.mesh_square_pipe_end_twisted_tria6 import create_nodes, create_elements
+
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
@@ -437,7 +448,7 @@ def setup(doc=None, solvertype="ccxtools"):
         FreeCAD.Console.PrintError("Error on creating elements.\n")
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.FemMesh = fem_mesh
-    femmesh_obj.Part = geom_obj
+    femmesh_obj.Shape = geom_obj
     femmesh_obj.SecondOrderLinear = False
 
     doc.recompute()

@@ -21,7 +21,7 @@
 			<depend>OpenSCAD Workbench</depend>
 			<depend>Part WORKBENCH</depend>
 			<depend>PartDesign WB</depend>
-			<depend>path</depend>
+			<depend>CAM</depend>
 			<depend>Plot</depend>
 			<depend>POINTS</depend>
 			<depend>ROBOTWB</depend>

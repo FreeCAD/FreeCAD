@@ -20,8 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <map>
+#include <string>
+#include <vector>
 
-#include "PreCompiled.h"
+#include "PreCompiled.h"    // NOLINT
 #ifndef _PreComp_
 # include <Precision.hxx>
 # include <TopoDS.hxx>
@@ -30,6 +33,7 @@
 #include <Base/Exception.h>
 #include "FeatureThickness.h"
 
+FC_LOG_LEVEL_INIT("PartDesign", true, true)
 
 using namespace PartDesign;
 
@@ -38,12 +42,11 @@ const char *PartDesign::Thickness::JoinEnums[] = {"Arc", "Intersection", nullptr
 
 PROPERTY_SOURCE(PartDesign::Thickness, PartDesign::DressUp)
 
-Thickness::Thickness()
-{
+Thickness::Thickness() {
     ADD_PROPERTY_TYPE(Value, (1.0), "Thickness", App::Prop_None, "Thickness value");
-    ADD_PROPERTY_TYPE(Mode, (long(0)), "Thickness", App::Prop_None, "Mode");
+    ADD_PROPERTY_TYPE(Mode, (0L), "Thickness", App::Prop_None, "Mode");
     Mode.setEnums(ModeEnums);
-    ADD_PROPERTY_TYPE(Join, (long(0)), "Thickness", App::Prop_None, "Join type");
+    ADD_PROPERTY_TYPE(Join, (0L), "Thickness", App::Prop_None, "Join type");
     Join.setEnums(JoinEnums);
     ADD_PROPERTY_TYPE(Reversed, (true), "Thickness", App::Prop_None,
                       "Apply the thickness towards the solids interior");
@@ -51,61 +54,117 @@ Thickness::Thickness()
                       "Enable intersection-handling");
 }
 
-short Thickness::mustExecute() const
-{
+int16_t Thickness::mustExecute() const {
     if (Placement.isTouched() ||
         Value.isTouched() ||
         Mode.isTouched() ||
-        Join.isTouched())
+        Join.isTouched()) {
         return 1;
+    }
     return DressUp::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Thickness::execute()
-{
+App::DocumentObjectExecReturn *Thickness::execute() {
     // Base shape
     Part::TopoShape TopShape;
     try {
-        TopShape = getBaseShape();
+        TopShape = getBaseTopoShape();
     }
-    catch (Base::Exception &e) {
+    catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
 
-    const std::vector<std::string>& subStrings = Base.getSubValues();
+    const std::vector<std::string>& subStrings = Base.getSubValues(true);
 
-    //If no element is selected, then we use a copy of previous feature.
+    // If the base has no sub elements listed just return a copy of the base.
     if (subStrings.empty()) {
-        //We must set the placement of the feature in case it's empty.
+        // We must set the placement of the feature in case it's empty.
         this->positionByBaseFeature();
         this->Shape.setValue(TopShape);
         return App::DocumentObject::StdReturn;
     }
 
-    /* If the feature was empty at some point, then Placement was set by positionByBaseFeature.
-    *  However makeThickSolid apparently requires the placement to be empty, so we have to clear it*/
+    /* If the feature was ever empty, then Placement was set by positionByBaseFeature.  However,
+     * makeThickSolid apparently requires the placement to be empty, so we have to clear it */
     this->Placement.setValue(Base::Placement());
 
-    TopTools_ListOfShape closingFaces;
-
-    for (const auto & it : subStrings) {
-        TopoDS_Face face = TopoDS::Face(TopShape.getSubShape(it.c_str()));
-        closingFaces.Append(face);
+    std::map<int, std::vector<TopoShape>> closeFaces;
+    for ( const auto& it : subStrings ) {
+        TopoDS_Shape face;
+        try {
+            face = TopShape.getSubShape(it.c_str());
+        }
+        catch (...) {
+        }
+        if (face.IsNull())
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Invalid face reference"));
+        // We found the sub element (face) so let's get its history index in our shape
+        int index = TopShape.findAncestor(face, TopAbs_SOLID);
+        if (!index) {
+            FC_WARN(getFullName() << ": Ignore non-solid face  " << it);
+            continue;
+        }
+        closeFaces[index].emplace_back(face);
     }
 
     bool reversed = Reversed.getValue();
     bool intersection = Intersection.getValue();
-    double thickness =  (reversed ? -1. : 1. )*Value.getValue();
+    double thickness = (reversed ? -1. : 1.) * Value.getValue();
     double tol = Precision::Confusion();
-    short mode = (short)Mode.getValue();
-    short join = (short)Join.getValue();
-    //we do not offer tangent join type
-    if(join == 1)
+    auto mode = static_cast<int16_t>(Mode.getValue());
+    auto join = Join.getValue();
+
+    std::vector<TopoShape> shapes;
+    auto count = static_cast<int>(TopShape.countSubShapes(TopAbs_SOLID));
+    if (!count)
+        return new App::DocumentObjectExecReturn("No solid");
+    // we do not offer tangent join type
+    if (join == 1)
         join = 2;
 
-    if (fabs(thickness) > 2*tol)
-        this->Shape.setValue(getSolid(TopShape.makeThickSolid(closingFaces, thickness, tol, intersection, false, mode, join)));
-    else
-        this->Shape.setValue(getSolid(TopShape.getShape()));
+    if (fabs(thickness) > 2 * tol) {
+        auto mapIterator = closeFaces.begin();
+        for (auto loopIndex = 1; loopIndex <= count; ++loopIndex) {
+            std::vector<TopoShape> dummy;
+            const auto* faces = &dummy;
+            TopoShape solid = TopShape;
+            // expect the sub element indexes in the map to be in order and matching our loop index,
+            // and effectively ignore them if they are not.
+            if (mapIterator != closeFaces.end() && loopIndex >= mapIterator->first) {
+                faces = &mapIterator->second;
+                solid = TopShape.getSubTopoShape(TopAbs_SOLID, mapIterator->first);
+            }
+            TopoShape res(0);
+            try {
+                res = solid.makeElementThickSolid(*faces,
+                                                  thickness,
+                                                  tol,
+                                                  intersection,
+                                                  false,
+                                                  mode,
+                                                  static_cast<Part::JoinType>(join));
+                shapes.push_back(res);
+            }
+            catch (Standard_Failure& e) {
+                FC_ERR("Exception on making thick solid: " << e.GetMessageString());
+                return new App::DocumentObjectExecReturn("Failed to make thick solid");
+            }
+            if (mapIterator != closeFaces.end()) {
+                ++mapIterator;
+            }
+        }
+    }
+
+    TopoShape result(0);
+    if (shapes.size() > 1) {
+        result.makeElementFuse(shapes);
+    } else if (shapes.empty()) {
+        result = TopShape;
+    } else {
+        result = shapes.front();
+    }
+    result = refineShapeIfActive(result);
+    this->Shape.setValue(getSolid(result));
     return App::DocumentObject::StdReturn;
 }

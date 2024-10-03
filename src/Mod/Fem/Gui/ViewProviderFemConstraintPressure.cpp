@@ -24,10 +24,9 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <Inventor/SbMatrix.h>
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbVec3f.h>
-#include <Inventor/nodes/SoMultipleCopy.h>
-#include <Inventor/nodes/SoSeparator.h>
 #endif
 
 #include "Mod/Fem/App/FemConstraintPressure.h"
@@ -45,123 +44,58 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintPressure,
 ViewProviderFemConstraintPressure::ViewProviderFemConstraintPressure()
 {
     sPixmap = "FEM_ConstraintPressure";
-    ADD_PROPERTY(FaceColor, (0.0f, 0.2f, 0.8f));
+    loadSymbol((resourceSymbolDir + "ConstraintPressure.iv").c_str());
+    ShapeAppearance.setDiffuseColor(0.0f, 0.2f, 0.8f);
 }
 
 ViewProviderFemConstraintPressure::~ViewProviderFemConstraintPressure() = default;
 
-// FIXME setEdit needs a careful review
 bool ViewProviderFemConstraintPressure::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
-        // When double-clicking on the item for this constraint the
-        // object unsets and sets its edit mode without closing
-        // the task panel
-        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-        TaskDlgFemConstraintPressure* constrDlg = qobject_cast<TaskDlgFemConstraintPressure*>(dlg);
-        if (constrDlg && constrDlg->getConstraintView() != this) {
-            constrDlg = nullptr;  // another constraint left open its task panel
-        }
-        if (dlg && !constrDlg) {
-            if (constraintDialog) {
-                // Ignore the request to open another dialog
-                return false;
-            }
-            else {
-                constraintDialog = new TaskFemConstraintPressure(this);
-                return true;
-            }
-        }
-
+        Gui::Control().closeDialog();
         // clear the selection (convenience)
         Gui::Selection().clearSelection();
+        Gui::Control().showDialog(new TaskDlgFemConstraintPressure(this));
 
-        // start the edit dialog
-        if (constrDlg) {
-            Gui::Control().showDialog(constrDlg);
-        }
-        else {
-            Gui::Control().showDialog(new TaskDlgFemConstraintPressure(this));
-        }
         return true;
     }
     else {
-        return ViewProviderDocumentObject::setEdit(ModNum);  // clazy:exclude=skipped-base-method
+        return ViewProviderFemConstraintOnBoundary::setEdit(ModNum);
     }
 }
 
-#define ARROWLENGTH (4)
-#define ARROWHEADRADIUS (ARROWLENGTH / 3.0f)
-// #define USE_MULTIPLE_COPY //OvG: MULTICOPY fails to update scaled arrows on initial drawing - so
-// disable
-
 void ViewProviderFemConstraintPressure::updateData(const App::Property* prop)
 {
-    // Gets called whenever a property of the attached object changes
-    Fem::ConstraintPressure* pcConstraint =
-        static_cast<Fem::ConstraintPressure*>(this->getObject());
-    float scaledheadradius =
-        ARROWHEADRADIUS * pcConstraint->Scale.getValue();  // OvG: Calculate scaled values once only
-    float scaledlength = ARROWLENGTH * pcConstraint->Scale.getValue();
+    auto pcConstraint = static_cast<Fem::ConstraintPressure*>(this->getObject());
 
-#ifdef USE_MULTIPLE_COPY
-    // OvG: always need access to cp for scaling
-    SoMultipleCopy* cp = new SoMultipleCopy();
-    if (pShapeSep->getNumChildren() == 0) {
-        // Set up the nodes
-        cp->matrix.setNum(0);
-        cp->addChild((SoNode*)createArrow(scaledlength, scaledheadradius));  // OvG: Scaling
-        pShapeSep->addChild(cp);
+    if (prop == &pcConstraint->Reversed) {
+        updateSymbol();
     }
-#endif
-
-    if (prop == &pcConstraint->Points) {
-        const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
-        const std::vector<Base::Vector3d>& normals = pcConstraint->Normals.getValues();
-        if (points.size() != normals.size()) {
-            return;
-        }
-        std::vector<Base::Vector3d>::const_iterator n = normals.begin();
-
-#ifdef USE_MULTIPLE_COPY
-        cp = static_cast<SoMultipleCopy*>(pShapeSep->getChild(0));  // OvG: Use top cp
-        cp->matrix.setNum(points.size());
-        SbMatrix* matrices = cp->matrix.startEditing();
-        int idx = 0;
-#else
-        // Redraw all arrows
-        Gui::coinRemoveAllChildren(pShapeSep);
-#endif
-
-        for (const auto& point : points) {
-            SbVec3f base(point.x, point.y, point.z);
-            SbVec3f dir(n->x, n->y, n->z);
-            double rev;
-            if (pcConstraint->Reversed.getValue()) {
-                base = base + dir * scaledlength;  // OvG: Scaling
-                rev = 1;
-            }
-            else {
-                rev = -1;
-            }
-            SbRotation rot(SbVec3f(0, rev, 0), dir);
-#ifdef USE_MULTIPLE_COPY
-            SbMatrix m;
-            m.setTransform(base, rot, SbVec3f(1, 1, 1));
-            matrices[idx] = m;
-            idx++;
-#else
-            SoSeparator* sep = new SoSeparator();
-            createPlacement(sep, base, rot);
-            createArrow(sep, scaledlength, scaledheadradius);  // OvG: Scaling
-            pShapeSep->addChild(sep);
-#endif
-            n++;
-        }
-#ifdef USE_MULTIPLE_COPY
-        cp->matrix.finishEditing();
-#endif
+    else {
+        ViewProviderFemConstraint::updateData(prop);
     }
+}
 
-    ViewProviderFemConstraint::updateData(prop);
+void ViewProviderFemConstraintPressure::transformSymbol(const Base::Vector3d& point,
+                                                        const Base::Vector3d& normal,
+                                                        SbMatrix& mat) const
+{
+    auto obj = static_cast<const Fem::ConstraintPressure*>(this->getObject());
+    float rotAngle = obj->Reversed.getValue() ? F_PI : 0.0f;
+    float s = obj->getScaleFactor();
+    // Symbol length from .iv file
+    float symLen = 4.0f;
+    SbMatrix mat0, mat1;
+    mat0.setTransform(SbVec3f(0, 0, 0),
+                      SbRotation(SbVec3f(0, 0, 1), rotAngle),
+                      SbVec3f(1, 1, 1),
+                      SbRotation(SbVec3f(0, 0, 1), 0),
+                      SbVec3f(0, symLen / 2.0f, 0));
+
+    mat1.setTransform(SbVec3f(point.x, point.y, point.z),
+                      SbRotation(SbVec3f(0, 1, 0), SbVec3f(normal.x, normal.y, normal.z)),
+                      SbVec3f(s, s, s));
+
+    mat = mat0 * mat1;
 }

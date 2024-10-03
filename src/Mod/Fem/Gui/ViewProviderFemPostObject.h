@@ -53,6 +53,9 @@ class SoDrawStyle;
 class SoIndexedFaceSet;
 class SoIndexedLineSet;
 class SoIndexedTriangleStripSet;
+class SoTransparencyType;
+class SoDepthBuffer;
+class SoSwitch;
 
 namespace Gui
 {
@@ -80,6 +83,10 @@ public:
     App::PropertyEnumeration Field;
     App::PropertyEnumeration VectorMode;
     App::PropertyPercent Transparency;
+    App::PropertyBool PlainColorEdgeOnSurface;
+    App::PropertyColor EdgeColor;
+    App::PropertyFloatConstraint LineWidth;
+    App::PropertyFloatConstraint PointSize;
 
     void attach(App::DocumentObject* pcObject) override;
     void setDisplayMode(const char* ModeName) override;
@@ -126,14 +133,16 @@ protected:
     virtual void setupTaskDialog(TaskDlgPost* dlg);
     bool setupPipeline();
     void updateVtk();
-    void setRangeOfColorBar(double min, double max);
+    void setRangeOfColorBar(float min, float max);
 
     SoCoordinate3* m_coordinates;
     SoIndexedPointSet* m_markers;
     SoIndexedLineSet* m_lines;
     SoIndexedFaceSet* m_faces;
     SoIndexedTriangleStripSet* m_triangleStrips;
+    SoSwitch* m_switchMatEdges;
     SoMaterial* m_material;
+    SoMaterial* m_matPlainEdges;
     SoMaterialBinding* m_materialBinding;
     SoShapeHints* m_shapeHints;
     SoNormalBinding* m_normalBinding;
@@ -143,6 +152,9 @@ protected:
     Gui::SoFCColorBar* m_colorBar;
     SoSeparator* m_colorRoot;
     SoDrawStyle* m_colorStyle;
+    SoTransparencyType* m_transpType;
+    SoSeparator* m_sepMarkerLine;
+    SoDepthBuffer* m_depthBuffer;
 
     vtkSmartPointer<vtkPolyDataAlgorithm> m_currentAlgorithm;
     vtkSmartPointer<vtkGeometryFilter> m_surface;
@@ -159,9 +171,12 @@ private:
     void WriteColorData(bool ResetColorBarRange);
     void WriteTransparency();
     void addAbsoluteField(vtkDataSet* dset, std::string FieldName);
+    void deleteColorBar();
 
     App::Enumeration m_coloringEnum, m_vectorEnum;
     bool m_blockPropertyChanges {false};
+
+    static App::PropertyFloatConstraint::Constraints sizeRange;
 };
 
 }  // namespace FemGui

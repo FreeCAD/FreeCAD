@@ -42,16 +42,29 @@ __author__ = "Ondsel"
 __url__ = "https://www.freecad.org"
 
 
+def noOtherTaskActive():
+    return UtilsAssembly.isAssemblyCommandActive() or JointObject.activeTask is not None
+
+
 def isCreateJointActive():
-    return UtilsAssembly.isAssemblyGrounded() and UtilsAssembly.assembly_has_at_least_n_parts(2)
+    return (
+        UtilsAssembly.isAssemblyGrounded()
+        and UtilsAssembly.assembly_has_at_least_n_parts(2)
+        and noOtherTaskActive()
+    )
 
 
 def activateJoint(index):
     if JointObject.activeTask:
         JointObject.activeTask.reject()
 
-    panel = TaskAssemblyCreateJoint(index)
-    Gui.Control.showDialog(panel)
+    Gui.addModule("JointObject")  # NOLINT
+    Gui.doCommand(f"panel = JointObject.TaskAssemblyCreateJoint({index})")
+    Gui.doCommandGui("dialog = Gui.Control.showDialog(panel)")
+    dialog = Gui.doCommandEval("dialog")
+    if dialog is not None:
+        dialog.setAutoCloseOnTransactionChange(True)
+        dialog.setDocumentName(App.ActiveDocument.Name)
 
 
 class CommandCreateJointFixed:
@@ -66,7 +79,7 @@ class CommandCreateJointFixed:
                 "Assembly_CreateJointFixed",
                 "Create a Fixed Joint",
             ),
-            "Accel": "J",
+            "Accel": "F",
             "ToolTip": "<p>"
             + QT_TRANSLATE_NOOP(
                 "Assembly_CreateJointFixed",
@@ -83,10 +96,10 @@ class CommandCreateJointFixed:
         }
 
     def IsActive(self):
-        if UtilsAssembly.activePart:
+        if UtilsAssembly.activePart() is not None:
             return UtilsAssembly.assembly_has_at_least_n_parts(2)
 
-        return UtilsAssembly.isAssemblyGrounded() and UtilsAssembly.assembly_has_at_least_n_parts(2)
+        return isCreateJointActive()
 
     def Activated(self):
         activateJoint(0)
@@ -213,30 +226,273 @@ class CommandCreateJointDistance:
                 "Assembly_CreateJointDistance",
                 "Create a Distance Joint: Fix the distance between the selected objects.",
             )
+            + "</p><p>"
+            + QT_TRANSLATE_NOOP(
+                "Assembly_CreateJointDistance",
+                "Create one of several different joints based on the selection."
+                "For example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.",
+            )
             + "</p>",
             "CmdType": "ForEdit",
         }
 
     def IsActive(self):
-        # return False
         return isCreateJointActive()
 
     def Activated(self):
         activateJoint(5)
 
 
+class CommandCreateJointParallel:
+    def __init__(self):
+        pass
+
+    def GetResources(self):
+
+        return {
+            "Pixmap": "Assembly_CreateJointParallel",
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointParallel", "Create Parallel Joint"),
+            "Accel": "N",
+            "ToolTip": "<p>"
+            + QT_TRANSLATE_NOOP(
+                "Assembly_CreateJointParallel",
+                "Create an Parallel Joint: Make the Z axis of selected coordinate systems parallel.",
+            )
+            + "</p>",
+            "CmdType": "ForEdit",
+        }
+
+    def IsActive(self):
+        return isCreateJointActive()
+
+    def Activated(self):
+        activateJoint(6)
+
+
+class CommandCreateJointPerpendicular:
+    def __init__(self):
+        pass
+
+    def GetResources(self):
+
+        return {
+            "Pixmap": "Assembly_CreateJointPerpendicular",
+            "MenuText": QT_TRANSLATE_NOOP(
+                "Assembly_CreateJointPerpendicular", "Create Perpendicular Joint"
+            ),
+            "Accel": "M",
+            "ToolTip": "<p>"
+            + QT_TRANSLATE_NOOP(
+                "Assembly_CreateJointPerpendicular",
+                "Create an Perpendicular Joint: Make the Z axis of selected coordinate systems perpendicular.",
+            )
+            + "</p>",
+            "CmdType": "ForEdit",
+        }
+
+    def IsActive(self):
+        return isCreateJointActive()
+
+    def Activated(self):
+        activateJoint(7)
+
+
+class CommandCreateJointAngle:
+    def __init__(self):
+        pass
+
+    def GetResources(self):
+
+        return {
+            "Pixmap": "Assembly_CreateJointAngle",
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointAngle", "Create Angle Joint"),
+            "Accel": "X",
+            "ToolTip": "<p>"
+            + QT_TRANSLATE_NOOP(
+                "Assembly_CreateJointAngle",
+                "Create an Angle Joint: Fix the angle between the Z axis of selected coordinate systems.",
+            )
+            + "</p>",
+            "CmdType": "ForEdit",
+        }
+
+    def IsActive(self):
+        return isCreateJointActive()
+
+    def Activated(self):
+        activateJoint(8)
+
+
+class CommandCreateJointRackPinion:
+    def __init__(self):
+        pass
+
+    def GetResources(self):
+
+        return {
+            "Pixmap": "Assembly_CreateJointRackPinion",
+            "MenuText": QT_TRANSLATE_NOOP(
+                "Assembly_CreateJointRackPinion", "Create Rack and Pinion Joint"
+            ),
+            "Accel": "Q",
+            "ToolTip": "<p>"
+            + QT_TRANSLATE_NOOP(
+                "Assembly_CreateJointRackPinion",
+                "Create a Rack and Pinion Joint: Links a part with a sliding joint with a part with a revolute joint.",
+            )
+            + "</p><p>"
+            + QT_TRANSLATE_NOOP(
+                "Assembly_CreateJointRackPinion",
+                "Select the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rack and the pinion.",
+            )
+            + "</p>",
+            "CmdType": "ForEdit",
+        }
+
+    def IsActive(self):
+        return isCreateJointActive()
+
+    def Activated(self):
+        activateJoint(9)
+
+
+class CommandCreateJointScrew:
+    def __init__(self):
+        pass
+
+    def GetResources(self):
+
+        return {
+            "Pixmap": "Assembly_CreateJointScrew",
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointScrew", "Create Screw Joint"),
+            "Accel": "W",
+            "ToolTip": "<p>"
+            + QT_TRANSLATE_NOOP(
+                "Assembly_CreateJointScrew",
+                "Create a Screw Joint: Links a part with a sliding joint with a part with a revolute joint.",
+            )
+            + "</p><p>"
+            + QT_TRANSLATE_NOOP(
+                "Assembly_CreateJointScrew",
+                "Select the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.",
+            )
+            + "</p>",
+            "CmdType": "ForEdit",
+        }
+
+    def IsActive(self):
+        return isCreateJointActive()
+
+    def Activated(self):
+        activateJoint(10)
+
+
+class CommandCreateJointGears:
+    def __init__(self):
+        pass
+
+    def GetResources(self):
+
+        return {
+            "Pixmap": "Assembly_CreateJointGears",
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointGears", "Create Gears Joint"),
+            "Accel": "X",
+            "ToolTip": "<p>"
+            + QT_TRANSLATE_NOOP(
+                "Assembly_CreateJointGears",
+                "Create a Gears Joint: Links two rotating gears together. They will have inverse rotation direction.",
+            )
+            + "</p><p>"
+            + QT_TRANSLATE_NOOP(
+                "Assembly_CreateJointScrew",
+                "Select the same coordinate systems as the revolute joints.",
+            )
+            + "</p>",
+            "CmdType": "ForEdit",
+        }
+
+    def IsActive(self):
+        return isCreateJointActive()
+
+    def Activated(self):
+        activateJoint(11)
+
+
+class CommandCreateJointBelt:
+    def __init__(self):
+        pass
+
+    def GetResources(self):
+
+        return {
+            "Pixmap": "Assembly_CreateJointPulleys",
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointBelt", "Create Belt Joint"),
+            "Accel": "P",
+            "ToolTip": "<p>"
+            + QT_TRANSLATE_NOOP(
+                "Assembly_CreateJointBelt",
+                "Create a Belt Joint: Links two rotating objects together. They will have the same rotation direction.",
+            )
+            + "</p><p>"
+            + QT_TRANSLATE_NOOP(
+                "Assembly_CreateJointScrew",
+                "Select the same coordinate systems as the revolute joints.",
+            )
+            + "</p>",
+            "CmdType": "ForEdit",
+        }
+
+    def IsActive(self):
+        return isCreateJointActive()
+
+    def Activated(self):
+        activateJoint(12)
+
+
+class CommandGroupGearBelt:
+    def GetCommands(self):
+        return ("Assembly_CreateJointGears", "Assembly_CreateJointBelt")
+
+    def GetResources(self):
+        """Set icon, menu and tooltip."""
+
+        return {
+            "Pixmap": "Assembly_CreateJointGears",
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointGearBelt", "Create Gear/Belt Joint"),
+            "ToolTip": "<p>"
+            + QT_TRANSLATE_NOOP(
+                "Assembly_CreateJointGearBelt",
+                "Create a Gears/Belt Joint: Links two rotating gears together.",
+            )
+            + "</p><p>"
+            + QT_TRANSLATE_NOOP(
+                "Assembly_CreateJointGearBelt",
+                "Select the same coordinate systems as the revolute joints.",
+            )
+            + "</p>",
+            "CmdType": "ForEdit",
+        }
+
+    def IsActive(self):
+        return isCreateJointActive()
+
+
 def createGroundedJoint(obj):
-    assembly = UtilsAssembly.activeAssembly()
-    if not assembly:
+    if not UtilsAssembly.activeAssembly():
         return
 
-    joint_group = UtilsAssembly.getJointGroup(assembly)
-
-    obj.Label = obj.Label + " 🔒"
-    ground = joint_group.newObject("App::FeaturePython", "GroundedJoint")
-    JointObject.GroundedJoint(ground, obj)
-    JointObject.ViewProviderGroundedJoint(ground.ViewObject)
-    return ground
+    Gui.addModule("UtilsAssembly")
+    Gui.addModule("JointObject")
+    commands = (
+        f'obj = App.ActiveDocument.getObject("{obj.Name}")\n'
+        "assembly = UtilsAssembly.activeAssembly()\n"
+        "joint_group = UtilsAssembly.getJointGroup(assembly)\n"
+        'ground = joint_group.newObject("App::FeaturePython", "GroundedJoint")\n'
+        "JointObject.GroundedJoint(ground, obj)"
+    )
+    Gui.doCommand(commands)
+    Gui.doCommandGui("JointObject.ViewProviderGroundedJoint(ground.ViewObject)")
+    return Gui.doCommandEval("ground")
 
 
 class CommandToggleGrounded:
@@ -280,35 +536,30 @@ class CommandToggleGrounded:
             # If you select 2 solids (bodies for example) within an assembly.
             # There'll be a single sel but 2 SubElementNames.
             for sub in sel.SubElementNames:
-                # Only objects within the assembly.
-                objs_names, element_name = UtilsAssembly.getObjsNamesAndElement(sel.ObjectName, sub)
-                if assembly.Name not in objs_names:
-                    continue
+                ref = [sel.Object, [sub, sub]]
+                moving_part = UtilsAssembly.getMovingPart(assembly, ref)
 
-                full_element_name = UtilsAssembly.getFullElementName(sel.ObjectName, sub)
-                obj = UtilsAssembly.getObject(full_element_name)
-                part_containing_obj = UtilsAssembly.getContainingPart(full_element_name, obj)
+                # Only objects within the assembly.
+                if moving_part is None:
+                    continue
 
                 # Check if part is grounded and if so delete the joint.
                 ungrounded = False
                 for joint in joint_group.Group:
-                    if (
-                        hasattr(joint, "ObjectToGround")
-                        and joint.ObjectToGround == part_containing_obj
-                    ):
-                        # Remove grounded tag.
-                        if part_containing_obj.Label.endswith(" 🔒"):
-                            part_containing_obj.Label = part_containing_obj.Label[:-2]
-                        doc = App.ActiveDocument
-                        doc.removeObject(joint.Name)
-                        doc.recompute()
+                    if hasattr(joint, "ObjectToGround") and joint.ObjectToGround == moving_part:
+                        commands = (
+                            "doc = App.ActiveDocument\n"
+                            f'doc.removeObject("{joint.Name}")\n'
+                            "doc.recompute()\n"
+                        )
+                        Gui.doCommand(commands)
                         ungrounded = True
                         break
                 if ungrounded:
                     continue
 
                 # Create groundedJoint.
-                createGroundedJoint(part_containing_obj)
+                createGroundedJoint(moving_part)
         App.closeActiveTransaction()
 
 
@@ -320,3 +571,11 @@ if App.GuiUp:
     Gui.addCommand("Assembly_CreateJointSlider", CommandCreateJointSlider())
     Gui.addCommand("Assembly_CreateJointBall", CommandCreateJointBall())
     Gui.addCommand("Assembly_CreateJointDistance", CommandCreateJointDistance())
+    Gui.addCommand("Assembly_CreateJointParallel", CommandCreateJointParallel())
+    Gui.addCommand("Assembly_CreateJointPerpendicular", CommandCreateJointPerpendicular())
+    Gui.addCommand("Assembly_CreateJointAngle", CommandCreateJointAngle())
+    Gui.addCommand("Assembly_CreateJointRackPinion", CommandCreateJointRackPinion())
+    Gui.addCommand("Assembly_CreateJointScrew", CommandCreateJointScrew())
+    Gui.addCommand("Assembly_CreateJointGears", CommandCreateJointGears())
+    Gui.addCommand("Assembly_CreateJointBelt", CommandCreateJointBelt())
+    Gui.addCommand("Assembly_CreateJointGearBelt", CommandGroupGearBelt())

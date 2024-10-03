@@ -86,7 +86,6 @@ public:
 
 private:
     DlgScale* widget;
-    Gui::TaskView::TaskBox* taskbox;
 };
 
 } // namespace PartGui

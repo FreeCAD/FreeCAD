@@ -36,7 +36,27 @@ def write_mesh(ccxwriter):
 
     element_param = 1  # highest element order only
     group_param = False  # do not write mesh group data
-    if ccxwriter.split_inpfile is True:
+
+    # Use reduced integration beam elements if this option is enabled in ccx solver settings
+    vol_variant = "standard"
+    edge_variant = "beam"
+    if ccxwriter.solver_obj.BeamReducedIntegration:
+        edge_variant = "beam reduced"
+    # Check to see if fluid sections are in analysis and use D network element type
+    if ccxwriter.member.geos_fluidsection:
+        edge_variant = "network"
+
+    # Use 2D elements if model space is not set to 3D
+    if ccxwriter.solver_obj.ModelSpace == "3D":
+        face_variant = "shell"
+    elif ccxwriter.solver_obj.ModelSpace == "plane stress":
+        face_variant = "stress"
+    elif ccxwriter.solver_obj.ModelSpace == "plane strain":
+        face_variant = "strain"
+    elif ccxwriter.solver_obj.ModelSpace == "axisymmetric":
+        face_variant = "axisymmetric"
+
+    if ccxwriter.split_inpfile:
         write_name = "femesh"
         file_name_split = ccxwriter.mesh_name + "_" + write_name + ".inp"
         ccxwriter.femmesh_file = join(ccxwriter.dir_name, file_name_split)
@@ -44,30 +64,27 @@ def write_mesh(ccxwriter):
         ccxwriter.femmesh.writeABAQUS(
             ccxwriter.femmesh_file,
             element_param,
-            group_param
+            group_param,
+            volVariant=vol_variant,
+            faceVariant=face_variant,
+            edgeVariant=edge_variant,
         )
-
-        # Check to see if fluid sections are in analysis and use D network element type
-        if ccxwriter.member.geos_fluidsection:
-            meshtools.write_D_network_element_to_inputfile(ccxwriter.femmesh_file)
 
         inpfile = codecs.open(ccxwriter.file_name, "w", encoding="utf-8")
         inpfile.write("{}\n".format(59 * "*"))
-        inpfile.write("** {}\n".format(write_name))
-        inpfile.write("*INCLUDE,INPUT={}\n".format(file_name_split))
+        inpfile.write(f"** {write_name}\n")
+        inpfile.write(f"*INCLUDE,INPUT={file_name_split}\n")
 
     else:
         ccxwriter.femmesh_file = ccxwriter.file_name
         ccxwriter.femmesh.writeABAQUS(
             ccxwriter.femmesh_file,
             element_param,
-            group_param
+            group_param,
+            volVariant=vol_variant,
+            faceVariant=face_variant,
+            edgeVariant=edge_variant,
         )
-
-        # Check to see if fluid sections are in analysis and use D network element type
-        if ccxwriter.member.geos_fluidsection:
-            # inpfile is closed
-            meshtools.write_D_network_element_to_inputfile(ccxwriter.femmesh_file)
 
         # reopen file with "append" to add all the rest
         inpfile = codecs.open(ccxwriter.femmesh_file, "a", encoding="utf-8")

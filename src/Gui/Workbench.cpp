@@ -41,7 +41,6 @@
 #include "Selection.h"
 #include "ToolBarManager.h"
 #include "ToolBoxManager.h"
-#include "UserSettings.h"
 #include "Window.h"
 
 #include <App/Application.h>
@@ -538,6 +537,7 @@ std::list<std::string> Workbench::listCommandbars() const
     qApp->translate("Workbench", "Workbench");
     qApp->translate("Workbench", "Structure");
     qApp->translate("Workbench", "Standard views");
+    qApp->translate("Workbench", "Individual views");
     qApp->translate("Workbench", "Axonometric");
     qApp->translate("Workbench", "&Stereo");
     qApp->translate("Workbench", "&Zoom");
@@ -590,17 +590,12 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
                   << "Std_ViewRear" << "Std_ViewBottom" << "Std_ViewLeft"
                   << "Separator" << "Std_ViewRotateLeft" << "Std_ViewRotateRight";
 
-        auto measure = new MenuItem();
-        measure->setCommand("Measure");
-        *measure << "View_Measure_Toggle_All" << "View_Measure_Clear_All";
-
-
-        *item << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_DrawStyle"
-              << StdViews << measure << "Separator"
+        *item << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_AlignToSelection" << "Std_DrawStyle"
+              << StdViews << "Separator"
               << "Std_ViewDockUndockFullscreen";
 
         if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0) {
-            *item << "Separator" << "Std_SetAppearance" << "Std_ToggleVisibility"
+            *item << "Separator" << "Std_ToggleVisibility"
                   << "Std_ToggleSelectability" << "Std_TreeSelection"
                   << "Std_RandomColor" << "Std_ToggleTransparency" << "Separator" << "Std_Delete"
                   << "Std_SendToPythonConsole" << "Std_TransformManip" << "Std_Placement";
@@ -609,9 +604,10 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
     else if (strcmp(recipient,"Tree") == 0)
     {
         if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0) {
-            *item << "Std_Placement" << "Std_ToggleVisibility" << "Std_ShowSelection" << "Std_HideSelection"
+            *item  << "Std_ToggleFreeze" << "Separator"
+                  << "Std_Placement" << "Std_ToggleVisibility" << "Std_ShowSelection" << "Std_HideSelection"
                   << "Std_ToggleSelectability" << "Std_TreeSelectAllInstances" << "Separator"
-                  << "Std_SetAppearance" << "Std_RandomColor" << "Std_ToggleTransparency" << "Separator"
+                  << "Std_RandomColor" << "Std_ToggleTransparency" << "Separator"
                   << "Std_Cut" << "Std_Copy" << "Std_Paste" << "Std_Delete"
                   << "Std_SendToPythonConsole" << "Separator";
         }
@@ -658,12 +654,11 @@ MenuItem* StdWorkbench::setupMenuBar() const
     // Standard views
     auto stdviews = new MenuItem;
     stdviews->setCommand("Standard views");
-    *stdviews << "Std_ViewFitAll" << "Std_ViewFitSelection" << axoviews
+    *stdviews << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_AlignToSelection" << axoviews
               << "Separator" << "Std_ViewHome" << "Std_ViewFront" << "Std_ViewTop"
-              << "Std_ViewRight" << "Separator" << "Std_ViewRear"
-              << "Std_ViewBottom" << "Std_ViewLeft"
-              << "Separator" << "Std_ViewRotateLeft" << "Std_ViewRotateRight"
-              << "Separator" << "Std_StoreWorkingView" << "Std_RecallWorkingView";
+              << "Std_ViewRight" << "Std_ViewRear" << "Std_ViewBottom" << "Std_ViewLeft"
+              << "Separator" << "Std_ViewRotateLeft" << "Std_ViewRotateRight" << "Separator"
+              << "Std_StoreWorkingView" << "Std_RecallWorkingView";
 
     // stereo
     auto view3d = new MenuItem;
@@ -683,8 +678,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
     *visu << "Std_ToggleVisibility" << "Std_ShowSelection" << "Std_HideSelection"
           << "Std_SelectVisibleObjects"
           << "Separator" << "Std_ToggleObjects" << "Std_ShowObjects" << "Std_HideObjects"
-          << "Separator" << "Std_ToggleSelectability"
-          << "Separator" << "View_Measure_Toggle_All" << "View_Measure_Clear_All";
+          << "Separator" << "Std_ToggleSelectability";
 
     // View
     auto view = new MenuItem( menuBar );
@@ -699,8 +693,8 @@ MenuItem* StdWorkbench::setupMenuBar() const
 #endif
           << "Separator" << visu
           << "Std_ToggleNavigation"
-          << "Std_SetAppearance"
           << "Std_RandomColor"
+          << "Std_ToggleTransparency"
           << "Separator"
           << "Std_Workbench"
           << "Std_ToolBarMenu"
@@ -709,7 +703,6 @@ MenuItem* StdWorkbench::setupMenuBar() const
         *view << "Std_DockOverlay";
     }
     *view << "Separator"
-          << "Std_ToggleTransparency"
           << "Std_LinkSelectActions"
           << "Std_TreeViewActions"
           << "Std_ViewStatusBar";
@@ -725,8 +718,6 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Std_DependencyGraph"
           << "Std_ExportDependencyGraph"
           << "Std_ProjectUtil"
-          << "Separator"
-          << "Std_MeasureDistance"
           << "Separator"
           << "Std_TextDocument"
           << "Separator"
@@ -789,18 +780,16 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     edit->setCommand("Edit");
     *edit << "Std_Undo" << "Std_Redo"
           << "Separator" << "Std_Refresh";
-    
+
     // Clipboard
     auto clipboard = new ToolBarItem( root , ToolBarItem::DefaultVisibility::Hidden );
     clipboard->setCommand("Clipboard");
     *clipboard << "Std_Cut" << "Std_Copy" << "Std_Paste";
-    
+
     // Workbench switcher
-    if (WorkbenchSwitcher::isToolbar(WorkbenchSwitcher::getValue())) {
-        auto wb = new ToolBarItem(root);
-        wb->setCommand("Workbench");
-        *wb << "Std_Workbench";
-    }
+    auto wb = new ToolBarItem(root);
+    wb->setCommand("Workbench");
+    *wb << "Std_Workbench";
 
     // Macro
     auto macro = new ToolBarItem( root, ToolBarItem::DefaultVisibility::Hidden);
@@ -811,22 +800,30 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     // View
     auto view = new ToolBarItem( root );
     view->setCommand("View");
-    *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_ViewIsometric"
-          << "Std_ViewFront"<< "Std_ViewTop" << "Std_ViewRight"
-          << "Std_ViewRear" << "Std_ViewBottom"<< "Std_ViewLeft"
-          << "Separator" << "Std_DrawStyle" << "Std_TreeViewActions"
-          << "Separator" << "Std_MeasureDistance";
+    *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_ViewGroup" << "Std_AlignToSelection"
+          << "Separator" << "Std_DrawStyle" << "Std_TreeViewActions";
+
+    // Individual views
+    auto individualViews = new ToolBarItem(root, ToolBarItem::DefaultVisibility::Hidden);
+    individualViews->setCommand("Individual views");
+    *individualViews << "Std_ViewIsometric"
+                     << "Std_ViewFront"
+                     << "Std_ViewTop"
+                     << "Std_ViewRight"
+                     << "Std_ViewRear"
+                     << "Std_ViewBottom"
+                     << "Std_ViewLeft";
 
     // Structure
     auto structure = new ToolBarItem( root );
     structure->setCommand("Structure");
-    *structure << "Std_Part" << "Std_Group" << "Std_LinkActions";
+    *structure << "Std_Part" << "Std_Group" << "Std_LinkActions" << "Std_VarSet";
 
     // Help
     auto help = new ToolBarItem( root );
     help->setCommand("Help");
     *help << "Std_WhatsThis";
-    
+
     return root;
 }
 
@@ -838,7 +835,7 @@ ToolBarItem* StdWorkbench::setupCommandBars() const
     auto view = new ToolBarItem( root );
     view->setCommand("Standard views");
     *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_ViewIsometric" << "Separator"
-          << "Std_ViewFront" << "Std_ViewRight" << "Std_ViewTop" << "Separator"
+          << "Std_ViewFront" << "Std_ViewRight" << "Std_ViewTop"
           << "Std_ViewRear" << "Std_ViewLeft" << "Std_ViewBottom";
 
     // Special Ops
@@ -853,15 +850,13 @@ ToolBarItem* StdWorkbench::setupCommandBars() const
 DockWindowItems* StdWorkbench::setupDockWindows() const
 {
     auto root = new DockWindowItems();
-    root->addDockWidget("Std_ToolBox", Qt::RightDockWidgetArea, false, false);
-    //root->addDockWidget("Std_HelpView", Qt::RightDockWidgetArea, true, false);
     root->addDockWidget("Std_TreeView", Qt::LeftDockWidgetArea, true, false);
     root->addDockWidget("Std_PropertyView", Qt::LeftDockWidgetArea, true, false);
     root->addDockWidget("Std_SelectionView", Qt::LeftDockWidgetArea, false, false);
     root->addDockWidget("Std_ComboView", Qt::LeftDockWidgetArea, true, true);
     root->addDockWidget("Std_TaskView", Qt::LeftDockWidgetArea, true, true);
-    root->addDockWidget("Std_ReportView", Qt::BottomDockWidgetArea, true, true);
-    root->addDockWidget("Std_PythonView", Qt::BottomDockWidgetArea, true, true);
+    root->addDockWidget("Std_ReportView", Qt::BottomDockWidgetArea, false, true);
+    root->addDockWidget("Std_PythonView", Qt::BottomDockWidgetArea, false, true);
 
     //Dagview through parameter.
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().

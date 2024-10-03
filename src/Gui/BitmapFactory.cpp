@@ -48,42 +48,14 @@
 
 using namespace Gui;
 
-/* XPM */
-static const char *not_found[]={
-"24 24 2 1",
-"# c #000000",
-". c #ffffff",
-"........................",
-"........................",
-"...##..............##...",
-"..####............####..",
-"..#####..........#####..",
-"..######........#####...",
-"...######......######...",
-"....######....######....",
-".....######..######.....",
-"......############......",
-".......##########.......",
-"........########........",
-".........######.........",
-"........########........",
-".......##########.......",
-"......############......",
-".....######..######.....",
-"....######....######....",
-"..#######......######...",
-".#######........######..",
-".######..........#####..",
-"..####.............##...",
-"........................",
-"........................"};
-
 namespace Gui {
 class BitmapFactoryInstP
 {
 public:
     QMap<std::string, const char**> xpmMap;
     QMap<std::string, QPixmap> xpmCache;
+
+    bool useIconTheme;
 };
 }
 
@@ -123,7 +95,9 @@ void BitmapFactoryInst::destruct ()
 BitmapFactoryInst::BitmapFactoryInst()
 {
     d = new BitmapFactoryInstP;
+
     restoreCustomPaths();
+    configureUseIconTheme();
 }
 
 BitmapFactoryInst::~BitmapFactoryInst()
@@ -139,6 +113,14 @@ void BitmapFactoryInst::restoreCustomPaths()
     for (auto & path : paths) {
         addPath(QString::fromUtf8(path.c_str()));
     }
+}
+
+void Gui::BitmapFactoryInst::configureUseIconTheme()
+{
+    Base::Reference<ParameterGrp> group = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Bitmaps/Theme");
+
+    d->useIconTheme = group->GetBool("UseIconTheme", group->GetBool("ThemeSearchPaths", false));
 }
 
 void BitmapFactoryInst::addPath(const QString& path)
@@ -204,6 +186,10 @@ bool BitmapFactoryInst::findPixmapInCache(const char* name, QPixmap& px) const
 
 QIcon BitmapFactoryInst::iconFromTheme(const char* name, const QIcon& fallback)
 {
+    if (!d->useIconTheme) {
+        return iconFromDefaultTheme(name, fallback);
+    }
+
     QString iconName = QString::fromUtf8(name);
     QIcon icon = QIcon::fromTheme(iconName, fallback);
     if (icon.isNull()) {
@@ -234,6 +220,21 @@ bool BitmapFactoryInst::loadPixmap(const QString& filename, QPixmap& icon) const
     }
 
     return !icon.isNull();
+}
+
+QIcon Gui::BitmapFactoryInst::iconFromDefaultTheme(const char* name, const QIcon& fallback)
+{
+    QIcon icon;
+    QPixmap px = pixmap(name);
+
+    if (!px.isNull()) {
+        icon.addPixmap(px);
+        return icon;
+    } else {
+        return fallback;
+    }
+
+    return icon;
 }
 
 QPixmap BitmapFactoryInst::pixmap(const char* name) const
@@ -281,11 +282,11 @@ QPixmap BitmapFactoryInst::pixmap(const char* name) const
     }
 
     Base::Console().Warning("Cannot find icon: %s\n", name);
-    return QPixmap(not_found);
+    return QPixmap(Gui::BitmapFactory().pixmapFromSvg("help-browser", QSize(16, 16)));
 }
 
 QPixmap BitmapFactoryInst::pixmapFromSvg(const char* name, const QSizeF& size,
-    const std::map<unsigned long, unsigned long>& colorMapping) const
+                                         const ColorMap& colorMapping) const
 {
     // If an absolute path is given
     QPixmap icon;
@@ -321,8 +322,18 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const char* name, const QSizeF& size,
     return icon;
 }
 
+QPixmap BitmapFactoryInst::pixmapFromSvg(const char* name, const QSizeF& size, qreal dpr,
+                                         const ColorMap& colorMapping) const
+{
+    qreal width = size.width() * dpr;
+    qreal height = size.height() * dpr;
+    QPixmap px(pixmapFromSvg(name, QSizeF(width, height), colorMapping));
+    px.setDevicePixelRatio(dpr);
+    return px;
+}
+
 QPixmap BitmapFactoryInst::pixmapFromSvg(const QByteArray& originalContents, const QSizeF& size,
-                                         const std::map<unsigned long, unsigned long>& colorMapping) const
+                                         const ColorMap& colorMapping) const
 {
     QString stringContents = QString::fromUtf8(originalContents);
     for ( const auto &colorToColor : colorMapping ) {

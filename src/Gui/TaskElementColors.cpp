@@ -543,10 +543,7 @@ void ElementColors::onElementListItemDoubleClicked(QListWidgetItem *item) {
 TaskElementColors::TaskElementColors(ViewProviderDocumentObject* vp, bool noHide)
 {
     widget = new ElementColors(vp,noHide);
-    taskbox = new TaskView::TaskBox(
-        QPixmap(), widget->windowTitle(), true, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(widget);
 }
 
 TaskElementColors::~TaskElementColors() = default;

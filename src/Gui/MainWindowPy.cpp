@@ -209,13 +209,9 @@ Py::Object MainWindowPy::addWindow(const Py::Tuple& args)
 
 Py::Object MainWindowPy::removeWindow(const Py::Tuple& args)
 {
-    PyObject* obj;
-    if (!PyArg_ParseTuple(args.ptr(), "O!", MDIViewPy::type_object(), &obj))
-        throw Py::Exception();
-
+    Py::ExtensionObject<MDIViewPy> mdi(args[0].callMemberFunction("cast_to_base"));
     if (_mw) {
-        MDIViewPy* mdi = static_cast<MDIViewPy*>(obj);
-        _mw->removeWindow(mdi->getMDIViewPtr());
+        _mw->removeWindow(mdi.extensionObject()->getMDIViewPtr());
     }
     return Py::None();
 }

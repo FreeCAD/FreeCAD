@@ -40,6 +40,7 @@ import FreeCAD
 import FreeCADGui
 
 import FemGui
+from femtools.femutils import getOutputWinColor
 
 
 def unicode(text, *args):
@@ -59,6 +60,7 @@ class _TaskPanel:
         )
 
         from femtools.ccxtools import CcxTools as ccx
+
         # we do not need to pass the analysis, it will be found on fea init
         # TODO: if there is not analysis object in document init of fea
         # will fail with an exception and task panel will not open
@@ -84,89 +86,61 @@ class _TaskPanel:
 
         # Connect Signals and Slots
         QtCore.QObject.connect(
-            self.form.tb_choose_working_dir,
-            QtCore.SIGNAL("clicked()"),
-            self.choose_working_dir
+            self.form.tb_choose_working_dir, QtCore.SIGNAL("clicked()"), self.choose_working_dir
         )
         QtCore.QObject.connect(
-            self.form.pb_write_inp,
-            QtCore.SIGNAL("clicked()"),
-            self.write_input_file_handler
+            self.form.pb_write_inp, QtCore.SIGNAL("clicked()"), self.write_input_file_handler
         )
         QtCore.QObject.connect(
-            self.form.pb_edit_inp,
-            QtCore.SIGNAL("clicked()"),
-            self.editCalculixInputFile
+            self.form.pb_edit_inp, QtCore.SIGNAL("clicked()"), self.editCalculixInputFile
         )
         # connect stopCalculix before runCalculix
         # see https://github.com/FreeCAD/FreeCAD/issues/12448
+        QtCore.QObject.connect(self.form.pb_run_ccx, QtCore.SIGNAL("clicked()"), self.stopCalculix)
+        QtCore.QObject.connect(self.form.pb_run_ccx, QtCore.SIGNAL("clicked()"), self.runCalculix)
         QtCore.QObject.connect(
-            self.form.pb_run_ccx,
-            QtCore.SIGNAL("clicked()"),
-            self.stopCalculix
-        )
-        QtCore.QObject.connect(
-            self.form.pb_run_ccx,
-            QtCore.SIGNAL("clicked()"),
-            self.runCalculix
-        )
-        QtCore.QObject.connect(
-            self.form.rb_static_analysis,
-            QtCore.SIGNAL("clicked()"),
-            self.select_static_analysis
+            self.form.rb_static_analysis, QtCore.SIGNAL("clicked()"), self.select_static_analysis
         )
         QtCore.QObject.connect(
             self.form.rb_frequency_analysis,
             QtCore.SIGNAL("clicked()"),
-            self.select_frequency_analysis
+            self.select_frequency_analysis,
         )
         QtCore.QObject.connect(
             self.form.rb_thermomech_analysis,
             QtCore.SIGNAL("clicked()"),
-            self.select_thermomech_analysis
+            self.select_thermomech_analysis,
         )
         QtCore.QObject.connect(
-            self.form.rb_check_mesh,
-            QtCore.SIGNAL("clicked()"),
-            self.select_check_mesh
+            self.form.rb_check_mesh, QtCore.SIGNAL("clicked()"), self.select_check_mesh
         )
         QtCore.QObject.connect(
             self.form.rb_buckling_analysis,
             QtCore.SIGNAL("clicked()"),
-            self.select_buckling_analysis
+            self.select_buckling_analysis,
         )
-        QtCore.QObject.connect(
-            self.Calculix,
-            QtCore.SIGNAL("started()"),
-            self.calculixStarted
-        )
+        QtCore.QObject.connect(self.Calculix, QtCore.SIGNAL("started()"), self.calculixStarted)
         QtCore.QObject.connect(
             self.Calculix,
             QtCore.SIGNAL("stateChanged(QProcess::ProcessState)"),
-            self.calculixStateChanged
+            self.calculixStateChanged,
         )
         QtCore.QObject.connect(
-            self.Calculix,
-            QtCore.SIGNAL("error(QProcess::ProcessError)"),
-            self.calculixError
+            self.Calculix, QtCore.SIGNAL("error(QProcess::ProcessError)"), self.calculixError
         )
         QtCore.QObject.connect(
             self.Calculix,
             QtCore.SIGNAL("finished(int, QProcess::ExitStatus)"),
-            self.calculixFinished
+            self.calculixFinished,
         )
-        QtCore.QObject.connect(
-            self.Timer,
-            QtCore.SIGNAL("timeout()"),
-            self.UpdateText
-        )
+        QtCore.QObject.connect(self.Timer, QtCore.SIGNAL("timeout()"), self.UpdateText)
 
         self.update()
 
     def getStandardButtons(self):
         # only show a close button
         # def accept() in no longer needed, since there is no OK button
-        return int(QtGui.QDialogButtonBox.Close)
+        return QtGui.QDialogButtonBox.Close
 
     def reject(self):
         FreeCADGui.ActiveDocument.resetEdit()
@@ -186,11 +160,23 @@ class _TaskPanel:
             self.form.rb_buckling_analysis.setChecked(True)
         return
 
-    def femConsoleMessage(self, message="", color="#000000"):
+    def femConsoleMessage(self, message="", outputwin_color_type=None):
         self.fem_console_message = self.fem_console_message + (
-            '<font color="#0000FF">{0:4.1f}:</font> <font color="{1}">{2}</font><br>'
-            .format(time.time() - self.Start, color, message)
+            '<font color="{}"><b>{:4.1f}:</b></font> '.format(
+                getOutputWinColor("Logging"), time.time() - self.Start
+            )
         )
+        if outputwin_color_type:
+            if outputwin_color_type == "#00AA00":  # Success is not part of output window parameters
+                self.fem_console_message += '<font color="{}">{}</font><br>'.format(
+                    outputwin_color_type, message
+                )
+            else:
+                self.fem_console_message += '<font color="{}">{}</font><br>'.format(
+                    getOutputWinColor(outputwin_color_type), message
+                )
+        else:
+            self.fem_console_message += message + "<br>"
         self.form.textEdit_Output.setText(self.fem_console_message)
         self.form.textEdit_Output.moveCursor(QtGui.QTextCursor.End)
 
@@ -201,7 +187,7 @@ class _TaskPanel:
         # <class 'PySide2.QtCore.QByteArray'>
 
         if out.isEmpty():
-            self.femConsoleMessage("CalculiX stdout is empty", "#FF0000")
+            self.femConsoleMessage("CalculiX stdout is empty", "Error")
             return False
 
         # https://forum.freecad.org/viewtopic.php?f=18&t=39195
@@ -226,20 +212,22 @@ class _TaskPanel:
             return True
 
     def UpdateText(self):
-        if(self.Calculix.state() == QtCore.QProcess.ProcessState.Running):
-            self.form.l_time.setText("Time: {0:4.1f}: ".format(time.time() - self.Start))
+        if self.Calculix.state() == QtCore.QProcess.ProcessState.Running:
+            self.form.l_time.setText(f"Time: {time.time() - self.Start:4.1f}: ")
 
     def calculixError(self, error=""):
-        print("Error() {}".format(error))
-        self.femConsoleMessage("CalculiX execute error: {}".format(error), "#FF0000")
+        print(f"Error() {error}")
+        self.femConsoleMessage(f"CalculiX execute error: {error}", "Error")
 
     def calculixNoError(self):
         print("CalculiX done without error!")
-        self.femConsoleMessage("CalculiX done without error!", "#00AA00")
+        self.femConsoleMessage(
+            "CalculiX done without error!", "#00AA00"
+        )  # Green leaving hard coded
 
     def calculixStarted(self):
         # print("calculixStarted()")
-        FreeCAD.Console.PrintLog("calculix state: {}\n".format(self.Calculix.state()))
+        FreeCAD.Console.PrintLog(f"calculix state: {self.Calculix.state()}\n")
         self.form.pb_run_ccx.setText("Stop CalculiX")
 
     def calculixStateChanged(self, newState):
@@ -250,11 +238,11 @@ class _TaskPanel:
         elif newState == QtCore.QProcess.ProcessState.NotRunning:
             self.femConsoleMessage("CalculiX stopped.")
         else:
-            self.femConsoleMessage("Problems.")
+            self.femConsoleMessage("Problems.", "Error")
 
     def calculixFinished(self, exitCode, exitStatus):
         # print("calculixFinished(), exit code: {}".format(exitCode))
-        FreeCAD.Console.PrintLog("calculix state: {}\n".format(self.Calculix.state()))
+        FreeCAD.Console.PrintLog(f"calculix state: {self.Calculix.state()}\n")
 
         # Restore previous cwd
         QtCore.QDir.setCurrent(self.cwd)
@@ -272,7 +260,7 @@ class _TaskPanel:
             self.calculixError()
 
         self.femConsoleMessage("Loading result sets...")
-        self.form.l_time.setText("Time: {0:4.1f}: ".format(time.time() - self.Start))
+        self.form.l_time.setText(f"Time: {time.time() - self.Start:4.1f}: ")
         self.fea.reset_mesh_purge_results_checked()
         self.fea.inp_file_name = self.fea.inp_file_name
 
@@ -287,8 +275,9 @@ class _TaskPanel:
                 "The used CalculiX version {}.{} creates broken output files. "
                 "The result file will not be read by FreeCAD FEM. "
                 "You still can try to read it stand alone with FreeCAD, but it is "
-                "strongly recommended to upgrade CalculiX to a newer version.\n"
-                .format(majorVersion, minorVersion)
+                "strongly recommended to upgrade CalculiX to a newer version.\n".format(
+                    majorVersion, minorVersion
+                )
             )
             QtGui.QMessageBox.warning(None, "Upgrade CalculiX", message)
             raise
@@ -296,11 +285,12 @@ class _TaskPanel:
         QApplication.setOverrideCursor(Qt.WaitCursor)
         try:
             self.fea.load_results()
-        except Exception:
+        except Exception as e:
             FreeCAD.Console.PrintError("loading results failed\n")
+            FreeCAD.Console.PrintError(e)
 
         QApplication.restoreOverrideCursor()
-        self.form.l_time.setText("Time: {0:4.1f}: ".format(time.time() - self.Start))
+        self.form.l_time.setText(f"Time: {time.time() - self.Start:4.1f}: ")
 
         # restore mesh object visibility
         CCX_mesh = self.fea.analysis.Document.getObject("ResultMesh")
@@ -308,15 +298,16 @@ class _TaskPanel:
             CCX_mesh.ViewObject.Visibility = self.CCX_mesh_visibility
 
     def choose_working_dir(self):
-        wd = QtGui.QFileDialog.getExistingDirectory(None, "Choose CalculiX working directory",
-                                                    self.fea.working_dir)
+        wd = QtGui.QFileDialog.getExistingDirectory(
+            None, "Choose CalculiX working directory", self.fea.working_dir
+        )
         if os.path.isdir(wd):
             self.fea.setup_working_dir(wd)
         self.form.le_working_dir.setText(self.fea.working_dir)
 
     def write_input_file_handler(self):
         self.Start = time.time()
-        self.form.l_time.setText("Time: {0:4.1f}: ".format(time.time() - self.Start))
+        self.form.l_time.setText(f"Time: {time.time() - self.Start:4.1f}: ")
         QApplication.restoreOverrideCursor()
         if self.check_prerequisites_helper():
             QApplication.setOverrideCursor(Qt.WaitCursor)
@@ -326,14 +317,14 @@ class _TaskPanel:
                 self.form.pb_edit_inp.setEnabled(True)
                 self.form.pb_run_ccx.setEnabled(True)
             else:
-                self.femConsoleMessage("Write .inp file failed!", "#FF0000")
+                self.femConsoleMessage("Write .inp file failed!", "Error")
             QApplication.restoreOverrideCursor()
-        self.form.l_time.setText("Time: {0:4.1f}: ".format(time.time() - self.Start))
+        self.form.l_time.setText(f"Time: {time.time() - self.Start:4.1f}: ")
 
     def check_prerequisites_helper(self):
         self.Start = time.time()
         self.femConsoleMessage("Check dependencies...")
-        self.form.l_time.setText("Time: {0:4.1f}: ".format(time.time() - self.Start))
+        self.form.l_time.setText(f"Time: {time.time() - self.Start:4.1f}: ")
 
         self.fea.update_objects()
         message = self.fea.check_prerequisites()
@@ -349,7 +340,7 @@ class _TaskPanel:
             self.ext_editor_process.start(ext_editor_path, [filename])
 
     def editCalculixInputFile(self):
-        print("editCalculixInputFile {}".format(self.fea.inp_file_name))
+        print(f"editCalculixInputFile {self.fea.inp_file_name}")
         ccx_prefs = FreeCAD.ParamGet(self.PREFS_PATH)
         if ccx_prefs.GetBool("UseInternalEditor", True):
             FemGui.open(self.fea.inp_file_name)
@@ -368,21 +359,21 @@ class _TaskPanel:
         if self.Calculix.state() == QtCore.QProcess.ProcessState.NotRunning:
             if self.fea.ccx_binary_present is False:
                 self.femConsoleMessage(
-                    "CalculiX can not be started. Missing or incorrect CalculiX binary: {}"
-                    .format(self.fea.ccx_binary)
+                    "CalculiX can not be started. Missing or incorrect CalculiX binary: {}".format(
+                        self.fea.ccx_binary
+                    )
                 )
                 # TODO deactivate the run button
                 return
             # print("runCalculix")
             self.Start = time.time()
 
-            self.femConsoleMessage("CalculiX binary: {}".format(self.fea.ccx_binary))
-            self.femConsoleMessage("CalculiX input file: {}".format(self.fea.inp_file_name))
+            self.femConsoleMessage(f"CalculiX binary: {self.fea.ccx_binary}")
+            self.femConsoleMessage(f"CalculiX input file: {self.fea.inp_file_name}")
             self.femConsoleMessage("Run CalculiX...")
 
             FreeCAD.Console.PrintMessage(
-                "run CalculiX at: {} with: {}\n"
-                .format(self.fea.ccx_binary, self.fea.inp_file_name)
+                f"run CalculiX at: {self.fea.ccx_binary} with: {self.fea.inp_file_name}\n"
             )
             # change cwd because ccx may crash if directory has no write permission
             # there is also a limit of the length of file names so jump to the document directory

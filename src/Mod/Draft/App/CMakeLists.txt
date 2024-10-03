@@ -31,6 +31,9 @@ SET(DraftUtils_SRCS
 
 add_library(DraftUtils SHARED ${DraftUtils_SRCS})
 target_link_libraries(DraftUtils ${DraftUtils_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(DraftUtils)
+endif()
 
 
 SET_BIN_DIR(DraftUtils DraftUtils /Mod/Draft)

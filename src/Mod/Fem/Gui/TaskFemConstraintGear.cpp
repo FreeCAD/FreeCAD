@@ -62,7 +62,7 @@ TaskFemConstraintGear::TaskFemConstraintGear(ViewProviderFemConstraint* Constrai
             qOverload<double>(&QDoubleSpinBox::valueChanged),
             this,
             &TaskFemConstraintGear::onForceAngleChanged);
-    connect(ui->buttonDirection, &QPushButton::pressed, this, [=] {
+    connect(ui->buttonDirection, &QPushButton::pressed, this, [this] {
         onButtonDirection(true);
     });
     connect(ui->checkReversed, &QCheckBox::toggled, this, &TaskFemConstraintGear::onCheckReversed);

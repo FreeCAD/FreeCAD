@@ -1546,6 +1546,9 @@ Efaces
 9,
 10,
 
+** Physical constants for SI(mm) unit system with Kelvins
+*PHYSICAL CONSTANTS, ABSOLUTE ZERO=0, STEFAN BOLTZMANN=5.670374419e-11
+
 ***********************************************************
 ** Materials
 ** see information about units at file end
@@ -1562,7 +1565,7 @@ Efaces
 
 ***********************************************************
 ** At least one step is needed to run an CalculiX analysis of FreeCAD
-*STEP
+*STEP, INC=2000
 *STATIC
 
 
@@ -1583,20 +1586,20 @@ ConstraintFixed,6
 *CLOAD
 ** ConstraintForce
 ** node loads on shape: CanileverPlate:Edge3
-3,3,-642857.1428571417
-4,3,-642857.1428571455
-64,3,-1285714.2857142843
-65,3,-1285714.285714283
-66,3,-1285714.28571428
-67,3,-1285714.2857142847
-68,3,-1285714.28571429
-69,3,-1285714.2857142906
+3,3,-642857.1428571
+4,3,-642857.1428571
+64,3,-1285714.285714
+65,3,-1285714.285714
+66,3,-1285714.285714
+67,3,-1285714.285714
+68,3,-1285714.285714
+69,3,-1285714.285714
 
 
 
 ***********************************************************
 ** Outputs --> frd file
-*NODE FILE, OUTPUT=2d
+*NODE FILE, OUTPUT=3d
 U
 *EL FILE
 S, E
@@ -1605,9 +1608,9 @@ S, E
 *NODE PRINT, NSET=ConstraintFixed, TOTALS=ONLY
 RF
 
-
+*OUTPUT, FREQUENCY=1
 ***********************************************************
-*END STEP 
+*END STEP
 
 ***********************************************************
 ** CalculiX Input file

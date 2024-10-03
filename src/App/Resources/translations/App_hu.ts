@@ -7,14 +7,14 @@
       <location filename="../../Link.cpp" line="118"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all links
 that reference the same configurable object</source>
-      <translation>Tárolja a felhasználó legutóbbi döntését, hogy a CopyOnChange beállítás minden hivatkozásra alkalmazható-e,
+      <translation>Tárolja a felhasználó legutóbbi döntését, hogy a CopyOnChange beállítás minden összekötésre alkalmazható-e,
 amelyek ugyanarra a konfigurálható tárgyra hivatkoznak</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="445"/>
+      <location filename="../../Application.cpp" line="463"/>
       <source>Unnamed</source>
       <translation>Névtelen</translation>
     </message>
@@ -22,32 +22,32 @@ amelyek ugyanarra a konfigurálható tárgyra hivatkoznak</translation>
   <context>
     <name>App::Origin</name>
     <message>
-      <location filename="../../Origin.cpp" line="140"/>
+      <location filename="../../Origin.cpp" line="142"/>
       <source>X-axis</source>
       <translation>X-tengely</translation>
     </message>
     <message>
-      <location filename="../../Origin.cpp" line="141"/>
+      <location filename="../../Origin.cpp" line="143"/>
       <source>Y-axis</source>
       <translation>Y tengely</translation>
     </message>
     <message>
-      <location filename="../../Origin.cpp" line="142"/>
+      <location filename="../../Origin.cpp" line="144"/>
       <source>Z-axis</source>
       <translation>Z tengely</translation>
     </message>
     <message>
-      <location filename="../../Origin.cpp" line="143"/>
+      <location filename="../../Origin.cpp" line="145"/>
       <source>XY-plane</source>
       <translation>XY sík</translation>
     </message>
     <message>
-      <location filename="../../Origin.cpp" line="144"/>
+      <location filename="../../Origin.cpp" line="146"/>
       <source>XZ-plane</source>
       <translation>XZ sík</translation>
     </message>
     <message>
-      <location filename="../../Origin.cpp" line="145"/>
+      <location filename="../../Origin.cpp" line="147"/>
       <source>YZ-plane</source>
       <translation>YZ síkban</translation>
     </message>

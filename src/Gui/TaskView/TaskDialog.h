@@ -57,7 +57,9 @@ public:
     TaskDialog();
     ~TaskDialog() override;
 
-    void addTaskBox(QWidget*);
+    QWidget* addTaskBox(QWidget* widget, bool expandable = true, QWidget* parent = nullptr);
+    QWidget* addTaskBox(const QPixmap& icon, QWidget* widget, bool expandable = true, QWidget* parent = nullptr);
+    QWidget* addTaskBoxWithoutHeader(QWidget* widget);
 
     void setButtonPosition(ButtonPosition p)
     { pos = p; }
@@ -87,6 +89,15 @@ public:
     }
     bool isAutoCloseOnTransactionChange() const {
         return autoCloseTransaction;
+    }
+
+    /// Defines whether a task dialog must be closed if the document is
+    /// deleted.
+    void setAutoCloseOnDeletedDocument(bool on) {
+        autoCloseDeletedDocument = on;
+    }
+    bool isAutoCloseOnDeletedDocument() const {
+        return autoCloseDeletedDocument;
     }
 
     const std::string& getDocumentName() const
@@ -122,6 +133,9 @@ public:
     /// is called by the framework when the dialog is automatically closed due to
     /// changing the active transaction
     virtual void autoClosedOnTransactionChange();
+    /// is called by the framework when the dialog is automatically closed due to
+    /// deleting the document
+    virtual void autoClosedOnDeletedDocument();
     /// is called by the framework if a button is clicked which has no accept or reject role
     virtual void clicked(int);
     /// is called by the framework if the dialog is accepted (Ok)
@@ -148,6 +162,7 @@ private:
     std::string documentName;
     bool escapeButton;
     bool autoCloseTransaction;
+    bool autoCloseDeletedDocument;
 
     friend class TaskDialogAttorney;
 };

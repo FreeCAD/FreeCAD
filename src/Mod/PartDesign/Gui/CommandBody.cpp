@@ -271,7 +271,7 @@ void CmdPartDesignBody::activated(int iMsg)
                         App::Plane* plane = static_cast<App::Plane*>(features.front());
                         std::string supportString = Gui::Command::getObjectCmd(plane,"(",", [''])");
 
-                        FCMD_OBJ_CMD(baseFeature,"Support = " << supportString);
+                        FCMD_OBJ_CMD(baseFeature,"AttachmentSupport = " << supportString);
                         FCMD_OBJ_CMD(baseFeature,"MapMode = '" << Attacher::AttachEngine::getModeName(Attacher::mmFlatFace) << "'");
                         Gui::Command::updateActive();
                     };
@@ -431,7 +431,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
     }
 
     // do the actual migration
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Migrate legacy part design features to Bodies"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Migrate legacy Part Design features to Bodies"));
 
     for ( auto chainIt = featureChains.begin(); !featureChains.empty();
             featureChains.erase (chainIt), chainIt = featureChains.begin () ) {

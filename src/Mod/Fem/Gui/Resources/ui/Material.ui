@@ -104,7 +104,7 @@
         <item row="1" column="1">
          <widget class="QPushButton" name="pushButton_editMat">
           <property name="text">
-           <string>use FreeCAD material editor</string>
+           <string>Use FreeCAD material editor</string>
           </property>
          </widget>
         </item>
@@ -120,7 +120,7 @@
            <enum>Qt::RightToLeft</enum>
           </property>
           <property name="text">
-           <string>use this task panel</string>
+           <string>Use this task panel</string>
           </property>
           <property name="checked">
            <bool>false</bool>
@@ -152,7 +152,7 @@
         <item row="4" column="0">
          <widget class="QLabel" name="label_8">
           <property name="text">
-           <string>Density                     </string>
+           <string>Density</string>
           </property>
          </widget>
         </item>
@@ -183,7 +183,7 @@
            <double>2.000000000000000</double>
           </property>
           <property name="maximum">
-           <double>2000000000.000000000000000</double>
+           <double>99999999999.000000000000000</double>
           </property>
           <property name="unit" stdset="0">
            <string notr="true">kg/m^3</string>
@@ -252,7 +252,7 @@
            <double>2.000000000000000</double>
           </property>
           <property name="maximum">
-           <double>90000000000.000000000000000</double>
+           <double>99999999999.000000000000000</double>
           </property>
           <property name="unit" stdset="0">
            <string notr="true">Pa</string>
@@ -362,7 +362,7 @@
            <double>0.000001000000000</double>
           </property>
           <property name="maximum">
-           <double>1000.000000000000000</double>
+           <double>99999999999.000000000000000</double>
           </property>
           <property name="unit" stdset="0">
            <string notr="true">m^2/s</string>
@@ -389,7 +389,7 @@
       </size>
      </property>
      <property name="title">
-      <string>Thermal  Properties</string>
+      <string>Thermal Properties</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_8">
       <item>
@@ -431,7 +431,7 @@
            <double>2.000000000000000</double>
           </property>
           <property name="maximum">
-           <double>2000000000.000000000000000</double>
+           <double>99999999999.000000000000000</double>
           </property>
           <property name="unit" stdset="0">
            <string notr="true">W/m/K</string>
@@ -478,7 +478,7 @@
            <double>2.000000000000000</double>
           </property>
           <property name="maximum">
-           <double>2000000000.000000000000000</double>
+           <double>99999999999.000000000000000</double>
           </property>
           <property name="unit" stdset="0">
            <string notr="true">m/m/K</string>
@@ -494,7 +494,7 @@
         <item row="2" column="0">
          <widget class="QLabel" name="label_14">
           <property name="text">
-           <string>Specific Heat:</string>
+           <string>Specific Heat Capacity:</string>
           </property>
          </widget>
         </item>
@@ -525,7 +525,7 @@
            <double>2.000000000000000</double>
           </property>
           <property name="maximum">
-           <double>2050000000.000000000000000</double>
+           <double>99999999999.000000000000000</double>
           </property>
           <property name="unit" stdset="0">
            <string notr="true">J/kg/K</string>

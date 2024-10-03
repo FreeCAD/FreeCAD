@@ -28,16 +28,19 @@ AppearanceModel:
   Description: "default rendering model"
   DOI: ""
   AmbientColor:
+    DisplayName: "Ambient Color"
     Type: 'Color'
     Units: ''
     URL: ''
     Description: " "
   DiffuseColor:
+    DisplayName: "Diffuse Color"
     Type: 'Color'
     Units: ''
     URL: ''
     Description: " "
   EmissiveColor:
+    DisplayName: "Emissive Color"
     Type: 'Color'
     Units: ''
     URL: ''
@@ -48,6 +51,7 @@ AppearanceModel:
     URL: ''
     Description: " "
   SpecularColor:
+    DisplayName: "Specular Color"
     Type: 'Color'
     Units: ''
     URL: ''

@@ -21,9 +21,9 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <layout class="QHBoxLayout" name="horizontalLayout1">
      <item>
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="maxSizeLabel">
        <property name="text">
         <string>Max. Size:</string>
        </property>
@@ -31,6 +31,24 @@
      </item>
      <item>
       <widget class="QDoubleSpinBox" name="doubleSpinBox_MaxSize">
+       <property name="maximum">
+        <double>9999999.990000000223517</double>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout2">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Min. Size:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDoubleSpinBox" name="doubleSpinBox_MinSize">
        <property name="maximum">
         <double>9999999.990000000223517</double>
        </property>
@@ -108,7 +126,7 @@
      <item row="2" column="0">
       <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>Nbr. Segs per Edge:</string>
+        <string>Number of Segments per Edge:</string>
        </property>
       </widget>
      </item>
@@ -125,7 +143,7 @@
      <item row="3" column="0">
       <widget class="QLabel" name="label_5">
        <property name="text">
-        <string>Nbr. Segs per Radius:</string>
+        <string>Number of Segments per Radius:</string>
        </property>
       </widget>
      </item>
@@ -163,7 +181,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label_6">
        <property name="text">
-        <string>Node count: </string>
+        <string>Node count:</string>
        </property>
       </widget>
      </item>

@@ -86,7 +86,6 @@ export PATH_TO_FREECAD_LIBDIR=\${HERE}/usr/lib
 # export QT_XKB_CONFIG_ROOT=\${HERE}/usr/lib
 export FONTCONFIG_FILE=/etc/fonts/fonts.conf
 export FONTCONFIG_PATH=/etc/fonts
-# export QTWEBENGINEPROCESS_PATH=\${HERE}/usr/libexec/QtWebEngineProcess
 
 # Show packages info if DEBUG env variable is set
 if [ "\$DEBUG" = 1 ]; then
@@ -98,8 +97,6 @@ fi
 export SSL_CERT_FILE=\$PREFIX/ssl/cacert.pem
 # https://github.com/FreeCAD/FreeCAD-AppImage/pull/20
 export GIT_SSL_CAINFO=\$HERE/usr/ssl/cacert.pem
-# https://github.com/FreeCAD/FreeCAD-Bundle/issues/92#issuecomment-1086829486
-export QTWEBENGINE_DISABLE_SANDBOX=1
 # Support for launching other applications (from /usr/bin)
 # https://github.com/FreeCAD/FreeCAD-AppImage/issues/30
 if [ ! -z "\$1" ] && [ -e "\$HERE/usr/bin/\$1" ] ; then

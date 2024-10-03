@@ -363,8 +363,7 @@
       <location filename="../../CommandTrajectory.cpp" line="464"/>
       <location filename="../../Command.cpp" line="71"/>
       <location filename="../../Command.cpp" line="130"/>
-      <location filename="../../Command.cpp" line="237"/>
-      <location filename="../../Command.cpp" line="271"/>
+      <location filename="../../Command.cpp" line="235"/>
       <location filename="../../CommandExport.cpp" line="62"/>
       <location filename="../../CommandExport.cpp" line="137"/>
       <source>Wrong selection</source>
@@ -382,20 +381,19 @@
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="107"/>
-      <location filename="../../Command.cpp" line="238"/>
-      <location filename="../../Command.cpp" line="272"/>
+      <location filename="../../Command.cpp" line="236"/>
       <location filename="../../CommandExport.cpp" line="63"/>
       <location filename="../../CommandExport.cpp" line="138"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>Абраць адзін Робат і адну траекторыю аб'екта.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="245"/>
+      <location filename="../../Command.cpp" line="243"/>
       <source>Trajectory not valid</source>
       <translation>Недапушчальная траекторыя</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="246"/>
+      <location filename="../../Command.cpp" line="244"/>
       <source>You need at least two waypoints in a trajectory to simulate.</source>
       <translation>Для мадэлявання патрэбна, прынамсі, дзве шляхавыя кропкі на траекторыі.</translation>
     </message>
@@ -474,7 +472,7 @@
       <translation>Абраць траекторыю, якую патрэбна палепшыць.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderTrajectory.cpp" line="148"/>
+      <location filename="../../ViewProviderTrajectory.cpp" line="145"/>
       <source>Modify</source>
       <translation>Змяніць</translation>
     </message>

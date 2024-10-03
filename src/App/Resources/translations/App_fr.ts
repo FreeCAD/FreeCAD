@@ -7,46 +7,46 @@
       <location filename="../../Link.cpp" line="118"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all links
 that reference the same configurable object</source>
-      <translation>Enregistre le dernier choix de l'utilisateur concernant l'application de la configuration CopyOnChange à tous les liens qui font référence au même objet configurable</translation>
+      <translation>Enregistre le dernier choix de l'utilisateur concernant la configuration de CopyOnChange sur tous les liens qui font référence au même objet configurable.</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="445"/>
+      <location filename="../../Application.cpp" line="463"/>
       <source>Unnamed</source>
-      <translation>Sans nom</translation>
+      <translation>Nouveau</translation>
     </message>
   </context>
   <context>
     <name>App::Origin</name>
     <message>
-      <location filename="../../Origin.cpp" line="140"/>
+      <location filename="../../Origin.cpp" line="142"/>
       <source>X-axis</source>
       <translation>Axe X</translation>
     </message>
     <message>
-      <location filename="../../Origin.cpp" line="141"/>
+      <location filename="../../Origin.cpp" line="143"/>
       <source>Y-axis</source>
       <translation>Axe Y</translation>
     </message>
     <message>
-      <location filename="../../Origin.cpp" line="142"/>
+      <location filename="../../Origin.cpp" line="144"/>
       <source>Z-axis</source>
       <translation>Axe Z</translation>
     </message>
     <message>
-      <location filename="../../Origin.cpp" line="143"/>
+      <location filename="../../Origin.cpp" line="145"/>
       <source>XY-plane</source>
       <translation>Plan XY</translation>
     </message>
     <message>
-      <location filename="../../Origin.cpp" line="144"/>
+      <location filename="../../Origin.cpp" line="146"/>
       <source>XZ-plane</source>
       <translation>Plan XZ</translation>
     </message>
     <message>
-      <location filename="../../Origin.cpp" line="145"/>
+      <location filename="../../Origin.cpp" line="147"/>
       <source>YZ-plane</source>
       <translation>Plan YZ</translation>
     </message>

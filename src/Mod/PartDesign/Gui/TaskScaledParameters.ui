@@ -7,44 +7,25 @@
     <x>0</x>
     <y>0</y>
     <width>253</width>
-    <height>270</height>
+    <height>85</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string notr="true">Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_4">
-     <item>
-      <widget class="QPushButton" name="buttonAddFeature">
-       <property name="text">
-        <string>Add feature</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="buttonRemoveFeature">
-       <property name="text">
-        <string>Remove feature</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <widget class="QListWidget" name="listWidgetFeatures">
-     <property name="dragDropMode">
-      <enum>QAbstractItemView::InternalMove</enum>
-     </property>
-    </widget>
-   </item>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
@@ -55,7 +36,7 @@
       </widget>
      </item>
      <item>
-      <widget class="Gui::QuantitySpinBox" name="spinFactor"/>
+      <widget class="Gui::QuantitySpinBox" name="spinFactor" native="true"/>
      </item>
     </layout>
    </item>
@@ -73,40 +54,6 @@
      </item>
     </layout>
    </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <item>
-      <widget class="QPushButton" name="buttonOK">
-       <property name="text">
-        <string>OK</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="checkBoxUpdateView">
-     <property name="text">
-      <string>Update view</string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
   </layout>
  </widget>
  <customwidgets>
@@ -123,13 +70,8 @@
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>buttonAddFeature</tabstop>
-  <tabstop>buttonRemoveFeature</tabstop>
-  <tabstop>listWidgetFeatures</tabstop>
   <tabstop>spinFactor</tabstop>
   <tabstop>spinOccurrences</tabstop>
-  <tabstop>buttonOK</tabstop>
-  <tabstop>checkBoxUpdateView</tabstop>
  </tabstops>
  <resources/>
  <connections/>

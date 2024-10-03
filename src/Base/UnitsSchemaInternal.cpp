@@ -272,6 +272,24 @@ UnitsSchemaInternal::schemaTranslate(const Quantity& quant, double& factor, QStr
             factor = 1e9;
         }
     }
+    //    else if (unit == Unit::Moment) {
+    //        if (UnitValue < 1e6) {
+    //            unitString = QString::fromLatin1("mNm");
+    //            factor = 1e3;
+    //        }
+    //        else if (UnitValue < 1e9) {
+    //            unitString = QString::fromLatin1("Nm");
+    //            factor = 1e6;
+    //        }
+    //        else if (UnitValue < 1e12) {
+    //            unitString = QString::fromLatin1("kNm");
+    //            factor = 1e9;
+    //        }
+    //        else {
+    //            unitString = QString::fromLatin1("MNm");
+    //            factor = 1e12;
+    //        }
+    //    }
     else if (unit == Unit::Power) {
         if (UnitValue < 1e6) {
             unitString = QString::fromLatin1("mW");
@@ -533,7 +551,7 @@ UnitsSchemaInternal::schemaTranslate(const Quantity& quant, double& factor, QStr
         }
     }
     else if (unit == Unit::DissipationRate) {
-        unitString = QString::fromLatin1("m^2/s^3");
+        unitString = QString::fromLatin1("W/kg");
         factor = 1e6;
     }
     else if (unit == Unit::InverseLength) {

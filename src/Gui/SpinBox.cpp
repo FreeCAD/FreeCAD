@@ -52,7 +52,7 @@ ExpressionSpinBox::ExpressionSpinBox(QAbstractSpinBox* sb)
 {
     lineedit = spinbox->findChild<QLineEdit*>();
     makeLabel(lineedit);
-    QObject::connect(iconLabel, &ExpressionLabel::clicked, [=]() {
+    QObject::connect(iconLabel, &ExpressionLabel::clicked, [this]() {
         this->openFormulaDialog();
     });
 }
@@ -183,7 +183,7 @@ void ExpressionSpinBox::openFormulaDialog()
         unit = qprop->getUnit();
 
     auto box = new Gui::Dialog::DlgExpressionInput(getPath(), getExpression(), unit, spinbox);
-    QObject::connect(box, &Gui::Dialog::DlgExpressionInput::finished, [=]() {
+    QObject::connect(box, &Gui::Dialog::DlgExpressionInput::finished, [this, box]() {
         if (box->result() == QDialog::Accepted)
             setExpression(box->getExpression());
         else if (box->discardedFormula())

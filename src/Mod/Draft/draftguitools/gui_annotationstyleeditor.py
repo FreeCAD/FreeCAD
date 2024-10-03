@@ -212,20 +212,20 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         elif index == 1:
             # Add new... entry
             reply = QtWidgets.QInputDialog.getText(None,
-                                               "Create new style",
-                                               "Style name:")
+                                                   translate("draft", "Create new style"),
+                                                   translate("draft", "Style name:"))
             if reply[1]:
                 # OK or Enter pressed
                 name = reply[0].strip()
                 if name == "":
                     QtWidgets.QMessageBox.information(None,
-                                                  "Style name required",
-                                                  "No style name specified")
+                                                      translate("draft", "Style name required"),
+                                                      translate("draft", "No style name specified"))
                     self.form.comboBoxStyles.setCurrentIndex(0)
                 elif name in self.styles:
                     QtWidgets.QMessageBox.information(None,
-                                                  "Style exists",
-                                                  "This style name already exists")
+                                                      translate("draft", "Style exists"),
+                                                      translate("draft", "This style name already exists"))
                     self.form.comboBoxStyles.setCurrentIndex(0)
                 else:
                     # create new style from current editor values
@@ -253,10 +253,10 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
 
         if self.get_style_users(style):
             reply = QtWidgets.QMessageBox.question(None,
-                                               "Style in use",
-                                               "This style is used by some objects in this document. Are you sure?",
-                                               QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
-                                               QtWidgets.QMessageBox.No)
+                                                   translate("draft", "Style in use"),
+                                                   translate("draft", "This style is used by some objects in this document. Are you sure?"),
+                                                   QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+                                                   QtWidgets.QMessageBox.No)
             if reply == QtWidgets.QMessageBox.No:
                 return
         self.form.comboBoxStyles.removeItem(index)
@@ -268,8 +268,8 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         style = self.form.comboBoxStyles.itemText(index)
 
         reply = QtWidgets.QInputDialog.getText(None,
-                                           "Rename style",
-                                           "New name:",
+                                               translate("draft", "Rename style"),
+                                               translate("draft", "New name:"),
                                            QtWidgets.QLineEdit.Normal,
                                            style)
         if reply[1]:
@@ -277,8 +277,8 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
             newname = reply[0]
             if newname in self.styles:
                 reply = QtWidgets.QMessageBox.information(None,
-                                                      "Style exists",
-                                                      "This style name already exists")
+                                                          translate("draft", "Style exists"),
+                                                          translate("draft", "This style name already exists"))
             else:
                 self.form.comboBoxStyles.setItemText(index, newname)
                 value = self.styles[style]

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 #include <App/Application.h>
 #include <App/ElementMap.h>
@@ -363,7 +363,7 @@ TEST_F(ElementMapTest, mimicSimpleUnion)
     //   pattern: new doc, create Cube, create Cylinder, Union of both (Cube first)
     std::ostringstream ss;
     std::ostringstream finalSs;
-    char* docName = "Unnamed";
+    const char* docName = "Unnamed";
 
     LessComplexPart cube(1L, "Box", _hasher);
     LessComplexPart cylinder(2L, "Cylinder", _hasher);
@@ -553,5 +553,4 @@ TEST_F(ElementMapTest, addAndGetChildElementsTest)
             return e.indexedName.toString() == "Pong2";
         }));
 }
-
 // NOLINTEND(readability-magic-numbers)

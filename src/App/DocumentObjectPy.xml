@@ -225,6 +225,13 @@ Return tuple(obj,newElementName,oldElementName)
                 <UserDocu>adjustRelativeLinks(parent,recursive=True) -- auto correct potential cyclic dependencies</UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="getElementMapVersion" Const="true">
+            <Documentation>
+                <UserDocu>
+                    getElementMapVersion(property_name): return element map version of a given geometry property
+                </UserDocu>
+            </Documentation>
+        </Methode>
     <Attribute Name="OutList" ReadOnly="true">
       <Documentation>
         <UserDocu>A list of all objects this object links to.</UserDocu>

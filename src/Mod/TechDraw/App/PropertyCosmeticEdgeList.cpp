@@ -99,19 +99,20 @@ PyObject *PropertyCosmeticEdgeList::getPyObject()
 void PropertyCosmeticEdgeList::setPyObject(PyObject *value)
 {
     if (PySequence_Check(value)) {
-        Py_ssize_t nSize = PySequence_Size(value);
+        Py::Sequence sequence(value);
+        Py_ssize_t nSize = sequence.size();
         std::vector<CosmeticEdge*> values;
         values.resize(nSize);
 
         for (Py_ssize_t i=0; i < nSize; ++i) {
-            PyObject* item = PySequence_GetItem(value, i);
-            if (!PyObject_TypeCheck(item, &(CosmeticEdgePy::Type))) {
+            Py::Object item = sequence.getItem(i);
+            if (!PyObject_TypeCheck(item.ptr(), &(CosmeticEdgePy::Type))) {
                 std::string error = std::string("types in list must be 'CosmeticEdge', not ");
-                error += item->ob_type->tp_name;
+                error += item.ptr()->ob_type->tp_name;
                 throw Base::TypeError(error);
             }
 
-            values[i] = static_cast<CosmeticEdgePy*>(item)->getCosmeticEdgePtr();
+            values[i] = static_cast<CosmeticEdgePy*>(item.ptr())->getCosmeticEdgePtr();
         }
 
         setValues(values);

@@ -59,6 +59,7 @@ TechDraw::DrawViewPart* TechDraw::getReferencesFromSelection(ReferenceVector& re
                 //subName to a null string to avoid later misunderstandings.
                 ReferenceEntry ref(dvp, std::string());
                 references2d.push_back(ref);
+                continue;
             }
             for (auto& sub : selItem.getSubNames()) {
                 ReferenceEntry ref(dvp, sub);
@@ -116,7 +117,7 @@ DimensionGeometryType TechDraw::validateDimSelection(
     StringVector subNames;
     TechDraw::DrawViewPart* dvpSave(nullptr);
     for (auto& ref : references) {
-        TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(ref.getObject());
+        auto* dvp = dynamic_cast<TechDraw::DrawViewPart*>(ref.getObject());
         if (dvp) {
             dvpSave = dvp;
             if (!ref.getSubName().empty()) {
@@ -151,7 +152,7 @@ DimensionGeometryType TechDraw::validateDimSelection(
     //check for wrong number of geometry
     GeomCountVector foundCounts;
     GeomCountMap minimumCountMap = loadRequiredCounts(acceptableGeometry, minimumCounts);
-    if (!checkGeometryOccurences(subNames, minimumCountMap)) {
+    if (!checkGeometryOccurrences(subNames, minimumCountMap)) {
         //too many or too few geometry descriptors.
         return isInvalid;
     }
@@ -192,7 +193,6 @@ DimensionGeometryType TechDraw::validateDimSelection3d(
         }
     }
 
-
     //check for invalid geometry descriptors in the subNames
     std::unordered_set<std::string> acceptableGeometrySet(acceptableGeometry.begin(),
                                                           acceptableGeometry.end());
@@ -203,7 +203,7 @@ DimensionGeometryType TechDraw::validateDimSelection3d(
 
     //check for wrong number of geometry
     GeomCountMap minimumCountMap = loadRequiredCounts(acceptableGeometry, minimumCounts);
-    if (!checkGeometryOccurences(subNames, minimumCountMap)) {
+    if (!checkGeometryOccurrences(subNames, minimumCountMap)) {
         //too many or too few geometry descriptors.
         return isInvalid;
     }
@@ -235,7 +235,7 @@ bool TechDraw::validateSubnameList(StringVector subNames, GeometrySet acceptable
 }
 
 //count how many of each "Edge", "Vertex, etc and compare totals to required minimum
-bool TechDraw::checkGeometryOccurences(StringVector subNames, GeomCountMap keyedMinimumCounts)
+bool TechDraw::checkGeometryOccurrences(StringVector subNames, GeomCountMap keyedMinimumCounts)
 {
     //how many of each geometry descriptor are input
     GeomCountMap foundCounts;
@@ -295,6 +295,10 @@ DimensionGeometryType TechDraw::getGeometryConfiguration(ReferenceVector valid2d
     if (config > isInvalid) {
         return config;
     }
+    config = isValidSingleFace(valid2dReferences.front());
+    if (config > isInvalid) {
+        return config;
+    }
 
     // no valid configuration found
     return isInvalid;
@@ -333,6 +337,10 @@ DimensionGeometryType TechDraw::getGeometryConfiguration3d(DrawViewPart* dvp,
         return config;
     }
     config = isValidSingleEdge3d(dvp, valid3dReferences.front());
+    if (config > isInvalid) {
+        return config;
+    }
+    config = isValidSingleFace3d(dvp, valid3dReferences.front());
     if (config > isInvalid) {
         return config;
     }
@@ -459,6 +467,47 @@ DimensionGeometryType TechDraw::isValidSingleEdge3d(DrawViewPart* dvp, Reference
     }
 
     return isInvalid;
+}
+
+//! verify that Selection contains a valid Geometry for a single Edge Dimension
+DimensionGeometryType TechDraw::isValidSingleFace(ReferenceEntry ref)
+{
+    auto objFeat(dynamic_cast<TechDraw::DrawViewPart*>(ref.getObject()));
+    if (!objFeat) {
+        return isInvalid;
+    }
+
+    //the Name starts with "Edge"
+    std::string geomName = DrawUtil::getGeomTypeFromName(ref.getSubName());
+    if (geomName != "Face") {
+        return isInvalid;
+    }
+
+    auto geom = objFeat->getFace(ref.getSubName());
+    if (!geom) {
+        return isInvalid;
+    }
+
+    return isFace;
+}
+
+//! verify that Selection contains a valid Geometry for a single Edge Dimension
+DimensionGeometryType TechDraw::isValidSingleFace3d(DrawViewPart* dvp, ReferenceEntry ref)
+{
+    (void)dvp;
+    //the Name starts with "Edge"
+    std::string geomName = DrawUtil::getGeomTypeFromName(ref.getSubName());
+    if (geomName != "Face") {
+        return isInvalid;
+    }
+
+    TopoDS_Shape refShape = ref.getGeometry();
+    if (refShape.IsNull() || refShape.ShapeType() != TopAbs_FACE) {
+        Base::Console().Warning("Geometry for reference is not a face.\n");
+        return isInvalid;
+    }
+
+    return isFace;
 }
 
 //! verify that the edge references can make a dimension. Currently only extent

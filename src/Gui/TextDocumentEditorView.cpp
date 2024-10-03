@@ -222,42 +222,51 @@ bool TextDocumentEditorView::onHasMsg(const char* msg) const
     return false;
 }
 
+int TextDocumentEditorView::execSaveDialog()
+{
+    this->setFocus();
+    QMessageBox box(this);
+    box.setIcon(QMessageBox::Question);
+    box.setWindowTitle(tr("Unsaved document"));
+    box.setText(tr("Do you want to save your changes before closing?"));
+    box.setInformativeText(tr("If you don't save, your changes will be lost."));
+    box.setStandardButtons(QMessageBox::Discard | QMessageBox::Cancel | QMessageBox::Save);
+    box.setDefaultButton(QMessageBox::Save);
+    box.setEscapeButton(QMessageBox::Cancel);
+
+    // add shortcuts
+    QAbstractButton* saveBtn = box.button(QMessageBox::Save);
+    if (saveBtn->shortcut().isEmpty()) {
+        QString text = saveBtn->text();
+        text.prepend(QLatin1Char('&'));
+        saveBtn->setShortcut(QKeySequence::mnemonic(text));
+    }
+
+    QAbstractButton* discardBtn = box.button(QMessageBox::Discard);
+    if (discardBtn->shortcut().isEmpty()) {
+        QString text = discardBtn->text();
+        text.prepend(QLatin1Char('&'));
+        discardBtn->setShortcut(QKeySequence::mnemonic(text));
+    }
+
+    box.adjustSize();
+    return box.exec();
+}
+
 bool TextDocumentEditorView::canClose()
 {
+    if (getGuiDocument()->isAboutToClose()) {
+        return true;
+    }
+
     if (getEditor()->document()->isModified()) {
-        this->setFocus();
-
-        QMessageBox box(this);
-        box.setIcon(QMessageBox::Question);
-        box.setWindowTitle(tr("Unsaved document"));
-        box.setText(tr("Do you want to save your changes before closing?"));
-        box.setInformativeText(tr("If you don't save, your changes will be lost."));
-        box.setStandardButtons(QMessageBox::Discard | QMessageBox::Cancel | QMessageBox::Save);
-        box.setDefaultButton(QMessageBox::Save);
-        box.setEscapeButton(QMessageBox::Cancel);
-
-        // add shortcuts
-        QAbstractButton* saveBtn = box.button(QMessageBox::Save);
-        if (saveBtn->shortcut().isEmpty()) {
-            QString text = saveBtn->text();
-            text.prepend(QLatin1Char('&'));
-            saveBtn->setShortcut(QKeySequence::mnemonic(text));
-        }
-
-        QAbstractButton* discardBtn = box.button(QMessageBox::Discard);
-        if (discardBtn->shortcut().isEmpty()) {
-            QString text = discardBtn->text();
-            text.prepend(QLatin1Char('&'));
-            discardBtn->setShortcut(QKeySequence::mnemonic(text));
-        }
-
-        box.adjustSize();
-        switch (box.exec())
+        switch (execSaveDialog())
         {
         case QMessageBox::Save:
             saveToObject();
-            if (getGuiDocument()->isLastView())
+            if (getGuiDocument()->isLastView()) {
                 return getGuiDocument()->save();
+            }
             return true;
         case QMessageBox::Discard:
             return true;

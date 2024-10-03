@@ -25,6 +25,11 @@
         <UserDocu>Get a material object by specifying its path and library name</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="inheritMaterial">
+      <Documentation>
+        <UserDocu>Create a new material object by specifying the UUID of its parent</UserDocu>
+      </Documentation>
+    </Methode>
     <Attribute Name="MaterialLibraries" ReadOnly="true">
       <Documentation>
         <UserDocu>List of Material libraries.</UserDocu>
@@ -45,6 +50,21 @@
     <Methode Name="materialsWithModelComplete">
       <Documentation>
         <UserDocu>Get a list of materials implementing the specified model, with values for all properties</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="save" Keyword="true">
+      <Documentation>
+        <UserDocu>Save the material in the specified library</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="filterMaterials" Keyword="true">
+      <Documentation>
+        <UserDocu>Returns a filtered material list</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="refresh">
+      <Documentation>
+        <UserDocu>Refreshes the material tree. Use sparingly as this is an expensive operation.</UserDocu>
       </Documentation>
     </Methode>
   </PythonExport>

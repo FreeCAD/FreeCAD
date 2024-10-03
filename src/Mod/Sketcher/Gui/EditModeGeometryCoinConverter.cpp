@@ -75,6 +75,7 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade& geoli
             coinMapping.CurvIdToGeoId[l].emplace_back();
         }
         coinMapping.PointIdToGeoId.emplace_back();
+        coinMapping.PointIdToPosId.emplace_back();
         coinMapping.PointIdToVertexId.emplace_back();
     }
 
@@ -86,6 +87,7 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade& geoli
     // empty layer.
     Points[0].emplace_back(0., 0., 0.);
     coinMapping.PointIdToGeoId[0].push_back(-1);  // root point
+    coinMapping.PointIdToPosId[0].push_back(Sketcher::PointPos::start);
     coinMapping.PointIdToVertexId[0].push_back(-1);
     // VertexId is the reference used for point selection/preselection
 
@@ -150,6 +152,23 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade& geoli
 
         for (int i = 0; i < numberPoints; i++) {
             coinMapping.PointIdToGeoId[coinLayer].push_back(geoId);
+            Sketcher::PointPos pos;
+            if (i == 0) {
+                if (pointmode == PointsMode::InsertMidOnly) {
+                    pos = Sketcher::PointPos::mid;
+                }
+                else {
+                    pos = Sketcher::PointPos::start;
+                }
+            }
+            else if (i == 1) {
+                pos = Sketcher::PointPos::end;
+            }
+            else {
+                pos = Sketcher::PointPos::mid;
+            }
+
+            coinMapping.PointIdToPosId[coinLayer].push_back(pos);
             coinMapping.PointIdToVertexId[coinLayer].push_back(vertexCounter++);
         }
 
@@ -296,7 +315,7 @@ template<typename GeoType,
          EditModeGeometryCoinConverter::AnalyseMode analysemode>
 void EditModeGeometryCoinConverter::convert(const Sketcher::GeometryFacade* geometryfacade,
                                             [[maybe_unused]] int geoid,
-                                            int subLayer)
+                                            [[maybe_unused]] int subLayer)
 {
     auto geo = static_cast<const GeoType*>(geometryfacade->getGeometry());
     auto layerId = getSafeGeomLayerId(geometryfacade);
@@ -415,7 +434,7 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeometryFacade* geom
                     e.ReportException();
                     Base::Console().DeveloperError(
                         "EditModeGeometryCoinConverter",
-                        "Curvature graph for B-Spline with GeoId=%d could not be calculated.\n",
+                        "Curvature graph for B-spline with GeoId=%d could not be calculated.\n",
                         geoid);  // TODO: Fix identification of curve.
                     curvaturelist[i] = 0;
                 }

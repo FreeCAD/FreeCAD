@@ -36,7 +36,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="99"/>
       <source>If this is checked, Features will claim their children in the tree view</source>
-      <translation>Wenn diese Option aktiviert ist, werden Features sich ihre Kinder in der Strukturbaum unterordnen</translation>
+      <translation>Wenn diese Option aktiviert ist, werden Merkmale sich ihre Kindobjekte in der Strukturbaum unterordnen</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="102"/>
@@ -57,7 +57,7 @@
       <location filename="../ui/openscadprefs-base.ui" line="139"/>
       <location filename="../ui/openscadprefs-base.ui" line="162"/>
       <source>The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</source>
-      <translation>Die maximale Anzahl der Kanten von einem Polygon, Prisma oder Prismenstumpf. Wenn fn größer als dieser Wert ist als rund betrachtet. Setzen Sie dies auf 0 für keine Begrenzung</translation>
+      <translation>Die maximale Anzahl der Kanten von einem Polygon, Prisma oder Prismenstumpf. Wenn fn größer als dieser Wert ist als rund betrachtet. Für keine Begrenzung auf 0 setzen</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="142"/>
@@ -168,18 +168,18 @@
     <message>
       <location filename="../../InitGui.py" line="130"/>
       <source>It looks like you may be using a Snap version of OpenSCAD.</source>
-      <translation>Es sieht so aus, als würden Sie eine Snap-Version von OpenSCAD verwenden.</translation>
+      <translation>Es sieht so aus, als würden eine Snap-Version von OpenSCAD verwendet werden.</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="135"/>
       <location filename="../../InitGui.py" line="148"/>
       <source>If OpenSCAD execution fails to load the temporary file, use FreeCAD's OpenSCAD Workbench Preferences to change the transfer mechanism.</source>
-      <translation>Wenn das OpenSCAD-Modul die temporäre Datei nicht laden kann, ändern Sie den Transfermechanismus in den Einstellungen der OpenSCAD Werkbank von FreeCAD.</translation>
+      <translation>Wenn das OpenSCAD-Modul die temporäre Datei nicht laden kann, den Transfermechanismus in den Einstellungen des Arbeitsbereichs OpenSCAD von FreeCAD ändern.</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="143"/>
       <source>It looks like you may be using a sandboxed version of FreeCAD.</source>
-      <translation>Es sieht so aus, als würden Sie FreeCAD in einer Sandbox verwenden.</translation>
+      <translation>Es sieht so aus, als würde FreeCAD in einer Sandbox-Version verwendet werden.</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="92"/>
@@ -276,7 +276,7 @@
       <location filename="../../OpenSCADCommands.py" line="482"/>
       <location filename="../../OpenSCADCommands.py" line="486"/>
       <source>Mesh Boolean</source>
-      <translation>Boolsche Operation am Netz-Element</translation>
+      <translation>Boolsche Netzverknüpfung</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="487"/>
@@ -291,19 +291,19 @@
     <message>
       <location filename="../../OpenSCADUtils.py" line="665"/>
       <source>Error: either all shapes must be 2D or all shapes must be 3D</source>
-      <translation>Fehler: Entweder müssen alle Formen 2D sein oder alle Formen müssen 3D sein</translation>
+      <translation>Fehler: Formen müssen entweder alle 2D sein oder alle 3D</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="550"/>
-      <location filename="../../importCSG.py" line="1432"/>
+      <location filename="../../importCSG.py" line="549"/>
+      <location filename="../../importCSG.py" line="1434"/>
       <source>Unsupported Function</source>
       <translation>Nicht unterstützte Funktion</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="550"/>
-      <location filename="../../importCSG.py" line="1432"/>
+      <location filename="../../importCSG.py" line="549"/>
+      <location filename="../../importCSG.py" line="1434"/>
       <source>Press OK</source>
-      <translation>Drücken Sie OK</translation>
+      <translation>OK drücken</translation>
     </message>
   </context>
   <context>
@@ -428,7 +428,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="307"/>
       <source>Replace an object in the Tree view. Please select old, new, and parent object</source>
-      <translation>Ersetzt ein Objekt im Feature-Baum. Bitte wählen Sie altes, neues und übergeordnetes Objekt</translation>
+      <translation>Ersetzt ein Objekt in der Baumansicht. Bitte altes, neues und übergeordnetes Objekt auswählen</translation>
     </message>
   </context>
   <context>
@@ -454,7 +454,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="534"/>
       <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
-      <translation>Fügen Sie ein OpenSCAD Element hinzu, indem Sie den OpenSCAD Code eingeben. Anschließend können Sie das OpenSCAD Binary ausführen</translation>
+      <translation>Ein OpenSCAD Element hinzufügen, durch Eingabe des OpenSCAD Codes. Anschließend kann das OpenSCAD Binary ausgeführt werden</translation>
     </message>
   </context>
   <context>
@@ -462,12 +462,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="545"/>
       <source>Mesh Boolean...</source>
-      <translation>Boolsche Operation am Netz-Element...</translation>
+      <translation>Boolsche Netzverknüpfung...</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="549"/>
       <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
-      <translation>Exportiert Objekte als Netze und verwendet OpenSCAD, um eine boolesche Operation auszuführen</translation>
+      <translation>Exportiert Objekte als Netze und verwendet OpenSCAD, um eine boolesche Verknüpfung auszuführen</translation>
     </message>
   </context>
   <context>

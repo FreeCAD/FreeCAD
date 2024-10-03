@@ -66,6 +66,7 @@ private:
     void labelChanged();
     void refresh();
     bool isEditorModified() const;
+    int execSaveDialog();
 
 private:
     QPlainTextEdit *const editor;

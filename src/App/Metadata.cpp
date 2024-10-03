@@ -58,7 +58,12 @@ directly. If you did not intend to use a system-defined macro
 
 using namespace App;
 namespace fs = boost::filesystem;
+#ifndef XERCES_CPP_NAMESPACE_BEGIN
+#define XERCES_CPP_NAMESPACE_QUALIFIER
+using namespace XERCES_CPP_NAMESPACE;
+#else
 XERCES_CPP_NAMESPACE_USE
+#endif
 
 namespace MetadataInternal
 {

@@ -119,6 +119,7 @@ ThicknessWidget::~ThicknessWidget()
 
 void ThicknessWidget::setupConnections()
 {
+    // clang-format off
     connect(d->ui.spinOffset, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
             this, &ThicknessWidget::onSpinOffsetValueChanged);
     connect(d->ui.modeType, qOverload<int>(&QComboBox::activated),
@@ -133,6 +134,7 @@ void ThicknessWidget::setupConnections()
             this, &ThicknessWidget::onFacesButtonToggled);
     connect(d->ui.updateView, &QCheckBox::toggled,
             this, &ThicknessWidget::onUpdateViewToggled);
+    // clang-format on
 }
 
 Part::Thickness* ThicknessWidget::getObject() const
@@ -296,11 +298,7 @@ TaskThickness::TaskThickness(Part::Thickness* offset)
 {
     widget = new ThicknessWidget(offset);
     widget->setWindowTitle(ThicknessWidget::tr("Thickness"));
-    taskbox = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("Part_Thickness"),
-        widget->windowTitle(), true, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(Gui::BitmapFactory().pixmap("Part_Thickness"), widget);
 }
 
 Part::Thickness* TaskThickness::getObject() const

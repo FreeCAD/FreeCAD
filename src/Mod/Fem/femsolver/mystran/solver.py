@@ -45,18 +45,16 @@ ANALYSIS_TYPES = ["static"]
 
 
 def create(doc, name="SolverMystran"):
-    return femutils.createObject(
-        doc, name, Proxy, ViewProxy)
+    return femutils.createObject(doc, name, Proxy, ViewProxy)
 
 
 class Proxy(solverbase.Proxy):
-    """The Fem::FemSolver's Proxy python type, add solver specific properties
-    """
+    """The Fem::FemSolver's Proxy python type, add solver specific properties"""
 
     Type = "Fem::SolverMystran"
 
     def __init__(self, obj):
-        super(Proxy, self).__init__(obj)
+        super().__init__(obj)
         obj.Proxy = self
 
         # mystran_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Mystran")
@@ -67,19 +65,21 @@ class Proxy(solverbase.Proxy):
 
     def createMachine(self, obj, directory, testmode=False):
         return run.Machine(
-            solver=obj, directory=directory,
+            solver=obj,
+            directory=directory,
             check=tasks.Check(),
             prepare=tasks.Prepare(),
             solve=tasks.Solve(),
             results=tasks.Results(),
-            testmode=testmode)
+            testmode=testmode,
+        )
 
     def editSupported(self):
         return True
 
     def edit(self, directory):
         pattern = os.path.join(directory, "*.bdf")  # TODO Mystran file ending
-        FreeCAD.Console.PrintMessage("{}\n".format(pattern))
+        FreeCAD.Console.PrintMessage(f"{pattern}\n")
         f = glob.glob(pattern)[0]
         FemGui.open(f)
         # see comment in oofem solver file
@@ -92,5 +92,6 @@ class ViewProxy(solverbase.ViewProxy):
 
     def getIcon(self):
         return ":/icons/FEM_SolverMystran.svg"
+
 
 ##  @}

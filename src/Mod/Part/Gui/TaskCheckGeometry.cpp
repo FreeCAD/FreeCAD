@@ -433,11 +433,16 @@ void TaskCheckGeometryResults::goCheck()
     for(const auto &sel :  selection) {
         selectedCount++;
         TopoDS_Shape shape = Part::Feature::getShape(sel.pObject,sel.SubName,true);
-        if (shape.IsNull())
+        if (shape.IsNull()) {
             continue;
+        }
+        if (shape.Infinite()) {
+            continue;
+        }
         currentSeparator = Gui::Application::Instance->getViewProvider(sel.pObject)->getRoot();
-        if (!currentSeparator)
+        if (!currentSeparator) {
             continue;
+        }
         QString baseName;
         QTextStream baseStream(&baseName);
         baseStream << sel.DocName;
@@ -678,13 +683,13 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   BOPCheck.CurveOnSurfaceMode() = curveOnSurfaceMode;
 
 #ifdef FC_DEBUG
-  Base::TimeInfo start_time;
+  Base::TimeElapsed start_time;
 #endif
 
   BOPCheck.Perform();
 
 #ifdef FC_DEBUG
-  float bopAlgoTime = Base::TimeInfo::diffTimeF(start_time,Base::TimeInfo());
+  float bopAlgoTime = Base::TimeElapsed::diffTimeF(start_time, Base::TimeElapsed());
   std::cout << std::endl << "BopAlgo check time is: " << bopAlgoTime << std::endl << std::endl;
 #endif
 
@@ -1010,7 +1015,7 @@ TaskCheckGeometryDialog::TaskCheckGeometryDialog()
     Content.push_back(settingsBox);
 
     autoRunCheckBox = new QCheckBox();
-    autoRunCheckBox->setText(tr("Skip settings page"));
+    autoRunCheckBox->setText(tr("Skip this settings page"));
     autoRunCheckBox->setToolTip(
         tr("Skip this settings page and run the geometry check automatically.")
         + QStringLiteral("\n")

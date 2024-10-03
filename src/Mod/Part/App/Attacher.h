@@ -30,8 +30,10 @@
 
 #include <GProp_GProps.hxx>
 
+#include <App/DocumentObserver.h>
 #include <App/GeoFeature.h>
 #include <App/PropertyLinks.h>
+#include <App/PropertyStandard.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 
@@ -105,6 +107,8 @@ enum eMapMode {
     mmOYZ,
     mmOYX,
 
+    mmParallelPlane,
+
     mmDummy_NumberOfModes//a value useful to check the validity of mode value
 };//see also eMapModeStrings[] definition in .cpp
 
@@ -144,7 +148,7 @@ enum eRefType {
 };
 
 
-using refTypeString = std::vector<eRefType>; //a sequence of ref types, according to Support contents for example
+using refTypeString = std::vector<eRefType>; //a sequence of ref types, according to AttachmentSupport contents for example
 using refTypeStringList = std::vector<refTypeString>; //a set of type strings, defines which selection sets are supported by a certain mode
 
 
@@ -221,8 +225,21 @@ public: //methods
                       double surfU = 0.0, double surfV = 0.0,
                       const Base::Placement &attachmentOffset = Base::Placement());
     virtual void setUp(const AttachEngine &another);
+
+    void setOffset(const Base::Placement &offset);
+
     virtual AttachEngine* copy() const = 0;
-    virtual Base::Placement calculateAttachedPlacement(const Base::Placement& origPlacement) const = 0;
+
+    Base::Placement calculateAttachedPlacement(
+        const Base::Placement &origPlacement, bool *subChanged=0);
+
+    virtual Base::Placement _calculateAttachedPlacement(
+        const std::vector<App::DocumentObject*> &objs,
+        const std::vector<std::string> &subs,
+        const Base::Placement &origPlacement) const = 0;
+
+    void setReferences(const App::PropertyLinkSubList &references);
+    void setReferences(const std::vector<App::SubObjectT> &references);
 
     /**
      * @brief placementFactory calculates placement from Z axis direction,
@@ -348,6 +365,9 @@ public://helper functions that may be useful outside of the class
 
     static GProp_GProps getInertialPropsOfShape(const std::vector<const TopoDS_Shape*> &shapes);
 
+    std::vector<App::DocumentObject*> getRefObjects() const;
+    const std::vector<std::string> &getSubValues() const {return subnames;}
+
     /**
      * @brief verifyReferencesAreSafe: checks if pointers in references still
      * point to objects contained in open documents. This guarantees the links
@@ -361,7 +381,10 @@ public: //enums
 
 
 public: //members
-    App::PropertyLinkSubList references;
+    std::string docName;
+    std::vector<std::string> objNames;
+    std::vector<std::string> subnames;
+    std::vector<std::string> shadowSubs;
 
     eMapMode mapMode = mmDeactivated;
     bool mapReverse = false;
@@ -405,7 +428,8 @@ protected:
         ret.push_back(rt4);
         return ret;
     }
-    static void readLinks(const App::PropertyLinkSubList &references, std::vector<App::GeoFeature *> &geofs,
+    static void readLinks(const std::vector<App::DocumentObject*> &objs,
+                          const std::vector<std::string> &subs, std::vector<App::GeoFeature *> &geofs,
                           std::vector<const TopoDS_Shape*>& shapes, std::vector<TopoDS_Shape> &storage,
                           std::vector<eRefType> &types);
 
@@ -420,7 +444,10 @@ class PartExport AttachEngine3D : public AttachEngine
 public:
     AttachEngine3D();
     AttachEngine3D* copy() const override;
-    Base::Placement calculateAttachedPlacement(const Base::Placement& origPlacement) const override;
+    Base::Placement _calculateAttachedPlacement(
+        const std::vector<App::DocumentObject*> &objs,
+        const std::vector<std::string> &subs,
+        const Base::Placement &origPlacement) const override;
 private:
     double calculateFoldAngle(gp_Vec axA, gp_Vec axB, gp_Vec edA, gp_Vec edB) const;
 };
@@ -432,7 +459,10 @@ class PartExport AttachEnginePlane : public AttachEngine
 public:
     AttachEnginePlane();
     AttachEnginePlane* copy() const override;
-    Base::Placement calculateAttachedPlacement(const Base::Placement& origPlacement) const override;
+    Base::Placement _calculateAttachedPlacement(
+        const std::vector<App::DocumentObject*> &objs,
+        const std::vector<std::string> &subs,
+        const Base::Placement &origPlacement) const override;
 };
 
 //attacher specialized for datum lines
@@ -442,7 +472,10 @@ class PartExport AttachEngineLine : public AttachEngine
 public:
     AttachEngineLine();
     AttachEngineLine* copy() const override;
-    Base::Placement calculateAttachedPlacement(const Base::Placement& origPlacement) const override;
+    Base::Placement _calculateAttachedPlacement(
+        const std::vector<App::DocumentObject*> &objs,
+        const std::vector<std::string> &subs,
+        const Base::Placement &origPlacement) const override;
 };
 
 //attacher specialized for datum points
@@ -452,7 +485,10 @@ class PartExport AttachEnginePoint : public AttachEngine
 public:
     AttachEnginePoint();
     AttachEnginePoint* copy() const override;
-    Base::Placement calculateAttachedPlacement(const Base::Placement& origPlacement) const override;
+    Base::Placement _calculateAttachedPlacement(
+        const std::vector<App::DocumentObject*> &objs,
+        const std::vector<std::string> &subs,
+        const Base::Placement &origPlacement) const override;
 
 private:
     gp_Pnt getProximityPoint(eMapMode mode, const TopoDS_Shape& s1, const TopoDS_Shape& s2) const;

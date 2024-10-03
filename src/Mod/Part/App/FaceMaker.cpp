@@ -61,12 +61,19 @@ void Part::FaceMaker::addTopoShape(const TopoShape& shape) {
         break;
         case TopAbs_WIRE:
             this->myWires.push_back(TopoDS::Wire(sh));
+            this->myTopoWires.push_back(shape);
         break;
         case TopAbs_EDGE:
             this->myWires.push_back(BRepBuilderAPI_MakeWire(TopoDS::Edge(sh)).Wire());
+            this->myTopoWires.push_back(shape);
+            this->myTopoWires.back().setShape(this->myWires.back(), false);
         break;
         case TopAbs_FACE:
             this->myInputFaces.push_back(sh);
+        break;
+        case TopAbs_VERTEX:
+            // This is a special case, since this is generally a stand-alone point in a sketch.  We
+            // need to ignore it rather than throw an error
         break;
         default:
             throw Base::TypeError(tr("Shape must be a wire, edge or compound. Something else was supplied.").toStdString());
@@ -186,6 +193,7 @@ void Part::FaceMaker::postBuild() {
     if(!op)
         op = Part::OpCodes::Face;
     const auto &faces = this->myTopoShape.getSubTopoShapes(TopAbs_FACE);
+    std::set<Data::MappedName> namesUsed;
     // name the face using the edges of its outer wire
     for(auto &face : faces) {
         ++index;
@@ -208,10 +216,18 @@ void Part::FaceMaker::postBuild() {
 
         std::vector<Data::MappedName> names;
         Data::ElementIDRefs sids;
-        // We just use the first source element name to make the face name more
-        // stable
-        names.push_back(edgeNames.begin()->name);
-        sids = edgeNames.begin()->sids;
+        // To avoid name collision, we keep track of any used names to make sure
+        // to use at least 'minElementNames' number of unused element names to
+        // generate the face name.
+        int nameCount = 0;
+        for (const auto &e : edgeNames) {
+            names.push_back(e.name);
+            sids += e.sids;
+            if (namesUsed.insert(e.name).second) {
+                if (++nameCount >= minElementNames)
+                    break;
+            }
+        }
         this->myTopoShape.setElementComboName(
                 Data::IndexedName::fromConst("Face",index),names,op,nullptr,&sids);
     }

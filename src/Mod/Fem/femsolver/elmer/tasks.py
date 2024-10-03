@@ -47,7 +47,7 @@ class Check(run.Check):
 
     def run(self):
         self.pushStatus("Checking analysis...\n")
-        if (self.check_mesh_exists()):
+        if self.check_mesh_exists():
             self.checkMeshType()
         self.check_material_exists()
         self.checkEquations()
@@ -55,9 +55,7 @@ class Check(run.Check):
     def checkMeshType(self):
         mesh = membertools.get_single_member(self.analysis, "Fem::FemMeshObject")
         if not femutils.is_of_type(mesh, "Fem::FemMeshGmsh"):
-            self.report.error(
-                "Unsupported type of mesh. "
-                "Mesh must be created with gmsh.")
+            self.report.error("Unsupported type of mesh. Mesh must be created with gmsh.")
             self.fail()
             return False
         return True
@@ -65,9 +63,7 @@ class Check(run.Check):
     def checkEquations(self):
         equations = self.solver.Group
         if not equations:
-            self.report.error(
-                "Solver has no equations. "
-                "Add at least one equation.")
+            self.report.error("Solver has no equations. Add at least one equation.")
             self.fail()
 
 
@@ -77,14 +73,13 @@ class Prepare(run.Prepare):
         # TODO print working dir to report console
         self.pushStatus("Preparing input files...\n")
         num_cores = settings.get_cores("ElmerGrid")
-        self.pushStatus("Number of CPU cores to be used for the solver run: {}\n"
-                        .format(num_cores))
+        self.pushStatus(f"Number of CPU cores to be used for the solver run: {num_cores}\n")
         if self.testmode:
             # test mode: neither gmsh, nor elmergrid nor elmersolver binaries needed
-            FreeCAD.Console.PrintMessage("Machine testmode: {}\n".format(self.testmode))
+            FreeCAD.Console.PrintMessage(f"Machine testmode: {self.testmode}\n")
             w = writer.Writer(self.solver, self.directory, True)
         else:
-            FreeCAD.Console.PrintLog("Machine testmode: {}\n".format(self.testmode))
+            FreeCAD.Console.PrintLog(f"Machine testmode: {self.testmode}\n")
             w = writer.Writer(self.solver, self.directory)
         try:
             w.write_solver_input()
@@ -93,7 +88,7 @@ class Prepare(run.Prepare):
         except writer.WriteError as e:
             self.report.error(str(e))
             self.fail()
-        except IOError:
+        except OSError:
             self.report.error("Can't access working directory.")
             self.fail()
 
@@ -124,11 +119,10 @@ class Solve(run.Solve):
                 solvpath = os.path.split(binary)[0]
                 if os.path.isdir(solvpath):
                     os.environ["ELMER_HOME"] = solvpath
-                    os.environ["LD_LIBRARY_PATH"] = "$LD_LIBRARY_PATH:{}/modules".format(solvpath)
+                    os.environ["LD_LIBRARY_PATH"] = f"$LD_LIBRARY_PATH:{solvpath}/modules"
             # different call depending if with multithreading or not
             num_cores = settings.get_cores("ElmerSolver")
-            self.pushStatus("Number of CPU cores to be used for the solver run: {}\n"
-                            .format(num_cores))
+            self.pushStatus(f"Number of CPU cores to be used for the solver run: {num_cores}\n")
             args = []
             if num_cores > 1:
                 if system() != "Windows":
@@ -143,14 +137,11 @@ class Solve(run.Solve):
                     cwd=self.directory,
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,
-                    startupinfo=femutils.startProgramInfo("hide")
+                    startupinfo=femutils.startProgramInfo("hide"),
                 )
             else:
                 self._process = subprocess.Popen(
-                    args,
-                    cwd=self.directory,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE
+                    args, cwd=self.directory, stdout=subprocess.PIPE, stderr=subprocess.PIPE
                 )
             self.signalAbort.add(self._process.terminate)
             output = self._observeSolver(self._process)
@@ -172,7 +163,8 @@ class Solve(run.Solve):
 
     def _createOutput(self):
         self.solver.ElmerOutput = self.analysis.Document.addObject(
-            "App::TextDocument", self.solver.Name + "Output")
+            "App::TextDocument", self.solver.Name + "Output"
+        )
         self.solver.ElmerOutput.Label = self.solver.Label + "Output"
         # App::TextDocument has no Attribute ReadOnly
         # TODO check if the attribute has been removed from App::TextDocument
@@ -194,11 +186,7 @@ class Solve(run.Solve):
         FrequencyList = []
         for line in OutputList:
             LineList = line.split(" ")
-            if (
-                len(LineList) > 1
-                and LineList[0] == "EigenSolve:"
-                and LineList[1] == "Computed"
-            ):
+            if len(LineList) > 1 and LineList[0] == "EigenSolve:" and LineList[1] == "Computed":
                 # we found a result and take now the next LineList[2] lines
                 modeCount = int(LineList[2])
                 modeNumber = modeCount
@@ -219,9 +207,7 @@ class Solve(run.Solve):
                 # now we can perform the calculation
                 eigenFreq = cmath.sqrt(eigenFreq) / (2 * cmath.pi)
                 # create an output line
-                FrequencyList.append(
-                    "Mode {}: {} Hz".format(modeNumber - modeCount + 1, eigenFreq.real)
-                )
+                FrequencyList.append(f"Mode {modeNumber - modeCount + 1}: {eigenFreq.real} Hz")
                 modeCount = modeCount - 1
         if modeNumber > 0:
             # push the results and append to output
@@ -274,7 +260,8 @@ class Results(run.Results):
 
     def _createResults(self):
         self.solver.ElmerResult = self.analysis.Document.addObject(
-            "Fem::FemPostPipeline", self.solver.Name + "Result")
+            "Fem::FemPostPipeline", self.solver.Name + "Result"
+        )
         self.solver.ElmerResult.Label = self.solver.ElmerResult.Name
         self.solver.ElmerResult.ViewObject.SelectionStyle = "BoundBox"
         self.analysis.addObject(self.solver.ElmerResult)
@@ -290,7 +277,7 @@ class Results(run.Results):
             self.pushStatus("\nNo result file was created.\n")
             self.fail()
             return
-        pvdFile = open(pvdFilePath, "r")
+        pvdFile = open(pvdFilePath)
         # read all lines
         pvdContent = pvdFile.readlines()
         # skip header and footer line and evaluate all lines
@@ -299,7 +286,7 @@ class Results(run.Results):
         # so .split("\"") gives as 2nd the time and as 7th the filename
         for i in range(0, len(pvdContent) - 2):
             # get time
-            lineArray = pvdContent[i + 1].split("\"")
+            lineArray = pvdContent[i + 1].split('"')
             time = float(lineArray[1])
             filename = os.path.join(self.directory, lineArray[7])
             if os.path.isfile(filename):
@@ -317,7 +304,7 @@ class Results(run.Results):
                 # but not the shape and bar coloring
                 self.solver.ElmerTimeResults[i].ViewObject.updateColorBars()
             else:
-                self.pushStatus("\nResult file for time {} is missing.\n".format(time))
+                self.pushStatus(f"\nResult file for time {time} is missing.\n")
                 self.fail()
                 return
         self.solver.Document.recompute()
@@ -328,9 +315,7 @@ class Results(run.Results):
         # FreeCAD would replaces dots in object names with underscores, thus do the same
         newName = self.solver.Name + "_" + str(time).replace(".", "_") + "_" + "Result"
         if counter > len(self.solver.ElmerTimeResults):
-            pipeline = self.analysis.Document.addObject(
-                "Fem::FemPostPipeline", newName
-            )
+            pipeline = self.analysis.Document.addObject("Fem::FemPostPipeline", newName)
             # App::PropertyLinkList does not support append
             # thus we have to use a temporary list to append
             tmplist = self.solver.ElmerTimeResults
@@ -343,9 +328,7 @@ class Results(run.Results):
                 # store current list before removing object since object removal will automatically
                 # remove entry from self.solver.ElmerTimeResults
                 tmplist = self.solver.ElmerTimeResults
-                self.analysis.Document.removeObject(
-                    self.solver.ElmerTimeResults[counter - 1].Name
-                )
+                self.analysis.Document.removeObject(self.solver.ElmerTimeResults[counter - 1].Name)
                 tmplist[counter - 1] = self.analysis.Document.addObject(
                     "Fem::FemPostPipeline", newName
                 )
@@ -354,10 +337,7 @@ class Results(run.Results):
 
     def _finishTimeResults(self, time, counter):
         # we purposely use the decimal dot in the label
-        self.solver.ElmerTimeResults[counter].Label = (
-            "{}_{}_Result"
-            .format(self.solver.Name, time)
-        )
+        self.solver.ElmerTimeResults[counter].Label = f"{self.solver.Name}_{time}_Result"
         self.solver.ElmerTimeResults[counter].ViewObject.OnTopWhenSelected = True
         self.analysis.addObject(self.solver.ElmerTimeResults[counter])
         # to assure the user sees something, set the default to Surface
@@ -388,5 +368,6 @@ class Results(run.Results):
                 self.report.error("Result file not found.")
                 self.fail()
         return postPath
+
 
 ##  @}

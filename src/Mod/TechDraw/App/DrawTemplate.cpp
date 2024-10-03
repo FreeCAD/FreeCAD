@@ -24,13 +24,19 @@
 
 #ifndef _PreComp_
 # include <sstream>
+# include <QCollator>
+# include <QDateTime>
 #endif
 
 #include <Base/Console.h>
 
+#include <App/Application.h>
+#include <App/Document.h>
+
 #include "DrawTemplate.h"
 #include "DrawTemplatePy.h"
 #include "DrawPage.h"
+#include "DrawUtil.h"
 
 
 using namespace TechDraw;
@@ -92,6 +98,92 @@ DrawPage* DrawTemplate::getParentPage() const
         }
     }
     return page;
+}
+
+// Return the counts related to pages, namely collated page index and total page count
+std::pair<int, int> DrawTemplate::getPageNumbers() const
+{
+    std::vector<DocumentObject *> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
+    std::vector<QString> pageNames;
+    for (auto page : pages) {
+        if (page->isAttachedToDocument() &&
+            !page->testStatus(App::ObjectStatus::Remove)) {
+            pageNames.push_back(QString::fromUtf8(page->Label.getValue()));
+        }
+    }
+    QCollator collator;
+    std::sort(pageNames.begin(), pageNames.end(), collator);
+
+    int pos = 0;
+    DrawPage *page = getParentPage();
+    if (page) {
+        auto it = std::find(pageNames.begin(), pageNames.end(), QString::fromUtf8(page->Label.getValue()));
+        if (it != pageNames.end()) {
+            pos = it - pageNames.begin() + 1;
+        }
+    }
+
+    return std::pair<int, int>(pos, (int) pageNames.size());
+}
+
+//! get replacement values from document
+QString DrawTemplate::getAutofillValue(const QString &id) const
+{
+    auto doc = getDocument();
+    if (!doc) {
+        return QString();
+    }
+    // author
+    if (id.compare(QString::fromUtf8(Autofill::Author)) == 0) {
+        auto value = QString::fromUtf8(doc->CreatedBy.getValue());
+        if (!value.isEmpty()) {
+            return value;
+        }
+    }
+    // date
+    else if (id.compare(QString::fromUtf8(Autofill::Date)) == 0) {
+        QDateTime date = QDateTime::currentDateTime();
+        return date.toString(QLocale().dateFormat(QLocale::ShortFormat));
+    }
+    // organization ( also organisation/owner/company )
+    else if (id.compare(QString::fromUtf8(Autofill::Organization)) == 0 ||
+             id.compare(QString::fromUtf8(Autofill::Organisation)) == 0 ||
+             id.compare(QString::fromUtf8(Autofill::Owner)) == 0 ||
+             id.compare(QString::fromUtf8(Autofill::Company)) == 0 ) {
+        auto value = QString::fromUtf8(doc->Company.getValue());
+        if (!value.isEmpty()) {
+            return value;
+        }
+    }
+    // scale
+    else if (id.compare(QString::fromUtf8(Autofill::Scale)) == 0) {
+        DrawPage *page = getParentPage();
+        if (page) {
+            std::pair<int, int> scale = DrawUtil::nearestFraction(page->Scale.getValue());
+            return QString::asprintf("%d : %d", scale.first, scale.second);
+        }
+    }
+    // sheet
+    else if (id.compare(QString::fromUtf8(Autofill::Sheet)) == 0) {
+        std::pair<int, int> pageNumbers = getPageNumbers();
+        return QString::asprintf("%d / %d", pageNumbers.first, pageNumbers.second);
+    }
+    // title
+    else if (id.compare(QString::fromUtf8(Autofill::Title)) == 0) {
+        return QString::fromUtf8(getDocument()->Label.getValue());
+    }
+    // page number
+    else if (id.compare(QString::fromUtf8(Autofill::PageNumber)) == 0) {
+        std::pair<int, int> pageNumbers = getPageNumbers();
+        return QString::number(pageNumbers.first);
+    }
+    // page total
+    else if (id.compare(QString::fromUtf8(Autofill::PageCount)) == 0) {
+        std::pair<int, int> pageNumbers = getPageNumbers();
+        return QString::number(pageNumbers.second);
+    }
+
+    return QString();
 }
 
 // Python Template feature ---------------------------------------------------------

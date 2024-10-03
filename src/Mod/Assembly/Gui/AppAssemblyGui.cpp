@@ -24,10 +24,14 @@
 #include "PreCompiled.h"
 
 #include <Base/Console.h>
+#include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
 
 #include "ViewProviderAssembly.h"
+#include "ViewProviderBom.h"
+#include "ViewProviderBomGroup.h"
 #include "ViewProviderJointGroup.h"
+#include "ViewProviderViewGroup.h"
 
 
 namespace AssemblyGui
@@ -38,6 +42,15 @@ extern PyObject* initModule();
 /* Python entry */
 PyMOD_INIT_FUNC(AssemblyGui)
 {
+    // load dependent module
+    try {
+        Base::Interpreter().runString("import SpreadsheetGui");
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_ImportError, e.what());
+        PyMOD_Return(nullptr);
+    }
+
     PyObject* mod = AssemblyGui::initModule();
     Base::Console().Log("Loading AssemblyGui module... done\n");
 
@@ -46,8 +59,11 @@ PyMOD_INIT_FUNC(AssemblyGui)
     // call PyType_Ready, otherwise we run into a segmentation fault, later on.
     // This function is responsible for adding inherited slots from a type's base class.
 
-    AssemblyGui::ViewProviderAssembly ::init();
+    AssemblyGui::ViewProviderAssembly::init();
+    AssemblyGui::ViewProviderBom::init();
+    AssemblyGui::ViewProviderBomGroup::init();
     AssemblyGui::ViewProviderJointGroup::init();
+    AssemblyGui::ViewProviderViewGroup::init();
 
     PyMOD_Return(mod);
 }

@@ -25,7 +25,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>Location:</string>
+           <string>Location (read-only):</string>
           </property>
          </widget>
         </item>
@@ -38,6 +38,9 @@
         </item>
         <item row="0" column="3">
          <widget class="QPushButton" name="openButton">
+          <property name="toolTip">
+           <string>Browse cache directory</string>
+          </property>
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -45,7 +48,7 @@
            </sizepolicy>
           </property>
           <property name="icon">
-           <iconset resource="Icons/resource.qrc">
+           <iconset resource="../Icons/resource.qrc">
             <normaloff>:/icons/document-open.svg</normaloff>:/icons/document-open.svg</iconset>
           </property>
          </widget>
@@ -195,7 +198,7 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="Icons/resource.qrc"/>
+  <include location="../Icons/resource.qrc"/>
  </resources>
  <connections/>
 </ui>

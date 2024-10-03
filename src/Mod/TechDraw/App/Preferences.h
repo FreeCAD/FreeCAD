@@ -23,6 +23,7 @@
 #ifndef Preferences_h_
 #define Preferences_h_
 
+#include <Qt>
 #include <string>
 
 #include <Base/Parameter.h>
@@ -64,6 +65,9 @@ public:
     static bool keepPagesUpToDate();
 
     static int projectionAngle();
+    static bool groupAutoDistribute();
+    static double groupSpaceX();
+    static double groupSpaceY();
 
     static int balloonArrow();
     static double balloonKinkLength();
@@ -84,6 +88,8 @@ public:
 
     static std::string svgFile();
     static std::string patFile();
+
+    static QString defaultSymbolDir();
 
     static std::string bitmapFill();
 
@@ -117,6 +123,7 @@ public:
     static int CenterLineStyle();
     static int HighlightLineStyle();
     static int HiddenLineStyle();
+    static int BreakLineStyle();
     static int LineCapStyle();
     static int LineCapIndex();
 
@@ -124,6 +131,25 @@ public:
 
     static std::string currentLineDefFile();
     static std::string currentElementDefFile();
+
+    static int sectionLineConvention();
+    static bool showSectionLine();
+    static bool includeCutLine();
+
+    static int BreakType();
+
+    static bool useExactMatchOnDims();
+
+    static bool useCameraDirection();
+    static bool alwaysShowLabel();
+
+    static bool SnapViews();
+    static double SnapLimitFactor();
+
+    static Qt::KeyboardModifiers multiselectModifiers();
+
+    static Qt::KeyboardModifiers balloonDragModifiers();
+    static void setBalloonDragModifiers(Qt::KeyboardModifiers newModifiers);
 };
 
 

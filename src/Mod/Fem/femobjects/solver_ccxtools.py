@@ -32,37 +32,29 @@ __url__ = "https://www.freecad.org"
 import FreeCAD
 
 from . import base_fempythonobject
-from femsolver.calculix.solver import add_attributes
-from femsolver.calculix.solver import on_restore_of_document
+from femsolver.calculix.solver import _BaseSolverCalculix
 
 
-class SolverCcxTools(base_fempythonobject.BaseFemPythonObject):
-    """The Fem::FemSolver's Proxy python type, add solver specific properties
-    """
+class SolverCcxTools(base_fempythonobject.BaseFemPythonObject, _BaseSolverCalculix):
+    """The Fem::FemSolver's Proxy python type, add solver specific properties"""
 
     Type = "Fem::SolverCcxTools"
 
     def __init__(self, obj):
-        super(SolverCcxTools, self).__init__(obj)
+        super().__init__(obj)
 
-        ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
-
-        # add attributes
         # implemented in framework calculix solver module
-        add_attributes(obj, ccx_prefs)
+        self.add_attributes(obj)
 
         obj.addProperty(
             "App::PropertyPath",
             "WorkingDir",
             "Fem",
-            "Working directory for calculations, will only be used it is left blank in preferences"
+            "Working directory for calculations, will only be used it is left blank in preferences",
         )
+        obj.setPropertyStatus("WorkingDir", "LockDynamic")
         # the working directory is not set, the solver working directory is
         # only used if the preferences working directory is left blank
 
     def onDocumentRestored(self, obj):
-
-        ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
-
-        # implemented in framework calculix solver module
-        on_restore_of_document(obj, ccx_prefs)
+        self.on_restore_of_document(obj)

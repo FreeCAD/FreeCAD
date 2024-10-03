@@ -89,24 +89,24 @@ void TaskLinkDim::loadAvailDims()
     if (!guiDoc)
         return;
 
-    std::vector<App::DocumentObject*> pageViews = m_page->Views.getValues();
-    std::vector<App::DocumentObject*>::iterator itView = pageViews.begin();
     std::string result;
     int selRefType = TechDraw::DrawViewDimension::getRefTypeSubElements(m_subs);
     //int found = 0;
-    for (; itView != pageViews.end(); itView++) {
-        if ((*itView)->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
-            TechDraw::DrawViewDimension* dim = static_cast<TechDraw::DrawViewDimension*>((*itView));
+    for (auto* view : m_page->getViews()) {
+        if (view->isDerivedFrom<TechDraw::DrawViewDimension>()) {
+            auto* dim = static_cast<TechDraw::DrawViewDimension*>(view);
             int dimRefType = dim->getRefType();
             if (dimRefType == selRefType) {                                     //potential matches
     //            found++;
                 if (dim->has3DReferences()) {
                     if (dimReferencesSelection(dim))  {
                         loadToTree(dim, true, guiDoc);
-                    } else {
+                    }
+                    else {
                         continue;                                               //already linked to something else
                     }
-                } else {
+                }
+                else {
                     loadToTree(dim, false, guiDoc);
                 }
             }

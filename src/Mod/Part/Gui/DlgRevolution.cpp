@@ -142,6 +142,7 @@ DlgRevolution::~DlgRevolution()
 
 void DlgRevolution::setupConnections()
 {
+    // clang-format off
     connect(ui->selectLine, &QPushButton::clicked,
             this, &DlgRevolution::onSelectLineClicked);
     connect(ui->btnX, &QPushButton::clicked,
@@ -152,6 +153,7 @@ void DlgRevolution::setupConnections()
             this, &DlgRevolution::onButtonZClicked);
     connect(ui->txtAxisLink, &QLineEdit::textChanged,
             this, &DlgRevolution::onAxisLinkTextChanged);
+    // clang-format on
 }
 
 Base::Vector3d DlgRevolution::getDirection() const
@@ -431,7 +433,7 @@ void DlgRevolution::accept()
             Gui::Command::runCommand(Gui::Command::App, code.toLatin1());
             QByteArray to = name.toLatin1();
             QByteArray from = shape.toLatin1();
-            Gui::Command::copyVisual(to, "ShapeColor", from);
+            Gui::Command::copyVisual(to, "ShapeAppearance", from);
             Gui::Command::copyVisual(to, "LineColor", from);
             Gui::Command::copyVisual(to, "PointColor", from);
         }
@@ -570,11 +572,7 @@ void DlgRevolution::autoSolid()
 TaskRevolution::TaskRevolution()
 {
     widget = new DlgRevolution();
-    taskbox = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("Part_Revolve"),
-        widget->windowTitle(), true, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(Gui::BitmapFactory().pixmap("Part_Revolve"), widget);
 }
 
 bool TaskRevolution::accept()

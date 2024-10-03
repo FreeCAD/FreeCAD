@@ -28,6 +28,7 @@
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/Link.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 
@@ -80,26 +81,46 @@ App::DocumentObjectExecReturn *DrawViewCollection::execute()
     return DrawView::execute();
 }
 
-int DrawViewCollection::addView(DrawView *view)
+int DrawViewCollection::addView(App::DocumentObject* docObj)
 {
     // Add the new view to the collection
-    std::vector<App::DocumentObject *> newViews(Views.getValues());
-    newViews.push_back(view);
+
+    if (!docObj->isDerivedFrom<DrawView>()
+        && !docObj->isDerivedFrom<App::Link>()) {
+        return -1;
+    }
+
+    auto* view = dynamic_cast<DrawView*>(docObj);
+
+    if (!view) {
+        auto* link = dynamic_cast<App::Link*>(docObj);
+        if (!link) {
+            return -1;
+        }
+
+        if (link) {
+            view = dynamic_cast<DrawView*>(link->getLinkedObject());
+            if (!view) {
+                return -1;
+            }
+        }
+    }
+
+    std::vector<App::DocumentObject*> newViews(Views.getValues());
+    newViews.push_back(docObj);
     Views.setValues(newViews);
 
     return Views.getSize();
 }
 
-int DrawViewCollection::removeView(DrawView *view)
+int DrawViewCollection::removeView(App::DocumentObject* docObj)
 {
     // Remove the view from the collection
-    const std::vector<App::DocumentObject*> currViews = Views.getValues();
     std::vector<App::DocumentObject*> newViews;
-    std::vector<App::DocumentObject*>::const_iterator it = currViews.begin();
-    for (; it != currViews.end(); it++) {
-        std::string viewName = view->getNameInDocument();
-        if (viewName.compare((*it)->getNameInDocument()) != 0) {
-            newViews.push_back((*it));
+    std::string viewName = docObj->getNameInDocument();
+    for (auto* view : Views.getValues()) {
+        if (viewName.compare(view->getNameInDocument()) != 0) {
+            newViews.push_back(view);
         }
     }
     Views.setValues(newViews);
@@ -107,23 +128,42 @@ int DrawViewCollection::removeView(DrawView *view)
     return Views.getSize();
 }
 
+std::vector<App::DocumentObject*> DrawViewCollection::getViews() const
+{
+    std::vector<App::DocumentObject*> views = Views.getValues();
+    std::vector<App::DocumentObject*> allViews;
+    for (auto& v : views) {
+        if (v->isDerivedFrom(App::Link::getClassTypeId())) {
+            v = static_cast<App::Link*>(v)->getLinkedObject();
+        }
+
+        if (!v->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+            continue;
+        }
+
+        allViews.push_back(v);
+    }
+    return allViews;
+}
+
 //make sure everything in View list represents a real DrawView docObj and occurs only once
 void DrawViewCollection::rebuildViewList()
 {
     const std::vector<App::DocumentObject*> currViews = Views.getValues();
     std::vector<App::DocumentObject*> newViews;
-    std::vector<App::DocumentObject*> children = getOutList();
-    for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != children.end(); ++it) {
-        if ((*it)->isDerivedFrom<DrawView>()) {
+    for (auto* child : getOutList()) {
+        if (child->isDerivedFrom<DrawView>() ||
+            (child->isDerivedFrom<App::Link>()
+                && static_cast<App::Link*>(child)->getLinkedObject()->isDerivedFrom<DrawView>())) {
             bool found = false;
             for (auto& v:currViews) {
-                if (v == (*it)) {
+                if (v == child) {
                     found = true;
                     break;
                 }
             }
             if (found) {
-                newViews.push_back((*it));
+                newViews.push_back(child);
             }
         }
     } // newViews contains only valid items, but may have duplicates
@@ -137,13 +177,12 @@ int DrawViewCollection::countChildren()
     //Count the children recursively if needed
     int numChildren = 0;
 
-    const std::vector<App::DocumentObject *> &views = Views.getValues();
-    for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
-
-        if((*it)->isDerivedFrom<TechDraw::DrawViewCollection>()) {
-            TechDraw::DrawViewCollection *viewCollection = static_cast<TechDraw::DrawViewCollection *>(*it);
+    for(auto* view : Views.getValues()) {
+        if(view->isDerivedFrom<DrawViewCollection>()) {
+            auto *viewCollection = static_cast<DrawViewCollection *>(view);
             numChildren += viewCollection->countChildren() + 1;
-        } else {
+        }
+        else {
             numChildren += 1;
         }
     }
@@ -157,9 +196,8 @@ void DrawViewCollection::onDocumentRestored()
 
 void DrawViewCollection::lockChildren()
 {
-//    Base::Console().Message("DVC::lockChildren()\n");
-    for (auto& v:Views.getValues()) {
-        TechDraw::DrawView *view = dynamic_cast<TechDraw::DrawView *>(v);
+    for (auto& v : getViews()) {
+        auto *view = dynamic_cast<DrawView *>(v);
         if (!view) {
             throw Base::ValueError("DrawViewCollection::lockChildren bad View\n");
         }
@@ -172,25 +210,25 @@ void DrawViewCollection::unsetupObject()
     nowUnsetting = true;
 
     // Remove the collection's views from document
-    App::Document* doc = getDocument();
-    std::string docName = doc->getName();
+    std::string docName = getDocument()->getName();
 
-    const std::vector<App::DocumentObject*> currViews = Views.getValues();
-    std::vector<App::DocumentObject*> emptyViews;
-    std::vector<App::DocumentObject*>::const_iterator it = currViews.begin();
-    for (; it != currViews.end(); it++) {
-        std::string viewName = (*it)->getNameInDocument();
-        Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
-                                          docName.c_str(), viewName.c_str());
+    for (auto* view : Views.getValues()) {
+        if (view->isAttachedToDocument()) {
+            std::string viewName = view->getNameInDocument();
+            Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
+                                              docName.c_str(), viewName.c_str());
+        }
     }
+
+    std::vector<App::DocumentObject*> emptyViews;
     Views.setValues(emptyViews);
 }
 
 QRectF DrawViewCollection::getRect() const
 {
     QRectF result;
-    for (auto& v:Views.getValues()) {
-        TechDraw::DrawView *view = dynamic_cast<TechDraw::DrawView *>(v);
+    for (auto& v : getViews()) {
+        auto *view = dynamic_cast<DrawView*>(v);
         if (!view) {
             throw Base::ValueError("DrawViewCollection::getRect bad View\n");
         }

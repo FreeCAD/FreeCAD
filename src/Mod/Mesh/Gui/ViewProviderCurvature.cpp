@@ -53,6 +53,7 @@
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/SoFCColorBar.h>
+#include <Gui/SoFCColorBarNotifier.h>
 #include <Gui/SoFCSelection.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/Widgets.h>
@@ -83,6 +84,7 @@ ViewProviderMeshCurvature::ViewProviderMeshCurvature()
     // simple color bar
     pcColorBar = new Gui::SoFCColorBar;
     pcColorBar->Attach(this);
+    Gui::SoFCColorBarNotifier::instance().attach(pcColorBar);
     pcColorBar->ref();
     pcColorBar->setRange(-0.5f, 0.5f, 3);
     pcLinkRoot = new SoGroup;
@@ -124,8 +126,7 @@ ViewProviderMeshCurvature::~ViewProviderMeshCurvature()
 {
     pcColorRoot->unref();
     pcColorMat->unref();
-    pcColorBar->Detach(this);
-    pcColorBar->unref();
+    deleteColorBar();
     pcLinkRoot->unref();
 }
 
@@ -183,14 +184,14 @@ void ViewProviderMeshCurvature::init(const Mesh::PropertyCurvatureList* pCurvInf
     // histogram over all values
     std::map<int, int> aHistogram;
     for (float aMinValue : aMinValues) {
-        int grp = (int)(10.0f * (aMinValue - fMin) / (fMax - fMin));
+        int grp = (int)(10.0F * (aMinValue - fMin) / (fMax - fMin));
         aHistogram[grp]++;
     }
 
-    float fRMin = -1.0f;
+    float fRMin = -1.0F;
     for (const auto& mIt : aHistogram) {
-        if ((float)mIt.second / (float)aMinValues.size() > 0.15f) {
-            fRMin = mIt.first * (fMax - fMin) / 10.0f + fMin;
+        if ((float)mIt.second / (float)aMinValues.size() > 0.15F) {
+            fRMin = mIt.first * (fMax - fMin) / 10.0F + fMin;
             break;
         }
     }
@@ -201,15 +202,15 @@ void ViewProviderMeshCurvature::init(const Mesh::PropertyCurvatureList* pCurvInf
     // histogram over all values
     aHistogram.clear();
     for (float aMaxValue : aMaxValues) {
-        int grp = (int)(10.0f * (aMaxValue - fMin) / (fMax - fMin));
+        int grp = (int)(10.0F * (aMaxValue - fMin) / (fMax - fMin));
         aHistogram[grp]++;
     }
 
-    float fRMax = 1.0f;
+    float fRMax = 1.0F;
     for (std::map<int, int>::reverse_iterator rIt2 = aHistogram.rbegin(); rIt2 != aHistogram.rend();
          ++rIt2) {
-        if ((float)rIt2->second / (float)aMaxValues.size() > 0.15f) {
-            fRMax = rIt2->first * (fMax - fMin) / 10.0f + fMin;
+        if ((float)rIt2->second / (float)aMaxValues.size() > 0.15F) {
+            fRMax = rIt2->first * (fMax - fMin) / 10.0F + fMin;
             break;
         }
     }
@@ -234,10 +235,17 @@ void ViewProviderMeshCurvature::slotChangedObject(const App::DocumentObject& Obj
             const Mesh::MeshObject& kernel = mesh.getValue();
             pcColorMat->diffuseColor.setNum((int)kernel.countPoints());
             pcColorMat->transparency.setNum((int)kernel.countPoints());
-            static_cast<Mesh::Curvature*>(pcObject)
-                ->Source.touch();  // make sure to recompute the feature
+            // make sure to recompute the feature
+            static_cast<Mesh::Curvature*>(pcObject)->Source.touch();
         }
     }
+}
+
+void ViewProviderMeshCurvature::deleteColorBar()
+{
+    Gui::SoFCColorBarNotifier::instance().detach(pcColorBar);
+    pcColorBar->Detach(this);
+    pcColorBar->unref();
 }
 
 void ViewProviderMeshCurvature::attach(App::DocumentObject* pcFeat)
@@ -278,8 +286,7 @@ void ViewProviderMeshCurvature::attach(App::DocumentObject* pcFeat)
         pcBar->ref();
         pcBar->setRange(fMin, fMax, 3);
         pcBar->Notify(0);
-        pcColorBar->Detach(this);
-        pcColorBar->unref();
+        deleteColorBar();
         pcColorBar = pcBar;
     }
 
@@ -609,9 +616,9 @@ ViewProviderMeshCurvature::curvatureInfo(bool detail, int index1, int index2, in
         const Mesh::CurvatureInfo& cVal1 = (*curv)[index1];
         const Mesh::CurvatureInfo& cVal2 = (*curv)[index2];
         const Mesh::CurvatureInfo& cVal3 = (*curv)[index3];
-        float fVal1 = 0.0f;
-        float fVal2 = 0.0f;
-        float fVal3 = 0.0f;
+        float fVal1 = 0.0F;
+        float fVal2 = 0.0F;
+        float fVal3 = 0.0F;
 
         bool print = true;
         std::string mode = getActiveDisplayMode();
@@ -631,9 +638,9 @@ ViewProviderMeshCurvature::curvatureInfo(bool detail, int index1, int index2, in
             fVal3 = cVal3.fMaxCurvature * cVal3.fMinCurvature;
         }
         else if (mode == "Mean curvature") {
-            fVal1 = 0.5f * (cVal1.fMaxCurvature + cVal1.fMinCurvature);
-            fVal2 = 0.5f * (cVal2.fMaxCurvature + cVal2.fMinCurvature);
-            fVal3 = 0.5f * (cVal3.fMaxCurvature + cVal3.fMinCurvature);
+            fVal1 = 0.5F * (cVal1.fMaxCurvature + cVal1.fMinCurvature);
+            fVal2 = 0.5F * (cVal2.fMaxCurvature + cVal2.fMinCurvature);
+            fVal3 = 0.5F * (cVal3.fMaxCurvature + cVal3.fMinCurvature);
         }
         else if (mode == "Absolute curvature") {
             fVal1 = fabs(cVal1.fMaxCurvature) > fabs(cVal1.fMinCurvature) ? cVal1.fMaxCurvature

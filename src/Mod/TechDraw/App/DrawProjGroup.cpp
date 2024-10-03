@@ -452,6 +452,7 @@ bool DrawProjGroup::canDelete(const char* viewProjType) const
 
 App::DocumentObject* DrawProjGroup::addProjection(const char* viewProjType)
 {
+    // Base::Console().Message("DPG::addProjection(%s)\n", viewProjType ? viewProjType : "null");
     DrawProjGroupItem* view(nullptr);
     std::pair<Base::Vector3d, Base::Vector3d> vecs;
 
@@ -499,10 +500,6 @@ App::DocumentObject* DrawProjGroup::addProjection(const char* viewProjType)
                                              true);//Front should stay locked.
                 view->LockPosition.purgeTouched();
             }
-            //        addView(view);                            //from DrawViewCollection
-            //        if (view != getAnchor()) {                //anchor is done elsewhere
-            //            view->recomputeFeature();
-            //        }
         }
     }
     return view;
@@ -545,9 +542,8 @@ int DrawProjGroup::purgeProjections()
 {
     while (!Views.getValues().empty()) {
         std::vector<DocumentObject*> views = Views.getValues();
-        DrawProjGroupItem* dpgi;
         DocumentObject* dObj = views.back();
-        dpgi = dynamic_cast<DrawProjGroupItem*>(dObj);
+        auto* dpgi = dynamic_cast<DrawProjGroupItem*>(dObj);
         if (dpgi) {
             std::string itemName = dpgi->Type.getValueAsString();
             removeProjection(itemName.c_str());
@@ -586,74 +582,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawProjGroup::getDirsFromFront(std::s
         throw Base::RuntimeError("Project Group missing Anchor projection item");
     }
 
-    Base::Vector3d org(0.0, 0.0, 0.0);
-    gp_Ax2 anchorCS = anch->getProjectionCS(org);
-    gp_Pnt gOrg(0.0, 0.0, 0.0);
-    gp_Dir gDir = anchorCS.Direction();
-    gp_Dir gXDir = anchorCS.XDirection();
-    gp_Dir gYDir = anchorCS.YDirection();
-    gp_Ax1 gUpAxis(gOrg, gYDir);
-    gp_Ax2 newCS;
-    gp_Dir gNewDir;
-    gp_Dir gNewXDir;
-
-    double angle = M_PI / 2.0;//90*
-
-    if (viewType == "Right") {
-        newCS = anchorCS.Rotated(gUpAxis, angle);
-        projDir = dir2vec(newCS.Direction());
-        rotVec = dir2vec(newCS.XDirection());
-    }
-    else if (viewType == "Left") {
-        newCS = anchorCS.Rotated(gUpAxis, -angle);
-        projDir = dir2vec(newCS.Direction());
-        rotVec = dir2vec(newCS.XDirection());
-    }
-    else if (viewType == "Top") {
-        projDir = dir2vec(gYDir);
-        rotVec = dir2vec(gXDir);
-    }
-    else if (viewType == "Bottom") {
-        projDir = dir2vec(gYDir.Reversed());
-        rotVec = dir2vec(gXDir);
-    }
-    else if (viewType == "Rear") {
-        projDir = dir2vec(gDir.Reversed());
-        rotVec = dir2vec(gXDir.Reversed());
-    }
-    else if (viewType == "FrontTopLeft") {
-        gp_Dir newDir = gp_Dir(gp_Vec(gDir) - gp_Vec(gXDir) + gp_Vec(gYDir));
-        projDir = dir2vec(newDir);
-        gp_Dir newXDir = gp_Dir(gp_Vec(gXDir) + gp_Vec(gDir));
-        rotVec = dir2vec(newXDir);
-    }
-    else if (viewType == "FrontTopRight") {
-        gp_Dir newDir = gp_Dir(gp_Vec(gDir) + gp_Vec(gXDir) + gp_Vec(gYDir));
-        projDir = dir2vec(newDir);
-        gp_Dir newXDir = gp_Dir(gp_Vec(gXDir) - gp_Vec(gDir));
-        rotVec = dir2vec(newXDir);
-    }
-    else if (viewType == "FrontBottomLeft") {
-        gp_Dir newDir = gp_Dir(gp_Vec(gDir) - gp_Vec(gXDir) - gp_Vec(gYDir));
-        projDir = dir2vec(newDir);
-        gp_Dir newXDir = gp_Dir(gp_Vec(gXDir) + gp_Vec(gDir));
-        rotVec = dir2vec(newXDir);
-    }
-    else if (viewType == "FrontBottomRight") {
-        gp_Dir newDir = gp_Dir(gp_Vec(gDir) + gp_Vec(gXDir) - gp_Vec(gYDir));
-        projDir = dir2vec(newDir);
-        gp_Dir newXDir = gp_Dir(gp_Vec(gXDir) - gp_Vec(gDir));
-        rotVec = dir2vec(newXDir);
-    } else {
-        // not one of the standard view directions, so complain and use the values for "Front"
-        Base::Console().Error("DrawProjGroup - %s unknown projection: %s\n", getNameInDocument(),
-                            viewType.c_str());
-        Base::Vector3d dirAnch = anch->Direction.getValue();
-        Base::Vector3d rotAnch = anch->getXDirection();
-        return std::make_pair(dirAnch, rotAnch);
-    }
-
-    return std::make_pair(projDir, rotVec);
+    return anch->getDirsFromFront(viewType);
 }
 
 Base::Vector3d DrawProjGroup::dir2vec(gp_Dir d)
@@ -1147,8 +1076,7 @@ TechDraw::DrawProjGroupItem* DrawProjGroup::getAnchor()
 {
     App::DocumentObject* docObj = Anchor.getValue();
     if (docObj) {
-        DrawProjGroupItem* result = static_cast<DrawProjGroupItem*>(docObj);
-        return result;
+        return static_cast<DrawProjGroupItem*>(docObj);
     }
     return nullptr;
 }
@@ -1156,7 +1084,7 @@ TechDraw::DrawProjGroupItem* DrawProjGroup::getAnchor()
 void DrawProjGroup::setAnchorDirection(const Base::Vector3d dir)
 {
     App::DocumentObject* docObj = Anchor.getValue();
-    DrawProjGroupItem* item = static_cast<DrawProjGroupItem*>(docObj);
+    auto* item = static_cast<DrawProjGroupItem*>(docObj);
     item->Direction.setValue(dir);
 }
 
@@ -1166,7 +1094,7 @@ Base::Vector3d DrawProjGroup::getAnchorDirection()
     if (!docObj) {
         return Base::Vector3d();
     }
-    DrawProjGroupItem* item = static_cast<DrawProjGroupItem*>(docObj);
+    auto* item = static_cast<DrawProjGroupItem*>(docObj);
     return item->Direction.getValue();
 }
 
@@ -1289,6 +1217,11 @@ void DrawProjGroup::spin(const std::string& spindirection)
     if (spindirection == "CCW")
         angle = -M_PI / 2.0;// Top -> Left -> Bottom -> Right -> Top
 
+    spin(angle);
+}
+
+void DrawProjGroup::spin(double angle)
+{
     DrawProjGroupItem* anchor = getAnchor();
     Base::Vector3d org(0.0, 0.0, 0.0);
     Base::Vector3d curRot = anchor->getXDirection();
@@ -1304,8 +1237,7 @@ std::vector<DrawProjGroupItem*> DrawProjGroup::getViewsAsDPGI()
     std::vector<DrawProjGroupItem*> result;
     auto views = Views.getValues();
     for (auto& v : views) {
-        DrawProjGroupItem* item = static_cast<DrawProjGroupItem*>(v);
-        result.push_back(item);
+        result.push_back(static_cast<DrawProjGroupItem*>(v));
     }
     return result;
 }
@@ -1321,7 +1253,7 @@ void DrawProjGroup::dumpISO(const char* title)
     for (auto& docObj : Views.getValues()) {
         Base::Vector3d dir;
         Base::Vector3d axis;
-        DrawProjGroupItem* v = static_cast<DrawProjGroupItem*>(docObj);
+        auto* v = static_cast<DrawProjGroupItem*>(docObj);
         std::string t = v->Type.getValueAsString();
         dir = v->Direction.getValue();
         axis = v->getXDirection();

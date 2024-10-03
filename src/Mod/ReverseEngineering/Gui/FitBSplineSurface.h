@@ -71,7 +71,6 @@ public:
 
 private:
     FitBSplineSurfaceWidget* widget;
-    Gui::TaskView::TaskBox* taskbox;
 };
 
 }  // namespace ReenGui

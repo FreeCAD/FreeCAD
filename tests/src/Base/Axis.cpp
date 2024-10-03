@@ -1,4 +1,4 @@
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 #include <Base/Axis.h>
 
 TEST(Axis, TestDefault)

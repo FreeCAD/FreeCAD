@@ -228,7 +228,7 @@ bool FitBSplineSurfaceWidget::accept()
 
         Gui::WaitCursor wc;
         Gui::Command::addModule(Gui::Command::App, "ReverseEngineering");
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Fit B-Spline"));
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Fit B-spline"));
         Gui::Command::runCommand(Gui::Command::Doc, command.toLatin1());
         Gui::Command::commitCommand();
         Gui::Command::updateActive();
@@ -256,12 +256,7 @@ void FitBSplineSurfaceWidget::changeEvent(QEvent* e)
 TaskFitBSplineSurface::TaskFitBSplineSurface(const App::DocumentObjectT& obj)
 {
     widget = new FitBSplineSurfaceWidget(obj);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/FitSurface"),
-                                         widget->windowTitle(),
-                                         true,
-                                         nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(Gui::BitmapFactory().pixmap("actions/FitSurface"), widget);
 }
 
 void TaskFitBSplineSurface::open()

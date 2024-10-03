@@ -54,13 +54,13 @@ protected:
     void changeEvent(QEvent *e) override;
 
     int prefBalloonArrow() const;
+    int prefBalloonShape() const;
+    int prefMattingStyle() const;
     void loadLineStyleBoxes();
 
 private:
     std::unique_ptr<Ui_DlgPrefsTechDrawAnnotationImp> ui;
     TechDraw::LineGenerator* m_lineGenerator;
-
-    bool m_blockLineStandardOnChanged{false};
 };
 
 } // namespace TechDrawGui

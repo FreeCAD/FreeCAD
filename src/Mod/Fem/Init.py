@@ -63,11 +63,10 @@ FreeCAD.addExportType("FEM mesh TetGen (*.poly)", "feminout.convert2TetGen")
 
 # see FemMesh::read() and FemMesh::write() methods in src/Mod/Fem/App/FemMesh.cpp
 FreeCAD.addImportType(
-    "FEM mesh formats (*.bdf *.BDF *.dat *.DAT *.inp *.INP *.med *.MED *.unv *.UNV *.vtk *.VTK *.vtu *.VTU *.pvtu *.PVTU *.z88 *.Z88)", "Fem"
+    "FEM mesh formats (*.bdf *.BDF *.dat *.DAT *.inp *.INP *.med *.MED *.unv *.UNV *.vtk *.VTK *.vtu *.VTU *.pvtu *.PVTU *.z88 *.Z88)",
+    "Fem",
 )
-FreeCAD.addExportType(
-    "FEM mesh formats (*.dat *.inp *.med *.stl *.unv *.vtk *.vtu *.z88)", "Fem"
-)
+FreeCAD.addExportType("FEM mesh formats (*.dat *.inp *.med *.stl *.unv *.vtk *.vtu *.z88)", "Fem")
 
 FreeCAD.addExportType("FEM mesh Nastran (*.bdf)", "feminout.exportNastranMesh")
 
@@ -77,17 +76,26 @@ FreeCAD.addImportType("FEM mesh Fenics (*.xml *.XML *.xdmf *.XDMF)", "feminout.i
 FreeCAD.addExportType("FEM mesh Fenics (*.xml *.xdmf)", "feminout.importFenicsMesh")
 
 FreeCAD.addImportType(
-    "FEM mesh YAML/JSON (*.meshyaml *.MESHYAML *.meshjson *.MESHJSON *.yaml *.YAML *.json *.JSON)", "feminout.importYamlJsonMesh"
+    "FEM mesh YAML/JSON (*.meshyaml *.MESHYAML *.meshjson *.MESHJSON *.yaml *.YAML *.json *.JSON)",
+    "feminout.importYamlJsonMesh",
 )
 FreeCAD.addExportType(
-    "FEM mesh YAML/JSON (*.meshyaml *.meshjson *.yaml *.json)", "feminout.importYamlJsonMesh"
+    "FEM mesh YAML/JSON (*.meshyaml *.meshjson *.yaml *.json)",
+    "feminout.importYamlJsonMesh",
 )
 
 FreeCAD.addImportType("FEM mesh Z88 (*i1.txt *I1.TXT)", "feminout.importZ88Mesh")
 FreeCAD.addExportType("FEM mesh Z88 (*i1.txt)", "feminout.importZ88Mesh")
 
-FreeCAD.addImportType("FEM result Z88 displacements (*o2.txt *O2.TXT)", "feminout.importZ88O2Results")
+FreeCAD.addImportType(
+    "FEM result Z88 displacements (*o2.txt *O2.TXT)", "feminout.importZ88O2Results"
+)
 
 if "BUILD_FEM_VTK" in FreeCAD.__cmake__:
-    FreeCAD.addImportType("FEM result VTK (*.vtk *.VTK *.vtu *.VTU *.pvtu *.PVTU)", "feminout.importVTKResults")
-    FreeCAD.addExportType("FEM result VTK (*.vtk *.vtu)", "feminout.importVTKResults")
+    FreeCAD.addImportType(
+        "FEM result VTK (*.vtk *.VTK *.vtu *.VTU *.pvtu *.PVTU)",
+        "feminout.importVTKResults",
+    )
+    FreeCAD.addExportType(
+        "FEM result VTK (*.vtu *.vtp *.vts *.vtr *.vti)", "feminout.importVTKResults"
+    )

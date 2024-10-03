@@ -45,6 +45,21 @@ namespace Data
 class ElementMap;
 using ElementMapPtr = std::shared_ptr<ElementMap>;
 
+/** Element trace callback
+     *
+     * The callback has the following call signature
+     *  (const std::string &name, size_t offset, long encodedTag, long tag) -> bool
+     *
+     * @param name: the current element name.
+     * @param offset: the offset skipping the encoded element name for the next iteration.
+     * @param encodedTag: the tag encoded inside the current element, which is usually the tag
+     *                    of the previous step in the shape history.
+     * @param tag: the tag of the current shape element.
+     *
+     * @sa traceElement()
+ */
+typedef std::function<bool(const MappedName&, int, long, long)> TraceCallback;
+
 /* This class provides for ComplexGeoData's ability to provide proper naming.
  * Specifically, ComplexGeoData uses this class for it's `_id` property.
  * Most of the operations work with the `indexedNames` and `mappedNames` maps.
@@ -184,6 +199,15 @@ public:
     long getElementHistory(const MappedName & name,
                            long masterTag,
                            MappedName *original=nullptr, std::vector<MappedName> *history=nullptr) const;
+
+    /** Iterate through the history of the give element name with a given callback
+     *
+     * @param name: the input element name
+     * @param cb: trace callback with call signature.
+     * @sa TraceCallback
+     */
+    void traceElement(const MappedName& name, long masterTag, TraceCallback cb) const;
+
 
 private:
     /** Serialize this map

@@ -454,7 +454,7 @@ bool GraphvizView::onMsg(const char* pMsg, const char**)
         formatMap << qMakePair(QString::fromLatin1("%1 (*.pdf)").arg(tr("PDF format")), QString::fromLatin1("pdf"));
 
         QStringList filter;
-        for (const auto & it : qAsConst(formatMap)) {
+        for (const auto & it : std::as_const(formatMap)) {
             filter << it.first;
         }
 
@@ -462,7 +462,7 @@ bool GraphvizView::onMsg(const char* pMsg, const char**)
         QString fn = Gui::FileDialog::getSaveFileName(this, tr("Export graph"), QString(), filter.join(QLatin1String(";;")), &selectedFilter);
         if (!fn.isEmpty()) {
             QString format;
-            for (const auto & it : qAsConst(formatMap)) {
+            for (const auto & it : std::as_const(formatMap)) {
                 if (selectedFilter == it.first) {
                     format = it.second;
                     break;
@@ -515,6 +515,8 @@ bool GraphvizView::onHasMsg(const char* pMsg) const
     else if (strcmp("PrintPreview",pMsg) == 0)
         return true;
     else if (strcmp("PrintPdf",pMsg) == 0)
+        return true;
+    else if (strcmp("AllowsOverlayOnHover", pMsg) == 0)
         return true;
     return false;
 }

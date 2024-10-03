@@ -39,18 +39,17 @@ jobs:
     with:
       artifactBasename: Prepare-${{ github.run_id }}
 
-  # GA in Jan-Mar 2024 Timeframe: https://github.com/actions/runner-images/issues/8439#issuecomment-1755601587
-  # MacOS_13_Conda_Apple:
-  #   needs: [Prepare]
-  #   uses: ./.github/workflows/sub_buildMacOSCondaApple.yml
-  #   with:
-  #     artifactBasename: MacOS_13_Conda_Apple-${{ github.run_id }}
-
-  MacOS_13_Conda_Intel:
+  MacOS_13_Conda_Apple:
     needs: [Prepare]
-    uses: ./.github/workflows/sub_buildMacOSCondaIntel.yml
+    uses: ./.github/workflows/sub_buildMacOSCondaApple.yml
     with:
-      artifactBasename: MacOS_13_Conda_Intel-${{ github.run_id }}
+      artifactBasename: MacOS_13_Conda_Apple-${{ github.run_id }}
+
+#  MacOS_13_Conda_Intel:
+#    needs: [Prepare]
+#    uses: ./.github/workflows/sub_buildMacOSCondaIntel.yml
+#    with:
+#      artifactBasename: MacOS_13_Conda_Intel-${{ github.run_id }}
 
   Ubuntu_20-04:
     needs: [Prepare]
@@ -64,17 +63,24 @@ jobs:
     with:
       artifactBasename: Ubuntu_22-04_Conda-${{ github.run_id }}
 
+  Ubuntu_22-04_Conda_Qt6:
+    needs: [Prepare]
+    uses: ./.github/workflows/sub_buildUbuntu2204CondaQt6.yml
+    with:
+      artifactBasename: Ubuntu_22-04_Conda-Qt6-${{ github.run_id }}
+
   Windows:
     needs: [Prepare]
     uses: ./.github/workflows/sub_buildWindows.yml
     with:
       artifactBasename: Windows-${{ github.run_id }}
 
-  Windows_Conda:
-    needs: [Prepare]
-    uses: ./.github/workflows/sub_buildWindowsConda.yml
-    with:
-      artifactBasename: Windows_Conda-${{ github.run_id }}
+  ## Disable until the following issue is resolved: https://github.com/mamba-org/mamba/issues/3292
+  # Windows_Conda:
+  #   needs: [Prepare]
+  #   uses: ./.github/workflows/sub_buildWindowsConda.yml
+  #   with:
+  #     artifactBasename: Windows_Conda-${{ github.run_id }}
 
   Lint:
     needs: [Prepare]
@@ -88,12 +94,12 @@ jobs:
   WrapUp:
     needs: [
         Prepare,
-        # MacOS_13_Conda_Apple,
-        MacOS_13_Conda_Intel,
+        MacOS_13_Conda_Apple,
+        # MacOS_13_Conda_Intel,
         Ubuntu_20-04,
         Ubuntu_22-04_Conda,
         Windows,
-        Windows_Conda,
+        # Windows_Conda,
         Lint
       ]
     if: always()

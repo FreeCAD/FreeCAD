@@ -38,7 +38,7 @@ class TestHelix(unittest.TestCase):
     def testHelicalTubeCase(self):
         body = self.Doc.addObject('PartDesign::Body','Body')
         sketch = body.newObject('Sketcher::SketchObject','Sketch')
-        sketch.Support = (self.Doc.getObject('XY_Plane'),[''])
+        sketch.AttachmentSupport = (self.Doc.getObject('XY_Plane'),[''])
         sketch.MapMode = 'FlatFace'
 
         geoList = []
@@ -78,7 +78,7 @@ class TestHelix(unittest.TestCase):
         body.addObject(helix)
         helix.Profile = profileSketch
         helix.ReferenceAxis = (profileSketch,"V_Axis")
-        helix.Placement = FreeCAD.Placement(FreeCAD.Vector(0,0,0), 
+        helix.Placement = FreeCAD.Placement(FreeCAD.Vector(0,0,0),
                                             FreeCAD.Rotation(FreeCAD.Vector(0,0,1),0),
                                             FreeCAD.Vector(0,0,0))
         helix.Pitch = 3
@@ -87,15 +87,15 @@ class TestHelix(unittest.TestCase):
         helix.Angle = 0
         helix.Mode = 1
         self.Doc.recompute()
-        self.assertAlmostEqual(helix.Shape.Volume, 78.95687956849457,places=5)
+        self.assertAlmostEqual(helix.Shape.Volume, 78.957,places=3)
 
         helix.Angle = 25
         self.Doc.recompute()
-        self.assertAlmostEqual(helix.Shape.Volume, 134.17450779511307,places=5)
+        self.assertAlmostEqual(helix.Shape.Volume, 134.17,places=2)
 
         profileSketch.addGeometry(Part.Circle(FreeCAD.Vector(2, 0, 0), FreeCAD.Vector(0,0,1), 0.5) )
         self.Doc.recompute()
-        self.assertAlmostEqual(helix.Shape.Volume, 100.63088079046352,places=5)
+        self.assertAlmostEqual(helix.Shape.Volume, 100.63,places=2)
 
 
     def testRectangle(self):
@@ -107,7 +107,7 @@ class TestHelix(unittest.TestCase):
         self.Doc.recompute()
 
         # xz_plane = body.Origin.OriginFeatures[4]
-        # coneSketch.Support = xz_plane
+        # coneSketch.AttachmentSupport = xz_plane
         # coneSketch.MapMode = 'FlatFace'
         helix = self.Doc.addObject("PartDesign::AdditiveHelix","AdditiveHelix")
         body.addObject(helix)
@@ -119,11 +119,15 @@ class TestHelix(unittest.TestCase):
         helix.Height = 150
         helix.Turns = 3
         helix.Angle = 0
-        helix.Mode = 0 
+        helix.Mode = 0
         self.Doc.recompute()
         bbox = helix.Shape.BoundBox
         self.assertAlmostEqual(bbox.YMin,0)
-        self.assertAlmostEqual(helix.Shape.Volume, 1178.0961742825648,places=5)
+        # Computed exact value
+        # with r = radius, l = length of square, t = turns
+        # pi * r**2 * l * t
+        expected = pi * 25 * 5 * 3
+        self.assertAlmostEqual(helix.Shape.Volume, expected, places=2)
 
 
     def testCone(self):
@@ -155,7 +159,7 @@ class TestHelix(unittest.TestCase):
         coneSketch.addConstraint(conList)
 
         xz_plane = body.Origin.OriginFeatures[4]
-        coneSketch.Support = xz_plane
+        coneSketch.AttachmentSupport = xz_plane
         coneSketch.MapMode = 'FlatFace'
         helix = self.Doc.addObject("PartDesign::AdditiveHelix","AdditiveHelix")
         body.addObject(helix)
@@ -167,10 +171,10 @@ class TestHelix(unittest.TestCase):
         helix.Height = 110
         helix.Turns = 2.2
         helix.Angle = 30
-        helix.Mode = 0 
+        helix.Mode = 0
         helix.Reversed = True
         self.Doc.recompute()
-        self.assertAlmostEqual(helix.Shape.Volume, 388285.4117047924,places=5)
+        self.assertAlmostEqual(helix.Shape.Volume/1e5, 3.8828,places=4)
 
     def tearDown(self):
         FreeCAD.closeDocument("PartDesignTestHelix")

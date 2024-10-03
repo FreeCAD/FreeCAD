@@ -19,7 +19,7 @@ include_directories(
 link_directories(${OCC_LIBRARY_DIR})
 
 set(MatGui_LIBS
-    Material
+    Materials
     FreeCADGui
 )
 
@@ -36,9 +36,22 @@ qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
 qt_create_resource_file(${Material_TR_QRC} ${QM_SRCS})
 qt_add_resources(MatGui_QRC_SRCS Resources/Material.qrc ${Material_TR_QRC})
 
+generate_from_xml(MaterialTreeWidgetPy)
+
+SET(Python_SRCS
+    MaterialTreeWidgetPy.xml
+    MaterialTreeWidgetPyImp.cpp
+)
+SOURCE_GROUP("Python" FILES ${Python_SRCS})
+
 set(MatGui_UIC_SRCS
     Array2D.ui
     Array3D.ui
+    DlgDisplayProperties.ui
+    DlgInspectAppearance.ui
+    DlgInspectMaterial.ui
+    DlgMaterial.ui
+    DlgSettingsDefaultMaterial.ui
     DlgSettingsMaterial.ui
     ImageEdit.ui
     ListEdit.ui
@@ -49,6 +62,7 @@ set(MatGui_UIC_SRCS
 )
 
 SET(MatGui_SRCS
+    ${Python_SRCS}
     ${MatGui_QRC_SRCS}
     ${MatGui_UIC_HDRS}
     AppearancePreview.h
@@ -67,6 +81,21 @@ SET(MatGui_SRCS
     BaseDelegate.cpp
     BaseDelegate.h
     Command.cpp
+    DlgDisplayPropertiesImp.cpp
+    DlgDisplayPropertiesImp.h
+    DlgDisplayProperties.ui
+    DlgInspectAppearance.cpp
+    DlgInspectAppearance.h
+    DlgInspectAppearance.ui
+    DlgInspectMaterial.cpp
+    DlgInspectMaterial.h
+    DlgInspectMaterial.ui
+    DlgMaterialImp.cpp
+    DlgMaterialImp.h
+    DlgMaterial.ui
+    DlgSettingsDefaultMaterial.cpp
+    DlgSettingsDefaultMaterial.h
+    DlgSettingsDefaultMaterial.ui
     DlgSettingsMaterial.cpp
     DlgSettingsMaterial.h
     DlgSettingsMaterial.ui
@@ -88,6 +117,8 @@ SET(MatGui_SRCS
     MaterialsEditor.cpp
     MaterialsEditor.h
     MaterialsEditor.ui
+    MaterialTreeWidget.cpp
+    MaterialTreeWidget.h
     ModelSelect.cpp
     ModelSelect.h
     ModelSelect.ui
@@ -98,6 +129,8 @@ SET(MatGui_SRCS
     TextEdit.ui
     Workbench.cpp
     Workbench.h
+    WorkbenchManipulator.cpp
+    WorkbenchManipulator.h
 )
 
 if(FREECAD_USE_PCH)
@@ -121,15 +154,24 @@ SET(MatGuiImages
     Resources/images/default_image.png
 )
 
-add_library(MatGui SHARED ${MatGui_SRCS} ${MatGuiIcon_SVG})
+SET(Material_Ui_Files
+    Resources/ui/materials-editor.ui
+)
+
+add_library(MatGui SHARED ${MatGui_SRCS} ${MatGuiIcon_SVG} ${MatGuiImages} ${Material_Ui_Files})
 target_link_libraries(MatGui ${MatGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(MatGui)
+endif()
 
 SET_BIN_DIR(MatGui MatGui /Mod/Material)
 SET_PYTHON_PREFIX_SUFFIX(MatGui)
 
 fc_copy_sources(MatGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Material" ${MatGuiIcon_SVG})
 fc_copy_sources(MatGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Material" ${MatGuiImages})
+fc_copy_sources(MatGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Material" ${Material_Ui_Files})
 
 INSTALL(TARGETS MatGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 INSTALL(FILES ${MatGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Material/Resources/icons")
 INSTALL(FILES ${MatGuiImages} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Material/Resources/images")
+INSTALL(FILES ${Material_Ui_Files} DESTINATION "Mod/Material/Resources/ui")

@@ -163,6 +163,10 @@ public:
 
     QSize minimumSizeHint() const override;
 
+    // Restore width before opening a task panel
+    void setRestoreWidth(bool on);
+    bool shouldRestoreWidth() const;
+
 Q_SIGNALS:
     void taskUpdate();
 
@@ -175,6 +179,13 @@ protected Q_SLOTS:
 private:
     void triggerMinimumSizeHint();
     void adjustMinimumSizeHint();
+    void saveCurrentWidth();
+    void tryRestoreWidth();
+    void slotActiveDocument(const App::Document&);
+    void slotDeletedDocument(const App::Document&);
+    void slotUndoDocument(const App::Document&);
+    void slotRedoDocument(const App::Document&);
+    void transactionChangeOnDocument(const App::Document&);
 
 protected:
     void keyPressEvent(QKeyEvent* event) override;
@@ -189,16 +200,13 @@ protected:
     // removes the running dialog after accept() or reject() from the TaskView
     void removeDialog();
 
-    void slotActiveDocument(const App::Document&);
-    void slotDeletedDocument();
-    void slotUndoDocument(const App::Document&);
-    void slotRedoDocument(const App::Document&);
-
     std::vector<TaskWatcher*> ActiveWatcher;
 
     QSint::ActionPanel* taskPanel;
     TaskDialog *ActiveDialog;
     TaskEditControl *ActiveCtrl;
+    bool restoreWidth = false;
+    int currentWidth = 0;
 
     Connection connectApplicationActiveDocument;
     Connection connectApplicationDeleteDocument;

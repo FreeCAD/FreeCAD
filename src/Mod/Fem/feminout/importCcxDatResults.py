@@ -34,27 +34,22 @@ import os
 
 import FreeCAD
 from FreeCAD import Console
+from builtins import open as pyopen
 
 
 EIGENVALUE_OUTPUT_SECTION = "     E I G E N V A L U E   O U T P U T"
 
 
 # ********* generic FreeCAD import and export methods *********
-pyopen = open
 
 
-def open(
-    filename
-):
+def open(filename):
     "called when freecad opens a file"
     docname = os.path.splitext(os.path.basename(filename))[0]
     insert(filename, docname)
 
 
-def insert(
-    filename,
-    docname
-):
+def insert(filename, docname):
     "called when freecad wants to import a file"
     try:
         doc = FreeCAD.getDocument(docname)
@@ -65,19 +60,14 @@ def insert(
 
 
 # ********* module specific methods *********
-def import_dat(
-    filename,
-    Analysis=None
-):
+def import_dat(filename, Analysis=None):
     r = readResult(filename)
     return r
 
 
 # read a calculix result file and extract the data
-def readResult(
-    dat_input
-):
-    Console.PrintMessage("Read ccx results from dat file: {}\n".format(dat_input))
+def readResult(dat_input):
+    Console.PrintMessage(f"Read ccx results from dat file: {dat_input}\n")
     dat_file = pyopen(dat_input, "r")
     eigenvalue_output_section_found = False
     mode_reading = False

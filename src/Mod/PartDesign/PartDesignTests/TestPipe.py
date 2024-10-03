@@ -41,7 +41,7 @@ class TestPipe(unittest.TestCase):
         self.SpineSketch = self.Doc.addObject('Sketcher::SketchObject', 'SpineSketch')
         self.Body.addObject(self.SpineSketch)
         self.SpineSketch.MapMode = 'FlatFace'
-        self.SpineSketch.Support = (self.Doc.XZ_Plane, [''])
+        self.SpineSketch.AttachmentSupport = (self.Doc.XZ_Plane, [''])
         self.Doc.recompute()
         self.SpineSketch.addGeometry(Part.LineSegment(App.Vector(0.0,0.0,0),App.Vector(0,1,0)),False)
         self.SpineSketch.addConstraint(Sketcher.Constraint('Coincident',0,1,-1,1))
@@ -64,7 +64,7 @@ class TestPipe(unittest.TestCase):
         self.SpineSketch = self.Doc.addObject('Sketcher::SketchObject', 'SpineSketch')
         self.Body.addObject(self.SpineSketch)
         self.SpineSketch.MapMode = 'FlatFace'
-        self.SpineSketch.Support = (self.Doc.XZ_Plane, [''])
+        self.SpineSketch.AttachmentSupport = (self.Doc.XZ_Plane, [''])
         self.Doc.recompute()
         self.SpineSketch.addGeometry(Part.LineSegment(App.Vector(0.0,0.0,0),App.Vector(0,1,0)),False)
         self.SpineSketch.addConstraint(Sketcher.Constraint('Coincident',0,1,-1,1))

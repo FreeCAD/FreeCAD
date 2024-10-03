@@ -93,15 +93,13 @@ class Shape2DView(DraftObject):
             obj.Tessellation = False
         if not "InPlace" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property",
-                    "For Cutlines and Cutfaces modes, \
-                    this leaves the faces at the cut location")
+                    "For Cutlines and Cutfaces modes, this leaves the faces at the cut location")
             obj.addProperty("App::PropertyBool", "InPlace",
                             "Draft", _tip)
             obj.InPlace = True
         if not "SegmentLength" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property",
-                    "Length of line segments if tessellating Ellipses or B-splines \
-                    into line segments")
+                    "Length of line segments if tessellating Ellipses or B-splines into line segments")
             obj.addProperty("App::PropertyFloat", "SegmentLength",
                             "Draft", _tip)
             obj.SegmentLength = .05
@@ -151,21 +149,19 @@ class Shape2DView(DraftObject):
         edges = []
         _groups = TechDraw.projectEx(shape, direction)
         for g in _groups[0:5]:
-            if g:
+            if not g.isNull():
                 edges.append(g)
-        if hasattr(obj,"HiddenLines"):
-            if obj.HiddenLines:
-                for g in _groups[5:]:
+        if getattr(obj, "HiddenLines", False):
+            for g in _groups[5:]:
+                if not g.isNull():
                     edges.append(g)
         edges = self.cleanExcluded(obj,edges)
-        #return Part.makeCompound(edges)
-        if hasattr(obj,"Tessellation") and obj.Tessellation:
+        if getattr(obj, "Tessellation", False):
             return DraftGeomUtils.cleanProjection(Part.makeCompound(edges),
                                                   obj.Tessellation,
                                                   obj.SegmentLength)
         else:
             return Part.makeCompound(edges)
-            #return DraftGeomUtils.cleanProjection(Part.makeCompound(edges))
 
     def cleanExcluded(self,obj,shapes):
 
@@ -194,6 +190,15 @@ class Shape2DView(DraftObject):
         if hasattr(obj,"ExclusionNames"):
             objs = [o for o in objs if not(o.Name in obj.ExclusionNames)]
             return objs
+
+    def _get_shapes(self, shape, onlysolids=False):
+        if onlysolids:
+            return shape.Solids
+        if shape.isNull():
+            return []
+        if shape.ShapeType == "Compound":
+            return shape.SubShapes
+        return [shape.copy()]
 
     def execute(self, obj):
         if self.props_changed_placement_only(obj) \
@@ -234,19 +239,13 @@ class Shape2DView(DraftObject):
                         shtypes = {}
                         for o in objs:
                             if utils.get_type(o) in ["Wall","Structure"]:
-                                if onlysolids:
-                                    shtypes.setdefault(o.Material.Name
-                                                      if (hasattr(o,"Material") and o.Material)
-                                                      else "None",[]).extend(o.Shape.Solids)
-                                else:
-                                    shtypes.setdefault(o.Material.Name
-                                                       if (hasattr(o,"Material") and o.Material)
-                                                       else "None",[]).extend(o.Shape.SubShapes)
-                            elif hasattr(o,'Shape'):
-                                if onlysolids:
-                                    shapes.extend(o.Shape.Solids)
-                                else:
-                                    shapes.extend(o.Shape.SubShapes)
+                                shtypes.setdefault(
+                                    o.Material.Name
+                                    if (hasattr(o,"Material") and o.Material) else "None",
+                                    []
+                                ).extend(self._get_shapes(o.Shape, onlysolids))
+                            elif hasattr(o, "Shape"):
+                                shapes.extend(self._get_shapes(o.Shape, onlysolids))
                         for k, v in shtypes.items():
                             v1 = v.pop()
                             if v:
@@ -267,11 +266,8 @@ class Shape2DView(DraftObject):
                                 shapes.extend(v1.SubShapes)
                     else:
                         for o in objs:
-                            if hasattr(o,'Shape'):
-                                if onlysolids:
-                                    shapes.extend(o.Shape.Solids)
-                                else:
-                                    shapes.extend(o.Shape.SubShapes)
+                            if hasattr(o, "Shape"):
+                                shapes.extend(self._get_shapes(o.Shape, onlysolids))
                     clip = False
                     if hasattr(obj.Base,"Clip"):
                         clip = obj.Base.Clip
@@ -299,15 +295,9 @@ class Shape2DView(DraftObject):
                                 #else:
                                 #    c = sh.copy()
                                 c = sh.cut(cutv)
-                                if onlysolids:
-                                    cuts.extend(c.Solids)
-                                else:
-                                    cuts.extend(c.SubShapes)
+                                cuts.extend(self._get_shapes(c, onlysolids))
                             else:
-                                if onlysolids:
-                                    cuts.extend(sh.Solids)
-                                else:
-                                    cuts.extend(sh.SubShapes)
+                                cuts.extend(self._get_shapes(sh, onlysolids))
                         comp = Part.makeCompound(cuts)
                         obj.Shape = self.getProjected(obj,comp,proj)
                     elif obj.ProjectionMode in ["Cutlines", "Cutfaces"]:
@@ -338,14 +328,14 @@ class Shape2DView(DraftObject):
                 shapes = []
                 objs = self.excludeNames(obj,groups.get_group_contents(obj.Base))
                 for o in objs:
-                    if hasattr(o,'Shape'):
-                        shapes.extend(o.Shape.SubShapes)
+                    if hasattr(o, "Shape"):
+                        shapes.extend(self._get_shapes(o.Shape))
                 if shapes:
                     import Part
                     comp = Part.makeCompound(shapes)
                     obj.Shape = self.getProjected(obj,comp,obj.Projection)
 
-            elif hasattr(obj.Base,'Shape'):
+            elif hasattr(obj.Base, "Shape"):
                 if not DraftVecUtils.isNull(obj.Projection):
                     if obj.ProjectionMode == "Solid":
                         obj.Shape = self.getProjected(obj,obj.Base.Shape,obj.Projection)

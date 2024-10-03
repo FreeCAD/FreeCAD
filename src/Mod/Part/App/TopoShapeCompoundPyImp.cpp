@@ -30,6 +30,7 @@
 # include <ShapeAnalysis_FreeBounds.hxx>
 # include <Standard_Failure.hxx>
 # include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
 # include <TopoDS_Compound.hxx>
 # include <TopTools_HSequenceOfShape.hxx>
 #endif
@@ -103,6 +104,9 @@ PyObject*  TopoShapeCompoundPy::add(PyObject *args)
 
     BRep_Builder builder;
     TopoDS_Shape comp = getTopoShapePtr()->getShape();
+    if (comp.IsNull()) {
+        builder.MakeCompound(TopoDS::Compound(comp));
+    }
 
     try {
         const TopoDS_Shape& sh = static_cast<TopoShapePy*>(obj)->

@@ -362,6 +362,17 @@ std::string  LineGenerator::getLineStandardsBody()
 {
     int activeStandard = Preferences::lineStandard();
     std::vector<std::string> choices = getAvailableLineStandards();
+    if (activeStandard < 0 ||
+        (size_t) activeStandard >= choices.size()) {
+        // there is a condition where the LineStandard parameter exists, but is -1 (the
+        // qt value for no current index in a combobox).  This is likely caused by an old
+        // development version writing an unvalidated value.  In this case, the existing but
+        // invalid value will be returned.  This is a temporary fix and can be removed for
+        // production.
+        // Preferences::lineStandard() will print a message about this every time it is called
+        // (lots of messages!).
+        activeStandard = 0;
+        }
     return getBodyFromString(choices.at(activeStandard));
 }
 

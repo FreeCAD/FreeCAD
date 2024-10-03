@@ -269,72 +269,98 @@ void PrefFileChooser::setParamGrpPath(const QByteArray& name)
 AccelLineEdit::AccelLineEdit(QWidget* parent)
     : QLineEdit(parent)
 {
-    setText(tr("none"));
+    setPlaceholderText(tr("Press a keyboard shortcut"));
+    setClearButtonEnabled(true);
+    keyPressedCount = 0;
+}
+
+bool AccelLineEdit::isNone() const
+{
+    return text().isEmpty();
 }
 
 void AccelLineEdit::keyPressEvent(QKeyEvent* e)
 {
-    QString txt;
-    setText(tr("none"));
+    if (isReadOnly()) {
+        QLineEdit::keyPressEvent(e);
+        return;
+    }
+
+    QString txtLine = text();
 
     int key = e->key();
     Qt::KeyboardModifiers state = e->modifiers();
 
-    if (key == Qt::Key_Control) {
-        return;
-    }
-    else if (key == Qt::Key_Shift) {
-        return;
-    }
-    else if (key == Qt::Key_Alt) {
-        return;
-    }
-    else if (state == Qt::NoModifier && key == Qt::Key_Backspace) {
-        return;  // clears the edit field
+    // Backspace clears the shortcut if text is present, else sets Backspace as shortcut.
+    // If a modifier is pressed without any other key, return.
+    // AltGr is not a modifier but doesn't have a QString representation.
+    switch (key) {
+        case Qt::Key_Backspace:
+        case Qt::Key_Delete:
+            if (state == Qt::NoModifier) {
+                keyPressedCount = 0;
+                if (isNone()) {
+                    QKeySequence ks(key);
+                    setText(ks.toString(QKeySequence::NativeText));
+                }
+                else {
+                    clear();
+                }
+            }
+        case Qt::Key_Control:
+        case Qt::Key_Shift:
+        case Qt::Key_Alt:
+        case Qt::Key_Meta:
+        case Qt::Key_AltGr:
+            return;
+        default:
+            break;
     }
 
-    switch (state) {
-        case Qt::ControlModifier: {
-            QKeySequence keyseq(Qt::CTRL + key);
-            txt += keyseq.toString(QKeySequence::NativeText);
-            setText(txt);
-        } break;
-        case Qt::AltModifier: {
-            QKeySequence keyseq(Qt::ALT + key);
-            txt += keyseq.toString(QKeySequence::NativeText);
-            setText(txt);
-        } break;
-        case Qt::ShiftModifier: {
-            QKeySequence keyseq(Qt::SHIFT + key);
-            txt += keyseq.toString(QKeySequence::NativeText);
-            setText(txt);
-        } break;
-        case Qt::ControlModifier + Qt::AltModifier: {
-            QKeySequence keyseq(Qt::CTRL + Qt::ALT + key);
-            txt += keyseq.toString(QKeySequence::NativeText);
-            setText(txt);
-        } break;
-        case Qt::ControlModifier + Qt::ShiftModifier: {
-            QKeySequence keyseq(Qt::CTRL + Qt::SHIFT + key);
-            txt += keyseq.toString(QKeySequence::NativeText);
-            setText(txt);
-        } break;
-        case Qt::ShiftModifier + Qt::AltModifier: {
-            QKeySequence keyseq(Qt::SHIFT + Qt::ALT + key);
-            txt += keyseq.toString(QKeySequence::NativeText);
-            setText(txt);
-        } break;
-        case Qt::ControlModifier + Qt::AltModifier + Qt::ShiftModifier: {
-            QKeySequence keyseq(Qt::CTRL + Qt::ALT + Qt::SHIFT + key);
-            txt += keyseq.toString(QKeySequence::NativeText);
-            setText(txt);
-        } break;
-        default: {
-            QKeySequence keyseq(key);
-            txt += keyseq.toString(QKeySequence::NativeText);
-            setText(txt);
-        } break;
+    if (txtLine.isEmpty()) {
+        // Text maybe cleared by QLineEdit's built in clear button
+        keyPressedCount = 0;
     }
+    else {
+        // 4 keys are allowed for QShortcut
+        switch (keyPressedCount) {
+            case 4:
+                keyPressedCount = 0;
+                txtLine.clear();
+                break;
+            case 0:
+                txtLine.clear();
+                break;
+            default:
+                txtLine += QString::fromLatin1(",");
+                break;
+        }
+    }
+
+    // Handles modifiers applying a mask.
+    if ((state & Qt::ControlModifier) == Qt::ControlModifier) {
+        QKeySequence ks(Qt::CTRL);
+        txtLine += ks.toString(QKeySequence::NativeText);
+    }
+    if ((state & Qt::AltModifier) == Qt::AltModifier) {
+        QKeySequence ks(Qt::ALT);
+        txtLine += ks.toString(QKeySequence::NativeText);
+    }
+    if ((state & Qt::ShiftModifier) == Qt::ShiftModifier) {
+        QKeySequence ks(Qt::SHIFT);
+        txtLine += ks.toString(QKeySequence::NativeText);
+    }
+    if ((state & Qt::MetaModifier) == Qt::MetaModifier) {
+        QKeySequence ks(Qt::META);
+        txtLine += ks.toString(QKeySequence::NativeText);
+    }
+
+    // Handles normal keys
+    QKeySequence ks(key);
+    txtLine += ks.toString(QKeySequence::NativeText);
+
+    setText(txtLine);
+    keyPressedCount++;
 }
 
 // ------------------------------------------------------------------------------
@@ -782,11 +808,13 @@ public:
             bool ok = false;
             double value = min;
 
-            if (locale.negativeSign() != QLatin1Char('-')) {
-                copy.replace(locale.negativeSign(), QLatin1Char('-'));
+            QChar plus = QLatin1Char('+'), minus = QLatin1Char('-');
+
+            if (locale.negativeSign() != minus) {
+                copy.replace(locale.negativeSign(), minus);
             }
-            if (locale.positiveSign() != QLatin1Char('+')) {
-                copy.replace(locale.positiveSign(), QLatin1Char('+'));
+            if (locale.positiveSign() != plus) {
+                copy.replace(locale.positiveSign(), plus);
             }
 
             try {
@@ -1833,7 +1861,7 @@ void ColorButton::paintEvent(QPaintEvent* e)
 
     // overpaint the rectangle to paint icon and text
     QStyleOptionButton opt;
-    opt.init(this);
+    opt.initFrom(this);
     opt.text = text();
     opt.icon = icon();
     opt.iconSize = iconSize();

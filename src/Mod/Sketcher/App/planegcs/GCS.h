@@ -317,6 +317,13 @@ public:
                                    double* angle,
                                    int tagId = 0,
                                    bool driving = true);
+    int addConstraintAngleViaTwoPoints(Curve& crv1,
+                                       Curve& crv2,
+                                       Point& p1,
+                                       Point& p2,
+                                       double* angle,
+                                       int tagId = 0,
+                                       bool driving = true);
     int addConstraintAngleViaPointAndParam(Curve& crv1,
                                            Curve& crv2,
                                            Point& p,
@@ -455,6 +462,7 @@ public:
                                  double* distance,
                                  int tagId = 0,
                                  bool driving = true);
+    int addConstraintArcLength(Arc& a, double* dist, int tagId, bool driving = true);
 
     // internal alignment constraints
     int addConstraintInternalAlignmentPoint2Ellipse(Ellipse& e,

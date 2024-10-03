@@ -7,9 +7,11 @@ endif(BUILD_GUI)
 set(Assembly_Scripts
     Init.py
     CommandCreateAssembly.py
+    CommandCreateBom.py
     CommandInsertLink.py
     CommandSolveAssembly.py
     CommandCreateJoint.py
+    CommandCreateView.py
     CommandExportASMT.py
     TestAssemblyWorkbench.py
     JointObject.py

@@ -32,6 +32,7 @@ __url__ = "https://www.freecad.org"
 
 try:
     import matplotlib
+
     matplotlib.use("Qt5Agg")
 except Exception:
     print("Failed to set matplotlib backend to Qt5Agg")
@@ -71,113 +72,92 @@ class _TaskPanel:
         self.info_widget = FreeCADGui.PySideUic.loadUi(ui_path + "ResultHints.ui")
         self.form = [self.result_widget, self.info_widget]
 
-        self.fem_prefs = FreeCAD.ParamGet(
-            "User parameter:BaseApp/Preferences/Mod/Fem/General"
-        )
-        self.restore_result_settings_in_dialog = self.fem_prefs.GetBool(
-            "RestoreResultDialog", True
-        )
+        self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
+        self.restore_result_settings_in_dialog = self.fem_prefs.GetBool("RestoreResultDialog", True)
 
         # Connect Signals and Slots
         # result type radio buttons
         # TODO: move to combo box, to be independent from result types and result types count
         QtCore.QObject.connect(
-            self.result_widget.rb_none, QtCore.SIGNAL("toggled(bool)"),
-            self.none_selected
+            self.result_widget.rb_none, QtCore.SIGNAL("toggled(bool)"), self.none_selected
         )
         QtCore.QObject.connect(
             self.result_widget.rb_abs_displacement,
             QtCore.SIGNAL("toggled(bool)"),
-            self.abs_displacement_selected
+            self.abs_displacement_selected,
         )
         QtCore.QObject.connect(
             self.result_widget.rb_x_displacement,
             QtCore.SIGNAL("toggled(bool)"),
-            self.x_displacement_selected
+            self.x_displacement_selected,
         )
         QtCore.QObject.connect(
             self.result_widget.rb_y_displacement,
             QtCore.SIGNAL("toggled(bool)"),
-            self.y_displacement_selected
+            self.y_displacement_selected,
         )
         QtCore.QObject.connect(
             self.result_widget.rb_z_displacement,
             QtCore.SIGNAL("toggled(bool)"),
-            self.z_displacement_selected
+            self.z_displacement_selected,
         )
         QtCore.QObject.connect(
             self.result_widget.rb_temperature,
             QtCore.SIGNAL("toggled(bool)"),
-            self.temperature_selected
+            self.temperature_selected,
         )
         QtCore.QObject.connect(
-            self.result_widget.rb_vm_stress,
-            QtCore.SIGNAL("toggled(bool)"),
-            self.vm_stress_selected
+            self.result_widget.rb_vm_stress, QtCore.SIGNAL("toggled(bool)"), self.vm_stress_selected
         )
         QtCore.QObject.connect(
-            self.result_widget.rb_maxprin,
-            QtCore.SIGNAL("toggled(bool)"),
-            self.max_prin_selected
+            self.result_widget.rb_maxprin, QtCore.SIGNAL("toggled(bool)"), self.max_prin_selected
         )
         QtCore.QObject.connect(
-            self.result_widget.rb_minprin,
-            QtCore.SIGNAL("toggled(bool)"),
-            self.min_prin_selected
+            self.result_widget.rb_minprin, QtCore.SIGNAL("toggled(bool)"), self.min_prin_selected
         )
         QtCore.QObject.connect(
             self.result_widget.rb_max_shear_stress,
             QtCore.SIGNAL("toggled(bool)"),
-            self.max_shear_selected
+            self.max_shear_selected,
         )
         QtCore.QObject.connect(
             self.result_widget.rb_massflowrate,
             QtCore.SIGNAL("toggled(bool)"),
-            self.massflowrate_selected
+            self.massflowrate_selected,
         )
         QtCore.QObject.connect(
             self.result_widget.rb_networkpressure,
             QtCore.SIGNAL("toggled(bool)"),
-            self.networkpressure_selected
+            self.networkpressure_selected,
         )
         QtCore.QObject.connect(
-            self.result_widget.rb_peeq,
-            QtCore.SIGNAL("toggled(bool)"),
-            self.peeq_selected
+            self.result_widget.rb_peeq, QtCore.SIGNAL("toggled(bool)"), self.peeq_selected
         )
 
         # stats
-        self.result_widget.show_histogram.clicked.connect(
-            self.show_histogram_clicked
-        )
+        self.result_widget.show_histogram.clicked.connect(self.show_histogram_clicked)
 
         # displacement
         QtCore.QObject.connect(
             self.result_widget.cb_show_displacement,
             QtCore.SIGNAL("clicked(bool)"),
-            self.show_displacement
+            self.show_displacement,
         )
         QtCore.QObject.connect(
             self.result_widget.hsb_displacement_factor,
             QtCore.SIGNAL("valueChanged(int)"),
-            self.hsb_disp_factor_changed
+            self.hsb_disp_factor_changed,
         )
 
-        self.result_widget.sb_displacement_factor.valueChanged.connect(
-            self.sb_disp_factor_changed
-        )
+        self.result_widget.sb_displacement_factor.valueChanged.connect(self.sb_disp_factor_changed)
         self.result_widget.sb_displacement_factor_max.valueChanged.connect(
             self.sb_disp_factor_max_changed
         )
 
         # user defined equation
-        self.result_widget.user_def_eq.textChanged.connect(
-            self.user_defined_text
-        )
+        self.result_widget.user_def_eq.textChanged.connect(self.user_defined_text)
         QtCore.QObject.connect(
-            self.result_widget.calculate,
-            QtCore.SIGNAL("clicked()"),
-            self.calculate
+            self.result_widget.calculate, QtCore.SIGNAL("clicked()"), self.calculate
         )
 
         self.update()
@@ -187,7 +167,7 @@ class _TaskPanel:
             self.restore_initial_result_dialog()
             # initialize scale factor for show displacement
             scale_factor = get_displacement_scale_factor(self.result_obj)
-            self.result_widget.sb_displacement_factor_max.setValue(10. * scale_factor)
+            self.result_widget.sb_displacement_factor_max.setValue(10.0 * scale_factor)
             self.result_widget.sb_displacement_factor.setValue(scale_factor)
 
     def restore_result_dialog(self):
@@ -259,13 +239,13 @@ class _TaskPanel:
         FreeCAD.FEM_dialog = {
             "results_type": "None",
             "show_disp": False,
-            "disp_factor": 0.,
-            "disp_factor_max": 100.
+            "disp_factor": 0.0,
+            "disp_factor_max": 100.0,
         }
-        self.result_widget.sb_displacement_factor_max.setValue(100.)    # init non standard values
+        self.result_widget.sb_displacement_factor_max.setValue(100.0)  # init non standard values
 
     def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Close)
+        return QtGui.QDialogButtonBox.Close
 
     def get_result_stats(self, type_name):
         return resulttools.get_stats(self.result_obj, type_name)
@@ -290,7 +270,7 @@ class _TaskPanel:
                 "Uabs",
                 self.result_obj.DisplacementLengths,
                 "mm",
-                translate("FEM", "Displacement Magnitude")
+                translate("FEM", "Displacement Magnitude"),
             )
         else:
             self.result_widget.rb_none.setChecked(True)
@@ -298,45 +278,24 @@ class _TaskPanel:
 
     def x_displacement_selected(self, state):
         if len(self.result_obj.DisplacementVectors) > 0:
-            res_disp_u1 = self.get_scalar_disp_list(
-                self.result_obj.DisplacementVectors, 0
-            )
-            self.result_selected(
-                "U1",
-                res_disp_u1,
-                "mm",
-                translate("FEM", "Displacement X")
-            )
+            res_disp_u1 = self.get_scalar_disp_list(self.result_obj.DisplacementVectors, 0)
+            self.result_selected("U1", res_disp_u1, "mm", translate("FEM", "Displacement X"))
         else:
             self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
 
     def y_displacement_selected(self, state):
         if len(self.result_obj.DisplacementVectors) > 0:
-            res_disp_u2 = self.get_scalar_disp_list(
-                self.result_obj.DisplacementVectors, 1
-            )
-            self.result_selected(
-                "U2",
-                res_disp_u2,
-                "mm",
-                translate("FEM", "Displacement Y")
-            )
+            res_disp_u2 = self.get_scalar_disp_list(self.result_obj.DisplacementVectors, 1)
+            self.result_selected("U2", res_disp_u2, "mm", translate("FEM", "Displacement Y"))
         else:
             self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
 
     def z_displacement_selected(self, state):
         if len(self.result_obj.DisplacementVectors) > 0:
-            res_disp_u3 = self.get_scalar_disp_list(
-                self.result_obj.DisplacementVectors, 2
-            )
-            self.result_selected(
-                "U3",
-                res_disp_u3,
-                "mm",
-                translate("FEM", "Displacement Z")
-            )
+            res_disp_u3 = self.get_scalar_disp_list(self.result_obj.DisplacementVectors, 2)
+            self.result_selected("U3", res_disp_u3, "mm", translate("FEM", "Displacement Z"))
         else:
             self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
@@ -344,10 +303,7 @@ class _TaskPanel:
     def vm_stress_selected(self, state):
         if len(self.result_obj.vonMises) > 0:
             self.result_selected(
-                "Sabs",
-                self.result_obj.vonMises,
-                "MPa",
-                translate("FEM", "von Mises Stress")
+                "Sabs", self.result_obj.vonMises, "MPa", translate("FEM", "von Mises Stress")
             )
         else:
             self.result_widget.rb_none.setChecked(True)
@@ -356,10 +312,7 @@ class _TaskPanel:
     def max_shear_selected(self, state):
         if len(self.result_obj.MaxShear) > 0:
             self.result_selected(
-                "MaxShear",
-                self.result_obj.MaxShear,
-                "MPa",
-                translate("FEM", "Max Shear Stress")
+                "MaxShear", self.result_obj.MaxShear, "MPa", translate("FEM", "Max Shear Stress")
             )
         else:
             self.result_widget.rb_none.setChecked(True)
@@ -371,7 +324,7 @@ class _TaskPanel:
                 "MaxPrin",
                 self.result_obj.PrincipalMax,
                 "MPa",
-                translate("FEM", "Max Principal Stress")
+                translate("FEM", "Max Principal Stress"),
             )
         else:
             self.result_widget.rb_none.setChecked(True)
@@ -380,10 +333,7 @@ class _TaskPanel:
     def temperature_selected(self, state):
         if len(self.result_obj.Temperature) > 0:
             self.result_selected(
-                "Temp",
-                self.result_obj.Temperature,
-                "K",
-                translate("FEM", "Temperature")
+                "Temp", self.result_obj.Temperature, "K", translate("FEM", "Temperature")
             )
         else:
             self.result_widget.rb_none.setChecked(True)
@@ -392,10 +342,7 @@ class _TaskPanel:
     def massflowrate_selected(self, state):
         if len(self.result_obj.MassFlowRate) > 0:
             self.result_selected(
-                "MFlow",
-                self.result_obj.MassFlowRate,
-                "kg/s",
-                translate("FEM", "Mass Flow Rate")
+                "MFlow", self.result_obj.MassFlowRate, "kg/s", translate("FEM", "Mass Flow Rate")
             )
         else:
             self.result_widget.rb_none.setChecked(True)
@@ -407,7 +354,7 @@ class _TaskPanel:
                 "NPress",
                 self.result_obj.NetworkPressure,
                 "MPa",
-                translate("FEM", "Network Pressure")
+                translate("FEM", "Network Pressure"),
             )
         else:
             self.result_widget.rb_none.setChecked(True)
@@ -419,7 +366,7 @@ class _TaskPanel:
                 "MinPrin",
                 self.result_obj.PrincipalMin,
                 "MPa",
-                translate("FEM", "Min Principal Stress")
+                translate("FEM", "Min Principal Stress"),
             )
         else:
             self.result_widget.rb_none.setChecked(True)
@@ -428,10 +375,7 @@ class _TaskPanel:
     def peeq_selected(self, state):
         if len(self.result_obj.Peeq) > 0:
             self.result_selected(
-                "Peeq",
-                self.result_obj.Peeq,
-                "",
-                translate("FEM", "Equivalent Plastic Strain")
+                "Peeq", self.result_obj.Peeq, "", translate("FEM", "Equivalent Plastic Strain")
             )
         else:
             self.result_widget.rb_none.setChecked(True)
@@ -452,7 +396,7 @@ class _TaskPanel:
                 QtGui.QMessageBox.information(
                     None,
                     self.result_obj.Label + " - " + translate("FEM", "Information"),
-                    translate("FEM", "No histogram available.\nPlease select a result type first.")
+                    translate("FEM", "No histogram available.\nPlease select a result type first."),
                 )
 
     def user_defined_text(self, equation):
@@ -523,19 +467,52 @@ class _TaskPanel:
         from ply import lex
         from ply import yacc
         import femtools.tokrules as tokrules
+
         identifiers = [
-            "x", "y", "z", "T", "vM", "Peeq", "P1", "P2", "P3",
-            "sxx", "syy", "szz", "sxy", "sxz", "syz",
-            "exx", "eyy", "ezz", "exy", "exz", "eyz",
-            "MS", "MF", "NP", "rx", "ry", "rz", "mc",
-            "s1x", "s1y", "s1z", "s2x", "s2y", "s2z", "s3x", "s3y", "s3z"
+            "x",
+            "y",
+            "z",
+            "T",
+            "vM",
+            "Peeq",
+            "P1",
+            "P2",
+            "P3",
+            "sxx",
+            "syy",
+            "szz",
+            "sxy",
+            "sxz",
+            "syz",
+            "exx",
+            "eyy",
+            "ezz",
+            "exy",
+            "exz",
+            "eyz",
+            "MS",
+            "MF",
+            "NP",
+            "rx",
+            "ry",
+            "rz",
+            "mc",
+            "s1x",
+            "s1y",
+            "s1z",
+            "s2x",
+            "s2y",
+            "s2z",
+            "s3x",
+            "s3y",
+            "s3z",
         ]
         tokrules.names = {}
         for i in identifiers:
             tokrules.names[i] = locals()[i]
 
         lexer = lex.lex(module=tokrules)
-        yacc.parse(input="UserDefinedFormula={0}".format(userdefined_eq), lexer=lexer)
+        yacc.parse(input=f"UserDefinedFormula={userdefined_eq}", lexer=lexer)
         UserDefinedFormula = tokrules.names["UserDefinedFormula"].tolist()
         tokrules.names = {}
         # UserDefinedFormula = eval(userdefined_eq).tolist()
@@ -580,18 +557,15 @@ class _TaskPanel:
     def update_colors_stats(self, res_values, res_unit, minm, maxm):
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if self.suitable_results:
-            self.mesh_obj.ViewObject.setNodeColorByScalars(
-                self.result_obj.NodeNumbers,
-                res_values
-            )
+            self.mesh_obj.ViewObject.setNodeColorByScalars(self.result_obj.NodeNumbers, res_values)
         self.set_result_stats(res_unit, minm, maxm)
         QtGui.QApplication.restoreOverrideCursor()
 
     def set_result_stats(self, unit, minm, maxm):
         self.result_widget.le_min.setProperty("unit", unit)
-        self.result_widget.le_min.setProperty("rawText", "{:.6} {}".format(minm, unit))
+        self.result_widget.le_min.setProperty("rawText", f"{minm:.6} {unit}")
         self.result_widget.le_max.setProperty("unit", unit)
-        self.result_widget.le_max.setProperty("rawText", "{:.6} {}".format(maxm, unit))
+        self.result_widget.le_max.setProperty("rawText", f"{maxm:.6} {unit}")
 
     def update_displacement(self, factor=None):
         if factor is None:
@@ -610,15 +584,14 @@ class _TaskPanel:
         FreeCAD.FEM_dialog["result_obj"] = self.result_obj
         if self.suitable_results:
             self.mesh_obj.ViewObject.setNodeDisplacementByVectors(
-                self.result_obj.NodeNumbers,
-                self.result_obj.DisplacementVectors
+                self.result_obj.NodeNumbers, self.result_obj.DisplacementVectors
             )
         self.update_displacement()
         QtGui.QApplication.restoreOverrideCursor()
 
     def hsb_disp_factor_changed(self, value):
         self.result_widget.sb_displacement_factor.setValue(
-            value / 100. * self.result_widget.sb_displacement_factor_max.value()
+            value / 100.0 * self.result_widget.sb_displacement_factor_max.value()
         )
         self.update_displacement()
 
@@ -626,11 +599,11 @@ class _TaskPanel:
         FreeCAD.FEM_dialog["disp_factor_max"] = value
         if value < self.result_widget.sb_displacement_factor.value():
             self.result_widget.sb_displacement_factor.setValue(value)
-        if value == 0.:
+        if value == 0.0:
             self.result_widget.hsb_displacement_factor.setValue(0)
         else:
             self.result_widget.hsb_displacement_factor.setValue(
-                round(self.result_widget.sb_displacement_factor.value() / value * 100.)
+                round(self.result_widget.sb_displacement_factor.value() / value * 100.0)
             )
 
     def sb_disp_factor_changed(self, value):
@@ -639,15 +612,15 @@ class _TaskPanel:
             self.result_widget.sb_displacement_factor.setValue(
                 self.result_widget.sb_displacement_factor_max.value()
             )
-        if self.result_widget.sb_displacement_factor_max.value() == 0.:
-            self.result_widget.hsb_displacement_factor.setValue(0.)
+        if self.result_widget.sb_displacement_factor_max.value() == 0.0:
+            self.result_widget.hsb_displacement_factor.setValue(0.0)
         else:
             self.result_widget.hsb_displacement_factor.setValue(
-                round(value / self.result_widget.sb_displacement_factor_max.value() * 100.)
+                round(value / self.result_widget.sb_displacement_factor_max.value() * 100.0)
             )
 
     def disable_empty_result_buttons(self):
-        """ disable radio buttons if result does not exists in result object"""
+        """disable radio buttons if result does not exists in result object"""
         """assignments
         DisplacementLengths --> rb_abs_displacement
         DisplacementVectors --> rb_x_displacement, rb_y_displacement, rb_z_displacement
@@ -688,19 +661,12 @@ class _TaskPanel:
         self.disable_empty_result_buttons()
         if self.mesh_obj.FemMesh.NodeCount == 0:
             the_error_messagetext = (
-                "FEM: there are no nodes in result mesh, "
-                "there will be nothing to show."
+                "FEM: there are no nodes in result mesh, there will be nothing to show."
             )
-            error_message = (
-                translate("FEM", the_error_messagetext) + "\n"
-            )
+            error_message = translate("FEM", the_error_messagetext) + "\n"
             FreeCAD.Console.PrintError(error_message)
-            QtGui.QMessageBox.critical(
-                None,
-                translate("FEM", "Empty result mesh"),
-                error_message
-            )
-        elif (self.mesh_obj.FemMesh.NodeCount == len(self.result_obj.NodeNumbers)):
+            QtGui.QMessageBox.critical(None, translate("FEM", "Empty result mesh"), error_message)
+        elif self.mesh_obj.FemMesh.NodeCount == len(self.result_obj.NodeNumbers):
             self.suitable_results = True
             hide_parts_constraints()
         else:
@@ -709,26 +675,19 @@ class _TaskPanel:
                     "FEM: Graphical bending stress output "
                     "for beam or shell FEM Meshes not yet supported."
                 )
-                error_message = (
-                    translate("FEM", the_error_messagetext) + "\n"
-                )
+                error_message = translate("FEM", the_error_messagetext) + "\n"
                 FreeCAD.Console.PrintError(error_message)
                 QtGui.QMessageBox.critical(
-                    None,
-                    translate("FEM", "No result object"),
-                    error_message
+                    None, translate("FEM", "No result object"), error_message
                 )
             else:
                 the_error_messagetext = (
-                    "FEM: Result node numbers are "
-                    "not equal to FEM Mesh NodeCount."
+                    "FEM: Result node numbers are not equal to FEM Mesh NodeCount."
                 )
                 error_message = translate("FEM", the_error_messagetext) + "\n"
                 FreeCAD.Console.PrintError(error_message)
                 QtGui.QMessageBox.critical(
-                    None,
-                    translate("FEM", "No result object"),
-                    error_message
+                    None, translate("FEM", "No result object"), error_message
                 )
 
     def reset_mesh_color(self):
@@ -752,6 +711,7 @@ class _TaskPanel:
 # helper
 def hide_parts_constraints():
     from FemGui import getActiveAnalysis
+
     fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
     hide_constraints = fem_prefs.GetBool("HideConstraint", False)
     if hide_constraints:

@@ -61,7 +61,7 @@
              <item>
               <widget class="QLabel" name="label_4">
                <property name="text">
-                <string>Pipe Area </string>
+                <string>Pipe Area</string>
                </property>
               </widget>
              </item>
@@ -648,7 +648,7 @@
                </column>
                <column>
                 <property name="text">
-                 <string>Head Loss[mm]</string>
+                 <string>Head Loss [mm]</string>
                 </property>
                </column>
                <item row="0" column="0">

@@ -107,7 +107,6 @@ public:
 
 private:
     CrossSections* widget;
-    Gui::TaskView::TaskBox* taskbox;
 };
 
 }  // namespace MeshPartGui

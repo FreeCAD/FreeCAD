@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="lbl_references">
      <property name="text">
-      <string>Select multiple face(s), click Add or Remove:</string>
+      <string>Click Add or Remove and select face(s)</string>
      </property>
     </widget>
    </item>
@@ -70,6 +70,13 @@
       </widget>
      </item>
      <item>
+      <widget class="QRadioButton" name="rb_radiation">
+       <property name="text">
+        <string>Surface Radiation</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QRadioButton" name="rb_dflux">
        <property name="text">
         <string>Surface heat flux</string>
@@ -81,7 +88,7 @@
    <item>
     <widget class="QStackedWidget" name="sw_heatflux">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="page">
       <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -112,16 +119,16 @@
           </layout>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="layoutAmbientTemp">
+          <layout class="QHBoxLayout" name="layoutAmbientTempCov">
            <item>
-            <widget class="QLabel" name="lbl_ambienttemp">
+            <widget class="QLabel" name="lbl_ambienttemp_conv">
              <property name="text">
               <string>Ambient Temperature</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="Gui::InputField" name="if_ambienttemp">
+            <widget class="Gui::InputField" name="if_ambienttemp_conv">
              <property name="text">
               <string>300 K</string>
              </property>
@@ -139,6 +146,65 @@
        </item>
       </layout>
      </widget>
+     <property name="currentIndex">
+      <number>1</number>
+     </property>
+     <widget class="QWidget" name="page_1">
+      <layout class="QVBoxLayout" name="verticalLayout_5">
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_6">
+         <item>
+          <layout class="QHBoxLayout" name="layoutEmissivity">
+           <item>
+            <widget class="QLabel" name="lbl_emissivity">
+             <property name="text">
+              <string>Emissivity</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="Gui::InputField" name="if_emissivity">
+             <property name="text">
+              <string>1 </string>
+             </property>
+             <property name="quantity" stdset="0">
+              <double>1.000000000000000</double>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="layoutAmbientTempRad">
+           <item>
+            <widget class="QLabel" name="lbl_ambienttemp_rad">
+             <property name="text">
+              <string>Ambient Temperature</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="Gui::InputField" name="if_ambienttemp_rad">
+             <property name="text">
+              <string>300 K</string>
+             </property>
+             <property name="unit" stdset="0">
+              <string notr="true">K</string>
+             </property>
+             <property name="quantity" stdset="0">
+              <double>300.000000000000000</double>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <property name="currentIndex">
+      <number>2</number>
+     </property>
      <widget class="QWidget" name="page_2">
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>

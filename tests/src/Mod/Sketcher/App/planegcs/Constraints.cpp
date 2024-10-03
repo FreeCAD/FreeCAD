@@ -1,11 +1,8 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
-#ifdef WIN32
-#define _USE_MATH_DEFINES
-#endif
 #include <cmath>
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 #include "Mod/Sketcher/App/planegcs/GCS.h"
 #include "Mod/Sketcher/App/planegcs/Geo.h"

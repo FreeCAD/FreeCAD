@@ -38,6 +38,8 @@
 #include "GeometryFacade.h"
 #include "Sketch.h"
 
+#include "SketchGeometryExtension.h"
+#include "ExternalGeometryExtension.h"
 
 namespace Sketcher
 {
@@ -46,6 +48,7 @@ class SketchAnalysis;
 
 class SketcherExport SketchObject: public Part::Part2DObject
 {
+    typedef Part::Part2DObject inherited;
     PROPERTY_HEADER_WITH_OVERRIDE(Sketcher::SketchObject);
 
 public:
@@ -65,7 +68,13 @@ public:
     Part ::PropertyGeometryList Geometry;
     Sketcher::PropertyConstraintList Constraints;
     App ::PropertyLinkSubList ExternalGeometry;
+    App ::PropertyLinkListHidden Exports;
+    Part ::PropertyGeometryList ExternalGeo;
     App ::PropertyBool FullyConstrained;
+    App ::PropertyPrecision ArcFitTolerance;
+    Part ::PropertyPartShape InternalShape;
+    App ::PropertyPrecision InternalTolerance;
+    App ::PropertyBool MakeInternals;
     /** @name methods override Feature */
     //@{
     short mustExecute() const override;
@@ -78,6 +87,7 @@ public:
     {
         return "SketcherGui::ViewProviderSketch";
     }
+    void setupObject() override;
     //@}
 
     /** SketchObject can work in two modes: Recompute Mode and noRecomputes Mode
@@ -168,15 +178,30 @@ public:
     /// Carbon copy another sketch geometry and constraints
     int carbonCopy(App::DocumentObject* pObj, bool construction = true);
     /// add an external geometry reference
-    int addExternal(App::DocumentObject* Obj, const char* SubName);
+    int addExternal(App::DocumentObject* Obj,
+                    const char* SubName,
+                    bool defining = false,
+                    bool intersection = false);
     /** delete external
      *  ExtGeoId >= 0 with 0 corresponding to the first user defined
      *  external geometry
      */
     int delExternal(int ExtGeoId);
+    int delExternal(const std::vector<int>& ExtGeoIds);
+    /// attach a link reference to an external geometry
+    int
+    attachExternal(const std::vector<int>& geoIds, App::DocumentObject* Obj, const char* SubName);
+    int detachExternal(const std::vector<int>& geoIds);
 
     /** deletes all external geometry */
     int delAllExternal();
+
+    const Part::Geometry* _getGeometry(int GeoId) const;
+    int setGeometry(int GeoId, const Part::Geometry*);
+    /// returns GeoId of all geometries projected from the same external geometry reference
+    std::vector<int> getRelatedGeometry(int GeoId) const;
+    /// Sync frozen external geometries
+    int syncGeometry(const std::vector<int>& geoIds);
 
     /** returns a pointer to a given Geometry index, possible indexes are:
      *  id>=0 for user defined geometries,
@@ -188,7 +213,10 @@ public:
         typename GeometryT = Part::Geometry,
         typename = typename std::enable_if<
             std::is_base_of<Part::Geometry, typename std::decay<GeometryT>::type>::value>::type>
-    const GeometryT* getGeometry(int GeoId) const;
+    const GeometryT* getGeometry(int GeoId) const
+    {
+        return static_cast<const GeometryT*>(_getGeometry(GeoId));
+    }
 
     std::unique_ptr<const GeometryFacade> getGeometryFacade(int GeoId) const;
 
@@ -200,15 +228,17 @@ public:
     /// returns a list of projected external geometries
     const std::vector<Part::Geometry*>& getExternalGeometry() const
     {
-        return ExternalGeo;
+        return ExternalGeo.getValues();
     }
     /// rebuilds external geometry (projection onto the sketch plane)
-    void rebuildExternalGeometry();
+    void rebuildExternalGeometry(bool defining = false, bool intersection = false);
     /// returns the number of external Geometry entities
     int getExternalGeometryCount() const
     {
-        return ExternalGeo.size();
+        return ExternalGeo.getSize();
     }
+    /// auto fix external geometry references
+    void fixExternalGeometry(const std::vector<int>& geoIds = {});
 
     /// retrieves a vector containing both normal and external Geometry (including the sketch axes)
     std::vector<Part::Geometry*> getCompleteGeometry() const;
@@ -264,6 +294,15 @@ public:
     /// toggle the driving status of this constraint
     int toggleActive(int ConstrId);
 
+    /// set the label position of the constraint
+    int setLabelPosition(int ConstrId, float value);
+    /// get the label position of the constraint
+    int getLabelPosition(int ConstrId, float& value);
+    /// set the label distance of the constraint
+    int setLabelDistance(int ConstrId, float value);
+    /// get the label distance of the constraint
+    int getLabelDistance(int ConstrId, float& value);
+
     /// Make all dimensionals Driving/non-Driving
     int setDatumsDriving(bool isdriving);
     /// Move Dimensional constraints at the end of the properties array
@@ -314,8 +353,12 @@ public:
      \param createCorner - keep geoId/pos as a Point and keep as many constraints as possible
      \retval - 0 on success, -1 on failure
      */
-    int
-    fillet(int geoId, PointPos pos, double radius, bool trim = true, bool preserveCorner = false);
+    int fillet(int geoId,
+               PointPos pos,
+               double radius,
+               bool trim = true,
+               bool preserveCorner = false,
+               bool chamfer = false);
     /*!
      \brief More general form of fillet
      \param geoId1, geoId2 - geoId for two lines (which don't necessarily have to coincide)
@@ -331,7 +374,8 @@ public:
                const Base::Vector3d& refPnt2,
                double radius,
                bool trim = true,
-               bool createCorner = false);
+               bool createCorner = false,
+               bool chamfer = false);
 
     /// trim a curve
     int trim(int geoId, const Base::Vector3d& point);
@@ -345,12 +389,25 @@ public:
       \param geoId1, posId1, geoId2, posId2: the end points to join
       \retval - 0 on success, -1 on failure
     */
-    int join(int geoId1, Sketcher::PointPos posId1, int geoId2, Sketcher::PointPos posId2);
+    int join(int geoId1,
+             Sketcher::PointPos posId1,
+             int geoId2,
+             Sketcher::PointPos posId2,
+             int continuity = 0);
 
     /// adds symmetric geometric elements with respect to the refGeoId (line or point)
     int addSymmetric(const std::vector<int>& geoIdList,
                      int refGeoId,
-                     Sketcher::PointPos refPosId = Sketcher::PointPos::none);
+                     Sketcher::PointPos refPosId = Sketcher::PointPos::none,
+                     bool addSymmetryConstraints = false);
+    // get the symmetric geometries of the geoIdList
+    std::vector<Part::Geometry*>
+    getSymmetric(const std::vector<int>& geoIdList,
+                 std::map<int, int>& geoIdMap,
+                 std::map<int, bool>& isStartEndInverted,
+                 int refGeoId,
+                 Sketcher::PointPos refPosId = Sketcher::PointPos::none);
+
     /// with default parameters adds a copy of the geometric elements displaced by the displacement
     /// vector. It creates an array of csize elements in the direction of the displacement vector by
     /// rsize elements in the direction perpendicular to the displacement vector, wherein the
@@ -485,6 +542,9 @@ public:
     unsigned int getMemSize() const override;
     void Save(Base::Writer& /*writer*/) const override;
     void Restore(Base::XMLReader& /*reader*/) override;
+    void handleChangedPropertyType(Base::XMLReader& reader,
+                                   const char* TypeName,
+                                   App::Property* prop) override;
 
     /// returns the number of construction lines (to be used as axes)
     int getAxisCount() const override;
@@ -645,9 +705,20 @@ public:
                              bool& yinv,
                              eReasonList* rsn = nullptr) const;
 
+    DocumentObject* getSubObject(const char* subname,
+                                 PyObject** pyObj = 0,
+                                 Base::Matrix4D* mat = 0,
+                                 bool transform = true,
+                                 int depth = 0) const override;
+
     Part::TopoShape getEdge(const Part::Geometry* geo, const char* name) const;
 
-    Data::IndexedName checkSubName(const char* sub) const;
+    std::vector<const char*> getElementTypes(bool all = true) const override;
+
+    std::vector<Data::IndexedName> getHigherElements(const char* element,
+                                                     bool silent = false) const override;
+
+    Data::IndexedName checkSubName(const char* subname) const;
 
     bool geoIdFromShapeType(const Data::IndexedName&, int& geoId, PointPos& posId) const;
 
@@ -662,17 +733,24 @@ public:
         return geoIdFromShapeType(shapetype, geoId, posId);
     }
 
-    std::string convertSubName(const char* subname, bool postfix = true) const
-    {
-        return convertSubName(checkSubName(subname), postfix);
-    }
+    /// Return a human friendly element reference of an external geometry
+    std::string getGeometryReference(int GeoId) const;
+
+    std::string convertSubName(const char* subname, bool postfix = true) const;
 
     std::string convertSubName(const std::string& subname, bool postfix = true) const
     {
         return convertSubName(subname.c_str(), postfix);
     }
 
+    static const std::string& internalPrefix();
+    static const char* convertInternalName(const char* name);
+
     std::string convertSubName(const Data::IndexedName&, bool postfix = true) const;
+
+    Data::IndexedName shapeTypeFromGeoId(int GeoId, PointPos pos = Sketcher::PointPos::none) const;
+
+    App::ElementNamePair getElementName(const char* name, ElementNameType type) const override;
 
     bool isPerformingInternalTransaction() const
     {
@@ -717,6 +795,11 @@ public:
     void makeMissingVerticalHorizontal(bool onebyone = false);
     void makeMissingEquality(bool onebyone = true);
 
+    /// Detect degenerated geometries
+    int detectDegeneratedGeometries(double tolerance);
+    /// Remove degenerated geometries
+    int removeDegeneratedGeometries(double tolerance);
+
     // helper
     /// returns the number of redundant constraints detected
     int autoRemoveRedundants(bool updategeo = true);
@@ -726,17 +809,30 @@ public:
     // Validation routines
     std::vector<Base::Vector3d> getOpenVertices() const;
 
+    // Signaled when solver has done update
+    boost::signals2::signal<void()> signalSolverUpdate;
+    boost::signals2::signal<void()> signalElementsChanged;
+
+    Part::TopoShape buildInternals(const Part::TopoShape& edges) const;
+
+    /// Get a map from internal element to the same geometry in normal shape
+    const std::map<std::string, std::string> getInternalElementMap() const;
+
 public:  // geometry extension functionalities for single element sketch object user convenience
     int setGeometryId(int GeoId, long id);
     int getGeometryId(int GeoId, long& id) const;
 
 protected:
+    // Only the first flag is toggled, the rest of the flags is set or cleared following the first
+    // flag.
+    int toggleExternalGeometryFlag(const std::vector<int>& geoIds,
+                                   const std::vector<ExternalGeometryExtension::Flag>& flags);
+
+    void buildShape();
     /// get called by the container when a property has changed
     void onChanged(const App::Property* /*prop*/) override;
     void onDocumentRestored() override;
     void restoreFinished() override;
-
-    void buildShape();
 
     std::string validateExpression(const App::ObjectIdentifier& path,
                                    std::shared_ptr<const App::Expression> expr);
@@ -751,6 +847,8 @@ protected:
     std::vector<Part::Geometry*>
     supportedGeometry(const std::vector<Part::Geometry*>& geoList) const;
 
+    void updateGeoHistory();
+    void generateId(Part::Geometry* geo);
 
     /*!
      \brief Transfer constraints on lines being filleted.
@@ -768,6 +866,14 @@ protected:
     // refactoring functions
     // check whether constraint may be changed driving status
     int testDrivingChange(int ConstrId, bool isdriving);
+
+    void initExternalGeo();
+
+    void onUpdateElementReference(const App::Property*) override;
+
+    void delExternalPrivate(const std::set<long>& ids, bool removeReference);
+
+    void updateGeometryRefs();
 
     void onUndoRedoFinished() override;
 
@@ -821,8 +927,6 @@ private:
     /// Flag to allow carbon copy from misaligned geometry
     bool allowUnaligned;
 
-    std::vector<Part::Geometry*> ExternalGeo;
-
     std::vector<int> VertexId2GeoId;
     std::vector<PointPos> VertexId2PosId;
 
@@ -874,9 +978,31 @@ private:
 
     bool internaltransaction;
 
-    // indicates whether changes to properties are the deed of SketchObject or not (for input
-    // validation)
-    bool managedoperation;
+    bool managedoperation;  // indicates whether changes to properties are the deed of SketchObject
+                            // or not (for input validation)
+
+    // mapping from ExternalGeometry[*] to ExternalGeo[*].Id
+    // Some external geometry may generate more than one projection
+    std::map<std::string, std::vector<long>> externalGeoRefMap;
+    bool updateGeoRef = false;
+
+    // backup of ExternalGeometry in case of element reference change
+    std::vector<std::string> externalGeoRef;
+
+    // mapping from ExternalGeo[*].Id to index of ExternalGeo
+    std::map<long, int> externalGeoMap;
+
+    // mapping from Geometry[*].Id to index of Geometry
+    std::map<long, int> geoMap;
+
+    int geoHistoryLevel;
+    std::vector<long> geoIdHistory;
+    long geoLastId;
+
+    class GeoHistory;
+    std::unique_ptr<GeoHistory> geoHistory;
+
+    mutable std::map<std::string, std::string> internalElementMap;
 };
 
 inline int SketchObject::initTemporaryMove(int geoId, PointPos pos, bool fine /*=true*/)
@@ -914,24 +1040,10 @@ inline int SketchObject::moveTemporaryPoint(int geoId,
     return solvedSketch.movePoint(geoId, pos, toPoint, relative);
 }
 
-template<typename GeometryT, typename>
-const GeometryT* SketchObject::getGeometry(int GeoId) const
-{
-    if (GeoId >= 0) {
-        const std::vector<Part::Geometry*>& geomlist = getInternalGeometry();
-        if (GeoId < int(geomlist.size())) {
-            return static_cast<GeometryT*>(geomlist[GeoId]);
-        }
-    }
-    else if (-GeoId <= int(ExternalGeo.size())) {
-        return static_cast<GeometryT*>(ExternalGeo[-GeoId - 1]);
-    }
-
-    return nullptr;
-}
 
 using SketchObjectPython = App::FeaturePythonT<SketchObject>;
 
+// ---------------------------------------------------------
 }  // namespace Sketcher
 
 

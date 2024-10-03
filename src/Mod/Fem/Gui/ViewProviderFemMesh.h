@@ -25,7 +25,7 @@
 
 #include <Gui/ViewProviderBuilder.h>
 #include <Gui/ViewProviderGeometryObject.h>
-#include <Gui/ViewProviderPythonFeature.h>
+#include <Gui/ViewProviderFeaturePython.h>
 #include <Mod/Fem/FemGlobal.h>
 
 class SoCoordinate3;
@@ -73,6 +73,9 @@ public:
     App::PropertyBool BackfaceCulling;
     App::PropertyBool ShowInner;
     App::PropertyInteger MaxFacesShowInner;
+    App::PropertyEnumeration ColorMode;
+    App::PropertyColorList NodeColorArray;
+    App::PropertyColorList ElementColorArray;
 
     void attach(App::DocumentObject* pcObject) override;
     void setDisplayMode(const char* ModeName) override;
@@ -110,7 +113,7 @@ public:
     //@{
 
     /// set the color for each node
-    void setColorByNodeId(const std::map<long, App::Color>& NodeColorMap);
+    void setColorByNodeId(const std::map<std::vector<long>, App::Color>& NodeColorMap);
     void setColorByNodeId(const std::vector<long>& NodeIds,
                           const std::vector<App::Color>& NodeColors);
 
@@ -125,9 +128,10 @@ public:
     /// reaply the node displacement with a certain factor and do a redraw
     void applyDisplacementToNodes(double factor);
     /// set the color for each element
-    void setColorByElementId(const std::map<long, App::Color>& ElementColorMap);
+    void setColorByElementId(const std::map<std::vector<long>, App::Color>& ElementColorMap);
     /// reset the view of the element colors
     void resetColorByElementId();
+    void setMaterialByElement();
     //@}
 
     const std::vector<unsigned long>& getVisibleElementFaces() const
@@ -139,8 +143,7 @@ public:
 
 private:
     static App::PropertyFloatConstraint::Constraints floatRange;
-
-    Py::Object PythonObject;
+    static const char* colorModeEnum[];
 
 protected:
     /// get called by the container whenever a property has been changed
@@ -148,11 +151,18 @@ protected:
 
     void setColorByNodeIdHelper(const std::vector<App::Color>&);
     void setDisplacementByNodeIdHelper(const std::vector<Base::Vector3d>& DispVector, long startId);
+    void setColorByIdHelper(const std::map<std::vector<long>, App::Color>& elemColorMap,
+                            const std::vector<unsigned long>& vElementIdx,
+                            int rShift,
+                            App::PropertyColorList& prop);
+    void setMaterialByColorArray(const App::PropertyColorList* prop,
+                                 const std::vector<unsigned long>& vElementIdx) const;
+    void setMaterialOverall() const;
+
     /// index of elements to their triangles
     std::vector<unsigned long> vFaceElementIdx;
     std::vector<unsigned long> vNodeElementIdx;
     std::vector<unsigned long> vHighlightedIdx;
-
     std::vector<Base::Vector3d> DisplacementVector;
     double DisplacementFactor;
 
@@ -173,7 +183,7 @@ private:
     class Private;
 };
 
-using ViewProviderFemMeshPython = Gui::ViewProviderPythonFeatureT<ViewProviderFemMesh>;
+using ViewProviderFemMeshPython = Gui::ViewProviderFeaturePythonT<ViewProviderFemMesh>;
 
 
 }  // namespace FemGui

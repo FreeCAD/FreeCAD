@@ -43,6 +43,8 @@
 #include <Mod/Part/App/TopoShape.h>
 
 #include "ShapeBinder.h"
+#include "Mod/Part/App/TopoShapeOpCode.h"
+#include "Base/Tools.h"
 
 FC_LOG_LEVEL_INIT("PartDesign",true,true)
 
@@ -76,10 +78,12 @@ void ShapeBinder::onChanged(const App::Property* prop)
 
 short int ShapeBinder::mustExecute() const {
 
-    if (Support.isTouched())
+    if (Support.isTouched()) {
         return 1;
-    if (TraceSupport.isTouched())
+    }
+    if (TraceSupport.isTouched()) {
         return 1;
+    }
 
     return Part::Feature::mustExecute();
 }
@@ -118,15 +122,12 @@ bool ShapeBinder::hasPlacementChanged() const
     return this->Placement.getValue() != placement;
 }
 
-App::DocumentObjectExecReturn* ShapeBinder::execute() {
-
+App::DocumentObjectExecReturn* ShapeBinder::execute()
+{
     if (!this->isRestoring()) {
         Part::TopoShape shape(updatedShape());
         if (!shape.isNull()) {
             this->Placement.setValue(shape.getTransform());
-            this->Shape.setValue(shape);
-        }
-        else {
             this->Shape.setValue(shape);
         }
     }
@@ -151,8 +152,8 @@ void ShapeBinder::getFilteredReferences(const App::PropertyLinkSubList* prop,
     //we only allow one part feature, so get the first one we find
     size_t index = 0;
     for (auto* it : objs) {
-        if (it && it->isDerivedFrom<Part::Feature>()) {
-            obj = static_cast<Part::Feature*>(it);
+        if (auto part = dynamic_cast<Part::Feature*>(it)) {
+            obj = part;
             break;
         }
         index++;
@@ -168,13 +169,15 @@ void ShapeBinder::getFilteredReferences(const App::PropertyLinkSubList* prop,
         //collect all subshapes for the object
         for (index = 0; index < objs.size(); index++) {
             //we only allow subshapes from a single Part::Feature
-            if (objs[index] != obj)
+            if (objs[index] != obj) {
                 continue;
+            }
 
             //in this mode the full shape is not allowed, as we already started the subshape
             //processing
-            if (subs[index].empty())
+            if (subs[index].empty()) {
                 continue;
+            }
 
             subobjects.push_back(subs[index]);
         }
@@ -182,12 +185,12 @@ void ShapeBinder::getFilteredReferences(const App::PropertyLinkSubList* prop,
     else {
         // search for Origin features
         for (auto* it : objs) {
-            if (it && it->isDerivedFrom<App::Line>()) {
-                obj = static_cast<App::GeoFeature*>(it);
+            if (auto line = dynamic_cast<App::Line*>(it)) {
+                obj = line;
                 break;
             }
-            else if (it && it->isDerivedFrom<App::Plane>()) {
-                obj = static_cast<App::GeoFeature*>(it);
+            if (auto plane = dynamic_cast<App::Plane*>(it)) {
+                obj = plane;
                 break;
             }
         }
@@ -196,15 +199,18 @@ void ShapeBinder::getFilteredReferences(const App::PropertyLinkSubList* prop,
 
 Part::TopoShape ShapeBinder::buildShapeFromReferences(App::GeoFeature* obj, std::vector< std::string > subs) {
 
-    if (!obj)
+    if (!obj) {
         return TopoDS_Shape();
+    }
 
     if (obj->isDerivedFrom<Part::Feature>()) {
-        Part::Feature* part = static_cast<Part::Feature*>(obj);
-        if (subs.empty())
+        auto part = static_cast<Part::Feature*>(obj);
+        if (subs.empty()) {
             return part->Shape.getValue();
+        }
 
         std::vector<TopoDS_Shape> shapes;
+        shapes.reserve(subs.size());
         for (const std::string& sub : subs) {
             shapes.push_back(part->Shape.getShape().getSubShape(sub.c_str()));
         }
@@ -213,16 +219,15 @@ Part::TopoShape ShapeBinder::buildShapeFromReferences(App::GeoFeature* obj, std:
             //single subshape. Return directly.
             return shapes[0];
         }
-        else {
-            //multiple subshapes. Make a compound.
-            BRep_Builder builder;
-            TopoDS_Compound cmp;
-            builder.MakeCompound(cmp);
-            for (const TopoDS_Shape& sh : shapes) {
-                builder.Add(cmp, sh);
-            }
-            return cmp;
+
+        //multiple subshapes. Make a compound.
+        BRep_Builder builder;
+        TopoDS_Compound cmp;
+        builder.MakeCompound(cmp);
+        for (const TopoDS_Shape& sh : shapes) {
+            builder.Add(cmp, sh);
         }
+        return cmp;
     }
     else if (obj->isDerivedFrom<App::Line>()) {
         gp_Lin line;
@@ -267,14 +272,18 @@ void ShapeBinder::onSettingDocument()
 void ShapeBinder::slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop)
 {
     App::Document* doc = getDocument();
-    if (!doc || doc->testStatus(App::Document::Restoring))
+    if (!doc || doc->testStatus(App::Document::Restoring)) {
         return;
-    if (this == &Obj)
+    }
+    if (this == &Obj) {
         return;
-    if (!TraceSupport.getValue())
+    }
+    if (!TraceSupport.getValue()) {
         return;
-    if (!Prop.isDerivedFrom<App::PropertyPlacement>())
+    }
+    if (!Prop.isDerivedFrom<App::PropertyPlacement>()) {
         return;
+    }
 
     App::GeoFeature* obj = nullptr;
     std::vector<std::string> subs;
@@ -282,8 +291,9 @@ void ShapeBinder::slotChangedObject(const App::DocumentObject& Obj, const App::P
     if (obj) {
         if (obj == &Obj) {
             // the directly referenced object has changed
-            if (hasPlacementChanged())
+            if (hasPlacementChanged()) {
                 enforceRecompute();
+            }
         }
         else if (Obj.hasExtension(App::GroupExtension::getExtensionClassTypeId())) {
             // check if the changed property belongs to a group-like object
@@ -296,8 +306,9 @@ void ShapeBinder::slotChangedObject(const App::DocumentObject& Obj, const App::P
 
             auto it = std::find(chain.begin(), chain.end(), &Obj);
             if (it != chain.end()) {
-                if (hasPlacementChanged())
+                if (hasPlacementChanged()) {
                     enforceRecompute();
+                }
             }
         }
     }
@@ -376,7 +387,7 @@ void SubShapeBinder::setupObject() {
 
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
-    this->Refine.setValue(hGrp->GetBool("RefineModel", false));
+    this->Refine.setValue(hGrp->GetBool("RefineModel", true));
 }
 
 App::DocumentObject* SubShapeBinder::getSubObject(const char* subname, PyObject** pyObj,
@@ -477,6 +488,7 @@ void SubShapeBinder::clearCopiedObjects() {
 void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
     Part::TopoShape result;
     std::vector<Part::TopoShape> shapes;
+    std::vector<std::pair<int,int> > shapeOwners;
     std::vector<const Base::Matrix4D*> shapeMats;
 
     bool forced = (Shape.getValue().IsNull() || (options & UpdateForced)) ? true : false;
@@ -510,7 +522,9 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
 
     bool first = false;
     std::unordered_map<const App::DocumentObject*, Base::Matrix4D> mats;
+    int idx = -1;
     for (auto& l : Support.getSubListValues()) {
+        ++idx;
         auto obj = l.getValue();
         if (!obj || !obj->isAttachedToDocument())
             continue;
@@ -622,16 +636,20 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
 
         const auto& subvals = copied ? _CopiedLink.getSubValues() : l.getSubValues();
         std::set<std::string> subs(subvals.begin(), subvals.end());
+        int sidx = copied?-1:idx;
+        int subidx = -1;
         static std::string none;
         if (subs.empty())
             subs.insert(none);
         else if (subs.size() > 1)
             subs.erase(none);
         for (const auto& sub : subs) {
+            ++subidx;
             try {
                 auto shape = Part::Feature::getTopoShape(obj, sub.c_str(), true);
                 if (!shape.isNull()) {
                     shapes.push_back(shape);
+                    shapeOwners.emplace_back(sidx, subidx);
                     shapeMats.push_back(&res.first->second);
                 }
             }
@@ -686,13 +704,32 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
             if (hit)
                 return;
         }
+        std::ostringstream ss;
+        int idx = -1;
+        for(auto &shape : shapes) {
+            ++idx;
+            if(shape.Hasher
+                && shape.getElementMapSize()
+                && shape.Hasher != getDocument()->getStringHasher())
+            {
+                ss.str("");
+                ss << Data::POSTFIX_EXTERNAL_TAG
+                   << Data::ComplexGeoData::elementMapPrefix()
+                   << Part::OpCodes::Shapebinder << ':' << shapeOwners[idx].first
+                   << ':' << shapeOwners[idx].second;
+                shape.reTagElementMap(-getID(),
+                                      getDocument()->getStringHasher(),ss.str().c_str());
+            }
+            if (!shape.hasSubShape(TopAbs_FACE) && shape.hasSubShape(TopAbs_EDGE))
+                shape = shape.makeElementCopy();
+        }
 
         if (shapes.size() == 1 && !Relative.getValue())
             shapes.back().setPlacement(Base::Placement());
         else {
             for (size_t i = 0; i < shapes.size(); ++i) {
                 auto& shape = shapes[i];
-                shape = shape.makeTransform(*shapeMats[i]);
+                shape = shape.makeElementTransform(*shapeMats[i]);
                 // if(shape.Hasher
                 //         && shape.getElementMapSize()
                 //         && shape.Hasher != getDocument()->getStringHasher())
@@ -707,9 +744,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
             // Shape.resetElementMapVersion();
             return;
         }
-
-        result.makeCompound(shapes);
-
+        result.makeElementCompound(shapes);
         bool fused = false;
         if (Fuse.getValue()) {
             // If the compound has solid, fuse them together, and ignore other type of
@@ -728,7 +763,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
             }
             else if (!solid.isNull()) {
                 // wrap the single solid in compound to keep its placement
-                result.makeCompound({ solid });
+                result.makeElementCompound({ solid });
                 fused = true;
             }
         }
@@ -737,10 +772,10 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
             && !result.hasSubShape(TopAbs_FACE)
             && result.hasSubShape(TopAbs_EDGE))
         {
-            result = result.makeWires();
+            result = result.makeElementWires();
             if (MakeFace.getValue()) {
                 try {
-                    result = result.makeFace(nullptr);
+                    result = result.makeElementFace(nullptr);
                 }
                 catch (...) {}
             }
@@ -749,10 +784,10 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
         if (!fused && result.hasSubShape(TopAbs_WIRE)
             && Offset.getValue() != 0.0) {
             try {
-                result = result.makeOffset2D(Offset.getValue(),
-                                             OffsetJoinType.getValue(),
-                                             OffsetFill.getValue(),
-                                             OffsetOpenResult.getValue(),
+                result = result.makeElementOffset2D(Offset.getValue(),
+                                             (Part::JoinType) OffsetJoinType.getValue() ,
+                                             OffsetFill.getValue() ? Part::FillType::fill : Part::FillType::noFill,
+                                             OffsetOpenResult.getValue() ? Part::OpenResult::allowOpenResult : Part::OpenResult::noOpenResult,
                                              OffsetIntersection.getValue());
             }
             catch (...) {
@@ -763,8 +798,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
         }
 
         if (Refine.getValue())
-            result = result.makeRefine();
-
+            result = result.makeElementRefine();
         result.setPlacement(Placement.getValue());
         Shape.setValue(result);
     }
@@ -827,6 +861,68 @@ void SubShapeBinder::onDocumentRestored() {
     inherited::onDocumentRestored();
 }
 
+void SubShapeBinder::collapseGeoChildren()
+{
+    // Geo children, i.e. children of GeoFeatureGroup may group some tool
+    // features under itself but does not function as a container. In addition,
+    // its parent group can directly reference the tool feature grouped without
+    // referencing the child. The purpose of this function is to remove any
+    // intermediate Non group features in the object path to avoid unnecessary
+    // dependencies.
+    if (Support.testStatus(App::Property::User3))
+        return;
+
+    Base::ObjectStatusLocker<App::Property::Status, App::Property>
+        guard(App::Property::User3, &Support);
+    App::PropertyXLinkSubList::atomic_change guard2(Support, false);
+
+    std::vector<App::DocumentObject*> removes;
+    std::map<App::DocumentObject*, std::vector<std::string> > newVals;
+    std::ostringstream ss;
+    for(auto &l : Support.getSubListValues()) {
+        auto obj = l.getValue();
+        if(!obj || !obj->getNameInDocument())
+            continue;
+        auto subvals = l.getSubValues();
+        if (subvals.empty())
+            continue;
+        bool touched = false;
+        for (auto itSub=subvals.begin(); itSub!=subvals.end();) {
+            auto &sub = *itSub;
+            App::SubObjectT sobjT(obj, sub.c_str());
+            if (sobjT.normalize(App::SubObjectT::NormalizeOption::KeepSubName)) {
+                touched = true;
+                auto newobj = sobjT.getObject();
+                sub = sobjT.getSubName();
+                if (newobj != obj) {
+                    newVals[newobj].push_back(std::move(sub));
+                    itSub = subvals.erase(itSub);
+                    continue;
+                }
+            }
+            ++itSub;
+        }
+        if (touched)
+            removes.push_back(obj);
+        if (!subvals.empty() && touched) {
+            auto &newSubs = newVals[obj];
+            if (newSubs.empty())
+                newSubs = std::move(subvals);
+            else
+                newSubs.insert(newSubs.end(),
+                               std::make_move_iterator(subvals.begin()),
+                               std::make_move_iterator(subvals.end()));
+        }
+    }
+
+    if (removes.size() || newVals.size())
+        guard2.aboutToChange();
+    for (auto obj : removes)
+        Support.removeValue(obj);
+    if (newVals.size())
+        setLinks(std::move(newVals));
+}
+
 void SubShapeBinder::onChanged(const App::Property* prop) {
     if (prop == &Context || prop == &Relative) {
         if (!Context.getValue() || !Relative.getValue()) {
@@ -844,6 +940,7 @@ void SubShapeBinder::onChanged(const App::Property* prop) {
     }
     else if (!isRestoring()) {
         if (prop == &Support) {
+            collapseGeoChildren();
             clearCopiedObjects();
             setupCopyOnChange();
             if (!Support.getSubListValues().empty()) {

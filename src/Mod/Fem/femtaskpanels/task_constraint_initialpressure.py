@@ -33,26 +33,24 @@ import FreeCAD
 import FreeCADGui
 from femguiutils import selection_widgets
 
-from femtools import femutils
 from femtools import membertools
+from . import base_femtaskpanel
 
 
-class _TaskPanel(object):
+class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
 
     def __init__(self, obj):
-        self._obj = obj
+        super().__init__(obj)
 
         self._paramWidget = FreeCADGui.PySideUic.loadUi(
-            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/InitialPressure.ui")
+            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/InitialPressure.ui"
+        )
         self._initParamWidget()
 
         # geometry selection widget
         # start with Solid in list!
         self._selectionWidget = selection_widgets.GeometryElementsSelection(
-            obj.References,
-            ["Solid", "Face"],
-            True,
-            False
+            obj.References, ["Solid", "Face"], True, False
         )
 
         # form made from param and selection widget
@@ -64,7 +62,7 @@ class _TaskPanel(object):
         if analysis is not None:
             self._mesh = membertools.get_single_member(analysis, "Fem::FemMeshObject")
         if self._mesh is not None:
-            self._part = femutils.get_part_to_mesh(self._mesh)
+            self._part = self._mesh.Shape
         self._partVisible = None
         self._meshVisible = None
 
@@ -77,17 +75,16 @@ class _TaskPanel(object):
 
     def reject(self):
         self._restoreVisibility()
-        FreeCADGui.ActiveDocument.resetEdit()
-        return True
+        self._selectionWidget.finish_selection()
+        return super().reject()
 
     def accept(self):
-        if self._obj.References != self._selectionWidget.references:
-            self._obj.References = self._selectionWidget.references
+        if self.obj.References != self._selectionWidget.references:
+            self.obj.References = self._selectionWidget.references
         self._applyWidgetChanges()
-        self._obj.Document.recompute()
-        FreeCADGui.ActiveDocument.resetEdit()
+        self._selectionWidget.finish_selection()
         self._restoreVisibility()
-        return True
+        return super().accept()
 
     def _restoreVisibility(self):
         if self._mesh is not None and self._part is not None:
@@ -101,20 +98,17 @@ class _TaskPanel(object):
                 self._part.ViewObject.hide()
 
     def _initParamWidget(self):
-        self._paramWidget.pressureQSB.setProperty(
-            'value', self._obj.Pressure)
-        FreeCADGui.ExpressionBinding(
-            self._paramWidget.pressureQSB).bind(self._obj, "Pressure")
+        self._paramWidget.pressureQSB.setProperty("value", self.obj.Pressure)
+        FreeCADGui.ExpressionBinding(self._paramWidget.pressureQSB).bind(self.obj, "Pressure")
 
     def _applyWidgetChanges(self):
         pressure = None
         try:
-            pressure = self._paramWidget.pressureQSB.property('value')
+            pressure = self._paramWidget.pressureQSB.property("value")
         except ValueError:
             FreeCAD.Console.PrintMessage(
                 "Wrong input. Not recognised input: '{}' "
-                "Pressure has not been set.\n"
-                .format(self._paramWidget.pressureQSB.text())
+                "Pressure has not been set.\n".format(self._paramWidget.pressureQSB.text())
             )
         if pressure is not None:
-            self._obj.Pressure = pressure
+            self.obj.Pressure = pressure

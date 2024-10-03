@@ -195,7 +195,7 @@ class WidgetFilterSelector(QtWidgets.QComboBox):
         max_width = 0
         font_metrics = self.fontMetrics()
         for index in range(self.count()):
-            width = font_metrics.width(self.itemText(index))
+            width = font_metrics.horizontalAdvance(self.itemText(index))
             max_width = max(max_width, width)
         self.view().setMinimumWidth(max_width + self.extra_padding)
 

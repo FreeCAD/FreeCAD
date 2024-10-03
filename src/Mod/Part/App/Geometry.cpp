@@ -65,6 +65,7 @@
 # include <Geom_TrimmedCurve.hxx>
 # include <GeomAPI_ExtremaCurveCurve.hxx>
 # include <GeomAPI_Interpolate.hxx>
+# include <GeomAPI_PointsToBSpline.hxx>
 # include <GeomAPI_ProjectPointOnCurve.hxx>
 # include <GeomConvert.hxx>
 # include <GeomConvert_CompCurveToBSplineCurve.hxx>
@@ -101,6 +102,7 @@
 # include <GeomAdaptor_HCurve.hxx>
 # endif
 
+# include <boost/random.hpp>
 # include <cmath>
 # include <ctime>
 #endif //_PreComp_
@@ -112,6 +114,8 @@
 #include <BRep_Tool.hxx>
 #include <TopoDS.hxx>
 #include <memory>
+#include <boost/thread/mutex.hpp>
+#include <boost/thread/thread.hpp>
 
 #include "Geometry.h"
 #include "ArcOfCirclePy.h"
@@ -454,8 +458,13 @@ void Geometry::deleteExtension(const std::string & name)
 void Geometry::createNewTag()
 {
     // Initialize a random number generator, to avoid Valgrind false positives.
+    // The random number generator is not threadsafe so we guard it.  See
+    // https://www.boost.org/doc/libs/1_62_0/libs/uuid/uuid.html#Design%20notes
     static boost::mt19937 ran;
     static bool seeded = false;
+    static boost::mutex random_number_mutex;
+
+    boost::lock_guard<boost::mutex> guard(random_number_mutex);
 
     if (!seeded) {
         ran.seed(static_cast<unsigned int>(std::time(nullptr)));
@@ -1713,28 +1722,115 @@ void GeomBSplineCurve::increaseDegree(int degree)
  * \param maxSegments
  * \param maxDegree
  * \param continuity
- * \return true if the approximation succeeded, false otherwise
  */
-bool GeomBSplineCurve::approximate(double tol3d, int maxSegments, int maxDegree, int continuity)
+void GeomBSplineCurve::approximate(double tol3d, int maxSegments, int maxDegree,
+                                   GeomAbs_Shape continuity)
 {
     try {
-        GeomAbs_Shape cont = GeomAbs_C0;
-        if (continuity >= 0 && continuity <= 6)
-            cont = static_cast<GeomAbs_Shape>(continuity);
-
         GeomAdaptor_Curve adapt(myCurve);
         Handle(GeomAdaptor_HCurve) hCurve = new GeomAdaptor_HCurve(adapt);
-        Approx_Curve3d approx(hCurve, tol3d, cont, maxSegments, maxDegree);
-        if (approx.IsDone() && approx.HasResult()) {
+        Approx_Curve3d approx(hCurve, tol3d, continuity, maxSegments, maxDegree);
+        if (approx.IsDone()) {
             this->setHandle(approx.Curve());
-            return true;
+        }
+        else if (approx.HasResult()) {
+            throw Standard_Failure("Approximation of B-Spline succeeded but is outside of tolerance");
+        }
+        else {
+            throw Standard_Failure("Approximation of B-Spline failed");
         }
     }
     catch (Standard_Failure& e) {
-        THROWM(Base::CADKernelError,e.GetMessageString())
+        THROWM(Base::CADKernelError, e.GetMessageString())
     }
+}
 
-    return false;
+void GeomBSplineCurve::approximate(const std::vector<Base::Vector3d>& pnts,
+                                   int minDegree, int maxDegree,
+                                   GeomAbs_Shape continuity, double tol3d)
+{
+    try {
+        TColgp_Array1OfPnt coords(1, static_cast<int>(pnts.size()));
+        Standard_Integer index = 1;
+        for (const auto& it : pnts) {
+            coords(index++) = gp_Pnt(it.x, it.y, it.z);
+        }
+
+        GeomAPI_PointsToBSpline fit(coords, minDegree, maxDegree, continuity, tol3d);
+        const Handle(Geom_BSplineCurve)& spline = fit.Curve();
+        if (!spline.IsNull()) {
+            setHandle(spline);
+        }
+        else {
+            throw Standard_Failure("Failed to approximate B-Spline");
+        }
+    }
+    catch (Standard_Failure& e) {
+        THROWM(Base::CADKernelError, e.GetMessageString())
+    }
+}
+
+void GeomBSplineCurve::approximate(const std::vector<Base::Vector3d>& pnts,
+                                   Approx_ParametrizationType parType,
+                                   int minDegree, int maxDegree,
+                                   GeomAbs_Shape continuity, double tol3d)
+{
+    try {
+        TColgp_Array1OfPnt coords(1, static_cast<int>(pnts.size()));
+        Standard_Integer index = 1;
+        for (const auto& it : pnts) {
+            coords(index++) = gp_Pnt(it.x, it.y, it.z);
+        }
+
+        GeomAPI_PointsToBSpline fit(coords, parType, minDegree, maxDegree, continuity, tol3d);
+        const Handle(Geom_BSplineCurve)& spline = fit.Curve();
+        if (!spline.IsNull()) {
+            setHandle(spline);
+        }
+        else {
+            throw Standard_Failure("Failed to approximate B-Spline");
+        }
+    }
+    catch (Standard_Failure& e) {
+        THROWM(Base::CADKernelError, e.GetMessageString())
+    }
+}
+
+/*!
+ * \brief GeomBSplineCurve::approximate
+ * \param pnts Points to fit
+ * \param weight1 Weight of curve length as smoothing criterion
+ * \param weight2 Weight of curvature as smoothing criterion
+ * \param weight3 Weight of torsion as smoothing criterion
+ * \param minDegree Minimum degree
+ * \param maxDegree Maximum degree
+ * \param continuity Continuity of the spline
+ * \param tol3d Tolerance to the data points
+ */
+void GeomBSplineCurve::approximate(const std::vector<Base::Vector3d>& pnts,
+                                   double weight1, double weight2, double weight3,
+                                   int maxDegree, GeomAbs_Shape continuity, double tol3d)
+{
+    try {
+        TColgp_Array1OfPnt coords(1, static_cast<int>(pnts.size()));
+        Standard_Integer index = 1;
+        for (const auto& it : pnts) {
+            coords(index++) = gp_Pnt(it.x, it.y, it.z);
+        }
+
+        GeomAPI_PointsToBSpline fit(coords, weight1, weight2, weight3,
+                                    maxDegree, continuity, tol3d);
+        const Handle(Geom_BSplineCurve)& spline = fit.Curve();
+        if (!spline.IsNull()) {
+            setHandle(spline);
+        }
+        else {
+            throw Standard_Failure("Failed to approximate B-Spline");
+        }
+    }
+    catch (Standard_Failure& e) {
+        THROWM(Base::CADKernelError, e.GetMessageString())
+    }
 }
 
 void GeomBSplineCurve::increaseMultiplicity(int index, int multiplicity)
@@ -1742,11 +1838,10 @@ void GeomBSplineCurve::increaseMultiplicity(int index, int multiplicity)
     try {
         Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast(this->handle());
         curve->IncreaseMultiplicity(index, multiplicity);
-        return;
     }
     catch (Standard_Failure& e) {
         THROWM(Base::CADKernelError,e.GetMessageString())
-            }
+    }
 }
 
 void GeomBSplineCurve::insertKnot(double param, int multiplicity)
@@ -1800,19 +1895,10 @@ void GeomBSplineCurve::Trim(double u, double v)
     };
 
     try {
-        if(!isPeriodic()) {
-            splitUnwrappedBSpline(u, v);
+        if (isPeriodic() && (v < u)) {
+            v = v + (getLastParameter() - getFirstParameter()); // v needs one extra lap
         }
-        else { // periodic
-            if( v < u ) { // wraps over origin
-                v = v + 1.0; // v needs one extra lap (1.0)
-
-                splitUnwrappedBSpline(u, v);
-            }
-            else {
-                splitUnwrappedBSpline(u, v);
-            }
-        }
+        splitUnwrappedBSpline(u, v);
     }
     catch (Standard_Failure& e) {
         THROWM(Base::CADKernelError,e.GetMessageString())

@@ -28,7 +28,7 @@
         </sizepolicy>
        </property>
        <property name="title">
-        <string>Working directory for solving analysis and gmsh meshing</string>
+        <string>Working directory for solving analysis and Gmsh meshing</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
@@ -273,13 +273,13 @@
           <item row="0" column="0">
            <widget class="Gui::PrefCheckBox" name="cb_analysis_group_meshing">
             <property name="enabled">
-             <bool>false</bool>
+             <bool>true</bool>
             </property>
             <property name="text">
              <string>Create mesh groups for analysis reference shapes (highly experimental)</string>
             </property>
             <property name="checked">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
             <property name="prefEntry" stdset="0">
              <cstring>AnalysisGroupMeshing</cstring>
@@ -355,7 +355,7 @@ with the last used dialog settings</string>
 when the results dialog is opened</string>
             </property>
             <property name="text">
-             <string>Hide analysis features when open result dialog</string>
+             <string>Hide analysis features when opening result dialog</string>
             </property>
             <property name="checkable">
              <bool>true</bool>

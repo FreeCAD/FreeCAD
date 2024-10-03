@@ -31,53 +31,12 @@
 #include <Base/Vector3D.h>
 
 #include "Geometry.h"
-
+#include "LineFormat.h"
 
 class TopoDS_Edge;
 
 namespace TechDraw {
 class DrawViewPart;
-
-
-//general purpose line format specifier
-class TechDrawExport LineFormat
-{
-public:
-    static constexpr size_t InvalidLine{0};
-
-    LineFormat();
-    LineFormat(const int style,
-               const double weight,
-               const App::Color& color,
-               const bool visible);
-    ~LineFormat() = default;
-
-    int getStyle() const { return m_style; }
-    void setStyle(int style) { m_style = style; }
-    double getWidth() const { return m_weight; }
-    void setWidth(double width) {m_weight = width; }
-    App::Color getColor() const { return m_color; }
-    void setColor(App::Color color) { m_color = color; }
-    QColor getQColor() const { return m_color.asValue<QColor>(); }
-    void setQColor(QColor qColor) { m_color.set(qColor.redF(), qColor.greenF(), qColor.blueF(), 1.0 - qColor.alphaF()); }
-    bool getVisible() const { return m_visible; }
-    void setVisible(bool viz) { m_visible = viz; }
-    int getLineNumber() const { return m_lineNumber; }
-    void setLineNumber(int number) { m_lineNumber = number; }
-
-    int m_style;
-    double m_weight;
-    App::Color m_color;
-    bool m_visible;
-    int m_lineNumber {1};
-
-    static double getDefEdgeWidth();
-    static App::Color getDefEdgeColor();
-    static int getDefEdgeStyle();
-
-    void dump(const char* title);
-    std::string toString() const;
-};
 
 //********** CosmeticEdge ******************************************************
 
@@ -99,6 +58,11 @@ public:
     TechDraw::BaseGeomPtr scaledAndRotatedGeometry(const double scale, const double rotDegrees);
 
     static TechDraw::BaseGeomPtr makeCanonicalLine(DrawViewPart* dvp, Base::Vector3d start, Base::Vector3d end);
+    static TechDraw::BaseGeomPtr makeLineFromCanonicalPoints(Base::Vector3d start, Base::Vector3d end);
+
+    LineFormat format() const { return m_format; }
+    void setFormat(LineFormat newFormat) { m_format = newFormat; }
+
     std::string toString() const override;
     void dump(const char* title) const;
 
@@ -108,7 +72,6 @@ public:
     void Restore(Base::XMLReader &/*reader*/) override;
 
     PyObject *getPyObject() override;
-    CosmeticEdge* copy() const;
     CosmeticEdge* clone() const;
 
     Base::Vector3d permaStart;         //persistent unscaled start/end points in View coords

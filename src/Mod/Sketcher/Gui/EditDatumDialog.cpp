@@ -285,7 +285,8 @@ void EditDatumDialog::drivingToggled(bool state)
 
 void EditDatumDialog::datumChanged()
 {
-    if (ui_ins_datum->labelEdit->text() != qAsConst(ui_ins_datum->labelEdit)->getHistory()[0]) {
+    if (ui_ins_datum->labelEdit->text()
+        != std::as_const(ui_ins_datum->labelEdit)->getHistory()[0]) {
         ui_ins_datum->cbDriving->setChecked(false);
     }
 }

@@ -38,14 +38,16 @@ def get_information():
         "meshtype": "solid",
         "meshelement": "Hexa20",
         "constraints": ["fixed", "force"],
-        "solvers": ["calculix", "ccxtools", "elmer", "z88"],
+        "solvers": ["ccxtools", "elmer", "z88"],
         "material": "solid",
-        "equations": ["mechanical"]
+        "equations": ["mechanical"],
     }
 
 
 def get_explanation(header=""):
-    return header + """
+    return (
+        header
+        + """
 
 To run the example from Python console use:
 from femexamples.ccx_cantilever_ele_hexa20 import setup
@@ -57,6 +59,7 @@ hexa20 elements and face load
 ...
 
 """
+    )
 
 
 def setup(doc=None, solvertype="ccxtools"):
@@ -80,6 +83,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # load the hexa20 mesh
     from .meshes.mesh_canticcx_hexa20 import create_nodes, create_elements
+
     new_fem_mesh = Fem.FemMesh()
     control = create_nodes(new_fem_mesh)
     if not control:

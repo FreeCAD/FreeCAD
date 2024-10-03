@@ -81,6 +81,9 @@ endif(FREECAD_USE_PCH)
 
 add_library(MeshPartGui SHARED ${MeshPartGui_SRCS} ${MeshPartGui_Scripts} ${FLATMESH_PY_SRCS})
 target_link_libraries(MeshPartGui ${MeshPartGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(MeshPartGui)
+endif()
 
 
 SET_BIN_DIR(MeshPartGui MeshPartGui /Mod/MeshPart)

@@ -14,7 +14,7 @@ care fac referire la același obiect configurabil</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="445"/>
+      <location filename="../../Application.cpp" line="463"/>
       <source>Unnamed</source>
       <translation>Nedenumit</translation>
     </message>
@@ -22,32 +22,32 @@ care fac referire la același obiect configurabil</translation>
   <context>
     <name>App::Origin</name>
     <message>
-      <location filename="../../Origin.cpp" line="140"/>
+      <location filename="../../Origin.cpp" line="142"/>
       <source>X-axis</source>
       <translation>Axa X</translation>
     </message>
     <message>
-      <location filename="../../Origin.cpp" line="141"/>
+      <location filename="../../Origin.cpp" line="143"/>
       <source>Y-axis</source>
       <translation>Axa Y</translation>
     </message>
     <message>
-      <location filename="../../Origin.cpp" line="142"/>
+      <location filename="../../Origin.cpp" line="144"/>
       <source>Z-axis</source>
       <translation>Axa Z</translation>
     </message>
     <message>
-      <location filename="../../Origin.cpp" line="143"/>
+      <location filename="../../Origin.cpp" line="145"/>
       <source>XY-plane</source>
       <translation>Planul XY</translation>
     </message>
     <message>
-      <location filename="../../Origin.cpp" line="144"/>
+      <location filename="../../Origin.cpp" line="146"/>
       <source>XZ-plane</source>
       <translation>Plan XZ</translation>
     </message>
     <message>
-      <location filename="../../Origin.cpp" line="145"/>
+      <location filename="../../Origin.cpp" line="147"/>
       <source>YZ-plane</source>
       <translation>YZ-plane</translation>
     </message>

@@ -20,7 +20,7 @@ include_directories(
 )
 link_directories(${YAML_CPP_LIBRARY_DIR})
 
-set(Material_LIBS
+set(Materials_LIBS
     ${Boost_LIBRARIES}
     FreeCADApp
 )
@@ -28,13 +28,23 @@ set(Material_LIBS
 include_directories(
     ${QtConcurrent_INCLUDE_DIRS}
 )
-list(APPEND Material_LIBS
+list(APPEND Materials_LIBS
     ${QtConcurrent_LIBRARIES}
-    ${YAML_CPP_LIBRARIES}
 )
+
+if(yaml-cpp_VERSION VERSION_LESS 0.8.0)
+    list(APPEND Materials_LIBS
+        ${YAML_CPP_LIBRARIES}
+    )
+else()
+    list(APPEND Materials_LIBS
+        yaml-cpp::yaml-cpp
+    )
+endif()
 
 generate_from_xml(Array2DPy)
 generate_from_xml(Array3DPy)
+generate_from_xml(MaterialFilterPy)
 generate_from_xml(MaterialManagerPy)
 generate_from_xml(MaterialPy)
 generate_from_xml(ModelManagerPy)
@@ -45,25 +55,27 @@ generate_from_xml(UUIDsPy)
 SET(Python_SRCS
     Exceptions.h
     Array2DPy.xml
-    Array2DPyImpl.cpp
+    Array2DPyImp.cpp
     Array3DPy.xml
-    Array3DPyImpl.cpp
+    Array3DPyImp.cpp
     MaterialManagerPy.xml
-    MaterialManagerPyImpl.cpp
+    MaterialManagerPyImp.cpp
     MaterialPy.xml
-    MaterialPyImpl.cpp
+    MaterialPyImp.cpp
+    MaterialFilterPy.xml
+    MaterialFilterPyImp.cpp
     ModelManagerPy.xml
-    ModelManagerPyImpl.cpp
+    ModelManagerPyImp.cpp
     ModelPropertyPy.xml
-    ModelPropertyPyImpl.cpp
+    ModelPropertyPyImp.cpp
     ModelPy.xml
-    ModelPyImpl.cpp
+    ModelPyImp.cpp
     UUIDsPy.xml
-    UUIDsPyImpl.cpp
+    UUIDsPyImp.cpp
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
-SET(Material_SRCS
+SET(Materials_SRCS
     ${Python_SRCS}
     AppMaterial.cpp
     FolderTree.h
@@ -93,19 +105,24 @@ SET(Material_SRCS
     ModelUuids.h
     PreCompiled.cpp
     PreCompiled.h
+    PropertyMaterial.cpp
+    PropertyMaterial.h
     trim.h
 )
 
 if(FREECAD_USE_PCH)
     add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Material_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(Material PreCompiled.h PreCompiled.cpp PCH_SRCS)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Materials_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(Materials PreCompiled.h PreCompiled.cpp PCH_SRCS)
 endif(FREECAD_USE_PCH)
 
-add_library(Material SHARED ${Material_SRCS})
-target_link_libraries(Material ${Material_LIBS})
+add_library(Materials SHARED ${Materials_SRCS})
+target_link_libraries(Materials ${Materials_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(Materials)
+endif()
 
-SET_BIN_DIR(Material Material /Mod/Material)
-SET_PYTHON_PREFIX_SUFFIX(Material)
+SET_BIN_DIR(Materials Materials /Mod/Material)
+SET_PYTHON_PREFIX_SUFFIX(Materials)
 
-INSTALL(TARGETS Material DESTINATION ${CMAKE_INSTALL_LIBDIR})
+INSTALL(TARGETS Materials DESTINATION ${CMAKE_INSTALL_LIBDIR})

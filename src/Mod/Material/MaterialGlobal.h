@@ -26,7 +26,7 @@
 
 // Material
 #ifndef MaterialsExport
-#ifdef Material_EXPORTS
+#ifdef Materials_EXPORTS
 #define MaterialsExport FREECAD_DECL_EXPORT
 #else
 #define MaterialsExport FREECAD_DECL_IMPORT

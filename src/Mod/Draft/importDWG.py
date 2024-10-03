@@ -50,9 +50,7 @@ else:
     def translate(context, txt):
         return txt
 
-# Save the native open function to avoid collisions
-if open.__module__ == '__builtin__':
-    pythonopen = open
+
 
 
 def open(filename):

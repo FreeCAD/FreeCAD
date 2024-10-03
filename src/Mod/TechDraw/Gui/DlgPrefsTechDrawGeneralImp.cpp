@@ -70,10 +70,17 @@ void DlgPrefsTechDrawGeneralImp::saveSettings()
     ui->pfc_Welding->onSave();
     ui->pfc_FilePattern->onSave();
     ui->le_NamePattern->onSave();
+    ui->fcSymbolDir->onSave();
+
     ui->cb_ShowGrid->onSave();
     ui->psb_GridSpacing->onSave();
 
     ui->cbMultiSelection->onSave();
+
+    ui->cb_useCameraDirection->onSave();
+    ui->cb_alwaysShowLabel->onSave();
+    ui->cb_SnapViews->onSave();
+    ui->psb_SnapFactor->onSave();
 }
 
 void DlgPrefsTechDrawGeneralImp::loadSettings()
@@ -102,6 +109,8 @@ void DlgPrefsTechDrawGeneralImp::loadSettings()
     ui->pfc_Welding->onRestore();
     ui->pfc_FilePattern->onRestore();
     ui->le_NamePattern->onRestore();
+    ui->fcSymbolDir->onRestore();
+
 
     bool gridDefault = PreferencesGui::showGrid();
     ui->cb_ShowGrid->setChecked(gridDefault);
@@ -114,6 +123,12 @@ void DlgPrefsTechDrawGeneralImp::loadSettings()
     bool multiSelectionDefault = PreferencesGui::multiSelection();
     ui->cbMultiSelection->setChecked(multiSelectionDefault);
     ui->cbMultiSelection->onRestore();
+
+    ui->cb_useCameraDirection->onRestore();
+    ui->cb_alwaysShowLabel->onRestore();
+
+    ui->cb_SnapViews->onRestore();
+    ui->psb_SnapFactor->onRestore();
 }
 
 /**
@@ -122,9 +137,7 @@ void DlgPrefsTechDrawGeneralImp::loadSettings()
 void DlgPrefsTechDrawGeneralImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        saveSettings();
         ui->retranslateUi(this);
-        loadSettings();
     }
     else {
         QWidget::changeEvent(e);

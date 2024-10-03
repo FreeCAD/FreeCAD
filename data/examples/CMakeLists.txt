@@ -5,10 +5,9 @@ SET(Examples_Files
     EngineBlock.FCStd
     PartDesignExample.FCStd
     RobotExample.FCStd
-    ArchDetail.FCStd
-    FemCalculixCantilever2D.FCStd
-    FemCalculixCantilever3D.FCStd
-    FemCalculixCantilever3D_newSolver.FCStd
+    BIMExample.FCStd
+    FEMExample.FCStd
+    AssemblyExample.FCStd
 )
 
 ADD_CUSTOM_TARGET(Example_data ALL
@@ -17,7 +16,7 @@ ADD_CUSTOM_TARGET(Example_data ALL
 
 # 0001097: CMake stops with error "Circular ... <- ... dependency dropped."
 if(NOT "${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
-    fc_copy_sources(Example_data "${CMAKE_BINARY_DIR}/data/examples" ${Examples_Files})
+    fc_copy_sources(Example_data "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/examples" ${Examples_Files})
 endif()
 
 if (WIN32 AND FREECAD_LIBPACK_USE)

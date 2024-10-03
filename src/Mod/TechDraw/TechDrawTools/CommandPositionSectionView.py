@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2023 edi <edi271@a1.net>               *
+# *   Copyright (c) 2023 edi <edi271@a1.net>                                *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -49,7 +49,7 @@ class CommandPositionSectionView:
         return {'Pixmap': 'TechDraw_ExtensionPositionSectionView.svg',
                 'Accel': "",
                 'MenuText': QT_TRANSLATE_NOOP("TechDraw_PositionSectionView", "Position Section View"),
-                'ToolTip': QT_TRANSLATE_NOOP("TechDraw_PositionSectionView", 
+                'ToolTip': QT_TRANSLATE_NOOP("TechDraw_PositionSectionView",
                   "Orthogonally align a section view with its source view:<br>\
                 - Select a single section view<br>\
                 - Click this tool<br>\

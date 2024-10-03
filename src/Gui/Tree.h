@@ -122,6 +122,7 @@ public:
     void itemSearch(const QString &text, bool select);
 
     static void synchronizeSelectionCheckBoxes();
+    static void updateVisibilityIcons();
 
     QList<QTreeWidgetItem *> childrenOfItem(const QTreeWidgetItem &item) const;
 
@@ -140,15 +141,35 @@ protected:
     void dragLeaveEvent(QDragLeaveEvent * event) override;
     void dragMoveEvent(QDragMoveEvent *event) override;
     void dropEvent(QDropEvent *event) override;
+
+private:
+    struct TargetItemInfo {
+        QTreeWidgetItem* targetItem = nullptr; //target may be the parent of underMouse
+        QTreeWidgetItem* underMouseItem = nullptr;
+        App::Document* targetDoc = nullptr;
+        QPoint pos;
+        bool inBottomHalf = false;
+        bool inThresholdZone = false;
+    };
+    TargetItemInfo getTargetInfo(QEvent* ev);
+    using ObjectItemSubname = std::pair<DocumentObjectItem*, std::vector<std::string>>;
+    bool dropInObject(QDropEvent* event, TargetItemInfo& targetInfo, std::vector<ObjectItemSubname> items);
+    bool dropInDocument(QDropEvent* event, TargetItemInfo& targetInfo, std::vector<ObjectItemSubname> items);
+    bool canDragFromParents(DocumentObjectItem* parentItem, App::DocumentObject* obj, App::DocumentObject* target);
+    void sortDroppedObjects(TargetItemInfo& targetInfo, std::vector<App::DocumentObject*> draggedObjects);
     //@}
-    bool event(QEvent *e) override;
-    void keyPressEvent(QKeyEvent *event) override;
-    void mouseDoubleClickEvent(QMouseEvent * event) override;
 
 protected:
-    void showEvent(QShowEvent *) override;
-    void hideEvent(QHideEvent *) override;
-    void leaveEvent(QEvent *) override;
+    bool event(QEvent *e) override;
+    void keyPressEvent(QKeyEvent *event) override;
+    void mousePressEvent(QMouseEvent * event) override;
+    void mouseDoubleClickEvent(QMouseEvent * event) override;
+
+    void showEvent(QShowEvent *ev) override;
+    void hideEvent(QHideEvent *ev) override;
+    void leaveEvent(QEvent *event) override;
+
+private:
     void _updateStatus(bool delay=true);
 
 protected Q_SLOTS:
@@ -291,6 +312,7 @@ public:
     void setData(int column, int role, const QVariant & value) override;
     void populateItem(DocumentObjectItem *item, bool refresh=false, bool delayUpdate=true);
     bool populateObject(App::DocumentObject *obj);
+    void sortObjectItems();
     void selectAllInstances(const ViewProviderDocumentObject &vpd);
     bool showItem(DocumentObjectItem *item, bool select, bool force=false);
     void updateItemsVisibility(QTreeWidgetItem *item, bool show);
@@ -342,6 +364,7 @@ protected:
             App::DocumentObject *obj, const char *subname, bool select=false);
 
     DocumentObjectItem *findItem(bool sync, DocumentObjectItem *item, const char *subname, bool select=true);
+    DocumentObjectItem *findItem(App::DocumentObject* obj, const std::string& subname) const;
 
     App::DocumentObject *getTopParent(App::DocumentObject *obj, std::string &subname);
 
@@ -439,10 +462,14 @@ public:
     int isParentGroup() const;
 
     DocumentObjectItem *getParentItem() const;
+    DocumentObjectItem *getNextSibling() const;
+    DocumentObjectItem *getPreviousSibling() const;
     TreeWidget *getTree() const;
 
 private:
     void setCheckState(bool checked);
+    void getExpandedSnapshot(std::vector<bool>& snapshot) const;
+    void applyExpandedSnapshot(const std::vector<bool>& snapshot, std::vector<bool>::const_iterator& from);
 
     QBrush bgBrush;
     DocumentItem *myOwner;

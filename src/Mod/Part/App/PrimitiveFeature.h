@@ -49,7 +49,6 @@ public:
 protected:
     void Restore(Base::XMLReader &reader) override;
     void onChanged (const App::Property* prop) override;
-    void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName) override;
     void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
 };
 

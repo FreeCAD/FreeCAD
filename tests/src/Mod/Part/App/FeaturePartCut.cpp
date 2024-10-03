@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 #include "Mod/Part/App/FeaturePartCut.h"
 #include <src/App/InitApplication.h>
@@ -171,6 +171,19 @@ TEST_F(FeaturePartCutTest, testGetProviderName)
     const char* name = _cut->getViewProviderName();
     // Assert
     EXPECT_STREQ(name, "PartGui::ViewProviderBoolean");
+}
+
+TEST_F(FeaturePartCutTest, testMapping)
+{
+
+    // Arrange
+    _cut->Base.setValue(_boxes[0]);
+    _cut->Tool.setValue(_boxes[1]);
+    // Act
+    _cut->execute();
+    const Part::TopoShape& ts1 = _cut->Shape.getShape();
+    // Assert
+    EXPECT_EQ(ts1.getElementMap().size(), 26);
 }
 
 // See FeaturePartCommon.cpp for a history test.  It would be exactly the same and redundant here.

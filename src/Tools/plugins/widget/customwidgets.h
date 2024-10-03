@@ -301,9 +301,13 @@ class AccelLineEdit: public QLineEdit
 
 public:
     AccelLineEdit(QWidget* parent = 0);
+    bool isNone() const;
 
 protected:
     void keyPressEvent(QKeyEvent* e);
+
+private:
+    int keyPressedCount;
 };
 
 // ------------------------------------------------------------------------------

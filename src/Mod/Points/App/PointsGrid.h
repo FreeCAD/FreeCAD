@@ -63,8 +63,12 @@ public:
     PointsGrid(const PointKernel& rclM, double fGridLen);
     /// Construction
     PointsGrid(const PointKernel& rclM, unsigned long ulX, unsigned long ulY, unsigned long ulZ);
+    PointsGrid(const PointsGrid&) = default;
+    PointsGrid(PointsGrid&&) = default;
     /// Destruction
     virtual ~PointsGrid() = default;
+    PointsGrid& operator=(const PointsGrid&) = default;
+    PointsGrid& operator=(PointsGrid&&) = default;
     //@}
 
 public:
@@ -174,7 +178,7 @@ protected:
                  unsigned long ulDistance,
                  std::set<unsigned long>& raclInd) const;
 
-protected:
+private:
     std::vector<std::vector<std::vector<std::set<unsigned long>>>>
         _aulGrid;                  /**< Grid data structure. */
     const PointKernel* _pclPoints; /**< The point kernel. */
@@ -280,7 +284,7 @@ public:
         rulZ = _ulZ;
     }
 
-protected:
+private:
     const PointsGrid& _rclGrid; /**< The point grid. */
     unsigned long _ulX {0};     /**< Number of grids in x. */
     unsigned long _ulY {0};     /**< Number of grids in y. */
@@ -293,11 +297,10 @@ protected:
     struct GridElement
     {
         GridElement(unsigned long x, unsigned long y, unsigned long z)
-        {
-            this->x = x;
-            this->y = y;
-            this->z = z;
-        }
+            : x {x}
+            , y {y}
+            , z {z}
+        {}
         bool operator<(const GridElement& pos) const
         {
             if (x == pos.x) {
@@ -324,7 +327,7 @@ protected:
 inline Base::BoundBox3d
 PointsGrid::GetBoundBox(unsigned long ulX, unsigned long ulY, unsigned long ulZ) const
 {
-    double fX, fY, fZ;
+    double fX {}, fY {}, fZ {};
 
     fX = _fMinX + (double(ulX) * _fGridLenX);
     fY = _fMinY + (double(ulY) * _fGridLenY);

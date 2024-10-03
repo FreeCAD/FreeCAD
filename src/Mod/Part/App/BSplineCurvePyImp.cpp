@@ -828,8 +828,8 @@ PyObject* BSplineCurvePy::approximate(PyObject *args, PyObject *kwds)
         else
             c = GeomAbs_C2;
 
-        bool ok = this->getGeomBSplineCurvePtr()->approximate(tol3d, segMax, degMax, c);
-        return Py_BuildValue("O", (ok ? Py_True : Py_False));
+        this->getGeomBSplineCurvePtr()->approximate(tol3d, segMax, degMax, c);
+        Py_Return;
     }
 
     // Approximate a list of points

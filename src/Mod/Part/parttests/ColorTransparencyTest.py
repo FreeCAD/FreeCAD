@@ -27,7 +27,7 @@ class ColorTransparencyTest(unittest.TestCase):
         self._pg.SetInt('DefaultShapeTransparency', transparency)
         obj = self._doc.addObject('Part::Box')
         assert obj.ViewObject.Transparency == transparency
-        obj.ViewObject.ShapeColor = (0.5, 0.0, 0.0)
+        obj.ViewObject.ShapeAppearance[0].DiffuseColor = (0.5, 0.0, 0.0)
 
         self.assertEqual(obj.ViewObject.Transparency, transparency,
             'transparency was unexpectedly changed to {} when changing the color.'.format(
@@ -38,11 +38,22 @@ class ColorTransparencyTest(unittest.TestCase):
         """
         related: https://github.com/FreeCAD/FreeCAD/pull/11866
         """
+
+        """
+        This test isn't currently valid as it draws from the hard coded default material.
+
+        The preference editor doesn't allow for setting transparencies. The default value
+        of 0 corresponds to a fully transparent color, which is not desirable. It changes
+        the transparency when loading to 1.0
+        """
+        
         self._pg.SetUnsigned('DefaultShapeColor', 0xff000000)  # red
         obj = self._doc.addObject('Part::Box')
 
-        self.assertEqual(obj.ViewObject.ShapeColor, (1.0, 0.0, 0.0, 0.0),
+        self.assertEqual(obj.ViewObject.ShapeAppearance[0].DiffuseColor, (1.0, 0.0, 0.0, 1.0),
             'default shape color was not set correctly')
+        self.assertEqual(obj.ViewObject.ShapeMaterial.DiffuseColor, (1.0, 0.0, 0.0, 1.0),
+            'default material color was not set correctly')
 
 
     def test_app_plane_transparency(self):

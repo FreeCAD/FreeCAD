@@ -46,6 +46,7 @@
 // other python types
 #include "ConstraintPy.h"
 #include "GeometryFacadePy.h"
+#include "SketchAnalysis.h"
 
 
 using namespace Sketcher;
@@ -258,6 +259,30 @@ PyObject* SketchObjectPy::deleteAllGeometry(PyObject* args)
     }
 
     Py_Return;
+}
+
+PyObject* SketchObjectPy::detectDegeneratedGeometries(PyObject* args)
+{
+    double tolerance {};
+    if (!PyArg_ParseTuple(args, "d", &tolerance)) {
+        return nullptr;
+    }
+
+    SketchAnalysis analyse(this->getSketchObjectPtr());
+    int count = analyse.detectDegeneratedGeometries(tolerance);
+    return Py::new_reference_to(Py::Long(count));
+}
+
+PyObject* SketchObjectPy::removeDegeneratedGeometries(PyObject* args)
+{
+    double tolerance {};
+    if (!PyArg_ParseTuple(args, "d", &tolerance)) {
+        return nullptr;
+    }
+
+    SketchAnalysis analyse(this->getSketchObjectPtr());
+    int count = analyse.removeDegeneratedGeometries(tolerance);
+    return Py::new_reference_to(Py::Long(count));
 }
 
 PyObject* SketchObjectPy::deleteAllConstraints(PyObject* args)
@@ -614,6 +639,12 @@ PyObject* SketchObjectPy::delConstraintOnPoint(PyObject* args)
         return nullptr;
     }
 
+    Py_Return;
+}
+
+PyObject* SketchObjectPy::delConstraintsToExternal()
+{
+    this->getSketchObjectPtr()->delConstraintsToExternal();
     Py_Return;
 }
 
@@ -1041,6 +1072,74 @@ PyObject* SketchObjectPy::toggleActive(PyObject* args)
     Py_Return;
 }
 
+PyObject* SketchObjectPy::getLabelPosition(PyObject* args)
+{
+    int constrid {};
+    float pos {};
+
+    if (!PyArg_ParseTuple(args, "i", &constrid)) {
+        return nullptr;
+    }
+
+    if (this->getSketchObjectPtr()->getLabelPosition(constrid, pos)) {
+        PyErr_SetString(PyExc_ValueError, "Invalid constraint id");
+        return nullptr;
+    }
+
+    return Py::new_reference_to(Py::Float(pos));
+}
+
+PyObject* SketchObjectPy::setLabelPosition(PyObject* args)
+{
+    int constrid {};
+    float pos {};
+
+    if (!PyArg_ParseTuple(args, "if", &constrid, &pos)) {
+        return nullptr;
+    }
+
+    if (this->getSketchObjectPtr()->setLabelPosition(constrid, pos)) {
+        PyErr_SetString(PyExc_ValueError, "Invalid constraint id");
+        return nullptr;
+    }
+
+    Py_Return;
+}
+
+PyObject* SketchObjectPy::getLabelDistance(PyObject* args)
+{
+    int constrid {};
+    float dist {};
+
+    if (!PyArg_ParseTuple(args, "i", &constrid)) {
+        return nullptr;
+    }
+
+    if (this->getSketchObjectPtr()->getLabelDistance(constrid, dist)) {
+        PyErr_SetString(PyExc_ValueError, "Invalid constraint id");
+        return nullptr;
+    }
+
+    return Py::new_reference_to(Py::Float(dist));
+}
+
+PyObject* SketchObjectPy::setLabelDistance(PyObject* args)
+{
+    int constrid {};
+    float dist {};
+
+    if (!PyArg_ParseTuple(args, "if", &constrid, &dist)) {
+        return nullptr;
+    }
+
+    if (this->getSketchObjectPtr()->setLabelDistance(constrid, dist)) {
+        PyErr_SetString(PyExc_ValueError, "Invalid constraint id");
+        return nullptr;
+    }
+
+    Py_Return;
+}
+
 PyObject* SketchObjectPy::movePoint(PyObject* args)
 {
     PyObject* pcObj;
@@ -1128,11 +1227,12 @@ PyObject* SketchObjectPy::fillet(PyObject* args)
     int geoId1, geoId2, posId1;
     int trim = true;
     PyObject* createCorner = Py_False;
+    PyObject* chamfer = Py_False;
     double radius;
 
     // Two Lines, radius
     if (PyArg_ParseTuple(args,
-                         "iiO!O!d|iO!",
+                         "iiO!O!d|iO!O!",
                          &geoId1,
                          &geoId2,
                          &(Base::VectorPy::Type),
@@ -1142,15 +1242,23 @@ PyObject* SketchObjectPy::fillet(PyObject* args)
                          &radius,
                          &trim,
                          &PyBool_Type,
-                         &createCorner)) {
+                         &createCorner,
+                         &PyBool_Type,
+                         &chamfer)) {
         // The i for &trim should probably have been a bool like &createCorner, but we'll leave it
         // an int for backward compatibility (and because python will accept a bool there anyway)
 
         Base::Vector3d v1 = static_cast<Base::VectorPy*>(pcObj1)->value();
         Base::Vector3d v2 = static_cast<Base::VectorPy*>(pcObj2)->value();
 
-        if (this->getSketchObjectPtr()
-                ->fillet(geoId1, geoId2, v1, v2, radius, trim, Base::asBoolean(createCorner))) {
+        if (this->getSketchObjectPtr()->fillet(geoId1,
+                                               geoId2,
+                                               v1,
+                                               v2,
+                                               radius,
+                                               trim,
+                                               Base::asBoolean(createCorner),
+                                               Base::asBoolean(chamfer))) {
             std::stringstream str;
             str << "Not able to fillet curves with ids : (" << geoId1 << ", " << geoId2
                 << ") and points (" << v1.x << ", " << v1.y << ", " << v1.z << ") & "
@@ -1164,18 +1272,21 @@ PyObject* SketchObjectPy::fillet(PyObject* args)
     PyErr_Clear();
     // Point, radius
     if (PyArg_ParseTuple(args,
-                         "iid|iO!",
+                         "iid|iO!O!",
                          &geoId1,
                          &posId1,
                          &radius,
                          &trim,
                          &PyBool_Type,
-                         &createCorner)) {
+                         &createCorner,
+                         &PyBool_Type,
+                         &chamfer)) {
         if (this->getSketchObjectPtr()->fillet(geoId1,
                                                static_cast<Sketcher::PointPos>(posId1),
                                                radius,
                                                trim,
-                                               Base::asBoolean(createCorner))) {
+                                               Base::asBoolean(createCorner),
+                                               Base::asBoolean(chamfer))) {
             std::stringstream str;
             str << "Not able to fillet point with ( geoId: " << geoId1 << ", PointPos: " << posId1
                 << " )";
@@ -1268,15 +1379,17 @@ PyObject* SketchObjectPy::join(PyObject* args)
     int GeoId1(Sketcher::GeoEnum::GeoUndef), GeoId2(Sketcher::GeoEnum::GeoUndef);
     int PosId1 = static_cast<int>(Sketcher::PointPos::none),
         PosId2 = static_cast<int>(Sketcher::PointPos::none);
+    int continuity = 0;
 
-    if (!PyArg_ParseTuple(args, "iiii", &GeoId1, &PosId1, &GeoId2, &PosId2)) {
+    if (!PyArg_ParseTuple(args, "iiii|i", &GeoId1, &PosId1, &GeoId2, &PosId2, &continuity)) {
         return nullptr;
     }
 
     if (this->getSketchObjectPtr()->join(GeoId1,
                                          (Sketcher::PointPos)PosId1,
                                          GeoId2,
-                                         (Sketcher::PointPos)PosId2)) {
+                                         (Sketcher::PointPos)PosId2,
+                                         continuity)) {
         std::stringstream str;
         str << "Not able to join the curves with end points: (" << GeoId1 << ", " << PosId1
             << "), (" << GeoId2 << ", " << PosId2 << ")";
@@ -1856,6 +1969,18 @@ PyObject* SketchObjectPy::makeMissingEquality(PyObject* args)
 
     this->getSketchObjectPtr()->makeMissingEquality(Base::asBoolean(onebyone));
 
+    Py_Return;
+}
+
+PyObject* SketchObjectPy::evaluateConstraints()
+{
+    bool ok = this->getSketchObjectPtr()->evaluateConstraints();
+    return Py::new_reference_to(Py::Boolean(ok));
+}
+
+PyObject* SketchObjectPy::validateConstraints()
+{
+    this->getSketchObjectPtr()->validateConstraints();
     Py_Return;
 }
 

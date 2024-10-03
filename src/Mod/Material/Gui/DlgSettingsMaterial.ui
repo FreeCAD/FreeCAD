@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>434</width>
-    <height>341</height>
+    <height>553</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -125,23 +125,14 @@ will be listed as available.</string>
             <property name="enabled">
              <bool>true</bool>
             </property>
+            <property name="mode">
+             <enum>Gui::FileChooser::Directory</enum>
+            </property>
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>20</height>
-             </size>
-            </property>
-            <property name="baseSize">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
             </property>
             <property name="prefEntry" stdset="0">
              <cstring>CustomMaterialsDir</cstring>
@@ -207,24 +198,168 @@ If unchecked, they will be sorted by their name.</string>
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="gb_materials_testing">
+    <widget class="QGroupBox" name="gbMaterialSelector">
      <property name="title">
-      <string>Testing</string>
+      <string>Material Selector</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_4">
+     <layout class="QVBoxLayout" name="verticalLayout_5">
       <item>
-       <widget class="Gui::PrefCheckBox" name="cb_legacy_editor">
+       <widget class="Gui::PrefCheckBox" name="cb_show_favorites">
         <property name="text">
-         <string>Use legacy editor</string>
+         <string>Show favorites</string>
         </property>
         <property name="checked">
          <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>LegacyEditor</cstring>
+         <cstring>ShowFavorites</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>Mod/Material/Cards</cstring>
+         <cstring>Mod/Material/TreeWidget</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="cb_show_recent">
+        <property name="text">
+         <string>Show recent</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowRecent</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Material/TreeWidget</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="cb_show_empty_libraries">
+        <property name="text">
+         <string>Show empty libraries</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowEmptyLibraries</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Material/TreeWidget</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="cb_show_empty_folders">
+        <property name="text">
+         <string>Show empty folders</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowEmptyFolders</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Material/TreeWidget</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="cb_show_legacy">
+        <property name="text">
+         <string>Show legacy files</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowLegacy</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Material/TreeWidget</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Material Editor</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_4">
+      <item>
+       <widget class="Gui::PrefCheckBox" name="cb_show_favorites_editor">
+        <property name="text">
+         <string>Show favorites</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowFavorites</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Material/Editor</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="cb_show_recent_editor">
+        <property name="text">
+         <string>Show recent</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowRecent</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Material/Editor</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="cb_show_empty_libraries_editor">
+        <property name="text">
+         <string>Show empty libraries</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowEmptyLibraries</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Material/Editor</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="cb_show_empty_folders_editor">
+        <property name="text">
+         <string>Show empty folders</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowEmptyFolders</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Material/Editor</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="cb_show_legacy_editor">
+        <property name="text">
+         <string>Show legacy files</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowLegacy</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Material/Editor</cstring>
         </property>
        </widget>
       </item>

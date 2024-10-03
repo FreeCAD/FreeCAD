@@ -80,7 +80,7 @@
          <widget class="Gui::PrefCheckBox" name="checkBox">
           <property name="toolTip">
            <string>If checked, no units conversion will occur.
-One unit in the SVG file will translate as one millimeter. </string>
+One unit in the SVG file will translate as one millimeter.</string>
           </property>
           <property name="text">
            <string>Disable units scaling</string>
@@ -201,9 +201,9 @@ One unit in the SVG file will translate as one millimeter. </string>
         <item>
          <widget class="Gui::PrefDoubleSpinBox" name="doubleSpinBox">
           <property name="toolTip">
-           <string>Versions of Open CASCADE older than version 6.8 don't support arc projection.
+           <string>Versions of OpenCASCADE older than version 6.8 don't support arc projection.
 In this case arcs will be discretized into small line segments.
-This value is the maximum segment length. </string>
+This value is the maximum segment length.</string>
           </property>
           <property name="suffix">
            <string>mm</string>

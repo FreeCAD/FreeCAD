@@ -35,10 +35,10 @@ import os
 
 import FreeCAD
 from FreeCAD import Console
+from builtins import open as pyopen
 
 
 # ********* generic FreeCAD import and export methods *********
-pyopen = open
 
 
 def open(filename):
@@ -59,17 +59,16 @@ def insert(filename, docname):
 
 # ********* module specific methods *********
 def read(filename):
-    """read a FemMesh from a inp mesh file and return the FemMesh
-    """
+    """read a FemMesh from a inp mesh file and return the FemMesh"""
     # no document object is created, just the FemMesh is returned
     mesh_data = read_inp(filename)
     from . import importToolsFem
+
     return importToolsFem.make_femmesh(mesh_data)
 
 
 def import_inp(filename):
-    """read a FEM mesh from a Z88 mesh file and insert a FreeCAD FEM Mesh object in the ActiveDocument
-    """
+    """read a FEM mesh from a Z88 mesh file and insert a FreeCAD FEM Mesh object in the ActiveDocument"""
     femmesh = read(filename)
     mesh_name = os.path.splitext(os.path.basename(filename))[0]
     if femmesh:
@@ -78,10 +77,10 @@ def import_inp(filename):
 
 
 def read_inp(file_name):
-    """read .inp file """
+    """read .inp file"""
     # ATM only mesh reading is supported (no boundary conditions)
 
-    class elements():
+    class elements:
 
         tria3 = {}
         tria6 = {}
@@ -95,6 +94,7 @@ def read_inp(file_name):
         penta15 = {}
         seg2 = {}
         seg3 = {}
+
     error_seg3 = False  # to print "not supported"
     nodes = {}
     model_definition = True
@@ -160,12 +160,10 @@ def read_inp(file_name):
             elif elm_type in ["S6", "CPS6", "CPE6", "CAX6"]:
                 elm_category = elements.tria6
                 number_of_nodes = 6
-            elif elm_type in ["S4", "S4R", "CPS4", "CPS4R", "CPE4", "CPE4R",
-                              "CAX4", "CAX4R"]:
+            elif elm_type in ["S4", "S4R", "CPS4", "CPS4R", "CPE4", "CPE4R", "CAX4", "CAX4R"]:
                 elm_category = elements.quad4
                 number_of_nodes = 4
-            elif elm_type in ["S8", "S8R", "CPS8", "CPS8R", "CPE8", "CPE8R",
-                              "CAX8", "CAX8R"]:
+            elif elm_type in ["S8", "S8R", "CPS8", "CPS8R", "CPE8", "CPE8R", "CAX8", "CAX8R"]:
                 elm_category = elements.quad8
                 number_of_nodes = 8
             elif elm_type == "C3D4":
@@ -218,7 +216,7 @@ def read_inp(file_name):
     if error_seg3 is True:  # to print "not supported"
         Console.PrintError("Error: seg3 (3-node beam element type) not supported, yet.\n")
     elif error_not_supported_elemtype is True:
-        Console.PrintError("Error: {} not supported.\n".format(elm_type))
+        Console.PrintError(f"Error: {elm_type} not supported.\n")
     f.close()
 
     # switch from the CalculiX node numbering to the FreeCAD node numbering
@@ -228,24 +226,56 @@ def read_inp(file_name):
         elements.tetra4[en] = [n[1], n[0], n[2], n[3]]
     for en in elements.tetra10:
         n = elements.tetra10[en]
-        elements.tetra10[en] = [n[1], n[0], n[2], n[3], n[4], n[6], n[5],
-                                n[8], n[7], n[9]]
+        elements.tetra10[en] = [n[1], n[0], n[2], n[3], n[4], n[6], n[5], n[8], n[7], n[9]]
     for en in elements.hexa8:
         n = elements.hexa8[en]
         elements.hexa8[en] = [n[5], n[6], n[7], n[4], n[1], n[2], n[3], n[0]]
     for en in elements.hexa20:
         n = elements.hexa20[en]
-        elements.hexa20[en] = [n[5], n[6], n[7], n[4], n[1], n[2], n[3], n[0],
-                               n[13], n[14], n[15], n[12], n[9], n[10], n[11],
-                               n[8], n[17], n[18], n[19], n[16]]
+        elements.hexa20[en] = [
+            n[5],
+            n[6],
+            n[7],
+            n[4],
+            n[1],
+            n[2],
+            n[3],
+            n[0],
+            n[13],
+            n[14],
+            n[15],
+            n[12],
+            n[9],
+            n[10],
+            n[11],
+            n[8],
+            n[17],
+            n[18],
+            n[19],
+            n[16],
+        ]
     for en in elements.penta6:
         n = elements.penta6[en]
         elements.penta6[en] = [n[4], n[5], n[3], n[1], n[2], n[0]]
     for en in elements.penta15:
         n = elements.penta15[en]
-        elements.penta15[en] = [n[4], n[5], n[3], n[1], n[2], n[0],
-                                n[10], n[11], n[9], n[7], n[8], n[6], n[13],
-                                n[14], n[12]]
+        elements.penta15[en] = [
+            n[4],
+            n[5],
+            n[3],
+            n[1],
+            n[2],
+            n[0],
+            n[10],
+            n[11],
+            n[9],
+            n[7],
+            n[8],
+            n[6],
+            n[13],
+            n[14],
+            n[12],
+        ]
     for en in elements.seg3:
         n = elements.seg3[en]
         elements.seg3[en] = [n[0], n[2], n[1]]
@@ -263,5 +293,5 @@ def read_inp(file_name):
         "Hexa8Elem": elements.hexa8,
         "Hexa20Elem": elements.hexa20,
         "Penta6Elem": elements.penta6,
-        "Penta15Elem": elements.penta15
+        "Penta15Elem": elements.penta15,
     }

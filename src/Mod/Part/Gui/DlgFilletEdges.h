@@ -168,7 +168,6 @@ public:
 
 private:
     DlgFilletEdges* widget;
-    Gui::TaskView::TaskBox* taskbox;
 };
 
 class TaskChamferEdges : public Gui::TaskView::TaskDialog
@@ -192,7 +191,6 @@ public:
 
 private:
     DlgChamferEdges* widget;
-    Gui::TaskView::TaskBox* taskbox;
 };
 
 } // namespace PartGui

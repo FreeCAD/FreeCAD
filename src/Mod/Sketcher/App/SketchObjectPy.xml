@@ -94,6 +94,38 @@ deleteAllGeometry()
             </UserDocu>
         </Documentation>
     </Methode>
+    <Methode Name="detectDegeneratedGeometries">
+        <Documentation>
+            <UserDocu>
+Detect degenerated geometries. A curve geometry is considered degenerated
+if the parameter range is less than the tolerance.
+
+detectDegeneratedGeometries(tolerance:float)
+
+    Args:
+        tolerance: The tolerance to check the parameter range of a curve.
+
+    Returns:
+        The number of degenerated geometries.
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="removeDegeneratedGeometries">
+        <Documentation>
+            <UserDocu>
+Remove degenerated geometries. A curve geometry is considered degenerated
+if the parameter range is less than the tolerance.
+
+removeDegeneratedGeometries(tolerance:float)
+
+    Args:
+        tolerance: The tolerance to check the parameter range of a curve.
+
+    Returns:
+        The number of degenerated geometries.
+            </UserDocu>
+        </Documentation>
+    </Methode>
     <Methode Name="deleteAllConstraints">
         <Documentation>
             <UserDocu>
@@ -263,6 +295,11 @@ delConstraintOnPoint(geoId:int, pointPos:int)
         </UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="delConstraintsToExternal" NoArgs="true">
+      <Documentation>
+        <UserDocu>Deletes all constraints referencing an external geometry.</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="setDatum">
       <Documentation>
         <UserDocu>
@@ -418,6 +455,62 @@ toggleActive(constraintIndex:int)
             </UserDocu>
         </Documentation>
     </Methode>
+    <Methode Name="getLabelPosition" Const="true">
+        <Documentation>
+            <UserDocu>
+Get label position of the constraint.
+
+getLabelPosition(constraintIndex:int)
+
+    Args:
+        constraintIndex: The zero-based index of the constraint to query.
+
+    Returns:
+        float with the current value.
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="setLabelPosition">
+        <Documentation>
+            <UserDocu>
+Set label position of the constraint.
+
+setLabelPosition(constraintIndex:int, value:float)
+
+    Args:
+        constraintIndex: The zero-based index of the constraint to query.
+        value: Value of the label position.
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="getLabelDistance" Const="true">
+        <Documentation>
+            <UserDocu>
+Get label distance of the constraint.
+
+getLabelDistance(constraintIndex:int)
+
+    Args:
+        constraintIndex: The zero-based index of the constraint to query.
+
+    Returns:
+        float with the current value.
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="setLabelDistance">
+        <Documentation>
+            <UserDocu>
+Set label distance of the constraint.
+
+setLabelDistance(constraintIndex:int, value:float)
+
+    Args:
+        constraintIndex: The zero-based index of the constraint to query.
+        value: Value of the label position.
+            </UserDocu>
+        </Documentation>
+    </Methode>
     <Methode Name="movePoint">
       <Documentation>
         <UserDocu>
@@ -526,17 +619,17 @@ toggleActive(constraintIndex:int)
     </Methode>
     <Methode Name="convertToNURBS">
         <Documentation>
-            <UserDocu>Approximates the given geometry with a B-Spline</UserDocu>
+            <UserDocu>Approximates the given geometry with a B-spline</UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="increaseBSplineDegree">
         <Documentation>
-            <UserDocu>Increases the given BSpline Degree by a number of degrees</UserDocu>
+            <UserDocu>Increases the given B-spline Degree by a number of degrees</UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="decreaseBSplineDegree">
         <Documentation>
-            <UserDocu>Decreases the given BSpline Degree by a number of degrees by approximating this curve</UserDocu>
+            <UserDocu>Decreases the given B-spline Degree by a number of degrees by approximating this curve</UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="modifyBSplineKnotMultiplicity">
@@ -661,6 +754,20 @@ toggleActive(constraintIndex:int)
         <Documentation>
             <UserDocu>
                 Applies the detected / set Equality constraints. If the argument is True, then solving and redundant removal is done after each individual addition.
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="evaluateConstraints" Const="true" NoArgs="true">
+        <Documentation>
+            <UserDocu>
+                Check for constraints with invalid indexes. Returns True if invalid constraints are found, False otherwise.
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="validateConstraints" NoArgs="true">
+        <Documentation>
+            <UserDocu>
+                Removes constraints with invalid indexes.
             </UserDocu>
         </Documentation>
     </Methode>

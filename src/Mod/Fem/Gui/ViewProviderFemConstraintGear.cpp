@@ -29,13 +29,13 @@
 #include <Inventor/SbVec3f.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Precision.hxx>
-#include <QMessageBox>
 #endif
 
 #include "Gui/Control.h"
 #include <Base/Console.h>
 #include <Mod/Fem/App/FemConstraintGear.h>
 
+#include "FemGuiTools.h"
 #include "TaskFemConstraintGear.h"
 #include "ViewProviderFemConstraintGear.h"
 
@@ -55,58 +55,15 @@ ViewProviderFemConstraintGear::~ViewProviderFemConstraintGear() = default;
 bool ViewProviderFemConstraintGear::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
-        // When double-clicking on the item for this constraint the
-        // object unsets and sets its edit mode without closing
-        // the task panel
-        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-        TaskDlgFemConstraintGear* constrDlg = qobject_cast<TaskDlgFemConstraintGear*>(dlg);
-        if (constrDlg && constrDlg->getConstraintView() != this) {
-            constrDlg = nullptr;  // another constraint left open its task panel
-        }
-        if (dlg && !constrDlg) {
-            // This case will occur in the ShaftWizard application
-            checkForWizard();
-            if (!wizardWidget || !wizardSubLayout) {
-                // No shaft wizard is running
-                QMessageBox msgBox;
-                msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-                msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
-                msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-                msgBox.setDefaultButton(QMessageBox::Yes);
-                int ret = msgBox.exec();
-                if (ret == QMessageBox::Yes) {
-                    Gui::Control().reject();
-                }
-                else {
-                    return false;
-                }
-            }
-            else if (constraintDialog) {
-                // Another FemConstraint* dialog is already open inside the Shaft Wizard
-                // Ignore the request to open another dialog
-                return false;
-            }
-            else {
-                constraintDialog = new TaskFemConstraintGear(this);
-                return true;
-            }
-        }
-
+        Gui::Control().closeDialog();
         // clear the selection (convenience)
         Gui::Selection().clearSelection();
-
-        // start the edit dialog
-        if (constrDlg) {
-            Gui::Control().showDialog(constrDlg);
-        }
-        else {
-            Gui::Control().showDialog(new TaskDlgFemConstraintGear(this));
-        }
+        Gui::Control().showDialog(new TaskDlgFemConstraintGear(this));
 
         return true;
     }
     else {
-        return ViewProviderDocumentObject::setEdit(ModNum);  // clazy:exclude=skipped-base-method
+        return ViewProviderFemConstraint::setEdit(ModNum);
     }
 }
 
@@ -139,12 +96,13 @@ void ViewProviderFemConstraintGear::updateData(const App::Property* prop)
             // Base::Console().Error("DirectionVector: %f, %f, %f\n", direction.x, direction.y,
             // direction.z);
 
-            createPlacement(pShapeSep, b, SbRotation(SbVec3f(0, 1, 0), ax));
-            pShapeSep->addChild(createCylinder(pcConstraint->Height.getValue() * 0.8, dia / 2));
-            createPlacement(pShapeSep,
-                            SbVec3f(dia / 2 * sin(angle), 0, dia / 2 * cos(angle)),
-                            SbRotation(ax, dir));
-            pShapeSep->addChild(createArrow(dia / 2, dia / 8));
+            GuiTools::createPlacement(pShapeSep, b, SbRotation(SbVec3f(0, 1, 0), ax));
+            pShapeSep->addChild(
+                GuiTools::createCylinder(pcConstraint->Height.getValue() * 0.8, dia / 2));
+            GuiTools::createPlacement(pShapeSep,
+                                      SbVec3f(dia / 2 * sin(angle), 0, dia / 2 * cos(angle)),
+                                      SbRotation(ax, dir));
+            pShapeSep->addChild(GuiTools::createArrow(dia / 2, dia / 8));
         }
     }
     else if (prop == &pcConstraint->Diameter) {
@@ -166,13 +124,13 @@ void ViewProviderFemConstraintGear::updateData(const App::Property* prop)
             SbVec3f dir(direction.x, direction.y, direction.z);
 
             const SoSeparator* sep = static_cast<SoSeparator*>(pShapeSep->getChild(2));
-            updateCylinder(sep, 0, pcConstraint->Height.getValue() * 0.8, dia / 2);
-            updatePlacement(pShapeSep,
-                            3,
-                            SbVec3f(dia / 2 * sin(angle), 0, dia / 2 * cos(angle)),
-                            SbRotation(ax, dir));
+            GuiTools::updateCylinder(sep, 0, pcConstraint->Height.getValue() * 0.8, dia / 2);
+            GuiTools::updatePlacement(pShapeSep,
+                                      3,
+                                      SbVec3f(dia / 2 * sin(angle), 0, dia / 2 * cos(angle)),
+                                      SbRotation(ax, dir));
             sep = static_cast<SoSeparator*>(pShapeSep->getChild(5));
-            updateArrow(sep, 0, dia / 2, dia / 8);
+            GuiTools::updateArrow(sep, 0, dia / 2, dia / 8);
         }
     }
     else if ((prop == &pcConstraint->DirectionVector) || (prop == &pcConstraint->ForceAngle)) {
@@ -203,10 +161,10 @@ void ViewProviderFemConstraintGear::updateData(const App::Property* prop)
             directions!)
             */
 
-            updatePlacement(pShapeSep,
-                            3,
-                            SbVec3f(dia / 2 * sin(angle), 0, dia / 2 * cos(angle)),
-                            SbRotation(ax, dir));
+            GuiTools::updatePlacement(pShapeSep,
+                                      3,
+                                      SbVec3f(dia / 2 * sin(angle), 0, dia / 2 * cos(angle)),
+                                      SbRotation(ax, dir));
         }
     }
 

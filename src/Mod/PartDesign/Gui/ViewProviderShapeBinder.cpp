@@ -72,7 +72,7 @@ ViewProviderShapeBinder::ViewProviderShapeBinder()
     unsigned long shcol = hGrp->GetUnsigned("DefaultDatumColor", 0xFFD70099);
     App::Color col((uint32_t)shcol);
 
-    ShapeColor.setValue(col);
+    ShapeAppearance.setDiffuseColor(col);
     LineColor.setValue(col);
     PointColor.setValue(col);
     Transparency.setValue(60);
@@ -125,6 +125,14 @@ void ViewProviderShapeBinder::unsetEdit(int ModNum) {
     PartGui::ViewProviderPart::unsetEdit(ModNum);
 }
 
+void ViewProviderShapeBinder::attach(App::DocumentObject *obj)
+{
+    if (auto geo = dynamic_cast<App::GeoFeature*>(obj)) {
+        geo->setMaterialAppearance(ShapeAppearance[0]);
+    }
+    ViewProviderPart::attach(obj);
+}
+
 void ViewProviderShapeBinder::highlightReferences(bool on)
 {
     App::GeoFeature* obj = nullptr;
@@ -153,9 +161,9 @@ void ViewProviderShapeBinder::highlightReferences(bool on)
             lcolors.resize(eMap.Extent(), svp->LineColor.getValue());
 
             TopExp::MapShapes(static_cast<Part::Feature*>(obj)->Shape.getValue(), TopAbs_FACE, eMap);
-            originalFaceColors = svp->DiffuseColor.getValues();
-            std::vector<App::Color> fcolors = originalFaceColors;
-            fcolors.resize(eMap.Extent(), svp->ShapeColor.getValue());
+            originalFaceAppearance = svp->ShapeAppearance.getValues();
+            std::vector<App::Material> fcolors = originalFaceAppearance;
+            fcolors.resize(eMap.Extent(), svp->ShapeAppearance[0]);
 
             for (const std::string& e : subs) {
                 // Note: stoi may throw, but it strictly shouldn't happen
@@ -169,11 +177,11 @@ void ViewProviderShapeBinder::highlightReferences(bool on)
                     int idx = std::stoi(e.substr(4)) - 1;
                     assert(idx >= 0);
                     if (idx < static_cast<int>(fcolors.size()))
-                        fcolors[idx] = App::Color(1.0, 0.0, 1.0); // magenta
+                        fcolors[idx].diffuseColor = App::Color(1.0, 0.0, 1.0); // magenta
                 }
             }
             svp->LineColorArray.setValues(lcolors);
-            svp->DiffuseColor.setValues(fcolors);
+            svp->ShapeAppearance.setValues(fcolors);
         }
     }
     else {
@@ -181,8 +189,8 @@ void ViewProviderShapeBinder::highlightReferences(bool on)
             svp->LineColorArray.setValues(originalLineColors);
             originalLineColors.clear();
 
-            svp->DiffuseColor.setValues(originalFaceColors);
-            originalFaceColors.clear();
+            svp->ShapeAppearance.setValues(originalFaceAppearance);
+            originalFaceAppearance.clear();
         }
     }
 }
@@ -221,6 +229,9 @@ ViewProviderSubShapeBinder::ViewProviderSubShapeBinder() {
 void ViewProviderSubShapeBinder::attach(App::DocumentObject* obj) {
 
     UseBinderStyle.setValue(boost::istarts_with(obj->getNameInDocument(), "binder"));
+    if (auto geo = dynamic_cast<App::GeoFeature*>(obj)) {
+        geo->setMaterialAppearance(ShapeAppearance[0]);
+    }
     ViewProviderPart::attach(obj);
 }
 
@@ -248,7 +259,7 @@ void ViewProviderSubShapeBinder::onChanged(const App::Property* prop) {
             transparency = Gui::ViewParams::instance()->getDefaultShapeTransparency();
             linewidth = Gui::ViewParams::instance()->getDefaultShapeLineWidth();
         }
-        ShapeColor.setValue(shapeColor);
+        ShapeAppearance.setDiffuseColor(shapeColor);
         LineColor.setValue(lineColor);
         PointColor.setValue(pointColor);
         Transparency.setValue(transparency);
@@ -429,5 +440,5 @@ std::vector<App::DocumentObject*> ViewProviderSubShapeBinder::claimChildren() co
 namespace Gui {
 PROPERTY_SOURCE_TEMPLATE(PartDesignGui::ViewProviderSubShapeBinderPython,
                          PartDesignGui::ViewProviderSubShapeBinder)
-template class PartDesignGuiExport ViewProviderPythonFeatureT<ViewProviderSubShapeBinder>;
+template class PartDesignGuiExport ViewProviderFeaturePythonT<ViewProviderSubShapeBinder>;
 }

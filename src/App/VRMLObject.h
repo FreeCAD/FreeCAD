@@ -61,13 +61,19 @@ public:
 
 protected:
     void onChanged(const App::Property*) override;
-    std::string getRelativePath(const std::string&, const std::string&) const;
-    std::string fixRelativePath(const std::string&, const std::string&) const;
-    void makeDirectories(const std::string&, const std::string&);
+
+private:
+    std::string getRelativePath(const std::string& prefix, const std::string& resource) const;
+    static std::string fixRelativePath(const std::string& name, const std::string& resource);
+    static void makeDirectories(const std::string& path, const std::string& subdir);
+    bool restoreTextureFinished(Base::Reader &reader);
+    void reloadFile();
 
 private:
     mutable std::string vrmlPath;
-    mutable int index{0};
+    mutable int indexRestore {0};
+    mutable int indexSave {0};
+    mutable bool restoreData {false};
 };
 
 } //namespace App

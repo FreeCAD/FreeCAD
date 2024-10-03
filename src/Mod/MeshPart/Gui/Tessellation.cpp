@@ -127,6 +127,7 @@ void Tessellation::meshingMethod(int id)
 
 void Tessellation::onComboFinenessCurrentIndexChanged(int index)
 {
+    // NOLINTBEGIN
     if (index == 5) {
         ui->doubleGrading->setEnabled(true);
         ui->spinEdgeElements->setEnabled(true);
@@ -167,6 +168,7 @@ void Tessellation::onComboFinenessCurrentIndexChanged(int index)
         default:
             break;
     }
+    // NOLINTEND
 }
 
 void Tessellation::onCheckSecondOrderToggled(bool on)
@@ -224,7 +226,7 @@ void Tessellation::onEstimateMaximumEdgeLengthClicked()
         }
     }
 
-    ui->spinMaximumEdgeLength->setValue(edgeLen / 10);
+    ui->spinMaximumEdgeLength->setValue(edgeLen / 10);  // NOLINT
 }
 
 bool Tessellation::accept()
@@ -255,8 +257,7 @@ bool Tessellation::accept()
             if (sel.pObject->isDerivedFrom(Part::Feature::getClassTypeId())) {
                 partWithNoFace = true;
             }
-            if (sel.pObject->isDerivedFrom(Part::BodyBase::getClassTypeId())) {
-                Part::BodyBase* body = static_cast<Part::BodyBase*>(sel.pObject);
+            if (auto body = dynamic_cast<Part::BodyBase*>(sel.pObject)) {
                 if (!body->Tip.getValue()) {
                     bodyWithNoTip = true;
                 }
@@ -293,10 +294,9 @@ bool Tessellation::accept()
         gmsh->process(activeDoc, shapeObjects);
         return false;
     }
-    else {
-        process(method, activeDoc, shapeObjects);
-        return doClose;
-    }
+
+    process(method, activeDoc, shapeObjects);
+    return doClose;
 }
 
 void Tessellation::process(int method,
@@ -373,17 +373,42 @@ void Tessellation::setFaceColors(int method, App::Document* doc, App::DocumentOb
         if (ui->meshShapeColors->isChecked()) {
             Gui::ViewProvider* vpm =
                 Gui::Application::Instance->getViewProvider(doc->getActiveObject());
-            MeshGui::ViewProviderMesh* vpmesh = dynamic_cast<MeshGui::ViewProviderMesh*>(vpm);
+            auto vpmesh = dynamic_cast<MeshGui::ViewProviderMesh*>(vpm);
 
             auto svp = Base::freecad_dynamic_cast<PartGui::ViewProviderPartExt>(
                 Gui::Application::Instance->getViewProvider(obj));
             if (vpmesh && svp) {
-                std::vector<App::Color> diff_col = svp->DiffuseColor.getValues();
+                std::vector<App::Color> diff_col = svp->ShapeAppearance.getDiffuseColors();
                 if (ui->groupsFaceColors->isChecked()) {
                     diff_col = getUniqueColors(diff_col);
                 }
+
                 vpmesh->highlightSegments(diff_col);
+                addFaceColors(dynamic_cast<Mesh::Feature*>(vpmesh->getObject()), diff_col);
             }
+        }
+    }
+}
+
+void Tessellation::addFaceColors(Mesh::Feature* mesh, const std::vector<App::Color>& colorPerSegm)
+{
+    const Mesh::MeshObject& kernel = mesh->Mesh.getValue();
+    unsigned long numSegm = kernel.countSegments();
+    if (numSegm > 0 && numSegm == colorPerSegm.size()) {
+        unsigned long uCtFacets = kernel.countFacets();
+        std::vector<App::Color> colorPerFace(uCtFacets);
+        for (unsigned long i = 0; i < numSegm; i++) {
+            App::Color segmColor = colorPerSegm[i];
+            std::vector<Mesh::FacetIndex> segm = kernel.getSegment(i).getIndices();
+            for (Mesh::FacetIndex it : segm) {
+                colorPerFace[it] = segmColor;
+            }
+        }
+
+        auto typeId = App::PropertyColorList::getClassTypeId();
+        if (auto prop = dynamic_cast<App::PropertyColorList*>(
+                mesh->addDynamicProperty(typeId.getName(), "FaceColors"))) {
+            prop->setValues(colorPerFace);
         }
     }
 }
@@ -397,6 +422,7 @@ std::vector<App::Color> Tessellation::getUniqueColors(const std::vector<App::Col
     }
 
     std::vector<App::Color> unique;
+    unique.reserve(col_set.size());
     for (const auto& it : col_set) {
         unique.emplace_back(it);
     }
@@ -480,7 +506,7 @@ QString Tessellation::getNetgenParameters() const
     bool secondOrder = ui->checkSecondOrder->isChecked();
     bool optimize = ui->checkOptimizeSurface->isChecked();
     bool allowquad = ui->checkQuadDominated->isChecked();
-    if (fineness < 5) {
+    if (fineness <= int(VeryFine)) {
         param = QString::fromLatin1("Shape=__shape__,"
                                     "Fineness=%1,SecondOrder=%2,Optimize=%3,AllowQuad=%4")
                     .arg(fineness)
@@ -581,7 +607,7 @@ bool Mesh2ShapeGmsh::writeProject(QString& inpFile, QString& outFile)
                    << "// mesh algorithm, only a few algorithms are usable with 3D boundary layer "
                       "generation\n"
                    << "// 2D mesh algorithm (1=MeshAdapt, 2=Automatic, 5=Delaunay, 6=Frontal, "
-                      "7=BAMG, 8=DelQuad, 9=Packing of Parallelograms)\n"
+                      "7=BAMG, 8=DelQuad, 9=Packing of Parallelograms, 11=Quasi-structured Quad)\n"
                    << "Mesh.Algorithm = " << algorithm << ";\n"
                    << "// 3D mesh algorithm (1=Delaunay, 2=New Delaunay, 4=Frontal, 7=MMG3D, "
                       "9=R-tree, 10=HTX)\n"
@@ -629,7 +655,7 @@ bool Mesh2ShapeGmsh::loadOutput()
     stlIn.close();
     kernel.harmonizeNormals();
 
-    Mesh::Feature* fea = static_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature", "Mesh"));
+    auto fea = static_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature", "Mesh"));
     fea->Label.setValue(d->label);
     fea->Mesh.setValue(kernel.getKernel());
     stl.deleteFile();
@@ -646,20 +672,16 @@ bool Mesh2ShapeGmsh::loadOutput()
 TaskTessellation::TaskTessellation()
 {
     widget = new Tessellation();
-    Gui::TaskView::TaskBox* taskbox =
-        new Gui::TaskView::TaskBox(QPixmap() /*Gui::BitmapFactory().pixmap("MeshPart_Mesher")*/,
-                                   widget->windowTitle(),
-                                   true,
-                                   nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(widget);
 }
 
 void TaskTessellation::open()
 {}
 
-void TaskTessellation::clicked(int)
-{}
+void TaskTessellation::clicked(int id)
+{
+    Q_UNUSED(id)
+}
 
 bool TaskTessellation::accept()
 {

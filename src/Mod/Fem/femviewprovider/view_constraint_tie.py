@@ -38,10 +38,17 @@ class VPConstraintTie(view_base_femconstraint.VPBaseFemConstraint):
     A View Provider for the ConstraintTie object
     """
 
+    def __init__(self, vobj):
+        super().__init__(vobj)
+        mat = vobj.ShapeAppearance[0]
+        mat.DiffuseColor = (0.3, 0.7, 0.5, 0.0)
+        vobj.ShapeAppearance = mat
+
     def setEdit(self, vobj, mode=0):
         view_base_femconstraint.VPBaseFemConstraint.setEdit(
-            self,
-            vobj,
-            mode,
-            task_constraint_tie._TaskPanel
+            self, vobj, mode, task_constraint_tie._TaskPanel
         )
+
+    def attach(self, vobj):
+        super().attach(vobj)
+        vobj.loadSymbol(self.resource_symbol_dir + "ConstraintTie.iv")

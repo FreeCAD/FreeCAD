@@ -52,7 +52,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="57"/>
       <source>Create a new empty trajectory</source>
-      <translation>Erstellen Sie eine neue, leere Bewegungsbahn</translation>
+      <translation>Eine neue, leere Bewegungsbahn erstellen</translation>
     </message>
   </context>
   <context>
@@ -88,7 +88,7 @@
     <message>
       <location filename="../../CommandExport.cpp" line="48"/>
       <source>Export the trajectory as a compact KRL subroutine.</source>
-      <translation>Exportieren Sie die Bewegungsbahn als kompaktes KRL Unterprogramm.</translation>
+      <translation>Exportiert die Bewegungsbahn als kompaktes KRL-Unterprogramm.</translation>
     </message>
   </context>
   <context>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../CommandExport.cpp" line="123"/>
       <source>Export the trajectory as a full KRL subroutine.</source>
-      <translation>Exportieren Sie die Bewegungsbahn als eine volle KRL-Unterroutine.</translation>
+      <translation>Exportiert die Bewegungsbahn als eine volle KRL-Unterroutine.</translation>
     </message>
   </context>
   <context>
@@ -363,8 +363,7 @@
       <location filename="../../CommandTrajectory.cpp" line="464"/>
       <location filename="../../Command.cpp" line="71"/>
       <location filename="../../Command.cpp" line="130"/>
-      <location filename="../../Command.cpp" line="237"/>
-      <location filename="../../Command.cpp" line="271"/>
+      <location filename="../../Command.cpp" line="235"/>
       <location filename="../../CommandExport.cpp" line="62"/>
       <location filename="../../CommandExport.cpp" line="137"/>
       <source>Wrong selection</source>
@@ -373,7 +372,7 @@
     <message>
       <location filename="../../Command.cpp" line="72"/>
       <source>Select one Robot to set home position</source>
-      <translation>Wählen Sie einen Roboter aus, um die Home Position festzulegen</translation>
+      <translation>Einen Roboter auswählen, um die Ausgangsposition festzulegen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="131"/>
@@ -382,22 +381,21 @@
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="107"/>
-      <location filename="../../Command.cpp" line="238"/>
-      <location filename="../../Command.cpp" line="272"/>
+      <location filename="../../Command.cpp" line="236"/>
       <location filename="../../CommandExport.cpp" line="63"/>
       <location filename="../../CommandExport.cpp" line="138"/>
       <source>Select one Robot and one Trajectory object.</source>
-      <translation>Wählen Sie einen Roboter und eine Bewegungsbahn.</translation>
+      <translation>Einen Roboter und eine Bewegungsbahn auswählen.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="245"/>
+      <location filename="../../Command.cpp" line="243"/>
       <source>Trajectory not valid</source>
       <translation>Bewegungsbahn nicht gültig</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="246"/>
+      <location filename="../../Command.cpp" line="244"/>
       <source>You need at least two waypoints in a trajectory to simulate.</source>
-      <translation>Sie benötigen für die Simulation mindestens zwei Wegpunkte auf der Bewegungsbahn.</translation>
+      <translation>Es werden für die Simulation mindestens zwei Wegpunkte auf der Bewegungsbahn benötigt.</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="89"/>
@@ -420,7 +418,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="261"/>
       <source>Select one robot and one shape or VRML object.</source>
-      <translation>Wählen Sie einen Roboter und eine Form oder ein VRML-Objekt.</translation>
+      <translation>Einen Roboter und eine Form oder ein VRML-Objekt auswählen.</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="174"/>
@@ -436,8 +434,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="202"/>
       <source>You have to hover above a geometry (Preselection) with the mouse to use this command. See documentation for details.</source>
-      <translation>Sie müssen die Maus über eine Geometrie (Preselection) positionieren, um diesen Befehl zu verwenden.
-Siehe Dokumentation für Details.</translation>
+      <translation>Die Maus muss über einer Geometrie schweben (Vorauswahl), um diesen Befehl verwenden zu können. Siehe Dokumentation für Details.</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="294"/>
@@ -472,10 +469,10 @@ Siehe Dokumentation für Details.</translation>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="465"/>
       <source>Select the Trajectory which you want to dress up.</source>
-      <translation>Wählen Sie die Bewegungsbahn die Sie verwenden wollen.</translation>
+      <translation>Die aufzubereitende Bewegungsbahn auswählen.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderTrajectory.cpp" line="148"/>
+      <location filename="../../ViewProviderTrajectory.cpp" line="145"/>
       <source>Modify</source>
       <translation>Bearbeiten</translation>
     </message>
@@ -487,7 +484,7 @@ Siehe Dokumentation für Details.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="75"/>
       <source>Please visit %1 and copy the files to %2</source>
-      <translation>Bitte gehen Sie zu %1 und kopieren Sie die Dateien in %2</translation>
+      <translation>Bitte die Dateien aus %1 in %2 kopieren</translation>
     </message>
   </context>
   <context>

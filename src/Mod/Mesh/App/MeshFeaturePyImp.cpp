@@ -90,6 +90,43 @@ PyObject* MeshFeaturePy::smooth(PyObject* args)
     Py_Return;
 }
 
+PyObject* MeshFeaturePy::decimate(PyObject* args)
+{
+    float fTol {};
+    float fRed {};
+    if (PyArg_ParseTuple(args, "ff", &fTol, &fRed)) {
+        PY_TRY
+        {
+            Mesh::Feature* obj = getFeaturePtr();
+            MeshObject* kernel = obj->Mesh.startEditing();
+            kernel->decimate(fTol, fRed);
+            obj->Mesh.finishEditing();
+        }
+        PY_CATCH;
+
+        Py_Return;
+    }
+
+    PyErr_Clear();
+    int targetSize {};
+    if (PyArg_ParseTuple(args, "i", &targetSize)) {
+        PY_TRY
+        {
+            Mesh::Feature* obj = getFeaturePtr();
+            MeshObject* kernel = obj->Mesh.startEditing();
+            kernel->decimate(targetSize);
+            obj->Mesh.finishEditing();
+        }
+        PY_CATCH;
+
+        Py_Return;
+    }
+
+    PyErr_SetString(PyExc_ValueError,
+                    "decimate(tolerance=float, reduction=float) or decimate(targetSize=int)");
+    return nullptr;
+}
+
 PyObject* MeshFeaturePy::removeNonManifolds(PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {

@@ -7,14 +7,13 @@
       <location filename="../../Link.cpp" line="118"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all links
 that reference the same configurable object</source>
-      <translation type="unfinished">Stores the last user choice of whether to apply CopyOnChange setup to all links
-that reference the same configurable object</translation>
+      <translation>存储用户最后一次选择是否将 CopyOnChange 设置应用于参考相同可配置对象的所有链接</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="445"/>
+      <location filename="../../Application.cpp" line="463"/>
       <source>Unnamed</source>
       <translation>未命名</translation>
     </message>
@@ -22,32 +21,32 @@ that reference the same configurable object</translation>
   <context>
     <name>App::Origin</name>
     <message>
-      <location filename="../../Origin.cpp" line="140"/>
+      <location filename="../../Origin.cpp" line="142"/>
       <source>X-axis</source>
       <translation>X轴</translation>
     </message>
     <message>
-      <location filename="../../Origin.cpp" line="141"/>
+      <location filename="../../Origin.cpp" line="143"/>
       <source>Y-axis</source>
       <translation>Y轴</translation>
     </message>
     <message>
-      <location filename="../../Origin.cpp" line="142"/>
+      <location filename="../../Origin.cpp" line="144"/>
       <source>Z-axis</source>
       <translation>Z轴</translation>
     </message>
     <message>
-      <location filename="../../Origin.cpp" line="143"/>
+      <location filename="../../Origin.cpp" line="145"/>
       <source>XY-plane</source>
       <translation>XY-平面</translation>
     </message>
     <message>
-      <location filename="../../Origin.cpp" line="144"/>
+      <location filename="../../Origin.cpp" line="146"/>
       <source>XZ-plane</source>
       <translation>XZ-平面</translation>
     </message>
     <message>
-      <location filename="../../Origin.cpp" line="145"/>
+      <location filename="../../Origin.cpp" line="147"/>
       <source>YZ-plane</source>
       <translation>YZ-平面</translation>
     </message>

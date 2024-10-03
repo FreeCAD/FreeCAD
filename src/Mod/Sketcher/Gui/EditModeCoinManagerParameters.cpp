@@ -28,7 +28,7 @@
 using namespace SketcherGui;
 
 SbColor DrawingParameters::InformationColor(0.0f, 1.0f, 0.0f);       // #00FF00 -> (  0,255,  0)
-SbColor DrawingParameters::CreateCurveColor(0.8f, 0.8f, 0.8f);       // #CCCCCC -> (204,204,204)
+SbColor DrawingParameters::CreateCurveColor(0.5f, 0.5f, 0.5f);       // ##7f7f7f -> (127,127,127)
 SbColor DrawingParameters::CrossColorH(0.8f, 0.4f, 0.4f);            // #CC6666 -> (204,102,102)
 SbColor DrawingParameters::CrossColorV(0.47f, 1.0f, 0.51f);          // #83FF83 -> (120,255,131)
 SbColor DrawingParameters::InvalidSketchColor(1.0f, 0.42f, 0.0f);    // #FF6D00 -> (255,109,  0)
@@ -38,11 +38,6 @@ SbColor
                                                              0.87f,
                                                              0.78f);   // #DEDEC8 -> (222,222,200)
 SbColor DrawingParameters::InternalAlignedGeoColor(0.7f, 0.7f, 0.5f);  // #B2B27F -> (178,178,127)
-SbColor
-    DrawingParameters::FullyConstraintConstructionPointColor(1.0f,
-                                                             0.58f,
-                                                             0.50f);  // #FF9580 -> (255,149,128)
-SbColor DrawingParameters::VertexColor(1.0f, 0.149f, 0.0f);           // #FF2600 -> (255, 38,  0)
 SbColor DrawingParameters::FullyConstraintElementColor(0.50f,
                                                        0.81f,
                                                        0.62f);           // #80D0A0 -> (128,208,160)
@@ -62,7 +57,8 @@ SbColor DrawingParameters::ConstrIcoColor(1.0f, 0.149f, 0.0f);  // #FF2600 -> (2
 SbColor
     DrawingParameters::NonDrivingConstrDimColor(0.0f, 0.149f, 1.0f);     // #0026FF -> (  0, 38,255)
 SbColor DrawingParameters::ExprBasedConstrDimColor(1.0f, 0.5f, 0.149f);  // #FF7F26 -> (255, 127,38)
-SbColor DrawingParameters::DeactivatedConstrDimColor(0.8f, 0.8f, 0.8f);  // #CCCCCC -> (204,204,204)
-SbColor DrawingParameters::CursorTextColor(0.0f, 0.0f, 1.0f);            // #0000FF -> (0,0,255)
+SbColor
+    DrawingParameters::DeactivatedConstrDimColor(0.5f, 0.5f, 0.5f);  // ##7f7f7f -> (127,127,127)
+SbColor DrawingParameters::CursorTextColor(0.0f, 0.0f, 1.0f);        // #0000FF -> (0,0,255)
 
 const MultiFieldId MultiFieldId::Invalid = MultiFieldId();

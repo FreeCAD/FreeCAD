@@ -48,6 +48,7 @@ object in the Arch Workbench.
 # \brief Provides the object code for the TwistedArray object.
 
 import draftgeoutils.geo_arrays as geo
+from draftutils.messages import _wrn
 from draftutils.translate import translate
 def QT_TRANSLATE_NOOP(ctx,txt): return txt
 from draftobjects.draftlink import DraftLink
@@ -65,12 +66,12 @@ class PathTwistedArray(DraftLink):
     """
 
     def __init__(self, obj):
-        super(PathTwistedArray, self).__init__(obj, "PathTwistedArray")
+        super().__init__(obj, "PathTwistedArray")
 
     def attach(self, obj):
         """Set up the properties when the object is attached."""
         self.set_properties(obj)
-        super(PathTwistedArray, self).attach(obj)
+        super().attach(obj)
 
     def set_properties(self, obj):
         """Set properties only if they don't exist."""
@@ -92,6 +93,17 @@ class PathTwistedArray(DraftLink):
                             "Objects",
                             QT_TRANSLATE_NOOP("App::Property","The object along which the copies will be distributed. It must contain 'Edges'."))
             obj.PathObject = None
+
+        if "Fuse" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Specifies if the copies "
+                                     "should be fused together "
+                                     "if they touch each other (slower)")
+            obj.addProperty("App::PropertyBool",
+                            "Fuse",
+                            "Objects",
+                            _tip)
+            obj.Fuse = False
 
         if "Count" not in properties:
             obj.addProperty("App::PropertyInteger",
@@ -117,16 +129,16 @@ class PathTwistedArray(DraftLink):
 
     def linkSetup(self, obj):
         """Set up the object as a link object."""
-        super(PathTwistedArray, self).linkSetup(obj)
+        super().linkSetup(obj)
         obj.configLinkProperty(ElementCount='Count')
 
     def onDocumentRestored(self, obj):
-        """Execute code when the document is restored.
-
-        Add properties that don't exist.
-        """
+        super().onDocumentRestored(obj)
+        # Fuse property was added in v1.0, obj should be OK if it is present:
+        if hasattr(obj, "Fuse"):
+            return
         self.set_properties(obj)
-        super(PathTwistedArray, self).onDocumentRestored(obj)
+        _wrn("v1.0, " + obj.Label + ", " + translate("draft", "added 'Fuse' property"))
 
     def execute(self, obj):
         """Execute when the object is created or recomputed."""

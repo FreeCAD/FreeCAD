@@ -76,7 +76,12 @@ public:
     void project(const DrawViewPart* dvp);
     void mapToPage(const DrawViewPart* dvp);
     void invertY();
+    void scale(double factor);
     void dump(const std::string& text) const;
+
+    pointPair toCanonicalForm(DrawViewPart* dvp) const;
+    pointPair toDisplayForm(DrawViewPart* dvp) const;
+
 
 private:
     Base::Vector3d m_first;
@@ -114,6 +119,10 @@ public:
     void invertY();
     void dump(const std::string& text) const;
 
+    anglePoints toCanonicalForm(DrawViewPart* dvp) const;
+    anglePoints toDisplayForm(DrawViewPart* dvp) const;
+
+
 private:
     pointPair m_ends;
     Base::Vector3d m_vertex;
@@ -134,6 +143,9 @@ public:
     void invertY();
     void dump(const std::string& text) const;
 
+    arcPoints toCanonicalForm(DrawViewPart* dvp) const;
+    arcPoints toDisplayForm(DrawViewPart* dvp) const;
+
 //TODO: setters and getters
     bool isArc;
     double radius;
@@ -142,6 +154,24 @@ public:
     pointPair arcEnds;
     Base::Vector3d midArc;
     bool arcCW;
+};
+
+//a convenient container for area dimension
+class TechDrawExport areaPoint
+{
+public:
+    areaPoint();
+    areaPoint(const areaPoint& ap) = default;
+
+    areaPoint& operator= (const areaPoint& ap);
+
+    void move(const Base::Vector3d& offset);
+    void project(const DrawViewPart* dvp);
+    void dump(const std::string& text) const;
+
+//TODO: setters and getters
+    double area;
+    Base::Vector3d center;
 };
 
 }   //end namespace TechDraw

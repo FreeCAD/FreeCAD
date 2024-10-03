@@ -40,7 +40,7 @@ class MaterialMechanicalNonlinear(base_fempythonobject.BaseFemPythonObject):
     Type = "Fem::MaterialMechanicalNonlinear"
 
     def __init__(self, obj):
-        super(MaterialMechanicalNonlinear, self).__init__(obj)
+        super().__init__(obj)
         self.add_properties(obj)
 
     def onDocumentRestored(self, obj):
@@ -77,19 +77,32 @@ class MaterialMechanicalNonlinear(base_fempythonobject.BaseFemPythonObject):
                 "App::PropertyLink",
                 "LinearBaseMaterial",
                 "Base",
-                "Set the linear material the nonlinear builds upon."
+                "Set the linear material the nonlinear builds upon.",
             )
+            obj.setPropertyStatus("LinearBaseMaterial", "LockDynamic")
 
         if not hasattr(obj, "MaterialModelNonlinearity"):
-            choices_nonlinear_material_models = ["simple hardening"]
+            choices_nonlinear_material_models = ["isotropic hardening", "kinematic hardening"]
             obj.addProperty(
                 "App::PropertyEnumeration",
                 "MaterialModelNonlinearity",
                 "Fem",
-                "Set the type on nonlinear material model"
+                "Set the type on nonlinear material model",
             )
+            obj.setPropertyStatus("MaterialModelNonlinearity", "LockDynamic")
             obj.MaterialModelNonlinearity = choices_nonlinear_material_models
             obj.MaterialModelNonlinearity = choices_nonlinear_material_models[0]
+
+        if (
+            hasattr(obj, "MaterialModelNonlinearity")
+            and obj.MaterialModelNonlinearity == "simple hardening"
+        ):
+            updated_choices_nonlinear_material_models = [
+                "isotropic hardening",
+                "kinematic hardening",
+            ]
+            obj.MaterialModelNonlinearity = updated_choices_nonlinear_material_models
+            obj.MaterialModelNonlinearity = updated_choices_nonlinear_material_models[0]
 
         if not hasattr(obj, "YieldPoints"):
             obj.addProperty(
@@ -97,6 +110,7 @@ class MaterialMechanicalNonlinear(base_fempythonobject.BaseFemPythonObject):
                 "YieldPoints",
                 "Fem",
                 "Set stress and strain for yield points as a list of strings, "
-                "each point \"stress, plastic strain\""
+                'each point "stress, plastic strain"',
             )
+            obj.setPropertyStatus("YieldPoints", "LockDynamic")
             obj.YieldPoints = []

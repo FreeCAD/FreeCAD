@@ -25,7 +25,7 @@
 
 #include "ViewProviderDragger.h"
 #include "ViewProviderOriginGroup.h"
-#include "ViewProviderPythonFeature.h"
+#include "ViewProviderFeaturePython.h"
 
 
 namespace Gui {
@@ -50,6 +50,9 @@ public:
     /// override from ViewProvider.h
     QIcon getIcon() const override;
 
+    /* Check whether the object accept reordering of its children during drop.*/
+    bool acceptReorderingObjects() const override { return true; };
+
 protected:
     /// get called by the container whenever a property has been changed
     void onChanged(const App::Property* prop) override;
@@ -58,7 +61,7 @@ protected:
 
 };
 
-using ViewProviderPartPython = ViewProviderPythonFeatureT<ViewProviderPart>;
+using ViewProviderPartPython = ViewProviderFeaturePythonT<ViewProviderPart>;
 
 } // namespace Gui
 

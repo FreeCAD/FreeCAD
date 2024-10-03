@@ -42,19 +42,24 @@
 #include "PreferencePages/DlgSettingsPythonConsole.h"
 #include "PreferencePages/DlgSettingsReportView.h"
 #include "PreferencePages/DlgSettingsSelection.h"
-#include "PreferencePages/DlgSettingsTheme.h"
+#include "PreferencePages/DlgSettingsUI.h"
 #include "PreferencePages/DlgSettingsViewColor.h"
 #include "PreferencePages/DlgSettingsWorkbenchesImp.h"
-#include "PreferencePages/DlgSettingsUI.h"
+#include "PreferencePages/DlgSettingsAdvanced.h"
 
 #include "DlgToolbarsImp.h"
 #include "DlgActionsImp.h"
 #include "DlgKeyboardImp.h"
+
+#ifndef USE_3DCONNEXION_NAVLIB
 #include "DlgCustomizeSpaceball.h"
 #include "DlgCustomizeSpNavSettings.h"
+#endif
+
 #include "InputField.h"
 #include "QuantitySpinBox.h"
 #include "PrefWidgets.h"
+#include "ToolBarManager.h"
 
 using namespace Gui;
 using namespace Gui::Dialog;
@@ -80,8 +85,8 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     new PrefPageProducer<DlgSettingsUI>               ( QT_TRANSLATE_NOOP("QObject","Display") );
     new PrefPageProducer<DlgSettingsNavigation>       ( QT_TRANSLATE_NOOP("QObject","Display") );
     new PrefPageProducer<DlgSettingsViewColor>        ( QT_TRANSLATE_NOOP("QObject","Display") );
-    new PrefPageProducer<DlgSettingsTheme>            ( QT_TRANSLATE_NOOP("QObject","Display") );
-    DlgSettingsTheme::attachObserver();
+    new PrefPageProducer<DlgSettingsAdvanced>         ( QT_TRANSLATE_NOOP("QObject","Display") );
+    DlgSettingsUI::attachObserver();
     new PrefPageProducer<DlgSettingsWorkbenchesImp>   ( QT_TRANSLATE_NOOP("QObject","Workbenches") );
     new PrefPageProducer<DlgSettingsMacroImp>         ( QT_TRANSLATE_NOOP("QObject", "Python"));
     new PrefPageProducer<DlgSettingsPythonConsole>    ( QT_TRANSLATE_NOOP("QObject", "Python"));
@@ -93,9 +98,10 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     new CustomPageProducer<DlgCustomKeyboardImp>;
     new CustomPageProducer<DlgCustomToolbarsImp>;
     new CustomPageProducer<DlgCustomActionsImp>;
+#ifndef USE_3DCONNEXION_NAVLIB
     new CustomPageProducer<DlgCustomizeSpNavSettings>;
     new CustomPageProducer<DlgCustomizeSpaceball>;
-
+#endif
     // ADD YOUR PREFERENCE WIDGETS HERE
     //
     //
@@ -124,5 +130,6 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     new WidgetProducer<Gui::IntSpinBox>;
     new WidgetProducer<Gui::DoubleSpinBox>;
     new WidgetProducer<Gui::QuantitySpinBox>;
+    new WidgetProducer<Gui::ExpLineEdit>;
 }
 // clang-format on

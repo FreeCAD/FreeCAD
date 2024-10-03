@@ -76,7 +76,9 @@ class ParamObserverView:
         if entry in ("DefaultShapeColor", "DefaultShapeLineColor", "DefaultShapeLineWidth"):
             _param_observer_callback_tray()
             return
-
+        if entry == "MarkerSize":
+            _param_observer_callback_snaptextsize()
+            return
 
 def _param_observer_callback_tray():
     if not hasattr(Gui, "draftToolBar"):
@@ -144,8 +146,18 @@ def _param_observer_callback_snapstyle():
 
 def _param_observer_callback_snapcolor():
     if hasattr(Gui, "Snapper"):
-        for snap_track in Gui.Snapper.trackers[2]:
-            snap_track.setColor()
+        tracker_list = [2, 5, 6]
+        for each_tracker in tracker_list:
+            for snap_track in Gui.Snapper.trackers[each_tracker]:
+                snap_track.setColor()
+
+
+def _param_observer_callback_snaptextsize():
+    if hasattr(Gui, "Snapper"):
+        tracker_list = [5, 6]
+        for each_tracker in tracker_list:
+            for snap_track in Gui.Snapper.trackers[each_tracker]:
+                snap_track.setSize()
 
 
 def _param_observer_callback_svg_pattern():
@@ -393,6 +405,7 @@ def _get_param_dictionary():
 
     # Arch parameters that are not in the preferences:
     param_dict["Mod/Arch"] = {
+        "applyConstructionStyle":      ("bool",      True),
         "ClaimHosted":                 ("bool",      True),
         "CustomIfcSchema":             ("string",    ""),     # importIFClegacy.py
         "createIfcGroups":             ("bool",      False),  # importIFClegacy.py
@@ -485,12 +498,16 @@ def _get_param_dictionary():
         "BackgroundColor":             ("unsigned",  336897023),
         "BackgroundColor2":            ("unsigned",  859006463),
         "BackgroundColor3":            ("unsigned",  2543299327),
+        "DefaultAmbientColor":         ("unsigned",  1431655935),
+        "DefaultEmissiveColor":        ("unsigned",  255),
         "DefaultShapeColor":           ("unsigned",  3435980543),
         "DefaultShapeLineColor":       ("unsigned",  421075455),
         "DefaultShapeLineWidth":       ("int",       2),
         "DefaultShapePointSize":       ("int",       2),
+        "DefaultShapeShininess":       ("int",       90),
         "DefaultShapeTransparency":    ("int",       0),
         "DefaultShapeVertexColor":     ("unsigned",  421075455),
+        "DefaultSpecularColor":        ("unsigned",  2290649343),
         "EnableSelection":             ("bool",      True),
         "Gradient":                    ("bool",      True),
         "MarkerSize":                  ("int",       9),
@@ -579,7 +596,7 @@ def _get_param_dictionary():
 PARAM_DICT = _get_param_dictionary()
 
 
-def get_param(entry, path="Mod/Draft"):
+def get_param(entry, path="Mod/Draft", ret_default=False):
     """Return a stored parameter value or its default.
 
     Parameters
@@ -590,6 +607,9 @@ def get_param(entry, path="Mod/Draft"):
         Defaults to "Mod/Draft".
         The path where the parameter can be found.
         This string is appended to "User parameter:BaseApp/Preferences/".
+    ret_default: bool, optional
+        Defaults to `False`.
+        If `True`, always return the default value even if a stored value is available.
 
     Returns
     -------
@@ -600,6 +620,8 @@ def get_param(entry, path="Mod/Draft"):
         return None
     param_grp = App.ParamGet("User parameter:BaseApp/Preferences/" + path)
     typ, default = PARAM_DICT[path][entry]
+    if ret_default:
+        return default
     if typ == "bool":
         return param_grp.GetBool(entry, default)
     if typ == "float":
@@ -613,12 +635,12 @@ def get_param(entry, path="Mod/Draft"):
     return None
 
 
-def get_param_arch(entry):
-    return get_param(entry, path="Mod/Arch")
+def get_param_arch(entry, ret_default=False):
+    return get_param(entry, path="Mod/Arch", ret_default=ret_default)
 
 
-def get_param_view(entry):
-    return get_param(entry, path="View")
+def get_param_view(entry, ret_default=False):
+    return get_param(entry, path="View", ret_default=ret_default)
 
 
 def set_param(entry, value, path="Mod/Draft"):

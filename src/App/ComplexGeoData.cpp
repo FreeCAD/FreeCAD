@@ -189,6 +189,17 @@ const std::string &ComplexGeoData::elementMapPrefix() {
     return prefix;
 }
 
+std::string ComplexGeoData::getElementMapVersion() const {
+    return "4";
+}
+
+bool ComplexGeoData::checkElementMapVersion(const char * ver) const
+{
+    return !boost::equals(ver, "3")
+        && !boost::equals(ver, "4")
+        && !boost::starts_with(ver, "3.");
+}
+
 size_t ComplexGeoData::getElementMapSize(bool flush) const
 {
     if (flush) {
@@ -285,6 +296,16 @@ ComplexGeoData::getElementMappedNames(const IndexedName& element, bool needUnmap
     return {std::make_pair(MappedName(element), ElementIDRefs())};
 }
 
+ElementMapPtr ComplexGeoData::resetElementMap(ElementMapPtr elementMap)
+{
+    _elementMap.swap(elementMap);
+    // We expect that if the ComplexGeoData ( TopoShape ) has a hasher, then its elementMap will
+    // have the same one.  Make sure that happens.
+    if ( _elementMap && ! _elementMap->hasher )
+        _elementMap->hasher = Hasher;
+    return elementMap;
+}
+
 std::vector<MappedElement> ComplexGeoData::getElementMap() const
 {
     flushElementMap();
@@ -300,6 +321,15 @@ ElementMapPtr ComplexGeoData::elementMap(bool flush) const
         flushElementMap();
     }
     return _elementMap;
+}
+
+ElementMapPtr ComplexGeoData::ensureElementMap(bool flush)
+{
+    if (!_elementMap) {
+        resetElementMap(std::make_shared<Data::ElementMap>());
+    }
+    return elementMap(flush);
+
 }
 
 void ComplexGeoData::flushElementMap() const
@@ -446,7 +476,7 @@ void ComplexGeoData::Restore(Base::XMLReader& reader)
 
     const char* file = "";
     if (reader.hasAttribute("file")) {
-        reader.getAttribute("file");
+        file = reader.getAttribute("file");
     }
     if (*file != 0) {
         reader.addFile(file, this);
@@ -516,10 +546,10 @@ void ComplexGeoData::readElements(Base::XMLReader& reader, size_t count)
                 }
             }
         }
-        _elementMap->setElementName(IndexedName(reader.getAttribute("value"), types),
-                                    MappedName(reader.getAttribute("key")),
-                                    Tag,
-                                    &sids);
+        ensureElementMap()->setElementName(IndexedName(reader.getAttribute("value"), types),
+                                           MappedName(reader.getAttribute("key")),
+                                           Tag,
+                                           &sids);
     }
     if (invalid_count != 0) {
         FC_ERR("Found " << invalid_count << " invalid string id");  // NOLINT
@@ -626,6 +656,10 @@ unsigned int ComplexGeoData::getMemSize() const
     return 0;
 }
 
+std::vector<IndexedName> ComplexGeoData::getHigherElements(const char *, bool) const
+{
+    return {};
+}
 
 void ComplexGeoData::setMappedChildElements(const std::vector<Data::ElementMap::MappedChildElements> & children)
 {
@@ -653,5 +687,33 @@ void ComplexGeoData::beforeSave() const
     }
 }
 
+void ComplexGeoData::hashChildMaps()
+{
+    flushElementMap();
+    if (_elementMap)
+        _elementMap->hashChildMaps(Tag);
+}
+
+bool ComplexGeoData::hasChildElementMap() const
+{
+    flushElementMap();
+    return _elementMap && _elementMap->hasChildElementMap();
+}
+
+void ComplexGeoData::dumpElementMap(std::ostream& stream) const
+{
+    auto map = getElementMap();
+    std::sort(map.begin(), map.end());
+    for ( auto& element : map ) {
+        stream << element.index << " : " << element.name << std::endl;
+    }
+}
+
+const std::string ComplexGeoData::dumpElementMap() const
+{
+    std::stringstream ss;
+    dumpElementMap(ss);
+    return ss.str();
+}
 
 // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)

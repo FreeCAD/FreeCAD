@@ -28,13 +28,11 @@
 #include <map>
 #include <string>
 
-#define  putpix()
-
 #include <App/Application.h>
-#include "GuiApplication.h"
 
 class QCloseEvent;
 class SoNode;
+class NavlibInterface;
 
 namespace Gui{
 class BaseView;
@@ -47,11 +45,6 @@ class MenuItem;
 class PreferencePackManager;
 class ViewProvider;
 class ViewProviderDocumentObject;
-
-
-GuiExport void initGuiAppPreMainWindow(bool calledByGuiPy);
-GuiExport void initGuiAppPostMainWindow(bool calledByGuiPy, QApplication &mApp, MainWindow &mw, GUIApplicationNativeEventAware *pmAppNativeEventAware);
-
 
 /** The Application main class
  * This is the central class of the GUI
@@ -79,6 +72,8 @@ public:
     void exportTo(const char* FileName, const char* DocName, const char* Module);
     /// Reload a partial opened document
     App::Document *reopen(App::Document *doc);
+    /// Prompt about recomputing if needed
+    static void checkForRecomputes();
     //@}
 
 
@@ -276,7 +271,7 @@ protected:
          std::make_pair(QT_TRANSLATE_NOOP("EditMode", "Color"),
                         QT_TRANSLATE_NOOP("EditMode",
                                           "The object will have the color of its individual faces "
-                                          "editable with the Part FaceColors command"))},
+                                          "editable with the Part FaceAppearances command"))},
     };
     int userEditMode = userEditModes.begin()->first;
 
@@ -343,6 +338,8 @@ public:
 
     static PyObject* sDoCommand                (PyObject *self,PyObject *args);
     static PyObject* sDoCommandGui             (PyObject *self,PyObject *args);
+    static PyObject* sDoCommandEval            (PyObject *self,PyObject *args);
+    static PyObject* sDoCommandSkip            (PyObject *self,PyObject *args);
     static PyObject* sAddModule                (PyObject *self,PyObject *args);
 
     static PyObject* sShowDownloads            (PyObject *self,PyObject *args);
@@ -367,6 +364,7 @@ private:
     struct ApplicationP* d;
     /// workbench python dictionary
     PyObject*             _pcWorkbenchDictionary;
+    NavlibInterface* pNavlibInterface;
 };
 
 } //namespace Gui

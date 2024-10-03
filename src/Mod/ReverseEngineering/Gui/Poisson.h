@@ -67,7 +67,6 @@ public:
 
 private:
     PoissonWidget* widget;
-    Gui::TaskView::TaskBox* taskbox;
 };
 
 }  // namespace ReenGui

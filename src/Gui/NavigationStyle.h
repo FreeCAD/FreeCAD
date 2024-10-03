@@ -149,12 +149,14 @@ public:
     void setRotationCenter(const SbVec3f& cnt);
     SbVec3f getFocalPoint() const;
 
-    void redraw();
-
     SoCamera* getCamera() const;
     void setCameraOrientation(const SbRotation& orientation, SbBool moveToCenter = false);
     void translateCamera(const SbVec3f& translation);
+
+#if (COIN_MAJOR_VERSION * 100 + COIN_MINOR_VERSION * 10 + COIN_MICRO_VERSION < 403)
     void findBoundingSphere();
+#endif
+
     void reorientCamera(SoCamera* camera, const SbRotation& rotation);
     void reorientCamera(SoCamera* camera, const SbRotation& rotation, const SbVec3f& rotationCenter);
 
@@ -199,7 +201,7 @@ protected:
     void setSeekMode(SbBool enable);
     SbBool seekToPoint(const SbVec2s screenpos);
     void seekToPoint(const SbVec3f& scenepos);
-    SbBool lookAtPoint(const SbVec2s screenpos);
+    void lookAtPoint(const SbVec2s screenpos);
     void lookAtPoint(const SbVec3f& position);
 
     void panCamera(SoCamera * camera,
@@ -207,8 +209,7 @@ protected:
                    const SbPlane & panplane,
                    const SbVec2f & previous,
                    const SbVec2f & current);
-    void pan(SoCamera* camera);
-    void panToCenter(const SbPlane & pplane, const SbVec2f & currpos);
+    void setupPanningPlane(const SoCamera* camera);
     int getDelta() const;
     void zoom(SoCamera * camera, float diffvalue);
     void zoomByCursor(const SbVec2f & thispos, const SbVec2f & prevpos);
@@ -287,7 +288,9 @@ private:
     float sensitivity;
     SbBool resetcursorpos;
 
+#if (COIN_MAJOR_VERSION * 100 + COIN_MINOR_VERSION * 10 + COIN_MICRO_VERSION < 403)
     SbSphere boundingSphere;
+#endif
 };
 
 /** Sub-classes of this class appear in the preference dialog where users can

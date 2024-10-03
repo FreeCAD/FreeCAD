@@ -23,6 +23,7 @@
 #ifndef GUI_TASKVIEW_TASKDIMENSION_H
 #define GUI_TASKVIEW_TASKDIMENSION_H
 
+#include <Gui/DocumentObserver.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
@@ -72,7 +73,7 @@ private Q_SLOTS:
 private:
     std::unique_ptr<Ui_TaskDimension> ui;
     QGIViewDimension *m_parent;
-    ViewProviderDimension *m_dimensionVP;
+    Gui::WeakPtrT<ViewProviderDimension> m_dimensionVP;
     std::pair<double, bool> getAngleFromSelection();
 };
 

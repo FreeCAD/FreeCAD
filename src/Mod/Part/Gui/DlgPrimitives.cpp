@@ -2185,16 +2185,11 @@ QString Location::toPlacement() const
 
 TaskPrimitives::TaskPrimitives()
 {
-    Gui::TaskView::TaskBox* taskbox;
     widget = new DlgPrimitives();
-    taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(), true, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(widget);
 
     location = new Location();
-    taskbox = new Gui::TaskView::TaskBox(QPixmap(), location->windowTitle() ,true, nullptr);
-    taskbox->groupLayout()->addWidget(location);
-    Content.push_back(taskbox);
+    addTaskBox(location);
 }
 
 QDialogButtonBox::StandardButtons TaskPrimitives::getStandardButtons() const
@@ -2227,17 +2222,12 @@ bool TaskPrimitives::reject()
 TaskPrimitivesEdit::TaskPrimitivesEdit(Part::Primitive* feature)
 {
     // create and show dialog for the primitives
-    Gui::TaskView::TaskBox* taskbox;
     widget = new DlgPrimitives(nullptr, feature);
-    taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(), true, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(widget);
 
     // create and show dialog for the location
     location = new Location(nullptr, feature);
-    taskbox = new Gui::TaskView::TaskBox(QPixmap(), location->windowTitle(), true, nullptr);
-    taskbox->groupLayout()->addWidget(location);
-    Content.push_back(taskbox);
+    addTaskBox(location);
 }
 
 QDialogButtonBox::StandardButtons TaskPrimitivesEdit::getStandardButtons() const

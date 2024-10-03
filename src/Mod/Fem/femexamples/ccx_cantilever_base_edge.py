@@ -67,11 +67,9 @@ def setup_cantilever_base_edge(doc=None, solvertype="ccxtools"):
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
 
     # solver
-    if solvertype == "calculix":
-        solver_obj = ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
-    elif solvertype == "ccxtools":
-        solver_obj = ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
-        solver_obj.WorkingDir = u""
+    if solvertype == "ccxtools":
+        solver_obj = ObjectsFem.makeSolverCalculiXCcxTools(doc, "CalculiXCcxTools")
+        solver_obj.WorkingDir = ""
     elif solvertype == "mystran":
         solver_obj = ObjectsFem.makeSolverMystran(doc, "SolverMystran")
     else:
@@ -79,7 +77,7 @@ def setup_cantilever_base_edge(doc=None, solvertype="ccxtools"):
             "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
-    if solvertype == "calculix" or solvertype == "ccxtools":
+    if solvertype == "ccxtools":
         solver_obj.AnalysisType = "static"
         solver_obj.GeometricalNonlinearity = "linear"
         solver_obj.ThermoMechSteadyState = False
@@ -94,7 +92,7 @@ def setup_cantilever_base_edge(doc=None, solvertype="ccxtools"):
         sectiontype="Rectangular",
         width=1000.0,
         height=1000.0,
-        name="BeamCrossSection"
+        name="BeamCrossSection",
     )
     analysis.addObject(beamsection_obj)
 
@@ -115,13 +113,14 @@ def setup_cantilever_base_edge(doc=None, solvertype="ccxtools"):
     # constraint force
     con_force = ObjectsFem.makeConstraintForce(doc, "ConstraintForce")
     con_force.References = [(geom_obj, "Vertex2")]
-    con_force.Force = "9000000.0 N" # 9 MN
+    con_force.Force = "9000000.0 N"  # 9 MN
     con_force.Direction = (load_line, ["Edge1"])
     con_force.Reversed = False
     analysis.addObject(con_force)
 
     # mesh
     from .meshes.mesh_canticcx_seg3 import create_nodes, create_elements
+
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
@@ -131,7 +130,7 @@ def setup_cantilever_base_edge(doc=None, solvertype="ccxtools"):
         FreeCAD.Console.PrintError("Error on creating elements.\n")
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.FemMesh = fem_mesh
-    femmesh_obj.Part = geom_obj
+    femmesh_obj.Shape = geom_obj
     femmesh_obj.SecondOrderLinear = False
     femmesh_obj.ElementDimension = "1D"
     femmesh_obj.CharacteristicLengthMax = "1750.0 mm"

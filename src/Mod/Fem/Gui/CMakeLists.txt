@@ -49,6 +49,7 @@ SET(Python_SRCS
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
+
 set(FemGui_UIC_SRCS
     DlgSettingsFemCcx.ui
     DlgSettingsFemElmer.ui
@@ -58,11 +59,13 @@ set(FemGui_UIC_SRCS
     DlgSettingsFemInOutVtk.ui
     DlgSettingsFemMystran.ui
     DlgSettingsFemZ88.ui
+    TaskCreateElementSet.ui
     TaskCreateNodeSet.ui
     TaskObjectName.ui
     TaskFemConstraint.ui
     TaskFemConstraintBearing.ui
     TaskFemConstraintFixed.ui
+    TaskFemConstraintRigidBody.ui
     TaskFemConstraintForce.ui
     TaskFemConstraintFluidBoundary.ui
     TaskFemConstraintPressure.ui
@@ -134,6 +137,9 @@ SET(FemGui_DLG_SRCS
     TaskFemConstraintFixed.ui
     TaskFemConstraintFixed.cpp
     TaskFemConstraintFixed.h
+    TaskFemConstraintRigidBody.ui
+    TaskFemConstraintRigidBody.cpp
+    TaskFemConstraintRigidBody.h
     TaskFemConstraintForce.ui
     TaskFemConstraintForce.cpp
     TaskFemConstraintForce.h
@@ -194,6 +200,8 @@ SET(FemGui_SRCS_ViewProvider
     ViewProviderSolver.h
     ViewProviderSetNodes.cpp
     ViewProviderSetNodes.h
+    ViewProviderSetElementNodes.cpp
+    ViewProviderSetElementNodes.h
     ViewProviderSetElements.cpp
     ViewProviderSetElements.h
     ViewProviderSetFaces.cpp
@@ -210,6 +218,8 @@ SET(FemGui_SRCS_ViewProvider
     ViewProviderFemConstraintBearing.h
     ViewProviderFemConstraintFixed.cpp
     ViewProviderFemConstraintFixed.h
+    ViewProviderFemConstraintRigidBody.cpp
+    ViewProviderFemConstraintRigidBody.h
     ViewProviderFemConstraintForce.cpp
     ViewProviderFemConstraintForce.h
     ViewProviderFemConstraintFluidBoundary.cpp
@@ -245,6 +255,9 @@ SET(FemGui_SRCS_TaskBoxes
     TaskObjectName.ui
     TaskObjectName.cpp
     TaskObjectName.h
+    TaskCreateElementSet.ui
+    TaskCreateElementSet.cpp
+    TaskCreateElementSet.h
     TaskCreateNodeSet.ui
     TaskCreateNodeSet.cpp
     TaskCreateNodeSet.h
@@ -282,6 +295,8 @@ endif(BUILD_FEM_VTK)
 SOURCE_GROUP("Task_Boxes" FILES ${FemGui_SRCS_TaskBoxes})
 
 SET(FemGui_SRCS_TaskDlg
+    TaskDlgCreateElementSet.h
+    TaskDlgCreateElementSet.cpp
     TaskDlgCreateNodeSet.h
     TaskDlgCreateNodeSet.cpp
     TaskDlgMeshShapeNetgen.h
@@ -299,6 +314,8 @@ SET(FemGui_SRCS_Module
     ActiveAnalysisObserver.cpp
     ActiveAnalysisObserver.h
     Command.cpp
+    FemGuiTools.cpp
+    FemGuiTools.h
     FemSettings.cpp
     FemSettings.h
     Resources/Fem.qrc
@@ -310,6 +327,7 @@ SET(FemGui_SRCS_Module
     Workbench.h
 )
 SOURCE_GROUP("Module" FILES ${FemGui_SRCS_Module})
+
 
 if(BUILD_FEM_VTK)
     SET(FemGui_SRCS_Post
@@ -346,12 +364,33 @@ SET(FemGuiIcon_SVG
     Resources/icons/FemWorkbench.svg
 )
 
-add_library(FemGui SHARED ${FemGui_SRCS} ${FemGuiIcon_SVG})
+SET(FemGuiSymbol_IV
+    Resources/symbols/ConstraintContact.iv
+    Resources/symbols/ConstraintDisplacement.iv
+    Resources/symbols/ConstraintFixed.iv
+    Resources/symbols/ConstraintForce.iv
+    Resources/symbols/ConstraintHeatFlux.iv
+    Resources/symbols/ConstraintPlaneRotation.iv
+    Resources/symbols/ConstraintPressure.iv
+    Resources/symbols/ConstraintRigidBody.iv
+    Resources/symbols/ConstraintSectionPrint.iv
+    Resources/symbols/ConstraintSpring.iv
+    Resources/symbols/ConstraintTemperature.iv
+    Resources/symbols/ConstraintTransform.iv
+    Resources/symbols/ConstraintTie.iv
+)
+
+add_library(FemGui SHARED ${FemGui_SRCS} ${FemGuiIcon_SVG} ${FemGuiSymbol_IV})
 target_link_libraries(FemGui ${FemGui_LIBS} ${VTK_LIBRARIES})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(FemGui)
+endif()
 
 fc_copy_sources(FemGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Fem" ${FemGuiIcon_SVG})
+fc_copy_sources(FemGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Fem" ${FemGuiSymbol_IV})
 
 INSTALL(FILES ${FemGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Fem/Resources/icons")
+INSTALL(FILES ${FemGuiSymbol_IV} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Fem/Resources/symbols")
 
 # Python modules ui files, they are copied as they are, thus the need not to be added to Fem.qrc
 # see https://forum.freecad.org/viewtopic.php?f=10&t=25833
@@ -376,6 +415,7 @@ SET(FemGuiPythonUI_SRCS
     Resources/ui/MeshGmsh.ui
     Resources/ui/MeshGroup.ui
     Resources/ui/MeshGroupXDMFExport.ui
+    Resources/ui/MeshNetgen.ui
     Resources/ui/MeshRegion.ui
     Resources/ui/ResultHints.ui
     Resources/ui/ResultShow.ui

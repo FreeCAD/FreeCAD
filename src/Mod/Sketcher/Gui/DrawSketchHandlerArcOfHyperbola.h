@@ -67,10 +67,7 @@ public:
     {
         if (Mode == STATUS_SEEK_First) {
             setPositionText(onSketchPos);
-            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f, 0.f))) {
-                renderSuggestConstraintsCursor(sugConstr1);
-                return;
-            }
+            seekAndRenderAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f, 0.f));
         }
         else if (Mode == STATUS_SEEK_Second) {
             EditCurve[1] = onSketchPos;
@@ -85,13 +82,10 @@ public:
             }
 
             drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr2,
-                                   onSketchPos,
-                                   Base::Vector2d(0.f, 0.f),
-                                   AutoConstraint::CURVE)) {
-                renderSuggestConstraintsCursor(sugConstr2);
-                return;
-            }
+            seekAndRenderAutoConstraint(sugConstr2,
+                                        onSketchPos,
+                                        Base::Vector2d(0.f, 0.f),
+                                        AutoConstraint::CURVE);
         }
         else if (Mode == STATUS_SEEK_Third) {
             // angle between the major axis of the hyperbola and the X axis
@@ -102,8 +96,9 @@ public:
             double angleatpoint = acosh(((onSketchPos.x - centerPoint.x) * cos(phi)
                                          + (onSketchPos.y - centerPoint.y) * sin(phi))
                                         / a);
-            double b = (onSketchPos.y - centerPoint.y - a * cosh(angleatpoint) * sin(phi))
-                / (sinh(angleatpoint) * cos(phi));
+            double b = ((onSketchPos.y - centerPoint.y) * cos(phi)
+                        - (onSketchPos.x - centerPoint.x) * sin(phi))
+                / sinh(angleatpoint);
 
             if (!boost::math::isnan(b)) {
                 for (int i = 15; i >= -15; i--) {
@@ -125,10 +120,7 @@ public:
                 }
 
                 drawEdit(EditCurve);
-                if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.f, 0.f))) {
-                    renderSuggestConstraintsCursor(sugConstr3);
-                    return;
-                }
+                seekAndRenderAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.f, 0.f));
             }
         }
         else if (Mode == STATUS_SEEK_Fourth) {
@@ -140,8 +132,9 @@ public:
             double angleatstartingpoint = acosh(((startingPoint.x - centerPoint.x) * cos(phi)
                                                  + (startingPoint.y - centerPoint.y) * sin(phi))
                                                 / a);
-            double b = (startingPoint.y - centerPoint.y - a * cosh(angleatstartingpoint) * sin(phi))
-                / (sinh(angleatstartingpoint) * cos(phi));
+            double b = ((startingPoint.y - centerPoint.y) * cos(phi)
+                        - (startingPoint.x - centerPoint.x) * sin(phi))
+                / sinh(angleatstartingpoint);
 
             double startAngle = angleatstartingpoint;
 
@@ -188,13 +181,8 @@ public:
             }
 
             drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr4, onSketchPos, Base::Vector2d(0.f, 0.f))) {
-                renderSuggestConstraintsCursor(sugConstr4);
-                return;
-            }
+            seekAndRenderAutoConstraint(sugConstr4, onSketchPos, Base::Vector2d(0.f, 0.f));
         }
-
-        applyCursor();
     }
 
     bool pressButton(Base::Vector2d onSketchPos) override
@@ -240,8 +228,10 @@ public:
             double angleatstartingpoint = acosh(((startingPoint.x - centerPoint.x) * cos(phi)
                                                  + (startingPoint.y - centerPoint.y) * sin(phi))
                                                 / a);
-            double b = (startingPoint.y - centerPoint.y - a * cosh(angleatstartingpoint) * sin(phi))
-                / (sinh(angleatstartingpoint) * cos(phi));
+
+            double b = ((startingPoint.y - centerPoint.y) * cos(phi)
+                        - (startingPoint.x - centerPoint.x) * sin(phi))
+                / sinh(angleatstartingpoint);
 
             double startAngle = angleatstartingpoint;
 

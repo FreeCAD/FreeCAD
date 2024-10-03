@@ -26,6 +26,7 @@ def convertMultilineString(str):
 
 import sys
 
+
 # utility stuff to avoid tests in the mainline code
 class _nevermatch:
     "Polymorphic with a regex that never matches"
@@ -140,10 +141,10 @@ def replace(template, dict, file):
     "Test: copy a block of lines, with full processing"
     import re
 
-    rex = re.compile("@([^@]+)@")
-    rbe = re.compile("\+")
-    ren = re.compile("-")
-    rco = re.compile("= ")
+    rex = re.compile(r"@([^@]+)@")
+    rbe = re.compile(r"\+")
+    ren = re.compile(r"-")
+    rco = re.compile(r"= ")
     x = 23  # just a variable to try substitution
     cop = copier(rex, dict, rbe, ren, rco)
     lines_block = [line + "\n" for line in template.split("\n")]
@@ -155,10 +156,10 @@ if __name__ == "__main__":
     "Test: copy a block of lines, with full processing"
     import re
 
-    rex = re.compile("@([^@]+)@")
-    rbe = re.compile("\+")
-    ren = re.compile("-")
-    rco = re.compile("= ")
+    rex = re.compile(r"@([^@]+)@")
+    rbe = re.compile(r"\+")
+    ren = re.compile(r"-")
+    rco = re.compile(r"= ")
     x = 23  # just a variable to try substitution
     cop = copier(rex, globals(), rbe, ren, rco)
     lines_block = [

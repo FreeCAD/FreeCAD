@@ -42,12 +42,14 @@ def get_information():
         "constraints": ["displacement", "spring"],
         "solvers": ["elmer"],
         "material": "solid",
-        "equations": ["deformation"]
+        "equations": ["deformation"],
     }
 
 
 def get_explanation(header=""):
-    return header + """
+    return (
+        header
+        + """
 
 To run the example from Python console use:
 from femexamples.equation_deformation_spring_elmer import setup
@@ -56,6 +58,7 @@ setup()
 Deformation equation - Elmer solver
 
 """
+    )
 
 
 def setup(doc=None, solvertype="elmer"):
@@ -73,32 +76,38 @@ def setup(doc=None, solvertype="elmer"):
     # sketch defining the spring form
     body = doc.addObject("PartDesign::Body", "Body")
     SketchPath = body.newObject("Sketcher::SketchObject", "Spring_Path")
-    SketchPath.Support = (doc.getObject("XY_Plane"), [""])
+    SketchPath.AttachmentSupport = (doc.getObject("XY_Plane"), [""])
     SketchPath.MapMode = "FlatFace"
-    SketchPath.addGeometry(Part.LineSegment(Vector(
-        -20.0, 30.0, 0.0), Vector(-20.0, 0.0, 0.0)), False)
-    SketchPath.addConstraint(Sketcher.Constraint('PointOnObject', 0, 2, -1))
-    SketchPath.addConstraint(Sketcher.Constraint('Vertical', 0))
-    SketchPath.addGeometry(Part.ArcOfCircle(Part.Circle(
-        Vector(0.0, 0.0, 0.0), Vector(0, 0, 1), 20.0), 3.141593, 6.283185), False)
-    SketchPath.addConstraint(Sketcher.Constraint('Tangent', 0, 2, 1, 1))
-    SketchPath.addConstraint(Sketcher.Constraint('PointOnObject', 1, 2, -1))
-    SketchPath.addGeometry(Part.LineSegment(
-        Vector(20.0, 0.0, 0.0), Vector(20.0, 30.0, 0.0)), False)
-    SketchPath.addConstraint(Sketcher.Constraint('Tangent', 1, 2, 2, 1))
-    SketchPath.addConstraint(Sketcher.Constraint('Equal', 2, 0))
+    SketchPath.addGeometry(
+        Part.LineSegment(Vector(-20.0, 30.0, 0.0), Vector(-20.0, 0.0, 0.0)), False
+    )
+    SketchPath.addConstraint(Sketcher.Constraint("PointOnObject", 0, 2, -1))
+    SketchPath.addConstraint(Sketcher.Constraint("Vertical", 0))
+    SketchPath.addGeometry(
+        Part.ArcOfCircle(
+            Part.Circle(Vector(0.0, 0.0, 0.0), Vector(0, 0, 1), 20.0),
+            3.141593,
+            6.283185,
+        ),
+        False,
+    )
+    SketchPath.addConstraint(Sketcher.Constraint("Tangent", 0, 2, 1, 1))
+    SketchPath.addConstraint(Sketcher.Constraint("PointOnObject", 1, 2, -1))
+    SketchPath.addGeometry(Part.LineSegment(Vector(20.0, 0.0, 0.0), Vector(20.0, 30.0, 0.0)), False)
+    SketchPath.addConstraint(Sketcher.Constraint("Tangent", 1, 2, 2, 1))
+    SketchPath.addConstraint(Sketcher.Constraint("Equal", 2, 0))
     SketchPath.ViewObject.Visibility = False
 
     # sketch defining the spring cross section
     SketchCircle = body.newObject("Sketcher::SketchObject", "Spring_Circle")
-    SketchCircle.Support = (doc.getObject("XZ_Plane"), [""])
+    SketchCircle.AttachmentSupport = (doc.getObject("XZ_Plane"), [""])
     SketchCircle.MapMode = "FlatFace"
     SketchCircle.addGeometry(Part.Circle(Vector(-20.0, 0.0, 0.0), Vector(0, 0, 1), 7.5), False)
-    SketchCircle.addConstraint(Sketcher.Constraint('PointOnObject', 0, 3, -1))
+    SketchCircle.addConstraint(Sketcher.Constraint("PointOnObject", 0, 3, -1))
     SketchCircle.ViewObject.Visibility = False
 
     # the spring object
-    SpringObject = body.newObject('PartDesign::AdditivePipe', 'Spring')
+    SpringObject = body.newObject("PartDesign::AdditivePipe", "Spring")
     SpringObject.Profile = SketchCircle
     SpringObject.Spine = SketchPath
 
@@ -112,6 +121,7 @@ def setup(doc=None, solvertype="elmer"):
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
     if FreeCAD.GuiUp:
         import FemGui
+
         FemGui.setActiveAnalysis(analysis)
 
     # solver
@@ -148,22 +158,22 @@ def setup(doc=None, solvertype="elmer"):
     DisplaceLeft = doc.addObject("Fem::ConstraintDisplacement", "DisplacementLeft")
     DisplaceLeft.xFree = False
     DisplaceLeft.hasXFormula = True
-    DisplaceLeft.xDisplacementFormula = "Variable \"time\"; Real MATC \"0.006*tx\""
+    DisplaceLeft.xDisplacementFormula = 'Variable "time"; Real MATC "0.006*tx"'
     DisplaceLeft.yFree = False
-    DisplaceLeft.yFix = True
+    DisplaceLeft.yDisplacement = 0
     DisplaceLeft.zFree = False
-    DisplaceLeft.zFix = True
+    DisplaceLeft.zDisplacement = 0
     DisplaceLeft.References = [(SpringObject, "Face1")]
     analysis.addObject(DisplaceLeft)
 
     DisplaceRight = doc.addObject("Fem::ConstraintDisplacement", "DisplacementRight")
     DisplaceRight.xFree = False
     DisplaceRight.hasXFormula = True
-    DisplaceRight.xDisplacementFormula = "Variable \"time\"; Real MATC \"-0.006*tx\""
+    DisplaceRight.xDisplacementFormula = 'Variable "time"; Real MATC "-0.006*tx"'
     DisplaceRight.yFree = False
-    DisplaceRight.yFix = True
+    DisplaceRight.yDisplacement = 0
     DisplaceRight.zFree = False
-    DisplaceRight.zFix = True
+    DisplaceRight.zDisplacement = 0
     DisplaceRight.References = [(SpringObject, "Face5")]
     analysis.addObject(DisplaceRight)
 
@@ -182,22 +192,20 @@ def setup(doc=None, solvertype="elmer"):
 
     # mesh
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
-    femmesh_obj.Part = body
+    femmesh_obj.Shape = body
     femmesh_obj.CharacteristicLengthMax = "1.25 mm"
     femmesh_obj.ElementOrder = "1st"
     femmesh_obj.ViewObject.Visibility = False
 
     # generate the mesh
     from femmesh import gmshtools
+
     gmsh_mesh = gmshtools.GmshTools(femmesh_obj, analysis)
     try:
         error = gmsh_mesh.create_mesh()
     except Exception:
         error = sys.exc_info()[1]
-        FreeCAD.Console.PrintError(
-            "Unexpected error when creating mesh: {}\n"
-            .format(error)
-        )
+        FreeCAD.Console.PrintError(f"Unexpected error when creating mesh: {error}\n")
 
     doc.recompute()
     return doc

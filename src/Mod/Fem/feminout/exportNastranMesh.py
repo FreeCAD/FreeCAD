@@ -36,7 +36,7 @@ try:
     from pyNastran.bdf.bdf import BDF
 except Exception:
     FreeCAD.Console.PrintError(
-        "Module pyNastran not found. Writing Mystran solver input will not be work.\n"
+        "Module pyNastran not found. Writing Mystran solver input will not work.\n"
     )
 
 from FreeCAD import Console
@@ -49,10 +49,8 @@ from femmesh import meshtools
 # names are fix given from FreeCAD, these methods are called from FreeCAD
 # they are set in FEM modules Init.py
 
-def export(
-    objectslist,
-    filename
-):
+
+def export(objectslist, filename):
     "called when freecad exports a file"
     if len(objectslist) != 1:
         Console.PrintError("This exporter can only export one object.\n")
@@ -72,10 +70,7 @@ def export(
 
 
 # ********* writer *******************************************************************************
-def write(
-    fem_mesh,
-    filename
-):
+def write(fem_mesh, filename):
     """directly write a FemMesh to a pyNastran mesh file format
     fem_mesh: a FemMesh"""
 
@@ -91,17 +86,14 @@ def write(
     mesh_pynas_code += missing_code_pnynasmesh
 
     # pynas file
-    basefilename = filename[:len(filename) - 4]  # TODO basename is more failsafe
+    basefilename = filename[: len(filename) - 4]  # TODO basename is more failsafe
     pynasf = open(basefilename + ".py", "w")
     pynasf.write("# written by FreeCAD\n\n\n")
     pynasf.write("from pyNastran.bdf.bdf import BDF\n")
     pynasf.write("model = BDF()\n\n\n")
     pynasf.write(mesh_pynas_code)
 
-    pynasf.write(
-        "model.write_bdf('{}', enddata=True)\n"
-        .format(basefilename + "_pyNas.bdf")
-    )
+    pynasf.write("model.write_bdf('{}', enddata=True)\n".format(basefilename + "_pyNas.bdf"))
     pynasf.close()
 
     # execute pyNastran code to add grid to the model
@@ -128,11 +120,11 @@ def get_pynastran_mesh(
     pynas_nodes = "# grid cards, geometric mesh points\n"
     for node in femnodes_mesh:
         vec = femnodes_mesh[node]
-        pynas_nodes += "model.add_grid({}, [{}, {}, {}])\n".format(node, vec.x, vec.y, vec.z)
+        pynas_nodes += f"model.add_grid({node}, [{vec.x}, {vec.y}, {vec.z}])\n"
     # print(pynas_nodes)
 
     # elements
-    # Nastran seams to have the same node order as SMESH (FreeCAD) has
+    # Nastran seems to have the same node order as SMESH (FreeCAD) has
     # thus just write the nodes at once
     pynas_elements = "# elements cards\n"
     for element in femelement_table:
@@ -142,14 +134,13 @@ def get_pynastran_mesh(
         if export_element_type == "cbar":
             pynas_elements += (
                 "model.add_{ele_keyword}({eid}, {pid}, {nodes}, "
-                "{orientation_vec}, {gnull})\n"
-                .format(
+                "{orientation_vec}, {gnull})\n".format(
                     ele_keyword=export_element_type,
                     eid=element,
                     pid=1,
                     nodes=nodes,
                     orientation_vec="x=[0.0, 0.0, 1.0]",
-                    gnull="g0=None"
+                    gnull="g0=None",
                 )
             )
         else:
@@ -161,28 +152,31 @@ def get_pynastran_mesh(
                 ele_keyword = "ctetra"
                 # N1, N3, N2, N4, N7, N6, N5, N8, N10, N9
                 the_nodes = [
-                    nodes[0], nodes[2], nodes[1], nodes[3],
-                    nodes[6], nodes[5], nodes[4],
-                    nodes[7], nodes[9], nodes[8],
+                    nodes[0],
+                    nodes[2],
+                    nodes[1],
+                    nodes[3],
+                    nodes[6],
+                    nodes[5],
+                    nodes[4],
+                    nodes[7],
+                    nodes[9],
+                    nodes[8],
                 ]
             else:
                 ele_keyword = export_element_type
                 the_nodes = nodes
-            pynas_elements += (
-                "model.add_{ele_keyword}({eid}, {pid}, {nodes})\n"
-                .format(ele_keyword=ele_keyword, eid=element, pid=1, nodes=the_nodes)
+            pynas_elements += "model.add_{ele_keyword}({eid}, {pid}, {nodes})\n".format(
+                ele_keyword=ele_keyword, eid=element, pid=1, nodes=the_nodes
             )
     # print(pynas_elements)
 
-    mesh_pynas_code = "{}\n\n{}\n\n".format(pynas_nodes, pynas_elements)
+    mesh_pynas_code = f"{pynas_nodes}\n\n{pynas_elements}\n\n"
     return mesh_pynas_code
 
 
 # Helper
-def get_export_element_type(
-    femmesh,
-    femelement_table=None
-):
+def get_export_element_type(femmesh, femelement_table=None):
     return nastran_ele_types[meshtools.get_femmesh_eletype(femmesh, femelement_table)]
 
 

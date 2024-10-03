@@ -78,6 +78,11 @@ public:
 
     void Restore(Base::XMLReader& reader) override;
 
+    void getLinksTo(std::vector<App::ObjectIdentifier>& identifiers,
+                    App::DocumentObject* obj,
+                    const char* subname = nullptr,
+                    bool all = false) const override;
+
     void copyCells(Base::Writer& writer, const std::vector<App::Range>& ranges) const;
 
     void pasteCells(Base::XMLReader& reader, App::Range dstRange);
@@ -201,7 +206,6 @@ public:
 
     void invalidateDependants(const App::DocumentObject* docObj);
 
-    void renamedDocumentObject(const App::DocumentObject* docObj);
     void
     renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier>& paths);
 

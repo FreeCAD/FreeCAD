@@ -240,7 +240,7 @@ void CmdSketcherNewSketch::activated(int iMsg)
         else
             assert(0 /* mapmode index out of range */);
         doCommand(
-            Gui, "App.activeDocument().%s.Support = %s", FeatName.c_str(), supportString.c_str());
+            Gui, "App.activeDocument().%s.AttachmentSupport = %s", FeatName.c_str(), supportString.c_str());
         doCommand(Gui, "App.activeDocument().recompute()");// recompute the sketch placement based
                                                            // on its support
         doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
@@ -414,7 +414,7 @@ CmdSketcherReorientSketch::CmdSketcherReorientSketch()
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Reorient sketch...");
     sToolTipText = QT_TR_NOOP("Place the selected sketch on one of the global coordinate planes.\n"
-                              "This will clear the 'Support' property, if any.");
+                              "This will clear the 'AttachmentSupport' property, if any.");
     sWhatsThis = "Sketcher_ReorientSketch";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_ReorientSketch";
@@ -425,7 +425,7 @@ void CmdSketcherReorientSketch::activated(int iMsg)
     Q_UNUSED(iMsg);
     Sketcher::SketchObject* sketch =
         Gui::Selection().getObjectsOfType<Sketcher::SketchObject>().front();
-    if (sketch->Support.getValue()) {
+    if (sketch->AttachmentSupport.getValue()) {
         int ret = QMessageBox::question(
             Gui::getMainWindow(),
             qApp->translate("Sketcher_ReorientSketch", "Sketch has support"),
@@ -435,7 +435,7 @@ void CmdSketcherReorientSketch::activated(int iMsg)
             QMessageBox::Yes | QMessageBox::No);
         if (ret == QMessageBox::No)
             return;
-        sketch->Support.setValue(nullptr);
+        sketch->AttachmentSupport.setValue(nullptr);
     }
 
     // ask user for orientation
@@ -549,9 +549,9 @@ CmdSketcherMapSketch::CmdSketcherMapSketch()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Map sketch to face...");
+    sMenuText = QT_TR_NOOP("Attach sketch...");
     sToolTipText = QT_TR_NOOP(
-        "Set the 'Support' of a sketch.\n"
+        "Set the 'AttachmentSupport' of a sketch.\n"
         "First select the supporting geometry, for example, a face or an edge of a solid object,\n"
         "then call this command, then choose the desired sketch.");
     sWhatsThis = "Sketcher_MapSketch";
@@ -707,7 +707,7 @@ void CmdSketcherMapSketch::activated(int iMsg)
             openCommand(QT_TRANSLATE_NOOP("Command", "Attach sketch"));
             Gui::cmdAppObjectArgs(
                 sketch, "MapMode = \"%s\"", AttachEngine::getModeName(suggMapMode).c_str());
-            Gui::cmdAppObjectArgs(sketch, "Support = %s", supportString.c_str());
+            Gui::cmdAppObjectArgs(sketch, "AttachmentSupport = %s", supportString.c_str());
             commitCommand();
             doCommand(Gui, "App.activeDocument().recompute()");
         }
@@ -715,7 +715,7 @@ void CmdSketcherMapSketch::activated(int iMsg)
             openCommand(QT_TRANSLATE_NOOP("Command", "Detach sketch"));
             Gui::cmdAppObjectArgs(
                 sketch, "MapMode = \"%s\"", AttachEngine::getModeName(suggMapMode).c_str());
-            Gui::cmdAppObjectArgs(sketch, "Support = None");
+            Gui::cmdAppObjectArgs(sketch, "AttachmentSupport = None");
             commitCommand();
             doCommand(Gui, "App.activeDocument().recompute()");
         }
@@ -784,7 +784,7 @@ CmdSketcherValidateSketch::CmdSketcherValidateSketch()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Validate sketch...");
-    sToolTipText = QT_TR_NOOP("Validate a sketch by looking at missing coincidences,\n"
+    sToolTipText = QT_TR_NOOP("Validates a sketch by looking at missing coincidences,\n"
                               "invalid constraints, degenerated geometry, etc.");
     sWhatsThis = "Sketcher_ValidateSketch";
     sStatusTip = sToolTipText;
@@ -824,7 +824,7 @@ CmdSketcherMirrorSketch::CmdSketcherMirrorSketch()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Mirror sketch");
-    sToolTipText = QT_TR_NOOP("Create a new mirrored sketch for each selected sketch\n"
+    sToolTipText = QT_TR_NOOP("Creates a new mirrored sketch for each selected sketch\n"
                               "by using the X or Y axes, or the origin point,\n"
                               "as mirroring reference.");
     sWhatsThis = "Sketcher_MirrorSketch";
@@ -1078,6 +1078,7 @@ bool CmdSketcherViewSection::isActive()
 /* Grid tool */
 class GridSpaceAction: public QWidgetAction
 {
+    Q_DECLARE_TR_FUNCTIONS(GridSpaceAction)
 public:
     GridSpaceAction(QObject* parent)
         : QWidgetAction(parent)
@@ -1315,6 +1316,7 @@ bool CmdSketcherGrid::isActive()
 /* Snap tool */
 class SnapSpaceAction: public QWidgetAction
 {
+    Q_DECLARE_TR_FUNCTIONS(SnapSpaceAction)
 public:
     SnapSpaceAction(QObject* parent)
         : QWidgetAction(parent)
@@ -1583,6 +1585,7 @@ bool CmdSketcherSnap::isActive()
 /* Rendering Order */
 class RenderingOrderAction: public QWidgetAction
 {
+    Q_DECLARE_TR_FUNCTIONS(RenderingOrderAction)
 public:
     RenderingOrderAction(QObject* parent)
         : QWidgetAction(parent)
@@ -1768,16 +1771,16 @@ void CmdRenderingOrder::updateIcon()
         Gui::BitmapFactory().iconFromTheme("Sketcher_RenderingOrder_Construction");
     static QIcon external = Gui::BitmapFactory().iconFromTheme("Sketcher_RenderingOrder_External");
 
-    auto* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
-
-    if (TopElement == ElementType::Normal) {
-        pcAction->setIcon(normal);
-    }
-    else if (TopElement == ElementType::Construction) {
-        pcAction->setIcon(construction);
-    }
-    else if (TopElement == ElementType::External) {
-        pcAction->setIcon(external);
+    if (auto* pcAction = qobject_cast<Gui::ActionGroup*>(getAction())) {
+        if (TopElement == ElementType::Normal) {
+            pcAction->setIcon(normal);
+        }
+        else if (TopElement == ElementType::Construction) {
+            pcAction->setIcon(construction);
+        }
+        else if (TopElement == ElementType::External) {
+            pcAction->setIcon(external);
+        }
     }
 }
 

@@ -60,6 +60,7 @@ using namespace MeshGui;
 #define CROSS_HOT_X 7
 #define CROSS_HOT_Y 7
 
+// NOLINTBEGIN
 // clang-format off
 unsigned char MeshSelection::cross_bitmap[] = {
     0xc0, 0x03, 0x40, 0x02, 0x40, 0x02, 0x40, 0x02,
@@ -73,6 +74,7 @@ unsigned char MeshSelection::cross_mask_bitmap[] = {
     0xff, 0xff, 0xff, 0xff, 0xc0, 0x03, 0xc0, 0x03,
     0xc0, 0x03, 0xc0, 0x03, 0xc0, 0x03, 0xc0, 0x03};
 // clang-format on
+// NOLINTEND
 
 MeshSelection::MeshSelection()
 {
@@ -205,8 +207,8 @@ void MeshSelection::prepareFreehandSelection(bool add, SoEventCallbackCB* cb)
         // set cross cursor
         Gui::FreehandSelection* freehand = new Gui::FreehandSelection();
         freehand->setClosed(true);
-        freehand->setColor(1.0f, 0.0f, 0.0f);
-        freehand->setLineWidth(3.0f);
+        freehand->setColor(1.0F, 0.0F, 0.0F);
+        freehand->setLineWidth(3.0F);
         viewer->navigationStyle()->startSelection(freehand);
 
         auto setComponentCursor = [=]() {
@@ -303,7 +305,8 @@ bool MeshSelection::deleteSelectionBorder()
         Mesh::Feature* mf = static_cast<Mesh::Feature*>(view->getObject());
 
         // mark the selected facet as visited
-        std::vector<Mesh::FacetIndex> selection, remove;
+        std::vector<Mesh::FacetIndex> selection;
+        std::vector<Mesh::FacetIndex> remove;
         std::set<Mesh::PointIndex> borderPoints;
         MeshCore::MeshAlgorithm meshAlg(mf->Mesh.getValue().getKernel());
         meshAlg.GetFacetsFlag(selection, MeshCore::MeshFacet::SELECTED);
@@ -469,7 +472,8 @@ void MeshSelection::selectGLCallback(void* ud, SoEventCallback* n)
         polygon.push_back(polygon.front());
     }
 
-    SbVec3f pnt, dir;
+    SbVec3f pnt;
+    SbVec3f dir;
     view->getNearPlane(pnt, dir);
     Base::Vector3f normal(dir[0], dir[1], dir[2]);
 
@@ -491,7 +495,8 @@ void MeshSelection::selectGLCallback(void* ud, SoEventCallback* n)
 
         if (self->onlyVisibleTriangles) {
             const SbVec2s& sz = view->getSoRenderManager()->getViewportRegion().getWindowSize();
-            short width {}, height {};
+            short width {};
+            short height {};
             sz.getValue(width, height);
             std::vector<SbVec2s> pixelPoly = view->getPolygon();
             SbBox2s rect;
@@ -519,7 +524,7 @@ void MeshSelection::selectGLCallback(void* ud, SoEventCallback* n)
             MeshCore::MeshFacetIterator it_f(kernel);
             for (Mesh::FacetIndex face : faces) {
                 it_f.Set(face);
-                if (it_f->GetNormal() * normal > 0.0f) {
+                if (it_f->GetNormal() * normal > 0.0F) {
                     screen.push_back(face);
                 }
             }

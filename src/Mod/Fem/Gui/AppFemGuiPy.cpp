@@ -96,7 +96,7 @@ private:
             FemGui::ActiveAnalysisObserver::instance()->setActiveObject(
                 static_cast<Fem::FemAnalysis*>(obj));
             FemGui::ActiveAnalysisObserver::instance()->highlightActiveObject(
-                Gui::HighlightMode::Blue,
+                Gui::HighlightMode::UserDefined,
                 true);
         }
 

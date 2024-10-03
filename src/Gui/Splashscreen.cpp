@@ -162,7 +162,7 @@ public:
         // choose text color
         auto tc = cfg.find("SplashTextColor");
         if (tc != cfg.end()) {
-            QColor col; col.setNamedColor(QString::fromLatin1(tc->second.c_str()));
+            QColor col(QString::fromStdString(tc->second));
             if (col.isValid()) {
                 textColor = col;
             }
@@ -184,17 +184,17 @@ public:
         Q_UNUSED(content)
 
 #ifdef FC_DEBUG
-        Log(msg.c_str());
         Q_UNUSED(level)
+        Log(msg);
 #else
         if (level == Base::LogStyle::Log) {
-            Log(msg.c_str());
+            Log(msg);
         }
 #endif
     }
-    void Log (const char * text)
+    void Log(const std::string& text)
     {
-        QString msg(QString::fromUtf8(text));
+        QString msg(QString::fromStdString(text));
         QRegularExpression rx;
         // ignore 'Init:' and 'Mod:' prefixes
         rx.setPattern(QLatin1String("^\\s*(Init:|Mod:)\\s*"));
@@ -266,11 +266,7 @@ AboutDialogFactory::~AboutDialogFactory() = default;
 
 QDialog *AboutDialogFactory::create(QWidget *parent) const
 {
-#ifdef _USE_3DCONNEXION_SDK
-    return new AboutDialog(true, parent);
-#else
-    return new AboutDialog(false, parent);
-#endif
+    return new AboutDialog(parent);
 }
 
 const AboutDialogFactory *AboutDialogFactory::defaultFactory()
@@ -298,11 +294,9 @@ void AboutDialogFactory::setDefaultFactory(AboutDialogFactory *f)
  *
  *  The dialog will be modal.
  */
-AboutDialog::AboutDialog(bool showLic, QWidget* parent)
+AboutDialog::AboutDialog(QWidget* parent)
   : QDialog(parent), ui(new Ui_AboutApplication)
 {
-    Q_UNUSED(showLic);
-
     setModal(true);
     ui->setupUi(this);
     connect(ui->copyButton, &QPushButton::clicked,
@@ -341,6 +335,7 @@ AboutDialog::AboutDialog(bool showLic, QWidget* parent)
     showLicenseInformation();
     showLibraryInformation();
     showCollectionInformation();
+    showPrivacyPolicy();
     showOrHideImage(rect);
 }
 
@@ -767,6 +762,31 @@ void AboutDialog::showCollectionInformation()
     textField->setSource(path);
 }
 
+void AboutDialog::showPrivacyPolicy()
+{
+    auto policyFileURL = QLatin1String(":/doc/PRIVACY_POLICY");
+    QFile policyFile(policyFileURL);
+
+    if (!policyFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return;
+    }
+    auto text = QString::fromUtf8(policyFile.readAll());
+    auto tabPrivacyPolicy = new QWidget();
+    tabPrivacyPolicy->setObjectName(QString::fromLatin1("tabPrivacyPolicy"));
+    ui->tabWidget->addTab(tabPrivacyPolicy, tr("Privacy Policy"));
+    auto hLayout = new QVBoxLayout(tabPrivacyPolicy);
+    auto textField = new QTextBrowser(tabPrivacyPolicy);
+    textField->setOpenExternalLinks(true);
+    hLayout->addWidget(textField);
+
+#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
+    // We can't actually render the markdown, so just display it as text
+    textField->setText(text);
+#else
+    textField->setMarkdown(text);
+#endif
+}
+
 void AboutDialog::linkActivated(const QUrl& link)
 {
     auto licenseView = new LicenseView();
@@ -808,7 +828,6 @@ void AboutDialog::copyToClipboard()
             deskInfo = QLatin1String(" (") + deskEnv + QLatin1String("/") + deskSess + QLatin1String(")");
     }
 
-    str << "```\n";
     str << "OS: " << prettyProductInfoWrapper() << deskInfo << '\n';
     str << "Word size of " << exe << ": " << QSysInfo::WordSize << "-bit\n";
     str << "Version: " << major << "." << minor << "." << point << suffix << "." << build;
@@ -851,16 +870,49 @@ void AboutDialog::copyToClipboard()
         << '\n';
 #endif
     QLocale loc;
-    str << "Locale: " << loc.languageToString(loc.language()) << "/"
-        << loc.countryToString(loc.country())
+    str << "Locale: " << QLocale::languageToString(loc.language()) << "/"
+#if QT_VERSION < QT_VERSION_CHECK(6,6,0)
+        << QLocale::countryToString(loc.country())
+#else
+        << QLocale::territoryToString(loc.territory())
+#endif
         << " (" << loc.name() << ")";
     if (loc != QLocale::system()) {
         loc = QLocale::system();
-        str << " [ OS: " << loc.languageToString(loc.language()) << "/"
-            << loc.countryToString(loc.country())
+        str << " [ OS: " << QLocale::languageToString(loc.language()) << "/"
+#if QT_VERSION < QT_VERSION_CHECK(6,6,0)
+            << QLocale::countryToString(loc.country())
+#else
+            << QLocale::territoryToString(loc.territory())
+#endif
             << " (" << loc.name() << ") ]";
     }
     str << "\n";
+
+    // Add Stylesheet/Theme/Qtstyle information
+    std::string styleSheet = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")->GetASCII("StyleSheet");
+    std::string theme = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")->GetASCII("Theme");
+
+    #if QT_VERSION >= QT_VERSION_CHECK(6, 1, 0)
+        std::string style = qApp->style()->name().toStdString();
+    #else
+        std::string style = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")->GetASCII("QtStyle");
+        if(style.empty()) {
+            style = "Qt default";
+        }
+    #endif
+
+    if(styleSheet.empty()) {
+        styleSheet = "unset";
+    }
+    if(theme.empty()) {
+        theme = "unset";
+    }
+
+    str << "Stylesheet/Theme/QtStyle: "
+        << QString::fromStdString(styleSheet) << "/"
+        << QString::fromStdString(theme) << "/"
+        << QString::fromStdString(style) << "\n";
 
     // Add installed module information:
     auto modDir = fs::path(App::Application::getUserAppDataDir()) / "Mod";
@@ -884,12 +936,11 @@ void AboutDialog::copyToClipboard()
             auto disablingFile = mod.path() / "ADDON_DISABLED";
             if (fs::exists(disablingFile))
                 str << " (Disabled)";
-            
+
             str << "\n";
         }
     }
 
-    str << "```\n";
     QClipboard* cb = QApplication::clipboard();
     cb->setText(data);
 }

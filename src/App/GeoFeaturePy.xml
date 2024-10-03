@@ -58,6 +58,12 @@ If an object has no such property then None is returned.
 Unlike to getPropertyNameOfGeometry this function returns the geometry, not its name.</UserDocu>
       </Documentation>
     </Methode>
+    <Attribute Name="ElementMapVersion" ReadOnly="true">
+        <Documentation>
+            <UserDocu>Element map version</UserDocu>
+        </Documentation>
+        <Parameter Name="ElementMapVersion" Type="String" />
+    </Attribute>
     <CustomAttributes />
   </PythonExport>
 </GenerateModel>

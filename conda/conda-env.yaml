@@ -2,7 +2,8 @@ name: freecad
 channels:
 - conda-forge
 dependencies:
+- conda-forge/noarch::conda-libmamba-solver==24.7.0
 - conda-devenv
-- mamba==1.4.9    # NOTE: Pin to highest version supported by the devenv
-- python==3.11.*  # dependencies. If a higher version is installed, a crash
-                  # occurs during the downgrade process.
+- mamba
+- python==3.11.*
+- zstd==1.5.6

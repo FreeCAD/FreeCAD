@@ -151,15 +151,15 @@ void EditModeCoinManager::ParameterObserver::initParameters()
          }},
         {"ConstructionWidth",
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
-             updateWidth(drawingParameters.ConstructionWidth, param, 1);
+             updateWidth(drawingParameters.ConstructionWidth, param, 2);
          }},
         {"InternalWidth",
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
-             updateWidth(drawingParameters.InternalWidth, param, 1);
+             updateWidth(drawingParameters.InternalWidth, param, 2);
          }},
         {"ExternalWidth",
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
-             updateWidth(drawingParameters.ExternalWidth, param, 1);
+             updateWidth(drawingParameters.ExternalWidth, param, 2);
          }},
         {"EdgePattern",
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
@@ -180,10 +180,6 @@ void EditModeCoinManager::ParameterObserver::initParameters()
         {"CreateLineColor",
          [this, drawingParameters = Client.drawingParameters](const std::string& param) {
              updateColor(drawingParameters.CreateCurveColor, param);
-         }},
-        {"EditedVertexColor",
-         [this, drawingParameters = Client.drawingParameters](const std::string& param) {
-             updateColor(drawingParameters.VertexColor, param);
          }},
         {"EditedEdgeColor",
          [this, drawingParameters = Client.drawingParameters](const std::string& param) {
@@ -208,10 +204,6 @@ void EditModeCoinManager::ParameterObserver::initParameters()
         {"FullyConstraintInternalAlignmentColor",
          [this, drawingParameters = Client.drawingParameters](const std::string& param) {
              updateColor(drawingParameters.FullyConstraintInternalAlignmentColor, param);
-         }},
-        {"FullyConstraintConstructionPointColor",
-         [this, drawingParameters = Client.drawingParameters](const std::string& param) {
-             updateColor(drawingParameters.FullyConstraintConstructionPointColor, param);
          }},
         {"FullyConstraintElementColor",
          [this, drawingParameters = Client.drawingParameters](const std::string& param) {

@@ -17,7 +17,7 @@
       <location filename="../../Command.cpp" line="721"/>
       <location filename="../../Command.cpp" line="723"/>
       <source>Add triangle manually to a mesh</source>
-      <translation>Handmatig een driehoek toevoegen aan een gaas</translation>
+      <translation>Handmatig een driehoek toevoegen aan een mesh</translation>
     </message>
   </context>
   <context>
@@ -25,7 +25,7 @@
     <message>
       <location filename="../../Command.cpp" line="1438"/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation type="unfinished">Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1439"/>
@@ -102,7 +102,7 @@
     <message>
       <location filename="../../Command.cpp" line="165"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="166"/>
@@ -139,13 +139,13 @@
     <message>
       <location filename="../../Command.cpp" line="1265"/>
       <source>Check solid mesh</source>
-      <translation>Controleer vast maaswerk</translation>
+      <translation>Controleer vaste mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1266"/>
       <location filename="../../Command.cpp" line="1268"/>
       <source>Checks whether the mesh is a solid</source>
-      <translation>Controleert of het maaswerk een volumemodel is</translation>
+      <translation>Controleert of de mesh een volumemodel is</translation>
     </message>
   </context>
   <context>
@@ -158,13 +158,13 @@
     <message>
       <location filename="../../Command.cpp" line="1046"/>
       <source>Evaluate and repair mesh...</source>
-      <translation>Evalueer en repareer maaswerk...</translation>
+      <translation>Evalueer en repareer mesh...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1047"/>
       <location filename="../../Command.cpp" line="1049"/>
       <source>Opens a dialog to analyze and repair a mesh</source>
-      <translation>Opent een venster voor analyse en reparatie van een maaswerk</translation>
+      <translation>Opent een venster voor analyse en reparatie van een mesh</translation>
     </message>
   </context>
   <context>
@@ -177,13 +177,13 @@
     <message>
       <location filename="../../Command.cpp" line="377"/>
       <source>Export mesh...</source>
-      <translation>Gaas exporteren...</translation>
+      <translation>Mesh exporteren...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="378"/>
       <location filename="../../Command.cpp" line="380"/>
       <source>Exports a mesh to file</source>
-      <translation>Exporteert een gaas naar een bestand</translation>
+      <translation>Exporteert een mesh naar een bestand</translation>
     </message>
   </context>
   <context>
@@ -221,7 +221,7 @@
       <location filename="../../Command.cpp" line="1524"/>
       <location filename="../../Command.cpp" line="1526"/>
       <source>Fill holes of the mesh</source>
-      <translation>Gaten in het gaas vullen</translation>
+      <translation>Gaten in de mesh vullen</translation>
     </message>
   </context>
   <context>
@@ -240,7 +240,7 @@
       <location filename="../../Command.cpp" line="1404"/>
       <location filename="../../Command.cpp" line="1406"/>
       <source>Flips the normals of the mesh</source>
-      <translation>De normalen van het gaas omkeren</translation>
+      <translation>De normalen van de mesh omkeren</translation>
     </message>
   </context>
   <context>
@@ -253,13 +253,13 @@
     <message>
       <location filename="../../Command.cpp" line="460"/>
       <source>Create mesh from geometry...</source>
-      <translation>Genereer maaswerk vanuit geometrie...</translation>
+      <translation>Genereer mesh vanuit geometrie...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="461"/>
       <location filename="../../Command.cpp" line="463"/>
       <source>Create mesh from the selected geometry</source>
-      <translation>Genereer maaswerk vanuit geselecteerde vorm</translation>
+      <translation>Genereer mesh vanuit geselecteerde vorm</translation>
     </message>
   </context>
   <context>
@@ -334,19 +334,19 @@
   <context>
     <name>CmdMeshMerge</name>
     <message>
-      <location filename="../../Command.cpp" line="1689"/>
+      <location filename="../../Command.cpp" line="1692"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1690"/>
+      <location filename="../../Command.cpp" line="1693"/>
       <source>Merge</source>
       <translation>Samenvoegen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1691"/>
+      <location filename="../../Command.cpp" line="1694"/>
       <source>Merges selected meshes into one</source>
-      <translation>Voegt geselecteerde maaswerken samen tot één enkele</translation>
+      <translation>Voegt geselecteerde mesh-en samen tot één enkele</translation>
     </message>
   </context>
   <context>
@@ -403,7 +403,7 @@
       <location filename="../../Command.cpp" line="989"/>
       <location filename="../../Command.cpp" line="991"/>
       <source>Splits a mesh into two meshes</source>
-      <translation>Verdeelt een gaas in twee gazen</translation>
+      <translation>Verdeelt een mesh in twee mesh-en</translation>
     </message>
   </context>
   <context>
@@ -416,13 +416,13 @@
     <message>
       <location filename="../../Command.cpp" line="834"/>
       <source>Trim mesh</source>
-      <translation>Gaas bijsnijden</translation>
+      <translation>Mesh bijsnijden</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="835"/>
       <location filename="../../Command.cpp" line="837"/>
       <source>Trims a mesh with a picked polygon</source>
-      <translation>Snijdt een maaswerk met een geselecteerde veelhoek</translation>
+      <translation>Verkleint een mesh met een geselecteerde veelhoek</translation>
     </message>
   </context>
   <context>
@@ -479,25 +479,25 @@
       <location filename="../../Command.cpp" line="1137"/>
       <location filename="../../Command.cpp" line="1139"/>
       <source>Remove topologic independent components from the mesh</source>
-      <translation>Ruimtelijk onafhankelijke onderdelen van het maaswerk verwijderen</translation>
+      <translation>Ruimtelijk onafhankelijke onderdelen van de mesh verwijderen</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshScale</name>
     <message>
-      <location filename="../../Command.cpp" line="1784"/>
+      <location filename="../../Command.cpp" line="1787"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1785"/>
+      <location filename="../../Command.cpp" line="1788"/>
       <source>Scale...</source>
       <translation>Schaal...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1786"/>
+      <location filename="../../Command.cpp" line="1789"/>
       <source>Scale selected meshes</source>
-      <translation>Geselecteerde maaswerken schalen</translation>
+      <translation>Geselecteerde mesh schalen</translation>
     </message>
   </context>
   <context>
@@ -510,49 +510,49 @@
     <message>
       <location filename="../../Command.cpp" line="930"/>
       <source>Create section from mesh and plane</source>
-      <translation>Genereer doorsnede van maaswerk en vlak</translation>
+      <translation>Genereer doorsnede van mesh en vlak</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="931"/>
       <location filename="../../Command.cpp" line="932"/>
       <source>Section from mesh and plane</source>
-      <translation>Doorsnede van maaswerk en vlak</translation>
+      <translation>Doorsnede van mesh en vlak</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshSegmentation</name>
     <message>
-      <location filename="../../Command.cpp" line="1617"/>
+      <location filename="../../Command.cpp" line="1620"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1618"/>
+      <location filename="../../Command.cpp" line="1621"/>
       <source>Create mesh segments...</source>
       <translation>Genereer maaswerk-segmenten...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1619"/>
-      <location filename="../../Command.cpp" line="1621"/>
+      <location filename="../../Command.cpp" line="1622"/>
+      <location filename="../../Command.cpp" line="1624"/>
       <source>Create mesh segments</source>
-      <translation>Gaassegmenten aanmaken</translation>
+      <translation>Mesh segmenten aanmaken</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshSegmentationBestFit</name>
     <message>
-      <location filename="../../Command.cpp" line="1653"/>
+      <location filename="../../Command.cpp" line="1656"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1654"/>
+      <location filename="../../Command.cpp" line="1657"/>
       <source>Create mesh segments from best-fit surfaces...</source>
       <translation>Genereer maaswerk-segmenten uit meest passende oppervlakken...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1655"/>
-      <location filename="../../Command.cpp" line="1657"/>
+      <location filename="../../Command.cpp" line="1658"/>
+      <location filename="../../Command.cpp" line="1660"/>
       <source>Create mesh segments from best-fit surfaces</source>
       <translation>Genereer maaswerk-segmenten uit meest passende oppervlakken</translation>
     </message>
@@ -579,17 +579,17 @@
   <context>
     <name>CmdMeshSplitComponents</name>
     <message>
-      <location filename="../../Command.cpp" line="1735"/>
+      <location filename="../../Command.cpp" line="1738"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1736"/>
+      <location filename="../../Command.cpp" line="1739"/>
       <source>Split by components</source>
       <translation>Gesplitst op onderdelen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1737"/>
+      <location filename="../../Command.cpp" line="1740"/>
       <source>Split selected mesh into its components</source>
       <translation>Splits geselecteerde maaswerk tot zijn componenten</translation>
     </message>
@@ -692,7 +692,7 @@
       <translation>Maaswerk HoekpuntKromming</translation>
     </message>
     <message>
-      <location filename="../../DlgSmoothing.cpp" line="180"/>
+      <location filename="../../DlgSmoothing.cpp" line="175"/>
       <source>Mesh Smoothing</source>
       <translation>Maaswerk Vloeiend maken</translation>
     </message>
@@ -704,7 +704,7 @@
     <message>
       <location filename="../../Command.cpp" line="1414"/>
       <source>Flip mesh normals</source>
-      <translation>Normale spiegelen van maaswerk</translation>
+      <translation>Normalen spiegelen van de mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1548"/>
@@ -712,67 +712,67 @@
       <translation>Gaten vullen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1704"/>
+      <location filename="../../Command.cpp" line="1707"/>
       <source>Mesh merge</source>
-      <translation>Samenvoegen van maaswerk</translation>
+      <translation>Samenvoegen van mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1750"/>
+      <location filename="../../Command.cpp" line="1753"/>
       <source>Mesh split</source>
       <translation>Maaswerk splitsen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1813"/>
+      <location filename="../../Command.cpp" line="1816"/>
       <source>Mesh scale</source>
       <translation>Maaswerk verschalen</translation>
     </message>
     <message>
-      <location filename="../../DlgDecimating.cpp" line="160"/>
+      <location filename="../../DlgDecimating.cpp" line="156"/>
       <source>Mesh Decimating</source>
       <translation>Maaswerk verminderen</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="550"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="548"/>
       <source>Harmonize normals</source>
       <translation>Harmoniseer loodlijnen</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="661"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="659"/>
       <source>Remove non-manifolds</source>
       <translation>Verwijder niet waterdichte elementen</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="766"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="763"/>
       <source>Fix indices</source>
       <translation>Index repareren</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="836"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="832"/>
       <source>Remove degenerated faces</source>
       <translation>Gedegenereerde vlakken verwijderen</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="908"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="903"/>
       <source>Remove duplicated faces</source>
       <translation>Dubbele vlakken verwijderen</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="978"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="972"/>
       <source>Remove duplicated points</source>
       <translation>Dubbele punten verwijderen</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1064"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1057"/>
       <source>Fix self-intersections</source>
       <translation>Repareer zelf-kruisingen</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1143"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1135"/>
       <source>Remove folds</source>
       <translation>Vouwen verwijderen</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1187"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1179"/>
       <source>Repair mesh</source>
       <translation>Herstel maaswerk</translation>
     </message>
@@ -782,34 +782,34 @@
       <translation>Selectie verwijderen</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="958"/>
-      <location filename="../../ViewProvider.cpp" line="1019"/>
+      <location filename="../../ViewProvider.cpp" line="963"/>
+      <location filename="../../ViewProvider.cpp" line="1024"/>
       <source>Cut</source>
       <translation>Knippen</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="968"/>
-      <location filename="../../ViewProvider.cpp" line="1089"/>
+      <location filename="../../ViewProvider.cpp" line="973"/>
+      <location filename="../../ViewProvider.cpp" line="1094"/>
       <source>Trim</source>
       <translation>Bijsnijden</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1176"/>
+      <location filename="../../ViewProvider.cpp" line="1181"/>
       <source>Split</source>
       <translation>Opsplitsen</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1249"/>
+      <location filename="../../ViewProvider.cpp" line="1254"/>
       <source>Segment</source>
       <translation>Segment</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1848"/>
+      <location filename="../../ViewProvider.cpp" line="1856"/>
       <source>Delete</source>
       <translation>Verwijderen</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1977"/>
+      <location filename="../../ViewProvider.cpp" line="1985"/>
       <source>Fill hole</source>
       <translation>Vul gat</translation>
     </message>
@@ -838,7 +838,7 @@
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="66"/>
-      <location filename="../../DlgDecimating.cpp" line="102"/>
+      <location filename="../../DlgDecimating.cpp" line="101"/>
       <source>Absolute number</source>
       <translation>Absoluut getal</translation>
     </message>
@@ -848,7 +848,7 @@
       <translation>Tolerantie</translation>
     </message>
     <message>
-      <location filename="../../DlgDecimating.cpp" line="96"/>
+      <location filename="../../DlgDecimating.cpp" line="95"/>
       <source>Absolute number (Maximum: %1)</source>
       <translation>Absoluut getal (Maximum: %1)</translation>
     </message>
@@ -986,11 +986,12 @@
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="253"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="421"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="420"/>
       <source>No selection</source>
       <translation>Geen selectie</translation>
     </message>
     <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="450"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="451"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="452"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="453"/>
@@ -1001,146 +1002,145 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="458"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="459"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="460"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="461"/>
       <source>No information</source>
       <translation>Geen informatie</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="558"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="556"/>
       <source>Orientation</source>
       <translation>Oriëntatie</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="526"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="524"/>
       <source>No flipped normals</source>
       <translation>Geen gespiegelde loodlijnen</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="532"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="530"/>
       <source>%1 flipped normals</source>
       <translation>%1 gespiegelde loodlijnen</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="618"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="616"/>
       <source>No non-manifolds</source>
       <translation>Geen niet-variëteiten</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="626"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="624"/>
       <source>%1 non-manifolds</source>
       <translation>%1 niet-variëteiten</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="677"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="680"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="675"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="678"/>
       <source>Non-manifolds</source>
       <translation>Niet-variëteiten</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="680"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="678"/>
       <source>Cannot remove non-manifolds</source>
       <translation>Kan de niet-variëteiten niet verwijderen</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="721"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="718"/>
       <source>Invalid face indices</source>
       <translation>Ongeldige vlak indexen</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="728"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="725"/>
       <source>Invalid point indices</source>
       <translation>Ongeldige punt indexen</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="735"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="732"/>
       <source>Multiple point indices</source>
       <translation>Meerdere punt indexen</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="742"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="739"/>
       <source>Invalid neighbour indices</source>
       <translation>Ongeldige buurindexen</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="749"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="746"/>
       <source>No invalid indices</source>
       <translation>Geen ongeldige indices</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="774"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="771"/>
       <source>Indices</source>
       <translation>Indexen</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="812"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="808"/>
       <source>No degenerations</source>
       <translation>Geen degeneraties</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="818"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="814"/>
       <source>%1 degenerated faces</source>
       <translation>%1 gedegenereerde vlakken</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="845"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="841"/>
       <source>Degenerations</source>
       <translation>Degeneraties</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="883"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="878"/>
       <source>No duplicated faces</source>
       <translation>Geen gedupliceerde vlakken</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="889"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="884"/>
       <source>%1 duplicated faces</source>
       <translation>%1 dubbele vlakken
 </translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="917"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="912"/>
       <source>Duplicated faces</source>
       <translation>Dubbele vlakken</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="954"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="948"/>
       <source>No duplicated points</source>
       <translation>Geen dubbele punten</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="960"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="987"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="954"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="981"/>
       <source>Duplicated points</source>
       <translation>dubbele punten</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1031"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1024"/>
       <source>No self-intersections</source>
       <translation>Niet zelfsnijdend</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1037"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1030"/>
       <source>Self-intersections</source>
       <translation>Zelf-doorsnijdingen</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1108"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1100"/>
       <source>No folds on surface</source>
       <translation>Geen plooien op het oppervlak</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1124"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1116"/>
       <source>%1 folds on surface</source>
       <translation>1% plooien op het oppervlak</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1152"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1144"/>
       <source>Folds</source>
       <translation>Plooien</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1286"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1289"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1278"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1281"/>
       <source>Mesh repair</source>
       <translation>Mesh reparatie</translation>
     </message>
@@ -1464,7 +1464,7 @@ to a smoother appearance.
       <translation>Als deze optie is ingesteld, wordt de Phong-beschaduwing gebruikt, anders vlakke schaduwen.
 De beschaduwing bepaalt het uiterlijk van de oppervlakken.
 
-Bij vlakke beschaduwingen worden de oppervlaktenormen niet per eindpunt gedefinieerd, wat leidt
+Bij vlakke beschaduwingen worden de loodlijnen niet per hoekpunt gedefinieerd, wat leidt
 tot een onrealistisch uiterlijk voor gebogen oppervlakken, terwijl het gebruik van Phong-beschaduwing
 tot een gladder uiterlijk leidt.
 </translation>
@@ -1624,7 +1624,7 @@ tot een gladder uiterlijk leidt.
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="766"/>
+      <location filename="../../MeshEditor.cpp" line="767"/>
       <source>Finish</source>
       <translation>Voltooien</translation>
     </message>
@@ -1822,7 +1822,7 @@ tot een gladder uiterlijk leidt.
     <message>
       <location filename="../../Segmentation.ui" line="20"/>
       <source>Smooth mesh</source>
-      <translation>Glad gaas</translation>
+      <translation>Vloeiende mesh</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="37"/>
@@ -1892,7 +1892,7 @@ tot een gladder uiterlijk leidt.
     <message>
       <location filename="../../SegmentationBestFit.ui" line="14"/>
       <source>Mesh segmentation</source>
-      <translation>Mesh segmentatie</translation>
+      <translation>Meshsegmentatie</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="20"/>
@@ -2001,13 +2001,13 @@ tot een gladder uiterlijk leidt.
     <name>MeshGui::TaskRemoveComponents</name>
     <message>
       <location filename="../../RemoveComponents.cpp" line="208"/>
-      <location filename="../../RemoveComponents.cpp" line="255"/>
+      <location filename="../../RemoveComponents.cpp" line="253"/>
       <source>Delete</source>
       <translation>Verwijderen</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.cpp" line="209"/>
-      <location filename="../../RemoveComponents.cpp" line="256"/>
+      <location filename="../../RemoveComponents.cpp" line="254"/>
       <source>Invert</source>
       <translation>Omkeren</translation>
     </message>
@@ -2040,13 +2040,13 @@ tot een gladder uiterlijk leidt.
       <translation>Mesh info box</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="101"/>
+      <location filename="../../Workbench.cpp" line="88"/>
       <source>Mesh info</source>
       <translation>Mesh informatie</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="123"/>
-      <location filename="../../Workbench.cpp" line="124"/>
+      <location filename="../../Workbench.cpp" line="121"/>
+      <location filename="../../Workbench.cpp" line="122"/>
       <source>X: %1	Y: %2	Z: %3</source>
       <translation>X: %1	Y: %2	Z: %3</translation>
     </message>
@@ -2091,7 +2091,7 @@ Gelieve naar http://www.openscad.org/index.html te gaan om het te installeren.</
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1336"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1328"/>
       <source>Evaluate &amp; Repair Mesh</source>
       <translation>Evalueer &amp; herstel de mesh</translation>
     </message>
@@ -2099,12 +2099,12 @@ Gelieve naar http://www.openscad.org/index.html te gaan om het te installeren.</
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppMeshGui.cpp" line="161"/>
+      <location filename="../../AppMeshGui.cpp" line="157"/>
       <source>Display</source>
       <translation>Weergave</translation>
     </message>
     <message>
-      <location filename="../../AppMeshGui.cpp" line="163"/>
+      <location filename="../../AppMeshGui.cpp" line="159"/>
       <source>Import-Export</source>
       <translation>Importeren-Exporteren</translation>
     </message>
@@ -2169,7 +2169,7 @@ Gelieve naar http://www.openscad.org/index.html te gaan om het te installeren.</
     <message>
       <location filename="../../Command.cpp" line="349"/>
       <source>Import mesh</source>
-      <translation>Gaas importeren</translation>
+      <translation>Mesh importeren</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="402"/>
@@ -2229,7 +2229,7 @@ Gelieve naar http://www.openscad.org/index.html te gaan om het te installeren.</
     <message>
       <location filename="../../Command.cpp" line="424"/>
       <source>Export mesh</source>
-      <translation>Gaas exporteren</translation>
+      <translation>Mesh exporteren</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="470"/>
@@ -2272,12 +2272,12 @@ Gelieve naar http://www.openscad.org/index.html te gaan om het te installeren.</
       <translation>Vul de gaten met maximaal aantal randen:</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1801"/>
+      <location filename="../../Command.cpp" line="1804"/>
       <source>Scaling</source>
       <translation>Schalen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1802"/>
+      <location filename="../../Command.cpp" line="1805"/>
       <source>Enter scaling factor:</source>
       <translation>Geef schaal factor:</translation>
     </message>
@@ -2287,48 +2287,48 @@ Gelieve naar http://www.openscad.org/index.html te gaan om het te installeren.</
       <translation>[Punten: %1, randen: %2, gezichten: %3]</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="804"/>
+      <location filename="../../ViewProvider.cpp" line="809"/>
       <source>Display components</source>
       <translation>Geef componenten weer</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="812"/>
+      <location filename="../../ViewProvider.cpp" line="817"/>
       <source>Display segments</source>
       <translation>Segmenten weergeven</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="820"/>
+      <location filename="../../ViewProvider.cpp" line="825"/>
       <source>Display colors</source>
       <translation>Kleuren weergeven</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1679"/>
+      <location filename="../../ViewProvider.cpp" line="1687"/>
       <location filename="../../ViewProviderCurvature.cpp" line="522"/>
       <source>Leave info mode</source>
       <translation>Info modus verlaten</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1746"/>
+      <location filename="../../ViewProvider.cpp" line="1754"/>
       <source>Index: %1</source>
       <translation>Index: %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1772"/>
+      <location filename="../../ViewProvider.cpp" line="1780"/>
       <source>Leave hole-filling mode</source>
       <translation>Gatvulmodus verlaten</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1822"/>
+      <location filename="../../ViewProvider.cpp" line="1830"/>
       <source>Leave removal mode</source>
       <translation>Verwijdermodus verlaten</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1823"/>
+      <location filename="../../ViewProvider.cpp" line="1831"/>
       <source>Delete selected faces</source>
       <translation>Verwijder geselecteerde vlakken</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1824"/>
+      <location filename="../../ViewProvider.cpp" line="1832"/>
       <source>Clear selected faces</source>
       <translation>Geselecteerde vlakken wissen</translation>
     </message>
@@ -2383,7 +2383,7 @@ Gelieve naar http://www.openscad.org/index.html te gaan om het te installeren.</
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Mesh segmentation</source>
-      <translation>Meshsegmentatie</translation>
+      <translation>Mesh segmentatie</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>

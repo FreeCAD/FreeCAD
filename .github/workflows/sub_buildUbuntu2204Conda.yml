@@ -70,14 +70,18 @@ jobs:
         with:
           submodules: true
       - name: Setup Miniconda
+        env:
+          CONDA_VERBOSITY: 2
         uses: conda-incubator/setup-miniconda@v3
         with:
           activate-environment: .conda/freecad
           environment-file: conda/conda-env.yaml
-          channels: conda-forge,defaults
+          channels: conda-forge
           channel-priority: true
           miniforge-version: latest
       - name: Install FreeCAD dependencies
+        env:
+          CONDA_VERBOSITY: 2
         run: |
           ./conda/setup-environment.sh
       - name: Set Environment Variables
@@ -98,9 +102,11 @@ jobs:
         uses: ./.github/workflows/actions/linux/generateCacheKey
         with:
           compiler: ${{ env.CXX }}
+          qt_major_version: 5
       - name: Restore Compiler Cache
-        uses: pat-s/always-upload-cache@v3
+        uses: actions/cache@v4
         with:
+          save-always: true
           path: ${{ env.CCACHE_DIR }}
           key: FC-${{ steps.genCacheKey.outputs.cacheKey }}-${{ github.ref }}-${{ github.run_id }}
           restore-keys: |

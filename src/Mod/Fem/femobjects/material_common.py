@@ -30,7 +30,10 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief material common object
 
+from FreeCAD import Base
 from . import base_fempythonobject
+
+_PropHelper = base_fempythonobject._PropHelper
 
 
 class MaterialCommon(base_fempythonobject.BaseFemPythonObject):
@@ -41,32 +44,47 @@ class MaterialCommon(base_fempythonobject.BaseFemPythonObject):
     Type = "Fem::MaterialCommon"
 
     def __init__(self, obj):
-        super(MaterialCommon, self).__init__(obj)
-        self.add_properties(obj)
+        super().__init__(obj)
+
+        for prop in self._get_properties():
+            prop.add_to_object(obj)
+
+    def _get_properties(self):
+        prop = []
+
+        prop.append(
+            _PropHelper(
+                type="App::PropertyLinkSubListGlobal",
+                name="References",
+                group="Material",
+                doc="List of material shapes",
+                value=[],
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyEnumeration",
+                name="Category",
+                group="Material",
+                doc="Material type: fluid or solid",
+                value=["Solid", "Fluid"],
+            )
+        )
+
+        return prop
 
     def onDocumentRestored(self, obj):
-        self.add_properties(obj)
+        # update old project with new properties
+        for prop in self._get_properties():
+            try:
+                obj.getPropertyByName(prop.name)
+            except Base.PropertyError:
+                prop.add_to_object(obj)
 
-    def add_properties(self, obj):
-        # References
-        if not hasattr(obj, "References"):
-            obj.addProperty(
-                "App::PropertyLinkSubList",
-                "References",
-                "Material",
-                "List of material shapes"
-            )
-        # Category
-        # attribute Category was added in commit 61fb3d429a
-        if not hasattr(obj, "Category"):
-            obj.addProperty(
-                "App::PropertyEnumeration",
-                "Category",
-                "Material",
-                "Material type: fluid or solid"
-            )
-            obj.Category = ["Solid", "Fluid"]  # used in TaskPanel
-            obj.Category = "Solid"
+            if prop.name == "References":
+                # change References to App::PropertyLinkSubListGlobal
+                prop.handle_change_type(obj, old_type="App::PropertyLinkSubList")
+
         """
         Some remarks to the category. Not finished, thus to be continued.
 

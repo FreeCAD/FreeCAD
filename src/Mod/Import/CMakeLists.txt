@@ -47,6 +47,7 @@ set(Import_Scripts
 
 if(BUILD_GUI)
     list (APPEND Import_Scripts InitGui.py)
+    list (APPEND Import_Scripts TestImportGui.py)
 endif(BUILD_GUI)
 
 add_custom_target(ImportScripts ALL

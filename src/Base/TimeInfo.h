@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2024 Ladislav Michl <ladis@linux-mips.org>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,135 +25,109 @@
 #ifndef BASE_TIMEINFO_H
 #define BASE_TIMEINFO_H
 
-// Std. configurations
-
-
-#include <cstdio>
-#if defined(FC_OS_BSD)
-#include <sys/time.h>
-#else
-#include <sys/timeb.h>
-#endif
-#include <ctime>
-
-#ifdef __GNUC__
-#include <cstdint>
-#endif
-
+#include <chrono>
+#include <sstream>
 #include <string>
 #include <FCGlobal.h>
 
-#if defined(FC_OS_BSD)
-struct timeb
-{
-    int64_t time;
-    unsigned short millitm;
-};
-#endif
-
 namespace Base
 {
-/// BaseClass class and root of the type system
-class BaseExport TimeInfo
+
+using Clock = std::chrono::system_clock;
+
+class TimeInfo: public std::chrono::time_point<Clock>
 {
+private:
+    bool _null;
 
 public:
-    /// Construction
-    TimeInfo();
+    TimeInfo()
+    {
+        setCurrent();
+    }
+
     TimeInfo(const TimeInfo&) = default;
     TimeInfo(TimeInfo&&) = default;
-    /// Destruction
-    ~TimeInfo();
+    ~TimeInfo() = default;
 
-    /// sets the object to the actual system time
-    void setCurrent();
-    void setTime_t(int64_t seconds);
-
-    int64_t getSeconds() const;
-    unsigned short getMiliseconds() const;
-
-    TimeInfo& operator=(const TimeInfo& time) = default;
-    TimeInfo& operator=(TimeInfo&& time) = default;
-    bool operator==(const TimeInfo& time) const;
-    bool operator!=(const TimeInfo& time) const;
-
-    bool operator<(const TimeInfo& time) const;
-    bool operator<=(const TimeInfo& time) const;
-    bool operator>=(const TimeInfo& time) const;
-    bool operator>(const TimeInfo& time) const;
-
-    static std::string currentDateTimeString();
-    static std::string diffTime(const TimeInfo& timeStart, const TimeInfo& timeEnd = TimeInfo());
-    static float diffTimeF(const TimeInfo& timeStart, const TimeInfo& timeEnd = TimeInfo());
-    bool isNull() const;
-    static TimeInfo null();
-
-private:
-    // clang-format off
-#if defined(_MSC_VER)
-    struct _timeb timebuffer;
-#elif defined(__GNUC__)
-    struct timeb timebuffer {};
-#endif
-    // clang-format on
-};
-
-
-inline int64_t TimeInfo::getSeconds() const
-{
-    return timebuffer.time;
-}
-
-inline unsigned short TimeInfo::getMiliseconds() const
-{
-    return timebuffer.millitm;
-}
-
-inline bool TimeInfo::operator!=(const TimeInfo& time) const
-{
-    return (timebuffer.time != time.timebuffer.time
-            || timebuffer.millitm != time.timebuffer.millitm);
-}
-
-inline bool TimeInfo::operator==(const TimeInfo& time) const
-{
-    return (timebuffer.time == time.timebuffer.time
-            && timebuffer.millitm == time.timebuffer.millitm);
-}
-
-inline bool TimeInfo::operator<(const TimeInfo& time) const
-{
-    if (timebuffer.time == time.timebuffer.time) {
-        return timebuffer.millitm < time.timebuffer.millitm;
+    void setCurrent()
+    {
+        static_cast<std::chrono::time_point<Clock>&>(*this) = Clock::now();
+        _null = false;
     }
-    return timebuffer.time < time.timebuffer.time;
-}
 
-inline bool TimeInfo::operator<=(const TimeInfo& time) const
-{
-    if (timebuffer.time == time.timebuffer.time) {
-        return timebuffer.millitm <= time.timebuffer.millitm;
+    void setTime_t(std::time_t time)
+    {
+        static_cast<std::chrono::time_point<Clock>&>(*this) = Clock::from_time_t(time);
+        _null = false;
     }
-    return timebuffer.time <= time.timebuffer.time;
-}
 
-inline bool TimeInfo::operator>=(const TimeInfo& time) const
-{
-    if (timebuffer.time == time.timebuffer.time) {
-        return timebuffer.millitm >= time.timebuffer.millitm;
+    std::time_t getTime_t()
+    {
+        return Clock::to_time_t(*this);
     }
-    return timebuffer.time >= time.timebuffer.time;
-}
 
-inline bool TimeInfo::operator>(const TimeInfo& time) const
-{
-    if (timebuffer.time == time.timebuffer.time) {
-        return timebuffer.millitm > time.timebuffer.millitm;
+    static float diffTimeF(const TimeInfo& start, const TimeInfo& end = TimeInfo())
+    {
+        const std::chrono::duration<float> duration = end - start;
+        return duration.count();
     }
-    return timebuffer.time > time.timebuffer.time;
-}
+
+    static std::string diffTime(const TimeInfo& start, const TimeInfo& end = TimeInfo())
+    {
+        std::stringstream ss;
+        const std::chrono::duration<float> secs = end - start;
+        ss << secs.count();
+        return ss.str();
+    }
+
+    bool isNull() const
+    {
+        return _null;
+    }
+
+    static TimeInfo null()
+    {
+        TimeInfo ti;
+        ti._null = true;
+        return ti;
+    }
+};  // class TimeInfo
+
+using Ticks = std::chrono::steady_clock;
+
+class TimeElapsed: public std::chrono::time_point<Ticks>
+{
+public:
+    TimeElapsed()
+    {
+        setCurrent();
+    }
+
+    TimeElapsed(const TimeElapsed&) = default;
+    TimeElapsed(TimeElapsed&&) = default;
+    ~TimeElapsed() = default;
+
+    void setCurrent()
+    {
+        static_cast<std::chrono::time_point<Ticks>&>(*this) = Ticks::now();
+    }
+
+    static float diffTimeF(const TimeElapsed& start, const TimeElapsed& end = TimeElapsed())
+    {
+        const std::chrono::duration<float> duration = end - start;
+        return duration.count();
+    }
+
+    static std::string diffTime(const TimeElapsed& start, const TimeElapsed& end = TimeElapsed())
+    {
+        std::stringstream ss;
+        const std::chrono::duration<float> secs = end - start;
+        ss << secs.count();
+        return ss.str();
+    }
+};  // class TimeElapsed
 
 }  // namespace Base
-
 
 #endif  // BASE_TIMEINFO_H

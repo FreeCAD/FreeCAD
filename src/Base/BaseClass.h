@@ -128,7 +128,7 @@ private:                                                                        
     TYPESYSTEM_SOURCE_ABSTRACT_P(_class_)                                                          \
     void _class_::init(void)                                                                       \
     {                                                                                              \
-        initSubclass(_class_::classTypeId, #_class_, #_parentclass_, &(_class_::create));          \
+        initSubclass(_class_::classTypeId, #_class_, #_parentclass_, nullptr);                     \
     }
 // NOLINTEND(cppcoreguidelines-macro-usage)
 

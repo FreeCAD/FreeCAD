@@ -46,7 +46,6 @@
 #include <QFile>
 #include <QFileDialog>
 #include <QFileInfo>
-#include <QGLWidget>
 #include <QGraphicsRectItem>
 #include <QGraphicsSvgItem>
 #include <QGridLayout>
@@ -55,8 +54,10 @@
 #include <QListWidget>
 #include <QMenu>
 #include <QMessageBox>
+#include <QOpenGLWidget>
 #include <QPaintEvent>
 #include <QPainter>
+#include <QPaintEngine>
 #include <QPrintDialog>
 #include <QPrintPreviewDialog>
 #include <QPrinter>

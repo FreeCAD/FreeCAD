@@ -56,9 +56,9 @@ public:
     using VisibilityFunction =  std::function<void (bool, const std::string &, Gui::ViewProviderDocumentObject*,
                                 App::DocumentObject *, const std::string&)>;
 
-    explicit TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidget *parent = nullptr,
-                 QString picture = QString(),
-                 QString text = QString::fromLatin1("Attachment"), VisibilityFunction func = 0);
+    explicit TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidget *parent,
+                 QString picture,
+                 QString text, VisibilityFunction func = 0);
     ~TaskAttacher() override;
 
     bool   getFlip() const;

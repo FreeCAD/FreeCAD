@@ -71,3 +71,7 @@ class HLRBRep_TypeOfResultingEdge(IntEnum):
     RgNLine = 4
     Sharp = 5
 
+class SingleShapeCompoundCreationPolicy(IntEnum):
+    ReturnShape = 0
+    ForceCompound = 1
+

@@ -66,7 +66,7 @@ def onRestore(active):
 
         isConnected(i)
 
-        if i.objectName() and not i.isFloating():
+        if i.objectName() and i.parentWidget() == mw and not i.isFloating():
             toolbars[i.objectName()] = i
         else:
             pass

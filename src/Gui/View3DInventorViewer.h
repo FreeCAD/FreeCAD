@@ -110,21 +110,6 @@ public:
     };
     //@}
 
-    /** @name Anti-Aliasing modes of the rendered 3D scene
-      * Specifies Anti-Aliasing (AA) method
-      * - Smoothing enables OpenGL line and vertex smoothing (basically deprecated)
-      * - MSAA is hardware multi sampling (with 2, 4 or 8 passes), a quite common and efficient AA technique
-      */
-    //@{
-    enum AntiAliasing {
-        None,
-        Smoothing,
-        MSAA2x,
-        MSAA4x,
-        MSAA8x
-    };
-    //@}
-
     /** @name Render mode
       */
     //@{
@@ -219,6 +204,8 @@ public:
     void setEditingViewProvider(Gui::ViewProvider* vp, int ModNum);
     /// return whether a view provider is edited
     bool isEditingViewProvider() const;
+    /// return currently editing view provider
+    ViewProvider* getEditingViewProvider() const;
     /// reset from edit mode
     void resetEditingViewProvider();
     void setupEditingRoot(SoNode *node=nullptr, const Base::Matrix4D *mat=nullptr);
@@ -413,6 +400,8 @@ public:
      */
     void viewSelection();
 
+    void alignToSelection();
+
     void setGradientBackground(Background);
     Background getGradientBackground() const;
     void setGradientBackgroundColor(const SbColor& fromColor,
@@ -485,7 +474,7 @@ private:
     static void drawArrow();
     static void drawSingleBackground(const QColor&);
     void setCursorRepresentation(int mode);
-    void aboutToDestroyGLContext() override;
+    void aboutToDestroyGLContext();
     void createStandardCursors(double);
 
 private:

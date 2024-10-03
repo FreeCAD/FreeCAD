@@ -27,18 +27,19 @@ import os
 import FreeCAD
 from draftguitools import gui_base
 from draftutils import params
+from draftutils.todo import todo
 from draftutils.translate import QT_TRANSLATE_NOOP, translate
 
 
-class Draft_Hatch(gui_base.GuiCommandSimplest):
+class Draft_Hatch(gui_base.GuiCommandNeedsSelection):
 
 
     def GetResources(self):
 
-        return {'Pixmap'  : "Draft_Hatch",
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Hatch", "Hatch"),
-                'Accel': "H, A",
-                'ToolTip' : QT_TRANSLATE_NOOP("Draft_Hatch", "Creates hatches on the faces of a selected object")}
+        return {"Pixmap": "Draft_Hatch",
+                "MenuText": QT_TRANSLATE_NOOP("Draft_Hatch", "Hatch"),
+                "Accel": "H, A",
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_Hatch", "Creates hatches on the faces of a selected object")}
 
     def Activated(self):
 
@@ -47,7 +48,7 @@ class Draft_Hatch(gui_base.GuiCommandSimplest):
         if FreeCADGui.Selection.getSelection():
             FreeCADGui.Control.showDialog(Draft_Hatch_TaskPanel(FreeCADGui.Selection.getSelection()[0]))
         else:
-            FreeCAD.Console.PrintError(translate("Draft","You must choose a base object before using this command")+"\n")
+            FreeCAD.Console.PrintError(translate("Draft", "You must choose a base object before using this command") + "\n")
 
 
 class Draft_Hatch_TaskPanel:
@@ -69,6 +70,7 @@ class Draft_Hatch_TaskPanel:
             self.form.Pattern.setCurrentText(pat)
         self.form.Scale.setValue(params.get_param("HatchPatternScale"))
         self.form.Rotation.setValue(params.get_param("HatchPatternRotation"))
+        todo.delay(self.form.setFocus, None)  # Make sure using Esc works.
 
     def accept(self):
 

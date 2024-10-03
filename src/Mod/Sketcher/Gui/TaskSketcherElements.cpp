@@ -222,9 +222,9 @@ public:
         // limitation of not knowing about padding, border and margin boxes of stylesheets
         // thus being unable to provide proper sizeHint for stylesheets to render correctly
         if (role == Qt::DecorationRole) {
-            int size = listWidget()->style()->pixelMetric(QStyle::PM_ListViewIconSize);
+            auto size = listWidget()->iconSize();
 
-            return QIcon(QPixmap(QSize(size, size)));
+            return QIcon(QPixmap(size));
         }
 
         return QListWidgetItem::data(role);
@@ -241,6 +241,24 @@ public:
                 return isEndPointSelected;
             case Sketcher::PointPos::mid:
                 return isMidPointSelected;
+            default:
+                return false;
+        }
+    }
+
+    bool isGeometryPreselected(Sketcher::PointPos pos) const
+    {
+        switch (pos) {
+            case Sketcher::PointPos::none:
+                return hovered == SubElementType::edge;
+            case Sketcher::PointPos::start:
+                return hovered == SubElementType::start;
+            case Sketcher::PointPos::end:
+                return hovered == SubElementType::end;
+            case Sketcher::PointPos::mid:
+                return hovered == SubElementType::mid;
+            default:
+                return false;
         }
     }
 
@@ -303,7 +321,7 @@ private:
         {QT_TR_NOOP("Arc of ellipse"), 1},
         {QT_TR_NOOP("Arc of hyperbola"), 1},
         {QT_TR_NOOP("Arc of parabola"), 1},
-        {QT_TR_NOOP("B-Spline"), 1}};
+        {QT_TR_NOOP("B-spline"), 1}};
 };
 }// namespace SketcherGui
 
@@ -490,7 +508,7 @@ private:
     {
         int hue, sat, val, alp;
         QIcon Normal = Gui::BitmapFactory().iconFromTheme(name);
-        QImage imgConstr(Normal.pixmap(qAsConst(Normal).availableSizes()[0]).toImage());
+        QImage imgConstr(Normal.pixmap(std::as_const(Normal).availableSizes()[0]).toImage());
         QImage imgExt(imgConstr);
         QImage imgInt(imgConstr);
 
@@ -656,15 +674,15 @@ void ElementView::contextMenuEvent(QContextMenuEvent* event)
                  "Sketcher_ConstrainPointOnObject",
                  doPointOnObjectConstraint,
                  true)
-    CONTEXT_ITEM("Constraint_Vertical",
-                 "Vertical Constraint",
-                 "Sketcher_ConstrainVertical",
-                 doVerticalConstraint,
-                 true)
     CONTEXT_ITEM("Constraint_Horizontal",
                  "Horizontal Constraint",
                  "Sketcher_ConstrainHorizontal",
                  doHorizontalConstraint,
+                 true)
+    CONTEXT_ITEM("Constraint_Vertical",
+                 "Vertical Constraint",
+                 "Sketcher_ConstrainVertical",
+                 doVerticalConstraint,
                  true)
     CONTEXT_ITEM("Constraint_Parallel",
                  "Parallel Constraint",
@@ -694,8 +712,6 @@ void ElementView::contextMenuEvent(QContextMenuEvent* event)
     CONTEXT_ITEM(
         "Constraint_Block", "Block Constraint", "Sketcher_ConstrainBlock", doBlockConstraint, true)
 
-    CONTEXT_ITEM(
-        "Constraint_Lock", "Lock Constraint", "Sketcher_ConstrainLock", doLockConstraint, true)
     CONTEXT_ITEM("Constraint_HorizontalDistance",
                  "Horizontal Distance",
                  "Sketcher_ConstrainDistanceX",
@@ -711,6 +727,11 @@ void ElementView::contextMenuEvent(QContextMenuEvent* event)
                  "Sketcher_ConstrainDistance",
                  doLengthConstraint,
                  true)
+    CONTEXT_ITEM("Constraint_Radiam",
+                 "Radiam Constraint",
+                 "Sketcher_ConstrainRadiam",
+                 doRadiamConstraint,
+                 true)
     CONTEXT_ITEM("Constraint_Radius",
                  "Radius Constraint",
                  "Sketcher_ConstrainRadius",
@@ -721,16 +742,13 @@ void ElementView::contextMenuEvent(QContextMenuEvent* event)
                  "Sketcher_ConstrainDiameter",
                  doDiameterConstraint,
                  true)
-    CONTEXT_ITEM("Constraint_Radiam",
-                 "Radiam Constraint",
-                 "Sketcher_ConstrainRadiam",
-                 doRadiamConstraint,
-                 true)
     CONTEXT_ITEM("Constraint_InternalAngle",
                  "Angle Constraint",
                  "Sketcher_ConstrainAngle",
                  doAngleConstraint,
                  true)
+    CONTEXT_ITEM(
+        "Constraint_Lock", "Lock Constraint", "Sketcher_ConstrainLock", doLockConstraint, true)
 
     menu.addSeparator();
 
@@ -790,8 +808,8 @@ void ElementView::contextMenuEvent(QContextMenuEvent* event)
 
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainCoincident", doPointCoincidence)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainPointOnObject", doPointOnObjectConstraint)
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainVertical", doVerticalConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainHorizontal", doHorizontalConstraint)
+CONTEXT_MEMBER_DEF("Sketcher_ConstrainVertical", doVerticalConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainParallel", doParallelConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainPerpendicular", doPerpendicularConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainTangent", doTangentConstraint)
@@ -799,14 +817,14 @@ CONTEXT_MEMBER_DEF("Sketcher_ConstrainEqual", doEqualConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainSymmetric", doSymmetricConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainBlock", doBlockConstraint)
 
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainLock", doLockConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainDistanceX", doHorizontalDistance)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainDistanceY", doVerticalDistance)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainDistance", doLengthConstraint)
+CONTEXT_MEMBER_DEF("Sketcher_ConstrainRadiam", doRadiamConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainRadius", doRadiusConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainDiameter", doDiameterConstraint)
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainRadiam", doRadiamConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainAngle", doAngleConstraint)
+CONTEXT_MEMBER_DEF("Sketcher_ConstrainLock", doLockConstraint)
 
 CONTEXT_MEMBER_DEF("Sketcher_ToggleConstruction", doToggleConstruction)
 
@@ -941,9 +959,16 @@ void ElementItemDelegate::drawSubControl(SubControl element,
 
     auto drawSelectIcon = [&](Sketcher::PointPos pos) {
         auto icon = ElementWidgetIcons::getIcon(item->GeometryType, pos, item->State);
-        auto opacity = 0.4f;
 
-        if (isHovered) {
+        auto isOptionSelected = option.state & QStyle::State_Selected;
+        auto isOptionHovered = option.state & QStyle::State_MouseOver;
+
+        // items that user is not interacting with should be fully opaque
+        // only if item is partially selected (so only one part of geometry)
+        // the rest should be dimmed out
+        auto opacity = isOptionHovered || isOptionSelected ? 0.4 : 1.0;
+
+        if (item->isGeometryPreselected(pos)) {
             opacity = 0.8f;
         }
 
@@ -1157,7 +1182,7 @@ void ElementFilterList::languageChange()
 /* TRANSLATOR SketcherGui::TaskSketcherElements */
 
 TaskSketcherElements::TaskSketcherElements(ViewProviderSketch* sketchView)
-    : TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Elements"), true, nullptr)
+    : TaskBox(Gui::BitmapFactory().pixmap("Sketcher_CreateLine"), tr("Elements"), true, nullptr)
     , sketchView(sketchView)
     , ui(new Ui_TaskSketcherElements())
     , focusItemIndex(-1)
@@ -1228,7 +1253,7 @@ void TaskSketcherElements::connectSignals()
                      &TaskSketcherElements::onFilterBoxStateChanged);
     QObject::connect(
         ui->settingsButton, &QToolButton::clicked, ui->settingsButton, &QToolButton::showMenu);
-    QObject::connect(qAsConst(ui->settingsButton)->actions()[0],
+    QObject::connect(std::as_const(ui->settingsButton)->actions()[0],
                      &QAction::changed,
                      this,
                      &TaskSketcherElements::onSettingsExtendedInformationChanged);
@@ -1248,7 +1273,7 @@ void TaskSketcherElements::createFilterButtonActions()
     auto* action = new QWidgetAction(this);
     filterList = new ElementFilterList(this);
     action->setDefaultWidget(filterList);
-    qAsConst(ui->filterButton)->addAction(action);
+    std::as_const(ui->filterButton)->addAction(action);
 }
 
 void TaskSketcherElements::onFilterBoxStateChanged(int val)
@@ -1299,7 +1324,7 @@ void TaskSketcherElements::onListMultiFilterItemChanged(QListWidgetItem* item)
     for (int i = filterList->count() - 1; i >= 0; i--) {
         bool isChecked = filterList->item(i)->checkState() == Qt::Checked;
         filterState = filterState << 1;// we shift left first, else the list is shifted at the end.
-        filterState = filterState | isChecked;
+        filterState = filterState | (isChecked ? 1 : 0);
     }
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
@@ -1385,6 +1410,7 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
         if (strcmp(msg.pDocName, sketchView->getSketchObject()->getDocument()->getName()) == 0
             && strcmp(msg.pObjectName, sketchView->getSketchObject()->getNameInDocument()) == 0) {
             if (msg.pSubName) {
+                ElementItem* modified_item = NULL;
                 QString expr = QString::fromLatin1(msg.pSubName);
                 std::string shapetype(msg.pSubName);
                 // if-else edge vertex
@@ -1397,11 +1423,36 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
                         int ElementId = match.captured(1).toInt(&ok) - 1;
                         if (ok) {
                             int countItems = ui->listWidgetElements->count();
+                            // TODO: This and the loop below get slow when we have a lot of items.
+                            // Perhaps we should also maintain a map so that we can look up items
+                            // by element number.
                             for (int i = 0; i < countItems; i++) {
                                 ElementItem* item =
                                     static_cast<ElementItem*>(ui->listWidgetElements->item(i));
                                 if (item->ElementNbr == ElementId) {
                                     item->isLineSelected = select;
+                                    modified_item = item;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (shapetype.size() > 12 && shapetype.substr(0, 12) == "ExternalEdge") {
+                    QRegularExpression rx(QString::fromLatin1("^ExternalEdge(\\d+)$"));
+                    QRegularExpressionMatch match;
+                    boost::ignore_unused(expr.indexOf(rx, 0, &match));
+                    if (match.hasMatch()) {
+                        bool ok;
+                        int ElementId = -match.captured(1).toInt(&ok) - 2;
+                        if (ok) {
+                            int countItems = ui->listWidgetElements->count();
+                            for (int i = 0; i < countItems; i++) {
+                                ElementItem* item =
+                                    static_cast<ElementItem*>(ui->listWidgetElements->item(i));
+                                if (item->ElementNbr == ElementId) {
+                                    item->isLineSelected = select;
+                                    modified_item = item;
                                     break;
                                 }
                             }
@@ -1427,6 +1478,7 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
                                 ElementItem* item =
                                     static_cast<ElementItem*>(ui->listWidgetElements->item(i));
                                 if (item->ElementNbr == GeoId) {
+                                    modified_item = item;
                                     switch (PosId) {
                                         case Sketcher::PointPos::start:
                                             item->isStartingPointSelected = select;
@@ -1449,15 +1501,24 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
                 // update the listwidget
                 {
                     QSignalBlocker sigblk(ui->listWidgetElements);
-                    for (int i = 0; i < ui->listWidgetElements->count(); i++) {
-                        ElementItem* item =
-                            static_cast<ElementItem*>(ui->listWidgetElements->item(i));
-                        if (item->isSelected())
-                            item->setSelected(
-                                false);// if already selected, we need to reset setSelected or it
-                                       // won't draw subelements correctly if selecting several.
-                        item->setSelected(item->isLineSelected || item->isStartingPointSelected
-                                          || item->isEndPointSelected || item->isMidPointSelected);
+                    if (modified_item != NULL) {
+                        bool is_selected = modified_item->isSelected();
+                        const bool should_be_selected = modified_item->isLineSelected
+                            || modified_item->isStartingPointSelected || modified_item->isEndPointSelected
+                            || modified_item->isMidPointSelected;
+
+                        // If an element is already selected and a new subelement gets selected
+                        // (eg., if you select the arc of a circle then select the center as well),
+                        // the new subelement won't get highlighted in the list until you mouseover
+                        // the list.  To avoid this, we deselect first to trigger a redraw.
+                        if (should_be_selected && is_selected) {
+                            modified_item->setSelected(false);
+                            is_selected = false;
+                        }
+
+                        if (should_be_selected != is_selected) {
+                          modified_item->setSelected(should_be_selected);
+                        }
                     }
                 }
             }
@@ -1590,7 +1651,12 @@ void TaskSketcherElements::onListWidgetElementsItemPressed(QListWidgetItem* it)
 
 
             if (item->isLineSelected) {
-                ss << "Edge" << item->ElementNbr + 1;
+                if (item->ElementNbr >= 0) {
+                    ss << "Edge" << item->ElementNbr + 1;
+                }
+                else {
+                    ss << "ExternalEdge" << -item->ElementNbr - 2;
+                }
                 elementSubNames.push_back(ss.str());
             }
 
@@ -1611,8 +1677,11 @@ void TaskSketcherElements::onListWidgetElementsItemPressed(QListWidgetItem* it)
             selectVertex(item->isMidPointSelected, item->MidVertex);
         }
 
-        if (!elementSubNames.empty()) {
-            Gui::Selection().addSelections(doc_name.c_str(), obj_name.c_str(), elementSubNames);
+        for (const auto& elementSubName : elementSubNames) {
+            Gui::Selection().addSelection2(
+                doc_name.c_str(),
+                obj_name.c_str(),
+                sketchView->getSketchObject()->convertSubName(elementSubName).c_str());
         }
 
         this->blockSelection(block);
@@ -1691,7 +1760,12 @@ void TaskSketcherElements::onListWidgetElementsMouseMoveOnItem(QListWidgetItem* 
         else if (item->hovered == SubElementType::mid)
             preselectvertex(item->ElementNbr, Sketcher::PointPos::mid);
         else if (item->hovered == SubElementType::edge) {
-            ss << "Edge" << item->ElementNbr + 1;
+            if (item->ElementNbr >= 0) {
+                ss << "Edge" << item->ElementNbr + 1;
+            }
+            else {
+                ss << "ExternalEdge" << -item->ElementNbr - 2;
+            }
             Gui::Selection().setPreselect(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
         }
     }
@@ -1806,12 +1880,12 @@ void TaskSketcherElements::slotElementsChanged()
                                                      : QString::fromLatin1("")))
                                       : (QString::fromLatin1("%1-").arg(i) + tr("Parabolic Arc")))
                 : type == Part::GeomBSplineCurve::getClassTypeId()
-                ? (isNamingBoxChecked ? (tr("BSpline") + IdInformation())
+                ? (isNamingBoxChecked ? (tr("B-spline") + IdInformation())
                            + (construction
                                   ? (QString::fromLatin1("-") + tr("Construction"))
                                   : (internalAligned ? (QString::fromLatin1("-") + tr("Internal"))
                                                      : QString::fromLatin1("")))
-                                      : (QString::fromLatin1("%1-").arg(i) + tr("BSpline")))
+                                      : (QString::fromLatin1("%1-").arg(i) + tr("B-spline")))
                 : (isNamingBoxChecked ? (tr("Other") + IdInformation())
                            + (construction
                                   ? (QString::fromLatin1("-") + tr("Construction"))
@@ -1918,8 +1992,8 @@ void TaskSketcherElements::slotElementsChanged()
                            ? (tr("Parabolic Arc") + linkname)
                            : (QString::fromLatin1("%1-").arg(i - 2) + tr("Parabolic Arc")))
                     : type == Part::GeomBSplineCurve::getClassTypeId()
-                    ? (isNamingBoxChecked ? (tr("BSpline") + linkname)
-                                          : (QString::fromLatin1("%1-").arg(i - 2) + tr("BSpline")))
+                    ? (isNamingBoxChecked ? (tr("B-spline") + linkname)
+                                          : (QString::fromLatin1("%1-").arg(i - 2) + tr("B-spline")))
                     : (isNamingBoxChecked ? (tr("Other") + linkname)
                                           : (QString::fromLatin1("%1-").arg(i - 2) + tr("Other"))),
                 sketchView);

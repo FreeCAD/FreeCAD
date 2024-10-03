@@ -60,6 +60,7 @@ void DlgSettingsGeneral::saveSettings()
     ui->checkBooleanRefine->onSave();
     ui->checkSketchBaseRefine->onSave();
     ui->checkObjectNaming->onSave();
+    ui->checkAllowCompoundBody->onSave();
 }
 
 void DlgSettingsGeneral::loadSettings()
@@ -68,6 +69,7 @@ void DlgSettingsGeneral::loadSettings()
     ui->checkBooleanRefine->onRestore();
     ui->checkSketchBaseRefine->onRestore();
     ui->checkObjectNaming->onRestore();
+    ui->checkAllowCompoundBody->onRestore();
 }
 
 /**
@@ -168,7 +170,7 @@ DlgImportExportStep::DlgImportExportStep(QWidget* parent)
   , importStep(new DlgImportStep(this))
   , headerStep(new DlgExportHeaderStep(this))
 {
-    setWindowTitle(tr("STEP"));
+    setWindowTitle(QLatin1String("STEP"));
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->setSpacing(0);
     layout->setContentsMargins(0, 0, 0, 0);

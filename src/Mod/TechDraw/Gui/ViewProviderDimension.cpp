@@ -30,11 +30,14 @@
 # include <QMenu>
 #endif
 
+#include <QMessageBox>
+
 #include <Base/Parameter.h>
 #include <App/Application.h>
 #include <App/DocumentObject.h>
 #include <Gui/ActionFunction.h>
 #include <Gui/Control.h>
+#include <Gui/MainWindow.h>
 
 #include <Mod/TechDraw/App/LineGroup.h>
 #include <Mod/TechDraw/App/LandmarkDimension.h>
@@ -193,6 +196,8 @@ void ViewProviderDimension::setPixmapForType()
         sPixmap = "TechDraw_AngleDimension";
     } else if (getViewObject()->Type.isValue("Angle3Pt")) {
         sPixmap = "TechDraw_3PtAngleDimension";
+    } else if (getViewObject()->Type.isValue("Area")) {
+        sPixmap = "TechDraw_AreaDimension";
     }
 }
 
@@ -283,3 +288,23 @@ bool ViewProviderDimension::canDelete(App::DocumentObject *obj) const
     Q_UNUSED(obj)
     return true;
 }
+
+bool ViewProviderDimension::onDelete(const std::vector<std::string> & parms)
+{
+    Q_UNUSED(parms)
+//    Base::Console().Message("VPB::onDelete() - parms: %d\n", parms.size());
+    auto dlg = Gui::Control().activeDialog();
+    auto ourDlg = dynamic_cast<TaskDlgDimension*>(dlg);
+    if (ourDlg)  {
+        QString bodyMessage;
+        QTextStream bodyMessageStream(&bodyMessage);
+        bodyMessageStream << qApp->translate("TaskDimension",
+            "You cannot delete this dimension now because\nthere is an open task dialog.");
+        QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("TaskDimension", "Can Not Delete"), bodyMessage,
+            QMessageBox::Ok);
+        return false;
+    }
+    return true;
+}
+

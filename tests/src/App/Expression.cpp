@@ -1,4 +1,4 @@
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 #include "App/ExpressionParser.h"
 #include "App/ExpressionTokenizer.h"
@@ -13,6 +13,15 @@ TEST(Expression, tokenize)
     EXPECT_EQ(App::ExpressionTokenizer().perform(QString::fromUtf8("0.00000 \xC2\xB0-ss"), 12), QString::fromLatin1("ss"));
     EXPECT_EQ(App::ExpressionTokenizer().perform(QString::fromUtf8("0.00000 deg"), 5), QString());
     EXPECT_EQ(App::ExpressionTokenizer().perform(QString::fromUtf8("0.00000 deg"), 11), QString::fromLatin1("deg"));
+}
+
+TEST(Expression, tokenizeCompletion)
+{
+    EXPECT_EQ(App::ExpressionTokenizer().perform(QString::fromUtf8("My Cube"), 7), QString::fromUtf8("MyCube"));
+    EXPECT_EQ(App::ExpressionTokenizer().perform(QString::fromUtf8("My Cube0"), 8), QString::fromUtf8("MyCube0"));
+    EXPECT_EQ(App::ExpressionTokenizer().perform(QString::fromUtf8("My Cube 0"), 9), QString::fromUtf8("MyCube0"));
+    EXPECT_EQ(App::ExpressionTokenizer().perform(QString::fromUtf8("My Cube1"), 8), QString::fromUtf8("MyCube1"));
+    EXPECT_EQ(App::ExpressionTokenizer().perform(QString::fromUtf8("My Cube 1"), 9), QString::fromUtf8("MyCube1"));
 }
 
 TEST(Expression, tokenizeQuantity)

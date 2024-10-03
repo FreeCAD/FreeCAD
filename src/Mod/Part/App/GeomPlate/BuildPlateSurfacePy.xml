@@ -23,7 +23,7 @@
     </Methode>
     <Methode Name="setNbBounds">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu>Sets the number of bounds</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="loadInitSurface">
@@ -85,12 +85,12 @@
     </Methode>
     <Methode Name="disc2dContour">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu>Returns the 2D contour of the plate surface</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="disc3dContour">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu>Returns the 3D contour of the plate surface</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="G0Error" Const="true">

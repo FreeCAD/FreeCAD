@@ -437,6 +437,20 @@ TopoDS_Shape DrawViewDetail::projectEdgesOntoFace(TopoDS_Shape& edgeShape, TopoD
     return TopoDS_Shape(std::move(edges));
 }
 
+//! given a 3d point, find the corresponding point in this view.
+Base::Vector3d DrawViewDetail::mapPoint3dToDetail(const Base::Vector3d& inPoint) const
+{
+    auto baseObj = BaseView.getValue();
+    auto baseDvp = dynamic_cast<DrawViewPart*>(baseObj);
+    if (!baseDvp) {
+        throw Base::RuntimeError("Detail has no BaseView");
+    }
+    auto pointOnBase = baseDvp->projectPoint(inPoint, false);
+    auto detailCenter = AnchorPoint.getValue();
+    auto pointOnDetail = DU::invertY(pointOnBase - detailCenter);
+    return pointOnDetail;
+}
+
 //we don't want to paint detail highlights on top of detail views,
 //so tell the Gui that there are no details for this view
 std::vector<DrawViewDetail*> DrawViewDetail::getDetailRefs() const

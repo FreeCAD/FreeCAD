@@ -4,18 +4,18 @@
   <context>
     <name>CmdDrawingAnnotation</name>
     <message>
-      <location filename="../../Command.cpp" line="508"/>
+      <location filename="../../Command.cpp" line="510"/>
       <source>Drawing</source>
       <translation>図面</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="509"/>
+      <location filename="../../Command.cpp" line="511"/>
       <source>&amp;Annotation</source>
       <translation>注釈(&amp;A)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="510"/>
       <location filename="../../Command.cpp" line="512"/>
+      <location filename="../../Command.cpp" line="514"/>
       <source>Inserts an Annotation view in the active drawing</source>
       <translation>アクティブな図面に注釈表示を挿入</translation>
     </message>
@@ -23,18 +23,18 @@
   <context>
     <name>CmdDrawingClip</name>
     <message>
-      <location filename="../../Command.cpp" line="563"/>
+      <location filename="../../Command.cpp" line="565"/>
       <source>Drawing</source>
       <translation>図面</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="564"/>
+      <location filename="../../Command.cpp" line="566"/>
       <source>&amp;Clip</source>
       <translation>クリップ(&amp;C)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="565"/>
       <location filename="../../Command.cpp" line="567"/>
+      <location filename="../../Command.cpp" line="569"/>
       <source>Inserts a clip group in the active drawing</source>
       <translation>アクティブな図面にクリップグループを挿入</translation>
     </message>
@@ -42,18 +42,18 @@
   <context>
     <name>CmdDrawingDraftView</name>
     <message>
-      <location filename="../../Command.cpp" line="773"/>
+      <location filename="../../Command.cpp" line="775"/>
       <source>Drawing</source>
       <translation>図面</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="774"/>
+      <location filename="../../Command.cpp" line="776"/>
       <source>&amp;Draft View</source>
-      <translation>ドラフト・ビュー(&amp;D)</translation>
+      <translation>&amp;基本設計ビュー</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="776"/>
       <location filename="../../Command.cpp" line="778"/>
+      <location filename="../../Command.cpp" line="780"/>
       <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
       <translation>アクティブな図面に選択したオブジェクトのドラフト・ビューを挿入</translation>
     </message>
@@ -61,18 +61,18 @@
   <context>
     <name>CmdDrawingExportPage</name>
     <message>
-      <location filename="../../Command.cpp" line="681"/>
+      <location filename="../../Command.cpp" line="683"/>
       <source>File</source>
       <translation>ファイル</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="682"/>
+      <location filename="../../Command.cpp" line="684"/>
       <source>&amp;Export page...</source>
       <translation>ページをエクスポート(&amp;E)...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="683"/>
       <location filename="../../Command.cpp" line="685"/>
+      <location filename="../../Command.cpp" line="687"/>
       <source>Export a page to an SVG file</source>
       <translation>ページをSVGファイルにエクスポート</translation>
     </message>
@@ -80,13 +80,13 @@
   <context>
     <name>CmdDrawingNewA3Landscape</name>
     <message>
-      <location filename="../../Command.cpp" line="273"/>
+      <location filename="../../Command.cpp" line="275"/>
       <source>Drawing</source>
       <translation>図面</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="274"/>
-      <location filename="../../Command.cpp" line="275"/>
+      <location filename="../../Command.cpp" line="276"/>
+      <location filename="../../Command.cpp" line="277"/>
       <source>Insert new A3 landscape drawing</source>
       <translation type="unfinished">Insert new A3 landscape drawing</translation>
     </message>
@@ -108,17 +108,17 @@
   <context>
     <name>CmdDrawingNewView</name>
     <message>
-      <location filename="../../Command.cpp" line="314"/>
+      <location filename="../../Command.cpp" line="316"/>
       <source>Drawing</source>
       <translation>図面</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="315"/>
+      <location filename="../../Command.cpp" line="317"/>
       <source>Insert view in drawing</source>
       <translation>図面にビューを挿入</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="316"/>
+      <location filename="../../Command.cpp" line="318"/>
       <source>Insert a new View of a Part in the active drawing</source>
       <translation>アクティブな図面に新しい部品の表示を挿入</translation>
     </message>
@@ -144,18 +144,18 @@
   <context>
     <name>CmdDrawingOpenBrowserView</name>
     <message>
-      <location filename="../../Command.cpp" line="469"/>
+      <location filename="../../Command.cpp" line="471"/>
       <source>Drawing</source>
       <translation>図面</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="470"/>
+      <location filename="../../Command.cpp" line="472"/>
       <source>Open &amp;browser view</source>
       <translation>ブラウザ表示を開く(&amp;b)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="471"/>
       <location filename="../../Command.cpp" line="473"/>
+      <location filename="../../Command.cpp" line="475"/>
       <source>Opens the selected page in a browser view</source>
       <translation>ブラウザ表示で選択されているページを開く</translation>
     </message>
@@ -163,17 +163,17 @@
   <context>
     <name>CmdDrawingOrthoViews</name>
     <message>
-      <location filename="../../Command.cpp" line="414"/>
+      <location filename="../../Command.cpp" line="416"/>
       <source>Drawing</source>
       <translation>図面</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="415"/>
+      <location filename="../../Command.cpp" line="417"/>
       <source>Insert orthographic views</source>
-      <translation>正投影表示を挿入</translation>
+      <translation>正投影ビューを挿入</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="416"/>
+      <location filename="../../Command.cpp" line="418"/>
       <source>Insert an orthographic projection of a part in the active drawing</source>
       <translation>アクティブな図面に部品の正投影図を挿入</translation>
     </message>
@@ -181,18 +181,18 @@
   <context>
     <name>CmdDrawingProjectShape</name>
     <message>
-      <location filename="../../Command.cpp" line="738"/>
+      <location filename="../../Command.cpp" line="740"/>
       <source>Drawing</source>
       <translation>図面</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="739"/>
+      <location filename="../../Command.cpp" line="741"/>
       <source>Project shape...</source>
       <translation>形状を投影...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="740"/>
-      <location filename="../../Command.cpp" line="741"/>
+      <location filename="../../Command.cpp" line="742"/>
+      <location filename="../../Command.cpp" line="743"/>
       <source>Project shape onto a user-defined plane</source>
       <translation>ユーザー定義面上に形状を投影</translation>
     </message>
@@ -200,18 +200,18 @@
   <context>
     <name>CmdDrawingSpreadsheetView</name>
     <message>
-      <location filename="../../Command.cpp" line="805"/>
+      <location filename="../../Command.cpp" line="807"/>
       <source>Drawing</source>
       <translation>図面</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="806"/>
+      <location filename="../../Command.cpp" line="808"/>
       <source>&amp;Spreadsheet View</source>
       <translation>スプレッドシートビュー(&amp;S)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="807"/>
       <location filename="../../Command.cpp" line="809"/>
+      <location filename="../../Command.cpp" line="811"/>
       <source>Inserts a view of a selected spreadsheet in the active drawing</source>
       <translation>アクティブな図面に選択したスプレッドシートのビューを挿入</translation>
     </message>
@@ -219,146 +219,146 @@
   <context>
     <name>CmdDrawingSymbol</name>
     <message>
-      <location filename="../../Command.cpp" line="613"/>
+      <location filename="../../Command.cpp" line="615"/>
       <source>Drawing</source>
       <translation>図面</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="614"/>
+      <location filename="../../Command.cpp" line="616"/>
       <source>&amp;Symbol</source>
       <translation>シンボル(&amp;S)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="615"/>
       <location filename="../../Command.cpp" line="617"/>
-      <source>Inserts a symbol from a svg file in the active drawing</source>
-      <translation>記号をSVGファイルから現在の図面に挿入します</translation>
+      <location filename="../../Command.cpp" line="619"/>
+      <source>Inserts a symbol from a SVG file in the active drawing</source>
+      <translation>シンボルをSVGファイルから現在の図面に挿入</translation>
     </message>
   </context>
   <context>
     <name>DrawingGui::DrawingView</name>
     <message>
-      <location filename="../../DrawingView.cpp" line="215"/>
+      <location filename="../../DrawingView.cpp" line="217"/>
       <source>&amp;Background</source>
       <translation>背景(&amp;B)</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="221"/>
+      <location filename="../../DrawingView.cpp" line="223"/>
       <source>&amp;Outline</source>
       <translation>アウトライン(&amp;O)</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="227"/>
+      <location filename="../../DrawingView.cpp" line="229"/>
       <source>&amp;Native</source>
       <translation>ネィティブ(&amp;N)</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="231"/>
+      <location filename="../../DrawingView.cpp" line="233"/>
       <source>&amp;OpenGL</source>
       <translation>OpenGL(&amp;O)</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="234"/>
+      <location filename="../../DrawingView.cpp" line="236"/>
       <source>&amp;Image</source>
       <translation>画像(&amp;I)</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="238"/>
+      <location filename="../../DrawingView.cpp" line="240"/>
       <source>&amp;High Quality Antialiasing</source>
       <translation>高品質アンチエイリアス(&amp;H)</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="276"/>
+      <location filename="../../DrawingView.cpp" line="278"/>
       <source>Open SVG File</source>
       <translation>SVGファイルを開く</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="277"/>
+      <location filename="../../DrawingView.cpp" line="279"/>
       <source>Could not open file '%1'.</source>
       <translation>ファイル '%1' を開けませんでした。</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="368"/>
+      <location filename="../../DrawingView.cpp" line="370"/>
       <source>&amp;Renderer</source>
       <translation>レンダラー(&amp;R)</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="480"/>
+      <location filename="../../DrawingView.cpp" line="485"/>
       <source>Export PDF</source>
       <translation>PDFファイル形式でエクスポート</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="481"/>
+      <location filename="../../DrawingView.cpp" line="486"/>
       <source>PDF file</source>
       <translation>PDFファイル</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="497"/>
+      <location filename="../../DrawingView.cpp" line="502"/>
       <source>Page sizes</source>
       <translation>ページサイズ</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="498"/>
+      <location filename="../../DrawingView.cpp" line="503"/>
       <source>A0</source>
       <translation>A0</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="500"/>
+      <location filename="../../DrawingView.cpp" line="505"/>
       <source>A1</source>
       <translation>A1</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="502"/>
+      <location filename="../../DrawingView.cpp" line="507"/>
       <source>A2</source>
       <translation>A2</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="504"/>
+      <location filename="../../DrawingView.cpp" line="509"/>
       <source>A3</source>
       <translation>A3</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="506"/>
+      <location filename="../../DrawingView.cpp" line="511"/>
       <source>A4</source>
       <translation>A4</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="508"/>
+      <location filename="../../DrawingView.cpp" line="513"/>
       <source>A5</source>
       <translation>A5</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="592"/>
+      <location filename="../../DrawingView.cpp" line="597"/>
       <source>Different orientation</source>
       <translation>異なる向き</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="593"/>
+      <location filename="../../DrawingView.cpp" line="598"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
       <translation>プリンターでは、図面と異なる印刷方向を使用します。続行しますか？</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="603"/>
-      <location filename="../../DrawingView.cpp" line="614"/>
+      <location filename="../../DrawingView.cpp" line="608"/>
+      <location filename="../../DrawingView.cpp" line="619"/>
       <source>Different paper size</source>
       <translation>別の用紙サイズ</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="604"/>
-      <location filename="../../DrawingView.cpp" line="615"/>
+      <location filename="../../DrawingView.cpp" line="609"/>
+      <location filename="../../DrawingView.cpp" line="620"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>プリンターでは、図面とは異なる用紙サイズを使用します。
 続行しますか？</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="629"/>
+      <location filename="../../DrawingView.cpp" line="634"/>
       <source>Opening file failed</source>
       <translation>ファイルを開けませんでした。</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="630"/>
+      <location filename="../../DrawingView.cpp" line="635"/>
       <source>Can't open file '%1' for writing.</source>
       <translation>書き込み用ファイル '%1' を開くことができません。</translation>
     </message>
@@ -454,7 +454,7 @@ Do you want to continue?</source>
       <location filename="../../TaskOrthoViews.ui" line="457"/>
       <location filename="../../TaskOrthoViews.ui" line="482"/>
       <source>Right click for axonometric settings</source>
-      <translation>右クリックでアクソノ メトリック設定</translation>
+      <translation>右クリックで軸測投影の設定</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="329"/>
@@ -489,7 +489,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="681"/>
       <source>Show hidden lines</source>
-      <translation>隠線を表示</translation>
+      <translation>かくれ線を表示</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="688"/>
@@ -499,7 +499,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="699"/>
       <source>Axonometric</source>
-      <translation>不等角投影</translation>
+      <translation>軸測投影</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="707"/>
@@ -509,17 +509,17 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="718"/>
       <source>Isometric</source>
-      <translation>アイソメトリック</translation>
+      <translation>等角投影</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="723"/>
       <source>Dimetric</source>
-      <translation>ダイメトリック</translation>
+      <translation>二等角投影</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="728"/>
       <source>Trimetric</source>
-      <translation>不等角投影図法</translation>
+      <translation>不等角投影</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="736"/>
@@ -550,7 +550,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="848"/>
       <source> Trimetric</source>
-      <translation>不等角投影図法</translation>
+      <translation>不等角投影</translation>
     </message>
   </context>
   <context>
@@ -606,27 +606,27 @@ Do you want to continue?</source>
       <translation>アイソパラメトリック曲線の非表示</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="71"/>
+      <location filename="../../TaskDialog.cpp" line="70"/>
       <source>Project shapes</source>
       <translation>形状を投影</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="86"/>
+      <location filename="../../TaskDialog.cpp" line="85"/>
       <source>No active document</source>
       <translation>アクティブなドキュメントがありません</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="87"/>
+      <location filename="../../TaskDialog.cpp" line="86"/>
       <source>There is currently no active document to complete the operation</source>
       <translation>操作を完了するためのアクティブなドキュメントが現在ありません。</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="94"/>
+      <location filename="../../TaskDialog.cpp" line="93"/>
       <source>No active view</source>
       <translation>アクティブなビューがありません。</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="95"/>
+      <location filename="../../TaskDialog.cpp" line="94"/>
       <source>There is currently no active view to complete the operation</source>
       <translation>操作を完了するためのアクティブなビューが現在ありません。</translation>
     </message>
@@ -636,36 +636,36 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="106"/>
       <source>Page</source>
-      <translation>ページ</translation>
+      <translation>用紙</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="229"/>
+      <location filename="../../Command.cpp" line="231"/>
       <source>Landscape</source>
       <translation>横</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="232"/>
+      <location filename="../../Command.cpp" line="234"/>
       <source>Portrait</source>
       <translation>縦</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="237"/>
+      <location filename="../../Command.cpp" line="239"/>
       <source>%1%2 %3</source>
       <translation>%1%2 %3
 </translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="240"/>
+      <location filename="../../Command.cpp" line="242"/>
       <source>Insert new %1%2 %3 drawing</source>
       <translation>新しい %1 %2 %3 の図面を挿入</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="244"/>
+      <location filename="../../Command.cpp" line="246"/>
       <source>%1%2 %3 (%4)</source>
       <translation>%1%2 %3 (%4)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="247"/>
+      <location filename="../../Command.cpp" line="249"/>
       <source>Insert new %1%2 %3 (%4) drawing</source>
       <translation>新しい図面を %1%2 %3 (%4) で挿入します</translation>
     </message>
@@ -674,92 +674,92 @@ Do you want to continue?</source>
     <name>QObject</name>
     <message>
       <location filename="../../Command.cpp" line="72"/>
-      <location filename="../../Command.cpp" line="638"/>
+      <location filename="../../Command.cpp" line="640"/>
       <source>Choose an SVG file to open</source>
       <translation>開くSVGファイルを選択</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="74"/>
-      <location filename="../../Command.cpp" line="640"/>
-      <location filename="../../Command.cpp" line="701"/>
+      <location filename="../../Command.cpp" line="642"/>
+      <location filename="../../Command.cpp" line="703"/>
       <source>Scalable Vector Graphic</source>
       <translation>スケーラブル・ベクター・グラフィック</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="329"/>
-      <location filename="../../Command.cpp" line="429"/>
-      <location filename="../../Command.cpp" line="483"/>
-      <location filename="../../Command.cpp" line="695"/>
-      <location filename="../../Command.cpp" line="820"/>
+      <location filename="../../Command.cpp" line="331"/>
+      <location filename="../../Command.cpp" line="431"/>
+      <location filename="../../Command.cpp" line="485"/>
+      <location filename="../../Command.cpp" line="697"/>
+      <location filename="../../Command.cpp" line="822"/>
       <source>Wrong selection</source>
       <translation>誤った選択</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="330"/>
+      <location filename="../../Command.cpp" line="332"/>
       <source>Select a Part object.</source>
       <translation>パーツオブジェクトを選択</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="340"/>
-      <location filename="../../Command.cpp" line="440"/>
-      <location filename="../../Command.cpp" line="525"/>
-      <location filename="../../Command.cpp" line="580"/>
-      <location filename="../../Command.cpp" line="630"/>
-      <location filename="../../Command.cpp" line="828"/>
+      <location filename="../../Command.cpp" line="342"/>
+      <location filename="../../Command.cpp" line="442"/>
+      <location filename="../../Command.cpp" line="527"/>
+      <location filename="../../Command.cpp" line="582"/>
+      <location filename="../../Command.cpp" line="632"/>
+      <location filename="../../Command.cpp" line="830"/>
       <source>No page found</source>
       <translation>ページが見つかりません</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="341"/>
-      <location filename="../../Command.cpp" line="441"/>
-      <location filename="../../Command.cpp" line="526"/>
-      <location filename="../../Command.cpp" line="581"/>
-      <location filename="../../Command.cpp" line="631"/>
-      <location filename="../../Command.cpp" line="829"/>
+      <location filename="../../Command.cpp" line="343"/>
+      <location filename="../../Command.cpp" line="443"/>
+      <location filename="../../Command.cpp" line="528"/>
+      <location filename="../../Command.cpp" line="583"/>
+      <location filename="../../Command.cpp" line="633"/>
+      <location filename="../../Command.cpp" line="831"/>
       <source>Create a page first.</source>
       <translation>最初にページを作成してください</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="430"/>
+      <location filename="../../Command.cpp" line="432"/>
       <source>Select exactly one Part object.</source>
-      <translation>部品オブジェクトを1 つだけ選択して下さい。</translation>
+      <translation>部品オブジェクトを一つだけ選択してください。</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="484"/>
-      <location filename="../../Command.cpp" line="696"/>
+      <location filename="../../Command.cpp" line="486"/>
+      <location filename="../../Command.cpp" line="698"/>
       <source>Select one Page object.</source>
       <translation>ページオブジェクトを1つ選択</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="702"/>
+      <location filename="../../Command.cpp" line="704"/>
       <source>All Files</source>
       <translation>すべてのファイル</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="705"/>
+      <location filename="../../Command.cpp" line="707"/>
       <source>Export page</source>
       <translation>ページをエクスポート</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="821"/>
+      <location filename="../../Command.cpp" line="823"/>
       <source>Select exactly one Spreadsheet object.</source>
-      <translation>スプレッドシートオブジェクトを1 つだけ選択して下さい。</translation>
-    </message>
-    <message>
-      <location filename="../../TaskOrthoViews.cpp" line="46"/>
-      <location filename="../../TaskOrthoViews.cpp" line="1040"/>
-      <source>Make axonometric...</source>
-      <translation>不等角投影図を作成...</translation>
+      <translation>スプレッドシートオブジェクトを一つだけ選択してください。</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="47"/>
       <location filename="../../TaskOrthoViews.cpp" line="1041"/>
-      <source>Edit axonometric settings...</source>
-      <translation>不等角投影図の設定を編集...</translation>
+      <source>Make axonometric...</source>
+      <translation>軸測投影図を作成...</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="48"/>
       <location filename="../../TaskOrthoViews.cpp" line="1042"/>
+      <source>Edit axonometric settings...</source>
+      <translation>軸測投影の設定を編集...</translation>
+    </message>
+    <message>
+      <location filename="../../TaskOrthoViews.cpp" line="49"/>
+      <location filename="../../TaskOrthoViews.cpp" line="1043"/>
       <source>Make orthographic</source>
       <translation>正投影図を作成</translation>
     </message>

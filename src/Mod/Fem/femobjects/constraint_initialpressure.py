@@ -37,7 +37,7 @@ class ConstraintInitialPressure(base_fempythonobject.BaseFemPythonObject):
     Type = "Fem::ConstraintInitialPressure"
 
     def __init__(self, obj):
-        super(ConstraintInitialPressure, self).__init__(obj)
+        super().__init__(obj)
         self.add_properties(obj)
 
     def onDocumentRestored(self, obj):
@@ -45,11 +45,7 @@ class ConstraintInitialPressure(base_fempythonobject.BaseFemPythonObject):
 
     def add_properties(self, obj):
         if not hasattr(obj, "Pressure"):
-            obj.addProperty(
-                "App::PropertyPressure",
-                "Pressure",
-                "Parameter",
-                "Initial Pressure"
-            )
+            obj.addProperty("App::PropertyPressure", "Pressure", "Parameter", "Initial Pressure")
+            obj.setPropertyStatus("Pressure", "LockDynamic")
             # we initialize 1 bar
             obj.Pressure = "100 kPa"

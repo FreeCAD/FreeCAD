@@ -89,6 +89,8 @@ public:
 
     /// creates a instance of this type
     void* createInstance();
+    /// Checks whether this type can instantiate
+    bool canInstantiate() const;
     /// creates a instance of the named type
     static void* createInstanceByName(const char* TypeName, bool bLoadModule = false);
     static void importModule(const char* TypeName);
@@ -128,7 +130,6 @@ public:
     static void init();
     static void destruct();
 
-protected:
     static std::string getModuleName(const char* ClassName);
 
 

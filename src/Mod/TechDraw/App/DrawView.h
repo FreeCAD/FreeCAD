@@ -37,9 +37,10 @@ namespace TechDraw
 {
 
 class DrawPage;
+class DrawViewCollection;
 class DrawViewClip;
 class DrawLeaderLine;
-/*class CosmeticVertex;*/
+class DrawViewPart;
 
 /** Base class of all View Features in the drawing module
  */
@@ -74,6 +75,7 @@ public:
 
     bool isInClip();
     DrawViewClip* getClipGroup();
+    DrawViewCollection *getCollection() const;
 
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override {
@@ -94,6 +96,7 @@ public:
     virtual bool checkFit() const;
     virtual bool checkFit(DrawPage*) const;
     virtual void setPosition(double x, double y, bool force = false);
+    virtual Base::Vector3d getPosition() const { return Base::Vector3d(X.getValue(), Y.getValue(), 0.0); }
     virtual bool keepUpdated(void);
 
     boost::signals2::signal<void (const DrawView*)> signalGuiPaint;
@@ -118,7 +121,12 @@ public:
 
     void translateLabel(std::string context, std::string baseName, std::string uniqueName);
 
+    virtual App::PropertyLink *getOwnerProperty() { return nullptr; }
+
+    static bool isProjGroupItem(DrawViewPart* item);
+
 protected:
+    void onBeforeChange(const App::Property *prop) override;
     void onChanged(const App::Property* prop) override;
     virtual void validateScale();
     std::string pageFeatName;
@@ -127,6 +135,8 @@ protected:
 
     int prefScaleType();
     double prefScale();
+
+    void touchTreeOwner(App::DocumentObject *owner) const;
 
 private:
     static const char* ScaleTypeEnums[];

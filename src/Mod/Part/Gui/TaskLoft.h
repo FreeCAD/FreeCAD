@@ -73,7 +73,6 @@ public:
 
 private:
     LoftWidget* widget;
-    Gui::TaskView::TaskBox* taskbox;
 };
 
 } //namespace PartGui

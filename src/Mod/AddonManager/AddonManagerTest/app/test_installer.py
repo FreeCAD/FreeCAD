@@ -125,7 +125,7 @@ class TestAddonInstaller(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp_dir:
             test_simple_repo = os.path.join(self.test_data_dir, "test_simple_repo.zip")
             non_gh_mock = MockAddon()
-            non_gh_mock.url = test_simple_repo
+            non_gh_mock.url = test_simple_repo[:-4]
             non_gh_mock.name = "NonGitHubMock"
             installer = AddonInstaller(non_gh_mock, [])
             installer.installation_path = temp_dir
@@ -136,7 +136,7 @@ class TestAddonInstaller(unittest.TestCase):
     def test_finalize_zip_installation_github(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             test_github_style_repo = os.path.join(self.test_data_dir, "test_github_style_repo.zip")
-            self.mock_addon.url = test_github_style_repo
+            self.mock_addon.url = "https://github.com/something/test_github_style_repo"
             self.mock_addon.branch = "master"
             installer = AddonInstaller(self.mock_addon, [])
             installer.installation_path = temp_dir
@@ -146,9 +146,10 @@ class TestAddonInstaller(unittest.TestCase):
 
     def test_code_in_branch_subdirectory_true(self):
         """When there is a subdirectory with the branch name in it, find it"""
+        self.mock_addon.url = "https://something.com/something_else/something"
         installer = AddonInstaller(self.mock_addon, [])
         with tempfile.TemporaryDirectory() as temp_dir:
-            os.mkdir(os.path.join(temp_dir, f"{self.mock_addon.name}-{self.mock_addon.branch}"))
+            os.mkdir(os.path.join(temp_dir, f"something-{self.mock_addon.branch}"))
             result = installer._code_in_branch_subdirectory(temp_dir)
             self.assertTrue(result, "Failed to find ZIP subdirectory")
 
@@ -171,9 +172,10 @@ class TestAddonInstaller(unittest.TestCase):
 
     def test_move_code_out_of_subdirectory(self):
         """All files are moved out and the subdirectory is deleted"""
+        self.mock_addon.url = "https://something.com/something_else/something"
         installer = AddonInstaller(self.mock_addon, [])
         with tempfile.TemporaryDirectory() as temp_dir:
-            subdir = os.path.join(temp_dir, f"{self.mock_addon.name}-{self.mock_addon.branch}")
+            subdir = os.path.join(temp_dir, f"something-{self.mock_addon.branch}")
             os.mkdir(subdir)
             with open(os.path.join(subdir, "README.txt"), "w", encoding="utf-8") as f:
                 f.write("# Test file for unit testing")

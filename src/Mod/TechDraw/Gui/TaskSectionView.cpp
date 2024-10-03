@@ -432,10 +432,7 @@ bool TaskSectionView::apply(bool forceUpdate)
     if (!ui->cbLiveUpdate->isChecked() && !forceUpdate) {
         //nothing to do
         m_applyDeferred++;
-        QString msgLiteral =
-            QString::fromUtf8(QT_TRANSLATE_NOOP("TaskPojGroup", " updates pending"));
-        QString msgNumber = QString::number(m_applyDeferred);
-        ui->lPendingUpdates->setText(msgNumber + msgLiteral);
+        ui->lPendingUpdates->setText(tr("%n update(s) pending", "", m_applyDeferred));
         return false;
     }
 
@@ -586,7 +583,7 @@ void TaskSectionView::updateSectionView()
     const std::string objectName("SectionView");
     std::string baseName = m_base->getNameInDocument();
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit SectionView"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Section View"));
     if (m_section) {
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionDirection = '%s'",
                            m_sectionName.c_str(), m_dirName.c_str());

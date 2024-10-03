@@ -476,7 +476,7 @@ void ModelSelect::onSelectModel(const QItemSelection& selected, const QItemSelec
                 ui->standardButtons->button(QDialogButtonBox::Ok)->setEnabled(true);
                 ui->buttonFavorite->setEnabled(true);
             }
-            catch (const std::exception& e) {
+            catch (const std::exception&) {
                 _selected = QString::fromStdString("");
                 clearMaterialModel();
                 ui->standardButtons->button(QDialogButtonBox::Ok)->setEnabled(false);

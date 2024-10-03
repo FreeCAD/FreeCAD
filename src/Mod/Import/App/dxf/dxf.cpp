@@ -2162,7 +2162,7 @@ bool CDxfRead::ReadLwPolyLine()
     // In the latter case the stroke attributes apply to the closure stroke (if any) which ends at
     // the first vertex.
     Setup3DVectorAttribute(ePrimaryPoint, currentVertex.location);
-    SetupScaledDoubleAttribute(eFloat3, currentVertex.bulge);
+    SetupValueAttribute(eFloat3, currentVertex.bulge);
     SetupValueAttribute(eInteger1, flags);
     while (get_next_record() && m_record_type != eObjectType) {
         if ((m_record_type == ePrimaryPoint + eXOffset && have_x)
@@ -2208,7 +2208,7 @@ bool CDxfRead::ReadPolyLine()
     // To avoid eating and discarding the rest of the entieies if ENDSEQ is missing,
     // we quit on any unknown type-0 record.
     Setup3DVectorAttribute(ePrimaryPoint, currentVertex.location);
-    SetupScaledDoubleAttribute(eFloat3, currentVertex.bulge);
+    SetupValueAttribute(eFloat3, currentVertex.bulge);
     while (get_next_record() && m_record_type == eObjectType && IsObjectName("VERTEX")) {
         // Set vertex defaults
         currentVertex.location = Base::Vector3d();
@@ -2910,7 +2910,11 @@ bool CDxfRead::ReadEntitiesSection()
                     return false;
                 }
             }
+            catch (const Base::Exception& e) {
+                e.ReportException();
+            }
             catch (...) {
+                ImportError("CDxfRead::ReadEntity raised unknown exception\n");
             }
         }
         else {
@@ -3067,7 +3071,7 @@ App::Color CDxfRead::ObjectColor(ColorIndex_t index)
         result = App::Color(brightness, brightness, brightness);
     }
     else {
-        static const std::array<float, 5> fades = {1.00, 0.74, 0.50, 0.40, 0.30};
+        static const std::array<float, 5> fades = {1.00F, 0.74F, 0.50F, 0.40F, 0.30F};
         return wheel(index / 10 - 1, (index & 1) != 0 ? 0.69 : 0, fades[(index / 2) % 5]);
     }
     // TODO: These colors are modified to contrast with the background. In the original program

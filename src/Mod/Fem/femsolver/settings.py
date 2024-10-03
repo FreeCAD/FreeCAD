@@ -51,7 +51,7 @@ import FreeCAD
 
 
 class DirSetting:
-    """ Enum of possible directory setting values.
+    """Enum of possible directory setting values.
 
     Strings used to indicate the solver directory setting set in FreeCADs
     setting system. Returned by :func:`get_dir_setting` for that purpose. There
@@ -71,6 +71,7 @@ class DirSetting:
         Use directory set below. Create own subdirectory for every solver. Name
         directory after the solver label prefixed with the document name.
     """
+
     TEMPORARY = "temporary"
     BESIDE = "beside"
     CUSTOM = "custom"
@@ -82,7 +83,7 @@ _GENERAL_PARAM = _PARAM_PATH + "General"
 
 
 def get_binary(name, silent=False):
-    """ Find binary of solver *name* honoring user settings.
+    """Find binary of solver *name* honoring user settings.
 
     Return the specific path set by the user in FreeCADs settings/parameter
     system if set or the default binary name if no specific path is set. If no
@@ -101,14 +102,13 @@ def get_binary(name, silent=False):
         if not silent:
             FreeCAD.Console.PrintError(
                 "Settings solver name: {} not found in "
-                "solver settings modules _SOLVER_PARAM dirctionary.\n"
-                .format(name)
+                "solver settings modules _SOLVER_PARAM dirctionary.\n".format(name)
             )
         return None
 
 
 def get_cores(name):
-    """ Read number of CPU cores for solver *name* honoring user settings.
+    """Read number of CPU cores for solver *name* honoring user settings.
 
     Returns number of CPU cores to be used for the solver run
 
@@ -120,14 +120,13 @@ def get_cores(name):
     else:
         FreeCAD.Console.PrintError(
             "Settings solver name: {} not found in "
-            "solver settings modules _SOLVER_PARAM dirctionary.\n"
-            .format(name)
+            "solver settings modules _SOLVER_PARAM dirctionary.\n".format(name)
         )
         return None
 
 
 def get_write_comments(name):
-    """ Check whether "write_comments" is set for solver.
+    """Check whether "write_comments" is set for solver.
 
     Returns ``True`` if the "write_comments" setting/parameter is set for the
     solver with the id *name*. Returns ``False`` otherwise. If the solver is
@@ -140,20 +139,19 @@ def get_write_comments(name):
     else:
         FreeCAD.Console.PrintError(
             "Settings solver name: {} not found in "
-            "solver settings modules _SOLVER_PARAM dirctionary.\n"
-            .format(name)
+            "solver settings modules _SOLVER_PARAM dirctionary.\n".format(name)
         )
         return None
 
 
 def get_custom_dir():
-    """ Get value for :term:`General/CustomDirectoryPath` parameter. """
+    """Get value for :term:`General/CustomDirectoryPath` parameter."""
     param_group = FreeCAD.ParamGet(_GENERAL_PARAM)
     return param_group.GetString("CustomDirectoryPath")
 
 
 def get_dir_setting():
-    """ Return directory setting set by the user.
+    """Return directory setting set by the user.
 
     Return one of the three possible values of the :class:`DirSetting` enum
     depending on the setting set in FreeCAD parameter system. Result dependes
@@ -169,11 +167,10 @@ def get_dir_setting():
 
 
 def get_default_solver():
-    """ Return default solver name.
-    """
+    """Return default solver name."""
     solver_map = {0: "None"}
     if get_binary("Calculix", True):
-        solver_map[1] = "CalculixCcxTools"
+        solver_map[1] = "CalculiXCcxTools"
     if get_binary("ElmerSolver", True):
         solver_map[len(solver_map)] = "Elmer"
     if get_binary("Mystran", True):
@@ -184,8 +181,8 @@ def get_default_solver():
     return solver_map[param_group.GetInt("DefaultSolver", 0)]
 
 
-class _SolverDlg(object):
-    """ Internal query logic for solver specific settings.
+class _SolverDlg:
+    """Internal query logic for solver specific settings.
 
     Each instance queries settings for one specific solver (e.g. Elmer) common
     among all solvers. To clarify: There are a few settings that are useful
@@ -233,26 +230,26 @@ class _SolverDlg(object):
         # without any additional user input
         # see ccxttols, it works for Windows and Linux there
         binary = self.default
-        FreeCAD.Console.PrintLog("Solver binary path default: {} \n".format(binary))
+        FreeCAD.Console.PrintLog(f"Solver binary path default: {binary} \n")
 
         # check if use_default is set to True
         # if True the standard binary path will be overwritten with a user binary path
         if self.param_group.GetBool(self.use_default, True) is False:
             binary = self.param_group.GetString(self.custom_path)
-        FreeCAD.Console.PrintLog("Solver binary path user setting: {} \n".format(binary))
+        FreeCAD.Console.PrintLog(f"Solver binary path user setting: {binary} \n")
 
         # get the whole binary path name for the given command or binary path and return it
         # None is returned if the binary has not been found
         # The user does not know what exactly has going wrong.
         from shutil import which as find_bin
+
         the_found_binary = find_bin(binary)
         if (the_found_binary is None) and (not silent):
             FreeCAD.Console.PrintError(
-                "The binary has not been found. Full binary search path: {}\n"
-                .format(binary)
+                f"The binary has not been found. Full binary search path: {binary}\n"
             )
         else:
-            FreeCAD.Console.PrintLog("Found solver binary path: {}\n".format(the_found_binary))
+            FreeCAD.Console.PrintLog(f"Found solver binary path: {the_found_binary}\n")
         return the_found_binary
 
     def get_cores(self):
@@ -268,25 +265,30 @@ _SOLVER_PARAM = {
         default="ccx",
         param_path=_PARAM_PATH + "Ccx",
         use_default="UseStandardCcxLocation",
-        custom_path="ccxBinaryPath"),
+        custom_path="ccxBinaryPath",
+    ),
     "ElmerSolver": _SolverDlg(
         default="ElmerSolver",
         param_path=_PARAM_PATH + "Elmer",
         use_default="UseStandardElmerLocation",
-        custom_path="elmerBinaryPath"),
+        custom_path="elmerBinaryPath",
+    ),
     "ElmerGrid": _SolverDlg(
         default="ElmerGrid",
         param_path=_PARAM_PATH + "Elmer",
         use_default="UseStandardGridLocation",
-        custom_path="gridBinaryPath"),
+        custom_path="gridBinaryPath",
+    ),
     "Mystran": _SolverDlg(
         default="mystran",
         param_path=_PARAM_PATH + "Mystran",
         use_default="UseStandardMystranLocation",
-        custom_path="mystranBinaryPath"),
+        custom_path="mystranBinaryPath",
+    ),
     "Z88": _SolverDlg(
         default="z88r",
         param_path=_PARAM_PATH + "Z88",
         use_default="UseStandardZ88Location",
-        custom_path="z88BinaryPath"),
+        custom_path="z88BinaryPath",
+    ),
 }

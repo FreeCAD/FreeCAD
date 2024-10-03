@@ -45,6 +45,7 @@
 #include <Mod/Part/App/TopoShape.h>
 
 #include <App/Document.h>
+#include <App/Link.h>
 #include <App/Origin.h>
 #include <App/OriginFeature.h>
 #include <App/Part.h>
@@ -247,7 +248,7 @@ public:
         guidocument->openCommand(QT_TRANSLATE_NOOP("Command", "Create a Sketch on Face"));
         FCMD_OBJ_CMD(activeBody, "newObject('Sketcher::SketchObject','" << FeatName << "')");
         auto Feat = appdocument->getObject(FeatName.c_str());
-        FCMD_OBJ_CMD(Feat, "Support = " << supportString);
+        FCMD_OBJ_CMD(Feat, "AttachmentSupport = " << supportString);
         FCMD_OBJ_CMD(Feat, "MapMode = '" << Attacher::AttachEngine::getModeName(Attacher::mmFlatFace)<<"'");
         Gui::Command::updateActive();
         PartDesignGui::setEdit(Feat, activeBody);
@@ -619,9 +620,9 @@ private:
 
         FCMD_OBJ_CMD(partDesignBody,"newObject('Sketcher::SketchObject','" << FeatName << "')");
         auto Feat = partDesignBody->getDocument()->getObject(FeatName.c_str());
-        FCMD_OBJ_CMD(Feat,"Support = " << supportString);
+        FCMD_OBJ_CMD(Feat,"AttachmentSupport = " << supportString);
         FCMD_OBJ_CMD(Feat,"MapMode = '" << Attacher::AttachEngine::getModeName(Attacher::mmFlatFace)<<"'");
-        Gui::Command::updateActive(); // Make sure the Support's Placement property is updated
+        Gui::Command::updateActive(); // Make sure the AttachmentSupport's Placement property is updated
         PartDesignGui::setEdit(Feat, partDesignBody);
     }
 
@@ -681,7 +682,13 @@ std::tuple<bool, PartDesign::Body*> SketchWorkflow::shouldCreateBody()
 
     // We need either an active Body, or for there to be no Body
     // objects (in which case, just make one) to make a new sketch.
-    PartDesign::Body* pdBody = PartDesignGui::getBody(/* messageIfNot = */ false);
+    // If we are inside a link, we need to use its placement.
+    App::DocumentObject *topParent;
+    PartDesign::Body *pdBody = PartDesignGui::getBody(/* messageIfNot = */ false, true, true, &topParent);
+    if (pdBody && topParent->isLink()) {
+        auto *xLink = dynamic_cast<App::Link *>(topParent);
+        pdBody->Placement.setValue(xLink->Placement.getValue());
+    }
     if (!pdBody) {
         if (appdocument->countObjectsOfType(PartDesign::Body::getClassTypeId()) == 0) {
             shouldMakeBody = true;

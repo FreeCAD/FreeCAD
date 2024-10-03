@@ -56,6 +56,18 @@ For a temporary document it returns its transient directory.
         </UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="getUniqueObjectName">
+      <Documentation>
+        <UserDocu>getUniqueObjectName(objName) -> objName
+
+          Return the same name, or the name made unique, for Example Box -> Box002 if there are conflicting name
+          already in the document.
+
+          ObjName : str
+          Object name.
+        </UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="mergeProject">
       <Documentation>
         <UserDocu>Merges this document with another project file</UserDocu>
@@ -290,6 +302,12 @@ sort: whether to topologically sort the return list
         <UserDocu>The list of root objects in this document</UserDocu>
       </Documentation>
       <Parameter Name="RootObjects" Type="List" />
+    </Attribute>
+    <Attribute Name="RootObjectsIgnoreLinks" ReadOnly="true">
+      <Documentation>
+        <UserDocu>The list of root objects in this document ignoring references from links.</UserDocu>
+      </Documentation>
+      <Parameter Name="RootObjectsIgnoreLinks" Type="List" />
     </Attribute>
     <Attribute Name="UndoMode" ReadOnly="false">
       <Documentation>

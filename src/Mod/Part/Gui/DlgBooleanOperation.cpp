@@ -471,11 +471,7 @@ void DlgBooleanOperation::accept()
 TaskBooleanOperation::TaskBooleanOperation()
 {
     widget = new DlgBooleanOperation();
-    taskbox = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("Part_Booleans"),
-        widget->windowTitle(), false, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(Gui::BitmapFactory().pixmap("Part_Booleans"), widget, false);
 }
 
 void TaskBooleanOperation::clicked(int id)
