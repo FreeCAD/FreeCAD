@@ -511,9 +511,12 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint>& suggested
             constr.Type = Sketcher::Tangent;
         }
 
-        if (constr.Type == Sketcher::Tangent && Dir.Length() > 1e-8
-            && hitShapeDir.Length()
-                > 1e-8) {  // We are hitting a line and have hitting vector information
+        if (constr.Type == Sketcher::Tangent) {
+            if (Dir.Length() < 1e-8 || hitShapeDir.Length() < 1e-8) {
+                // Direction not set so return;
+                return suggestedConstraints.size();
+            }
+            // We are hitting a line and have hitting vector information
             Base::Vector3d dir3d = Base::Vector3d(Dir.x, Dir.y, 0);
             double cosangle = dir3d.Normalize() * hitShapeDir.Normalize();
 
