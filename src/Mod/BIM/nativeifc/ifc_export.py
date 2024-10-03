@@ -31,12 +31,13 @@ from importers import importIFCHelper
 from nativeifc import ifc_tools
 
 
-def get_export_preferences(ifcfile, preferred_context=None):
+def get_export_preferences(ifcfile, preferred_context=None, create=None):
     """returns a preferences dict for exportIFC.
     Preferred context can either indicate a ContextType like 'Model' or 'Plan',
-    or a [ContextIdentifier,ContextType] list or tuple, for ex.
-    ('Annotation','Plan'). This function will do its best to find the most
-    appropriate context."""
+    or a [ContextIdentifier,ContextType,TargetView] list or tuple, for ex.
+    ('Annotation','Plan') or ('Body','Model','MODEL_VIEW'). This function
+    will do its best to find the most appropriate context. If create is True,
+    if the exact context is not found, a new one is created"""
 
     prefs = exportIFC.getPreferences()
     prefs["SCHEMA"] = ifcfile.wrapped_data.schema_name()
@@ -46,25 +47,80 @@ def get_export_preferences(ifcfile, preferred_context=None):
     cids = ifc_tools.get_body_context_ids(ifcfile)
     contexts = [ifcfile[i] for i in cids]
     best_context = None
+    exact_match = False
     if preferred_context:
         if isinstance(preferred_context, str):
             for context in contexts:
                 if context.ContextType == preferred_context:
                     best_context = context
+                    exact_match = True
                     break
         elif isinstance(preferred_context, (list, tuple)):
             second_choice = None
             for context in contexts:
-                if context.ContextType == preferred_context[1]:
-                    second_choice = context
-                    if context.ContextIdentifier == preferred_context[0]:
+                if len(preferred_context) > 2:
+                    if (context.TargetView == preferred_context[2]
+                        and context.ContextType == preferred_context[1]
+                        and context.ContextIdentifier == preferred_context[0]):
+                            best_context = context
+                            exact_match = True
+                if len(preferred_context) > 1:
+                    if (context.ContextType == preferred_context[1]
+                        and context.ContextIdentifier == preferred_context[0]):
+                            if not exact_match:
+                                best_context = context
+                                if len(preferred_context) == 2:
+                                    exact_match = True
+                if context.ContextType == preferred_context[0]:
+                    if not exact_match:
                         best_context = context
-                        break
-            else:
-                if second_choice:
-                    best_context = second_choice
-    if not best_context:
-        best_context = contexts[0]
+                        if len(preferred_context) == 1:
+                            exact_match = True
+            if contexts:
+                if not best_context:
+                    best_context = contexts[0]
+        if create:
+            if not exact_match:
+                if isinstance(preferred_context, str):
+                    best_context = ifc_tools.api_run("context.add_context",
+                                                     ifcfile,
+                                                     context_type = preferred_context)
+                elif best_context:
+                    if len(preferred_context) > 2:
+                        best_context = ifc_tools.api_run("context.add_context",
+                                                         ifcfile,
+                                                         context_type = preferred_context[1],
+                                                         context_identifier = preferred_context[0],
+                                                         target_view = preferred_context[2],
+                                                         parent = best_context)
+                    elif len(preferred_context) > 1:
+                        best_context = ifc_tools.api_run("context.add_context",
+                                                         ifcfile,
+                                                         context_type = preferred_context[1],
+                                                         context_identifier = preferred_context[0],
+                                                         parent = best_context)
+                else:
+                    if len(preferred_context) > 1:
+                        best_context = ifc_tools.api_run("context.add_context",
+                                                         ifcfile,
+                                                         context_type = preferred_context[1])
+                        if len(preferred_context) > 2:
+                            best_context = ifc_tools.api_run("context.add_context",
+                                                             ifcfile,
+                                                             context_type = preferred_context[1],
+                                                             context_identifier = preferred_context[0],
+                                                             target_view = preferred_context[2],
+                                                             parent = best_context)
+                        else:
+                            best_context = ifc_tools.api_run("context.add_context",
+                                                             ifcfile,
+                                                             context_type = preferred_context[1],
+                                                             context_identifier = preferred_context[0],
+                                                             parent = best_context)
+                    else:
+                        best_context = ifc_tools.api_run("context.add_context",
+                                                         ifcfile,
+                                                         context_type = preferred_context[0])
     return prefs, best_context
 
 
@@ -221,7 +277,11 @@ def create_annotation(obj, ifcfile):
     exportIFC.curvestyles = {}
     exportIFC.ifcopenshell = ifcopenshell
     exportIFC.ifcbin = exportIFCHelper.recycler(ifcfile, template=False)
-    prefs, context = get_export_preferences(ifcfile, preferred_context="Plan")
+    if is_annotation(obj) and Draft.getType(obj) != "SectionPlane":
+        context_type = "Plan"
+    else:
+        context_type = "Model"
+    prefs, context = get_export_preferences(ifcfile, preferred_context=context_type, create=True)
     prefs["BBIMDIMS"] = True # Save dimensions as 2-point polylines
     history = get_history(ifcfile)
     # TODO The following prints each edge as a separate IfcGeometricCurveSet
