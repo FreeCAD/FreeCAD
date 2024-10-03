@@ -102,4 +102,19 @@ TEST_F(ExpressionParserTest, functionPARSEQUANT)
 
 }
 
+TEST_F(ExpressionParserTest, isTokenAConstant)
+{
+    std::array<std::string, 7> constants {"pi", "e", "True", "False", "true", "false", "None"};
+    for (const auto & constant : constants) {
+        EXPECT_TRUE(App::ExpressionParser::isTokenAConstant(constant))
+          << "\"" << constant << "\" did not evaluate as a constant";
+    }
+
+    std::array<std::string, 6> notConstants {"PI", "E", "TRUE", "FALSE", "NONE", "none"};
+    for (const auto & nonConstant : notConstants) {
+        EXPECT_FALSE(App::ExpressionParser::isTokenAConstant(nonConstant))
+          << "\"" << nonConstant << "\" evaluated as a constant";
+    }
+}
+
 // clang-format on

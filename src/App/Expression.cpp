@@ -3855,6 +3855,13 @@ bool ExpressionParser::isTokenAnIndentifier(const std::string & str)
     return (status == 0 && (token == IDENTIFIER || token == CELLADDRESS));
 }
 
+bool ExpressionParser::isTokenAConstant(const std::string & str)
+{
+    int token{}, status{};
+    std::tie(token, status) = getTokenAndStatus(str);
+    return (status == 0 && token == CONSTANT);
+}
+
 bool ExpressionParser::isTokenAUnit(const std::string & str)
 {
     int token{}, status{};
