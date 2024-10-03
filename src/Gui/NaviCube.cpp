@@ -56,6 +56,7 @@
 #include "MainWindow.h"
 #include "View3DInventorViewer.h"
 #include "View3DInventor.h"
+#include "ViewParams.h"
 
 
 using namespace Eigen;
@@ -179,6 +180,10 @@ public:
     float m_InactiveOpacity = 0.5;
     SbVec2s m_PosOffset = SbVec2s(0,0);
 
+    App::Color m_xColor;
+    App::Color m_yColor;
+    App::Color m_zColor;
+
     bool m_Prepared = false;
     static vector<string> m_commands;
     bool m_Draggable = false;
@@ -212,6 +217,7 @@ int NaviCube::getNaviCubeSize()
 
 NaviCube::NaviCube(Gui::View3DInventorViewer* viewer) {
     m_NaviCubeImplementation = new NaviCubeImplementation(viewer);
+    updateColors();
 }
 
 NaviCube::~NaviCube() {
@@ -828,13 +834,16 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode, float opacity)
             a, a, a  // 0
         };
         glVertexPointer(3, GL_FLOAT, 0, pointData);
-        glColor4f(1, 0, 0, opacity);
+
+        glColor4f(m_xColor.r, m_xColor.g, m_xColor.b, opacity);
         glDrawArrays(GL_LINES, 0, 2);
         glDrawArrays(GL_POINTS, 0, 2);
-        glColor4f(0, 1, 0, opacity);
+
+        glColor4f(m_yColor.r, m_yColor.g, m_yColor.b, opacity);
         glDrawArrays(GL_LINES, 2, 2);
         glDrawArrays(GL_POINTS, 2, 2);
-        glColor4f(0, 0, 1, opacity);
+
+        glColor4f(m_zColor.r, m_zColor.g, m_zColor.b, opacity);
         glDrawArrays(GL_LINES, 4, 2);
         glDrawArrays(GL_POINTS, 4, 2);
     }
@@ -1165,6 +1174,18 @@ bool NaviCubeImplementation::processSoEvent(const SoEvent* ev) {
 
 QString NaviCubeImplementation::str(const char* str) {
     return QString::fromLatin1(str);
+}
+
+void NaviCube::updateColors()
+{
+    unsigned long colorLong;
+
+    colorLong = Gui::ViewParams::instance()->getAxisXColor();
+    m_NaviCubeImplementation->m_xColor = App::Color(static_cast<uint32_t>(colorLong));
+    colorLong = Gui::ViewParams::instance()->getAxisYColor();
+    m_NaviCubeImplementation->m_yColor = App::Color(static_cast<uint32_t>(colorLong));
+    colorLong = Gui::ViewParams::instance()->getAxisZColor();
+    m_NaviCubeImplementation->m_zColor = App::Color(static_cast<uint32_t>(colorLong));
 }
 
 void NaviCube::setNaviCubeCommands(const std::vector<std::string>& cmd)
