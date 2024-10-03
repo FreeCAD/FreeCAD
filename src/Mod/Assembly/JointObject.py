@@ -201,6 +201,7 @@ class Joint:
         self.migrationScript(joint)
         self.migrationScript2(joint)
         self.migrationScript3(joint)
+        self.migrationScript4(joint)
 
         # First Joint Connector
         if not hasattr(joint, "Reference1"):
@@ -529,6 +530,20 @@ class Joint:
             )
 
             joint.Offset2 = App.Placement(current_offset, App.Rotation(current_rotation, 0, 0))
+
+    def migrationScript4(self, joint):
+        if hasattr(joint, "Reference1"):
+            base_name, *sub_names, feature_name = joint.Reference1[1][0].split(".")
+            ref1 = ".".join((base_name, *sub_names[:-1], feature_name))
+            base_name, *sub_names, feature_name = joint.Reference1[1][1].split(".")
+            ref2 = ".".join((base_name, *sub_names[:-1], feature_name))
+            joint.Reference1 = (joint.Reference1[0], [ref1, ref2])
+        if hasattr(joint, "Reference2"):
+            base_name, *sub_names, feature_name = joint.Reference2[1][0].split(".")
+            ref1 = ".".join((base_name, *sub_names[:-1], feature_name))
+            base_name, *sub_names, feature_name = joint.Reference2[1][1].split(".")
+            ref2 = ".".join((base_name, *sub_names[:-1], feature_name))
+            joint.Reference2 = (joint.Reference2[0], [ref1, ref2])
 
     def dumps(self):
         return None
@@ -1803,20 +1818,13 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
     # selectionObserver stuff
     def addSelection(self, doc_name, obj_name, sub_name, mousePos):
         rootObj = App.getDocument(doc_name).getObject(obj_name)
-        resolved = rootObj.resolveSubElement(sub_name)
-        element_name_TNP = resolved[1]
-        element_name = resolved[2]
 
-        # Preprocess the sub_name to remove the TNP string
-        # We do this because after we need to add the vertex_name as well.
-        # And the names will be resolved anyway after.
-        if len(element_name_TNP.split(".")) == 2:
-            names = sub_name.split(".")
-            names.pop(-2)  # remove the TNP string
-            sub_name = ".".join(names)
-
-        ref = [rootObj, [sub_name]]
-
+        # If the sub_name that comes in has extra features in it, remove them.  For example a
+        # Part.Body.Pad.Sketch becomes Part.Body.Sketch and a
+        # Body.Pad.Sketch becomes Body.sketch
+        base_name, *path_detail, old_name = sub_name.split(".")
+        target_link = ".".join((base_name, *path_detail[:-2], old_name))
+        ref = [rootObj, [target_link]]
         moving_part = self.getMovingPart(ref)
 
         # Check if the addition is acceptable (we are not doing this in selection gate to let user move objects)
