@@ -347,6 +347,10 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     else if (strcmp(Reason,"AxisXColor") == 0 || strcmp(Reason,"AxisYColor") == 0 || strcmp(Reason,"AxisZColor") == 0) {
         for (auto _viewer : _viewers) {
             _viewer->getNaviCube()->updateColors();
+            if(_viewer->hasAxisCross()) {
+                _viewer->setAxisCross(false);  // Force redraw
+                _viewer->setAxisCross(true);
+            }
         }
     }
     else if (strcmp(Reason,"UseVBO") == 0) {
