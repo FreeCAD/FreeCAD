@@ -195,6 +195,9 @@ class ifc_object:
                 if dim:
                     rep = dim[0]
                     for curve in rep.Items:
+                        if not hasattr(curve, "Elements"):
+                            # this is a TextLiteral for the dimension text - skip it
+                            continue
                         for sub in curve.Elements:
                             if sub.is_a("IfcIndexedPolyCurve"):
                                 points = sub.Points
