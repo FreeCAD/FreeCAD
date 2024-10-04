@@ -414,6 +414,8 @@ def get_ifcfile(obj):
             if getattr(project, "Proxy", None):
                 project.Proxy.ifcfile = ifcfile
             return ifcfile
+        else:
+            FreeCAD.Console.PrintError("Error: No IFC file attached to this project")
     return None
 
 
@@ -977,14 +979,17 @@ def save(obj, filepath=None):
     obj.Modified = False
 
 
-def aggregate(obj, parent):
-    """Takes any FreeCAD object and aggregates it to an existing IFC object"""
+def aggregate(obj, parent, mode=None):
+    """Takes any FreeCAD object and aggregates it to an existing IFC object.
+    Mode can be 'opening' to force-create a subtraction"""
 
     proj = get_project(parent)
     if not proj:
         FreeCAD.Console.PrintError("The parent object is not part of an IFC project\n")
         return
     ifcfile = get_ifcfile(proj)
+    if not ifcfile:
+        return
     product = None
     stepid = getattr(obj, "StepId", None)
     if stepid:
@@ -1001,11 +1006,14 @@ def aggregate(obj, parent):
         newobj = obj
         new = False
     else:
-        product = create_product(obj, parent, ifcfile)
+        ifcclass = None
+        if mode == "opening":
+            ifcclass = "IfcOpeningElement"
+        product = create_product(obj, parent, ifcfile, ifcclass)
         shapemode = getattr(parent, "ShapeMode", DEFAULT_SHAPEMODE)
         newobj = create_object(product, obj.Document, ifcfile, shapemode)
         new = True
-    create_relationship(obj, newobj, parent, product, ifcfile)
+    create_relationship(obj, newobj, parent, product, ifcfile, mode)
     base = getattr(obj, "Base", None)
     if base:
         # make sure the base is used only by this object before deleting
@@ -1179,7 +1187,7 @@ def get_subvolume(obj):
     return tempface, tempobj
 
 
-def create_relationship(old_obj, obj, parent, element, ifcfile):
+def create_relationship(old_obj, obj, parent, element, ifcfile, mode=None):
     """Creates a relationship between an IFC object and a parent IFC object"""
 
     if isinstance(parent, FreeCAD.DocumentObject):
@@ -1280,7 +1288,8 @@ def create_relationship(old_obj, obj, parent, element, ifcfile):
                     relating_object=container,
                 )
     # case 4: void element
-    elif parent_element.is_a("IfcElement") and element.is_a("IfcOpeningElement"):
+    elif (parent_element.is_a("IfcElement") and element.is_a("IfcOpeningElement"))\
+    or (mode == "opening"):
         uprel = api_run(
             "void.add_opening", ifcfile, opening=element, element=parent_element
         )
