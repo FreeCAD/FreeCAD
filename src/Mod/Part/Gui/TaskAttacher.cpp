@@ -65,12 +65,12 @@ const QString makeRefString(const App::DocumentObject* obj, const std::string& s
     if (!obj)
         return QObject::tr("No reference selected");
 
-    if (obj->isDerivedFrom<App::OriginFeature>() ||
+    else if (obj->isDerivedFrom<App::OriginFeature>() ||
         obj->isDerivedFrom<Part::Datum>())
         // App::Plane, Line or Datum feature
         return QString::fromLatin1(obj->getNameInDocument());
 
-    if ((sub.size() > 4) && (sub.substr(0,4) == "Face")) {
+    else if ((sub.size() > 4) && (sub.substr(0,4) == "Face")) {
         int subId = std::atoi(&sub[4]);
         return QString::fromLatin1(obj->getNameInDocument()) + QString::fromLatin1(":") + QObject::tr("Face") + QString::number(subId);
     } else if ((sub.size() > 4) && (sub.substr(0,4) == "Edge")) {
@@ -92,12 +92,12 @@ void TaskAttacher::makeRefStrings(std::vector<QString>& refstrings, std::vector<
     std::vector<App::DocumentObject*> refs = pcAttach->AttachmentSupport.getValues();
     refnames = pcAttach->AttachmentSupport.getSubValues();
 
-    for (size_t r = 0; r < 4; r++) {
-        if ((r < refs.size()) && (refs[r])) {
-            refstrings.push_back(makeRefString(refs[r], refnames[r]));
+    for (size_t rs = 0; rs < 4; rs++) {
+        if ((r < refs.size()) && (refs[rs])) {
+            refstrings.push_back(makeRefString(refs[rs], refnames[rs]));
             // for Origin or Datum features refnames is empty but we need a non-empty return value
-            if (refnames[r].empty())
-                refnames[r] = refs[r]->getNameInDocument();
+            if (refnames[rs].empty())
+                refnames[rs] = refs[rs]->getNameInDocument();
         } else {
             refstrings.push_back(QObject::tr("No reference selected"));
             refnames.emplace_back("");
