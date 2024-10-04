@@ -1812,9 +1812,13 @@ protected:
     {
         //distance, lock
         if (availableConstraint == AvailableConstraint::FIRST) {
+            selAllowed = true;
+            if(selPoints[0].GeoId == Sketcher::GeoEnum::RtPnt) {
+                // Cannot do distance to origin if origin selected
+                return;
+            }
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add 'Distance to origin' constraint"));
             createDistanceConstrain(selPoints[0].GeoId, selPoints[0].PosId, Sketcher::GeoEnum::RtPnt, Sketcher::PointPos::start, onSketchPos);
-            selAllowed = true;
         }
         if (availableConstraint == AvailableConstraint::SECOND) {
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add lock constraint"));
