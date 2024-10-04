@@ -216,8 +216,31 @@ class _Wall(ArchComponent.Component):
     def onDocumentRestored(self,obj):
         """Method run when the document is restored. Re-adds the Arch component, and Arch wall properties."""
 
+        import DraftGeomUtils
+        from draftutils.messages import _wrn
+
         ArchComponent.Component.onDocumentRestored(self,obj)
         self.setProperties(obj)
+
+        # In V1.0 the handling of wall normals has changed. As a result existing
+        # walls with their Normal set to [0, 0, 0], based on wires or faces with
+        # a shape normal pointing towards -Z, would be extruded in that direction
+        # instead of towards +Z as before. To avoid this their Normal property is
+        # changed to [0, 0, 1].
+        if FreeCAD.ActiveDocument.getProgramVersion() < "0.22" \
+                and obj.Normal == Vector(0, 0, 0) \
+                and hasattr(obj.Base, "Shape") \
+                and not obj.Base.Shape.Solids \
+                and obj.Face == 0 \
+                and not obj.Base.isDerivedFrom("Sketcher::SketchObject") \
+                and DraftGeomUtils.get_shape_normal(obj.Base.Shape) != Vector(0, 0, 1):
+            obj.Normal = Vector(0, 0, 1)
+            _wrn(
+                "v1.0, "
+                + obj.Label
+                + ", "
+                + translate("Arch", "changed 'Normal' to [0, 0, 1] to preserve extrusion direction")
+            )
 
         if hasattr(obj,"ArchSketchData") and obj.ArchSketchData and Draft.getType(obj.Base) == "ArchSketch":
             if hasattr(obj,"Width"):
