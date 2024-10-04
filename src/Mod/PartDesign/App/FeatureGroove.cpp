@@ -81,6 +81,12 @@ short Groove::mustExecute() const
 
 App::DocumentObjectExecReturn *Groove::execute()
 {
+    if (onlyHasToRefine()){
+        TopoShape result = refineShapeIfActive(rawShape);
+        Shape.setValue(result);
+        return App::DocumentObject::StdReturn;
+    }
+
     // Validate parameters
     double angle = Angle.getValue();
     if (angle > 360.0)
@@ -187,6 +193,8 @@ App::DocumentObjectExecReturn *Groove::execute()
         if (boolOp.isNull())
             return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
 
+        // store shape before refinement
+        this->rawShape = boolOp;
         boolOp = refineShapeIfActive(boolOp);
         boolOp = getSolid(boolOp);
         if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
