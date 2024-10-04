@@ -817,14 +817,20 @@ class _MeshNetgenFromShape(CommandManager):
     def Activated(self):
         # a mesh could be made with and without an analysis,
         # we're going to check not for an analysis in command manager module
+        netgen_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Netgen")
         FreeCAD.ActiveDocument.openTransaction("Create FEM mesh Netgen")
         mesh_obj_name = "FEMMeshNetgen"
         # if requested by some people add Preference for this
         # mesh_obj_name = sel[0].Name + "_Mesh"
         FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand(
-            "ObjectsFem.makeMeshNetgen(FreeCAD.ActiveDocument, '" + mesh_obj_name + "')"
-        )
+        if netgen_prefs.GetBool("UseLegacyNetgen", 1):
+            FreeCADGui.doCommand(
+                "ObjectsFem.makeMeshNetgenLegacy(FreeCAD.ActiveDocument, '" + mesh_obj_name + "')"
+            )
+        else:
+            FreeCADGui.doCommand(
+                "ObjectsFem.makeMeshNetgen(FreeCAD.ActiveDocument, '" + mesh_obj_name + "')"
+            )
         FreeCADGui.doCommand(
             "FreeCAD.ActiveDocument.ActiveObject.Shape = FreeCAD.ActiveDocument.{}".format(
                 self.selobj.Name
