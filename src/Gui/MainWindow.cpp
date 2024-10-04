@@ -1968,6 +1968,11 @@ QPixmap MainWindow::aboutImage() const
         about_image.load(fi.filePath(), "PNG");
 
     std::string about_path = App::Application::Config()["AboutImage"];
+    // See if current version is dev
+    QString suffix  = QString::fromLatin1(App::Application::Config()["BuildVersionSuffix"].c_str());
+    if (suffix == QString::fromLatin1("dev")) {
+        about_path = App::Application::Config()["AboutImageDev"];
+    }
     if (!about_path.empty() && about_image.isNull()) {
         QString path = QString::fromUtf8(about_path.c_str());
         if (QDir(path).isRelative()) {
