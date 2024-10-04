@@ -179,6 +179,9 @@ protected:
     Gui::ViewProviderDocumentObject   *ViewProvider;
 
     TaskAttacher  *parameter;
+        
+private:
+    bool commandOpened;
 };
 
 } //namespace PartDesignGui
