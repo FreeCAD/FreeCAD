@@ -134,6 +134,8 @@ class Arch_Wall:
 
         import Draft
         import Part
+        import Arch
+        import ArchWall
         from draftutils import gui_utils
         if obj:
             if Draft.getType(obj) == "Wall":
@@ -171,9 +173,9 @@ class Arch_Wall:
             else:
                 if self.JOIN_WALLS_SKETCHES:
                     # join existing subwalls first if possible, then add the new one
-                    w = joinWalls(self.existing)
+                    w = Arch.joinWalls(self.existing)
                     if w:
-                        if areSameWallTypes([w,self]):
+                        if ArchWall.areSameWallTypes([w,self]):
                             FreeCADGui.doCommand('FreeCAD.ActiveDocument.'+w.Name+'.Base.addGeometry(trace)')
                         else:
                             # if not possible, add new wall as addition to the existing one
