@@ -92,7 +92,7 @@ void TaskAttacher::makeRefStrings(std::vector<QString>& refstrings, std::vector<
     std::vector<App::DocumentObject*> refs = pcAttach->AttachmentSupport.getValues();
     refnames = pcAttach->AttachmentSupport.getSubValues();
 
-    for (size_t rs = 0; r < 4; r++) {
+    for (size_t rs = 0; rs < 4; rs++) {
         if ((rs < refs.size()) && (refs[rs])) {
             refstrings.push_back(makeRefString(refs[rs], refnames[rs]));
             // for Origin or Datum features refnames is empty but we need a non-empty return value
