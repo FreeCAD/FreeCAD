@@ -12,7 +12,7 @@ qt5 = ["qt5"]
 
 [feature.qt6.dependencies]
 ccache = "*"
-cmake = "*"
+cmake = "3.28.3"
 ninja = "*"
 compilers = "*"
 swig = "*"
