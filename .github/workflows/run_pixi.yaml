@@ -20,4 +20,6 @@ jobs:
       with:
         pixi-version: v0.30.0
         cache: true
+        environments: >-
+          ${{ matrix.qt }}
     - run: pixi run -e ${{ matrix.qt }} install
