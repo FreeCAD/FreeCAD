@@ -163,36 +163,31 @@ sed = "*"
 sed = "*"
 
 [feature.qt6.target.linux-64]
-tasks = { configure = { cmd = [ "cmake", "-B", "build_qt6", "--preset", "conda-linux-debug" ], depends-on = ["initialize"]} }
+tasks = { configure = { cmd = [ "cmake", "-B", "build_qt6", "--preset", "conda-linux-debug", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"]} }
 
 [feature.qt6.target.linux-aarch64]
-tasks = { configure = { cmd = [ "cmake", "-B", "build_qt6", "--preset", "conda-linux-debug",
-								"-D", "QT_HOST_PATH=$CONDA_PREFIX"], depends-on= ["initialize"]} }
+tasks = { configure = { cmd = [ "cmake", "-B", "build_qt6", "--preset", "conda-linux-debug", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on= ["initialize"]} }
 
 [feature.qt6.target.osx-64]
-tasks = { configure = { cmd = [ "cmake", "-B", "build_qt6", "--preset", "conda-macos-debug" ], depends-on = ["initialize"]} }
+tasks = { configure = { cmd = [ "cmake", "-B", "build_qt6", "--preset", "conda-macos-debug", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"]} }
 
 [feature.qt6.target.osx-arm64]
-tasks = { configure = { cmd = [ "cmake", "-B", "build_qt6", "--preset", "conda-macos-debug",
-								"-D", "QT_HOST_PATH=$CONDA_PREFIX"], depends-on = ["initialize"]} }
+tasks = { configure = { cmd = [ "cmake", "-B", "build_qt6", "--preset", "conda-macos-debug", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"]} }
 
 [feature.qt6.target.win-64]
-tasks = { configure = { cmd = [ "cmake", "-B", "build_qt6", "--preset", "conda-windows-debug" ], depends-on = ["initialize"]} }
-
+tasks = { configure = { cmd = [ "cmake", "-B", "build_qt6", "--preset", "conda-windows-debug", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"]} }
 
 [feature.qt5.target.linux-64]
 tasks = { configure = { cmd = [ "cmake", "-B", "build_qt5", "--preset", "conda-linux-debug" ], depends-on = ["initialize"]} }
 
 [feature.qt5.target.linux-aarch64]
-tasks = { configure = { cmd = [ "cmake", "-B", "build_qt5", "--preset", "conda-linux-debug",
-								"-D", "QT_HOST_PATH=$CONDA_PREFIX"], depends-on= ["initialize"]} }
+tasks = { configure = { cmd = [ "cmake", "-B", "build_qt5", "--preset", "conda-linux-debug" ], depends-on = ["initialize"]} }
 
 [feature.qt5.target.osx-64]
 tasks = { configure = { cmd = [ "cmake", "-B", "build_qt5", "--preset", "conda-macos-debug" ], depends-on = ["initialize"]} }
 
 [feature.qt5.target.osx-arm64]
-tasks = { configure = { cmd = [ "cmake", "-B", "build_qt5", "--preset", "conda-macos-debug",
-								"-D", "QT_HOST_PATH=$CONDA_PREFIX"], depends-on = ["initialize"]} }
+tasks = { configure = { cmd = [ "cmake", "-B", "build_qt5", "--preset", "conda-macos-debug" ], depends-on = ["initialize"]} }
 
 [feature.qt5.target.win-64]
 tasks = { configure = { cmd = [ "cmake", "-B", "build_qt5", "--preset", "conda-windows-debug" ], depends-on = ["initialize"]} }
