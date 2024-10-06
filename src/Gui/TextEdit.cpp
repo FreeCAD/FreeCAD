@@ -32,6 +32,7 @@
 # include <QTextCursor>
 #endif
 
+#include "CallTips.h"
 #include "TextEdit.h"
 #include "SyntaxHighlighter.h"
 #include "Tools.h"
@@ -46,6 +47,16 @@ using namespace Gui;
 TextEdit::TextEdit(QWidget* parent)
     : QPlainTextEdit(parent), cursorPosition(0), listBox(nullptr)
 {
+    // create the window for call tips
+    callTipsList = new CallTipsList(this);
+    callTipsList->setFrameStyle(QFrame::Box);
+    callTipsList->setFrameShadow(QFrame::Raised);
+    callTipsList->setLineWidth(2);
+    installEventFilter(callTipsList);
+    viewport()->installEventFilter(callTipsList);
+    callTipsList->setSelectionMode( QAbstractItemView::SingleSelection );
+    callTipsList->hide();
+
     //Note: Set the correct context to this shortcut as we may use several instances of this
     //class at a time
     auto shortcut = new QShortcut(this);
@@ -77,7 +88,9 @@ TextEdit::~TextEdit() = default;
  */
 void TextEdit::keyPressEvent(QKeyEvent* e)
 {
+    // We want input to be appended to document before doing calltips
     QPlainTextEdit::keyPressEvent(e);
+
     // This can't be done in CompletionList::eventFilter() because we must first perform
     // the event and afterwards update the list widget
     if (listBox && listBox->isVisible()) {
@@ -94,6 +107,35 @@ void TextEdit::keyPressEvent(QKeyEvent* e)
         listBox->keyboardSearch(cursor.selectedText());
         cursor.clearSelection();
     }
+
+
+    if (e->key() == Qt::Key_Period)
+    {
+        // QTextCursor cursor = this->textCursor();
+        // In Qt 4.8 there is a strange behaviour because when pressing ":"
+        // then key is also set to 'Period' instead of 'Colon'. So we have
+        // to make sure we only handle the period.
+        if (e->text() == QLatin1String(".")) {
+            // analyse context and show available call tips
+            // TODO: idk why we need to remove the . from the input string (- 1). This shouldn't be needed
+            QString textToBeCompleted = getInputString().left(getInputStringPosition() - 1);
+            callTipsList->showTips( textToBeCompleted );
+        }
+    }
+
+    // This can't be done in CallTipsList::eventFilter() because we must first perform
+    // the event and afterwards update the list widget
+    if (callTipsList->isVisible()) {
+        callTipsList->validateCursor();
+    }
+}
+
+int TextEdit::getInputStringPosition() {
+    return textCursor().positionInBlock();
+}
+
+QString TextEdit::getInputString() {
+    return textCursor().block().text();
 }
 
 void TextEdit::wheelEvent(QWheelEvent* e)

@@ -27,6 +27,8 @@
 
 #include <QListWidget>
 #include <QPlainTextEdit>
+
+#include "CallTips.h"
 #include "Window.h"
 
 
@@ -60,6 +62,11 @@ public:
     explicit TextEdit(QWidget *parent = nullptr);
     ~TextEdit() override;
 
+    //! Get the cursor position of the current line being edited
+    virtual int getInputStringPosition();
+    //! Get the text of the current line being edited
+    virtual QString getInputString();
+
 private Q_SLOTS:
     void complete();
 
@@ -71,6 +78,7 @@ Q_SIGNALS:
 protected:
     void keyPressEvent(QKeyEvent *) override;
     void wheelEvent(QWheelEvent* e) override;
+    CallTipsList* callTipsList = nullptr;
 
 private:
     void createListBox();
