@@ -72,6 +72,9 @@ void QuickMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
             selectionTimer->start(100);
         }
         pendingProcessing = true;
+    } else {
+        // avoid unlikely potential race condition where a tool dialog was opened while the timer was already running
+       pendingProcessing = false;
     }
 }
 
