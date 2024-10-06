@@ -116,9 +116,12 @@ bool QuickMeasure::shouldMeasure(const Gui::SelectionChanges& msg) const
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     if (doc) {
         // we have a document
-        if (msg.Type == Gui::SelectionChanges::AddSelection || msg.Type == Gui::SelectionChanges::RmvSelection || msg.Type == Gui::SelectionChanges::SetSelection ||  msg.Type == Gui::SelectionChanges::ClrSelection) {
+        if (msg.Type == Gui::SelectionChanges::AddSelection
+            || msg.Type == Gui::SelectionChanges::RmvSelection
+            || msg.Type == Gui::SelectionChanges::SetSelection
+            || msg.Type == Gui::SelectionChanges::ClrSelection) {
             // the event is about a change in selected objects
-            if (Gui::Control().activeDialog()==nullptr) {
+            if (Gui::Control().activeDialog() == nullptr) {
                 // we are not in a tool dialog where the user needs to click on stuff
                 return true;
             }
