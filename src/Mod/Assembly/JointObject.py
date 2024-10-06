@@ -167,7 +167,9 @@ def get_active_view(gui_doc):
     if activeView is None:
         # Fall back on current active document.
         activeView = Gui.ActiveDocument.ActiveView
-    return activeView
+    if hasattr(activeView, "getSceneGraph"):
+        return activeView
+    return None
 
 
 # The joint object consists of 2 JCS (joint coordinate systems) and a Joint Type.
