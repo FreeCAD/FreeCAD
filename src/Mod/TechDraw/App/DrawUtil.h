@@ -116,13 +116,12 @@ public:
 
     static Base::Vector3d vertex2Vector(const TopoDS_Vertex& v);
 
+    template <typename T>
+    static std::string formatVector(const T& v)
+    {
+        return formatVector(toVector3d(v));
+    }
     static std::string formatVector(const Base::Vector3d& v);
-    static std::string formatVector(const gp_Dir& v);
-    static std::string formatVector(const gp_Dir2d& v);
-    static std::string formatVector(const gp_Vec& v);
-    static std::string formatVector(const gp_Pnt& v);
-    static std::string formatVector(const gp_Pnt2d& v);
-    static std::string formatVector(const QPointF& v);
 
     static bool vectorLess(const Base::Vector3d& v1, const Base::Vector3d& v2);
     //!std::map require comparator to be a type not a function
@@ -174,6 +173,11 @@ public:
     static Base::Vector3d toVector3d(const T& v)
     {
         return Base::Vector3d(v.X(), v.Y(), v.Z());
+    }
+
+    static Base::Vector3d toVector3d(const QPointF& v)
+    {
+        return Base::Vector3d(v.x(), v.y(), 0);
     }
 
     //! To gp_*
@@ -280,8 +284,12 @@ public:
     static void dumpEdges(const char* text, const TopoDS_Shape& s);
 };
 
-template <>  // GCC BUG 85282, wanting this to be outside class body. This is only the declaration, the definition .cpp
-Base::Vector3d DrawUtil::toVector3d<QPointF>(const QPointF& v);
+
+// GCC BUG 85282, wanting this to be outside class body. This is only the declaration, the definition .cpp
+//template<> std::string DrawUtil::formatVector<Base::Vector3d>(const Base::Vector3d &v);
+
+// GCC BUG 85282, wanting this to be outside class body. This is only the declaration, the definition .cpp
+//template<> Base::Vector3d DrawUtil::toVector3d<QPointF>(const QPointF& v);
 
 }//end namespace TechDraw
 #endif
