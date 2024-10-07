@@ -1,6 +1,6 @@
 <a href="https://freecad.org"><img src="/src/Gui/Icons/freecad.svg" height="100px" width="100px"></a>
 
-### Your Own Engineering Toolbox
+### Your own 3D parametric modeler
 
 [Website](https://www.freecad.org) • 
 [Documentation](https://wiki.freecad.org) •
