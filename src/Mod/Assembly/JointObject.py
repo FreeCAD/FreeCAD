@@ -460,7 +460,7 @@ class Joint:
                 "Joint Connector 1",
                 QT_TRANSLATE_NOOP("App::Property", "The first reference of the joint"),
             )
-            
+
             if joint.Object1 is not None:
                 obj = joint.Object1[0]
                 part = joint.Part1
