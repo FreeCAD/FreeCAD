@@ -169,36 +169,22 @@ public:
     static Base::Vector2d Intersect2d(Base::Vector2d p1, Base::Vector2d d1, Base::Vector2d p2,
                                       Base::Vector2d d2);
 
-    static Base::Vector3d toVector3d(const gp_Pnt gp)
+
+    template <typename T>
+    static Base::Vector3d toVector3d(const T& v)
     {
-        return Base::Vector3d(gp.X(), gp.Y(), gp.Z());
-    }
-    static Base::Vector3d toVector3d(const gp_Dir gp)
-    {
-        return Base::Vector3d(gp.X(), gp.Y(), gp.Z());
-    }
-    static Base::Vector3d toVector3d(const gp_Vec gp)
-    {
-        return Base::Vector3d(gp.X(), gp.Y(), gp.Z());
-    }
-    static Base::Vector3d toVector3d(const QPointF gp)
-    {
-        return Base::Vector3d(gp.x(), gp.y(), 0.0);
+        return Base::Vector3d(v.X(), v.Y(), v.Z());
     }
 
-    static gp_Pnt togp_Pnt(const Base::Vector3d v)
+    //! To gp_*
+    // TODO: Would this be relevant to move to Base::Vector3d? Probably
+    template <typename T>
+    static T to(const Base::Vector3d &v)
     {
-        return gp_Pnt(v.x, v.y, v.z);
+        return T(v.x, v.y, v.z);
     }
-    static gp_Dir togp_Dir(const Base::Vector3d v)
-    {
-        return gp_Dir(v.x, v.y, v.z);
-    }
-    static gp_Vec togp_Vec(const Base::Vector3d v)
-    {
-        return gp_Vec(v.x, v.y, v.z);
-    }
-    static QPointF toQPointF(const Base::Vector3d v)
+
+    static QPointF toQPointF(const Base::Vector3d &v)
     {
         return QPointF(v.x, v.y);
     }
@@ -293,6 +279,9 @@ public:
     static void dumpCS3(const char* text, const gp_Ax3& CS);
     static void dumpEdges(const char* text, const TopoDS_Shape& s);
 };
+
+template <>  // GCC BUG 85282, wanting this to be outside class body. This is only the declaration, the definition .cpp
+Base::Vector3d DrawUtil::toVector3d<QPointF>(const QPointF& v);
 
 }//end namespace TechDraw
 #endif

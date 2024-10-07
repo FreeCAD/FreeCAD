@@ -501,8 +501,8 @@ bool TaskComplexSection::apply(bool forceUpdate)
     }
     else {
         gp_Pnt stdOrigin(0.0, 0.0, 0.0);
-        gp_Ax2 sectionCS(stdOrigin, DrawUtil::togp_Dir(m_saveNormal),
-                         DrawUtil::togp_Dir(m_saveXDir));
+        gp_Ax2 sectionCS(stdOrigin, DrawUtil::to<gp_Dir>(m_saveNormal),
+                         DrawUtil::to<gp_Dir>(m_saveXDir));
         if (!DrawComplexSection::canBuild(sectionCS, m_profileObject)) {
             Base::Console().Error(
                 "Can not build Complex Section with this profile and direction (2)\n");

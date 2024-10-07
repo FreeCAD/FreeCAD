@@ -340,7 +340,7 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
             grid = mkTransRotate.Shape();
         }
         gp_Trsf xGridTranslate;
-        xGridTranslate.SetTranslation(DrawUtil::togp_Vec(hatchOffset));
+        xGridTranslate.SetTranslation(DrawUtil::to<gp_Vec>(hatchOffset));
         BRepBuilderAPI_Transform mkTransTranslate(grid, xGridTranslate, true);
         grid = mkTransTranslate.Shape();
 
