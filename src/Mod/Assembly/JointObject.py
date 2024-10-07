@@ -455,20 +455,6 @@ class Joint:
 
     def migrationScript2(self, joint):
         if hasattr(joint, "Object1"):
-            obj = joint.Object1[0]
-            part = joint.Part1
-            elt = joint.Object1[1][0]
-            vtx = joint.Object1[1][1]
-
-            joint.removeProperty("Object1")
-            joint.removeProperty("Part1")
-
-            # now we need to get the 'selection-root-obj' and the global path
-            rootObj, path = UtilsAssembly.getRootPath(obj, part)
-            obj = rootObj
-            elt = path + elt
-            vtx = path + vtx
-
             joint.addProperty(
                 "App::PropertyXLinkSubHidden",
                 "Reference1",
@@ -476,22 +462,24 @@ class Joint:
                 QT_TRANSLATE_NOOP("App::Property", "The first reference of the joint"),
             )
 
-            joint.Reference1 = [obj, [elt, vtx]]
+            if joint.Object1 is not None:
+                obj = joint.Object1[0]
+                part = joint.Part1
+                elt = joint.Object1[1][0]
+                vtx = joint.Object1[1][1]
+
+                # now we need to get the 'selection-root-obj' and the global path
+                rootObj, path = UtilsAssembly.getRootPath(obj, part)
+                obj = rootObj
+                elt = path + elt
+                vtx = path + vtx
+
+                joint.Reference1 = [obj, [elt, vtx]]
+
+            joint.removeProperty("Object1")
+            joint.removeProperty("Part1")
 
         if hasattr(joint, "Object2"):
-            obj = joint.Object2[0]
-            part = joint.Part2
-            elt = joint.Object2[1][0]
-            vtx = joint.Object2[1][1]
-
-            joint.removeProperty("Object2")
-            joint.removeProperty("Part2")
-
-            rootObj, path = UtilsAssembly.getRootPath(obj, part)
-            obj = rootObj
-            elt = path + elt
-            vtx = path + vtx
-
             joint.addProperty(
                 "App::PropertyXLinkSubHidden",
                 "Reference2",
@@ -499,7 +487,21 @@ class Joint:
                 QT_TRANSLATE_NOOP("App::Property", "The second reference of the joint"),
             )
 
-            joint.Reference2 = [obj, [elt, vtx]]
+            if joint.Object2 is not None:
+                obj = joint.Object2[0]
+                part = joint.Part2
+                elt = joint.Object2[1][0]
+                vtx = joint.Object2[1][1]
+
+                rootObj, path = UtilsAssembly.getRootPath(obj, part)
+                obj = rootObj
+                elt = path + elt
+                vtx = path + vtx
+
+                joint.Reference2 = [obj, [elt, vtx]]
+
+            joint.removeProperty("Object2")
+            joint.removeProperty("Part2")
 
     def migrationScript3(self, joint):
         if hasattr(joint, "Offset"):
