@@ -22,7 +22,7 @@ with integrated tools for part design, analysis, documentation, assembly, and ma
 
 * **Create models from drawings and back again:** draw simple or complex sketches and transform your ideas into parts. FreeCAD lets you to build models from 2D geometry constrained shapes and use them to build assemblies. Production drawings are ready to be made with the high quality Draft workbench.
 
-* **Own the data you create:** FreeCAD maintains its own <i>open</i> data format. This ensures data created using FreeCAD will maintain accessible to those who use it.
+* **Own the data you create:** FreeCAD maintains its own <i>open</i> data format. This ensures data created using FreeCAD will remain accessible to those who use it.
 
 * **Designed for your needs:** FreeCAD is designed to fit a wide range of uses including product design, mechanical engineering and architecture, whether you are a hobbyist, programmer, experienced CAD user, student or teacher.
 
