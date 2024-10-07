@@ -30,6 +30,7 @@ BOP-like operations"""
 #  \ingroup PART
 
 __all__ = [
+"BOPFeatures",
 "GeneralFuseResult",
 "JoinAPI",
 "JoinFeatures",
@@ -41,6 +42,7 @@ __all__ = [
 
 def importAll():
     "importAll(): imports all modules of BOPTools package"
+    from . import BOPFeatures
     from . import GeneralFuseResult
     from . import JoinAPI
     from . import JoinFeatures

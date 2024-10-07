@@ -119,6 +119,7 @@ ThicknessWidget::~ThicknessWidget()
 
 void ThicknessWidget::setupConnections()
 {
+    // clang-format off
     connect(d->ui.spinOffset, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
             this, &ThicknessWidget::onSpinOffsetValueChanged);
     connect(d->ui.modeType, qOverload<int>(&QComboBox::activated),
@@ -133,6 +134,7 @@ void ThicknessWidget::setupConnections()
             this, &ThicknessWidget::onFacesButtonToggled);
     connect(d->ui.updateView, &QCheckBox::toggled,
             this, &ThicknessWidget::onUpdateViewToggled);
+    // clang-format on
 }
 
 Part::Thickness* ThicknessWidget::getObject() const

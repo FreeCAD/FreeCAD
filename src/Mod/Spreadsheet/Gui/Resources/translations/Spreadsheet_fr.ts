@@ -663,7 +663,7 @@ créée si elle n'existe pas.</translation>
     <message>
       <location filename="../../PropertiesDialog.ui" line="239"/>
       <source>Text for the unit</source>
-      <translation type="unfinished">Text for the unit</translation>
+      <translation>Texte pour l'unité de mesure</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="263"/>
@@ -727,21 +727,21 @@ créée si elle n'existe pas.</translation>
       <translation>Le copier-coller a échoué</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="485"/>
+      <location filename="../../SpreadsheetView.cpp" line="488"/>
       <source>Alias contains invalid characters!</source>
       <translation>L'alias contient des caractères invalides !</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="491"/>
+      <location filename="../../SpreadsheetView.cpp" line="494"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>La cellule est désignée par un alias, par exemple
 Spreadsheet.my_alias_name au lieu de Spreadsheet.B1</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="125"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="152"/>
       <source>Spreadsheet</source>
-      <translation>Feuille de calcul</translation>
+      <translation>Spreadsheet</translation>
     </message>
   </context>
   <context>
@@ -940,8 +940,8 @@ Defaults to: %V = %A
       <translation>Le format de la présentation personnalisée de la chaîne de caractères dans la cellule.
 Par défaut : %V = %A
 
-%A - nom d'alias
-%V - valeur de la cellule</translation>
+%V : valeur de la cellule
+%A : nom de l'alias</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="84"/>
@@ -1127,12 +1127,12 @@ Par défaut : %V = %A
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="294"/>
+      <location filename="../../SpreadsheetView.cpp" line="297"/>
       <source>Export PDF</source>
       <translation>Exporter au format PDF</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="296"/>
+      <location filename="../../SpreadsheetView.cpp" line="299"/>
       <source>PDF file</source>
       <translation>Fichier PDF</translation>
     </message>
@@ -1163,9 +1163,9 @@ Par défaut : %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="81"/>
       <source>Unnamed</source>
-      <translation>Sans nom</translation>
+      <translation>Nouveau</translation>
     </message>
   </context>
 </TS>

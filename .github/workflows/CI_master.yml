@@ -75,11 +75,12 @@ jobs:
     with:
       artifactBasename: Windows-${{ github.run_id }}
 
-  Windows_Conda:
-    needs: [Prepare]
-    uses: ./.github/workflows/sub_buildWindowsConda.yml
-    with:
-      artifactBasename: Windows_Conda-${{ github.run_id }}
+  ## Disable until the following issue is resolved: https://github.com/mamba-org/mamba/issues/3292
+  # Windows_Conda:
+  #   needs: [Prepare]
+  #   uses: ./.github/workflows/sub_buildWindowsConda.yml
+  #   with:
+  #     artifactBasename: Windows_Conda-${{ github.run_id }}
 
   Lint:
     needs: [Prepare]
@@ -98,7 +99,7 @@ jobs:
         Ubuntu_20-04,
         Ubuntu_22-04_Conda,
         Windows,
-        Windows_Conda,
+        # Windows_Conda,
         Lint
       ]
     if: always()

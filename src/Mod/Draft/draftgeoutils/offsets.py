@@ -343,7 +343,9 @@ def offsetWire(wire, dvec, bind=False, occ=False,
         # record current edge's Orientation, and set Delta
         if i != 0:  # else:
             # TODO Should also calculate 1st edge direction above
-            if isinstance(curredge.Curve, Part.Circle):
+            if isinstance(curredge.Curve, (Part.Circle,Part.Ellipse)):
+            # Seems Circle/Ellipse (1 geometry) would be sorted in 1 list,
+            # so i=0; should not happen here in fact (i != 0). 2024.8.25.
                 delta = curredge.tangentAt(curredge.FirstParameter).cross(norm)
             else:
                 delta = vec(curredge).cross(norm)
@@ -441,7 +443,7 @@ def offsetWire(wire, dvec, bind=False, occ=False,
             # TODO arc always in counter-clockwise directinon
             # ... ( not necessarily 'reversed')
             if curOrientation == "Reversed":
-                if not isinstance(curredge.Curve, Part.Circle):
+                if not isinstance(curredge.Curve, (Part.Circle,Part.Ellipse)):
                     # assume straight line, reverse it
                     nedge = Part.Edge(nedge.Vertexes[1], nedge.Vertexes[0])
                 elif nedge.isClosed():
@@ -482,7 +484,7 @@ def offsetWire(wire, dvec, bind=False, occ=False,
                 elif curAlign == 'Center':
                     nedge = offset(curredge, delta, trim=True)
             if curOrientation == "Reversed":
-                if not isinstance(curredge.Curve, Part.Circle):
+                if not isinstance(curredge.Curve, (Part.Circle,Part.Ellipse)):
                     # assume straight line, reverse it
                     nedge = Part.Edge(nedge.Vertexes[1], nedge.Vertexes[0])
                 elif nedge.isClosed():

@@ -49,7 +49,7 @@
     <message>
       <location filename="../../Command.cpp" line="776"/>
       <source>&amp;Draft View</source>
-      <translation>ドラフト・ビュー(&amp;D)</translation>
+      <translation>&amp;基本設計ビュー</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="778"/>
@@ -170,7 +170,7 @@
     <message>
       <location filename="../../Command.cpp" line="417"/>
       <source>Insert orthographic views</source>
-      <translation>正投影表示を挿入</translation>
+      <translation>正投影ビューを挿入</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="418"/>
@@ -232,7 +232,7 @@
       <location filename="../../Command.cpp" line="617"/>
       <location filename="../../Command.cpp" line="619"/>
       <source>Inserts a symbol from a SVG file in the active drawing</source>
-      <translation type="unfinished">Inserts a symbol from a SVG file in the active drawing</translation>
+      <translation>シンボルをSVGファイルから現在の図面に挿入</translation>
     </message>
   </context>
   <context>
@@ -283,82 +283,82 @@
       <translation>レンダラー(&amp;R)</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="482"/>
+      <location filename="../../DrawingView.cpp" line="485"/>
       <source>Export PDF</source>
       <translation>PDFファイル形式でエクスポート</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="483"/>
+      <location filename="../../DrawingView.cpp" line="486"/>
       <source>PDF file</source>
       <translation>PDFファイル</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="499"/>
+      <location filename="../../DrawingView.cpp" line="502"/>
       <source>Page sizes</source>
       <translation>ページサイズ</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="500"/>
+      <location filename="../../DrawingView.cpp" line="503"/>
       <source>A0</source>
       <translation>A0</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="502"/>
+      <location filename="../../DrawingView.cpp" line="505"/>
       <source>A1</source>
       <translation>A1</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="504"/>
+      <location filename="../../DrawingView.cpp" line="507"/>
       <source>A2</source>
       <translation>A2</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="506"/>
+      <location filename="../../DrawingView.cpp" line="509"/>
       <source>A3</source>
       <translation>A3</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="508"/>
+      <location filename="../../DrawingView.cpp" line="511"/>
       <source>A4</source>
       <translation>A4</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="510"/>
+      <location filename="../../DrawingView.cpp" line="513"/>
       <source>A5</source>
       <translation>A5</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="594"/>
+      <location filename="../../DrawingView.cpp" line="597"/>
       <source>Different orientation</source>
       <translation>異なる向き</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="595"/>
+      <location filename="../../DrawingView.cpp" line="598"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
       <translation>プリンターでは、図面と異なる印刷方向を使用します。続行しますか？</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="605"/>
-      <location filename="../../DrawingView.cpp" line="616"/>
+      <location filename="../../DrawingView.cpp" line="608"/>
+      <location filename="../../DrawingView.cpp" line="619"/>
       <source>Different paper size</source>
       <translation>別の用紙サイズ</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="606"/>
-      <location filename="../../DrawingView.cpp" line="617"/>
+      <location filename="../../DrawingView.cpp" line="609"/>
+      <location filename="../../DrawingView.cpp" line="620"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>プリンターでは、図面とは異なる用紙サイズを使用します。
 続行しますか？</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="631"/>
+      <location filename="../../DrawingView.cpp" line="634"/>
       <source>Opening file failed</source>
       <translation>ファイルを開けませんでした。</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="632"/>
+      <location filename="../../DrawingView.cpp" line="635"/>
       <source>Can't open file '%1' for writing.</source>
       <translation>書き込み用ファイル '%1' を開くことができません。</translation>
     </message>
@@ -454,7 +454,7 @@ Do you want to continue?</source>
       <location filename="../../TaskOrthoViews.ui" line="457"/>
       <location filename="../../TaskOrthoViews.ui" line="482"/>
       <source>Right click for axonometric settings</source>
-      <translation>右クリックでアクソノ メトリック設定</translation>
+      <translation>右クリックで軸測投影の設定</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="329"/>
@@ -489,7 +489,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="681"/>
       <source>Show hidden lines</source>
-      <translation>隠線を表示</translation>
+      <translation>かくれ線を表示</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="688"/>
@@ -499,7 +499,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="699"/>
       <source>Axonometric</source>
-      <translation>不等角投影</translation>
+      <translation>軸測投影</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="707"/>
@@ -509,17 +509,17 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="718"/>
       <source>Isometric</source>
-      <translation>アイソメトリック</translation>
+      <translation>等角投影</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="723"/>
       <source>Dimetric</source>
-      <translation>ダイメトリック</translation>
+      <translation>二等角投影</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="728"/>
       <source>Trimetric</source>
-      <translation>不等角投影図法</translation>
+      <translation>不等角投影</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="736"/>
@@ -550,7 +550,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="848"/>
       <source> Trimetric</source>
-      <translation>不等角投影図法</translation>
+      <translation>不等角投影</translation>
     </message>
   </context>
   <context>
@@ -636,7 +636,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="106"/>
       <source>Page</source>
-      <translation>ページ</translation>
+      <translation>用紙</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="231"/>
@@ -722,7 +722,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="432"/>
       <source>Select exactly one Part object.</source>
-      <translation>部品オブジェクトを1 つだけ選択して下さい。</translation>
+      <translation>部品オブジェクトを一つだけ選択してください。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="486"/>
@@ -743,19 +743,19 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="823"/>
       <source>Select exactly one Spreadsheet object.</source>
-      <translation>スプレッドシートオブジェクトを1 つだけ選択して下さい。</translation>
+      <translation>スプレッドシートオブジェクトを一つだけ選択してください。</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="47"/>
       <location filename="../../TaskOrthoViews.cpp" line="1041"/>
       <source>Make axonometric...</source>
-      <translation>不等角投影図を作成...</translation>
+      <translation>軸測投影図を作成...</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="48"/>
       <location filename="../../TaskOrthoViews.cpp" line="1042"/>
       <source>Edit axonometric settings...</source>
-      <translation>不等角投影図の設定を編集...</translation>
+      <translation>軸測投影の設定を編集...</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="49"/>

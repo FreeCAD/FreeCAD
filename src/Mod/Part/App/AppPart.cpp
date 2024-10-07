@@ -200,6 +200,7 @@ PyObject* Part::PartExceptionOCCRangeError;
 PyObject* Part::PartExceptionOCCConstructionError;
 PyObject* Part::PartExceptionOCCDimensionError;
 
+// clang-format off
 PyMOD_INIT_FUNC(Part)
 {
     // load dependent module
@@ -564,3 +565,4 @@ PyMOD_INIT_FUNC(Part)
     
     PyMOD_Return(partModule);
 }
+// clang-format on

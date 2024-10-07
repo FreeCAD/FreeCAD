@@ -53,6 +53,7 @@ Equation 1
 End
 
 Solver 2
+  Ascii Output = Logical True
   Coordinate Scaling Revert = Logical True
   Equation = String "ResultOutput"
   Exec Solver = String "After simulation"

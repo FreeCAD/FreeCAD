@@ -206,6 +206,9 @@ DrawViewDimension::DrawViewDimension()
         (App::Prop_None),
         "Feature bounding box corners as of last reference update.  Used by autocorrect");
 
+    // changing the references in the property editor will only cause problems
+    References2D.setStatus(App::Property::ReadOnly, true);
+    References3D.setStatus(App::Property::ReadOnly, true);
 
     // hide the DrawView properties that don't apply to Dimensions
     ScaleType.setStatus(App::Property::ReadOnly, true);
@@ -464,8 +467,7 @@ App::DocumentObjectExecReturn* DrawViewDimension::execute()
         m_referencesCorrect = autocorrectReferences();
     }
     if (!m_referencesCorrect) {
-        m_referencesCorrect = true;
-        new App::DocumentObjectExecReturn("Autocorrect failed to fix broken references", this);
+        return new App::DocumentObjectExecReturn("Autocorrect failed to fix broken references", this);
     }
 
     // references are good, we can proceed
@@ -767,6 +769,25 @@ double DrawViewDimension::getProjectedDimValue() const
     return result;
 }
 
+
+pointPair DrawViewDimension::getLinearPoints() const
+{
+    Base::Vector3d stdY{0, 1, 0};
+    if (Type.isValue("Distance")) {
+        // if the dimVec points the wrong way on generally vertical dims, the dim text will be
+        // placed on the wrong side of the dim line.
+        auto dimVec = m_linearPoints.second() - m_linearPoints.first();
+        dimVec.Normalize();
+        auto dotY = stdY.Dot(dimVec);
+        if (dotY > 0) {
+            // dimVec points up (ish) so the dim text will be to right of dim line and readable from
+            // left side of the page.  Dimensions should always be readable from the bottom-right, so
+            // we flip the points.
+            return {m_linearPoints.second(), m_linearPoints.first()};
+        }
+    }
+    return m_linearPoints;
+}
 
 pointPair DrawViewDimension::getPointsOneEdge(ReferenceVector references)
 {

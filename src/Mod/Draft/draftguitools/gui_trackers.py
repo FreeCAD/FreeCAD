@@ -89,13 +89,24 @@ class Tracker:
         ToDo.delay(self._removeSwitch, self.switch)
         self.switch = None
 
+    def get_scene_graph(self):
+        """Returns the current scenegraph or None if this is not a 3D view
+        """
+        v = Draft.get3DView()
+        if v:
+            return v.getSceneGraph()
+        else:
+            return None
+
     def _insertSwitch(self, switch):
         """Insert self.switch into the scene graph.
 
         Must not be called
         from an event handler (or other scene graph traversal).
         """
-        sg = Draft.get3DView().getSceneGraph()
+        sg = self.get_scene_graph()
+        if not sg:
+            return
         if self.ontop:
             sg.insertChild(switch, 0)
         else:
@@ -107,7 +118,9 @@ class Tracker:
         As with _insertSwitch,
         must not be called during scene graph traversal).
         """
-        sg = Draft.get3DView().getSceneGraph()
+        sg = self.get_scene_graph()
+        if not sg:
+            return
         if sg.findChild(switch) >= 0:
             sg.removeChild(switch)
 
@@ -127,7 +140,9 @@ class Tracker:
         So it doesn't obscure the other objects.
         """
         if self.switch:
-            sg = Draft.get3DView().getSceneGraph()
+            sg = self.get_scene_graph()
+            if not sg:
+                return
             sg.removeChild(self.switch)
             sg.addChild(self.switch)
 
@@ -137,7 +152,9 @@ class Tracker:
         So it obscures the other objects.
         """
         if self.switch:
-            sg = Draft.get3DView().getSceneGraph()
+            sg = self.get_scene_graph()
+            if not sg:
+                return
             sg.removeChild(self.switch)
             sg.insertChild(self.switch, 0)
 
@@ -445,7 +462,7 @@ class bsplineTracker(Tracker):
             except Exception:
                 # workaround for pivy SoInput.setBuffer() bug
                 buf = buf.replace("\n", "")
-                pts = re.findall("point \\[(.*?)\\]", buf)[0]
+                pts = re.findall(r"point \\[(.*?)\\]", buf)[0]
                 pts = pts.split(",")
                 pc = []
                 for p in pts:
@@ -523,7 +540,7 @@ class bezcurveTracker(Tracker):
                 except Exception:
                     # workaround for pivy SoInput.setBuffer() bug
                     buf = buf.replace("\n","")
-                    pts = re.findall("point \\[(.*?)\\]", buf)[0]
+                    pts = re.findall(r"point \\[(.*?)\\]", buf)[0]
                     pts = pts.split(",")
                     pc = []
                     for p in pts:
@@ -652,7 +669,7 @@ class arcTracker(Tracker):
         except Exception:
             # workaround for pivy SoInput.setBuffer() bug
             buf = buf.replace("\n", "")
-            pts = re.findall("point \\[(.*?)\\]", buf)[0]
+            pts = re.findall(r"point \\[(.*?)\\]", buf)[0]
             pts = pts.split(",")
             pc = []
             for p in pts:
@@ -1414,10 +1431,8 @@ class archDimTracker(Tracker):
         p2node = coin.SbVec3f([p2.x, p2.y, p2.z])
         self.dimnode.pnts.setValues([p1node, p2node])
         self.dimnode.lineWidth = 1
-        color = utils.get_rgba_tuple(params.get_param("snapcolor"))[:3]
-        self.dimnode.textColor.setValue(coin.SbVec3f(color))
-        self.dimnode.size = 11
-        self.size_pixel = self.dimnode.size.getValue()*96/72
+        self.setColor()
+        self.setSize()
         self.offset = 0.5
         self.mode = mode
         self.matrix = self.transform.matrix
@@ -1431,6 +1446,19 @@ class archDimTracker(Tracker):
         self.setMode(mode)
         self.setString()
         super().__init__(children=[self.transform, self.dimnode], name="archDimTracker")
+
+    def setColor(self, color=None):
+        """Set the color."""
+        if color is None:
+            self.color = utils.get_rgba_tuple(params.get_param("snapcolor"))[:3]
+        else:
+            self.color.rgb = color
+        self.dimnode.textColor.setValue(coin.SbVec3f(self.color))
+
+    def setSize(self):
+        """Set the text size."""
+        self.dimnode.size = params.get_param_view("MarkerSize") * 2
+        self.size_pixel = self.dimnode.size.getValue() * 96 / 72
 
     def setString(self, text=None):
         """Set the dim string to the given value or auto value."""

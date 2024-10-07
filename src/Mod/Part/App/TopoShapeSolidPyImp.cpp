@@ -88,45 +88,7 @@ int TopoShapeSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return -1;
 
     try {
-#ifdef FC_USE_TNP_FIX
         getTopoShapePtr()->makeElementSolid(*static_cast<TopoShapePy*>(obj)->getTopoShapePtr());
-#else
-        const TopoDS_Shape& shape = static_cast<TopoShapePy*>(obj)
-            ->getTopoShapePtr()->getShape();
-        //first, if we were given a compsolid, try making a solid out of it
-        TopExp_Explorer CSExp (shape, TopAbs_COMPSOLID);
-        TopoDS_CompSolid compsolid;
-        int count=0;
-        for (; CSExp.More(); CSExp.Next()) {
-            ++count;
-            compsolid = TopoDS::CompSolid(CSExp.Current());
-            if (count > 1)
-                break;
-        }
-        if (count == 0) {
-            //no compsolids. Get shells...
-            BRepBuilderAPI_MakeSolid mkSolid;
-            TopExp_Explorer anExp (shape, TopAbs_SHELL);
-            count=0;
-            for (; anExp.More(); anExp.Next()) {
-                ++count;
-                mkSolid.Add(TopoDS::Shell(anExp.Current()));
-            }
-
-            if (count == 0)//no shells?
-                Standard_Failure::Raise("No shells or compsolids found in shape");
-
-            TopoDS_Solid solid = mkSolid.Solid();
-            BRepLib::OrientClosedSolid(solid);
-            getTopoShapePtr()->setShape(solid);
-        } else if (count == 1) {
-            BRepBuilderAPI_MakeSolid mkSolid(compsolid);
-            TopoDS_Solid solid = mkSolid.Solid();
-            getTopoShapePtr()->setShape(solid);
-        } else /*if (count > 1)*/ {
-            Standard_Failure::Raise("Only one compsolid can be accepted. Provided shape has more than one compsolid.");
-        }
-#endif
     }
     catch (Standard_Failure& err) {
         std::stringstream errmsg;
@@ -220,14 +182,10 @@ Py::Object TopoShapeSolidPy::getOuterShell() const
     const TopoDS_Shape& shape = getTopoShapePtr()->getShape();
     if (!shape.IsNull() && shape.ShapeType() == TopAbs_SOLID)
         shell = BRepClass3d::OuterShell(TopoDS::Solid(shape));
-#ifdef FC_USE_TNP_FIX
     TopoShape res;
     res.setShape(shell);
     res.mapSubElement(*getTopoShapePtr());
     return shape2pyshape(res);
-#else
-    return Py::Object(new TopoShapeShellPy(new TopoShape(shell)),true);
-#endif
 }
 
 PyObject* TopoShapeSolidPy::getMomentOfInertia(PyObject *args)
@@ -327,13 +285,9 @@ PyObject* TopoShapeSolidPy::offsetFaces(PyObject *args)
     try {
         builder.MakeOffsetShape();
         const TopoDS_Shape& offsetshape = builder.Shape();
-#ifdef FC_USE_TNP_FIX
         TopoShape res;
         res.setShape(offsetshape);
         return Py::new_reference_to(shape2pyshape(res));
-#else
-        return new TopoShapeSolidPy(new TopoShape(offsetshape));
-#endif
     }
     catch (Standard_Failure& e) {
 

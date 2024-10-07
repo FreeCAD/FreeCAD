@@ -49,6 +49,7 @@
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawPagePy.h>
 #include <Mod/TechDraw/App/DrawTemplate.h>
+#include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/Preferences.h>
 
 #include "PagePrinter.h"
@@ -58,6 +59,7 @@
 
 using namespace TechDrawGui;
 using namespace TechDraw;
+using DU = DrawUtil;
 
 constexpr double A4Heightmm = 297.0;
 constexpr double A4Widthmm = 210.0;
@@ -134,6 +136,8 @@ void PagePrinter::makePageLayout(TechDraw::DrawPage* dPage, QPageLayout& pageLay
     height = attr.pageheight;
     pageLayout.setPageSize(QPageSize(attr.paperSize));
     pageLayout.setOrientation(attr.orientation);
+    pageLayout.setMode(QPageLayout::FullPageMode);
+    pageLayout.setMargins(QMarginsF());
 }
 
 /// print the Page associated with the parent MDIViewPage as a Pdf file
@@ -146,9 +150,12 @@ void PagePrinter::printPdf(std::string file)
     }
 
     // set up the pdfwriter
-    QString outputFile = QString::fromUtf8(file.data(), file.size());
+    auto filespec = Base::Tools::escapeEncodeFilename(file);
+    filespec = DU::cleanFilespecBackslash(file);
+    QString outputFile = Base::Tools::fromStdString(filespec);
     QPdfWriter pdfWriter(outputFile);
     QPageLayout pageLayout = pdfWriter.pageLayout();
+    auto marginsdb = pageLayout.margins(QPageLayout::Millimeter);
     QString documentName = QString::fromUtf8(m_vpPage->getDrawPage()->getNameInDocument());
     pdfWriter.setTitle(documentName);
     // default pdfWriter dpi is 1200.
@@ -159,6 +166,7 @@ void PagePrinter::printPdf(std::string file)
     double height = A4Widthmm;
     makePageLayout(dPage, pageLayout, width, height);
     pdfWriter.setPageLayout(pageLayout);
+    marginsdb = pageLayout.margins(QPageLayout::Millimeter);
 
     // first page does not respect page layout unless painter is created after
     // pdfWriter layout is established.
@@ -229,16 +237,6 @@ void PagePrinter::printAll(QPrinter* printer, App::Document* doc)
         makePageLayout(dPage, pageLayout, width, height);
         printer->setPageLayout(pageLayout);
 
-        //for some reason the first page doesn't obey the pageLayout, so we have to print
-        //a sacrificial blank page, but we make it a feature instead of a bug by printing a
-        //table of contents on the sacrificial page.
-        // Note: if the painter(printer) occurs after the printer->setPageLayout, then the
-        // first page will obey the layout.  This would mean creating the painter inside the
-        // loop.
-        // if (firstTime) {
-        //     firstTime = false;
-        //     printBannerPage(printer, painter, pageLayout, doc, docObjs);
-        // }
         if (!firstTime) {
             printer->newPage();
         }
@@ -381,22 +379,25 @@ void PagePrinter::saveSVG(std::string file)
         Base::Console().Warning("PagePrinter - no file specified\n");
         return;
     }
-    QString filename = QString::fromUtf8(file.data(), file.size());
+    auto filespec = Base::Tools::escapeEncodeFilename(file);
+    filespec = DU::cleanFilespecBackslash(file);
+    QString filename = Base::Tools::fromStdString(filespec);
     if (m_scene) {
         m_scene->saveSvg(filename);
     }
 }
 
-void PagePrinter::saveDXF(std::string fileName)
+void PagePrinter::saveDXF(std::string inFileName)
 {
     TechDraw::DrawPage* page = m_vpPage->getDrawPage();
     std::string PageName = page->getNameInDocument();
-    fileName = Base::Tools::escapeEncodeFilename(fileName);
+    auto filespec = Base::Tools::escapeEncodeFilename(inFileName);
+    filespec = DU::cleanFilespecBackslash(filespec);
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Save page to dxf"));
     Gui::Command::doCommand(Gui::Command::Doc, "import TechDraw");
     Gui::Command::doCommand(Gui::Command::Doc,
                             "TechDraw.writeDXFPage(App.activeDocument().%s, u\"%s\")",
-                            PageName.c_str(), (const char*)fileName.c_str());
+                            PageName.c_str(), filespec.c_str());
     Gui::Command::commitCommand();
 }
 

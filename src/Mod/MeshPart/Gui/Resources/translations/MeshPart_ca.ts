@@ -80,7 +80,7 @@ Aquesta comanda només funciona amb objectes 'malla'.</translation>
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Malla</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>

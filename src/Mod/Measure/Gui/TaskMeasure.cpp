@@ -23,51 +23,74 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QApplication>
-# include <QKeyEvent>
+#include <QApplication>
+#include <QKeyEvent>
 #endif
 
 
 #include "TaskMeasure.h"
 
-#include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/Link.h>
+#include <Mod/Measure/App/MeasureDistance.h>
+#include <App/PropertyStandard.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
+#include <Gui/ViewProviderDocumentObject.h>
 
 #include <QFormLayout>
 #include <QPushButton>
+#include <QSettings>
 
 using namespace Gui;
 
+namespace
+{
+constexpr auto taskMeasureSettingsGroup = "TaskMeasure";
+constexpr auto taskMeasureShowDeltaSettingsName = "ShowDelta";
+}  // namespace
 
 TaskMeasure::TaskMeasure()
 {
     qApp->installEventFilter(this);
 
     this->setButtonPosition(TaskMeasure::South);
-    auto taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("umf-measurement"), tr("Measurement"), true, nullptr);
+    auto taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("umf-measurement"),
+                                              tr("Measurement"),
+                                              true,
+                                              nullptr);
+
+    QSettings settings;
+    settings.beginGroup(QLatin1String(taskMeasureSettingsGroup));
+    delta = settings.value(QLatin1String(taskMeasureShowDeltaSettingsName), true).toBool();
+
+    showDelta = new QCheckBox();
+    showDelta->setChecked(delta);
+    showDeltaLabel = new QLabel(tr("Show Delta:"));
+    connect(showDelta, &QCheckBox::stateChanged, this, &TaskMeasure::showDeltaChanged);
 
     // Create mode dropdown and add all registered measuretypes
     modeSwitch = new QComboBox();
     modeSwitch->addItem(QString::fromLatin1("Auto"));
 
-    for (App::MeasureType* mType : App::MeasureManager::getMeasureTypes()){
+    for (App::MeasureType* mType : App::MeasureManager::getMeasureTypes()) {
         modeSwitch->addItem(QString::fromLatin1(mType->label.c_str()));
     }
 
     // Connect dropdown's change signal to our onModeChange slot
-    connect(modeSwitch, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskMeasure::onModeChanged);
+    connect(modeSwitch,
+            qOverload<int>(&QComboBox::currentIndexChanged),
+            this,
+            &TaskMeasure::onModeChanged);
 
     // Result widget
     valueResult = new QLineEdit();
     valueResult->setReadOnly(true);
 
     // Main layout
-    QBoxLayout *layout = taskbox->groupLayout();
+    QBoxLayout* layout = taskbox->groupLayout();
 
     QFormLayout* formLayout = new QFormLayout();
     formLayout->setHorizontalSpacing(10);
@@ -76,6 +99,7 @@ TaskMeasure::TaskMeasure()
     formLayout->setFormAlignment(Qt::AlignCenter);
 
     formLayout->addRow(tr("Mode:"), modeSwitch);
+    formLayout->addRow(showDeltaLabel, showDelta);
     formLayout->addRow(tr("Result:"), valueResult);
     layout->addLayout(formLayout);
 
@@ -87,22 +111,25 @@ TaskMeasure::TaskMeasure()
     // Set selection style
     Gui::Selection().setSelectionStyle(Gui::SelectionSingleton::SelectionStyle::GreedySelection);
 
-    if(!App::GetApplication().getActiveTransaction())
+    if (!App::GetApplication().getActiveTransaction()) {
         App::GetApplication().setActiveTransaction("Add Measurement");
+    }
 
-
+    setAutoCloseOnDeletedDocument(true);
     // Call invoke method delayed, otherwise the dialog might not be fully initialized
     QTimer::singleShot(0, this, &TaskMeasure::invoke);
 }
 
-TaskMeasure::~TaskMeasure(){
+TaskMeasure::~TaskMeasure()
+{
     Gui::Selection().setSelectionStyle(Gui::SelectionSingleton::SelectionStyle::NormalSelection);
     detachSelection();
     qApp->removeEventFilter(this);
 }
 
 
-void TaskMeasure::modifyStandardButtons(QDialogButtonBox* box) {
+void TaskMeasure::modifyStandardButtons(QDialogButtonBox* box)
+{
 
     QPushButton* btn = box->button(QDialogButtonBox::Apply);
     btn->setText(tr("Save"));
@@ -120,7 +147,8 @@ void TaskMeasure::modifyStandardButtons(QDialogButtonBox* box) {
     connect(btn, &QPushButton::released, this, &TaskMeasure::reset);
 }
 
-bool canAnnotate(Measure::MeasureBase* obj) {
+bool canAnnotate(Measure::MeasureBase* obj)
+{
     if (obj == nullptr) {
         // null object, can't annotate this
         return false;
@@ -128,14 +156,15 @@ bool canAnnotate(Measure::MeasureBase* obj) {
 
     auto vpName = obj->getViewProviderName();
     // if there is not a vp, return false
-    if ((vpName == nullptr) || (vpName[0] == '\0')){
+    if ((vpName == nullptr) || (vpName[0] == '\0')) {
         return false;
     }
 
     return true;
 }
 
-void TaskMeasure::enableAnnotateButton(bool state) {
+void TaskMeasure::enableAnnotateButton(bool state)
+{
     // if the task ui is not init yet we don't have a button box.
     if (!this->buttonBox) {
         return;
@@ -145,16 +174,94 @@ void TaskMeasure::enableAnnotateButton(bool state) {
     btn->setEnabled(state);
 }
 
-void TaskMeasure::setMeasureObject(Measure::MeasureBase* obj) {
+void TaskMeasure::setMeasureObject(Measure::MeasureBase* obj)
+{
     _mMeasureObject = obj;
 }
 
 
-void TaskMeasure::update() {
-    App::Document *doc = App::GetApplication().getActiveDocument();
+App::DocumentObject* TaskMeasure::createObject(const App::MeasureType* measureType)
+{
+    auto measureClass =
+        measureType->isPython ? "Measure::MeasurePython" : measureType->measureObject;
+    auto type = Base::Type::getTypeIfDerivedFrom(measureClass.c_str(),
+                                                 App::DocumentObject::getClassTypeId(),
+                                                 true);
+
+    if (type.isBad()) {
+        return nullptr;
+    }
+
+    _mMeasureObject = static_cast<Measure::MeasureBase*>(type.createInstance());
+
+    // Create an instance of the python measure class, the classe's
+    // initializer sets the object as proxy
+    if (measureType->isPython) {
+        Base::PyGILStateLocker lock;
+        Py::Tuple args(1);
+        args.setItem(0, Py::asObject(_mMeasureObject->getPyObject()));
+        PyObject* result = PyObject_CallObject(measureType->pythonClass, args.ptr());
+        Py_XDECREF(result);
+    }
+
+    return static_cast<App::DocumentObject*>(_mMeasureObject);
+}
+
+
+Gui::ViewProviderDocumentObject* TaskMeasure::createViewObject(App::DocumentObject* measureObj)
+{
+    // Add view object
+    auto vpName = measureObj->getViewProviderName();
+    if ((vpName == nullptr) || (vpName[0] == '\0')) {
+        return nullptr;
+    }
+
+    auto vpType =
+        Base::Type::getTypeIfDerivedFrom(vpName,
+                                         Gui::ViewProviderDocumentObject::getClassTypeId(),
+                                         true);
+    if (vpType.isBad()) {
+        return nullptr;
+    }
+
+    auto vp = static_cast<Gui::ViewProviderDocumentObject*>(vpType.createInstance());
+
+    _mGuiDocument = Gui::Application::Instance->activeDocument();
+    _mGuiDocument->setAnnotationViewProvider(vp->getTypeId().getName(), vp);
+    vp->attach(measureObj);
+
+    // Init the position of the annotation
+    static_cast<MeasureGui::ViewProviderMeasureBase*>(vp)->positionAnno(_mMeasureObject);
+
+    vp->updateView();
+    vp->setActiveMode();
+
+    _mViewObject = vp;
+    return vp;
+}
+
+
+void TaskMeasure::saveObject()
+{
+    if (_mViewObject && _mGuiDocument) {
+        _mGuiDocument->addViewProvider(_mViewObject);
+        _mGuiDocument->takeAnnotationViewProvider(_mViewObject->getTypeId().getName());
+        _mViewObject = nullptr;
+    }
+
+    _mDocument = App::GetApplication().getActiveDocument();
+    _mDocument->addObject(_mMeasureObject,
+                          modeSwitch->currentIndex() != 0 ? modeSwitch->currentText().toLatin1()
+                                                          : QString().toLatin1());
+}
+
+
+void TaskMeasure::update()
+{
+    App::Document* doc = App::GetApplication().getActiveDocument();
 
     // Reset selection if the selected object is not valid
-    for(auto sel : Gui::Selection().getSelection()) {
+    for (auto sel : Gui::Selection().getSelection()) {
         App::DocumentObject* ob = sel.pObject;
         App::DocumentObject* sub = ob->getSubObject(sel.SubName);
 
@@ -166,7 +273,8 @@ void TaskMeasure::update() {
 
         std::string mod = Base::Type::getModuleName(sub->getTypeId().getName());
         if (!App::MeasureManager::hasMeasureHandler(mod.c_str())) {
-            Base::Console().Message("No measure handler available for geometry of module: %s\n", mod);
+            Base::Console().Message("No measure handler available for geometry of module: %s\n",
+                                    mod);
             clearSelection();
             return;
         }
@@ -174,24 +282,23 @@ void TaskMeasure::update() {
 
     valueResult->setText(QString::asprintf("-"));
 
-    // Get valid measure type
-    App::MeasureType *measureType(nullptr);
-
-
     std::string mode = explicitMode ? modeSwitch->currentText().toStdString() : "";
 
     App::MeasureSelection selection;
     for (auto s : Gui::Selection().getSelection(doc->getName(), ResolveMode::NoResolve)) {
         App::SubObjectT sub(s.pObject, s.SubName);
 
-        App::MeasureSelectionItem item = { sub, Base::Vector3d(s.x, s.y, s.z) };
+        App::MeasureSelectionItem item = {sub, Base::Vector3d(s.x, s.y, s.z)};
         selection.push_back(item);
     }
 
+    // Get valid measure type
+    App::MeasureType* measureType = nullptr;
     auto measureTypes = App::MeasureManager::getValidMeasureTypes(selection, mode);
     if (measureTypes.size() > 0) {
         measureType = measureTypes.front();
     }
+
 
     if (!measureType) {
 
@@ -217,27 +324,7 @@ void TaskMeasure::update() {
     if (!_mMeasureObject || measureType->measureObject != _mMeasureObject->getTypeId().getName()) {
         // we don't already have a measureobject or it isn't the same type as the new one
         removeObject();
-
-        if (measureType->isPython) {
-            Base::PyGILStateLocker lock;
-            auto pyMeasureClass = measureType->pythonClass;
-
-            // Create a MeasurePython instance
-            auto featurePython = doc->addObject("Measure::MeasurePython", measureType->label.c_str());
-            setMeasureObject((Measure::MeasureBase*)featurePython);
-
-            // Create an instance of the pyMeasureClass, the classe's initializer sets the object as proxy
-            Py::Tuple args(1);
-            args.setItem(0, Py::asObject(featurePython->getPyObject()));
-            PyObject* result = PyObject_CallObject(pyMeasureClass, args.ptr());
-            Py_XDECREF(result);
-        }
-        else {
-            // Create measure object
-            setMeasureObject(
-                (Measure::MeasureBase*)doc->addObject(measureType->measureObject.c_str(), measureType->label.c_str())
-            );
-        }
+        createObject(measureType);
     }
 
     // we have a valid measure object so we can enable the annotate button
@@ -248,14 +335,27 @@ void TaskMeasure::update() {
 
     // Get result
     valueResult->setText(_mMeasureObject->getResultString());
+
+    createViewObject(_mMeasureObject);
+
+    // Must be after createViewObject!
+    assert(_mViewObject);
+    auto* prop = dynamic_cast<App::PropertyBool*>(_mViewObject->getPropertyByName("ShowDelta"));
+    setDeltaPossible(prop != nullptr);
+    if (prop) {
+        prop->setValue(showDelta->isChecked());
+        _mViewObject->update(prop);
+    }
 }
 
-void TaskMeasure::close(){
+void TaskMeasure::close()
+{
     Control().closeDialog();
 }
 
 
-void ensureGroup(Measure::MeasureBase* measurement) {
+void TaskMeasure::ensureGroup(Measure::MeasureBase* measurement)
+{
     // Ensure measurement object is part of the measurements group
 
     const char* measurementGroupName = "Measurements";
@@ -263,10 +363,13 @@ void ensureGroup(Measure::MeasureBase* measurement) {
         return;
     }
 
-    App::Document* doc = App::GetApplication().getActiveDocument();
+    App::Document* doc = measurement->getDocument();
     App::DocumentObject* obj = doc->getObject(measurementGroupName);
     if (!obj || !obj->isValid()) {
-        obj = doc->addObject("App::DocumentObjectGroup", measurementGroupName, true, "MeasureGui::ViewProviderMeasureGroup");
+        obj = doc->addObject("App::DocumentObjectGroup",
+                             measurementGroupName,
+                             true,
+                             "MeasureGui::ViewProviderMeasureGroup");
     }
 
     auto group = static_cast<App::DocumentObjectGroup*>(obj);
@@ -275,11 +378,14 @@ void ensureGroup(Measure::MeasureBase* measurement) {
 
 
 // Runs after the dialog is created
-void TaskMeasure::invoke() {
+void TaskMeasure::invoke()
+{
     update();
 }
 
-bool TaskMeasure::apply(){
+bool TaskMeasure::apply()
+{
+    saveObject();
     ensureGroup(_mMeasureObject);
     _mMeasureObject = nullptr;
     reset();
@@ -290,7 +396,8 @@ bool TaskMeasure::apply(){
     return false;
 }
 
-bool TaskMeasure::reject(){
+bool TaskMeasure::reject()
+{
     removeObject();
     close();
 
@@ -299,7 +406,8 @@ bool TaskMeasure::reject(){
     return false;
 }
 
-void TaskMeasure::reset() {
+void TaskMeasure::reset()
+{
     // Reset tool state
     this->clearSelection();
 
@@ -311,22 +419,31 @@ void TaskMeasure::reset() {
 }
 
 
-void TaskMeasure::removeObject() {
+void TaskMeasure::removeObject()
+{
     if (_mMeasureObject == nullptr) {
         return;
     }
-    if (_mMeasureObject->isRemoving() ) {
+    if (_mMeasureObject->isRemoving()) {
         return;
     }
-    _mMeasureObject->getDocument()->removeObject (_mMeasureObject->getNameInDocument());
+
+    if (_mViewObject && _mGuiDocument) {
+        _mGuiDocument->removeAnnotationViewProvider(_mViewObject->getTypeId().getName());
+        _mViewObject = nullptr;
+    }
+
+    delete _mMeasureObject;
     setMeasureObject(nullptr);
 }
 
-bool TaskMeasure::hasSelection(){
+bool TaskMeasure::hasSelection()
+{
     return !Gui::Selection().getSelection().empty();
 }
 
-void TaskMeasure::clearSelection(){
+void TaskMeasure::clearSelection()
+{
     Gui::Selection().clearSelection();
 }
 
@@ -334,15 +451,17 @@ void TaskMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     // Skip non-relevant events
     if (msg.Type != SelectionChanges::AddSelection && msg.Type != SelectionChanges::RmvSelection
-        && msg.Type != SelectionChanges::SetSelection && msg.Type != SelectionChanges::ClrSelection) {
+        && msg.Type != SelectionChanges::SetSelection
+        && msg.Type != SelectionChanges::ClrSelection) {
 
         return;
-        }
+    }
 
     update();
 }
 
-bool TaskMeasure::eventFilter(QObject* obj, QEvent* event) {
+bool TaskMeasure::eventFilter(QObject* obj, QEvent* event)
+{
 
     if (event->type() == QEvent::KeyPress) {
         auto keyEvent = static_cast<QKeyEvent*>(event);
@@ -351,7 +470,8 @@ bool TaskMeasure::eventFilter(QObject* obj, QEvent* event) {
 
             if (this->hasSelection()) {
                 this->reset();
-            } else {
+            }
+            else {
                 this->reject();
             }
 
@@ -359,7 +479,9 @@ bool TaskMeasure::eventFilter(QObject* obj, QEvent* event) {
         }
 
         if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter) {
-            this->apply();
+            // Save object. Indirectly dependent on whether the apply button is enabled
+            // enabled if valid measurement object.
+            this->buttonBox->button(QDialogButtonBox::Apply)->click();
             return true;
         }
     }
@@ -367,12 +489,32 @@ bool TaskMeasure::eventFilter(QObject* obj, QEvent* event) {
     return TaskDialog::eventFilter(obj, event);
 }
 
-void TaskMeasure::onModeChanged(int index) {
+void TaskMeasure::setDeltaPossible(bool possible)
+{
+    showDelta->setVisible(possible);
+    showDeltaLabel->setVisible(possible);
+}
+
+void TaskMeasure::onModeChanged(int index)
+{
     explicitMode = (index != 0);
+
     this->update();
 }
 
-void TaskMeasure::setModeSilent(App::MeasureType* mode) {
+void TaskMeasure::showDeltaChanged(int checkState)
+{
+    delta = checkState == Qt::CheckState::Checked;
+
+    QSettings settings;
+    settings.beginGroup(QLatin1String(taskMeasureSettingsGroup));
+    settings.setValue(QLatin1String(taskMeasureShowDeltaSettingsName), delta);
+
+    this->update();
+}
+
+void TaskMeasure::setModeSilent(App::MeasureType* mode)
+{
     modeSwitch->blockSignals(true);
 
     if (mode == nullptr) {
@@ -385,7 +527,8 @@ void TaskMeasure::setModeSilent(App::MeasureType* mode) {
 }
 
 // Get explicitly set measure type from the mode switch
-App::MeasureType* TaskMeasure::getMeasureType() {
+App::MeasureType* TaskMeasure::getMeasureType()
+{
     for (App::MeasureType* mType : App::MeasureManager::getMeasureTypes()) {
         if (mType->label.c_str() == modeSwitch->currentText().toLatin1()) {
             return mType;

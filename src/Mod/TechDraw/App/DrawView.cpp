@@ -42,8 +42,9 @@
 #include "DrawUtil.h"
 #include "DrawViewClip.h"
 #include "DrawViewCollection.h"
+#include "DrawProjGroup.h"
+#include "DrawProjGroupItem.h"
 #include "Preferences.h"
-
 
 using namespace TechDraw;
 using DU = DrawUtil;
@@ -652,6 +653,22 @@ void DrawView::setScaleAttribute()
     }
 }
 
+//! due to changes made for the "intelligent" view creation tool, testing for a view being an
+//! instance of DrawProjGroupItem is no longer reliable, as views not in a group are sometimes
+//! created as DrawProjGroupItem without belonging to a group.  We now need to test for the existance
+//! of the parent DrawProjGroup
+bool DrawView::isProjGroupItem(DrawViewPart* item)
+{
+    auto dpgi = dynamic_cast<DrawProjGroupItem*>(item);
+    if (!dpgi) {
+        return false;
+    }
+    auto group = dpgi->getPGroup();
+    if (!group) {
+        return false;
+    }
+    return true;
+}
 int DrawView::prefScaleType()
 {
     return Preferences::getPreferenceGroup("General")->GetInt("DefaultScaleType", 0);

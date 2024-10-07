@@ -99,10 +99,10 @@ public:
     /// Get valid paths for this property; used by auto completer
     void getPaths(std::vector<App::ObjectIdentifier> & paths) const override;
 
-    virtual std::string getElementMapVersion(bool restored=false) const override;
+    std::string getElementMapVersion(bool restored) const override;
     void resetElementMapVersion() {_Ver.clear();}
 
-//    virtual void afterRestore() override;
+    void afterRestore() override;
 
     friend class Feature;
 

@@ -85,6 +85,7 @@ class AssemblyGuiExport ViewProviderAssembly: public Gui::ViewProviderPart,
     enum class DragMode
     {
         Translation,
+        TranslationNoSolve,
         TranslationOnAxis,
         TranslationOnPlane,
         Rotation,
@@ -170,6 +171,7 @@ public:
 
     bool canDragObjectIn3d(App::DocumentObject* obj) const;
     bool getSelectedObjectsWithinAssembly(bool addPreselection = true, bool onlySolids = false);
+    App::DocumentObject* getSelectedJoint();
 
     /// Get the python wrapper for that ViewProvider
     PyObject* getPyObject() override;
@@ -201,7 +203,6 @@ public:
     bool enableMovement;
     bool moveOnlyPreselected;
     bool moveInCommand;
-    bool jointVisibilityBackup;
     bool ctrlPressed;
 
     long lastClickTime;  // Store last click time as milliseconds
@@ -216,6 +217,7 @@ public:
 
     App::DocumentObject* movingJoint;
 
+    std::vector<std::pair<App::DocumentObject*, bool>> jointVisibilitiesBackup;
     std::vector<std::pair<App::DocumentObject*, double>> objectMasses;
     std::vector<MovingObject> docsToMove;
 

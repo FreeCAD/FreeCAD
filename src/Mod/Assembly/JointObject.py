@@ -200,6 +200,8 @@ class Joint:
     def createProperties(self, joint):
         self.migrationScript(joint)
         self.migrationScript2(joint)
+        self.migrationScript3(joint)
+        self.migrationScript4(joint)
 
         # First Joint Connector
         if not hasattr(joint, "Reference1"):
@@ -229,6 +231,17 @@ class Joint:
                 QT_TRANSLATE_NOOP(
                     "App::Property",
                     "This prevents Placement1 from recomputing, enabling custom positioning of the placement.",
+                ),
+            )
+
+        if not hasattr(joint, "Offset1"):
+            joint.addProperty(
+                "App::PropertyPlacement",
+                "Offset1",
+                "Joint Connector 1",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "This is the attachment offset of the first connector of the joint.",
                 ),
             )
 
@@ -263,6 +276,17 @@ class Joint:
                 ),
             )
 
+        if not hasattr(joint, "Offset2"):
+            joint.addProperty(
+                "App::PropertyPlacement",
+                "Offset2",
+                "Joint Connector 2",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "This is the attachment offset of the second connector of the joint.",
+                ),
+            )
+
         # Other properties
         if not hasattr(joint, "Distance"):
             joint.addProperty(
@@ -283,28 +307,6 @@ class Joint:
                 QT_TRANSLATE_NOOP(
                     "App::Property",
                     "This is the second distance of the joint. It is used only by the gear joint to store the second radius.",
-                ),
-            )
-
-        if not hasattr(joint, "Rotation"):
-            joint.addProperty(
-                "App::PropertyFloat",
-                "Rotation",
-                "Joint",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "This is the rotation of the joint.",
-                ),
-            )
-
-        if not hasattr(joint, "Offset"):
-            joint.addProperty(
-                "App::PropertyVector",
-                "Offset",
-                "Joint",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "This is the offset vector of the joint.",
                 ),
             )
 
@@ -499,48 +501,49 @@ class Joint:
 
             joint.Reference2 = [obj, [elt, vtx]]
 
-        def getSubnameForSelection(self, obj, part, elName):
-            # We need the subname starting from the part.
-            # Example for : Assembly.Part1.LinkToPart2.Part3.Body.Tip.Face1
-            # part is Part1 and obj is Body
-            # we should get : LinkToPart2.Part3.Body.Tip.Face1
+    def migrationScript3(self, joint):
+        if hasattr(joint, "Offset"):
+            current_offset = joint.Offset  # App.Vector
+            current_rotation = joint.Rotation  # float
 
-            if obj is None or part is None:
-                return elName
+            joint.removeProperty("Offset")
+            joint.removeProperty("Rotation")
 
-            if obj.TypeId == "PartDesign::Body":
-                elName = obj.Tip.Name + "." + elName
-            elif obj.TypeId == "App::Link":
-                linked_obj = obj.getLinkedObject()
-                if linked_obj.TypeId == "PartDesign::Body":
-                    elName = linked_obj.Tip.Name + "." + elName
+            joint.addProperty(
+                "App::PropertyPlacement",
+                "Offset1",
+                "Joint Connector 1",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "This is the attachment offset of the first connector of the joint.",
+                ),
+            )
 
-            if obj != part and obj in part.OutListRecursive:
-                bSub = ""
-                currentObj = part
+            joint.addProperty(
+                "App::PropertyPlacement",
+                "Offset2",
+                "Joint Connector 2",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "This is the attachment offset of the second connector of the joint.",
+                ),
+            )
 
-                limit = 0
-                while limit < 1000:
-                    limit = limit + 1
+            joint.Offset2 = App.Placement(current_offset, App.Rotation(current_rotation, 0, 0))
 
-                    if currentObj != part:
-                        if bSub != "":
-                            bSub = bSub + "."
-                        bSub = bSub + currentObj.Name
-
-                    if currentObj == obj:
-                        break
-
-                    if currentObj.TypeId == "App::Link":
-                        currentObj = currentObj.getLinkedObject()
-
-                    for obji in currentObj.OutList:
-                        if obji == obj or obj in obji.OutListRecursive:
-                            currentObj = obji
-                            break
-
-                elName = bSub + "." + elName
-            return elName
+    def migrationScript4(self, joint):
+        if hasattr(joint, "Reference1"):
+            base_name, *sub_names, feature_name = joint.Reference1[1][0].split(".")
+            ref1 = ".".join((base_name, *sub_names[:-1], feature_name))
+            base_name, *sub_names, feature_name = joint.Reference1[1][1].split(".")
+            ref2 = ".".join((base_name, *sub_names[:-1], feature_name))
+            joint.Reference1 = (joint.Reference1[0], [ref1, ref2])
+        if hasattr(joint, "Reference2"):
+            base_name, *sub_names, feature_name = joint.Reference2[1][0].split(".")
+            ref1 = ".".join((base_name, *sub_names[:-1], feature_name))
+            base_name, *sub_names, feature_name = joint.Reference2[1][1].split(".")
+            ref2 = ".".join((base_name, *sub_names[:-1], feature_name))
+            joint.Reference2 = (joint.Reference2[0], [ref1, ref2])
 
     def dumps(self):
         return None
@@ -566,7 +569,7 @@ class Joint:
         if App.isRestoring():
             return
 
-        if prop == "Rotation" or prop == "Offset":
+        if prop == "Offset1" or prop == "Offset2":
             if joint.Reference1 is None or joint.Reference2 is None:
                 return
 
@@ -647,12 +650,11 @@ class Joint:
         ignoreVertex = joint.JointType == "Distance"
         plc = UtilsAssembly.findPlacement(ref, ignoreVertex)
 
-        # We apply rotation / reverse / offset it necessary, but only to the second JCS.
-        if index == 1:
-            if joint.Offset.Length != 0.0:
-                plc = UtilsAssembly.applyOffsetToPlacement(plc, joint.Offset)
-            if joint.Rotation != 0.0:
-                plc = UtilsAssembly.applyRotationToPlacement(plc, joint.Rotation)
+        # We apply the attachment offsets.
+        if index == 0:
+            plc = plc * joint.Offset1
+        else:
+            plc = plc * joint.Offset2
 
         return plc
 
@@ -716,6 +718,13 @@ class Joint:
             )
             if not sameDir:
                 jcsPlc2 = UtilsAssembly.flipPlacement(jcsPlc2)
+
+            # For link groups and sub-assemblies we have to take into account
+            # the parent placement (ie the linkgroup plc) as the linkgroup is not the moving part
+            # But instead of doing as follow, we rather enforce identity placement for linkgroups.
+            # parentPlc = UtilsAssembly.getParentPlacementIfNeeded(part2)
+            # part2.Placement = globalJcsPlc1 * jcsPlc2.inverse() * parentPlc.inverse()
+
             part2.Placement = globalJcsPlc1 * jcsPlc2.inverse()
             return True
 
@@ -730,6 +739,7 @@ class Joint:
             )
             if not sameDir:
                 jcsPlc1 = UtilsAssembly.flipPlacement(jcsPlc1)
+
             part1.Placement = globalJcsPlc2 * jcsPlc1.inverse()
             return True
         return False
@@ -1288,7 +1298,7 @@ class MakeJointSelGate:
             selected_object.isDerivedFrom("Part::Feature")
             or selected_object.isDerivedFrom("App::Part")
         ):
-            if selected_object.isDerivedFrom("App::Link"):
+            if UtilsAssembly.isLink(selected_object):
                 linked = selected_object.getLinkedObject()
 
                 if not (linked.isDerivedFrom("Part::Feature") or linked.isDerivedFrom("App::Part")):
@@ -1315,6 +1325,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.activeType = "Part"
         else:
             self.activeType = "Assembly"
+            self.assembly.ensureIdentityPlacements()
 
         self.doc = self.assembly.Document
         self.gui_doc = Gui.getDocument(self.doc)
@@ -1421,6 +1432,9 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         else:
             self.joint.Document.removeObject(self.joint.Name)
 
+        cmds = UtilsAssembly.generatePropertySettings("obj", self.joint)
+        Gui.doCommand(cmds)
+
         App.closeActiveTransaction()
         return True
 
@@ -1516,10 +1530,12 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.joint.Distance2 = self.form.distanceSpinbox2.property("rawValue")
 
     def onOffsetChanged(self, quantity):
-        self.joint.Offset = App.Vector(0, 0, self.form.offsetSpinbox.property("rawValue"))
+        self.joint.Offset2.Base = App.Vector(0, 0, self.form.offsetSpinbox.property("rawValue"))
 
     def onRotationChanged(self, quantity):
-        self.joint.Rotation = self.form.rotationSpinbox.property("rawValue")
+        yaw = self.form.rotationSpinbox.property("rawValue")
+        ypr = self.joint.Offset2.Rotation.getYawPitchRoll()
+        self.joint.Offset2.Rotation.setYawPitchRoll(yaw, ypr[1], ypr[2])
 
     def onLimitLenMinChanged(self, quantity):
         if self.form.limitCheckbox1.isChecked():
@@ -1672,8 +1688,10 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
         self.form.distanceSpinbox.setProperty("rawValue", self.joint.Distance)
         self.form.distanceSpinbox2.setProperty("rawValue", self.joint.Distance2)
-        self.form.offsetSpinbox.setProperty("rawValue", self.joint.Offset.z)
-        self.form.rotationSpinbox.setProperty("rawValue", self.joint.Rotation)
+        self.form.offsetSpinbox.setProperty("rawValue", self.joint.Offset2.Base.z)
+        self.form.rotationSpinbox.setProperty(
+            "rawValue", self.joint.Offset2.Rotation.getYawPitchRoll()[0]
+        )
 
         self.form.limitCheckbox1.setChecked(self.joint.EnableLengthMin)
         self.form.limitCheckbox2.setChecked(self.joint.EnableLengthMax)
@@ -1800,20 +1818,13 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
     # selectionObserver stuff
     def addSelection(self, doc_name, obj_name, sub_name, mousePos):
         rootObj = App.getDocument(doc_name).getObject(obj_name)
-        resolved = rootObj.resolveSubElement(sub_name)
-        element_name_TNP = resolved[1]
-        element_name = resolved[2]
 
-        # Preprocess the sub_name to remove the TNP string
-        # We do this because after we need to add the vertex_name as well.
-        # And the names will be resolved anyway after.
-        if len(element_name_TNP.split(".")) == 2:
-            names = sub_name.split(".")
-            names.pop(-2)  # remove the TNP string
-            sub_name = ".".join(names)
-
-        ref = [rootObj, [sub_name]]
-
+        # If the sub_name that comes in has extra features in it, remove them.  For example a
+        # Part.Body.Pad.Sketch becomes Part.Body.Sketch and a
+        # Body.Pad.Sketch becomes Body.sketch
+        base_name, *path_detail, old_name = sub_name.split(".")
+        target_link = ".".join((base_name, *path_detail[:-2], old_name))
+        ref = [rootObj, [target_link]]
         moving_part = self.getMovingPart(ref)
 
         # Check if the addition is acceptable (we are not doing this in selection gate to let user move objects)

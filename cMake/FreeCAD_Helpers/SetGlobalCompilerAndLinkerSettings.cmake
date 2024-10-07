@@ -34,6 +34,7 @@ macro(SetGlobalCompilerAndLinkerSettings)
         if(FREECAD_RELEASE_PDB)
             set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Zi")
             set (CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS_RELEASE} /DEBUG")
+            set (CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} /DEBUG")
         endif(FREECAD_RELEASE_PDB)
         if(FREECAD_RELEASE_SEH)
             # remove /EHsc or /EHs flags because they are incompatible with /EHa
@@ -90,8 +91,5 @@ macro(SetGlobalCompilerAndLinkerSettings)
             link_libraries(-lgdi32)
         endif()
     endif(MINGW)
-
-    # Enable the Topological Naming Problem mitigation code
-    add_compile_options(-DFC_USE_TNP_FIX)
 
 endmacro(SetGlobalCompilerAndLinkerSettings)

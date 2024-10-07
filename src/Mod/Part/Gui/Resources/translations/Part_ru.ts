@@ -148,7 +148,7 @@
       <location filename="../../AttacherTexts.cpp" line="281"/>
       <source>Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+      <translation>Точка ставится в позицию размещения объекта. Работает с объектами с размещениями и краями эллипса/параболы/гиперболы.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="283"/>
@@ -570,13 +570,13 @@
       <location filename="../../AttacherTexts.cpp" line="145"/>
       <source>XY parallel to plane</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">XY parallel to plane</translation>
+      <translation>Параллельно XY плоскости</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="146"/>
       <source>X' Y' plane is parallel to the plane (object's XY) and passes through the vertex</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">X' Y' plane is parallel to the plane (object's XY) and passes through the vertex</translation>
+      <translation>Плоскость X' Y' параллельна плоскости (объект XY) и проходит через вершину</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="148"/>
@@ -779,13 +779,13 @@
       <location filename="../../AttacherTexts.cpp" line="67"/>
       <source>XY parallel to plane</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XY parallel to plane</translation>
+      <translation>Параллельно XY плоскости</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="68"/>
       <source>X' Y' plane is parallel to the plane (object's XY) and passes through the vertex.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">X' Y' plane is parallel to the plane (object's XY) and passes through the vertex.</translation>
+      <translation>Плоскость X' Y' параллельна плоскости (XY объекта) и проходит через вершину.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="70"/>
@@ -1562,7 +1562,7 @@
     <message>
       <location filename="../../Command.cpp" line="1010"/>
       <source>Export CAD file...</source>
-      <translation type="unfinished">Export CAD file...</translation>
+      <translation>Экспорт CAD файла...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1011"/>
@@ -1634,7 +1634,7 @@
     <message>
       <location filename="../../Command.cpp" line="947"/>
       <source>Import CAD file...</source>
-      <translation type="unfinished">Import CAD file...</translation>
+      <translation>Импорт CAD файла...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="948"/>
@@ -2207,17 +2207,17 @@ of projection.</source>
       <translation>Конвертировать сетку</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1076"/>
+      <location filename="../../TaskAttacher.cpp" line="1078"/>
       <source>Edit attachment</source>
       <translation>Изменить вложение</translation>
     </message>
     <message>
-      <location filename="../../TaskFaceAppearances.cpp" line="456"/>
+      <location filename="../../TaskFaceAppearances.cpp" line="454"/>
       <source>Change face colors</source>
       <translation>Изменить цвета грани</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="199"/>
+      <location filename="../../TaskLoft.cpp" line="202"/>
       <source>Loft</source>
       <translation>Профиль</translation>
     </message>
@@ -2248,7 +2248,7 @@ of projection.</source>
       <translation>Твердотельный объект</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="365"/>
+      <location filename="../../TaskSweep.cpp" line="368"/>
       <source>Sweep</source>
       <translation>Профиль по траектории</translation>
     </message>
@@ -2258,7 +2258,7 @@ of projection.</source>
       <translation>Изменить зеркалирование</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1557"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1559"/>
       <source>Project on surface</source>
       <translation>Проецировать на поверхность</translation>
     </message>
@@ -2532,7 +2532,7 @@ Note: The placement is expressed in local space of object being attached.</sourc
   <context>
     <name>PartGui::DlgChamferEdges</name>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="1109"/>
+      <location filename="../../DlgFilletEdges.cpp" line="1111"/>
       <source>Chamfer Edges</source>
       <translation>Притупить ребра фаской</translation>
     </message>
@@ -2568,68 +2568,66 @@ Note: The placement is expressed in local space of object being attached.</sourc
   <context>
     <name>PartGui::DlgExportStep</name>
     <message>
-      <location filename="../../DlgExportStep.ui" line="20"/>
+      <location filename="../../DlgExportStep.ui" line="23"/>
       <source>Export</source>
       <translation>Экспорт</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="26"/>
+      <location filename="../../DlgExportStep.ui" line="36"/>
       <source>Units for export of STEP</source>
       <translation>Единицы для экспорта STEP</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="47"/>
+      <location filename="../../DlgExportStep.ui" line="44"/>
       <source>Millimeter</source>
       <translation>Миллиметр</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="52"/>
+      <location filename="../../DlgExportStep.ui" line="49"/>
       <source>Meter</source>
       <translation>Метр</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="57"/>
+      <location filename="../../DlgExportStep.ui" line="54"/>
       <source>Inch</source>
       <translation>Дюйм</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="65"/>
+      <location filename="../../DlgExportStep.ui" line="139"/>
       <source>Write out curves in parametric space of surface</source>
       <translation>Выписать кривые в параметрическом пространстве поверхности</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="72"/>
+      <location filename="../../DlgExportStep.ui" line="123"/>
       <source>Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</source>
-      <translation type="unfinished">Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</translation>
+      <translation>Снимите этот флажок, чтобы пропустить невидимые объекты при экспорте, что полезно для САПР, которые не поддерживают невидимость стилей STEP.</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="88"/>
+      <location filename="../../DlgExportStep.ui" line="104"/>
       <source>Check this option to keep the placement information when exporting
 a single object. Please note that when importing back the STEP file, the
 placement will be encoded into the shape geometry, instead of keeping
 it inside the Placement property.</source>
-      <translation type="unfinished">Check this option to keep the placement information when exporting
-a single object. Please note that when importing back the STEP file, the
-placement will be encoded into the shape geometry, instead of keeping
-it inside the Placement property.</translation>
+      <translation>Установите этот флажок, чтобы сохранить информацию о размещении при экспорте
+отдельного объекта. Обратите внимание, что при обратном импорте файла STEP размещение будет закодировано в геометрию формы, а не сохранено внутри свойства Placement.</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="75"/>
+      <location filename="../../DlgExportStep.ui" line="126"/>
       <source>Export invisible objects</source>
       <translation>Экспортировать невидимые объекты</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="94"/>
+      <location filename="../../DlgExportStep.ui" line="110"/>
       <source>Export single object placement</source>
       <translation>Экспорт размещения одного объекта</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="107"/>
+      <location filename="../../DlgExportStep.ui" line="91"/>
       <source>Use legacy export function</source>
       <translation>Использовать устаревшую функцию экспорта</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="120"/>
+      <location filename="../../DlgExportStep.ui" line="29"/>
       <source>Scheme</source>
       <translation>Схема</translation>
     </message>
@@ -2691,7 +2689,7 @@ the size of the resulting STEP file.</source>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="71"/>
-      <location filename="../../DlgExtrusion.cpp" line="230"/>
+      <location filename="../../DlgExtrusion.cpp" line="232"/>
       <source>Select</source>
       <translation>Выбрать</translation>
     </message>
@@ -2798,40 +2796,40 @@ If both lengths are zero, magnitude of direction is used.</source>
       <translation>Фигура(ы)</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="204"/>
+      <location filename="../../DlgExtrusion.cpp" line="206"/>
       <source>Selecting...</source>
       <translation>Выбор...</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="452"/>
+      <location filename="../../DlgExtrusion.cpp" line="454"/>
       <source>The document '%1' doesn't exist.</source>
       <translation type="unfinished">The document '%1' doesn't exist.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="500"/>
-      <location filename="../../DlgExtrusion.cpp" line="506"/>
+      <location filename="../../DlgExtrusion.cpp" line="502"/>
+      <location filename="../../DlgExtrusion.cpp" line="508"/>
       <source>Creating Extrusion failed.
 %1</source>
       <translation>Ошибка при создании выдавливания.
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="573"/>
+      <location filename="../../DlgExtrusion.cpp" line="575"/>
       <source>Object not found: %1</source>
       <translation>Объект не найден: %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="635"/>
+      <location filename="../../DlgExtrusion.cpp" line="637"/>
       <source>No shapes selected for extrusion. Select some, first.</source>
       <translation>Не выбраны фигуры для выдавливания.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="652"/>
+      <location filename="../../DlgExtrusion.cpp" line="654"/>
       <source>Unknown error</source>
       <translation>Неизвестная ошибка</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="656"/>
+      <location filename="../../DlgExtrusion.cpp" line="658"/>
       <source>Extrusion direction link is invalid.
 
 %1</source>
@@ -2840,12 +2838,12 @@ If both lengths are zero, magnitude of direction is used.</source>
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="658"/>
+      <location filename="../../DlgExtrusion.cpp" line="660"/>
       <source>Direction mode is to use an edge, but no edge is linked.</source>
       <translation>Выбран режим вдоль линии, но ориентировочная линяя не выбрана.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="681"/>
+      <location filename="../../DlgExtrusion.cpp" line="683"/>
       <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
 
 (%1)</source>
@@ -2854,12 +2852,12 @@ If both lengths are zero, magnitude of direction is used.</source>
 (%1)</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="691"/>
+      <location filename="../../DlgExtrusion.cpp" line="693"/>
       <source>Extrusion direction vector is zero-length. It must be non-zero.</source>
       <translation>Вектор направления выдавливания имеет нулевую длину. Он должен быть не нулевым.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="702"/>
+      <location filename="../../DlgExtrusion.cpp" line="704"/>
       <source>Total extrusion length is zero (length1 == -length2). It must be nonzero.</source>
       <translation>Итоговая длина выдавливания равна нулю (длина1 = -длина2). Такого не должно быть.</translation>
     </message>
@@ -2957,7 +2955,7 @@ If both lengths are zero, magnitude of direction is used.</source>
       <translation>Ребра для выполнения фаски</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="912"/>
+      <location filename="../../DlgFilletEdges.cpp" line="914"/>
       <source>Start length</source>
       <translation>Начальная длина</translation>
     </message>
@@ -2969,7 +2967,7 @@ If both lengths are zero, magnitude of direction is used.</source>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="269"/>
       <source>Chamfer Parameters</source>
-      <translation type="unfinished">Chamfer Parameters</translation>
+      <translation>Параметры Фаски</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="273"/>
@@ -2998,7 +2996,7 @@ If both lengths are zero, magnitude of direction is used.</source>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="283"/>
-      <location filename="../../DlgFilletEdges.cpp" line="914"/>
+      <location filename="../../DlgFilletEdges.cpp" line="916"/>
       <source>Start radius</source>
       <translation>Начальный радиус</translation>
     </message>
@@ -3008,39 +3006,39 @@ If both lengths are zero, magnitude of direction is used.</source>
       <translation>Конечный радиус</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="761"/>
-      <location filename="../../DlgFilletEdges.cpp" line="821"/>
+      <location filename="../../DlgFilletEdges.cpp" line="763"/>
+      <location filename="../../DlgFilletEdges.cpp" line="823"/>
       <source>Edge%1</source>
       <translation>Грань%1</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="904"/>
+      <location filename="../../DlgFilletEdges.cpp" line="906"/>
       <source>Length</source>
       <translation>Длина</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="906"/>
+      <location filename="../../DlgFilletEdges.cpp" line="908"/>
       <source>Radius</source>
       <translation>Радиус</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="960"/>
+      <location filename="../../DlgFilletEdges.cpp" line="962"/>
       <source>No shape selected</source>
       <translation>Профиль не выбран</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="961"/>
+      <location filename="../../DlgFilletEdges.cpp" line="963"/>
       <source>No valid shape is selected.
 Please select a valid shape in the drop-down box first.</source>
       <translation>Допустимый профиль не выбран. Пожалуйста сначала выберите допустимый профиль в выпадающем списке.</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="1012"/>
+      <location filename="../../DlgFilletEdges.cpp" line="1014"/>
       <source>No edge selected</source>
       <translation>Нет выбранных ребер</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="1013"/>
+      <location filename="../../DlgFilletEdges.cpp" line="1015"/>
       <source>No edge entity is checked to fillet.
 Please check one or more edge entities first.</source>
       <translation>Не выбрано ни одного ребра. Выберите хотя бы одно ребро для скругления.</translation>
@@ -3081,7 +3079,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="65"/>
       <source>Export solids and shells as</source>
-      <translation type="unfinished">Export solids and shells as</translation>
+      <translation>Экспортировать твердотельное и оболочки как</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="71"/>
@@ -3153,10 +3151,9 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="26"/>
-      <source>If checked, no Compound merge will be done
+      <source>If checked, Compound merge will be done
 during file reading (slower but higher details).</source>
-      <translation>Если флажок установлен, составное слияние выполняться не будет.
-во время чтения файла (медленнее, но подробнее).</translation>
+      <translation>Если этот флажок установлен, то во время чтения файла будет выполнено слияние составных файлов (медленнее, но с более высокой детализацией).</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="30"/>
@@ -3212,7 +3209,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="123"/>
       <source>Do not use instance names. Useful for some legacy STEP files with non-meaningful auto-generated instance names.</source>
-      <translation type="unfinished">Do not use instance names. Useful for some legacy STEP files with non-meaningful auto-generated instance names.</translation>
+      <translation>Не используйте имена экземпляров. Полезно для некоторых устаревших файлов STEP с не имеющими смысла автоматически сгенерированными именами экземпляров.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="126"/>
@@ -3222,7 +3219,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="150"/>
       <source>CodePage</source>
-      <translation type="unfinished">CodePage</translation>
+      <translation>Код страницы</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="177"/>
@@ -3387,7 +3384,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="14"/>
       <source>STEP input file</source>
-      <translation type="unfinished">STEP input file</translation>
+      <translation>STEP входной файл</translation>
     </message>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="20"/>
@@ -3910,7 +3907,7 @@ during file reading (slower but higher details).</source>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="250"/>
-      <location filename="../../DlgRevolution.cpp" line="463"/>
+      <location filename="../../DlgRevolution.cpp" line="465"/>
       <source>Select reference</source>
       <translation>Выберите ориентир</translation>
     </message>
@@ -3940,19 +3937,19 @@ during file reading (slower but higher details).</source>
       <translation>Создать твердое тело</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="183"/>
+      <location filename="../../DlgRevolution.cpp" line="185"/>
       <source>Object not found: %1</source>
       <translation>Объект не найден: %1</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="264"/>
+      <location filename="../../DlgRevolution.cpp" line="266"/>
       <source>Select a shape for revolution, first.</source>
       <translation>Сначала выберите фигуру для революции.</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="280"/>
-      <location filename="../../DlgRevolution.cpp" line="285"/>
-      <location filename="../../DlgRevolution.cpp" line="290"/>
+      <location filename="../../DlgRevolution.cpp" line="282"/>
+      <location filename="../../DlgRevolution.cpp" line="287"/>
+      <location filename="../../DlgRevolution.cpp" line="292"/>
       <source>Revolution axis link is invalid.
 
 %1</source>
@@ -3961,23 +3958,23 @@ during file reading (slower but higher details).</source>
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="290"/>
+      <location filename="../../DlgRevolution.cpp" line="292"/>
       <source>Unknown error</source>
       <translation>Неизвестная ошибка</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="299"/>
+      <location filename="../../DlgRevolution.cpp" line="301"/>
       <source>Revolution axis direction is zero-length. It must be non-zero.</source>
       <translation>Вектор направления оси вращения нулевой. Такого не должно быть.</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="309"/>
+      <location filename="../../DlgRevolution.cpp" line="311"/>
       <source>Revolution angle span is zero. It must be non-zero.</source>
       <translation>Угол поворота тела вращения равен нулю. Такого не должно быть.</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="443"/>
-      <location filename="../../DlgRevolution.cpp" line="447"/>
+      <location filename="../../DlgRevolution.cpp" line="445"/>
+      <location filename="../../DlgRevolution.cpp" line="449"/>
       <source>Creating Revolve failed.
 
 %1</source>
@@ -3986,7 +3983,7 @@ during file reading (slower but higher details).</source>
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="459"/>
+      <location filename="../../DlgRevolution.cpp" line="461"/>
       <source>Selecting... (line or arc)</source>
       <translation>Выбор... (линия или дуга)</translation>
     </message>
@@ -4079,12 +4076,12 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="117"/>
       <source>These settings are experimental and may result in decreased stability, more problems and undefined behaviors.</source>
-      <translation type="unfinished">These settings are experimental and may result in decreased stability, more problems and undefined behaviors.</translation>
+      <translation>Эти настройки являются экспериментальными и могут привести к снижению стабильности, появлению дополнительных проблем и неопределенному поведению.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="127"/>
       <source>Allow multiple solids in Part Design Body by default (experimental)</source>
-      <translation type="unfinished">Allow multiple solids in Part Design Body by default (experimental)</translation>
+      <translation>Разрешить несколько твердых тел в теле конструкции детали по умолчанию (экспериментальная функция)</translation>
     </message>
   </context>
   <context>
@@ -4241,10 +4238,9 @@ during file reading (slower but higher details).</source>
 If not checked, it depends on the option "Backlight color"
 (preferences section Display -&gt; 3D View); either the backlight color
 will be used or black.</source>
-      <translation type="unfinished">The bottom side of the surface will be rendered the same way as the top.
-If not checked, it depends on the option "Backlight color"
-(preferences section Display -&gt; 3D View); either the backlight color
-will be used or black.</translation>
+      <translation>Нижняя сторона поверхности будет визуализироваться так же, как и верхняя.
+Если не отмечено, это зависит от параметра «Цвет подсветки»
+(раздел настроек Дисплей -&gt; 3D-вид); будет использоваться либо цвет подсветки, либо черный.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="471"/>
@@ -4360,27 +4356,27 @@ the sketch plane's normal vector will be used</source>
       <translation>Выбранные профили</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="177"/>
+      <location filename="../../TaskLoft.cpp" line="180"/>
       <source>Too few elements</source>
       <translation>Слишком мало элементов</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="177"/>
+      <location filename="../../TaskLoft.cpp" line="180"/>
       <source>At least two vertices, edges, wires or faces are required.</source>
       <translation>Необходимы две вершины, линии или грани.</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="211"/>
+      <location filename="../../TaskLoft.cpp" line="214"/>
       <source>Input error</source>
       <translation>Ошибка ввода</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="240"/>
+      <location filename="../../TaskLoft.cpp" line="243"/>
       <source>Vertex/Edge/Wire/Face</source>
       <translation>Точка/Ребро/Ломаная/грань</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="241"/>
+      <location filename="../../TaskLoft.cpp" line="244"/>
       <source>Loft</source>
       <translation>Чердак (под крышей)</translation>
     </message>
@@ -4472,7 +4468,7 @@ the sketch plane's normal vector will be used</source>
   <context>
     <name>PartGui::OffsetWidget</name>
     <message>
-      <location filename="../../TaskOffset.cpp" line="204"/>
+      <location filename="../../TaskOffset.cpp" line="206"/>
       <source>Input error</source>
       <translation>Ошибка ввода</translation>
     </message>
@@ -4500,7 +4496,7 @@ the sketch plane's normal vector will be used</source>
     <message>
       <location filename="../../SectionCutting.ui" line="20"/>
       <source>Persistent Section Cutting</source>
-      <translation type="unfinished">Persistent Section Cutting</translation>
+      <translation>Постоянная резка секции</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="32"/>
@@ -4737,69 +4733,69 @@ only created cuts will be visible</source>
       <translation>Выбранные профили</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="328"/>
+      <location filename="../../TaskSweep.cpp" line="331"/>
       <source>Too few elements</source>
       <translation>Слишком мало элементов</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="328"/>
+      <location filename="../../TaskSweep.cpp" line="331"/>
       <source>At least one edge or wire is required.</source>
       <translation>Требуется по крайней мере одна кривая линия или ломаная.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="332"/>
+      <location filename="../../TaskSweep.cpp" line="335"/>
       <source>Invalid selection</source>
       <translation>Неправильное выделение</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="332"/>
+      <location filename="../../TaskSweep.cpp" line="335"/>
       <source>Select one or more edges from a single object.</source>
       <translation>Выберите один или несколько ребер одного объекта.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="339"/>
+      <location filename="../../TaskSweep.cpp" line="342"/>
       <source>Wrong selection</source>
       <translation>Неправильный выбор</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="339"/>
+      <location filename="../../TaskSweep.cpp" line="342"/>
       <source>'%1' cannot be used as profile and path.</source>
       <translation>'%1' не может использоваться в качестве профиля и пути.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="377"/>
+      <location filename="../../TaskSweep.cpp" line="380"/>
       <source>Input error</source>
       <translation>Ошибка ввода</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="410"/>
+      <location filename="../../TaskSweep.cpp" line="413"/>
       <source>Done</source>
       <translation>Готово</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="412"/>
+      <location filename="../../TaskSweep.cpp" line="415"/>
       <source>Select one or more connected edges in the 3d view and press 'Done'</source>
       <translation>Выберите один или несколько соединенных ребер в трёхмерном виде и нажмите «OK»</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="434"/>
-      <location filename="../../TaskSweep.cpp" line="442"/>
+      <location filename="../../TaskSweep.cpp" line="437"/>
+      <location filename="../../TaskSweep.cpp" line="445"/>
       <source>Sweep path</source>
       <translation>Траектория построения</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="434"/>
-      <location filename="../../TaskSweep.cpp" line="442"/>
+      <location filename="../../TaskSweep.cpp" line="437"/>
+      <location filename="../../TaskSweep.cpp" line="445"/>
       <source>The selected sweep path is invalid.</source>
       <translation>Недопустимый путь траектории равёртки с заметанием.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="454"/>
+      <location filename="../../TaskSweep.cpp" line="457"/>
       <source>Vertex/Wire</source>
       <translation>Вершина/проволока</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="455"/>
+      <location filename="../../TaskSweep.cpp" line="458"/>
       <source>Sweep</source>
       <translation>Профиль по траектории</translation>
     </message>
@@ -4838,7 +4834,7 @@ only created cuts will be visible</source>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="124"/>
-      <location filename="../../TaskAttacher.cpp" line="337"/>
+      <location filename="../../TaskAttacher.cpp" line="339"/>
       <source>Attachment Offset (in local coordinates):</source>
       <translation>Смещение присоединения (в локальных координатах):</translation>
     </message>
@@ -4919,77 +4915,77 @@ of object being attached.</source>
       <translation>Поменять стороны</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="320"/>
+      <location filename="../../TaskAttacher.cpp" line="322"/>
       <source>OCC error: %1</source>
       <translation>Ошибка openCASCADE: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="322"/>
+      <location filename="../../TaskAttacher.cpp" line="324"/>
       <source>unknown error</source>
       <translation>неизвестная ошибка</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="325"/>
+      <location filename="../../TaskAttacher.cpp" line="327"/>
       <source>Attachment mode failed: %1</source>
       <translation>Ошибка режима присоединения: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="329"/>
+      <location filename="../../TaskAttacher.cpp" line="331"/>
       <source>Not attached</source>
       <translation>Не присоединен</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="333"/>
+      <location filename="../../TaskAttacher.cpp" line="335"/>
       <source>Attached with mode %1</source>
       <translation>Присоединен в режиме %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="337"/>
+      <location filename="../../TaskAttacher.cpp" line="339"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>Смещение присоединения (неактивно - не присоединено):</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="634"/>
+      <location filename="../../TaskAttacher.cpp" line="636"/>
       <source>Face</source>
       <translation>Грань</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="641"/>
+      <location filename="../../TaskAttacher.cpp" line="643"/>
       <source>Edge</source>
       <translation>Ребро</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="648"/>
+      <location filename="../../TaskAttacher.cpp" line="650"/>
       <source>Vertex</source>
       <translation>Вершина</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="713"/>
+      <location filename="../../TaskAttacher.cpp" line="715"/>
       <source>Selecting...</source>
       <translation>Выбор...</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="717"/>
+      <location filename="../../TaskAttacher.cpp" line="719"/>
       <source>Reference%1</source>
       <translation>Ориентир%1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="764"/>
+      <location filename="../../TaskAttacher.cpp" line="766"/>
       <source>Not editable because rotation of AttachmentOffset is bound by expressions.</source>
       <translation>Неизменяемое, потому что вращательная часть положения присоединения ограничена уравнениями.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="830"/>
+      <location filename="../../TaskAttacher.cpp" line="832"/>
       <source>Reference combinations:</source>
       <translation>Комбинации ориентиров:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="847"/>
+      <location filename="../../TaskAttacher.cpp" line="849"/>
       <source>%1 (add %2)</source>
       <translation>%1 (и %2)</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="852"/>
+      <location filename="../../TaskAttacher.cpp" line="854"/>
       <source>%1 (add more references)</source>
       <translation>%1 (и более ориентиров)</translation>
     </message>
@@ -5135,7 +5131,7 @@ Individual boolean operation checks:</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1013"/>
       <source>Skip this settings page</source>
-      <translation type="unfinished">Skip this settings page</translation>
+      <translation>Пропустить страницу настроек</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1084"/>
@@ -5245,12 +5241,12 @@ Individual boolean operation checks:</source>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1062"/>
+      <location filename="../../TaskAttacher.cpp" line="1064"/>
       <source>Attachment</source>
       <translation>Вложение</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1117"/>
+      <location filename="../../TaskAttacher.cpp" line="1119"/>
       <source>Datum dialog: Input error</source>
       <translation>Величина: ошибка ввода</translation>
     </message>
@@ -5443,7 +5439,7 @@ Individual boolean operation checks:</source>
       <translation>Френе</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="480"/>
+      <location filename="../../TaskSweep.cpp" line="483"/>
       <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
       <translation>Выберите один или более профилей, а также выберите грань или последовательность граней в трёхмерном виде для пути заметания.</translation>
@@ -5481,23 +5477,23 @@ in the 3D view for the sweep path.</source>
     <name>PartGui::ThicknessWidget</name>
     <message>
       <location filename="../../TaskThickness.cpp" line="89"/>
-      <location filename="../../TaskThickness.cpp" line="288"/>
-      <location filename="../../TaskThickness.cpp" line="298"/>
+      <location filename="../../TaskThickness.cpp" line="290"/>
+      <location filename="../../TaskThickness.cpp" line="300"/>
       <source>Thickness</source>
       <translation>Толщина</translation>
     </message>
     <message>
-      <location filename="../../TaskThickness.cpp" line="185"/>
+      <location filename="../../TaskThickness.cpp" line="187"/>
       <source>Select faces of the source object and press 'Done'</source>
       <translation>Выберите поверхность исходного объекта и нажмите "Продолжить"</translation>
     </message>
     <message>
-      <location filename="../../TaskThickness.cpp" line="188"/>
+      <location filename="../../TaskThickness.cpp" line="190"/>
       <source>Done</source>
       <translation>Готово</translation>
     </message>
     <message>
-      <location filename="../../TaskThickness.cpp" line="253"/>
+      <location filename="../../TaskThickness.cpp" line="255"/>
       <source>Input error</source>
       <translation>Ошибка ввода</translation>
     </message>
@@ -5564,12 +5560,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="389"/>
       <source>Please select two shapes or more. Or, select one compound containing two or more shapes to compute the intersection between.</source>
-      <translation type="unfinished">Please select two shapes or more. Or, select one compound containing two or more shapes to compute the intersection between.</translation>
+      <translation>Пожалуйста, выберите две фигуры или более. Или выберите одно соединение, содержащее две или более фигур, чтобы вычислить пересечение между ними.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="465"/>
       <source>Please select two shapes or more. Or, select one compound containing two or more shapes to be fused.</source>
-      <translation type="unfinished">Please select two shapes or more. Or, select one compound containing two or more shapes to be fused.</translation>
+      <translation>Пожалуйста, выберите две формы или более. Или выберите одно соединение, содержащее две или более форм для слияния.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="856"/>
@@ -5946,9 +5942,9 @@ Do you want to continue?</source>
       <translation>Изменить проекцию</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="878"/>
+      <location filename="../../ViewProviderExt.cpp" line="887"/>
       <source>Set appearance per face...</source>
-      <translation type="unfinished">Set appearance per face...</translation>
+      <translation>Установить внешний вид для каждой стороны...</translation>
     </message>
   </context>
   <context>
@@ -6594,7 +6590,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
     <message>
       <location filename="../../DlgScale.cpp" line="206"/>
       <source>The document '%1' doesn't exist.</source>
-      <translation type="unfinished">The document '%1' doesn't exist.</translation>
+      <translation>Документ «%1» не существует.</translation>
     </message>
     <message>
       <location filename="../../DlgScale.cpp" line="254"/>
@@ -6692,7 +6688,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
   <context>
     <name>FaceMaker</name>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="75"/>
+      <location filename="../../../App/FaceMaker.cpp" line="79"/>
       <source>Shape must be a wire, edge or compound. Something else was supplied.</source>
       <translation>Форма должна представлять собой проволоку, кромку или соединение. Что-то еще было поставлено.</translation>
     </message>
@@ -6700,12 +6696,12 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
   <context>
     <name>Part::FaceMakerSimple</name>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="281"/>
+      <location filename="../../../App/FaceMaker.cpp" line="278"/>
       <source>Simple</source>
       <translation>Простой</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="286"/>
+      <location filename="../../../App/FaceMaker.cpp" line="283"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
       <translation>Делает отдельную плоскую грань из каждой ломаной независимо. Нет поддержки отверстий; ломаные могут быть на разных плоскостях.</translation>
     </message>
@@ -6739,12 +6735,12 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
   <context>
     <name>Part::FaceMakerExtrusion</name>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="459"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="381"/>
       <source>Part Extrude facemaker</source>
       <translation>Выдавливающий деталь гранедел</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="464"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="386"/>
       <source>Supports making faces with holes, does not support nesting.</source>
       <translation>Поддерживает создание граней с отверстиями, вложения не поддерживаются.</translation>
     </message>
@@ -6762,7 +6758,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="14"/>
       <source>Set appearance per face</source>
-      <translation type="unfinished">Set appearance per face</translation>
+      <translation>Установить внешний вид для каждой стороны</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="20"/>
@@ -6782,14 +6778,13 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="73"/>
       <source>Custom appearance:</source>
-      <translation type="unfinished">Custom appearance:</translation>
+      <translation>Пользовательский вид:</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="97"/>
       <source>When checked, you can select multiple faces
 by dragging a selection rectangle in the 3D view</source>
-      <translation type="unfinished">When checked, you can select multiple faces
-by dragging a selection rectangle in the 3D view</translation>
+      <translation>Если этот флажок установлен, вы можете выбрать несколько граней, перетащив прямоугольник выбора в 3D-виде</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="87"/>

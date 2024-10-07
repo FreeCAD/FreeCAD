@@ -147,6 +147,8 @@ public:
     void setBalloonGroups();
     void setLeaderParentage();
 
+    static bool itemClearsSelection(int itemTypeIn);
+    static Qt::KeyboardModifiers cleanModifierList(Qt::KeyboardModifiers mods);
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;

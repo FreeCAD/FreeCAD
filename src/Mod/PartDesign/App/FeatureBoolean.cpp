@@ -137,7 +137,6 @@ App::DocumentObjectExecReturn *Boolean::execute()
         if (shape.IsNull())
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Tool shape is null"));
 
-#ifdef FC_USE_TNP_FIX
         const char *op = nullptr;
         if (type == "Fuse")
             op = Part::OpCodes::Fuse;
@@ -160,30 +159,6 @@ App::DocumentObjectExecReturn *Boolean::execute()
             FC_ERR("Boolean operation failed: " << e.GetMessageString());
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Boolean operation failed"));
         }
-#else
-        if (type == "Fuse") {
-            BRepAlgoAPI_Fuse mkFuse(result, shape);
-            if (!mkFuse.IsDone())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Fusion of tools failed"));
-            // we have to get the solids (fuse sometimes creates compounds)
-            boolOp = this->getSolid(mkFuse.Shape());
-            // lets check if the result is a solid
-            if (boolOp.IsNull())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
-        } else if (type == "Cut") {
-            BRepAlgoAPI_Cut mkCut(result, shape);
-            if (!mkCut.IsDone())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Cut out failed"));
-            boolOp = mkCut.Shape();
-        } else if (type == "Common") {
-            BRepAlgoAPI_Common mkCommon(result, shape);
-            if (!mkCommon.IsDone())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Common operation failed"));
-            boolOp = mkCommon.Shape();
-        }
-
-        result = boolOp; // Use result of this operation for fuse/cut of next body
-#endif
     }
 
     result = refineShapeIfActive(result);

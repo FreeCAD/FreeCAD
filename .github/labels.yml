@@ -20,6 +20,10 @@
 - changed-files:
   - any-glob-to-any-file:  ['src/Mod/Material/**/*']
 
+"Mod: Measurement":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Measure/**/*']
+
 "Mod: BIM":
 - changed-files:
   - any-glob-to-any-file:  ['src/Mod/BIM/**/*']
@@ -87,6 +91,12 @@
 "Mod: Test":
 - changed-files:
   - any-glob-to-any-file:  ['src/Mod/Test/**/*']
+
+# 'Packaging' related labels
+
+"Packaging/building":
+- changed-files:
+  - any-glob-to-any-file:  ['cMake/**/*']
 
 # 'Topic' related labels
 

@@ -433,11 +433,16 @@ void TaskCheckGeometryResults::goCheck()
     for(const auto &sel :  selection) {
         selectedCount++;
         TopoDS_Shape shape = Part::Feature::getShape(sel.pObject,sel.SubName,true);
-        if (shape.IsNull())
+        if (shape.IsNull()) {
             continue;
+        }
+        if (shape.Infinite()) {
+            continue;
+        }
         currentSeparator = Gui::Application::Instance->getViewProvider(sel.pObject)->getRoot();
-        if (!currentSeparator)
+        if (!currentSeparator) {
             continue;
+        }
         QString baseName;
         QTextStream baseStream(&baseName);
         baseStream << sel.DocName;

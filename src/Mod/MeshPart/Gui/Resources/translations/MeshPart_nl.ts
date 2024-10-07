@@ -62,12 +62,12 @@ Deze opdracht werkt alleen met een 'maaswerk' object.</translation>
     <message>
       <location filename="../../Command.cpp" line="192"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="193"/>
       <source>Create section from mesh and plane</source>
-      <translation>Genereer doorsnede van maaswerk en vlak</translation>
+      <translation>Genereer doorsnede van mesh en vlak</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="194"/>
@@ -80,7 +80,7 @@ Deze opdracht werkt alleen met een 'maaswerk' object.</translation>
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>
@@ -580,7 +580,7 @@ Selecteer een andere vorm alstublieft.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="49"/>
       <source>Unwrap mesh</source>
-      <translation type="unfinished">Unwrap mesh</translation>
+      <translation>Mesh uitvouwen</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="52"/>
@@ -593,7 +593,7 @@ Selecteer een andere vorm alstublieft.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="88"/>
       <source>Unwrap face</source>
-      <translation type="unfinished">Unwrap face</translation>
+      <translation>Vlak uitvouwen</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="91"/>

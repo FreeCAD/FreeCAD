@@ -5,8 +5,8 @@
     <name>ArchMaterial</name>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="14"/>
-      <source>Arch material</source>
-      <translation>Материјал окружења Архитектура</translation>
+      <source>BIM material</source>
+      <translation type="unfinished">BIM material</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="26"/>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="268"/>
       <source>Parent</source>
-      <translation type="unfinished">Parent</translation>
+      <translation>Надређен</translation>
     </message>
   </context>
   <context>
@@ -149,7 +149,7 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="31"/>
       <source>BIM Server</source>
-      <translation type="unfinished">BIM Server</translation>
+      <translation>BIM Сервер</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="97"/>
@@ -419,12 +419,12 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="32"/>
       <source>Only selected objects</source>
-      <translation type="unfinished">Only selected objects</translation>
+      <translation>Само изабрани објекти</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="39"/>
       <source>Only visible BIM objects</source>
-      <translation type="unfinished">Only visible BIM objects</translation>
+      <translation>Само видљиви BIM објекти</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="50"/>
@@ -480,12 +480,12 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/dialogClassification.ui" line="48"/>
       <source>Only visible objects</source>
-      <translation type="unfinished">Only visible objects</translation>
+      <translation>Само видљиви објекти</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="60"/>
       <source>Sort by:</source>
-      <translation type="unfinished">Sort by:</translation>
+      <translation>Сортирај по:</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="68"/>
@@ -599,7 +599,7 @@ Utils -&gt; Make IFC project</translation>
       <location filename="../ui/dialogConvertDocument.ui" line="46"/>
       <location filename="../ui/dialogCreateProject.ui" line="30"/>
       <source>Do not ask again</source>
-      <translation type="unfinished">Do not ask again</translation>
+      <translation>Не питај поново</translation>
     </message>
     <message>
       <location filename="../ui/dialogCreateProject.ui" line="14"/>
@@ -620,12 +620,12 @@ Utils -&gt; Make IFC project</translation>
       <location filename="../ui/dialogImport.ui" line="152"/>
       <location filename="../ui/dialogExport.ui" line="30"/>
       <source>Ask me again next time</source>
-      <translation type="unfinished">Ask me again next time</translation>
+      <translation>Питај ме поново следећи пут</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="14"/>
       <source>IFC Elements Manager</source>
-      <translation type="unfinished">IFC Elements Manager</translation>
+      <translation>Менаџер IFC елемената</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="20"/>
@@ -636,7 +636,7 @@ Utils -&gt; Make IFC project</translation>
       <location filename="../ui/dialogIfcElements.ui" line="30"/>
       <location filename="../ui/dialogIfcQuantities.ui" line="30"/>
       <source>only visible BIM objects</source>
-      <translation type="unfinished">only visible BIM objects</translation>
+      <translation>само видљиви BIM објекти</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="39"/>
@@ -656,7 +656,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogIfcQuantities.ui" line="14"/>
       <source>IFC Quantities Manager</source>
-      <translation type="unfinished">IFC Quantities Manager</translation>
+      <translation>Менаџер IFC количина</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcQuantities.ui" line="20"/>
@@ -707,17 +707,17 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogImport.ui" line="55"/>
       <source>Locked (IFC objects only)</source>
-      <translation type="unfinished">Locked (IFC objects only)</translation>
+      <translation>Закључано (само IFC објекти)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="60"/>
       <source>Unlocked (non-IFC objects permitted)</source>
-      <translation type="unfinished">Unlocked (non-IFC objects permitted)</translation>
+      <translation>Откључано (дозвољени и објекти који нису IFC)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="68"/>
       <source>Lock document</source>
-      <translation type="unfinished">Lock document</translation>
+      <translation>Закључај документ</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="75"/>
@@ -1195,7 +1195,7 @@ Utils -&gt; Make IFC project</translation>
       <location filename="../ui/dialogSpaces.ui" line="61"/>
       <location filename="../ui/dialogSpaces.ui" line="128"/>
       <source>Area</source>
-      <translation type="unfinished">Area</translation>
+      <translation>Површинa</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="55"/>
@@ -1212,7 +1212,7 @@ Utils -&gt; Make IFC project</translation>
       <location filename="../ui/dialogSpaces.ui" line="75"/>
       <location filename="../ui/dialogSpaces.ui" line="145"/>
       <source>1.00 m²</source>
-      <translation type="unfinished">1.00 m²</translation>
+      <translation>1.00 m²</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="85"/>
@@ -1223,12 +1223,12 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="92"/>
       <source>0</source>
-      <translation type="unfinished">0</translation>
+      <translation>0</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="102"/>
       <source>0 W</source>
-      <translation type="unfinished">0 W</translation>
+      <translation>0 W</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="115"/>
@@ -1297,13 +1297,13 @@ Utils -&gt; Make IFC project</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="85"/>
-      <source>FreeCAD is a complex application. If this is your first contact with FreeCAD, or you have never worked with 3D or BIM before, you might want to take our &lt;a href="https://www.freecadweb.org/wiki/BIM_Start_Tutorial"&gt;BIM tutorial&lt;/a&gt; first (Also available under menu &lt;span style=" font-weight:600;"&gt;Help -&amp;gt; BIM Tutorial&lt;/span&gt;).</source>
-      <translation type="unfinished">FreeCAD is a complex application. If this is your first contact with FreeCAD, or you have never worked with 3D or BIM before, you might want to take our &lt;a href="https://www.freecadweb.org/wiki/BIM_Start_Tutorial"&gt;BIM tutorial&lt;/a&gt; first (Also available under menu &lt;span style=" font-weight:600;"&gt;Help -&amp;gt; BIM Tutorial&lt;/span&gt;).</translation>
+      <source>FreeCAD is a complex application. If this is your first contact with FreeCAD, or you have never worked with 3D or BIM before, you might want to take our &lt;a href="https://wiki.freecad.org/BIM_ingame_tutorial"&gt;BIM tutorial&lt;/a&gt; first (Also available under menu &lt;span style=" font-weight:600;"&gt;Help -&amp;gt; BIM Tutorial&lt;/span&gt;).</source>
+      <translation type="unfinished">FreeCAD is a complex application. If this is your first contact with FreeCAD, or you have never worked with 3D or BIM before, you might want to take our &lt;a href="https://wiki.freecad.org/BIM_ingame_tutorial"&gt;BIM tutorial&lt;/a&gt; first (Also available under menu &lt;span style=" font-weight:600;"&gt;Help -&amp;gt; BIM Tutorial&lt;/span&gt;).</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="95"/>
-      <source>The BIM workbench also has a &lt;a href="https://wiki.freecadweb.org/BIM_Workbench"&gt;complete documentation&lt;/a&gt;  available under the Help menu. The "what's this?" button will also open the help page of any tool from the toolbars.</source>
-      <translation type="unfinished">The BIM workbench also has a &lt;a href="https://wiki.freecadweb.org/BIM_Workbench"&gt;complete documentation&lt;/a&gt;  available under the Help menu. The "what's this?" button will also open the help page of any tool from the toolbars.</translation>
+      <source>The BIM workbench also has a &lt;a href="https://wiki.freecad.org/BIM_Workbench"&gt;complete documentation&lt;/a&gt;  available under the Help menu. The "what's this?" button will also open the help page of any tool from the toolbars.</source>
+      <translation type="unfinished">The BIM workbench also has a &lt;a href="https://wiki.freecad.org/BIM_Workbench"&gt;complete documentation&lt;/a&gt;  available under the Help menu. The "what's this?" button will also open the help page of any tool from the toolbars.</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="105"/>
@@ -1717,7 +1717,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="20"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The following test will check your model or the selected object(s) and their children for conformity to some IFC standards.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Important&lt;/span&gt;: None of the failed tests below will prevent exporting IFC files, nor do these tests guarantee that your IFC files meets some specific quality or standard requirement. They are there to help you assess what is and what is not in your exported file. It's for you to choose which item is of importance to you or not. Hovering the mouse over each description will give you more information to decide.&lt;/p&gt;&lt;p&gt;After a test is run, clicking the corresponding button will give you more information to help you to fix problems.&lt;/p&gt;&lt;p&gt;The &lt;a href="http://www.buildingsmart-tech.org/specifications"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;official IFC website&lt;/span&gt;&lt;/a&gt; contains a lot of useful information about IFC standards.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The following test will check your model or the selected object(s) and their children for conformity to some IFC standards.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Important&lt;/span&gt;: None of the failed tests below will prevent exporting IFC files, nor do these tests guarantee that your IFC files meets some specific quality or standard requirement. They are there to help you assess what is and what is not in your exported file. It's for you to choose which item is of importance to you or not. Hovering the mouse over each description will give you more information to decide.&lt;/p&gt;&lt;p&gt;After a test is run, clicking the corresponding button will give you more information to help you to fix problems.&lt;/p&gt;&lt;p&gt;The &lt;a href="http://www.buildingsmart-tech.org/specifications"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;official IFC website&lt;/span&gt;&lt;/a&gt; contains a lot of useful information about IFC standards.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Овај тест служи за проверу да ли су модели, изабрани објекти и њихови подређени објекти у складу са одређеним IFC стандардима.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Важно&lt;/span&gt;: Неуспешни тестови нец́е спречити извоз IFC датотека, нити гарантују да тестиране ИФЦ датотеке испуњавају неке специфичне захтеве квалитета или стандарда. Они су ту само да омогуће процену датотеке. На теби је да изабереш која је ставка важна, а која не. Лебдењем миша изнад сваког описа појавиће се више информација.&lt;/p&gt;&lt;p&gt;Након покретања теста, кликом на одговарајуц́е дугме на располагању ће ти бити више информација за решавање проблема..&lt;/p&gt;&lt;p&gt; &lt;a href="http://www.buildingsmart-tech.org/specifications"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;Званични IFC веб-сајт&lt;/span&gt;&lt;/a&gt; садржи много корисних информација о IFC стандардима.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="30"/>
@@ -2020,17 +2020,17 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/dialogTutorial.ui" line="91"/>
       <source>&lt;&lt; Previous</source>
-      <translation type="unfinished">&lt;&lt; Previous</translation>
+      <translation>&lt;&lt; Претходна cтраница</translation>
     </message>
     <message>
       <location filename="../ui/dialogTutorial.ui" line="98"/>
       <source>Next &gt;&gt;</source>
-      <translation type="unfinished">Next &gt;&gt;</translation>
+      <translation>Следећа страница &gt;&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogViews.ui" line="64"/>
       <source>Element</source>
-      <translation type="unfinished">Element</translation>
+      <translation>Елемент</translation>
     </message>
     <message>
       <location filename="../ui/dialogViews.ui" line="69"/>
@@ -2040,7 +2040,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/dialogWindows.ui" line="14"/>
       <source>Doors and windows</source>
-      <translation type="unfinished">Doors and windows</translation>
+      <translation>Врата и прозори</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="20"/>
@@ -2050,12 +2050,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/dialogWindows.ui" line="32"/>
       <source>Group by:</source>
-      <translation type="unfinished">Group by:</translation>
+      <translation>Групиши по:</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="40"/>
       <source>Do not group</source>
-      <translation type="unfinished">Do not group</translation>
+      <translation>Не групиши</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="50"/>
@@ -2077,18 +2077,18 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/dialogWindows.ui" line="97"/>
       <source>Total number of doors:</source>
-      <translation type="unfinished">Total number of doors:</translation>
+      <translation>Укупни број врата:</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="104"/>
       <source>Total number of windows:</source>
-      <translation type="unfinished">Total number of windows:</translation>
+      <translation>Укупни број прозора:</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="111"/>
       <location filename="../ui/dialogWindows.ui" line="121"/>
       <source>0</source>
-      <translation type="unfinished">0</translation>
+      <translation>0</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="161"/>
@@ -2229,12 +2229,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="183"/>
       <source>If this is checked, a dialog will be shown at each import</source>
-      <translation type="unfinished">If this is checked, a dialog will be shown at each import</translation>
+      <translation>Ако је означено, приликом сваког увоза отвориће се прозор са опцијама</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="186"/>
       <source>Show options dialog when importing</source>
-      <translation type="unfinished">Show options dialog when importing</translation>
+      <translation>Прикажи прозор са опцијама приликом увоза</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="205"/>
@@ -2244,12 +2244,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="211"/>
       <source>Show warning when saving</source>
-      <translation type="unfinished">Show warning when saving</translation>
+      <translation>Прикажи упозорење приликом снимања</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="230"/>
       <source>New document</source>
-      <translation type="unfinished">New document</translation>
+      <translation>Нови документ</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="236"/>
@@ -2265,7 +2265,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="268"/>
       <source>New project</source>
-      <translation type="unfinished">New project</translation>
+      <translation>Нови пројекат</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="274"/>
@@ -2497,7 +2497,7 @@ a Footprint display mode</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="515"/>
       <source>BIM server</source>
-      <translation type="unfinished">BIM server</translation>
+      <translation>BIM Сервер</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="528"/>
@@ -2561,7 +2561,7 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="26"/>
       <source>Wall color</source>
-      <translation type="unfinished">Wall color</translation>
+      <translation>Боја зида</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="57"/>
@@ -2576,7 +2576,7 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="105"/>
       <source>Window glass transparency</source>
-      <translation type="unfinished">Window glass transparency</translation>
+      <translation>Прозирност прозорског стакла</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="118"/>
@@ -2587,12 +2587,12 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="137"/>
       <source>Window glass color</source>
-      <translation type="unfinished">Window glass color</translation>
+      <translation>Боја прозорског стакла</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="161"/>
       <source>Panel color</source>
-      <translation type="unfinished">Panel color</translation>
+      <translation>Боја панела</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="185"/>
@@ -2612,7 +2612,7 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="252"/>
       <source>Solid</source>
-      <translation>Пуно</translation>
+      <translation>Пун тело</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="257"/>
@@ -2662,22 +2662,22 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="415"/>
       <source>Stair length</source>
-      <translation type="unfinished">Stair length</translation>
+      <translation>Дужина степеништа</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="441"/>
       <source>Stair width</source>
-      <translation type="unfinished">Stair width</translation>
+      <translation>Ширина степеништа</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="467"/>
       <source>Stair height</source>
-      <translation type="unfinished">Stair height</translation>
+      <translation>Висина степеништа</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="493"/>
       <source>Number of stair steps</source>
-      <translation type="unfinished">Number of stair steps</translation>
+      <translation>Број степеника</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="14"/>
@@ -2685,37 +2685,37 @@ instead of the FreeCAD web workbench</translation>
       <translation>IFC увоз</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="41"/>
+      <location filename="../ui/preferences-ifc.ui" line="32"/>
       <source>Show this dialog when importing</source>
       <translation>Прикажи овај прозор приликом увоза</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="54"/>
+      <location filename="../ui/preferences-ifc.ui" line="45"/>
       <source>Shows verbose debug messages during import and export
 of IFC files in the Report view panel</source>
       <translation>Приказује опширне поруке о отклањању грешака у панелу Прегледача објава током увоза и извоза
  IFC датотека</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="58"/>
+      <location filename="../ui/preferences-ifc.ui" line="49"/>
       <source>Show debug messages</source>
       <translation>Прикажи поруке о отклањању грешака</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="71"/>
+      <location filename="../ui/preferences-ifc.ui" line="62"/>
       <source>Clones are used when objects have shared geometry
 One object is the base object, the others are clones.</source>
       <translation>Клонови се користе када објекти имају заједничку геометрију
 Један објекат је основни објекат, други су клонови.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="75"/>
+      <location filename="../ui/preferences-ifc.ui" line="66"/>
       <source>Create clones when objects have shared geometry</source>
       <translation>Направи клонове када објекти имају заједничку геометрију</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="99"/>
-      <location filename="../ui/preferences-ifc.ui" line="119"/>
+      <location filename="../ui/preferences-ifc.ui" line="90"/>
+      <location filename="../ui/preferences-ifc.ui" line="110"/>
       <source>EXPERIMENTAL
 The number of cores to use in multicore mode.
 Keep 0 to disable multicore mode.
@@ -2734,192 +2734,192 @@ if you start getting crashes when you set multiple cores.</source>
 ако дође до грешака приликом рада у режиму са више језгара.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="129"/>
+      <location filename="../ui/preferences-ifc.ui" line="120"/>
       <source>Number of cores to use (experimental)</source>
       <translation>Број језгара које се користе (експериментално)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="157"/>
+      <location filename="../ui/preferences-ifc.ui" line="148"/>
       <source>Import options</source>
       <translation>Поставке увоза</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="165"/>
+      <location filename="../ui/preferences-ifc.ui" line="156"/>
       <source>Import arch IFC objects as</source>
       <translation>Увези IFC објекте окружења Архитектура као</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="172"/>
-      <location filename="../ui/preferences-ifc.ui" line="221"/>
+      <location filename="../ui/preferences-ifc.ui" line="163"/>
+      <location filename="../ui/preferences-ifc.ui" line="212"/>
       <source>Specifies what kind of objects will be created in FreeCAD</source>
       <translation>Одређује које врсте објеката ће бити створене у FreeCAD-у</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="182"/>
+      <location filename="../ui/preferences-ifc.ui" line="173"/>
       <source>Parametric BIM objects</source>
-      <translation type="unfinished">Parametric BIM objects</translation>
+      <translation>Параметарски BIM објекти</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="187"/>
-      <location filename="../ui/preferences-ifc.ui" line="231"/>
+      <location filename="../ui/preferences-ifc.ui" line="178"/>
+      <location filename="../ui/preferences-ifc.ui" line="222"/>
       <source>Non-parametric BIM objects</source>
-      <translation type="unfinished">Non-parametric BIM objects</translation>
+      <translation>Непараметарски BIM објекти</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="192"/>
-      <location filename="../ui/preferences-ifc.ui" line="236"/>
+      <location filename="../ui/preferences-ifc.ui" line="183"/>
+      <location filename="../ui/preferences-ifc.ui" line="227"/>
       <source>Simple Part shapes</source>
       <translation>Једноставни Part облици</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="197"/>
+      <location filename="../ui/preferences-ifc.ui" line="188"/>
       <source>One compound per floor</source>
-      <translation type="unfinished">One compound per floor</translation>
+      <translation>Један састављени објекат по спрату</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="202"/>
+      <location filename="../ui/preferences-ifc.ui" line="193"/>
       <source>Do not import Arch objects</source>
-      <translation>Немој увозити објекте окружења Архитектура</translation>
+      <translation>Немој увозити објекте БИМ окружења</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="214"/>
+      <location filename="../ui/preferences-ifc.ui" line="205"/>
       <source>Import struct IFC objects as</source>
       <translation>Увези структуралне IFC објекте као</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="241"/>
+      <location filename="../ui/preferences-ifc.ui" line="232"/>
       <source>One compound for all</source>
-      <translation type="unfinished">One compound for all</translation>
+      <translation>Један састављени објекат за све</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="246"/>
+      <location filename="../ui/preferences-ifc.ui" line="237"/>
       <source>Do not import structural objects</source>
       <translation>Не увози структурне објекте</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="258"/>
+      <location filename="../ui/preferences-ifc.ui" line="249"/>
       <source>Root element:</source>
       <translation>Основни елемент:</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="265"/>
+      <location filename="../ui/preferences-ifc.ui" line="256"/>
       <source>Only subtypes of the specified element will be imported.
 Keep the element IfcProduct to import all building elements.</source>
       <translation>Биће увезени само подтипови наведеног елемента.
 Задржи елемент IfcProduct да би увезао све елементе зграде.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="284"/>
+      <location filename="../ui/preferences-ifc.ui" line="275"/>
       <source>Openings will be imported as subtractions, otherwise wall shapes
 will already have their openings subtracted</source>
       <translation>Отвори ће бити увезени као засебно одузимање, у супротном зидови
 ће већ имати одузете отворе</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="288"/>
+      <location filename="../ui/preferences-ifc.ui" line="279"/>
       <source>Separate openings</source>
       <translation>Засебни отвори</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="301"/>
+      <location filename="../ui/preferences-ifc.ui" line="292"/>
       <source>The importer will try to detect extrusions.
 Note that this might slow things down.</source>
       <translation>Увозник ће покушати да открије додавање извлачењем.
 Имај на уму да би ово могло успорити рад.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="305"/>
+      <location filename="../ui/preferences-ifc.ui" line="296"/>
       <source>Detect extrusions</source>
       <translation>Детектуј додавање извлачењем</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="318"/>
+      <location filename="../ui/preferences-ifc.ui" line="309"/>
       <source>Split walls made of multiple layers</source>
       <translation>Раздвој зидове који се направљени од више слојева</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="321"/>
+      <location filename="../ui/preferences-ifc.ui" line="312"/>
       <source>Split multilayer walls</source>
       <translation>Раздвој вишеслојне зидове</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="334"/>
+      <location filename="../ui/preferences-ifc.ui" line="325"/>
       <source>Object names will be prefixed with the IFC ID number</source>
       <translation>Имена објеката ће имати префикс са IFC ID бројем</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="337"/>
+      <location filename="../ui/preferences-ifc.ui" line="328"/>
       <source>Prefix names with ID number</source>
       <translation>Префикс имена са ID бројем</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="350"/>
+      <location filename="../ui/preferences-ifc.ui" line="341"/>
       <source>If several materials with the same name and color are found in the IFC file,
 they will be treated as one.</source>
       <translation>Ако се у IFC датотеци нађе неколико материјала са истим именом и бојом,
 они ће се третирати као један материјал.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="354"/>
+      <location filename="../ui/preferences-ifc.ui" line="345"/>
       <source>Merge materials with same name and same color</source>
       <translation>Обједини материјале истог имена и исте боје</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="367"/>
+      <location filename="../ui/preferences-ifc.ui" line="358"/>
       <source>Each object will have their IFC properties stored in a spreadsheet object</source>
       <translation>Сваки објекат ће имати своје IFC особине смештене у табели</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="370"/>
+      <location filename="../ui/preferences-ifc.ui" line="361"/>
       <source>Import IFC properties in spreadsheet</source>
       <translation>Увези IFC особине у табели</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="383"/>
+      <location filename="../ui/preferences-ifc.ui" line="374"/>
       <source>IFC files can contain unclean or non-solid geometry. If this option is checked, all the geometry is imported, regardless of their validity.</source>
       <translation>IFC датотеке могу да садрже објекте која нису пуна тела. Ако је ова опција чекирана, увози се сва геометрија, без обзира на њену валидност.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="386"/>
+      <location filename="../ui/preferences-ifc.ui" line="377"/>
       <source>Allow invalid shapes</source>
       <translation>Дозволи неважеће облике</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="401"/>
+      <location filename="../ui/preferences-ifc.ui" line="392"/>
       <source>Exclude list:</source>
       <translation>Lista izuzetaka:</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="408"/>
+      <location filename="../ui/preferences-ifc.ui" line="399"/>
       <source>Comma-separated list of IFC entities to be excluded from imports</source>
       <translation>Листа IFC ентитета раздвојених зарезима које треба искључити приликом увоза</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="429"/>
+      <location filename="../ui/preferences-ifc.ui" line="420"/>
       <source>Fit view during import on the imported objects.
 This will slow down the import, but one can watch the import.</source>
-      <translation type="unfinished">Fit view during import on the imported objects.
-This will slow down the import, but one can watch the import.</translation>
+      <translation>Смешта увезене објекте у поглед током увоза.
+Ово ће успорити увоз, али се он може пратити.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="433"/>
+      <location filename="../ui/preferences-ifc.ui" line="424"/>
       <source>Fit view while importing</source>
-      <translation type="unfinished">Fit view while importing</translation>
+      <translation>Смештај у поглед током увоза</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="446"/>
+      <location filename="../ui/preferences-ifc.ui" line="437"/>
       <source>Creates a full parametric model on import using stored
 FreeCAD object properties</source>
       <translation>Ствара потпуно параметарски модел приликом увоза користећи сачуване
 особине FreeCAD објекта</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="450"/>
+      <location filename="../ui/preferences-ifc.ui" line="441"/>
       <source>Import full FreeCAD parametric definitions if available</source>
       <translation>Увези потпуно параметарске FreeCAD дефиниције ако су доступне</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="463"/>
+      <location filename="../ui/preferences-ifc.ui" line="454"/>
       <source>If this option is checked, the default 'Project', 'Site', 'Building', and 'Storeys'
 objects that are usually found in an IFC file are not imported, and all objects
 are placed in a 'Group' instead.
@@ -2930,7 +2930,7 @@ are placed in a 'Group' instead.
 'Buildings' and 'Storeys' are still imported if there is more than one.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="469"/>
+      <location filename="../ui/preferences-ifc.ui" line="460"/>
       <source>Replace 'Project', 'Site', 'Building', and 'Storey' with 'Group'</source>
       <translation type="unfinished">Replace 'Project', 'Site', 'Building', and 'Storey' with 'Group'</translation>
     </message>
@@ -2940,7 +2940,7 @@ are placed in a 'Group' instead.
       <translation>DAE</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="57"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="48"/>
       <location filename="../ui/preferences-dae.ui" line="26"/>
       <source>Export options</source>
       <translation>Опције извоза</translation>
@@ -2985,7 +2985,7 @@ If using Netgen, make sure that it is available.</source>
     <message>
       <location filename="../ui/preferences-dae.ui" line="108"/>
       <source>Builtin and Mefisto mesher options</source>
-      <translation type="unfinished">Builtin and Mefisto mesher options</translation>
+      <translation>Опције уграђеног и Мефисто генератора мреже</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="116"/>
@@ -3072,19 +3072,19 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</sour
       <translation>IFC извоз</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="35"/>
-      <location filename="../ui/preferences-ifc.ui" line="35"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="26"/>
+      <location filename="../ui/preferences-ifc.ui" line="26"/>
       <source>General options</source>
       <translation>Опште поставке</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="41"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="32"/>
       <source>Show this dialog when exporting</source>
       <translation>Прикажи овај прозор приликом извоза</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="65"/>
-      <location filename="../ui/preferences-ifc-export.ui" line="78"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="56"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="69"/>
       <source>The type of objects that you wish to export:
 - Standard model: solid objects.
 - Structural analysis: wireframe model for structural calculations.
@@ -3095,49 +3095,49 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</sour
 - Стандардни + структурални: обе врсте модела.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="71"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="62"/>
       <source>Export type</source>
-      <translation>Тип извоза</translation>
+      <translation>Врста извоза</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="91"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="82"/>
       <source>Standard model</source>
       <translation>Стандардни модел</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="96"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="87"/>
       <source>Structural analysis</source>
       <translation>Структурална анализа</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="101"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="92"/>
       <source>Standard + structural</source>
-      <translation>Стандардни + Структурална</translation>
+      <translation>Стандардни + Структурални</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="111"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="102"/>
       <source>Some IFC viewers don't like objects exported as extrusions.
 Use this to force all objects to be exported as BREP geometry.</source>
       <translation>Неки IFC приказивачи не воле објекте који се извозе као извлачење.
 Користи ово да присилиш све објекте да буду извезени као BREP геометрија.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="115"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="106"/>
       <source>Force export as Brep</source>
       <translation>Присилно извези као BREP</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="128"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="119"/>
       <source>Use triangulation options set in the DAE options page</source>
       <translation>Користи опције триангулације постављене на картици DAE</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="131"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="122"/>
       <source>Use DAE triangulation options</source>
       <translation>Користи опције DAE триангулације</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="144"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="135"/>
       <source>Curved shapes that cannot be represented as curves in IFC
 are decomposed into flat facets.
 If this is checked, an additional calculation is done to join coplanar facets.</source>
@@ -3146,12 +3146,12 @@ If this is checked, an additional calculation is done to join coplanar facets.</
 Ако је ово означено, врши се додатни прорачун за спајање компланарних фасета.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="149"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="140"/>
       <source>Join coplanar facets when triangulating</source>
       <translation>Споји компланарне фасете приликом триангулације</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="162"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="153"/>
       <source>When exporting objects without unique ID (UID), the generated UID
 will be stored inside the FreeCAD object for reuse next time that object
 is exported. This leads to smaller differences between file versions.</source>
@@ -3160,12 +3160,12 @@ is exported. This leads to smaller differences between file versions.</source>
 извозио. Ово доводи до мањих разлика између верзија датотека.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="167"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="158"/>
       <source>Store IFC unique ID in FreeCAD objects</source>
       <translation>Чувати IFC јединствени ID у FreeCAD објектима</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="183"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="174"/>
       <source>IFCOpenShell is a library that allows to import IFC files.
 Its serializer functionality allows to give it an OCC shape and it will
 produce adequate IFC geometry: NURBS, faceted, or anything else.
@@ -3176,46 +3176,46 @@ Note: The serializer is still an experimental feature!</source>
 Напомена: серијализатор је још увек експериментална функција!</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="189"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="180"/>
       <source>Use IfcOpenShell serializer if available</source>
       <translation>Користи IfcOpenShell серијализатор ако је доступан</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="202"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="193"/>
       <source>2D objects will be exported as IfcAnnotation</source>
       <translation>2Д објекти ће бити извезени као IfcAnnotation</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="205"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="196"/>
       <source>Export 2D objects as IfcAnnotations</source>
       <translation>Извези 2Д објекте као IfcAnnotations</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="221"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="212"/>
       <source>All FreeCAD object properties will be stored inside the exported objects,
 allowing to recreate a full parametric model on reimport.</source>
       <translation>Све особине FreeCAD објеката биће ускладиштене унутар извезених објеката,
 што ће омогућити стварање потпуно параметарског модела при поновном увозу.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="225"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="216"/>
       <source>Export full FreeCAD parametric model</source>
       <translation>Извези потпуно параметарски FreeCAD модел</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="238"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="229"/>
       <source>When possible, similar entities will be used only once in the file if possible.
 This can reduce the file size a lot, but will make it less easily readable.</source>
       <translation>Када је могуће, слични ентитети ће се користити само једном у датотеци ако је могуће.
 Ово може знатно смањити величину датотеке, али ће је учинити мање читљивом.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="242"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="233"/>
       <source>Reuse similar entities</source>
       <translation>Поново користи сличне ентитете</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="258"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="249"/>
       <source>When possible, IFC objects that are extruded rectangles will be
 exported as IfcRectangleProfileDef.
 However, some other applications might have problems importing that entity.
@@ -3226,62 +3226,62 @@ If this is your case, you can disable this and then all profiles will be exporte
 Ако је ово твој случај, можеш да онемогућиш ово и тада ће сви профили бити извезени као IfcArbitraryClosedProfileDef.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="264"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="255"/>
       <source>Disable IfcRectangleProfileDef</source>
       <translation>Онемогући IfcRectangleProfileDef</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="277"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="268"/>
       <source>Some IFC types such as IfcWall or IfcBeam have special standard versions like IfcWallStandardCase or IfcBeamStandardCase. If this option is turned on, FreeCAD will automatically export such objects
 as standard cases when the necessary conditions are met.</source>
       <translation type="unfinished">Some IFC types such as IfcWall or IfcBeam have special standard versions like IfcWallStandardCase or IfcBeamStandardCase. If this option is turned on, FreeCAD will automatically export such objects
 as standard cases when the necessary conditions are met.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="396"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="387"/>
       <source>Add default building if one is not found in the document</source>
       <translation type="unfinished">Add default building if one is not found in the document</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="412"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="403"/>
       <source>In FreeCAD, it is possible to nest groups inside buildings or storeys. If this option is disabled, FreeCAD groups will be saved as IfcGroups and aggregated to the building structure. Aggregating non-building elements such as IfcGroups is however not recommended by the IFC standards. It is therefore also possible to export these groups as IfcElementAssemblies, which produces an IFC-compliant file. However, at FreeCAD, we believe nesting groups inside structures should be possible, and this option is there to have a chance to demonstrate our point of view.</source>
       <translation type="unfinished">In FreeCAD, it is possible to nest groups inside buildings or storeys. If this option is disabled, FreeCAD groups will be saved as IfcGroups and aggregated to the building structure. Aggregating non-building elements such as IfcGroups is however not recommended by the IFC standards. It is therefore also possible to export these groups as IfcElementAssemblies, which produces an IFC-compliant file. However, at FreeCAD, we believe nesting groups inside structures should be possible, and this option is there to have a chance to demonstrate our point of view.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="415"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="406"/>
       <source>Export nested groups as assemblies</source>
       <translation type="unfinished">Export nested groups as assemblies</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="281"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="272"/>
       <source>Auto-detect and export as standard cases when applicable</source>
       <translation>Аутоматско откривање и извоз у виду стандардних случајева када је применљиво</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="294"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="285"/>
       <source>If no site is found in the FreeCAD document, a default one will be added.
 A site is not mandatory but a common practice is to have at least one in the file.</source>
       <translation>Ако у FreeCAD документу није пронађенa парцела, додаће се једна.
 Парцела није обавезна, али је уобичајена пракса да се има бар једна.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="298"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="289"/>
       <source>Add default site if one is not found in the document</source>
       <translation>Додај почетну парцелу ако она није пронађена у документу</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="375"/>
-      <location filename="../ui/preferences-ifc.ui" line="482"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="366"/>
+      <location filename="../ui/preferences-ifc.ui" line="473"/>
       <source>Check also NativeIFC-specific preferences under BIM -&gt; NativeIFC</source>
       <translation type="unfinished">Check also NativeIFC-specific preferences under BIM -&gt; NativeIFC</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="385"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="376"/>
       <source>IFC standard compliance</source>
       <translation type="unfinished">IFC standard compliance</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="391"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="382"/>
       <source>If no building is found in the FreeCAD document, a default one will be added.
 Warning: The IFC standard asks for at least one building in each file. By turning this option off, you will produce a non-standard IFC file.
 However, at FreeCAD, we believe having a building should not be mandatory, and this option is there to have a chance to demonstrate our point of view.</source>
@@ -3290,20 +3290,20 @@ However, at FreeCAD, we believe having a building should not be mandatory, and t
 Међутим, у FreeCAD-у верујемо да постојање зграде не би требало да буде обавезно, а ова опција је ту да бисмо имали прилику да покажемо своје гледиште.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="311"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="302"/>
       <source>If no building storey is found in the FreeCAD document, a default one will be added.
 A building storey is not mandatory but a common practice to have at least one in the file.</source>
       <translation>Ако у FreeCAD документу није пронађен ниједан спрат зграде, додаће се један.
 Зграда не мора да има спратове, али је уобичајена пракса да се има бар један.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="315"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="306"/>
       <source>Add default building storey if one is not found in the document</source>
       <translation>Додај почетни спрат зграде ако ниједан није пронађен у документу</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="330"/>
-      <location filename="../ui/preferences-ifc-export.ui" line="345"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="321"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="336"/>
       <source>The units you want your IFC file to be exported to.
 
 Note that IFC files are ALWAYS written in metric units; imperial units
@@ -3318,17 +3318,17 @@ unit to work with when opening the file.</source>
 јединицама треба радити приликом отварања датотеке.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="338"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="329"/>
       <source>IFC file units</source>
       <translation>Мерне јединице IFC датотеке</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="360"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="351"/>
       <source>Metric</source>
       <translation>Метрички</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="365"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="356"/>
       <source>Imperial</source>
       <translation>Империјални</translation>
     </message>
@@ -3350,7 +3350,7 @@ unit to work with when opening the file.</source>
       <location filename="../../ArchStructure.py" line="129"/>
       <location filename="../../ArchStructure.py" line="446"/>
       <source>Column</source>
-      <translation type="unfinished">Column</translation>
+      <translation>Стуб</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="151"/>
@@ -3397,7 +3397,7 @@ unit to work with when opening the file.</source>
       <location filename="../../ArchStructure.py" line="345"/>
       <location filename="../../bimcommands/BimWall.py" line="156"/>
       <source>Next point</source>
-      <translation type="unfinished">Next point</translation>
+      <translation>Следећа тачка</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="440"/>
@@ -3406,14 +3406,14 @@ unit to work with when opening the file.</source>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="456"/>
-      <location filename="../../ArchCommands.py" line="1336"/>
+      <location filename="../../ArchCommands.py" line="1335"/>
       <location filename="../../bimcommands/BimProfile.py" line="74"/>
       <source>Category</source>
       <translation>Категорија</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="463"/>
-      <location filename="../../bimcommands/BimWindow.py" line="306"/>
+      <location filename="../../bimcommands/BimWindow.py" line="307"/>
       <location filename="../../bimcommands/BimProfile.py" line="81"/>
       <location filename="../../bimcommands/BimPanel.py" line="138"/>
       <source>Preset</source>
@@ -3422,7 +3422,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchStructure.py" line="472"/>
       <location filename="../../ArchPrecast.py" line="1412"/>
-      <location filename="../../ArchCommands.py" line="1011"/>
+      <location filename="../../ArchCommands.py" line="1010"/>
       <location filename="../../bimcommands/BimWall.py" line="293"/>
       <location filename="../../bimcommands/BimPanel.py" line="148"/>
       <source>Length</source>
@@ -3678,7 +3678,7 @@ unit to work with when opening the file.</source>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="842"/>
-      <location filename="../../ArchMaterial.py" line="95"/>
+      <location filename="../../ArchMaterial.py" line="93"/>
       <source>Reorder children alphabetically</source>
       <translation>Преуреди подређене по абецедном реду</translation>
     </message>
@@ -3721,13 +3721,13 @@ unit to work with when opening the file.</source>
       <location filename="../../bimcommands/BimRoof.py" line="58"/>
       <location filename="../../bimcommands/BimRoof.py" line="68"/>
       <source>Create Roof</source>
-      <translation type="unfinished">Create Roof</translation>
+      <translation>Направи Кров</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="728"/>
       <location filename="../../bimcommands/BimRoof.py" line="77"/>
       <source>Unable to create a roof</source>
-      <translation type="unfinished">Unable to create a roof</translation>
+      <translation>Није могуће направити кров</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1663"/>
@@ -3740,7 +3740,7 @@ unit to work with when opening the file.</source>
       <location filename="../../ArchRoof.py" line="945"/>
       <location filename="../../Arch.py" line="639"/>
       <source>Roof</source>
-      <translation type="unfinished">Roof</translation>
+      <translation>Кров</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="946"/>
@@ -3775,7 +3775,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchRoof.py" line="948"/>
       <source>Angle (deg)</source>
-      <translation type="unfinished">Angle (deg)</translation>
+      <translation>Угао (степени)</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="949"/>
@@ -3790,7 +3790,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchRoof.py" line="951"/>
       <source>Thickness (mm)</source>
-      <translation type="unfinished">Thickness (mm)</translation>
+      <translation>Дебљина (мм)</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="952"/>
@@ -3800,12 +3800,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchRoof.py" line="953"/>
       <source>Height (mm)</source>
-      <translation type="unfinished">Height (mm)</translation>
+      <translation>Виcина (мм)</translation>
     </message>
     <message>
       <location filename="../../ArchWindowPresets.py" line="519"/>
       <source>Door</source>
-      <translation type="unfinished">Door</translation>
+      <translation>Врата</translation>
     </message>
     <message>
       <location filename="../../ArchWindowPresets.py" line="522"/>
@@ -3981,52 +3981,52 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation type="unfinished">Crossing point not found in profile.</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="67"/>
+      <location filename="../../importers/importSHP.py" line="66"/>
       <source>Shapes elevation</source>
       <translation type="unfinished">Shapes elevation</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="68"/>
+      <location filename="../../importers/importSHP.py" line="67"/>
       <source>Choose which field provides shapes elevations:</source>
       <translation type="unfinished">Choose which field provides shapes elevations:</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="109"/>
+      <location filename="../../importers/importSHP.py" line="108"/>
       <source>No shape found in this file</source>
       <translation type="unfinished">No shape found in this file</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="134"/>
+      <location filename="../../importers/importSHP.py" line="133"/>
       <source>Shapefile module not found</source>
       <translation type="unfinished">Shapefile module not found</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="135"/>
+      <location filename="../../importers/importSHP.py" line="134"/>
       <source>The shapefile Python library was not found on your system. Would you like to download it now from %1? It will be placed in your macros folder.</source>
       <translation type="unfinished">The shapefile Python library was not found on your system. Would you like to download it now from %1? It will be placed in your macros folder.</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="141"/>
+      <location filename="../../importers/importSHP.py" line="140"/>
       <source>Error: Unable to download from %1</source>
       <translation type="unfinished">Error: Unable to download from %1</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="151"/>
+      <location filename="../../importers/importSHP.py" line="150"/>
       <source>Could not download shapefile module. Aborting.</source>
       <translation type="unfinished">Could not download shapefile module. Aborting.</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="154"/>
+      <location filename="../../importers/importSHP.py" line="153"/>
       <source>Shapefile module not downloaded. Aborting.</source>
       <translation type="unfinished">Shapefile module not downloaded. Aborting.</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="157"/>
+      <location filename="../../importers/importSHP.py" line="156"/>
       <source>Shapefile module not found. Aborting.</source>
       <translation type="unfinished">Shapefile module not found. Aborting.</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="158"/>
+      <location filename="../../importers/importSHP.py" line="157"/>
       <source>The shapefile library can be downloaded from the following URL and installed in your macros folder:</source>
       <translation type="unfinished">The shapefile library can be downloaded from the following URL and installed in your macros folder:</translation>
     </message>
@@ -4038,9 +4038,9 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../bimcommands/BimWindow.py" line="100"/>
       <location filename="../../bimcommands/BimWindow.py" line="119"/>
-      <location filename="../../bimcommands/BimWindow.py" line="166"/>
+      <location filename="../../bimcommands/BimWindow.py" line="167"/>
       <source>Create Window</source>
-      <translation type="unfinished">Create Window</translation>
+      <translation>Направи прозор</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWindow.py" line="134"/>
@@ -4048,99 +4048,99 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation type="unfinished">Choose a face on an existing object or select a preset</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="190"/>
+      <location filename="../../bimcommands/BimWindow.py" line="191"/>
       <source>Window not based on sketch. Window not aligned or resized.</source>
       <translation type="unfinished">Window not based on sketch. Window not aligned or resized.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="200"/>
+      <location filename="../../bimcommands/BimWindow.py" line="201"/>
       <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
       <translation type="unfinished">No Width and/or Height constraint in window sketch. Window not resized.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="203"/>
+      <location filename="../../bimcommands/BimWindow.py" line="204"/>
       <source>No window found. Cannot continue.</source>
-      <translation type="unfinished">No window found. Cannot continue.</translation>
+      <translation>Није пронађен ниједан прозор. Није могуће наставити.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="265"/>
+      <location filename="../../bimcommands/BimWindow.py" line="266"/>
       <source>Window options</source>
-      <translation type="unfinished">Window options</translation>
+      <translation>Параметри прозора</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="269"/>
+      <location filename="../../bimcommands/BimWindow.py" line="270"/>
       <source>Auto include in host object</source>
       <translation type="unfinished">Auto include in host object</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="275"/>
+      <location filename="../../bimcommands/BimWindow.py" line="276"/>
       <source>Sill height</source>
       <translation type="unfinished">Sill height</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="869"/>
+      <location filename="../../ArchWindow.py" line="896"/>
       <source>This window has no defined opening</source>
       <translation type="unfinished">This window has no defined opening</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1146"/>
-      <location filename="../../ArchWindow.py" line="1195"/>
-      <location filename="../../ArchWindow.py" line="1356"/>
+      <location filename="../../ArchWindow.py" line="1173"/>
+      <location filename="../../ArchWindow.py" line="1222"/>
+      <location filename="../../ArchWindow.py" line="1383"/>
       <source>Get selected edge</source>
       <translation type="unfinished">Get selected edge</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1295"/>
+      <location filename="../../ArchWindow.py" line="1322"/>
       <source>Unable to create component</source>
       <translation type="unfinished">Unable to create component</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1333"/>
+      <location filename="../../ArchWindow.py" line="1360"/>
       <source>Window elements</source>
       <translation type="unfinished">Window elements</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1334"/>
+      <location filename="../../ArchWindow.py" line="1361"/>
       <source>Hole wire</source>
       <translation type="unfinished">Hole wire</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1335"/>
+      <location filename="../../ArchWindow.py" line="1362"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
       <translation type="unfinished">The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1336"/>
+      <location filename="../../ArchWindow.py" line="1363"/>
       <source>Pick selected</source>
       <translation>Изабери</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1337"/>
+      <location filename="../../ArchWindow.py" line="1364"/>
       <location filename="../../ArchAxisSystem.py" line="323"/>
       <location filename="../../ArchAxis.py" line="752"/>
       <location filename="../../ArchComponent.py" line="1949"/>
       <location filename="../../ArchSectionPlane.py" line="1324"/>
-      <location filename="../../ArchSpace.py" line="744"/>
+      <location filename="../../ArchSpace.py" line="738"/>
       <source>Remove</source>
       <translation>Уклони</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1338"/>
+      <location filename="../../ArchWindow.py" line="1365"/>
       <location filename="../../ArchAxisSystem.py" line="324"/>
       <location filename="../../ArchAxis.py" line="753"/>
       <location filename="../../ArchComponent.py" line="1950"/>
-      <location filename="../../ArchSpace.py" line="738"/>
+      <location filename="../../ArchSpace.py" line="732"/>
       <source>Add</source>
       <translation>Додај</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="856"/>
       <location filename="../../ArchReference.py" line="652"/>
-      <location filename="../../ArchWindow.py" line="1339"/>
+      <location filename="../../ArchWindow.py" line="1366"/>
       <location filename="../../ArchIFCView.py" line="56"/>
       <location filename="../../ArchAxisSystem.py" line="203"/>
-      <location filename="../../ArchMaterial.py" line="367"/>
-      <location filename="../../ArchMaterial.py" line="665"/>
+      <location filename="../../ArchMaterial.py" line="363"/>
+      <location filename="../../ArchMaterial.py" line="663"/>
       <location filename="../../ArchGrid.py" line="285"/>
       <location filename="../../ArchSchedule.py" line="432"/>
       <location filename="../../ArchAxis.py" line="581"/>
@@ -4150,101 +4150,101 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Уреди</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1340"/>
+      <location filename="../../ArchWindow.py" line="1367"/>
       <source>Create/update component</source>
       <translation type="unfinished">Create/update component</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1341"/>
+      <location filename="../../ArchWindow.py" line="1368"/>
       <source>Base 2D object</source>
       <translation type="unfinished">Base 2D object</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1342"/>
-      <location filename="../../ArchWindow.py" line="1347"/>
+      <location filename="../../ArchWindow.py" line="1369"/>
+      <location filename="../../ArchWindow.py" line="1374"/>
       <source>Wires</source>
       <translation type="unfinished">Wires</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1343"/>
+      <location filename="../../ArchWindow.py" line="1370"/>
       <location filename="../../ArchComponent.py" line="1957"/>
       <source>Components</source>
       <translation>Компоненте</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1344"/>
+      <location filename="../../ArchWindow.py" line="1371"/>
       <source>Create new component</source>
       <translation type="unfinished">Create new component</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1345"/>
-      <location filename="../../ArchMaterial.py" line="747"/>
-      <location filename="../../ArchMaterial.py" line="766"/>
+      <location filename="../../ArchWindow.py" line="1372"/>
+      <location filename="../../ArchMaterial.py" line="743"/>
+      <location filename="../../ArchMaterial.py" line="762"/>
       <source>Name</source>
       <translation>Име</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1346"/>
+      <location filename="../../ArchWindow.py" line="1373"/>
       <location filename="../../ArchComponent.py" line="2012"/>
-      <location filename="../../ArchCommands.py" line="1338"/>
+      <location filename="../../ArchCommands.py" line="1337"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="461"/>
       <source>Type</source>
       <translation>Врста</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1348"/>
-      <location filename="../../ArchMaterial.py" line="747"/>
-      <location filename="../../ArchMaterial.py" line="766"/>
+      <location filename="../../ArchWindow.py" line="1375"/>
+      <location filename="../../ArchMaterial.py" line="743"/>
+      <location filename="../../ArchMaterial.py" line="762"/>
       <location filename="../../bimcommands/BimPanel.py" line="162"/>
       <source>Thickness</source>
       <translation>Дебљина</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1349"/>
+      <location filename="../../ArchWindow.py" line="1376"/>
       <location filename="../../ArchPrecast.py" line="1418"/>
       <source>Offset</source>
       <translation>Одмак</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1350"/>
+      <location filename="../../ArchWindow.py" line="1377"/>
       <source>Hinge</source>
-      <translation type="unfinished">Hinge</translation>
+      <translation>Шарка</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1351"/>
+      <location filename="../../ArchWindow.py" line="1378"/>
       <source>Opening mode</source>
       <translation type="unfinished">Opening mode</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1352"/>
-      <location filename="../../ArchWindow.py" line="1354"/>
+      <location filename="../../ArchWindow.py" line="1379"/>
+      <location filename="../../ArchWindow.py" line="1381"/>
       <source>+ default</source>
       <translation type="unfinished">+ default</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1353"/>
+      <location filename="../../ArchWindow.py" line="1380"/>
       <source>If this is checked, the default Frame value of this window will be added to the value entered here</source>
       <translation type="unfinished">If this is checked, the default Frame value of this window will be added to the value entered here</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1355"/>
+      <location filename="../../ArchWindow.py" line="1382"/>
       <source>If this is checked, the default Offset value of this window will be added to the value entered here</source>
       <translation type="unfinished">If this is checked, the default Offset value of this window will be added to the value entered here</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1357"/>
+      <location filename="../../ArchWindow.py" line="1384"/>
       <source>Press to retrieve the selected edge</source>
       <translation type="unfinished">Press to retrieve the selected edge</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="799"/>
-      <location filename="../../ArchWindow.py" line="1358"/>
+      <location filename="../../ArchWindow.py" line="826"/>
+      <location filename="../../ArchWindow.py" line="1385"/>
       <source>Invert opening direction</source>
       <translation type="unfinished">Invert opening direction</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="808"/>
-      <location filename="../../ArchWindow.py" line="1359"/>
+      <location filename="../../ArchWindow.py" line="835"/>
+      <location filename="../../ArchWindow.py" line="1386"/>
       <source>Invert hinge position</source>
       <translation type="unfinished">Invert hinge position</translation>
     </message>
@@ -4282,10 +4282,10 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation type="unfinished">Axis system components</translation>
     </message>
     <message>
-      <location filename="../../importers/importJSON.py" line="61"/>
-      <location filename="../../importers/importWebGL.py" line="874"/>
-      <location filename="../../importers/importOBJ.py" line="261"/>
-      <location filename="../../importers/importOBJ.py" line="285"/>
+      <location filename="../../importers/importJSON.py" line="58"/>
+      <location filename="../../importers/importWebGL.py" line="873"/>
+      <location filename="../../importers/importOBJ.py" line="258"/>
+      <location filename="../../importers/importOBJ.py" line="282"/>
       <source>Successfully written</source>
       <translation type="unfinished">Successfully written</translation>
     </message>
@@ -4306,27 +4306,27 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation type="unfinished">Create Truss</translation>
     </message>
     <message>
-      <location filename="../../importers/importIFClegacy.py" line="112"/>
+      <location filename="../../importers/importIFClegacy.py" line="110"/>
       <source>Couldn't locate IfcOpenShell</source>
       <translation type="unfinished">Couldn't locate IfcOpenShell</translation>
     </message>
     <message>
-      <location filename="../../importers/importIFClegacy.py" line="389"/>
+      <location filename="../../importers/importIFClegacy.py" line="387"/>
       <source>IfcOpenShell not found or disabled, falling back on internal parser.</source>
       <translation type="unfinished">IfcOpenShell not found or disabled, falling back on internal parser.</translation>
     </message>
     <message>
-      <location filename="../../importers/importIFClegacy.py" line="395"/>
+      <location filename="../../importers/importIFClegacy.py" line="393"/>
       <source>IFC Schema not found, IFC import disabled.</source>
       <translation type="unfinished">IFC Schema not found, IFC import disabled.</translation>
     </message>
     <message>
-      <location filename="../../importers/importIFClegacy.py" line="930"/>
+      <location filename="../../importers/importIFClegacy.py" line="928"/>
       <source>Error: IfcOpenShell is not installed</source>
       <translation type="unfinished">Error: IfcOpenShell is not installed</translation>
     </message>
     <message>
-      <location filename="../../importers/importIFClegacy.py" line="937"/>
+      <location filename="../../importers/importIFClegacy.py" line="935"/>
       <source>Error: your IfcOpenShell version is too old</source>
       <translation type="unfinished">Error: your IfcOpenShell version is too old</translation>
     </message>
@@ -4338,7 +4338,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../Arch.py" line="774"/>
       <source>Stairs</source>
-      <translation>Степенице</translation>
+      <translation>Степениште</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="877"/>
@@ -4348,7 +4348,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../bimcommands/BimStairs.py" line="55"/>
       <source>Create Stairs</source>
-      <translation type="unfinished">Create Stairs</translation>
+      <translation>Направи степениште</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="236"/>
@@ -4376,8 +4376,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Обједини дупликате</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="747"/>
-      <location filename="../../ArchMaterial.py" line="766"/>
+      <location filename="../../ArchMaterial.py" line="743"/>
+      <location filename="../../ArchMaterial.py" line="762"/>
       <location filename="../../Arch.py" line="302"/>
       <source>Material</source>
       <translation>Материјал</translation>
@@ -4388,17 +4388,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation type="unfinished">MultiMaterial</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="797"/>
+      <location filename="../../ArchMaterial.py" line="793"/>
       <source>New layer</source>
       <translation type="unfinished">New layer</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="834"/>
+      <location filename="../../ArchMaterial.py" line="830"/>
       <source>Total thickness</source>
       <translation>Укупна дебљина</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="848"/>
+      <location filename="../../ArchMaterial.py" line="844"/>
       <source>depends on the object</source>
       <translation type="unfinished">depends on the object</translation>
     </message>
@@ -4502,7 +4502,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchGrid.py" line="394"/>
       <source>Columns</source>
-      <translation type="unfinished">Columns</translation>
+      <translation>Стубови</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1005"/>
@@ -4638,7 +4638,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../Arch.py" line="372"/>
       <source>Panel</source>
-      <translation type="unfinished">Panel</translation>
+      <translation>Панел</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="395"/>
@@ -4654,12 +4654,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../bimcommands/BimPanel.py" line="80"/>
       <location filename="../../bimcommands/BimPanel.py" line="109"/>
       <source>Create Panel</source>
-      <translation type="unfinished">Create Panel</translation>
+      <translation>Направи Панел</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="134"/>
       <source>Panel options</source>
-      <translation type="unfinished">Panel options</translation>
+      <translation>Параметри панела</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="169"/>
@@ -4830,50 +4830,50 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Приложи табелу</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="568"/>
+      <location filename="../../ArchSchedule.py" line="569"/>
       <source>Import CSV file</source>
       <translation type="unfinished">Import CSV file</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="601"/>
+      <location filename="../../ArchSchedule.py" line="602"/>
       <source>Export CSV file</source>
       <translation type="unfinished">Export CSV file</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1099"/>
+      <location filename="../../ArchCommands.py" line="1098"/>
       <source>Export CSV File</source>
       <translation type="unfinished">Export CSV File</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="622"/>
+      <location filename="../../ArchSchedule.py" line="623"/>
       <source>Unable to recognize that file type</source>
       <translation type="unfinished">Unable to recognize that file type</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="644"/>
-      <location filename="../../ArchSchedule.py" line="662"/>
-      <location filename="../../ArchCommands.py" line="1010"/>
+      <location filename="../../ArchSchedule.py" line="645"/>
+      <location filename="../../ArchSchedule.py" line="663"/>
+      <location filename="../../ArchCommands.py" line="1009"/>
       <source>Description</source>
       <translation>Опис</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="644"/>
-      <location filename="../../ArchSchedule.py" line="662"/>
+      <location filename="../../ArchSchedule.py" line="645"/>
+      <location filename="../../ArchSchedule.py" line="663"/>
       <location filename="../../ArchComponent.py" line="2013"/>
-      <location filename="../../ArchCommands.py" line="1339"/>
+      <location filename="../../ArchCommands.py" line="1338"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="462"/>
       <source>Value</source>
       <translation>Вредност</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="644"/>
-      <location filename="../../ArchSchedule.py" line="662"/>
-      <location filename="../../ArchCommands.py" line="1340"/>
+      <location filename="../../ArchSchedule.py" line="645"/>
+      <location filename="../../ArchSchedule.py" line="663"/>
+      <location filename="../../ArchCommands.py" line="1339"/>
       <source>Unit</source>
       <translation>Мерна јединица</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="723"/>
+      <location filename="../../ArchSchedule.py" line="724"/>
       <source>Schedule</source>
       <translation type="unfinished">Schedule</translation>
     </message>
@@ -4939,12 +4939,12 @@ Floor creation aborted.</translation>
       <translation>Ознака</translation>
     </message>
     <message>
-      <location filename="../../importers/importOBJ.py" line="87"/>
+      <location filename="../../importers/importOBJ.py" line="84"/>
       <source>Found a shape containing curves, triangulating</source>
       <translation type="unfinished">Found a shape containing curves, triangulating</translation>
     </message>
     <message>
-      <location filename="../../importers/importOBJ.py" line="367"/>
+      <location filename="../../importers/importOBJ.py" line="364"/>
       <source>Successfully imported</source>
       <translation type="unfinished">Successfully imported</translation>
     </message>
@@ -5014,7 +5014,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="1955"/>
       <source>Objects</source>
-      <translation>Предмети</translation>
+      <translation>Објекти</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1958"/>
@@ -5235,19 +5235,19 @@ Building creation aborted.</translation>
       <translation type="unfinished">Create Space</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="727"/>
+      <location filename="../../ArchSpace.py" line="721"/>
       <source>Set text position</source>
       <translation type="unfinished">Set text position</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="731"/>
+      <location filename="../../ArchSpace.py" line="725"/>
       <source>Space boundaries</source>
       <translation type="unfinished">Space boundaries</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="982"/>
       <source>Wall</source>
-      <translation type="unfinished">Wall</translation>
+      <translation>Зид</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="989"/>
@@ -5259,17 +5259,17 @@ Building creation aborted.</translation>
       <location filename="../../bimcommands/BimWall.py" line="164"/>
       <location filename="../../bimcommands/BimWall.py" line="416"/>
       <source>Create Wall</source>
-      <translation type="unfinished">Create Wall</translation>
+      <translation>Направи Зид</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="119"/>
       <source>First point of wall</source>
-      <translation type="unfinished">First point of wall</translation>
+      <translation>Прва тачка зида</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="274"/>
       <source>Wall options</source>
-      <translation type="unfinished">Wall options</translation>
+      <translation>Параметри зида</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="278"/>
@@ -5310,7 +5310,7 @@ Building creation aborted.</translation>
       <location filename="../../bimcommands/BimArchUtils.py" line="470"/>
       <location filename="../../bimcommands/BimArchUtils.py" line="474"/>
       <source>Please select only wall objects</source>
-      <translation type="unfinished">Please select only wall objects</translation>
+      <translation>Изабери само објекте зид</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="461"/>
@@ -5364,58 +5364,58 @@ Building creation aborted.</translation>
       <translation type="unfinished">contains faces that are not part of any solid</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1004"/>
+      <location filename="../../ArchCommands.py" line="1003"/>
       <source>Survey</source>
       <translation>Анкета</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1005"/>
+      <location filename="../../ArchCommands.py" line="1004"/>
       <source>Set description</source>
       <translation type="unfinished">Set description</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1006"/>
+      <location filename="../../ArchCommands.py" line="1005"/>
       <source>Clear</source>
       <translation>Обриши</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1007"/>
+      <location filename="../../ArchCommands.py" line="1006"/>
       <source>Copy Length</source>
       <translation type="unfinished">Copy Length</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1008"/>
+      <location filename="../../ArchCommands.py" line="1007"/>
       <source>Copy Area</source>
       <translation type="unfinished">Copy Area</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1009"/>
+      <location filename="../../ArchCommands.py" line="1008"/>
       <source>Export CSV</source>
       <translation type="unfinished">Export CSV</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1012"/>
+      <location filename="../../ArchCommands.py" line="1011"/>
       <source>Area</source>
       <translation type="unfinished">Area</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1057"/>
+      <location filename="../../ArchCommands.py" line="1056"/>
       <source>Total</source>
       <translation type="unfinished">Total</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1137"/>
+      <location filename="../../ArchCommands.py" line="1136"/>
       <source>Object doesn't have settable IFC attributes</source>
       <translation type="unfinished">Object doesn't have settable IFC attributes</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1143"/>
+      <location filename="../../ArchCommands.py" line="1142"/>
       <source>Disabling B-rep force flag of object</source>
       <translation type="unfinished">Disabling B-rep force flag of object</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1146"/>
-      <location filename="../../ArchCommands.py" line="1149"/>
+      <location filename="../../ArchCommands.py" line="1145"/>
+      <location filename="../../ArchCommands.py" line="1148"/>
       <source>Enabling B-rep force flag of object</source>
       <translation type="unfinished">Enabling B-rep force flag of object</translation>
     </message>
@@ -5461,12 +5461,12 @@ Building creation aborted.</translation>
       <translation type="unfinished">Create Component</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1337"/>
+      <location filename="../../ArchCommands.py" line="1336"/>
       <source>Key</source>
       <translation type="unfinished">Key</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1347"/>
+      <location filename="../../ArchCommands.py" line="1346"/>
       <source>The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</source>
       <translation type="unfinished">The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</translation>
     </message>
@@ -5481,9 +5481,9 @@ Building creation aborted.</translation>
       <translation type="unfinished">Create Level</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimFence.py" line="51"/>
+      <location filename="../../bimcommands/BimFence.py" line="52"/>
       <source>Create Fence</source>
-      <translation type="unfinished">Create Fence</translation>
+      <translation>Направи Ограду</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimBox.py" line="283"/>
@@ -5682,7 +5682,7 @@ Building creation aborted.</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="192"/>
-      <location filename="../../ArchMaterial.py" line="170"/>
+      <location filename="../../ArchMaterial.py" line="166"/>
       <source>A standard code (MasterFormat, OmniClass,...)</source>
       <translation type="unfinished">A standard code (MasterFormat, OmniClass,...)</translation>
     </message>
@@ -5867,7 +5867,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="510"/>
       <source>The transparency of child objects</source>
-      <translation>Провидност овог подређеног објекта</translation>
+      <translation>Провидност подређених објеката</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="515"/>
@@ -5912,7 +5912,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchProfile.py" line="126"/>
       <source>Wall thickness</source>
-      <translation type="unfinished">Wall thickness</translation>
+      <translation>Дебљина зида</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="150"/>
@@ -6279,12 +6279,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWindow.py" line="135"/>
       <source>The width of this window</source>
-      <translation type="unfinished">The width of this window</translation>
+      <translation>Ширина овог прозора</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="137"/>
       <source>The height of this window</source>
-      <translation type="unfinished">The height of this window</translation>
+      <translation>Висина овог прозора</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="139"/>
@@ -6309,7 +6309,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWindow.py" line="148"/>
       <source>The area of this window</source>
-      <translation type="unfinished">The area of this window</translation>
+      <translation>Површина овог прозора</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="150"/>
@@ -6342,7 +6342,7 @@ Building creation aborted.</translation>
       <translation type="unfinished">Show elevation opening symbols if available</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1085"/>
+      <location filename="../../ArchWindow.py" line="1112"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
       <translation type="unfinished">The number of the wire that defines the hole. A value of 0 means automatic</translation>
     </message>
@@ -6619,43 +6619,43 @@ Building creation aborted.</translation>
       <translation type="unfinished">When true, the fence will be colored like the original post and section.</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="168"/>
-      <location filename="../../ArchMaterial.py" line="620"/>
+      <location filename="../../ArchMaterial.py" line="164"/>
+      <location filename="../../ArchMaterial.py" line="618"/>
       <source>A description for this material</source>
       <translation type="unfinished">A description for this material</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="172"/>
+      <location filename="../../ArchMaterial.py" line="168"/>
       <source>A URL where to find information about this material</source>
       <translation type="unfinished">A URL where to find information about this material</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="174"/>
+      <location filename="../../ArchMaterial.py" line="170"/>
       <source>The transparency value of this material</source>
-      <translation>Вредност провидности овог материјала</translation>
+      <translation>Провидности овог материјала</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="176"/>
+      <location filename="../../ArchMaterial.py" line="172"/>
       <source>The color of this material</source>
       <translation>Боја овог материјала</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="178"/>
+      <location filename="../../ArchMaterial.py" line="174"/>
       <source>The color of this material when cut</source>
       <translation type="unfinished">The color of this material when cut</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="621"/>
+      <location filename="../../ArchMaterial.py" line="619"/>
       <source>The list of layer names</source>
       <translation type="unfinished">The list of layer names</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="622"/>
+      <location filename="../../ArchMaterial.py" line="620"/>
       <source>The list of layer materials</source>
       <translation type="unfinished">The list of layer materials</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="623"/>
+      <location filename="../../ArchMaterial.py" line="621"/>
       <source>The list of layer thicknesses</source>
       <translation type="unfinished">The list of layer thicknesses</translation>
     </message>
@@ -6848,7 +6848,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchPanel.py" line="97"/>
       <source>The area of this panel</source>
-      <translation type="unfinished">The area of this panel</translation>
+      <translation>Површина овог панела</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="504"/>
@@ -7471,13 +7471,13 @@ Building creation aborted.</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="918"/>
-      <location filename="../../ArchSpace.py" line="456"/>
+      <location filename="../../ArchSpace.py" line="454"/>
       <source>The name of the font</source>
       <translation type="unfinished">The name of the font</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="921"/>
-      <location filename="../../ArchSpace.py" line="462"/>
+      <location filename="../../ArchSpace.py" line="460"/>
       <source>The size of the text font</source>
       <translation type="unfinished">The size of the text font</translation>
     </message>
@@ -7557,42 +7557,42 @@ Building creation aborted.</translation>
       <translation type="unfinished">Defines the calculation type for the horizontal area and its perimeter length</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="453"/>
+      <location filename="../../ArchSpace.py" line="451"/>
       <source>The text to show. Use $area, $label, $tag, $longname, $description and for finishes $floor, $walls, $ceiling to insert the respective data</source>
       <translation type="unfinished">The text to show. Use $area, $label, $tag, $longname, $description and for finishes $floor, $walls, $ceiling to insert the respective data</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="459"/>
+      <location filename="../../ArchSpace.py" line="457"/>
       <source>The color of the area text</source>
       <translation type="unfinished">The color of the area text</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="465"/>
+      <location filename="../../ArchSpace.py" line="463"/>
       <source>The size of the first line of text</source>
       <translation type="unfinished">The size of the first line of text</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="468"/>
+      <location filename="../../ArchSpace.py" line="466"/>
       <source>The space between the lines of text</source>
       <translation type="unfinished">The space between the lines of text</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="471"/>
+      <location filename="../../ArchSpace.py" line="469"/>
       <source>The position of the text. Leave (0,0,0) for automatic position</source>
       <translation type="unfinished">The position of the text. Leave (0,0,0) for automatic position</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="473"/>
+      <location filename="../../ArchSpace.py" line="471"/>
       <source>The justification of the text</source>
       <translation type="unfinished">The justification of the text</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="477"/>
+      <location filename="../../ArchSpace.py" line="475"/>
       <source>The number of decimals to use for calculated texts</source>
       <translation type="unfinished">The number of decimals to use for calculated texts</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="480"/>
+      <location filename="../../ArchSpace.py" line="478"/>
       <source>Show the unit suffix</source>
       <translation type="unfinished">Show the unit suffix</translation>
     </message>
@@ -7869,12 +7869,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimRoof.py" line="40"/>
       <source>Roof</source>
-      <translation type="unfinished">Roof</translation>
+      <translation>Кров</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimRoof.py" line="44"/>
       <source>Creates a roof object from the selected wire.</source>
-      <translation type="unfinished">Creates a roof object from the selected wire.</translation>
+      <translation>Од изабраног жичаног рама прави објекат кров.</translation>
     </message>
   </context>
   <context>
@@ -7960,7 +7960,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimStairs.py" line="42"/>
       <source>Stairs</source>
-      <translation>Степенице</translation>
+      <translation>Степениште</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimStairs.py" line="46"/>
@@ -7986,7 +7986,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimFence.py" line="40"/>
       <source>Fence</source>
-      <translation type="unfinished">Fence</translation>
+      <translation>Ограда</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimFence.py" line="43"/>
@@ -8049,12 +8049,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchGrid.py" line="65"/>
       <source>The number of columns</source>
-      <translation type="unfinished">The number of columns</translation>
+      <translation>Број стубова</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="67"/>
-      <source>The sizes for rows</source>
-      <translation type="unfinished">The sizes for rows</translation>
+      <source>The sizes of rows</source>
+      <translation type="unfinished">The sizes of rows</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="69"/>
@@ -8107,7 +8107,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="54"/>
       <source>Panel</source>
-      <translation type="unfinished">Panel</translation>
+      <translation>Панел</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="58"/>
@@ -8309,7 +8309,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="52"/>
       <source>Wall</source>
-      <translation type="unfinished">Wall</translation>
+      <translation>Зид</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="56"/>
@@ -8561,7 +8561,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     </message>
     <message>
       <location filename="../../InitGui.py" line="40"/>
-      <location filename="../../bimcommands/BimViews.py" line="138"/>
+      <location filename="../../bimcommands/BimViews.py" line="136"/>
       <source>BIM</source>
       <translation type="unfinished">BIM</translation>
     </message>
@@ -8991,7 +8991,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="690"/>
       <source>Top left</source>
-      <translation>Горње лево</translation>
+      <translation>Одозго слева</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="691"/>
@@ -9001,7 +9001,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="692"/>
       <source>Top right</source>
-      <translation>Горње десно</translation>
+      <translation>Одозго сдесна</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="693"/>
@@ -9021,7 +9021,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="696"/>
       <source>Bottom left</source>
-      <translation>Доње лево</translation>
+      <translation>Одоздо слева</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="697"/>
@@ -9031,7 +9031,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="698"/>
       <source>Bottom right</source>
-      <translation>Доње десно</translation>
+      <translation>Одоздо сдесна</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="804"/>
@@ -9079,7 +9079,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <translation type="unfinished">Delete unused</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="91"/>
+      <location filename="../../bimcommands/BimViews.py" line="89"/>
       <location filename="../../bimcommands/BimMaterial.py" line="169"/>
       <source>Rename</source>
       <translation>Преименуј</translation>
@@ -9095,7 +9095,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <translation type="unfinished">Merge to...</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="87"/>
+      <location filename="../../bimcommands/BimViews.py" line="85"/>
       <location filename="../../bimcommands/BimMaterial.py" line="175"/>
       <source>Delete</source>
       <translation>Обриши</translation>
@@ -9398,12 +9398,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <translation type="unfinished">Unit system updated for all opened documents</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="670"/>
+      <location filename="../../bimcommands/BimSetup.py" line="673"/>
       <source>IfcOpenShell not found</source>
       <translation type="unfinished">IfcOpenShell not found</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="674"/>
+      <location filename="../../bimcommands/BimSetup.py" line="677"/>
       <source>IfcOpenShell is needed to import and export IFC files. It appears to be missing on your system. Would you like to download and install it now? It will be installed in FreeCAD's Macros directory.</source>
       <translation type="unfinished">IfcOpenShell is needed to import and export IFC files. It appears to be missing on your system. Would you like to download and install it now? It will be installed in FreeCAD's Macros directory.</translation>
     </message>
@@ -9463,72 +9463,72 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <translation type="unfinished">Please select exactly one object</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="85"/>
+      <location filename="../../bimcommands/BimViews.py" line="83"/>
       <source>Add level</source>
       <translation type="unfinished">Add level</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="86"/>
+      <location filename="../../bimcommands/BimViews.py" line="84"/>
       <source>Add proxy</source>
       <translation type="unfinished">Add proxy</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="88"/>
+      <location filename="../../bimcommands/BimViews.py" line="86"/>
       <source>Toggle on/off</source>
       <translation>Укључи/искључи</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="89"/>
+      <location filename="../../bimcommands/BimViews.py" line="87"/>
       <source>Isolate</source>
       <translation>Изолуј</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="90"/>
+      <location filename="../../bimcommands/BimViews.py" line="88"/>
       <source>Save view position</source>
       <translation type="unfinished">Save view position</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="108"/>
+      <location filename="../../bimcommands/BimViews.py" line="106"/>
       <source>Creates a new level</source>
       <translation type="unfinished">Creates a new level</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="109"/>
+      <location filename="../../bimcommands/BimViews.py" line="107"/>
       <source>Creates a new Working Plane Proxy</source>
       <translation type="unfinished">Creates a new Working Plane Proxy</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="110"/>
+      <location filename="../../bimcommands/BimViews.py" line="108"/>
       <source>Deletes the selected item</source>
       <translation type="unfinished">Deletes the selected item</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="111"/>
+      <location filename="../../bimcommands/BimViews.py" line="109"/>
       <source>Toggles selected items on/off</source>
       <translation type="unfinished">Toggles selected items on/off</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="112"/>
+      <location filename="../../bimcommands/BimViews.py" line="110"/>
       <source>Turns all items off except the selected ones</source>
       <translation type="unfinished">Turns all items off except the selected ones</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="113"/>
+      <location filename="../../bimcommands/BimViews.py" line="111"/>
       <source>Saves the current camera position to the selected items</source>
       <translation type="unfinished">Saves the current camera position to the selected items</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="114"/>
+      <location filename="../../bimcommands/BimViews.py" line="112"/>
       <source>Renames the selected item</source>
       <translation type="unfinished">Renames the selected item</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="260"/>
+      <location filename="../../bimcommands/BimViews.py" line="267"/>
       <source>2D Views</source>
       <translation type="unfinished">2D Views</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="274"/>
+      <location filename="../../bimcommands/BimViews.py" line="280"/>
       <source>Sheets</source>
       <translation type="unfinished">Sheets</translation>
     </message>
@@ -9726,12 +9726,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimColumn.py" line="47"/>
       <source>Column</source>
-      <translation type="unfinished">Column</translation>
+      <translation>Стуб</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimColumn.py" line="50"/>
       <source>Creates a column at a specified location</source>
-      <translation type="unfinished">Creates a column at a specified location</translation>
+      <translation>Направи стуб у наведеној тачки</translation>
     </message>
   </context>
   <context>
@@ -9866,12 +9866,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimDoor.py" line="44"/>
       <source>Door</source>
-      <translation type="unfinished">Door</translation>
+      <translation>Врата</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDoor.py" line="47"/>
       <source>Places a door at a given location</source>
-      <translation type="unfinished">Places a door at a given location</translation>
+      <translation>Смести врата на датој локацији</translation>
     </message>
   </context>
   <context>
@@ -10019,7 +10019,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimImagePlane.py" line="39"/>
       <source>Image plane</source>
-      <translation>Слика на равни</translation>
+      <translation>Раван слике</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimImagePlane.py" line="42"/>
@@ -10430,12 +10430,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
   <context>
     <name>BIM_Views</name>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="42"/>
+      <location filename="../../bimcommands/BimViews.py" line="40"/>
       <source>Views manager</source>
       <translation type="unfinished">Views manager</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="45"/>
+      <location filename="../../bimcommands/BimViews.py" line="43"/>
       <source>Shows or hides the views manager</source>
       <translation type="unfinished">Shows or hides the views manager</translation>
     </message>
@@ -10458,12 +10458,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimWindows.py" line="37"/>
       <source>Manage doors and windows...</source>
-      <translation type="unfinished">Manage doors and windows...</translation>
+      <translation>Управљај вратима и прозорима...</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWindows.py" line="41"/>
       <source>Manage the different doors and windows of your BIM project</source>
-      <translation type="unfinished">Manage the different doors and windows of your BIM project</translation>
+      <translation>Управљај вратима и прозорима BIM пројекта</translation>
     </message>
   </context>
   <context>
@@ -10471,7 +10471,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimWPCommands.py" line="38"/>
       <source>Working Plane Front</source>
-      <translation type="unfinished">Working Plane Front</translation>
+      <translation>Радна раван спреда</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWPCommands.py" line="41"/>
@@ -10484,7 +10484,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimWPCommands.py" line="55"/>
       <source>Working Plane Side</source>
-      <translation type="unfinished">Working Plane Side</translation>
+      <translation>Радна раван са стране</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWPCommands.py" line="58"/>
@@ -10497,7 +10497,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimWPCommands.py" line="72"/>
       <source>Working Plane Top</source>
-      <translation type="unfinished">Working Plane Top</translation>
+      <translation>Радна раван одозго</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWPCommands.py" line="75"/>
@@ -10586,12 +10586,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
   <context>
     <name>IFC_SaveAs</name>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="217"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="220"/>
       <source>Saves the current IFC document as another file</source>
       <translation type="unfinished">Saves the current IFC document as another file</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="219"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="222"/>
       <source>Save IFC file as...</source>
       <translation type="unfinished">Save IFC file as...</translation>
     </message>
@@ -10632,7 +10632,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../ui/dialogSetup.ui" line="33"/>
       <source>Hover your mouse on each setting for additional info.</source>
-      <translation type="unfinished">Hover your mouse on each setting for additional info.</translation>
+      <translation>За додатне информације лебди мишем изнад сваког подешавања.</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="230"/>
@@ -10714,17 +10714,17 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../ui/dialogSetup.ui" line="579"/>
       <source>Top (XY)</source>
-      <translation>Горња (XY)</translation>
+      <translation>Одгоре (XY)</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="584"/>
       <source>Front (XZ)</source>
-      <translation>Фронтална (XZ)</translation>
+      <translation>Спреда (XZ)</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="589"/>
       <source>Side (YZ)</source>
-      <translation>Бочна (YZ)</translation>
+      <translation>Са стране (YZ)</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="223"/>
@@ -10805,26 +10805,6 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <location filename="../ui/dialogSetup.ui" line="510"/>
       <source>All rights reserved (no specific license)</source>
       <translation type="unfinished">All rights reserved (no specific license)</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogSetup.ui" line="515"/>
-      <source>CC-BY</source>
-      <translation type="unfinished">CC-BY</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogSetup.ui" line="520"/>
-      <source>CC-BY-SA</source>
-      <translation type="unfinished">CC-BY-SA</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogSetup.ui" line="525"/>
-      <source>CC-BY-NC</source>
-      <translation type="unfinished">CC-BY-NC</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogSetup.ui" line="530"/>
-      <source>CC-BY-SA-NC</source>
-      <translation type="unfinished">CC-BY-SA-NC</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="119"/>

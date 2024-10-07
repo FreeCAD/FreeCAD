@@ -61,43 +61,6 @@ App::DocumentObjectExecReturn *Fillet::execute()
         TopExp::MapShapes(baseShape, TopAbs_EDGE, mapOfShape);
         TopTools_IndexedMapOfShape mapOfEdges;
         TopExp::MapShapes(baseShape, TopAbs_EDGE, mapOfEdges);
-#ifndef FC_USE_TNP_FIX
-
-        std::vector<FilletElement> values = Edges.getValues();
-        for (const auto & value : values) {
-            int id = value.edgeid;
-            double radius1 = value.radius1;
-            double radius2 = value.radius2;
-            const TopoDS_Edge& edge = TopoDS::Edge(mapOfShape.FindKey(id));
-            mkFillet.Add(radius1, radius2, edge);
-        }
-
-        TopoDS_Shape shape = mkFillet.Shape();
-        if (shape.IsNull())
-            return new App::DocumentObjectExecReturn("Resulting shape is null");
-
-        //shapefix re #4285
-        //https://www.forum.freecad.org/viewtopic.php?f=3&t=43890&sid=dae2fa6fda71670863a103b42739e47f
-        TopoShape* ts = new TopoShape(shape);
-        double minTol = 2.0 * Precision::Confusion();
-        double maxTol = 4.0 * Precision::Confusion();
-        bool rc = ts->fix(Precision::Confusion(), minTol, maxTol);
-        if (rc) {
-            shape = ts->getShape();
-        }
-        delete ts;
-
-        ShapeHistory history = buildHistory(mkFillet, TopAbs_FACE, shape, baseShape);
-        this->Shape.setValue(shape);
-
-        // make sure the 'PropertyShapeHistory' is not safed in undo/redo (#0001889)
-        PropertyShapeHistory prop;
-        prop.setValue(history);
-        prop.setContainer(this);
-        prop.touch();
-
-        return App::DocumentObject::StdReturn;
-#else
         const auto &vals = EdgeLinks.getSubValues();
         const auto &subs = EdgeLinks.getShadowSubs();
         if(subs.size()!=(size_t)Edges.getSize())
@@ -128,7 +91,6 @@ App::DocumentObjectExecReturn *Fillet::execute()
         TopoShape res(0);
         this->Shape.setValue(res.makeElementShape(mkFillet,baseTopoShape,Part::OpCodes::Fillet));
         return Part::Feature::execute();
-#endif
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());

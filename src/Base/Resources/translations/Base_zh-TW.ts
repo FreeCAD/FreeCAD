@@ -11,7 +11,7 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="71"/>
       <source>MKS (m, kg, s, °)</source>
-      <translation type="unfinished">MKS (m, kg, s, °)</translation>
+      <translation>MKS (m, kg, s, °)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="73"/>
@@ -36,7 +36,7 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="81"/>
       <source>Metric small parts &amp; CNC (mm, mm/min)</source>
-      <translation type="unfinished">Metric small parts &amp; CNC (mm, mm/min)</translation>
+      <translation>公制小零件 &amp; CNC (mm, mm/min)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="83"/>
@@ -46,7 +46,7 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="85"/>
       <source>FEM (mm, N, s)</source>
-      <translation type="unfinished">FEM (mm, N, s)</translation>
+      <translation>FEM (mm, N, s)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="87"/>

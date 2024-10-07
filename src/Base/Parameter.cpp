@@ -50,7 +50,7 @@
 #endif
 
 #include <boost/algorithm/string.hpp>
-#include "fmt/printf.h"
+#include <fmt/printf.h>
 
 #include "Parameter.h"
 #include "Parameter.inl"
@@ -60,8 +60,12 @@
 
 FC_LOG_LEVEL_INIT("Parameter", true, true)
 
-
+#ifndef XERCES_CPP_NAMESPACE_BEGIN
+#define XERCES_CPP_NAMESPACE_QUALIFIER
+using namespace XERCES_CPP_NAMESPACE;
+#else
 XERCES_CPP_NAMESPACE_USE
+#endif
 using namespace Base;
 
 
@@ -76,7 +80,6 @@ using namespace Base;
 // - DOMPrintErrorHandler
 // - XStr
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 
 class DOMTreeErrorReporter: public ErrorHandler
 {
@@ -1012,15 +1015,13 @@ void ParameterGrp::SetASCII(const char* Name, const char* sValue)
 {
     if (!_pGroupNode) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-            FC_WARN("Setting attribute "
-                    << "FCText:" << Name << " in an orphan group " << _cName);
+            FC_WARN("Setting attribute " << "FCText:" << Name << " in an orphan group " << _cName);
         }
         return;
     }
     if (_Clearing) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-            FC_WARN("Adding attribute "
-                    << "FCText:" << Name << " while clearing " << GetPath());
+            FC_WARN("Adding attribute " << "FCText:" << Name << " while clearing " << GetPath());
         }
         return;
     }

@@ -108,7 +108,7 @@ class ToolBitEditor(object):
         # which aren't being needed anymore.
 
         def labelText(name):
-            return re.sub("([A-Z][a-z]+)", r" \1", re.sub("([A-Z]+)", r" \1", name))
+            return re.sub(r"([A-Z][a-z]+)", r" \1", re.sub(r"([A-Z]+)", r" \1", name))
 
         layout = self.form.bitParams.layout()
         ui = FreeCADGui.UiLoader()
@@ -176,9 +176,7 @@ class ToolBitEditor(object):
                 label.setEditable(False)
 
                 value = QtGui.QStandardItem()
-                value.setData(
-                    PathUtil.getPropertyValueString(tool, prop), QtCore.Qt.DisplayRole
-                )
+                value.setData(PathUtil.getPropertyValueString(tool, prop), QtCore.Qt.DisplayRole)
                 value.setData(tool, _Delegate.ObjectRole)
                 value.setData(prop, _Delegate.PropertyRole)
 
@@ -262,9 +260,7 @@ class ToolBitEditor(object):
         path = self.tool.BitShape
         if not path:
             path = Path.Preferences.lastPathToolShape()
-        foo = QtGui.QFileDialog.getOpenFileName(
-            self.form, "Path - Tool Shape", path, "*.fcstd"
-        )
+        foo = QtGui.QFileDialog.getOpenFileName(self.form, "Path - Tool Shape", path, "*.fcstd")
         if foo and foo[0]:
             Path.Preferences.setLastPathToolShape(os.path.dirname(foo[0]))
             self.form.shapePath.setText(foo[0])

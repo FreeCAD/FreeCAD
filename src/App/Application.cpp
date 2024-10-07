@@ -423,6 +423,14 @@ void Application::setupPythonException(PyObject* module)
     Base::PyExc_FC_CADKernelError = PyErr_NewException("Base.CADKernelError", Base::PyExc_FC_GeneralError, nullptr);
     Py_INCREF(Base::PyExc_FC_CADKernelError);
     PyModule_AddObject(module, "CADKernelError", Base::PyExc_FC_CADKernelError);
+
+    Base::PyExc_FC_PropertyError = PyErr_NewException("Base.PropertyError", PyExc_AttributeError, nullptr);
+    Py_INCREF(Base::PyExc_FC_PropertyError);
+    PyModule_AddObject(module, "PropertyError", Base::PyExc_FC_PropertyError);
+
+    Base::PyExc_FC_AbortIOException = PyErr_NewException("Base.PyExc_FC_AbortIOException", PyExc_BaseException, nullptr);
+    Py_INCREF(Base::PyExc_FC_AbortIOException);
+    PyModule_AddObject(module, "AbortIOException", Base::PyExc_FC_AbortIOException);
 }
 // clang-format on
 
@@ -2184,6 +2192,7 @@ void Application::initTypes()
     new Base::ExceptionProducer<Base::UnitsMismatchError>;
     new Base::ExceptionProducer<Base::CADKernelError>;
     new Base::ExceptionProducer<Base::RestoreError>;
+    new Base::ExceptionProducer<Base::PropertyError>;
 }
 
 namespace {
@@ -2217,6 +2226,7 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
     ("user-cfg,u", value<string>(),"User config file to load/save user settings")
     ("system-cfg,s", value<string>(),"System config file to load/save system settings")
     ("run-test,t", value<string>()->implicit_value(""),"Run a given test case (use 0 (zero) to run all tests). If no argument is provided then return list of all available tests.")
+    ("run-open,r", value<string>()->implicit_value(""),"Run a given test case (use 0 (zero) to run all tests). If no argument is provided then return list of all available tests.  Keeps UI open after test(s) complete.")
     ("module-path,M", value< vector<string> >()->composing(),"Additional module paths")
     ("python-path,P", value< vector<string> >()->composing(),"Additional python paths")
     ("single-instance", "Allow to run a single instance of the application")
@@ -2441,8 +2451,9 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
         mConfig["SystemParameter"] = vm["system-cfg"].as<string>();
     }
 
-    if (vm.count("run-test")) {
-        string testCase = vm["run-test"].as<string>();
+    if (vm.count("run-test") || vm.count("run-open")) {
+        string testCase = vm.count("run-open") ? vm["run-open"].as<string>() : vm["run-test"].as<string>();
+
         if ( "0" == testCase) {
             testCase = "TestApp.All";
         }
@@ -2452,6 +2463,7 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
         mConfig["TestCase"] = testCase;
         mConfig["RunMode"] = "Internal";
         mConfig["ScriptFileName"] = "FreeCADTest";
+        mConfig["ExitTests"] = vm.count("run-open") == 0  ? "yes" : "no";
     }
 
     if (vm.count("single-instance")) {
@@ -3315,7 +3327,46 @@ void Application::ExtractUserPath()
     mConfig["UserMacroPath"] = Base::FileInfo::pathToString(macro) + PATHSEP;
 }
 
-#if defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD)
+// TODO: Consider using this for all UNIX-like OSes
+#if defined(__OpenBSD__)
+#include <cstdio>
+#include <cstdlib>
+#include <sys/param.h>
+#include <QCoreApplication>
+
+std::string Application::FindHomePath(const char* sCall)
+{
+    // We have three ways to start this application either use one of the two executables or
+    // import the FreeCAD.so module from a running Python session. In the latter case the
+    // Python interpreter is already initialized.
+    std::string absPath;
+    std::string homePath;
+    if (Py_IsInitialized()) {
+        // Note: realpath is known to cause a buffer overflow because it
+        // expands the given path to an absolute path of unknown length.
+        // Even setting PATH_MAX does not necessarily solve the problem
+        // for sure but the risk of overflow is rather small.
+        char resolved[PATH_MAX];
+        char* path = realpath(sCall, resolved);
+        if (path)
+            absPath = path;
+    }
+    else {
+        int argc = 1;
+        QCoreApplication app(argc, (char**)(&sCall));
+        absPath = QCoreApplication::applicationFilePath().toStdString();
+    }
+
+    // should be an absolute path now
+    std::string::size_type pos = absPath.find_last_of("/");
+    homePath.assign(absPath,0,pos);
+    pos = homePath.find_last_of("/");
+    homePath.assign(homePath,0,pos+1);
+
+    return homePath;
+}
+
+#elif defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD)
 #include <cstdio>
 #include <cstdlib>
 #include <sys/param.h>

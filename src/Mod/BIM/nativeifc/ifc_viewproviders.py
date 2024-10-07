@@ -426,10 +426,11 @@ class ifc_vp_document(ifc_vp_object):
 
         from nativeifc import ifc_tools  # lazy import
 
-        get_filepath(self.Object)
-        ifc_tools.save(self.Object)
-        self.replace_file(self.Object, sf)
-        self.Object.Document.recompute()
+        sf = get_filepath(self.Object)
+        if sf:
+            ifc_tools.save(self.Object)
+            self.replace_file(self.Object, sf)
+            self.Object.Document.recompute()
 
     def replace_file(self, obj, newfile):
         """Asks the user if the attached file path needs to be replaced"""
@@ -634,5 +635,5 @@ def get_filepath(project):
         if not sf.lower().endswith(".ifc"):
             sf += ".ifc"
         project.IfcFilePath = sf
-        return True
-    return False
+        return sf
+    return None

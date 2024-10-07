@@ -123,7 +123,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../CommandExportASMT.py" line="52"/>
+        <location filename="../../../CommandExportASMT.py" line="51"/>
         <source>Export currently active assembly as a ASMT file.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -224,7 +224,7 @@
     </message>
     <message>
         <location filename="../../../JointObject.py" line="51"/>
-        <location filename="../../../JointObject.py" line="1533"/>
+        <location filename="../../../JointObject.py" line="1554"/>
         <source>Distance</source>
         <translation type="unfinished"></translation>
     </message>
@@ -240,7 +240,7 @@
     </message>
     <message>
         <location filename="../../../JointObject.py" line="54"/>
-        <location filename="../../../JointObject.py" line="1535"/>
+        <location filename="../../../JointObject.py" line="1556"/>
         <source>Angle</source>
         <translation type="unfinished"></translation>
     </message>
@@ -265,17 +265,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../JointObject.py" line="1365"/>
+        <location filename="../../../JointObject.py" line="1409"/>
         <source>You need to select 2 elements from 2 separate parts.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../JointObject.py" line="1537"/>
+        <location filename="../../../JointObject.py" line="1558"/>
         <source>Radius 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../JointObject.py" line="1539"/>
+        <location filename="../../../JointObject.py" line="1560"/>
         <source>Pitch radius</source>
         <translation type="unfinished"></translation>
     </message>
@@ -378,144 +378,142 @@
 <context>
     <name>App::Property</name>
     <message>
-        <location filename="../../../JointObject.py" line="192"/>
+        <location filename="../../../JointObject.py" line="188"/>
         <source>The type of the joint</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../JointObject.py" line="213"/>
-        <location filename="../../../JointObject.py" line="449"/>
-        <source>The first object of the joint</source>
+        <location filename="../../../JointObject.py" line="211"/>
+        <location filename="../../../JointObject.py" line="475"/>
+        <source>The first reference of the joint</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../JointObject.py" line="221"/>
-        <source>The first part of the joint</source>
+        <location filename="../../../JointObject.py" line="222"/>
+        <source>This is the local coordinate system within Reference1&apos;s object that will be used for the joint.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../JointObject.py" line="232"/>
-        <source>This is the local coordinate system within object1 that will be used for the joint.</source>
+        <location filename="../../../JointObject.py" line="244"/>
+        <location filename="../../../JointObject.py" line="518"/>
+        <source>This is the attachment offset of the first connector of the joint.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../JointObject.py" line="243"/>
-        <source>This prevents Placement1 from recomputing, enabling custom positioning of the placement.</source>
+        <location filename="../../../JointObject.py" line="253"/>
+        <location filename="../../../JointObject.py" line="498"/>
+        <source>The second reference of the joint</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../JointObject.py" line="252"/>
-        <location filename="../../../JointObject.py" line="468"/>
-        <source>The second object of the joint</source>
+        <location filename="../../../JointObject.py" line="264"/>
+        <source>This is the local coordinate system within Reference2&apos;s object that will be used for the joint.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../JointObject.py" line="260"/>
-        <source>The second part of the joint</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../JointObject.py" line="271"/>
-        <source>This is the local coordinate system within object2 that will be used for the joint.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../JointObject.py" line="282"/>
-        <source>This prevents Placement2 from recomputing, enabling custom positioning of the placement.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../JointObject.py" line="294"/>
-        <source>This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../JointObject.py" line="305"/>
-        <source>This is the second distance of the joint. It is used only by the gear joint to store the second radius.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../JointObject.py" line="316"/>
-        <source>This is the rotation of the joint.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../JointObject.py" line="327"/>
-        <source>This is the offset vector of the joint.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../JointObject.py" line="338"/>
-        <source>This indicates if the joint is active.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../JointObject.py" line="350"/>
-        <source>Enable the minimum length limit of the joint.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../JointObject.py" line="362"/>
-        <source>Enable the maximum length limit of the joint.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../JointObject.py" line="374"/>
-        <source>Enable the minimum angle limit of the joint.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../JointObject.py" line="386"/>
-        <source>Enable the minimum length of the joint.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../JointObject.py" line="398"/>
-        <source>This is the minimum limit for the length between both coordinate systems (along their Z axis).</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../JointObject.py" line="409"/>
-        <source>This is the maximum limit for the length between both coordinate systems (along their Z axis).</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../JointObject.py" line="420"/>
-        <source>This is the minimum limit for the angle between both coordinate systems (between their X axis).</source>
+        <location filename="../../../JointObject.py" line="286"/>
+        <location filename="../../../JointObject.py" line="528"/>
+        <source>This is the attachment offset of the second connector of the joint.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../JointObject.py" line="431"/>
+        <source>The first object of the joint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../JointObject.py" line="233"/>
+        <source>This prevents Placement1 from recomputing, enabling custom positioning of the placement.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../JointObject.py" line="450"/>
+        <source>The second object of the joint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../JointObject.py" line="275"/>
+        <source>This prevents Placement2 from recomputing, enabling custom positioning of the placement.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../JointObject.py" line="298"/>
+        <source>This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../JointObject.py" line="309"/>
+        <source>This is the second distance of the joint. It is used only by the gear joint to store the second radius.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../JointObject.py" line="320"/>
+        <source>This indicates if the joint is active.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../JointObject.py" line="332"/>
+        <source>Enable the minimum length limit of the joint.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../JointObject.py" line="344"/>
+        <source>Enable the maximum length limit of the joint.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../JointObject.py" line="356"/>
+        <source>Enable the minimum angle limit of the joint.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../JointObject.py" line="368"/>
+        <source>Enable the minimum length of the joint.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../JointObject.py" line="380"/>
+        <source>This is the minimum limit for the length between both coordinate systems (along their Z axis).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../JointObject.py" line="391"/>
+        <source>This is the maximum limit for the length between both coordinate systems (along their Z axis).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../JointObject.py" line="402"/>
+        <source>This is the minimum limit for the angle between both coordinate systems (between their X axis).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../JointObject.py" line="413"/>
         <source>This is the maximum limit for the angle between both coordinate systems (between their X axis).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../JointObject.py" line="1021"/>
+        <location filename="../../../JointObject.py" line="1065"/>
         <source>The object to ground</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../JointObject.py" line="1033"/>
+        <location filename="../../../JointObject.py" line="1077"/>
         <source>This is where the part is grounded.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../CommandCreateView.py" line="235"/>
-        <source>The object moved by the move</source>
+        <location filename="../../../CommandCreateView.py" line="246"/>
+        <location filename="../../../CommandCreateView.py" line="280"/>
+        <source>The objects moved by the move</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../CommandCreateView.py" line="242"/>
-        <source>The containing parts of objects moved by the move</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../CommandCreateView.py" line="252"/>
+        <location filename="../../../CommandCreateView.py" line="257"/>
         <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../CommandCreateView.py" line="259"/>
+        <location filename="../../../CommandCreateView.py" line="265"/>
         <source>The type of the move</source>
         <translation type="unfinished"></translation>
     </message>
@@ -663,22 +661,17 @@ The files are named &quot;runPreDrag.asmt&quot; and &quot;dragging.log&quot; and
 <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-        <location filename="../../ViewProviderAssembly.cpp" line="150"/>
-        <source>Delete associated joints</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../ViewProviderAssembly.cpp" line="162"/>
+        <location filename="../../ViewProviderAssembly.cpp" line="180"/>
         <source>The object is associated to one or more joints.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderAssembly.cpp" line="164"/>
+        <location filename="../../ViewProviderAssembly.cpp" line="182"/>
         <source>Do you want to move the object and delete associated joints?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderAssembly.cpp" line="780"/>
+        <location filename="../../ViewProviderAssembly.cpp" line="856"/>
         <source>Move part</source>
         <translation type="unfinished"></translation>
     </message>
@@ -925,7 +918,7 @@ Press ESC to cancel.</source>
     </message>
     <message>
         <location filename="../../../CommandCreateBom.py" line="81"/>
-        <source>The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the bom. If you don&apos;t need the BOM object to be saved as a document object, you can simply export and cancel the task.</source>
+        <source>The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you don&apos;t need the BOM object to be saved as a document object, you can simply export and cancel the task.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

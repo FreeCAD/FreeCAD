@@ -86,9 +86,7 @@ def shapeBoundBox(obj):
                 bb = bb.united(b)
             return bb
     if obj:
-        Path.Log.error(
-            translate("PathStock", "Invalid base object %s - no shape found") % obj.Name
-        )
+        Path.Log.error(translate("PathStock", "Invalid base object %s - no shape found") % obj.Name)
     return None
 
 
@@ -114,9 +112,7 @@ class StockFromBase(Stock):
             "App::PropertyLink",
             "Base",
             "Base",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "The base object this stock is derived from"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "The base object this stock is derived from"),
         )
         obj.addProperty(
             "App::PropertyDistance",
@@ -204,19 +200,13 @@ class StockFromBase(Stock):
         return None
 
     def execute(self, obj):
-        bb = (
-            shapeBoundBox(obj.Base.Group)
-            if obj.Base and hasattr(obj.Base, "Group")
-            else None
-        )
+        bb = shapeBoundBox(obj.Base.Group) if obj.Base and hasattr(obj.Base, "Group") else None
         Path.Log.track(obj.Label, bb)
 
         # Sometimes, when the Base changes it's temporarily not assigned when
         # Stock.execute is triggered - it'll be set correctly the next time around.
         if bb:
-            self.origin = FreeCAD.Vector(
-                -obj.ExtXneg.Value, -obj.ExtYneg.Value, -obj.ExtZneg.Value
-            )
+            self.origin = FreeCAD.Vector(-obj.ExtXneg.Value, -obj.ExtYneg.Value, -obj.ExtZneg.Value)
 
             self.length = bb.XLength + obj.ExtXneg.Value + obj.ExtXpos.Value
             self.width = bb.YLength + obj.ExtYneg.Value + obj.ExtYpos.Value
@@ -433,16 +423,14 @@ def CreateCylinder(job, radius=None, height=None, placement=None):
         obj.Height = height
     elif base:
         bb = shapeBoundBox(base.Group)
-        obj.Radius = math.sqrt(bb.XLength ** 2 + bb.YLength ** 2) / 2.0
+        obj.Radius = math.sqrt(bb.XLength**2 + bb.YLength**2) / 2.0
         obj.Height = max(bb.ZLength, 1)
 
     if placement:
         obj.Placement = placement
     elif base:
         bb = shapeBoundBox(base.Group)
-        origin = FreeCAD.Vector(
-            (bb.XMin + bb.XMax) / 2, (bb.YMin + bb.YMax) / 2, bb.ZMin
-        )
+        origin = FreeCAD.Vector((bb.XMin + bb.XMax) / 2, (bb.YMin + bb.YMax) / 2, bb.ZMin)
         obj.Placement = FreeCAD.Placement(origin, FreeCAD.Vector(), 0)
 
     SetupStockObject(obj, StockType.CreateCylinder)
@@ -508,9 +496,7 @@ def CreateFromTemplate(job, template):
                 and rotW is not None
             ):
                 pos = FreeCAD.Vector(float(posX), float(posY), float(posZ))
-                rot = FreeCAD.Rotation(
-                    float(rotX), float(rotY), float(rotZ), float(rotW)
-                )
+                rot = FreeCAD.Rotation(float(rotX), float(rotY), float(rotZ), float(rotW))
                 placement = FreeCAD.Placement(pos, rot)
             elif (
                 posX is not None
@@ -584,8 +570,7 @@ def CreateFromTemplate(job, template):
                     )
                 else:
                     Path.Log.track(
-                        "  take placement (%s) and extent (%s) from model"
-                        % (placement, extent)
+                        "  take placement (%s) and extent (%s) from model" % (placement, extent)
                     )
                 return CreateBox(job, extent, placement)
 
@@ -603,15 +588,13 @@ def CreateFromTemplate(job, template):
                 return CreateCylinder(job, radius, height, placement)
 
             Path.Log.error(
-                translate("PathStock", "Unsupported stock type named {}").format(
-                    stockType
-                )
+                translate("PathStock", "Unsupported stock type named {}").format(stockType)
             )
         else:
             Path.Log.error(
-                translate(
-                    "PathStock", "Unsupported PathStock template version {}"
-                ).format(template.get("version"))
+                translate("PathStock", "Unsupported PathStock template version {}").format(
+                    template.get("version")
+                )
             )
         return None
 

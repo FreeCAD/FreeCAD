@@ -40,8 +40,6 @@ if(MSVC)
     endif()
 endif()
 
-add_compile_options("-DFC_USE_TNP_FIX")
-
 if(WIN32)
     add_definitions(-DCOIN_DLL -D_USE_MATH_DEFINES)
 endif(WIN32)

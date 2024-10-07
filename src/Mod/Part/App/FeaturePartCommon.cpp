@@ -86,122 +86,6 @@ short MultiCommon::mustExecute() const
 
 App::DocumentObjectExecReturn *MultiCommon::execute()
 {
-#ifndef FC_USE_TNP_FIX
-    std::vector<TopoDS_Shape> s;
-    std::vector<App::DocumentObject*> obj = Shapes.getValues();
-
-    std::vector<App::DocumentObject*>::iterator it;
-    for (it = obj.begin(); it != obj.end(); ++it) {
-        s.push_back(Feature::getShape(*it));
-    }
-
-    bool argumentsAreInCompound = false;
-    TopoDS_Shape compoundOfArguments;
-
-    //if only one source shape, and it is a compound - fuse children of the compound
-    if (s.size() == 1){
-        compoundOfArguments = s[0];
-        if (compoundOfArguments.ShapeType() == TopAbs_COMPOUND){
-            s.clear();
-            TopoDS_Iterator it(compoundOfArguments);
-            for (; it.More(); it.Next()) {
-                const TopoDS_Shape& aChild = it.Value();
-                s.push_back(aChild);
-            }
-            argumentsAreInCompound = true;
-        }
-    }
-
-    if (s.size() >= 2) {
-        try {
-            std::vector<ShapeHistory> history;
-            TopoDS_Shape resShape = s.front();
-            if (resShape.IsNull())
-                throw NullShapeException("Input shape is null");
-
-            for (std::vector<TopoDS_Shape>::iterator it = s.begin()+1; it != s.end(); ++it) {
-                if (it->IsNull())
-                    throw Base::RuntimeError("Input shape is null");
-
-                // Let's call algorithm computing a fuse operation:
-                BRepAlgoAPI_Common mkCommon(resShape, *it);
-                // Let's check if the fusion has been successful
-                if (!mkCommon.IsDone())
-                    throw BooleanException("Intersection failed");
-                resShape = mkCommon.Shape();
-
-                ShapeHistory hist1 = buildHistory(mkCommon, TopAbs_FACE, resShape, mkCommon.Shape1());
-                ShapeHistory hist2 = buildHistory(mkCommon, TopAbs_FACE, resShape, mkCommon.Shape2());
-                if (history.empty()) {
-                    history.push_back(hist1);
-                    history.push_back(hist2);
-                }
-                else {
-                    for (auto & jt : history)
-                        jt = joinHistory(jt, hist1);
-                    history.push_back(hist2);
-                }
-            }
-            if (resShape.IsNull())
-                throw NullShapeException("Resulting shape is invalid");
-
-            Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-                .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
-            if (hGrp->GetBool("CheckModel", true)) {
-                 BRepCheck_Analyzer aChecker(resShape);
-                 if (! aChecker.IsValid() ) {
-                     return new App::DocumentObjectExecReturn("Resulting shape is invalid");
-                 }
-            }
-            if (this->Refine.getValue()) {
-                try {
-                    TopoDS_Shape oldShape = resShape;
-                    BRepBuilderAPI_RefineModel mkRefine(oldShape);
-                    resShape = mkRefine.Shape();
-                    ShapeHistory hist = buildHistory(mkRefine, TopAbs_FACE, resShape, oldShape);
-                    for (auto & jt : history)
-                        jt = joinHistory(jt, hist);
-                }
-                catch (Standard_Failure&) {
-                    // do nothing
-                }
-            }
-
-            this->Shape.setValue(resShape);
-
-            if (argumentsAreInCompound){
-                //combine histories of every child of source compound into one
-                ShapeHistory overallHist;
-                TopTools_IndexedMapOfShape facesOfCompound;
-                TopAbs_ShapeEnum type = TopAbs_FACE;
-                TopExp::MapShapes(compoundOfArguments, type, facesOfCompound);
-                for (std::size_t iChild = 0; iChild < history.size(); iChild++){ //loop over children of source compound
-                    //for each face of a child, find the inex of the face in compound, and assign the corresponding right-hand-size of the history
-                    TopTools_IndexedMapOfShape facesOfChild;
-                    TopExp::MapShapes(s[iChild], type, facesOfChild);
-                    for(std::pair<const int,ShapeHistory::List> &histitem: history[iChild].shapeMap){ //loop over elements of history - that is - over faces of the child of source compound
-                        int iFaceInChild = histitem.first;
-                        ShapeHistory::List &iFacesInResult = histitem.second;
-                        TopoDS_Shape srcFace = facesOfChild(iFaceInChild + 1); //+1 to convert our 0-based to OCC 1-bsed conventions
-                        int iFaceInCompound = facesOfCompound.FindIndex(srcFace)-1;
-                        overallHist.shapeMap[iFaceInCompound] = iFacesInResult; //this may overwrite existing info if the same face is used in several children of compound. This shouldn't be a problem, because the histories should match anyway...
-                    }
-                }
-                history.clear();
-                history.push_back(overallHist);
-            }
-            this->History.setValues(history);
-        }
-        catch (Standard_Failure& e) {
-            return new App::DocumentObjectExecReturn(e.GetMessageString());
-        }
-    }
-    else {
-        throw Base::CADKernelError("Not enough shape objects linked");
-    }
-
-    return App::DocumentObject::StdReturn;
-#else
     std::vector<TopoShape> shapes;
     for (auto obj : Shapes.getValues()) {
         TopoShape sh = Feature::getTopoShape(obj);
@@ -222,7 +106,7 @@ App::DocumentObjectExecReturn *MultiCommon::execute()
                                              .GetGroup("BaseApp")
                                              ->GetGroup("Preferences")
                                              ->GetGroup("Mod/Part/Boolean");
-    if (hGrp->GetBool("CheckModel", true)) {
+    if (hGrp->GetBool("CheckModel", false)) {
         BRepCheck_Analyzer aChecker(res.getShape());
         if (!aChecker.IsValid()) {
             return new App::DocumentObjectExecReturn("Resulting shape is invalid");
@@ -235,5 +119,4 @@ App::DocumentObjectExecReturn *MultiCommon::execute()
     this->Shape.setValue(res);
 
     return Part::Feature::execute();
-#endif
 }

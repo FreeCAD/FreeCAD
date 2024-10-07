@@ -24,27 +24,34 @@
 #include <QString>
 #include <QComboBox>
 #include <QLineEdit>
+#include <QCheckBox>
 
 #include <App/Application.h>
+#include <App/Document.h>
 #include <App/MeasureManager.h>
+#include <Gui/Document.h>
 
 #include <Mod/Measure/App/MeasureBase.h>
+#include <Mod/Measure/Gui/ViewProviderMeasureBase.h>
 
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
 
-namespace Gui {
+namespace Gui
+{
 
-class TaskMeasure : public TaskView::TaskDialog, public Gui::SelectionObserver {
+class TaskMeasure: public TaskView::TaskDialog, public Gui::SelectionObserver
+{
 
 public:
     TaskMeasure();
     ~TaskMeasure() override;
 
     void modifyStandardButtons(QDialogButtonBox* box) override;
-    QDialogButtonBox::StandardButtons getStandardButtons() const override {
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
+    {
         return QDialogButtonBox::Apply | QDialogButtonBox::Abort | QDialogButtonBox::Reset;
     }
 
@@ -63,16 +70,28 @@ public:
 private:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
-    Measure::MeasureBase *_mMeasureObject = nullptr;
+    App::Document* _mDocument = nullptr;
+    Gui::Document* _mGuiDocument = nullptr;
+    Measure::MeasureBase* _mMeasureObject = nullptr;
+    Gui::ViewProviderDocumentObject* _mViewObject = nullptr;
 
-    QLineEdit* valueResult{nullptr};
-    QComboBox* modeSwitch{nullptr};
+    QLineEdit* valueResult {nullptr};
+    QComboBox* modeSwitch {nullptr};
+    QCheckBox* showDelta {nullptr};
+    QLabel* showDeltaLabel {nullptr};
 
     void removeObject();
     void onModeChanged(int index);
+    void showDeltaChanged(int checkState);
     void setModeSilent(App::MeasureType* mode);
     App::MeasureType* getMeasureType();
     void enableAnnotateButton(bool state);
+    App::DocumentObject* createObject(const App::MeasureType* measureType);
+    Gui::ViewProviderDocumentObject* createViewObject(App::DocumentObject* measureObj);
+    void saveObject();
+    void ensureGroup(Measure::MeasureBase* measurement);
+    void setDeltaPossible(bool possible);
+
 
     // List of measure types
     std::vector<App::DocumentObject> measureObjects;
@@ -80,6 +99,8 @@ private:
     // Stores if the mode is explicitly set by the user or implicitly through the selection
     bool explicitMode = false;
 
+    // Stores if delta measures shall be shown
+    bool delta = true;
 };
 
-} // namespace Gui
+}  // namespace Gui

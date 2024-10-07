@@ -1,23 +1,24 @@
-/***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
+// SPDX-License-Identifier: LGPL-2.1-or-later
+/****************************************************************************
+ *                                                                          *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>               *
+ *                                                                          *
+ *   This file is part of FreeCAD.                                          *
+ *                                                                          *
+ *   FreeCAD is free software: you can redistribute it and/or modify it     *
+ *   under the terms of the GNU Lesser General Public License as            *
+ *   published by the Free Software Foundation, either version 2.1 of the   *
+ *   License, or (at your option) any later version.                        *
+ *                                                                          *
+ *   FreeCAD is distributed in the hope that it will be useful, but         *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
+ *   Lesser General Public License for more details.                        *
+ *                                                                          *
+ *   You should have received a copy of the GNU Lesser General Public       *
+ *   License along with FreeCAD. If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                       *
+ *                                                                          *
  ***************************************************************************/
 
 #include "PreCompiled.h"
@@ -155,6 +156,7 @@ SketchObject::SketchObject()
                       (App::PropertyType)(App::Prop_None),
                       "Tolerance for fitting arcs of projected external geometry");
     geoLastId = 0;
+    geoHistoryLevel = 1;
 
     ADD_PROPERTY(InternalShape,
                  (Part::TopoShape()));
@@ -264,9 +266,11 @@ App::DocumentObjectExecReturn* SketchObject::execute()
         Constraints.acceptGeometry(getCompleteGeometry());
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("%s\nClear constraints to external geometry\n", e.what());
+        // 9/16/24: We used to clear the constraints here, but we no longer want to do that
+        // as missing reference geometry is not considered an error while we sort out sketcher UI.
+        // Base::Console().Error("%s\nClear constraints to external geometry\n", e.what());
         // we cannot trust the constraints of external geometries, so remove them
-        delConstraintsToExternal();
+        //  delConstraintsToExternal();
     }
 
     // This includes a regular solve including full geometry update, except when an error
@@ -324,17 +328,13 @@ void SketchObject::buildShape() {
         if(GeometryFacade::getConstruction(geo)) {
             continue;
         }
-        if (geo->isDerivedFrom<Part::GeomPoint>())
-#ifdef FC_USE_TNP_FIX
-        {
+        if (geo->isDerivedFrom<Part::GeomPoint>()) {
             Part::TopoShape vertex(TopoDS::Vertex(geo->toShape()));
             int idx = getVertexIndexGeoPos(geoId -1, Sketcher::PointPos::start);
             std::string name = convertSubName(Data::IndexedName::fromConst("Vertex", idx+1), false);
             if (!vertex.hasElementMap()) {
-                // TODO: Eventually this will likely be made obsolete, when TopoShapes always have an element map
                 vertex.resetElementMap(std::make_shared<Data::ElementMap>());
-            }
-            vertex.setElementName(Data::IndexedName::fromConst("Vertex", 1),
+            }            vertex.setElementName(Data::IndexedName::fromConst("Vertex", 1),
                                   Data::MappedName::fromRawData(name.c_str()),0L);
             vertices.push_back(vertex);
             vertices.back().copyElementMap(vertex, Part::OpCodes::Sketch);
@@ -345,17 +345,6 @@ void SketchObject::buildShape() {
                 FC_WARN("Edge too small: " << indexedName);
             }
         }
-
-#else
-        {
-            vertices.emplace_back(TopoDS::Vertex(geo->toShape()));
-            int idx = getVertexIndexGeoPos(i-1, PointPos::start);
-            std::string name = convertSubName(Data::IndexedName::fromConst("Vertex", idx+1), false);
-        }
-        else
-            shapes.push_back(getEdge(geo,convertSubName(
-                        Data::IndexedName::fromConst("Edge", i), false).c_str()));
-#endif
     }
 
     for(int i=2;i<ExternalGeo.getSize();++i) {
@@ -384,21 +373,17 @@ void SketchObject::buildShape() {
      } else {
          std::vector<Part::TopoShape> results;
          if (!shapes.empty()) {
-             // This call of makeElementWires() does not have the op code, in order to
-             // avoid duplication. Because we'll going to make a compound (to
-             // include the vertices) below with the same op code.
-             //
              // Note, that we HAVE TO add the Part::OpCodes::Sketch op code to all
              // geometry exposed through the Shape property, because
              // SketchObject::getElementName() relies on this op code to
              // differentiate geometries that are exposed with those in edit
              // mode.
-             auto wires = Part::TopoShape().makeElementWires(shapes);
+             auto wires = Part::TopoShape().makeElementWires(shapes, Part::OpCodes::Sketch);
              for (const auto &wire : wires.getSubTopoShapes(TopAbs_WIRE))
                  results.push_back(wire);
          }
          results.insert(results.end(), vertices.begin(), vertices.end());
-         result.makeElementCompound(results, Part::OpCodes::Sketch);
+         result.makeElementCompound(results);
      }
     result.Tag = getID();
     InternalShape.setValue(buildInternals(result.located(TopLoc_Location())));
@@ -1561,12 +1546,7 @@ int SketchObject::addGeometry(const std::vector<Part::Geometry*>& geoList,
         Part::Geometry* copy = v->copy();
         generateId(copy);
 
-        if (copy->is<Part::GeomPoint>()) {
-            // creation mode for points is always construction not to
-            // break legacy code
-            GeometryFacade::setConstruction(copy, true);
-        }
-        else if (construction) {
+        if (construction) {
             GeometryFacade::setConstruction(copy, construction);
         }
 
@@ -1600,12 +1580,7 @@ int SketchObject::addGeometry(std::unique_ptr<Part::Geometry> newgeo, bool const
     auto* geoNew = newgeo.release();
     generateId(geoNew);
 
-    if (geoNew->is<Part::GeomPoint>()) {
-        // creation mode for points is always construction not to
-        // break legacy code
-        GeometryFacade::setConstruction(geoNew, true);
-    }
-    else if (construction) {
+    if (construction) {
         GeometryFacade::setConstruction(geoNew, construction);
     }
 
@@ -1880,7 +1855,6 @@ int SketchObject::setConstruction(int GeoId, bool on)
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
 
-#ifdef FC_USE_TNP_FIX
    Part::PropertyGeometryList *prop;
     int idx;
     if (GeoId >= 0) {
@@ -1894,21 +1868,12 @@ int SketchObject::setConstruction(int GeoId, bool on)
         idx = -GeoId-1;
     }else
         return -1;
-#else
-    const std::vector<Part::Geometry*>& vals = getInternalGeometry();
-    if (GeoId < 0 || GeoId >= int(vals.size()))
-        return -1;
-
-    if (getGeometryFacade(GeoId)->isInternalAligned())
-        return -1;
-#endif
 
     // While it may seem that there is not a need to trigger an update at this time, because the
     // solver has its own copy of the geometry, and updateColors of the viewprovider may be
     // triggered by the clearselection of the UI command, this won't update the elements widget, in
     // the accumulative of actions it is judged that it is worth to trigger an update here.
 
-#ifdef FC_USE_TNP_FIX
     std::unique_ptr<Part::Geometry> geo(prop->getValues()[idx]->clone());
     if(prop == &Geometry)
         GeometryFacade::setConstruction(geo.get(), on);
@@ -1918,12 +1883,6 @@ int SketchObject::setConstruction(int GeoId, bool on)
     }
 
     prop->set1Value(idx,std::move(geo));
-
-#else
-    std::unique_ptr<Part::Geometry> geo(vals[GeoId]->clone());
-    GeometryFacade::setConstruction(geo.get(), on);
-    this->Geometry.set1Value(GeoId, std::move(geo));
-#endif
     solverNeedsUpdate = true;
     return 0;
 }
@@ -2347,7 +2306,7 @@ void SketchObject::transferFilletConstraints(int geoId1, PointPos posId1, int ge
 
     // Add a vertex to preserve the original intersection of the filleted lines
     Part::GeomPoint* originalCorner = new Part::GeomPoint(getPoint(geoId1, posId1));
-    int originalCornerId = addGeometry(originalCorner);
+    int originalCornerId = addGeometry(originalCorner, true);
     delete originalCorner;
 
     // Constrain the vertex to the two lines
@@ -4236,8 +4195,9 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
 
                 // TODO: Do we apply constraints on center etc of the conics?
 
-                // transfer constraints from start and end of original
+                // transfer constraints from start, mid and end of original
                 transferConstraints(GeoId, PointPos::start, newId0, PointPos::start, true);
+                transferConstraints(GeoId, PointPos::mid, newId0, PointPos::mid);
                 transferConstraints(GeoId, PointPos::end, newId1, PointPos::end, true);
             });
     }
@@ -7763,7 +7723,7 @@ int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName, boo
     solverNeedsUpdate = true;
     return ExternalGeometry.getValues().size() - 1;
 }
-#ifdef FC_USE_TNP_FIX
+
 int SketchObject::delExternal(int ExtGeoId)
 {
     return delExternal(std::vector<int>{ExtGeoId});
@@ -7792,73 +7752,7 @@ int SketchObject::delExternal(const std::vector<int>& ExtGeoIds)
     delExternalPrivate(geoIds, true);
     return 0;
 }
-#else
-int SketchObject::delExternal(int ExtGeoId)
-{
-    // no need to check input data validity as this is an sketchobject managed operation.
-    Base::StateLocker lock(managedoperation, true);
 
-    // get the actual lists of the externals
-    std::vector<DocumentObject*> Objects = ExternalGeometry.getValues();
-    std::vector<std::string> SubElements = ExternalGeometry.getSubValues();
-
-    if (ExtGeoId < 0 || ExtGeoId >= int(SubElements.size()))
-        return -1;
-
-    const std::vector<DocumentObject*> originalObjects = Objects;
-    const std::vector<std::string> originalSubElements = SubElements;
-
-    Objects.erase(Objects.begin() + ExtGeoId);
-    SubElements.erase(SubElements.begin() + ExtGeoId);
-
-    const std::vector<Constraint*>& constraints = Constraints.getValues();
-    std::vector<Constraint*> newConstraints;
-    std::vector<Constraint*> copiedConstraints;
-    int GeoId = GeoEnum::RefExt - ExtGeoId;
-    for (auto cstr : constraints) {
-        if (cstr->First != GeoId && cstr->Second != GeoId && cstr->Third != GeoId) {
-            auto copiedConstr = cstr;
-            if (copiedConstr->First < GeoId && copiedConstr->First != GeoEnum::GeoUndef) {
-                if (cstr == copiedConstr)
-                    copiedConstr = cstr->clone();
-                copiedConstr->First += 1;
-            }
-            if (copiedConstr->Second < GeoId && copiedConstr->Second != GeoEnum::GeoUndef) {
-                if (cstr == copiedConstr)
-                    copiedConstr = cstr->clone();
-                copiedConstr->Second += 1;
-            }
-            if (copiedConstr->Third < GeoId && copiedConstr->Third != GeoEnum::GeoUndef) {
-                if (cstr == copiedConstr)
-                    copiedConstr = cstr->clone();
-                copiedConstr->Third += 1;
-            }
-
-            newConstraints.push_back(copiedConstr);
-            if (cstr != copiedConstr)
-                copiedConstraints.push_back(copiedConstr);
-        }
-    }
-
-    ExternalGeometry.setValues(Objects, SubElements);
-    try {
-        rebuildExternalGeometry();
-    }
-    catch (const Base::Exception& e) {
-        Base::Console().Error("%s\n", e.what());
-        // revert to original values
-        ExternalGeometry.setValues(originalObjects, originalSubElements);
-        for (Constraint* it : copiedConstraints)
-            delete it;
-        return -1;
-    }
-
-    solverNeedsUpdate = true;
-    Constraints.setValues(std::move(newConstraints));
-    acceptGeometry();// This may need to be refactored into OnChanged for ExternalGeometry.
-    return 0;
-}
-#endif
 void SketchObject::delExternalPrivate(const std::set<long> &ids, bool removeRef) {
 
     Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
@@ -8515,7 +8409,6 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
     // We use a vector here to keep the order (roughly) the same as ExternalGeometry
     std::vector<std::vector<std::unique_ptr<Part::Geometry> > > newGeos;
     newGeos.reserve(Objects.size());
-#ifdef FC_USE_TNP_FIX
     for (int i=0; i < int(Objects.size()); i++) {
         const App::DocumentObject *Obj=Objects[i];
         const std::string &SubElement=SubElements[i];
@@ -8539,24 +8432,6 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
             refSet.insert(std::move(key));
             continue;
         }
-#else
-    for (std::vector<Part::Geometry*>::iterator it = ExternalGeo.begin(); it != ExternalGeo.end();
-         ++it)
-        if (*it)
-            delete *it;
-    ExternalGeo.clear();
-    Part::GeomLineSegment* HLine = new Part::GeomLineSegment();
-    Part::GeomLineSegment* VLine = new Part::GeomLineSegment();
-    HLine->setPoints(Base::Vector3d(0, 0, 0), Base::Vector3d(1, 0, 0));
-    VLine->setPoints(Base::Vector3d(0, 0, 0), Base::Vector3d(0, 1, 0));
-    GeometryFacade::setConstruction(HLine, true);
-    GeometryFacade::setConstruction(VLine, true);
-    ExternalGeo.push_back(HLine);
-    ExternalGeo.push_back(VLine);
-    for (int i = 0; i < int(Objects.size()); i++) {
-        const App::DocumentObject* Obj = Objects[i];
-        const std::string SubElement = SubElements[i];
-#endif
         if(!Obj || !Obj->getNameInDocument())
             continue;
 
@@ -10326,7 +10201,6 @@ void SketchObject::onChanged(const App::Property* prop)
         }
     }
     else if (prop == &ExternalGeometry) {
-#ifdef FC_USE_TNP_FIX
         if (doc && doc->isPerformingTransaction()) {
             setStatus(App::PendingTransactionUpdate, true);
         }
@@ -10362,15 +10236,6 @@ void SketchObject::onChanged(const App::Property* prop)
             }
             solve();
         }
-#else
-        // make sure not to change anything while restoring this object
-        if (!isRestoring()) {
-            // external geometry was cleared
-            if (ExternalGeometry.getSize() == 0) {
-                delConstraintsToExternal();
-            }
-        }
-#endif
     }
 #if 0
     // For now do not delete anything (#0001791). When changing the support
@@ -10629,7 +10494,6 @@ void SketchObject::restoreFinished()
     try {
         migrateSketch();
 
-#ifdef FC_USE_TNP_FIX
         updateGeometryRefs();
         if(ExternalGeo.getSize()<=2) {
             if (ExternalGeo.getSize() < 2)
@@ -10646,11 +10510,6 @@ void SketchObject::restoreFinished()
         }else
             acceptGeometry();
 
-#else
-        validateExternalLinks();
-        rebuildExternalGeometry();
-        Constraints.acceptGeometry(getCompleteGeometry());
-#endif
         synchroniseGeometryState();
         // this may happen when saving a sketch directly in edit mode
         // but never performed a recompute before
@@ -11365,13 +11224,6 @@ const char *SketchObject::convertInternalName(const char *name)
 App::ElementNamePair SketchObject::getElementName(
         const char *name, ElementNameType type) const
 {
-    //  Todo: Toponaming Project March 2024:  This method override breaks the sketcher - selection and deletion
-    //          of constraints ceases to work.  See #13169.  We need to prove that this works before
-    //          enabling it.
-//    return Part2DObject::getElementName(name,type);
-#ifndef FC_USE_TNP_FIX
-    return Part2DObject::getElementName(name,type);
-#endif
     App::ElementNamePair ret;
     if(!name) return ret;
 
@@ -11383,7 +11235,6 @@ App::ElementNamePair SketchObject::getElementName(
     index.appendToStringBuffer(ret.oldName);
     if (auto realName = convertInternalName(ret.oldName.c_str())) {
         Data::MappedElement mappedElement;
-        (void)realName;
         if (mapped)
             mappedElement = InternalShape.getShape().getElementName(name);
         else if (type == ElementNameType::Export)
@@ -11497,26 +11348,72 @@ Data::IndexedName SketchObject::checkSubName(const char *subname) const{
 
     bio::stream<bio::array_source> iss(mappedSubname+1, std::strlen(mappedSubname+1));
     int id = -1;
-    switch(mappedSubname[0]) {
-    case '\0': // check length != 0
+    bool valid = false;
+    switch (mappedSubname[0]) {
+        case '\0':  // check length != 0
+            break;
+
+        case 'g':  // = geometry
+        case 'e':  // = external geometry
+            if (iss >> id) {
+                valid = true;
+            }
+            break;
+
+        // for RootPoint, H_Axis, V_Axis
+        default: {
+            const char* dot = strchr(mappedSubname, '.');
+            if (dot) {
+                mappedSubname = dot + 1;
+            }
+            return Data::IndexedName(mappedSubname, types, false);
+        }
+    }
+
+    if (!valid) {
         FC_ERR("invalid subname " << subname);
-        break;
+        return Data::IndexedName();
+    }
 
-    case 'g': // = geometry
-    case 'e': // = external geometry
-        if(!(iss>>id))
-            FC_ERR("invalid subname " << subname);
-        break;
-
-    // for RootPoint, H_Axis, V_Axis
-    default: {
-        const char *dot = strchr(mappedSubname,'.');
-        if(dot)
-            mappedSubname = dot+1;
-        return Data::IndexedName(mappedSubname, types, false);
-    }}
-
-    // TNP July '24: omitted code related to external and internal sketcher stuff implemented in LS3
+    int geoId;
+    const Part::Geometry* geo = 0;
+    switch (mappedSubname[0]) {
+        case 'g': {
+            auto it = geoMap.find(id);
+            if (it != geoMap.end()) {
+                geoId = it->second;
+                geo = getGeometry(geoId);
+            }
+            break;
+        }
+        case 'e': {
+            auto it = externalGeoMap.find(id);
+            if (it != externalGeoMap.end()) {
+                geoId = -it->second - 1;
+                geo = getGeometry(geoId);
+            }
+            break;
+        }
+    }
+    if (geo && GeometryFacade::getId(geo) == id) {
+        char sep;
+        int posId = static_cast<int>(PointPos::none);
+        if ((iss >> sep >> posId) && sep == 'v') {
+            int idx = getVertexIndexGeoPos(geoId, static_cast<PointPos>(posId));
+            if (idx < 0) {
+                FC_ERR("invalid subname " << subname);
+                return Data::IndexedName();
+            }
+            return Data::IndexedName::fromConst("Vertex", idx + 1);
+        }
+        else if (geoId >= 0) {
+            return Data::IndexedName::fromConst("Edge", geoId + 1);
+        }
+        else {
+            return Data::IndexedName::fromConst("ExternalEdge", -geoId - 2);
+        }
+    }
+    FC_ERR("cannot find subname " << subname);
 
     return Data::IndexedName();
 }

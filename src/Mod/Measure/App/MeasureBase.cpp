@@ -35,13 +35,18 @@ using namespace Measure;
 
 PROPERTY_SOURCE(Measure::MeasureBase, App::DocumentObject)
 
-MeasureBase::MeasureBase() {
-    ADD_PROPERTY_TYPE(Placement, (Base::Placement()), nullptr, App::PropertyType(App::Prop_ReadOnly|App::Prop_Output|App::Prop_NoRecompute), "Visual placement of the measurement");
-
+MeasureBase::MeasureBase()
+{
+    ADD_PROPERTY_TYPE(
+        Placement,
+        (Base::Placement()),
+        nullptr,
+        App::PropertyType(App::Prop_ReadOnly | App::Prop_Output | App::Prop_NoRecompute),
+        "Visual placement of the measurement");
 }
 
 
-PyObject *MeasureBase::getPyObject(void)
+PyObject* MeasureBase::getPyObject(void)
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
@@ -50,7 +55,8 @@ PyObject *MeasureBase::getPyObject(void)
     return Py::new_reference_to(PythonObject);
 }
 
-Py::Object MeasureBase::getProxyObject() const {
+Py::Object MeasureBase::getProxyObject() const
+{
     Base::PyGILStateLocker lock;
     App::Property* prop = this->getPropertyByName("Proxy");
     if (!prop) {
@@ -59,7 +65,8 @@ Py::Object MeasureBase::getProxyObject() const {
     return dynamic_cast<App::PropertyPythonObject*>(prop)->getValue();
 };
 
-std::vector<App::DocumentObject*> MeasureBase::getSubject() const {
+std::vector<App::DocumentObject*> MeasureBase::getSubject() const
+{
     Base::PyGILStateLocker lock;
 
     Py::Object proxy = getProxyObject();
@@ -67,11 +74,12 @@ std::vector<App::DocumentObject*> MeasureBase::getSubject() const {
     // Pass the feature object to the proxy
     Py::Tuple args(1);
     args.setItem(0, Py::Object(const_cast<MeasureBase*>(this)->getPyObject()));
-    
+
     Py::Object ret;
     try {
         ret = proxy.callMemberFunction("getSubject", args);
-    } catch (Py::Exception&) {
+    }
+    catch (Py::Exception&) {
         Base::PyException e;
         e.ReportException();
         return {};
@@ -84,14 +92,13 @@ std::vector<App::DocumentObject*> MeasureBase::getSubject() const {
     }
 
     return retVec;
-    };
-
-        
+};
 
 
-void MeasureBase::parseSelection(const App::MeasureSelection& selection) {
+void MeasureBase::parseSelection(const App::MeasureSelection& selection)
+{
     Base::PyGILStateLocker lock;
-    
+
     Py::Object proxy = getProxyObject();
 
     // Convert selection to python list
@@ -106,15 +113,16 @@ void MeasureBase::parseSelection(const App::MeasureSelection& selection) {
     // Call the parseSelection method of the proxy object
     try {
         proxy.callMemberFunction("parseSelection", args);
-    } catch (Py::Exception&) {
+    }
+    catch (Py::Exception&) {
         Base::PyException e;
         e.ReportException();
     }
-    
 }
 
 
-std::vector<std::string> MeasureBase::getInputProps() {
+std::vector<std::string> MeasureBase::getInputProps()
+{
     Base::PyGILStateLocker lock;
     Py::Object proxy = getProxyObject();
 
@@ -125,7 +133,8 @@ std::vector<std::string> MeasureBase::getInputProps() {
     Py::Object ret;
     try {
         ret = proxy.callMemberFunction("getInputProps");
-    } catch (Py::Exception&) {
+    }
+    catch (Py::Exception&) {
         Base::PyException e;
         e.ReportException();
         return {};
@@ -142,11 +151,11 @@ std::vector<std::string> MeasureBase::getInputProps() {
 }
 
 
-
-QString MeasureBase::getResultString() {
+QString MeasureBase::getResultString()
+{
     Py::Object proxy = getProxyObject();
     Base::PyGILStateLocker lock;
- 
+
     if (!proxy.isNone()) {
 
         // Pass the feature object to the proxy
@@ -156,7 +165,8 @@ QString MeasureBase::getResultString() {
         Py::Object ret;
         try {
             ret = proxy.callMemberFunction("getResultString", args);
-        } catch (Py::Exception&) {
+        }
+        catch (Py::Exception&) {
             Base::PyException e;
             e.ReportException();
             return QString();
@@ -165,9 +175,9 @@ QString MeasureBase::getResultString() {
     }
 
     App::Property* prop = getResultProp();
-        if (prop == nullptr) {
-            return QString();
-        }
+    if (prop == nullptr) {
+        return QString();
+    }
 
     if (prop->isDerivedFrom(App::PropertyQuantity::getClassTypeId())) {
         return static_cast<App::PropertyQuantity*>(prop)->getQuantityValue().getUserString();
@@ -177,28 +187,35 @@ QString MeasureBase::getResultString() {
     return QString();
 }
 
-void MeasureBase::onDocumentRestored() {
+void MeasureBase::onDocumentRestored()
+{
     // Force recompute the measurement
     recompute();
 }
 
-Base::Placement MeasureBase::getPlacement() {
+Base::Placement MeasureBase::getPlacement()
+{
     return this->Placement.getValue();
 }
 
 
 // Python Drawing feature ---------------------------------------------------------
 
-namespace App {
+namespace App
+{
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Measure::MeasurePython, Measure::MeasureBase)
-template<> const char* Measure::MeasurePython::getViewProviderName(void) const {
+template<>
+const char* Measure::MeasurePython::getViewProviderName(void) const
+{
     return "MeasureGui::ViewProviderMeasure";
 }
-template<> PyObject* Measure::MeasurePython::getPyObject() {
+template<>
+PyObject* Measure::MeasurePython::getPyObject()
+{
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new FeaturePythonPyT<Measure::MeasureBasePy>(this),true);
+        PythonObject = Py::Object(new FeaturePythonPyT<Measure::MeasureBasePy>(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }
@@ -206,6 +223,4 @@ template<> PyObject* Measure::MeasurePython::getPyObject() {
 
 // explicit template instantiation
 template class MeasureExport FeaturePythonT<Measure::MeasureBase>;
-}
-
-
+}  // namespace App

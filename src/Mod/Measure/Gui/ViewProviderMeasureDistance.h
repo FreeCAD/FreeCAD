@@ -82,8 +82,7 @@ private:
 };
 
 
-
-class MeasureGuiExport ViewProviderMeasureDistance : public MeasureGui::ViewProviderMeasureBase
+class MeasureGuiExport ViewProviderMeasureDistance: public MeasureGui::ViewProviderMeasureBase
 {
     PROPERTY_HEADER_WITH_OVERRIDE(MeasureGui::ViewProviderMeasureDistance);
 
@@ -98,7 +97,8 @@ public:
     void positionAnno(const Measure::MeasureBase* measureObject) override;
 
 protected:
-    Base::Vector3d getTextDirection(Base::Vector3d elementDirection, double tolerance = defaultTolerance) override;
+    Base::Vector3d getTextDirection(Base::Vector3d elementDirection,
+                                    double tolerance = defaultTolerance) override;
     void onChanged(const App::Property* prop) override;
 
 private:
@@ -115,7 +115,7 @@ private:
     SbMatrix getMatrix();
 };
 
-} //namespace MeasureGui
+}  // namespace MeasureGui
 
 
-#endif // MEASUREGUI_VIEWPROVIDERMEASUREDISTANCE_H
+#endif  // MEASUREGUI_VIEWPROVIDERMEASUREDISTANCE_H

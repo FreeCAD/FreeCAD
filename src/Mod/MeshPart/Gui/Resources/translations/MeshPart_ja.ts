@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="282"/>
       <source>Cross-sections...</source>
-      <translation>断面...</translation>
+      <translation>横断面...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="283"/>
       <source>Cross-sections</source>
-      <translation>断面</translation>
+      <translation>横断面</translation>
     </message>
   </context>
   <context>
@@ -112,7 +112,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../CrossSections.ui" line="14"/>
       <source>Cross sections</source>
-      <translation>断面</translation>
+      <translation>横断面</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
@@ -142,7 +142,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../CrossSections.ui" line="71"/>
       <source>Sections</source>
-      <translation>断面</translation>
+      <translation>横断面</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="83"/>
@@ -157,7 +157,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../CrossSections.ui" line="109"/>
       <source>Distance:</source>
-      <translation>距離:</translation>
+      <translation>距離：</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="128"/>

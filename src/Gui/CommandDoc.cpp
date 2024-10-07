@@ -1318,7 +1318,11 @@ StdCmdDelete::StdCmdDelete()
   sWhatsThis    = "Std_Delete";
   sStatusTip    = QT_TR_NOOP("Deletes the selected objects");
   sPixmap       = "edit-delete";
+#ifdef FC_OS_MACOSX
+  sAccel        = "Backspace";
+#else
   sAccel        = keySequenceToAccel(QKeySequence::Delete);
+#endif
   eType         = ForEdit;
 }
 
@@ -1562,6 +1566,7 @@ void StdCmdPlacement::activated(int iMsg)
             plm->setPropertyName(QLatin1String("Placement"));
             plm->setSelection(selection);
             plm->bindObject();
+            plm->clearSelection();
         }
     }
     Gui::Control().showDialog(plm);

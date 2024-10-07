@@ -76,7 +76,7 @@ jobs:
         with:
           activate-environment: .conda/freecad
           environment-file: conda/conda-env.yaml
-          channels: conda-forge,defaults
+          channels: conda-forge
           channel-priority: true
           miniforge-version: latest
       - name: Install FreeCAD dependencies
@@ -102,6 +102,7 @@ jobs:
         uses: ./.github/workflows/actions/linux/generateCacheKey
         with:
           compiler: ${{ env.CXX }}
+          qt_major_version: 5
       - name: Restore Compiler Cache
         uses: actions/cache@v4
         with:

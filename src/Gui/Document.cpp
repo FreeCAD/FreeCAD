@@ -117,6 +117,7 @@ struct DocumentP
     Connection connectStartLoadDocument;
     Connection connectFinishLoadDocument;
     Connection connectShowHidden;
+    Connection connectFinishRestoreDocument;
     Connection connectFinishRestoreObject;
     Connection connectExportObjects;
     Connection connectImportObjects;
@@ -556,20 +557,41 @@ ViewProvider * Document::getAnnotationViewProvider(const char* name) const
     return ( (it != d->_ViewProviderMapAnnotation.end()) ? it->second : 0 );
 }
 
-void Document::removeAnnotationViewProvider(const char* name)
+bool Document::isAnnotationViewProvider(const ViewProvider* vp) const
 {
-    std::map<std::string,ViewProvider*>::iterator it = d->_ViewProviderMapAnnotation.find(name);
-    std::list<Gui::BaseView*>::iterator vIt;
+    std::map<std::string,ViewProvider*>::const_iterator it;
+    for (it = d->_ViewProviderMapAnnotation.begin(); it != d->_ViewProviderMapAnnotation.end(); ++it) {
+        if (it->second == vp)
+            return true;
+    }
+    return false;
+}
 
-    // cycling to all views of the document
-    for (vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
-        auto activeView = dynamic_cast<View3DInventor *>(*vIt);
-        if (activeView)
-            activeView->getViewer()->removeViewProvider(it->second);
+
+ViewProvider* Document::takeAnnotationViewProvider(const char* name)
+{
+    auto it = d->_ViewProviderMapAnnotation.find(name);
+    if (it == d->_ViewProviderMapAnnotation.end()) {
+        return nullptr;
     }
 
-    delete it->second;
+    ViewProvider* vp = it->second;
     d->_ViewProviderMapAnnotation.erase(it);
+
+    // cycling to all views of the document
+    for (auto vIt : d->baseViews) {
+        if (auto activeView = dynamic_cast<View3DInventor *>(vIt)) {
+            activeView->getViewer()->removeViewProvider(vp);
+        }
+    }
+
+    return vp;
+}
+
+
+void Document::removeAnnotationViewProvider(const char* name)
+{
+    delete takeAnnotationViewProvider(name);
 }
 
 
@@ -975,6 +997,10 @@ bool Document::isModified() const
     return d->_isModified;
 }
 
+bool Document::isAboutToClose() const
+{
+    return d->_isClosing;
+}
 
 ViewProviderDocumentObject* Document::getViewProviderByPathFromTail(SoPath * path) const
 {

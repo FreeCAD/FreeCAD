@@ -1494,10 +1494,10 @@ to a smoother appearance.
 
  If face angle ≥ crease angle, facet shading is used
  If face angle &lt; crease angle, smooth shading is used</source>
-      <translation>Crease angle is a threshold angle between two faces.
+      <translation>折痕角是兩個面之間的閾值角度。
 
- If face angle ≥ crease angle, facet shading is used
- If face angle &lt; crease angle, smooth shading is used</translation>
+如果面角 ≥ 折痕角，則使用面片陰影
+如果面角 &lt; 折痕角，則使用平滑陰影</translation>
     </message>
   </context>
   <context>

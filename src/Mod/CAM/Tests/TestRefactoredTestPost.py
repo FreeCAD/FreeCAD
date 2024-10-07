@@ -145,9 +145,7 @@ class TestRefactoredTestPost(PathTestUtils.PathTestBase):
 
     def test00110(self):
         """Test axis-precision."""
-        self.compare_third_line(
-            "G0 X10 Y20 Z30", "G0 X10.00 Y20.00 Z30.00", "--axis-precision=2"
-        )
+        self.compare_third_line("G0 X10 Y20 Z30", "G0 X10.00 Y20.00 Z30.00", "--axis-precision=2")
 
     #############################################################################
 
@@ -394,9 +392,7 @@ G21
 """
         self.docobj.Path = Path.Path([])
         postables = [self.docobj]
-        gcode: str = postprocessor.export(
-            postables, "-", "--output_all_arguments"
-        )
+        gcode: str = postprocessor.export(postables, "-", "--output_all_arguments")
         # The argparse help routine turns out to be sensitive to the
         # number of columns in the terminal window that the tests
         # are run from.  This affects the indenting in the output.

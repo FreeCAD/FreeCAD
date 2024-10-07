@@ -296,6 +296,16 @@ ComplexGeoData::getElementMappedNames(const IndexedName& element, bool needUnmap
     return {std::make_pair(MappedName(element), ElementIDRefs())};
 }
 
+ElementMapPtr ComplexGeoData::resetElementMap(ElementMapPtr elementMap)
+{
+    _elementMap.swap(elementMap);
+    // We expect that if the ComplexGeoData ( TopoShape ) has a hasher, then its elementMap will
+    // have the same one.  Make sure that happens.
+    if ( _elementMap && ! _elementMap->hasher )
+        _elementMap->hasher = Hasher;
+    return elementMap;
+}
+
 std::vector<MappedElement> ComplexGeoData::getElementMap() const
 {
     flushElementMap();
@@ -311,6 +321,15 @@ ElementMapPtr ComplexGeoData::elementMap(bool flush) const
         flushElementMap();
     }
     return _elementMap;
+}
+
+ElementMapPtr ComplexGeoData::ensureElementMap(bool flush)
+{
+    if (!_elementMap) {
+        resetElementMap(std::make_shared<Data::ElementMap>());
+    }
+    return elementMap(flush);
+
 }
 
 void ComplexGeoData::flushElementMap() const
@@ -527,10 +546,10 @@ void ComplexGeoData::readElements(Base::XMLReader& reader, size_t count)
                 }
             }
         }
-        _elementMap->setElementName(IndexedName(reader.getAttribute("value"), types),
-                                    MappedName(reader.getAttribute("key")),
-                                    Tag,
-                                    &sids);
+        ensureElementMap()->setElementName(IndexedName(reader.getAttribute("value"), types),
+                                           MappedName(reader.getAttribute("key")),
+                                           Tag,
+                                           &sids);
     }
     if (invalid_count != 0) {
         FC_ERR("Found " << invalid_count << " invalid string id");  // NOLINT

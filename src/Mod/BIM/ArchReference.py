@@ -390,28 +390,28 @@ class ArchReference:
             for line in docf:
                 line = line.decode("utf8")
                 if "<Object name=" in line:
-                    n = re.findall('name=\"(.*?)\"',line)
+                    n = re.findall(r'name=\"(.*?)\"',line)
                     if n:
                         name = n[0]
                 elif "<Property name=\"Label\"" in line:
                     writemode = True
                 elif writemode and "<String value=" in line:
-                    n = re.findall('value=\"(.*?)\"',line)
+                    n = re.findall(r'value=\"(.*?)\"',line)
                     if n:
                         label = n[0]
                         writemode = False
                 elif "<Property name=\"Shape\" type=\"Part::PropertyPartShape\"" in line:
                     writemode = True
                 elif writemode and "<Part file=" in line:
-                    n = re.findall('file=\"(.*?)\"',line)
+                    n = re.findall(r'file=\"(.*?)\"',line)
                     if n:
                         part = n[0]
                         writemode = False
                 elif "<Property name=\"MaterialsTable\" type=\"App::PropertyMap\"" in line:
                     writemode = True
                 elif writemode and "<Item key=" in line:
-                    n = re.findall('key=\"(.*?)\"',line)
-                    v = re.findall('value=\"(.*?)\"',line)
+                    n = re.findall(r'key=\"(.*?)\"',line)
+                    v = re.findall(r'value=\"(.*?)\"',line)
                     if n and v:
                         materials[n[0]] = v[0]
                 elif writemode and "</Map>" in line:
@@ -469,7 +469,7 @@ class ArchReference:
                         writemode1 = False
                         writemode2 = True
                     elif writemode2 and ("<ColorList file=" in line):
-                        n = re.findall('file=\"(.*?)\"',line)
+                        n = re.findall(r'file=\"(.*?)\"',line)
                         if n:
                             colorfile = n[0]
                             break
@@ -808,7 +808,7 @@ class ViewProviderArchReference:
                     writemode1 = False
                     writemode2 = True
                 elif writemode2 and ("<FileIncluded file=" in line):
-                    n = re.findall('file=\"(.*?)\"',line)
+                    n = re.findall(r'file=\"(.*?)\"',line)
                     if n:
                         ivfile = n[0]
                         break
