@@ -73,11 +73,6 @@ void QuickMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
         }
         pendingProcessing = true;
     }
-    else {
-        // avoid unlikely potential race condition where a tool dialog was opened while the timer
-        // was already running
-        pendingProcessing = false;
-    }
 }
 
 void QuickMeasure::processSelection()
@@ -109,8 +104,12 @@ void QuickMeasure::processSelection()
 
 void QuickMeasure::tryMeasureSelection()
 {
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
     measurement->clear();
-    addSelectionToMeasurement();
+    if (doc && Gui::Control().activeDialog() == nullptr) {
+        // we (still) have a doc and are not in a tool dialog where the user needs to click on stuff
+        addSelectionToMeasurement();
+    }
     printResult();
 }
 
@@ -126,10 +125,7 @@ bool QuickMeasure::shouldMeasure(const Gui::SelectionChanges& msg) const
             || msg.Type == Gui::SelectionChanges::SetSelection
             || msg.Type == Gui::SelectionChanges::ClrSelection) {
             // the event is about a change in selected objects
-            if (Gui::Control().activeDialog() == nullptr) {
-                // we are not in a tool dialog where the user needs to click on stuff
-                return true;
-            }
+            return true;
         }
     }
     return false;
