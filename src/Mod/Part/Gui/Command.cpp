@@ -32,6 +32,7 @@
 #endif
 
 #include <App/Document.h>
+#include <App/GeoFeature.h>
 #include <App/DocumentObjectGroup.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -2230,6 +2231,25 @@ bool CmdPartSectionCut::isActive()
 //===========================================================================
 // Part_CoordinateSystem
 //===========================================================================
+
+namespace {
+    QString getAutoGroupCommandStr()
+        // Helper function to get the python code to add the newly created object to the active Part/Body object if present
+    {
+        App::GeoFeature* activeObj = Gui::Application::Instance->activeView()->getActiveObject<App::GeoFeature*>(PDBODYKEY);
+        if (!activeObj) {
+            activeObj = Gui::Application::Instance->activeView()->getActiveObject<App::GeoFeature*>(PARTKEY);
+        }
+
+        if (activeObj) {
+            QString activeName = QString::fromLatin1(activeObj->getNameInDocument());
+            return QString::fromLatin1("App.ActiveDocument.getObject('%1\').addObject(obj)\n").arg(activeName);
+        }
+
+        return QString::fromLatin1("# Object created at document root.");
+    }
+}
+
 DEF_STD_CMD_A(CmdPartCoordinateSystem)
 
 CmdPartCoordinateSystem::CmdPartCoordinateSystem()
@@ -2250,9 +2270,10 @@ void CmdPartCoordinateSystem::activated(int iMsg)
     openCommand(QT_TRANSLATE_NOOP("Command", "Add a coordinate system"));
 
     std::string name = getUniqueObjectName("LCS");
-    doCommand(Doc, "App.activeDocument().addObject('Part::LocalCoordinateSystem','%s')", name.c_str());
-    doCommand(Doc, "App.ActiveDocument.getObject('%s').Visibility = True", name.c_str());
-    doCommand(Doc, "App.ActiveDocument.getObject('%s').ViewObject.doubleClicked()", name.c_str());
+    doCommand(Doc, "obj = App.activeDocument().addObject('Part::LocalCoordinateSystem','%s')", name.c_str());
+    doCommand(Doc, getAutoGroupCommandStr().toUtf8());
+    doCommand(Doc, "obj.Visibility = True");
+    doCommand(Doc, "obj.ViewObject.doubleClicked()");
 }
 
 bool CmdPartCoordinateSystem::isActive()
@@ -2283,8 +2304,9 @@ void CmdPartPlane::activated(int iMsg)
     openCommand(QT_TRANSLATE_NOOP("Command", "Add a plane"));
 
     std::string name = getUniqueObjectName("Plane");
-    doCommand(Doc, "App.activeDocument().addObject('Part::DatumPlane','%s')", name.c_str());
-    doCommand(Doc, "App.ActiveDocument.getObject('%s').ViewObject.doubleClicked()", name.c_str());
+    doCommand(Doc, "obj = App.activeDocument().addObject('Part::DatumPlane','%s')", name.c_str());
+    doCommand(Doc, getAutoGroupCommandStr().toUtf8());
+    doCommand(Doc, "obj.ViewObject.doubleClicked()");
 }
 
 bool CmdPartPlane::isActive()
@@ -2315,8 +2337,9 @@ void CmdPartLine::activated(int iMsg)
     openCommand(QT_TRANSLATE_NOOP("Command", "Add a line"));
 
     std::string name = getUniqueObjectName("Line");
-    doCommand(Doc, "App.activeDocument().addObject('Part::DatumLine','%s')", name.c_str());
-    doCommand(Doc, "App.ActiveDocument.getObject('%s').ViewObject.doubleClicked()", name.c_str());
+    doCommand(Doc, "obj = App.activeDocument().addObject('Part::DatumLine','%s')", name.c_str());
+    doCommand(Doc, getAutoGroupCommandStr().toUtf8());
+    doCommand(Doc, "obj.ViewObject.doubleClicked()");
 }
 
 bool CmdPartLine::isActive()
@@ -2347,8 +2370,9 @@ void CmdPartPoint::activated(int iMsg)
     openCommand(QT_TRANSLATE_NOOP("Command", "Add a point"));
 
     std::string name = getUniqueObjectName("Point");
-    doCommand(Doc, "App.activeDocument().addObject('Part::DatumPoint','%s')", name.c_str());
-    doCommand(Doc, "App.ActiveDocument.getObject('%s').ViewObject.doubleClicked()", name.c_str());
+    doCommand(Doc, "obj = App.activeDocument().addObject('Part::DatumPoint','%s')", name.c_str());
+    doCommand(Doc, getAutoGroupCommandStr().toUtf8());
+    doCommand(Doc, "obj.ViewObject.doubleClicked()");
 }
 
 bool CmdPartPoint::isActive()
