@@ -65,6 +65,12 @@ short Fillet::mustExecute() const
 
 App::DocumentObjectExecReturn *Fillet::execute()
 {
+    if (onlyHasToRefine()){
+        TopoShape result = refineShapeIfActive(rawShape);
+        Shape.setValue(result);
+        return App::DocumentObject::StdReturn;
+    }
+
     Part::TopoShape baseShape;
     try {
         baseShape = getBaseTopoShape();
@@ -110,6 +116,8 @@ App::DocumentObjectExecReturn *Fillet::execute()
         }
 
         if (!failed) {
+            // store shape before refinement
+            this->rawShape = shape;
             shape = refineShapeIfActive(shape);
             shape = getSolid(shape);
         }

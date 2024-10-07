@@ -121,6 +121,13 @@ short Helix::mustExecute() const
 
 App::DocumentObjectExecReturn* Helix::execute()
 {
+
+    if (onlyHasToRefine()){
+        TopoShape result = refineShapeIfActive(rawShape, RefineErrorPolicy::Warn);
+        Shape.setValue(result);
+        return App::DocumentObject::StdReturn;
+    }
+
     // Validate and normalize parameters
     HelixMode mode = static_cast<HelixMode>(Mode.getValue());
     if (mode == HelixMode::pitch_height_angle) {
@@ -250,6 +257,8 @@ App::DocumentObjectExecReturn* Helix::execute()
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids"));
             }
 
+                // store shape before refinement
+            this->rawShape = result;
             Shape.setValue(getSolid(result));
             return App::DocumentObject::StdReturn;
         }
@@ -272,6 +281,8 @@ App::DocumentObjectExecReturn* Helix::execute()
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids"));
             }
 
+            // store shape before refinement
+            this->rawShape = boolOp;
             boolOp = refineShapeIfActive(boolOp, RefineErrorPolicy::Warn);
             Shape.setValue(getSolid(boolOp));
         }
@@ -301,6 +312,8 @@ App::DocumentObjectExecReturn* Helix::execute()
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids"));
             }
 
+            // store shape before refinement
+            this->rawShape = boolOp;
             boolOp = refineShapeIfActive(boolOp, RefineErrorPolicy::Warn);
             Shape.setValue(getSolid(boolOp));
         }

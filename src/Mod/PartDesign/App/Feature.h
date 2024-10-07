@@ -99,14 +99,14 @@ protected:
     /**
      * Get a solid of the given shape. If no solid is found an exception is raised.
      */
-    TopoShape getSolid(const TopoShape&);
+    TopoShape getSolid(const TopoShape&) const;
     static int countSolids(const TopoDS_Shape&, TopAbs_ShapeEnum type = TopAbs_SOLID);
 
     /**
      * Checks if the single-solid body rule is fulfilled.
      */
     bool isSingleSolidRuleSatisfied(const TopoDS_Shape&, TopAbs_ShapeEnum type = TopAbs_SOLID);
-    SingleSolidRuleMode singleSolidRuleMode();
+    SingleSolidRuleMode singleSolidRuleMode() const;
 
     void updateSuppressedShape();
 

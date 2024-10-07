@@ -104,6 +104,12 @@ short Pipe::mustExecute() const
 
 App::DocumentObjectExecReturn *Pipe::execute()
 {
+    if (onlyHasToRefine()){
+        TopoShape result = refineShapeIfActive(rawShape);
+        Shape.setValue(result);
+        return App::DocumentObject::StdReturn;
+    }
+
     auto getSectionShape = [](App::DocumentObject* feature,
                               const std::vector<std::string>& subs) -> TopoDS_Shape {
         if (!feature || !feature->isDerivedFrom(Part::Feature::getClassTypeId()))
@@ -380,6 +386,8 @@ App::DocumentObjectExecReturn *Pipe::execute()
                 return new App::DocumentObjectExecReturn(
                     QT_TRANSLATE_NOOP("Exception", "Pipe: There is nothing to subtract from"));
 
+            // store shape before refinement
+            this->rawShape = result;
             auto ts_result = refineShapeIfActive(result);
             Shape.setValue(getSolid(ts_result));
             return App::DocumentObject::StdReturn;
@@ -402,6 +410,8 @@ App::DocumentObjectExecReturn *Pipe::execute()
                                                                            "Result has multiple solids: that is not currently supported."));
             }
 
+            // store shape before refinement
+            this->rawShape = boolOp;
             boolOp = refineShapeIfActive(boolOp);
             Shape.setValue(getSolid(boolOp));
         }
@@ -422,6 +432,8 @@ App::DocumentObjectExecReturn *Pipe::execute()
                                                                            "Result has multiple solids: that is not currently supported."));
             }
 
+            // store shape before refinement
+            this->rawShape = boolOp;
             boolOp = refineShapeIfActive(boolOp);
             Shape.setValue(getSolid(boolOp));
         }
