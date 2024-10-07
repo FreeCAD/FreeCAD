@@ -53,6 +53,16 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
 
         prop.append(
             _PropHelper(
+                type="App::PropertyLinkList",
+                name="MeshRegionList",
+                group="Base",
+                doc="Refinements of the mesh",
+                value=[],
+            )
+        )
+        # mesh parameters
+        prop.append(
+            _PropHelper(
                 type="App::PropertyString",
                 name="Optimize3d",
                 group="Mesh Parameters",

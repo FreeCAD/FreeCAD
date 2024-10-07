@@ -112,6 +112,7 @@ NetgenTools.run_netgen(**{params})
             "params": self.get_meshing_parameters(),
             "second_order": self.obj.SecondOrder,
             "result_file": self.result_file,
+            "mesh_region": self.get_mesh_region(),
         }
 
     def compute(self):
@@ -121,12 +122,27 @@ NetgenTools.run_netgen(**{params})
         return self.process
 
     @staticmethod
-    def run_netgen(brep_file, threads, heal, params, second_order, result_file):
+    def run_netgen(brep_file, threads, heal, params, second_order, result_file, mesh_region):
+        import pyngcore as ngcore
+        from netgen import meshing
 
         geom = occ.OCCGeometry(brep_file)
         ngcore.SetNumThreads(threads)
 
+        shape = geom.shape
+        for items, l in mesh_region:
+            for t, n in items:
+                if t == "Vertex":
+                    shape.vertices.vertices[n - 1].maxh = l
+                elif t == "Edge":
+                    shape.edges.edges[n - 1].maxh = l
+                elif t == "Face":
+                    shape.faces.faces[n - 1].maxh = l
+                elif t == "Solid":
+                    shape.solids.solids[n - 1].maxh = l
+
         with ngcore.TaskManager():
+            geom = occ.OCCGeometry(shape)
             if heal:
                 geom.Heal()
             mesh = geom.GenerateMesh(mp=meshing.MeshingParameters(**params))
@@ -305,6 +321,22 @@ NetgenTools.run_netgen(**{params})
             params["optsteps3d"] = 5
 
         return params
+
+    def get_mesh_region(self):
+        import Part
+
+        d = []
+        for reg in self.obj.MeshRegionList:
+            for s, sub_list in reg.References:
+                if s.isDerivedFrom("App::GeoFeature") and isinstance(
+                    s.getPropertyOfGeometry(), Part.Shape
+                ):
+                    geom = s.getPropertyOfGeometry()
+                    sub_sh = [s.getSubObject(_) for _ in sub_list]
+                    res = geom.findSubShape(sub_sh)
+                    l = reg.CharacteristicLength.getValueAs("mm").Value
+                    d.append((res, l))
+        return d
 
     @staticmethod
     def version():
