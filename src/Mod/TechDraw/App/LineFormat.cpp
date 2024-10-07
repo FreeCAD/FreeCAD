@@ -26,6 +26,8 @@
 #ifndef _PreComp_
 #endif
 
+#include <Base/Reader.h>
+
 #include "LineGroup.h"
 #include "LineGenerator.h"
 #include "Preferences.h"
@@ -43,6 +45,11 @@ LineFormat::LineFormat()
     m_color= getDefEdgeColor();
     m_visible = true;
     m_lineNumber = LineGenerator::fromQtStyle((Qt::PenStyle)m_style);
+}
+
+LineFormat::LineFormat(Base::XMLReader &reader)
+{
+    Restore(reader);
 }
 
 // static loader of default format
@@ -114,4 +121,17 @@ int LineFormat::getDefEdgeStyle()
     return Preferences::getPreferenceGroup("Decorations")->GetInt("CenterLineStyle", 2);   //dashed
 }
 
-
+void LineFormat::Restore(Base::XMLReader &reader)
+{
+    reader.readElement("Style");
+    setStyle(reader.getAttributeAsInteger("value"));
+    reader.readElement("Weight");
+    setWidth(reader.getAttributeAsFloat("value"));
+    reader.readElement("Color");
+    std::string tempHex = reader.getAttribute("value");
+    App::Color tempColor;
+    tempColor.fromHexString(tempHex);
+    setColor(tempColor);
+    reader.readElement("Visible");
+    setVisible(reader.getAttributeAsInteger("value") != 0);
+}

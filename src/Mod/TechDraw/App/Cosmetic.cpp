@@ -242,17 +242,7 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
         return;
     }
 //    Base::Console().Message("CE::Restore - reading elements\n");
-    reader.readElement("Style");
-    m_format.setStyle(reader.getAttributeAsInteger("value"));
-    reader.readElement("Weight");
-    m_format.setWidth(reader.getAttributeAsFloat("value"));
-    reader.readElement("Color");
-    std::string tempHex = reader.getAttribute("value");
-    App::Color tempColor;
-    tempColor.fromHexString(tempHex);
-    m_format.setColor(tempColor);
-    reader.readElement("Visible");
-    m_format.setVisible(reader.getAttributeAsInteger("value") != 0);
+    m_format = LineFormat(reader);
 
     reader.readElement("GeometryType");
     GeomType gType = static_cast<GeomType>(reader.getAttributeAsInteger("value"));
@@ -445,17 +435,7 @@ void GeomFormat::Restore(Base::XMLReader &reader)
 
     // style is deprecated in favour of line number, but we still save and restore it
     // to avoid problems with old documents.
-    reader.readElement("Style");
-    m_format.setStyle(reader.getAttributeAsInteger("value"));
-    reader.readElement("Weight");
-    m_format.setWidth(reader.getAttributeAsFloat("value"));
-    reader.readElement("Color");
-    std::string tempHex = reader.getAttribute("value");
-    App::Color tempColor;
-    tempColor.fromHexString(tempHex);
-    m_format.setColor(tempColor);
-    reader.readElement("Visible");
-    m_format.setVisible((int)reader.getAttributeAsInteger("value") == 0 ? false : true);
+    m_format = LineFormat(reader);
     // older documents may not have the LineNumber element, so we need to check the
     // next entry.  if it is a start element, then we check if it is a start element
     // for LineNumber.

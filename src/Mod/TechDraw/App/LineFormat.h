@@ -46,11 +46,12 @@ public:
                const App::Color& color,
                const bool visible,
                const int lineNumber);
-   // TODO: phase out the old 4 parameter constructor
-   LineFormat(const int style,
+    // TODO: phase out the old 4 parameter constructor
+    LineFormat(const int style,
                const double weight,
                const App::Color& color,
                const bool visible);
+    LineFormat(Base::XMLReader &reader);
     ~LineFormat() = default;
 
     // style was used to specify QPen styles.  line number (from LineGenerator) should be used now.
@@ -74,6 +75,9 @@ public:
     static double getDefEdgeWidth();
     static App::Color getDefEdgeColor();
     static int getDefEdgeStyle();
+
+    void Restore(Base::XMLReader &reader);
+
 
     void dump(const char* title);
     std::string toString() const;
