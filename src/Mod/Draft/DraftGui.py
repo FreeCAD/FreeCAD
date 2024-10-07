@@ -143,9 +143,8 @@ class DraftTaskPanel:
         # https://github.com/FreeCAD/FreeCAD/issues/17027
         # Function can be called multiple times if Esc is pressed during mouse
         # move. We need to prevent multiple calls to draftToolBar.escape():
-        if getattr(FreeCAD, "activeDraftCommand", None) is None:
+        if not FreeCADGui.draftToolBar.isTaskOn:
             return
-        FreeCAD.activeDraftCommand = None
         FreeCADGui.draftToolBar.isTaskOn = False
         FreeCADGui.draftToolBar.escape()
         if FreeCADGui.ActiveDocument:
