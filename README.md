@@ -62,9 +62,8 @@ FreeCAD requires several dependencies to correctly compile for development and p
 Reporting Issues
 ---------
 
-FreeCAD, unlike proprietary, closed source, solutions, relies heavily on the community to give feedback on problems, or issues, on their experience using the software. This process gives the developers insight to help make the software better.
+To report an issue please:
 
-To start the process of filing an issue:
 - Consider posting to the [Forum](https://forum.freecad.org), [Discord](https://discord.com/invite/F4hdxzYZfc) channel, or [Reddit](https://www.reddit.com/r/FreeCAD) to verify the issue; 
 - Search the existing [issues](https://github.com/FreeCAD/FreeCAD/issues) for potential duplicates; 
 - Use the most updated stable or [development versions](https://github.com/FreeCAD/FreeCAD-Bundle/releases/tag/weekly-builds) of FreeCAD; 
@@ -73,9 +72,9 @@ To start the process of filing an issue:
 - Post a Step-By-Step explanation on how to recreate the issue; 
 - Upload an example file (FCStd as ZIP file) to demonstrate the problem; 
 
-For more details visit:
+For more detail see:
 
-- [Issue Tracker](https://github.com/FreeCAD/FreeCAD/issues)
+- [Bug Tracker](https://github.com/FreeCAD/FreeCAD/issues)
 - [Reporting Issues and Requesting Features](https://github.com/FreeCAD/FreeCAD/issues/new/choose)
 - [Contributing](https://github.com/FreeCAD/FreeCAD/blob/main/CONTRIBUTING.md)
 - [Help Forum](https://forum.freecad.org/viewforum.php?f=3)
@@ -87,7 +86,7 @@ to apply for a grant to work on projects of their choosing. Check
 [jobs and funding](https://blog.freecad.org/jobs/) to know more.
 
 Usage & Getting Help
---------------------
+
 
 The FreeCAD wiki contains documentation on 
 general FreeCAD usage, Python scripting, and development.
