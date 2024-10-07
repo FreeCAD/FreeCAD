@@ -85,8 +85,9 @@ The [FPA](https://fpa.freecad.org) offers developers the opportunity
 to apply for a grant to work on projects of their choosing. Check
 [jobs and funding](https://blog.freecad.org/jobs/) to know more.
 
-Usage & Getting Help
 
+Usage & Getting Help
+--------------------
 
 The FreeCAD wiki contains documentation on 
 general FreeCAD usage, Python scripting, and development.
