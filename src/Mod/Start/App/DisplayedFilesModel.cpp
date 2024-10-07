@@ -283,14 +283,45 @@ void DisplayedFilesModel::addFile(const QString& filePath)
     if (!qfi.isReadable()) {
         return;
     }
+
+    // Check if FreeCAD can open the file by its extension
     if (!freecadCanOpen(qfi.suffix())) {
         return;
     }
+
+    // Add file information to cache
     _fileInfoCache.emplace_back(getFileInfo(filePath.toStdString()));
     if (qfi.suffix().toLower() == QLatin1String("fcstd")) {
         auto thumbnail = loadFCStdThumbnail(filePath.toStdString());
         if (!thumbnail.isEmpty()) {
             _imageCache.insert(filePath, thumbnail);
+        }
+    }
+    else {
+        // If it is not a FreeCAD file, generate thumbnail using F3D
+        QString thumbnailPath = QString(QLatin1String("%1/%2_thumbnail.png"))
+                                    .arg(QLatin1String("/tmp"))
+                                    .arg(qfi.baseName());  // Temporary path for the thumbnail
+
+        QString command =
+            QString(QLatin1String("f3d --config=thumbnail --load-plugins=occt --verbose=quiet "
+                                  "--output=%1 --resolution=%2,%3 %4"))
+                .arg(thumbnailPath)
+                .arg(128)        // Thumbnail size in X
+                .arg(128)        // Thumbnail size in Y
+                .arg(filePath);  // Input file
+
+        // Run the f3d command to generate the thumbnail
+        int result = std::system(command.toStdString().c_str());
+
+        // Check if the thumbnail was generated successfully and exists
+        if (result == 0 && QFile::exists(thumbnailPath)) {
+            QFile thumbnailFile(thumbnailPath);
+            if (thumbnailFile.open(QIODevice::ReadOnly)) {
+                QByteArray thumbnailData = thumbnailFile.readAll();
+                thumbnailFile.close();
+                _imageCache.insert(filePath, thumbnailData);
+            }
         }
     }
 }
