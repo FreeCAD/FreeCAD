@@ -28,7 +28,6 @@
 #include <QGraphicsItem>
 
 #include <App/DocumentObject.h>
-#include <Base/Vector3D.h>
 #include <Gui/Selection.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -50,8 +49,13 @@ namespace Gui {
 class Command;
 }
 
+namespace Base {
+class Vector2d;
+}
+
 namespace TechDrawGui
 {
+class QGIVertex;
 
 /// Convenient utility functions for TechDraw Gui Module
 class TechDrawGuiExport DrawGuiUtil {
@@ -94,6 +98,10 @@ class TechDrawGuiExport DrawGuiUtil {
                                       const App::DocumentObject& targetObject);
     static std::vector<std::string>  getSubsForSelectedObject(const std::vector<Gui::SelectionObject>& selection,
                                                                 App::DocumentObject* selectedObj);
+
+    static void rotateToAlignVertically(const QGIVertex* p1, const QGIVertex* p2);
+    static void rotateToAlignHorizontally(const QGIVertex* p1, const QGIVertex* p2);
+    static void rotateToAlign(const QGIVertex* p1, const QGIVertex* p2, const Base::Vector2d direction);
 };
 
 } //end namespace TechDrawGui
