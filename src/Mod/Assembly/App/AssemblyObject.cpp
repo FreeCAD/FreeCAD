@@ -170,9 +170,11 @@ int AssemblyObject::solve(bool enableRedo, bool updateJCS)
 
     try {
         mbdAssembly->runPreDrag();  // solve() is causing some issues with limits.
-    }
-    catch (...) {
-        FC_ERR("Solve failed\n");
+    } catch (const std::exception &e) {
+        FC_ERR("Solve failed: " << e.what());
+        return -1;
+    } catch (...) {
+        FC_ERR("Solve failed: unhandled exception");
         return -1;
     }
 
