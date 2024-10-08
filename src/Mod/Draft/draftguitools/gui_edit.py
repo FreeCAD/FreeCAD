@@ -235,6 +235,7 @@ class Edit(gui_base_original.Modifier):
         self.gui_tools_repository.add('Ellipse', edit_draft.DraftEllipseGuiTools())
         self.gui_tools_repository.add('Dimension', edit_draft.DraftDimensionGuiTools()) # Backward compatibility
         self.gui_tools_repository.add('LinearDimension', edit_draft.DraftDimensionGuiTools())
+        self.gui_tools_repository.add('Label', edit_draft.DraftLabelGuiTools())
 
         self.gui_tools_repository.add('Wall', edit_arch.ArchWallGuiTools())
         self.gui_tools_repository.add('Window', edit_arch.ArchWindowGuiTools())
