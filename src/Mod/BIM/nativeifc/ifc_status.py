@@ -193,6 +193,7 @@ def lock_document():
     doc = FreeCAD.ActiveDocument
     products = []
     spatial = []
+    ifcfile = None
     if "IfcFilePath" not in doc.PropertiesList:
         # this is not a locked document
         projects = [o for o in doc.Objects if getattr(o, "Class", None) == "IfcProject"]
@@ -260,6 +261,18 @@ def lock_document():
             ifc_tools.convert_document(doc)
             doc.commitTransaction()
             doc.recompute()
+        # reveal file contents if needed
+        if "IfcFilePath" in doc.PropertiesList:
+            create = True
+            for o in doc.Objects:
+                # scan for site or building
+                if getattr(o, "IfcClass", "") in ("IfcSite", "IfcBuilding"):
+                    create = False
+                    break
+            if create:
+                if not ifcfile:
+                    ifcfile = doc.Proxy.ifcfile
+                ifc_tools.create_children(doc, recursive=False)
 
 
 def find_toplevel(objs):
