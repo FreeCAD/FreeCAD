@@ -158,6 +158,14 @@ void View3DInventorPy::init_type()
         "\n"
         "Does the same as getObjectInfo() but returns a list of dictionaries or None.\n");
     add_noargs_method("getSize",&View3DInventorPy::getSize,"getSize()");
+    add_varargs_method("getObjectInfoRay",&View3DInventorPy::getObjectInfoRay,
+        "getObjectInfoRay(tuple(3D vector,3D vector) or tuple of 6 floats) -> dictionary or None\n"
+        "\n"
+        "Vectors represent start point and direction of intesecion ray\n"
+        "Return a dictionary with the name of document, object and component. The\n"
+        "dictionary also contains the coordinates of the appropriate 3d point of\n"
+        "the underlying geometry in the scenegraph.\n"
+        "If no geometry was found 'None' is returned, instead.\n");
     add_varargs_method("getPoint",&View3DInventorPy::getPointOnFocalPlane,
         "Same as getPointOnFocalPlane");
     add_varargs_method("getPointOnFocalPlane",&View3DInventorPy::getPointOnFocalPlane,
@@ -1489,6 +1497,120 @@ Py::Object View3DInventorPy::getObjectsInfo(const Py::Tuple& args)
             }
 
             ret = list;
+        }
+
+        return ret;
+    }
+    catch (const Py::Exception&) {
+        throw;
+    }
+}
+
+Py::Object View3DInventorPy::getObjectInfoRay(const Py::Tuple& args)
+{
+    PyObject* vs;
+    PyObject* vd;
+    double vsx,vsy,vsz;
+    double vdx,vdy,vdz;
+    if (PyArg_ParseTuple(args.ptr(), "O!O!", &Base::VectorPy::Type, &vs,
+                                       &Base::VectorPy::Type,  &vd)) {
+        Base::Vector3d* startvec = static_cast<Base::VectorPy*>(vs)->getVectorPtr();
+        vsx = startvec->x;
+        vsy = startvec->y;
+        vsz = startvec->z;
+        Base::Vector3d* dirvec = static_cast<Base::VectorPy*>(vd)->getVectorPtr();
+        vdx = dirvec->x;
+        vdy = dirvec->y;
+        vdz = dirvec->z;
+    }
+    else {
+        PyErr_Clear();
+        if (!PyArg_ParseTuple(args.ptr(), "dddddd", &vsx,&vsy,&vsz,&vdx,&vdy,&vdz)) {
+            throw Py::TypeError("Wrong arguments, two Vectors or six floats expected expected");
+        }
+    }
+
+    try {
+
+        // As this method could be called during a SoHandleEventAction scene
+        // graph traversal we must not use a second SoHandleEventAction as
+        // we will get Coin warnings because of multiple scene graph traversals
+        // which is regarded as error-prone.
+        SoRayPickAction action(getView3DIventorPtr()->getViewer()->getSoRenderManager()->getViewportRegion());
+        action.setRay(SbVec3f(vsx, vsy, vsz), SbVec3f(vdx, vdy, vdz));
+        action.apply(getView3DIventorPtr()->getViewer()->getSoRenderManager()->getSceneGraph());
+        SoPickedPoint *Point = action.getPickedPoint();
+
+        Py::Object ret = Py::None();
+        if (Point) {
+            Py::Dict dict;
+            SbVec3f pt = Point->getPoint();
+            dict.setItem("x", Py::Float(pt[0]));
+            dict.setItem("y", Py::Float(pt[1]));
+            dict.setItem("z", Py::Float(pt[2]));
+
+            ViewProvider *vp = getView3DIventorPtr()->getViewer()->getViewProviderByPath(Point->getPath());
+            if (vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+                if (!vp->isSelectable())
+                    return ret;
+                auto vpd = static_cast<ViewProviderDocumentObject*>(vp);
+                if (vp->useNewSelectionModel()) {
+                    std::string subname;
+                    if (!vp->getElementPicked(Point,subname))
+                        return ret;
+                    auto obj = vpd->getObject();
+                    if (!obj)
+                        return ret;
+                    if (!subname.empty()) {
+                        App::ElementNamePair elementName;
+                        auto sobj = App::GeoFeature::resolveElement(obj,subname.c_str(),elementName);
+                        if (!sobj)
+                            return ret;
+                        if (sobj != obj) {
+                            dict.setItem("ParentObject",Py::Object(obj->getPyObject(),true));
+                            dict.setItem("SubName",Py::String(subname));
+                            obj = sobj;
+                        }
+                        subname = !elementName.oldName.empty()?elementName.oldName:elementName.newName;
+                    }
+                    dict.setItem("Document",
+                        Py::String(obj->getDocument()->getName()));
+                    dict.setItem("Object",
+                        Py::String(obj->getNameInDocument()));
+                    dict.setItem("Component",Py::String(subname));
+                }
+                else {
+                    dict.setItem("Document",
+                        Py::String(vpd->getObject()->getDocument()->getName()));
+                    dict.setItem("Object",
+                        Py::String(vpd->getObject()->getNameInDocument()));
+                    // search for a SoFCSelection node
+                    SoFCDocumentObjectAction objaction;
+                    objaction.apply(Point->getPath());
+                    if (objaction.isHandled()) {
+                        dict.setItem("Component",
+                            Py::String(objaction.componentName.getString()));
+                    }
+                }
+
+                // ok, found the node of interest
+                ret = dict;
+            }
+            else {
+                // custom nodes not in a VP: search for a SoFCSelection node
+                SoFCDocumentObjectAction objaction;
+                objaction.apply(Point->getPath());
+                if (objaction.isHandled()) {
+                    dict.setItem("Document",
+                        Py::String(objaction.documentName.getString()));
+                    dict.setItem("Object",
+                        Py::String(objaction.objectName.getString()));
+                    dict.setItem("Component",
+                        Py::String(objaction.componentName.getString()));
+                    // ok, found the node of interest
+                    ret = dict;
+                }
+            }
         }
 
         return ret;
