@@ -125,7 +125,7 @@ void ViewProviderAssembly::setupContextMenu(QMenu* menu, QObject* receiver, cons
         this->doubleClicked();
     });
 
-    ViewProviderDragger::setupContextMenu(menu, receiver, member);
+    ViewProviderDragger::setupContextMenu(menu, receiver, member); //NOLINT
 }
 
 bool ViewProviderAssembly::doubleClicked()
