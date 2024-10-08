@@ -250,7 +250,8 @@ def lock_document():
             prefs, context = ifc_tools.get_export_preferences(ifcfile)
             exportIFC.export(objs, ifcfile, preferences=prefs)
             for n in [o.Name for o in doc.Objects]:
-                doc.removeObject(n)
+                if doc.getObject(n):
+                    doc.removeObject(n)
             ifc_tools.create_children(doc, ifcfile, recursive=True)
             doc.Modified = True
             doc.commitTransaction()
