@@ -17,7 +17,7 @@
    <item row="0" column="0">
     <widget class="QGroupBox" name="GroupBox5">
      <property name="title">
-      <string>Translation:</string>
+      <string>Translation</string>
      </property>
      <layout class="QGridLayout">
       <property name="leftMargin">
@@ -44,7 +44,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>X:</string>
+         <string notr="true">X</string>
         </property>
        </widget>
       </item>
@@ -60,7 +60,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Y:</string>
+         <string notr="true">Y</string>
         </property>
        </widget>
       </item>
@@ -76,7 +76,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Z:</string>
+         <string notr="true">Z</string>
         </property>
        </widget>
       </item>
@@ -92,7 +92,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Axial:</string>
+         <string>Axial</string>
         </property>
        </widget>
       </item>
@@ -115,7 +115,7 @@
    <item row="0" column="1">
     <widget class="QGroupBox" name="GroupBox5_3">
      <property name="title">
-      <string>Center:</string>
+      <string>Center</string>
      </property>
      <layout class="QGridLayout">
       <property name="leftMargin">
@@ -142,7 +142,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>X:</string>
+         <string notr="true">X</string>
         </property>
        </widget>
       </item>
@@ -158,7 +158,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Y:</string>
+         <string notr="true">Y</string>
         </property>
        </widget>
       </item>
@@ -174,7 +174,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Z:</string>
+         <string notr="true">Z</string>
         </property>
        </widget>
       </item>
@@ -201,7 +201,7 @@
    <item row="1" column="0" colspan="2">
     <widget class="QGroupBox" name="GroupBox5_2">
      <property name="title">
-      <string>Rotation:</string>
+      <string>Rotation</string>
      </property>
      <layout class="QGridLayout">
       <property name="leftMargin">
@@ -281,7 +281,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Axis:</string>
+               <string>Axis</string>
               </property>
              </widget>
             </item>
@@ -303,7 +303,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Angle:</string>
+               <string>Angle</string>
               </property>
              </widget>
             </item>
@@ -357,7 +357,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Yaw (around z-axis):</string>
+               <string>Yaw (around z-axis)</string>
               </property>
              </widget>
             </item>
@@ -377,7 +377,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Pitch (around y-axis):</string>
+               <string>Pitch (around y-axis)</string>
               </property>
              </widget>
             </item>
@@ -397,7 +397,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Roll (around x-axis):</string>
+               <string>Roll (around x-axis)</string>
               </property>
              </widget>
             </item>
