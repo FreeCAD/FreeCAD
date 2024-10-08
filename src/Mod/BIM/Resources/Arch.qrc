@@ -202,6 +202,7 @@
         <file>ui/preferences-dae.ui</file>
         <file>ui/preferences-ifc-export.ui</file>
         <file>ui/preferences-ifc.ui</file>
+        <file>ui/preferences-sh3d-import.ui</file>
         <file>ui/preferencesNativeIFC.ui</file>
         <file>translations/Arch_af.qm</file>
         <file>translations/Arch_ar.qm</file>
