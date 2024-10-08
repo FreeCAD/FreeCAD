@@ -440,8 +440,11 @@ void StartView::fileCardSelected(const QModelIndex& index)
         QString filename = QString::fromStdString(escapedstr);
         QFileInfo fi(filename);
         if (!fi.exists() || !fi.isFile()) {
-            QMessageBox::critical(Gui::getMainWindow(), tr("File not found"), tr("The file '%1' cannot be opened.").arg(filename));
-        } else {
+            QMessageBox::critical(Gui::getMainWindow(),
+                                  tr("File not found"),
+                                  tr("The file '%1' cannot be opened.").arg(filename));
+        }
+        else {
             // invokes appendFile()
             Gui::SelectModule::Dict dict = Gui::SelectModule::importHandler(filename);
             for (Gui::SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
