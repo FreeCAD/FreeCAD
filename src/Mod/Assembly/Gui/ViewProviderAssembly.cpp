@@ -27,6 +27,7 @@
 #include <boost/core/ignore_unused.hpp>
 #include <QMessageBox>
 #include <QTimer>
+#include <QMenu>
 #include <vector>
 #include <sstream>
 #include <iostream>
