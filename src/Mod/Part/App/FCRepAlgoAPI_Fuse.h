@@ -45,8 +45,7 @@ public:
     //! <S2>  -tool
     //! <anOperation> - the type of the operation
     Standard_EXPORT FCRepAlgoAPI_Fuse(const TopoDS_Shape& S1,
-                                     const TopoDS_Shape& S2,
-                                     const Message_ProgressRange& theRange = Message_ProgressRange());
+                                     const TopoDS_Shape& S2);
 
 };
 #endif
