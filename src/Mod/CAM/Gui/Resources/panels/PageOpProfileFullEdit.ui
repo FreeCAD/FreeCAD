@@ -144,7 +144,7 @@
       <item row="1" column="0">
        <widget class="QCheckBox" name="useCompensation">
         <property name="toolTip">
-         <string>If checked the profile operation is offset by the tool radius. The offset direction is determined by the Cut Side</string>
+         <string>If checked, the profile operation is offset by the tool radius. The offset direction is determined by the Cut Side</string>
         </property>
         <property name="text">
          <string>Use Compensation</string>

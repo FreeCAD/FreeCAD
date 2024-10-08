@@ -155,7 +155,7 @@ void TextureMapping::onFileChooserFileNameSelected(const QString& s)
     }
 
     if (!this->grp) {
-        QMessageBox::warning(this, tr("No 3d view"), tr("No active 3d view found."));
+        QMessageBox::warning(this, tr("No 3D view"), tr("No active 3D view found."));
         return;
     }
 
