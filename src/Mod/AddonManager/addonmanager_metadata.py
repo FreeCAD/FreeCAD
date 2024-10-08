@@ -244,6 +244,12 @@ def get_branch_from_metadata(metadata: Metadata) -> str:
     return "master"  # Legacy default
 
 
+def get_repo_url_from_metadata(metadata: Metadata) -> str:
+    for url in metadata.url:
+        if url.type == UrlType.repository:
+            return url.location
+
+
 class MetadataReader:
     """Read metadata XML data and construct a Metadata object"""
 
