@@ -28,71 +28,29 @@
      <layout class="QVBoxLayout" name="verticalLayout_5">
       <item>
        <layout class="QGridLayout" name="gridLayout">
-        <property name="horizontalSpacing">
-         <number>4</number>
-        </property>
         <item row="0" column="0">
          <widget class="QLabel" name="l_rotation_frequency">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
           <property name="text">
-           <string>Rotation frequency f&lt;sub&gt;rot&lt;/sub&gt; [rps]</string>
-          </property>
-          <property name="scaledContents">
-           <bool>false</bool>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-          </property>
-          <property name="margin">
-           <number>0</number>
-          </property>
-          <property name="indent">
-           <number>-1</number>
+           <string>Rotation Frequency:</string>
           </property>
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="Gui::InputField" name="if_rotation_frequency">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>80</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>revolutions per second</string>
-          </property>
-          <property name="layoutDirection">
-           <enum>Qt::LeftToRight</enum>
-          </property>
-          <property name="text">
-           <string>0 1/s</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="singleStep">
-           <double>1.000000000000000</double>
-          </property>
-          <property name="maximum">
-           <double>1000000000.000000000000000</double>
-          </property>
+         <widget class="Gui::QuantitySpinBox" name="qsb_rotation_frequency">
           <property name="unit" stdset="0">
            <string>1/s</string>
           </property>
-          <property name="decimals" stdset="0">
-           <number>2</number>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="toolTip">
+           <string>Revolutions per second</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignLeft|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
           </property>
           <property name="value" stdset="0">
            <double>0.000000000000000</double>
@@ -108,9 +66,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Gui::InputField</class>
-   <extends>QLineEdit</extends>
-   <header>Gui/InputField.h</header>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
