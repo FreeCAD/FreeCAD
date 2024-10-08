@@ -559,9 +559,15 @@ class Joint:
                 return obj
         return None
 
-    def setJointType(self, joint, jointType):
-        joint.JointType = jointType
-        joint.Label = jointType.replace(" ", "")
+    def setJointType(self, joint, newType):
+        oldType = joint.JointType
+        joint.JointType = newType
+
+        # try to replace the joint type in the label.
+        tr_old_type = TranslatedJointTypes[JointTypes.index(oldType)]
+        tr_new_type = TranslatedJointTypes[JointTypes.index(newType)]
+        if tr_old_type in joint.Label:
+            joint.Label = joint.Label.replace(tr_old_type, tr_new_type)
 
     def onChanged(self, joint, prop):
         """Do something when a property has changed"""
@@ -1351,7 +1357,6 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
         self.form.jointType.setCurrentIndex(jointTypeIndex)
         self.jType = JointTypes[self.form.jointType.currentIndex()]
-        self.form.jointType.currentIndexChanged.connect(self.onJointTypeChanged)
 
         self.form.distanceSpinbox.valueChanged.connect(self.onDistanceChanged)
         self.form.distanceSpinbox2.valueChanged.connect(self.onDistance2Changed)
@@ -1397,6 +1402,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.visibilityBackup = False
 
         self.adaptUi()
+
+        self.form.jointType.currentIndexChanged.connect(self.onJointTypeChanged)
 
         if self.creating:
             # This has to be after adaptUi so that properties default values are adapted
