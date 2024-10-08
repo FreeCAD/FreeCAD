@@ -1505,7 +1505,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.joint = self.assembly.newObject("App::FeaturePython", "Temporary joint")
         else:
             joint_group = UtilsAssembly.getJointGroup(self.assembly)
-            self.joint = joint_group.newObject("App::FeaturePython", self.jointName)
+            self.joint = joint_group.newObject("App::FeaturePython", "Joint")
+            self.joint.Label = self.jointName
 
         Joint(self.joint, type_index)
         ViewProviderJoint(self.joint.ViewObject)
