@@ -442,12 +442,11 @@ void copyTemplateParameters(/*const*/ ParameterManager& templateParameterManager
     }
 }
 
-void PreferencePackManager::save(const std::string& name, const std::vector<TemplateFile>& templates)
+void PreferencePackManager::save(const std::string& name, const std::string& directory, const std::vector<TemplateFile>& templates)
 {
     if (templates.empty())
         return;
 
-    AddPackToMetadata(name);
 
     // Create the config file
     auto outputParameterManager = ParameterManager::Create();
@@ -457,10 +456,18 @@ void PreferencePackManager::save(const std::string& name, const std::vector<Temp
         templateParameterManager->LoadDocument(t.path.string().c_str());
         copyTemplateParameters(*templateParameterManager, *outputParameterManager);
     }
-    auto savedPreferencePacksDirectory =
-        fs::path(App::Application::getUserAppDataDir()) / "SavedPreferencePacks";
-    auto cfgFilename = savedPreferencePacksDirectory / name / (name + ".cfg");
-    outputParameterManager->SaveDocument(cfgFilename.string().c_str());
+
+    std::string cfgFilename;
+    if (directory.empty()) {
+        AddPackToMetadata(name);
+        auto savedPreferencePacksDirectory =
+            fs::path(App::Application::getUserAppDataDir()) / "SavedPreferencePacks";
+        cfgFilename = (savedPreferencePacksDirectory / name / (name + ".cfg")).string();
+    }
+    else {
+        cfgFilename = (fs::path(directory) / (name + ".cfg")).string();
+    }
+    outputParameterManager->SaveDocument(cfgFilename.c_str());
 }
 
 // Needed until we support only C++20 and above and can use std::string's built-in ends_with()
