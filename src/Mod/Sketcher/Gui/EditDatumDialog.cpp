@@ -203,7 +203,7 @@ void EditDatumDialog::accepted()
                     ui_ins_datum->labelEdit->apply();
                 }
                 else {
-                    auto unitString = newQuant.getUnit().getString().toUtf8().toStdString();
+                    auto unitString = newQuant.getUnit().getString();
                     unitString = Base::Tools::escapeQuotesFromString(unitString);
                     Gui::cmdAppObjectArgs(sketch,
                                           "setDatum(%i,App.Units.Quantity('%f %s'))",

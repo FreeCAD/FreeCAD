@@ -164,8 +164,8 @@ private:
     void updateText(const Base::Quantity&);
     void updateEdit(const QString& text);
     void updateFromCache(bool notify, bool updateUnit = true);
-    QString getUserString(const Base::Quantity& val, double& factor, QString& unitString) const;
-    QString getUserString(const Base::Quantity& val) const;
+    std::string getUserString(const Base::Quantity& val, double& factor, std::string& unitString) const;
+    std::string getUserString(const Base::Quantity& val) const;
 
 Q_SIGNALS:
     /** Gets emitted if the user has entered a VALID input

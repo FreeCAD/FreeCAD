@@ -174,7 +174,7 @@ Base::Type DlgExpressionInput::determineTypeVarSet()
     // varset.  Since unit properties are derived from App::PropertyFloat, it
     // allows us to create a property and set the value.
 
-    std::string unitTypeString = impliedUnit.getTypeString().toStdString();
+    std::string unitTypeString = impliedUnit.getTypeString();
     if (unitTypeString.empty()) {
         // no type was provided
         return Base::Type::badType();
@@ -187,7 +187,7 @@ Base::Type DlgExpressionInput::determineTypeVarSet()
 
 bool DlgExpressionInput::typeOkForVarSet()
 {
-    std::string unitType = impliedUnit.getTypeString().toStdString();
+    std::string unitType = impliedUnit.getTypeString();
     return determineTypeVarSet() != Base::Type::badType();
 }
 
@@ -242,12 +242,10 @@ void NumberRange::throwIfOutOfRange(const Base::Quantity& value) const
     if (value.getValue() < minimum || value.getValue() > maximum) {
         Base::Quantity minVal(minimum, value.getUnit());
         Base::Quantity maxVal(maximum, value.getUnit());
-        QString valStr = value.getUserString();
-        QString minStr = minVal.getUserString();
-        QString maxStr = maxVal.getUserString();
-        QString error = QString::fromLatin1("Value out of range (%1 out of [%2, %3])").arg(valStr, minStr, maxStr);
-
-        throw Base::ValueError(error.toStdString());
+        auto valStr = value.getUserString();
+        auto minStr = minVal.getUserString();
+        auto maxStr = maxVal.getUserString();
+        throw Base::ValueError("Value out of range (" + valStr + " out of [" + minStr + ", " + maxStr + "])");
     }
 }
 
@@ -289,12 +287,12 @@ void DlgExpressionInput::checkExpression(const QString& text)
             auto * n = Base::freecad_dynamic_cast<NumberExpression>(result.get());
             if (n) {
                 Base::Quantity value = n->getQuantity();
-                QString msg = value.getUserString();
-
                 if (!value.isValid()) {
                     throw Base::ValueError("Not a number");
                 }
-                else if (!impliedUnit.isEmpty()) {
+
+                auto msg = value.getUserString();
+                if (!impliedUnit.isEmpty()) {
                     if (!value.getUnit().isEmpty() && value.getUnit() != impliedUnit)
                         throw Base::UnitsMismatchError("Unit mismatch between result and required unit");
 
@@ -302,7 +300,7 @@ void DlgExpressionInput::checkExpression(const QString& text)
 
                 }
                 else if (!value.getUnit().isEmpty()) {
-                    msg += QString::fromUtf8(" (Warning: unit discarded)");
+                    msg += " (Warning: unit discarded)";
 
                     QPalette p(ui->msg->palette());
                     p.setColor(QPalette::WindowText, Qt::red);
@@ -311,7 +309,7 @@ void DlgExpressionInput::checkExpression(const QString& text)
 
                 numberRange.throwIfOutOfRange(value);
 
-                ui->msg->setText(msg);
+                ui->msg->setText(Base::Tools::fromStdString(msg));
             }
             else {
                 ui->msg->setText(Base::Tools::fromStdString(result->toString()));
