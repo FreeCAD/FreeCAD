@@ -35,8 +35,6 @@
 #include <Inventor/sensors/SoIdleSensor.h>
 #include <FCGlobal.h>
 
-#include "So3DAnnotation.h"
-
 class SoCamera;
 
 namespace Gui
