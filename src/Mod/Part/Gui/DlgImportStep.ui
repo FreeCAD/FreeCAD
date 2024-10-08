@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string notr="true">STEP</string>
+   <string>STEP Import Settings</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_4">
    <item row="1" column="0">
