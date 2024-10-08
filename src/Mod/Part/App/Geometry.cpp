@@ -793,6 +793,11 @@ GeomBSplineCurve* GeomCurve::toNurbs(double first, double last) const
     return toBSpline(first, last);
 }
 
+GeomCurve* GeomCurve::createArc([[maybe_unused]] double first, [[maybe_unused]] double last) const
+{
+    return nullptr;
+}
+
 bool GeomCurve::tangent(double u, gp_Dir& dir) const
 {
     Handle(Geom_Curve) curve = Handle(Geom_Curve)::DownCast(handle());
@@ -1378,6 +1383,14 @@ Geometry *GeomBSplineCurve::copy() const
     catch (Standard_Failure& exc) {
         THROWM(Base::CADKernelError, exc.GetMessageString())
     }
+}
+
+GeomCurve* GeomBSplineCurve::createArc(double first, double last) const
+{
+   auto newBsp = static_cast<Part::GeomBSplineCurve*>(this->copy());
+   newBsp->Trim(first, last);
+
+   return newBsp;
 }
 
 int GeomBSplineCurve::countPoles() const
@@ -2270,6 +2283,14 @@ Geometry *GeomTrimmedCurve::copy() const
     return newCurve;
 }
 
+GeomCurve* GeomTrimmedCurve::createArc(double first, double last) const
+{
+    auto newArc = static_cast<Part::GeomTrimmedCurve*>(this->copy());
+    newArc->setRange(first, last);
+
+    return newArc;
+}
+
 // Persistence implementer
 unsigned int GeomTrimmedCurve::getMemSize () const
 {
@@ -2590,6 +2611,14 @@ Geometry *GeomCircle::copy() const
     GeomCircle *newCirc = new GeomCircle(myCurve);
     newCirc->copyNonTag(this);
     return newCirc;
+}
+
+GeomCurve* GeomCircle::createArc(double first, double last) const
+{
+    auto newArc = new GeomArcOfCircle(Handle(Geom_Circle)::DownCast(this->handle()->Copy()));
+    newArc->setRange(first, last, false);
+
+    return newArc;
 }
 
 GeomBSplineCurve* GeomCircle::toNurbs(double first, double last) const
@@ -3028,6 +3057,14 @@ Geometry *GeomEllipse::copy() const
     GeomEllipse *newEllipse = new GeomEllipse(myCurve);
     newEllipse->copyNonTag(this);
     return newEllipse;
+}
+
+GeomCurve* GeomEllipse::createArc(double first, double last) const
+{
+    auto newArc = new GeomArcOfEllipse(Handle(Geom_Ellipse)::DownCast(this->handle()->Copy()));
+    newArc->setRange(first, last, false);
+
+    return newArc;
 }
 
 GeomBSplineCurve* GeomEllipse::toNurbs(double first, double last) const
