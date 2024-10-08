@@ -21,8 +21,10 @@
 """Helper functions that are used by SH3D importer."""
 import math
 import os
+import re
 import uuid
-import xml.sax
+import xml.etree.ElementTree as ET
+import zipfile
 
 import Arch
 import Draft
@@ -32,11 +34,8 @@ import Mesh
 import numpy
 import Part
 import WorkingPlane
-import xml.etree.ElementTree as ET
-import zipfile
-
-from draftutils.params import get_param_arch
 from draftutils.messages import _err, _log, _msg, _wrn
+from draftutils.params import get_param_arch
 
 import FreeCAD as App
 
@@ -51,9 +50,8 @@ else:
 
 try:
     import Render
+    from Render import Camera, PointLight
     from Render.project import Project
-    from Render import PointLight
-    from Render import Camera
     RENDER_IS_AVAILABLE = True
 except :
     RENDER_IS_AVAILABLE = False
@@ -147,7 +145,7 @@ class SH3DImporter:
 
             self.progress_bar.start(f"Importing SweetHome 3D file. Please wait ...", self.total_object_count)
 
-            _log(f"Importing home '{home.get('name')}' ...")
+            _msg(f"Importing home '{home.get('name')}' ...")
             # Create the groups to organize the different resources together
             self._create_groups()
 
@@ -204,7 +202,7 @@ class SH3DImporter:
                 Gui.runCommand('Render_View', 0)
                 self._refresh()
 
-            _log(f"Successfully imported home '{home.get('name')}' ...")
+            _msg(f"Successfully imported home '{home.get('name')}' ...")
         
     def _get_object_count(self, home):
         """Get an approximate count of object to be imported
@@ -390,6 +388,9 @@ class SH3DImporter:
         building = Arch.makeBuilding([])
         self.set_property(building, "App::PropertyString", "shType", "The element type", 'building')
         self.set_property(building, "App::PropertyString", "id", "The element's id", elm.get('name'))
+        for property in elm.findall('property'):
+            property_name = re.sub('[^A-Za-z0-9]+', '', property.get('name'))
+            self.set_property(building, "App::PropertyString", property_name, "", property.get('value'))
         return building
 
     def _create_default_floor(self):
@@ -407,6 +408,7 @@ class SH3DImporter:
         return floor
 
     def _import_elements(self, home, name):
+        _msg(f"Importing all <{name}> elements ...")
         def _process(tuple):
             (i, elm) = tuple
             _log(f"Importing <{name}>#{i} ({self.current_object_count + 1}/{self.total_object_count}) ...")
@@ -476,7 +478,7 @@ class SH3DImporter:
 
 
 class BaseHandler:
-    """The base class for all importer object."""
+    """The base class for all importers."""
 
     def __init__(self, importer: SH3DImporter):
         self.importer = importer
@@ -506,6 +508,20 @@ class BaseHandler:
         """
         return self.importer.get_fc_object(id, sh_type)
 
+    def get_floor(self, level_id):
+        """Returns the Floor associated with the level_id.
+
+        Returns the first level if there is just one level or if level_id is None
+
+        Args:
+            levels (list): The list of imported levels
+            level_id (string): the level @id
+
+        Returns:
+            level: The level
+        """
+        return self.importer.get_floor(level_id)
+
 
 class LevelHandler(BaseHandler):
     """A helper class to import a SH3D `<level>` object."""
@@ -520,7 +536,6 @@ class LevelHandler(BaseHandler):
             i (int): the ordinal of the imported element
             elm (Element): the xml element
         """
-        _log(f"Adding level {elm.get('id')} ...")
         floor = None
         if self.importer.preferences["MERGE"]:
             floor = self.get_fc_object(elm.get("id"), 'level')
@@ -546,27 +561,7 @@ class LevelHandler(BaseHandler):
         self.setp(obj, "App::PropertyBool", "viewable", "Whether the floor is viewable", elm)
 
 
-class InLevelHandler(BaseHandler):
-
-    def __init__(self, importer: SH3DImporter):
-        super().__init__(importer)
-
-    def get_floor(self, level_id):
-        """Returns the Floor associated with the level_id.
-
-        Returns the first level if there is just one level or if level_id is None
-
-        Args:
-            levels (list): The list of imported levels
-            level_id (string): the level @id
-
-        Returns:
-            level: The level
-        """
-        return self.importer.get_floor(level_id)
-
-
-class RoomHandler(InLevelHandler):
+class RoomHandler(BaseHandler):
     """A helper class to import a SH3D `<room>` object.
 
     It also handles the <point> elements found as children of the <room> element.
@@ -628,7 +623,7 @@ class RoomHandler(InLevelHandler):
         self.setp(obj, "App::PropertyBool", "ceilingFlat", "", elm)
 
 
-class WallHandler(InLevelHandler):
+class WallHandler(BaseHandler):
     """A helper class to import a SH3D `<wall>` object."""
 
     def __init__(self, importer: SH3DImporter):
@@ -668,11 +663,11 @@ class WallHandler(InLevelHandler):
         floor.addObject(wall)
         self.importer.add_wall(wall)
 
-        # if self.importer.preferences["IMPORT_FURNITURES"]:
-        #     App.ActiveDocument.recompute()
-        #     baseboards = _import_baseboards(wall, elm)
-        #     if len(baseboards):
-        #         App.ActiveDocument.Baseboards.addObjects(baseboards)
+        if self.importer.preferences["IMPORT_FURNITURES"]:
+            App.ActiveDocument.recompute()
+            for baseboard in elm.findall('baseboard'):
+                self._import_baseboard(wall, baseboard)
+            
 
         # TODO: adding walls and subtracting windows...
         # wall.Additions = walls
@@ -920,6 +915,75 @@ class WallHandler(InLevelHandler):
         if hasattr(wall.ViewObject, "DiffuseColor"):
             wall.ViewObject.DiffuseColor = colors
 
+    def _import_baseboard(self, wall, elm):
+        """Creates and returns a Part::Extrusion from the imported_baseboard object
+
+        Args:
+            imported_baseboard (dict): the dict object containg the characteristics of the new object
+
+        Returns:
+            Part::Extrusion: the newly created object
+        """
+        wall_width = float(wall.Width)
+        baseboard_width = dim_sh2fc(elm.get('thickness'))
+        baseboard_height = dim_sh2fc(elm.get('height'))
+        vertexes = wall.Shape.Vertexes
+
+        # The left side is defined as the face on the left hand side when going
+        # from (xStart,yStart) to (xEnd,yEnd). I assume the points are always
+        # created in the same order. We then have on the lefthand side the points
+        # 1 and 2, while on the righthand side we have the points 4 and 6
+        side = elm.get('attribute')
+        if side == 'leftSideBaseboard':
+            p_start = vertexes[0].Point
+            p_end = vertexes[2].Point
+            p_normal = vertexes[4].Point
+        elif side == 'rightSideBaseboard':
+            p_start = vertexes[4].Point
+            p_end = vertexes[6].Point
+            p_normal = vertexes[0].Point
+        else:
+            raise ValueError(f"Invalid SweetHome3D file: invalid baseboard with 'attribute'={side}")
+
+        v_normal = p_normal - p_start
+        v_baseboard = v_normal * (baseboard_width/wall_width)
+        p0 = p_start
+        p1 = p_end
+        p2 = p_end - v_baseboard
+        p3 = p_start - v_baseboard
+
+        baseboard_id = f"{wall.id}-{side}"
+        baseboard = None
+        if self.importer.preferences["MERGE"]:
+            baseboard = self.get_fc_object(baseboard_id, 'baseboard')
+
+        if not baseboard:
+            # I first add a rectangle
+            base = Draft.makeRectangle([p0, p1, p2, p3], face=True, support=None)
+            base.Visibility = False
+            # and then I extrude
+            baseboard = App.ActiveDocument.addObject('Part::Extrusion', f"{wall.Label} {side}")
+            baseboard.Base = base
+
+        baseboard.DirMode = "Custom"
+        baseboard.Dir = App.Vector(0, 0, 1)
+        baseboard.DirLink = None
+        baseboard.LengthFwd = baseboard_height
+        baseboard.LengthRev = 0
+        baseboard.Solid = True
+        baseboard.Reversed = False
+        baseboard.Symmetric = False
+        baseboard.TaperAngle = 0
+        baseboard.TaperAngleRev = 0
+
+        set_color_and_transparency(baseboard, elm.get('color'))
+
+        self.setp(baseboard, "App::PropertyString", "shType", "The element type", 'baseboard')
+        self.setp(baseboard, "App::PropertyString", "id", "The element's id", baseboard_id)
+        self.setp(baseboard, "App::PropertyLink", "parent", "The element parent", wall)
+
+        App.ActiveDocument.Baseboards.addObject(baseboard)
+
 
 class BaseFurnitureHandler(BaseHandler):
     """The base class for importing different class of furnitures."""
@@ -973,7 +1037,7 @@ class BaseFurnitureHandler(BaseHandler):
         self.setp(obj, "App::PropertyFloat", "heightInPlan", "The object's height in the plan view", elm)
 
 
-class DoorOrWindowHandler(BaseFurnitureHandler, InLevelHandler):
+class DoorOrWindowHandler(BaseFurnitureHandler):
     """A helper class to import a SH3D `<doorOrWindow>` object."""
 
     def __init__(self, importer: SH3DImporter):
@@ -1106,7 +1170,7 @@ class DoorOrWindowHandler(BaseFurnitureHandler, InLevelHandler):
         return None
 
 
-class FurnitureHandler(BaseFurnitureHandler, InLevelHandler):
+class FurnitureHandler(BaseFurnitureHandler):
     """A helper class to import a SH3D `<pieceOfFurniture>` object."""
 
     def __init__(self, importer: SH3DImporter):
@@ -1290,7 +1354,7 @@ class CameraHandler(BaseHandler):
 
         attribute = elm.get('attribute')
         if attribute != "storedCamera":
-            _wrn(translate("BIM", f"Type of <{elm.tag}> #{i} is not supported: '{attribute}'. Skipping!"))
+            _log(translate("BIM", f"Type of <{elm.tag}> #{i} is not supported: '{attribute}'. Skipping!"))
             return
 
         camera_id = f"{attribute}-{i}"
