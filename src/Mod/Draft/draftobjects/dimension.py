@@ -201,6 +201,14 @@ class DimensionBase(DraftAnnotation):
         vobj = obj.ViewObject
         if not vobj:
             return
+        if hasattr(vobj, "ArrowType"):
+            _wrn("v1.0, " + obj.Label + ", " + translate("draft", "migrated 'ArrowType' property to 'ArrowTypeEnd'"))
+            vobj.ArrowTypeEnd = vobj.ArrowType
+            vobj.removeProperty("ArrowType")
+        if hasattr(vobj, "ArrowSize"):
+            _wrn("v1.0, " + obj.Label + ", " + translate("draft", "migrated 'ArrowSize' property to 'ArrowSizeEnd'"))
+            vobj.ArrowSizeEnd = vobj.ArrowSize
+            vobj.removeProperty("ArrowSize")
         if hasattr(vobj, "TextColor"):
             return
         self.update_properties_0v21(obj, vobj)

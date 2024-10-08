@@ -232,6 +232,10 @@ class Label(DraftAnnotation):
         vobj = obj.ViewObject
         if not vobj:
             return
+        if hasattr(vobj, "ArrowType"):
+            vobj.removeProperty("ArrowType")
+        if hasattr(vobj, "ArrowSize"):
+            vobj.removeProperty("ArrowSize")
         if hasattr(vobj, "FontName") and hasattr(vobj, "FontSize"):
             return
         self.update_properties_0v21(obj, vobj)
