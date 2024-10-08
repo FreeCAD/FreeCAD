@@ -581,6 +581,9 @@ void CmdSketcherMapSketch::activated(int iMsg)
                 qApp->translate("Sketcher_MapSketch", "The document doesn't have a sketch"));
             return;
         }
+        std::sort(sketches.begin(), sketches.end(), [](const auto &a, const auto &b) {
+            return strcmp(a->Label.getValue(), b->Label.getValue()) < 0;
+        });
 
         bool ok;
         QStringList items;
