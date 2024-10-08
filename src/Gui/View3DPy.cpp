@@ -1172,6 +1172,9 @@ Py::Object View3DInventorPy::dumpNode(const Py::Tuple& args)
     void* ptr = nullptr;
     try {
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoNode *", object, &ptr, 0);
+        if (!ptr) {
+            throw Py::RuntimeError("Conversion of SoNode failed");
+        }
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -2171,6 +2174,9 @@ Py::Object View3DInventorPy::addEventCallbackPivy(const Py::Tuple& args)
     void* ptr = nullptr;
     try {
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoType *", proxy, &ptr, 0);
+        if (!ptr) {
+            throw Py::RuntimeError("Conversion of SoType failed");
+        }
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -2213,6 +2219,9 @@ Py::Object View3DInventorPy::removeEventCallbackPivy(const Py::Tuple& args)
     void* ptr = nullptr;
     try {
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoType *", proxy, &ptr, 0);
+        if (!ptr) {
+            throw Py::RuntimeError("Conversion of SoType failed");
+        }
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -2303,6 +2312,9 @@ Py::Object View3DInventorPy::addDraggerCallback(const Py::Tuple& args)
     void* ptr = nullptr;
     try {
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoDragger *", dragger, &ptr, 0);
+        if (!ptr) {
+            throw Py::RuntimeError("Conversion of SoDragger failed");
+        }
     }
     catch (const Base::Exception&) {
         throw Py::TypeError("The first argument must be of type SoDragger");
@@ -2355,6 +2367,9 @@ Py::Object View3DInventorPy::removeDraggerCallback(const Py::Tuple& args)
     void* ptr = nullptr;
     try {
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoDragger *", dragger, &ptr, 0);
+        if (!ptr) {
+            throw Py::RuntimeError("Conversion of SoDragger failed");
+        }
     }
     catch (const Base::Exception&) {
         throw Py::TypeError("The first argument must be of type SoDragger");
