@@ -234,6 +234,20 @@ SET(Properties_SRCS
 )
 SOURCE_GROUP("Properties" FILES ${Properties_SRCS})
 
+SET(FCRepAlgoAPI_SRCS
+    FCRepAlgoAPI_BooleanOperation.cpp
+    FCRepAlgoAPI_BooleanOperation.h
+    FCRepAlgoAPI_Common.cpp
+    FCRepAlgoAPI_Common.h
+    FCRepAlgoAPI_Fuse.cpp
+    FCRepAlgoAPI_Fuse.h
+    FCRepAlgoAPI_Cut.cpp
+    FCRepAlgoAPI_Cut.h
+    FCRepAlgoAPI_Section.cpp
+    FCRepAlgoAPI_Section.h
+)
+SOURCE_GROUP("FCRepAlgoAPI-wrapper" FILES ${FCRepAlgoAPI_SRCS})
+
 SET(Python_SRCS
     ArcPy.xml
     ArcPyImp.cpp
@@ -495,6 +509,7 @@ SET(Part_SRCS
     ${HLRBRepPy_SRCS}
     ${ShapeFixPy_SRCS}
     ${ShapeUpgradePy_SRCS}
+    ${FCRepAlgoAPI_SRCS}
     IGES/ImportExportSettings.cpp
     IGES/ImportExportSettings.h
     OCAF/ImportExportSettings.cpp
