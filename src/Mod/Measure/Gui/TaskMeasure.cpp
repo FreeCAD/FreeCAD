@@ -200,7 +200,7 @@ Measure::MeasureBase* TaskMeasure::createObject(const App::MeasureType* measureT
     else {
         // Create measure object
         _mMeasureObject = (Measure::MeasureBase*)doc->addObject(measureType->measureObject.c_str(),
-                                                    measureType->label.c_str());
+                                                                measureType->label.c_str());
     }
 
     return _mMeasureObject;
