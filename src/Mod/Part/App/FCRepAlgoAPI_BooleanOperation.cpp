@@ -27,6 +27,7 @@
 #include <BRepBndLib.hxx>
 #include <Bnd_Box.hxx>
 #include <TopoDS_Shape.hxx>
+#include <Precision.hxx>
 #include <App/Application.h>
 
 FCRepAlgoAPI_BooleanOperation::FCRepAlgoAPI_BooleanOperation()
