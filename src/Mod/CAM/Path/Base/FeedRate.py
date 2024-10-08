@@ -34,10 +34,10 @@ __doc__ = "Helper for adding Feed Rate to Path Commands"
 TODO:  This needs to be able to handle feedrates for axes other than X,Y,Z
 """
 
-if False:
-    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
-    Path.Log.trackModule(Path.Log.thisModule())
-else:
+# Uncomment here for debugging mode:
+#    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+#    Path.Log.trackModule(Path.Log.thisModule())
+# Uncomment here for non-debugging mode:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 

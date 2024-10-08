@@ -31,10 +31,10 @@ __doc__ = "Generates the helical toolpath for a single spot targetshape"
 __contributors__ = "russ4262 (Russell Johnson), Lorenz Hüdepohl"
 
 
-if False:
-    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
-    Path.Log.trackModule(Path.Log.thisModule())
-else:
+# Uncomment here for debugging mode:
+#    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+#    Path.Log.trackModule(Path.Log.thisModule())
+# Uncomment here for non-debugging mode:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
