@@ -140,6 +140,11 @@ class DraftTaskPanel:
                 FreeCADGui.ActiveDocument.resetEdit()
             return True
     def reject(self):
+        # https://github.com/FreeCAD/FreeCAD/issues/17027
+        # Function can be called multiple times if Esc is pressed during mouse
+        # move. We need to prevent multiple calls to draftToolBar.escape():
+        if not FreeCADGui.draftToolBar.isTaskOn:
+            return
         FreeCADGui.draftToolBar.isTaskOn = False
         FreeCADGui.draftToolBar.escape()
         if FreeCADGui.ActiveDocument:

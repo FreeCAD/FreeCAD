@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #include "Workbench.h"
+#include <Base/Interpreter.h>
 #include <Gui/MenuManager.h>
 #include <Gui/ToolBarManager.h>
 
@@ -46,7 +47,25 @@ using namespace PartGui;
 /// @namespace PartGui @class Workbench
 TYPESYSTEM_SOURCE(PartGui::Workbench, Gui::StdWorkbench)
 
-Workbench::Workbench() = default;
+Workbench::Workbench() {
+    /** If we are to have Sketcher_NewSketch as command in toolbar and menu,
+     then we must assure SketcherGui has already been loaded.
+     By putting this in a try/except block we avoid creating a dependency
+     on sketcher workbench as the import will silently fail if sketcher wb is not built.
+     Note that BUILD_SKETCHER is a cmake-gui option.
+     **/
+
+    const char* code =
+            "try:\n"
+            "    import SketcherGui\n"
+            "    success = 'True'\n"
+            "except ImportError:\n"
+            "    success = 'False'";
+
+    const std::string result = Base::Interpreter().runStringWithKey(code, "success", "False");
+    hasSketcher = (result == "True");
+
+}
 
 Workbench::~Workbench() = default;
 
@@ -121,9 +140,11 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Materials_InspectMaterial"
           << "Separator"
           << bop << join << split << compound
-          << "Separator"
-          << "Sketcher_NewSketch"
-          << "Part_Extrude"
+          << "Separator";
+    if (hasSketcher) {
+      *part << "Sketcher_NewSketch";
+    }
+      *part << "Part_Extrude"
           << "Part_Revolve"
           << "Part_Mirror"
           << "Part_Scale"
@@ -171,8 +192,10 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     Gui::ToolBarItem* tool = new Gui::ToolBarItem(root);
     tool->setCommand("Part tools");
-    *tool << "Sketcher_NewSketch"
-          << "Part_Extrude"
+    if (hasSketcher) {
+        *tool << "Sketcher_NewSketch";
+    }
+    *tool << "Part_Extrude"
           << "Part_Revolve"
           << "Part_Mirror"
           << "Part_Scale"
