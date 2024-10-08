@@ -27,6 +27,7 @@
 #include <BRepBndLib.hxx>
 #include <Bnd_Box.hxx>
 #include <TopoDS_Shape.hxx>
+#include <App/Application.h>
 
 FCRepAlgoAPI_BooleanOperation::FCRepAlgoAPI_BooleanOperation()
 :
@@ -48,5 +49,7 @@ FCRepAlgoAPI_BooleanOperation::FCRepAlgoAPI_BooleanOperation(const TopoDS_Shape&
 }
   
 double FCRepAlgoAPI_BooleanOperation::getDefaultFuzzyValue(const double size) {
-    return FuzzyBooster * size * Precision::Confusion();
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
+    return hGrp->GetFloat("BooleanFuzzy",FuzzyBooster) * size * Precision::Confusion();
 }
