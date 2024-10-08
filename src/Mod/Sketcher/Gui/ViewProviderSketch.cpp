@@ -3862,19 +3862,19 @@ void ViewProviderSketch::clearSelectPoints()
 bool ViewProviderSketch::isSelected(const std::string& subNameSuffix) const
 {
     return Gui::Selection().isSelected(
-        editDocName.c_str(), editObjName.c_str(), (editSubName + subNameSuffix).c_str());
+        editDocName.c_str(), editObjName.c_str(), (editSubName + getSketchObject()->convertSubName(subNameSuffix)).c_str());
 }
 
 void ViewProviderSketch::rmvSelection(const std::string& subNameSuffix)
 {
     Gui::Selection().rmvSelection(
-        editDocName.c_str(), editObjName.c_str(), (editSubName + subNameSuffix).c_str());
+        editDocName.c_str(), editObjName.c_str(), (editSubName + getSketchObject()->convertSubName(subNameSuffix)).c_str());
 }
 
 bool ViewProviderSketch::addSelection(const std::string& subNameSuffix, float x, float y, float z)
 {
     return Gui::Selection().addSelection(
-        editDocName.c_str(), editObjName.c_str(), (editSubName + subNameSuffix).c_str(), x, y, z);
+        editDocName.c_str(), editObjName.c_str(), (editSubName + getSketchObject()->convertSubName(subNameSuffix)).c_str(), x, y, z);
 }
 
 bool ViewProviderSketch::addSelection2(const std::string& subNameSuffix, float x, float y, float z)
