@@ -24,8 +24,8 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepPrim_Cylinder.hxx>
-# include <BRepAlgoAPI_Cut.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
+# include <Mod/Part/App/FCRepAlgoAPI_Cut.h>
+# include <Mod/Part/App/FCRepAlgoAPI_Fuse.h>
 # include <BRepBuilderAPI_GTransform.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakePolygon.hxx>

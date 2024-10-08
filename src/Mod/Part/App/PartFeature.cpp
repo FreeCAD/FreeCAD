@@ -26,8 +26,8 @@
 # include <sstream>
 # include <Bnd_Box.hxx>
 # include <BRepAdaptor_Curve.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
-# include <BRepAlgoAPI_Common.hxx>
+# include <Mod/Part/App/FCRepAlgoAPI_Fuse.h>
+# include <Mod/Part/App/FCRepAlgoAPI_Common.h>
 # include <BRepBndLib.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
@@ -1891,7 +1891,7 @@ bool Part::checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& seco
 
     if (touch_is_intersection) {
         // If both shapes fuse to a single solid, then they intersect
-        BRepAlgoAPI_Fuse mkFuse(first, second);
+        FCRepAlgoAPI_Fuse mkFuse(first, second);
         if (!mkFuse.IsDone())
             return false;
         if (mkFuse.Shape().IsNull())
@@ -1909,7 +1909,7 @@ bool Part::checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& seco
         }
     } else {
         // If both shapes have common material, then they intersect
-        BRepAlgoAPI_Common mkCommon(first, second);
+        FCRepAlgoAPI_Common mkCommon(first, second);
         if (!mkCommon.IsDone())
             return false;
         if (mkCommon.Shape().IsNull())

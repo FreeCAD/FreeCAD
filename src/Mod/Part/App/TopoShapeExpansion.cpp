@@ -41,11 +41,11 @@
 #include <BRepTools.hxx>
 #include <BRep_Builder.hxx>
 #include <BRep_Tool.hxx>
-#include <BRepAlgoAPI_BooleanOperation.hxx>
-#include <BRepAlgoAPI_Common.hxx>
-#include <BRepAlgoAPI_Cut.hxx>
-#include <BRepAlgoAPI_Fuse.hxx>
-#include <BRepAlgoAPI_Section.hxx>
+#include <Mod/Part/App/FCRepAlgoAPI_BooleanOperation.h>
+#include <Mod/Part/App/FCRepAlgoAPI_Common.h>
+#include <Mod/Part/App/FCRepAlgoAPI_Cut.h>
+#include <Mod/Part/App/FCRepAlgoAPI_Fuse.h>
+#include <Mod/Part/App/FCRepAlgoAPI_Section.h>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepBuilderAPI_FindPlane.hxx>
 #include <BRepBuilderAPI_GTransform.hxx>
@@ -5686,16 +5686,16 @@ TopoShape& TopoShape::makeElementBoolean(const char* maker,
 
     std::unique_ptr<BRepAlgoAPI_BooleanOperation> mk;
     if (strcmp(maker, Part::OpCodes::Fuse) == 0) {
-        mk.reset(new BRepAlgoAPI_Fuse);
+        mk.reset(new FCRepAlgoAPI_Fuse);
     }
     else if (strcmp(maker, Part::OpCodes::Cut) == 0) {
-        mk.reset(new BRepAlgoAPI_Cut);
+        mk.reset(new FCRepAlgoAPI_Cut);
     }
     else if (strcmp(maker, Part::OpCodes::Common) == 0) {
-        mk.reset(new BRepAlgoAPI_Common);
+        mk.reset(new FCRepAlgoAPI_Common);
     }
     else if (strcmp(maker, Part::OpCodes::Section) == 0) {
-        mk.reset(new BRepAlgoAPI_Section);
+        mk.reset(new FCRepAlgoAPI_Section);
         buildShell = false;
     }
     else {
