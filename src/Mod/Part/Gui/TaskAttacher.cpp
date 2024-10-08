@@ -1064,7 +1064,6 @@ TaskDlgAttacher::TaskDlgAttacher(Gui::ViewProviderDocumentObject *ViewProvider, 
         parameter  = new TaskAttacher(ViewProvider, nullptr, QString(), tr("Attachment"));
         Content.push_back(parameter);
     }
-    commandOpened = false;
 }
 
 TaskDlgAttacher::~TaskDlgAttacher() = default;
@@ -1074,11 +1073,7 @@ TaskDlgAttacher::~TaskDlgAttacher() = default;
 
 void TaskDlgAttacher::open()
 {
-    Gui::Document* document = Gui::Application::Instance->getDocument(ViewProvider->getObject()->getDocument());
-    if (!document->hasPendingCommand()) {
-        document->openCommand(QT_TRANSLATE_NOOP("Command", "Edit attachment"));
-        commandOpened = true;
-    }
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit attachment"));
 }
 
 void TaskDlgAttacher::clicked(int)
@@ -1116,9 +1111,7 @@ bool TaskDlgAttacher::accept()
         Gui::cmdAppObject(obj, "recompute()");
 
         Gui::cmdGuiDocument(obj, "resetEdit()");
-        if (commandOpened) {
-            document->commitCommand();
-        }
+        Gui::Command::commitCommand();
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Datum dialog: Input error"), QCoreApplication::translate("Exception", e.what()));
@@ -1134,9 +1127,7 @@ bool TaskDlgAttacher::reject()
     Gui::Document* document = doc.getDocument();
     if (document) {
         // roll back the done things
-        if (commandOpened) {
-            document->abortCommand();
-        }
+        Gui::Command::abortCommand();
         Gui::Command::doCommand(Gui::Command::Gui,"%s.resetEdit()", doc.getGuiDocumentPython().c_str());
         Gui::Command::doCommand(Gui::Command::Doc,"%s.recompute()", doc.getAppDocumentPython().c_str());
     }
