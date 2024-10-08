@@ -133,8 +133,10 @@ def get_text(plane, techdraw,
                 # text is perpendicular to view, so it shouldn't appear
                 return ""
             else:
-                # TODO maybe there is something better to do here?
-                angle = 0
+                # Compute an X vector
+                vec = App.Vector(1,0,0)
+                vec = angle.multVec(App.Vector(1,0,0))
+                angle = DraftVecUtils.angle(vec,plane.u)
 
     # text should be a list of strings separated by a newline
     if not isinstance(text, list):
