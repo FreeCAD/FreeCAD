@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-  <PythonExport
-      Father="ArcOfConic2dPy"
-      Name="ArcOfParabola2dPy"
-      PythonName="Part.Geom2d.ArcOfParabola2d"
-      Twin="Geom2dArcOfParabola"
-      TwinPointer="Geom2dArcOfParabola"
-      Include="Mod/Part/App/Geometry2d.h"
-      Namespace="Part"
-      FatherInclude="Mod/Part/App/Geom2d/ArcOfConic2dPy.h"
-      FatherNamespace="Part"
-      Constructor="true">
-    <Documentation>
-      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
-      <UserDocu>Describes a portion of a parabola</UserDocu>
-    </Documentation>
-    <Attribute Name="Focal" ReadOnly="false">
-      <Documentation>
-        <UserDocu>The focal length of the parabola.</UserDocu>
-      </Documentation>
-      <Parameter Name="Focal" Type="Float"/>
-    </Attribute>
-    <Attribute Name="Parabola" ReadOnly="true">
-      <Documentation>
-        <UserDocu>The internal parabola representation</UserDocu>
-      </Documentation>
-      <Parameter Name="Parabola" Type="Object"/>
-    </Attribute>
-  </PythonExport>
+    <PythonExport
+        Father="ArcOfConic2dPy"
+        Name="ArcOfParabola2dPy"
+        PythonName="Part.Geom2d.ArcOfParabola2d"
+        Twin="Geom2dArcOfParabola"
+        TwinPointer="Geom2dArcOfParabola"
+        Include="Mod/Part/App/Geometry2d.h"
+        Namespace="Part"
+        FatherInclude="Mod/Part/App/Geom2d/ArcOfConic2dPy.h"
+        FatherNamespace="Part"
+        Constructor="true">
+        <Documentation>
+            <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+            <UserDocu>Describes a portion of a parabola.</UserDocu>
+        </Documentation>
+        <Attribute Name="Focal" ReadOnly="false">
+            <Documentation>
+                <UserDocu>The focal length of the parabola.</UserDocu>
+            </Documentation>
+            <Parameter Name="Focal" Type="Float"/>
+        </Attribute>
+        <Attribute Name="Parabola" ReadOnly="true">
+            <Documentation>
+                <UserDocu>The internal parabola representation.</UserDocu>
+            </Documentation>
+            <Parameter Name="Parabola" Type="Object"/>
+        </Attribute>
+    </PythonExport>
 </GenerateModel>

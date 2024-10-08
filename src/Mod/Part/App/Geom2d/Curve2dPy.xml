@@ -27,23 +27,24 @@
         </Methode>
         <Methode Name="discretize" Const="true" Keyword="true">
             <Documentation>
-                <UserDocu>Discretizes the curve and returns a list of points.
+                <UserDocu>
+Discretizes the curve and returns a list of points.
 The function accepts keywords as argument:
-discretize(Number=n) =&gt; gives a list of 'n' equidistant points
-discretize(QuasiNumber=n) =&gt; gives a list of 'n' quasi equidistant points (is faster than the method above)
-discretize(Distance=d) =&gt; gives a list of equidistant points with distance 'd'
-discretize(Deflection=d) =&gt; gives a list of points with a maximum deflection 'd' to the curve
-discretize(QuasiDeflection=d) =&gt; gives a list of points with a maximum deflection 'd' to the curve (faster)
+discretize(Number=n) =&gt; gives a list of 'n' equidistant points.
+discretize(QuasiNumber=n) =&gt; gives a list of 'n' quasi-equidistant points (is faster than the method above).
+discretize(Distance=d) =&gt; gives a list of equidistant points with distance 'd'.
+discretize(Deflection=d) =&gt; gives a list of points with a maximum deflection 'd' to the curve.
+discretize(QuasiDeflection=d) =&gt; gives a list of points with a maximum deflection 'd' to the curve (faster).
 discretize(Angular=a,Curvature=c,[Minimum=m]) =&gt; gives a list of points with an angular deflection of 'a'
-                                    and a curvature deflection of 'c'. Optionally a minimum number of points
-                                    can be set which by default is set to 2.
+    and a curvature deflection of 'c'. Optionally a minimum number of points
+    can be set, which by default is set to 2.
 
-Optionally you can set the keywords 'First' and 'Last' to define a sub-range of the parameter range
-of the curve.
+Optionally you can set the keywords 'First' and 'Last' to define
+    a sub-range of the parameter range of the curve.
 
-If no keyword is given then it depends on whether the argument is an int or float.
-If it's an int then the behaviour is as if using the keyword 'Number', if it's float
-then the behaviour is as if using the keyword 'Distance'.
+If no keyword is given, then it depends on whether the argument is an int or float.
+If it's an int then the behaviour is as if using the keyword 'Number',
+if it's a float then the behaviour is as if using the keyword 'Distance'.
 
 Example:
 
@@ -57,19 +58,25 @@ Part.show(s)
 
 p=c.discretize(Angular=0.09,Curvature=0.01,Last=3.14,Minimum=100)
 s=Part.Compound([Part.Vertex(i) for i in p])
-Part.show(s)</UserDocu>
+Part.show(s)
+                </UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="length">
             <Documentation>
-                <UserDocu>Computes the length of a curve
-length([uMin,uMax,Tol]) -&gt; Float</UserDocu>
+                <UserDocu>
+                    Computes the length of a curve
+                    length([uMin,uMax,Tol]) -&gt; Float
+                </UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="parameterAtDistance">
             <Documentation>
-                <UserDocu>Returns the parameter on the curve of a point at the given distance from a starting parameter.
-parameterAtDistance([abscissa, startingParameter]) -&gt; Float the</UserDocu>
+                <UserDocu>
+                    Returns the parameter on the curve of a point at
+                    the given distance from a starting parameter.
+                    parameterAtDistance([abscissa, startingParameter]) -&gt; Float
+                </UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="value">
@@ -84,40 +91,54 @@ parameterAtDistance([abscissa, startingParameter]) -&gt; Float the</UserDocu>
         </Methode>
         <Methode Name="parameter">
             <Documentation>
-                <UserDocu>Returns the parameter on the curve
-of the nearest orthogonal projection of the point.</UserDocu>
+                <UserDocu>
+                    Returns the parameter on the curve of the
+                    nearest orthogonal projection of the point.
+                </UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="normal" Const="true">
             <Documentation>
-                <UserDocu>Vector = normal(pos) - Get the normal vector at the given parameter [First|Last] if defined</UserDocu>
+                <UserDocu>
+                    Vector = normal(pos) - Get the normal vector at the given parameter [First|Last] if defined.
+                </UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="curvature" Const="true">
             <Documentation>
-                <UserDocu>Float = curvature(pos) - Get the curvature at the given parameter [First|Last] if defined</UserDocu>
+                <UserDocu>
+                    Float = curvature(pos) - Get the curvature at the given parameter [First|Last] if defined.
+                </UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="centerOfCurvature" Const="true">
             <Documentation>
-                <UserDocu>Vector = centerOfCurvature(float pos) - Get the center of curvature at the given parameter [First|Last] if defined</UserDocu>
+                <UserDocu>
+                    Vector = centerOfCurvature(float pos) - Get the center of curvature at the given parameter [First|Last] if defined.
+                </UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="intersectCC" Const="true">
             <Documentation>
-                <UserDocu>Returns all intersection points between this curve and the given curve.</UserDocu>
+                <UserDocu>
+                    Returns all intersection points between this curve and the given curve.
+                </UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="toBSpline">
             <Documentation>
-                <UserDocu>Converts a curve of any type (only part from First to Last)
-                    toBSpline([Float=First, Float=Last]) -&gt; B-Spline curve</UserDocu>
+                <UserDocu>
+                    Converts a curve of any type (only part from First to Last)
+                    toBSpline([Float=First, Float=Last]) -&gt; B-Spline curve
+                </UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="approximateBSpline">
             <Documentation>
-                <UserDocu>Approximates a curve of any type to a B-Spline curve
-                    approximateBSpline(Tolerance, MaxSegments, MaxDegree, [Order='C2']) -&gt; B-Spline curve</UserDocu>
+                <UserDocu>
+                    Approximates a curve of any type to a B-Spline curve
+                    approximateBSpline(Tolerance, MaxSegments, MaxDegree, [Order='C2']) -&gt; B-Spline curve
+                </UserDocu>
             </Documentation>
         </Methode>
         <Attribute Name="Continuity" ReadOnly="true">
