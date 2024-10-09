@@ -50,7 +50,9 @@ FCRepAlgoAPI_BooleanOperation::FCRepAlgoAPI_BooleanOperation(const TopoDS_Shape&
 }
   
 double FCRepAlgoAPI_BooleanOperation::getDefaultFuzzyValue(const double size) {
+    const double DefaultFuzzyBooster=1.0;
+
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
-    return hGrp->GetFloat("BooleanFuzzy",FuzzyBooster) * size * Precision::Confusion();
+    return hGrp->GetFloat("BooleanFuzzy",DefaultFuzzyBooster) * size * Precision::Confusion();
 }

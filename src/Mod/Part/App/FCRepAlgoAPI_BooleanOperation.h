@@ -28,8 +28,6 @@
 #include <BRepAlgoAPI_BooleanOperation.hxx>
 
 
-#define FuzzyBooster 1.0
-
 class FCRepAlgoAPI_BooleanOperation : public BRepAlgoAPI_BooleanOperation
 {
 public:
