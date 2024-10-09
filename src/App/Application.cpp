@@ -2810,12 +2810,12 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
         Base::Console().Log("Init:     Processing file: %s\n",file.filePath().c_str());
 
         try {
-            if (file.hasExtension("fcstd") || file.hasExtension("std")) {
+            if (file.hasExtension({"fcstd", "std"})) {
                 // try to open
                 Application::_pcSingleton->openDocument(file.filePath().c_str());
                 processed.push_back(it);
             }
-            else if (file.hasExtension("fcscript") || file.hasExtension("fcmacro")) {
+            else if (file.hasExtension({"fcscript", "fcmacro"})) {
                 Base::Interpreter().runFile(file.filePath().c_str(), true);
                 processed.push_back(it);
             }
