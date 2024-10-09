@@ -36,6 +36,7 @@ import Part
 import WorkingPlane
 from draftutils.messages import _err, _log, _msg, _wrn
 from draftutils.params import get_param_arch
+from functools import reduce
 
 import FreeCAD as App
 
@@ -168,17 +169,25 @@ class SH3DImporter:
                 self.default_floor = self.fc_objects.get('Level') if 'Level' in self.fc_objects else self._create_default_floor()
                 self.add_floor(self.default_floor)
 
+            # Importing <room> elements ...
             self._import_elements(home, 'room')
             
-            self._import_elements(home, 'wall')
+            # Importing <wall> elements ...
+            if self.preferences["JOIN_ARCH_WALL"]:
+                self._import_and_join_walls(home)
+            else:
+                self._import_elements(home, 'wall')
+
             self._refresh()
             if App.GuiUp:
                 Gui.SendMsgToActiveView("ViewFit")
 
+            # Importing <doorOrWindow> elements ...
             if self.preferences["IMPORT_DOORS_AND_WINDOWS"]:
                 self._import_elements(home, 'doorOrWindow')
                 self._refresh()
             
+            # Importing <pieceOfFurniture> elements ...
             if self.preferences["IMPORT_FURNITURES"]:
                 self._import_elements(home, 'pieceOfFurniture')
                 self._refresh()
@@ -187,17 +196,18 @@ class SH3DImporter:
                     self._import_elements(furniture_group, 'pieceOfFurniture', False)
                     self.progress_bar.next()
 
+            # Importing <light> elements ...
             if self.preferences["IMPORT_LIGHTS"] and self.preferences["RENDER_IS_AVAILABLE"]:
                 self._import_elements(home, 'light')
                 self._refresh()
 
+            # Importing <observerCamera> elements ...
             if self.preferences["IMPORT_CAMERAS"] and self.preferences["RENDER_IS_AVAILABLE"]:
                 self._import_elements(home, 'observerCamera')
                 self._import_elements(home, 'camera')
                 self._refresh()
 
             if self.preferences["CREATE_RENDER_PROJECT"] and self.preferences["RENDER_IS_AVAILABLE"] and self.project:
-
                 Project.create(doc, renderer="Povray", template="povray_standard.pov")
                 Gui.Selection.clearSelection()
                 Gui.Selection.addSelection(self.project)
@@ -227,6 +237,7 @@ class SH3DImporter:
             'IMPORT_CAMERAS': get_param_arch("sh3dImportCameras"),
             'MERGE': get_param_arch("sh3dMerge"),
             'CREATE_ARCH_EQUIPMENT': get_param_arch("sh3dCreateArchEquipment"),
+            'JOIN_ARCH_WALL': get_param_arch("sh3dJoinArchWall"),
             'CREATE_RENDER_PROJECT': get_param_arch("sh3dCreateRenderProject"),
             'DEFAULT_FLOOR_COLOR': color_fc2sh(get_param_arch("sh3dDefaultFloorColor")),
             'DEFAULT_CEILING_COLOR': color_fc2sh(get_param_arch("sh3dDefaultCeilingColor")),
@@ -412,8 +423,9 @@ class SH3DImporter:
 
         return floor
 
-    def _import_elements(self, home, name, update_progress=True):
-        _msg(f"Importing all <{name}> elements ...")
+    def _import_elements(self, parent, name, update_progress=True):
+        if update_progress:
+            _msg(f"Importing all <{name}> elements ...")
         def _process(tuple):
             (i, elm) = tuple
             _log(f"Importing <{name}>#{i} ({self.current_object_count + 1}/{self.total_object_count}) ...")
@@ -421,68 +433,65 @@ class SH3DImporter:
             if update_progress:
                 self.progress_bar.next()
                 self.current_object_count = self.current_object_count + 1
-        list(map(_process, enumerate(home.findall(name))))
+        list(map(_process, enumerate(parent.findall(name))))
 
+    def _import_and_join_walls(self, parent, update_progress=True):
+        # Create a map of all the walls to be created
+        self.seen = []
+        for i, wall in enumerate(parent.findall('wall')):
+            wall_id = wall.get('id')
+            if wall_id in self.seen:
+                continue
+            self.seen.append(wall_id)
+            wall_segments = [wall]
+            self._join_previous_wall(parent, wall, wall_segments)
+            self._join_next_wall(parent, wall, wall_segments)
+            txt = ' -> '.join(list(map(lambda w: w.get('id'), wall_segments)))
+            _log(f"Found continuous wall segments: [{txt}] ...")
+            if len(wall_segments) == 1:
+                self.handlers['wall'].process(i, wall_segments[0])
+            else:
+                self.handlers['wall'].process(i, wall_segments)
+            if update_progress:
+                self.progress_bar.next()
+                self.current_object_count = self.current_object_count + 1
+        self.seen = []
 
-#         # elif tag == "doorOrWindow":
-#         #     name = attributes["name"]
-                #---------------------------------------------------------------
-#         #     data = self.zip_file.read(attributes["model"])
-#         #     th,tf = tempfile.mkstemp(suffix=".obj")
-#         #     f = pyopen(tf,"wb")
-#         #     f.write(data)
-#         #     f.close()
-#         #     os.close(th)
-                #---------------------------------------------------------------
-#         #     m = Mesh.read(tf)
-#         #     fx = (float(attributes["width"])/100)/m.BoundBox.XLength
-#         #     fy = (float(attributes["height"])/100)/m.BoundBox.YLength
-#         #     fz = (float(attributes["depth"])/100)/m.BoundBox.ZLength
-#         #     mat = FreeCAD.Matrix()
-#         #     mat.scale(1000*fx,1000*fy,1000*fz)
-#         #     mat.rotateX(math.pi/2)
-#         #     m.transform(mat)
-#         #     b = m.BoundBox
-#         #     v1 = FreeCAD.Vector(b.XMin,b.YMin-500,b.ZMin)
-#         #     v2 = FreeCAD.Vector(b.XMax,b.YMin-500,b.ZMin)
-#         #     v3 = FreeCAD.Vector(b.XMax,b.YMax+500,b.ZMin)
-#         #     v4 = FreeCAD.Vector(b.XMin,b.YMax+500,b.ZMin)
-#         #     sub = Part.makePolygon([v1,v2,v3,v4,v1])
-#         #     sub = Part.Face(sub)
-#         #     sub = sub.extrude(FreeCAD.Vector(0,0,b.ZLength))
-#         #     os.remove(tf)
-#         #     shape = Arch.getShapeFromMesh(m)
-#         #     if not shape:
-#         #         shape=Part.Shape()
-#         #         shape.makeShapeFromMesh(m.Topology,0.100000)
-#         #         shape = shape.removeSplitter()
-#         #     if shape:
-#         #         if DEBUG: print("Creating window: ",name)
-#         #         if "angle" in attributes:
-#         #             shape.rotate(shape.BoundBox.Center,FreeCAD.Vector(0,0,1),math.degrees(float(attributes["angle"])))
-#         #             sub.rotate(shape.BoundBox.Center,FreeCAD.Vector(0,0,1),math.degrees(float(attributes["angle"])))
-#         #         p = shape.BoundBox.Center.negative()
-#         #         p = p.add(FreeCAD.Vector(float(attributes["x"])*10,float(attributes["y"])*10,0))
-#         #         p = p.add(FreeCAD.Vector(0,0,shape.BoundBox.Center.z-shape.BoundBox.ZMin))
-#         #         if "elevation" in attributes:
-#         #             p = p.add(FreeCAD.Vector(0,0,float(attributes["elevation"])*10))
-#         #         shape.translate(p)
-#         #         sub.translate(p)
-#         #         obj = FreeCAD.ActiveDocument.addObject("Part::Feature",name+"_body")
-#         #         obj.Shape = shape
-#         #         subobj = FreeCAD.ActiveDocument.addObject("Part::Feature",name+"_sub")
-#         #         subobj.Shape = sub
-#         #         if FreeCAD.GuiUp:
-#         #             subobj.ViewObject.hide()
-#         #         win = Arch.makeWindow(baseobj=obj,name=name)
-#         #         win.Label = name
-#         #         win.Subvolume = subobj
-#         #         self.windows.append(win)
-#         #     else:
-#         #         print("importSH3D: Error creating shape for door/window "+name)
+    def _join_previous_wall(self, parent, wall, wall_segments):
+        """Prepend the wall referenced by 'wallAtStart' to the list of wall
+        """
+        # We skip curved walls
+        if wall.get('wallAtStart') and not wall.get('arcExtent'):
+            sibling_wall_id, sibling_wall = self._get_sibling_wall(parent, wall, 'wallAtStart')
+            if not sibling_wall_id or sibling_wall.get('arcExtent'):
+                return None, None
+            if DEBUG: _log(f"{sibling_wall_id} -> {wall.get('id')}")
+            wall_segments.insert(0, sibling_wall)
+            self.seen.append(sibling_wall_id)
+            self._join_previous_wall(parent, sibling_wall, wall_segments)
 
+    def _join_next_wall(self, parent, wall, wall_segments):
+        """Prepend the wall referenced by 'wallAtStart' to the list of wall
+        """
+        # We skip curved walls
+        if wall.get('wallAtEnd') and not wall.get('arcExtent'):
+            sibling_wall_id, sibling_wall = self._get_sibling_wall(parent, wall, 'wallAtEnd')
+            if not sibling_wall_id or sibling_wall.get('arcExtent'):
+                return None, None
+            if DEBUG: _log(f"{wall.get('id')} -> {sibling_wall_id}")
+            wall_segments.append(sibling_wall)
+            self.seen.append(sibling_wall_id)
+            self._join_next_wall(parent, sibling_wall, wall_segments)
 
-
+    def _get_sibling_wall(self, parent, wall, sibling_tag):
+        wall_id = wall.get('id')
+        sibling_wall_id = wall.get(sibling_tag)
+        if sibling_wall_id in self.seen:
+            return None, None
+        sibling_wall = parent.find(f"./wall[@id='{sibling_wall_id}']")
+        if sibling_wall is None:
+            raise ValueError(f"Invalid SweetHome3D file: wall {wall_id} reference an unknown wall {sibling_wall_id}")
+        return sibling_wall_id, sibling_wall
 
 class BaseHandler:
     """The base class for all importers."""
@@ -622,8 +631,6 @@ class RoomHandler(BaseHandler):
         floor_color = elm.get('floorColor',self.importer.preferences["DEFAULT_FLOOR_COLOR"])
         ceiling_color = elm.get('ceilingColor', self.importer.preferences["DEFAULT_CEILING_COLOR"])
 
-        _log(f"floor color = {floor_color}")
-        _log(f"ceiling color = {ceiling_color}")
         self.setp(obj, "App::PropertyString", "shType", "The element type", 'room')
         self.setp(obj, "App::PropertyString", "id", "The slab's id", elm.get('id', str(uuid.uuid4())))
         self.setp(obj, "App::PropertyFloat", "nameAngle", "The room's name angle", elm)
@@ -655,6 +662,13 @@ class WallHandler(BaseHandler):
             i (int): the ordinal of the imported element
             elm (Element): the xml element
         """
+        if type(elm) is ET.Element:
+            self._process_wall(i, elm)
+        else:
+            assert (type(elm) == type([]))
+            self._process_wall_segments(i, elm)
+
+    def _process_wall(self, i, elm):
         level_id = elm.get('level', None)
         floor = self.get_floor(level_id)
         assert floor != None, f"Missing floor '{level_id}' for <wall> '{elm.get('id')}' ..."
@@ -686,12 +700,40 @@ class WallHandler(BaseHandler):
             App.ActiveDocument.recompute([wall])
             for baseboard in elm.findall('baseboard'):
                 self._import_baseboard(floor, wall, baseboard)
-            
 
         # TODO: adding walls and subtracting windows...
         # wall.Additions = walls
         # wall.Subtractions = windows
 
+
+    def _process_wall_segments(self, i, elms):
+        elm = elms[0]
+        level_id = elm.get('level', None)
+        floor = self.get_floor(level_id)
+        assert floor != None, f"Missing floor '{level_id}' for <wall> '{elm.get('id')}' ..."
+
+        wall = None
+        if self.importer.preferences["MERGE"]:
+            wall = self.get_fc_object(elm.get("id"), 'wall')
+
+        invert_angle = False
+        if not wall:
+            wall = self._make_joined_wall(floor, elms)
+
+        self._set_wall_colors(wall, invert_angle, elm)
+
+        wall.IfcType = "Wall"
+        wall.Label = elm.get("id")
+
+        self._set_properties(wall, elm)
+
+        floor.addObject(wall)
+        self.importer.add_wall(wall)  
+
+        # if self.importer.preferences["IMPORT_FURNITURES"]:
+        #     App.ActiveDocument.recompute([wall])
+        #     for baseboard in elm.findall('baseboard'):
+        #         self._import_baseboard(floor, wall, baseboard)
 
     def _set_properties(self, obj, elm):
         self.setp(obj, "App::PropertyString", "shType", "The element type", 'wall')
@@ -701,6 +743,43 @@ class WallHandler(BaseHandler):
         self.setp(obj, "App::PropertyString", "pattern", "The pattern of this wall in plan view", elm)
         self.setp(obj, "App::PropertyFloat", "leftSideShininess", "The wall's left hand side shininess", elm)
         self.setp(obj, "App::PropertyFloat", "rightSideShininess", "The wall's right hand side shininess", elm)
+
+    def _make_joined_wall(self, floor, elms):
+        """Create a Arch Wall from a line.
+
+        The constructed wall will be a simple solid with the length width height found in imported_wall
+
+        Args:
+            floor (Arch::Structure): The floor the wall belongs to
+            elms (Element): a list of xml elements, one for each contiguous segment
+
+        Returns:
+            Arch::Wall: the newly created wall
+        """
+        points = []
+        height = thickness = None
+        for elm in elms:
+            x_start = float(elm.get('xStart'))
+            y_start = float(elm.get('yStart'))
+            z_start = dim_fc2sh(floor.Placement.Base.z)
+            x_end = float(elm.get('xEnd'))
+            y_end = float(elm.get('yEnd'))
+
+            p1 = coord_sh2fc(App.Vector(x_start, y_start, z_start))
+            p2 = coord_sh2fc(App.Vector(x_end, y_end, z_start))
+            points.append(p1)
+            points.append(p2)
+            if not height:
+                height = dim_sh2fc(elm.get('height', dim_fc2sh(floor.Height)))
+            if not thickness:
+                thickness = dim_sh2fc(elm.get('thickness'))
+        line = Draft.makeWire(points, closed=False, face=False) 
+        wall = Arch.makeWall(line)
+
+        wall.Height = height
+        wall.Width = thickness
+        wall.Normal = App.Vector(0, 0, 1)
+        return wall
 
     def _make_straight_wall(self, floor, elm):
         """Create a Arch Wall from a line.
@@ -810,7 +889,7 @@ class WallHandler(BaseHandler):
         a1 = math.degrees(DraftVecUtils.angle(App.Vector(1, 0, 0), radius1))
         a2 = math.degrees(DraftVecUtils.angle(App.Vector(1, 0, 0), radius2))
 
-        if self.importer.preferences["DEBUG"]:
+        if DEBUG:
             p1C1p2 = numpy.sign(DraftVecUtils.angle(
                 p1-circles[0].Center, p2-circles[0].Center))
             p1C2p2 = numpy.sign(DraftVecUtils.angle(
@@ -832,7 +911,7 @@ class WallHandler(BaseHandler):
         placement2 = App.Placement(p2, r2) * p_corner
         section2 = Draft.make_rectangle(thickness, height2, placement2)
 
-        if self.importer.preferences["DEBUG"]:
+        if DEBUG:
             section1.ViewObject.LineColor = DEBUG_COLOR
             section2.ViewObject.LineColor = DEBUG_COLOR
 
@@ -1190,6 +1269,65 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         return None
 
 
+
+#         # elif tag == "doorOrWindow":
+#         #     name = attributes["name"]
+                # READ --------------------------------------------------
+#         #     data = self.zip_file.read(attributes["model"])
+#         #     th,tf = tempfile.mkstemp(suffix=".obj")
+#         #     f = pyopen(tf,"wb")
+#         #     f.write(data)
+#         #     f.close()
+#         #     os.close(th)
+                # TRANSFORM ---------------------------------------------
+#         #     m = Mesh.read(tf)
+#         #     fx = (float(attributes["width"])/100)/m.BoundBox.XLength
+#         #     fy = (float(attributes["height"])/100)/m.BoundBox.YLength
+#         #     fz = (float(attributes["depth"])/100)/m.BoundBox.ZLength
+#         #     mat = FreeCAD.Matrix()
+#         #     mat.scale(1000*fx,1000*fy,1000*fz)
+#         #     mat.rotateX(math.pi/2)
+#         #     m.transform(mat)
+                # ???? ---------------------------------------------
+#         #     b = m.BoundBox
+#         #     v1 = FreeCAD.Vector(b.XMin,b.YMin-500,b.ZMin)
+#         #     v2 = FreeCAD.Vector(b.XMax,b.YMin-500,b.ZMin)
+#         #     v3 = FreeCAD.Vector(b.XMax,b.YMax+500,b.ZMin)
+#         #     v4 = FreeCAD.Vector(b.XMin,b.YMax+500,b.ZMin)
+#         #     sub = Part.makePolygon([v1,v2,v3,v4,v1])
+#         #     sub = Part.Face(sub)
+#         #     sub = sub.extrude(FreeCAD.Vector(0,0,b.ZLength))
+#         #     os.remove(tf)
+#         #     shape = Arch.getShapeFromMesh(m)
+#         #     if not shape:
+#         #         shape=Part.Shape()
+#         #         shape.makeShapeFromMesh(m.Topology,0.100000)
+#         #         shape = shape.removeSplitter()
+#         #     if shape:
+#         #         if DEBUG: print("Creating window: ",name)
+#         #         if "angle" in attributes:
+#         #             shape.rotate(shape.BoundBox.Center,FreeCAD.Vector(0,0,1),math.degrees(float(attributes["angle"])))
+#         #             sub.rotate(shape.BoundBox.Center,FreeCAD.Vector(0,0,1),math.degrees(float(attributes["angle"])))
+#         #         p = shape.BoundBox.Center.negative()
+#         #         p = p.add(FreeCAD.Vector(float(attributes["x"])*10,float(attributes["y"])*10,0))
+#         #         p = p.add(FreeCAD.Vector(0,0,shape.BoundBox.Center.z-shape.BoundBox.ZMin))
+#         #         if "elevation" in attributes:
+#         #             p = p.add(FreeCAD.Vector(0,0,float(attributes["elevation"])*10))
+#         #         shape.translate(p)
+#         #         sub.translate(p)
+#         #         obj = FreeCAD.ActiveDocument.addObject("Part::Feature",name+"_body")
+#         #         obj.Shape = shape
+#         #         subobj = FreeCAD.ActiveDocument.addObject("Part::Feature",name+"_sub")
+#         #         subobj.Shape = sub
+#         #         if FreeCAD.GuiUp:
+#         #             subobj.ViewObject.hide()
+#         #         win = Arch.makeWindow(baseobj=obj,name=name)
+#         #         win.Label = name
+#         #         win.Subvolume = subobj
+#         #         self.windows.append(win)
+#         #     else:
+#         #         print("importSH3D: Error creating shape for door/window "+name)
+
 class FurnitureHandler(BaseFurnitureHandler):
     """A helper class to import a SH3D `<pieceOfFurniture>` object."""
 
@@ -1481,6 +1619,7 @@ def color_fc2sh(hexcode):
     # 0xRRGGBBAA => AARRGGBB
     hex_str = hex(int(hexcode))[2:]
     return ''.join([hex_str[6:], hex_str[0:6]])
+
 
 def hex2rgb(hexcode):
     # We might have transparency as the first 2 digit
