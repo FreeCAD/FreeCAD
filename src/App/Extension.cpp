@@ -29,6 +29,7 @@
 
 #include <Base/PyObjectBase.h>
 
+#include "Property.h"
 #include "Extension.h"
 #include "ExtensionContainer.h"
 #include "ExtensionPython.h"

@@ -24,6 +24,8 @@
 #define APP_LINK_H
 
 #include <unordered_set>
+#include <boost/preprocessor/seq/for_each.hpp>
+
 #include <Base/Parameter.h>
 #include <Base/Bitmask.h>
 #include "DocumentObject.h"

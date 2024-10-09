@@ -27,6 +27,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
+#include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
 
 #include "SketchObjectSF.h"

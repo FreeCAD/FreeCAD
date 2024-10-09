@@ -26,9 +26,19 @@
 
 #include "DocumentObject.h"
 #include "PropertyGeo.h"
-#include "MappedElement.h"
-#include "Material.h"
 #include "ComplexGeoData.h"
+
+namespace App {
+    class Material;
+}
+
+namespace Data {
+    class IndexedName;
+    struct MappedElement;
+    class MappedName;
+}
+
+class ComplexGeoData;
 
 namespace App
 {
