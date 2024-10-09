@@ -26,12 +26,11 @@
 
 #include <string>
 #include <QDomDocument>
-#include <QMap>
-#include <QString>
 #include <QVector>
 
-
+template <class T, class U> class QMap;
 class QIODevice;
+class QString;
 
 namespace App {
 

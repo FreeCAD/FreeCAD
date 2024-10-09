@@ -49,6 +49,7 @@
 
 #include <QDir>
 #include <QFileInfo>
+#include <QMap>
 #include <QProcessEnvironment>
 #include <QStandardPaths>
 #include <LibraryVersions.h>

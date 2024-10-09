@@ -25,7 +25,6 @@
 #define APP_PATH_H
 
 #include <bitset>
-#include <map>
 #include <set>
 #include <string>
 #include <vector>
@@ -43,7 +42,7 @@ namespace App
 using any = boost::any;
 
 template<class T>
-inline const T &any_cast(const boost::any &value) {
+inline const T &any_cast(const boost::any &value) {     // deprecate this
     return boost::any_cast<const T&>(value);
 }
 

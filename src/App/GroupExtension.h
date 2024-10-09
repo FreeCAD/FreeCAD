@@ -29,6 +29,7 @@
 #include <App/ExtensionPython.h>
 #include <vector>
 
+#include <Base/Interpreter.h>
 
 namespace App
 {

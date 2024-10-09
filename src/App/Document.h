@@ -24,10 +24,8 @@
 #define APP_DOCUMENT_H
 
 #include <CXX/Objects.hxx>
-#include <Base/Observer.h>
 #include <Base/Persistence.h>
 #include <Base/Type.h>
-#include <Base/Handle.h>
 
 #include "PropertyContainer.h"
 #include "PropertyLinks.h"
@@ -35,10 +33,10 @@
 
 #include <map>
 #include <vector>
-#include <QString>
 
 namespace Base {
     class Writer;
+    template <class T> class Reference; 
 }
 
 namespace App

@@ -26,15 +26,16 @@
 
 #include <Base/Exception.h>
 #include <Base/Persistence.h>
-#include <boost/any.hpp>
 #include <boost/signals2.hpp>
 #include <bitset>
-#include <string>
-#include <FCGlobal.h>
 
 #include "ElementNamingUtils.h"
 namespace Py {
 class Object;
+}
+
+namespace boost {
+    class any;
 }
 
 namespace App

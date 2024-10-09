@@ -24,9 +24,7 @@
 #ifndef APP_DYNAMICPROPERTY_H
 #define APP_DYNAMICPROPERTY_H
 
-#include <map>
 #include <string>
-#include <vector>
 
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/hashed_index.hpp>

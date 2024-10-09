@@ -518,8 +518,12 @@ const string ViewProvider::getOverrideMode() {
 
 void ViewProvider::setModeSwitch()
 {
-    if (viewOverrideMode == -1)
+    return;
+    if (viewOverrideMode == -1) {
+        //Base::Console("isBad(): %i\n", pcModeSwitch->isBad());
+        Base::Console().Message("_iActualMode: %i\n", _iActualMode);
         pcModeSwitch->whichChild = _iActualMode;
+    }
     else if (viewOverrideMode < pcModeSwitch->getNumChildren())
         pcModeSwitch->whichChild = viewOverrideMode;
     else

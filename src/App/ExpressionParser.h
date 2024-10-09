@@ -26,9 +26,12 @@
 #define EXPRESSION_PARSER_H
 
 #include "Expression.h"
-#include <Base/Matrix.h>
-#include <Base/Quantity.h>
 #include <Base/Vector3D.h>
+#include <Base/Quantity.h>
+
+namespace Base {
+    class Matrix4D;
+}
 
 namespace App {
 
