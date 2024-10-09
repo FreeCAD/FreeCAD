@@ -165,6 +165,32 @@ def removeComponents(objectsList,host=None):
                     if FreeCAD.GuiUp:
                         if not Draft.getType(o) in ["Window","Roof"]:
                             setAsSubcomponent(o)
+                    # Making reference to BimWindow.Arch_Window:
+                    # Check if o and o.Base has Attachment Support, and
+                    # if the support is the host object itself - thus a cyclic
+                    # dependency and probably creating TNP.
+                    # If above is postive, remove its AttachmentSupport:
+                    if hasattr(o,"Base") and o.Base:
+                        objList = [o, o.Base]
+                    else:
+                        objList = [o]
+                    for i in objList:
+                        objHost = None
+                        if hasattr(i,"AttachmentSupport"):
+                            if i.AttachmentSupport:
+                                if isinstance(i.AttachmentSupport,tuple):
+                                    objHost = i.AttachmentSupport[0]
+                                elif isinstance(i.AttachmentSupport,list):
+                                    objHost = i.AttachmentSupport[0][0]
+                                else:
+                                    objHost = i.AttachmentSupport
+                            if objHost == host:
+                                msg = FreeCAD.Console.PrintMessage
+                                msg(i.Label + " is mapped to " + host.Label +
+                                    ", removing the former's Attachment " +
+                                    "Support to avoid cyclic dependency and " +
+                                    "TNP." + "\n")
+                                i.AttachmentSupport = None # remove
             host.Subtractions = s
         elif Draft.getType(host) in ["SectionPlane"]:
             a = host.Objects
