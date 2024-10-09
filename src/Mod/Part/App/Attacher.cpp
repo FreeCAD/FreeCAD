@@ -27,6 +27,7 @@
 # include <BRepAdaptor_Surface.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepBuilderAPI_MakeVertex.hxx>
 # include <BRepExtrema_DistShapeShape.hxx>
 # include <BRepGProp.hxx>
 # include <BRepIntCurveSurface_Inter.hxx>
@@ -820,7 +821,7 @@ GProp_GProps AttachEngine::getInertialPropsOfShape(const std::vector<const TopoD
  * subshapes are copied in the process (but copying a whole shape of an object can potentially be slow).
  */
 void AttachEngine::readLinks(const std::vector<App::DocumentObject*> &objs,
-                             const std::vector<std::string> &sub,
+                             const std::vector<std::string> &subs,
                              std::vector<App::GeoFeature*> &geofs,
                              std::vector<const TopoDS_Shape*> &shapes,
                              std::vector<TopoDS_Shape> &storage,
@@ -831,50 +832,56 @@ void AttachEngine::readLinks(const std::vector<App::DocumentObject*> &objs,
     shapes.resize(objs.size());
     types.resize(objs.size());
     for (std::size_t i = 0; i < objs.size(); i++) {
-        if (!objs[i]->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+        std::string fullSub = subs[i];
+        const char* element = Data::findElementName(fullSub.c_str());
+        App::DocumentObject* obj = objs[i]->getSubObject(subs[i].c_str());
+
+        auto* geof = dynamic_cast<App::GeoFeature*>(obj);
+        if (!geof) {
             FC_THROWM(AttachEngineException,
                       "AttachEngine3D: attached to a non App::GeoFeature '"
-                          << objs[i]->getNameInDocument() << "'");
+                          << obj->getNameInDocument() << "'");
         }
-        auto* geof = dynamic_cast<App::GeoFeature*>(objs[i]);
         geofs[i] = geof;
-        Part::TopoShape shape;
+        TopoDS_Shape myShape;
+        Base::Placement plc = App::GeoFeature::getGlobalPlacement(obj, objs[i], fullSub);
         if (geof->isDerivedFrom(App::Plane::getClassTypeId())) {
             // obtain Z axis and origin of placement
             Base::Vector3d norm;
-            geof->Placement.getValue().getRotation().multVec(Base::Vector3d(0.0, 0.0, 1.0), norm);
+            plc.getRotation().multVec(Base::Vector3d(0.0, 0.0, 1.0), norm);
             Base::Vector3d org;
-            geof->Placement.getValue().multVec(Base::Vector3d(), org);
+            plc.multVec(Base::Vector3d(), org);
             // make shape - an local-XY plane infinite face
             gp_Pln plane = gp_Pln(gp_Pnt(org.x, org.y, org.z), gp_Dir(norm.x, norm.y, norm.z));
-            TopoDS_Shape myShape = BRepBuilderAPI_MakeFace(plane).Shape();
+            myShape = BRepBuilderAPI_MakeFace(plane).Shape();
             myShape.Infinite(true);
-            storage.emplace_back(myShape);
-            shapes[i] = &(storage[storage.size() - 1]);
         }
         else if (geof->isDerivedFrom(App::Line::getClassTypeId())) {
             // obtain X axis and origin of placement
-            // note an inconsistency: App::Line is along local X, PartDesign::DatumLine is along
-            // local Z.
             Base::Vector3d dir;
-            geof->Placement.getValue().getRotation().multVec(Base::Vector3d(1.0, 0.0, 0.0), dir);
+            plc.getRotation().multVec(Base::Vector3d(0.0, 0.0, 1.0), dir);
             Base::Vector3d org;
-            geof->Placement.getValue().multVec(Base::Vector3d(), org);
+            plc.multVec(Base::Vector3d(), org);
             // make shape - an infinite line along local X axis
             gp_Lin line = gp_Lin(gp_Pnt(org.x, org.y, org.z), gp_Dir(dir.x, dir.y, dir.z));
-            TopoDS_Shape myShape = BRepBuilderAPI_MakeEdge(line).Shape();
+            myShape = BRepBuilderAPI_MakeEdge(line).Shape();
             myShape.Infinite(true);
-            storage.emplace_back(myShape);
-            shapes[i] = &(storage[storage.size() - 1]);
+        }
+        else if (geof->isDerivedFrom(App::Point::getClassTypeId())) {
+            Base::Vector3d org;
+            plc.multVec(Base::Vector3d(), org);
+
+            gp_Pnt pnt = gp_Pnt(org.x, org.y, org.z);
+            myShape = BRepBuilderAPI_MakeVertex(pnt).Shape();
         }
         else {
             try {
-                shape = Part::Feature::getTopoShape(geof, sub[i].c_str(), true);
+                Part::TopoShape shape = Part::Feature::getTopoShape(geof, element, true);
                 for (;;) {
                     if (shape.isNull()) {
                         FC_THROWM(AttachEngineException,
                                   "AttachEngine3D: subshape not found "
-                                      << objs[i]->getNameInDocument() << '.' << sub[i]);
+                                      << objs[i]->getNameInDocument() << '.' << subs[i]);
                     }
                     if (shape.shapeType() != TopAbs_COMPOUND
                         || shape.countSubShapes(TopAbs_SHAPE) != 1) {
@@ -883,32 +890,34 @@ void AttachEngine::readLinks(const std::vector<App::DocumentObject*> &objs,
                     // auto extract the single sub-shape from a compound
                     shape = shape.getSubTopoShape(TopAbs_SHAPE, 1);
                 }
-                storage.emplace_back(shape.getShape());
+                shape.setPlacement(plc);
+                myShape = shape.getShape();
             }
             catch (Standard_Failure& e) {
                 FC_THROWM(AttachEngineException,
                           "AttachEngine3D: subshape not found " << objs[i]->getNameInDocument()
-                                                                << '.' << sub[i] << std::endl
+                                                                << '.' << subs[i] << std::endl
                                                                 << e.GetMessageString());
             }
             catch (Base::CADKernelError& e) {
                 FC_THROWM(AttachEngineException,
                           "AttachEngine3D: subshape not found " << objs[i]->getNameInDocument()
-                                                                << '.' << sub[i] << std::endl
+                                                                << '.' << subs[i] << std::endl
                                                                 << e.what());
             }
-            if (storage.back().IsNull()) {
+            if (myShape.IsNull()) {
                 FC_THROWM(AttachEngineException,
                           "AttachEngine3D: null subshape " << objs[i]->getNameInDocument() << '.'
-                                                           << sub[i]);
+                                                           << subs[i]);
             }
-            shapes[i] = &(storage.back());
         }
+        storage.emplace_back(myShape);
+        shapes[i] = &(storage.back());
 
         // FIXME: unpack single-child compounds here? Compounds are not used so far, so it should be
         // considered later, when the need arises.
         types[i] = getShapeType(*(shapes[i]));
-        if (sub[i].length() == 0) {
+        if (subs[i].length() == 0) {
             types[i] = eRefType(types[i] | rtFlagHasPlacement);
         }
     }
@@ -977,6 +986,7 @@ Base::Placement AttachEngine::calculateAttachedPlacement(const Base::Placement& 
     for (auto obj : objs) {
         ++i;
         auto& sub = subnames[i];
+        obj = obj->getSubObject(sub.c_str());
         auto& shadow = shadowSubs[i];
         if (shadow.empty() || !Data::hasMissingElement(sub.c_str())) {
             continue;
@@ -1176,9 +1186,13 @@ AttachEngine3D::_calculateAttachedPlacement(const std::vector<App::DocumentObjec
     }
 
     // common stuff for all map modes
-    gp_Pnt refOrg(0.0, 0.0, 0.0);  // origin of linked object
-    Base::Placement Place = parts[0]->Placement.getValue();
-    refOrg = gp_Pnt(Place.getPosition().x, Place.getPosition().y, Place.getPosition().z);
+    Base::Placement Place = App::GeoFeature::getGlobalPlacement(parts[0], objs[0], subs[0]);
+    Base::Console().Warning("parts[0] = %s\n", parts[0]->getNameInDocument());
+    Base::Console().Warning("objs[0] = %s\n", objs[0]->getNameInDocument());
+    Base::Console().Warning("subs[0] = %s\n", subs[0]);
+    Base::Console().Warning("Place = (%f, %f, %f)\n", Place.getPosition().x, Place.getPosition().y, Place.getPosition().z);
+    Base::Vector3d vec = Place.getPosition();
+    gp_Pnt refOrg = gp_Pnt(vec.x, vec.y, vec.z);  // origin of linked object
 
     // variables to derive the actual placement.
     // They are to be set, depending on the mode:
@@ -2120,9 +2134,9 @@ AttachEngineLine::_calculateAttachedPlacement(const std::vector<App::DocumentObj
 
 
         // common stuff for all map modes
-        gp_Pnt refOrg(0.0, 0.0, 0.0);
-        Base::Placement Place = parts[0]->Placement.getValue();
-        refOrg = gp_Pnt(Place.getPosition().x, Place.getPosition().y, Place.getPosition().z);
+        Base::Placement Place = App::GeoFeature::getGlobalPlacement(parts[0], objs[0], subs[0]);
+        Base::Vector3d vec = Place.getPosition();
+        gp_Pnt refOrg = gp_Pnt(vec.x, vec.y, vec.z);  // origin of linked object
 
         // variables to derive the actual placement.
         // They are to be set, depending on the mode:
