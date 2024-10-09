@@ -32,6 +32,7 @@
 FCRepAlgoAPI_BooleanOperation::FCRepAlgoAPI_BooleanOperation()
 {
     SetFuzzyValue(Part::FuzzyHelper::getDefaultFuzzyValue(0.0));
+    SetRunParallel(Standard_True);
 }
 
 
@@ -44,5 +45,6 @@ FCRepAlgoAPI_BooleanOperation::FCRepAlgoAPI_BooleanOperation(const TopoDS_Shape&
     BRepBndLib::Add(theS1, bounds);
     BRepBndLib::Add(theS2, bounds);
     SetFuzzyValue(Part::FuzzyHelper::getDefaultFuzzyValue(bounds.SquareExtent()));
+    SetRunParallel(Standard_True);
 }
   

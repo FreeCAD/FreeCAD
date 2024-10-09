@@ -32,6 +32,7 @@
 FCRepAlgoAPI_Section::FCRepAlgoAPI_Section()
 {
     SetFuzzyValue(Part::FuzzyHelper::getDefaultFuzzyValue(0.0));
+    SetRunParallel(Standard_True);
 }
 
 FCRepAlgoAPI_Section::FCRepAlgoAPI_Section(const TopoDS_Shape& S1, const TopoDS_Shape& S2, const Standard_Boolean PerformNow)
@@ -41,6 +42,7 @@ FCRepAlgoAPI_Section::FCRepAlgoAPI_Section(const TopoDS_Shape& S1, const TopoDS_
     BRepBndLib::Add(S1, bounds);
     BRepBndLib::Add(S2, bounds);
     SetFuzzyValue(Part::FuzzyHelper::getDefaultFuzzyValue(bounds.SquareExtent()));
+    SetRunParallel(Standard_True);
     if (PerformNow) Build();
 }
 
@@ -54,5 +56,6 @@ BRepAlgoAPI_Section(Sh,Pl,false)
     Bnd_Box bounds;
     BRepBndLib::Add(Sh, bounds);
     SetFuzzyValue(Part::FuzzyHelper::getDefaultFuzzyValue(bounds.SquareExtent()));
+    SetRunParallel(Standard_True);
     if (PerformNow) Build();
 }
