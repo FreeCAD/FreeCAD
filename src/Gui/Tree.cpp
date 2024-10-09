@@ -5417,9 +5417,10 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
 
         if (currentStatus & Status::External) {
             static QPixmap pxExternal;
+            int px = 12 * getMainWindow()->devicePixelRatioF();
             if (pxExternal.isNull()) {
                 pxExternal = Gui::BitmapFactory().pixmapFromSvg("LinkOverlay",
-                                                              QSize(24, 24));
+                                                              QSize(px, px));
             }
             pxOff = BitmapFactory().merge(pxOff, pxExternal, BitmapFactoryInst::BottomRight);
             pxOn = BitmapFactory().merge(pxOn, pxExternal, BitmapFactoryInst::BottomRight);
