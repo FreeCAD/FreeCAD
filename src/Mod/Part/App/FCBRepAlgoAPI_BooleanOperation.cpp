@@ -55,5 +55,5 @@ void FCBRepAlgoAPI_BooleanOperation::setAutoFuzzy()
         BRepBndLib::Add(it.Value(), bounds);
     for (TopTools_ListOfShape::Iterator it(myTools); it.More(); it.Next())
         BRepBndLib::Add(it.Value(), bounds);
-    SetFuzzyValue(Part::FuzzyHelper::getBooleanFuzzy() * bounds.SquareExtent() * Precision::Confusion());
+    SetFuzzyValue(Part::FuzzyHelper::getBooleanFuzzy() * sqrt(bounds.SquareExtent()) * Precision::Confusion());
 }
