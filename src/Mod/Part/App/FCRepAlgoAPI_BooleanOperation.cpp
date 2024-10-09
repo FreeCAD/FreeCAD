@@ -30,11 +30,11 @@
 #include <BRepBndLib.hxx>
 #include <Bnd_Box.hxx>
 #include <TopoDS_Shape.hxx>
+#include <Precision.hxx>
 #include <FuzzyHelper.h>
 
 FCRepAlgoAPI_BooleanOperation::FCRepAlgoAPI_BooleanOperation()
 {
-    SetFuzzyValue(Part::FuzzyHelper::getDefaultFuzzyValue(0.0));
     SetRunParallel(Standard_True);
 }
 
@@ -55,5 +55,5 @@ void FCRepAlgoAPI_BooleanOperation::setAutoFuzzy()
         BRepBndLib::Add(it.Value(), bounds);
     for (TopTools_ListOfShape::Iterator it(myTools); it.More(); it.Next())
         BRepBndLib::Add(it.Value(), bounds);
-    SetFuzzyValue(Part::FuzzyHelper::getDefaultFuzzyValue(bounds.SquareExtent()));
+    SetFuzzyValue(Part::FuzzyHelper::getBooleanFuzzy() * bounds.SquareExtent() * Precision::Confusion());
 }

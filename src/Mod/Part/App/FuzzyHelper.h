@@ -36,7 +36,10 @@ namespace Part
 class PartExport FuzzyHelper
 {
 public:
-    static double getDefaultFuzzyValue(const double size);
+    static double getBooleanFuzzy();
+    static void setBooleanFuzzy(const double base);
+private:
+    static double BooleanFuzzy;
 };
 
 

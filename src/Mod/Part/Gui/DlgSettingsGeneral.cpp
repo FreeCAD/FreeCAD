@@ -30,6 +30,7 @@
 #endif
 
 #include <Mod/Part/App/Interface.h>
+#include <Mod/Part/App/FuzzyHelper.h>
 #include <Mod/Part/App/IGES/ImportExportSettings.h>
 #include <Mod/Part/App/OCAF/ImportExportSettings.h>
 #include <Mod/Part/App/STEP/ImportExportSettings.h>
@@ -62,6 +63,7 @@ void DlgSettingsGeneral::saveSettings()
     ui->checkObjectNaming->onSave();
     ui->checkAllowCompoundBody->onSave();
     ui->BooleanFuzzy->onSave();
+    Part::FuzzyHelper::setBooleanFuzzy(ui->BooleanFuzzy->value());
 }
 
 void DlgSettingsGeneral::loadSettings()

@@ -22,18 +22,16 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#include <App/Application.h>
-#include <Precision.hxx>
 #include <FuzzyHelper.h>
 
 using namespace Part;
 
-double FuzzyHelper::getDefaultFuzzyValue(const double size) {
-    const double DefaultFuzzyBooster=1.0;
+double FuzzyHelper::BooleanFuzzy = 1.0;
 
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
-    return hGrp->GetFloat("BooleanFuzzy",DefaultFuzzyBooster) * size * Precision::Confusion();
+double FuzzyHelper::getBooleanFuzzy() {
+    return BooleanFuzzy;
+}
+void FuzzyHelper::setBooleanFuzzy(const double fuzzy) {
+    BooleanFuzzy = fuzzy;
 }
 
