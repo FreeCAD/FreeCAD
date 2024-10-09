@@ -41,10 +41,7 @@ FCRepAlgoAPI_Section::FCRepAlgoAPI_Section()
 FCRepAlgoAPI_Section::FCRepAlgoAPI_Section(const TopoDS_Shape& S1, const TopoDS_Shape& S2, const Standard_Boolean PerformNow)
 : BRepAlgoAPI_Section(S1,S2,false) 
 {
-    Bnd_Box bounds;
-    BRepBndLib::Add(S1, bounds);
-    BRepBndLib::Add(S2, bounds);
-    SetFuzzyValue(Part::FuzzyHelper::getDefaultFuzzyValue(bounds.SquareExtent()));
+    setAutoFuzzy();
     SetRunParallel(Standard_True);
     if (PerformNow) Build();
 }
@@ -56,9 +53,18 @@ const Standard_Boolean PerformNow)
 : 
 BRepAlgoAPI_Section(Sh,Pl,false) 
 {
-    Bnd_Box bounds;
-    BRepBndLib::Add(Sh, bounds);
-    SetFuzzyValue(Part::FuzzyHelper::getDefaultFuzzyValue(bounds.SquareExtent()));
+    setAutoFuzzy();
     SetRunParallel(Standard_True);
     if (PerformNow) Build();
+}
+
+
+void FCRepAlgoAPI_Section::setAutoFuzzy()
+{
+    Bnd_Box bounds;
+    for (TopTools_ListOfShape::Iterator it(myArguments); it.More(); it.Next())
+        BRepBndLib::Add(it.Value(), bounds);
+    for (TopTools_ListOfShape::Iterator it(myTools); it.More(); it.Next())
+        BRepBndLib::Add(it.Value(), bounds);
+    SetFuzzyValue(Part::FuzzyHelper::getDefaultFuzzyValue(bounds.SquareExtent()));
 }

@@ -131,6 +131,7 @@ App::DocumentObjectExecReturn *MultiFuse::execute()
 
             mkFuse.SetArguments(shapeArguments);
             mkFuse.SetTools(shapeTools);
+            mkFuse.setAutoFuzzy();
             mkFuse.Build();
 
             if (!mkFuse.IsDone()) {

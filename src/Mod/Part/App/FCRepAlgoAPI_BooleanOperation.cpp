@@ -44,10 +44,16 @@ FCRepAlgoAPI_BooleanOperation::FCRepAlgoAPI_BooleanOperation(const TopoDS_Shape&
                                                const BOPAlgo_Operation theOperation)
 : BRepAlgoAPI_BooleanOperation(theS1, theS2, theOperation)
 {
-    Bnd_Box bounds;
-    BRepBndLib::Add(theS1, bounds);
-    BRepBndLib::Add(theS2, bounds);
-    SetFuzzyValue(Part::FuzzyHelper::getDefaultFuzzyValue(bounds.SquareExtent()));
+    setAutoFuzzy();
     SetRunParallel(Standard_True);
 }
   
+void FCRepAlgoAPI_BooleanOperation::setAutoFuzzy()
+{
+    Bnd_Box bounds;
+    for (TopTools_ListOfShape::Iterator it(myArguments); it.More(); it.Next())
+        BRepBndLib::Add(it.Value(), bounds);
+    for (TopTools_ListOfShape::Iterator it(myTools); it.More(); it.Next())
+        BRepBndLib::Add(it.Value(), bounds);
+    SetFuzzyValue(Part::FuzzyHelper::getDefaultFuzzyValue(bounds.SquareExtent()));
+}

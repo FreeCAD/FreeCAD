@@ -40,6 +40,9 @@ public:
     //! Empty constructor
     Standard_EXPORT FCRepAlgoAPI_BooleanOperation();
 
+    // set fuzzyness based on size
+    void setAutoFuzzy();
+
 protected: //! @name Constructors
 
   //! Constructor to perform Boolean operation on only two arguments.

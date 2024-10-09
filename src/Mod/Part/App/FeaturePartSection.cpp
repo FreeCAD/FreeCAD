@@ -61,6 +61,7 @@ BRepAlgoAPI_BooleanOperation* Section::makeOperation(const TopoDS_Shape& base, c
     mkSection->Init1(base);
     mkSection->Init2(tool);
     mkSection->Approximation(approx);
+    mkSection->setAutoFuzzy();
     mkSection->Build();
     if (!mkSection->IsDone())
         throw Base::RuntimeError("Section failed");

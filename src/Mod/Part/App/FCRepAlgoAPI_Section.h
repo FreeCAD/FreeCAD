@@ -59,6 +59,7 @@ public:
     //! Obsolete
     Standard_EXPORT FCRepAlgoAPI_Section(const TopoDS_Shape& S1, const gp_Pln& Pl, const Standard_Boolean PerformNow = Standard_True);
 
-
+    // set fuzzyness based on size
+    void setAutoFuzzy();
 };
 #endif
