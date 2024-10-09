@@ -57,33 +57,74 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
             self.sectiontype_changed,
         )
         QtCore.QObject.connect(
-            self.parameterWidget.if_rec_height,
+            self.parameterWidget.qsb_rec_height,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
             self.rec_height_changed,
         )
         QtCore.QObject.connect(
-            self.parameterWidget.if_rec_width,
+            self.parameterWidget.qsb_rec_width,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
             self.rec_width_changed,
         )
         QtCore.QObject.connect(
-            self.parameterWidget.if_circ_diameter,
+            self.parameterWidget.qsb_circ_diameter,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
             self.circ_diameter_changed,
         )
         QtCore.QObject.connect(
-            self.parameterWidget.if_pipe_diameter,
+            self.parameterWidget.qsb_pipe_diameter,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
             self.pipe_diameter_changed,
         )
         QtCore.QObject.connect(
-            self.parameterWidget.if_pipe_thickness,
+            self.parameterWidget.qsb_pipe_thickness,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
             self.pipe_thickness_changed,
         )
+        QtCore.QObject.connect(
+            self.parameterWidget.qsb_elliptical_axis1,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.elliptical_axis1_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.qsb_elliptical_axis2,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.elliptical_axis2_changed,
+        )
+
+        QtCore.QObject.connect(
+            self.parameterWidget.qsb_box_height,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.box_height_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.qsb_box_width,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.box_width_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.qsb_box_t1,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.box_t1_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.qsb_box_t2,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.box_t2_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.qsb_box_t3,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.box_t3_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.qsb_box_t4,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.box_t4_changed,
+        )
 
         self.parameterWidget.cb_crosssectiontype.addItems(
-            element_geometry1D.ElementGeometry1D.known_beam_types
+            obj.getEnumerationsOfProperty("SectionType")
         )
         self.get_beamsection_props()
         self.updateParameterWidget()
@@ -113,6 +154,14 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.CircDiameter = self.obj.CircDiameter
         self.PipeDiameter = self.obj.PipeDiameter
         self.PipeThickness = self.obj.PipeThickness
+        self.Axis1Length = self.obj.Axis1Length
+        self.Axis2Length = self.obj.Axis2Length
+        self.BoxHeight = self.obj.BoxHeight
+        self.BoxWidth = self.obj.BoxWidth
+        self.BoxT1 = self.obj.BoxT1
+        self.BoxT2 = self.obj.BoxT2
+        self.BoxT3 = self.obj.BoxT3
+        self.BoxT4 = self.obj.BoxT4
 
     def set_beamsection_props(self):
         self.obj.SectionType = self.SectionType
@@ -121,16 +170,33 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.obj.CircDiameter = self.CircDiameter
         self.obj.PipeDiameter = self.PipeDiameter
         self.obj.PipeThickness = self.PipeThickness
+        self.obj.Axis1Length = self.Axis1Length
+        self.obj.Axis2Length = self.Axis2Length
+        self.obj.BoxHeight = self.BoxHeight
+        self.obj.BoxWidth = self.BoxWidth
+        self.obj.BoxT1 = self.BoxT1
+        self.obj.BoxT2 = self.BoxT2
+        self.obj.BoxT3 = self.BoxT3
+        self.obj.BoxT4 = self.BoxT4
 
     def updateParameterWidget(self):
         "fills the widgets"
         index_crosssectiontype = self.parameterWidget.cb_crosssectiontype.findText(self.SectionType)
         self.parameterWidget.cb_crosssectiontype.setCurrentIndex(index_crosssectiontype)
-        self.parameterWidget.if_rec_height.setText(self.RectHeight.UserString)
-        self.parameterWidget.if_rec_width.setText(self.RectWidth.UserString)
-        self.parameterWidget.if_circ_diameter.setText(self.CircDiameter.UserString)
-        self.parameterWidget.if_pipe_diameter.setText(self.PipeDiameter.UserString)
-        self.parameterWidget.if_pipe_thickness.setText(self.PipeThickness.UserString)
+        self.parameterWidget.qsb_rec_height.setProperty("value", self.RectHeight)
+        self.parameterWidget.qsb_rec_width.setProperty("value", self.RectWidth)
+        self.parameterWidget.qsb_circ_diameter.setProperty("value", self.CircDiameter)
+        self.parameterWidget.qsb_pipe_diameter.setProperty("value", self.PipeDiameter)
+        self.parameterWidget.qsb_pipe_thickness.setProperty("value", self.PipeThickness)
+        self.parameterWidget.qsb_elliptical_axis1.setProperty("value", self.Axis1Length)
+        self.parameterWidget.qsb_elliptical_axis2.setProperty("value", self.Axis2Length)
+
+        self.parameterWidget.qsb_box_height.setProperty("value", self.BoxHeight)
+        self.parameterWidget.qsb_box_width.setProperty("value", self.BoxWidth)
+        self.parameterWidget.qsb_box_t1.setProperty("value", self.BoxT1)
+        self.parameterWidget.qsb_box_t2.setProperty("value", self.BoxT2)
+        self.parameterWidget.qsb_box_t3.setProperty("value", self.BoxT3)
+        self.parameterWidget.qsb_box_t4.setProperty("value", self.BoxT4)
 
     def sectiontype_changed(self, index):
         if index < 0:
@@ -153,3 +219,27 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
 
     def pipe_thickness_changed(self, base_quantity_value):
         self.PipeThickness = base_quantity_value
+
+    def elliptical_axis1_changed(self, base_quantity_value):
+        self.Axis1Length = base_quantity_value
+
+    def elliptical_axis2_changed(self, base_quantity_value):
+        self.Axis2Length = base_quantity_value
+
+    def box_height_changed(self, base_quantity_value):
+        self.BoxHeight = base_quantity_value
+
+    def box_width_changed(self, base_quantity_value):
+        self.BoxWidth = base_quantity_value
+
+    def box_t1_changed(self, base_quantity_value):
+        self.BoxT1 = base_quantity_value
+
+    def box_t2_changed(self, base_quantity_value):
+        self.BoxT2 = base_quantity_value
+
+    def box_t3_changed(self, base_quantity_value):
+        self.BoxT3 = base_quantity_value
+
+    def box_t4_changed(self, base_quantity_value):
+        self.BoxT4 = base_quantity_value
