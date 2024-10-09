@@ -31,7 +31,7 @@
 # include <Approx_Curve3d.hxx>
 # include <BRep_Tool.hxx>
 # include <BRepAdaptor_Curve.hxx>
-# include <Mod/Part/App/FCRepAlgoAPI_Section.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Section.h>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
@@ -619,7 +619,7 @@ std::vector<Base::Vector3d> BaseGeom::intersection(TechDraw::BaseGeomPtr geom2)
         return interPoints;
     }
 
-    FCRepAlgoAPI_Section sectionOp(edge1, edge2);
+    FCBRepAlgoAPI_Section sectionOp(edge1, edge2);
     sectionOp.SetFuzzyValue(FUZZYADJUST*EWTOLERANCE);
     sectionOp.SetNonDestructive(true);
 

@@ -23,8 +23,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Mod/Part/App/FCRepAlgoAPI_Cut.h>
-# include <Mod/Part/App/FCRepAlgoAPI_Fuse.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 # include <BRepBndLib.hxx>
 # include <BRepBuilderAPI_Sewing.hxx>
 # include <BRepBuilderAPI_MakeSolid.hxx>
@@ -387,7 +387,7 @@ App::DocumentObjectExecReturn *Pipe::execute()
 
         if (getAddSubType() == FeatureAddSub::Additive) {
 
-            FCRepAlgoAPI_Fuse mkFuse(base.getShape(), result);
+            FCBRepAlgoAPI_Fuse mkFuse(base.getShape(), result);
             if (!mkFuse.IsDone())
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Adding the pipe failed"));
             // we have to get the solids (fuse sometimes creates compounds)
@@ -407,7 +407,7 @@ App::DocumentObjectExecReturn *Pipe::execute()
         }
         else if (getAddSubType() == FeatureAddSub::Subtractive) {
 
-            FCRepAlgoAPI_Cut mkCut(base.getShape(), result);
+            FCBRepAlgoAPI_Cut mkCut(base.getShape(), result);
             if (!mkCut.IsDone())
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Subtracting the pipe failed"));
             // we have to get the solids (fuse sometimes creates compounds)

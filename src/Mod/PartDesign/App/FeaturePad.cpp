@@ -23,7 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Mod/Part/App/FCRepAlgoAPI_Fuse.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 # include <Precision.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>

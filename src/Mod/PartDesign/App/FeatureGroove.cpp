@@ -23,7 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Mod/Part/App/FCRepAlgoAPI_Cut.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
 # include <BRepPrimAPI_MakeRevol.hxx>
 # include <BRepFeat_MakeRevol.hxx>
 # include <gp_Lin.hxx>

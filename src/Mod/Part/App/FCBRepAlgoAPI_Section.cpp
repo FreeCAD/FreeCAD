@@ -23,20 +23,48 @@
  **************************************************************************/
 
 /**
-  * FCRepAlgoAPI provides a wrapper for various OCCT functions.
+  * FCBRepAlgoAPI provides a wrapper for various OCCT functions.
   */
 
-#include <FCRepAlgoAPI_Common.h>
+#include <FCBRepAlgoAPI_Section.h>
+#include <BRepBndLib.hxx>
+#include <Bnd_Box.hxx>
 #include <TopoDS_Shape.hxx>
+#include <Precision.hxx>
+#include <FuzzyHelper.h>
 
-FCRepAlgoAPI_Common::FCRepAlgoAPI_Common()
+FCBRepAlgoAPI_Section::FCBRepAlgoAPI_Section()
 {
-  myOperation=BOPAlgo_COMMON;
+    SetRunParallel(Standard_True);
 }
 
-FCRepAlgoAPI_Common::FCRepAlgoAPI_Common(const TopoDS_Shape& S1, 
-                                       const TopoDS_Shape& S2)
-: FCRepAlgoAPI_BooleanOperation(S1, S2, BOPAlgo_COMMON)
+FCBRepAlgoAPI_Section::FCBRepAlgoAPI_Section(const TopoDS_Shape& S1, const TopoDS_Shape& S2, const Standard_Boolean PerformNow)
+: BRepAlgoAPI_Section(S1,S2,false) 
 {
-  Build();
+    setAutoFuzzy();
+    SetRunParallel(Standard_True);
+    if (PerformNow) Build();
+}
+
+FCBRepAlgoAPI_Section::FCBRepAlgoAPI_Section
+(const TopoDS_Shape&    Sh,
+const gp_Pln&          Pl,
+const Standard_Boolean PerformNow)
+: 
+BRepAlgoAPI_Section(Sh,Pl,false) 
+{
+    setAutoFuzzy();
+    SetRunParallel(Standard_True);
+    if (PerformNow) Build();
+}
+
+
+void FCBRepAlgoAPI_Section::setAutoFuzzy()
+{
+    Bnd_Box bounds;
+    for (TopTools_ListOfShape::Iterator it(myArguments); it.More(); it.Next())
+        BRepBndLib::Add(it.Value(), bounds);
+    for (TopTools_ListOfShape::Iterator it(myTools); it.More(); it.Next())
+        BRepBndLib::Add(it.Value(), bounds);
+    SetFuzzyValue(Part::FuzzyHelper::getBooleanFuzzy() * bounds.SquareExtent() * Precision::Confusion());
 }

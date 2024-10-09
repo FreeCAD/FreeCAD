@@ -23,7 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Mod/Part/App/FCRepAlgoAPI_Cut.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
 # include <gp_Dir.hxx>
 # include <Precision.hxx>
 # include <TopExp_Explorer.hxx>

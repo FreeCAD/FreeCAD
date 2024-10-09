@@ -23,23 +23,23 @@
  **************************************************************************/
 
 /**
-  * FCRepAlgoAPI provides a wrapper for various OCCT functions.
+  * FCBRepAlgoAPI provides a wrapper for various OCCT functions.
   */
 
-#include <FCRepAlgoAPI_BooleanOperation.h>
+#include <FCBRepAlgoAPI_BooleanOperation.h>
 #include <BRepBndLib.hxx>
 #include <Bnd_Box.hxx>
 #include <TopoDS_Shape.hxx>
 #include <Precision.hxx>
 #include <FuzzyHelper.h>
 
-FCRepAlgoAPI_BooleanOperation::FCRepAlgoAPI_BooleanOperation()
+FCBRepAlgoAPI_BooleanOperation::FCBRepAlgoAPI_BooleanOperation()
 {
     SetRunParallel(Standard_True);
 }
 
 
-FCRepAlgoAPI_BooleanOperation::FCRepAlgoAPI_BooleanOperation(const TopoDS_Shape& theS1,
+FCBRepAlgoAPI_BooleanOperation::FCBRepAlgoAPI_BooleanOperation(const TopoDS_Shape& theS1,
                                                const TopoDS_Shape& theS2,
                                                const BOPAlgo_Operation theOperation)
 : BRepAlgoAPI_BooleanOperation(theS1, theS2, theOperation)
@@ -48,7 +48,7 @@ FCRepAlgoAPI_BooleanOperation::FCRepAlgoAPI_BooleanOperation(const TopoDS_Shape&
     SetRunParallel(Standard_True);
 }
   
-void FCRepAlgoAPI_BooleanOperation::setAutoFuzzy()
+void FCBRepAlgoAPI_BooleanOperation::setAutoFuzzy()
 {
     Bnd_Box bounds;
     for (TopTools_ListOfShape::Iterator it(myArguments); it.More(); it.Next())

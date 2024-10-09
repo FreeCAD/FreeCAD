@@ -23,31 +23,20 @@
  **************************************************************************/
 
 /**
-  * FCRepAlgoAPI provides a wrapper for various OCCT functions.
+  * FCBRepAlgoAPI provides a wrapper for various OCCT functions.
   */
 
-#ifndef FCREPALGOAPIFUSE_H
-#define FCREPALGOAPIFUSE_H
-#include <BRepAlgoAPI_Fuse.hxx>
-#include <Mod/Part/App/FCRepAlgoAPI_BooleanOperation.h>
+#include <FCBRepAlgoAPI_Fuse.h>
+#include <TopoDS_Shape.hxx>
 
-
-class FCRepAlgoAPI_Fuse : public FCRepAlgoAPI_BooleanOperation
+FCBRepAlgoAPI_Fuse::FCBRepAlgoAPI_Fuse()
 {
-public:
+  myOperation=BOPAlgo_FUSE;
+}
 
-    DEFINE_STANDARD_ALLOC
-
-  
-    //! Empty constructor
-    Standard_EXPORT FCRepAlgoAPI_Fuse();
-  
-    //! Constructor with two shapes
-    //! <S1>  -argument
-    //! <S2>  -tool
-    //! <anOperation> - the type of the operation
-    Standard_EXPORT FCRepAlgoAPI_Fuse(const TopoDS_Shape& S1,
-                                     const TopoDS_Shape& S2);
-
-};
-#endif
+FCBRepAlgoAPI_Fuse::FCBRepAlgoAPI_Fuse(const TopoDS_Shape& S1, 
+                                       const TopoDS_Shape& S2)
+: FCBRepAlgoAPI_BooleanOperation(S1, S2, BOPAlgo_FUSE)
+{
+  Build();
+}

@@ -36,12 +36,12 @@
 # include <BRep_Builder.hxx>
 # include <BRep_Tool.hxx>
 # include <BRepAdaptor_Surface.hxx>
-# include <Mod/Part/App/FCRepAlgoAPI_Common.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
 # include <BRepAdaptor_CompCurve.hxx>
 # include <BRepAdaptor_Curve.hxx>
-# include <Mod/Part/App/FCRepAlgoAPI_Cut.h>
-# include <Mod/Part/App/FCRepAlgoAPI_Fuse.h>
-# include <Mod/Part/App/FCRepAlgoAPI_Section.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Section.h>
 # include <BRepBndLib.hxx>
 # include <BRepBuilderAPI_Copy.hxx>
 # include <BRepBuilderAPI_FaceError.hxx>
@@ -1698,7 +1698,7 @@ TopoDS_Shape TopoShape::cut(TopoDS_Shape shape) const
         return this->_Shape;
     if (shape.IsNull())
         return this->_Shape;
-    FCRepAlgoAPI_Cut mkCut(this->_Shape, shape);
+    FCBRepAlgoAPI_Cut mkCut(this->_Shape, shape);
     return makeShell(mkCut.Shape());
 }
 
@@ -1706,7 +1706,7 @@ TopoDS_Shape TopoShape::cut(const std::vector<TopoDS_Shape>& shapes, Standard_Re
 {
     if (this->_Shape.IsNull())
         return this->_Shape;
-    FCRepAlgoAPI_Cut mkCut;
+    FCBRepAlgoAPI_Cut mkCut;
     mkCut.SetRunParallel(true);
     TopTools_ListOfShape shapeArguments,shapeTools;
     shapeArguments.Append(this->_Shape);
@@ -1738,7 +1738,7 @@ TopoDS_Shape TopoShape::common(TopoDS_Shape shape) const
         return this->_Shape;
     if (shape.IsNull())
         return shape;
-    FCRepAlgoAPI_Common mkCommon(this->_Shape, shape);
+    FCBRepAlgoAPI_Common mkCommon(this->_Shape, shape);
     return makeShell(mkCommon.Shape());
 }
 
@@ -1746,7 +1746,7 @@ TopoDS_Shape TopoShape::common(const std::vector<TopoDS_Shape>& shapes, Standard
 {
     if (this->_Shape.IsNull())
         return this->_Shape;
-    FCRepAlgoAPI_Common mkCommon;
+    FCBRepAlgoAPI_Common mkCommon;
     mkCommon.SetRunParallel(true);
     TopTools_ListOfShape shapeArguments,shapeTools;
     shapeArguments.Append(this->_Shape);
@@ -1778,7 +1778,7 @@ TopoDS_Shape TopoShape::fuse(TopoDS_Shape shape) const
         return shape;
     if (shape.IsNull())
         return this->_Shape;
-    FCRepAlgoAPI_Fuse mkFuse(this->_Shape, shape);
+    FCBRepAlgoAPI_Fuse mkFuse(this->_Shape, shape);
     return makeShell(mkFuse.Shape());
 }
 
@@ -1787,7 +1787,7 @@ TopoDS_Shape TopoShape::fuse(const std::vector<TopoDS_Shape>& shapes, Standard_R
     if (this->_Shape.IsNull())
         Standard_Failure::Raise("Base shape is null");
 
-    FCRepAlgoAPI_Fuse mkFuse;
+    FCBRepAlgoAPI_Fuse mkFuse;
     mkFuse.SetRunParallel(true);
     TopTools_ListOfShape shapeArguments,shapeTools;
     shapeArguments.Append(this->_Shape);
@@ -1828,7 +1828,7 @@ TopoDS_Shape TopoShape::section(TopoDS_Shape shape, Standard_Boolean approximate
         Standard_Failure::Raise("Base shape is null");
     if (shape.IsNull())
         Standard_Failure::Raise("Tool shape is null");
-    FCRepAlgoAPI_Section mkSection;
+    FCBRepAlgoAPI_Section mkSection;
     mkSection.Init1(this->_Shape);
     mkSection.Init2(shape);
     mkSection.Approximation(approximate);
@@ -1845,7 +1845,7 @@ TopoDS_Shape TopoShape::section(const std::vector<TopoDS_Shape>& shapes,
     if (this->_Shape.IsNull())
         Standard_Failure::Raise("Base shape is null");
 
-    FCRepAlgoAPI_Section mkSection;
+    FCBRepAlgoAPI_Section mkSection;
     mkSection.SetRunParallel(true);
     mkSection.Approximation(approximate);
     TopTools_ListOfShape shapeArguments,shapeTools;

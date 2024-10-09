@@ -27,7 +27,7 @@
 #include <App/PropertyLinks.h>
 #include "PartFeature.h"
 
-class FCRepAlgoAPI_BooleanOperation;
+class FCBRepAlgoAPI_BooleanOperation;
 
 namespace Part
 {

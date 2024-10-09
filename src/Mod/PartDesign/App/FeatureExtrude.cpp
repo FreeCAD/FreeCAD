@@ -24,7 +24,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Mod/Part/App/FCRepAlgoAPI_Fuse.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 # include <BRep_Builder.hxx>
 # include <BRepFeat_MakePrism.hxx>
 # include <BRepPrimAPI_MakePrism.hxx>
@@ -275,7 +275,7 @@ void FeatureExtrude::generatePrism(TopoDS_Shape& prism,
                     throw Base::RuntimeError("ProfileBased: Up to face: Could not extrude the sketch!");
                 auto onePrism = PrismMaker.Shape();
 
-                FCRepAlgoAPI_Fuse fuse(prism, onePrism);
+                FCBRepAlgoAPI_Fuse fuse(prism, onePrism);
                 prism = fuse.Shape();
             }
         }

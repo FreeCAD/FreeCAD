@@ -23,48 +23,43 @@
  **************************************************************************/
 
 /**
-  * FCRepAlgoAPI provides a wrapper for various OCCT functions.
+  * FCBRepAlgoAPI provides a wrapper for various OCCT functions.
   */
 
-#include <FCRepAlgoAPI_Section.h>
-#include <BRepBndLib.hxx>
-#include <Bnd_Box.hxx>
-#include <TopoDS_Shape.hxx>
-#include <Precision.hxx>
-#include <FuzzyHelper.h>
+#ifndef FCREPALGOAPISECTION_H
+#define FCREPALGOAPISECTION_H
+#include <BRepAlgoAPI_Section.hxx>
+#include <BRepBuilderAPI_Command.hxx>
+#include <Mod/Part/App/FCBRepAlgoAPI_BooleanOperation.h>
 
-FCRepAlgoAPI_Section::FCRepAlgoAPI_Section()
+
+class FCBRepAlgoAPI_Section : public BRepAlgoAPI_Section
 {
-    SetRunParallel(Standard_True);
-}
+public:
 
-FCRepAlgoAPI_Section::FCRepAlgoAPI_Section(const TopoDS_Shape& S1, const TopoDS_Shape& S2, const Standard_Boolean PerformNow)
-: BRepAlgoAPI_Section(S1,S2,false) 
-{
-    setAutoFuzzy();
-    SetRunParallel(Standard_True);
-    if (PerformNow) Build();
-}
+    DEFINE_STANDARD_ALLOC
 
-FCRepAlgoAPI_Section::FCRepAlgoAPI_Section
-(const TopoDS_Shape&    Sh,
-const gp_Pln&          Pl,
-const Standard_Boolean PerformNow)
-: 
-BRepAlgoAPI_Section(Sh,Pl,false) 
-{
-    setAutoFuzzy();
-    SetRunParallel(Standard_True);
-    if (PerformNow) Build();
-}
+  
+    //! Empty constructor
+    Standard_EXPORT FCBRepAlgoAPI_Section();
+  
+    //! Constructor with two shapes
+    //! <S1>  -argument
+    //! <S2>  -tool
+    //! <PerformNow> - the flag:
+    //! if <PerformNow>=True - the algorithm is performed immediately
+    //! Obsolete
+    Standard_EXPORT FCBRepAlgoAPI_Section(const TopoDS_Shape& S1, const TopoDS_Shape& S2, const Standard_Boolean PerformNow = Standard_True);
 
+    //! Constructor with two shapes
+    //! <S1>  - argument
+    //! <Pl>  - tool
+    //! <PerformNow> - the flag:
+    //! if <PerformNow>=True - the algorithm is performed immediately
+    //! Obsolete
+    Standard_EXPORT FCBRepAlgoAPI_Section(const TopoDS_Shape& S1, const gp_Pln& Pl, const Standard_Boolean PerformNow = Standard_True);
 
-void FCRepAlgoAPI_Section::setAutoFuzzy()
-{
-    Bnd_Box bounds;
-    for (TopTools_ListOfShape::Iterator it(myArguments); it.More(); it.Next())
-        BRepBndLib::Add(it.Value(), bounds);
-    for (TopTools_ListOfShape::Iterator it(myTools); it.More(); it.Next())
-        BRepBndLib::Add(it.Value(), bounds);
-    SetFuzzyValue(Part::FuzzyHelper::getBooleanFuzzy() * bounds.SquareExtent() * Precision::Confusion());
-}
+    // set fuzzyness based on size
+    void setAutoFuzzy();
+};
+#endif

@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Mod/Part/App/FCRepAlgoAPI_Section.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Section.h>
 # include <Standard_Version.hxx>
 #endif
 
@@ -57,7 +57,7 @@ BRepAlgoAPI_BooleanOperation* Section::makeOperation(const TopoDS_Shape& base, c
     // Let's call algorithm computing a section operation:
 
     bool approx = Approximation.getValue();
-    std::unique_ptr<FCRepAlgoAPI_Section> mkSection(new FCRepAlgoAPI_Section());
+    std::unique_ptr<FCBRepAlgoAPI_Section> mkSection(new FCBRepAlgoAPI_Section());
     mkSection->Init1(base);
     mkSection->Init2(tool);
     mkSection->Approximation(approx);

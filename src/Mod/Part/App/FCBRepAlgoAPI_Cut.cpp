@@ -23,20 +23,20 @@
  **************************************************************************/
 
 /**
-  * FCRepAlgoAPI provides a wrapper for various OCCT functions.
+  * FCBRepAlgoAPI provides a wrapper for various OCCT functions.
   */
 
-#include <FCRepAlgoAPI_Cut.h>
+#include <FCBRepAlgoAPI_Cut.h>
 #include <TopoDS_Shape.hxx>
 
-FCRepAlgoAPI_Cut::FCRepAlgoAPI_Cut()
+FCBRepAlgoAPI_Cut::FCBRepAlgoAPI_Cut()
 {
   myOperation=BOPAlgo_CUT;
 }
 
-FCRepAlgoAPI_Cut::FCRepAlgoAPI_Cut(const TopoDS_Shape& S1, 
+FCBRepAlgoAPI_Cut::FCBRepAlgoAPI_Cut(const TopoDS_Shape& S1, 
                                        const TopoDS_Shape& S2)
-: FCRepAlgoAPI_BooleanOperation(S1, S2, BOPAlgo_CUT)
+: FCBRepAlgoAPI_BooleanOperation(S1, S2, BOPAlgo_CUT)
 {
   Build();
 }

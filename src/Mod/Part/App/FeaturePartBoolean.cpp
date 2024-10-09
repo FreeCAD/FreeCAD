@@ -24,7 +24,7 @@
 #ifndef _PreComp_
 # include <memory>
 
-# include <Mod/Part/App/FCRepAlgoAPI_BooleanOperation.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_BooleanOperation.h>
 # include <BRepCheck_Analyzer.hxx>
 # include <Standard_Failure.hxx>
 #endif

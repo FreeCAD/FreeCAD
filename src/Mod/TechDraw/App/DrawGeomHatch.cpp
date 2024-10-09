@@ -28,7 +28,7 @@
 
 #include <Bnd_Box.hxx>
 #include <BRep_Builder.hxx>
-#include <Mod/Part/App/FCRepAlgoAPI_Common.h>
+#include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
@@ -345,7 +345,7 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
         grid = mkTransTranslate.Shape();
 
         //Common(Compound, Face)
-        FCRepAlgoAPI_Common mkCommon(face, grid);
+        FCBRepAlgoAPI_Common mkCommon(face, grid);
         if (!mkCommon.IsDone() ||
             mkCommon.Shape().IsNull()) {
             return result;

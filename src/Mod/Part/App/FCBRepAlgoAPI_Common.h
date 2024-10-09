@@ -23,33 +23,30 @@
  **************************************************************************/
 
 /**
-  * FCRepAlgoAPI provides a wrapper for various OCCT functions.
+  * FCBRepAlgoAPI provides a wrapper for various OCCT functions.
   */
 
-#ifndef FCREPALGOAPIBOOLEANOPERATION_H
-#define FCREPALGOAPIBOOLEANOPERATION_H
-#include <BRepAlgoAPI_BooleanOperation.hxx>
+#ifndef FCREPALGOAPICOMMON_H
+#define FCREPALGOAPICOMMON_H
+#include <BRepAlgoAPI_Common.hxx>
+#include <Mod/Part/App/FCBRepAlgoAPI_BooleanOperation.h>
 
 
-class FCRepAlgoAPI_BooleanOperation : public BRepAlgoAPI_BooleanOperation
+class FCBRepAlgoAPI_Common : public FCBRepAlgoAPI_BooleanOperation
 {
 public:
 
     DEFINE_STANDARD_ALLOC
-
+  
     //! Empty constructor
-    Standard_EXPORT FCRepAlgoAPI_BooleanOperation();
-
-    // set fuzzyness based on size
-    void setAutoFuzzy();
-
-protected: //! @name Constructors
-
-  //! Constructor to perform Boolean operation on only two arguments.
-  //! Obsolete
-  Standard_EXPORT FCRepAlgoAPI_BooleanOperation(const TopoDS_Shape& theS1,
-                                               const TopoDS_Shape& theS2,
-                                               const BOPAlgo_Operation theOperation);
+    Standard_EXPORT FCBRepAlgoAPI_Common();
+  
+    //! Constructor with two shapes
+    //! <S1>  -argument
+    //! <S2>  -tool
+    //! <anOperation> - the type of the operation
+    Standard_EXPORT FCBRepAlgoAPI_Common(const TopoDS_Shape& S1,
+                                     const TopoDS_Shape& S2);
 
 };
 #endif

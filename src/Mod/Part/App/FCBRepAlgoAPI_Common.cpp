@@ -23,43 +23,20 @@
  **************************************************************************/
 
 /**
-  * FCRepAlgoAPI provides a wrapper for various OCCT functions.
+  * FCBRepAlgoAPI provides a wrapper for various OCCT functions.
   */
 
-#ifndef FCREPALGOAPISECTION_H
-#define FCREPALGOAPISECTION_H
-#include <BRepAlgoAPI_Section.hxx>
-#include <BRepBuilderAPI_Command.hxx>
-#include <Mod/Part/App/FCRepAlgoAPI_BooleanOperation.h>
+#include <FCBRepAlgoAPI_Common.h>
+#include <TopoDS_Shape.hxx>
 
-
-class FCRepAlgoAPI_Section : public BRepAlgoAPI_Section
+FCBRepAlgoAPI_Common::FCBRepAlgoAPI_Common()
 {
-public:
+  myOperation=BOPAlgo_COMMON;
+}
 
-    DEFINE_STANDARD_ALLOC
-
-  
-    //! Empty constructor
-    Standard_EXPORT FCRepAlgoAPI_Section();
-  
-    //! Constructor with two shapes
-    //! <S1>  -argument
-    //! <S2>  -tool
-    //! <PerformNow> - the flag:
-    //! if <PerformNow>=True - the algorithm is performed immediately
-    //! Obsolete
-    Standard_EXPORT FCRepAlgoAPI_Section(const TopoDS_Shape& S1, const TopoDS_Shape& S2, const Standard_Boolean PerformNow = Standard_True);
-
-    //! Constructor with two shapes
-    //! <S1>  - argument
-    //! <Pl>  - tool
-    //! <PerformNow> - the flag:
-    //! if <PerformNow>=True - the algorithm is performed immediately
-    //! Obsolete
-    Standard_EXPORT FCRepAlgoAPI_Section(const TopoDS_Shape& S1, const gp_Pln& Pl, const Standard_Boolean PerformNow = Standard_True);
-
-    // set fuzzyness based on size
-    void setAutoFuzzy();
-};
-#endif
+FCBRepAlgoAPI_Common::FCBRepAlgoAPI_Common(const TopoDS_Shape& S1, 
+                                       const TopoDS_Shape& S2)
+: FCBRepAlgoAPI_BooleanOperation(S1, S2, BOPAlgo_COMMON)
+{
+  Build();
+}

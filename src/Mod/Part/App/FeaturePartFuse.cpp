@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Mod/Part/App/FCRepAlgoAPI_Fuse.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 # include <BRepCheck_Analyzer.hxx>
 # include <Standard_Failure.hxx>
 # include <TopoDS_Iterator.hxx>
@@ -51,7 +51,7 @@ Fuse::Fuse() = default;
 BRepAlgoAPI_BooleanOperation* Fuse::makeOperation(const TopoDS_Shape& base, const TopoDS_Shape& tool) const
 {
     // Let's call algorithm computing a fuse operation:
-    return new FCRepAlgoAPI_Fuse(base, tool);
+    return new FCBRepAlgoAPI_Fuse(base, tool);
 }
 
 const char *Fuse::opCode() const
@@ -114,7 +114,7 @@ App::DocumentObjectExecReturn *MultiFuse::execute()
     if (shapes.size() >= 2) {
         try {
             std::vector<ShapeHistory> history;
-            FCRepAlgoAPI_Fuse mkFuse;
+            FCBRepAlgoAPI_Fuse mkFuse;
             TopTools_ListOfShape shapeArguments, shapeTools;
             const TopoShape& shape = shapes.front();
             if (shape.isNull()) {
