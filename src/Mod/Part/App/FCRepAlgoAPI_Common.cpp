@@ -33,10 +33,6 @@ FCRepAlgoAPI_Common::FCRepAlgoAPI_Common()
   myOperation=BOPAlgo_COMMON;
 }
 
-FCRepAlgoAPI_Common::~FCRepAlgoAPI_Common()
-{
-}
-
 FCRepAlgoAPI_Common::FCRepAlgoAPI_Common(const TopoDS_Shape& S1, 
                                        const TopoDS_Shape& S2)
 : FCRepAlgoAPI_BooleanOperation(S1, S2, BOPAlgo_COMMON)

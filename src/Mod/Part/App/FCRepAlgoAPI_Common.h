@@ -34,11 +34,9 @@ class FCRepAlgoAPI_Common : public FCRepAlgoAPI_BooleanOperation
 public:
 
     DEFINE_STANDARD_ALLOC
-
   
     //! Empty constructor
     Standard_EXPORT FCRepAlgoAPI_Common();
-    Standard_EXPORT virtual ~FCRepAlgoAPI_Common();
   
     //! Constructor with two shapes
     //! <S1>  -argument

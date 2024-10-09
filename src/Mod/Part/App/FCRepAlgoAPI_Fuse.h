@@ -38,7 +38,6 @@ public:
   
     //! Empty constructor
     Standard_EXPORT FCRepAlgoAPI_Fuse();
-    Standard_EXPORT virtual ~FCRepAlgoAPI_Fuse();
   
     //! Constructor with two shapes
     //! <S1>  -argument

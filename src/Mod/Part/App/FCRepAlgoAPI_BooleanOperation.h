@@ -37,7 +37,6 @@ public:
     //! Empty constructor
     Standard_EXPORT FCRepAlgoAPI_BooleanOperation();
 
-
     static double getDefaultFuzzyValue(const double size); 
 
 protected: //! @name Constructors

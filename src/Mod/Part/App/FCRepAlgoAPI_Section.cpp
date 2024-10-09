@@ -35,10 +35,6 @@ FCRepAlgoAPI_Section::FCRepAlgoAPI_Section()
     SetFuzzyValue(FCRepAlgoAPI_BooleanOperation::getDefaultFuzzyValue(0.0));
 }
 
-FCRepAlgoAPI_Section::~FCRepAlgoAPI_Section()
-{
-}
-
 FCRepAlgoAPI_Section::FCRepAlgoAPI_Section(const TopoDS_Shape& S1, const TopoDS_Shape& S2, const Standard_Boolean PerformNow)
 : BRepAlgoAPI_Section(S1,S2,false) 
 {

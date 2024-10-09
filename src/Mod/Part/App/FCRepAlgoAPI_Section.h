@@ -39,7 +39,6 @@ public:
   
     //! Empty constructor
     Standard_EXPORT FCRepAlgoAPI_Section();
-    Standard_EXPORT virtual ~FCRepAlgoAPI_Section();
   
     //! Constructor with two shapes
     //! <S1>  -argument

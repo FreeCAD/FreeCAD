@@ -34,11 +34,9 @@ class FCRepAlgoAPI_Cut : public FCRepAlgoAPI_BooleanOperation
 public:
 
     DEFINE_STANDARD_ALLOC
-
   
     //! Empty constructor
     Standard_EXPORT FCRepAlgoAPI_Cut();
-    Standard_EXPORT virtual ~FCRepAlgoAPI_Cut();
   
     //! Constructor with two shapes
     //! <S1>  -argument
