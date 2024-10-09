@@ -19,42 +19,25 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
+
+#ifndef PART_FUZZYHELPER_H
+#define PART_FUZZYHELPER_H
+
+#include <Mod/Part/PartGlobal.h>
+
+namespace Part
+{
+
 /**
-  * FCRepAlgoAPI provides a wrapper for various OCCT functions.
-  */
-
-#include <FCRepAlgoAPI_Section.h>
-#include <BRepBndLib.hxx>
-#include <Bnd_Box.hxx>
-#include <TopoDS_Shape.hxx>
-#include <FuzzyHelper.h>
-
-FCRepAlgoAPI_Section::FCRepAlgoAPI_Section()
-:
-  BRepAlgoAPI_Section()
+ * @brief The FuzzyHelper class provides a static helper function to determine fuzzy value for a boolean operation
+ */
+class PartExport FuzzyHelper
 {
-    SetFuzzyValue(Part::FuzzyHelper::getDefaultFuzzyValue(0.0));
+public:
+    static double getDefaultFuzzyValue(const double size);
+};
+
+
 }
 
-FCRepAlgoAPI_Section::FCRepAlgoAPI_Section(const TopoDS_Shape& S1, const TopoDS_Shape& S2, const Standard_Boolean PerformNow)
-: BRepAlgoAPI_Section(S1,S2,false) 
-{
-    Bnd_Box bounds;
-    BRepBndLib::Add(S1, bounds);
-    BRepBndLib::Add(S2, bounds);
-    SetFuzzyValue(Part::FuzzyHelper::getDefaultFuzzyValue(bounds.SquareExtent()));
-    if (PerformNow) Build();
-}
-
-FCRepAlgoAPI_Section::FCRepAlgoAPI_Section
-(const TopoDS_Shape&    Sh,
-const gp_Pln&          Pl,
-const Standard_Boolean PerformNow)
-: 
-BRepAlgoAPI_Section(Sh,Pl,false) 
-{
-    Bnd_Box bounds;
-    BRepBndLib::Add(Sh, bounds);
-    SetFuzzyValue(Part::FuzzyHelper::getDefaultFuzzyValue(bounds.SquareExtent()));
-    if (PerformNow) Build();
-}
+#endif // PART_FUZZYHELPER_H

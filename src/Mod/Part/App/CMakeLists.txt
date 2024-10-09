@@ -530,6 +530,8 @@ SET(Part_SRCS
     CrossSection.h
     ExtrusionHelper.cpp
     ExtrusionHelper.h
+    FuzzyHelper.cpp
+    FuzzyHelper.h
     GeometryExtension.cpp
     GeometryExtension.h
     GeometryDefaultExtension.cpp

@@ -19,42 +19,19 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-/**
-  * FCRepAlgoAPI provides a wrapper for various OCCT functions.
-  */
 
-#include <FCRepAlgoAPI_Section.h>
-#include <BRepBndLib.hxx>
-#include <Bnd_Box.hxx>
-#include <TopoDS_Shape.hxx>
+#include "PreCompiled.h"
+#include <App/Application.h>
+#include <Precision.hxx>
 #include <FuzzyHelper.h>
 
-FCRepAlgoAPI_Section::FCRepAlgoAPI_Section()
-:
-  BRepAlgoAPI_Section()
-{
-    SetFuzzyValue(Part::FuzzyHelper::getDefaultFuzzyValue(0.0));
+using namespace Part;
+
+double FuzzyHelper::getDefaultFuzzyValue(const double size) {
+    const double DefaultFuzzyBooster=1.0;
+
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
+    return hGrp->GetFloat("BooleanFuzzy",DefaultFuzzyBooster) * size * Precision::Confusion();
 }
 
-FCRepAlgoAPI_Section::FCRepAlgoAPI_Section(const TopoDS_Shape& S1, const TopoDS_Shape& S2, const Standard_Boolean PerformNow)
-: BRepAlgoAPI_Section(S1,S2,false) 
-{
-    Bnd_Box bounds;
-    BRepBndLib::Add(S1, bounds);
-    BRepBndLib::Add(S2, bounds);
-    SetFuzzyValue(Part::FuzzyHelper::getDefaultFuzzyValue(bounds.SquareExtent()));
-    if (PerformNow) Build();
-}
-
-FCRepAlgoAPI_Section::FCRepAlgoAPI_Section
-(const TopoDS_Shape&    Sh,
-const gp_Pln&          Pl,
-const Standard_Boolean PerformNow)
-: 
-BRepAlgoAPI_Section(Sh,Pl,false) 
-{
-    Bnd_Box bounds;
-    BRepBndLib::Add(Sh, bounds);
-    SetFuzzyValue(Part::FuzzyHelper::getDefaultFuzzyValue(bounds.SquareExtent()));
-    if (PerformNow) Build();
-}

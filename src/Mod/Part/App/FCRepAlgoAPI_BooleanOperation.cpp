@@ -23,18 +23,17 @@
   * FCRepAlgoAPI provides a wrapper for various OCCT functions.
   */
 
-#include <FCRepAlgoAPI_Section.h>
+#include <FCRepAlgoAPI_BooleanOperation.h>
 #include <BRepBndLib.hxx>
 #include <Bnd_Box.hxx>
 #include <TopoDS_Shape.hxx>
-#include <Precision.hxx>
-#include <App/Application.h>
+#include <FuzzyHelper.h>
 
 FCRepAlgoAPI_BooleanOperation::FCRepAlgoAPI_BooleanOperation()
 :
   BRepAlgoAPI_BooleanOperation()
 {
-    SetFuzzyValue(FCRepAlgoAPI_BooleanOperation::getDefaultFuzzyValue(0.0));
+    SetFuzzyValue(Part::FuzzyHelper::getDefaultFuzzyValue(0.0));
 }
 
 
@@ -46,13 +45,6 @@ FCRepAlgoAPI_BooleanOperation::FCRepAlgoAPI_BooleanOperation(const TopoDS_Shape&
     Bnd_Box bounds;
     BRepBndLib::Add(theS1, bounds);
     BRepBndLib::Add(theS2, bounds);
-    SetFuzzyValue(FCRepAlgoAPI_BooleanOperation::getDefaultFuzzyValue(bounds.SquareExtent()));
+    SetFuzzyValue(Part::FuzzyHelper::getDefaultFuzzyValue(bounds.SquareExtent()));
 }
   
-double FCRepAlgoAPI_BooleanOperation::getDefaultFuzzyValue(const double size) {
-    const double DefaultFuzzyBooster=1.0;
-
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
-    return hGrp->GetFloat("BooleanFuzzy",DefaultFuzzyBooster) * size * Precision::Confusion();
-}
