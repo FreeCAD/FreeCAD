@@ -1560,9 +1560,9 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
     def reverseRotToggled(self, val):
         if val:
-            self.form.jointType.setCurrentIndex(8)
+            self.form.jointType.setCurrentIndex(JointTypes.index("Gears"))
         else:
-            self.form.jointType.setCurrentIndex(9)
+            self.form.jointType.setCurrentIndex(JointTypes.index("Belt"))
 
     def adaptUi(self):
         jType = self.jType
