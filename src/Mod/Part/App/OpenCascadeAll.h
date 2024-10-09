@@ -115,12 +115,12 @@
 
 #include <BRepAlgo.hxx>
 #include <BRepAlgo_NormalProjection.hxx>
-#include <FCRepAlgoAPI_BooleanOperation.hxx>
-#include <FCRepAlgoAPI_Common.hxx>
-#include <FCRepAlgoAPI_Cut.hxx>
+#include <BRepAlgoAPI_BooleanOperation.hxx>
+#include <BRepAlgoAPI_Common.hxx>
+#include <BRepAlgoAPI_Cut.hxx>
 # include <BRepAlgoAPI_Defeaturing.hxx>
-#include <FCRepAlgoAPI_Fuse.hxx>
-#include <FCRepAlgoAPI_Section.hxx>
+#include <BRepAlgoAPI_Fuse.hxx>
+#include <BRepAlgoAPI_Section.hxx>
 
 #include <BRepBndLib.hxx>
 
