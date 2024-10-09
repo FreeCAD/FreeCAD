@@ -27,8 +27,6 @@
 #include <TopoDS_Shape.hxx>
 
 FCRepAlgoAPI_Common::FCRepAlgoAPI_Common()
-:
-  FCRepAlgoAPI_BooleanOperation()
 {
   myOperation=BOPAlgo_COMMON;
 }

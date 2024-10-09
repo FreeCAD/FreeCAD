@@ -27,8 +27,6 @@
 #include <TopoDS_Shape.hxx>
 
 FCRepAlgoAPI_Fuse::FCRepAlgoAPI_Fuse()
-:
-  FCRepAlgoAPI_BooleanOperation()
 {
   myOperation=BOPAlgo_FUSE;
 }

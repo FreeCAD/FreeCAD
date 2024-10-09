@@ -27,8 +27,6 @@
 #include <TopoDS_Shape.hxx>
 
 FCRepAlgoAPI_Cut::FCRepAlgoAPI_Cut()
-:
-  FCRepAlgoAPI_BooleanOperation()
 {
   myOperation=BOPAlgo_CUT;
 }

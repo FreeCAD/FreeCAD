@@ -30,8 +30,6 @@
 #include <FuzzyHelper.h>
 
 FCRepAlgoAPI_BooleanOperation::FCRepAlgoAPI_BooleanOperation()
-:
-  BRepAlgoAPI_BooleanOperation()
 {
     SetFuzzyValue(Part::FuzzyHelper::getDefaultFuzzyValue(0.0));
 }
