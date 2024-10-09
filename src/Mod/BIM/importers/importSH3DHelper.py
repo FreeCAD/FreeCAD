@@ -66,15 +66,12 @@ PREDEFINED_RGB = {"black": (0, 0, 0),
                   "cyan": (0, 1.0, 1.0),
                   "white": (1.0, 1.0, 1.0)}
 
-DEBUG = True
+DEBUG = False
 DEBUG_COLOR = (255, 0, 0)
 
 # SweetHome3D is in cm while FreeCAD is in mm
 FACTOR = 10
-TOLERANCE = 0.0001 # smaller than this, two points are considered equal
 DEFAULT_WALL_WIDTH = 100
-DEFAULT_FLOOR_COLOR = 'FF96A9BA'
-DEFAULT_CEILING_COLOR = 'FF000000'
 
 
 class SH3DImporter:
@@ -112,6 +109,7 @@ class SH3DImporter:
 
         if self.preferences["IMPORT_FURNITURES"]:
             self.handlers['pieceOfFurniture'] = FurnitureHandler(self)
+            self.handlers['furnitureGroup'] = None
 
         if self.preferences["IMPORT_LIGHTS"] and self.preferences["RENDER_IS_AVAILABLE"]:
             self.handlers['light'] = LightHandler(self)
@@ -184,6 +182,10 @@ class SH3DImporter:
             if self.preferences["IMPORT_FURNITURES"]:
                 self._import_elements(home, 'pieceOfFurniture')
                 self._refresh()
+                # We also import all the <furnitureGroup>
+                for furniture_group in home.findall('furnitureGroup'):
+                    self._import_elements(furniture_group, 'pieceOfFurniture', False)
+                    self.progress_bar.next()
 
             if self.preferences["IMPORT_LIGHTS"] and self.preferences["RENDER_IS_AVAILABLE"]:
                 self._import_elements(home, 'light')
@@ -224,10 +226,11 @@ class SH3DImporter:
             'IMPORT_LIGHTS': get_param_arch("sh3dImportLights"),
             'IMPORT_CAMERAS': get_param_arch("sh3dImportCameras"),
             'MERGE': get_param_arch("sh3dMerge"),
-            'CREATE_ARCH_WALLS': get_param_arch("sh3dCreateArchWalls"),
+            'CREATE_ARCH_EQUIPMENT': get_param_arch("sh3dCreateArchEquipment"),
             'CREATE_RENDER_PROJECT': get_param_arch("sh3dCreateRenderProject"),
-            'DEFAULT_FLOOR_COLOR': get_param_arch("sh3dDefaultFloorColor"),
-            "RENDER_IS_AVAILABLE": RENDER_IS_AVAILABLE
+            'DEFAULT_FLOOR_COLOR': color_fc2sh(get_param_arch("sh3dDefaultFloorColor")),
+            'DEFAULT_CEILING_COLOR': color_fc2sh(get_param_arch("sh3dDefaultCeilingColor")),
+            "RENDER_IS_AVAILABLE": RENDER_IS_AVAILABLE,
         }
         return preferences
 
@@ -335,13 +338,10 @@ class SH3DImporter:
         import_cameras = self.preferences["IMPORT_CAMERAS"] and self.preferences["RENDER_IS_AVAILABLE"]
 
         doc = App.ActiveDocument
-        if import_furnitures:
-            if not doc.getObject("Baseboards"):
-              _log(f"Creating Baseboards group ...")
-              doc.addObject("App::DocumentObjectGroup", "Baseboards")
-            if not doc.getObject("Furnitures"):
-              _log(f"Creating Furnitures group ...")
-              doc.addObject("App::DocumentObjectGroup", "Furnitures")
+        # if import_furnitures:
+        #     if not doc.getObject("Baseboards"):
+        #       _log(f"Creating Baseboards group ...")
+        #       doc.addObject("App::DocumentObjectGroup", "Baseboards")
         if import_lights and not doc.getObject("Lights"):
             _log(f"Creating Lights group ...")
             doc.addObject("App::DocumentObjectGroup", "Lights")
@@ -404,29 +404,36 @@ class SH3DImporter:
         self.set_property(floor, "App::PropertyString", "shType", "The element type", 'level')
         self.set_property(floor, "App::PropertyString", "id", "The element's id", 'Level')
         self.set_property(floor, "App::PropertyFloat", "floorThickness", "The floor's slab thickness", dim_fc2sh(floor.Height))
+        if self.preferences["IMPORT_FURNITURES"]:
+            group = floor.newObject("App::DocumentObjectGroup", "Furnitures")
+            self.set_property(floor, "App::PropertyString", "FurnitureGroupName", "The DocumentObjectGroup name for all furnitures in this floor", group.Name)
+            group = floor.newObject("App::DocumentObjectGroup", "Baseboards")
+            self.set_property(floor, "App::PropertyString", "BaseboardGroupName", "The DocumentObjectGroup name for all baseboards on this floor", group.Name)
 
         return floor
 
-    def _import_elements(self, home, name):
+    def _import_elements(self, home, name, update_progress=True):
         _msg(f"Importing all <{name}> elements ...")
         def _process(tuple):
             (i, elm) = tuple
             _log(f"Importing <{name}>#{i} ({self.current_object_count + 1}/{self.total_object_count}) ...")
-
             self.handlers[name].process(i, elm)
-            self.progress_bar.next()
-            self.current_object_count = self.current_object_count + 1
+            if update_progress:
+                self.progress_bar.next()
+                self.current_object_count = self.current_object_count + 1
         list(map(_process, enumerate(home.findall(name))))
 
 
 #         # elif tag == "doorOrWindow":
 #         #     name = attributes["name"]
+                #---------------------------------------------------------------
 #         #     data = self.zip_file.read(attributes["model"])
 #         #     th,tf = tempfile.mkstemp(suffix=".obj")
 #         #     f = pyopen(tf,"wb")
 #         #     f.write(data)
 #         #     f.close()
 #         #     os.close(th)
+                #---------------------------------------------------------------
 #         #     m = Mesh.read(tf)
 #         #     fx = (float(attributes["width"])/100)/m.BoundBox.XLength
 #         #     fy = (float(attributes["height"])/100)/m.BoundBox.YLength
@@ -550,6 +557,12 @@ class LevelHandler(BaseHandler):
 
         floor.ViewObject.Visibility = elm.get('visible', 'true') == 'true'
 
+        if self.importer.preferences["IMPORT_FURNITURES"]:
+            group = floor.newObject("App::DocumentObjectGroup", "Furnitures")
+            self.setp(floor, "App::PropertyString", "FurnitureGroupName", "The DocumentObjectGroup name for all furnitures on this floor", group.Name)
+            group = floor.newObject("App::DocumentObjectGroup", "Baseboards")
+            self.setp(floor, "App::PropertyString", "BaseboardGroupName", "The DocumentObjectGroup name for all baseboards on this floor", group.Name)
+
         self.importer.add_floor(floor)
         
 
@@ -600,11 +613,17 @@ class RoomHandler(BaseHandler):
         slab.IfcType = "Slab"
         slab.Normal = App.Vector(0,0,-1)
 
-        set_color_and_transparency(slab, elm.get('floorColor', DEFAULT_FLOOR_COLOR))
+        color = elm.get('floorColor', self.importer.preferences["DEFAULT_FLOOR_COLOR"])
+        set_color_and_transparency(slab, color)
         self._set_properties(slab, elm)
         floor.addObject(slab)
 
     def _set_properties(self, obj, elm):
+        floor_color = elm.get('floorColor',self.importer.preferences["DEFAULT_FLOOR_COLOR"])
+        ceiling_color = elm.get('ceilingColor', self.importer.preferences["DEFAULT_CEILING_COLOR"])
+
+        _log(f"floor color = {floor_color}")
+        _log(f"ceiling color = {ceiling_color}")
         self.setp(obj, "App::PropertyString", "shType", "The element type", 'room')
         self.setp(obj, "App::PropertyString", "id", "The slab's id", elm.get('id', str(uuid.uuid4())))
         self.setp(obj, "App::PropertyFloat", "nameAngle", "The room's name angle", elm)
@@ -615,10 +634,10 @@ class RoomHandler(BaseHandler):
         self.setp(obj, "App::PropertyFloat", "areaXOffset", "The room's area annotation x offset", elm)
         self.setp(obj, "App::PropertyFloat", "areaYOffset", "The room's area annotation y offset", elm)
         self.setp(obj, "App::PropertyBool", "floorVisible", "Whether the floor of the room is displayed", elm)
-        self.setp(obj, "App::PropertyString", "floorColor", "The room's floor color", str(elm.get('floorColor', DEFAULT_FLOOR_COLOR)))
+        self.setp(obj, "App::PropertyString", "floorColor", "The room's floor color", floor_color)
         self.setp(obj, "App::PropertyFloat", "floorShininess", "The room's floor shininess", elm)
         self.setp(obj, "App::PropertyBool", "ceilingVisible", "Whether the ceiling of the room is displayed", elm)
-        self.setp(obj, "App::PropertyString", "ceilingColor", "The room's ceiling color", str(elm.get('ceilingColor', DEFAULT_CEILING_COLOR)))
+        self.setp(obj, "App::PropertyString", "ceilingColor", "The room's ceiling color", ceiling_color)
         self.setp(obj, "App::PropertyFloat", "ceilingShininess", "The room's ceiling shininess", elm)
         self.setp(obj, "App::PropertyBool", "ceilingFlat", "", elm)
 
@@ -664,9 +683,9 @@ class WallHandler(BaseHandler):
         self.importer.add_wall(wall)
 
         if self.importer.preferences["IMPORT_FURNITURES"]:
-            App.ActiveDocument.recompute()
+            App.ActiveDocument.recompute([wall])
             for baseboard in elm.findall('baseboard'):
-                self._import_baseboard(wall, baseboard)
+                self._import_baseboard(floor, wall, baseboard)
             
 
         # TODO: adding walls and subtracting windows...
@@ -891,7 +910,7 @@ class WallHandler(BaseHandler):
 
     def _set_wall_colors(self, wall, invert_angle, elm):
         # The default color of the wall
-        topColor = elm.get('topColor', DEFAULT_FLOOR_COLOR)
+        topColor = elm.get('topColor', self.importer.preferences["DEFAULT_FLOOR_COLOR"])
         set_color_and_transparency(wall, topColor)
         leftSideColor = hex2rgb(elm.get('leftSideColor', topColor))
         rightSideColor = hex2rgb(elm.get('rightSideColor', topColor))
@@ -915,7 +934,7 @@ class WallHandler(BaseHandler):
         if hasattr(wall.ViewObject, "DiffuseColor"):
             wall.ViewObject.DiffuseColor = colors
 
-    def _import_baseboard(self, wall, elm):
+    def _import_baseboard(self, floor, wall, elm):
         """Creates and returns a Part::Extrusion from the imported_baseboard object
 
         Args:
@@ -930,7 +949,7 @@ class WallHandler(BaseHandler):
         vertexes = wall.Shape.Vertexes
 
         # The left side is defined as the face on the left hand side when going
-        # from (xStart,yStart) to (xEnd,yEnd). I assume the points are always
+        # from (xStart,yStart) to (xEnd,yEnd). Assume the points are always
         # created in the same order. We then have on the lefthand side the points
         # 1 and 2, while on the righthand side we have the points 4 and 6
         side = elm.get('attribute')
@@ -964,6 +983,7 @@ class WallHandler(BaseHandler):
             # and then I extrude
             baseboard = App.ActiveDocument.addObject('Part::Extrusion', f"{wall.Label} {side}")
             baseboard.Base = base
+            
 
         baseboard.DirMode = "Custom"
         baseboard.Dir = App.Vector(0, 0, 1)
@@ -982,7 +1002,7 @@ class WallHandler(BaseHandler):
         self.setp(baseboard, "App::PropertyString", "id", "The element's id", baseboard_id)
         self.setp(baseboard, "App::PropertyLink", "parent", "The element parent", wall)
 
-        App.ActiveDocument.Baseboards.addObject(baseboard)
+        floor.getObject(floor.BaseboardGroupName).addObject(baseboard)
 
 
 class BaseFurnitureHandler(BaseHandler):
@@ -1060,7 +1080,7 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
             feature = self.get_fc_object(elm.get('id'), 'doorOrWindow')
 
         if not feature:
-            feature = self.create_door(floor, elm)
+            feature = self._create_door(floor, elm)
 
         assert feature != None, f"Missing feature for <doorOrWindow> {elm.get('id')} ..."
 
@@ -1082,7 +1102,7 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         self.setp(obj, "App::PropertyString", "cutOutShape", "", elm)
         self.setp(obj, "App::PropertyBool", "boundToWall", "", elm)
 
-    def create_door(self, floor, elm):
+    def _create_door(self, floor, elm):
         # The window in SweetHome3D s is defined with a width, depth, height.
         # Furthermore the (x.y.z) is the center point of the lower face of the
         # window. In FC the placement is defined on the face of the whole that
@@ -1214,11 +1234,11 @@ class FurnitureHandler(BaseFurnitureHandler):
         self.set_furniture_common_properties(feature, elm)
         self.set_piece_of_furniture_common_properties(feature, elm)
         self.set_piece_of_furniture_horizontal_rotation_properties(feature, elm)
+        floor.getObject(floor.FurnitureGroupName).addObject(feature)
+            
         # We add the object to the list of known object that can then 
         # be referenced elsewhere in the SH3D model (i.e. lights).
-        floor.addObject(feature)
         self.importer.fc_objects[feature.id] = feature
-
 
     def _create_equipment(self, elm):
         
@@ -1253,12 +1273,16 @@ class FurnitureHandler(BaseFurnitureHandler):
         transform.move(coord_sh2fc(App.Vector(x, y, level_elevation + z + (dim_fc2sh(height) / 2))))
         mesh.transform(transform)
 
-        shape = Part.Shape()
-        shape.makeShapeFromMesh(mesh.Topology,1.00000)
-        # shape = shape.removeSplitter()
+        if self.importer.preferences["CREATE_ARCH_EQUIPMENT"]:
+            shape = Part.Shape()
+            shape.makeShapeFromMesh(mesh.Topology, 0.100000)
+            equipment = Arch.makeEquipment(name=name)
+            equipment.Shape = shape
+            equipment.purgeTouched()
+        else:
+            equipment = App.ActiveDocument.addObject("Mesh::Feature", name)
+            equipment.Mesh = mesh
 
-        equipment = Arch.makeEquipment(name=name)
-        equipment.Shape = shape
         return equipment
 
     def _get_mesh(self, elm):
@@ -1452,6 +1476,11 @@ def set_color_and_transparency(obj, color):
     if hasattr(obj.ViewObject, "Transparency"):
         obj.ViewObject.Transparency = _hex2transparency(color)
 
+
+def color_fc2sh(hexcode):
+    # 0xRRGGBBAA => AARRGGBB
+    hex_str = hex(int(hexcode))[2:]
+    return ''.join([hex_str[6:], hex_str[0:6]])
 
 def hex2rgb(hexcode):
     # We might have transparency as the first 2 digit
