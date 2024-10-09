@@ -113,6 +113,8 @@ private:
     void updateRefButton(int idx);
     void updateAttachmentOffsetUI();
 
+    void processSelection(App::DocumentObject*& obj, std::string& sub);
+
     /**
      * @brief updateListOfModes Fills the mode list with modes that apply to
      * current set of references. Maintains selection when possible.

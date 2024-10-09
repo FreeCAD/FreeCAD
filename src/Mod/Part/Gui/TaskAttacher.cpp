@@ -43,6 +43,7 @@
 #include <Gui/DocumentObserver.h>
 #include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
+#include <Base/Tools.h>
 #include <Mod/Part/App/AttachExtension.h>
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/Part/Gui/AttacherTexts.h>
@@ -112,7 +113,7 @@ void TaskAttacher::makeRefStrings(std::vector<QString>& refstrings, std::vector<
 TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject* ViewProvider, QWidget* parent,
     QString picture, QString text, TaskAttacher::VisibilityFunction visFunc)
     : TaskBox(Gui::BitmapFactory().pixmap(picture.toLatin1()), text, true, parent)
-    , SelectionObserver(ViewProvider)
+    , SelectionObserver(ViewProvider, true, Gui::ResolveMode::NoResolve)
     , ViewProvider(ViewProvider)
     , ui(new Ui_TaskAttacher)
     , visibilityFunc(visFunc)
@@ -365,6 +366,112 @@ QLineEdit* TaskAttacher::getLine(unsigned idx)
     }
 }
 
+void TaskAttacher::processSelection(App::DocumentObject*& rootObj, std::string& sub)
+{
+    // The reference that we store must take into account the hierarchy of geoFeatures. For example:
+    // - Part
+    // - - Cube
+    // - Sketch
+    // if sketch is attached to Cube.Face1 then it must store Part:Cube.Face3 as Sketch is outside of Part.
+    // - Part
+    // - - Cube
+    // - - Sketch
+    // In this example if must store Cube:Face3 because Sketch is inside Part, sibling of Cube.
+    // So placement of Part is already taken into account.
+    // - Part1
+    // - - Part2
+    // - - - Cube
+    // - - Sketch
+    // In this example it must store Part2:Cube.Face3 since Part1 is already taken into account.
+    // - Part1
+    // - - Part2
+    // - - - Cube
+    // - - Part3
+    // - - - Sketch
+    // In this example it's not possible because Sketch has Part3 placement. So it should be rejected
+    // So we need to take the selection object and subname, and process them to get the correct obj/sub based
+    // on attached and attaching objects positions.
+
+    std::vector<std::string> names = Base::Tools::splitSubName(sub);
+    if (!rootObj || names.size() < 2) {
+        return;
+    }
+    names.insert(names.begin(), rootObj->getNameInDocument());
+
+    App::Document* doc = rootObj->getDocument();
+    App::DocumentObject* attachingObj = ViewProvider->getObject(); // Attaching object
+    App::DocumentObject* subObj = rootObj->getSubObject(sub.c_str()); // Object being attached.
+    if (!subObj || subObj == rootObj) {
+        // Case of root object. We don't need to modify it.
+        return;
+    }
+    if (subObj == attachingObj) {
+        //prevent self-referencing
+        rootObj = nullptr;
+        return;
+    }
+
+    // Check if attachingObj is a root object. if so we keep the full path.
+    auto* group = App::GeoFeatureGroupExtension::getGroupOfObject(attachingObj);
+    if (!group) {
+        if (attachingObj->getDocument() != rootObj->getDocument()) {
+            // If it's not in same document then it's not a good selection
+            rootObj = nullptr;
+        }
+        // if it's same document we keep the rootObj and sub unchanged.
+        return;
+    }
+
+    for (size_t i = 0; i < names.size(); ++i) {
+        App::DocumentObject* obj = doc->getObject(names[i].c_str());
+        if (!obj) {
+            Base::Console().TranslatedUserError("TaskAttacher",
+                "Unsuitable selection: '%s' cannot be attached to '%s' from within it's group '%s'.\n",
+                attachingObj->getFullLabel(), subObj->getFullLabel(), group->getFullLabel());
+            rootObj = nullptr;
+            return;
+        }
+
+        // In case the attaching object is in a link to a part.
+        // For instance : 
+        // - Part1
+        // - - LinkToPart2
+        // - - - Cube
+        // - - - Sketch
+        obj = obj->getLinkedObject();
+
+        if (obj == group) {
+            ++i;
+            obj = doc->getObject(names[i].c_str());
+            if (!obj) {
+                return;
+            }
+
+            rootObj = obj;
+
+            // Rebuild 'sub' starting from the next element after the current 'name'
+            sub = "";
+            for (size_t j = i + 1; j < names.size(); ++j) {
+                sub += names[j];
+                if (j != names.size() - 1) {
+                    sub += ".";  // Add a period between elements
+                }
+            }
+            return;
+        }
+    }
+
+    // if we reach this point it means that attaching object's group is outside of
+    // the scope of the attached object. For instance: 
+    // - Part1
+    // - - Part2
+    // - - - Cube
+    // - - Part3
+    // - - - Sketch
+    // In this case the selection is not acceptable.
+    rootObj = nullptr;
+}
+
 void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (!ViewProvider) {
@@ -377,14 +484,17 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
         }
 
         // Note: The validity checking has already been done in ReferenceSelection.cpp
-        Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
+        App::DocumentObject* obj = ViewProvider->getObject();
+        Part::AttachExtension* pcAttach = obj->getExtensionByType<Part::AttachExtension>();
         std::vector<App::DocumentObject*> refs = pcAttach->AttachmentSupport.getValues();
         std::vector<std::string> refnames = pcAttach->AttachmentSupport.getSubValues();
-        App::DocumentObject* selObj = ViewProvider->getObject()->getDocument()->getObject(msg.pObjectName);
-        if (!selObj || selObj == ViewProvider->getObject())//prevent self-referencing
-            return;
 
+        App::DocumentObject* selObj = obj->getDocument()->getObject(msg.pObjectName);
         std::string subname = msg.pSubName;
+        processSelection(selObj, subname);
+        if (!selObj) {
+            return;
+        }
 
         // Remove subname for planes and datum features
         if (selObj->isDerivedFrom<App::DatumElement>() || selObj->isDerivedFrom<Part::Datum>()) {
