@@ -425,7 +425,7 @@ def get_svg(obj,
     # all the SVG strings from the contents of the group
     if hasattr(obj, "isDerivedFrom"):
         if (obj.isDerivedFrom("App::DocumentObjectGroup")
-                or utils.get_type(obj) in ["Layer","BuildingPart"]):
+                or utils.get_type(obj) in ["Layer","BuildingPart","IfcGroup"]):
             svg = ""
             for child in obj.Group:
                 svg += get_svg(child,
@@ -506,7 +506,8 @@ def get_svg(obj,
         svg = _svg_shape(svg, obj, plane,
                          fillstyle, pathdata, stroke, linewidth, lstyle)
 
-    elif utils.get_type(obj) in ["Dimension", "LinearDimension"]:
+    elif (utils.get_type(obj) in ["Dimension", "LinearDimension"]
+            or (utils.get_type(obj) == "IfcAnnotation" and obj.ObjectType == "DIMENSION")):
         svg = _svg_dimension(obj, plane, scale, linewidth, fontsize,
                              stroke, tstroke, pointratio, techdraw, rotation)
 
@@ -650,7 +651,8 @@ def get_svg(obj,
                                     rotation, position, text,
                                     linespacing, justification)
 
-    elif utils.get_type(obj) in ["Annotation", "DraftText", "Text"]:
+    elif (utils.get_type(obj) in ["Annotation", "DraftText", "Text"]
+        or (utils.get_type(obj) == "IfcAnnotation" and obj.ObjectType == "TEXT")):
         # returns an svg representation of a document annotation
         if not App.GuiUp:
             _wrn("Export of texts to SVG is only available in GUI mode")
