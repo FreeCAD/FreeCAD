@@ -458,6 +458,8 @@ def export(objectslist, filename, argstring):
     with open(filename, "w") as fp:
         fp.write(final)
 
+    return final
+
 
 def linenumber():
     if not OUTPUT_LINE_NUMBERS:
