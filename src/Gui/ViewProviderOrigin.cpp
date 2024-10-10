@@ -161,7 +161,7 @@ void ViewProviderOrigin::resetTemporaryVisibility() {
 double ViewProviderOrigin::defaultSize()
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    return 0.25 * hGrp->GetFloat("NewDocumentCameraScale",100.0);
+    return hGrp->GetFloat("DatumsSize", 25);
 }
 
 bool ViewProviderOrigin::isTemporaryVisibility() {
