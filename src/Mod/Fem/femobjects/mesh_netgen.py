@@ -415,6 +415,15 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
         )
         prop.append(
             _PropHelper(
+                type="App::PropertyBool",
+                name="SecondOrderLinear",
+                group="Mesh Parameters",
+                doc="Second order nodes are created by linear interpolation",
+                value=False,
+            )
+        )
+        prop.append(
+            _PropHelper(
                 type="App::PropertyInteger",
                 name="ElementOrder",
                 group="Mesh Parameters",
