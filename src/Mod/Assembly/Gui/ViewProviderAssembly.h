@@ -103,6 +103,7 @@ public:
     QIcon getIcon() const override;
 
     bool doubleClicked() override;
+    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
     bool onDelete(const std::vector<std::string>& subNames) override;
     bool canDelete(App::DocumentObject* obj) const override;
 
