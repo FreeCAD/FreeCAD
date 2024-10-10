@@ -1440,7 +1440,7 @@ TopoShape Vertex::asTopoShape(double scale)
 {
     Base::Vector3d point = DU::toVector3d(BRep_Tool::Pnt(getOCCVertex()));
     point = point / scale;
-    BRepBuilderAPI_MakeVertex mkVert(DU::togp_Pnt(point));
+    BRepBuilderAPI_MakeVertex mkVert(DU::to<gp_Pnt>(point));
     return TopoShape(mkVert.Vertex());
 }
 

@@ -1116,8 +1116,8 @@ arcPoints DrawViewDimension::arcPointsFromEdge(TopoDS_Edge occEdge)
         if (pts.isArc) {
             // part of circle
             gp_Ax1 axis = circle.Axis();
-            gp_Vec startVec = DrawUtil::togp_Vec(pts.arcEnds.first() - pts.center);
-            gp_Vec endVec = DrawUtil::togp_Vec(pts.arcEnds.second() - pts.center);
+            gp_Vec startVec = DrawUtil::to<gp_Vec>(pts.arcEnds.first() - pts.center);
+            gp_Vec endVec = DrawUtil::to<gp_Vec>(pts.arcEnds.second() - pts.center);
             double angle = startVec.AngleWithRef(endVec, axis.Direction().XYZ());
             pts.arcCW = (angle < 0.0);
         }
@@ -1136,8 +1136,8 @@ arcPoints DrawViewDimension::arcPointsFromEdge(TopoDS_Edge occEdge)
         if (pts.isArc) {
             // part of ellipse
             gp_Ax1 axis = ellipse.Axis();
-            gp_Vec startVec = DrawUtil::togp_Vec(pts.arcEnds.first() - pts.center);
-            gp_Vec endVec = DrawUtil::togp_Vec(pts.arcEnds.second() - pts.center);
+            gp_Vec startVec = DrawUtil::to<gp_Vec>(pts.arcEnds.first() - pts.center);
+            gp_Vec endVec = DrawUtil::to<gp_Vec>(pts.arcEnds.second() - pts.center);
             double angle = startVec.AngleWithRef(endVec, axis.Direction().XYZ());
             pts.arcCW = (angle < 0.0);
         }
@@ -1165,8 +1165,8 @@ arcPoints DrawViewDimension::arcPointsFromEdge(TopoDS_Edge occEdge)
             if (pts.isArc) {
                 // part of circle
                 gp_Ax1 axis = circle.Axis();
-                gp_Vec startVec = DrawUtil::togp_Vec(pts.arcEnds.first() - pts.center);
-                gp_Vec endVec = DrawUtil::togp_Vec(pts.arcEnds.second() - pts.center);
+                gp_Vec startVec = DrawUtil::to<gp_Vec>(pts.arcEnds.first() - pts.center);
+                gp_Vec endVec = DrawUtil::to<gp_Vec>(pts.arcEnds.second() - pts.center);
                 double angle = startVec.AngleWithRef(endVec, axis.Direction().XYZ());
                 pts.arcCW = (angle < 0.0);
             }
@@ -1303,7 +1303,7 @@ anglePoints DrawViewDimension::getAnglePointsTwoEdges(ReferenceVector references
     if (!haveIntersection) {
         throw Base::RuntimeError("Geometry for 3d angle dimension does not intersect");
     }
-    gp_Pnt gApex = DrawUtil::togp_Pnt(vApex);
+    gp_Pnt gApex = DrawUtil::to<gp_Pnt>(vApex);
 
     gp_Pnt gFar0 = gEnd0;
     if (gStart0.Distance(gApex) > gEnd0.Distance(gApex)) {
