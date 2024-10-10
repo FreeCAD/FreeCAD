@@ -181,44 +181,57 @@ App::DocumentObjectExecReturn* LocalCoordinateSystem::execute() {
     return DocumentObject::execute();
 }
 
-void LocalCoordinateSystem::setupObject() {
-    const static struct {
-        const Base::Type type;
-        const char* role;
-        const QString label;
-        Base::Rotation rot;
-    }
-    setupData[] = {
-        // clang-format off
-        {App::Line::getClassTypeId(),  AxisRoles[0],  tr("X-axis"),   Base::Rotation()},
-        {App::Line::getClassTypeId(),  AxisRoles[1],  tr("Y-axis"),   Base::Rotation(Base::Vector3d(1,1,1), M_PI * 2 / 3)},
-        {App::Line::getClassTypeId(),  AxisRoles[2],  tr("Z-axis"),   Base::Rotation(Base::Vector3d(1,-1,1), M_PI * 2 / 3)},
-        {App::Plane::getClassTypeId(), PlaneRoles[0], tr("XY-plane"), Base::Rotation()},
-        {App::Plane::getClassTypeId(), PlaneRoles[1], tr("XZ-plane"), Base::Rotation(1.0, 0.0, 0.0, 1.0)},
-        {App::Plane::getClassTypeId(), PlaneRoles[2], tr("YZ-plane"), Base::Rotation(Base::Vector3d(1,1,1), M_PI * 2 / 3)},
-        {App::Point::getClassTypeId(), PointRoles[0], tr("Origin"),   Base::Rotation()}
-        // clang-format on
+const std::vector<LocalCoordinateSystem::SetupData>& LocalCoordinateSystem::getSetupData() {
+    static const std::vector<SetupData> setupData = {
+    {App::Line::getClassTypeId(),  AxisRoles[0],  tr("X-axis"),   Base::Rotation(Base::Vector3d(1,1,1), M_PI * 2 / 3)},
+    {App::Line::getClassTypeId(),  AxisRoles[1],  tr("Y-axis"),   Base::Rotation(Base::Vector3d(-1, 1, 1), M_PI * 2 / 3)},
+    {App::Line::getClassTypeId(),  AxisRoles[2],  tr("Z-axis"),   Base::Rotation()},
+    {App::Plane::getClassTypeId(), PlaneRoles[0], tr("XY-plane"), Base::Rotation()},
+    {App::Plane::getClassTypeId(), PlaneRoles[1], tr("XZ-plane"), Base::Rotation(1.0, 0.0, 0.0, 1.0)},
+    {App::Plane::getClassTypeId(), PlaneRoles[2], tr("YZ-plane"), Base::Rotation(Base::Vector3d(1,1,1), M_PI * 2 / 3)},
+    {App::Point::getClassTypeId(), PointRoles[0], tr("Origin"),   Base::Rotation()}
     };
+    return setupData;
+}
 
+DatumElement* LocalCoordinateSystem::createDatum(SetupData& data)
+{
+    App::Document* doc = getDocument();
+    std::string objName = doc->getUniqueObjectName(data.role);
+    App::DocumentObject* featureObj = doc->addObject(data.type.getName(), objName.c_str());
+
+    assert(featureObj && featureObj->isDerivedFrom(App::DatumElement::getClassTypeId()));
+
+    QByteArray byteArray = data.label.toUtf8();
+    featureObj->Label.setValue(byteArray.constData());
+
+    auto* feature = static_cast <App::DatumElement*> (featureObj);
+    feature->Placement.setValue(Base::Placement(Base::Vector3d(), data.rot));
+    feature->Role.setValue(data.role);
+
+    feature->Placement.setStatus(Property::Hidden, true);
+    return feature;
+}
+
+LocalCoordinateSystem::SetupData LocalCoordinateSystem::getData(const char* role)
+{
+    const auto& setupData = getSetupData();
+    for (auto data : setupData) {
+        if (std::strcmp(role, data.role) == 0) {
+            return data;
+        }
+    }
+    return LocalCoordinateSystem::SetupData();
+}
+
+void LocalCoordinateSystem::setupObject()
+{
     App::Document* doc = getDocument();
 
     std::vector<App::DocumentObject*> links;
+    const auto& setupData = getSetupData();
     for (auto data : setupData) {
-        std::string objName = doc->getUniqueObjectName(data.role);
-        App::DocumentObject* featureObj = doc->addObject(data.type.getName(), objName.c_str());
-
-        assert(featureObj && featureObj->isDerivedFrom(App::DatumElement::getClassTypeId()));
-
-        QByteArray byteArray = data.label.toUtf8();
-        featureObj->Label.setValue(byteArray.constData());
-
-        App::DatumElement* feature = static_cast <App::DatumElement*> (featureObj);
-        feature->Placement.setValue(Base::Placement(Base::Vector3d(), data.rot));
-        feature->Role.setValue(data.role);
-
-        feature->Placement.setStatus(Property::Hidden, true);
-
-        links.push_back(feature);
+        links.push_back(createDatum(data));
     }
 
     OriginFeatures.setValues(links);
@@ -240,6 +253,41 @@ void LocalCoordinateSystem::unsetupObject() {
     }
 }
 
+void LocalCoordinateSystem::onDocumentRestored()
+{
+    GeoFeature::onDocumentRestored();
+
+    // In 0.22 origins did not have point.
+    auto features = OriginFeatures.getValues();
+
+    auto featIt = std::find_if(features.begin(), features.end(),
+        [](App::DocumentObject* obj) {
+        return obj->isDerivedFrom(App::DatumElement::getClassTypeId()) &&
+            strcmp(static_cast<App::DatumElement*>(obj)->Role.getValue(), PointRoles[0]) == 0;
+    });
+    if (featIt == features.end()) {
+        // origin not found let's add it
+        auto* origin = createDatum(getData(PointRoles[0]));
+        features.push_back(origin);
+        OriginFeatures.setValues(features);
+    }
+
+    // In 0.22 the axis placement were wrong. The X axis had identity placement instead of the Z.
+    // This was fixed but we need to migrate old files.
+    const auto& setupData = getSetupData();
+    for (auto* obj : features) {
+        auto* feature = dynamic_cast <App::DatumElement*> (obj);
+        if (!feature) { continue; }
+        for (auto data : setupData) {
+            // ensure the rotation is correct for the role
+            if (std::strcmp(feature->Role.getValue(), data.role) == 0) {
+                if (!feature->Placement.getValue().getRotation().isSame(data.rot)) {
+                    feature->Placement.setValue(Base::Placement(Base::Vector3d(), data.rot));
+                }
+            }
+        }
+    }
+}
 // ----------------------------------------------------------------------------
 
 LocalCoordinateSystem::LCSExtension::LCSExtension(LocalCoordinateSystem * obj)

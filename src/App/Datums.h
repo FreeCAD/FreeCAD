@@ -28,9 +28,11 @@
 #include "GeoFeature.h"
 
 #include "GeoFeatureGroupExtension.h"
-
 #include "QCoreApplication"
-
+namespace Base
+{
+    class Rotation;
+}
 namespace App
 {
     class LocalCoordinateSystem;
@@ -182,6 +184,7 @@ protected:
     void setupObject() override;
     /// Removes all planes and axis if they are still linked to the document
     void unsetupObject() override;
+    void onDocumentRestored() override;
 
 private:
     struct SetupData;
@@ -196,6 +199,17 @@ private:
             PyObject**, Base::Matrix4D*, bool, int) const override;
     };
     LCSExtension extension;
+
+    struct SetupData {
+        Base::Type type;
+        const char* role = nullptr;
+        QString label;
+        Base::Rotation rot;
+    };
+    static const std::vector<SetupData>& getSetupData();
+
+    DatumElement* createDatum(SetupData& data);
+    SetupData getData(const char* role);
 };
 
 } //namespace App
