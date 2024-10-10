@@ -84,7 +84,7 @@ TEST_F(FuzzyBooleanTest, testGoodFuzzy)
     double oldFuzzy = Part::FuzzyHelper::getBooleanFuzzy();
     Part::FuzzyHelper::setBooleanFuzzy(10.0);
     _fuse->execute();
-    EXPECT_FLOAT_EQ(Part::FuzzyHelper::getBooleanFuzzy(),10.0);
+    EXPECT_FLOAT_EQ(Part::FuzzyHelper::getBooleanFuzzy(), 10.0);
     Part::FuzzyHelper::setBooleanFuzzy(oldFuzzy);
 
     // Verify
@@ -118,7 +118,8 @@ TEST_F(FuzzyBooleanTest, testFailsTooSmallFuzzy)
     Part::FuzzyHelper::setBooleanFuzzy(oldFuzzy);
 
     // Verify
-    //EXPECT_NEAR(PartTestHelpers::getVolume(_fuse->Shape.getValue()),PartTestHelpers::getVolume(_helix1->Shape.getValue())+PartTestHelpers::getVolume(_cylinder1->Shape.getValue()),0.1); // fails on OCCT 7.3 - ignore
+    // EXPECT_NEAR(PartTestHelpers::getVolume(_fuse->Shape.getValue()),PartTestHelpers::getVolume(_helix1->Shape.getValue())+PartTestHelpers::getVolume(_cylinder1->Shape.getValue()),0.1);
+    // // fails on OCCT 7.3 - ignore
 
     // Analyse
     Part::TopoShape ts = _fuse->Shape.getValue();
@@ -146,8 +147,9 @@ TEST_F(FuzzyBooleanTest, testCompletelyFailsTooBigFuzzy)
         _fuse->execute();
         ts = _fuse->Shape.getValue();
         if (ts.isNull()) {
-            failed=1;
-        } else {
+            failed = 1;
+        }
+        else {
             TopoDS_Shape BOPCopy = BRepBuilderAPI_Copy(ts.getShape()).Shape();
             BOPAlgo_ArgumentAnalyzer BOPCheck;
             BOPCheck.SetShape1(BOPCopy);
@@ -155,10 +157,13 @@ TEST_F(FuzzyBooleanTest, testCompletelyFailsTooBigFuzzy)
 
             BOPCheck.Perform();
             // Assert
-            if(BOPCheck.HasFaulty()) failed=1;
+            if (BOPCheck.HasFaulty()) {
+                failed = 1;
+            }
         }
-    } catch (...) {
-            failed = 1;
+    }
+    catch (...) {
+        failed = 1;
     }
     Part::FuzzyHelper::setBooleanFuzzy(oldFuzzy);
     EXPECT_EQ(failed, 1);
