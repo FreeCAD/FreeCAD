@@ -28,7 +28,6 @@
 #include <QPrintPreviewDialog>
 #include <QPrinter>
 #include <QTextDocument>
-#include <cmath>
 #endif
 
 #include <App/DocumentObject.h>
@@ -47,6 +46,7 @@
 #include "LineEdit.h"
 #include "SpreadsheetDelegate.h"
 #include "SpreadsheetView.h"
+#include "ZoomableView.h"
 #include "qtcolorpicker.h"
 #include "ui_Sheet.h"
 
@@ -73,6 +73,8 @@ SheetView::SheetView(Gui::Document* pcDocument, App::DocumentObject* docObj, QWi
     QWidget* w = new QWidget(this);
     ui->setupUi(w);
     setCentralWidget(w);
+
+    new ZoomableView(ui);
 
     delegate = new SpreadsheetDelegate(sheet);
     ui->cells->setModel(model);
