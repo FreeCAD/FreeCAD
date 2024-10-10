@@ -449,6 +449,13 @@ Application::Application(bool GUIenabled)
             PyModule_AddFunctions(module, Application::Methods);
         }
         Py::Module(module).setAttr(std::string("ActiveDocument"), Py::None());
+        Py::Module(module).setAttr(std::string("HasQtBug_129596"),
+#ifdef HAS_QTBUG_129596
+            Py::True()
+#else
+            Py::False()
+#endif
+        );
 
         UiLoaderPy::init_type();
         Base::Interpreter().addType(UiLoaderPy::type_object(), module, "UiLoader");

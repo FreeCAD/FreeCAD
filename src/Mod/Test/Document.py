@@ -2092,7 +2092,7 @@ class DocumentObserverCases(unittest.TestCase):
         FreeCAD.closeDocument(self.Doc2.Name)
         self.assertEqual(self.Obs.signal.pop(), "DocDeleted")
         self.assertTrue(self.Obs.parameter.pop() is self.Doc2)
-        if FreeCAD.GuiUp:
+        if FreeCAD.GuiUp and not FreeCAD.Gui.HasQtBug_129596:
             # only has document activated signal when running in GUI mode
             self.assertEqual(self.Obs.signal.pop(), "DocActivated")
             self.assertTrue(self.Obs.parameter.pop() is self.Doc1)
