@@ -509,7 +509,6 @@ SET(Part_SRCS
     ${HLRBRepPy_SRCS}
     ${ShapeFixPy_SRCS}
     ${ShapeUpgradePy_SRCS}
-    ${FCBRepAlgoAPI_SRCS}
     IGES/ImportExportSettings.cpp
     IGES/ImportExportSettings.h
     OCAF/ImportExportSettings.cpp
@@ -597,7 +596,7 @@ if(EIGEN3_NO_DEPRECATED_COPY)
         PROPERTIES COMPILE_FLAGS ${EIGEN3_NO_DEPRECATED_COPY})
 endif()
 
-add_library(Part SHARED ${Part_SRCS})
+add_library(Part SHARED ${Part_SRCS} ${FCBRepAlgoAPI_SRCS})
 target_link_libraries(Part ${Part_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(Part)
