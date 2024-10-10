@@ -338,17 +338,17 @@ class DocumentBasicCases(unittest.TestCase):
 
         res = obj.getSubObject("X_Axis", retType=2)
         self.assertEqual(
-            res[1].multVec(FreeCAD.Vector(1, 0, 0)).getAngle(FreeCAD.Vector(1, 0, 0)), 0.0
+            res[1].multVec(FreeCAD.Vector(0, 0, 1)).getAngle(FreeCAD.Vector(1, 0, 0)), 0.0
         )
 
         res = obj.getSubObject("Y_Axis", retType=2)
         self.assertEqual(
-            res[1].multVec(FreeCAD.Vector(1, 0, 0)).getAngle(FreeCAD.Vector(0, 1, 0)), 0.0
+            res[1].multVec(FreeCAD.Vector(0, 0, 1)).getAngle(FreeCAD.Vector(0, 1, 0)), 0.0
         )
 
         res = obj.getSubObject("Z_Axis", retType=2)
         self.assertEqual(
-            res[1].multVec(FreeCAD.Vector(1, 0, 0)).getAngle(FreeCAD.Vector(0, 0, 1)), 0.0
+            res[1].multVec(FreeCAD.Vector(0, 0, 1)).getAngle(FreeCAD.Vector(0, 0, 1)), 0.0
         )
 
         res = obj.getSubObject("XY_Plane", retType=2)

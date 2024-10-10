@@ -28,12 +28,14 @@
 #include "GeoFeature.h"
 
 #include "GeoFeatureGroupExtension.h"
-
 #include "QCoreApplication"
-
+namespace Base
+{
+class Rotation;
+}
 namespace App
 {
-    class LocalCoordinateSystem;
+class LocalCoordinateSystem;
 
 class AppExport DatumElement : public App::GeoFeature
 {
@@ -48,6 +50,8 @@ public:
 
     /// Finds the origin object this plane belongs to
     App::LocalCoordinateSystem* getLCS();
+
+    bool getCameraAlignmentDirection(Base::Vector3d& direction, const char* subname) const override;
 
     /// Returns true if this DatumElement is part of a App::Origin.
     bool isOriginFeature();
@@ -92,6 +96,8 @@ public:
     const char* getViewProviderName() const override {
         return "Gui::ViewProviderOrigin";
     }
+
+    bool getCameraAlignmentDirection(Base::Vector3d& direction, const char* subname) const override;
 
     /** @name Axis and plane access
      * This functions returns casted axis and planes objects and asserts they are set correctly
@@ -182,6 +188,7 @@ protected:
     void setupObject() override;
     /// Removes all planes and axis if they are still linked to the document
     void unsetupObject() override;
+    void onDocumentRestored() override;
 
 private:
     struct SetupData;
@@ -196,6 +203,17 @@ private:
             PyObject**, Base::Matrix4D*, bool, int) const override;
     };
     LCSExtension extension;
+
+    struct SetupData {
+        Base::Type type;
+        const char* role = nullptr;
+        QString label;
+        Base::Rotation rot;
+    };
+    static const std::vector<SetupData>& getSetupData();
+
+    DatumElement* createDatum(SetupData& data);
+    SetupData getData(const char* role);
 };
 
 }  // namespace App
