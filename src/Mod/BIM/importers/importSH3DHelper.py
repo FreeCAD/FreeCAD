@@ -85,8 +85,8 @@ class SH3DImporter:
 
     As an implementation detail, note that we do not use an
     xml.sax parser as the XML elements found in the SH3D file
-    do not follow a natural / dependency order (i.e. doors and 
-    windows depend upon wall but are usually defined *before* 
+    do not follow a natural / dependency order (i.e. doors and
+    windows depend upon wall but are usually defined *before*
     the different <wall> elements)
     """
 
@@ -94,7 +94,7 @@ class SH3DImporter:
         """Create a SH3DImporter instance to import the given SH3D file.
 
         Args:
-            filename (str): the filename of the ZIP file containing the SH3D 
+            filename (str): the filename of the ZIP file containing the SH3D
               objects.
             progress_bar (_type_): a FreeCAD.Base.ProgressIndicator called
               to let the User monitor the import process
@@ -103,7 +103,6 @@ class SH3DImporter:
         self.filename = filename
         self.progress_bar = progress_bar
         self.preferences = self._get_preferences()
-        
 
         self.handlers = {
             'level': LevelHandler(self),
@@ -168,7 +167,7 @@ class SH3DImporter:
             if home.find('level') != None:
                 self._import_elements(home, 'level')
             else:
-                # Has the default floor already been created from a 
+                # Has the default floor already been created from a
                 # previous import?
                 _log("No level defined. Using default level ...")
                 self.default_floor = self.fc_objects.get('Level') if 'Level' in self.fc_objects else self._create_default_floor()
@@ -176,7 +175,7 @@ class SH3DImporter:
 
             # Importing <room> elements ...
             self._import_elements(home, 'room')
-            
+
             # Importing <wall> elements ...
             if self.preferences["JOIN_ARCH_WALL"]:
                 self._import_and_join_walls(home)
@@ -191,7 +190,7 @@ class SH3DImporter:
             if self.preferences["IMPORT_DOORS_AND_WINDOWS"]:
                 self._import_elements(home, 'doorOrWindow')
                 self._refresh()
-            
+
             # Importing <pieceOfFurniture> elements ...
             if self.preferences["IMPORT_FURNITURES"]:
                 self._import_elements(home, 'pieceOfFurniture')
@@ -219,7 +218,7 @@ class SH3DImporter:
                 self._refresh()
 
             _msg(f"Successfully imported home '{home.get('name')}' ...")
-        
+
     def _get_object_count(self, home):
         """Get an approximate count of object to be imported
         """
@@ -344,7 +343,7 @@ class SH3DImporter:
 
     def add_wall(self, wall):
         self.walls.append(wall)
-        
+
     def _create_groups(self):
         """Create FreeCAD Group for the different imported elements
         """
@@ -519,7 +518,7 @@ class BaseHandler:
             valid_values (list, optional): The property's enumerated values. Defaults to None.
         """
         self.importer.set_property(obj, type_, name, description, value, valid_values)
-    
+
     def get_fc_object(self, id, sh_type):
         """Returns the FC doc element corresponding to the imported id and sh_type
 
@@ -581,7 +580,6 @@ class LevelHandler(BaseHandler):
             self.setp(floor, "App::PropertyString", "BaseboardGroupName", "The DocumentObjectGroup name for all baseboards on this floor", group.Name)
 
         self.importer.add_floor(floor)
-        
 
     def _set_properties(self, obj, elm):
         self.setp(obj, "App::PropertyString", "shType", "The element type", 'level')
@@ -750,7 +748,7 @@ class WallHandler(BaseHandler):
         self._set_properties(wall, elm)
 
         floor.addObject(wall)
-        self.importer.add_wall(wall)  
+        self.importer.add_wall(wall)
 
         # if self.importer.preferences["IMPORT_FURNITURES"]:
         #     App.ActiveDocument.recompute([wall])
@@ -820,7 +818,7 @@ class WallHandler(BaseHandler):
         if DEBUG:
             _log(f"a1={a1}º (x -> {radius1}) w/ center={center} and p1={p1}")
             _log(f"a2={a2}º (x -> {radius2}) w/ center={center} and p2={p2}")
-        
+
         circle = Part.Circle(center, Z_NORM,radius)
         if invert_angle:
             sketch.addGeometry(Part.ArcOfCircle(circle, a1, a2))
@@ -1104,7 +1102,6 @@ class WallHandler(BaseHandler):
             # and then I extrude
             baseboard = App.ActiveDocument.addObject('Part::Extrusion', f"{wall.Label} {side}")
             baseboard.Base = base
-            
 
         baseboard.DirMode = "Custom"
         baseboard.Dir = Z_NORM
@@ -1281,8 +1278,7 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         # of the bouding box. Note that the angle of the rotation is negated
         # because the y axis is reversed in SweetHome3D
         center2corner = App.Vector(-width/2, -wall_width/2, 0)
-        center2corner = App.Rotation(App.Vector(
-            0, 0, 1), math.degrees(-angle)).multVec(center2corner)
+        center2corner = App.Rotation(App.Vector(0, 0, 1), math.degrees(-angle)).multVec(center2corner)
 
         corner = center.add(center2corner)
         pl = App.Placement(
@@ -1315,7 +1311,7 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         o1 = 0
         o2 = w1 / 2
         window = Arch.makeWindowPreset(windowtype, width=width, height=height, h1=h1, h2=h2, h3=h3, w1=w1, w2=w2, o1=o1, o2=o2, placement=pl)
-        if wall: 
+        if wall:
             window.Hosts = [wall]
         return window
 
@@ -1372,13 +1368,13 @@ class FurnitureHandler(BaseFurnitureHandler):
             self.setp(floor, "App::PropertyString", "FurnitureGroupName", "The DocumentObjectGroup name for all furnitures on this floor", group.Name)
 
         floor.getObject(floor.FurnitureGroupName).addObject(feature)
-            
-        # We add the object to the list of known object that can then 
+
+        # We add the object to the list of known object that can then
         # be referenced elsewhere in the SH3D model (i.e. lights).
         self.importer.fc_objects[feature.id] = feature
 
     def _create_equipment(self, elm):
-        
+
         floor = self.get_floor(elm.get('level'))
 
         # REF: sweethome3d-code/SweetHome3D/src/com/eteks/sweethome3d/j3d/ModelManager.java:getPieceOfFurnitureNormalizedModelTransformation()
@@ -1456,13 +1452,13 @@ class LightHandler(FurnitureHandler):
 
             if not light_source:
                 _, light_source, _ = PointLight.create()
-        
+
             x = float(sub_elm.get('x'))
             y = float(sub_elm.get('y'))
             z = float(sub_elm.get('z'))
             diameter = float(sub_elm.get('diameter'))
             color = sub_elm.get('color')
-        
+
             light_source.Label = elm.get('name')
             light_source.Placement.Base = coord_sh2fc(App.Vector(x, y, z))
             light_source.Radius = dim_sh2fc(diameter / 2)
