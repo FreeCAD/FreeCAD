@@ -46,5 +46,3 @@ fc_target_copy_resource(PartTestData
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/tests
     ${PartTestData_Files})
-
-

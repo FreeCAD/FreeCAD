@@ -40,16 +40,16 @@ protected:
     void TearDown() override
     {}
 
-    Part::Fuse* _fuse = nullptr;  // NOLINT Can't be private in a test framework
+    Part::Fuse* _fuse = nullptr;             // NOLINT Can't be private in a test framework
     Part::ImportBrep* _cylinder1 = nullptr;  // NOLINT Can't be private in a test framework
-    Part::ImportBrep* _helix1 = nullptr;  // NOLINT Can't be private in a test framework
+    Part::ImportBrep* _helix1 = nullptr;     // NOLINT Can't be private in a test framework
 };
 
 TEST_F(FuzzyBooleanTest, testLoadedCorrectly)
 {
 
-    EXPECT_NEAR(PartTestHelpers::getVolume(_cylinder1->Shape.getValue()),125.6, 1.0);
-    EXPECT_NEAR(PartTestHelpers::getVolume(_helix1->Shape.getValue()),33.32, 1.0);
+    EXPECT_NEAR(PartTestHelpers::getVolume(_cylinder1->Shape.getValue()), 125.6, 1.0);
+    EXPECT_NEAR(PartTestHelpers::getVolume(_helix1->Shape.getValue()), 33.32, 1.0);
 }
 
 TEST_F(FuzzyBooleanTest, testDefaultFuzzy)
@@ -59,9 +59,12 @@ TEST_F(FuzzyBooleanTest, testDefaultFuzzy)
     _fuse->execute();
 
     // Verify
-    EXPECT_NEAR(PartTestHelpers::getVolume(_fuse->Shape.getValue()),PartTestHelpers::getVolume(_helix1->Shape.getValue())+PartTestHelpers::getVolume(_cylinder1->Shape.getValue()),0.1);
+    EXPECT_NEAR(PartTestHelpers::getVolume(_fuse->Shape.getValue()),
+                PartTestHelpers::getVolume(_helix1->Shape.getValue())
+                    + PartTestHelpers::getVolume(_cylinder1->Shape.getValue()),
+                0.1);
 
-    //Analyse
+    // Analyse
     Part::TopoShape ts = _fuse->Shape.getValue();
     ASSERT_FALSE(ts.isNull());
     TopoDS_Shape BOPCopy = BRepBuilderAPI_Copy(ts.getShape()).Shape();
@@ -72,23 +75,25 @@ TEST_F(FuzzyBooleanTest, testDefaultFuzzy)
     BOPCheck.Perform();
     // Assert
     EXPECT_FALSE(BOPCheck.HasFaulty());
-   
 }
 
 TEST_F(FuzzyBooleanTest, testGoodFuzzy)
 {
 
     // Act
-    double oldFuzzy=Part::FuzzyHelper::getBooleanFuzzy();
+    double oldFuzzy = Part::FuzzyHelper::getBooleanFuzzy();
     Part::FuzzyHelper::setBooleanFuzzy(10.0);
     _fuse->execute();
     EXPECT_FLOAT_EQ(Part::FuzzyHelper::getBooleanFuzzy(),10.0);
     Part::FuzzyHelper::setBooleanFuzzy(oldFuzzy);
 
     // Verify
-    EXPECT_NEAR(PartTestHelpers::getVolume(_fuse->Shape.getValue()),PartTestHelpers::getVolume(_helix1->Shape.getValue())+PartTestHelpers::getVolume(_cylinder1->Shape.getValue()),0.1);
+    EXPECT_NEAR(PartTestHelpers::getVolume(_fuse->Shape.getValue()),
+                PartTestHelpers::getVolume(_helix1->Shape.getValue())
+                    + PartTestHelpers::getVolume(_cylinder1->Shape.getValue()),
+                0.1);
 
-    //Analyse
+    // Analyse
     Part::TopoShape ts = _fuse->Shape.getValue();
     ASSERT_FALSE(ts.isNull());
     TopoDS_Shape BOPCopy = BRepBuilderAPI_Copy(ts.getShape()).Shape();
@@ -98,25 +103,24 @@ TEST_F(FuzzyBooleanTest, testGoodFuzzy)
 
     BOPCheck.Perform();
     // Assert
-    int result=BOPCheck.HasFaulty();
+    int result = BOPCheck.HasFaulty();
     EXPECT_FALSE(result);
-   
 }
 
 TEST_F(FuzzyBooleanTest, testFailsTooSmallFuzzy)
 {
 
     // Act
-    double oldFuzzy=Part::FuzzyHelper::getBooleanFuzzy();
+    double oldFuzzy = Part::FuzzyHelper::getBooleanFuzzy();
     Part::FuzzyHelper::setBooleanFuzzy(0.01);
     _fuse->execute();
-    EXPECT_FLOAT_EQ(Part::FuzzyHelper::getBooleanFuzzy(),0.01);
+    EXPECT_FLOAT_EQ(Part::FuzzyHelper::getBooleanFuzzy(), 0.01);
     Part::FuzzyHelper::setBooleanFuzzy(oldFuzzy);
 
     // Verify
     //EXPECT_NEAR(PartTestHelpers::getVolume(_fuse->Shape.getValue()),PartTestHelpers::getVolume(_helix1->Shape.getValue())+PartTestHelpers::getVolume(_cylinder1->Shape.getValue()),0.1); // fails on OCCT 7.3 - ignore
 
-    //Analyse
+    // Analyse
     Part::TopoShape ts = _fuse->Shape.getValue();
     ASSERT_FALSE(ts.isNull());
     TopoDS_Shape BOPCopy = BRepBuilderAPI_Copy(ts.getShape()).Shape();
@@ -126,18 +130,17 @@ TEST_F(FuzzyBooleanTest, testFailsTooSmallFuzzy)
 
     BOPCheck.Perform();
     // Assert
-    int result=BOPCheck.HasFaulty();
+    int result = BOPCheck.HasFaulty();
     EXPECT_TRUE(result);
-   
 }
 
 TEST_F(FuzzyBooleanTest, testCompletelyFailsTooBigFuzzy)
 {
 
     // Act
-    double oldFuzzy=Part::FuzzyHelper::getBooleanFuzzy();
+    double oldFuzzy = Part::FuzzyHelper::getBooleanFuzzy();
     Part::FuzzyHelper::setBooleanFuzzy(1e10);
-    int failed=0;
+    int failed = 0;
     Part::TopoShape ts;
     try {
         _fuse->execute();
@@ -155,11 +158,8 @@ TEST_F(FuzzyBooleanTest, testCompletelyFailsTooBigFuzzy)
             if(BOPCheck.HasFaulty()) failed=1;
         }
     } catch (...) {
-        failed=1;
+            failed = 1;
     }
     Part::FuzzyHelper::setBooleanFuzzy(oldFuzzy);
-    EXPECT_EQ(failed,1);
-
-
-   
+    EXPECT_EQ(failed, 1);
 }
