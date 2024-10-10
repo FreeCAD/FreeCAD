@@ -24,17 +24,27 @@
 #define EXPRESSIONENGINE_H
 
 #include <functional>
-#include <boost/unordered/unordered_map.hpp>
 #include <boost_signals2.hpp>
 #include <boost_graph_adjacency_list.hpp>
+#include <boost/unordered/unordered_map_fwd.hpp>
+#include <boost/graph/depth_first_search.hpp>
 #include <boost/graph/topological_sort.hpp>
 #include <App/PropertyLinks.h>
-#include <set>
 
 namespace Base {
 class Writer;
 class XMLReader;
 }
+
+namespace boost {
+    class listS;
+    class vecS;
+    class directedS;
+}
+
+// namespace std {
+//     template <class T> class set;
+// }
 
 namespace App {
 

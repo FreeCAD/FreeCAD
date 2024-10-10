@@ -24,8 +24,6 @@
 #ifndef APP_PROPERTYCONTAINER_H
 #define APP_PROPERTYCONTAINER_H
 
-#include <map>
-#include <cstring>
 #include <Base/Persistence.h>
 
 #include "DynamicProperty.h"
@@ -34,6 +32,9 @@ namespace Base {
 class Writer;
 }
 
+// namespace std {
+//     template<class T, class U> class map;
+// }
 
 namespace App
 {

@@ -25,12 +25,16 @@
 #define APP_PROJECTFILE_H
 
 #include <Base/Type.h>
-#include <zipios++/zipfile.h>
-#include <sstream>
 #include <list>
-#include <map>
 #include <string>
 #include <xercesc/util/XercesDefs.hpp>
+
+// namespace std {
+//     // class istream;
+//     // class ostream;
+//     template <class T> class list;
+// }
+
 
 #ifndef XERCES_CPP_NAMESPACE_BEGIN
 #define XERCES_CPP_NAMESPACE_QUALIFIER

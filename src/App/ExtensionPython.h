@@ -24,7 +24,6 @@
 #ifndef APP_EXTENSIONPYTHON_H
 #define APP_EXTENSIONPYTHON_H
 
-#include <Base/Interpreter.h>
 #include "Extension.h"
 #include "PropertyPythonObject.h"
 

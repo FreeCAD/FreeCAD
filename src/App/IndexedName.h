@@ -28,14 +28,16 @@
 #include <cassert>
 #include <cstring>
 #include <ostream>
-#include <string>
-#include <vector>
+#include <string> // move to .cpp
 
 #include <QByteArray>
 #include <QHash>
 
 #include "FCGlobal.h"
 
+// namespace std {
+//     template <class T> class vector;
+// }
 
 namespace Data
 {

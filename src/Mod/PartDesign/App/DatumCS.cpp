@@ -28,6 +28,7 @@
 # include <gp_Pln.hxx>
 #endif
 
+#include <Base/Interpreter.h>
 #include <Mod/Part/App/PartPyCXX.h>
 #include <Mod/Part/App/OCCError.h>
 #include "DatumCS.h"

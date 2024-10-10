@@ -25,7 +25,7 @@
 #define BASE_ENUMERATION_H
 
 #include <memory>
-#include <string>
+#include <string>  // Move function to .cpp
 #include <vector>
 #include <FCGlobal.h>
 

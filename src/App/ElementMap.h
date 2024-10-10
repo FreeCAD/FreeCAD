@@ -34,10 +34,10 @@
 
 #include <cstring>
 #include <deque>
-#include <functional>
 #include <map>
 #include <memory>
 
+//class std::function;
 
 namespace Data
 {

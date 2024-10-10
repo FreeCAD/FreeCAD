@@ -25,7 +25,6 @@
 
 #include <FCConfig.h>
 
-#include <bitset>
 #include <memory>
 
 #include <QByteArray>
