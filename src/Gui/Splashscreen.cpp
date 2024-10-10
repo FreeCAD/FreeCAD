@@ -819,13 +819,20 @@ void AboutDialog::copyToClipboard()
 
     QString deskEnv = QProcessEnvironment::systemEnvironment().value(QStringLiteral("XDG_CURRENT_DESKTOP"), QString());
     QString deskSess = QProcessEnvironment::systemEnvironment().value(QStringLiteral("DESKTOP_SESSION"), QString());
+    QStringList deskInfoList;
     QString deskInfo;
 
-    if ( !(deskEnv.isEmpty() && deskSess.isEmpty()) ) {
-        if ( deskEnv.isEmpty() || deskSess.isEmpty() )
-            deskInfo = QLatin1String(" (") + deskEnv + deskSess + QLatin1String(")");
-        else
-            deskInfo = QLatin1String(" (") + deskEnv + QLatin1String("/") + deskSess + QLatin1String(")");
+    if (!deskEnv.isEmpty()) {
+        deskInfoList.append(deskEnv);
+    }
+    if (!deskSess.isEmpty()) {
+        deskInfoList.append(deskSess);
+    }
+    if (qGuiApp->platformName() != QLatin1String("windows") && qGuiApp->platformName() != QLatin1String("cocoa")) {
+        deskInfoList.append(qGuiApp->platformName());
+    }
+    if(!deskInfoList.isEmpty()) {
+        deskInfo = QLatin1String(" (") + deskInfoList.join(QLatin1String("/")) + QLatin1String(")");
     }
 
     str << "OS: " << prettyProductInfoWrapper() << deskInfo << '\n';
