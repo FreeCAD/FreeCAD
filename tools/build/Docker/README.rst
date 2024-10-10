@@ -73,7 +73,7 @@ The following commands are used to create and run a Arch Linux build environment
 
 .. code-block:: console
 
-    docker build --file tools/build/Dockerfile.Arch --tag freecad-arch
+    docker build --file tools/build/Docker/Dockerfile.Arch --tag freecad-arch
     docker run --rm --interactive --tty --volume $(pwd):/builds:z freecad-arch
 
 
@@ -84,7 +84,7 @@ The following commands are used to create and run a Debian build environment.
 
 .. code-block:: console
 
-    docker build --file tools/build/Dockerfile.Debian --tag freecad-debian
+    docker build --file tools/build/Docker/Dockerfile.Debian --tag freecad-debian
     docker run --rm --interactive --tty --volume $(pwd):/builds:z freecad-debian
 
 
@@ -95,7 +95,7 @@ The following commands are used to create and run a Fedora build environment.
 
 .. code-block:: console
 
-    docker build --file tools/build/Dockerfile.Fedora --tag freecad-fedora
+    docker build --file tools/build/Docker/Dockerfile.Fedora --tag freecad-fedora
     docker run --rm --interactive --tty --volume $(pwd):/builds:z freecad-fedora
 
 
@@ -106,7 +106,7 @@ The following commands are used to create and run a Manjaro build environment.
 
 .. code-block:: console
 
-    docker build --file tools/build/Dockerfile.Manjaro --tag freecad-manjaro
+    docker build --file tools/build/Docker/Dockerfile.Manjaro --tag freecad-manjaro
     docker run --rm --interactive --tty --volume $(pwd):/builds:z freecad-manjaro
 
 
@@ -118,7 +118,7 @@ The following commands are used to create and run a Ubuntu build environment.
 
 .. code-block:: console
 
-    docker build --file tools/build/Dockerfile.Ubuntu --tag freecad-ubuntu
+    docker build --file tools/build/Docker/Dockerfile.Ubuntu --tag freecad-ubuntu
     docker run --rm --interactive --tty --volume $(pwd):/builds:z freecad-ubuntu
 
 

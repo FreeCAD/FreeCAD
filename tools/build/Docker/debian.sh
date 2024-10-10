@@ -12,4 +12,5 @@ apt-get install --no-install-recommends --yes build-essential cmake doxygen \
     libvtk-dicom-dev libx11-dev libxerces-c-dev libxmu-dev libxmuu-dev \
     libzipios++-dev netgen netgen-headers pyside2-tools python3-dev \
     python3-matplotlib python3-pivy python3-ply python3-pyside2.qtsvg \
-    python3-pyside2.qtuitools qtchooser qttools5-dev shiboken2 swig
+    python3-pyside2.qtuitools qtchooser qttools5-dev shiboken2 swig \
+    python3-pyside2.qtnetwork libyaml-cpp-dev
