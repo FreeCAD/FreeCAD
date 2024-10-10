@@ -61,14 +61,56 @@ void ViewProviderPlane::attach(App::DocumentObject * obj) {
     ViewProviderDatum::attach(obj);
 
     const char* name = pcObject->getNameInDocument();
+
+    // Setup colors
+    auto material = new SoMaterial();
+    SbColor color;
+    material->transparency.setValue(0.95f);
+    float alpha = 0.0f;
+    float lineTransparency = 0.5;
+    bool noRole = false;
+    auto planesRoles = App::LocalCoordinateSystem::PlaneRoles;
+    if (strncmp(name, planesRoles[0], strlen(planesRoles[0])) == 0) {
+        // XY-axis: blue
+        ShapeAppearance.setDiffuseColor(ViewParams::instance()->getAxisZColor());
+        ShapeAppearance.setTransparency(lineTransparency);
+        color.setPackedValue(ViewParams::instance()->getAxisZColor(), alpha);
+    }
+    else if (strncmp(name, planesRoles[1], strlen(planesRoles[1])) == 0) {
+        // XZ-axis: green
+        ShapeAppearance.setDiffuseColor(ViewParams::instance()->getAxisYColor());
+        ShapeAppearance.setTransparency(lineTransparency);
+        color.setPackedValue(ViewParams::instance()->getAxisYColor(), alpha);
+    }
+    else if (strncmp(name, planesRoles[2], strlen(planesRoles[2])) == 0) {
+        // YZ-axis: red
+        ShapeAppearance.setDiffuseColor(ViewParams::instance()->getAxisXColor());
+        ShapeAppearance.setTransparency(lineTransparency);
+        color.setPackedValue(ViewParams::instance()->getAxisXColor(), alpha);
+    }
+    else {
+        noRole = true;
+    }
+
     static const float size = ViewProviderOrigin::defaultSize() * 0.6; //NOLINT
     static const float startSize = 0.25 * size; //NOLINT
 
 
-    static const SbVec3f verts[4] = {
-        SbVec3f(size,size,0),   SbVec3f(size, startSize,0),
-        SbVec3f(startSize,startSize,0), SbVec3f(startSize,size,0),
-    };
+    SbVec3f verts[4];
+    if (noRole) {
+        double doubleSize = 2 * size;
+        verts[0] = SbVec3f(doubleSize, doubleSize, 0);
+        verts[1] = SbVec3f(doubleSize, 0, 0);
+        verts[2] = SbVec3f(0, 0, 0);
+        verts[3] = SbVec3f(0, doubleSize, 0);
+    }
+    else {
+        verts[0] = SbVec3f(size, size, 0);
+        verts[1] = SbVec3f(size, startSize, 0);
+        verts[2] = SbVec3f(startSize, startSize, 0);
+        verts[3] = SbVec3f(startSize, size, 0);
+    }
+
 
     // indexes used to create the edges
     static const int32_t lines[6] = { 0, 1, 2, 3, 0, -1 };
@@ -89,32 +131,6 @@ void ViewProviderPlane::attach(App::DocumentObject * obj) {
     auto faceSeparator = new SoSeparator();
     sep->addChild(faceSeparator);
 
-    auto material = new SoMaterial();
-    material->transparency.setValue(0.95f);
-    SbColor color;
-    float alpha = 0.0f;
-    float lineTransparency = 0.5;
-
-    // Setup colors
-    auto planesRoles = App::LocalCoordinateSystem::PlaneRoles;
-    if (strncmp(name, planesRoles[0], strlen(planesRoles[0])) == 0) {
-        // XY-axis: blue
-        ShapeAppearance.setDiffuseColor(ViewParams::instance()->getAxisZColor());
-        ShapeAppearance.setTransparency(lineTransparency);
-        color.setPackedValue(ViewParams::instance()->getAxisZColor(), alpha);
-    }
-    else if (strncmp(name, planesRoles[1], strlen(planesRoles[1])) == 0) {
-        // XZ-axis: green
-        ShapeAppearance.setDiffuseColor(ViewParams::instance()->getAxisYColor());
-        ShapeAppearance.setTransparency(lineTransparency);
-        color.setPackedValue(ViewParams::instance()->getAxisYColor(), alpha);
-    }
-    else if (strncmp(name, planesRoles[2], strlen(planesRoles[2])) == 0) {
-        // YZ-axis: red
-        ShapeAppearance.setDiffuseColor(ViewParams::instance()->getAxisXColor());
-        ShapeAppearance.setTransparency(lineTransparency);
-        color.setPackedValue(ViewParams::instance()->getAxisXColor(), alpha);
-    }
 
     material->ambientColor.setValue(color);
     material->diffuseColor.setValue(color);

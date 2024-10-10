@@ -58,7 +58,7 @@ void ViewProviderLine::attach(App::DocumentObject *obj) {
     // Setup label text and line colors
     const char* name = pcObject->getNameInDocument();
             
-
+    bool noRole = false;
     auto axisRoles = App::LocalCoordinateSystem::AxisRoles;
     if (strncmp(name, axisRoles[0], strlen(axisRoles[0])) == 0) {
         // X-axis: red
@@ -75,10 +75,21 @@ void ViewProviderLine::attach(App::DocumentObject *obj) {
         ShapeAppearance.setDiffuseColor(ViewParams::instance()->getAxisZColor());
         pLabel->string.setValue(SbString("Z"));
     }
+    else {
+        noRole = true;
+    }
 
     static const float size = ViewProviderOrigin::defaultSize();
 
-    static const SbVec3f verts[2] = { SbVec3f(size, 0, 0),   SbVec3f ( 0.2 * size, 0, 0 ) }; //NOLINT
+    SbVec3f verts[2];
+    if (noRole) {
+        verts[0] = SbVec3f(0, 0, 2 * size);
+        verts[1] = SbVec3f(0, 0, 0);
+    }
+    else {
+        verts[0] = SbVec3f(0, 0, size);
+        verts[1] = SbVec3f(0, 0, 0.2 * size);
+    }
 
     // indexes used to create the edges
     static const int32_t lines[4] = { 0, 1, -1 };
@@ -96,7 +107,7 @@ void ViewProviderLine::attach(App::DocumentObject *obj) {
     sep->addChild ( pLines );
 
     auto textTranslation = new SoTranslation ();
-    textTranslation->translation.setValue ( SbVec3f ( size * 1.1, 0, 0 ) );
+    textTranslation->translation.setValue(SbVec3f(0, 0, size * 1.1));
     sep->addChild ( textTranslation );
 
     auto ps = new SoPickStyle();
