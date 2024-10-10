@@ -150,7 +150,7 @@ void PathSegmentWalker::walk(PathSegmentVisitor& cb, const Base::Vector3d& start
     bool absolutecenter = false;
 
     // for mapping the coordinates to XY plane
-    double Base::Vector3d::*pz = &Base::Vector3d::z;
+    double Base::Vector3d::* pz = &Base::Vector3d::z;
 
     cb.setup(last);
 
