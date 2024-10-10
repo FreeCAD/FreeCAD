@@ -869,6 +869,7 @@ void AboutDialog::copyToClipboard()
 #endif
         << '\n';
 #endif
+    str << "Platform: " << qGuiApp->platformName() << '\n';
     QLocale loc;
     str << "Locale: " << QLocale::languageToString(loc.language()) << "/"
 #if QT_VERSION < QT_VERSION_CHECK(6,6,0)
