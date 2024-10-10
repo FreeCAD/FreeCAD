@@ -132,6 +132,21 @@ public:
     /// utility function to swap the index in First/Second/Third of the provided constraint from the
     /// fromGeoId GeoId to toGeoId
     void substituteIndex(int fromGeoId, int toGeoId);
+    /// utility function to swap the index and position in First/Second/Third of the provided
+    /// constraint from {fromGeoId, fromPosId} to {toGeoId, toPosId}.
+    void substituteIndexAndPos(int fromGeoId, PointPos fromPosId, int toGeoId, PointPos toPosId);
+
+    /// utility function to check if `geoId` is one of the geometries
+    bool involvesGeoId(int geoId) const
+    {
+        return First == geoId || Second == geoId || Third == geoId;
+    }
+    /// utility function to check if (`geoId`, `posId`) is one of the points/curves
+    bool involvesGeoIdAndPosId(int geoId, PointPos posId) const
+    {
+        return (First == geoId && FirstPos == posId) || (Second == geoId && SecondPos == posId)
+            || (Third == geoId && ThirdPos == posId);
+    }
 
     std::string typeToString() const
     {
