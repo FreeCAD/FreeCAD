@@ -120,13 +120,21 @@ class _TaskPanel(base_femmeshtaskpanel._BaseMeshTaskPanel):
         self.form.qsb_min_size.setProperty("value", self.min_size)
         FreeCADGui.ExpressionBinding(self.form.qsb_min_size).bind(self.obj, "MinSize")
 
+        self.form.dsb_growth_rate.setProperty("value", self.growth_rate)
+        FreeCADGui.ExpressionBinding(self.form.dsb_growth_rate).bind(self.obj, "GrowthRate")
+
+        self.form.dsb_curvature_safety.setProperty("value", self.curvature_safety)
+        FreeCADGui.ExpressionBinding(self.form.dsb_curvature_safety).bind(
+            self.obj, "CurvatureSafety"
+        )
+
+        self.form.dsb_seg_per_edge.setProperty("value", self.seg_per_edge)
+        FreeCADGui.ExpressionBinding(self.form.dsb_seg_per_edge).bind(self.obj, "SegmentsPerEdge")
+
         self.fineness_enum = self.obj.getEnumerationsOfProperty("Fineness")
         index = self.fineness_enum.index(self.fineness)
         self.form.cb_fineness.addItems(self.fineness_enum)
         self.form.cb_fineness.setCurrentIndex(index)
-        self.form.dsb_growth_rate.setValue(self.growth_rate)
-        self.form.dsb_curvature_safety.setValue(self.curvature_safety)
-        self.form.dsb_seg_per_edge.setValue(self.seg_per_edge)
 
         self.form.ckb_second_order.setChecked(self.second_order)
 

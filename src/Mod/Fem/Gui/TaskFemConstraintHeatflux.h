@@ -45,9 +45,10 @@ public:
     explicit TaskFemConstraintHeatflux(ViewProviderFemConstraintHeatflux* ConstraintView,
                                        QWidget* parent = nullptr);
     ~TaskFemConstraintHeatflux() override;
-    double getAmbientTemp() const;
+    std::string getAmbientTemp() const;
     /*double getFaceTemp(void) const;*/
-    double getFilmCoef() const;
+    std::string getFilmCoef() const;
+    std::string getDFlux() const;
     double getEmissivity() const;
     std::string get_constraint_type() const;
     const std::string getReferences() const override;

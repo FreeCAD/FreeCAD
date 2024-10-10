@@ -44,8 +44,8 @@ public:
                                      QWidget* parent = nullptr);
     ~TaskFemConstraintSpring() override;
     const std::string getReferences() const override;
-    std::string get_normalStiffness() const;
-    std::string get_tangentialStiffness() const;
+    std::string getNormalStiffness() const;
+    std::string getTangentialStiffness() const;
     std::string getElmerStiffness() const;
 
 private Q_SLOTS:

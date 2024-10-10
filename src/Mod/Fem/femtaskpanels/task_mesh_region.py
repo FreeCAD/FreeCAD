@@ -47,11 +47,11 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         super().__init__(obj)
 
         # parameter widget
-        self.parameterWidget = FreeCADGui.PySideUic.loadUi(
+        self.parameter_widget = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshRegion.ui"
         )
         QtCore.QObject.connect(
-            self.parameterWidget.if_elelen,
+            self.parameter_widget.qsb_elelen,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
             self.elelen_changed,
         )
@@ -59,26 +59,29 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
 
         # geometry selection widget
         # start with Solid in list!
-        self.selectionWidget = selection_widgets.GeometryElementsSelection(
+        self.selection_widget = selection_widgets.GeometryElementsSelection(
             obj.References, ["Solid", "Face", "Edge", "Vertex"], True, False
         )
 
         # form made from param and selection widget
-        self.form = [self.parameterWidget, self.selectionWidget]
+        self.form = [self.parameter_widget, self.selection_widget]
 
     def accept(self):
         self.obj.CharacteristicLength = self.elelen
-        self.obj.References = self.selectionWidget.references
-        self.selectionWidget.finish_selection()
+        self.obj.References = self.selection_widget.references
+        self.selection_widget.finish_selection()
         return super().accept()
 
     def reject(self):
-        self.selectionWidget.finish_selection()
+        self.selection_widget.finish_selection()
         return super().reject()
 
     def init_parameter_widget(self):
         self.elelen = self.obj.CharacteristicLength
-        self.parameterWidget.if_elelen.setText(self.elelen.UserString)
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_elelen).bind(
+            self.obj, "CharacteristicLength"
+        )
+        self.parameter_widget.qsb_elelen.setProperty("value", self.elelen)
 
     def elelen_changed(self, base_quantity_value):
         self.elelen = base_quantity_value
