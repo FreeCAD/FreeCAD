@@ -2263,6 +2263,9 @@ private:
         try {
             TopoShape* shape = new TopoShape();
             Base::Interpreter().convertSWIGPointerObj("OCC.TopoDS","TopoDS_Shape *", proxy, &ptr, 0);
+            if (!ptr) {
+                throw Py::RuntimeError("Conversion of OCC.TopoDS.TopoDS_Shape failed");
+            }
             TopoDS_Shape* s = static_cast<TopoDS_Shape*>(ptr);
             shape->setShape(*s);
             return Py::asObject(new TopoShapePy(shape));
