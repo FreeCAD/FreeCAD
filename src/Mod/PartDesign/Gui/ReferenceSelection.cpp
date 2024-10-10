@@ -148,12 +148,12 @@ bool ReferenceSelection::allowOrigin(PartDesign::Body *body, App::OriginGroupExt
     if (fits) { // check that it actually belongs to the chosen body or part
         try { // here are some throwers
             if (body) {
-                if (body->getOrigin ()->hasObject (pObj) ) {
+                if (body->hasObject(pObj, true) ) {
                     return true;
                 }
             }
             else if (originGroup ) {
-                if (originGroup->getOrigin()->hasObject(pObj)) {
+                if (originGroup->hasObject(pObj, true)) {
                     return true;
                 }
             }
