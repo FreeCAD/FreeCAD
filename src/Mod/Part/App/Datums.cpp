@@ -33,7 +33,7 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(Part::DatumPlane, App::Plane)
 Part::DatumPlane::DatumPlane()
 {
     AttachExtension::initExtension(this);
-    //touch();
+    this->setAttacher(new AttachEnginePlane);
 }
 
 
@@ -42,7 +42,7 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(Part::DatumLine, App::Line)
 Part::DatumLine::DatumLine()
 {
     AttachExtension::initExtension(this);
-    //touch();
+    this->setAttacher(new AttachEngineLine);
 }
 
 
@@ -51,7 +51,7 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(Part::DatumPoint, App::Point)
 Part::DatumPoint::DatumPoint()
 {
     AttachExtension::initExtension(this);
-    //touch();
+    this->setAttacher(new AttachEnginePoint);
 }
 
 
@@ -60,5 +60,4 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(Part::LocalCoordinateSystem, App::LocalCoordinat
 Part::LocalCoordinateSystem::LocalCoordinateSystem()
 {
     AttachExtension::initExtension(this);
-    //touch();
 }
