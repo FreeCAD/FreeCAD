@@ -167,7 +167,7 @@
            <double>10.0</double>
           </property>
           <property name="value">
-           <double>1.0</double>
+           <double>10.0</double>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>BooleanFuzzy</cstring>

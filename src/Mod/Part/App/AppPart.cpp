@@ -566,7 +566,7 @@ PyMOD_INIT_FUNC(Part)
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
     
-    Part::FuzzyHelper::setBooleanFuzzy(hGrp->GetFloat("BooleanFuzzy",1.0));
+    Part::FuzzyHelper::setBooleanFuzzy(hGrp->GetFloat("BooleanFuzzy",10.0));
     
     PyMOD_Return(partModule);
 }
