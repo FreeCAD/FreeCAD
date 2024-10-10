@@ -33,10 +33,10 @@ import DraftVecUtils
 import Mesh
 import numpy
 import Part
+import Sketcher
 import WorkingPlane
 from draftutils.messages import _err, _log, _msg, _wrn
 from draftutils.params import get_param_arch
-from functools import reduce
 
 import FreeCAD as App
 
@@ -73,7 +73,12 @@ DEBUG_COLOR = (255, 0, 0)
 # SweetHome3D is in cm while FreeCAD is in mm
 FACTOR = 10
 DEFAULT_WALL_WIDTH = 100
+TOLERANCE = float(.1)
 
+ORIGIN = App.Vector(0, 0, 0)
+X_NORM = App.Vector(1, 0, 0)
+Y_NORM = App.Vector(0, 1, 0)
+Z_NORM = App.Vector(0, 0, 1)
 
 class SH3DImporter:
     """The main class to import a SH3D file.
@@ -134,6 +139,7 @@ class SH3DImporter:
     def import_sh3d(self):
         doc = App.ActiveDocument
 
+        self.progress_bar.start(f"Importing SweetHome 3D file '{self.filename}'. Please wait ...", -1)
         with zipfile.ZipFile(self.filename, 'r') as zip:
             self.zip = zip
             entries = zip.namelist()
@@ -142,7 +148,6 @@ class SH3DImporter:
             home = ET.fromstring(zip.read("Home.xml"))
             self.total_object_count = self._get_object_count(home)
 
-            self.progress_bar.start(f"Importing SweetHome 3D file. Please wait ...", self.total_object_count)
 
             _msg(f"Importing home '{home.get('name')}' ...")
             # Create the groups to organize the different resources together
@@ -194,7 +199,6 @@ class SH3DImporter:
                 # We also import all the <furnitureGroup>
                 for furniture_group in home.findall('furnitureGroup'):
                     self._import_elements(furniture_group, 'pieceOfFurniture', False)
-                    self.progress_bar.next()
 
             # Importing <light> elements ...
             if self.preferences["IMPORT_LIGHTS"] and self.preferences["RENDER_IS_AVAILABLE"]:
@@ -424,8 +428,12 @@ class SH3DImporter:
         return floor
 
     def _import_elements(self, parent, name, update_progress=True):
+        names = list(self.handlers.keys())
+        elements = parent.findall(name)
         if update_progress:
-            _msg(f"Importing all <{name}> elements ...")
+            self.progress_bar.stop()
+            self.progress_bar.start(f"Step {names.index(name)+1}/{len(names)}: importing {len(elements)} '{name}' elements. Please wait ...", len(elements))
+            _msg(f"Importing {len(elements)} '{name}' elements ...")
         def _process(tuple):
             (i, elm) = tuple
             _log(f"Importing <{name}>#{i} ({self.current_object_count + 1}/{self.total_object_count}) ...")
@@ -461,9 +469,9 @@ class SH3DImporter:
         """Prepend the wall referenced by 'wallAtStart' to the list of wall
         """
         # We skip curved walls
-        if wall.get('wallAtStart') and not wall.get('arcExtent'):
+        if wall.get('wallAtStart'): # and not wall.get('arcExtent'):
             sibling_wall_id, sibling_wall = self._get_sibling_wall(parent, wall, 'wallAtStart')
-            if not sibling_wall_id or sibling_wall.get('arcExtent'):
+            if not sibling_wall_id: # or sibling_wall.get('arcExtent'):
                 return None, None
             if DEBUG: _log(f"{sibling_wall_id} -> {wall.get('id')}")
             wall_segments.insert(0, sibling_wall)
@@ -474,9 +482,9 @@ class SH3DImporter:
         """Prepend the wall referenced by 'wallAtStart' to the list of wall
         """
         # We skip curved walls
-        if wall.get('wallAtEnd') and not wall.get('arcExtent'):
+        if wall.get('wallAtEnd'): # and not wall.get('arcExtent'):
             sibling_wall_id, sibling_wall = self._get_sibling_wall(parent, wall, 'wallAtEnd')
-            if not sibling_wall_id or sibling_wall.get('arcExtent'):
+            if not sibling_wall_id: # or sibling_wall.get('arcExtent'):
                 return None, None
             if DEBUG: _log(f"{wall.get('id')} -> {sibling_wall_id}")
             wall_segments.append(sibling_wall)
@@ -620,7 +628,7 @@ class RoomHandler(BaseHandler):
 
         slab.Label = elm.get('name', 'Room')
         slab.IfcType = "Slab"
-        slab.Normal = App.Vector(0,0,-1)
+        slab.Normal = -Z_NORM
 
         color = elm.get('floorColor', self.importer.preferences["DEFAULT_FLOOR_COLOR"])
         set_color_and_transparency(slab, color)
@@ -701,11 +709,6 @@ class WallHandler(BaseHandler):
             for baseboard in elm.findall('baseboard'):
                 self._import_baseboard(floor, wall, baseboard)
 
-        # TODO: adding walls and subtracting windows...
-        # wall.Additions = walls
-        # wall.Subtractions = windows
-
-
     def _process_wall_segments(self, i, elms):
         elm = elms[0]
         level_id = elm.get('level', None)
@@ -718,7 +721,26 @@ class WallHandler(BaseHandler):
 
         invert_angle = False
         if not wall:
-            wall = self._make_joined_wall(floor, elms)
+            sketch = App.activeDocument().addObject('Sketcher::SketchObject', 'Sketch')
+            for j, wall_segment in enumerate(elms):
+                if wall_segment.get('arcExtent'):
+                    self._process_curved_segment(floor, sketch, wall_segment)
+                else:
+                    self._process_straight_segment(floor, sketch, wall_segment)
+                # if j > 0:
+                #     if wall_segment.get('arcExtent'):
+                #         sketch.addConstraint(Sketcher.Constraint("Coincident", j, 2, j-1, 1))
+                #     else:
+                #         sketch.addConstraint(Sketcher.Constraint("Coincident", j-1, 2, j, 1))
+            if sketch.GeometryCount == 0:
+                _wrn(f"Wall {elm.get('id')} does not contain any relevant wall segment. Skipping!")
+                return
+            wall = Arch.makeWall(sketch)
+            wall.Height = height = dim_sh2fc(elm.get('height', dim_fc2sh(floor.Height)))
+            wall.Width = dim_sh2fc(elm.get('thickness'))
+            wall.Normal = Z_NORM
+
+
 
         self._set_wall_colors(wall, invert_angle, elm)
 
@@ -744,42 +766,66 @@ class WallHandler(BaseHandler):
         self.setp(obj, "App::PropertyFloat", "leftSideShininess", "The wall's left hand side shininess", elm)
         self.setp(obj, "App::PropertyFloat", "rightSideShininess", "The wall's right hand side shininess", elm)
 
-    def _make_joined_wall(self, floor, elms):
-        """Create a Arch Wall from a line.
+    def _process_straight_segment(self, floor, sketch, elm):
+        x_start = float(elm.get('xStart'))
+        y_start = float(elm.get('yStart'))
+        z_start = dim_fc2sh(floor.Placement.Base.z)
+        x_end = float(elm.get('xEnd'))
+        y_end = float(elm.get('yEnd'))
+        p1 = coord_sh2fc(App.Vector(x_start, y_start, z_start))
+        p2 = coord_sh2fc(App.Vector(x_end, y_end, z_start))
+        if not p1.isEqual(p2, TOLERANCE):
+            sketch.addGeometry(Part.LineSegment(p1, p2))
 
-        The constructed wall will be a simple solid with the length width height found in imported_wall
+    def _process_curved_segment(self, floor, sketch, elm):
+        x1 = float(elm.get('xStart'))
+        y1 = float(elm.get('yStart'))
+        x2 = float(elm.get('xEnd'))
+        y2 = float(elm.get('yEnd'))
+        z = dim_fc2sh(floor.Placement.Base.z)
 
-        Args:
-            floor (Arch::Structure): The floor the wall belongs to
-            elms (Element): a list of xml elements, one for each contiguous segment
+        # p1 and p2 are the points at which the arc should pass, i.e. the center
+        #   of the edge used to draw the rectangle (used later on as sections)
+        p1 = coord_sh2fc(App.Vector(x1, y1, z))
+        p2 = coord_sh2fc(App.Vector(x2, y2, z))
+        arc_extent = ang_sh2fc(elm.get('arcExtent', 0))
 
-        Returns:
-            Arch::Wall: the newly created wall
-        """
-        points = []
-        height = thickness = None
-        for elm in elms:
-            x_start = float(elm.get('xStart'))
-            y_start = float(elm.get('yStart'))
-            z_start = dim_fc2sh(floor.Placement.Base.z)
-            x_end = float(elm.get('xEnd'))
-            y_end = float(elm.get('yEnd'))
+        # FROM HERE ALL IS IN FC COORDINATE
 
-            p1 = coord_sh2fc(App.Vector(x_start, y_start, z_start))
-            p2 = coord_sh2fc(App.Vector(x_end, y_end, z_start))
-            points.append(p1)
-            points.append(p2)
-            if not height:
-                height = dim_sh2fc(elm.get('height', dim_fc2sh(floor.Height)))
-            if not thickness:
-                thickness = dim_sh2fc(elm.get('thickness'))
-        line = Draft.makeWire(points, closed=False, face=False) 
-        wall = Arch.makeWall(line)
+        # Calculate the circle that pases through the center of both rectangle
+        #   and has the correct angle betwen p1 and p2
+        chord = DraftVecUtils.dist(p1, p2)
+        radius = abs(chord / (2*math.sin(arc_extent/2)))
 
-        wall.Height = height
-        wall.Width = thickness
-        wall.Normal = App.Vector(0, 0, 1)
-        return wall
+        circles = DraftGeomUtils.circleFrom2PointsRadius(p1, p2, radius)
+        # We take the center that preserve the arc_extent orientation (in FC
+        #   coordinate). The orientation is calculated from p1 to p2
+        invert_angle = False
+        center = circles[0].Center
+        if numpy.sign(arc_extent) != numpy.sign(DraftVecUtils.angle(p1-center, p2-center)):
+            invert_angle = True
+            center = circles[1].Center
+
+        # radius1 and radius2 are the vector from center to p1 and p2 respectively
+        radius1 = p1 - center
+        radius2 = p2 - center
+
+        # NOTE: FreeCAD.Vector.getAngle return unsigned angle, using
+        #   DraftVecUtils.angle instead
+        # a1 and a2 are the angle between each etremity radius and the unit vector
+        #   they are used to determine the rotation for the section used to draw
+        #   the wall.
+        a1 = DraftVecUtils.angle(X_NORM, radius1)
+        a2 = DraftVecUtils.angle(X_NORM, radius2)
+        if DEBUG:
+            _log(f"a1={a1}º (x -> {radius1}) w/ center={center} and p1={p1}")
+            _log(f"a2={a2}º (x -> {radius2}) w/ center={center} and p2={p2}")
+        
+        circle = Part.Circle(center, Z_NORM,radius)
+        if invert_angle:
+            sketch.addGeometry(Part.ArcOfCircle(circle, a1, a2))
+        else:
+            sketch.addGeometry(Part.ArcOfCircle(circle, a2, a1))
 
     def _make_straight_wall(self, floor, elm):
         """Create a Arch Wall from a line.
@@ -807,7 +853,7 @@ class WallHandler(BaseHandler):
         # wall.setExpression('Height', f"<<{floor}>>.height")
         wall.Height = dim_sh2fc(elm.get('height', dim_fc2sh(floor.Height)))
         wall.Width = dim_sh2fc(elm.get('thickness'))
-        wall.Normal = App.Vector(0, 0, 1)
+        wall.Normal = Z_NORM
         return wall
 
     def _make_tappered_wall(self, floor, elm):
@@ -886,8 +932,8 @@ class WallHandler(BaseHandler):
         # a1 and a2 are the angle between each etremity radius and the unit vector
         #   they are used to determine the rotation for the section used to draw
         #   the wall.
-        a1 = math.degrees(DraftVecUtils.angle(App.Vector(1, 0, 0), radius1))
-        a2 = math.degrees(DraftVecUtils.angle(App.Vector(1, 0, 0), radius2))
+        a1 = math.degrees(DraftVecUtils.angle(X_NORM, radius1))
+        a2 = math.degrees(DraftVecUtils.angle(X_NORM, radius2))
 
         if DEBUG:
             p1C1p2 = numpy.sign(DraftVecUtils.angle(
@@ -915,9 +961,7 @@ class WallHandler(BaseHandler):
             section1.ViewObject.LineColor = DEBUG_COLOR
             section2.ViewObject.LineColor = DEBUG_COLOR
 
-            origin = App.Vector(0, 0, 0)
-            g = App.ActiveDocument.addObject(
-                "App::DocumentObjectGroup", elm.get('id'))
+            g = App.ActiveDocument.addObject("App::DocumentObjectGroup", elm.get('id'))
 
             def _debug_transformation(label, center, thickness, height, angle, point):
                 p = Draft.make_point(center.x, center.y, center.z, color=DEBUG_COLOR, name=f"C{label}", point_size=5)
@@ -926,7 +970,7 @@ class WallHandler(BaseHandler):
                 p = Draft.make_point(point.x, point.y, point.z, color=DEBUG_COLOR, name=f"P{label}", point_size=5)
                 g.addObject(p)
 
-                l = Draft.make_wire([origin, point])
+                l = Draft.make_wire([ORIGIN, point])
                 l.ViewObject.LineColor = DEBUG_COLOR
                 l.Label = f"O-P{label}"
                 g.addObject(l)
@@ -937,21 +981,21 @@ class WallHandler(BaseHandler):
                 g.addObject(s)
 
                 r = App.Rotation(0, 0, 0)
-                p = App.Placement(origin, r) * p_corner
+                p = App.Placement(ORIGIN, r) * p_corner
                 s = Draft.make_rectangle(thickness, height, p)
                 s.ViewObject.LineColor = DEBUG_COLOR
                 s.Label = f"O-S{label}-(corner)"
                 g.addObject(s)
 
                 r = App.Rotation(angle, 0, 0)
-                p = App.Placement(origin, r) * p_corner
+                p = App.Placement(ORIGIN, r) * p_corner
                 s = Draft.make_rectangle(thickness, height, p)
                 s.ViewObject.LineColor = DEBUG_COLOR
                 s.Label = f"O-S{label}-(corner+a{label})"
                 g.addObject(s)
 
                 r = App.Rotation(angle, 0, 90)
-                p = App.Placement(origin, r) * p_corner
+                p = App.Placement(ORIGIN, r) * p_corner
                 s = Draft.make_rectangle(thickness, height, p)
                 s.ViewObject.LineColor = DEBUG_COLOR
                 s.Label = f"O-S{label}-(corner+a{label}+90)"
@@ -964,10 +1008,8 @@ class WallHandler(BaseHandler):
                 s.Label = f"P{label}-S{label}-(corner+a{label}+90)"
                 g.addObject(s)
 
-            _debug_transformation(
-                "1", circles[0].Center, thickness, height1, a1, p1)
-            _debug_transformation(
-                "2", circles[1].Center, thickness, height2, a2, p2)
+            _debug_transformation("1", circles[0].Center, thickness, height1, a1, p1)
+            _debug_transformation("2", circles[1].Center, thickness, height2, a2, p2)
 
         # Create the spine
         placement = App.Placement(center, App.Rotation())
@@ -1065,7 +1107,7 @@ class WallHandler(BaseHandler):
             
 
         baseboard.DirMode = "Custom"
-        baseboard.Dir = App.Vector(0, 0, 1)
+        baseboard.Dir = Z_NORM
         baseboard.DirLink = None
         baseboard.LengthFwd = baseboard_height
         baseboard.LengthRev = 0
@@ -1081,6 +1123,10 @@ class WallHandler(BaseHandler):
         self.setp(baseboard, "App::PropertyString", "id", "The element's id", baseboard_id)
         self.setp(baseboard, "App::PropertyLink", "parent", "The element parent", wall)
 
+        if 'BaseboardGroupName' not in floor.PropertiesList:
+            group = floor.newObject("App::DocumentObjectGroup", "Baseboards")
+            self.setp(floor, "App::PropertyString", "BaseboardGroupName", "The DocumentObjectGroup name for all baseboards on this floor", group.Name)
+
         floor.getObject(floor.BaseboardGroupName).addObject(baseboard)
 
 
@@ -1092,6 +1138,7 @@ class BaseFurnitureHandler(BaseHandler):
 
     def set_furniture_common_properties(self, obj, elm):
         self.setp(obj, "App::PropertyString", "id", "The furniture's id", elm)
+        self.setp(obj, "App::PropertyString", "name", "The furniture's name", elm)
         self.setp(obj, "App::PropertyFloat", "angle", "The angle of the furniture", elm)
         self.setp(obj, "App::PropertyBool", "visible", "Whether the object is visible", elm)
         self.setp(obj, "App::PropertyBool", "movable", "Whether the object is movable", elm)
@@ -1136,6 +1183,25 @@ class BaseFurnitureHandler(BaseHandler):
         self.setp(obj, "App::PropertyFloat", "heightInPlan", "The object's height in the plan view", elm)
 
 
+    def _get_mesh(self, elm):
+        model = elm.get('model')
+        if model not in self.importer.zip.namelist():
+            raise ValueError(f"Invalid SweetHome3D file: missing model {model} for furniture {elm.get('id')}")
+        model_path_obj = None
+        try:
+            # Since mesh.read(model_data) does not work on BytesIO extract it first
+            tmp_dir = App.ActiveDocument.TransientDir
+            if os.path.isdir(os.path.join(tmp_dir, model)):
+                tmp_dir = os.path.join(tmp_dir, str(uuid.uuid4()))
+            model_path = self.importer.zip.extract(member=model, path=tmp_dir)
+            model_path_obj = model_path+".obj"
+            os.rename(model_path, model_path_obj)
+            mesh = Mesh.Mesh()
+            mesh.read(model_path_obj)
+        finally:
+            os.remove(model_path_obj)
+        return mesh
+
 class DoorOrWindowHandler(BaseFurnitureHandler):
     """A helper class to import a SH3D `<doorOrWindow>` object."""
 
@@ -1149,24 +1215,26 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
             i (int): the ordinal of the imported element
             elm (Element): the xml element
         """
+        door_id = f"{elm.get('id', elm.get('name'))}-{i}"
         level_id = elm.get('level', None)
         floor = self.get_floor(level_id)
-        assert floor != None, f"Missing floor '{level_id}' for <doorOrWindow> '{elm.get('id')}' ..."
+        assert floor != None, f"Missing floor '{level_id}' for <doorOrWindow> '{door_id}' ..."
 
 
         feature = None
         if self.importer.preferences["MERGE"]:
-            feature = self.get_fc_object(elm.get('id'), 'doorOrWindow')
+            feature = self.get_fc_object(door_id, 'doorOrWindow')
 
         if not feature:
             feature = self._create_door(floor, elm)
 
-        assert feature != None, f"Missing feature for <doorOrWindow> {elm.get('id')} ..."
+        assert feature != None, f"Missing feature for <doorOrWindow> {door_id} ..."
 
         feature.IfcType = "Window"
         self._set_properties(feature, elm)
         self.set_furniture_common_properties(feature, elm)
         self.set_piece_of_furniture_common_properties(feature, elm)
+        self.setp(feature, "App::PropertyString", "id", "The furniture's id", door_id)
 
     def _set_properties(self, obj, elm):
         self.setp(obj, "App::PropertyString", "shType", "The element type", 'doorOrWindow')
@@ -1220,7 +1288,7 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         pl = App.Placement(
             corner,  # translation
             App.Rotation(math.degrees(-angle), 0, 90),  # rotation
-            App.Vector(0, 0, 0)  # rotation@coordinate
+            ORIGIN  # rotation@coordinate
         )
 
         # NOTE: the windows are not imported as meshes, but we use a simple
@@ -1269,65 +1337,6 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         return None
 
 
-
-#         # elif tag == "doorOrWindow":
-#         #     name = attributes["name"]
-                # READ --------------------------------------------------
-#         #     data = self.zip_file.read(attributes["model"])
-#         #     th,tf = tempfile.mkstemp(suffix=".obj")
-#         #     f = pyopen(tf,"wb")
-#         #     f.write(data)
-#         #     f.close()
-#         #     os.close(th)
-                # TRANSFORM ---------------------------------------------
-#         #     m = Mesh.read(tf)
-#         #     fx = (float(attributes["width"])/100)/m.BoundBox.XLength
-#         #     fy = (float(attributes["height"])/100)/m.BoundBox.YLength
-#         #     fz = (float(attributes["depth"])/100)/m.BoundBox.ZLength
-#         #     mat = FreeCAD.Matrix()
-#         #     mat.scale(1000*fx,1000*fy,1000*fz)
-#         #     mat.rotateX(math.pi/2)
-#         #     m.transform(mat)
-                # ???? ---------------------------------------------
-#         #     b = m.BoundBox
-#         #     v1 = FreeCAD.Vector(b.XMin,b.YMin-500,b.ZMin)
-#         #     v2 = FreeCAD.Vector(b.XMax,b.YMin-500,b.ZMin)
-#         #     v3 = FreeCAD.Vector(b.XMax,b.YMax+500,b.ZMin)
-#         #     v4 = FreeCAD.Vector(b.XMin,b.YMax+500,b.ZMin)
-#         #     sub = Part.makePolygon([v1,v2,v3,v4,v1])
-#         #     sub = Part.Face(sub)
-#         #     sub = sub.extrude(FreeCAD.Vector(0,0,b.ZLength))
-#         #     os.remove(tf)
-#         #     shape = Arch.getShapeFromMesh(m)
-#         #     if not shape:
-#         #         shape=Part.Shape()
-#         #         shape.makeShapeFromMesh(m.Topology,0.100000)
-#         #         shape = shape.removeSplitter()
-#         #     if shape:
-#         #         if DEBUG: print("Creating window: ",name)
-#         #         if "angle" in attributes:
-#         #             shape.rotate(shape.BoundBox.Center,FreeCAD.Vector(0,0,1),math.degrees(float(attributes["angle"])))
-#         #             sub.rotate(shape.BoundBox.Center,FreeCAD.Vector(0,0,1),math.degrees(float(attributes["angle"])))
-#         #         p = shape.BoundBox.Center.negative()
-#         #         p = p.add(FreeCAD.Vector(float(attributes["x"])*10,float(attributes["y"])*10,0))
-#         #         p = p.add(FreeCAD.Vector(0,0,shape.BoundBox.Center.z-shape.BoundBox.ZMin))
-#         #         if "elevation" in attributes:
-#         #             p = p.add(FreeCAD.Vector(0,0,float(attributes["elevation"])*10))
-#         #         shape.translate(p)
-#         #         sub.translate(p)
-#         #         obj = FreeCAD.ActiveDocument.addObject("Part::Feature",name+"_body")
-#         #         obj.Shape = shape
-#         #         subobj = FreeCAD.ActiveDocument.addObject("Part::Feature",name+"_sub")
-#         #         subobj.Shape = sub
-#         #         if FreeCAD.GuiUp:
-#         #             subobj.ViewObject.hide()
-#         #         win = Arch.makeWindow(baseobj=obj,name=name)
-#         #         win.Label = name
-#         #         win.Subvolume = subobj
-#         #         self.windows.append(win)
-#         #     else:
-#         #         print("importSH3D: Error creating shape for door/window "+name)
-
 class FurnitureHandler(BaseFurnitureHandler):
     """A helper class to import a SH3D `<pieceOfFurniture>` object."""
 
@@ -1341,37 +1350,27 @@ class FurnitureHandler(BaseFurnitureHandler):
             i (int): the ordinal of the imported element
             elm (Element): the xml element
         """
+        furniture_id = f"{elm.get('id', elm.get('name'))}-{i}"
         level_id = elm.get('level', None)
         floor = self.get_floor(level_id)
-        assert floor != None, f"Missing floor '{level_id}' for <doorOrWindow> '{elm.get('id')}' ..."
+        assert floor != None, f"Missing floor '{level_id}' for <pieceOfFurniture> '{furniture_id}' ..."
 
         feature = None
         if self.importer.preferences["MERGE"]:
-            feature = self.get_fc_object(elm.get("id"), 'pieceOfFurniture')
+            feature = self.get_fc_object(furniture_id, 'pieceOfFurniture')
 
         if not feature:
-            # let's read the model first
-
-            # materials = _import_materials(elm)
-            
             feature = self._create_equipment(elm)
-        
-            # App.ActiveDocument.Furnitures.addObject(feature)
-            
-            # if "Material" not in equipment.PropertiesList and len(materials) > 0:
-            #     equipment.addProperty(
-            #             "App::PropertyLink",
-            #             "Material",
-            #             "",
-            #             QT_TRANSLATE_NOOP(
-            #                 "App::Property", "The Material for this object"
-            #             ),
-            #     )
-            #     equipment.Material = materials[0]
         self.setp(feature, "App::PropertyString", "shType", "The element type", 'pieceOfFurniture')
         self.set_furniture_common_properties(feature, elm)
         self.set_piece_of_furniture_common_properties(feature, elm)
         self.set_piece_of_furniture_horizontal_rotation_properties(feature, elm)
+        self.setp(feature, "App::PropertyString", "id", "The furniture's id", furniture_id)
+
+        if 'FurnitureGroupName' not in floor.PropertiesList:
+            group = floor.newObject("App::DocumentObjectGroup", "Furnitures")
+            self.setp(floor, "App::PropertyString", "FurnitureGroupName", "The DocumentObjectGroup name for all furnitures on this floor", group.Name)
+
         floor.getObject(floor.FurnitureGroupName).addObject(feature)
             
         # We add the object to the list of known object that can then 
@@ -1423,25 +1422,6 @@ class FurnitureHandler(BaseFurnitureHandler):
 
         return equipment
 
-    def _get_mesh(self, elm):
-        model = elm.get('model')
-        if model not in self.importer.zip.namelist():
-            raise ValueError(f"Invalid SweetHome3D file: missing model {model} for furniture {elm.get('id')}")
-        model_path_obj = None
-        try:
-            # Since mesh.read(model_data) does not work on BytesIO extract it first
-            tmp_dir = App.ActiveDocument.TransientDir
-            if os.path.isdir(os.path.join(tmp_dir, model)):
-                tmp_dir = os.path.join(tmp_dir, str(uuid.uuid4()))
-            model_path = self.importer.zip.extract(member=model, path=tmp_dir)
-            model_path_obj = model_path+".obj"
-            os.rename(model_path, model_path_obj)
-            mesh = Mesh.Mesh()
-            mesh.read(model_path_obj)
-        finally:
-            os.remove(model_path_obj)
-        return mesh
-
 
 class LightHandler(FurnitureHandler):
     """A helper class to import a SH3D `<light>` object."""
@@ -1456,19 +1436,21 @@ class LightHandler(FurnitureHandler):
             i (int): the ordinal of the imported element
             elm (Element): the xml element
         """
+        light_id = f"{elm.get('id', elm.get('name'))}-{i}"
         level_id = elm.get('level', None)
         floor = self.get_floor(level_id)
-        assert floor != None, f"Missing floor '{level_id}' for <doorOrWindow> '{elm.get('id')}' ..."
+        assert floor != None, f"Missing floor '{level_id}' for <doorOrWindow> '{light_id}' ..."
 
         if self.importer.preferences["IMPORT_FURNITURES"]:
             super().process(i, elm)
-            light_apppliance = self.get_fc_object(elm.get('id'), 'pieceOfFurniture')
-            assert light_apppliance != None, f"Missing <light> '{elm.get('id')}' ..."
+            light_apppliance = self.get_fc_object(light_id, 'pieceOfFurniture')
+            assert light_apppliance != None, f"Missing <light> furniture {light_id} ..."
             self.setp(light_apppliance, "App::PropertyFloat", "power", "The power of the light",  float(elm.get('power', 0.5)))
 
-        for i, sub_elm in enumerate(elm.findall('lightSource')):
+        # Import the lightSource sub-elments
+        for j, sub_elm in enumerate(elm.findall('lightSource')):
             light_source = None
-            light_source_id = f"{elm.get('id')}-{i}"
+            light_source_id = f"{light_id}-{j}"
             if self.importer.preferences["MERGE"]:
                 light_source = self.get_fc_object(light_source_id, 'lightSource')
 
@@ -1488,6 +1470,7 @@ class LightHandler(FurnitureHandler):
 
             self.setp(light_source, "App::PropertyString", "shType", "The element type", 'lightSource')
             self.setp(light_source, "App::PropertyString", "id", "The elment's id", light_source_id)
+            self.setp(light_source, "App::PropertyLink", "lightAppliance", "The furniture", light_apppliance)
 
             App.ActiveDocument.Lights.addObject(light_source)
 

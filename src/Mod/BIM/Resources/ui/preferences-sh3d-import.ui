@@ -113,7 +113,7 @@
                 </property>
               </widget>
             </item>
-            <item>
+            <!-- <item>
               <widget class="Gui::PrefCheckBox" name="checkBox_8">
                 <property name="toolTip">
                   <string>Whether to join the different Arch::Wall together</string>
@@ -128,7 +128,7 @@
                   <cstring>Mod/Arch</cstring>
                 </property>
               </widget>
-            </item>
+            </item> -->
             <item>
               <widget class="Gui::PrefCheckBox" name="checkBox_11">
                 <property name="toolTip">
