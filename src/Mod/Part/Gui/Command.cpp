@@ -2256,7 +2256,7 @@ CmdPartCoordinateSystem::CmdPartCoordinateSystem()
     : Command("Part_CoordinateSystem")
 {
     sGroup = QT_TR_NOOP("Part");
-    sMenuText = QT_TR_NOOP("Create a Coordinate System");
+    sMenuText = QT_TR_NOOP("Create a coordinate system");
     sToolTipText = QT_TR_NOOP("A coordinate system object that can be attached to other objects.");
     sWhatsThis = "Part_CoordinateSystem";
     sStatusTip = sToolTipText;
@@ -2290,7 +2290,7 @@ CmdPartPlane::CmdPartPlane()
     : Command("Part_Plane")
 {
     sGroup = QT_TR_NOOP("Part");
-    sMenuText = QT_TR_NOOP("Create a Plane");
+    sMenuText = QT_TR_NOOP("Create a datum plane");
     sToolTipText = QT_TR_NOOP("A plane object that can be attached to other objects.");
     sWhatsThis = "Part_Plane";
     sStatusTip = sToolTipText;
@@ -2301,7 +2301,7 @@ void CmdPartPlane::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Add a plane"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add a datum plane"));
 
     std::string name = getUniqueObjectName("Plane");
     doCommand(Doc, "obj = App.activeDocument().addObject('Part::DatumPlane','%s')", name.c_str());
@@ -2323,7 +2323,7 @@ CmdPartLine::CmdPartLine()
     : Command("Part_Line")
 {
     sGroup = QT_TR_NOOP("Part");
-    sMenuText = QT_TR_NOOP("Create a Line");
+    sMenuText = QT_TR_NOOP("Create a datum line");
     sToolTipText = QT_TR_NOOP("A line object that can be attached to other objects.");
     sWhatsThis = "Part_Line";
     sStatusTip = sToolTipText;
@@ -2334,7 +2334,7 @@ void CmdPartLine::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Add a line"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add a datum line"));
 
     std::string name = getUniqueObjectName("Line");
     doCommand(Doc, "obj = App.activeDocument().addObject('Part::DatumLine','%s')", name.c_str());
@@ -2356,7 +2356,7 @@ CmdPartPoint::CmdPartPoint()
     : Command("Part_Point")
 {
     sGroup = QT_TR_NOOP("Part");
-    sMenuText = QT_TR_NOOP("Create a point");
+    sMenuText = QT_TR_NOOP("Create a datum point");
     sToolTipText = QT_TR_NOOP("A point object that can be attached to other objects.");
     sWhatsThis = "Part_Point";
     sStatusTip = sToolTipText;
@@ -2367,7 +2367,7 @@ void CmdPartPoint::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Add a point"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add a datum point"));
 
     std::string name = getUniqueObjectName("Point");
     doCommand(Doc, "obj = App.activeDocument().addObject('Part::DatumPoint','%s')", name.c_str());
