@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2012 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2024 Ondsel (PL Boyer) <development@ondsel.com>         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,50 +20,26 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ORIGINFEATURE_H
-#define ORIGINFEATURE_H
 
-#include "GeoFeature.h"
+#ifndef GUI_ViewProviderPoint_H
+#define GUI_ViewProviderPoint_H
 
-namespace App
+#include "ViewProviderDatum.h"
+
+namespace Gui
 {
 
-class Origin;
-
-/** Plane Object
- *  Used to define planar support for all kind of operations in the document space
- */
-class AppExport OriginFeature: public App::GeoFeature
-{
-    PROPERTY_HEADER_WITH_OVERRIDE(App::OriginFeature);
+class GuiExport ViewProviderPoint : public ViewProviderDatum {
+    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderPoint);
 public:
-    /// additional information about the feature usage (e.g. "BasePlane-XY" or "Axis-X" in a Origin)
-    PropertyString Role;
-
     /// Constructor
-    OriginFeature();
-    ~OriginFeature() override;
+    ViewProviderPoint();
+    ~ViewProviderPoint() override;
 
-    /// Finds the origin object this plane belongs to
-    App::Origin *getOrigin ();
+    void attach ( App::DocumentObject * ) override;
 };
 
-class AppExport Plane: public App::OriginFeature {
-    PROPERTY_HEADER_WITH_OVERRIDE(App::OriginFeature);
-public:
-    const char* getViewProviderName() const override {
-        return "Gui::ViewProviderPlane";
-    }
-};
+} //namespace Gui
 
-class AppExport Line: public App::OriginFeature {
-    PROPERTY_HEADER_WITH_OVERRIDE(App::OriginFeature);
-public:
-    const char* getViewProviderName() const override {
-        return "Gui::ViewProviderLine";
-    }
-};
 
-} //namespace App
-
-#endif /* end of include guard: ORIGINFEATURE_H */
+#endif // GUI_ViewProviderPoint_H

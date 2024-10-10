@@ -104,7 +104,7 @@
 #include "MaterialObject.h"
 #include "MeasureManagerPy.h"
 #include "Origin.h"
-#include "OriginFeature.h"
+#include "Datums.h"
 #include "OriginGroupExtension.h"
 #include "OriginGroupExtensionPy.h"
 #include "SuppressibleExtension.h"
@@ -2126,9 +2126,11 @@ void Application::initTypes()
     App::TextDocument              ::init();
     App::Placement                 ::init();
     App::PlacementPython           ::init();
-    App::OriginFeature             ::init();
+    App::DatumElement              ::init();
     App::Plane                     ::init();
     App::Line                      ::init();
+    App::Point                     ::init();
+    App::LocalCoordinateSystem     ::init();
     App::Part                      ::init();
     App::Origin                    ::init();
     App::Link                      ::init();

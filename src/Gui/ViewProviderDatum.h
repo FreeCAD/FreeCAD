@@ -20,41 +20,61 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#ifndef VIEWPROVIDEDATUM_H_BYJRZNDL
+#define VIEWPROVIDEDATUM_H_BYJRZNDL
 
-#include "OriginFeature.h"
-#include "Document.h"
-#include "Origin.h"
+#include "ViewProviderGeometryObject.h"
 
+class SoText2;
+class SoScale;
 
-using namespace App;
-
-PROPERTY_SOURCE(App::OriginFeature, App::GeoFeature)
-PROPERTY_SOURCE(App::Plane, App::OriginFeature)
-PROPERTY_SOURCE(App::Line, App::OriginFeature)
-
-OriginFeature::OriginFeature()
+namespace Gui
 {
-    ADD_PROPERTY_TYPE ( Role, (""), 0, App::Prop_ReadOnly, "Role of the feature in the Origin" ) ;
 
-    // Set placement to read-only
-    Placement.setStatus(Property::Hidden, true);
-}
+    class SoShapeScale;
 
-OriginFeature::~OriginFeature() = default;
+    /**
+     * View provider associated with an App::DatumElement.
+     */
+    class GuiExport ViewProviderDatum : public ViewProviderGeometryObject {
+        PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderDatum);
 
-Origin * OriginFeature::getOrigin () {
-    App::Document *doc = getDocument();
-    auto origins = doc->getObjectsOfType ( App::Origin::getClassTypeId() );
+    public:
+        ViewProviderDatum();
+        ~ViewProviderDatum() override;
 
-    auto originIt= std::find_if (origins.begin(), origins.end(), [this] (DocumentObject *origin) {
-            assert ( origin->isDerivedFrom ( App::Origin::getClassTypeId() ) );
-            return static_cast<App::Origin *> (origin)->hasObject (this);
-        } );
-    if (originIt == origins.end()) {
-        return nullptr;
-    } else {
-        assert ( (*originIt)->isDerivedFrom ( App::Origin::getClassTypeId() ) );
-        return static_cast<App::Origin *> (*originIt);
-    }
-}
+        /// Get point derived classes will add their specific stuff
+        SoSeparator* getLCSRoot() { return pLCSRoot; }
+
+        /// Get pointer to the text label associated with the feature
+        SoText2* getLabel() { return pLabel; }
+
+        void attach(App::DocumentObject*) override;
+        std::vector<std::string> getDisplayModes() const override;
+        void setDisplayMode(const char* ModeName) override;
+
+        /// @name Suppress ViewProviderGeometryObject's behaviour
+        ///@{
+        bool setEdit(int) override
+        {
+            return false;
+        }
+        void unsetEdit(int) override
+        { }
+        ///@}
+
+        bool doubleClicked() override;
+
+    protected:
+        void onChanged(const App::Property* prop) override;
+        bool onDelete(const std::vector<std::string>&) override;
+    protected:
+        SoSeparator* pLCSRoot;
+        SoShapeScale* soScale;
+        SoText2* pLabel;
+        double lineThickness;
+    };
+
+} /* Gui */
+
+#endif /* end of include guard: VIEWPROVIDEDATUM_H_BYJRZNDL */
