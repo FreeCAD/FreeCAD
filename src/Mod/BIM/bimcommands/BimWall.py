@@ -191,7 +191,7 @@ class Arch_Wall:
                         FreeCADGui.doCommand('Arch.addComponents(FreeCAD.ActiveDocument.'+FreeCAD.ActiveDocument.Objects[-1].Name+',FreeCAD.ActiveDocument.'+self.existing[0].Name+')')
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
-            gui_utils.end_all_events()
+            # gui_utils.end_all_events()  # Causes a crash on Linux.
             self.tracker.finalize()
             if self.continueCmd:
                 self.Activated()
