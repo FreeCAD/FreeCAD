@@ -2367,14 +2367,6 @@ QTableCornerButton::section {
   border-radius: 0px;
 }
 
-QTableView::item {
-    color: white;
-}
-QTableView {
-  /*qproperty-AliasedCellBackgroundColor: #f700ff;*/
-  /*qproperty-aliasBgColor: #f700ff;*/
-}
-
 /* QHeaderView ------------------------------------------------------------
 
 https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qheaderview
