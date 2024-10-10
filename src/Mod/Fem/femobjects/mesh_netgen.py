@@ -53,6 +53,16 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
 
         prop.append(
             _PropHelper(
+                type="App::PropertyLinkList",
+                name="MeshRegionList",
+                group="Base",
+                doc="Refinements of the mesh",
+                value=[],
+            )
+        )
+        # mesh parameters
+        prop.append(
+            _PropHelper(
                 type="App::PropertyString",
                 name="Optimize3d",
                 group="Mesh Parameters",
@@ -403,6 +413,15 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
         )
         prop.append(
             _PropHelper(
+                type="App::PropertyBool",
+                name="SecondOrderLinear",
+                group="Mesh Parameters",
+                doc="Second order nodes are created by linear interpolation",
+                value=False,
+            )
+        )
+        prop.append(
+            _PropHelper(
                 type="App::PropertyInteger",
                 name="ElementOrder",
                 group="Mesh Parameters",
@@ -484,3 +503,11 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
         )
 
         return prop
+
+    def onDocumentRestored(self, obj):
+        # update old project with new properties
+        for prop in self._get_properties():
+            try:
+                obj.getPropertyByName(prop.name)
+            except Base.PropertyError:
+                prop.add_to_object(obj)
