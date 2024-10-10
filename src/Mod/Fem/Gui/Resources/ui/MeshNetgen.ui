@@ -59,7 +59,6 @@
           <property name="minimumSize">
            <size>
             <width>100</width>
-            <height>20</height>
            </size>
           </property>
           <property name="alignment">
@@ -100,7 +99,6 @@
           <property name="minimumSize">
            <size>
             <width>100</width>
-            <height>20</height>
            </size>
           </property>
           <property name="alignment">
