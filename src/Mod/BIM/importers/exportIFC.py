@@ -1106,22 +1106,22 @@ def export(exportList, filename, colors=None, preferences=None):
                 None,
                 None
             )]
-        if buildings and (not sites):
-            ifcfile.createIfcRelAggregates(
-                ifcopenshell.guid.new(),
-                history,
-                'ProjectLink',
-                '',
-                project,buildings
-            )
-        if floors and buildings:
-            ifcfile.createIfcRelAggregates(
-                ifcopenshell.guid.new(),
-                history,
-                'BuildingLink',
-                '',
-                buildings[0],floors
-            )
+    if buildings and (not sites):
+        ifcfile.createIfcRelAggregates(
+            ifcopenshell.guid.new(),
+            history,
+            'ProjectLink',
+            '',
+            project,buildings
+        )
+    if floors and buildings:
+        ifcfile.createIfcRelAggregates(
+            ifcopenshell.guid.new(),
+            history,
+            'BuildingLink',
+            '',
+            buildings[0],floors
+        )
     if sites and buildings:
         ifcfile.createIfcRelAggregates(
             ifcopenshell.guid.new(),
