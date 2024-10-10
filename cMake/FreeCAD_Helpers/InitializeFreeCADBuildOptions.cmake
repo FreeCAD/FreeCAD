@@ -64,6 +64,7 @@ macro(InitializeFreeCADBuildOptions)
     else(MSVC)
         option(FREECAD_LIBPACK_USE "Use the LibPack to Build FreeCAD (only Win32 so far)." OFF)
         set(FREECAD_LIBPACK_DIR ""  CACHE PATH  "Directory of the FreeCAD LibPack")
+        option(FREECAD_USE_PCH "Activate precompiled headers where it's used." OFF)
     endif(MSVC)
 
     ChooseQtVersion()
