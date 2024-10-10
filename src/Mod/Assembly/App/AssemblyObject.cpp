@@ -87,6 +87,8 @@
 #include "JointGroup.h"
 #include "ViewGroup.h"
 
+FC_LOG_LEVEL_INIT("Assembly", true, true, true)
+
 namespace PartApp = Part;
 
 using namespace Assembly;
@@ -169,8 +171,12 @@ int AssemblyObject::solve(bool enableRedo, bool updateJCS)
     try {
         mbdAssembly->runPreDrag();  // solve() is causing some issues with limits.
     }
+    catch (const std::exception& e) {
+        FC_ERR("Solve failed: " << e.what());
+        return -1;
+    }
     catch (...) {
-        Base::Console().Error("Solve failed\n");
+        FC_ERR("Solve failed: unhandled exception");
         return -1;
     }
 
