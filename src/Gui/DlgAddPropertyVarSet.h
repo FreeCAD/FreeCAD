@@ -42,14 +42,21 @@ namespace Dialog {
 class EditFinishedComboBox : public QComboBox {
     Q_OBJECT
 public:
-    explicit EditFinishedComboBox(QWidget *parent = nullptr) : QComboBox(parent) {}
+    explicit EditFinishedComboBox(QWidget *parent = nullptr) : QComboBox(parent) {
+        setEditable(true);
+        connect(this, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &EditFinishedComboBox::onIndexChanged);
+        connect(this->lineEdit(), &QLineEdit::editingFinished, this, &EditFinishedComboBox::onEditingFinished);
+    }
 
 Q_SIGNALS:
     void editFinished();
 
-protected:
-    void focusOutEvent(QFocusEvent *event) override {
-        QComboBox::focusOutEvent(event);
+private:
+    void onEditingFinished() {
+        Q_EMIT editFinished();
+    }
+
+    void onIndexChanged() {
         Q_EMIT editFinished();
     }
 };
@@ -94,6 +101,7 @@ private:
     void checkType();
     void onEditFinished();
     void onNamePropertyChanged(const QString& text);
+    void critical(const QString& title, const QString& text);
 
     void getSupportedTypes(std::vector<Base::Type>& types);
 
