@@ -57,7 +57,7 @@ void ViewProviderLine::attach(App::DocumentObject *obj) {
 
     // Setup label text and line colors
     const char* name = pcObject->getNameInDocument();
-            
+
     bool noRole = false;
     auto axisRoles = App::LocalCoordinateSystem::AxisRoles;
     if (strncmp(name, axisRoles[0], strlen(axisRoles[0])) == 0) {
