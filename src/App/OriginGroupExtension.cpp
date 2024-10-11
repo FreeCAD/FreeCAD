@@ -191,8 +191,7 @@ void OriginGroupExtension::relinkToOrigin(App::DocumentObject* obj)
 
     auto isOriginFeature = [](App::DocumentObject* obj) -> bool {
         // Check if the object is a DatumElement
-        auto* datumElement = dynamic_cast<App::DatumElement*>(obj);
-        if (datumElement) {
+        if (auto* datumElement = dynamic_cast<App::DatumElement*>(obj)) {
             // Check if the DatumElement is an origin
             return datumElement->isOriginFeature();
         }

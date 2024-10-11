@@ -47,7 +47,7 @@ PROPERTY_SOURCE(App::LocalCoordinateSystem, App::GeoFeature)
 
 DatumElement::DatumElement(bool hideRole)
 {
-    ADD_PROPERTY_TYPE ( Role, (""), 0, App::Prop_ReadOnly, "Role of the datum in the local coordinate system." ) ;
+    ADD_PROPERTY_TYPE(Role, (""), 0, App::Prop_ReadOnly, "Role of the datum in the local coordinate system.");
 
     // The role is hidden by default. It is visible only when the datum is in a LCS
     if (hideRole) {
@@ -65,7 +65,7 @@ bool DatumElement::getCameraAlignmentDirection(Base::Vector3d& direction, const 
     return true;
 }
 
-App::LocalCoordinateSystem* DatumElement::getLCS ()
+App::LocalCoordinateSystem* DatumElement::getLCS()
 {
     auto inList = getInList();
     for (auto* obj : inList) {
@@ -315,8 +315,8 @@ void LocalCoordinateSystem::LCSExtension::initExtension(ExtensionContainer * obj
     App::GroupExtension::initExtension(obj);
 }
 
-bool LocalCoordinateSystem::LCSExtension::extensionGetSubObject(DocumentObject * &ret, const char* subname,
-    PyObject * *pyobj, Base::Matrix4D * mat, bool, int depth) const {
+bool LocalCoordinateSystem::LCSExtension::extensionGetSubObject(DocumentObject*& ret, const char* subname,
+    PyObject** pyobj, Base::Matrix4D* mat, bool, int depth) const {
     if (!subname || subname[0] == '\0') {
         return false;
     }
