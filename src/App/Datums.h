@@ -51,6 +51,8 @@ public:
     /// Finds the origin object this plane belongs to
     App::LocalCoordinateSystem* getLCS();
 
+    bool getCameraAlignmentDirection(Base::Vector3d& direction, const char* subname) const override;
+
     /// Returns true if this DatumElement is part of a App::Origin.
     bool isOriginFeature();
 };
@@ -94,6 +96,8 @@ public:
     const char* getViewProviderName() const override {
         return "Gui::ViewProviderOrigin";
     }
+
+    bool getCameraAlignmentDirection(Base::Vector3d& direction, const char* subname) const override;
 
     /** @name Axis and plane access
      * This functions returns casted axis and planes objects and asserts they are set correctly
