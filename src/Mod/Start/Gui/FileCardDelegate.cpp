@@ -117,25 +117,25 @@ void FileCardDelegate::paint(QPainter* painter,
         _widget->setProperty("state", QStringLiteral("pressed"));
         QColor color = getSelectionColor();
         _widget->setStyleSheet(QString::fromLatin1("QWidget#thumbnailWidget {"
-                                                    " border: 2px solid rgb(%1, %2, %3);"
-                                                    " border-radius: 4px;"
-                                                    " padding: 8px;"
-                                                    "}")
-                                    .arg(color.red())
-                                    .arg(color.green())
-                                    .arg(color.blue()));
+                                                   " border: 2px solid rgb(%1, %2, %3);"
+                                                   " border-radius: 4px;"
+                                                   " padding: 8px;"
+                                                   "}")
+                                   .arg(color.red())
+                                   .arg(color.green())
+                                   .arg(color.blue()));
     }
     else if (option.state & QStyle::State_MouseOver) {
         _widget->setProperty("state", QStringLiteral("hovered"));
         QColor color = getBorderColor();
         _widget->setStyleSheet(QString::fromLatin1("QWidget#thumbnailWidget {"
-                                                    " border: 2px solid rgb(%1, %2, %3);"
-                                                    " border-radius: 4px;"
-                                                    " padding: 8px;"
-                                                    "}")
-                                    .arg(color.red())
-                                    .arg(color.green())
-                                    .arg(color.blue()));
+                                                   " border: 2px solid rgb(%1, %2, %3);"
+                                                   " border-radius: 4px;"
+                                                   " padding: 8px;"
+                                                   "}")
+                                   .arg(color.red())
+                                   .arg(color.green())
+                                   .arg(color.blue()));
     }
     else {
         QColor color = getBackgroundColor();
@@ -143,7 +143,7 @@ void FileCardDelegate::paint(QPainter* painter,
                                                    " background-color: rgb(%1, %2, %3);"
                                                    " border: 2px solid transparent;"
                                                    " border-radius: 4px;"
-                                                    " padding: 8px;"
+                                                   " padding: 8px;"
                                                    "}")
                                    .arg(color.red())
                                    .arg(color.green())
