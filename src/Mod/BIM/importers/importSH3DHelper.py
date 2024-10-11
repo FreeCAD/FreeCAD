@@ -80,6 +80,24 @@ X_NORM = App.Vector(1, 0, 0)
 Y_NORM = App.Vector(0, 1, 0)
 Z_NORM = App.Vector(0, 0, 1)
 
+DOOR_MODEL_LOOKUP = {
+    "eTeks#fixedWindow85x123": "Open 2-pane",
+    "eTeks#window85x123": "Open 2-pane",
+    "eTeks#doubleWindow126x123": "Open 2-pane",
+    "eTeks#doubleWindow126x163": "Open 2-pane",
+    "eTeks#doubleFrenchWindow126x200": "Open 2-pane",
+    "eTeks#window85x163": "Open 2-pane",
+    "eTeks#frenchWindow85x200": "Open 2-pane",
+    "eTeks#doubleHungWindow80x122": "Open 2-pane",
+    "eTeks#roundWindow": "Open 2-pane",
+    "eTeks#halfRoundWindow": "Open 2-pane",
+    "Scopia#window_2x1_with_sliders": "Sliding 2-pane",
+    "Scopia#window_2x3_arched": "Sliding 2-pane",
+    "Scopia#window_2x4_arched": "Sliding 2-pane",
+    "eTeks#sliderWindow126x200": "Sliding 2-pane",
+}
+
+
 class SH3DImporter:
     """The main class to import a SH3D file.
 
@@ -116,10 +134,10 @@ class SH3DImporter:
             self.handlers['pieceOfFurniture'] = FurnitureHandler(self)
             self.handlers['furnitureGroup'] = None
 
-        if self.preferences["IMPORT_LIGHTS"] and self.preferences["RENDER_IS_AVAILABLE"]:
+        if self.preferences["IMPORT_LIGHTS"]:
             self.handlers['light'] = LightHandler(self)
 
-        if self.preferences["IMPORT_CAMERAS"] and self.preferences["RENDER_IS_AVAILABLE"]:
+        if self.preferences["IMPORT_CAMERAS"]:
             camera_handler = CameraHandler(self)
             self.handlers['observerCamera'] = camera_handler
             self.handlers['camera'] = camera_handler
@@ -136,6 +154,11 @@ class SH3DImporter:
         self.walls = []
 
     def import_sh3d(self):
+        """Import the SH3D file.
+
+        Raises:
+            ValueError: if an invalid SH3D file is detected
+        """
         doc = App.ActiveDocument
 
         self.progress_bar.start(f"Importing SweetHome 3D file '{self.filename}'. Please wait ...", -1)
@@ -191,26 +214,25 @@ class SH3DImporter:
                 self._import_elements(home, 'doorOrWindow')
                 self._refresh()
 
-            # Importing <pieceOfFurniture> elements ...
+            # Importing <pieceOfFurniture> && <furnitureGroup> elements ...
             if self.preferences["IMPORT_FURNITURES"]:
                 self._import_elements(home, 'pieceOfFurniture')
-                self._refresh()
-                # We also import all the <furnitureGroup>
                 for furniture_group in home.findall('furnitureGroup'):
                     self._import_elements(furniture_group, 'pieceOfFurniture', False)
+                self._refresh()
 
             # Importing <light> elements ...
-            if self.preferences["IMPORT_LIGHTS"] and self.preferences["RENDER_IS_AVAILABLE"]:
+            if self.preferences["IMPORT_LIGHTS"]:
                 self._import_elements(home, 'light')
                 self._refresh()
 
             # Importing <observerCamera> elements ...
-            if self.preferences["IMPORT_CAMERAS"] and self.preferences["RENDER_IS_AVAILABLE"]:
+            if self.preferences["IMPORT_CAMERAS"]:
                 self._import_elements(home, 'observerCamera')
                 self._import_elements(home, 'camera')
                 self._refresh()
 
-            if self.preferences["CREATE_RENDER_PROJECT"] and self.preferences["RENDER_IS_AVAILABLE"] and self.project:
+            if self.preferences["CREATE_RENDER_PROJECT"] and self.project:
                 Project.create(doc, renderer="Povray", template="povray_standard.pov")
                 Gui.Selection.clearSelection()
                 Gui.Selection.addSelection(self.project)
@@ -229,22 +251,18 @@ class SH3DImporter:
 
     def _get_preferences(self):
         """Retrieve the SH3D preferences available in Mod/Arch."""
-        # if App.GuiUp and get_param_arch("sh3dShowDialog", True):
-        #     Gui.showPreferences("Import-Export", 0)
-
         preferences = {
             'DEBUG': get_param_arch("sh3dDebug"),
             'IMPORT_DOORS_AND_WINDOWS': get_param_arch("sh3dImportDoorsAndWindows"),
             'IMPORT_FURNITURES': get_param_arch("sh3dImportFurnitures"),
-            'IMPORT_LIGHTS': get_param_arch("sh3dImportLights"),
-            'IMPORT_CAMERAS': get_param_arch("sh3dImportCameras"),
+            'IMPORT_LIGHTS': get_param_arch("sh3dImportLights") and RENDER_IS_AVAILABLE,
+            'IMPORT_CAMERAS': get_param_arch("sh3dImportCameras") and RENDER_IS_AVAILABLE,
             'MERGE': get_param_arch("sh3dMerge"),
             'CREATE_ARCH_EQUIPMENT': get_param_arch("sh3dCreateArchEquipment"),
             'JOIN_ARCH_WALL': get_param_arch("sh3dJoinArchWall"),
-            'CREATE_RENDER_PROJECT': get_param_arch("sh3dCreateRenderProject"),
+            'CREATE_RENDER_PROJECT': get_param_arch("sh3dCreateRenderProject") and RENDER_IS_AVAILABLE,
             'DEFAULT_FLOOR_COLOR': color_fc2sh(get_param_arch("sh3dDefaultFloorColor")),
             'DEFAULT_CEILING_COLOR': color_fc2sh(get_param_arch("sh3dDefaultCeilingColor")),
-            "RENDER_IS_AVAILABLE": RENDER_IS_AVAILABLE,
         }
         return preferences
 
@@ -328,7 +346,7 @@ class SH3DImporter:
     def get_floor(self, level_id):
         """Returns the Floor associated with the level_id.
 
-        Returns the first level if there is just one level or if level_id is None
+        Returns the first level if only one defined or level_id is None
 
         Args:
             levels (list): The list of imported levels
@@ -347,19 +365,11 @@ class SH3DImporter:
     def _create_groups(self):
         """Create FreeCAD Group for the different imported elements
         """
-        import_furnitures = self.preferences["IMPORT_FURNITURES"]
-        import_lights = self.preferences["IMPORT_LIGHTS"] and self.preferences["RENDER_IS_AVAILABLE"]
-        import_cameras = self.preferences["IMPORT_CAMERAS"] and self.preferences["RENDER_IS_AVAILABLE"]
-
         doc = App.ActiveDocument
-        # if import_furnitures:
-        #     if not doc.getObject("Baseboards"):
-        #       _log(f"Creating Baseboards group ...")
-        #       doc.addObject("App::DocumentObjectGroup", "Baseboards")
-        if import_lights and not doc.getObject("Lights"):
+        if self.preferences["IMPORT_LIGHTS"] and not doc.getObject("Lights"):
             _log(f"Creating Lights group ...")
             doc.addObject("App::DocumentObjectGroup", "Lights")
-        if import_cameras and not doc.getObject("Cameras"):
+        if self.preferences["IMPORT_CAMERAS"] and not doc.getObject("Cameras"):
             _log(f"Creating Cameras group ...")
             doc.addObject("App::DocumentObjectGroup", "Cameras")
 
@@ -370,9 +380,18 @@ class SH3DImporter:
             elm (str): the <home> element
 
         """
-        self.project = self.fc_objects.get('Project') if 'Project' in self.fc_objects else self._create_project()
-        self.site = self.fc_objects.get('Site') if 'Site' in self.fc_objects else self._create_site()
-        self.building = self.fc_objects.get(elm.get('name')) if elm.get('name') in self.fc_objects else self._create_building(elm)
+        if 'Project' in self.fc_objects:
+            self.project = self.fc_objects.get('Project')
+        else:
+            self.project = self._create_project()
+        if 'Site' in self.fc_objects:
+            self.site = self.fc_objects.get('Site')
+        else:
+            self.site = self._create_site()
+        if elm.get('name') in self.fc_objects:
+            self.building = self.fc_objects.get(elm.get('name'))
+        else:
+            self.building = self._create_building(elm)
         self.project.addObject(self.site)
         self.site.addObject(self.building)
 
@@ -403,8 +422,9 @@ class SH3DImporter:
         self.set_property(building, "App::PropertyString", "shType", "The element type", 'building')
         self.set_property(building, "App::PropertyString", "id", "The element's id", elm.get('name'))
         for property in elm.findall('property'):
-            property_name = re.sub('[^A-Za-z0-9]+', '', property.get('name'))
-            self.set_property(building, "App::PropertyString", property_name, "", property.get('value'))
+            name = re.sub('[^A-Za-z0-9]+', '', property.get('name'))
+            value = property.get('value')
+            self.set_property(building, "App::PropertyString", name, "", value)
         return building
 
     def _create_default_floor(self):
@@ -436,7 +456,11 @@ class SH3DImporter:
         def _process(tuple):
             (i, elm) = tuple
             _log(f"Importing <{name}>#{i} ({self.current_object_count + 1}/{self.total_object_count}) ...")
-            self.handlers[name].process(i, elm)
+            try:
+                self.handlers[name].process(i, elm)
+            except Exception as e:
+                _err(f"Failed to import <{name}>#{i} ({elm.get('id', elm.get('name'))}):")
+                _err(str(e))
             if update_progress:
                 self.progress_bar.next()
                 self.current_object_count = self.current_object_count + 1
@@ -514,17 +538,20 @@ class BaseHandler:
             type_ (str): the property type
             name (str): the property name
             description (str): the property description
-            value (xml.etree.ElementTree.Element|str, optional): The property's value. Defaults to None.
-            valid_values (list, optional): The property's enumerated values. Defaults to None.
+            value (xml.etree.ElementTree.Element|str, optional): The
+                property's value. Defaults to None.
+            valid_values (list, optional): The property's enumerated values.
+                Defaults to None.
         """
         self.importer.set_property(obj, type_, name, description, value, valid_values)
 
     def get_fc_object(self, id, sh_type):
-        """Returns the FC doc element corresponding to the imported id and sh_type
+        """Returns the FC object with the specified id and sh_type
 
         Args:
             id (str): the id of the element to lookup
-            sh_type (str, optional): The SweetHome type of the element to be imported. Defaults to None.
+            sh_type (str, optional): The SweetHome type of the element to be
+                imported. Defaults to None.
 
         Returns:
             FCObject: The FC object that correspond to the imported SH element
@@ -534,7 +561,8 @@ class BaseHandler:
     def get_floor(self, level_id):
         """Returns the Floor associated with the level_id.
 
-        Returns the first level if there is just one level or if level_id is None
+        Returns the first level if there is just one level or if level_id is
+            None
 
         Args:
             levels (list): The list of imported levels
@@ -685,7 +713,7 @@ class WallHandler(BaseHandler):
 
         invert_angle = False
         if not wall:
-            if elm.get('arcExtent'):
+            if float(elm.get('arcExtent', 0)) != 0:
                 wall, invert_angle = self._make_arqued_wall(floor, elm)
             elif elm.get('heightAtEnd'):
                 wall = self._make_tappered_wall(floor, elm)
@@ -791,7 +819,7 @@ class WallHandler(BaseHandler):
         # FROM HERE ALL IS IN FC COORDINATE
 
         # Calculate the circle that pases through the center of both rectangle
-        #   and has the correct angle betwen p1 and p2
+        #   and has the correct angle between p1 and p2
         chord = DraftVecUtils.dist(p1, p2)
         radius = abs(chord / (2*math.sin(arc_extent/2)))
 
@@ -876,8 +904,7 @@ class WallHandler(BaseHandler):
         ]
         profile = Draft.make_wire(points, closed=True, face=True)
         width = dim_sh2fc(elm.get('thickness'))
-        extrusion = App.ActiveDocument.addObject(
-            'Part::Extrusion', elm.get('id'))
+        extrusion = App.ActiveDocument.addObject('Part::Extrusion', elm.get('id'))
         extrusion.Base = profile
         extrusion.DirMode = "Custom"
         extrusion.Dir = WorkingPlane.DraftGeomUtils.getNormal(points)
@@ -908,7 +935,7 @@ class WallHandler(BaseHandler):
         # FROM HERE ALL IS IN FC COORDINATE
 
         # Calculate the circle that pases through the center of both rectangle
-        #   and has the correct angle betwen p1 and p2
+        #   and has the correct angle between p1 and p2
         chord = DraftVecUtils.dist(p1, p2)
         radius = abs(chord / (2*math.sin(arc_extent/2)))
 
@@ -1057,7 +1084,7 @@ class WallHandler(BaseHandler):
         """Creates and returns a Part::Extrusion from the imported_baseboard object
 
         Args:
-            imported_baseboard (dict): the dict object containg the characteristics of the new object
+            imported_baseboard (dict): the dict object containing the characteristics of the new object
 
         Returns:
             Part::Extrusion: the newly created object
@@ -1199,6 +1226,7 @@ class BaseFurnitureHandler(BaseHandler):
             os.remove(model_path_obj)
         return mesh
 
+
 class DoorOrWindowHandler(BaseFurnitureHandler):
     """A helper class to import a SH3D `<doorOrWindow>` object."""
 
@@ -1247,7 +1275,7 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         self.setp(obj, "App::PropertyBool", "boundToWall", "", elm)
 
     def _create_door(self, floor, elm):
-        # The window in SweetHome3D s is defined with a width, depth, height.
+        # The window in SweetHome3D is defined with a width, depth, height.
         # Furthermore the (x.y.z) is the center point of the lower face of the
         # window. In FC the placement is defined on the face of the whole that
         # will contain the windows. The makes this calculation rather
@@ -1275,10 +1303,11 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         angle = float(elm.get('angle', 0))
 
         # this is the vector that allow me to go from the center to the corner
-        # of the bouding box. Note that the angle of the rotation is negated
+        # of the bounding box. Note that the angle of the rotation is negated
         # because the y axis is reversed in SweetHome3D
         center2corner = App.Vector(-width/2, -wall_width/2, 0)
-        center2corner = App.Rotation(App.Vector(0, 0, 1), math.degrees(-angle)).multVec(center2corner)
+        rotation = App.Rotation(App.Vector(0, 0, 1), math.degrees(-angle))
+        center2corner = rotation.multVec(center2corner)
 
         corner = center.add(center2corner)
         pl = App.Placement(
@@ -1288,20 +1317,16 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         )
 
         # NOTE: the windows are not imported as meshes, but we use a simple
-        #   correspondance between a catalog ID and a specific window preset from
+        #   correspondence between a catalog ID and a specific window preset from
         #   the parts library.
-        # Arch.WindowPresets =  ["Fixed", "Open 1-pane", "Open 2-pane", "Sash 2-pane", "Sliding 2-pane", "Simple door", "Glass door", "Sliding 4-pane", "Awning"]
+        # Arch.WindowPresets =  ["Fixed", "Open 1-pane", "Open 2-pane", 
+        # "Sash 2-pane", "Sliding 2-pane", "Simple door", "Glass door", 
+        # "Sliding 4-pane", "Awning"]
 
         catalog_id = elm.get('catalogId')
-        if catalog_id in ("eTeks#fixedWindow85x123", "eTeks#window85x123", "eTeks#doubleWindow126x123", "eTeks#doubleWindow126x163", "eTeks#doubleFrenchWindow126x200", "eTeks#window85x163", "eTeks#frenchWindow85x200", "eTeks#doubleHungWindow80x122", "eTeks#roundWindow", "eTeks#halfRoundWindow"):
-            windowtype = 'Open 2-pane'
-        elif catalog_id in ("Scopia#window_2x1_with_sliders", "Scopia#window_2x3_arched", "Scopia#window_2x4_arched", "eTeks#sliderWindow126x200"):
-            windowtype = 'Sliding 2-pane'
-        elif catalog_id in ("eTeks#frontDoor", "eTeks#roundedDoor", "eTeks#door", "eTeks#doorFrame", "eTeks#roundDoorFrame"):
-            windowtype = 'Simple door'
-        else:
+        if catalog_id not in list(DOOR_MODEL_LOOKUP.keys()):
             _wrn(f"Unknown catalogId {catalog_id} for door {elm.get('id')}. Defaulting to 'Simple Door'")
-            windowtype = 'Simple door'
+        windowtype = DOOR_MODEL_LOOKUP.get(catalog_id, 'Simple door')
 
         h1 = 10
         h2 = 10
@@ -1310,7 +1335,7 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         w2 = 10
         o1 = 0
         o2 = w1 / 2
-        window = Arch.makeWindowPreset(windowtype, width=width, height=height, h1=h1, h2=h2, h3=h3, w1=w1, w2=w2, o1=o1, o2=o2, placement=pl)
+        window = Arch.makeWindowPreset(windowtype, width, height, h1, h2, h3, w1, w2, o1, o2, pl)
         if wall:
             window.Hosts = [wall]
         return window
@@ -1377,7 +1402,6 @@ class FurnitureHandler(BaseFurnitureHandler):
 
         floor = self.get_floor(elm.get('level'))
 
-        # REF: sweethome3d-code/SweetHome3D/src/com/eteks/sweethome3d/j3d/ModelManager.java:getPieceOfFurnitureNormalizedModelTransformation()
         width = dim_sh2fc(float(elm.get('width')))
         depth = dim_sh2fc(float(elm.get('depth')))
         height = dim_sh2fc(float(elm.get('height')))
@@ -1403,7 +1427,8 @@ class FurnitureHandler(BaseFurnitureHandler):
         transform.rotateY(roll)
         transform.rotateZ(-angle)
         level_elevation = dim_fc2sh(floor.Placement.Base.z)
-        transform.move(coord_sh2fc(App.Vector(x, y, level_elevation + z + (dim_fc2sh(height) / 2))))
+        distance = App.Vector(x, y, level_elevation + z + (dim_fc2sh(height) / 2))
+        transform.move(coord_sh2fc(distance))
         mesh.transform(transform)
 
         if self.importer.preferences["CREATE_ARCH_EQUIPMENT"]:
@@ -1603,10 +1628,11 @@ def color_fc2sh(hexcode):
 def hex2rgb(hexcode):
     # We might have transparency as the first 2 digit
     offset = 0 if len(hexcode) == 6 else 2
-    return (int(hexcode[offset:offset+2], 16),   # Red
-            int(hexcode[offset+2:offset+4], 16),  # Green
-            int(hexcode[offset+4:offset+6], 16)  # Blue
-            )
+    return (
+        int(hexcode[offset:offset+2], 16),   # Red
+        int(hexcode[offset+2:offset+4], 16),  # Green
+        int(hexcode[offset+4:offset+6], 16)  # Blue
+        )
 
 
 def _hex2transparency(hexcode):
