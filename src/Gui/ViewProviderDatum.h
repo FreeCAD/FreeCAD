@@ -63,8 +63,6 @@ namespace Gui
         { }
         ///@}
 
-        bool doubleClicked() override;
-
     protected:
         void onChanged(const App::Property* prop) override;
         bool onDelete(const std::vector<std::string>&) override;

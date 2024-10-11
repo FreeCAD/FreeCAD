@@ -31,11 +31,11 @@
 #include "QCoreApplication"
 namespace Base
 {
-    class Rotation;
+class Rotation;
 }
 namespace App
 {
-    class LocalCoordinateSystem;
+class LocalCoordinateSystem;
 
 class AppExport DatumElement : public App::GeoFeature
 {

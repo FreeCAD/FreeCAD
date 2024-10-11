@@ -197,13 +197,3 @@ bool ViewProviderOrigin::onDelete(const std::vector<std::string> &) {
 
     return true;
 }
-
-
-bool ViewProviderOrigin::doubleClicked()
-{
-    auto* origin = dynamic_cast<App::Origin*>(getObject());
-    if (!origin) {
-        // open placement edit
-    }
-    return true;
-}

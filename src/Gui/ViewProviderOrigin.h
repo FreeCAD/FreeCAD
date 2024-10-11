@@ -71,8 +71,6 @@ public:
         return false;
     }
 
-    bool doubleClicked() override;
-
     /// Returns default size. Use this if it is not possible to determine appropriate size by other means
     static double defaultSize();
 

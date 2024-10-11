@@ -168,19 +168,5 @@ bool ViewProviderDatum::onDelete(const std::vector<std::string>&) {
     auto feat = static_cast <App::DatumElement*> (getObject());
     // Forbid deletion if there is an origin this feature belongs to
 
-    if (feat->getLCS()) {
-        return false;
-    }
-    else {
-        return true;
-    }
-}
-
-bool ViewProviderDatum::doubleClicked()
-{
-    auto* datum = dynamic_cast<App::DatumElement*>(getObject());
-    if (!datum->getLCS()) {
-        // open placement edit
-    }
-    return true;
+    return !feat->getLCS();
 }
