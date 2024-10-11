@@ -1038,19 +1038,19 @@ public:
      */
     void setValue(const Material& mat);
     void setValue(const Color& col);
-    void setValue(float r, float g, float b, float a = 0.0F);
+    void setValue(float r, float g, float b, float a = 1.0F);
     void setValue(uint32_t rgba);
     void setAmbientColor(const Color& col);
-    void setAmbientColor(float r, float g, float b, float a = 0.0F);
+    void setAmbientColor(float r, float g, float b, float a = 1.0F);
     void setAmbientColor(uint32_t rgba);
     void setDiffuseColor(const Color& col);
-    void setDiffuseColor(float r, float g, float b, float a = 0.0F);
+    void setDiffuseColor(float r, float g, float b, float a = 1.0F);
     void setDiffuseColor(uint32_t rgba);
     void setSpecularColor(const Color& col);
-    void setSpecularColor(float r, float g, float b, float a = 0.0F);
+    void setSpecularColor(float r, float g, float b, float a = 1.0F);
     void setSpecularColor(uint32_t rgba);
     void setEmissiveColor(const Color& col);
-    void setEmissiveColor(float r, float g, float b, float a = 0.0F);
+    void setEmissiveColor(float r, float g, float b, float a = 1.0F);
     void setEmissiveColor(uint32_t rgba);
     void setShininess(float);
     void setTransparency(float);
@@ -1123,32 +1123,32 @@ public:
     void setValue(int index, const Material& mat);
 
     void setAmbientColor(const Color& col);
-    void setAmbientColor(float r, float g, float b, float a = 0.0F);
+    void setAmbientColor(float r, float g, float b, float a = 1.0F);
     void setAmbientColor(uint32_t rgba);
     void setAmbientColor(int index, const Color& col);
-    void setAmbientColor(int index, float r, float g, float b, float a = 0.0F);
+    void setAmbientColor(int index, float r, float g, float b, float a = 1.0F);
     void setAmbientColor(int index, uint32_t rgba);
 
     void setDiffuseColor(const Color& col);
-    void setDiffuseColor(float r, float g, float b, float a = 0.0F);
+    void setDiffuseColor(float r, float g, float b, float a = 1.0F);
     void setDiffuseColor(uint32_t rgba);
     void setDiffuseColor(int index, const Color& col);
-    void setDiffuseColor(int index, float r, float g, float b, float a = 0.0F);
+    void setDiffuseColor(int index, float r, float g, float b, float a = 1.0F);
     void setDiffuseColor(int index, uint32_t rgba);
     void setDiffuseColors(const std::vector<App::Color>& colors);
 
     void setSpecularColor(const Color& col);
-    void setSpecularColor(float r, float g, float b, float a = 0.0F);
+    void setSpecularColor(float r, float g, float b, float a = 1.0F);
     void setSpecularColor(uint32_t rgba);
     void setSpecularColor(int index, const Color& col);
-    void setSpecularColor(int index, float r, float g, float b, float a = 0.0F);
+    void setSpecularColor(int index, float r, float g, float b, float a = 1.0F);
     void setSpecularColor(int index, uint32_t rgba);
 
     void setEmissiveColor(const Color& col);
-    void setEmissiveColor(float r, float g, float b, float a = 0.0F);
+    void setEmissiveColor(float r, float g, float b, float a = 1.0F);
     void setEmissiveColor(uint32_t rgba);
     void setEmissiveColor(int index, const Color& col);
-    void setEmissiveColor(int index, float r, float g, float b, float a = 0.0F);
+    void setEmissiveColor(int index, float r, float g, float b, float a = 1.0F);
     void setEmissiveColor(int index, uint32_t rgba);
 
     void setShininess(float);

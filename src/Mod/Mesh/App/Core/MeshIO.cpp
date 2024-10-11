@@ -525,7 +525,7 @@ bool MeshInput::LoadOFF(std::istream& rstrIn)
                         str >> std::ws >> a;
                         // no transparency
                         if (!str) {
-                            a = 0.0f;
+                            a = 1.0f;
                         }
 
                         if (r > 1.0f || g > 1.0f || b > 1.0f || a > 1.0f) {
@@ -578,7 +578,7 @@ bool MeshInput::LoadOFF(std::istream& rstrIn)
                     str >> std::ws >> a;
                     // no transparency
                     if (!str) {
-                        a = 0.0f;
+                        a = 1.0f;
                     }
 
                     if (r > 1.0f || g > 1.0f || b > 1.0f || a > 1.0f) {
