@@ -57,6 +57,14 @@ DatumElement::DatumElement(bool hideRole)
 
 DatumElement::~DatumElement() = default;
 
+bool DatumElement::getCameraAlignmentDirection(Base::Vector3d& direction, const char* subname) const
+{
+    Q_UNUSED(subname);
+    Placement.getValue().getRotation().multVec(Base::Vector3d(0., 0., 1.), direction);
+
+    return true;
+}
+
 App::LocalCoordinateSystem* DatumElement::getLCS ()
 {
     auto inList = getInList();
@@ -87,6 +95,14 @@ LocalCoordinateSystem::LocalCoordinateSystem() : extension(this) {
 
 
 LocalCoordinateSystem::~LocalCoordinateSystem() = default;
+
+bool LocalCoordinateSystem::getCameraAlignmentDirection(Base::Vector3d& direction, const char* subname) const
+{
+    Q_UNUSED(subname);
+    Placement.getValue().getRotation().multVec(Base::Vector3d(0., 0., 1.), direction);
+
+    return true;
+}
 
 App::DatumElement* LocalCoordinateSystem::getDatumElement(const char* role) const {
     const auto& features = OriginFeatures.getValues();
@@ -226,8 +242,6 @@ LocalCoordinateSystem::SetupData LocalCoordinateSystem::getData(const char* role
 
 void LocalCoordinateSystem::setupObject()
 {
-    App::Document* doc = getDocument();
-
     std::vector<App::DocumentObject*> links;
     const auto& setupData = getSetupData();
     for (auto data : setupData) {
@@ -266,8 +280,9 @@ void LocalCoordinateSystem::onDocumentRestored()
             strcmp(static_cast<App::DatumElement*>(obj)->Role.getValue(), PointRoles[0]) == 0;
     });
     if (featIt == features.end()) {
-        // origin not found let's add it
-        auto* origin = createDatum(getData(PointRoles[0]));
+        // origin point not found let's add it
+        auto data = getData(PointRoles[0]);
+        auto* origin = createDatum(data);
         features.push_back(origin);
         OriginFeatures.setValues(features);
     }
