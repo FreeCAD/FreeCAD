@@ -308,12 +308,7 @@ void ViewProviderAssembly::setEditViewer(Gui::View3DInventorViewer* viewer, int 
 
 bool ViewProviderAssembly::isInEditMode() const
 {
-    App::DocumentObject* activePart = getActivePart();
-    if (!activePart) {
-        return false;
-    }
-
-    return activePart == this->getObject();
+    return asmDragger != nullptr;
 }
 
 App::DocumentObject* ViewProviderAssembly::getActivePart() const
