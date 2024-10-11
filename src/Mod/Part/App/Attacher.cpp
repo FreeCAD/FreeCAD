@@ -844,73 +844,45 @@ void AttachEngine::readLinks(const std::vector<App::DocumentObject*> &objs,
         }
         geofs[i] = geof;
         TopoDS_Shape myShape;
-        Base::Placement plc = App::GeoFeature::getGlobalPlacement(obj, objs[i], fullSub);
-        if (geof->isDerivedFrom(App::Plane::getClassTypeId())) {
-            // obtain Z axis and origin of placement
-            Base::Vector3d norm;
-            plc.getRotation().multVec(Base::Vector3d(0.0, 0.0, 1.0), norm);
-            Base::Vector3d org;
-            plc.multVec(Base::Vector3d(), org);
-            // make shape - an local-XY plane infinite face
-            gp_Pln plane = gp_Pln(gp_Pnt(org.x, org.y, org.z), gp_Dir(norm.x, norm.y, norm.z));
-            myShape = BRepBuilderAPI_MakeFace(plane).Shape();
-            myShape.Infinite(true);
-        }
-        else if (geof->isDerivedFrom(App::Line::getClassTypeId())) {
-            // obtain X axis and origin of placement
-            Base::Vector3d dir;
-            plc.getRotation().multVec(Base::Vector3d(0.0, 0.0, 1.0), dir);
-            Base::Vector3d org;
-            plc.multVec(Base::Vector3d(), org);
-            // make shape - an infinite line along local X axis
-            gp_Lin line = gp_Lin(gp_Pnt(org.x, org.y, org.z), gp_Dir(dir.x, dir.y, dir.z));
-            myShape = BRepBuilderAPI_MakeEdge(line).Shape();
-            myShape.Infinite(true);
-        }
-        else if (geof->isDerivedFrom(App::Point::getClassTypeId())) {
-            Base::Vector3d org;
-            plc.multVec(Base::Vector3d(), org);
 
-            gp_Pnt pnt = gp_Pnt(org.x, org.y, org.z);
-            myShape = BRepBuilderAPI_MakeVertex(pnt).Shape();
-        }
-        else {
-            try {
-                Part::TopoShape shape = Part::Feature::getTopoShape(geof, element, true);
-                for (;;) {
-                    if (shape.isNull()) {
-                        FC_THROWM(AttachEngineException,
-                                  "AttachEngine3D: subshape not found "
-                                      << objs[i]->getNameInDocument() << '.' << subs[i]);
-                    }
-                    if (shape.shapeType() != TopAbs_COMPOUND
-                        || shape.countSubShapes(TopAbs_SHAPE) != 1) {
-                        break;
-                    }
-                    // auto extract the single sub-shape from a compound
-                    shape = shape.getSubTopoShape(TopAbs_SHAPE, 1);
+        try {
+            Part::TopoShape shape = Part::Feature::getTopoShape(geof, element, true);
+            for (;;) {
+                if (shape.isNull()) {
+                    FC_THROWM(AttachEngineException,
+                                "AttachEngine3D: subshape not found "
+                                    << objs[i]->getNameInDocument() << '.' << subs[i]);
                 }
-                shape.setPlacement(plc);
-                myShape = shape.getShape();
+                if (shape.shapeType() != TopAbs_COMPOUND
+                    || shape.countSubShapes(TopAbs_SHAPE) != 1) {
+                    break;
+                }
+                // auto extract the single sub-shape from a compound
+                shape = shape.getSubTopoShape(TopAbs_SHAPE, 1);
             }
-            catch (Standard_Failure& e) {
-                FC_THROWM(AttachEngineException,
-                          "AttachEngine3D: subshape not found " << objs[i]->getNameInDocument()
-                                                                << '.' << subs[i] << std::endl
-                                                                << e.GetMessageString());
-            }
-            catch (Base::CADKernelError& e) {
-                FC_THROWM(AttachEngineException,
-                          "AttachEngine3D: subshape not found " << objs[i]->getNameInDocument()
-                                                                << '.' << subs[i] << std::endl
-                                                                << e.what());
-            }
-            if (myShape.IsNull()) {
+            Base::Placement plc = App::GeoFeature::getGlobalPlacement(obj, objs[i], fullSub);
+
+            shape.setPlacement(plc);
+            myShape = shape.getShape();
+        }
+        catch (Standard_Failure& e) {
+            FC_THROWM(AttachEngineException,
+                        "AttachEngine3D: subshape not found " << objs[i]->getNameInDocument()
+                                                            << '.' << subs[i] << std::endl
+                                                            << e.GetMessageString());
+        }
+        catch (Base::CADKernelError& e) {
+            FC_THROWM(AttachEngineException,
+                        "AttachEngine3D: subshape not found " << objs[i]->getNameInDocument()
+                                                            << '.' << subs[i] << std::endl
+                                                            << e.what());
+        }
+        if (myShape.IsNull()) {
                 FC_THROWM(AttachEngineException,
                           "AttachEngine3D: null subshape " << objs[i]->getNameInDocument() << '.'
                                                            << subs[i]);
             }
-        }
+
         storage.emplace_back(myShape);
         shapes[i] = &(storage.back());
 
