@@ -259,7 +259,10 @@ void StartView::configureNewFileButtons(QLayout* layout) const
 
 QString StartView::fileCardStyle() const
 {
-    if (!qApp->styleSheet().isEmpty()) {
+    auto hGrpView = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/MainWindow");
+    auto qssFile = hGrpView->GetASCII("StyleSheet", "");
+    if (!qssFile.empty()) {
         return {};
     }
 

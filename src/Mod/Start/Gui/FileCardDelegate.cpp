@@ -115,37 +115,35 @@ void FileCardDelegate::paint(QPainter* painter,
     _widget->setProperty("state", QStringLiteral(""));
     if (option.state & QStyle::State_Selected) {
         _widget->setProperty("state", QStringLiteral("pressed"));
-        if (qApp->styleSheet().isEmpty()) {
-            QColor color = getSelectionColor();
-            _widget->setStyleSheet(QString::fromLatin1("QWidget#thumbnailWidget {"
-                                                       " border: 2px solid rgb(%1, %2, %3);"
-                                                       " border-radius: 4px;"
-                                                       " padding: 2px;"
-                                                       "}")
-                                       .arg(color.red())
-                                       .arg(color.green())
-                                       .arg(color.blue()));
-        }
+        QColor color = getSelectionColor();
+        _widget->setStyleSheet(QString::fromLatin1("QWidget#thumbnailWidget {"
+                                                    " border: 2px solid rgb(%1, %2, %3);"
+                                                    " border-radius: 4px;"
+                                                    " padding: 8px;"
+                                                    "}")
+                                    .arg(color.red())
+                                    .arg(color.green())
+                                    .arg(color.blue()));
     }
     else if (option.state & QStyle::State_MouseOver) {
         _widget->setProperty("state", QStringLiteral("hovered"));
-        if (qApp->styleSheet().isEmpty()) {
-            QColor color = getBorderColor();
-            _widget->setStyleSheet(QString::fromLatin1("QWidget#thumbnailWidget {"
-                                                       " border: 2px solid rgb(%1, %2, %3);"
-                                                       " border-radius: 4px;"
-                                                       " padding: 2px;"
-                                                       "}")
-                                       .arg(color.red())
-                                       .arg(color.green())
-                                       .arg(color.blue()));
-        }
+        QColor color = getBorderColor();
+        _widget->setStyleSheet(QString::fromLatin1("QWidget#thumbnailWidget {"
+                                                    " border: 2px solid rgb(%1, %2, %3);"
+                                                    " border-radius: 4px;"
+                                                    " padding: 8px;"
+                                                    "}")
+                                    .arg(color.red())
+                                    .arg(color.green())
+                                    .arg(color.blue()));
     }
-    else if (qApp->styleSheet().isEmpty()) {
+    else {
         QColor color = getBackgroundColor();
         _widget->setStyleSheet(QString::fromLatin1("QWidget#thumbnailWidget {"
                                                    " background-color: rgb(%1, %2, %3);"
-                                                   " border-radius: 8px;"
+                                                   " border: 2px solid transparent;"
+                                                   " border-radius: 4px;"
+                                                    " padding: 8px;"
                                                    "}")
                                    .arg(color.red())
                                    .arg(color.green())
@@ -183,7 +181,7 @@ QSize FileCardDelegate::sizeHint(const QStyleOptionViewItem& option, const QMode
     auto qfm = QFontMetrics(font);
     auto textHeight = 2 * qfm.lineSpacing();
     auto cardHeight =
-        thumbnailSize + textHeight + 2 * spacing + cardMargin.top() + cardMargin.bottom();
+        thumbnailSize + textHeight + 2 * spacing + cardMargin.top() + cardMargin.bottom() + 4;
 
     return {static_cast<int>(cardWidth), static_cast<int>(cardHeight)};
 }
