@@ -102,6 +102,7 @@ class _TaskPanel(base_femmeshtaskpanel._BaseMeshTaskPanel):
         self.curvature_safety = self.obj.CurvatureSafety
         self.seg_per_edge = self.obj.SegmentsPerEdge
         self.second_order = self.obj.SecondOrder
+        self.user_p = self.get_user_fineness_params(self.obj)
 
     def set_mesh_params(self):
         self.obj.MinSize = self.min_size
@@ -155,18 +156,41 @@ class _TaskPanel(base_femmeshtaskpanel._BaseMeshTaskPanel):
 
     def fineness_changed(self, index):
         self.fineness = self.fineness_enum[index]
+        self.obj.Fineness = self.fineness
         if self.fineness == "UserDefined":
-            self.form.qsb_min_size.setEnabled(True)
-            self.form.qsb_max_size.setEnabled(True)
             self.form.dsb_seg_per_edge.setEnabled(True)
             self.form.dsb_growth_rate.setEnabled(True)
             self.form.dsb_curvature_safety.setEnabled(True)
+            self.form.dsb_seg_per_edge.setProperty("value", self.user_p["segmentsperedge"])
+            self.form.dsb_growth_rate.setProperty("value", self.user_p["grading"])
+            self.form.dsb_curvature_safety.setProperty("value", self.user_p["curvaturesafety"])
+            # set properties
+            self.obj.SegmentsPerEdge = self.user_p["segmentsperedge"]
+            self.obj.GrowthRate = self.user_p["grading"]
+            self.obj.CurvatureSafety = self.user_p["curvaturesafety"]
+            self.obj.OptimizationSteps3d = self.user_p["optsteps3d"]
+            self.obj.CloseEdgeFactor = self.user_p["closeedgefac"]
         else:
-            self.form.qsb_min_size.setEnabled(False)
-            self.form.qsb_max_size.setEnabled(False)
+            p = self.obj.Proxy.get_predef_fineness_params(self.fineness)
             self.form.dsb_seg_per_edge.setEnabled(False)
             self.form.dsb_growth_rate.setEnabled(False)
             self.form.dsb_curvature_safety.setEnabled(False)
+            self.form.dsb_growth_rate.setProperty("value", p["grading"])
+            self.form.dsb_seg_per_edge.setProperty("value", p["segmentsperedge"])
+            self.form.dsb_curvature_safety.setProperty("value", p["curvaturesafety"])
 
     def second_order_changed(self, bool_value):
         self.second_order = bool_value
+
+    def get_user_fineness_params(self, obj):
+        # parameters affected by the fineness value. If initial fineness is "UserDefined"
+        # use current values otherwise use predefined values
+        p = obj.Proxy.get_predef_fineness_params("UserDefined")
+        if obj.Fineness == "UserDefined":
+            p["curvaturesafety"] = obj.CurvatureSafety
+            p["grading"] = obj.GrowthRate
+            p["segmentsperedge"] = obj.SegmentsPerEdge
+            p["optsteps3d"] = obj.OptimizationSteps3d
+            p["closeedgefac"] = obj.CloseEdgeFactor
+
+        return p
