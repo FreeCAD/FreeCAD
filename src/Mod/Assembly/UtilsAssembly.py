@@ -52,7 +52,8 @@ def activePartOrAssembly():
 def activeAssembly():
     active_assembly = activePartOrAssembly()
     if active_assembly is not None and active_assembly.isDerivedFrom("Assembly::AssemblyObject"):
-        return active_assembly
+        if active_assembly.ViewObject.isInEditMode():
+            return active_assembly
 
     return None
 
