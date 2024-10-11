@@ -257,14 +257,13 @@ void TaskMeasure::update()
     // Update tool mode display
     setModeSilent(measureType);
 
-    if (!_mMeasureObject || measureType->measureObject != _mMeasureObject->getTypeId().getName()) {
+    if (!_mMeasureObject
+        || measureType->measureObject != _mMeasureObject->getTypeId().getName()
+        || _mMeasureObject->getDocument() != doc) {
         // we don't already have a measureobject or it isn't the same type as the new one
         removeObject();
         createObject(measureType);
     }
-
-    // From here on we need a valid measure object
-    assert(_mMeasureObject);
 
     // we have a valid measure object so we can enable the annotate button
     enableAnnotateButton(true);
@@ -275,11 +274,24 @@ void TaskMeasure::update()
     // Get result
     valueResult->setText(_mMeasureObject->getResultString());
 
+    // Initialite the measurement's viewprovider
+    initViewObject();
+}
+
+
+void TaskMeasure::initViewObject()
+{
+    Gui::Document* guiDoc = Gui::Application::Instance->activeDocument();
+    if (!guiDoc) {
+        return;
+    }
+
+    Gui::ViewProvider* viewObject = guiDoc->getViewProvider(_mMeasureObject);
+    if (!viewObject) {
+        return;
+    }
 
     // Init the position of the annotation
-    Gui::Document* guiDoc = Gui::Application::Instance->activeDocument();
-    Gui::ViewProvider* viewObject = guiDoc->getViewProvider(_mMeasureObject);
-    assert(viewObject);
     dynamic_cast<MeasureGui::ViewProviderMeasureBase*>(viewObject)->positionAnno(_mMeasureObject);
 
     // Set the ShowDelta Property if it exists on the measurements view object
@@ -290,6 +302,7 @@ void TaskMeasure::update()
         viewObject->update(prop);
     }
 }
+
 
 void TaskMeasure::close()
 {

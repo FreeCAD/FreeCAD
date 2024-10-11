@@ -87,10 +87,7 @@ private:
     Measure::MeasureBase* createObject(const App::MeasureType* measureType);
     void ensureGroup(Measure::MeasureBase* measurement);
     void setDeltaPossible(bool possible);
-
-
-    // List of measure types
-    std::vector<App::DocumentObject> measureObjects;
+    void initViewObject();
 
     // Stores if the mode is explicitly set by the user or implicitly through the selection
     bool explicitMode = false;
