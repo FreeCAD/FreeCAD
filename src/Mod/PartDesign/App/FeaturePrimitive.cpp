@@ -119,15 +119,20 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "Failed to perform boolean operation"));
         }
-        boolOp = this->getSolid(boolOp);
+
+        TopoShape solidBoolOp = getSolid(boolOp);
         // lets check if the result is a solid
-        if (boolOp.isNull()) {
+        if (solidBoolOp.isNull()) {
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
         }
-        boolOp = refineShapeIfActive(boolOp);
-        Shape.setValue(getSolid(boolOp));
-        AddSubShape.setValue(primitiveShape);
+        if (solidBoolOp == base){
+            //solidBoolOp is misplaced but boolOp is ok
+            Shape.setValue(boolOp);
+            return App::DocumentObject::StdReturn;
+        }
+        solidBoolOp = refineShapeIfActive(solidBoolOp);
+        Shape.setValue(getSolid(solidBoolOp));
     }
     catch (Standard_Failure& e) {
 
@@ -139,6 +144,10 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
 
 void FeaturePrimitive::onChanged(const App::Property* prop)
 {
+    if (prop == &AttachmentOffset){
+        this->touch();
+        return;
+    }
     FeatureAddSub::onChanged(prop);
 }
 

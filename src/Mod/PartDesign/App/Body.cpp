@@ -465,11 +465,11 @@ void Body::onChanged(const App::Property* prop) {
         else if (prop == &AllowCompound) {
             // As disallowing compounds can break the model we need to recompute the whole tree.
             // This will inform user about first place where there is more than one solid.
-            if (!AllowCompound.getValue()) {
-                for (auto feature : getFullModel()) {
-                    feature->enforceRecompute();
-                }
+            // On allowing compounds we must also recompute the entire feature tree
+            for (auto feature : getFullModel()) {
+                feature->enforceRecompute();
             }
+
         }
     }
 

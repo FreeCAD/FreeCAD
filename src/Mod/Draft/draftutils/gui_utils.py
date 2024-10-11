@@ -866,6 +866,14 @@ def get_bbox(obj, debug=False):
 # See https://forum.freecadweb.org/viewtopic.php?p=656362#p656362.
 # Used to fix https://github.com/FreeCAD/FreeCAD/issues/10469.
 def end_all_events():
+    view = get_3d_view()
+    if view is None:
+        return
+    if view.getNavigationType() in (
+            "Gui::GestureNavigationStyle", "Gui::MayaGestureNavigationStyle"
+    ):
+        return
+
     class DelayEnder:
         def __init__(self):
             self.delay_is_done = False

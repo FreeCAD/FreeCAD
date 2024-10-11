@@ -176,8 +176,11 @@ SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent * const ev)
             processed = true;
         }
         else if (this->currentmode == NavigationStyle::PANNING) {
-            float ratio = vp.getViewportAspectRatio();
-            panCamera(viewer->getSoRenderManager()->getCamera(), ratio, this->panningplane, posn, prevnormalized);
+            if (!blockPan) {
+                float ratio = vp.getViewportAspectRatio();
+                panCamera(viewer->getSoRenderManager()->getCamera(), ratio, this->panningplane, posn, prevnormalized);
+            }
+            blockPan = false;
             processed = true;
         }
         else if (this->currentmode == NavigationStyle::DRAGGING) {
@@ -233,6 +236,10 @@ SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent * const ev)
             processed = true;
         }
         newmode = NavigationStyle::PANNING;
+
+        if (currentmode != NavigationStyle::PANNING) {
+            blockPan = true;
+        }
         break;
     case ALTDOWN:
         if (newmode != NavigationStyle::DRAGGING) {

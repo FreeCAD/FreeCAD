@@ -122,14 +122,13 @@ StartView::StartView(QWidget* parent)
     firstStartScrollArea->setWidgetResizable(true);
 
     auto firstStartRegion = gsl::owner<QHBoxLayout*>(new QHBoxLayout(firstStartScrollWidget));
-    firstStartRegion->addStretch();
+    firstStartRegion->setAlignment(Qt::AlignCenter);
     auto firstStartWidget = gsl::owner<FirstStartWidget*>(new FirstStartWidget(this));
     connect(firstStartWidget,
             &FirstStartWidget::dismissed,
             this,
             &StartView::firstStartWidgetDismissed);
     firstStartRegion->addWidget(firstStartWidget);
-    firstStartRegion->addStretch();
     _contents->addWidget(firstStartScrollArea);
 
     // Documents page

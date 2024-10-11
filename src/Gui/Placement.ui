@@ -505,13 +505,6 @@
    <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
- <tabstops>
-  <tabstop>rotationInput</tabstop>
-  <tabstop>xAxis</tabstop>
-  <tabstop>yAxis</tabstop>
-  <tabstop>zAxis</tabstop>
-  <tabstop>applyIncrementalPlacement</tabstop>
- </tabstops>
  <resources/>
  <connections>
   <connection>
