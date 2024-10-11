@@ -147,21 +147,6 @@ void TaskMeasure::modifyStandardButtons(QDialogButtonBox* box)
     connect(btn, &QPushButton::released, this, &TaskMeasure::reset);
 }
 
-bool canAnnotate(Measure::MeasureBase* obj)
-{
-    if (obj == nullptr) {
-        // null object, can't annotate this
-        return false;
-    }
-
-    auto vpName = obj->getViewProviderName();
-    // if there is not a vp, return false
-    if ((vpName == nullptr) || (vpName[0] == '\0')) {
-        return false;
-    }
-
-    return true;
-}
 
 void TaskMeasure::enableAnnotateButton(bool state)
 {
@@ -188,7 +173,7 @@ Measure::MeasureBase* TaskMeasure::createObject(const App::MeasureType* measureT
 
         // Create a MeasurePython instance
         auto featurePython = doc->addObject("Measure::MeasurePython", measureType->label.c_str());
-        _mMeasureObject = (Measure::MeasureBase*)featurePython;
+        _mMeasureObject = dynamic_cast<Measure::MeasureBase*>(featurePython);
 
         // Create an instance of the pyMeasureClass, the classe's initializer sets the object as
         // proxy
@@ -199,8 +184,8 @@ Measure::MeasureBase* TaskMeasure::createObject(const App::MeasureType* measureT
     }
     else {
         // Create measure object
-        _mMeasureObject = (Measure::MeasureBase*)doc->addObject(measureType->measureObject.c_str(),
-                                                                measureType->label.c_str());
+        _mMeasureObject = dynamic_cast<Measure::MeasureBase*>(doc->addObject(measureType->measureObject.c_str(),
+                                                                measureType->label.c_str()));
     }
 
     return _mMeasureObject;

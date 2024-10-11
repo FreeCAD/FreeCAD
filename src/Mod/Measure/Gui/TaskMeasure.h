@@ -19,6 +19,8 @@
  *                                                                         *
  **************************************************************************/
 
+#ifndef MEASURE_TASKMEASURE_H
+#define MEASURE_TASKMEASURE_H
 
 #include <qcolumnview.h>
 #include <QString>
@@ -69,8 +71,6 @@ public:
 private:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
-    App::Document* _mDocument = nullptr;
-    Gui::Document* _mGuiDocument = nullptr;
     Measure::MeasureBase* _mMeasureObject = nullptr;
 
     QLineEdit* valueResult {nullptr};
@@ -100,3 +100,5 @@ private:
 };
 
 }  // namespace Gui
+
+#endif  // MEASURE_TASKMEASURE_H
