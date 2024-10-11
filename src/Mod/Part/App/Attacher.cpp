@@ -1159,10 +1159,6 @@ AttachEngine3D::_calculateAttachedPlacement(const std::vector<App::DocumentObjec
 
     // common stuff for all map modes
     Base::Placement Place = App::GeoFeature::getGlobalPlacement(parts[0], objs[0], subs[0]);
-    Base::Console().Warning("parts[0] = %s\n", parts[0]->getNameInDocument());
-    Base::Console().Warning("objs[0] = %s\n", objs[0]->getNameInDocument());
-    Base::Console().Warning("subs[0] = %s\n", subs[0]);
-    Base::Console().Warning("Place = (%f, %f, %f)\n", Place.getPosition().x, Place.getPosition().y, Place.getPosition().z);
     Base::Vector3d vec = Place.getPosition();
     gp_Pnt refOrg = gp_Pnt(vec.x, vec.y, vec.z);  // origin of linked object
 
