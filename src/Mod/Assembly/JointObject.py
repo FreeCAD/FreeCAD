@@ -643,30 +643,32 @@ class Joint:
 
     def flipOnePart(self, joint):
         assembly = self.getAssembly(joint)
-        part2ConnectedByJoint = assembly.isJointConnectingPartToGround(joint, "Reference2")
+
+        part2 = UtilsAssembly.getMovingPart(assembly, joint.Reference2)
+        if part2 is not None:
+            part2ConnectedByJoint = assembly.isJointConnectingPartToGround(joint, "Reference2")
+            part2Grounded = assembly.isPartGrounded(part2)
+            if part2ConnectedByJoint and not part2Grounded:
+                jcsPlc = UtilsAssembly.getJcsPlcRelativeToPart(
+                    assembly, joint.Placement2, joint.Reference2
+                )
+                globalJcsPlc = UtilsAssembly.getJcsGlobalPlc(joint.Placement2, joint.Reference2)
+                jcsPlc = UtilsAssembly.flipPlacement(jcsPlc)
+                part2.Placement = globalJcsPlc * jcsPlc.inverse()
+                solveIfAllowed(self.getAssembly(joint))
+                return
 
         part1 = UtilsAssembly.getMovingPart(assembly, joint.Reference1)
-        part2 = UtilsAssembly.getMovingPart(assembly, joint.Reference2)
-
-        part1Grounded = assembly.isPartGrounded(part1)
-        part2Grounded = assembly.isPartGrounded(part2)
-        if part2ConnectedByJoint and not part2Grounded:
-            jcsPlc = UtilsAssembly.getJcsPlcRelativeToPart(
-                assembly, joint.Placement2, joint.Reference2
-            )
-            globalJcsPlc = UtilsAssembly.getJcsGlobalPlc(joint.Placement2, joint.Reference2)
-            jcsPlc = UtilsAssembly.flipPlacement(jcsPlc)
-            part2.Placement = globalJcsPlc * jcsPlc.inverse()
-
-        elif not part1Grounded:
-            jcsPlc = UtilsAssembly.getJcsPlcRelativeToPart(
-                assembly, joint.Placement1, joint.Reference1
-            )
-            globalJcsPlc = UtilsAssembly.getJcsGlobalPlc(joint.Placement1, joint.Reference1)
-            jcsPlc = UtilsAssembly.flipPlacement(jcsPlc)
-            part1.Placement = globalJcsPlc * jcsPlc.inverse()
-
-        solveIfAllowed(self.getAssembly(joint))
+        if part1 is not None:
+            part1Grounded = assembly.isPartGrounded(part1)
+            if not part1Grounded:
+                jcsPlc = UtilsAssembly.getJcsPlcRelativeToPart(
+                    assembly, joint.Placement1, joint.Reference1
+                )
+                globalJcsPlc = UtilsAssembly.getJcsGlobalPlc(joint.Placement1, joint.Reference1)
+                jcsPlc = UtilsAssembly.flipPlacement(jcsPlc)
+                part1.Placement = globalJcsPlc * jcsPlc.inverse()
+                return
 
     def preSolve(self, joint, savePlc=True):
         # The goal of this is to put the part in the correct position to avoid wrong placement by the solve.
