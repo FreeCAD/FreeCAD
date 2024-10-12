@@ -473,6 +473,20 @@ void DlgAddPropertyVarSet::accept()
 void DlgAddPropertyVarSet::reject()
 {
     App::Document* doc = varSet->getDocument();
+    // On reject we can disconnect the signal handlers because nothing useful
+    // is to be done.  Otherwise, signals may activate the handlers that assume
+    // that a new property has been created, an assumption that will be
+    // violated by aborting the transaction because it will remove the newly
+    // created property.
+    disconnect(&comboBoxGroup, &EditFinishedComboBox::editFinished,
+               this, &DlgAddPropertyVarSet::onEditFinished);
+    disconnect(ui->comboBoxType, &QComboBox::currentTextChanged,
+               this, &DlgAddPropertyVarSet::onEditFinished);
+    disconnect(ui->lineEditName, &QLineEdit::editingFinished,
+               this, &DlgAddPropertyVarSet::onEditFinished);
+    disconnect(ui->lineEditName, &QLineEdit::textChanged,
+               this, &DlgAddPropertyVarSet::onNamePropertyChanged);
+
     // a transaction is not pending if a name has not been determined.
     if (doc->hasPendingTransaction()) {
         doc->abortTransaction();
