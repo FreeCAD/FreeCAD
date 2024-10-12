@@ -132,8 +132,6 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/libass-0.17.1-h8fe9dca_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/libblas-3.9.0-24_linux64_openblas.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/libboost-1.82.0-h6fcfa73_6.conda
-      - conda: https://conda.anaconda.org/conda-forge/linux-64/libboost-devel-1.82.0-h00ab1b0_6.conda
-      - conda: https://conda.anaconda.org/conda-forge/linux-64/libboost-headers-1.82.0-ha770c72_6.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/libbrotlicommon-1.1.0-hb9d3cd8_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/libbrotlidec-1.1.0-hb9d3cd8_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/libbrotlienc-1.1.0-hb9d3cd8_2.conda
@@ -506,8 +504,6 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libass-0.17.1-h36b5d3b_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libblas-3.9.0-24_linuxaarch64_openblas.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libboost-1.82.0-h133f18d_6.conda
-      - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libboost-devel-1.82.0-h37bb5a9_6.conda
-      - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libboost-headers-1.82.0-h8af1aa0_6.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libbrotlicommon-1.1.0-h86ecc28_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libbrotlidec-1.1.0-h86ecc28_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libbrotlienc-1.1.0-h86ecc28_2.conda
@@ -869,8 +865,6 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-64/libass-0.17.1-h80904bb_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/libblas-3.9.0-22_osx64_openblas.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/libboost-1.82.0-hf0c313a_6.conda
-      - conda: https://conda.anaconda.org/conda-forge/osx-64/libboost-devel-1.82.0-h1c7c39f_6.conda
-      - conda: https://conda.anaconda.org/conda-forge/osx-64/libboost-headers-1.82.0-h694c41f_6.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/libbrotlicommon-1.1.0-h00291cd_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/libbrotlidec-1.1.0-h00291cd_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/libbrotlienc-1.1.0-h00291cd_2.conda
@@ -1178,8 +1172,6 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/libass-0.17.1-hf7da4fe_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/libblas-3.9.0-24_osxarm64_openblas.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/libboost-1.82.0-h72cdd8a_6.conda
-      - conda: https://conda.anaconda.org/conda-forge/osx-arm64/libboost-devel-1.82.0-hf450f58_6.conda
-      - conda: https://conda.anaconda.org/conda-forge/osx-arm64/libboost-headers-1.82.0-hce30654_6.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/libbrotlicommon-1.1.0-hd74edd7_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/libbrotlidec-1.1.0-hd74edd7_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/libbrotlienc-1.1.0-hd74edd7_2.conda
@@ -1457,8 +1449,6 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/win-64/libarchive-3.7.4-haf234dc_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/libblas-3.9.0-24_win64_mkl.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/libboost-1.82.0-h65993cd_6.conda
-      - conda: https://conda.anaconda.org/conda-forge/win-64/libboost-devel-1.82.0-h91493d7_6.conda
-      - conda: https://conda.anaconda.org/conda-forge/win-64/libboost-headers-1.82.0-h57928b3_6.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/libbrotlicommon-1.1.0-h2466b09_2.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/libbrotlidec-1.1.0-h2466b09_2.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/libbrotlienc-1.1.0-h2466b09_2.conda
