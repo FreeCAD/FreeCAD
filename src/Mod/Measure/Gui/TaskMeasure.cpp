@@ -184,8 +184,8 @@ Measure::MeasureBase* TaskMeasure::createObject(const App::MeasureType* measureT
     }
     else {
         // Create measure object
-        _mMeasureObject = dynamic_cast<Measure::MeasureBase*>(doc->addObject(measureType->measureObject.c_str(),
-                                                                measureType->label.c_str()));
+        _mMeasureObject = dynamic_cast<Measure::MeasureBase*>(
+            doc->addObject(measureType->measureObject.c_str(), measureType->label.c_str()));
     }
 
     return _mMeasureObject;
@@ -257,8 +257,7 @@ void TaskMeasure::update()
     // Update tool mode display
     setModeSilent(measureType);
 
-    if (!_mMeasureObject
-        || measureType->measureObject != _mMeasureObject->getTypeId().getName()
+    if (!_mMeasureObject || measureType->measureObject != _mMeasureObject->getTypeId().getName()
         || _mMeasureObject->getDocument() != doc) {
         // we don't already have a measureobject or it isn't the same type as the new one
         removeObject();
@@ -323,7 +322,8 @@ void TaskMeasure::ensureGroup(Measure::MeasureBase* measurement)
     App::DocumentObject* obj = doc->getObject(measurementGroupName);
 
 
-    if (!obj || !obj->isValid() || !obj->isDerivedFrom(App::DocumentObjectGroup::getClassTypeId())) {
+    if (!obj || !obj->isValid()
+        || !obj->isDerivedFrom(App::DocumentObjectGroup::getClassTypeId())) {
         obj = doc->addObject("App::DocumentObjectGroup",
                              measurementGroupName,
                              true,
