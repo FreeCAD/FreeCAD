@@ -321,7 +321,9 @@ void TaskMeasure::ensureGroup(Measure::MeasureBase* measurement)
 
     App::Document* doc = measurement->getDocument();
     App::DocumentObject* obj = doc->getObject(measurementGroupName);
-    if (!obj || !obj->isValid()) {
+
+
+    if (!obj || !obj->isValid() || !obj->isDerivedFrom(App::DocumentObjectGroup::getClassTypeId())) {
         obj = doc->addObject("App::DocumentObjectGroup",
                              measurementGroupName,
                              true,
