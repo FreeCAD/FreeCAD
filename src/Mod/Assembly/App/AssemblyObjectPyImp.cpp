@@ -99,7 +99,7 @@ PyObject* AssemblyObjectPy::isPartConnected(PyObject* args)
 {
     PyObject* pyobj;
 
-    if (!PyArg_ParseTuple(args, "O", &pyobj)) {
+    if (!PyArg_ParseTuple(args, "O!", &(App::DocumentObjectPy::Type), &pyobj)) {
         return nullptr;
     }
     auto* obj = static_cast<App::DocumentObjectPy*>(pyobj)->getDocumentObjectPtr();
@@ -111,7 +111,7 @@ PyObject* AssemblyObjectPy::isPartGrounded(PyObject* args)
 {
     PyObject* pyobj;
 
-    if (!PyArg_ParseTuple(args, "O", &pyobj)) {
+    if (!PyArg_ParseTuple(args, "O!", &(App::DocumentObjectPy::Type), &pyobj)) {
         return nullptr;
     }
     auto* obj = static_cast<App::DocumentObjectPy*>(pyobj)->getDocumentObjectPtr();
@@ -124,7 +124,7 @@ PyObject* AssemblyObjectPy::isJointConnectingPartToGround(PyObject* args)
     PyObject* pyobj;
     char* pname;
 
-    if (!PyArg_ParseTuple(args, "Os", &pyobj, &pname)) {
+    if (!PyArg_ParseTuple(args, "O!s", &(App::DocumentObjectPy::Type), &pyobj, &pname)) {
         return nullptr;
     }
     auto* obj = static_cast<App::DocumentObjectPy*>(pyobj)->getDocumentObjectPtr();
