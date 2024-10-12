@@ -671,11 +671,12 @@ QGIViewDimension::QGIViewDimension() : dvDimension(nullptr), hasHover(false), m_
                                  //above this Dimension's parent view.   need Layers?
     hideFrame();
 
-    m_refFlag = new QGCustomSvg();
-    m_refFlag->setParentItem(this);
-    m_refFlag->load(QString::fromUtf8(":/icons/TechDraw_RefError.svg"));
-    m_refFlag->setZValue(ZVALUE::LOCK);
-    m_refFlag->hide();
+    // needs phase 2 of autocorrect to be useful
+    // m_refFlag = new QGCustomSvg();
+    // m_refFlag->setParentItem(this);
+    // m_refFlag->load(QString::fromUtf8(":/icons/TechDraw_RefError.svg"));
+    // m_refFlag->setZValue(ZVALUE::LOCK);
+    // m_refFlag->hide();
 }
 
 QVariant QGIViewDimension::itemChange(GraphicsItemChange change, const QVariant& value)
@@ -812,12 +813,13 @@ void QGIViewDimension::updateView(bool update)
         updateDim();
     }
 
-    if (dim->hasGoodReferences()) {
-        m_refFlag->hide();
-    } else {
-        m_refFlag->centerAt(datumLabel->pos() + datumLabel->boundingRect().center());
-        m_refFlag->show();
-    }
+    // needs Phase 2 of autocorrect to be useful
+    // if (dim->hasGoodReferences()) {
+    //     m_refFlag->hide();
+    // } else {
+    //     m_refFlag->centerAt(datumLabel->pos() + datumLabel->boundingRect().center());
+    //     m_refFlag->show();
+    // }
 
     draw();
 }
