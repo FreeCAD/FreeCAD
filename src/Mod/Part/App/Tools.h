@@ -43,6 +43,10 @@
 #include <vector>
 
 
+namespace Part
+{
+class TopoShape;
+}
 class gp_Lin;
 class gp_Pln;
 
@@ -235,6 +239,26 @@ public:
      * and false otherwise, plane case included.
      */
     static bool isConcave(const TopoDS_Face &face, const gp_Pnt &pointOfVue, const gp_Dir &direction);
+
+    /**
+     * \copydoc Part::Tools::isShapeEmpty(const TopoDS_Shape&)
+     */
+    static bool isShapeEmpty(const TopoShape& shape);
+
+    /**
+     * \brief Determines whether the given \ref TopoDS_Shape is empty.
+     *
+     * This function evaluates whether a given shape is considered "empty."
+     *
+     * A shape is empty if:
+     * - It is null (uninitialized).
+     * - It is a compound shape (i.e., a container for sub-shapes), but all its sub-shapes are empty.
+     * - It does not have any geometry.
+     *
+     * \param[in] shape The shape to evaluate.
+     * \return `true` if the shape is empty, otherwise `false`.
+     */
+    static bool isShapeEmpty(const TopoDS_Shape& shape);
 };
 
 } //namespace Part

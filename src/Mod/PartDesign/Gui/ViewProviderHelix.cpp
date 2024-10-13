@@ -49,12 +49,12 @@ ViewProviderHelix::~ViewProviderHelix() = default;
 void ViewProviderHelix::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     addDefaultAction(menu, QObject::tr("Edit Helix"));
-    PartDesignGui::ViewProviderAddSub::setupContextMenu(menu, receiver, member);
+    ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
 TaskDlgFeatureParameters *ViewProviderHelix::getEditDialog()
 {
-    return new TaskDlgHelixParameters( this );
+    return new TaskDlgHelixParameters(this);
 }
 
 QIcon ViewProviderHelix::getIcon() const {
@@ -67,23 +67,6 @@ QIcon ViewProviderHelix::getIcon() const {
 
     str += QStringLiteral("Helix.svg");
     return PartDesignGui::ViewProvider::mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
-}
-
-bool ViewProviderHelix::setEdit(int ModNum)
-{
-    if (ModNum == ViewProvider::Default ) {
-        auto* prim = getObject<PartDesign::Helix>();
-        setPreviewDisplayMode(TaskHelixParameters::showPreview(prim));
-    }
-    return ViewProviderAddSub::setEdit(ModNum);
-}
-
-void ViewProviderHelix::unsetEdit(int ModNum)
-{
-    setPreviewDisplayMode(false);
-    // Rely on parent class to:
-    // restitute old workbench (set setEdit above) and close the dialog if exiting editing
-    PartDesignGui::ViewProvider::unsetEdit(ModNum);
 }
 
 std::vector<App::DocumentObject*> ViewProviderHelix::claimChildren() const {

@@ -26,8 +26,10 @@
 #ifndef _PreComp_
 # include <QMessageBox>
 # include <QAction>
-# include <QApplication>
 # include <QMenu>
+# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoPickStyle.h>
+# include <BRep_Builder.hxx>
 #endif
 
 #include <Base/Exception.h>
@@ -37,14 +39,22 @@
 #include <Gui/CommandT.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
+#include <Gui/Selection/SoFCUnifiedSelection.h>
+#include <Gui/Inventor/So3DAnnotation.h>
 #include <Gui/MainWindow.h>
+#include <Gui/Utilities.h>
 #include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/Feature.h>
+#include <Mod/PartDesign/App/FeatureAddSub.h>
+#include <Mod/Part/Gui/ViewProvider.h>
+#include <Mod/Part/Gui/ViewProviderExt.h>
+#include <Mod/Part/Gui/SoBrepEdgeSet.h>
+#include <Mod/Part/Gui/ViewProviderPreviewExtension.h>
 
 #include "TaskFeatureParameters.h"
 
 #include "ViewProvider.h"
 #include "ViewProviderPy.h"
+
 
 using namespace PartDesignGui;
 
@@ -53,10 +63,30 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesignGui::ViewProvider, PartGui::ViewProvid
 ViewProvider::ViewProvider()
 {
     ViewProviderSuppressibleExtension::initExtension(this);
-    PartGui::ViewProviderAttachExtension::initExtension(this);
+    ViewProviderAttachExtension::initExtension(this);
+    ViewProviderPreviewExtension::initExtension(this);
 }
 
 ViewProvider::~ViewProvider() = default;
+
+void ViewProvider::beforeDelete()
+{
+    ViewProviderPart::beforeDelete();
+}
+
+void ViewProvider::attach(App::DocumentObject* pcObject)
+{
+    ViewProviderPart::attach(pcObject);
+
+    if (auto addSubFeature = getObject<PartDesign::FeatureAddSub>()) {
+        const Base::Color green(0.0F, 1.0F, 0.6F);
+        const Base::Color red(1.0F, 0.0F, 0.0F);
+
+        bool isAdditive = addSubFeature->getAddSubType() == PartDesign::FeatureAddSub::Additive;
+
+        PreviewColor.setValue(isAdditive ? green : red);
+    }
+}
 
 bool ViewProvider::doubleClicked()
 {
@@ -149,6 +179,8 @@ TaskDlgFeatureParameters *ViewProvider::getEditDialog() {
 
 void ViewProvider::unsetEdit(int ModNum)
 {
+    showPreview(false);
+
     // return to the WB we were in before editing the PartDesign feature
     if (!oldWb.empty()) {
         Gui::Command::assureWorkbench(oldWb.c_str());
@@ -170,13 +202,40 @@ void ViewProvider::unsetEdit(int ModNum)
 
 void ViewProvider::updateData(const App::Property* prop)
 {
-    // TODO What's that? (2015-07-24, Fat-Zer)
-    if (prop->is<Part::PropertyPartShape>() &&
-        strcmp(prop->getName(),"AddSubShape") == 0) {
-        return;
+    if (strcmp(prop->getName(), "PreviewShape") == 0) {
+        updatePreviewShape();
     }
 
     inherited::updateData(prop);
+}
+
+void ViewProvider::attachPreview()
+{
+    ViewProviderPreviewExtension::attachPreview();
+
+    pcToolPreview = new PartGui::SoPreviewShape;
+    pcToolPreview->transparency = 0.95F;
+    pcToolPreview->color.connectFrom(&pcPreviewShape->color);
+
+    pcPreviewRoot->addChild(pcToolPreview);
+}
+
+void ViewProvider::updatePreview()
+{
+    ViewProviderPreviewExtension::updatePreview();
+
+    if (auto* addSubFeature = getObject<PartDesign::FeatureAddSub>()) {
+        // we only want to show the additional tool preview for subtractive features
+        if (addSubFeature->getAddSubType() != PartDesign::FeatureAddSub::Subtractive) {
+            return;
+        }
+
+        Part::TopoShape toolShape = addSubFeature->AddSubShape.getShape();
+
+        updatePreviewShape(toolShape, pcToolPreview);
+    } else {
+        updatePreviewShape({}, pcToolPreview);
+    }
 }
 
 void ViewProvider::onChanged(const App::Property* prop) {
@@ -267,10 +326,50 @@ bool ViewProvider::onDelete(const std::vector<std::string>&)
         //
         // fixes (#3084)
 
-        FCMD_OBJ_CMD(body,"removeObject(" << Gui::Command::getObjectCmd(feature) << ')');
+        FCMD_OBJ_CMD(body, "removeObject(" << Gui::Command::getObjectCmd(feature) << ')');
     }
 
     return true;
+}
+
+Part::TopoShape ViewProvider::getPreviewShape() const
+{
+    if (auto feature = getObject()->getExtensionByType<Part::PreviewExtension>(true)) {
+        // Feature is responsible for generating proper shape and this ViewProvider
+        // is using it instead of more normal `Shape` property.
+        return feature->PreviewShape.getShape();
+    }
+
+    return {};
+}
+
+void ViewProvider::showPreviousFeature(bool enable)
+{
+    PartDesign::Feature* feature {getObject<PartDesign::Feature>()};
+    PartDesign::Feature* baseFeature { nullptr };
+
+    ViewProvider* baseFeatureViewProvider { nullptr };
+
+    if (!feature) {
+        return;
+    }
+
+    baseFeature = dynamic_cast<PartDesign::Feature*>(feature->BaseFeature.getValue());
+    if (baseFeature) {
+        baseFeatureViewProvider = freecad_cast<ViewProvider*>(Gui::Application::Instance->getViewProvider(baseFeature));
+    }
+
+    if (!baseFeatureViewProvider) {
+        baseFeatureViewProvider = this;
+    }
+
+    if (enable) {
+        baseFeatureViewProvider->show();
+        hide();
+    } else {
+        baseFeatureViewProvider->hide();
+        show();
+    }
 }
 
 void ViewProvider::setBodyMode(bool bodymode) {
@@ -330,8 +429,6 @@ ViewProviderBody* ViewProvider::getBodyViewProvider() {
 
     return nullptr;
 }
-
-
 
 namespace Gui {
 /// @cond DOXERR

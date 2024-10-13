@@ -468,7 +468,7 @@ measured along the specified direction</string>
    <item>
     <widget class="QCheckBox" name="checkBoxUpdateView">
      <property name="text">
-      <string>Update view</string>
+      <string>Recompute on change</string>
      </property>
      <property name="checked">
       <bool>true</bool>
