@@ -203,6 +203,9 @@ public:
     /// Sync frozen external geometries
     int syncGeometry(const std::vector<int>& geoIds);
 
+    template<typename returnType>
+    returnType performActionByGeomType(const Part::Geometry* geo);
+
     /** returns a pointer to a given Geometry index, possible indexes are:
      *  id>=0 for user defined geometries,
      *  id==-1 for the horizontal sketch axis,
@@ -340,6 +343,11 @@ public:
     /// retrieves the coordinates of a point
     static Base::Vector3d getPoint(const Part::Geometry* geo, PointPos PosId);
     Base::Vector3d getPoint(int GeoId, PointPos PosId) const;
+    template<class geomType>
+    static Base::Vector3d getPointForGeometry(const geomType* geo, PointPos PosId)
+    {
+        return Base::Vector3d();
+    }
 
     /// toggle geometry to draft line
     int toggleConstruction(int GeoId);
@@ -381,6 +389,22 @@ public:
     int trim(int geoId, const Base::Vector3d& point);
     /// extend a curve
     int extend(int geoId, double increment, PointPos endPoint);
+    /// Once smaller pieces have been created from a larger curve (by split or trim, say), derive
+    /// the constraint that will replace the given one (which is to be deleted). NOTE: Currently
+    /// assuming all constraints on the end points of the old curve have been transferred or
+    /// destroyed
+    /// Returns whether or not new constraint(s) was/were added.
+    bool deriveConstraintsForPieces(const int oldId,
+                                    const std::vector<int>& newIds,
+                                    const Constraint* con,
+                                    std::vector<Constraint*>& newConstraints);
+    // Explicitly giving `newGeos` for cases where they are not yet added
+    bool deriveConstraintsForPieces(const int oldId,
+                                    const std::vector<int>& newIds,
+                                    const std::vector<const Part::Geometry*>& newGeo,
+                                    const Constraint* con,
+                                    std::vector<Constraint*>& newConstraints);
+
     /// split a curve
     int split(int geoId, const Base::Vector3d& point);
     /*!
@@ -422,11 +446,18 @@ public:
                 double perpscale = 1.0);
 
     int removeAxesAlignment(const std::vector<int>& geoIdList);
+    static bool isClosedCurve(const Part::Geometry* geo);
+    static bool hasInternalGeometry(const Part::Geometry* geo);
     /// Exposes all internal geometry of an object supporting internal geometry
     /*!
      * \return -1 on error
      */
     int exposeInternalGeometry(int GeoId);
+    template<class geomType>
+    int exposeInternalGeometryForType(const int GeoId)
+    {
+        return -1;  // By default internal geometry is not supported
+    }
     /*!
      \brief Deletes all unused (not further constrained) internal geometry
      \param GeoId - the geometry having the internal geometry to delete
@@ -434,6 +465,14 @@ public:
      geometry \retval int - returns -1 on error, otherwise the number of deleted elements
      */
     int deleteUnusedInternalGeometry(int GeoId, bool delgeoid = false);
+    /*!
+     \brief Same as `deleteUnusedInternalGeometry`, but changes `GeoId` to the new Id of the
+     geometry, or to `GeoEnum::GeoUndef` if the geometry is deleted as well. \param GeoId - the
+     geometry having the internal geometry to delete \param delgeoid - if true in addition to the
+     unused internal geometry also deletes the GeoId geometry \retval int - returns -1 on error,
+     otherwise the number of deleted elements
+     */
+    int deleteUnusedInternalGeometryAndUpdateGeoId(int& GeoId, bool delgeoid = false);
     /*!
      \brief Approximates the given geometry with a B-spline
      \param GeoId - the geometry to approximate
@@ -831,6 +870,23 @@ protected:
     void buildShape();
     /// get called by the container when a property has changed
     void onChanged(const App::Property* /*prop*/) override;
+
+    /// Helper functions for `deleteUnusedInternalGeometry` by cases
+    /// two foci for ellipses and arcs of ellipses and hyperbolas
+    int deleteUnusedInternalGeometryWhenTwoFoci(int GeoId, bool delgeoid = false);
+    /// one focus for parabolas
+    int deleteUnusedInternalGeometryWhenOneFocus(int GeoId, bool delgeoid = false);
+    /// b-splines need their own treatment
+    int deleteUnusedInternalGeometryWhenBSpline(int GeoId, bool delgeoid = false);
+
+    void onGeometryChanged();
+    void onConstraintsChanged();
+    void onExternalGeoChanged();
+    void onExternalGeometryChanged();
+    void onPlacementChanged();
+    void onExpressionEngineChanged();
+    void onAttachmentSupportChanged();
+
     void onDocumentRestored() override;
     void restoreFinished() override;
 
@@ -848,7 +904,7 @@ protected:
     supportedGeometry(const std::vector<Part::Geometry*>& geoList) const;
 
     void updateGeoHistory();
-    void generateId(Part::Geometry* geo);
+    void generateId(const Part::Geometry* geo);
 
     /*!
      \brief Transfer constraints on lines being filleted.
@@ -919,6 +975,14 @@ protected:
                      Sketcher::PointPos secondPos = Sketcher::PointPos::none,
                      int thirdGeoId = GeoEnum::GeoUndef,
                      Sketcher::PointPos thirdPos = Sketcher::PointPos::none);
+
+public:
+    // FIXME: These may not need to be public. Decide before merging.
+    // helper function to get constraint after deleting a geometry
+    std::unique_ptr<Constraint> getConstraintAfterDeletingGeo(const Constraint* constr,
+                                                              const int deletedGeoId) const;
+
+    void changeConstraintAfterDeletingGeo(Constraint* constr, const int deletedGeoId) const;
 
 private:
     /// Flag to allow external geometry from other bodies than the one this sketch belongs to
