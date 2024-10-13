@@ -260,9 +260,24 @@ void TaskDressUpParameters::setSelection(QListWidgetItem* current) {
 
             // highlight the selected item
             bool block = this->blockSelection(true);
-            Gui::Selection().addSelection(docName.c_str(), objName.c_str(), subName.c_str(), 0, 0, 0);
+            tryAddSelection(docName, objName, subName);
             this->blockSelection(block);
         }
+    }
+}
+
+void TaskDressUpParameters::tryAddSelection(const std::string& doc,
+                                            const std::string& obj,
+                                            const std::string& sub)
+{
+    try {
+        Gui::Selection().addSelection(doc.c_str(), obj.c_str(), sub.c_str(), 0, 0, 0);
+    }
+    catch (const Base::Exception& e) {
+        e.ReportException();
+    }
+    catch (const Standard_Failure& e) {
+        Base::Console().Error("OCC error: %s\n", e.GetMessageString());
     }
 }
 
