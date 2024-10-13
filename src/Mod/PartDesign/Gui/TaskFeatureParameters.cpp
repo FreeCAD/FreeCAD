@@ -52,6 +52,9 @@ TaskFeatureParameters::TaskFeatureParameters(PartDesignGui::ViewProvider *vp, QW
 {
     Gui::Document* doc = vp->getDocument();
     this->attachDocument(doc);
+
+    vp->showPreviousFeature(true);
+    vp->showPreview(true);
 }
 
 void TaskFeatureParameters::slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj)

@@ -98,6 +98,7 @@
 #include "GeometryIntExtensionPy.h"
 #include "GeometryMigrationExtension.h"
 #include "GeometryStringExtensionPy.h"
+#include "PreviewExtension.h"
 #include "HyperbolaPy.h"
 #include "ImportStep.h"
 #include "LinePy.h"
@@ -437,6 +438,8 @@ PyMOD_INIT_FUNC(Part)
     Part::AttachExtensionPython ::init();
 
     Part::PrismExtension        ::init();
+
+    Part::PreviewExtension      ::init();
 
     Part::Feature               ::init();
     Part::FeatureExt            ::init();

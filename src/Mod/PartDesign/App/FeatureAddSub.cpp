@@ -28,6 +28,7 @@
 
 #include <App/FeaturePythonPyImp.h>
 #include <Mod/Part/App/modelRefine.h>
+#include <Mod/Part/App/TopoShapeOpCode.h>
 
 #include "FeatureAddSub.h"
 #include "FeaturePy.h"
@@ -43,7 +44,12 @@ PROPERTY_SOURCE(PartDesign::FeatureAddSub, PartDesign::FeatureRefine)
 
 FeatureAddSub::FeatureAddSub()
 {
-    ADD_PROPERTY(AddSubShape,(TopoDS_Shape()));
+    ADD_PROPERTY(AddSubShape, (TopoDS_Shape()));
+}
+
+void FeatureAddSub::onChanged(const App::Property* property)
+{
+    Feature::onChanged(property);
 }
 
 FeatureAddSub::Type FeatureAddSub::getAddSubType()
@@ -58,15 +64,50 @@ short FeatureAddSub::mustExecute() const
     return PartDesign::Feature::mustExecute();
 }
 
-void FeatureAddSub::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShape)
+void FeatureAddSub::getAddSubShape(Part::TopoShape& addShape, Part::TopoShape& subShape)
 {
-    if (addSubType == Additive)
+    if (addSubType == Additive) {
         addShape = AddSubShape.getShape();
-    else if (addSubType == Subtractive)
+    }
+    else if (addSubType == Subtractive) {
         subShape = AddSubShape.getShape();
+    }
 }
 
+void FeatureAddSub::updatePreviewShape()
+{
+    const auto notifyWarning = [this](auto message) {
+        Base::Console().warning(fmt::format("Failure while computing preview: {}. That usually indicates an error with model.", message).c_str());
+    };
+
+    // for subtractive shapes we want to also showcase removed volume, not only the tool
+    if (addSubType == Subtractive) {
+        TopoShape base = getBaseTopoShape(true);
+
+        try {
+            base.makeElementBoolean(Part::OpCodes::Common, { base, AddSubShape.getShape() });
+        } catch (Standard_Failure& e) {
+            notifyWarning(e.GetMessageString());
+        }
+
+        if (base.isValid() && !base.isNull()) {
+            PreviewShape.setValue(base);
+            return;
+        }
+
+        if (base.isNull()) {
+            notifyWarning("Preview shape is empty");
+        }
+
+        if (base.isNull()) {
+            notifyWarning("Preview shape is invalid");
+        }
+    }
+
+    PreviewShape.setValue(AddSubShape.getShape());
 }
+
+}  // namespace PartDesign
 
 namespace App {
 /// @cond DOXERR
