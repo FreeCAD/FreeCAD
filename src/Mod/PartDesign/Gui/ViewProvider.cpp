@@ -28,6 +28,9 @@
 # include <QAction>
 # include <QApplication>
 # include <QMenu>
+# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoTransform.h>
+# include <BRep_Builder.hxx>
 #endif
 
 #include <Base/Exception.h>
@@ -37,14 +40,20 @@
 #include <Gui/CommandT.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
+#include <Gui/Selection/SoFCUnifiedSelection.h>
+#include <Gui/Inventor/So3DAnnotation.h>
 #include <Gui/MainWindow.h>
 #include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/Feature.h>
+#include <Mod/Part/Gui/ViewProvider.h>
+#include <Mod/Part/Gui/ViewProviderExt.h>
 
 #include "TaskFeatureParameters.h"
 
 #include "ViewProvider.h"
 #include "ViewProviderPy.h"
+
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoPickStyle.h>
 
 using namespace PartDesignGui;
 
@@ -57,6 +66,18 @@ ViewProvider::ViewProvider()
 }
 
 ViewProvider::~ViewProvider() = default;
+
+void ViewProvider::beforeDelete()
+{
+    makePreviewVisible(false);
+    ViewProviderPart::beforeDelete();
+}
+
+void ViewProvider::attach(App::DocumentObject* pcObject)
+{
+    ViewProviderPart::attach(pcObject);
+    getPreviewViewProvider()->attach(pcObject);
+}
 
 bool ViewProvider::doubleClicked()
 {
@@ -129,6 +150,7 @@ bool ViewProvider::setEdit(int ModNum)
             }
         }
 
+        makePreviewVisible(true);
         Gui::Control().showDialog(featureDlg);
         return true;
     } else {
@@ -144,6 +166,8 @@ TaskDlgFeatureParameters *ViewProvider::getEditDialog() {
 
 void ViewProvider::unsetEdit(int ModNum)
 {
+    makePreviewVisible(false);
+
     // return to the WB we were in before editing the PartDesign feature
     if (!oldWb.empty())
         Gui::Command::assureWorkbench(oldWb.c_str());
@@ -171,10 +195,8 @@ void ViewProvider::unsetEdit(int ModNum)
 
 void ViewProvider::updateData(const App::Property* prop)
 {
-    // TODO What's that? (2015-07-24, Fat-Zer)
-    if (prop->is<Part::PropertyPartShape>() &&
-        strcmp(prop->getName(),"AddSubShape") == 0) {
-        return;
+    if (strcmp(prop->getName(), "PreviewShape") == 0) {
+        updatePreview();
     }
 
     inherited::updateData(prop);
@@ -332,6 +354,85 @@ ViewProviderBody* ViewProvider::getBodyViewProvider() {
     return nullptr;
 }
 
+void ViewProvider::updatePreview()
+{
+    getPreviewViewProvider()->updateView();
+}
+
+void ViewProvider::makePreviewVisible(bool enable)
+{
+    auto feature = dynamic_cast<PartDesign::Feature*>(getObject());
+    if (!feature) {
+        return;
+    }
+
+    auto baseFeature = feature->BaseFeature.getValue();
+    if (!baseFeature) {
+        return;
+    }
+
+    auto baseFeatureViewProvider = Gui::Application::Instance->getViewProvider(baseFeature);
+    if (!baseFeatureViewProvider) {
+        return;
+    }
+
+    updatePreview();
+
+    if (enable) {
+        hide();
+
+        baseFeatureViewProvider->show();
+        baseFeatureViewProvider->getAnnotation()->addChild(previewGroup);
+    } else {
+        show();
+        baseFeatureViewProvider->hide();
+
+        auto previewGroupIndex = baseFeatureViewProvider->getAnnotation()->findChild(previewGroup);
+        if (previewGroupIndex >= 0) {
+            baseFeatureViewProvider->getAnnotation()->removeChild(previewGroupIndex);
+        }
+    }
+}
+
+ViewProviderPreview* ViewProvider::getPreviewViewProvider() {
+    if (!previewViewProvider) {
+        auto vp = new ViewProviderPreview;
+
+        vp->setStatus(Gui::SecondaryView, true);
+        vp->attach(getObject());
+
+        vp->forceUpdate();
+
+        vp->Selectable.setValue(false);
+
+        vp->ShapeAppearance.setDiffuseColor(0.f, 0.f, 1.f);
+        vp->PointMaterial.setDiffuseColor(0.f, 0.f, 1.f);
+        vp->LineMaterial.setDiffuseColor(0.f, 0.f, 1.f);
+
+        vp->ShapeAppearance.setTransparency(.9f);
+        vp->LineMaterial.setTransparency(.6f);
+        vp->PointMaterial.setTransparency(.6f);
+
+        vp->Lighting.setValue(1);
+
+        vp->setDefaultMode(0);
+        vp->updateView();
+        vp->show();
+
+        previewGroup = new Gui::So3DAnnotation;
+        previewGroup->setName("Preview");
+        previewGroup->addChild(vp->getRoot());
+
+
+        previewViewProvider.reset(vp);
+    }
+
+    if (previewViewProvider->testStatus(Gui::Detach)) {
+        previewViewProvider->reattach(getObject());
+    }
+
+    return previewViewProvider.get();
+}
 
 
 namespace Gui {
