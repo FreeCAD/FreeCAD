@@ -144,7 +144,7 @@ void TaskThicknessParameters::onSelectionChanged(const Gui::SelectionChanges& ms
 void TaskThicknessParameters::setButtons(const selectionModes mode)
 {
     ui->buttonRefSel->setChecked(mode == refSel);
-    ui->buttonRefSel->setText(mode == refSel ? btnPreviewStr() : btnSelectStr());
+    ui->buttonRefSel->setText(mode == refSel ? stopSelectionLabel() : startSelectionLabel());
 }
 
 void TaskThicknessParameters::onRefDeleted()
@@ -280,7 +280,7 @@ bool TaskDlgThicknessParameters::accept()
 {
     auto obj = getObject();
     if (!obj->isError()) {
-        parameter->showObject();
+        getViewObject()->showPreviousFeature(false);
     }
 
     parameter->apply();

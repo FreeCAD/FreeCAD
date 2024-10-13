@@ -55,10 +55,7 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskDressUpParameters */
 
 TaskDressUpParameters::TaskDressUpParameters(ViewProviderDressUp *DressUpView, bool selectEdges, bool selectFaces, QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap(DressUpView->featureIcon().c_str()),
-              DressUpView->menuName,
-              true,
-              parent)
+    : TaskFeatureParameters(DressUpView, parent, DressUpView->featureIcon(), DressUpView->menuName)
     , proxy(nullptr)
     , deleteAction(nullptr)
     , addAllEdgesAction(nullptr)
@@ -70,7 +67,6 @@ TaskDressUpParameters::TaskDressUpParameters(ViewProviderDressUp *DressUpView, b
     App::GetApplication().getActiveTransaction(&transactionID);
 
     selectionMode = none;
-    showObject();
 }
 
 TaskDressUpParameters::~TaskDressUpParameters()
@@ -282,6 +278,16 @@ void TaskDressUpParameters::tryAddSelection(const std::string& doc,
     }
 }
 
+QString TaskDressUpParameters::startSelectionLabel()
+{
+    return tr("Select");
+}
+
+QString TaskDressUpParameters::stopSelectionLabel()
+{
+    return tr("Confirm Selection");
+}
+
 void TaskDressUpParameters::itemClickedTimeout() {
     // executed after double-click time passed
     wasDoubleClicked = false;
@@ -368,34 +374,7 @@ void TaskDressUpParameters::removeItemFromListWidget(QListWidget* widget, const 
 void TaskDressUpParameters::hideOnError()
 {
     App::DocumentObject* dressup = DressUpView->getObject();
-    if (dressup->isError())
-        hideObject();
-    else
-        showObject();
-}
-
-void TaskDressUpParameters::setDressUpVisibility(bool visible)
-{
-    App::DocumentObject* base = getBase();
-    if (base) {
-        App::DocumentObject* duv = DressUpView->getObject();
-        if (duv->Visibility.getValue() != visible) {
-            duv->Visibility.setValue(visible);
-        }
-        if (base->Visibility.getValue() == visible) {
-            base->Visibility.setValue(!visible);
-        }
-    }
-}
-
-void TaskDressUpParameters::hideObject()
-{
-    setDressUpVisibility(false);
-}
-
-void TaskDressUpParameters::showObject()
-{
-    setDressUpVisibility(true);
+    DressUpView->setErrorState(dressup->isError());
 }
 
 ViewProviderDressUp* TaskDressUpParameters::getDressUpView() const
@@ -427,16 +406,12 @@ void TaskDressUpParameters::setSelectionMode(selectionModes mode)
     setButtons(mode);
 
     if (mode == none) {
-        showObject();
-
         Gui::Selection().rmvSelectionGate();
 
         // remove any highlights and selections
         DressUpView->highlightReferences(false);
     }
     else {
-        hideObject();
-
         AllowSelectionFlags allow;
         allow.setFlag(AllowSelection::EDGE, allowEdges);
         allow.setFlag(AllowSelection::FACE, allowFaces);

@@ -487,6 +487,7 @@ public:
     //@{
     bool isNull() const;
     bool isValid() const;
+    bool isEmpty() const;
     bool analyze(bool runBopCheck, std::ostream&) const;
     bool isClosed() const;
     bool isCoplanar(const TopoShape& other, double tol = -1) const;

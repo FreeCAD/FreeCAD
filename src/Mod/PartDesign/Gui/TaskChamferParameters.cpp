@@ -182,7 +182,7 @@ void TaskChamferParameters::onCheckBoxUseAllEdgesToggled(bool checked)
 void TaskChamferParameters::setButtons(const selectionModes mode)
 {
     ui->buttonRefSel->setChecked(mode == refSel);
-    ui->buttonRefSel->setText(mode == refSel ? btnPreviewStr() : btnSelectStr());
+    ui->buttonRefSel->setText(mode == refSel ? stopSelectionLabel() : startSelectionLabel());
 }
 
 void TaskChamferParameters::onRefDeleted()
@@ -349,7 +349,7 @@ bool TaskDlgChamferParameters::accept()
 {
     auto obj = getObject();
     if (!obj->isError()) {
-        parameter->showObject();
+        getViewObject()->showPreviousFeature(false);
     }
 
     parameter->apply();
