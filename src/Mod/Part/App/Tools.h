@@ -235,6 +235,8 @@ public:
      * and false otherwise, plane case included.
      */
     static bool isConcave(const TopoDS_Face &face, const gp_Pnt &pointOfVue, const gp_Dir &direction);
+
+    static bool isShapeEmpty(const TopoDS_Shape& shape);
 };
 
 } //namespace Part

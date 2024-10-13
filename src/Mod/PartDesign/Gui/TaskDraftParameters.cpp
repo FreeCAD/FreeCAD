@@ -180,7 +180,7 @@ void TaskDraftParameters::onButtonPlane(bool checked)
 {
     if (checked) {
         setButtons(plane);
-        hideObject();
+        getViewObject()->showPreviousFeature(true);
         selectionMode = plane;
         Gui::Selection().clearSelection();
         Gui::Selection().addSelectionGate(new ReferenceSelection(
@@ -193,7 +193,7 @@ void TaskDraftParameters::onButtonLine(bool checked)
 {
     if (checked) {
         setButtons(line);
-        hideObject();
+        getViewObject()->showPreviousFeature(true);
         selectionMode = line;
         Gui::Selection().clearSelection();
         Gui::Selection().addSelectionGate(
@@ -311,7 +311,7 @@ bool TaskDlgDraftParameters::accept()
 {
     auto tobj = getObject();
     if (!tobj->isError()) {
-        parameter->showObject();
+        getViewObject()->showPreviousFeature(false);
     }
 
     parameter->apply();

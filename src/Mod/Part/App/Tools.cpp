@@ -71,7 +71,10 @@
 
 #include "Tools.h"
 
+#include <TopExp_Explorer.hxx>
 
+
+class TopExp_Explorer;
 void Part::closestPointsOnLines(const gp_Lin& lin1, const gp_Lin& lin2, gp_Pnt& p1, gp_Pnt& p2)
 {
     // they might be the same point
@@ -778,4 +781,25 @@ bool Part::Tools::isConcave(const TopoDS_Face &face, const gp_Pnt &pointOfVue, c
     result = result || ((dirdV.Angle(direction) - std::numbers::pi/2) <= Precision::Confusion());
 
     return result;
+}
+
+bool Part::Tools::isShapeEmpty(const TopoDS_Shape& shape)
+{
+    // If shape is null we consider it as empty
+    if (shape.IsNull()) {
+        return true;
+    }
+
+    if (shape.ShapeType() == TopAbs_COMPOUND) {
+        for (TopoDS_Iterator it(shape); it.More(); it.Next()) {
+            if (const TopoDS_Shape& sub = it.Value(); !isShapeEmpty(sub)) {
+                // Found a non-empty sub-shape
+                return false;
+            }
+        }
+    }
+
+    // To see if shape is non-empty we check if it has at least one vertex
+    TopExp_Explorer explorer(shape, TopAbs_VERTEX);
+    return !explorer.More();
 }
