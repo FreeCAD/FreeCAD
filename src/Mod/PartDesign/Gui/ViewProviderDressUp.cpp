@@ -41,8 +41,17 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderDressUp,PartDesignGui::ViewProvider)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderDressUp, PartDesignGui::ViewProvider)
 
+
+void ViewProviderDressUp::attach(App::DocumentObject* pcObject)
+{
+    ViewProvider::attach(pcObject);
+
+    const Base::Color magenta(1.0F, 0.0F, 1.0F);
+
+    PreviewColor.setValue(magenta);
+}
 
 void ViewProviderDressUp::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
