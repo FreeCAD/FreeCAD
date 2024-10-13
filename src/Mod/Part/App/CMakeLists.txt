@@ -225,6 +225,8 @@ SET(Features_SRCS
     DatumFeature.h
     AttachExtension.h
     AttachExtension.cpp
+    PreviewExtension.cpp
+    PreviewExtension.h
     PrismExtension.cpp
     PrismExtension.h
     VectorAdapter.cpp

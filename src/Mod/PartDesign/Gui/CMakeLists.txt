@@ -109,8 +109,6 @@ SET(PartDesignGuiViewProvider_SRCS
     ViewProviderShapeBinder.cpp
     ViewProviderBoolean.cpp
     ViewProviderBoolean.h
-    ViewProviderAddSub.cpp
-    ViewProviderAddSub.h
     ViewProviderPrimitive.h
     ViewProviderPrimitive.cpp
     ViewProviderPipe.h
