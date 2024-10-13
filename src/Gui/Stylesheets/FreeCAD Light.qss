@@ -1633,11 +1633,16 @@ QSint--ActionGroup QFrame[class="content"] QToolButton {
   color: black;
   text-align: center;
   background-color: qlineargradient(x1:0, y1:0.3, x2:0, y2:1, stop:0 #f0f0f0, stop:1 #fdfdfd);
-  border: 0px solid #adadad;
+  border: 1px solid #adadad;
   padding: 1px 1px; /* different than regular QPushButton */
   margin: 0px; /* different than regular QPushButton */
   min-height: 16px; /* same as QTabBar QPushButton min-width */
   border-radius: 3px;
+}
+
+QSint--ActionGroup QFrame[class="content"] QToolButton:checked {
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #fefefe, stop:1 #f8f8f8);
+  border: 1px solid @ThemeAccentColor2;
 }
 
 /* QToolButtons with a menu found in Sketcher task panel*/
