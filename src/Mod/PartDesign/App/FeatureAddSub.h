@@ -53,6 +53,8 @@ public:
 
     virtual void getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShape);
 
+    void updatePreviewShape() override;
+
     Part::PropertyPartShape   AddSubShape;
     App::PropertyBool Refine;
 

@@ -757,7 +757,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
 
         // set the additive shape property for later usage in e.g. pattern
         prism = refineShapeIfActive(prism);
-        this->AddSubShape.setValue(prism);
+        AddSubShape.setValue(prism);
 
         if (base.shapeType(true) <= TopAbs_SOLID && fuse) {
             prism.Tag = -this->getID();

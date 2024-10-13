@@ -83,15 +83,21 @@ TopoShape FeatureAddSub::refineShapeIfActive(const TopoShape& oldShape, const Re
     return oldShape;
 }
 
-void FeatureAddSub::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShape)
+void FeatureAddSub::getAddSubShape(Part::TopoShape& addShape, Part::TopoShape& subShape)
 {
-    if (addSubType == Additive)
+    if (addSubType == Additive) {
         addShape = AddSubShape.getShape();
-    else if (addSubType == Subtractive)
+    }
+    else if (addSubType == Subtractive) {
         subShape = AddSubShape.getShape();
+    }
+}
+void FeatureAddSub::updatePreviewShape()
+{
+    PreviewShape.setValue(AddSubShape.getShape());
 }
 
-}
+}  // namespace PartDesign
 
 namespace App {
 /// @cond DOXERR
