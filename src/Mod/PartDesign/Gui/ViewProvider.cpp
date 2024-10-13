@@ -28,6 +28,10 @@
 # include <QAction>
 # include <QApplication>
 # include <QMenu>
+# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoPickStyle.h>
+# include <Inventor/nodes/SoTransform.h>
+# include <BRep_Builder.hxx>
 #endif
 
 #include <Base/Exception.h>
@@ -37,26 +41,138 @@
 #include <Gui/CommandT.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
+#include <Gui/Selection/SoFCUnifiedSelection.h>
+#include <Gui/Inventor/So3DAnnotation.h>
 #include <Gui/MainWindow.h>
 #include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/Feature.h>
+#include <Mod/Part/Gui/ViewProvider.h>
+#include <Mod/Part/Gui/ViewProviderExt.h>
 
 #include "TaskFeatureParameters.h"
 
 #include "ViewProvider.h"
 #include "ViewProviderPy.h"
 
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoDepthBuffer.h>
+#include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoLightModel.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoMaterialBinding.h>
+#include <Inventor/nodes/SoNormal.h>
+#include <Inventor/nodes/SoPolygonOffset.h>
+#include <Mod/Part/Gui/SoBrepEdgeSet.h>
+#include <Mod/Part/Gui/SoBrepFaceSet.h>
+#include <Mod/Part/Gui/SoBrepPointSet.h>
+#include <Mod/PartDesign/App/FeatureAddSub.h>
+#include <Mod/PartDesign/App/FeatureDressUp.h>
+
+
 using namespace PartDesignGui;
 
 PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesignGui::ViewProvider, PartGui::ViewProviderPart)
 
+SO_NODE_SOURCE(SoPreviewShape);
+
+SoPreviewShape::SoPreviewShape()
+    : coords(new SoCoordinate3)
+    , norm(new SoNormal)
+    , faceset(new PartGui::SoBrepFaceSet)
+    , lineset(new PartGui::SoBrepEdgeSet)
+    , nodeset(new PartGui::SoBrepPointSet)
+{
+    SO_NODE_CONSTRUCTOR(SoPreviewShape);
+
+    SO_NODE_ADD_FIELD(color, (1.f, 0.f, 1.f));
+    SO_NODE_ADD_FIELD(transparency, (0.85f));
+    SO_NODE_ADD_FIELD(lineWidth, (2.f));
+
+    SoDrawStyle* solidLineStyle = new SoDrawStyle();
+    solidLineStyle->lineWidth.connectFrom(&lineWidth);
+
+    SoDrawStyle* hiddenLineStyle = new SoDrawStyle();
+    hiddenLineStyle->lineWidth.connectFrom(&lineWidth);
+    hiddenLineStyle->linePattern = 0xF0F0;
+
+    SoLightModel* solidColorLightModel = new SoLightModel();
+    solidColorLightModel->model = SoLightModel::BASE_COLOR;
+
+    SoNormalBinding* normalBinding = new SoNormalBinding();
+    normalBinding->value = SoNormalBinding::PER_VERTEX_INDEXED;
+
+    // This should be OVERALL but then line pattern does not work correctly
+    // Probably a bug in coin to be investigated.
+    SoMaterialBinding* materialBinding = new SoMaterialBinding();
+    materialBinding->value = SoMaterialBinding::PER_FACE_INDEXED;
+
+    SoMaterial* material = new SoMaterial;
+    material->diffuseColor.connectFrom(&color);
+    material->transparency.connectFrom(&transparency);
+
+    SoPolygonOffset* polygonOffset = new SoPolygonOffset;
+
+    SoMaterial* lineMaterial = new SoMaterial;
+    lineMaterial->diffuseColor.connectFrom(&color);
+    lineMaterial->transparency = 0.0f;
+
+    SoSeparator* lineSep = new SoSeparator;
+    lineSep->addChild(normalBinding);
+    lineSep->addChild(materialBinding);
+    lineSep->addChild(solidColorLightModel);
+    lineSep->addChild(lineMaterial);
+    lineSep->addChild(lineset);
+
+    SoSeparator* annotation = new Gui::So3DAnnotation;
+    annotation->addChild(hiddenLineStyle);
+    annotation->addChild(material);
+    annotation->addChild(lineSep);
+    annotation->addChild(polygonOffset);
+    annotation->addChild(faceset);
+
+    SoSeparator::addChild(solidLineStyle);
+    SoSeparator::addChild(material);
+    SoSeparator::addChild(coords);
+    SoSeparator::addChild(norm);
+    SoSeparator::addChild(lineSep);
+    SoSeparator::addChild(polygonOffset);
+    SoSeparator::addChild(faceset);
+    SoSeparator::addChild(annotation);
+}
+
 ViewProvider::ViewProvider()
 {
     ViewProviderSuppressibleExtension::initExtension(this);
-    PartGui::ViewProviderAttachExtension::initExtension(this);
+    ViewProviderAttachExtension::initExtension(this);
 }
 
 ViewProvider::~ViewProvider() = default;
+
+void ViewProvider::beforeDelete()
+{
+    makePreviewVisible(false);
+    ViewProviderPart::beforeDelete();
+}
+
+void ViewProvider::attach(App::DocumentObject* pcObject)
+{
+    ViewProviderPart::attach(pcObject);
+
+    previewShape = new SoPreviewShape;
+    updatePreviewShape();
+
+    if (getObject()->isDerivedFrom<PartDesign::DressUp>()) {
+        previewShape->color.setValue(1.f, 0.f, 1.f);
+    }
+    else if (auto featureAddSub = getObject<PartDesign::FeatureAddSub>()) {
+        if (featureAddSub->getAddSubType() == PartDesign::FeatureAddSub::Subtractive) {
+            previewShape->color.setValue(1.f, 0.f, 0.f);
+        } else {
+            previewShape->color.setValue(0.f, 1.f, 6.f);
+        }
+    } else {
+        previewShape->color.setValue(1.f, 0.f, 1.f);
+    }
+}
 
 bool ViewProvider::doubleClicked()
 {
@@ -129,6 +245,7 @@ bool ViewProvider::setEdit(int ModNum)
             }
         }
 
+        makePreviewVisible(true);
         Gui::Control().showDialog(featureDlg);
         return true;
     } else {
@@ -144,6 +261,8 @@ TaskDlgFeatureParameters *ViewProvider::getEditDialog() {
 
 void ViewProvider::unsetEdit(int ModNum)
 {
+    makePreviewVisible(false);
+
     // return to the WB we were in before editing the PartDesign feature
     if (!oldWb.empty())
         Gui::Command::assureWorkbench(oldWb.c_str());
@@ -171,10 +290,8 @@ void ViewProvider::unsetEdit(int ModNum)
 
 void ViewProvider::updateData(const App::Property* prop)
 {
-    // TODO What's that? (2015-07-24, Fat-Zer)
-    if (prop->is<Part::PropertyPartShape>() &&
-        strcmp(prop->getName(),"AddSubShape") == 0) {
-        return;
+    if (strcmp(prop->getName(), "PreviewShape") == 0) {
+        updatePreviewShape();
     }
 
     inherited::updateData(prop);
@@ -268,10 +385,48 @@ bool ViewProvider::onDelete(const std::vector<std::string>&)
         //
         // fixes (#3084)
 
-        FCMD_OBJ_CMD(body,"removeObject(" << Gui::Command::getObjectCmd(feature) << ')');
+        FCMD_OBJ_CMD(body, "removeObject(" << Gui::Command::getObjectCmd(feature) << ')');
     }
 
     return true;
+}
+
+Part::TopoShape ViewProvider::getPreviewShape() const
+{
+    if (auto feature = dynamic_cast<PartDesign::Feature*>(getObject())) {
+        // Feature is responsible for generating proper shape and this ViewProvider
+        // is using it instead of more normal `Shape` property.
+        return feature->PreviewShape.getShape();
+    }
+
+    return {};
+}
+
+void ViewProvider::updatePreviewShape()
+{
+    setupCoinGeometry(getPreviewShape().getShape(),
+                      previewShape->coords,
+                      previewShape->faceset,
+                      previewShape->norm,
+                      previewShape->lineset,
+                      previewShape->nodeset);
+
+    // For some reason line patterns are not rendered correctly if material binding is set to
+    // anything other than PER_FACE. PER_FACE material binding seems to require materialIndex per
+    // each distinct edge. Until that is fixed, this code forces each edge to use the first material.
+    unsigned lineCoordsCount = previewShape->lineset->coordIndex.getNum();
+    unsigned lineCount = 1;
+
+    for (unsigned i = 0; i < lineCoordsCount; ++i) {
+        if (previewShape->lineset->coordIndex[i] < 0) {
+            lineCount++;
+        }
+    }
+
+    previewShape->lineset->materialIndex.setNum(lineCount);
+    for (unsigned i = 0; i < lineCount; ++i) {
+        previewShape->lineset->materialIndex.set1Value(i, 0);
+    }
 }
 
 void ViewProvider::setBodyMode(bool bodymode) {
@@ -332,7 +487,45 @@ ViewProviderBody* ViewProvider::getBodyViewProvider() {
     return nullptr;
 }
 
+void ViewProvider::makePreviewVisible(bool enable)
+{
+    PartDesign::Feature* feature {getObject<PartDesign::Feature>()};
+    PartDesign::Feature* baseFeature { nullptr };
 
+    ViewProvider* baseFeatureViewProvider { nullptr };
+    Gui::ViewProvider* bodyViewProvider {getBodyViewProvider()};
+
+    if (!feature) {
+        return;
+    }
+
+    baseFeature = dynamic_cast<PartDesign::Feature*>(feature->BaseFeature.getValue());
+    if (baseFeature) {
+        baseFeatureViewProvider = freecad_cast<ViewProvider*>(Gui::Application::Instance->getViewProvider(baseFeature));
+    }
+
+    if (!baseFeatureViewProvider) {
+        baseFeatureViewProvider = this;
+    }
+
+    if (!bodyViewProvider) {
+        bodyViewProvider = baseFeatureViewProvider->getBodyViewProvider();
+    }
+
+    if (enable) {
+        feature->updatePreviewShape();
+
+        baseFeatureViewProvider->show();
+        hide();
+
+        bodyViewProvider->getAnnotation()->addChild(previewShape);
+    } else {
+        baseFeatureViewProvider->hide();
+        show();
+
+        bodyViewProvider->getAnnotation()->removeChild(previewShape);
+    }
+}
 
 namespace Gui {
 /// @cond DOXERR

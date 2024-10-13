@@ -24,16 +24,41 @@
 #ifndef PARTGUI_ViewProvider_H
 #define PARTGUI_ViewProvider_H
 
+#include <App/DocumentObject.h>
 #include <Mod/Part/Gui/ViewProvider.h>
-#include "ViewProviderBody.h"
+#include <Mod/Part/Gui/ViewProviderExt.h>
 #include <Gui/ViewProviderFeaturePython.h>
 #include "Gui/ViewProviderSuppressibleExtension.h"
 
 #include <Mod/Part/Gui/ViewProviderAttachExtension.h>
+#include <Mod/PartDesign/App/Feature.h>
+
+#include <Gui/Selection/SoFCUnifiedSelection.h>
+
+#include "ViewProviderBody.h"
 
 namespace PartDesignGui {
 
 class TaskDlgFeatureParameters;
+
+class PartDesignGuiExport SoPreviewShape : public SoSeparator {
+    using inherited = SoSeparator;
+    SO_NODE_HEADER(SoPreviewShape);
+
+public:
+    SoPreviewShape();
+
+    SoSFColor color;
+    SoSFFloat transparency;
+    SoSFFloat lineWidth;
+
+    SoCoordinate3* coords;
+    SoNormal* norm;
+
+    PartGui::SoBrepFaceSet* faceset;
+    PartGui::SoBrepEdgeSet* lineset;
+    PartGui::SoBrepPointSet* nodeset;
+};
 
 /**
  * A common base class for all part design features view providers
@@ -51,8 +76,10 @@ public:
     /// destructor
     ~ViewProvider() override;
 
+    void beforeDelete() override;
+    void attach(App::DocumentObject* pcObject) override;
+
     bool doubleClicked() override;
-    void updateData(const App::Property*) override;
     void onChanged(const App::Property* prop) override;
 
     Gui::ViewProvider* startEditing(int ModNum) override;
@@ -73,6 +100,9 @@ public:
     //Returns the ViewProvider of the body the feature belongs to, or NULL, if not in a body
     ViewProviderBody* getBodyViewProvider();
 
+    //Toggles visibility of the preview
+    void makePreviewVisible(bool);
+
     PyObject* getPyObject() override;
 
     QIcon mergeColorfulOverlayIcons (const QIcon & orig) const override;
@@ -81,8 +111,14 @@ protected:
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
     bool setEdit(int ModNum) override;
     void unsetEdit(int ModNum) override;
+    void updateData(const App::Property* prop) override;
 
     bool onDelete(const std::vector<std::string> &) override;
+
+    /// Returns shape that should be used as the preview
+    virtual Part::TopoShape getPreviewShape() const;
+    /// Updates preview visuals
+    void updatePreviewShape();
 
     /**
      * Returns a newly create dialog for the part to be placed in the task view
@@ -92,6 +128,9 @@ protected:
 
     std::string oldWb;
     App::DocumentObject* oldTip{nullptr};
+
+    Gui::CoinPtr<SoPreviewShape> previewShape;
+
     bool isSetTipIcon{false};
 };
 

@@ -123,6 +123,10 @@ public:
     std::vector<Base::Vector3d> getSelectionShape(const char* Element) const override;
     //@}
 
+    virtual Part::TopoShape getRenderedShape() const {
+        return Part::Feature::getTopoShape(getObject(), Part::ShapeOption::NoFlag);
+    }
+
     /** @name Highlight handling
     * This group of methods do the highlighting of elements.
     */
@@ -169,6 +173,13 @@ protected:
     void handleChangedPropertyName(Base::XMLReader& reader,
                                    const char* TypeName,
                                    const char* PropName) override;
+
+    void setupCoinGeometry(TopoDS_Shape shape,
+                           SoCoordinate3* coords,
+                           SoBrepFaceSet* faceset,
+                           SoNormal* norm,
+                           SoBrepEdgeSet* lineset,
+                           SoBrepPointSet* nodeset);
 
     // nodes for the data representation
     SoMaterialBinding * pcFaceBind;
