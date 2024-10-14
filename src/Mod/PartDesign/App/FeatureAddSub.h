@@ -42,6 +42,7 @@ public:
 
     FeatureAddSub();
 
+    void onChanged(const App::Property *) override;
     Type getAddSubType();
 
     short mustExecute() const override;

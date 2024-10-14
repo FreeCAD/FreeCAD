@@ -43,7 +43,17 @@ PROPERTY_SOURCE(PartDesign::FeatureAddSub, PartDesign::FeatureRefine)
 
 FeatureAddSub::FeatureAddSub()
 {
-    ADD_PROPERTY(AddSubShape,(TopoDS_Shape()));
+    ADD_PROPERTY(AddSubShape, (TopoDS_Shape()));
+
+}
+
+void FeatureAddSub::onChanged(const App::Property* property)
+{
+    if (property == &AddSubShape) {
+        updatePreviewShape();
+    }
+
+    Feature::onChanged(property);
 }
 
 FeatureAddSub::Type FeatureAddSub::getAddSubType()
