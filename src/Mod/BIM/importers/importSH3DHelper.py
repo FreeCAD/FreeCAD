@@ -108,14 +108,14 @@ class SH3DImporter:
     the different <wall> elements)
     """
 
-    def __init__(self, filename, progress_bar):
+    def __init__(self, filename, progress_bar=None):
         """Create a SH3DImporter instance to import the given SH3D file.
 
         Args:
             filename (str): the filename of the ZIP file containing the SH3D
               objects.
-            progress_bar (_type_): a FreeCAD.Base.ProgressIndicator called
-              to let the User monitor the import process
+            progress_bar (_type_,optional): a FreeCAD.Base.ProgressIndicator
+              called to let the User monitor the import process
         """
         super().__init__()
         self.filename = filename
@@ -160,8 +160,8 @@ class SH3DImporter:
             ValueError: if an invalid SH3D file is detected
         """
         doc = App.ActiveDocument
-
-        self.progress_bar.start(f"Importing SweetHome 3D file '{self.filename}'. Please wait ...", -1)
+        if self.progress_bar:
+            self.progress_bar.start(f"Importing SweetHome 3D file '{self.filename}'. Please wait ...", -1)
         with zipfile.ZipFile(self.filename, 'r') as zip:
             self.zip = zip
             entries = zip.namelist()
@@ -449,7 +449,7 @@ class SH3DImporter:
     def _import_elements(self, parent, name, update_progress=True):
         names = list(self.handlers.keys())
         elements = parent.findall(name)
-        if update_progress:
+        if update_progress and self.progress_bar:
             self.progress_bar.stop()
             self.progress_bar.start(f"Step {names.index(name)+1}/{len(names)}: importing {len(elements)} '{name}' elements. Please wait ...", len(elements))
             _msg(f"Importing {len(elements)} '{name}' elements ...")
@@ -461,9 +461,9 @@ class SH3DImporter:
             except Exception as e:
                 _err(f"Failed to import <{name}>#{i} ({elm.get('id', elm.get('name'))}):")
                 _err(str(e))
-            if update_progress:
+            if update_progress and self.progress_bar:
                 self.progress_bar.next()
-                self.current_object_count = self.current_object_count + 1
+            self.current_object_count = self.current_object_count + 1
         list(map(_process, enumerate(parent.findall(name))))
 
     def _import_and_join_walls(self, parent, update_progress=True):
@@ -483,7 +483,7 @@ class SH3DImporter:
                 self.handlers['wall'].process(i, wall_segments[0])
             else:
                 self.handlers['wall'].process(i, wall_segments)
-            if update_progress:
+            if update_progress and self.progress_bar:
                 self.progress_bar.next()
                 self.current_object_count = self.current_object_count + 1
         self.seen = []
@@ -723,7 +723,7 @@ class WallHandler(BaseHandler):
         self._set_wall_colors(wall, invert_angle, elm)
 
         wall.IfcType = "Wall"
-        wall.Label = elm.get("id")
+        wall.Label = f"wall{i}"
 
         self._set_properties(wall, elm)
 
@@ -1319,8 +1319,8 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         # NOTE: the windows are not imported as meshes, but we use a simple
         #   correspondence between a catalog ID and a specific window preset from
         #   the parts library.
-        # Arch.WindowPresets =  ["Fixed", "Open 1-pane", "Open 2-pane", 
-        # "Sash 2-pane", "Sliding 2-pane", "Simple door", "Glass door", 
+        # Arch.WindowPresets =  ["Fixed", "Open 1-pane", "Open 2-pane",
+        # "Sash 2-pane", "Sliding 2-pane", "Simple door", "Glass door",
         # "Sliding 4-pane", "Awning"]
 
         catalog_id = elm.get('catalogId')
