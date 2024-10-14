@@ -380,7 +380,7 @@ jobs:
           pylintWarnings=0
           pylintRefactorings=0
           pylintConventions=0
-          pip install pylint
+          pip install --break-system-packages pylint
           # List enabled pylint checks
           pylint --list-msgs-enabled > ${{ env.logdir }}pylint-enabled-checks.log
           # Run pylint on all python files
@@ -440,7 +440,7 @@ jobs:
         run: |
           blackReformats=0
           blackFails=0
-          pip install black
+          pip install --break-system-packages black
           set +e
           black --check ${{ inputs.changedPythonFiles }} &> ${{ env.logdir }}black.log
           exitCode=$?
@@ -506,7 +506,7 @@ jobs:
                             libqt5x11extras5-dev                        \
                             libshiboken2-dev                            \
                             libspnav-dev                                \
-                            libvtk7-dev                                 \
+                            libvtk9-dev                                 \
                             libx11-dev                                  \
                             libxerces-c-dev                             \
                             libyaml-cpp-dev                             \
@@ -514,7 +514,6 @@ jobs:
                             netgen                                      \
                             netgen-headers                              \
                             occt-draw                                   \
-                            pyqt5-dev-tools                             \
                             pyside2-tools                               \
                             python3-dev                                 \
                             python3-git                                 \
@@ -578,7 +577,7 @@ jobs:
         continue-on-error: ${{ inputs.cpplintFailSilent }}
         run: |
           cpplintErrors=0
-          pip install cpplint
+          pip install --break-system-packages cpplint
           # Run cpplint
           for file in ${{ inputs.changedCppFiles }}
           do
@@ -643,7 +642,7 @@ jobs:
         if: inputs.checkSpelling && always()
         continue-on-error: ${{ inputs.codespellFailSilent }}
         run: |
-          pip install codespell
+          pip install --break-system-packages codespell
           wget https://raw.githubusercontent.com/codespell-project/codespell/master/codespell_lib/data/dictionary.txt
           #wget https://raw.githubusercontent.com/codespell-project/codespell/master/codespell_lib/data/dictionary_rare.txt
           set +e
