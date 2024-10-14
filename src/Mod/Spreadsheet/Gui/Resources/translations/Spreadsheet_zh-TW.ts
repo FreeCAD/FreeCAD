@@ -680,7 +680,7 @@ switch the design configuration. The property will be created if not exist.</tra
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="140"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="116"/>
       <location filename="../../Command.cpp" line="195"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
       <translation type="unfinished">CSV (*.csv *.CSV);;All (*)</translation>
@@ -691,12 +691,12 @@ switch the design configuration. The property will be created if not exist.</tra
       <translation>匯入檔案</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="142"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="118"/>
       <source>Export file</source>
       <translation>匯出檔案</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="167"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="143"/>
       <source>Show spreadsheet</source>
       <translation>顯示試算表</translation>
     </message>
@@ -1103,7 +1103,7 @@ Defaults to: %V = %A
       <location filename="../../SheetTableView.cpp" line="213"/>
       <location filename="../../SheetTableView.cpp" line="661"/>
       <source>Copy</source>
-      <translation>複製</translation>
+      <translation>拷貝</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="215"/>

@@ -719,7 +719,7 @@ se comprobarán los complementos instalados para ver si hay actualizaciones disp
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="99"/>
       <source>Update all available</source>
-      <translation>Actualizaciones disponibles</translation>
+      <translation>Instalar todas las actualizaciones disponibles</translation>
     </message>
   </context>
   <context>
@@ -1477,7 +1477,7 @@ se comprobarán los complementos instalados para ver si hay actualizaciones disp
     <message>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="116"/>
       <source>Run</source>
-      <translation>ejecutar</translation>
+      <translation>Ejecutar</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="117"/>
@@ -1775,7 +1775,7 @@ se comprobarán los complementos instalados para ver si hay actualizaciones disp
       <location filename="../../install_to_toolbar.py" line="253"/>
       <source>Run</source>
       <comment>Indicates a macro that can be &apos;run&apos;</comment>
-      <translation>ejecutar</translation>
+      <translation>Ejecutar</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_utility.py" line="76"/>
