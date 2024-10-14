@@ -429,7 +429,7 @@ protected:
         return ret;
     }
     static void readLinks(const std::vector<App::DocumentObject*> &objs,
-                          const std::vector<std::string> &subs, std::vector<App::GeoFeature *> &geofs,
+                          const std::vector<std::string> &subs,
                           std::vector<const TopoDS_Shape*>& shapes, std::vector<TopoDS_Shape> &storage,
                           std::vector<eRefType> &types);
 
