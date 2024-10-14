@@ -152,7 +152,7 @@ class CAMWorkbench(Workbench):
                 drillingcmdlist,
                 QT_TRANSLATE_NOOP("CAM_DrillingTools", "Drilling Operations"),
             ),
-        )            
+        )
         threedcmdgroup = threedopcmdlist
         if Path.Preferences.experimentalFeaturesEnabled():
             prepcmdlist.append("CAM_Shape")

@@ -23,7 +23,6 @@
 # ***************************************************************************
 
 
-
 import FreeCAD
 import Part
 import Path
@@ -93,9 +92,7 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
 
     def circularHoleFeatures(self, obj):
         """circularHoleFeatures(obj) ... tapping works on anything, turn on all Base geometries and Locations."""
-        return (
-            PathOp.FeatureBaseGeometry | PathOp.FeatureLocations | PathOp.FeatureCoolant
-        )
+        return PathOp.FeatureBaseGeometry | PathOp.FeatureLocations | PathOp.FeatureCoolant
 
     def initCircularHoleOperation(self, obj):
         """initCircularHoleOperation(obj) ... add tapping specific properties to obj."""
@@ -103,9 +100,7 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
             "App::PropertyFloat",
             "DwellTime",
             "Tap",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "The time to dwell at bottom of tapping cycle"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "The time to dwell at bottom of tapping cycle"),
         )
         obj.addProperty(
             "App::PropertyBool",
@@ -126,9 +121,7 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
             "App::PropertyEnumeration",
             "ReturnLevel",
             "Tap",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Controls how tool retracts Default=G98"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Controls how tool retracts Default=G98"),
         )
         obj.addProperty(
             "App::PropertyDistance",
@@ -231,10 +224,7 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
             repeat = 1  # technical debt:  Add a repeat property for user control
 
             # Get attribute from obj.tool, assign default and set to bool for passing to generate
-            isRightHand = (
-                getattr(obj.ToolController.Tool, "Rotation", "Right Hand")
-                == "Right Hand"
-            )
+            isRightHand = getattr(obj.ToolController.Tool, "Rotation", "Right Hand") == "Right Hand"
 
             try:
                 tappingcommands = tapping.generate(
@@ -264,9 +254,7 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
 
         if hasattr(job.SetupSheet, "RetractHeight"):
             obj.RetractHeight = job.SetupSheet.RetractHeight
-        elif self.applyExpression(
-            obj, "RetractHeight", "StartDepth+SetupSheet.SafeHeightOffset"
-        ):
+        elif self.applyExpression(obj, "RetractHeight", "StartDepth+SetupSheet.SafeHeightOffset"):
             if not job:
                 obj.RetractHeight = 10
             else:

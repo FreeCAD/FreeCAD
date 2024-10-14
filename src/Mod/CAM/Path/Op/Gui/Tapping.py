@@ -48,46 +48,46 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
     """Controller for the tapping operation's page"""
 
     def initPage(self, obj):
-#        self.peckDepthSpinBox = PathGuiUtil.QuantitySpinBox(
-#           self.form.peckDepth, obj, "PeckDepth"
-#       )
-#       self.peckRetractSpinBox = PathGuiUtil.QuantitySpinBox(
-#           self.form.peckRetractHeight, obj, "RetractHeight"
-#       )
-        self.dwellTimeSpinBox = PathGuiUtil.QuantitySpinBox(
-            self.form.dwellTime, obj, "DwellTime"
-        )
-#       self.form.chipBreakEnabled.setEnabled(False)
+        #        self.peckDepthSpinBox = PathGuiUtil.QuantitySpinBox(
+        #           self.form.peckDepth, obj, "PeckDepth"
+        #       )
+        #       self.peckRetractSpinBox = PathGuiUtil.QuantitySpinBox(
+        #           self.form.peckRetractHeight, obj, "RetractHeight"
+        #       )
+        self.dwellTimeSpinBox = PathGuiUtil.QuantitySpinBox(self.form.dwellTime, obj, "DwellTime")
+
+    #       self.form.chipBreakEnabled.setEnabled(False)
 
     def registerSignalHandlers(self, obj):
-#       self.form.peckEnabled.toggled.connect(self.form.peckDepth.setEnabled)
-#       self.form.peckEnabled.toggled.connect(self.form.dwellEnabled.setDisabled)
-#       self.form.peckEnabled.toggled.connect(self.setChipBreakControl)
+        #       self.form.peckEnabled.toggled.connect(self.form.peckDepth.setEnabled)
+        #       self.form.peckEnabled.toggled.connect(self.form.dwellEnabled.setDisabled)
+        #       self.form.peckEnabled.toggled.connect(self.setChipBreakControl)
 
         self.form.dwellEnabled.toggled.connect(self.form.dwellTime.setEnabled)
         self.form.dwellEnabled.toggled.connect(self.form.dwellTimelabel.setEnabled)
-#       self.form.dwellEnabled.toggled.connect(self.form.peckEnabled.setDisabled)
-#       self.form.dwellEnabled.toggled.connect(self.setChipBreakControl)
+        #       self.form.dwellEnabled.toggled.connect(self.form.peckEnabled.setDisabled)
+        #       self.form.dwellEnabled.toggled.connect(self.setChipBreakControl)
 
-#       self.form.peckRetractHeight.setEnabled(True)
-#       self.form.retractLabel.setEnabled(True)
+        #       self.form.peckRetractHeight.setEnabled(True)
+        #       self.form.retractLabel.setEnabled(True)
 
-#        if self.form.peckEnabled.isChecked():
-#            self.form.dwellEnabled.setEnabled(False)
-#            self.form.peckDepth.setEnabled(True)
-#            self.form.peckDepthLabel.setEnabled(True)
-#            self.form.chipBreakEnabled.setEnabled(True)
-#        elif self.form.dwellEnabled.isChecked():
+        #        if self.form.peckEnabled.isChecked():
+        #            self.form.dwellEnabled.setEnabled(False)
+        #            self.form.peckDepth.setEnabled(True)
+        #            self.form.peckDepthLabel.setEnabled(True)
+        #            self.form.chipBreakEnabled.setEnabled(True)
+        #        elif self.form.dwellEnabled.isChecked():
         if self.form.dwellEnabled.isChecked():
-#            self.form.peckEnabled.setEnabled(False)
+            #            self.form.peckEnabled.setEnabled(False)
             self.form.dwellTime.setEnabled(True)
             self.form.dwellTimelabel.setEnabled(True)
-#            self.form.chipBreakEnabled.setEnabled(False)
-#        else:
-#            self.form.chipBreakEnabled.setEnabled(False)
 
-#    def setChipBreakControl(self):
-#        self.form.chipBreakEnabled.setEnabled(self.form.peckEnabled.isChecked())
+    #            self.form.chipBreakEnabled.setEnabled(False)
+    #        else:
+    #            self.form.chipBreakEnabled.setEnabled(False)
+
+    #    def setChipBreakControl(self):
+    #        self.form.chipBreakEnabled.setEnabled(self.form.peckEnabled.isChecked())
 
     def getForm(self):
         """getForm() ... return UI"""
@@ -100,23 +100,23 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         return form
 
     def updateQuantitySpinBoxes(self, index=None):
-#        self.peckDepthSpinBox.updateSpinBox()
-#        self.peckRetractSpinBox.updateSpinBox()
+        #        self.peckDepthSpinBox.updateSpinBox()
+        #        self.peckRetractSpinBox.updateSpinBox()
         self.dwellTimeSpinBox.updateSpinBox()
 
     def getFields(self, obj):
         """setFields(obj) ... update obj's properties with values from the UI"""
         Path.Log.track()
-#        self.peckDepthSpinBox.updateProperty()
-#        self.peckRetractSpinBox.updateProperty()
+        #        self.peckDepthSpinBox.updateProperty()
+        #        self.peckRetractSpinBox.updateProperty()
         self.dwellTimeSpinBox.updateProperty()
 
         if obj.DwellEnabled != self.form.dwellEnabled.isChecked():
             obj.DwellEnabled = self.form.dwellEnabled.isChecked()
-#        if obj.PeckEnabled != self.form.peckEnabled.isChecked():
-#            obj.PeckEnabled = self.form.peckEnabled.isChecked()
-#        if obj.chipBreakEnabled != self.form.chipBreakEnabled.isChecked():
-#            obj.chipBreakEnabled = self.form.chipBreakEnabled.isChecked()
+        #        if obj.PeckEnabled != self.form.peckEnabled.isChecked():
+        #            obj.PeckEnabled = self.form.peckEnabled.isChecked()
+        #        if obj.chipBreakEnabled != self.form.chipBreakEnabled.isChecked():
+        #            obj.chipBreakEnabled = self.form.chipBreakEnabled.isChecked()
         if obj.ExtraOffset != str(self.form.ExtraOffset.currentData()):
             obj.ExtraOffset = str(self.form.ExtraOffset.currentData())
 
@@ -133,16 +133,16 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         else:
             self.form.dwellEnabled.setCheckState(QtCore.Qt.Unchecked)
 
-#        if obj.PeckEnabled:
-#            self.form.peckEnabled.setCheckState(QtCore.Qt.Checked)
-#        else:
-#            self.form.peckEnabled.setCheckState(QtCore.Qt.Unchecked)
-#            self.form.chipBreakEnabled.setEnabled(False)
+        #        if obj.PeckEnabled:
+        #            self.form.peckEnabled.setCheckState(QtCore.Qt.Checked)
+        #        else:
+        #            self.form.peckEnabled.setCheckState(QtCore.Qt.Unchecked)
+        #            self.form.chipBreakEnabled.setEnabled(False)
 
-#        if obj.chipBreakEnabled:
-#            self.form.chipBreakEnabled.setCheckState(QtCore.Qt.Checked)
-#        else:
-#            self.form.chipBreakEnabled.setCheckState(QtCore.Qt.Unchecked)
+        #        if obj.chipBreakEnabled:
+        #            self.form.chipBreakEnabled.setCheckState(QtCore.Qt.Checked)
+        #        else:
+        #            self.form.chipBreakEnabled.setCheckState(QtCore.Qt.Unchecked)
 
         self.selectInComboBox(obj.ExtraOffset, self.form.ExtraOffset)
 
@@ -153,17 +153,18 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         """getSignalsForUpdate(obj) ... return list of signals which cause the receiver to update the model"""
         signals = []
 
-#        signals.append(self.form.peckRetractHeight.editingFinished)
-#        signals.append(self.form.peckDepth.editingFinished)
+        #        signals.append(self.form.peckRetractHeight.editingFinished)
+        #        signals.append(self.form.peckDepth.editingFinished)
         signals.append(self.form.dwellTime.editingFinished)
         signals.append(self.form.dwellEnabled.stateChanged)
-#        signals.append(self.form.peckEnabled.stateChanged)
-#        signals.append(self.form.chipBreakEnabled.stateChanged)
+        #        signals.append(self.form.peckEnabled.stateChanged)
+        #        signals.append(self.form.chipBreakEnabled.stateChanged)
         signals.append(self.form.toolController.currentIndexChanged)
         signals.append(self.form.coolantController.currentIndexChanged)
         signals.append(self.form.ExtraOffset.currentIndexChanged)
 
         return signals
+
 
 #    def updateData(self, obj, prop):
 #        if prop in ["PeckDepth", "RetractHeight"] and not prop in ["Base", "Disabled"]:
