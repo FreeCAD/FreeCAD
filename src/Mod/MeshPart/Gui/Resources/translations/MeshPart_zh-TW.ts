@@ -62,7 +62,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../Command.cpp" line="192"/>
       <source>Mesh</source>
-      <translation/>
+      <translation>網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="193"/>
@@ -104,7 +104,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../Command.cpp" line="217"/>
       <source>Section with plane</source>
-      <translation>Section with plane</translation>
+      <translation>有平面的剖面</translation>
     </message>
   </context>
   <context>
@@ -300,7 +300,7 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
     <message>
       <location filename="../../Tessellation.ui" line="48"/>
       <source>Maximal linear deflection of a mesh section from the surface of the object</source>
-      <translation>Maximal linear deflection of a mesh section from the surface of the object</translation>
+      <translation>網格部分相對於物件表面的最大線性偏轉</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="67"/>
@@ -310,7 +310,7 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
     <message>
       <location filename="../../Tessellation.ui" line="74"/>
       <source>Maximal angular deflection of a mesh section to the next section</source>
-      <translation>Maximal angular deflection of a mesh section to the next section</translation>
+      <translation>網格部分到下一部分的最大角度偏轉</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="98"/>
@@ -339,9 +339,7 @@ Surface deviation multiplied by the length of the current mesh segment (edge)</t
       <source>Mesh segments will be grouped according to the color of the object faces.
 These groups will be exported for mesh output formats supporting
 this feature (e.g. the format OBJ).</source>
-      <translation>Mesh segments will be grouped according to the color of the object faces.
-These groups will be exported for mesh output formats supporting
-this feature (e.g. the format OBJ).</translation>
+      <translation>網格段將根據物件面顏色進行分組。這些分組將被匯出到支持此功能的網格輸出格式（例如 OBJ 格式）。</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="124"/>
@@ -526,7 +524,7 @@ Select a different shape, please.</translation>
     <message>
       <location filename="../../Command.cpp" line="207"/>
       <source>Please select a plane at which you section the mesh.</source>
-      <translation>Please select a plane at which you section the mesh.</translation>
+      <translation>請選擇用於剖切網格的平面。</translation>
     </message>
   </context>
   <context>

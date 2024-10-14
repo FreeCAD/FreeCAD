@@ -2380,7 +2380,7 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2307"/>
-      <location filename="../../CommandCreateDims.cpp" line="2473"/>
+      <location filename="../../CommandCreateDims.cpp" line="2472"/>
       <source>Create Dimension</source>
       <translation>Crea una cota</translation>
     </message>
@@ -2411,7 +2411,7 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
       <translation>Crear imatge</translation>
     </message>
     <message>
-      <location filename="../../QGIViewBalloon.cpp" line="500"/>
+      <location filename="../../QGIViewBalloon.cpp" line="510"/>
       <source>Drag Balloon</source>
       <translation>Arrossegar Globus</translation>
     </message>
@@ -2421,7 +2421,7 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
       <translation>Arrossegar Dimensió</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="570"/>
+      <location filename="../../QGSPage.cpp" line="598"/>
       <source>Create Balloon</source>
       <translation>Crea un globus</translation>
     </message>
@@ -2966,7 +2966,7 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
     <message>
       <location filename="../../mrichtextedit.ui" line="525"/>
       <source>Font size</source>
-      <translation>Mida del tipus de lletra</translation>
+      <translation>Mida de la tipografia</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="566"/>
@@ -3148,9 +3148,9 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
       <location filename="../../CommandCreateDims.cpp" line="2093"/>
       <location filename="../../CommandCreateDims.cpp" line="2108"/>
       <location filename="../../CommandCreateDims.cpp" line="2387"/>
-      <location filename="../../CommandCreateDims.cpp" line="2551"/>
-      <location filename="../../CommandCreateDims.cpp" line="2559"/>
-      <location filename="../../CommandCreateDims.cpp" line="2568"/>
+      <location filename="../../CommandCreateDims.cpp" line="2550"/>
+      <location filename="../../CommandCreateDims.cpp" line="2558"/>
+      <location filename="../../CommandCreateDims.cpp" line="2567"/>
       <location filename="../../Command.cpp" line="1180"/>
       <location filename="../../Command.cpp" line="1187"/>
       <location filename="../../Command.cpp" line="1195"/>
@@ -3161,19 +3161,19 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
       <translation>Selecció incorrecta</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2552"/>
+      <location filename="../../CommandCreateDims.cpp" line="2551"/>
       <location filename="../../Command.cpp" line="1181"/>
       <source>Select an object first</source>
       <translation>Seleccioneu primer un objecte</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2560"/>
+      <location filename="../../CommandCreateDims.cpp" line="2559"/>
       <location filename="../../Command.cpp" line="1188"/>
       <source>Too many objects selected</source>
       <translation>Hi ha masses objectes seleccionats</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2569"/>
+      <location filename="../../CommandCreateDims.cpp" line="2568"/>
       <location filename="../../Command.cpp" line="1196"/>
       <source>Create a page first.</source>
       <translation>Crear una pàgina primer.</translation>
@@ -3262,12 +3262,12 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
       <translation>La pàgina conté DrawViewArch que no s'exportaran. Voleu continuar?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2433"/>
+      <location filename="../../CommandCreateDims.cpp" line="2432"/>
       <source>Ellipse Curve Warning</source>
       <translation>Advertència de corba d'el·lipse</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2444"/>
+      <location filename="../../CommandCreateDims.cpp" line="2443"/>
       <source>BSpline Curve Warning</source>
       <translation>Advertència de corba BSpline</translation>
     </message>
@@ -3279,8 +3279,8 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
       <location filename="../../CommandCreateDims.cpp" line="2133"/>
       <location filename="../../CommandCreateDims.cpp" line="2148"/>
       <location filename="../../CommandCreateDims.cpp" line="2226"/>
-      <location filename="../../CommandCreateDims.cpp" line="2403"/>
-      <location filename="../../CommandCreateDims.cpp" line="2419"/>
+      <location filename="../../CommandCreateDims.cpp" line="2402"/>
+      <location filename="../../CommandCreateDims.cpp" line="2418"/>
       <location filename="../../TaskDimRepair.cpp" line="125"/>
       <location filename="../../TaskDimRepair.cpp" line="137"/>
       <location filename="../../TaskDimRepair.cpp" line="148"/>
@@ -3289,7 +3289,7 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
       <translation>Selecció incorrecta</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2455"/>
+      <location filename="../../CommandCreateDims.cpp" line="2454"/>
       <source>BSpline Curve Error</source>
       <translation>Error de corba BSpline</translation>
     </message>
@@ -3314,27 +3314,27 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
       <translation>No hi ha cap cota en la selecció</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2404"/>
+      <location filename="../../CommandCreateDims.cpp" line="2403"/>
       <source>Can not make 2D dimension from selection</source>
       <translation>No pots fer una cota 2D d'aquesta selecció</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2420"/>
+      <location filename="../../CommandCreateDims.cpp" line="2419"/>
       <source>Can not make 3D dimension from selection</source>
       <translation>No pots fer una cota 3D d'aquesta selecció</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2434"/>
+      <location filename="../../CommandCreateDims.cpp" line="2433"/>
       <source>Selected edge is an Ellipse. Value will be approximate. Continue?</source>
       <translation>L'aresta seleccionada és una el·lipse. El valor serà aproximat. Voleu continuar?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2445"/>
+      <location filename="../../CommandCreateDims.cpp" line="2444"/>
       <source>Selected edge is a B-spline. Value will be approximate. Continue?</source>
       <translation>L'aresta seleccionada és una B-Spline. El valor serà aproximat. Voleu continuar?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2456"/>
+      <location filename="../../CommandCreateDims.cpp" line="2455"/>
       <source>Selected edge is a B-spline and a radius/diameter can not be calculated.</source>
       <translation>L'aresta seleccionada és una B-Spline i un radi/diàmetre no es pot calcular.</translation>
     </message>
@@ -3486,8 +3486,8 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
       <location filename="../../CommandAnnotate.cpp" line="1254"/>
       <location filename="../../CommandAnnotate.cpp" line="1428"/>
       <location filename="../../CommandAnnotate.cpp" line="1435"/>
-      <location filename="../../CommandAnnotate.cpp" line="1711"/>
-      <location filename="../../CommandAnnotate.cpp" line="1724"/>
+      <location filename="../../CommandAnnotate.cpp" line="1712"/>
+      <location filename="../../CommandAnnotate.cpp" line="1725"/>
       <source>Wrong Selection</source>
       <translation>Selecció incorrecta</translation>
     </message>
@@ -3621,22 +3621,22 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
       <translation>Seleccioneu exactament una única línia guia o un únic símbol de soldadura.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1638"/>
+      <location filename="../../CommandAnnotate.cpp" line="1639"/>
       <source>SurfaceFinishSymbols</source>
       <translation>Símbols d'acabat superficial</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1639"/>
+      <location filename="../../CommandAnnotate.cpp" line="1640"/>
       <source>Selected object is not a part view, nor a leader line</source>
       <translation>L'objecte seleccionat no forma part d'una vista ni d'una línia guia</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1712"/>
+      <location filename="../../CommandAnnotate.cpp" line="1713"/>
       <source>No Part View in Selection</source>
       <translation>No hi ha cap vista de peça a la selecció</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1725"/>
+      <location filename="../../CommandAnnotate.cpp" line="1726"/>
       <source>No %1 in Selection</source>
       <translation>No hi ha cap %1 a la selecció</translation>
     </message>
@@ -4172,12 +4172,12 @@ Sense una selecció, un navegador de fitxers us permet seleccionar un fitxer d'i
       <translation>Nom del document:</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="170"/>
+      <location filename="../../TaskProjGroup.cpp" line="181"/>
       <source>Projection Group</source>
       <translation>Grup de projecció</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="180"/>
+      <location filename="../../TaskProjGroup.cpp" line="191"/>
       <source>Part View</source>
       <translation>Vista de peça</translation>
     </message>
@@ -4686,7 +4686,72 @@ Per consegüent, heu d'augmentar el límit de mosaics.</translation>
       <translation>Passades en l'eliminació de vores superposades</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="455"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="449"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Some combinations of OS and Navigation style key bindings may conflict with the default modifier keys for Ballon dragging and View snapping override.  You can make adjustments here to find a non-conflicting key binding.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Some combinations of OS and Navigation style key bindings may conflict with the default modifier keys for Ballon dragging and View snapping override.  You can make adjustments here to find a non-conflicting key binding.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="452"/>
+      <source>Behaviour Overrides</source>
+      <translation type="unfinished">Behaviour Overrides</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="460"/>
+      <source>Check this box to use the default modifier keys.  Uncheck this box to set a different key combination.</source>
+      <translation type="unfinished">Check this box to use the default modifier keys.  Uncheck this box to set a different key combination.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="463"/>
+      <source>Use Default</source>
+      <translation type="unfinished">Use Default</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="480"/>
+      <source>Balloon Drag</source>
+      <translation type="unfinished">Balloon Drag</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="487"/>
+      <source>Check this box to include the Alt key in the modifiers.</source>
+      <translation type="unfinished">Check this box to include the Alt key in the modifiers.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="490"/>
+      <source>Alt</source>
+      <translation>Alt</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="497"/>
+      <source>Check this box to include the Shift key in the modifiers.</source>
+      <translation type="unfinished">Check this box to include the Shift key in the modifiers.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="500"/>
+      <source>Shift</source>
+      <translation>Shift</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="507"/>
+      <source>Check this box to include the Meta/Start/Super key in the modifiers.</source>
+      <translation type="unfinished">Check this box to include the Meta/Start/Super key in the modifiers.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="510"/>
+      <source>Meta</source>
+      <translation type="unfinished">Meta</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="517"/>
+      <source>Check this box to include the Control key in the modifiers.</source>
+      <translation type="unfinished">Check this box to include the Control key in the modifiers.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="520"/>
+      <source>Control</source>
+      <translation type="unfinished">Control</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="538"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Nota:&lt;/span&gt; Els elements en &lt;span style=&quot; font-style:italic;&quot;&gt;cursiva&lt;/span&gt; són els valors predeterminats per a objectes nous. No tenen cap efecte sobre els objectes existents.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -5325,12 +5390,12 @@ Aquesta configuració només és per a la barra d'eines. Trieu el que trieu, tot
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="147"/>
       <source>Font Size</source>
-      <translation>Mida del tipus de lletra</translation>
+      <translation>Mida de la tipografia</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="194"/>
       <source>Dimension text font size</source>
-      <translation>Mida del tipus de lletra del text</translation>
+      <translation>Mida de la tipografia del text de cotes</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="286"/>
@@ -5342,7 +5407,7 @@ Aquesta configuració només és per a la barra d'eines. Trieu el que trieu, tot
       <source>Tolerance text scale
 Multiplier of &apos;Font Size&apos;</source>
       <translation>Escala de text de la tolerància
-Multiplicador de 'Mida de lletra'</translation>
+Multiplicador de 'Mida de tipografia'</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="96"/>
@@ -5513,18 +5578,18 @@ for ProjectionGroups</source>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="181"/>
       <source>* this font is also used for dimensions
    Changes have no effect on existing dimensions.</source>
-      <translation>* aquesta font també s'utilitza per a cotes
+      <translation>* aquesta tipografia també s'utilitza per a cotes
    Els canvis no tenen efecte sobre les cotes existents.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="185"/>
       <source>Label Font*</source>
-      <translation>Tipus de lletra de l'etiqueta*</translation>
+      <translation>Tipografia de l'etiqueta*</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="220"/>
       <source>Font for labels</source>
-      <translation>Tipus de lletra de les etiquetes</translation>
+      <translation>Tipografia de les etiquetes</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="239"/>
@@ -6122,12 +6187,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="57"/>
       <source>Font Size:</source>
-      <translation>Mida del tipus de lletra:</translation>
+      <translation>Mida de la tipografia:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="76"/>
       <source>Fontsize for &apos;Text&apos;</source>
-      <translation>Mida del tipus de lletra del &apos;text&apos;</translation>
+      <translation>Mida de la tipografia del &apos;text&apos;</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="95"/>
@@ -7215,12 +7280,12 @@ utilitzat en contres del valor de cota</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="230"/>
       <source>Font Size:</source>
-      <translation>Mida del tipus de lletra:</translation>
+      <translation>Mida de la tipografia:</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="249"/>
       <source>Fontsize for &apos;Text&apos;</source>
-      <translation>Mida del tipus de lletra del &apos;text&apos;</translation>
+      <translation>Mida de la tipografia del &apos;text&apos;</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="271"/>
@@ -7863,8 +7928,8 @@ Podeu seleccionar més punts per a obtenir segments de línia.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="362"/>
-      <location filename="../../TaskProjGroup.cpp" line="646"/>
-      <location filename="../../TaskProjGroup.cpp" line="653"/>
+      <location filename="../../TaskProjGroup.cpp" line="661"/>
+      <location filename="../../TaskProjGroup.cpp" line="668"/>
       <source>Top</source>
       <translation>Planta</translation>
     </message>
@@ -7875,8 +7940,8 @@ Podeu seleccionar més punts per a obtenir segments de línia.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="409"/>
-      <location filename="../../TaskProjGroup.cpp" line="648"/>
-      <location filename="../../TaskProjGroup.cpp" line="650"/>
+      <location filename="../../TaskProjGroup.cpp" line="663"/>
+      <location filename="../../TaskProjGroup.cpp" line="665"/>
       <source>Left</source>
       <translation>Esquerra</translation>
     </message>
@@ -7887,14 +7952,14 @@ Podeu seleccionar més punts per a obtenir segments de línia.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="449"/>
-      <location filename="../../TaskProjGroup.cpp" line="648"/>
-      <location filename="../../TaskProjGroup.cpp" line="650"/>
+      <location filename="../../TaskProjGroup.cpp" line="663"/>
+      <location filename="../../TaskProjGroup.cpp" line="665"/>
       <source>Right</source>
       <translation>Dreta</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="466"/>
-      <location filename="../../TaskProjGroup.cpp" line="651"/>
+      <location filename="../../TaskProjGroup.cpp" line="666"/>
       <source>Rear</source>
       <translation>Posterior</translation>
     </message>
@@ -7905,8 +7970,8 @@ Podeu seleccionar més punts per a obtenir segments de línia.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="516"/>
-      <location filename="../../TaskProjGroup.cpp" line="646"/>
-      <location filename="../../TaskProjGroup.cpp" line="653"/>
+      <location filename="../../TaskProjGroup.cpp" line="661"/>
+      <location filename="../../TaskProjGroup.cpp" line="668"/>
       <source>Bottom</source>
       <translation>Inferior</translation>
     </message>
@@ -7948,31 +8013,31 @@ usant l'espaiat X/Y donat</translation>
       <translation>Espaiat y</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="645"/>
-      <location filename="../../TaskProjGroup.cpp" line="654"/>
+      <location filename="../../TaskProjGroup.cpp" line="660"/>
+      <location filename="../../TaskProjGroup.cpp" line="669"/>
       <source>FrontTopLeft</source>
       <translation>Frontal a dalt a l'esquerra</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="645"/>
-      <location filename="../../TaskProjGroup.cpp" line="654"/>
+      <location filename="../../TaskProjGroup.cpp" line="660"/>
+      <location filename="../../TaskProjGroup.cpp" line="669"/>
       <source>FrontBottomRight</source>
       <translation>Frontal avall a la dreta</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="647"/>
-      <location filename="../../TaskProjGroup.cpp" line="652"/>
+      <location filename="../../TaskProjGroup.cpp" line="662"/>
+      <location filename="../../TaskProjGroup.cpp" line="667"/>
       <source>FrontTopRight</source>
       <translation>Frontal a dalt a la dreta</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="647"/>
-      <location filename="../../TaskProjGroup.cpp" line="652"/>
+      <location filename="../../TaskProjGroup.cpp" line="662"/>
+      <location filename="../../TaskProjGroup.cpp" line="667"/>
       <source>FrontBottomLeft</source>
       <translation>Frontal avall a l'esquerra</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="649"/>
+      <location filename="../../TaskProjGroup.cpp" line="664"/>
       <source>Front</source>
       <translation>Alçat</translation>
     </message>
@@ -9904,7 +9969,7 @@ hi ha un diàleg de tasca obert.</translation>
   <context>
     <name>Preferences</name>
     <message>
-      <location filename="../../../App/Preferences.cpp" line="451"/>
+      <location filename="../../../App/Preferences.cpp" line="466"/>
       <source>The LineStandard parameter is invalid. Using zero instead.</source>
       <translation>El paràmetre de l'estàndard de línia és invàlid. Utilitzant zero al seu lloc.</translation>
     </message>
@@ -9941,37 +10006,37 @@ hi ha un diàleg de tasca obert.</translation>
   <context>
     <name>TechDrawGui::DirectionEditDialog</name>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="920"/>
+      <location filename="../../TaskProjGroup.cpp" line="955"/>
       <source>Direction</source>
       <translation>Direcció</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="925"/>
+      <location filename="../../TaskProjGroup.cpp" line="960"/>
       <source>X: </source>
       <translation>X: </translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="933"/>
+      <location filename="../../TaskProjGroup.cpp" line="968"/>
       <source>Y: </source>
       <translation>Y: </translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="941"/>
+      <location filename="../../TaskProjGroup.cpp" line="976"/>
       <source>Z: </source>
       <translation>Z: </translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="957"/>
+      <location filename="../../TaskProjGroup.cpp" line="992"/>
       <source>OK</source>
       <translation>D'acord</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="958"/>
+      <location filename="../../TaskProjGroup.cpp" line="993"/>
       <source>Cancel</source>
       <translation>Cancel·la</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="964"/>
+      <location filename="../../TaskProjGroup.cpp" line="999"/>
       <source>Rotate by</source>
       <translation>Rotar per</translation>
     </message>

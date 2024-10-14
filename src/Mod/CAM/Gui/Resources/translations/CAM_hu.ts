@@ -258,7 +258,7 @@ Vegye figyelembe, hogy ez a lehetőség ki van kapcsolva, ha a munkában egy meg
       <source>Enable all operations for which the configuration values should be exported.
 
 Note that only operations which currently have configuration values set are listed.</source>
-      <translation>Engedélyezze az összes olyan műveletet, amelyre a konfigurációs értékeket exportálni kell.
+      <translation>Engedélyezze az összes olyan műveletet, amelyre a konfigurációs értékeket exportálni kell. 
 
 Ne feledje, hogy csak olyan műveletek vannak felsorolva, amelyek jelenleg konfigurációs értékekkel rendelkeznek.</translation>
     </message>
@@ -738,9 +738,9 @@ Az alap tárgy határoló keretéből származó készletek esetében ez az öss
 You can add feature for processing by selecting them and then pressing Add. If a feature is accidentally added to the list it can be removed through Remove and will no longer be processed.
 
 Reset deletes all current items from the list and fills the list with all circular holes eligible for the operation from the model. You can again refine the list afterwards by enabling/disabling, removing and adding features.</source>
-      <translation>A furat jellemzőinek és a kapcsolódó furat meghatározott sugarának meghatározása.
+      <translation>A furat jellemzőinek és a kapcsolódó furat meghatározott sugarának meghatározása. 
 
-A feldolgozáshoz használható funkciót úgy adhat hozzá, hogy kiválasztja őket, majd megnyomja a Hozzáadás gombot. Ha egy funkció véletlenül hozzáadódik a listához, az eltávolítható az Eltávolítás segítségével, és a továbbiakban nem lesz feldolgozva.
+A feldolgozáshoz használható funkciót úgy adhat hozzá, hogy kiválasztja őket, majd megnyomja a Hozzáadás gombot. Ha egy funkció véletlenül hozzáadódik a listához, az eltávolítható az Eltávolítás segítségével, és a továbbiakban nem lesz feldolgozva. 
 
 A Visszaállítás törli az összes aktuális elemet a listából, és kitölti a listát a modellből a műveletre jogosult összes kör alakú furattal. Ezt követően ismét finomíthatja a listát a funkciók engedélyezésével/letiltásával, eltávolításával és hozzáadásával.</translation>
     </message>
@@ -5551,9 +5551,9 @@ Default: 3 mm</source>
     </message>
     <message>
       <location filename="../../../Path/Op/Vcarve.py" line="327"/>
-      <source>Cutoff for removing colinear segments (degrees).
+      <source>Cutoff for removing colinear segments (degrees). 
                         default=10.0.</source>
-      <translation>Vágási érték a colinear szakaszok eltávolításához (fokban).
+      <translation>Vágási érték a colinear szakaszok eltávolításához (fokban). 
                         alapértelmezett=10.0.</translation>
     </message>
     <message>
@@ -6939,22 +6939,22 @@ Az op-létrehozás megszakítása</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="69"/>
-      <source>The currently selected unit schema:
+      <source>The currently selected unit schema: 
      &apos;{}&apos; for this document
- Does not use &apos;minutes&apos; for velocity values.
-
-CNC machines require feed rate to be expressed in
-unit/minute. To ensure correct G-code:
+ Does not use &apos;minutes&apos; for velocity values. 
+ 
+CNC machines require feed rate to be expressed in 
+unit/minute. To ensure correct G-code: 
 Select a minute-based schema in preferences.
 For example:
     &apos;Metric, Small Parts &amp; CNC&apos;
     &apos;US Customary&apos;
     &apos;Imperial Decimal&apos;</source>
-      <translation>Az aktuálisan kiválasztott egységséma:
+      <translation>Az aktuálisan kiválasztott egységséma: 
      &apos;{}&apos; ehhez a dokumentumhoz
- Nem használja a &apos; perc &apos; értékeket a sebességértékekhez.
-A CNC-gépek megkövetelik, hogy az előtolási sebesség a következő mértékegységben legyen megadva
-egység/perc. A helyes G-kód biztosítása érdekében:
+ Nem használja a &apos; perc &apos; értékeket a sebességértékekhez. 
+A CNC-gépek megkövetelik, hogy az előtolási sebesség a következő mértékegységben legyen megadva 
+egység/perc. A helyes G-kód biztosítása érdekében: 
 Válasszon perc alapú sémát a beállításokban.
 Például:
     Például: &apos;Metrikus, kis alkatrészek és CNC&apos;
@@ -7024,9 +7024,9 @@ Például:
     <name>CAM_Inspect</name>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="132"/>
-      <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s).
+      <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s). 
  Values will be converted to the desired unit during post processing.</source>
-      <translation>&lt;b&gt;Megjegyzés&lt;/b&gt;: Ez a párbeszédablak a FreeCAD alapegységekben (mm/s) jeleníti meg az elérési út parancsokat.
+      <translation>&lt;b&gt;Megjegyzés&lt;/b&gt;: Ez a párbeszédablak a FreeCAD alapegységekben (mm/s) jeleníti meg az elérési út parancsokat. 
  Az értékek az utófeldolgozás során a kívánt egységre konvertálódnak.</translation>
     </message>
     <message>
@@ -7338,13 +7338,13 @@ Például:
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="231"/>
       <source>The Job&apos;s last post-processed file is missing</source>
-      <translation>A feladathoz az utolsó utófeldolgozott fájl hiányzik</translation>
+      <translation>A feladat utolsó utófeldolgozott fájlja hiányzik</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="364"/>
-      <source>Tool number {} is a legacy tool. Legacy tools not
+      <source>Tool number {} is a legacy tool. Legacy tools not 
                     supported by Path-Sanity</source>
-      <translation>A {} számú eszköz egy örökölt eszköz. Az örökölt eszközök
+      <translation>A {} számú eszköz egy örökölt eszköz. Az örökölt eszközök 
                     Path-Sanity által nem támogatottak</translation>
     </message>
     <message>
@@ -8484,10 +8484,10 @@ Például:
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="126"/>
       <source>Toolbit Working directory {} needs these sudirectories:
- {}
+ {} 
  Create them?</source>
       <translation>A szerszámbetét munkakönyvtárnak {} a következő könyvtárakra van szüksége:
- {}
+ {} 
  Hozza létre őket?</translation>
     </message>
     <message>

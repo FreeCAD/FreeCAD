@@ -456,7 +456,7 @@ L'expression doit être interprétée comme une chaîne de caractères d'une cer
       <source>The dependency with the referenced spreadsheet will
 be hidden to the dependency checking.
 Useful to avoid cyclic dependencies, but use with caution!</source>
-      <translation>La dépendance avec la feuille de calcul référencée sera masquée lors de la
+      <translation>La dépendance avec la feuille de calcul référencée sera masquée lors de la 
 vérification des dépendances.
 Utile pour éviter les dépendances cycliques, mais à utiliser avec précaution !</translation>
     </message>
@@ -542,7 +542,7 @@ par cette propriété.</translation>
       <location filename="../../DlgSheetConf.ui" line="64"/>
       <source>Type in an expression to specify the object and property name to dynamically
 switch the design configuration. The property will be created if not exist.</source>
-      <translation>Saisir une expression pour spécifier le nom de l'objet et de la propriété. Cela
+      <translation>Saisir une expression pour spécifier le nom de l'objet et de la propriété. Cela 
 changera dynamiquement la configuration de la conception. La propriété sera
 créée si elle n'existe pas.</translation>
     </message>
@@ -679,7 +679,7 @@ créée si elle n'existe pas.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="140"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="116"/>
       <location filename="../../Command.cpp" line="195"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
       <translation>CSV (*.csv *.CSV);;Tout (*)</translation>
@@ -690,12 +690,12 @@ créée si elle n'existe pas.</translation>
       <translation>Importer un fichier</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="142"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="118"/>
       <source>Export file</source>
       <translation>Exporter le fichier</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="167"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="143"/>
       <source>Show spreadsheet</source>
       <translation>Montrer la feuille de calcul</translation>
     </message>

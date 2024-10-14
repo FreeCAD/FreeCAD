@@ -345,12 +345,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="156"/>
       <source>Refine Shape Feature</source>
-      <translation>Refine Shape Feature</translation>
+      <translation>精煉形狀功能</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="159"/>
       <source>Create Refine Shape Feature</source>
-      <translation>Create Refine Shape Feature</translation>
+      <translation>建立精煉形狀功能</translation>
     </message>
   </context>
   <context>
@@ -363,7 +363,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="189"/>
       <source>Create Mirror Mesh Feature</source>
-      <translation>Create Mirror Mesh Feature</translation>
+      <translation>建立鏡像網格特徵</translation>
     </message>
   </context>
   <context>
@@ -376,7 +376,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="219"/>
       <source>Create Scale Mesh Feature</source>
-      <translation>Create Scale Mesh Feature</translation>
+      <translation>建立縮放網格特徵</translation>
     </message>
   </context>
   <context>
@@ -384,12 +384,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="245"/>
       <source>Resize Mesh Feature...</source>
-      <translation>調整網格特徵的大小...</translation>
+      <translation>調整網格特徵大小...</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="249"/>
       <source>Create Resize Mesh Feature</source>
-      <translation>Create Resize Mesh Feature</translation>
+      <translation>建立調整網格特徵大小</translation>
     </message>
   </context>
   <context>
@@ -397,7 +397,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="266"/>
       <source>Increase Tolerance Feature</source>
-      <translation>Increase Tolerance Feature</translation>
+      <translation>增加公差特徵</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="269"/>

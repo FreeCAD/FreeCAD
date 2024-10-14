@@ -91,7 +91,7 @@
       <translation>편집</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="715"/>
+      <location filename="../Application.cpp" line="705"/>
       <source>Import</source>
       <translation>가져오기</translation>
     </message>
@@ -196,7 +196,7 @@
       <location filename="../TaskView/TaskImage.cpp" line="259"/>
       <location filename="../TaskView/TaskOrientation.cpp" line="69"/>
       <source>Edit image</source>
-      <translation>이미지 편집</translation>
+      <translation>화상 편집</translation>
     </message>
     <message>
       <location filename="../CommandFeat.cpp" line="127"/>
@@ -424,42 +424,42 @@
   <context>
     <name>EditMode</name>
     <message>
-      <location filename="../Application.h" line="258"/>
+      <location filename="../Application.h" line="256"/>
       <source>Default</source>
       <translation>기본값</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="259"/>
+      <location filename="../Application.h" line="257"/>
       <source>The object will be edited using the mode defined internally to be the most appropriate for the object type</source>
       <translation>객체 유형에 가장 적합하도록 내부적으로 정의된 모드를 사용하여 객체를 편집합니다.</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="263"/>
+      <location filename="../Application.h" line="261"/>
       <source>Transform</source>
       <translation>변환하기</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="264"/>
+      <location filename="../Application.h" line="262"/>
       <source>The object will have its placement editable with the Std TransformManip command</source>
       <translation>대상물이 변위 명령을 입력할 수 있는 상태로 될 것 입니다</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="268"/>
+      <location filename="../Application.h" line="266"/>
       <source>Cutting</source>
       <translation>절단</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="269"/>
+      <location filename="../Application.h" line="267"/>
       <source>This edit mode is implemented as available but currently does not seem to be used by any object</source>
       <translation>현 편집 모드는 사용할 수 있는 기능이고, 현재 사용중인 대상물이 없는 것으로 보입니다</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="273"/>
+      <location filename="../Application.h" line="271"/>
       <source>Color</source>
       <translation>색상</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="274"/>
+      <location filename="../Application.h" line="272"/>
       <source>The object will have the color of its individual faces editable with the Part FaceAppearances command</source>
       <translation type="unfinished">The object will have the color of its individual faces editable with the Part FaceAppearances command</translation>
     </message>
@@ -3603,12 +3603,12 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     <message>
       <location filename="../DlgSettingsImage.ui" line="14"/>
       <source>Image settings</source>
-      <translation>이미지 설정</translation>
+      <translation>화상 설정</translation>
     </message>
     <message>
       <location filename="../DlgSettingsImage.ui" line="35"/>
       <source>Image dimensions</source>
-      <translation>이미지 치수</translation>
+      <translation>화상 치수</translation>
     </message>
     <message>
       <location filename="../DlgSettingsImage.ui" line="73"/>
@@ -3644,7 +3644,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
       <location filename="../DlgSettingsImage.ui" line="219"/>
       <location filename="../DlgSettingsImage.ui" line="246"/>
       <source>Pixel</source>
-      <translation>픽셀</translation>
+      <translation>화소</translation>
     </message>
     <message>
       <location filename="../DlgSettingsImage.ui" line="226"/>
@@ -3699,7 +3699,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     <message>
       <location filename="../DlgSettingsImage.ui" line="324"/>
       <source>Image properties</source>
-      <translation>이미지 속성</translation>
+      <translation>화상 속성</translation>
     </message>
     <message>
       <location filename="../DlgSettingsImage.ui" line="345"/>
@@ -3734,7 +3734,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     <message>
       <location filename="../DlgSettingsImage.ui" line="395"/>
       <source>Image comment</source>
-      <translation>이미지 주석</translation>
+      <translation>화상 주석</translation>
     </message>
     <message>
       <location filename="../DlgSettingsImage.ui" line="416"/>
@@ -5384,17 +5384,17 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../TextureMapping.cpp" line="71"/>
       <source>Image files (%1)</source>
-      <translation>이미지 파일 (%1)</translation>
+      <translation>화상 파일 (%1)</translation>
     </message>
     <message>
       <location filename="../TextureMapping.cpp" line="136"/>
       <source>No image</source>
-      <translation>이미지가 아닙니다</translation>
+      <translation>화상이 아닙니다</translation>
     </message>
     <message>
       <location filename="../TextureMapping.cpp" line="136"/>
       <source>The specified file is not a valid image file.</source>
-      <translation>이 파일은 유효한 이미지 파일이 아닙니다.</translation>
+      <translation>이 파일은 유효한 화상 파일이 아닙니다.</translation>
     </message>
     <message>
       <location filename="../TextureMapping.cpp" line="158"/>
@@ -5926,7 +5926,7 @@ Do you want to save your changes?</source>
     <message>
       <location filename="../GraphvizView.cpp" line="361"/>
       <source>Graphviz failed to create an image file</source>
-      <translation>Graphviz가 이미지 파일을 만들지 못했습니다</translation>
+      <translation>Graphviz가 화상 파일을 만들지 못했습니다</translation>
     </message>
     <message>
       <location filename="../GraphvizView.cpp" line="449"/>
@@ -6129,57 +6129,57 @@ Do you want to save your changes?</source>
     <name>Gui::MainWindow</name>
     <message>
       <location filename="../MainWindow.cpp" line="174"/>
-      <location filename="../MainWindow.cpp" line="2422"/>
+      <location filename="../MainWindow.cpp" line="2423"/>
       <source>Dimension</source>
       <translation>치수</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="531"/>
+      <location filename="../MainWindow.cpp" line="532"/>
       <source>Ready</source>
       <translation>준비</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1218"/>
+      <location filename="../MainWindow.cpp" line="1219"/>
       <source>Close All</source>
       <translation>모두 닫기</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1443"/>
       <location filename="../MainWindow.cpp" line="1444"/>
       <location filename="../MainWindow.cpp" line="1445"/>
+      <location filename="../MainWindow.cpp" line="1446"/>
       <source>Toggles this toolbar</source>
       <translation>이 도구 모음 전환하기</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1464"/>
       <location filename="../MainWindow.cpp" line="1465"/>
       <location filename="../MainWindow.cpp" line="1466"/>
+      <location filename="../MainWindow.cpp" line="1467"/>
       <source>Toggles this dockable window</source>
       <translation>이 도킹 가능 창 전환하기</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1993"/>
+      <location filename="../MainWindow.cpp" line="1994"/>
       <source>WARNING: This is a development version.</source>
       <translation>경고: 이것은 개발용 버전입니다.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1994"/>
+      <location filename="../MainWindow.cpp" line="1995"/>
       <source>Please do not use it in a production environment.</source>
       <translation>생산환경에서 이 버전을 사용하지 마세요.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2213"/>
-      <location filename="../MainWindow.cpp" line="2305"/>
+      <location filename="../MainWindow.cpp" line="2214"/>
+      <location filename="../MainWindow.cpp" line="2306"/>
       <source>Unsaved document</source>
       <translation>저장하지 않은 문서</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2214"/>
+      <location filename="../MainWindow.cpp" line="2215"/>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
       <translation>내보낸 객체에 외부 링크가 포함되어 있습니다. 내보내기 전에 문서를 한 번 이상 저장하십시오.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2306"/>
+      <location filename="../MainWindow.cpp" line="2307"/>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
       <translation>외부 객체에 링크하려면, 문서를 한 번 이상 저장해야 합니다.
@@ -6941,7 +6941,7 @@ Do you want to specify another directory?</source>
       <location filename="../TaskView/TaskAppearance.ui" line="17"/>
       <location filename="../TaskView/TaskAppearance.cpp" line="43"/>
       <source>Appearance</source>
-      <translation>설정</translation>
+      <translation>외관</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskAppearance.ui" line="37"/>
@@ -6990,7 +6990,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TaskView/TaskSelectLinkProperty.ui" line="14"/>
       <source>Appearance</source>
-      <translation>설정</translation>
+      <translation>외관</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskSelectLinkProperty.cpp" line="43"/>
@@ -7016,23 +7016,23 @@ Do you want to specify another directory?</source>
       <translation>예, 다시 불러옵니다.</translation>
     </message>
     <message>
-      <location filename="../TextDocumentEditorView.cpp" line="232"/>
+      <location filename="../TextDocumentEditorView.cpp" line="230"/>
       <source>Unsaved document</source>
       <translation>저장하지 않은 문서</translation>
     </message>
     <message>
-      <location filename="../TextDocumentEditorView.cpp" line="233"/>
+      <location filename="../TextDocumentEditorView.cpp" line="231"/>
       <source>Do you want to save your changes before closing?</source>
       <translation>닫기 전에 변경 내용을 저장하시겠습니까?</translation>
     </message>
     <message>
-      <location filename="../TextDocumentEditorView.cpp" line="234"/>
+      <location filename="../TextDocumentEditorView.cpp" line="232"/>
       <source>If you don't save, your changes will be lost.</source>
       <translation>저장하지 않으면 변경 내용이 손실됩니다.</translation>
     </message>
     <message>
-      <location filename="../TextDocumentEditorView.cpp" line="288"/>
-      <location filename="../TextDocumentEditorView.cpp" line="295"/>
+      <location filename="../TextDocumentEditorView.cpp" line="297"/>
+      <location filename="../TextDocumentEditorView.cpp" line="304"/>
       <source>Edit text</source>
       <translation>텍스트 편집</translation>
     </message>
@@ -7728,47 +7728,47 @@ Do you want to specify another directory?</source>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../MainWindow.cpp" line="703"/>
+      <location filename="../MainWindow.cpp" line="704"/>
       <source>Tree view</source>
       <translation>트리 보기</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="625"/>
+      <location filename="../MainWindow.cpp" line="626"/>
       <source>Tasks</source>
       <translation>작업</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="729"/>
+      <location filename="../MainWindow.cpp" line="730"/>
       <source>Property view</source>
       <translation>속성 보기</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="642"/>
+      <location filename="../MainWindow.cpp" line="643"/>
       <source>Selection view</source>
       <translation>선택항목 보기</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="757"/>
+      <location filename="../MainWindow.cpp" line="758"/>
       <source>Task List</source>
       <translation>작업 목록</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="782"/>
+      <location filename="../MainWindow.cpp" line="783"/>
       <source>Model</source>
       <translation>모델</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="808"/>
+      <location filename="../MainWindow.cpp" line="809"/>
       <source>DAG View</source>
       <translation>DAG 보기</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="660"/>
+      <location filename="../MainWindow.cpp" line="661"/>
       <source>Report view</source>
       <translation>보고서 보기</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="680"/>
+      <location filename="../MainWindow.cpp" line="681"/>
       <source>Python console</source>
       <translation>Python 콘솔</translation>
     </message>
@@ -7808,35 +7808,35 @@ Do you want to specify another directory?</source>
       <translation>파이썬</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="680"/>
-      <location filename="../Application.cpp" line="786"/>
-      <location filename="../Application.cpp" line="863"/>
+      <location filename="../Application.cpp" line="670"/>
+      <location filename="../Application.cpp" line="764"/>
+      <location filename="../Application.cpp" line="841"/>
       <source>Unknown filetype</source>
       <translation>알 수 없는 파일유형</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="681"/>
-      <location filename="../Application.cpp" line="787"/>
+      <location filename="../Application.cpp" line="671"/>
+      <location filename="../Application.cpp" line="765"/>
       <source>Cannot open unknown filetype: %1</source>
       <translation>알 수 없는 파일유형을 열 수 없습니다: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="854"/>
+      <location filename="../Application.cpp" line="832"/>
       <source>Export failed</source>
       <translation>내보내기 실패</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="864"/>
+      <location filename="../Application.cpp" line="842"/>
       <source>Cannot save to unknown filetype: %1</source>
       <translation>알 수 없는 파일유형에 저장할 수 없습니다. %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="993"/>
+      <location filename="../Application.cpp" line="975"/>
       <source>Recomputation required</source>
       <translation>재계산 필요</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="994"/>
+      <location filename="../Application.cpp" line="976"/>
       <source>Some document(s) require recomputation for migration purposes. It is highly recommended to perform a recomputation before any modification to avoid compatibility problems.
 
 Do you want to recompute now?</source>
@@ -7845,24 +7845,24 @@ Do you want to recompute now?</source>
 Do you want to recompute now?</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1011"/>
+      <location filename="../Application.cpp" line="993"/>
       <source>Recompute error</source>
       <translation>재계산 오류</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1012"/>
+      <location filename="../Application.cpp" line="994"/>
       <source>Failed to recompute some document(s).
 Please check report view for more details.</source>
       <translation type="unfinished">Failed to recompute some document(s).
 Please check report view for more details.</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1664"/>
+      <location filename="../Application.cpp" line="1646"/>
       <source>Workbench failure</source>
       <translation>작업대 실패</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1665"/>
+      <location filename="../Application.cpp" line="1647"/>
       <source>%1</source>
       <translation>%1</translation>
     </message>
@@ -7923,7 +7923,7 @@ Please check report view for more details.</translation>
       <translation>PDF로 내보내기...</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="867"/>
+      <location filename="../MainWindow.cpp" line="868"/>
       <location filename="../CommandDoc.cpp" line="1231"/>
       <source>Unsaved document</source>
       <translation>저장하지 않은 문서</translation>
@@ -8065,12 +8065,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../CommandView.cpp" line="1967"/>
       <source>Save image</source>
-      <translation>이미지 저장</translation>
+      <translation>화상 저장</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2118"/>
       <source>Choose an image file to open</source>
-      <translation>열려는 이미지 파일 고르기</translation>
+      <translation>열려는 화상 파일 고르기</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="581"/>
@@ -8216,51 +8216,51 @@ Do you want to continue?</source>
       <translation type="unfinished">Too many opened non-intrusive notifications. Notifications are being omitted!</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1075"/>
+      <location filename="../Document.cpp" line="1079"/>
       <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
 
 </source>
       <translation>동일한 물리적 경로가 감지되었습니다. 존재하는 문서의 원치 않는 덮어쓰기가 발생할 수 있습니다!</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1076"/>
+      <location filename="../Document.cpp" line="1080"/>
       <source>Are you sure you want to continue?</source>
       <translation>계속 진행 하시겠습니까?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1095"/>
+      <location filename="../Document.cpp" line="1099"/>
       <source>Please check report view for more...</source>
       <translation>자세한 내용은 보고서 보기를 확인하십시오...</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1098"/>
+      <location filename="../Document.cpp" line="1102"/>
       <source>Physical path:</source>
       <translation>물리적 경로:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1100"/>
-      <location filename="../Document.cpp" line="1106"/>
+      <location filename="../Document.cpp" line="1104"/>
+      <location filename="../Document.cpp" line="1110"/>
       <source>Document:</source>
       <translation>문서:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1102"/>
-      <location filename="../Document.cpp" line="1108"/>
+      <location filename="../Document.cpp" line="1106"/>
+      <location filename="../Document.cpp" line="1112"/>
       <source>Path:</source>
       <translation>경로:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1117"/>
+      <location filename="../Document.cpp" line="1121"/>
       <source>Identical physical path</source>
       <translation>동일한 물리적 경로</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1125"/>
+      <location filename="../Document.cpp" line="1129"/>
       <source>Could not save document</source>
       <translation>문서를 저장할 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1126"/>
+      <location filename="../Document.cpp" line="1130"/>
       <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
 
 "%1"
@@ -8273,102 +8273,102 @@ Would you like to save the file with a different name?</source>
 파일을 다른 이름으로 저장하시겠습니까?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1136"/>
-      <location filename="../Document.cpp" line="1272"/>
-      <location filename="../Document.cpp" line="1355"/>
+      <location filename="../Document.cpp" line="1140"/>
+      <location filename="../Document.cpp" line="1276"/>
+      <location filename="../Document.cpp" line="1359"/>
       <source>Saving aborted</source>
       <translation>저장 실패</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1183"/>
+      <location filename="../Document.cpp" line="1187"/>
       <source>Save dependent files</source>
       <translation>종속 파일 저장하기</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1184"/>
+      <location filename="../Document.cpp" line="1188"/>
       <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
       <translation>파일에 외부 종속성이 있습니다. 종속 파일도 저장하시겠습니까?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1218"/>
-      <location filename="../Document.cpp" line="1266"/>
+      <location filename="../Document.cpp" line="1222"/>
+      <location filename="../Document.cpp" line="1270"/>
       <source>Saving document failed</source>
       <translation>문서 저장 실패</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1232"/>
+      <location filename="../Document.cpp" line="1236"/>
       <source>Save document under new filename...</source>
       <translation>새 파일 이름으로 문서  저장하기...</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1239"/>
-      <location filename="../Document.cpp" line="1340"/>
+      <location filename="../Document.cpp" line="1243"/>
+      <location filename="../Document.cpp" line="1344"/>
       <source>Save %1 Document</source>
       <translation>%1 문서 저장</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1241"/>
+      <location filename="../Document.cpp" line="1245"/>
       <source>Document</source>
       <translation>문서</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1285"/>
-      <location filename="../Document.cpp" line="1326"/>
+      <location filename="../Document.cpp" line="1289"/>
+      <location filename="../Document.cpp" line="1330"/>
       <source>Failed to save document</source>
       <translation>문서 저장 실패</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1286"/>
+      <location filename="../Document.cpp" line="1290"/>
       <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
       <translation>문서에는 주기적 종속성이 포함되어 있습니다. 아직도 저장하길 원하나요?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1337"/>
+      <location filename="../Document.cpp" line="1341"/>
       <source>Save a copy of the document under new filename...</source>
       <translation>문서의 사본을 새 파일 이름으로 저장하기...</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1342"/>
+      <location filename="../Document.cpp" line="1346"/>
       <source>%1 document (*.FCStd)</source>
       <translation>%1 문서 (*.FCStd)</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2003"/>
+      <location filename="../Document.cpp" line="2007"/>
       <source>Document not closable</source>
       <translation>문서를 닫을 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2004"/>
+      <location filename="../Document.cpp" line="2008"/>
       <source>The document is not closable for the moment.</source>
       <translation>그 문서는 당분간 닫을 수 없다.</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2041"/>
+      <location filename="../Document.cpp" line="2045"/>
       <source>Document not saved</source>
       <translation>문서가 저장되지 않았습니다</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2042"/>
+      <location filename="../Document.cpp" line="2046"/>
       <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
       <translation>%1 문서를 저장할 수 없습니다. 닫기를 취소하시겠습니까?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2370"/>
+      <location filename="../Document.cpp" line="2374"/>
       <source>Undo</source>
       <translation>실행 취소</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2370"/>
+      <location filename="../Document.cpp" line="2374"/>
       <source>Redo</source>
       <translation>다시 실행</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2372"/>
+      <location filename="../Document.cpp" line="2376"/>
       <source>There are grouped transactions in the following documents with other preceding transactions</source>
       <translation>다음 문서에 다른 이전 트랜잭션과 함께 그룹화된 트랜잭션이 있습니다.</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2375"/>
+      <location filename="../Document.cpp" line="2379"/>
       <source>Choose 'Yes' to roll back all preceding transactions.
 Choose 'No' to roll back in the active document only.
 Choose 'Abort' to abort</source>
@@ -8478,32 +8478,32 @@ Choose 'Abort' to abort</source>
       <translation>다이얼로그를 닫으시겠습니까?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="869"/>
+      <location filename="../MainWindow.cpp" line="870"/>
       <source>Do you want to save your changes to document '%1' before closing?</source>
       <translation>문서를 닫기 전에 변경 내용을 '%1'에 저장하시겠습니까?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="872"/>
+      <location filename="../MainWindow.cpp" line="873"/>
       <source>Do you want to save your changes to document before closing?</source>
       <translation>닫기 전에 변경사항을 문서에 저장하시겠습니까?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="874"/>
+      <location filename="../MainWindow.cpp" line="875"/>
       <source>If you don't save, your changes will be lost.</source>
       <translation>저장하지 않으면 변경 내용이 손실됩니다.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="879"/>
+      <location filename="../MainWindow.cpp" line="880"/>
       <source>Apply answer to all</source>
       <translation>모든 것에 답변 적용</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="969"/>
+      <location filename="../MainWindow.cpp" line="970"/>
       <source>%1 Document(s) not saved</source>
       <translation>%1문서가 저장되지 않았습니다.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="970"/>
+      <location filename="../MainWindow.cpp" line="971"/>
       <source>Some documents could not be saved. Do you want to cancel closing?</source>
       <translation>일부 문서를 저장할 수 없습니다. 닫는 것을 취소하시겠습니까?</translation>
     </message>
@@ -8606,35 +8606,43 @@ Choose 'Abort' to abort</source>
       <translation>모든 링크를 가져오지 못했습니다</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="105"/>
-      <location filename="../DlgAddProperty.cpp" line="118"/>
-      <location filename="../DlgAddPropertyVarSet.cpp" line="347"/>
-      <location filename="../DlgAddPropertyVarSet.cpp" line="359"/>
-      <location filename="../DlgAddPropertyVarSet.cpp" line="374"/>
+      <location filename="../DlgAddProperty.cpp" line="106"/>
+      <location filename="../DlgAddProperty.cpp" line="117"/>
+      <location filename="../DlgAddProperty.cpp" line="126"/>
+      <location filename="../DlgAddPropertyVarSet.cpp" line="345"/>
+      <location filename="../DlgAddPropertyVarSet.cpp" line="353"/>
+      <location filename="../DlgAddPropertyVarSet.cpp" line="363"/>
+      <location filename="../DlgAddPropertyVarSet.cpp" line="377"/>
       <source>Invalid name</source>
       <translation>잘못된 이름</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="106"/>
+      <location filename="../DlgAddProperty.cpp" line="107"/>
       <source>The property name or group name must only contain alpha numericals,
 underscore, and must not start with a digit.</source>
       <translation>속성 또는 그룹에 이름을 지정할 때 규칙은 첫글자는 숫자가 아니어야 하고, 알파벳, 밑줄, 숫자들로 되어 있어야 하는 것입니다.</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="119"/>
-      <location filename="../DlgAddPropertyVarSet.cpp" line="360"/>
+      <location filename="../DlgAddProperty.cpp" line="118"/>
+      <location filename="../DlgAddPropertyVarSet.cpp" line="354"/>
+      <source>The property name is a reserved word.</source>
+      <translation type="unfinished">The property name is a reserved word.</translation>
+    </message>
+    <message>
+      <location filename="../DlgAddProperty.cpp" line="127"/>
+      <location filename="../DlgAddPropertyVarSet.cpp" line="364"/>
       <source>The property '%1' already exists in '%2'</source>
       <translation type="unfinished">The property '%1' already exists in '%2'</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="142"/>
-      <location filename="../DlgAddPropertyVarSet.cpp" line="272"/>
+      <location filename="../DlgAddProperty.cpp" line="150"/>
+      <location filename="../DlgAddPropertyVarSet.cpp" line="271"/>
       <source>Add property</source>
       <translation>속성 추가하기</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="143"/>
-      <location filename="../DlgAddPropertyVarSet.cpp" line="273"/>
+      <location filename="../DlgAddProperty.cpp" line="151"/>
+      <location filename="../DlgAddPropertyVarSet.cpp" line="272"/>
       <source>Failed to add property to '%1': %2</source>
       <translation>'%1'에 속성을 추가하지 못했습니다: %2</translation>
     </message>
@@ -8747,7 +8755,7 @@ the current copy will be lost.
     <message>
       <location filename="../ViewProviderImagePlane.cpp" line="147"/>
       <source>Change image...</source>
-      <translation>이미지 변경...</translation>
+      <translation>화상 변경...</translation>
     </message>
     <message>
       <location filename="../SoFCColorGradient.cpp" line="103"/>
@@ -8917,14 +8925,14 @@ the current copy will be lost.
       <translation>억제</translation>
     </message>
     <message>
-      <location filename="../DlgAddPropertyVarSet.cpp" line="348"/>
+      <location filename="../DlgAddPropertyVarSet.cpp" line="346"/>
       <source>The property name must only contain alpha numericals,
 underscore, and must not start with a digit.</source>
       <translation type="unfinished">The property name must only contain alpha numericals,
 underscore, and must not start with a digit.</translation>
     </message>
     <message>
-      <location filename="../DlgAddPropertyVarSet.cpp" line="375"/>
+      <location filename="../DlgAddPropertyVarSet.cpp" line="378"/>
       <source>The group name must only contain alpha numericals,
 underscore, and must not start with a digit.</source>
       <translation type="unfinished">The group name must only contain alpha numericals,
@@ -9826,7 +9834,7 @@ underscore, and must not start with a digit.</translation>
       <translation>비어 있는 새 문서 만들기</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2410"/>
+      <location filename="../MainWindow.cpp" line="2411"/>
       <location filename="../DocumentRecovery.cpp" line="391"/>
       <source>Unnamed</source>
       <translation>이름없음</translation>
@@ -11240,7 +11248,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1926"/>
       <source>Save image...</source>
-      <translation type="unfinished">Save image...</translation>
+      <translation>화상 저장...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1927"/>
@@ -11342,12 +11350,12 @@ Are you sure you want to continue?
     <message>
       <location filename="../CommandView.cpp" line="737"/>
       <source>Wireframe</source>
-      <translation>와이어 프레임</translation>
+      <translation>철사틀</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="739"/>
       <source>Wireframe mode</source>
-      <translation>와이어 프레임 모드</translation>
+      <translation>철사틀 모드</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="742"/>
@@ -11367,7 +11375,7 @@ Are you sure you want to continue?
     <message>
       <location filename="../CommandView.cpp" line="749"/>
       <source>No shading mode</source>
-      <translation>음영 모드 없음</translation>
+      <translation>음영 없음 모드</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="752"/>
@@ -11875,7 +11883,7 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     <message>
       <location filename="../TaskView/TaskImage.ui" line="14"/>
       <source>Image plane settings</source>
-      <translation type="unfinished">Image plane settings</translation>
+      <translation>화상 평면 설정</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="22"/>
@@ -11888,87 +11896,87 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
       <translation>XY 평면</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="38"/>
+      <location filename="../TaskView/TaskImage.ui" line="35"/>
       <source>XZ-Plane</source>
       <translation>XZ 평면</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="45"/>
+      <location filename="../TaskView/TaskImage.ui" line="42"/>
       <source>YZ-Plane</source>
       <translation>YZ 평면</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="76"/>
+      <location filename="../TaskView/TaskImage.ui" line="73"/>
       <source>Reverse direction</source>
       <translation>역방향</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="83"/>
+      <location filename="../TaskView/TaskImage.ui" line="80"/>
       <source>Offset:</source>
       <translation>편차:</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="103"/>
+      <location filename="../TaskView/TaskImage.ui" line="100"/>
       <source>X distance:</source>
       <translation>X 거리:</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="123"/>
+      <location filename="../TaskView/TaskImage.ui" line="120"/>
       <source>Y distance:</source>
       <translation>Y 거리:</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="143"/>
+      <location filename="../TaskView/TaskImage.ui" line="140"/>
       <source>Rotation :</source>
       <translation type="unfinished">Rotation :</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="159"/>
+      <location filename="../TaskView/TaskImage.ui" line="156"/>
       <source>Transparency :</source>
       <translation>투명도 :</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="191"/>
+      <location filename="../TaskView/TaskImage.ui" line="188"/>
       <source>Image size</source>
-      <translation type="unfinished">Image size</translation>
+      <translation>화상 크기</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="197"/>
+      <location filename="../TaskView/TaskImage.ui" line="194"/>
       <source>Width:</source>
       <translation>너비:</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="217"/>
+      <location filename="../TaskView/TaskImage.ui" line="214"/>
       <source>Height:</source>
       <translation>높이:</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="237"/>
+      <location filename="../TaskView/TaskImage.ui" line="234"/>
       <source>Keep aspect ratio</source>
       <translation>종횡비 유지</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="247"/>
+      <location filename="../TaskView/TaskImage.ui" line="244"/>
       <source>Interactively scale the image by setting a length between two points of the image.</source>
       <translation>이미지의 두 포인트 사이의 길이를 설정하여 서로 작용하게 이미지 크기를 조정합니다.</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="250"/>
+      <location filename="../TaskView/TaskImage.ui" line="247"/>
       <source>Calibrate</source>
       <translation>조정</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="257"/>
+      <location filename="../TaskView/TaskImage.ui" line="254"/>
       <source>Calibration</source>
       <translation>교정</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="263"/>
+      <location filename="../TaskView/TaskImage.ui" line="260"/>
       <source>Apply</source>
       <translation>적용</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="270"/>
+      <location filename="../TaskView/TaskImage.ui" line="267"/>
       <source>Cancel</source>
       <translation>취소하기</translation>
     </message>
@@ -12095,7 +12103,7 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     <message>
       <location filename="../ImageView.cpp" line="75"/>
       <source>Failed to load image file</source>
-      <translation type="unfinished">Failed to load image file</translation>
+      <translation>화상 파일 불러오기 실패</translation>
     </message>
     <message>
       <location filename="../ImageView.cpp" line="76"/>
@@ -12123,13 +12131,13 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     <message>
       <location filename="../CommandView.cpp" line="2097"/>
       <source>Load image...</source>
-      <translation type="unfinished">Load image...</translation>
+      <translation>화상 불러오기...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2098"/>
       <location filename="../CommandView.cpp" line="2100"/>
       <source>Loads an image</source>
-      <translation type="unfinished">Loads an image</translation>
+      <translation>화상을 불러옵니다</translation>
     </message>
   </context>
   <context>
@@ -12629,77 +12637,77 @@ display the splash screen</source>
       <translation>되돌리기...</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="90"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="106"/>
       <source>Manage preference packs</source>
       <translation>환경설정 팩 관리하기</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="505"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="524"/>
       <source>Small (%1px)</source>
       <translation>작게(%1px)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="506"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="525"/>
       <source>Medium (%1px)</source>
       <translation>중간(%1px)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="507"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="526"/>
       <source>Large (%1px)</source>
       <translation>크게(%1px)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="508"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="527"/>
       <source>Extra large (%1px)</source>
       <translation>아주크게(%1px)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="510"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="529"/>
       <source>Custom (%1px)</source>
       <translation>커스텀(%1px)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="579"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="598"/>
       <source>Combined</source>
       <translation type="unfinished">Combined</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="580"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="599"/>
       <source>Independent</source>
       <translation type="unfinished">Independent</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="607"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="626"/>
       <source>Preference Pack Name</source>
       <translation>환경설정 팩 이름</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="608"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="627"/>
       <source>Tags</source>
       <translation>태그</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="645"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="664"/>
       <source>Apply</source>
       <translation>적용</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="646"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="677"/>
       <source>Apply the %1 preference pack</source>
       <translation>%1 환경설정 팩 적용하기</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="707"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="739"/>
       <source>Choose a FreeCAD config file to import</source>
       <translation>가져올 FreeCAD 구성 파일 고르기</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="718"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="750"/>
       <source>File exists</source>
       <translation>파일이 존재합니다</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="719"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="751"/>
       <source>A preference pack with that name already exists. Overwrite?</source>
       <translation>해당 이름의 환경설정 팩이 이미 있습니다. 덮어쓰시겠습니까?</translation>
     </message>
@@ -13485,7 +13493,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../DlgAddPropertyVarSet.ui" line="58"/>
       <source>Add another</source>
-      <translation type="unfinished">Add another</translation>
+      <translation>계속 추가</translation>
     </message>
     <message>
       <location filename="../DlgAddPropertyVarSet.ui" line="65"/>
@@ -13703,12 +13711,12 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandStructure.cpp" line="139"/>
       <source>Create a variable set</source>
-      <translation type="unfinished">Create a variable set</translation>
+      <translation>변수 집합 생성</translation>
     </message>
     <message>
       <location filename="../CommandStructure.cpp" line="140"/>
       <source>A Variable Set is an object that maintains a set of properties to be used as variables.</source>
-      <translation type="unfinished">A Variable Set is an object that maintains a set of properties to be used as variables.</translation>
+      <translation>변수 집합은 변수로 사용할 속성들을 모아 관리합니다.</translation>
     </message>
   </context>
   <context>
@@ -13716,13 +13724,13 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="778"/>
       <source>&amp;Units converter...</source>
-      <translation type="unfinished">&amp;Units converter...</translation>
+      <translation>&amp;단위 변환기</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="779"/>
       <location filename="../CommandStd.cpp" line="781"/>
       <source>Start the units converter</source>
-      <translation type="unfinished">Start the units converter</translation>
+      <translation>단위 변환기 시작</translation>
     </message>
   </context>
 </TS>
