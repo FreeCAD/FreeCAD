@@ -22,6 +22,11 @@
 
 #include "PreCompiled.h"
 
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/unordered/unordered_map_fwd.hpp>
+#include <boost/graph/depth_first_search.hpp>
+#include <boost/graph/topological_sort.hpp>
+
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -33,7 +38,6 @@
 
 #include "PropertyExpressionEngine.h"
 #include "ExpressionVisitors.h"
-
 
 FC_LOG_LEVEL_INIT("App", true);
 
@@ -72,11 +76,29 @@ void PropertyExpressionContainer::slotRelabelDocument(const App::Document &doc) 
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
+
+using DiGraph = boost::adjacency_list< boost::listS, boost::vecS, boost::directedS >;
+using Edge = std::pair<int, int>;
+
 struct PropertyExpressionEngine::Private {
+
+
     // For some reason, MSVC has trouble with vector of scoped_connection if
     // defined in header, hence the private structure here.
     std::vector<boost::signals2::scoped_connection> conns;
     std::unordered_map<std::string, std::vector<ObjectIdentifier> > propMap;
+
+    // Keep these declarations outside of header
+    // As their includes increases build time majorly which will
+    // propagate effect all files include PropertyExpressionEngine.h
+    static void buildGraph(const ExpressionMap & exprs,
+                           boost::unordered_map<int, ObjectIdentifier> & revNodes,
+                           DiGraph & g, ExecuteOption option=ExecuteAll);
+    static void buildGraphStructures(const ObjectIdentifier & path,
+                                     const std::shared_ptr<Expression> expression,
+                                     boost::unordered_map<ObjectIdentifier, int> & nodes,
+                                     boost::unordered_map<int, ObjectIdentifier> & revNodes,
+                                     std::vector<Edge> & edges);
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -326,11 +348,11 @@ void PropertyExpressionEngine::Restore(Base::XMLReader &reader)
  * @param edges Edges in graph
  */
 
-void PropertyExpressionEngine::buildGraphStructures(const ObjectIdentifier & path,
+void PropertyExpressionEngine::Private::buildGraphStructures(const ObjectIdentifier & path,
                                                     const std::shared_ptr<Expression> expression,
                                                     boost::unordered_map<ObjectIdentifier, int> & nodes,
                                                     boost::unordered_map<int, ObjectIdentifier> & revNodes,
-                                                    std::vector<Edge> & edges) const
+                                                    std::vector<Edge> & edges)
 {
     /* Insert target property into nodes structure */
     if (nodes.find(path) == nodes.end()) {
@@ -527,9 +549,9 @@ struct cycle_detector : public boost::dfs_visitor<> {
  * @param g Graph to update. May contain additional nodes than in revNodes, because of outside dependencies.
  */
 
-void PropertyExpressionEngine::buildGraph(const ExpressionMap & exprs,
+void PropertyExpressionEngine::Private::buildGraph(const ExpressionMap & exprs,
                     boost::unordered_map<int, ObjectIdentifier> & revNodes,
-                    DiGraph & g, ExecuteOption option) const
+                    DiGraph & g, ExecuteOption option)
 {
     boost::unordered_map<ObjectIdentifier, int> nodes;
     std::vector<Edge> edges;
@@ -584,7 +606,7 @@ std::vector<App::ObjectIdentifier> PropertyExpressionEngine::computeEvaluationOr
     boost::unordered_map<int, ObjectIdentifier> revNodes;
     DiGraph g;
 
-    buildGraph(expressions, revNodes, g, option);
+    Private::buildGraph(expressions, revNodes, g, option);
 
     /* Compute evaluation order for expressions */
     std::vector<int> c;
@@ -805,7 +827,7 @@ std::string PropertyExpressionEngine::validateExpression(const ObjectIdentifier 
         boost::unordered_map<int, ObjectIdentifier> revNodes;
         DiGraph g;
 
-        buildGraph(newExpressions, revNodes, g);
+        Private::buildGraph(newExpressions, revNodes, g);
     }
     catch (const Base::Exception & e) {
         return e.what();
