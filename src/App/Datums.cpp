@@ -80,7 +80,8 @@ App::LocalCoordinateSystem* DatumElement::getLCS()
 
 bool DatumElement::isOriginFeature()
 {
-    return getLCS()->isOrigin();
+    auto lcs = getLCS();
+    return lcs ? getLCS()->isOrigin() : false;
 }
 
 // ----------------------------------------------------------------------------
