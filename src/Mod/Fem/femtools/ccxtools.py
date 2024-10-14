@@ -599,6 +599,10 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 self.has_nonpositive_jacobians()
                 FreeCAD.Console.PrintMessage("\n--------end problems---------\n")
         else:
+            # remove highlighted nodes, if any
+            if FreeCAD.GuiUp:
+                self.mesh.ViewObject.HighlightedNodes = []
+
             FreeCAD.Console.PrintMessage("CalculiX finished without error.\n")
         return ret_code
 
