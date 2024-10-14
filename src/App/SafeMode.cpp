@@ -21,6 +21,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "PreCompiled.h"
+
 #include <QTemporaryDir>
 
 #include "Application.h"
