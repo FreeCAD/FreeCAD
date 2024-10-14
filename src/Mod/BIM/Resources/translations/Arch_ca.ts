@@ -1268,7 +1268,7 @@ Utilitats -&gt; Crea un projecte IFC</translation>
     <message>
       <location filename="../ui/dialogTree.ui" line="40"/>
       <source>GroupBox</source>
-      <translation type="unfinished">GroupBox</translation>
+      <translation>Caixa de grup</translation>
     </message>
     <message>
       <location filename="../ui/dialogTree.ui" line="70"/>
@@ -3367,7 +3367,7 @@ De totes maneres, algunes aplicacions BIM utilitzen aquest factor per escollir q
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="345"/>
-      <location filename="../../bimcommands/BimWall.py" line="156"/>
+      <location filename="../../bimcommands/BimWall.py" line="158"/>
       <source>Next point</source>
       <translation>Punt següent</translation>
     </message>
@@ -3378,7 +3378,7 @@ De totes maneres, algunes aplicacions BIM utilitzen aquest factor per escollir q
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="456"/>
-      <location filename="../../ArchCommands.py" line="1335"/>
+      <location filename="../../ArchCommands.py" line="1361"/>
       <location filename="../../bimcommands/BimProfile.py" line="74"/>
       <source>Category</source>
       <translation>Categoria</translation>
@@ -3394,8 +3394,8 @@ De totes maneres, algunes aplicacions BIM utilitzen aquest factor per escollir q
     <message>
       <location filename="../../ArchStructure.py" line="472"/>
       <location filename="../../ArchPrecast.py" line="1412"/>
-      <location filename="../../ArchCommands.py" line="1010"/>
-      <location filename="../../bimcommands/BimWall.py" line="293"/>
+      <location filename="../../ArchCommands.py" line="1036"/>
+      <location filename="../../bimcommands/BimWall.py" line="295"/>
       <location filename="../../bimcommands/BimPanel.py" line="148"/>
       <source>Length</source>
       <translation>Longitud</translation>
@@ -3403,7 +3403,7 @@ De totes maneres, algunes aplicacions BIM utilitzen aquest factor per escollir q
     <message>
       <location filename="../../ArchStructure.py" line="482"/>
       <location filename="../../ArchPrecast.py" line="1413"/>
-      <location filename="../../bimcommands/BimWall.py" line="299"/>
+      <location filename="../../bimcommands/BimWall.py" line="301"/>
       <location filename="../../bimcommands/BimPanel.py" line="155"/>
       <source>Width</source>
       <translation>Amplària</translation>
@@ -3411,7 +3411,7 @@ De totes maneres, algunes aplicacions BIM utilitzen aquest factor per escollir q
     <message>
       <location filename="../../ArchStructure.py" line="489"/>
       <location filename="../../ArchPrecast.py" line="1414"/>
-      <location filename="../../bimcommands/BimWall.py" line="305"/>
+      <location filename="../../bimcommands/BimWall.py" line="307"/>
       <source>Height</source>
       <translation>Alçària</translation>
     </message>
@@ -3432,7 +3432,7 @@ De totes maneres, algunes aplicacions BIM utilitzen aquest factor per escollir q
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="505"/>
-      <location filename="../../bimcommands/BimWall.py" line="319"/>
+      <location filename="../../bimcommands/BimWall.py" line="321"/>
       <location filename="../../bimcommands/BimPanel.py" line="173"/>
       <source>Con&amp;tinue</source>
       <translation>Con&amp;tinua</translation>
@@ -3444,7 +3444,7 @@ De totes maneres, algunes aplicacions BIM utilitzen aquest factor per escollir q
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="809"/>
-      <location filename="../../ArchWall.py" line="416"/>
+      <location filename="../../ArchWall.py" line="439"/>
       <source>This mesh is an invalid solid</source>
       <translation>Aquesta malla no és un sòlid vàlid</translation>
     </message>
@@ -4158,7 +4158,7 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
     <message>
       <location filename="../../ArchWindow.py" line="1373"/>
       <location filename="../../ArchComponent.py" line="2012"/>
-      <location filename="../../ArchCommands.py" line="1337"/>
+      <location filename="../../ArchCommands.py" line="1363"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="461"/>
       <source>Type</source>
       <translation>Tipus</translation>
@@ -4434,7 +4434,7 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
     <message>
       <location filename="../../ArchGrid.py" line="387"/>
       <source>Total height</source>
-      <translation type="unfinished">Total height</translation>
+      <translation>Alçada total</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="388"/>
@@ -4812,7 +4812,7 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
       <translation>Exportar fitxer CSV</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1098"/>
+      <location filename="../../ArchCommands.py" line="1124"/>
       <source>Export CSV File</source>
       <translation>Exportar fitxer CSV</translation>
     </message>
@@ -4824,7 +4824,7 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
     <message>
       <location filename="../../ArchSchedule.py" line="645"/>
       <location filename="../../ArchSchedule.py" line="663"/>
-      <location filename="../../ArchCommands.py" line="1009"/>
+      <location filename="../../ArchCommands.py" line="1035"/>
       <source>Description</source>
       <translation>Descripció</translation>
     </message>
@@ -4832,7 +4832,7 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
       <location filename="../../ArchSchedule.py" line="645"/>
       <location filename="../../ArchSchedule.py" line="663"/>
       <location filename="../../ArchComponent.py" line="2013"/>
-      <location filename="../../ArchCommands.py" line="1338"/>
+      <location filename="../../ArchCommands.py" line="1364"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="462"/>
       <source>Value</source>
       <translation>Valor</translation>
@@ -4840,7 +4840,7 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
     <message>
       <location filename="../../ArchSchedule.py" line="645"/>
       <location filename="../../ArchSchedule.py" line="663"/>
-      <location filename="../../ArchCommands.py" line="1339"/>
+      <location filename="../../ArchCommands.py" line="1365"/>
       <source>Unit</source>
       <translation>Unitat</translation>
     </message>
@@ -4959,7 +4959,7 @@ S'interromp la creació de la planta.</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1948"/>
-      <location filename="../../ArchCommands.py" line="214"/>
+      <location filename="../../ArchCommands.py" line="240"/>
       <source>Component</source>
       <translation>Component</translation>
     </message>
@@ -5149,7 +5149,7 @@ S'interromp la creació de la planta.</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1338"/>
-      <location filename="../../bimcommands/BimWall.py" line="313"/>
+      <location filename="../../bimcommands/BimWall.py" line="315"/>
       <source>Center</source>
       <translation>Centre</translation>
     </message>
@@ -5228,8 +5228,8 @@ S'avorta la creació de la construcció.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="90"/>
-      <location filename="../../bimcommands/BimWall.py" line="164"/>
-      <location filename="../../bimcommands/BimWall.py" line="416"/>
+      <location filename="../../bimcommands/BimWall.py" line="166"/>
+      <location filename="../../bimcommands/BimWall.py" line="418"/>
       <source>Create Wall</source>
       <translation>Crea un mur</translation>
     </message>
@@ -5239,37 +5239,37 @@ S'avorta la creació de la construcció.</translation>
       <translation>Primer punt del mur</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="274"/>
+      <location filename="../../bimcommands/BimWall.py" line="276"/>
       <source>Wall options</source>
       <translation>Opcions de mur</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="278"/>
+      <location filename="../../bimcommands/BimWall.py" line="280"/>
       <source>Wall Presets...</source>
       <translation>Valors predeterminats de Mur...</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="279"/>
+      <location filename="../../bimcommands/BimWall.py" line="281"/>
       <source>This list shows all the MultiMaterials objects of this document. Create some to define wall types.</source>
       <translation>Aquesta llista mostra tots els objectes multimaterials del document. Creeu-ne alguns per a definir els tipus de mur.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="311"/>
+      <location filename="../../bimcommands/BimWall.py" line="313"/>
       <source>Alignment</source>
       <translation>Alineació</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="313"/>
+      <location filename="../../bimcommands/BimWall.py" line="315"/>
       <source>Left</source>
       <translation>Esquerra</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="314"/>
+      <location filename="../../bimcommands/BimWall.py" line="316"/>
       <source>Right</source>
       <translation>Dreta</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="329"/>
+      <location filename="../../bimcommands/BimWall.py" line="331"/>
       <source>Use sketches</source>
       <translation>Utilitzi esbossos</translation>
     </message>
@@ -5291,103 +5291,108 @@ S'avorta la creació de la construcció.</translation>
       <translation>Fusiona els murs</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="407"/>
+      <location filename="../../ArchWall.py" line="243"/>
+      <source>changed 'Normal' to [0, 0, 1] to preserve extrusion direction</source>
+      <translation type="unfinished">changed 'Normal' to [0, 0, 1] to preserve extrusion direction</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="430"/>
       <source>Cannot compute blocks for wall</source>
       <translation>No es poden calcular els blocs pel mur</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="518"/>
+      <location filename="../../ArchWall.py" line="541"/>
       <source>Error: Unable to modify the base object of this wall</source>
       <translation>Error: No es pot modificar l'objecte base d'aquest mur</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1280"/>
+      <location filename="../../ArchWall.py" line="1303"/>
       <source>Flip direction</source>
       <translation>Volteja la direcció</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="408"/>
+      <location filename="../../ArchCommands.py" line="434"/>
       <source>Invalid cut plane</source>
       <translation>Pla de tall invàlid</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="691"/>
+      <location filename="../../ArchCommands.py" line="717"/>
       <source>is not closed</source>
       <translation>no està tancat</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="693"/>
+      <location filename="../../ArchCommands.py" line="719"/>
       <source>is not valid</source>
       <translation>no és vàlid</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="695"/>
+      <location filename="../../ArchCommands.py" line="721"/>
       <source>doesn't contain any solid</source>
       <translation>no conté cap sòlid</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="701"/>
+      <location filename="../../ArchCommands.py" line="727"/>
       <source>contains a non-closed solid</source>
       <translation>conté un sòlid no tancat</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="703"/>
+      <location filename="../../ArchCommands.py" line="729"/>
       <source>contains faces that are not part of any solid</source>
       <translation>conté cares que no formen part de cap sòlid</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1003"/>
+      <location filename="../../ArchCommands.py" line="1029"/>
       <source>Survey</source>
       <translation>Recollida de dades</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1004"/>
+      <location filename="../../ArchCommands.py" line="1030"/>
       <source>Set description</source>
       <translation>Estableix una descripció</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1005"/>
+      <location filename="../../ArchCommands.py" line="1031"/>
       <source>Clear</source>
       <translation>Neteja</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1006"/>
+      <location filename="../../ArchCommands.py" line="1032"/>
       <source>Copy Length</source>
       <translation>Copia la longitud</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1007"/>
+      <location filename="../../ArchCommands.py" line="1033"/>
       <source>Copy Area</source>
       <translation>Copia l'àrea</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1008"/>
+      <location filename="../../ArchCommands.py" line="1034"/>
       <source>Export CSV</source>
       <translation>Exporta CSV</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1011"/>
+      <location filename="../../ArchCommands.py" line="1037"/>
       <source>Area</source>
       <translation>Àrea</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1056"/>
+      <location filename="../../ArchCommands.py" line="1082"/>
       <source>Total</source>
       <translation>Total</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1136"/>
+      <location filename="../../ArchCommands.py" line="1162"/>
       <source>Object doesn't have settable IFC attributes</source>
       <translation>L'objecte no té atributs d'IFC configurables</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1142"/>
+      <location filename="../../ArchCommands.py" line="1168"/>
       <source>Disabling B-rep force flag of object</source>
       <translation>Desactiva l'indicador de B-rep forçat de l'objecte</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1145"/>
-      <location filename="../../ArchCommands.py" line="1148"/>
+      <location filename="../../ArchCommands.py" line="1171"/>
+      <location filename="../../ArchCommands.py" line="1174"/>
       <source>Enabling B-rep force flag of object</source>
       <translation>Activa l'indicador de B-rep forçat de l'objecte</translation>
     </message>
@@ -5433,12 +5438,12 @@ S'avorta la creació de la construcció.</translation>
       <translation>Crea un component</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1336"/>
+      <location filename="../../ArchCommands.py" line="1362"/>
       <source>Key</source>
       <translation>Clau</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1346"/>
+      <location filename="../../ArchCommands.py" line="1372"/>
       <source>The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</source>
       <translation>L'objecte no té un atribut de Propietats IFC. Cancel·la la creació del full de càlcul per a l'objecte:</translation>
     </message>
@@ -5543,94 +5548,94 @@ S'avorta la creació de la construcció.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="698"/>
       <source>Mirror the Base along its Y axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">Mirror the Base along its Y axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>Emmiralla la base al llarg del seu eix Y (només s'utilitza si BasePerpendicularToTool és Cert)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="700"/>
       <source>Base rotation around the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">Base rotation around the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>Rotació de Base al llarg de l'eix de l'Eina (només es fa servir si BasePerpendicularToTool és Cert)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="702"/>
       <location filename="../../ArchPanel.py" line="73"/>
       <source>The length of this element, if not based on a profile</source>
-      <translation type="unfinished">The length of this element, if not based on a profile</translation>
+      <translation>La longitud d'aquest element, si no està basat en el perfil</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="704"/>
       <location filename="../../ArchPanel.py" line="75"/>
       <source>The width of this element, if not based on a profile</source>
-      <translation type="unfinished">The width of this element, if not based on a profile</translation>
+      <translation>L'amplada d'aquest element, si no està basat en el perfil</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="706"/>
       <source>The height or extrusion depth of this element. Keep 0 for automatic</source>
-      <translation type="unfinished">The height or extrusion depth of this element. Keep 0 for automatic</translation>
+      <translation>L'alçada o profunditat d'extrusió d'aquest element. Mantingui 0 per a automàtica</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="708"/>
       <location filename="../../ArchPanel.py" line="102"/>
       <location filename="../../ArchWall.py" line="180"/>
       <source>The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</source>
-      <translation type="unfinished">The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</translation>
+      <translation>La direcció d'extrusió normal d'aquest objecte (mantingui (0,0,0) per a automàtica)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="710"/>
       <location filename="../../ArchPrecast.py" line="70"/>
       <source>The structural nodes of this element</source>
-      <translation type="unfinished">The structural nodes of this element</translation>
+      <translation>Els nodes estructurals d'aquest element</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="712"/>
       <source>A description of the standard profile this element is based upon</source>
-      <translation type="unfinished">A description of the standard profile this element is based upon</translation>
+      <translation>Una descripció del perfil estàndard en què es basa aquest element</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="714"/>
       <source>Offset distance between the centerline and the nodes line</source>
-      <translation type="unfinished">Offset distance between the centerline and the nodes line</translation>
+      <translation>Distància de separació entre la línia central i la línia de nodes</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="716"/>
       <location filename="../../ArchPanel.py" line="99"/>
       <source>The facemaker type to use to build the profile of this object</source>
-      <translation type="unfinished">The facemaker type to use to build the profile of this object</translation>
+      <translation>El tipus de generador de cares que s'ha d'utilitzar per a construir el perfil d'aquest objecte</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="719"/>
       <location filename="../../ArchStructure.py" line="727"/>
       <source>Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this BIM Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups.</source>
-      <translation type="unfinished">Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this BIM Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups.</translation>
+      <translation>Vores seleccionades (o grup de vores) de l'ArchSketch base, utilitzades per crear la forma d'aquesta estructura BIM (en lloc d'utilitzar totes les vores de la forma base de manera predeterminada). L'entrada és el nombre de vores o grups.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1052"/>
       <source>If the nodes are visible or not</source>
-      <translation type="unfinished">If the nodes are visible or not</translation>
+      <translation>Si els nodes són visibles o no</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1054"/>
       <source>The width of the nodes line</source>
-      <translation type="unfinished">The width of the nodes line</translation>
+      <translation>L'amplada de la línia de nodes</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1056"/>
       <source>The size of the node points</source>
-      <translation type="unfinished">The size of the node points</translation>
+      <translation>La mida dels punts de node</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1059"/>
       <source>The color of the nodes line</source>
-      <translation type="unfinished">The color of the nodes line</translation>
+      <translation>El color de la línia de nodes</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1062"/>
       <source>The type of structural node</source>
-      <translation type="unfinished">The type of structural node</translation>
+      <translation>El tipus de node estructural</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1396"/>
       <source>Axes systems this structure is built on</source>
-      <translation type="unfinished">Axes systems this structure is built on</translation>
+      <translation>Sistema d'eixos sobre el qual està construïda aquesta estructura</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1397"/>
@@ -5640,251 +5645,251 @@ S'avorta la creació de la construcció.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="1398"/>
       <source>If true the element are aligned with axes</source>
-      <translation type="unfinished">If true the element are aligned with axes</translation>
+      <translation>Si s'estableix a cert, l'element s'alinea amb els eixos</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="188"/>
       <source>The model description of this equipment</source>
-      <translation type="unfinished">The model description of this equipment</translation>
+      <translation>La descripció del model d'aquest equipament</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="190"/>
       <source>The URL of the product page of this equipment</source>
-      <translation type="unfinished">The URL of the product page of this equipment</translation>
+      <translation>L'URL de la pàgina del producte d'aquest equipament</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="192"/>
       <location filename="../../ArchMaterial.py" line="166"/>
       <source>A standard code (MasterFormat, OmniClass,...)</source>
-      <translation type="unfinished">A standard code (MasterFormat, OmniClass,...)</translation>
+      <translation>Un codi estàndard (MasterFormat, OmniClass,...)</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="194"/>
       <source>Additional snap points for this equipment</source>
-      <translation type="unfinished">Additional snap points for this equipment</translation>
+      <translation>Punts d'ajust addicionals d'aquest equipament</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="196"/>
       <source>The electric power needed by this equipment in Watts</source>
-      <translation type="unfinished">The electric power needed by this equipment in Watts</translation>
+      <translation>La potència elèctrica necessària d'aquest equipament en Watts</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="140"/>
       <location filename="../../Arch.py" line="168"/>
       <location filename="../../ArchBuilding.py" line="281"/>
       <source>The type of this building</source>
-      <translation type="unfinished">The type of this building</translation>
+      <translation>El tipus d'aquesta construcció</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="217"/>
       <location filename="../../ArchFloor.py" line="209"/>
       <source>The height of this object</source>
-      <translation type="unfinished">The height of this object</translation>
+      <translation>L'alçada d'aquest objecte</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="219"/>
       <source>If true, the height value propagates to contained objects if the height of those objects is set to 0</source>
-      <translation type="unfinished">If true, the height value propagates to contained objects if the height of those objects is set to 0</translation>
+      <translation>Si és cert, el valor d'alçada es propaga als objectes continguts, si l'alçada d'aquests objectes s'estableix a 0</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="222"/>
       <source>The level of the (0,0,0) point of this level</source>
-      <translation type="unfinished">The level of the (0,0,0) point of this level</translation>
+      <translation>El nivell del punt (0,0,0) d'aquest nivell</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="224"/>
       <location filename="../../ArchFloor.py" line="211"/>
       <source>The computed floor area of this floor</source>
-      <translation type="unfinished">The computed floor area of this floor</translation>
+      <translation>L'àrea calculada d'aquesta planta</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="226"/>
       <location filename="../../ArchComponent.py" line="205"/>
       <source>An optional description for this component</source>
-      <translation type="unfinished">An optional description for this component</translation>
+      <translation>Una descripció opcional d'aquest component</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="228"/>
       <location filename="../../ArchComponent.py" line="207"/>
       <source>An optional tag for this component</source>
-      <translation type="unfinished">An optional tag for this component</translation>
+      <translation>Una etiqueta opcional d'aquest component</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="230"/>
       <location filename="../../ArchSectionPlane.py" line="814"/>
       <source>The shape of this object</source>
-      <translation type="unfinished">The shape of this object</translation>
+      <translation>La forma d'aquest objecte</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="232"/>
       <source>This property stores an OpenInventor representation for this object</source>
-      <translation type="unfinished">This property stores an OpenInventor representation for this object</translation>
+      <translation>Aquesta propietat emmagatzema una representació d'OpenInventor per a aquest objecte</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="235"/>
       <source>If true, only solids will be collected by this object when referenced from other files</source>
-      <translation type="unfinished">If true, only solids will be collected by this object when referenced from other files</translation>
+      <translation>Si és cert, aquest objecte només recopilarà sòlids quan es faci referència des d'altres fitxers</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="238"/>
       <source>A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files</source>
-      <translation type="unfinished">A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files</translation>
+      <translation>Un mapa MaterialName:SolidIndexesList que relaciona noms de materials amb índexs de sòlids utilitzat en referenciar aquest objecte des d'altres fitxers</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="450"/>
       <location filename="../../ArchSectionPlane.py" line="903"/>
       <source>The line width of this object</source>
-      <translation type="unfinished">The line width of this object</translation>
+      <translation>El gruix de la línia d'aquest objecte</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="453"/>
       <source>An optional unit to express levels</source>
-      <translation type="unfinished">An optional unit to express levels</translation>
+      <translation>Una unitat opcional per expressar nivells</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="455"/>
       <source>A transformation to apply to the level mark</source>
-      <translation type="unfinished">A transformation to apply to the level mark</translation>
+      <translation>Una transformació per aplicar a la marca de nivell</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="458"/>
       <source>If true, show the level</source>
-      <translation type="unfinished">If true, show the level</translation>
+      <translation>Si és cert, mostra el nivell</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="461"/>
       <source>If true, show the unit on the level tag</source>
-      <translation type="unfinished">If true, show the unit on the level tag</translation>
+      <translation>Si és cert, mostra la unitat a l'etiqueta de nivell</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="463"/>
       <source>If true, display offset will affect the origin mark too</source>
-      <translation type="unfinished">If true, display offset will affect the origin mark too</translation>
+      <translation>Si és cert, el desplaçament de la visualització afectarà també la marca d'origen</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="465"/>
       <source>If true, the object's label is displayed</source>
-      <translation type="unfinished">If true, the object's label is displayed</translation>
+      <translation>Si és cert, es visualitza l'etiqueta de l'objecte</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="468"/>
       <source>The font to be used for texts</source>
-      <translation type="unfinished">The font to be used for texts</translation>
+      <translation>La tipografia a utilitzar pels texts</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="471"/>
       <source>The font size of texts</source>
-      <translation type="unfinished">The font size of texts</translation>
+      <translation>La mida de la tipografia dels texts</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="474"/>
       <source>The individual face colors</source>
-      <translation type="unfinished">The individual face colors</translation>
+      <translation>Els colors de la cara individual</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="478"/>
       <source>If true, when activated, the working plane will automatically adapt to this level</source>
-      <translation type="unfinished">If true, when activated, the working plane will automatically adapt to this level</translation>
+      <translation>Si és cert, quan s'activi, el pla de treball s'adaptarà automàticament a aquest nivell</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="481"/>
       <source>If set to True, the working plane will be kept on Auto mode</source>
-      <translation type="unfinished">If set to True, the working plane will be kept on Auto mode</translation>
+      <translation>Si s'estableix a Cert, el pla de treball es mantindrà en mode Automàtic</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="483"/>
       <source>Camera position data associated with this object</source>
-      <translation type="unfinished">Camera position data associated with this object</translation>
+      <translation>Dades de posició de la càmera associades amb aquest objecte</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="486"/>
       <source>If set, the view stored in this object will be restored on double-click</source>
-      <translation type="unfinished">If set, the view stored in this object will be restored on double-click</translation>
+      <translation>Si s'estableix, la vista emmagatzemada en aquest objecte es restaurarà fent doble clic</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="488"/>
       <source>If True, double-clicking this object in the tree activates it</source>
-      <translation type="unfinished">If True, double-clicking this object in the tree activates it</translation>
+      <translation>Si és cert, un doble clic sobre aquest objecte a l’arbre, l'activa</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="492"/>
       <source>If this is enabled, the OpenInventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</source>
-      <translation type="unfinished">If this is enabled, the OpenInventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</translation>
+      <translation>Si està activada, la representació de l’OpenInventor d’aquest objecte es desarà en el fitxer FreeCAD, i permetrà fer-ne referència en altres fitxers en mode lleuger.</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="494"/>
       <source>A slot to save the OpenInventor representation of this object, if enabled</source>
-      <translation type="unfinished">A slot to save the OpenInventor representation of this object, if enabled</translation>
+      <translation>Un espai per a guardar la representació de l’OpenInventor d’aquest objecte, si està habilitada</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="499"/>
       <source>If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</source>
-      <translation type="unfinished">If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</translation>
+      <translation>Si és Cert, mostra els objectes continguts en aquesta part de la construcció que adoptaran aquestes preferències de línia, color i transparència</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="501"/>
       <source>The line width of child objects</source>
-      <translation type="unfinished">The line width of child objects</translation>
+      <translation>L'amplada de línia dels objectes fills</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="504"/>
       <source>The line color of child objects</source>
-      <translation type="unfinished">The line color of child objects</translation>
+      <translation>El color de línia dels objectes fills</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="507"/>
       <source>The shape appearance of child objects</source>
-      <translation type="unfinished">The shape appearance of child objects</translation>
+      <translation>L'aparença de la forma dels objectes fills</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="510"/>
       <source>The transparency of child objects</source>
-      <translation type="unfinished">The transparency of child objects</translation>
+      <translation>La transparència dels objectes fills</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="515"/>
       <source>Cut the view above this level</source>
-      <translation type="unfinished">Cut the view above this level</translation>
+      <translation>Retalla la vista per damunt d’aquest nivell</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="517"/>
       <source>The distance between the level plane and the cut line</source>
-      <translation type="unfinished">The distance between the level plane and the cut line</translation>
+      <translation>Distància entre el pla de nivell i la línia de tall</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="520"/>
       <source>Turn cutting on when activating this level</source>
-      <translation type="unfinished">Turn cutting on when activating this level</translation>
+      <translation>Activa el tall quan s'activi aquest nivell</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="524"/>
       <source>The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</source>
-      <translation type="unfinished">The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</translation>
+      <translation>La caixa de captura dels objectes acabats de crear expressats com a [XMin,YMin,ZMin,XMax,YMax,ZMax]</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="526"/>
       <source>Turns auto group box on/off</source>
-      <translation type="unfinished">Turns auto group box on/off</translation>
+      <translation>Habilita/Deshabilita la caixa de grup automàtica</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="528"/>
       <source>Automatically set size from contents</source>
-      <translation type="unfinished">Automatically set size from contents</translation>
+      <translation>Estableix automàticament la mida a partir dels continguts</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="530"/>
       <source>A margin to use when autosize is turned on</source>
-      <translation type="unfinished">A margin to use when autosize is turned on</translation>
+      <translation>Marge a utilitzar quan la mida automàtica està habilitada</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="125"/>
       <source>Outside Diameter</source>
-      <translation type="unfinished">Outside Diameter</translation>
+      <translation>Diàmetre exterior</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="126"/>
       <source>Wall thickness</source>
-      <translation type="unfinished">Wall thickness</translation>
+      <translation>Gruix del mur</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="150"/>
@@ -5894,7 +5899,7 @@ S'avorta la creació de la construcció.</translation>
       <location filename="../../ArchProfile.py" line="271"/>
       <location filename="../../ArchProfile.py" line="298"/>
       <source>Width of the beam</source>
-      <translation type="unfinished">Width of the beam</translation>
+      <translation>Amplada de la biga</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="151"/>
@@ -5904,234 +5909,234 @@ S'avorta la creació de la construcció.</translation>
       <location filename="../../ArchProfile.py" line="272"/>
       <location filename="../../ArchProfile.py" line="299"/>
       <source>Height of the beam</source>
-      <translation type="unfinished">Height of the beam</translation>
+      <translation>Alçada de la biga</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="152"/>
       <location filename="../../ArchProfile.py" line="300"/>
       <source>Thickness of the web</source>
-      <translation type="unfinished">Thickness of the web</translation>
+      <translation>Gruix de l'ànima</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="153"/>
       <location filename="../../ArchProfile.py" line="301"/>
       <source>Thickness of the flanges</source>
-      <translation type="unfinished">Thickness of the flanges</translation>
+      <translation>Gruix de les ales</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="210"/>
       <source>Thickness of the sides</source>
-      <translation type="unfinished">Thickness of the sides</translation>
+      <translation>Gruix dels costats</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="243"/>
       <source>Thickness of the webs</source>
-      <translation type="unfinished">Thickness of the webs</translation>
+      <translation>Gruix de les ànimes</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="244"/>
       <source>Thickness of the flange</source>
-      <translation type="unfinished">Thickness of the flange</translation>
+      <translation>Gruix de l'ala</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="273"/>
       <source>Thickness of the legs</source>
-      <translation type="unfinished">Thickness of the legs</translation>
+      <translation>Gruix dels suports</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="521"/>
       <source>The base terrain of this site</source>
-      <translation type="unfinished">The base terrain of this site</translation>
+      <translation>El terreny base del lloc</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="523"/>
       <source>The street and house number of this site, with postal box or apartment number if needed</source>
-      <translation type="unfinished">The street and house number of this site, with postal box or apartment number if needed</translation>
+      <translation>El carrer i el número d'aquest lloc, amb el número de bústia o número d'apartament si és necessari</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="525"/>
       <source>The postal or zip code of this site</source>
-      <translation type="unfinished">The postal or zip code of this site</translation>
+      <translation>El codi postal del lloc</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="527"/>
       <source>The city of this site</source>
-      <translation type="unfinished">The city of this site</translation>
+      <translation>La ciutat del lloc</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="529"/>
       <source>The region, province or county of this site</source>
-      <translation type="unfinished">The region, province or county of this site</translation>
+      <translation>La regió, província o comptat del lloc</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="531"/>
       <source>The country of this site</source>
-      <translation type="unfinished">The country of this site</translation>
+      <translation>El país del lloc</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="533"/>
       <location filename="../../ArchSite.py" line="535"/>
       <source>The latitude of this site</source>
-      <translation type="unfinished">The latitude of this site</translation>
+      <translation>La latitud del lloc</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="537"/>
       <source>Angle between the true North and the North direction in this document</source>
-      <translation type="unfinished">Angle between the true North and the North direction in this document</translation>
+      <translation>Angle entre el nord geogràfic i el nord en aquest document</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="542"/>
       <source>The elevation of level 0 of this site</source>
-      <translation type="unfinished">The elevation of level 0 of this site</translation>
+      <translation>L'elevació del nivell 0 of this site</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="544"/>
       <source>A URL that shows this site in a mapping website</source>
-      <translation type="unfinished">A URL that shows this site in a mapping website</translation>
+      <translation>Un URL que mostra aquest lloc en un lloc web de cartografia</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="546"/>
       <location filename="../../ArchComponent.py" line="201"/>
       <source>Other shapes that are appended to this object</source>
-      <translation type="unfinished">Other shapes that are appended to this object</translation>
+      <translation>Altres formes que s'afegeixen a aquest objecte</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="548"/>
       <location filename="../../ArchComponent.py" line="203"/>
       <source>Other shapes that are subtracted from this object</source>
-      <translation type="unfinished">Other shapes that are subtracted from this object</translation>
+      <translation>Altres formes que són extretes d'aquest objecte</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="550"/>
       <location filename="../../ArchComponent.py" line="226"/>
       <source>The area of the projection of this object onto the XY plane</source>
-      <translation type="unfinished">The area of the projection of this object onto the XY plane</translation>
+      <translation>L'àrea de la projecció d'aquest objecte en el pla XY</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="552"/>
       <source>The perimeter length of the projected area</source>
-      <translation type="unfinished">The perimeter length of the projected area</translation>
+      <translation>La longitud del perímetre de l'àrea projectada</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="554"/>
       <source>The volume of earth to be added to this terrain</source>
-      <translation type="unfinished">The volume of earth to be added to this terrain</translation>
+      <translation>El volum de terra que s'afegeix al terreny</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="556"/>
       <source>The volume of earth to be removed from this terrain</source>
-      <translation type="unfinished">The volume of earth to be removed from this terrain</translation>
+      <translation>El volum de terra que se suprimeix del terreny</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="558"/>
       <source>An extrusion vector to use when performing boolean operations</source>
-      <translation type="unfinished">An extrusion vector to use when performing boolean operations</translation>
+      <translation>Un vector d'extrusió que s'utilitza quan es realitzen operacions booleanes</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="561"/>
       <source>Remove splitters from the resulting shape</source>
-      <translation type="unfinished">Remove splitters from the resulting shape</translation>
+      <translation>Suprimeix els separadors de la forma resultant</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="563"/>
       <source>An optional offset between the model (0,0,0) origin and the point indicated by the geocoordinates</source>
-      <translation type="unfinished">An optional offset between the model (0,0,0) origin and the point indicated by the geocoordinates</translation>
+      <translation>Un desplaçament opcional entre l'origen del model (0,0,0) i el punt indicat per les coordenades geogràfiques</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="567"/>
       <location filename="../../ArchIFC.py" line="70"/>
       <source>The type of this object</source>
-      <translation type="unfinished">The type of this object</translation>
+      <translation>El tipus d'aquest objecte</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="571"/>
       <source>The time zone where this site is located</source>
-      <translation type="unfinished">The time zone where this site is located</translation>
+      <translation>El fus horari on es troba aquest lloc</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="573"/>
       <source>An optional EPW File for the location of this site. Refer to the Site documentation to know how to obtain one</source>
-      <translation type="unfinished">An optional EPW File for the location of this site. Refer to the Site documentation to know how to obtain one</translation>
+      <translation>Un fitxer opcional EPW per a la localització d'aquest lloc. Busqueu a la pàgina de documentació per saber com obtenir una</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="777"/>
       <source>Show wind rose diagram or not. Uses solar diagram scale. Needs Ladybug module</source>
-      <translation type="unfinished">Show wind rose diagram or not. Uses solar diagram scale. Needs Ladybug module</translation>
+      <translation>Mostrar o ocultar La Rosa dels vents. Fa servir una escala del diagrama solar. Necessita el mòdul Ladybug</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="779"/>
       <source>Show solar diagram or not</source>
-      <translation type="unfinished">Show solar diagram or not</translation>
+      <translation>Mostra o no el diagrama solar</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="781"/>
       <source>The scale of the solar diagram</source>
-      <translation type="unfinished">The scale of the solar diagram</translation>
+      <translation>L'escala del diagrama solar</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="784"/>
       <source>The position of the solar diagram</source>
-      <translation type="unfinished">The position of the solar diagram</translation>
+      <translation>La posició del diagrama solar</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="786"/>
       <source>The color of the solar diagram</source>
-      <translation type="unfinished">The color of the solar diagram</translation>
+      <translation>El color del diagrama solar</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="790"/>
       <source>When set to 'True North' the whole geometry will be rotated to match the true north of this site</source>
-      <translation type="unfinished">When set to 'True North' the whole geometry will be rotated to match the true north of this site</translation>
+      <translation>Quan s'estableix com 'Nord vertader', tota la geometria gira per a coincidir amb el vertader nord d'aquest lloc</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="794"/>
       <source>Show compass or not</source>
-      <translation type="unfinished">Show compass or not</translation>
+      <translation>Mostra o no la brúixola</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="796"/>
       <source>The rotation of the Compass relative to the Site</source>
-      <translation type="unfinished">The rotation of the Compass relative to the Site</translation>
+      <translation>La rotació de la brúixola relativa al Lloc</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="798"/>
       <source>The position of the Compass relative to the Site placement</source>
-      <translation type="unfinished">The position of the Compass relative to the Site placement</translation>
+      <translation>La posició de la brúixola amb relació al posicionament del Lloc</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="800"/>
       <source>Update the Declination value based on the compass rotation</source>
-      <translation type="unfinished">Update the Declination value based on the compass rotation</translation>
+      <translation>Actualitza el valor de la declinació basat en el gir de la brúixola</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="162"/>
       <source>The list of angles of the roof segments</source>
-      <translation type="unfinished">The list of angles of the roof segments</translation>
+      <translation>La llista d'angles dels segments de la teulada</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="167"/>
       <source>The list of horizontal length projections of the roof segments</source>
-      <translation type="unfinished">The list of horizontal length projections of the roof segments</translation>
+      <translation>La llista de les longituts de les projeccions horitzontals dels segments de teulada</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="172"/>
       <source>The list of IDs of the relative profiles of the roof segments</source>
-      <translation type="unfinished">The list of IDs of the relative profiles of the roof segments</translation>
+      <translation>La llista dels IDs dels perfils relatius dels segments de teulada</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="177"/>
       <source>The list of thicknesses of the roof segments</source>
-      <translation type="unfinished">The list of thicknesses of the roof segments</translation>
+      <translation>La llista de gruixos dels segments de teulada</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="182"/>
       <source>The list of overhangs of the roof segments</source>
-      <translation type="unfinished">The list of overhangs of the roof segments</translation>
+      <translation>La llista de ràfecs dels segments de teulada</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="187"/>
       <source>The list of calculated heights of the roof segments</source>
-      <translation type="unfinished">The list of calculated heights of the roof segments</translation>
+      <translation>La llista d'alçades calculades dels segments de teulada</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="192"/>
@@ -6141,162 +6146,162 @@ S'avorta la creació de la construcció.</translation>
     <message>
       <location filename="../../ArchRoof.py" line="197"/>
       <source>The total length of the ridges and hips of the roof</source>
-      <translation type="unfinished">The total length of the ridges and hips of the roof</translation>
+      <translation>La longitud total dels cavallons i cavallons inclinats de la teulada</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="203"/>
       <source>The total length of the borders of the roof</source>
-      <translation type="unfinished">The total length of the borders of the roof</translation>
+      <translation>La longitud total de les vores de la teulada</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="209"/>
       <source>Specifies if the direction of the roof should be flipped</source>
-      <translation type="unfinished">Specifies if the direction of the roof should be flipped</translation>
+      <translation>Especifica si la direcció de la teulada hauria de ser invertida</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="214"/>
       <source>An optional object that defines a volume to be subtracted from walls. If field is set - it has a priority over auto-generated subvolume</source>
-      <translation type="unfinished">An optional object that defines a volume to be subtracted from walls. If field is set - it has a priority over auto-generated subvolume</translation>
+      <translation>Un objecte opcional que defineix un volum que s'ha de restar de les parets. Si el camp està definit, té prioritat sobre el subvolum generat automàticament</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="72"/>
       <source>The base file this component is built upon</source>
-      <translation type="unfinished">The base file this component is built upon</translation>
+      <translation>El fitxer base on aquest component està basat</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="75"/>
       <source>The part to use from the base file</source>
-      <translation type="unfinished">The part to use from the base file</translation>
+      <translation>La peça a utilitzar de l'arxiu base</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="78"/>
       <source>The way the referenced objects are included in the current document. 'Normal' includes the shape, 'Transient' discards the shape when the object is switched off (smaller filesize), 'Lightweight' does not import the shape but only the OpenInventor representation</source>
-      <translation type="unfinished">The way the referenced objects are included in the current document. 'Normal' includes the shape, 'Transient' discards the shape when the object is switched off (smaller filesize), 'Lightweight' does not import the shape but only the OpenInventor representation</translation>
+      <translation>La manera en què s'inclouen els objectes referenciats en el document actual. 'Normal' inclou la forma, 'Transitori' descarta la forma quan l'objecte està desactivat (mida de fitxer més petita), 'Lleuger' no importa la forma, només la representació d'OpenInventor</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="88"/>
       <source>Fuse objects of same material</source>
-      <translation type="unfinished">Fuse objects of same material</translation>
+      <translation>Unir objectes del mateix material</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="525"/>
       <source>The latest time stamp of the linked file</source>
-      <translation type="unfinished">The latest time stamp of the linked file</translation>
+      <translation>L'última marca de temps del fitxer enllaçat</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="529"/>
       <source>If true, the colors from the linked file will be kept updated</source>
-      <translation type="unfinished">If true, the colors from the linked file will be kept updated</translation>
+      <translation>Si és cert, els colors de l'arxiu enllaçat es mantindran actualitzats</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="65"/>
       <source>The profile used to build this frame</source>
-      <translation type="unfinished">The profile used to build this frame</translation>
+      <translation>El perfil utilitzat per construir aquest marc</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="67"/>
       <source>Specifies if the profile must be aligned with the extrusion wires</source>
-      <translation type="unfinished">Specifies if the profile must be aligned with the extrusion wires</translation>
+      <translation>Especifica si el perfil ha d'estar alineat amb els cables d'extrusió</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="70"/>
       <source>An offset vector between the base sketch and the frame</source>
-      <translation type="unfinished">An offset vector between the base sketch and the frame</translation>
+      <translation>Un vector d'equidistància entre la base de l'esbós i el marc</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="72"/>
       <source>Crossing point of the path on the profile.</source>
-      <translation type="unfinished">Crossing point of the path on the profile.</translation>
+      <translation>Punt d'encreuament del camí en el perfil.</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="74"/>
       <source>An optional additional placement to add to the profile before extruding it</source>
-      <translation type="unfinished">An optional additional placement to add to the profile before extruding it</translation>
+      <translation>Un emplaçament opcional addicional per a afegir al perfil abans d'extrudir-lo</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="76"/>
       <source>The rotation of the profile around its extrusion axis</source>
-      <translation type="unfinished">The rotation of the profile around its extrusion axis</translation>
+      <translation>La rotació del perfil al voltant de l'eix d'extrusió</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="78"/>
       <source>The type of edges to consider</source>
-      <translation type="unfinished">The type of edges to consider</translation>
+      <translation>El tipus d'arestes que cal tenir en compte</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="81"/>
       <source>If true, geometry is fused, otherwise a compound</source>
-      <translation type="unfinished">If true, geometry is fused, otherwise a compound</translation>
+      <translation>Si és cert, la geometria es fusiona, en cas contrari un compost</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="126"/>
       <source>The objects that host this window</source>
-      <translation type="unfinished">The objects that host this window</translation>
+      <translation>Els objectes que acull aquesta finestra</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="128"/>
       <source>The components of this window</source>
-      <translation type="unfinished">The components of this window</translation>
+      <translation>Els components d'aquesta finestra</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="131"/>
       <source>The depth of the hole that this window makes in its host object. If 0, the value will be calculated automatically.</source>
-      <translation type="unfinished">The depth of the hole that this window makes in its host object. If 0, the value will be calculated automatically.</translation>
+      <translation>La profunditat del forat que aquesta finestra fa al seu objecte amfitrió. Si és 0, el valor es calcularà automàticament.</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="133"/>
       <source>An optional object that defines a volume to be subtracted from hosts of this window</source>
-      <translation type="unfinished">An optional object that defines a volume to be subtracted from hosts of this window</translation>
+      <translation>Un objecte opcional que defineix un volum que s'ha de restar dels amfitrions de la finestra</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="135"/>
       <source>The width of this window</source>
-      <translation type="unfinished">The width of this window</translation>
+      <translation>L'amplada d'aquesta finestra</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="137"/>
       <source>The height of this window</source>
-      <translation type="unfinished">The height of this window</translation>
+      <translation>L'alçada d'aquesta finestra</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="139"/>
       <source>The normal direction of this window</source>
-      <translation type="unfinished">The normal direction of this window</translation>
+      <translation>La direcció normal de la finestra</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="141"/>
       <source>The preset number this window is based on</source>
-      <translation type="unfinished">The preset number this window is based on</translation>
+      <translation>El número preestablert amb què es basa aquesta finestra</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="144"/>
       <source>The frame size of this window</source>
-      <translation type="unfinished">The frame size of this window</translation>
+      <translation>La mida del marc d'aquesta finestra</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="146"/>
       <source>The offset size of this window</source>
-      <translation type="unfinished">The offset size of this window</translation>
+      <translation>La mida d'equidistància d'aquesta finestra</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="148"/>
       <source>The area of this window</source>
-      <translation type="unfinished">The area of this window</translation>
+      <translation>L'àrea de la finestra</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="150"/>
       <source>The width of louvre elements</source>
-      <translation type="unfinished">The width of louvre elements</translation>
+      <translation>L'amplada dels llistons de persiana</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="152"/>
       <source>The space between louvre elements</source>
-      <translation type="unfinished">The space between louvre elements</translation>
+      <translation>L'espaiat entre els llistons de persiana</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="154"/>
       <source>Opens the subcomponents that have a hinge defined</source>
-      <translation type="unfinished">Opens the subcomponents that have a hinge defined</translation>
+      <translation>Obra els subcomponents que tenen una frontissa definida</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="156"/>
@@ -6306,12 +6311,12 @@ S'avorta la creació de la construcció.</translation>
     <message>
       <location filename="../../ArchWindow.py" line="158"/>
       <source>Shows plan opening symbols if available</source>
-      <translation type="unfinished">Shows plan opening symbols if available</translation>
+      <translation>Mostra els símbols d'obertura de la planta, si està disponible</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="160"/>
       <source>Show elevation opening symbols if available</source>
-      <translation type="unfinished">Show elevation opening symbols if available</translation>
+      <translation>Mostra els símbols d'obertura de l'elevació, si està disponible</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1112"/>
@@ -6321,12 +6326,12 @@ S'avorta la creació de la construcció.</translation>
     <message>
       <location filename="../../ArchAxisSystem.py" line="64"/>
       <source>The axes this system is made of</source>
-      <translation type="unfinished">The axes this system is made of</translation>
+      <translation>Els eixos que formen aquest sistema</translation>
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="66"/>
       <source>The placement of this axis system</source>
-      <translation type="unfinished">The placement of this axis system</translation>
+      <translation>La posició del sistema d'eixos</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="70"/>
@@ -6356,12 +6361,12 @@ S'avorta la creació de la construcció.</translation>
     <message>
       <location filename="../../ArchTruss.py" line="90"/>
       <source>An optional start offset for the top strut</source>
-      <translation type="unfinished">An optional start offset for the top strut</translation>
+      <translation>Una separació inicial opcional per al puntal superior</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="93"/>
       <source>An optional end offset for the top strut</source>
-      <translation type="unfinished">An optional end offset for the top strut</translation>
+      <translation>Una separació final opcional per al puntal superior</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="96"/>
@@ -6381,12 +6386,12 @@ S'avorta la creació de la construcció.</translation>
     <message>
       <location filename="../../ArchTruss.py" line="108"/>
       <source>The direction of the rods</source>
-      <translation type="unfinished">The direction of the rods</translation>
+      <translation>La direcció de les barres</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="112"/>
       <source>The diameter or side of the rods</source>
-      <translation type="unfinished">The diameter or side of the rods</translation>
+      <translation>El diàmetre o el costat de les barres</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="116"/>
@@ -6396,118 +6401,118 @@ S'avorta la creació de la construcció.</translation>
     <message>
       <location filename="../../ArchTruss.py" line="120"/>
       <source>If the truss has a rod at its endpoint or not</source>
-      <translation type="unfinished">If the truss has a rod at its endpoint or not</translation>
+      <translation>Indica si l'encavallada té una barra en el seu extrem o no</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="123"/>
       <source>How to draw the rods</source>
-      <translation type="unfinished">How to draw the rods</translation>
+      <translation>Com dibuixar les barres</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="73"/>
       <source>The length of these stairs, if no baseline is defined</source>
-      <translation type="unfinished">The length of these stairs, if no baseline is defined</translation>
+      <translation>La longitud de l'escala, si no s'ha definit cap línia de base</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="75"/>
       <source>The width of these stairs</source>
-      <translation type="unfinished">The width of these stairs</translation>
+      <translation>L'amplada de l'escala</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="77"/>
       <source>The total height of these stairs</source>
-      <translation type="unfinished">The total height of these stairs</translation>
+      <translation>L'alçada total de l'escala</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="79"/>
       <source>The alignment of these stairs on their baseline, if applicable</source>
-      <translation type="unfinished">The alignment of these stairs on their baseline, if applicable</translation>
+      <translation>L'alineació de l'escala sobre la seva línia de base, si correspon</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="84"/>
       <source>The width of a Landing (Second edge and after - First edge follows Width property)</source>
-      <translation type="unfinished">The width of a Landing (Second edge and after - First edge follows Width property)</translation>
+      <translation>L'amplada d'un replà (segona aresta i següents - La primera aresta segueix la propietat d'amplada)</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="89"/>
       <source>The number of risers in these stairs</source>
-      <translation type="unfinished">The number of risers in these stairs</translation>
+      <translation>El nombre de contrapetges de l'escala</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="91"/>
       <source>The depth of the treads of these stairs</source>
-      <translation type="unfinished">The depth of the treads of these stairs</translation>
+      <translation>La profunditat de les esteses de l'escala</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="94"/>
       <source>The height of the risers of these stairs</source>
-      <translation type="unfinished">The height of the risers of these stairs</translation>
+      <translation>L'alçada de les contrapetges de l'escala</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="97"/>
       <source>The size of the nosing</source>
-      <translation type="unfinished">The size of the nosing</translation>
+      <translation>La mida del nas d'esglaó</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="99"/>
       <source>The thickness of the treads</source>
-      <translation type="unfinished">The thickness of the treads</translation>
+      <translation>El gruix de les esteses</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="101"/>
       <source>The Blondel ratio indicates comfortable stairs and should be between 62 and 64cm or 24.5 and 25.5in</source>
-      <translation type="unfinished">The Blondel ratio indicates comfortable stairs and should be between 62 and 64cm or 24.5 and 25.5in</translation>
+      <translation>La proporció Blondel indica escales còmodes i ha d'estar entre 62 i 64 cm o 24.5 i 25.5 polzades</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="105"/>
       <source>The thickness of the risers</source>
-      <translation type="unfinished">The thickness of the risers</translation>
+      <translation>El gruix de les contrapetges</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="108"/>
       <source>The depth of the landing of these stairs</source>
-      <translation type="unfinished">The depth of the landing of these stairs</translation>
+      <translation>La profunditat del replà d'aquestes escales</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="111"/>
       <source>The depth of the treads of these stairs - Enforced regardless of Length or edge's Length</source>
-      <translation type="unfinished">The depth of the treads of these stairs - Enforced regardless of Length or edge's Length</translation>
+      <translation>La profunditat de l'estesa de les escales - Reforçada independentment de la longitud o de la longitud de l'aresta</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="113"/>
       <source>The height of the risers of these stairs - Enforced regardless of Height or edge's Height</source>
-      <translation type="unfinished">The height of the risers of these stairs - Enforced regardless of Height or edge's Height</translation>
+      <translation>L'alçada de la contrapetja de les escales - Reforçada independentment de l'alçada o de l'alçada de l'aresta</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="116"/>
       <source>The direction of flight after landing</source>
-      <translation type="unfinished">The direction of flight after landing</translation>
+      <translation>La direcció d'un tram d'escala després d'un replà</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="123"/>
       <source>The 'absolute' top level of a flight of stairs leads to</source>
-      <translation type="unfinished">The 'absolute' top level of a flight of stairs leads to</translation>
+      <translation>El nivell superior 'absolut' del tram de les escales condueix a</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="126"/>
       <location filename="../../ArchStairs.py" line="129"/>
       <source>The 'left outline' of stairs</source>
-      <translation type="unfinished">The 'left outline' of stairs</translation>
+      <translation>El 'contorn esquerre' de les escales</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="150"/>
       <source>The 'left outline' of all segments of stairs</source>
-      <translation type="unfinished">The 'left outline' of all segments of stairs</translation>
+      <translation>El 'contorn esquerre' de tots els segments de les escales</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="153"/>
       <source>The 'right outline' of all segments of stairs</source>
-      <translation type="unfinished">The 'right outline' of all segments of stairs</translation>
+      <translation>El 'contorn dret' de tots els segments de les escales</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="179"/>
       <source>The type of landings of these stairs</source>
-      <translation type="unfinished">The type of landings of these stairs</translation>
+      <translation>El tipus de replà de l'escala</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="182"/>
@@ -6517,94 +6522,94 @@ S'avorta la creació de la construcció.</translation>
     <message>
       <location filename="../../ArchStairs.py" line="185"/>
       <source>The type of structure of these stairs</source>
-      <translation type="unfinished">The type of structure of these stairs</translation>
+      <translation>El tipus d'estructura de l'escala</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="188"/>
       <source>The thickness of the massive structure or of the stringers</source>
-      <translation type="unfinished">The thickness of the massive structure or of the stringers</translation>
+      <translation>El gruix de l'estructura massiva o dels travessers</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="190"/>
       <source>The width of the stringers</source>
-      <translation type="unfinished">The width of the stringers</translation>
+      <translation>L'amplada dels travessers</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="192"/>
       <source>The offset between the border of the stairs and the structure</source>
-      <translation type="unfinished">The offset between the border of the stairs and the structure</translation>
+      <translation>La distància entre la vora de l'escala i l'estructura</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="194"/>
       <location filename="../../ArchStairs.py" line="935"/>
       <source>The overlap of the stringers above the bottom of the treads</source>
-      <translation type="unfinished">The overlap of the stringers above the bottom of the treads</translation>
+      <translation>La superposició dels travessers d'escala sobre la part inferior de les esteses</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="196"/>
       <source>The thickness of the lower floor slab</source>
-      <translation type="unfinished">The thickness of the lower floor slab</translation>
+      <translation>El gruix de la llosa del pis inferior</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="198"/>
       <source>The thickness of the upper floor slab</source>
-      <translation type="unfinished">The thickness of the upper floor slab</translation>
+      <translation>El gruix de la llosa del pis superior</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="200"/>
       <source>The type of connection between the lower floor slab and the start of the stairs</source>
-      <translation type="unfinished">The type of connection between the lower floor slab and the start of the stairs</translation>
+      <translation>El tipus de connexió entre la llosa del pis inferior i l'inici de les escales</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="203"/>
       <source>The type of connection between the end of the stairs and the upper floor slab</source>
-      <translation type="unfinished">The type of connection between the end of the stairs and the upper floor slab</translation>
+      <translation>El tipus de connexió entre el final de les escales i la llosa del pis superior</translation>
     </message>
     <message>
       <location filename="../../ArchFence.py" line="62"/>
       <source>A single section of the fence</source>
-      <translation type="unfinished">A single section of the fence</translation>
+      <translation>Una única secció de tanca</translation>
     </message>
     <message>
       <location filename="../../ArchFence.py" line="66"/>
       <source>A single fence post</source>
-      <translation type="unfinished">A single fence post</translation>
+      <translation>Un únic pal de la tanca</translation>
     </message>
     <message>
       <location filename="../../ArchFence.py" line="70"/>
       <source>The Path the fence should follow</source>
-      <translation type="unfinished">The Path the fence should follow</translation>
+      <translation>El camí que ha de seguir la tanca</translation>
     </message>
     <message>
       <location filename="../../ArchFence.py" line="74"/>
       <source>The number of sections the fence is built of</source>
-      <translation type="unfinished">The number of sections the fence is built of</translation>
+      <translation>El nombre de seccions amb què es construeix la tanca</translation>
     </message>
     <message>
       <location filename="../../ArchFence.py" line="79"/>
       <source>The number of posts used to build the fence</source>
-      <translation type="unfinished">The number of posts used to build the fence</translation>
+      <translation>El nombre de pals utilitzats per a construir la tanca</translation>
     </message>
     <message>
       <location filename="../../ArchFence.py" line="263"/>
       <source>When true, the fence will be colored like the original post and section.</source>
-      <translation type="unfinished">When true, the fence will be colored like the original post and section.</translation>
+      <translation>Si és cert, la tanca s'acolorirà com el pal i la secció originals.</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="164"/>
       <location filename="../../ArchMaterial.py" line="618"/>
       <source>A description for this material</source>
-      <translation type="unfinished">A description for this material</translation>
+      <translation>Una descripció d'aquest material</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="168"/>
       <source>A URL where to find information about this material</source>
-      <translation type="unfinished">A URL where to find information about this material</translation>
+      <translation>La URL on trobar informació sobre aquest material</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="170"/>
       <source>The transparency value of this material</source>
-      <translation type="unfinished">The transparency value of this material</translation>
+      <translation>El valor de transparència d'aquest material</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="172"/>
@@ -6614,27 +6619,27 @@ S'avorta la creació de la construcció.</translation>
     <message>
       <location filename="../../ArchMaterial.py" line="174"/>
       <source>The color of this material when cut</source>
-      <translation type="unfinished">The color of this material when cut</translation>
+      <translation>El color d'aquest material quan s'escapça</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="619"/>
       <source>The list of layer names</source>
-      <translation type="unfinished">The list of layer names</translation>
+      <translation>La llista dels noms de capa</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="620"/>
       <source>The list of layer materials</source>
-      <translation type="unfinished">The list of layer materials</translation>
+      <translation>La llista dels materials de capa</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="621"/>
       <source>The list of layer thicknesses</source>
-      <translation type="unfinished">The list of layer thicknesses</translation>
+      <translation>La llista dels gruixos de capa</translation>
     </message>
     <message>
       <location filename="../../ArchIFC.py" line="67"/>
       <source>IFC data</source>
-      <translation type="unfinished">IFC data</translation>
+      <translation>Dades IFC</translation>
     </message>
     <message>
       <location filename="../../ArchIFC.py" line="74"/>
@@ -6646,71 +6651,71 @@ S'avorta la creació de la construcció.</translation>
       <location filename="../../ArchIFC.py" line="290"/>
       <location filename="../../ArchIFC.py" line="297"/>
       <source>Description of IFC attributes are not yet implemented</source>
-      <translation type="unfinished">Description of IFC attributes are not yet implemented</translation>
+      <translation>No s'ha implementat encara la descripció dels atributs IFC</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="64"/>
       <source>The length of this element</source>
-      <translation type="unfinished">The length of this element</translation>
+      <translation>La longitud d'aquest element</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="66"/>
       <source>The width of this element</source>
-      <translation type="unfinished">The width of this element</translation>
+      <translation>L'amplada d'aquest element</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="68"/>
       <source>The height of this element</source>
-      <translation type="unfinished">The height of this element</translation>
+      <translation>L'alçada d'aquest element</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="98"/>
       <location filename="../../ArchPrecast.py" line="286"/>
       <location filename="../../ArchPrecast.py" line="427"/>
       <source>The size of the chamfer of this element</source>
-      <translation type="unfinished">The size of the chamfer of this element</translation>
+      <translation>La mida del xamfrà d'aquest element</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="100"/>
       <source>The dent length of this element</source>
-      <translation type="unfinished">The dent length of this element</translation>
+      <translation>La longitud de l'aleta d'aquest element</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="102"/>
       <location filename="../../ArchPrecast.py" line="431"/>
       <source>The dent height of this element</source>
-      <translation type="unfinished">The dent height of this element</translation>
+      <translation>L'alçada de l'aleta d'aquest element</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="104"/>
       <location filename="../../ArchPrecast.py" line="296"/>
       <source>The dents of this element</source>
-      <translation type="unfinished">The dents of this element</translation>
+      <translation>Les aletes d'aquest element</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="220"/>
       <source>The chamfer length of this element</source>
-      <translation type="unfinished">The chamfer length of this element</translation>
+      <translation>La longitud del xamfrà d'aquest element</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="222"/>
       <source>The base length of this element</source>
-      <translation type="unfinished">The base length of this element</translation>
+      <translation>La longitud de base d'aquest element</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="288"/>
       <source>The groove depth of this element</source>
-      <translation type="unfinished">The groove depth of this element</translation>
+      <translation>La profunditat de la ranura d'aquest element</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="290"/>
       <source>The groove height of this element</source>
-      <translation type="unfinished">The groove height of this element</translation>
+      <translation>L'alçada de la ranura d'aquest element</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="292"/>
       <source>The spacing between the grooves of this element</source>
-      <translation type="unfinished">The spacing between the grooves of this element</translation>
+      <translation>L'espaiat entre les ranures d'aquest element</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="294"/>
@@ -6720,17 +6725,17 @@ S'avorta la creació de la construcció.</translation>
     <message>
       <location filename="../../ArchPrecast.py" line="429"/>
       <source>The dent width of this element</source>
-      <translation type="unfinished">The dent width of this element</translation>
+      <translation>L'amplada de l'aleta d'aquest element</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="538"/>
       <source>The type of this slab</source>
-      <translation type="unfinished">The type of this slab</translation>
+      <translation>El tipus de llosa</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="541"/>
       <source>The size of the base of this element</source>
-      <translation type="unfinished">The size of the base of this element</translation>
+      <translation>La mida de la base d'aquest element</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="543"/>
@@ -6740,22 +6745,22 @@ S'avorta la creació de la construcció.</translation>
     <message>
       <location filename="../../ArchPrecast.py" line="545"/>
       <source>The major radius of the holes of this element</source>
-      <translation type="unfinished">The major radius of the holes of this element</translation>
+      <translation>El radi major dels forats d'aquest element</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="547"/>
       <source>The minor radius of the holes of this element</source>
-      <translation type="unfinished">The minor radius of the holes of this element</translation>
+      <translation>El radi menor dels forats d'aquest element</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="549"/>
       <source>The spacing between the holes of this element</source>
-      <translation type="unfinished">The spacing between the holes of this element</translation>
+      <translation>L'espaiat entre els forats d'aquest element</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="649"/>
       <source>The length of the down floor of this element</source>
-      <translation type="unfinished">The length of the down floor of this element</translation>
+      <translation>La longitud de la planta baixa d'aquest element</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="651"/>
@@ -6765,17 +6770,17 @@ S'avorta la creació de la construcció.</translation>
     <message>
       <location filename="../../ArchPrecast.py" line="653"/>
       <source>The riser height of this element</source>
-      <translation type="unfinished">The riser height of this element</translation>
+      <translation>L'alçada de la contrapetja d'aquest element</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="655"/>
       <source>The tread depth of this element</source>
-      <translation type="unfinished">The tread depth of this element</translation>
+      <translation>La profunditat de l'estesa d'aquest element</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="77"/>
       <source>The thickness or extrusion depth of this element</source>
-      <translation type="unfinished">The thickness or extrusion depth of this element</translation>
+      <translation>El gruix o profunditat d'extrusió d'aquest element</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="79"/>
@@ -6785,70 +6790,70 @@ S'avorta la creació de la construcció.</translation>
     <message>
       <location filename="../../ArchPanel.py" line="82"/>
       <source>The offset between this panel and its baseline</source>
-      <translation type="unfinished">The offset between this panel and its baseline</translation>
+      <translation>L'equidistància entre aquest tauler i la seva línia base</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="84"/>
       <source>The length of waves for corrugated elements</source>
-      <translation type="unfinished">The length of waves for corrugated elements</translation>
+      <translation>La longitud de les ones per als elements corrugats</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="86"/>
       <source>The height of waves for corrugated elements</source>
-      <translation type="unfinished">The height of waves for corrugated elements</translation>
+      <translation>L'alçada de les ones per als elements corrugats</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="88"/>
       <source>The horizontal offset of waves for corrugated elements</source>
-      <translation type="unfinished">The horizontal offset of waves for corrugated elements</translation>
+      <translation>L'equidistància horitzontal de les ones per a elements corrugats</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="90"/>
       <source>The direction of waves for corrugated elements</source>
-      <translation type="unfinished">The direction of waves for corrugated elements</translation>
+      <translation>La direcció de les ones per als elements corrugats</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="92"/>
       <source>The type of waves for corrugated elements</source>
-      <translation type="unfinished">The type of waves for corrugated elements</translation>
+      <translation>El tipus d'ones per als elements corrugats</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="95"/>
       <source>If the wave also affects the bottom side or not</source>
-      <translation type="unfinished">If the wave also affects the bottom side or not</translation>
+      <translation>Si l'ona també afecta la a part inferior o no</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="97"/>
       <source>The area of this panel</source>
-      <translation type="unfinished">The area of this panel</translation>
+      <translation>L'àrea d'aquest tauler</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="504"/>
       <source>The linked object</source>
-      <translation type="unfinished">The linked object</translation>
+      <translation>L'objecte enllaçat</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="509"/>
       <location filename="../../ArchPanel.py" line="789"/>
       <source>The size of the tag text</source>
-      <translation type="unfinished">The size of the tag text</translation>
+      <translation>La mida del text de l'etiqueta</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="516"/>
       <location filename="../../ArchPanel.py" line="796"/>
       <source>The font of the tag text</source>
-      <translation type="unfinished">The font of the tag text</translation>
+      <translation>La tipografia del text de l'etiqueta</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="506"/>
       <source>The text to display. Can be %tag%, %label% or %description% to display the panel tag or label</source>
-      <translation type="unfinished">The text to display. Can be %tag%, %label% or %description% to display the panel tag or label</translation>
+      <translation>El text que s'ha de mostrar. Pot ser %tag%, %label% o %description% per a mostrar l'etiqueta del tauler o l'etiqueta</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="512"/>
       <location filename="../../ArchPanel.py" line="792"/>
       <source>The position of the tag text. Keep (0,0,0) for center position</source>
-      <translation type="unfinished">The position of the tag text. Keep (0,0,0) for center position</translation>
+      <translation>La posició del text de l'etiqueta. Deixeu (0,0,0) per a la posició central</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="514"/>
@@ -6860,84 +6865,84 @@ S'avorta la creació de la construcció.</translation>
       <location filename="../../ArchPanel.py" line="519"/>
       <location filename="../../ArchPanel.py" line="808"/>
       <source>If True, the object is rendered as a face, if possible.</source>
-      <translation type="unfinished">If True, the object is rendered as a face, if possible.</translation>
+      <translation>Si és Cert, l'objecte es renderitza com a cara, si és possible.</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="521"/>
       <source>The allowed angles this object can be rotated to when placed on sheets</source>
-      <translation type="unfinished">The allowed angles this object can be rotated to when placed on sheets</translation>
+      <translation>Els angles permesos per a girar aquest objecte quan es col·loca en fulls</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="524"/>
       <source>An offset value to move the cut plane from the center point</source>
-      <translation type="unfinished">An offset value to move the cut plane from the center point</translation>
+      <translation>Un valor d'equidistància per moure el pla de tall des del punt central</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="697"/>
       <location filename="../../ArchPanel.py" line="960"/>
       <source>A margin inside the boundary</source>
-      <translation type="unfinished">A margin inside the boundary</translation>
+      <translation>Un marge dins del límit</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="699"/>
       <location filename="../../ArchPanel.py" line="962"/>
       <source>Turns the display of the margin on/off</source>
-      <translation type="unfinished">Turns the display of the margin on/off</translation>
+      <translation>Activa o desactiva la visualització del marge</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="785"/>
       <source>The linked Panel cuts</source>
-      <translation type="unfinished">The linked Panel cuts</translation>
+      <translation>Els talls del tauler enllaçat</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="787"/>
       <source>The tag text to display</source>
-      <translation type="unfinished">The tag text to display</translation>
+      <translation>El text de l'etiqueta que s'ha de mostrar</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="799"/>
       <source>The width of the sheet</source>
-      <translation type="unfinished">The width of the sheet</translation>
+      <translation>L'amplada del full</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="802"/>
       <source>The height of the sheet</source>
-      <translation type="unfinished">The height of the sheet</translation>
+      <translation>L'alçada del full</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="805"/>
       <source>The fill ratio of this sheet</source>
-      <translation type="unfinished">The fill ratio of this sheet</translation>
+      <translation>La relació d'emplenament d'aquest full</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="810"/>
       <source>Specifies an angle for the wood grain (Clockwise, 0 is North)</source>
-      <translation type="unfinished">Specifies an angle for the wood grain (Clockwise, 0 is North)</translation>
+      <translation>Especifica un angle per a la veta (sentit horari, 0 és nord)</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="812"/>
       <source>Specifies the scale applied to each panel view.</source>
-      <translation type="unfinished">Specifies the scale applied to each panel view.</translation>
+      <translation>Especifica l'escala aplicada a cada vista de tauler.</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="815"/>
       <source>A list of possible rotations for the nester</source>
-      <translation type="unfinished">A list of possible rotations for the nester</translation>
+      <translation>Una llista de les possibles rotacions per a l'operació d'imbricació</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="964"/>
       <source>Turns the display of the wood grain texture on/off</source>
-      <translation type="unfinished">Turns the display of the wood grain texture on/off</translation>
+      <translation>Activa/desactiva la visualització de la textura de veta</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="90"/>
       <source>An optional host object for this curtain wall</source>
-      <translation type="unfinished">An optional host object for this curtain wall</translation>
+      <translation>Un objecte amfitrió opcional per aquest mur cortina</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="93"/>
       <source>The height of the curtain wall, if based on an edge</source>
-      <translation type="unfinished">The height of the curtain wall, if based on an edge</translation>
+      <translation>L'alçada del mur cortina, si és basat en una vora</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="97"/>
@@ -6947,102 +6952,102 @@ S'avorta la creació de la construcció.</translation>
     <message>
       <location filename="../../ArchCurtainWall.py" line="101"/>
       <source>If the profile of the vertical mullions get aligned with the surface or not</source>
-      <translation type="unfinished">If the profile of the vertical mullions get aligned with the surface or not</translation>
+      <translation>Indica si el perfil dels mainells verticals s'alinea o no amb la superfície</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="104"/>
       <source>The number of vertical sections of this curtain wall</source>
-      <translation type="unfinished">The number of vertical sections of this curtain wall</translation>
+      <translation>El nombre de seccions verticals d'aquest mur cortina</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="112"/>
       <source>The height of the vertical mullions profile, if no profile is used</source>
-      <translation type="unfinished">The height of the vertical mullions profile, if no profile is used</translation>
+      <translation>L'alçada del perfil dels mainells verticals, si cap perfil és emprat</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="116"/>
       <source>The width of the vertical mullions profile, if no profile is used</source>
-      <translation type="unfinished">The width of the vertical mullions profile, if no profile is used</translation>
+      <translation>L'amplada del perfil dels mainells verticals, si cap perfil és emprat</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="120"/>
       <source>A profile for vertical mullions (disables vertical mullion size)</source>
-      <translation type="unfinished">A profile for vertical mullions (disables vertical mullion size)</translation>
+      <translation>Un perfil per als mainells verticals (desactiva la mida dels mainells verticals)</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="123"/>
       <source>The number of horizontal mullions</source>
-      <translation type="unfinished">The number of horizontal mullions</translation>
+      <translation>El nombre de mainells horitzontals</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="127"/>
       <source>If the profile of the horizontal mullions gets aligned with the surface or not</source>
-      <translation type="unfinished">If the profile of the horizontal mullions gets aligned with the surface or not</translation>
+      <translation>Indica si el perfil dels mainells horitzontals s'alinea o no amb la superfície</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="130"/>
       <source>The number of horizontal sections of this curtain wall</source>
-      <translation type="unfinished">The number of horizontal sections of this curtain wall</translation>
+      <translation>El nombre de seccions horitzontals d'aquest mur cortina</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="138"/>
       <source>The height of the horizontal mullions profile, if no profile is used</source>
-      <translation type="unfinished">The height of the horizontal mullions profile, if no profile is used</translation>
+      <translation>L'alçada del perfil dels mainells horitzontals, si cap perfil és emprat</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="142"/>
       <source>The width of the horizontal mullions profile, if no profile is used</source>
-      <translation type="unfinished">The width of the horizontal mullions profile, if no profile is used</translation>
+      <translation>L'amplada del perfil dels mainells horitzontals, si cap perfil és emprat</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="146"/>
       <source>A profile for horizontal mullions (disables horizontal mullion size)</source>
-      <translation type="unfinished">A profile for horizontal mullions (disables horizontal mullion size)</translation>
+      <translation>Un perfil per als mainells horitzontals (desactiva la mida dels mainells horitzontals)</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="149"/>
       <source>The number of diagonal mullions</source>
-      <translation type="unfinished">The number of diagonal mullions</translation>
+      <translation>El nombre de mainells diagonals</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="153"/>
       <source>The size of the diagonal mullions, if any, if no profile is used</source>
-      <translation type="unfinished">The size of the diagonal mullions, if any, if no profile is used</translation>
+      <translation>La mida dels mainells diagonals, si no s'utilitza cap perfil</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="157"/>
       <source>A profile for diagonal mullions, if any (disables horizontal mullion size)</source>
-      <translation type="unfinished">A profile for diagonal mullions, if any (disables horizontal mullion size)</translation>
+      <translation>Un perfil per als mainells diagonals, si n'hi ha (desactiva la mida dels mainells horitzontals)</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="160"/>
       <source>The number of panels</source>
-      <translation type="unfinished">The number of panels</translation>
+      <translation>El nombre de panells</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="164"/>
       <source>The thickness of the panels</source>
-      <translation type="unfinished">The thickness of the panels</translation>
+      <translation>El gruix dels panells</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="168"/>
       <source>Swaps horizontal and vertical lines</source>
-      <translation type="unfinished">Swaps horizontal and vertical lines</translation>
+      <translation>Intercanvia les línies verticals i horitzontals</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="171"/>
       <source>Perform subtractions between components so none overlap</source>
-      <translation type="unfinished">Perform subtractions between components so none overlap</translation>
+      <translation>Realitza restes entre components perquè no se superposin</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="174"/>
       <source>Centers the profile over the edges or not</source>
-      <translation type="unfinished">Centers the profile over the edges or not</translation>
+      <translation>Centra el perfil sobre les vores o no</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="178"/>
       <source>The vertical direction reference to be used by this object to deduce vertical/horizontal directions. Keep it close to the actual vertical direction of your curtain wall</source>
-      <translation type="unfinished">The vertical direction reference to be used by this object to deduce vertical/horizontal directions. Keep it close to the actual vertical direction of your curtain wall</translation>
+      <translation>La referència de direcció vertical que ha d'utilitzar aquest objecte per a deduir les direccions verticals/horitzontals. Manteniu-ho prop de la direcció vertical real del mur cortina</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="181"/>
@@ -7052,102 +7057,102 @@ S'avorta la creació de la construcció.</translation>
     <message>
       <location filename="../../ArchPipe.py" line="74"/>
       <source>The diameter of this pipe, if not based on a profile</source>
-      <translation type="unfinished">The diameter of this pipe, if not based on a profile</translation>
+      <translation>El diàmetre d'aquest tub, si no està basat en un perfil</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="76"/>
       <source>The width of this pipe, if not based on a profile</source>
-      <translation type="unfinished">The width of this pipe, if not based on a profile</translation>
+      <translation>L'amplada d'aquest tub, si no està basat en un perfil</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="79"/>
       <source>The height of this pipe, if not based on a profile</source>
-      <translation type="unfinished">The height of this pipe, if not based on a profile</translation>
+      <translation>L'alçada d'aquest tub, si no està basat en un perfil</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="82"/>
       <source>The length of this pipe, if not based on an edge</source>
-      <translation type="unfinished">The length of this pipe, if not based on an edge</translation>
+      <translation>La longitud d'aquest tub, si no està basada en una vora</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="84"/>
       <source>An optional closed profile to base this pipe on</source>
-      <translation type="unfinished">An optional closed profile to base this pipe on</translation>
+      <translation>Un perfil tancat opcional sobre el qual es basa aquest tub</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="86"/>
       <source>Offset from the start point</source>
-      <translation type="unfinished">Offset from the start point</translation>
+      <translation>Equidistància des del punt d'inici</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="88"/>
       <source>Offset from the end point</source>
-      <translation type="unfinished">Offset from the end point</translation>
+      <translation>Equidistància des del punt final</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="90"/>
       <source>The wall thickness of this pipe, if not based on a profile</source>
-      <translation type="unfinished">The wall thickness of this pipe, if not based on a profile</translation>
+      <translation>El gruix de la paret d'aquest tub, si no està basat en un perfil</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="92"/>
       <source>If not based on a profile, this controls the profile of this pipe</source>
-      <translation type="unfinished">If not based on a profile, this controls the profile of this pipe</translation>
+      <translation>Si no està basat en un perfil, això controla el perfil d'aquest tub</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="284"/>
       <source>The curvature radius of this connector</source>
-      <translation type="unfinished">The curvature radius of this connector</translation>
+      <translation>El radi de curvatura d'aquest connector</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="286"/>
       <source>The pipes linked by this connector</source>
-      <translation type="unfinished">The pipes linked by this connector</translation>
+      <translation>Els tubs enllaçats per aquest connector</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="288"/>
       <source>The type of this connector</source>
-      <translation type="unfinished">The type of this connector</translation>
+      <translation>El tipus d'aquest connector</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="104"/>
       <source>The description column</source>
-      <translation type="unfinished">The description column</translation>
+      <translation>La columna de descripció</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="106"/>
       <source>The values column</source>
-      <translation type="unfinished">The values column</translation>
+      <translation>La columna de valors</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="108"/>
       <source>The units column</source>
-      <translation type="unfinished">The units column</translation>
+      <translation>La columna d'unitats</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="110"/>
       <source>The objects column</source>
-      <translation type="unfinished">The objects column</translation>
+      <translation>La columna d'objectes</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="112"/>
       <source>The filter column</source>
-      <translation type="unfinished">The filter column</translation>
+      <translation>La columna de filtre</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="114"/>
       <source>If True, a spreadsheet containing the results is recreated when needed</source>
-      <translation type="unfinished">If True, a spreadsheet containing the results is recreated when needed</translation>
+      <translation>Si és cert, recrea, quan és necessari, un full de càlcul que conté els resultats</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="118"/>
       <source>If True, the schedule and the associated spreadsheet are updated whenever the document is recomputed</source>
-      <translation type="unfinished">If True, the schedule and the associated spreadsheet are updated whenever the document is recomputed</translation>
+      <translation>Si és Cert, el guió i full de càlcul associat s'actualitzen quan el document es recalcula</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="130"/>
       <source>The BIM Schedule that uses this spreadsheet</source>
-      <translation type="unfinished">The BIM Schedule that uses this spreadsheet</translation>
+      <translation>El guió BIM que utilitza aquest full de càlcul</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="116"/>
@@ -7158,242 +7163,242 @@ S'avorta la creació de la construcció.</translation>
       <location filename="../../ArchFloor.py" line="214"/>
       <location filename="../../ArchSectionPlane.py" line="812"/>
       <source>The placement of this object</source>
-      <translation type="unfinished">The placement of this object</translation>
+      <translation>El posicionament d'aquest objecte</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="70"/>
       <source>The intervals between axes</source>
-      <translation type="unfinished">The intervals between axes</translation>
+      <translation>Els intervals entre eixos</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="72"/>
       <source>The angles of each axis</source>
-      <translation type="unfinished">The angles of each axis</translation>
+      <translation>Els angles de cada eix</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="74"/>
       <source>The label of each axis</source>
-      <translation type="unfinished">The label of each axis</translation>
+      <translation>L'etiqueta de cada eix</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="76"/>
       <source>An optional custom bubble number</source>
-      <translation type="unfinished">An optional custom bubble number</translation>
+      <translation>Un número opcional de bombolla personalitzat</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="78"/>
       <source>The length of the axes</source>
-      <translation type="unfinished">The length of the axes</translation>
+      <translation>La longitud dels eixos</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="85"/>
       <source>If not zero, the axes are not represented as one full line but as two lines of the given length</source>
-      <translation type="unfinished">If not zero, the axes are not represented as one full line but as two lines of the given length</translation>
+      <translation>Si no és zero, els eixos no es representaran com a una línia, sinó com a dues línies amb la longitud donada</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="177"/>
       <source>The size of the axis bubbles</source>
-      <translation type="unfinished">The size of the axis bubbles</translation>
+      <translation>La mida de les bambolles d'eix</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="180"/>
       <source>The numbering style</source>
-      <translation type="unfinished">The numbering style</translation>
+      <translation>L'estil de numeració</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="184"/>
       <source>The type of line to draw this axis</source>
-      <translation type="unfinished">The type of line to draw this axis</translation>
+      <translation>El tipus de línia per dibuixar aquest eix</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="188"/>
       <source>Where to add bubbles to this axis: Start, end, both or none</source>
-      <translation type="unfinished">Where to add bubbles to this axis: Start, end, both or none</translation>
+      <translation>On afegir bombolles a l'eix: Principi, final, ambdós o cap</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="191"/>
       <source>The line width to draw this axis</source>
-      <translation type="unfinished">The line width to draw this axis</translation>
+      <translation>El gruix de la línia per dibuixar aquest eix</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="194"/>
       <source>The color of this axis</source>
-      <translation type="unfinished">The color of this axis</translation>
+      <translation>El color d'aquest eix</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="197"/>
       <source>The number of the first axis</source>
-      <translation type="unfinished">The number of the first axis</translation>
+      <translation>El número del primer eix</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="200"/>
       <source>The font to use for texts</source>
-      <translation type="unfinished">The font to use for texts</translation>
+      <translation>La tipografia a utilitzar pels texts</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="203"/>
       <source>The font size</source>
-      <translation type="unfinished">The font size</translation>
+      <translation>La mida de la tipografia</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="206"/>
       <source>If true, show the labels</source>
-      <translation type="unfinished">If true, show the labels</translation>
+      <translation>Si és cert, mostra les etiquetes</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="208"/>
       <source>A transformation to apply to each label</source>
-      <translation type="unfinished">A transformation to apply to each label</translation>
+      <translation>Una transformació que s'aplica a cada etiqueta</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="197"/>
       <source>The base object this component is built upon</source>
-      <translation type="unfinished">The base object this component is built upon</translation>
+      <translation>L'objecte base sobre el qual es construeix aquest component</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="199"/>
       <source>The object this component is cloning</source>
-      <translation type="unfinished">The object this component is cloning</translation>
+      <translation>L'objecte que aquest component clona</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="209"/>
       <source>An optional standard (OmniClass, etc...) code for this component</source>
-      <translation type="unfinished">An optional standard (OmniClass, etc...) code for this component</translation>
+      <translation>Un codi estàndard opcional (OmniClass, etc) per a aquest component</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="211"/>
       <source>A material for this object</source>
-      <translation type="unfinished">A material for this object</translation>
+      <translation>Un material per a aquest objecte</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="217"/>
       <source>Specifies if moving this object moves its base instead</source>
-      <translation type="unfinished">Specifies if moving this object moves its base instead</translation>
+      <translation>Especifica si en moure aquest objecte, es mou la seva base en el seu lloc</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="220"/>
       <source>Specifies if this object must move together when its host is moved</source>
-      <translation type="unfinished">Specifies if this object must move together when its host is moved</translation>
+      <translation>Especifica si aquest objecte s'ha de moure juntament amb el seu amfitrió, quan aquest es mou</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="223"/>
       <source>The area of all vertical faces of this object</source>
-      <translation type="unfinished">The area of all vertical faces of this object</translation>
+      <translation>L'àrea de totes les cares verticals d'aquest objecte</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="229"/>
       <source>The perimeter length of the horizontal area</source>
-      <translation type="unfinished">The perimeter length of the horizontal area</translation>
+      <translation>La longitud del perímetre de l'àrea horitzontal</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="232"/>
       <source>An optional higher-resolution mesh or shape for this object</source>
-      <translation type="unfinished">An optional higher-resolution mesh or shape for this object</translation>
+      <translation>Una malla o forma opcional en alta resolució per a aquest objecte</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="234"/>
       <source>An optional axis or axis system on which this object should be duplicated</source>
-      <translation type="unfinished">An optional axis or axis system on which this object should be duplicated</translation>
+      <translation>Un eix o sistema d'eixos opcional sobre el qual s'ha de duplicar aquest objecte</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1182"/>
       <source>Use the material color as this object's shape color, if available</source>
-      <translation type="unfinished">Use the material color as this object's shape color, if available</translation>
+      <translation>Utilitza el color del material com a color de la forma d’aquest objecte, si està disponible</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="73"/>
       <source>The diameter of the bar</source>
-      <translation type="unfinished">The diameter of the bar</translation>
+      <translation>El diàmetre de la barra</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="75"/>
       <source>The distance between the border of the beam and the first bar (concrete cover).</source>
-      <translation type="unfinished">The distance between the border of the beam and the first bar (concrete cover).</translation>
+      <translation>La distància entre la vora de la biga i la primera barra (coberta de formigó).</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="77"/>
       <source>The distance between the border of the beam and the last bar (concrete cover).</source>
-      <translation type="unfinished">The distance between the border of the beam and the last bar (concrete cover).</translation>
+      <translation>La distància entre la vora de la biga i l'última barra (coberta de formigó).</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="79"/>
       <source>The amount of bars</source>
-      <translation type="unfinished">The amount of bars</translation>
+      <translation>La quantitat de barres</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="81"/>
       <source>The spacing between the bars</source>
-      <translation type="unfinished">The spacing between the bars</translation>
+      <translation>L'espaiat entre les barres</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="84"/>
       <source>The total distance to span the rebars over. Keep 0 to automatically use the host shape size.</source>
-      <translation type="unfinished">The total distance to span the rebars over. Keep 0 to automatically use the host shape size.</translation>
+      <translation>La distància total per a estendre les armadures per damunt. Manteniu 0 per a utilitzar automàticament la mida de la forma amfitrió.</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="86"/>
       <source>The direction to use to spread the bars. Keep (0,0,0) for automatic direction.</source>
-      <translation type="unfinished">The direction to use to spread the bars. Keep (0,0,0) for automatic direction.</translation>
+      <translation>La direcció que s'ha d'utilitzar per a estendre les barres. Mantingueu (0,0,0) per a una direcció automàtica.</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="88"/>
       <source>The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter.</source>
-      <translation type="unfinished">The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter.</translation>
+      <translation>El cantell que s'ha d'aplicar a l'angle del perfil de base. Aquest valor es multiplica pel diàmetre de la barra.</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="90"/>
       <source>List of placement of all the bars</source>
-      <translation type="unfinished">List of placement of all the bars</translation>
+      <translation>Llista del posicionament de totes les barres</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="92"/>
       <source>The structure object that hosts this rebar</source>
-      <translation type="unfinished">The structure object that hosts this rebar</translation>
+      <translation>L'objecte estructura que allotja aquesta armadura</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="94"/>
       <source>The custom spacing of rebar</source>
-      <translation type="unfinished">The custom spacing of rebar</translation>
+      <translation>L'espaiat personalitzat de l'armadura</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="96"/>
       <source>Length of a single rebar</source>
-      <translation type="unfinished">Length of a single rebar</translation>
+      <translation>Longitud d'una única armadura</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="99"/>
       <source>Total length of all rebars</source>
-      <translation type="unfinished">Total length of all rebars</translation>
+      <translation>Longitud total de totes les armadures</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="106"/>
       <source>The rebar mark</source>
-      <translation type="unfinished">The rebar mark</translation>
+      <translation>La marca d'armadura</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="400"/>
       <source>Shape of rebar</source>
-      <translation type="unfinished">Shape of rebar</translation>
+      <translation>Forma de l'armadura</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="816"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
-      <translation type="unfinished">The objects that must be considered by this section plane. Empty means the whole document.</translation>
+      <translation>Els objectes que han de ser considerats amb aquest pla de secció. Buit significa tot el document.</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="818"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
-      <translation type="unfinished">If false, non-solids will be cut too, with possible wrong results.</translation>
+      <translation>Si és fals, els objectes no sòlids també es tallaran, amb possibles resultats erronis.</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="821"/>
       <source>If True, resulting views will be clipped to the section plane area.</source>
-      <translation type="unfinished">If True, resulting views will be clipped to the section plane area.</translation>
+      <translation>Si és cert, les vistes que en resulten es retallaran en la zona del pla de la secció.</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="823"/>
       <source>If true, the color of the objects material will be used to fill cut areas.</source>
-      <translation type="unfinished">If true, the color of the objects material will be used to fill cut areas.</translation>
+      <translation>Si és cert, el color del material dels objectes s'utilitzarà per a emplenar les zones retallades.</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="826"/>
@@ -7445,13 +7450,13 @@ S'avorta la creació de la construcció.</translation>
       <location filename="../../ArchSectionPlane.py" line="918"/>
       <location filename="../../ArchSpace.py" line="454"/>
       <source>The name of the font</source>
-      <translation type="unfinished">The name of the font</translation>
+      <translation>El nom de la tipografia</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="921"/>
       <location filename="../../ArchSpace.py" line="460"/>
       <source>The size of the text font</source>
-      <translation type="unfinished">The size of the text font</translation>
+      <translation>La mida de la tipografia del text</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="220"/>
@@ -7566,7 +7571,7 @@ S'avorta la creació de la construcció.</translation>
     <message>
       <location filename="../../ArchSpace.py" line="478"/>
       <source>Show the unit suffix</source>
-      <translation type="unfinished">Show the unit suffix</translation>
+      <translation>Mostra el sufix de la unitat</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="160"/>
@@ -7626,12 +7631,12 @@ S'avorta la creació de la construcció.</translation>
     <message>
       <location filename="../../ArchWall.py" line="195"/>
       <source>The length of each block</source>
-      <translation type="unfinished">The length of each block</translation>
+      <translation>La longitud de cada bloc</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="197"/>
       <source>The height of each block</source>
-      <translation type="unfinished">The height of each block</translation>
+      <translation>L'alçada de cada bloc</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="199"/>
@@ -9500,7 +9505,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <translation type="unfinished">2D Views</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="280"/>
+      <location filename="../../bimcommands/BimViews.py" line="281"/>
       <source>Sheets</source>
       <translation type="unfinished">Sheets</translation>
     </message>
@@ -10676,7 +10681,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../ui/dialogSetup.ui" line="283"/>
       <source>Default font</source>
-      <translation type="unfinished">Default font</translation>
+      <translation>Tipografia predeterminada</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="574"/>

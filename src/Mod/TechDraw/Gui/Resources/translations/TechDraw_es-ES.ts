@@ -82,7 +82,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1788"/>
       <source>Insert 3-Point Angle Dimension</source>
-      <translation>Insertar Cota Angular de 3 Puntos</translation>
+      <translation>Insertar cota angular de 3 puntos</translation>
     </message>
   </context>
   <context>
@@ -108,7 +108,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1741"/>
       <source>Insert Angle Dimension</source>
-      <translation>Insertar Cota Angular</translation>
+      <translation>Insertar cota angular</translation>
     </message>
   </context>
   <context>
@@ -518,12 +518,12 @@ Al hacer clic izquierdo en el espacio vacío validará la cota actual. Al hacer 
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2185"/>
       <source>Create Horizontal Chamfer Dimension</source>
-      <translation>Crear dimensión de chaflán horizontal</translation>
+      <translation>Crear cota de chaflán horizontal</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2186"/>
       <source>Create a horizontal size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</source>
-      <translation>Crear un tamaño horizontal y una dimensión de ángulo para un chaflán:&lt;br&gt;- Seleccione dos vértices&lt;br&gt;- Haga clic en esta herramienta</translation>
+      <translation>Crear un tamaño horizontal y una cota de ángulo para un chaflán:&lt;br&gt;- Seleccione dos vértices&lt;br&gt;- Haga clic en esta herramienta</translation>
     </message>
   </context>
   <context>
@@ -649,13 +649,13 @@ Al hacer clic izquierdo en el espacio vacío validará la cota actual. Al hacer 
       <location filename="../../CommandExtensionDims.cpp" line="2083"/>
       <location filename="../../CommandExtensionDims.cpp" line="2252"/>
       <source>Create Horizontal Chamfer Dimension</source>
-      <translation>Crear dimensión de chaflán horizontal</translation>
+      <translation>Crear cota de chaflán horizontal</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2084"/>
       <location filename="../../CommandExtensionDims.cpp" line="2253"/>
       <source>Create a horizontal size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</source>
-      <translation>Crear un tamaño horizontal y una dimensión de ángulo para un chaflán:&lt;br&gt;- Seleccione dos vértices&lt;br&gt;- Haga clic en esta herramienta</translation>
+      <translation>Crear un tamaño horizontal y una cota de ángulo para un chaflán:&lt;br&gt;- Seleccione dos vértices&lt;br&gt;- Haga clic en esta herramienta</translation>
     </message>
   </context>
   <context>
@@ -688,7 +688,7 @@ Al hacer clic izquierdo en el espacio vacío validará la cota actual. Al hacer 
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2285"/>
       <source>Create Arc Length Dimension</source>
-      <translation>Crear dimensión de longitud del arco</translation>
+      <translation>Crear cota de longitud del arco</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2286"/>
@@ -713,7 +713,7 @@ Al hacer clic izquierdo en el espacio vacío validará la cota actual. Al hacer 
       <location filename="../../CommandExtensionDims.cpp" line="1500"/>
       <location filename="../../CommandExtensionDims.cpp" line="1622"/>
       <source>Create a sequence of aligned oblique dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The first two vertexes define the direction&lt;br&gt;- Click this tool</source>
-      <translation>Crear una secuencia de dimensiones oblicuas alineadas:&lt;br&gt;- Seleccione tres o más vértices&lt;br&gt;- Los dos primeros vértices definen la dirección&lt;br&gt;- Haga clic en esta herramienta</translation>
+      <translation>Crear una secuencia de cotas oblicuas alineadas:&lt;br&gt;- Seleccione tres o más vértices&lt;br&gt;- Los dos primeros vértices definen la dirección&lt;br&gt;- Haga clic en esta herramienta</translation>
     </message>
   </context>
   <context>
@@ -733,7 +733,7 @@ Al hacer clic izquierdo en el espacio vacío validará la cota actual. Al hacer 
       <location filename="../../CommandExtensionDims.cpp" line="1889"/>
       <location filename="../../CommandExtensionDims.cpp" line="2019"/>
       <source>Create multiple evenly spaced oblique dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- The first two vertexes also define the direction&lt;br&gt;- Click this tool</source>
-      <translation>Crear múltiples dimensiones oblicuas con espacio uniforme a partir de la misma línea de base:&lt;br&gt;- Especifica el espaciado en cascada (opcional)&lt;br&gt;- Seleccione tres o más vértices&lt;br&gt;- El orden de selección de los dos primeros vértices determina la posición de la línea de base&lt;br&gt;- Los dos primeros vértices también definen la dirección&lt;br&gt;- Haga clic en esta herramienta</translation>
+      <translation>Crear múltiples cotas oblicuas con espacio uniforme a partir de la misma línea de base:&lt;br&gt;- Especifica el espaciado en cascada (opcional)&lt;br&gt;- Seleccione tres o más vértices&lt;br&gt;- El orden de selección de los dos primeros vértices determina la posición de la línea de base&lt;br&gt;- Los dos primeros vértices también definen la dirección&lt;br&gt;- Haga clic en esta herramienta</translation>
     </message>
   </context>
   <context>
@@ -831,7 +831,7 @@ Al hacer clic izquierdo en el espacio vacío validará la cota actual. Al hacer 
       <location filename="../../CommandExtensionDims.cpp" line="505"/>
       <location filename="../../CommandExtensionDims.cpp" line="612"/>
       <source>Decrease the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation>Reducir el número de lugares decimales del texto de la cota:&lt;br&gt;- Seleccione una o más dimensiones&lt;br&gt;- Haga clic en esta herramienta</translation>
+      <translation>Reducir el número de lugares decimales del texto de la cota:&lt;br&gt;- Seleccione una o más cotas&lt;br&gt;- Haga clic en esta herramienta</translation>
     </message>
   </context>
   <context>
@@ -973,7 +973,7 @@ Al hacer clic izquierdo en el espacio vacío validará la cota actual. Al hacer 
       <location filename="../../CommandExtensionDims.cpp" line="472"/>
       <location filename="../../CommandExtensionDims.cpp" line="605"/>
       <source>Increase the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation>Aumentar el número de lugares decimales del texto de la cota:&lt;br&gt;- Seleccione una o más dimensiones&lt;br&gt;- Haga clic en esta herramienta</translation>
+      <translation>Aumentar el número de lugares decimales del texto de la cota:&lt;br&gt;- Seleccione una o más cotas&lt;br&gt;- Haga clic en esta herramienta</translation>
     </message>
   </context>
   <context>
@@ -991,7 +991,7 @@ Al hacer clic izquierdo en el espacio vacío validará la cota actual. Al hacer 
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="538"/>
       <source>Increase the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation>Aumentar el número de lugares decimales del texto de la cota:&lt;br&gt;- Seleccione una o más dimensiones&lt;br&gt;- Haga clic en esta herramienta</translation>
+      <translation>Aumentar el número de lugares decimales del texto de la cota:&lt;br&gt;- Seleccione una o más cotas&lt;br&gt;- Haga clic en esta herramienta</translation>
     </message>
   </context>
   <context>
@@ -1011,7 +1011,7 @@ Al hacer clic izquierdo en el espacio vacío validará la cota actual. Al hacer 
       <location filename="../../CommandExtensionDims.cpp" line="157"/>
       <location filename="../../CommandExtensionDims.cpp" line="396"/>
       <source>Insert a &apos;⌀&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation>Inserta un símbolo &apos;⌀&apos; al principio del texto de la cota:&lt;br&gt;- Seleccione una o más dimensiones&lt;br&gt;- Haga clic en esta herramienta</translation>
+      <translation>Inserta un símbolo &apos;⌀&apos; al principio del texto de la cota:&lt;br&gt;- Seleccione una o más cotas&lt;br&gt;- Haga clic en esta herramienta</translation>
     </message>
   </context>
   <context>
@@ -1029,7 +1029,7 @@ Al hacer clic izquierdo en el espacio vacío validará la cota actual. Al hacer 
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="315"/>
       <source>Insert a &apos;⌀&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation>Inserta un símbolo &apos;⌀&apos; al principio del texto de la cota:&lt;br&gt;- Seleccione una o más dimensiones&lt;br&gt;- Haga clic en esta herramienta</translation>
+      <translation>Inserta un símbolo &apos;⌀&apos; al principio del texto de la cota:&lt;br&gt;- Seleccione una o más cotas&lt;br&gt;- Haga clic en esta herramienta</translation>
     </message>
   </context>
   <context>
@@ -1049,7 +1049,7 @@ Al hacer clic izquierdo en el espacio vacío validará la cota actual. Al hacer 
       <location filename="../../CommandExtensionDims.cpp" line="190"/>
       <location filename="../../CommandExtensionDims.cpp" line="403"/>
       <source>Insert a &apos;□&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation>Inserta un símbolo &apos;□&apos; al principio del texto de la cota:&lt;br&gt;- Seleccione una o más dimensiones&lt;br&gt;- Haga clic en esta herramienta</translation>
+      <translation>Inserta un símbolo &apos;□&apos; al principio del texto de la cota:&lt;br&gt;- Seleccione una o más cotas&lt;br&gt;- Haga clic en esta herramienta</translation>
     </message>
   </context>
   <context>
@@ -1143,7 +1143,7 @@ Al hacer clic izquierdo en el espacio vacío validará la cota actual. Al hacer 
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="829"/>
       <source>Align horizontal dimensions to create a chain dimension:&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation>Alinear las dimensiones horizontales para crear una cadena de cota:&lt;br&gt;- Seleccione dos o más dimensiones horizontales&lt;br&gt;- La primera dimensión define la posición&lt;br&gt;- Haga clic en esta herramienta</translation>
+      <translation>Alinear las cotas horizontales para crear una cadena de cota:&lt;br&gt;- Seleccione dos o más cotas horizontales&lt;br&gt;- La primera cota define la posición&lt;br&gt;- Haga clic en esta herramienta</translation>
     </message>
   </context>
   <context>
@@ -1163,7 +1163,7 @@ Al hacer clic izquierdo en el espacio vacío validará la cota actual. Al hacer 
       <location filename="../../CommandExtensionDims.cpp" line="665"/>
       <location filename="../../CommandExtensionDims.cpp" line="904"/>
       <source>Align horizontal dimensions to create a chain dimension:&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation>Alinear las dimensiones horizontales para crear una cadena de cota:&lt;br&gt;- Seleccione dos o más dimensiones horizontales&lt;br&gt;- La primera dimensión define la posición&lt;br&gt;- Haga clic en esta herramienta</translation>
+      <translation>Alinear las cotas horizontales para crear una cadena de cota:&lt;br&gt;- Seleccione dos o más cotas horizontales&lt;br&gt;- La primera cota define la posición&lt;br&gt;- Haga clic en esta herramienta</translation>
     </message>
   </context>
   <context>
@@ -1183,7 +1183,7 @@ Al hacer clic izquierdo en el espacio vacío validará la cota actual. Al hacer 
       <location filename="../../CommandExtensionDims.cpp" line="794"/>
       <location filename="../../CommandExtensionDims.cpp" line="920"/>
       <source>Align oblique dimensions to create a chain dimension:&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation>Alinear las dimensiones oblicuas para crear una cadena de cota:&lt;br&gt;- Seleccione dos o más dimensiones oblicuas paralelas&lt;br&gt;- La primera dimensión define la posición&lt;br&gt;- Haga clic en esta herramienta</translation>
+      <translation>Alinear las cotas oblicuas para crear una cadena de cota:&lt;br&gt;- Seleccione dos o más cotas oblicuas paralelas&lt;br&gt;- La primera cota define la posición&lt;br&gt;- Haga clic en esta herramienta</translation>
     </message>
   </context>
   <context>
@@ -1203,7 +1203,7 @@ Al hacer clic izquierdo en el espacio vacío validará la cota actual. Al hacer 
       <location filename="../../CommandExtensionDims.cpp" line="727"/>
       <location filename="../../CommandExtensionDims.cpp" line="912"/>
       <source>Align vertical dimensions to create a chain dimension:&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation>Alinear las dimensiones verticales para crear una cadena de cota:&lt;br&gt;- Seleccione dos o más dimensiones verticales&lt;br&gt;- La primera dimensión define la posición&lt;br&gt;- Haga clic en esta herramienta</translation>
+      <translation>Alinear las cotas verticales para crear una cadena de cota:&lt;br&gt;- Seleccione dos o más cotas verticales&lt;br&gt;- La primera cota define la posición&lt;br&gt;- Haga clic en esta herramienta</translation>
     </message>
   </context>
   <context>
@@ -1221,7 +1221,7 @@ Al hacer clic izquierdo en el espacio vacío validará la cota actual. Al hacer 
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="282"/>
       <source>Remove prefix symbols at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation>Eliminar los símbolos de prefijos al principio del texto de la cota:&lt;br&gt;- Seleccione una o más dimensiones&lt;br&gt;- Haga clic en esta herramienta</translation>
+      <translation>Eliminar los símbolos de prefijos al principio del texto de la cota:&lt;br&gt;- Seleccione una o más cotas&lt;br&gt;- Haga clic en esta herramienta</translation>
     </message>
   </context>
   <context>
@@ -2231,7 +2231,7 @@ Sin una selección, un explorador de archivos le permite seleccionar un archivo 
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2307"/>
-      <location filename="../../CommandCreateDims.cpp" line="2473"/>
+      <location filename="../../CommandCreateDims.cpp" line="2472"/>
       <source>Create Dimension</source>
       <translation>Crear Cota</translation>
     </message>
@@ -2262,7 +2262,7 @@ Sin una selección, un explorador de archivos le permite seleccionar un archivo 
       <translation>Crear imagen</translation>
     </message>
     <message>
-      <location filename="../../QGIViewBalloon.cpp" line="500"/>
+      <location filename="../../QGIViewBalloon.cpp" line="510"/>
       <source>Drag Balloon</source>
       <translation>Arrastrar Globo</translation>
     </message>
@@ -2272,7 +2272,7 @@ Sin una selección, un explorador de archivos le permite seleccionar un archivo 
       <translation>Arrastrar Cota</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="570"/>
+      <location filename="../../QGSPage.cpp" line="598"/>
       <source>Create Balloon</source>
       <translation>Crear Globo</translation>
     </message>
@@ -2999,9 +2999,9 @@ Sin una selección, un explorador de archivos le permite seleccionar un archivo 
       <location filename="../../CommandCreateDims.cpp" line="2093"/>
       <location filename="../../CommandCreateDims.cpp" line="2108"/>
       <location filename="../../CommandCreateDims.cpp" line="2387"/>
-      <location filename="../../CommandCreateDims.cpp" line="2551"/>
-      <location filename="../../CommandCreateDims.cpp" line="2559"/>
-      <location filename="../../CommandCreateDims.cpp" line="2568"/>
+      <location filename="../../CommandCreateDims.cpp" line="2550"/>
+      <location filename="../../CommandCreateDims.cpp" line="2558"/>
+      <location filename="../../CommandCreateDims.cpp" line="2567"/>
       <location filename="../../Command.cpp" line="1180"/>
       <location filename="../../Command.cpp" line="1187"/>
       <location filename="../../Command.cpp" line="1195"/>
@@ -3012,19 +3012,19 @@ Sin una selección, un explorador de archivos le permite seleccionar un archivo 
       <translation>Selección incorrecta</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2552"/>
+      <location filename="../../CommandCreateDims.cpp" line="2551"/>
       <location filename="../../Command.cpp" line="1181"/>
       <source>Select an object first</source>
       <translation>Seleccione un objeto en primer lugar</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2560"/>
+      <location filename="../../CommandCreateDims.cpp" line="2559"/>
       <location filename="../../Command.cpp" line="1188"/>
       <source>Too many objects selected</source>
       <translation>Demasiados objetos seleccionados</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2569"/>
+      <location filename="../../CommandCreateDims.cpp" line="2568"/>
       <location filename="../../Command.cpp" line="1196"/>
       <source>Create a page first.</source>
       <translation>Cree una página de dibujo primero.</translation>
@@ -3113,12 +3113,12 @@ Sin una selección, un explorador de archivos le permite seleccionar un archivo 
       <translation>La página contiene DrawViewArch que no será exportada. ¿Desea continuar?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2433"/>
+      <location filename="../../CommandCreateDims.cpp" line="2432"/>
       <source>Ellipse Curve Warning</source>
       <translation>Advertencia de curva de ellipse</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2444"/>
+      <location filename="../../CommandCreateDims.cpp" line="2443"/>
       <source>BSpline Curve Warning</source>
       <translation>Aviso de Curva BSpline</translation>
     </message>
@@ -3130,8 +3130,8 @@ Sin una selección, un explorador de archivos le permite seleccionar un archivo 
       <location filename="../../CommandCreateDims.cpp" line="2133"/>
       <location filename="../../CommandCreateDims.cpp" line="2148"/>
       <location filename="../../CommandCreateDims.cpp" line="2226"/>
-      <location filename="../../CommandCreateDims.cpp" line="2403"/>
-      <location filename="../../CommandCreateDims.cpp" line="2419"/>
+      <location filename="../../CommandCreateDims.cpp" line="2402"/>
+      <location filename="../../CommandCreateDims.cpp" line="2418"/>
       <location filename="../../TaskDimRepair.cpp" line="125"/>
       <location filename="../../TaskDimRepair.cpp" line="137"/>
       <location filename="../../TaskDimRepair.cpp" line="148"/>
@@ -3140,7 +3140,7 @@ Sin una selección, un explorador de archivos le permite seleccionar un archivo 
       <translation>Selección incorrecta</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2455"/>
+      <location filename="../../CommandCreateDims.cpp" line="2454"/>
       <source>BSpline Curve Error</source>
       <translation>Error de curva BSpline</translation>
     </message>
@@ -3152,40 +3152,40 @@ Sin una selección, un explorador de archivos le permite seleccionar un archivo 
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2134"/>
       <source>Can not make 2d extent dimension from selection</source>
-      <translation>No se puede hacer una dimensión de extensión 2D a partir de la selección</translation>
+      <translation>No se puede hacer una cota de extensión 2D a partir de la selección</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2149"/>
       <source>Can not make 3d extent dimension from selection</source>
-      <translation>No se puede hacer una dimensión de extensión 3D a partir de la selección</translation>
+      <translation>No se puede hacer una cota de extensión 3D a partir de la selección</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2227"/>
       <source>There is no Dimension in your selection</source>
-      <translation>No hay ninguna dimensión en su selección</translation>
+      <translation>No hay ninguna cota en su selección</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2404"/>
+      <location filename="../../CommandCreateDims.cpp" line="2403"/>
       <source>Can not make 2D dimension from selection</source>
       <translation>No se puede hacer la cota 2D de la selección</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2420"/>
+      <location filename="../../CommandCreateDims.cpp" line="2419"/>
       <source>Can not make 3D dimension from selection</source>
       <translation>No se puede hacer la cota 3D de la selección</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2434"/>
+      <location filename="../../CommandCreateDims.cpp" line="2433"/>
       <source>Selected edge is an Ellipse. Value will be approximate. Continue?</source>
       <translation>El borde seleccionado es un Ellipse. El valor será aproximado. ¿Continuar?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2445"/>
+      <location filename="../../CommandCreateDims.cpp" line="2444"/>
       <source>Selected edge is a B-spline. Value will be approximate. Continue?</source>
       <translation>El borde seleccionado es una B-Spline. El valor será aproximado. ¿Continuar?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2456"/>
+      <location filename="../../CommandCreateDims.cpp" line="2455"/>
       <source>Selected edge is a B-spline and a radius/diameter can not be calculated.</source>
       <translation>El borde seleccionado es una B-Spline y un radio/diámetro no puede ser calculado.</translation>
     </message>
@@ -3337,8 +3337,8 @@ Sin una selección, un explorador de archivos le permite seleccionar un archivo 
       <location filename="../../CommandAnnotate.cpp" line="1254"/>
       <location filename="../../CommandAnnotate.cpp" line="1428"/>
       <location filename="../../CommandAnnotate.cpp" line="1435"/>
-      <location filename="../../CommandAnnotate.cpp" line="1711"/>
-      <location filename="../../CommandAnnotate.cpp" line="1724"/>
+      <location filename="../../CommandAnnotate.cpp" line="1712"/>
+      <location filename="../../CommandAnnotate.cpp" line="1725"/>
       <source>Wrong Selection</source>
       <translation>Selección Incorrecta</translation>
     </message>
@@ -3472,22 +3472,22 @@ Sin una selección, un explorador de archivos le permite seleccionar un archivo 
       <translation>Seleccione exactamente una Línea de referencia o un símbolo de Soldadura.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1638"/>
+      <location filename="../../CommandAnnotate.cpp" line="1639"/>
       <source>SurfaceFinishSymbols</source>
       <translation>SímbolosdeAcabadoSuperficial</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1639"/>
+      <location filename="../../CommandAnnotate.cpp" line="1640"/>
       <source>Selected object is not a part view, nor a leader line</source>
       <translation>El objeto seleccionado no es parte de una vista, menos una línea de referencia</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1712"/>
+      <location filename="../../CommandAnnotate.cpp" line="1713"/>
       <source>No Part View in Selection</source>
       <translation>No hay Vista de parte en la selección</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1725"/>
+      <location filename="../../CommandAnnotate.cpp" line="1726"/>
       <source>No %1 in Selection</source>
       <translation>No hay %1 en la selección</translation>
     </message>
@@ -3746,7 +3746,7 @@ Sin una selección, un explorador de archivos le permite seleccionar un archivo 
       <location filename="../../CommandExtensionDims.cpp" line="633"/>
       <location filename="../../CommandExtensionDims.cpp" line="642"/>
       <source>TechDraw PosHorizChainDimension</source>
-      <translation>Dimensión de la cadena Horizontal TechDraw</translation>
+      <translation>TechDraw Cota en cadena Horizontal </translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="643"/>
@@ -3758,7 +3758,7 @@ Sin una selección, un explorador de archivos le permite seleccionar un archivo 
       <location filename="../../CommandExtensionDims.cpp" line="694"/>
       <location filename="../../CommandExtensionDims.cpp" line="703"/>
       <source>TechDraw PosVertChainDimension</source>
-      <translation>Dimensión de la cadena Vertical TechDraw</translation>
+      <translation>TechDraw Cota en cadena Vertical</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="704"/>
@@ -3770,7 +3770,7 @@ Sin una selección, un explorador de archivos le permite seleccionar un archivo 
       <location filename="../../CommandExtensionDims.cpp" line="756"/>
       <location filename="../../CommandExtensionDims.cpp" line="765"/>
       <source>TechDraw PosObliqueChainDimension</source>
-      <translation>Dimensión de la cadena Oblicua TechDraw</translation>
+      <translation>TechDraw Cota en cadena Oblicua</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="766"/>
@@ -3782,19 +3782,19 @@ Sin una selección, un explorador de archivos le permite seleccionar un archivo 
       <location filename="../../CommandExtensionDims.cpp" line="942"/>
       <location filename="../../CommandExtensionDims.cpp" line="951"/>
       <source>TechDraw CascadeHorizDimension</source>
-      <translation>Dimensiones en cascada horizontal TechDraw</translation>
+      <translation>TechDraw Cota en cascada Horizontal </translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1008"/>
       <location filename="../../CommandExtensionDims.cpp" line="1017"/>
       <source>TechDraw CascadeVertDimension</source>
-      <translation>Dimensión en cascada vertical TechDraw</translation>
+      <translation>TechDraw Cota en cascada Vertical </translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1075"/>
       <location filename="../../CommandExtensionDims.cpp" line="1084"/>
       <source>TechDraw CascadeObliqueDimension</source>
-      <translation>Dimensión en cascada oblicua TechDraw</translation>
+      <translation>TechDraw Cota en cascada Oblicua </translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1274"/>
@@ -3974,7 +3974,7 @@ Sin una selección, un explorador de archivos le permite seleccionar un archivo 
     <message>
       <location filename="../../TaskDimRepair.cpp" line="67"/>
       <source>Dimension Repair</source>
-      <translation>Reparación de dimensión</translation>
+      <translation>Reparación de cota</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="126"/>
@@ -3984,12 +3984,12 @@ Sin una selección, un explorador de archivos le permite seleccionar un archivo 
     <message>
       <location filename="../../TaskDimRepair.cpp" line="138"/>
       <source>Can not make a dimension from selection</source>
-      <translation>No se puede hacer una dimensión a partir de la selección.</translation>
+      <translation>No se puede hacer una cota a partir de la selección</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="149"/>
       <source>Can not make dimension from selection</source>
-      <translation>No se puede hacer la dimensión de la selección</translation>
+      <translation>No se puede hacer una cota de la selección</translation>
     </message>
     <message>
       <location filename="../../AppTechDrawGui.cpp" line="171"/>
@@ -4023,12 +4023,12 @@ Sin una selección, un explorador de archivos le permite seleccionar un archivo 
       <translation>Nombre del documento:</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="170"/>
+      <location filename="../../TaskProjGroup.cpp" line="181"/>
       <source>Projection Group</source>
       <translation>Grupo de proyección</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="180"/>
+      <location filename="../../TaskProjGroup.cpp" line="191"/>
       <source>Part View</source>
       <translation>Vista de parte</translation>
     </message>
@@ -4324,7 +4324,7 @@ en el pliegue de la línea de referencia</translation>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="260"/>
       <source>Offsets the lower symbol to indicate alternating welds</source>
-      <translation>Desplaza el símbolo inferior para indicar soldaduras alternantes</translation>
+      <translation>Desfasa el símbolo inferior para indicar soldaduras alternantes</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="263"/>
@@ -4478,7 +4478,7 @@ Cada unidad tiene aproximadamente 0.1 mm de ancho</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="350"/>
       <source>If checked, system will attempt to automatically correct dimension references when the model changes.</source>
-      <translation>Si está marcado, el sistema intentará corregir automáticamente las referencias de dimensión cuando el modelo cambie.</translation>
+      <translation>Si está marcado, el sistema intentará corregir automáticamente las referencias de cotas cuando el modelo cambie.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="356"/>
@@ -4542,7 +4542,72 @@ Por tanto, necesitará aumentar el límite de recuadros.</translation>
       <translation>Número de pasadas para eliminar superposiciones de aristas</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="455"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="449"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Some combinations of OS and Navigation style key bindings may conflict with the default modifier keys for Ballon dragging and View snapping override.  You can make adjustments here to find a non-conflicting key binding.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Some combinations of OS and Navigation style key bindings may conflict with the default modifier keys for Ballon dragging and View snapping override.  You can make adjustments here to find a non-conflicting key binding.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="452"/>
+      <source>Behaviour Overrides</source>
+      <translation type="unfinished">Behaviour Overrides</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="460"/>
+      <source>Check this box to use the default modifier keys.  Uncheck this box to set a different key combination.</source>
+      <translation type="unfinished">Check this box to use the default modifier keys.  Uncheck this box to set a different key combination.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="463"/>
+      <source>Use Default</source>
+      <translation type="unfinished">Use Default</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="480"/>
+      <source>Balloon Drag</source>
+      <translation type="unfinished">Balloon Drag</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="487"/>
+      <source>Check this box to include the Alt key in the modifiers.</source>
+      <translation type="unfinished">Check this box to include the Alt key in the modifiers.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="490"/>
+      <source>Alt</source>
+      <translation>Alt</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="497"/>
+      <source>Check this box to include the Shift key in the modifiers.</source>
+      <translation type="unfinished">Check this box to include the Shift key in the modifiers.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="500"/>
+      <source>Shift</source>
+      <translation>Mayúsculas</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="507"/>
+      <source>Check this box to include the Meta/Start/Super key in the modifiers.</source>
+      <translation type="unfinished">Check this box to include the Meta/Start/Super key in the modifiers.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="510"/>
+      <source>Meta</source>
+      <translation type="unfinished">Meta</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="517"/>
+      <source>Check this box to include the Control key in the modifiers.</source>
+      <translation type="unfinished">Check this box to include the Control key in the modifiers.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="520"/>
+      <source>Control</source>
+      <translation type="unfinished">Control</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="538"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Nota:&lt;/span&gt; Artículos en cursiva &lt;span style=&quot; font-style:italic;&quot;&gt;&lt;/span&gt; son valores predeterminados para nuevos objetos. No tienen ningún efecto sobre los objetos existentes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -5052,7 +5117,7 @@ si planeas usar un dibujo como una guía de corte 1:1.
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="20"/>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="32"/>
       <source>Dimensions</source>
-      <translation>Dimensiones</translation>
+      <translation>Cotas</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="181"/>
@@ -5097,12 +5162,12 @@ si planeas usar un dibujo como una guía de corte 1:1.
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="433"/>
       <source>Controls the size of the gap between the dimension point and the start of the extension line for ASME dimensions.</source>
-      <translation>Controla el tamaño de la brecha entre el punto de cota y el inicio de la línea de extensión para las dimensiones ASME.</translation>
+      <translation>Controla el tamaño de la brecha entre el punto de cota y el inicio de la línea de extensión para las cotas ASME.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="483"/>
       <source>Controls the size of spacing between dimension line and dimension text for ISO dimensions.</source>
-      <translation>Controla el tamaño del espacio entre la línea de dimensión y el texto de dimensión para las dimensiones ISO.</translation>
+      <translation>Controla el tamaño del espacio entre la línea de cota y el texto de la cota para las cotas ISO.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="486"/>
@@ -5171,7 +5236,7 @@ Este ajuste solo es para la barra de herramientas. Cualquiera que sea el que esc
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="67"/>
       <source>Dimension Format</source>
-      <translation>Formato de dimensión</translation>
+      <translation>Formato de cota</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="408"/>
@@ -5186,7 +5251,7 @@ Este ajuste solo es para la barra de herramientas. Cualquiera que sea el que esc
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="194"/>
       <source>Dimension text font size</source>
-      <translation>Tamaño de fuente del texto de la dimensión</translation>
+      <translation>Tamaño de fuente del texto de la cota</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="286"/>
@@ -5233,7 +5298,7 @@ Multiplicador de &apos;Tamaño de fuente&apos;</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="405"/>
       <source>Controls the size of the gap between the dimension point and the start of the extension line for ISO dimensions.</source>
-      <translation>Controla el tamaño de la brecha entre el punto de cota y el inicio de la línea de extensión para las dimensiones ISO.</translation>
+      <translation>Controla el tamaño de la brecha entre el punto de cota y el inicio de la línea de extensión para las cotas ISO.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="415"/>
@@ -5250,7 +5315,7 @@ Multiplicador de &apos;Tamaño de fuente&apos;</translation>
       <source>Controls the size of the gap between the dimension point and the start of the extension line for ISO dimensions.
  Value * linewidth is the gap.
  Normally, no gap is used. If using a gap, the recommended value is 8.</source>
-      <translation>Controla el tamaño de la brecha entre el punto de dimensión y el inicio de la línea de extensión para las dimensiones ISO. 
+      <translation>Controla el tamaño de la brecha entre el punto de cota y el inicio de la línea de extensión para las cotas ISO. 
 El ancho de línea * valor es la brecha. 
 Normalmente, no se utiliza ninguna brecha Si se utiliza una brecha, el valor recomendado es 8.</translation>
     </message>
@@ -5258,7 +5323,7 @@ Normalmente, no se utiliza ninguna brecha Si se utiliza una brecha, el valor rec
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="461"/>
       <source>Controls the size of the gap between the dimension point and the start of the extension line for ASME dimensions. Value * linewidth is the gap.
  Normally, no gap is used. If using a gap, the recommended value is 6.</source>
-      <translation>Controla el tamaño de la brecha entre el punto de dimensión y el inicio de la línea de extensión para las dimensiones ASME. El ancho de línea * valor es la brecha. 
+      <translation>Controla el tamaño de la brecha entre el punto de cota y el inicio de la línea de extensión para las cotas ASME. El ancho de línea * valor es la brecha. 
 Normalmente, no se utiliza ninguna brecha Si se utiliza una brecha, el valor recomendado es 6.</translation>
     </message>
     <message>
@@ -6301,7 +6366,7 @@ Do you want to continue?</source>
       <location filename="../../TaskComplexSection.ui" line="185"/>
       <location filename="../../TaskComplexSection.ui" line="192"/>
       <source>Offset</source>
-      <translation>Desplazamiento</translation>
+      <translation>Desfase</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="197"/>
@@ -7224,7 +7289,7 @@ en lugar del valor de dimensión</translation>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="104"/>
       <source>Offset X</source>
-      <translation>Desplazamiento X</translation>
+      <translation>Desfase X</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="117"/>
@@ -7239,7 +7304,7 @@ en lugar del valor de dimensión</translation>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="223"/>
       <source>Offset Y</source>
-      <translation>Desplazamiento Y</translation>
+      <translation>Desfase Y</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="70"/>
@@ -7282,7 +7347,7 @@ en lugar del valor de dimensión</translation>
     <message>
       <location filename="../../TaskHatch.ui" line="114"/>
       <source>Offset X</source>
-      <translation>Desplazamiento X</translation>
+      <translation>Desfase X</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="38"/>
@@ -7317,7 +7382,7 @@ en lugar del valor de dimensión</translation>
     <message>
       <location filename="../../TaskHatch.ui" line="173"/>
       <source>Offset Y</source>
-      <translation>Desplazamiento Y</translation>
+      <translation>Desfase Y</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="140"/>
@@ -7724,8 +7789,8 @@ Puedes elegir más puntos para obtener segmentos de línea.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="362"/>
-      <location filename="../../TaskProjGroup.cpp" line="646"/>
-      <location filename="../../TaskProjGroup.cpp" line="653"/>
+      <location filename="../../TaskProjGroup.cpp" line="661"/>
+      <location filename="../../TaskProjGroup.cpp" line="668"/>
       <source>Top</source>
       <translation>Planta</translation>
     </message>
@@ -7736,8 +7801,8 @@ Puedes elegir más puntos para obtener segmentos de línea.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="409"/>
-      <location filename="../../TaskProjGroup.cpp" line="648"/>
-      <location filename="../../TaskProjGroup.cpp" line="650"/>
+      <location filename="../../TaskProjGroup.cpp" line="663"/>
+      <location filename="../../TaskProjGroup.cpp" line="665"/>
       <source>Left</source>
       <translation>Izquierda</translation>
     </message>
@@ -7748,14 +7813,14 @@ Puedes elegir más puntos para obtener segmentos de línea.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="449"/>
-      <location filename="../../TaskProjGroup.cpp" line="648"/>
-      <location filename="../../TaskProjGroup.cpp" line="650"/>
+      <location filename="../../TaskProjGroup.cpp" line="663"/>
+      <location filename="../../TaskProjGroup.cpp" line="665"/>
       <source>Right</source>
       <translation>Derecha</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="466"/>
-      <location filename="../../TaskProjGroup.cpp" line="651"/>
+      <location filename="../../TaskProjGroup.cpp" line="666"/>
       <source>Rear</source>
       <translation>Posterior</translation>
     </message>
@@ -7766,8 +7831,8 @@ Puedes elegir más puntos para obtener segmentos de línea.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="516"/>
-      <location filename="../../TaskProjGroup.cpp" line="646"/>
-      <location filename="../../TaskProjGroup.cpp" line="653"/>
+      <location filename="../../TaskProjGroup.cpp" line="661"/>
+      <location filename="../../TaskProjGroup.cpp" line="668"/>
       <source>Bottom</source>
       <translation>Inferior</translation>
     </message>
@@ -7809,31 +7874,31 @@ usando el Espaciado X/Y dado</translation>
       <translation>Espaciado en Y</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="645"/>
-      <location filename="../../TaskProjGroup.cpp" line="654"/>
+      <location filename="../../TaskProjGroup.cpp" line="660"/>
+      <location filename="../../TaskProjGroup.cpp" line="669"/>
       <source>FrontTopLeft</source>
       <translation>Frontal izquierdo</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="645"/>
-      <location filename="../../TaskProjGroup.cpp" line="654"/>
+      <location filename="../../TaskProjGroup.cpp" line="660"/>
+      <location filename="../../TaskProjGroup.cpp" line="669"/>
       <source>FrontBottomRight</source>
       <translation>Frontal inferior derecho</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="647"/>
-      <location filename="../../TaskProjGroup.cpp" line="652"/>
+      <location filename="../../TaskProjGroup.cpp" line="662"/>
+      <location filename="../../TaskProjGroup.cpp" line="667"/>
       <source>FrontTopRight</source>
       <translation>Frontal derecho</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="647"/>
-      <location filename="../../TaskProjGroup.cpp" line="652"/>
+      <location filename="../../TaskProjGroup.cpp" line="662"/>
+      <location filename="../../TaskProjGroup.cpp" line="667"/>
       <source>FrontBottomLeft</source>
       <translation>Frontal inferior izquierdo</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="649"/>
+      <location filename="../../TaskProjGroup.cpp" line="664"/>
       <source>Front</source>
       <translation>Alzado</translation>
     </message>
@@ -8498,7 +8563,7 @@ usando el Espaciado X/Y dado</translation>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="417"/>
       <source>Remove prefix symbols at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation>Eliminar los símbolos de prefijos al principio del texto de la cota:&lt;br&gt;- Seleccione una o más dimensiones&lt;br&gt;- Haga clic en esta herramienta</translation>
+      <translation>Eliminar los símbolos de prefijos al principio del texto de la cota:&lt;br&gt;- Seleccione una o más cotas&lt;br&gt;- Haga clic en esta herramienta</translation>
     </message>
   </context>
   <context>
@@ -8586,7 +8651,7 @@ usando el Espaciado X/Y dado</translation>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
       <source>Dimensions</source>
-      <translation>Dimensiones</translation>
+      <translation>Cotas</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
@@ -8812,7 +8877,7 @@ usando el Espaciado X/Y dado</translation>
     <message>
       <location filename="../../TaskDimRepair.ui" line="14"/>
       <source>Dimension Repair</source>
-      <translation>Reparación de dimensión</translation>
+      <translation>Reparación de cota</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="20"/>
@@ -8847,7 +8912,7 @@ usando el Espaciado X/Y dado</translation>
     <message>
       <location filename="../../TaskDimRepair.ui" line="119"/>
       <source>The View that owns this Dimension</source>
-      <translation>La vista que posee esta dimensión</translation>
+      <translation>La vista que posee esta cota</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="138"/>
@@ -8888,7 +8953,7 @@ usando el Espaciado X/Y dado</translation>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2211"/>
       <source>Repair Dimension References</source>
-      <translation>Reparar referencias de dimensiones</translation>
+      <translation>Reparar referencias de cotas</translation>
     </message>
   </context>
   <context>
@@ -8919,7 +8984,7 @@ usando el Espaciado X/Y dado</translation>
     <message>
       <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="54"/>
       <source>Axonometric length dimension</source>
-      <translation>Dimensión de longitud axonométrica</translation>
+      <translation>Cota de longitud axonométrica</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="61"/>
@@ -8928,8 +8993,8 @@ usando el Espaciado X/Y dado</translation>
                 - select second edge to define the direction of the extension lines&lt;br&gt;
                 - optional: select two more vertexes which define the measurement instead of the length&lt;br&gt;
                   of the first selected edge</source>
-      <translation>Crear una dimensión axonométrica de longitud&lt;br&gt;
-                - seleccione el primer borde para definir la dirección y la longitud de la línea de dimensión&lt;br&gt;
+      <translation>Crear una cota axonométrica de longitud&lt;br&gt;
+                - seleccione el primer borde para definir la dirección y la longitud de la línea de cota&lt;br&gt;
                 - seleccione el segundo borde para definir la dirección de las líneas de extensión&lt;br&gt;
                 - opcional: seleccione dos vértices más que definan la medida en lugar de la longitud&lt;br&gt;
                   del primer borde seleccionado</translation>
@@ -8949,7 +9014,7 @@ usando el Espaciado X/Y dado</translation>
 - click the tool button, a panel opens
 - select shaft fit / hole fit
 - select the desired ISO 286 fit field using the combo box</source>
-      <translation>Añade un agujero o ajuste de eje a una dimensión
+      <translation>Añade un agujero o ajuste de eje a una cota
 - selecciona una cota de longitud o diámetro
 - haz clic en el botón de herramienta, un panel se abre
 - seleccione ajuste de eje / ajuste de agujero
@@ -9397,17 +9462,17 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="48"/>
       <source>X-Offset</source>
-      <translation>Desplazamiento-X</translation>
+      <translation>Desfase-X</translation>
     </message>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="55"/>
       <source>Y-Offset</source>
-      <translation>Desplazamiento-Y</translation>
+      <translation>Desfase-Y</translation>
     </message>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="72"/>
       <source>Enter X offset value</source>
-      <translation>Introducir el valor de desplazamiento X</translation>
+      <translation>Introducir el valor de desfase X</translation>
     </message>
   </context>
   <context>
@@ -9415,7 +9480,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="77"/>
       <source>Add an offset vertex</source>
-      <translation>Añadir un desplazamiento de vértice</translation>
+      <translation>Añadir un desfase de vértice</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="83"/>
@@ -9423,15 +9488,15 @@ there is an open task dialog.</source>
                 - select one vertex&lt;br&gt;
                 - start the tool&lt;br&gt;
                 - enter offset values in panel</source>
-      <translation>Crear un desplazamiento de vértice&lt;br&gt;
+      <translation>Crear un desfase de vértice&lt;br&gt;
                 - seleccione un vértice&lt;br&gt;
                 - inicie la herramienta&lt;br&gt;
-                - introduzca los valores de desplazamiento en el panel</translation>
+                - introduzca los valores de desfase en el panel</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskAddOffsetVertex.py" line="45"/>
       <source>Add offset vertex</source>
-      <translation>Añadir desplazamiento de vértice</translation>
+      <translation>Añadir desfase de vértice</translation>
     </message>
   </context>
   <context>
@@ -9554,7 +9619,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="66"/>
       <source>Dotted</source>
-      <translation>Discontinua</translation>
+      <translation>Punteada</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="67"/>
@@ -9762,7 +9827,7 @@ there is an open task dialog.</source>
   <context>
     <name>Preferences</name>
     <message>
-      <location filename="../../../App/Preferences.cpp" line="451"/>
+      <location filename="../../../App/Preferences.cpp" line="466"/>
       <source>The LineStandard parameter is invalid. Using zero instead.</source>
       <translation>El parámetro LineStandard es inválido. Usando cero en su lugar.</translation>
     </message>
@@ -9799,37 +9864,37 @@ hay un diálogo de tareas abierto.</translation>
   <context>
     <name>TechDrawGui::DirectionEditDialog</name>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="920"/>
+      <location filename="../../TaskProjGroup.cpp" line="955"/>
       <source>Direction</source>
       <translation>Dirección</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="925"/>
+      <location filename="../../TaskProjGroup.cpp" line="960"/>
       <source>X: </source>
       <translation>X: </translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="933"/>
+      <location filename="../../TaskProjGroup.cpp" line="968"/>
       <source>Y: </source>
       <translation>Y: </translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="941"/>
+      <location filename="../../TaskProjGroup.cpp" line="976"/>
       <source>Z: </source>
       <translation>Z: </translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="957"/>
+      <location filename="../../TaskProjGroup.cpp" line="992"/>
       <source>OK</source>
       <translation>Aceptar</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="958"/>
+      <location filename="../../TaskProjGroup.cpp" line="993"/>
       <source>Cancel</source>
       <translation>Cancelar</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="964"/>
+      <location filename="../../TaskProjGroup.cpp" line="999"/>
       <source>Rotate by</source>
       <translation>Rotar por</translation>
     </message>
