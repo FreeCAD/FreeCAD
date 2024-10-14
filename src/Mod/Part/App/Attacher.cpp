@@ -301,7 +301,8 @@ Base::Placement AttachEngine::placementFactory(const gp_Dir &ZAxis,
     gp_Ax3 ax3;//OCC representation of the final placement
     if (!makeYVertical) {
         ax3 = gp_Ax3(Origin, ZAxis, XAxis);
-    } else if (!makeLegacyFlatFaceOrientation) {
+    }
+    else if (!makeLegacyFlatFaceOrientation) {
         //align Y along Z, if possible
         gp_Vec YAxis(0.0,0.0,1.0);
         XAxis = YAxis.Crossed(gp_Vec(ZAxis));
@@ -310,7 +311,8 @@ Base::Placement AttachEngine::placementFactory(const gp_Dir &ZAxis,
             XAxis = (gp_Vec(1,0,0)*ZAxis.Z()).Normalized();
         }
         ax3 = gp_Ax3(Origin, ZAxis, XAxis);
-    } else if (makeLegacyFlatFaceOrientation) {
+    }
+    else if (makeLegacyFlatFaceOrientation) {
         //find out, to which axis of support Normal is closest to.
         //The result will be written into pos variable (0..2 = X..Z)
         if (!placeOfRef)
@@ -386,13 +388,11 @@ void AttachEngine::suggestMapModes(SuggestResult &result) const
     result.message = SuggestResult::srLinkBroken;
     result.bestFitMode = mmDeactivated;
 
-
-    std::vector<App::GeoFeature*> parts;
     std::vector<const TopoDS_Shape*> shapes;
     std::vector<TopoDS_Shape> shapeStorage;
     std::vector<eRefType> typeStr;
     try{
-        readLinks(getRefObjects(),subnames, parts, shapes, shapeStorage, typeStr);
+        readLinks(getRefObjects(),subnames, shapes, shapeStorage, typeStr);
     } catch (Base::Exception &err) {
         result.references_Types = typeStr;
         result.message = SuggestResult::srLinkBroken;
@@ -578,11 +578,10 @@ eRefType AttachEngine::getShapeType(const App::DocumentObject *obj, const std::s
     //const_cast is worth here, to keep obj argument const. We are not going to write anything to obj through this temporary link.
     tmpLink.setValue(const_cast<App::DocumentObject*>(obj), subshape.c_str());
 
-    std::vector<App::GeoFeature*> parts;
     std::vector<const TopoDS_Shape*> shapes;
     std::vector<TopoDS_Shape> copiedShapeStorage;
     std::vector<eRefType> types;
-    readLinks(tmpLink.getValues(),tmpLink.getSubValues(), parts, shapes, copiedShapeStorage, types);
+    readLinks(tmpLink.getValues(), tmpLink.getSubValues(), shapes, copiedShapeStorage, types);
 
     assert(types.size() == 1);
     return types[0];
@@ -815,38 +814,35 @@ GProp_GProps AttachEngine::getInertialPropsOfShape(const std::vector<const TopoD
 
 /*!
  * \brief AttachEngine3D::readLinks
- * \param parts
  * \param shapes
  * \param storage is a buffer storing what some of the pointers in shapes point to. It is needed, since
  * subshapes are copied in the process (but copying a whole shape of an object can potentially be slow).
  */
-void AttachEngine::readLinks(const std::vector<App::DocumentObject*> &objs,
+void AttachEngine::readLinks(const std::vector<App::DocumentObject*>& objs,
                              const std::vector<std::string> &subs,
-                             std::vector<App::GeoFeature*> &geofs,
                              std::vector<const TopoDS_Shape*> &shapes,
                              std::vector<TopoDS_Shape> &storage,
                              std::vector<eRefType> &types)
 {
-    geofs.resize(objs.size());
     storage.reserve(objs.size());
     shapes.resize(objs.size());
     types.resize(objs.size());
     for (std::size_t i = 0; i < objs.size(); i++) {
-        std::string fullSub = subs[i];
-        const char* element = Data::findElementName(fullSub.c_str());
-        App::DocumentObject* obj = objs[i]->getSubObject(subs[i].c_str());
-
-        auto* geof = dynamic_cast<App::GeoFeature*>(obj);
+        auto* geof = dynamic_cast<App::GeoFeature*>(objs[i]);
         if (!geof) {
-            FC_THROWM(AttachEngineException,
-                      "AttachEngine3D: attached to a non App::GeoFeature '"
-                          << obj->getNameInDocument() << "'");
+            // Accept App::Links to GeoFeatures
+            geof = dynamic_cast<App::GeoFeature*>(objs[i]->getLinkedObject());
+            if (!geof) {
+                FC_THROWM(AttachEngineException,
+                    "AttachEngine3D: attached to a non App::GeoFeature '" << objs[i]->getNameInDocument() << "'");
+            }
         }
-        geofs[i] = geof;
         TopoDS_Shape myShape;
 
         try {
-            Part::TopoShape shape = Part::Feature::getTopoShape(geof, element, true);
+            // getTopoShape support fully qualified subnames and should return shape with correct
+            // global placement.
+            Part::TopoShape shape = Part::Feature::getTopoShape(objs[i], subs[i].c_str(), true);
             for (;;) {
                 if (shape.isNull()) {
                     FC_THROWM(AttachEngineException,
@@ -860,9 +856,7 @@ void AttachEngine::readLinks(const std::vector<App::DocumentObject*> &objs,
                 // auto extract the single sub-shape from a compound
                 shape = shape.getSubTopoShape(TopAbs_SHAPE, 1);
             }
-            Base::Placement plc = App::GeoFeature::getGlobalPlacement(obj, objs[i], fullSub);
 
-            shape.setPlacement(plc);
             myShape = shape.getShape();
         }
         catch (Standard_Failure& e) {
@@ -878,10 +872,10 @@ void AttachEngine::readLinks(const std::vector<App::DocumentObject*> &objs,
                                                             << e.what());
         }
         if (myShape.IsNull()) {
-                FC_THROWM(AttachEngineException,
-                          "AttachEngine3D: null subshape " << objs[i]->getNameInDocument() << '.'
-                                                           << subs[i]);
-            }
+            FC_THROWM(AttachEngineException,
+                        "AttachEngine3D: null subshape " << objs[i]->getNameInDocument() << '.'
+                                                        << subs[i]);
+        }
 
         storage.emplace_back(myShape);
         shapes[i] = &(storage.back());
@@ -893,7 +887,6 @@ void AttachEngine::readLinks(const std::vector<App::DocumentObject*> &objs,
             types[i] = eRefType(types[i] | rtFlagHasPlacement);
         }
     }
-
 }
 
 void AttachEngine::throwWrongMode(eMapMode mmode)
@@ -1147,18 +1140,18 @@ AttachEngine3D::_calculateAttachedPlacement(const std::vector<App::DocumentObjec
         throw ExceptionCancel();  // to be handled in positionBySupport, to not do anything if
                                   // disabled
     }
-    std::vector<App::GeoFeature*> parts;
     std::vector<const TopoDS_Shape*> shapes;
     std::vector<TopoDS_Shape> copiedShapeStorage;
     std::vector<eRefType> types;
-    readLinks(objs, subs, parts, shapes, copiedShapeStorage, types);
+    readLinks(objs, subs, shapes, copiedShapeStorage, types);
 
-    if (parts.empty()) {
+    if (shapes.empty()) {
         throw ExceptionCancel();
     }
 
     // common stuff for all map modes
-    Base::Placement Place = App::GeoFeature::getGlobalPlacement(parts[0], objs[0], subs[0]);
+    App::DocumentObject* subObj = objs[0]->getSubObject(subs[0].c_str());
+    Base::Placement Place = App::GeoFeature::getGlobalPlacement(subObj, objs[0], subs[0]);
     Base::Vector3d vec = Place.getPosition();
     gp_Pnt refOrg = gp_Pnt(vec.x, vec.y, vec.z);  // origin of linked object
 
@@ -2090,19 +2083,19 @@ AttachEngineLine::_calculateAttachedPlacement(const std::vector<App::DocumentObj
 
     Base::Placement plm;
     if (!bReUsed) {
-        std::vector<App::GeoFeature*> parts;
         std::vector<const TopoDS_Shape*> shapes;
         std::vector<TopoDS_Shape> copiedShapeStorage;
         std::vector<eRefType> types;
-        readLinks(objs, subs, parts, shapes, copiedShapeStorage, types);
+        readLinks(objs, subs, shapes, copiedShapeStorage, types);
 
-        if (parts.empty()) {
+        if (shapes.empty()) {
             throw ExceptionCancel();
         }
 
 
         // common stuff for all map modes
-        Base::Placement Place = App::GeoFeature::getGlobalPlacement(parts[0], objs[0], subs[0]);
+        App::DocumentObject* subObj = objs[0]->getSubObject(subs[0].c_str());
+        Base::Placement Place = App::GeoFeature::getGlobalPlacement(subObj, objs[0], subs[0]);
         Base::Vector3d vec = Place.getPosition();
         gp_Pnt refOrg = gp_Pnt(vec.x, vec.y, vec.z);  // origin of linked object
 
@@ -2457,13 +2450,12 @@ AttachEnginePoint::_calculateAttachedPlacement(const std::vector<App::DocumentOb
 
     Base::Placement plm;
     if (!bReUsed) {
-        std::vector<App::GeoFeature*> parts;
         std::vector<const TopoDS_Shape*> shapes;
         std::vector<TopoDS_Shape> copiedShapeStorage;
         std::vector<eRefType> types;
-        readLinks(objs, subs, parts, shapes, copiedShapeStorage, types);
+        readLinks(objs, subs, shapes, copiedShapeStorage, types);
 
-        if (parts.empty()) {
+        if (shapes.empty()) {
             throw ExceptionCancel();
         }
 
