@@ -546,7 +546,7 @@ const char* FragShaderSSAOBlur = R"(
         float sum = 0.0;
         for( int x = -1; x <= 2; ++x ) {
             for( int y = -1; y <= 2; y++ ) {
-                sum += texelFetchOffset( AoTex, pix, 0, ivec2(x,y) ).r;
+                sum += texelFetch( AoTex, pix + ivec2(x,y), 0).r;
             }
         }
 
