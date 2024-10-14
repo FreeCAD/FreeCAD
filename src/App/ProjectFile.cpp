@@ -554,7 +554,7 @@ std::string ProjectFile::replaceInputFile(const std::string& name, std::istream&
     Base::ofstream newZip(tmp, std::ios::out | std::ios::binary);
 
     // standard compression
-    const int compressionLevel = 6;
+    constexpr int compressionLevel = 6;
     zipios::ZipOutputStream outZip(newZip);
     outZip.setComment("FreeCAD Document");
     outZip.setLevel(compressionLevel);
@@ -594,7 +594,7 @@ std::string ProjectFile::replaceInputFiles(const std::map<std::string, std::istr
     Base::ofstream newZip(tmp, std::ios::out | std::ios::binary);
 
     // standard compression
-    const int compressionLevel = 6;
+    constexpr int compressionLevel = 6;
     zipios::ZipOutputStream outZip(newZip);
     outZip.setComment("FreeCAD Document");
     outZip.setLevel(compressionLevel);
@@ -639,7 +639,7 @@ ProjectFile::replacePropertyFiles(const std::map<std::string, App::Property*>& p
     // open extra scope
     {
         // standard compression
-        const int compressionLevel = 6;
+        constexpr int compressionLevel = 6;
         Base::ZipWriter writer(newZip);
         writer.setComment("FreeCAD Document");
         writer.setLevel(compressionLevel);

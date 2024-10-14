@@ -694,7 +694,7 @@ public:
     /// Stores the last user choice of whether to apply CopyOnChange setup to all link
     /// that links to the same configurable object
     static const bool & getCopyOnChangeApplyToAll();
-    static const bool & defaultCopyOnChangeApplyToAll();
+    static constexpr bool defaultCopyOnChangeApplyToAll() { return true; };
     static void removeCopyOnChangeApplyToAll();
     static void setCopyOnChangeApplyToAll(const bool &v);
     static const char *docCopyOnChangeApplyToAll();

@@ -702,7 +702,7 @@ void PropertyIntegerConstraint::setPyObject(PyObject *value)
 
 TYPESYSTEM_SOURCE(App::PropertyPercent , App::PropertyIntegerConstraint)
 
-const PropertyIntegerConstraint::Constraints percent = {0,100,1};
+constexpr PropertyIntegerConstraint::Constraints percent = {0,100,1};
 
 //**************************************************************************
 // Construction/Destruction
@@ -1161,7 +1161,7 @@ TYPESYSTEM_SOURCE(App::PropertyPrecision, App::PropertyFloatConstraint)
 //**************************************************************************
 // Construction/Destruction
 //
-const PropertyFloatConstraint::Constraints PrecisionStandard = {0.0,DBL_MAX,0.001};
+constexpr PropertyFloatConstraint::Constraints PrecisionStandard = {0.0,DBL_MAX,0.001};
 
 PropertyPrecision::PropertyPrecision()
 {

@@ -269,14 +269,14 @@ public:
     /// the boundary struct
     struct Constraints {
         long LowerBound, UpperBound, StepSize;
-        Constraints()
+        constexpr Constraints()
             : LowerBound(0)
             , UpperBound(0)
             , StepSize(0)
             , candelete(false)
         {
         }
-        Constraints(long l, long u, long s)
+        constexpr Constraints(long l, long u, long s)
             : LowerBound(l)
             , UpperBound(u)
             , StepSize(s)
@@ -573,14 +573,14 @@ public:
     /// the boundary struct
     struct Constraints {
         double LowerBound, UpperBound, StepSize;
-        Constraints()
+        constexpr Constraints()
             : LowerBound(0)
             , UpperBound(0)
             , StepSize(0)
             , candelete(false)
         {
         }
-        Constraints(double l, double u, double s)
+        constexpr Constraints(double l, double u, double s)
             : LowerBound(l)
             , UpperBound(u)
             , StepSize(s)

@@ -29,7 +29,7 @@ using namespace App;
 
 PROPERTY_SOURCE(App::VarSet, App::DocumentObject)
 
-const char* VarSet::getViewProviderName() const  // make constexpr
+const char* VarSet::getViewProviderName() const
 {
     return "Gui::ViewProviderVarSet";
 }

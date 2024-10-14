@@ -125,12 +125,6 @@ const bool & LinkParams::getCopyOnChangeApplyToAll() {
 }
 
 // Auto generated code. See class document of LinkParams.
-const bool & LinkParams::defaultCopyOnChangeApplyToAll() {
-    static const bool def = true;
-    return def;
-}
-
-// Auto generated code. See class document of LinkParams.
 void LinkParams::setCopyOnChangeApplyToAll(const bool &v) {
     instance()->handle->SetBool("CopyOnChangeApplyToAll",v);
     instance()->CopyOnChangeApplyToAll = v;

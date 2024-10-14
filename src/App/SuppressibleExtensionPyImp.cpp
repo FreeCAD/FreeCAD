@@ -30,7 +30,7 @@
 using namespace App;
 
 // returns a string which represent the object e.g. when printed in python
-std::string SuppressibleExtensionPy::representation() const  // make constexpr
+std::string SuppressibleExtensionPy::representation() const
 {
     return {"<suppressible extension object>"};
 }

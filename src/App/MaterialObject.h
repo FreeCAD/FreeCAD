@@ -42,7 +42,7 @@ public:
     App::PropertyMap Material;
 
 
-    /// returns the type name of the ViewProvider  // make constexpr
+    /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override {
         return "Gui::ViewProviderMaterialObject";
     }

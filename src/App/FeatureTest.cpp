@@ -48,8 +48,8 @@ using namespace App;
 PROPERTY_SOURCE(App::FeatureTest, App::DocumentObject)
 
 const char* enums[]= {"Zero","One","Two","Three","Four",nullptr};
-const PropertyIntegerConstraint::Constraints intPercent = {0,100,1};
-const PropertyFloatConstraint::Constraints floatPercent = {0.0,100.0,1.0};
+constexpr PropertyIntegerConstraint::Constraints intPercent = {0,100,1};
+constexpr PropertyFloatConstraint::Constraints floatPercent = {0.0,100.0,1.0};
 
 
 FeatureTest::FeatureTest()
@@ -93,7 +93,7 @@ FeatureTest::FeatureTest()
   ADD_PROPERTY(Placement ,(Base::Placement()));
 
   // properties for recompute testing
-  static const char* group = "Feature Test";
+  constexpr const char* group = "Feature Test";
   ADD_PROPERTY_TYPE(Source1       ,(nullptr),group,Prop_None,"Source for testing links");
   ADD_PROPERTY_TYPE(Source2       ,(nullptr),group,Prop_None,"Source for testing links");
   ADD_PROPERTY_TYPE(SourceN       ,(nullptr),group,Prop_None,"Source for testing links");
