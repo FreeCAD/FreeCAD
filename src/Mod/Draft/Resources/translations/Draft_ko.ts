@@ -855,7 +855,7 @@ will be moved to the center of the view.</translation>
       <location filename="../ui/TaskSelectPlane.ui" line="159"/>
       <location filename="../ui/TaskSelectPlane.ui" line="169"/>
       <source>The color of the grid</source>
-      <translation>그리드의 색상</translation>
+      <translation>격자의 색상</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="162"/>
@@ -894,7 +894,7 @@ will be moved to the center of the view.</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="219"/>
       <source>Grid size</source>
-      <translation>그리드 크기</translation>
+      <translation>격자 크기</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="242"/>
@@ -920,7 +920,7 @@ will be moved to the center of the view.</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="179"/>
       <source>Grid spacing</source>
-      <translation>그리드 간격</translation>
+      <translation>격자 간격</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="245"/>
@@ -1054,7 +1054,7 @@ will be moved to the center of the view.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="255"/>
       <source>Wireframe</source>
-      <translation>와이어 프레임</translation>
+      <translation>철사틀</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="250"/>
@@ -2411,7 +2411,7 @@ Use Draft ToggleGrid to change this for the active view.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="30"/>
       <source>Always show the grid</source>
-      <translation>항상 그리드 표시</translation>
+      <translation>항상 격자 표시</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="49"/>
@@ -2435,7 +2435,7 @@ showing the main square size in the bottom left corner</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="73"/>
       <source>Show grid border</source>
-      <translation>그리드 경계 표시</translation>
+      <translation>격자 경계 표시</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="92"/>
@@ -2466,12 +2466,12 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="179"/>
       <source>Grid spacing</source>
-      <translation>그리드 간격</translation>
+      <translation>격자 간격</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="211"/>
       <source>Grid size</source>
-      <translation>그리드 크기</translation>
+      <translation>격자 크기</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="240"/>
@@ -2531,7 +2531,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="273"/>
       <source>The color of the grid</source>
-      <translation>그리드의 색상</translation>
+      <translation>격자의 색상</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="247"/>
@@ -2829,32 +2829,32 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <name>draft</name>
     <message>
       <location filename="../../DraftGui.py" line="58"/>
-      <location filename="../../DraftGui.py" line="540"/>
+      <location filename="../../DraftGui.py" line="545"/>
       <source>Relative</source>
       <translation type="unfinished">Relative</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="59"/>
-      <location filename="../../DraftGui.py" line="545"/>
+      <location filename="../../DraftGui.py" line="550"/>
       <source>Global</source>
       <translation>전역</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="60"/>
-      <location filename="../../DraftGui.py" line="563"/>
-      <location filename="../../DraftGui.py" line="823"/>
+      <location filename="../../DraftGui.py" line="568"/>
+      <location filename="../../DraftGui.py" line="828"/>
       <source>Continue</source>
       <translation>계속</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="61"/>
-      <location filename="../../DraftGui.py" line="571"/>
+      <location filename="../../DraftGui.py" line="576"/>
       <source>Close</source>
       <translation>닫기</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="62"/>
-      <location filename="../../DraftGui.py" line="582"/>
+      <location filename="../../DraftGui.py" line="587"/>
       <location filename="../../draftguitools/gui_move.py" line="216"/>
       <location filename="../../draftguitools/gui_rotate.py" line="287"/>
       <location filename="../../draftguitools/gui_scale.py" line="203"/>
@@ -2910,7 +2910,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="72"/>
-      <location filename="../../DraftGui.py" line="577"/>
+      <location filename="../../DraftGui.py" line="582"/>
       <source>Select edge</source>
       <translation>모서리 선택</translation>
     </message>
@@ -2926,7 +2926,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="75"/>
-      <location filename="../../DraftGui.py" line="573"/>
+      <location filename="../../DraftGui.py" line="578"/>
       <source>Wipe</source>
       <translation type="unfinished">Wipe</translation>
     </message>
@@ -3007,285 +3007,285 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
       <translation>위치:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="491"/>
-      <location filename="../../DraftGui.py" line="519"/>
-      <location filename="../../DraftGui.py" line="1469"/>
-      <location filename="../../DraftGui.py" line="1484"/>
+      <location filename="../../DraftGui.py" line="496"/>
+      <location filename="../../DraftGui.py" line="524"/>
+      <location filename="../../DraftGui.py" line="1474"/>
+      <location filename="../../DraftGui.py" line="1489"/>
       <location filename="../../draftguitools/gui_groups.py" line="239"/>
       <location filename="../../draftguitools/gui_groups.py" line="244"/>
       <source>None</source>
       <translation>없음</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="518"/>
+      <location filename="../../DraftGui.py" line="523"/>
       <source>active command:</source>
       <translation type="unfinished">active command:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="520"/>
+      <location filename="../../DraftGui.py" line="525"/>
       <source>Active Draft command</source>
       <translation type="unfinished">Active Draft command</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="521"/>
+      <location filename="../../DraftGui.py" line="526"/>
       <source>X coordinate of next point</source>
       <translation type="unfinished">X coordinate of next point</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="522"/>
+      <location filename="../../DraftGui.py" line="527"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="523"/>
+      <location filename="../../DraftGui.py" line="528"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="524"/>
+      <location filename="../../DraftGui.py" line="529"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="525"/>
+      <location filename="../../DraftGui.py" line="530"/>
       <source>Y coordinate of next point</source>
       <translation type="unfinished">Y coordinate of next point</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="526"/>
+      <location filename="../../DraftGui.py" line="531"/>
       <source>Z coordinate of next point</source>
       <translation type="unfinished">Z coordinate of next point</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="527"/>
+      <location filename="../../DraftGui.py" line="532"/>
       <source>Enter point</source>
       <translation type="unfinished">Enter point</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="529"/>
+      <location filename="../../DraftGui.py" line="534"/>
       <source>Enter a new point with the given coordinates</source>
       <translation type="unfinished">Enter a new point with the given coordinates</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="530"/>
+      <location filename="../../DraftGui.py" line="535"/>
       <source>Length</source>
       <translation>길이:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="531"/>
+      <location filename="../../DraftGui.py" line="536"/>
       <location filename="../../draftguitools/gui_trimex.py" line="226"/>
       <source>Angle</source>
       <translation>각</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="532"/>
+      <location filename="../../DraftGui.py" line="537"/>
       <source>Length of current segment</source>
       <translation type="unfinished">Length of current segment</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="533"/>
+      <location filename="../../DraftGui.py" line="538"/>
       <source>Angle of current segment</source>
       <translation type="unfinished">Angle of current segment</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="536"/>
+      <location filename="../../DraftGui.py" line="541"/>
       <source>Check this to lock the current angle</source>
       <translation type="unfinished">Check this to lock the current angle</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="537"/>
-      <location filename="../../DraftGui.py" line="805"/>
+      <location filename="../../DraftGui.py" line="542"/>
+      <location filename="../../DraftGui.py" line="810"/>
       <source>Radius</source>
       <translation>반지름</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="538"/>
-      <location filename="../../DraftGui.py" line="806"/>
+      <location filename="../../DraftGui.py" line="543"/>
+      <location filename="../../DraftGui.py" line="811"/>
       <source>Radius of Circle</source>
       <translation>원의 반지름</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="543"/>
+      <location filename="../../DraftGui.py" line="548"/>
       <source>Coordinates relative to last point or to coordinate system origin
 if is the first point to set</source>
       <translation>마지막 점에 대한 좌표 또는 좌표계 원점
 설정할 첫 번째 포인트인 경우</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="548"/>
+      <location filename="../../DraftGui.py" line="553"/>
       <source>Coordinates relative to global coordinate system.
 Uncheck to use working plane coordinate system</source>
       <translation>전역 좌표계에 상대적인 좌표입니다.
 작업 기준면 좌표계를 사용하려면 선택 취소</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="550"/>
+      <location filename="../../DraftGui.py" line="555"/>
       <source>Filled</source>
       <translation type="unfinished">Filled</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="554"/>
+      <location filename="../../DraftGui.py" line="559"/>
       <source>Check this if the object should appear as filled, otherwise it will appear as wireframe.
 Not available if Draft preference option 'Use Part Primitives' is enabled</source>
       <translation type="unfinished">Check this if the object should appear as filled, otherwise it will appear as wireframe.
 Not available if Draft preference option 'Use Part Primitives' is enabled</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="556"/>
+      <location filename="../../DraftGui.py" line="561"/>
       <source>Finish</source>
       <translation>마침</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="558"/>
+      <location filename="../../DraftGui.py" line="563"/>
       <source>Finishes the current drawing or editing operation</source>
       <translation>현재 그리기 또는 편집 작업을 마칩니다.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="561"/>
+      <location filename="../../DraftGui.py" line="566"/>
       <source>If checked, command will not finish until you press the command button again</source>
       <translation>이 옵션을 선택하면 명령어 버튼을 다시 누를 때까지 명령어가 완료되지 않습니다.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="566"/>
+      <location filename="../../DraftGui.py" line="571"/>
       <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
       <translation>이것을 선택하면 고전적 편차 대신 OCC 방식의 편차가 적용됩니다</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="567"/>
+      <location filename="../../DraftGui.py" line="572"/>
       <source>OCC-style offset</source>
       <translation>OCC 방식의 편차</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="569"/>
+      <location filename="../../DraftGui.py" line="574"/>
       <source>Undo</source>
       <translation>실행취소</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="583"/>
+      <location filename="../../DraftGui.py" line="588"/>
       <source>If checked, objects will be copied instead of moved</source>
       <translation type="unfinished">If checked, objects will be copied instead of moved</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="570"/>
+      <location filename="../../DraftGui.py" line="575"/>
       <source>Undo the last segment</source>
       <translation>마지막 세그먼트 실행 취소</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="572"/>
+      <location filename="../../DraftGui.py" line="577"/>
       <source>Finishes and closes the current line</source>
       <translation>현재 라인을 완료하고 닫습니다.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="574"/>
+      <location filename="../../DraftGui.py" line="579"/>
       <source>Wipes the existing segments of this line and starts again from the last point</source>
       <translation type="unfinished">Wipes the existing segments of this line and starts again from the last point</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="575"/>
+      <location filename="../../DraftGui.py" line="580"/>
       <source>Set WP</source>
       <translation type="unfinished">Set WP</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="576"/>
+      <location filename="../../DraftGui.py" line="581"/>
       <source>Reorients the working plane on the last segment</source>
       <translation type="unfinished">Reorients the working plane on the last segment</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="578"/>
+      <location filename="../../DraftGui.py" line="583"/>
       <source>Selects an existing edge to be measured by this dimension</source>
       <translation type="unfinished">Selects an existing edge to be measured by this dimension</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="579"/>
+      <location filename="../../DraftGui.py" line="584"/>
       <source>Sides</source>
       <translation type="unfinished">Sides</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="580"/>
+      <location filename="../../DraftGui.py" line="585"/>
       <source>Number of sides</source>
       <translation type="unfinished">Number of sides</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="584"/>
+      <location filename="../../DraftGui.py" line="589"/>
       <source>Modify subelements</source>
       <translation type="unfinished">Modify subelements</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="585"/>
+      <location filename="../../DraftGui.py" line="590"/>
       <source>If checked, subelements will be modified instead of entire objects</source>
       <translation type="unfinished">If checked, subelements will be modified instead of entire objects</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="586"/>
+      <location filename="../../DraftGui.py" line="591"/>
       <source>Create text</source>
       <translation>문자 생성</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="587"/>
+      <location filename="../../DraftGui.py" line="592"/>
       <source>Press this button to create the text object, or finish your text with two blank lines</source>
       <translation>이 단추를 눌러 문자를 생성하거나, 빈 줄 두개로 문자를 마무리 하세요.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="609"/>
+      <location filename="../../DraftGui.py" line="614"/>
       <source>Change default style for new objects</source>
       <translation type="unfinished">Change default style for new objects</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="610"/>
+      <location filename="../../DraftGui.py" line="615"/>
       <source>Toggle construction mode</source>
       <translation type="unfinished">Toggle construction mode</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="611"/>
-      <location filename="../../DraftGui.py" line="1472"/>
-      <location filename="../../DraftGui.py" line="1487"/>
+      <location filename="../../DraftGui.py" line="616"/>
+      <location filename="../../DraftGui.py" line="1477"/>
+      <location filename="../../DraftGui.py" line="1492"/>
       <source>Autogroup off</source>
       <translation type="unfinished">Autogroup off</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="688"/>
+      <location filename="../../DraftGui.py" line="693"/>
       <location filename="../../draftguitools/gui_lines.py" line="66"/>
       <source>Line</source>
       <translation>선</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="696"/>
+      <location filename="../../DraftGui.py" line="701"/>
       <source>DWire</source>
       <translation>DWire</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="714"/>
+      <location filename="../../DraftGui.py" line="719"/>
       <source>Circle</source>
       <translation>원</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="719"/>
+      <location filename="../../DraftGui.py" line="724"/>
       <source>Arc</source>
       <translation>호</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="724"/>
+      <location filename="../../DraftGui.py" line="729"/>
       <location filename="../../draftguitools/gui_rotate.py" line="290"/>
       <source>Rotate</source>
       <translation>회전하기</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="728"/>
+      <location filename="../../DraftGui.py" line="733"/>
       <source>Point</source>
       <translation>점</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="756"/>
+      <location filename="../../DraftGui.py" line="761"/>
       <source>Label</source>
       <translation type="unfinished">Label</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="758"/>
+      <location filename="../../DraftGui.py" line="763"/>
       <source>Label type</source>
       <translation type="unfinished">Label type</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="774"/>
+      <location filename="../../DraftGui.py" line="779"/>
       <location filename="../../draftguitools/gui_offset.py" line="241"/>
       <location filename="../../draftguitools/gui_offset.py" line="258"/>
       <location filename="../../draftguitools/gui_offset.py" line="323"/>
@@ -3293,71 +3293,71 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>편차</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="779"/>
-      <location filename="../../DraftGui.py" line="797"/>
+      <location filename="../../DraftGui.py" line="784"/>
+      <location filename="../../DraftGui.py" line="802"/>
       <location filename="../../draftguitools/gui_trimex.py" line="221"/>
       <source>Distance</source>
       <translation type="unfinished">Distance</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="780"/>
-      <location filename="../../DraftGui.py" line="798"/>
+      <location filename="../../DraftGui.py" line="785"/>
+      <location filename="../../DraftGui.py" line="803"/>
       <location filename="../../draftguitools/gui_trimex.py" line="223"/>
       <source>Offset distance</source>
       <translation>편차 거리</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="794"/>
+      <location filename="../../DraftGui.py" line="799"/>
       <source>Trimex</source>
       <translation type="unfinished">Trimex</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="872"/>
-      <location filename="../../DraftGui.py" line="873"/>
-      <location filename="../../DraftGui.py" line="874"/>
-      <location filename="../../DraftGui.py" line="876"/>
       <location filename="../../DraftGui.py" line="877"/>
       <location filename="../../DraftGui.py" line="878"/>
+      <location filename="../../DraftGui.py" line="879"/>
+      <location filename="../../DraftGui.py" line="881"/>
+      <location filename="../../DraftGui.py" line="882"/>
+      <location filename="../../DraftGui.py" line="883"/>
       <source>Local {}</source>
       <translation type="unfinished">Local {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="880"/>
-      <location filename="../../DraftGui.py" line="881"/>
-      <location filename="../../DraftGui.py" line="882"/>
-      <location filename="../../DraftGui.py" line="884"/>
       <location filename="../../DraftGui.py" line="885"/>
       <location filename="../../DraftGui.py" line="886"/>
+      <location filename="../../DraftGui.py" line="887"/>
+      <location filename="../../DraftGui.py" line="889"/>
+      <location filename="../../DraftGui.py" line="890"/>
+      <location filename="../../DraftGui.py" line="891"/>
       <source>Global {}</source>
       <translation type="unfinished">Global {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1480"/>
+      <location filename="../../DraftGui.py" line="1485"/>
       <source>Autogroup:</source>
       <translation type="unfinished">Autogroup:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1619"/>
+      <location filename="../../DraftGui.py" line="1624"/>
       <source>Modify objects</source>
       <translation type="unfinished">Modify objects</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1768"/>
+      <location filename="../../DraftGui.py" line="1773"/>
       <source>Faces</source>
       <translation type="unfinished">Faces</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1769"/>
+      <location filename="../../DraftGui.py" line="1774"/>
       <source>Remove</source>
       <translation>제거</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1770"/>
+      <location filename="../../DraftGui.py" line="1775"/>
       <source>Add</source>
       <translation>추가하기</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1771"/>
+      <location filename="../../DraftGui.py" line="1776"/>
       <source>Facebinder elements</source>
       <translation type="unfinished">Facebinder elements</translation>
     </message>
@@ -3506,7 +3506,7 @@ or try saving to a lower DWG version.</translation>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="715"/>
       <source>image is Null</source>
-      <translation type="unfinished">image is Null</translation>
+      <translation>화상이 비어 있음</translation>
     </message>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="721"/>
@@ -4821,17 +4821,17 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">changed 'Tracking' property type</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="175"/>
+      <location filename="../../draftobjects/shapestring.py" line="178"/>
       <source>ShapeString: oblique angle must be in the -80 to +80 degree range</source>
       <translation type="unfinished">ShapeString: oblique angle must be in the -80 to +80 degree range</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="187"/>
+      <location filename="../../draftobjects/shapestring.py" line="190"/>
       <source>ShapeString: string has no wires</source>
       <translation type="unfinished">ShapeString: string has no wires</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="221"/>
+      <location filename="../../draftobjects/shapestring.py" line="223"/>
       <source>ShapeString: face creation failed for one character</source>
       <translation type="unfinished">ShapeString: face creation failed for one character</translation>
     </message>

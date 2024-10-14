@@ -2123,12 +2123,12 @@ Por defecto: 3 mm</translation>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="117"/>
       <source>Finishing pass Z offset</source>
-      <translation>Desplazamiento Z para pasada de acabado</translation>
+      <translation>Desfase Z para pasada de acabado</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="124"/>
       <source>Endmill offset for the finishing pass run. Use small value like -0.2 mm to help clean &quot;fuzzy skin&quot; or other artefacts.</source>
-      <translation>Desplazamiento de la fresa para la pasada de acabado. Utilice un valor pequeño como -0,2 mm para ayudar a limpiar la "piel difusa" u otros artefactos.</translation>
+      <translation>Desfase de la fresa para la pasada de acabado. Utilice un valor pequeño como -0,2 mm para ayudar a limpiar la "piel difusa" u otros artefactos.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="140"/>
@@ -2453,7 +2453,7 @@ Si se deja vacío, el directorio macro es usado.</translation>
 This can be helpful when almost all jobs will be processed by the same machine with a similar setup.
 
 If left empty no template will be preselected.</source>
-      <translation>La plantilla por defecto a seleccionar al crear un nuevo Trabajo.
+      <translation>La plantilla por defecto a seleccionar al crear un nuevo Trabajo. 
 
 Esto puede ser útil cuando casi todos los trabajos serán procesados por la misma máquina con una configuración similar.
 
@@ -3671,7 +3671,7 @@ Ordenar por operación hará cada operación en todos los sistemas de coordenada
       <location filename="../panels/PathEdit.ui" line="254"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=&quot; font-style:italic;&quot;&gt;Work Offsets&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=&quot; font-style:italic;&quot;&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.
 FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your G-code output. The exact way in which the output is affected is controlled by the &apos;order by&apos; setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Sistemas de coordenadas de trabajo&lt;/span&gt; también llamadas &lt;span style=&quot; font-style:italic;&quot;&gt;Desplazamientos de trabajo&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;Desplazamientos de fijaciones&lt;/span&gt;, o &lt;span style=&quot; font-style:italic;&quot;&gt;Fijaciones &lt;/span&gt;son útiles para crear trabajos de producción eficientes en los que la misma pieza se realiza muchas veces en la máquina.
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Sistemas de coordenadas de trabajo&lt;/span&gt; también llamadas &lt;span style=&quot; font-style:italic;&quot;&gt;Desfases de trabajo&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;Desfases de fijaciones&lt;/span&gt;, o &lt;span style=&quot; font-style:italic;&quot;&gt;Fijaciones &lt;/span&gt;son útiles para crear trabajos de producción eficientes en los que la misma pieza se realiza muchas veces en la máquina.
 FreeCAD no tiene conocimiento de dónde existe un sistema de coordenadas particular dentro del sistema de coordenadas de la máquina, por lo que agregar sistemas de coordenadas adicionales a su trabajo no tendrá ningún cambio visual dentro de su trabajo. Sin embargo, cambiará la salida del código G. La forma exacta en que se ve afectada la salida está controlada por el ajuste de &apos;order by&apos;ordenar por&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
@@ -5294,7 +5294,7 @@ Por defecto: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="210"/>
       <source>For arcs/circular edges, offset the radius for the toolpath.</source>
-      <translation>Para arcos/bordes circulares, desplazar el radio de la trayectoria.</translation>
+      <translation>Para arcos/bordes circulares, desfasar el radio de la trayectoria.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="219"/>
@@ -5550,7 +5550,7 @@ Por defecto: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Vcarve.py" line="305"/>
       <source>Finishing pass Z offset</source>
-      <translation>Desplazamiento Z para pasada de acabado</translation>
+      <translation>Desfase Z para pasada de acabado</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Vcarve.py" line="317"/>
@@ -5559,9 +5559,9 @@ Por defecto: 3 mm</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Vcarve.py" line="327"/>
-      <source>Cutoff for removing colinear segments (degrees).
+      <source>Cutoff for removing colinear segments (degrees). 
                         default=10.0.</source>
-      <translation>Corte para eliminar segmentos colineales (grados).
+      <translation>Corte para eliminar segmentos colineales (grados). 
                         por defecto=10.0.</translation>
     </message>
     <message>
@@ -6946,23 +6946,23 @@ Abortando la creación de la op</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="69"/>
-      <source>The currently selected unit schema:
+      <source>The currently selected unit schema: 
      &apos;{}&apos; for this document
- Does not use &apos;minutes&apos; for velocity values.
-
-CNC machines require feed rate to be expressed in
-unit/minute. To ensure correct G-code:
+ Does not use &apos;minutes&apos; for velocity values. 
+ 
+CNC machines require feed rate to be expressed in 
+unit/minute. To ensure correct G-code: 
 Select a minute-based schema in preferences.
 For example:
     &apos;Metric, Small Parts &amp; CNC&apos;
     &apos;US Customary&apos;
     &apos;Imperial Decimal&apos;</source>
-      <translation>El esquema de unidadades seleccionadoactualmente:
+      <translation>El esquema de unidadades seleccionadoactualmente: 
      &apos;{}&apos; para este documento
- No utiliza &apos;minutos&apos; para valores de velocidad.
-
-Las máquinas CNC requieren que la velocidad de avance se exprese en
-unidad/minuto. Para garantizar un código G correcto:
+ No utiliza &apos;minutos&apos; para valores de velocidad. 
+ 
+Las máquinas CNC requieren que la velocidad de avance se exprese en 
+unidad/minuto. Para garantizar un código G correcto: 
 Seleccione un esquema basado en minutos en las preferencias.
 Por ejemplo:
     &apos;Métrico, piezas pequeñas y CNC&apos;
@@ -7025,16 +7025,16 @@ Por ejemplo:
     <message>
       <location filename="../../../Path/Main/Gui/Fixture.py" line="154"/>
       <source>Creates a Fixture Offset</source>
-      <translation>Crea un desplazamiento de accesorio</translation>
+      <translation>Crea un desfase de fijación</translation>
     </message>
   </context>
   <context>
     <name>CAM_Inspect</name>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="132"/>
-      <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s).
+      <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s). 
  Values will be converted to the desired unit during post processing.</source>
-      <translation>&lt;b&gt;Nota&lt;/b&gt;: Este diálogo muestra los comandos de trayectoria en las unidades base de FreeCAD (mm/s).
+      <translation>&lt;b&gt;Nota&lt;/b&gt;: Este diálogo muestra los comandos de trayectoria en las unidades base de FreeCAD (mm/s). 
  Los valores se convertirán a la unidad deseada durante el post-procesamiento.</translation>
     </message>
     <message>
@@ -7271,7 +7271,7 @@ Por ejemplo:
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="73"/>
       <source>Work Offsets</source>
-      <translation>Desplazamientos de trabajo</translation>
+      <translation>Desfases de trabajo</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="76"/>
@@ -7350,9 +7350,9 @@ Por ejemplo:
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="364"/>
-      <source>Tool number {} is a legacy tool. Legacy tools not
+      <source>Tool number {} is a legacy tool. Legacy tools not 
                     supported by Path-Sanity</source>
-      <translation>El número de herramienta {} es una herramienta antigua. Las herramientas heredadas no
+      <translation>El número de herramienta {} es una herramienta antigua. Las herramientas heredadas no 
                         son soportadas por Path-Sanity</translation>
     </message>
     <message>
@@ -7950,7 +7950,7 @@ Por ejemplo:
       <location filename="../../../Path/Op/Slot.py" line="1869"/>
       <location filename="../../../Path/Op/Slot.py" line="1881"/>
       <source>Current offset value produces negative radius.</source>
-      <translation>El valor del desplazamiento actual produce un radio negativo.</translation>
+      <translation>El valor del desfase actual produce un radio negativo.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Slot.py" line="275"/>
@@ -8492,10 +8492,10 @@ Por ejemplo:
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="126"/>
       <source>Toolbit Working directory {} needs these sudirectories:
- {}
+ {} 
  Create them?</source>
       <translation>Directorio de trabajo de herramienta {} necesita estos sudirectorios:
- {}
+ {} 
  ¿Crearlos?</translation>
     </message>
     <message>

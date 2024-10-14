@@ -1504,7 +1504,7 @@ If zero, it is equal to Radius2</source>
       <location filename="../../TaskChamferParameters.ui" line="20"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation>Cliquez sur le bouton pour passer en mode sélection, cliquez à nouveau pour terminer la sélection</translation>
+      <translation>Cliquer sur le bouton pour passer en mode sélection, cliquer à nouveau pour terminer la sélection</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="24"/>
@@ -1515,8 +1515,8 @@ click again to end selection</source>
       <location filename="../../TaskChamferParameters.ui" line="34"/>
       <source>- select an item to highlight it
 - double-click on an item to see the chamfers</source>
-      <translation>- sélectionnez un élément pour le mettre en surbrillance
-- double-cliquez sur un élément pour voir les chanfreins</translation>
+      <translation>- sélectionner un élément pour le mettre en surbrillance
+- double-cliquer sur un élément pour voir les chanfreins</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="49"/>
@@ -1604,7 +1604,7 @@ click again to end selection</source>
   <context>
     <name>PartDesignGui::TaskDlgFeatureParameters</name>
     <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="133"/>
+      <location filename="../../TaskFeatureParameters.cpp" line="139"/>
       <source>Input error</source>
       <translation>Erreur de saisie</translation>
     </message>
@@ -1623,7 +1623,7 @@ click again to end selection</source>
       <location filename="../../TaskDraftParameters.ui" line="20"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation>Cliquez sur le bouton pour passer en mode sélection, cliquez à nouveau pour terminer la sélection</translation>
+      <translation>Cliquer sur le bouton pour passer en mode sélection, cliquer à nouveau pour terminer la sélection</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="24"/>
@@ -1634,8 +1634,8 @@ click again to end selection</source>
       <location filename="../../TaskDraftParameters.ui" line="34"/>
       <source>- select an item to highlight it
 - double-click on an item to see the drafts</source>
-      <translation>- sélectionnez un élément pour le mettre en surbrillance
-- double-cliquez sur un élément pour voir les dépouilles</translation>
+      <translation>- sélectionner un élément pour le mettre en surbrillance
+- double-cliquer sur un élément pour voir les dépouilles</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="47"/>
@@ -1677,17 +1677,17 @@ click again to end selection</source>
       <translation>Sélectionner</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="278"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="293"/>
       <source>Add all edges</source>
       <translation>Ajouter toutes les arêtes</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="285"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="300"/>
       <source>Adds all edges to the list box (active only when in add selection mode).</source>
-      <translation>Ajoute toutes les arêtes à la liste (actif uniquement en mode sélection ajoutée).</translation>
+      <translation>Ajoute toutes les arêtes à la liste (actif uniquement en mode ajout de sélection).</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="293"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="308"/>
       <source>Remove</source>
       <translation>Supprimer</translation>
     </message>
@@ -1851,7 +1851,7 @@ click again to end selection</source>
       <location filename="../../TaskFilletParameters.ui" line="20"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation>Cliquez sur le bouton pour passer en mode sélection, cliquez à nouveau pour terminer la sélection</translation>
+      <translation>Cliquer sur le bouton pour passer en mode sélection, cliquer à nouveau pour terminer la sélection</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="24"/>
@@ -1862,8 +1862,8 @@ click again to end selection</source>
       <location filename="../../TaskFilletParameters.ui" line="34"/>
       <source>- select an item to highlight it
 - double-click on an item to see the fillets</source>
-      <translation>- sélectionnez un élément pour le mettre en surbrillance
-- double-cliquez sur un élément pour voir les congés</translation>
+      <translation>- sélectionner un élément pour le mettre en surbrillance
+- double-cliquer sur un élément pour voir les congés</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="47"/>
@@ -2341,8 +2341,7 @@ click again to end selection</source>
       <location filename="../../TaskPadPocketParameters.ui" line="170"/>
       <source>Click button to enter selection mode,
          click again to end selection</source>
-      <translation>Cliquer sur le bouton pour passer en mode sélection,
-cliquer à nouveau pour terminer la sélection.</translation>
+      <translation>Cliquer sur le bouton pour passer en mode sélection, cliquer à nouveau pour terminer la sélection</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="174"/>
@@ -2961,7 +2960,7 @@ measured along the specified direction</source>
       <location filename="../../TaskThicknessParameters.ui" line="20"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation>Cliquez sur le bouton pour passer en mode sélection, cliquez à nouveau pour terminer la sélection</translation>
+      <translation>Cliquer sur le bouton pour passer en mode sélection, cliquer à nouveau pour terminer la sélection</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="24"/>
@@ -2972,8 +2971,8 @@ click again to end selection</source>
       <location filename="../../TaskThicknessParameters.ui" line="34"/>
       <source>- select an item to highlight it
 - double-click on an item to see the features</source>
-      <translation>- sélectionnez un élément pour le mettre en surbrillance
-- double-cliquez sur un élément pour voir les fonctions</translation>
+      <translation>- sélectionner un élément pour le mettre en surbrillance
+- double-cliquer sur un élément pour voir les fonctions</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="47"/>
@@ -3432,7 +3431,7 @@ click again to end selection</source>
       <location filename="../../ViewProviderShapeBinder.cpp" line="95"/>
       <location filename="../../Command.cpp" line="1016"/>
       <source>A dialog is already open in the task panel</source>
-      <translation>Une boîte de dialogue est déjà ouverte dans le panneau des tâches</translation>
+      <translation>Une fenêtre de dialogue est déjà ouverte dans le panneau des tâches.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderHole.cpp" line="78"/>
@@ -3444,7 +3443,7 @@ click again to end selection</source>
       <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
       <location filename="../../Command.cpp" line="1017"/>
       <source>Do you want to close this dialog?</source>
-      <translation>Voulez-vous fermer cette boîte de dialogue?</translation>
+      <translation>Voulez-vous fermer cette fenêtre de dialogue ?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="896"/>
@@ -3962,7 +3961,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../ViewProviderThickness.cpp" line="41"/>
       <source>Edit thickness</source>
-      <translation>Modifier l'épaisseur</translation>
+      <translation>Modifier l'évidement</translation>
     </message>
   </context>
   <context>
@@ -4735,25 +4734,25 @@ over 90: larger hole radius at the bottom</source>
       <translation>Opération booléenne non prise en charge</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="783"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="787"/>
       <location filename="../../../App/FeaturePipe.cpp" line="397"/>
       <location filename="../../../App/FeaturePipe.cpp" line="417"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="248"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="126"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="252"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="127"/>
       <source>Resulting shape is not a solid</source>
       <translation>La forme résultante n'est pas un solide</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="787"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="798"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="805"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="802"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="809"/>
       <location filename="../../../App/FeatureChamfer.cpp" line="171"/>
       <location filename="../../../App/FeaturePipe.cpp" line="401"/>
       <location filename="../../../App/FeaturePipe.cpp" line="421"/>
       <location filename="../../../App/FeatureDraft.cpp" line="322"/>
       <location filename="../../../App/FeatureBoolean.cpp" line="167"/>
       <location filename="../../../App/FeatureFillet.cpp" line="117"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="253"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="257"/>
       <location filename="../../../App/FeatureHole.cpp" line="1956"/>
       <location filename="../../../App/FeatureGroove.cpp" line="193"/>
       <source>Result has multiple solids: that is not currently supported.</source>
@@ -4869,17 +4868,17 @@ over 90: larger hole radius at the bottom</source>
       <translation>Jusqu'à la face : impossible d'obtenir la sous-forme !</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="697"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="701"/>
       <source>Unable to reach the selected shape, please select faces</source>
-      <translation type="unfinished">Unable to reach the selected shape, please select faces</translation>
+      <translation>Impossible d'atteindre la forme sélectionnée, sélectionner des faces.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="724"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="728"/>
       <source>Magnitude of taper angle matches or exceeds 90 degrees</source>
       <translation>La magnitude de l'angle de dépouille est égale ou supérieure à 90 degrés.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="735"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="739"/>
       <source>Padding with draft angle failed</source>
       <translation>La protrusion avec l'angle de dépouille a échoué.</translation>
     </message>
@@ -5054,12 +5053,12 @@ Les entités d'intersection d'esquisse dans une esquisse ne sont pas autorisées
       <location filename="../../../App/FeatureHole.cpp" line="1935"/>
       <location filename="../../../App/FeatureHole.cpp" line="1940"/>
       <source>Boolean operation failed on profile Edge</source>
-      <translation type="unfinished">Boolean operation failed on profile Edge</translation>
+      <translation>L'opération booléenne a échoué sur le profil de l'arête.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1946"/>
       <source>Boolean operation produced non-solid on profile Edge</source>
-      <translation type="unfinished">Boolean operation produced non-solid on profile Edge</translation>
+      <translation>L'opération booléenne a produit des éléments non solides sur le profil de l'arête.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="160"/>
@@ -5089,27 +5088,27 @@ L'intersection d'entités d'esquisse ou de plusieurs faces dans une esquisse n'e
       <translation>Erreur : le filetage n'a pas pu être construit.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="137"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="141"/>
       <source>Loft: At least one section is needed</source>
       <translation>Lissage : au moins une section est nécessaire</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="265"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="269"/>
       <source>Loft: A fatal error occurred when making the loft</source>
       <translation>Lissage : une erreur s'est produite lors de la création du lissage</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="168"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="172"/>
       <source>Loft: Creating a face from sketch failed</source>
       <translation>Lissage : la création d'une face à partir de l'esquisse a échoué</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="201"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="205"/>
       <source>Loft: Failed to create shell</source>
       <translation>Lissage : impossible de créer la coque</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="817"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="821"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
       <translation>Impossible de créer une face à partir d'une esquisse.
@@ -5226,112 +5225,112 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
       <translation>Impossible de soustraire la fonction primitive sans la fonction de base</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="237"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="241"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="113"/>
       <source>Unknown operation type</source>
       <translation>Type d'opération inconnu</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="243"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="247"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="120"/>
       <source>Failed to perform boolean operation</source>
       <translation>Impossible d'effectuer l'opération booléenne</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="188"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="197"/>
       <source>Length of box too small</source>
       <translation>Longueur de la boîte trop petite</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="190"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="199"/>
       <source>Width of box too small</source>
       <translation>Largeur de la boîte trop petite</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="192"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="201"/>
       <source>Height of box too small</source>
       <translation>Hauteur de la boîte trop petite</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="238"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="247"/>
       <source>Radius of cylinder too small</source>
       <translation>Rayon du cylindre trop petit</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="240"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="249"/>
       <source>Height of cylinder too small</source>
       <translation>Hauteur du cylindre trop petite</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="242"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="251"/>
       <source>Rotation angle of cylinder too small</source>
       <translation>Angle de rotation du cylindre trop petit</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="295"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="304"/>
       <source>Radius of sphere too small</source>
       <translation>Rayon de la sphère trop petit</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="344"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="346"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="353"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="355"/>
       <source>Radius of cone cannot be negative</source>
       <translation>Le rayon du cône ne peut pas être négatif</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="348"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="357"/>
       <source>Height of cone too small</source>
       <translation>Hauteur du cône trop petite</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="411"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="413"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="420"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="422"/>
       <source>Radius of ellipsoid too small</source>
       <translation>Rayon de l'ellipsoïde trop petit</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="495"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="497"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="504"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="506"/>
       <source>Radius of torus too small</source>
       <translation>Rayon du tore trop petit</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="560"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="569"/>
       <source>Polygon of prism is invalid, must have 3 or more sides</source>
       <translation>Le polygone du prisme est invalide, il doit avoir au moins 3 côtés</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="562"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="571"/>
       <source>Circumradius of the polygon, of the prism, is too small</source>
       <translation>Le rayon du cercle circonscrit du polygone, du prisme, est trop petit</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="564"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="573"/>
       <source>Height of prism is too small</source>
       <translation>Hauteur du prisme trop petite</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="645"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="654"/>
       <source>delta x of wedge too small</source>
       <translation>delta X de la pyramide tronquée trop petit</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="648"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="657"/>
       <source>delta y of wedge too small</source>
       <translation>delta Y de la pyramide tronquée trop petit</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="651"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="660"/>
       <source>delta z of wedge too small</source>
       <translation>delta Z de la pyramide tronquée trop petit</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="654"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="663"/>
       <source>delta z2 of wedge is negative</source>
       <translation>delta Z2 de la pyramide tronquée est négatif</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="657"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="666"/>
       <source>delta x2 of wedge is negative</source>
       <translation>delta X2 de la pyramide tronquée est négatif</translation>
     </message>
@@ -5351,7 +5350,7 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
       <translation>L'axe de référence n'est pas valide</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="776"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="780"/>
       <source>Fusion with base feature failed</source>
       <translation>La fusion avec la fonction de base a échoué</translation>
     </message>

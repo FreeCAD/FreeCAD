@@ -1448,7 +1448,7 @@ Wenn Null, ist er gleich Radius2</translation>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="58"/>
       <source>Common</source>
-      <translation>Schnitt</translation>
+      <translation>Schnittmenge</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="53"/>
@@ -1604,7 +1604,7 @@ erneut klicken um die Auswahl zu beenden</translation>
   <context>
     <name>PartDesignGui::TaskDlgFeatureParameters</name>
     <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="133"/>
+      <location filename="../../TaskFeatureParameters.cpp" line="139"/>
       <source>Input error</source>
       <translation>Eingabefehler</translation>
     </message>
@@ -1679,17 +1679,17 @@ erneut klicken um die Auswahl zu beenden</translation>
       <translation>Auswählen</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="278"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="293"/>
       <source>Add all edges</source>
       <translation>Alle Kanten hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="285"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="300"/>
       <source>Adds all edges to the list box (active only when in add selection mode).</source>
       <translation>Fügt alle Kanten in das Listenfeld hinzu (aktiv nur im Auswahlmodus Hinzufügen).</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="293"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="308"/>
       <source>Remove</source>
       <translation>Entfernen</translation>
     </message>
@@ -4751,25 +4751,25 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
       <translation>Nicht unterstützte boolesche Verknüpfung</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="783"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="787"/>
       <location filename="../../../App/FeaturePipe.cpp" line="397"/>
       <location filename="../../../App/FeaturePipe.cpp" line="417"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="248"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="126"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="252"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="127"/>
       <source>Resulting shape is not a solid</source>
       <translation>Die resultierende Form ist kein Festkörper</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="787"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="798"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="805"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="802"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="809"/>
       <location filename="../../../App/FeatureChamfer.cpp" line="171"/>
       <location filename="../../../App/FeaturePipe.cpp" line="401"/>
       <location filename="../../../App/FeaturePipe.cpp" line="421"/>
       <location filename="../../../App/FeatureDraft.cpp" line="322"/>
       <location filename="../../../App/FeatureBoolean.cpp" line="167"/>
       <location filename="../../../App/FeatureFillet.cpp" line="117"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="253"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="257"/>
       <location filename="../../../App/FeatureHole.cpp" line="1956"/>
       <location filename="../../../App/FeatureGroove.cpp" line="193"/>
       <source>Result has multiple solids: that is not currently supported.</source>
@@ -4885,17 +4885,17 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
       <translation>Bis zu Oberfläche: Konnte kein SubShape ermitteln!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="697"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="701"/>
       <source>Unable to reach the selected shape, please select faces</source>
-      <translation type="unfinished">Unable to reach the selected shape, please select faces</translation>
+      <translation>Die ausgewählte Form konnte nicht erreicht werden, bitte Flächen auswählen</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="724"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="728"/>
       <source>Magnitude of taper angle matches or exceeds 90 degrees</source>
       <translation>Größe des Schrägungswinkels ist größer oder gleich 90 Grad</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="735"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="739"/>
       <source>Padding with draft angle failed</source>
       <translation>Aufpolsterung mit Schrägungswinkel fehlgeschlagen</translation>
     </message>
@@ -5070,12 +5070,12 @@ Skizzenobjekte dürfen einander nicht schneiden.</translation>
       <location filename="../../../App/FeatureHole.cpp" line="1935"/>
       <location filename="../../../App/FeatureHole.cpp" line="1940"/>
       <source>Boolean operation failed on profile Edge</source>
-      <translation type="unfinished">Boolean operation failed on profile Edge</translation>
+      <translation>Boolesche Verknüpfung an Profilkante fehlgeschlagen</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1946"/>
       <source>Boolean operation produced non-solid on profile Edge</source>
-      <translation type="unfinished">Boolean operation produced non-solid on profile Edge</translation>
+      <translation>Boolesche Verknüpfung erzeugte einen Nicht-Festkörper an der Profilkante</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="160"/>
@@ -5105,27 +5105,27 @@ Beim Erstellen von Taschen bis zu einer Fläche sind nur einzelne Flächen in de
       <translation>Fehler: Gewinde konnte nicht gebaut werden</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="137"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="141"/>
       <source>Loft: At least one section is needed</source>
       <translation>Fehler bei Ausformung: Mindestens ein Abschnitt wird benötigt</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="265"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="269"/>
       <source>Loft: A fatal error occurred when making the loft</source>
       <translation>Ausformung: Ein schwerwiegender Fehler ist beim Erstellen der Ausformung aufgetreten</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="168"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="172"/>
       <source>Loft: Creating a face from sketch failed</source>
       <translation>Ausormung: Es konnte keine Fläche aus der Skizze erstellt werden</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="201"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="205"/>
       <source>Loft: Failed to create shell</source>
       <translation>Ausformung: Fehler beim Erstellen des Hüllkörpers</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="817"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="821"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
       <translation>Konnte keine Fläche aus der Skizze erstellen.
@@ -5242,112 +5242,112 @@ Skizzenobjekte dürfen einander nicht schneiden und auch mehrfache Flächen sind
       <translation>Das Grundkörper-Formelement kann ohne Basis-Formelement nicht abgezogen werden</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="237"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="241"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="113"/>
       <source>Unknown operation type</source>
       <translation>Unbekannte Vorgangsart</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="243"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="247"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="120"/>
       <source>Failed to perform boolean operation</source>
       <translation>Boolesche Verknüpfung konnte nicht ausgeführt werden</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="188"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="197"/>
       <source>Length of box too small</source>
       <translation>Die Länge des Quaders ist zu gering</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="190"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="199"/>
       <source>Width of box too small</source>
       <translation>Die Breite des Quaders ist zu gering</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="192"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="201"/>
       <source>Height of box too small</source>
       <translation>Die Höhe des Quaders ist zu gering</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="238"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="247"/>
       <source>Radius of cylinder too small</source>
       <translation>Der Radius des Zylinders ist zu klein</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="240"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="249"/>
       <source>Height of cylinder too small</source>
       <translation>Die Höhe des Zylinders ist zu gering</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="242"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="251"/>
       <source>Rotation angle of cylinder too small</source>
       <translation>Der Drehwinkel des Zylinders ist zu klein</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="295"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="304"/>
       <source>Radius of sphere too small</source>
       <translation>Der Radius der Kugel ist zu klein</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="344"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="346"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="353"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="355"/>
       <source>Radius of cone cannot be negative</source>
       <translation>Der Radius des Kegels darf nicht negativ sein</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="348"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="357"/>
       <source>Height of cone too small</source>
       <translation>Die Höhe des Kegels ist zu gering</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="411"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="413"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="420"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="422"/>
       <source>Radius of ellipsoid too small</source>
       <translation>Der Radius des Ellipsoids ist zu klein</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="495"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="497"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="504"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="506"/>
       <source>Radius of torus too small</source>
       <translation>Der Radius des Torus ist zu klein</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="560"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="569"/>
       <source>Polygon of prism is invalid, must have 3 or more sides</source>
       <translation>Das Vieleck des Prismas ist ungültig; es muss 3 oder mehr Seiten haben</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="562"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="571"/>
       <source>Circumradius of the polygon, of the prism, is too small</source>
       <translation>Umkreis des Polygons des Prismas ist zu klein</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="564"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="573"/>
       <source>Height of prism is too small</source>
       <translation>Die Höhe des Prismas ist zu gering</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="645"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="654"/>
       <source>delta x of wedge too small</source>
       <translation>Das delta x des Keils ist zu klein</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="648"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="657"/>
       <source>delta y of wedge too small</source>
       <translation>Das delta x des Keils ist zu klein</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="651"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="660"/>
       <source>delta z of wedge too small</source>
       <translation>Das delta z des Keils ist zu klein</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="654"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="663"/>
       <source>delta z2 of wedge is negative</source>
       <translation>Das delta z2 des Keils ist negativ</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="657"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="666"/>
       <source>delta x2 of wedge is negative</source>
       <translation>Das delta x2 des Keils ist negativ</translation>
     </message>
@@ -5367,7 +5367,7 @@ Skizzenobjekte dürfen einander nicht schneiden und auch mehrfache Flächen sind
       <translation>Referenzachse ist ungültig</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="776"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="780"/>
       <source>Fusion with base feature failed</source>
       <translation>Vereinigung mit Basis-Formelement ist fehlgeschlagen</translation>
     </message>

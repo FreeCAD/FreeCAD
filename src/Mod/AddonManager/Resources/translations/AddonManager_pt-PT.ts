@@ -104,12 +104,12 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="55"/>
       <source>Required Python modules</source>
-      <translation type="unfinished">Required Python modules</translation>
+      <translation>Módulos Python necessários</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="67"/>
       <source>Optional Python modules</source>
-      <translation type="unfinished">Optional Python modules</translation>
+      <translation>Módulos opcionais do Python</translation>
     </message>
   </context>
   <context>
@@ -117,18 +117,18 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="14"/>
       <source>Addon Developer Tools</source>
-      <translation type="unfinished">Addon Developer Tools</translation>
+      <translation>Ferramentas do Desenvolvedor Addon</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="25"/>
       <source>Path to Addon</source>
-      <translation type="unfinished">Path to Addon</translation>
+      <translation>Caminho para o Addon</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="45"/>
       <location filename="../../developer_mode.ui" line="195"/>
       <source>Browse...</source>
-      <translation type="unfinished">Browse...</translation>
+      <translation>Explorar...</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="54"/>
@@ -138,13 +138,13 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="65"/>
       <source>Primary branch</source>
-      <translation type="unfinished">Primary branch</translation>
+      <translation>Ramo primário</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="77"/>
       <location filename="../../developer_mode.ui" line="160"/>
       <source>Explanation of what this Addon provides. Displayed in the Addon Manager. It is not necessary for this to state that this is a FreeCAD Addon.</source>
-      <translation type="unfinished">Explanation of what this Addon provides. Displayed in the Addon Manager. It is not necessary for this to state that this is a FreeCAD Addon.</translation>
+      <translation>Explicação do que este Addon fornece. Exibido no Gerenciador de Addons. Não é necessário que isso declare que este é um Addon do FreeCAD.</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="80"/>
@@ -188,7 +188,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../developer_mode.ui" line="139"/>
       <location filename="../../developer_mode.ui" line="225"/>
       <source>Displayed in the Addon Manager&apos;s list of Addons. Should not include the word &quot;FreeCAD&quot;, and must be a valid directory name on all support operating systems.</source>
-      <translation type="unfinished">Displayed in the Addon Manager&apos;s list of Addons. Should not include the word &quot;FreeCAD&quot;, and must be a valid directory name on all support operating systems.</translation>
+      <translation>Exibido na lista de Addon Manager&apos;s de Complementos. Não deve incluir a palavra &quot;FreeCAD&quot;, e deve ser um nome de diretório válido em todos os sistemas operacionais de suporte.</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="153"/>
@@ -198,7 +198,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="166"/>
       <source>TIP: Since this is displayed within FreeCAD, in the Addon Manager, it is not necessary to take up space saying things like &quot;This is a FreeCAD Addon...&quot; -- just say what it does.</source>
-      <translation type="unfinished">TIP: Since this is displayed within FreeCAD, in the Addon Manager, it is not necessary to take up space saying things like &quot;This is a FreeCAD Addon...&quot; -- just say what it does.</translation>
+      <translation>DICA: Como isso é exibido no FreeCAD, no Gerenciador de Addon, não é necessário ocupar espaço dizendo coisas como &quot;Este é um Addon do FreeCAD. .&quot; -- apenas diga o que faz.</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="173"/>
@@ -243,12 +243,12 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="265"/>
       <source>Detect...</source>
-      <translation type="unfinished">Detect...</translation>
+      <translation>Detectar...</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="277"/>
       <source>Addon Contents</source>
-      <translation type="unfinished">Addon Contents</translation>
+      <translation>Conteúdo adicional</translation>
     </message>
   </context>
   <context>
@@ -271,7 +271,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_tags.ui" line="35"/>
       <source>HINT: Common tags include &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot;, etc.</source>
-      <translation type="unfinished">HINT: Common tags include &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot;, etc.</translation>
+      <translation>DICA: Tags comuns incluem &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot;, etc.</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="17"/>
@@ -281,7 +281,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../first_run.ui" line="23"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
-      <translation type="unfinished">The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</translation>
+      <translation>Os complementos que podem ser instalados aqui não fazem oficialmente parte do FreeCAD e não são revistos pela equipe do FreeCAD. Certifique-se que conhece o que está a instalar!</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="39"/>
@@ -291,7 +291,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../first_run.ui" line="46"/>
       <source>Automatically check installed Addons for updates</source>
-      <translation type="unfinished">Automatically check installed Addons for updates</translation>
+      <translation>Verificar automaticamente atualizações de Addons instalados</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="53"/>
@@ -316,7 +316,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../first_run.ui" line="86"/>
       <source>These and other settings are available in the FreeCAD Preferences window.</source>
-      <translation type="unfinished">These and other settings are available in the FreeCAD Preferences window.</translation>
+      <translation>Estas e outras configurações estão disponíveis na janela de Preferências do FreeCAD.</translation>
     </message>
   </context>
   <context>
@@ -349,12 +349,12 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="69"/>
       <source>If this is an optional dependency, the Addon Manager will offer to install it (when possible), but will not block installation if the user chooses not to, or cannot, install the package.</source>
-      <translation type="unfinished">If this is an optional dependency, the Addon Manager will offer to install it (when possible), but will not block installation if the user chooses not to, or cannot, install the package.</translation>
+      <translation>Se esta for uma dependência opcional, o Gerenciador de Addon oferecerá para instalar (quando possível), mas não irá bloquear a instalação se o usuário escolher não como, ou não pode, instalar o pacote.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="72"/>
       <source>Optional</source>
-      <translation type="unfinished">Optional</translation>
+      <translation>Opcional</translation>
     </message>
   </context>
   <context>
@@ -459,7 +459,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="20"/>
       <source>Upcoming versions of the FreeCAD Addon Manager will support developers&apos; setting a specific branch or tag for use with a specific version of FreeCAD (e.g. setting a specific tag as the last version of your Addon to support v0.19, etc.)</source>
-      <translation type="unfinished">Upcoming versions of the FreeCAD Addon Manager will support developers&apos; setting a specific branch or tag for use with a specific version of FreeCAD (e.g. setting a specific tag as the last version of your Addon to support v0.19, etc.)</translation>
+      <translation>Versões futuras do Gerenciador de Addon FreeCAD suportará desenvolvedores&apos; definindo um branch ou tag específico para uso com uma versão específica do FreeCAD (ex: definir uma tag específica como a última versão do Addon para suportar v0.19, etc.)</translation>
     </message>
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="43"/>
@@ -512,8 +512,8 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../AddonManagerOptions.ui" line="23"/>
       <source>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates</source>
-      <translation type="unfinished">If this option is selected, when launching the Addon Manager,
-installed addons will be checked for available updates</translation>
+      <translation>Se esta opção for selecionada, ao iniciar o Addon Manager,
+addons instalados serão verificados se há atualizações disponíveis</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="27"/>
@@ -548,7 +548,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="98"/>
       <source>Hide Addons without a license</source>
-      <translation type="unfinished">Hide Addons without a license</translation>
+      <translation>Ocultar Complementos sem licença</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="114"/>
@@ -618,17 +618,17 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="369"/>
       <source>The path to the git executable. Autodetected if needed and not specified.</source>
-      <translation type="unfinished">The path to the git executable. Autodetected if needed and not specified.</translation>
+      <translation>O caminho para o git executável. Detectado automaticamente se necessário e não especificado.</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="390"/>
       <source>Advanced Options</source>
-      <translation type="unfinished">Advanced Options</translation>
+      <translation>Opções Avançadas</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="396"/>
       <source>Show option to change branches (requires git)</source>
-      <translation type="unfinished">Show option to change branches (requires git)</translation>
+      <translation>Exibir opção para alterar branches (requer git)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="409"/>
@@ -638,7 +638,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="422"/>
       <source>Activate Addon Manager options intended for developers of new Addons.</source>
-      <translation type="unfinished">Activate Addon Manager options intended for developers of new Addons.</translation>
+      <translation>Ativar opções de Gerenciador de Addon destinadas aos desenvolvedores de novos Addons.</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="425"/>
@@ -651,17 +651,17 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../package_details.ui" line="49"/>
       <source>Uninstalls a selected macro or workbench</source>
-      <translation type="unfinished">Uninstalls a selected macro or workbench</translation>
+      <translation>Desinstala uma macro ou bancada de trabalho selecionada</translation>
     </message>
     <message>
       <location filename="../../package_details.ui" line="52"/>
       <source>Install</source>
-      <translation type="unfinished">Install</translation>
+      <translation>instalar</translation>
     </message>
     <message>
       <location filename="../../package_details.ui" line="59"/>
       <source>Uninstall</source>
-      <translation type="unfinished">Uninstall</translation>
+      <translation>Desinstalar</translation>
     </message>
     <message>
       <location filename="../../package_details.ui" line="66"/>
@@ -676,7 +676,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../package_details.ui" line="80"/>
       <source>Change branch</source>
-      <translation type="unfinished">Change branch</translation>
+      <translation>Alterar ramo</translation>
     </message>
   </context>
   <context>
@@ -689,22 +689,22 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="20"/>
       <source>The following Python packages have been installed locally by the Addon Manager to satisfy Addon dependencies. Installation location:</source>
-      <translation type="unfinished">The following Python packages have been installed locally by the Addon Manager to satisfy Addon dependencies. Installation location:</translation>
+      <translation>Os seguintes pacotes do Python foram instalados localmente pelo Addon Manager para satisfazer as dependências do Addon. Localização da instalação:</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="59"/>
       <source>Package name</source>
-      <translation type="unfinished">Package name</translation>
+      <translation>Nome do pacote</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="64"/>
       <source>Installed version</source>
-      <translation type="unfinished">Installed version</translation>
+      <translation>Versão instalada:</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="69"/>
       <source>Available version</source>
-      <translation type="unfinished">Available version</translation>
+      <translation>Versão disponível:</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="74"/>
@@ -1053,7 +1053,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../developer_mode_license.ui" line="74"/>
       <source>Browse...</source>
-      <translation type="unfinished">Browse...</translation>
+      <translation>Explorar...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="81"/>
@@ -1079,7 +1079,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../select_toolbar_dialog.ui" line="36"/>
       <source>Ask every time</source>
-      <translation type="unfinished">Ask every time</translation>
+      <translation>Perguntar todas as vezes</translation>
     </message>
   </context>
   <context>
@@ -1088,27 +1088,27 @@ installed addons will be checked for available updates</translation>
       <location filename="../../toolbar_button.ui" line="14"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="486"/>
       <source>Add button?</source>
-      <translation type="unfinished">Add button?</translation>
+      <translation>Adicionar botão?</translation>
     </message>
     <message>
       <location filename="../../toolbar_button.ui" line="20"/>
       <source>Add a toolbar button for this macro?</source>
-      <translation type="unfinished">Add a toolbar button for this macro?</translation>
+      <translation>Adicionar um botão na barra de ferramentas para esta macro?</translation>
     </message>
     <message>
       <location filename="../../toolbar_button.ui" line="32"/>
       <source>Yes</source>
-      <translation type="unfinished">Yes</translation>
+      <translation>Sim</translation>
     </message>
     <message>
       <location filename="../../toolbar_button.ui" line="39"/>
       <source>No</source>
-      <translation type="unfinished">No</translation>
+      <translation>Não</translation>
     </message>
     <message>
       <location filename="../../toolbar_button.ui" line="46"/>
       <source>Never</source>
-      <translation type="unfinished">Never</translation>
+      <translation>Nunca</translation>
     </message>
   </context>
   <context>
@@ -1116,17 +1116,17 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../AddonManager.py" line="296"/>
       <source>Starting up...</source>
-      <translation type="unfinished">Starting up...</translation>
+      <translation>Iniciando....</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="332"/>
       <source>Loading addon information</source>
-      <translation type="unfinished">Loading addon information</translation>
+      <translation>Carregando informações de addon</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="358"/>
       <source>Worker process {} is taking a long time to stop...</source>
-      <translation type="unfinished">Worker process {} is taking a long time to stop...</translation>
+      <translation>Processo de trabalhador {} está demorando muito para parar...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_cache.py" line="95"/>
@@ -1150,17 +1150,17 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../AddonManager.py" line="423"/>
       <source>You must restart FreeCAD for changes to take effect.</source>
-      <translation type="unfinished">You must restart FreeCAD for changes to take effect.</translation>
+      <translation>Você deve reiniciar o FreeCAD para que as alterações tenham efeito.</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="432"/>
       <source>Restart now</source>
-      <translation type="unfinished">Restart now</translation>
+      <translation>Reiniciar agora</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="433"/>
       <source>Restart later</source>
-      <translation type="unfinished">Restart later</translation>
+      <translation>Reiniciar mais tarde</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="499"/>
@@ -1177,7 +1177,7 @@ installed addons will be checked for available updates</translation>
       <location filename="../../AddonManager.py" line="689"/>
       <location filename="../../AddonManager.py" line="724"/>
       <source>Checking for updates...</source>
-      <translation type="unfinished">Checking for updates...</translation>
+      <translation>A procurar atualizações...</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="939"/>
@@ -1198,7 +1198,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="97"/>
       <source>Check for updates</source>
-      <translation type="unfinished">Check for updates</translation>
+      <translation>A procurar atualizações</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="98"/>
@@ -1208,24 +1208,24 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="99"/>
       <source>Developer tools...</source>
-      <translation type="unfinished">Developer tools...</translation>
+      <translation>Ferramentas do Desenvolvedor Addon...</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="107"/>
       <source>Apply %n available update(s)</source>
-      <translation type="unfinished">Apply %n available update(s)</translation>
+      <translation>Aplicar atualizações do %n disponíveis</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="110"/>
       <source>No updates available</source>
-      <translation type="unfinished">No updates available</translation>
+      <translation>Nenhuma atualização disponível</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="829"/>
       <location filename="../../AddonManager.py" line="855"/>
       <location filename="../../AddonManager.py" line="954"/>
       <source>Cannot launch a new installer until the previous one has finished.</source>
-      <translation type="unfinished">Cannot launch a new installer until the previous one has finished.</translation>
+      <translation>Não é possível iniciar um novo instalador até que o anterior tenha terminado.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_people_table.py" line="86"/>
@@ -1246,17 +1246,17 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../manage_python_dependencies.py" line="164"/>
       <source>New Python Version Detected</source>
-      <translation type="unfinished">New Python Version Detected</translation>
+      <translation>Nova versão do Python detectada</translation>
     </message>
     <message>
       <location filename="../../manage_python_dependencies.py" line="169"/>
       <source>This appears to be the first time this version of Python has been used with the Addon Manager. Would you like to install the same auto-installed dependencies for it?</source>
-      <translation type="unfinished">This appears to be the first time this version of Python has been used with the Addon Manager. Would you like to install the same auto-installed dependencies for it?</translation>
+      <translation>Parece ser a primeira vez que esta versão do Python é usada no Addon Manager. Você gostaria de instalar as mesmas dependências instaladas automaticamente para ele?</translation>
     </message>
     <message>
       <location filename="../../manage_python_dependencies.py" line="198"/>
       <source>Processing, please wait...</source>
-      <translation type="unfinished">Processing, please wait...</translation>
+      <translation>Processando. Por favor, aguarde...</translation>
     </message>
     <message>
       <location filename="../../manage_python_dependencies.py" line="246"/>
@@ -1267,27 +1267,27 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../manage_python_dependencies.py" line="340"/>
       <source>Updating...</source>
-      <translation type="unfinished">Updating...</translation>
+      <translation>Atualizando...</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="96"/>
       <source>Could not import QtNetwork -- it does not appear to be installed on your system. Your provider may have a package for this dependency (often called &quot;python3-pyside2.qtnetwork&quot;)</source>
-      <translation type="unfinished">Could not import QtNetwork -- it does not appear to be installed on your system. Your provider may have a package for this dependency (often called &quot;python3-pyside2.qtnetwork&quot;)</translation>
+      <translation>Não foi possível importar QtNetwork -- parece que não está instalado no seu sistema. Seu provedor pode ter um pacote para essa dependência (muitas vezes chamado &quot;python3-pyside2.qtnetwork&quot;)</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="228"/>
       <source>Failed to convert the specified proxy port &apos;{}&apos; to a port number</source>
-      <translation type="unfinished">Failed to convert the specified proxy port &apos;{}&apos; to a port number</translation>
+      <translation>Falha ao converter a porta proxy especificada &apos;{}&apos; para um número de porta</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="257"/>
       <source>Parameter error: mutually exclusive proxy options set. Resetting to default.</source>
-      <translation type="unfinished">Parameter error: mutually exclusive proxy options set. Resetting to default.</translation>
+      <translation>Erro de parâmetro: conjunto de opções de proxy mutuamente exclusivas. Redefinindo para o padrão.</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="272"/>
       <source>Parameter error: user proxy indicated, but no proxy provided. Resetting to default.</source>
-      <translation type="unfinished">Parameter error: user proxy indicated, but no proxy provided. Resetting to default.</translation>
+      <translation>Erro de parâmetro: o proxy do usuário indicou, mas nenhum proxy foi fornecido. Redefinindo para o padrão.</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="421"/>
@@ -1453,12 +1453,12 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="111"/>
       <source>Install</source>
-      <translation type="unfinished">Install</translation>
+      <translation>instalar</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="112"/>
       <source>Uninstall</source>
-      <translation type="unfinished">Uninstall</translation>
+      <translation>Desinstalar</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="114"/>
@@ -1983,7 +1983,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../package_list.py" line="474"/>
       <source>Installed version</source>
-      <translation type="unfinished">Installed version</translation>
+      <translation>Versão instalada:</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="483"/>
@@ -1998,7 +1998,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../package_list.py" line="494"/>
       <source>Available version</source>
-      <translation type="unfinished">Available version</translation>
+      <translation>Versão disponível:</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="106"/>

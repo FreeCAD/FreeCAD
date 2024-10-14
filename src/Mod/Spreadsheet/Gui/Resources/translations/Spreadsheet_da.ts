@@ -680,7 +680,7 @@ switch the design configuration. The property will be created if not exist.</tra
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="140"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="116"/>
       <location filename="../../Command.cpp" line="195"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
       <translation type="unfinished">CSV (*.csv *.CSV);;All (*)</translation>
@@ -691,12 +691,12 @@ switch the design configuration. The property will be created if not exist.</tra
       <translation>Importer fil</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="142"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="118"/>
       <source>Export file</source>
       <translation>Eksportér fil</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="167"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="143"/>
       <source>Show spreadsheet</source>
       <translation>Vis regnearket</translation>
     </message>

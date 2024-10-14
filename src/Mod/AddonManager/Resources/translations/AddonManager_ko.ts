@@ -1468,7 +1468,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="113"/>
       <source>Disable</source>
-      <translation type="unfinished">Disable</translation>
+      <translation>비활성화</translation>
     </message>
     <message>
       <location filename="../../addonmanager_package_details_controller.py" line="125"/>

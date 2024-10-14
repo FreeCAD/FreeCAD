@@ -4,22 +4,22 @@
   <context>
     <name>StartGui::FirstStartWidget</name>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="95"/>
+      <location filename="../../FirstStartWidget.cpp" line="94"/>
       <source>Done</source>
       <translation>Udført</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="97"/>
+      <location filename="../../FirstStartWidget.cpp" line="96"/>
       <source>Welcome to %1</source>
       <translation>Velkommen til %1</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="100"/>
+      <location filename="../../FirstStartWidget.cpp" line="99"/>
       <source>To get started, set your basic configuration options below.</source>
       <translation>For at komme i gang, så angiv dine ønskede basisindstillinger nedenfor.</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="101"/>
+      <location filename="../../FirstStartWidget.cpp" line="100"/>
       <source>These options (and many more) can be changed later in Preferences.</source>
       <translation>Disse indstillinger (og mange flere) kan ændres i menupunktet Præferencer.</translation>
     </message>
@@ -59,87 +59,87 @@
   <context>
     <name>StartGui::StartView</name>
     <message>
-      <location filename="../../StartView.cpp" line="212"/>
+      <location filename="../../StartView.cpp" line="213"/>
       <source>Empty file</source>
       <translation>Tom fil</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="213"/>
+      <location filename="../../StartView.cpp" line="214"/>
       <source>Create a new empty FreeCAD file</source>
       <translation>Opret en ny tom FreeCAD-fil</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="215"/>
+      <location filename="../../StartView.cpp" line="216"/>
       <source>Open File</source>
       <translation>Åbn fil</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="216"/>
+      <location filename="../../StartView.cpp" line="217"/>
       <source>Open an existing CAD file or 3D model</source>
       <translation>Åbn en eksisterende CAD-fil eller 3D-model</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="218"/>
+      <location filename="../../StartView.cpp" line="219"/>
       <source>Parametric Part</source>
       <translation>Parametrisk komponent</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="219"/>
+      <location filename="../../StartView.cpp" line="220"/>
       <source>Create a part with the Part Design workbench</source>
       <translation>Opret en ny komponent eller åbn en eksisterende</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="221"/>
+      <location filename="../../StartView.cpp" line="222"/>
       <source>Assembly</source>
       <translation>Samling</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="222"/>
+      <location filename="../../StartView.cpp" line="223"/>
       <source>Create an assembly project</source>
       <translation>Opret en samling af komponenter</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="224"/>
+      <location filename="../../StartView.cpp" line="225"/>
       <source>2D Draft</source>
       <translation>2D Udkast</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="225"/>
+      <location filename="../../StartView.cpp" line="226"/>
       <source>Create a 2D Draft with the Draft workbench</source>
       <translation>Opret eller rediger et udkast i 2D</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="227"/>
+      <location filename="../../StartView.cpp" line="228"/>
       <source>BIM/Architecture</source>
       <translation>BIM/Arkitektur</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="228"/>
+      <location filename="../../StartView.cpp" line="229"/>
       <source>Create an architectural project</source>
       <translation>Opret et arkitekturprojekt</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="494"/>
+      <location filename="../../StartView.cpp" line="506"/>
       <source>New File</source>
       <translation>Ny Fil</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="495"/>
+      <location filename="../../StartView.cpp" line="507"/>
       <source>Examples</source>
       <translation>Eksempler</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="496"/>
+      <location filename="../../StartView.cpp" line="508"/>
       <source>Recent Files</source>
       <translation>Seneste filer</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="499"/>
+      <location filename="../../StartView.cpp" line="511"/>
       <source>Open first start setup</source>
       <translation type="unfinished">Open first start setup</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="501"/>
+      <location filename="../../StartView.cpp" line="513"/>
       <source>Don't show this Start page again (start with blank screen)</source>
       <translation>Vis ikke startsiden igen (start med tom skærm)</translation>
     </message>
@@ -147,7 +147,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="488"/>
+      <location filename="../../StartView.cpp" line="500"/>
       <source>Start</source>
       <translation>Start</translation>
     </message>

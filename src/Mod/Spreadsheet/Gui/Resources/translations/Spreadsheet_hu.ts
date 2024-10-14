@@ -680,7 +680,7 @@ változtassa a tervezési konfigurációt. A tulajdonság létrejön, ha nem lé
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="140"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="116"/>
       <location filename="../../Command.cpp" line="195"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
       <translation>CSV (*.csv *.CSV);;Összes (*)</translation>
@@ -691,12 +691,12 @@ változtassa a tervezési konfigurációt. A tulajdonság létrejön, ha nem lé
       <translation>Fájl importálása</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="142"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="118"/>
       <source>Export file</source>
       <translation>Fájl exportálása</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="167"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="143"/>
       <source>Show spreadsheet</source>
       <translation>Számolótábla mutatása</translation>
     </message>

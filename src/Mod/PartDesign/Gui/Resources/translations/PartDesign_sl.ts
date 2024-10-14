@@ -1606,7 +1606,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
   <context>
     <name>PartDesignGui::TaskDlgFeatureParameters</name>
     <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="133"/>
+      <location filename="../../TaskFeatureParameters.cpp" line="139"/>
       <source>Input error</source>
       <translation>Napaka vnosa</translation>
     </message>
@@ -1681,17 +1681,17 @@ s ponovnim klikom pa zaključite izbiranje</translation>
       <translation>Izberi</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="278"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="293"/>
       <source>Add all edges</source>
       <translation>Dodaj vse robove</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="285"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="300"/>
       <source>Adds all edges to the list box (active only when in add selection mode).</source>
       <translation>Doda vse robove v okno s seznamom (dejavno le v načinu dodajanja izbora).</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="293"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="308"/>
       <source>Remove</source>
       <translation>Odstrani</translation>
     </message>
@@ -4755,25 +4755,25 @@ nad 90: v spodnjem delu večji premer luknje</translation>
       <translation type="unfinished">Unsupported boolean operation</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="783"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="787"/>
       <location filename="../../../App/FeaturePipe.cpp" line="397"/>
       <location filename="../../../App/FeaturePipe.cpp" line="417"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="248"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="126"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="252"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="127"/>
       <source>Resulting shape is not a solid</source>
       <translation>Dobljena oblika ni telo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="787"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="798"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="805"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="802"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="809"/>
       <location filename="../../../App/FeatureChamfer.cpp" line="171"/>
       <location filename="../../../App/FeaturePipe.cpp" line="401"/>
       <location filename="../../../App/FeaturePipe.cpp" line="421"/>
       <location filename="../../../App/FeatureDraft.cpp" line="322"/>
       <location filename="../../../App/FeatureBoolean.cpp" line="167"/>
       <location filename="../../../App/FeatureFillet.cpp" line="117"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="253"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="257"/>
       <location filename="../../../App/FeatureHole.cpp" line="1956"/>
       <location filename="../../../App/FeatureGroove.cpp" line="193"/>
       <source>Result has multiple solids: that is not currently supported.</source>
@@ -4889,17 +4889,17 @@ nad 90: v spodnjem delu večji premer luknje</translation>
       <translation type="unfinished">Up to face: Could not get SubShape!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="697"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="701"/>
       <source>Unable to reach the selected shape, please select faces</source>
       <translation type="unfinished">Unable to reach the selected shape, please select faces</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="724"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="728"/>
       <source>Magnitude of taper angle matches or exceeds 90 degrees</source>
       <translation type="unfinished">Magnitude of taper angle matches or exceeds 90 degrees</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="735"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="739"/>
       <source>Padding with draft angle failed</source>
       <translation type="unfinished">Padding with draft angle failed</translation>
     </message>
@@ -5109,27 +5109,27 @@ Sekanje enot očrta ali več ploskev v očrtu ni dopustno pri izdelavi ugreza v 
       <translation>Napak: navoja ni bilo mogoče izvesti</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="137"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="141"/>
       <source>Loft: At least one section is needed</source>
       <translation>Navleček: potreben je vsaj en presek</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="265"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="269"/>
       <source>Loft: A fatal error occurred when making the loft</source>
       <translation>Navleček: pri navlačenju je prišlo do usodne napake</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="168"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="172"/>
       <source>Loft: Creating a face from sketch failed</source>
       <translation type="unfinished">Loft: Creating a face from sketch failed</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="201"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="205"/>
       <source>Loft: Failed to create shell</source>
       <translation type="unfinished">Loft: Failed to create shell</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="817"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="821"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
       <translation>Iz očrta ni bilo mogoče ustvariti ploskve.
@@ -5246,112 +5246,112 @@ Sekajočih se prvin očrta ali več ploskev v očrtu ne sme biti.</translation>
       <translation>Osnovnika ni mogoče odvzemati brez izhodiščne značilnosti</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="237"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="241"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="113"/>
       <source>Unknown operation type</source>
       <translation type="unfinished">Unknown operation type</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="243"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="247"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="120"/>
       <source>Failed to perform boolean operation</source>
       <translation type="unfinished">Failed to perform boolean operation</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="188"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="197"/>
       <source>Length of box too small</source>
       <translation>Premajhna dolžina kvadra</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="190"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="199"/>
       <source>Width of box too small</source>
       <translation>Premajhna širina kvadra</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="192"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="201"/>
       <source>Height of box too small</source>
       <translation>Premajhna višina kvadra</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="238"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="247"/>
       <source>Radius of cylinder too small</source>
       <translation>Premajhen polmer valja</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="240"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="249"/>
       <source>Height of cylinder too small</source>
       <translation>Premajhna višina valja</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="242"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="251"/>
       <source>Rotation angle of cylinder too small</source>
       <translation>Premahjen kót zasuka valja</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="295"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="304"/>
       <source>Radius of sphere too small</source>
       <translation>Premajhen polmer krogle</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="344"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="346"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="353"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="355"/>
       <source>Radius of cone cannot be negative</source>
       <translation>Polmer stožca ne more biti negativen</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="348"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="357"/>
       <source>Height of cone too small</source>
       <translation>Premajhna višina stožca</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="411"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="413"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="420"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="422"/>
       <source>Radius of ellipsoid too small</source>
       <translation>Premajhen polmer elipsoida</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="495"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="497"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="504"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="506"/>
       <source>Radius of torus too small</source>
       <translation>Premajhen polmer svitka</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="560"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="569"/>
       <source>Polygon of prism is invalid, must have 3 or more sides</source>
       <translation>Mnogokotnik prizma ni veljaven. Imeti mora najmanj 3 stranice</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="562"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="571"/>
       <source>Circumradius of the polygon, of the prism, is too small</source>
       <translation>Premajhen polmer očrtane krožnice mnogokotnika prizme</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="564"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="573"/>
       <source>Height of prism is too small</source>
       <translation>Premajhna višina prizme</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="645"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="654"/>
       <source>delta x of wedge too small</source>
       <translation>sprememba x-a klina premajhna</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="648"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="657"/>
       <source>delta y of wedge too small</source>
       <translation>sprememba y-a klina premajhna</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="651"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="660"/>
       <source>delta z of wedge too small</source>
       <translation>sprememba z-ja klina premajhna</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="654"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="663"/>
       <source>delta z2 of wedge is negative</source>
       <translation>sprememba klinovega z-ja 2 je negativna</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="657"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="666"/>
       <source>delta x2 of wedge is negative</source>
       <translation>sprememba klinovega x-a 2 je negativna</translation>
     </message>
@@ -5371,7 +5371,7 @@ Sekajočih se prvin očrta ali več ploskev v očrtu ne sme biti.</translation>
       <translation type="unfinished">Reference axis is invalid</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="776"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="780"/>
       <source>Fusion with base feature failed</source>
       <translation>Združitev z izhodiščno značilnostjo spodletela</translation>
     </message>

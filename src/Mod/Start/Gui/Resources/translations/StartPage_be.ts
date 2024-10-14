@@ -4,22 +4,22 @@
   <context>
     <name>StartGui::FirstStartWidget</name>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="95"/>
+      <location filename="../../FirstStartWidget.cpp" line="94"/>
       <source>Done</source>
       <translation>Гатова</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="97"/>
+      <location filename="../../FirstStartWidget.cpp" line="96"/>
       <source>Welcome to %1</source>
       <translation>Вітаем у %1</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="100"/>
+      <location filename="../../FirstStartWidget.cpp" line="99"/>
       <source>To get started, set your basic configuration options below.</source>
       <translation>Каб пачаць працу, задайце свае асноўныя параметры канфігурацыі, якія прыведзеныя ніжэй.</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="101"/>
+      <location filename="../../FirstStartWidget.cpp" line="100"/>
       <source>These options (and many more) can be changed later in Preferences.</source>
       <translation>Гэтыя налады (і многія іншыя) могуць быць змененыя пазней у Перавагах.</translation>
     </message>
@@ -59,87 +59,87 @@
   <context>
     <name>StartGui::StartView</name>
     <message>
-      <location filename="../../StartView.cpp" line="212"/>
+      <location filename="../../StartView.cpp" line="213"/>
       <source>Empty file</source>
       <translation>Пусты файл</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="213"/>
+      <location filename="../../StartView.cpp" line="214"/>
       <source>Create a new empty FreeCAD file</source>
       <translation>Стварыць новы пусты файл FreeCAD</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="215"/>
+      <location filename="../../StartView.cpp" line="216"/>
       <source>Open File</source>
       <translation>Адчыніць файл</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="216"/>
+      <location filename="../../StartView.cpp" line="217"/>
       <source>Open an existing CAD file or 3D model</source>
       <translation>Адчыніць файл CAD, які існуе, ці трохмерную мадэль</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="218"/>
+      <location filename="../../StartView.cpp" line="219"/>
       <source>Parametric Part</source>
       <translation>Параметрычная дэталь</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="219"/>
+      <location filename="../../StartView.cpp" line="220"/>
       <source>Create a part with the Part Design workbench</source>
       <translation>Стварыць дэталь з дапамогай варштату Праектавання дэталі</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="221"/>
+      <location filename="../../StartView.cpp" line="222"/>
       <source>Assembly</source>
       <translation>Зборка</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="222"/>
+      <location filename="../../StartView.cpp" line="223"/>
       <source>Create an assembly project</source>
       <translation>Стварыць праект зборкі</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="224"/>
+      <location filename="../../StartView.cpp" line="225"/>
       <source>2D Draft</source>
       <translation>Двухмерны чарнавік</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="225"/>
+      <location filename="../../StartView.cpp" line="226"/>
       <source>Create a 2D Draft with the Draft workbench</source>
       <translation>Стварыць двухмерны чарнавік з дапамогай варштату Чарнавік</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="227"/>
+      <location filename="../../StartView.cpp" line="228"/>
       <source>BIM/Architecture</source>
       <translation>BIM/Архітэктура</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="228"/>
+      <location filename="../../StartView.cpp" line="229"/>
       <source>Create an architectural project</source>
       <translation>Стварыць архітэктурны праект</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="494"/>
+      <location filename="../../StartView.cpp" line="506"/>
       <source>New File</source>
       <translation>Новы файл</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="495"/>
+      <location filename="../../StartView.cpp" line="507"/>
       <source>Examples</source>
       <translation>Прыклады</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="496"/>
+      <location filename="../../StartView.cpp" line="508"/>
       <source>Recent Files</source>
       <translation>Апошнія файлы</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="499"/>
+      <location filename="../../StartView.cpp" line="511"/>
       <source>Open first start setup</source>
       <translation>Адчыніць налады пры першым запуску</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="501"/>
+      <location filename="../../StartView.cpp" line="513"/>
       <source>Don't show this Start page again (start with blank screen)</source>
       <translation>Больш не паказваць гэтую стартавую старонку (пачаць з пустога экрану)</translation>
     </message>
@@ -147,7 +147,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="488"/>
+      <location filename="../../StartView.cpp" line="500"/>
       <source>Start</source>
       <translation>Пачаць</translation>
     </message>

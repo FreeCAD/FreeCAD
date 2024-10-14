@@ -2205,7 +2205,7 @@ Pohled kamery určuje směr projekce.</translation>
       <translation>Převést síť</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1078"/>
+      <location filename="../../TaskAttacher.cpp" line="1076"/>
       <source>Edit attachment</source>
       <translation>Upravit připojení</translation>
     </message>
@@ -4992,33 +4992,33 @@ Poznámka: Umístění je určeno v lokálním souřadnicovém systému připoje
   <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1001"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1006"/>
       <source>Shape Content</source>
       <translation>Obsah tvaru</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1009"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="1204"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1014"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1209"/>
       <source>Settings</source>
       <translation>Nastavení</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1015"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1020"/>
       <source>Skip this settings page and run the geometry check automatically.</source>
       <translation>Přeskočit tuto stránku nastavení a provést kontrolu geometrie automaticky.</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1017"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1022"/>
       <source>Default: false</source>
       <translation>Výchozí: vypnuto</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1024"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1029"/>
       <source>Run boolean operation check</source>
       <translation>Spustit kontrolu booleovských operací</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1025"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1030"/>
       <source>Extra boolean operations check that can sometimes find errors that
 the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</source>
@@ -5027,160 +5027,160 @@ které standardní kontrola geometrie BRep postrádá. Tyto chyby nemusí
 vždy znamenat, že kontrolovaný objekt je nepoužitelný.  Výchozí: vypnuto</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1035"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1040"/>
       <source>Single-threaded</source>
       <translation>Jedním vláknem</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1036"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1041"/>
       <source>Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</source>
       <translation>Spustit kontrolu geometrie v jednom vlákně. Toto je pomalejší,
 ale stabilnější. Výchozí: vypnuto</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1045"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1050"/>
       <source>Log errors</source>
       <translation>Zaznamenat chyby</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1046"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1051"/>
       <source>Log errors to report view.  Default: true</source>
       <translation>Zaznamenávat chyby pro zobrazení hlášení. Výchozí: zapnuto</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1053"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1058"/>
       <source>Expand shape content</source>
       <translation>Rozbalit obsah tvaru</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1054"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1059"/>
       <source>Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>Rozbalí obsah tvaru. Změny se projeví při příštím použití 
 nástroje pro kontrolu geometrie. Výchozí: vypnuto</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1063"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1068"/>
       <source>Advanced shape content</source>
       <translation>Rozšířený obsah tvaru</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1064"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1069"/>
       <source>Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>Zobrazit rozšířený obsah tvaru. Změny se projeví při příštím použití 
 nástroje pro kontrolu geometrie. Výchozí: vypnuto</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1072"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1077"/>
       <source>
 Individual boolean operation checks:</source>
       <translation>
 Jednotlivé kontroly booleovských operací:</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1075"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1080"/>
       <source>Bad type</source>
       <translation>Chybný typ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1083"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1088"/>
       <source>Self-intersect</source>
       <translation>Sebe protínání</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1096"/>
       <source>Too small edge</source>
       <translation>Příliš malá hrana</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1099"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1104"/>
       <source>Nonrecoverable face</source>
       <translation>Neobnovitelná plocha</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1107"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1112"/>
       <source>Continuity</source>
       <translation>Kontinuita</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1115"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1120"/>
       <source>Incompatibility of face</source>
       <translation>Nekompatibilita plochy</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1123"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1128"/>
       <source>Incompatibility of vertex</source>
       <translation>Nekompatibilita vrcholu</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1131"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1136"/>
       <source>Incompatibility of edge</source>
       <translation>Nekompatibilita hrany</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1139"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1144"/>
       <source>Invalid curve on surface</source>
       <translation>Neplatná křivka na povrchu</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1076"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1081"/>
       <source>Check for bad argument types.  Default: true</source>
       <translation>Zkontrolovat špatné typy argumentů.  Výchozí: zapnuto</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1013"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1018"/>
       <source>Skip this settings page</source>
       <translation>Přeskočit tuto stránku nastavení</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1084"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1089"/>
       <source>Check for self-intersections.  Default: true</source>
       <translation>Kontrolovat protínání sama sebe.  Výchozí: zapnuto</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1092"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1097"/>
       <source>Check for edges that are too small.  Default: true</source>
       <translation>Zkontrolovat hrany, které jsou příliš malé.  Výchozí: zapnuto</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1100"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1105"/>
       <source>Check for nonrecoverable faces.  Default: true</source>
       <translation>Zkontrolovat neobnovitelné plochy.  Výchozí: zapnuto</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1108"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1113"/>
       <source>Check for continuity.  Default: true</source>
       <translation>Kontrola kontinuity.  Výchozí: zapnuto</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1116"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1121"/>
       <source>Check for incompatible faces.  Default: true</source>
       <translation>Zkontrolovat nekompatibilní plochy.  Výchozí: zapnuto</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1124"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1129"/>
       <source>Check for incompatible vertices.  Default: true</source>
       <translation>Zkontrolovat nekompatibilní vrcholy.  Výchozí: zapnuto</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1132"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1137"/>
       <source>Check for incompatible edges.  Default: true</source>
       <translation>Zkontrolovat nekompatibilní hrany.  Výchozí: zapnuto</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1140"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1145"/>
       <source>Check for invalid curves on surfaces.  Default: true</source>
       <translation>Kontrola neplatných křivek na površích.  Výchozí: zapnuto</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1203"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1208"/>
       <source>Run check</source>
       <translation>Spustit kontrolu</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1209"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1214"/>
       <source>Results</source>
       <translation>Výsledky</translation>
     </message>
@@ -5209,22 +5209,22 @@ Jednotlivé kontroly booleovských operací:</translation>
       <translation>Kontrola geometrie</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="459"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="464"/>
       <source>Invalid</source>
       <translation>Neplatné</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="478"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="483"/>
       <source>Checking</source>
       <translation>Kontrola</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="501"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="506"/>
       <source>%1 processed out of %2 selected</source>
       <translation>%1 zpracován z %2 vybraných</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../TaskCheckGeometry.cpp" line="502"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="507"/>
       <source>%n invalid shapes.</source>
       <translation>
         <numerusform>%n neplatný tvar.</numerusform>
@@ -5234,7 +5234,7 @@ Jednotlivé kontroly booleovských operací:</translation>
       </translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="590"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="595"/>
       <source>Checked object</source>
       <translation>Zkontrolovaný objekt</translation>
     </message>
@@ -5247,7 +5247,7 @@ Jednotlivé kontroly booleovských operací:</translation>
       <translation>Připojení</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1119"/>
+      <location filename="../../TaskAttacher.cpp" line="1117"/>
       <source>Datum dialog: Input error</source>
       <translation>Dialog hodnoty: Chyba vstupu</translation>
     </message>
@@ -5884,7 +5884,7 @@ Chcete pokračovat?</translation>
       <translation>Booleovská operace: Neplatné</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="699"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="704"/>
       <source>Invalid</source>
       <translation>Neplatné</translation>
     </message>
@@ -5944,7 +5944,7 @@ Chcete pokračovat?</translation>
       <translation>Upravit projekci</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="887"/>
+      <location filename="../../ViewProviderExt.cpp" line="886"/>
       <source>Set appearance per face...</source>
       <translation>Nastavit vzhled pro plochu...</translation>
     </message>
@@ -5952,57 +5952,57 @@ Chcete pokračovat?</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="33"/>
+      <location filename="../../Workbench.cpp" line="34"/>
       <source>&amp;Part</source>
       <translation>&amp;Díl</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="34"/>
+      <location filename="../../Workbench.cpp" line="35"/>
       <source>&amp;Simple</source>
       <translation>&amp;Jednoduchý</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="35"/>
+      <location filename="../../Workbench.cpp" line="36"/>
       <source>&amp;Parametric</source>
       <translation>&amp;Parametrický</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="36"/>
+      <location filename="../../Workbench.cpp" line="37"/>
       <source>Solids</source>
       <translation>Tělesa</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="37"/>
+      <location filename="../../Workbench.cpp" line="38"/>
       <source>Part tools</source>
       <translation>Nástroje dílu</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="38"/>
+      <location filename="../../Workbench.cpp" line="39"/>
       <source>Boolean</source>
       <translation>Boolean</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="39"/>
+      <location filename="../../Workbench.cpp" line="40"/>
       <source>Primitives</source>
       <translation>Základní tvary</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="40"/>
+      <location filename="../../Workbench.cpp" line="41"/>
       <source>Join</source>
       <translation>Spojit</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="41"/>
+      <location filename="../../Workbench.cpp" line="42"/>
       <source>Split</source>
       <translation>Rozdělit</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="42"/>
+      <location filename="../../Workbench.cpp" line="43"/>
       <source>Compound</source>
       <translation>Směs</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="43"/>
+      <location filename="../../Workbench.cpp" line="44"/>
       <source>Create a copy</source>
       <translation>Vytvořit kopii</translation>
     </message>
