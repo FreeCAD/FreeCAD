@@ -25,9 +25,7 @@
 
 #ifndef _PreComp_
 # if defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-#  include <unistd.h>
-#  include <pwd.h>
-#  include <sys/types.h>
+#include <stdlib.h>
 # elif defined(__MINGW32__)
 #  undef WINVER
 #  define WINVER 0x502 // needed for SetDllDirectory
@@ -3046,15 +3044,10 @@ QString getUserHome()
     QString path;
 #if defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD) || defined(FC_OS_MACOSX)
     // Default paths for the user specific stuff
-    struct passwd pwd;
-    struct passwd *result;
-    const std::size_t buflen = 16384;
-    std::vector<char> buffer(buflen);
-    int error = getpwuid_r(getuid(), &pwd, buffer.data(), buffer.size(), &result);
-    Q_UNUSED(error)
-    if (!result)
+    const char* cpath = getenv("HOME");
+    if (!cpath)
         throw Base::RuntimeError("Getting HOME path from system failed!");
-    path = QString::fromUtf8(result->pw_dir);
+    path = QString::fromUtf8(cpath);
 #else
     path = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
 #endif
