@@ -6375,7 +6375,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
       <source>Constrain contextually based on your selection.
 Depending on your selection you might have several constraints available. You can cycle through them using M key.
 Left clicking on empty space will validate the current constraint. Right clicking or pressing Esc will cancel.</source>
-      <translation>구속은 당신의 선택 상황에 기반합니다. 
+      <translation>구속은 당신의 선택 상황에 기반합니다.
 선택 항목에 따라 여러 구속들을 사용할 수 있습니다. M 키를 눌러 사용 가능한 구속들을 순환할 수 있습니다.
 빈 공간을 마우스 왼쪽 버튼으로 클릭하면 현재 구속의 유효성이 검사됩니다. 마우스 오른쪽 버튼을 클릭하거나 Esc 키를 누르면 취소됩니다.</translation>
     </message>
