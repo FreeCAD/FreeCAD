@@ -30,14 +30,16 @@
 
 #include <atomic>
 #include <Base/Console.h>
-#include <Base/Reader.h>
-#include <Base/Writer.h>
 
 #include "Transactions.h"
 #include "Document.h"
 #include "DocumentObject.h"
 #include "Property.h"
 
+namespace Base {
+    class Reader;
+    class Writer;
+}
 
 FC_LOG_LEVEL_INIT("App",true,true)
 

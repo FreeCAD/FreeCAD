@@ -10,7 +10,6 @@
 #include "ElementNamingUtils.h"
 
 #include "App/Application.h"
-#include "Base/Console.h"
 #include "Document.h"
 #include "DocumentObject.h"
 

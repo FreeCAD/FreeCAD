@@ -23,7 +23,6 @@
 
 #include "PreCompiled.h"
 
-#include <iostream>
 #include <boost/regex.hpp>
 
 #include <Base/Base64.h>
@@ -32,8 +31,8 @@
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 
+#include "PropertyContainer.h"
 #include "PropertyPythonObject.h"
-#include "DocumentObject.h"
 
 
 using namespace App;

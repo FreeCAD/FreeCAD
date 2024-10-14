@@ -26,7 +26,6 @@
 #include <boost/range.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 #include <Base/Tools.h>
-#include <Base/Uuid.h>
 
 #include "Application.h"
 #include "ElementNamingUtils.h"

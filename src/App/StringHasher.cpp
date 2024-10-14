@@ -38,7 +38,7 @@
 #include <boost/bimap/unordered_set_of.hpp>
 #include <boost/iostreams/stream.hpp>
 
-#include "MappedElement.h"
+#include "MappedName.h"
 #include "StringHasher.h"
 #include "StringHasherPy.h"
 #include "StringIDPy.h"

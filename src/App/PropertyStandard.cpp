@@ -35,7 +35,7 @@
 #include <Base/Stream.h>
 #include <Base/Tools.h>
 
-#include "PropertyStandard.h"
+//#include "PropertyStandard.h"
 #include "Application.h"
 #include "Document.h"
 #include "DocumentObject.h"

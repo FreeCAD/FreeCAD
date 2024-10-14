@@ -22,8 +22,6 @@
 
 #include "PreCompiled.h"
 
-#include <Base/Tools.h>
-
 #include "Extension.h"
 #include "SuppressibleExtension.h"
 #include "SuppressibleExtensionPy.h"

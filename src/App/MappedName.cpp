@@ -22,15 +22,9 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <unordered_set>
-#endif
-
 #include "MappedName.h"
 
-#include "Base/Console.h"
-
-#include <boost/iostreams/device/array.hpp>
+#include <Base/Console.h>
 #include <boost/iostreams/stream.hpp>
 
 

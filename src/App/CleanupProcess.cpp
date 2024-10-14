@@ -23,7 +23,7 @@
 
 #include "PreCompiled.h"
 #include <list>
-#include <QMap>
+#include <functional>
 
 #include "CleanupProcess.h"
 

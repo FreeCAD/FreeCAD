@@ -32,8 +32,6 @@
 #include <Base/GeometryPyCXX.h>
 #include <Base/Tools.h>
 #include <Base/Interpreter.h>
-#include <Base/QuantityPy.h>
-#include <Base/Console.h>
 #include <Base/Reader.h>
 #include <CXX/Objects.hxx>
 

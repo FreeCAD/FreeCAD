@@ -23,8 +23,6 @@
 
 #include "PreCompiled.h"
 
-#include "Application.h"
-
 // inclusion of the generated files (generated out of PropertyContainerPy.xml)
 #include <App/ExtensionPy.h>
 #include <App/ExtensionPy.cpp>
@@ -32,7 +30,7 @@
 using namespace App;
 
 // returns a string which represent the object e.g. when printed in python
-std::string ExtensionPy::representation() const
+std::string ExtensionPy::representation() const  // make constexpr
 {
     return {"<extension>"};
 }

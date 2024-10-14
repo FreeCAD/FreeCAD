@@ -22,13 +22,12 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <cassert>
 # include <cstring>
+# include <string_view>
 #endif
 
 #include <Base/Exception.h>
 #include "Enumeration.h"
-#include <string_view>
 
 using namespace App;
 

@@ -20,8 +20,7 @@
  *                                                                         *
  **************************************************************************/
 #include "PreCompiled.h"
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
+
 #include <Base/VectorPy.h>
 #include <App/Document.h>
 #include <App/Link.h>

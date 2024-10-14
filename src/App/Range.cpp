@@ -27,7 +27,6 @@
 #include <sstream>
 #include <string>
 #include <cmath>
-#include <regex>
 #endif
 
 #include <string_view>

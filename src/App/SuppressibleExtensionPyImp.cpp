@@ -22,18 +22,15 @@
 
 #include "PreCompiled.h"
 
-#include "DocumentObject.h"
-
 // inclusion of the generated files (generated out of SuppressibleExtensionPy.xml)
 #include "SuppressibleExtensionPy.h"
 #include "SuppressibleExtensionPy.cpp"
-#include "DocumentObjectPy.h"
 
 
 using namespace App;
 
 // returns a string which represent the object e.g. when printed in python
-std::string SuppressibleExtensionPy::representation() const
+std::string SuppressibleExtensionPy::representation() const  // make constexpr
 {
     return {"<suppressible extension object>"};
 }

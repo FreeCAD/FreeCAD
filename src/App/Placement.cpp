@@ -46,7 +46,7 @@ Placement::~Placement() = default;
 // Python feature ---------------------------------------------------------
 namespace App {
 PROPERTY_SOURCE_TEMPLATE(App::PlacementPython, App::Placement)
-template<> const char* App::PlacementPython::getViewProviderName() const {
+template<> const char* App::PlacementPython::getViewProviderName() const {  // make constexpr
    return "Gui::ViewProviderPlacementPython";
 }
 template class AppExport FeaturePythonT<App::Placement>;
