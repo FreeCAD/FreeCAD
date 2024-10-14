@@ -29,6 +29,7 @@
 # include <QApplication>
 # include <QMenu>
 # include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoTransform.h>
 # include <BRep_Builder.hxx>
 #endif
@@ -51,17 +52,37 @@
 #include "ViewProvider.h"
 #include "ViewProviderPy.h"
 
-#include <Inventor/nodes/SoMaterial.h>
-#include <Inventor/nodes/SoPickStyle.h>
 
 using namespace PartDesignGui;
 
 PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesignGui::ViewProvider, PartGui::ViewProviderPart)
+PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesignGui::ViewProviderPreview, PartGui::ViewProviderPart)
+
+Part::TopoShape ViewProviderPreview::getRenderedShape() const
+{
+    if (auto feature = dynamic_cast<PartDesign::Feature*>(getObject())) {
+        // Feature is responsible for generating proper shape and this ViewProvider
+        // is using it instead of more normal `Shape` property.
+        return feature->PreviewShape.getShape();
+    }
+
+    // no preview available, return empty shape
+    return {};
+}
+
+void ViewProviderPreview::updateData(const App::Property* prop)
+{
+    if (strcmp(prop->getName(), "ShapeMaterial") == 0) {
+        return;
+    }
+
+    return ViewProviderPart::updateData(prop);
+}
 
 ViewProvider::ViewProvider()
 {
     ViewProviderSuppressibleExtension::initExtension(this);
-    PartGui::ViewProviderAttachExtension::initExtension(this);
+    ViewProviderAttachExtension::initExtension(this);
 }
 
 ViewProvider::~ViewProvider() = default;
@@ -186,7 +207,7 @@ void ViewProvider::unsetEdit(int ModNum)
 void ViewProvider::updateData(const App::Property* prop)
 {
     if (strcmp(prop->getName(), "PreviewShape") == 0) {
-        updatePreview();
+        getPreviewViewProvider()->updateView();
     }
 
     inherited::updateData(prop);
@@ -328,31 +349,29 @@ ViewProviderBody* ViewProvider::getBodyViewProvider() {
     return nullptr;
 }
 
-void ViewProvider::updatePreview()
-{
-    getPreviewViewProvider()->updateView();
-}
-
 void ViewProvider::makePreviewVisible(bool enable)
 {
-    auto feature = dynamic_cast<PartDesign::Feature*>(getObject());
+    PartDesign::Feature *feature { nullptr }, *baseFeature { nullptr };
+    Gui::ViewProvider *baseFeatureViewProvider { nullptr };
+
+    feature = dynamic_cast<PartDesign::Feature*>(getObject());
+
     if (!feature) {
         return;
     }
 
-    auto baseFeature = feature->BaseFeature.getValue();
-    if (!baseFeature) {
-        return;
+    baseFeature = dynamic_cast<PartDesign::Feature*>(feature->BaseFeature.getValue());
+    if (baseFeature) {
+        baseFeatureViewProvider = Gui::Application::Instance->getViewProvider(baseFeature);
     }
 
-    auto baseFeatureViewProvider = Gui::Application::Instance->getViewProvider(baseFeature);
     if (!baseFeatureViewProvider) {
-        return;
+        baseFeatureViewProvider = this;
     }
-
-    updatePreview();
 
     if (enable) {
+        feature->updatePreviewShape();
+
         hide();
 
         baseFeatureViewProvider->show();

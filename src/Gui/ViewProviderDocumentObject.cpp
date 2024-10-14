@@ -152,7 +152,7 @@ App::Property* ViewProviderDocumentObject::addDynamicProperty(
 
 void ViewProviderDocumentObject::onBeforeChange(const App::Property* prop)
 {
-    if (isAttachedToDocument()) {
+    if (isAttachedToDocument() && !testStatus(SecondaryView)) {
         App::DocumentObject* obj = getObject();
         App::Document* doc = obj ? obj->getDocument() : nullptr;
         if (doc) {
@@ -176,6 +176,7 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
             Visibility.setStatus(App::Property::User2, false);
         }
         if (!Visibility.testStatus(App::Property::User1)
+                && !testStatus(SecondaryView)
                 && getObject()
                 && getObject()->Visibility.getValue()!=Visibility.getValue())
         {

@@ -120,8 +120,8 @@ public:
     std::vector<Base::Vector3d> getSelectionShape(const char* Element) const override;
     //@}
 
-    virtual TopoDS_Shape getShape() const {
-        return Part::Feature::getShape(getObject());
+    virtual Part::TopoShape getRenderedShape() const {
+        return Part::Feature::getTopoShape(getObject());
     }
 
     /** @name Highlight handling

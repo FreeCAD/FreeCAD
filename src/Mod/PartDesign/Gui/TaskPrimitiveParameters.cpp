@@ -971,8 +971,8 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject* obj)
     return true;
 }
 
-TaskPrimitiveParameters::TaskPrimitiveParameters(ViewProviderPrimitive* PrimitiveView)
-    : vp_prm(PrimitiveView)
+TaskDlgPrimitiveParameters::TaskDlgPrimitiveParameters(ViewProviderPrimitive* PrimitiveView)
+    : vp_prm(PrimitiveView), TaskDlgFeatureParameters(PrimitiveView)
 {
     assert(PrimitiveView);
 
@@ -982,9 +982,9 @@ TaskPrimitiveParameters::TaskPrimitiveParameters(ViewProviderPrimitive* Primitiv
     Content.push_back(parameter);
 }
 
-TaskPrimitiveParameters::~TaskPrimitiveParameters() = default;
+TaskDlgPrimitiveParameters::~TaskDlgPrimitiveParameters() = default;
 
-bool TaskPrimitiveParameters::accept()
+bool TaskDlgPrimitiveParameters::accept()
 {
     bool primitiveOK = primitive->setPrimitive(vp_prm->getObject());
     if (!primitiveOK) {
@@ -996,7 +996,7 @@ bool TaskPrimitiveParameters::accept()
     return true;
 }
 
-bool TaskPrimitiveParameters::reject()
+bool TaskDlgPrimitiveParameters::reject()
 {
     // roll back the done things
     Gui::Command::abortCommand();
@@ -1005,7 +1005,7 @@ bool TaskPrimitiveParameters::reject()
     return true;
 }
 
-QDialogButtonBox::StandardButtons TaskPrimitiveParameters::getStandardButtons() const
+QDialogButtonBox::StandardButtons TaskDlgPrimitiveParameters::getStandardButtons() const
 {
     return Gui::TaskView::TaskDialog::getStandardButtons();
 }

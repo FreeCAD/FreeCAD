@@ -64,6 +64,10 @@ Feature::Feature()
     Placement.setStatus(App::Property::Hidden, true);
     BaseFeature.setStatus(App::Property::Hidden, true);
 
+    PreviewShape.setStatus(App::Property::Output, true);
+    PreviewShape.setStatus(App::Property::Transient, true);
+    PreviewShape.setStatus(App::Property::Hidden, true);
+
     App::SuppressibleExtension::initExtension(this);
 }
 
@@ -157,7 +161,8 @@ void Feature::onChanged(const App::Property *prop)
 {
     if (!this->isRestoring()
         && this->getDocument()
-        && !this->getDocument()->isPerformingTransaction()) {
+        && !this->getDocument()->isPerformingTransaction()
+    ) {
         if (prop == &Visibility || prop == &BaseFeature) {
             auto body = Body::findBodyOf(this);
             if (body) {

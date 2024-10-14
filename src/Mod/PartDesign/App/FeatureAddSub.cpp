@@ -44,12 +44,27 @@ PROPERTY_SOURCE(PartDesign::FeatureAddSub, PartDesign::Feature)
 
 FeatureAddSub::FeatureAddSub()
 {
-    ADD_PROPERTY(AddSubShape,(TopoDS_Shape()));
-    ADD_PROPERTY_TYPE(Refine,(0),"Part Design",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after adding/subtracting");
-    //init Refine property
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
+    ADD_PROPERTY(AddSubShape, (TopoDS_Shape()));
+    ADD_PROPERTY_TYPE(Refine,
+                      (0),
+                      "Part Design",
+                      (App::PropertyType)(App::Prop_None),
+                      "Refine shape (clean up redundant edges) after adding/subtracting");
+    // init Refine property
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
+                                             .GetUserParameter()
+                                             .GetGroup("BaseApp")
+                                             ->GetGroup("Preferences")
+                                             ->GetGroup("Mod/PartDesign");
     this->Refine.setValue(hGrp->GetBool("RefineModel", true));
+}
+void FeatureAddSub::onChanged(const App::Property* property)
+{
+    if (property == &AddSubShape) {
+        updatePreviewShape();
+    }
+
+    Feature::onChanged(property);
 }
 
 FeatureAddSub::Type FeatureAddSub::getAddSubType()

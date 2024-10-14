@@ -42,22 +42,13 @@ namespace PartDesignGui {
 class TaskDlgFeatureParameters;
 
 class PartDesignGuiExport ViewProviderPreview : public PartGui::ViewProviderPart {
+    using inherited = PartGui::ViewProviderPart;
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderPreview);
+
 public:
-    TopoDS_Shape getShape() const override {
-        if (PartDesign::Feature* feature = dynamic_cast<PartDesign::Feature*>(getObject())) {
-            return feature->PreviewShape.getValue();
-        }
+    Part::TopoShape getRenderedShape() const override;
 
-        return TopoDS_Shape();
-    }
-
-    void updateData(const App::Property *prop) override {
-        if (strcmp(prop->getName(), "ShapeMaterial") == 0) {
-            return;
-        }
-
-        return ViewProviderPart::updateData(prop);
-    }
+    void updateData(const App::Property* prop) override;
 };
 
 /**
@@ -98,10 +89,9 @@ public:
     //Returns the ViewProvider of the body the feature belongs to, or NULL, if not in a body
     ViewProviderBody* getBodyViewProvider();
 
-    //Returns the ViewProvider of the body the feature belongs to, or NULL, if not in a body
+    //Returns ViewProvider used to render the preview shape, creating one if necessary
     ViewProviderPreview* getPreviewViewProvider();
-
-    void updatePreview();
+    //Toggles visibility of the preview
     void makePreviewVisible(bool);
 
     PyObject* getPyObject() override;
@@ -112,7 +102,7 @@ protected:
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
     bool setEdit(int ModNum) override;
     void unsetEdit(int ModNum) override;
-    void updateData(const App::Property* prop);
+    void updateData(const App::Property* prop) override;
 
     bool onDelete(const std::vector<std::string> &) override;
 
