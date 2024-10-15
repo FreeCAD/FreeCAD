@@ -299,6 +299,10 @@ void DlgAddPropertyVarSet::changePropertyToAdd() {
     assert(name == namePropertyToAdd);
 
     App::Property* prop = varSet->getPropertyByName(namePropertyToAdd.c_str());
+    if (prop == nullptr) {
+        // this should not happen because this method assumes the property exists
+        FC_THROWM(Base::RuntimeError, "A property with name '" << name << "' does not exist.");
+    }
 
     std::string group = comboBoxGroup.currentText().toStdString();
     if (prop->getGroup() != group) {
