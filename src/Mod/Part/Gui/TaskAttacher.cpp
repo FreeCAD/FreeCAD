@@ -33,6 +33,7 @@
 
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/ElementNamingUtils.h>
 #include <App/ObjectIdentifier.h>
 #include <App/Datums.h>
 #include <App/Part.h>
@@ -63,32 +64,22 @@ namespace sp = std::placeholders;
 // Create reference name from PropertyLinkSub values in a translatable fashion
 const QString makeRefString(const App::DocumentObject* obj, const std::string& sub)
 {
-    if (!obj)
+    if (!obj) {
         return QObject::tr("No reference selected");
+    }
 
-    if (obj->isDerivedFrom<App::DatumElement>() ||
-        obj->isDerivedFrom<Part::Datum>())
-        // App::Plane, Line or Datum feature
+    if (obj->isDerivedFrom<App::DatumElement>() || obj->isDerivedFrom<Part::Datum>()) {
         return QString::fromLatin1(obj->getNameInDocument());
+    }
 
-    if ((sub.size() > 4) && (sub.substr(0, 4) == "Face")) {
-        int subId = std::atoi(&sub[4]);
-        return QString::fromLatin1(obj->getNameInDocument()) + QString::fromLatin1(":") + QObject::tr("Face") + QString::number(subId);
-    }
-    else if ((sub.size() > 4) && (sub.substr(0, 4) == "Edge")) {
-        int subId = std::atoi(&sub[4]);
-        return QString::fromLatin1(obj->getNameInDocument()) + QString::fromLatin1(":") + QObject::tr("Edge") + QString::number(subId);
-    }
-    else if ((sub.size() > 6) && (sub.substr(0, 6) == "Vertex")) {
-        int subId = std::atoi(&sub[6]);
-        return QString::fromLatin1(obj->getNameInDocument()) + QString::fromLatin1(":") + QObject::tr("Vertex") + QString::number(subId);
-    }
-    else {
-        //something else that face/edge/vertex. Can be empty string.
-        return QString::fromLatin1(obj->getNameInDocument())
-            + (sub.length() > 0 ? QString::fromLatin1(":") : QString())
-            + QString::fromLatin1(sub.c_str());
-    }
+    // Hide the TNP string from the user. ie show "Body.Pad.Face6"  and not : 
+    // "Body.Pad.;#a:1;:G0;XTR;:Hc94:8,F.Face6"
+    App::ElementNamePair el;
+    App::GeoFeature::resolveElement(obj, sub.c_str(), el, true);
+
+    return QString::fromLatin1(obj->getNameInDocument())
+        + (sub.length() > 0 ? QString::fromLatin1(":") : QString())
+        + QString::fromLatin1(el.oldName.c_str());
 }
 
 void TaskAttacher::makeRefStrings(std::vector<QString>& refstrings, std::vector<std::string>& refnames) {
