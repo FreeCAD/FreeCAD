@@ -1260,7 +1260,11 @@ class MakeJointSelGate:
         ):
             # We accept only if it is not a root object of the assembly.
             # Datums must be included in a GeoFeature.
-            return not self.assembly.hasObject(sel_obj)
+            lcs = sel_obj
+            if lcs.isDerivedFrom("App::DatumElement"):
+                lcs = sel_obj.getParent()
+
+            return not self.assembly.hasObject(lcs)
 
         return False
 
