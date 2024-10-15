@@ -25,14 +25,22 @@
 #ifndef BASE_FILEINFO_H
 #define BASE_FILEINFO_H
 
-#include <boost/filesystem.hpp>
-#include <string>
+//#include <string>
 #include <vector>
-#include <Base/TimeInfo.h>
 
+//#include <Base/TimeInfo.h>
+
+#include <bits/stringfwd.h>  // Works on Linux. Make if-else for Windows?
+
+namespace boost {
+namespace filesystem {
+    class path;
+}
+}
 
 namespace Base
 {
+class TimeInfo;
 
 /// When reading and writing a character stream, the incoming data can be dumped into the stream
 /// unaltered (if it contains only data that is valid in the current XML character set), or it can
@@ -64,10 +72,7 @@ public:
     /// Set a new file name
     void setFile(const char* name);
     /// Set a new file name
-    void setFile(const std::string& name)
-    {
-        setFile(name.c_str());
-    }
+    void setFile(const std::string& name);
 
 
     /** @name extraction of information */
@@ -162,9 +167,6 @@ public:
     /// Convert from string to filesystem path
     static boost::filesystem::path stringToPath(const std::string& str);
     //@}
-
-private:
-    std::string FileName;
 };
 
 }  // namespace Base

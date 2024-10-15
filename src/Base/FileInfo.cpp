@@ -97,6 +97,10 @@ std::wstring ConvertToWideString(const std::string& string)
 // FileInfo
 
 
+namespace {
+    std::string FileName;
+}
+
 FileInfo::FileInfo(const char* fileName)
 {
     setFile(fileName);
@@ -694,3 +698,8 @@ std::vector<Base::FileInfo> FileInfo::getDirectoryContent() const
 #endif
     return List;
 }
+
+void FileInfo::setFile(const std::string& name)
+    {
+        setFile(name.c_str());
+    }
