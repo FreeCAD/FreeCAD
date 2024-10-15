@@ -92,25 +92,7 @@ struct AppExport PropertyData
       const void* m_container;
   };
 
-  // A multi index container for holding the property spec, with the following
-  // index,
-  // * a sequence, to preserve creation order
-  // * hash index on property name
-  // * hash index on property pointer offset
-  mutable bmi::multi_index_container<
-      PropertySpec,
-      bmi::indexed_by<
-          bmi::sequenced<>,
-          bmi::hashed_unique<
-              bmi::member<PropertySpec, const char*, &PropertySpec::Name>,
-              CStringHasher,
-              CStringHasher
-          >,
-          bmi::hashed_unique<
-              bmi::member<PropertySpec, short, &PropertySpec::Offset>
-          >
-      >
-  > propertyData;
+  struct Private;
 
   mutable bool parentMerged = false;
 
