@@ -229,7 +229,7 @@ bool MeshSearchNeighbours::AccumulateNeighbours(const MeshFacet& rclF, FacetInde
         _aclOuter.insert(ulPIdx);
         _aclResult.insert(ulPIdx);
 
-        if (Base::DistanceP2(_clCenter, _rclPAry[ulPIdx]) < _fMaxDistanceP2) {
+        if (_clCenter.DistanceP2(_rclPAry[ulPIdx]) < _fMaxDistanceP2) {
             k++;
         }
     }
@@ -315,7 +315,7 @@ MeshSearchNeighbours::NeighboursFacetFromFacet(FacetIndex ulFacetIdx,
                 const MeshFacet& rclF = f_beg[pJ];
 
                 for (PointIndex ptIndex : rclF._aulPoints) {
-                    if (Base::DistanceP2(_clCenter, _rclPAry[ptIndex]) < _fMaxDistanceP2) {
+                    if (_clCenter.DistanceP2(_rclPAry[ptIndex]) < _fMaxDistanceP2) {
                         aulFacetSet.insert(pJ);
                         break;
                     }

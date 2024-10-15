@@ -119,7 +119,7 @@ float AbstractPolygonTriangulator::GetLength() const
             if (jt == _points.end()) {
                 jt = _points.begin();
             }
-            len += Base::Distance(*it, *jt);
+            len += it->Distance(*jt);
         }
     }
 

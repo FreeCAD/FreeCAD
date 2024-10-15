@@ -225,7 +225,7 @@ bool Vector3<float_type>::operator==(const Vector3<float_type>& rcVct) const
 template<class float_type>
 bool Vector3<float_type>::IsEqual(const Vector3<float_type>& rclPnt, float_type tol) const
 {
-    return Distance(*this, rclPnt) <= tol;
+    return Distance(rclPnt) <= tol;
 }
 
 template<class float_type>
@@ -270,6 +270,25 @@ void Vector3<float_type>::ProjectToPlane(const Vector3& rclBase,
 }
 
 template<class float_type>
+inline float_type Vector3<float_type>::Distance(const Vector3<float_type>& v2) const
+{
+    float_type dx = x - v2.x;
+    float_type dy = y - v2.y;
+    float_type dz = z - v2.z;
+    return static_cast<float_type>(sqrt((dx * dx) + (dy * dy) + (dz * dz)));
+}
+
+/// Returns the squared distance between two points
+template<class float_type>
+inline float_type Vector3<float_type>::DistanceP2(const Vector3<float_type>& v2) const
+{
+    float_type dx = x - v2.x;
+    float_type dy = y - v2.y;
+    float_type dz = z - v2.z;
+    return dx * dx + dy * dy + dz * dz;
+}
+
+template<class float_type>
 float_type Vector3<float_type>::DistanceToPlane(const Vector3<float_type>& rclBase,
                                                 const Vector3<float_type>& rclNorm) const
 {
@@ -295,7 +314,7 @@ template<class float_type>
 Vector3<float_type> Vector3<float_type>::DistanceToLineSegment(const Vector3& rclP1,
                                                                const Vector3& rclP2) const
 {
-    float_type len2 = Base::DistanceP2(rclP1, rclP2);
+    float_type len2 = rclP1.DistanceP2(rclP2);
     if (len2 == 0) {
         return rclP1;
     }

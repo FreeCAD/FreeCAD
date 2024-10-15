@@ -56,10 +56,10 @@ bool MeshAlgorithm::IsVertexVisible(const Base::Vector3f& rcVertex,
     // search for the nearest facet to rcView in direction to rcVertex
     if (NearestFacetOnRay(rcView, cDirection, /*1.2f*fDistance,*/ rclGrid, cIntsct, uInd)) {
         // now check if the facet overlays the point
-        float fLen = Base::Distance(rcView, cIntsct);
+        float fLen = rcView.Distance(cIntsct);
         if (fLen < fDistance) {
             // is it the same point?
-            if (Base::Distance(rcVertex, cIntsct) > fMaxDistance) {
+            if (rcVertex.Distance(cIntsct) > fMaxDistance) {
                 // ok facet overlays the vertex
                 return false;
             }
@@ -286,7 +286,9 @@ float MeshAlgorithm::GetAverageEdgeLength() const
     MeshFacetIterator cF(_rclMesh);
     for (cF.Init(); cF.More(); cF.Next()) {
         for (int i = 0; i < 3; i++) {
-            fLen += Base::Distance(cF->_aclPoints[i], cF->_aclPoints[(i + 1) % 3]);
+            Vector3d p1 = cF->_aclPoints[i];
+            Vector3d p2 = cF->_aclPoints[(i + 1) % 3];
+            fLen += p1.Distance(p2);
         }
     }
 
@@ -300,7 +302,9 @@ float MeshAlgorithm::GetMinimumEdgeLength() const
     MeshFacetIterator cF(_rclMesh);
     for (cF.Init(); cF.More(); cF.Next()) {
         for (int i = 0; i < 3; i++) {
-            fLen = std::min(fLen, Base::Distance(cF->_aclPoints[i], cF->_aclPoints[(i + 1) % 3]));
+            Vector3d p1 = cF->_aclPoints[i];
+            Vector3d p2 = cF->_aclPoints[(i + 1) % 3];
+            fLen = std::min(fLen, p1.Distance(p2));
         }
     }
 
@@ -313,7 +317,9 @@ float MeshAlgorithm::GetMaximumEdgeLength() const
     MeshFacetIterator cF(_rclMesh);
     for (cF.Init(); cF.More(); cF.Next()) {
         for (int i = 0; i < 3; i++) {
-            fLen = std::max(fLen, Base::Distance(cF->_aclPoints[i], cF->_aclPoints[(i + 1) % 3]));
+            Vector3d p1 = cF->_aclPoints[i];
+            Vector3d p2 = cF->_aclPoints[(i + 1) % 3];
+            fLen = std::max(fLen, p1.Distance(p2));
         }
     }
 
@@ -1590,7 +1596,7 @@ bool MeshAlgorithm::ConnectLines(std::list<std::pair<Base::Vector3f, Base::Vecto
     std::list<TCIter> _clToDelete;
     float fToDelDist = fMinEps / 10.0f;
     for (TCIter pF = rclLines.begin(); pF != rclLines.end(); ++pF) {
-        if (Base::DistanceP2(pF->first, pF->second) < fToDelDist) {
+        if (pF->first.DistanceP2(pF->second) < fToDelDist) {
             _clToDelete.push_back(pF);
         }
     }
@@ -1624,23 +1630,23 @@ bool MeshAlgorithm::ConnectLines(std::list<std::pair<Base::Vector3f, Base::Vecto
             bFoundLine = false;
 
             for (pF = rclLines.begin(); pF != rclLines.end(); ++pF) {
-                if (Base::DistanceP2(clFront, pF->first) < fFrontMin) {
-                    fFrontMin = Base::DistanceP2(clFront, pF->first);
+                if (clFront.DistanceP2(pF->first) < fFrontMin) {
+                    fFrontMin = clFront.DistanceP2(pF->first);
                     pFront = pF;
                     bFrontFirst = true;
                 }
-                else if (Base::DistanceP2(clEnd, pF->first) < fEndMin) {
-                    fEndMin = Base::DistanceP2(clEnd, pF->first);
+                else if (clEnd.DistanceP2(pF->first) < fEndMin) {
+                    fEndMin = clEnd.DistanceP2(pF->first);
                     pEnd = pF;
                     bEndFirst = true;
                 }
-                else if (Base::DistanceP2(clFront, pF->second) < fFrontMin) {
-                    fFrontMin = Base::DistanceP2(clFront, pF->second);
+                else if (clFront.DistanceP2(pF->second) < fFrontMin) {
+                    fFrontMin = clFront.DistanceP2(pF->second);
                     pFront = pF;
                     bFrontFirst = false;
                 }
-                else if (Base::DistanceP2(clEnd, pF->second) < fEndMin) {
-                    fEndMin = Base::DistanceP2(clEnd, pF->second);
+                else if (clEnd.Cross(clEnd, pF->second) < fEndMin) {
+                    fEndMin = clEnd.DistanceP2(clEnd, pF->second);
                     pEnd = pF;
                     bEndFirst = false;
                 }
@@ -1683,7 +1689,9 @@ bool MeshAlgorithm::ConnectLines(std::list<std::pair<Base::Vector3f, Base::Vecto
     std::list<TPIter> _clPolyToDelete;
     for (TPIter pJ = rclPolylines.begin(); pJ != rclPolylines.end(); ++pJ) {
         if (pJ->size() == 2) {  // only one line segment
-            if (Base::DistanceP2(*pJ->begin(), *(pJ->begin() + 1)) <= fMinEps) {
+            Vector3d p1 = *pJ->begin();
+            Vector3d p2 = *(pJ->begin() + 1);
+            if (p1.DistanceP2(p2) <= fMinEps) {
                 _clPolyToDelete.push_back(pJ);
             }
         }
@@ -1708,7 +1716,7 @@ bool MeshAlgorithm::ConnectPolygons(
             continue;
         }
         std::pair<Base::Vector3f, Base::Vector3f> currentSort;
-        float fDist = Base::Distance(OutIter->front(), OutIter->back());
+        float fDist = OutIter->front().Distance(OutIter->back());
         currentSort.first = OutIter->front();
         currentSort.second = OutIter->back();
 
@@ -1719,14 +1727,14 @@ bool MeshAlgorithm::ConnectPolygons(
                 continue;
             }
 
-            if (Base::Distance(OutIter->front(), InnerIter->front()) < fDist) {
+            if (OutIter->front().Distance(InnerIter->front()) < fDist) {
                 currentSort.second = InnerIter->front();
-                fDist = Base::Distance(OutIter->front(), InnerIter->front());
+                fDist = OutIter->front()Distance(InnerIter->front());
             }
 
-            if (Base::Distance(OutIter->front(), InnerIter->back()) < fDist) {
+            if (OutIter->front().Distance(InnerIter->back()) < fDist) {
                 currentSort.second = InnerIter->back();
-                fDist = Base::Distance(OutIter->front(), InnerIter->back());
+                fDist = OutIter->front().Distance(InnerIter->back());
             }
         }
 
@@ -1942,7 +1950,7 @@ void MeshRefPointToFacets::SearchNeighbours(const MeshFacetArray& rFacets,
     }
 
     const MeshFacet& face = rFacets[index];
-    if (Base::DistanceP2(rclCenter, _rclMesh.GetFacet(face).GetGravityPoint()) > fMaxDist2) {
+    if (rclCenter.DistanceP2(_rclMesh.GetFacet(face).GetGravityPoint()) > fMaxDist2) {
         return;
     }
 
@@ -2094,7 +2102,7 @@ float MeshRefPointToPoints::GetAverageEdgeLength(PointIndex index) const
     const std::set<PointIndex>& n = (*this)[index];
     const Base::Vector3f& p = rPoints[index];
     for (PointIndex it : n) {
-        len += Base::Distance(p, rPoints[it]);
+        len += p.Distance(rPoints[it]);
     }
     return (len / n.size());
 }
@@ -2158,9 +2166,9 @@ void MeshRefNormalToPoints::Rebuild()
         const MeshPoint& p0 = rPoints[rFacet._aulPoints[0]];
         const MeshPoint& p1 = rPoints[rFacet._aulPoints[1]];
         const MeshPoint& p2 = rPoints[rFacet._aulPoints[2]];
-        float l2p01 = Base::DistanceP2(p0, p1);
-        float l2p12 = Base::DistanceP2(p1, p2);
-        float l2p20 = Base::DistanceP2(p2, p0);
+        float l2p01 = p0.DistanceP2(p1);
+        float l2p12 = p1.DistanceP2(p2);
+        float l2p20 = p2.DistanceP2(p0);
 
         Base::Vector3f facenormal = _rclMesh.GetFacet(rFacet).GetNormal();
         _norm[rFacet._aulPoints[0]] += facenormal * (1.0f / (l2p01 * l2p20));

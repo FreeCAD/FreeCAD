@@ -199,7 +199,7 @@ unsigned long MeshGrid::Inside(const Base::BoundBox3f& rclBB,
     for (auto i = ulMinX; i <= ulMaxX; i++) {
         for (auto j = ulMinY; j <= ulMaxY; j++) {
             for (auto k = ulMinZ; k <= ulMaxZ; k++) {
-                if (Base::DistanceP2(GetBoundBox(i, j, k).GetCenter(), rclOrg) < fMinDistP2) {
+                if (rclOrg.DistanceP2(GetBoundBox(i, j, k).GetCenter()) < fMinDistP2) {
                     raulElements.insert(raulElements.end(),
                                         _aulGrid[i][j][k].begin(),
                                         _aulGrid[i][j][k].end());

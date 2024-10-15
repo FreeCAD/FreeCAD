@@ -92,8 +92,8 @@ bool MeshProjection::connectLines(std::list<std::pair<Base::Vector3f, Base::Vect
 
         bool bPos = false;
         for (it = cutLines.begin(); it != cutLines.end(); ++it) {
-            float fD1 = Base::DistanceP2(curr, it->first);
-            float fD2 = Base::DistanceP2(curr, it->second);
+            float fD1 = curr.DistanceP2(it->first);
+            float fD2 = curr.DistanceP2(it->second);
             if (std::min<float>(fD1, fD2) < fMin) {
                 pCurr = it;
                 bPos = fD1 < fD2;

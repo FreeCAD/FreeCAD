@@ -493,7 +493,9 @@ unsigned long MeshEvalDegeneratedFacets::CountEdgeTooSmall(float fMinEdgeLength)
 
     while (!clFIter.EndReached()) {
         for (int i = 0; i < 3; i++) {
-            if (Base::Distance(clFIter->_aclPoints[i], clFIter->_aclPoints[(i + 1) % 3])
+            Vector3d p1 = clFIter->_aclPoints[i];
+            Vecotr3d p2 = clFIter->_aclPoints[(i + 1) % 3];
+            if (p1.Distance(p2)
                 < fMinEdgeLength) {
                 k++;
             }
@@ -560,7 +562,7 @@ bool MeshRemoveNeedles::Fixup()
             const Base::Vector3f& p1 = rclPAry[facet._aulPoints[i]];
             const Base::Vector3f& p2 = rclPAry[facet._aulPoints[(i + 1) % 3]];
 
-            float distance = Base::Distance(p1, p2);
+            float distance = p1.Distance(p2);
             if (distance < fMinLen) {
                 unsigned long facetIndex = static_cast<unsigned long>(index);
                 todo.push(std::make_pair(distance, std::make_pair(facetIndex, i)));
@@ -585,7 +587,7 @@ bool MeshRemoveNeedles::Fixup()
         float fMinLen = perimeter * fMinEdgeLength;
         const Base::Vector3f& p1 = rclPAry[facet._aulPoints[faceedge.second]];
         const Base::Vector3f& p2 = rclPAry[facet._aulPoints[(faceedge.second + 1) % 3]];
-        float distance = Base::Distance(p1, p2);
+        float distance = p1.Distance(p2);
         if (distance >= fMinLen) {
             continue;
         }
@@ -695,9 +697,9 @@ bool MeshFixCaps::Fixup()
         // the maximum angle must have a clear distance to the other corner points
         // as factor we choose a default value of 25% of the corresponding edge length
         Base::Vector3f p4 = p1.Perpendicular(p2, p3 - p2);
-        float distP2P3 = Base::Distance(p2, p3);
-        float distP2P4 = Base::Distance(p2, p4);
-        float distP3P4 = Base::Distance(p3, p4);
+        float distP2P3 = p2.Distance(p3);
+        float distP2P4 = p2.Distance(p4);
+        float distP3P4 = p3.Distance(p4);
         if (distP2P4 / distP2P3 < fSplitFactor || distP3P4 / distP2P3 < fSplitFactor) {
             continue;
         }

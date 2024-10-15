@@ -275,7 +275,7 @@ void CmdApproxCylinder::activated(int)
         if (fit.Fit() < FLOAT_MAX) {
             Base::Vector3f base, top;
             fit.GetBounding(base, top);
-            float height = Base::Distance(base, top);
+            float height = base.Distance(top);
 
             Base::Rotation rot;
             rot.setValue(Base::Vector3d(0, 0, 1), Base::convertTo<Base::Vector3d>(fit.GetAxis()));

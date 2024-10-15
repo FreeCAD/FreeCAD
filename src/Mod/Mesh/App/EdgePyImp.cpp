@@ -202,7 +202,9 @@ Py::Tuple EdgePy::getNeighbourIndices() const
 Py::Float EdgePy::getLength() const
 {
     EdgePy::PointerType edge = this->getEdgePtr();
-    return Py::Float(Base::Distance(edge->_aclPoints[0], edge->_aclPoints[1]));
+    Vector3d p1 = edge->_aclPoints[0];
+    Vector3d p2 = edge->_aclPoints[1];
+    return Py::Float(p1.Distance(p2));
 }
 
 PyObject* EdgePy::getCustomAttributes(const char* /*attr*/) const

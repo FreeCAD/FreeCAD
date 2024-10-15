@@ -867,12 +867,12 @@ inline MeshPoint::MeshPoint(const Base::Vector3f& rclPt)
 
 inline bool MeshPoint::operator==(const MeshPoint& rclPt) const
 {
-    return Base::DistanceP2(*this, rclPt) < MeshDefinitions::_fMinPointDistanceP2;
+    return DistanceP2(rclPt) < MeshDefinitions::_fMinPointDistanceP2;
 }
 
 inline bool MeshPoint::operator==(const Base::Vector3f& rclV) const
 {
-    return Base::DistanceP2(*this, rclV) < MeshDefinitions::_fMinPointDistanceP2;
+    return DistanceP2(rclV) < MeshDefinitions::_fMinPointDistanceP2;
 }
 
 inline bool MeshPoint::operator<(const MeshPoint& rclPt) const
@@ -949,9 +949,9 @@ inline Base::BoundBox3f MeshGeomFacet::GetBoundBox() const
 inline float MeshGeomFacet::Perimeter() const
 {
     float perimeter = 0.0f;
-    perimeter += Base::Distance(_aclPoints[0], _aclPoints[1]);
-    perimeter += Base::Distance(_aclPoints[1], _aclPoints[2]);
-    perimeter += Base::Distance(_aclPoints[2], _aclPoints[0]);
+    perimeter += _aclPoints[0].Distance(_aclPoints[1]);
+    perimeter += _aclPoints[1].Distance(_aclPoints[2]);
+    perimeter += _aclPoints[2].Distance(_aclPoints[0]);
     return perimeter;
 }
 

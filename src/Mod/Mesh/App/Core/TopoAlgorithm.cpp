@@ -116,7 +116,7 @@ bool MeshTopoAlgorithm::SnapVertex(FacetIndex ulFacetPos, const Base::Vector3f& 
             const Base::Vector3f& rPt2 = _rclMesh._aclPointArray[rFace._aulPoints[(i + 1) % 3]];
             Base::Vector3f cNo2 = (rPt2 - rPt1) % cNo1;
             Base::Vector3f cNo3 = (rP - rPt1) % (rPt2 - rPt1);
-            float fD2 = Base::DistanceP2(rPt1, rPt2);
+            float fD2 = rPt1.DistanceP2(rPt2);
             float fTV = (rP - rPt1) * (rPt2 - rPt1);
 
             // Point is on the edge
@@ -252,9 +252,9 @@ void MeshTopoAlgorithm::OptimizeTopology(float fMaxAngle)
 static float
 cos_maxangle(const Base::Vector3f& v1, const Base::Vector3f& v2, const Base::Vector3f& v3)
 {
-    float a = Base::Distance(v2, v3);
-    float b = Base::Distance(v3, v1);
-    float c = Base::Distance(v1, v2);
+    float a = v2.Distance(v3);
+    float b = v3.Distance(v1);
+    float c = v1.Distance(v2);
     float A = a * (b * b + c * c - a * a);
     float B = b * (c * c + a * a - b * b);
     float C = c * (a * a + b * b - c * c);
@@ -382,7 +382,7 @@ void MeshTopoAlgorithm::DelaunayFlip(float fMaxAngle)
             const MeshFacet& face_2 = _rclMesh._aclFacetArray[edge.second];
             unsigned short side = face_2.Side(edge.first);
             MeshPoint vertex = _rclMesh.GetPoint(face_2._aulPoints[(side + 1) % 3]);
-            if (Base::DistanceP2(center, vertex) < radius) {
+            if (center.DistanceP2(vertex) < radius) {
                 SwapEdge(edge.first, edge.second);
                 for (int i = 0; i < 3; i++) {
                     if (face_1._aulNeighbours[i] != FACET_INDEX_MAX
@@ -434,8 +434,8 @@ int MeshTopoAlgorithm::DelaunayFlip()
                 r1 = r1 * r1;
                 float r2 = f2.CenterOfCircumCircle(c2);
                 r2 = r2 * r2;
-                float d1 = Base::DistanceP2(c1, p2);
-                float d2 = Base::DistanceP2(c2, p1);
+                float d1 = c1.DistanceP2(p2);
+                float d2 = c2.DistanceP2(p1);
                 if (d1 < r1 || d2 < r2) {
                     SwapEdge(i, n);
                     cnt_swap++;
@@ -533,8 +533,8 @@ void MeshTopoAlgorithm::AdjustEdgesToCurvatureDirection()
             // positive or negative distance
             float fDist = raPts[uPt4].DistanceToPlane(cPlane._aclPoints[0], cPlane.GetNormal());
 
-            float fLength12 = Base::Distance(raPts[uPt1], raPts[uPt2]);
-            float fLength34 = Base::Distance(raPts[uPt3], raPts[uPt4]);
+            float fLength12 = raPts[uPt1].Distance(raPts[uPt2]);
+            float fLength34 = raPts[uPt3].Distance(raPts[uPt4]);
             if (fabs(cEdgeDir1 * cMinDir) < fabs(cEdgeDir2 * cMinDir)) {
                 if (IsSwapEdgeLegal(uFt1, uFt2) && fLength34 < 1.05f * fLength12
                     && fActCurvature * fDist > 0.0f) {
@@ -1220,13 +1220,13 @@ void MeshTopoAlgorithm::SplitFacet(FacetIndex ulFacetPos,
 
     auto pointIndex = [=](const Base::Vector3f& rP) {
         unsigned short equalP = USHRT_MAX;
-        if (Base::Distance(rVertex0, rP) < fEps) {
+        if (rVertex0.Distance(rP) < fEps) {
             equalP = 0;
         }
-        else if (Base::Distance(rVertex1, rP) < fEps) {
+        else if (rVertex1.Distance(rP) < fEps) {
             equalP = 1;
         }
-        else if (Base::Distance(rVertex2, rP) < fEps) {
+        else if (rVertex2.Distance(rP) < fEps) {
             equalP = 2;
         }
         return equalP;
@@ -1342,8 +1342,8 @@ void MeshTopoAlgorithm::SplitFacetOnTwoEdges(FacetIndex ulFacetPos,
     rFace._aulPoints[v1] = cntPts1;
     rFace._aulNeighbours[v0] = cntFts + 1;
 
-    float dist1 = Base::DistanceP2(_rclMesh._aclPointArray[p0], cP1);
-    float dist2 = Base::DistanceP2(_rclMesh._aclPointArray[p1], cP2);
+    float dist1 = cP1.DistanceP2(_rclMesh._aclPointArray[p0]);
+    float dist2 = cP2.DistanceP2(_rclMesh._aclPointArray[p1]);
 
     if (dist1 > dist2) {
         AddFacet(p0, p1, cntPts2, n0, cntFts + 1, n2);

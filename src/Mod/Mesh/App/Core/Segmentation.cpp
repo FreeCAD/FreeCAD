@@ -378,7 +378,7 @@ float SphereSurfaceFit::Fit()
 
 float SphereSurfaceFit::GetDistanceToSurface(const Base::Vector3f& pnt) const
 {
-    float dist = Base::Distance(pnt, center);
+    float dist = pnt.Distance(center);
     return (dist - radius);
 }
 

@@ -84,7 +84,7 @@ protected:
         {}
         bool operator()(const Base::Vector3f& rclPt1, const Base::Vector3f& rclPt2)
         {
-            return Base::DistanceP2(_clCenter, rclPt1) < Base::DistanceP2(_clCenter, rclPt2);
+            return _clCenter.DistanceP2(rclPt1) < _clCenter.DistanceP2(rclPt2);
         }
         Base::Vector3f _clCenter;
     };
@@ -116,7 +116,7 @@ inline bool MeshSearchNeighbours::CheckDistToFacet(const MeshFacet& rclF)
 
     for (PointIndex ulPIdx : rclF._aulPoints) {
         if (!_rclPAry[ulPIdx].IsFlag(MeshPoint::MARKED)) {
-            if (Base::DistanceP2(_clCenter, _rclPAry[ulPIdx]) < _fMaxDistanceP2) {
+            if (_clCenter.DistanceP2(_rclPAry[ulPIdx]) < _fMaxDistanceP2) {
                 bFound = true;
                 {
                     _aclResult.insert(ulPIdx);
@@ -132,7 +132,7 @@ inline bool MeshSearchNeighbours::CheckDistToFacet(const MeshFacet& rclF)
 
 inline bool MeshSearchNeighbours::InnerPoint(const Base::Vector3f& rclPt) const
 {
-    return Base::DistanceP2(_clCenter, rclPt) < _fMaxDistanceP2;
+    return _clCenter.DistanceP2(rclPt) < _fMaxDistanceP2;
 }
 
 inline bool MeshSearchNeighbours::TriangleCutsSphere(const MeshFacet& rclF) const

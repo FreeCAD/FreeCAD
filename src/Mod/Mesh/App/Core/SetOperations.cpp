@@ -772,23 +772,23 @@ void MeshIntersection::connectLines(bool onlyclosed,
             bFoundLine = false;
 
             for (pF = data.begin(); pF != data.end(); ++pF) {
-                if (Base::DistanceP2(front.p, pF->p1) < fFrontMin) {
-                    fFrontMin = Base::DistanceP2(front.p, pF->p1);
+                if (front.p.DistanceP2(pF->p1) < fFrontMin) {
+                    fFrontMin = front.p.DistanceP2(pF->p1);
                     pFront = pF;
                     bFrontFirst = true;
                 }
-                else if (Base::DistanceP2(back.p, pF->p1) < fEndMin) {
-                    fEndMin = Base::DistanceP2(back.p, pF->p1);
+                else if (back.p.DistanceP2(pF->p1) < fEndMin) {
+                    fEndMin = back.p.DistanceP2(pF->p1);
                     pEnd = pF;
                     bEndFirst = true;
                 }
-                else if (Base::DistanceP2(front.p, pF->p2) < fFrontMin) {
-                    fFrontMin = Base::DistanceP2(front.p, pF->p2);
+                else if (front.p.DistanceP2(pF->p2) < fFrontMin) {
+                    fFrontMin = front.p.DistanceP2(pF->p2);
                     pFront = pF;
                     bFrontFirst = false;
                 }
-                else if (Base::DistanceP2(back.p, pF->p2) < fEndMin) {
-                    fEndMin = Base::DistanceP2(back.p, pF->p2);
+                else if (back.p.DistanceP2(pF->p2) < fEndMin) {
+                    fEndMin = back.p.DistanceP2(pF->p2);
                     pEnd = pF;
                     bEndFirst = false;
                 }
@@ -837,7 +837,7 @@ void MeshIntersection::connectLines(bool onlyclosed,
 
         if (onlyclosed) {
             if (newPoly.size() > 2
-                && Base::DistanceP2(newPoly.front().p, newPoly.back().p) < fMinEps) {
+                && newPoly.front().p.DistanceP2(newPoly.back().p) < fMinEps) {
                 lines.push_back(newPoly);
             }
         }

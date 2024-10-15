@@ -331,7 +331,7 @@ void MeshFaceAddition::showMarker(SoPickedPoint* pp)
                 if (f._aulNeighbours[i] == MeshCore::FACET_INDEX_MAX
                     || f._aulNeighbours[(i + 2) % 3] == MeshCore::FACET_INDEX_MAX) {
                     pnt = points[index];
-                    float len = Base::DistanceP2(pnt, Base::Vector3f(vec[0], vec[1], vec[2]));
+                    float len = pnt.DistanceP2(Base::Vector3f(vec[0], vec[1], vec[2]));
                     if (len < distance) {
                         distance = len;
                         point_index = index;

@@ -1657,7 +1657,7 @@ private:
                 pt = getCoord(proto, i, hasPlacement, plm);
 
                 if ((!filter) && (cnt_pts > 0)) {
-                    if (Base::Distance(last, pt) < minDistance) {
+                    if (last.Distance(pt) < minDistance) {
                         filter = true;
                     }
                 }

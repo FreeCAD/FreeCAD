@@ -649,7 +649,7 @@ PyObject *GeomPoint::getPyObject()
 bool GeomPoint::isSame(const Geometry &other, double tol, double) const
 {
     return other.getTypeId() == getTypeId()
-        && Base::DistanceP2(dynamic_cast<const GeomPoint &>(other).getPoint(),getPoint()) <= tol*tol;
+        && getPoint().DistanceP2(dynamic_cast<const GeomPoint &>(other).getPoint()) <= tol*tol;
 }
 
 // -------------------------------------------------
@@ -2237,7 +2237,7 @@ bool GeomConic::isSame(const Geometry &_other, double tol, double atol) const
 
     return conic->Position().XDirection().Angle(conic2->Position().XDirection()) <= atol
         && conic->Position().YDirection().Angle(conic2->Position().YDirection()) <= atol
-        && Base::DistanceP2(getLocation(),other.getLocation()) <= tol*tol;
+        && getLocation().DistanceP2(other.getLocation()) <= tol*tol;
 }
 
 // -------------------------------------------------
@@ -4468,7 +4468,7 @@ bool GeomLine::isSame(const Geometry &_other, double tol, double atol) const
     auto &other = dynamic_cast<const GeomLine &>(_other);
 
     return getDir().GetAngle(other.getDir()) <= atol
-            && Base::DistanceP2(getPos(), other.getPos()) <= tol*tol;
+            && getPos().DistanceP2(other.getPos()) <= tol*tol;
 }
 // -------------------------------------------------
 
@@ -5159,7 +5159,7 @@ bool GeomElementarySurface::isSame(const Geometry &_other, double tol, double at
         return false;
 
     auto &other = static_cast<const GeomElementarySurface &>(_other);
-    return Base::DistanceP2(getLocation(), other.getLocation()) <= tol*tol
+    return getLocation().DistanceP2(other.getLocation()) <= tol*tol
         && getDir().GetAngle(other.getDir()) <= atol
         && ((getXDir().GetAngle(other.getXDir()) <= atol
                 && getYDir().GetAngle(other.getYDir()) <= atol)

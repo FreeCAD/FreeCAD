@@ -137,7 +137,7 @@ int LineSegmentPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         Base::Vector3d v2 = static_cast<Base::VectorPy*>(pV2)->value();
         try {
             // Create line out of two points
-            double distance = Base::Distance(v1, v2);
+            double distance = v1.Distance(v2);
             if (distance < gp::Resolution())
                 Standard_Failure::Raise("Both points are equal");
             GC_MakeSegment ms(gp_Pnt(v1.x,v1.y,v1.z),

@@ -106,7 +106,7 @@ public:
 #if defined(FC_DEBUG)
             // Only for testing purposes
             try {
-                float height = Base::Distance(base, top);
+                float height = base.Distance(top);
                 Gui::Command::doCommand(
                     Gui::Command::App,
                     "cyl = App.ActiveDocument.addObject('Part::Cylinder', 'Cylinder')\n"

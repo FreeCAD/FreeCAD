@@ -240,6 +240,13 @@ public:
      * Note: Do not mix up this method with ProjectToLine.
      */
     Vector3 Perpendicular(const Vector3& rclBase, const Vector3& rclDir) const;
+    
+    /// Returns the distance between two points
+    //template<class return_float_type>
+    float_type Distance(const Vector3<float_type>& v2) const;
+    /// Returns the squared distance between two points
+    //template<class return_float_type>
+    float_type DistanceP2(const Vector3<float_type>& v2) const;
     /** Computes the distance to the given plane. Depending on the side this point is located
      * the distance can also be negative. The distance is positive if the point is at the same
      * side the plane normal points to, negative otherwise.
@@ -258,25 +265,7 @@ public:
 
 // global functions
 
-/// Returns the distance between two points
-template<class float_type>
-inline float_type Distance(const Vector3<float_type>& v1, const Vector3<float_type>& v2)
-{
-    float_type x = v1.x - v2.x;
-    float_type y = v1.y - v2.y;
-    float_type z = v1.z - v2.z;
-    return static_cast<float_type>(sqrt((x * x) + (y * y) + (z * z)));
-}
 
-/// Returns the squared distance between two points
-template<class float_type>
-inline float_type DistanceP2(const Vector3<float_type>& v1, const Vector3<float_type>& v2)
-{
-    float_type x = v1.x - v2.x;
-    float_type y = v1.y - v2.y;
-    float_type z = v1.z - v2.z;
-    return x * x + y * y + z * z;
-}
 
 /// Multiplication of scalar with vector.
 template<class float_type>

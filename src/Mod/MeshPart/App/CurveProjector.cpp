@@ -448,7 +448,7 @@ void CurveProjectorWithToolMesh::makeToolMesh(const TopoDS_Edge& aEdge,
                     Base::Vector3f((float)gpPt.X(), (float)gpPt.Y(), (float)gpPt.Z()),
                     It->GetNormal(),
                     cResultPoint)) {
-                if (Base::Distance(LinePoint, cResultPoint) < 0.5) {
+                if (LinePoint.Distance(cResultPoint) < 0.5) {
                     ResultNormal += It->GetNormal();
                 }
             }
@@ -942,7 +942,7 @@ void MeshProjection::projectEdgeToEdge(const TopoDS_Edge& aEdge,
                 // lies the point inside the edge?
                 if (l >= 0.0f && l <= 1.0f) {
                     Base::Vector3f cSplitPoint = (1 - l) * cE0 + l * cE1;
-                    float fDist = Base::Distance(cP0, cSplitPoint);
+                    float fDist = cP0.Distance(cSplitPoint);
 
                     if (fDist <= fMaxDist) {
                         SplitEdge splitEdge;
@@ -970,7 +970,7 @@ void MeshProjection::projectEdgeToEdge(const TopoDS_Edge& aEdge,
                     // lies the point inside the edge?
                     if (l >= 0.0 && l <= 1.0) {
                         cSplitPoint = (1 - l) * cE0 + l * cE1;
-                        float fDist = Base::Distance(cP0, cSplitPoint);
+                        float fDist = cP0.Distance(cSplitPoint);
 
                         if (fDist <= fMaxDist) {
                             nCntSol++;

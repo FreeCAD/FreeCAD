@@ -581,7 +581,7 @@ PyObject* VectorPy::distanceToPoint(PyObject* args)
     VectorPy::PointerType this_ptr = getVectorPtr();
     VectorPy::PointerType base_ptr = base_vec->getVectorPtr();
 
-    Py::Float dist(Base::Distance(*this_ptr, *base_ptr));
+    Py::Float dist(this_ptr->Distance(*base_ptr));
     return Py::new_reference_to(dist);
 }
 

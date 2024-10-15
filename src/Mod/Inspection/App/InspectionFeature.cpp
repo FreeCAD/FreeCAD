@@ -460,7 +460,7 @@ float InspectNominalPoints::getDistance(const Base::Vector3f& point) const
     double fMinDist = DBL_MAX;
     for (unsigned long it : indices) {
         Base::Vector3d pt = _rKernel.getPoint(it);
-        double fDist = Base::Distance(pointd, pt);
+        double fDist = pointd.Distance(pt);
         if (fDist < fMinDist) {
             fMinDist = fDist;
         }

@@ -49,13 +49,13 @@ bool Line3<float_type>::operator==(const Line3<float_type>& line) const
 template<typename float_type>
 float_type Line3<float_type>::Length() const
 {
-    return Base::Distance(p1, p2);
+    return p1.Distance(p2);
 }
 
 template<typename float_type>
 float_type Line3<float_type>::SqrLength() const
 {
-    return Base::DistanceP2(p1, p2);
+    return p1.Distance(p2);
 }
 
 template<typename float_type>

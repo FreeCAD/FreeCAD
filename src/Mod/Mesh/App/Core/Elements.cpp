@@ -281,9 +281,9 @@ bool MeshGeomEdge::IntersectWithLine(const Base::Vector3f& rclPt,
     float s = ((_aclPoints[0] - rclPt) * normal2) / (rclDir * normal2);
     rclRes = rclPt + s * rclDir;
 
-    float dist1 = Base::Distance(_aclPoints[0], _aclPoints[1]);
-    float dist2 = Base::Distance(_aclPoints[0], rclRes);
-    float dist3 = Base::Distance(_aclPoints[1], rclRes);
+    float dist1 = _aclPoints[0].Distance(, _aclPoints[1]);
+    float dist2 = _aclPoints[0].Distance(, rclRes);
+    float dist3 = _aclPoints[1].Distance(rclRes);
 
     return dist2 + dist3 <= dist1 + eps;
 }
@@ -436,7 +436,7 @@ void MeshGeomEdge::ClosestPointsToLine(const Base::Vector3f& linePt,
 
 bool MeshGeomEdge::IsPointOf(const Base::Vector3f& rclPoint, float fDistance) const
 {
-    float len2 = Base::DistanceP2(_aclPoints[0], _aclPoints[1]);
+    float len2 = _aclPoints[0].DistanceP2(_aclPoints[1]);
     if (len2 == 0.0f) {
         return _aclPoints[0].IsEqual(rclPoint, 0.0f);
     }
@@ -452,7 +452,7 @@ bool MeshGeomEdge::IsPointOf(const Base::Vector3f& rclPoint, float fDistance) co
 
     // point on the edge
     Base::Vector3f ptEdge = t * p2p1 + _aclPoints[0];
-    return Base::Distance(ptEdge, rclPoint) <= fDistance;
+    return ptEdge.Distance(rclPoint) <= fDistance;
 }
 
 bool MeshGeomEdge::IsProjectionPointOf(const Base::Vector3f& point) const
@@ -1264,9 +1264,9 @@ float MeshGeomFacet::CenterOfInscribedCircle(Base::Vector3f& rclCenter) const
     const Base::Vector3f& p1 = _aclPoints[1];
     const Base::Vector3f& p2 = _aclPoints[2];
 
-    float a = Base::Distance(p1, p2);
-    float b = Base::Distance(p2, p0);
-    float c = Base::Distance(p0, p1);
+    float a = p1.Distance(p2);
+    float b = p2.Distance(p0);
+    float c = p0.Distance(p1);
 
     // radius of the circle
     float fRadius = Area();
@@ -1327,13 +1327,13 @@ unsigned short MeshGeomFacet::NearestEdgeToPoint(const Base::Vector3f& rclPt) co
 
     // 1st edge
     Base::Vector3f clDir = rcP2 - rcP1;
-    float fLen = Base::Distance(rcP2, rcP1);
+    float fLen = rcP2.Distance(rcP1);
     float t = ((rclPt - rcP1) * clDir) / (fLen * fLen);
     if (t < 0.0f) {
-        fD1 = Base::Distance(rclPt, rcP1);
+        fD1 = rclPt.Distance(rcP1);
     }
     else if (t > 1.0f) {
-        fD1 = Base::Distance(rclPt, rcP2);
+        fD1 = rclPt.Distance(rcP2);
     }
     else {
         fD1 = (((rclPt - rcP1) % clDir).Length()) / fLen;
@@ -1341,13 +1341,13 @@ unsigned short MeshGeomFacet::NearestEdgeToPoint(const Base::Vector3f& rclPt) co
 
     // 2nd edge
     clDir = rcP3 - rcP2;
-    fLen = Base::Distance(rcP3, rcP2);
+    fLen = rcP3.Distance(rcP2);
     t = ((rclPt - rcP2) * clDir) / (fLen * fLen);
     if (t < 0.0f) {
-        fD2 = Base::Distance(rclPt, rcP2);
+        fD2 = rclPt.Distance(rcP2);
     }
     else if (t > 1.0f) {
-        fD2 = Base::Distance(rclPt, rcP3);
+        fD2 = rclPt.Distance(rcP3);
     }
     else {
         fD2 = (((rclPt - rcP2) % clDir).Length()) / fLen;
@@ -1355,13 +1355,13 @@ unsigned short MeshGeomFacet::NearestEdgeToPoint(const Base::Vector3f& rclPt) co
 
     // 3rd edge
     clDir = rcP1 - rcP3;
-    fLen = Base::Distance(rcP1, rcP3);
+    fLen = rcP1.Distance(rcP1, rcP3);
     t = ((rclPt - rcP3) * clDir) / (fLen * fLen);
     if (t < 0.0f) {
-        fD3 = Base::Distance(rclPt, rcP3);
+        fD3 = rclPt.Distance(rcP3);
     }
     else if (t > 1.0f) {
-        fD3 = Base::Distance(rclPt, rcP1);
+        fD3 = rclPt.Distance(rcP1);
     }
     else {
         fD3 = (((rclPt - rcP3) % clDir).Length()) / fLen;
@@ -1401,13 +1401,13 @@ void MeshGeomFacet::NearestEdgeToPoint(const Base::Vector3f& rclPt,
 
     // 1st edge
     Base::Vector3f clDir = rcP2 - rcP1;
-    float fLen = Base::Distance(rcP2, rcP1);
+    float fLen = rcP2.Distance(cP1);
     float t = ((rclPt - rcP1) * clDir) / (fLen * fLen);
     if (t < 0.0f) {
-        fD1 = Base::Distance(rclPt, rcP1);
+        fD1 = rclPt.Distance(rcP1);
     }
     else if (t > 1.0f) {
-        fD1 = Base::Distance(rclPt, rcP2);
+        fD1 = rclPt.Distance(rcP2);
     }
     else {
         fD1 = (((rclPt - rcP1) % clDir).Length()) / fLen;
@@ -1415,13 +1415,13 @@ void MeshGeomFacet::NearestEdgeToPoint(const Base::Vector3f& rclPt,
 
     // 2nd edge
     clDir = rcP3 - rcP2;
-    fLen = Base::Distance(rcP3, rcP2);
+    fLen = rcP3.Distance(rcP2);
     t = ((rclPt - rcP2) * clDir) / (fLen * fLen);
     if (t < 0.0f) {
-        fD2 = Base::Distance(rclPt, rcP2);
+        fD2 = rclPt.Distance(rcP2);
     }
     else if (t > 1.0f) {
-        fD2 = Base::Distance(rclPt, rcP3);
+        fD2 = rclPt.Distance(rcP3);
     }
     else {
         fD2 = (((rclPt - rcP2) % clDir).Length()) / fLen;
@@ -1429,13 +1429,13 @@ void MeshGeomFacet::NearestEdgeToPoint(const Base::Vector3f& rclPt,
 
     // 3rd edge
     clDir = rcP1 - rcP3;
-    fLen = Base::Distance(rcP1, rcP3);
+    fLen = rclPt.Distance(rcP3);
     t = ((rclPt - rcP3) * clDir) / (fLen * fLen);
     if (t < 0.0f) {
-        fD3 = Base::Distance(rclPt, rcP3);
+        fD3 = rclPt.Distance(rcP3);
     }
     else if (t > 1.0f) {
-        fD3 = Base::Distance(rclPt, rcP1);
+        fD3 = rclPt.Distance(rcP1);
     }
     else {
         fD3 = (((rclPt - rcP3) % clDir).Length()) / fLen;
@@ -1550,7 +1550,7 @@ bool MeshGeomFacet::IsPointOfSphere(const Base::Vector3f& rP) const
     radius = CenterOfCircumCircle(center);
     radius *= radius;
 
-    float dist = Base::DistanceP2(rP, center);
+    float dist = rP.DistanceP2(center);
     return dist < radius;
 }
 
@@ -1562,7 +1562,7 @@ bool MeshGeomFacet::IsPointOfSphere(const MeshGeomFacet& rFacet) const
     radius *= radius;
 
     for (const auto& pnt : rFacet._aclPoints) {
-        float dist = Base::DistanceP2(pnt, center);
+        float dist = pnt.DistanceP2(center);
         if (dist < radius) {
             return true;
         }
@@ -1598,9 +1598,9 @@ float MeshGeomFacet::AspectRatio2() const
     const Base::Vector3f& rcP2 = _aclPoints[1];
     const Base::Vector3f& rcP3 = _aclPoints[2];
 
-    float a = Base::Distance(rcP1, rcP2);
-    float b = Base::Distance(rcP2, rcP3);
-    float c = Base::Distance(rcP3, rcP1);
+    float a = rcP1.Distance(rcP2);
+    float b = rcP2.Distance(rcP3);
+    float c = rcP3.Distance(rcP1);
 
     // https://stackoverflow.com/questions/10289752/aspect-ratio-of-a-triangle-of-a-meshed-surface
     return a * b * c / ((b + c - a) * (c + a - b) * (a + b - c));

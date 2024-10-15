@@ -541,8 +541,8 @@ Mesh::MeshObject* Mesher::createFrom(SMESH_Mesh* mesh) const
             Base::Vector3d v5(node5->X(), node5->Y(), node5->Z());
             Base::Vector3d v6(node6->X(), node6->Y(), node6->Z());
             Base::Vector3d v7(node7->X(), node7->Y(), node7->Z());
-            double dist46 = Base::DistanceP2(v4, v6);
-            double dist57 = Base::DistanceP2(v5, v7);
+            double dist46 = v4.DistanceP2(v6);
+            double dist57 = v5.DistanceP2(v7);
             if (dist46 > dist57) {
                 f5._aulPoints[0] = mapNodeIndex[node4];
                 f5._aulPoints[1] = mapNodeIndex[node6];

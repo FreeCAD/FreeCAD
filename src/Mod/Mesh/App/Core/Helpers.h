@@ -121,7 +121,7 @@ inline bool MeshHelpPoint::operator<(const MeshHelpPoint& rclObj) const
 
 inline bool MeshHelpPoint::operator==(const MeshHelpPoint& rclObj) const
 {
-    return Base::DistanceP2(_clPt, rclObj._clPt) < MeshDefinitions::_fMinPointDistanceP2;
+    return _clPt.DistanceP2(rclObj._clPt) < MeshDefinitions::_fMinPointDistanceP2;
 }
 
 inline void

@@ -988,7 +988,7 @@ std::set<int> FemMesh::getNodesByVertex(const TopoDS_Vertex& vertex) const
         Base::Vector3d vec(xyz[0], xyz[1], xyz[2]);
         vec = Mtrx * vec;
 
-        if (Base::DistanceP2(node, vec) <= limit)
+        if (node.DistanceP2(vec) <= limit)
 #pragma omp critical
         {
             result.insert(aNode->GetID());
