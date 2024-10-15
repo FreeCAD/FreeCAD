@@ -24,6 +24,8 @@
 
 #include "PreCompiled.h"
 
+#include <string>
+
 #include "Exception.h"
 #include "Console.h"
 #include "PyObjectBase.h"
@@ -56,7 +58,7 @@ Exception::Exception(const char* sMessage)
 {}
 
 Exception::Exception(std::string sMessage)
-    : _sErrMsg(std::move(sMessage))
+    : _sErrMsg(sMessage.c_str())
     , _line(0)
     , _isTranslatable(false)
     , _isReported(false)
@@ -84,27 +86,27 @@ Exception& Exception::operator=(Exception&& inst) noexcept
 
 const char* Exception::what() const noexcept
 {
-    return _sErrMsg.c_str();
+    return _sErrMsg;
 }
 
 void Exception::ReportException() const
 {
     if (!_isReported) {
         const char* msg {};
-        if (_sErrMsg.empty()) {
+        if (strlen(_sErrMsg) == 0) {
             msg = typeid(*this).name();
         }
         else {
-            msg = _sErrMsg.c_str();
+            msg = _sErrMsg;
         }
 #ifdef FC_DEBUG
-        if (!_function.empty()) {
-            _FC_ERR(_file.c_str(), _line, _function << " -- " << msg);
+        if (strlen(_function) != 0) {
+            _FC_ERR(_file, _line, _function << " -- " << msg);
         }
         else
 #endif
         {
-            _FC_ERR(_file.c_str(), _line, msg);
+            _FC_ERR(_file, _line, msg);
         }
         _isReported = true;
     }
@@ -130,15 +132,15 @@ void Exception::setPyObject(PyObject* pydict)
         if (pydict && Py::_Dict_Check(pydict)) {
             Py::Dict edict(pydict);
             if (edict.hasKey("sfile")) {
-                _file = static_cast<std::string>(Py::String(edict.getItem("sfile")));
+                _file = static_cast<std::string>(Py::String(edict.getItem("sfile"))).c_str();
             }
 
             if (edict.hasKey("sfunction")) {
-                _function = static_cast<std::string>(Py::String(edict.getItem("sfunction")));
+                _function = static_cast<std::string>(Py::String(edict.getItem("sfunction"))).c_str();
             }
 
             if (edict.hasKey("sErrMsg")) {
-                _sErrMsg = static_cast<std::string>(Py::String(edict.getItem("sErrMsg")));
+                _sErrMsg = static_cast<std::string>(Py::String(edict.getItem("sErrMsg"))).c_str();
             }
 
             if (edict.hasKey("iline")) {
@@ -288,11 +290,14 @@ FileException::FileException()
 void FileException::setFileName(const char* sFileName)
 {
     file.setFile(sFileName);
-    _sErrMsgAndFileName = _sErrMsg;
+    
+    std::string result = _sErrMsg;
     if (sFileName) {
-        _sErrMsgAndFileName += ": ";
-        _sErrMsgAndFileName += sFileName;
+        result += ": ";
+        result += sFileName;
     }
+    _sErrMsgAndFileName = result.c_str();
+
 }
 
 std::string FileException::getFileName() const
@@ -302,27 +307,27 @@ std::string FileException::getFileName() const
 
 const char* FileException::what() const noexcept
 {
-    return _sErrMsgAndFileName.c_str();
+    return _sErrMsgAndFileName;
 }
 
 void FileException::ReportException() const
 {
     if (!_isReported) {
         const char* msg {};
-        if (_sErrMsgAndFileName.empty()) {
+        if (strlen(_sErrMsgAndFileName) == 0) {
             msg = typeid(*this).name();
         }
         else {
-            msg = _sErrMsgAndFileName.c_str();
+            msg = _sErrMsgAndFileName;
         }
 #ifdef FC_DEBUG
-        if (!_function.empty()) {
-            _FC_ERR(_file.c_str(), _line, _function << " -- " << msg);
+        if (strlen(_function) != 0) {
+            _FC_ERR(_file, _line, _function << " -- " << msg);
         }
         else
 #endif
         {
-            _FC_ERR(_file.c_str(), _line, msg);
+            _FC_ERR(_file, _line, msg);
         }
         _isReported = true;
     }

@@ -26,10 +26,12 @@
 #define BASE_EXCEPTION_H
 
 #include <csignal>
-#include <string>
 #include "BaseClass.h"
 #include "FileInfo.h"
 
+// namespace std {
+//     class string;  // Name clash on Linux
+// }
 
 using PyObject = struct _object;
 
@@ -46,6 +48,139 @@ using PyObject = struct _object;
 /// identify that string for translation so that if you ask for a translation (and the translator
 /// have provided one) at that time it gets translated (e.g. in the UI before showing the message of
 /// the exception).
+
+// NOLINTBEGIN
+// #ifdef _MSC_VER
+
+// #define THROW(exception)                                                                           \
+//     {                                                                                              \
+//         exception myexcp;                                                                          \
+//         myexcp.setDebugInformation(__FILE__.c_str(), __LINE__.c_str(), __FUNCSIG__.c_str());                               \
+//         throw myexcp;                                                                              \
+//     }
+// #define THROWM(exception, message)                                                                 \
+//     {                                                                                              \
+//         exception myexcp(message);                                                                 \
+//         myexcp.setDebugInformation(__FILE__.c_str(), __LINE__.c_str(), __FUNCSIG__.c_str());                               \
+//         throw myexcp;                                                                              \
+//     }
+// #define THROWMF_FILEEXCEPTION(message, filenameorfileinfo)                                         \
+//     {                                                                                              \
+//         FileException myexcp(message, filenameorfileinfo);                                         \
+//         myexcp.setDebugInformation(__FILE__.c_str(), __LINE__.c_str(), __FUNCSIG__.c_str());                               \
+//         throw myexcp;                                                                              \
+//     }
+
+// #define THROWT(exception)                                                                          \
+//     {                                                                                              \
+//         exception myexcp;                                                                          \
+//         myexcp.setDebugInformation(__FILE__.c_str(), __LINE__.c_str(), __FUNCSIG__.c_str());                               \
+//         myexcp.setTranslatable(true);                                                              \
+//         throw myexcp;                                                                              \
+//     }
+// #define THROWMT(exception, message)                                                                \
+//     {                                                                                              \
+//         exception myexcp(message);                                                                 \
+//         myexcp.setDebugInformation(__FILE__.c_str(), __LINE__.c_str(), __FUNCSIG__.c_str());                               \
+//         myexcp.setTranslatable(true);                                                              \
+//         throw myexcp;                                                                              \
+//     }
+// #define THROWMFT_FILEEXCEPTION(message, filenameorfileinfo)                                        \
+//     {                                                                                              \
+//         FileException myexcp(message, filenameorfileinfo);                                         \
+//         myexcp.setDebugInformation(__FILE__.c_str(), __LINE__.c_str(), __FUNCSIG__.c_str());                               \
+//         myexcp.setTranslatable(true);                                                              \
+//         throw myexcp;                                                                              \
+//     }
+
+// #elif defined(__GNUC__)
+
+// #define THROW(exception)                                                                           \
+//     {                                                                                              \
+//         exception myexcp;                                                                          \
+//         myexcp.setDebugInformation(__FILE__.c_str(), __LINE__.c_str(), __PRETTY_FUNCTION__.c_str());                       \
+//         throw myexcp;                                                                              \
+//     }
+// #define THROWM(exception, message)                                                                 \
+//     {                                                                                              \
+//         exception myexcp(message);                                                                 \
+//         myexcp.setDebugInformation(__FILE__.c_str(), __LINE__.c_str(), __PRETTY_FUNCTION__.c_str());                       \
+//         throw myexcp;                                                                              \
+//     }
+// #define THROWMF_FILEEXCEPTION(message, filenameorfileinfo)                                         \
+//     {                                                                                              \
+//         FileException myexcp(message, filenameorfileinfo);                                         \
+//         myexcp.setDebugInformation(__FILE__.c_str(), __LINE__.c_str(), __PRETTY_FUNCTION__.c_str());                       \
+//         throw myexcp;                                                                              \
+//     }
+
+// #define THROWT(exception)                                                                          \
+//     {                                                                                              \
+//         exception myexcp;                                                                          \
+//         myexcp.setDebugInformation(__FILE__.c_str(), __LINE__.c_str(), __PRETTY_FUNCTION__.c_str());                       \
+//         myexcp.setTranslatable(true);                                                              \
+//         throw myexcp;                                                                              \
+//     }
+// #define THROWMT(exception, message)                                                                \
+//     {                                                                                              \
+//         exception myexcp(message);                                                                 \
+//         myexcp.setDebugInformation(__FILE__.c_str(), __LINE__.c_str(), __PRETTY_FUNCTION__.c_str());                       \
+//         myexcp.setTranslatable(true);                                                              \
+//         throw myexcp;                                                                              \
+//     }
+// #define THROWMFT_FILEEXCEPTION(message, filenameorfileinfo)                                        \
+//     {                                                                                              \
+//         FileException myexcp(message, filenameorfileinfo);                                         \
+//         myexcp.setDebugInformation(__FILE__.c_str(), __LINE__.c_str(), __PRETTY_FUNCTION__.c_str());                       \
+//         myexcp.setTranslatable(true);                                                              \
+//         throw myexcp;                                                                              \
+//     }
+
+// #else
+
+// #define THROW(exception)                                                                           \
+//     {                                                                                              \
+//         exception myexcp;                                                                          \
+//         myexcp.setDebugInformation(__FILE__.c_str(), __LINE__.c_str(), __func__.c_str());                                  \
+//         throw myexcp;                                                                              \
+//     }
+// #define THROWM(exception, message)                                                                 \
+//     {                                                                                              \
+//         exception myexcp(message);                                                                 \
+//         myexcp.setDebugInformation(__FILE__.c_str(), __LINE__.c_str(), __func__.c_str());                                  \
+//         throw myexcp;                                                                              \
+//     }
+// #define THROWMF_FILEEXCEPTION(message, filenameorfileinfo)                                         \
+//     {                                                                                              \
+//         FileException myexcp(message, filenameorfileinfo);                                         \
+//         myexcp.setDebugInformation(__FILE__.c_str(), __LINE__.c_str(), __func__.c_str());                                  \
+//         throw myexcp;                                                                              \
+//     }
+
+// #define THROWT(exception)                                                                          \
+//     {                                                                                              \
+//         exception myexcp;                                                                          \
+//         myexcp.setDebugInformation(__FILE__.c_str(), __LINE__.c_str(), __func__.c_str());                                  \
+//         myexcp.setTranslatable(true);                                                              \
+//         throw myexcp;                                                                              \
+//     }
+// #define THROWMT(exception, message)                                                                \
+//     {                                                                                              \
+//         exception myexcp(message);                                                                 \
+//         myexcp.setDebugInformation(__FILE__.c_str(), __LINE__.c_str(), __func__.c_str());                                  \
+//         myexcp.setTranslatable(true);                                                              \
+//         throw myexcp;                                                                              \
+//     }
+// #define THROWMFT_FILEEXCEPTION(message, filenameorfileinfo)                                        \
+//     {                                                                                              \
+//         FileException myexcp(message, filenameorfileinfo);                                         \
+//         myexcp.setDebugInformation(__FILE__.c_str(), __LINE__.c_str(), __func__.c_str());                                  \
+//         myexcp.setTranslatable(true);                                                              \
+//         throw myexcp;                                                                              \
+//     }
+
+
+
 
 // NOLINTBEGIN
 #ifdef _MSC_VER
@@ -180,13 +315,17 @@ using PyObject = struct _object;
 
 #endif
 
+// Do not include sstream here, as it's an heavy import. Instead do
+// in local file, or use THROWM instead of FC_THROWM.
 #define FC_THROWM(_exception, _msg)                                                                \
     do {                                                                                           \
         std::stringstream ss;                                                                      \
         ss << _msg;                                                                                \
         THROWM(_exception, ss.str().c_str());                                                      \
     } while (0)
-// NOLINTEND
+
+// #endif
+
 
 namespace Base
 {
@@ -210,10 +349,10 @@ public:
     inline void setMessage(const std::string& sMessage);
     // what may differ from the message given by the user in
     // derived classes
-    inline std::string getMessage() const;
-    inline std::string getFile() const;
+    inline const char* getMessage() const;
+    inline const char* getFile() const;
     inline int getLine() const;
-    inline std::string getFunction() const;
+    inline const char* getFunction() const;
     inline bool getTranslatable() const;
     inline bool getReported() const
     {
@@ -222,7 +361,7 @@ public:
 
     /// setter methods for including debug information
     /// intended to use via macro for autofilling of debugging information
-    inline void setDebugInformation(const std::string& file, int line, const std::string& function);
+    inline void setDebugInformation(const char* file, int line, const char* function);
 
     inline void setTranslatable(bool translatable);
 
@@ -254,10 +393,10 @@ protected:
     Exception(Exception&& inst) noexcept;
 
 protected:
-    std::string _sErrMsg;
-    std::string _file;
+    const char* _sErrMsg = "";
+    const char* _file = "";
     int _line;
-    std::string _function;
+    const char* _function = "";
     bool _isTranslatable;
     mutable bool _isReported;
 };
@@ -402,7 +541,7 @@ protected:
     FileInfo file;
     // necessary   for what() legacy behaviour as it returns a buffer that
     // can not be of a temporary object to be destroyed at end of what()
-    std::string _sErrMsgAndFileName;
+    const char* _sErrMsgAndFileName;
     void setFileName(const char* sFileName = nullptr);
 };
 
@@ -961,17 +1100,12 @@ inline void Exception::setMessage(const char* sMessage)
     _sErrMsg = sMessage;
 }
 
-inline void Exception::setMessage(const std::string& sMessage)
-{
-    _sErrMsg = sMessage;
-}
-
-inline std::string Exception::getMessage() const
+inline const char* Exception::getMessage() const
 {
     return _sErrMsg;
 }
 
-inline std::string Exception::getFile() const
+inline const char* Exception::getFile() const
 {
     return _file;
 }
@@ -981,7 +1115,7 @@ inline int Exception::getLine() const
     return _line;
 }
 
-inline std::string Exception::getFunction() const
+inline const char* Exception::getFunction() const
 {
     return _function;
 }
@@ -992,7 +1126,7 @@ inline bool Exception::getTranslatable() const
 }
 
 inline void
-Exception::setDebugInformation(const std::string& file, int line, const std::string& function)
+Exception::setDebugInformation(const char* file, int line, const char* function)
 {
     _file = file;
     _line = line;

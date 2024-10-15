@@ -45,7 +45,7 @@ using namespace Base;
 
 PyException::PyException(const Py::Object& obj)
 {
-    _sErrMsg = obj.as_string();
+    _sErrMsg = obj.as_string().c_str();
     // WARNING: we are assuming that python type object will never be
     // destroyed, so we don't keep reference here to save book-keeping in
     // our copy constructor and destructor
@@ -64,7 +64,7 @@ PyException::PyException()
     std::string prefix = PP_last_error_type; /* exception name text */
     std::string error = PP_last_error_info;  /* exception data text */
 
-    _sErrMsg = error;
+    _sErrMsg = error.c_str();
     _errorType = prefix;
 
     // NOLINTNEXTLINE
@@ -115,7 +115,7 @@ void PyException::raiseException()
     }
 
     if (_exceptionType == Base::PyExc_FC_FreeCADAbort) {
-        Base::AbortException exc(_sErrMsg.c_str());
+        Base::AbortException exc(_sErrMsg);
         exc.setReported(_isReported);
         throw exc;
     }
@@ -187,7 +187,7 @@ SystemExitException::SystemExitException()
         }
     }
 
-    _sErrMsg = errMsg;
+    _sErrMsg = errMsg.c_str();
     _exitCode = errCode;
 }
 
