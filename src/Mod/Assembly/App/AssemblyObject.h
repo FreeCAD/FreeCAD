@@ -186,7 +186,6 @@ public:
     void setObjMasses(std::vector<std::pair<App::DocumentObject*, double>> objectMasses);
 
     std::vector<AssemblyLink*> getSubAssemblies();
-    void updateGroundedJointsPlacements();
 
     std::vector<App::DocumentObject*> getMotionsFromSimulation(App::DocumentObject* sim);
 
