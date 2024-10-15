@@ -29,6 +29,13 @@
 #endif
 
 #include <atomic>
+
+#include <boost/multi_index_container.hpp>
+#include <boost/multi_index/hashed_index.hpp>
+#include <boost/multi_index/sequenced_index.hpp>
+#include <boost/multi_index/member.hpp>
+#include <boost/multi_index/mem_fun.hpp>
+
 #include <Base/Console.h>
 
 #include "Transactions.h"
@@ -48,6 +55,25 @@ using namespace std;
 
 TYPESYSTEM_SOURCE(App::Transaction, Base::Persistence)
 
+
+
+using Info = std::pair<const TransactionalObject*, TransactionObject*>;
+
+// is this better having in anonymous namespace?
+struct Transaction::Private
+{
+    bmi::multi_index_container<
+        Info,
+        bmi::indexed_by<
+            bmi::sequenced<>,
+            bmi::hashed_unique<
+                bmi::member<Info, const TransactionalObject*, &Info::first>
+            >
+        >
+    > _Objects;
+};
+
+
 //**************************************************************************
 // Construction/Destruction
 
@@ -55,7 +81,11 @@ Transaction::Transaction(int id)
 {
     if(!id) id = getNewID();
     transID = id;
+    pImpl = new Private;
 }
+
+
+
 
 /**
  * A destructor.
@@ -63,7 +93,7 @@ Transaction::Transaction(int id)
  */
 Transaction::~Transaction()
 {
-    auto &index = _Objects.get<0>();
+    auto &index = pImpl->_Objects.get<0>();
     for (const auto & It : index) {
         if (It.second->status == TransactionObject::New) {
             // If an object has been removed from the document the transaction
@@ -95,6 +125,7 @@ Transaction::~Transaction()
         }
         delete It.second;
     }
+    delete pImpl;
 }
 
 static std::atomic<int> _TransactionID;
@@ -133,18 +164,18 @@ int Transaction::getID() const
 
 bool Transaction::isEmpty() const
 {
-    return _Objects.empty();
+    return pImpl->_Objects.empty();
 }
 
 bool Transaction::hasObject(const TransactionalObject *Obj) const
 {
-    return !!_Objects.get<1>().count(Obj);
+    return !!pImpl->_Objects.get<1>().count(Obj);
 }
 
 void Transaction::addOrRemoveProperty(TransactionalObject *Obj,
                                     const Property* pcProp, bool add)
 {
-    auto &index = _Objects.get<1>();
+    auto &index = pImpl->_Objects.get<1>();
     auto pos = index.find(Obj);
 
     TransactionObject *To;
@@ -169,7 +200,7 @@ void Transaction::apply(Document &Doc, bool forward)
 {
     std::string errMsg;
     try {
-        auto &index = _Objects.get<0>();
+        auto &index = pImpl->_Objects.get<0>();
         for(auto &info : index) 
             info.second->applyDel(Doc, const_cast<TransactionalObject*>(info.first));
         for(auto &info : index) 
@@ -192,7 +223,7 @@ void Transaction::apply(Document &Doc, bool forward)
 
 void Transaction::addObjectNew(TransactionalObject *Obj)
 {
-    auto &index = _Objects.get<1>();
+    auto &index = pImpl->_Objects.get<1>();
     auto pos = index.find(Obj);
     if (pos != index.end()) {
         if (pos->second->status == TransactionObject::Del) {
@@ -207,8 +238,8 @@ void Transaction::addObjectNew(TransactionalObject *Obj)
             pos->second->status = TransactionObject::New;
             pos->second->_NameInDocument = Obj->detachFromDocument();
             // move item at the end to make sure the order of removal is kept
-            auto &seq = _Objects.get<0>();
-            seq.relocate(seq.end(),_Objects.project<0>(pos));
+            auto &seq = pImpl->_Objects.get<0>();
+            seq.relocate(seq.end(),pImpl->_Objects.project<0>(pos));
         }
     }
     else {
@@ -221,7 +252,7 @@ void Transaction::addObjectNew(TransactionalObject *Obj)
 
 void Transaction::addObjectDel(const TransactionalObject *Obj)
 {
-    auto &index = _Objects.get<1>();
+    auto &index = pImpl->_Objects.get<1>();
     auto pos = index.find(Obj);
 
     // is it created in this transaction ?
@@ -242,7 +273,7 @@ void Transaction::addObjectDel(const TransactionalObject *Obj)
 
 void Transaction::addObjectChange(const TransactionalObject *Obj, const Property *Prop)
 {
-    auto &index = _Objects.get<1>();
+    auto &index = pImpl->_Objects.get<1>();
     auto pos = index.find(Obj);
 
     TransactionObject *To;

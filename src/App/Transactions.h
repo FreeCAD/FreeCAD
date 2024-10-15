@@ -26,6 +26,7 @@
 #define APP_TRANSACTION_H
 
 #include <unordered_map>
+
 #include <Base/Factory.h>
 #include <Base/Persistence.h>
 #include <App/PropertyContainer.h>
@@ -88,17 +89,9 @@ public:
     void addObjectChange(const TransactionalObject *Obj, const Property *Prop);
 
 private:
+    struct Private;
+    Private* pImpl;
     int transID;
-    using Info = std::pair<const TransactionalObject*, TransactionObject*>;
-    bmi::multi_index_container<
-        Info,
-        bmi::indexed_by<
-            bmi::sequenced<>,
-            bmi::hashed_unique<
-                bmi::member<Info, const TransactionalObject*, &Info::first>
-            >
-        >
-    > _Objects;
 };
 
 /** Represents an entry for an object in a Transaction
