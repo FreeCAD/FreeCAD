@@ -57,8 +57,8 @@ ViewProviderDatum::ViewProviderDatum() {
     soScale = new SoShapeScale();
 
     // Create the separator filled by inherited classes
-    pLCSRoot = new SoSeparator();
-    pLCSRoot->ref();
+    pRoot = new SoSeparator();
+    pRoot->ref();
 
     // Create the Label node
     pLabel = new SoText2();
@@ -69,7 +69,7 @@ ViewProviderDatum::ViewProviderDatum() {
 
 
 ViewProviderDatum::~ViewProviderDatum() {
-    pLCSRoot->unref();
+    pRoot->unref();
     pLabel->unref();
 }
 
@@ -113,7 +113,7 @@ void ViewProviderDatum::attach(App::DocumentObject* pcObject)
     highlight->addChild(style);
 
     // Visible lines
-    highlight->addChild(pLCSRoot);
+    highlight->addChild(pRoot);
 
     // Hidden features
     auto hidden = new SoAnnotation();
@@ -125,7 +125,7 @@ void ViewProviderDatum::attach(App::DocumentObject* pcObject)
     hidden->addChild(style);
 
     // Hidden lines
-    hidden->addChild(pLCSRoot);
+    hidden->addChild(pRoot);
 
     highlight->addChild(hidden);
 
