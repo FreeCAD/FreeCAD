@@ -131,7 +131,7 @@ std::string Color::asHexString() const
 {
     // clang-format off
     std::stringstream ss;
-    ss << "#" << std::hex << std::uppercase << std::setfill('0')
+    ss << "#" << std::hex << std::uppercase << std::setfill('0')  // Consider removing setfill, 342 ms
        << std::setw(2) << int(std::lround(r * 255.0F))
        << std::setw(2) << int(std::lround(g * 255.0F))
        << std::setw(2) << int(std::lround(b * 255.0F));

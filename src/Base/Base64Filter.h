@@ -25,6 +25,8 @@
 #define FREECAD_BASE_BASE64FILTER_H
 
 
+// can this be moved to it's own translation unit?
+
 #include "Base64.h"
 #include "FCGlobal.h"
 

@@ -38,6 +38,8 @@
 #include <unistd.h>
 #endif
 
+#include <CXX/Extensions.hxx>
+
 #include "Parameter.h"
 #include "Exception.h"
 #include "Interpreter.h"
