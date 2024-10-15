@@ -134,7 +134,7 @@ GeoFeature::_getElementName(const char* name, const Data::MappedElement& mapped)
     }
 }
 
-DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subname, 
+DocumentObject *GeoFeature::resolveElement(const DocumentObject *obj, const char *subname, 
         ElementNamePair &elementName, bool append,
         ElementNameType type, const DocumentObject *filter, 
         const char **_element, GeoFeature **geoFeature)
