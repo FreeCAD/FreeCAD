@@ -161,6 +161,21 @@ def getObject(ref):
         if obj.TypeId in {"App::Part", "Assembly::AssemblyObject"} or isLinkGroup(obj):
             continue
 
+        elif obj.isDerivedFrom("App::LocalCoordinateSystem"):
+            # 2 cases possible, either we have the LCS itself: "part.LCS."
+            # or we have a datum: "part.LCS.X_Axis"
+            if i + 1 < len(names):
+                obj2 = None
+                for obji in obj.OutList:
+                    if obji.Name == names[i + 1]:
+                        obj2 = obji
+                        break
+                if obj2 and obj2.isDerivedFrom("App::DatumElement"):
+                    return obj2
+
+        elif obj.isDerivedFrom("App::DatumElement"):
+            return obj
+
         elif obj.TypeId == "PartDesign::Body":
             if i + 1 < len(names):
                 obj2 = None
@@ -168,7 +183,7 @@ def getObject(ref):
                     if obji.Name == names[i + 1]:
                         obj2 = obji
                         break
-                if obj2 and isBodySubObject(obj2.TypeId):
+                if obj2 and isBodySubObject(obj2):
                     return obj2
             return obj
 
@@ -185,7 +200,7 @@ def getObject(ref):
                         if obji.Name == names[i + 1]:
                             obj2 = obji
                             break
-                    if obj2 and isBodySubObject(obj2.TypeId):
+                    if obj2 and isBodySubObject(obj2):
                         return obj2
                 return obj
             elif linked_obj.isDerivedFrom("Part::Feature"):
@@ -197,13 +212,12 @@ def getObject(ref):
     return None
 
 
-def isBodySubObject(typeId):
+def isBodySubObject(obj):
     return (
-        typeId == "Sketcher::SketchObject"
-        or typeId == "PartDesign::Point"
-        or typeId == "PartDesign::Line"
-        or typeId == "PartDesign::Plane"
-        or typeId == "PartDesign::CoordinateSystem"
+        obj.isDerivedFrom("Sketcher::SketchObject")
+        or obj.isDerivedFrom("PartDesign::Datum")
+        or obj.isDerivedFrom("App::DatumElement")
+        or obj.isDerivedFrom("App::LocalCoordinateSystem")
     )
 
 
@@ -347,21 +361,6 @@ def getElementName(full_name):
     # case of PartDesign datums : CoordinateSystem, point, line, plane
     if parts[-1] in {"X", "Y", "Z", "Point", "Line", "Plane"}:
         return ""
-
-    # Case of origin objects
-    if parts[-1] == "":
-        if "X_Axis" in parts[-2]:
-            return "X_Axis"
-        if "Y_Axis" in parts[-2]:
-            return "Y_Axis"
-        if "Z_Axis" in parts[-2]:
-            return "Z_Axis"
-        if "XY_Plane" in parts[-2]:
-            return "XY_Plane"
-        if "XZ_Plane" in parts[-2]:
-            return "XZ_Plane"
-        if "YZ_Plane" in parts[-2]:
-            return "YZ_Plane"
 
     return parts[-1]
 
@@ -946,16 +945,8 @@ def findPlacement(ref, ignoreVertex=False):
     elt = getElementName(ref[1][0])
     vtx = getElementName(ref[1][1])
 
-    # case of origin objects.
-    if elt == "X_Axis" or elt == "YZ_Plane":
-        return App.Placement(App.Vector(), App.Rotation(App.Vector(0, 1, 0), -90))
-    if elt == "Y_Axis" or elt == "XZ_Plane":
-        return App.Placement(App.Vector(), App.Rotation(App.Vector(1, 0, 0), 90))
-    if elt == "Z_Axis" or elt == "XY_Plane":
-        return App.Placement()
-
     if not elt or not vtx:
-        # case of whole parts such as PartDesign::Body or PartDesign::CordinateSystem/Point/Line/Plane.
+        # case of whole parts such as PartDesign::Body or App/PartDesign::CordinateSystem/Point/Line/Plane.
         return App.Placement()
 
     plc = App.Placement()
