@@ -267,7 +267,7 @@ std::string TaskFemConstraintSpring::get_tangentialStiffness() const
 
 std::string TaskFemConstraintSpring::getElmerStiffness() const
 {
-    return Base::Tools::toStdString(ui->ElmerStiffnessCB->currentText());
+    return QString::toStdString(ui->ElmerStiffnessCB->currentText());
 }
 
 void TaskFemConstraintSpring::changeEvent(QEvent*)

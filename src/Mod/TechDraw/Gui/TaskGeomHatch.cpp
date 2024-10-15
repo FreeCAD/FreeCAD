@@ -94,7 +94,7 @@ void TaskGeomHatch::initUi()
 
 void TaskGeomHatch::onFileChanged()
 {
-    auto filespec = Base::Tools::toStdString(ui->fcFile->fileName());
+    auto filespec = QString::toStdString(ui->fcFile->fileName());
     m_file = DU::cleanFilespecBackslash(filespec);
     std::vector<std::string> names = PATLineSpec::getPatternList(m_file);
     QStringList qsNames = listToQ(names);

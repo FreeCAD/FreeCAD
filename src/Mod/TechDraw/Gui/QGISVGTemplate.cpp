@@ -195,7 +195,7 @@ void QGISVGTemplate::createClickHandles()
                 "QGISVGTemplate::createClickHandles - no name for editable text at %f, %f\n", x, y);
             return true;
         }
-        std::string editableNameString = textMap[Base::Tools::toStdString(name)];
+        std::string editableNameString = textMap[QString::toStdString(name)];
 
         // default box size
         double textHeight{0};

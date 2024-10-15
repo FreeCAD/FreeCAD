@@ -723,7 +723,7 @@ std::string SketcherGui::lengthToDisplayFormat(double value, int digits)
     QString qUserString = asQuantity.getUserString();
     if (Base::UnitsApi::isMultiUnitLength() || (!hideUnits() && useSystemDecimals())) {
         // just return the user string
-        return Base::Tools::toStdString(qUserString);
+        return QString::toStdString(qUserString);
     }
 
     // find the unit of measure
@@ -738,24 +738,24 @@ std::string SketcherGui::lengthToDisplayFormat(double value, int digits)
     QRegularExpressionMatch match = rxNoUnits.match(qUserString);
     if (!match.hasMatch()) {
         // no units in userString?
-        return Base::Tools::toStdString(qUserString);
+        return QString::toStdString(qUserString);
     }
     QString matched = match.captured(1);  // matched is the numeric part of user string
     int dpPos = matched.indexOf(QLocale().decimalPoint());
     if (dpPos < 0) {
         // no decimal separator (ie an integer), return all the digits
         if (hideUnits()) {
-            return Base::Tools::toStdString(matched);
+            return QString::toStdString(matched);
         }
         else {
-            return Base::Tools::toStdString(matched + unitPart);
+            return QString::toStdString(matched + unitPart);
         }
     }
 
     // real number
     if (useSystemDecimals() && hideUnits()) {
         // return just the numeric part of the user string
-        return Base::Tools::toStdString(matched);
+        return QString::toStdString(matched);
     }
 
     // real number and not using system decimals
@@ -766,9 +766,9 @@ std::string SketcherGui::lengthToDisplayFormat(double value, int digits)
     }
     QString numericPart = matched.left(requiredLength);
     if (hideUnits()) {
-        return Base::Tools::toStdString(numericPart);
+        return QString::toStdString(numericPart);
     }
-    return Base::Tools::toStdString(numericPart + unitPart);
+    return QString::toStdString(numericPart + unitPart);
 }
 
 // convert value to display format %0.[digits]f. Units are always displayed for
@@ -791,7 +791,7 @@ std::string SketcherGui::angleToDisplayFormat(double value, int digits)
         QString escapeSecond = QString::fromLatin1("\"");          // substitute ascii double quote
         QString displayString = qUserString.replace(schemeMinute, escapeMinute);
         displayString = displayString.replace(schemeSecond, escapeSecond);
-        return Base::Tools::toStdString(displayString);
+        return QString::toStdString(displayString);
     }
 
     // we always use use U+00B0 (°) as the unit of measure for angles in
@@ -805,19 +805,19 @@ std::string SketcherGui::angleToDisplayFormat(double value, int digits)
     QRegularExpressionMatch match = rxNoUnits.match(qUserString);
     if (!match.hasMatch()) {
         // no units in userString?
-        return Base::Tools::toStdString(qUserString);
+        return QString::toStdString(qUserString);
     }
     QString matched = match.captured(1);  // matched is the numeric part of user string
     int dpPos = matched.indexOf(decimalSep);
     if (dpPos < 0) {
         // no decimal separator (ie an integer), return all the digits
-        return Base::Tools::toStdString(matched + qUnitString);
+        return QString::toStdString(matched + qUnitString);
     }
 
     // real number
     if (useSystemDecimals()) {
         // return just the numeric part of the user string + degree symbol
-        return Base::Tools::toStdString(matched + qUnitString);
+        return QString::toStdString(matched + qUnitString);
     }
 
     // real number and not using system decimals
@@ -827,7 +827,7 @@ std::string SketcherGui::angleToDisplayFormat(double value, int digits)
         requiredLength = matched.size();
     }
     QString numericPart = matched.left(requiredLength);
-    return Base::Tools::toStdString(numericPart + qUnitString);
+    return QString::toStdString(numericPart + qUnitString);
 }
 
 

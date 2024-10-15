@@ -125,7 +125,7 @@ std::vector<std::string> DlgStringListEditor::getTexts() const
 
     for (int iRow = 0; iRow < ui->lwTexts->count(); iRow++) {
         QString itemText = ui->lwTexts->item(iRow)->text();
-        outTexts.push_back(Base::Tools::toStdString(itemText));
+        outTexts.push_back(QString::toStdString(itemText));
     }
     if (outTexts.back().empty()) {
         outTexts.pop_back();

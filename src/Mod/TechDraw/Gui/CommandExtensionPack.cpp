@@ -1846,7 +1846,7 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
         qUserString.chop(2);
         qUserString.append(QString::fromUtf8("²"));
     }
-    std::string sUserString = Base::Tools::toStdString(qUserString);
+    std::string sUserString = QString::toStdString(qUserString);
 
     // set the attributes in the data tab's fields
     //    balloon->SourceView.setValue(objFeat);

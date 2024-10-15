@@ -100,7 +100,7 @@ void QGIHighlight::makeHighlight()
 void QGIHighlight::makeReference()
 {
     prepareGeometryChange();
-    int fontSize = QGIView::exactFontSize(Base::Tools::toStdString(m_refFont.family()),
+    int fontSize = QGIView::exactFontSize(QString::toStdString(m_refFont.family()),
                                           m_refSize);
     m_refFont .setPixelSize(fontSize);
     m_reference->setFont(m_refFont);

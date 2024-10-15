@@ -1861,7 +1861,7 @@ std::string DrawUtil::translateArbitrary(std::string context, std::string baseNa
         suffix = uniqueName.substr(baseName.length(), uniqueName.length() - baseName.length());
     }
     QString qTranslated = qApp->translate(context.c_str(), baseName.c_str());
-    std::string ssTranslated = Base::Tools::toStdString(qTranslated);
+    std::string ssTranslated = QString::toStdString(qTranslated);
     return ssTranslated + suffix;
 }
 

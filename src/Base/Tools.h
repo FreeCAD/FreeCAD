@@ -266,17 +266,6 @@ struct BaseExport Tools
     static std::string escapeEncodeFilename(const std::string& s);
 
     /**
-     * @brief toStdString Convert a QString into a UTF-8 encoded std::string.
-     * @param s String to convert.
-     * @return A std::string encoded as UTF-8.
-     */
-    static inline std::string toStdString(const QString& s)
-    {
-        QByteArray tmp = s.toUtf8();
-        return {tmp.constData(), static_cast<size_t>(tmp.size())};
-    }
-
-    /**
      * @brief quoted Creates a quoted string.
      * @param String to be quoted.
      * @return A quoted std::string.

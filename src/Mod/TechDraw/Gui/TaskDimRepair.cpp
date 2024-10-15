@@ -234,7 +234,7 @@ bool TaskDimRepair::accept()
 {
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
-    Gui::Command::openCommand(Base::Tools::toStdString(tr("Repair Dimension")).c_str());
+    Gui::Command::openCommand(QString::toStdString(tr("Repair Dimension")).c_str());
     replaceReferences();
     Gui::Command::commitCommand();
 

@@ -485,7 +485,7 @@ void TaskDetail::updateDetail()
         double radius = ui->qsbRadius->rawValue();
         detailFeat->Radius.setValue(radius);
         QString qRef = ui->leReference->text();
-        std::string ref = Base::Tools::toStdString(qRef);
+        std::string ref = QString::toStdString(qRef);
         detailFeat->Reference.setValue(ref);
 
         detailFeat->recomputeFeature();

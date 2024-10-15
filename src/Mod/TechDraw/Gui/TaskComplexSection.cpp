@@ -568,7 +568,7 @@ void TaskComplexSection::createComplexSection()
         // we pluck the generated suffix from the object name and append it to "Section" to generate
         // unique Labels
         QString qTemp = ui->leSymbol->text();
-        std::string temp = Base::Tools::toStdString(qTemp);
+        std::string temp = QString::toStdString(qTemp);
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionSymbol = '%s'",
                            m_sectionName.c_str(), temp.c_str());
 
@@ -653,7 +653,7 @@ void TaskComplexSection::updateComplexSection()
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Section View"));
     if (m_section) {
         QString qTemp = ui->leSymbol->text();
-        std::string temp = Base::Tools::toStdString(qTemp);
+        std::string temp = QString::toStdString(qTemp);
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionSymbol = '%s'",
                            m_sectionName.c_str(), temp.c_str());
 
@@ -704,7 +704,7 @@ std::string TaskComplexSection::makeSectionLabel(QString symbol)
     const std::string objectName{QT_TR_NOOP("ComplexSection")};
     std::string uniqueSuffix{m_sectionName.substr(objectName.length(), std::string::npos)};
     std::string uniqueLabel = "Section" + uniqueSuffix;
-    std::string temp = Base::Tools::toStdString(symbol);
+    std::string temp = QString::toStdString(symbol);
     return ( uniqueLabel + " " + temp + " - " + temp );
 }
 

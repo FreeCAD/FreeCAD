@@ -1209,7 +1209,7 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemChanged(QListWidgetItem
     const Sketcher::Constraint* v = vals[it->ConstraintNbr];
     const std::string currConstraintName = v->Name;
 
-    const std::string basename = Base::Tools::toStdString(it->data(Qt::EditRole).toString());
+    const std::string basename = QString::toStdString(it->data(Qt::EditRole).toString());
 
     std::string newName(
         Sketcher::PropertyConstraintList::getConstraintName(basename, it->ConstraintNbr));

@@ -1140,6 +1140,6 @@ std::string Cell::getFormattedQuantity()
             qFormatted = number + QString::fromStdString(" " + displayUnit.stringRep);
         }
     }
-    result = Base::Tools::toStdString(qFormatted);
+    result = QString::toStdString(qFormatted);
     return result;
 }

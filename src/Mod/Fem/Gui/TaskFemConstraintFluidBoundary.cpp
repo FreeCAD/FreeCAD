@@ -382,7 +382,7 @@ void TaskFemConstraintFluidBoundary::updateBoundaryTypeUI()
 {
     Fem::ConstraintFluidBoundary* pcConstraint =
         static_cast<Fem::ConstraintFluidBoundary*>(ConstraintView->getObject());
-    std::string boundaryType = Base::Tools::toStdString(ui->comboBoundaryType->currentText());
+    std::string boundaryType = QString::toStdString(ui->comboBoundaryType->currentText());
     // std::string boundaryType = pcConstraint->BoundaryType.getValueAsString();
 
     // Update subtypes, any change here should be written back to FemConstraintFluidBoundary.cpp
@@ -431,8 +431,8 @@ void TaskFemConstraintFluidBoundary::updateBoundaryTypeUI()
 void TaskFemConstraintFluidBoundary::updateSubtypeUI()
 {
 
-    std::string boundaryType = Base::Tools::toStdString(ui->comboBoundaryType->currentText());
-    std::string subtype = Base::Tools::toStdString(ui->comboSubtype->currentText());
+    std::string boundaryType = QString::toStdString(ui->comboBoundaryType->currentText());
+    std::string subtype = QString::toStdString(ui->comboSubtype->currentText());
 
     if (boundaryType == "inlet" || boundaryType == "outlet") {
         ui->tabBasicBoundary->setEnabled(true);
@@ -503,7 +503,7 @@ void TaskFemConstraintFluidBoundary::updateTurbulenceUI()
         tr(TurbulenceSpecificationHelpTexts[ui->comboTurbulenceSpecification->currentIndex()]));
     /// hide/disable UI only happened in constructor, update helptext and label text here
     std::string turbulenceSpec =
-        Base::Tools::toStdString(ui->comboTurbulenceSpecification->currentText());
+        QString::toStdString(ui->comboTurbulenceSpecification->currentText());
     ui->labelTurbulentIntensityValue->setText(tr("Intensity [0~1]"));
     if (turbulenceSpec == "intensity&DissipationRate") {
         ui->labelTurbulentLengthValue->setText(tr("Dissipation Rate [m2/s3]"));
@@ -532,7 +532,7 @@ void TaskFemConstraintFluidBoundary::updateThermalBoundaryUI()
         tr(ThermalBoundaryHelpTexts[ui->comboThermalBoundaryType->currentIndex()]));
     // to hide/disable UI according to subtype
     std::string thermalBoundaryType =
-        Base::Tools::toStdString(ui->comboThermalBoundaryType->currentText());
+        QString::toStdString(ui->comboThermalBoundaryType->currentText());
     ui->spinHTCoeffValue->setEnabled(false);
     ui->spinTemperatureValue->setEnabled(false);
     ui->spinHeatFluxValue->setEnabled(false);
@@ -704,12 +704,12 @@ void TaskFemConstraintFluidBoundary::onCheckReverse(const bool pressed)
 
 std::string TaskFemConstraintFluidBoundary::getBoundaryType() const
 {
-    return Base::Tools::toStdString(ui->comboBoundaryType->currentText());
+    return QString::toStdString(ui->comboBoundaryType->currentText());
 }
 
 std::string TaskFemConstraintFluidBoundary::getSubtype() const
 {
-    return Base::Tools::toStdString(ui->comboSubtype->currentText());
+    return QString::toStdString(ui->comboSubtype->currentText());
 }
 
 double TaskFemConstraintFluidBoundary::getBoundaryValue() const
@@ -730,7 +730,7 @@ std::string TaskFemConstraintFluidBoundary::getTurbulenceModel() const
 
 std::string TaskFemConstraintFluidBoundary::getTurbulenceSpecification() const
 {
-    return Base::Tools::toStdString(ui->comboTurbulenceSpecification->currentText());
+    return QString::toStdString(ui->comboTurbulenceSpecification->currentText());
 }
 
 double TaskFemConstraintFluidBoundary::getTurbulentIntensityValue() const
@@ -755,7 +755,7 @@ bool TaskFemConstraintFluidBoundary::getHeatTransferring() const
 
 std::string TaskFemConstraintFluidBoundary::getThermalBoundaryType() const
 {
-    return Base::Tools::toStdString(ui->comboThermalBoundaryType->currentText());
+    return QString::toStdString(ui->comboThermalBoundaryType->currentText());
 }
 
 double TaskFemConstraintFluidBoundary::getTemperatureValue() const

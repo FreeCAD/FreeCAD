@@ -432,7 +432,7 @@ void SheetView::confirmAliasChanged(const QString& text)
     bool aliasOkay = true;
 
     ui->cellAlias->setDocumentObject(sheet);
-    if (text.length() != 0 && !sheet->isValidAlias(Base::Tools::toStdString(text))) {
+    if (text.length() != 0 && !sheet->isValidAlias(QString::toStdString(text))) {
         aliasOkay = false;
     }
 
@@ -445,7 +445,7 @@ void SheetView::confirmAliasChanged(const QString& text)
             (void)cell->getAlias(current_alias);
             if (text != QString::fromUtf8(current_alias.c_str())) {
                 Base::Console().Error("Unable to set alias: %s\n",
-                                      Base::Tools::toStdString(text).c_str());
+                                      QString::toStdString(text).c_str());
             }
         }
         else {
@@ -479,7 +479,7 @@ void SheetView::aliasChanged(const QString& text)
         warningColor = QLatin1String("rgb(200,0,0)");  // Dark red for light mode
     }
 
-    if (!text.isEmpty() && !sheet->isValidAlias(Base::Tools::toStdString(text))) {
+    if (!text.isEmpty() && !sheet->isValidAlias(QString::toStdString(text))) {
         aliasOk = false;
     }
 

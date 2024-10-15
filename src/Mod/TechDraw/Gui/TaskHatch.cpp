@@ -144,7 +144,7 @@ void TaskHatch::restoreHatchState()
 
 void TaskHatch::onFileChanged()
 {
-    m_file = Base::Tools::toStdString(ui->fcFile->fileName());
+    m_file = QString::toStdString(ui->fcFile->fileName());
     apply();
 }
 
@@ -209,7 +209,7 @@ void TaskHatch::createHatch()
     m_hatch = static_cast<TechDraw::DrawHatch *>(doc->getObject(FeatName.c_str()));
     m_hatch->Source.setValue(m_dvp, m_subs);
 
-    auto filespec = Base::Tools::toStdString(ui->fcFile->fileName());
+    auto filespec = QString::toStdString(ui->fcFile->fileName());
     filespec = DU::cleanFilespecBackslash(filespec);
     Command::doCommand(Command::Doc, "App.activeDocument().%s.HatchPattern = '%s'",
                        FeatName.c_str(),
@@ -239,7 +239,7 @@ void TaskHatch::updateHatch()
 
     Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update Hatch"));
 
-    auto filespec = Base::Tools::toStdString(ui->fcFile->fileName());
+    auto filespec = QString::toStdString(ui->fcFile->fileName());
     filespec = DU::cleanFilespecBackslash(filespec);
     Command::doCommand(Command::Doc, "App.activeDocument().%s.HatchPattern = '%s'",
                        FeatName.c_str(),

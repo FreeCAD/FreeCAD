@@ -442,7 +442,7 @@ bool TaskSectionView::apply(bool forceUpdate)
     if (m_dirName.empty()) {
         //this should never happen
         std::string msg =
-            Base::Tools::toStdString(tr("Nothing to apply. No section direction picked yet"));
+            QString::toStdString(tr("Nothing to apply. No section direction picked yet"));
         Base::Console().Error((msg + "\n").c_str());
         return false;
     }
@@ -513,7 +513,7 @@ TechDraw::DrawViewSection* TaskSectionView::createSectionView(void)
         // we pluck the generated suffix from the object name and append it to "Section" to generate
         // unique Labels
         QString qTemp = ui->leSymbol->text();
-        std::string temp = Base::Tools::toStdString(qTemp);
+        std::string temp = QString::toStdString(qTemp);
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionSymbol = '%s'",
                            m_sectionName.c_str(), temp.c_str());
 
@@ -593,7 +593,7 @@ void TaskSectionView::updateSectionView()
                            ui->sbOrgY->value().getValue(), ui->sbOrgZ->value().getValue());
 
         QString qTemp = ui->leSymbol->text();
-        std::string temp = Base::Tools::toStdString(qTemp);
+        std::string temp = QString::toStdString(qTemp);
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionSymbol = '%s'",
                            m_sectionName.c_str(), temp.c_str());
 
@@ -636,7 +636,7 @@ std::string TaskSectionView::makeSectionLabel(QString symbol)
     const std::string objectName("SectionView");
     std::string uniqueSuffix{m_sectionName.substr(objectName.length(), std::string::npos)};
     std::string uniqueLabel = "Section" + uniqueSuffix;
-    std::string temp = Base::Tools::toStdString(symbol);
+    std::string temp = QString::toStdString(symbol);
     return ( uniqueLabel + " " + temp + " - " + temp );
 }
 

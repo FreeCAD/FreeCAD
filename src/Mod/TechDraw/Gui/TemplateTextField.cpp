@@ -78,7 +78,7 @@ void TemplateTextField::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
         ui.setFieldName(fieldNameStr);
         ui.setFieldContent(tmplte->EditableTexts[fieldNameStr]);
-        ui.setAutofillContent(Base::Tools::toStdString(m_autofillString));
+        ui.setAutofillContent(QString::toStdString(m_autofillString));
 
         if (ui.exec() == QDialog::Accepted) {
             QString qsClean = ui.getFieldContent();

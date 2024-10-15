@@ -498,7 +498,7 @@ void MDIViewPage::saveSVG()
         return;
     }
     static_cast<void>(blockSelection(true));// avoid to be notified by itself
-    saveSVG(Base::Tools::toStdString(fn));
+    saveSVG(QString::toStdString(fn));
     static_cast<void>(blockSelection(false));
 }
 

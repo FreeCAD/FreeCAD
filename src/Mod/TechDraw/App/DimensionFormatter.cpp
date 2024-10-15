@@ -102,7 +102,7 @@ std::string DimensionFormatter::formatValue(const qreal value,
         if (formatSpecifier.isEmpty()) {
             Base::Console().Warning("Warning - no numeric format in Format Spec %s - %s\n",
                                     qPrintable(qFormatSpec), m_dimension->getNameInDocument());
-            return Base::Tools::toStdString(qFormatSpec);
+            return QString::toStdString(qFormatSpec);
         }
 
         // for older TD drawings the formatSpecifier "%g" was used, but the number of decimals was
@@ -158,45 +158,45 @@ std::string DimensionFormatter::formatValue(const qreal value,
     //formattedValue is now in formatSpec format with local decimal separator
     std::string formattedValueString = formattedValue.toStdString();
     if (partial == 0) {   //prefix + unit subsystem string + suffix
-        return Base::Tools::toStdString(formatPrefix) +
-               Base::Tools::toStdString(qUserString) +
-               Base::Tools::toStdString(formatSuffix);
+        return QString::toStdString(formatPrefix) +
+               QString::toStdString(qUserString) +
+               QString::toStdString(formatSuffix);
     }
     else if (partial == 1)  {            // prefix number[unit] suffix
         if (angularMeasure) {
             //always insert unit after value
-            return Base::Tools::toStdString(formatPrefix) +
+            return QString::toStdString(formatPrefix) +
                      formattedValueString + "°" +
-                     Base::Tools::toStdString(formatSuffix);
+                     QString::toStdString(formatSuffix);
         }
         else if (m_dimension->showUnits() || areaMeasure){
             if (isDim && m_dimension->haveTolerance()) {
                 //unit will be included in tolerance so don't repeat it here
-                return Base::Tools::toStdString(formatPrefix) +
+                return QString::toStdString(formatPrefix) +
                          formattedValueString +
-                         Base::Tools::toStdString(formatSuffix);
+                         QString::toStdString(formatSuffix);
             }
             else {
                 //no tolerance, so we need to include unit
-                return Base::Tools::toStdString(formatPrefix) +
+                return QString::toStdString(formatPrefix) +
                          formattedValueString + " " +
-                         Base::Tools::toStdString(qBasicUnit) +
-                         Base::Tools::toStdString(formatSuffix);
+                         QString::toStdString(qBasicUnit) +
+                         QString::toStdString(formatSuffix);
             }
         }
         else {
             //showUnits is false
-            return Base::Tools::toStdString(formatPrefix) +
+            return QString::toStdString(formatPrefix) +
                      formattedValueString +
-                     Base::Tools::toStdString(formatSuffix);
+                     QString::toStdString(formatSuffix);
         }
     }
     else if (partial == 2) {             // just the unit
         if (angularMeasure) {
-            return Base::Tools::toStdString(qBasicUnit);
+            return QString::toStdString(qBasicUnit);
         }
         else if (m_dimension->showUnits() || areaMeasure) {
-            return Base::Tools::toStdString(qBasicUnit);
+            return QString::toStdString(qBasicUnit);
         }
         else {
             return "";
@@ -318,14 +318,14 @@ QString DimensionFormatter::formatValueToSpec(const double value, const QString&
         QString fs = formatSpecifier;
         fs.replace(QRegularExpression(QStringLiteral("%(.*)w")), QStringLiteral("%\\1f"));
         fs.replace(QRegularExpression(QStringLiteral("%(.*)W")), QStringLiteral("%\\1F"));
-        formattedValue = QString::asprintf(Base::Tools::toStdString(fs).c_str(), value);
+        formattedValue = QString::asprintf(QString::toStdString(fs).c_str(), value);
         // First, try to cut trailing zeros, if AFTER decimal dot there are nonzero numbers
         // Second, try to cut also decimal dot and zeros, if there are just zeros after it
         formattedValue.replace(QRegularExpression(QStringLiteral("([0-9][0-9]*\\.[0-9]*[1-9])00*$")), QStringLiteral("\\1"));
         formattedValue.replace(QRegularExpression(QStringLiteral("([0-9][0-9]*)\\.0*$")), QStringLiteral("\\1"));
     } else {
         if (isNumericFormat(formatSpecifier)) {
-            formattedValue = QString::asprintf(Base::Tools::toStdString(formatSpecifier).c_str(), value);
+            formattedValue = QString::asprintf(QString::toStdString(formatSpecifier).c_str(), value);
         }
     }
 
@@ -403,7 +403,7 @@ std::string DimensionFormatter::getDefaultFormatSpec(bool isToleranceFormat) con
         formatSpec.replace(QString::fromUtf8("%"), QString::fromUtf8("%+"));
     }
 
-    return Base::Tools::toStdString(formatSpec);
+    return QString::toStdString(formatSpec);
 }
 
 //true if value is too small to display using formatSpec
