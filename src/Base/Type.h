@@ -26,13 +26,14 @@
 
 // Std. configurations
 
-#include <string>
-#include <map>
-#include <set>
-#include <vector>
+//#include <string>
+//#include <vector>
 #ifndef FC_GLOBAL_H
 #include <FCGlobal.h>
 #endif
+
+#include <bits/stringfwd.h>  // Works on Linux. Introduce if-else for Windows?
+//#include <iosfwd>  // Works on Linux. Introduce if-else for Windows?
 
 namespace Base
 {
@@ -136,10 +137,8 @@ public:
 
 private:
     unsigned int index {0};
-
-    static std::map<std::string, unsigned int> typemap;
-    static std::vector<TypeData*> typedata;
-    static std::set<std::string> loadModuleSet;
+    // struct Private;
+    // static Private* pimpl;
 };
 
 

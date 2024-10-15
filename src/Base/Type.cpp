@@ -26,8 +26,12 @@
 #include <cassert>
 #endif
 
+#include <map>
+#include <set>
+
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "Type.h"
+#include "TypeHelpers.h"
 #include "Exception.h"
 #include "Interpreter.h"
 #include "Console.h"
@@ -36,6 +40,11 @@
 using namespace Base;
 using namespace std;
 
+namespace {
+    static std::map<std::string, unsigned int> typemap;
+    static std::vector<TypeData*> typedata;
+    static std::set<std::string> loadModuleSet;
+}
 
 struct Base::TypeData
 {
@@ -55,9 +64,6 @@ struct Base::TypeData
     Type::instantiationMethod instMethod;
 };
 
-map<string, unsigned int> Type::typemap;
-vector<TypeData*> Type::typedata;
-set<string> Type::loadModuleSet;
 
 void* Type::createInstance()
 {
@@ -127,12 +133,12 @@ Type Type::badType()
 Type Type::createType(const Type& parent, const char* name, instantiationMethod method)
 {
     Type newType;
-    newType.index = static_cast<unsigned int>(Type::typedata.size());
+    newType.index = static_cast<unsigned int>(typedata.size());
     TypeData* typeData = new TypeData(name, newType, parent, method);
-    Type::typedata.push_back(typeData);
+    typedata.push_back(typeData);
 
     // add to dictionary for fast lookup
-    Type::typemap[name] = newType.getKey();
+    typemap[name] = newType.getKey();
 
     return newType;
 }
@@ -140,11 +146,11 @@ Type Type::createType(const Type& parent, const char* name, instantiationMethod 
 
 void Type::init()
 {
-    assert(Type::typedata.empty());
+    assert(typedata.empty());
 
 
-    Type::typedata.push_back(new TypeData("BadType"));
-    Type::typemap["BadType"] = 0;
+    typedata.push_back(new TypeData("BadType"));
+    typemap["BadType"] = 0;
 }
 
 void Type::destruct()
