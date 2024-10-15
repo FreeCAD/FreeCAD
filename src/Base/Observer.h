@@ -28,7 +28,6 @@
 #include <cassert>
 #include <cstring>
 #include <set>
-#include "Console.h"
 #include "Exception.h"
 
 
@@ -120,13 +119,7 @@ public:
      * A destructor.
      * No special function so far.
      */
-    virtual ~Subject()
-    {
-        if (_ObserverSet.size() > 0) {
-            Base::Console().DeveloperWarning(std::string("~Subject()"),
-                                             "Not detached all observers yet\n");
-        }
-    }
+    virtual ~Subject();
 
     /** Attach an Observer
      * Attach an Observer to the list of Observers which get
@@ -134,20 +127,7 @@ public:
      * @param ToObserv A pointer to a concrete Observer
      * @see Notify
      */
-    void Attach(Observer<MsgType>* ToObserv)
-    {
-#ifdef FC_DEBUG
-        size_t count = _ObserverSet.size();
-        _ObserverSet.insert(ToObserv);
-        if (_ObserverSet.size() == count) {
-            Base::Console().DeveloperWarning(std::string("Subject::Attach"),
-                                             "Observer %p already attached\n",
-                                             static_cast<void*>(ToObserv));
-        }
-#else
-        _ObserverSet.insert(ToObserv);
-#endif
-    }
+    void Attach(Observer<MsgType>* ToObserv);
 
     /** Detach an Observer
      * Detach an Observer from the list of Observers which get
@@ -155,20 +135,7 @@ public:
      * @param ToObserv A pointer to a concrete Observer
      * @see Notify
      */
-    void Detach(Observer<MsgType>* ToObserv)
-    {
-#ifdef FC_DEBUG
-        size_t count = _ObserverSet.size();
-        _ObserverSet.erase(ToObserv);
-        if (_ObserverSet.size() == count) {
-            Base::Console().DeveloperWarning(std::string("Subject::Detach"),
-                                             "Observer %p already detached\n",
-                                             static_cast<void*>(ToObserv));
-        }
-#else
-        _ObserverSet.erase(ToObserv);
-#endif
-    }
+    void Detach(Observer<MsgType>* ToObserv);
 
     /** Notify all Observers
      * Send a message to all Observers attached to this subject.
@@ -176,30 +143,7 @@ public:
      * Oberserver and Subject.
      * @see Notify
      */
-    void Notify(MsgType rcReason)
-    {
-        for (typename std::set<Observer<MsgType>*>::iterator Iter = _ObserverSet.begin();
-             Iter != _ObserverSet.end();
-             ++Iter) {
-            try {
-                (*Iter)->OnChange(*this, rcReason);  // send OnChange-signal
-            }
-            catch (Base::Exception& e) {
-                Base::Console().Error("Unhandled Base::Exception caught when notifying observer.\n"
-                                      "The error message is: %s\n",
-                                      e.what());
-            }
-            catch (std::exception& e) {
-                Base::Console().Error("Unhandled std::exception caught when notifying observer\n"
-                                      "The error message is: %s\n",
-                                      e.what());
-            }
-            catch (...) {
-                Base::Console().Error(
-                    "Unhandled unknown exception caught in when notifying observer.\n");
-            }
-        }
-    }
+    void Notify(MsgType rcReason);
 
     /** Get an Observer by name
      * Get a observer by name if the observer reimplements the Name() mthode.

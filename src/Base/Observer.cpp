@@ -23,11 +23,80 @@
 
 #include "PreCompiled.h"
 
+#include "Console.h"
 #include "Observer.h"
 
 
 namespace Base
 {
+
+template<class MsgType>
+Subject<MsgType>::~Subject()
+{
+    if (_ObserverSet.size() > 0) {
+        Base::Console().DeveloperWarning(std::string("~Subject()"),
+                                            "Not detached all observers yet\n");
+    }
+}
+
+template<class MsgType>
+void Subject<MsgType>::Attach(Observer<MsgType>* ToObserv)
+{
+#ifdef FC_DEBUG
+    size_t count = _ObserverSet.size();
+    _ObserverSet.insert(ToObserv);
+    if (_ObserverSet.size() == count) {
+        Base::Console().DeveloperWarning(std::string("Subject::Attach"),
+                                            "Observer %p already attached\n",
+                                            static_cast<void*>(ToObserv));
+    }
+#else
+    _ObserverSet.insert(ToObserv);
+#endif
+}
+
+template<class MsgType>
+void Subject<MsgType>::Notify(MsgType rcReason)
+{
+    for (typename std::set<Observer<MsgType>*>::iterator Iter = _ObserverSet.begin();
+            Iter != _ObserverSet.end();
+            ++Iter) {
+        try {
+            (*Iter)->OnChange(*this, rcReason);  // send OnChange-signal
+        }
+        catch (Base::Exception& e) {
+            Base::Console().Error("Unhandled Base::Exception caught when notifying observer.\n"
+                                    "The error message is: %s\n",
+                                    e.what());
+        }
+        catch (std::exception& e) {
+            Base::Console().Error("Unhandled std::exception caught when notifying observer\n"
+                                    "The error message is: %s\n",
+                                    e.what());
+        }
+        catch (...) {
+            Base::Console().Error(
+                "Unhandled unknown exception caught in when notifying observer.\n");
+        }
+    }
+}
+
+template<class MsgType>
+void Subject<MsgType>::Detach(Observer<MsgType>* ToObserv)
+{
+#ifdef FC_DEBUG
+    size_t count = _ObserverSet.size();
+    _ObserverSet.erase(ToObserv);
+    if (_ObserverSet.size() == count) {
+        Base::Console().DeveloperWarning(std::string("Subject::Detach"),
+                                            "Observer %p already detached\n",
+                                            static_cast<void*>(ToObserv));
+    }
+#else
+    _ObserverSet.erase(ToObserv);
+#endif
+}
+
 
 #if !defined(__MINGW32__)
 template class BaseExport Observer<const char*>;
