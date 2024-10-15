@@ -429,6 +429,8 @@ class _Window(ArchComponent.Component):
             if hasattr(clonedProxy, "boxes"):
                 self.boxes = clonedProxy.boxes
             return
+        if not self.ensureBase(obj):
+            return
 
         import Part
         import DraftGeomUtils
