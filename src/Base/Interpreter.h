@@ -41,11 +41,16 @@
 #undef isalnum
 #endif
 
-#include <CXX/Extensions.hxx>
+// #include <CXX/Extensions.hxx>
+#include <CXX/Python3/Objects.hxx>
 #include <list>
 #include <string>
 #include "Exception.h"
 
+
+namespace Py {
+    class ExtensionModuleBase;
+}
 
 // NOLINTBEGIN
 /** Helper macro to obtain callable from an object
@@ -85,10 +90,6 @@
 
 namespace Base
 {
-
-using std::string;
-using std::vector;
-
 
 class BaseExport PyException: public Exception
 {

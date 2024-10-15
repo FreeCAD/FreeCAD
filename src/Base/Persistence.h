@@ -24,6 +24,8 @@
 #ifndef APP_PERSISTENCE_H
 #define APP_PERSISTENCE_H
 
+#include <iosfwd>
+
 #include "BaseClass.h"
 
 namespace Base

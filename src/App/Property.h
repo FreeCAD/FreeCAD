@@ -24,6 +24,8 @@
 #ifndef APP_PROPERTY_H
 #define APP_PROPERTY_H
 
+#include <set> 
+
 #include <Base/Exception.h>
 #include <Base/Persistence.h>
 #include <boost/signals2.hpp>

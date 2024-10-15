@@ -25,7 +25,6 @@
 #define BASE_VECTOR3D_H
 
 
-#include <cmath>
 #include <cfloat>
 
 #ifndef F_PI

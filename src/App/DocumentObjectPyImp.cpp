@@ -25,6 +25,7 @@
 #include <Base/GeometryPyCXX.h>
 #include <Base/MatrixPy.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
+#include <Base/TypeHelpers.h>
 
 #include "DocumentObject.h"
 #include "Document.h"

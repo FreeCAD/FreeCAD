@@ -52,6 +52,7 @@
 #include <boost/algorithm/string.hpp>
 #include <fmt/printf.h>
 
+#include "FileInfo.h"
 #include "Parameter.h"
 #include "Parameter.inl"
 #include "Console.h"

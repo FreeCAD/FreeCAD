@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #include <App/Document.h>
+#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 

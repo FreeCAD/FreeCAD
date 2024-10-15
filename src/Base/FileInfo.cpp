@@ -42,9 +42,12 @@
 #include <sys/types.h>
 #endif
 
+#include <boost/filesystem.hpp>
+
 #include "FileInfo.h"
 #include "Exception.h"
 #include "Stream.h"
+#include "TimeInfo.h"
 
 
 using namespace Base;

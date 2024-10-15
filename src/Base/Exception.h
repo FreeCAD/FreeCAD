@@ -26,8 +26,9 @@
 #define BASE_EXCEPTION_H
 
 #include <csignal>
+#include <new>
+
 #include "BaseClass.h"
-#include "FileInfo.h"
 
 // namespace std {
 //     class string;  // Name clash on Linux
@@ -346,7 +347,7 @@ public:
     virtual void ReportException() const;
 
     inline void setMessage(const char* sMessage);
-    inline void setMessage(const std::string& sMessage);
+    void setMessage(const std::string& sMessage);
     // what may differ from the message given by the user in
     // derived classes
     inline const char* getMessage() const;

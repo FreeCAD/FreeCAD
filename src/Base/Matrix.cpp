@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 #include <cstring>
 #include <sstream>
+#include <cmath>
 #endif
 
 #include "Matrix.h"

@@ -24,6 +24,8 @@
 #ifndef BASE_SEQUENCER_H
 #define BASE_SEQUENCER_H
 
+#include <stdio.h>
+
 #include "Exception.h"
 
 

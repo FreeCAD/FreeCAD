@@ -34,9 +34,9 @@
 #include <vector>
 #include <string>
 
-#include <QString>
-
 // ----------------------------------------------------------------------------
+
+class QString;
 
 namespace Base
 {

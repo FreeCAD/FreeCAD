@@ -29,6 +29,8 @@
 #include <boost/regex.hpp>
 #endif
 
+#include <CXX/Extensions.hxx>
+
 #include "Interpreter.h"
 #include "Console.h"
 #include "ExceptionFactory.h"

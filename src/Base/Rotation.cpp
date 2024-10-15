@@ -21,10 +21,15 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#include <array>
+#include "PreCompiled.h" 
+#include <boost/beast/core/string.hpp>
 
-#include <boost/algorithm/string/predicate.hpp>
+#include <array>
+#include <string.h>
+#include <cassert>
+#include <vector>
+
+
 #include "Base/Exception.h"
 
 #include "Rotation.h"
@@ -63,6 +68,7 @@ Rotation::Rotation(const double q[4])
     : Rotation()
 {
     this->setValue(q);
+    return;
 }
 
 /** Construct a rotation initialized with the given quaternion components:
@@ -953,7 +959,7 @@ Rotation::EulerSequence Rotation::eulerSequenceFromName(const char* name)
 {
     if (name) {
         for (unsigned i = 0; i < sizeof(EulerSequenceNames) / sizeof(EulerSequenceNames[0]); ++i) {
-            if (boost::iequals(name, EulerSequenceNames[i])) {
+            if (boost::beast::iequals(name, EulerSequenceNames[i])) {
                 return static_cast<EulerSequence>(i + 1);
             }
         }

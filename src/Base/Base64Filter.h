@@ -237,11 +237,11 @@ struct base64_decoder
         }
     }
 
-    std::size_t line_size;
-    std::uint8_t pending_in = 0;
+    size_t line_size;
+    uint8_t pending_in = 0;
     std::array<char, 4> char_array_4 {};
-    std::uint8_t pending_out = 3;
-    std::uint8_t out_count = 3;
+    uint8_t pending_out = 3;
+    uint8_t out_count = 3;
     std::array<char, 3> char_array_3 {};
     Base64ErrorHandling errHandling;
     bool eof = false;

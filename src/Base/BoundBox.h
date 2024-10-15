@@ -26,6 +26,8 @@
 
 #include <array>
 #include <limits>
+#include <iosfwd>
+
 #include "Matrix.h"
 #include "Tools2D.h"
 #include "ViewProj.h"

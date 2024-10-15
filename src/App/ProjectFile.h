@@ -27,6 +27,7 @@
 #include <Base/Type.h>
 #include <list>
 #include <string>
+#include <map>
 #include <xercesc/util/XercesDefs.hpp>
 
 // namespace std {

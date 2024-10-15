@@ -42,6 +42,7 @@
 #include <App/DocumentObject.h>
 #include <App/ObjectIdentifier.h>
 #include <App/PropertyUnits.h>
+#include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/MatrixPy.h>
 #include <Base/PlacementPy.h>
