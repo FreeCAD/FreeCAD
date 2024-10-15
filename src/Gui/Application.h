@@ -30,6 +30,10 @@
 
 #include <App/Application.h>
 
+#if QT_VERSION >= QT_VERSION_CHECK(6,0,0)
+# define HAS_QTBUG_129596
+#endif
+
 class QCloseEvent;
 class SoNode;
 class NavlibInterface;

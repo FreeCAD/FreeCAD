@@ -568,12 +568,12 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="162"/>
       <source>Hide Addons marked Obsolete</source>
-      <translation type="unfinished">Hide Addons marked Obsolete</translation>
+      <translation>Geçersiz olarak işaretlenmiş Eklentileri Gizle</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="178"/>
       <source>Hide Addons that require a newer version of FreeCAD</source>
-      <translation type="unfinished">Hide Addons that require a newer version of FreeCAD</translation>
+      <translation>FreeCAD'in daha yeni bir sürümünü gerektiren Eklentileri Gizle</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="200"/>
@@ -593,7 +593,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="276"/>
       <source>User system proxy</source>
-      <translation type="unfinished">User system proxy</translation>
+      <translation>Kullanıcı sistem vekil sunucusu</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="289"/>
@@ -745,7 +745,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../update_all.ui" line="23"/>
       <source>Updating out-of-date addons...</source>
-      <translation type="unfinished">Updating out-of-date addons...</translation>
+      <translation>Güncel olmayan eklentilerin güncellenmesi...</translation>
     </message>
   </context>
   <context>
@@ -1218,7 +1218,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="110"/>
       <source>No updates available</source>
-      <translation type="unfinished">No updates available</translation>
+      <translation>Güncelleme Mevcut Değil</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="829"/>
@@ -1321,7 +1321,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="91"/>
       <source>Removing {}</source>
-      <translation type="unfinished">Removing {}</translation>
+      <translation>{} kaldırılıyor</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="114"/>
@@ -2077,7 +2077,7 @@ installed addons will be checked for available updates</translation>
       <location filename="../../change_branch.py" line="218"/>
       <source>Last Updated</source>
       <comment>Table header for git update date</comment>
-      <translation type="unfinished">Last Updated</translation>
+      <translation>Son Güncellenme Tarihi</translation>
     </message>
     <message>
       <location filename="../../addonmanager_dependency_installer.py" line="131"/>
@@ -2358,7 +2358,7 @@ installed addons will be checked for available updates</translation>
       <location filename="../../AddonManagerOptions.py" line="268"/>
       <source>Branch name</source>
       <comment>Preferences header for custom repositories</comment>
-      <translation type="unfinished">Branch name</translation>
+      <translation>Şube adı</translation>
     </message>
     <message>
       <location filename="../../addonmanager_git.py" line="153"/>

@@ -2204,7 +2204,7 @@ La vue de la caméra détermine la direction de la projection.</translation>
       <translation>Convertir le maillage</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1078"/>
+      <location filename="../../TaskAttacher.cpp" line="1076"/>
       <source>Edit attachment</source>
       <translation>Modifier l'ancrage</translation>
     </message>
@@ -4602,7 +4602,7 @@ au risque que tous les objets coupés auront la même couleur.</translation>
       <location filename="../../SectionCutting.ui" line="544"/>
       <source>When the dialog is closed,
 only created cuts will be visible</source>
-      <translation>Lorsque la boîte de dialogue sera fermée, seules les coupes créées seront visibles</translation>
+      <translation>Lorsque la fenêtre de dialogue sera fermée, seules les coupes créées seront visibles.</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="548"/>
@@ -4984,33 +4984,33 @@ Remarque : la position est exprimée dans le système de coordonnées local de l
   <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1001"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1006"/>
       <source>Shape Content</source>
       <translation>Contenu de la forme</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1009"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="1204"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1014"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1209"/>
       <source>Settings</source>
       <translation>Paramètres</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1015"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1020"/>
       <source>Skip this settings page and run the geometry check automatically.</source>
       <translation>Sauter cette page de paramètres et exécuter la vérification de la géométrie automatiquement.</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1017"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1022"/>
       <source>Default: false</source>
       <translation>Par défaut : faux</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1024"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1029"/>
       <source>Run boolean operation check</source>
       <translation>Exécuter la vérification de l’opération booléenne</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1025"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1030"/>
       <source>Extra boolean operations check that can sometimes find errors that
 the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</source>
@@ -5020,12 +5020,12 @@ manqué. Ces erreurs ne signifient pas toujours que l’objet vérifié est inut
 Valeur par défaut : faux</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1035"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1040"/>
       <source>Single-threaded</source>
       <translation>Exécution sur un seul thread</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1036"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1041"/>
       <source>Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</source>
       <translation>Lancer la vérification de la géométrie avec un seul thread.
@@ -5033,23 +5033,23 @@ C'est plus lent, mais plus stable.
 Valeur par défaut : false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1045"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1050"/>
       <source>Log errors</source>
       <translation>Journal des erreurs</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1046"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1051"/>
       <source>Log errors to report view.  Default: true</source>
       <translation>Les logs d'erreurs vers la Vue rapport.
 Valeur par défaut : true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1053"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1058"/>
       <source>Expand shape content</source>
       <translation>Développer le contenu de la forme</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1054"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1059"/>
       <source>Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>Développer le contenu de la forme. Les modifications prendront effet la
@@ -5057,12 +5057,12 @@ prochaine fois que vous utiliserez l'outil de vérification de la géométrie.
 Valeur par défaut : false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1063"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1068"/>
       <source>Advanced shape content</source>
       <translation>Contenu avancé de la forme</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1064"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1069"/>
       <source>Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>Afficher le contenu avancé de la forme. Les modifications prendront effet la
@@ -5070,123 +5070,123 @@ prochaine fois que vous utiliserez l'outil de vérification de la géométrie.
 Valeur par défaut : false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1072"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1077"/>
       <source>
 Individual boolean operation checks:</source>
       <translation>
 Vérifications des différentes opérations booléennes :</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1075"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1080"/>
       <source>Bad type</source>
       <translation>Mauvais type d'argument</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1083"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1088"/>
       <source>Self-intersect</source>
       <translation>Auto-intersection</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1096"/>
       <source>Too small edge</source>
       <translation>Arête trop petite</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1099"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1104"/>
       <source>Nonrecoverable face</source>
       <translation>Face non-récupérable</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1107"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1112"/>
       <source>Continuity</source>
       <translation>Continuité</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1115"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1120"/>
       <source>Incompatibility of face</source>
       <translation>Incompatibilité de face</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1123"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1128"/>
       <source>Incompatibility of vertex</source>
       <translation>Incompatibilité de sommet</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1131"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1136"/>
       <source>Incompatibility of edge</source>
       <translation>Incompatibilité d’arête</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1139"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1144"/>
       <source>Invalid curve on surface</source>
       <translation>Courbe de surface non valable</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1076"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1081"/>
       <source>Check for bad argument types.  Default: true</source>
       <translation>Vérifier la présence de mauvais types d'arguments.
 Valeur par défaut : true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1013"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1018"/>
       <source>Skip this settings page</source>
       <translation>Passer cette page de paramètres</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1084"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1089"/>
       <source>Check for self-intersections.  Default: true</source>
       <translation>Vérifier la présence d'auto-intersections.
 Valeur par défaut : true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1092"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1097"/>
       <source>Check for edges that are too small.  Default: true</source>
       <translation>Vérifier la présence d'arêtes trop petites.
 Valeur par défaut : true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1100"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1105"/>
       <source>Check for nonrecoverable faces.  Default: true</source>
       <translation>Vérifier la présence de faces non récupérables. 
 Valeur par défaut : true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1108"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1113"/>
       <source>Check for continuity.  Default: true</source>
       <translation>Vérifier la continuité.
 Valeur par défaut : true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1116"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1121"/>
       <source>Check for incompatible faces.  Default: true</source>
       <translation>Vérifier la présence de faces incompatibles.
 Valeur par défaut : true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1124"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1129"/>
       <source>Check for incompatible vertices.  Default: true</source>
       <translation>Vérifier la présence de sommets incompatibles.
 Valeur par défaut : true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1132"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1137"/>
       <source>Check for incompatible edges.  Default: true</source>
       <translation>Vérifier la présence d'arêtes incompatibles.
 Valeur par défaut : true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1140"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1145"/>
       <source>Check for invalid curves on surfaces.  Default: true</source>
       <translation>Vérifier la présence de courbes invalides sur des surfaces.
 Valeur par défaut : true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1203"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1208"/>
       <source>Run check</source>
       <translation>Lancer la vérification</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1209"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1214"/>
       <source>Results</source>
       <translation>Résultats</translation>
     </message>
@@ -5215,22 +5215,22 @@ Valeur par défaut : true</translation>
       <translation>Vérifier la géométrie</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="459"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="464"/>
       <source>Invalid</source>
       <translation>Invalide</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="478"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="483"/>
       <source>Checking</source>
       <translation>Vérification</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="501"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="506"/>
       <source>%1 processed out of %2 selected</source>
       <translation>%1 traités sur %2 sélectionnés</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../TaskCheckGeometry.cpp" line="502"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="507"/>
       <source>%n invalid shapes.</source>
       <translation>
         <numerusform>%n formes invalides.</numerusform>
@@ -5238,7 +5238,7 @@ Valeur par défaut : true</translation>
       </translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="590"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="595"/>
       <source>Checked object</source>
       <translation>Objet vérifié</translation>
     </message>
@@ -5251,9 +5251,9 @@ Valeur par défaut : true</translation>
       <translation>Ancrage</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1119"/>
+      <location filename="../../TaskAttacher.cpp" line="1117"/>
       <source>Datum dialog: Input error</source>
-      <translation>Boîte de dialogue du point de référence : erreur de saisie</translation>
+      <translation>Fenêtre de dialogue du point de référence : erreur de saisie</translation>
     </message>
   </context>
   <context>
@@ -5888,7 +5888,7 @@ Voulez-vous continuer ?</translation>
       <translation>Opération booléenne : non valide</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="699"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="704"/>
       <source>Invalid</source>
       <translation>Invalide</translation>
     </message>
@@ -5915,7 +5915,7 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="622"/>
       <source>Edit thickness</source>
-      <translation>Modifier l'épaisseur</translation>
+      <translation>Modifier l'évidement</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSpline.cpp" line="94"/>
@@ -5948,7 +5948,7 @@ Voulez-vous continuer ?</translation>
       <translation>Modifier la projection</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="887"/>
+      <location filename="../../ViewProviderExt.cpp" line="886"/>
       <source>Set appearance per face...</source>
       <translation>Définir l'apparence par face...</translation>
     </message>
@@ -5956,57 +5956,57 @@ Voulez-vous continuer ?</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="33"/>
+      <location filename="../../Workbench.cpp" line="34"/>
       <source>&amp;Part</source>
       <translation>&amp;Part</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="34"/>
+      <location filename="../../Workbench.cpp" line="35"/>
       <source>&amp;Simple</source>
       <translation>&amp;Simple</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="35"/>
+      <location filename="../../Workbench.cpp" line="36"/>
       <source>&amp;Parametric</source>
       <translation>&amp;Paramétrique</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="36"/>
+      <location filename="../../Workbench.cpp" line="37"/>
       <source>Solids</source>
       <translation>Solides</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="37"/>
+      <location filename="../../Workbench.cpp" line="38"/>
       <source>Part tools</source>
       <translation>Outils de pièces</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="38"/>
+      <location filename="../../Workbench.cpp" line="39"/>
       <source>Boolean</source>
       <translation>Opérations booléennes</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="39"/>
+      <location filename="../../Workbench.cpp" line="40"/>
       <source>Primitives</source>
       <translation>Primitives</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="40"/>
+      <location filename="../../Workbench.cpp" line="41"/>
       <source>Join</source>
       <translation>Joindre</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="41"/>
+      <location filename="../../Workbench.cpp" line="42"/>
       <source>Split</source>
       <translation>Scinder</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="42"/>
+      <location filename="../../Workbench.cpp" line="43"/>
       <source>Compound</source>
       <translation>Composés</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="43"/>
+      <location filename="../../Workbench.cpp" line="44"/>
       <source>Create a copy</source>
       <translation>Créer une copie</translation>
     </message>
@@ -6235,7 +6235,7 @@ Cela créera un "filtre composé" pour chaque forme.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="214"/>
       <source>{} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</source>
-      <translation>{} ne peut pas être ancré. Vous pouvez toujours utiliser la boîte de dialogue d'édition de l'ancrage pour aligner l'objet, mais l'ancrage ne sera pas paramétrique.</translation>
+      <translation>{} ne peut pas être ancré. Vous pouvez toujours utiliser la fenêtre de dialogue d'édition de l'ancrage pour aligner l'objet, mais l'ancrage ne sera pas paramétrique.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="215"/>

@@ -1288,7 +1288,7 @@ Utils -&gt; Crea un progetto IFC</translation>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="63"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This appears to be the first time that you are using the BIM workbench. If you press OK, the next screen will propose you to set a couple of typical FreeCAD options that are suitable for BIM work. You can change these options anytime later under menu &lt;span style=" font-weight:600;"&gt;Manage -&amp;gt; BIM Setup...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This appears to be the first time that you are using the BIM workbench. If you press OK, the next screen will propose you to set a couple of typical FreeCAD options that are suitable for BIM work. You can change these options anytime later under menu &lt;span style=" font-weight:600;"&gt;Manage -&amp;gt; BIM Setup...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Questa sembra essere la prima volta che stai usando l'ambiente BIM. Se premi OK, la prossima schermata ti proporrà di impostare un paio di opzioni tipiche di FreeCAD adatte al lavoro BIM. Puoi cambiare queste opzioni più tardi in qualsiasi momento nel menu &lt;span style=" font-weight:600;"&gt;Gestisci -&amp;gt; Configurazione BIM...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="78"/>
@@ -1862,7 +1862,7 @@ Utils -&gt; Crea un progetto IFC</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="246"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Classification systems, such as UniClass or MasterFormat, or even your own custom system, are in some cases an important part of a building project. This test will ensure that all BIM objects and materials found in the model have their standard code property dutifully filled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Classification systems, such as UniClass or MasterFormat, or even your own custom system, are in some cases an important part of a building project. This test will ensure that all BIM objects and materials found in the model have their standard code property dutifully filled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sistemi di classificazione come UniClass o MasterFormat, o anche il proprio sistema personalizzato, in alcuni casi sono una parte importante di un progetto di costruzione. Questo test garantirà che tutti gli oggetti BIM e i materiali trovati nel modello abbiano le loro proprietà di codice standard doverosamente compliate.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="249"/>
@@ -1947,7 +1947,7 @@ Utils -&gt; Crea un progetto IFC</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="415"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When exporting a model to IFC, all BIM objects that are an extrusion of a rectangular profile will use an IfcRectangleProfileDef entity as their extrusion profile. However, Revit won't import these correctly. If you are going to use the IFC file in Revit, we recommend you to disable this behavior by checking the option under menu &lt;span style=" font-weight:600;"&gt;Edit -&amp;gt; Preferences -&amp;gt; BIM -&amp;gt; NativeIFC -&amp;gt; Disable IfcRectangularProfileDef&lt;/span&gt;.&lt;/p&gt;&lt;p&gt;When that option is checked, all extrusion profiles will be exported as generic IfcArbitraryProfileDef entities, regardless of if they are rectangular or not, which will contain a little less information, but will open correctly in Revit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When exporting a model to IFC, all BIM objects that are an extrusion of a rectangular profile will use an IfcRectangleProfileDef entity as their extrusion profile. However, Revit won't import these correctly. If you are going to use the IFC file in Revit, we recommend you to disable this behavior by checking the option under menu &lt;span style=" font-weight:600;"&gt;Edit -&amp;gt; Preferences -&amp;gt; BIM -&amp;gt; NativeIFC -&amp;gt; Disable IfcRectangularProfileDef&lt;/span&gt;.&lt;/p&gt;&lt;p&gt;When that option is checked, all extrusion profiles will be exported as generic IfcArbitraryProfileDef entities, regardless of if they are rectangular or not, which will contain a little less information, but will open correctly in Revit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Quando si esporta un modello in IFC, tutti gli oggetti BIM che sono un'estrusione di un profilo rettangolare useranno un'entità IfcRectangleProfileDef come loro profilo di estrusione. Tuttavia, Revit non li importerà correttamente. Se si sta per utilizzare il file IFC in Revit,  consigliamo di disabilitare questo comportamento selezionando l'opzione nel menu &lt;span style=" font-weight:600;"&gt;Edit -&amp;gt; Preferenze -&amp;gt; BIM -&amp;gt; NativeIFC -&amp;gt; Disabilita IfcRectangularProfileDef&lt;/span&gt;.&lt;/p&gt;&lt;p&gt;Quando questa opzione è selezionata, tutti i profili di estrusione saranno esportati come entità generiche IfcArbitraryProfileDef, indipendentemente dal fatto che siano rettangolari o no,  conterranno un po' meno informazioni, ma si apriranno correttamente in Revit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="418"/>
@@ -2978,7 +2978,7 @@ Se si utilizza Netgen, accertarsi che sia disponibile.</translation>
     <message>
       <location filename="../ui/preferences-dae.ui" line="108"/>
       <source>Builtin and Mefisto mesher options</source>
-      <translation type="unfinished">Builtin and Mefisto mesher options</translation>
+      <translation>Opzioni del mesher incorporato e di Mefisto</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="116"/>
@@ -3238,7 +3238,7 @@ come casi standard quando le condizioni necessarie sono soddisfatte.</translatio
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="403"/>
       <source>In FreeCAD, it is possible to nest groups inside buildings or storeys. If this option is disabled, FreeCAD groups will be saved as IfcGroups and aggregated to the building structure. Aggregating non-building elements such as IfcGroups is however not recommended by the IFC standards. It is therefore also possible to export these groups as IfcElementAssemblies, which produces an IFC-compliant file. However, at FreeCAD, we believe nesting groups inside structures should be possible, and this option is there to have a chance to demonstrate our point of view.</source>
-      <translation type="unfinished">In FreeCAD, it is possible to nest groups inside buildings or storeys. If this option is disabled, FreeCAD groups will be saved as IfcGroups and aggregated to the building structure. Aggregating non-building elements such as IfcGroups is however not recommended by the IFC standards. It is therefore also possible to export these groups as IfcElementAssemblies, which produces an IFC-compliant file. However, at FreeCAD, we believe nesting groups inside structures should be possible, and this option is there to have a chance to demonstrate our point of view.</translation>
+      <translation>In FreeCAD, è possibile nidificare gruppi all'interno di edifici o piani. Se questa opzione è disabilitata, i gruppi FreeCAD saranno salvati come Gruppi IfcGroups e aggregati nella struttura di costruzione. Gli standard IFC non raccomandano tuttavia l’aggregazione di elementi non edilizi come IfcGroup. È quindi anche possibile esportare questi gruppi come IfcElementAssemblies, che produce un file conforme alle IFC. Tuttavia, in FreeCAD, crediamo che i gruppi nidificati all'interno delle strutture dovrebbero essere possibili, e questa opzione è prevista per avere la possibilità di dimostrare il nostro punto di vista.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="406"/>
@@ -3383,7 +3383,7 @@ unit to work with when opening the file.</source>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="345"/>
-      <location filename="../../bimcommands/BimWall.py" line="156"/>
+      <location filename="../../bimcommands/BimWall.py" line="158"/>
       <source>Next point</source>
       <translation>Punto successivo</translation>
     </message>
@@ -3394,7 +3394,7 @@ unit to work with when opening the file.</source>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="456"/>
-      <location filename="../../ArchCommands.py" line="1335"/>
+      <location filename="../../ArchCommands.py" line="1361"/>
       <location filename="../../bimcommands/BimProfile.py" line="74"/>
       <source>Category</source>
       <translation>Categoria</translation>
@@ -3410,8 +3410,8 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchStructure.py" line="472"/>
       <location filename="../../ArchPrecast.py" line="1412"/>
-      <location filename="../../ArchCommands.py" line="1010"/>
-      <location filename="../../bimcommands/BimWall.py" line="293"/>
+      <location filename="../../ArchCommands.py" line="1036"/>
+      <location filename="../../bimcommands/BimWall.py" line="295"/>
       <location filename="../../bimcommands/BimPanel.py" line="148"/>
       <source>Length</source>
       <translation>Lunghezza</translation>
@@ -3419,7 +3419,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchStructure.py" line="482"/>
       <location filename="../../ArchPrecast.py" line="1413"/>
-      <location filename="../../bimcommands/BimWall.py" line="299"/>
+      <location filename="../../bimcommands/BimWall.py" line="301"/>
       <location filename="../../bimcommands/BimPanel.py" line="155"/>
       <source>Width</source>
       <translation>Larghezza</translation>
@@ -3427,7 +3427,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchStructure.py" line="489"/>
       <location filename="../../ArchPrecast.py" line="1414"/>
-      <location filename="../../bimcommands/BimWall.py" line="305"/>
+      <location filename="../../bimcommands/BimWall.py" line="307"/>
       <source>Height</source>
       <translation>Altezza</translation>
     </message>
@@ -3439,16 +3439,16 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchStructure.py" line="499"/>
       <source>Switch Length/Height</source>
-      <translation type="unfinished">Switch Length/Height</translation>
+      <translation>Inverti Lunghezza/Altezza</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="501"/>
       <source>Switch Length/Width</source>
-      <translation type="unfinished">Switch Length/Width</translation>
+      <translation>Inverti Lunghezza/Larghezza</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="505"/>
-      <location filename="../../bimcommands/BimWall.py" line="319"/>
+      <location filename="../../bimcommands/BimWall.py" line="321"/>
       <location filename="../../bimcommands/BimPanel.py" line="173"/>
       <source>Con&amp;tinue</source>
       <translation>Con&amp;tinua</translation>
@@ -3460,7 +3460,7 @@ unit to work with when opening the file.</source>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="809"/>
-      <location filename="../../ArchWall.py" line="416"/>
+      <location filename="../../ArchWall.py" line="439"/>
       <source>This mesh is an invalid solid</source>
       <translation>Questa mesh non è un solido valido</translation>
     </message>
@@ -4174,7 +4174,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="../../ArchWindow.py" line="1373"/>
       <location filename="../../ArchComponent.py" line="2012"/>
-      <location filename="../../ArchCommands.py" line="1337"/>
+      <location filename="../../ArchCommands.py" line="1363"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="461"/>
       <source>Type</source>
       <translation>Tipo</translation>
@@ -4470,7 +4470,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="../../ArchGrid.py" line="391"/>
       <source>Del column</source>
-      <translation type="unfinished">Del column</translation>
+      <translation>Cancella colonna</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="392"/>
@@ -4828,7 +4828,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
       <translation>Esporta file CSV</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1098"/>
+      <location filename="../../ArchCommands.py" line="1124"/>
       <source>Export CSV File</source>
       <translation>Esporta file CSV</translation>
     </message>
@@ -4840,7 +4840,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="../../ArchSchedule.py" line="645"/>
       <location filename="../../ArchSchedule.py" line="663"/>
-      <location filename="../../ArchCommands.py" line="1009"/>
+      <location filename="../../ArchCommands.py" line="1035"/>
       <source>Description</source>
       <translation>Descrizione</translation>
     </message>
@@ -4848,7 +4848,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
       <location filename="../../ArchSchedule.py" line="645"/>
       <location filename="../../ArchSchedule.py" line="663"/>
       <location filename="../../ArchComponent.py" line="2013"/>
-      <location filename="../../ArchCommands.py" line="1338"/>
+      <location filename="../../ArchCommands.py" line="1364"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="462"/>
       <source>Value</source>
       <translation>Valore</translation>
@@ -4856,7 +4856,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="../../ArchSchedule.py" line="645"/>
       <location filename="../../ArchSchedule.py" line="663"/>
-      <location filename="../../ArchCommands.py" line="1339"/>
+      <location filename="../../ArchCommands.py" line="1365"/>
       <source>Unit</source>
       <translation>Unità</translation>
     </message>
@@ -4975,7 +4975,7 @@ Creazione del Piano interrotta.</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1948"/>
-      <location filename="../../ArchCommands.py" line="214"/>
+      <location filename="../../ArchCommands.py" line="240"/>
       <source>Component</source>
       <translation>Componente</translation>
     </message>
@@ -5165,7 +5165,7 @@ Creazione del Piano interrotta.</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1338"/>
-      <location filename="../../bimcommands/BimWall.py" line="313"/>
+      <location filename="../../bimcommands/BimWall.py" line="315"/>
       <source>Center</source>
       <translation>Centro</translation>
     </message>
@@ -5244,8 +5244,8 @@ Creazione Edificio interrotta.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="90"/>
-      <location filename="../../bimcommands/BimWall.py" line="164"/>
-      <location filename="../../bimcommands/BimWall.py" line="416"/>
+      <location filename="../../bimcommands/BimWall.py" line="166"/>
+      <location filename="../../bimcommands/BimWall.py" line="418"/>
       <source>Create Wall</source>
       <translation>Crea un muro</translation>
     </message>
@@ -5255,37 +5255,37 @@ Creazione Edificio interrotta.</translation>
       <translation>Primo punto del muro</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="274"/>
+      <location filename="../../bimcommands/BimWall.py" line="276"/>
       <source>Wall options</source>
       <translation>Opzioni muro</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="278"/>
+      <location filename="../../bimcommands/BimWall.py" line="280"/>
       <source>Wall Presets...</source>
       <translation>Preimpostazioni Muro...</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="279"/>
+      <location filename="../../bimcommands/BimWall.py" line="281"/>
       <source>This list shows all the MultiMaterials objects of this document. Create some to define wall types.</source>
       <translation>Questa lista mostra tutti gli oggetti MultiMateriale di questo documento. Creane alcuni per definire i tipi di muri.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="311"/>
+      <location filename="../../bimcommands/BimWall.py" line="313"/>
       <source>Alignment</source>
       <translation>Allineamento</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="313"/>
+      <location filename="../../bimcommands/BimWall.py" line="315"/>
       <source>Left</source>
       <translation>Da sinistra</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="314"/>
+      <location filename="../../bimcommands/BimWall.py" line="316"/>
       <source>Right</source>
       <translation>Da destra</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="329"/>
+      <location filename="../../bimcommands/BimWall.py" line="331"/>
       <source>Use sketches</source>
       <translation>Utilizza gli schizzi</translation>
     </message>
@@ -5307,105 +5307,110 @@ Creazione Edificio interrotta.</translation>
       <translation>Unisci Muri</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="407"/>
+      <location filename="../../ArchWall.py" line="243"/>
+      <source>changed 'Normal' to [0, 0, 1] to preserve extrusion direction</source>
+      <translation type="unfinished">changed 'Normal' to [0, 0, 1] to preserve extrusion direction</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="430"/>
       <source>Cannot compute blocks for wall</source>
       <translation>Non è possibile calcolare i blocchi per il muro</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="518"/>
+      <location filename="../../ArchWall.py" line="541"/>
       <source>Error: Unable to modify the base object of this wall</source>
       <translation>Errore: impossibile modificare l'oggetto base di questo muro</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1280"/>
+      <location filename="../../ArchWall.py" line="1303"/>
       <source>Flip direction</source>
       <translation>Inverti direzione</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="408"/>
+      <location filename="../../ArchCommands.py" line="434"/>
       <source>Invalid cut plane</source>
       <translation>Piano di taglio non valido</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="691"/>
+      <location filename="../../ArchCommands.py" line="717"/>
       <source>is not closed</source>
       <translation>non è chiuso</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="693"/>
+      <location filename="../../ArchCommands.py" line="719"/>
       <source>is not valid</source>
       <translation>non è valido</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="695"/>
+      <location filename="../../ArchCommands.py" line="721"/>
       <source>doesn't contain any solid</source>
       <translation>non contiene alcun solido</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="701"/>
+      <location filename="../../ArchCommands.py" line="727"/>
       <source>contains a non-closed solid</source>
       <translation>contiene un solido non chiuso</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="703"/>
+      <location filename="../../ArchCommands.py" line="729"/>
       <source>contains faces that are not part of any solid</source>
       <translation>contiene delle facce che non fanno parte di nessun solido</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1003"/>
+      <location filename="../../ArchCommands.py" line="1029"/>
       <source>Survey</source>
       <translation>Ispeziona</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1004"/>
+      <location filename="../../ArchCommands.py" line="1030"/>
       <source>Set description</source>
       <translation>Imposta una descrizione</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1005"/>
+      <location filename="../../ArchCommands.py" line="1031"/>
       <source>Clear</source>
       <translation>Pulisci</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1006"/>
+      <location filename="../../ArchCommands.py" line="1032"/>
       <source>Copy Length</source>
       <translation>Copia Lunghezza</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1007"/>
+      <location filename="../../ArchCommands.py" line="1033"/>
       <source>Copy Area</source>
       <translation>Copia Area</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1008"/>
+      <location filename="../../ArchCommands.py" line="1034"/>
       <source>Export CSV</source>
       <translation>Esporta CSV</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1011"/>
+      <location filename="../../ArchCommands.py" line="1037"/>
       <source>Area</source>
       <translation>Area</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1056"/>
+      <location filename="../../ArchCommands.py" line="1082"/>
       <source>Total</source>
       <translation>Totale</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1136"/>
+      <location filename="../../ArchCommands.py" line="1162"/>
       <source>Object doesn't have settable IFC attributes</source>
       <translation>L'oggetto non ha attributi IFC impostabili</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1142"/>
+      <location filename="../../ArchCommands.py" line="1168"/>
       <source>Disabling B-rep force flag of object</source>
-      <translation type="unfinished">Disabling B-rep force flag of object</translation>
+      <translation>Disabilita la rappresentazione B-rep forzata dell'oggetto</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1145"/>
-      <location filename="../../ArchCommands.py" line="1148"/>
+      <location filename="../../ArchCommands.py" line="1171"/>
+      <location filename="../../ArchCommands.py" line="1174"/>
       <source>Enabling B-rep force flag of object</source>
-      <translation type="unfinished">Enabling B-rep force flag of object</translation>
+      <translation>Abilita la rappresentazione B-rep forzata dell'oggetto</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="54"/>
@@ -5449,12 +5454,12 @@ Creazione Edificio interrotta.</translation>
       <translation>Crea Componente</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1336"/>
+      <location filename="../../ArchCommands.py" line="1362"/>
       <source>Key</source>
       <translation>Chiave</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1346"/>
+      <location filename="../../ArchCommands.py" line="1372"/>
       <source>The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</source>
       <translation>L'oggetto non ha un attributo IfcProperties. Annulla la creazione del foglio di calcolo per l'oggetto:</translation>
     </message>
@@ -7627,7 +7632,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchWall.py" line="177"/>
       <source>The alignment of this wall on its base object, if applicable. Disabled and ignored if Base object (ArchSketch) provides the information.</source>
-      <translation type="unfinished">The alignment of this wall on its base object, if applicable. Disabled and ignored if Base object (ArchSketch) provides the information.</translation>
+      <translation>L'allineamento di questo muro sul suo oggetto base, se applicabile. Disabilitato e ignorato se l'oggetto Base (ArchSketch) fornisce le informazioni.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="184"/>
@@ -9228,7 +9233,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="900"/>
       <source>Verify which properties a certain property set must contain on %1</source>
-      <translation type="unfinished">Verify which properties a certain property set must contain on %1</translation>
+      <translation>Verifica quali proprietà un determinato set di proprietà deve contenere su %1</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="907"/>
@@ -9516,7 +9521,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <translation>Viste 2D</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="280"/>
+      <location filename="../../bimcommands/BimViews.py" line="281"/>
       <source>Sheets</source>
       <translation>Fogli</translation>
     </message>

@@ -92,7 +92,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="101"/>
       <source>Module of the gear</source>
-      <translation type="unfinished">Module of the gear</translation>
+      <translation>齿轮模数</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="108"/>
@@ -657,12 +657,12 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="280"/>
       <source>Create a shape binder</source>
-      <translation>创建图形面</translation>
+      <translation>创建形状引用连接</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="281"/>
       <source>Create a new shape binder</source>
-      <translation>创建新图形面</translation>
+      <translation>创建新的形状引用连接</translation>
     </message>
   </context>
   <context>
@@ -676,7 +676,7 @@ so that self intersection is avoided.</source>
       <location filename="../../Command.cpp" line="346"/>
       <location filename="../../Command.cpp" line="347"/>
       <source>Create a sub-object(s) shape binder</source>
-      <translation>创建减料体</translation>
+      <translation>创建子对象形状引用连接</translation>
     </message>
   </context>
   <context>
@@ -864,17 +864,17 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="300"/>
       <source>Edit ShapeBinder</source>
-      <translation>编辑图形面</translation>
+      <translation>编辑形状引用连接</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="309"/>
       <source>Create ShapeBinder</source>
-      <translation>创建图形面</translation>
+      <translation>创建形状引用连接</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="392"/>
       <source>Create SubShapeBinder</source>
-      <translation>创建子图形面</translation>
+      <translation>创建子形状引用连接</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="447"/>
@@ -1007,7 +1007,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
       <source>Edge tools</source>
-      <translation type="unfinished">Edge tools</translation>
+      <translation>边缘工具</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="56"/>
@@ -1022,7 +1022,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>
       <source>Modeling tools</source>
-      <translation type="unfinished">Modeling tools</translation>
+      <translation>建模工具</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="59"/>
@@ -1599,13 +1599,13 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="102"/>
       <source>There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</source>
-      <translation>没有适合当前参照集的依附模式。如果您选择继续，特征将保持现有状态，且将被定义为参照更改而不被移动。要继续吗？</translation>
+      <translation>没有适合当前参考集的附着模式。如果您选择继续，特征将保持现有状态，且将被定义为参照更改而不被移动。要继续吗？</translation>
     </message>
   </context>
   <context>
     <name>PartDesignGui::TaskDlgFeatureParameters</name>
     <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="133"/>
+      <location filename="../../TaskFeatureParameters.cpp" line="139"/>
       <source>Input error</source>
       <translation>输入错误</translation>
     </message>
@@ -1680,17 +1680,17 @@ click again to end selection</source>
       <translation>选择</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="278"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="293"/>
       <source>Add all edges</source>
       <translation>添加所有边</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="285"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="300"/>
       <source>Adds all edges to the list box (active only when in add selection mode).</source>
       <translation>将所有边添加到列表框中（仅当处于添加选择模式时才处于活动状态）。</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="293"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="308"/>
       <source>Remove</source>
       <translation>删除</translation>
     </message>
@@ -2334,7 +2334,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="130"/>
       <source>Select shape</source>
-      <translation type="unfinished">Select shape</translation>
+      <translation>选择形状</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="148"/>
@@ -2760,7 +2760,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="68"/>
       <source>Offset Angle</source>
-      <translation type="unfinished">Offset Angle</translation>
+      <translation>偏移角度</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="93"/>
@@ -3387,7 +3387,7 @@ click again to end selection</source>
     <message>
       <location filename="../../Command.cpp" line="410"/>
       <source>Sub-Shape Binder</source>
-      <translation>子形状投影器</translation>
+      <translation>子形状引用连接</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="651"/>
@@ -3471,7 +3471,7 @@ click again to end selection</source>
     <message>
       <location filename="../../Command.cpp" line="919"/>
       <source>Consider using a ShapeBinder or a BaseFeature to reference external geometry in a body.</source>
-      <translation>考虑使用 ShapeBinder 或 BaseFeature 来参考物体的外部几何形状。</translation>
+      <translation>考虑使用引用连接或基础特征来参考物体的外部几何形状。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="941"/>
@@ -3868,7 +3868,7 @@ This feature is broken and can't be edited.</source>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="204"/>
       <source>Edit shape binder</source>
-      <translation>编辑图形面</translation>
+      <translation>编辑形状引用连接</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="316"/>
@@ -3955,7 +3955,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../ViewProviderMirrored.cpp" line="39"/>
       <source>Edit mirrored</source>
-      <translation type="unfinished">Edit mirrored</translation>
+      <translation>编辑镜像</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMultiTransform.cpp" line="48"/>
@@ -3983,7 +3983,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="14"/>
       <source>Sprocket parameters</source>
-      <translation type="unfinished">Sprocket parameters</translation>
+      <translation>链轮参数</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="26"/>
@@ -4163,7 +4163,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="310"/>
       <source>Tooth Width:</source>
-      <translation type="unfinished">Tooth Width:</translation>
+      <translation>齿宽:</translation>
     </message>
   </context>
   <context>
@@ -4449,7 +4449,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
       <source>Create an additive feature</source>
-      <translation>创建增料体</translation>
+      <translation>创建增料特征</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
@@ -4578,22 +4578,22 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="64"/>
       <source>Shaft wizard</source>
-      <translation type="unfinished">Shaft wizard</translation>
+      <translation>轴向导</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="72"/>
       <source>Section 1</source>
-      <translation type="unfinished">Section 1</translation>
+      <translation>截面1</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="72"/>
       <source>Section 2</source>
-      <translation type="unfinished">Section 2</translation>
+      <translation>截面2</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="76"/>
       <source>Add column</source>
-      <translation type="unfinished">Add column</translation>
+      <translation>添加一列</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="122"/>
@@ -4619,7 +4619,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="153"/>
       <source>Bearing</source>
-      <translation type="unfinished">Bearing</translation>
+      <translation>轴承</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="154"/>
@@ -4629,7 +4629,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="155"/>
       <source>Pulley</source>
-      <translation type="unfinished">Pulley</translation>
+      <translation>滑轮</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="166"/>
@@ -4751,25 +4751,25 @@ over 90: larger hole radius at the bottom</source>
       <translation type="unfinished">Unsupported boolean operation</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="783"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="787"/>
       <location filename="../../../App/FeaturePipe.cpp" line="397"/>
       <location filename="../../../App/FeaturePipe.cpp" line="417"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="248"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="126"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="252"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="127"/>
       <source>Resulting shape is not a solid</source>
       <translation type="unfinished">Resulting shape is not a solid</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="787"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="798"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="805"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="802"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="809"/>
       <location filename="../../../App/FeatureChamfer.cpp" line="171"/>
       <location filename="../../../App/FeaturePipe.cpp" line="401"/>
       <location filename="../../../App/FeaturePipe.cpp" line="421"/>
       <location filename="../../../App/FeatureDraft.cpp" line="322"/>
       <location filename="../../../App/FeatureBoolean.cpp" line="167"/>
       <location filename="../../../App/FeatureFillet.cpp" line="117"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="253"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="257"/>
       <location filename="../../../App/FeatureHole.cpp" line="1956"/>
       <location filename="../../../App/FeatureGroove.cpp" line="193"/>
       <source>Result has multiple solids: that is not currently supported.</source>
@@ -4886,17 +4886,17 @@ over 90: larger hole radius at the bottom</source>
       <translation type="unfinished">Up to face: Could not get SubShape!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="697"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="701"/>
       <source>Unable to reach the selected shape, please select faces</source>
       <translation type="unfinished">Unable to reach the selected shape, please select faces</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="724"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="728"/>
       <source>Magnitude of taper angle matches or exceeds 90 degrees</source>
       <translation type="unfinished">Magnitude of taper angle matches or exceeds 90 degrees</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="735"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="739"/>
       <source>Padding with draft angle failed</source>
       <translation type="unfinished">Padding with draft angle failed</translation>
     </message>
@@ -4929,7 +4929,7 @@ Intersecting sketch entities in a sketch are not allowed.</translation>
       <location filename="../../../App/FeatureHelix.cpp" line="130"/>
       <location filename="../../../App/FeatureHelix.cpp" line="144"/>
       <source>Error: height too small!</source>
-      <translation type="unfinished">Error: height too small!</translation>
+      <translation>错误：高度太小！</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="136"/>
@@ -5093,12 +5093,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2076"/>
       <source>Thread type out of range</source>
-      <translation type="unfinished">Thread type out of range</translation>
+      <translation>螺线类型超出范围</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2079"/>
       <source>Thread size out of range</source>
-      <translation type="unfinished">Thread size out of range</translation>
+      <translation>螺线大小超出范围</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2171"/>
@@ -5106,27 +5106,27 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
       <translation type="unfinished">Error: Thread could not be built</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="137"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="141"/>
       <source>Loft: At least one section is needed</source>
       <translation type="unfinished">Loft: At least one section is needed</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="265"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="269"/>
       <source>Loft: A fatal error occurred when making the loft</source>
       <translation type="unfinished">Loft: A fatal error occurred when making the loft</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="168"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="172"/>
       <source>Loft: Creating a face from sketch failed</source>
       <translation type="unfinished">Loft: Creating a face from sketch failed</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="201"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="205"/>
       <source>Loft: Failed to create shell</source>
       <translation type="unfinished">Loft: Failed to create shell</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="817"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="821"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
       <translation type="unfinished">Could not create face from sketch.
@@ -5243,112 +5243,112 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
       <translation type="unfinished">Cannot subtract primitive feature without base feature</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="237"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="241"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="113"/>
       <source>Unknown operation type</source>
       <translation type="unfinished">Unknown operation type</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="243"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="247"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="120"/>
       <source>Failed to perform boolean operation</source>
       <translation type="unfinished">Failed to perform boolean operation</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="188"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="197"/>
       <source>Length of box too small</source>
       <translation type="unfinished">Length of box too small</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="190"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="199"/>
       <source>Width of box too small</source>
       <translation type="unfinished">Width of box too small</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="192"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="201"/>
       <source>Height of box too small</source>
       <translation type="unfinished">Height of box too small</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="238"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="247"/>
       <source>Radius of cylinder too small</source>
       <translation type="unfinished">Radius of cylinder too small</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="240"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="249"/>
       <source>Height of cylinder too small</source>
       <translation type="unfinished">Height of cylinder too small</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="242"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="251"/>
       <source>Rotation angle of cylinder too small</source>
       <translation type="unfinished">Rotation angle of cylinder too small</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="295"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="304"/>
       <source>Radius of sphere too small</source>
       <translation type="unfinished">Radius of sphere too small</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="344"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="346"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="353"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="355"/>
       <source>Radius of cone cannot be negative</source>
       <translation type="unfinished">Radius of cone cannot be negative</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="348"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="357"/>
       <source>Height of cone too small</source>
       <translation type="unfinished">Height of cone too small</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="411"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="413"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="420"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="422"/>
       <source>Radius of ellipsoid too small</source>
       <translation type="unfinished">Radius of ellipsoid too small</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="495"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="497"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="504"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="506"/>
       <source>Radius of torus too small</source>
       <translation type="unfinished">Radius of torus too small</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="560"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="569"/>
       <source>Polygon of prism is invalid, must have 3 or more sides</source>
       <translation type="unfinished">Polygon of prism is invalid, must have 3 or more sides</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="562"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="571"/>
       <source>Circumradius of the polygon, of the prism, is too small</source>
       <translation type="unfinished">Circumradius of the polygon, of the prism, is too small</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="564"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="573"/>
       <source>Height of prism is too small</source>
       <translation type="unfinished">Height of prism is too small</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="645"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="654"/>
       <source>delta x of wedge too small</source>
       <translation type="unfinished">delta x of wedge too small</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="648"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="657"/>
       <source>delta y of wedge too small</source>
       <translation type="unfinished">delta y of wedge too small</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="651"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="660"/>
       <source>delta z of wedge too small</source>
       <translation type="unfinished">delta z of wedge too small</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="654"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="663"/>
       <source>delta z2 of wedge is negative</source>
       <translation type="unfinished">delta z2 of wedge is negative</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="657"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="666"/>
       <source>delta x2 of wedge is negative</source>
       <translation type="unfinished">delta x2 of wedge is negative</translation>
     </message>
@@ -5368,7 +5368,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
       <translation type="unfinished">Reference axis is invalid</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="776"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="780"/>
       <source>Fusion with base feature failed</source>
       <translation type="unfinished">Fusion with base feature failed</translation>
     </message>
@@ -5408,7 +5408,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../ViewProviderBody.cpp" line="137"/>
       <source>Active body</source>
-      <translation type="unfinished">Active body</translation>
+      <translation>活动实体</translation>
     </message>
   </context>
   <context>
@@ -5416,12 +5416,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../Command.cpp" line="2442"/>
       <source>Create datum</source>
-      <translation type="unfinished">Create datum</translation>
+      <translation>创建基准</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2443"/>
       <source>Create a datum object or local coordinate system</source>
-      <translation type="unfinished">Create a datum object or local coordinate system</translation>
+      <translation>创建基准对象或局部坐标系统</translation>
     </message>
   </context>
   <context>
@@ -5429,12 +5429,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../Command.cpp" line="2477"/>
       <source>Create datum</source>
-      <translation type="unfinished">Create datum</translation>
+      <translation>创建基准</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2478"/>
       <source>Create a datum object or local coordinate system</source>
-      <translation type="unfinished">Create a datum object or local coordinate system</translation>
+      <translation>创建基准对象或局部坐标系统</translation>
     </message>
   </context>
 </TS>

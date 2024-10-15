@@ -19,6 +19,8 @@
  *                                                                         *
  **************************************************************************/
 
+#ifndef MEASURE_TASKMEASURE_H
+#define MEASURE_TASKMEASURE_H
 
 #include <qcolumnview.h>
 #include <QString>
@@ -65,15 +67,11 @@ public:
     bool hasSelection();
     void clearSelection();
     bool eventFilter(QObject* obj, QEvent* event) override;
-    void setMeasureObject(Measure::MeasureBase* obj);
 
 private:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
-    App::Document* _mDocument = nullptr;
-    Gui::Document* _mGuiDocument = nullptr;
     Measure::MeasureBase* _mMeasureObject = nullptr;
-    Gui::ViewProviderDocumentObject* _mViewObject = nullptr;
 
     QLineEdit* valueResult {nullptr};
     QComboBox* modeSwitch {nullptr};
@@ -86,15 +84,10 @@ private:
     void setModeSilent(App::MeasureType* mode);
     App::MeasureType* getMeasureType();
     void enableAnnotateButton(bool state);
-    App::DocumentObject* createObject(const App::MeasureType* measureType);
-    Gui::ViewProviderDocumentObject* createViewObject(App::DocumentObject* measureObj);
-    void saveObject();
+    Measure::MeasureBase* createObject(const App::MeasureType* measureType);
     void ensureGroup(Measure::MeasureBase* measurement);
     void setDeltaPossible(bool possible);
-
-
-    // List of measure types
-    std::vector<App::DocumentObject> measureObjects;
+    void initViewObject();
 
     // Stores if the mode is explicitly set by the user or implicitly through the selection
     bool explicitMode = false;
@@ -104,3 +97,5 @@ private:
 };
 
 }  // namespace Gui
+
+#endif  // MEASURE_TASKMEASURE_H

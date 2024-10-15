@@ -2204,7 +2204,7 @@ Kamera görünümü, izdüşüm yönünü belirler.</translation>
       <translation>Metal örgüyü dönüştür</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1078"/>
+      <location filename="../../TaskAttacher.cpp" line="1076"/>
       <source>Edit attachment</source>
       <translation>Ek dosyayı düzenle</translation>
     </message>
@@ -4988,33 +4988,33 @@ Not: Yerleşim, eklenen nesnenin yerel koordinat sisteminde ifade edilir.</trans
   <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1001"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1006"/>
       <source>Shape Content</source>
       <translation>Şekil İçeriği</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1009"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="1204"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1014"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1209"/>
       <source>Settings</source>
       <translation>Ayarlar</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1015"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1020"/>
       <source>Skip this settings page and run the geometry check automatically.</source>
       <translation type="unfinished">Skip this settings page and run the geometry check automatically.</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1017"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1022"/>
       <source>Default: false</source>
       <translation type="unfinished">Default: false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1024"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1029"/>
       <source>Run boolean operation check</source>
       <translation type="unfinished">Run boolean operation check</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1025"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1030"/>
       <source>Extra boolean operations check that can sometimes find errors that
 the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</source>
@@ -5023,158 +5023,158 @@ the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1035"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1040"/>
       <source>Single-threaded</source>
       <translation>Tek vida dişli</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1036"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1041"/>
       <source>Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</source>
       <translation>Tek vida dişinde geometri kontrolünü çalıştırın. Bu yöntem, daha yavaş ama daha kararlıdır. Varsayılan: false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1045"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1050"/>
       <source>Log errors</source>
       <translation>Veritabanı günlüğü hataları</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1046"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1051"/>
       <source>Log errors to report view.  Default: true</source>
       <translation>Rapor görünümü için hataları veritabanı günlüğüne kaydedin. Varsayılan: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1053"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1058"/>
       <source>Expand shape content</source>
       <translation>Şekil içeriğini genişlet</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1054"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1059"/>
       <source>Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>Şekil içeriğini genişletin. Değişiklikler bir sonraki kullanımınızda geçerli olacak
 geometri aracını kontrol edin. Varsayılan: false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1063"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1068"/>
       <source>Advanced shape content</source>
       <translation>Gelişmiş şekil içeriği</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1064"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1069"/>
       <source>Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>Gelişmiş şekil içeriğini göster. Değişiklikler, geometriyi kontrol etme aracını bir sonraki kullanışınızda geçerli olacaktır. Varsayılan: false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1072"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1077"/>
       <source>
 Individual boolean operation checks:</source>
       <translation type="unfinished">
 Individual boolean operation checks:</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1075"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1080"/>
       <source>Bad type</source>
       <translation type="unfinished">Bad type</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1083"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1088"/>
       <source>Self-intersect</source>
       <translation type="unfinished">Self-intersect</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1096"/>
       <source>Too small edge</source>
       <translation type="unfinished">Too small edge</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1099"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1104"/>
       <source>Nonrecoverable face</source>
       <translation type="unfinished">Nonrecoverable face</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1107"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1112"/>
       <source>Continuity</source>
       <translation>Süreklilik</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1115"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1120"/>
       <source>Incompatibility of face</source>
       <translation type="unfinished">Incompatibility of face</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1123"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1128"/>
       <source>Incompatibility of vertex</source>
       <translation type="unfinished">Incompatibility of vertex</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1131"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1136"/>
       <source>Incompatibility of edge</source>
       <translation type="unfinished">Incompatibility of edge</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1139"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1144"/>
       <source>Invalid curve on surface</source>
       <translation type="unfinished">Invalid curve on surface</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1076"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1081"/>
       <source>Check for bad argument types.  Default: true</source>
       <translation>Kötü argüman türlerini kontrol edin. Varsayılan: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1013"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1018"/>
       <source>Skip this settings page</source>
       <translation type="unfinished">Skip this settings page</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1084"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1089"/>
       <source>Check for self-intersections.  Default: true</source>
       <translation>Kendi kendine kesişme olup olmadığını kontrol edin. Varsayılan: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1092"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1097"/>
       <source>Check for edges that are too small.  Default: true</source>
       <translation>Çok küçük kenarları kontrol edin. Varsayılan: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1100"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1105"/>
       <source>Check for nonrecoverable faces.  Default: true</source>
       <translation>Kurtarılamaz yüzleri kontrol edin. Varsayılan: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1108"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1113"/>
       <source>Check for continuity.  Default: true</source>
       <translation>Sürekliliği kontrol edin. Varsayılan: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1116"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1121"/>
       <source>Check for incompatible faces.  Default: true</source>
       <translation>Uyumsuz yüzleri kontrol edin. Varsayılan: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1124"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1129"/>
       <source>Check for incompatible vertices.  Default: true</source>
       <translation>Uyumsuz köşeleri kontrol edin. Varsayılan: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1132"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1137"/>
       <source>Check for incompatible edges.  Default: true</source>
       <translation>Uyumsuz kenarları kontrol edin. Varsayılan: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1140"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1145"/>
       <source>Check for invalid curves on surfaces.  Default: true</source>
       <translation>Yüzeylerde geçersiz eğriler olup olmadığını kontrol edin. Varsayılan: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1203"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1208"/>
       <source>Run check</source>
       <translation>Kontrolü çalıştır</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1209"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1214"/>
       <source>Results</source>
       <translation>Sonuçlar</translation>
     </message>
@@ -5203,22 +5203,22 @@ Individual boolean operation checks:</translation>
       <translation>Geometriyi kontrol et</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="459"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="464"/>
       <source>Invalid</source>
       <translation>Geçersiz</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="478"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="483"/>
       <source>Checking</source>
       <translation type="unfinished">Checking</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="501"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="506"/>
       <source>%1 processed out of %2 selected</source>
       <translation type="unfinished">%1 processed out of %2 selected</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../TaskCheckGeometry.cpp" line="502"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="507"/>
       <source>%n invalid shapes.</source>
       <translation type="unfinished">
         <numerusform>%n invalid shapes.</numerusform>
@@ -5226,7 +5226,7 @@ Individual boolean operation checks:</translation>
       </translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="590"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="595"/>
       <source>Checked object</source>
       <translation type="unfinished">Checked object</translation>
     </message>
@@ -5239,7 +5239,7 @@ Individual boolean operation checks:</translation>
       <translation>Eklenti</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1119"/>
+      <location filename="../../TaskAttacher.cpp" line="1117"/>
       <source>Datum dialog: Input error</source>
       <translation>Veri iletişim kutusu: Giriş hatası</translation>
     </message>
@@ -5877,7 +5877,7 @@ Devam etmek istiyor musun?</translation>
       <translation type="unfinished">Boolean operation: Not valid</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="699"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="704"/>
       <source>Invalid</source>
       <translation>Geçersiz</translation>
     </message>
@@ -5937,7 +5937,7 @@ Devam etmek istiyor musun?</translation>
       <translation type="unfinished">Edit projection</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="887"/>
+      <location filename="../../ViewProviderExt.cpp" line="886"/>
       <source>Set appearance per face...</source>
       <translation type="unfinished">Set appearance per face...</translation>
     </message>
@@ -5945,57 +5945,57 @@ Devam etmek istiyor musun?</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="33"/>
+      <location filename="../../Workbench.cpp" line="34"/>
       <source>&amp;Part</source>
       <translation>&amp;Parça</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="34"/>
+      <location filename="../../Workbench.cpp" line="35"/>
       <source>&amp;Simple</source>
       <translation>&amp;Basit</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="35"/>
+      <location filename="../../Workbench.cpp" line="36"/>
       <source>&amp;Parametric</source>
       <translation>&amp;Değişken tabanlı</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="36"/>
+      <location filename="../../Workbench.cpp" line="37"/>
       <source>Solids</source>
       <translation>Katı maddeler</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="37"/>
+      <location filename="../../Workbench.cpp" line="38"/>
       <source>Part tools</source>
       <translation>Bölüm araçları</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="38"/>
+      <location filename="../../Workbench.cpp" line="39"/>
       <source>Boolean</source>
       <translation>Mantıksal</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="39"/>
+      <location filename="../../Workbench.cpp" line="40"/>
       <source>Primitives</source>
       <translation>Temel öğeler</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="40"/>
+      <location filename="../../Workbench.cpp" line="41"/>
       <source>Join</source>
       <translation>Birleştir</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="41"/>
+      <location filename="../../Workbench.cpp" line="42"/>
       <source>Split</source>
       <translation>Ayır</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="42"/>
+      <location filename="../../Workbench.cpp" line="43"/>
       <source>Compound</source>
       <translation>Bileşik</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="43"/>
+      <location filename="../../Workbench.cpp" line="44"/>
       <source>Create a copy</source>
       <translation>Kopya oluştur</translation>
     </message>

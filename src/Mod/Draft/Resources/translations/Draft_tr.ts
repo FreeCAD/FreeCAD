@@ -754,8 +754,8 @@ Birden fazla kopyalar oluştuğu zaman bir bağlantı daha verimlidir ama o, bir
       <location filename="../ui/TaskSelectPlane.ui" line="20"/>
       <source>Select 3 vertices, one or more shapes or a WP Proxy. Then confirm by clicking in the 3D view.
 Or choose one of the options below.</source>
-      <translation type="unfinished">Select 3 vertices, one or more shapes or a WP Proxy. Then confirm by clicking in the 3D view.
-Or choose one of the options below.</translation>
+      <translation>3 köşe, bir veya daha fazla şekil veya bir WP Proxy seçin. Ardından 3B görünümde tıklayarak onaylayın.
+Ya da aşağıdaki seçeneklerden birini seçin.</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="31"/>
@@ -848,9 +848,8 @@ of the buttons above</translation>
       <source>Moves the working plane without changing its
 orientation. If no point is selected, the plane
 will be moved to the center of the view.</source>
-      <translation type="unfinished">Moves the working plane without changing its
-orientation. If no point is selected, the plane
-will be moved to the center of the view.</translation>
+      <translation>Çalışma düzlemini yönünü değiştirmeden hareket ettirir. Hiçbir nokta seçilmezse, düzlem
+görüntünün merkezine taşınır.</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="159"/>
@@ -878,13 +877,13 @@ will be moved to the center of the view.</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="199"/>
       <source>Major lines every</source>
-      <translation type="unfinished">Major lines every</translation>
+      <translation>Her ana hat</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="209"/>
       <location filename="../ui/TaskSelectPlane.ui" line="229"/>
       <source> squares</source>
-      <translation type="unfinished"> squares</translation>
+      <translation> kareler</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="216"/>
@@ -901,7 +900,7 @@ will be moved to the center of the view.</translation>
       <location filename="../ui/TaskSelectPlane.ui" line="242"/>
       <location filename="../ui/TaskSelectPlane.ui" line="252"/>
       <source>The distance at which a point can be snapped to</source>
-      <translation type="unfinished">The distance at which a point can be snapped to</translation>
+      <translation>Bir noktanın yakalanabileceği mesafe</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="289"/>
@@ -971,17 +970,17 @@ will be moved to the center of the view.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="80"/>
       <source>Ambient shape color</source>
-      <translation type="unfinished">Ambient shape color</translation>
+      <translation>Ortam şekli rengi</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="91"/>
       <source>Emissive shape color</source>
-      <translation type="unfinished">Emissive shape color</translation>
+      <translation>Yayıcı şekil rengi</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="102"/>
       <source>Specular shape color</source>
-      <translation type="unfinished">Specular shape color</translation>
+      <translation>Speküler şekil rengi</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="113"/>
@@ -991,7 +990,7 @@ will be moved to the center of the view.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="130"/>
       <source>Shape shininess</source>
-      <translation type="unfinished">Shape shininess</translation>
+      <translation>Şekil parıldaması</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="150"/>
@@ -1065,22 +1064,22 @@ will be moved to the center of the view.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="22"/>
       <source>Fill the values below from a stored style preset</source>
-      <translation type="unfinished">Fill the values below from a stored style preset</translation>
+      <translation>Aşağıdaki değerleri depolanmış bir stil ön ayarından doldurun</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="40"/>
       <source>Save the current style as a preset...</source>
-      <translation type="unfinished">Save the current style as a preset...</translation>
+      <translation>Mevcut stili ön ayar olarak kaydet...</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="181"/>
       <source>Point color</source>
-      <translation type="unfinished">Point color</translation>
+      <translation>Nokta rengi</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="192"/>
       <source>Point size</source>
-      <translation type="unfinished">Point size</translation>
+      <translation>Nokta boyutu</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="260"/>
@@ -1125,19 +1124,18 @@ will be moved to the center of the view.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="285"/>
       <source>Texts</source>
-      <translation type="unfinished">Texts</translation>
+      <translation>Metinler</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="328"/>
       <source>Line spacing factor</source>
-      <translation type="unfinished">Line spacing factor</translation>
+      <translation>Satır aralığı faktörü</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="349"/>
       <source>The annotation scale multiplier is the inverse of the scale set in the
 Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
-      <translation type="unfinished">The annotation scale multiplier is the inverse of the scale set in the
-Annotation scale widget. If the scale is 1:100 the multiplier is 100.</translation>
+      <translation>Açıklama ölçek çarpanı, Açıklama ölçek widget'ında ayarlanan ölçeğin tersidir. Ölçek 1:100 ise çarpan 100'dür.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="380"/>
@@ -1167,12 +1165,12 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</translati
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="477"/>
       <source>If checked, a unit symbol is added to dimension texts</source>
-      <translation type="unfinished">If checked, a unit symbol is added to dimension texts</translation>
+      <translation>Eğer işaretlenirse, ölçülendirme metinlerinin yanına bir birim sembolü eklenir</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="494"/>
       <source>The unit override for dimensions. Leave blank to use the current FreeCAD unit.</source>
-      <translation type="unfinished">The unit override for dimensions. Leave blank to use the current FreeCAD unit.</translation>
+      <translation>Ölçülendirme için kullanılacak birim. FreeCAD'in geçerli birimini kullanmak için boş bırakın.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="508"/>
@@ -1182,7 +1180,7 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</translati
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="370"/>
       <source>The color for texts, dimension texts and label texts</source>
-      <translation type="unfinished">The color for texts, dimension texts and label texts</translation>
+      <translation>Metinler, ölçülendirme metinleri ve etiket metinleri için kullanılacak renk</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="291"/>
@@ -1192,7 +1190,7 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</translati
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="304"/>
       <source>The font for texts, dimensions and labels</source>
-      <translation type="unfinished">The font for texts, dimensions and labels</translation>
+      <translation>Metinler, ölçüler ve etiketler için kullanılacak yazı tipi</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="311"/>
@@ -1202,7 +1200,7 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</translati
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="318"/>
       <source>The height for texts, dimension texts and label texts</source>
-      <translation type="unfinished">The height for texts, dimension texts and label texts</translation>
+      <translation>Metinler, ölçülendirme metinleri ve etiket metinleri için kullanılacak yazı boyutu</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="335"/>
@@ -1232,12 +1230,12 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</translati
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="501"/>
       <source>Dim line overshoot</source>
-      <translation type="unfinished">Dim line overshoot</translation>
+      <translation>Loş çizgi aşımı</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="518"/>
       <source>Ext line length</source>
-      <translation type="unfinished">Ext line length</translation>
+      <translation>Harici satır uzunluğu</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="525"/>
@@ -1394,7 +1392,7 @@ Objects can then automatically be added to groups as well.</translation>
     <message>
       <location filename="../ui/preferences-draft.ui" line="149"/>
       <source>Command options</source>
-      <translation type="unfinished">Command options</translation>
+      <translation>Komut seçenekleri</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="155"/>
@@ -1404,7 +1402,7 @@ Objects can then automatically be added to groups as well.</translation>
     <message>
       <location filename="../ui/preferences-draft.ui" line="158"/>
       <source>Show prompts in the Report view</source>
-      <translation type="unfinished">Show prompts in the Report view</translation>
+      <translation>İstemleri Rapor görünümünde göster</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="171"/>
@@ -1649,7 +1647,7 @@ pattern definitions to be added to the standard patterns</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="20"/>
       <source>Texts</source>
-      <translation type="unfinished">Texts</translation>
+      <translation>Metinler</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="26"/>
@@ -1673,7 +1671,7 @@ as "Arial", a style such as "sans", "serif" or "mono", or a family such as
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="99"/>
       <source>Line spacing factor</source>
-      <translation type="unfinished">Line spacing factor</translation>
+      <translation>Satır aralığı faktörü</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="106"/>
@@ -1818,12 +1816,12 @@ or cm, leave blank to use the current unit defined in FreeCAD.</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="425"/>
       <source>The default number of decimal places for dimension texts</source>
-      <translation type="unfinished">The default number of decimal places for dimension texts</translation>
+      <translation>Boyut metinleri için varsayılan ondalık basamak sayısı</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="460"/>
       <source>The optional string inserted between the feet and inches values in dimensions</source>
-      <translation type="unfinished">The optional string inserted between the feet and inches values in dimensions</translation>
+      <translation>Boyutlardaki ayak ve inç değerleri arasına eklenen isteğe bağlı dize</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="476"/>
@@ -1833,12 +1831,12 @@ or cm, leave blank to use the current unit defined in FreeCAD.</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="495"/>
       <source>The default distance the dimension line is extended past the extension lines</source>
-      <translation type="unfinished">The default distance the dimension line is extended past the extension lines</translation>
+      <translation>Boyut çizgisinin uzatma çizgilerinin ötesine kadar uzatıldığı varsayılan mesafe</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="524"/>
       <source>Extension line length</source>
-      <translation type="unfinished">Extension line length</translation>
+      <translation>Uzatma hattı uzunluğu</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="531"/>
@@ -2267,7 +2265,7 @@ If it is set to '0' the whole spline is treated as a straight segment.</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="442"/>
       <source>Use layers</source>
-      <translation type="unfinished">Use layers</translation>
+      <translation>Katmanları kullanın</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="605"/>
@@ -2316,7 +2314,7 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="133"/>
       <source>Major lines every</source>
-      <translation type="unfinished">Major lines every</translation>
+      <translation>Her ana hat</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="146"/>
@@ -2329,7 +2327,7 @@ Major grid lines are thicker than minor grid lines.</translation>
       <location filename="../ui/preferences-draftsnap.ui" line="150"/>
       <location filename="../ui/preferences-draftsnap.ui" line="221"/>
       <source> squares</source>
-      <translation type="unfinished"> squares</translation>
+      <translation> kareler</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="218"/>
@@ -2686,17 +2684,17 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="618"/>
       <source>Decrease radius</source>
-      <translation type="unfinished">Decrease radius</translation>
+      <translation>Yarıçapı azalt</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="749"/>
       <source>UI options</source>
-      <translation type="unfinished">UI options</translation>
+      <translation>Kullanıcı arayüzü seçenekleri</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="755"/>
       <source>If checked, the Draft snap toolbar will only be visible during commands</source>
-      <translation type="unfinished">If checked, the Draft snap toolbar will only be visible during commands</translation>
+      <translation>İşaretlenirse, Taslak yakalama araç çubuğu yalnızca komutlar sırasında görünür olacaktır</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="774"/>
@@ -2828,32 +2826,32 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <name>draft</name>
     <message>
       <location filename="../../DraftGui.py" line="58"/>
-      <location filename="../../DraftGui.py" line="540"/>
+      <location filename="../../DraftGui.py" line="545"/>
       <source>Relative</source>
       <translation>Göreceli</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="59"/>
-      <location filename="../../DraftGui.py" line="545"/>
+      <location filename="../../DraftGui.py" line="550"/>
       <source>Global</source>
       <translation>Küresel</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="60"/>
-      <location filename="../../DraftGui.py" line="563"/>
-      <location filename="../../DraftGui.py" line="823"/>
+      <location filename="../../DraftGui.py" line="568"/>
+      <location filename="../../DraftGui.py" line="828"/>
       <source>Continue</source>
       <translation>Devam</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="61"/>
-      <location filename="../../DraftGui.py" line="571"/>
+      <location filename="../../DraftGui.py" line="576"/>
       <source>Close</source>
       <translation>Kapat</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="62"/>
-      <location filename="../../DraftGui.py" line="582"/>
+      <location filename="../../DraftGui.py" line="587"/>
       <location filename="../../draftguitools/gui_move.py" line="216"/>
       <location filename="../../draftguitools/gui_rotate.py" line="287"/>
       <location filename="../../draftguitools/gui_scale.py" line="203"/>
@@ -2909,7 +2907,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="72"/>
-      <location filename="../../DraftGui.py" line="577"/>
+      <location filename="../../DraftGui.py" line="582"/>
       <source>Select edge</source>
       <translation>Kenarı seç</translation>
     </message>
@@ -2925,7 +2923,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="75"/>
-      <location filename="../../DraftGui.py" line="573"/>
+      <location filename="../../DraftGui.py" line="578"/>
       <source>Wipe</source>
       <translation>Temizle</translation>
     </message>
@@ -3006,285 +3004,285 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
       <translation>Pozisyon:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="491"/>
-      <location filename="../../DraftGui.py" line="519"/>
-      <location filename="../../DraftGui.py" line="1469"/>
-      <location filename="../../DraftGui.py" line="1484"/>
+      <location filename="../../DraftGui.py" line="496"/>
+      <location filename="../../DraftGui.py" line="524"/>
+      <location filename="../../DraftGui.py" line="1474"/>
+      <location filename="../../DraftGui.py" line="1489"/>
       <location filename="../../draftguitools/gui_groups.py" line="239"/>
       <location filename="../../draftguitools/gui_groups.py" line="244"/>
       <source>None</source>
       <translation>Hiçbiri</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="518"/>
+      <location filename="../../DraftGui.py" line="523"/>
       <source>active command:</source>
       <translation>etkin komut:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="520"/>
+      <location filename="../../DraftGui.py" line="525"/>
       <source>Active Draft command</source>
       <translation>Aktif Taslak komutu</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="521"/>
+      <location filename="../../DraftGui.py" line="526"/>
       <source>X coordinate of next point</source>
       <translation>Bir sonraki noktanın X koordinatı</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="522"/>
+      <location filename="../../DraftGui.py" line="527"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="523"/>
+      <location filename="../../DraftGui.py" line="528"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="524"/>
+      <location filename="../../DraftGui.py" line="529"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="525"/>
+      <location filename="../../DraftGui.py" line="530"/>
       <source>Y coordinate of next point</source>
       <translation>Bir sonraki noktanın Y koordinatı</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="526"/>
+      <location filename="../../DraftGui.py" line="531"/>
       <source>Z coordinate of next point</source>
       <translation>Bir sonraki noktanın Z koordinatı</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="527"/>
+      <location filename="../../DraftGui.py" line="532"/>
       <source>Enter point</source>
       <translation>Nokta belirt</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="529"/>
+      <location filename="../../DraftGui.py" line="534"/>
       <source>Enter a new point with the given coordinates</source>
       <translation>Verilen koordinatlarla yeni bir nokta belirtin</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="530"/>
+      <location filename="../../DraftGui.py" line="535"/>
       <source>Length</source>
       <translation>Uzunluk</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="531"/>
+      <location filename="../../DraftGui.py" line="536"/>
       <location filename="../../draftguitools/gui_trimex.py" line="226"/>
       <source>Angle</source>
       <translation>Açı</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="532"/>
+      <location filename="../../DraftGui.py" line="537"/>
       <source>Length of current segment</source>
       <translation>Geçerli segmentin uzunluğu</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="533"/>
+      <location filename="../../DraftGui.py" line="538"/>
       <source>Angle of current segment</source>
       <translation>Geçerli segmentin açısı</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="536"/>
+      <location filename="../../DraftGui.py" line="541"/>
       <source>Check this to lock the current angle</source>
       <translation>Geçerli açıyı kilitlemek için bunu işaretleyin</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="537"/>
-      <location filename="../../DraftGui.py" line="805"/>
+      <location filename="../../DraftGui.py" line="542"/>
+      <location filename="../../DraftGui.py" line="810"/>
       <source>Radius</source>
       <translation>Yarıçap</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="538"/>
-      <location filename="../../DraftGui.py" line="806"/>
+      <location filename="../../DraftGui.py" line="543"/>
+      <location filename="../../DraftGui.py" line="811"/>
       <source>Radius of Circle</source>
       <translation>Çemberin Yarıçapı</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="543"/>
+      <location filename="../../DraftGui.py" line="548"/>
       <source>Coordinates relative to last point or to coordinate system origin
 if is the first point to set</source>
       <translation type="unfinished">Coordinates relative to last point or to coordinate system origin
 if is the first point to set</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="548"/>
+      <location filename="../../DraftGui.py" line="553"/>
       <source>Coordinates relative to global coordinate system.
 Uncheck to use working plane coordinate system</source>
       <translation type="unfinished">Coordinates relative to global coordinate system.
 Uncheck to use working plane coordinate system</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="550"/>
+      <location filename="../../DraftGui.py" line="555"/>
       <source>Filled</source>
       <translation>Dolu</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="554"/>
+      <location filename="../../DraftGui.py" line="559"/>
       <source>Check this if the object should appear as filled, otherwise it will appear as wireframe.
 Not available if Draft preference option 'Use Part Primitives' is enabled</source>
       <translation type="unfinished">Check this if the object should appear as filled, otherwise it will appear as wireframe.
 Not available if Draft preference option 'Use Part Primitives' is enabled</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="556"/>
+      <location filename="../../DraftGui.py" line="561"/>
       <source>Finish</source>
       <translation>Bitir</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="558"/>
+      <location filename="../../DraftGui.py" line="563"/>
       <source>Finishes the current drawing or editing operation</source>
       <translation type="unfinished">Finishes the current drawing or editing operation</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="561"/>
+      <location filename="../../DraftGui.py" line="566"/>
       <source>If checked, command will not finish until you press the command button again</source>
       <translation type="unfinished">If checked, command will not finish until you press the command button again</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="566"/>
+      <location filename="../../DraftGui.py" line="571"/>
       <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
       <translation type="unfinished">If checked, an OCC-style offset will be performed instead of the classic offset</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="567"/>
+      <location filename="../../DraftGui.py" line="572"/>
       <source>OCC-style offset</source>
       <translation type="unfinished">OCC-style offset</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="569"/>
+      <location filename="../../DraftGui.py" line="574"/>
       <source>Undo</source>
       <translation>Geri al</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="583"/>
+      <location filename="../../DraftGui.py" line="588"/>
       <source>If checked, objects will be copied instead of moved</source>
       <translation type="unfinished">If checked, objects will be copied instead of moved</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="570"/>
+      <location filename="../../DraftGui.py" line="575"/>
       <source>Undo the last segment</source>
       <translation>Son segmenti geri al</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="572"/>
+      <location filename="../../DraftGui.py" line="577"/>
       <source>Finishes and closes the current line</source>
       <translation>Geçerli çizgiyi kapatır ve sonlandırır</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="574"/>
+      <location filename="../../DraftGui.py" line="579"/>
       <source>Wipes the existing segments of this line and starts again from the last point</source>
       <translation type="unfinished">Wipes the existing segments of this line and starts again from the last point</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="575"/>
+      <location filename="../../DraftGui.py" line="580"/>
       <source>Set WP</source>
       <translation>WP ayarla</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="576"/>
+      <location filename="../../DraftGui.py" line="581"/>
       <source>Reorients the working plane on the last segment</source>
       <translation type="unfinished">Reorients the working plane on the last segment</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="578"/>
+      <location filename="../../DraftGui.py" line="583"/>
       <source>Selects an existing edge to be measured by this dimension</source>
       <translation type="unfinished">Selects an existing edge to be measured by this dimension</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="579"/>
+      <location filename="../../DraftGui.py" line="584"/>
       <source>Sides</source>
       <translation>Kenarlar</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="580"/>
+      <location filename="../../DraftGui.py" line="585"/>
       <source>Number of sides</source>
       <translation>Yüzeylerin sayısı</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="584"/>
+      <location filename="../../DraftGui.py" line="589"/>
       <source>Modify subelements</source>
       <translation type="unfinished">Modify subelements</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="585"/>
+      <location filename="../../DraftGui.py" line="590"/>
       <source>If checked, subelements will be modified instead of entire objects</source>
       <translation type="unfinished">If checked, subelements will be modified instead of entire objects</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="586"/>
+      <location filename="../../DraftGui.py" line="591"/>
       <source>Create text</source>
       <translation>Metin oluştur</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="587"/>
+      <location filename="../../DraftGui.py" line="592"/>
       <source>Press this button to create the text object, or finish your text with two blank lines</source>
       <translation type="unfinished">Press this button to create the text object, or finish your text with two blank lines</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="609"/>
+      <location filename="../../DraftGui.py" line="614"/>
       <source>Change default style for new objects</source>
       <translation type="unfinished">Change default style for new objects</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="610"/>
+      <location filename="../../DraftGui.py" line="615"/>
       <source>Toggle construction mode</source>
       <translation type="unfinished">Toggle construction mode</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="611"/>
-      <location filename="../../DraftGui.py" line="1472"/>
-      <location filename="../../DraftGui.py" line="1487"/>
+      <location filename="../../DraftGui.py" line="616"/>
+      <location filename="../../DraftGui.py" line="1477"/>
+      <location filename="../../DraftGui.py" line="1492"/>
       <source>Autogroup off</source>
       <translation type="unfinished">Autogroup off</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="688"/>
+      <location filename="../../DraftGui.py" line="693"/>
       <location filename="../../draftguitools/gui_lines.py" line="66"/>
       <source>Line</source>
       <translation>Çizgi</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="696"/>
+      <location filename="../../DraftGui.py" line="701"/>
       <source>DWire</source>
       <translation>DWire</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="714"/>
+      <location filename="../../DraftGui.py" line="719"/>
       <source>Circle</source>
       <translation>Daire</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="719"/>
+      <location filename="../../DraftGui.py" line="724"/>
       <source>Arc</source>
       <translation>Yay</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="724"/>
+      <location filename="../../DraftGui.py" line="729"/>
       <location filename="../../draftguitools/gui_rotate.py" line="290"/>
       <source>Rotate</source>
       <translation>Döndür</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="728"/>
+      <location filename="../../DraftGui.py" line="733"/>
       <source>Point</source>
       <translation>Nokta</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="756"/>
+      <location filename="../../DraftGui.py" line="761"/>
       <source>Label</source>
       <translation>Etiket</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="758"/>
+      <location filename="../../DraftGui.py" line="763"/>
       <source>Label type</source>
       <translation type="unfinished">Label type</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="774"/>
+      <location filename="../../DraftGui.py" line="779"/>
       <location filename="../../draftguitools/gui_offset.py" line="241"/>
       <location filename="../../draftguitools/gui_offset.py" line="258"/>
       <location filename="../../draftguitools/gui_offset.py" line="323"/>
@@ -3292,71 +3290,71 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>Uzaklaşma</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="779"/>
-      <location filename="../../DraftGui.py" line="797"/>
+      <location filename="../../DraftGui.py" line="784"/>
+      <location filename="../../DraftGui.py" line="802"/>
       <location filename="../../draftguitools/gui_trimex.py" line="221"/>
       <source>Distance</source>
       <translation>Uzaklık</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="780"/>
-      <location filename="../../DraftGui.py" line="798"/>
+      <location filename="../../DraftGui.py" line="785"/>
+      <location filename="../../DraftGui.py" line="803"/>
       <location filename="../../draftguitools/gui_trimex.py" line="223"/>
       <source>Offset distance</source>
       <translation type="unfinished">Offset distance</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="794"/>
+      <location filename="../../DraftGui.py" line="799"/>
       <source>Trimex</source>
       <translation>KırpUzat</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="872"/>
-      <location filename="../../DraftGui.py" line="873"/>
-      <location filename="../../DraftGui.py" line="874"/>
-      <location filename="../../DraftGui.py" line="876"/>
       <location filename="../../DraftGui.py" line="877"/>
       <location filename="../../DraftGui.py" line="878"/>
+      <location filename="../../DraftGui.py" line="879"/>
+      <location filename="../../DraftGui.py" line="881"/>
+      <location filename="../../DraftGui.py" line="882"/>
+      <location filename="../../DraftGui.py" line="883"/>
       <source>Local {}</source>
       <translation type="unfinished">Local {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="880"/>
-      <location filename="../../DraftGui.py" line="881"/>
-      <location filename="../../DraftGui.py" line="882"/>
-      <location filename="../../DraftGui.py" line="884"/>
       <location filename="../../DraftGui.py" line="885"/>
       <location filename="../../DraftGui.py" line="886"/>
+      <location filename="../../DraftGui.py" line="887"/>
+      <location filename="../../DraftGui.py" line="889"/>
+      <location filename="../../DraftGui.py" line="890"/>
+      <location filename="../../DraftGui.py" line="891"/>
       <source>Global {}</source>
       <translation type="unfinished">Global {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1480"/>
+      <location filename="../../DraftGui.py" line="1485"/>
       <source>Autogroup:</source>
       <translation type="unfinished">Autogroup:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1619"/>
+      <location filename="../../DraftGui.py" line="1624"/>
       <source>Modify objects</source>
       <translation type="unfinished">Modify objects</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1768"/>
+      <location filename="../../DraftGui.py" line="1773"/>
       <source>Faces</source>
       <translation>Yüzler</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1769"/>
+      <location filename="../../DraftGui.py" line="1774"/>
       <source>Remove</source>
       <translation>Kaldır</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1770"/>
+      <location filename="../../DraftGui.py" line="1775"/>
       <source>Add</source>
       <translation>Ekle</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1771"/>
+      <location filename="../../DraftGui.py" line="1776"/>
       <source>Facebinder elements</source>
       <translation type="unfinished">Facebinder elements</translation>
     </message>
@@ -4820,17 +4818,17 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">changed 'Tracking' property type</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="175"/>
+      <location filename="../../draftobjects/shapestring.py" line="178"/>
       <source>ShapeString: oblique angle must be in the -80 to +80 degree range</source>
       <translation type="unfinished">ShapeString: oblique angle must be in the -80 to +80 degree range</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="187"/>
+      <location filename="../../draftobjects/shapestring.py" line="190"/>
       <source>ShapeString: string has no wires</source>
       <translation type="unfinished">ShapeString: string has no wires</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="221"/>
+      <location filename="../../draftobjects/shapestring.py" line="223"/>
       <source>ShapeString: face creation failed for one character</source>
       <translation type="unfinished">ShapeString: face creation failed for one character</translation>
     </message>

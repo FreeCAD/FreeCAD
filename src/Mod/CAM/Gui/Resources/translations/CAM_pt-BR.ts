@@ -1198,7 +1198,7 @@ Objetos a serem processados podem ser adicionado a esta lista seletando eles e a
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="169"/>
       <source>Chip Break</source>
-      <translation type="unfinished">Chip Break</translation>
+      <translation>Quebra de Cavaco</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="176"/>
@@ -1208,7 +1208,7 @@ Objetos a serem processados podem ser adicionado a esta lista seletando eles e a
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="179"/>
       <source>G85: Retract from the hole at the given feedrate instead of rapid move</source>
-      <translation type="unfinished">G85: Retract from the hole at the given feedrate instead of rapid move</translation>
+      <translation>G85: Retrai o furo pela taxa de alimentação em vez de um movimento rápido</translation>
     </message>
     <message>
       <location filename="../panels/PageOpEngraveEdit.ui" line="63"/>
@@ -1372,9 +1372,9 @@ Objetos a serem processados podem ser adicionado a esta lista seletando eles e a
       <source>Specify if the facing should be restricted by the actual shape of the selected face (or the part if no face is selected), or if the bounding box should be faced off.
 
 The latter can be used to face of the entire stock area to ensure uniform heights for the following operations</source>
-      <translation type="unfinished">Specify if the facing should be restricted by the actual shape of the selected face (or the part if no face is selected), or if the bounding box should be faced off.
+      <translation>Especifique se a face deve ser restringida pela forma real do objeto selecionado (ou pela peça, se nenhuma face estiver selecionada) ou se a caixa delimitadora deve ser faceada.
 
-The latter can be used to face of the entire stock area to ensure uniform heights for the following operations</translation>
+Este último pode ser utilizado para facear toda a área do material para garantir alturas uniformes para as operações seguintes</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="95"/>
@@ -1454,12 +1454,12 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="261"/>
       <source>Use Rest Machining</source>
-      <translation type="unfinished">Use Rest Machining</translation>
+      <translation>Usar Usinagem de acabamento</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="204"/>
       <source>Material Allowance</source>
-      <translation type="unfinished">Material Allowance</translation>
+      <translation>Sobre material</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="130"/>
@@ -1481,7 +1481,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="52"/>
       <source>Probe Grid Points</source>
-      <translation type="unfinished">Probe Grid Points</translation>
+      <translation>Sondar nos Pontos da Grade</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="58"/>
@@ -1562,22 +1562,22 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="137"/>
       <source>Check if this profile operation should also process holes in the base geometry. Found holes are automatically offset on the opposite cut side and performed in the opposite direction as perimeters. Note that this does not include cylindrical holes, the assumption being that they will get drilled</source>
-      <translation type="unfinished">Check if this profile operation should also process holes in the base geometry. Found holes are automatically offset on the opposite cut side and performed in the opposite direction as perimeters. Note that this does not include cylindrical holes, the assumption being that they will get drilled</translation>
+      <translation>Verifique se esta operação de perfil também deve processar furos na geometria base. Buracos encontrados são automaticamente deslocados no lado oposto e executados na direção oposta como perímetros. Observe que isto não inclui buracos cilíndricos, assumindo que eles serão perfurados</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="147"/>
       <source>If checked the profile operation is offset by the tool radius. The offset direction is determined by the Cut Side</source>
-      <translation type="unfinished">If checked the profile operation is offset by the tool radius. The offset direction is determined by the Cut Side</translation>
+      <translation>Se marcado a usinagem do perfil é deslocado pelo raio da ferramenta. A direção do deslocamento é determinada pelo lado do corte</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="157"/>
       <source>Check if you want this profile operation to also be applied to cylindrical holes, which normally get drilled. This can be useful if no drill of adequate size is available or the number of holes don&apos;t warrant a tool change. Note that the cut side and direction is reversed in respect to the specified values</source>
-      <translation type="unfinished">Check if you want this profile operation to also be applied to cylindrical holes, which normally get drilled. This can be useful if no drill of adequate size is available or the number of holes don&apos;t warrant a tool change. Note that the cut side and direction is reversed in respect to the specified values</translation>
+      <translation>Verifique se você deseja que esta usinagem de perfil também seja aplicada a buracos cilindricos, que normalmente são perfurados. Isso pode ser útil se nenhuma broca de tamanho adequado estiver disponível ou o número de buracos justificar uma mudança de ferramenta. Note que o lado e a direção do corte é revertido em relação aos valores especificados</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="167"/>
       <source>Check if this profile operation should also process the outside perimeter of the base geometry shapes</source>
-      <translation type="unfinished">Check if this profile operation should also process the outside perimeter of the base geometry shapes</translation>
+      <translation>Verifique se esta operação de perfil também deve processar o perímetro externo das formas de geometria base</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="140"/>
@@ -1602,12 +1602,12 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="71"/>
       <source>Start Feature Reference</source>
-      <translation type="unfinished">Start Feature Reference</translation>
+      <translation>Referência de Recurso Inicial</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="42"/>
       <source> The tool and its settings to be used for this operation </source>
-      <translation type="unfinished"> The tool and its settings to be used for this operation </translation>
+      <translation> A ferramenta e suas configurações a serem utilizadas para esta operação </translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="97"/>
@@ -1619,7 +1619,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpSlotEdit.ui" line="102"/>
       <location filename="../panels/PageOpSlotEdit.ui" line="174"/>
       <source>Center of Bounding Box</source>
-      <translation type="unfinished">Center of Bounding Box</translation>
+      <translation>Centro da caixa delimitadora</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="107"/>
@@ -1652,22 +1652,22 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="141"/>
       <source>End Feature Reference</source>
-      <translation type="unfinished">End Feature Reference</translation>
+      <translation>Final do recurso de referência</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="90"/>
       <source>Choose what point to use on the first selected feature</source>
-      <translation type="unfinished">Choose what point to use on the first selected feature</translation>
+      <translation>Escolha qual ponto usar no primeiro objeto selecionado</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="162"/>
       <source>Choose what point to use on the second selected feature</source>
-      <translation type="unfinished">Choose what point to use on the second selected feature</translation>
+      <translation>Escolha qual ponto usar no segundo objeto selecionado</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="222"/>
       <source>No Base Geometry selected</source>
-      <translation type="unfinished">No Base Geometry selected</translation>
+      <translation>Nenhuma geometria de base selecionada</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="228"/>
@@ -1677,12 +1677,12 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="241"/>
       <source>Currently using custom point inputs in the Property View of the Data tab</source>
-      <translation type="unfinished">Currently using custom point inputs in the Property View of the Data tab</translation>
+      <translation>Atualmente usando ponto de entrada personalizada na exibição de propriedade da guia de dados</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="244"/>
       <source>Currently using custom point inputs available in the Property View of the Data tab.</source>
-      <translation type="unfinished">Currently using custom point inputs available in the Property View of the Data tab.</translation>
+      <translation>Atualmente usando ponto personalizado disponíveis na visualização de propriedades da aba de dados.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="275"/>
@@ -1692,17 +1692,17 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="291"/>
       <source>Positive extends the beginning of the path, negative shortens</source>
-      <translation type="unfinished">Positive extends the beginning of the path, negative shortens</translation>
+      <translation>Valores positivos estendem o início da trajetória, valores negativos encurtam</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="301"/>
       <source>Extend Path End</source>
-      <translation type="unfinished">Extend Path End</translation>
+      <translation>Estender o Caminho final</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="317"/>
       <source>Positive extends the end of the path, negative shortens</source>
-      <translation type="unfinished">Positive extends the end of the path, negative shortens</translation>
+      <translation>Valores positivos estendem o fim da trajetória, valores negativos encurtam</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="98"/>
@@ -1714,12 +1714,12 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="357"/>
       <source>Complete the operation in a single pass at depth, or multiple passes to final depth</source>
-      <translation type="unfinished">Complete the operation in a single pass at depth, or multiple passes to final depth</translation>
+      <translation>Realiza a operação em um único passo de profundidade, ou passos múltiplos para a profundidade final</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="361"/>
       <source>Single-pass</source>
-      <translation type="unfinished">Single-pass</translation>
+      <translation>Passe único</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="366"/>
@@ -1734,7 +1734,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="381"/>
       <source>Choose the path orientation with regard to the feature(s) selected</source>
-      <translation type="unfinished">Choose the path orientation with regard to the feature(s) selected</translation>
+      <translation>Escolha a orientação da trajetória relativamente ao objeto selecionado</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="385"/>
@@ -1749,12 +1749,12 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="398"/>
       <source>Enable to reverse the cut direction of the slot path</source>
-      <translation type="unfinished">Enable to reverse the cut direction of the slot path</translation>
+      <translation>Ativar para inverter a direção de corte da trajetória do rebaixo</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="401"/>
       <source>Reverse cut direction</source>
-      <translation type="unfinished">Reverse cut direction</translation>
+      <translation>Inverter a direção do corte</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="77"/>
@@ -1770,7 +1770,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="119"/>
       <source>Profile Edges</source>
-      <translation type="unfinished">Profile Edges</translation>
+      <translation>Perfil de arestas</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="133"/>
@@ -1787,50 +1787,50 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpWaterlineEdit.ui" line="91"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="70"/>
       <source>Select the overall boundary for the operation.</source>
-      <translation type="unfinished">Select the overall boundary for the operation.</translation>
+      <translation>Selecione o limite geral para a operação.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="84"/>
       <source>Planar: Flat, 3D surface scan.  Rotational: 4th-axis rotational scan.</source>
-      <translation type="unfinished">Planar: Flat, 3D surface scan.  Rotational: 4th-axis rotational scan.</translation>
+      <translation>Plano: Plano, varredura de superfície 3D. Rotativa: varredura do 4.º eixo rotativo.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="110"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="98"/>
       <source>Complete the operation in a single pass at depth, or multiple passes to final depth.</source>
-      <translation type="unfinished">Complete the operation in a single pass at depth, or multiple passes to final depth.</translation>
+      <translation>Complete a operação em um único passo, ou passos múltiplos para a profundidade final.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="129"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="112"/>
       <source>Set the geometric clearing pattern to use for the operation.</source>
-      <translation type="unfinished">Set the geometric clearing pattern to use for the operation.</translation>
+      <translation>Defina o padrão de corte a ser usado na operação.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="126"/>
       <source>Profile the edges of the selection.</source>
-      <translation type="unfinished">Profile the edges of the selection.</translation>
+      <translation>Identifique as bordas da seleção.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="140"/>
       <source>Avoid cutting the last &apos;N&apos; faces in the Base Geometry list of selected faces.</source>
-      <translation type="unfinished">Avoid cutting the last &apos;N&apos; faces in the Base Geometry list of selected faces.</translation>
+      <translation>Evita cortar as últimas faces 'N' na lista de Geometria de base das faces selecionadas.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="147"/>
       <source>Bounding box extra offset X, Y</source>
-      <translation type="unfinished">Bounding box extra offset X, Y</translation>
+      <translation>Deslocamento suplementar X, Y da caixa de delimitação</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="191"/>
       <source>Dropcutter lines are created parallel to this axis.</source>
-      <translation type="unfinished">Dropcutter lines are created parallel to this axis.</translation>
+      <translation>Linhas de Dropcutter são criadas em paralelo a este eixo.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="149"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="205"/>
       <source>Set the Z-axis depth offset from the target surface.</source>
-      <translation type="unfinished">Set the Z-axis depth offset from the target surface.</translation>
+      <translation>Defina o deslocamento de profundidade do eixo Z na superfície alvo.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="194"/>
@@ -1841,23 +1841,23 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="254"/>
       <source>Make True, if specifying a Start Point</source>
-      <translation type="unfinished">Make True, if specifying a Start Point</translation>
+      <translation>Verdadeiro, especificando um ponto de partida</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="204"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="264"/>
       <source>Enable optimization of linear paths (co-linear points). Removes unnecessary co-linear points from G-code output.</source>
-      <translation type="unfinished">Enable optimization of linear paths (co-linear points). Removes unnecessary co-linear points from G-code output.</translation>
+      <translation>Habilitar otimização de trajetórias lineares (pontos co-lineares). Remove pontos co-lineares desnecessários da saída G-Code.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="274"/>
       <source>If true, the cutter will remain inside the boundaries of the model or selected face(s)</source>
-      <translation type="unfinished">If true, the cutter will remain inside the boundaries of the model or selected face(s)</translation>
+      <translation>Se ativado, a ferramenta permanecerá nos limites do modelo ou face(s) selecionada(s)</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="287"/>
       <source>Enable separate optimization of transitions between, and breaks within, each step over path.</source>
-      <translation type="unfinished">Enable separate optimization of transitions between, and breaks within, each step over path.</translation>
+      <translation>Habilitar otimização separada das transições internas e quebras internas em cada etapa da trajetória.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="184"/>
@@ -1867,12 +1867,12 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="162"/>
       <source>Additional offset to the selected bounding box along the X axis.</source>
-      <translation type="unfinished">Additional offset to the selected bounding box along the X axis.</translation>
+      <translation>Deslocamento adicional para a caixa delimitadora selecionada ao longo do eixo X.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="172"/>
       <source>Additional offset to the selected bounding box along the Y axis.</source>
-      <translation type="unfinished">Additional offset to the selected bounding box along the Y axis.</translation>
+      <translation>Deslocamento adicional para a caixa delimitadora selecionada ao longo do eixo Y.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="198"/>
@@ -1891,9 +1891,9 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <source>The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter.
 
 A step over of 100% results in no overlap between two different cycles.</source>
-      <translation type="unfinished">The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter.
+      <translation>Distância lateral que a ferramenta é deslocada em cada ciclo do padrão, especificado em porcentagem do diâmetro da ferramenta.
 
-A step over of 100% results in no overlap between two different cycles.</translation>
+Um passo acima de 100% não resultará em nenhuma sobreposição entre dois ciclos diferentes.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="187"/>
@@ -1915,7 +1915,7 @@ A step over of 100% results in no overlap between two different cycles.</transla
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="290"/>
       <source>Optimize StepOver Transitions</source>
-      <translation type="unfinished">Optimize StepOver Transitions</translation>
+      <translation>Otimizar transições de sobreposição</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="14"/>
@@ -1932,27 +1932,27 @@ A step over of 100% results in no overlap between two different cycles.</transla
       <source>Expression set as the StartDepth of a newly created operation.
 
 Default: OpStartDepth</source>
-      <translation type="unfinished">Expression set as the StartDepth of a newly created operation.
+      <translation>Expressão definida como profundidade inicial de uma operação recém-criada.
 
-Default: OpStartDepth</translation>
+Padrão: OpStartDepth</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="59"/>
       <source>Expression set as the FinalDepth for a newly created operation.
 
 Default: OpFinalDepth</source>
-      <translation type="unfinished">Expression set as the FinalDepth for a newly created operation.
+      <translation>Expressão definida como profundidade final para uma operação recém-criada.
 
-Default: OpFinalDepth</translation>
+Padrão: OpFinalDepth</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="75"/>
       <source>Expression set as the StepDown of a newly created operation.
 
 Default: OpToolDiameter</source>
-      <translation type="unfinished">Expression set as the StepDown of a newly created operation.
+      <translation>Expressão definida como profundidade inicial de uma nova operação.
 
-Default: OpToolDiameter</translation>
+Padrão: OpStartDepth</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="87"/>
@@ -1979,16 +1979,17 @@ Default: OpToolDiameter</translation>
       <source>Expression set as ClearanceHeight for new operations.
 
 Default: &quot;OpStockZMax+SetupSheet.ClearanceHeightOffset&quot;</source>
-      <translation type="unfinished">Expression set as ClearanceHeight for new operations.
+      <translation>Expressão definida como altura de folga para novas operações
 
-Default: &quot;OpStockZMax+SetupSheet.ClearanceHeightOffset&quot;</translation>
+Padrão:
+&quot;OpStockZMax+SetupSheet.ClearanceHeightOffset&quot;</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="145"/>
       <source>Expression set as SafeHeight for new operations.
 
 Default: &quot;OpStockZMax+SetupSheet.SafeHeightOffset&quot;</source>
-      <translation type="unfinished">Expression set as SafeHeight for new operations.
+      <translation>Expressão definida como altura de segurança para novas operações
 
 Default: &quot;OpStockZMax+SetupSheet.SafeHeightOffset&quot;</translation>
     </message>
@@ -1997,19 +1998,19 @@ Default: &quot;OpStockZMax+SetupSheet.SafeHeightOffset&quot;</translation>
       <source>SafeHeightOffset can be for expressions to set the SafeHeight for new operations.
 
 Default: &quot;5mm&quot;</source>
-      <translation type="unfinished">SafeHeightOffset can be for expressions to set the SafeHeight for new operations.
+      <translation>SafeHeightOffset serve para definir a altura de segurança para novas operações.
 
-Default: &quot;5mm&quot;</translation>
+Padrão: &quot;5mm&quot;</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="205"/>
       <source>Rapid horizontal speed assigned as HorizRapid to new ToolController.</source>
-      <translation type="unfinished">Rapid horizontal speed assigned as HorizRapid to new ToolController.</translation>
+      <translation>Velocidade rápida horizontal atribuída como HorizRapid para o novo controlador de ferramenta.</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="225"/>
       <source>Rapid vertical speed assigned to VertRapid of new ToolController.</source>
-      <translation type="unfinished">Rapid vertical speed assigned to VertRapid of new ToolController.</translation>
+      <translation>Velocidade rápida vertical atribuída como VertRapid para o novo controlador de ferramenta.</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="138"/>
@@ -2021,9 +2022,9 @@ Default: &quot;5mm&quot;</translation>
       <source>ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
 
 Default: 3 mm</source>
-      <translation type="unfinished">ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
+      <translation>ClearanceHeightOffset - É usado para definir a Altura de folga para novas operações.
 
-Default: 3 mm</translation>
+Padrão: 3 mm</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="186"/>
@@ -2100,47 +2101,47 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="65"/>
       <source>Discretization Deflection</source>
-      <translation type="unfinished">Discretization Deflection</translation>
+      <translation>Desvio de discreção</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="72"/>
       <source>This value is used in discretizing arcs into segments. Smaller values will result in larger gcode. Larger values may cause unwanted segments in the medial line path.</source>
-      <translation type="unfinished">This value is used in discretizing arcs into segments. Smaller values will result in larger gcode. Larger values may cause unwanted segments in the medial line path.</translation>
+      <translation>Este valor é usado em segmentos de arcos discretos. Valores menores resultarão em códigos maiores. Valores maiores podem causar segmentos indesejados no caminho da linha média.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="104"/>
       <source>Sets how aggressively colinear segments are filtered from the Voronoi diagram. Valid values are 0 - 90 degrees (larger numbers filter more). Default = 10</source>
-      <translation type="unfinished">Sets how aggressively colinear segments are filtered from the Voronoi diagram. Valid values are 0 - 90 degrees (larger numbers filter more). Default = 10</translation>
+      <translation>Define o quão agressivamente segmentos colineares são filtrados do diagrama de Voronoi. Valores válidos são 0 a 90 graus (números maiores são mais filtro). Padrão = 10</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="117"/>
       <source>Finishing pass Z offset</source>
-      <translation type="unfinished">Finishing pass Z offset</translation>
+      <translation>Deslocamento no eixo Z no passo de acabamento</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="124"/>
       <source>Endmill offset for the finishing pass run. Use small value like -0.2 mm to help clean &quot;fuzzy skin&quot; or other artefacts.</source>
-      <translation type="unfinished">Endmill offset for the finishing pass run. Use small value like -0.2 mm to help clean &quot;fuzzy skin&quot; or other artefacts.</translation>
+      <translation>Deslocamento da fresa para passo de acabamento. Use um valor pequeno como -0,2 mm para ajudar a limpar &quot;superfície difusa&quot; ou outros artefatos.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="140"/>
       <source>After carving travel again the path to remove artifacts and imperfections</source>
-      <translation type="unfinished">After carving travel again the path to remove artifacts and imperfections</translation>
+      <translation>Repete o passo de gravação para remover imperfeiçoes</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="146"/>
       <source>Finishing pass</source>
-      <translation type="unfinished">Finishing pass</translation>
+      <translation>Passo de acabamento</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="153"/>
       <source>Optimize path to avoid raising endmill when moving to adjacent edges. May result in sub-millimeter inaccuracies. </source>
-      <translation type="unfinished">Optimize path to avoid raising endmill when moving to adjacent edges. May result in sub-millimeter inaccuracies. </translation>
+      <translation>Otimiza o percurso para evitar saídas da fresa para arestas adjacentes. Pode resultar em imperfeições sub milimétricas.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="156"/>
       <source>Optimize movements</source>
-      <translation type="unfinished">Optimize movements</translation>
+      <translation>Otimizar movimentos</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="97"/>
@@ -3853,16 +3854,17 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
       <source>Expression set as ClearanceHeight for new operations.
 
 Default: &quot;OpStockZMax+SetupSheet.ClearanceHeightOffset&quot;</source>
-      <translation type="unfinished">Expression set as ClearanceHeight for new operations.
+      <translation>Expressão definida como altura de folga para novas operações
 
-Default: &quot;OpStockZMax+SetupSheet.ClearanceHeightOffset&quot;</translation>
+Padrão:
+&quot;OpStockZMax+SetupSheet.ClearanceHeightOffset&quot;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1162"/>
       <source>Expression set as SafeHeight for new operations.
 
 Default: &quot;OpStockZMax+SetupSheet.SafeHeightOffset&quot;</source>
-      <translation type="unfinished">Expression set as SafeHeight for new operations.
+      <translation>Expressão definida como altura de segurança para novas operações
 
 Default: &quot;OpStockZMax+SetupSheet.SafeHeightOffset&quot;</translation>
     </message>
@@ -3871,9 +3873,9 @@ Default: &quot;OpStockZMax+SetupSheet.SafeHeightOffset&quot;</translation>
       <source>SafeHeightOffset can be for expressions to set the SafeHeight for new operations.
 
 Default: &quot;5mm&quot;</source>
-      <translation type="unfinished">SafeHeightOffset can be for expressions to set the SafeHeight for new operations.
+      <translation>SafeHeightOffset serve para definir a altura de segurança para novas operações.
 
-Default: &quot;5mm&quot;</translation>
+Padrão: &quot;5mm&quot;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1270"/>
@@ -3888,12 +3890,12 @@ Default: &quot;5mm&quot;</translation>
     <message>
       <location filename="../panels/PathEdit.ui" line="1370"/>
       <source>Rapid horizontal speed assigned as HorizRapid to new ToolController.</source>
-      <translation type="unfinished">Rapid horizontal speed assigned as HorizRapid to new ToolController.</translation>
+      <translation>Velocidade rápida horizontal atribuída como HorizRapid para o novo controlador de ferramenta.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1390"/>
       <source>Rapid vertical speed assigned to VertRapid of new ToolController.</source>
-      <translation type="unfinished">Rapid vertical speed assigned to VertRapid of new ToolController.</translation>
+      <translation>Velocidade rápida vertical atribuída como VertRapid para o novo controlador de ferramenta.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1430"/>
@@ -3932,18 +3934,18 @@ If &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is se
       <source>Expression set as the StartDepth of a newly created operation.
 
 Default: OpStartDepth</source>
-      <translation type="unfinished">Expression set as the StartDepth of a newly created operation.
+      <translation>Expressão definida como profundidade inicial de uma operação recém-criada.
 
-Default: OpStartDepth</translation>
+Padrão: OpStartDepth</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1076"/>
       <source>Expression set as the FinalDepth for a newly created operation.
 
 Default: OpFinalDepth</source>
-      <translation type="unfinished">Expression set as the FinalDepth for a newly created operation.
+      <translation>Expressão definida como profundidade final para uma operação recém-criada.
 
-Default: OpFinalDepth</translation>
+Padrão: OpFinalDepth</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1085"/>
@@ -3955,9 +3957,9 @@ Default: OpFinalDepth</translation>
       <source>Expression set as the StepDown of a newly created operation.
 
 Default: OpToolDiameter</source>
-      <translation type="unfinished">Expression set as the StepDown of a newly created operation.
+      <translation>Expressão definida como profundidade inicial de uma nova operação.
 
-Default: OpToolDiameter</translation>
+Padrão: OpStartDepth</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1104"/>
@@ -3984,9 +3986,9 @@ Default: OpToolDiameter</translation>
       <source>ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
 
 Default: 3 mm</source>
-      <translation type="unfinished">ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
+      <translation>ClearanceHeightOffset - É usado para definir a Altura de folga para novas operações.
 
-Default: 3 mm</translation>
+Padrão: 3 mm</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1155"/>
@@ -4910,7 +4912,7 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Op/Waterline.py" line="452"/>
       <location filename="../../../Path/Op/Base.py" line="298"/>
       <source>Make True, if specifying a Start Point</source>
-      <translation type="unfinished">Make True, if specifying a Start Point</translation>
+      <translation>Verdadeiro, especificando um ponto de partida</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="306"/>
@@ -5234,14 +5236,14 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Op/Slot.py" line="147"/>
       <location filename="../../../Path/Op/Waterline.py" line="327"/>
       <source>Set the geometric clearing pattern to use for the operation.</source>
-      <translation type="unfinished">Set the geometric clearing pattern to use for the operation.</translation>
+      <translation>Defina o padrão de corte a ser usado na operação.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="316"/>
       <location filename="../../../Path/Op/Slot.py" line="174"/>
       <location filename="../../../Path/Op/Waterline.py" line="368"/>
       <source>Complete the operation in a single pass at depth, or multiple passes to final depth.</source>
-      <translation type="unfinished">Complete the operation in a single pass at depth, or multiple passes to final depth.</translation>
+      <translation>Complete a operação em um único passo, ou passos múltiplos para a profundidade final.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="122"/>
@@ -5323,7 +5325,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="158"/>
       <source>Dropcutter lines are created parallel to this axis.</source>
-      <translation type="unfinished">Dropcutter lines are created parallel to this axis.</translation>
+      <translation>Linhas de Dropcutter são criadas em paralelo a este eixo.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="166"/>
@@ -5343,13 +5345,13 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="193"/>
       <source>Planar: Flat, 3D surface scan.  Rotational: 4th-axis rotational scan.</source>
-      <translation type="unfinished">Planar: Flat, 3D surface scan.  Rotational: 4th-axis rotational scan.</translation>
+      <translation>Plano: Plano, varredura de superfície 3D. Rotativa: varredura do 4.º eixo rotativo.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="202"/>
       <location filename="../../../Path/Op/Waterline.py" line="230"/>
       <source>Avoid cutting the last &apos;N&apos; faces in the Base Geometry list of selected faces.</source>
-      <translation type="unfinished">Avoid cutting the last &apos;N&apos; faces in the Base Geometry list of selected faces.</translation>
+      <translation>Evita cortar as últimas faces 'N' na lista de Geometria de base das faces selecionadas.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="210"/>
@@ -5385,7 +5387,7 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Op/Surface.py" line="263"/>
       <location filename="../../../Path/Op/Waterline.py" line="300"/>
       <source>Select the overall boundary for the operation.</source>
-      <translation type="unfinished">Select the overall boundary for the operation.</translation>
+      <translation>Selecione o limite geral para a operação.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="272"/>
@@ -5409,7 +5411,7 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Op/Surface.py" line="307"/>
       <location filename="../../../Path/Op/Waterline.py" line="353"/>
       <source>Set the Z-axis depth offset from the target surface.</source>
-      <translation type="unfinished">Set the Z-axis depth offset from the target surface.</translation>
+      <translation>Defina o deslocamento de profundidade do eixo Z na superfície alvo.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="322"/>
@@ -5426,7 +5428,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="337"/>
       <source>Profile the edges of the selection.</source>
-      <translation type="unfinished">Profile the edges of the selection.</translation>
+      <translation>Identifique as bordas da seleção.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="346"/>
@@ -5444,13 +5446,13 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Op/Surface.py" line="364"/>
       <location filename="../../../Path/Op/Waterline.py" line="410"/>
       <source>Enable optimization of linear paths (co-linear points). Removes unnecessary co-linear points from G-code output.</source>
-      <translation type="unfinished">Enable optimization of linear paths (co-linear points). Removes unnecessary co-linear points from G-code output.</translation>
+      <translation>Habilitar otimização de trajetórias lineares (pontos co-lineares). Remove pontos co-lineares desnecessários da saída G-Code.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="373"/>
       <location filename="../../../Path/Op/Waterline.py" line="419"/>
       <source>Enable separate optimization of transitions between, and breaks within, each step over path.</source>
-      <translation type="unfinished">Enable separate optimization of transitions between, and breaks within, each step over path.</translation>
+      <translation>Habilitar otimização separada das transições internas e quebras internas em cada etapa da trajetória.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="382"/>
@@ -5532,7 +5534,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Vcarve.py" line="291"/>
       <source>Optimize movements</source>
-      <translation type="unfinished">Optimize movements</translation>
+      <translation>Otimizar movimentos</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Vcarve.py" line="298"/>
@@ -5542,7 +5544,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Vcarve.py" line="305"/>
       <source>Finishing pass Z offset</source>
-      <translation type="unfinished">Finishing pass Z offset</translation>
+      <translation>Deslocamento no eixo Z no passo de acabamento</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Vcarve.py" line="317"/>
@@ -6132,7 +6134,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="136"/>
       <source>Single-pass</source>
-      <translation type="unfinished">Single-pass</translation>
+      <translation>Passe único</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="137"/>
@@ -7790,7 +7792,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Slot.py" line="256"/>
       <source>Single-pass</source>
-      <translation type="unfinished">Single-pass</translation>
+      <translation>Passe único</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="257"/>
@@ -7817,7 +7819,7 @@ For example:
       <location filename="../../../Path/Op/Slot.py" line="266"/>
       <location filename="../../../Path/Op/Slot.py" line="278"/>
       <source>Center of Bounding Box</source>
-      <translation type="unfinished">Center of Bounding Box</translation>
+      <translation>Centro da caixa delimitadora</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="269"/>
@@ -8053,7 +8055,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Surface.py" line="463"/>
       <source>Single-pass</source>
-      <translation type="unfinished">Single-pass</translation>
+      <translation>Passe único</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="464"/>

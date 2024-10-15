@@ -1257,7 +1257,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="108"/>
       <source>Create a cube solid</source>
-      <translation>建立一個立方實體</translation>
+      <translation>建立一個實心立方體</translation>
     </message>
   </context>
   <context>
@@ -1419,7 +1419,7 @@
     <message>
       <location filename="../../Command.cpp" line="618"/>
       <source>Shape splitting and Compsolid creation tools.</source>
-      <translation>形狀分割和組合實體創建工具</translation>
+      <translation>形狀分割和組合實體建立工具</translation>
     </message>
   </context>
   <context>
@@ -1457,7 +1457,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="192"/>
       <source>Create a cone solid</source>
-      <translation>建立一圓錐實體</translation>
+      <translation>建立一實心圓錐</translation>
     </message>
   </context>
   <context>
@@ -1859,7 +1859,7 @@ of projection.</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="354"/>
       <source>Refine the copy of a shape</source>
-      <translation>調整複製之造型</translation>
+      <translation>精煉拷貝之造型</translation>
     </message>
   </context>
   <context>
@@ -1975,12 +1975,12 @@ of projection.</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="222"/>
       <source>Create simple copy</source>
-      <translation>建立一不與原本物件連動之複製</translation>
+      <translation>建立簡單副本</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="223"/>
       <source>Create a simple non-parametric copy</source>
-      <translation>建立一簡單無參數之複製</translation>
+      <translation>建立一簡單非參數化的拷貝</translation>
     </message>
   </context>
   <context>
@@ -2018,7 +2018,7 @@ of projection.</source>
     <message>
       <location filename="../../CommandParametric.cpp" line="150"/>
       <source>Create a sphere solid</source>
-      <translation>建立一球體實體</translation>
+      <translation>建立一實心球體</translation>
     </message>
   </context>
   <context>
@@ -2204,7 +2204,7 @@ of projection.</source>
       <translation>轉換網格</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1078"/>
+      <location filename="../../TaskAttacher.cpp" line="1076"/>
       <source>Edit attachment</source>
       <translation>編輯附件</translation>
     </message>
@@ -2270,22 +2270,22 @@ of projection.</source>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="35"/>
       <source>Reference 1</source>
-      <translation>參考物件 1</translation>
+      <translation>參考 1</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="52"/>
       <source>Reference 2</source>
-      <translation>參考物件 2</translation>
+      <translation>參考 2</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="69"/>
       <source>Reference 3</source>
-      <translation>參考物件 3</translation>
+      <translation>參考 3</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="86"/>
       <source>Reference 4</source>
-      <translation>參考物件 4</translation>
+      <translation>參考 4</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="101"/>
@@ -2295,7 +2295,7 @@ of projection.</source>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="124"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation>附件偏移（在本地座標）：</translation>
+      <translation>附件偏移（在局部座標）：</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="136"/>
@@ -2655,7 +2655,7 @@ the size of the resulting STEP file.</source>
     <message>
       <location filename="../../DlgExtrusion.ui" line="35"/>
       <source>Along normal</source>
-      <translation>維持垂直</translation>
+      <translation>沿著法線</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="45"/>
@@ -2743,7 +2743,7 @@ If both lengths are zero, magnitude of direction is used.</source>
     <message>
       <location filename="../../DlgExtrusion.ui" line="262"/>
       <source>Distribute extrusion length equally to both sides.</source>
-      <translation>將拉伸長度均等分配給兩側。</translation>
+      <translation>將擠壓長度均等分配給兩側。</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="265"/>
@@ -3648,7 +3648,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1725"/>
       <source>Pitch:</source>
-      <translation>俯仰：</translation>
+      <translation>螺距:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1802"/>
@@ -4064,7 +4064,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="108"/>
       <source>Experimental</source>
-      <translation>Experimental</translation>
+      <translation>實驗性功能</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="117"/>
@@ -4274,7 +4274,7 @@ will be used or black.</source>
     <message>
       <location filename="../../Location.ui" line="54"/>
       <source>Y</source>
-      <translation>Ÿ</translation>
+      <translation>Y</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="71"/>
@@ -4795,22 +4795,22 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskAttacher.ui" line="35"/>
       <source>Reference 1</source>
-      <translation>參考物件 1</translation>
+      <translation>參考 1</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="52"/>
       <source>Reference 2</source>
-      <translation>參考物件 2</translation>
+      <translation>參考 2</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="69"/>
       <source>Reference 3</source>
-      <translation>參考物件 3</translation>
+      <translation>參考 3</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="86"/>
       <source>Reference 4</source>
-      <translation>參考物件 4</translation>
+      <translation>參考 4</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="101"/>
@@ -4821,7 +4821,7 @@ only created cuts will be visible</source>
       <location filename="../../TaskAttacher.ui" line="124"/>
       <location filename="../../TaskAttacher.cpp" line="339"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation>附件偏移（在本地座標）：</translation>
+      <translation>附件偏移（在局部座標）：</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="136"/>
@@ -4834,7 +4834,7 @@ only created cuts will be visible</source>
       <location filename="../../TaskAttacher.ui" line="227"/>
       <source>Note: The placement is expressed in local coordinate system
 of object being attached.</source>
-      <translation>注意：附加物件的位置是以其本地座標系統表示的。</translation>
+      <translation>注意：附加物件的位置是以其局部座標系統表示的。</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="172"/>
@@ -4857,7 +4857,7 @@ of object being attached.</source>
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
       <translation>繞 X 軸旋轉
-注意：附加物件的位置是以其本地座標系統表示的。</translation>
+注意：附加物件的位置是以其局部座標系統表示的。</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="284"/>
@@ -4870,7 +4870,7 @@ of object being attached.</source>
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
       <translation>繞 Y 軸旋轉
-注意：附加物件的位置是以其本地座標系統表示的。</translation>
+注意：附加物件的位置是以其局部座標系統表示的。</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="324"/>
@@ -4883,7 +4883,7 @@ of object being attached.</source>
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
       <translation>繞 Z 軸旋轉
-注意：附加物件的位置是以其本地座標系統表示的。</translation>
+注意：附加物件的位置是以其局部座標系統表示的。</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="361"/>
@@ -4974,190 +4974,190 @@ of object being attached.</source>
   <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1001"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1006"/>
       <source>Shape Content</source>
       <translation>造型內容</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1009"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="1204"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1014"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1209"/>
       <source>Settings</source>
       <translation>設定</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1015"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1020"/>
       <source>Skip this settings page and run the geometry check automatically.</source>
       <translation>跳過此設定頁面並自動運行幾何檢查。</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1017"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1022"/>
       <source>Default: false</source>
       <translation>預設值：false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1024"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1029"/>
       <source>Run boolean operation check</source>
       <translation>執行布林運算檢查</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1025"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1030"/>
       <source>Extra boolean operations check that can sometimes find errors that
 the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</source>
       <translation>額外的布林運算檢查，有時可以發現標準 BRep 幾何檢查所忽略的錯誤。這些錯誤並不一定意味著檢查的物件無法使用。預設值為 false。</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1035"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1040"/>
       <source>Single-threaded</source>
       <translation>單執行緒</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1036"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1041"/>
       <source>Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</source>
       <translation>以單線程執行幾何檢查。這樣做會慢一些，但更穩定。預設值：false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1045"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1050"/>
       <source>Log errors</source>
       <translation>紀錄錯誤</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1046"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1051"/>
       <source>Log errors to report view.  Default: true</source>
       <translation>將錯誤記錄到報告視圖中。預設值：true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1053"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1058"/>
       <source>Expand shape content</source>
       <translation>展開形狀內容</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1054"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1059"/>
       <source>Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>擴展形狀內容。更改將在下次使用檢查幾何工具時生效。預設值：false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1063"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1068"/>
       <source>Advanced shape content</source>
       <translation>進階形狀內容</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1064"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1069"/>
       <source>Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>顯示進階形狀內容。更改將在下次使用檢查幾何工具時生效。預設值：false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1072"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1077"/>
       <source>
 Individual boolean operation checks:</source>
       <translation>
 個別布林運算檢查：</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1075"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1080"/>
       <source>Bad type</source>
       <translation>錯誤類型</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1083"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1088"/>
       <source>Self-intersect</source>
       <translation>自我交叉</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1096"/>
       <source>Too small edge</source>
       <translation>太小的邊</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1099"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1104"/>
       <source>Nonrecoverable face</source>
       <translation>不可恢復的面</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1107"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1112"/>
       <source>Continuity</source>
       <translation>連續性</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1115"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1120"/>
       <source>Incompatibility of face</source>
       <translation>不相容的面</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1123"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1128"/>
       <source>Incompatibility of vertex</source>
       <translation>不相容的頂點</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1131"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1136"/>
       <source>Incompatibility of edge</source>
       <translation>不相容的邊</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1139"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1144"/>
       <source>Invalid curve on surface</source>
       <translation>表面的無效曲線</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1076"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1081"/>
       <source>Check for bad argument types.  Default: true</source>
       <translation>檢查錯誤的參數類型。預設值：true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1013"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1018"/>
       <source>Skip this settings page</source>
       <translation>跳過此設定頁面</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1084"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1089"/>
       <source>Check for self-intersections.  Default: true</source>
       <translation>檢視是否自我交叉。預設值：true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1092"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1097"/>
       <source>Check for edges that are too small.  Default: true</source>
       <translation>檢查是否存在太小的邊。預設值：true。</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1100"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1105"/>
       <source>Check for nonrecoverable faces.  Default: true</source>
       <translation>對不可恢復的面檢查 預設: ture</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1108"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1113"/>
       <source>Check for continuity.  Default: true</source>
       <translation>檢查連續性。預設值：true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1116"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1121"/>
       <source>Check for incompatible faces.  Default: true</source>
       <translation>檢查不相容的面。預設值：true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1124"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1129"/>
       <source>Check for incompatible vertices.  Default: true</source>
       <translation>檢查不相容的頂點。預設值：true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1132"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1137"/>
       <source>Check for incompatible edges.  Default: true</source>
       <translation>檢查是否存在不相容的邊。預設值：true。</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1140"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1145"/>
       <source>Check for invalid curves on surfaces.  Default: true</source>
       <translation>檢查表面的無效曲線。預設值：true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1203"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1208"/>
       <source>Run check</source>
       <translation>執行檢查</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1209"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1214"/>
       <source>Results</source>
       <translation>結果</translation>
     </message>
@@ -5186,29 +5186,29 @@ Individual boolean operation checks:</source>
       <translation>檢查幾何</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="459"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="464"/>
       <source>Invalid</source>
       <translation>無效</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="478"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="483"/>
       <source>Checking</source>
       <translation>檢查中</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="501"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="506"/>
       <source>%1 processed out of %2 selected</source>
       <translation>已處理了 %2 選擇中的 %1</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../TaskCheckGeometry.cpp" line="502"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="507"/>
       <source>%n invalid shapes.</source>
       <translation>
         <numerusform>%n 無效形狀。</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="590"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="595"/>
       <source>Checked object</source>
       <translation>已勾選物件</translation>
     </message>
@@ -5221,7 +5221,7 @@ Individual boolean operation checks:</source>
       <translation>附件</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1119"/>
+      <location filename="../../TaskAttacher.cpp" line="1117"/>
       <source>Datum dialog: Input error</source>
       <translation>基準對話框: 輸入錯誤</translation>
     </message>
@@ -5493,7 +5493,7 @@ in the 3D view for the sweep path.</source>
       <location filename="../../AppPartGui.cpp" line="240"/>
       <location filename="../../AppPartGui.cpp" line="241"/>
       <source>Part/Part Design</source>
-      <translation>Part/Part Design</translation>
+      <translation>零件/零件設計</translation>
     </message>
     <message>
       <location filename="../../AppPartGui.cpp" line="242"/>
@@ -5858,7 +5858,7 @@ Do you want to continue?</source>
       <translation>布林運算：無效的</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="699"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="704"/>
       <source>Invalid</source>
       <translation>無效</translation>
     </message>
@@ -5918,7 +5918,7 @@ Do you want to continue?</source>
       <translation>編輯投影</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="887"/>
+      <location filename="../../ViewProviderExt.cpp" line="886"/>
       <source>Set appearance per face...</source>
       <translation>為每個面設定外觀...</translation>
     </message>
@@ -5926,59 +5926,59 @@ Do you want to continue?</source>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="33"/>
+      <location filename="../../Workbench.cpp" line="34"/>
       <source>&amp;Part</source>
       <translation>&amp;零件</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="34"/>
+      <location filename="../../Workbench.cpp" line="35"/>
       <source>&amp;Simple</source>
       <translation>&amp;簡易</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="35"/>
+      <location filename="../../Workbench.cpp" line="36"/>
       <source>&amp;Parametric</source>
       <translation>&amp;參數</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="36"/>
+      <location filename="../../Workbench.cpp" line="37"/>
       <source>Solids</source>
       <translation>固體</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="37"/>
+      <location filename="../../Workbench.cpp" line="38"/>
       <source>Part tools</source>
       <translation>零件工具</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="38"/>
+      <location filename="../../Workbench.cpp" line="39"/>
       <source>Boolean</source>
       <translation>布林運算</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="39"/>
+      <location filename="../../Workbench.cpp" line="40"/>
       <source>Primitives</source>
       <translation>元件</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="40"/>
+      <location filename="../../Workbench.cpp" line="41"/>
       <source>Join</source>
       <translation>Join</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="41"/>
+      <location filename="../../Workbench.cpp" line="42"/>
       <source>Split</source>
       <translation>分割</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="42"/>
+      <location filename="../../Workbench.cpp" line="43"/>
       <source>Compound</source>
       <translation>複合</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="43"/>
+      <location filename="../../Workbench.cpp" line="44"/>
       <source>Create a copy</source>
-      <translation>建立複本</translation>
+      <translation>建立拷貝</translation>
     </message>
   </context>
   <context>
@@ -6171,7 +6171,7 @@ for collision or distance filtering.</source>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="56"/>
       <source>Split up a compound of shapes into separate objects.
 It will create a 'Compound Filter' for each shape.</source>
-      <translation>將組件的形狀分割成單獨的物件。它將為每個形狀創建一個「組件過濾器」。</translation>
+      <translation>將組件的形狀分割成單獨的物件。它將為每個形狀建立一個「組件過濾器」。</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="62"/>
@@ -6281,7 +6281,7 @@ It will create a 'Compound Filter' for each shape.</source>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="602"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation>附件偏移（在本地座標）：</translation>
+      <translation>附件偏移（在局部座標）：</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="605"/>
@@ -6434,7 +6434,7 @@ or from the shapes inside a compound.
 This is a boolean union which is then sliced at the intersections
 of the original shapes.
 A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation>從選定的兩個或多個物件或從複合體內的形狀中創建一個「布林碎片」物件。這是一個布林聯集，然後在原始形狀的交點處進行切割。可以使用「組件過濾器」提取個別的切片。</translation>
+      <translation>從選定的兩個或多個物件或從複合體內的形狀中建立一個「布林碎片」物件。這是一個布林聯集，然後在原始形狀的交點處進行切割。可以使用「組件過濾器」提取個別的切片。</translation>
     </message>
   </context>
   <context>
@@ -6463,7 +6463,7 @@ A 'Compound Filter' can be used to extract the individual slices.</source>
       <location filename="../../../BOPTools/SplitFeatures.py" line="375"/>
       <source>Slice a selected object by other objects, and split it apart.
 It will create a 'Compound Filter' for each slice.</source>
-      <translation>使用其他物件對所選物件進行切割，將其分割成多個部分。對於每個切片，將創建一個「組件過濾器」。</translation>
+      <translation>使用其他物件對所選物件進行切割，將其分割成多個部分。對於每個切片，將建立一個「組件過濾器」。</translation>
     </message>
   </context>
   <context>
@@ -6686,7 +6686,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
     <message>
       <location filename="../../../App/FaceMakerCheese.cpp" line="252"/>
       <source>Supports making planar faces with holes, but no islands inside holes.</source>
-      <translation>支援在平面上創建具有孔洞但沒有孔洞內部島嶼的面。</translation>
+      <translation>支援在平面上建立具有孔洞但沒有孔洞內部島嶼的面。</translation>
     </message>
   </context>
   <context>

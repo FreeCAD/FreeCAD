@@ -1129,7 +1129,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../AppMatGui.cpp" line="106"/>
       <source>Material workbench</source>
-      <translation type="unfinished">Material workbench</translation>
+      <translation>Material werkbank</translation>
     </message>
     <message>
       <location filename="../../AppMatGui.cpp" line="108"/>
@@ -1197,7 +1197,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../Command.cpp" line="89"/>
       <source>Appearance...</source>
-      <translation type="unfinished">Appearance...</translation>
+      <translation>Uiterlijk...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="90"/>

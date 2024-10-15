@@ -495,12 +495,12 @@
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="23"/>
       <source>Card resources</source>
-      <translation>Sources d'information du jeu de paramètres</translation>
+      <translation>Sources des paramètres</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="31"/>
       <source>The cards built-in to FreeCAD will be listed as available.</source>
-      <translation>Les jeux de paramètres intégrés à FreeCAD seront listés comme disponibles.</translation>
+      <translation>Les paramètres intégrés à FreeCAD seront listés comme disponibles.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="34"/>
@@ -520,7 +520,7 @@
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="69"/>
       <source>Also cards from FreeCAD&apos;s preferences directory will be listed as available.</source>
-      <translation>Les jeux de paramètres du répertoire des préférences de FreeCAD seront également listés comme étant disponibles.</translation>
+      <translation>Les paramètres provenant du répertoire des préférences de FreeCAD seront aussi listés comme étant disponibles.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="72"/>
@@ -531,7 +531,7 @@
       <location filename="../../DlgSettingsMaterial.ui" line="88"/>
       <source>Also material cards also from the specified directory
 will be listed as available.</source>
-      <translation>Les jeux de paramètres des matériaux provenant du répertoire spécifié seront également listés comme disponibles.</translation>
+      <translation>Les paramètres des matériaux provenant du répertoire spécifié seront aussi listés comme disponibles.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="92"/>
@@ -562,7 +562,7 @@ will be listed as available.</source>
       <location filename="../../DlgSettingsMaterial.ui" line="180"/>
       <source>Material cards appear sorted by their resources (locations).
 If unchecked, they will be sorted by their name.</source>
-      <translation>Les jeux de paramètres de matériaux apparaissent triés par leurs sources d'information (emplacements).
+      <translation>Les paramètres des matériaux apparaissent triés par leurs sources (emplacements).
 S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
     </message>
     <message>

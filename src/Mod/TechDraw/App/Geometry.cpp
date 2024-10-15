@@ -23,8 +23,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <cmath>
-# include <boost/random.hpp>
 # include <boost/uuid/uuid_generators.hpp>
 # include <boost/uuid/uuid_io.hpp>
 
@@ -53,8 +51,6 @@
 # include <GProp_GProps.hxx>
 # include <Geom_BSplineCurve.hxx>
 # include <Geom_BezierCurve.hxx>
-# include <Geom_Circle.hxx>
-# include <Geom_TrimmedCurve.hxx>
 # include <GeomAPI_PointsToBSpline.hxx>
 # include <GeomAPI_ProjectPointOnCurve.hxx>
 # include <GeomConvert_BSplineCurveToBezierCurve.hxx>
@@ -1630,45 +1626,43 @@ bool GeometryUtils::getCircleParms(TopoDS_Edge occEdge, double& radius, Base::Ve
 }
 
 //! make a circle or arc of circle Edge from BSpline Edge
-//! assumes the spline is generally circular but does not check
-// ??? why does this not use getCircleParms to retrieve centre, radius, start/end, isArc
+// Note that the input edge has been inverted by GeometryObject, so +Y points down.
 TopoDS_Edge GeometryUtils::asCircle(TopoDS_Edge splineEdge, bool& arc)
 {
-    BRepAdaptor_Curve curveAdapt(splineEdge);
+    double radius{0};
+    Base::Vector3d center;
+    bool isArc = false;
+    bool canMakeCircle = GeometryUtils::getCircleParms(splineEdge, radius, center, isArc);
+    if (!canMakeCircle) {
+        throw Base::RuntimeError("GU::asCircle received non-circular edge!");
+    }
+
+    gp_Pnt gCenter = DU::togp_Pnt(center);
+    gp_Dir gNormal{0, 0, 1};
+    Handle(Geom_Circle) circleFromParms = GC_MakeCircle(gCenter, gNormal, radius);
 
     // find the ends of the edge from the underlying curve
-    Handle(Geom_Curve) curve = curveAdapt.Curve().Curve();
+    BRepAdaptor_Curve curveAdapt(splineEdge);
     double firstParam = curveAdapt.FirstParameter();
     double lastParam = curveAdapt.LastParameter();
     gp_Pnt startPoint = curveAdapt.Value(firstParam);
     gp_Pnt endPoint = curveAdapt.Value(lastParam);
 
+    if (startPoint.IsEqual(endPoint, EWTOLERANCE)) {    //more reliable than IsClosed flag
+        arc = false;
+        return BRepBuilderAPI_MakeEdge(circleFromParms);
+    }
+
     arc = true;
     double midRange = (lastParam + firstParam) / 2;
     gp_Pnt midPoint = curveAdapt.Value(midRange);
-    if (startPoint.IsEqual(endPoint, 0.001)) {    //more reliable than IsClosed flag
-        arc = false;
-        // can not use the start and end points since they are the same and that will give us only
-        // 2 of the 3 points we need.  Q: why did this work sometimes?
-        // Q: do we need to account for reversed parameter range?  we don't use reversed edges much.
-        auto parmRange = lastParam - firstParam;
-        auto lowParm = parmRange * 0.25;
-        auto lowPoint = curveAdapt.Value(lowParm);
-        auto highParm = parmRange* 0.75;
-        auto highPoint = curveAdapt.Value(highParm);
-        Handle(Geom_Circle) circle3Points = GC_MakeCircle(lowPoint, midPoint, highPoint);
 
-        if (circle3Points.IsNull()) {
-            return {};
-        }
+    GC_MakeArcOfCircle mkArc(startPoint, midPoint, endPoint);
+    auto circleArc = mkArc.Value();
 
-        return BRepBuilderAPI_MakeEdge(circle3Points);
-    }
-
-    Handle(Geom_TrimmedCurve) circleArc =
-                                GC_MakeArcOfCircle (startPoint, midPoint, endPoint);
     return BRepBuilderAPI_MakeEdge(circleArc);
 }
+
 
 bool GeometryUtils::isLine(TopoDS_Edge occEdge)
 {

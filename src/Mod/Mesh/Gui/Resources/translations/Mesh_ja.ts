@@ -2167,7 +2167,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="402"/>
       <source>Simple Model Format</source>
-      <translation>シンプルモデルフォーマット</translation>
+      <translation>シンプルモデル形式</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="404"/>
@@ -2212,12 +2212,12 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="413"/>
       <source>Asymptote Format</source>
-      <translation>漸近線フォーマット</translation>
+      <translation>Asymptote形式</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="414"/>
       <source>3D Manufacturing Format</source>
-      <translation>3次元製造フォーマット</translation>
+      <translation>3Dマニュファクチャリング形式</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="424"/>

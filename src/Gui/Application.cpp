@@ -449,6 +449,13 @@ Application::Application(bool GUIenabled)
             PyModule_AddFunctions(module, Application::Methods);
         }
         Py::Module(module).setAttr(std::string("ActiveDocument"), Py::None());
+        Py::Module(module).setAttr(std::string("HasQtBug_129596"),
+#ifdef HAS_QTBUG_129596
+            Py::True()
+#else
+            Py::False()
+#endif
+        );
 
         UiLoaderPy::init_type();
         Base::Interpreter().addType(UiLoaderPy::type_object(), module, "UiLoader");
@@ -968,6 +975,10 @@ void Application::checkForRecomputes() {
         return;
     WaitCursor wc;
     wc.restoreCursor();
+
+    // Splasher is shown ontop of warnings on macOS so stop it before it's too late
+    getMainWindow()->stopSplasher();
+
     auto res = QMessageBox::warning(getMainWindow(), QObject::tr("Recomputation required"),
                                     QObject::tr("Some document(s) require recomputation for migration purposes. "
                                                 "It is highly recommended to perform a recomputation before "
