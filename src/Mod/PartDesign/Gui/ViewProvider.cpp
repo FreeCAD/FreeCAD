@@ -53,6 +53,8 @@
 #include "ViewProvider.h"
 #include "ViewProviderPy.h"
 
+#include <Mod/PartDesign/App/FeatureAddSub.h>
+
 
 using namespace PartDesignGui;
 
@@ -378,7 +380,7 @@ ViewProviderBody* ViewProvider::getBodyViewProvider() {
 void ViewProvider::makePreviewVisible(bool enable)
 {
     PartDesign::Feature *feature { nullptr }, *baseFeature { nullptr };
-    Gui::ViewProvider *baseFeatureViewProvider { nullptr };
+    ViewProvider *baseFeatureViewProvider { nullptr };
 
     feature = dynamic_cast<PartDesign::Feature*>(getObject());
 
@@ -388,7 +390,7 @@ void ViewProvider::makePreviewVisible(bool enable)
 
     baseFeature = dynamic_cast<PartDesign::Feature*>(feature->BaseFeature.getValue());
     if (baseFeature) {
-        baseFeatureViewProvider = Gui::Application::Instance->getViewProvider(baseFeature);
+        baseFeatureViewProvider = dynamic_cast<ViewProvider*>(Gui::Application::Instance->getViewProvider(baseFeature));
     }
 
     if (!baseFeatureViewProvider) {
@@ -398,13 +400,13 @@ void ViewProvider::makePreviewVisible(bool enable)
     if (enable) {
         feature->updatePreviewShape();
 
-        hide();
+        makeTemporaryVisible(false);
+        baseFeatureViewProvider->makeTemporaryVisible(true);
 
-        baseFeatureViewProvider->show();
         baseFeatureViewProvider->getAnnotation()->addChild(previewGroup);
     } else {
-        show();
-        baseFeatureViewProvider->hide();
+        makeTemporaryVisible(true);
+        baseFeatureViewProvider->makeTemporaryVisible(false);
 
         auto previewGroupIndex = baseFeatureViewProvider->getAnnotation()->findChild(previewGroup);
         if (previewGroupIndex >= 0) {
@@ -424,11 +426,11 @@ ViewProviderPreview* ViewProvider::getPreviewViewProvider() {
 
         vp->Selectable.setValue(false);
 
-        vp->ShapeAppearance.setDiffuseColor(0.f, 0.f, 1.f);
-        vp->PointMaterial.setDiffuseColor(0.f, 0.f, 1.f);
-        vp->LineMaterial.setDiffuseColor(0.f, 0.f, 1.f);
+        vp->ShapeAppearance.setDiffuseColor(1.f, 0.f, 1.f);
+        vp->PointMaterial.setDiffuseColor(1.f, 0.f, 1.f);
+        vp->LineMaterial.setDiffuseColor(1.f, 0.f, 1.f);
 
-        vp->ShapeAppearance.setTransparency(.9f);
+        vp->ShapeAppearance.setTransparency(.7f);
         vp->LineMaterial.setTransparency(.6f);
         vp->PointMaterial.setTransparency(.6f);
 
@@ -442,12 +444,23 @@ ViewProviderPreview* ViewProvider::getPreviewViewProvider() {
         previewGroup->setName("Preview");
         previewGroup->addChild(vp->getRoot());
 
-
         previewViewProvider.reset(vp);
     }
 
     if (previewViewProvider->testStatus(Gui::Detach)) {
         previewViewProvider->reattach(getObject());
+    }
+
+    if (auto featureAddSub = dynamic_cast<PartDesign::FeatureAddSub*>(getObject())) {
+        if (featureAddSub->getAddSubType() == PartDesign::FeatureAddSub::Subtractive) {
+            previewViewProvider->ShapeAppearance.setDiffuseColor(1.f, 0.f, 0.f);
+            previewViewProvider->PointMaterial.setDiffuseColor(1.f, 0.f, 0.f);
+            previewViewProvider->LineMaterial.setDiffuseColor(1.f, 0.f, 0.f);
+        } else {
+            previewViewProvider->ShapeAppearance.setDiffuseColor(1.f, 1.f, 0.f);
+            previewViewProvider->PointMaterial.setDiffuseColor(1.f, 1.f, 0.f);
+            previewViewProvider->LineMaterial.setDiffuseColor(1.f, 1.f, 0.f);
+        }
     }
 
     return previewViewProvider.get();

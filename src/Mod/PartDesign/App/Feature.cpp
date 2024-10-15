@@ -401,36 +401,7 @@ void Feature::getGeneratedShapes(std::vector<int>& faces,
 
 void Feature::updatePreviewShape()
 {
-    auto shape = Shape.getShape();
-    auto baseFeature = dynamic_cast<Feature*>(BaseFeature.getValue());
-
-    if (!baseFeature || baseFeature->Shape.getShape().isNull()) {
-        PreviewShape.setValue(Shape.getShape());
-        return;
-    }
-
-    std::vector<int> faces, edges, vertices;
-    getGeneratedShapes(faces, edges, vertices);
-
-    if (faces.empty()) {
-        PreviewShape.setValue(TopoDS_Shape());
-        return;
-    }
-
-    shape.setPlacement(Base::Placement());
-
-    BRep_Builder builder;
-    TopoDS_Compound comp;
-    builder.MakeCompound(comp);
-
-    for (int faceId : faces) {
-        builder.Add(comp, shape.getSubShape(TopAbs_FACE, faceId));
-    }
-
-    Part::TopoShape preview(comp);
-    preview.mapSubElement(shape);
-
-    PreviewShape.setValue(preview);
+    // no-op
 }
 
 PyObject* Feature::getPyObject()
