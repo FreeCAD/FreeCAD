@@ -715,7 +715,7 @@ PyObject*  DocumentPy::supportedTypes(PyObject *args)
         return nullptr;
 
     std::vector<Base::Type> ary;
-    Base::Type::getAllDerivedFrom(App::DocumentObject::getClassTypeId(), ary);
+    Base::Type::Helpers::getAllDerivedFrom(App::DocumentObject::getClassTypeId(), ary);
     Py::List res;
     for (const auto & it : ary)
         res.append(Py::String(it.getName()));

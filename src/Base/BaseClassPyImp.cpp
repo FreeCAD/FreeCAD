@@ -27,6 +27,8 @@
 #include "BaseClassPy.h"
 #include "BaseClassPy.cpp"
 
+#include "TypeHelpers.h"
+
 using namespace Base;
 
 // returns a string which represent the object e.g. when printed in python
@@ -55,7 +57,7 @@ PyObject* BaseClassPy::getAllDerivedFrom(PyObject* args)
     }
 
     std::vector<Base::Type> ary;
-    Base::Type::getAllDerivedFrom(getBaseClassPtr()->getTypeId(), ary);
+    Base::Type::Helpers::getAllDerivedFrom(getBaseClassPtr()->getTypeId(), ary);
     Py::List res;
     for (const auto& it : ary) {
         res.append(Py::String(it.getName()));

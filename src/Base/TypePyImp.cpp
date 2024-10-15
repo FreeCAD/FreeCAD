@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #include "Type.h"
+#include "TypeHelpers.h"
 #include "BaseClassPy.h"
 #include "BindingManager.h"
 #include "TypePy.h"
@@ -150,7 +151,7 @@ PyObject* TypePy::getAllDerivedFrom(PyObject* args)
     } while (false);
 
     std::vector<Base::Type> ary;
-    Base::Type::getAllDerivedFrom(type, ary);
+    Base::Type::Helpers::getAllDerivedFrom(type, ary);
     Py::List res;
     for (const auto& it : ary) {
         res.append(Py::asObject(new TypePy(new Base::Type(it))));
@@ -166,7 +167,7 @@ PyObject* TypePy::getAllDerived(PyObject* args)
 
     Base::Type type = Base::Type::fromName(getBaseTypePtr()->getName());
     std::vector<Base::Type> ary;
-    Base::Type::getAllDerivedFrom(type, ary);
+    Base::Type::Helpers::getAllDerivedFrom(type, ary);
     Py::List res;
     for (const auto& it : ary) {
         res.append(Py::asObject(new TypePy(new Base::Type(it))));

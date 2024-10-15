@@ -107,7 +107,7 @@ void DlgAddPropertyVarSet::initializeGroup()
 void DlgAddPropertyVarSet::getSupportedTypes(std::vector<Base::Type>& types)
 {
     std::vector<Base::Type> proptypes;
-    Base::Type::getAllDerivedFrom(Base::Type::fromName("App::Property"), proptypes);
+    Base::Type::Helpers::getAllDerivedFrom(Base::Type::fromName("App::Property"), proptypes);
     std::copy_if(proptypes.begin(), proptypes.end(), std::back_inserter(types), [](const Base::Type& type) {
         return type.canInstantiate();
     });

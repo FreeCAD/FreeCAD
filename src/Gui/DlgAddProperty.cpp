@@ -57,7 +57,7 @@ DlgAddProperty::DlgAddProperty(QWidget* parent,
 
     std::vector<Base::Type> proptypes;
     std::vector<Base::Type> types;
-    Base::Type::getAllDerivedFrom(Base::Type::fromName("App::Property"), proptypes);
+    Base::Type::Helpers::getAllDerivedFrom(Base::Type::fromName("App::Property"), proptypes);
     std::copy_if (proptypes.begin(), proptypes.end(), std::back_inserter(types), [](const Base::Type& type) {
         return type.canInstantiate();
     });

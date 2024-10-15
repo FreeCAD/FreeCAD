@@ -113,7 +113,7 @@ PyObject*  ViewProviderPy::supportedProperties(PyObject *args)
         return nullptr;
 
     std::vector<Base::Type> ary;
-    Base::Type::getAllDerivedFrom(App::Property::getClassTypeId(), ary);
+    Base::Type::Helpers::getAllDerivedFrom(App::Property::getClassTypeId(), ary);
     Py::List res;
     for (auto & it : ary) {
         auto data = static_cast<Base::BaseClass*>(it.createInstance());

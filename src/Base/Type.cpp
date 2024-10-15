@@ -202,7 +202,7 @@ bool Type::isDerivedFrom(const Type& type) const
     return false;
 }
 
-int Type::getAllDerivedFrom(const Type& type, std::vector<Type>& List)
+int Type::Helpers::getAllDerivedFrom(const Type& type, std::vector<Type>& List)
 {
     int cnt = 0;
 

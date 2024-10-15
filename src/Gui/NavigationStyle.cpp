@@ -1792,7 +1792,7 @@ std::map<Base::Type, std::string> UserNavigationStyle::getUserFriendlyNames()
 {
     std::map<Base::Type, std::string> names;
     std::vector<Base::Type> types;
-    Base::Type::getAllDerivedFrom(UserNavigationStyle::getClassTypeId(), types);
+    Base::Type::Helpers::getAllDerivedFrom(UserNavigationStyle::getClassTypeId(), types);
 
     for (auto & type : types) {
         if (type != UserNavigationStyle::getClassTypeId()) {
