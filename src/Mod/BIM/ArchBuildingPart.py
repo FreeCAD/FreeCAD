@@ -803,7 +803,8 @@ class ViewProviderBuildingPart:
     def setupContextMenu(self, vobj, menu):
         from PySide import QtCore, QtGui
         import Draft_rc
-
+        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+            return
         if (not hasattr(vobj,"DoubleClickActivates")) or vobj.DoubleClickActivates:
             if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == self.Object:
                 menuTxt = translate("Arch", "Deactivate")
