@@ -49,6 +49,8 @@
 #include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
+#include <Gui/Document.h>
+#include <Gui/ModuleIO.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <gsl/pointers>
@@ -432,12 +434,10 @@ void StartView::postStart(PostStartBehavior behavior) const
 
 void StartView::fileCardSelected(const QModelIndex& index)
 {
-    auto file = index.data(static_cast<int>(Start::DisplayedFilesModelRoles::path)).toString();
-    std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(file.toStdString().c_str());
-    escapedstr = Base::Tools::escapeEncodeFilename(escapedstr);
-    auto command = std::string("FreeCAD.loadFile('") + escapedstr + "')";
     try {
-        Base::Interpreter().runString(command.c_str());
+        auto filename =
+            index.data(static_cast<int>(Start::DisplayedFilesModelRoles::path)).toString();
+        Gui::ModuleIO::verifyAndOpenFile(filename);
         Gui::Application::checkForRecomputes();
         postStart(PostStartBehavior::doNotSwitchWorkbench);
     }
