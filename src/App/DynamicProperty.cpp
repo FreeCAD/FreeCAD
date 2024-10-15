@@ -23,31 +23,59 @@
 
 #include "PreCompiled.h"
 
+
+#include <boost/multi_index_container.hpp>
+#include <boost/multi_index/hashed_index.hpp>
+#include <boost/multi_index/sequenced_index.hpp>
+#include <boost/multi_index/member.hpp>
+#include <boost/multi_index/mem_fun.hpp>
+
+#include <Base/Console.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>
 #include <Base/Writer.h>
 
 #include "DynamicProperty.h"
-#include "Application.h"
+#include "Application.h" 
 #include "Property.h"
 #include "PropertyContainer.h"
 
 
 FC_LOG_LEVEL_INIT("Property",true,true)
 
+namespace bmi = boost::multi_index;
 
 using namespace App;
 
+struct DynamicProperty::Private {
+    bmi::multi_index_container<
+        PropData,
+        bmi::indexed_by<
+            bmi::hashed_unique<
+                bmi::const_mem_fun<PropData, const char*, &PropData::getName>,
+                CStringHasher,
+                CStringHasher
+            >,
+            bmi::hashed_unique<
+                bmi::member<PropData, Property*, &PropData::property>
+            >
+        >
+    > props;
+};
 
-DynamicProperty::DynamicProperty() = default;
+DynamicProperty::DynamicProperty()
+{
+    pImpl = new Private;
+}
 
 DynamicProperty::~DynamicProperty()
 {
     clear();
+    delete pImpl;
 }
 
 void DynamicProperty::clear() {
-    auto &index = props.get<0>();
+    auto &index = pImpl->props.get<0>();
     for(auto &v : index)
         delete v.property;
     index.clear();
@@ -55,25 +83,25 @@ void DynamicProperty::clear() {
 
 void DynamicProperty::getPropertyList(std::vector<Property*> &List) const
 {
-    for (auto &v : props.get<0>())
+    for (auto &v : pImpl->props.get<0>())
         List.push_back(v.property);
 }
 
 void DynamicProperty::getPropertyNamedList(std::vector<std::pair<const char*, Property*> > &List) const
 {
-    for (auto &v : props.get<0>())
+    for (auto &v : pImpl->props.get<0>())
         List.emplace_back(v.getName(),v.property);
 }
 
 void DynamicProperty::getPropertyMap(std::map<std::string,Property*> &Map) const
 {
-    for (auto &v : props.get<0>())
+    for (auto &v : pImpl->props.get<0>())
         Map[v.name] = v.property;
 }
 
 Property *DynamicProperty::getDynamicPropertyByName(const char* name) const
 {
-    auto &index = props.get<0>();
+    auto &index = pImpl->props.get<0>();
     auto it = index.find(name);
     if (it != index.end())
         return it->property;
@@ -83,7 +111,7 @@ Property *DynamicProperty::getDynamicPropertyByName(const char* name) const
 std::vector<std::string> DynamicProperty::getDynamicPropertyNames() const
 {
     std::vector<std::string> names;
-    auto &index = props.get<0>();
+    auto &index = pImpl->props.get<0>();
     names.reserve(index.size());
     for(auto &v : index)
         names.push_back(v.name);
@@ -97,7 +125,7 @@ short DynamicProperty::getPropertyType(const Property* prop) const
 
 short DynamicProperty::getPropertyType(const char *name) const
 {
-    auto &index = props.get<0>();
+    auto &index = pImpl->props.get<0>();
     auto it = index.find(name);
     if (it != index.end()) {
         short attr = it->attr;
@@ -112,7 +140,7 @@ short DynamicProperty::getPropertyType(const char *name) const
 
 const char* DynamicProperty::getPropertyGroup(const Property* prop) const
 {
-    auto &index = props.get<1>();
+    auto &index = pImpl->props.get<1>();
     auto it = index.find(const_cast<Property*>(prop));
     if(it!=index.end())
         return it->group.c_str();
@@ -121,7 +149,7 @@ const char* DynamicProperty::getPropertyGroup(const Property* prop) const
 
 const char* DynamicProperty::getPropertyGroup(const char *name) const
 {
-    auto &index = props.get<0>();
+    auto &index = pImpl->props.get<0>();
     auto it = index.find(name);
     if (it != index.end())
         return it->group.c_str();
@@ -130,7 +158,7 @@ const char* DynamicProperty::getPropertyGroup(const char *name) const
 
 const char* DynamicProperty::getPropertyDocumentation(const Property* prop) const
 {
-    auto &index = props.get<1>();
+    auto &index = pImpl->props.get<1>();
     auto it = index.find(const_cast<Property*>(prop));
     if(it!=index.end())
         return it->doc.c_str();
@@ -139,7 +167,7 @@ const char* DynamicProperty::getPropertyDocumentation(const Property* prop) cons
 
 const char* DynamicProperty::getPropertyDocumentation(const char *name) const
 {
-    auto &index = props.get<0>();
+    auto &index = pImpl->props.get<0>();
     auto it = index.find(name);
     if (it != index.end())
         return it->doc.c_str();
@@ -189,7 +217,7 @@ Property* DynamicProperty::addDynamicProperty(PropertyContainer &pc, const char*
 
     Property* pcProperty = static_cast<Property*>(propInstance);
 
-    auto res = props.get<0>().emplace(pcProperty,name, nullptr, group, doc, attr, ro, hidden);
+    auto res = pImpl->props.get<0>().emplace(pcProperty,name, nullptr, group, doc, attr, ro, hidden);
 
     pcProperty->setContainer(&pc);
     pcProperty->myName = res.first->name.c_str();
@@ -211,7 +239,7 @@ bool DynamicProperty::addProperty(Property *prop)
 {
     if(!prop || !prop->hasName())
         return false;
-    auto &index = props.get<0>();
+    auto &index = pImpl->props.get<0>();
     if(index.count(prop->getName()))
         return false;
     index.emplace(prop,std::string(),prop->getName(),
@@ -221,7 +249,7 @@ bool DynamicProperty::addProperty(Property *prop)
 
 bool DynamicProperty::removeProperty(const Property *prop)
 {
-    auto &index = props.get<1>();
+    auto &index = pImpl->props.get<1>();
     auto it = index.find(const_cast<Property*>(prop));
     if (it != index.end()) {
         index.erase(it);
@@ -232,7 +260,7 @@ bool DynamicProperty::removeProperty(const Property *prop)
 
 bool DynamicProperty::removeDynamicProperty(const char* name)
 {
-    auto &index = props.get<0>();
+    auto &index = pImpl->props.get<0>();
     auto it = index.find(name);
     if (it != index.end()) {
         if(it->property->testStatus(Property::LockDynamic))
@@ -280,7 +308,7 @@ std::string DynamicProperty::getUniquePropertyName(PropertyContainer &pc, const 
 
 void DynamicProperty::save(const Property *prop, Base::Writer &writer) const
 {
-    auto &index = props.get<1>();
+    auto &index = pImpl->props.get<1>();
     auto it = index.find(const_cast<Property*>(prop));
     if(it != index.end()) {
         auto &data = *it;
@@ -324,7 +352,7 @@ Property *DynamicProperty::restore(PropertyContainer &pc,
 
 DynamicProperty::PropData DynamicProperty::getDynamicPropertyData(const Property *prop) const
 {
-    auto &index = props.get<1>();
+    auto &index = pImpl->props.get<1>();
     auto it = index.find(const_cast<Property*>(prop));
     if(it != index.end())
         return *it;
@@ -332,7 +360,7 @@ DynamicProperty::PropData DynamicProperty::getDynamicPropertyData(const Property
 }
 
 bool DynamicProperty::changeDynamicProperty(const Property *prop, const char *group, const char *doc) {
-    auto &index = props.get<1>();
+    auto &index = pImpl->props.get<1>();
     auto it = index.find(const_cast<Property*>(prop));
     if (it == index.end())
         return false;
@@ -345,9 +373,14 @@ bool DynamicProperty::changeDynamicProperty(const Property *prop, const char *gr
 
 const char *DynamicProperty::getPropertyName(const Property *prop) const
 {
-    auto &index = props.get<1>();
+    auto &index = pImpl->props.get<1>();
     auto it = index.find(const_cast<Property*>(prop));
     if(it != index.end())
         return it->getName();
     return nullptr;
+}
+
+size_t DynamicProperty::size()
+{
+    return pImpl->props.size();
 }
