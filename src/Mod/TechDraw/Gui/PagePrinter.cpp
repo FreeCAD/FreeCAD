@@ -152,7 +152,7 @@ void PagePrinter::printPdf(std::string file)
     // set up the pdfwriter
     auto filespec = Base::Tools::escapeEncodeFilename(file);
     filespec = DU::cleanFilespecBackslash(file);
-    QString outputFile = Base::Tools::fromStdString(filespec);
+    QString outputFile = QString::fromStdString(filespec);
     QPdfWriter pdfWriter(outputFile);
     QPageLayout pageLayout = pdfWriter.pageLayout();
     auto marginsdb = pageLayout.margins(QPageLayout::Millimeter);
@@ -381,7 +381,7 @@ void PagePrinter::saveSVG(std::string file)
     }
     auto filespec = Base::Tools::escapeEncodeFilename(file);
     filespec = DU::cleanFilespecBackslash(file);
-    QString filename = Base::Tools::fromStdString(filespec);
+    QString filename = QString::fromStdString(filespec);
     if (m_scene) {
         m_scene->saveSvg(filename);
     }

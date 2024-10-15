@@ -160,7 +160,7 @@ void TaskSectionView::setUiEdit()
     //    Base::Console().Message("TSV::setUiEdit()\n");
     setWindowTitle(QObject::tr("Edit Section View"));
     std::string temp = m_section->SectionSymbol.getValue();
-    QString qTemp = Base::Tools::fromStdString(temp);
+    QString qTemp = QString::fromStdString(temp);
     ui->leSymbol->setText(qTemp);
 
     ui->sbScale->setValue(m_section->getScale());
@@ -189,7 +189,7 @@ void TaskSectionView::setUiEdit()
 void TaskSectionView::setUiCommon(Base::Vector3d origin)
 {
     std::string temp = m_base->getNameInDocument();
-    QString qTemp = Base::Tools::fromStdString(temp);
+    QString qTemp = QString::fromStdString(temp);
     ui->leBaseView->setText(qTemp);
 
     ui->sbOrgX->setUnit(Base::Unit::Length);
@@ -642,8 +642,8 @@ std::string TaskSectionView::makeSectionLabel(QString symbol)
 
 void TaskSectionView::failNoObject(void)
 {
-    QString qsectionName = Base::Tools::fromStdString(m_sectionName);
-    QString qbaseName = Base::Tools::fromStdString(m_baseName);
+    QString qsectionName = QString::fromStdString(m_sectionName);
+    QString qbaseName = QString::fromStdString(m_baseName);
     QString msg = tr("Can not continue. Object * %1 or %2 not found.").arg(qsectionName, qbaseName);
     QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Operation Failed"), msg);
     Gui::Control().closeDialog();

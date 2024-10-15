@@ -203,7 +203,7 @@ TechDraw::DrawViewImage* TaskActiveView::createActiveView()
                  QImage::Format_RGB32);    //arbitrary initial image size.
     image.fill(QColor(Qt::transparent));
     Grabber3d::quickView(view3d, bg, image);
-    bool success = image.save(Base::Tools::fromStdString(tempName));
+    bool success = image.save(QString::fromStdString(tempName));
 
     if (!success) {
         Base::Console().Error("ActiveView could not save file: %s\n", fileSpec.c_str());

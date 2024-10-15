@@ -142,7 +142,7 @@ int EditDatumDialog::exec(bool atCursor)
         ui_ins_datum->labelEdit->pushToHistory();
         ui_ins_datum->labelEdit->selectNumber();
         ui_ins_datum->labelEdit->bind(sketch->Constraints.createPath(ConstrNbr));
-        ui_ins_datum->name->setText(Base::Tools::fromStdString(Constr->Name));
+        ui_ins_datum->name->setText(QString::fromStdString(Constr->Name));
 
         ui_ins_datum->cbDriving->setChecked(!Constr->isDriving);
 

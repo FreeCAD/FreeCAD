@@ -110,7 +110,7 @@ void TaskCosVertex::setUiPrimary()
 
     if (m_baseFeat) {
         std::string baseName = m_baseFeat->getNameInDocument();
-        ui->leBaseView->setText(Base::Tools::fromStdString(baseName));
+        ui->leBaseView->setText(QString::fromStdString(baseName));
     }
     ui->pbTracker->setText(tr("Point Picker"));
     ui->pbTracker->setEnabled(true);

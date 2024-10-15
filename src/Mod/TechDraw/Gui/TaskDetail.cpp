@@ -242,7 +242,7 @@ void TaskDetail::setUiFromFeat()
 //    Base::Console().Message("TD::setUIFromFeat()\n");
     if (m_baseFeat) {
         std::string baseName = getBaseFeat()->getNameInDocument();
-        ui->leBaseView->setText(Base::Tools::fromStdString(baseName));
+        ui->leBaseView->setText(QString::fromStdString(baseName));
     }
 
     Base::Vector3d anchor;

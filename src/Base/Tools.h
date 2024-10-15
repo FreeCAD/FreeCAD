@@ -277,16 +277,6 @@ struct BaseExport Tools
     }
 
     /**
-     * @brief fromStdString Convert a std::string encoded as UTF-8 into a QString.
-     * @param s std::string, expected to be UTF-8 encoded.
-     * @return String represented as a QString.
-     */
-    static inline QString fromStdString(const std::string& s)
-    {
-        return QString::fromUtf8(s.c_str(), static_cast<int>(s.size()));
-    }
-
-    /**
      * @brief quoted Creates a quoted string.
      * @param String to be quoted.
      * @return A quoted std::string.

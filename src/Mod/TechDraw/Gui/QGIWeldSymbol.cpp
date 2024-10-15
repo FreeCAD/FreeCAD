@@ -254,7 +254,7 @@ void QGIWeldSymbol::drawTailText()
     if (!vp) {
         return;
     }
-    QString qFontName = Base::Tools::fromStdString(vp->Font.getValue());
+    QString qFontName = QString::fromStdString(vp->Font.getValue());
     int fontSize = QGIView::exactFontSize(vp->Font.getValue(),
                                           vp->FontSize.getValue());
 

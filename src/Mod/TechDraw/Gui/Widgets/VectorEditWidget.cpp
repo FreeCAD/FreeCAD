@@ -96,7 +96,7 @@ bool VectorEditWidget::eventFilter(QObject *target, QEvent *event)
 }
 void VectorEditWidget::setLabel(std::string newLabel)
 {
-    QString qNewLabelString = Base::Tools::fromStdString(newLabel);
+    QString qNewLabelString = QString::fromStdString(newLabel);
     lvectorName->setText(qNewLabelString);
 }
 
@@ -178,7 +178,7 @@ void VectorEditWidget::slotZValueChanged(double newValue)
 void VectorEditWidget::updateDisplay()
 {
 //    Base::Console().Message("VEW::updateDisplay() - m_value: %s\n", DrawUtil::formatVector(m_value).c_str());
-    QString qNewDisplayString = Base::Tools::fromStdString(DrawUtil::formatVector(m_value));
+    QString qNewDisplayString = QString::fromStdString(DrawUtil::formatVector(m_value));
     leVectorDisplay->setText(qNewDisplayString);
 }
 

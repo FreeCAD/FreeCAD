@@ -70,7 +70,7 @@ void DlgStringListEditor::fillList(std::vector<std::string> texts)
     int textCount = texts.size();
     int i = 0;
     for (; i < textCount; i++) {
-        qText = Base::Tools::fromStdString(texts[i]);
+        qText = QString::fromStdString(texts[i]);
         QListWidgetItem* item = new QListWidgetItem(qText);
         item->setFlags(item->flags() | Qt::ItemIsEditable);
         ui->lwTexts->addItem(item);

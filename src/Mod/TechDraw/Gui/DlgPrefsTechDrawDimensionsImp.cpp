@@ -150,7 +150,7 @@ void DlgPrefsTechDrawDimensionsImp::loadSettings()
     DrawGuiUtil::loadArrowBox(ui->pcbArrow);
     ui->pcbArrow->setCurrentIndex(prefArrowStyle());
 
-    ui->leFormatSpec->setText(Base::Tools::fromStdString(Preferences::formatSpec()));
+    ui->leFormatSpec->setText(QString::fromStdString(Preferences::formatSpec()));
     ui->leFormatSpec->onRestore();
 
     ui->pdsbGapISO->onRestore();

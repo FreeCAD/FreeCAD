@@ -86,7 +86,7 @@ void TemplateTextField::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
             if (ui.getAutofillState()) {
                 auto svgTemplate = dynamic_cast<DrawSVGTemplate*>(tmplte);
                 if (svgTemplate) {
-                    QString fieldName = Base::Tools::fromStdString(fieldNameStr);
+                    QString fieldName = QString::fromStdString(fieldNameStr);
                     QString autofillValue = svgTemplate->getAutofillByEditableName(fieldName);
                     if (!autofillValue.isEmpty()) {
                         utf8Content = autofillValue.toUtf8().constData();

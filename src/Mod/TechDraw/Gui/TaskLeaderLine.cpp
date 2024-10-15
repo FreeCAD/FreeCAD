@@ -221,7 +221,7 @@ void TaskLeaderLine::setUiPrimary()
 
     if (m_baseFeat) {
         std::string baseName = m_baseFeat->getNameInDocument();
-        ui->tbBaseView->setText(Base::Tools::fromStdString(baseName));
+        ui->tbBaseView->setText(QString::fromStdString(baseName));
     }
 
     ui->pbTracker->setText(tr("Pick points"));
@@ -264,7 +264,7 @@ void TaskLeaderLine::setUiEdit()
 
     if (m_lineFeat) {
         std::string baseName = m_lineFeat->LeaderParent.getValue()->getNameInDocument();
-        ui->tbBaseView->setText(Base::Tools::fromStdString(baseName));
+        ui->tbBaseView->setText(QString::fromStdString(baseName));
 
         DrawGuiUtil::loadArrowBox(ui->cboxStartSym);
         ui->cboxStartSym->setCurrentIndex(m_lineFeat->StartSymbol.getValue());

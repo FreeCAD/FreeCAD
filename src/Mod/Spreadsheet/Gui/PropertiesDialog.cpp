@@ -111,9 +111,9 @@ PropertiesDialog::PropertiesDialog(Sheet* _sheet,
         ui->styleUnderline->setChecked(true);
     }
 
-    ui->displayUnit->setText(Base::Tools::fromStdString(displayUnit.stringRep));
+    ui->displayUnit->setText(QString::fromStdString(displayUnit.stringRep));
 
-    ui->alias->setText(Base::Tools::fromStdString(alias));
+    ui->alias->setText(QString::fromStdString(alias));
 
     // Colors
     connect(ui->foregroundColor,

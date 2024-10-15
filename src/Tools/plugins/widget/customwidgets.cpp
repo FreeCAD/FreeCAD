@@ -1262,7 +1262,7 @@ bool QuantitySpinBox::event(QEvent* event)
         if (isBound() && getExpression() && lineEdit()->isReadOnly()) {
             QHelpEvent * helpEvent = static_cast<QHelpEvent*>(event);
 
-            QToolTip::showText( helpEvent->globalPos(), Base::Tools::fromStdString(getExpression()->toString()), this);
+            QToolTip::showText( helpEvent->globalPos(), QString::fromStdString(getExpression()->toString()), this);
             event->accept();
             return true;
         }

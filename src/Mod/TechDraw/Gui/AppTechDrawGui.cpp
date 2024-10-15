@@ -90,7 +90,7 @@ void loadTechDrawResource()
         {"osifont-lgpl3fe.ttf", "osifont-italic.ttf", "Y14.5-2018.ttf", "Y14.5-FreeCAD.ttf"});
 
     for (auto& font : fontsAll) {
-        QString fontFile = Base::Tools::fromStdString(fontDir + font);
+        QString fontFile = QString::fromStdString(fontDir + font);
         int rc = QFontDatabase::addApplicationFont(fontFile);
         if (rc < 0) {
             Base::Console().Warning(

@@ -79,7 +79,7 @@ TaskLineDecor::~TaskLineDecor()
 void TaskLineDecor::initUi()
 {
     std::string viewName = m_partFeat->getNameInDocument();
-    ui->le_View->setText(Base::Tools::fromStdString(viewName));
+    ui->le_View->setText(QString::fromStdString(viewName));
 
     std::stringstream ss;
     for (auto& e: m_edges) {
@@ -90,7 +90,7 @@ void TaskLineDecor::initUi()
     if (!temp.empty()) {
         temp.resize(temp.length() - 2);
     }
-    ui->le_Lines->setText(Base::Tools::fromStdString(temp));
+    ui->le_Lines->setText(QString::fromStdString(temp));
 
     ui->cc_Color->setColor(m_color.asValue<QColor>());
     ui->dsb_Weight->setValue(m_weight);

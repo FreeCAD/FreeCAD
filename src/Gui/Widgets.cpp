@@ -1615,7 +1615,7 @@ void ExpLineEdit::onChange() {
         QPalette p(palette());
         p.setColor(QPalette::Text, Qt::lightGray);
         setPalette(p);
-        iconLabel->setExpressionText(Base::Tools::fromStdString(getExpression()->toString()));
+        iconLabel->setExpressionText(QString::fromStdString(getExpression()->toString()));
     }
     else {
         setReadOnly(false);
@@ -1645,7 +1645,7 @@ void ExpLineEdit::resizeEvent(QResizeEvent * event)
             QPalette p(palette());
             p.setColor(QPalette::Text, Qt::lightGray);
             setPalette(p);
-            iconLabel->setExpressionText(Base::Tools::fromStdString(getExpression()->toString()));
+            iconLabel->setExpressionText(QString::fromStdString(getExpression()->toString()));
         }
         else {
             setReadOnly(false);

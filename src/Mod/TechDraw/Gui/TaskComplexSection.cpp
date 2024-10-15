@@ -149,13 +149,13 @@ void TaskComplexSection::setUiPrimary()
     setUiCommon();
 
     if (m_baseView) {
-        ui->leBaseView->setText(Base::Tools::fromStdString(m_baseView->getNameInDocument()));
+        ui->leBaseView->setText(QString::fromStdString(m_baseView->getNameInDocument()));
         //if there is a baseView, we don't know the sectionNormal yet and have to wait until
         //one is picked in the dialog
         Base::Vector3d defaultNormal(-1.0, 0.0, 0.0);
         m_saveNormal = defaultNormal;
         m_saveXDir = Base::Vector3d(0.0, 1.0, 0.0);
-        ui->leBaseView->setText(Base::Tools::fromStdString(m_baseView->getNameInDocument()));
+        ui->leBaseView->setText(QString::fromStdString(m_baseView->getNameInDocument()));
         m_compass->setDialAngle(0.0);
         m_viewDirectionWidget->setValueNoNotify(Base::Vector3d(1.0, 0.0, 0.0));
     }
@@ -179,10 +179,10 @@ void TaskComplexSection::setUiEdit()
     setWindowTitle(QObject::tr("Edit Complex Section"));
 
     if (m_baseView) {
-        ui->leBaseView->setText(Base::Tools::fromStdString(m_baseView->getNameInDocument()));
+        ui->leBaseView->setText(QString::fromStdString(m_baseView->getNameInDocument()));
     }
     ui->cmbStrategy->setCurrentIndex(m_section->ProjectionStrategy.getValue());
-    ui->leSymbol->setText(Base::Tools::fromStdString(m_section->SectionSymbol.getValue()));
+    ui->leSymbol->setText(QString::fromStdString(m_section->SectionSymbol.getValue()));
     ui->sbScale->setValue(m_section->Scale.getValue());
     ui->cmbScaleType->setCurrentIndex(m_section->getScaleType());
 
@@ -190,7 +190,7 @@ void TaskComplexSection::setUiEdit()
 
     Base::Vector3d sectionNormalVec = m_section->SectionNormal.getValue();
     if (m_baseView) {
-        ui->leBaseView->setText(Base::Tools::fromStdString(m_baseView->getNameInDocument()));
+        ui->leBaseView->setText(QString::fromStdString(m_baseView->getNameInDocument()));
         Base::Vector3d projectedViewDirection = m_baseView->projectPoint(sectionNormalVec, false);
         double viewAngle = atan2(-projectedViewDirection.y, -projectedViewDirection.x);
         m_compass->setDialAngle(viewAngle * 180.0 / M_PI);
@@ -205,9 +205,9 @@ void TaskComplexSection::setUiEdit()
 void TaskComplexSection::setUiCommon()
 {
     ui->leSectionObjects->setText(sourcesToString());
-    ui->leProfileObject->setText(Base::Tools::fromStdString(m_profileObject->getNameInDocument())
+    ui->leProfileObject->setText(QString::fromStdString(m_profileObject->getNameInDocument())
                                  + QString::fromUtf8(" / ")
-                                 + Base::Tools::fromStdString(m_profileObject->Label.getValue()));
+                                 + QString::fromStdString(m_profileObject->Label.getValue()));
 
     m_compass = new CompassWidget(this);
     auto layout = ui->compassLayout;
@@ -383,9 +383,9 @@ void TaskComplexSection::onProfileObjectsUseSelectionClicked()
     if (!selection.empty()) {
         m_profileObject = selection.front().getObject();
         ui->leProfileObject->setText(
-            Base::Tools::fromStdString(m_profileObject->getNameInDocument())
+            QString::fromStdString(m_profileObject->getNameInDocument())
             + QString::fromUtf8(" / ")
-            + Base::Tools::fromStdString(m_profileObject->Label.getValue()));
+            + QString::fromStdString(m_profileObject->Label.getValue()));
     }
 }
 void TaskComplexSection::scaleTypeChanged(int index)
@@ -452,25 +452,25 @@ QString TaskComplexSection::sourcesToString()
     QString currentSeparator;
     if (m_baseView) {
         for (auto& obj : m_baseView->Source.getValues()) {
-            result += currentSeparator + Base::Tools::fromStdString(obj->getNameInDocument())
-                + QString::fromUtf8(" / ") + Base::Tools::fromStdString(obj->Label.getValue());
+            result += currentSeparator + QString::fromStdString(obj->getNameInDocument())
+                + QString::fromUtf8(" / ") + QString::fromStdString(obj->Label.getValue());
             currentSeparator = separator;
         }
         currentSeparator = QString();
         for (auto& obj : m_baseView->XSource.getValues()) {
-            result += currentSeparator + Base::Tools::fromStdString(obj->getNameInDocument())
-                + QString::fromUtf8(" / ") + Base::Tools::fromStdString(obj->Label.getValue());
+            result += currentSeparator + QString::fromStdString(obj->getNameInDocument())
+                + QString::fromUtf8(" / ") + QString::fromStdString(obj->Label.getValue());
         }
     }
     else {
         for (auto& obj : m_shapes) {
-            result += currentSeparator + Base::Tools::fromStdString(obj->getNameInDocument())
-                + QString::fromUtf8(" / ") + Base::Tools::fromStdString(obj->Label.getValue());
+            result += currentSeparator + QString::fromStdString(obj->getNameInDocument())
+                + QString::fromUtf8(" / ") + QString::fromStdString(obj->Label.getValue());
         }
         currentSeparator = QString();
         for (auto& obj : m_xShapes) {
-            result += currentSeparator + Base::Tools::fromStdString(obj->getNameInDocument())
-                + QString::fromUtf8(" / ") + Base::Tools::fromStdString(obj->Label.getValue());
+            result += currentSeparator + QString::fromStdString(obj->getNameInDocument())
+                + QString::fromUtf8(" / ") + QString::fromStdString(obj->Label.getValue());
         }
     }
     return result;
@@ -710,8 +710,8 @@ std::string TaskComplexSection::makeSectionLabel(QString symbol)
 
 void TaskComplexSection::failNoObject(void)
 {
-    QString qsectionName = Base::Tools::fromStdString(m_sectionName);
-    QString qbaseName = Base::Tools::fromStdString(m_saveBaseName);
+    QString qsectionName = QString::fromStdString(m_sectionName);
+    QString qbaseName = QString::fromStdString(m_saveBaseName);
     QString msg = tr("Can not continue. Object * %1 or %2 not found.").arg(qsectionName, qbaseName);
     QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Operation Failed"), msg);
     Gui::Control().closeDialog();

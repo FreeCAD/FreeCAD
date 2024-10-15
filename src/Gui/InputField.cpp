@@ -120,7 +120,7 @@ void InputField::bind(const App::ObjectIdentifier &_path)
         std::shared_ptr<const Expression> expr(docObj->getExpression(getPath()).expression);
 
         if (expr)
-            newInput(Tools::fromStdString(expr->toString()));
+            newInput(QString::fromStdString(expr->toString()));
     }
 
     // Create document object, to initialize completer
@@ -164,7 +164,7 @@ void InputField::updateText(const Base::Quantity& quant)
         std::shared_ptr<const Expression> e(getPath().getDocumentObject()->getExpression(getPath()).expression);
 
         if (e) {
-            setText(Tools::fromStdString(e->toString()));
+            setText(QString::fromStdString(e->toString()));
             return;
         }
     }

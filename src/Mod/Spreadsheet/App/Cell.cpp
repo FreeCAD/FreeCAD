@@ -1111,7 +1111,7 @@ std::string Cell::getFormattedQuantity()
             if (computedUnit.isEmpty() || computedUnit == du.unit) {
                 QString number =
                     QLocale().toString(rawVal / duScale, 'f', Base::UnitsApi::getDecimals());
-                qFormatted = number + Base::Tools::fromStdString(" " + displayUnit.stringRep);
+                qFormatted = number + QString::fromStdString(" " + displayUnit.stringRep);
             }
         }
     }
@@ -1124,7 +1124,7 @@ std::string Cell::getFormattedQuantity()
         if (hasDisplayUnit) {
             QString number =
                 QLocale().toString(rawVal / duScale, 'f', Base::UnitsApi::getDecimals());
-            qFormatted = number + Base::Tools::fromStdString(" " + displayUnit.stringRep);
+            qFormatted = number + QString::fromStdString(" " + displayUnit.stringRep);
         }
     }
     else if (prop->isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
@@ -1137,7 +1137,7 @@ std::string Cell::getFormattedQuantity()
         if (hasDisplayUnit) {
             QString number =
                 QLocale().toString(rawVal / duScale, 'f', Base::UnitsApi::getDecimals());
-            qFormatted = number + Base::Tools::fromStdString(" " + displayUnit.stringRep);
+            qFormatted = number + QString::fromStdString(" " + displayUnit.stringRep);
         }
     }
     result = Base::Tools::toStdString(qFormatted);

@@ -217,7 +217,7 @@ void QGISVGTemplate::createClickHandles()
         QFont fontForLength(Preferences::labelFontQString());
         fontForLength.setPixelSize(textHeight);
         textItemForLength.setFont(fontForLength);
-        textItemForLength.setPlainText(Base::Tools::fromStdString(editableNameString));
+        textItemForLength.setPlainText(QString::fromStdString(editableNameString));
         auto brect = textItemForLength.boundingRect();
         auto newLength = brect.width();
 

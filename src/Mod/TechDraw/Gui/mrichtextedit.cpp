@@ -812,7 +812,7 @@ void MRichTextEdit::setDefFont(QString fontName)
 
 QFont MRichTextEdit::getDefFont()
 {
-    QString family = Base::Tools::fromStdString(Preferences::labelFont());
+    QString family = QString::fromStdString(Preferences::labelFont());
     m_defFont = family;
     QFont result;
     result.setFamily(family);

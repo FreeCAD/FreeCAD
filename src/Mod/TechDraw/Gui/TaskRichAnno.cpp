@@ -167,7 +167,7 @@ void TaskRichAnno::setUiPrimary()
 
     if (m_baseFeat) {
         std::string baseName = m_baseFeat->getNameInDocument();
-        ui->leBaseView->setText(Base::Tools::fromStdString(baseName));
+        ui->leBaseView->setText(QString::fromStdString(baseName));
     }
     ui->dsbWidth->setUnit(Base::Unit::Length);
     ui->dsbWidth->setMinimum(0);
@@ -210,7 +210,7 @@ void TaskRichAnno::setUiEdit()
         if (docObj) {
             baseName = docObj->getNameInDocument();
         }
-        ui->leBaseView->setText(Base::Tools::fromStdString(baseName));
+        ui->leBaseView->setText(QString::fromStdString(baseName));
         ui->teAnnoText->setHtml(QString::fromUtf8(m_annoFeat->AnnoText.getValue()));
         ui->dsbMaxWidth->setValue(m_annoFeat->MaxWidth.getValue());
         ui->cbShowFrame->setChecked(m_annoFeat->ShowFrame.getValue());

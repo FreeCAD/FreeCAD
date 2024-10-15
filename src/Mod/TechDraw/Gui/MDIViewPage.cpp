@@ -142,7 +142,7 @@ void MDIViewPage::setScene(QGSPage* scene, QGVPage* viewWidget)
 void MDIViewPage::setDocumentObject(const std::string& name)
 {
     m_objectName = name;
-    setObjectName(Base::Tools::fromStdString(name));
+    setObjectName(QString::fromStdString(name));
 }
 
 void MDIViewPage::setDocumentName(const std::string& name) { m_documentName = name; }

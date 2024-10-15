@@ -262,7 +262,7 @@ void QGITile::setFont(QFont f, double fSizePx)
 
 void QGITile::setFont(std::string fName, double fSizePx)
 {
-    QString qFName = Base::Tools::fromStdString(fName);
+    QString qFName = QString::fromStdString(fName);
     QFont f(qFName);
     setFont(f, fSizePx);
 }

@@ -115,7 +115,7 @@ void initComboBox(QComboBox* combo,
     int iItem = 1;  // the first one is "unspecific" (index 0)
     combo->clear();
     for (unsigned int it = 0; it < textItems.size(); it++) {
-        combo->insertItem(it, Base::Tools::fromStdString(textItems[it]));
+        combo->insertItem(it, QString::fromStdString(textItems[it]));
         if (sItem == textItems[it]) {
             iItem = it;
         }
@@ -309,7 +309,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
             else {
                 ui->tabTurbulenceBoundary->setEnabled(true);
                 ui->labelTurbulenceSpecification->setText(
-                    Base::Tools::fromStdString(pTurbulenceModel->getValueAsString()));
+                    QString::fromStdString(pTurbulenceModel->getValueAsString()));
                 initComboBox(ui->comboTurbulenceSpecification,
                              pcConstraint->TurbulenceSpecification.getEnumVector(),
                              pcConstraint->TurbulenceSpecification.getValueAsString());

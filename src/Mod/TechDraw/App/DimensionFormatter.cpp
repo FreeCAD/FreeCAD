@@ -90,7 +90,7 @@ std::string DimensionFormatter::formatValue(const qreal value,
     QString formatSpecifier = qsl[2];   //FormatSpec specifier
 
     QString qMultiValueStr;
-    QString qBasicUnit = Base::Tools::fromStdString(Base::UnitsApi::getBasicLengthUnit());
+    QString qBasicUnit = QString::fromStdString(Base::UnitsApi::getBasicLengthUnit());
 
     QString formattedValue;
     if (isMultiValueSchema() && partial == 0) {
@@ -374,8 +374,8 @@ std::string DimensionFormatter::getDefaultFormatSpec(bool isToleranceFormat) con
     QString formatSpec;
     QString qPrefix;
     if (prefFormat.empty()) {
-        QString format1 = Base::Tools::fromStdString("%.");
-        QString format2 = Base::Tools::fromStdString("f");
+        QString format1 = QString::fromStdString("%.");
+        QString format2 = QString::fromStdString("f");
         int precision;
         if (m_dimension->useDecimals()) {
             precision = Base::UnitsApi::getDecimals();

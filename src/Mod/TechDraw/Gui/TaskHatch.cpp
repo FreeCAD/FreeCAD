@@ -96,7 +96,7 @@ TaskHatch::~TaskHatch()
 void TaskHatch::setUiPrimary()
 {
     setWindowTitle(QObject::tr("Create Face Hatch"));
-    ui->fcFile->setFileName(Base::Tools::fromStdString(DrawHatch::prefSvgHatch()));
+    ui->fcFile->setFileName(QString::fromStdString(DrawHatch::prefSvgHatch()));
     ui->fcFile->setFilter(QString::fromUtf8(
             "SVG files (*.svg *.SVG);;Bitmap files(*.jpg *.jpeg *.png *.bmp);;All files (*)"));
     ui->sbScale->setValue(1.0);
@@ -108,7 +108,7 @@ void TaskHatch::setUiPrimary()
 void TaskHatch::setUiEdit()
 {
     setWindowTitle(QObject::tr("Edit Face Hatch"));
-    ui->fcFile->setFileName(Base::Tools::fromStdString(m_saveFile));
+    ui->fcFile->setFileName(QString::fromStdString(m_saveFile));
     ui->fcFile->setFilter(QString::fromUtf8(
             "SVG files (*.svg *.SVG);;Bitmap files(*.jpg *.jpeg *.png *.bmp);;All files (*)"));
     ui->sbScale->setValue(m_saveScale);
