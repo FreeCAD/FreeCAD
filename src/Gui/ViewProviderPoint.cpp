@@ -51,8 +51,7 @@ void ViewProviderPoint::attach(App::DocumentObject * obj) {
     // The coordinates for the point (single vertex at the origin)
     static const SbVec3f point = SbVec3f(0, 0, 0);
 
-    // Get the local coordinate system root node (LCSRoot)
-    SoSeparator* sep = getLCSRoot();
+    SoSeparator* sep = getRoot();
 
     auto pCoords = new SoCoordinate3();
     pCoords->point.setNum(1);

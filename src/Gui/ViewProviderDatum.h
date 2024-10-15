@@ -44,7 +44,7 @@ namespace Gui
         ~ViewProviderDatum() override;
 
         /// Get point derived classes will add their specific stuff
-        SoSeparator* getLCSRoot() { return pLCSRoot; }
+        SoSeparator* getRoot() { return pRoot; }
 
         /// Get pointer to the text label associated with the feature
         SoText2* getLabel() { return pLabel; }
@@ -67,7 +67,7 @@ namespace Gui
         void onChanged(const App::Property* prop) override;
         bool onDelete(const std::vector<std::string>&) override;
     protected:
-        SoSeparator* pLCSRoot;
+        SoSeparator* pRoot;
         SoShapeScale* soScale;
         SoText2* pLabel;
         double lineThickness;
