@@ -66,7 +66,7 @@ void ReaderIges::read(Handle(TDocStd_Document) hDoc)  // NOLINT
     aReader.SetNameMode(true);
     aReader.SetLayerMode(true);
     if (aReader.ReadFile(name8bit.c_str()) != IFSelect_RetDone) {
-        throw Base::FileException("Cannot read IGES file", file);
+        throw Base::FileException("Cannot read IGES file", file.fileName());
     }
 
 #if OCC_VERSION_HEX < 0x070500

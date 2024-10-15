@@ -58,6 +58,6 @@ void WriterIges::write(Handle(TDocStd_Document) hDoc) const  // NOLINT
     writer.Transfer(hDoc);
     Standard_Boolean ret = writer.Write(name8bit.c_str());
     if (!ret) {
-        throw Base::FileException("Cannot open file: ", file);
+        throw Base::FileException("Cannot open file: ", file.fileName());
     }
 }

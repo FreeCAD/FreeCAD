@@ -63,7 +63,7 @@ void ReaderStep::read(Handle(TDocStd_Document) hDoc)  // NOLINT
     aStepModel->SetSourceCodePage(codePage);
     if (aReader.ReadFile(name8bit.c_str(), aStepModel->InternalParameters) != IFSelect_RetDone) {
 #endif
-        throw Base::FileException("Cannot read STEP file", file);
+        throw Base::FileException("Cannot read STEP file", file.fileName());
     }
 
 #if OCC_VERSION_HEX < 0x070500

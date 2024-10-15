@@ -1848,7 +1848,7 @@ void FemMesh::read(const char* FileName)
 
     // checking on the file
     if (!File.isReadable()) {
-        throw Base::FileException("File to load not existing or not readable", File);
+        throw Base::FileException("File to load not existing or not readable", FileName);
     }
 
     if (File.hasExtension("unv")) {

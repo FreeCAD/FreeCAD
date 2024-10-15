@@ -512,8 +512,6 @@ class BaseExport FileException: public Exception
 public:
     /// With massage and file name
     explicit FileException(const char* sMessage, const char* sFileName = nullptr);
-    /// With massage and file name
-    FileException(const char* sMessage, const FileInfo& File);
     /// standard construction
     FileException();
     FileException(const FileException&) = default;
@@ -538,7 +536,7 @@ public:
     PyObject* getPyExceptionType() const override;
 
 protected:
-    FileInfo file;
+    const char* filepath;
     // necessary   for what() legacy behaviour as it returns a buffer that
     // can not be of a temporary object to be destroyed at end of what()
     const char* _sErrMsgAndFileName;

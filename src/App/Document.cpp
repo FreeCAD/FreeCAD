@@ -1730,7 +1730,7 @@ private:
         Base::FileInfo tmp(sourcename);
         if (!tmp.renameFile(targetname.c_str())) {
             throw Base::FileException(
-                "Cannot rename tmp save file to project file", Base::FileInfo(targetname));
+                "Cannot rename tmp save file to project file", targetname.c_str());
         }
     }
     void applyTimeStamp(const std::string& sourcename, const std::string& targetname) {
@@ -1856,7 +1856,7 @@ private:
 
                     if (ext >= numberOfFiles + 10) {
                         Base::Console().Error("File not saved: Cannot rename project file to backup file\n");
-                        //throw Base::FileException("File not saved: Cannot rename project file to backup file", fi);
+                        //throw Base::FileException("File not saved: Cannot rename project file to backup file", fi.fileName());
                     }
                 }
             }
@@ -1874,11 +1874,11 @@ private:
         Base::FileInfo tmp(sourcename);
         if (!tmp.renameFile(targetname.c_str())) {
             throw Base::FileException(
-                "Save interrupted: Cannot rename temporary file to project file", tmp);
+                "Save interrupted: Cannot rename temporary file to project file", tmp.fileName().c_str());
         }
 
         if (backupManagementError) {
-            throw Base::FileException("Warning: Save complete, but error while managing backup history.", fi);
+            throw Base::FileException("Warning: Save complete, but error while managing backup history.", fi.fileName().c_str());
         }
     }
     static bool fileComparisonByDate(const Base::FileInfo& i,
@@ -1980,7 +1980,7 @@ bool Document::saveToFile(const char* filename) const
         Base::ofstream file(tmp, std::ios::out | std::ios::binary);
         Base::ZipWriter writer(file);
         if (!file.is_open()) {
-            throw Base::FileException("Failed to open file", tmp);
+            throw Base::FileException("Failed to open file", tmp.fileName().c_str());
         }
 
         writer.setComment("FreeCAD Document");
@@ -2003,7 +2003,7 @@ bool Document::saveToFile(const char* filename) const
         writer.writeFiles();
 
         if (writer.hasErrors()) {
-            throw Base::FileException("Failed to write all data to file", tmp);
+            throw Base::FileException("Failed to write all data to file", tmp.fileName().c_str());
         }
 
         GetApplication().signalSaveDocument(*this);
@@ -2084,7 +2084,7 @@ void Document::restore (const char *filename,
     std::streamoff size = buf->pubseekoff(0, std::ios::end, std::ios::in);
     buf->pubseekoff(0, std::ios::beg, std::ios::in);
     if (size < 22) // an empty zip archive has 22 bytes
-        throw Base::FileException("Invalid project file",filename);
+        throw Base::FileException("Invalid project file", filename);
 
     zipios::ZipInputStream zipstream(file);
     Base::XMLReader reader(filename, zipstream);

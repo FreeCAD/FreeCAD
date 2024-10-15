@@ -270,17 +270,17 @@ PyObject* XMLAttributeError::getPyExceptionType() const
 
 FileException::FileException(const char* sMessage, const char* sFileName)
     : Exception(sMessage)
-    , file(sFileName)
+    , filepath(sFileName)
 {
     setFileName(sFileName);
 }
 
-FileException::FileException(const char* sMessage, const FileInfo& File)
-    : Exception(sMessage)
-    , file(File)
-{
-    setFileName(File.filePath().c_str());
-}
+// FileException::FileException(const char* sMessage, const FileInfo& File)
+//     : Exception(sMessage)
+//     , filepath(File)
+// {
+//     setFileName(File.filePath().c_str());
+// }
 
 FileException::FileException()
     : Exception("Unknown file exception happened")
@@ -289,8 +289,7 @@ FileException::FileException()
 
 void FileException::setFileName(const char* sFileName)
 {
-    file.setFile(sFileName);
-    
+    filepath = sFileName;
     std::string result = _sErrMsg;
     if (sFileName) {
         result += ": ";
@@ -302,7 +301,7 @@ void FileException::setFileName(const char* sFileName)
 
 std::string FileException::getFileName() const
 {
-    return file.fileName();
+    return filepath;
 }
 
 const char* FileException::what() const noexcept
@@ -336,7 +335,7 @@ void FileException::ReportException() const
 PyObject* FileException::getPyObject()
 {
     Py::Dict edict(Exception::getPyObject(), true);
-    edict.setItem("filename", Py::String(this->file.fileName()));
+    edict.setItem("filename", Py::String(filepath));
     return Py::new_reference_to(edict);
 }
 
