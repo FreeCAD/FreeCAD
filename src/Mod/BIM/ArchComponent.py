@@ -1498,6 +1498,8 @@ class ViewProviderComponent:
             The context menu already assembled prior to this method being
             called.
         """
+        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+            return
         self.contextMenuAddEdit(menu)
         self.contextMenuAddToggleSubcomponents(menu)
 
