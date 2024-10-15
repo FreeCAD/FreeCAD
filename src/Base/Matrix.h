@@ -26,7 +26,6 @@
 
 #include <string>
 #include <array>
-#include <cmath>
 
 #include "Vector3D.h"
 #ifndef FC_GLOBAL_H
@@ -406,7 +405,7 @@ inline bool Matrix4D::operator==(const Matrix4D& mat) const
     for (int iz = 0; iz < 4; iz++) {
         for (int is = 0; is < 4; is++) {
             double temp = dMtrx4D[iz][is] - mat.dMtrx4D[iz][is];
-            if (temp > traits_type::epsilon() || temp < traits_type::epsilon()) {
+            if (temp > traits_type::epsilon() || temp < traits_type::epsilon()) { 
                 return false;
             }
         }
