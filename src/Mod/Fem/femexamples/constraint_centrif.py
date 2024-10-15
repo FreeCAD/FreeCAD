@@ -92,6 +92,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
     fusion = doc.addObject("Part::MultiFuse", "Fusion")
     fusion.Shapes = [stiffener, circumference]
+    fusion.Refine = True
     doc.recompute()
 
     centerhole = doc.addObject("Part::Cylinder", "CenterHole")
@@ -102,6 +103,7 @@ def setup(doc=None, solvertype="ccxtools"):
     ring_bottom = doc.addObject("Part::Cut", "RingBottom")
     ring_bottom.Base = fusion
     ring_bottom.Tool = centerhole
+    ring_bottom.Refine = True
     doc.recompute()
 
     # standard ring

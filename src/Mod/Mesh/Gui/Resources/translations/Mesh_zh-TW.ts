@@ -63,18 +63,18 @@
     <message>
       <location filename="../../Command.cpp" line="960"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="961"/>
       <source>Cross-sections...</source>
-      <translation>剖面...</translation>
+      <translation>橫切面...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="962"/>
       <location filename="../../Command.cpp" line="963"/>
       <source>Cross-sections</source>
-      <translation>剖面</translation>
+      <translation>橫切面</translation>
     </message>
   </context>
   <context>
@@ -618,7 +618,7 @@
     <message>
       <location filename="../../Command.cpp" line="86"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="87"/>
@@ -679,7 +679,7 @@
     <message>
       <location filename="../../Command.cpp" line="259"/>
       <source>Mesh intersection</source>
-      <translation>網格相交</translation>
+      <translation>網格交叉</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="355"/>
@@ -754,17 +754,17 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="903"/>
       <source>Remove duplicated faces</source>
-      <translation>Remove duplicated faces</translation>
+      <translation>移除重複面</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="972"/>
       <source>Remove duplicated points</source>
-      <translation>Remove duplicated points</translation>
+      <translation>移除重複點</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1057"/>
       <source>Fix self-intersections</source>
-      <translation>Fix self-intersections</translation>
+      <translation>修正自我交錯</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1135"/>
@@ -939,7 +939,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="347"/>
       <source>Duplicated points</source>
-      <translation>複製之點</translation>
+      <translation>被複製的點</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="427"/>
@@ -959,7 +959,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="667"/>
       <source>Self-intersections</source>
-      <translation>自我交錯</translation>
+      <translation>自我交叉</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="735"/>
@@ -1104,23 +1104,23 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="948"/>
       <source>No duplicated points</source>
-      <translation>無重疊點</translation>
+      <translation>無重複點</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="954"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="981"/>
       <source>Duplicated points</source>
-      <translation>複製之點</translation>
+      <translation>被複製的點</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1024"/>
       <source>No self-intersections</source>
-      <translation>無內部交錯</translation>
+      <translation>無自我交叉</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1030"/>
       <source>Self-intersections</source>
-      <translation>自我交錯</translation>
+      <translation>自我交叉</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1100"/>
@@ -1295,7 +1295,7 @@
       <location filename="../../DlgRegularSolidImp.cpp" line="209"/>
       <location filename="../../DlgRegularSolidImp.cpp" line="217"/>
       <source>Create %1</source>
-      <translation>創建%1</translation>
+      <translation>建立%1</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolidImp.cpp" line="124"/>
@@ -1323,7 +1323,7 @@
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="31"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;曲面網格化&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;定義網格化曲面與曲面的最大偏差。數值越小，算繪速度會越慢，但細節和解析度將會增加。&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="34"/>
@@ -1426,15 +1426,15 @@ is used when writing a file in AMF format</translation>
 If not checked, it depends on the option "Enable backlight color"
 (preferences section Display -&gt; 3D View). Either the backlight color
 will be used or black.</source>
-      <translation>The bottom side of surface will be rendered the same way than top side.
-If not checked, it depends on the option "Enable backlight color"
-(preferences section Display -&gt; 3D View). Either the backlight color
-will be used or black.</translation>
+      <translation>表面的底部將以與頂部相同的方式進行算繪。
+如果未勾選，則取決於「啟用背光顏色」選項
+（在偏好設定的「顯示」-&gt;「3D視圖」部分）。
+可以使用背景燈光顏色或黑色。</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="257"/>
       <source>Two-side rendering</source>
-      <translation>雙面渲染</translation>
+      <translation>雙面算繪</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="273"/>

@@ -682,7 +682,7 @@ promijeniti konfiguraciju dizajna. Objekt će se stvoriti ako ne postoji.</trans
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="140"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="116"/>
       <location filename="../../Command.cpp" line="195"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
       <translation>CSV (*.csv *.CSV);;All (*)</translation>
@@ -693,12 +693,12 @@ promijeniti konfiguraciju dizajna. Objekt će se stvoriti ako ne postoji.</trans
       <translation>Uvoz datoteke</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="142"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="118"/>
       <source>Export file</source>
       <translation>Izvoz datoteke</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="167"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="143"/>
       <source>Show spreadsheet</source>
       <translation>Pokaži Proračunsku Tablicu</translation>
     </message>

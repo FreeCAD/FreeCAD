@@ -2460,7 +2460,7 @@ public:
 
     bool isActive() override
     {
-        return hasActiveDocument();
+         return (hasActiveDocument() && !Gui::Control().activeDialog());
     }
 };
 
@@ -2495,7 +2495,7 @@ public:
 
     bool isActive() override
     {
-        return hasActiveDocument();
+         return (hasActiveDocument() && !Gui::Control().activeDialog());
     }
 };
 

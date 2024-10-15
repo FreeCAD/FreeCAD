@@ -566,20 +566,10 @@ class BIM_IfcExplorer:
                                 self.addAttributes(prop.id(), subitem)
 
     def tostr(self, text):
-        "resolves py2/py3 string representation hassles"
-
-        import six
-
-        if six.PY2:
-            if isinstance(text, unicode):
-                return text.encode("utf8")
-            else:
-                return str(text)
+        if isinstance(text, str):
+            return text
         else:
-            if isinstance(text, str):
-                return text
-            else:
-                return str(text)
+            return str(text)
 
     def onSelectTree(self, item, previous):
         "displays attributes and properties of a tree item"

@@ -335,10 +335,11 @@
       <source>Dimension contextually based on your selection.
 Depending on your selection you might have several dimensions available. You can cycle through them using the M key.
 Left clicking on empty space will validate the current Dimension. Right clicking or pressing Esc will cancel.</source>
-      <translation>Dimension contextuelle en fonction de votre sélection.
-En fonction de votre sélection, plusieurs dimensions peuvent être disponibles. Vous pouvez les parcourir en utilisant la touche M.
-- Un clic gauche sur un espace vide validera la dimension en cours.
-- Un clic droit ou une pression sur la touche Échap annule la validation.</translation>
+      <translation>Cote contextuelle en fonction de votre sélection. En fonction de votre sélection, plusieurs
+cotes peuvent être disponibles.
+Vous pouvez les parcourir en utilisant la touche M.
+- un clic gauche sur un espace vide validera la cote en cours.
+- un clic droit ou une pression sur la touche Échap annule la validation.</translation>
     </message>
   </context>
   <context>
@@ -564,9 +565,9 @@ En fonction de votre sélection, plusieurs dimensions peuvent être disponibles.
       <location filename="../../CommandExtensionPack.cpp" line="782"/>
       <source>Change the attributes of cosmetic lines and centerlines:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more lines&lt;br&gt;- Click this tool</source>
       <translation>Modifier les attributs des lignes cosmétiques et des lignes centrales :
-- Spécifier les attributs de la ligne (facultatif),
-- Sélectionner une ou plusieurs lignes,
-- Cliquer sur cet outil.</translation>
+- spécifier les attributs de la ligne (facultatif),
+- sélectionner une ou plusieurs lignes,
+- cliquer sur cet outil.</translation>
     </message>
   </context>
   <context>
@@ -587,9 +588,9 @@ En fonction de votre sélection, plusieurs dimensions peuvent être disponibles.
       <location filename="../../CommandExtensionPack.cpp" line="353"/>
       <source>Add centerlines to circles and arcs:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles or arcs&lt;br&gt;- Click this tool</source>
       <translation>Ajouter des lignes centrales aux cercles et aux arcs :
-- Spécifier les attributs de ligne (facultatif),
-- Sélectionner un ou plusieurs cercles ou arcs,
-- Cliquer sur cet outil.</translation>
+- spécifier les attributs de ligne (facultatif),
+- sélectionner un ou plusieurs cercles ou arcs,
+- cliquer sur cet outil.</translation>
     </message>
   </context>
   <context>
@@ -608,9 +609,9 @@ En fonction de votre sélection, plusieurs dimensions peuvent être disponibles.
       <location filename="../../CommandExtensionPack.cpp" line="284"/>
       <source>Add centerlines to circles and arcs:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles or arcs&lt;br&gt;- Click this tool</source>
       <translation>Ajouter des lignes centrales aux cercles et aux arcs :
-- Spécifier les attributs de ligne (facultatif),
-- Sélectionner un ou plusieurs cercles ou arcs,
-- Cliquer sur cet outil.</translation>
+- spécifier les attributs de ligne (facultatif),
+- sélectionner un ou plusieurs cercles ou arcs,
+- cliquer sur cet outil.</translation>
     </message>
   </context>
   <context>
@@ -917,10 +918,10 @@ En fonction de votre sélection, plusieurs dimensions peuvent être disponibles.
       <location filename="../../CommandExtensionPack.cpp" line="1108"/>
       <source>Add a cosmetic circle based on two vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius)&lt;br&gt;- Click this tool</source>
       <translation>Ajouter un cercle cosmétique basé sur deux sommets :
-- Spécifier les attributs de ligne (facultatif),
-- Sélectionner le sommet 1 (point central),
-- Sélectionner le sommet 2 (rayon),
-- Cliquer sur cet outil.</translation>
+- spécifier les attributs de ligne (facultatif),
+- sélectionner le sommet 1 (point central),
+- sélectionner le sommet 2 (rayon),
+- cliquer sur cet outil.</translation>
     </message>
   </context>
   <context>
@@ -941,11 +942,11 @@ En fonction de votre sélection, plusieurs dimensions peuvent être disponibles.
       <location filename="../../CommandExtensionPack.cpp" line="1196"/>
       <source>Add a cosmetic counter clockwise arc based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius and start angle)&lt;br&gt;- Select vertex 3 (end angle)&lt;br&gt;- Click this tool</source>
       <translation>Ajouter un arc cosmétique dans le sens anti-horaire basé sur trois sommets :
-- Spécifier les attributs de la ligne (facultatif),
-- Sélectionner le sommet 1 (point central),
-- Sélectionner le sommet 2 (rayon et angle de départ),
-- Sélectionner le sommet 3 (angle de fin),
-- Cliquer sur cet outil.</translation>
+- spécifier les attributs de la ligne (facultatif),
+- sélectionner le sommet 1 (point central),
+- sélectionner le sommet 2 (rayon et angle de départ),
+- sélectionner le sommet 3 (angle de fin),
+- cliquer sur cet outil.</translation>
     </message>
   </context>
   <context>
@@ -966,10 +967,10 @@ En fonction de votre sélection, plusieurs dimensions peuvent être disponibles.
       <location filename="../../CommandExtensionPack.cpp" line="1186"/>
       <source>Add a cosmetic circle based on two vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius)&lt;br&gt;- Click this tool</source>
       <translation>Ajouter un cercle cosmétique basé sur deux sommets :
-- Spécifier les attributs de ligne (facultatif),
-- Sélectionner le sommet 1 (point central),
-- Sélectionner le sommet 2 (rayon),
-- Cliquer sur cet outil.</translation>
+- spécifier les attributs de ligne (facultatif),
+- sélectionner le sommet 1 (point central),
+- sélectionner le sommet 2 (rayon),
+- cliquer sur cet outil.</translation>
     </message>
   </context>
   <context>
@@ -989,17 +990,17 @@ En fonction de votre sélection, plusieurs dimensions peuvent être disponibles.
       <location filename="../../CommandExtensionPack.cpp" line="1073"/>
       <source>Add a cosmetic circle based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select 3 vertexes&lt;br&gt;- Click this tool</source>
       <translation>Ajouter un cercle cosmétique basé sur trois sommets :
-- Spécifier les attributs de ligne (facultatif),
-- Sélectionner 3 sommets,
-- Cliquer sur cet outil.</translation>
+- spécifier les attributs de ligne (facultatif),
+- sélectionner 3 sommets,
+- cliquer sur cet outil.</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1207"/>
       <source>Add a cosmetic circle based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select three vertexes&lt;br&gt;- Click this tool</source>
       <translation>Ajouter un cercle cosmétique basé sur trois sommets :
-- Spécifier les attributs de ligne (facultatif),
-- Sélectionner trois sommets,
-- Cliquer sur cet outil.</translation>
+- spécifier les attributs de ligne (facultatif),
+- sélectionner trois sommets,
+- cliquer sur cet outil.</translation>
     </message>
   </context>
   <context>
@@ -1043,9 +1044,9 @@ En fonction de votre sélection, plusieurs dimensions peuvent être disponibles.
       <location filename="../../CommandExtensionPack.cpp" line="362"/>
       <source>Add centerlines to a circular pattern of circles:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select three or more circles forming a circular pattern&lt;br&gt;- Click this tool</source>
       <translation>Ajouter des lignes centrales à un motif circulaire de cercles :
-- Spécifier les attributs de ligne (facultatif),
-- Sélectionner trois cercles ou plus formant un motif circulaire,
-- Cliquer sur cet outil.</translation>
+- spécifier les attributs de ligne (facultatif),
+- sélectionner trois cercles ou plus formant un motif circulaire,
+- cliquer sur cet outil.</translation>
     </message>
   </context>
   <context>
@@ -1101,7 +1102,7 @@ En fonction de votre sélection, plusieurs dimensions peuvent être disponibles.
       <location filename="../../CommandExtensionDims.cpp" line="156"/>
       <location filename="../../CommandExtensionDims.cpp" line="395"/>
       <source>Insert &apos;⌀&apos; Prefix</source>
-      <translation>Insérer un préfixe "⌀"</translation>
+      <translation>Insérer le préfixe "⌀"</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="157"/>
@@ -1122,7 +1123,7 @@ En fonction de votre sélection, plusieurs dimensions peuvent être disponibles.
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="314"/>
       <source>Insert &apos;⌀&apos; Prefix</source>
-      <translation>Insérer un préfixe "⌀"</translation>
+      <translation>Insérer le préfixe "⌀"</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="315"/>
@@ -1143,7 +1144,7 @@ En fonction de votre sélection, plusieurs dimensions peuvent être disponibles.
       <location filename="../../CommandExtensionDims.cpp" line="189"/>
       <location filename="../../CommandExtensionDims.cpp" line="402"/>
       <source>Insert &apos;□&apos; Prefix</source>
-      <translation>Insérer un préfixe "□"</translation>
+      <translation>Insérer le préfixe "□"</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="190"/>
@@ -1341,14 +1342,14 @@ En fonction de votre sélection, plusieurs dimensions peuvent être disponibles.
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="281"/>
       <source>Remove Prefix</source>
-      <translation>Supprimer le préfixe</translation>
+      <translation>Supprimer les symboles</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="282"/>
       <source>Remove prefix symbols at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation>Supprimer les symboles de préfixe au début du texte de la cote :
-- Sélectionner une ou plusieurs cotes
-- Cliquer sur cet outil</translation>
+      <translation>Supprimer les symboles devant le texte de la cote :
+- sélectionner une ou plusieurs cotes
+- cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -1366,10 +1367,11 @@ En fonction de votre sélection, plusieurs dimensions peuvent être disponibles.
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="747"/>
       <source>Select the attributes for new cosmetic lines and centerlines, and specify the cascade spacing and delta distance:&lt;br&gt;- Click this tool&lt;br&gt;- Specify the attributes, spacing and distance in the dialog box&lt;br&gt;- Press OK</source>
-      <translation>Sélectionner les attributs pour les nouvelles lignes cosmétiques et les lignes centrales et spécifier l'espacement en cascade et la distance delta :
-- Cliquer sur cet outil,
-- Spécifier les attributs, espacement et distance dans la boîte de dialogue,
-- Appuyer sur OK.</translation>
+      <translation>Sélectionner les attributs pour les nouvelles lignes cosmétiques et les lignes centrales et
+spécifier l'espacement en cascade et la distance delta :
+- cliquer sur cet outil,
+- spécifier les attributs, espacement et distance dans la fenêtre de dialogue,
+- appuyer sur OK.</translation>
     </message>
   </context>
   <context>
@@ -1413,9 +1415,9 @@ En fonction de votre sélection, plusieurs dimensions peuvent être disponibles.
       <location filename="../../CommandExtensionPack.cpp" line="719"/>
       <source>Add a cosmetic thread to the top or bottom view of bolts/screws/rods:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles&lt;br&gt;- Click this tool</source>
       <translation>Ajouter un filetage à la vue supérieure ou inférieure des boulons/vis/tiges :
-- Spécifier les attributs de ligne (facultatif),
-- Sélectionner un ou plusieurs cercles,
-- Cliquer sur cet outil.</translation>
+- spécifier les attributs de ligne (facultatif),
+- sélectionner un ou plusieurs cercles,
+- cliquer sur cet outil.</translation>
     </message>
   </context>
   <context>
@@ -1436,9 +1438,9 @@ En fonction de votre sélection, plusieurs dimensions peuvent être disponibles.
       <location filename="../../CommandExtensionPack.cpp" line="710"/>
       <source>Add a cosmetic thread to the side view of a bolt/screw/rod:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
       <translation>Ajouter un corps de filetage à la vue latérale d'un boulon/vis/tige :
-- Spécifier les attributs de ligne (facultatif),
-- Sélectionner deux lignes parallèles,
-- Cliquer sur cet outil.</translation>
+- spécifier les attributs de ligne (facultatif),
+- sélectionner deux lignes parallèles,
+- cliquer sur cet outil.</translation>
     </message>
   </context>
   <context>
@@ -1459,9 +1461,9 @@ En fonction de votre sélection, plusieurs dimensions peuvent être disponibles.
       <location filename="../../CommandExtensionPack.cpp" line="700"/>
       <source>Add a cosmetic thread to the top or bottom view of holes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles&lt;br&gt;- Click this tool</source>
       <translation>Ajouter un taraudage à la vue supérieure ou inférieure des boulons/vis/tiges :
-- Spécifier les attributs de ligne (facultatif),
-- Sélectionner un ou plusieurs cercles,
-- Cliquer sur cet outil.</translation>
+- spécifier les attributs de ligne (facultatif),
+- sélectionner un ou plusieurs cercles,
+- cliquer sur cet outil.</translation>
     </message>
   </context>
   <context>
@@ -2383,7 +2385,7 @@ En l'absence de sélection, un navigateur de fichiers vous permet de sélectionn
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2307"/>
-      <location filename="../../CommandCreateDims.cpp" line="2473"/>
+      <location filename="../../CommandCreateDims.cpp" line="2472"/>
       <source>Create Dimension</source>
       <translation>Créer une cote</translation>
     </message>
@@ -2414,7 +2416,7 @@ En l'absence de sélection, un navigateur de fichiers vous permet de sélectionn
       <translation>Créer une image</translation>
     </message>
     <message>
-      <location filename="../../QGIViewBalloon.cpp" line="500"/>
+      <location filename="../../QGIViewBalloon.cpp" line="510"/>
       <source>Drag Balloon</source>
       <translation>Faire glisser une infobulle</translation>
     </message>
@@ -2424,7 +2426,7 @@ En l'absence de sélection, un navigateur de fichiers vous permet de sélectionn
       <translation>Faire glisser la cote</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="570"/>
+      <location filename="../../QGSPage.cpp" line="598"/>
       <source>Create Balloon</source>
       <translation>Créer une infobulle</translation>
     </message>
@@ -2532,7 +2534,7 @@ En l'absence de sélection, un navigateur de fichiers vous permet de sélectionn
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="256"/>
       <source>Remove Prefix</source>
-      <translation>Supprimer le préfixe</translation>
+      <translation>Supprimer les symboles</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="442"/>
@@ -2677,7 +2679,7 @@ En l'absence de sélection, un navigateur de fichiers vous permet de sélectionn
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="797"/>
       <source>TechDraw Change Line Attributes</source>
-      <translation>Modification des attributs de lignes</translation>
+      <translation>TechDraw Modification des attributs de lignes</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="800"/>
@@ -3151,9 +3153,9 @@ En l'absence de sélection, un navigateur de fichiers vous permet de sélectionn
       <location filename="../../CommandCreateDims.cpp" line="2093"/>
       <location filename="../../CommandCreateDims.cpp" line="2108"/>
       <location filename="../../CommandCreateDims.cpp" line="2387"/>
-      <location filename="../../CommandCreateDims.cpp" line="2551"/>
-      <location filename="../../CommandCreateDims.cpp" line="2559"/>
-      <location filename="../../CommandCreateDims.cpp" line="2568"/>
+      <location filename="../../CommandCreateDims.cpp" line="2550"/>
+      <location filename="../../CommandCreateDims.cpp" line="2558"/>
+      <location filename="../../CommandCreateDims.cpp" line="2567"/>
       <location filename="../../Command.cpp" line="1180"/>
       <location filename="../../Command.cpp" line="1187"/>
       <location filename="../../Command.cpp" line="1195"/>
@@ -3164,19 +3166,19 @@ En l'absence de sélection, un navigateur de fichiers vous permet de sélectionn
       <translation>Sélection non valide</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2552"/>
+      <location filename="../../CommandCreateDims.cpp" line="2551"/>
       <location filename="../../Command.cpp" line="1181"/>
       <source>Select an object first</source>
       <translation>Sélectionner d’abord un objet</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2560"/>
+      <location filename="../../CommandCreateDims.cpp" line="2559"/>
       <location filename="../../Command.cpp" line="1188"/>
       <source>Too many objects selected</source>
       <translation>Trop d'éléments sélectionnés</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2569"/>
+      <location filename="../../CommandCreateDims.cpp" line="2568"/>
       <location filename="../../Command.cpp" line="1196"/>
       <source>Create a page first.</source>
       <translation>Créer d'abord une page.</translation>
@@ -3186,7 +3188,7 @@ En l'absence de sélection, un navigateur de fichiers vous permet de sélectionn
       <location filename="../../CommandCreateDims.cpp" line="2388"/>
       <location filename="../../Command.cpp" line="1208"/>
       <source>No View of a Part in selection.</source>
-      <translation>Aucune vue d'une pièce dans la sélection.</translation>
+      <translation>Pas de vue de l'objet dans la sélection.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1379"/>
@@ -3216,7 +3218,7 @@ En l'absence de sélection, un navigateur de fichiers vous permet de sélectionn
     <message>
       <location filename="../../Command.cpp" line="1482"/>
       <source>View does not belong to a Clip</source>
-      <translation>La vue n'appartient pas à une fenêtre de rognage</translation>
+      <translation>La vue n'appartient pas à une fenêtre de rognage.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1541"/>
@@ -3265,12 +3267,12 @@ En l'absence de sélection, un navigateur de fichiers vous permet de sélectionn
       <translation>La page contient DrawViewArch qui ne sera pas exporté. Continuer ?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2433"/>
+      <location filename="../../CommandCreateDims.cpp" line="2432"/>
       <source>Ellipse Curve Warning</source>
       <translation>Avertissement à propos des courbes des ellipses</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2444"/>
+      <location filename="../../CommandCreateDims.cpp" line="2443"/>
       <source>BSpline Curve Warning</source>
       <translation>Avertissement à propos des courbes des B-splines</translation>
     </message>
@@ -3282,8 +3284,8 @@ En l'absence de sélection, un navigateur de fichiers vous permet de sélectionn
       <location filename="../../CommandCreateDims.cpp" line="2133"/>
       <location filename="../../CommandCreateDims.cpp" line="2148"/>
       <location filename="../../CommandCreateDims.cpp" line="2226"/>
-      <location filename="../../CommandCreateDims.cpp" line="2403"/>
-      <location filename="../../CommandCreateDims.cpp" line="2419"/>
+      <location filename="../../CommandCreateDims.cpp" line="2402"/>
+      <location filename="../../CommandCreateDims.cpp" line="2418"/>
       <location filename="../../TaskDimRepair.cpp" line="125"/>
       <location filename="../../TaskDimRepair.cpp" line="137"/>
       <location filename="../../TaskDimRepair.cpp" line="148"/>
@@ -3292,7 +3294,7 @@ En l'absence de sélection, un navigateur de fichiers vous permet de sélectionn
       <translation>Sélection non valide</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2455"/>
+      <location filename="../../CommandCreateDims.cpp" line="2454"/>
       <source>BSpline Curve Error</source>
       <translation>Erreur de la courbe de la B-spline</translation>
     </message>
@@ -3317,27 +3319,27 @@ En l'absence de sélection, un navigateur de fichiers vous permet de sélectionn
       <translation>Il n’y a pas de cote dans votre sélection</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2404"/>
+      <location filename="../../CommandCreateDims.cpp" line="2403"/>
       <source>Can not make 2D dimension from selection</source>
-      <translation>Impossible de créer une dimension en 2D avec la sélection en cours</translation>
+      <translation>Impossible de créer une cote en 2D avec la sélection en cours</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2420"/>
+      <location filename="../../CommandCreateDims.cpp" line="2419"/>
       <source>Can not make 3D dimension from selection</source>
-      <translation>Impossible de créer une dimension en 3D avec la sélection en cours</translation>
+      <translation>Impossible de créer une cote en 3D avec la sélection en cours</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2434"/>
+      <location filename="../../CommandCreateDims.cpp" line="2433"/>
       <source>Selected edge is an Ellipse. Value will be approximate. Continue?</source>
       <translation>L'arête sélectionnée est une ellipse. La valeur sera approximative. Voulez-vous continuer ?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2445"/>
+      <location filename="../../CommandCreateDims.cpp" line="2444"/>
       <source>Selected edge is a B-spline. Value will be approximate. Continue?</source>
       <translation>L'arête sélectionnée fait partie d'une B-spline. La valeur sera approximative. Voulez-vous continuer ?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2456"/>
+      <location filename="../../CommandCreateDims.cpp" line="2455"/>
       <source>Selected edge is a B-spline and a radius/diameter can not be calculated.</source>
       <translation>L'arête sélectionnée fait partie d'une B-spline et le rayon/diamètre ne peut pas être calculé.</translation>
     </message>
@@ -3461,7 +3463,7 @@ En l'absence de sélection, un navigateur de fichiers vous permet de sélectionn
       <location filename="../../CommandExtensionPack.cpp" line="1372"/>
       <location filename="../../CommandExtensionPack.cpp" line="1678"/>
       <source>Close active task dialog and try again.</source>
-      <translation>Fermer la boîte de dialogue des tâches actives et réessayer.</translation>
+      <translation>Fermer la fenêtre de dialogue des tâches actives et réessayer</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="122"/>
@@ -3489,8 +3491,8 @@ En l'absence de sélection, un navigateur de fichiers vous permet de sélectionn
       <location filename="../../CommandAnnotate.cpp" line="1254"/>
       <location filename="../../CommandAnnotate.cpp" line="1428"/>
       <location filename="../../CommandAnnotate.cpp" line="1435"/>
-      <location filename="../../CommandAnnotate.cpp" line="1711"/>
-      <location filename="../../CommandAnnotate.cpp" line="1724"/>
+      <location filename="../../CommandAnnotate.cpp" line="1712"/>
+      <location filename="../../CommandAnnotate.cpp" line="1725"/>
       <source>Wrong Selection</source>
       <translation>Sélection incorrecte</translation>
     </message>
@@ -3624,22 +3626,22 @@ En l'absence de sélection, un navigateur de fichiers vous permet de sélectionn
       <translation>Sélectionner seulement une ligne de repère ou un symbole de soudure.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1638"/>
+      <location filename="../../CommandAnnotate.cpp" line="1639"/>
       <source>SurfaceFinishSymbols</source>
       <translation>Symboles d'état de surface</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1639"/>
+      <location filename="../../CommandAnnotate.cpp" line="1640"/>
       <source>Selected object is not a part view, nor a leader line</source>
       <translation>L'objet sélectionné n'est ni une vue partielle ni une ligne de repère.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1712"/>
+      <location filename="../../CommandAnnotate.cpp" line="1713"/>
       <source>No Part View in Selection</source>
-      <translation>Pas de vue partielle dans cette sélection</translation>
+      <translation>Pas de vue de l'objet dans cette sélection</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1725"/>
+      <location filename="../../CommandAnnotate.cpp" line="1726"/>
       <source>No %1 in Selection</source>
       <translation>Aucun %1 dans la sélection</translation>
     </message>
@@ -4049,13 +4051,13 @@ En l'absence de sélection, un navigateur de fichiers vous permet de sélectionn
       <location filename="../../TaskDimension.cpp" line="146"/>
       <location filename="../../TaskDimension.cpp" line="161"/>
       <source>Missing Dimension</source>
-      <translation>Dimension manquante</translation>
+      <translation>Cote manquante</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="147"/>
       <location filename="../../TaskDimension.cpp" line="162"/>
       <source>Dimension not found.  Was it deleted? Can not continue.</source>
-      <translation>Dimension non trouvée. A-t-elle était supprimée ? Impossible de continuer.</translation>
+      <translation>Cote non trouvée. A-t-elle était supprimée ? Impossible de continuer.</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="443"/>
@@ -4175,14 +4177,14 @@ En l'absence de sélection, un navigateur de fichiers vous permet de sélectionn
       <translation>Nom du document :</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="170"/>
+      <location filename="../../TaskProjGroup.cpp" line="181"/>
       <source>Projection Group</source>
       <translation>Groupe de projection</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="180"/>
+      <location filename="../../TaskProjGroup.cpp" line="191"/>
       <source>Part View</source>
-      <translation>Vue partielle</translation>
+      <translation>Vue de l'objet</translation>
     </message>
   </context>
   <context>
@@ -4692,7 +4694,72 @@ Si elle n'est pas cochée, FreeCAD utilisera l'algorithme d'origine de reconnais
       <translation>Nombre de passes pour supprimer les chevauchements d'arêtes</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="455"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="449"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Some combinations of OS and Navigation style key bindings may conflict with the default modifier keys for Ballon dragging and View snapping override.  You can make adjustments here to find a non-conflicting key binding.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Some combinations of OS and Navigation style key bindings may conflict with the default modifier keys for Ballon dragging and View snapping override.  You can make adjustments here to find a non-conflicting key binding.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="452"/>
+      <source>Behaviour Overrides</source>
+      <translation type="unfinished">Behaviour Overrides</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="460"/>
+      <source>Check this box to use the default modifier keys.  Uncheck this box to set a different key combination.</source>
+      <translation type="unfinished">Check this box to use the default modifier keys.  Uncheck this box to set a different key combination.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="463"/>
+      <source>Use Default</source>
+      <translation type="unfinished">Use Default</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="480"/>
+      <source>Balloon Drag</source>
+      <translation type="unfinished">Balloon Drag</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="487"/>
+      <source>Check this box to include the Alt key in the modifiers.</source>
+      <translation type="unfinished">Check this box to include the Alt key in the modifiers.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="490"/>
+      <source>Alt</source>
+      <translation>Alt</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="497"/>
+      <source>Check this box to include the Shift key in the modifiers.</source>
+      <translation type="unfinished">Check this box to include the Shift key in the modifiers.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="500"/>
+      <source>Shift</source>
+      <translation>Maj</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="507"/>
+      <source>Check this box to include the Meta/Start/Super key in the modifiers.</source>
+      <translation type="unfinished">Check this box to include the Meta/Start/Super key in the modifiers.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="510"/>
+      <source>Meta</source>
+      <translation type="unfinished">Meta</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="517"/>
+      <source>Check this box to include the Control key in the modifiers.</source>
+      <translation type="unfinished">Check this box to include the Control key in the modifiers.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="520"/>
+      <source>Control</source>
+      <translation type="unfinished">Control</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="538"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;span style=&quot; font-weight:600;&quot;&gt;Remarque :&lt;/span&gt; les éléments en &lt;span style=&quot; font-style:italic;&quot;&gt;italiques&lt;/span&gt; sont les valeurs par défaut des nouveaux objets. Ils n'ont aucun effet sur les objets déjà en place.</translation>
     </message>
@@ -5277,11 +5344,11 @@ un dessin comme guide de coupe 1:1.</translation>
 &apos;Separated tools&apos;: Individual tools for each dimensioning tool.
 &apos;Both&apos;: You will have both the &apos;Dimension&apos; tool and the separated tools.
 This setting is only for the toolbar. Whichever you choose, all tools are always available in the menu and through shortcuts.</source>
-      <translation>Sélectionnez le type d'outils de cotation pour votre barre d'outils :
-- Outil unique : un seul outil pour toutes les cotes de la barre d'outils : Distance, Distance X/Y, Angle, Rayon. (d'autres outils dans la liste déroulante)
-- Outils séparés : outils distincts pour chaque outil de cotation.
-- Les deux : vous disposerez à la fois de l'outil Cote et des outils séparés.
-Ce paramètre ne s'applique qu'à la barre d'outils. Quel que soit votre choix, tous les outils sont toujours disponibles dans le menu et dans les raccourcis.</translation>
+      <translation>Sélectionner le type d'outils de cotation pour votre barre d'outils :
+- outil unique : un seul outil pour toutes les cotes de la barre d'outils : Distance, Distance X/Y, Angle, Rayon. (d'autres outils dans la liste déroulante)
+- outils séparés : outils distincts pour chaque outil de cotation.
+- les deux : à la fois l'outil de cotation et les outils séparés.
+Ce paramètre ne s'applique qu'à la barre d'outils. Quel que soit le choix, tous les outils sont toujours disponibles dans le menu et dans les raccourcis.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="561"/>
@@ -6768,12 +6835,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="277"/>
       <source>Least material condition (LMC)</source>
-      <translation>État au minimum de matière (LMC)</translation>
+      <translation>État au minimum de matière</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="292"/>
       <source>Maximum material condition (MMC)</source>
-      <translation>État au maximum de matière (MMC)</translation>
+      <translation>État au maximum de matière</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="307"/>
@@ -6793,7 +6860,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="352"/>
       <source>Regardless of feature size (RFS)</source>
-      <translation>Indépendamment des dimensions de l’élément (RFS)</translation>
+      <translation>Indépendamment des cotes de l’élément</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="367"/>
@@ -7735,7 +7802,7 @@ Vous pouvez sélectionner d'autres points pour obtenir des segments de ligne.</t
     <message>
       <location filename="../../TaskLinkDim.ui" line="153"/>
       <source>To These Dimensions</source>
-      <translation>À ces dimensions</translation>
+      <translation>À ces cotes</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.cpp" line="58"/>
@@ -7873,8 +7940,8 @@ Vous pouvez sélectionner d'autres points pour obtenir des segments de ligne.</t
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="362"/>
-      <location filename="../../TaskProjGroup.cpp" line="646"/>
-      <location filename="../../TaskProjGroup.cpp" line="653"/>
+      <location filename="../../TaskProjGroup.cpp" line="661"/>
+      <location filename="../../TaskProjGroup.cpp" line="668"/>
       <source>Top</source>
       <translation>Dessus</translation>
     </message>
@@ -7885,8 +7952,8 @@ Vous pouvez sélectionner d'autres points pour obtenir des segments de ligne.</t
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="409"/>
-      <location filename="../../TaskProjGroup.cpp" line="648"/>
-      <location filename="../../TaskProjGroup.cpp" line="650"/>
+      <location filename="../../TaskProjGroup.cpp" line="663"/>
+      <location filename="../../TaskProjGroup.cpp" line="665"/>
       <source>Left</source>
       <translation>Gauche</translation>
     </message>
@@ -7897,14 +7964,14 @@ Vous pouvez sélectionner d'autres points pour obtenir des segments de ligne.</t
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="449"/>
-      <location filename="../../TaskProjGroup.cpp" line="648"/>
-      <location filename="../../TaskProjGroup.cpp" line="650"/>
+      <location filename="../../TaskProjGroup.cpp" line="663"/>
+      <location filename="../../TaskProjGroup.cpp" line="665"/>
       <source>Right</source>
       <translation>Droite</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="466"/>
-      <location filename="../../TaskProjGroup.cpp" line="651"/>
+      <location filename="../../TaskProjGroup.cpp" line="666"/>
       <source>Rear</source>
       <translation>Arrière</translation>
     </message>
@@ -7915,8 +7982,8 @@ Vous pouvez sélectionner d'autres points pour obtenir des segments de ligne.</t
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="516"/>
-      <location filename="../../TaskProjGroup.cpp" line="646"/>
-      <location filename="../../TaskProjGroup.cpp" line="653"/>
+      <location filename="../../TaskProjGroup.cpp" line="661"/>
+      <location filename="../../TaskProjGroup.cpp" line="668"/>
       <source>Bottom</source>
       <translation>Dessous</translation>
     </message>
@@ -7957,31 +8024,31 @@ using the given X/Y Spacing</source>
       <translation>Espacement Y</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="645"/>
-      <location filename="../../TaskProjGroup.cpp" line="654"/>
+      <location filename="../../TaskProjGroup.cpp" line="660"/>
+      <location filename="../../TaskProjGroup.cpp" line="669"/>
       <source>FrontTopLeft</source>
       <translation>Avant en haut à gauche</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="645"/>
-      <location filename="../../TaskProjGroup.cpp" line="654"/>
+      <location filename="../../TaskProjGroup.cpp" line="660"/>
+      <location filename="../../TaskProjGroup.cpp" line="669"/>
       <source>FrontBottomRight</source>
       <translation>Avant en bas à droite</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="647"/>
-      <location filename="../../TaskProjGroup.cpp" line="652"/>
+      <location filename="../../TaskProjGroup.cpp" line="662"/>
+      <location filename="../../TaskProjGroup.cpp" line="667"/>
       <source>FrontTopRight</source>
       <translation>Avant en haut à droite</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="647"/>
-      <location filename="../../TaskProjGroup.cpp" line="652"/>
+      <location filename="../../TaskProjGroup.cpp" line="662"/>
+      <location filename="../../TaskProjGroup.cpp" line="667"/>
       <source>FrontBottomLeft</source>
       <translation>Avant en bas à gauche</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="649"/>
+      <location filename="../../TaskProjGroup.cpp" line="664"/>
       <source>Front</source>
       <translation>Face</translation>
     </message>
@@ -8641,12 +8708,12 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="416"/>
       <source>Remove Prefix</source>
-      <translation>Supprimer le préfixe</translation>
+      <translation>Supprimer les symboles</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="417"/>
       <source>Remove prefix symbols at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation>Supprimer les symboles de préfixe au début du texte de la cote :
+      <translation>Supprimer les symboles devant le texte de la cote :
 - sélectionner une ou plusieurs cotes
 - cliquer sur cet outil</translation>
     </message>
@@ -8786,7 +8853,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>TechDraw Attributes</source>
-      <translation>Attributs TechDraw</translation>
+      <translation>TechDraw Attributs</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
@@ -8811,7 +8878,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
       <source>TechDraw Views</source>
-      <translation>Vues TechDraw</translation>
+      <translation>Vues de TechDraw</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="54"/>
@@ -9099,7 +9166,7 @@ using the given X/Y Spacing</source>
 - select shaft fit / hole fit
 - select the desired ISO 286 fit field using the combo box</source>
       <translation>Ajouter une tolérance à un trou ou à un arbre :
-- sélectionner une dimension de longueur ou de diamètre
+- sélectionner une cote de longueur ou de diamètre
 - cliquer sur le bouton de l'outil, un panneau s'ouvre
 - sélectionner l'ajustement de l'arbre/l'ajustement du trou
 - sélectionner le champ d'ajustement ISO 286 souhaité à l'aide de la liste déroulante</translation>
@@ -9899,21 +9966,21 @@ there is an open task dialog.</source>
       <location filename="../../CommandExtensionDims.cpp" line="222"/>
       <location filename="../../CommandExtensionDims.cpp" line="409"/>
       <source>Insert &apos;n×&apos; Prefix</source>
-      <translation>Insérer "n×" préfixes</translation>
+      <translation>Insérer le préfixe "n×"</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="223"/>
       <location filename="../../CommandExtensionDims.cpp" line="410"/>
       <source>Insert repeated feature count at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation>Insérer un nombre répété d'éléments au début du texte de la dimension :
-- Sélectionner une ou plusieurs dimensions,
-- Cliquer sur cet outil.</translation>
+      <translation>Insérer un symbole de répétition au début du texte de la cote :
+- sélectionner une ou plusieurs cotes,
+- cliquer sur cet outil.</translation>
     </message>
   </context>
   <context>
     <name>Preferences</name>
     <message>
-      <location filename="../../../App/Preferences.cpp" line="451"/>
+      <location filename="../../../App/Preferences.cpp" line="466"/>
       <source>The LineStandard parameter is invalid. Using zero instead.</source>
       <translation>Le paramètre Norme des lignes n'est pas valide. Utiliser zéro à la place.</translation>
     </message>
@@ -9924,7 +9991,7 @@ there is an open task dialog.</source>
       <location filename="../../ViewProviderDimension.cpp" line="301"/>
       <source>You cannot delete this dimension now because
 there is an open task dialog.</source>
-      <translation>Vous ne pouvez pas supprimer cette cote maintenant car il y a une boîte de dialogue ouverte.</translation>
+      <translation>Vous ne pouvez pas supprimer cette cote maintenant car il y a une fenêtre de dialogue ouverte.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDimension.cpp" line="304"/>
@@ -9949,37 +10016,37 @@ there is an open task dialog.</source>
   <context>
     <name>TechDrawGui::DirectionEditDialog</name>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="920"/>
+      <location filename="../../TaskProjGroup.cpp" line="955"/>
       <source>Direction</source>
       <translation>Direction</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="925"/>
+      <location filename="../../TaskProjGroup.cpp" line="960"/>
       <source>X: </source>
       <translation>X : </translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="933"/>
+      <location filename="../../TaskProjGroup.cpp" line="968"/>
       <source>Y: </source>
       <translation>Y : </translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="941"/>
+      <location filename="../../TaskProjGroup.cpp" line="976"/>
       <source>Z: </source>
       <translation>Z: </translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="957"/>
+      <location filename="../../TaskProjGroup.cpp" line="992"/>
       <source>OK</source>
       <translation>OK</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="958"/>
+      <location filename="../../TaskProjGroup.cpp" line="993"/>
       <source>Cancel</source>
       <translation>Annuler</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="964"/>
+      <location filename="../../TaskProjGroup.cpp" line="999"/>
       <source>Rotate by</source>
       <translation>Tourner de</translation>
     </message>
@@ -9994,7 +10061,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1449"/>
       <source>Dimension tools.</source>
-      <translation>Outils de dimensions</translation>
+      <translation>Outils de cotation</translation>
     </message>
   </context>
   <context>
@@ -10007,7 +10074,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1835"/>
       <source>Insert Area Annotation</source>
-      <translation>Insérer une annotation de surface</translation>
+      <translation>Insérer une cote de surface</translation>
     </message>
   </context>
   <context>

@@ -30,6 +30,7 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QListView>
+#include <QMessageBox>
 #include <QPushButton>
 #include <QScrollArea>
 #include <QWidget>
@@ -41,14 +42,16 @@
 #include "FileCardView.h"
 #include "FirstStartWidget.h"
 #include "FlowLayout.h"
-#include "Gui/Workbench.h"
-#include <Gui/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Application.h>
 #include <Base/Interpreter.h>
 #include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
+#include <Gui/MainWindow.h>
+#include <Gui/Document.h>
+#include <Gui/Workbench.h>
+#include <Gui/FileDialog.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <gsl/pointers>
@@ -435,11 +438,22 @@ void StartView::fileCardSelected(const QModelIndex& index)
     auto file = index.data(static_cast<int>(Start::DisplayedFilesModelRoles::path)).toString();
     std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(file.toStdString().c_str());
     escapedstr = Base::Tools::escapeEncodeFilename(escapedstr);
-    auto command = std::string("FreeCAD.loadFile('") + escapedstr + "')";
     try {
-        Base::Interpreter().runString(command.c_str());
-        Gui::Application::checkForRecomputes();
-        postStart(PostStartBehavior::doNotSwitchWorkbench);
+        QString filename = QString::fromStdString(escapedstr);
+        QFileInfo fi(filename);
+        if (!fi.exists() || !fi.isFile()) {
+            QMessageBox::critical(Gui::getMainWindow(),
+                                  tr("File not found"),
+                                  tr("The file '%1' cannot be opened.").arg(filename));
+        }
+        else {
+            // invokes appendFile()
+            Gui::SelectModule::Dict dict = Gui::SelectModule::importHandler(filename);
+            for (Gui::SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
+                Gui::Application::Instance->open(it.key().toUtf8(), it.value().toLatin1());
+                break;
+            }
+        }
     }
     catch (Base::PyException& e) {
         Base::Console().Error(e.getMessage().c_str());

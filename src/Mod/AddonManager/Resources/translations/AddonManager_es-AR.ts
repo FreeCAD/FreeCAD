@@ -719,7 +719,7 @@ los complementos instalados se comprobarán si hay actualizaciones disponibles</
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="99"/>
       <source>Update all available</source>
-      <translation>Actualizaciones disponibles</translation>
+      <translation>Instalar todas las actualizaciones disponibles</translation>
     </message>
   </context>
   <context>

@@ -373,7 +373,7 @@
     <message>
       <location filename="../../Poisson.ui" line="66"/>
       <source>Samples per node</source>
-      <translation type="unfinished">Samples per node</translation>
+      <translation>每個節點的樣本</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="90"/>
@@ -617,7 +617,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="47"/>
       <source>Iso-Parametric</source>
-      <translation type="unfinished">Iso-Parametric</translation>
+      <translation>等參數</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="55"/>
