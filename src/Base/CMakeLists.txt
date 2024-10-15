@@ -288,6 +288,7 @@ SET(FreeCADBase_HPP_SRCS
     Bitmask.h
     BoundBox.h
     Builder3D.h
+    ConnectionBlocker.h
     Console.h
     ConsoleObserver.h
     Converter.h

@@ -33,7 +33,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <boost_signals2.hpp>
+
 #include <QString>
 
 // ----------------------------------------------------------------------------
@@ -245,22 +245,6 @@ private:
     std::size_t flag;
     bool oldValue;
 };
-
-// ----------------------------------------------------------------------------
-
-class ConnectionBlocker
-{
-    using Connection = boost::signals2::connection;
-    using ConnectionBlock = boost::signals2::shared_connection_block;
-    ConnectionBlock blocker;
-
-public:
-    ConnectionBlocker(Connection& c)
-        : blocker(c)
-    {}
-    ~ConnectionBlocker() = default;
-};
-// NOLINTEND
 
 // ----------------------------------------------------------------------------
 
