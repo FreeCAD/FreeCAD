@@ -37,6 +37,7 @@
 #endif
 
 #include <App/Application.h>
+#include <App/Datums.h>
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/FeaturePythonPyImp.h>
@@ -2330,7 +2331,8 @@ App::DocumentObject* AssemblyObject::getObjFromRef(App::DocumentObject* obj, std
         // PartDesign::Point + Line + Plane + CoordinateSystem
         // getViewProviderName instead of isDerivedFrom to avoid dependency on sketcher
         return (strcmp(obj->getViewProviderName(), "SketcherGui::ViewProviderSketch") == 0
-                || obj->isDerivedFrom<PartApp::Datum>());
+                || obj->isDerivedFrom<PartApp::Datum>() || obj->isDerivedFrom<App::DatumElement>()
+                || obj->isDerivedFrom<App::LocalCoordinateSystem>());
     };
 
     // Helper function to handle PartDesign::Body objects
