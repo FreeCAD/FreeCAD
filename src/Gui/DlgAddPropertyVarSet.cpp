@@ -37,7 +37,6 @@
 #include "DlgAddPropertyVarSet.h"
 #include "ui_DlgAddPropertyVarSet.h"
 #include "MainWindow.h"
-#include "ViewProviderDocumentObject.h"
 #include "ViewProviderVarSet.h"
 
 FC_LOG_LEVEL_INIT("DlgAddPropertyVarSet", true, true)
@@ -99,8 +98,8 @@ void DlgAddPropertyVarSet::initializeGroup()
     }
 
     comboBoxGroup.setEditText(QString::fromStdString(groupNamesSorted[0]));
-    connect(&comboBoxGroup, &EditFinishedComboBox::editFinished,
-            this, &DlgAddPropertyVarSet::onEditFinished);
+    connComboBoxGroup = connect(&comboBoxGroup, &EditFinishedComboBox::editFinished,
+                                this, &DlgAddPropertyVarSet::onEditFinished);
 }
 
 void DlgAddPropertyVarSet::getSupportedTypes(std::vector<Base::Type>& types)
@@ -140,8 +139,8 @@ void DlgAddPropertyVarSet::initializeTypes()
     ui->comboBoxType->setCompleter(&completerType);
     ui->comboBoxType->setInsertPolicy(QComboBox::NoInsert);
 
-    connect(ui->comboBoxType, &QComboBox::currentTextChanged,
-            this, &DlgAddPropertyVarSet::onEditFinished);
+    connComboBoxType = connect(ui->comboBoxType, &QComboBox::currentTextChanged,
+                               this, &DlgAddPropertyVarSet::onEditFinished);
 }
 
 /*
@@ -167,9 +166,9 @@ void DlgAddPropertyVarSet::initializeWidgets(ViewProviderVarSet* viewProvider)
 
     connect(this, &QDialog::finished,
             this, [viewProvider](int result) { viewProvider->onFinished(result); });
-    connect(ui->lineEditName, &QLineEdit::editingFinished,
-            this, &DlgAddPropertyVarSet::onEditFinished);
-    connect(ui->lineEditName, &QLineEdit::textChanged,
+    connLineEditNameEditFinished = connect(ui->lineEditName, &QLineEdit::editingFinished,
+                                           this, &DlgAddPropertyVarSet::onEditFinished);
+    connLineEditNameTextChanged = connect(ui->lineEditName, &QLineEdit::textChanged,
             this, &DlgAddPropertyVarSet::onNamePropertyChanged);
 
     std::string title = "Add a property to " + varSet->getFullName();
@@ -478,14 +477,10 @@ void DlgAddPropertyVarSet::reject()
     // that a new property has been created, an assumption that will be
     // violated by aborting the transaction because it will remove the newly
     // created property.
-    disconnect(&comboBoxGroup, &EditFinishedComboBox::editFinished,
-               this, &DlgAddPropertyVarSet::onEditFinished);
-    disconnect(ui->comboBoxType, &QComboBox::currentTextChanged,
-               this, &DlgAddPropertyVarSet::onEditFinished);
-    disconnect(ui->lineEditName, &QLineEdit::editingFinished,
-               this, &DlgAddPropertyVarSet::onEditFinished);
-    disconnect(ui->lineEditName, &QLineEdit::textChanged,
-               this, &DlgAddPropertyVarSet::onNamePropertyChanged);
+    disconnect(connComboBoxGroup);
+    disconnect(connComboBoxType);
+    disconnect(connLineEditNameEditFinished);
+    disconnect(connLineEditNameTextChanged);
 
     // a transaction is not pending if a name has not been determined.
     if (doc->hasPendingTransaction()) {
