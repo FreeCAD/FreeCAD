@@ -817,6 +817,10 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         return True
 
     def setupContextMenu(self, vobj, menu):
+
+        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+            return
+
         hingeIdxs = self.getHingeEdgeIndices()
 
         super().contextMenuAddEdit(menu)

@@ -84,6 +84,8 @@ class _ViewProviderArchMaterialContainer:
         self.Object = vobj.Object
 
     def setupContextMenu(self, vobj, menu):
+        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+            return
         actionMergeByName = QtGui.QAction(QtGui.QIcon(":/icons/Arch_Material_Group.svg"),
                                           translate("Arch", "Merge duplicates"),
                                           menu)
@@ -360,6 +362,8 @@ class _ViewProviderArchMaterial:
         return True
 
     def setupContextMenu(self, vobj, menu):
+        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+            return
         actionEdit = QtGui.QAction(translate("Arch", "Edit"),
                                    menu)
         actionEdit.triggered.connect(self.edit)
@@ -660,6 +664,8 @@ class _ViewProviderArchMultiMaterial:
         self.edit()
 
     def setupContextMenu(self, vobj, menu):
+        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+            return
         actionEdit = QtGui.QAction(translate("Arch", "Edit"),
                                    menu)
         actionEdit.triggered.connect(self.edit)

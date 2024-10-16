@@ -89,6 +89,9 @@ class ifc_vp_object:
         from nativeifc import ifc_materials
         from PySide import QtCore, QtGui  # lazy import
 
+        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+            return
+
         icon = QtGui.QIcon(":/icons/IFC.svg")
         element = ifc_tools.get_ifc_element(vobj.Object)
         ifc_menu = None
@@ -396,6 +399,9 @@ class ifc_vp_document(ifc_vp_object):
 
         from PySide import QtCore, QtGui  # lazy import
 
+        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+            return
+
         ifc_menu = super().setupContextMenu(vobj, menu)
         if not ifc_menu:
             ifc_menu = menu
@@ -575,6 +581,9 @@ class ifc_vp_material:
         from nativeifc import ifc_tools  # lazy import
         from nativeifc import ifc_psets
         from PySide import QtCore, QtGui  # lazy import
+
+        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+            return
 
         icon = QtGui.QIcon(":/icons/IFC.svg")
         if ifc_psets.has_psets(self.Object):
