@@ -111,8 +111,15 @@ bool TaskDlgFeatureParameters::accept()
         if(isUpdateBlocked){
             Gui::cmdAppDocument(feature, "recompute()");
         } else {
-            // object was already computed
+            // object was already computed, nothing more to do with it...
             Gui::cmdAppDocument(feature, "purgeTouched()");
+
+            // ...but touch parents to signal the change...
+            for (auto obj : feature->getInList()){
+                obj->touch();
+            }
+            // ...and recompute them
+            Gui::cmdAppDocument(feature->getDocument(), "recompute()");
         }
 
         if (!feature->isValid()) {

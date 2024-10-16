@@ -180,13 +180,6 @@ def get_beside_base(obj):
             )
         )
         FreeCAD.Console.PrintError(f"{error_message}\n")
-        if FreeCAD.GuiUp:
-            QtGui.QMessageBox.critical(
-                FreeCADGui.getMainWindow(),
-                "Can't start Solver or Mesh creation besides FC file.",
-                error_message,
-            )
-
         # from .errors import MustSaveError
         # raise MustSaveError()
         return new_path
@@ -205,10 +198,6 @@ def get_custom_base(solver):
             " For the moment the tmp dir {} is used.".format(path, new_path)
         )
         FreeCAD.Console.PrintError(f"{error_message}\n")
-        if FreeCAD.GuiUp:
-            QtGui.QMessageBox.critical(
-                FreeCADGui.getMainWindow(), "Can't start Solver or Mesh creation.", error_message
-            )
         # from .errors import DirectoryDoesNotExistError
         # raise DirectoryDoesNotExistError("Invalid path")
         return new_path
