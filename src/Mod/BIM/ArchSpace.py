@@ -261,6 +261,8 @@ class _Space(ArchComponent.Component):
 
         if self.clone(obj):
             return
+        if not self.ensureBase(obj):
+            return
         self.getShape(obj)
 
     def onChanged(self,obj,prop):

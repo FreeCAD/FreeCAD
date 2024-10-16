@@ -216,6 +216,8 @@ class _Equipment(ArchComponent.Component):
 
         if self.clone(obj):
             return
+        if not self.ensureBase(obj):
+            return
 
         pl = obj.Placement
         if obj.Base:

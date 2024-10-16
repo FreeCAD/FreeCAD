@@ -215,6 +215,8 @@ class _Rebar(ArchComponent.Component):
 
         if self.clone(obj):
             return
+        if not self.ensureBase(obj):
+            return
         if not obj.Base:
             # let pass without error so that object can receive a shape directly
             #FreeCAD.Console.PrintError(

@@ -118,6 +118,10 @@ class _ArchPipe(ArchComponent.Component):
         import math
         import Part
         import DraftGeomUtils
+        if self.clone(obj):
+            return
+        if not self.ensureBase(obj):
+            return
         pl = obj.Placement
         w = self.getWire(obj)
         if not w:
@@ -296,6 +300,11 @@ class _ArchPipeConnector(ArchComponent.Component):
         self.setProperties(obj)
 
     def execute(self,obj):
+
+        if self.clone(obj):
+            return
+        if not self.ensureBase(obj):
+            return
 
         tol = 1 # tolerance for alignment. This is only visual, we can keep it low...
         ptol = 0.001 # tolerance for coincident points
