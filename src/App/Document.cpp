@@ -97,6 +97,7 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 #include <Base/UnitsApi.h>
 
 #include "Document.h"
+#include "DocumentSignals.h"
 #include "private/DocumentP.h"
 #include "Application.h"
 #include "AutoTransaction.h"
@@ -248,7 +249,7 @@ bool Document::undo(int id)
             }
         }
 
-        signalUndo(*this); // now signal the undo
+        signals->signalUndo(*this); // now signal the undo
 
         return true;
     }
@@ -297,7 +298,7 @@ bool Document::redo(int id)
             }
         }
 
-        signalRedo(*this);
+        signals->signalRedo(*this);
         return true;
     }
 
@@ -383,7 +384,7 @@ int Document::_openTransaction(const char* name, int id)
         mUndoMap[d->activeUndoTransaction->getID()] = d->activeUndoTransaction;
         id = d->activeUndoTransaction->getID();
 
-        signalOpenTransaction(*this, name);
+        signals->signalOpenTransaction(*this, name);
 
         auto &app = GetApplication();
         auto activeDoc = app.getActiveDocument();
@@ -500,7 +501,7 @@ void Document::_commitTransaction(bool notify)
             delete mUndoTransactions.front();
             mUndoTransactions.pop_front();
         }
-        signalCommitTransaction(*this);
+        signals->signalCommitTransaction(*this);
 
         // closeActiveTransaction() may call again _commitTransaction()
         if (notify)
@@ -536,7 +537,7 @@ void Document::_abortTransaction()
         mUndoMap.erase(d->activeUndoTransaction->getID());
         delete d->activeUndoTransaction;
         d->activeUndoTransaction = nullptr;
-        signalAbortTransaction(*this);
+        signals->signalAbortTransaction(*this);
     }
 }
 
@@ -713,12 +714,12 @@ void Document::onBeforeChange(const Property* prop)
 {
     if(prop == &Label)
         oldLabel = Label.getValue();
-    signalBeforeChange(*this, *prop);
+    signals->signalBeforeChange(*this, *prop);
 }
 
 void Document::onChanged(const Property* prop)
 {
-    signalChanged(*this, *prop);
+    signals->signalChanged(*this, *prop);
 
     // the Name property is a label for display purposes
     if (prop == &Label) {
@@ -769,7 +770,7 @@ void Document::onChanged(const Property* prop)
 void Document::onBeforeChangeProperty(const TransactionalObject *Who, const Property *What)
 {
     if(Who->isDerivedFrom(App::DocumentObject::getClassTypeId()))
-        signalBeforeChangeObject(*static_cast<const App::DocumentObject*>(Who), *What);
+        signals->signalBeforeChangeObject(*static_cast<const App::DocumentObject*>(Who), *What);
     if(!d->rollback && !globalIsRelabeling) {
         _checkTransaction(nullptr, What, __LINE__);
         if (d->activeUndoTransaction)
@@ -779,7 +780,7 @@ void Document::onBeforeChangeProperty(const TransactionalObject *Who, const Prop
 
 void Document::onChangedProperty(const DocumentObject *Who, const Property *What)
 {
-    signalChangedObject(*Who, *What);
+    signals->signalChangedObject(*Who, *What);
 }
 
 void Document::setTransactionMode(int iMode)
@@ -791,7 +792,8 @@ void Document::setTransactionMode(int iMode)
 // constructor
 //--------------------------------------------------------------------------
 Document::Document(const char* documentName)
-    : myName(documentName)
+    : signals(new Public),
+    myName(documentName)
 {
     // Remark: In a constructor we should never increment a Python object as we cannot be sure
     // if the Python interpreter gets a reference of it. E.g. if we increment but Python don't
@@ -926,6 +928,8 @@ Document::~Document()
         std::cerr << "Removing transient directory failed: " << e.what() << std::endl;
     }
     delete d;
+
+    delete signals;
 }
 
 std::string Document::getTransientDirectoryName(const std::string& uuid, const std::string& filename) const
@@ -1167,7 +1171,7 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj, std::
     writer.Stream() << "</Document>" << endl;
 
     // Hook for others to add further data.
-    signalExportObjects(obj, writer);
+    signals->signalExportObjects(obj, writer);
 
     // write additional files
     writer.writeFiles();
@@ -1526,10 +1530,10 @@ Document::importObjects(Base::XMLReader& reader)
 
     reader.readEndElement("Document");
 
-    signalImportObjects(objs, reader);
+    signals->signalImportObjects(objs, reader);
     afterRestore(objs,true);
 
-    signalFinishImportObjects(objs);
+    signals->signalFinishImportObjects(objs);
 
     for(auto o : objs) {
         if(o && o->isAttachedToDocument())
@@ -1922,7 +1926,7 @@ private:
 
 bool Document::saveToFile(const char* filename) const
 {
-    signalStartSave(*this, filename);
+    signals->signalStartSave(*this, filename);
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document");
     int compression = hGrp->GetInt("CompressionLevel",7);
@@ -1997,7 +2001,7 @@ bool Document::saveToFile(const char* filename) const
         Document::Save(writer);
 
         // Special handling for Gui document.
-        signalSaveDocument(writer);
+        signals->signalSaveDocument(writer);
 
         // write additional files
         writer.writeFiles();
@@ -2036,7 +2040,7 @@ bool Document::saveToFile(const char* filename) const
         policy.apply(fn, nativePath);
     }
 
-    signalFinishSave(*this, filename);
+    signals->signalFinishSave(*this, filename);
 
     return true;
 }
@@ -2112,7 +2116,7 @@ void Document::restore (const char *filename,
     // exist, what is done in Restore().
     // Note: This file doesn't need to be available if the document has been created
     // without GUI. But if available then follow after all data files of the App document.
-    signalRestoreDocument(reader);
+    signals->signalRestoreDocument(reader);
     reader.readFiles(zipstream);
 
     if (reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestore)) {
@@ -2229,7 +2233,7 @@ bool Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool 
         } else if(!d->touchedObjs.count(obj))
             obj->purgeTouched();
 
-        signalFinishRestoreObject(*obj);
+        signals->signalFinishRestoreObject(*obj);
     }
 
     d->touchedObjs.clear();
@@ -2761,7 +2765,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
                 d->vertexMap.clear();
                 return -1;
             }
-            signalRecomputedObject(*Cur);
+            signals->signalRecomputedObject(*Cur);
             ++objectCount;
         }
     }
@@ -2775,7 +2779,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
     }
     d->vertexMap.clear();
 
-    signalRecomputed(*this);
+    signals->signalRecomputed(*this);
 
     return objectCount;
 }
@@ -2804,7 +2808,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
     // The 'SkipRecompute' flag can be (tmp.) set to avoid too many
     // time expensive recomputes
     if(!force && testStatus(Document::SkipRecompute)) {
-        signalSkipRecompute(*this,objs);
+        signals->signalSkipRecompute(*this,objs);
         return 0;
     }
 
@@ -2814,7 +2818,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
     FC_TIME_INIT(t);
 
     Base::ObjectStatusLocker<Document::Status, Document> exe(Document::Recomputing, this);
-    signalBeforeRecompute(*this);
+    signals->signalBeforeRecompute(*this);
 
 #if 0
     //////////////////////////////////////////////////////////////////////////
@@ -2882,7 +2886,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
                     }
                 }
                 if(obj->isTouched() || doRecompute) {
-                    signalRecomputedObject(*obj);
+                    signals->signalRecomputedObject(*obj);
                     obj->purgeTouched();
                     // set all dependent object touched to force recompute
                     for (auto inObjIt : obj->getInList())
@@ -2922,7 +2926,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
         obj->setStatus(ObjectStatus::Recompute2,false);
     }
 
-    signalRecomputed(*this,topoSortedObjects);
+    signals->signalRecomputed(*this,topoSortedObjects);
 
     FC_TIME_LOG(t,"Recompute total");
 
@@ -3199,7 +3203,7 @@ bool Document::recomputeFeature(DocumentObject* Feat, bool recursive)
             return !hasError;
         } else {
             _recomputeFeature(Feat);
-            signalRecomputedObject(*Feat);
+            signals->signalRecomputedObject(*Feat);
             return Feat->isValid();
         }
     }else
@@ -3274,14 +3278,14 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName,
     if (viewType && viewType[0] != '\0')
         pcObject->_pcViewProviderName = viewType;
 
-    signalNewObject(*pcObject);
+    signals->signalNewObject(*pcObject);
 
     // do no transactions if we do a rollback!
     if (!d->rollback && d->activeUndoTransaction) {
-        signalTransactionAppend(*pcObject, d->activeUndoTransaction);
+        signals->signalTransactionAppend(*pcObject, d->activeUndoTransaction);
     }
 
-    signalActivatedObject(*pcObject);
+    signals->signalActivatedObject(*pcObject);
 
     // return the Object
     return pcObject;
@@ -3370,17 +3374,17 @@ std::vector<DocumentObject *> Document::addObjects(const char* sType, const std:
         const char *viewType = pcObject->getViewProviderNameOverride();
         pcObject->_pcViewProviderName = viewType ? viewType : "";
 
-        signalNewObject(*pcObject);
+        signals->signalNewObject(*pcObject);
 
         // do no transactions if we do a rollback!
         if (!d->rollback && d->activeUndoTransaction) {
-            signalTransactionAppend(*pcObject, d->activeUndoTransaction);
+            signals->signalTransactionAppend(*pcObject, d->activeUndoTransaction);
         }
     }
 
     if (!objects.empty()) {
         d->activeObject = objects.back();
-        signalActivatedObject(*objects.back());
+        signals->signalActivatedObject(*objects.back());
     }
 
     return objects;
@@ -3429,14 +3433,14 @@ void Document::addObject(DocumentObject* pcObject, const char* pObjectName)
     const char *viewType = pcObject->getViewProviderNameOverride();
     pcObject->_pcViewProviderName = viewType ? viewType : "";
 
-    signalNewObject(*pcObject);
+    signals->signalNewObject(*pcObject);
 
     // do no transactions if we do a rollback!
     if (!d->rollback && d->activeUndoTransaction) {
-        signalTransactionAppend(*pcObject, d->activeUndoTransaction);
+        signals->signalTransactionAppend(*pcObject, d->activeUndoTransaction);
     }
 
-    signalActivatedObject(*pcObject);
+    signals->signalActivatedObject(*pcObject);
 }
 
 void Document::_addObject(DocumentObject* pcObject, const char* pObjectName)
@@ -3462,15 +3466,15 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName)
     pcObject->_pcViewProviderName = viewType ? viewType : "";
 
     // send the signal
-    signalNewObject(*pcObject);
+    signals->signalNewObject(*pcObject);
 
     // do no transactions if we do a rollback!
     if (!d->rollback && d->activeUndoTransaction) {
-        signalTransactionAppend(*pcObject, d->activeUndoTransaction);
+        signals->signalTransactionAppend(*pcObject, d->activeUndoTransaction);
     }
 
     d->activeObject = pcObject;
-    signalActivatedObject(*pcObject);
+    signals->signalActivatedObject(*pcObject);
 }
 
 /// Remove an object out of the document
@@ -3502,16 +3506,16 @@ void Document::removeObject(const char* sName)
         pos->second->unsetupObject();
     }
 
-    signalDeletedObject(*(pos->second));
+    signals->signalDeletedObject(*(pos->second));
 
     // do no transactions if we do a rollback!
     if (!d->rollback && d->activeUndoTransaction) {
         // in this case transaction delete or save the object
-        signalTransactionRemove(*pos->second, d->activeUndoTransaction);
+        signals->signalTransactionRemove(*pos->second, d->activeUndoTransaction);
     }
     else {
         // if not saved in undo -> delete object
-        signalTransactionRemove(*pos->second, 0);
+        signals->signalTransactionRemove(*pos->second, 0);
     }
 
 #ifdef USE_OLD_DAG
@@ -3607,7 +3611,7 @@ void Document::_removeObject(DocumentObject* pcObject)
     if (!d->undoing && !d->rollback) {
         pcObject->unsetupObject();
     }
-    signalDeletedObject(*pcObject);
+    signals->signalDeletedObject(*pcObject);
     // TODO Check me if it's needed (2015-09-01, Fat-Zer)
 
     //remove the tip if needed
@@ -3619,12 +3623,12 @@ void Document::_removeObject(DocumentObject* pcObject)
     // do no transactions if we do a rollback!
     if (!d->rollback && d->activeUndoTransaction) {
         // Undo stuff
-        signalTransactionRemove(*pcObject, d->activeUndoTransaction);
+        signals->signalTransactionRemove(*pcObject, d->activeUndoTransaction);
         d->activeUndoTransaction->addObjectNew(pcObject);
     }
     else {
         // for a rollback delete the object
-        signalTransactionRemove(*pcObject, 0);
+        signals->signalTransactionRemove(*pcObject, 0);
         breakDependency(pcObject, true);
     }
 

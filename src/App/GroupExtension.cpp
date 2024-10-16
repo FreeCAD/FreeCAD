@@ -353,7 +353,7 @@ void GroupExtension::extensionOnChanged(const Property* p) {
         for(auto obj : Group.getValue()) {
             if(obj && obj->isAttachedToDocument()) {
                 //NOLINTBEGIN
-                _Conns[obj] = obj->signalChanged.connect(std::bind(
+                _Conns[obj] = obj->signals->signalChanged.connect(std::bind(
                             &GroupExtension::slotChildChanged,this,sp::_1, sp::_2));
                 //NOLINTEND
             }

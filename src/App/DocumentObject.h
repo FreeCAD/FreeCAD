@@ -107,12 +107,8 @@ public:
     /// Allow control visibility status in App name space
     PropertyBool Visibility;
 
-    /// signal before changing a property of this object
-    boost::signals2::signal<void (const App::DocumentObject&, const App::Property&)> signalBeforeChange;
-    /// signal on changed  property of this object
-    boost::signals2::signal<void (const App::DocumentObject&, const App::Property&)> signalChanged;
-    /// signal on changed property of this object before document scoped signalChangedObject
-    boost::signals2::signal<void (const App::DocumentObject&, const App::Property&)> signalEarlyChanged;
+    struct Public;
+    Public* signals;  // pImpl
 
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName() const {
@@ -687,9 +683,10 @@ private:
 private:
     // Back pointer to all the fathers in a DAG of the document
     // this is used by the document (via friend) to have a effective DAG handling
+    struct Private;
+    Private* pImpl;
     std::vector<App::DocumentObject*> _inList;
     mutable std::vector<App::DocumentObject *> _outList;
-    mutable std::unordered_map<const char *, App::DocumentObject*, CStringHasher, CStringHasher> _outListMap;
     mutable bool _outListCached = false;
 };
 

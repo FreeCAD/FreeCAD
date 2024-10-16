@@ -24,11 +24,12 @@
 #ifndef APP_PROPERTY_H
 #define APP_PROPERTY_H
 
-#include <set> 
+#include <cassert>
+#include <set>
+#include <vector>
 
 #include <Base/Exception.h>
 #include <Base/Persistence.h>
-#include <boost/signals2.hpp>
 #include <bitset>
 
 #include "ElementNamingUtils.h"
@@ -310,7 +311,8 @@ private:
     int64_t _id;
 
 public:
-    boost::signals2::signal<void (const App::Property&)> signalChanged;
+    struct Public;
+    Public* signals;  //pImpl
 };
 
 

@@ -24,7 +24,6 @@
 #define EXPRESSIONENGINE_H
 
 #include <functional>
-#include <boost_signals2.hpp>
 #include <App/PropertyLinks.h>
 
 namespace Base {
@@ -36,6 +35,7 @@ namespace boost {
     class listS;
     class vecS;
     class directedS;
+    class any;
 }
 
 // namespace std {
@@ -159,9 +159,6 @@ public:
     App::ObjectIdentifier canonicalPath(const App::ObjectIdentifier &p) const override;
 
     size_t numExpressions() const;
-
-    ///signal called when an expression was changed
-    boost::signals2::signal<void (const App::ObjectIdentifier &)> expressionChanged;
 
     void afterRestore() override;
     void onContainerRestored() override;

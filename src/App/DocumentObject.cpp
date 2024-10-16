@@ -21,7 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
+  
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <stack>
@@ -34,11 +34,14 @@
 #include <Base/Writer.h>
 
 #include "Application.h"
+#include "CStringHasher.h"
 #include "ElementNamingUtils.h"
 #include "Document.h"
 #include "DocumentObject.h"
+#include "DocumentObjectSignals.h"
 #include "DocumentObjectExtension.h"
 #include "DocumentObjectGroup.h"
+#include "DocumentSignals.h"
 #include "GeoFeatureGroupExtension.h"
 #include "Link.h"
 #include "ObjectIdentifier.h"
@@ -63,6 +66,10 @@ DocumentObjectExecReturn *DocumentObject::StdReturn = nullptr;
 // DocumentObject
 //===========================================================================
 
+struct DocumentObject::Private {
+    mutable std::unordered_map<const char *, App::DocumentObject*, CStringHasher, CStringHasher> _outListMap;
+};
+
 DocumentObject::DocumentObject()
     : ExpressionEngine()
 {
@@ -80,6 +87,8 @@ DocumentObject::DocumentObject()
     Visibility.setStatus(Property::Output,true);
     Visibility.setStatus(Property::Hidden,true);
     Visibility.setStatus(Property::NoModify,true);
+
+    pImpl = new Private;
 }
 
 DocumentObject::~DocumentObject()
@@ -211,7 +220,7 @@ void DocumentObject::touch(bool noRecompute)
         StatusBits.set(ObjectStatus::Enforce);
     StatusBits.set(ObjectStatus::Touch);
     if (_pDoc)
-        _pDoc->signalTouchedObject(*this);
+        _pDoc->signals->signalTouchedObject(*this);
 }
 
 /**
@@ -223,7 +232,7 @@ void DocumentObject::freeze()
     StatusBits.set(ObjectStatus::Freeze);
     // use the signalTouchedObject to refresh the Gui
     if (_pDoc)
-        _pDoc->signalTouchedObject(*this);
+        _pDoc->signals->signalTouchedObject(*this);
 }
 
 /**
@@ -746,7 +755,7 @@ void DocumentObject::onBeforeChange(const Property* prop)
     if (_pDoc)
         onBeforeChangeProperty(_pDoc, prop);
 
-    signalBeforeChange(*this,*prop);
+    signals->signalBeforeChange(*this,*prop);
 }
 
 void DocumentObject::onEarlyChange(const Property *prop)
@@ -767,7 +776,7 @@ void DocumentObject::onEarlyChange(const Property *prop)
         }
     }
 
-    signalEarlyChanged(*this, *prop);
+    signals->signalEarlyChanged(*this, *prop);
 }
 
 /// get called by the container when a Property was changed
@@ -798,7 +807,7 @@ void DocumentObject::onChanged(const Property* prop)
     //     _pDoc->onChangedProperty(this,prop);
 
     if (prop == &Label && _pDoc && oldLabel != Label.getStrValue())
-        _pDoc->signalRelabelObject(*this);
+        _pDoc->signals->signalRelabelObject(*this);
 
     // set object touched if it is an input property
     if (!testStatus(ObjectStatus::NoTouch) 
@@ -821,12 +830,12 @@ void DocumentObject::onChanged(const Property* prop)
     if (_pDoc)
         _pDoc->onChangedProperty(this,prop);
 
-    signalChanged(*this,*prop);
+    signals->signalChanged(*this,*prop);
 }
 
 void DocumentObject::clearOutListCache() const {
     _outList.clear();
-    _outListMap.clear();
+    pImpl->_outListMap.clear();
     _outListCached = false;
 }
 
@@ -864,13 +873,13 @@ DocumentObject *DocumentObject::getSubObject(const char *subname,
     }else{
         name = std::string(subname,dot);
         const auto &outList = getOutList();
-        if(outList.size()!=_outListMap.size()) {
-            _outListMap.clear();
+        if(outList.size()!=pImpl->_outListMap.size()) {
+            pImpl->_outListMap.clear();
             for(auto obj : outList)
-                _outListMap[obj->getDagKey()] = obj;
+                pImpl->_outListMap[obj->getDagKey()] = obj;
         }
-        auto it = _outListMap.find(name.c_str());
-        if(it != _outListMap.end())
+        auto it = pImpl->_outListMap.find(name.c_str());
+        if(it != pImpl->_outListMap.end())
             ret = it->second;
     }
 
@@ -1419,5 +1428,5 @@ bool DocumentObject::redirectSubName(std::ostringstream &, DocumentObject *, Doc
 void DocumentObject::onPropertyStatusChanged(const Property &prop, unsigned long oldStatus) {
     (void)oldStatus;
     if(!Document::isAnyRestoring() && isAttachedToDocument() && getDocument())
-        getDocument()->signalChangePropertyEditor(*getDocument(),prop);
+        getDocument()->signals->signalChangePropertyEditor(*getDocument(),prop);
 }
