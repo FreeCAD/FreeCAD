@@ -99,54 +99,6 @@ protected:
     long _lValue;
 };
 
-// /** Path properties
-//  * Properties handling file system paths.
-//  */
-// class AppExport PropertyPath: public Property
-// {
-//     TYPESYSTEM_HEADER_WITH_OVERRIDE();
-
-// public:
-
-//     PropertyPath();
-//     ~PropertyPath() override;
-
-//     /** Sets the property
-//      */
-//     void setValue(const boost::filesystem::path &);
-
-//     /** Sets the property
-//      */
-//     void setValue(const char *);
-
-//     /** This method returns a string representation of the property
-//      */
-//     const boost::filesystem::path &getValue() const;
-
-//     const char* getEditorName() const override { return "Gui::PropertyEditor::PropertyPathItem"; }
-
-//     PyObject *getPyObject() override;
-//     void setPyObject(PyObject* py) override;
-
-//     void Save (Base::Writer &writer) const override;
-//     void Restore(Base::XMLReader &reader) override;
-
-//     Property *Copy() const override;
-//     void Paste(const Property &from) override;
-
-//     unsigned int getMemSize () const override;
-
-//     bool isSame(const Property &other) const override {
-//         if (&other == this) {
-//             return true;
-//         }
-//         return getTypeId() == other.getTypeId()
-//             && getValue() == static_cast<decltype(this)>(&other)->getValue();
-//     }
-
-// protected:
-//     boost::filesystem::path _cValue;
-// };
 
 /// Property wrapper around an Enumeration object.
 class AppExport PropertyEnumeration: public Property

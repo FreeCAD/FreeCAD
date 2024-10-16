@@ -150,116 +150,116 @@ void PropertyInteger::setPathValue(const ObjectIdentifier &path, const boost::an
 }
 
 
-//**************************************************************************
-//**************************************************************************
-// PropertyPath
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// //**************************************************************************
+// //**************************************************************************
+// // PropertyPath
+// //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyPath , App::Property)
+// TYPESYSTEM_SOURCE(App::PropertyPath , App::Property)
 
-//**************************************************************************
-// Construction/Destruction
+// //**************************************************************************
+// // Construction/Destruction
 
-PropertyPath::PropertyPath() = default;
+// PropertyPath::PropertyPath() = default;
 
-PropertyPath::~PropertyPath() = default;
-
-
-//**************************************************************************
-// Base class implementer
+// PropertyPath::~PropertyPath() = default;
 
 
-//**************************************************************************
-// Setter/getter for the property
-
-void PropertyPath::setValue(const boost::filesystem::path &Path)
-{
-    aboutToSetValue();
-    _cValue = Path;
-    hasSetValue();
-}
-
-void PropertyPath::setValue(const char * Path)
-{
-    aboutToSetValue();
-#if (BOOST_FILESYSTEM_VERSION == 2)
-    _cValue = boost::filesystem::path(Path,boost::filesystem::no_check );
-    //_cValue = boost::filesystem::path(Path,boost::filesystem::native );
-    //_cValue = boost::filesystem::path(Path,boost::filesystem::windows_name );
-#else
-    _cValue = boost::filesystem::path(Path);
-#endif
-    hasSetValue();
-}
-
-const boost::filesystem::path &PropertyPath::getValue() const
-{
-    return _cValue;
-}
-
-PyObject *PropertyPath::getPyObject()
-{
-#if (BOOST_FILESYSTEM_VERSION == 2)
-    std::string str = _cValue.native_file_string();
-#else
-    std::string str = _cValue.string();
-#endif
-
-    // Returns a new reference, don't increment it!
-    PyObject *p = PyUnicode_DecodeUTF8(str.c_str(),str.size(),nullptr);
-    if (!p) throw Base::UnicodeError("UTF8 conversion failure at PropertyPath::getPyObject()");
-    return p;
-}
-
-void PropertyPath::setPyObject(PyObject *value)
-{
-    std::string path;
-    if (PyUnicode_Check(value)) {
-        path = PyUnicode_AsUTF8(value);
-    }
-    else {
-        std::string error = std::string("type must be str or unicode, not ");
-        error += value->ob_type->tp_name;
-        throw Base::TypeError(error);
-    }
-
-    // assign the path
-    setValue(path.c_str());
-}
+// //**************************************************************************
+// // Base class implementer
 
 
-void PropertyPath::Save (Base::Writer &writer) const
-{
-    std::string val = encodeAttribute(_cValue.string());
-    writer.Stream() << writer.ind() << "<Path value=\"" <<  val <<"\"/>" << std::endl;
-}
+// //**************************************************************************
+// // Setter/getter for the property
 
-void PropertyPath::Restore(Base::XMLReader &reader)
-{
-    // read my Element
-    reader.readElement("Path");
-    // get the value of my Attribute
-    setValue(reader.getAttribute("value"));
-}
+// void PropertyPath::setValue(const boost::filesystem::path &Path)
+// {
+//     aboutToSetValue();
+//     _cValue = Path;
+//     hasSetValue();
+// }
 
-Property *PropertyPath::Copy() const
-{
-    PropertyPath *p= new PropertyPath();
-    p->_cValue = _cValue;
-    return p;
-}
+// void PropertyPath::setValue(const char * Path)
+// {
+//     aboutToSetValue();
+// #if (BOOST_FILESYSTEM_VERSION == 2)
+//     _cValue = boost::filesystem::path(Path,boost::filesystem::no_check );
+//     //_cValue = boost::filesystem::path(Path,boost::filesystem::native );
+//     //_cValue = boost::filesystem::path(Path,boost::filesystem::windows_name );
+// #else
+//     _cValue = boost::filesystem::path(Path);
+// #endif
+//     hasSetValue();
+// }
 
-void PropertyPath::Paste(const Property &from)
-{
-    aboutToSetValue();
-    _cValue = dynamic_cast<const PropertyPath&>(from)._cValue;
-    hasSetValue();
-}
+// const boost::filesystem::path &PropertyPath::getValue() const
+// {
+//     return _cValue;
+// }
 
-unsigned int PropertyPath::getMemSize () const
-{
-    return static_cast<unsigned int>(_cValue.string().size());
-}
+// PyObject *PropertyPath::getPyObject()
+// {
+// #if (BOOST_FILESYSTEM_VERSION == 2)
+//     std::string str = _cValue.native_file_string();
+// #else
+//     std::string str = _cValue.string();
+// #endif
+
+//     // Returns a new reference, don't increment it!
+//     PyObject *p = PyUnicode_DecodeUTF8(str.c_str(),str.size(),nullptr);
+//     if (!p) throw Base::UnicodeError("UTF8 conversion failure at PropertyPath::getPyObject()");
+//     return p;
+// }
+
+// void PropertyPath::setPyObject(PyObject *value)
+// {
+//     std::string path;
+//     if (PyUnicode_Check(value)) {
+//         path = PyUnicode_AsUTF8(value);
+//     }
+//     else {
+//         std::string error = std::string("type must be str or unicode, not ");
+//         error += value->ob_type->tp_name;
+//         throw Base::TypeError(error);
+//     }
+
+//     // assign the path
+//     setValue(path.c_str());
+// }
+
+
+// void PropertyPath::Save (Base::Writer &writer) const
+// {
+//     std::string val = encodeAttribute(_cValue.string());
+//     writer.Stream() << writer.ind() << "<Path value=\"" <<  val <<"\"/>" << std::endl;
+// }
+
+// void PropertyPath::Restore(Base::XMLReader &reader)
+// {
+//     // read my Element
+//     reader.readElement("Path");
+//     // get the value of my Attribute
+//     setValue(reader.getAttribute("value"));
+// }
+
+// Property *PropertyPath::Copy() const
+// {
+//     PropertyPath *p= new PropertyPath();
+//     p->_cValue = _cValue;
+//     return p;
+// }
+
+// void PropertyPath::Paste(const Property &from)
+// {
+//     aboutToSetValue();
+//     _cValue = dynamic_cast<const PropertyPath&>(from)._cValue;
+//     hasSetValue();
+// }
+
+// unsigned int PropertyPath::getMemSize () const
+// {
+//     return static_cast<unsigned int>(_cValue.string().size());
+// }
 
 //**************************************************************************
 //**************************************************************************
