@@ -104,7 +104,7 @@ public:
     /// Checks for a special extension, NOT case sensitive
     bool hasExtension(const char* Ext) const;
     /// Checks for any of the special extensions, NOT case sensitive
-    bool hasExtension(std::initializer_list<const char*> Exts) const;
+    bool hasExtension(const std::initializer_list<const char*> Exts) const;
     //@}
 
     /** @name methods to test the status of the file or dir */

@@ -25,7 +25,6 @@
 
 #include <array>
 #include <cstring>
-#include <string>
 
 namespace App
 {

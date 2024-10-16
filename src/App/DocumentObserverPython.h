@@ -27,7 +27,6 @@
 #include <FCGlobal.h>
 #include <boost/signals2.hpp>
 #include <CXX/Objects.hxx>
-#include <string>
 #include <vector>
 
 namespace App

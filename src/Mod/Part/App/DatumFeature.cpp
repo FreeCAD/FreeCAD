@@ -23,6 +23,8 @@
 
 #include "PreCompiled.h"
 
+#include <Base/Interpreter.h>
+
 #include "DatumFeature.h"
 #include "OCCError.h"
 #include "PartPyCXX.h"

@@ -24,7 +24,6 @@
 #define EXPRESSION_H
 
 #include <deque>
-#include <set>
 #include <string>
 
 #include <App/PropertyLinks.h>
@@ -33,6 +32,7 @@
 #include <Base/Exception.h>
 #include <Base/BaseClass.h>
 
+// template <class T> class std::set;
 
 namespace Base
 {
