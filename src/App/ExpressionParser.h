@@ -147,6 +147,95 @@ protected:
 };
 
 /**
+  * Class implementing a ImperialAngle 1deg2M1AS
+  */
+
+class AppExport ImperialAngle : public UnitExpression {
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+public:
+    explicit ImperialAngle(const App::DocumentObject *_owner = nullptr, Expression * _deg = nullptr, Expression * _prime = nullptr, Expression * _doublePrime = nullptr);
+
+    ~ImperialAngle() override;
+
+    bool isTouched() const override;
+
+    Expression * simplify() const override;
+
+    int priority() const override;
+
+    Expression * getDeg() const { return deg; }
+
+    Expression * getPrime() const { return prime; }
+
+    Expression * getdoublePrime() const { return doublePrime; }
+
+protected:
+    Expression * _copy() const override;
+
+    Py::Object _getPyValue() const override;
+
+    void _toString(std::ostream &ss, bool persistent, int indent) const override;
+
+    void _visit(ExpressionVisitor & v) override;
+
+    virtual bool isCommutative() const;
+
+    virtual bool isLeftAssociative() const;
+
+    virtual bool isRightAssociative() const;
+
+    Expression * deg;         /**< Degree */
+    Expression * prime;       /**< Arc Minute/prime */
+    Expression * doublePrime; /**< Arc Second/doublePrime */
+};
+
+/**
+  * Class implementing a ImperialDistance 1ft 2 1/2in
+  */
+
+class AppExport ImperialDistance : public UnitExpression {
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+public:
+    explicit ImperialDistance(const App::DocumentObject *_owner = nullptr, Expression * _feet = nullptr, Expression * _inches = nullptr, Expression * _fractionTop = nullptr, Expression * _fractionBottom = nullptr);
+
+    ~ImperialDistance() override;
+
+    bool isTouched() const override;
+
+    Expression * simplify() const override;
+
+    int priority() const override;
+
+    Expression * getFeet() const { return feet; }
+
+    Expression * getInches() const { return inches; }
+
+    Expression * getFractionTop() const { return fractionTop; }
+
+    Expression * getFractionBottom() const { return fractionBottom; }
+
+protected:
+    Expression * _copy() const override;
+
+    Py::Object _getPyValue() const override;
+
+    void _toString(std::ostream &ss, bool persistent, int indent) const override;
+
+    void _visit(ExpressionVisitor & v) override;
+
+    virtual bool isCommutative() const;
+
+    virtual bool isLeftAssociative() const;
+
+    virtual bool isRightAssociative() const;
+
+    Expression * feet;         /**< Degree */
+    Expression * inches;       /**< Arc Minute/prime */
+    Expression * fractionTop; /**< Arc Second/doublePrime */
+    Expression * fractionBottom; /**< Arc Second/doublePrime */
+};
+
+/**
   * Class implementing an infix expression.
   *
   */

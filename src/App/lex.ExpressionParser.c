@@ -9126,22 +9126,22 @@ COUNTCHARS; yylval.quantity.scaler  = Quantity::Candela;             yylval.quan
 case 48:
 YY_RULE_SETUP
 #line 233 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Inch;                yylval.quantity.unitStr = yytext; return UNIT; // inch
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Inch;                yylval.quantity.unitStr = yytext; return UNITINCH; // inch
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
 #line 234 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Inch;                yylval.quantity.unitStr = yytext; return USUNIT; // inch
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Inch;                yylval.quantity.unitStr = yytext; return UNITINCH; // inch
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
 #line 235 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Foot;                yylval.quantity.unitStr = yytext; return UNIT; // foot
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Foot;                yylval.quantity.unitStr = yytext; return UNITFOOT; // foot
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
 #line 236 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Foot;                yylval.quantity.unitStr = yytext; return USUNIT; // foot
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Foot;                yylval.quantity.unitStr = yytext; return UNITFOOT; // foot
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
@@ -9516,12 +9516,12 @@ COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloCalorie;         yylval.quan
 case 126:
 YY_RULE_SETUP
 #line 330 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Degree;              yylval.quantity.unitStr = yytext; return UNIT; // degree         (internal standard angle)
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Degree;              yylval.quantity.unitStr = yytext; return UNITDEG; // degree         (internal standard angle)
 	YY_BREAK
 case 127:
 YY_RULE_SETUP
 #line 331 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Degree;              yylval.quantity.unitStr = yytext; return UNIT; // degree         (internal standard angle)
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Degree;              yylval.quantity.unitStr = yytext; return UNITDEG; // degree         (internal standard angle)
 	YY_BREAK
 case 128:
 YY_RULE_SETUP
@@ -9536,22 +9536,22 @@ COUNTCHARS; yylval.quantity.scaler  = Quantity::Gon;                 yylval.quan
 case 130:
 YY_RULE_SETUP
 #line 334 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::AngMinute;           yylval.quantity.unitStr = yytext; return UNIT; // angminute
+COUNTCHARS; yylval.quantity.scaler  = Quantity::AngMinute;           yylval.quantity.unitStr = yytext; return UNITARCMIN; // angminute
 	YY_BREAK
 case 131:
 YY_RULE_SETUP
 #line 335 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::AngMinute;           yylval.quantity.unitStr = yytext; return UNIT; // angminute U+2032 	&prime; &#8242; ′
+COUNTCHARS; yylval.quantity.scaler  = Quantity::AngMinute;           yylval.quantity.unitStr = yytext; return UNITARCMIN; // angminute U+2032 	&prime; &#8242; ′
 	YY_BREAK
 case 132:
 YY_RULE_SETUP
 #line 336 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::AngSecond;           yylval.quantity.unitStr = yytext; return UNIT; // angsecond
+COUNTCHARS; yylval.quantity.scaler  = Quantity::AngSecond;           yylval.quantity.unitStr = yytext; return UNITARCSEC; // angsecond
 	YY_BREAK
 case 133:
 YY_RULE_SETUP
 #line 337 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::AngSecond;           yylval.quantity.unitStr = yytext; return UNIT; // angsecond U+2033 	&Prime; &#8243; ″
+COUNTCHARS; yylval.quantity.scaler  = Quantity::AngSecond;           yylval.quantity.unitStr = yytext; return UNITARCSEC; // angsecond U+2033 	&Prime; &#8243; ″
 	YY_BREAK
 case 134:
 YY_RULE_SETUP

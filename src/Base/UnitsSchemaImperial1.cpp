@@ -261,13 +261,8 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(const Quantity& quant,
 
         // Process into string. Start with negative sign if quantity is less
         // than zero
-        char plusOrMinus {};
         if (quant.getValue() < 0) {
             output << "-";
-            plusOrMinus = '-';
-        }
-        else {
-            plusOrMinus = '+';
         }
 
         bool trailingNumber = false;
@@ -281,15 +276,19 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(const Quantity& quant,
             if (trailingNumber) {
                 output << " ";
             }
-            output << inches << "\"";
+            output << inches;
             trailingNumber = true;
         }
         // Print fractional inches if we have any
         if (num != 0) {
             if (trailingNumber) {
-                output << " " << plusOrMinus << " ";
+                output << " ";
             }
-            output << num << "/" << den << "\"";
+            output << num << "/" << den;
+        }
+
+        if (inches != 0 || num != 0) {
+            output << "\"";
         }
 
         // Done!
