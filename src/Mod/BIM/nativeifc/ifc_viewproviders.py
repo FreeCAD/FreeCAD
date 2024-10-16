@@ -70,8 +70,16 @@ class ifc_vp_object:
                 obj.ViewObject.DiffuseColor = colors
 
     def getIcon(self):
-        if self.Object.IfcClass == "IfcGroup":
-            from PySide import QtGui
+        from PySide import QtCore, QtGui  # lazy import
+        
+        rclass = self.Object.IfcClass.replace("StandardCase","") 
+        ifcicon = ":/icons/IFC/" + rclass + ".svg"
+        if QtCore.QFile.exists(ifcicon):
+            if getattr(self, "ifcclass", "") != rclass:
+                self.ifcclass = rclass
+                self.ifcicon = overlay(ifcicon, ":/icons/IFC.svg")
+            return getattr(self, "ifcicon", overlay(ifcicon, ":/icons/IFC.svg"))
+        elif self.Object.IfcClass == "IfcGroup":
             return QtGui.QIcon.fromTheme("folder", QtGui.QIcon(":/icons/folder.svg"))
         elif self.Object.ShapeMode == "Shape":
             return ":/icons/IFC_object.svg"
