@@ -85,6 +85,11 @@ long PropertyInteger::getValue() const
     return _lValue;
 }
 
+boost::any PropertyInteger::getPathValue() const
+{
+    return _lValue;
+}
+
 PyObject *PropertyInteger::getPyObject()
 {
     return Py_BuildValue("l", _lValue);

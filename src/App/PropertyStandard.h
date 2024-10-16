@@ -28,7 +28,6 @@
 #include <memory>
 #include <string>
 #include <vector>
-#include <boost/any.hpp>
 #include <Base/Uuid.h>
 
 #include "Property.h"
@@ -85,7 +84,7 @@ public:
     unsigned int getMemSize () const override{return sizeof(long);}
 
     void setPathValue(const App::ObjectIdentifier & path, const boost::any & value) override;
-    const boost::any getPathValue(const App::ObjectIdentifier & /*path*/) const override { return _lValue; }
+    const boost::any getPathValue(const App::ObjectIdentifier & /*path*/) const override;
 
     bool isSame(const Property &other) const override {
         if (&other == this) {

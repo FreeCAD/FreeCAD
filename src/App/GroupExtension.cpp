@@ -26,6 +26,8 @@
 #include <Base/Tools.h>
 
 #include "Document.h"
+#include "DocumentObject.h"
+#include "DocumentObjectSignals.h"
 #include "GeoFeatureGroupExtension.h"
 #include "GroupExtensionPy.h"
 
