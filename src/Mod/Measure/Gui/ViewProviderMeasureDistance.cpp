@@ -254,7 +254,7 @@ SbMatrix ViewProviderMeasureDistance::getMatrix()
     Base::Vector3d localXAxis = (vec2 - vec1).Normalize();
     Base::Vector3d localYAxis = getTextDirection(localXAxis, tolerance).Normalize();
 
-    // X and Y axis have to be 90° to eachother
+    // X and Y axis have to be 90° to each other
     assert(fabs(localYAxis.Dot(localXAxis)) < tolerance);
     Base::Vector3d localZAxis = localYAxis.Cross(localXAxis).Normalize();
 
