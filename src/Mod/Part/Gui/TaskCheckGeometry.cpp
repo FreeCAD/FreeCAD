@@ -599,13 +599,35 @@ void TaskCheckGeometryResults::buildShapeContent(App::DocumentObject *pObject, c
         if (!module) {
             throw Py::Exception();
         }
-        Py::Tuple args(3);
-        args.setItem(0, Py::asObject(pObject->getPyObject()));
-        args.setItem(1, Py::Long(decimals));
-        args.setItem(2, Py::Boolean(advancedShapeContent));
-        Py::Module shapecontent(module, true);
-        Py::String result(shapecontent.callMemberFunction("buildShapeContent", args));
-        stream << result.as_std_string("utf-8");
+        {
+            Py::Tuple args(3);
+            args.setItem(0, Py::asObject(pObject->getPyObject()));
+            args.setItem(1, Py::Long(decimals));
+            args.setItem(2, Py::Boolean(advancedShapeContent));
+            Py::Module shapecontent(module, true);
+            Py::String result(shapecontent.callMemberFunction("buildShapeContent", args));
+            stream << result.as_std_string("utf-8");
+        }
+        {
+            stream << std::endl << tr("Tolerance information").toStdString() << ": " << std::endl;
+            Py::Tuple args(1);
+            {
+                args.setItem(0, Py::Long(-1));
+                Py::Float result(Py::asObject(Part::TopoShape(shape).getPyObject()).callMemberFunction("globalTolerance",args));
+                stream << " " << tr("Global Minimum").toStdString() << ": " << result << std::endl;
+            }
+            {
+                args.setItem(0, Py::Long(0));
+                Py::Float result(Py::asObject(Part::TopoShape(shape).getPyObject()).callMemberFunction("globalTolerance",args));
+                stream << " " << tr("Global Average").toStdString() << ": " << result << std::endl;
+            }
+            {
+                args.setItem(0, Py::Long(1));
+                Py::Float result(Py::asObject(Part::TopoShape(shape).getPyObject()).callMemberFunction("globalTolerance",args));
+                stream << " " << tr("Global Maximum").toStdString() << ": " << result;
+            }
+        }
+
     }
     catch (Py::Exception&) {
         Base::PyException e;
