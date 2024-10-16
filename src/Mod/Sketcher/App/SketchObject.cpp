@@ -323,7 +323,10 @@ void SketchObject::buildShape() {
     std::vector<Part::TopoShape> shapes;
     std::vector<Part::TopoShape> vertices;
     int geoId =0;
-    for(auto geo : getInternalGeometry()) {
+
+    // get the geometry after running the solver
+    auto geometries = solvedSketch.extractGeometry();
+    for(auto geo : geometries) {
         ++geoId;
         if(GeometryFacade::getConstruction(geo)) {
             continue;
@@ -345,6 +348,10 @@ void SketchObject::buildShape() {
                 FC_WARN("Edge too small: " << indexedName);
             }
         }
+    }
+
+    for (auto geo : geometries) {
+        delete geo;
     }
 
     for(int i=2;i<ExternalGeo.getSize();++i) {
