@@ -8,6 +8,7 @@ SET(Examples_Files
     BIMExample.FCStd
     FEMExample.FCStd
     AssemblyExample.FCStd
+    ArchDetail.FCStd
 )
 
 ADD_CUSTOM_TARGET(Example_data ALL
