@@ -64,7 +64,7 @@ public:
 
     /**
      * @brief fetchAxisLink: read AxisLink to obtain the axis parameters and
-     * angle span. Note: this routine is re-used in Revolve dialog, hence it
+     * angle span. Note: this routine is reused in Revolve dialog, hence it
      * is static.
      * @param axisLink (input): the link
      * @param center (output): base point of axis
