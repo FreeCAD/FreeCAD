@@ -28,8 +28,6 @@
 #include <memory>
 #include <string>
 #include <vector>
-#include <boost/dynamic_bitset.hpp>
-#include <boost/filesystem/path.hpp>
 #include <boost/any.hpp>
 #include <Base/Uuid.h>
 
@@ -37,6 +35,13 @@
 #include "Enumeration.h"
 #include "Material.h"
 
+
+namespace boost {
+    class any;
+    // namespace filesystem {
+    //     class path;
+    // }
+}
 
 namespace Base {
 class InputStream;
@@ -94,54 +99,54 @@ protected:
     long _lValue;
 };
 
-/** Path properties
- * Properties handling file system paths.
- */
-class AppExport PropertyPath: public Property
-{
-    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+// /** Path properties
+//  * Properties handling file system paths.
+//  */
+// class AppExport PropertyPath: public Property
+// {
+//     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
-public:
+// public:
 
-    PropertyPath();
-    ~PropertyPath() override;
+//     PropertyPath();
+//     ~PropertyPath() override;
 
-    /** Sets the property
-     */
-    void setValue(const boost::filesystem::path &);
+//     /** Sets the property
+//      */
+//     void setValue(const boost::filesystem::path &);
 
-    /** Sets the property
-     */
-    void setValue(const char *);
+//     /** Sets the property
+//      */
+//     void setValue(const char *);
 
-    /** This method returns a string representation of the property
-     */
-    const boost::filesystem::path &getValue() const;
+//     /** This method returns a string representation of the property
+//      */
+//     const boost::filesystem::path &getValue() const;
 
-    const char* getEditorName() const override { return "Gui::PropertyEditor::PropertyPathItem"; }
+//     const char* getEditorName() const override { return "Gui::PropertyEditor::PropertyPathItem"; }
 
-    PyObject *getPyObject() override;
-    void setPyObject(PyObject* py) override;
+//     PyObject *getPyObject() override;
+//     void setPyObject(PyObject* py) override;
 
-    void Save (Base::Writer &writer) const override;
-    void Restore(Base::XMLReader &reader) override;
+//     void Save (Base::Writer &writer) const override;
+//     void Restore(Base::XMLReader &reader) override;
 
-    Property *Copy() const override;
-    void Paste(const Property &from) override;
+//     Property *Copy() const override;
+//     void Paste(const Property &from) override;
 
-    unsigned int getMemSize () const override;
+//     unsigned int getMemSize () const override;
 
-    bool isSame(const Property &other) const override {
-        if (&other == this) {
-            return true;
-        }
-        return getTypeId() == other.getTypeId()
-            && getValue() == static_cast<decltype(this)>(&other)->getValue();
-    }
+//     bool isSame(const Property &other) const override {
+//         if (&other == this) {
+//             return true;
+//         }
+//         return getTypeId() == other.getTypeId()
+//             && getValue() == static_cast<decltype(this)>(&other)->getValue();
+//     }
 
-protected:
-    boost::filesystem::path _cValue;
-};
+// protected:
+//     boost::filesystem::path _cValue;
+// };
 
 /// Property wrapper around an Enumeration object.
 class AppExport PropertyEnumeration: public Property
@@ -896,32 +901,6 @@ public:
 
 private:
     bool _lValue;
-};
-
-/** Bool list properties
- *
- */
-class AppExport PropertyBoolList : public PropertyListsT<bool,boost::dynamic_bitset<> >
-{
-    TYPESYSTEM_HEADER_WITH_OVERRIDE();
-    using inherited = PropertyListsT<bool, boost::dynamic_bitset<> >;
-
-public:
-    PropertyBoolList();
-    ~PropertyBoolList() override;
-
-    PyObject *getPyObject() override;
-    void setPyObject(PyObject* py) override;
-
-    void Save (Base::Writer &writer) const override;
-    void Restore(Base::XMLReader &reader) override;
-
-    Property *Copy() const override;
-    void Paste(const Property &from) override;
-    unsigned int getMemSize () const override;
-
-protected:
-    bool getPyValue(PyObject* py) const override;
 };
 
 

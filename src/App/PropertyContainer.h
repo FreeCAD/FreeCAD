@@ -25,6 +25,7 @@
 #define APP_PROPERTYCONTAINER_H
 
 #include <Base/Persistence.h>
+#include <climits>
 
 #include "DynamicProperty.h"
 

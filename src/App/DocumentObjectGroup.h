@@ -25,12 +25,13 @@
 #define APP_DOCUMENTOBJECTGROUP_H
 
 #include "DocumentObject.h"
-#include "FeaturePython.h"
+//#include "FeaturePython.h"
 #include "GroupExtension.h"
 
 
 namespace App
 {
+template<class T> class FeaturePythonT;
 
 class AppExport DocumentObjectGroup : public DocumentObject, public GroupExtension {
 

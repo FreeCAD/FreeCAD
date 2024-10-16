@@ -30,6 +30,8 @@
 #include <vector>
 #include <unordered_set>
 
+#include <memory>
+
 #include "Property.h"
 
 namespace Base {
@@ -570,7 +572,7 @@ public:
 
     void setSilentRestore(bool enable);
 
-    boost::signals2::signal<void(const std::string &, const std::string &)> signalUpdateElementReference;
+    //boost::signals2::signal<void(const std::string &, const std::string &)> signalUpdateElementReference;
 
 protected:
     void hasSetValue() override;

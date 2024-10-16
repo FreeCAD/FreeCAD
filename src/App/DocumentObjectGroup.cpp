@@ -25,6 +25,7 @@
 
 #include "DocumentObjectGroup.h"
 #include "DocumentObjectGroupPy.h"
+#include "FeaturePython.h"
 #include "FeaturePythonPyImp.h"
 
 using namespace App;

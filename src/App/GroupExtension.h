@@ -24,6 +24,8 @@
 #ifndef APP_GROUPEXTENSION_H
 #define APP_GROUPEXTENSION_H
 
+#include <boost/signals2/signal.hpp>
+
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectExtension.h>
 #include <App/ExtensionPython.h>

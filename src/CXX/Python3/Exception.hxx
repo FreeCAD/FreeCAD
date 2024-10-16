@@ -45,7 +45,7 @@
 #include "CXX/Python3/IndirectPythonInterface.hxx"
 
 #include <string>
-#include <iostream>
+//#include <iostream>
 
 // This mimics the Python structure, in order to minimize confusion
 namespace Py

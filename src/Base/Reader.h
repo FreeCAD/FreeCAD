@@ -26,8 +26,8 @@
 #include <bitset>
 #include <map>
 #include <memory>
-#include <sstream>
 #include <string>
+#include <istream>
 
 #include <xercesc/framework/XMLPScanToken.hpp>
 #include <xercesc/sax2/Attributes.hpp>

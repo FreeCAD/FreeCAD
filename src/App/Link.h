@@ -27,13 +27,14 @@
 #include <boost/preprocessor/seq/for_each.hpp>
 
 #include <Base/Parameter.h>
+#include <Base/Placement.h>
 #include <Base/Bitmask.h>
 #include "DocumentObject.h"
 #include "DocumentObjectExtension.h"
-#include "FeaturePython.h"
 #include "GroupExtension.h"
 #include "PropertyLinks.h"
 
+#include <boost/algorithm/string/predicate.hpp>  // TODO: Find the correct include. This is just a random, that works
 
 //FIXME: ISO C++11 requires at least one argument for the "..." in a variadic macro
 #if defined(__clang__)
@@ -49,6 +50,7 @@
 
 namespace App
 {
+template<class T> class FeaturePythonT;
 
 class AppExport LinkBaseExtension : public App::DocumentObjectExtension
 {
