@@ -113,13 +113,13 @@ class CAMWorkbench(Workbench):
         twodopcmdlist = [
             "CAM_Profile",
             "CAM_Pocket_Shape",
-            "CAM_Drilling",
             "CAM_MillFace",
             "CAM_Helix",
             "CAM_Adaptive",
         ]
         threedopcmdlist = ["CAM_Pocket3D"]
         engravecmdlist = ["CAM_Engrave", "CAM_Deburr", "CAM_Vcarve"]
+        drillingcmdlist = ["CAM_Drilling", "CAM_Tapping"]
         modcmdlist = ["CAM_OperationCopy", "CAM_Array", "CAM_SimpleCopy"]
         dressupcmdlist = [
             "CAM_DressupAxisMap",
@@ -145,7 +145,14 @@ class CAMWorkbench(Workbench):
                 QT_TRANSLATE_NOOP("CAM_EngraveTools", "Engraving Operations"),
             ),
         )
-
+        drillingcmdgroup = ["CAM_DrillingTools"]
+        FreeCADGui.addCommand(
+            "CAM_DrillingTools",
+            PathCommandGroup(
+                drillingcmdlist,
+                QT_TRANSLATE_NOOP("CAM_DrillingTools", "Drilling Operations"),
+            ),
+        )
         threedcmdgroup = threedopcmdlist
         if Path.Preferences.experimentalFeaturesEnabled():
             prepcmdlist.append("CAM_Shape")
@@ -196,7 +203,7 @@ class CAMWorkbench(Workbench):
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Tool Commands"), toolcmdlist)
         self.appendToolbar(
             QT_TRANSLATE_NOOP("Workbench", "New Operations"),
-            twodopcmdlist + engravecmdgroup + threedcmdgroup,
+            twodopcmdlist + drillingcmdgroup + engravecmdgroup + threedcmdgroup,
         )
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Path Modification"), modcmdlist)
         if extracmdlist:
@@ -210,6 +217,7 @@ class CAMWorkbench(Workbench):
             + toolbitcmdlist
             + ["Separator"]
             + twodopcmdlist
+            + drillingcmdlist
             + engravecmdlist
             + ["Separator"]
             + threedopcmdlist
