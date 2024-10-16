@@ -1334,7 +1334,7 @@ CmdFemCreateElementsSet::CmdFemCreateElementsSet()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Erase Elements");
+    sMenuText = QT_TR_NOOP("Erase elements");
     sToolTipText = QT_TR_NOOP("Creates a FEM mesh elements set");
     sWhatsThis = "FEM_CreateElementsSet";
     sStatusTip = sToolTipText;
