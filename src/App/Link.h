@@ -33,6 +33,7 @@
 #include "DocumentObjectExtension.h"
 #include "GroupExtension.h"
 #include "PropertyLinks.h"
+#include "PropertyBoolList.h"
 
 #include <boost/algorithm/string/predicate.hpp>  // TODO: Find the correct include. This is just a random, that works
 
