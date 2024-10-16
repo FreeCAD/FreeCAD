@@ -166,6 +166,7 @@ int main(int argc, char** argv)
     App::Application::Config()["AppIcon"] = "freecad";
     App::Application::Config()["SplashScreen"] = "freecadsplash";
     App::Application::Config()["AboutImage"] = "freecadabout";
+    App::Application::Config()["AboutImageDev"] = "freecadaboutdev";
     App::Application::Config()["StartWorkbench"] = "PartDesignWorkbench";
     // App::Application::Config()["HiddenDockWindow"] = "Property editor";
     App::Application::Config()["SplashAlignment"] = "Bottom|Left";
