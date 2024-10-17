@@ -215,7 +215,11 @@ class GmshTools:
 
         command_list = [self.gmsh_bin, "-", self.temp_file_geo]
         self.process = subprocess.Popen(
-            command_list, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+            command_list,
+            shell=False,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            startupinfo=femutils.startProgramInfo("hide"),
         )
 
         out, err = self.process.communicate()
