@@ -231,6 +231,8 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject* ViewProvider, QWidge
     Gui::Document* document = Gui::Application::Instance->getDocument(ViewProvider->getObject()->getDocument());
     connectDelObject = document->signalDeletedObject.connect(bnd1);
     connectDelDocument = document->signalDeleteDocument.connect(bnd2);
+
+    handleInitialSelection();
 }
 
 TaskAttacher::~TaskAttacher()
@@ -463,6 +465,32 @@ void TaskAttacher::processSelection(App::DocumentObject*& rootObj, std::string& 
     rootObj = nullptr;
 }
 
+void TaskAttacher::handleInitialSelection()
+{
+    // We handle initial selection only if it is not attached yet.
+    App::DocumentObject* obj = ViewProvider->getObject();
+    Part::AttachExtension* pcAttach = obj->getExtensionByType<Part::AttachExtension>();
+    std::vector<App::DocumentObject*> refs = pcAttach->AttachmentSupport.getValues();
+
+    if (!refs.empty()) {
+        return;
+    }
+    std::vector<std::string> objNames;
+    std::vector<std::string> subNames;
+
+    auto sel = Gui::Selection().getSelectionEx("",
+        App::DocumentObject::getClassTypeId(), Gui::ResolveMode::NoResolve);
+    for (auto& selObj : sel) {
+        std::vector<std::string> subs = selObj.getSubNames();
+        const char* objName = selObj.getFeatName();
+        for (auto& sub : subs) {
+            objNames.push_back(objName);
+            subNames.push_back(sub);
+        }
+    }
+    addToReference(objNames, subNames);
+}
+
 void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (!ViewProvider) {
@@ -470,18 +498,26 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
 
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
-        if (iActiveRef < 0) {
-            return;
-        }
+        addToReference(msg.pObjectName, msg.pSubName);
+    }
+}
 
-        // Note: The validity checking has already been done in ReferenceSelection.cpp
-        App::DocumentObject* obj = ViewProvider->getObject();
-        Part::AttachExtension* pcAttach = obj->getExtensionByType<Part::AttachExtension>();
+void TaskAttacher::addToReference(std::vector<std::string> objNames, std::vector<std::string> subNames)
+{
+    if (iActiveRef < 0 || objNames.size() != subNames.size()) {
+        return;
+    }
+
+    // Note: The validity checking has already been done in ReferenceSelection.cpp
+    App::DocumentObject* obj = ViewProvider->getObject();
+    Part::AttachExtension* pcAttach = obj->getExtensionByType<Part::AttachExtension>();
+
+    for (size_t i = 0; i < objNames.size(); ++i) {
         std::vector<App::DocumentObject*> refs = pcAttach->AttachmentSupport.getValues();
         std::vector<std::string> refnames = pcAttach->AttachmentSupport.getSubValues();
 
-        App::DocumentObject* selObj = obj->getDocument()->getObject(msg.pObjectName);
-        std::string subname = msg.pSubName;
+        App::DocumentObject* selObj = obj->getDocument()->getObject(objNames[i].c_str());
+        std::string subname = subNames[i];
         processSelection(selObj, subname);
         if (!selObj) {
             return;
@@ -518,26 +554,29 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
             refnames.push_back(subname);
         }
 
-        //bool error = false;
-        try {
-            pcAttach->AttachmentSupport.setValues(refs, refnames);
-            updateListOfModes();
-            eMapMode mmode = getActiveMapMode();//will be mmDeactivated, if selected or if no modes are available
-            if (mmode == mmDeactivated) {
-                //error = true;
-                this->completed = false;
+        pcAttach->AttachmentSupport.setValues(refs, refnames);
+
+        if (i == objNames.size() - 1) {
+            // We check for the moed only for the last ref added. This is to avoid unnecessary warnings
+            // when we handle initial selection.
+            try {
+                updateListOfModes();
+                eMapMode mmode = getActiveMapMode();//will be mmDeactivated, if selected or if no modes are available
+                if (mmode == mmDeactivated) {
+                    //error = true;
+                    this->completed = false;
+                }
+                else {
+                    this->completed = true;
+                }
+                pcAttach->MapMode.setValue(mmode);
+                selectMapMode(mmode);
+                updatePreview();
             }
-            else {
-                this->completed = true;
+            catch (Base::Exception& e) {
+                ui->message->setText(QCoreApplication::translate("Exception", e.what()));
+                ui->message->setStyleSheet(QString::fromLatin1("QLabel{color: red;}"));
             }
-            pcAttach->MapMode.setValue(mmode);
-            selectMapMode(mmode);
-            updatePreview();
-        }
-        catch (Base::Exception& e) {
-            //error = true;
-            ui->message->setText(QCoreApplication::translate("Exception", e.what()));
-            ui->message->setStyleSheet(QString::fromLatin1("QLabel{color: red;}"));
         }
 
         QLineEdit* line = getLine(iActiveRef);
@@ -559,9 +598,16 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
                 iActiveRef++;
             }
         }
-
-        updateReferencesUI();
     }
+
+    updateReferencesUI();
+}
+
+void TaskAttacher::addToReference(const char* objName, const char* subName)
+{
+    std::string objname = objName;
+    std::string subname = subName;
+    addToReference({ objname }, { subname });
 }
 
 void TaskAttacher::onAttachmentOffsetChanged(double /*val*/, int idx)
