@@ -294,6 +294,19 @@ ComplexGeoData::getElementMappedNames(const IndexedName& element, bool needUnmap
     return {std::make_pair(MappedName(element), ElementIDRefs())};
 }
 
+void traceElement(const MappedName& name, TraceCallback& cb) const
+{
+    _elementMap->traceElement(name, Tag, cb);
+}
+
+MappedName setElementName(const IndexedName& element,
+                          const MappedName& name,
+                          long masterTag,
+                          const ElementIDRefs* sid = nullptr,
+                          bool overwrite = false) {
+    return _elementMap -> setElementName(element, name, masterTag, sid, overwrite);
+}
+
 ElementMapPtr ComplexGeoData::resetElementMap(ElementMapPtr elementMap)
 {
     _elementMap.swap(elementMap);

@@ -28,11 +28,10 @@
 #define APP_COMPLEX_GEO_DATA_H
 
 #include <algorithm>
+#include <memory>
 #include <Base/Handle.h>
 #include <Base/Matrix.h>
 #include <Base/Persistence.h>
-#include "MappedElement.h"
-#include "ElementMap.h"
 #include "StringHasher.h"
 
 #ifdef __GNUC__
@@ -50,7 +49,20 @@ using BoundBox3d = BoundBox3<double>;
 
 namespace Data
 {
+// Consider making fwd header
+class ElementMap;
+class IndexedName;
+struct MappedChildElements;
+struct MappedElement;
 class MappedName;
+class TraceCallback;
+
+using ElementIDRefs = QVector<::App::StringIDRef>;
+using ElementMapPtr = std::shared_ptr<ElementMap>;
+
+
+class StringHasher;
+using StringHasherRef = Base::Reference<StringHasher>;
 
 //struct MappedChildElements;
 /// Option for App::GeoFeature::searchElementCache()
@@ -259,9 +271,7 @@ public:
                               const MappedName& name,
                               long masterTag,
                               const ElementIDRefs* sid = nullptr,
-                              bool overwrite = false) {
-        return _elementMap -> setElementName(element, name, masterTag, sid, overwrite);
-    }
+                              bool overwrite = false);
 
     bool hasElementMap() {
         return _elementMap != nullptr;
@@ -295,16 +305,16 @@ public:
     }
 
     // NOTE: getElementHistory is now in ElementMap
-    long getElementHistory(const MappedName & name,
-                           MappedName *original=nullptr, std::vector<MappedName> *history=nullptr) const {
-        if ( _elementMap != nullptr ) {
-            return _elementMap->getElementHistory(name, Tag, original, history);
-        }
-        return 0;
-    };
+    // long getElementHistory(const MappedName & name,
+    //                        MappedName *original=nullptr, std::vector<MappedName> *history=nullptr) const {
+    //     if ( _elementMap != nullptr ) {
+    //         return _elementMap->getElementHistory(name, Tag, original, history);
+    //     }
+    //     return 0;
+    // };
 
-    void setMappedChildElements(const std::vector<Data::ElementMap::MappedChildElements> & children);
-    std::vector<Data::ElementMap::MappedChildElements> getMappedChildElements() const;
+    void setMappedChildElements(const std::vector<Data::MappedChildElements> & children);
+    std::vector<Data::MappedChildElements> getMappedChildElements() const;
 
     char elementType(const Data::MappedName &) const;
     char elementType(const Data::IndexedName &) const;
@@ -348,10 +358,7 @@ public:
      * @param cb: trace callback with call signature.
      * @sa TraceCallback
      */
-    void traceElement(const MappedName& name, TraceCallback cb) const
-    {
-        _elementMap->traceElement(name, Tag, cb);
-    }
+    void traceElement(const MappedName& name, TraceCallback& cb) const;
 
     /** Flush an internal buffering for element mapping */
     virtual void flushElementMap() const;
