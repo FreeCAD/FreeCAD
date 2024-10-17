@@ -98,11 +98,10 @@ void ViewProviderPlane::attach(App::DocumentObject * obj) {
 
     SbVec3f verts[4];
     if (noRole) {
-        double doubleSize = 2 * size;
-        verts[0] = SbVec3f(doubleSize, doubleSize, 0);
-        verts[1] = SbVec3f(doubleSize, 0, 0);
-        verts[2] = SbVec3f(0, 0, 0);
-        verts[3] = SbVec3f(0, doubleSize, 0);
+        verts[0] = SbVec3f(size, size, 0);
+        verts[1] = SbVec3f(size, -size, 0);
+        verts[2] = SbVec3f(-size, -size, 0);
+        verts[3] = SbVec3f(-size, size, 0);
     }
     else {
         verts[0] = SbVec3f(size, size, 0);
