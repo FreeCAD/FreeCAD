@@ -28,8 +28,8 @@
 # include <QActionGroup>
 # include <QApplication>
 # include <QEvent>
+# include <QFileInfo>
 # include <QMenu>
-# include <QMessageBox>
 # include <QRegularExpression>
 # include <QScreen>
 # include <QTimer>
@@ -50,8 +50,8 @@
 #include "PreferencePages/DlgSettingsWorkbenchesImp.h"
 #include "Document.h"
 #include "EditorView.h"
-#include "FileDialog.h"
 #include "Macro.h"
+#include "ModuleIO.h"
 #include "MainWindow.h"
 #include "PythonEditor.h"
 #include "WhatsThis.h"
@@ -902,20 +902,13 @@ void RecentFilesAction::activateFile(int id)
     }
 
     QString filename = files[id];
-    QFileInfo fi(filename);
-    if (!fi.exists() || !fi.isFile()) {
-        QMessageBox::critical(getMainWindow(), tr("File not found"), tr("The file '%1' cannot be opened.").arg(filename));
+    if (!ModuleIO::verifyFile(filename)) {
         files.removeAll(filename);
         setFiles(files);
         save();
     }
     else {
-        // invokes appendFile()
-        SelectModule::Dict dict = SelectModule::importHandler(filename);
-        for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
-            Application::Instance->open(it.key().toUtf8(), it.value().toLatin1());
-            break;
-        }
+        ModuleIO::openFile(filename);
     }
 }
 
@@ -1102,8 +1095,7 @@ void RecentMacrosAction::activateFile(int id)
 
     QString filename = files[id];
     QFileInfo fi(filename);
-    if (!fi.exists() || !fi.isFile()) {
-        QMessageBox::critical(getMainWindow(), tr("File not found"), tr("The file '%1' cannot be opened.").arg(filename));
+    if (!ModuleIO::verifyFile(filename)) {
         files.removeAll(filename);
         setFiles(files);
     }

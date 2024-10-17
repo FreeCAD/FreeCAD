@@ -91,6 +91,7 @@
 #include "DownloadManager.h"
 #include "FileDialog.h"
 #include "MenuManager.h"
+#include "ModuleIO.h"
 #include "NotificationArea.h"
 #include "OverlayManager.h"
 #include "ProgressBar.h"
@@ -2411,12 +2412,7 @@ void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& urls)
     }
 
     QByteArray docName = doc ? QByteArray(doc->getName()) : qApp->translate("StdCmdNew","Unnamed").toUtf8();
-    SelectModule::Dict dict = SelectModule::importHandler(files);
-    // load the files with the associated modules
-    for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
-        // if the passed document name doesn't exist the module should create it, if needed
-        Application::Instance->importFrom(it.key().toUtf8(), docName, it.value().toLatin1());
-    }
+    ModuleIO::importFiles(files, docName);
 }
 
 void MainWindow::changeEvent(QEvent *e)
