@@ -24,7 +24,7 @@
 #pragma once
 
 namespace SafeMode {
-    bool SafeModeEnabled();
-    void StartSafeMode();
-    void Destruct();
+    FreeCADApp_EXPORTS bool SafeModeEnabled();
+    FreeCADApp_EXPORTS void StartSafeMode();
+    FreeCADApp_EXPORTS void Destruct();
 };
