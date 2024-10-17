@@ -215,7 +215,11 @@ class GmshTools:
 
         command_list = [self.gmsh_bin, "-", self.temp_file_geo]
         self.process = subprocess.Popen(
-            command_list, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+            command_list,
+            shell=False,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            startupinfo=femutils.startProgramInfo("hide"),
         )
 
         out, err = self.process.communicate()
@@ -445,6 +449,7 @@ class GmshTools:
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 universal_newlines=True,
+                startupinfo=femutils.startProgramInfo("hide"),
             )
         except Exception as e:
             Console.PrintMessage(str(e) + "\n")
@@ -926,7 +931,11 @@ class GmshTools:
         # print(command_list)
         try:
             p = subprocess.Popen(
-                command_list, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+                command_list,
+                shell=False,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                startupinfo=femutils.startProgramInfo("hide"),
             )
             output, error = p.communicate()
             error = error.decode("utf-8")
