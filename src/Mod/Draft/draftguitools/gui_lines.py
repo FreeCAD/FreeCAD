@@ -51,9 +51,12 @@ from draftutils.translate import translate
 class Line(gui_base_original.Creator):
     """Gui command for the Line tool."""
 
-    def __init__(self, wiremode=False):
+    def __init__(self, wiremode=False, leader=False):
         super().__init__()
         self.isWire = wiremode
+        self.isLeader = leader
+        if leader:
+            self.isWire = True
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -74,6 +77,9 @@ class Line(gui_base_original.Creator):
             self.ui.wireUi(title=title, icon=icon)
         else:
             self.ui.lineUi(title=title, icon=icon)
+        if self.isLeader:
+            self.ui.closeButton.hide()
+            self.ui.hasFill.hide()
 
         self.obj = self.doc.addObject("Part::Feature", self.featureName)
         gui_utils.format_object(self.obj)
