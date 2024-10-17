@@ -92,6 +92,7 @@ public:
 
     Part::PropertyTopoShapeList SavedGeometry;
     App::PropertyVectorList BoxCorners;
+    App::PropertyBool UseActualArea;
 
     enum RefType
     {
@@ -211,6 +212,10 @@ public:
     void saveFeatureBox();
     Base::BoundBox3d getSavedBox();
     Base::BoundBox3d getFeatureBox();
+
+    static double getActualArea(const TopoDS_Face& face);
+    static double getFilledArea(const TopoDS_Face& face);
+    static Base::Vector3d getFaceCenter(const TopoDS_Face& face);
 
 protected:
     void handleChangedPropertyType(Base::XMLReader&, const char*, App::Property*) override;
