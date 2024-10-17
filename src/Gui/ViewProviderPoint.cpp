@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
- *   Copyright (c) 2016 Stefan Tröger <stefantroeger@gmx.net>              *
+ *   Copyright (c) 2024 Ondsel (PL Boyer) <development@ondsel.com>         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,34 +20,50 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEWPROVIDERORIGINGROUPEXTENSION_H
-#define GUI_VIEWPROVIDERORIGINGROUPEXTENSION_H
+#include "PreCompiled.h"
 
-#include "ViewProviderGeoFeatureGroup.h"
+#ifndef _PreComp_
+# include <Inventor/nodes/SoSphere.h>
+# include <Inventor/nodes/SoCoordinate3.h>
+# include <Inventor/nodes/SoIndexedLineSet.h>
+# include <Inventor/nodes/SoPickStyle.h>
+# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoTranslation.h>
+#endif
 
+#include "ViewProviderPoint.h"
+#include "ViewProviderOrigin.h"
 
-namespace Gui
+using namespace Gui;
+
+PROPERTY_SOURCE(Gui::ViewProviderPoint, Gui::ViewProviderDatum)
+
+ViewProviderPoint::ViewProviderPoint()
 {
+    sPixmap = "Std_Point";  // Set the icon for the point
+}
 
-class GuiExport ViewProviderOriginGroupExtension : public ViewProviderGeoFeatureGroupExtension
-{
-    EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderOriginGroupExtension);
+ViewProviderPoint::~ViewProviderPoint() = default;
 
-public:
-    /// Constructor
-    ViewProviderOriginGroupExtension();
-    ~ViewProviderOriginGroupExtension() override;
+void ViewProviderPoint::attach(App::DocumentObject * obj) {
+    ViewProviderDatum::attach(obj);
 
-    std::vector<App::DocumentObject*> extensionClaimChildren()const override;
-    std::vector<App::DocumentObject*> extensionClaimChildren3D()const override;
+    // The coordinates for the point (single vertex at the origin)
+    static const SbVec3f point = SbVec3f(0, 0, 0);
 
-private:
-    std::vector<App::DocumentObject*> constructChildren (
-            const std::vector<App::DocumentObject*> &children ) const;
-};
+    SoSeparator* sep = getRoot();
 
-using ViewProviderOriginGroupExtensionPython = ViewProviderExtensionPythonT<Gui::ViewProviderOriginGroupExtension>;
+    auto pCoords = new SoCoordinate3();
+    pCoords->point.setNum(1);
+    pCoords->point.setValue(point);
+    sep->addChild(pCoords);
 
-} //namespace Gui
+    auto sphere = new SoSphere();
+    sphere->radius.setValue(1.0);
+    sep->addChild(sphere);
 
-#endif // GUI_VIEWPROVIDERORIGINGROUPEXTENSION_H
+    // Add pick style to define how the point can be selected
+    auto ps = new SoPickStyle();
+    ps->style.setValue(SoPickStyle::BOUNDING_BOX);
+    sep->addChild(ps);
+}

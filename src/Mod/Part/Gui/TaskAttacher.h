@@ -113,6 +113,10 @@ private:
     void updateRefButton(int idx);
     void updateAttachmentOffsetUI();
 
+    void processSelection(App::DocumentObject*& obj, std::string& sub);
+    void handleInitialSelection();
+    void addToReference(const char* objName, const char* subName);
+
     /**
      * @brief updateListOfModes Fills the mode list with modes that apply to
      * current set of references. Maintains selection when possible.
@@ -151,7 +155,7 @@ class PartGuiExport TaskDlgAttacher : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    explicit TaskDlgAttacher(Gui::ViewProviderDocumentObject *ViewProvider, bool createBox = true);
+    explicit TaskDlgAttacher(Gui::ViewProviderDocumentObject *ViewProvider, bool createBox = true, bool openCmd = true);
     ~TaskDlgAttacher() override;
 
     Gui::ViewProviderDocumentObject* getViewProvider() const
@@ -179,6 +183,7 @@ protected:
     Gui::ViewProviderDocumentObject   *ViewProvider;
 
     TaskAttacher  *parameter;
+    bool openCommand;
 };
 
 } //namespace PartDesignGui

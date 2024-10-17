@@ -176,7 +176,6 @@ class Joint:
         self.migrationScript(joint)
         self.migrationScript2(joint)
         self.migrationScript3(joint)
-        self.migrationScript4(joint)
 
         # First Joint Connector
         if not hasattr(joint, "Reference1"):
@@ -507,20 +506,6 @@ class Joint:
             )
 
             joint.Offset2 = App.Placement(current_offset, App.Rotation(current_rotation, 0, 0))
-
-    def migrationScript4(self, joint):
-        if hasattr(joint, "Reference1"):
-            base_name, *sub_names, feature_name = joint.Reference1[1][0].split(".")
-            ref1 = ".".join((base_name, *sub_names[:-1], feature_name))
-            base_name, *sub_names, feature_name = joint.Reference1[1][1].split(".")
-            ref2 = ".".join((base_name, *sub_names[:-1], feature_name))
-            joint.Reference1 = (joint.Reference1[0], [ref1, ref2])
-        if hasattr(joint, "Reference2"):
-            base_name, *sub_names, feature_name = joint.Reference2[1][0].split(".")
-            ref1 = ".".join((base_name, *sub_names[:-1], feature_name))
-            base_name, *sub_names, feature_name = joint.Reference2[1][1].split(".")
-            ref2 = ".".join((base_name, *sub_names[:-1], feature_name))
-            joint.Reference2 = (joint.Reference2[0], [ref1, ref2])
 
     def dumps(self):
         return None
@@ -1262,21 +1247,26 @@ class MakeJointSelGate:
             return False
 
         ref = [obj, [sub]]
-        selected_object = UtilsAssembly.getObject(ref)
+        sel_obj = UtilsAssembly.getObject(ref)
 
-        if not (
-            selected_object.isDerivedFrom("Part::Feature")
-            or selected_object.isDerivedFrom("App::Part")
+        if UtilsAssembly.isLink(sel_obj):
+            sel_obj = sel_obj.getLinkedObject()
+
+        if sel_obj.isDerivedFrom("Part::Feature") or sel_obj.isDerivedFrom("App::Part"):
+            return True
+
+        if sel_obj.isDerivedFrom("App::LocalCoordinateSystem") or sel_obj.isDerivedFrom(
+            "App::DatumElement"
         ):
-            if UtilsAssembly.isLink(selected_object):
-                linked = selected_object.getLinkedObject()
+            # We accept only if it is not a root object of the assembly.
+            # Datums must be included in a GeoFeature.
+            lcs = sel_obj
+            if lcs.isDerivedFrom("App::DatumElement"):
+                lcs = sel_obj.getParent()
 
-                if not (linked.isDerivedFrom("Part::Feature") or linked.isDerivedFrom("App::Part")):
-                    return False
-            else:
-                return False
+            return not self.assembly.hasObject(lcs)
 
-        return True
+        return False
 
 
 activeTask = None
@@ -1791,12 +1781,14 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
     def addSelection(self, doc_name, obj_name, sub_name, mousePos):
         rootObj = App.getDocument(doc_name).getObject(obj_name)
 
-        # If the sub_name that comes in has extra features in it, remove them.  For example a
-        # Part.Body.Pad.Sketch becomes Part.Body.Sketch and a
-        # Body.Pad.Sketch becomes Body.sketch
-        base_name, *path_detail, old_name = sub_name.split(".")
-        target_link = ".".join((base_name, *path_detail[:-2], old_name))
-        ref = [rootObj, [target_link]]
+        # We do not need the full TNP string like :"Part.Body.Pad.;#a:1;:G0;XTR;:Hc94:8,F.Face6"
+        # instead we need : "Part.Body.Pad.Face6"
+        resolved = rootObj.resolveSubElement(sub_name, True)
+        sub_name = resolved[2]
+
+        sub_name = UtilsAssembly.fixBodyExtraFeatureInSub(doc_name, sub_name)
+
+        ref = [rootObj, [sub_name]]
         moving_part = self.getMovingPart(ref)
 
         # Check if the addition is acceptable (we are not doing this in selection gate to let user move objects)

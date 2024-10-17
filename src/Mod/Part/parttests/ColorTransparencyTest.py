@@ -64,6 +64,6 @@ class ColorTransparencyTest(unittest.TestCase):
         obj = self._doc.addObject('App::Origin')
         t = self._doc.findObjects('App::Plane')[0].ViewObject.Transparency
 
-        self.assertEqual(t, 0,
-            'transparency of App::Plane object is {} instead of 0'.format(t))
+        self.assertEqual(t, 50,
+            'transparency of App::Plane object is {} instead of 50'.format(t))
 

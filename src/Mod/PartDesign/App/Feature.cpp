@@ -36,7 +36,7 @@
 #include <App/DocumentObject.h>
 #include <App/FeaturePythonPyImp.h>
 #include <App/ElementNamingUtils.h>
-#include "App/OriginFeature.h"
+#include "App/Datums.h"
 #include <Base/Console.h>
 
 #include "Feature.h"
@@ -320,7 +320,7 @@ PyObject* Feature::getPyObject()
 
 bool Feature::isDatum(const App::DocumentObject* feature)
 {
-    return feature->isDerivedFrom<App::OriginFeature>() ||
+    return feature->isDerivedFrom<App::DatumElement>() ||
            feature->isDerivedFrom<Part::Datum>();
 }
 
