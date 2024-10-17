@@ -36,6 +36,7 @@
 FCBRepAlgoAPI_Section::FCBRepAlgoAPI_Section()
 {
     SetRunParallel(Standard_True);
+    SetNonDestructive(Standard_True);
 }
 
 FCBRepAlgoAPI_Section::FCBRepAlgoAPI_Section(const TopoDS_Shape& S1, const TopoDS_Shape& S2, const Standard_Boolean PerformNow)
@@ -43,6 +44,7 @@ FCBRepAlgoAPI_Section::FCBRepAlgoAPI_Section(const TopoDS_Shape& S1, const TopoD
 {
     setAutoFuzzy();
     SetRunParallel(Standard_True);
+    SetNonDestructive(Standard_True);
     if (PerformNow) Build();
 }
 
