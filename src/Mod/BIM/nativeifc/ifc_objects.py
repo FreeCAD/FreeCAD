@@ -211,7 +211,7 @@ class ifc_object:
                             else:
                                 print("DEBUG: unknown dimension curve type:",sub)
             elif attribute in ["DisplayLength","DisplayHeight","Depth"]:
-                l = w = h = 1000
+                l = w = h = 1000.0
                 if obj.ViewObject:
                     if obj.ViewObject.DisplayLength.Value:
                         l = ifc_export.get_scaled_value(obj.ViewObject.DisplayLength.Value, ifcfile)

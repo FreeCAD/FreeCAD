@@ -834,6 +834,14 @@ def set_attribute(ifcfile, element, attribute, value):
 
     # This function can become pure IFC
 
+    def is_same(val1, val2):
+        if val1 == val2:
+            return True
+        if isinstance(val1, (tuple, list)):
+            if tuple(val1) == tuple(val2):
+                return True
+        return False
+
     if not ifcfile or not element:
         return False
     if isinstance(value, FreeCAD.Units.Quantity):
@@ -863,12 +871,13 @@ def set_attribute(ifcfile, element, attribute, value):
         ):
             # do not consider default FreeCAD names given to unnamed alements
             return False
-        if getattr(element, attribute) != value:
+        if not is_same(getattr(element, attribute), value):
             FreeCAD.Console.PrintLog(
                 "Changing IFC attribute value of "
                 + str(attribute)
                 + ": "
                 + str(value)
+                + " (original value:" +str(getattr(element, attribute))+")"
                 + "\n"
             )
             api_run(cmd, ifcfile, product=element, attributes=attribs)
