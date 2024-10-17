@@ -114,6 +114,8 @@ private:
     void updateAttachmentOffsetUI();
 
     void processSelection(App::DocumentObject*& obj, std::string& sub);
+    void handleInitialSelection();
+    void addToReference(const char* objName, const char* subName);
 
     /**
      * @brief updateListOfModes Fills the mode list with modes that apply to

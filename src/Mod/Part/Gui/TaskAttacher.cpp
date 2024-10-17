@@ -231,6 +231,8 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject* ViewProvider, QWidge
     Gui::Document* document = Gui::Application::Instance->getDocument(ViewProvider->getObject()->getDocument());
     connectDelObject = document->signalDeletedObject.connect(bnd1);
     connectDelDocument = document->signalDeleteDocument.connect(bnd2);
+
+    handleInitialSelection();
 }
 
 TaskAttacher::~TaskAttacher()
@@ -463,6 +465,28 @@ void TaskAttacher::processSelection(App::DocumentObject*& rootObj, std::string& 
     rootObj = nullptr;
 }
 
+void TaskAttacher::handleInitialSelection()
+{
+    // We handle initial selection only if it is not attached yet.
+    App::DocumentObject* obj = ViewProvider->getObject();
+    Part::AttachExtension* pcAttach = obj->getExtensionByType<Part::AttachExtension>();
+    std::vector<App::DocumentObject*> refs = pcAttach->AttachmentSupport.getValues();
+
+    if (!refs.empty()) {
+        return;
+    }
+
+    auto sel = Gui::Selection().getSelectionEx("",
+        App::DocumentObject::getClassTypeId(), Gui::ResolveMode::NoResolve);
+    for (auto& selObj : sel) {
+        std::vector<std::string> subs = selObj.getSubNames();
+        const char* objName = selObj.getFeatName();
+        for (auto& sub : subs) {
+            addToReference(objName, sub.c_str());
+        }
+    }
+}
+
 void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (!ViewProvider) {
@@ -470,98 +494,103 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
 
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
-        if (iActiveRef < 0) {
+        addToReference(msg.pObjectName, msg.pSubName);
+    }
+}
+
+void TaskAttacher::addToReference(const char* objName, const char* subName)
+{
+    if (iActiveRef < 0) {
+        return;
+    }
+
+    // Note: The validity checking has already been done in ReferenceSelection.cpp
+    App::DocumentObject* obj = ViewProvider->getObject();
+    Part::AttachExtension* pcAttach = obj->getExtensionByType<Part::AttachExtension>();
+    std::vector<App::DocumentObject*> refs = pcAttach->AttachmentSupport.getValues();
+    std::vector<std::string> refnames = pcAttach->AttachmentSupport.getSubValues();
+
+    App::DocumentObject* selObj = obj->getDocument()->getObject(objName);
+    std::string subname = subName;
+    processSelection(selObj, subname);
+    if (!selObj) {
+        return;
+    }
+
+    // Remove subname for planes and datum features
+    if (selObj->isDerivedFrom<App::DatumElement>() || selObj->isDerivedFrom<Part::Datum>()) {
+        subname = "";
+    }
+
+    // eliminate duplicate selections
+    for (size_t r = 0; r < refs.size(); r++) {
+        if ((refs[r] == selObj) && (refnames[r] == subname)) {
             return;
         }
+    }
 
-        // Note: The validity checking has already been done in ReferenceSelection.cpp
-        App::DocumentObject* obj = ViewProvider->getObject();
-        Part::AttachExtension* pcAttach = obj->getExtensionByType<Part::AttachExtension>();
-        std::vector<App::DocumentObject*> refs = pcAttach->AttachmentSupport.getValues();
-        std::vector<std::string> refnames = pcAttach->AttachmentSupport.getSubValues();
+    if (autoNext && iActiveRef > 0 && iActiveRef == static_cast<int>(refnames.size())) {
+        if (refs[iActiveRef - 1] == selObj
+            && refnames[iActiveRef - 1].length() != 0 && subname.length() == 0) {
+            //A whole object was selected by clicking it twice. Fill it
+            //into previous reference, where a sub-named reference filled by
+            //the first click is already stored.
 
-        App::DocumentObject* selObj = obj->getDocument()->getObject(msg.pObjectName);
-        std::string subname = msg.pSubName;
-        processSelection(selObj, subname);
-        if (!selObj) {
-            return;
+            iActiveRef--;
         }
+    }
+    if (iActiveRef < static_cast<int>(refs.size())) {
+        refs[iActiveRef] = selObj;
+        refnames[iActiveRef] = subname;
+    }
+    else {
+        refs.push_back(selObj);
+        refnames.push_back(subname);
+    }
 
-        // Remove subname for planes and datum features
-        if (selObj->isDerivedFrom<App::DatumElement>() || selObj->isDerivedFrom<Part::Datum>()) {
-            subname = "";
-        }
-
-        // eliminate duplicate selections
-        for (size_t r = 0; r < refs.size(); r++) {
-            if ((refs[r] == selObj) && (refnames[r] == subname)) {
-                return;
-            }
-        }
-
-        if (autoNext && iActiveRef > 0 && iActiveRef == static_cast<int>(refnames.size())) {
-            if (refs[iActiveRef - 1] == selObj
-                && refnames[iActiveRef - 1].length() != 0 && subname.length() == 0) {
-                //A whole object was selected by clicking it twice. Fill it
-                //into previous reference, where a sub-named reference filled by
-                //the first click is already stored.
-
-                iActiveRef--;
-            }
-        }
-        if (iActiveRef < static_cast<int>(refs.size())) {
-            refs[iActiveRef] = selObj;
-            refnames[iActiveRef] = subname;
+    //bool error = false;
+    try {
+        pcAttach->AttachmentSupport.setValues(refs, refnames);
+        updateListOfModes();
+        eMapMode mmode = getActiveMapMode();//will be mmDeactivated, if selected or if no modes are available
+        if (mmode == mmDeactivated) {
+            //error = true;
+            this->completed = false;
         }
         else {
-            refs.push_back(selObj);
-            refnames.push_back(subname);
+            this->completed = true;
         }
-
-        //bool error = false;
-        try {
-            pcAttach->AttachmentSupport.setValues(refs, refnames);
-            updateListOfModes();
-            eMapMode mmode = getActiveMapMode();//will be mmDeactivated, if selected or if no modes are available
-            if (mmode == mmDeactivated) {
-                //error = true;
-                this->completed = false;
-            }
-            else {
-                this->completed = true;
-            }
-            pcAttach->MapMode.setValue(mmode);
-            selectMapMode(mmode);
-            updatePreview();
-        }
-        catch (Base::Exception& e) {
-            //error = true;
-            ui->message->setText(QCoreApplication::translate("Exception", e.what()));
-            ui->message->setStyleSheet(QString::fromLatin1("QLabel{color: red;}"));
-        }
-
-        QLineEdit* line = getLine(iActiveRef);
-        if (line) {
-            line->blockSignals(true);
-            line->setText(makeRefString(selObj, subname));
-            line->setProperty("RefName", QByteArray(subname.c_str()));
-            line->blockSignals(false);
-        }
-
-        if (autoNext) {
-            if (iActiveRef == -1) {
-                //nothing to do
-            }
-            else if (iActiveRef == 4 || this->lastSuggestResult.nextRefTypeHint.empty()) {
-                iActiveRef = -1;
-            }
-            else {
-                iActiveRef++;
-            }
-        }
-
-        updateReferencesUI();
+        pcAttach->MapMode.setValue(mmode);
+        selectMapMode(mmode);
+        updatePreview();
     }
+    catch (Base::Exception& e) {
+        //error = true;
+        ui->message->setText(QCoreApplication::translate("Exception", e.what()));
+        ui->message->setStyleSheet(QString::fromLatin1("QLabel{color: red;}"));
+    }
+
+    QLineEdit* line = getLine(iActiveRef);
+    if (line) {
+        line->blockSignals(true);
+        line->setText(makeRefString(selObj, subname));
+        line->setProperty("RefName", QByteArray(subname.c_str()));
+        line->blockSignals(false);
+    }
+
+    if (autoNext) {
+        if (iActiveRef == -1) {
+            //nothing to do
+        }
+        else if (iActiveRef == 4 || this->lastSuggestResult.nextRefTypeHint.empty()) {
+            iActiveRef = -1;
+        }
+        else {
+            iActiveRef++;
+        }
+    }
+
+    updateReferencesUI();
 }
 
 void TaskAttacher::onAttachmentOffsetChanged(double /*val*/, int idx)
