@@ -843,6 +843,9 @@ def set_attribute(ifcfile, element, attribute, value):
             return False
         if not val1 and not val2:
             return False
+        if isinstance(val1, (tuple, list)):
+            if tuple(val1) == tuple(val2):
+                return False
         if val1 is None and "NOTDEFINED" in str(val2).upper():
             return False
         if val1 is None and "UNDEFINED" in str(val2).upper():
@@ -882,12 +885,13 @@ def set_attribute(ifcfile, element, attribute, value):
         ):
             # do not consider default FreeCAD names given to unnamed alements
             return False
-        if differs(getattr(element, attribute, None),value):
+        if differs(getattr(element, attribute, None), value):
             FreeCAD.Console.PrintLog(
                 "Changing IFC attribute value of "
                 + str(attribute)
                 + ": "
                 + str(value)
+                + " (original value:" +str(getattr(element, attribute))+")"
                 + "\n"
             )
             api_run(cmd, ifcfile, product=element, attributes=attribs)

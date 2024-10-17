@@ -234,6 +234,9 @@ def get_dimension(annotation):
             s = ifcopenshell.util.unit.calculate_unit_scale(annotation.file) * 1000
             for rep in annotation.Representation.Representations:
                 shape = importIFCHelper.get2DShape(rep, s, notext=True)
+                pl = get_placement(annotation.ObjectPlacement, scale=s)
+                if pl:
+                    shape[0].Placement = pl
                 if shape and len(shape) == 1:
                     if len(shape[0].Vertexes) >= 2:
                         # two-point polyline (BBIM)
