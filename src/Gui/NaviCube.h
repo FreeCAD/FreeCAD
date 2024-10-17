@@ -51,6 +51,7 @@ public:
     void setCorner(Corner);
     void setOffset(int x, int y);
     bool isDraggable();
+    void updateColors();
     void setDraggable(bool draggable);
     void setSize(int size);
     void setChamfer(float size);

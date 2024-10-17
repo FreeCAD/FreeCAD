@@ -36,6 +36,7 @@
 #include <App/Document.h>
 #include <App/OriginFeature.h>
 #include <App/Origin.h>
+#include <Gui/ViewParams.h>
 
 #include "ViewProviderOriginFeature.h"
 #include "SoFCSelection.h"
@@ -108,14 +109,17 @@ void ViewProviderOriginFeature::attach(App::DocumentObject* pcObject)
         const char* axisName = pcObject->getNameInDocument();
         auto axisRoles = App::Origin::AxisRoles;
         if ( strncmp(axisName, axisRoles[0], strlen(axisRoles[0]) ) == 0 ) {
-            // X-axis: red
-            ShapeAppearance.setDiffuseColor(0xFF0000FF);
+            // X-axis
+            uint32_t color = static_cast<uint32_t>(Gui::ViewParams::instance()->getAxisXColor());
+            ShapeAppearance.setDiffuseColor(color);
         } else if ( strncmp(axisName, axisRoles[1], strlen(axisRoles[1]) ) == 0 ) {
-            // Y-axis: green
-            ShapeAppearance.setDiffuseColor(0x00FF00FF);
+            // Y-axis
+            uint32_t color = static_cast<uint32_t>(Gui::ViewParams::instance()->getAxisYColor());
+            ShapeAppearance.setDiffuseColor(color);
         } else if ( strncmp(axisName, axisRoles[2], strlen(axisRoles[2]) ) == 0 ) {
-            // Z-axis: blue
-            ShapeAppearance.setDiffuseColor(0x0000FFFF);
+            // Z-axis
+            uint32_t color = static_cast<uint32_t>(Gui::ViewParams::instance()->getAxisZColor());
+            ShapeAppearance.setDiffuseColor(color);
         }
     }
     font->size.setValue ( defaultSz / fontRatio );
