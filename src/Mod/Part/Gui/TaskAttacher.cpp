@@ -1214,8 +1214,8 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgAttacher::TaskDlgAttacher(Gui::ViewProviderDocumentObject* ViewProvider, bool createBox)
-    : TaskDialog(), ViewProvider(ViewProvider), parameter(nullptr)
+TaskDlgAttacher::TaskDlgAttacher(Gui::ViewProviderDocumentObject* ViewProvider, bool createBox, bool openCmd)
+    : TaskDialog(), ViewProvider(ViewProvider), parameter(nullptr), openCommand(openCmd)
 {
     assert(ViewProvider);
     setDocumentName(ViewProvider->getDocument()->getDocument()->getName());
@@ -1233,7 +1233,9 @@ TaskDlgAttacher::~TaskDlgAttacher() = default;
 
 void TaskDlgAttacher::open()
 {
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit attachment"));
+    if (openCommand) {
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit attachment"));
+    }
 }
 
 void TaskDlgAttacher::clicked(int)

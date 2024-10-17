@@ -155,7 +155,7 @@ class PartGuiExport TaskDlgAttacher : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    explicit TaskDlgAttacher(Gui::ViewProviderDocumentObject *ViewProvider, bool createBox = true);
+    explicit TaskDlgAttacher(Gui::ViewProviderDocumentObject *ViewProvider, bool createBox = true, bool openCmd = true);
     ~TaskDlgAttacher() override;
 
     Gui::ViewProviderDocumentObject* getViewProvider() const
@@ -183,6 +183,7 @@ protected:
     Gui::ViewProviderDocumentObject   *ViewProvider;
 
     TaskAttacher  *parameter;
+    bool openCommand;
 };
 
 } //namespace PartDesignGui
