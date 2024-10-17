@@ -111,7 +111,7 @@ void ViewProviderAttachExtension::extensionSetupContextMenu(QMenu* menu, QObject
     }
 }
 
-void ViewProviderAttachExtension::showAttachmentEditor()
+void ViewProviderAttachExtension::showAttachmentEditor(bool openCmd)
 {
     if (Gui::Control().activeDialog()) {
         Gui::Control().closeDialog();
@@ -129,7 +129,7 @@ void ViewProviderAttachExtension::showAttachmentEditor()
     }
 
     if (!task) {
-        task = new TaskDlgAttacher(getExtendedViewProvider());
+        task = new TaskDlgAttacher(getExtendedViewProvider(), true, openCmd);
     }
 
     Gui::Control().showDialog(task);

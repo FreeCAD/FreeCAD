@@ -44,7 +44,7 @@ public:
     void extensionUpdateData(const App::Property*) override;
     void extensionSetupContextMenu(QMenu*, QObject*, const char*) override;
 
-    void showAttachmentEditor();
+    void showAttachmentEditor(bool openCmd = true);
 };
 
 using ViewProviderAttachExtensionPython = Gui::ViewProviderExtensionPythonT<PartGui::ViewProviderAttachExtension>;
