@@ -1713,17 +1713,16 @@ TopoDS_Shape TopoShape::cut(const std::vector<TopoDS_Shape>& shapes, Standard_Re
     for (const auto & shape : shapes) {
         if (shape.IsNull())
             throw Base::ValueError("Tool shape is null");
-        if (tolerance > 0.0)
-            // workaround for http://dev.opencascade.org/index.php?q=node/1056#comment-520
-            shapeTools.Append(BRepBuilderAPI_Copy(shape).Shape());
-        else
-            shapeTools.Append(shape);
+        shapeTools.Append(shape);
     }
 
     mkCut.SetArguments(shapeArguments);
     mkCut.SetTools(shapeTools);
-    if (tolerance > 0.0)
+    if (tolerance > 0.0) {
         mkCut.SetFuzzyValue(tolerance);
+    } else if (tolerance < 0.0) {
+        mkCut.setAutoFuzzy();
+    }
     mkCut.Build();
     if (!mkCut.IsDone())
         throw Base::RuntimeError("Multi cut failed");
@@ -1753,17 +1752,16 @@ TopoDS_Shape TopoShape::common(const std::vector<TopoDS_Shape>& shapes, Standard
     for (const auto & shape : shapes) {
         if (shape.IsNull())
             throw Base::ValueError("Tool shape is null");
-        if (tolerance > 0.0)
-            // workaround for http://dev.opencascade.org/index.php?q=node/1056#comment-520
-            shapeTools.Append(BRepBuilderAPI_Copy(shape).Shape());
-        else
-            shapeTools.Append(shape);
+        shapeTools.Append(shape);
     }
 
     mkCommon.SetArguments(shapeArguments);
     mkCommon.SetTools(shapeTools);
-    if (tolerance > 0.0)
+    if (tolerance > 0.0) {
         mkCommon.SetFuzzyValue(tolerance);
+    } else if (tolerance < 0.0) {
+        mkCommon.setAutoFuzzy();
+    }
     mkCommon.Build();
     if (!mkCommon.IsDone())
         throw Base::RuntimeError("Multi common failed");
@@ -1794,16 +1792,15 @@ TopoDS_Shape TopoShape::fuse(const std::vector<TopoDS_Shape>& shapes, Standard_R
     for (const auto & shape : shapes) {
         if (shape.IsNull())
             throw NullShapeException("Tool shape is null");
-        if (tolerance > 0.0)
-            // workaround for http://dev.opencascade.org/index.php?q=node/1056#comment-520
-            shapeTools.Append(BRepBuilderAPI_Copy(shape).Shape());
-        else
-            shapeTools.Append(shape);
+        shapeTools.Append(shape);
     }
     mkFuse.SetArguments(shapeArguments);
     mkFuse.SetTools(shapeTools);
-    if (tolerance > 0.0)
+    if (tolerance > 0.0) {
         mkFuse.SetFuzzyValue(tolerance);
+    } else if (tolerance < 0.0) {
+        mkFuse.setAutoFuzzy();
+    }
     mkFuse.Build();
     if (!mkFuse.IsDone())
         throw Base::RuntimeError("Multi fuse failed");
@@ -1853,17 +1850,16 @@ TopoDS_Shape TopoShape::section(const std::vector<TopoDS_Shape>& shapes,
     for (const auto & shape : shapes) {
         if (shape.IsNull())
             throw Base::ValueError("Tool shape is null");
-        if (tolerance > 0.0)
-            // workaround for http://dev.opencascade.org/index.php?q=node/1056#comment-520
-            shapeTools.Append(BRepBuilderAPI_Copy(shape).Shape());
-        else
-            shapeTools.Append(shape);
+        shapeTools.Append(shape);
     }
 
     mkSection.SetArguments(shapeArguments);
     mkSection.SetTools(shapeTools);
-    if (tolerance > 0.0)
+    if (tolerance > 0.0) {
         mkSection.SetFuzzyValue(tolerance);
+    } else if (tolerance < 0.0) {
+        mkSection.setAutoFuzzy();
+    }
     mkSection.Build();
     if (!mkSection.IsDone())
         throw Base::RuntimeError("Multi section failed");
@@ -1915,15 +1911,14 @@ TopoDS_Shape TopoShape::generalFuse(const std::vector<TopoDS_Shape> &sOthers, St
     for (const TopoDS_Shape &it: sOthers) {
         if (it.IsNull())
             throw NullShapeException("Tool shape is null");
-        if (tolerance > 0.0)
-            // workaround for http://dev.opencascade.org/index.php?q=node/1056#comment-520
-            GFAArguments.Append(BRepBuilderAPI_Copy(it).Shape());
-        else
             GFAArguments.Append(it);
     }
     mkGFA.SetArguments(GFAArguments);
-    if (tolerance > 0.0)
+    if (tolerance > 0.0) {
         mkGFA.SetFuzzyValue(tolerance);
+    } else if (tolerance < 0.0) {
+        FCBRepAlgoAPIHelper::setAutoFuzzy(&mkGFA);
+    }
     mkGFA.SetNonDestructive(Standard_True);
     mkGFA.Build();
     if (!mkGFA.IsDone())

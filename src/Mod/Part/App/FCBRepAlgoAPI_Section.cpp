@@ -63,10 +63,5 @@ BRepAlgoAPI_Section(Sh,Pl,false)
 
 void FCBRepAlgoAPI_Section::setAutoFuzzy()
 {
-    Bnd_Box bounds;
-    for (TopTools_ListOfShape::Iterator it(myArguments); it.More(); it.Next())
-        BRepBndLib::Add(it.Value(), bounds);
-    for (TopTools_ListOfShape::Iterator it(myTools); it.More(); it.Next())
-        BRepBndLib::Add(it.Value(), bounds);
-    SetFuzzyValue(Part::FuzzyHelper::getBooleanFuzzy() * sqrt(bounds.SquareExtent()) * Precision::Confusion());
+    FCBRepAlgoAPIHelper::setAutoFuzzy(this);
 }

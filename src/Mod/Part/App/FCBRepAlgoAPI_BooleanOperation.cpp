@@ -52,10 +52,22 @@ FCBRepAlgoAPI_BooleanOperation::FCBRepAlgoAPI_BooleanOperation(const TopoDS_Shap
   
 void FCBRepAlgoAPI_BooleanOperation::setAutoFuzzy()
 {
+    FCBRepAlgoAPIHelper::setAutoFuzzy(this);
+}
+
+
+void FCBRepAlgoAPIHelper::setAutoFuzzy(BRepAlgoAPI_BooleanOperation* op) {
     Bnd_Box bounds;
-    for (TopTools_ListOfShape::Iterator it(myArguments); it.More(); it.Next())
+    for (TopTools_ListOfShape::Iterator it(op->Arguments()); it.More(); it.Next())
         BRepBndLib::Add(it.Value(), bounds);
-    for (TopTools_ListOfShape::Iterator it(myTools); it.More(); it.Next())
+    for (TopTools_ListOfShape::Iterator it(op->Tools()); it.More(); it.Next())
         BRepBndLib::Add(it.Value(), bounds);
-    SetFuzzyValue(Part::FuzzyHelper::getBooleanFuzzy() * sqrt(bounds.SquareExtent()) * Precision::Confusion());
+    op->SetFuzzyValue(Part::FuzzyHelper::getBooleanFuzzy() * sqrt(bounds.SquareExtent()) * Precision::Confusion());
+}
+
+void FCBRepAlgoAPIHelper::setAutoFuzzy(BRepAlgoAPI_BuilderAlgo* op) {
+    Bnd_Box bounds;
+    for (TopTools_ListOfShape::Iterator it(op->Arguments()); it.More(); it.Next())
+        BRepBndLib::Add(it.Value(), bounds);
+    op->SetFuzzyValue(Part::FuzzyHelper::getBooleanFuzzy() * sqrt(bounds.SquareExtent()) * Precision::Confusion());
 }

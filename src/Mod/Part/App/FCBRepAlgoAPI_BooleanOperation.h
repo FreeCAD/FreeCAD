@@ -30,6 +30,12 @@
 #define FCREPALGOAPIBOOLEANOPERATION_H
 #include <BRepAlgoAPI_BooleanOperation.hxx>
 
+class FCBRepAlgoAPIHelper
+{
+public:
+    static void setAutoFuzzy(BRepAlgoAPI_BooleanOperation* op);
+    static void setAutoFuzzy(BRepAlgoAPI_BuilderAlgo* op);
+};
 
 class FCBRepAlgoAPI_BooleanOperation : public BRepAlgoAPI_BooleanOperation
 {

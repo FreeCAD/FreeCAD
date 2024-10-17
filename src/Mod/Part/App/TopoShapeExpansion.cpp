@@ -4055,15 +4055,13 @@ TopoShape& TopoShape::makeElementGeneralFuse(const std::vector<TopoShape>& _shap
         if (shape.isNull()) {
             FC_THROWM(NullShapeException, "Null input shape");
         }
-        if (tol > 0.0) {
-            // workaround for http://dev.opencascade.org/index.php?q=node/1056#comment-520
-            shape = shape.makeElementCopy();
-        }
         GFAArguments.Append(shape.getShape());
     }
     mkGFA.SetArguments(GFAArguments);
     if (tol > 0.0) {
         mkGFA.SetFuzzyValue(tol);
+    } else if (tol < 0.0) {
+        FCBRepAlgoAPIHelper::setAutoFuzzy(&mkGFA);
     }
     mkGFA.SetNonDestructive(Standard_True);
     mkGFA.Build();
@@ -5666,7 +5664,7 @@ TopoShape& TopoShape::makeElementBoolean(const char* maker,
         }
     }
 
-    if (tolerance > 0.0 && _shapes.empty()) {
+    if (tolerance != 0.0 && _shapes.empty()) {
         _shapes = shapes;
     }
 
@@ -5712,12 +5710,6 @@ TopoShape& TopoShape::makeElementBoolean(const char* maker,
         if (++i == 0) {
             shapeArguments.Append(shape.getShape());
         }
-        else if (tolerance > 0.0) {
-            auto& s = _shapes[i];
-            // workaround for http://dev.opencascade.org/index.php?q=node/1056#comment-520
-            s.setShape(BRepBuilderAPI_Copy(s.getShape()).Shape(), false);
-            shapeTools.Append(s.getShape());
-        }
         else {
             shapeTools.Append(shape.getShape());
         }
@@ -5739,6 +5731,8 @@ TopoShape& TopoShape::makeElementBoolean(const char* maker,
     mk->SetTools(shapeTools);
     if (tolerance > 0.0) {
         mk->SetFuzzyValue(tolerance);
+    } else if (tolerance < 0.0) {
+        FCBRepAlgoAPIHelper::setAutoFuzzy(mk.get());
     }
     mk->Build();
     makeElementShape(*mk, inputs, op);
