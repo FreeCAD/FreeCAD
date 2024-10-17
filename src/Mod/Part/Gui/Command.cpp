@@ -70,6 +70,7 @@
 #include "TaskShapeBuilder.h"
 #include "TaskSweep.h"
 #include "ViewProvider.h"
+#include "ViewProviderAttachExtension.h"
 
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -2248,6 +2249,26 @@ namespace {
 
         return QString::fromLatin1("# Object created at document root.");
     }
+
+    void showAttachmentEditor(std::string& name)
+    {
+        auto* obj = App::GetApplication().getActiveDocument()->getObject(name.c_str());
+        if (!obj) {
+            return;
+        }
+
+        auto* vp = Gui::Application::Instance->getViewProvider(obj);
+        if (!vp) {
+            return;
+        }
+
+        auto* vpe = vp->getExtensionByType<PartGui::ViewProviderAttachExtension>();
+        if (!vpe) {
+            return;
+        }
+        auto* vppe = static_cast<PartGui::ViewProviderAttachExtension*>(vpe);
+        vppe->showAttachmentEditor(false);
+    }
 }
 
 DEF_STD_CMD_A(CmdPartCoordinateSystem)
@@ -2273,7 +2294,8 @@ void CmdPartCoordinateSystem::activated(int iMsg)
     doCommand(Doc, "obj = App.activeDocument().addObject('Part::LocalCoordinateSystem','%s')", name.c_str());
     doCommand(Doc, getAutoGroupCommandStr().toUtf8());
     doCommand(Doc, "obj.Visibility = True");
-    doCommand(Doc, "obj.ViewObject.doubleClicked()");
+    showAttachmentEditor(name);
+    //doCommand(Doc, "obj.ViewObject.doubleClicked()");
 }
 
 bool CmdPartCoordinateSystem::isActive()
@@ -2306,7 +2328,7 @@ void CmdPartPlane::activated(int iMsg)
     std::string name = getUniqueObjectName("Plane");
     doCommand(Doc, "obj = App.activeDocument().addObject('Part::DatumPlane','%s')", name.c_str());
     doCommand(Doc, getAutoGroupCommandStr().toUtf8());
-    doCommand(Doc, "obj.ViewObject.doubleClicked()");
+    showAttachmentEditor(name);
 }
 
 bool CmdPartPlane::isActive()
@@ -2339,7 +2361,7 @@ void CmdPartLine::activated(int iMsg)
     std::string name = getUniqueObjectName("Line");
     doCommand(Doc, "obj = App.activeDocument().addObject('Part::DatumLine','%s')", name.c_str());
     doCommand(Doc, getAutoGroupCommandStr().toUtf8());
-    doCommand(Doc, "obj.ViewObject.doubleClicked()");
+    showAttachmentEditor(name);
 }
 
 bool CmdPartLine::isActive()
@@ -2372,7 +2394,7 @@ void CmdPartPoint::activated(int iMsg)
     std::string name = getUniqueObjectName("Point");
     doCommand(Doc, "obj = App.activeDocument().addObject('Part::DatumPoint','%s')", name.c_str());
     doCommand(Doc, getAutoGroupCommandStr().toUtf8());
-    doCommand(Doc, "obj.ViewObject.doubleClicked()");
+    showAttachmentEditor(name);
 }
 
 bool CmdPartPoint::isActive()
