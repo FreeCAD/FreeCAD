@@ -24,7 +24,7 @@
 #pragma once
 
 namespace SafeMode {
-    bool SafeModeEnabled();
-    void StartSafeMode();
-    void Destruct();
+    AppExport bool SafeModeEnabled();
+    AppExport void StartSafeMode();
+    AppExport void Destruct();
 };
