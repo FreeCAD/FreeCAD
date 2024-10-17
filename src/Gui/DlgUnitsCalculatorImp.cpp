@@ -92,7 +92,8 @@ DlgUnitsCalculator::DlgUnitsCalculator(QWidget* parent, Qt::WindowFlags fl)
           << Base::Unit::ElectricalCapacitance << Base::Unit::ElectricalInductance
           << Base::Unit::ElectricalConductance << Base::Unit::ElectricalResistance
           << Base::Unit::ElectricalConductivity << Base::Unit::ElectricCharge
-          << Base::Unit::ElectricCurrent << Base::Unit::ElectricPotential << Base::Unit::Force
+          << Base::Unit::ElectricCurrent << Base::Unit::ElectricPotential
+          << Base::Unit::ElectricFlux << Base::Unit::Force
           << Base::Unit::Frequency << Base::Unit::HeatFlux << Base::Unit::InverseArea
           << Base::Unit::InverseLength << Base::Unit::InverseVolume
           << Base::Unit::KinematicViscosity << Base::Unit::Length << Base::Unit::LuminousIntensity
@@ -104,6 +105,7 @@ DlgUnitsCalculator::DlgUnitsCalculator(QWidget* parent, Qt::WindowFlags fl)
           << Base::Unit::TimeSpan << Base::Unit::VacuumPermittivity << Base::Unit::Velocity
           << Base::Unit::Volume << Base::Unit::VolumeFlowRate
           << Base::Unit::VolumetricThermalExpansionCoefficient << Base::Unit::Work;
+
     for (const Base::Unit& it : units) {
         ui->unitsBox->addItem(it.getTypeString());
     }
