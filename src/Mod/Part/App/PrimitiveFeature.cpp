@@ -652,13 +652,6 @@ App::DocumentObjectExecReturn *Cone::execute()
         return new App::DocumentObjectExecReturn("Radius of cone too small");
     if (Height.getValue() < Precision::Confusion())
         return new App::DocumentObjectExecReturn("Height of cone too small");
-    double angle = Angle.getValue();
-#if OCC_VERSION_HEX == 0x070702
-    // OCCT 7.7.2 will not model a cone with an angle of exactly 360, so we cheat:
-    if ( angle == 360.0) {
-        angle = 359.99;
-    }
-#endif
     try {
         TopoDS_Shape ResultShape;
         if (std::abs(Radius1.getValue() - Radius2.getValue()) < Precision::Confusion()){
@@ -672,7 +665,7 @@ App::DocumentObjectExecReturn *Cone::execute()
             BRepPrimAPI_MakeCone mkCone(Radius1.getValue(),
                                         Radius2.getValue(),
                                         Height.getValue(),
-                                        Base::toRadians<double>(angle));
+                                        Base::toRadians<double>(Angle.getValue()));
             ResultShape = mkCone.Shape();
         }
         this->Shape.setValue(ResultShape);
