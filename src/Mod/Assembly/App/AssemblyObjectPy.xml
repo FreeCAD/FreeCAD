@@ -38,6 +38,52 @@
         </UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="generateSimulation">
+      <Documentation>
+        <UserDocu>
+          Generate the simulation.
+
+          solve(simulationObject) -> int
+
+          Args:
+          simulationObject: The simulation Object.
+
+          Returns:
+          0 in case of success, otherwise the following codes in this order of
+          priority:
+          -6 if no parts are fixed.
+          -4 if over-constrained,
+          -3 if conflicting constraints,
+          -5 if malformed constraints
+          -1 if solver error,
+          -2 if redundant constraints.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="updateForFrame">
+      <Documentation>
+        <UserDocu>
+          Update entire assembly to frame number specified.
+
+          updateForFrame(index)
+
+          Args: index of frame.
+
+          Returns: None
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="numberOfFrames">
+      <Documentation>
+        <UserDocu>
+          numberOfFrames()
+
+          Args: None
+
+          Returns: Number of frames
+        </UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="undoSolve">
       <Documentation>
         <UserDocu>
@@ -125,7 +171,12 @@
         </UserDocu>
       </Documentation>
     </Methode>
-
+    <Attribute Name="Joints" ReadOnly="true">
+      <Documentation>
+        <UserDocu>A list of all joints this assembly has.</UserDocu>
+      </Documentation>
+      <Parameter Name="Joints" Type="List"/>
+    </Attribute>
     <CustomAttributes />
   </PythonExport>
 </GenerateModel>
