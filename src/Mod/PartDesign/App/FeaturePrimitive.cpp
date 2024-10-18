@@ -360,7 +360,7 @@ App::DocumentObjectExecReturn* Cone::execute()
             //Build a cylinder
             BRepPrimAPI_MakeCylinder mkCylr(Radius1.getValue(),
                                             Height.getValue(),
-                                            2.0 * M_PI);
+                                            Base::toRadians<double>(Angle.getValue()));
             return FeaturePrimitive::execute(mkCylr.Shape());
         }
         // Build a cone
