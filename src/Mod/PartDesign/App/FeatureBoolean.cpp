@@ -23,9 +23,9 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRepAlgoAPI_Common.hxx>
-# include <BRepAlgoAPI_Cut.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
+# include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 # include <Standard_Failure.hxx>
 #endif
 

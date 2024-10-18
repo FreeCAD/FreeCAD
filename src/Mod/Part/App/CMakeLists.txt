@@ -234,6 +234,20 @@ SET(Properties_SRCS
 )
 SOURCE_GROUP("Properties" FILES ${Properties_SRCS})
 
+SET(FCBRepAlgoAPI_SRCS
+    FCBRepAlgoAPI_BooleanOperation.cpp
+    FCBRepAlgoAPI_BooleanOperation.h
+    FCBRepAlgoAPI_Common.cpp
+    FCBRepAlgoAPI_Common.h
+    FCBRepAlgoAPI_Fuse.cpp
+    FCBRepAlgoAPI_Fuse.h
+    FCBRepAlgoAPI_Cut.cpp
+    FCBRepAlgoAPI_Cut.h
+    FCBRepAlgoAPI_Section.cpp
+    FCBRepAlgoAPI_Section.h
+)
+SOURCE_GROUP("FCBRepAlgoAPI-wrapper" FILES ${FCBRepAlgoAPI_SRCS})
+
 SET(Python_SRCS
     ArcPy.xml
     ArcPyImp.cpp
@@ -515,6 +529,8 @@ SET(Part_SRCS
     CrossSection.h
     ExtrusionHelper.cpp
     ExtrusionHelper.h
+    FuzzyHelper.cpp
+    FuzzyHelper.h
     GeometryExtension.cpp
     GeometryExtension.h
     GeometryDefaultExtension.cpp
@@ -580,7 +596,7 @@ if(EIGEN3_NO_DEPRECATED_COPY)
         PROPERTIES COMPILE_FLAGS ${EIGEN3_NO_DEPRECATED_COPY})
 endif()
 
-add_library(Part SHARED ${Part_SRCS})
+add_library(Part SHARED ${Part_SRCS} ${FCBRepAlgoAPI_SRCS})
 target_link_libraries(Part ${Part_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(Part)

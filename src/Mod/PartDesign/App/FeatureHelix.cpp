@@ -24,9 +24,9 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepAdaptor_Surface.hxx>
-# include <BRepAlgoAPI_Common.hxx>
-# include <BRepAlgoAPI_Cut.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
+# include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 # include <BRepBndLib.hxx>
 # include <BRepBuilderAPI_MakeSolid.hxx>
 # include <BRepBuilderAPI_Sewing.hxx>
@@ -256,7 +256,7 @@ App::DocumentObjectExecReturn* Helix::execute()
 
         if (getAddSubType() == FeatureAddSub::Additive) {
 
-            BRepAlgoAPI_Fuse mkFuse(base.getShape(), result);
+            FCBRepAlgoAPI_Fuse mkFuse(base.getShape(), result);
             if (!mkFuse.IsDone()){
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Adding the helix failed"));
             }
@@ -280,14 +280,14 @@ App::DocumentObjectExecReturn* Helix::execute()
             TopoShape boolOp;
 
             if (Outside.getValue()) {  // are we subtracting the inside or the outside of the profile.
-                BRepAlgoAPI_Common mkCom(result, base.getShape());
+                FCBRepAlgoAPI_Common mkCom(result, base.getShape());
                 if (!mkCom.IsDone())
                     return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Intersecting the helix failed"));
                 boolOp = this->getSolid(mkCom.Shape());
 
             }
             else {
-                BRepAlgoAPI_Cut mkCut(base.getShape(), result);
+                FCBRepAlgoAPI_Cut mkCut(base.getShape(), result);
                 if (!mkCut.IsDone())
                     return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Subtracting the helix failed"));
                 boolOp = this->getSolid(mkCut.Shape());
