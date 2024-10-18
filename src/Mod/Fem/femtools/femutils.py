@@ -368,6 +368,8 @@ def startProgramInfo(code):
             info.wShowWindow = SW_DEFAULT
         info.dwFlags = subprocess.STARTF_USESHOWWINDOW
         return info
+    else:
+        return None
 
 
 def expandParentObject():
