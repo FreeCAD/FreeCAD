@@ -2420,13 +2420,9 @@ void Area::makeOffset(list<shared_ptr<CArea>>& areas,
 #endif
 
     if (offset < 0) {
-        stepover = -fabs(stepover);
         if (count < 0) {
             if (!last_stepover) {
                 last_stepover = offset * 0.5;
-            }
-            else {
-                last_stepover = -fabs(last_stepover);
             }
         }
         else {
