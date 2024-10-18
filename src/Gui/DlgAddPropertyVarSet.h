@@ -125,6 +125,12 @@ private:
     std::string namePropertyToAdd;
     std::unique_ptr<PropertyEditor::PropertyItem> propertyItem;
     std::unique_ptr<App::ObjectIdentifier> objectIdentifier;
+
+    // connections
+    QMetaObject::Connection connComboBoxGroup;
+    QMetaObject::Connection connComboBoxType;
+    QMetaObject::Connection connLineEditNameEditFinished;
+    QMetaObject::Connection connLineEditNameTextChanged;
 };
 
 } // namespace Dialog
