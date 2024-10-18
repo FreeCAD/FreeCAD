@@ -24,7 +24,7 @@ import math
 
 import FreeCAD
 # import Draft
-import ifcopenshell
+import ifcopenshell.guid
 from draftutils import params
 
 def getObjectsOfIfcType(objects, ifcType):
