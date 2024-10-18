@@ -42,6 +42,7 @@ class TemporaryGuiTest(unittest.TestCase):
     def test_monkey_patch_regression(self):
         # Given
         from pivy import coin
+
         parent = coin.SoGroup()
         child1 = coin.SoGroup()
         child2 = coin.SoGroup()
