@@ -52,6 +52,7 @@ class BIM_Leader(gui_lines.Line):
 
     def finish(self, closed=False, cont=False):
         import DraftVecUtils
+        self.end_callbacks(self.call)
         self.removeTemporaryObject()
         if getattr(self,"oldWP",None):
             FreeCAD.DraftWorkingPlane = self.oldWP

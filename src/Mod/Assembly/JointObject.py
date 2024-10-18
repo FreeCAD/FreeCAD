@@ -509,18 +509,25 @@ class Joint:
             joint.Offset2 = App.Placement(current_offset, App.Rotation(current_rotation, 0, 0))
 
     def migrationScript4(self, joint):
-        if hasattr(joint, "Reference1"):
-            base_name, *sub_names, feature_name = joint.Reference1[1][0].split(".")
-            ref1 = ".".join((base_name, *sub_names[:-1], feature_name))
-            base_name, *sub_names, feature_name = joint.Reference1[1][1].split(".")
-            ref2 = ".".join((base_name, *sub_names[:-1], feature_name))
-            joint.Reference1 = (joint.Reference1[0], [ref1, ref2])
-        if hasattr(joint, "Reference2"):
-            base_name, *sub_names, feature_name = joint.Reference2[1][0].split(".")
-            ref1 = ".".join((base_name, *sub_names[:-1], feature_name))
-            base_name, *sub_names, feature_name = joint.Reference2[1][1].split(".")
-            ref2 = ".".join((base_name, *sub_names[:-1], feature_name))
-            joint.Reference2 = (joint.Reference2[0], [ref1, ref2])
+        if hasattr(joint, "Reference1") and joint.Reference1[0] is not None:
+            doc_name = joint.Reference1[0].Document.Name
+            sub1 = joint.Reference1[1][0]
+            sub1 = UtilsAssembly.fixBodyExtraFeatureInSub(doc_name, sub1)
+            sub2 = joint.Reference1[1][1]
+            sub2 = UtilsAssembly.fixBodyExtraFeatureInSub(doc_name, sub2)
+
+            if sub1 != joint.Reference1[1][0] or sub2 != joint.Reference1[1][1]:
+                joint.Reference1 = (joint.Reference1[0], [sub1, sub2])
+
+        if hasattr(joint, "Reference2") and joint.Reference2[0] is not None:
+            doc_name = joint.Reference2[0].Document.Name
+            sub1 = joint.Reference2[1][0]
+            sub1 = UtilsAssembly.fixBodyExtraFeatureInSub(doc_name, sub1)
+            sub2 = joint.Reference2[1][1]
+            sub2 = UtilsAssembly.fixBodyExtraFeatureInSub(doc_name, sub2)
+
+            if sub1 != joint.Reference2[1][0] or sub2 != joint.Reference2[1][1]:
+                joint.Reference2 = (joint.Reference2[0], [sub1, sub2])
 
     def dumps(self):
         return None
@@ -536,13 +543,14 @@ class Joint:
 
     def setJointType(self, joint, newType):
         oldType = joint.JointType
-        joint.JointType = newType
+        if newType != oldType:
+            joint.JointType = newType
 
-        # try to replace the joint type in the label.
-        tr_old_type = TranslatedJointTypes[JointTypes.index(oldType)]
-        tr_new_type = TranslatedJointTypes[JointTypes.index(newType)]
-        if tr_old_type in joint.Label:
-            joint.Label = joint.Label.replace(tr_old_type, tr_new_type)
+            # try to replace the joint type in the label.
+            tr_old_type = TranslatedJointTypes[JointTypes.index(oldType)]
+            tr_new_type = TranslatedJointTypes[JointTypes.index(newType)]
+            if tr_old_type in joint.Label:
+                joint.Label = joint.Label.replace(tr_old_type, tr_new_type)
 
     def onChanged(self, joint, prop):
         """Do something when a property has changed"""
@@ -1319,6 +1327,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
         self.form.jointType.setCurrentIndex(jointTypeIndex)
         self.jType = JointTypes[self.form.jointType.currentIndex()]
+        self.form.jointType.currentIndexChanged.connect(self.onJointTypeChanged)
 
         self.form.distanceSpinbox.valueChanged.connect(self.onDistanceChanged)
         self.form.distanceSpinbox2.valueChanged.connect(self.onDistance2Changed)
@@ -1364,8 +1373,6 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.visibilityBackup = False
 
         self.adaptUi()
-
-        self.form.jointType.currentIndexChanged.connect(self.onJointTypeChanged)
 
         if self.creating:
             # This has to be after adaptUi so that properties default values are adapted
@@ -1791,12 +1798,14 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
     def addSelection(self, doc_name, obj_name, sub_name, mousePos):
         rootObj = App.getDocument(doc_name).getObject(obj_name)
 
-        # If the sub_name that comes in has extra features in it, remove them.  For example a
-        # Part.Body.Pad.Sketch becomes Part.Body.Sketch and a
-        # Body.Pad.Sketch becomes Body.sketch
-        base_name, *path_detail, old_name = sub_name.split(".")
-        target_link = ".".join((base_name, *path_detail[:-2], old_name))
-        ref = [rootObj, [target_link]]
+        # We do not need the full TNP string like :"Part.Body.Pad.;#a:1;:G0;XTR;:Hc94:8,F.Face6"
+        # instead we need : "Part.Body.Pad.Face6"
+        resolved = rootObj.resolveSubElement(sub_name, True)
+        sub_name = resolved[2]
+
+        sub_name = UtilsAssembly.fixBodyExtraFeatureInSub(doc_name, sub_name)
+
+        ref = [rootObj, [sub_name]]
         moving_part = self.getMovingPart(ref)
 
         # Check if the addition is acceptable (we are not doing this in selection gate to let user move objects)
