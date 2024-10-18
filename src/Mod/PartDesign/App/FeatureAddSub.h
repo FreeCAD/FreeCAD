@@ -47,11 +47,14 @@ public:
 
     FeatureAddSub();
 
+    void onChanged(const App::Property *) override;
     Type getAddSubType();
 
     short mustExecute() const override;
 
     virtual void getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShape);
+
+    void updatePreviewShape() override;
 
     Part::PropertyPartShape   AddSubShape;
     App::PropertyBool Refine;

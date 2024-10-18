@@ -44,6 +44,8 @@
 #include "Body.h"
 #include "ShapeBinder.h"
 
+#include <BRep_Builder.hxx>
+
 FC_LOG_LEVEL_INIT("PartDesign", true, true)
 
 
@@ -58,8 +60,13 @@ Feature::Feature()
     ADD_PROPERTY_TYPE(_Body,(nullptr),"Base",(App::PropertyType)(
                 App::Prop_ReadOnly|App::Prop_Hidden|App::Prop_Output|App::Prop_Transient),0);
     ADD_PROPERTY(SuppressedShape,(TopoShape()));
+    ADD_PROPERTY(PreviewShape,(TopoShape()));
     Placement.setStatus(App::Property::Hidden, true);
     BaseFeature.setStatus(App::Property::Hidden, true);
+
+    PreviewShape.setStatus(App::Property::Output, true);
+    PreviewShape.setStatus(App::Property::Transient, true);
+    PreviewShape.setStatus(App::Property::Hidden, true);
 
     App::SuppressibleExtension::initExtension(this);
 }
@@ -93,6 +100,7 @@ App::DocumentObjectExecReturn* Feature::recompute()
     }
     else {
         Shape.setValue(getBaseTopoShape(true));
+        updatePreviewShape();
     }
     return App::DocumentObject::StdReturn;
 }
@@ -153,7 +161,8 @@ void Feature::onChanged(const App::Property *prop)
 {
     if (!this->isRestoring()
         && this->getDocument()
-        && !this->getDocument()->isPerformingTransaction()) {
+        && !this->getDocument()->isPerformingTransaction()
+    ) {
         if (prop == &Visibility || prop == &BaseFeature) {
             auto body = Body::findBodyOf(this);
             if (body) {
@@ -166,6 +175,10 @@ void Feature::onChanged(const App::Property *prop)
                         body->insertObject(BaseFeature.getValue(), this);
                 }
             }
+        }
+
+        if (prop == &Shape) {
+            updatePreviewShape();
         }
     }
     Part::Feature::onChanged(prop);
@@ -307,6 +320,81 @@ Part::TopoShape Feature::getBaseTopoShape(bool silent) const
         }
     }
     return result;
+}
+
+void Feature::getGeneratedShapes(std::vector<int>& faces,
+                                 std::vector<int>& edges,
+                                 std::vector<int>& vertices) const
+{
+    Part::TopoShape shape = Shape.getShape();
+    
+    std::set<int> edgeSet;
+    std::set<int> vertexSet;
+    
+    unsigned count = shape.countSubShapes(TopAbs_FACE);
+
+    for (unsigned faceId = 1; faceId <= count; ++faceId) {
+        Data::MappedName mapped = shape.getMappedName(Data::IndexedName::fromConst("Face", faceId));
+
+        if (mapped && shape.isElementGenerated(mapped)) {
+            faces.push_back(faceId);
+
+            Part::TopoShape face = shape.getSubTopoShape(TopAbs_FACE, faceId);
+            
+            for(auto &edge : face.getSubShapes(TopAbs_EDGE)) {
+                int edgeId = shape.findShape(edge);
+
+                if (edgeId > 0) {
+                    edgeSet.insert(edgeId);
+                }
+            }
+            
+            for (auto &vertex : face.getSubShapes(TopAbs_VERTEX)) {
+                int vertexId = shape.findShape(vertex);
+
+                if (vertexId > 0) {
+                    vertexSet.insert(vertexId);
+                }
+            }
+        }
+    }
+
+    std::copy(edgeSet.begin(), edgeSet.end(), std::back_inserter(edges));
+    std::copy(vertexSet.begin(), vertexSet.end(), std::back_inserter(vertices));
+}
+
+void Feature::updatePreviewShape()
+{
+    auto shape = Shape.getShape();
+    auto baseFeature = dynamic_cast<Feature*>(BaseFeature.getValue());
+
+    if (!baseFeature || baseFeature->Shape.getShape().isNull()) {
+        PreviewShape.setValue(Shape.getShape());
+        return;
+    }
+
+    std::vector<int> faces, edges, vertices;
+    getGeneratedShapes(faces, edges, vertices);
+
+    if (faces.empty()) {
+        PreviewShape.setValue(TopoDS_Shape());
+        return;
+    }
+
+    shape.setPlacement(Base::Placement());
+
+    BRep_Builder builder;
+    TopoDS_Compound comp;
+    builder.MakeCompound(comp);
+
+    for (int faceId : faces) {
+        builder.Add(comp, shape.getSubShape(TopAbs_FACE, faceId));
+    }
+
+    Part::TopoShape preview(comp);
+    preview.mapSubElement(shape);
+
+    PreviewShape.setValue(preview);
 }
 
 PyObject* Feature::getPyObject()

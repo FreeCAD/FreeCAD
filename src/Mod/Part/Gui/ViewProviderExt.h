@@ -120,6 +120,10 @@ public:
     std::vector<Base::Vector3d> getSelectionShape(const char* Element) const override;
     //@}
 
+    virtual Part::TopoShape getRenderedShape() const {
+        return Part::Feature::getTopoShape(getObject());
+    }
+
     /** @name Highlight handling
     * This group of methods do the highlighting of elements.
     */

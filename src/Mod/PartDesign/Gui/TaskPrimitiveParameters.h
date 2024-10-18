@@ -31,6 +31,7 @@
 
 #include "ViewProviderPrimitive.h"
 #include "TaskDatumParameters.h"
+#include "TaskFeatureParameters.h"
 
 namespace App {
 class Property;
@@ -117,13 +118,13 @@ private:
     ViewProviderPrimitive* vp;
 };
 
-class TaskPrimitiveParameters : public Gui::TaskView::TaskDialog
+class TaskDlgPrimitiveParameters : public TaskDlgFeatureParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskPrimitiveParameters(ViewProviderPrimitive *PrimitiveView);
-    ~TaskPrimitiveParameters() override;
+    explicit TaskDlgPrimitiveParameters(ViewProviderPrimitive *PrimitiveView);
+    ~TaskDlgPrimitiveParameters() override;
 
 protected:
     QDialogButtonBox::StandardButtons getStandardButtons() const override;
