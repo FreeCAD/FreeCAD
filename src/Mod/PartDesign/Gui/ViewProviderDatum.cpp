@@ -48,7 +48,7 @@
 #include <Gui/Control.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
-#include <Gui/ViewProviderOrigin.h>
+#include <Gui/ViewProviderCoordinateSystem.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/DatumCS.h>
 #include <Mod/PartDesign/App/DatumLine.h>
@@ -66,7 +66,7 @@ using namespace PartDesignGui;
 PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesignGui::ViewProviderDatum,Gui::ViewProviderGeometryObject)
 
 // static data
-const double ViewProviderDatum::defaultSize = Gui::ViewProviderOrigin::defaultSize ();
+const double ViewProviderDatum::defaultSize = Gui::ViewProviderCoordinateSystem::defaultSize ();
 
 ViewProviderDatum::ViewProviderDatum()
 {

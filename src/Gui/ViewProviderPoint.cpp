@@ -32,7 +32,7 @@
 #endif
 
 #include "ViewProviderPoint.h"
-#include "ViewProviderOrigin.h"
+#include "ViewProviderCoordinateSystem.h"
 
 using namespace Gui;
 

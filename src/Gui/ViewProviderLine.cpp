@@ -37,7 +37,7 @@
 #include <Gui/ViewParams.h>
 
 #include "ViewProviderLine.h"
-#include "ViewProviderOrigin.h"
+#include "ViewProviderCoordinateSystem.h"
 
 
 using namespace Gui;
@@ -79,7 +79,7 @@ void ViewProviderLine::attach(App::DocumentObject *obj) {
         noRole = true;
     }
 
-    static const float size = ViewProviderOrigin::defaultSize();
+    static const float size = ViewProviderCoordinateSystem::defaultSize();
 
     SbVec3f verts[2];
     if (noRole) {
