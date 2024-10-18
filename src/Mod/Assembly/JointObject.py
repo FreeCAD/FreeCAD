@@ -1270,21 +1270,26 @@ class MakeJointSelGate:
             return False
 
         ref = [obj, [sub]]
-        selected_object = UtilsAssembly.getObject(ref)
+        sel_obj = UtilsAssembly.getObject(ref)
 
-        if not (
-            selected_object.isDerivedFrom("Part::Feature")
-            or selected_object.isDerivedFrom("App::Part")
+        if UtilsAssembly.isLink(sel_obj):
+            sel_obj = sel_obj.getLinkedObject()
+
+        if sel_obj.isDerivedFrom("Part::Feature") or sel_obj.isDerivedFrom("App::Part"):
+            return True
+
+        if sel_obj.isDerivedFrom("App::LocalCoordinateSystem") or sel_obj.isDerivedFrom(
+            "App::DatumElement"
         ):
-            if UtilsAssembly.isLink(selected_object):
-                linked = selected_object.getLinkedObject()
+            # We accept only if it is not a root object of the assembly.
+            # Datums must be included in a GeoFeature.
+            lcs = sel_obj
+            if lcs.isDerivedFrom("App::DatumElement"):
+                lcs = sel_obj.getParent()
 
-                if not (linked.isDerivedFrom("Part::Feature") or linked.isDerivedFrom("App::Part")):
-                    return False
-            else:
-                return False
+            return not self.assembly.hasObject(lcs)
 
-        return True
+        return False
 
 
 activeTask = None

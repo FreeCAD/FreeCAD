@@ -31,7 +31,7 @@
 #endif
 
 #include <App/DocumentObject.h>
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 #include <Gui/Command.h>
 #include <Gui/SelectionObject.h>
 #include <Gui/ViewProvider.h>
