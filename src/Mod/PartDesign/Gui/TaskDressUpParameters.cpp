@@ -379,22 +379,28 @@ void TaskDressUpParameters::hideOnError()
         showObject();
 }
 
-void TaskDressUpParameters::hideObject()
+void TaskDressUpParameters::setDressUpVisibility(bool visisble)
 {
     App::DocumentObject* base = getBase();
-    if(base) {
-        DressUpView->getObject()->Visibility.setValue(false);
-        base->Visibility.setValue(true);
+    if (base) {
+        App::DocumentObject* duv = DressUpView->getObject();
+        if (duv->Visibility.getValue() != visisble) {
+            duv->Visibility.setValue(visisble);
+        }
+        if (base->Visibility.getValue() == visisble) {
+            base->Visibility.setValue(!visisble);
+        }
     }
+}
+
+void TaskDressUpParameters::hideObject()
+{
+    setDressUpVisibility(false);
 }
 
 void TaskDressUpParameters::showObject()
 {
-    App::DocumentObject* base = getBase();
-    if (base) {
-        DressUpView->getObject()->Visibility.setValue(true);
-        base->Visibility.setValue(false);
-    }
+    setDressUpVisibility(true);
 }
 
 ViewProviderDressUp* TaskDressUpParameters::getDressUpView() const
