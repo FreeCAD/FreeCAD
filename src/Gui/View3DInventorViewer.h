@@ -427,6 +427,9 @@ public:
     bool isEnabledVBO() const;
     void setRenderCache(int);
 
+    //! Update colors of axis in corner to match preferences
+    void updateColors();
+
     void getDimensions(float& fHeight, float& fWidth) const;
     float getMaxDimension() const;
     SbVec3f getCenterPointOnFocalPlane() const;
@@ -523,6 +526,10 @@ private:
     bool fpsEnabled;
     bool vboEnabled;
     bool naviCubeEnabled;
+
+    App::Color m_xColor;
+    App::Color m_yColor;
+    App::Color m_zColor;
 
     bool editing;
     QCursor editCursor, zoomCursor, panCursor, spinCursor;
