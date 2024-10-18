@@ -80,7 +80,7 @@ bool ViewProviderPoint::doubleClicked()
 }
 
 
-PROPERTY_SOURCE_WITH_EXTENSIONS(PartGui::ViewProviderLCS, Gui::ViewProviderOrigin)
+PROPERTY_SOURCE_WITH_EXTENSIONS(PartGui::ViewProviderLCS, Gui::ViewProviderCoordinateSystem)
 
 ViewProviderLCS::ViewProviderLCS()
 {

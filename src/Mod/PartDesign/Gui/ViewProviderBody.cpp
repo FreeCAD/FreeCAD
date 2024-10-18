@@ -42,7 +42,7 @@
 #include <Gui/MDIView.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
-#include <Gui/ViewProviderOrigin.h>
+#include <Gui/ViewProviderCoordinateSystem.h>
 #include <Gui/ViewProviderDatum.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/DatumCS.h>

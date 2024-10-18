@@ -33,7 +33,7 @@
 #include "Base/Console.h"
 #include <Base/Vector3D.h>
 
-#include "ViewProviderOrigin.h"
+#include "ViewProviderCoordinateSystem.h"
 #include "Application.h"
 #include "Command.h"
 #include "Document.h"
@@ -45,12 +45,12 @@
 using namespace Gui;
 
 
-PROPERTY_SOURCE(Gui::ViewProviderOrigin, Gui::ViewProviderGeoFeatureGroup)
+PROPERTY_SOURCE(Gui::ViewProviderCoordinateSystem, Gui::ViewProviderGeoFeatureGroup)
 
 /**
  * Creates the view provider for an object group.
  */
-ViewProviderOrigin::ViewProviderOrigin()
+ViewProviderCoordinateSystem::ViewProviderCoordinateSystem()
 {
     sPixmap = "Std_CoordinateSystem";
     Visibility.setValue(false);
@@ -63,39 +63,39 @@ ViewProviderOrigin::ViewProviderOrigin()
     pcRoot->insertChild(lm, 0);
 }
 
-ViewProviderOrigin::~ViewProviderOrigin() {
+ViewProviderCoordinateSystem::~ViewProviderCoordinateSystem() {
     pcGroupChildren->unref();
     pcGroupChildren = nullptr;
 }
 
-std::vector<App::DocumentObject*> ViewProviderOrigin::claimChildren() const
+std::vector<App::DocumentObject*> ViewProviderCoordinateSystem::claimChildren() const
 {
     return static_cast<App::Origin*>( getObject() )->OriginFeatures.getValues();
 }
 
-std::vector<App::DocumentObject*> ViewProviderOrigin::claimChildren3D() const {
+std::vector<App::DocumentObject*> ViewProviderCoordinateSystem::claimChildren3D() const {
     return claimChildren ();
 }
 
-void ViewProviderOrigin::attach(App::DocumentObject* pcObject)
+void ViewProviderCoordinateSystem::attach(App::DocumentObject* pcObject)
 {
     Gui::ViewProviderDocumentObject::attach(pcObject);
     addDisplayMaskMode(pcGroupChildren, "Base");
 }
 
-std::vector<std::string> ViewProviderOrigin::getDisplayModes() const
+std::vector<std::string> ViewProviderCoordinateSystem::getDisplayModes() const
 {
     return { "Base" };
 }
 
-void ViewProviderOrigin::setDisplayMode(const char* ModeName)
+void ViewProviderCoordinateSystem::setDisplayMode(const char* ModeName)
 {
     if (strcmp(ModeName, "Base") == 0)
         setDisplayMaskMode("Base");
     ViewProviderDocumentObject::setDisplayMode(ModeName);
 }
 
-void ViewProviderOrigin::setTemporaryVisibility(bool axis, bool plane) {
+void ViewProviderCoordinateSystem::setTemporaryVisibility(bool axis, bool plane) {
     auto origin = static_cast<App::Origin*>( getObject() );
 
     bool saveState = tempVisMap.empty();
@@ -151,24 +151,24 @@ void ViewProviderOrigin::setTemporaryVisibility(bool axis, bool plane) {
 
 }
 
-void ViewProviderOrigin::resetTemporaryVisibility() {
+void ViewProviderCoordinateSystem::resetTemporaryVisibility() {
     for(std::pair<Gui::ViewProvider*, bool> pair : tempVisMap) {
         pair.first->setVisible(pair.second);
     }
     tempVisMap.clear ();
 }
 
-double ViewProviderOrigin::defaultSize()
+double ViewProviderCoordinateSystem::defaultSize()
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     return hGrp->GetFloat("DatumsSize", 25);
 }
 
-bool ViewProviderOrigin::isTemporaryVisibility() {
+bool ViewProviderCoordinateSystem::isTemporaryVisibility() {
     return !tempVisMap.empty();
 }
 
-void ViewProviderOrigin::updateData(const App::Property* prop) {
+void ViewProviderCoordinateSystem::updateData(const App::Property* prop) {
     auto* jcs = dynamic_cast<App::LocalCoordinateSystem*>(getObject());
     if(jcs) {
         if (prop == &jcs->Placement) {
@@ -178,7 +178,7 @@ void ViewProviderOrigin::updateData(const App::Property* prop) {
     ViewProviderDocumentObject::updateData(prop);
 }
 
-bool ViewProviderOrigin::onDelete(const std::vector<std::string> &) {
+bool ViewProviderCoordinateSystem::onDelete(const std::vector<std::string> &) {
     auto lcs = static_cast<App::LocalCoordinateSystem*>(getObject());
 
     auto origin = dynamic_cast<App::Origin*>(lcs);

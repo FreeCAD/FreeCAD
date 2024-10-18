@@ -968,7 +968,7 @@ SET(Viewprovider_CPP_SRCS
     ViewProviderGeoFeatureGroup.cpp
     ViewProviderOriginGroup.cpp
     ViewProviderPart.cpp
-    ViewProviderOrigin.cpp
+    ViewProviderCoordinateSystem.cpp
     ViewProviderMaterialObject.cpp
     ViewProviderTextDocument.cpp
     ViewProviderTextureExtension.cpp
@@ -1006,7 +1006,7 @@ SET(Viewprovider_SRCS
     ViewProviderGeoFeatureGroup.h
     ViewProviderOriginGroup.h
     ViewProviderPart.h
-    ViewProviderOrigin.h
+    ViewProviderCoordinateSystem.h
     ViewProviderMaterialObject.h
     ViewProviderTextDocument.h
     ViewProviderTextureExtension.h
