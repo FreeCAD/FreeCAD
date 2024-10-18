@@ -44,7 +44,7 @@ public:
 
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override {
-        return "Gui::ViewProviderOrigin";
+        return "Gui::ViewProviderCoordinateSystem";
     }
 
     bool isOrigin() override { return true; };

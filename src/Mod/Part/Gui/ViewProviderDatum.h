@@ -27,7 +27,7 @@
 #include <Gui/ViewProviderLine.h>
 #include <Gui/ViewProviderPlane.h>
 #include <Gui/ViewProviderPoint.h>
-#include <Gui/ViewProviderOrigin.h>
+#include <Gui/ViewProviderCoordinateSystem.h>
 #include <QCoreApplication>
 
 #include <Mod/Part/Gui/ViewProviderAttachExtension.h>
@@ -67,7 +67,7 @@ public:
     bool doubleClicked() override;
 };
 
-class PartGuiExport ViewProviderLCS : public Gui::ViewProviderOrigin, PartGui::ViewProviderAttachExtension
+class PartGuiExport ViewProviderLCS : public Gui::ViewProviderCoordinateSystem, PartGui::ViewProviderAttachExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(PartGui::ViewProviderLCS);
 

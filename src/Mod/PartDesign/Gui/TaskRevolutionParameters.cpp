@@ -32,7 +32,7 @@
 #include <Gui/CommandT.h>
 #include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
-#include <Gui/ViewProviderOrigin.h>
+#include <Gui/ViewProviderCoordinateSystem.h>
 #include <Mod/PartDesign/App/FeatureRevolution.h>
 #include <Mod/PartDesign/App/FeatureGroove.h>
 #include <Mod/PartDesign/App/Body.h>
@@ -97,7 +97,7 @@ TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* 
     if (body) {
         try {
             App::Origin *origin = body->getOrigin();
-            auto *vpOrigin = static_cast<ViewProviderOrigin*>(
+            auto *vpOrigin = static_cast<ViewProviderCoordinateSystem*>(
                 Gui::Application::Instance->getViewProvider(origin));
             vpOrigin->setTemporaryVisibility(true, false);
         }
@@ -642,8 +642,8 @@ TaskRevolutionParameters::~TaskRevolutionParameters()
         PartDesign::Body * body = obj ? PartDesign::Body::findBodyOf(obj) : nullptr;
         if (body) {
             App::Origin *origin = body->getOrigin();
-            ViewProviderOrigin* vpOrigin;
-            vpOrigin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
+            ViewProviderCoordinateSystem* vpOrigin;
+            vpOrigin = static_cast<ViewProviderCoordinateSystem*>(Gui::Application::Instance->getViewProvider(origin));
             vpOrigin->resetTemporaryVisibility();
         }
     }

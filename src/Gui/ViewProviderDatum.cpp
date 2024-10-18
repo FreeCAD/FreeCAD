@@ -40,7 +40,7 @@
 #include "ViewProviderDatum.h"
 #include "SoAxisCrossKit.h"
 #include "SoFCSelection.h"
-#include "ViewProviderOrigin.h"
+#include "ViewProviderCoordinateSystem.h"
 
 
 using namespace Gui;
@@ -49,7 +49,7 @@ PROPERTY_SOURCE(Gui::ViewProviderDatum, Gui::ViewProviderGeometryObject)
 
 ViewProviderDatum::ViewProviderDatum() {
     // Set default color for origin (light-blue)
-    ShapeAppearance.setDiffuseColor(ViewProviderOrigin::defaultColor);
+    ShapeAppearance.setDiffuseColor(ViewProviderCoordinateSystem::defaultColor);
     Transparency.setValue(0);
     BoundingBox.setStatus(App::Property::Hidden, true); // Hide Boundingbox from the user due to it doesn't make sense
 
@@ -78,7 +78,7 @@ void ViewProviderDatum::attach(App::DocumentObject* pcObject)
 {
     ViewProviderGeometryObject::attach(pcObject);
 
-    float defaultSz = ViewProviderOrigin::defaultSize();
+    float defaultSz = ViewProviderCoordinateSystem::defaultSize();
 
     // Create an external separator
     auto sep = new SoSeparator();

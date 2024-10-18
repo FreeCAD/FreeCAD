@@ -33,15 +33,15 @@ namespace Gui {
 
 class Document;
 
-class GuiExport ViewProviderOrigin : public ViewProviderGeoFeatureGroup
+class GuiExport ViewProviderCoordinateSystem : public ViewProviderGeoFeatureGroup
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderOrigin);
+    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderCoordinateSystem);
 
 public:
     /// constructor.
-    ViewProviderOrigin();
+    ViewProviderCoordinateSystem();
     /// destructor.
-    ~ViewProviderOrigin() override;
+    ~ViewProviderCoordinateSystem() override;
 
     /// @name Override methods
     ///@{
