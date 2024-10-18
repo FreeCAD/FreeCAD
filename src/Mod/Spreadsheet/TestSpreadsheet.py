@@ -38,6 +38,31 @@ v = Base.Vector
 # ----------------------------------------------------------------------------------
 
 
+class TemporaryGuiTest(unittest.TestCase):
+    def test_monkey_patch_regression(self):
+        # Given
+        from pivy import coin
+        parent = coin.SoGroup()
+        child1 = coin.SoGroup()
+        child2 = coin.SoGroup()
+        parent.addChild(child1)
+        parent.addChild(child2)
+        path = coin.SoPath(2)
+        path.append(parent)
+        path.append(child2)
+
+        # When
+        before_removal = path.getLength()
+        parent.removeAllChildren()
+        after_removal = path.getLength()
+
+        # Then
+        expected_before = 2
+        expected_after = 1
+        self.assertEqual(before_removal, expected_before)
+        self.assertEqual(after_removal, expected_after)
+
+
 class SpreadsheetCases(unittest.TestCase):
     def setUp(self):
         self.doc = FreeCAD.newDocument()
