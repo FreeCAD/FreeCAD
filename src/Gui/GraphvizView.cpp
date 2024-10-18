@@ -282,20 +282,16 @@ void GraphvizView::updateSvgItem(const App::Document &doc)
     QStringList args, flatArgs;
     args << QLatin1String("-Tsvg");
     flatArgs << QLatin1String("-c2 -l2");
-
-#ifdef FC_OS_LINUX
-    QString path = QString::fromUtf8(hGrp->GetASCII("Graphviz", "/usr/bin").c_str());
-#else
-    QString path = QString::fromUtf8(hGrp->GetASCII("Graphviz").c_str());
-#endif
+    auto dot = QString::fromLatin1("dot");
+    auto unflatten = QString::fromLatin1("unflatten");
+    auto path = QString::fromUtf8(hGrp->GetASCII("Graphviz").c_str());
     bool pathChanged = false;
-#ifdef FC_OS_WIN32
-    QString dot = QString::fromLatin1("\"%1/dot\"").arg(path);
-    QString unflatten = QString::fromLatin1("\"%1/unflatten\"").arg(path);
-#else
-    QString dot = QString::fromLatin1("%1/dot").arg(path);
-    QString unflatten = QString::fromLatin1("%1/unflatten").arg(path);
-#endif
+    QDir dir;
+    if (!path.isEmpty()) {
+        dir = QDir(path);
+        dot = dir.filePath(QString::fromLatin1("dot"));
+        unflatten = dir.filePath(QString::fromLatin1("unflatten"));
+    }
     dotProc->setEnvironment(QProcess::systemEnvironment());
     flatProc->setEnvironment(QProcess::systemEnvironment());
     do {
@@ -323,14 +319,12 @@ void GraphvizView::updateSvgItem(const App::Document &doc)
                 disconnectSignals();
                 return;
             }
-            pathChanged = true;
-#ifdef FC_OS_WIN32
-            dot = QString::fromLatin1("\"%1/dot\"").arg(path);
-            unflatten = QString::fromLatin1("\"%1/unflatten\"").arg(path);
-#else
-            dot = QString::fromLatin1("%1/dot").arg(path);
-            unflatten = QString::fromLatin1("%1/unflatten").arg(path);
-#endif
+            else {
+                dir = QDir(path);
+                dot = dir.filePath(QString::fromLatin1("dot"));
+                unflatten = dir.filePath(QString::fromLatin1("unflatten"));
+                pathChanged = true;
+            }
         }
         else {
             if (pathChanged)
