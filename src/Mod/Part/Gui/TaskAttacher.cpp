@@ -1073,7 +1073,9 @@ TaskDlgAttacher::~TaskDlgAttacher() = default;
 
 void TaskDlgAttacher::open()
 {
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit attachment"));
+    if (!Gui::Command::hasPendingCommand()) {
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit attachment"));
+    }
 }
 
 void TaskDlgAttacher::clicked(int)
