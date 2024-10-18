@@ -35,7 +35,7 @@ translate = FreeCAD.Qt.translate
 class BIM_Leader(gui_lines.Line):
 
     def __init__(self):
-        super(BIM_Leader, self).__init__(wiremode=True)
+        super(BIM_Leader, self).__init__(leader=True)
 
     def GetResources(self):
         return {
