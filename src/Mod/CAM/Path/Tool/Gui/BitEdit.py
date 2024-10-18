@@ -119,7 +119,7 @@ class ToolBitEditor(object):
         usedRows = 0
         for nr, name in enumerate(tool.Proxy.toolShapeProperties(tool)):
             if nr < len(self.widgets):
-                Path.Log.debug("re-use row: {} [{}]".format(nr, name))
+                Path.Log.debug("reuse row: {} [{}]".format(nr, name))
                 label, qsb, editor = self.widgets[nr]
                 label.setText(labelText(name))
                 editor.attachTo(tool, name)
