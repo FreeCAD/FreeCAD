@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #include <QFile>
+#include <QMap>
 
 #include "Branding.h"
 
