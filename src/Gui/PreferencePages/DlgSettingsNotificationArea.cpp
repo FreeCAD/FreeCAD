@@ -94,6 +94,7 @@ void DlgSettingsNotificationArea::adaptUiToAreaEnabledState(bool enabled)
     ui->maxNotifications->setEnabled(enabled);
     ui->maxWidgetMessages->setEnabled(enabled);
     ui->autoRemoveUserNotifications->setEnabled(enabled);
+    ui->notificationWidth->setEnabled(enabled);
     ui->hideNonIntrusiveNotificationsWhenWindowDeactivated->setEnabled(enabled);
     ui->preventNonIntrusiveNotificationsWhenWindowNotActive->setEnabled(enabled);
     ui->developerErrorSubscriptionEnabled->setEnabled(enabled);
