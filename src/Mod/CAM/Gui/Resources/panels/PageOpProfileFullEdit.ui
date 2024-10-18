@@ -115,6 +115,43 @@
         </property>
        </widget>
       </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="numPassesLabel">
+        <property name="text">
+         <string>Number of Passes</string>
+        </property>
+       </widget>
+      </item>
+     <item row="3" column="1">
+       <widget class="QSpinBox" name="numPasses">
+	    <property name="minimum">
+		 <number>1</number>
+        </property>
+        <property name="toolTip">
+         <string>The number of passes to do. If more than one, requires a non-zero value for Pass Stepover.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="stepoverLabel">
+        <property name="text">
+         <string>Pass Stepover</string>
+        </property>
+       </widget>
+      </item>
+     <item row="4" column="1">
+       <widget class="Gui::InputField" name="stepover">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>If doing multiple passes, the extra offset of each additional pass.</string>
+        </property>
+       </widget>
+      </item>
       </layout>
     </widget>
    </item>
