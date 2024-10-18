@@ -67,15 +67,6 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyEnumeration",
-                name="Fineness",
-                group="Mesh Parameters",
-                doc="Fineness",
-                value=["VeryCoarse", "Coarse", "Moderate", "Fine", "VeryFine", "UserDefined"],
-            )
-        )
-        prop.append(
-            _PropHelper(
                 type="App::PropertyInteger",
                 name="OptimizationSteps3d",
                 group="Mesh Parameters",
@@ -284,22 +275,33 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
                 value=0.2,
             )
         )
+
+        # Netgen meshing steps
+        meshing_step = [
+            "AnalizeGeometry",
+            "MeshEdges",
+            "MeshSurface",
+            "OptimizeSurface",
+            "MeshVolume",
+            "OptimizeVolume",
+        ]
+
         prop.append(
             _PropHelper(
-                type="App::PropertyInteger",
+                type="App::PropertyEnumeration",
                 name="StartStep",
                 group="Mesh Parameters",
-                doc="Start at step",
-                value=0,
+                doc="First step",
+                value=meshing_step,
             )
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyInteger",
+                type="App::PropertyEnumeration",
                 name="EndStep",
                 group="Mesh Parameters",
-                doc="EndStep",
-                value=6,
+                doc="Last step",
+                value=meshing_step,
             )
         )
         prop.append(
@@ -482,5 +484,95 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
                 value=False,
             )
         )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyEnumeration",
+                name="Fineness",
+                group="Mesh Parameters",
+                doc="Mesh granularity.\n"
+                + "If differs from UserDefined, uses specific values\n"
+                + "for CurvatureSafety, SegmentsPerEdge, GrowthRate,\n"
+                + "CloseEdgeFactor and OptimizationSteps3d",
+                value=["VeryCoarse", "Coarse", "Moderate", "Fine", "VeryFine", "UserDefined"],
+            )
+        )
 
         return prop
+
+    def onChanged(self, obj, prop):
+        if prop == "Fineness":
+            if obj.Fineness != "UserDefined":
+                p = self.get_predef_fineness_params(obj.Fineness)
+                obj.CurvatureSafety = p["curvaturesafety"]
+                obj.SegmentsPerEdge = p["segmentsperedge"]
+                obj.GrowthRate = p["grading"]
+                obj.CloseEdgeFactor = p["closeedgefac"]
+                obj.OptimizationSteps3d = p["optsteps3d"]
+
+                obj.setPropertyStatus("CurvatureSafety", "ReadOnly")
+                obj.setPropertyStatus("SegmentsPerEdge", "ReadOnly")
+                obj.setPropertyStatus("GrowthRate", "ReadOnly")
+                obj.setPropertyStatus("CloseEdgeFactor", "ReadOnly")
+                obj.setPropertyStatus("OptimizationSteps3d", "ReadOnly")
+            else:
+                obj.setPropertyStatus("CurvatureSafety", "-ReadOnly")
+                obj.setPropertyStatus("SegmentsPerEdge", "-ReadOnly")
+                obj.setPropertyStatus("GrowthRate", "-ReadOnly")
+                obj.setPropertyStatus("CloseEdgeFactor", "-ReadOnly")
+                obj.setPropertyStatus("OptimizationSteps3d", "-ReadOnly")
+
+    def onDocumentRestored(self, obj):
+        # update old project with new properties
+        for prop in self._get_properties():
+            try:
+                obj.getPropertyByName(prop.name)
+            except Base.PropertyError:
+                prop.add_to_object(obj)
+
+            # for StartStep and EndStep set enumeration index from old integer value
+            if prop.name == "StartStep" or prop.name == "EndStep":
+                prop.handle_change_type(
+                    obj, "App::PropertyInteger", lambda x: 0 if x <= 1 else 5 if x >= 6 else x - 1
+                )
+
+    def get_predef_fineness_params(self, fineness):
+        # set specific parameters by fineness
+        params = {}
+        if fineness == "VeryCoarse":
+            params["curvaturesafety"] = 1
+            params["segmentsperedge"] = 0.3
+            params["grading"] = 0.7
+            params["closeedgefac"] = 0.5
+            params["optsteps3d"] = 5
+        elif fineness == "Coarse":
+            params["curvaturesafety"] = 1.5
+            params["segmentsperedge"] = 0.5
+            params["grading"] = 0.5
+            params["closeedgefac"] = 1
+            params["optsteps3d"] = 5
+        elif fineness == "Moderate":
+            params["curvaturesafety"] = 2
+            params["segmentsperedge"] = 1
+            params["grading"] = 0.3
+            params["closeedgefac"] = 2
+            params["optsteps3d"] = 5
+        elif fineness == "Fine":
+            params["curvaturesafety"] = 3
+            params["segmentsperedge"] = 2
+            params["grading"] = 0.2
+            params["closeedgefac"] = 3.5
+            params["optsteps3d"] = 5
+        elif fineness == "VeryFine":
+            params["curvaturesafety"] = 5
+            params["segmentsperedge"] = 3
+            params["grading"] = 0.1
+            params["closeedgefac"] = 5
+            params["optsteps3d"] = 5
+        elif fineness == "UserDefined":
+            params["curvaturesafety"] = 2
+            params["segmentsperedge"] = 2
+            params["grading"] = 0.3
+            params["closeedgefac"] = 2
+            params["optsteps3d"] = 3
+
+        return params
