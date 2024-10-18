@@ -47,7 +47,7 @@
 
 #ifndef _PreComp_
 #include <BRepAdaptor_Surface.hxx>
-#include <BRepAlgoAPI_Cut.hxx>
+#include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
@@ -510,7 +510,7 @@ void DrawViewSection::makeSectionCut(const TopoDS_Shape& baseShape)
     TopExp_Explorer expl(myShape, TopAbs_SOLID);
     for (; expl.More(); expl.Next()) {
         const TopoDS_Solid& s = TopoDS::Solid(expl.Current());
-        BRepAlgoAPI_Cut mkCut(s, m_cuttingTool);
+        FCBRepAlgoAPI_Cut mkCut(s, m_cuttingTool);
         if (!mkCut.IsDone()) {
             Base::Console().Warning("DVS: Section cut has failed in %s\n", getNameInDocument());
             continue;
@@ -527,7 +527,7 @@ void DrawViewSection::makeSectionCut(const TopoDS_Shape& baseShape)
     // second cut if requested.  Sometimes the first cut includes extra uncut
     // pieces.
     if (trimAfterCut()) {
-        BRepAlgoAPI_Cut mkCut2(cutPieces, m_cuttingTool);
+        FCBRepAlgoAPI_Cut mkCut2(cutPieces, m_cuttingTool);
         if (mkCut2.IsDone()) {
             m_cutPieces = mkCut2.Shape();
             if (debugSection()) {
