@@ -93,25 +93,7 @@ namespace PartApp = Part;
 
 using namespace Assembly;
 using namespace MbD;
-/*
-static void printPlacement(Base::Placement plc, const char* name)
-{
-    Base::Vector3d pos = plc.getPosition();
-    Base::Vector3d axis;
-    double angle;
-    Base::Rotation rot = plc.getRotation();
-    rot.getRawValue(axis, angle);
-    Base::Console().Warning(
-        "placement %s : position (%.1f, %.1f, %.1f) - axis (%.1f, %.1f, %.1f) angle %.1f\n",
-        name,
-        pos.x,
-        pos.y,
-        pos.z,
-        axis.x,
-        axis.y,
-        axis.z,
-        angle);
-}*/
+
 
 // ================================ Assembly Object ============================
 
@@ -1403,8 +1385,6 @@ std::string AssemblyObject::handleOneSideOfJoint(App::DocumentObject* joint,
     // containing Part.
 
     if (obj->getNameInDocument() != part->getNameInDocument()) {
-        // Make plc relative to the containing part
-        // plc = objPlc * plc; // this would not work for nested parts.
 
         auto* ref = dynamic_cast<App::PropertyXLinkSub*>(joint->getPropertyByName(propRefName));
         if (!ref) {
@@ -1647,9 +1627,6 @@ AssemblyObject::makeMbdPart(std::string& name, Base::Placement plc, double mass)
     Base::Vector3d r1 = mat.getRow(1);
     Base::Vector3d r2 = mat.getRow(2);
     mbdPart->setRotationMatrix(r0.x, r0.y, r0.z, r1.x, r1.y, r1.z, r2.x, r2.y, r2.z);
-    /*double q0, q1, q2, q3;
-    rot.getValue(q0, q1, q2, q3);
-    mbdPart->setQuarternions(q0, q1, q2, q3);*/
 
     return mbdPart;
 }
@@ -1670,9 +1647,7 @@ std::shared_ptr<ASMTMarker> AssemblyObject::makeMbdMarker(std::string& name, Bas
     Base::Vector3d r1 = mat.getRow(1);
     Base::Vector3d r2 = mat.getRow(2);
     mbdMarker->setRotationMatrix(r0.x, r0.y, r0.z, r1.x, r1.y, r1.z, r2.x, r2.y, r2.z);
-    /*double q0, q1, q2, q3;
-    rot.getValue(q0, q1, q2, q3);
-    mbdMarker->setQuarternions(q0, q1, q2, q3);*/
+
     return mbdMarker;
 }
 
@@ -2515,37 +2490,3 @@ App::DocumentObject* AssemblyObject::getLinkedObjFromRef(App::DocumentObject* jo
     }
     return nullptr;
 }
-
-
-/*void Part::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property*
-prop)
-{
-    App::Part::handleChangedPropertyType(reader, TypeName, prop);
-}*/
-
-/* Apparently not necessary as App::Part doesn't have this.
-// Python Assembly feature ---------------------------------------------------------
-
-namespace App
-{
-    /// @cond DOXERR
-    PROPERTY_SOURCE_TEMPLATE(Assembly::AssemblyObjectPython, Assembly::AssemblyObject)
-        template<>
-    const char* Assembly::AssemblyObjectPython::getViewProviderName() const
-    {
-        return "AssemblyGui::ViewProviderAssembly";
-    }
-    template<>
-    PyObject* Assembly::AssemblyObjectPython::getPyObject()
-    {
-        if (PythonObject.is(Py::_None())) {
-            // ref counter is set to 1
-            PythonObject = Py::Object(new FeaturePythonPyT<AssemblyObjectPy>(this), true);
-        }
-        return Py::new_reference_to(PythonObject);
-    }
-    /// @endcond
-
-    // explicit template instantiation
-    template class AssemblyExport FeaturePythonT<Assembly::AssemblyObject>;
-}// namespace App*/
