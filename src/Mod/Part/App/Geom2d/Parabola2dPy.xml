@@ -18,22 +18,22 @@
         <Attribute Name="Focal" ReadOnly="false">
             <Documentation>
                 <UserDocu>The focal distance is the distance between
-the apex and the focus of the parabola.</UserDocu>
+                    the apex and the focus of the parabola.</UserDocu>
             </Documentation>
             <Parameter Name="Focal" Type="Float"/>
         </Attribute>
         <Attribute Name="Focus" ReadOnly="true">
             <Documentation>
                 <UserDocu>The focus is on the positive side of the
-'X Axis' of the local coordinate system of the parabola.</UserDocu>
+                    'X Axis' of the local coordinate system of the parabola.</UserDocu>
             </Documentation>
             <Parameter Name="Focus" Type="Object"/>
         </Attribute>
         <Attribute Name="Parameter" ReadOnly="true">
             <Documentation>
                 <UserDocu>Compute the parameter of this parabola
-which is the distance between its focus
-and its directrix. This distance is twice the focal length.</UserDocu>
+                    which is the distance between its focus
+                    and its directrix. This distance is twice the focal length.</UserDocu>
             </Documentation>
             <Parameter Name="Parameter" Type="Float"/>
         </Attribute>
