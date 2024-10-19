@@ -30,147 +30,81 @@ __title__ = "FEM class and methods that migrates old App objects"
 __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecad.org"
 
+from importlib.util import spec_from_loader
+
 import FreeCAD
 
 
 class FemMigrateApp:
 
-    def find_module(self, fullname, path):
-
-        if fullname == "femsolver.elmer.equations":
-            return self
-        if fullname == "femsolver.elmer.equations.fluxsolver":
-            return self
-
-        if fullname == "femobjects":
-            return self
-        if fullname == "femobjects._FemConstraintBodyHeatSource":
-            return self
-        if fullname == "femobjects._FemConstraintElectrostaticPotential":
-            return self
-        if fullname == "femobjects._FemConstraintFlowVelocity":
-            return self
-        if fullname == "femobjects._FemConstraintInitialFlowVelocity":
-            return self
-        if fullname == "femobjects._FemConstraintSelfWeight":
-            return self
-        if fullname == "femobjects._FemConstraintTie":
-            return self
-        if fullname == "femobjects._FemElementFluid1D":
-            return self
-        if fullname == "femobjects._FemElementGeometry1D":
-            return self
-        if fullname == "femobjects._FemElementGeometry2D":
-            return self
-        if fullname == "femobjects._FemElementRotation1D":
-            return self
-        if fullname == "femobjects._FemMaterial":
-            return self
-        if fullname == "femobjects._FemMaterialMechanicalNonlinear":
-            return self
-        if fullname == "femobjects._FemMaterialReinforced":
-            return self
-        if fullname == "femobjects._FemMeshBoundaryLayer":
-            return self
-        if fullname == "femobjects._FemMeshGmsh":
-            return self
-        if fullname == "femobjects._FemMeshGroup":
-            return self
-        if fullname == "femobjects._FemMeshRegion":
-            return self
-        if fullname == "femobjects._FemMeshResult":
-            return self
-        if fullname == "femobjects._FemResultMechanical":
-            return self
-        if fullname == "femobjects._FemSolverCalculix":
-            return self
-
-        if fullname == "PyObjects":
-            return self
-        if fullname == "PyObjects._FemConstraintBodyHeatSource":
-            return self
-        if fullname == "PyObjects._FemConstraintElectrostaticPotential":
-            return self
-        if fullname == "PyObjects._FemConstraintFlowVelocity":
-            return self
-        if fullname == "PyObjects._FemConstraintInitialFlowVelocity":
-            return self
-        if fullname == "PyObjects._FemConstraintSelfWeight":
-            return self
-        if fullname == "PyObjects._FemElementFluid1D":
-            return self
-        if fullname == "PyObjects._FemElementGeometry1D":
-            return self
-        if fullname == "PyObjects._FemElementGeometry2D":
-            return self
-        if fullname == "PyObjects._FemElementRotation1D":
-            return self
-        if fullname == "PyObjects._FemMaterial":
-            return self
-        if fullname == "PyObjects._FemMaterialMechanicalNonlinear":
-            return self
-        if fullname == "PyObjects._FemMeshBoundaryLayer":
-            return self
-        if fullname == "PyObjects._FemMeshGmsh":
-            return self
-        if fullname == "PyObjects._FemMeshGroup":
-            return self
-        if fullname == "PyObjects._FemMeshRegion":
-            return self
-        if fullname == "PyObjects._FemMeshResult":
-            return self
-        if fullname == "PyObjects._FemResultMechanical":
-            return self
-        if fullname == "PyObjects._FemSolverCalculix":
-            return self
-        if fullname == "PyObjects._FemSolverZ88":
-            return self
-
-        if fullname == "PyObjects._FemBeamSection":
-            return self
-        if fullname == "PyObjects._FemFluidSection":
-            return self
-        if fullname == "PyObjects._FemShellThickness":
-            return self
-
-        if fullname == "_FemBeamSection":
-            return self
-        if fullname == "_FemConstraintSelfWeight":
-            return self
-        if fullname == "_FemMaterial":
-            return self
-        if fullname == "_FemMaterialMechanicalNonlinear":
-            return self
-        if fullname == "_FemMeshGmsh":
-            return self
-        if fullname == "_FemMeshGroup":
-            return self
-        if fullname == "_FemMeshRegion":
-            return self
-        if fullname == "_FemResultMechanical":
-            return self
-        if fullname == "_FemShellThickness":
-            return self
-        if fullname == "_FemSolverCalculix":
-            return self
-        if fullname == "_FemSolverZ88":
-            return self
-
-        if fullname == "_FemMechanicalResult":
-            return self
-        if fullname == "FemResult":
-            return self
-        if fullname == "_MechanicalMaterial":
-            return self
-
-        if fullname == "FemBeamSection":
-            return self
-        if fullname == "FemShellThickness":
-            return self
-        if fullname == "MechanicalAnalysis":
-            return self
-        if fullname == "MechanicalMaterial":
-            return self
+    def find_spec(self, fullname, path, target=None):
+        if fullname in {
+            "femsolver.elmer.equations",
+            "femsolver.elmer.equations.fluxsolver",
+            "femobjects",
+            "femobjects._FemConstraintBodyHeatSource",
+            "femobjects._FemConstraintElectrostaticPotential",
+            "femobjects._FemConstraintFlowVelocity",
+            "femobjects._FemConstraintInitialFlowVelocity",
+            "femobjects._FemConstraintSelfWeight",
+            "femobjects._FemConstraintTie",
+            "femobjects._FemElementFluid1D",
+            "femobjects._FemElementGeometry1D",
+            "femobjects._FemElementGeometry2D",
+            "femobjects._FemElementRotation1D",
+            "femobjects._FemMaterial",
+            "femobjects._FemMaterialMechanicalNonlinear",
+            "femobjects._FemMaterialReinforced",
+            "femobjects._FemMeshBoundaryLayer",
+            "femobjects._FemMeshGmsh",
+            "femobjects._FemMeshGroup",
+            "femobjects._FemMeshRegion",
+            "femobjects._FemMeshResult",
+            "femobjects._FemResultMechanical",
+            "femobjects._FemSolverCalculix",
+            "PyObjects",
+            "PyObjects._FemConstraintBodyHeatSource",
+            "PyObjects._FemConstraintElectrostaticPotential",
+            "PyObjects._FemConstraintFlowVelocity",
+            "PyObjects._FemConstraintInitialFlowVelocity",
+            "PyObjects._FemConstraintSelfWeight",
+            "PyObjects._FemElementFluid1D",
+            "PyObjects._FemElementGeometry1D",
+            "PyObjects._FemElementGeometry2D",
+            "PyObjects._FemElementRotation1D",
+            "PyObjects._FemMaterial",
+            "PyObjects._FemMaterialMechanicalNonlinear",
+            "PyObjects._FemMeshBoundaryLayer",
+            "PyObjects._FemMeshGmsh",
+            "PyObjects._FemMeshGroup",
+            "PyObjects._FemMeshRegion",
+            "PyObjects._FemMeshResult",
+            "PyObjects._FemResultMechanical",
+            "PyObjects._FemSolverCalculix",
+            "PyObjects._FemSolverZ88",
+            "PyObjects._FemBeamSection",
+            "PyObjects._FemFluidSection",
+            "PyObjects._FemShellThickness",
+            "_FemBeamSection",
+            "_FemConstraintSelfWeight",
+            "_FemMaterial",
+            "_FemMaterialMechanicalNonlinear",
+            "_FemMeshGmsh",
+            "_FemMeshGroup",
+            "_FemMeshRegion",
+            "_FemResultMechanical",
+            "_FemShellThickness",
+            "_FemSolverCalculix",
+            "_FemSolverZ88",
+            "_FemMechanicalResult",
+            "FemResult",
+            "_MechanicalMaterial",
+            "FemBeamSection",
+            "FemShellThickness",
+            "MechanicalAnalysis",
+            "MechanicalMaterial",
+        }:
+            return spec_from_loader(fullname, self)
         return None
 
     def create_module(self, spec):
