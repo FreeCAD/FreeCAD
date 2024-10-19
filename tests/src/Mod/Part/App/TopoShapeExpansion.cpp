@@ -3025,7 +3025,6 @@ TEST_F(TopoShapeExpansionTest, makeElementGTransformWithMap)
                                      "Vertex8",
                                      "Vertex8;:H2,V",
                                  }));
-    */
 }
 
 // Not testing _makeElementTransform as it is a thin wrapper that calls the same places as the four
