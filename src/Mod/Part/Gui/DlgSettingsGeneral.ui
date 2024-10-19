@@ -134,51 +134,6 @@
         </property>
        </widget>
       </item>
-      <item>
-        <layout class="QGridLayout">
-          <property name="margin">
-           <number>0</number>
-          </property>
-          <property name="spacing">
-           <number>6</number>
-          </property>
-          <item row="0" column="0">
-          <widget class="QLabel" name="textLabel_Fuzzy">
-           <property name="toolTip">
-            <string>Base Size for Boolean Operation Fozzyness in OCCT, gets scaled by object size.</string>
-           </property>
-           <property name="text">
-            <string>Boolean Operation Fuzzy Value</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="Gui::PrefDoubleSpinBox" name="BooleanFuzzy">
-           <property name="decimals">
-            <number>4</number>
-           </property>
-           <property name="maximum">
-            <double>1000000000000000000000000000000000</double>
-           </property>
-           <property name="minimum">
-            <double>0.0</double>
-           </property>
-          <property name="singleStep">
-           <double>10.0</double>
-          </property>
-          <property name="value">
-           <double>10.0</double>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>BooleanFuzzy</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Part/Boolean</cstring>
-          </property>
-         </widget>
-        </item>
-        </layout>
-      </item>
      </layout>
     </widget>
    </item>
