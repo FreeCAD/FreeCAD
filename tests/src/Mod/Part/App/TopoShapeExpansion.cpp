@@ -1672,7 +1672,6 @@ TEST_F(TopoShapeExpansionTest, makeElementBooleanFuse)
                                      "Vertex8",
                                      "Vertex8;:H2,V",
                                  }));
-    */
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementDraft)
