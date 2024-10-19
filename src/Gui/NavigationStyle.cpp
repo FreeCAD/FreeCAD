@@ -43,11 +43,11 @@
 
 #include "NavigationStyle.h"
 #include "Application.h"
+#include "Inventor/SoMouseWheelEvent.h"
 #include "MenuManager.h"
 #include "MouseSelection.h"
 #include "NavigationAnimator.h"
 #include "NavigationAnimation.h"
-#include "SoMouseWheelEvent.h"
 #include "View3DInventorViewer.h"
 
 using namespace Gui;
