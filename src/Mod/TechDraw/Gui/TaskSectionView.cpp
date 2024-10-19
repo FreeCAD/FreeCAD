@@ -150,8 +150,7 @@ void TaskSectionView::setUiPrimary()
     //don't allow updates until a direction is picked
     ui->pbUpdateNow->setEnabled(false);
     ui->cbLiveUpdate->setEnabled(false);
-    QString msgLiteral =
-        QString::fromUtf8(QT_TRANSLATE_NOOP("TaskSectionView", "No direction set"));
+    QString msgLiteral = QObject::tr("No direction set");
     ui->lPendingUpdates->setText(msgLiteral);
 }
 
