@@ -2314,7 +2314,6 @@ TEST_F(TopoShapeExpansionTest, makeElementCut)
                                      "Vertex7",
                                      "Vertex8",
                                  }));
-    */
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementChamfer)
