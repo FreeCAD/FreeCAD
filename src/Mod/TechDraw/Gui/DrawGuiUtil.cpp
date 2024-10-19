@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2024 Benjamin Bræstrup Sayoc <benj5378@outlook.com>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -48,6 +49,7 @@
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
 #include <Base/Tools.h>
+#include <Base/Tools2D.h>
 #include <Base/Type.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
@@ -74,6 +76,8 @@
 #include "DlgPageChooser.h"
 #include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
+#include "QGIVertex.h"
+#include "QGIViewPart.h"
 #include "QGSPage.h"
 #include "ViewProviderPage.h"
 #include "Rez.h"
@@ -776,3 +780,64 @@ QIcon DrawGuiUtil::maskBlackPixels(QIcon itemIcon, QSize iconSize, QColor textCo
     return filler;
 }
 
+
+void DrawGuiUtil::rotateToAlignVertically(const QGIVertex* p1, const QGIVertex* p2)
+{
+    // Base::Vector2d yAxis(0.0, 1.0);
+    Base::Vector2d yAxis(0.0, 1.0);
+    rotateToAlign(p1, p2, yAxis);
+}
+
+void DrawGuiUtil::rotateToAlignHorizontally(const QGIVertex* p1, const QGIVertex* p2)
+{
+    Base::Vector2d xAxis(1.0, 0.0);
+    rotateToAlign(p1, p2, xAxis);
+}
+
+//! The the view of p1 and p2 will be rotated to make p1 and p2 aligned with direction (for instance horizontalle aligned)
+void DrawGuiUtil::rotateToAlign(const QGIVertex* p1, const QGIVertex* p2, const Base::Vector2d direction)
+{
+    QGIViewPart* view = static_cast<QGIViewPart*>(p1->parentItem());
+    if(view != static_cast<QGIViewPart*>(p2->parentItem())) {
+        Base::Console().Error("Vertexes have to be from the same view!");
+    }
+
+    // Always draw from left to right to get angle consistency, such
+    // that the angle will be the same, even though the view is rotated 180 degrees
+    // I don't think this is needed after adding rotation logic.
+    // Temporarily keep here until tested
+    // Base::Vector2d oldDirection;
+    // if(p1->x() < p2->x()) {
+    //     oldDirection = p1->vector2dBetweenPoints(p2);
+    // }
+    // else {
+    //     oldDirection = p2->vector2dBetweenPoints(p1);
+    // }
+
+    Base::Vector2d oldDirection = p2->vector2dBetweenPoints(p1);
+
+    // If pointing counterclockwise, we need to rotate clockwise
+    // If pointing clockwise, we need to rotate counter clockwise
+    int cw = 1;
+    if(direction.Angle() > oldDirection.Angle()) {
+        cw = -1;
+    }
+
+    // Base::Console().Message("oldDirection: Vector2d(%f, %f), v=%f\n", oldDirection.x, oldDirection.y, oldDirection.Angle());
+    double toRotate = direction.GetAngle(oldDirection);
+    // Radians to degrees
+    toRotate = toRotate * 180 / M_PI;
+
+    // Rotate least amount possible
+    if(toRotate > 90) {
+        // Instead of rotating 145 degrees to match direction
+        // we only rotate -35 degrees
+        toRotate = toRotate - 180;
+    }
+    else if(toRotate < -90) {
+        toRotate = toRotate + 180;
+    }
+
+    double oldRotation = view->getViewObject()->Rotation.getValue();
+    view->getViewObject()->Rotation.setValue(oldRotation + toRotate * cw);
+}
