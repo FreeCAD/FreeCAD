@@ -42,6 +42,7 @@ TaskDialog::TaskDialog()
     : QObject(nullptr), pos(North)
     , escapeButton(true)
     , autoCloseTransaction(false)
+    , autoCloseDeletedDocument(false)
 {
 
 }
