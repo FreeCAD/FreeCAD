@@ -232,18 +232,6 @@ void StartView::configureNewFileButtons(QLayout* layout) const
                                  tr("Create an architectural project"),
                                  QLatin1String(":/icons/BIMWorkbench.svg")});
 
-    auto hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Start");
-    if (hGrp->GetBool("FileCardUseStyleSheet", true)) {
-        QString style = fileCardStyle();
-        newEmptyFile->setStyleSheet(style);
-        openFile->setStyleSheet(style);
-        partDesign->setStyleSheet(style);
-        assembly->setStyleSheet(style);
-        draft->setStyleSheet(style);
-        arch->setStyleSheet(style);
-    }
-
     // TODO: Ensure all of the required WBs are actually available
     layout->addWidget(partDesign);
     layout->addWidget(assembly);
@@ -258,52 +246,6 @@ void StartView::configureNewFileButtons(QLayout* layout) const
     connect(assembly, &QPushButton::clicked, this, &StartView::newAssemblyFile);
     connect(draft, &QPushButton::clicked, this, &StartView::newDraftFile);
     connect(arch, &QPushButton::clicked, this, &StartView::newArchFile);
-}
-
-QString StartView::fileCardStyle() const
-{
-    if (!qApp->styleSheet().isEmpty()) {
-        return {};
-    }
-
-    auto hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Start");
-
-    auto getUserColor = [&hGrp](QColor color, const char* parameter) {
-        uint32_t packed = App::Color::asPackedRGB<QColor>(color);
-        packed = hGrp->GetUnsigned(parameter, packed);
-        color = App::Color::fromPackedRGB<QColor>(packed);
-        return color;
-    };
-
-    QColor background(221, 221, 221);  // NOLINT
-    background = getUserColor(background, "FileCardBackgroundColor");
-
-    QColor hovered(98, 160, 234);  // NOLINT
-    hovered = getUserColor(hovered, "FileCardBorderColor");
-
-    QColor pressed(38, 162, 105);  // NOLINT
-    pressed = getUserColor(pressed, "FileCardSelectionColor");
-
-    return QString::fromLatin1("QPushButton {"
-                               " background-color: rgb(%1, %2, %3);"
-                               " border-radius: 8px;"
-                               "}"
-                               "QPushButton:hover {"
-                               " border: 2px solid rgb(%4, %5, %6);"
-                               "}"
-                               "QPushButton:pressed {"
-                               " border: 2px solid rgb(%7, %8, %9);"
-                               "}")
-        .arg(background.red())
-        .arg(background.green())
-        .arg(background.blue())
-        .arg(hovered.red())
-        .arg(hovered.green())
-        .arg(hovered.blue())
-        .arg(pressed.red())
-        .arg(pressed.green())
-        .arg(pressed.blue());
 }
 
 void StartView::configureFileCardWidget(QListView* fileCardWidget)
