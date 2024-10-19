@@ -635,7 +635,16 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         # Assert UpToFace element map is correct
         self.assertEqual(self.countFacesEdgesVertexes(revolution.Shape.ElementReverseMap),
                          (8, 18, 12))
-        #self.assertEqual( revolution.Shape.ElementReverseMap["Face8"].count(";"), 7)
+        # Assertions modified/added while reviewing PR#17119 by CalligaroV
+        # Previously the condition counted the number of ";" (element map operations prefix)
+        # If the number of operations changes then the number of ";" will change accordingly
+        #
+        # However, it is more useful to count the number of times an elemement name is
+        # present in the MappedName of an element (a MappedName is definined also using the
+        # element names - "Vertex*", "Edge*", "Face*" - used by an OCCT operation to generate
+        # output elements)
+        self.assertEqual( revolution.Shape.ElementReverseMap["Face8"].count("Face8"), 3)
+        self.assertEqual( revolution.Shape.ElementReverseMap["Face8"].count("Face10"), 3)
 
     def testPartDesignElementMapLoft(self):
         # Arrange
