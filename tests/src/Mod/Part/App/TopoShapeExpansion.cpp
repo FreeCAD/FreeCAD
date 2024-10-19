@@ -1514,7 +1514,6 @@ TEST_F(TopoShapeExpansionTest, makeElementBooleanCut)
                                      "Vertex7",
                                      "Vertex8",
                                  }));
-    */
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementBooleanFuse)
