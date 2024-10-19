@@ -968,8 +968,8 @@ ChangePointVector DrawViewSection::getChangePointsFromSectionLine()
     if (baseDvp) {
         std::pair<Base::Vector3d, Base::Vector3d> lineEnds = sectionLineEnds();
         // make start and end marks
-        gp_Pnt location0 = DU::togp_Pnt(lineEnds.first);
-        gp_Pnt location1 = DU::togp_Pnt(lineEnds.second);
+        gp_Pnt location0 = DU::to<gp_Pnt>(lineEnds.first);
+        gp_Pnt location1 = DU::to<gp_Pnt>(lineEnds.second);
         gp_Dir postDir = gp_Dir(location1.XYZ() - location0.XYZ());
         gp_Dir preDir = postDir.Reversed();
         ChangePoint startPoint(location0, preDir, postDir);
@@ -1067,9 +1067,9 @@ void DrawViewSection::setCSFromLocalUnit(const Base::Vector3d localUnit)
     //    Base::Console().Message("DVS::setCSFromLocalUnit(%s)\n",
     //    DrawUtil::formatVector(localUnit).c_str());
     gp_Dir verticalDir = getSectionCS().YDirection();
-    gp_Ax1 verticalAxis(DrawUtil::togp_Pnt(SectionOrigin.getValue()), verticalDir);
+    gp_Ax1 verticalAxis(DrawUtil::to<gp_Pnt>(SectionOrigin.getValue()), verticalDir);
     gp_Dir oldNormal = getSectionCS().Direction();
-    gp_Dir newNormal = DrawUtil::togp_Dir(projectPoint(localUnit));
+    gp_Dir newNormal = DrawUtil::to<gp_Dir>(projectPoint(localUnit));
     double angle = oldNormal.AngleWithRef(newNormal, verticalDir);
     gp_Ax2 newCS = getSectionCS().Rotated(verticalAxis, angle);
     SectionNormal.setValue(DrawUtil::toVector3d(newCS.Direction()));
