@@ -92,14 +92,6 @@ void SpreadsheetDelegate::onEditorFinishedWithKey(int key, Qt::KeyboardModifiers
     Q_EMIT finishedWithKey(key, modifiers);
 }
 
-QSize SpreadsheetDelegate::sizeHint(const QStyleOptionViewItem& option,
-                                    const QModelIndex& index) const
-{
-    Q_UNUSED(option);
-    Q_UNUSED(index);
-    return {};
-}
-
 static inline void drawBorder(QPainter* painter,
                               const QStyleOptionViewItem& option,
                               unsigned flags,
