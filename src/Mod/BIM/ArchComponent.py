@@ -263,6 +263,8 @@ class Component(ArchIFC.IfcProduct):
 
         if self.clone(obj):
             return
+        if not self.ensureBase(obj):
+            return
         if obj.Base:
             shape = self.spread(obj,obj.Base.Shape)
             if obj.Additions or obj.Subtractions:
@@ -1152,6 +1154,20 @@ class Component(ArchIFC.IfcProduct):
                     if obj in link.Hosts:
                         hosts.append(link)
         return hosts
+
+    def ensureBase(self, obj):
+        """Returns False if the object has a Base but of the wrong type.
+        Either returns True"""
+
+        if hasattr(obj, "Base"):
+            if obj.Base:
+                if not obj.Base.isDerivedFrom("Part::Feature"):
+                    if not obj.Base.isDerivedFrom("Mesh::Feature"):
+                        import Part
+                        if not hasattr(obj.Base, "Shape") or not isinstance(obj.Base.Shape,Part.Shape):
+                            FreeCAD.Console.PrintError(obj.Label+": "+translate("Arch","Wrong base type")+"\n")
+                            return False
+        return True
 
 
 class ViewProviderComponent:
