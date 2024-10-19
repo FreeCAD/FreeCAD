@@ -2847,7 +2847,6 @@ TEST_F(TopoShapeExpansionTest, makeElementTransformWithMap)
                                      "Vertex8",
                                      "Vertex8;:H2,V",
                                  }));
-    */
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementGTransformWithoutMap)
