@@ -305,7 +305,7 @@ def p_part(p):
 def p_2d_point(p):
     '2d_point : OSQUARE NUMBER COMMA NUMBER ESQUARE'
     global points_list
-    if printverbose: print("2d Point")
+    if printverbose: print("2D Point")
     p[0] = [float(p[2]), float(p[4])]
 
 

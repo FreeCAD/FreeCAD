@@ -58,7 +58,7 @@
      <item row="0" column="0">
       <widget class="QRadioButton" name="rb2d1">
        <property name="text">
-        <string>2d Point</string>
+        <string>2D Point</string>
        </property>
        <property name="checked">
         <bool>true</bool>
@@ -74,7 +74,7 @@
      <item row="0" column="1">
       <widget class="QRadioButton" name="rb3d1">
        <property name="text">
-        <string>3d Point</string>
+        <string>3D Point</string>
        </property>
        <property name="autoExclusive">
         <bool>true</bool>
@@ -137,7 +137,7 @@
      <item row="0" column="0">
       <widget class="QRadioButton" name="rb2d2">
        <property name="text">
-        <string>2d Point</string>
+        <string>2D Point</string>
        </property>
        <property name="checked">
         <bool>true</bool>
@@ -153,7 +153,7 @@
      <item row="0" column="1">
       <widget class="QRadioButton" name="rb3d2">
        <property name="text">
-        <string>3d Point</string>
+        <string>3D Point</string>
        </property>
        <property name="autoExclusive">
         <bool>true</bool>
