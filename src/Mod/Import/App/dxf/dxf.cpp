@@ -2118,7 +2118,7 @@ bool CDxfRead::ReadText()
         // NOLINTEND(cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
     }
     else {
-        ImportError("Unable to process encoding for TEXT/MTEXT '%s'", textPrefix);
+        ImportError("Unable to process encoding for TEXT/MTEXT '%s'\n", textPrefix);
     }
     repeat_last_record();
     return true;
