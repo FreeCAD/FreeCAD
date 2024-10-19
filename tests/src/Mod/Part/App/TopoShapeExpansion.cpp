@@ -3307,7 +3307,6 @@ TEST_F(TopoShapeExpansionTest, traceElement)
                                      "Vertex7",
                                      "Vertex8",
                                  }));
-    */
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementOffset)
