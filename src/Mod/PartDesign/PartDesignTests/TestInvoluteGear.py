@@ -265,7 +265,11 @@ class TestInvoluteGear(unittest.TestCase):
         pocket.Reversed = True # need to "pocket upwards" into the cylinder
         pocket.Type = 'ThroughAll'
         self.assertSuccessfulRecompute()
-        self.assertSolid(pocket.Shape)
+        if pocket.Shape.ShapeType == 'Compound':
+            self.assertEqual(len(pocket.Shape.Solids), 1)
+            self.assertSolid(pocket.Shape.Solids[0])
+        else:
+            self.assertSolid(pocket.Shape)
 
     def testRecomputeExternalGearFromV020(self):
         FreeCAD.closeDocument(self.Doc.Name) # this was created in setUp(self)
