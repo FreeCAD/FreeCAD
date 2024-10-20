@@ -323,7 +323,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 QT_TRANSLATE_NOOP(
                     "App::Property",
                     "The number of passes to do. Requires a non-zero value for Stepover",
-                )
+                ),
             )
         if not hasattr(obj, "Stepover"):
             obj.addProperty(
@@ -356,7 +356,9 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         if num_passes > 1 and stepover == 0:
             # This check is important because C++ code has a default value for stepover if it's 0 and extra passes are requested
             num_passes = 1
-            Path.Log.warning("Multipass profile requires a non-zero stepover. Reducing to a single pass.")
+            Path.Log.warning(
+                "Multipass profile requires a non-zero stepover. Reducing to a single pass."
+            )
 
         if obj.UseComp:
             offset = self.radius + obj.OffsetExtra.Value
@@ -651,7 +653,10 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                             cutWireObjs = False
                             openEdges = []
                             params = self.areaOpAreaParams(obj, False)
-                            passOffsets = [self.ofstRadius + i * abs(params["Stepover"]) for i in range(params["ExtraPass"] + 1)][::-1]
+                            passOffsets = [
+                                self.ofstRadius + i * abs(params["Stepover"])
+                                for i in range(params["ExtraPass"] + 1)
+                            ][::-1]
                             (origWire, flatWire) = flattened
 
                             self._addDebugObject("FlatWire", flatWire)
