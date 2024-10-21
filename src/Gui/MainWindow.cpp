@@ -70,6 +70,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
+#include <App/SafeMode.h>
 #include <Base/ConsoleObserver.h>
 #include <Base/Parameter.h>
 #include <Base/Exception.h>
@@ -91,6 +92,7 @@
 #include "DownloadManager.h"
 #include "FileDialog.h"
 #include "MenuManager.h"
+#include "ModuleIO.h"
 #include "NotificationArea.h"
 #include "OverlayManager.h"
 #include "ProgressBar.h"
@@ -1653,6 +1655,22 @@ void MainWindow::delayedStartup()
     if (hGrp->GetBool("RecoveryEnabled", true)) {
         Application::Instance->checkForPreviousCrashes();
     }
+
+    if (SafeMode::SafeModeEnabled()) {
+        auto safeModePopup = QMessageBox(
+            QMessageBox::Information,
+            tr("Safe mode enabled"),
+            tr("FreeCAD is now running in safe mode."),
+            QMessageBox::Ok
+        );
+        safeModePopup.setInformativeText(
+            tr(
+                "Safe mode temporarily disables your configurations and addons."
+                " Restart the application to exit safe mode."
+            )
+        );
+        safeModePopup.exec();
+    }
 }
 
 void MainWindow::appendRecentFile(const QString& filename)
@@ -2411,12 +2429,7 @@ void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& urls)
     }
 
     QByteArray docName = doc ? QByteArray(doc->getName()) : qApp->translate("StdCmdNew","Unnamed").toUtf8();
-    SelectModule::Dict dict = SelectModule::importHandler(files);
-    // load the files with the associated modules
-    for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
-        // if the passed document name doesn't exist the module should create it, if needed
-        Application::Instance->importFrom(it.key().toUtf8(), docName, it.value().toLatin1());
-    }
+    ModuleIO::importFiles(files, docName);
 }
 
 void MainWindow::changeEvent(QEvent *e)
@@ -2612,6 +2625,10 @@ void MainWindow::setWindowTitle(const QString& string)
     }
     else {
         title = appname;
+    }
+
+    if (SafeMode::SafeModeEnabled()) {
+        title = QString::fromUtf8("%1 (%2)").arg(title, tr("Safe Mode"));
     }
 
     if (!string.isEmpty()) {

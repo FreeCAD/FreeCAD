@@ -837,6 +837,7 @@ class _MeshNetgenFromShape(CommandManager):
             )
         )
         FreeCADGui.doCommand("FreeCAD.ActiveDocument.ActiveObject.Fineness = 'Moderate'")
+        FreeCADGui.doCommand("FreeCAD.ActiveDocument.ActiveObject.EndStep = 'OptimizeVolume'")
         # Netgen mesh object could be added without an active analysis
         # but if there is an active analysis move it in there
         import FemGui

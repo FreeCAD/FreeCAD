@@ -665,14 +665,14 @@ App::DocumentObjectExecReturn *Cone::execute()
             //Build a cylinder
             BRepPrimAPI_MakeCylinder mkCylr(Radius1.getValue(),
                                             Height.getValue(),
-                                            2.0 * M_PI);
+                                            Base::toRadians<double>(Angle.getValue()));
             ResultShape = mkCylr.Shape();
         } else {
             // Build a cone
             BRepPrimAPI_MakeCone mkCone(Radius1.getValue(),
                                         Radius2.getValue(),
                                         Height.getValue(),
-                                        angle/180.0f*M_PI);
+                                        Base::toRadians<double>(angle));
             ResultShape = mkCone.Shape();
         }
         this->Shape.setValue(ResultShape);

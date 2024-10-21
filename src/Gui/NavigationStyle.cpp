@@ -62,6 +62,8 @@ public:
         FreeTurntable
     };
 
+    static constexpr float defaultSphereRadius = 0.8;
+
     FCSphereSheetProjector(const SbSphere & sph, const SbBool orienttoeye = true)
         : SbSphereSheetProjector(sph, orienttoeye)
     {
@@ -221,7 +223,7 @@ void NavigationStyle::initialize()
     // FIXME: use a smaller sphere than the default one to have a larger
     // area close to the borders that gives us "z-axis rotation"?
     // 19990425 mortene.
-    this->spinprojector = new FCSphereSheetProjector(SbSphere(SbVec3f(0, 0, 0), 0.8f));
+    this->spinprojector = new FCSphereSheetProjector(SbSphere(SbVec3f(0, 0, 0), FCSphereSheetProjector::defaultSphereRadius));
     SbViewVolume volume;
     volume.ortho(-1, 1, -1, 1, -1, 1);
     this->spinprojector->setViewVolume(volume);
@@ -849,7 +851,7 @@ SbVec3f NavigationStyle::getFocalPoint() const
     return focal;
 }
 
-/** Uses the sphere sheet projector to map the mouseposition onto
+/** Uses the sphere sheet projector to map the mouse position onto
  * a 3D point and find a rotation from this and the last calculated point.
  */
 void NavigationStyle::spin(const SbVec2f & pointerpos)
@@ -863,6 +865,22 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
     SbVec2f lastpos;
     lastpos[0] = float(this->log.position[1][0]) / float(std::max((int)(glsize[0]-1), 1));
     lastpos[1] = float(this->log.position[1][1]) / float(std::max((int)(glsize[1]-1), 1));
+
+    // Adjust the spin projector sphere to the screen position of the rotation center
+    if (rotationCenterFound) {
+        const auto pointOnScreen = viewer->getPointOnViewport(rotationCenter);
+        const auto sphereCenter = 2 * normalizePixelPos(pointOnScreen) - SbVec2f {1, 1};
+
+        float x, y;
+        sphereCenter.getValue(x, y);
+
+        const float radius = FCSphereSheetProjector::defaultSphereRadius * (1 + sphereCenter.length());
+
+        spinprojector->setSphere(SbSphere {SbVec3f {x, y, 0}, radius});
+    }
+    else {
+        spinprojector->setSphere(SbSphere {SbVec3f {0, 0, 0}, FCSphereSheetProjector::defaultSphereRadius});
+    }
 
     if (this->rotationCenterMode && this->rotationCenterFound) {
         SbVec3f hitpoint = this->rotationCenter;

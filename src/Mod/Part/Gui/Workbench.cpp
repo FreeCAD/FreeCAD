@@ -115,7 +115,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     compound->setCommand("Compound");
     *compound << "Part_Compound"
               << "Part_ExplodeCompound"
-              << "Part_CompoundFilter";
+              << "Part_CompoundFilter"
+              << "Part_ToleranceSet";
 
     Gui::MenuItem* part = new Gui::MenuItem;
     root->insertItem(item, part);
