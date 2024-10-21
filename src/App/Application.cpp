@@ -137,6 +137,8 @@
 #include <App/TestScript.h>
 #include <App/CMakeScript.h>
 
+#include "SafeMode.h"
+
 #ifdef _MSC_VER // New handler for Microsoft Visual C++ compiler
 # pragma warning( disable : 4535 )
 # if !defined(_DEBUG) && defined(HAVE_SEH)
@@ -1742,6 +1744,7 @@ void Application::destruct()
     Base::InterpreterSingleton::Destruct();
     Base::Type::destruct();
     ParameterManager::Terminate();
+    SafeMode::Destruct();
 }
 
 void Application::destructObserver()
@@ -2230,6 +2233,7 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
     ("module-path,M", value< vector<string> >()->composing(),"Additional module paths")
     ("python-path,P", value< vector<string> >()->composing(),"Additional python paths")
     ("single-instance", "Allow to run a single instance of the application")
+    ("safe-mode", "Force enable safe mode")
     ("pass", value< vector<string> >()->multitoken(), "Ignores the following arguments and pass them through to be used by a script")
     ;
 
@@ -2557,6 +2561,10 @@ void Application::initConfig(int argc, char ** argv)
 
     // extract home paths
     ExtractUserPath();
+    
+    if (vm.count("safe-mode")) {
+        SafeMode::StartSafeMode();
+    }
 
 #   ifdef FC_DEBUG
     mConfig["Debug"] = "1";
