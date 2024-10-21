@@ -240,6 +240,11 @@ App::DocumentObjectExecReturn* Helix::execute()
         double size=sqrt(bounds.SquareExtent());
         ShapeFix_ShapeTolerance fix;
         fix.LimitTolerance(path, Precision::Confusion() * 1e-6 * size ); // needed to produce valid Pipe for very big parts
+        // We introduce final part tolerance with the second call to LimitTolerance below, however
+        // OCCT has a bug where the side-walls of the Pipe disappear with very large (km range) pieces
+        // increasing a tiny bit of extra tolerance to the path fixes this. This will in any case
+        // be less than the tolerance lower limit below, but sufficient to avoid the bug
+
         BRepOffsetAPI_MakePipe mkPS(TopoDS::Wire(path), face, GeomFill_Trihedron::GeomFill_IsFrenet, Standard_False);
         result = mkPS.Shape();
 
@@ -248,7 +253,7 @@ App::DocumentObjectExecReturn* Helix::execute()
         if (SC.State() == TopAbs_IN) {
             result.Reverse();
         }
-        
+ 
         fix.LimitTolerance(result, Precision::Confusion() * size * Tolerance.getValue() ); // significant precision reduction due to helical approximation - needed to allow fusion to succeed
 
         AddSubShape.setValue(result);

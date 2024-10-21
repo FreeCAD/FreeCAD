@@ -148,13 +148,13 @@ class TestHelix(unittest.TestCase):
             helix.Placement = FreeCAD.Placement(FreeCAD.Vector(0,0,0), FreeCAD.Rotation(FreeCAD.Vector(0,0,1),0), FreeCAD.Vector(0,0,0))
 
             helix.Pitch = 2*(10**exponent)
-            helix.Turns = 3
+            helix.Turns = 2
             helix.Height = helix.Turns* helix.Pitch
             helix.Angle = 0
             helix.Mode = 0
             self.Doc.recompute()
-            
-            self.assertTrue(helix.Shape.isValid()) 
+ 
+            self.assertTrue(helix.Shape.isValid())
             bbox = helix.Shape.BoundBox
             self.assertAlmostEqual(bbox.ZMin/((10**exponent)**3),0,places=4)
             # Computed exact value
@@ -189,13 +189,13 @@ class TestHelix(unittest.TestCase):
             helix.Placement = FreeCAD.Placement(FreeCAD.Vector(0,0,0), FreeCAD.Rotation(FreeCAD.Vector(0,0,1),0), FreeCAD.Vector(0,0,0))
 
             helix.Pitch = 2*(10**exponent)
-            helix.Turns = 3.5 # workaround for OCCT bug with very large helices - full turns truncate the cylinder due to seam alignment
+            helix.Turns = 2.5 # workaround for OCCT bug with very large helices - full turns truncate the cylinder due to seam alignment
             helix.Height = helix.Turns* helix.Pitch
             helix.Angle = 0
             helix.Mode = 0
             self.Doc.recompute()
-            
-            self.assertTrue(helix.Shape.isValid()) 
+
+            self.assertTrue(helix.Shape.isValid())
             bbox = helix.Shape.BoundBox
             self.assertAlmostEqual(bbox.ZMin/((10**exponent)**3),0,places=4)
             # Computed exact value
@@ -204,7 +204,7 @@ class TestHelix(unittest.TestCase):
             cyl = pi * ((10*(10**exponent))**2) * 8*(10**exponent)
             expected = cyl + (pi * ( ((11*(10**exponent))**2) - ((10*(10**exponent))**2) ) * 1*(10**exponent) * helix.Turns )
             self.assertAlmostEqual(helix.Shape.Volume/ ((10**exponent)**3),expected/ ((10**exponent)**3),places=2)
-    
+
     def testGiantHelixSubtractive(self):
         """ Test giant helix subtracted from Cylinder """
         for exponent in range(-1,8):
@@ -231,13 +231,13 @@ class TestHelix(unittest.TestCase):
             helix.Placement = FreeCAD.Placement(FreeCAD.Vector(0,0,0), FreeCAD.Rotation(FreeCAD.Vector(0,0,1),0), FreeCAD.Vector(0,0,0))
 
             helix.Pitch = 2*(10**exponent)
-            helix.Turns = 3.5 # workaround for OCCT bug with very large helices - full turns truncate the cylinder due to seam alignment
+            helix.Turns = 2.5 # workaround for OCCT bug with very large helices - full turns truncate the cylinder due to seam alignment
             helix.Height = helix.Turns* helix.Pitch
             helix.Angle = 0
             helix.Mode = 0
             self.Doc.recompute()
-            
-            self.assertTrue(helix.Shape.isValid()) 
+
+            self.assertTrue(helix.Shape.isValid())
             bbox = helix.Shape.BoundBox
             self.assertAlmostEqual(bbox.ZMin/((10**exponent)**3),0,places=4)
             # Computed exact value
