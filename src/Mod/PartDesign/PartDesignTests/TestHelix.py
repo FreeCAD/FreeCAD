@@ -129,6 +129,123 @@ class TestHelix(unittest.TestCase):
         expected = pi * 25 * 5 * 3
         self.assertAlmostEqual(helix.Shape.Volume, expected, places=2)
 
+    def testGiantHelix(self):
+        """ Test giant helix """
+        for exponent in range(-1,10):
+            body = self.Doc.addObject('PartDesign::Body','GearBody')
+            gearSketch = self.Doc.addObject('Sketcher::SketchObject', 'GearSketch')
+            body.addObject(gearSketch)
+            TestSketcherApp.CreateRectangleSketch(gearSketch, (10*(10**exponent), 0), (1*(10**exponent), 1*(10**exponent)))
+            xz_plane = body.Origin.OriginFeatures[4]
+            gearSketch.AttachmentSupport = xz_plane
+            gearSketch.MapMode = 'FlatFace'
+            self.Doc.recompute()
+
+            helix = self.Doc.addObject("PartDesign::AdditiveHelix","AdditiveHelix")
+            body.addObject(helix)
+            helix.Profile = gearSketch
+            helix.ReferenceAxis = (gearSketch,"V_Axis")
+            helix.Placement = FreeCAD.Placement(FreeCAD.Vector(0,0,0), FreeCAD.Rotation(FreeCAD.Vector(0,0,1),0), FreeCAD.Vector(0,0,0))
+
+            helix.Pitch = 2*(10**exponent)
+            helix.Turns = 3
+            helix.Height = helix.Turns* helix.Pitch
+            helix.Angle = 0
+            helix.Mode = 0
+            self.Doc.recompute()
+            
+            self.assertTrue(helix.Shape.isValid()) 
+            bbox = helix.Shape.BoundBox
+            self.assertAlmostEqual(bbox.ZMin/((10**exponent)**3),0,places=4)
+            # Computed exact value
+            # with r = radius, l = length of square, t = turns
+            # pi * r**2 * l * t
+            expected = pi * ( ((11*(10**exponent))**2) - ((10*(10**exponent))**2) ) * 1*(10**exponent) * helix.Turns
+            self.assertAlmostEqual(helix.Shape.Volume/ ((10**exponent)**3),expected/ ((10**exponent)**3),places=2)
+
+    def testGiantHelixAdditive(self):
+        """ Test giant helix added to Cylinder """
+        for exponent in range(-1,8):
+            body = self.Doc.addObject('PartDesign::Body','GearBody')
+            gearSketch = self.Doc.addObject('Sketcher::SketchObject', 'GearSketch')
+            body.addObject(gearSketch)
+            TestSketcherApp.CreateRectangleSketch(gearSketch, (10*(10**exponent), 0), (1*(10**exponent), 1*(10**exponent)))
+            xz_plane = body.Origin.OriginFeatures[4]
+            gearSketch.AttachmentSupport = xz_plane
+            gearSketch.MapMode = 'FlatFace'
+            self.Doc.recompute()
+
+            cylinder = self.Doc.addObject('PartDesign::AdditiveCylinder','Cylinder')
+            cylinder.Radius = 10*(10**exponent)
+            cylinder.Height = 8*(10**exponent)
+            cylinder.Angle = 360
+            body.addObject(cylinder)
+            self.Doc.recompute()
+
+            helix = self.Doc.addObject("PartDesign::AdditiveHelix","AdditiveHelix")
+            body.addObject(helix)
+            helix.Profile = gearSketch
+            helix.ReferenceAxis = (gearSketch,"V_Axis")
+            helix.Placement = FreeCAD.Placement(FreeCAD.Vector(0,0,0), FreeCAD.Rotation(FreeCAD.Vector(0,0,1),0), FreeCAD.Vector(0,0,0))
+
+            helix.Pitch = 2*(10**exponent)
+            helix.Turns = 3.5 # workaround for OCCT bug with very large helices - full turns truncate the cylinder due to seam alignment
+            helix.Height = helix.Turns* helix.Pitch
+            helix.Angle = 0
+            helix.Mode = 0
+            self.Doc.recompute()
+            
+            self.assertTrue(helix.Shape.isValid()) 
+            bbox = helix.Shape.BoundBox
+            self.assertAlmostEqual(bbox.ZMin/((10**exponent)**3),0,places=4)
+            # Computed exact value
+            # with r = radius, l = length of square, t = turns
+            # pi * r**2 * l * t
+            cyl = pi * ((10*(10**exponent))**2) * 8*(10**exponent)
+            expected = cyl + (pi * ( ((11*(10**exponent))**2) - ((10*(10**exponent))**2) ) * 1*(10**exponent) * helix.Turns )
+            self.assertAlmostEqual(helix.Shape.Volume/ ((10**exponent)**3),expected/ ((10**exponent)**3),places=2)
+    
+    def testGiantHelixSubtractive(self):
+        """ Test giant helix subtracted from Cylinder """
+        for exponent in range(-1,8):
+            body = self.Doc.addObject('PartDesign::Body','GearBody')
+            gearSketch = self.Doc.addObject('Sketcher::SketchObject', 'GearSketch')
+            body.addObject(gearSketch)
+            TestSketcherApp.CreateRectangleSketch(gearSketch, (10*(10**exponent), 0), (1*(10**exponent), 1*(10**exponent)))
+            xz_plane = body.Origin.OriginFeatures[4]
+            gearSketch.AttachmentSupport = xz_plane
+            gearSketch.MapMode = 'FlatFace'
+            self.Doc.recompute()
+
+            cylinder = self.Doc.addObject('PartDesign::AdditiveCylinder','Cylinder')
+            cylinder.Radius = 11*(10**exponent)
+            cylinder.Height = 8*(10**exponent)
+            cylinder.Angle = 360
+            body.addObject(cylinder)
+            self.Doc.recompute()
+
+            helix = self.Doc.addObject("PartDesign::SubtractiveHelix","SubtractiveHelix")
+            body.addObject(helix)
+            helix.Profile = gearSketch
+            helix.ReferenceAxis = (gearSketch,"V_Axis")
+            helix.Placement = FreeCAD.Placement(FreeCAD.Vector(0,0,0), FreeCAD.Rotation(FreeCAD.Vector(0,0,1),0), FreeCAD.Vector(0,0,0))
+
+            helix.Pitch = 2*(10**exponent)
+            helix.Turns = 3.5 # workaround for OCCT bug with very large helices - full turns truncate the cylinder due to seam alignment
+            helix.Height = helix.Turns* helix.Pitch
+            helix.Angle = 0
+            helix.Mode = 0
+            self.Doc.recompute()
+            
+            self.assertTrue(helix.Shape.isValid()) 
+            bbox = helix.Shape.BoundBox
+            self.assertAlmostEqual(bbox.ZMin/((10**exponent)**3),0,places=4)
+            # Computed exact value
+            # with r = radius, l = length of square, t = turns
+            # pi * r**2 * l * t
+            cyl = pi * ((11*(10**exponent))**2) * 8*(10**exponent)
+            expected = cyl - (pi * ( ((11*(10**exponent))**2) - ((10*(10**exponent))**2) ) * 1*(10**exponent) * helix.Turns )
+            self.assertAlmostEqual(helix.Shape.Volume/ ((10**exponent)**3),expected/ ((10**exponent)**3),places=2)
 
     def testCone(self):
         """ Test helix following a cone """
