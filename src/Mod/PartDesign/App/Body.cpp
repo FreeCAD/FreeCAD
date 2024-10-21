@@ -471,6 +471,20 @@ void Body::onChanged(const App::Property* prop) {
             }
 
         }
+        else if (prop == &ShapeMaterial) {
+            std::vector<App::DocumentObject*> features = Group.getValues();
+            if (!features.empty()) {
+                for (auto it : features) {
+                    auto feature = dynamic_cast<Part::Feature*>(it);
+                    if (feature) {
+                        if (feature->ShapeMaterial.getValue().getUUID()
+                            != ShapeMaterial.getValue().getUUID()) {
+                            feature->ShapeMaterial.setValue(ShapeMaterial.getValue());
+                        }
+                    }
+                }
+            }
+        }
     }
 
     Part::BodyBase::onChanged(prop);

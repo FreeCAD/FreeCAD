@@ -208,6 +208,9 @@ App::DocumentObjectExecReturn *MultiFuse::execute()
             }
             this->Shape.setValue(res);
             this->History.setValues(history);
+
+            App::DocumentObject* link = Shapes.getValues()[0];
+            copyMaterial(link);
             return Part::Feature::execute();
         }
         catch (Standard_Failure& e) {

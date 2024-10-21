@@ -117,6 +117,10 @@ App::DocumentObjectExecReturn *MultiCommon::execute()
         res = res.makeElementRefine();
     }
     this->Shape.setValue(res);
+    if (Shapes.getSize() > 0) {
+        App::DocumentObject* link = Shapes.getValues()[0];
+        copyMaterial(link);
+    }
 
     return Part::Feature::execute();
 }
