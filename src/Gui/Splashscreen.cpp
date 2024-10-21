@@ -480,8 +480,11 @@ void AboutDialog::showCredits()
     textField->setOpenLinks(false);
     hlayout->addWidget(textField);
 
-    QString creditsHTML = QString::fromLatin1("<html><body><h1>");
+    QString creditsHTML = QString::fromLatin1("<html><body><p>");
+    //: Header for bgbsww
+    creditsHTML += tr("This version of FreeCAD is dedicated to the memory of Brad McLean, aka bgbsww.");
     //: Header for the Credits tab of the About screen
+    creditsHTML += QString::fromLatin1("</p><h1>");
     creditsHTML += tr("Credits");
     creditsHTML += QString::fromLatin1("</h1><p>");
     creditsHTML += tr("FreeCAD would not be possible without the contributions of");
