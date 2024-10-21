@@ -1231,6 +1231,7 @@ SET(FreeCADGui_CPP_SRCS
     GuiConsole.cpp
     Macro.cpp
     MergeDocuments.cpp
+    ModuleIO.cpp
     Namespace.h
     resource.cpp
     Control.cpp
@@ -1266,6 +1267,7 @@ SET(FreeCADGui_SRCS
     Macro.h
     MergeDocuments.h
     MetaTypes.h
+    ModuleIO.h
     Notifications.h
     PreCompiled.cpp
     PreCompiled.h
