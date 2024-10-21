@@ -64,6 +64,8 @@ class DraftAnnotation(object):
         vobj = obj.ViewObject
         if not vobj:
             return
+        if not getattr(vobj, "Proxy", None):
+            return
         if hasattr(vobj, "ScaleMultiplier") and hasattr(vobj, "AnnotationStyle"):
             return
         self.add_missing_properties_0v19(obj, vobj)
