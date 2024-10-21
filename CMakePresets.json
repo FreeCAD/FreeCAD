@@ -51,14 +51,6 @@
         "hidden": true,
         "generator": "Ninja",
         "cacheVariables": {
-          "Boost_NO_BOOST_CMAKE": {
-            "type": "BOOL",
-            "value": "ON"
-          },
-          "BUILD_DYNAMIC_LINK_PYTHON": {
-            "type": "BOOL",
-            "value": "ON"
-          },
           "BUILD_FEM_NETGEN": {
             "type": "BOOL",
             "value": "ON"
@@ -102,10 +94,6 @@
           "QT_HOST_PATH": {
             "type": "PATH",
             "value": "$env{CONDA_PREFIX}"
-          },
-          "USE_BOOST_PYTHON": {
-            "type": "BOOL",
-            "value": "OFF"
           }
         }
       },
