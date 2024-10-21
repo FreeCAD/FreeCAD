@@ -28,7 +28,7 @@
 
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
-#include <BRepAlgoAPI_Section.hxx>
+#include <Mod/Part/App/FCBRepAlgoAPI_Section.h>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
@@ -7664,7 +7664,7 @@ int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName, boo
                 continue;
             if (intersection) {
                 try {
-                    BRepAlgoAPI_Section maker(subShape, sketchPlane);
+                    FCBRepAlgoAPI_Section maker(subShape, sketchPlane);
                     if (!maker.IsDone() || maker.Shape().IsNull())
                         continue;
                 } catch (Standard_Failure &) {
@@ -9018,7 +9018,7 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
             if (intersection && (refSubShape.ShapeType() == TopAbs_EDGE
                                  || refSubShape.ShapeType() == TopAbs_FACE))
             {
-                BRepAlgoAPI_Section maker(refSubShape, sketchPlane);
+                FCBRepAlgoAPI_Section maker(refSubShape, sketchPlane);
                 maker.Approximation(Standard_True);
                 if (!maker.IsDone())
                     FC_THROWM(Base::CADKernelError,"Failed to get intersection");
