@@ -16,6 +16,7 @@ target_sources(
             ${CMAKE_CURRENT_SOURCE_DIR}/FeaturePartCut.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/FeaturePartFuse.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/FeatureRevolution.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/FuzzyBoolean.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Geometry.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/PartFeature.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/PartFeatures.cpp
@@ -31,3 +32,17 @@ target_sources(
             ${CMAKE_CURRENT_SOURCE_DIR}/TopoShapeMakeShape.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/WireJoiner.cpp
 )
+
+set(PartTestData_Files
+    brepfiles/cylinder1.brep
+    brepfiles/helix1.brep
+)
+
+ADD_CUSTOM_TARGET(PartTestData ALL
+    SOURCES ${PartTestData_Files}
+)
+
+fc_target_copy_resource(PartTestData
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/tests
+    ${PartTestData_Files})
