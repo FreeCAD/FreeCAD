@@ -36,6 +36,12 @@ using namespace Data;
 bool ElementNameComparator::operator()(const MappedName& leftName,
                                        const MappedName& rightName) const
 {
+    if (! leftName) {
+        return true;
+    }
+    if (! rightName) {
+        return false;
+    }
     int size = static_cast<int>(std::min(leftName.size(), rightName.size()));
     if (size == 0U) {
         return leftName.size() < rightName.size();

@@ -698,7 +698,7 @@ public:
     /// data and prefix are empty.
     bool empty() const
     {
-        return this->data.isEmpty() && this->postfix.isEmpty();
+        return this->data != nullptr && this->data.isEmpty() && this->postfix.isEmpty();
     }
 
     /// Returns true if this is shared data, or false if a unique copy has been made.
