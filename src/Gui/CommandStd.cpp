@@ -29,6 +29,9 @@
 # include <QRegularExpression>
 # include <QRegularExpressionMatch>
 # include <QWhatsThis>
+# include <QAbstractButton>
+# include <QTimer>
+# include <QProcess>
 #endif
 
 #include <App/Document.h>
@@ -317,6 +320,53 @@ void StdCmdWhatsThis::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     QWhatsThis::enterWhatsThisMode();
+}
+
+//===========================================================================
+// Std_RestartInSafeMode
+//===========================================================================
+DEF_STD_CMD(StdCmdRestartInSafeMode)
+
+StdCmdRestartInSafeMode::StdCmdRestartInSafeMode()
+  :Command("Std_RestartInSafeMode")
+{
+    sGroup        = "Help";
+    sMenuText     = QT_TR_NOOP("Restart in safe mode");
+    sToolTipText  = QT_TR_NOOP("Restart in safe mode");
+    sWhatsThis    = "Std_RestartInSafeMode";
+    sStatusTip    = QT_TR_NOOP("Restart in safe mode");
+    sPixmap       = "safe-mode-restart";
+    eType         = 0;
+}
+
+void StdCmdRestartInSafeMode::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    QMessageBox restartBox;
+    restartBox.setIcon(QMessageBox::Warning);
+    restartBox.setWindowTitle(QObject::tr("Restart in safe mode"));
+    restartBox.setText(QObject::tr("Are you sure you want to restart FreeCAD and enter safe mode?"));
+    restartBox.setInformativeText(QObject::tr("Safe mode temporarily disables your configuration and addons."));
+    restartBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    restartBox.setDefaultButton(QMessageBox::No);
+
+    if (restartBox.exec() == QMessageBox::Yes) {
+        //restart FreeCAD after a delay to give time to this dialog to close
+        const int ms = 1000;
+        QTimer::singleShot(ms, []()
+        {
+            QStringList args = QApplication::arguments();
+            args.pop_front();
+            auto const safeModeArgument = QString::fromLatin1("--safe-mode");
+            if (!args.contains(safeModeArgument)) {
+                args.append(safeModeArgument);
+            }
+            if (getMainWindow()->close()) {
+                QProcess::startDetached(QApplication::applicationFilePath(), args);
+            }
+        });
+    }
 }
 
 //===========================================================================
@@ -938,6 +988,7 @@ void CreateStdCommands()
     rcCmdMgr.addCommand(new StdCmdRecentFiles());
     rcCmdMgr.addCommand(new StdCmdRecentMacros());
     rcCmdMgr.addCommand(new StdCmdWhatsThis());
+    rcCmdMgr.addCommand(new StdCmdRestartInSafeMode());
     rcCmdMgr.addCommand(new StdCmdPythonHelp());
     rcCmdMgr.addCommand(new StdCmdOnlineHelp());
     rcCmdMgr.addCommand(new StdCmdOnlineHelpWebsite());

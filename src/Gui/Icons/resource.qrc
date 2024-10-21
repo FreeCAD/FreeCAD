@@ -135,6 +135,7 @@
         <file>internet-web-browser.svg</file>
         <file>InTray.svg</file>
         <file>InTray_missed_notifications.svg</file>
+        <file>safe-mode-restart.svg</file>
         <file>view-select.svg</file>
         <file>view-unselectable.svg</file>
         <file>view-refresh.svg</file>
@@ -391,6 +392,7 @@
         <file>accessories-text-editor.svg</file>
         <file>accessories-calculator.svg</file>
         <file>internet-web-browser.svg</file>
+        <file>safe-mode-restart.svg</file>
         <file>view-select.svg</file>
         <file>view-unselectable.svg</file>
         <file>view-refresh.svg</file>
