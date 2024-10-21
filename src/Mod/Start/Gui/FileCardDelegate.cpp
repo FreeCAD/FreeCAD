@@ -120,13 +120,13 @@ void FileCardDelegate::paint(QPainter* painter,
         if (qApp->styleSheet().isEmpty()) {
             QColor color = getSelectionColor();
             style = QString::fromLatin1("QWidget#thumbnailWidget {"
-                                                       " border: 2px solid rgb(%1, %2, %3);"
-                                                       " border-radius: 4px;"
-                                                       " padding: 2px;"
-                                                       "}")
-                                       .arg(color.red())
-                                       .arg(color.green())
-                                       .arg(color.blue());
+                                        " border: 2px solid rgb(%1, %2, %3);"
+                                        " border-radius: 4px;"
+                                        " padding: 2px;"
+                                        "}")
+                        .arg(color.red())
+                        .arg(color.green())
+                        .arg(color.blue());
         }
     }
     else if (option.state & QStyle::State_MouseOver) {
@@ -134,24 +134,24 @@ void FileCardDelegate::paint(QPainter* painter,
         if (qApp->styleSheet().isEmpty()) {
             QColor color = getBorderColor();
             style = QString::fromLatin1("QWidget#thumbnailWidget {"
-                                                       " border: 2px solid rgb(%1, %2, %3);"
-                                                       " border-radius: 4px;"
-                                                       " padding: 2px;"
-                                                       "}")
-                                       .arg(color.red())
-                                       .arg(color.green())
-                                       .arg(color.blue());
+                                        " border: 2px solid rgb(%1, %2, %3);"
+                                        " border-radius: 4px;"
+                                        " padding: 2px;"
+                                        "}")
+                        .arg(color.red())
+                        .arg(color.green())
+                        .arg(color.blue());
         }
     }
     else if (qApp->styleSheet().isEmpty()) {
         QColor color = getBackgroundColor();
         style = QString::fromLatin1("QWidget#thumbnailWidget {"
-                                                   " background-color: rgb(%1, %2, %3);"
-                                                   " border-radius: 8px;"
-                                                   "}")
-                                   .arg(color.red())
-                                   .arg(color.green())
-                                   .arg(color.blue());
+                                    " background-color: rgb(%1, %2, %3);"
+                                    " border-radius: 8px;"
+                                    "}")
+                    .arg(color.red())
+                    .arg(color.green())
+                    .arg(color.blue());
     }
 
     _widget->setStyleSheet(style);
