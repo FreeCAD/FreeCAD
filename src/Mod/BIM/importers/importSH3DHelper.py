@@ -30,11 +30,10 @@ import Arch
 import Draft
 import DraftGeomUtils
 import DraftVecUtils
+import draftutils.gui_utils as gui_utils
 import Mesh
 import numpy
 import Part
-import Sketcher
-import WorkingPlane
 from draftutils.messages import _err, _log, _msg, _wrn
 from draftutils.params import get_param_arch
 
@@ -67,8 +66,10 @@ PREDEFINED_RGB = {"black": (0, 0, 0),
                   "cyan": (0, 1.0, 1.0),
                   "white": (1.0, 1.0, 1.0)}
 
-DEBUG = False
-DEBUG_COLOR = (255, 0, 0)
+TRACE = False
+# Sometimes, the Part::Sweep creates a "twisted" sweep that
+#   impeeds the creation of the corresponding wall.
+FIX_INVALID_SWEEP = True
 
 # SweetHome3D is in cm while FreeCAD is in mm
 FACTOR = 10
@@ -187,7 +188,7 @@ class SH3DImporter:
 
             # Import the <level> element if any. If none are defined
             # create a default one.
-            if home.find('level') != None:
+            if home.find(path='level') != None:
                 self._import_elements(home, 'level')
             else:
                 # Has the default floor already been created from a
@@ -200,13 +201,10 @@ class SH3DImporter:
             self._import_elements(home, 'room')
 
             # Importing <wall> elements ...
-            if self.preferences["JOIN_ARCH_WALL"]:
-                self._import_and_join_walls(home)
-            else:
-                self._import_elements(home, 'wall')
+            self._import_elements(home, 'wall')
 
             self._refresh()
-            if App.GuiUp:
+            if App.GuiUp and self.preferences["FIT_VIEW"]:
                 Gui.SendMsgToActiveView("ViewFit")
 
             # Importing <doorOrWindow> elements ...
@@ -261,6 +259,7 @@ class SH3DImporter:
             'CREATE_ARCH_EQUIPMENT': get_param_arch("sh3dCreateArchEquipment"),
             'JOIN_ARCH_WALL': get_param_arch("sh3dJoinArchWall"),
             'CREATE_RENDER_PROJECT': get_param_arch("sh3dCreateRenderProject") and RENDER_IS_AVAILABLE,
+            'FIT_VIEW': get_param_arch("sh3dFitView"),
             'DEFAULT_FLOOR_COLOR': color_fc2sh(get_param_arch("sh3dDefaultFloorColor")),
             'DEFAULT_CEILING_COLOR': color_fc2sh(get_param_arch("sh3dDefaultCeilingColor")),
         }
@@ -446,83 +445,39 @@ class SH3DImporter:
 
         return floor
 
-    def _import_elements(self, parent, name, update_progress=True):
-        names = list(self.handlers.keys())
-        elements = parent.findall(name)
+    def _import_elements(self, parent, tag, update_progress=True):
+        """Generic function to import a specific element.
+
+        This function will lookup the handler registered for the elements
+        `tag` and then call it on each item. It also provides some update
+        on the whole process.
+
+        Args:
+            parent (Element): the parent of the elements to be imported.
+                Usually the <home> element.
+            tag (str): the tag of the elements to be imported.
+            update_progress (bool, optional): whether to update the
+                progress. Set to false when importing a group of elements.
+                Defaults to True.
+        """
+        tags = list(self.handlers.keys())
+        elements = parent.findall(tag)
         if update_progress and self.progress_bar:
             self.progress_bar.stop()
-            self.progress_bar.start(f"Step {names.index(name)+1}/{len(names)}: importing {len(elements)} '{name}' elements. Please wait ...", len(elements))
-            _msg(f"Importing {len(elements)} '{name}' elements ...")
+            self.progress_bar.start(f"Step {tags.index(tag)+1}/{len(tags)}: importing {len(elements)} '{tag}' elements. Please wait ...", len(elements))
+            _msg(f"Importing {len(elements)} '{tag}' elements ...")
         def _process(tuple):
             (i, elm) = tuple
-            _log(f"Importing <{name}>#{i} ({self.current_object_count + 1}/{self.total_object_count}) ...")
+            _log(f"Importing <{tag}>#{i} ({self.current_object_count + 1}/{self.total_object_count}) ...")
             try:
-                self.handlers[name].process(i, elm)
+                self.handlers[tag].process(parent, i, elm)
             except Exception as e:
-                _err(f"Failed to import <{name}>#{i} ({elm.get('id', elm.get('name'))}):")
+                _err(f"Failed to import <{tag}>#{i} ({elm.get('id', elm.get('name'))}):")
                 _err(str(e))
             if update_progress and self.progress_bar:
                 self.progress_bar.next()
             self.current_object_count = self.current_object_count + 1
-        list(map(_process, enumerate(parent.findall(name))))
-
-    def _import_and_join_walls(self, parent, update_progress=True):
-        # Create a map of all the walls to be created
-        self.seen = []
-        for i, wall in enumerate(parent.findall('wall')):
-            wall_id = wall.get('id')
-            if wall_id in self.seen:
-                continue
-            self.seen.append(wall_id)
-            wall_segments = [wall]
-            self._join_previous_wall(parent, wall, wall_segments)
-            self._join_next_wall(parent, wall, wall_segments)
-            txt = ' -> '.join(list(map(lambda w: w.get('id'), wall_segments)))
-            _log(f"Found continuous wall segments: [{txt}] ...")
-            if len(wall_segments) == 1:
-                self.handlers['wall'].process(i, wall_segments[0])
-            else:
-                self.handlers['wall'].process(i, wall_segments)
-            if update_progress and self.progress_bar:
-                self.progress_bar.next()
-                self.current_object_count = self.current_object_count + 1
-        self.seen = []
-
-    def _join_previous_wall(self, parent, wall, wall_segments):
-        """Prepend the wall referenced by 'wallAtStart' to the list of wall
-        """
-        # We skip curved walls
-        if wall.get('wallAtStart'): # and not wall.get('arcExtent'):
-            sibling_wall_id, sibling_wall = self._get_sibling_wall(parent, wall, 'wallAtStart')
-            if not sibling_wall_id: # or sibling_wall.get('arcExtent'):
-                return None, None
-            if DEBUG: _log(f"{sibling_wall_id} -> {wall.get('id')}")
-            wall_segments.insert(0, sibling_wall)
-            self.seen.append(sibling_wall_id)
-            self._join_previous_wall(parent, sibling_wall, wall_segments)
-
-    def _join_next_wall(self, parent, wall, wall_segments):
-        """Prepend the wall referenced by 'wallAtStart' to the list of wall
-        """
-        # We skip curved walls
-        if wall.get('wallAtEnd'): # and not wall.get('arcExtent'):
-            sibling_wall_id, sibling_wall = self._get_sibling_wall(parent, wall, 'wallAtEnd')
-            if not sibling_wall_id: # or sibling_wall.get('arcExtent'):
-                return None, None
-            if DEBUG: _log(f"{wall.get('id')} -> {sibling_wall_id}")
-            wall_segments.append(sibling_wall)
-            self.seen.append(sibling_wall_id)
-            self._join_next_wall(parent, sibling_wall, wall_segments)
-
-    def _get_sibling_wall(self, parent, wall, sibling_tag):
-        wall_id = wall.get('id')
-        sibling_wall_id = wall.get(sibling_tag)
-        if sibling_wall_id in self.seen:
-            return None, None
-        sibling_wall = parent.find(f"./wall[@id='{sibling_wall_id}']")
-        if sibling_wall is None:
-            raise ValueError(f"Invalid SweetHome3D file: wall {wall_id} reference an unknown wall {sibling_wall_id}")
-        return sibling_wall_id, sibling_wall
+        list(map(_process, enumerate(elements)))
 
 class BaseHandler:
     """The base class for all importers."""
@@ -580,7 +535,7 @@ class LevelHandler(BaseHandler):
     def __init__(self, importer: SH3DImporter):
         super().__init__(importer)
 
-    def process(self, i, elm):
+    def process(self, parent, i, elm):
         """Creates and returns a Arch::Floor
 
         Args:
@@ -626,7 +581,7 @@ class RoomHandler(BaseHandler):
     def __init__(self, importer: SH3DImporter):
         super().__init__(importer)
 
-    def process(self, i, elm):
+    def process(self, parent, i, elm):
         """Creates and returns a Arch::Structure from the imported_room object
 
         Args:
@@ -688,21 +643,15 @@ class WallHandler(BaseHandler):
 
     def __init__(self, importer: SH3DImporter):
         super().__init__(importer)
+        self.wall_sections = {}
 
-    def process(self, i, elm):
+    def process(self, parent, i, elm):
         """Creates and returns a Arch::Structure from the imported_wall object
 
         Args:
             i (int): the ordinal of the imported element
             elm (Element): the xml element
         """
-        if type(elm) is ET.Element:
-            self._process_wall(i, elm)
-        else:
-            assert (type(elm) == type([]))
-            self._process_wall_segments(i, elm)
-
-    def _process_wall(self, i, elm):
         level_id = elm.get('level', None)
         floor = self.get_floor(level_id)
         assert floor != None, f"Missing floor '{level_id}' for <wall> '{elm.get('id')}' ..."
@@ -711,16 +660,15 @@ class WallHandler(BaseHandler):
         if self.importer.preferences["MERGE"]:
             wall = self.get_fc_object(elm.get("id"), 'wall')
 
-        invert_angle = False
         if not wall:
-            if float(elm.get('arcExtent', 0)) != 0:
-                wall, invert_angle = self._make_arqued_wall(floor, elm)
-            elif elm.get('heightAtEnd'):
-                wall = self._make_tappered_wall(floor, elm)
-            else:
-                wall = self._make_straight_wall(floor, elm)
+            prev = self._get_sibling_wall(parent, elm, 'wallAtStart')
+            next = self._get_sibling_wall(parent, elm, 'wallAtEnd')
+            wall = self._create_wall(floor, prev, next, elm)
+            if not wall:
+                _log(f"No wall created for {elm.get('id')}. Skipping!")
+                return
 
-        self._set_wall_colors(wall, invert_angle, elm)
+        self._set_wall_colors(wall, elm)
 
         wall.IfcType = "Wall"
         wall.Label = f"wall{i}"
@@ -735,53 +683,15 @@ class WallHandler(BaseHandler):
             for baseboard in elm.findall('baseboard'):
                 self._import_baseboard(floor, wall, baseboard)
 
-    def _process_wall_segments(self, i, elms):
-        elm = elms[0]
-        level_id = elm.get('level', None)
-        floor = self.get_floor(level_id)
-        assert floor != None, f"Missing floor '{level_id}' for <wall> '{elm.get('id')}' ..."
-
-        wall = None
-        if self.importer.preferences["MERGE"]:
-            wall = self.get_fc_object(elm.get("id"), 'wall')
-
-        invert_angle = False
-        if not wall:
-            sketch = App.activeDocument().addObject('Sketcher::SketchObject', 'Sketch')
-            for j, wall_segment in enumerate(elms):
-                if wall_segment.get('arcExtent'):
-                    self._process_curved_segment(floor, sketch, wall_segment)
-                else:
-                    self._process_straight_segment(floor, sketch, wall_segment)
-                # if j > 0:
-                #     if wall_segment.get('arcExtent'):
-                #         sketch.addConstraint(Sketcher.Constraint("Coincident", j, 2, j-1, 1))
-                #     else:
-                #         sketch.addConstraint(Sketcher.Constraint("Coincident", j-1, 2, j, 1))
-            if sketch.GeometryCount == 0:
-                _wrn(f"Wall {elm.get('id')} does not contain any relevant wall segment. Skipping!")
-                return
-            wall = Arch.makeWall(sketch)
-            wall.Height = height = dim_sh2fc(elm.get('height', dim_fc2sh(floor.Height)))
-            wall.Width = dim_sh2fc(elm.get('thickness'))
-            wall.Normal = Z_NORM
-
-
-
-        self._set_wall_colors(wall, invert_angle, elm)
-
-        wall.IfcType = "Wall"
-        wall.Label = elm.get("id")
-
-        self._set_properties(wall, elm)
-
-        floor.addObject(wall)
-        self.importer.add_wall(wall)
-
-        # if self.importer.preferences["IMPORT_FURNITURES"]:
-        #     App.ActiveDocument.recompute([wall])
-        #     for baseboard in elm.findall('baseboard'):
-        #         self._import_baseboard(floor, wall, baseboard)
+    def _get_sibling_wall(self, parent, wall, sibling_attribute_name):
+        sibling_wall_id = wall.get(sibling_attribute_name, None)
+        if not sibling_wall_id:
+            return None
+        sibling_wall = parent.find(f"./wall[@id='{sibling_wall_id}']")
+        if sibling_wall is None:
+            wall_id = wall.get('id')
+            raise ValueError(f"Invalid SweetHome3D file: wall {wall_id} reference an unknown wall {sibling_wall_id}")
+        return sibling_wall
 
     def _set_properties(self, obj, elm):
         self.setp(obj, "App::PropertyString", "shType", "The element type", 'wall')
@@ -792,69 +702,8 @@ class WallHandler(BaseHandler):
         self.setp(obj, "App::PropertyFloat", "leftSideShininess", "The wall's left hand side shininess", elm)
         self.setp(obj, "App::PropertyFloat", "rightSideShininess", "The wall's right hand side shininess", elm)
 
-    def _process_straight_segment(self, floor, sketch, elm):
-        x_start = float(elm.get('xStart'))
-        y_start = float(elm.get('yStart'))
-        z_start = dim_fc2sh(floor.Placement.Base.z)
-        x_end = float(elm.get('xEnd'))
-        y_end = float(elm.get('yEnd'))
-        p1 = coord_sh2fc(App.Vector(x_start, y_start, z_start))
-        p2 = coord_sh2fc(App.Vector(x_end, y_end, z_start))
-        if not p1.isEqual(p2, TOLERANCE):
-            sketch.addGeometry(Part.LineSegment(p1, p2))
-
-    def _process_curved_segment(self, floor, sketch, elm):
-        x1 = float(elm.get('xStart'))
-        y1 = float(elm.get('yStart'))
-        x2 = float(elm.get('xEnd'))
-        y2 = float(elm.get('yEnd'))
-        z = dim_fc2sh(floor.Placement.Base.z)
-
-        # p1 and p2 are the points at which the arc should pass, i.e. the center
-        #   of the edge used to draw the rectangle (used later on as sections)
-        p1 = coord_sh2fc(App.Vector(x1, y1, z))
-        p2 = coord_sh2fc(App.Vector(x2, y2, z))
-        arc_extent = ang_sh2fc(elm.get('arcExtent', 0))
-
-        # FROM HERE ALL IS IN FC COORDINATE
-
-        # Calculate the circle that pases through the center of both rectangle
-        #   and has the correct angle between p1 and p2
-        chord = DraftVecUtils.dist(p1, p2)
-        radius = abs(chord / (2*math.sin(arc_extent/2)))
-
-        circles = DraftGeomUtils.circleFrom2PointsRadius(p1, p2, radius)
-        # We take the center that preserve the arc_extent orientation (in FC
-        #   coordinate). The orientation is calculated from p1 to p2
-        invert_angle = False
-        center = circles[0].Center
-        if numpy.sign(arc_extent) != numpy.sign(DraftVecUtils.angle(p1-center, p2-center)):
-            invert_angle = True
-            center = circles[1].Center
-
-        # radius1 and radius2 are the vector from center to p1 and p2 respectively
-        radius1 = p1 - center
-        radius2 = p2 - center
-
-        # NOTE: FreeCAD.Vector.getAngle return unsigned angle, using
-        #   DraftVecUtils.angle instead
-        # a1 and a2 are the angle between each etremity radius and the unit vector
-        #   they are used to determine the rotation for the section used to draw
-        #   the wall.
-        a1 = DraftVecUtils.angle(X_NORM, radius1)
-        a2 = DraftVecUtils.angle(X_NORM, radius2)
-        if DEBUG:
-            _log(f"a1={a1}º (x -> {radius1}) w/ center={center} and p1={p1}")
-            _log(f"a2={a2}º (x -> {radius2}) w/ center={center} and p2={p2}")
-
-        circle = Part.Circle(center, Z_NORM,radius)
-        if invert_angle:
-            sketch.addGeometry(Part.ArcOfCircle(circle, a1, a2))
-        else:
-            sketch.addGeometry(Part.ArcOfCircle(circle, a2, a1))
-
-    def _make_straight_wall(self, floor, elm):
-        """Create a Arch Wall from a line.
+    def _create_wall(self, floor, prev, next, elm):
+        """Create an Arch Wall from a line.
 
         The constructed wall will be a simple solid with the length width height found in imported_wall
 
@@ -865,226 +714,328 @@ class WallHandler(BaseHandler):
         Returns:
             Arch::Wall: the newly created wall
         """
-        x_start = float(elm.get('xStart'))
-        y_start = float(elm.get('yStart'))
-        z_start = dim_fc2sh(floor.Placement.Base.z)
-        x_end = float(elm.get('xEnd'))
-        y_end = float(elm.get('yEnd'))
+        wall_details = self._get_wall_details(floor, elm)
+        assert wall_details is not None, f"Fail to get details of wall {elm.get('id')}. Bailing out! {elm} / {wall_details}"
 
-        p1 = coord_sh2fc(App.Vector(x_start, y_start, z_start))
-        p2 = coord_sh2fc(App.Vector(x_end, y_end, z_start))
-        line = Draft.makeLine(p1, p2)
-        wall = Arch.makeWall(line)
+        prev_wall_details = self._get_wall_details(floor, prev)
+        next_wall_details = self._get_wall_details(floor, next)
 
-        # wall.setExpression('Height', f"<<{floor}>>.height")
-        wall.Height = dim_sh2fc(elm.get('height', dim_fc2sh(floor.Height)))
-        wall.Width = dim_sh2fc(elm.get('thickness'))
-        wall.Normal = Z_NORM
+        # Is the wall curved (i.e. arc_extent != 0) ?
+        if wall_details[5] != 0:
+            section_start, section_end, spine = self._create_curved_segment(
+                wall_details,
+                prev_wall_details,
+                next_wall_details)
+        else:
+            section_start, section_end, spine = self._create_straight_segment(
+                wall_details,
+                prev_wall_details,
+                next_wall_details)
+
+        sweep = App.ActiveDocument.addObject('Part::Sweep')
+        sweep.Sections = [section_start, section_end]
+        sweep.Spine = spine
+        sweep.Solid = True
+        sweep.Frenet = False
+        section_start.Visibility = False
+        section_end.Visibility = False
+        spine.Visibility = False
+        App.ActiveDocument.recompute([sweep])
+        # Sometimes the Part::Sweep creates a "twisted" sweep which
+        # result in a broken wall. The solution is to avoid joining
+        # this end of the wall altogether.
+        if FIX_INVALID_SWEEP and (sweep.Shape.isNull() or not sweep.Shape.isValid()):
+            _log(f"Part::Sweep for wall#{elm.get('id')} is invalid. Rotating end section up to colinear vector ...")
+            max_adjustment = 45 # DraftVecUtils.angle(end-start, normal)
+            adjustment = 0
+            cog = section_end.Shape.CenterOfGravity
+            while (sweep.Shape.isNull() or not sweep.Shape.isValid()) and adjustment <= max_adjustment:
+                Draft.rotate([section_end], 1, cog, Z_NORM)
+                App.ActiveDocument.recompute([sweep])
+                adjustment += 1
+            if adjustment == max_adjustment:
+                _log(f"Failed to adjust end section for wall#{elm.get('id')}")
+            elif adjustment != 0:
+                _log(f"Adjusted wall#{elm.get('id')} by {adjustment}º")
+                # Draft.rotate([section_end], -adjustment, cog, Z_NORM)
+                # App.ActiveDocument.recompute([sweep])
+            assert sweep.Shape.isNull() or sweep.Shape.isValid()
+
+        wall = Arch.makeWall(sweep)
         return wall
 
-    def _make_tappered_wall(self, floor, elm):
-        #
-        # We draw the vertical profile of the wall and then we extrude the
-        # resulting shape. Finally we transform this shape into an Arch::Wall
-        #
+    def _get_wall_details(self, floor, elm):
+        """Returns the relevant element for the given wall.
+
+        Args:
+            floor (Slab): the Slab the wall belongs to
+            elm (Element): the wall being imported
+
+        Returns:
+            Vector: the wall's starting point
+            vector: the wall's ending point
+            float: the thickness
+            float: the wall's height at the starting point
+            float: the wall's height at the ending point
+            float: the wall's arc in degrees
+        """
+        if elm is None:
+            return None
         x_start = float(elm.get('xStart'))
         y_start = float(elm.get('yStart'))
         x_end = float(elm.get('xEnd'))
         y_end = float(elm.get('yEnd'))
         z = dim_fc2sh(floor.Placement.Base.z)
-
-        height_at_start = float(elm.get('height', dim_fc2sh(floor.Height)))
-        height_at_end = float(elm.get('heightAtEnd', height_at_start))
-
-        points = [
-            coord_sh2fc(App.Vector(x_start, y_start, z)),
-            coord_sh2fc(App.Vector(x_end, y_end, z)),
-            coord_sh2fc(App.Vector(x_end, y_end, z+height_at_end)),
-            coord_sh2fc(App.Vector(x_start, y_start, z+height_at_start)),
-        ]
-        profile = Draft.make_wire(points, closed=True, face=True)
-        width = dim_sh2fc(elm.get('thickness'))
-        extrusion = App.ActiveDocument.addObject('Part::Extrusion', elm.get('id'))
-        extrusion.Base = profile
-        extrusion.DirMode = "Custom"
-        extrusion.Dir = WorkingPlane.DraftGeomUtils.getNormal(points)
-        extrusion.LengthFwd = width
-        extrusion.Symmetric = True
-        profile.Visibility = False
-        wall = Arch.makeWall(extrusion)
-        return wall
-
-    def _make_arqued_wall(self, floor, elm):
-
-        x1 = float(elm.get('xStart'))
-        y1 = float(elm.get('yStart'))
-        x2 = float(elm.get('xEnd'))
-        y2 = float(elm.get('yEnd'))
-        z = dim_fc2sh(floor.Placement.Base.z)
-
-        # p1 and p2 are the points at which the arc should pass, i.e. the center
-        #   of the edge used to draw the rectangle (used later on as sections)
-        p1 = coord_sh2fc(App.Vector(x1, y1, z))
-        p2 = coord_sh2fc(App.Vector(x2, y2, z))
 
         thickness = dim_sh2fc(elm.get('thickness'))
         arc_extent = ang_sh2fc(elm.get('arcExtent', 0))
-        height1 = dim_sh2fc(elm.get('height', dim_fc2sh(floor.Height)))
-        height2 = dim_sh2fc(elm.get('heightAtEnd', dim_fc2sh(height1)))
+        height_start = dim_sh2fc(elm.get('height', dim_fc2sh(floor.Height)))
+        height_end = dim_sh2fc(elm.get('heightAtEnd', dim_fc2sh(height_start)))
 
-        # FROM HERE ALL IS IN FC COORDINATE
+        start = coord_sh2fc(App.Vector(x_start, y_start, z))
+        end = coord_sh2fc(App.Vector(x_end, y_end, z))
 
-        # Calculate the circle that pases through the center of both rectangle
-        #   and has the correct angle between p1 and p2
-        chord = DraftVecUtils.dist(p1, p2)
-        radius = abs(chord / (2*math.sin(arc_extent/2)))
+        return (start, end, thickness, height_start, height_end, arc_extent)
 
-        circles = DraftGeomUtils.circleFrom2PointsRadius(p1, p2, radius)
-        # We take the center that preserve the arc_extent orientation (in FC
-        #   coordinate). The orientation is calculated from p1 to p2
-        invert_angle = False
-        center = circles[0].Center
-        if numpy.sign(arc_extent) != numpy.sign(DraftVecUtils.angle(p1-center, p2-center)):
-            invert_angle = True
-            center = circles[1].Center
+    def _create_straight_segment(self, wall_details, prev_wall_details, next_wall_details):
+        """Returns the sections and spine for a straight wall.
 
-        # radius1 and radius2 are the vector from center to p1 and p2 respectively
-        radius1 = p1-center
-        radius2 = p2-center
+        Args:
+            wall_details (tuple): the wall details for the wall being imported
+            prev_wall_details (tuple): the details for the previous sibling
+            next_wall_details (tuple): the details for the next sibling
 
-        # NOTE: FreeCAD.Vector.getAngle return unsigned angle, using
-        #   DraftVecUtils.angle instead
-        # a1 and a2 are the angle between each etremity radius and the unit vector
-        #   they are used to determine the rotation for the section used to draw
-        #   the wall.
-        a1 = math.degrees(DraftVecUtils.angle(X_NORM, radius1))
-        a2 = math.degrees(DraftVecUtils.angle(X_NORM, radius2))
+        Returns:
+            Rectangle, Rectangle, spine: both section and the line for the wall
+        """
+        (start, end, thickness, height_start, height_end, _) = wall_details
 
-        if DEBUG:
-            p1C1p2 = numpy.sign(DraftVecUtils.angle(
-                p1-circles[0].Center, p2-circles[0].Center))
-            p1C2p2 = numpy.sign(DraftVecUtils.angle(
-                p1-circles[1].Center, p2-circles[1].Center))
-            print(f"{elm.get('id')}: arc_extent={round(math.degrees(arc_extent))}, sign(C1)={p1C1p2}, sign(C2)={p1C2p2}, c={center}, a1={round(a1)}, a2={round(a2)}")
+        section_start = self._get_section(wall_details, True, prev_wall_details)
+        section_end = self._get_section(wall_details, False, next_wall_details)
 
-        # Place the 1st section.
-        # The rectamgle is oriented vertically and normal to the radius (ZYX)
-        # NOTE: That we adjust the placement origin with the wall thickness, as
-        #   the rectangle is placed using its corner (not the center of the edge
-        #   used to draw it).
-        p_corner = App.Placement(App.Vector(-thickness/2), App.Rotation())
-        r1 = App.Rotation(a1, 0, 90)
-        placement1 = App.Placement(p1, r1) * p_corner
-        section1 = Draft.make_rectangle(thickness, height1, placement1)
+        spine = Draft.makeLine(start, end)
 
-        # Place the 2nd section. Rotation (ZYX)
-        r2 = App.Rotation(a2, 0, 90)
-        placement2 = App.Placement(p2, r2) * p_corner
-        section2 = Draft.make_rectangle(thickness, height2, placement2)
+        return section_start, section_end, spine
 
-        if DEBUG:
-            section1.ViewObject.LineColor = DEBUG_COLOR
-            section2.ViewObject.LineColor = DEBUG_COLOR
+    def _create_curved_segment(self, wall_details, prev_wall_details, next_wall_details):
+        """Returns the sections and spine for a curved wall.
 
-            g = App.ActiveDocument.addObject("App::DocumentObjectGroup", elm.get('id'))
+        Args:
+            wall_details (tuple): the wall details for the wall being imported
+            prev_wall_details (tuple): the details for the previous sibling
+            next_wall_details (tuple): the details for the next sibling
 
-            def _debug_transformation(label, center, thickness, height, angle, point):
-                p = Draft.make_point(center.x, center.y, center.z, color=DEBUG_COLOR, name=f"C{label}", point_size=5)
-                g.addObject(p)
+        Returns:
+            Rectangle, Rectangle, spine: both section and the arc for the wall
+        # """
+        section_start = self._get_section(wall_details, True, prev_wall_details)
+        section_end = self._get_section(wall_details, False, next_wall_details)
 
-                p = Draft.make_point(point.x, point.y, point.z, color=DEBUG_COLOR, name=f"P{label}", point_size=5)
-                g.addObject(p)
+        a1, a2, (invert_angle, center, radius) = self._get_normal_angles(wall_details)
 
-                l = Draft.make_wire([ORIGIN, point])
-                l.ViewObject.LineColor = DEBUG_COLOR
-                l.Label = f"O-P{label}"
-                g.addObject(l)
-
-                s = Draft.make_rectangle(thickness, height)
-                s.ViewObject.LineColor = DEBUG_COLOR
-                s.Label = f"O-S{label}"
-                g.addObject(s)
-
-                r = App.Rotation(0, 0, 0)
-                p = App.Placement(ORIGIN, r) * p_corner
-                s = Draft.make_rectangle(thickness, height, p)
-                s.ViewObject.LineColor = DEBUG_COLOR
-                s.Label = f"O-S{label}-(corner)"
-                g.addObject(s)
-
-                r = App.Rotation(angle, 0, 0)
-                p = App.Placement(ORIGIN, r) * p_corner
-                s = Draft.make_rectangle(thickness, height, p)
-                s.ViewObject.LineColor = DEBUG_COLOR
-                s.Label = f"O-S{label}-(corner+a{label})"
-                g.addObject(s)
-
-                r = App.Rotation(angle, 0, 90)
-                p = App.Placement(ORIGIN, r) * p_corner
-                s = Draft.make_rectangle(thickness, height, p)
-                s.ViewObject.LineColor = DEBUG_COLOR
-                s.Label = f"O-S{label}-(corner+a{label}+90)"
-                g.addObject(s)
-
-                r = App.Rotation(angle, 0, 90)
-                p = App.Placement(point, r) * p_corner
-                s = Draft.make_rectangle(thickness, height, p)
-                s.ViewObject.LineColor = DEBUG_COLOR
-                s.Label = f"P{label}-S{label}-(corner+a{label}+90)"
-                g.addObject(s)
-
-            _debug_transformation("1", circles[0].Center, thickness, height1, a1, p1)
-            _debug_transformation("2", circles[1].Center, thickness, height2, a2, p2)
-
-        # Create the spine
         placement = App.Placement(center, App.Rotation())
+        # BEWARE: makeCircle always draws counter-clockwise (i.e. in positive
+        # direction in xYz coordinate system). We therefore need to invert
+        # the start and end angle (as in SweetHome the wall is drawn in
+        # clockwise fashion).
         if invert_angle:
-            spine = Draft.make_circle(radius, placement, False, a1, a2)
+            spine = Draft.makeCircle(radius, placement, False, a1, a2)
         else:
-            spine = Draft.make_circle(radius, placement, False, a2, a1)
+            spine = Draft.makeCircle(radius, placement, False, a2, a1)
+        return section_start, section_end, spine
 
-        feature = App.ActiveDocument.addObject('Part::Sweep')
-        feature.Sections = [section1, section2]
-        feature.Spine = spine
-        feature.Solid = True
-        feature.Frenet = False
-        section1.Visibility = False
-        section2.Visibility = False
-        spine.Visibility = False
-        wall = Arch.makeWall(feature)
-        return wall, invert_angle
+    def _get_section(self, wall_details, at_start, sibling_details):
+        """Returns a rectangular section at the specified coordinate.
 
-    def _set_wall_colors(self, wall, invert_angle, elm):
-        # The default color of the wall
+        Returns a Rectangle that is then used as a section in the Part::Sweep
+        used to construct a wall. Depending whether the wall should be joined
+        with its siblings, the rectangle is either created and rotated around
+        the endpoint of the line that will be used as the spline of the sweep
+        or it is calculated as the intersection profile of the 2 walls.
+
+        Args:
+            wall_details (tuple): The details of the wall
+            at_start (bool): indicate whether the section is for the start
+                point or the end point of the wall.
+            sibling_details (tuple): The details of the sibling wall
+
+        Returns:
+            Rectangle: the section properly positioned
+        """
+        if self.importer.preferences["JOIN_ARCH_WALL"] and sibling_details:
+            # In case the walls are to be joined we determine the intersection
+            # of both wall which depends on their respective thickness.
+            # Calculate the left and right side of each wall
+            (start, end, thickness, height_start, height_end, _) = wall_details
+            (s_start, s_end, s_thickness, s_height_start, s_height_end, s_arc_extent) = sibling_details
+
+            lside, rside = self._get_sides(start, end, thickness)
+            s_lside, s_rside = self._get_sides(s_start, s_end, s_thickness)
+            intersection = self._get_intersection_edge(lside, rside, s_lside, s_rside)
+            i_start, i_end = intersection.Vertexes[0].Point, intersection.Vertexes[1].Point
+
+            (start, end, thickness, height_start, height_end, _) = wall_details
+            height = height_start if at_start else height_end
+            i_start_z = i_start + App.Vector(0, 0, height)
+            i_end_z = i_end + App.Vector(0, 0, height)
+
+            if TRACE:
+                _log(f"Joining wall {self._pv(end-start)}@{self._pv(start)} and wall {self._pv(s_end-s_start)}@{self._pv(s_start)}")
+                _log(f"    wall: {self._pe(lside)},{self._pe(rside)}")
+                _log(f" sibling: {self._pe(s_lside)},{self._pe(s_rside)}")
+                _log(f"intersec: {self._pe(intersection)}")
+            section = Draft.makeRectangle([i_start, i_end, i_end_z, i_start_z])
+        else:
+            (start, end, thickness, height_start, height_end, _) = wall_details
+            height = height_start if at_start else height_end
+            center = start if at_start else end
+            a1, a2, _ = self._get_normal_angles(wall_details)
+            z_rotation = a1 if at_start else a2
+            section = Draft.makeRectangle(thickness, height)
+            Draft.move([section], App.Vector(-thickness/2, 0, 0))
+            Draft.rotate([section], 90, ORIGIN, X_NORM)
+            Draft.rotate([section], z_rotation, ORIGIN, Z_NORM)
+            Draft.move([section], center)
+
+        return section
+
+    def _get_intersection_edge(self, lside, rside, sibling_lside, sibling_rside):
+        """Returns the intersection edge of the 4 input edges.
+
+        Args:
+            lside (Edge): the wall left handside
+            rside (Edge): the wall right handside
+            sibling_lside (Edge): the sibling wall left handside
+            sibling_rside (Edge): the sibling wall right handside
+
+        Returns:
+            Edge: the Edge starting at the left handsides intersection and the
+                the right handsides intersection.
+        """
+        points = DraftGeomUtils.findIntersection(lside, sibling_lside, True, True)
+        left = points[0] if len(points) else lside.Vertexes[0].Point
+        points = DraftGeomUtils.findIntersection(rside, sibling_rside, True, True)
+        right = points[0] if len(points) else rside.Vertexes[0].Point
+        return DraftGeomUtils.edg(left, right)
+
+    def _get_normal_angles(self, wall_details):
+        """Return the angles of the normal at the endpoints of the wall.
+
+        This method returns the normal angle of the sections that constitute
+        the wall sweep. These angles can then be used to create the 
+        corresponding sections. Depending on whether the wall section is 
+        straight or curved, the section will be calculated slightly 
+        differently.
+
+        Args:
+            wall_details (tuple): The details of the wall
+
+        Returns:
+            float: the angle of the normal at the starting point
+            float: the angle of the normal at the ending point
+            bool: the angle of the normal at the ending point
+            Vector: the center of the circle for a curved wall section
+            float: the radius of said circle
+        """
+        (start, end, thickness, height_start, height_end, arc_extent) = wall_details
+
+        angle_start = angle_end = 0
+        invert_angle = False
+        center = radius = None
+        if arc_extent == 0:
+            angle_start = angle_end = 90-math.degrees(DraftVecUtils.angle(end-start, X_NORM))
+        else:
+            # Calculate the circle that pases through the center of both rectangle
+            #   and has the correct angle between p1 and p2
+            chord = DraftVecUtils.dist(start, end)
+            radius = abs(chord / (2*math.sin(arc_extent/2)))
+
+            circles = DraftGeomUtils.circleFrom2PointsRadius(start, end, radius)
+            # We take the center that preserve the arc_extent orientation (in FC
+            #   coordinate). The orientation is calculated from start to end
+            center = circles[0].Center
+            if numpy.sign(arc_extent) != numpy.sign(DraftVecUtils.angle(start-center, end-center, Z_NORM)):
+                invert_angle = True
+                center = circles[1].Center
+
+            # radius1 and radius2 are the vector from center to start and end respectively
+            radius1 = start - center
+            radius2 = end - center
+
+            angle_start = math.degrees(DraftVecUtils.angle(X_NORM, radius1, Z_NORM))
+            angle_end = math.degrees(DraftVecUtils.angle(X_NORM, radius2, Z_NORM))
+
+        return angle_start, angle_end, (invert_angle, center, radius)
+
+    def _get_sides(self, start, end, thickness):
+        """Return 2 edges corresponding to the left and right side of the wall.
+
+        Args:
+            start (Vector): the wall's starting point
+            end (Vector): the wall's ending point
+            thickness (float): the wall's thickness
+        
+        Returns:
+            Edge: the left handside edge of the wall
+            Edge: the right handside edge of the wall
+        """
+        normal = self._get_normal(start, end, start+Z_NORM)
+        loffset = DraftVecUtils.scale(-normal, thickness/2)
+        roffset = DraftVecUtils.scale(normal, thickness/2)
+        edge = DraftGeomUtils.edg(start, end)
+        lside = DraftGeomUtils.offset(edge, loffset)
+        rside = DraftGeomUtils.offset(edge, roffset)
+        if TRACE:
+            _log(f"_get_sides(): wall {self._pv(end-start)}@{self._pv(start)} => normal={self._pv(normal)}, lside={self._pe(lside)}, rside={self._pe(rside)}")
+        return lside, rside
+
+    def _get_normal(self, a, b, c):
+        """Return the normal of a plane defined by 3 points.
+
+        NOTE: the order of your point is important as the coordinate
+            will go from a to b to c
+
+        Args:
+            a (Vector): the first point
+            b (Vector): the second point
+            c (Vector): the third point
+
+        Returns:
+            Vector: the normalized vector of the plane's normal
+        """
+        return (b - a).cross(c - a).normalize()
+
+    def _pe(self, edge):
+        # Print an Edge in a condensed way
+        return f"{self._pv(edge.Vertexes[0].Point)}->{self._pv(edge.Vertexes[1].Point)}"
+
+    def _pv(self, vect):
+        # Print an Vector in a condensed way
+        return f"({round(getattr(vect, 'X', getattr(vect,'x')))}, {round(getattr(vect, 'Y', getattr(vect,'y')))})"
+
+    def _set_wall_colors(self, wall, elm):
+        """Set the `wall`'s color taken from `elm`.
+
+        Using `ViewObject.DiffuseColor` attribute to set the different
+        color faces. Note that when the faces are changing (i.e. when
+        adding doors & windows). This will generate the wrong color
+        """
         topColor = elm.get('topColor', self.importer.preferences["DEFAULT_FLOOR_COLOR"])
         set_color_and_transparency(wall, topColor)
         leftSideColor = hex2rgb(elm.get('leftSideColor', topColor))
         rightSideColor = hex2rgb(elm.get('rightSideColor', topColor))
         topColor = hex2rgb(topColor)
 
-        # Unfortunately all faces are not defined the same way for all the wall.
-        # It depends on the type of wall :o.
-        if elm.get('arcExtent'):
-            if invert_angle:
-                colors = [topColor, rightSideColor, topColor,
-                          leftSideColor, topColor, topColor]
-            else:
-                colors = [topColor, leftSideColor, topColor,
-                          rightSideColor, topColor, topColor]
-        elif elm.get('heightAtEnd'):
-            colors = [topColor, topColor, topColor,
-                      topColor, rightSideColor, leftSideColor]
-        else:
-            colors = [leftSideColor, topColor,
-                      rightSideColor, topColor, topColor, topColor]
         if hasattr(wall.ViewObject, "DiffuseColor"):
-            wall.ViewObject.DiffuseColor = colors
+            wall.ViewObject.DiffuseColor = [topColor, rightSideColor, topColor, leftSideColor, topColor, topColor]
 
     def _import_baseboard(self, floor, wall, elm):
         """Creates and returns a Part::Extrusion from the imported_baseboard object
 
         Args:
-            imported_baseboard (dict): the dict object containing the characteristics of the new object
+            floor (Slab): the Slab the wall belongs to
+            wall (Wall): the Arch wall
+            elm (Element): the wall being imported
 
         Returns:
             Part::Extrusion: the newly created object
@@ -1233,7 +1184,7 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
     def __init__(self, importer: SH3DImporter):
         super().__init__(importer)
 
-    def process(self, i, elm):
+    def process(self, parent, i, elm):
         """Creates and returns a Arch::Door from the imported_door object
 
         Args:
@@ -1364,7 +1315,7 @@ class FurnitureHandler(BaseFurnitureHandler):
     def __init__(self, importer: SH3DImporter):
         super().__init__(importer)
 
-    def process(self, i, elm):
+    def process(self, parent, i, elm):
         """Creates and returns a Mesh from the imported_furniture object
 
         Args:
@@ -1450,7 +1401,7 @@ class LightHandler(FurnitureHandler):
     def __init__(self, importer: SH3DImporter):
         super().__init__(importer)
 
-    def process(self, i, elm):
+    def process(self, parent, i, elm):
         """_summary_
 
         Args:
@@ -1502,7 +1453,7 @@ class CameraHandler(BaseHandler):
     def __init__(self, handler):
         super().__init__(handler)
 
-    def process(self, i, elm):
+    def process(self, parent, i, elm):
         """Creates and returns a Render Camera from the imported_camera object
 
         Args:
@@ -1636,4 +1587,4 @@ def hex2rgb(hexcode):
 
 
 def _hex2transparency(hexcode):
-    return 50 if DEBUG else 100 - int(int(hexcode[0:2], 16) * 100 / 255)
+    return 50 if TRACE else 100 - int(int(hexcode[0:2], 16) * 100 / 255)

@@ -27,7 +27,7 @@
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_3">
             <item>
-              <widget class="Gui::PrefCheckBox" name="checkBox_7">
+              <widget class="Gui::PrefCheckBox" name="checkBox_1">
                 <property name="text">
                   <string>Show this dialog when importing</string>
                 </property>
@@ -40,7 +40,7 @@
               </widget>
             </item>
             <item>
-              <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_5">
+              <widget class="Gui::PrefCheckBox" name="checkBox_2">
                 <property name="toolTip">
                   <string>Shows verbose debug messages during import of SH3D files in the Report
                     view panel</string>
@@ -66,7 +66,7 @@
           </property>
           <layout class="QVBoxLayout" name="verticalLayout">
             <item>
-              <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_6">
+              <widget class="Gui::PrefCheckBox" name="checkBox_3">
                 <property name="toolTip">
                   <string>Whether to import the model's doors and windows</string>
                 </property>
@@ -82,7 +82,7 @@
               </widget>
             </item>
             <item>
-              <widget class="Gui::PrefCheckBox" name="checkBox_2">
+              <widget class="Gui::PrefCheckBox" name="checkBox_4">
                 <property name="toolTip">
                   <string>Whether to import the model's furnitures</string>
                 </property>
@@ -98,7 +98,7 @@
               </widget>
             </item>
             <item>
-              <widget class="Gui::PrefCheckBox" name="checkBox_8">
+              <widget class="Gui::PrefCheckBox" name="checkBox_5">
                 <property name="toolTip">
                   <string>Whether to create Arch::Equipment for each furniture defined in the model (NOTE: this can negatively impact the import process speed)</string>
                 </property>
@@ -113,8 +113,8 @@
                 </property>
               </widget>
             </item>
-            <!-- <item>
-              <widget class="Gui::PrefCheckBox" name="checkBox_8">
+            <item>
+              <widget class="Gui::PrefCheckBox" name="checkBox_6">
                 <property name="toolTip">
                   <string>Whether to join the different Arch::Wall together</string>
                 </property>
@@ -128,9 +128,9 @@
                   <cstring>Mod/Arch</cstring>
                 </property>
               </widget>
-            </item> -->
+            </item>
             <item>
-              <widget class="Gui::PrefCheckBox" name="checkBox_11">
+              <widget class="Gui::PrefCheckBox" name="checkBox_7">
                 <property name="toolTip">
                   <string>Whether to import the model's lights. Note that you also need to import
                     the model's furnitures.</string>
@@ -147,7 +147,7 @@
               </widget>
             </item>
             <item>
-              <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_7">
+              <widget class="Gui::PrefCheckBox" name="checkBox_8">
                 <property name="toolTip">
                   <string>Whether to import the model's cameras</string>
                 </property>
@@ -163,7 +163,7 @@
               </widget>
             </item>
             <item>
-              <widget class="Gui::PrefCheckBox" name="checkBox_3">
+              <widget class="Gui::PrefCheckBox" name="checkBox_9">
                 <property name="toolTip">
                   <string>Merge imported element with existing FC object</string>
                 </property>
@@ -259,7 +259,7 @@
               </layout>
             </item>
             <item>
-              <widget class="Gui::PrefCheckBox" name="checkBox_8">
+              <widget class="Gui::PrefCheckBox" name="checkBox_10">
                 <property name="toolTip">
                   <string>Create a default Render project with the newly Site</string>
                 </property>
@@ -268,6 +268,22 @@
                 </property>
                 <property name="prefEntry" stdset="0">
                   <cstring>sh3dCreateRenderProject</cstring>
+                </property>
+                <property name="prefPath" stdset="0">
+                  <cstring>Mod/Arch</cstring>
+                </property>
+              </widget>
+            </item>
+            <item>
+              <widget class="Gui::PrefCheckBox" name="checkBox_11">
+                <property name="toolTip">
+                  <string>Fit view while importing.</string>
+                </property>
+                <property name="text">
+                  <string>Fit view while importing</string>
+                </property>
+                <property name="prefEntry" stdset="0">
+                  <cstring>sh3dFitView</cstring>
                 </property>
                 <property name="prefPath" stdset="0">
                   <cstring>Mod/Arch</cstring>

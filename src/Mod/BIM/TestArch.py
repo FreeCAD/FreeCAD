@@ -763,16 +763,16 @@ class ArchTest(unittest.TestCase):
         """
         operation = "importers.importSH3D"
         _msg("  Test '{}'".format(operation))
-        _msg("  NOT IMPLEMENTED")
-        # filename = os.path.join(os.path.dirname(__file__), "Resources/importers/Sample.sh3d")
-        # from BIM.importers.importSH3DHelper import SH3DImporter
-        # importer = SH3DImporter(filename)
-        # importer.import_sh3d()
-        # assert App.ActiveDocument.Project
-        # assert App.ActiveDocument.Site
-        # assert App.ActiveDocument.BuildingPart.Label == "Building"
-        # assert App.ActiveDocument.BuildingPart001.Label == "Level"
-        # assert App.ActiveDocument.Wall
+        import BIM.importers.importSH3DHelper
+        dirname = os.path.dirname(BIM.importers.importSH3DHelper.__file__)
+        filename = os.path.join(dirname, "samples/Sample.sh3d")
+        importer = BIM.importers.importSH3DHelper.SH3DImporter(filename)
+        importer.import_sh3d()
+        assert App.ActiveDocument.Project
+        assert App.ActiveDocument.Site
+        assert App.ActiveDocument.BuildingPart.Label == "Building"
+        assert App.ActiveDocument.BuildingPart001.Label == "Level"
+        assert App.ActiveDocument.Wall
 
     def tearDown(self):
         App.closeDocument("ArchTest")

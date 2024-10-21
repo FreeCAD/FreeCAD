@@ -59,12 +59,14 @@ SET(importers_SRCS
     importers/importWebGL.py
     importers/importJSON.py
     importers/importSH3D.py
+    importers/importSH3DHelper.py
     importers/import3DS.py
     importers/importSHP.py
     importers/importGBXML.py
     importers/exportIFCStructuralTools.py
     importers/exportIFC.py
     importers/exportIFCHelper.py
+    importers/samples/Sample.sh3d
 )
 
 SET(Dice3DS_SRCS
