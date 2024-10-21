@@ -35,7 +35,8 @@ import FreeCAD
 import Fem
 
 try:
-    from netgen import occ, config as ng_config
+    from netgen import occ, meshing, config as ng_config
+    import pyngcore as ngcore
 except ModuleNotFoundError:
     FreeCAD.Console.PrintError("To use FemMesh Netgen objects, install the Netgen Python bindings")
 
@@ -100,7 +101,9 @@ NetgenTools.run_netgen(**{params})
             "fineness": self.obj.Fineness,
             "params": self.get_meshing_parameters(),
             "second_order": self.obj.SecondOrder,
+            "second_order_linear": self.obj.SecondOrderLinear,
             "result_file": self.result_file,
+            "mesh_region": self.get_mesh_region(),
         }
 
         code_str = self.code.format(params=mesh_params)
@@ -118,12 +121,31 @@ NetgenTools.run_netgen(**{params})
         return True
 
     @staticmethod
-    def run_netgen(brep_file, threads, heal, fineness, params, second_order, result_file):
-        import pyngcore as ngcore
-        from netgen import meshing
-
+    def run_netgen(
+        brep_file,
+        threads,
+        heal,
+        fineness,
+        params,
+        second_order,
+        second_order_linear,
+        result_file,
+        mesh_region,
+    ):
         geom = occ.OCCGeometry(brep_file)
         ngcore.SetNumThreads(threads)
+
+        shape = geom.shape
+        for items, l in mesh_region:
+            for t, n in items:
+                if t == "Vertex":
+                    shape.vertices.vertices[n - 1].maxh = l
+                elif t == "Edge":
+                    shape.edges.edges[n - 1].maxh = l
+                elif t == "Face":
+                    shape.faces.faces[n - 1].maxh = l
+                elif t == "Solid":
+                    shape.solids.solids[n - 1].maxh = l
 
         if fineness == "UserDefined":
             mp = meshing.MeshingParameters(**params)
@@ -139,11 +161,14 @@ NetgenTools.run_netgen(**{params})
             mp = meshing.meshsize.very_fine
 
         with ngcore.TaskManager():
+            geom = occ.OCCGeometry(shape)
             if heal:
                 geom.Heal()
             mesh = geom.GenerateMesh(mp=mp)
 
         if second_order:
+            if second_order_linear:
+                mesh.SetGeometry(None)
             mesh.SecondOrder()
 
         coords = mesh.Coordinates()
@@ -281,6 +306,22 @@ NetgenTools.run_netgen(**{params})
         }
 
         return params
+
+    def get_mesh_region(self):
+        from Part import Shape as PartShape
+
+        result = []
+        for reg in self.obj.MeshRegionList:
+            for s, sub_list in reg.References:
+                if s.isDerivedFrom("App::GeoFeature") and isinstance(
+                    s.getPropertyOfGeometry(), PartShape
+                ):
+                    geom = s.getPropertyOfGeometry()
+                    sub_obj = [s.getSubObject(_) for _ in sub_list]
+                    sub_sh = geom.findSubShape(sub_obj)
+                    l = reg.CharacteristicLength.getValueAs("mm").Value
+                    result.append((sub_sh, l))
+        return result
 
     @staticmethod
     def version():
