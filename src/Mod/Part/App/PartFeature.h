@@ -169,6 +169,9 @@ protected:
     void onBeforeChange(const App::Property* prop) override;
     void onChanged(const App::Property* prop) override;
 
+    void copyMaterial(Feature* feature);
+    void copyMaterial(App::DocumentObject* link);
+
     void registerElementCache(const std::string &prefix, PropertyPartShape *prop);
 
     /** Helper function to obtain mapped and indexed element name from a shape
@@ -210,7 +213,8 @@ public:
     App::PropertyLinkSub   EdgeLinks;
 
     short mustExecute() const override;
-    void onUpdateElementReference(const App::Property *prop) override;
+    App::DocumentObjectExecReturn* execute() override;
+    void onUpdateElementReference(const App::Property* prop) override;
 
 protected:
     void onDocumentRestored() override;
