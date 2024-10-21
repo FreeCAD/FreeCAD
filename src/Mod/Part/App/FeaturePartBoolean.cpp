@@ -136,6 +136,7 @@ App::DocumentObjectExecReturn* Boolean::execute()
             res = res.makeElementRefine();
         }
         this->Shape.setValue(res);
+        copyMaterial(base);
         return Part::Feature::execute();
     }
     catch (...) {
