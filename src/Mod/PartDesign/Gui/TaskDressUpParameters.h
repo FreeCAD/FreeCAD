@@ -102,6 +102,7 @@ protected:
 
 private:
     void tryAddSelection(const std::string& doc, const std::string& obj, const std::string& sub);
+    void setDressUpVisibility(bool visisble);
 
 protected:
     QWidget* proxy;
