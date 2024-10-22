@@ -1909,14 +1909,17 @@ TopoDS_Shape TopoShape::generalFuse(const std::vector<TopoDS_Shape> &sOthers, St
     TopTools_ListOfShape GFAArguments;
     GFAArguments.Append(this->_Shape);
     for (const TopoDS_Shape &it: sOthers) {
-        if (it.IsNull())
+        if (it.IsNull()) {
             throw NullShapeException("Tool shape is null");
-            GFAArguments.Append(it);
+        }
+
+        GFAArguments.Append(it);
     }
     mkGFA.SetArguments(GFAArguments);
     if (tolerance > 0.0) {
         mkGFA.SetFuzzyValue(tolerance);
-    } else if (tolerance < 0.0) {
+    }
+    else if (tolerance < 0.0) {
         FCBRepAlgoAPIHelper::setAutoFuzzy(&mkGFA);
     }
     mkGFA.SetNonDestructive(Standard_True);
