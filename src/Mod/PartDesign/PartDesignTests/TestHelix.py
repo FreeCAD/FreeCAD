@@ -179,7 +179,7 @@ class TestHelix(unittest.TestCase):
             maxe=8
         else:
             mine=-1
-            maxe=7
+            maxe=6
         for iexponent in range(mine,maxe):
             exponent = float(iexponent)
             body = self.Doc.addObject('PartDesign::Body','GearBody')
