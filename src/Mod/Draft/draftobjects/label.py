@@ -227,10 +227,15 @@ class Label(DraftAnnotation):
         super().onDocumentRestored(obj)
         self.Type = "Label"
 
-        if not hasattr(obj, "ViewObject"):
+        if not getattr(obj, "ViewObject", None):
             return
         vobj = obj.ViewObject
-        if not vobj:
+        if not getattr(vobj, "Proxy", None):
+            # Object was save without GUI. We need to restore the ViewObject.
+            from draftviewproviders.view_label import ViewProviderLabel
+            from draftutils import gui_utils
+            ViewProviderLabel(obj.ViewObject)
+            gui_utils.format_object(obj)
             return
         if hasattr(vobj, "FontName") and hasattr(vobj, "FontSize"):
             return
