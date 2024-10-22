@@ -432,7 +432,7 @@
       <item row="3" column="0">
        <widget class="Gui::PrefCheckBox" name="overlayAutoHideCheckBox">
         <property name="toolTip">
-         <string>Automatically hide overlayed dock panels when in non 3D view (like TechDraw or Spreadsheet).</string>
+         <string>Automatically hide overlaid dock panels when in non 3D view (like TechDraw or Spreadsheet).</string>
         </property>
         <property name="text">
          <string>Auto hide in non 3D view</string>
