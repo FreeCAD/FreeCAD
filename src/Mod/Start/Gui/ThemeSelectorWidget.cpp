@@ -36,7 +36,44 @@
 #include <Gui/Command.h>
 #include <Gui/PreferencePackManager.h>
 
+#ifdef FC_OS_MACOSX
+#include <CoreFoundation/CoreFoundation.h>
+#endif
+
 using namespace StartGui;
+
+bool isSystemInDarkMode()
+{
+#if QT_VERSION < QT_VERSION_CHECK(6, 4, 0)
+#ifdef FC_OS_MACOSX
+    auto key = CFSTR("AppleInterfaceStyle");
+    if (auto value = CFPreferencesCopyAppValue(key, kCFPreferencesAnyApplication)) {
+        // If the value is "Dark", Dark Mode is enabled
+        if (CFGetTypeID(value) == CFStringGetTypeID()) {
+            if (CFStringCompare(
+                (CFStringRef)value, CFSTR("Dark"),
+                kCFCompareCaseInsensitive) == kCFCompareEqualTo
+            ) {
+                CFRelease(value);
+                return true;  // Dark Mode is enabled
+            }
+        }
+        CFRelease(value);
+    }
+    return false;
+#endif // FC_OS_MACOSX
+#elif QT_VERSION < QT_VERSION_CHECK(6, 5, 0)
+    // https://www.qt.io/blog/dark-mode-on-windows-11-with-qt-6.5
+    const QPalette defaultPalette;
+    return defaultPalette.color(QPalette::WindowText).lightness()
+         > defaultPalette.color(QPalette::Window).lightness();
+#else
+    // https://www.qt.io/blog/dark-mode-on-windows-11-with-qt-6.5
+    return QStyleHints::colorScheme == Qt::ColorScheme::Dark;
+#endif
+    return false;
+}
+
 
 ThemeSelectorWidget::ThemeSelectorWidget(QWidget* parent)
     : QWidget(parent)
@@ -45,6 +82,9 @@ ThemeSelectorWidget::ThemeSelectorWidget(QWidget* parent)
     , _buttons {nullptr, nullptr, nullptr}
 {
     setObjectName(QLatin1String("ThemeSelectorWidget"));
+#ifdef FC_OS_MACOSX
+    preselectThemeFromSystemSettings();
+#endif
     setupUi();
     qApp->installEventFilter(this);
 }
@@ -55,9 +95,10 @@ void ThemeSelectorWidget::setupButtons(QBoxLayout* layout)
     if (!layout) {
         return;
     }
-    std::map<Theme, QString> themeMap {{Theme::Classic, tr("FreeCAD Classic")},
-                                       {Theme::Dark, tr("FreeCAD Dark")},
-                                       {Theme::Light, tr("FreeCAD Light")}};
+    std::map<Theme, QString> themeMap {
+        {Theme::Classic, tr("FreeCAD Classic")},
+        {Theme::Dark, tr("FreeCAD Dark")},
+        {Theme::Light, tr("FreeCAD Light")}};
     std::map<Theme, QIcon> iconMap {
         {Theme::Classic, QIcon(QLatin1String(":/thumbnails/Theme_thumbnail_classic.png"))},
         {Theme::Light, QIcon(QLatin1String(":/thumbnails/Theme_thumbnail_light.png"))},
@@ -67,6 +108,16 @@ void ThemeSelectorWidget::setupButtons(QBoxLayout* layout)
     auto styleSheetName = QString::fromStdString(hGrp->GetASCII("StyleSheet"));
     for (const auto& theme : themeMap) {
         auto button = gsl::owner<QToolButton*>(new QToolButton());
+#ifdef FC_OS_MACOSX
+        // Disabling classic on macOS as this doesn't work when system is in dark mode
+        // and to make matter worse, on macOS there's a setting that changes mode
+        // depending on time of day.
+        // Hiding classic will work since the theme is auto-selected on first load.
+        // This way, dark mode users will get a first good impression.
+        if (theme.first == Theme::Classic) {
+            button->setVisible(false);
+        }
+#endif
         button->setCheckable(true);
         button->setAutoExclusive(true);
         button->setToolButtonStyle(Qt::ToolButtonStyle::ToolButtonTextUnderIcon);
@@ -124,6 +175,22 @@ void ThemeSelectorWidget::onLinkActivated(const QString& link)
     pref->SetInt("StatusSelection", 0);       // 0 stands for any installation status
 
     Gui::Application::Instance->commandManager().runCommandByName("Std_AddonMgr");
+}
+
+void ThemeSelectorWidget::preselectThemeFromSystemSettings()
+{
+    auto nullStyle("<N/A>");
+    auto hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/MainWindow"
+    );
+    auto styleSheetName = QString::fromStdString(hGrp->GetASCII("StyleSheet", nullStyle));
+    if (styleSheetName == QString::fromStdString(nullStyle)) {
+        if (isSystemInDarkMode()) {
+            themeChanged(Theme::Dark);
+        } else {
+            themeChanged(Theme::Light);
+        }
+    }
 }
 
 void ThemeSelectorWidget::themeChanged(Theme newTheme)
