@@ -50,10 +50,8 @@ bool isSystemInDarkMode()
     if (auto value = CFPreferencesCopyAppValue(key, kCFPreferencesAnyApplication)) {
         // If the value is "Dark", Dark Mode is enabled
         if (CFGetTypeID(value) == CFStringGetTypeID()) {
-            if (CFStringCompare(
-                (CFStringRef)value, CFSTR("Dark"),
-                kCFCompareCaseInsensitive) == kCFCompareEqualTo
-            ) {
+            if (CFStringCompare((CFStringRef)value, CFSTR("Dark"), kCFCompareCaseInsensitive)
+                == kCFCompareEqualTo) {
                 CFRelease(value);
                 return true;  // Dark Mode is enabled
             }
@@ -61,12 +59,12 @@ bool isSystemInDarkMode()
         CFRelease(value);
     }
     return false;
-#endif // FC_OS_MACOSX
+#endif  // FC_OS_MACOSX
 #elif QT_VERSION < QT_VERSION_CHECK(6, 5, 0)
     // https://www.qt.io/blog/dark-mode-on-windows-11-with-qt-6.5
     const QPalette defaultPalette;
     return defaultPalette.color(QPalette::WindowText).lightness()
-         > defaultPalette.color(QPalette::Window).lightness();
+        > defaultPalette.color(QPalette::Window).lightness();
 #else
     // https://www.qt.io/blog/dark-mode-on-windows-11-with-qt-6.5
     return QStyleHints::colorScheme == Qt::ColorScheme::Dark;
@@ -95,10 +93,9 @@ void ThemeSelectorWidget::setupButtons(QBoxLayout* layout)
     if (!layout) {
         return;
     }
-    std::map<Theme, QString> themeMap {
-        {Theme::Classic, tr("FreeCAD Classic")},
-        {Theme::Dark, tr("FreeCAD Dark")},
-        {Theme::Light, tr("FreeCAD Light")}};
+    std::map<Theme, QString> themeMap {{Theme::Classic, tr("FreeCAD Classic")},
+                                       {Theme::Dark, tr("FreeCAD Dark")},
+                                       {Theme::Light, tr("FreeCAD Light")}};
     std::map<Theme, QIcon> iconMap {
         {Theme::Classic, QIcon(QLatin1String(":/thumbnails/Theme_thumbnail_classic.png"))},
         {Theme::Light, QIcon(QLatin1String(":/thumbnails/Theme_thumbnail_light.png"))},
@@ -181,13 +178,13 @@ void ThemeSelectorWidget::preselectThemeFromSystemSettings()
 {
     auto nullStyle("<N/A>");
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/MainWindow"
-    );
+        "User parameter:BaseApp/Preferences/MainWindow");
     auto styleSheetName = QString::fromStdString(hGrp->GetASCII("StyleSheet", nullStyle));
     if (styleSheetName == QString::fromStdString(nullStyle)) {
         if (isSystemInDarkMode()) {
             themeChanged(Theme::Dark);
-        } else {
+        }
+        else {
             themeChanged(Theme::Light);
         }
     }
