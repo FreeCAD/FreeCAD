@@ -39,6 +39,7 @@
 
 #include "ui_TaskRevolutionParameters.h"
 #include "TaskRevolutionParameters.h"
+#include "ViewProviderGroove.h"
 #include "ReferenceSelection.h"
 
 using namespace PartDesignGui;
@@ -47,7 +48,9 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskRevolutionParameters */
 
 TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* RevolutionView, QWidget *parent)
-    : TaskSketchBasedParameters(RevolutionView, parent, "PartDesign_Revolution", tr("Revolution parameters")),
+    : TaskSketchBasedParameters(RevolutionView, parent,
+                                RevolutionView->isDerivedFrom(PartDesignGui::ViewProviderGroove::getClassTypeId()) ? "PartDesign_Groove" : "PartDesign_Revolution",
+                                RevolutionView->isDerivedFrom(PartDesignGui::ViewProviderGroove::getClassTypeId()) ? tr("Groove parameters") : tr("Revolution parameters")),
       ui(new Ui_TaskRevolutionParameters),
       proxy(new QWidget(this)),
       selectionFace(false),
@@ -318,7 +321,9 @@ void TaskRevolutionParameters::setCheckboxes(PartDesign::Revolution::RevolMethod
 
     ui->checkBoxReversed->setEnabled(isReversedEnabled);
 
+    ui->buttonFace->setVisible(isFaceEditEnabled);
     ui->buttonFace->setEnabled(isFaceEditEnabled);
+    ui->lineFaceName->setVisible(isFaceEditEnabled);
     ui->lineFaceName->setEnabled(isFaceEditEnabled);
     if (!isFaceEditEnabled) {
         ui->buttonFace->setChecked(false);
