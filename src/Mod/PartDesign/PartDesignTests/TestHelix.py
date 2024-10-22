@@ -131,7 +131,15 @@ class TestHelix(unittest.TestCase):
 
     def testGiantHelix(self):
         """ Test giant helix """
-        for exponent in range(-1,10):
+        _OCC_VERSION=[ int(v) for v in Part.OCC_VERSION.split('.') ]
+        if _OCC_VERSION[0]>7 or (_OCC_VERSION[0]==7 and _OCC_VERSION[1]>3):
+            mine=-1
+            maxe=10
+        else:
+            mine=-1
+            maxe=9
+        for iexponent in range(mine,maxe):
+            exponent = float(iexponent)
             body = self.Doc.addObject('PartDesign::Body','GearBody')
             gearSketch = self.Doc.addObject('Sketcher::SketchObject', 'GearSketch')
             body.addObject(gearSketch)
@@ -165,7 +173,15 @@ class TestHelix(unittest.TestCase):
 
     def testGiantHelixAdditive(self):
         """ Test giant helix added to Cylinder """
-        for exponent in range(-1,8):
+        _OCC_VERSION=[ int(v) for v in Part.OCC_VERSION.split('.') ]
+        if _OCC_VERSION[0]>7 or (_OCC_VERSION[0]==7 and _OCC_VERSION[1]>3):
+            mine=-1
+            maxe=8
+        else:
+            mine=-1
+            maxe=7
+        for iexponent in range(mine,maxe):
+            exponent = float(iexponent)
             body = self.Doc.addObject('PartDesign::Body','GearBody')
             gearSketch = self.Doc.addObject('Sketcher::SketchObject', 'GearSketch')
             body.addObject(gearSketch)
@@ -207,7 +223,15 @@ class TestHelix(unittest.TestCase):
 
     def testGiantHelixSubtractive(self):
         """ Test giant helix subtracted from Cylinder """
-        for exponent in range(-1,8):
+        _OCC_VERSION=[ int(v) for v in Part.OCC_VERSION.split('.') ]
+        if _OCC_VERSION[0]>7 or (_OCC_VERSION[0]==7 and _OCC_VERSION[1]>3):
+            mine=-1
+            maxe=8
+        else:
+            mine=-1
+            maxe=6
+        for iexponent in range(mine,maxe):
+            exponent = float(iexponent)
             body = self.Doc.addObject('PartDesign::Body','GearBody')
             gearSketch = self.Doc.addObject('Sketcher::SketchObject', 'GearSketch')
             body.addObject(gearSketch)
