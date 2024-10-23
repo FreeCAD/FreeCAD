@@ -305,15 +305,10 @@ void FeatureExtrude::generatePrism(TopoShape& prism,
             Ltotal = getThroughAllLength();
         }
 
-
         if (method == "TwoLengths") {
-            // midplane makes no sense here
             Ltotal += L2;
             if (reversed) {
                 Loffset = -L;
-            }
-            else if (midplane) {
-                Loffset = -0.5 * (L2 + L);
             }
             else {
                 Loffset = -L2;
