@@ -1066,18 +1066,6 @@ class GroundedJoint:
 
         joint.ObjectToGround = obj_to_ground
 
-        joint.addProperty(
-            "App::PropertyPlacement",
-            "Placement",
-            "Ground",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "This is where the part is grounded.",
-            ),
-        )
-
-        joint.Placement = obj_to_ground.Placement
-
     def dumps(self):
         return None
 
@@ -1281,13 +1269,17 @@ class MakeJointSelGate:
         if sel_obj.isDerivedFrom("App::LocalCoordinateSystem") or sel_obj.isDerivedFrom(
             "App::DatumElement"
         ):
-            # We accept only if it is not a root object of the assembly.
-            # Datums must be included in a GeoFeature.
-            lcs = sel_obj
-            if lcs.isDerivedFrom("App::DatumElement"):
-                lcs = sel_obj.getParent()
+            datum = sel_obj
+            if datum.isDerivedFrom("App::DatumElement"):
+                parent = datum.getParent()
+                if parent.isDerivedFrom("App::LocalCoordinateSystem"):
+                    datum = parent
 
-            return not self.assembly.hasObject(lcs)
+            if self.assembly.hasObject(datum) and hasattr(datum, "MapMode"):
+                # accept only datum that are not attached
+                return datum.MapMode == "Deactivated"
+
+            return True
 
         return False
 
