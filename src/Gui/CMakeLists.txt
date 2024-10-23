@@ -436,6 +436,7 @@ SOURCE_GROUP("Command" FILES ${Command_SRCS})
 SET(Dialog_CPP_SRCS
     Clipping.cpp
     DemoMode.cpp
+    DlgAbout.cpp
     DlgActivateWindowImp.cpp
     DlgCreateNewPreferencePackImp.cpp
     DlgUnitsCalculatorImp.cpp
@@ -476,6 +477,7 @@ SET(Dialog_CPP_SRCS
 SET(Dialog_HPP_SRCS
     Clipping.h
     DemoMode.h
+    DlgAbout.h
     DlgActivateWindowImp.h
     DlgCreateNewPreferencePackImp.h
     DlgUnitsCalculatorImp.h
@@ -1080,7 +1082,7 @@ SET(Widget_CPP_SRCS
     ProgressDialog.cpp
     QuantitySpinBox.cpp
     SpinBox.cpp
-    Splashscreen.cpp
+    SplashScreen.cpp
     PythonWrapper.cpp
     UiLoader.cpp
     WidgetFactory.cpp
@@ -1101,7 +1103,7 @@ SET(Widget_HPP_SRCS
     QuantitySpinBox.h
     QuantitySpinBox_p.h
     SpinBox.h
-    Splashscreen.h
+    SplashScreen.h
     PythonWrapper.h
     UiLoader.h
     WidgetFactory.h
