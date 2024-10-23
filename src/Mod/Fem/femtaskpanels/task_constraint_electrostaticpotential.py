@@ -24,7 +24,7 @@
 # ***************************************************************************
 
 __title__ = "FreeCAD FEM constraint electrostatic potential task panel for the document object"
-__author__ = "Markus Hovorka, Bernd Hahnebach, Uwe Stöhr"
+__author__ = "Markus Hovorka, Bernd Hahnebach, Uwe Stöhr, André Kapelrud"
 __url__ = "https://www.freecad.org"
 
 ## @package task_constraint_electrostaticpotential
@@ -87,6 +87,13 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
             QtCore.SIGNAL("toggled(bool)"),
             self._vectorField_visibility,
         )
+
+    def _BCtype_clicked(self, button):
+        self._BCtype(button == self._paramWidget.diricletBC_RB)
+
+    def _BCtype(self, isDiriclet):
+        self._paramWidget.neumannGB.setEnabled(not isDiriclet)
+        self._paramWidget.diricletGB.setEnabled(isDiriclet)
 
     def _vectorField_visibility(self, visible):
         self._paramWidget.vectorFieldGB.setVisible(visible)
@@ -166,6 +173,18 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
             not self._paramWidget.capacitanceBodyBox.isChecked()
         )
 
+        # neumann/diriclet radiogroup selection
+        self._paramWidget.BCtypeBG.buttonClicked.connect(self._BCtype_clicked)
+        if self.obj.Diriclet:
+            self._paramWidget.diricletBC_RB.click()
+        else:
+            self._paramWidget.neumannBC_RB.click()
+
+        self._paramWidget.electricfluxQSB.setProperty("value", self.obj.ElectricFlux)
+        FreeCADGui.ExpressionBinding(self._paramWidget.electricfluxQSB).bind(
+            self.obj, "ElectricFlux"
+        )
+
     def _applyPotentialChanges(self, enabledBox, potentialQSB):
         enabled = enabledBox.isChecked()
         potential = None
@@ -219,3 +238,14 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         if self.obj.CapacitanceBodyEnabled:
             self._paramWidget.capacitanceBody_spinBox.setEnabled(True)
             self.obj.CapacitanceBody = self._paramWidget.capacitanceBody_spinBox.value()
+
+        self.obj.Diriclet = self._paramWidget.diricletBC_RB.isChecked()
+
+        try:
+            self.obj.ElectricFlux = self._paramWidget.electricfluxQSB.property("value")
+        except ValueError:
+            FreeCAD.Console.PrintMessage(
+                "Wrong input. Not recognised input: '{}' "
+                "ElectricFlux has not been set.\n".format(self._paramWidget.electricfluxQSB.text())
+            )
+            self.obj.ElectricFlux = "0.0 s*A/(mm^2)"

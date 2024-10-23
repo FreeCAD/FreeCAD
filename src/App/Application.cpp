@@ -2042,6 +2042,7 @@ void Application::initTypes()
     App::PropertyElectricCharge             ::init();
     App::PropertyElectricCurrent            ::init();
     App::PropertyElectricPotential          ::init();
+    App::PropertyElectricFlux               ::init();
     App::PropertyFrequency                  ::init();
     App::PropertyForce                      ::init();
     App::PropertyHeatFlux                   ::init();
