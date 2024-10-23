@@ -431,9 +431,7 @@ bool FileInfo::isDir() const
         return ((st.st_mode & _S_IFDIR) != 0);
 
 #elif defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-        struct stat st
-        {
-        };
+        struct stat st {};
         if (stat(FileName.c_str(), &st) != 0) {
             return false;
         }
@@ -463,9 +461,7 @@ unsigned int FileInfo::size() const
         }
 
 #elif defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-        struct stat st
-        {
-        };
+        struct stat st {};
         if (stat(FileName.c_str(), &st) == 0) {
             bytes = st.st_size;
         }
@@ -487,9 +483,7 @@ TimeInfo FileInfo::lastModified() const
         }
 
 #elif defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-        struct stat st
-        {
-        };
+        struct stat st {};
         if (stat(FileName.c_str(), &st) == 0) {
             ti.setTime_t(st.st_mtime);
         }
@@ -511,9 +505,7 @@ TimeInfo FileInfo::lastRead() const
         }
 
 #elif defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-        struct stat st
-        {
-        };
+        struct stat st {};
         if (stat(FileName.c_str(), &st) == 0) {
             ti.setTime_t(st.st_atime);
         }
