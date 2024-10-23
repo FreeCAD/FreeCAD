@@ -4806,6 +4806,7 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList, int refGeoId,
                         if (constr->Type != Sketcher::DistanceX
                             && constr->Type != Sketcher::DistanceY) {
                             Constraint* constNew = constr->copy();
+                            constNew->Name = ""; // Make sure we don't have 2 constraint with same name.
                             constNew->First = fit->second;
                             newconstrVals.push_back(constNew);
                         }
@@ -4818,6 +4819,7 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList, int refGeoId,
                         // diameter, weight,...
 
                         Constraint* constNew = constr->copy();
+                        constNew->Name = "";
                         constNew->First = fit->second;
                         newconstrVals.push_back(constNew);
                     }
@@ -4838,7 +4840,7 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList, int refGeoId,
                                 || constr->Type == Sketcher::PointOnObject
                                 || constr->Type == Sketcher::InternalAlignment) {
                                 Constraint* constNew = constr->copy();
-
+                                constNew->Name = "";
                                 constNew->First = fit->second;
                                 constNew->Second = sit->second;
                                 if (isStartEndInverted[constr->First]) {
@@ -4870,6 +4872,7 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList, int refGeoId,
 
                             if (tit != geoIdMap.end()) {// Third is also in the list
                                 Constraint* constNew = constr->copy();
+                                constNew->Name = "";
                                 constNew->First = fit->second;
                                 constNew->Second = sit->second;
                                 constNew->Third = tit->second;
