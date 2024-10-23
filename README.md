@@ -51,12 +51,12 @@ software center application.
 
 For development releases check the [weekly-builds page](https://github.com/FreeCAD/FreeCAD-Bundle/releases/tag/weekly-builds).
 
-Other options are described at the [wiki Download page](https://wiki.freecad.org/Download).
+Other options are described on the [wiki Download page](https://wiki.freecad.org/Download).
 
 Compiling
 ---------
 
-Compiling FreeCAD requires installation of several libraries and their 
+Compiling FreeCAD requires the installation of several libraries and their 
 development files such as OCCT (Open Cascade), Coin and Qt, listed in the 
 pages below. Once this is done, FreeCAD can be compiled with 
 CMake. On Windows, these libraries are bundled and offered by the 
@@ -86,7 +86,7 @@ To report an issue please:
 - Post a Step-By-Step explanation on how to recreate the issue; 
 - Upload an example file (FCStd as ZIP file) to demonstrate the problem; 
 
-For more detail see:
+For more details see:
 
 - [Bug Tracker](https://github.com/FreeCAD/FreeCAD/issues)
 - [Reporting Issues and Requesting Features](https://github.com/FreeCAD/FreeCAD/issues/new/choose)
