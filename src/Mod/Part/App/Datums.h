@@ -30,7 +30,7 @@
 namespace Part
 {
 
-class PartExport DatumPlane : public App::Plane, public Part::AttachExtension
+class PartExport DatumPlane : public App::Plane, public AttachExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(Part::DatumPlane);
 
@@ -42,7 +42,7 @@ public:
     }
 };
 
-class PartExport DatumLine : public App::Line, public Part::AttachExtension
+class PartExport DatumLine : public App::Line, public AttachExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(Part::DatumLine);
 
@@ -54,7 +54,7 @@ public:
     }
 };
 
-class PartExport DatumPoint : public App::Point, public Part::AttachExtension
+class PartExport DatumPoint : public App::Point, public AttachExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(Part::DatumPoint);
 
@@ -66,7 +66,7 @@ public:
     }
 };
 
-class PartExport LocalCoordinateSystem : public App::LocalCoordinateSystem, public Part::AttachExtension
+class PartExport LocalCoordinateSystem : public App::LocalCoordinateSystem, public AttachExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(Part::LocalCoordinateSystem);
 
