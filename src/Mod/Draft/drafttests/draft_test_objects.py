@@ -613,8 +613,8 @@ def _create_objects(doc=None,
     doc.recompute()
 
 
-def create_test_file(font_file=App.getHomePath()+"data/Mod/TechDraw/Resources/fonts/osifont-lgpl3fe.ttf",
-                     hatch_file=App.getHomePath()+"data/Mod/TechDraw/PAT/FCPAT.pat",
+def create_test_file(font_file=App.getResourceDir()+"Mod/TechDraw/Resources/fonts/osifont-lgpl3fe.ttf",
+                     hatch_file=App.getResourceDir()+"Mod/TechDraw/PAT/FCPAT.pat",
                      hatch_name="Horizontal5"):
     """Create a complete test file of Draft objects.
 
