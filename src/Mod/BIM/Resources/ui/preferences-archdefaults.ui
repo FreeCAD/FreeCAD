@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>522</width>
-    <height>851</height>
+    <height>892</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -48,6 +48,12 @@
        <spacer name="horizontalSpacer_1">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
         </property>
        </spacer>
       </item>
@@ -302,6 +308,13 @@
       <string>Other</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_RebarOffset">
+        <property name="text">
+         <string>Rebar offset</string>
+        </property>
+       </widget>
+      </item>
       <item row="0" column="0" colspan="3">
        <widget class="Gui::PrefCheckBox" name="checkBox_WallSketches">
         <property name="text">
@@ -312,6 +325,32 @@
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>WallSketches</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_StairsLength">
+        <property name="text">
+         <string>Stair length</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="Gui::PrefUnitSpinBox" name="spinBox_StairsWidth">
+        <property name="unit" stdset="0">
+         <string>mm</string>
+        </property>
+        <property name="minimum">
+         <double>0.000000000000000</double>
+        </property>
+        <property name="rawValue" stdset="0">
+         <double>1000.000000000000000</double>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>StairsWidth</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Arch</cstring>
@@ -331,30 +370,16 @@
          <string>mm</string>
         </property>
         <property name="minimum">
-         <number>0.0</number>
+         <double>0.000000000000000</double>
         </property>
         <property name="rawValue" stdset="0">
-         <double>50.0</double>
+         <double>50.000000000000000</double>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>PipeDiameter</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Arch</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="2">
-       <spacer name="horizontalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </spacer>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_RebarDiameter">
-        <property name="text">
-         <string>Rebar diameter</string>
         </property>
        </widget>
       </item>
@@ -370,10 +395,10 @@
          <string>mm</string>
         </property>
         <property name="minimum">
-         <number>0.0</number>
+         <double>0.000000000000000</double>
         </property>
         <property name="rawValue" stdset="0">
-         <double>6.0</double>
+         <double>6.000000000000000</double>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>RebarDiameter</cstring>
@@ -383,114 +408,22 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="label_RebarOffset">
-        <property name="text">
-         <string>Rebar offset</string>
-        </property>
-       </widget>
-      </item>
       <item row="3" column="1">
        <widget class="Gui::PrefUnitSpinBox" name="spinBox_RebarOffset">
         <property name="unit" stdset="0">
          <string>mm</string>
         </property>
         <property name="minimum">
-         <number>0.0</number>
+         <double>0.000000000000000</double>
         </property>
         <property name="rawValue" stdset="0">
-         <double>30.0</double>
+         <double>30.000000000000000</double>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>RebarOffset</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Arch</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="label_StairsLength">
-        <property name="text">
-         <string>Stair length</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1">
-       <widget class="Gui::PrefUnitSpinBox" name="spinBox_StairsLength">
-        <property name="unit" stdset="0">
-         <string>mm</string>
-        </property>
-        <property name="minimum">
-         <number>0.0</number>
-        </property>
-        <property name="rawValue" stdset="0">
-         <double>4500.0</double>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>StairsLength</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Arch</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="0">
-       <widget class="QLabel" name="label_StairsWidth">
-        <property name="text">
-         <string>Stair width</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="1">
-       <widget class="Gui::PrefUnitSpinBox" name="spinBox_StairsWidth">
-        <property name="unit" stdset="0">
-         <string>mm</string>
-        </property>
-        <property name="minimum">
-         <number>0.0</number>
-        </property>
-        <property name="rawValue" stdset="0">
-         <double>1000.0</double>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>StairsWidth</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Arch</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="0">
-       <widget class="QLabel" name="label_StairsHeight">
-        <property name="text">
-         <string>Stair height</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="1">
-       <widget class="Gui::PrefUnitSpinBox" name="spinBox_StairsHeight">
-        <property name="unit" stdset="0">
-         <string>mm</string>
-        </property>
-        <property name="minimum">
-         <number>0.0</number>
-        </property>
-        <property name="rawValue" stdset="0">
-         <double>3000.0</double>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>StairsHeight</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Arch</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="7" column="0">
-       <widget class="QLabel" name="label_StairsSteps">
-        <property name="text">
-         <string>Number of stair steps</string>
         </property>
        </widget>
       </item>
@@ -507,6 +440,101 @@
         </property>
        </widget>
       </item>
+      <item row="7" column="0">
+       <widget class="QLabel" name="label_StairsSteps">
+        <property name="text">
+         <string>Number of stair steps</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_RebarDiameter">
+        <property name="text">
+         <string>Rebar diameter</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="label_StairsHeight">
+        <property name="text">
+         <string>Stair height</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="Gui::PrefUnitSpinBox" name="spinBox_StairsHeight">
+        <property name="unit" stdset="0">
+         <string>mm</string>
+        </property>
+        <property name="minimum">
+         <double>0.000000000000000</double>
+        </property>
+        <property name="rawValue" stdset="0">
+         <double>3000.000000000000000</double>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>StairsHeight</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="Gui::PrefUnitSpinBox" name="spinBox_StairsLength">
+        <property name="unit" stdset="0">
+         <string>mm</string>
+        </property>
+        <property name="minimum">
+         <double>0.000000000000000</double>
+        </property>
+        <property name="rawValue" stdset="0">
+         <double>4500.000000000000000</double>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>StairsLength</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_StairsWidth">
+        <property name="text">
+         <string>Stair width</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkBox">
+        <property name="toolTip">
+         <string>When clicking a view or level in the BIM views manager, this switches the background to plain color when activating a 2D view, and to gradient color when activating a level</string>
+        </property>
+        <property name="text">
+         <string>Switch backgrounds</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>BimViewsSwitchBackground</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/BIM</cstring>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -515,6 +543,12 @@
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
     </spacer>
    </item>
   </layout>
@@ -522,6 +556,26 @@
  <layoutdefault spacing="6" margin="11"/>
  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
  <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::ColorButton</class>
+   <extends>QPushButton</extends>
+   <header>Gui/Widgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefColorButton</class>
+   <extends>Gui::ColorButton</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
   <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
@@ -533,28 +587,8 @@
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefSpinBox</class>
-   <extends>QSpinBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::QuantitySpinBox</class>
-   <extends>QWidget</extends>
-   <header>Gui/QuantitySpinBox.h</header>
-  </customwidget>
-  <customwidget>
    <class>Gui::PrefUnitSpinBox</class>
    <extends>Gui::QuantitySpinBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::ColorButton</class>
-   <extends>QPushButton</extends>
-   <header>Gui/Widgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefColorButton</class>
-   <extends>Gui::ColorButton</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

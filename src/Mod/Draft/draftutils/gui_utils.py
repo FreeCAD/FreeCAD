@@ -131,7 +131,7 @@ def autogroup(obj):
     if Gui.ActiveDocument.ActiveView.getActiveObject("NativeIFC") is not None:
         # NativeIFC handling
         try:
-            import ifc_tools
+            from nativeifc import ifc_tools
             parent = Gui.ActiveDocument.ActiveView.getActiveObject("NativeIFC")
             if parent != active_group:
                 ifc_tools.aggregate(obj, parent)
