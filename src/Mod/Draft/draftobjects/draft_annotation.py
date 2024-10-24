@@ -63,7 +63,7 @@ class DraftAnnotation(object):
             return
         vobj = obj.ViewObject
         if not getattr(vobj, "Proxy", None):
-            # Object was save without GUI.
+            # Object was saved without GUI.
             # onDocumentRestored in the object class should restore the ViewObject.
             return
         if hasattr(vobj, "ScaleMultiplier") and hasattr(vobj, "AnnotationStyle"):
