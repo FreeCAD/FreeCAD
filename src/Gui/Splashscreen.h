@@ -116,7 +116,6 @@ protected:
 
 private:
     Ui_AboutApplication* ui;
-    class LibraryInfo;
 };
 
 } // namespace Dialog
