@@ -635,7 +635,16 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         # Assert UpToFace element map is correct
         self.assertEqual(self.countFacesEdgesVertexes(revolution.Shape.ElementReverseMap),
                          (8, 18, 12))
-        self.assertEqual( revolution.Shape.ElementReverseMap["Face8"].count(";"), 7)
+        # Assertions modified/added while reviewing PR#17119 by CalligaroV
+        # Previously the condition counted the number of ";" (element map operations prefix)
+        # If the number of operations changes then the number of ";" will change accordingly
+        #
+        # However, it is more useful to count the number of times an elemement name is
+        # present in the MappedName of an element (a MappedName is definined also using the
+        # element names - "Vertex*", "Edge*", "Face*" - used by an OCCT operation to generate
+        # output elements)
+        self.assertEqual( revolution.Shape.ElementReverseMap["Face8"].count("Face8"), 3)
+        self.assertEqual( revolution.Shape.ElementReverseMap["Face8"].count("Face10"), 3)
 
     def testPartDesignElementMapLoft(self):
         # Arrange
@@ -767,10 +776,10 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.Doc.recompute()
         # Assert
         self.assertEqual(len(body.Shape.childShapes()), 1)
-        self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 55)
+        self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 51)
         self.assertEqual(body.Shape.ElementMapSize, 51)
         self.assertEqual(sketch.Shape.ElementMapSize, 12)
-        self.assertEqual(pocket.Shape.ElementMapSize, 55)
+        self.assertEqual(pocket.Shape.ElementMapSize, 51)
         self.assertNotEqual(
             pocket.Shape.ElementReverseMap["Vertex1"], "Vertex1"
         )  # NewName, not OldName
@@ -1856,7 +1865,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         edges = [name for name in reverseMap.keys() if name.startswith("Edge")]
         vertexes = [name for name in reverseMap.keys() if name.startswith("Vertex")]
         self.assertEqual(len(body.Shape.childShapes()), 1)
-        self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 64)
+        self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 62)
         self.assertEqual(len(reverseMap), 62)
         self.assertEqual(len(faces), 12)
         self.assertEqual(len(edges), 30)
