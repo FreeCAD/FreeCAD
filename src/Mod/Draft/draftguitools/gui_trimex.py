@@ -222,11 +222,16 @@ class Trimex(gui_base_original.Modifier):
                 self.ui.radiusValue.setToolTip(translate("draft",
                                                          "Offset distance"))
                 self.ui.setRadiusValue(dist, unit="Length")
-            else:
+            elif ang:
                 self.ui.labelRadius.setText(translate("draft", "Angle"))
                 self.ui.radiusValue.setToolTip(translate("draft",
                                                          "Offset angle"))
                 self.ui.setRadiusValue(ang, unit="Angle")
+            else:
+                # both dist and ang are None, this indicates an impossible
+                # situation. Setting 0 with no unit will show "0 ??" and not
+                # compute any value
+                self.ui.setRadiusValue(0)
             self.ui.radiusValue.setFocus()
             self.ui.radiusValue.selectAll()
             gui_tool_utils.redraw3DView()
@@ -337,7 +342,8 @@ class Trimex(gui_base_original.Modifier):
             if real:
                 if self.force:
                     ray = self.newpoint.sub(v1)
-                    ray.multiply(self.force / ray.Length)
+                    if ray.Length:
+                        ray.multiply(self.force / ray.Length)
                     self.newpoint = App.Vector.add(v1, ray)
                 newedges.append(Part.LineSegment(self.newpoint, v2).toShape())
         else:
