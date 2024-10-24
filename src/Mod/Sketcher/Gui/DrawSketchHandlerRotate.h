@@ -397,8 +397,31 @@ private:
                             newConstr->Second = secondIndexi;
                             geoIdsWhoAlreadyHasEqual.push_back(secondIndexi);
                         }
-                        else {
+                        else if (cstr->Type == Distance) {
                             newConstr->Second = secondIndexi;
+                        }
+                        else {
+                            // We should be able to handle cases where rotation is 90 or 180, but
+                            // this is segfaulting. The same is reported in
+                            // SketchObject::addSymmetric. There's apparantly a problem with
+                            // creation of DistanceX/Y. On top of the segfault the DistanceX/Y flips
+                            // the new geometry.
+                            /*if (cstr->Type == DistanceX || cstr->Type == DistanceY) {
+                                //DistanceX/Y can be applied only if the rotation if 90 or 180.
+                                if (fabs(fmod(individualAngle, M_PI)) < Precision::Confusion()) {
+                                    // ok and nothing to do actually
+                                }
+                                else if (fabs(fmod(individualAngle, M_PI * 0.5)) <
+                            Precision::Confusion()) { cstr->Type = cstr->Type == DistanceX ?
+                            DistanceY : DistanceX;
+                                }
+                                else {
+                                    // cannot apply for random angles
+                                    continue;
+                                }
+                            }*/
+                            // So for now we just ignore all DistanceX/Y
+                            continue;
                         }
                     }
                     else if ((cstr->Type == Block) && firstIndex >= 0) {
