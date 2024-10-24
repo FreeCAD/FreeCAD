@@ -21,55 +21,47 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#ifndef ASSEMBLYGUI_VIEWPROVIDER_ViewProviderSimulationGroup_H
+#define ASSEMBLYGUI_VIEWPROVIDER_ViewProviderSimulationGroup_H
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
+#include <Mod/Assembly/AssemblyGlobal.h>
 
-#include "AssemblyObject.h"
-#include "AssemblyLink.h"
-#include "BomObject.h"
-#include "BomGroup.h"
-#include "JointGroup.h"
-#include "ViewGroup.h"
-#include "SimulationGroup.h"
+#include <Gui/ViewProviderDocumentObjectGroup.h>
 
 
-namespace Assembly
+namespace AssemblyGui
 {
-extern PyObject* initModule();
-}
 
-/* Python entry */
-PyMOD_INIT_FUNC(AssemblyApp)
+class AssemblyGuiExport ViewProviderSimulationGroup: public Gui::ViewProviderDocumentObjectGroup
 {
-    // load dependent module
-    try {
-        Base::Interpreter().runString("import Part");
-        Base::Interpreter().runString("import Spreadsheet");
-    }
-    catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(nullptr);
-    }
+    PROPERTY_HEADER_WITH_OVERRIDE(AssemblyGui::ViewProviderSimulationGroup);
 
-    PyObject* mod = Assembly::initModule();
-    Base::Console().Log("Loading Assembly module... done\n");
+public:
+    ViewProviderSimulationGroup();
+    ~ViewProviderSimulationGroup() override;
 
+    /// deliver the icon shown in the tree view. Override from ViewProvider.h
+    QIcon getIcon() const override;
 
-    // NOTE: To finish the initialization of our own type objects we must
-    // call PyType_Ready, otherwise we run into a segmentation fault, later on.
-    // This function is responsible for adding inherited slots from a type's base class.
+    // Prevent dragging of the joints and dropping things inside the joint group.
+    bool canDragObjects() const override
+    {
+        return false;
+    };
+    bool canDropObjects() const override
+    {
+        return false;
+    };
+    bool canDragAndDropObject(App::DocumentObject*) const override
+    {
+        return false;
+    };
 
-    Assembly::AssemblyObject ::init();
-    Assembly::AssemblyLink ::init();
-    Assembly::BomObject ::init();
+    // protected:
+    /// get called by the container whenever a property has been changed
+    // void onChanged(const App::Property* prop) override;
+};
 
-    Assembly::BomGroup ::init();
-    Assembly::JointGroup ::init();
-    Assembly::ViewGroup ::init();
-    Assembly::SimulationGroup ::init();
+}  // namespace AssemblyGui
 
-    PyMOD_Return(mod);
-}
+#endif  // ASSEMBLYGUI_VIEWPROVIDER_ViewProviderSimulationGroup_H
