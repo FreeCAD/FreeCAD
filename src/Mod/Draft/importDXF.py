@@ -104,6 +104,11 @@ def errorDXFLib(gui):
     -----
     Use local variables, not global variables.
     """
+    try:
+        import ArchCommands
+    except:
+        # BIM not present
+        return
     dxfAllowDownload = params.get_param("dxfAllowDownload")
     if dxfAllowDownload:
         files = ['dxfColorMap.py', 'dxfImportObjects.py',
@@ -111,7 +116,6 @@ def errorDXFLib(gui):
 
         baseurl = 'https://raw.githubusercontent.com/yorikvanhavre/'
         baseurl += 'Draft-dxf-importer/master/'
-        import ArchCommands
         from FreeCAD import Base
         progressbar = Base.ProgressIndicator()
         progressbar.start("Downloading files...", 4)
