@@ -104,6 +104,8 @@ private:
     void critical(const QString& title, const QString& text);
 
     void getSupportedTypes(std::vector<Base::Type>& types);
+    App::Property* getPropertyToAdd();
+    void addDocumentation();
 
 private:
     std::unordered_set<std::string> typesWithoutEditor = {

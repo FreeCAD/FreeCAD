@@ -199,6 +199,7 @@ void DlgAddPropertyVarSet::clearEditors(bool clearName)
         ui->lineEditName->blockSignals(beforeBlocked);
     }
     removeEditor();
+    ui->lineEditToolTip->clear();
     setOkEnabled(false);
     namePropertyToAdd.clear();
 }
@@ -259,11 +260,12 @@ void DlgAddPropertyVarSet::createProperty()
     std::string name = ui->lineEditName->text().toStdString();
     std::string group = comboBoxGroup.currentText().toStdString();
     std::string type = ui->comboBoxType->currentText().toStdString();
+    std::string doc = ui->lineEditToolTip->text().toStdString();
 
     App::Property* prop;
     try {
         prop = varSet->addDynamicProperty(type.c_str(), name.c_str(),
-                                          group.c_str());
+                                          group.c_str(), doc.c_str());
     }
     catch (Base::Exception& e) {
         e.ReportException();
@@ -291,6 +293,17 @@ void DlgAddPropertyVarSet::createProperty()
     setOkEnabled(true);
 }
 
+App::Property* DlgAddPropertyVarSet::getPropertyToAdd() {
+    // This function should be called only if it is certain the property exists.
+    // It will throw a runtime error if not.
+    App::Property* prop = varSet->getPropertyByName(namePropertyToAdd.c_str());
+    if (prop == nullptr) {
+        FC_THROWM(Base::RuntimeError, "A property with name '" << namePropertyToAdd << "' does not exist.");
+    }
+
+    return prop;
+}
+
 void DlgAddPropertyVarSet::changePropertyToAdd() {
     // we were already adding a new property, the only option to get here
     // is a change of type or group.
@@ -298,15 +311,13 @@ void DlgAddPropertyVarSet::changePropertyToAdd() {
     std::string name = ui->lineEditName->text().toStdString();
     assert(name == namePropertyToAdd);
 
-    App::Property* prop = varSet->getPropertyByName(namePropertyToAdd.c_str());
-    if (prop == nullptr) {
-        // this should not happen because this method assumes the property exists
-        FC_THROWM(Base::RuntimeError, "A property with name '" << name << "' does not exist.");
-    }
+    // performs a check for nullptr
+    App::Property* prop = getPropertyToAdd();
 
     std::string group = comboBoxGroup.currentText().toStdString();
+    std::string doc = ui->lineEditToolTip->text().toStdString();
     if (prop->getGroup() != group) {
-        varSet->changeDynamicProperty(prop, group.c_str(), nullptr);
+        varSet->changeDynamicProperty(prop, group.c_str(), doc.c_str());
     }
 
     std::string type = ui->comboBoxType->currentText().toStdString();
@@ -407,6 +418,7 @@ void DlgAddPropertyVarSet::onEditFinished() {
         checkName();
         checkGroup();
         checkType();
+        // no check for tooltip, we accept any string
     }
     catch (const CreatePropertyException&) {
         if (!namePropertyToAdd.empty()) {
@@ -452,8 +464,29 @@ void DlgAddPropertyVarSet::valueChanged()
     propertyItem->setData(data);
 }
 
+void DlgAddPropertyVarSet::addDocumentation() {
+    /* Add the documentation to an existing property.
+     * Note that this method assumes the property exists.
+     *
+     * Since there is no check on documentation (we accept any string), there
+     * is no signal handler for the documentation field.  This method updates
+     * the property that is being added with the text inserted as
+     * documentation/tooltip.
+     *
+     * This function should be called at a late stage, before doing the accept.
+     */
+
+    std::string group = comboBoxGroup.currentText().toStdString();
+    std::string doc = ui->lineEditToolTip->text().toStdString();
+
+    // performs a check for nullptr
+    App::Property* prop = getPropertyToAdd();
+    varSet->changeDynamicProperty(prop, group.c_str(), doc.c_str());
+}
+
 void DlgAddPropertyVarSet::accept()
 {
+    addDocumentation();
     App::Document* doc = varSet->getDocument();
     doc->commitTransaction();
 
