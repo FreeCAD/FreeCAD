@@ -119,13 +119,9 @@
             "type": "FILEPATH",
             "value": "${sourceDir}/.conda/freecad/include"
           },
-          "CMAKE_INSTALL_LIBDIR": {
-            "type": "FILEPATH",
-            "value": "${sourceDir}/.conda/freecad/lib"
-          },
           "CMAKE_INSTALL_PREFIX": {
             "type": "FILEPATH",
-            "value": "${sourceDir}/.conda/freecad"
+            "value": "${sourceDir}/conda/pkg/linux/AppDir"
           },
           "CMAKE_LIBRARY_PATH":{
             "type": "FILEPATH",
@@ -151,21 +147,13 @@
         },
         "cmakeExecutable": "${sourceDir}/conda/cmake.sh",
         "cacheVariables": {
-          "CMAKE_IGNORE_PREFIX_PATH": {
-            "type": "STRING",
-            "value": "/opt/homebrew;/usr/local/homebrew"
-          },
           "CMAKE_INCLUDE_PATH": {
             "type": "FILEPATH",
             "value": "${sourceDir}/.conda/freecad/include"
           },
-          "CMAKE_INSTALL_LIBDIR": {
-            "type": "FILEPATH",
-            "value": "${sourceDir}/.conda/freecad/lib"
-          },
           "CMAKE_INSTALL_PREFIX": {
             "type": "FILEPATH",
-            "value": "${sourceDir}/.conda/freecad"
+            "value": "${sourceDir}/conda/pkg/osx/FreeCAD.app/Contents/Resources"
           },
           "CMAKE_LIBRARY_PATH":{
             "type": "FILEPATH",
@@ -174,6 +162,14 @@
           "CMAKE_PREFIX_PATH": {
             "type": "FILEPATH",
             "value": "${sourceDir}/.conda/freecad"
+          },
+          "CMAKE_INSTALL_RPATH": {
+            "type": "FILEPATH",
+            "value": "@loader_path/../lib/"
+          },
+          "CMAKE_MACOSX_RPATH": {
+            "type": "BOOL",
+            "value": "ON"
           },
           "OCC_INCLUDE_DIR": {
             "type": "FILEPATH",
@@ -280,13 +276,7 @@
         "inherits": [
           "conda-debug",
           "conda-windows"
-        ],
-        "cacheVariables": {
-          "CMAKE_BUILD_TYPE": {
-            "type": "STRING",
-            "value": "RelWithDebInfo"
-          }
-        }
+        ]
       },
       {
         "name": "conda-windows-release",
