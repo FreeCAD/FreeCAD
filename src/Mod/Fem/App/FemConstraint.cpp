@@ -59,7 +59,7 @@
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 #include <App/FeaturePythonPyImp.h>
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/Tools.h>
 

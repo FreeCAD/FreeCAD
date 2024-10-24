@@ -134,7 +134,7 @@ GeoFeature::_getElementName(const char* name, const Data::MappedElement& mapped)
     }
 }
 
-DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subname, 
+DocumentObject *GeoFeature::resolveElement(const DocumentObject *obj, const char *subname, 
         ElementNamePair &elementName, bool append,
         ElementNameType type, const DocumentObject *filter, 
         const char **_element, GeoFeature **geoFeature)
@@ -287,7 +287,7 @@ Base::Placement GeoFeature::getGlobalPlacement(App::DocumentObject* targetObj,
                                                    App::DocumentObject* rootObj,
                                                    const std::string& sub)
 {
-    if (!targetObj || !rootObj || sub.empty()) {
+    if (!targetObj || !rootObj) {
         return Base::Placement();
     }
     std::vector<std::string> names = Base::Tools::splitSubName(sub);

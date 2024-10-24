@@ -261,15 +261,19 @@ void Document::exportGraphviz(std::ostream& out) const
                 if (!sgraph) {
                     auto group = GeoFeatureGroupExtension::getGroupOfObject(docObj);
                     if (group) {
-                        if (docObj->isDerivedFrom(App::OriginFeature::getClassTypeId()))
+                        if (docObj->isDerivedFrom(App::DatumElement::getClassTypeId()))
                             sgraph = GraphList[group->getExtensionByType<OriginGroupExtension>()->Origin.getValue()];
                         else
                             sgraph = GraphList[group];
                     }
                 }
                 if (!sgraph) {
-                    if (docObj->isDerivedFrom(OriginFeature::getClassTypeId()))
-                        sgraph = GraphList[static_cast<OriginFeature *>(docObj)->getOrigin()];
+                    if (docObj->isDerivedFrom(DatumElement::getClassTypeId())){
+                        auto* lcs = static_cast<DatumElement*>(docObj)->getLCS();
+                        if (lcs) {
+                            sgraph = GraphList[lcs];
+                        }
+                    }
                 }
             }
             if (!sgraph)
