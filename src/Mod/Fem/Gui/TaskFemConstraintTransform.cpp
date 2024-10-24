@@ -119,7 +119,7 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(
     ui->spb_rot_axis_x->setValue(axis.x);
     ui->spb_rot_axis_y->setValue(axis.y);
     ui->spb_rot_axis_z->setValue(axis.z);
-    Base::Quantity rotAngle(angle, QString::fromUtf8("rad"));
+    Base::Quantity rotAngle(angle, "rad");
     ui->qsb_rot_angle->setValue(rotAngle.getValueAs(Base::Quantity::Degree));
 
     ui->spb_rot_axis_x->bind(
@@ -415,7 +415,7 @@ void TaskFemConstraintTransform::addToSelection()
         ui->spb_rot_axis_x->setValue(axis.x);
         ui->spb_rot_axis_y->setValue(axis.y);
         ui->spb_rot_axis_z->setValue(axis.z);
-        Base::Quantity rotAngle(angle, QString::fromUtf8("rad"));
+        Base::Quantity rotAngle(angle, "rad");
         ui->qsb_rot_angle->setValue(rotAngle.getValueAs(Base::Quantity::Degree));
     }
 }

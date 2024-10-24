@@ -20,17 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef BASE_UNITSSCHEMAIMPERIAL1_H
 #define BASE_UNITSSCHEMAIMPERIAL1_H
 
-#include <QString>
 #include "UnitsSchema.h"
-
 
 namespace Base
 {
-
 
 /** The schema class for the imperial unit system
  *  Here are the definitions for the imperial unit system.
@@ -39,10 +35,8 @@ namespace Base
 class UnitsSchemaImperial1: public UnitsSchema
 {
 public:
-    // virtual void setSchemaUnits(void);
-    // virtual void resetSchemaUnits(void);
-    QString
-    schemaTranslate(const Base::Quantity& quant, double& factor, QString& unitString) override;
+    std::string
+    schemaTranslate(const Base::Quantity& quant, double& factor, std::string& unitString) override;
     std::string getBasicLengthUnit() const override
     {
         return {"in"};
@@ -56,10 +50,8 @@ public:
 class UnitsSchemaImperialDecimal: public UnitsSchema
 {
 public:
-    // virtual void setSchemaUnits(void);
-    // virtual void resetSchemaUnits(void);
-    QString
-    schemaTranslate(const Base::Quantity& quant, double& factor, QString& unitString) override;
+    std::string
+    schemaTranslate(const Base::Quantity& quant, double& factor, std::string& unitString) override;
     std::string getBasicLengthUnit() const override
     {
         return {"in"};
@@ -73,10 +65,8 @@ public:
 class UnitsSchemaImperialBuilding: public UnitsSchema
 {
 public:
-    // virtual void setSchemaUnits(void);
-    // virtual void resetSchemaUnits(void);
-    QString
-    schemaTranslate(const Base::Quantity& quant, double& factor, QString& unitString) override;
+    std::string
+    schemaTranslate(const Base::Quantity& quant, double& factor, std::string& unitString) override;
     std::string getBasicLengthUnit() const override
     {
         return {"ft"};
@@ -96,10 +86,8 @@ public:
 class UnitsSchemaImperialCivil: public UnitsSchema
 {
 public:
-    // virtual void setSchemaUnits(void);
-    // virtual void resetSchemaUnits(void);
-    QString
-    schemaTranslate(const Base::Quantity& quant, double& factor, QString& unitString) override;
+    std::string
+    schemaTranslate(const Base::Quantity& quant, double& factor, std::string& unitString) override;
     std::string getBasicLengthUnit() const override
     {
         return {"ft"};
@@ -112,8 +100,6 @@ public:
     }
 };
 
-
 }  // namespace Base
-
 
 #endif  // BASE_UNITSSCHEMAIMPERIAL1_H

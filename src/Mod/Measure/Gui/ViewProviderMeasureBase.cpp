@@ -263,7 +263,7 @@ void ViewProviderMeasureBase::draggerChangedCallback(void* data, SoDragger*)
 
 void ViewProviderMeasureBase::setLabelValue(const Base::Quantity& value)
 {
-    pLabel->string.setValue(value.getUserString().toUtf8().constData());
+    pLabel->string.setValue(value.getUserString().c_str());
 }
 
 void ViewProviderMeasureBase::setLabelValue(const QString& value)

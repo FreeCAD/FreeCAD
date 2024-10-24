@@ -120,7 +120,7 @@ public:
                 result = quantity;
 
                 // Now translate the quantity into its string representation using the user-defined unit system
-                input = Base::UnitsApi::schemaTranslate(result);
+                input = QString::fromStdString(Base::UnitsApi::schemaTranslate(result));
             }
         }
 
@@ -168,7 +168,7 @@ public:
         if (locale.positiveSign() != plus)
             copy.replace(locale.positiveSign(), plus);
 
-        QString reverseUnitStr = unitStr;
+        QString reverseUnitStr = QString::fromStdString(unitStr);
         std::reverse(reverseUnitStr.begin(), reverseUnitStr.end());
 
         //Prep for expression parser
@@ -259,7 +259,7 @@ public:
     Base::Quantity cached;
     Base::Unit unit;
     double unitValue;
-    QString unitStr;
+    std::string unitStr;
     double maximum;
     double minimum;
     double singleStep;
@@ -385,7 +385,7 @@ void QuantitySpinBox::evaluateExpression()
 
 void Gui::QuantitySpinBox::setNumberExpression(App::NumberExpression* expr)
 {
-    updateEdit(getUserString(expr->getQuantity()));
+    updateEdit(QString::fromStdString(getUserString(expr->getQuantity())));
     handlePendingEmit();
 }
 
@@ -423,9 +423,9 @@ void QuantitySpinBox::updateText(const Quantity &quant)
     Q_D(QuantitySpinBox);
 
     double dFactor;
-    QString txt = getUserString(quant, dFactor, d->unitStr);
+    std::string txt = getUserString(quant, dFactor, d->unitStr);
     d->unitValue = quant.getValue()/dFactor;
-    updateEdit(txt);
+    updateEdit(QString::fromStdString(txt));
     handlePendingEmit();
 }
 
@@ -441,7 +441,7 @@ void QuantitySpinBox::updateEdit(const QString& text)
 
     edit->setText(text);
 
-    cursor = qBound(0, cursor, edit->displayText().size() - d->unitStr.size());
+    cursor = qBound(0, cursor, edit->displayText().size() - QString::fromStdString(d->unitStr).size());
     if (selsize > 0) {
         edit->setSelection(0, cursor);
     }
@@ -576,7 +576,7 @@ void QuantitySpinBox::updateFromCache(bool notify, bool updateUnit /* = true */)
         double factor;
         const Base::Quantity& res = d->cached;
         auto tmpUnit(d->unitStr);
-        QString text = getUserString(res, factor, updateUnit ? d->unitStr : tmpUnit);
+        std::string text = getUserString(res, factor, updateUnit ? d->unitStr : tmpUnit);
         d->unitValue = res.getValue() / factor;
         d->quantity = res;
 
@@ -585,7 +585,7 @@ void QuantitySpinBox::updateFromCache(bool notify, bool updateUnit /* = true */)
             d->pendingEmit = false;
             Q_EMIT valueChanged(res);
             Q_EMIT valueChanged(res.getValue());
-            Q_EMIT textChanged(text);
+            Q_EMIT textChanged(QString::fromStdString(text));
         }
     }
 }
@@ -608,7 +608,7 @@ void QuantitySpinBox::setUnit(const Base::Unit &unit)
 void QuantitySpinBox::setUnitText(const QString& str)
 {
     try {
-        Base::Quantity quant = Base::Quantity::parse(str);
+        Base::Quantity quant = Base::Quantity::parse(str.toStdString());
         setUnit(quant.getUnit());
     }
     catch (const Base::ParserError&) {
@@ -618,7 +618,7 @@ void QuantitySpinBox::setUnitText(const QString& str)
 QString QuantitySpinBox::unitText()
 {
     Q_D(QuantitySpinBox);
-    return d->unitStr;
+    return QString::fromStdString(d->unitStr);
 }
 
 double QuantitySpinBox::singleStep() const
@@ -709,7 +709,7 @@ void QuantitySpinBox::clearSchema()
     updateText(d->quantity);
 }
 
-QString QuantitySpinBox::getUserString(const Base::Quantity& val, double& factor, QString& unitString) const
+std::string QuantitySpinBox::getUserString(const Base::Quantity& val, double& factor, std::string& unitString) const
 {
     Q_D(const QuantitySpinBox);
     if (d->scheme) {
@@ -720,12 +720,12 @@ QString QuantitySpinBox::getUserString(const Base::Quantity& val, double& factor
     }
 }
 
-QString QuantitySpinBox::getUserString(const Base::Quantity& val) const
+std::string QuantitySpinBox::getUserString(const Base::Quantity& val) const
 {
     Q_D(const QuantitySpinBox);
     if (d->scheme) {
         double factor;
-        QString unitString;
+        std::string unitString;
         return val.getUserString(d->scheme.get(), factor, unitString);
     }
     else {
@@ -929,8 +929,8 @@ void QuantitySpinBox::selectNumber()
 QString QuantitySpinBox::textFromValue(const Base::Quantity& value) const
 {
     double factor;
-    QString unitStr;
-    QString str = getUserString(value, factor, unitStr);
+    std::string unitStr;
+    QString str = QString::fromStdString(getUserString(value, factor, unitStr));
     if (qAbs(value.getValue()) >= 1000.0) {
         str.remove(locale().groupSeparator());
     }
