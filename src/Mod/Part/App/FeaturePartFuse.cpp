@@ -102,12 +102,14 @@ App::DocumentObjectExecReturn *MultiFuse::execute()
     TopoShape compoundOfArguments;
 
     // if only one source shape, and it is a compound - fuse children of the compound
-    if (shapes.size() == 1) {
+    while (shapes.size() == 1) {
         compoundOfArguments = shapes[0];
         if (compoundOfArguments.getShape().ShapeType() == TopAbs_COMPOUND) {
             shapes.clear();
             shapes = compoundOfArguments.getSubTopoShapes();
             argumentsAreInCompound = true;
+        } else {
+            break;
         }
     }
 
