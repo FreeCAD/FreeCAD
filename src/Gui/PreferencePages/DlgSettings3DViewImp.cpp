@@ -35,6 +35,7 @@
 #include <Base/Tools.h>
 #include <Gui/Multisample.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/ViewParams.h>
 
 #include "DlgSettings3DViewImp.h"
 #include "ui_DlgSettings3DView.h"
@@ -74,6 +75,9 @@ void DlgSettings3DViewImp::saveSettings()
     ui->sliderIntensity->onSave();
     ui->radioPerspective->onSave();
     ui->radioOrthographic->onSave();
+    ui->xAxisColor->onSave();
+    ui->yAxisColor->onSave();
+    ui->zAxisColor->onSave();
 }
 
 void DlgSettings3DViewImp::loadSettings()
@@ -92,6 +96,9 @@ void DlgSettings3DViewImp::loadSettings()
     ui->radioPerspective->onRestore();
     ui->radioOrthographic->onRestore();
     ui->comboTransparentRender->onRestore();
+    ui->xAxisColor->onRestore();
+    ui->yAxisColor->onRestore();
+    ui->zAxisColor->onRestore();
 
     loadAntiAliasing();
     loadRenderCache();
@@ -239,4 +246,5 @@ void DlgSettings3DViewImp::onAliasingChanged(int index)
 }
 
 #include "moc_DlgSettings3DViewImp.cpp"
+
 
