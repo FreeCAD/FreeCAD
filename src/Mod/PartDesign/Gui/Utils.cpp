@@ -120,7 +120,7 @@ PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModer
     if (activeView) {
         auto doc = activeView->getAppDocument();
         bool singleBodyDocument = doc->countObjectsOfType(PartDesign::Body::getClassTypeId()) == 1;
-        if (assertModern && PartDesignGui::assureModernWorkflow (doc) ) {
+        if (assertModern) {
             activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY,topParent,subname);
 
             if (!activeBody && singleBodyDocument && autoActivate) {

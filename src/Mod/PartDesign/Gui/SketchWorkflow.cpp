@@ -667,12 +667,24 @@ void SketchWorkflow::createSketch()
 
 void SketchWorkflow::tryCreateSketch()
 {
-    if (PartDesignGui::assureModernWorkflow(appdocument)) {
-        createSketchWithModernWorkflow();
+    auto result = shouldCreateBody();
+    auto shouldMakeBody = std::get<0>(result);
+    activeBody = std::get<1>(result);
+    if (shouldAbort(shouldMakeBody)) {
+        return;
     }
-    // No PartDesign feature without Body past FreeCAD 0.13
-    else if (PartDesignGui::isLegacyWorkflow(appdocument)) {
-        createSketchWithLegacyWorkflow();
+
+    auto faceOrPlaneFilter = getFaceAndPlaneFilter();
+    SketchPreselection sketchOnFace{ guidocument, activeBody, faceOrPlaneFilter };
+
+    if (sketchOnFace.matches()) {
+        // create Sketch on Face or Plane
+        sketchOnFace.createSupport();
+        sketchOnFace.createSketchOnSupport(sketchOnFace.getSupport());
+    }
+    else {
+        SketchRequestSelection requestSelection{ guidocument, activeBody };
+        requestSelection.findSupport();
     }
 }
 
@@ -727,31 +739,4 @@ std::tuple<Gui::SelectionFilter, Gui::SelectionFilter> SketchWorkflow::getFaceAn
     return std::make_tuple(FaceFilter, PlaneFilter);
 }
 
-void SketchWorkflow::createSketchWithModernWorkflow()
-{
-    auto result = shouldCreateBody();
-    auto shouldMakeBody = std::get<0>(result);
-    activeBody = std::get<1>(result);
-    if (shouldAbort(shouldMakeBody)) {
-        return;
-    }
 
-    auto faceOrPlaneFilter = getFaceAndPlaneFilter();
-    SketchPreselection sketchOnFace{guidocument, activeBody, faceOrPlaneFilter};
-
-    if (sketchOnFace.matches()) {
-        // create Sketch on Face or Plane
-        sketchOnFace.createSupport();
-        sketchOnFace.createSketchOnSupport(sketchOnFace.getSupport());
-    }
-    else {
-        SketchRequestSelection requestSelection{guidocument, activeBody};
-        requestSelection.findSupport();
-    }
-}
-
-void SketchWorkflow::createSketchWithLegacyWorkflow()
-{
-    Gui::CommandManager& cmdMgr = Gui::Application::Instance->commandManager();
-    cmdMgr.runCommandByName("Sketcher_NewSketch");
-}
