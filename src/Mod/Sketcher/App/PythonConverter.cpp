@@ -214,13 +214,12 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
                  double startAngle, endAngle;
                  arc->getRange(startAngle, endAngle, /*emulateCCWXY=*/true);
                  SingleGeometry sg;
-                 sg.creation =
-                     boost::str(boost::format("Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, "
-                                              "%f), App.Vector(%f, %f, %f), %f), %f, %f)")
-                                % arc->getCenter().x % arc->getCenter().y % arc->getCenter().z
-                                % arc->getAxisDirection().x % arc->getAxisDirection().y
-                                % arc->getAxisDirection().z % arc->getRadius()
-                                % startAngle % endAngle);
+                 sg.creation = boost::str(
+                     boost::format("Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, "
+                                   "%f), App.Vector(%f, %f, %f), %f), %f, %f)")
+                     % arc->getCenter().x % arc->getCenter().y % arc->getCenter().z
+                     % arc->getAxisDirection().x % arc->getAxisDirection().y
+                     % arc->getAxisDirection().z % arc->getRadius() % startAngle % endAngle);
                  sg.construction = Sketcher::GeometryFacade::getConstruction(geo);
                  return sg;
              }},
@@ -263,8 +262,7 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
                          "Part.ArcOfEllipse(Part.Ellipse(App.Vector(%f, %f, %f), App.Vector(%f, "
                          "%f, %f), App.Vector(%f, %f, %f)), %f, %f)")
                      % periapsis.x % periapsis.y % periapsis.z % positiveB.x % positiveB.y
-                     % positiveB.z % center.x % center.y % center.z % startAngle
-                     % endAngle);
+                     % positiveB.z % center.x % center.y % center.z % startAngle % endAngle);
                  sg.construction = Sketcher::GeometryFacade::getConstruction(geo);
                  return sg;
              }},
@@ -281,8 +279,8 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
                      boost::format("Part.ArcOfHyperbola(Part.Hyperbola(App.Vector(%f, %f, %f), "
                                    "App.Vector(%f, %f, %f), App.Vector(%f, %f, %f)), %f, %f)")
                      % majAxisPoint.x % majAxisPoint.y % majAxisPoint.z % minAxisPoint.x
-                     % minAxisPoint.y % minAxisPoint.z % center.x % center.y % center.z
-                     % startAngle % endAngle);
+                     % minAxisPoint.y % minAxisPoint.z % center.x % center.y % center.z % startAngle
+                     % endAngle);
                  sg.construction = Sketcher::GeometryFacade::getConstruction(geo);
                  return sg;
              }},
