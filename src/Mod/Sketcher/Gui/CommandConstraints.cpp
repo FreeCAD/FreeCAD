@@ -2490,6 +2490,20 @@ protected:
 
     void createVerticalConstrain(int GeoId1, Sketcher::PointPos PosId1, int GeoId2, Sketcher::PointPos PosId2) {
         if (selLine.size() == 1) {
+            // If the line is horizontal (should be without constraint if we're here), then we need to modify
+            // its point or we'll get a null line.
+            const Part::Geometry* geo = Obj->getGeometry(GeoId1);
+            if (!(geo->is<Part::GeomLineSegment>())) {
+                return;
+            }
+            auto* line = static_cast<const Part::GeomLineSegment*>(geo);
+
+            Base::Vector3d p1 = line->getStartPoint();
+            Base::Vector3d p2 = line->getEndPoint();
+            if (fabs(p1.y - p2.y) < Precision::Confusion()) { // effectively vertical
+                p2 = p1 + (p2 - p1).Length() * Base::Vector3d(0.0, 1.0, 0.0);
+                Gui::cmdAppObjectArgs(Obj, "movePoint(%d,2,App.Vector(%f, %f, 0),0) ", GeoId1, p2.x, p2.y);
+            }
             Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Vertical',%d)) ", GeoId1);
         }
         else { //2points
@@ -2504,7 +2518,21 @@ protected:
     }
     void createHorizontalConstrain(int GeoId1, Sketcher::PointPos PosId1, int GeoId2, Sketcher::PointPos PosId2) {
         if (selLine.size() == 1) {
-            Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Horizontal',%d)) ", GeoId1);
+            // If the line is vertical (should be without constraint if we're here), then we need to modify
+            // its point or we'll get a null line.
+            const Part::Geometry* geo = Obj->getGeometry(GeoId1);
+            if (!(geo->is<Part::GeomLineSegment>())) {
+                return;
+            }
+            auto* line = static_cast<const Part::GeomLineSegment*>(geo);
+
+            Base::Vector3d p1 = line->getStartPoint();
+            Base::Vector3d p2 = line->getEndPoint();
+            if (fabs(p1.x - p2.x) < Precision::Confusion()) { // effectively vertical
+                p2 = p1 + (p2 - p1).Length() * Base::Vector3d(1.0, 0.0, 0.0);
+                Gui::cmdAppObjectArgs(Obj, "movePoint(%d,2,App.Vector(%f, %f, 0),0) ", GeoId1, p2.x, p2.y);
+            }
+            Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Horizontal',%d)) ", GeoId1);
         }
         else { //2points
             if (areBothPointsOrSegmentsFixed(Obj, GeoId1, GeoId2)) {
