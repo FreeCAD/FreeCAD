@@ -866,6 +866,8 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
     lastpos[0] = float(this->log.position[1][0]) / float(std::max((int)(glsize[0]-1), 1));
     lastpos[1] = float(this->log.position[1][1]) / float(std::max((int)(glsize[1]-1), 1));
 
+    float sensitivity = getSensitivity();
+
     // Adjust the spin projector sphere to the screen position of the rotation center
     if (rotationCenterFound) {
         const auto pointOnScreen = viewer->getPointOnViewport(rotationCenter);
@@ -874,7 +876,9 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
         float x, y;
         sphereCenter.getValue(x, y);
 
-        const float radius = FCSphereSheetProjector::defaultSphereRadius * (1 + sphereCenter.length());
+        const float sphereScale = 1 + sphereCenter.length();
+        const float radius = FCSphereSheetProjector::defaultSphereRadius * sphereScale;
+        sensitivity *= sphereScale;
 
         spinprojector->setSphere(SbSphere {SbVec3f {x, y, 0}, radius});
     }
@@ -899,7 +903,6 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
     this->spinprojector->project(lastpos);
     SbRotation r;
     this->spinprojector->projectAndGetRotation(pointerpos, r);
-    float sensitivity = getSensitivity();
     if (sensitivity > 1.0f) {
         SbVec3f axis;
         float radians{};
