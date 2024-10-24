@@ -60,6 +60,19 @@ using ElementMapPtr = std::shared_ptr<ElementMap>;
  */
 typedef std::function<bool(const MappedName&, int, long, long)> TraceCallback;
 
+struct AppExport MappedChildElements
+{
+    IndexedName indexedName;
+    int count;
+    int offset;
+    long tag;
+    ElementMapPtr elementMap;
+    QByteArray postfix;
+    ElementIDRefs sids;
+
+    // prefix() has been moved to ElementNamingUtils.h
+};
+
 /* This class provides for ComplexGeoData's ability to provide proper naming.
  * Specifically, ComplexGeoData uses this class for it's `_id` property.
  * Most of the operations work with the `indexedNames` and `mappedNames` maps.
@@ -175,24 +188,13 @@ public:
      */
     void hashChildMaps(long masterTag);
 
-    struct AppExport MappedChildElements
-    {
-        IndexedName indexedName;
-        int count;
-        int offset;
-        long tag;
-        ElementMapPtr elementMap;
-        QByteArray postfix;
-        ElementIDRefs sids;
-
-        // prefix() has been moved to ElementNamingUtils.h
-    };
+    //struct MappedChildElements;
 
     /* Note: the original addChildElements passed `ComplexGeoData& master` for getting the `Tag`,
      *   now it just passes `long masterTag`.*/
-    void addChildElements(long masterTag, const std::vector<MappedChildElements>& children);
+    void addChildElements(long masterTag, const std::vector<Data::MappedChildElements>& children);
 
-    std::vector<MappedChildElements> getChildElements() const;
+    std::vector<Data::MappedChildElements> getChildElements() const;
 
     std::vector<MappedElement> getAll() const;
 

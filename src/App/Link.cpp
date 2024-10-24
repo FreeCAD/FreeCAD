@@ -30,12 +30,18 @@
 
 #include "Application.h"
 #include "ElementNamingUtils.h"
+#include "CStringHasher.h"
 #include "ComplexGeoDataPy.h"
 #include "Document.h"
+#include "DocumentObject.h"
+#include "DocumentObjectSignals.h"
 #include "DocumentObserver.h"
+#include "FeaturePython.h"
 #include "GeoFeatureGroupExtension.h"
 #include "Link.h"
 #include "LinkBaseExtensionPy.h"
+#include "PropertySignals.h"
+#include "StringHasher.h"
 
 //FIXME: ISO C++11 requires at least one argument for the "..." in a variadic macro
 #if defined(__clang__)
@@ -793,7 +799,7 @@ bool LinkBaseExtension::setupCopyOnChange(DocumentObject *parent, DocumentObject
 
     for(const auto &v : newProps) {
         // sync configuration properties
-        copyOnChangeConns->push_back(v.second->signalChanged.connect([parent](const Property &prop) {
+        copyOnChangeConns->push_back(v.second->signals->signalChanged.connect([parent](const Property &prop) {
             if(!prop.testStatus(Property::CopyOnChange))
                 return;
             auto p = parent->getPropertyByName(prop.getName());
@@ -907,7 +913,7 @@ void LinkBaseExtension::monitorOnChangeCopyObjects(
         return;
     for(auto obj : objs) {
         obj->setStatus(App::ObjectStatus::TouchOnColorChange, true);
-        copyOnChangeSrcConns.emplace_back(obj->signalChanged.connect(
+        copyOnChangeSrcConns.emplace_back(obj->signals->signalChanged.connect(
             [this](const DocumentObject &, const Property &) {
                 if (auto prop = this->getLinkCopyOnChangeTouchedProperty()) {
                     if (this->getLinkCopyOnChangeValue() != CopyOnChangeDisabled)
@@ -1556,7 +1562,7 @@ void LinkBaseExtension::updateGroup() {
                 FC_LOG("new group connection " << getExtendedObject()->getFullName()
                         << " -> " << group->getFullName());
                 //NOLINTBEGIN
-                conn = group->signalChanged.connect(
+                conn = group->signals->signalChanged.connect(
                         std::bind(&LinkBaseExtension::slotChangedPlainGroup,this,sp::_1,sp::_2));
                 //NOLINTEND
             }
@@ -1572,7 +1578,7 @@ void LinkBaseExtension::updateGroup() {
                     FC_LOG("new group connection " << getExtendedObject()->getFullName()
                             << " -> " << child->getFullName());
                     //NOLINTBEGIN
-                    conn = child->signalChanged.connect(
+                    conn = child->signals->signalChanged.connect(
                             std::bind(&LinkBaseExtension::slotChangedPlainGroup,this,sp::_1,sp::_2));
                     //NOLINTEND
                 }
@@ -1842,7 +1848,7 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
         setupCopyOnChange(parent, getLinkCopyOnChangeSourceValue() == nullptr);
     } else if (prop == getLinkCopyOnChangeSourceProperty()) {
         if (auto source = getLinkCopyOnChangeSourceValue()) {
-            this->connCopyOnChangeSource = source->signalChanged.connect(
+            this->connCopyOnChangeSource = source->signals->signalChanged.connect(
                 [this](const DocumentObject & obj, const Property &prop) {
                     auto src = getLinkCopyOnChangeSourceValue();
                     if (src != &obj || getLinkCopyOnChangeValue()==CopyOnChangeDisabled)

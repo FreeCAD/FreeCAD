@@ -26,6 +26,7 @@
 #include <FCConfig.h>
 
 #include <memory>
+#include <map>
 
 #include <QByteArray>
 #include <QVector>

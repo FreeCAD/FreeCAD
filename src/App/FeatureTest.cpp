@@ -33,6 +33,8 @@
 #include <Base/Unit.h>
 #include <CXX/Objects.hxx>
 
+#include "PropertyMaterial.h"
+#include "PropertyBoolList.h"
 #include "FeatureTest.h"
 #include "Material.h"
 #include "Range.h"
@@ -59,7 +61,6 @@ FeatureTest::FeatureTest()
   ADD_PROPERTY(Bool   ,(true)  );
   ADD_PROPERTY(BoolList,(false));
   ADD_PROPERTY(String ,("4711"));
-  ADD_PROPERTY(Path   ,("c:\\temp"));
   ADD_PROPERTY(StringList ,("4711"));
 
   ADD_PROPERTY(Enum   ,(4));

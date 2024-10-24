@@ -35,6 +35,7 @@
 #include <Base/Tools.h>
 #include <Base/Writer.h>
 
+#include "CStringHasher.h"
 #include "DynamicProperty.h"
 #include "Application.h" 
 #include "Property.h"
@@ -380,7 +381,7 @@ const char *DynamicProperty::getPropertyName(const Property *prop) const
     return nullptr;
 }
 
-size_t DynamicProperty::size()
+size_t DynamicProperty::size() const
 {
     return pImpl->props.size();
 }

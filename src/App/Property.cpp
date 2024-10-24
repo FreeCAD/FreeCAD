@@ -259,7 +259,7 @@ void Property::hasSetValue()
         father->onChanged(this);
         if(!testStatus(Busy)) {
             Base::BitsetLocker<decltype(StatusBits)> guard(StatusBits,Busy);
-            signalChanged(*this);
+            signals->signalChanged(*this);
         }
     }
     StatusBits.set(Touched);

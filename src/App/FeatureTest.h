@@ -29,6 +29,8 @@
 #include "PropertyLinks.h"
 #include "PropertyPythonObject.h"
 #include "PropertyUnits.h"
+#include "PropertyBoolList.h"
+#include "PropertyMaterial.h"
 
 
 namespace App
@@ -50,7 +52,6 @@ public:
   App::PropertyBool         Bool;
   App::PropertyBoolList     BoolList;
   App::PropertyString       String;
-  App::PropertyPath         Path;
   App::PropertyStringList   StringList;
 
   App::PropertyColor        Colour;

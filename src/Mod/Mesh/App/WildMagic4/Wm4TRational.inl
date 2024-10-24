@@ -549,6 +549,7 @@ void TRational<N>::GetPositiveFloat (const TInteger<N>& rkDenom,
     TInteger<N>& rkQuo, TInteger<N>& rkRem, int iBlock,
     unsigned int& ruiExponent, unsigned int& ruiMantissa)
 {
+    static_assert(0);
     // assert(rkDenom > 0 && rkQuo > 0);
 
     // quotient smaller than the maximum float

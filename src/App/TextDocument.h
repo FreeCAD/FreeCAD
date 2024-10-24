@@ -24,6 +24,8 @@
 #ifndef APP_TEXTDOCUMENT_H
 #define APP_TEXTDOCUMENT_H
 
+#include <boost/signals2/signal.hpp>
+
 #include "DocumentObject.h"
 #include "PropertyStandard.h"
 

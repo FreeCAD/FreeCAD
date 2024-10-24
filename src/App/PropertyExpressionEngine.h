@@ -67,6 +67,25 @@ private:
     static void slotRelabelDocument(const App::Document &doc);
 };
 
+
+/**
+ * @brief The ExpressionInfo struct encapsulates an expression.
+ */
+
+struct ExpressionInfo {
+    std::shared_ptr<App::Expression> expression; /**< The actual expression tree */
+    bool busy;
+
+    explicit ExpressionInfo(std::shared_ptr<App::Expression> expression = std::shared_ptr<App::Expression>()) {
+        this->expression = expression;
+        this->busy = false;
+    }
+
+    ExpressionInfo(const ExpressionInfo &) = default;
+
+    ExpressionInfo & operator=(const ExpressionInfo &) = default;
+};
+
 class AppExport PropertyExpressionEngine : public App::PropertyExpressionContainer,
                                            private App::AtomicPropertyChangeInterface<PropertyExpressionEngine>
 {
@@ -85,23 +104,7 @@ public:
 
     using ValidatorFunc = std::function<std::string (const App::ObjectIdentifier & path, std::shared_ptr<const App::Expression> expr)>;
 
-    /**
-     * @brief The ExpressionInfo struct encapsulates an expression.
-     */
-
-    struct ExpressionInfo {
-        std::shared_ptr<App::Expression> expression; /**< The actual expression tree */
-        bool busy;
-
-        explicit ExpressionInfo(std::shared_ptr<App::Expression> expression = std::shared_ptr<App::Expression>()) {
-            this->expression = expression;
-            this->busy = false;
-        }
-
-        ExpressionInfo(const ExpressionInfo &) = default;
-
-        ExpressionInfo & operator=(const ExpressionInfo &) = default;
-    };
+    //struct ExpressionInfo;
 
     PropertyExpressionEngine();
     ~PropertyExpressionEngine() override;
@@ -171,6 +174,9 @@ public:
     /* Python interface */
     PyObject *getPyObject() override;
     void setPyObject(PyObject *) override;
+
+    struct Public;
+    Public* signals;
 
     // Note: use std::map instead of unordered_map to keep the binding order stable
     #if defined(FC_OS_MACOSX) || defined(FC_OS_BSD) || defined(_LIBCPP_VERSION)

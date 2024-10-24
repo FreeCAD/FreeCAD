@@ -29,6 +29,7 @@
 #include <boost/algorithm/string/predicate.hpp>
 
 #include <App/DocumentObjectPy.h>
+#include <Base/Console.h>
 #include <Base/GeometryPyCXX.h>
 #include <Base/Tools.h>
 #include <Base/Interpreter.h>
@@ -37,6 +38,7 @@
 
 #include "ObjectIdentifier.h"
 #include "Application.h"
+#include "CStringHasher.h"
 #include "Document.h"
 #include "ExpressionParser.h"
 #include "Link.h"

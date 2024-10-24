@@ -26,6 +26,7 @@
 
 
 #include <cfloat>
+#include "MathTools.h"
 
 #ifndef F_PI
 #define F_PI 3.1415926f

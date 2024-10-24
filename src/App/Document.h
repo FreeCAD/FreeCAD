@@ -23,7 +23,6 @@
 #ifndef APP_DOCUMENT_H
 #define APP_DOCUMENT_H
 
-#include <CXX/Objects.hxx>
 #include <Base/Persistence.h>
 #include <Base/Type.h>
 
@@ -31,6 +30,7 @@
 #include "PropertyLinks.h"
 #include "PropertyStandard.h"
 
+#include <functional>
 #include <map>
 #include <vector>
 

@@ -31,7 +31,7 @@
 namespace Base
 {
 
-class BaseExport FutureWatcherProgress: public QObject
+class BaseExport FutureWatcherProgress: public QObject  // consider if this needs to be QObject
 {
     Q_OBJECT
 

@@ -26,8 +26,6 @@
 #define APP_DOCUMENTOBJECT_H
 
 #include <App/TransactionalObject.h>
-#include <App/PropertyExpressionEngine.h>
-#include <App/PropertyLinks.h>
 #include <App/PropertyStandard.h>
 #include <Base/SmartPtrPy.h>
 
@@ -45,6 +43,10 @@ class Document;
 class DocumentObjectGroup;
 class DocumentObjectPy;
 class Expression;
+struct ExpressionInfo;
+class PropertyExpressionEngine;
+class PropertyLinkSub;
+class PropertyLinkSubList;
 
 enum ObjectStatus {
     Touch = 0,
@@ -102,7 +104,7 @@ public:
 
     PropertyString Label;
     PropertyString Label2;
-    PropertyExpressionEngine ExpressionEngine;
+    PropertyExpressionEngine* ExpressionEngine;
 
     /// Allow control visibility status in App name space
     PropertyBool Visibility;
@@ -469,7 +471,7 @@ public:
 
     void clearExpression(const ObjectIdentifier & path);
 
-    virtual const PropertyExpressionEngine::ExpressionInfo getExpression(const ObjectIdentifier &path) const;
+    virtual const ExpressionInfo getExpression(const ObjectIdentifier &path) const;
 
     virtual void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths);
 

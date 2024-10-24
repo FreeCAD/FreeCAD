@@ -28,16 +28,30 @@
 #define APP_COMPLEX_GEO_DATA_H
 
 #include <algorithm>
+#include <functional>
 #include <memory>
+
+#include <QVector>
+
 #include <Base/Handle.h>
 #include <Base/Matrix.h>
 #include <Base/Persistence.h>
-#include "StringHasher.h"
+#include <Base/Bitmask.h>
+//#include "StringHasher.h"
+//#include "StringHasher_fwd.h"
+#include "ElementNamingUtils.h"
 
 #ifdef __GNUC__
 # include <cstdint>
 #endif
 
+//class QVector;
+
+namespace App {
+class StringIDRef;
+class StringHasher;
+using StringHasherRef = Base::Reference<StringHasher>;
+}
 
 namespace Base
 {
@@ -55,14 +69,12 @@ class IndexedName;
 struct MappedChildElements;
 struct MappedElement;
 class MappedName;
-class TraceCallback;
 
+// Fix this. Make fwd file. typedef and using cannot be fwd.
+typedef std::function<bool(const MappedName&, int, long, long)> TraceCallback;
 using ElementIDRefs = QVector<::App::StringIDRef>;
+//class ElementIDRefs;
 using ElementMapPtr = std::shared_ptr<ElementMap>;
-
-
-class StringHasher;
-using StringHasherRef = Base::Reference<StringHasher>;
 
 //struct MappedChildElements;
 /// Option for App::GeoFeature::searchElementCache()

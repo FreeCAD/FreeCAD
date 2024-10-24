@@ -44,7 +44,12 @@ EXTENSION_PROPERTY_SOURCE_TEMPLATE(App::GroupExtensionPython, App::GroupExtensio
 template class AppExport ExtensionPythonT<GroupExtensionPythonT<GroupExtension>>;
 }
 
-GroupExtension::GroupExtension()
+struct GroupExtension::Private {
+    std::unordered_map<const App::DocumentObject*, boost::signals2::scoped_connection> _Conns;
+};
+
+GroupExtension::GroupExtension() :
+    pImpl(new Private)
 {
     initExtensionType(GroupExtension::getExtensionClassTypeId());
     
@@ -54,7 +59,10 @@ GroupExtension::GroupExtension()
             PropertyType(Prop_Hidden|Prop_Transient),0);
 }
 
-GroupExtension::~GroupExtension() = default;
+GroupExtension::~GroupExtension()
+{
+    delete pImpl;
+};
 
 DocumentObject* GroupExtension::addObject(const char* sType, const char* pObjectName)
 {
@@ -351,11 +359,11 @@ void GroupExtension::extensionOnChanged(const Property* p) {
     }
 
     if(p == &Group) {
-        _Conns.clear();
+        pImpl->_Conns.clear();
         for(auto obj : Group.getValue()) {
             if(obj && obj->isAttachedToDocument()) {
                 //NOLINTBEGIN
-                _Conns[obj] = obj->signals->signalChanged.connect(std::bind(
+                pImpl->_Conns[obj] = obj->signals->signalChanged.connect(std::bind(
                             &GroupExtension::slotChildChanged,this,sp::_1, sp::_2));
                 //NOLINTEND
             }

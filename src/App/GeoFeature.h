@@ -30,6 +30,7 @@
 
 namespace App {
     class Material;
+    class PropertyXLinkSub;
 }
 
 namespace Data {

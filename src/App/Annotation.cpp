@@ -29,7 +29,7 @@ using namespace App;
 
 PROPERTY_SOURCE(App::Annotation, App::DocumentObject)
 
-
+                              
 Annotation::Annotation()
 {
     ADD_PROPERTY(LabelText, (""));

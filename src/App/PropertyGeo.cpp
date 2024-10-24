@@ -23,6 +23,8 @@
 
 #include "PreCompiled.h"
 
+#include <boost/algorithm/string/predicate.hpp>
+
 #include <Base/MatrixPy.h>
 #include <Base/PlacementPy.h>
 #include <Base/Reader.h>
@@ -41,6 +43,7 @@
 #include "PropertyGeo.h"
 #include "Placement.h"
 #include "ObjectIdentifier.h"
+#include "StringHasher.h"
 
 
 using namespace App;
@@ -990,47 +993,47 @@ unsigned int PropertyPlacementList::getMemSize () const
 
 
 
-//**************************************************************************
-//**************************************************************************
-// PropertyPlacement
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// //**************************************************************************
+// //**************************************************************************
+// // PropertyPlacement
+// //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyPlacementLink , App::PropertyLink)
+// TYPESYSTEM_SOURCE(App::PropertyPlacementLink , App::PropertyLink)
 
-//**************************************************************************
-// Construction/Destruction
-
-
-PropertyPlacementLink::PropertyPlacementLink() = default;
+// //**************************************************************************
+// // Construction/Destruction
 
 
-PropertyPlacementLink::~PropertyPlacementLink() = default;
+// PropertyPlacementLink::PropertyPlacementLink() = default;
 
-App::Placement * PropertyPlacementLink::getPlacementObject() const
-{
-    if (_pcLink->isDerivedFrom<App::Placement>())
-        return dynamic_cast<App::Placement*>(_pcLink);
-    else
-        return nullptr;
 
-}
+// PropertyPlacementLink::~PropertyPlacementLink() = default;
 
-//**************************************************************************
-// Base class implementer
+// App::Placement * PropertyPlacementLink::getPlacementObject() const
+// {
+//     if (_pcLink->isDerivedFrom<App::Placement>())
+//         return dynamic_cast<App::Placement*>(_pcLink);
+//     else
+//         return nullptr;
 
-Property *PropertyPlacementLink::Copy() const
-{
-    PropertyPlacementLink *p= new PropertyPlacementLink();
-    p->_pcLink = _pcLink;
-    return p;
-}
+// }
 
-void PropertyPlacementLink::Paste(const Property &from)
-{
-    aboutToSetValue();
-    _pcLink = dynamic_cast<const PropertyPlacementLink&>(from)._pcLink;
-    hasSetValue();
-}
+// //**************************************************************************
+// // Base class implementer
+
+// Property *PropertyPlacementLink::Copy() const
+// {
+//     PropertyPlacementLink *p= new PropertyPlacementLink();
+//     p->_pcLink = _pcLink;
+//     return p;
+// }
+
+// void PropertyPlacementLink::Paste(const Property &from)
+// {
+//     aboutToSetValue();
+//     _pcLink = dynamic_cast<const PropertyPlacementLink&>(from)._pcLink;
+//     hasSetValue();
+// }
 
 //**************************************************************************
 //**************************************************************************

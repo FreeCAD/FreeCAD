@@ -33,6 +33,8 @@
 #include "GeoFeatureGroupExtension.h"
 #include "ElementNamingUtils.h"
 #include "Link.h"
+#include "MappedElement.h"
+#include "Material.h"
 
 
 using namespace App;

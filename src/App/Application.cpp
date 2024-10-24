@@ -85,10 +85,12 @@
 #include "Application.h"
 #include "CleanupProcess.h"
 #include "ComplexGeoData.h"
+#include "Document.h"
 #include "DocumentObjectFileIncluded.h"
 #include "DocumentObjectGroup.h"
 #include "DocumentObjectGroupPy.h"
 #include "DocumentObserver.h"
+#include "DocumentSignals.h"
 #include "DocumentPy.h"
 #include "ExpressionParser.h"
 #include "FeatureTest.h"
@@ -501,25 +503,25 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
     //NOLINTBEGIN
     // clang-format off
     // connect the signals to the application for the new document
-    _pActiveDoc->signalBeforeChange.connect(std::bind(&App::Application::slotBeforeChangeDocument, this, sp::_1, sp::_2));
-    _pActiveDoc->signalChanged.connect(std::bind(&App::Application::slotChangedDocument, this, sp::_1, sp::_2));
-    _pActiveDoc->signalNewObject.connect(std::bind(&App::Application::slotNewObject, this, sp::_1));
-    _pActiveDoc->signalDeletedObject.connect(std::bind(&App::Application::slotDeletedObject, this, sp::_1));
-    _pActiveDoc->signalBeforeChangeObject.connect(std::bind(&App::Application::slotBeforeChangeObject, this, sp::_1, sp::_2));
-    _pActiveDoc->signalChangedObject.connect(std::bind(&App::Application::slotChangedObject, this, sp::_1, sp::_2));
-    _pActiveDoc->signalRelabelObject.connect(std::bind(&App::Application::slotRelabelObject, this, sp::_1));
-    _pActiveDoc->signalActivatedObject.connect(std::bind(&App::Application::slotActivatedObject, this, sp::_1));
-    _pActiveDoc->signalUndo.connect(std::bind(&App::Application::slotUndoDocument, this, sp::_1));
-    _pActiveDoc->signalRedo.connect(std::bind(&App::Application::slotRedoDocument, this, sp::_1));
-    _pActiveDoc->signalRecomputedObject.connect(std::bind(&App::Application::slotRecomputedObject, this, sp::_1));
-    _pActiveDoc->signalRecomputed.connect(std::bind(&App::Application::slotRecomputed, this, sp::_1));
-    _pActiveDoc->signalBeforeRecompute.connect(std::bind(&App::Application::slotBeforeRecompute, this, sp::_1));
-    _pActiveDoc->signalOpenTransaction.connect(std::bind(&App::Application::slotOpenTransaction, this, sp::_1, sp::_2));
-    _pActiveDoc->signalCommitTransaction.connect(std::bind(&App::Application::slotCommitTransaction, this, sp::_1));
-    _pActiveDoc->signalAbortTransaction.connect(std::bind(&App::Application::slotAbortTransaction, this, sp::_1));
-    _pActiveDoc->signalStartSave.connect(std::bind(&App::Application::slotStartSaveDocument, this, sp::_1, sp::_2));
-    _pActiveDoc->signalFinishSave.connect(std::bind(&App::Application::slotFinishSaveDocument, this, sp::_1, sp::_2));
-    _pActiveDoc->signalChangePropertyEditor.connect(std::bind(&App::Application::slotChangePropertyEditor, this, sp::_1, sp::_2));
+    _pActiveDoc->signals->signalBeforeChange.connect(std::bind(&App::Application::slotBeforeChangeDocument, this, sp::_1, sp::_2));
+    _pActiveDoc->signals->signalChanged.connect(std::bind(&App::Application::slotChangedDocument, this, sp::_1, sp::_2));
+    _pActiveDoc->signals->signalNewObject.connect(std::bind(&App::Application::slotNewObject, this, sp::_1));
+    _pActiveDoc->signals->signalDeletedObject.connect(std::bind(&App::Application::slotDeletedObject, this, sp::_1));
+    _pActiveDoc->signals->signalBeforeChangeObject.connect(std::bind(&App::Application::slotBeforeChangeObject, this, sp::_1, sp::_2));
+    _pActiveDoc->signals->signalChangedObject.connect(std::bind(&App::Application::slotChangedObject, this, sp::_1, sp::_2));
+    _pActiveDoc->signals->signalRelabelObject.connect(std::bind(&App::Application::slotRelabelObject, this, sp::_1));
+    _pActiveDoc->signals->signalActivatedObject.connect(std::bind(&App::Application::slotActivatedObject, this, sp::_1));
+    _pActiveDoc->signals->signalUndo.connect(std::bind(&App::Application::slotUndoDocument, this, sp::_1));
+    _pActiveDoc->signals->signalRedo.connect(std::bind(&App::Application::slotRedoDocument, this, sp::_1));
+    _pActiveDoc->signals->signalRecomputedObject.connect(std::bind(&App::Application::slotRecomputedObject, this, sp::_1));
+    _pActiveDoc->signals->signalRecomputed.connect(std::bind(&App::Application::slotRecomputed, this, sp::_1));
+    _pActiveDoc->signals->signalBeforeRecompute.connect(std::bind(&App::Application::slotBeforeRecompute, this, sp::_1));
+    _pActiveDoc->signals->signalOpenTransaction.connect(std::bind(&App::Application::slotOpenTransaction, this, sp::_1, sp::_2));
+    _pActiveDoc->signals->signalCommitTransaction.connect(std::bind(&App::Application::slotCommitTransaction, this, sp::_1));
+    _pActiveDoc->signals->signalAbortTransaction.connect(std::bind(&App::Application::slotAbortTransaction, this, sp::_1));
+    _pActiveDoc->signals->signalStartSave.connect(std::bind(&App::Application::slotStartSaveDocument, this, sp::_1, sp::_2));
+    _pActiveDoc->signals->signalFinishSave.connect(std::bind(&App::Application::slotFinishSaveDocument, this, sp::_1, sp::_2));
+    _pActiveDoc->signals->signalChangePropertyEditor.connect(std::bind(&App::Application::slotChangePropertyEditor, this, sp::_1, sp::_2));
     // clang-format on
     //NOLINTEND
 
@@ -2005,7 +2007,7 @@ void Application::initTypes()
     App::PropertyVectorList         ::init();
     App::PropertyPlacement          ::init();
     App::PropertyPlacementList      ::init();
-    App::PropertyPlacementLink      ::init();
+    // App::PropertyPlacementLink      ::init();
     App::PropertyRotation           ::init();
     App::PropertyGeometry           ::init();
     App::PropertyComplexGeoData     ::init();
@@ -2013,7 +2015,7 @@ void Application::initTypes()
     App::PropertyColorList          ::init();
     App::PropertyMaterial           ::init();
     App::PropertyMaterialList       ::init();
-    App::PropertyPath               ::init();
+    //App::PropertyPath               ::init();
     App::PropertyFile               ::init();
     App::PropertyFileIncluded       ::init();
     App::PropertyPythonObject       ::init();

@@ -67,17 +67,22 @@ DocumentObjectExecReturn *DocumentObject::StdReturn = nullptr;
 //===========================================================================
 
 struct DocumentObject::Private {
-    mutable std::unordered_map<const char *, App::DocumentObject*, CStringHasher, CStringHasher> _outListMap;
+    mutable std::unordered_map<const char *, App::DocumentObject*, App::CStringHasher, App::CStringHasher> _outListMap;
 };
 
 DocumentObject::DocumentObject()
-    : ExpressionEngine()
+    : ExpressionEngine(new PropertyExpressionEngine)
 {
     // define Label of type 'Output' to avoid being marked as touched after relabeling
     ADD_PROPERTY_TYPE(Label,("Unnamed"),"Base",Prop_Output,"User name of the object (UTF8)");
     ADD_PROPERTY_TYPE(Label2,(""),"Base",Prop_Hidden,"User description of the object (UTF8)");
     Label2.setStatus(App::Property::Output,true);
-    ADD_PROPERTY_TYPE(ExpressionEngine,(),"Base",Prop_Hidden,"Property expressions");
+
+    //ADD_PROPERTY_TYPE(ExpressionEngine,(),"Base",Prop_Hidden,"Property expressions");
+    // Do manually, because we are using a pointer
+    this->ExpressionEngine->setValue();\
+    this->ExpressionEngine->setContainer(this); \
+    propertyData.addProperty(static_cast<App::PropertyContainer*>(this), "ExpressionEngine", this->ExpressionEngine, ("Base"),(Prop_Hidden),("Property expressions"));
 
     ADD_PROPERTY(Visibility, (true));
 
@@ -104,6 +109,7 @@ DocumentObject::~DocumentObject()
         // Call before decrementing the reference counter, otherwise a heap error can occur
         obj->setInvalid();
     }
+    delete ExpressionEngine;
 }
 
 void DocumentObject::printInvalidLinks() const
@@ -251,7 +257,7 @@ void DocumentObject::unfreeze(bool noRecompute)
  */
 bool DocumentObject::isTouched() const
 {
-    return ExpressionEngine.isTouched() || StatusBits.test(ObjectStatus::Touch);
+    return ExpressionEngine->isTouched() || StatusBits.test(ObjectStatus::Touch);
 }
 
 /**
@@ -283,7 +289,7 @@ bool DocumentObject::mustRecompute() const
 
 short DocumentObject::mustExecute() const
 {
-    if (ExpressionEngine.isTouched())
+    if (ExpressionEngine->isTouched())
         return 1;
 
     //ask all extensions
@@ -411,7 +417,7 @@ void DocumentObject::getOutList(int options, std::vector<DocumentObject*> &res) 
             link->getLinks(res,noHidden);
     }
     if(!(options & OutListNoExpression))
-        ExpressionEngine.getLinks(res);
+        ExpressionEngine->getLinks(res);
 
     if(options & OutListNoXLinked) {
         for(auto it=res.begin()+size;it!=res.end();) {
@@ -719,7 +725,7 @@ bool DocumentObject::removeDynamicProperty(const char* name)
 
     _pDoc->addOrRemovePropertyOfObject(this, prop, false);
 
-    auto expressions = ExpressionEngine.getExpressions();
+    auto expressions = ExpressionEngine->getExpressions();
     std::vector<App::ObjectIdentifier> removeExpr;
 
     for (const auto& it : expressions) {
@@ -729,7 +735,7 @@ bool DocumentObject::removeDynamicProperty(const char* name)
     }
 
     for (const auto& it : removeExpr) {
-        ExpressionEngine.setValue(it, std::shared_ptr<Expression>());
+        ExpressionEngine->setValue(it, std::shared_ptr<Expression>());
     }
 
     return TransactionalObject::removeDynamicProperty(name);
@@ -1081,7 +1087,7 @@ void DocumentObject::Save (Base::Writer &writer) const
 
 void DocumentObject::setExpression(const ObjectIdentifier &path, std::shared_ptr<Expression> expr)
 {
-    ExpressionEngine.setValue(path, expr);
+    ExpressionEngine->setValue(path, expr);
 }
 
 /**
@@ -1100,14 +1106,14 @@ void DocumentObject::clearExpression(const ObjectIdentifier & path)
  * @return Expression info, containing expression and optional comment.
  */
 
-const PropertyExpressionEngine::ExpressionInfo DocumentObject::getExpression(const ObjectIdentifier &path) const
+const ExpressionInfo DocumentObject::getExpression(const ObjectIdentifier &path) const
 {
-    boost::any value = ExpressionEngine.getPathValue(path);
+    boost::any value = ExpressionEngine->getPathValue(path);
 
-    if (value.type() == typeid(PropertyExpressionEngine::ExpressionInfo))
-        return boost::any_cast<PropertyExpressionEngine::ExpressionInfo>(value);
+    if (value.type() == typeid(ExpressionInfo))
+        return boost::any_cast<ExpressionInfo>(value);
     else
-        return PropertyExpressionEngine::ExpressionInfo();
+        return ExpressionInfo();
 }
 
 /**
@@ -1119,7 +1125,7 @@ const PropertyExpressionEngine::ExpressionInfo DocumentObject::getExpression(con
 
 void DocumentObject::renameObjectIdentifiers(const std::map<ObjectIdentifier, ObjectIdentifier> &paths)
 {
-    ExpressionEngine.renameObjectIdentifiers(paths);
+    ExpressionEngine->renameObjectIdentifiers(paths);
 }
 
 void DocumentObject::onDocumentRestored()

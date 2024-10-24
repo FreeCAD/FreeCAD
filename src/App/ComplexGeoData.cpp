@@ -36,6 +36,7 @@
 #include "ElementMap.h"
 #include "ElementNamingUtils.h"
 
+#include <Base/Console.h>
 #include <Base/Placement.h>
 #include <Base/Reader.h>
 #include <Base/Rotation.h>
@@ -294,16 +295,16 @@ ComplexGeoData::getElementMappedNames(const IndexedName& element, bool needUnmap
     return {std::make_pair(MappedName(element), ElementIDRefs())};
 }
 
-void traceElement(const MappedName& name, TraceCallback& cb) const
+void ComplexGeoData::traceElement(const MappedName& name, TraceCallback& cb) const
 {
     _elementMap->traceElement(name, Tag, cb);
 }
 
-MappedName setElementName(const IndexedName& element,
+MappedName ComplexGeoData::setElementName(const IndexedName& element,
                           const MappedName& name,
                           long masterTag,
-                          const ElementIDRefs* sid = nullptr,
-                          bool overwrite = false) {
+                          const ElementIDRefs* sid,
+                          bool overwrite) {
     return _elementMap -> setElementName(element, name, masterTag, sid, overwrite);
 }
 
@@ -672,7 +673,7 @@ std::vector<IndexedName> ComplexGeoData::getHigherElements(const char *, bool) c
     return {};
 }
 
-void ComplexGeoData::setMappedChildElements(const std::vector<Data::ElementMap::MappedChildElements> & children)
+void ComplexGeoData::setMappedChildElements(const std::vector<Data::MappedChildElements> & children)
 {
     // DO NOT reset element map if there is one. Because we allow mixing child
     // mapping and normal mapping
@@ -682,7 +683,7 @@ void ComplexGeoData::setMappedChildElements(const std::vector<Data::ElementMap::
     _elementMap->addChildElements(Tag, children);
 }
 
-std::vector<Data::ElementMap::MappedChildElements> ComplexGeoData::getMappedChildElements() const
+std::vector<Data::MappedChildElements> ComplexGeoData::getMappedChildElements() const
 {
     if (!_elementMap) {
         return {};

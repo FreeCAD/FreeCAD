@@ -39,9 +39,9 @@
 #define __PyCXX_wrap_python_hxx__
 
 // On some platforms we have to include time.h to get select defined
-#if !defined(__WIN32__) && !defined(WIN32) && !defined(_WIN32) && !defined(_WIN64)
-#include <sys/time.h>
-#endif
+// #if !defined(__WIN32__) && !defined(WIN32) && !defined(_WIN32) && !defined(_WIN64)
+// #include <sys/time.h>
+// #endif
 
 // Prevent multiple conflicting definitions of swab from stdlib.h and unistd.h
 #if defined(__sun) || defined(sun)

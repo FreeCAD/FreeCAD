@@ -106,6 +106,7 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 #include "License.h"
 #include "Link.h"
 #include "MergeDocuments.h"
+#include "PropertyExpressionEngine.h"
 #include "StringHasher.h"
 #include "Transactions.h"
 
@@ -2180,7 +2181,7 @@ bool Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool 
             for(auto prop : propMap[obj])
                 prop->onContainerRestored();
             bool touched = false;
-            auto returnCode = obj->ExpressionEngine.execute(
+            auto returnCode = obj->ExpressionEngine->execute(
                     PropertyExpressionEngine::ExecuteOnRestore,&touched);
             if(returnCode!=DocumentObject::StdReturn) {
                 FC_ERR("Expression engine failed to restore " << obj->getFullName() << ": " << returnCode->Why);
@@ -2711,7 +2712,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
         bool NeedUpdate = false;
 
         // ask the object if it should be recomputed
-        if (Cur->mustExecute() == 1 || Cur->ExpressionEngine.depsAreTouched()) {
+        if (Cur->mustExecute() == 1 || Cur->ExpressionEngine->depsAreTouched()) {
 #ifdef FC_LOGFEATUREUPDATE
             std::clog << "[touched]";
 #endif
@@ -2759,7 +2760,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
         if (!Cur || !isIn(Cur)) continue;
 
         if (recomputeList.find(Cur) != recomputeList.end() ||
-                Cur->ExpressionEngine.depsAreTouched()) {
+                Cur->ExpressionEngine->depsAreTouched()) {
             if ( _recomputeFeature(Cur)) {
                 // if something happened break execution of recompute
                 d->vertexMap.clear();
@@ -3141,11 +3142,11 @@ int Document::_recomputeFeature(DocumentObject* Feat)
 
     DocumentObjectExecReturn  *returnCode = nullptr;
     try {
-        returnCode = Feat->ExpressionEngine.execute(PropertyExpressionEngine::ExecuteNonOutput);
+        returnCode = Feat->ExpressionEngine->execute(PropertyExpressionEngine::ExecuteNonOutput);
         if (returnCode == DocumentObject::StdReturn) {
             returnCode = Feat->recompute();
             if(returnCode == DocumentObject::StdReturn)
-                returnCode = Feat->ExpressionEngine.execute(PropertyExpressionEngine::ExecuteOutput);
+                returnCode = Feat->ExpressionEngine->execute(PropertyExpressionEngine::ExecuteOutput);
         }
     }
     catch(Base::AbortException &e){

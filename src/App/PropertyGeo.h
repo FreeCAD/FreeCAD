@@ -24,18 +24,19 @@
 #ifndef APP_PROPERTYGEO_H
 #define APP_PROPERTYGEO_H
 
-#include <Base/BoundBox.h>
 #include <Base/Matrix.h>
 #include <Base/Placement.h>
 #include <Base/Unit.h>
 #include <Base/Vector3D.h>
 
-#include "PropertyLinks.h"
+//#include "PropertyLinks.h"
 #include <FCGlobal.h>
 
 
 namespace Base {
 class Writer;
+template <class _Precision> class BoundBox3;// NOLINT
+using BoundBox3d = BoundBox3<double>;
 }
 
 namespace Data {
@@ -368,33 +369,33 @@ private:
     Base::Placement _cPos;
 };
 
-/** the general Link Property
- *  Main Purpose of this property is to Link Objects and Features in a document.
- */
-class AppExport PropertyPlacementLink : public PropertyLink
-{
-    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+// /** the general Link Property
+//  *  Main Purpose of this property is to Link Objects and Features in a document.
+//  */
+// class AppExport PropertyPlacementLink : public PropertyLink
+// {
+//     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
-public:
-    /**
-     * A constructor.
-     * A more elaborate description of the constructor.
-     */
-    PropertyPlacementLink();
+// public:
+//     /**
+//      * A constructor.
+//      * A more elaborate description of the constructor.
+//      */
+//     PropertyPlacementLink();
 
-    /**
-     * A destructor.
-     * A more elaborate description of the destructor.
-     */
-    ~PropertyPlacementLink() override;
+//     /**
+//      * A destructor.
+//      * A more elaborate description of the destructor.
+//      */
+//     ~PropertyPlacementLink() override;
 
-    /** This method returns the linked DocumentObject
-     */
-    App::Placement * getPlacementObject() const;
+//     /** This method returns the linked DocumentObject
+//      */
+//     App::Placement * getPlacementObject() const;
 
-    Property *Copy() const override;
-    void Paste(const Property &from) override;
-};
+//     Property *Copy() const override;
+//     void Paste(const Property &from) override;
+// };
 
 
 class AppExport PropertyPlacementList: public PropertyListsT<Base::Placement>

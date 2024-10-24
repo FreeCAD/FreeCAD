@@ -34,6 +34,7 @@
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 
+#include "CStringHasher.h"
 #include "Property.h"
 #include "PropertyContainer.h"
 
@@ -50,10 +51,12 @@ TYPESYSTEM_SOURCE(App::PropertyContainer,Base::Persistence)
 //**************************************************************************
 // Construction/Destruction
 
+PropertyData PropertyContainer::propertyData;
+
 // Here's the implementation! Description should take place in the header file!
 PropertyContainer::PropertyContainer()
 {
-    Private.propertyData.parentPropertyData = nullptr;
+    propertyData.parentPropertyData = nullptr;
 }
 
 PropertyContainer::~PropertyContainer() = default;
@@ -182,8 +185,8 @@ const char* PropertyContainer::getPropertyName(const Property* prop)const
     return res;
 }
 
-const PropertyData * PropertyContainer::getPropertyDataPtr(){return &Private.propertyData;}
-const PropertyData & PropertyContainer::getPropertyData() const{return Private.propertyData;}
+const PropertyData * PropertyContainer::getPropertyDataPtr(){return &propertyData;}
+const PropertyData & PropertyContainer::getPropertyData() const{return propertyData;}
 
 
 /**
@@ -223,8 +226,6 @@ void PropertyContainer::handleChangedPropertyType(XMLReader &reader, const char 
     (void)TypeName;
     (void)prop;
 }
-
-PropertyData PropertyContainer::Private.propertyData;
 
 void PropertyContainer::beforeSave() const
 {
@@ -434,6 +435,40 @@ void PropertyContainer::onPropertyStatusChanged(const Property &prop, unsigned l
     (void)oldStatus;
 }
 
+namespace bmi = boost::multi_index;
+struct PropertyData::Private {
+  // A multi index container for holding the property spec, with the following
+  // index,
+  // * a sequence, to preserve creation order
+  // * hash index on property name
+  // * hash index on property pointer offset
+  mutable bmi::multi_index_container<
+      PropertySpec,
+      bmi::indexed_by<
+          bmi::sequenced<>,
+          bmi::hashed_unique<
+              bmi::member<PropertySpec, const char*, &PropertySpec::Name>,
+              CStringHasher,
+              CStringHasher
+          >,
+          bmi::hashed_unique<
+              bmi::member<PropertySpec, short, &PropertySpec::Offset>
+          >
+      >
+  > propertyData;
+};
+
+
+
+PropertyData::PropertyData() :
+    pImpl(new Private)
+{}
+
+PropertyData::~PropertyData()
+{
+    delete pImpl;
+}
+
 void PropertyData::addProperty(OffsetBase offsetBase,const char* PropName, Property *Prop, const char* PropertyGroup , PropertyType Type, const char* PropertyDocu)
 {
 #ifdef FC_DEBUG
@@ -443,7 +478,7 @@ void PropertyData::addProperty(OffsetBase offsetBase,const char* PropName, Prope
         short offset = offsetBase.getOffsetTo(Prop);
         if(offset < 0)
             throw Base::RuntimeError("Invalid static property");
-        auto &index = Private.propertyData.get<1>();
+        auto &index = pImpl->propertyData.get<1>();
         auto it = index.find(PropName);
         if(it == index.end()) {
             if(parentMerged)
@@ -472,8 +507,8 @@ void PropertyData::merge(PropertyData *other) const {
     }
     if(other)  {
         other->merge();
-        auto &index = Private.propertyData.get<0>();
-        for(const auto &spec : other->Private.propertyData.get<0>())
+        auto &index = pImpl->propertyData.get<0>();
+        for(const auto &spec : other->pImpl->propertyData.get<0>())
             index.push_back(spec);
     }
 }
@@ -485,8 +520,8 @@ void PropertyData::split(PropertyData *other) {
         parentMerged = false;
     }
     if(other)  {
-        auto &index = Private.propertyData.get<2>();
-        for(const auto &spec : other->Private.propertyData.get<0>())
+        auto &index = pImpl->propertyData.get<2>();
+        for(const auto &spec : other->pImpl->propertyData.get<0>())
             index.erase(spec.Offset);
     }
 }
@@ -495,7 +530,7 @@ const PropertyData::PropertySpec *PropertyData::findProperty(OffsetBase offsetBa
 {
     (void)offsetBase;
     merge();
-    auto &index = Private.propertyData.get<1>();
+    auto &index = pImpl->propertyData.get<1>();
     auto it = index.find(PropName);
     if(it != index.end())
         return &(*it);
@@ -509,7 +544,7 @@ const PropertyData::PropertySpec *PropertyData::findProperty(OffsetBase offsetBa
     if(diff<0)
         return nullptr;
 
-    auto &index = Private.propertyData.get<2>();
+    auto &index = pImpl->propertyData.get<2>();
     auto it = index.find(diff);
     if(it!=index.end())
         return &(*it);
@@ -600,7 +635,7 @@ Property *PropertyData::getPropertyByName(OffsetBase offsetBase,const char* name
 void PropertyData::getPropertyMap(OffsetBase offsetBase,std::map<std::string,Property*> &Map) const
 {
     merge();
-    for(auto &spec : Private.propertyData.get<0>())
+    for(auto &spec : pImpl->propertyData.get<0>())
         Map[spec.Name] = reinterpret_cast<Property *>(spec.Offset + offsetBase.getOffset());
 }
 
@@ -608,8 +643,8 @@ void PropertyData::getPropertyList(OffsetBase offsetBase,std::vector<Property*> 
 {
     merge();
     size_t base = List.size();
-    List.reserve(base+Private.propertyData.size());
-    for (auto &spec : Private.propertyData.get<0>())
+    List.reserve(base+pImpl->propertyData.size());
+    for (auto &spec : pImpl->propertyData.get<0>())
         List.push_back(reinterpret_cast<Property *>(spec.Offset + offsetBase.getOffset()));
 }
 
@@ -618,35 +653,12 @@ void PropertyData::getPropertyNamedList(OffsetBase offsetBase,
 {
     merge();
     size_t base = List.size();
-    List.reserve(base+Private.propertyData.size());
-    for (auto &spec : Private.propertyData.get<0>()) {
+    List.reserve(base+pImpl->propertyData.size());
+    for (auto &spec : pImpl->propertyData.get<0>()) {
         auto prop = reinterpret_cast<Property *>(spec.Offset + offsetBase.getOffset());
         List.emplace_back(prop->getName(),prop);
     }
 }
-
-struct PropertyData::Private {
-  // A multi index container for holding the property spec, with the following
-  // index,
-  // * a sequence, to preserve creation order
-  // * hash index on property name
-  // * hash index on property pointer offset
-  mutable bmi::multi_index_container<
-      PropertySpec,
-      bmi::indexed_by<
-          bmi::sequenced<>,
-          bmi::hashed_unique<
-              bmi::member<PropertySpec, const char*, &PropertySpec::Name>,
-              CStringHasher,
-              CStringHasher
-          >,
-          bmi::hashed_unique<
-              bmi::member<PropertySpec, short, &PropertySpec::Offset>
-          >
-      >
-  > propertyData;
-}
-
 
 
 /** \defgroup PropFrame Property framework

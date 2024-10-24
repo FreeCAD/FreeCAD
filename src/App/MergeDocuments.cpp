@@ -30,6 +30,7 @@
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 
+#include "DocumentSignals.h"
 #include "MergeDocuments.h"
 
 
@@ -75,9 +76,9 @@ MergeDocuments::MergeDocuments(App::Document* doc)
     : appdoc(doc)
 {
     //NOLINTBEGIN
-    connectExport = doc->signalExportObjects.connect
+    connectExport = doc->signals->signalExportObjects.connect
         (std::bind(&MergeDocuments::exportObject, this, sp::_1, sp::_2));
-    connectImport = doc->signalImportObjects.connect
+    connectImport = doc->signals->signalImportObjects.connect
         (std::bind(&MergeDocuments::importObject, this, sp::_1, sp::_2));
     //NOLINTEND
 
@@ -145,11 +146,11 @@ void MergeDocuments::Restore(Base::XMLReader &r)
 void MergeDocuments::SaveDocFile (Base::Writer & w) const
 {
     // Save view provider stuff
-    appdoc->signalExportViewObjects(this->objects, w);
+    appdoc->signals->signalExportViewObjects(this->objects, w);
 }
 
 void MergeDocuments::RestoreDocFile(Base::Reader & r)
 {
     // Restore view provider stuff
-    appdoc->signalImportViewObjects(this->objects, r, this->nameMap);
+    appdoc->signals->signalImportViewObjects(this->objects, r, this->nameMap);
 }

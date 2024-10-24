@@ -33,6 +33,7 @@
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/math/special_functions/round.hpp>
 #include <boost/math/special_functions/trunc.hpp>
+#include <boost/io/ios_state.hpp>
 
 #include <sstream>
 #include <stack>
@@ -43,6 +44,7 @@
 #include <App/ObjectIdentifier.h>
 #include <App/PropertyUnits.h>
 #include <Base/Console.h>
+#include <Base/Exception.h>
 #include <Base/Interpreter.h>
 #include <Base/MatrixPy.h>
 #include <Base/PlacementPy.h>
@@ -51,6 +53,7 @@
 #include <Base/VectorPy.h>
 
 #include "ExpressionParser.h"
+#include "PropertyBoolList.h"
 
 
 /** \defgroup Expression Expressions framework

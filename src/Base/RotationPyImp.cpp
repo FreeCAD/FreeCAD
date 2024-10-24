@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #include <Base/GeometryPyCXX.h>
-#include <Base/Tools.h>
+#include <Base/MathTools.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
 
 // inclusion of the generated files (generated out of RotationPy.xml)

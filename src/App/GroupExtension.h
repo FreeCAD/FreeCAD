@@ -23,12 +23,11 @@
 
 #ifndef APP_GROUPEXTENSION_H
 #define APP_GROUPEXTENSION_H
-
-#include <boost/signals2/signal.hpp>
-
+ 
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectExtension.h>
 #include <App/ExtensionPython.h>
+#include <App/PropertyLinks.h>
 #include <vector>
 
 #include <Base/Interpreter.h>
@@ -136,7 +135,8 @@ private:
 
     // for tracking children visibility
     void slotChildChanged(const App::DocumentObject&, const App::Property&);
-    std::unordered_map<const App::DocumentObject*, boost::signals2::scoped_connection> _Conns;
+    struct Private;
+    Private* pImpl;
 };
 
 

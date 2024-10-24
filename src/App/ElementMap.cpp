@@ -13,8 +13,11 @@
 #include "Document.h"
 #include "DocumentObject.h"
 
+#include <Base/Console.h>
+
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
+#include <boost/io/ios_state.hpp>
 
 
 FC_LOG_LEVEL_INIT("ElementMap", true, 2);// NOLINT
@@ -1253,7 +1256,7 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
     }
 }
 
-std::vector<ElementMap::MappedChildElements> ElementMap::getChildElements() const
+std::vector<MappedChildElements> ElementMap::getChildElements() const
 {
     std::vector<MappedChildElements> res;
     res.reserve(this->childElements.size());

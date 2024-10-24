@@ -31,7 +31,7 @@
 
 namespace App
 {
-
+ 
 class AppExport Annotation : public DocumentObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(App::Annotation);

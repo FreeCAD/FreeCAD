@@ -94,10 +94,14 @@ struct AppExport PropertyData
   };
 
   struct Private;
+  Private* pImpl;
 
   mutable bool parentMerged = false;
 
   const PropertyData*     parentPropertyData;
+
+  PropertyData();
+  ~PropertyData();
 
   void addProperty(OffsetBase offsetBase,const char* PropName, Property *Prop, const char* PropertyGroup= nullptr, PropertyType = Prop_None, const char* PropertyDocu= nullptr );
 
@@ -250,7 +254,7 @@ protected:
 
 private:
   std::string _propertyPrefix;
-  static PropertyData propertyData;
+  static App::PropertyData propertyData;
 };
 
 /// Property define

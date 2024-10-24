@@ -27,7 +27,7 @@
 #endif
 
 #include <Base/Console.h>
-#include <Base/Sequencer.h>
+#include <Base/Sequencer.h> 
 
 #include "Algorithm.h"
 #include "Approximation.h"

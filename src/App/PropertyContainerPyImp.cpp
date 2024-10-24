@@ -28,6 +28,7 @@
 #endif
 
 #include "PropertyContainer.h"
+#include "PropertyLinks.h"
 #include "Property.h"
 #include "DocumentObject.h"
 #include <Base/PyWrapParseTupleAndKeywords.h>

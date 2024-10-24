@@ -10,7 +10,7 @@ namespace App {
 struct PropertyExpressionEngine::Public {
     ///signal called when an expression was changed
     
-    const boost::signals2::signal<void (const App::ObjectIdentifier &)>* expressionChanged;
+    const boost::signals2::signal<void (const App::ObjectIdentifier &)> expressionChanged;
 };
 }
 

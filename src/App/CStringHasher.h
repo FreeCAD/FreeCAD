@@ -3,8 +3,7 @@
 
 #include <boost/multi_index/hashed_index.hpp>
 
-namespace bmi = boost::multi_index;
-
+namespace App {
 struct CStringHasher {
     inline std::size_t operator()(const char *s) const {
         if(!s) return 0;
@@ -16,5 +15,6 @@ struct CStringHasher {
         return std::strcmp(a,b)==0;
     }
 };
+}
 
 #endif

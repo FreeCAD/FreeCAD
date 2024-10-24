@@ -25,8 +25,9 @@
 #define BASE_Unit_H
 
 #include <cstdint>
-#include <QString>
 #include <FCGlobal.h>
+
+class QString;
 
 namespace Base
 {

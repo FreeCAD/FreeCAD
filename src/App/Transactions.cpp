@@ -59,6 +59,8 @@ TYPESYSTEM_SOURCE(App::Transaction, Base::Persistence)
 
 using Info = std::pair<const TransactionalObject*, TransactionObject*>;
 
+namespace bmi = boost::multi_index;
+
 // is this better having in anonymous namespace?
 struct Transaction::Private
 {

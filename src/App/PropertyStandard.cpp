@@ -41,6 +41,8 @@
 #include "DocumentObject.h"
 #include "MaterialPy.h"
 #include "ObjectIdentifier.h"
+#include "PropertyBoolList.h"
+#include "PropertyMaterial.h"
 
 
 using namespace App;
@@ -85,7 +87,7 @@ long PropertyInteger::getValue() const
     return _lValue;
 }
 
-boost::any PropertyInteger::getPathValue() const
+const boost::any PropertyInteger::getPathValue(const App::ObjectIdentifier & /*path*/) const
 {
     return _lValue;
 }

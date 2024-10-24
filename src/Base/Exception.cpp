@@ -174,6 +174,12 @@ void Exception::setPyException() const
     PyErr_SetString(exc, what());
 }
 
+// TODO: deprecate this? Should be converted to const char* in the caller
+void Exception::setMessage(const std::string& sMessage)
+{
+    _sErrMsg = sMessage.c_str();
+}
+
 // ---------------------------------------------------------
 
 TYPESYSTEM_SOURCE(Base::AbortException, Base::Exception)

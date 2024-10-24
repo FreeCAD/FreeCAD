@@ -33,7 +33,8 @@
 #include "MatrixPy.h"
 #include "RotationPy.h"
 #include "VectorPy.h"
-#include "Tools.h"
+//#include "Tools.h"
+#include "MathTools.h"
 
 using namespace Base;
 

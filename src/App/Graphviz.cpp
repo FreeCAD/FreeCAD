@@ -34,6 +34,7 @@
 #include "Origin.h"
 #include "OriginGroupExtension.h"
 #include "ObjectIdentifier.h"
+#include "PropertyExpressionEngine.h"
 
 using namespace App;
 using namespace boost;
@@ -188,7 +189,7 @@ void Document::exportGraphviz(std::ostream& out) const
 
         void addExpressionSubgraphIfNeeded(DocumentObject * obj, bool CSsubgraphs) {
 
-            auto expressions = obj->ExpressionEngine.getExpressions();
+            auto expressions = obj->ExpressionEngine->getExpressions();
 
             if (!expressions.empty()) {
 
@@ -300,7 +301,7 @@ void Document::exportGraphviz(std::ostream& out) const
             }
 
             // Add expressions and its dependencies
-            auto expressions{docObj->ExpressionEngine.getExpressions()};
+            auto expressions{docObj->ExpressionEngine->getExpressions()};
             for (const auto &expr : expressions) {
                 auto found = std::as_const(GlobalVertexList).find(getId(expr.first));
                 if (found == GlobalVertexList.end()) {
@@ -458,7 +459,7 @@ void Document::exportGraphviz(std::ostream& out) const
             for (const auto &docObj : objects) {
 
                 // Add expressions and its dependencies
-                auto expressions = docObj->ExpressionEngine.getExpressions();
+                auto expressions = docObj->ExpressionEngine->getExpressions();
                 for (const auto &expr : expressions) {
                     std::map<ObjectIdentifier, bool> deps;
                     expr.second->getIdentifiers(deps);

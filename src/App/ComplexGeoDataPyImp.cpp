@@ -26,6 +26,7 @@
 # include <memory>
 #endif
 
+#include "ElementMap.h"
 #include "ComplexGeoData.h"
 #include "StringHasher.h"
 
