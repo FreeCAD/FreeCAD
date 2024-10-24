@@ -146,15 +146,21 @@ class Trimex(gui_base_original.Modifier):
             # normal wire trimex mode
             self.color = self.obj.ViewObject.LineColor
             self.width = self.obj.ViewObject.LineWidth
-            # self.obj.ViewObject.Visibility = False
-            self.obj.ViewObject.LineColor = (0.5, 0.5, 0.5)
-            self.obj.ViewObject.LineWidth = 1
-            self.extrudeMode = False
             if self.obj.Shape.Wires:
                 self.edges = self.obj.Shape.Wires[0].Edges
                 self.edges = Part.__sortEdges__(self.edges)
             else:
                 self.edges = self.obj.Shape.Edges
+            for e in self.edges:
+                if isinstance(e.Curve,(Part.BSplineCurve, Part.BezierCurve)):
+                    self.obj = None
+                    self.finish()
+                    _err(translate("draft", "Trimex is not supported yet on this type of object."))
+                    return
+            # self.obj.ViewObject.Visibility = False
+            self.obj.ViewObject.LineColor = (0.5, 0.5, 0.5)
+            self.obj.ViewObject.LineWidth = 1
+            self.extrudeMode = False
             self.ghost = []
             lc = self.color
             sc = (lc[0], lc[1], lc[2])
