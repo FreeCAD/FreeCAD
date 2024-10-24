@@ -24,7 +24,7 @@
 # This is a build and test workflow for CI of FreeCAD.
 # This workflow aims at building and testing FreeCAD on a Conda environment on Linux.
 
-name: Build Ubuntu 22.04 (Conda)
+name: Build Ubuntu 24.04 (Conda)
 on:
   workflow_call:
     inputs:
@@ -45,7 +45,7 @@ on:
 
 jobs:
   Build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     continue-on-error: ${{ inputs.allowedToFail }}
     env:
       CCACHE_DIR: ${{ github.workspace }}/ccache
