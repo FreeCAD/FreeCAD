@@ -347,6 +347,7 @@ set(ONDSELSOLVER_HEADERS
         ASMTAngleJoint.h
         ASMTAnimationParameters.h
         ASMTAssembly.h
+        ASMTAtPointJoint.h
         ASMTCompoundJoint.h
         ASMTConstantGravity.h
         ASMTConstantVelocityJoint.h
@@ -358,6 +359,7 @@ set(ONDSELSOLVER_HEADERS
         ASMTForceTorque.h
         ASMTGearJoint.h
         ASMTGeneralMotion.h
+        ASMTInLineJoint.h
         ASMTInPlaneJoint.h
         ASMTItem.h
         ASMTItemIJ.h
