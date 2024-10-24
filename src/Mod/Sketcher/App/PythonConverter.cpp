@@ -211,6 +211,8 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
             {Part::GeomArcOfCircle::getClassTypeId(),
              [](const Part::Geometry* geo) {
                  auto arc = static_cast<const Part::GeomArcOfCircle*>(geo);
+                 double startAngle, endAngle;
+                 arc->getRange(startAngle, endAngle, /*emulateCCWXY=*/true);
                  SingleGeometry sg;
                  sg.creation =
                      boost::str(boost::format("Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, "
@@ -218,7 +220,7 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
                                 % arc->getCenter().x % arc->getCenter().y % arc->getCenter().z
                                 % arc->getAxisDirection().x % arc->getAxisDirection().y
                                 % arc->getAxisDirection().z % arc->getRadius()
-                                % arc->getFirstParameter() % arc->getLastParameter());
+                                % startAngle % endAngle);
                  sg.construction = Sketcher::GeometryFacade::getConstruction(geo);
                  return sg;
              }},
@@ -250,6 +252,8 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
             {Part::GeomArcOfEllipse::getClassTypeId(),
              [](const Part::Geometry* geo) {
                  auto aoe = static_cast<const Part::GeomArcOfEllipse*>(geo);
+                 double startAngle, endAngle;
+                 aoe->getRange(startAngle, endAngle, /*emulateCCWXY=*/true);
                  SingleGeometry sg;
                  auto center = aoe->getCenter();
                  auto periapsis = center + aoe->getMajorAxisDir() * aoe->getMajorRadius();
@@ -259,14 +263,16 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
                          "Part.ArcOfEllipse(Part.Ellipse(App.Vector(%f, %f, %f), App.Vector(%f, "
                          "%f, %f), App.Vector(%f, %f, %f)), %f, %f)")
                      % periapsis.x % periapsis.y % periapsis.z % positiveB.x % positiveB.y
-                     % positiveB.z % center.x % center.y % center.z % aoe->getFirstParameter()
-                     % aoe->getLastParameter());
+                     % positiveB.z % center.x % center.y % center.z % startAngle
+                     % endAngle);
                  sg.construction = Sketcher::GeometryFacade::getConstruction(geo);
                  return sg;
              }},
             {Part::GeomArcOfHyperbola::getClassTypeId(),
              [](const Part::Geometry* geo) {
                  auto aoh = static_cast<const Part::GeomArcOfHyperbola*>(geo);
+                 double startAngle, endAngle;
+                 aoh->getRange(startAngle, endAngle, /*emulateCCWXY=*/true);
                  SingleGeometry sg;
                  auto center = aoh->getCenter();
                  auto majAxisPoint = center + aoh->getMajorAxisDir() * aoh->getMajorRadius();
@@ -276,13 +282,15 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
                                    "App.Vector(%f, %f, %f), App.Vector(%f, %f, %f)), %f, %f)")
                      % majAxisPoint.x % majAxisPoint.y % majAxisPoint.z % minAxisPoint.x
                      % minAxisPoint.y % minAxisPoint.z % center.x % center.y % center.z
-                     % aoh->getFirstParameter() % aoh->getLastParameter());
+                     % startAngle % endAngle);
                  sg.construction = Sketcher::GeometryFacade::getConstruction(geo);
                  return sg;
              }},
             {Part::GeomArcOfParabola::getClassTypeId(),
              [](const Part::Geometry* geo) {
                  auto aop = static_cast<const Part::GeomArcOfParabola*>(geo);
+                 double startAngle, endAngle;
+                 aop->getRange(startAngle, endAngle, /*emulateCCWXY=*/true);
                  SingleGeometry sg;
                  auto focus = aop->getFocus();
                  auto axisPoint = aop->getCenter();
@@ -290,7 +298,7 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
                      boost::format("Part.ArcOfParabola(Part.Parabola(App.Vector(%f, %f, %f), "
                                    "App.Vector(%f, %f, %f), App.Vector(0, 0, 1)), %f, %f)")
                      % focus.x % focus.y % focus.z % axisPoint.x % axisPoint.y % axisPoint.z
-                     % aop->getFirstParameter() % aop->getLastParameter());
+                     % startAngle % endAngle);
                  sg.construction = Sketcher::GeometryFacade::getConstruction(geo);
                  return sg;
              }},
