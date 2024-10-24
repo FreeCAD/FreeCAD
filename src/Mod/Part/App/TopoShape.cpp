@@ -2333,7 +2333,7 @@ TopoDS_Shape TopoShape::makeSpiralHelix(Standard_Real radiusbottom, Standard_Rea
     }
 
     TopoDS_Wire wire = mkWire.Wire();
-    BRepLib::BuildCurves3d(wire, Precision::Confusion(), GeomAbs_Shape::GeomAbs_C1, 14, 10000);
+    BRepLib::BuildCurves3d(wire, Precision::Confusion() * 1e-6 * (radiusbottom+radiustop), GeomAbs_Shape::GeomAbs_C1, 14, 10000); // precision must be reduced for very large parts to avoid #17113
     return TopoDS_Shape(std::move(wire));
 }
 

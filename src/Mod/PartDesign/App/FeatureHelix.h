@@ -56,6 +56,7 @@ public:
     App::PropertyEnumeration Mode;
     App::PropertyBool        Outside;
     App::PropertyBool        HasBeenEdited;
+    App::PropertyFloatConstraint   Tolerance;
 
     /** if this property is set to a valid link, both Axis and Base properties
      *  are calculated according to the linked line
@@ -95,6 +96,7 @@ protected:
 
     static const App::PropertyFloatConstraint::Constraints floatTurns;
     static const App::PropertyAngle::Constraints floatAngle;
+    static const App::PropertyFloatConstraint::Constraints floatTolerance;
 
 private:
     static const char* ModeEnums[];
