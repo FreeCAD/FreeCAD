@@ -75,6 +75,10 @@ void StartGui::Manipulator::modifyMenuBar(Gui::MenuItem* menuBar)
 
     Gui::MenuItem* helpMenu = menuBar->findItem("&Help");
     Gui::MenuItem* loadStart = new Gui::MenuItem();
+    Gui::MenuItem* loadSeparator = new Gui::MenuItem();
     loadStart->setCommand("Start_Start");
-    helpMenu->appendItem(loadStart);
+    loadSeparator->setCommand("Separator");
+    Gui::MenuItem* firstItem = helpMenu->findItem("Std_FreeCADUserHub");
+    helpMenu->insertItem(firstItem, loadStart);
+    helpMenu->insertItem(firstItem, loadSeparator);
 }
