@@ -30,18 +30,10 @@ p = App.ParamGet("User parameter:Tux/NavigationIndicator")
 pView = App.ParamGet("User parameter:BaseApp/Preferences/View")
 pMWin = App.ParamGet("User parameter:BaseApp/Preferences/MainWindow")
 
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
 
-    def translate(context, text):
-        "convenience function for Qt 4 translator"
-        return QtGui.QApplication.translate(context, text, None, _encoding)
-
-except AttributeError:
-
-    def translate(context, text):
-        "convenience function for Qt 5 translator"
-        return QtGui.QApplication.translate(context, text, None)
+def translate(context, text):
+    "convenience function for Qt 5/6 translator"
+    return QtGui.QApplication.translate(context, text, None)
 
 
 class IndicatorButton(QtGui.QPushButton):
