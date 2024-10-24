@@ -52,9 +52,12 @@ protected:
     explicit DlgCustomToolbars(Type, QWidget* parent = nullptr);
     ~DlgCustomToolbars() override;
 
+public:
+    void onWorkbenchBoxActivated(int index);
+    void onActivateCategoryBox();
+
 protected:
     void setupConnections();
-    void onWorkbenchBoxActivated(int index);
     void onMoveActionRightButtonClicked();
     void onMoveActionLeftButtonClicked();
     void onMoveActionUpButtonClicked();
@@ -78,7 +81,6 @@ protected:
     virtual void removeCustomCommand(const QString&, const QByteArray&);
     virtual void moveUpCustomCommand(const QString&, const QByteArray&);
     virtual void moveDownCustomCommand(const QString&, const QByteArray&);
-    void onActivateCategoryBox();
 
 private:
     void importCustomToolbars(const QByteArray&);

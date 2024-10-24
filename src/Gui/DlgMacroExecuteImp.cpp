@@ -45,6 +45,8 @@
 #include "Macro.h"
 #include "MainWindow.h"
 #include "PythonEditor.h"
+#include "Workbench.h"
+#include "WorkbenchManager.h"
 
 
 using namespace Gui;
@@ -757,7 +759,7 @@ Note: your changes will be applied when you next switch workbenches\n"));
      **/
 
     QString instructions2 =
-        tr("Walkthrough instructions: Click right arrow button (->), then Close.");
+        tr("Walkthrough instructions: Select macro from list, then click right arrow button (->), then Close.");
     auto workbenchBox =
         setupToolbarPage->findChild<QComboBox*>(QString::fromLatin1("workbenchBox"));
     if (!workbenchBox) {
@@ -769,10 +771,7 @@ Note: your changes will be applied when you next switch workbenches\n"));
         int globalIdx = workbenchBox->findData(QString::fromLatin1("Global"));
         if (globalIdx != -1) {
             workbenchBox->setCurrentIndex(globalIdx);
-            QMetaObject::invokeMethod(setupToolbarPage,
-                                      "on_workbenchBox_activated",
-                                      Qt::DirectConnection,
-                                      Q_ARG(int, globalIdx));
+            setupToolbarPage->onWorkbenchBoxActivated(globalIdx);
         }
         else {
             Base::Console().Warning("Toolbar walkthrough: Unable to find Global workbench\n");
@@ -786,7 +785,7 @@ Note: your changes will be applied when you next switch workbenches\n"));
             }
             else {
                 newButton->setStyleSheet(QString::fromLatin1("color:red"));
-                instructions2 = tr("Walkthrough instructions: Click New, then right arrow (->) "
+                instructions2 = tr("Walkthrough instructions: Click New, select macro, then right arrow (->) "
                                    "button, then Close.");
             }
         }
@@ -812,10 +811,7 @@ Note: your changes will be applied when you next switch workbenches\n"));
         int macrosIdx = categoryBox->findText(tr("Macros"));
         if (macrosIdx != -1) {
             categoryBox->setCurrentIndex(macrosIdx);
-            QMetaObject::invokeMethod(setupToolbarPage,
-                                      "on_categoryBox_activated",
-                                      Qt::DirectConnection,
-                                      Q_ARG(int, macrosIdx));
+            //setupToolbarPage->onActivateCategoryBox();
         }
         else {
             Base::Console().Warning("Toolbar walkthrough: Unable to find Macros in categoryBox\n");
@@ -857,6 +853,11 @@ Note: your changes will be applied when you next switch workbenches\n"));
         }
     }
     dlg.exec();
+    // refresh toolbar so new icon shows up immediately
+    Workbench* active = Gui::WorkbenchManager::instance()->active();
+    if (active) {
+        active->activate();
+    }
 }
 
 
