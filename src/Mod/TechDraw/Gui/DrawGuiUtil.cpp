@@ -46,6 +46,7 @@
 #include <App/PropertyPythonObject.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/Interpreter.h>
 #include <Base/Parameter.h>
 #include <Base/Tools.h>
 #include <Base/Type.h>

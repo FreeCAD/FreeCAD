@@ -31,7 +31,6 @@
 #include <Base/Handle.h>
 #include <Base/Matrix.h>
 #include <Base/Persistence.h>
-#include "MappedName.h"
 #include "MappedElement.h"
 #include "ElementMap.h"
 #include "StringHasher.h"
@@ -51,6 +50,7 @@ using BoundBox3d = BoundBox3<double>;
 
 namespace Data
 {
+class MappedName;
 
 //struct MappedChildElements;
 /// Option for App::GeoFeature::searchElementCache()

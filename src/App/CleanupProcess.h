@@ -25,7 +25,6 @@
 #define APP_CLEANUPPROCESS_H
 
 #include <functional>
-#include <FCGlobal.h>
 
 namespace App
 {

@@ -25,18 +25,21 @@
 
 
 #include <vector>
-#include <tuple>
 #include <functional>
 #include <string>
 #include <Python.h>
-#include <App/DocumentObject.h>
-#include <Base/Vector3D.h>
-#include <App/DocumentObserver.h>
-#include <Base/Interpreter.h>
 
-#include <FCGlobal.h>
+#include <Base/Vector3D.h>
+
+#include "DocumentObserver.h"
+
+
+namespace Py {
+    class Tuple;
+}
 
 namespace App {
+class DocumentObject;
 
 // Add your class methods and member variables here
 enum class MeasureElementType {
