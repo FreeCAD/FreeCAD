@@ -1657,12 +1657,16 @@ def getPropertyData(key,value,preferences):
     if ptype in ["IfcLabel","IfcText","IfcIdentifier",'IfcDescriptiveMeasure']:
         pass
     elif ptype == "IfcBoolean":
-        if pvalue == ".T.":
+        if pvalue in ["True", "False"]:
+            pvalue = eval(pvalue)
+        elif pvalue == ".T.":
             pvalue = True
         else:
             pvalue = False
     elif ptype == "IfcLogical":
-        if pvalue.upper() == "TRUE":
+        if pvalue in ["True", "False"]:
+            pvalue = eval(pvalue)
+        elif pvalue.upper() == "TRUE":
             pvalue = True
         else:
             pvalue = False
