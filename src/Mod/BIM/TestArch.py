@@ -758,6 +758,22 @@ class ArchTest(unittest.TestCase):
         App.ActiveDocument.recompute()
         assert wall.Visibility
 
+    def testImportSH3D(self):
+        """Import a SweetHome 3D file
+        """
+        operation = "importers.importSH3D"
+        _msg("  Test '{}'".format(operation))
+        import BIM.importers.importSH3DHelper
+        dirname = os.path.dirname(BIM.importers.importSH3DHelper.__file__)
+        filename = os.path.join(dirname, "samples/Sample.sh3d")
+        importer = BIM.importers.importSH3DHelper.SH3DImporter(filename)
+        importer.import_sh3d()
+        assert App.ActiveDocument.Project
+        assert App.ActiveDocument.Site
+        assert App.ActiveDocument.BuildingPart.Label == "Building"
+        assert App.ActiveDocument.BuildingPart001.Label == "Level"
+        assert App.ActiveDocument.Wall
+
     def tearDown(self):
         App.closeDocument("ArchTest")
         pass

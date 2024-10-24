@@ -135,6 +135,21 @@ def offset(edge, vector, trim=False):
     and a complete circle will be returned.
 
     None if there is a problem.
+
+    Parameters
+    ----------
+    edge: Part.Shape
+        the edge to offset
+    vector: Base::Vector3
+        the vector by which the edge is to be offset
+    trim: bool, optional
+        If `edge` is an arc and `trim` is `True`, the resulting
+        arc will be trimmed to the proper angle
+
+    Returns
+    -------
+    Part.Shape
+        The offset shape
     """
     if (not isinstance(edge, Part.Shape)
             or not isinstance(vector, App.Vector)):
