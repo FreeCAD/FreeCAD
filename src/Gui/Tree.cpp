@@ -2982,8 +2982,12 @@ void TreeWidget::onUpdateStatus()
 
     std::vector<App::DocumentObject*> errors;
 
+    // Use a local copy in case of nested calls
+    auto localNewObjects = NewObjects;
+    NewObjects.clear();
+
     // Checking for new objects
-    for (auto& v : NewObjects) {
+    for (auto& v : localNewObjects) {
         auto doc = App::GetApplication().getDocument(v.first.c_str());
         if (!doc)
             continue;
@@ -3006,10 +3010,13 @@ void TreeWidget::onUpdateStatus()
                 docItem->createNewItem(*vpd);
         }
     }
-    NewObjects.clear();
+
+    // Use a local copy in case of nested calls
+    auto localChangedObjects = ChangedObjects;
+    ChangedObjects.clear();
 
     // Update children of changed objects
-    for (auto& v : ChangedObjects) {
+    for (auto& v : localChangedObjects) {
         auto obj = v.first;
 
         auto iter = ObjectTable.find(obj);
@@ -3035,7 +3042,6 @@ void TreeWidget::onUpdateStatus()
 
         updateChildren(iter->first, iter->second, v.second.test(CS_Output), false);
     }
-    ChangedObjects.clear();
 
     FC_LOG("update item status");
     TimingInit();
