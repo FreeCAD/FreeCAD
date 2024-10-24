@@ -24,11 +24,13 @@
 """This module contains FreeCAD commands for the Draft workbench"""
 
 import os
-import FreeCAD as App
-from draftutils.translate import translate, QT_TRANSLATE_NOOP
-from draftgeoutils.general import geomType
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
+import FreeCAD as App
+from draftgeoutils.general import geomType
 from draftobjects.base import DraftObject
+from draftutils import gui_utils
+from draftutils.translate import translate
 
 
 class Hatch(DraftObject):
@@ -64,8 +66,11 @@ class Hatch(DraftObject):
         self.Type = "Hatch"
 
     def onDocumentRestored(self,obj):
-
         self.setProperties(obj)
+        super().onDocumentRestored(obj)
+        gui_utils.restore_view_object(
+            obj, vp_module="view_hatch", vp_class="ViewProviderDraftHatch"
+        )
 
     def dumps(self):
 

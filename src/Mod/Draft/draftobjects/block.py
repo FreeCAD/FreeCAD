@@ -30,17 +30,24 @@
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 from draftobjects.base import DraftObject
+from draftutils import gui_utils
 
 
 class Block(DraftObject):
     """The Block object"""
 
     def __init__(self, obj):
-        super(Block, self).__init__(obj, "Block")
+        super().__init__(obj, "Block")
 
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "The components of this block")
         obj.addProperty("App::PropertyLinkList","Components", "Draft", _tip)
+
+    def onDocumentRestored(self, obj):
+        super().onDocumentRestored(obj)
+        gui_utils.restore_view_object(
+            obj, vp_module="view_base", vp_class="ViewProviderDraftPart", format=False
+        )
 
     def execute(self, obj):
         if self.props_changed_placement_only(obj):

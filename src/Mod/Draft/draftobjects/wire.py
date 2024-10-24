@@ -34,6 +34,7 @@ import FreeCAD as App
 import DraftGeomUtils
 import DraftVecUtils
 from draftobjects.base import DraftObject
+from draftutils import gui_utils
 from draftutils import params
 
 
@@ -41,7 +42,7 @@ class Wire(DraftObject):
     """The Wire object"""
 
     def __init__(self, obj):
-        super(Wire, self).__init__(obj, "Wire")
+        super().__init__(obj, "Wire")
 
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "The vertices of the wire")
@@ -93,6 +94,10 @@ class Wire(DraftObject):
 
         obj.MakeFace = params.get_param("fillmode")
         obj.Closed = False
+
+    def onDocumentRestored(self, obj):
+        super().onDocumentRestored(obj)
+        gui_utils.restore_view_object(obj, vp_module="view_wire", vp_class="ViewProviderWire")
 
     def execute(self, obj):
         if self.props_changed_placement_only(obj): # Supplying obj is required because of `Base` and `Tool`.

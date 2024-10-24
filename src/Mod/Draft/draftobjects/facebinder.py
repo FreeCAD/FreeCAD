@@ -31,14 +31,14 @@
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-
 from draftobjects.base import DraftObject
+from draftutils import gui_utils
 
 
 class Facebinder(DraftObject):
     """The Draft Facebinder object"""
     def __init__(self,obj):
-        super(Facebinder, self).__init__(obj, "Facebinder")
+        super().__init__(obj, "Facebinder")
 
         _tip = QT_TRANSLATE_NOOP("App::Property","Linked faces")
         obj.addProperty("App::PropertyLinkSubList", "Faces", "Draft", _tip)
@@ -58,6 +58,12 @@ class Facebinder(DraftObject):
         _tip = QT_TRANSLATE_NOOP("App::Property","The area of the faces of this Facebinder")
         obj.addProperty("App::PropertyArea","Area", "Draft", _tip)
         obj.setEditorMode("Area", 1)
+
+    def onDocumentRestored(self, obj):
+        super().onDocumentRestored(obj)
+        gui_utils.restore_view_object(
+            obj, vp_module="view_facebinder", vp_class="ViewProviderFacebinder", format=False
+        )
 
     def execute(self, obj):
         if self.props_changed_placement_only(obj):

@@ -38,8 +38,9 @@ import lazy_loader.lazy_loader as lz
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-
+from draftutils import gui_utils
 from draftutils.messages import _wrn
+
 from draftobjects.base import DraftObject
 
 # Delay import of module until first use because it is heavy
@@ -60,7 +61,7 @@ class DraftLink(DraftObject):
 
     def __init__(self, obj, tp):
         self.use_link = False if obj else True
-        super(DraftLink, self).__init__(obj, tp)
+        super().__init__(obj, tp)
         if obj:
             self.attach(obj)
 
@@ -74,7 +75,7 @@ class DraftLink(DraftObject):
             self.__dict__ = state
         else:
             self.use_link = False
-            super(DraftLink, self).loads(state)
+            super().loads(state)
 
     def attach(self, obj):
         """Set up the properties when the object is attached."""
@@ -181,8 +182,15 @@ class DraftLink(DraftObject):
             else:
                 self.execute(obj)
 
-        # Object properties are updated when the document is opened.
-        self.props_changed_clear()
+        super().onDocumentRestored(obj)
+        if hasattr(obj, "LinkTransform"):
+            gui_utils.restore_view_object(
+                obj, vp_module="view_draftlink", vp_class="ViewProviderDraftLink", format=False
+            )
+        else:
+            gui_utils.restore_view_object(
+                obj, vp_module="view_array", vp_class="ViewProviderDraftArray"
+            )
 
     def buildShape(self, obj, pl, pls):
         """Build the shape of the link object."""

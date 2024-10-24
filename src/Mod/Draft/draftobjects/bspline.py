@@ -31,6 +31,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 from draftobjects.base import DraftObject
+from draftutils import gui_utils
 from draftutils import params
 
 
@@ -38,7 +39,7 @@ class BSpline(DraftObject):
     """The BSpline object"""
 
     def __init__(self, obj):
-        super(BSpline, self).__init__(obj, "BSpline")
+        super().__init__(obj, "BSpline")
 
         _tip =  QT_TRANSLATE_NOOP("App::Property",
                 "The points of the B-spline")
@@ -59,6 +60,12 @@ class BSpline(DraftObject):
         obj.Closed = False
         obj.Points = []
         self.assureProperties(obj)
+
+    def onDocumentRestored(self, obj):
+        super().onDocumentRestored(obj)
+        gui_utils.restore_view_object(
+            obj, vp_module="view_bspline", vp_class="ViewProviderBSpline"
+        )
 
     def assureProperties(self, obj): # for Compatibility with older versions
         if not hasattr(obj, "Parameterization"):
