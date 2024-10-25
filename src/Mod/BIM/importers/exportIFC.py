@@ -1766,7 +1766,7 @@ def exportIfcAttributes(obj, kwargs, scale=0.001):
             value = obj.getPropertyByName(property)
             if isinstance(value, FreeCAD.Units.Quantity):
                 value = float(value)
-                if property in ["ElevationWithFlooring","Elevation"]:
+                if "Elevation" in property:
                     value = value*scale # some properties must be changed to meters
             if (ifctype == "IfcFurnishingElement") and (property == "PredefinedType"):
                 pass # IFC2x3 Furniture objects get converted to IfcFurnishingElement and have no PredefinedType anymore
