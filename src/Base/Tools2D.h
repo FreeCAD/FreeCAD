@@ -455,8 +455,8 @@ inline bool Line2d::Contains(const Vector2d& rclV) const
 
 inline BoundBox2d::BoundBox2d()
 {
-    MinX = MinY = DOUBLE_MAX;
-    MaxX = MaxY = -DOUBLE_MAX;
+    MinX = MinY = DBL_MAX;
+    MaxX = MaxY = -DBL_MAX;
 }
 
 inline BoundBox2d::BoundBox2d(double fX1, double fY1, double fX2, double fY2)
@@ -513,8 +513,8 @@ inline Vector2d BoundBox2d::GetCenter() const
 
 inline void BoundBox2d::SetVoid()
 {
-    MinX = MinY = DOUBLE_MAX;
-    MaxX = MaxY = -DOUBLE_MAX;
+    MinX = MinY = DBL_MAX;
+    MaxX = MaxY = -DBL_MAX;
 }
 
 inline void BoundBox2d::Add(const Vector2d& v)

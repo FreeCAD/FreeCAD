@@ -43,8 +43,8 @@ DlgSettingsFemCcxImp::DlgSettingsFemCcxImp(QWidget* parent)
 {
     ui->setupUi(this);
     // set ranges
-    ui->dsb_ccx_analysis_time->setMaximum(FLOAT_MAX);
-    ui->dsb_ccx_initial_time_step->setMaximum(FLOAT_MAX);
+    ui->dsb_ccx_analysis_time->setMaximum(FLT_MAX);
+    ui->dsb_ccx_initial_time_step->setMaximum(FLT_MAX);
     // determine number of CPU cores
     int processor_count = QThread::idealThreadCount();
     ui->sb_ccx_numcpu->setMaximum(processor_count);

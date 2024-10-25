@@ -144,7 +144,7 @@ Base::Matrix4D AbstractPolygonTriangulator::GetTransformToFitPlane() const
         planeFit.AddPoint(point);
     }
 
-    if (planeFit.Fit() >= FLOAT_MAX) {
+    if (planeFit.Fit() >= FLT_MAX) {
         throw Base::RuntimeError("Plane fit failed");
     }
 
@@ -215,7 +215,7 @@ void AbstractPolygonTriangulator::PostProcessing(const std::vector<Base::Vector3
         polyFit.AddPoint(pt);
     }
 
-    if (polyFit.CountPoints() >= uMinPts && polyFit.Fit() < FLOAT_MAX) {
+    if (polyFit.CountPoints() >= uMinPts && polyFit.Fit() < FLT_MAX) {
         for (auto& newpoint : _newpoints) {
             newpoint.z = static_cast<float>(polyFit.Value(newpoint.x, newpoint.y));
         }
