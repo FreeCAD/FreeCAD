@@ -1103,8 +1103,6 @@ CmdPartDesignPad::CmdPartDesignPad()
 void CmdPartDesignPad::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    App::Document *doc = getDocument();
-
     prepareProfileBased(this, "Pad", 10.0);
 }
 
@@ -1133,8 +1131,6 @@ CmdPartDesignPocket::CmdPartDesignPocket()
 void CmdPartDesignPocket::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    App::Document *doc = getDocument();
-
     prepareProfileBased(this, "Pocket", 5.0);
 }
 
@@ -1163,8 +1159,6 @@ CmdPartDesignHole::CmdPartDesignHole()
 void CmdPartDesignHole::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    App::Document *doc = getDocument();
-
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
 
     if (!pcActiveBody)
@@ -1208,8 +1202,6 @@ CmdPartDesignRevolution::CmdPartDesignRevolution()
 void CmdPartDesignRevolution::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    App::Document *doc = getDocument();
-
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
 
     if (!pcActiveBody)
@@ -1265,8 +1257,6 @@ CmdPartDesignGroove::CmdPartDesignGroove()
 void CmdPartDesignGroove::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    App::Document *doc = getDocument();
-
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
 
     if (!pcActiveBody)
@@ -1330,9 +1320,7 @@ CmdPartDesignAdditivePipe::CmdPartDesignAdditivePipe()
 void CmdPartDesignAdditivePipe::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    App::Document *doc = getDocument();
-
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
 
     if (!pcActiveBody)
         return;
@@ -1379,8 +1367,6 @@ CmdPartDesignSubtractivePipe::CmdPartDesignSubtractivePipe()
 void CmdPartDesignSubtractivePipe::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    App::Document *doc = getDocument();
-
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
 
     if (!pcActiveBody)
@@ -1428,8 +1414,6 @@ CmdPartDesignAdditiveLoft::CmdPartDesignAdditiveLoft()
 void CmdPartDesignAdditiveLoft::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    App::Document *doc = getDocument();
-
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
 
     if (!pcActiveBody)
@@ -1477,8 +1461,6 @@ CmdPartDesignSubtractiveLoft::CmdPartDesignSubtractiveLoft()
 void CmdPartDesignSubtractiveLoft::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    App::Document *doc = getDocument();
-
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
 
     if (!pcActiveBody)
@@ -1525,8 +1507,6 @@ CmdPartDesignAdditiveHelix::CmdPartDesignAdditiveHelix()
 void CmdPartDesignAdditiveHelix::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    App::Document *doc = getDocument();
-
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
 
     if (!pcActiveBody)
@@ -1600,8 +1580,6 @@ CmdPartDesignSubtractiveHelix::CmdPartDesignSubtractiveHelix()
 void CmdPartDesignSubtractiveHelix::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    App::Document *doc = getDocument();
-
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
 
     if (!pcActiveBody)
@@ -1643,8 +1621,7 @@ bool dressupGetSelected(Gui::Command* cmd, const std::string& which,
         Gui::SelectionObject &selected, bool &useAllEdges, bool& noSelection)
 {
     // No PartDesign feature without Body past FreeCAD 0.16
-    App::Document *doc = cmd->getDocument();
-
+    
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
 
     if (!pcActiveBody)
@@ -2028,8 +2005,7 @@ void CmdPartDesignMirrored::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     // No PartDesign feature without Body past FreeCAD 0.16
-    App::Document *doc = getDocument();
-
+    
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
 
     if (!pcActiveBody)
@@ -2081,8 +2057,7 @@ void CmdPartDesignLinearPattern::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     // No PartDesign feature without Body past FreeCAD 0.16
-    App::Document *doc = getDocument();
-
+    
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
 
     if (!pcActiveBody)
@@ -2136,8 +2111,7 @@ void CmdPartDesignPolarPattern::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     // No PartDesign feature without Body past FreeCAD 0.16
-    App::Document *doc = getDocument();
-
+    
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
 
     if (!pcActiveBody)
@@ -2192,8 +2166,7 @@ CmdPartDesignScaled::CmdPartDesignScaled()
 void CmdPartDesignScaled::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    App::Document *doc = getDocument();
-
+    
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
 
     if (!pcActiveBody)
@@ -2236,8 +2209,7 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     // No PartDesign feature without Body past FreeCAD 0.16
-    App::Document *doc = getDocument();
-
+    
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
 
     if (!pcActiveBody)
