@@ -78,6 +78,10 @@
 
 #endif
 
+#include <HLRAlgo_Projector.hxx>
+#include <HLRBRep_Algo.hxx>
+#include <HLRBRep_HLRToShape.hxx>
+
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/ElementNamingUtils.h>
@@ -8358,6 +8362,560 @@ void SketchObject::validateExternalLinks()
     }
 }
 
+namespace {
+void processEdge2(TopoDS_Edge& projEdge, std::vector<std::unique_ptr<Part::Geometry>>& geos)
+{
+    BRepAdaptor_Curve projCurve(projEdge);
+    if (projCurve.GetType() == GeomAbs_Line) {
+        gp_Pnt P1 = projCurve.Value(projCurve.FirstParameter());
+        gp_Pnt P2 = projCurve.Value(projCurve.LastParameter());
+        Base::Vector3d p1(P1.X(), P1.Y(), P1.Z());
+        Base::Vector3d p2(P2.X(), P2.Y(), P2.Z());
+
+        if (Base::Distance(p1, p2) < Precision::Confusion()) {
+            Base::Vector3d p = (p1 + p2) / 2;
+            auto* point = new Part::GeomPoint(p);
+            GeometryFacade::setConstruction(point, true);
+            geos.emplace_back(point);
+        }
+        else {
+            auto* line = new Part::GeomLineSegment();
+            line->setPoints(p1, p2);
+            GeometryFacade::setConstruction(line, true);
+            geos.emplace_back(line);
+        }
+    }
+    else if (projCurve.GetType() == GeomAbs_Circle) {
+        gp_Circ c = projCurve.Circle();
+        gp_Pnt p = c.Location();
+        gp_Pnt P1 = projCurve.Value(projCurve.FirstParameter());
+        gp_Pnt P2 = projCurve.Value(projCurve.LastParameter());
+
+        if (P1.SquareDistance(P2) < Precision::Confusion()) {
+            auto* circle = new Part::GeomCircle();
+            circle->setRadius(c.Radius());
+            circle->setCenter(Base::Vector3d(p.X(), p.Y(), p.Z()));
+
+            GeometryFacade::setConstruction(circle, true);
+            geos.emplace_back(circle);
+        }
+        else {
+            auto* arc = new Part::GeomArcOfCircle();
+            Handle(Geom_Curve) curve = new Geom_Circle(c);
+            Handle(Geom_TrimmedCurve) tCurve = new Geom_TrimmedCurve(curve,
+                    projCurve.FirstParameter(),
+                    projCurve.LastParameter());
+            arc->setHandle(tCurve);
+            GeometryFacade::setConstruction(arc, true);
+            geos.emplace_back(arc);
+        }
+    }
+    else if (projCurve.GetType() == GeomAbs_BSplineCurve) {
+        // Unfortunately, a normal projection of a circle can also give
+        // a Bspline Split the spline into arcs
+        GeomConvert_BSplineCurveKnotSplitting bSplineSplitter(projCurve.BSpline(), 2);
+        auto* bspline = new Part::GeomBSplineCurve(projCurve.BSpline());
+        GeometryFacade::setConstruction(bspline, true);
+        geos.emplace_back(bspline);
+    }
+    else if (projCurve.GetType() == GeomAbs_Hyperbola) {
+        gp_Hypr e = projCurve.Hyperbola();
+        gp_Pnt p = e.Location();
+        gp_Pnt P1 = projCurve.Value(projCurve.FirstParameter());
+        gp_Pnt P2 = projCurve.Value(projCurve.LastParameter());
+
+        gp_Dir normal = e.Axis().Direction();
+        gp_Dir xdir = e.XAxis().Direction();
+        gp_Ax2 xdirref(p, normal);
+
+        if (P1.SquareDistance(P2) < Precision::Confusion()) {
+            auto* hyperbola = new Part::GeomHyperbola();
+            hyperbola->setMajorRadius(e.MajorRadius());
+            hyperbola->setMinorRadius(e.MinorRadius());
+            hyperbola->setCenter(Base::Vector3d(p.X(), p.Y(), p.Z()));
+            hyperbola->setAngleXU(-xdir.AngleWithRef(xdirref.XDirection(), normal));
+            GeometryFacade::setConstruction(hyperbola, true);
+            geos.emplace_back(hyperbola);
+        }
+        else {
+            auto* aoh = new Part::GeomArcOfHyperbola();
+            Handle(Geom_Curve) curve = new Geom_Hyperbola(e);
+            Handle(Geom_TrimmedCurve) tCurve = new Geom_TrimmedCurve(curve,
+                    projCurve.FirstParameter(),
+                    projCurve.LastParameter());
+            aoh->setHandle(tCurve);
+            GeometryFacade::setConstruction(aoh, true);
+            geos.emplace_back(aoh);
+        }
+    }
+    else if (projCurve.GetType() == GeomAbs_Parabola) {
+        gp_Parab e = projCurve.Parabola();
+        gp_Pnt p = e.Location();
+        gp_Pnt P1 = projCurve.Value(projCurve.FirstParameter());
+        gp_Pnt P2 = projCurve.Value(projCurve.LastParameter());
+
+        gp_Dir normal = e.Axis().Direction();
+        gp_Dir xdir = e.XAxis().Direction();
+        gp_Ax2 xdirref(p, normal);
+
+        if (P1.SquareDistance(P2) < Precision::Confusion()) {
+            auto* parabola = new Part::GeomParabola();
+            parabola->setFocal(e.Focal());
+            parabola->setCenter(Base::Vector3d(p.X(), p.Y(), p.Z()));
+            parabola->setAngleXU(-xdir.AngleWithRef(xdirref.XDirection(), normal));
+            GeometryFacade::setConstruction(parabola, true);
+            geos.emplace_back(parabola);
+        }
+        else {
+            auto* aop = new Part::GeomArcOfParabola();
+            Handle(Geom_Curve) curve = new Geom_Parabola(e);
+            Handle(Geom_TrimmedCurve) tCurve = new Geom_TrimmedCurve(curve,
+                    projCurve.FirstParameter(),
+                    projCurve.LastParameter());
+            aop->setHandle(tCurve);
+            GeometryFacade::setConstruction(aop, true);
+            geos.emplace_back(aop);
+        }
+    }
+    else if (projCurve.GetType() == GeomAbs_Ellipse) {
+        gp_Elips e = projCurve.Ellipse();
+        gp_Pnt p = e.Location();
+        gp_Pnt P1 = projCurve.Value(projCurve.FirstParameter());
+        gp_Pnt P2 = projCurve.Value(projCurve.LastParameter());
+
+        // gp_Dir normal = e.Axis().Direction();
+        gp_Dir normal = gp_Dir(0, 0, 1);
+        gp_Ax2 xdirref(p, normal);
+
+        if (P1.SquareDistance(P2) < Precision::Confusion()) {
+            auto* ellipse = new Part::GeomEllipse();
+            Handle(Geom_Ellipse) curve = new Geom_Ellipse(e);
+            ellipse->setHandle(curve);
+            GeometryFacade::setConstruction(ellipse, true);
+            geos.emplace_back(ellipse);
+        }
+        else {
+            auto* aoe = new Part::GeomArcOfEllipse();
+            Handle(Geom_Curve) curve = new Geom_Ellipse(e);
+            Handle(Geom_TrimmedCurve) tCurve = new Geom_TrimmedCurve(curve,
+                    projCurve.FirstParameter(),
+                    projCurve.LastParameter());
+            aoe->setHandle(tCurve);
+            GeometryFacade::setConstruction(aoe, true);
+            geos.emplace_back(aoe);
+        }
+    }
+    else {
+        throw Base::NotImplementedError("Not yet supported geometry for external geometry");
+    }
+}
+
+void processEdge(const TopoDS_Edge& edge,
+                 std::vector<std::unique_ptr<Part::Geometry>>& geos,
+                 const Handle(Geom_Plane)& gPlane,
+                 const Base::Placement& invPlm,
+                 const gp_Trsf& mov,
+                 const gp_Pln& sketchPlane,
+                 const Base::Rotation& invRot,
+                 gp_Ax3& sketchAx3,
+                 TopoDS_Shape& aProjFace)
+{
+    BRepAdaptor_Curve curve(edge);
+    if (curve.GetType() == GeomAbs_Line) {
+        geos.emplace_back(projectLine(curve, gPlane, invPlm));
+    }
+    else if (curve.GetType() == GeomAbs_Circle) {
+        gp_Dir vec1 = sketchPlane.Axis().Direction();
+        gp_Dir vec2 = curve.Circle().Axis().Direction();
+        if (vec1.IsParallel(vec2, Precision::Confusion())) {
+            gp_Circ circle = curve.Circle();
+            gp_Pnt cnt = circle.Location();
+            gp_Pnt beg = curve.Value(curve.FirstParameter());
+            gp_Pnt end = curve.Value(curve.LastParameter());
+
+            GeomAPI_ProjectPointOnSurf proj(cnt, gPlane);
+            cnt = proj.NearestPoint();
+            circle.SetLocation(cnt);
+            cnt.Transform(mov);
+            circle.Transform(mov);
+
+            if (beg.SquareDistance(end) < Precision::Confusion()) {
+                auto* gCircle = new Part::GeomCircle();
+                gCircle->setRadius(circle.Radius());
+                gCircle->setCenter(Base::Vector3d(cnt.X(), cnt.Y(), cnt.Z()));
+
+                GeometryFacade::setConstruction(gCircle, true);
+                geos.emplace_back(gCircle);
+            }
+            else {
+                auto* gArc = new Part::GeomArcOfCircle();
+                Handle(Geom_Curve) hCircle = new Geom_Circle(circle);
+                Handle(Geom_TrimmedCurve) tCurve = new Geom_TrimmedCurve(
+                    hCircle, curve.FirstParameter(), curve.LastParameter());
+                gArc->setHandle(tCurve);
+                GeometryFacade::setConstruction(gArc, true);
+                geos.emplace_back(gArc);
+            }
+        }
+        else {
+            // creates an ellipse or a segment
+
+            gp_Dir vec1 = sketchPlane.Axis().Direction();
+            gp_Dir vec2 = curve.Circle().Axis().Direction();
+            gp_Circ origCircle = curve.Circle();
+
+            if (vec1.IsNormal(
+                vec2, Precision::Angular())) {// circle's normal vector in plane:
+            //   projection is a line
+            //   define center by projection
+                gp_Pnt cnt = origCircle.Location();
+                GeomAPI_ProjectPointOnSurf proj(cnt, gPlane);
+                cnt = proj.NearestPoint();
+
+                gp_Dir dirOrientation = gp_Dir(vec1 ^ vec2);
+                gp_Dir dirLine(dirOrientation);
+
+                auto* projectedSegment = new Part::GeomLineSegment();
+                Geom_Line ligne(cnt, dirLine);// helper object to compute end points
+                gp_Pnt P1, P2;                // end points of the segment, OCC style
+
+                ligne.D0(-origCircle.Radius(), P1);
+                ligne.D0(origCircle.Radius(), P2);
+
+                if (!curve.IsClosed()) {// arc of circle
+
+                    // start point of arc of circle
+                    gp_Pnt pntF = curve.Value(curve.FirstParameter());
+                    // end point of arc of circle
+                    gp_Pnt pntL = curve.Value(curve.LastParameter());
+
+                    double alpha =
+                        dirOrientation.AngleWithRef(curve.Circle().XAxis().Direction(),
+                            curve.Circle().Axis().Direction());
+
+                    double baseAngle = curve.FirstParameter();
+
+                    int tours = 0;
+                    double startAngle = baseAngle + alpha;
+                    // bring startAngle back in [-pi/2 , 3pi/2[
+                    while (startAngle < -M_PI / 2.0 && tours < 10) {
+                        startAngle = baseAngle + ++tours * 2.0 * M_PI + alpha;
+                    }
+                    while (startAngle >= 3.0 * M_PI / 2.0 && tours > -10) {
+                        startAngle = baseAngle + --tours * 2.0 * M_PI + alpha;
+                    }
+
+                    // apply same offset to end angle
+                    double endAngle = curve.LastParameter() + startAngle - baseAngle;
+
+                    if (startAngle <= 0.0) {
+                        if (endAngle <= 0.0) {
+                            P1 = ProjPointOnPlane_XYZ(pntF, sketchPlane);
+                            P2 = ProjPointOnPlane_XYZ(pntL, sketchPlane);
+                        }
+                        else {
+                            if (endAngle <= fabs(startAngle)) {
+                                // P2 = P2 already defined
+                                P1 = ProjPointOnPlane_XYZ(pntF, sketchPlane);
+                            }
+                            else if (endAngle < M_PI) {
+                                // P2 = P2, already defined
+                                P1 = ProjPointOnPlane_XYZ(pntL, sketchPlane);
+                            }
+                            else {
+                                // P1 = P1, already defined
+                                // P2 = P2, already defined
+                            }
+                        }
+                    }
+                    else if (startAngle < M_PI) {
+                        if (endAngle < M_PI) {
+                            P1 = ProjPointOnPlane_XYZ(pntF, sketchPlane);
+                            P2 = ProjPointOnPlane_XYZ(pntL, sketchPlane);
+                        }
+                        else if (endAngle < 2.0 * M_PI - startAngle) {
+                            P2 = ProjPointOnPlane_XYZ(pntF, sketchPlane);
+                            // P1 = P1, already defined
+                        }
+                        else if (endAngle < 2.0 * M_PI) {
+                            P2 = ProjPointOnPlane_XYZ(pntL, sketchPlane);
+                            // P1 = P1, already defined
+                        }
+                        else {
+                            // P1 = P1, already defined
+                            // P2 = P2, already defined
+                        }
+                    }
+                    else {
+                        if (endAngle < 2 * M_PI) {
+                            P1 = ProjPointOnPlane_XYZ(pntF, sketchPlane);
+                            P2 = ProjPointOnPlane_XYZ(pntL, sketchPlane);
+                        }
+                        else if (endAngle < 4 * M_PI - startAngle) {
+                            P1 = ProjPointOnPlane_XYZ(pntF, sketchPlane);
+                            // P2 = P2, already defined
+                        }
+                        else if (endAngle < 3 * M_PI) {
+                            // P1 = P1, already defined
+                            P2 = ProjPointOnPlane_XYZ(pntL, sketchPlane);
+                        }
+                        else {
+                            // P1 = P1, already defined
+                            // P2 = P2, already defined
+                        }
+                    }
+                }
+
+                Base::Vector3d p1(P1.X(), P1.Y(), P1.Z());// ends of segment FCAD style
+                Base::Vector3d p2(P2.X(), P2.Y(), P2.Z());
+                invPlm.multVec(p1, p1);
+                invPlm.multVec(p2, p2);
+
+                projectedSegment->setPoints(p1, p2);
+                GeometryFacade::setConstruction(projectedSegment, true);
+                geos.emplace_back(projectedSegment);
+            }
+            else {// general case, full circle
+                gp_Pnt cnt = origCircle.Location();
+                GeomAPI_ProjectPointOnSurf proj(cnt, gPlane);
+                // projection of circle center on sketch plane, 3D space
+                cnt = proj.NearestPoint();
+                // converting to FCAD style vector
+                Base::Vector3d p(cnt.X(), cnt.Y(), cnt.Z());
+                // transforming towards sketch's (x,y) coordinates
+                invPlm.multVec(p, p);
+
+
+                gp_Vec vecMajorAxis = vec1 ^ vec2;// major axis in 3D space
+
+                double minorRadius;// TODO use data type of vectors around...
+                double cosTheta;
+                // cos of angle between the two planes, assuming vectirs are normalized
+                // to 1
+                cosTheta = fabs(vec1.Dot(vec2));
+                minorRadius = origCircle.Radius() * cosTheta;
+
+                // maj axis into FCAD style vector
+                Base::Vector3d vectorMajorAxis(
+                    vecMajorAxis.X(), vecMajorAxis.Y(), vecMajorAxis.Z());
+                // transforming to sketch's (x,y) coordinates
+                invRot.multVec(vectorMajorAxis, vectorMajorAxis);
+                // back to OCC
+                vecMajorAxis.SetXYZ(
+                    gp_XYZ(vectorMajorAxis[0], vectorMajorAxis[1], vectorMajorAxis[2]));
+
+                // NB: force normal of ellipse to be normal of sketch's plane.
+                gp_Ax2 refFrameEllipse(
+                    gp_Pnt(gp_XYZ(p[0], p[1], p[2])), gp_Vec(0, 0, 1), vecMajorAxis);
+                Handle(Geom_Ellipse) curve =
+                    new Geom_Ellipse(refFrameEllipse, origCircle.Radius(), minorRadius);
+                Part::GeomEllipse* ellipse = new Part::GeomEllipse();
+                ellipse->setHandle(curve);
+                GeometryFacade::setConstruction(ellipse, true);
+                geos.emplace_back(ellipse);
+            }
+        }
+    }
+    else if (curve.GetType() == GeomAbs_Ellipse) {
+
+        gp_Elips elipsOrig = curve.Ellipse();
+        gp_Elips elipsDest;
+        gp_Pnt origCenter = elipsOrig.Location();
+        gp_Pnt destCenter = ProjPointOnPlane_UVN(origCenter, sketchPlane).XYZ();
+
+        gp_Dir origAxisMajorDir = elipsOrig.XAxis().Direction();
+        gp_Vec origAxisMajor = elipsOrig.MajorRadius() * gp_Vec(origAxisMajorDir);
+        gp_Dir origAxisMinorDir = elipsOrig.YAxis().Direction();
+        gp_Vec origAxisMinor = elipsOrig.MinorRadius() * gp_Vec(origAxisMinorDir);
+
+        // Here, it used to be a test for parallel direction between the sketchplane and
+        // the elipsOrig, in which the original ellipse would be copied and translated
+        // to the new position. The problem with that approach is that for the sketcher
+        // the normal vector is always (0,0,1). If the original ellipse was not on the
+        // XY plane, the copy will not be either. Then, the dimensions would be wrong
+        // because of the different major axis direction (which is not projected on the
+        // XY plane). So here, we default to the more general ellipse construction
+        // algorithm.
+        //
+        // Doing that solves:
+        // https://forum.freecad.org/viewtopic.php?f=3&t=55284#p477522
+
+        // GENERAL ELLIPSE CONSTRUCTION ALGORITHM
+        //
+        // look for major axis of projected ellipse
+        //
+        // t is the parameter along the origin ellipse
+        //   OM(t) = origCenter
+        //           + majorRadius * cos(t) * origAxisMajorDir
+        //           + minorRadius * sin(t) * origAxisMinorDir
+        gp_Vec2d PA = ProjVecOnPlane_UV(origAxisMajor, sketchPlane);
+        gp_Vec2d PB = ProjVecOnPlane_UV(origAxisMinor, sketchPlane);
+        double t_max = 2.0 * PA.Dot(PB) / (PA.SquareMagnitude() - PB.SquareMagnitude());
+        t_max = 0.5 * atan(t_max);// gives new major axis is most cases, but not all
+        double t_min = t_max + 0.5 * M_PI;
+
+        // ON_max = OM(t_max) gives the point, which projected on the sketch plane,
+        //     becomes the apoapse of the projected ellipse.
+        gp_Vec ON_max = origAxisMajor * cos(t_max) + origAxisMinor * sin(t_max);
+        gp_Vec ON_min = origAxisMajor * cos(t_min) + origAxisMinor * sin(t_min);
+        gp_Vec destAxisMajor = ProjVecOnPlane_UVN(ON_max, sketchPlane);
+        gp_Vec destAxisMinor = ProjVecOnPlane_UVN(ON_min, sketchPlane);
+
+        double RDest = destAxisMajor.Magnitude();
+        double rDest = destAxisMinor.Magnitude();
+
+        if (RDest < rDest) {
+            double rTmp = rDest;
+            rDest = RDest;
+            RDest = rTmp;
+            gp_Vec axisTmp = destAxisMajor;
+            destAxisMajor = destAxisMinor;
+            destAxisMinor = axisTmp;
+        }
+
+        double sens = sketchAx3.Direction().Dot(elipsOrig.Position().Direction());
+        int flip = sens > 0.0 ? 1.0 : -1.0;
+        gp_Ax2 destCurveAx2(destCenter, gp_Dir(0, 0, flip), gp_Dir(destAxisMajor));
+
+        // projection is a circle
+        if ((RDest - rDest) < (double)Precision::Confusion()) {
+            Handle(Geom_Circle) curve = new Geom_Circle(destCurveAx2, 0.5 * (rDest + RDest));
+            auto* circle = new Part::GeomCircle();
+            circle->setHandle(curve);
+            GeometryFacade::setConstruction(circle, true);
+            geos.emplace_back(circle);
+        }
+        else {
+            if (sketchPlane.Position().Direction().IsNormal(
+                elipsOrig.Position().Direction(), Precision::Angular())) {
+                gp_Vec start = gp_Vec(destCenter.XYZ()) + destAxisMajor;
+                gp_Vec end = gp_Vec(destCenter.XYZ()) - destAxisMajor;
+
+                auto* projectedSegment = new Part::GeomLineSegment();
+                projectedSegment->setPoints(
+                    Base::Vector3d(start.X(), start.Y(), start.Z()),
+                    Base::Vector3d(end.X(), end.Y(), end.Z()));
+                GeometryFacade::setConstruction(projectedSegment, true);
+                geos.emplace_back(projectedSegment);
+            }
+            else {
+
+                elipsDest.SetPosition(destCurveAx2);
+                elipsDest.SetMajorRadius(destAxisMajor.Magnitude());
+                elipsDest.SetMinorRadius(destAxisMinor.Magnitude());
+
+
+                Handle(Geom_Ellipse) curve = new Geom_Ellipse(elipsDest);
+                auto* ellipse = new Part::GeomEllipse();
+                ellipse->setHandle(curve);
+                GeometryFacade::setConstruction(ellipse, true);
+                geos.emplace_back(ellipse);
+            }
+        }
+    }
+    else {
+        try {
+            BRepOffsetAPI_NormalProjection mkProj(aProjFace);
+            mkProj.Add(edge);
+            mkProj.Build();
+            const TopoDS_Shape& projShape = mkProj.Projection();
+            if (!projShape.IsNull()) {
+                TopExp_Explorer xp;
+                for (xp.Init(projShape, TopAbs_EDGE); xp.More(); xp.Next()) {
+                    TopoDS_Edge projEdge = TopoDS::Edge(xp.Current());
+                    TopLoc_Location loc(mov);
+                    projEdge.Location(loc);
+                    processEdge2(projEdge, geos);
+                }
+            }
+        }
+        catch (Standard_Failure& e) {
+            throw Base::CADKernelError(e.GetMessageString());
+        }
+    }
+}
+
+std::vector<TopoDS_Shape> projectShape(const TopoDS_Shape& inShape, const gp_Ax3& viewAxis)
+{
+    std::vector<TopoDS_Shape> res;
+    Handle(HLRBRep_Algo) brep_hlr;
+    try {
+        brep_hlr = new HLRBRep_Algo();
+        brep_hlr->Add(inShape);
+
+        gp_Trsf aTrsf;
+        aTrsf.SetTransformation(viewAxis);
+        HLRAlgo_Projector projector(aTrsf, false, 1);
+
+        brep_hlr->Projector(projector);
+        brep_hlr->Update();
+        brep_hlr->Hide();
+    }
+    catch (const Standard_Failure& e) {
+        Base::Console().Error("GO::projectShape - OCC error - %s - while projecting shape\n",
+            e.GetMessageString());
+        throw Base::RuntimeError("SketchObject::projectShape - OCC error");
+    }
+    catch (...) {
+        throw Base::RuntimeError("SketchObject::projectShape - unknown error");
+    }
+
+    try {
+        HLRBRep_HLRToShape hlrToShape(brep_hlr);
+        if (!hlrToShape.VCompound().IsNull()) {
+            //TopAbs_COMPOUND to TopAbs_EDGE
+            res.push_back(hlrToShape.VCompound());
+        }
+
+        if (!hlrToShape.Rg1LineVCompound().IsNull()) {
+            res.push_back(hlrToShape.Rg1LineVCompound());
+        }
+
+        /*if (!hlrToShape.RgNLineVCompound().IsNull()) {
+            res.push_back(hlrToShape.RgNLineVCompound());
+        }*/ // we don't need the seams.
+
+        if (!hlrToShape.OutLineVCompound().IsNull()) {
+            res.push_back(hlrToShape.OutLineVCompound());
+        }
+
+        if (!hlrToShape.IsoLineVCompound().IsNull()) {
+            res.push_back(hlrToShape.IsoLineVCompound());
+        }
+
+        if (!hlrToShape.HCompound().IsNull()) {
+            res.push_back(hlrToShape.HCompound());
+        }
+
+        if (!hlrToShape.Rg1LineHCompound().IsNull()) {
+            res.push_back(hlrToShape.Rg1LineHCompound());
+        }
+
+        /*if (!hlrToShape.RgNLineHCompound().IsNull()) {
+            res.push_back(hlrToShape.RgNLineHCompound());
+        }*/
+
+        if (!hlrToShape.OutLineHCompound().IsNull()) {
+            res.push_back(hlrToShape.OutLineHCompound());
+        }
+
+        if (!hlrToShape.IsoLineHCompound().IsNull()) {
+            res.push_back(hlrToShape.IsoLineHCompound());
+        }
+    }
+    catch (const Standard_Failure&) {
+        throw Base::RuntimeError(
+            "SketchObject::projectShape - OCC error occurred while extracting edges");
+    }
+    catch (...) {
+        throw Base::RuntimeError(
+            "SketchObject::projectShape - unknown error occurred while extracting edges");
+    }
+
+    return res;
+}
+}
+
 void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
 {
     Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
@@ -8463,12 +9021,12 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
         TopoDS_Shape refSubShape;
 
         if (Obj->isDerivedFrom<Part::Datum>()) {
-            const Part::Datum* datum = static_cast<const Part::Datum*>(Obj);
+            auto* datum = static_cast<const Part::Datum*>(Obj);
             refSubShape = datum->getShape();
         }
         else if (Obj->isDerivedFrom<Part::Feature>()) {
             try {
-                const Part::Feature* refObj = static_cast<const Part::Feature*>(Obj);
+                auto* refObj = static_cast<const Part::Feature*>(Obj);
                 const Part::TopoShape& refShape = refObj->Shape.getShape();
                 refSubShape = refShape.getSubShape(SubElement.c_str());
             }
@@ -8477,7 +9035,7 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
             }
         }
         else if (Obj->isDerivedFrom<App::Plane>()) {
-            const App::Plane* pl = static_cast<const App::Plane*>(Obj);
+            auto* pl = static_cast<const App::Plane*>(Obj);
             Base::Placement plm = pl->Placement.getValue();
             Base::Vector3d base = plm.getPosition();
             Base::Rotation rot = plm.getRotation();
@@ -8506,521 +9064,73 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
                     Geom_Plane plane = surface.Plane();
                     gp_Dir dnormal = plane.Axis().Direction();
                     gp_Dir snormal = sketchPlane.Axis().Direction();
-                    if (fabs(dnormal.Angle(snormal) - M_PI_2) < Precision::Confusion()) {
-                        // Get vector that is normal to both sketch plane normal and plane normal.
-                        // This is the line's direction
-                        gp_Dir lnormal = dnormal.Crossed(snormal);
-                        BRepBuilderAPI_MakeEdge builder(gp_Lin(plane.Location(), lnormal));
-                        builder.Build();
-                        if (builder.IsDone()) {
-                            const TopoDS_Edge& edge = TopoDS::Edge(builder.Shape());
-                            BRepAdaptor_Curve curve(edge);
-                            if (curve.GetType() == GeomAbs_Line) {
-                                geos.emplace_back(projectLine(curve, gPlane, invPlm));
-                            }
-                        }
+
+                    // Extract all edges from the face
+                    TopExp_Explorer edgeExp;
+                    for (edgeExp.Init(face, TopAbs_EDGE); edgeExp.More(); edgeExp.Next()) {
+                        TopoDS_Edge edge = TopoDS::Edge(edgeExp.Current());
+                        // Process each edge
+                        processEdge(edge, geos, gPlane, invPlm, mov, sketchPlane, invRot, sketchAx3, aProjFace);
                     }
-                    else {
-                        throw Base::ValueError(
-                            "Selected external reference plane must be normal to sketch plane");
+
+                    if (fabs(dnormal.Angle(snormal) - M_PI_2) < Precision::Confusion()) {
+                        // The face is normal to the sketch plane
+                        // We don't want to keep the projection of all the edges of the face.
+                        // We need a single line that goes from min to max of all the projections.
+                        bool initialized = false;
+                        Base::Vector3d start, end;
+                        // Lambda to determine if a point should replace start or end
+                        auto updateExtremes = [&](const Base::Vector3d& point) {
+                            if ((point - start).Length() < (point - end).Length()) {
+                                // `point` is closer to `start` than `end`, check if it's further out than `start`
+                                if ((point - end).Length() > (end - start).Length()) {
+                                    start = point;
+                                }
+                            }
+                            else {
+                                // `point` is closer to `end`, check if it's further out than `end`
+                                if ((point - start).Length() > (end - start).Length()) {
+                                    end = point;
+                                }
+                            }
+                        };
+                        for (auto& geo : geos) {
+                            auto* line = dynamic_cast<Part::GeomLineSegment*>(geo.get());
+                            if (!line) {
+                                continue; // we should have only lines
+                            }
+                            if (!initialized) {
+                                start = line->getStartPoint();
+                                end = line->getEndPoint();
+                                initialized = true;
+                                continue;
+                            }
+
+                            updateExtremes(line->getStartPoint());
+                            updateExtremes(line->getEndPoint());
+                        }
+
+                        auto* unifiedLine = new Part::GeomLineSegment();
+                        unifiedLine->setPoints(start, end);
+                        geos.clear(); // Clear other segments
+                        geos.emplace_back(unifiedLine);
                     }
                 }
                 else {
-                    throw Base::ValueError(
-                        "Non-planar faces are not yet supported for external geometry of sketches");
+                    std::vector<TopoDS_Shape> res = projectShape(face, sketchAx3);
+                    for (auto& resShape : res) {
+                        TopExp_Explorer explorer(resShape, TopAbs_EDGE);
+                        while (explorer.More()) {
+                            TopoDS_Edge projEdge = TopoDS::Edge(explorer.Current());
+                            processEdge2(projEdge, geos);
+                            explorer.Next();
+                        }
+                    }
                 }
             } break;
             case TopAbs_EDGE: {
                 const TopoDS_Edge& edge = TopoDS::Edge(refSubShape);
-                BRepAdaptor_Curve curve(edge);
-                if (curve.GetType() == GeomAbs_Line) {
-                    geos.emplace_back(projectLine(curve, gPlane, invPlm));
-                }
-                else if (curve.GetType() == GeomAbs_Circle) {
-                    gp_Dir vec1 = sketchPlane.Axis().Direction();
-                    gp_Dir vec2 = curve.Circle().Axis().Direction();
-                    if (vec1.IsParallel(vec2, Precision::Confusion())) {
-                        gp_Circ circle = curve.Circle();
-                        gp_Pnt cnt = circle.Location();
-                        gp_Pnt beg = curve.Value(curve.FirstParameter());
-                        gp_Pnt end = curve.Value(curve.LastParameter());
-
-                        GeomAPI_ProjectPointOnSurf proj(cnt, gPlane);
-                        cnt = proj.NearestPoint();
-                        circle.SetLocation(cnt);
-                        cnt.Transform(mov);
-                        circle.Transform(mov);
-
-                        if (beg.SquareDistance(end) < Precision::Confusion()) {
-                            Part::GeomCircle* gCircle = new Part::GeomCircle();
-                            gCircle->setRadius(circle.Radius());
-                            gCircle->setCenter(Base::Vector3d(cnt.X(), cnt.Y(), cnt.Z()));
-
-                            GeometryFacade::setConstruction(gCircle, true);
-                            geos.emplace_back(gCircle);
-                        }
-                        else {
-                            Part::GeomArcOfCircle* gArc = new Part::GeomArcOfCircle();
-                            Handle(Geom_Curve) hCircle = new Geom_Circle(circle);
-                            Handle(Geom_TrimmedCurve) tCurve = new Geom_TrimmedCurve(
-                                hCircle, curve.FirstParameter(), curve.LastParameter());
-                            gArc->setHandle(tCurve);
-                            GeometryFacade::setConstruction(gArc, true);
-                            geos.emplace_back(gArc);
-                        }
-                    }
-                    else {
-                        // creates an ellipse or a segment
-
-                        gp_Dir vec1 = sketchPlane.Axis().Direction();
-                        gp_Dir vec2 = curve.Circle().Axis().Direction();
-                        gp_Circ origCircle = curve.Circle();
-
-                        if (vec1.IsNormal(
-                                vec2, Precision::Angular())) {// circle's normal vector in plane:
-                            //   projection is a line
-                            //   define center by projection
-                            gp_Pnt cnt = origCircle.Location();
-                            GeomAPI_ProjectPointOnSurf proj(cnt, gPlane);
-                            cnt = proj.NearestPoint();
-
-                            gp_Dir dirOrientation = gp_Dir(vec1 ^ vec2);
-                            gp_Dir dirLine(dirOrientation);
-
-                            Part::GeomLineSegment* projectedSegment = new Part::GeomLineSegment();
-                            Geom_Line ligne(cnt, dirLine);// helper object to compute end points
-                            gp_Pnt P1, P2;                // end points of the segment, OCC style
-
-                            ligne.D0(-origCircle.Radius(), P1);
-                            ligne.D0(origCircle.Radius(), P2);
-
-                            if (!curve.IsClosed()) {// arc of circle
-
-                                // start point of arc of circle
-                                gp_Pnt pntF = curve.Value(curve.FirstParameter());
-                                // end point of arc of circle
-                                gp_Pnt pntL = curve.Value(curve.LastParameter());
-
-                                double alpha =
-                                    dirOrientation.AngleWithRef(curve.Circle().XAxis().Direction(),
-                                                                curve.Circle().Axis().Direction());
-
-                                double baseAngle = curve.FirstParameter();
-
-                                int tours = 0;
-                                double startAngle = baseAngle + alpha;
-                                // bring startAngle back in [-pi/2 , 3pi/2[
-                                while (startAngle < -M_PI / 2.0 && tours < 10) {
-                                    startAngle = baseAngle + ++tours * 2.0 * M_PI + alpha;
-                                }
-                                while (startAngle >= 3.0 * M_PI / 2.0 && tours > -10) {
-                                    startAngle = baseAngle + --tours * 2.0 * M_PI + alpha;
-                                }
-
-                                // apply same offset to end angle
-                                double endAngle = curve.LastParameter() + startAngle - baseAngle;
-
-                                if (startAngle <= 0.0) {
-                                    if (endAngle <= 0.0) {
-                                        P1 = ProjPointOnPlane_XYZ(pntF, sketchPlane);
-                                        P2 = ProjPointOnPlane_XYZ(pntL, sketchPlane);
-                                    }
-                                    else {
-                                        if (endAngle <= fabs(startAngle)) {
-                                            // P2 = P2 already defined
-                                            P1 = ProjPointOnPlane_XYZ(pntF, sketchPlane);
-                                        }
-                                        else if (endAngle < M_PI) {
-                                            // P2 = P2, already defined
-                                            P1 = ProjPointOnPlane_XYZ(pntL, sketchPlane);
-                                        }
-                                        else {
-                                            // P1 = P1, already defined
-                                            // P2 = P2, already defined
-                                        }
-                                    }
-                                }
-                                else if (startAngle < M_PI) {
-                                    if (endAngle < M_PI) {
-                                        P1 = ProjPointOnPlane_XYZ(pntF, sketchPlane);
-                                        P2 = ProjPointOnPlane_XYZ(pntL, sketchPlane);
-                                    }
-                                    else if (endAngle < 2.0 * M_PI - startAngle) {
-                                        P2 = ProjPointOnPlane_XYZ(pntF, sketchPlane);
-                                        // P1 = P1, already defined
-                                    }
-                                    else if (endAngle < 2.0 * M_PI) {
-                                        P2 = ProjPointOnPlane_XYZ(pntL, sketchPlane);
-                                        // P1 = P1, already defined
-                                    }
-                                    else {
-                                        // P1 = P1, already defined
-                                        // P2 = P2, already defined
-                                    }
-                                }
-                                else {
-                                    if (endAngle < 2 * M_PI) {
-                                        P1 = ProjPointOnPlane_XYZ(pntF, sketchPlane);
-                                        P2 = ProjPointOnPlane_XYZ(pntL, sketchPlane);
-                                    }
-                                    else if (endAngle < 4 * M_PI - startAngle) {
-                                        P1 = ProjPointOnPlane_XYZ(pntF, sketchPlane);
-                                        // P2 = P2, already defined
-                                    }
-                                    else if (endAngle < 3 * M_PI) {
-                                        // P1 = P1, already defined
-                                        P2 = ProjPointOnPlane_XYZ(pntL, sketchPlane);
-                                    }
-                                    else {
-                                        // P1 = P1, already defined
-                                        // P2 = P2, already defined
-                                    }
-                                }
-                            }
-
-                            Base::Vector3d p1(P1.X(), P1.Y(), P1.Z());// ends of segment FCAD style
-                            Base::Vector3d p2(P2.X(), P2.Y(), P2.Z());
-                            invPlm.multVec(p1, p1);
-                            invPlm.multVec(p2, p2);
-
-                            projectedSegment->setPoints(p1, p2);
-                            GeometryFacade::setConstruction(projectedSegment, true);
-                            geos.emplace_back(projectedSegment);
-                        }
-                        else {// general case, full circle
-                            gp_Pnt cnt = origCircle.Location();
-                            GeomAPI_ProjectPointOnSurf proj(cnt, gPlane);
-                            // projection of circle center on sketch plane, 3D space
-                            cnt = proj.NearestPoint();
-                            // converting to FCAD style vector
-                            Base::Vector3d p(cnt.X(), cnt.Y(), cnt.Z());
-                            // transforming towards sketch's (x,y) coordinates
-                            invPlm.multVec(p, p);
-
-
-                            gp_Vec vecMajorAxis = vec1 ^ vec2;// major axis in 3D space
-
-                            double minorRadius;// TODO use data type of vectors around...
-                            double cosTheta;
-                            // cos of angle between the two planes, assuming vectirs are normalized
-                            // to 1
-                            cosTheta = fabs(vec1.Dot(vec2));
-                            minorRadius = origCircle.Radius() * cosTheta;
-
-                            // maj axis into FCAD style vector
-                            Base::Vector3d vectorMajorAxis(
-                                vecMajorAxis.X(), vecMajorAxis.Y(), vecMajorAxis.Z());
-                            // transforming to sketch's (x,y) coordinates
-                            invRot.multVec(vectorMajorAxis, vectorMajorAxis);
-                            // back to OCC
-                            vecMajorAxis.SetXYZ(
-                                gp_XYZ(vectorMajorAxis[0], vectorMajorAxis[1], vectorMajorAxis[2]));
-
-                            // NB: force normal of ellipse to be normal of sketch's plane.
-                            gp_Ax2 refFrameEllipse(
-                                gp_Pnt(gp_XYZ(p[0], p[1], p[2])), gp_Vec(0, 0, 1), vecMajorAxis);
-                            Handle(Geom_Ellipse) curve =
-                                new Geom_Ellipse(refFrameEllipse, origCircle.Radius(), minorRadius);
-                            Part::GeomEllipse* ellipse = new Part::GeomEllipse();
-                            ellipse->setHandle(curve);
-                            GeometryFacade::setConstruction(ellipse, true);
-                            geos.emplace_back(ellipse);
-                        }
-                    }
-                }
-                else if (curve.GetType() == GeomAbs_Ellipse) {
-
-                    gp_Elips elipsOrig = curve.Ellipse();
-                    gp_Elips elipsDest;
-                    gp_Pnt origCenter = elipsOrig.Location();
-                    gp_Pnt destCenter = ProjPointOnPlane_UVN(origCenter, sketchPlane).XYZ();
-
-                    gp_Dir origAxisMajorDir = elipsOrig.XAxis().Direction();
-                    gp_Vec origAxisMajor = elipsOrig.MajorRadius() * gp_Vec(origAxisMajorDir);
-                    gp_Dir origAxisMinorDir = elipsOrig.YAxis().Direction();
-                    gp_Vec origAxisMinor = elipsOrig.MinorRadius() * gp_Vec(origAxisMinorDir);
-
-                    // Here, it used to be a test for parallel direction between the sketchplane and
-                    // the elipsOrig, in which the original ellipse would be copied and translated
-                    // to the new position. The problem with that approach is that for the sketcher
-                    // the normal vector is always (0,0,1). If the original ellipse was not on the
-                    // XY plane, the copy will not be either. Then, the dimensions would be wrong
-                    // because of the different major axis direction (which is not projected on the
-                    // XY plane). So here, we default to the more general ellipse construction
-                    // algorithm.
-                    //
-                    // Doing that solves:
-                    // https://forum.freecad.org/viewtopic.php?f=3&t=55284#p477522
-
-                    // GENERAL ELLIPSE CONSTRUCTION ALGORITHM
-                    //
-                    // look for major axis of projected ellipse
-                    //
-                    // t is the parameter along the origin ellipse
-                    //   OM(t) = origCenter
-                    //           + majorRadius * cos(t) * origAxisMajorDir
-                    //           + minorRadius * sin(t) * origAxisMinorDir
-                    gp_Vec2d PA = ProjVecOnPlane_UV(origAxisMajor, sketchPlane);
-                    gp_Vec2d PB = ProjVecOnPlane_UV(origAxisMinor, sketchPlane);
-                    double t_max = 2.0 * PA.Dot(PB) / (PA.SquareMagnitude() - PB.SquareMagnitude());
-                    t_max = 0.5 * atan(t_max);// gives new major axis is most cases, but not all
-                    double t_min = t_max + 0.5 * M_PI;
-
-                    // ON_max = OM(t_max) gives the point, which projected on the sketch plane,
-                    //     becomes the apoapse of the projected ellipse.
-                    gp_Vec ON_max = origAxisMajor * cos(t_max) + origAxisMinor * sin(t_max);
-                    gp_Vec ON_min = origAxisMajor * cos(t_min) + origAxisMinor * sin(t_min);
-                    gp_Vec destAxisMajor = ProjVecOnPlane_UVN(ON_max, sketchPlane);
-                    gp_Vec destAxisMinor = ProjVecOnPlane_UVN(ON_min, sketchPlane);
-
-                    double RDest = destAxisMajor.Magnitude();
-                    double rDest = destAxisMinor.Magnitude();
-
-                    if (RDest < rDest) {
-                        double rTmp = rDest;
-                        rDest = RDest;
-                        RDest = rTmp;
-                        gp_Vec axisTmp = destAxisMajor;
-                        destAxisMajor = destAxisMinor;
-                        destAxisMinor = axisTmp;
-                    }
-
-                    double sens = sketchAx3.Direction().Dot(elipsOrig.Position().Direction());
-                    gp_Ax2 destCurveAx2(
-                        destCenter, gp_Dir(0, 0, sens > 0.0 ? 1.0 : -1.0), gp_Dir(destAxisMajor));
-
-                    // projection is a circle
-                    if ((RDest - rDest) < (double)Precision::Confusion()) {
-                        Handle(Geom_Circle) curve =
-                            new Geom_Circle(destCurveAx2, 0.5 * (rDest + RDest));
-                        Part::GeomCircle* circle = new Part::GeomCircle();
-                        circle->setHandle(curve);
-                        GeometryFacade::setConstruction(circle, true);
-                        geos.emplace_back(circle);
-                    }
-                    else {
-                        if (sketchPlane.Position().Direction().IsNormal(
-                                elipsOrig.Position().Direction(), Precision::Angular())) {
-                            gp_Vec start = gp_Vec(destCenter.XYZ()) + destAxisMajor;
-                            gp_Vec end = gp_Vec(destCenter.XYZ()) - destAxisMajor;
-
-                            Part::GeomLineSegment* projectedSegment = new Part::GeomLineSegment();
-                            projectedSegment->setPoints(
-                                Base::Vector3d(start.X(), start.Y(), start.Z()),
-                                Base::Vector3d(end.X(), end.Y(), end.Z()));
-                            GeometryFacade::setConstruction(projectedSegment, true);
-                            geos.emplace_back(projectedSegment);
-                        }
-                        else {
-
-                            elipsDest.SetPosition(destCurveAx2);
-                            elipsDest.SetMajorRadius(destAxisMajor.Magnitude());
-                            elipsDest.SetMinorRadius(destAxisMinor.Magnitude());
-
-
-                            Handle(Geom_Ellipse) curve = new Geom_Ellipse(elipsDest);
-                            Part::GeomEllipse* ellipse = new Part::GeomEllipse();
-                            ellipse->setHandle(curve);
-                            GeometryFacade::setConstruction(ellipse, true);
-                            geos.emplace_back(ellipse);
-                        }
-                    }
-                }
-                else {
-                    try {
-                        BRepOffsetAPI_NormalProjection mkProj(aProjFace);
-                        mkProj.Add(edge);
-                        mkProj.Build();
-                        const TopoDS_Shape& projShape = mkProj.Projection();
-                        if (!projShape.IsNull()) {
-                            TopExp_Explorer xp;
-                            for (xp.Init(projShape, TopAbs_EDGE); xp.More(); xp.Next()) {
-                                TopoDS_Edge projEdge = TopoDS::Edge(xp.Current());
-                                TopLoc_Location loc(mov);
-                                projEdge.Location(loc);
-                                BRepAdaptor_Curve projCurve(projEdge);
-                                if (projCurve.GetType() == GeomAbs_Line) {
-                                    gp_Pnt P1 = projCurve.Value(projCurve.FirstParameter());
-                                    gp_Pnt P2 = projCurve.Value(projCurve.LastParameter());
-                                    Base::Vector3d p1(P1.X(), P1.Y(), P1.Z());
-                                    Base::Vector3d p2(P2.X(), P2.Y(), P2.Z());
-
-                                    if (Base::Distance(p1, p2) < Precision::Confusion()) {
-                                        Base::Vector3d p = (p1 + p2) / 2;
-                                        Part::GeomPoint* point = new Part::GeomPoint(p);
-                                        GeometryFacade::setConstruction(point, true);
-                                        geos.emplace_back(point);
-                                    }
-                                    else {
-                                        Part::GeomLineSegment* line = new Part::GeomLineSegment();
-                                        line->setPoints(p1, p2);
-                                        GeometryFacade::setConstruction(line, true);
-                                        geos.emplace_back(line);
-                                    }
-                                }
-                                else if (projCurve.GetType() == GeomAbs_Circle) {
-                                    gp_Circ c = projCurve.Circle();
-                                    gp_Pnt p = c.Location();
-                                    gp_Pnt P1 = projCurve.Value(projCurve.FirstParameter());
-                                    gp_Pnt P2 = projCurve.Value(projCurve.LastParameter());
-
-                                    if (P1.SquareDistance(P2) < Precision::Confusion()) {
-                                        Part::GeomCircle* circle = new Part::GeomCircle();
-                                        circle->setRadius(c.Radius());
-                                        circle->setCenter(Base::Vector3d(p.X(), p.Y(), p.Z()));
-
-                                        GeometryFacade::setConstruction(circle, true);
-                                        geos.emplace_back(circle);
-                                    }
-                                    else {
-                                        Part::GeomArcOfCircle* arc = new Part::GeomArcOfCircle();
-                                        Handle(Geom_Curve) curve = new Geom_Circle(c);
-                                        Handle(Geom_TrimmedCurve) tCurve =
-                                            new Geom_TrimmedCurve(curve,
-                                                                  projCurve.FirstParameter(),
-                                                                  projCurve.LastParameter());
-                                        arc->setHandle(tCurve);
-                                        GeometryFacade::setConstruction(arc, true);
-                                        geos.emplace_back(arc);
-                                    }
-                                }
-                                else if (projCurve.GetType() == GeomAbs_BSplineCurve) {
-                                    // Unfortunately, a normal projection of a circle can also give
-                                    // a Bspline Split the spline into arcs
-                                    GeomConvert_BSplineCurveKnotSplitting bSplineSplitter(
-                                        projCurve.BSpline(), 2);
-                                    // int s = bSplineSplitter.NbSplits();
-                                    if ((curve.GetType() == GeomAbs_Circle)
-                                        && (bSplineSplitter.NbSplits() == 2)) {
-                                        // Result of projection is actually a circle...
-                                        TColStd_Array1OfInteger splits(1, 2);
-                                        bSplineSplitter.Splitting(splits);
-                                        gp_Pnt p1 = projCurve.Value(splits(1));
-                                        gp_Pnt p2 = projCurve.Value(splits(2));
-                                        gp_Pnt p3 = projCurve.Value(0.5 * (splits(1) + splits(2)));
-                                        GC_MakeCircle circleMaker(p1, p2, p3);
-                                        Handle(Geom_Circle) circ = circleMaker.Value();
-                                        Part::GeomCircle* circle = new Part::GeomCircle();
-                                        circle->setRadius(circ->Radius());
-                                        gp_Pnt center = circ->Axis().Location();
-                                        circle->setCenter(
-                                            Base::Vector3d(center.X(), center.Y(), center.Z()));
-
-                                        GeometryFacade::setConstruction(circle, true);
-                                        geos.emplace_back(circle);
-                                    }
-                                    else {
-                                        Part::GeomBSplineCurve* bspline =
-                                            new Part::GeomBSplineCurve(projCurve.BSpline());
-                                        GeometryFacade::setConstruction(bspline, true);
-                                        geos.emplace_back(bspline);
-                                    }
-                                }
-                                else if (projCurve.GetType() == GeomAbs_Hyperbola) {
-                                    gp_Hypr e = projCurve.Hyperbola();
-                                    gp_Pnt p = e.Location();
-                                    gp_Pnt P1 = projCurve.Value(projCurve.FirstParameter());
-                                    gp_Pnt P2 = projCurve.Value(projCurve.LastParameter());
-
-                                    gp_Dir normal = e.Axis().Direction();
-                                    gp_Dir xdir = e.XAxis().Direction();
-                                    gp_Ax2 xdirref(p, normal);
-
-                                    if (P1.SquareDistance(P2) < Precision::Confusion()) {
-                                        Part::GeomHyperbola* hyperbola = new Part::GeomHyperbola();
-                                        hyperbola->setMajorRadius(e.MajorRadius());
-                                        hyperbola->setMinorRadius(e.MinorRadius());
-                                        hyperbola->setCenter(Base::Vector3d(p.X(), p.Y(), p.Z()));
-                                        hyperbola->setAngleXU(
-                                            -xdir.AngleWithRef(xdirref.XDirection(), normal));
-                                        GeometryFacade::setConstruction(hyperbola, true);
-                                        geos.emplace_back(hyperbola);
-                                    }
-                                    else {
-                                        Part::GeomArcOfHyperbola* aoh =
-                                            new Part::GeomArcOfHyperbola();
-                                        Handle(Geom_Curve) curve = new Geom_Hyperbola(e);
-                                        Handle(Geom_TrimmedCurve) tCurve =
-                                            new Geom_TrimmedCurve(curve,
-                                                                  projCurve.FirstParameter(),
-                                                                  projCurve.LastParameter());
-                                        aoh->setHandle(tCurve);
-                                        GeometryFacade::setConstruction(aoh, true);
-                                        geos.emplace_back(aoh);
-                                    }
-                                }
-                                else if (projCurve.GetType() == GeomAbs_Parabola) {
-                                    gp_Parab e = projCurve.Parabola();
-                                    gp_Pnt p = e.Location();
-                                    gp_Pnt P1 = projCurve.Value(projCurve.FirstParameter());
-                                    gp_Pnt P2 = projCurve.Value(projCurve.LastParameter());
-
-                                    gp_Dir normal = e.Axis().Direction();
-                                    gp_Dir xdir = e.XAxis().Direction();
-                                    gp_Ax2 xdirref(p, normal);
-
-                                    if (P1.SquareDistance(P2) < Precision::Confusion()) {
-                                        Part::GeomParabola* parabola = new Part::GeomParabola();
-                                        parabola->setFocal(e.Focal());
-                                        parabola->setCenter(Base::Vector3d(p.X(), p.Y(), p.Z()));
-                                        parabola->setAngleXU(
-                                            -xdir.AngleWithRef(xdirref.XDirection(), normal));
-                                        GeometryFacade::setConstruction(parabola, true);
-                                        geos.emplace_back(parabola);
-                                    }
-                                    else {
-                                        Part::GeomArcOfParabola* aop =
-                                            new Part::GeomArcOfParabola();
-                                        Handle(Geom_Curve) curve = new Geom_Parabola(e);
-                                        Handle(Geom_TrimmedCurve) tCurve =
-                                            new Geom_TrimmedCurve(curve,
-                                                                  projCurve.FirstParameter(),
-                                                                  projCurve.LastParameter());
-                                        aop->setHandle(tCurve);
-                                        GeometryFacade::setConstruction(aop, true);
-                                        geos.emplace_back(aop);
-                                    }
-                                }
-                                else if (projCurve.GetType() == GeomAbs_Ellipse) {
-                                    gp_Elips e = projCurve.Ellipse();
-                                    gp_Pnt p = e.Location();
-                                    gp_Pnt P1 = projCurve.Value(projCurve.FirstParameter());
-                                    gp_Pnt P2 = projCurve.Value(projCurve.LastParameter());
-
-                                    // gp_Dir normal = e.Axis().Direction();
-                                    gp_Dir normal = gp_Dir(0, 0, 1);
-                                    gp_Ax2 xdirref(p, normal);
-
-                                    if (P1.SquareDistance(P2) < Precision::Confusion()) {
-                                        Part::GeomEllipse* ellipse = new Part::GeomEllipse();
-                                        Handle(Geom_Ellipse) curve = new Geom_Ellipse(e);
-                                        ellipse->setHandle(curve);
-                                        GeometryFacade::setConstruction(ellipse, true);
-                                        geos.emplace_back(ellipse);
-                                    }
-                                    else {
-                                        Part::GeomArcOfEllipse* aoe = new Part::GeomArcOfEllipse();
-                                        Handle(Geom_Curve) curve = new Geom_Ellipse(e);
-                                        Handle(Geom_TrimmedCurve) tCurve =
-                                            new Geom_TrimmedCurve(curve,
-                                                                  projCurve.FirstParameter(),
-                                                                  projCurve.LastParameter());
-                                        aoe->setHandle(tCurve);
-                                        GeometryFacade::setConstruction(aoe, true);
-                                        geos.emplace_back(aoe);
-                                    }
-                                }
-                                else {
-                                    throw Base::NotImplementedError(
-                                        "Not yet supported geometry for external geometry");
-                                }
-                            }
-                        }
-                    }
-                    catch (Standard_Failure& e) {
-                        throw Base::CADKernelError(e.GetMessageString());
-                    }
-                }
+                processEdge(edge, geos, gPlane, invPlm, mov, sketchPlane, invRot, sketchAx3, aProjFace);
             } break;
             case TopAbs_VERTEX: {
                 gp_Pnt P = BRep_Tool::Pnt(TopoDS::Vertex(refSubShape));
@@ -9029,7 +9139,7 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
                 Base::Vector3d p(P.X(), P.Y(), P.Z());
                 invPlm.multVec(p, p);
 
-                Part::GeomPoint* point = new Part::GeomPoint(p);
+                auto* point = new Part::GeomPoint(p);
                 GeometryFacade::setConstruction(point, true);
                 geos.emplace_back(point);
             } break;
