@@ -37,7 +37,6 @@
 #endif
 
 
-
 namespace Base
 {
 template<class numT>

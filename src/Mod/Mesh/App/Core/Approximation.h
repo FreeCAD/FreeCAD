@@ -201,7 +201,7 @@ protected:
     // NOLINTBEGIN
     std::list<Base::Vector3f> _vPoints; /**< Holds the points for the fit algorithm.  */
     bool _bIsFitted {false};            /**< Flag, whether the fit has been called. */
-    float _fLastResult {FLT_MAX};     /**< Stores the last result of the fit */
+    float _fLastResult {FLT_MAX};       /**< Stores the last result of the fit */
     // NOLINTEND
 };
 
