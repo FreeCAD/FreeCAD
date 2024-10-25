@@ -374,7 +374,7 @@ void CmdPartCommon::activated(int iMsg)
         numShapes = 1; //to be updated later in code, if
         Gui::SelectionObject selobj = Sel[0];
         TopoDS_Shape sh = Part::Feature::getShape(selobj.getObject());
-        while (numShapes==1 and sh.ShapeType() == TopAbs_COMPOUND) {
+        while (numShapes==1 && sh.ShapeType() == TopAbs_COMPOUND) {
             numShapes = 0;
             TopoDS_Iterator it(sh);
             TopoDS_Shape last;
@@ -453,7 +453,7 @@ void CmdPartFuse::activated(int iMsg)
         numShapes = 1; //to be updated later in code
         Gui::SelectionObject selobj = Sel[0];
         TopoDS_Shape sh = Part::Feature::getShape(selobj.getObject());
-        while (numShapes==1 and sh.ShapeType() == TopAbs_COMPOUND) {
+        while (numShapes==1 && sh.ShapeType() == TopAbs_COMPOUND) {
             numShapes = 0;
             TopoDS_Iterator it(sh);
             TopoDS_Shape last;
