@@ -1,86 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
-  <class>Dialog</class>
-  <widget class="QDialog" name="Dialog">
-    <property name="windowModality">
-      <enum>Qt::ApplicationModal</enum>
-    </property>
-    <property name="geometry">
-      <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>520</width>
-        <height>110</height>
-      </rect>
-    </property>
-    <property name="windowTitle">
-      <string>Add-on Manager: Warning!</string>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-        <layout class="QHBoxLayout" name="bodyLayout">
-          <item>
-            <widget class="QLabel" name="warningIconLabel">
-              <property name="minimumSize">
-                <size>
-                  <width>100</width>
-                  <height>100</height>
-                </size>
-              </property>
-            </widget>
-          </item>
-          <item>
-            <widget class="QLabel" name="labelWarning">
-              <property name="text">
-                <string>The Add-on Manager provides access to an extensive library of useful third-party FreeCAD extensions. No guarantees can be made regarding their safety or functionality.</string>
-              </property>
-              <property name="wordWrap">
-                <bool>true</bool>
-              </property>
-            </widget>
-          </item>
-        </layout>
-      </item>
-      <item>
-        <spacer name="verticalSpacerMiddle">
-          <property name="orientation">
-            <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeType">
-            <enum>QSizePolicy::Expanding</enum>
-          </property>
-        </spacer>
-      </item>
-      <item>
-        <layout class="QHBoxLayout" name="buttonLayout">
-          <item>
-            <spacer name="horizontalSpacerLeft">
-              <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeType">
-                <enum>QSizePolicy::Expanding</enum>
-              </property>
-            </spacer>
-          </item>
-          <item>
-            <widget class="QPushButton" name="buttonContinue">
-              <property name="text">
-                <string>Continue</string>
-              </property>
-            </widget>
-          </item>
-          <item>
-            <widget class="QPushButton" name="buttonQuit">
-              <property name="text">
-                <string>Cancel</string>
-              </property>
-            </widget>
-          </item>
-        </layout>
-      </item>
-    </layout>
-  </widget>
-  <resources/>
-  <connections/>
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="windowModality">
+   <enum>Qt::ApplicationModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>520</width>
+    <height>110</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Add-on Manager: Warning!</string>
+  </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+      <layout class="QHBoxLayout" name="bodyLayout">
+        <item>
+          <widget class="QLabel" name="warningIconLabel">
+            <property name="minimumSize">
+              <size>
+                <width>100</width>
+                <height>100</height>
+              </size>
+            </property>
+          </widget>
+        </item>
+        <item>
+          <widget class="QLabel" name="labelWarning">
+            <property name="text">
+              <string>The Add-on Manager provides access to an extensive library of useful third-party FreeCAD extensions. No guarantees can be made regarding their safety or functionality.</string>
+            </property>
+            <property name="wordWrap">
+              <bool>true</bool>
+            </property>
+          </widget>
+        </item>
+      </layout>
+    </item>
+    <item>
+      <spacer name="verticalSpacerMiddle">
+        <property name="orientation">
+          <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+        </property>
+      </spacer>
+    </item>
+    <item>
+      <layout class="QHBoxLayout" name="buttonLayout">
+        <item>
+          <spacer name="horizontalSpacerLeft">
+            <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+              <enum>QSizePolicy::Expanding</enum>
+            </property>
+          </spacer>
+        </item>
+        <item>
+          <widget class="QPushButton" name="buttonContinue">
+            <property name="text">
+              <string>Continue</string>
+            </property>
+          </widget>
+        </item>
+        <item>
+          <widget class="QPushButton" name="buttonQuit">
+            <property name="text">
+              <string>Cancel</string>
+            </property>
+          </widget>
+        </item>
+      </layout>
+    </item>
+  </layout>
+</widget>
+<resources/>
+<connections/>
 </ui>

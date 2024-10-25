@@ -25,7 +25,7 @@
 
 import os
 
-from PySide import QtGui, QtCore, QtWidgets
+from PySide import QtCore, QtWidgets
 from PySide.QtGui import QPixmap
 
 import FreeCAD
@@ -37,44 +37,43 @@ import addonmanager_utilities as utils
 
 
 class FirstRunDialog:
-	"""Manage the display of the Addon Manager's first-run dialog, setting up some user
-	preferences and making sure they are aware that this connects to the internet, downloads
-	data, and possibly installs things that run code not affiliated with FreeCAD itself."""
+    """Manage the display of the Addon Manager's first-run dialog, setting up some user
+    preferences and making sure they are aware that this connects to the internet, downloads
+    data, and possibly installs things that run code not affiliated with FreeCAD itself."""
 
-	def __init__(self):
-		self.pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
-		self.readWarning = self.pref.GetBool("readWarning2022", False)
+    def __init__(self):
+        self.pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
+        self.readWarning = self.pref.GetBool("readWarning2022", False)
 
-	def exec(self) -> bool:
-		"""Display a first-run dialog if needed, and return True to indicate the Addon Manager
-		should continue loading, or False if the user cancelled the dialog and wants to exit."""
-		if not self.readWarning:
-			# Load the custom UI for the first-run dialog
-			warning_dialog = FreeCADGui.PySideUic.loadUi(
-				os.path.join(os.path.dirname(__file__), "first_run.ui")
-			)
+    def exec(self) -> bool:
+        """Display a first-run dialog if needed, and return True to indicate the Addon Manager
+        should continue loading, or False if the user cancelled the dialog and wants to exit."""
+        if not self.readWarning:
+            warning_dialog = FreeCADGui.PySideUic.loadUi(
+                os.path.join(os.path.dirname(__file__), "first_run.ui")
+            )
+            
+            # Set up the warning icon
+            warning_icon_label = warning_dialog.warningIconLabel
+            pixmap = QPixmap(":/icons/AddonMgrWithWarning.svg")
+            warning_icon_label.setPixmap(pixmap)
+            warning_icon_label.setScaledContents(True)
+            warning_icon_label.setFixedSize(80, 80)
 
-			# Set up the warning icon
-			warning_icon_label = warning_dialog.warningIconLabel
-			pixmap = QPixmap(":/icons/AddonMgrWithWarning.svg")
-			warning_icon_label.setPixmap(pixmap)
-			warning_icon_label.setScaledContents(True)
-			warning_icon_label.setFixedSize(80, 80)
+            # Customize layout margins and spacing
+            layout = warning_dialog.findChild(QtWidgets.QHBoxLayout, "bodyLayout")
+            layout.setContentsMargins(20, 6, 20, 6)  # Left, top, right, bottom margins
+            layout.setSpacing(30)  # Set spacing between widgets
 
-			# Customize layout margins and spacing
-			layout = warning_dialog.findChild(QtWidgets.QHBoxLayout, "bodyLayout")
-			layout.setContentsMargins(20, 6, 20, 6)  # Left, top, right, bottom margins
-			layout.setSpacing(30)  # Set spacing between widgets
+            # Connect the "Continue" button to accept the dialog (continue with Addon Manager)
+            warning_dialog.buttonContinue.clicked.connect(warning_dialog.accept)
 
-			# Connect the "Continue" button to accept the dialog (continue with Addon Manager)
-			warning_dialog.buttonContinue.clicked.connect(warning_dialog.accept)
+            # Connect the "Quit" button to reject (exit) the dialog
+            warning_dialog.buttonQuit.clicked.connect(warning_dialog.reject)
 
-			# Connect the "Quit" button to reject (exit) the dialog
-			warning_dialog.buttonQuit.clicked.connect(warning_dialog.reject)
+            # Show the dialog and check whether the user accepted or canceled
+            if warning_dialog.exec() == QtWidgets.QDialog.Accepted:
+                self.readWarning = True
+                self.pref.SetBool("readWarning2022", True)
 
-			# Show the dialog and check whether the user accepted or canceled
-			if warning_dialog.exec() == QtWidgets.QDialog.Accepted:
-				self.readWarning = True
-				self.pref.SetBool("readWarning2022", True)
-
-		return self.readWarning  # Return True if the user accepted, False otherwise
+        return self.readWarning
