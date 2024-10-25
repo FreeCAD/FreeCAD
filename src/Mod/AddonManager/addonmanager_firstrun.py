@@ -52,7 +52,7 @@ class FirstRunDialog:
             warning_dialog = FreeCADGui.PySideUic.loadUi(
                 os.path.join(os.path.dirname(__file__), "first_run.ui")
             )
-            
+
             # Set up the warning icon
             warning_icon_label = warning_dialog.warningIconLabel
             pixmap = QPixmap(":/icons/AddonMgrWithWarning.svg")
