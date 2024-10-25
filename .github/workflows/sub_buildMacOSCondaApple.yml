@@ -24,7 +24,7 @@
 # This is a build and test workflow for CI of FreeCAD.
 # This workflow aims at building and testing FreeCAD on a Conda environment on macOS.
 
-name: Build macOS 13 (Apple Silicon)
+name: Build macOS 23 (Apple Silicon)
 on:
   workflow_call:
     inputs:
@@ -54,8 +54,8 @@ jobs:
       CCACHE_COMPILERCHECK: "%compiler% -dumpfullversion -dumpversion" # default:mtime
       CCACHE_COMPRESS: true
       CCACHE_COMPRESSLEVEL: 1
-      CC: arm64-apple-darwin20.0.0-clang
-      CXX: arm64-apple-darwin20.0.0-clang++
+      CC: arm64-apple-darwin23.5.0-clang
+      CXX: arm64-apple-darwin23.5.0-clang++
       builddir: ${{ github.workspace }}/build/release/
       logdir: /tmp/logs/
       reportdir: /tmp/report/
