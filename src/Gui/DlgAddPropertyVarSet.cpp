@@ -48,6 +48,8 @@ const std::string DlgAddPropertyVarSet::GROUP_BASE = "Base";
 
 const bool CLEAR_NAME = true;
 
+/* TRANSLATOR Gui::Dialog::DlgAddPropertyVarset */
+
 DlgAddPropertyVarSet::DlgAddPropertyVarSet(QWidget* parent,
                                            ViewProviderVarSet* viewProvider)
     : QDialog(parent),
@@ -171,9 +173,7 @@ void DlgAddPropertyVarSet::initializeWidgets(ViewProviderVarSet* viewProvider)
     connLineEditNameTextChanged = connect(ui->lineEditName, &QLineEdit::textChanged,
             this, &DlgAddPropertyVarSet::onNamePropertyChanged);
 
-    std::string title = "Add a property to " + varSet->getFullName();
-    setWindowTitle(QString::fromStdString(title));
-
+    setTitle();
     setOkEnabled(false);
 
     ui->lineEditName->setFocus();
@@ -183,6 +183,11 @@ void DlgAddPropertyVarSet::initializeWidgets(ViewProviderVarSet* viewProvider)
 
     // FC_ERR("Initialize widgets");
     // printFocusChain(ui->lineEditName);
+}
+
+void DlgAddPropertyVarSet::setTitle()
+{
+    setWindowTitle(tr("Add a property to %1").arg(QString::fromStdString(varSet->getFullName())));
 }
 
 void DlgAddPropertyVarSet::setOkEnabled(bool enabled)
@@ -214,6 +219,15 @@ void DlgAddPropertyVarSet::removeEditor()
         // FC_ERR("remove editor");
         // printFocusChain(ui->comboBoxType);
     }
+}
+
+void DlgAddPropertyVarSet::changeEvent(QEvent* e)
+{
+    if (e->type() == QEvent::LanguageChange) {
+        ui->retranslateUi(this);
+        setTitle();
+    }
+    QDialog::changeEvent(e);
 }
 
 static PropertyEditor::PropertyItem *createPropertyItem(App::Property *prop)
