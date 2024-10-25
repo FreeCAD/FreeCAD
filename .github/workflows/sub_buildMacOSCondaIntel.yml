@@ -54,8 +54,8 @@ jobs:
       CCACHE_COMPILERCHECK: "%compiler% -dumpfullversion -dumpversion" # default:mtime
       CCACHE_COMPRESS: true
       CCACHE_COMPRESSLEVEL: 1
-      CC: x86_64-apple-darwin13.4.0-clang
-      CXX: x86_64-apple-darwin13.4.0-clang++
+      CC: x86_64-apple-darwin19.6.0-clang
+      CXX: x86_64-apple-darwin19.6.0-clang++
       builddir: ${{ github.workspace }}/build/release/
       logdir: /tmp/logs/
       reportdir: /tmp/report/
