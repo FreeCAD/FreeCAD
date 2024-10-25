@@ -27,7 +27,7 @@ protected:
     void TearDown() override
     {}
 
-    Part::Fuse* _fuse = nullptr;  // NOLINT Can't be private in a test framework
+    Part::Fuse* _fuse = nullptr;            // NOLINT Can't be private in a test framework
     Part::MultiFuse* _multiFuse = nullptr;  // NOLINT Can't be private in a test framework
 };
 
@@ -84,7 +84,7 @@ TEST_F(FeaturePartFuseTest, testRecursiveCompound)
     // Arrange
     Part::Compound* _compound[3] = {nullptr};
     int t;
-    for (t=0;t<3;t++) {
+    for (t = 0; t < 3; t++) {
         _compound[t] = dynamic_cast<Part::Compound*>(_doc->addObject("Part::Compound"));
     }
     _compound[0]->Links.setValues({_boxes[0], _boxes[1]});
@@ -93,7 +93,7 @@ TEST_F(FeaturePartFuseTest, testRecursiveCompound)
     _multiFuse->Shapes.setValues({_compound[2]});
 
     // Act
-    for (t=0;t<3;t++) {
+    for (t = 0; t < 3; t++) {
         _compound[t]->execute();
     }
     _multiFuse->execute();
