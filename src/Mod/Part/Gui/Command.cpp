@@ -374,12 +374,15 @@ void CmdPartCommon::activated(int iMsg)
         numShapes = 1; //to be updated later in code, if
         Gui::SelectionObject selobj = Sel[0];
         TopoDS_Shape sh = Part::Feature::getShape(selobj.getObject());
-        if (sh.ShapeType() == TopAbs_COMPOUND) {
+        while (numShapes==1 and sh.ShapeType() == TopAbs_COMPOUND) {
             numShapes = 0;
             TopoDS_Iterator it(sh);
+            TopoDS_Shape last;
             for (; it.More(); it.Next()) {
                 ++numShapes;
+                last = it.Value();
             }
+            sh = last;
         }
     } else {
         numShapes = Sel.size();
@@ -450,12 +453,15 @@ void CmdPartFuse::activated(int iMsg)
         numShapes = 1; //to be updated later in code
         Gui::SelectionObject selobj = Sel[0];
         TopoDS_Shape sh = Part::Feature::getShape(selobj.getObject());
-        if (sh.ShapeType() == TopAbs_COMPOUND) {
+        while (numShapes==1 and sh.ShapeType() == TopAbs_COMPOUND) {
             numShapes = 0;
             TopoDS_Iterator it(sh);
+            TopoDS_Shape last;
             for (; it.More(); it.Next()) {
                 ++numShapes;
+                last = it.Value();
             }
+            sh = last;
         }
     } else {
         numShapes = Sel.size();
