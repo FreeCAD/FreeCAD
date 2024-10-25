@@ -61,8 +61,9 @@ class Clone(DraftObject):
 
     def onDocumentRestored(self, obj):
         super().onDocumentRestored(obj)
+        ref = obj.Objects[0] if obj.Objects else None
         gui_utils.restore_view_object(
-            obj, vp_module="view_clone", vp_class="ViewProviderClone", format_ref=obj.Objects[0]
+            obj, vp_module="view_clone", vp_class="ViewProviderClone", format_ref=ref
         )
 
     def join(self,obj,shapes):
