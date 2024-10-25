@@ -71,6 +71,8 @@
 #include "ViewProviderAssembly.h"
 #include "ViewProviderAssemblyPy.h"
 
+#include <Gui/Utilities.h>
+
 
 using namespace Assembly;
 using namespace AssemblyGui;
@@ -1154,27 +1156,14 @@ bool ViewProviderAssembly::getDraggerVisibility()
 
 void ViewProviderAssembly::setDraggerPlacement(Base::Placement plc)
 {
-    double q0, q1, q2, q3;
-    plc.getRotation().getValue(q0, q1, q2, q3);
-    Base::Vector3d pos = plc.getPosition();
-    asmDragger->rotation.setValue(q0, q1, q2, q3);
-    asmDragger->translation.setValue(pos.x, pos.y, pos.z);
+    asmDragger->rotation.setValue(Base::convertTo<SbRotation>(plc.getRotation()));
+    asmDragger->translation.setValue(Base::convertTo<SbVec3f>(plc.getPosition()));
 }
 
 Base::Placement ViewProviderAssembly::getDraggerPlacement()
 {
-    Base::Placement plc;
-    SbVec3f pos = asmDragger->translation.getValue();
-    plc.setPosition(Base::Vector3d(pos[0], pos[1], pos[2]));
-
-    SbVec3f axis;
-    float angle;
-    asmDragger->rotation.getValue(axis, angle);
-    Base::Vector3d axisV = Base::Vector3d(axis[0], axis[1], axis[2]);
-    Base::Rotation rot(axisV, angle);
-    plc.setRotation(rot);
-
-    return plc;
+    return {Base::convertTo<Base::Vector3d>(asmDragger->translation.getValue()),
+            Base::convertTo<Base::Rotation>(asmDragger->rotation.getValue())};
 }
 
 Gui::SoFCCSysDragger* ViewProviderAssembly::getDragger()
