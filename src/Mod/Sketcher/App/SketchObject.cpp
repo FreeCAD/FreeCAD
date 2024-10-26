@@ -4756,13 +4756,8 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList, int refGeoId,
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
 
-    const std::vector<Part::Geometry*>& geovals = getInternalGeometry();
-    std::vector<Part::Geometry*> newgeoVals(geovals);
-
     const std::vector<Constraint*>& constrvals = this->Constraints.getValues();
     std::vector<Constraint*> newconstrVals(constrvals);
-
-    newgeoVals.reserve(geovals.size() + geoIdList.size());
 
     std::map<int, int> geoIdMap;
     std::map<int, bool> isStartEndInverted;
@@ -4783,15 +4778,10 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList, int refGeoId,
         }
     }
 
-    // add the geometry
-    std::vector<Part::Geometry*> symmetricVals = getSymmetric(geoIdList, geoIdMap, isStartEndInverted, refGeoId, refPosId);
-    newgeoVals.insert(newgeoVals.end(), symmetricVals.begin(), symmetricVals.end());
+    std::vector<Part::Geometry*> symgeos = getSymmetric(geoIdList, geoIdMap, isStartEndInverted, refGeoId, refPosId);
 
-    // Block acceptGeometry in OnChanged to avoid unnecessary checks and updates
     {
-        Base::StateLocker lock(internaltransaction, true);
-        Geometry.setValues(std::move(newgeoVals));
-
+        addGeometry(symgeos);
 
         for (auto* constr :  constrvals) {
             // we look in the map, because we might have skipped internal alignment geometry
@@ -4812,6 +4802,7 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList, int refGeoId,
                         if (constr->Type != Sketcher::DistanceX
                             && constr->Type != Sketcher::DistanceY) {
                             Constraint* constNew = constr->copy();
+                            constNew->Name = ""; // Make sure we don't have 2 constraint with same name.
                             constNew->First = fit->second;
                             newconstrVals.push_back(constNew);
                         }
@@ -4824,6 +4815,7 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList, int refGeoId,
                         // diameter, weight,...
 
                         Constraint* constNew = constr->copy();
+                        constNew->Name = "";
                         constNew->First = fit->second;
                         newconstrVals.push_back(constNew);
                     }
@@ -4844,7 +4836,7 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList, int refGeoId,
                                 || constr->Type == Sketcher::PointOnObject
                                 || constr->Type == Sketcher::InternalAlignment) {
                                 Constraint* constNew = constr->copy();
-
+                                constNew->Name = "";
                                 constNew->First = fit->second;
                                 constNew->Second = sit->second;
                                 if (isStartEndInverted[constr->First]) {
@@ -4876,6 +4868,7 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList, int refGeoId,
 
                             if (tit != geoIdMap.end()) {// Third is also in the list
                                 Constraint* constNew = constr->copy();
+                                constNew->Name = "";
                                 constNew->First = fit->second;
                                 constNew->Second = sit->second;
                                 constNew->Third = tit->second;

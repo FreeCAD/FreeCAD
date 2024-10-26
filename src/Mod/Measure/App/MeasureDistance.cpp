@@ -27,7 +27,13 @@
 #include <App/Document.h>
 #include <App/MeasureManager.h>
 #include <Base/Tools.h>
+#include <BRepAdaptor_Curve.hxx>
+#include <BRepAdaptor_CompCurve.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
+#include <gp_Circ.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Wire.hxx>
 
 #include "MeasureDistance.h"
 
@@ -178,6 +184,44 @@ bool MeasureDistance::getShape(App::PropertyLinkSub* prop, TopoDS_Shape& rShape)
     return true;
 }
 
+bool MeasureDistance::distanceCircleCircle(const TopoDS_Shape& shape1, const TopoDS_Shape& shape2)
+{
+    auto circle1 = asCircle(shape1);
+    auto circle2 = asCircle(shape2);
+    if (!circle1.IsNull() && !circle2.IsNull()) {
+        const gp_Pnt p1 = circle1->Location();
+        const gp_Pnt p2 = circle2->Location();
+        setValues(p1, p2);
+        return true;
+    }
+
+    return false;
+}
+
+void MeasureDistance::distanceGeneric(const TopoDS_Shape& shape1, const TopoDS_Shape& shape2)
+{
+    // Calculate the extrema
+    BRepExtrema_DistShapeShape measure(shape1, shape2);
+    if (!measure.IsDone() || measure.NbSolution() < 1) {
+        throw Base::RuntimeError("Could not get extrema");
+    }
+
+    const gp_Pnt p1 = measure.PointOnShape1(1);
+    const gp_Pnt p2 = measure.PointOnShape2(1);
+    setValues(p1, p2);
+}
+
+void MeasureDistance::setValues(const gp_Pnt& p1, const gp_Pnt& p2)
+{
+    Position1.setValue(p1.X(), p1.Y(), p1.Z());
+    Position2.setValue(p2.X(), p2.Y(), p2.Z());
+
+    const gp_Pnt delta = p2.XYZ() - p1.XYZ();
+    Distance.setValue(p1.Distance(p2));
+    DistanceX.setValue(std::fabs(delta.X()));
+    DistanceY.setValue(std::fabs(delta.Y()));
+    DistanceZ.setValue(std::fabs(delta.Z()));
+}
 
 App::DocumentObjectExecReturn* MeasureDistance::execute()
 {
@@ -207,24 +251,11 @@ App::DocumentObjectExecReturn* MeasureDistance::execute()
         return new App::DocumentObjectExecReturn("Could not get shape");
     }
 
-    // Calculate the extrema
-    BRepExtrema_DistShapeShape measure(shape1, shape2);
-    if (!measure.IsDone() || measure.NbSolution() < 1) {
-        return new App::DocumentObjectExecReturn("Could not get extrema");
+    if (distanceCircleCircle(shape1, shape2)) {
+        return DocumentObject::StdReturn;
     }
 
-    gp_Pnt p1 = measure.PointOnShape1(1);
-    Position1.setValue(p1.X(), p1.Y(), p1.Z());
-
-    gp_Pnt p2 = measure.PointOnShape2(1);
-    Position2.setValue(p2.X(), p2.Y(), p2.Z());
-
-    gp_Pnt delta = measure.PointOnShape2(1).XYZ() - measure.PointOnShape1(1).XYZ();
-    Distance.setValue(measure.Value());
-    DistanceX.setValue(fabs(delta.X()));
-    DistanceY.setValue(fabs(delta.Y()));
-    DistanceZ.setValue(fabs(delta.Z()));
-
+    distanceGeneric(shape1, shape2);
     return DocumentObject::StdReturn;
 }
 
@@ -240,6 +271,44 @@ void MeasureDistance::onChanged(const App::Property* prop)
     DocumentObject::onChanged(prop);
 }
 
+Handle(Geom_Circle) MeasureDistance::asCircle(const TopoDS_Shape& shape) const
+{
+    if (shape.IsNull()) {
+        return {};
+    }
+
+    if (shape.ShapeType() == TopAbs_EDGE) {
+        return asCircle(TopoDS::Edge(shape));
+    }
+
+    if (shape.ShapeType() == TopAbs_WIRE) {
+        return asCircle(TopoDS::Wire(shape));
+    }
+
+    return {};
+}
+
+Handle(Geom_Circle) MeasureDistance::asCircle(const TopoDS_Edge& edge) const
+{
+    Handle(Geom_Circle) circle;
+    BRepAdaptor_Curve adapt(edge);
+    if (adapt.GetType() == GeomAbs_Circle) {
+        circle = new Geom_Circle(adapt.Circle());
+    }
+
+    return circle;
+}
+
+Handle(Geom_Circle) MeasureDistance::asCircle(const TopoDS_Wire& wire) const
+{
+    Handle(Geom_Circle) circle;
+    BRepAdaptor_CompCurve adapt(wire);
+    if (adapt.GetType() == GeomAbs_Circle) {
+        circle = new Geom_Circle(adapt.Circle());
+    }
+
+    return circle;
+}
 
 //! Return the object we are measuring
 //! used by the viewprovider in determining visibility
