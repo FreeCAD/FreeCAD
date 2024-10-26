@@ -48,8 +48,6 @@ const std::string DlgAddPropertyVarSet::GROUP_BASE = "Base";
 
 const bool CLEAR_NAME = true;
 
-/* TRANSLATOR Gui::Dialog::DlgAddPropertyVarset */
-
 DlgAddPropertyVarSet::DlgAddPropertyVarSet(QWidget* parent,
                                            ViewProviderVarSet* viewProvider)
     : QDialog(parent),
@@ -187,7 +185,7 @@ void DlgAddPropertyVarSet::initializeWidgets(ViewProviderVarSet* viewProvider)
 
 void DlgAddPropertyVarSet::setTitle()
 {
-    setWindowTitle(tr("Add a property to %1").arg(QString::fromStdString(varSet->getFullName())));
+    setWindowTitle(QObject::tr("Add a property to %1").arg(QString::fromStdString(varSet->getFullName())));
 }
 
 void DlgAddPropertyVarSet::setOkEnabled(bool enabled)
