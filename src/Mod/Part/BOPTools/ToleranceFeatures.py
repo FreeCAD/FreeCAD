@@ -116,7 +116,7 @@ class FeatureToleranceSet:
         obj.Proxy = self
         self.Type = "FeatureToleranceSet"
 
-    def onChanged(self, obj, prop):
+    def onDocumentRestored(self, obj):
         if not hasattr(obj, 'maxTolerance'):
             obj.addProperty("App::PropertyLength","maxTolerance","ToleranceSet", "0")
 
