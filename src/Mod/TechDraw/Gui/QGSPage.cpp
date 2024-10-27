@@ -130,15 +130,6 @@ void QGSPage::mousePressEvent(QGraphicsSceneMouseEvent * event)
     QGraphicsScene::mousePressEvent(event);
 }
 
-void QGSPage::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
-{
-    Qt::KeyboardModifiers originalModifiers = event->modifiers();
-    if ((event->button() == Qt::LeftButton) && PreferencesGui::multiSelection()) {
-        event->setModifiers(originalModifiers | Qt::ControlModifier);
-    }
-
-    QGraphicsScene::mouseReleaseEvent(event);
-}
 
 //! returns true if clicking on the item should clear the selection
 bool QGSPage::itemClearsSelection(int itemTypeIn)
