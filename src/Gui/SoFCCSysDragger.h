@@ -282,6 +282,10 @@ public:
     SoSFInt32 rotationIncrementCountY; //!< used from outside for rotation y steps.
     SoSFInt32 rotationIncrementCountZ; //!< used from outside for rotation z steps.
 
+    SoSFString xAxisLabel; //!< label for X axis
+    SoSFString yAxisLabel; //!< label for Y axis
+    SoSFString zAxisLabel; //!< label for Z axis
+
     void clearIncrementCounts(); //!< used to reset after drag update.
 
     /*! @brief Overall scale of dragger node.
