@@ -25,16 +25,20 @@
 #define GUI_VIEWPROVIDER_DRAGGER_H
 
 #include "ViewProviderDocumentObject.h"
+#include "SoFCCSysDragger.h"
+#include <Base/Placement.h>
+#include <App/PropertyGeo.h>
 
 class SoDragger;
 class SoTransform;
 
-namespace Base { class Placement;}
-
 namespace Gui {
 
+namespace TaskView {
+    class TaskDialog;
+}
+
 class View3DInventorViewer;
-class SoFCCSysDragger;
 
 /**
  * The base class for all view providers modifying the placement
@@ -52,6 +56,13 @@ public:
     /// destructor.
     ~ViewProviderDragger() override;
 
+    App::PropertyPlacement TransformOrigin;
+
+    Base::Placement getTransformOrigin() const { return TransformOrigin.getValue(); }
+    void setTransformOrigin(const Base::Placement& placement);
+    void resetTransformOrigin();
+
+public:
     /** @name Edit methods */
     //@{
     bool doubleClicked() override;
@@ -63,21 +74,40 @@ public:
     /*! synchronize From FC placement to Coin placement*/
     static void updateTransform(const Base::Placement &from, SoTransform *to);
 
+    void updatePlacementFromDragger();
+    void updateTransformFromDragger();
+
+    Base::Placement getDraggerPlacement() const;
+    void setDraggerPlacement(const Base::Placement& placement);
+
 protected:
     bool setEdit(int ModNum) override;
     void unsetEdit(int ModNum) override;
     void setEditViewer(View3DInventorViewer*, int ModNum) override;
     void unsetEditViewer(View3DInventorViewer*) override;
     //@}
-    SoFCCSysDragger *csysDragger = nullptr;
+
+    void onChanged(const App::Property* prop) override;
+
+    /**
+     * Returns a newly create dialog for the part to be placed in the task view
+     * Must be reimplemented in subclasses.
+     */
+    virtual TaskView::TaskDialog* getTransformDialog();
+
+    CoinPtr<SoFCCSysDragger> csysDragger = nullptr;
 
 private:
-    static void dragFinishCallback(void * data, SoDragger * d);
-    static void updatePlacementFromDragger(ViewProviderDragger *sudoThis, SoFCCSysDragger *draggerIn);
+    static void dragStartCallback(void *data, SoDragger *d);
+    static void dragFinishCallback(void *data, SoDragger *d);
+    static void dragMotionCallback(void *data, SoDragger *d);
+
+    void updateDraggerPosition();
 
     bool checkLink();
 
     ViewProvider *_linkDragger = nullptr;
+    Base::Placement draggerPlacement { };
 };
 
 } // namespace Gui

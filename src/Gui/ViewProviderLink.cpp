@@ -2893,7 +2893,7 @@ void ViewProviderLink::setEditViewer(Gui::View3DInventorViewer* viewer, int ModN
             dragger->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
             viewer->setupEditingRoot(pcDragger,&dragCtx->preTransform);
 
-            auto task = new TaskCSysDragger(this, dragger);
+            auto task = new TaskCSysDragger(nullptr, dragger);
             Gui::Control().showDialog(task);
         }
     }
