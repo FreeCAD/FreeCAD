@@ -81,7 +81,7 @@ void TaskPolarPatternParameters::setupParameterUI(QWidget* widget)
     QMetaObject::connectSlotsByName(this);
 
     // Get the feature data
-    auto pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
+    auto pcPolarPattern = getObject<PartDesign::PolarPattern>();
 
     ui->polarAngle->bind(pcPolarPattern->Angle);
     ui->angleOffset->bind(pcPolarPattern->Offset);
@@ -168,7 +168,7 @@ void TaskPolarPatternParameters::updateUI()
     }
     blockUpdate = true;
 
-    auto pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
+    auto pcPolarPattern = getObject<PartDesign::PolarPattern>();
 
     auto mode = static_cast<PartDesign::PolarPatternMode>(pcPolarPattern->Mode.getValue());
     bool reverse = pcPolarPattern->Reversed.getValue();
@@ -208,7 +208,7 @@ void TaskPolarPatternParameters::kickUpdateViewTimer() const
 
 void TaskPolarPatternParameters::adaptVisibilityToMode()
 {
-    auto pcLinearPattern = static_cast<PartDesign::PolarPattern*>(getObject());
+    auto pcLinearPattern = getObject<PartDesign::PolarPattern>();
     auto mode = static_cast<PartDesign::PolarPatternMode>(pcLinearPattern->Mode.getValue());
 
     ui->polarAngleWrapper->setVisible(mode == PartDesign::PolarPatternMode::angle);
@@ -222,7 +222,7 @@ void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges&
             exitSelectionMode();
         }
         else {
-            auto pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
+            auto pcPolarPattern = getObject<PartDesign::PolarPattern>();
 
             std::vector<std::string> axes;
             App::DocumentObject* selObj = nullptr;
@@ -247,7 +247,7 @@ void TaskPolarPatternParameters::onCheckReverse(const bool on)
     if (blockUpdate) {
         return;
     }
-    auto pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
+    auto pcPolarPattern = getObject<PartDesign::PolarPattern>();
     pcPolarPattern->Reversed.setValue(on);
 
     exitSelectionMode();
@@ -259,7 +259,7 @@ void TaskPolarPatternParameters::onModeChanged(const int mode)
     if (blockUpdate) {
         return;
     }
-    auto pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
+    auto pcPolarPattern = getObject<PartDesign::PolarPattern>();
     pcPolarPattern->Mode.setValue(mode);
 
     adaptVisibilityToMode();
@@ -273,7 +273,7 @@ void TaskPolarPatternParameters::onAngle(const double angle)
     if (blockUpdate) {
         return;
     }
-    auto pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
+    auto pcPolarPattern = getObject<PartDesign::PolarPattern>();
     pcPolarPattern->Angle.setValue(angle);
 
     exitSelectionMode();
@@ -285,7 +285,7 @@ void TaskPolarPatternParameters::onOffset(const double offset)
     if (blockUpdate) {
         return;
     }
-    auto pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
+    auto pcPolarPattern = getObject<PartDesign::PolarPattern>();
     pcPolarPattern->Offset.setValue(offset);
 
     exitSelectionMode();
@@ -297,7 +297,7 @@ void TaskPolarPatternParameters::onOccurrences(const uint n)
     if (blockUpdate) {
         return;
     }
-    auto pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
+    auto pcPolarPattern = getObject<PartDesign::PolarPattern>();
     pcPolarPattern->Occurrences.setValue(n);
 
     exitSelectionMode();
@@ -309,7 +309,7 @@ void TaskPolarPatternParameters::onAxisChanged(int /*num*/)
     if (blockUpdate) {
         return;
     }
-    auto pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
+    auto pcPolarPattern = getObject<PartDesign::PolarPattern>();
 
     try {
         if (!axesLinks.getCurrentLink().getValue()) {
@@ -337,7 +337,7 @@ void TaskPolarPatternParameters::onUpdateView(bool on)
     blockUpdate = !on;
     if (on) {
         // Do the same like in TaskDlgPolarPatternParameters::accept() but without doCommand
-        auto pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
+        auto pcPolarPattern = getObject<PartDesign::PolarPattern>();
         std::vector<std::string> axes;
         App::DocumentObject* obj = nullptr;
 

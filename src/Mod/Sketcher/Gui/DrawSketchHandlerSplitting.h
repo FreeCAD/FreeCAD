@@ -151,7 +151,7 @@ public:
                                       onSketchPos.x,
                                       onSketchPos.y);
                 Gui::Command::commitCommand();
-                tryAutoRecompute(static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
+                tryAutoRecompute(sketchgui->getObject<Sketcher::SketchObject>());
             }
             catch (const Base::Exception&) {
                 Gui::NotifyError(sketchgui,

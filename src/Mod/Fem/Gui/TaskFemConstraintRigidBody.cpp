@@ -109,7 +109,7 @@ TaskFemConstraintRigidBody::TaskFemConstraintRigidBody(
 
     /* Note: */
     // Get the feature data
-    auto pcConstraint = static_cast<Fem::ConstraintRigidBody*>(ConstraintView->getObject());
+    auto pcConstraint = ConstraintView->getObject<Fem::ConstraintRigidBody>();
 
     const Base::Vector3d& refNode = pcConstraint->ReferenceNode.getValue();
     const Base::Vector3d& disp = pcConstraint->Displacement.getValue();
@@ -273,8 +273,7 @@ void TaskFemConstraintRigidBody::addToSelection()
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
-    Fem::ConstraintRigidBody* pcConstraint =
-        static_cast<Fem::ConstraintRigidBody*>(ConstraintView->getObject());
+    Fem::ConstraintRigidBody* pcConstraint = ConstraintView->getObject<Fem::ConstraintRigidBody>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
@@ -347,8 +346,7 @@ void TaskFemConstraintRigidBody::removeFromSelection()
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
-    Fem::ConstraintRigidBody* pcConstraint =
-        static_cast<Fem::ConstraintRigidBody*>(ConstraintView->getObject());
+    Fem::ConstraintRigidBody* pcConstraint = ConstraintView->getObject<Fem::ConstraintRigidBody>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
     std::vector<size_t> itemsToDel;
@@ -405,7 +403,7 @@ void TaskFemConstraintRigidBody::onReferenceDeleted()
 
 void TaskFemConstraintRigidBody::onRotModeXChanged(int item)
 {
-    const char* val = static_cast<Fem::ConstraintRigidBody*>(ConstraintView->getObject())
+    const char* val = ConstraintView->getObject<Fem::ConstraintRigidBody>()
                           ->RotationalModeX.getEnumVector()[item]
                           .c_str();
 
@@ -424,7 +422,7 @@ void TaskFemConstraintRigidBody::onRotModeXChanged(int item)
 }
 void TaskFemConstraintRigidBody::onRotModeYChanged(int item)
 {
-    const char* val = static_cast<Fem::ConstraintRigidBody*>(ConstraintView->getObject())
+    const char* val = ConstraintView->getObject<Fem::ConstraintRigidBody>()
                           ->RotationalModeY.getEnumVector()[item]
                           .c_str();
 
@@ -443,7 +441,7 @@ void TaskFemConstraintRigidBody::onRotModeYChanged(int item)
 }
 void TaskFemConstraintRigidBody::onRotModeZChanged(int item)
 {
-    const char* val = static_cast<Fem::ConstraintRigidBody*>(ConstraintView->getObject())
+    const char* val = ConstraintView->getObject<Fem::ConstraintRigidBody>()
                           ->RotationalModeZ.getEnumVector()[item]
                           .c_str();
 
@@ -463,7 +461,7 @@ void TaskFemConstraintRigidBody::onRotModeZChanged(int item)
 
 void TaskFemConstraintRigidBody::onTransModeXChanged(int item)
 {
-    const char* val = static_cast<Fem::ConstraintRigidBody*>(ConstraintView->getObject())
+    const char* val = ConstraintView->getObject<Fem::ConstraintRigidBody>()
                           ->TranslationalModeX.getEnumVector()[item]
                           .c_str();
 
@@ -482,7 +480,7 @@ void TaskFemConstraintRigidBody::onTransModeXChanged(int item)
 }
 void TaskFemConstraintRigidBody::onTransModeYChanged(int item)
 {
-    const char* val = static_cast<Fem::ConstraintRigidBody*>(ConstraintView->getObject())
+    const char* val = ConstraintView->getObject<Fem::ConstraintRigidBody>()
                           ->TranslationalModeY.getEnumVector()[item]
                           .c_str();
 
@@ -501,7 +499,7 @@ void TaskFemConstraintRigidBody::onTransModeYChanged(int item)
 }
 void TaskFemConstraintRigidBody::onTransModeZChanged(int item)
 {
-    const char* val = static_cast<Fem::ConstraintRigidBody*>(ConstraintView->getObject())
+    const char* val = ConstraintView->getObject<Fem::ConstraintRigidBody>()
                           ->TranslationalModeZ.getEnumVector()[item]
                           .c_str();
 
@@ -521,7 +519,7 @@ void TaskFemConstraintRigidBody::onTransModeZChanged(int item)
 
 void TaskFemConstraintRigidBody::onRefNodeXChanged(double value)
 {
-    auto obj = static_cast<Fem::ConstraintRigidBody*>(ConstraintView->getObject());
+    auto obj = ConstraintView->getObject<Fem::ConstraintRigidBody>();
     Base::Vector3d refNode = obj->ReferenceNode.getValue();
     refNode.x = value;
     obj->ReferenceNode.setValue(refNode);
@@ -529,7 +527,7 @@ void TaskFemConstraintRigidBody::onRefNodeXChanged(double value)
 
 void TaskFemConstraintRigidBody::onRefNodeYChanged(double value)
 {
-    auto obj = static_cast<Fem::ConstraintRigidBody*>(ConstraintView->getObject());
+    auto obj = ConstraintView->getObject<Fem::ConstraintRigidBody>();
     Base::Vector3d refNode = obj->ReferenceNode.getValue();
     refNode.y = value;
     obj->ReferenceNode.setValue(refNode);
@@ -537,7 +535,7 @@ void TaskFemConstraintRigidBody::onRefNodeYChanged(double value)
 
 void TaskFemConstraintRigidBody::onRefNodeZChanged(double value)
 {
-    auto obj = static_cast<Fem::ConstraintRigidBody*>(ConstraintView->getObject());
+    auto obj = ConstraintView->getObject<Fem::ConstraintRigidBody>();
     Base::Vector3d refNode = obj->ReferenceNode.getValue();
     refNode.z = value;
     obj->ReferenceNode.setValue(refNode);

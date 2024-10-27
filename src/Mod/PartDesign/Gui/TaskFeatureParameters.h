@@ -75,8 +75,9 @@ protected:
     template<typename T = App::DocumentObject> T* getObject() const
     {
         static_assert(std::is_base_of<App::DocumentObject, T>::value, "Wrong template argument");
+
         if (vp) {
-            return dynamic_cast<T*>(vp->getObject());
+            return vp->getObject<T>();
         }
 
         return nullptr;
@@ -134,7 +135,7 @@ public:
     {
         static_assert(std::is_base_of<App::DocumentObject, T>::value, "Wrong template argument");
         if (vp) {
-            return dynamic_cast<T*>(vp->getObject());
+            return vp->getObject<T>();
         }
 
         return nullptr;

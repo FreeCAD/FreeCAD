@@ -51,8 +51,7 @@ void ViewProviderPathCompound::unsetEdit(int ModNum)
 
 std::vector<App::DocumentObject*> ViewProviderPathCompound::claimChildren() const
 {
-    return std::vector<App::DocumentObject*>(
-        static_cast<Path::FeatureCompound*>(getObject())->Group.getValues());
+    return std::vector<App::DocumentObject*>(getObject<Path::FeatureCompound>()->Group.getValues());
 }
 
 bool ViewProviderPathCompound::canDragObjects() const
@@ -62,7 +61,7 @@ bool ViewProviderPathCompound::canDragObjects() const
 
 void ViewProviderPathCompound::dragObject(App::DocumentObject* obj)
 {
-    static_cast<Path::FeatureCompound*>(getObject())->removeObject(obj);
+    getObject<Path::FeatureCompound>()->removeObject(obj);
 }
 
 bool ViewProviderPathCompound::canDropObjects() const
@@ -72,7 +71,7 @@ bool ViewProviderPathCompound::canDropObjects() const
 
 void ViewProviderPathCompound::dropObject(App::DocumentObject* obj)
 {
-    static_cast<Path::FeatureCompound*>(getObject())->addObject(obj);
+    getObject<Path::FeatureCompound>()->addObject(obj);
 }
 
 QIcon ViewProviderPathCompound::getIcon() const

@@ -124,8 +124,7 @@ private:
 
             Gui::Command::commitCommand();
 
-            tryAutoRecomputeIfNotSolve(
-                static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
+            tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
         }
         catch (const Base::Exception&) {
             Gui::NotifyError(sketchgui,

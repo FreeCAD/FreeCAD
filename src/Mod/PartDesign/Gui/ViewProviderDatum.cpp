@@ -289,7 +289,7 @@ bool ViewProviderDatum::doubleClicked()
     Msg += this->pcObject->Label.getValue();
     Gui::Command::openCommand(Msg.c_str());
 
-    Part::Datum* pcDatum = static_cast<Part::Datum*>(getObject());
+    Part::Datum* pcDatum = getObject<Part::Datum>();
     PartDesign::Body* activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
     auto datumBody = PartDesignGui::getBodyFor(pcDatum, false);
 

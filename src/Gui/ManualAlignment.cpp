@@ -240,7 +240,7 @@ Base::BoundBox3d AlignmentGroup::getBoundingBox() const
     std::vector<Gui::ViewProviderDocumentObject*>::const_iterator it;
     for (it = this->_views.begin(); it != this->_views.end(); ++it) {
         if ((*it)->isDerivedFrom(Gui::ViewProviderGeometryObject::getClassTypeId())) {
-            auto geo = static_cast<App::GeoFeature*>((*it)->getObject());
+            auto geo = (*it)->getObject<App::GeoFeature>();
             const App::PropertyComplexGeoData* prop = geo->getPropertyOfGeometry();
             if (prop)
                 box.Add(prop->getBoundingBox());
