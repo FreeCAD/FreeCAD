@@ -87,6 +87,13 @@ Rotation Rotation::fromNormalVector(const Vector3d& normal)
     return Rotation(Vector3d(0, 0, 1), normal);
 }
 
+Rotation Rotation::fromEulerAngles(EulerSequence theOrder, double alpha, double beta, double gamma)
+{
+    Rotation rotation;
+    rotation.setEulerAngles(theOrder, alpha, beta, gamma);
+    return rotation;
+}
+
 const double* Rotation::getValue() const
 {
     return &this->quat[0];

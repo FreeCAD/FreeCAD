@@ -230,15 +230,17 @@ SoSeparator* TDragger::buildLabelGeometry()
     labelSeparator->addChild(labelTranslation);
 
     auto label = new SoFrameLabel();
-    label->justification = SoFrameLabel::CENTER;
     label->string.connectFrom(&this->label);
     label->textColor.setValue(1.0, 1.0, 1.0);
-    label->horAlignment.setValue(SoImage::CENTER);
-    label->vertAlignment.setValue(SoImage::HALF);
+    label->horAlignment = SoImage::CENTER;
+    label->vertAlignment = SoImage::HALF;
+    label->border = false;
+    label->backgroundUseBaseColor = true;
     labelSeparator->addChild(label);
 
     return labelSeparator;
 }
+
 SoBaseColor* TDragger::buildActiveColor()
 {
     auto colorActive = new SoBaseColor();
@@ -1170,7 +1172,6 @@ SoFCCSysDragger::SoFCCSysDragger()
     SO_KIT_ADD_CATALOG_ENTRY(zRotatorDragger, RDragger, TRUE, zRotatorSeparator, "", TRUE);
 
     // Other
-
     SO_KIT_ADD_FIELD(translation, (0.0, 0.0, 0.0));
     SO_KIT_ADD_FIELD(translationIncrement, (1.0));
     SO_KIT_ADD_FIELD(translationIncrementCountX, (0));
@@ -1186,6 +1187,10 @@ SoFCCSysDragger::SoFCCSysDragger()
     SO_KIT_ADD_FIELD(draggerSize, (1.0));
     SO_KIT_ADD_FIELD(autoScaleResult, (1.0));
 
+    SO_KIT_ADD_FIELD(xAxisLabel, ("X"));
+    SO_KIT_ADD_FIELD(yAxisLabel, ("Y"));
+    SO_KIT_ADD_FIELD(zAxisLabel, ("Z"));
+
     SO_KIT_INIT_INSTANCE();
 
     // Colors
@@ -1198,17 +1203,17 @@ SoFCCSysDragger::SoFCCSysDragger()
     tDragger = SO_GET_ANY_PART(this, "xTranslatorDragger", TDragger);
     tDragger->translationIncrement.connectFrom(&this->translationIncrement);
     tDragger->autoScaleResult.connectFrom(&this->autoScaleResult);
-    tDragger->label.setValue("U");
+    tDragger->label.connectFrom(&xAxisLabel);
     translationIncrementCountX.connectFrom(&tDragger->translationIncrementCount);
     tDragger = SO_GET_ANY_PART(this, "yTranslatorDragger", TDragger);
     tDragger->translationIncrement.connectFrom(&this->translationIncrement);
     tDragger->autoScaleResult.connectFrom(&this->autoScaleResult);
-    tDragger->label.setValue("V");
+    tDragger->label.connectFrom(&yAxisLabel);
     translationIncrementCountY.connectFrom(&tDragger->translationIncrementCount);
     tDragger = SO_GET_ANY_PART(this, "zTranslatorDragger", TDragger);
     tDragger->translationIncrement.connectFrom(&this->translationIncrement);
     tDragger->autoScaleResult.connectFrom(&this->autoScaleResult);
-    tDragger->label.setValue("W");
+    tDragger->label.connectFrom(&zAxisLabel);
     translationIncrementCountZ.connectFrom(&tDragger->translationIncrementCount);
     // Planar Translator
     TPlanarDragger* tPlanarDragger;
