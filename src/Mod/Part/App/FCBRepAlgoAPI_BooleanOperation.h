@@ -61,8 +61,7 @@ protected: //! @name Constructors
 
 
 private:
-  TopTools_ListOfShape myOriginalArguments;
   Standard_EXPORT const TopoDS_Shape RecursiveCutCompound(const TopoDS_Shape& theArgument, const Message_ProgressRange& theRange);
-
+  Standard_EXPORT const TopoDS_Shape RecursiveCutByCompound(const TopoDS_Shape& theArgument, const TopoDS_Shape& theTool, const Message_ProgressRange& theRange);
 };
 #endif
