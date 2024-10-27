@@ -30,7 +30,9 @@
 #include <BRepBndLib.hxx>
 #include <Bnd_Box.hxx>
 #include <BRepCheck_Analyzer.hxx>
+#include <BRep_Builder.hxx>
 #include <TopoDS_Shape.hxx>
+#include <TopoDS_Iterator.hxx>
 #include <Precision.hxx>
 #include <FuzzyHelper.h>
 
@@ -77,4 +79,34 @@ void FCBRepAlgoAPIHelper::setAutoFuzzy(BRepAlgoAPI_BuilderAlgo* op) {
     for (TopTools_ListOfShape::Iterator it(op->Arguments()); it.More(); it.Next())
         BRepBndLib::Add(it.Value(), bounds);
     op->SetFuzzyValue(Part::FuzzyHelper::getBooleanFuzzy() * sqrt(bounds.SquareExtent()) * Precision::Confusion());
+}
+
+void FCBRepAlgoAPI_BooleanOperation::Build(const Message_ProgressRange& theRange) {
+
+    if (myOperation==BOPAlgo_CUT && myArguments.Size()==1 && myArguments.First().ShapeType() == TopAbs_COMPOUND) {
+        myOriginalArguments = myArguments;
+        myShape = RecursiveCutCompound(myOriginalArguments.First(), theRange);
+    } else {
+        return BRepAlgoAPI_BooleanOperation::Build(theRange);
+    }
+
+}
+
+const TopoDS_Shape FCBRepAlgoAPI_BooleanOperation::RecursiveCutCompound(const TopoDS_Shape& theArgument, const Message_ProgressRange& theRange) {
+    BRep_Builder builder;
+    TopoDS_Compound comp;
+    builder.MakeCompound(comp);
+    TopoDS_Iterator it(theArgument);
+    for (; it.More(); it.Next()) {
+        TopTools_ListOfShape currentArguments;
+        currentArguments.Append(it.Value());
+        myArguments = currentArguments;
+        Build(theRange);
+        if (IsDone()) {
+            builder.Add(comp, myShape);
+        } else {
+            return TopoDS_Shape();
+        }
+    }
+    return comp;
 }

@@ -49,6 +49,8 @@ public:
     // set fuzzyness based on size
     void setAutoFuzzy();
 
+    Standard_EXPORT virtual void Build(const Message_ProgressRange& theRange = Message_ProgressRange()) Standard_OVERRIDE;
+
 protected: //! @name Constructors
 
   //! Constructor to perform Boolean operation on only two arguments.
@@ -56,6 +58,11 @@ protected: //! @name Constructors
   Standard_EXPORT FCBRepAlgoAPI_BooleanOperation(const TopoDS_Shape& theS1,
                                                const TopoDS_Shape& theS2,
                                                const BOPAlgo_Operation theOperation);
+
+
+private:
+  TopTools_ListOfShape myOriginalArguments;
+  Standard_EXPORT const TopoDS_Shape RecursiveCutCompound(const TopoDS_Shape& theArgument, const Message_ProgressRange& theRange);
 
 };
 #endif
