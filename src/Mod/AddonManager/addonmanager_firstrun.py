@@ -26,6 +26,7 @@
 import os
 
 from PySide import QtCore, QtWidgets
+from PySide.QtGui import QPixmap
 
 import FreeCAD
 import FreeCADGui
@@ -51,55 +52,28 @@ class FirstRunDialog:
             warning_dialog = FreeCADGui.PySideUic.loadUi(
                 os.path.join(os.path.dirname(__file__), "first_run.ui")
             )
-            autocheck = self.pref.GetBool("AutoCheck", False)
-            download_macros = self.pref.GetBool("DownloadMacros", False)
-            proxy_string = self.pref.GetString("ProxyUrl", "")
-            if self.pref.GetBool("NoProxyCheck", True):
-                proxy_option = 0
-            elif self.pref.GetBool("SystemProxyCheck", False):
-                proxy_option = 1
-            elif self.pref.GetBool("UserProxyCheck", False):
-                proxy_option = 2
 
-            def toggle_proxy_list(option: int):
-                if option == 2:
-                    warning_dialog.lineEditProxy.show()
-                else:
-                    warning_dialog.lineEditProxy.hide()
+            # Set up the warning icon
+            warning_icon_label = warning_dialog.warningIconLabel
+            pixmap = QPixmap(":/icons/AddonMgrWithWarning.svg")
+            warning_icon_label.setPixmap(pixmap)
+            warning_icon_label.setScaledContents(True)
+            warning_icon_label.setFixedSize(80, 80)
 
-            warning_dialog.checkBoxAutoCheck.setChecked(autocheck)
-            warning_dialog.checkBoxDownloadMacroMetadata.setChecked(download_macros)
-            warning_dialog.comboBoxProxy.setCurrentIndex(proxy_option)
-            toggle_proxy_list(proxy_option)
-            if proxy_option == 2:
-                warning_dialog.lineEditProxy.setText(proxy_string)
+            # Customize layout margins and spacing
+            layout = warning_dialog.findChild(QtWidgets.QHBoxLayout, "bodyLayout")
+            layout.setContentsMargins(20, 6, 20, 6)  # Left, top, right, bottom margins
+            layout.setSpacing(30)  # Set spacing between widgets
 
-            warning_dialog.comboBoxProxy.currentIndexChanged.connect(toggle_proxy_list)
+            # Connect the "Continue" button to accept the dialog (continue with Addon Manager)
+            warning_dialog.buttonContinue.clicked.connect(warning_dialog.accept)
 
-            warning_dialog.labelWarning.setStyleSheet(
-                f"color:{utils.warning_color_string()};font-weight:bold;"
-            )
+            # Connect the "Quit" button to reject (exit) the dialog
+            warning_dialog.buttonQuit.clicked.connect(warning_dialog.reject)
 
+            # Show the dialog and check whether the user accepted or canceled
             if warning_dialog.exec() == QtWidgets.QDialog.Accepted:
                 self.readWarning = True
                 self.pref.SetBool("readWarning2022", True)
-                self.pref.SetBool("AutoCheck", warning_dialog.checkBoxAutoCheck.isChecked())
-                self.pref.SetBool(
-                    "DownloadMacros",
-                    warning_dialog.checkBoxDownloadMacroMetadata.isChecked(),
-                )
-                selected_proxy_option = warning_dialog.comboBoxProxy.currentIndex()
-                if selected_proxy_option == 0:
-                    self.pref.SetBool("NoProxyCheck", True)
-                    self.pref.SetBool("SystemProxyCheck", False)
-                    self.pref.SetBool("UserProxyCheck", False)
-                elif selected_proxy_option == 1:
-                    self.pref.SetBool("NoProxyCheck", False)
-                    self.pref.SetBool("SystemProxyCheck", True)
-                    self.pref.SetBool("UserProxyCheck", False)
-                else:
-                    self.pref.SetBool("NoProxyCheck", False)
-                    self.pref.SetBool("SystemProxyCheck", False)
-                    self.pref.SetBool("UserProxyCheck", True)
-                    self.pref.SetString("ProxyUrl", warning_dialog.lineEditProxy.text())
+
         return self.readWarning
