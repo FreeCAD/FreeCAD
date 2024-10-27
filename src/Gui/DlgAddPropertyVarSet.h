@@ -96,6 +96,11 @@ private:
     void createProperty();
     void changePropertyToAdd();
 
+    void openTransaction();
+    bool hasPendingTransaction();
+    void abortTransaction();
+    void closeTransaction(bool abort);
+
     void checkName();
     void checkGroup();
     void checkType();
@@ -127,6 +132,9 @@ private:
     std::string namePropertyToAdd;
     std::unique_ptr<PropertyEditor::PropertyItem> propertyItem;
     std::unique_ptr<App::ObjectIdentifier> objectIdentifier;
+
+    // a transactionID of 0 means that there is no active transaction.
+    int transactionID;
 
     // connections
     QMetaObject::Connection connComboBoxGroup;
