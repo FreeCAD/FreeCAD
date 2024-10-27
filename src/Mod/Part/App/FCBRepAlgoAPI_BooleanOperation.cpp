@@ -83,13 +83,19 @@ void FCBRepAlgoAPIHelper::setAutoFuzzy(BRepAlgoAPI_BuilderAlgo* op) {
 
 void FCBRepAlgoAPI_BooleanOperation::Build(const Message_ProgressRange& theRange) {
 
-    if (myOperation==BOPAlgo_CUT && myArguments.Size()==1 && myArguments.First().ShapeType() == TopAbs_COMPOUND) {
-        myOriginalArguments = myArguments;
+    if (myOperation==BOPAlgo_CUT && myArguments.Size()==1 && myTools.Size()==1 && myTools.First().ShapeType() == TopAbs_COMPOUND) {
+        TopTools_ListOfShape myOriginalTools = myTools;
+        TopTools_ListOfShape myOriginalArguments = myArguments;
+        myShape = RecursiveCutByCompound(myOriginalArguments.First(), myOriginalTools.First(), theRange);
+        myArguments = myOriginalArguments;
+        myTools = myOriginalTools;
+    } else if (myOperation==BOPAlgo_CUT && myArguments.Size()==1 && myArguments.First().ShapeType() == TopAbs_COMPOUND) {
+        TopTools_ListOfShape myOriginalArguments = myArguments;
         myShape = RecursiveCutCompound(myOriginalArguments.First(), theRange);
+        myArguments = myOriginalArguments;
     } else {
-        return BRepAlgoAPI_BooleanOperation::Build(theRange);
+        BRepAlgoAPI_BooleanOperation::Build(theRange);
     }
-
 }
 
 const TopoDS_Shape FCBRepAlgoAPI_BooleanOperation::RecursiveCutCompound(const TopoDS_Shape& theArgument, const Message_ProgressRange& theRange) {
@@ -109,4 +115,25 @@ const TopoDS_Shape FCBRepAlgoAPI_BooleanOperation::RecursiveCutCompound(const To
         }
     }
     return comp;
+}
+
+
+const TopoDS_Shape FCBRepAlgoAPI_BooleanOperation::RecursiveCutByCompound(const TopoDS_Shape& theArgument, const TopoDS_Shape& theTool, const Message_ProgressRange& theRange) {
+    TopoDS_Shape result = theArgument;
+    TopoDS_Iterator it(theTool);
+    for (; it.More(); it.Next()) {
+        TopTools_ListOfShape currentArguments;
+        TopTools_ListOfShape currentTools;
+        currentArguments.Append(result);
+        currentTools.Append(it.Value());
+        myArguments = currentArguments;
+        myTools = currentTools;
+        Build(theRange);
+        if (IsDone()) {
+            result = myShape;
+        } else {
+            return TopoDS_Shape();
+        }
+    }
+    return result;
 }
