@@ -536,7 +536,6 @@ void DlgAddPropertyVarSet::accept()
 
 void DlgAddPropertyVarSet::reject()
 {
-    App::Document* doc = varSet->getDocument();
     // On reject we can disconnect the signal handlers because nothing useful
     // is to be done.  Otherwise, signals may activate the handlers that assume
     // that a new property has been created, an assumption that will be
