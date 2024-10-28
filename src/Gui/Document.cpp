@@ -578,7 +578,7 @@ void Document::resetIfEditing()
     }
 }
 
-View3DInventor* Document::openEditingView3D(ViewProviderDocumentObject* vp)
+View3DInventor* Document::openEditingView3D(const ViewProviderDocumentObject* vp)
 {
     auto view3d = dynamic_cast<View3DInventor *>(getActiveView());
     // if the currently active view is not the 3d view search for it and activate it
@@ -590,6 +590,16 @@ View3DInventor* Document::openEditingView3D(ViewProviderDocumentObject* vp)
     }
 
     return view3d;
+}
+
+View3DInventor* Document::openEditingView3D(const App::DocumentObject* obj)
+{
+    if (auto vp = dynamic_cast<ViewProviderDocumentObject*>(
+            Application::Instance->getViewProvider(obj))) {
+        return openEditingView3D(vp);
+    }
+
+    return nullptr;
 }
 
 bool Document::trySetEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
@@ -2357,7 +2367,7 @@ MDIView* Document::getActiveView() const
     return nullptr;
 }
 
-MDIView *Document::setActiveView(ViewProviderDocumentObject *vp, Base::Type typeId)
+MDIView *Document::setActiveView(const ViewProviderDocumentObject* vp, Base::Type typeId)
 {
     MDIView *view = nullptr;
     if (!vp) {
@@ -2372,19 +2382,22 @@ MDIView *Document::setActiveView(ViewProviderDocumentObject *vp, Base::Type type
             }
             else {
                 auto linked = obj->getLinkedObject(true);
-                if (linked!=obj) {
+                if (linked != obj) {
                     auto vpLinked = dynamic_cast<ViewProviderDocumentObject*>(
                                 Application::Instance->getViewProvider(linked));
-                    if (vpLinked)
+                    if (vpLinked) {
                         view = vpLinked->getMDIView();
+                    }
                 }
 
                 if (!view && typeId.isBad()) {
                     MDIView* active = getActiveView();
-                    if (active && active->containsViewProvider(vp))
+                    if (active && active->containsViewProvider(vp)) {
                         view = active;
-                    else
+                    }
+                    else {
                         typeId = View3DInventor::getClassTypeId();
+                    }
                 }
             }
         }
@@ -2401,11 +2414,13 @@ MDIView *Document::setActiveView(ViewProviderDocumentObject *vp, Base::Type type
         }
     }
 
-    if (!view && !typeId.isBad())
+    if (!view && !typeId.isBad()) {
         view = createView(typeId);
+    }
 
-    if (view)
+    if (view) {
         getMainWindow()->setActiveWindow(view);
+    }
 
     return view;
 }
