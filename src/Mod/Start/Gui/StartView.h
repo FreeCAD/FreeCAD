@@ -96,6 +96,8 @@ protected:
 
     QString fileCardStyle() const;
 
+    void paintEvent(QPaintEvent* event) override;
+
 private:
     void retranslateUi();
 
