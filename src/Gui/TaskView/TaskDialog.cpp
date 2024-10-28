@@ -31,6 +31,8 @@
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/View3DInventor.h>
+#include <Gui/ViewProviderDocumentObject.h>
+
 
 #include "TaskDialog.h"
 #include "TaskView.h"
