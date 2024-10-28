@@ -68,6 +68,28 @@
      </property>
     </widget>
    </item>
+   <item row="4" column="0">
+    <widget class="Gui::PrefCheckBox" name="CheckBox_RigidSubAsm">
+     <property name="toolTip">
+      <string>If checked, the inserted sub-assemblies will not be flexible.
+Rigid means that the sub-assembly will be considered as a solid.
+Flexible means that the sub-assembly joints will be taken into account in the main assembly.
+You can change this property of sub-assemblies at any time by right clicking them.</string>
+     </property>
+     <property name="text">
+      <string>Rigid sub-assemblies</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>InsertRigidSubAssemblies</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Mod/Assembly</cstring>
+     </property>
+    </widget>
+   </item>
    </layout>
  </widget>
  <customwidgets>
