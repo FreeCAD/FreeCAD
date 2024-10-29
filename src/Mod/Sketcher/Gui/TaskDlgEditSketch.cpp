@@ -79,6 +79,8 @@ TaskDlgEditSketch::TaskDlgEditSketch(ViewProviderSketch* sketchView)
         std::bind(&SketcherGui::TaskDlgEditSketch::slotToolChanged, this, sp::_1));
 
     ToolSettings->setHidden(true);
+
+    associateToObject3dView(sketchView->getObject());
 }
 
 TaskDlgEditSketch::~TaskDlgEditSketch()
@@ -144,5 +146,11 @@ bool TaskDlgEditSketch::reject()
     return true;
 }
 
+
+void TaskDlgEditSketch::autoClosedOnClosedView()
+{
+    // Make sure the edit mode is exited when the view is closed.
+    reject();
+}
 
 #include "moc_TaskDlgEditSketch.cpp"

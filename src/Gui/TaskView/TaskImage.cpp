@@ -679,9 +679,7 @@ TaskImageDialog::TaskImageDialog(Image::ImagePlane* obj)
 {
     addTaskBox(Gui::BitmapFactory().pixmap("image-plane"), widget);
 
-    auto doc = obj->getDocument();
-    setDocumentName(doc->getName());
-    setAutoCloseOnDeletedDocument(true);
+    associateToObject3dView(obj);
 }
 
 void TaskImageDialog::open()

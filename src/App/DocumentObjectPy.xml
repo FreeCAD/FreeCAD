@@ -232,6 +232,13 @@ Return tuple(obj,newElementName,oldElementName)
                 </UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="isAttachedToDocument" Const="true">
+            <Documentation>
+                <UserDocu>
+                    isAttachedToDocument(): return true if the object is part of a document, false otherwise
+                </UserDocu>
+            </Documentation>
+        </Methode>
     <Attribute Name="OutList" ReadOnly="true">
       <Documentation>
         <UserDocu>A list of all objects this object links to.</UserDocu>
@@ -266,7 +273,7 @@ Return tuple(obj,newElementName,oldElementName)
             <Documentation>
                 <UserDocu>Return the internal name of this object</UserDocu>
             </Documentation>
-            <Parameter Name="Name" Type="String"/>
+            <Parameter Name="Name" Type="Object"/>
         </Attribute>
                 <Attribute Name="Document" ReadOnly="true">
                         <Documentation>

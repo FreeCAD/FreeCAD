@@ -52,6 +52,9 @@ protected:
     explicit DlgCustomToolbars(Type, QWidget* parent = nullptr);
     ~DlgCustomToolbars() override;
 
+public:
+    void activateWorkbenchBox(int index);  // Public accessor for DlgMacroExecuteImp
+
 protected:
     void setupConnections();
     void onWorkbenchBoxActivated(int index);

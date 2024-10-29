@@ -146,15 +146,21 @@ class Trimex(gui_base_original.Modifier):
             # normal wire trimex mode
             self.color = self.obj.ViewObject.LineColor
             self.width = self.obj.ViewObject.LineWidth
-            # self.obj.ViewObject.Visibility = False
-            self.obj.ViewObject.LineColor = (0.5, 0.5, 0.5)
-            self.obj.ViewObject.LineWidth = 1
-            self.extrudeMode = False
             if self.obj.Shape.Wires:
                 self.edges = self.obj.Shape.Wires[0].Edges
                 self.edges = Part.__sortEdges__(self.edges)
             else:
                 self.edges = self.obj.Shape.Edges
+            for e in self.edges:
+                if isinstance(e.Curve,(Part.BSplineCurve, Part.BezierCurve)):
+                    self.obj = None
+                    self.finish()
+                    _err(translate("draft", "Trimex is not supported yet on this type of object."))
+                    return
+            # self.obj.ViewObject.Visibility = False
+            self.obj.ViewObject.LineColor = (0.5, 0.5, 0.5)
+            self.obj.ViewObject.LineWidth = 1
+            self.extrudeMode = False
             self.ghost = []
             lc = self.color
             sc = (lc[0], lc[1], lc[2])
@@ -222,11 +228,16 @@ class Trimex(gui_base_original.Modifier):
                 self.ui.radiusValue.setToolTip(translate("draft",
                                                          "Offset distance"))
                 self.ui.setRadiusValue(dist, unit="Length")
-            else:
+            elif ang:
                 self.ui.labelRadius.setText(translate("draft", "Angle"))
                 self.ui.radiusValue.setToolTip(translate("draft",
                                                          "Offset angle"))
                 self.ui.setRadiusValue(ang, unit="Angle")
+            else:
+                # both dist and ang are None, this indicates an impossible
+                # situation. Setting 0 with no unit will show "0 ??" and not
+                # compute any value
+                self.ui.setRadiusValue(0)
             self.ui.radiusValue.setFocus()
             self.ui.radiusValue.selectAll()
             gui_tool_utils.redraw3DView()
@@ -337,7 +348,8 @@ class Trimex(gui_base_original.Modifier):
             if real:
                 if self.force:
                     ray = self.newpoint.sub(v1)
-                    ray.multiply(self.force / ray.Length)
+                    if ray.Length:
+                        ray.multiply(self.force / ray.Length)
                     self.newpoint = App.Vector.add(v1, ray)
                 newedges.append(Part.LineSegment(self.newpoint, v2).toShape())
         else:

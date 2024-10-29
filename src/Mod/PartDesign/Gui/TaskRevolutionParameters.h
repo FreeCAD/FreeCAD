@@ -27,6 +27,7 @@
 #include <Mod/PartDesign/App/FeatureGroove.h>
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderRevolution.h"
+#include "ViewProviderGroove.h"
 
 
 class Ui_TaskRevolutionParameters;
@@ -46,7 +47,10 @@ class TaskRevolutionParameters : public TaskSketchBasedParameters
     Q_OBJECT
 
 public:
-    explicit TaskRevolutionParameters(ViewProvider* RevolutionView, QWidget* parent = nullptr);
+    explicit TaskRevolutionParameters(ViewProvider* RevolutionView,
+                                      const char *pixname,
+                                      QString title = tr("Revolution parameters"),
+                                      QWidget* parent = nullptr);
     ~TaskRevolutionParameters() override;
 
     void apply() override;
@@ -121,9 +125,15 @@ class TaskDlgRevolutionParameters : public TaskDlgSketchBasedParameters
     Q_OBJECT
 
 public:
-    explicit TaskDlgRevolutionParameters(PartDesignGui::ViewProvider *RevolutionView);
+    explicit TaskDlgRevolutionParameters(PartDesignGui::ViewProviderRevolution *RevolutionView);
 };
+class TaskDlgGrooveParameters : public TaskDlgSketchBasedParameters
+{
+    Q_OBJECT
 
+public:
+    explicit TaskDlgGrooveParameters(PartDesignGui::ViewProviderGroove *GrooveView);
+};
 } //namespace PartDesignGui
 
 #endif // GUI_TASKVIEW_TASKAPPERANCE_H

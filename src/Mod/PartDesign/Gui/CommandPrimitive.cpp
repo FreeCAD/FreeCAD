@@ -248,8 +248,6 @@ CmdPrimtiveCompSubtractive::CmdPrimtiveCompSubtractive()
 
 void CmdPrimtiveCompSubtractive::activated(int iMsg)
 {
-    App::Document *doc = getDocument();
-
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
 
     if (!pcActiveBody)

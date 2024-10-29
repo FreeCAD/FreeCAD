@@ -4756,8 +4756,6 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList, int refGeoId,
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
 
-    const std::vector<Part::Geometry*>& geovals = getInternalGeometry();
-
     const std::vector<Constraint*>& constrvals = this->Constraints.getValues();
     std::vector<Constraint*> newconstrVals(constrvals);
 

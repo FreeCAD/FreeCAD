@@ -442,11 +442,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     FreeCAD.Console.PrintError(error_message)
             self.ccx_binary = ccx_binary
 
-        startup_info = None
-        if system() == "Windows":
-            # Windows workaround to avoid blinking terminal window
-            startup_info = subprocess.STARTUPINFO()
-            startup_info.dwFlags = subprocess.STARTF_USESHOWWINDOW
         ccx_stdout = None
         ccx_stderr = None
         try:
@@ -455,7 +450,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 shell=False,
-                startupinfo=startup_info,
+                startupinfo=femutils.startProgramInfo(""),
             )
             ccx_stdout, ccx_stderr = p.communicate()
             if ccx_binary_sig in str(ccx_stdout):
@@ -534,11 +529,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         import re
         from platform import system
 
-        startup_info = None
-        if system() == "Windows":
-            # Windows workaround to avoid blinking terminal window
-            startup_info = subprocess.STARTUPINFO()
-            startup_info.dwFlags = subprocess.STARTF_USESHOWWINDOW
         ccx_stdout = None
         ccx_stderr = None
         # Now extract the version number
@@ -547,7 +537,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             shell=False,
-            startupinfo=startup_info,
+            startupinfo=femutils.startProgramInfo(""),
         )
         ccx_stdout, ccx_stderr = p.communicate()
         ccx_stdout = ccx_stdout.decode()

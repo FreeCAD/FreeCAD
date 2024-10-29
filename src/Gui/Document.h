@@ -51,6 +51,7 @@ namespace Gui {
 
 class BaseView;
 class MDIView;
+class View3DInventor;
 class ViewProvider;
 class ViewProviderDocumentObject;
 class Application;
@@ -217,9 +218,9 @@ public:
     std::list<MDIView*> getMDIViews() const;
     /// returns a list of all MDI views of a certain type
     std::list<MDIView*> getMDIViewsOfType(const Base::Type& typeId) const;
-    //@}
-
     MDIView *setActiveView(ViewProviderDocumentObject *vp=nullptr, Base::Type typeId = Base::Type());
+    View3DInventor* openEditingView3D(ViewProviderDocumentObject* vp);
+    //@}
 
     /** @name View provider handling  */
     //@{
@@ -313,6 +314,8 @@ protected:
     Gui::DocumentPy *_pcDocPy;
 
 private:
+    bool trySetEdit(Gui::ViewProvider* p, int ModNum, const char *subname);
+    void resetIfEditing();
     //handles the scene graph nodes to correctly group child and parents
     void handleChildren3D(ViewProvider* viewProvider, bool deleting=false);
 

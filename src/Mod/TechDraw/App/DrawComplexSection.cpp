@@ -506,13 +506,6 @@ void DrawComplexSection::makeAlignedPieces(const TopoDS_Shape& rawShape)
         return;
     }
 
-    int pieceCount = pieces.size();
-    if (pieceCount < 2) {
-        //no need to space out the pieces
-        m_alignResult = TopoDS::Compound(pieces.front());
-        return;
-    }
-
     //space the pieces "horizontally" or "vertically" in OXYZ
     double movementReverser = isProfileVertical ? verticalReverser : horizReverser;
     gp_Vec movementAxis = gp_Vec(gp::OX().Direction());

@@ -1657,12 +1657,16 @@ def getPropertyData(key,value,preferences):
     if ptype in ["IfcLabel","IfcText","IfcIdentifier",'IfcDescriptiveMeasure']:
         pass
     elif ptype == "IfcBoolean":
-        if pvalue == ".T.":
+        if pvalue in ["True", "False"]:
+            pvalue = eval(pvalue)
+        elif pvalue == ".T.":
             pvalue = True
         else:
             pvalue = False
     elif ptype == "IfcLogical":
-        if pvalue.upper() == "TRUE":
+        if pvalue in ["True", "False"]:
+            pvalue = eval(pvalue)
+        elif pvalue.upper() == "TRUE":
             pvalue = True
         else:
             pvalue = False
@@ -1762,7 +1766,7 @@ def exportIfcAttributes(obj, kwargs, scale=0.001):
             value = obj.getPropertyByName(property)
             if isinstance(value, FreeCAD.Units.Quantity):
                 value = float(value)
-                if property in ["ElevationWithFlooring","Elevation"]:
+                if "Elevation" in property:
                     value = value*scale # some properties must be changed to meters
             if (ifctype == "IfcFurnishingElement") and (property == "PredefinedType"):
                 pass # IFC2x3 Furniture objects get converted to IfcFurnishingElement and have no PredefinedType anymore

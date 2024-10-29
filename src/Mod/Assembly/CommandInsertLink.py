@@ -99,6 +99,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
         pref = Preferences.preferences()
         self.form.CheckBox_ShowOnlyParts.setChecked(pref.GetBool("InsertShowOnlyParts", False))
+        self.form.CheckBox_RigidSubAsm.setChecked(pref.GetBool("InsertRigidSubAssemblies", True))
 
         # Actions
         self.form.openFileButton.clicked.connect(self.openFiles)
@@ -166,6 +167,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
     def deactivated(self):
         pref = Preferences.preferences()
         pref.SetBool("InsertShowOnlyParts", self.form.CheckBox_ShowOnlyParts.isChecked())
+        pref.SetBool("InsertRigidSubAssemblies", self.form.CheckBox_RigidSubAsm.isChecked())
         Gui.Selection.clearSelection()
 
     def buildPartList(self):
@@ -357,7 +359,16 @@ class TaskAssemblyInsertLink(QtCore.QObject):
                 print(selectedPart.Document.Name)
                 documentItem.setText(0, f"{newDocName}.FCStd")"""
 
-        addedObject = self.assembly.newObject("App::Link", selectedPart.Label)
+        if selectedPart.isDerivedFrom("Assembly::AssemblyObject"):
+            objType = "Assembly::AssemblyLink"
+        else:
+            objType = "App::Link"
+
+        addedObject = self.assembly.newObject(objType, selectedPart.Label)
+
+        if selectedPart.isDerivedFrom("Assembly::AssemblyObject"):
+            addedObject.Rigid = self.form.CheckBox_RigidSubAsm.isChecked()
+
         # set placement of the added object to the center of the screen.
         view = Gui.activeView()
         x, y = view.getSize()

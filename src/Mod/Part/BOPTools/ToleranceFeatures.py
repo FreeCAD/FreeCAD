@@ -47,14 +47,15 @@ def getParamRefine():
     return FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Part/Boolean").GetBool("RefineModel")
 
 
-def cmdCreateToleranceSetFeature(name, minTolerance=1e-7):
-    """cmdCreateToleranceSetFeature(name, minTolerance): generalized implementation of GUI commands."""
+def cmdCreateToleranceSetFeature(name, minTolerance=1e-7, maxTolerance=0):
+    """cmdCreateToleranceSetFeature(name, minTolerance, maxTolerance): generalized implementation of GUI commands."""
     sel = FreeCADGui.Selection.getSelectionEx()
 
     FreeCAD.ActiveDocument.openTransaction("Create ToleranceSet")
     FreeCADGui.addModule("BOPTools.ToleranceFeatures")
     FreeCADGui.doCommand("j = BOPTools.ToleranceFeatures.makeToleranceSet(name='{name}')".format(name=name))
     FreeCADGui.doCommand("j.minTolerance = {minTolerance}".format(minTolerance=minTolerance))
+    FreeCADGui.doCommand("j.maxTolerance = {maxTolerance}".format(maxTolerance=maxTolerance))
     FreeCADGui.doCommand("j.Objects = {sel}".format(
        sel= "["  +  ", ".join(["App.ActiveDocument."+so.Object.Name for so in sel])  +  "]"
     ))
@@ -108,19 +109,26 @@ class FeatureToleranceSet:
         obj.addProperty("App::PropertyLinkList","Objects","ToleranceSet","Objects to have tolerance adjusted.")
         obj.addProperty("App::PropertyBool","Refine","ToleranceSet",
                         "True = refine resulting shape. False = output as is.")
-        obj.addProperty("App::PropertyFloat","minTolerance","ToleranceSet", "1e-7")
+        obj.addProperty("App::PropertyLength","minTolerance","ToleranceSet", "0.1 nm")
+        obj.addProperty("App::PropertyLength","maxTolerance","ToleranceSet", "0")
         obj.Refine = getParamRefine()
 
         obj.Proxy = self
         self.Type = "FeatureToleranceSet"
 
+    def onDocumentRestored(self, obj):
+        if not hasattr(obj, 'maxTolerance'):
+            obj.addProperty("App::PropertyLength","maxTolerance","ToleranceSet", "0")
+
     def execute(self,selfobj):
         shapes = []
         for obj in selfobj.Objects:
             sh = obj.Shape.copy(True,False)
-            sh.limitTolerance(selfobj.minTolerance)
+            sh.limitTolerance(selfobj.minTolerance,selfobj.maxTolerance)
             if selfobj.Refine:
+                sh.fix(selfobj.minTolerance,selfobj.minTolerance,selfobj.maxTolerance)
                 sh = sh.removeSplitter()
+                sh.fix(selfobj.minTolerance,selfobj.minTolerance,selfobj.maxTolerance)
             shapes.append(sh)
 
         if len(shapes)>1:
