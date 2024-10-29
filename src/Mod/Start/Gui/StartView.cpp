@@ -68,16 +68,19 @@ struct NewButton
     QString iconPath;
 };
 
-class NewFileButton : public QPushButton {
+class NewFileButton: public QPushButton
+{
 
 public:
     NewFileButton(const NewButton& newButton)
     {
         auto hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Mod/Start");
-        const auto cardSpacing = static_cast<int>(hGrp->GetInt("FileCardSpacing", 25));       // NOLINT
-        const auto newFileIconSize = static_cast<int>(hGrp->GetInt("NewFileIconSize", 48));   // NOLINT
-        const auto cardLabelWith = static_cast<int>(hGrp->GetInt("FileCardLabelWith", 180));  // NOLINT
+        const auto cardSpacing = static_cast<int>(hGrp->GetInt("FileCardSpacing", 25));  // NOLINT
+        const auto newFileIconSize =
+            static_cast<int>(hGrp->GetInt("NewFileIconSize", 48));  // NOLINT
+        const auto cardLabelWith =
+            static_cast<int>(hGrp->GetInt("FileCardLabelWith", 180));  // NOLINT
 
         auto mainLayout = gsl::owner<QHBoxLayout*>(new QHBoxLayout(this));
         auto iconLabel = gsl::owner<QLabel*>(new QLabel(this));
@@ -106,7 +109,8 @@ public:
         updateStyle();
     }
 
-    void updateStyle() {
+    void updateStyle()
+    {
         QString style = QStringLiteral("");
         if (qApp->styleSheet().isEmpty()) {
             style = fileCardStyle();
@@ -116,7 +120,7 @@ public:
 
     void changeEvent(QEvent* event) override
     {
-        if(!changeInProgress && event->type() == QEvent::StyleChange) {
+        if (!changeInProgress && event->type() == QEvent::StyleChange) {
             changeInProgress = true;  // Block recursive calls.
             updateStyle();
             changeInProgress = false;
@@ -124,7 +128,7 @@ public:
 
         QPushButton::changeEvent(event);
     }
-    
+
 
     QString fileCardStyle() const
     {
@@ -148,15 +152,15 @@ public:
         pressed = getUserColor(pressed, "FileCardSelectionColor");
 
         return QString::fromLatin1("QPushButton {"
-                                " background-color: rgb(%1, %2, %3);"
-                                " border-radius: 8px;"
-                                "}"
-                                "QPushButton:hover {"
-                                " border: 2px solid rgb(%4, %5, %6);"
-                                "}"
-                                "QPushButton:pressed {"
-                                " border: 2px solid rgb(%7, %8, %9);"
-                                "}")
+                                   " background-color: rgb(%1, %2, %3);"
+                                   " border-radius: 8px;"
+                                   "}"
+                                   "QPushButton:hover {"
+                                   " border: 2px solid rgb(%4, %5, %6);"
+                                   "}"
+                                   "QPushButton:pressed {"
+                                   " border: 2px solid rgb(%7, %8, %9);"
+                                   "}")
             .arg(background.red())
             .arg(background.green())
             .arg(background.blue())
@@ -281,24 +285,30 @@ StartView::StartView(QWidget* parent)
 
 void StartView::configureNewFileButtons(QLayout* layout) const
 {
-    auto newEmptyFile = gsl::owner<NewFileButton*>(new NewFileButton({tr("Empty file"),
-                                         tr("Create a new empty FreeCAD file"),
-                                         QLatin1String(":/icons/document-new.svg")}));
-    auto openFile = gsl::owner<NewFileButton*>(new NewFileButton({tr("Open File"),
-                                     tr("Open an existing CAD file or 3D model"),
-                                     QLatin1String(":/icons/document-open.svg")}));
-    auto partDesign = gsl::owner<NewFileButton*>(new NewFileButton({tr("Parametric Part"),
-                                       tr("Create a part with the Part Design workbench"),
-                                       QLatin1String(":/icons/PartDesignWorkbench.svg")}));
-    auto assembly = gsl::owner<NewFileButton*>(new NewFileButton({tr("Assembly"),
-                                     tr("Create an assembly project"),
-                                     QLatin1String(":/icons/AssemblyWorkbench.svg")}));
-    auto draft = gsl::owner<NewFileButton*>(new NewFileButton({tr("2D Draft"),
-                                  tr("Create a 2D Draft with the Draft workbench"),
-                                  QLatin1String(":/icons/DraftWorkbench.svg")}));
-    auto arch = gsl::owner<NewFileButton*>(new NewFileButton({tr("BIM/Architecture"),
-                                 tr("Create an architectural project"),
-                                 QLatin1String(":/icons/BIMWorkbench.svg")}));
+    auto newEmptyFile =
+        gsl::owner<NewFileButton*>(new NewFileButton({tr("Empty file"),
+                                                      tr("Create a new empty FreeCAD file"),
+                                                      QLatin1String(":/icons/document-new.svg")}));
+    auto openFile =
+        gsl::owner<NewFileButton*>(new NewFileButton({tr("Open File"),
+                                                      tr("Open an existing CAD file or 3D model"),
+                                                      QLatin1String(":/icons/document-open.svg")}));
+    auto partDesign = gsl::owner<NewFileButton*>(
+        new NewFileButton({tr("Parametric Part"),
+                           tr("Create a part with the Part Design workbench"),
+                           QLatin1String(":/icons/PartDesignWorkbench.svg")}));
+    auto assembly = gsl::owner<NewFileButton*>(
+        new NewFileButton({tr("Assembly"),
+                           tr("Create an assembly project"),
+                           QLatin1String(":/icons/AssemblyWorkbench.svg")}));
+    auto draft = gsl::owner<NewFileButton*>(
+        new NewFileButton({tr("2D Draft"),
+                           tr("Create a 2D Draft with the Draft workbench"),
+                           QLatin1String(":/icons/DraftWorkbench.svg")}));
+    auto arch =
+        gsl::owner<NewFileButton*>(new NewFileButton({tr("BIM/Architecture"),
+                                                      tr("Create an architectural project"),
+                                                      QLatin1String(":/icons/BIMWorkbench.svg")}));
 
     // TODO: Ensure all of the required WBs are actually available
     layout->addWidget(partDesign);
