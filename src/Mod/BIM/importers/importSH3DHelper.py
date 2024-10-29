@@ -649,6 +649,7 @@ class WallHandler(BaseHandler):
         """Creates and returns a Arch::Structure from the imported_wall object
 
         Args:
+            parent (Element): the parent Element of the wall to be imported
             i (int): the ordinal of the imported element
             elm (Element): the xml element
         """
@@ -742,26 +743,35 @@ class WallHandler(BaseHandler):
         spine.Visibility = False
         App.ActiveDocument.recompute([sweep])
         # Sometimes the Part::Sweep creates a "twisted" sweep which
-        # result in a broken wall. The solution is to avoid joining
-        # this end of the wall altogether.
+        # result in a broken wall. The solution is to use a compound
+        # object based on ruled surface instead.
         if FIX_INVALID_SWEEP and (sweep.Shape.isNull() or not sweep.Shape.isValid()):
-            _log(f"Part::Sweep for wall#{elm.get('id')} is invalid. Rotating end section up to colinear vector ...")
-            max_adjustment = 45 # DraftVecUtils.angle(end-start, normal)
-            adjustment = 0
-            cog = section_end.Shape.CenterOfGravity
-            while (sweep.Shape.isNull() or not sweep.Shape.isValid()) and adjustment <= max_adjustment:
-                Draft.rotate([section_end], 1, cog, Z_NORM)
-                App.ActiveDocument.recompute([sweep])
-                adjustment += 1
-            if adjustment == max_adjustment:
-                _log(f"Failed to adjust end section for wall#{elm.get('id')}")
-            elif adjustment != 0:
-                _log(f"Adjusted wall#{elm.get('id')} by {adjustment}º")
-                # Draft.rotate([section_end], -adjustment, cog, Z_NORM)
-                # App.ActiveDocument.recompute([sweep])
-            assert sweep.Shape.isNull() or sweep.Shape.isValid()
-
-        wall = Arch.makeWall(sweep)
+            _log(f"Part::Sweep for wall#{elm.get('id')} is invalid. Using ruled surface instead ...")
+            ruled_surface = App.ActiveDocument.addObject('Part::RuledSurface')
+            ruled_surface.Curve1 = section_start
+            ruled_surface.Curve2 = section_end
+            App.ActiveDocument.recompute([ruled_surface])
+            _log(f"Creating compound object ...")
+            compound = App.ActiveDocument.addObject('Part::Compound')
+            compound.Links = [section_start, section_end, ruled_surface]
+            App.ActiveDocument.recompute([compound])
+            _log(f"Creating solid ...")
+            solid = App.ActiveDocument.addObject("Part::Feature")
+            solid.Shape = Part.Solid(Part.Shell(compound.Shape.Faces))
+            doc = App.ActiveDocument
+            doc.removeObject(compound.Label)
+            doc.recompute()
+            doc.removeObject(ruled_surface.Label)
+            doc.recompute()
+            doc.removeObject(sweep.Label)
+            doc.recompute()
+            doc.removeObject(spine.Label)
+            doc.recompute()
+            doc.removeObject(section_start.Label)
+            doc.removeObject(section_end.Label)
+            wall = Arch.makeWall(solid)
+        else:
+            wall = Arch.makeWall(sweep)
         return wall
 
     def _get_wall_details(self, floor, elm):
@@ -808,7 +818,7 @@ class WallHandler(BaseHandler):
         Returns:
             Rectangle, Rectangle, spine: both section and the line for the wall
         """
-        (start, end, thickness, height_start, height_end, _) = wall_details
+        (start, end, _, _, _, _) = wall_details
 
         section_start = self._get_section(wall_details, True, prev_wall_details)
         section_end = self._get_section(wall_details, False, next_wall_details)
@@ -867,14 +877,12 @@ class WallHandler(BaseHandler):
             # of both wall which depends on their respective thickness.
             # Calculate the left and right side of each wall
             (start, end, thickness, height_start, height_end, _) = wall_details
-            (s_start, s_end, s_thickness, s_height_start, s_height_end, s_arc_extent) = sibling_details
+            (s_start, s_end, s_thickness, _, _, _) = sibling_details
 
             lside, rside = self._get_sides(start, end, thickness)
             s_lside, s_rside = self._get_sides(s_start, s_end, s_thickness)
-            intersection = self._get_intersection_edge(lside, rside, s_lside, s_rside)
-            i_start, i_end = intersection.Vertexes[0].Point, intersection.Vertexes[1].Point
+            i_start, i_end = self._get_intersection_edge(lside, rside, s_lside, s_rside)
 
-            (start, end, thickness, height_start, height_end, _) = wall_details
             height = height_start if at_start else height_end
             i_start_z = i_start + App.Vector(0, 0, height)
             i_end_z = i_end + App.Vector(0, 0, height)
@@ -883,10 +891,10 @@ class WallHandler(BaseHandler):
                 _log(f"Joining wall {self._pv(end-start)}@{self._pv(start)} and wall {self._pv(s_end-s_start)}@{self._pv(s_start)}")
                 _log(f"    wall: {self._pe(lside)},{self._pe(rside)}")
                 _log(f" sibling: {self._pe(s_lside)},{self._pe(s_rside)}")
-                _log(f"intersec: {self._pe(intersection)}")
+                _log(f"intersec: {self._pv(i_start)},{self._pv(i_end)}")
             section = Draft.makeRectangle([i_start, i_end, i_end_z, i_start_z])
         else:
-            (start, end, thickness, height_start, height_end, _) = wall_details
+            (start, end, thickness, height_start, height_end, _) = wall_details 
             height = height_start if at_start else height_end
             center = start if at_start else end
             a1, a2, _ = self._get_normal_angles(wall_details)
@@ -916,15 +924,16 @@ class WallHandler(BaseHandler):
         left = points[0] if len(points) else lside.Vertexes[0].Point
         points = DraftGeomUtils.findIntersection(rside, sibling_rside, True, True)
         right = points[0] if len(points) else rside.Vertexes[0].Point
-        return DraftGeomUtils.edg(left, right)
+        edge = DraftGeomUtils.edg(left, right)
+        return edge.Vertexes[0].Point, edge.Vertexes[1].Point
 
     def _get_normal_angles(self, wall_details):
         """Return the angles of the normal at the endpoints of the wall.
 
         This method returns the normal angle of the sections that constitute
-        the wall sweep. These angles can then be used to create the 
-        corresponding sections. Depending on whether the wall section is 
-        straight or curved, the section will be calculated slightly 
+        the wall sweep. These angles can then be used to create the
+        corresponding sections. Depending on whether the wall section is
+        straight or curved, the section will be calculated slightly
         differently.
 
         Args:
@@ -974,7 +983,7 @@ class WallHandler(BaseHandler):
             start (Vector): the wall's starting point
             end (Vector): the wall's ending point
             thickness (float): the wall's thickness
-        
+
         Returns:
             Edge: the left handside edge of the wall
             Edge: the right handside edge of the wall
@@ -1027,7 +1036,7 @@ class WallHandler(BaseHandler):
         topColor = hex2rgb(topColor)
 
         if hasattr(wall.ViewObject, "DiffuseColor"):
-            wall.ViewObject.DiffuseColor = [topColor, rightSideColor, topColor, leftSideColor, topColor, topColor]
+            wall.ViewObject.DiffuseColor = [topColor, leftSideColor, topColor, rightSideColor, topColor, topColor]
 
     def _import_baseboard(self, floor, wall, elm):
         """Creates and returns a Part::Extrusion from the imported_baseboard object
