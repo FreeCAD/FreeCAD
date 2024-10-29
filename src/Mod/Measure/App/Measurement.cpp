@@ -50,10 +50,6 @@
 #include "MeasurementPy.h"
 
 
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
-
 using namespace Measure;
 using namespace Base;
 using namespace Part;
@@ -525,7 +521,7 @@ double Measurement::angle(const Base::Vector3d& /*param*/) const
                 gp_Lin l2r = gp_Lin(pnt1First, dir2r);  // (B')
                 Standard_Real aRad = l1.Angle(l2);
                 double aRadr = l1.Angle(l2r);
-                return std::min(aRad, aRadr) * 180 / M_PI;
+                return Base::toDegrees<double>(std::min(aRad, aRadr));
             }
             else {
                 throw Base::RuntimeError("Measurement references must both be lines");
@@ -554,7 +550,7 @@ double Measurement::angle(const Base::Vector3d& /*param*/) const
             gp_Lin line0 = gp_Lin(gEnd0, gDir0);
             gp_Lin line1 = gp_Lin(gEnd1, gDir1);
             double radians = line0.Angle(line1);
-            return radians * 180 / M_PI;
+            return Base::toDegrees<double>(radians);
         }
     }
     throw Base::RuntimeError("Unexpected error for angle measurement");

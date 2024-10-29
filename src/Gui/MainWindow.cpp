@@ -70,6 +70,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
+#include <App/SafeMode.h>
 #include <Base/ConsoleObserver.h>
 #include <Base/Parameter.h>
 #include <Base/Exception.h>
@@ -1654,6 +1655,22 @@ void MainWindow::delayedStartup()
     if (hGrp->GetBool("RecoveryEnabled", true)) {
         Application::Instance->checkForPreviousCrashes();
     }
+
+    if (SafeMode::SafeModeEnabled()) {
+        auto safeModePopup = QMessageBox(
+            QMessageBox::Information,
+            tr("Safe mode enabled"),
+            tr("FreeCAD is now running in safe mode."),
+            QMessageBox::Ok
+        );
+        safeModePopup.setInformativeText(
+            tr(
+                "Safe mode temporarily disables your configurations and addons."
+                " Restart the application to exit safe mode."
+            )
+        );
+        safeModePopup.exec();
+    }
 }
 
 void MainWindow::appendRecentFile(const QString& filename)
@@ -2608,6 +2625,10 @@ void MainWindow::setWindowTitle(const QString& string)
     }
     else {
         title = appname;
+    }
+
+    if (SafeMode::SafeModeEnabled()) {
+        title = QString::fromUtf8("%1 (%2)").arg(title, tr("Safe Mode"));
     }
 
     if (!string.isEmpty()) {

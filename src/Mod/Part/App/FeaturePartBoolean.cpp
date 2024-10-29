@@ -24,7 +24,7 @@
 #ifndef _PreComp_
 # include <memory>
 
-# include <BRepAlgoAPI_BooleanOperation.hxx>
+# include <Mod/Part/App/FCBRepAlgoAPI_BooleanOperation.h>
 # include <BRepCheck_Analyzer.hxx>
 # include <Standard_Failure.hxx>
 #endif
@@ -136,6 +136,7 @@ App::DocumentObjectExecReturn* Boolean::execute()
             res = res.makeElementRefine();
         }
         this->Shape.setValue(res);
+        copyMaterial(base);
         return Part::Feature::execute();
     }
     catch (...) {

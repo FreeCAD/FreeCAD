@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRepAlgoAPI_Fuse.hxx>
+# include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 # include <BRepCheck_Analyzer.hxx>
 # include <Standard_Failure.hxx>
 # include <TopoDS_Iterator.hxx>
@@ -51,7 +51,7 @@ Fuse::Fuse() = default;
 BRepAlgoAPI_BooleanOperation* Fuse::makeOperation(const TopoDS_Shape& base, const TopoDS_Shape& tool) const
 {
     // Let's call algorithm computing a fuse operation:
-    return new BRepAlgoAPI_Fuse(base, tool);
+    return new FCBRepAlgoAPI_Fuse(base, tool);
 }
 
 const char *Fuse::opCode() const
@@ -114,7 +114,7 @@ App::DocumentObjectExecReturn *MultiFuse::execute()
     if (shapes.size() >= 2) {
         try {
             std::vector<ShapeHistory> history;
-            BRepAlgoAPI_Fuse mkFuse;
+            FCBRepAlgoAPI_Fuse mkFuse;
             TopTools_ListOfShape shapeArguments, shapeTools;
             const TopoShape& shape = shapes.front();
             if (shape.isNull()) {
@@ -131,6 +131,7 @@ App::DocumentObjectExecReturn *MultiFuse::execute()
 
             mkFuse.SetArguments(shapeArguments);
             mkFuse.SetTools(shapeTools);
+            mkFuse.setAutoFuzzy();
             mkFuse.Build();
 
             if (!mkFuse.IsDone()) {
@@ -208,6 +209,9 @@ App::DocumentObjectExecReturn *MultiFuse::execute()
             }
             this->Shape.setValue(res);
             this->History.setValues(history);
+
+            App::DocumentObject* link = Shapes.getValues()[0];
+            copyMaterial(link);
             return Part::Feature::execute();
         }
         catch (Standard_Failure& e) {

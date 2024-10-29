@@ -49,14 +49,14 @@ std::string DocumentObjectPy::representation() const
     return str.str();
 }
 
-Py::String DocumentObjectPy::getName() const
+Py::Object DocumentObjectPy::getName() const
 {
     DocumentObject* object = this->getDocumentObjectPtr();
     const char* internal = object->getNameInDocument();
     if (!internal) {
-        throw Py::RuntimeError(std::string("This object is currently not part of a document"));
+        return Py::None();
     }
-    return {std::string(internal)};
+    return Py::String(internal);
 }
 
 Py::String DocumentObjectPy::getFullName() const
@@ -74,6 +74,17 @@ Py::Object DocumentObjectPy::getDocument() const
     else {
         return Py::Object(doc->getPyObject(), true);
     }
+}
+
+PyObject* DocumentObjectPy::isAttachedToDocument(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    DocumentObject* object = this->getDocumentObjectPtr();
+    bool ok = object->isAttachedToDocument();
+    return Py::new_reference_to(Py::Boolean(ok));
 }
 
 PyObject*  DocumentObjectPy::addProperty(PyObject *args, PyObject *kwd)

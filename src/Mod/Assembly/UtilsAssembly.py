@@ -28,12 +28,10 @@ import Part
 
 if App.GuiUp:
     import FreeCADGui as Gui
-
-import PySide.QtCore as QtCore
-import PySide.QtGui as QtGui
+    from PySide import QtCore, QtGui, QtWidgets
 
 
-# translate = App.Qt.translate
+translate = App.Qt.translate
 
 __title__ = "Assembly utilitary functions"
 __author__ = "Ondsel"
@@ -392,7 +390,7 @@ def extract_type_and_number(element_name):
         return None, None
 
 
-def findElementClosestVertex(assembly, ref, mousePos):
+def findElementClosestVertex(ref, mousePos):
     element_name = getElementName(ref[1][0])
     if element_name == "":
         return ""
@@ -788,6 +786,36 @@ def findCylindersIntersection(obj, surface, edge, elt_index):
     return surface.Center
 
 
+def openEditingPlacementDialog(obj, propName):
+    task_placement = Gui.TaskPlacement()
+    dialog = task_placement.form
+
+    # Connect to the placement property
+    task_placement.setPlacement(getattr(obj, propName))
+    task_placement.setSelection([obj])
+    task_placement.setPropertyName(propName)
+    task_placement.bindObject()
+    task_placement.setIgnoreTransactions(True)
+
+    dialog.findChild(QtWidgets.QPushButton, "selectedVertex").hide()
+    dialog.exec_()
+
+
+def setPickableState(obj, state: bool):
+    vobj = obj.ViewObject
+    if hasattr(vobj, "Proxy"):
+        proxy = vobj.Proxy
+        if hasattr(proxy, "setPickableState"):
+            proxy.setPickableState(state)
+
+
+def setJointsPickableState(doc, state: bool):
+    """Make all joints in document selectable (True) or unselectable (False) in 3D view"""
+    for obj in doc.Objects:
+        if obj.TypeId == "App::FeaturePython" and hasattr(obj, "JointType"):
+            setPickableState(obj, state)
+
+
 def applyOffsetToPlacement(plc, offset):
     plc.Base = plc.Base + plc.Rotation.multVec(offset)
     return plc
@@ -818,6 +846,23 @@ def arePlacementZParallel(plc1, plc2):
     zAxis1 = plc1.Rotation.multVec(App.Vector(0, 0, 1))
     zAxis2 = plc2.Rotation.multVec(App.Vector(0, 0, 1))
     return zAxis1.cross(zAxis2).Length < 1e-06
+
+
+def removeTNPFromSubname(doc_name, obj_name, sub_name):
+    rootObj = App.getDocument(doc_name).getObject(obj_name)
+    resolved = rootObj.resolveSubElement(sub_name)
+    element_name_TNP = resolved[1]
+    element_name = resolved[2]
+
+    # Preprocess the sub_name to remove the TNP string
+    # We do this because after we need to add the vertex_name as well.
+    # And the names will be resolved anyway after.
+    if len(element_name_TNP.split(".")) == 2:
+        names = sub_name.split(".")
+        names.pop(-2)  # remove the TNP string
+        sub_name = ".".join(names)
+
+    return sub_name
 
 
 """
@@ -1100,6 +1145,10 @@ def getMovingPart(assembly, ref):
 
         if obj.TypeId == "App::DocumentObjectGroup":
             continue  # we ignore groups.
+
+        # We ignore dynamic sub-assemblies.
+        if obj.isDerivedFrom("Assembly::AssemblyLink") and obj.Rigid == False:
+            continue
 
         # If it is a LinkGroup then we skip it
         if isLinkGroup(obj):

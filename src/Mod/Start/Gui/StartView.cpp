@@ -230,18 +230,6 @@ void StartView::configureNewFileButtons(QLayout* layout) const
                                  tr("Create an architectural project"),
                                  QLatin1String(":/icons/BIMWorkbench.svg")});
 
-    auto hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Start");
-    if (hGrp->GetBool("FileCardUseStyleSheet", true)) {
-        QString style = fileCardStyle();
-        newEmptyFile->setStyleSheet(style);
-        openFile->setStyleSheet(style);
-        partDesign->setStyleSheet(style);
-        assembly->setStyleSheet(style);
-        draft->setStyleSheet(style);
-        arch->setStyleSheet(style);
-    }
-
     // TODO: Ensure all of the required WBs are actually available
     layout->addWidget(partDesign);
     layout->addWidget(assembly);
@@ -256,6 +244,17 @@ void StartView::configureNewFileButtons(QLayout* layout) const
     connect(assembly, &QPushButton::clicked, this, &StartView::newAssemblyFile);
     connect(draft, &QPushButton::clicked, this, &StartView::newDraftFile);
     connect(arch, &QPushButton::clicked, this, &StartView::newArchFile);
+}
+
+void StartView::paintEvent(QPaintEvent* event)
+{
+    QString style = QStringLiteral("");
+    if (qApp->styleSheet().isEmpty()) {
+        style = fileCardStyle();
+    }
+    setStyleSheet(style);
+
+    Gui::MDIView::paintEvent(event);
 }
 
 QString StartView::fileCardStyle() const

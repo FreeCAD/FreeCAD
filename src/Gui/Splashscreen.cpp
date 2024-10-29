@@ -410,10 +410,17 @@ void AboutDialog::setupLabels()
     os.replace(QString::fromLatin1("Unknown"), prettyProductInfoWrapper());
     ui->labelBuildOS->setText(os);
 
-    QString platform = ui->labelBuildPlatform->text();
-    platform.replace(QString::fromLatin1("Unknown"),
-        QString::fromLatin1("%1-bit").arg(QSysInfo::WordSize));
-    ui->labelBuildPlatform->setText(platform);
+    QString architecture = ui->labelBuildRunArchitecture->text();
+    if (QSysInfo::buildCpuArchitecture() == QSysInfo::currentCpuArchitecture()) {
+        architecture.replace(QString::fromLatin1("Unknown"), QSysInfo::buildCpuArchitecture());
+    }
+    else {
+        architecture.replace(
+            QString::fromLatin1("Unknown"),
+            QString::fromLatin1("%1 (running on: %2)")
+                .arg(QSysInfo::buildCpuArchitecture(), QSysInfo::currentCpuArchitecture()));
+    }
+    ui->labelBuildRunArchitecture->setText(architecture);
 
     // branch name
     it = config.find("BuildRevisionBranch");
@@ -453,14 +460,6 @@ void AboutDialog::setupLabels()
         ui->labelBuildHash->hide();
     }
 }
-
-class AboutDialog::LibraryInfo {
-public:
-    QString name;
-    QString href;
-    QString url;
-    QString version;
-};
 
 void AboutDialog::showCredits()
 {
@@ -572,180 +571,14 @@ void AboutDialog::showLibraryInformation()
     ui->tabWidget->addTab(tab_library, tr("Libraries"));
     auto hlayout = new QVBoxLayout(tab_library);
     auto textField = new QTextBrowser(tab_library);
-    textField->setOpenExternalLinks(false);
-    textField->setOpenLinks(false);
+    textField->setOpenExternalLinks(true);
     hlayout->addWidget(textField);
 
-    QList<LibraryInfo> libInfo;
     QString baseurl = QString::fromLatin1("file:///%1/ThirdPartyLibraries.html")
             .arg(QString::fromUtf8(App::Application::getHelpDir().c_str()));
+    QUrl librariesFileUrl = QUrl(baseurl);
 
-    // Boost
-    libInfo << LibraryInfo {
-        QLatin1String("Boost"),
-        baseurl + QLatin1String("#_TocBoost"),
-        QLatin1String("https://www.boost.org"),
-        QLatin1String(BOOST_LIB_VERSION)
-    };
-
-    // Coin3D
-    libInfo << LibraryInfo {
-        QLatin1String("Coin3D"),
-        baseurl + QLatin1String("#_TocCoin3D"),
-        QLatin1String("https://coin3d.github.io"),
-        QLatin1String(COIN_VERSION)
-    };
-
-    // Eigen3
-    libInfo << LibraryInfo {
-        QLatin1String("Eigen"),
-        baseurl + QLatin1String("#_TocEigen"),
-        QLatin1String("https://eigen.tuxfamily.org"),
-        QString::fromLatin1(fcEigen3Version)
-    };
-
-    // FreeType
-    libInfo << LibraryInfo {
-        QLatin1String("FreeType"),
-        baseurl + QLatin1String("#_TocFreeType"),
-        QLatin1String("https://freetype.org"),
-        QString::fromLatin1(fcFreetypeVersion)
-    };
-
-    // KDL
-    libInfo << LibraryInfo {
-        QLatin1String("KDL"),
-        baseurl + QLatin1String("#_TocKDL"),
-        QLatin1String("https://www.orocos.org/kdl"),
-        QString()
-    };
-
-    // libarea
-    libInfo << LibraryInfo {
-        QLatin1String("libarea"),
-        baseurl + QLatin1String("#_TocLibArea"),
-        QLatin1String("https://github.com/danielfalck/libarea"),
-        QString()
-    };
-
-    // OCCT
-#if defined(HAVE_OCC_VERSION)
-    libInfo << LibraryInfo {
-        QLatin1String("Open CASCADE Technology"),
-        baseurl + QLatin1String("#_TocOCCT"),
-        QLatin1String("https://www.opencascade.com/open-cascade-technology/"),
-        QLatin1String(OCC_VERSION_STRING_EXT)
-    };
-#endif
-
-    // pcl
-    libInfo << LibraryInfo {
-        QLatin1String("Point Cloud Library"),
-        baseurl + QLatin1String("#_TocPcl"),
-        QLatin1String("https://www.pointclouds.org"),
-        QString::fromLatin1(fcPclVersion)
-    };
-
-    // PyCXX
-    libInfo << LibraryInfo {
-        QLatin1String("PyCXX"),
-        baseurl + QLatin1String("#_TocPyCXX"),
-        QLatin1String("http://cxx.sourceforge.net"),
-        QString::fromLatin1(fcPycxxVersion)
-    };
-
-    // Python
-    libInfo << LibraryInfo {
-        QLatin1String("Python"),
-        baseurl + QLatin1String("#_TocPython"),
-        QLatin1String("https://www.python.org"),
-        QLatin1String(PY_VERSION)
-    };
-
-    // PySide
-    libInfo << LibraryInfo {
-        QLatin1String("Qt for Python (PySide)"),
-        baseurl + QLatin1String("#_TocPySide"),
-        QLatin1String("https://wiki.qt.io/Qt_for_Python"),
-        QString::fromLatin1(fcPysideVersion)
-    };
-
-    // Qt
-    libInfo << LibraryInfo {
-        QLatin1String("Qt"),
-        baseurl + QLatin1String("#_TocQt"),
-        QLatin1String("https://www.qt.io"),
-        QLatin1String(QT_VERSION_STR)
-    };
-
-    // Salome SMESH
-    libInfo << LibraryInfo {
-        QLatin1String("Salome SMESH"),
-        baseurl + QLatin1String("#_TocSalomeSMESH"),
-        QLatin1String("https://salome-platform.org"),
-#ifdef SMESH_VERSION_STR
-        QLatin1String(SMESH_VERSION_STR)
-#else
-        QString()
-#endif
-    };
-
-    // Shiboken
-    libInfo << LibraryInfo {
-        QLatin1String("Qt for Python (Shiboken)"),
-        baseurl + QLatin1String("#_TocPySide"),
-        QLatin1String("https://wiki.qt.io/Qt_for_Python"),
-        QString::fromLatin1(fcShibokenVersion)
-    };
-
-    // vtk
-    libInfo << LibraryInfo {
-        QLatin1String("vtk"),
-        baseurl + QLatin1String("#_TocVtk"),
-        QLatin1String("https://www.vtk.org"),
-        QString::fromLatin1(fcVtkVersion)
-    };
-
-    // Xerces-C
-    libInfo << LibraryInfo {
-        QLatin1String("Xerces-C"),
-        baseurl + QLatin1String("#_TocXercesC"),
-        QLatin1String("https://xerces.apache.org/xerces-c"),
-        QString::fromLatin1(fcXercescVersion)
-    };
-
-    // Zipios++
-    libInfo << LibraryInfo {
-        QLatin1String("Zipios++"),
-        baseurl + QLatin1String("#_TocZipios"),
-        QLatin1String("http://zipios.sourceforge.net"),
-        QString()
-    };
-
-    // zlib
-    libInfo << LibraryInfo {
-        QLatin1String("zlib"),
-        baseurl + QLatin1String("#_TocZlib"),
-        QLatin1String("https://zlib.net"),
-        QLatin1String(ZLIB_VERSION)
-    };
-
-
-    QString msg = tr("This software uses open source components whose copyright and other "
-                     "proprietary rights belong to their respective owners:");
-    QString html;
-    QTextStream out(&html);
-    out << "<html><head/><body style=\" font-size:8.25pt; font-weight:400; font-style:normal;\">"
-        << "<p>" << msg << "<br/></p>\n<ul>\n";
-    for (const auto & it : libInfo) {
-        out << "<li><p>" << it.name << " " << it.version << "</p>"
-               "<p><a href=\"" << it.href << "\">" << it.url
-            << "</a><br/></p></li>\n";
-    }
-    out << "</ul>\n</body>\n</html>";
-    textField->setHtml(html);
-
-    connect(textField, &QTextBrowser::anchorClicked, this, &AboutDialog::linkActivated);
+    textField->setSource(librariesFileUrl);
 }
 
 void AboutDialog::showCollectionInformation()
@@ -839,7 +672,11 @@ void AboutDialog::copyToClipboard()
     }
 
     str << "OS: " << prettyProductInfoWrapper() << deskInfo << '\n';
-    str << "Word size of " << exe << ": " << QSysInfo::WordSize << "-bit\n";
+    if (QSysInfo::buildCpuArchitecture() == QSysInfo::currentCpuArchitecture()){
+        str << "Architecture: " << QSysInfo::buildCpuArchitecture() << "\n";
+    } else {
+        str << "Architecture: " << QSysInfo::buildCpuArchitecture() << "(running on: " << QSysInfo::currentCpuArchitecture() << ")\n";
+    }
     str << "Version: " << major << "." << minor << "." << point << suffix << "." << build;
     char *appimage = getenv("APPIMAGE");
     if (appimage)

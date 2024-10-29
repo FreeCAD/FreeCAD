@@ -40,6 +40,8 @@ from pivy import coin
 import UtilsAssembly
 import Preferences
 
+from SoSwitchMarker import SoSwitchMarker
+
 translate = App.Qt.translate
 
 TranslatedJointTypes = [
@@ -800,133 +802,17 @@ class ViewProviderJoint:
 
     def attach(self, vobj):
         """Setup the scene sub-graph of the view provider, this method is mandatory"""
-        self.axis_thickness = 3
-        self.scaleFactor = 20
-
-        view_params = App.ParamGet("User parameter:BaseApp/Preferences/View")
-        param_x_axis_color = view_params.GetUnsigned("AxisXColor", 0xCC333300)
-        param_y_axis_color = view_params.GetUnsigned("AxisYColor", 0x33CC3300)
-        param_z_axis_color = view_params.GetUnsigned("AxisZColor", 0x3333CC00)
-
-        self.x_axis_so_color = coin.SoBaseColor()
-        self.x_axis_so_color.rgb.setValue(UtilsAssembly.color_from_unsigned(param_x_axis_color))
-        self.y_axis_so_color = coin.SoBaseColor()
-        self.y_axis_so_color.rgb.setValue(UtilsAssembly.color_from_unsigned(param_y_axis_color))
-        self.z_axis_so_color = coin.SoBaseColor()
-        self.z_axis_so_color.rgb.setValue(UtilsAssembly.color_from_unsigned(param_z_axis_color))
-
         self.app_obj = vobj.Object
-        app_doc = self.app_obj.Document
-        self.gui_doc = Gui.getDocument(app_doc)
 
-        self.transform1 = coin.SoTransform()
-        self.transform2 = coin.SoTransform()
-        self.transform3 = coin.SoTransform()
-
-        self.draw_style = coin.SoDrawStyle()
-        self.draw_style.style = coin.SoDrawStyle.LINES
-        self.draw_style.lineWidth = self.axis_thickness
-
-        self.switch_JCS1 = self.JCS_sep(self.transform1)
-        self.switch_JCS2 = self.JCS_sep(self.transform2)
-        self.switch_JCS_preview = self.JCS_sep(self.transform3)
-
-        self.pick = coin.SoPickStyle()
-        self.setPickableState(True)
+        self.switch_JCS1 = SoSwitchMarker(vobj)
+        self.switch_JCS2 = SoSwitchMarker(vobj)
+        self.switch_JCS_preview = SoSwitchMarker(vobj)
 
         self.display_mode = coin.SoType.fromName("SoFCSelection").createInstance()
-        self.display_mode.addChild(self.pick)
         self.display_mode.addChild(self.switch_JCS1)
         self.display_mode.addChild(self.switch_JCS2)
         self.display_mode.addChild(self.switch_JCS_preview)
         vobj.addDisplayMode(self.display_mode, "Wireframe")
-
-    def JCS_sep(self, soTransform):
-        JCS = coin.SoAnnotation()
-        JCS.addChild(soTransform)
-
-        base_plane_sep = self.plane_sep(0.4, 15)
-        X_axis_sep = self.line_sep([0.5, 0, 0], [1, 0, 0], self.x_axis_so_color)
-        Y_axis_sep = self.line_sep([0, 0.5, 0], [0, 1, 0], self.y_axis_so_color)
-        Z_axis_sep = self.line_sep([0, 0, 0], [0, 0, 1], self.z_axis_so_color)
-
-        JCS.addChild(base_plane_sep)
-        JCS.addChild(X_axis_sep)
-        JCS.addChild(Y_axis_sep)
-        JCS.addChild(Z_axis_sep)
-
-        switch_JCS = coin.SoSwitch()
-        switch_JCS.addChild(JCS)
-        switch_JCS.whichChild = coin.SO_SWITCH_NONE
-
-        return switch_JCS
-
-    def line_sep(self, startPoint, endPoint, soColor):
-        line = coin.SoLineSet()
-        line.numVertices.setValue(2)
-        coords = coin.SoCoordinate3()
-        coords.point.setValues(0, [startPoint, endPoint])
-
-        axis_sep = coin.SoAnnotation()
-        axis_sep.addChild(self.draw_style)
-        axis_sep.addChild(soColor)
-        axis_sep.addChild(coords)
-        axis_sep.addChild(line)
-
-        scale = coin.SoType.fromName("SoShapeScale").createInstance()
-        scale.setPart("shape", axis_sep)
-        scale.scaleFactor = self.scaleFactor
-
-        return scale
-
-    def plane_sep(self, size, num_vertices):
-        coords = coin.SoCoordinate3()
-
-        for i in range(num_vertices):
-            angle = float(i) / num_vertices * 2.0 * math.pi
-            x = math.cos(angle) * size
-            y = math.sin(angle) * size
-            coords.point.set1Value(i, x, y, 0)
-
-        face = coin.SoFaceSet()
-        face.numVertices.setValue(num_vertices)
-
-        transform = coin.SoTransform()
-        transform.translation.setValue(0, 0, 0)
-
-        draw_style = coin.SoDrawStyle()
-        draw_style.style = coin.SoDrawStyle.FILLED
-
-        material = coin.SoMaterial()
-        material.diffuseColor.setValue([0.5, 0.5, 0.5])
-        material.ambientColor.setValue([0.5, 0.5, 0.5])
-        material.specularColor.setValue([0.5, 0.5, 0.5])
-        material.emissiveColor.setValue([0.5, 0.5, 0.5])
-        material.transparency.setValue(0.3)
-
-        face_sep = coin.SoAnnotation()
-        face_sep.addChild(transform)
-        face_sep.addChild(draw_style)
-        face_sep.addChild(material)
-        face_sep.addChild(coords)
-        face_sep.addChild(face)
-
-        scale = coin.SoType.fromName("SoShapeScale").createInstance()
-        scale.setPart("shape", face_sep)
-        scale.scaleFactor = self.scaleFactor
-
-        return scale
-
-    def set_JCS_placement(self, soTransform, placement, ref):
-        # change plc to be relative to the origin of the document.
-        global_plc = UtilsAssembly.getGlobalPlacement(ref)
-        placement = global_plc * placement
-
-        t = placement.Base
-        soTransform.translation.setValue(t.x, t.y, t.z)
-
-        r = placement.Rotation.Q
-        soTransform.rotation.setValue(r[0], r[1], r[2], r[3])
 
     def updateData(self, joint, prop):
         """If a property of the handled feature has changed we have the chance to handle this here"""
@@ -936,7 +822,7 @@ class ViewProviderJoint:
                 plc = joint.Placement1
                 self.switch_JCS1.whichChild = coin.SO_SWITCH_ALL
 
-                self.set_JCS_placement(self.transform1, plc, joint.Reference1)
+                self.switch_JCS1.set_marker_placement(plc, joint.Reference1)
             else:
                 self.switch_JCS1.whichChild = coin.SO_SWITCH_NONE
 
@@ -945,23 +831,22 @@ class ViewProviderJoint:
                 plc = joint.Placement2
                 self.switch_JCS2.whichChild = coin.SO_SWITCH_ALL
 
-                self.set_JCS_placement(self.transform2, plc, joint.Reference2)
+                self.switch_JCS2.set_marker_placement(plc, joint.Reference2)
             else:
                 self.switch_JCS2.whichChild = coin.SO_SWITCH_NONE
 
     def showPreviewJCS(self, visible, placement=None, ref=None):
         if visible:
             self.switch_JCS_preview.whichChild = coin.SO_SWITCH_ALL
-            self.set_JCS_placement(self.transform3, placement, ref)
+            self.switch_JCS_preview.set_marker_placement(placement, ref)
         else:
             self.switch_JCS_preview.whichChild = coin.SO_SWITCH_NONE
 
     def setPickableState(self, state: bool):
         """Set JCS selectable or unselectable in 3D view"""
-        if not state:
-            self.pick.style.setValue(coin.SoPickStyle.UNPICKABLE)
-        else:
-            self.pick.style.setValue(coin.SoPickStyle.SHAPE_ON_TOP)
+        self.switch_JCS1.setPickableState(state)
+        self.switch_JCS2.setPickableState(state)
+        self.switch_JCS_preview.setPickableState(state)
 
     def getDisplayModes(self, obj):
         """Return a list of display modes."""
@@ -976,15 +861,10 @@ class ViewProviderJoint:
     def onChanged(self, vp, prop):
         """Here we can do something when a single property got changed"""
         # App.Console.PrintMessage("Change property: " + str(prop) + "\n")
-        if prop == "color_X_axis":
-            c = vp.getPropertyByName("color_X_axis")
-            self.x_axis_so_color.rgb.setValue(c[0], c[1], c[2])
-        if prop == "color_Y_axis":
-            c = vp.getPropertyByName("color_Y_axis")
-            self.x_axis_so_color.rgb.setValue(c[0], c[1], c[2])
-        if prop == "color_Z_axis":
-            c = vp.getPropertyByName("color_Z_axis")
-            self.x_axis_so_color.rgb.setValue(c[0], c[1], c[2])
+        if prop == "color_X_axis" or prop == "color_Y_axis" or prop == "color_Z_axis":
+            self.switch_JCS1.onChanged(vp, prop)
+            self.switch_JCS2.onChanged(vp, prop)
+            self.switch_JCS_preview.onChanged(vp, prop)
 
     def getIcon(self):
         if self.app_obj.JointType == "Fixed":
@@ -1041,7 +921,10 @@ class ViewProviderJoint:
             self.gui_doc.setEdit(assembly)
 
         panel = TaskAssemblyCreateJoint(0, vobj.Object)
-        Gui.Control.showDialog(panel)
+        dialog = Gui.Control.showDialog(panel)
+        if dialog is not None:
+            dialog.setAutoCloseOnTransactionChange(True)
+            dialog.setDocumentName(App.ActiveDocument.Name)
 
         return True
 
@@ -1296,6 +1179,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
         global activeTask
         activeTask = self
+        self.blockOffsetRotation = False
 
         self.assembly = UtilsAssembly.activeAssembly()
         if not self.assembly:
@@ -1333,7 +1217,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.form.distanceSpinbox2.valueChanged.connect(self.onDistance2Changed)
         self.form.offsetSpinbox.valueChanged.connect(self.onOffsetChanged)
         self.form.rotationSpinbox.valueChanged.connect(self.onRotationChanged)
-        self.form.PushButtonReverse.clicked.connect(self.onReverseClicked)
+        self.form.offset1Button.clicked.connect(self.onOffset1Clicked)
+        self.form.offset2Button.clicked.connect(self.onOffset2Clicked)
 
         self.form.limitCheckbox1.stateChanged.connect(self.adaptUi)
         self.form.limitCheckbox2.stateChanged.connect(self.adaptUi)
@@ -1346,6 +1231,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
         self.form.reverseRotCheckbox.setChecked(self.jType == "Gears")
         self.form.reverseRotCheckbox.stateChanged.connect(self.reverseRotToggled)
+
+        self.form.offsetTabs.currentChanged.connect(self.on_offset_tab_changed)
 
         if jointObj:
             Gui.Selection.clearSelection()
@@ -1380,7 +1267,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             # before handleInitialSelection tries to solve.
             self.handleInitialSelection()
 
-        self.setJointsPickableState(False)
+        UtilsAssembly.setJointsPickableState(self.doc, False)
 
         Gui.Selection.addSelectionGate(
             MakeJointSelGate(self, self.assembly), Gui.Selection.ResolveMode.NoResolve
@@ -1441,7 +1328,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         Gui.Selection.clearSelection()
         self.view.removeEventCallback("SoLocation2Event", self.callbackMove)
         self.view.removeEventCallback("SoKeyboardEvent", self.callbackKey)
-        self.setJointsPickableState(True)
+        UtilsAssembly.setJointsPickableState(self.doc, True)
         if Gui.Control.activeDialog():
             Gui.Control.closeDialog()
 
@@ -1509,9 +1396,15 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.joint.Distance2 = self.form.distanceSpinbox2.property("rawValue")
 
     def onOffsetChanged(self, quantity):
+        if self.blockOffsetRotation:
+            return
+
         self.joint.Offset2.Base = App.Vector(0, 0, self.form.offsetSpinbox.property("rawValue"))
 
     def onRotationChanged(self, quantity):
+        if self.blockOffsetRotation:
+            return
+
         yaw = self.form.rotationSpinbox.property("rawValue")
         ypr = self.joint.Offset2.Rotation.getYawPitchRoll()
         self.joint.Offset2.Rotation.setYawPitchRoll(yaw, ypr[1], ypr[2])
@@ -1652,6 +1545,34 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         else:
             self.form.groupBox_limits.hide()
 
+        self.updateOffsetWidgets()
+
+    def updateOffsetWidgets(self):
+        # Makes sure the values in both the simplified and advanced tabs are sync.
+        pos = self.joint.Offset1.Base
+        self.form.offset1Button.setText(f"({pos.x}, {pos.y}, {pos.z})")
+
+        pos = self.joint.Offset2.Base
+        self.form.offset2Button.setText(f"({pos.x}, {pos.y}, {pos.z})")
+
+        self.blockOffsetRotation = True
+        self.form.offsetSpinbox.setProperty("rawValue", pos.z)
+        self.form.rotationSpinbox.setProperty(
+            "rawValue", self.joint.Offset2.Rotation.getYawPitchRoll()[0]
+        )
+        self.blockOffsetRotation = False
+
+    def on_offset_tab_changed(self):
+        self.updateOffsetWidgets()
+
+    def onOffset1Clicked(self):
+        UtilsAssembly.openEditingPlacementDialog(self.joint, "Offset1")
+        self.updateOffsetWidgets()
+
+    def onOffset2Clicked(self):
+        UtilsAssembly.openEditingPlacementDialog(self.joint, "Offset2")
+        self.updateOffsetWidgets()
+
     def updateTaskboxFromJoint(self):
         self.refs = []
         self.presel_ref = None
@@ -1752,7 +1673,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
         # newPos = self.view.getPoint(*info["Position"]) is not OK: it's not pos on the object but on the focal plane
         newPos = App.Vector(cursor_info["x"], cursor_info["y"], cursor_info["z"])
-        vertex_name = UtilsAssembly.findElementClosestVertex(self.assembly, ref, newPos)
+        vertex_name = UtilsAssembly.findElementClosestVertex(ref, newPos)
 
         ref = UtilsAssembly.addVertexToReference(ref, vertex_name)
 
@@ -1828,7 +1749,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         # Selection is acceptable so add it
 
         mousePos = App.Vector(mousePos[0], mousePos[1], mousePos[2])
-        vertex_name = UtilsAssembly.findElementClosestVertex(self.assembly, ref, mousePos)
+        vertex_name = UtilsAssembly.findElementClosestVertex(ref, mousePos)
 
         # add the vertex name to the reference
         ref = UtilsAssembly.addVertexToReference(ref, vertex_name)
@@ -1866,15 +1787,3 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
     def clearSelection(self, doc_name):
         self.refs.clear()
         self.updateJoint()
-
-    def setJointsPickableState(self, state: bool):
-        """Make all joints in assembly selectable (True) or unselectable (False) in 3D view"""
-        if self.activeType == "Assembly":
-            jointGroup = UtilsAssembly.getJointGroup(self.assembly)
-            for joint in jointGroup.Group:
-                if hasattr(joint, "JointType"):
-                    joint.ViewObject.Proxy.setPickableState(state)
-        else:
-            for obj in self.assembly.OutList:
-                if obj.TypeId == "App::FeaturePython" and hasattr(obj, "JointType"):
-                    obj.ViewObject.Proxy.setPickableState(state)

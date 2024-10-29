@@ -25,8 +25,8 @@
 #ifndef _PreComp_
 # include <gp_Dir.hxx>
 # include <BRep_Builder.hxx>
-# include <BRepAlgoAPI_Cut.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
+# include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakeSolid.hxx>
@@ -1879,7 +1879,7 @@ App::DocumentObjectExecReturn* Hole::execute()
             TopoDS_Shape protoThread = makeThread(xDir, zDir, length);
 
             // fuse the thread to the hole
-            BRepAlgoAPI_Fuse mkFuse(protoHole, protoThread);
+            FCBRepAlgoAPI_Fuse mkFuse(protoHole, protoThread);
             if (!mkFuse.IsDone())
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Adding the thread failed"));
 

@@ -975,10 +975,6 @@ void Application::checkForRecomputes() {
         return;
     WaitCursor wc;
     wc.restoreCursor();
-
-    // Splasher is shown ontop of warnings on macOS so stop it before it's too late
-    getMainWindow()->stopSplasher();
-
     auto res = QMessageBox::warning(getMainWindow(), QObject::tr("Recomputation required"),
                                     QObject::tr("Some document(s) require recomputation for migration purposes. "
                                                 "It is highly recommended to perform a recomputation before "
@@ -1031,7 +1027,7 @@ void Application::slotActiveDocument(const App::Document& Doc)
         // Update the application to show the unit change
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Units");
-        if (Doc.FileName.getValue()[0] != '\0' && !hGrp->GetBool("IgnoreProjectSchema")) {
+        if (!hGrp->GetBool("IgnoreProjectSchema")) {
             int userSchema = Doc.UnitSystem.getValue();
             Base::UnitsApi::setSchema(static_cast<Base::UnitSystem>(userSchema));
             getMainWindow()->setUserSchema(userSchema);
@@ -1415,6 +1411,11 @@ void Application::viewActivated(MDIView* pcView)
     }
 }
 
+/// Gets called if a view gets closed
+void Application::viewClosed(MDIView* pcView)
+{
+    signalCloseView(pcView);
+}
 
 void Application::updateActive()
 {
@@ -1912,8 +1913,11 @@ void setCategoryFilterRules()
     QTextStream stream(&filter);
     stream << "qt.qpa.xcb.warning=false\n";
     stream << "qt.qpa.mime.warning=false\n";
+    stream << "qt.qpa.wayland.warning=false\n";
+    stream << "qt.qpa.wayland.*.warning=false\n";
     stream << "qt.svg.warning=false\n";
     stream << "qt.xkb.compose.warning=false\n";
+    stream << "kf.*.warning=false\n";
     stream.flush();
     QLoggingCategory::setFilterRules(filter);
 }

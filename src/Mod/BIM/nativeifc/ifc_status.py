@@ -279,6 +279,7 @@ def lock_document():
 def find_toplevel(objs):
     """Finds the top-level objects from the list"""
 
+    import Draft
     # filter out any object that depend on another from the list
     nobjs = []
     for obj in objs:
@@ -292,17 +293,35 @@ def find_toplevel(objs):
                 break
         else:
             nobjs.append(obj)
-    # filter out 2D objects
-    objs = nobjs
+    # filter out non-convertible objects
+    objs = filter_out(nobjs)
+    return objs
+
+
+def filter_out(objs):
+    """Filter out objects that should not be converted to IFC"""
+
     nobjs = []
     for obj in objs:
         if obj.isDerivedFrom("Part::Feature"):
-            if obj.Shape.Edges and not obj.Shape.Solids:
-                print("Excluding", obj.Label, "- 2D objects not supported yet")
-            else:
-                nobjs.append(obj)
-        else:
             nobjs.append(obj)
+        elif obj.isDerivedFrom("Mesh::Feature"):
+            nobjs.append(obj)
+        elif obj.isDerivedFrom("App::DocumentObjectGroup"):
+            if filter_out(obj.Group):
+                # only append groups that contain exportable objects
+                nobjs.append(obj)
+            else:
+                print("DEBUG: Filtering out",obj.Label)
+        elif obj.isDerivedFrom("Mesh::Feature"):
+            nobjs.append(obj)
+        elif obj.isDerivedFrom("App::Feature"):
+            if Draft.get_type(obj) in ("Dimension","LinearDimension","Layer","Text","DraftText"):
+                nobjs.append(obj)
+            else:
+                print("DEBUG: Filtering out",obj.Label)
+        else:
+            print("DEBUG: Filtering out",obj.Label)
     return nobjs
 
 
