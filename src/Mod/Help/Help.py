@@ -183,7 +183,7 @@ def location_url(url_localized: str, url_english: str) -> tuple:
 
 
 def get_location(page) -> tuple:
-    """retrieves the location (online or offline) of a given page"""
+    """retrieves the location (online or offline) of a given page. Returns the location and the page name"""
 
     location = ""
     if page.startswith("http"):
