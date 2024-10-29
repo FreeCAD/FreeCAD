@@ -388,9 +388,9 @@ class BIM_Library_TaskPanel:
                 it = QtGui.QStandardItem(f)
                 it.setToolTip(os.path.join(dp, f))
                 self.filemodel.appendRow(it)
-                if f.endswith(".fcstd"):
+                if f.lower().endswith(".fcstd"):
                     it.setIcon(QtGui.QIcon(":icons/freecad-doc.png"))
-                elif f.endswith(".ifc"):
+                elif f.lower().endswith(".ifc"):
                     it.setIcon(QtGui.QIcon(":/icons/IFC.svg"))
                 else:
                     it.setIcon(QtGui.QIcon(":/icons/Part_document.svg"))
