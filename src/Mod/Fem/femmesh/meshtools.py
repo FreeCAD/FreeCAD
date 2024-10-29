@@ -1752,9 +1752,13 @@ def get_reference_group_elements(obj, aPart):
 
         for child1 in childs:
             ref_shape1 = parent.getSubObject(child1)
-            subchilds=[ref_shape1,]
-            if ref_shape1.ShapeType=="Compound": # if user selects a compound, add all the solids in it
-                subchilds=ref_shape1.Solids
+            subchilds = [
+                ref_shape1,
+            ]
+            if (
+                ref_shape1.ShapeType == "Compound"
+            ):  # if user selects a compound, add all the solids in it
+                subchilds = ref_shape1.Solids
             for ref_shape in subchilds:
                 FreeCAD.Console.PrintLog(f"{ref_shape}\n")
                 found_element = geomtools.find_element_in_shape(aShape, ref_shape)
