@@ -81,24 +81,56 @@ void FCBRepAlgoAPIHelper::setAutoFuzzy(BRepAlgoAPI_BuilderAlgo* op) {
     op->SetFuzzyValue(Part::FuzzyHelper::getBooleanFuzzy() * sqrt(bounds.SquareExtent()) * Precision::Confusion());
 }
 
-void FCBRepAlgoAPI_BooleanOperation::Build(const Message_ProgressRange& theRange) {
 
-    if (myOperation==BOPAlgo_CUT && myArguments.Size()==1 && myTools.Size()==1 && myTools.First().ShapeType() == TopAbs_COMPOUND) {
-        TopTools_ListOfShape myOriginalTools = myTools;
-        TopTools_ListOfShape myOriginalArguments = myArguments;
-        myShape = RecursiveCutByCompound(myOriginalArguments.First(), myOriginalTools.First(), theRange);
-        myArguments = myOriginalArguments;
-        myTools = myOriginalTools;
-    } else if (myOperation==BOPAlgo_CUT && myArguments.Size()==1 && myArguments.First().ShapeType() == TopAbs_COMPOUND) {
-        TopTools_ListOfShape myOriginalArguments = myArguments;
-        myShape = RecursiveCutCompound(myOriginalArguments.First(), theRange);
-        myArguments = myOriginalArguments;
-    } else {
-        BRepAlgoAPI_BooleanOperation::Build(theRange);
+void FCBRepAlgoAPI_BooleanOperation::RecursiveAddArguments(const TopoDS_Shape& theArgument) {
+    TopoDS_Iterator it(theArgument);
+    for (; it.More(); it.Next()) {
+        if (it.Value().ShapeType() == TopAbs_COMPOUND) {
+            RecursiveAddArguments(it.Value());
+        } else {
+            if (!myArguments.Size()) {
+                myArguments.Append(it.Value());
+            } else {
+                myTools.Append(it.Value());
+            }
+        }
     }
 }
 
-const TopoDS_Shape FCBRepAlgoAPI_BooleanOperation::RecursiveCutCompound(const TopoDS_Shape& theArgument, const Message_ProgressRange& theRange) {
+void FCBRepAlgoAPI_BooleanOperation::Build() {
+
+    if (myOperation == BOPAlgo_CUT && myArguments.Size() == 1 && myTools.Size() == 1 && myTools.First().ShapeType() == TopAbs_COMPOUND) {
+        TopTools_ListOfShape myOriginalArguments = myArguments;
+        TopTools_ListOfShape myOriginalTools = myTools;
+        TopTools_ListOfShape currentTools, currentArguments;
+        myArguments = currentArguments;
+        myTools = currentTools;
+        RecursiveAddArguments(myOriginalTools.First());
+        if (myTools.Size()) {
+            myOperation = BOPAlgo_FUSE; // fuse tools together
+            Build();
+            myOperation = BOPAlgo_CUT; // restore
+            myArguments = myOriginalArguments;
+            if (IsDone()) {
+                myTools.Append(myShape);
+                Build(); // cut with fused tools
+            }
+            myTools = myOriginalTools; //restore
+        } else { // there was less than 2 shapes in the compound
+            myArguments = myOriginalArguments;
+            myTools = myOriginalTools; //restore
+            Build();
+        }
+    } else if (myOperation==BOPAlgo_CUT && myArguments.Size()==1 && myArguments.First().ShapeType() == TopAbs_COMPOUND) {
+        TopTools_ListOfShape myOriginalArguments = myArguments;
+        myShape = RecursiveCutCompound(myOriginalArguments.First());
+        myArguments = myOriginalArguments;
+    } else {
+        BRepAlgoAPI_BooleanOperation::Build();
+    }
+}
+
+const TopoDS_Shape FCBRepAlgoAPI_BooleanOperation::RecursiveCutCompound(const TopoDS_Shape& theArgument) {
     BRep_Builder builder;
     TopoDS_Compound comp;
     builder.MakeCompound(comp);
@@ -107,7 +139,7 @@ const TopoDS_Shape FCBRepAlgoAPI_BooleanOperation::RecursiveCutCompound(const To
         TopTools_ListOfShape currentArguments;
         currentArguments.Append(it.Value());
         myArguments = currentArguments;
-        Build(theRange);
+        Build();
         if (IsDone()) {
             builder.Add(comp, myShape);
         } else {
@@ -117,23 +149,3 @@ const TopoDS_Shape FCBRepAlgoAPI_BooleanOperation::RecursiveCutCompound(const To
     return comp;
 }
 
-
-const TopoDS_Shape FCBRepAlgoAPI_BooleanOperation::RecursiveCutByCompound(const TopoDS_Shape& theArgument, const TopoDS_Shape& theTool, const Message_ProgressRange& theRange) {
-    TopoDS_Shape result = theArgument;
-    TopoDS_Iterator it(theTool);
-    for (; it.More(); it.Next()) {
-        TopTools_ListOfShape currentArguments;
-        TopTools_ListOfShape currentTools;
-        currentArguments.Append(result);
-        currentTools.Append(it.Value());
-        myArguments = currentArguments;
-        myTools = currentTools;
-        Build(theRange);
-        if (IsDone()) {
-            result = myShape;
-        } else {
-            return TopoDS_Shape();
-        }
-    }
-    return result;
-}
