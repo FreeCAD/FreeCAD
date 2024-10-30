@@ -37,7 +37,7 @@
     "StatusSelection": 0,
     "SystemProxyCheck": true,
     "UpdateFrequencyComboEntry": 0,
-    "UserProxyCheck": true,
+    "UserProxyCheck": false,
     "ViewStyle": 1,
     "WindowHeight": 600,
     "WindowWidth": 800,
