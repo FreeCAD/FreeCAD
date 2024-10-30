@@ -227,7 +227,7 @@ App::ElementNamePair Feature::getExportElementName(TopoShape shape,
                     if (!name) {
                         continue;
                     }
-                    indices.emplace_back(name.size(),
+                    indices.emplace_back(names.size(),
                                          shape.findAncestors(ss.getShape(), res.first));
                     names.push_back(name);
                     if (indices.back().second.size() == 1 && ++count >= MinLowerTopoNames) {
