@@ -19,6 +19,21 @@
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
       <layout class="QHBoxLayout" name="bodyLayout">
+        <property name="spacing">
+          <number>30</number>
+        </property>
+        <property name="leftMargin">
+          <number>20</number>
+        </property>
+        <property name="topMargin">
+          <number>6</number>
+        </property>
+        <property name="rightMargin">
+          <number>20</number>
+        </property>
+        <property name="bottomMargin">
+          <number>6</number>
+        </property>
         <item>
           <widget class="QLabel" name="warningIconLabel">
             <property name="minimumSize">
@@ -26,6 +41,18 @@
                 <width>100</width>
                 <height>100</height>
               </size>
+            </property>
+            <property name="maximumSize">
+              <size>
+                <width>100</width>
+                <height>100</height>
+              </size>
+            </property>
+            <property name="scaledContents">
+              <bool>false</bool>
+            </property>
+            <property name="pixmap">
+              <pixmap resource="../AddonManager.qrc">:/icons/AddonMgrWithWarning.svg</pixmap>
             </property>
           </widget>
         </item>

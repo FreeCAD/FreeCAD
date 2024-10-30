@@ -53,26 +53,18 @@ class FirstRunDialog:
                 os.path.join(os.path.dirname(__file__), "first_run.ui")
             )
 
-            # Set up the warning icon
-            warning_icon_label = warning_dialog.warningIconLabel
-            pixmap = QPixmap(":/icons/AddonMgrWithWarning.svg")
-            warning_icon_label.setPixmap(pixmap)
-            warning_icon_label.setScaledContents(True)
-            warning_icon_label.setFixedSize(80, 80)
-
-            # Customize layout margins and spacing
-            layout = warning_dialog.findChild(QtWidgets.QHBoxLayout, "bodyLayout")
-            layout.setContentsMargins(20, 6, 20, 6)  # Left, top, right, bottom margins
-            layout.setSpacing(30)  # Set spacing between widgets
-
-            # Connect the "Continue" button to accept the dialog (continue with Addon Manager)
+            # Set signal handlers for accept/reject buttons
             warning_dialog.buttonContinue.clicked.connect(warning_dialog.accept)
-
-            # Connect the "Quit" button to reject (exit) the dialog
             warning_dialog.buttonQuit.clicked.connect(warning_dialog.reject)
 
             # Show the dialog and check whether the user accepted or canceled
             if warning_dialog.exec() == QtWidgets.QDialog.Accepted:
+                # Temporary fix to assign defaults until json method is fully implemented
+                self.pref.SetBool("NoProxyCheck", True)
+                self.pref.SetBool("SystemProxyCheck", True)
+                self.pref.SetBool("UserProxyCheck", True)
+
+                # Store warning as read/accepted
                 self.readWarning = True
                 self.pref.SetBool("readWarning2022", True)
 
