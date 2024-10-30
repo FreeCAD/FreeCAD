@@ -165,16 +165,10 @@ DlgDisplayPropertiesImp::DlgDisplayPropertiesImp(bool floating, QWidget* parent,
     // that contain the basic render model.
     setupFilters();
 
-    std::vector<Gui::ViewProvider*> views = getSelection();
-    setDisplayModes(views);
-    setColorPlot(views);
-    setShapeAppearance(views);
-    setLineColor(views);
-    setPointColor(views);
-    setPointSize(views);
-    setLineWidth(views);
-    setTransparency(views);
-    setLineTransparency(views);
+    {
+        QSignalBlocker block(d->ui.widgetMaterial);
+        setPropertiesFromSelection();
+    }
 
     // embed this dialog into a dockable widget container
     if (floating) {
@@ -297,6 +291,20 @@ void DlgDisplayPropertiesImp::changeEvent(QEvent* e)
     QDialog::changeEvent(e);
 }
 
+void DlgDisplayPropertiesImp::setPropertiesFromSelection()
+{
+    std::vector<Gui::ViewProvider*> views = getSelection();
+    setDisplayModes(views);
+    setColorPlot(views);
+    setShapeAppearance(views);
+    setLineColor(views);
+    setPointColor(views);
+    setPointSize(views);
+    setLineWidth(views);
+    setTransparency(views);
+    setLineTransparency(views);
+}
+
 /// @cond DOXERR
 void DlgDisplayPropertiesImp::OnChange(Gui::SelectionSingleton::SubjectType& rCaller,
                                        Gui::SelectionSingleton::MessageType Reason)
@@ -306,16 +314,7 @@ void DlgDisplayPropertiesImp::OnChange(Gui::SelectionSingleton::SubjectType& rCa
         || Reason.Type == Gui::SelectionChanges::RmvSelection
         || Reason.Type == Gui::SelectionChanges::SetSelection
         || Reason.Type == Gui::SelectionChanges::ClrSelection) {
-        std::vector<Gui::ViewProvider*> views = getSelection();
-        setDisplayModes(views);
-        setColorPlot(views);
-        setShapeAppearance(views);
-        setLineColor(views);
-        setPointColor(views);
-        setPointSize(views);
-        setLineWidth(views);
-        setTransparency(views);
-        setLineTransparency(views);
+        setPropertiesFromSelection();
     }
 }
 /// @endcond
