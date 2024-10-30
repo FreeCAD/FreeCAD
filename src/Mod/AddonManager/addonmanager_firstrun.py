@@ -59,11 +59,6 @@ class FirstRunDialog:
 
             # Show the dialog and check whether the user accepted or canceled
             if warning_dialog.exec() == QtWidgets.QDialog.Accepted:
-                # Temporary fix to assign defaults until json method is fully implemented
-                self.pref.SetBool("NoProxyCheck", True)
-                self.pref.SetBool("SystemProxyCheck", True)
-                self.pref.SetBool("UserProxyCheck", True)
-
                 # Store warning as read/accepted
                 self.readWarning = True
                 self.pref.SetBool("readWarning2022", True)
