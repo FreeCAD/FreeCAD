@@ -102,7 +102,8 @@ App::DocumentObjectExecReturn *MultiFuse::execute()
     TopoShape compoundOfArguments;
 
     // if only one source shape, and it is a compound - fuse children of the compound
-    while (shapes.size() == 1) {
+    int naucks_sanity_remaining=1000000; // hard abort after 1 million loops - will trigger "not enough shape objects linked" error below if ever reached
+    while (shapes.size() == 1 && naucks_sanity_remaining-- > 0) {
         compoundOfArguments = shapes[0];
         if (compoundOfArguments.getShape().ShapeType() == TopAbs_COMPOUND) {
             shapes.clear();
