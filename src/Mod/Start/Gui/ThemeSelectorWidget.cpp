@@ -47,11 +47,16 @@ using namespace StartGui;
 static bool isSystemInDarkMode()
 {
     // Auto-detect system setting and default to light mode
-#if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
+    // https://www.qt.io/blog/dark-mode-on-windows-11-with-qt-6.5
+    const auto scheme = QGuiApplication::styleHints()->colorScheme();
+    return scheme == Qt::ColorScheme::Dark;
+#elif QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
     // https://www.qt.io/blog/dark-mode-on-windows-11-with-qt-6.5
     const QPalette defaultPalette;
-    return defaultPalette.color(QPalette::WindowText).lightness()
-        > defaultPalette.color(QPalette::Window).lightness();
+    const auto text = defaultPalette.color(QPalette::WindowText);
+    const auto window = defaultPalette.color(QPalette::Window);
+    return text.lightness() > window.lightness();
 #else
 #ifdef FC_OS_MACOSX
     auto key = CFSTR("AppleInterfaceStyle");
