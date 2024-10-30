@@ -113,6 +113,9 @@ def get_femnodes_by_refshape(femmesh, ref):
             nodes += femmesh.getNodesByFace(r)
         elif r.ShapeType == "Solid":
             nodes += femmesh.getNodesBySolid(r)
+        elif r.ShapeType == "Compound":
+            for s in r.Solids:
+                nodes += femmesh.getNodesBySolid(s)
         else:
             FreeCAD.Console.PrintMessage("  No Vertice, Edge, Face or Solid as reference shapes!\n")
     return nodes
