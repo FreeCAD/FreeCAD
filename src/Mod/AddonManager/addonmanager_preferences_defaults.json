@@ -35,7 +35,7 @@
     "SelectedAddon": "",
     "ShowBranchSwitcher": false,
     "StatusSelection": 0,
-    "SystemProxyCheck": true,
+    "SystemProxyCheck": false,
     "UpdateFrequencyComboEntry": 0,
     "UserProxyCheck": false,
     "ViewStyle": 1,
