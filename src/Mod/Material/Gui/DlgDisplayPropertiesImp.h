@@ -96,6 +96,7 @@ private:
     void setTransparency(const std::vector<Gui::ViewProvider*>&);
     void setLineTransparency(const std::vector<Gui::ViewProvider*>&);
     std::vector<Gui::ViewProvider*> getSelection() const;
+    void setPropertiesFromSelection();
 
 private:
     class Private;
