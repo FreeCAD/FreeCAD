@@ -654,7 +654,7 @@ void DocumentRecoveryHandler::checkForPreviousCrashes(const std::function<void(Q
     for (const QFileInfo&  it : locks) {
         QString bn = it.baseName();
         // ignore the lock file for this instance
-        QString pid = QString::number(QCoreApplication::applicationPid());
+        QString pid = QString::number(App::Application::applicationPid());
         if (bn.startsWith(exeName) && bn.indexOf(pid) < 0) {
             QString fn = it.absoluteFilePath();
 

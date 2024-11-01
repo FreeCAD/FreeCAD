@@ -47,6 +47,7 @@
 #include <sys/sysctl.h>
 #endif
 
+#include <QCoreApplication>
 #include <QDir>
 #include <QFileInfo>
 #include <QProcessEnvironment>
@@ -1112,6 +1113,11 @@ Application::TransactionSignaller::~TransactionSignaller() {
             Base::Console().Warning("~TransactionSignaller: Unexpected boost exception\n");
         }
     }
+}
+
+int64_t Application::applicationPid()
+{
+    return QCoreApplication::applicationPid();
 }
 
 std::string Application::getHomePath()

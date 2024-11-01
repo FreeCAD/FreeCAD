@@ -2176,7 +2176,7 @@ void tryRunEventLoop(GUISingleApplication& mainApp)
     out << App::Application::getUserCachePath()
         << App::Application::getExecutableName()
         << "_"
-        << QCoreApplication::applicationPid()
+        << App::Application::applicationPid()
         << ".lock";
 
     // open a lock file with the PID
