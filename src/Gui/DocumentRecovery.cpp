@@ -677,7 +677,7 @@ void DocumentRecoveryHandler::checkForPreviousCrashes(const std::function<void(Q
                 callableFunc(tmp, dirs, it.fileName());
             }
             else {
-                Base::Console().Warning("Failed to lock file %s\n", fn.toUtf8().constData());
+                Base::Console().Log("Failed to lock file %s\n", fn.toUtf8().constData());
             }
         }
     }
