@@ -618,8 +618,13 @@ private:
         std::string FeatName = documentOfBody->getUniqueObjectName("Sketch");
         std::string supportString = Gui::Command::getObjectCmd(plane,"(",",[''])");
 
+        App::Document* doc = partDesignBody->getDocument();
+        if (!doc->hasPendingTransaction()) {
+            doc->openTransaction(QT_TRANSLATE_NOOP("Command", "Create a new Sketch"));
+        }
+
         FCMD_OBJ_CMD(partDesignBody,"newObject('Sketcher::SketchObject','" << FeatName << "')");
-        auto Feat = partDesignBody->getDocument()->getObject(FeatName.c_str());
+        auto Feat = doc->getObject(FeatName.c_str());
         FCMD_OBJ_CMD(Feat,"AttachmentSupport = " << supportString);
         FCMD_OBJ_CMD(Feat,"MapMode = '" << Attacher::AttachEngine::getModeName(Attacher::mmFlatFace)<<"'");
         Gui::Command::updateActive(); // Make sure the AttachmentSupport's Placement property is updated
