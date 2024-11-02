@@ -3625,8 +3625,9 @@ void Document::_removeObject(DocumentObject* pcObject)
     else {
         // for a rollback delete the object
         signalTransactionRemove(*pcObject, 0);
-        breakDependency(pcObject, true);
     }
+
+    breakDependency(pcObject, true);
 
     // remove from map
     pcObject->setStatus(ObjectStatus::Remove, false); // Unset the bit to be on the safe side
