@@ -203,6 +203,7 @@ public:
 protected:
     PropertyItem();
 
+    void setPropertyValue(const std::string& value);
     virtual QVariant displayName() const;
     virtual QVariant decoration(const QVariant&) const;
     virtual QVariant toolTip(const App::Property*) const;
