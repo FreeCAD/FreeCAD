@@ -44,10 +44,11 @@ whether you are a hobbyist, programmer, experienced CAD user, student or teacher
 Installing
 ----------
 
-To download prebuilt packages, visit the
+Precompiled packages for stable releases are available for Windows, macOS and Linux on the
 [Releases page](https://github.com/FreeCAD/FreeCAD/releases).
 
-On Linux, FreeCAD is also available through most distribution's default package manager and their software center applications.
+On most Linux distributions, FreeCAD is also directly installable from the 
+software center application.
 
 For development releases visit the [weekly-builds page](https://github.com/FreeCAD/FreeCAD-Bundle/releases/tag/weekly-builds).
 
