@@ -56,7 +56,9 @@ Other options are described on the [wiki Download page](https://wiki.freecad.org
 Compiling
 ---------
 
-FreeCAD requires several dependencies to correctly compile for development and production builds. The following pages contain updated build instructions for their respective platforms:
+FreeCAD requires several dependencies to correctly compile for development and
+production builds. The following pages contain updated build instructions for
+their respective platforms:
 
 - [Linux](https://wiki.freecad.org/Compile_on_Linux)
 - [Windows](https://wiki.freecad.org/Compile_on_Windows)
