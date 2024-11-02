@@ -598,7 +598,7 @@ void PropertyItem::setPropertyName(const QString& name, const QString& realName)
     displayText = str;
 }
 
-void PropertyItem::setPropertyValue(const QString& value)
+void PropertyItem::setPropertyValue(const std::string& value)
 {
     // Construct command for property assignment in one go, in case of any
     // intermediate changes caused by property change that may potentially
@@ -631,8 +631,7 @@ void PropertyItem::setPropertyValue(const QString& value)
             continue;
         }
 
-        ss << parent->getPropertyPrefix() << prop->getName() << " = " << value.toUtf8().constData()
-           << '\n';
+        ss << parent->getPropertyPrefix() << prop->getName() << " = " << value << '\n';
     }
 
     std::string cmd = ss.str();
@@ -653,6 +652,11 @@ void PropertyItem::setPropertyValue(const QString& value)
     catch (...) {
         Base::Console().Error("Unknown C++ exception in PropertyItem::setPropertyValue thrown\n");
     }
+}
+
+void PropertyItem::setPropertyValue(const QString& value)
+{
+    setPropertyValue(value.toStdString());
 }
 
 QVariant PropertyItem::dataProperty(int role) const
