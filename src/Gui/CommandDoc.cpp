@@ -408,6 +408,7 @@ void StdCmdExport::activated(int iMsg)
     static QString lastExportFullPath = QString();
     static bool lastExportUsedGeneratedFilename = true;
     static QString lastExportFilterUsed = QString();
+    static Document* lastActiveDocument;
 
     auto selection = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId());
     if (selection.empty()) {
@@ -434,15 +435,16 @@ void StdCmdExport::activated(int iMsg)
 
     // Create a default filename for the export
     // * If this is the first export this session default, generate a new default.
-    // * If this is a repeated export during the same session:
+    // * If this is a repeated export during the same session and file:
     //     * If the user accepted the default filename last time, regenerate a new
     //       default, potentially updating the object label.
     //     * If not, default to their previously-set export filename.
     QString defaultFilename = lastExportFullPath;
 
     bool filenameWasGenerated = false;
-    // We want to generate a new default name in two cases:
-    if (defaultFilename.isEmpty() || lastExportUsedGeneratedFilename) {
+    bool didActiveDocumentChange = lastActiveDocument != getActiveGuiDocument();
+    // We want to generate a new default name in three cases:
+    if (defaultFilename.isEmpty() || lastExportUsedGeneratedFilename || didActiveDocumentChange) {
         // First, get the name and path of the current .FCStd file, if there is one:
         QString docFilename = QString::fromUtf8(
             App::GetApplication().getActiveDocument()->getFileName());
@@ -461,7 +463,7 @@ void StdCmdExport::activated(int iMsg)
             defaultExportPath = Gui::FileDialog::getWorkingDirectory();
         }
 
-        if (lastExportUsedGeneratedFilename /*<- static, true on first call*/ ) {
+        if (lastExportUsedGeneratedFilename   || didActiveDocumentChange) {  /*<- static, true on first call*/
             defaultFilename = defaultExportPath + QLatin1Char('/') + createDefaultExportBasename();
 
             // Append the last extension used, if there is one.
@@ -499,6 +501,7 @@ void StdCmdExport::activated(int iMsg)
         else
             lastExportUsedGeneratedFilename = false;
         lastExportFullPath = fileName;
+        lastActiveDocument = getActiveGuiDocument();
     }
 }
 

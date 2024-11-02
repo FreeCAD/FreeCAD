@@ -4,22 +4,22 @@
   <context>
     <name>StartGui::FirstStartWidget</name>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="95"/>
+      <location filename="../../FirstStartWidget.cpp" line="94"/>
       <source>Done</source>
       <translation>Bitti</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="97"/>
+      <location filename="../../FirstStartWidget.cpp" line="96"/>
       <source>Welcome to %1</source>
       <translation>%1'e hoş geldiniz</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="100"/>
+      <location filename="../../FirstStartWidget.cpp" line="99"/>
       <source>To get started, set your basic configuration options below.</source>
       <translation>Başlamak için temel yapılandırma seçeneklerinizi aşağıda ayarlayın.</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="101"/>
+      <location filename="../../FirstStartWidget.cpp" line="100"/>
       <source>These options (and many more) can be changed later in Preferences.</source>
       <translation>Bu ayarları (ve daha fazlasını) tekrar Tercihler kısmından değiştirebilirsiniz.</translation>
     </message>
@@ -59,87 +59,87 @@
   <context>
     <name>StartGui::StartView</name>
     <message>
-      <location filename="../../StartView.cpp" line="212"/>
+      <location filename="../../StartView.cpp" line="213"/>
       <source>Empty file</source>
       <translation>Boş dosya</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="213"/>
+      <location filename="../../StartView.cpp" line="214"/>
       <source>Create a new empty FreeCAD file</source>
       <translation>Boş bir FreeCAD dosyası oluştur</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="215"/>
+      <location filename="../../StartView.cpp" line="216"/>
       <source>Open File</source>
       <translation>Dosya Aç</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="216"/>
+      <location filename="../../StartView.cpp" line="217"/>
       <source>Open an existing CAD file or 3D model</source>
       <translation>Mevcut bir CAD dosyası veya 3D model aç</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="218"/>
+      <location filename="../../StartView.cpp" line="219"/>
       <source>Parametric Part</source>
       <translation>Değişkenli Parça</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="219"/>
+      <location filename="../../StartView.cpp" line="220"/>
       <source>Create a part with the Part Design workbench</source>
       <translation>Parça Tasarımı tezgahı ile parça oluştur</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="221"/>
+      <location filename="../../StartView.cpp" line="222"/>
       <source>Assembly</source>
       <translation>Montaj</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="222"/>
+      <location filename="../../StartView.cpp" line="223"/>
       <source>Create an assembly project</source>
       <translation>Montaj projesi oluştur</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="224"/>
+      <location filename="../../StartView.cpp" line="225"/>
       <source>2D Draft</source>
       <translation>2D Taslak</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="225"/>
+      <location filename="../../StartView.cpp" line="226"/>
       <source>Create a 2D Draft with the Draft workbench</source>
       <translation>Taslak tezgahı ile 2D taslak oluştur</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="227"/>
+      <location filename="../../StartView.cpp" line="228"/>
       <source>BIM/Architecture</source>
       <translation>BIM/Mimari</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="228"/>
+      <location filename="../../StartView.cpp" line="229"/>
       <source>Create an architectural project</source>
       <translation>Mimari yapı projesi oluştur</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="494"/>
+      <location filename="../../StartView.cpp" line="506"/>
       <source>New File</source>
       <translation>Yeni Dosya</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="495"/>
+      <location filename="../../StartView.cpp" line="507"/>
       <source>Examples</source>
       <translation>Örnekler</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="496"/>
+      <location filename="../../StartView.cpp" line="508"/>
       <source>Recent Files</source>
       <translation>Son kullanılan dosyalar</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="499"/>
+      <location filename="../../StartView.cpp" line="511"/>
       <source>Open first start setup</source>
       <translation>İlk kurulumu aç</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="501"/>
+      <location filename="../../StartView.cpp" line="513"/>
       <source>Don't show this Start page again (start with blank screen)</source>
       <translation>Açılış ekranını tekrar gösterme (boş pencere ile başlat)</translation>
     </message>
@@ -147,7 +147,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="488"/>
+      <location filename="../../StartView.cpp" line="500"/>
       <source>Start</source>
       <translation>Başla</translation>
     </message>

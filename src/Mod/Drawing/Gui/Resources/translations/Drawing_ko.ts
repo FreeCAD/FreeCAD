@@ -260,7 +260,7 @@
     <message>
       <location filename="../../DrawingView.cpp" line="236"/>
       <source>&amp;Image</source>
-      <translation>이미지(&amp;I)</translation>
+      <translation>화상(&amp;I)</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="240"/>

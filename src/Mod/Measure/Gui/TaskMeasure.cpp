@@ -38,7 +38,7 @@
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
-#include <Gui/ViewProviderDocumentObject.h>
+#include <Gui/ViewProvider.h>
 
 #include <QFormLayout>
 #include <QPushButton>
@@ -147,21 +147,6 @@ void TaskMeasure::modifyStandardButtons(QDialogButtonBox* box)
     connect(btn, &QPushButton::released, this, &TaskMeasure::reset);
 }
 
-bool canAnnotate(Measure::MeasureBase* obj)
-{
-    if (obj == nullptr) {
-        // null object, can't annotate this
-        return false;
-    }
-
-    auto vpName = obj->getViewProviderName();
-    // if there is not a vp, return false
-    if ((vpName == nullptr) || (vpName[0] == '\0')) {
-        return false;
-    }
-
-    return true;
-}
 
 void TaskMeasure::enableAnnotateButton(bool state)
 {
@@ -174,85 +159,36 @@ void TaskMeasure::enableAnnotateButton(bool state)
     btn->setEnabled(state);
 }
 
-void TaskMeasure::setMeasureObject(Measure::MeasureBase* obj)
+
+Measure::MeasureBase* TaskMeasure::createObject(const App::MeasureType* measureType)
 {
-    _mMeasureObject = obj;
-}
-
-
-App::DocumentObject* TaskMeasure::createObject(const App::MeasureType* measureType)
-{
-    auto measureClass =
-        measureType->isPython ? "Measure::MeasurePython" : measureType->measureObject;
-    auto type = Base::Type::getTypeIfDerivedFrom(measureClass.c_str(),
-                                                 App::DocumentObject::getClassTypeId(),
-                                                 true);
-
-    if (type.isBad()) {
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    if (!doc) {
         return nullptr;
     }
 
-    _mMeasureObject = static_cast<Measure::MeasureBase*>(type.createInstance());
-
-    // Create an instance of the python measure class, the classe's
-    // initializer sets the object as proxy
     if (measureType->isPython) {
         Base::PyGILStateLocker lock;
+        auto pyMeasureClass = measureType->pythonClass;
+
+        // Create a MeasurePython instance
+        auto featurePython = doc->addObject("Measure::MeasurePython", measureType->label.c_str());
+        _mMeasureObject = dynamic_cast<Measure::MeasureBase*>(featurePython);
+
+        // Create an instance of the pyMeasureClass, the classe's initializer sets the object as
+        // proxy
         Py::Tuple args(1);
-        args.setItem(0, Py::asObject(_mMeasureObject->getPyObject()));
-        PyObject* result = PyObject_CallObject(measureType->pythonClass, args.ptr());
+        args.setItem(0, Py::asObject(featurePython->getPyObject()));
+        PyObject* result = PyObject_CallObject(pyMeasureClass, args.ptr());
         Py_XDECREF(result);
     }
-
-    return static_cast<App::DocumentObject*>(_mMeasureObject);
-}
-
-
-Gui::ViewProviderDocumentObject* TaskMeasure::createViewObject(App::DocumentObject* measureObj)
-{
-    // Add view object
-    auto vpName = measureObj->getViewProviderName();
-    if ((vpName == nullptr) || (vpName[0] == '\0')) {
-        return nullptr;
+    else {
+        // Create measure object
+        _mMeasureObject = dynamic_cast<Measure::MeasureBase*>(
+            doc->addObject(measureType->measureObject.c_str(), measureType->label.c_str()));
     }
 
-    auto vpType =
-        Base::Type::getTypeIfDerivedFrom(vpName,
-                                         Gui::ViewProviderDocumentObject::getClassTypeId(),
-                                         true);
-    if (vpType.isBad()) {
-        return nullptr;
-    }
-
-    auto vp = static_cast<Gui::ViewProviderDocumentObject*>(vpType.createInstance());
-
-    _mGuiDocument = Gui::Application::Instance->activeDocument();
-    _mGuiDocument->setAnnotationViewProvider(vp->getTypeId().getName(), vp);
-    vp->attach(measureObj);
-
-    // Init the position of the annotation
-    static_cast<MeasureGui::ViewProviderMeasureBase*>(vp)->positionAnno(_mMeasureObject);
-
-    vp->updateView();
-    vp->setActiveMode();
-
-    _mViewObject = vp;
-    return vp;
-}
-
-
-void TaskMeasure::saveObject()
-{
-    if (_mViewObject && _mGuiDocument) {
-        _mGuiDocument->addViewProvider(_mViewObject);
-        _mGuiDocument->takeAnnotationViewProvider(_mViewObject->getTypeId().getName());
-        _mViewObject = nullptr;
-    }
-
-    _mDocument = App::GetApplication().getActiveDocument();
-    _mDocument->addObject(_mMeasureObject,
-                          modeSwitch->currentIndex() != 0 ? modeSwitch->currentText().toLatin1()
-                                                          : QString().toLatin1());
+    return _mMeasureObject;
 }
 
 
@@ -321,7 +257,8 @@ void TaskMeasure::update()
     // Update tool mode display
     setModeSilent(measureType);
 
-    if (!_mMeasureObject || measureType->measureObject != _mMeasureObject->getTypeId().getName()) {
+    if (!_mMeasureObject || measureType->measureObject != _mMeasureObject->getTypeId().getName()
+        || _mMeasureObject->getDocument() != doc) {
         // we don't already have a measureobject or it isn't the same type as the new one
         removeObject();
         createObject(measureType);
@@ -336,17 +273,35 @@ void TaskMeasure::update()
     // Get result
     valueResult->setText(_mMeasureObject->getResultString());
 
-    createViewObject(_mMeasureObject);
+    // Initialite the measurement's viewprovider
+    initViewObject();
+}
 
-    // Must be after createViewObject!
-    assert(_mViewObject);
-    auto* prop = dynamic_cast<App::PropertyBool*>(_mViewObject->getPropertyByName("ShowDelta"));
+
+void TaskMeasure::initViewObject()
+{
+    Gui::Document* guiDoc = Gui::Application::Instance->activeDocument();
+    if (!guiDoc) {
+        return;
+    }
+
+    Gui::ViewProvider* viewObject = guiDoc->getViewProvider(_mMeasureObject);
+    if (!viewObject) {
+        return;
+    }
+
+    // Init the position of the annotation
+    dynamic_cast<MeasureGui::ViewProviderMeasureBase*>(viewObject)->positionAnno(_mMeasureObject);
+
+    // Set the ShowDelta Property if it exists on the measurements view object
+    auto* prop = dynamic_cast<App::PropertyBool*>(viewObject->getPropertyByName("ShowDelta"));
     setDeltaPossible(prop != nullptr);
     if (prop) {
         prop->setValue(showDelta->isChecked());
-        _mViewObject->update(prop);
+        viewObject->update(prop);
     }
 }
+
 
 void TaskMeasure::close()
 {
@@ -365,7 +320,10 @@ void TaskMeasure::ensureGroup(Measure::MeasureBase* measurement)
 
     App::Document* doc = measurement->getDocument();
     App::DocumentObject* obj = doc->getObject(measurementGroupName);
-    if (!obj || !obj->isValid()) {
+
+
+    if (!obj || !obj->isValid()
+        || !obj->isDerivedFrom(App::DocumentObjectGroup::getClassTypeId())) {
         obj = doc->addObject("App::DocumentObjectGroup",
                              measurementGroupName,
                              true,
@@ -385,7 +343,6 @@ void TaskMeasure::invoke()
 
 bool TaskMeasure::apply()
 {
-    saveObject();
     ensureGroup(_mMeasureObject);
     _mMeasureObject = nullptr;
     reset();
@@ -428,13 +385,8 @@ void TaskMeasure::removeObject()
         return;
     }
 
-    if (_mViewObject && _mGuiDocument) {
-        _mGuiDocument->removeAnnotationViewProvider(_mViewObject->getTypeId().getName());
-        _mViewObject = nullptr;
-    }
-
-    delete _mMeasureObject;
-    setMeasureObject(nullptr);
+    _mMeasureObject->getDocument()->removeObject(_mMeasureObject->getNameInDocument());
+    _mMeasureObject = nullptr;
 }
 
 bool TaskMeasure::hasSelection()

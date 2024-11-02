@@ -26,8 +26,8 @@
 # include <sstream>
 # include <Bnd_Box.hxx>
 # include <BRepAdaptor_Curve.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
-# include <BRepAlgoAPI_Common.hxx>
+# include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
 # include <BRepBndLib.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
@@ -128,6 +128,26 @@ PyObject *Feature::getPyObject()
     return Py::new_reference_to(PythonObject);
 }
 
+void Feature::copyMaterial(Feature* feature)
+{
+    auto mat = Materials::MaterialManager::defaultMaterial();
+    if (feature) {
+        if (ShapeMaterial.getValue().getUUID() != feature->ShapeMaterial.getValue().getUUID()) {
+            if (ShapeMaterial.getValue().getUUID() == mat->getUUID()) {
+                ShapeMaterial.setValue(feature->ShapeMaterial.getValue());
+            }
+        }
+    }
+}
+
+void Feature::copyMaterial(App::DocumentObject* link)
+{
+    auto feature = dynamic_cast<Part::Feature*>(link);
+    if (feature) {
+        copyMaterial(feature);
+    }
+}
+
 /**
  * Override getElementName to support the Export type.  Other calls are passed to the original
  * method
@@ -207,7 +227,7 @@ App::ElementNamePair Feature::getExportElementName(TopoShape shape,
                     if (!name) {
                         continue;
                     }
-                    indices.emplace_back(name.size(),
+                    indices.emplace_back(names.size(),
                                          shape.findAncestors(ss.getShape(), res.first));
                     names.push_back(name);
                     if (indices.back().second.size() == 1 && ++count >= MinLowerTopoNames) {
@@ -1709,6 +1729,16 @@ short FilletBase::mustExecute() const
     return 0;
 }
 
+App::DocumentObjectExecReturn* FilletBase::execute()
+{
+    App::DocumentObject* link = this->Base.getValue();
+    if (!link) {
+        return new App::DocumentObjectExecReturn("No object linked");
+    }
+    copyMaterial(link);
+    return Part::Feature::execute();
+}
+
 void FilletBase::onChanged(const App::Property *prop) {
     if(getDocument() && !getDocument()->testStatus(App::Document::Restoring)) {
         if(prop == &Edges || prop == &Base) {
@@ -1891,7 +1921,7 @@ bool Part::checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& seco
 
     if (touch_is_intersection) {
         // If both shapes fuse to a single solid, then they intersect
-        BRepAlgoAPI_Fuse mkFuse(first, second);
+        FCBRepAlgoAPI_Fuse mkFuse(first, second);
         if (!mkFuse.IsDone())
             return false;
         if (mkFuse.Shape().IsNull())
@@ -1909,7 +1939,7 @@ bool Part::checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& seco
         }
     } else {
         // If both shapes have common material, then they intersect
-        BRepAlgoAPI_Common mkCommon(first, second);
+        FCBRepAlgoAPI_Common mkCommon(first, second);
         if (!mkCommon.IsDone())
             return false;
         if (mkCommon.Shape().IsNull())

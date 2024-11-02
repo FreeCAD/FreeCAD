@@ -415,6 +415,9 @@ public:
 
 protected:
     SbBool processSoEvent(const SoEvent * const ev) override;
+
+private:
+    SbBool blockPan {false}; // Used to block the first pan in a mouse movement to prevent big jumps
 };
 
 class GuiExport OpenCascadeNavigationStyle : public UserNavigationStyle {

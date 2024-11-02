@@ -117,12 +117,12 @@ class Heatwriter:
             if obj.References:
                 for name in obj.References[0][1]:
                     if obj.ConstraintType == "Convection":
-                        film = self.write.getFromUi(obj.FilmCoef, "W/(m^2*K)", "M/(T^3*O)")
-                        temp = self.write.getFromUi(obj.AmbientTemp, "K", "O")
+                        film = obj.FilmCoef.getValueAs("W/(m^2*K)").Value
+                        temp = obj.AmbientTemp.getValueAs("K").Value
                         self.write.boundary(name, "Heat Transfer Coefficient", film)
                         self.write.boundary(name, "External Temperature", temp)
                     elif obj.ConstraintType == "DFlux":
-                        flux = self.write.getFromUi(obj.DFlux, "W/m^2", "M*T^-3")
+                        flux = obj.DFlux.getValueAs("W/m^2").Value
                         self.write.boundary(name, "Heat Flux BC", True)
                         self.write.boundary(name, "Heat Flux", flux)
                 self.write.handled(obj)

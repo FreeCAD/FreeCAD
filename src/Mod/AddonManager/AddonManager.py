@@ -271,7 +271,7 @@ class CommandAddonManager(QtCore.QObject):
         self.button_bar = WidgetGlobalButtonBar(self.dialog)
 
         # If we are checking for updates automatically, hide the Check for updates button:
-        autocheck = pref.GetBool("AutoCheck", False)
+        autocheck = pref.GetBool("AutoCheck", True)
         if autocheck:
             self.button_bar.check_for_updates.hide()
         else:
@@ -477,7 +477,7 @@ class CommandAddonManager(QtCore.QObject):
             self.select_addon,
         ]
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
-        if pref.GetBool("DownloadMacros", False):
+        if pref.GetBool("DownloadMacros", True):
             self.startup_sequence.append(self.load_macro_metadata)
         self.number_of_progress_regions = len(self.startup_sequence)
         self.current_progress_region = 0
@@ -664,7 +664,7 @@ class CommandAddonManager(QtCore.QObject):
         """checks every installed addon for available updates"""
 
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
-        autocheck = pref.GetBool("AutoCheck", False)
+        autocheck = pref.GetBool("AutoCheck", True)
         if not autocheck:
             FreeCAD.Console.PrintLog(
                 "Addon Manager: Skipping update check because AutoCheck user preference is False\n"

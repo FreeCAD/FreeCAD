@@ -30,6 +30,7 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QListView>
+#include <QMessageBox>
 #include <QPushButton>
 #include <QScrollArea>
 #include <QWidget>
@@ -41,14 +42,16 @@
 #include "FileCardView.h"
 #include "FirstStartWidget.h"
 #include "FlowLayout.h"
-#include "Gui/Workbench.h"
-#include <Gui/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Application.h>
 #include <Base/Interpreter.h>
 #include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
+#include <Gui/Document.h>
+#include <Gui/ModuleIO.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <gsl/pointers>
 
 using namespace StartGui;
@@ -122,14 +125,13 @@ StartView::StartView(QWidget* parent)
     firstStartScrollArea->setWidgetResizable(true);
 
     auto firstStartRegion = gsl::owner<QHBoxLayout*>(new QHBoxLayout(firstStartScrollWidget));
-    firstStartRegion->addStretch();
+    firstStartRegion->setAlignment(Qt::AlignCenter);
     auto firstStartWidget = gsl::owner<FirstStartWidget*>(new FirstStartWidget(this));
     connect(firstStartWidget,
             &FirstStartWidget::dismissed,
             this,
             &StartView::firstStartWidgetDismissed);
     firstStartRegion->addWidget(firstStartWidget);
-    firstStartRegion->addStretch();
     _contents->addWidget(firstStartScrollArea);
 
     // Documents page
@@ -228,18 +230,6 @@ void StartView::configureNewFileButtons(QLayout* layout) const
                                  tr("Create an architectural project"),
                                  QLatin1String(":/icons/BIMWorkbench.svg")});
 
-    auto hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Start");
-    if (hGrp->GetBool("FileCardUseStyleSheet", true)) {
-        QString style = fileCardStyle();
-        newEmptyFile->setStyleSheet(style);
-        openFile->setStyleSheet(style);
-        partDesign->setStyleSheet(style);
-        assembly->setStyleSheet(style);
-        draft->setStyleSheet(style);
-        arch->setStyleSheet(style);
-    }
-
     // TODO: Ensure all of the required WBs are actually available
     layout->addWidget(partDesign);
     layout->addWidget(assembly);
@@ -254,6 +244,17 @@ void StartView::configureNewFileButtons(QLayout* layout) const
     connect(assembly, &QPushButton::clicked, this, &StartView::newAssemblyFile);
     connect(draft, &QPushButton::clicked, this, &StartView::newDraftFile);
     connect(arch, &QPushButton::clicked, this, &StartView::newArchFile);
+}
+
+void StartView::paintEvent(QPaintEvent* event)
+{
+    QString style = QStringLiteral("");
+    if (qApp->styleSheet().isEmpty()) {
+        style = fileCardStyle();
+    }
+    setStyleSheet(style);
+
+    Gui::MDIView::paintEvent(event);
 }
 
 QString StartView::fileCardStyle() const
@@ -431,14 +432,10 @@ void StartView::postStart(PostStartBehavior behavior) const
 
 void StartView::fileCardSelected(const QModelIndex& index)
 {
-    auto file = index.data(static_cast<int>(Start::DisplayedFilesModelRoles::path)).toString();
-    std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(file.toStdString().c_str());
-    escapedstr = Base::Tools::escapeEncodeFilename(escapedstr);
-    auto command = std::string("FreeCAD.loadFile('") + escapedstr + "')";
     try {
-        Base::Interpreter().runString(command.c_str());
-        Gui::Application::checkForRecomputes();
-        postStart(PostStartBehavior::doNotSwitchWorkbench);
+        auto filename =
+            index.data(static_cast<int>(Start::DisplayedFilesModelRoles::path)).toString();
+        Gui::ModuleIO::verifyAndOpenFile(filename);
     }
     catch (Base::PyException& e) {
         Base::Console().Error(e.getMessage().c_str());
@@ -477,6 +474,17 @@ void StartView::firstStartWidgetDismissed()
 
 void StartView::changeEvent(QEvent* event)
 {
+    _openFirstStart->setEnabled(true);
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    if (doc) {
+        Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
+        if (view) {
+            Gui::View3DInventorViewer* viewer = view->getViewer();
+            if (viewer->isEditing()) {
+                _openFirstStart->setEnabled(false);
+            }
+        }
+    }
     if (event->type() == QEvent::LanguageChange) {
         this->retranslateUi();
     }

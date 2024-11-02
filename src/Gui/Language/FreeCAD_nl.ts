@@ -91,7 +91,7 @@
       <translation>Bewerken</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="715"/>
+      <location filename="../Application.cpp" line="705"/>
       <source>Import</source>
       <translation>Importeren</translation>
     </message>
@@ -284,7 +284,7 @@
     <message>
       <location filename="../Workbench.cpp" line="531"/>
       <source>Measure</source>
-      <translation>Meten</translation>
+      <translation>Opmeten</translation>
     </message>
   </context>
   <context>
@@ -424,42 +424,42 @@
   <context>
     <name>EditMode</name>
     <message>
-      <location filename="../Application.h" line="258"/>
+      <location filename="../Application.h" line="256"/>
       <source>Default</source>
       <translation>Standaard</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="259"/>
+      <location filename="../Application.h" line="257"/>
       <source>The object will be edited using the mode defined internally to be the most appropriate for the object type</source>
       <translation>Het object zal worden bewerkt met behulp van de intern gedefinieerde modus die het meest geschikt is voor dit type object</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="263"/>
+      <location filename="../Application.h" line="261"/>
       <source>Transform</source>
       <translation>Transformeren</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="264"/>
+      <location filename="../Application.h" line="262"/>
       <source>The object will have its placement editable with the Std TransformManip command</source>
       <translation>De plaatsing van het object kan worden bewerkt met de Std TransformManip opdracht</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="268"/>
+      <location filename="../Application.h" line="266"/>
       <source>Cutting</source>
       <translation>Snijden</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="269"/>
+      <location filename="../Application.h" line="267"/>
       <source>This edit mode is implemented as available but currently does not seem to be used by any object</source>
       <translation>Deze bewerkingsmodus is geïmplementeerd zoals nu beschikbaar maar lijkt momenteel niet te worden gebruikt door een object</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="273"/>
+      <location filename="../Application.h" line="271"/>
       <source>Color</source>
       <translation>Kleur</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="274"/>
+      <location filename="../Application.h" line="272"/>
       <source>The object will have the color of its individual faces editable with the Part FaceAppearances command</source>
       <translation>De kleur van de individuele vlakken van het object kunnen worden bewerkt met de opdracht Weergave-Kleur per vlak</translation>
     </message>
@@ -1634,7 +1634,7 @@ same time. The one with the highest priority will be triggered.</source>
       <location filename="../SceneInspector.cpp" line="138"/>
       <location filename="../SceneInspector.cpp" line="206"/>
       <source>Scene Inspector</source>
-      <translation>Scènekeuring</translation>
+      <translation>Scène inspectie</translation>
     </message>
   </context>
   <context>
@@ -4557,7 +4557,7 @@ Larger value eases to pick things, but can make small features impossible to sel
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="14"/>
       <source>Units converter</source>
-      <translation type="unfinished">Units converter</translation>
+      <translation>Eenheden omzetter</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="28"/>
@@ -6113,57 +6113,57 @@ Wilt u uw wijzigingen opslaan?</translation>
     <name>Gui::MainWindow</name>
     <message>
       <location filename="../MainWindow.cpp" line="174"/>
-      <location filename="../MainWindow.cpp" line="2422"/>
+      <location filename="../MainWindow.cpp" line="2423"/>
       <source>Dimension</source>
       <translation>Afmeting</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="531"/>
+      <location filename="../MainWindow.cpp" line="532"/>
       <source>Ready</source>
       <translation>Gereed</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1218"/>
+      <location filename="../MainWindow.cpp" line="1219"/>
       <source>Close All</source>
       <translation>Alles sluiten</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1443"/>
       <location filename="../MainWindow.cpp" line="1444"/>
       <location filename="../MainWindow.cpp" line="1445"/>
+      <location filename="../MainWindow.cpp" line="1446"/>
       <source>Toggles this toolbar</source>
       <translation>Schakelt deze werkbalk in/uit</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1464"/>
       <location filename="../MainWindow.cpp" line="1465"/>
       <location filename="../MainWindow.cpp" line="1466"/>
+      <location filename="../MainWindow.cpp" line="1467"/>
       <source>Toggles this dockable window</source>
       <translation>Schakelt dit dokbare venster in/uit</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1993"/>
+      <location filename="../MainWindow.cpp" line="1994"/>
       <source>WARNING: This is a development version.</source>
       <translation>WAARSCHUWING: Dit is een ontwikkelversie.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1994"/>
+      <location filename="../MainWindow.cpp" line="1995"/>
       <source>Please do not use it in a production environment.</source>
       <translation>Gebruik het alstublieft niet in een productieomgeving.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2213"/>
-      <location filename="../MainWindow.cpp" line="2305"/>
+      <location filename="../MainWindow.cpp" line="2214"/>
+      <location filename="../MainWindow.cpp" line="2306"/>
       <source>Unsaved document</source>
       <translation>Niet-opgeslagen document</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2214"/>
+      <location filename="../MainWindow.cpp" line="2215"/>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
       <translation>Het geëxporteerde object bevat een externe link. Sla het document minstens één keer op voordat u het exporteert.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2306"/>
+      <location filename="../MainWindow.cpp" line="2307"/>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
       <translation>Om een link naar externe objecten te kunnen maken, moet het document minstens één keer worden opgeslagen.
@@ -6825,7 +6825,7 @@ Wilt u een andere map opgeven?</translation>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="325"/>
       <source>Automatic Python modules documentation</source>
-      <translation type="unfinished">Automatic Python modules documentation</translation>
+      <translation>Automatische python module documentatie</translation>
     </message>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="326"/>
@@ -6997,23 +6997,23 @@ Wilt u een andere map opgeven?</translation>
       <translation>Ja, opnieuw laden.</translation>
     </message>
     <message>
-      <location filename="../TextDocumentEditorView.cpp" line="232"/>
+      <location filename="../TextDocumentEditorView.cpp" line="230"/>
       <source>Unsaved document</source>
       <translation>Niet-opgeslagen document</translation>
     </message>
     <message>
-      <location filename="../TextDocumentEditorView.cpp" line="233"/>
+      <location filename="../TextDocumentEditorView.cpp" line="231"/>
       <source>Do you want to save your changes before closing?</source>
       <translation>Wilt u de wijziging op slaan voordat u afsluit?</translation>
     </message>
     <message>
-      <location filename="../TextDocumentEditorView.cpp" line="234"/>
+      <location filename="../TextDocumentEditorView.cpp" line="232"/>
       <source>If you don't save, your changes will be lost.</source>
       <translation>Als u niet opslaat, zullen uw wijzigingen verloren gaan.</translation>
     </message>
     <message>
-      <location filename="../TextDocumentEditorView.cpp" line="288"/>
-      <location filename="../TextDocumentEditorView.cpp" line="295"/>
+      <location filename="../TextDocumentEditorView.cpp" line="297"/>
+      <location filename="../TextDocumentEditorView.cpp" line="304"/>
       <source>Edit text</source>
       <translation>Tekst bewerken</translation>
     </message>
@@ -7709,47 +7709,47 @@ Wilt u een andere map opgeven?</translation>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../MainWindow.cpp" line="703"/>
+      <location filename="../MainWindow.cpp" line="704"/>
       <source>Tree view</source>
       <translation>Boomstructuurweergave</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="625"/>
+      <location filename="../MainWindow.cpp" line="626"/>
       <source>Tasks</source>
       <translation>Taken</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="729"/>
+      <location filename="../MainWindow.cpp" line="730"/>
       <source>Property view</source>
       <translation>Eigenschappen-aanzicht</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="642"/>
+      <location filename="../MainWindow.cpp" line="643"/>
       <source>Selection view</source>
       <translation>Selectieweergave</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="757"/>
+      <location filename="../MainWindow.cpp" line="758"/>
       <source>Task List</source>
       <translation>Taken lijst</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="782"/>
+      <location filename="../MainWindow.cpp" line="783"/>
       <source>Model</source>
       <translation>Model</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="808"/>
+      <location filename="../MainWindow.cpp" line="809"/>
       <source>DAG View</source>
       <translation>DAG weergave</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="660"/>
+      <location filename="../MainWindow.cpp" line="661"/>
       <source>Report view</source>
       <translation>Rapportweergave</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="680"/>
+      <location filename="../MainWindow.cpp" line="681"/>
       <source>Python console</source>
       <translation>Python Console</translation>
     </message>
@@ -7789,35 +7789,35 @@ Wilt u een andere map opgeven?</translation>
       <translation>Python</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="680"/>
-      <location filename="../Application.cpp" line="786"/>
-      <location filename="../Application.cpp" line="863"/>
+      <location filename="../Application.cpp" line="670"/>
+      <location filename="../Application.cpp" line="764"/>
+      <location filename="../Application.cpp" line="841"/>
       <source>Unknown filetype</source>
       <translation>Onbekend bestandstype</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="681"/>
-      <location filename="../Application.cpp" line="787"/>
+      <location filename="../Application.cpp" line="671"/>
+      <location filename="../Application.cpp" line="765"/>
       <source>Cannot open unknown filetype: %1</source>
       <translation>Kan onbekende bestandstype niet openen: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="854"/>
+      <location filename="../Application.cpp" line="832"/>
       <source>Export failed</source>
       <translation>Exporteren mislukt</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="864"/>
+      <location filename="../Application.cpp" line="842"/>
       <source>Cannot save to unknown filetype: %1</source>
       <translation>Kan onbekende bestandstype niet opslaan: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="993"/>
+      <location filename="../Application.cpp" line="975"/>
       <source>Recomputation required</source>
       <translation>Herberekening vereist</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="994"/>
+      <location filename="../Application.cpp" line="976"/>
       <source>Some document(s) require recomputation for migration purposes. It is highly recommended to perform a recomputation before any modification to avoid compatibility problems.
 
 Do you want to recompute now?</source>
@@ -7826,24 +7826,24 @@ Do you want to recompute now?</source>
 Wilt u nu herberekenen?</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1011"/>
+      <location filename="../Application.cpp" line="993"/>
       <source>Recompute error</source>
       <translation>Herberekenings fout</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1012"/>
+      <location filename="../Application.cpp" line="994"/>
       <source>Failed to recompute some document(s).
 Please check report view for more details.</source>
       <translation>Kan sommige document(en) niet herberekenen.
 Controleer de rapportweergave voor meer details.</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1664"/>
+      <location filename="../Application.cpp" line="1646"/>
       <source>Workbench failure</source>
       <translation>Werkbank falen</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1665"/>
+      <location filename="../Application.cpp" line="1647"/>
       <source>%1</source>
       <translation>%1</translation>
     </message>
@@ -7904,7 +7904,7 @@ Controleer de rapportweergave voor meer details.</translation>
       <translation>Exporteren van PDF ...</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="867"/>
+      <location filename="../MainWindow.cpp" line="868"/>
       <location filename="../CommandDoc.cpp" line="1231"/>
       <source>Unsaved document</source>
       <translation>Niet-opgeslagen document</translation>
@@ -8196,7 +8196,7 @@ Do you want to continue?</source>
       <translation>Te veel geopende achtergrond meldingen. Meldingen worden weggelaten!</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1075"/>
+      <location filename="../Document.cpp" line="1079"/>
       <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
 
 </source>
@@ -8205,44 +8205,44 @@ Do you want to continue?</source>
 </translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1076"/>
+      <location filename="../Document.cpp" line="1080"/>
       <source>Are you sure you want to continue?</source>
       <translation>Weet u zeker dat u wilt doorgaan?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1095"/>
+      <location filename="../Document.cpp" line="1099"/>
       <source>Please check report view for more...</source>
       <translation>Controleer de rapportweergave voor meer...</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1098"/>
+      <location filename="../Document.cpp" line="1102"/>
       <source>Physical path:</source>
       <translation>Fysiek pad:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1100"/>
-      <location filename="../Document.cpp" line="1106"/>
+      <location filename="../Document.cpp" line="1104"/>
+      <location filename="../Document.cpp" line="1110"/>
       <source>Document:</source>
       <translation>Document:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1102"/>
-      <location filename="../Document.cpp" line="1108"/>
+      <location filename="../Document.cpp" line="1106"/>
+      <location filename="../Document.cpp" line="1112"/>
       <source>Path:</source>
       <translation>PAD:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1117"/>
+      <location filename="../Document.cpp" line="1121"/>
       <source>Identical physical path</source>
       <translation>Identische fysieke pad</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1125"/>
+      <location filename="../Document.cpp" line="1129"/>
       <source>Could not save document</source>
       <translation>Kan verzending niet opslaan</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1126"/>
+      <location filename="../Document.cpp" line="1130"/>
       <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
 
 "%1"
@@ -8255,102 +8255,102 @@ Would you like to save the file with a different name?</source>
 Wilt u het bestand met een andere naam opslaan?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1136"/>
-      <location filename="../Document.cpp" line="1272"/>
-      <location filename="../Document.cpp" line="1355"/>
+      <location filename="../Document.cpp" line="1140"/>
+      <location filename="../Document.cpp" line="1276"/>
+      <location filename="../Document.cpp" line="1359"/>
       <source>Saving aborted</source>
       <translation>Opslaan afgebroken</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1183"/>
+      <location filename="../Document.cpp" line="1187"/>
       <source>Save dependent files</source>
       <translation>Bewaar afhankelijke bestanden</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1184"/>
+      <location filename="../Document.cpp" line="1188"/>
       <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
       <translation>Het bestand bevat externe afhankelijkheden. Wilt u ook de afhankelijke bestanden opslaan?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1218"/>
-      <location filename="../Document.cpp" line="1266"/>
+      <location filename="../Document.cpp" line="1222"/>
+      <location filename="../Document.cpp" line="1270"/>
       <source>Saving document failed</source>
       <translation>Document opslaan is mislukt</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1232"/>
+      <location filename="../Document.cpp" line="1236"/>
       <source>Save document under new filename...</source>
       <translation>Document opslaan onder een nieuwe bestandsnaam...</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1239"/>
-      <location filename="../Document.cpp" line="1340"/>
+      <location filename="../Document.cpp" line="1243"/>
+      <location filename="../Document.cpp" line="1344"/>
       <source>Save %1 Document</source>
       <translation>Document %1 opslaan</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1241"/>
+      <location filename="../Document.cpp" line="1245"/>
       <source>Document</source>
       <translation>Document</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1285"/>
-      <location filename="../Document.cpp" line="1326"/>
+      <location filename="../Document.cpp" line="1289"/>
+      <location filename="../Document.cpp" line="1330"/>
       <source>Failed to save document</source>
       <translation>Opslaan document mislukt</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1286"/>
+      <location filename="../Document.cpp" line="1290"/>
       <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
       <translation>Documenten bevatten cyclische afhankelijkheden. Wilt u ze nog opslaan?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1337"/>
+      <location filename="../Document.cpp" line="1341"/>
       <source>Save a copy of the document under new filename...</source>
       <translation>Bewaar een copy van het actieve document onder een nieuwe naam...</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1342"/>
+      <location filename="../Document.cpp" line="1346"/>
       <source>%1 document (*.FCStd)</source>
       <translation>%1 document (*.FCStd)</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2003"/>
+      <location filename="../Document.cpp" line="2007"/>
       <source>Document not closable</source>
       <translation>Document niet te sluiten</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2004"/>
+      <location filename="../Document.cpp" line="2008"/>
       <source>The document is not closable for the moment.</source>
       <translation>Het document kan nu niet gesloten worden.</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2041"/>
+      <location filename="../Document.cpp" line="2045"/>
       <source>Document not saved</source>
       <translation>Document niet opgeslagen</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2042"/>
+      <location filename="../Document.cpp" line="2046"/>
       <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
       <translation>Het document%1 kon niet worden opgeslagen. Wilt u het sluiten annuleren?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2370"/>
+      <location filename="../Document.cpp" line="2374"/>
       <source>Undo</source>
       <translation>Ongedaan maken</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2370"/>
+      <location filename="../Document.cpp" line="2374"/>
       <source>Redo</source>
       <translation>Herstel ongedaan maken</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2372"/>
+      <location filename="../Document.cpp" line="2376"/>
       <source>There are grouped transactions in the following documents with other preceding transactions</source>
       <translation>Er zijn gegroepeerde transacties in de volgende documenten met andere voorgaande transacties</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2375"/>
+      <location filename="../Document.cpp" line="2379"/>
       <source>Choose 'Yes' to roll back all preceding transactions.
 Choose 'No' to roll back in the active document only.
 Choose 'Abort' to abort</source>
@@ -8460,32 +8460,32 @@ Kies 'Afbreken' om af te breken</translation>
       <translation>Wilt u dit dialoogvenster sluiten?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="869"/>
+      <location filename="../MainWindow.cpp" line="870"/>
       <source>Do you want to save your changes to document '%1' before closing?</source>
       <translation>Wil je de wijzigingen in het document '%1' opslaan alvorens te sluiten?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="872"/>
+      <location filename="../MainWindow.cpp" line="873"/>
       <source>Do you want to save your changes to document before closing?</source>
       <translation>Wilt u de wijzigingen aan het document opslaan voordat u afsluit?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="874"/>
+      <location filename="../MainWindow.cpp" line="875"/>
       <source>If you don't save, your changes will be lost.</source>
       <translation>Als u niet opslaat, zullen uw wijzigingen verloren gaan.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="879"/>
+      <location filename="../MainWindow.cpp" line="880"/>
       <source>Apply answer to all</source>
       <translation>Antwoord op alles toepassen</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="969"/>
+      <location filename="../MainWindow.cpp" line="970"/>
       <source>%1 Document(s) not saved</source>
       <translation>%1 Document(en) niet opgeslagen</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="970"/>
+      <location filename="../MainWindow.cpp" line="971"/>
       <source>Some documents could not be saved. Do you want to cancel closing?</source>
       <translation>Sommige documenten konden niet worden opgeslagen. Wilt u het sluiten annuleren?</translation>
     </message>
@@ -8588,36 +8588,44 @@ Kies 'Afbreken' om af te breken</translation>
       <translation>Alle links importeren is mislukt</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="105"/>
-      <location filename="../DlgAddProperty.cpp" line="118"/>
-      <location filename="../DlgAddPropertyVarSet.cpp" line="347"/>
-      <location filename="../DlgAddPropertyVarSet.cpp" line="359"/>
-      <location filename="../DlgAddPropertyVarSet.cpp" line="374"/>
+      <location filename="../DlgAddProperty.cpp" line="106"/>
+      <location filename="../DlgAddProperty.cpp" line="117"/>
+      <location filename="../DlgAddProperty.cpp" line="126"/>
+      <location filename="../DlgAddPropertyVarSet.cpp" line="345"/>
+      <location filename="../DlgAddPropertyVarSet.cpp" line="353"/>
+      <location filename="../DlgAddPropertyVarSet.cpp" line="363"/>
+      <location filename="../DlgAddPropertyVarSet.cpp" line="377"/>
       <source>Invalid name</source>
       <translation>Ongeldige naam</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="106"/>
+      <location filename="../DlgAddProperty.cpp" line="107"/>
       <source>The property name or group name must only contain alpha numericals,
 underscore, and must not start with a digit.</source>
       <translation>De eigenschapsnaam of groepsnaam mag alleen alfanumerieke tekens en
 underscore bevatten en mag niet beginnen met een cijfer.</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="119"/>
-      <location filename="../DlgAddPropertyVarSet.cpp" line="360"/>
+      <location filename="../DlgAddProperty.cpp" line="118"/>
+      <location filename="../DlgAddPropertyVarSet.cpp" line="354"/>
+      <source>The property name is a reserved word.</source>
+      <translation type="unfinished">The property name is a reserved word.</translation>
+    </message>
+    <message>
+      <location filename="../DlgAddProperty.cpp" line="127"/>
+      <location filename="../DlgAddPropertyVarSet.cpp" line="364"/>
       <source>The property '%1' already exists in '%2'</source>
       <translation>Eigenschap '%1' bestaat al in '%2'</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="142"/>
-      <location filename="../DlgAddPropertyVarSet.cpp" line="272"/>
+      <location filename="../DlgAddProperty.cpp" line="150"/>
+      <location filename="../DlgAddPropertyVarSet.cpp" line="271"/>
       <source>Add property</source>
       <translation>Voeg eigenschap toe</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="143"/>
-      <location filename="../DlgAddPropertyVarSet.cpp" line="273"/>
+      <location filename="../DlgAddProperty.cpp" line="151"/>
+      <location filename="../DlgAddPropertyVarSet.cpp" line="272"/>
       <source>Failed to add property to '%1': %2</source>
       <translation>Eigenschap toevoegen aan '%1': %2 mislukt</translation>
     </message>
@@ -8899,14 +8907,14 @@ de huidige kopie verloren gaat.
       <translation>Onderdrukt</translation>
     </message>
     <message>
-      <location filename="../DlgAddPropertyVarSet.cpp" line="348"/>
+      <location filename="../DlgAddPropertyVarSet.cpp" line="346"/>
       <source>The property name must only contain alpha numericals,
 underscore, and must not start with a digit.</source>
       <translation>De eigenschapsnaam mag alleen alfanumerieke tekens bevatten,
 onderstrepingsteken, en mag niet beginnen met een cijfer.</translation>
     </message>
     <message>
-      <location filename="../DlgAddPropertyVarSet.cpp" line="375"/>
+      <location filename="../DlgAddPropertyVarSet.cpp" line="378"/>
       <source>The group name must only contain alpha numericals,
 underscore, and must not start with a digit.</source>
       <translation>De groepsnaam mag alleen alfanumerieke tekens bevatten,
@@ -9590,7 +9598,7 @@ onderstrepingsteken, en mag niet beginnen met een cijfer.</translation>
     <message>
       <location filename="../CommandLink.cpp" line="211"/>
       <source>A Link is an object that references or links to another object in the same document, or in another document. Unlike Clones, Links reference the original Shape directly, making them more memory-efficient, which helps with the creation of complex assemblies.</source>
-      <translation type="unfinished">A Link is an object that references or links to another object in the same document, or in another document. Unlike Clones, Links reference the original Shape directly, making them more memory-efficient, which helps with the creation of complex assemblies.</translation>
+      <translation>Een link is een object dat verwijst of koppelt naar een ander object in hetzelfde document, of in een ander document. Anders dan Clones, verwijzen Links direct naar de oorspronkelijke Vorm, waardoor ze geheugen efficiënter worden, wat helpt bij het maken van complexe samenstellingen.</translation>
     </message>
   </context>
   <context>
@@ -9808,7 +9816,7 @@ onderstrepingsteken, en mag niet beginnen met een cijfer.</translation>
       <translation>Maak een nieuw leeg document</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2410"/>
+      <location filename="../MainWindow.cpp" line="2411"/>
       <location filename="../DocumentRecovery.cpp" line="391"/>
       <source>Unnamed</source>
       <translation>Naamloos</translation>
@@ -9886,7 +9894,7 @@ onderstrepingsteken, en mag niet beginnen met een cijfer.</translation>
     <message>
       <location filename="../CommandStructure.cpp" line="53"/>
       <source>A Part is a general purpose container to keep together a group of objects so that they act as a unit in the 3D view. It is meant to arrange objects that have a Part TopoShape, like Part Primitives, PartDesign Bodies, and other Parts.</source>
-      <translation type="unfinished">A Part is a general purpose container to keep together a group of objects so that they act as a unit in the 3D view. It is meant to arrange objects that have a Part TopoShape, like Part Primitives, PartDesign Bodies, and other Parts.</translation>
+      <translation>Een Onderdeel is een algemene container om een groep objecten bij elkaar te houden, zodat ze in de 3D-weergave behandeld worden als een eenheid. Het is bedoeld om objecten te ordenen die een Part TopoShape hebben, zoals Part Primitives, PartDesign Bodies en andere Parts.</translation>
     </message>
   </context>
   <context>
@@ -10150,13 +10158,13 @@ onderstrepingsteken, en mag niet beginnen met een cijfer.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3152"/>
       <source>Scene inspector...</source>
-      <translation>Scènekeuring...</translation>
+      <translation>Scène inspectie...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3153"/>
       <location filename="../CommandView.cpp" line="3155"/>
       <source>Scene inspector</source>
-      <translation>Scènekeuring</translation>
+      <translation>Scène inspectie</translation>
     </message>
   </context>
   <context>
@@ -10534,7 +10542,7 @@ onderstrepingsteken, en mag niet beginnen met een cijfer.</translation>
       <location filename="../CommandView.cpp" line="1300"/>
       <location filename="../CommandView.cpp" line="1302"/>
       <source>Set to bottom view</source>
-      <translation>Instellen als onderaanzicht</translation>
+      <translation>Onderaanzicht</translation>
     </message>
   </context>
   <context>
@@ -10646,7 +10654,7 @@ onderstrepingsteken, en mag niet beginnen met een cijfer.</translation>
       <location filename="../CommandView.cpp" line="1324"/>
       <location filename="../CommandView.cpp" line="1326"/>
       <source>Set to front view</source>
-      <translation>Ingestellen als vooraanzicht</translation>
+      <translation>Vooraanzicht</translation>
     </message>
   </context>
   <context>
@@ -10674,7 +10682,7 @@ onderstrepingsteken, en mag niet beginnen met een cijfer.</translation>
       <location filename="../CommandView.cpp" line="1445"/>
       <location filename="../CommandView.cpp" line="1447"/>
       <source>Set to isometric view</source>
-      <translation>Ingesteld op isometrisch aanzicht</translation>
+      <translation>Isometrisch aanzicht</translation>
     </message>
   </context>
   <context>
@@ -10772,7 +10780,7 @@ onderstrepingsteken, en mag niet beginnen met een cijfer.</translation>
       <location filename="../CommandView.cpp" line="1348"/>
       <location filename="../CommandView.cpp" line="1350"/>
       <source>Set to left view</source>
-      <translation>Instellen als linkeraanzicht</translation>
+      <translation>Linkeraanzicht</translation>
     </message>
   </context>
   <context>
@@ -10786,7 +10794,7 @@ onderstrepingsteken, en mag niet beginnen met een cijfer.</translation>
       <location filename="../CommandView.cpp" line="1372"/>
       <location filename="../CommandView.cpp" line="1374"/>
       <source>Set to rear view</source>
-      <translation>Instellen als achteraanzicht</translation>
+      <translation>Achter aanzicht</translation>
     </message>
   </context>
   <context>
@@ -10814,7 +10822,7 @@ onderstrepingsteken, en mag niet beginnen met een cijfer.</translation>
       <location filename="../CommandView.cpp" line="1396"/>
       <location filename="../CommandView.cpp" line="1398"/>
       <source>Set to right view</source>
-      <translation>Instellen als rechteraanzicht</translation>
+      <translation>Rechteraanzicht</translation>
     </message>
   </context>
   <context>
@@ -10870,7 +10878,7 @@ onderstrepingsteken, en mag niet beginnen met een cijfer.</translation>
       <location filename="../CommandView.cpp" line="1420"/>
       <location filename="../CommandView.cpp" line="1422"/>
       <source>Set to top view</source>
-      <translation>Instellen als bovenaanzicht</translation>
+      <translation>Boven aanzicht</translation>
     </message>
   </context>
   <context>
@@ -11330,7 +11338,7 @@ Weet u zeker dat u wilt doorgaan?
     <message>
       <location filename="../CommandView.cpp" line="739"/>
       <source>Wireframe mode</source>
-      <translation>Draadmodelmodus</translation>
+      <translation>Draadmodel modus</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="742"/>
@@ -11874,87 +11882,87 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
       <translation>XY-vlak</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="38"/>
+      <location filename="../TaskView/TaskImage.ui" line="35"/>
       <source>XZ-Plane</source>
       <translation>XZ-vlak</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="45"/>
+      <location filename="../TaskView/TaskImage.ui" line="42"/>
       <source>YZ-Plane</source>
       <translation>YZ-vlak</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="76"/>
+      <location filename="../TaskView/TaskImage.ui" line="73"/>
       <source>Reverse direction</source>
       <translation>Richting omkeren</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="83"/>
+      <location filename="../TaskView/TaskImage.ui" line="80"/>
       <source>Offset:</source>
       <translation>Offset:</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="103"/>
+      <location filename="../TaskView/TaskImage.ui" line="100"/>
       <source>X distance:</source>
       <translation>X afstand:</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="123"/>
+      <location filename="../TaskView/TaskImage.ui" line="120"/>
       <source>Y distance:</source>
       <translation>Y afstand:</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="143"/>
+      <location filename="../TaskView/TaskImage.ui" line="140"/>
       <source>Rotation :</source>
       <translation>Rotatie :</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="159"/>
+      <location filename="../TaskView/TaskImage.ui" line="156"/>
       <source>Transparency :</source>
       <translation>Doorzichtigheid:</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="191"/>
+      <location filename="../TaskView/TaskImage.ui" line="188"/>
       <source>Image size</source>
       <translation>Afbeelding afmetingen</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="197"/>
+      <location filename="../TaskView/TaskImage.ui" line="194"/>
       <source>Width:</source>
       <translation>Breedte:</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="217"/>
+      <location filename="../TaskView/TaskImage.ui" line="214"/>
       <source>Height:</source>
       <translation>Hoogte:</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="237"/>
+      <location filename="../TaskView/TaskImage.ui" line="234"/>
       <source>Keep aspect ratio</source>
       <translation>Beeldverhouding behouden</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="247"/>
+      <location filename="../TaskView/TaskImage.ui" line="244"/>
       <source>Interactively scale the image by setting a length between two points of the image.</source>
       <translation>De afbeelding interactief schalen door een lengte tussen twee punten van de afbeelding in te stellen.</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="250"/>
+      <location filename="../TaskView/TaskImage.ui" line="247"/>
       <source>Calibrate</source>
       <translation>Kalibreren</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="257"/>
+      <location filename="../TaskView/TaskImage.ui" line="254"/>
       <source>Calibration</source>
       <translation>Kalibratie</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="263"/>
+      <location filename="../TaskView/TaskImage.ui" line="260"/>
       <source>Apply</source>
       <translation>Toepassen</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="270"/>
+      <location filename="../TaskView/TaskImage.ui" line="267"/>
       <source>Cancel</source>
       <translation>Annuleren</translation>
     </message>
@@ -12616,77 +12624,77 @@ het splashscherm weergeven</translation>
       <translation>Ongedaan maken...</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="90"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="106"/>
       <source>Manage preference packs</source>
       <translation>Beheer voorkeurspakketten</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="505"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="524"/>
       <source>Small (%1px)</source>
       <translation>Kleine (%1px)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="506"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="525"/>
       <source>Medium (%1px)</source>
       <translation>Medium (%1px)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="507"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="526"/>
       <source>Large (%1px)</source>
       <translation>Grote (%1px)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="508"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="527"/>
       <source>Extra large (%1px)</source>
       <translation>Extra groot (%1px)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="510"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="529"/>
       <source>Custom (%1px)</source>
       <translation>Aangepaste (%1px)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="579"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="598"/>
       <source>Combined</source>
       <translation>Gecombineerd</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="580"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="599"/>
       <source>Independent</source>
       <translation>Onafhankelijk</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="607"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="626"/>
       <source>Preference Pack Name</source>
       <translation>Naam van het voorkeuren pakket</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="608"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="627"/>
       <source>Tags</source>
       <translation>Labels</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="645"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="664"/>
       <source>Apply</source>
       <translation>Toepassen</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="646"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="677"/>
       <source>Apply the %1 preference pack</source>
       <translation>%1 voorkeurspakket toepassen</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="707"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="739"/>
       <source>Choose a FreeCAD config file to import</source>
       <translation>Kies een FreeCAD configuratiebestand om te importeren</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="718"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="750"/>
       <source>File exists</source>
       <translation>Bestand bestaat</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="719"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="751"/>
       <source>A preference pack with that name already exists. Overwrite?</source>
       <translation>Een voorkeurspakket met deze naam bestaat al. Overschrijven?</translation>
     </message>
@@ -13435,12 +13443,12 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3946"/>
       <source>Align to selection</source>
-      <translation type="unfinished">Align to selection</translation>
+      <translation>Uitlijnen met de selectie</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3947"/>
       <source>Align the view with the selection</source>
-      <translation type="unfinished">Align the view with the selection</translation>
+      <translation>De weergave uitlijnen met de selectie</translation>
     </message>
   </context>
   <context>
@@ -13704,13 +13712,13 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="778"/>
       <source>&amp;Units converter...</source>
-      <translation type="unfinished">&amp;Units converter...</translation>
+      <translation>&amp;Eenheden omzetter...</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="779"/>
       <location filename="../CommandStd.cpp" line="781"/>
       <source>Start the units converter</source>
-      <translation type="unfinished">Start the units converter</translation>
+      <translation>Start de eenheden omzetter</translation>
     </message>
   </context>
 </TS>

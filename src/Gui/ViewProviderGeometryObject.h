@@ -116,6 +116,8 @@ protected:
     SoFCBoundingBox* pcBoundingBox {nullptr};
     SoSwitch* pcBoundSwitch {nullptr};
     SoBaseColor* pcBoundColor {nullptr};
+
+    App::Material materialAppearance;
 };
 
 }  // namespace Gui

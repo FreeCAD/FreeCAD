@@ -695,17 +695,17 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="59"/>
       <source>Select one or more features in the 3d view and press &apos;Add&apos; to add them as the base items for this operation. Selected features can be deleted entirely.</source>
-      <translation type="unfinished">Select one or more features in the 3d view and press &apos;Add&apos; to add them as the base items for this operation. Selected features can be deleted entirely.</translation>
+      <translation>選擇 3D 視圖中的一個或多個特徵，並按下「新增」以將它們作為此操作的基礎項目。選擇的特徵可以完全刪除。</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="69"/>
       <source>Add selected features to the list of base geometries for this operation</source>
-      <translation>Add selected features to the list of base geometries for this operation</translation>
+      <translation>將所選擇的特徵添加到此操作的基礎幾何圖形列表中</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="79"/>
       <source>Remove the selected list items from the list of base geometries. The operation will not be applied to them.</source>
-      <translation>Remove the selected list items from the list of base geometries. The operation will not be applied to them.</translation>
+      <translation>從基幾何體列表中移除所選的列表項目。該操作將不會對它們應用。</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="89"/>
@@ -740,11 +740,11 @@ For stock from the Base object&apos;s bounding box it means the extra material i
 You can add feature for processing by selecting them and then pressing Add. If a feature is accidentally added to the list it can be removed through Remove and will no longer be processed.
 
 Reset deletes all current items from the list and fills the list with all circular holes eligible for the operation from the model. You can again refine the list afterwards by enabling/disabling, removing and adding features.</source>
-      <translation>Table of hole features and the determined radius of the associated hole.
+      <translation>孔特徵的列表及其關聯孔的確定半徑。
 
-You can add feature for processing by selecting them and then pressing Add. If a feature is accidentally added to the list it can be removed through Remove and will no longer be processed.
+您可以通過選擇特徵並按下「添加」來將特徵添加到處理中。如果不小心將某個特徵添加到列表中，可以通過「移除」來將其刪除，該特徵將不再被處理。
 
-Reset deletes all current items from the list and fills the list with all circular holes eligible for the operation from the model. You can again refine the list afterwards by enabling/disabling, removing and adding features.</translation>
+「重置」將刪除列表中的所有當前項目，並從模型中填充所有符合該操作的圓形孔的列表。您可以通過啟用/停用、移除和添加特徵來再次精煉列表。</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="33"/>
@@ -760,17 +760,17 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="46"/>
       <source>Add selected items from 3d view to the list of base geometries</source>
-      <translation>Add selected items from 3d view to the list of base geometries</translation>
+      <translation>將 3D 視圖中的選取項目新增至基本幾何圖形清單中</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="56"/>
       <source>Remove selected list items from the list of base geometries. The operation is no longer applied to them.</source>
-      <translation>Remove selected list items from the list of base geometries. The operation is no longer applied to them.</translation>
+      <translation>從基本幾何圖形清單中刪除選取的清單項目。該操作不再適用於它們。</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="66"/>
       <source>Remove all list items and fill list with all eligible features from the job&apos;s base object.</source>
-      <translation type="unfinished">Remove all list items and fill list with all eligible features from the job&apos;s base object.</translation>
+      <translation>移除所有列表項目，並用工作基礎物件中的所有合適特徵填充列表。</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="69"/>
@@ -839,7 +839,7 @@ Reset deletes all current items from the list and fills the list with all circul
       <location filename="../panels/PageDiametersEdit.ui" line="43"/>
       <location filename="../panels/PageDepthsEdit.ui" line="59"/>
       <source>Transfer the Z value of the selected feature as the Start Depth for the operation.</source>
-      <translation>Transfer the Z value of the selected feature as the Start Depth for the operation.</translation>
+      <translation>將選定特徵的 Z 值轉移為操作的起始深度。</translation>
     </message>
     <message>
       <location filename="../panels/PageDiametersEdit.ui" line="64"/>
@@ -851,7 +851,7 @@ Reset deletes all current items from the list and fills the list with all circul
       <location filename="../panels/PageDiametersEdit.ui" line="80"/>
       <location filename="../panels/PageDepthsEdit.ui" line="105"/>
       <source>Transfer the Z value of the selected feature as the Final Depth for the operation.</source>
-      <translation>Transfer the Z value of the selected feature as the Final Depth for the operation.</translation>
+      <translation>將選定特徵的 Z 值轉移為操作的最終深度。</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="138"/>
@@ -1058,12 +1058,12 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="207"/>
       <source>How much to lift the tool up during the rapid linking moves over cleared regions. If linking path is not clear tool is raised to clearance height.</source>
-      <translation>How much to lift the tool up during the rapid linking moves over cleared regions. If linking path is not clear tool is raised to clearance height.</translation>
+      <translation>在快速連接移動到已清理區域的過程中，將工具抬起多少。如果連接路徑不暢通，則工具將升高至間隙高度。</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="217"/>
       <source>Max length of keep-tool-down linking path compared to direct distance between points. If exceeded link will be done by raising the tool to clearance height.</source>
-      <translation>Max length of keep-tool-down linking path compared to direct distance between points. If exceeded link will be done by raising the tool to clearance height.</translation>
+      <translation>保持工具向下連結路徑的最大長度與點之間的直接距離相比。如果超過，將透過將工具升高到間隙高度來完成連結。</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="227"/>
@@ -1544,7 +1544,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="70"/>
       <source>Specify if the profile should be performed inside or outside the base geometry features. This only matters if Use Compensation is checked (the default)</source>
-      <translation>Specify if the profile should be performed inside or outside the base geometry features. This only matters if Use Compensation is checked (the default)</translation>
+      <translation>指定輪廓應在基礎幾何特徵的內部或外部執行。這只有在勾選使用補償選項時才重要(預設情況下)</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="74"/>
@@ -1570,7 +1570,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="137"/>
       <source>Check if this profile operation should also process holes in the base geometry. Found holes are automatically offset on the opposite cut side and performed in the opposite direction as perimeters. Note that this does not include cylindrical holes, the assumption being that they will get drilled</source>
-      <translation>Check if this profile operation should also process holes in the base geometry. Found holes are automatically offset on the opposite cut side and performed in the opposite direction as perimeters. Note that this does not include cylindrical holes, the assumption being that they will get drilled</translation>
+      <translation>檢查此輪廓操作是否也應處理基礎幾何體中的孔。找到的孔會自動在相反的切割側偏移，並在與週長相反的方向上執行。請注意，這不包括圓柱形孔，假設它們將被鑽孔</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="147"/>
@@ -1580,12 +1580,12 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="157"/>
       <source>Check if you want this profile operation to also be applied to cylindrical holes, which normally get drilled. This can be useful if no drill of adequate size is available or the number of holes don&apos;t warrant a tool change. Note that the cut side and direction is reversed in respect to the specified values</source>
-      <translation type="unfinished">Check if you want this profile operation to also be applied to cylindrical holes, which normally get drilled. This can be useful if no drill of adequate size is available or the number of holes don&apos;t warrant a tool change. Note that the cut side and direction is reversed in respect to the specified values</translation>
+      <translation>檢查您是否希望將此輪廓操作也應用於通常鑽孔的圓柱孔。如果沒有足夠尺寸的鑽頭可用或孔的數量不保證更換工具，則這可能是有用的。請注意，切割邊和方向相對於指定值是相反的</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="167"/>
       <source>Check if this profile operation should also process the outside perimeter of the base geometry shapes</source>
-      <translation>Check if this profile operation should also process the outside perimeter of the base geometry shapes</translation>
+      <translation>檢查此輪廓操作是否還應處理基本幾何形狀的外周長</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="140"/>
@@ -1610,7 +1610,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="71"/>
       <source>Start Feature Reference</source>
-      <translation>Start Feature Reference</translation>
+      <translation>啟動特徵參考</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="42"/>
@@ -1660,17 +1660,17 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="141"/>
       <source>End Feature Reference</source>
-      <translation>End Feature Reference</translation>
+      <translation>結束結徵參考</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="90"/>
       <source>Choose what point to use on the first selected feature</source>
-      <translation>Choose what point to use on the first selected feature</translation>
+      <translation>選擇在第一個選定特徵上使用哪個點</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="162"/>
       <source>Choose what point to use on the second selected feature</source>
-      <translation>Choose what point to use on the second selected feature</translation>
+      <translation>選擇在第二個選定特徵上使用哪個點</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="222"/>
@@ -1742,7 +1742,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="381"/>
       <source>Choose the path orientation with regard to the feature(s) selected</source>
-      <translation>Choose the path orientation with regard to the feature(s) selected</translation>
+      <translation>選擇相對於所選特徵的路徑方向</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="385"/>
@@ -1907,7 +1907,7 @@ A step over of 100% results in no overlap between two different cycles.</transla
       <location filename="../panels/PageOpWaterlineEdit.ui" line="187"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="237"/>
       <source>Sample interval</source>
-      <translation>Sample interval</translation>
+      <translation>採樣間隔</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="207"/>
@@ -2163,7 +2163,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="66"/>
       <source>Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).</source>
-      <translation>Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).</translation>
+      <translation>選擇要使用的演算法：OCL Dropcutter* 或實驗性（不基於 OCL）。</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="142"/>
@@ -2198,7 +2198,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/PropertyBag.ui" line="55"/>
       <source>Modify...</source>
-      <translation>Modify...</translation>
+      <translation>修改...</translation>
     </message>
     <message>
       <location filename="../panels/PropertyBag.ui" line="62"/>
@@ -2737,7 +2737,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="339"/>
       <source>Default path shape selection behavior in 3D viewer</source>
-      <translation>Default path shape selection behavior in 3D viewer</translation>
+      <translation>3D 檢視器中的預設路徑形狀選擇行為</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="349"/>
@@ -2838,7 +2838,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../preferences/Advanced.ui" line="127"/>
       <source>Enable OCL dependent features</source>
-      <translation>Enable OCL dependent features</translation>
+      <translation>啟用 OCL 相依特徵</translation>
     </message>
     <message>
       <location filename="../preferences/Advanced.ui" line="140"/>
@@ -3145,7 +3145,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="172"/>
       <source>Copy From</source>
-      <translation>Copy From</translation>
+      <translation>拷貝自</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="20"/>
@@ -3165,7 +3165,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="67"/>
       <source>Add item selected in window.</source>
-      <translation>Add item selected in window.</translation>
+      <translation>新增在視窗中選擇的項目。</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="70"/>
@@ -3175,7 +3175,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="77"/>
       <source>Remove Item selected in list, then update.</source>
-      <translation>Remove Item selected in list, then update.</translation>
+      <translation>移除清單中選定的項目，然後更新。</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="80"/>
@@ -3185,7 +3185,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="87"/>
       <source>Update the path with the removed and reordered items.</source>
-      <translation>Update the path with the removed and reordered items.</translation>
+      <translation>使用已刪除和重新排序的項目來更新路徑。</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="90"/>
@@ -4296,7 +4296,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Base/SetupSheet.py" line="142"/>
       <source>The usage of this field depends on SafeHeightExpression - by default its value is added to the start depth and used for the safe height of an operation.</source>
-      <translation>The usage of this field depends on SafeHeightExpression - by default its value is added to the start depth and used for the safe height of an operation.</translation>
+      <translation>此欄位的使用取決於 SafeHeightExpression - 預設情況下，其值被加到起始深度並用於操作的安全高度。</translation>
     </message>
     <message>
       <location filename="../../../Path/Base/SetupSheet.py" line="148"/>
@@ -4306,7 +4306,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Base/SetupSheet.py" line="157"/>
       <source>The usage of this field depends on ClearanceHeightExpression - by default is value is added to the start depth and used for the clearance height of an operation.</source>
-      <translation>The usage of this field depends on ClearanceHeightExpression - by default is value is added to the start depth and used for the clearance height of an operation.</translation>
+      <translation>此欄位的使用取決於 ClearanceHeightExpression - 預設情況下，該值會加到起始深度並用於操作的間隙高度。</translation>
     </message>
     <message>
       <location filename="../../../Path/Base/SetupSheet.py" line="166"/>
@@ -4334,7 +4334,7 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="415"/>
       <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="54"/>
       <source>The base path to modify</source>
-      <translation>The base path to modify</translation>
+      <translation>要修改的基礎路徑</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Boundary.py" line="63"/>
@@ -4432,7 +4432,7 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="57"/>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="62"/>
       <source>The base toolpath to modify</source>
-      <translation>The base toolpath to modify</translation>
+      <translation>要修改的基礎刀具路徑</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="67"/>
@@ -4938,7 +4938,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/CircularHoleBase.py" line="80"/>
       <source>List of disabled features</source>
-      <translation>List of disabled features</translation>
+      <translation>列出停用特徵</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Custom.py" line="104"/>
@@ -5050,17 +5050,17 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/FeatureExtension.py" line="477"/>
       <source>Default length of extensions.</source>
-      <translation>Default length of extensions.</translation>
+      <translation>預設的延伸長度。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/FeatureExtension.py" line="484"/>
       <source>List of features to extend.</source>
-      <translation>List of features to extend.</translation>
+      <translation>列出要延伸的特徵</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/FeatureExtension.py" line="494"/>
       <source>When enabled connected extension edges are combined to wires.</source>
-      <translation>When enabled connected extension edges are combined to wires.</translation>
+      <translation>當啟用時，連接的延伸邊緣會合併為線段。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="107"/>
@@ -5106,7 +5106,7 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Op/Pocket.py" line="66"/>
       <location filename="../../../Path/Op/Waterline.py" line="265"/>
       <source>Choose how to process multiple Base Geometry features.</source>
-      <translation>Choose how to process multiple Base Geometry features.</translation>
+      <translation>選擇如何處理多個基礎幾何圖形特徵。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Pocket.py" line="77"/>
@@ -5204,7 +5204,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="132"/>
       <source>Maximum distance before a miter joint is truncated</source>
-      <translation type="unfinished">Maximum distance before a miter joint is truncated</translation>
+      <translation>斜面接點被截斷之前的最大距離</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="147"/>
@@ -5235,7 +5235,7 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Op/Surface.py" line="125"/>
       <location filename="../../../Path/Op/Waterline.py" line="203"/>
       <source>Show the temporary path construction objects when module is in DEBUG mode.</source>
-      <translation>Show the temporary path construction objects when module is in DEBUG mode.</translation>
+      <translation>當模組處於 DEBUG 模式時，顯示臨時路徑構造物件。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="281"/>
@@ -5279,17 +5279,17 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="183"/>
       <source>Choose the toolpath orientation with regard to the feature(s) selected.</source>
-      <translation>Choose the toolpath orientation with regard to the feature(s) selected.</translation>
+      <translation>選擇相對於所選特徵的刀具路徑方向。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="192"/>
       <source>Choose what point to use on the first selected feature.</source>
-      <translation>Choose what point to use on the first selected feature.</translation>
+      <translation>選擇相對於所選特徵的刀具路徑方向。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="201"/>
       <source>Choose what point to use on the second selected feature.</source>
-      <translation>Choose what point to use on the second selected feature.</translation>
+      <translation>選擇用於第二個所選特徵的點。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="210"/>
@@ -5363,7 +5363,7 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Op/Surface.py" line="210"/>
       <location filename="../../../Path/Op/Waterline.py" line="238"/>
       <source>Do not cut internal features on avoided faces.</source>
-      <translation>Do not cut internal features on avoided faces.</translation>
+      <translation>不在避免的面上切割內部特徵。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="219"/>
@@ -5381,13 +5381,13 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Op/Surface.py" line="246"/>
       <location filename="../../../Path/Op/Waterline.py" line="274"/>
       <source>Positive values push the cutter toward, or into, the feature. Negative values retract the cutter away from the feature.</source>
-      <translation>Positive values push the cutter toward, or into, the feature. Negative values retract the cutter away from the feature.</translation>
+      <translation>正值會將刀具推向或進入特徵。負值則會將刀具從特徵中撤回。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="255"/>
       <location filename="../../../Path/Op/Waterline.py" line="283"/>
       <source>Cut internal feature areas within a larger selected face.</source>
-      <translation>Cut internal feature areas within a larger selected face.</translation>
+      <translation>在選定的較大面內切割內部特徵區域。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="263"/>
@@ -5582,7 +5582,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="292"/>
       <source>Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).</source>
-      <translation>Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).</translation>
+      <translation>選擇要使用的演算法：OCL Dropcutter* 或實驗性（不基於 OCL）。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="309"/>
@@ -5740,7 +5740,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Copy.py" line="41"/>
       <source>The toolpath to be copied</source>
-      <translation>The toolpath to be copied</translation>
+      <translation>要拷類之刀具路徑</translation>
     </message>
   </context>
   <context>
@@ -5864,7 +5864,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="380"/>
       <source>The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.</source>
-      <translation>The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.</translation>
+      <translation>所選邊緣不可存取。如果有多個，重新排序選擇可能會起作用。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="480"/>
@@ -6008,7 +6008,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/SurfaceSupport.py" line="2355"/>
       <source>Failed to identify a horizontal cross-section for Face</source>
-      <translation>Failed to identify a horizontal cross-section for Face</translation>
+      <translation>無法辨識面的水平橫切面</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/SurfaceSupport.py" line="2584"/>
@@ -6039,7 +6039,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="97"/>
       <source>Experimental</source>
-      <translation>Experimental</translation>
+      <translation>實驗性功能</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="100"/>
@@ -6174,7 +6174,7 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Op/Waterline.py" line="638"/>
       <location filename="../../../Path/Op/Waterline.py" line="646"/>
       <source>Sample interval limits are 0.0001 to 25.4 millimeters.</source>
-      <translation>Sample interval limits are 0.0001 to 25.4 millimeters.</translation>
+      <translation>採樣間隔限制為 0.0001 至 25.4 毫米(mm)。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="653"/>
@@ -6382,7 +6382,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../PathCommands.py" line="116"/>
       <source>Feature Completion</source>
-      <translation>Feature Completion</translation>
+      <translation>特徵完成</translation>
     </message>
     <message>
       <location filename="../../../PathCommands.py" line="117"/>
@@ -6405,7 +6405,7 @@ Aborting op creation</translation>
       <location filename="../../../PathCommands.py" line="188"/>
       <location filename="../../../PathCommands.py" line="189"/>
       <source>Copy the operation in the job</source>
-      <translation>Copy the operation in the job</translation>
+      <translation>拷貝作業中的操作</translation>
     </message>
   </context>
   <context>
@@ -7041,7 +7041,7 @@ For example:
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="255"/>
       <source>Inspect toolPath Commands</source>
-      <translation>Inspect toolPath Commands</translation>
+      <translation>檢查刀具路徑指令</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="259"/>
@@ -7353,8 +7353,8 @@ For example:
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="364"/>
       <source>Tool number {} is a legacy tool. Legacy tools not
                     supported by Path-Sanity</source>
-      <translation type="unfinished">Tool number {} is a legacy tool. Legacy tools not
-                    supported by Path-Sanity</translation>
+      <translation>編號為 {} 的工具是舊版工具。舊版工具不
+                    被 Path-Sanity 支援</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="376"/>
@@ -7547,7 +7547,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/CircularHoleBase.py" line="147"/>
       <source>Feature %s.%s cannot be processed as a circular hole - please remove from Base geometry list.</source>
-      <translation>Feature %s.%s cannot be processed as a circular hole - please remove from Base geometry list.</translation>
+      <translation>特徵 %s.%s 不能被處理為圓形孔 - 請從基礎幾何形狀列表中移除。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Pocket.py" line="189"/>
@@ -7649,7 +7649,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/Drilling.py" line="216"/>
       <source>Creates a Drilling toolpath from the features of a base object</source>
-      <translation>Creates a Drilling toolpath from the features of a base object</translation>
+      <translation>從基礎物件的特徵建立鑽孔工具路徑。</translation>
     </message>
   </context>
   <context>
@@ -7662,7 +7662,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/Helix.py" line="111"/>
       <source>Creates a Helical toolpath from the features of a base object</source>
-      <translation>Creates a Helical toolpath from the features of a base object</translation>
+      <translation>從基礎物件的特徵建立螺旋工具路徑</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="71"/>
@@ -7770,7 +7770,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/FeatureExtension.py" line="185"/>
       <source>Extensions</source>
-      <translation>Extensions</translation>
+      <translation>延伸</translation>
     </message>
   </context>
   <context>
@@ -7895,12 +7895,12 @@ For example:
     <message>
       <location filename="../../../Path/Op/Slot.py" line="925"/>
       <source>The selected face is inaccessible.</source>
-      <translation>The selected face is inaccessible.</translation>
+      <translation>無法存取所選的面。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="944"/>
       <source>Only a vertex selected. Add another feature to the Base Geometry.</source>
-      <translation>Only a vertex selected. Add another feature to the Base Geometry.</translation>
+      <translation>僅選擇了一個頂點。請再添加另一個特徵到基礎幾何體。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="968"/>
@@ -8184,7 +8184,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="253"/>
       <source>Creates a Thread Milling toolpath from features of a base object</source>
-      <translation>Creates a Thread Milling toolpath from features of a base object</translation>
+      <translation>從基礎物件的特徵中建立螺紋銑削工具路徑。</translation>
     </message>
   </context>
   <context>
@@ -8246,12 +8246,12 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/Copy.py" line="93"/>
       <source>Copy</source>
-      <translation>複製</translation>
+      <translation>拷貝</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Copy.py" line="94"/>
       <source>Creates a linked copy of another toolpath</source>
-      <translation>Creates a linked copy of another toolpath</translation>
+      <translation>建立另一個刀具路徑的連結副本</translation>
     </message>
   </context>
   <context>
@@ -8337,18 +8337,18 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/SimpleCopy.py" line="38"/>
       <source>Simple Copy</source>
-      <translation>簡單複製</translation>
+      <translation>簡單拷貝</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/SimpleCopy.py" line="41"/>
       <source>Creates a non-parametric copy of another toolpath</source>
-      <translation>Creates a non-parametric copy of another toolpath</translation>
+      <translation>對另一個刀具路徑進行無參數之複製</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/SimpleCopy.py" line="58"/>
       <location filename="../../../Path/Op/Gui/SimpleCopy.py" line="63"/>
       <source>Please select exactly one toolpath object</source>
-      <translation>Please select exactly one toolpath object</translation>
+      <translation>請僅選擇一個刀具路徑物件</translation>
     </message>
   </context>
   <context>
@@ -8502,7 +8502,7 @@ For example:
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="143"/>
       <source>Copy example files to new {} directory?</source>
-      <translation>Copy example files to new {} directory?</translation>
+      <translation>拷貝範例檔案到新 {} 目錄?</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="726"/>
@@ -8560,7 +8560,7 @@ For example:
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibraryCmd.py" line="78"/>
       <source>Open an editor to manage ToolBit libraries</source>
-      <translation>Open an editor to manage ToolBit libraries</translation>
+      <translation>開啟編輯器來管理 ToolBit 函式庫</translation>
     </message>
   </context>
   <context>

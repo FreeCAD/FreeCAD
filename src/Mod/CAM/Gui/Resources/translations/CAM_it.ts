@@ -1206,7 +1206,7 @@ Il tasto Reimposta elimina tutti gli elementi correnti dall'elenco e riempie l'e
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="169"/>
       <source>Chip Break</source>
-      <translation type="unfinished">Chip Break</translation>
+      <translation>Rompi Truciolo</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="176"/>
@@ -1457,7 +1457,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="258"/>
       <source>Check to skip machining regions that have already been cleared by previous operations</source>
-      <translation type="unfinished">Check to skip machining regions that have already been cleared by previous operations</translation>
+      <translation>Spunta la casella per saltare le regioni di lavorazione che sono già state cancellate dalle operazioni precedenti</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="261"/>
@@ -2036,7 +2036,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="186"/>
       <source>Rapid Speeds</source>
-      <translation type="unfinished">Rapid Speeds</translation>
+      <translation>Velocità Rapide</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="192"/>
@@ -3389,12 +3389,12 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="68"/>
       <source>Launch CAMotics</source>
-      <translation type="unfinished">Launch CAMotics</translation>
+      <translation>Avvia CAMotics</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="75"/>
       <source>Make CAMotics File</source>
-      <translation type="unfinished">Make CAMotics File</translation>
+      <translation>Crea File CAMotics</translation>
     </message>
   </context>
   <context>
@@ -3633,7 +3633,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../panels/PathEdit.ui" line="209"/>
       <source>Work Coordinate Systems</source>
-      <translation type="unfinished">Work Coordinate Systems</translation>
+      <translation>Sistemi Coordinate Lavoro</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="228"/>
@@ -3648,7 +3648,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../panels/PathEdit.ui" line="196"/>
       <source>Optional arguments passed to the Post Processor. The arguments are specific for each Post Processor, please see its documentation for details.</source>
-      <translation type="unfinished">Optional arguments passed to the Post Processor. The arguments are specific for each Post Processor, please see its documentation for details.</translation>
+      <translation>Argomenti opzionali passati al Post Processor. Gli argomenti sono specifici per ogni Post Processor, vedere la documentazione per i dettagli.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="215"/>
@@ -4051,7 +4051,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/PathEdit.ui" line="1348"/>
       <source>Rapid Speeds</source>
-      <translation type="unfinished">Rapid Speeds</translation>
+      <translation>Velocità Rapide</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1357"/>
@@ -4161,7 +4161,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Main/Gui/Camotics.py" line="84"/>
       <source>CAMotics Project (*.camotics)</source>
-      <translation type="unfinished">CAMotics Project (*.camotics)</translation>
+      <translation>Progetto CAMotics (*.camotics)</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="706"/>
@@ -4447,17 +4447,17 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="79"/>
       <source>Height to raise during corner action</source>
-      <translation type="unfinished">Height to raise during corner action</translation>
+      <translation>Altezza di sollevamento durante l'azione di angolo</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="85"/>
       <source>Length or Radius of the approach</source>
-      <translation type="unfinished">Length or Radius of the approach</translation>
+      <translation>Lunghezza o raggio dell'avvicinamento</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="91"/>
       <source>Length or Radius of the exit</source>
-      <translation type="unfinished">Length or Radius of the exit</translation>
+      <translation>Lunghezza o raggio dell'uscita</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="67"/>
@@ -4588,7 +4588,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Main/Job.py" line="174"/>
       <source>Solid object to be used as stock.</source>
-      <translation type="unfinished">Solid object to be used as stock.</translation>
+      <translation>Oggetto solido da utilizzare come pezzo grezzo.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="183"/>
@@ -4683,27 +4683,27 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="235"/>
       <source>Length of this stock box</source>
-      <translation type="unfinished">Length of this stock box</translation>
+      <translation>Lunghezza di questo parallelepipedo grezzo</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="241"/>
       <source>Width of this stock box</source>
-      <translation type="unfinished">Width of this stock box</translation>
+      <translation>Larghezza di questo parallelepipedo grezzo</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="247"/>
       <source>Height of this stock box</source>
-      <translation type="unfinished">Height of this stock box</translation>
+      <translation>Altezza di questo parallelepipedo grezzo</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="287"/>
       <source>Radius of this stock cylinder</source>
-      <translation type="unfinished">Radius of this stock cylinder</translation>
+      <translation>Raggio di questo cilindro grezzo</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="293"/>
       <source>Height of this stock cylinder</source>
-      <translation type="unfinished">Height of this stock cylinder</translation>
+      <translation>Altezza di questo cilindro grezzo</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="329"/>
@@ -4746,7 +4746,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="954"/>
       <source>Lift distance for rapid moves</source>
-      <translation type="unfinished">Lift distance for rapid moves</translation>
+      <translation>Distanza di sollevamento per spostamenti rapidi</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="963"/>
@@ -4756,7 +4756,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="972"/>
       <source>How much stock to leave (i.e. for finishing operation)</source>
-      <translation type="unfinished">How much stock to leave (i.e. for finishing operation)</translation>
+      <translation>Quanta grezzo da lasciare (cioè per operazioni di finitura)</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="981"/>
@@ -4979,7 +4979,7 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Op/Drilling.py" line="102"/>
       <location filename="../../../Path/Op/Drilling.py" line="134"/>
       <source>Use chipbreaking</source>
-      <translation type="unfinished">Use chipbreaking</translation>
+      <translation>Usa rompitruciolo</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Drilling.py" line="110"/>
@@ -4990,7 +4990,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Drilling.py" line="122"/>
       <source>Incremental Drill depth before retracting to clear chips</source>
-      <translation type="unfinished">Incremental Drill depth before retracting to clear chips</translation>
+      <translation>Profondità di foratura aggiuntiva prima del ritorno per scaricare i trucioli</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Drilling.py" line="128"/>
@@ -5026,7 +5026,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Drilling.py" line="179"/>
       <source>How far the drilling depth is extended</source>
-      <translation type="unfinished">How far the drilling depth is extended</translation>
+      <translation>Fino a che punto la profondità di perforazione è estesa</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Drilling.py" line="188"/>
@@ -5083,7 +5083,7 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Op/Helix.py" line="138"/>
       <location filename="../../../Path/Op/Helix.py" line="163"/>
       <source>Extra value to stay away from final profile- good for roughing toolpath</source>
-      <translation type="unfinished">Extra value to stay away from final profile- good for roughing toolpath</translation>
+      <translation>Un valore aggiuntivo per mantenersi a distanza di sicurezza dal profilo finale - utile per il percorso di un utensile di sbozzatura</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/MillFace.py" line="96"/>
@@ -5098,7 +5098,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/MillFace.py" line="111"/>
       <source>Exclude milling raised areas inside the face.</source>
-      <translation type="unfinished">Exclude milling raised areas inside the face.</translation>
+      <translation>Escludere dalla fresatura le aree rialzate all'interno della faccia.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="237"/>
@@ -5163,7 +5163,7 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Op/PocketBase.py" line="194"/>
       <location filename="../../../Path/Op/PocketBase.py" line="266"/>
       <source>Skips machining regions that have already been cleared by previous operations.</source>
-      <translation type="unfinished">Skips machining regions that have already been cleared by previous operations.</translation>
+      <translation>Salta le regioni di lavorazione che sono già state ripulite da operazioni precedenti.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Probe.py" line="55"/>
@@ -5748,12 +5748,12 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/Boundary.py" line="160"/>
       <source>Unsupported stock object %s</source>
-      <translation type="unfinished">Unsupported stock object %s</translation>
+      <translation>Tipo di oggetto grezzo non supportato %s</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Boundary.py" line="176"/>
       <source>Unsupported stock type %s (%d)</source>
-      <translation type="unfinished">Unsupported stock type %s (%d)</translation>
+      <translation>Tipo di oggetto grezzo non supportato %s (%d)</translation>
     </message>
   </context>
   <context>
@@ -5761,7 +5761,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="89"/>
       <source>Invalid base object %s - no shape found</source>
-      <translation type="unfinished">Invalid base object %s - no shape found</translation>
+      <translation>Oggetto base % non valido - nessuna forma trovata</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="105"/>
@@ -5771,7 +5771,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="591"/>
       <source>Unsupported stock type named {}</source>
-      <translation type="unfinished">Unsupported stock type named {}</translation>
+      <translation>Tipo di grezzo non supportato denominato {}</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="595"/>
@@ -5784,12 +5784,12 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Area.py" line="115"/>
       <source>job %s has no Base.</source>
-      <translation type="unfinished">job %s has no Base.</translation>
+      <translation>lavorazione %s non ha Base.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Area.py" line="117"/>
       <source>no job for operation %s found.</source>
-      <translation type="unfinished">no job for operation %s found.</translation>
+      <translation>nessuna lavorazione per l'operazione %s trovata.</translation>
     </message>
   </context>
   <context>
@@ -5864,7 +5864,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="380"/>
       <source>The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.</source>
-      <translation type="unfinished">The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.</translation>
+      <translation>I lati selezionati non sono accessibili. Se multipli, riordinando la selezione potrebbe funzionare.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="480"/>
@@ -5930,12 +5930,12 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="1109"/>
       <source>No profile geometry shape returned.</source>
-      <translation type="unfinished">No profile geometry shape returned.</translation>
+      <translation>Nessuna forma geometrica del profilo restituita.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="1116"/>
       <source>No profile path geometry returned.</source>
-      <translation type="unfinished">No profile path geometry returned.</translation>
+      <translation>Nessuna geometria del percorso del profilo restituita.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="1131"/>
@@ -6891,12 +6891,12 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1370"/>
       <source>Unsupported stock object %s</source>
-      <translation type="unfinished">Unsupported stock object %s</translation>
+      <translation>Tipo di oggetto grezzo non supportato %s</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1386"/>
       <source>Unsupported stock type %s (%d)</source>
-      <translation type="unfinished">Unsupported stock type %s (%d)</translation>
+      <translation>Tipo di oggetto grezzo non supportato %s (%d)</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1477"/>

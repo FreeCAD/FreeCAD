@@ -449,6 +449,13 @@ Application::Application(bool GUIenabled)
             PyModule_AddFunctions(module, Application::Methods);
         }
         Py::Module(module).setAttr(std::string("ActiveDocument"), Py::None());
+        Py::Module(module).setAttr(std::string("HasQtBug_129596"),
+#ifdef HAS_QTBUG_129596
+            Py::True()
+#else
+            Py::False()
+#endif
+        );
 
         UiLoaderPy::init_type();
         Base::Interpreter().addType(UiLoaderPy::type_object(), module, "UiLoader");
@@ -680,7 +687,7 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
     wc.setIgnoreEvents(WaitCursor::NoEvents);
     Base::FileInfo File(FileName);
     std::string te = File.extension();
-    string unicodepath = Base::Tools::escapedUnicodeFromUtf8(File.filePath().c_str());
+    string unicodepath = File.filePath().c_str();
     unicodepath = Base::Tools::escapeEncodeFilename(unicodepath);
 
     if (Module) {
@@ -1020,7 +1027,7 @@ void Application::slotActiveDocument(const App::Document& Doc)
         // Update the application to show the unit change
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Units");
-        if (Doc.FileName.getValue()[0] != '\0' && !hGrp->GetBool("IgnoreProjectSchema")) {
+        if (!hGrp->GetBool("IgnoreProjectSchema")) {
             int userSchema = Doc.UnitSystem.getValue();
             Base::UnitsApi::setSchema(static_cast<Base::UnitSystem>(userSchema));
             getMainWindow()->setUserSchema(userSchema);
@@ -1404,6 +1411,11 @@ void Application::viewActivated(MDIView* pcView)
     }
 }
 
+/// Gets called if a view gets closed
+void Application::viewClosed(MDIView* pcView)
+{
+    signalCloseView(pcView);
+}
 
 void Application::updateActive()
 {
@@ -1901,8 +1913,11 @@ void setCategoryFilterRules()
     QTextStream stream(&filter);
     stream << "qt.qpa.xcb.warning=false\n";
     stream << "qt.qpa.mime.warning=false\n";
+    stream << "qt.qpa.wayland.warning=false\n";
+    stream << "qt.qpa.wayland.*.warning=false\n";
     stream << "qt.svg.warning=false\n";
     stream << "qt.xkb.compose.warning=false\n";
+    stream << "kf.*.warning=false\n";
     stream.flush();
     QLoggingCategory::setFilterRules(filter);
 }

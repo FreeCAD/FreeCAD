@@ -477,7 +477,7 @@
       <location filename="../../DlgSettingsDefaultMaterial.ui" line="14"/>
       <location filename="../../DlgSettingsDefaultMaterial.ui" line="20"/>
       <source>Default Material</source>
-      <translation>Materiał domyślnie</translation>
+      <translation>Materiał domyślny</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsDefaultMaterial.cpp" line="51"/>
@@ -495,7 +495,7 @@
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="23"/>
       <source>Card resources</source>
-      <translation>Karta zasobów</translation>
+      <translation>Zasoby kart</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="31"/>
@@ -550,7 +550,7 @@ zostaną wyświetlone jako dostępne.</translation>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="155"/>
       <source>Card sorting and duplicates</source>
-      <translation>Sortowanie kart i duplikatów</translation>
+      <translation>Sortowanie kart i duplikaty</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="161"/>

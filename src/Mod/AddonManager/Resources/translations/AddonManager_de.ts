@@ -99,7 +99,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="43"/>
       <source>FreeCAD Addons</source>
-      <translation>FreeCAD-Addons</translation>
+      <translation>FreeCAD-Programmerweiterungen</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="55"/>
@@ -122,7 +122,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../developer_mode.ui" line="25"/>
       <source>Path to Addon</source>
-      <translation>Pfad zum Addon</translation>
+      <translation>Pfad zur Erweiterung</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="45"/>
@@ -144,7 +144,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
       <location filename="../../developer_mode.ui" line="77"/>
       <location filename="../../developer_mode.ui" line="160"/>
       <source>Explanation of what this Addon provides. Displayed in the Addon Manager. It is not necessary for this to state that this is a FreeCAD Addon.</source>
-      <translation>Erläuterung, was diese Erweiterung bietet. Wird im Addon-Manager angezeigt. Der Hinweis, dass es sich um eine FreeCAD Erweiterung handelt, ist nicht notwendig.</translation>
+      <translation>Erläuterung der Eigenschaften dieser Erweiterung. Wird in der Erweiterungsverwaltung angezeigt. Der Hinweis, dass es sich um eine FreeCAD-Erweiterung handelt, ist nicht notwendig.</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="80"/>
@@ -169,12 +169,12 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../developer_mode.ui" line="113"/>
       <source>Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</source>
-      <translation>Semantic (1.2.3-beta) oder CalVer (2022.08.30) Stile unterstützt</translation>
+      <translation>Die Stie Semantic (1.2.3-beta) oder CalVer (2022.08.30) werden unterstützt</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="120"/>
       <source>Set to today (CalVer style)</source>
-      <translation>Auf heute setzen (CalVer Stil)</translation>
+      <translation>Auf heute setzen (CalVer-Stil)</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="132"/>
@@ -281,7 +281,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../first_run.ui" line="23"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
-      <translation>Die Addons, die hier installiert werden können, sind nicht offiziell Teil von FreeCAD und werden nicht vom FreeCAD Team überprüft. Man sollte sich sicher sein, dass man weiß, was man installiert!</translation>
+      <translation>Die Addons, die hier installiert werden können, sind nicht offiziell Teil von FreeCAD und werden nicht vom FreeCAD-Team überprüft. Man sollte sich sicher sein, dass man weiß, was man installiert!</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="39"/>
@@ -306,7 +306,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../first_run.ui" line="68"/>
       <source>System proxy</source>
-      <translation>System Proxy</translation>
+      <translation>System-Proxy</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="73"/>
@@ -393,7 +393,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
       <location filename="../../expanded_view.py" line="131"/>
       <location filename="../../expanded_view.ui" line="178"/>
       <source>Maintainer</source>
-      <translation>Instandhalter</translation>
+      <translation>Betreuer</translation>
     </message>
     <message>
       <location filename="../../expanded_view.py" line="134"/>
@@ -714,7 +714,7 @@ installierte Addons auf verfügbare Updates überprüft</translation>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="87"/>
       <source>An asterisk (*) in the &quot;Used by&quot; column indicates an optional dependency. Note that Used by only records direct imports in the Addon. Other Python packages that those packages depend upon may have been installed as well.</source>
-      <translation>Ein Stern (*) in der &quot;Von&quot; Spalte eingetragen zeigt eine optionale Abhängigkeit an. Es ist zu beachten, dass Von nur direkte Importe ins Addon anzeigt. Andere Python-Pakete, von denen diese Pakete abhängen, könnten ebenfalls installiert worden sein.</translation>
+      <translation>Ein in der &quot;Verwendet von&quot; Spalte eingetragener Stern (*) zeigt eine optionale Abhängigkeit an. Es ist zu beachten, dass Verwendet von nur direkte Importe ins Addon aufzeichnet. Andere Python-Pakete, von denen diese Pakete abhängen, könnten ebenfalls installiert worden sein.</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="99"/>
@@ -805,7 +805,7 @@ installierte Addons auf verfügbare Updates überprüft</translation>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="111"/>
       <source>Preference Pack Name</source>
-      <translation>Einstellunspaketname</translation>
+      <translation>Name des Voreinstellunspakets</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="125"/>
@@ -875,12 +875,12 @@ installierte Addons auf verfügbare Updates überprüft</translation>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="297"/>
       <source>Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</source>
-      <translation>Semantic (1.2.3-beta) oder CalVer (2022.08.30) Stile unterstützt</translation>
+      <translation>Die Stie Semantic (1.2.3-beta) oder CalVer (2022.08.30) werden unterstützt</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="304"/>
       <source>Set to today (CalVer style)</source>
-      <translation>Auf heute setzen (CalVer Stil)</translation>
+      <translation>Auf heute setzen (CalVer-Stil)</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="313"/>
@@ -903,7 +903,7 @@ installierte Addons auf verfügbare Updates überprüft</translation>
     <message>
       <location filename="../../add_toolbar_button_dialog.ui" line="20"/>
       <source>Add a toolbar button for this macro?</source>
-      <translation>Eine Werkzeugleistenschaltfläche für dieses Makro hinzufügen?</translation>
+      <translation>Eine Symbolleistenschaltfläche für dieses Makro hinzufügen?</translation>
     </message>
     <message>
       <location filename="../../add_toolbar_button_dialog.ui" line="32"/>
@@ -1069,7 +1069,7 @@ installierte Addons auf verfügbare Updates überprüft</translation>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="412"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="429"/>
       <source>Select Toolbar</source>
-      <translation>Werkzeugleiste auswählen</translation>
+      <translation>Symbolleiste auswählen</translation>
     </message>
     <message>
       <location filename="../../select_toolbar_dialog.ui" line="26"/>
@@ -1213,7 +1213,7 @@ installierte Addons auf verfügbare Updates überprüft</translation>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="107"/>
       <source>Apply %n available update(s)</source>
-      <translation>%n verfügbare Update(s) anwenden</translation>
+      <translation>%n verfügbare Aktualisierung(en) anwenden</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="110"/>
@@ -1309,7 +1309,7 @@ installierte Addons auf verfügbare Updates überprüft</translation>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="80"/>
       <source>Are you sure you want to uninstall {}?</source>
-      <translation>Wirklich {} deinstallieren?</translation>
+      <translation>Soll {} wirklich deinstalliert werden?</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="90"/>
@@ -1426,7 +1426,7 @@ installierte Addons auf verfügbare Updates überprüft</translation>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="334"/>
       <source>WARNING: This addon is currently installed, but disabled. Use the &apos;enable&apos; button to re-enable.</source>
-      <translation>WARNUNG: Dieses Add-on ist derzeit installiert, aber deaktiviert. Die Schaltfläche "aktivieren" verwenden, um es wieder zu aktivieren.</translation>
+      <translation>WARNUNG: Dieses Add-on ist derzeit installiert, aber deaktiviert. Die Schaltfläche "Aktivieren" verwenden, um es wieder zu aktivieren.</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="177"/>
@@ -1590,7 +1590,7 @@ installierte Addons auf verfügbare Updates überprüft</translation>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="429"/>
       <source>Addon</source>
-      <translation>Addon (Programmerweiterung)</translation>
+      <translation>Addon</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="430"/>
@@ -1838,7 +1838,7 @@ installierte Addons auf verfügbare Updates überprüft</translation>
     <message>
       <location filename="../../addonmanager_devmode.py" line="567"/>
       <source>Scanning Addon for Python version compatibility</source>
-      <translation>Scannen der Python-Versionenkompatibilität-Erweiterung</translation>
+      <translation>Untersuchen des Addons auf Kompatibilität mit Python-Versionen</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="594"/>

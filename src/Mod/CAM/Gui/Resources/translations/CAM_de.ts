@@ -1626,7 +1626,7 @@ Letzteres kann zur Bearbeitung der gesamten Rohmaterialfläche verwendet werden,
       <location filename="../panels/PageOpSlotEdit.ui" line="102"/>
       <location filename="../panels/PageOpSlotEdit.ui" line="174"/>
       <source>Center of Bounding Box</source>
-      <translation>Mittelpunkt des Begrenzungsrahmen</translation>
+      <translation>Mittelpunkt des Begrenzungsrahmens</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="107"/>
@@ -7821,7 +7821,7 @@ Zum Beispiel:
       <location filename="../../../Path/Op/Slot.py" line="266"/>
       <location filename="../../../Path/Op/Slot.py" line="278"/>
       <source>Center of Bounding Box</source>
-      <translation>Mittelpunkt des Begrenzungsrahmen</translation>
+      <translation>Mittelpunkt des Begrenzungsrahmens</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="269"/>

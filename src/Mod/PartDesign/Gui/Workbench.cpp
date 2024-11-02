@@ -83,14 +83,7 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
         App::DocumentObject *feature = selection.front().pObject;
         PartDesign::Body *body = nullptr;
 
-        // if PD workflow is not new-style then add a command to the context-menu
-        bool assertModern = true;
-        if (feature && !isModernWorkflow(feature->getDocument())) {
-            assertModern = false;
-            *item << "PartDesign_Migrate";
-        }
-
-        body = PartDesignGui::getBodyFor (feature, false, false, assertModern);
+        body = PartDesignGui::getBodyFor (feature, false, false, true);
         // lote of assertion so feature should be marked as a tip
         if ( selection.size () == 1 && feature && (
             ( feature->isDerivedFrom ( PartDesign::Feature::getClassTypeId () ) && body ) ||
