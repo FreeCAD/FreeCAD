@@ -2657,7 +2657,7 @@ void Application::initConfig(int argc, char ** argv)
         if (SafeMode::SafeModeEnabled()) {
             Base::Console().Message("FreeCAD is running in _SAFE_MODE_.\n");
             Base::Console().Message("Safe mode temporarily disables your configurations and "
-                                    "addons. Restart the application to exit safe mode.\n\n ");
+                                    "addons. Restart the application to exit safe mode.\n\n");
         }
     }
     LoadParameters();
