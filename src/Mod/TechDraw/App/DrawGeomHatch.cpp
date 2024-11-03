@@ -386,14 +386,14 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
 }
 
 /* static */
-std::vector<TopoDS_Edge> DrawGeomHatch::makeEdgeOverlay(PATLineSpec hl, Bnd_Box b, double scale)
+std::vector<TopoDS_Edge> DrawGeomHatch::makeEdgeOverlay(PATLineSpec hatchLine, Bnd_Box bBox, double scale)
 {
     constexpr double RightAngleDegrees{90.0};
     constexpr double HalfCircleDegrees{180.0};
     std::vector<TopoDS_Edge> result;
 
     double minX, maxX, minY, maxY, minZ, maxZ;
-    b.Get(minX, minY, minZ, maxX, maxY, maxZ);
+    bBox.Get(minX, minY, minZ, maxX, maxY, maxZ);
     //make the overlay bigger to cover rotations. might need to be bigger than 2x.
     double widthX = maxX - minX;
     double widthY = maxY - minY;
@@ -406,9 +406,9 @@ std::vector<TopoDS_Edge> DrawGeomHatch::makeEdgeOverlay(PATLineSpec hl, Bnd_Box 
     minY = centerY - width;
     maxY = centerY + width;
 
-    Base::Vector3d origin = hl.getOrigin();
-    double interval = hl.getIntervalX() * scale;
-    double angle = hl.getAngle();
+    Base::Vector3d origin = hatchLine.getOrigin();
+    double interval = hatchLine.getIntervalX() * scale;
+    double angle = hatchLine.getAngle();
 
     //only dealing with angles -180:180 for now
     if (angle > RightAngleDegrees) {
@@ -416,10 +416,10 @@ std::vector<TopoDS_Edge> DrawGeomHatch::makeEdgeOverlay(PATLineSpec hl, Bnd_Box 
     } else if (angle < -RightAngleDegrees) {
         angle = (HalfCircleDegrees + angle);
     }
-    double slope = hl.getSlope();
+    double slope = hatchLine.getSlope();
 
     if (angle == 0.0) {         //odd case 1: horizontal lines
-        interval = hl.getInterval() * scale;
+        interval = hatchLine.getInterval() * scale;
         double atomY  = origin.y;
         int repeatUp = (int) fabs((maxY - atomY)/interval);
         int repeatDown  = (int) fabs(((atomY - minY)/interval));
@@ -435,7 +435,7 @@ std::vector<TopoDS_Edge> DrawGeomHatch::makeEdgeOverlay(PATLineSpec hl, Bnd_Box 
         }
     } else if (angle == RightAngleDegrees ||
                angle == -RightAngleDegrees) {         //odd case 2: vertical lines
-        interval = hl.getInterval() * scale;
+        interval = hatchLine.getInterval() * scale;
         double atomX  = origin.x;
         int repeatRight = (int) fabs((maxX - atomX)/interval);
         int repeatLeft  = (int) fabs((atomX - minX)/interval);

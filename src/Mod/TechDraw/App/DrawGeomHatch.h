@@ -93,7 +93,7 @@ public:
                                                                 double scale , double hatchRotation = 0.0,
                                                                 Base::Vector3d hatchOffset = Base::Vector3d(0.0, 0.0, 0.0));
 
-    static std::vector<TopoDS_Edge> makeEdgeOverlay(PATLineSpec hl, Bnd_Box bBox,
+    static std::vector<TopoDS_Edge> makeEdgeOverlay(PATLineSpec hatchLine, Bnd_Box bBox,
                                     double scale);
     static TopoDS_Edge makeLine(Base::Vector3d start, Base::Vector3d end);
     static std::vector<PATLineSpec> getDecodedSpecsFromFile(std::string fileSpec, std::string myPattern);
