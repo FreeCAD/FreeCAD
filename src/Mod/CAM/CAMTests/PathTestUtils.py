@@ -185,3 +185,14 @@ class PathTestBase(unittest.TestCase):
         self.assertEqual(len(pts0), len(pts1))
         for i in range(len(pts0)):
             self.assertCoincide(pts0[i], pts1[i])
+
+    def assertSuccessfulRecompute(self, doc, *objs, msg=None):
+        """Asserts that the given objects can be successfully recomputed."""
+        if len(objs) == 0:
+            doc.recompute()
+            objs = doc.Objects
+        else:
+            doc.recompute(objs)
+        failed_objects = [o.Name for o in objs if "Invalid" in o.State]
+        if len(failed_objects) > 0:
+            self.fail(msg or f"Recompute failed for {failed_objects}")

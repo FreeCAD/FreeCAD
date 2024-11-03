@@ -349,6 +349,10 @@ SET(Tests_SRCS
     CAMTests/Tools/Shape/test-path-tool-bit-shape-00.fcstd
 )
 
+SET(Tests_Fixtures
+    CAMTests/Fixtures/OpHelix_v0-21.FCStd
+)
+
 SET(PathImages_Ops
     Images/Ops/chamfer.svg
 )
@@ -411,6 +415,7 @@ ADD_CUSTOM_TARGET(PathScripts ALL
 SET(test_files
   ${Path_Scripts}
   ${Tests_SRCS}
+  ${Tests_Fixtures}
 )
 
 ADD_CUSTOM_TARGET(Tests ALL
@@ -534,6 +539,13 @@ INSTALL(
         ${Tests_SRCS}
     DESTINATION
         Mod/CAM/CAMTests
+)
+
+INSTALL(
+    FILES
+        ${Tests_Fixtures}
+    DESTINATION
+        Mod/CAM/CAMTests/Fixtures
 )
 
 INSTALL(
