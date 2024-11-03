@@ -107,15 +107,16 @@ class BIM_IfcExplorer:
         self.dialog.resize(720, 540)
         toolbar = FreeCADGui.UiLoader().createWidget("Gui::ToolBar")
 
-        layout = QtGui.QVBoxLayout(self.dialog)
+        layout = QtGui.QVBoxLayout()
         layout.addWidget(toolbar)
-        hlayout = QtGui.QHBoxLayout(self.dialog)
+        hlayout = QtGui.QHBoxLayout()
         hlayout.addWidget(self.tree)
         layout.addLayout(hlayout)
-        vlayout = QtGui.QVBoxLayout(self.dialog)
+        vlayout = QtGui.QVBoxLayout()
         hlayout.addLayout(vlayout)
         vlayout.addWidget(self.attributes)
         vlayout.addWidget(self.properties)
+        self.dialog.setLayout(layout)
 
         # draw the toolbar buttons
         self.openAction = QtGui.QAction(translate("BIM", "Open"), None)
