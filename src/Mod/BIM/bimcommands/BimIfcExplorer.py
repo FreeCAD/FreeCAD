@@ -450,7 +450,7 @@ class BIM_IfcExplorer:
                 item.setIcon(0, QtGui.QIcon(":icons/Arch_Rebar.svg"))
             elif entity.is_a("IfcProduct"):
                 item.setIcon(0, QtGui.QIcon(":icons/Arch_Component.svg"))
-            self.tree.setFirstItemColumnSpanned(item, True)
+            item.setFirstColumnSpanned(True)
             item.setData(0, QtCore.Qt.UserRole, eid)
             for childid, grandchildren in children.items():
                 self.addEntity(childid, grandchildren, item)
@@ -557,7 +557,7 @@ class BIM_IfcExplorer:
                             + self.tostr(rel.RelatingPropertyDefinition.Name),
                         )
                         item.setFont(0, self.bold)
-                        self.properties.setFirstItemColumnSpanned(item, True)
+                        item.setFirstColumnSpanned(True)
                         if hasattr(rel.RelatingPropertyDefinition, "HasProperties"):
                             for prop in rel.RelatingPropertyDefinition.HasProperties:
                                 subitem = QtGui.QTreeWidgetItem(item)
