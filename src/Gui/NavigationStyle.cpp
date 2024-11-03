@@ -219,6 +219,7 @@ void NavigationStyle::initialize()
     this->spinsamplecounter = 0;
     this->spinincrement = SbRotation::identity();
     this->rotationCenterFound = false;
+    this->rotationCenterIsScenePointAtCursor = false;
 
     // FIXME: use a smaller sphere than the default one to have a larger
     // area close to the borders that gives us "z-axis rotation"?
@@ -868,8 +869,8 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
 
     float sensitivity = getSensitivity();
 
-    // Adjust the spin projector sphere to the screen position of the rotation center
-    if (rotationCenterFound) {
+    // Adjust the spin projector sphere to the screen position of the rotation center when the mouse intersects an object
+    if (getOrbitStyle() == Trackball && rotationCenterMode & RotationCenterMode::ScenePointAtCursor && rotationCenterFound && rotationCenterIsScenePointAtCursor) {
         const auto pointOnScreen = viewer->getPointOnViewport(rotationCenter);
         const auto sphereCenter = 2 * normalizePixelPos(pointOnScreen) - SbVec2f {1, 1};
 
@@ -1040,6 +1041,7 @@ void NavigationStyle::saveCursorPosition(const SoEvent * const ev)
 {
     this->globalPos.setValue(QCursor::pos().x(), QCursor::pos().y());
     this->localPos = ev->getPosition();
+    rotationCenterIsScenePointAtCursor = false;
 
     // mode is WindowCenter
     if (!this->rotationCenterMode) {
@@ -1058,6 +1060,7 @@ void NavigationStyle::saveCursorPosition(const SoEvent * const ev)
         SoPickedPoint * picked = rpaction.getPickedPoint();
         if (picked) {
             setRotationCenter(picked->getPoint());
+            rotationCenterIsScenePointAtCursor = true;
             return;
         }
     }
