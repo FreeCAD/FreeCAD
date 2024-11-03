@@ -217,6 +217,17 @@ class BIM_IfcExplorer:
         self.ifc = ifcopenshell.open(self.filename)
         root = self.getEntitiesTree()
 
+        # unable to find IfcSite
+        if not root:
+            FreeCAD.Console.PrintError(
+                translate(
+                    "BIM",
+                    "IfcSite element was not found in %s. Unable to explore.",
+                )
+                % self.filename + "\n"
+            )
+            return
+
         # populate tree contents
         for eid, children in root.items():
             self.addEntity(eid, children, self.tree)
