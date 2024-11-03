@@ -273,11 +273,11 @@ class BIM_IfcExplorer:
                     self.mesh.ViewObject.show()
                 else:
                     try:
-                        import importIFCHelper
+                        from importers import importIFCHelper
 
                         s = importIFCHelper.getScaling(self.ifc)
                     except:
-                        import importIFC
+                        from importers import importIFC
 
                         s = importIFC.getScaling(self.ifc)
                     s *= 1000  # ifcopenshell outputs its meshes in metres
