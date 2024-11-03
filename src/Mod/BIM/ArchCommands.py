@@ -770,6 +770,9 @@ def pruneIncluded(objectslist,strict=False):
                     elif parent.isDerivedFrom("PartDesign::Body") and obj == parent.BaseFeature:
                         # don't consider a PartDesign_Body with a PartDesign_Clone that references obj
                         pass
+                    elif parent.isDerivedFrom("PartDesign::SubShapeBinder") or (hasattr(parent, "TypeId") and parent.TypeId == "PartDesign::ShapeBinder"):
+                        # don't consider a PartDesign_SubShapeBinder or PartDesign_ShapeBinder referncing this object from another object
+                        pass
                     elif hasattr(parent,"Host") and parent.Host == obj:
                         pass
                     elif hasattr(parent,"Hosts") and obj in parent.Hosts:

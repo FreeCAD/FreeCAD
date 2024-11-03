@@ -956,7 +956,7 @@ def export(exportList,filename):
     # get all children and reorder list to get buildings and floors processed first
     objectslist = Draft.get_group_contents(exportList, walls=True,
                                            addgroups=True)
-    objectslist = Arch.pruneIncluded(objectslist)
+    objectslist = Arch.pruneIncluded(objectslist, strict=True)
 
     sites = []
     buildings = []
