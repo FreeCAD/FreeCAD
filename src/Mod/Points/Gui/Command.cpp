@@ -105,18 +105,20 @@ void CmdPointsImport::activated(int iMsg)
          *  origin had inaccuracies in the relative positioning of the points due to
          *  imprecise floating point variables used in COIN
          **/
-        Points::Feature *pcFtr = dynamic_cast<Points::Feature *>(doc->getDocument()->getActiveObject());
+        Points::Feature* pcFtr =
+            dynamic_cast<Points::Feature*>(doc->getDocument()->getActiveObject());
         if (pcFtr) {
             auto points = pcFtr->Points.getValue();
             auto bbox = points.getBoundBox();
             auto center = bbox.GetCenter();
 
-            if (!bbox.IsInBox(Base::Vector3d(0,0,0))) {
+            if (!bbox.IsInBox(Base::Vector3d(0, 0, 0))) {
                 QMessageBox msgBox;
                 msgBox.setIcon(QMessageBox::Question);
-                msgBox.setWindowTitle(QObject::tr( "Points not at Origin"));
-                msgBox.setText(QObject::tr("The Bounding Box of the imported points does not contain the origin.  "
-                                             "Do you want to translate it to the origin?"));
+                msgBox.setWindowTitle(QObject::tr("Points not at Origin"));
+                msgBox.setText(QObject::tr(
+                    "The Bounding Box of the imported points does not contain the origin.  "
+                    "Do you want to translate it to the origin?"));
                 msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
                 msgBox.setDefaultButton(QMessageBox::Yes);
                 auto ret = msgBox.exec();
@@ -131,7 +133,6 @@ void CmdPointsImport::activated(int iMsg)
             }
         }
     }
-
 }
 
 bool CmdPointsImport::isActive()
