@@ -20,12 +20,16 @@
 # *                                                                         *
 # ***************************************************************************
 
+import pathlib
+
 import Draft
 import FreeCAD
 import Path
 import Path.Main.Job as PathJob
 import Path.Op.Helix as PathHelix
 import CAMTests.PathTestUtils as PathTestUtils
+
+FIXTURE_PATH = pathlib.Path(__file__).parent / "Fixtures"
 
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 # Path.Log.trackModule(Path.Log.thisModule())
@@ -126,3 +130,47 @@ class TestPathHelix(PathTestUtils.PathTestBase):
                     self.assertRoughly(
                         round(pos.Length / 10, 0), proxy.holeDiameter(op, model, sub)
                     )
+
+    def testRecomputeHelixFromV021(self):
+        """Verify that we can still open and recompute a Helix created with older FreeCAD"""
+        self.tearDown()
+        self.doc = FreeCAD.openDocument(str(FIXTURE_PATH / "OpHelix_v0-21.FCStd"))
+        created_with = f"created with {self.doc.getProgramVersion()}"
+
+        def check(helix, direction, start_side, cut_mode):
+            with self.subTest(f"{helix.Name}: {direction}, {start_side}, {cut_mode}"):
+                # no recompute yet, i.e. check original as precondition
+                self.assertEqual(
+                    helix.Direction,
+                    direction,
+                    msg=f"Direction does not match fixture for helix {created_with}",
+                )
+                self.assertEqual(
+                    helix.StartSide,
+                    start_side,
+                    msg=f"StartSide does not match fixture for helix {created_with}",
+                )
+
+                # now see whether we can recompute the object from the old document
+                helix.enforceRecompute()
+                self.assertSuccessfulRecompute(
+                    self.doc, helix, msg=f"Cannot recompute helix {created_with}"
+                )
+                self.assertEqual(
+                    helix.Direction,
+                    direction,
+                    msg=f"Direction changed after recomputing helix {created_with}",
+                )
+                self.assertEqual(
+                    helix.StartSide,
+                    start_side,
+                    msg=f"StartSide changed after recomputing helix {created_with}",
+                )
+                # self.assertEqual(helix.CutMode, cut_mode,
+                #    msg=f"CutMode not correctly derived for helix {created_with}")
+
+        # object names and expected values defined in the fixture
+        check(self.doc.Helix, "CW", "Inside", "Conventional")
+        check(self.doc.Helix001, "CW", "Outside", "Climb")
+        check(self.doc.Helix002, "CCW", "Inside", "Climb")
+        check(self.doc.Helix003, "CCW", "Outside", "Conventional")
