@@ -60,7 +60,6 @@ class BIM_IfcExplorer:
 
         # setting up a font
         self.bold = QtGui.QFont()
-        self.bold.setWeight(75)
         self.bold.setBold(True)
 
         # setting up a link fint

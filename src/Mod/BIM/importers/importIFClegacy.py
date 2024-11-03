@@ -1793,7 +1793,6 @@ def explorer(filename,schema="IFC2X3_TC1.exp"):
     tree.headerItem().setText(1, "")
     tree.headerItem().setText(2, "Item and Properties")
     bold = QtGui.QFont()
-    bold.setWeight(75)
     bold.setBold(True)
 
     #print(ifc.Entities)
