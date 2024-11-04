@@ -30,6 +30,7 @@
 #endif
 
 #include <boost/filesystem.hpp>
+#include <boost/algorithm/string.hpp>
 #include <QDir>
 
 #include "PreferencePackManager.h"
@@ -134,12 +135,11 @@ void PreferencePack::applyConfigChanges() const
 }
 
 PreferencePackManager::PreferencePackManager()
+    : _preferencePackPaths(modPaths())
 {
-    auto modPath = fs::path(Base::FileInfo::stringToPath(App::Application::getUserAppDataDir())) / "Mod";
     auto savedPath = fs::path(Base::FileInfo::stringToPath(App::Application::getUserAppDataDir())) / "SavedPreferencePacks";
     auto resourcePath = fs::path(Base::FileInfo::stringToPath(App::Application::getResourceDir())) / "Gui" / "PreferencePacks";
-    _preferencePackPaths.push_back(resourcePath);
-    _preferencePackPaths.push_back(modPath);
+    _preferencePackPaths.insert(_preferencePackPaths.begin(), resourcePath);
     _preferencePackPaths.push_back(savedPath);
     rescan();
 
@@ -230,6 +230,26 @@ void Gui::PreferencePackManager::importConfig(const std::string& packName,
     fs::copy_file(path, cfgFilename, fs::copy_option::overwrite_if_exists);
 #endif
     rescan();
+}
+
+// TODO(Shvedov): Is this suitable place for this method? It is more generic,
+// and maybe more suitable place at Application?
+std::vector<boost::filesystem::path> Gui::PreferencePackManager::modPaths() const
+{
+    auto userModPath = fs::path(Base::FileInfo::stringToPath(App::Application::getUserAppDataDir())) / "Mod";
+
+    auto& config = App::Application::Config();
+    auto additionalModules = config.find("AdditionalModulePaths");
+    std::vector<boost::filesystem::path> result;
+
+    if (additionalModules != config.end()) {
+        boost::split(result,
+                     additionalModules->second,
+                     boost::is_any_of(";"),
+                     boost::token_compress_on);
+    }
+    result.emplace_back(userModPath);
+    return result;
 }
 
 void Gui::PreferencePackManager::FindPreferencePacksInPackage(const fs::path &mod)
@@ -528,7 +548,6 @@ std::vector<PreferencePackManager::TemplateFile> PreferencePackManager::template
     // (alternate spellings are provided for packages using CamelCase and snake_case, and both major English dialects)
 
     auto resourcePath = fs::path(Base::FileInfo::stringToPath(App::Application::getResourceDir())) / "Gui";
-    auto modPath = fs::path(Base::FileInfo::stringToPath(App::Application::getUserAppDataDir())) / "Mod";
 
     std::string group = "Built-In";
     if (fs::exists(resourcePath) && fs::is_directory(resourcePath)) {
@@ -536,11 +555,13 @@ std::vector<PreferencePackManager::TemplateFile> PreferencePackManager::template
         std::copy(localFiles.begin(), localFiles.end(), std::back_inserter(_templateFiles));
     }
 
-    if (fs::exists(modPath) && fs::is_directory(modPath)) {
-        for (const auto& mod : fs::directory_iterator(modPath)) {
-            group = Base::FileInfo::pathToString(mod.path().filename());
-            const auto localFiles = scanForTemplateFiles(group, mod);
-            std::copy(localFiles.begin(), localFiles.end(), std::back_inserter(_templateFiles));
+    for (const auto& modPath : modPaths()) {
+        if (fs::exists(modPath) && fs::is_directory(modPath)) {
+            for (const auto& mod : fs::directory_iterator(modPath)) {
+                group = Base::FileInfo::pathToString(mod.path().filename());
+                const auto localFiles = scanForTemplateFiles(group, mod);
+                std::copy(localFiles.begin(), localFiles.end(), std::back_inserter(_templateFiles));
+            }
         }
     }
 
