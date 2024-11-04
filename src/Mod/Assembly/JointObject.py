@@ -1257,6 +1257,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         )
         self.form.offset1Button.clicked.connect(self.onOffset1Clicked)
         self.form.offset2Button.clicked.connect(self.onOffset2Clicked)
+        self.form.PushButtonReverse.clicked.connect(self.onReverseClicked)
 
         self.form.limitCheckbox1.stateChanged.connect(self.adaptUi)
         self.form.limitCheckbox2.stateChanged.connect(self.adaptUi)
