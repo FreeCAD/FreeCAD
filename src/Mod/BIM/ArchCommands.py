@@ -608,7 +608,7 @@ def removeCurves(shape,dae=False,tolerance=5):
     with faceted segments. If dae is True, DAE triangulation options are used'''
     import Mesh
     if dae:
-        import importDAE
+        from importers import importDAE
         t = importDAE.triangulate(shape.cleaned())
     else:
         t = shape.cleaned().tessellate(tolerance)

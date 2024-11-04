@@ -252,7 +252,7 @@ class BIM_IfcExplorer:
     def insert(self):
         "inserts selected objects in the active document"
 
-        import importIFC
+        from importers import importIFC
         from PySide import QtCore, QtGui
 
         doc = FreeCAD.ActiveDocument
