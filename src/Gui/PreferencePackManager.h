@@ -191,6 +191,11 @@ namespace Gui {
          */
         void importConfig(const std::string &packName, const boost::filesystem::path &path);
 
+        /**
+         * Get a list of all mod directories.
+         */
+        std::vector<boost::filesystem::path> modPaths() const;
+
     private:
 
         void FindPreferencePacksInPackage(const boost::filesystem::path& mod);

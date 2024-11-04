@@ -54,7 +54,7 @@ void DlgPreferencePackManagementImp::showEvent(QShowEvent* event)
     // but can only disable individual installed packs (though we can completely uninstall the pack's
     // containing Addon by redirecting to the Addon Manager).
     auto savedPreferencePacksDirectory = fs::path(App::Application::getUserAppDataDir()) / "SavedPreferencePacks";
-    auto modDirectory = fs::path(App::Application::getUserAppDataDir()) / "Mod";
+    auto modDirectories = Application::Instance->prefPackManager()->modPaths();
     auto resourcePath = fs::path(App::Application::getResourceDir()) / "Gui" / "PreferencePacks";
 
     // The displayed tree has two levels: at the toplevel is either "User-Saved Packs" or the name
@@ -66,12 +66,14 @@ void DlgPreferencePackManagementImp::showEvent(QShowEvent* event)
     auto builtinPacks = getPacksFromDirectory(resourcePath);
 
     std::map<std::string, std::vector<std::string>> installedPacks;
-    if (fs::exists(modDirectory) && fs::is_directory(modDirectory)) {
-        for (const auto& mod : fs::directory_iterator(modDirectory)) {
-            auto packs = getPacksFromDirectory(mod);
-            if (!packs.empty()) {
-                auto modName = mod.path().filename().string();
-                installedPacks.emplace(modName, packs);
+    for (const auto& modDirectory : modDirectories) {
+        if (fs::exists(modDirectory) && fs::is_directory(modDirectory)) {
+            for (const auto& mod : fs::directory_iterator(modDirectory)) {
+                auto packs = getPacksFromDirectory(mod);
+                if (!packs.empty()) {
+                    auto modName = mod.path().filename().string();
+                    installedPacks.emplace(modName, packs);
+                }
             }
         }
     }
