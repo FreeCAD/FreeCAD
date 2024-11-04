@@ -66,7 +66,7 @@ PREDEFINED_RGB = {"black": (0, 0, 0),
                   "cyan": (0, 1.0, 1.0),
                   "white": (1.0, 1.0, 1.0)}
 
-TRACE = False
+TRACE = True
 # Sometimes, the Part::Sweep creates a "twisted" sweep that
 #   impeeds the creation of the corresponding wall.
 FIX_INVALID_SWEEP = True
@@ -710,7 +710,9 @@ class WallHandler(BaseHandler):
 
         Args:
             floor (Arch::Structure): The floor the wall belongs to
-            elm (Element): the xml element
+            prev (Element): the xml element for the previous sibling wall
+            next (Element): the xml element for the next sibling wall
+            elm (Element): the xml element for the wall to be imported
 
         Returns:
             Arch::Wall: the newly created wall
@@ -753,7 +755,7 @@ class WallHandler(BaseHandler):
             App.ActiveDocument.recompute([ruled_surface])
             _log(f"Creating compound object ...")
             compound = App.ActiveDocument.addObject('Part::Compound')
-            compound.Links = [section_start, section_end, ruled_surface]
+            compound.Links = [ruled_surface, section_start, section_end]
             App.ActiveDocument.recompute([compound])
             _log(f"Creating solid ...")
             solid = App.ActiveDocument.addObject("Part::Feature")
@@ -824,6 +826,9 @@ class WallHandler(BaseHandler):
         section_end = self._get_section(wall_details, False, next_wall_details)
 
         spine = Draft.makeLine(start, end)
+        if TRACE:
+            App.ActiveDocument.recompute([section_start, section_end, spine])
+            _log(f"_create_straight_segment(): wall {self._pv(start)}->{self._pv(end)} => section_start={self._ps(section_start)}, section_end={self._ps(section_end)}")
 
         return section_start, section_end, spine
 
@@ -894,7 +899,7 @@ class WallHandler(BaseHandler):
                 _log(f"intersec: {self._pv(i_start)},{self._pv(i_end)}")
             section = Draft.makeRectangle([i_start, i_end, i_end_z, i_start_z])
         else:
-            (start, end, thickness, height_start, height_end, _) = wall_details 
+            (start, end, thickness, height_start, height_end, _) = wall_details
             height = height_start if at_start else height_end
             center = start if at_start else end
             a1, a2, _ = self._get_normal_angles(wall_details)
@@ -925,7 +930,7 @@ class WallHandler(BaseHandler):
         points = DraftGeomUtils.findIntersection(rside, sibling_rside, True, True)
         right = points[0] if len(points) else rside.Vertexes[0].Point
         edge = DraftGeomUtils.edg(left, right)
-        return edge.Vertexes[0].Point, edge.Vertexes[1].Point
+        return edge.Vertexes[1].Point, edge.Vertexes[0].Point
 
     def _get_normal_angles(self, wall_details):
         """Return the angles of the normal at the endpoints of the wall.
@@ -1014,13 +1019,19 @@ class WallHandler(BaseHandler):
         """
         return (b - a).cross(c - a).normalize()
 
+    def _ps(self, section):
+        # Pretty print a Section in a condensed way
+        v = section.Shape.Vertexes
+        return f"[{self._pv(v[0].Point)}, {self._pv(v[1].Point)}, {self._pv(v[2].Point)}, {self._pv(v[3].Point)}]"
+
     def _pe(self, edge):
         # Print an Edge in a condensed way
-        return f"{self._pv(edge.Vertexes[0].Point)}->{self._pv(edge.Vertexes[1].Point)}"
+        v = edge.Vertexes
+        return f"[{self._pv(v[0].Point)}, {self._pv(v[1].Point)}]"
 
     def _pv(self, vect):
         # Print an Vector in a condensed way
-        return f"({round(getattr(vect, 'X', getattr(vect,'x')))}, {round(getattr(vect, 'Y', getattr(vect,'y')))})"
+        return f"({round(getattr(vect, 'X', getattr(vect,'x')))},{round(getattr(vect, 'Y', getattr(vect,'y')))})"
 
     def _set_wall_colors(self, wall, elm):
         """Set the `wall`'s color taken from `elm`.
