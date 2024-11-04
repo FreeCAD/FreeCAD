@@ -62,7 +62,9 @@
 #include "ASMTRotationLimit.h"
 #include "ASMTTranslationLimit.h"
 #include "ExternalSystem.h"
+#if __GNUC__ >= 8
 #include <filesystem>
+#endif
 
 using namespace MbD;
 
@@ -359,8 +361,11 @@ void MbD::ASMTAssembly::runSinglePendulum()
 
 std::shared_ptr<ASMTAssembly> MbD::ASMTAssembly::assemblyFromFile(const std::string& fileName)
 {
+    // https://stackoverflow.com/a/45867491
+    #if __GNUC__ >= 8
     std::filesystem::path currentPath = std::filesystem::current_path();
     std::cout << "Current directory: " << currentPath << std::endl;
+    #endif
 
     std::ifstream stream(fileName);
     if (stream.fail()) {

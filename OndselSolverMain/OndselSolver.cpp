@@ -12,7 +12,6 @@
   * @brief Program to assemble a piston crank system.
   *********************************************************************/
 
-#include <filesystem>
 #include "../OndselSolver/CADSystem.h"
 #include "../OndselSolver/CREATE.h"
 #include "../OndselSolver/GESpMatParPvPrecise.h"
