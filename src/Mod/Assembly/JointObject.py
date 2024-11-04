@@ -1217,6 +1217,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.form.distanceSpinbox2.valueChanged.connect(self.onDistance2Changed)
         self.form.offsetSpinbox.valueChanged.connect(self.onOffsetChanged)
         self.form.rotationSpinbox.valueChanged.connect(self.onRotationChanged)
+        self.form.PushButtonReverse.clicked.connect(self.onReverseClicked)
         self.form.offset1Button.clicked.connect(self.onOffset1Clicked)
         self.form.offset2Button.clicked.connect(self.onOffset2Clicked)
 
