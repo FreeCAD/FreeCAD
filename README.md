@@ -49,27 +49,20 @@ Precompiled packages for stable releases are available for Windows, macOS and Li
 On most Linux distributions, FreeCAD is also directly installable from the 
 software center application.
 
-For development releases check the [weekly-builds page](https://github.com/FreeCAD/FreeCAD-Bundle/releases/tag/weekly-builds).
+For development releases visit the [weekly-builds page](https://github.com/FreeCAD/FreeCAD-Bundle/releases/tag/weekly-builds).
 
 Other options are described on the [wiki Download page](https://wiki.freecad.org/Download).
 
 Compiling
 ---------
 
-Compiling FreeCAD requires the installation of several libraries and their 
-development files such as OCCT (Open Cascade), Coin and Qt, listed in the 
-pages below. Once this is done, FreeCAD can be compiled with 
-CMake. On Windows, these libraries are bundled and offered by the 
-FreeCAD team in a convenient package. On Linux, they are usually found 
-in your distribution's repositories, and on macOS and other platforms, 
-you will usually have to compile them yourself.
-
-The pages below contain up-to-date build instructions:
+FreeCAD requires several dependencies to correctly compile for development and
+production builds. The following pages contain updated build instructions for
+their respective platforms:
 
 - [Linux](https://wiki.freecad.org/Compile_on_Linux)
 - [Windows](https://wiki.freecad.org/Compile_on_Windows)
 - [macOS](https://wiki.freecad.org/Compile_on_MacOS)
-- [Cygwin](https://wiki.freecad.org/Compile_on_Cygwin)
 - [MinGW](https://wiki.freecad.org/Compile_on_MinGW)
 
 
@@ -95,17 +88,18 @@ For more details see:
 - [Help Forum](https://forum.freecad.org/viewforum.php?f=3)
 - [Developers Handbook](https://freecad.github.io/DevelopersHandbook/)
 
+> [!NOTE]
 The [FPA](https://fpa.freecad.org) offers developers the opportunity
 to apply for a grant to work on projects of their choosing. Check
 [jobs and funding](https://blog.freecad.org/jobs/) to know more.
 
 
-Usage & Getting help
+Usage & Getting Help
 --------------------
 
 The FreeCAD wiki contains documentation on 
-general FreeCAD usage, Python scripting, and development. These 
-pages might help you get started:
+general FreeCAD usage, Python scripting, and development.
+View these pages for more information:
 
 - [Getting started](https://wiki.freecad.org/Getting_started)
 - [Features list](https://wiki.freecad.org/Feature_list)
@@ -114,10 +108,10 @@ pages might help you get started:
 - [Scripting](https://wiki.freecad.org/Power_users_hub)
 - [Development](https://wiki.freecad.org/Developer_hub)
 
-The [FreeCAD forum](https://forum.freecad.org) is also a great place
-to find help and solve specific problems you might encounter when
-learning to use FreeCAD.
+The [FreeCAD forum](https://forum.freecad.org) is a great place
+to find help and solve specific problems when learning to use FreeCAD.
 
+---
 
 <p>This project receives generous infrastructure support from
   <a href="https://www.digitalocean.com/">
