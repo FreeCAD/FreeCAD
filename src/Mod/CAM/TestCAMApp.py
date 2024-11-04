@@ -22,63 +22,63 @@
 
 import TestApp
 
-from Tests.TestCAMSanity import TestCAMSanity
-from Tests.TestPathProfile import TestPathProfile
+from CAMTests.TestCAMSanity import TestCAMSanity
+from CAMTests.TestPathProfile import TestPathProfile
 
-from Tests.TestPathAdaptive import TestPathAdaptive
-from Tests.TestPathCore import TestPathCore
-from Tests.TestPathDepthParams import depthTestCases
-from Tests.TestPathDressupDogbone import TestDressupDogbone
-from Tests.TestPathDressupDogboneII import TestDressupDogboneII
-from Tests.TestPathDressupHoldingTags import TestHoldingTags
-from Tests.TestPathDrillable import TestPathDrillable
-from Tests.TestPathDrillGenerator import TestPathDrillGenerator
-from Tests.TestPathGeneratorDogboneII import TestGeneratorDogboneII
-from Tests.TestPathGeom import TestPathGeom
-from Tests.TestPathLanguage import TestPathLanguage
-from Tests.TestPathOpDeburr import TestPathOpDeburr
+from CAMTests.TestPathAdaptive import TestPathAdaptive
+from CAMTests.TestPathCore import TestPathCore
+from CAMTests.TestPathDepthParams import depthTestCases
+from CAMTests.TestPathDressupDogbone import TestDressupDogbone
+from CAMTests.TestPathDressupDogboneII import TestDressupDogboneII
+from CAMTests.TestPathDressupHoldingTags import TestHoldingTags
+from CAMTests.TestPathDrillable import TestPathDrillable
+from CAMTests.TestPathDrillGenerator import TestPathDrillGenerator
+from CAMTests.TestPathGeneratorDogboneII import TestGeneratorDogboneII
+from CAMTests.TestPathGeom import TestPathGeom
+from CAMTests.TestPathLanguage import TestPathLanguage
+from CAMTests.TestPathOpDeburr import TestPathOpDeburr
 
-# from Tests.TestPathHelix import TestPathHelix
-from Tests.TestPathHelpers import TestPathHelpers
-from Tests.TestPathHelixGenerator import TestPathHelixGenerator
-from Tests.TestPathLog import TestPathLog
-from Tests.TestPathOpUtil import TestPathOpUtil
+# from CAMTests.TestPathHelix import TestPathHelix
+from CAMTests.TestPathHelpers import TestPathHelpers
+from CAMTests.TestPathHelixGenerator import TestPathHelixGenerator
+from CAMTests.TestPathLog import TestPathLog
+from CAMTests.TestPathOpUtil import TestPathOpUtil
 
-# from Tests.TestPathPost import TestPathPost
-from Tests.TestPathPost import TestPathPostUtils
-from Tests.TestPathPost import TestBuildPostList
+# from CAMTests.TestPathPost import TestPathPost
+from CAMTests.TestPathPost import TestPathPostUtils
+from CAMTests.TestPathPost import TestBuildPostList
 
-# from Tests.TestPathPost import TestOutputNameSubstitution
-from Tests.TestPathPost import TestPostProcessorFactory
-from Tests.TestPathPost import TestResolvingPostProcessorName
-from Tests.TestPathPost import TestFileNameGenerator
+# from CAMTests.TestPathPost import TestOutputNameSubstitution
+from CAMTests.TestPathPost import TestPostProcessorFactory
+from CAMTests.TestPathPost import TestResolvingPostProcessorName
+from CAMTests.TestPathPost import TestFileNameGenerator
 
-from Tests.TestPathPreferences import TestPathPreferences
-from Tests.TestPathProfile import TestPathProfile
-from Tests.TestPathPropertyBag import TestPathPropertyBag
-from Tests.TestPathRotationGenerator import TestPathRotationGenerator
-from Tests.TestPathSetupSheet import TestPathSetupSheet
-from Tests.TestPathStock import TestPathStock
-from Tests.TestPathThreadMilling import TestPathThreadMilling
-from Tests.TestPathThreadMillingGenerator import TestPathThreadMillingGenerator
-from Tests.TestPathToolBit import TestPathToolBit
-from Tests.TestPathToolChangeGenerator import TestPathToolChangeGenerator
-from Tests.TestPathToolController import TestPathToolController
-from Tests.TestPathUtil import TestPathUtil
-from Tests.TestPathVcarve import TestPathVcarve
-from Tests.TestPathVoronoi import TestPathVoronoi
+from CAMTests.TestPathPreferences import TestPathPreferences
+from CAMTests.TestPathProfile import TestPathProfile
+from CAMTests.TestPathPropertyBag import TestPathPropertyBag
+from CAMTests.TestPathRotationGenerator import TestPathRotationGenerator
+from CAMTests.TestPathSetupSheet import TestPathSetupSheet
+from CAMTests.TestPathStock import TestPathStock
+from CAMTests.TestPathThreadMilling import TestPathThreadMilling
+from CAMTests.TestPathThreadMillingGenerator import TestPathThreadMillingGenerator
+from CAMTests.TestPathToolBit import TestPathToolBit
+from CAMTests.TestPathToolChangeGenerator import TestPathToolChangeGenerator
+from CAMTests.TestPathToolController import TestPathToolController
+from CAMTests.TestPathUtil import TestPathUtil
+from CAMTests.TestPathVcarve import TestPathVcarve
+from CAMTests.TestPathVoronoi import TestPathVoronoi
 
-from Tests.TestCentroidPost import TestCentroidPost
-from Tests.TestGrblPost import TestGrblPost
-from Tests.TestLinuxCNCPost import TestLinuxCNCPost
-from Tests.TestMach3Mach4Post import TestMach3Mach4Post
-from Tests.TestRefactoredCentroidPost import TestRefactoredCentroidPost
-from Tests.TestRefactoredGrblPost import TestRefactoredGrblPost
-from Tests.TestRefactoredLinuxCNCPost import TestRefactoredLinuxCNCPost
-from Tests.TestRefactoredMach3Mach4Post import TestRefactoredMach3Mach4Post
-from Tests.TestRefactoredTestPost import TestRefactoredTestPost
-from Tests.TestRefactoredTestPostGCodes import TestRefactoredTestPostGCodes
-from Tests.TestRefactoredTestPostMCodes import TestRefactoredTestPostMCodes
+from CAMTests.TestCentroidPost import TestCentroidPost
+from CAMTests.TestGrblPost import TestGrblPost
+from CAMTests.TestLinuxCNCPost import TestLinuxCNCPost
+from CAMTests.TestMach3Mach4Post import TestMach3Mach4Post
+from CAMTests.TestRefactoredCentroidPost import TestRefactoredCentroidPost
+from CAMTests.TestRefactoredGrblPost import TestRefactoredGrblPost
+from CAMTests.TestRefactoredLinuxCNCPost import TestRefactoredLinuxCNCPost
+from CAMTests.TestRefactoredMach3Mach4Post import TestRefactoredMach3Mach4Post
+from CAMTests.TestRefactoredTestPost import TestRefactoredTestPost
+from CAMTests.TestRefactoredTestPostGCodes import TestRefactoredTestPostGCodes
+from CAMTests.TestRefactoredTestPostMCodes import TestRefactoredTestPostMCodes
 
 # dummy usage to get flake8 and lgtm quiet
 False if TestCAMSanity.__name__ else True
