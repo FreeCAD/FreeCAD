@@ -588,7 +588,7 @@ class BIM_Library_TaskPanel:
 
             todo.delay(self.reject, None)
         elif ext == ".ifc":
-            import importIFC
+            from importers import importIFC
 
             importIFC.ZOOMOUT = False
             importIFC.insert(path, FreeCAD.ActiveDocument.Name)
