@@ -387,7 +387,7 @@ void QGIFace::buildPixHatch()
         return;
     }
 
-    QImage svgImage(SVGSIZEW, SVGSIZEH, QImage::Format_ARGB32);
+    QImage svgImage(round(wTile), round(hTile), QImage::Format_ARGB32);
     svgImage.fill(Qt::transparent);
     QPainter painter(&svgImage);
     if (svgImage.isNull()) {
@@ -398,9 +398,8 @@ void QGIFace::buildPixHatch()
     m_sharedRender->render(&painter);
 
     // convert the QImage into a QPixmap
-    QPixmap tilePixmap(SVGSIZEW, SVGSIZEH);
+    QPixmap tilePixmap(round(wTile), round(hTile));
     tilePixmap  = QPixmap::fromImage(svgImage);
-    tilePixmap = tilePixmap.scaled(wTile, hTile);
     if (tilePixmap.isNull()) {
         Base::Console().Error("QGIF::buildPixHatch - tilePixmap is null\n");
         return;
@@ -451,7 +450,6 @@ void QGIFace::buildPixHatch()
     m_imageSvgHatchArea->setPixmap(nothing);
     m_imageSvgHatchArea->load(fieldPixmap);
     m_imageSvgHatchArea->centerAt(faceCenter);
-
 }
 
 

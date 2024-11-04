@@ -918,7 +918,7 @@ class ViewProviderJoint:
             return False
 
         if UtilsAssembly.activeAssembly() != assembly:
-            self.gui_doc.setEdit(assembly)
+            vobj.Document.setEdit(assembly)
 
         panel = TaskAssemblyCreateJoint(0, vobj.Object)
         dialog = Gui.Control.showDialog(panel)
@@ -1213,22 +1213,6 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.jType = JointTypes[self.form.jointType.currentIndex()]
         self.form.jointType.currentIndexChanged.connect(self.onJointTypeChanged)
 
-        self.form.distanceSpinbox.valueChanged.connect(self.onDistanceChanged)
-        self.form.distanceSpinbox2.valueChanged.connect(self.onDistance2Changed)
-        self.form.offsetSpinbox.valueChanged.connect(self.onOffsetChanged)
-        self.form.rotationSpinbox.valueChanged.connect(self.onRotationChanged)
-        self.form.offset1Button.clicked.connect(self.onOffset1Clicked)
-        self.form.offset2Button.clicked.connect(self.onOffset2Clicked)
-
-        self.form.limitCheckbox1.stateChanged.connect(self.adaptUi)
-        self.form.limitCheckbox2.stateChanged.connect(self.adaptUi)
-        self.form.limitCheckbox3.stateChanged.connect(self.adaptUi)
-        self.form.limitCheckbox4.stateChanged.connect(self.adaptUi)
-        self.form.limitLenMinSpinbox.valueChanged.connect(self.onLimitLenMinChanged)
-        self.form.limitLenMaxSpinbox.valueChanged.connect(self.onLimitLenMaxChanged)
-        self.form.limitRotMinSpinbox.valueChanged.connect(self.onLimitRotMinChanged)
-        self.form.limitRotMaxSpinbox.valueChanged.connect(self.onLimitRotMaxChanged)
-
         self.form.reverseRotCheckbox.setChecked(self.jType == "Gears")
         self.form.reverseRotCheckbox.stateChanged.connect(self.reverseRotToggled)
 
@@ -1260,6 +1244,34 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.visibilityBackup = False
 
         self.adaptUi()
+
+        self.form.distanceSpinbox.valueChanged.connect(self.onDistanceChanged)
+        self.form.distanceSpinbox2.valueChanged.connect(self.onDistance2Changed)
+        self.form.offsetSpinbox.valueChanged.connect(self.onOffsetChanged)
+        self.form.rotationSpinbox.valueChanged.connect(self.onRotationChanged)
+        bind = Gui.ExpressionBinding(self.form.distanceSpinbox).bind(self.joint, "Distance")
+        bind = Gui.ExpressionBinding(self.form.distanceSpinbox2).bind(self.joint, "Distance2")
+        bind = Gui.ExpressionBinding(self.form.offsetSpinbox).bind(self.joint, "Offset2.Base.z")
+        bind = Gui.ExpressionBinding(self.form.rotationSpinbox).bind(
+            self.joint, "Offset2.Rotation.Yaw"
+        )
+        self.form.offset1Button.clicked.connect(self.onOffset1Clicked)
+        self.form.offset2Button.clicked.connect(self.onOffset2Clicked)
+        self.form.PushButtonReverse.clicked.connect(self.onReverseClicked)
+
+        self.form.limitCheckbox1.stateChanged.connect(self.adaptUi)
+        self.form.limitCheckbox2.stateChanged.connect(self.adaptUi)
+        self.form.limitCheckbox3.stateChanged.connect(self.adaptUi)
+        self.form.limitCheckbox4.stateChanged.connect(self.adaptUi)
+
+        self.form.limitLenMinSpinbox.valueChanged.connect(self.onLimitLenMinChanged)
+        self.form.limitLenMaxSpinbox.valueChanged.connect(self.onLimitLenMaxChanged)
+        self.form.limitRotMinSpinbox.valueChanged.connect(self.onLimitRotMinChanged)
+        self.form.limitRotMaxSpinbox.valueChanged.connect(self.onLimitRotMaxChanged)
+        bind = Gui.ExpressionBinding(self.form.limitLenMinSpinbox).bind(self.joint, "LengthMin")
+        bind = Gui.ExpressionBinding(self.form.limitLenMaxSpinbox).bind(self.joint, "LengthMax")
+        bind = Gui.ExpressionBinding(self.form.limitRotMinSpinbox).bind(self.joint, "AngleMin")
+        bind = Gui.ExpressionBinding(self.form.limitRotMaxSpinbox).bind(self.joint, "AngleMax")
 
         if self.creating:
             # This has to be after adaptUi so that properties default values are adapted
@@ -1630,16 +1642,28 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         needAngleLimits = self.jType in JointUsingLimitAngle
         if needLengthLimits:
             distance = UtilsAssembly.getJointDistance(self.joint)
-            if not self.form.limitCheckbox1.isChecked():
+            if (
+                not self.form.limitCheckbox1.isChecked()
+                and self.form.limitLenMinSpinbox.property("expression") == ""
+            ):
                 self.form.limitLenMinSpinbox.setProperty("rawValue", distance)
-            if not self.form.limitCheckbox2.isChecked():
+            if (
+                not self.form.limitCheckbox2.isChecked()
+                and self.form.limitLenMaxSpinbox.property("expression") == ""
+            ):
                 self.form.limitLenMaxSpinbox.setProperty("rawValue", distance)
 
         if needAngleLimits:
             angle = UtilsAssembly.getJointXYAngle(self.joint) / math.pi * 180
-            if not self.form.limitCheckbox3.isChecked():
+            if (
+                not self.form.limitCheckbox3.isChecked()
+                and self.form.limitRotMinSpinbox.property("expression") == ""
+            ):
                 self.form.limitRotMinSpinbox.setProperty("rawValue", angle)
-            if not self.form.limitCheckbox4.isChecked():
+            if (
+                not self.form.limitCheckbox4.isChecked()
+                and self.form.limitRotMaxSpinbox.property("expression") == ""
+            ):
                 self.form.limitRotMaxSpinbox.setProperty("rawValue", angle)
 
     def moveMouse(self, info):
