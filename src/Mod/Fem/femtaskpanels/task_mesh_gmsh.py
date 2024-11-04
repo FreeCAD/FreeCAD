@@ -46,13 +46,18 @@ class _TaskPanel(base_femmeshtaskpanel._BaseMeshTaskPanel):
     """
 
     def __init__(self, obj):
-        super().__init__(obj)
+        super().__init__(obj, gmshtools.GmshTools(obj))
 
         self.form = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshGmsh.ui"
         )
+        self.text_log = self.form.te_output
+        self.text_time = self.form.l_time
 
-        self.tool = gmshtools.GmshTools(obj)
+        self.setup_connections()
+
+    def setup_connections(self):
+        super().setup_connections()
 
         QtCore.QObject.connect(
             self.form.qsb_max_size, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.max_changed
@@ -69,7 +74,6 @@ class _TaskPanel(base_femmeshtaskpanel._BaseMeshTaskPanel):
         self.form.cb_dimension.addItems(self.obj.getEnumerationsOfProperty("ElementDimension"))
 
         self.form.cb_order.addItems(self.obj.getEnumerationsOfProperty("ElementOrder"))
-        QtCore.QObject.connect(self.timer, QtCore.SIGNAL("timeout()"), self.update_timer_text)
         QtCore.QObject.connect(
             self.form.pb_get_gmsh_version, QtCore.SIGNAL("clicked()"), self.get_version
         )
