@@ -232,7 +232,7 @@ std::vector<PATLineSpec> DrawGeomHatch::getDecodedSpecsFromFile(std::string file
     return PATLineSpec::getSpecsForPattern(fileSpec, myPattern);
 }
 
-std::vector<LineSet>  DrawGeomHatch::getTrimmedLines(int i)   //get the trimmed hatch lines for face i
+std::vector<LineSet>  DrawGeomHatch::getTrimmedLines(int iFace)   //get the trimmed hatch lines for face i
 {
     if (m_lineSets.empty()) {
         makeLineSets();
@@ -243,7 +243,7 @@ std::vector<LineSet>  DrawGeomHatch::getTrimmedLines(int i)   //get the trimmed 
         !source->hasGeometry()) {
         return std::vector<LineSet>();
     }
-    return getTrimmedLines(source, m_lineSets, i, ScalePattern.getValue(),
+    return getTrimmedLines(source, m_lineSets, iFace, ScalePattern.getValue(),
                            PatternRotation.getValue(), PatternOffset.getValue());
 }
 
@@ -386,38 +386,40 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
 }
 
 /* static */
-std::vector<TopoDS_Edge> DrawGeomHatch::makeEdgeOverlay(PATLineSpec hl, Bnd_Box b, double scale)
+std::vector<TopoDS_Edge> DrawGeomHatch::makeEdgeOverlay(PATLineSpec hatchLine, Bnd_Box bBox, double scale)
 {
+    constexpr double RightAngleDegrees{90.0};
+    constexpr double HalfCircleDegrees{180.0};
     std::vector<TopoDS_Edge> result;
 
     double minX, maxX, minY, maxY, minZ, maxZ;
-    b.Get(minX, minY, minZ, maxX, maxY, maxZ);
+    bBox.Get(minX, minY, minZ, maxX, maxY, maxZ);
     //make the overlay bigger to cover rotations. might need to be bigger than 2x.
-    double centerX = (minX + maxX) / 2.0;
     double widthX = maxX - minX;
-    minX = centerX - widthX;
-    maxX = centerX + widthX;
-    double centerY = (minY + maxY) / 2.0;
     double widthY = maxY - minY;
-    minY = centerY - widthY;
-    maxY = centerY + widthY;
+    double width = std::max(widthX, widthY);
 
-    Base::Vector3d start;
-    Base::Vector3d end;
-    Base::Vector3d origin = hl.getOrigin();
-    double interval = hl.getIntervalX() * scale;
-    double angle = hl.getAngle();
+    double centerX = (minX + maxX) / 2;
+    minX = centerX - width;
+    maxX = centerX + width;
+    double centerY = (minY + maxY) / 2;
+    minY = centerY - width;
+    maxY = centerY + width;
+
+    Base::Vector3d origin = hatchLine.getOrigin();
+    double interval = hatchLine.getIntervalX() * scale;
+    double angle = hatchLine.getAngle();
 
     //only dealing with angles -180:180 for now
-    if (angle > 90.0) {
-         angle = -(180.0 - angle);
-    } else if (angle < -90.0) {
-        angle = (180 + angle);
+    if (angle > RightAngleDegrees) {
+         angle = -(HalfCircleDegrees - angle);
+    } else if (angle < -RightAngleDegrees) {
+        angle = (HalfCircleDegrees + angle);
     }
-    double slope = hl.getSlope();
+    double slope = hatchLine.getSlope();
 
     if (angle == 0.0) {         //odd case 1: horizontal lines
-        interval = hl.getInterval() * scale;
+        interval = hatchLine.getInterval() * scale;
         double atomY  = origin.y;
         int repeatUp = (int) fabs((maxY - atomY)/interval);
         int repeatDown  = (int) fabs(((atomY - minY)/interval));
@@ -431,9 +433,9 @@ std::vector<TopoDS_Edge> DrawGeomHatch::makeEdgeOverlay(PATLineSpec hl, Bnd_Box 
             TopoDS_Edge newLine = makeLine(newStart, newEnd);
             result.push_back(newLine);
         }
-    } else if (angle == 90.0 ||
-               angle == -90.0) {         //odd case 2: vertical lines
-        interval = hl.getInterval() * scale;
+    } else if (angle == RightAngleDegrees ||
+               angle == -RightAngleDegrees) {         //odd case 2: vertical lines
+        interval = hatchLine.getInterval() * scale;
         double atomX  = origin.x;
         int repeatRight = (int) fabs((maxX - atomX)/interval);
         int repeatLeft  = (int) fabs((atomX - minX)/interval);
@@ -503,9 +505,9 @@ TopoDS_Edge DrawGeomHatch::makeLine(Base::Vector3d s, Base::Vector3d e)
 
 //! get all the untrimmed hatchlines for a face
 //! these will be clipped to shape on the gui side
-std::vector<LineSet> DrawGeomHatch::getFaceOverlay(int fdx)
+std::vector<LineSet> DrawGeomHatch::getFaceOverlay(int iFace)
 {
-//    Base::Console().Message("TRACE - DGH::getFaceOverlay(%d)\n", fdx);
+//    Base::Console().Message("TRACE - DGH::getFaceOverlay(%d)\n", iFace);
     std::vector<LineSet> result;
     DrawViewPart* source = getSourceView();
     if (!source ||
@@ -513,7 +515,7 @@ std::vector<LineSet> DrawGeomHatch::getFaceOverlay(int fdx)
         return result;
     }
 
-    TopoDS_Face face = extractFace(source, fdx);
+    TopoDS_Face face = extractFace(source, iFace);
 
     Bnd_Box bBox;
     BRepBndLib::AddOptimal(face, bBox);
