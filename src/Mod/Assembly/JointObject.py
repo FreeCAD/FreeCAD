@@ -918,7 +918,7 @@ class ViewProviderJoint:
             return False
 
         if UtilsAssembly.activeAssembly() != assembly:
-            self.gui_doc.setEdit(assembly)
+            vobj.Document.setEdit(assembly)
 
         panel = TaskAssemblyCreateJoint(0, vobj.Object)
         dialog = Gui.Control.showDialog(panel)
