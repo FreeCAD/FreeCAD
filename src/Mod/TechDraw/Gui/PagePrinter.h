@@ -96,7 +96,6 @@ public:
     void setOwner(MDIViewPage* owner) { m_owner = owner; }
     void setScene(QGSPage* scene);
 
-
     TechDraw::DrawPage * getPage() { return m_vpPage->getDrawPage(); }
 
     ViewProviderPage* getViewProviderPage() {return m_vpPage;}
@@ -107,6 +106,8 @@ public:
     QPageSize::PageSizeId getPaperSize() const { return m_paperSize; }
     double getPageWidth() const { return m_pagewidth; }
     double getPageHeight() const { return m_pageheight; }
+
+    static void resetPageState(ViewProviderPage* vpPage, bool savedState);
 
 private:
     std::string m_objectName;

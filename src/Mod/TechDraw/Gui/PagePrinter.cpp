@@ -56,7 +56,6 @@
 #include "QGSPage.h"
 #include "Rez.h"
 #include "ViewProviderPage.h"
-#include "MDIViewPage.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -207,8 +206,6 @@ void PagePrinter::print(QPrinter* printer)
 //static routine to print all pages in a document
 void PagePrinter::printAll(QPrinter* printer, App::Document* doc)
 {
-    Base::Console().Message("PP::printAll()\n");
-
     QPageLayout pageLayout = printer->pageLayout();
     std::vector<App::DocumentObject*> docObjs =
         doc->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
@@ -231,9 +228,11 @@ void PagePrinter::printAll(QPrinter* printer, App::Document* doc)
         if (!vpp) {
             continue;// can't print this one
         }
-        // is there always a mdi when printAll is called?
-        auto mdi = vpp->getMDIViewPage();
-        mdi->savePageExportState(vpp);
+        auto guiDoc = vpp->getDocument();
+        if (!guiDoc) {
+            continue;
+        }
+        bool pageModifiedState = guiDoc->isModified();
 
         auto dPage = static_cast<TechDraw::DrawPage*>(obj);
         double width = A4Heightmm;//default to A4 Landscape 297 x 210
@@ -249,7 +248,7 @@ void PagePrinter::printAll(QPrinter* printer, App::Document* doc)
         QRect targetRect = printer->pageLayout().fullRectPixels(printer->resolution());
 
         renderPage(vpp, painter, sourceRect, targetRect);
-        mdi->resetPageExportState(vpp);
+        resetPageState(vpp, pageModifiedState);
     }
 }
 
@@ -295,9 +294,11 @@ void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
         if (!vpp) {
             continue;// can't print this one
         }
-        // is there always a mdi when printAll is called?
-        auto mdi = vpp->getMDIViewPage();
-        mdi->savePageExportState(vpp);
+        auto guiDoc = vpp->getDocument();
+        if (!guiDoc) {
+            continue;
+        }
+        bool pageModifiedState = guiDoc->isModified();
 
         auto scene = vpp->getQGSPage();
         scene->setExportingPdf(true);
@@ -315,8 +316,7 @@ void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
         QRectF sourceRect(0.0, Rez::guiX(-height), Rez::guiX(width), Rez::guiX(height));
         QRect targetRect(0, 0, width * dpmm, height * dpmm);
         renderPage(vpp, painter, sourceRect, targetRect);
-        mdi->resetPageExportState(vpp);
-
+        resetPageState(vpp, pageModifiedState);
     }
 }
 
@@ -422,4 +422,26 @@ PaperAttributes::PaperAttributes()
     paperSize = QPageSize::A4;
     pagewidth = A4Heightmm;
     pageheight = A4Widthmm;
+}
+
+void PagePrinter::resetPageState(ViewProviderPage* vpPage, bool savedState)
+{
+    auto pageFeature  = vpPage->getDrawPage();
+    if (!pageFeature) {
+        // how did this happen?
+        // if we have a view provider for a page, but no page, something hase gone badly
+        // wrong somewhere
+        return;
+    }
+
+    auto guiDoc = vpPage->getDocument();
+    if (!guiDoc) {
+        // same this here.  can't really have a view provider without a document
+        return;
+    }
+    auto scene = vpPage->getQGSPage();
+    scene->setExportingPdf(false);
+    scene->setExportingSvg(false);
+    guiDoc->setModified(savedState);
+    pageFeature->redrawCommand();
 }

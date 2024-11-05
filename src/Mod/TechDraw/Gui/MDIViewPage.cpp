@@ -492,7 +492,6 @@ void MDIViewPage::print(QPrinter* printer)
 //static routine to print all pages in a document
 void MDIViewPage::printAll(QPrinter* printer, App::Document* doc)
 {
-    // Base::Console().Message("MDIVP::printAll()\n");
     PagePrinter::printAll(printer, doc);
 }
 
