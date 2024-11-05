@@ -29,7 +29,6 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief base task panel for mesh object
 
-import time
 from abc import ABC, abstractmethod
 
 from PySide import QtCore
@@ -78,6 +77,11 @@ class _BaseMeshTaskPanel(base_femtaskpanel._BaseTaskPanel, ABC):
             self.tool.process,
             QtCore.SIGNAL("finished(int,QProcess::ExitStatus)"),
             self.process_finished,
+        )
+        QtCore.QObject.connect(
+            self.tool.process,
+            QtCore.SIGNAL("finished(int,QProcess::ExitStatus)"),
+            self.stop_timer,
         )
         QtCore.QObject.connect(
             self.tool.process,
@@ -171,7 +175,6 @@ class _BaseMeshTaskPanel(base_femtaskpanel._BaseTaskPanel, ABC):
         QtGui.QApplication.restoreOverrideCursor()
         if self.tool.process.state() != QtCore.QProcess.ProcessState.NotRunning:
             self.tool.process.kill()
-            self._thread.quit()
             FreeCAD.Console.PrintWarning("Process aborted\n")
         else:
             return super().reject()
@@ -189,19 +192,17 @@ class _BaseMeshTaskPanel(base_femtaskpanel._BaseTaskPanel, ABC):
             self.run_mesher()
 
     def update_timer_text(self):
-        if (
-            self._thread.isRunning()
-            or self.tool.process.state() != QtCore.QProcess.ProcessState.NotRunning
-        ):
-            self.text_time.setText(f"Time: {time.time() - self.time_start:4.1f}")
-        else:
-            self.timer.stop()
-            QtGui.QApplication.restoreOverrideCursor()
+        self.text_time.setText(f"Time: {self.elapsed.elapsed()/1000:4.1f} s")
+
+    def stop_timer(self, code, status):
+        self.timer.stop()
+        QtGui.QApplication.restoreOverrideCursor()
 
     def run_mesher(self):
+        self.elapsed = QtCore.QElapsedTimer()
+        self.elapsed.start()
+        self.update_timer_text()
         self.timer.start(100)
-        self.time_start = time.time()
-        self.text_time.setText(f"Time: {time.time() - self.time_start:4.1f}: ")
 
         self._thread.start()
 
