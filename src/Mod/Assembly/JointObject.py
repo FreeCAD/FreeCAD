@@ -1214,7 +1214,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.form.reverseRotCheckbox.setChecked(self.jType == "Gears")
         self.form.reverseRotCheckbox.stateChanged.connect(self.reverseRotToggled)
 
-        self.form.offsetTabs.currentChanged.connect(self.on_offset_tab_changed)
+        self.form.advancedOffsetCheckbox.stateChanged.connect(self.advancedOffsetToggled)
 
         if jointObj:
             Gui.Selection.clearSelection()
@@ -1492,19 +1492,35 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.form.distanceSpinbox.setProperty("minimum", float("-inf"))
             self.form.distanceSpinbox2.setProperty("minimum", float("-inf"))
 
-        if jType in JointUsingOffset:
-            self.form.offsetLabel.show()
-            self.form.offsetSpinbox.show()
-        else:
+        if self.form.advancedOffsetCheckbox.isChecked():
+            self.form.offset1Label.show()
+            self.form.offset2Label.show()
+            self.form.offset1Button.show()
+            self.form.offset2Button.show()
+
             self.form.offsetLabel.hide()
             self.form.offsetSpinbox.hide()
-
-        if jType in JointUsingRotation:
-            self.form.rotationLabel.show()
-            self.form.rotationSpinbox.show()
-        else:
             self.form.rotationLabel.hide()
             self.form.rotationSpinbox.hide()
+        else:
+            self.form.offset1Label.hide()
+            self.form.offset2Label.hide()
+            self.form.offset1Button.hide()
+            self.form.offset2Button.hide()
+
+            if jType in JointUsingOffset:
+                self.form.offsetLabel.show()
+                self.form.offsetSpinbox.show()
+            else:
+                self.form.offsetLabel.hide()
+                self.form.offsetSpinbox.hide()
+
+            if jType in JointUsingRotation:
+                self.form.rotationLabel.show()
+                self.form.rotationSpinbox.show()
+            else:
+                self.form.rotationLabel.hide()
+                self.form.rotationSpinbox.hide()
 
         if jType in JointUsingReverse:
             self.form.PushButtonReverse.show()
@@ -1572,7 +1588,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         )
         self.blockOffsetRotation = False
 
-    def on_offset_tab_changed(self):
+    def advancedOffsetToggled(self, on):
+        self.adaptUi()
         self.updateOffsetWidgets()
 
     def onOffset1Clicked(self):
