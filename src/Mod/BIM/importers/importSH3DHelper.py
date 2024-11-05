@@ -115,34 +115,14 @@ class SH3DImporter:
         Args:
             filename (str): the filename of the ZIP file containing the SH3D
               objects.
-            progress_bar (_type_,optional): a FreeCAD.Base.ProgressIndicator
+            progress_bar (ProgressIndicator,optional): a ProgressIndicator
               called to let the User monitor the import process
         """
         super().__init__()
         self.filename = filename
         self.progress_bar = progress_bar
-        self.preferences = self._get_preferences()
-
-        self.handlers = {
-            'level': LevelHandler(self),
-            'room': RoomHandler(self),
-            'wall': WallHandler(self),
-        }
-        if self.preferences["IMPORT_DOORS_AND_WINDOWS"]:
-            self.handlers['doorOrWindow'] = DoorOrWindowHandler(self)
-
-        if self.preferences["IMPORT_FURNITURES"]:
-            self.handlers['pieceOfFurniture'] = FurnitureHandler(self)
-            self.handlers['furnitureGroup'] = None
-
-        if self.preferences["IMPORT_LIGHTS"]:
-            self.handlers['light'] = LightHandler(self)
-
-        if self.preferences["IMPORT_CAMERAS"]:
-            camera_handler = CameraHandler(self)
-            self.handlers['observerCamera'] = camera_handler
-            self.handlers['camera'] = camera_handler
-
+        self.preferences = None
+        self.handlers = {}
         self.total_object_count = 0
         self.current_object_count = 0
         self.zip = None
@@ -160,6 +140,9 @@ class SH3DImporter:
         Raises:
             ValueError: if an invalid SH3D file is detected
         """
+        self._get_preferences()
+        self._setup_handlers()
+
         doc = App.ActiveDocument
         if self.progress_bar:
             self.progress_bar.start(f"Importing SweetHome 3D file '{self.filename}'. Please wait ...", -1)
@@ -249,7 +232,10 @@ class SH3DImporter:
 
     def _get_preferences(self):
         """Retrieve the SH3D preferences available in Mod/Arch."""
-        preferences = {
+        if App.GuiUp and get_param_arch("sh3dShowDialog"):
+            Gui.showPreferences("Import-Export", 7)
+
+        self.preferences = {
             'DEBUG': get_param_arch("sh3dDebug"),
             'IMPORT_DOORS_AND_WINDOWS': get_param_arch("sh3dImportDoorsAndWindows"),
             'IMPORT_FURNITURES': get_param_arch("sh3dImportFurnitures"),
@@ -263,7 +249,30 @@ class SH3DImporter:
             'DEFAULT_FLOOR_COLOR': color_fc2sh(get_param_arch("sh3dDefaultFloorColor")),
             'DEFAULT_CEILING_COLOR': color_fc2sh(get_param_arch("sh3dDefaultCeilingColor")),
         }
-        return preferences
+
+        _msg(f"sh3dShowDialog={get_param_arch('sh3dShowDialog')}")
+        _msg(f"sh3dDebug={get_param_arch('sh3dDebug')}")
+
+    def _setup_handlers(self):
+        self.handlers = {
+            'level': LevelHandler(self),
+            'room': RoomHandler(self),
+            'wall': WallHandler(self),
+        }
+        if self.preferences["IMPORT_DOORS_AND_WINDOWS"]:
+            self.handlers['doorOrWindow'] = DoorOrWindowHandler(self)
+
+        if self.preferences["IMPORT_FURNITURES"]:
+            self.handlers['pieceOfFurniture'] = FurnitureHandler(self)
+            self.handlers['furnitureGroup'] = None
+
+        if self.preferences["IMPORT_LIGHTS"]:
+            self.handlers['light'] = LightHandler(self)
+
+        if self.preferences["IMPORT_CAMERAS"]:
+            camera_handler = CameraHandler(self)
+            self.handlers['observerCamera'] = camera_handler
+            self.handlers['camera'] = camera_handler
 
     def _refresh(self):
         App.ActiveDocument.recompute()
