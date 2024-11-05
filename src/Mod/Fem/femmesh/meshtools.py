@@ -113,6 +113,9 @@ def get_femnodes_by_refshape(femmesh, ref):
             nodes += femmesh.getNodesByFace(r)
         elif r.ShapeType == "Solid":
             nodes += femmesh.getNodesBySolid(r)
+        elif r.ShapeType == "Compound":
+            for s in r.Solids:
+                nodes += femmesh.getNodesBySolid(s)
         else:
             FreeCAD.Console.PrintMessage("  No Vertice, Edge, Face or Solid as reference shapes!\n")
     return nodes
@@ -1749,42 +1752,51 @@ def get_reference_group_elements(obj, aPart):
         childs = r[1]
         # FreeCAD.Console.PrintMessage("{}\n".format(parent))
         # FreeCAD.Console.PrintMessage("{}\n".format(childs))
-        for child in childs:
-            ref_shape = parent.getSubObject(child)
-            FreeCAD.Console.PrintLog(f"{ref_shape}\n")
-            found_element = geomtools.find_element_in_shape(aShape, ref_shape)
-            if found_element is not None:
-                elements.append(found_element)
-            else:
-                FreeCAD.Console.PrintError(
-                    "Problem: For the geometry of the "
-                    "following shape was no Shape found: {}\n".format(ref_shape)
-                )
-                FreeCAD.Console.PrintMessage("    " + obj.Name + "\n")
-                FreeCAD.Console.PrintMessage("    " + str(obj.References) + "\n")
-                FreeCAD.Console.PrintMessage("    " + r[0].Name + "\n")
-                if parent.Name != aPart.Name:
-                    FreeCAD.Console.PrintError(
-                        "The reference Shape is not a child "
-                        "nor it is the shape the mesh is made of. : {}\n".format(ref_shape)
-                    )
-                    FreeCAD.Console.PrintMessage(
-                        f"{aPart.Name}--> Name of the Feature we where searching in.\n"
-                    )
-                    FreeCAD.Console.PrintMessage(
-                        "{} --> Name of the parent Feature of reference Shape "
-                        "(Use the same as in the line before and you "
-                        "will have less trouble :-) !!!!!!).\n".format(parent.Name)
-                    )
-                    # import Part
-                    # Part.show(aShape)
-                    # Part.show(ref_shape)
+
+        for child1 in childs:
+            ref_shape1 = parent.getSubObject(child1)
+            subchilds = [
+                ref_shape1,
+            ]
+            if (
+                ref_shape1.ShapeType == "Compound"
+            ):  # if user selects a compound, add all the solids in it
+                subchilds = ref_shape1.Solids
+            for ref_shape in subchilds:
+                FreeCAD.Console.PrintLog(f"{ref_shape}\n")
+                found_element = geomtools.find_element_in_shape(aShape, ref_shape)
+                if found_element is not None:
+                    elements.append(found_element)
                 else:
-                    FreeCAD.Console.PrintError("This should not happen, please debug!\n")
-                    # in this case we would not have needed to use the
-                    # is_same_geometry() inside geomtools.find_element_in_shape()
-                    # AFAIK we could have used the Part methods isPartner() or even isSame()
-                    # We're going to find out when we need to debug this :-)!
+                    FreeCAD.Console.PrintError(
+                        "Problem: For the geometry of the "
+                        "following shape was no Shape found: {}\n".format(ref_shape)
+                    )
+                    FreeCAD.Console.PrintMessage("    " + obj.Name + "\n")
+                    FreeCAD.Console.PrintMessage("    " + str(obj.References) + "\n")
+                    FreeCAD.Console.PrintMessage("    " + r[0].Name + "\n")
+                    if parent.Name != aPart.Name:
+                        FreeCAD.Console.PrintError(
+                            "The reference Shape is not a child "
+                            "nor it is the shape the mesh is made of. : {}\n".format(ref_shape)
+                        )
+                        FreeCAD.Console.PrintMessage(
+                            f"{aPart.Name}--> Name of the Feature we where searching in.\n"
+                        )
+                        FreeCAD.Console.PrintMessage(
+                            "{} --> Name of the parent Feature of reference Shape "
+                            "(Use the same as in the line before and you "
+                            "will have less trouble :-) !!!!!!).\n".format(parent.Name)
+                        )
+                        # import Part
+                        # Part.show(aShape)
+                        # Part.show(ref_shape)
+                    else:
+                        FreeCAD.Console.PrintError("This should not happen, please debug!\n")
+                        # in this case we would not have needed to use the
+                        # is_same_geometry() inside geomtools.find_element_in_shape()
+                        # AFAIK we could have used the Part methods isPartner() or even isSame()
+                        # We're going to find out when we need to debug this :-)!
     return (key, sorted(elements))
 
 
