@@ -40,8 +40,6 @@
 #include "FeatureRevolution.h"
 #include "Mod/Part/App/TopoShapeOpCode.h"
 
-FC_LOG_LEVEL_INIT("PartDesign", true, true)
-
 using namespace PartDesign;
 
 namespace PartDesign {
