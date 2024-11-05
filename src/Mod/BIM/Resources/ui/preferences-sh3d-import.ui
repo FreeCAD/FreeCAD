@@ -43,7 +43,7 @@
               <widget class="Gui::PrefCheckBox" name="checkBox_2">
                 <property name="toolTip">
                   <string>Shows verbose debug messages during import of SH3D files in the Report
-                    view panel</string>
+                    view panel. Log level message must be allowed for this setting to have an effect.</string>
                 </property>
                 <property name="text">
                   <string>Show debug messages</string>

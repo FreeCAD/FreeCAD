@@ -66,7 +66,6 @@ PREDEFINED_RGB = {"black": (0, 0, 0),
                   "cyan": (0, 1.0, 1.0),
                   "white": (1.0, 1.0, 1.0)}
 
-TRACE = True
 # Sometimes, the Part::Sweep creates a "twisted" sweep that
 #   impeeds the creation of the corresponding wall.
 FIX_INVALID_SWEEP = True
@@ -176,7 +175,7 @@ class SH3DImporter:
             else:
                 # Has the default floor already been created from a
                 # previous import?
-                _log("No level defined. Using default level ...")
+                if self.preferences["DEBUG"]: _log("No level defined. Using default level ...")
                 self.default_floor = self.fc_objects.get('Level') if 'Level' in self.fc_objects else self._create_default_floor()
                 self.add_floor(self.default_floor)
 
@@ -250,9 +249,6 @@ class SH3DImporter:
             'DEFAULT_CEILING_COLOR': color_fc2sh(get_param_arch("sh3dDefaultCeilingColor")),
         }
 
-        _msg(f"sh3dShowDialog={get_param_arch('sh3dShowDialog')}")
-        _msg(f"sh3dDebug={get_param_arch('sh3dDebug')}")
-
     def _setup_handlers(self):
         self.handlers = {
             'level': LevelHandler(self),
@@ -297,7 +293,7 @@ class SH3DImporter:
         if valid_values:
             setattr(obj, name, valid_values)
         if value is None:
-            if self.preferences["DEBUG"]: _log(f"Setting obj.{name}=None")
+            if self.preferences["DEBUG"]:_log(f"Setting obj.{name}=None")
             return
         if type(value) is ET.Element:
             if type_ == "App::PropertyString":
@@ -341,10 +337,10 @@ class SH3DImporter:
             if sh_type:
                 assert fc_object.shType == sh_type, f"Invalid shType: expected {sh_type}, got {fc_object.shType}"
             if self.preferences["DEBUG"]:
-                _msg(translate("BIM", f"Merging imported element '{id}' with existing element of type '{type(fc_object)}'"))
+                _log(translate("BIM", f"Merging imported element '{id}' with existing element of type '{type(fc_object)}'"))
             return fc_object
         if self.preferences["DEBUG"]:
-            _msg(translate("BIM", f"No element found with id '{id}' and type '{sh_type}'"))
+            _log(translate("BIM", f"No element found with id '{id}' and type '{sh_type}'"))
         return None
 
     def add_floor(self, floor):
@@ -477,7 +473,7 @@ class SH3DImporter:
             _msg(f"Importing {len(elements)} '{tag}' elements ...")
         def _process(tuple):
             (i, elm) = tuple
-            _log(f"Importing <{tag}>#{i} ({self.current_object_count + 1}/{self.total_object_count}) ...")
+            _msg(f"Importing {tag}#{i} ({self.current_object_count + 1}/{self.total_object_count}) ...")
             try:
                 self.handlers[tag].process(parent, i, elm)
             except Exception as e:
@@ -835,7 +831,7 @@ class WallHandler(BaseHandler):
         section_end = self._get_section(wall_details, False, next_wall_details)
 
         spine = Draft.makeLine(start, end)
-        if TRACE:
+        if self.importer.preferences["DEBUG"]:
             App.ActiveDocument.recompute([section_start, section_end, spine])
             _log(f"_create_straight_segment(): wall {self._pv(start)}->{self._pv(end)} => section_start={self._ps(section_start)}, section_end={self._ps(section_end)}")
 
@@ -901,7 +897,7 @@ class WallHandler(BaseHandler):
             i_start_z = i_start + App.Vector(0, 0, height)
             i_end_z = i_end + App.Vector(0, 0, height)
 
-            if TRACE:
+            if self.importer.preferences["DEBUG"]:
                 _log(f"Joining wall {self._pv(end-start)}@{self._pv(start)} and wall {self._pv(s_end-s_start)}@{self._pv(s_start)}")
                 _log(f"    wall: {self._pe(lside)},{self._pe(rside)}")
                 _log(f" sibling: {self._pe(s_lside)},{self._pe(s_rside)}")
@@ -1008,7 +1004,7 @@ class WallHandler(BaseHandler):
         edge = DraftGeomUtils.edg(start, end)
         lside = DraftGeomUtils.offset(edge, loffset)
         rside = DraftGeomUtils.offset(edge, roffset)
-        if TRACE:
+        if self.importer.preferences["DEBUG"]:
             _log(f"_get_sides(): wall {self._pv(end-start)}@{self._pv(start)} => normal={self._pv(normal)}, lside={self._pe(lside)}, rside={self._pe(rside)}")
         return lside, rside
 
@@ -1616,4 +1612,4 @@ def hex2rgb(hexcode):
 
 
 def _hex2transparency(hexcode):
-    return 50 if TRACE else 100 - int(int(hexcode[0:2], 16) * 100 / 255)
+    return 100 - int(int(hexcode[0:2], 16) * 100 / 255)
