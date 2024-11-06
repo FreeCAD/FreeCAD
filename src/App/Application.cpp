@@ -35,6 +35,8 @@
 # endif
 # include <boost/program_options.hpp>
 # include <boost/date_time/posix_time/posix_time.hpp>
+# include <chrono>
+# include <random>
 #endif
 
 #ifdef FC_OS_WIN32
@@ -1117,7 +1119,17 @@ Application::TransactionSignaller::~TransactionSignaller() {
 
 int64_t Application::applicationPid()
 {
-    return QCoreApplication::applicationPid();
+    static int64_t randomNumber = []() {
+        auto tp = std::chrono::high_resolution_clock::now();
+        auto dur = tp.time_since_epoch();
+        auto seed = dur.count();
+        std::mt19937 generator(static_cast<unsigned>(seed));
+        constexpr int64_t minValue {1};
+        constexpr int64_t maxValue {1000000};
+        std::uniform_int_distribution<int64_t> distribution(minValue, maxValue);
+        return distribution(generator);
+    }();
+    return randomNumber;
 }
 
 std::string Application::getHomePath()
