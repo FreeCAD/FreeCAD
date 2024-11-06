@@ -703,12 +703,14 @@ void AboutDialog::copyToClipboard()
 
             str << "\n";
             
-            
-            
             QClipboard* cb = QApplication::clipboard();
             cb->setText(data);
-
-            ui->copyButton->setText(QString::fromStdString("copied"));
+            
+            ui->copyButton->setText(tr("copied"));
+            QTimer *timer = new QTimer(this);
+            timer -> start(2000);
+            
+            connect(timer, &QTimer::timeout, [this]() { ui->copyButton->setText(tr("Copy to clipboard")); } );
             
         }
     }
