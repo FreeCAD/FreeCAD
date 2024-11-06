@@ -41,6 +41,7 @@
 #include <Gui/ViewProvider.h>
 
 #include <QFormLayout>
+#include <QHBoxLayout>
 #include <QPushButton>
 #include <QSettings>
 
@@ -50,6 +51,7 @@ namespace
 {
 constexpr auto taskMeasureSettingsGroup = "TaskMeasure";
 constexpr auto taskMeasureShowDeltaSettingsName = "ShowDelta";
+constexpr auto taskMeasureAutoSaveSettingsName = "AutoSave";
 }  // namespace
 
 TaskMeasure::TaskMeasure()
@@ -65,11 +67,17 @@ TaskMeasure::TaskMeasure()
     QSettings settings;
     settings.beginGroup(QLatin1String(taskMeasureSettingsGroup));
     delta = settings.value(QLatin1String(taskMeasureShowDeltaSettingsName), true).toBool();
+    mAutoSave = settings.value(QLatin1String(taskMeasureAutoSaveSettingsName), true).toBool();
 
     showDelta = new QCheckBox();
     showDelta->setChecked(delta);
     showDeltaLabel = new QLabel(tr("Show Delta:"));
     connect(showDelta, &QCheckBox::stateChanged, this, &TaskMeasure::showDeltaChanged);
+
+    autoSaveCheckBox = new QCheckBox();
+    autoSaveCheckBox->setChecked(mAutoSave);
+    autoSaveLabel = new QLabel(tr("Auto Save Measurement:"));
+    connect(autoSaveCheckBox, &QCheckBox::stateChanged, this, &TaskMeasure::autoSaveChanged);
 
     // Create mode dropdown and add all registered measuretypes
     modeSwitch = new QComboBox();
@@ -100,8 +108,12 @@ TaskMeasure::TaskMeasure()
 
     formLayout->addRow(tr("Mode:"), modeSwitch);
     formLayout->addRow(showDeltaLabel, showDelta);
+    formLayout->addRow(autoSaveLabel, autoSaveCheckBox);
     formLayout->addRow(tr("Result:"), valueResult);
     layout->addLayout(formLayout);
+    auto* endLayout = new QHBoxLayout();
+    endLayout->addWidget(new QLabel(tr("Use CTRL modifier to add a selection to the current measurement.")));
+    layout->addLayout(endLayout);
 
     Content.emplace_back(taskbox);
 
@@ -134,7 +146,7 @@ void TaskMeasure::modifyStandardButtons(QDialogButtonBox* box)
     QPushButton* btn = box->button(QDialogButtonBox::Apply);
     btn->setText(tr("Save"));
     btn->setToolTip(tr("Save the measurement in the active document."));
-    connect(btn, &QPushButton::released, this, &TaskMeasure::apply);
+    connect(btn, &QPushButton::released, this, qOverload<>(&TaskMeasure::apply));
 
     // Disable button by default
     btn->setEnabled(false);
@@ -341,11 +353,17 @@ void TaskMeasure::invoke()
     update();
 }
 
-bool TaskMeasure::apply()
+bool TaskMeasure::apply() {
+    return apply(true);
+}
+
+bool TaskMeasure::apply(bool reset)
 {
     ensureGroup(_mMeasureObject);
     _mMeasureObject = nullptr;
-    reset();
+    if (reset) {
+        this->reset();
+    }
 
     // Commit transaction
     App::GetApplication().closeActiveTransaction();
@@ -401,6 +419,9 @@ void TaskMeasure::clearSelection()
 
 void TaskMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
+    if (mSkipSelectionChange) {
+        return;
+    }
     // Skip non-relevant events
     if (msg.Type != SelectionChanges::AddSelection && msg.Type != SelectionChanges::RmvSelection
         && msg.Type != SelectionChanges::SetSelection
@@ -409,6 +430,22 @@ void TaskMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
         return;
     }
 
+    // If the control modifier is pressed, the object is just added to the current measurement
+    // If the control modifier is not pressed, a new measurement will be started. If autosave is on,
+    // The old measurement will be saved otherwise discharded
+    if (!(QGuiApplication::keyboardModifiers() & Qt::ControlModifier)) {
+        mSkipSelectionChange = true;
+        if (mAutoSave &&  this->buttonBox->button(QDialogButtonBox::Apply)->isEnabled()) {
+            apply(false);
+        }
+
+        App::Document* doc = App::GetApplication().getActiveDocument();
+        if (doc) {
+            // Select only last added object, because it is the first object of the new measurement
+            Gui::Selection().setSelection(doc->getName(), {Gui::Selection().getSelection().back().pObject});
+        }
+        mSkipSelectionChange = false;
+    }
     update();
 }
 
@@ -463,6 +500,14 @@ void TaskMeasure::showDeltaChanged(int checkState)
     settings.setValue(QLatin1String(taskMeasureShowDeltaSettingsName), delta);
 
     this->update();
+}
+
+void TaskMeasure::autoSaveChanged(int checkState) {
+    mAutoSave = checkState == Qt::CheckState::Checked;
+
+    QSettings settings;
+    settings.beginGroup(QLatin1String(taskMeasureSettingsGroup));
+    settings.setValue(QLatin1String(taskMeasureAutoSaveSettingsName), mAutoSave);
 }
 
 void TaskMeasure::setModeSilent(App::MeasureType* mode)
