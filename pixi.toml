@@ -43,6 +43,7 @@ xerces-c = "*"
 yaml-cpp = "*"
 zlib = "*"
 zstd = "*"
+scipy = ">=1.14.1,<2"
 
 [feature.qt5.dependencies]
 qt-main = "*"
@@ -163,11 +164,11 @@ tasks = { configure = { cmd = [ "cmake", "-B", "build_qt6", "--preset", "conda-m
 tasks = { configure = { cmd = [ "cmake", "-B", "build_qt6", "--preset", "conda-windows-debug", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"]} }
 
 [feature.qt5.tasks]
-build = { cmd = [ "cmake", "--build", "build_qt5" ], depends-on = ["configure"]}
+build = { cmd = [ "cmake", "--build", "build_qt5", "-j", "2" ], depends-on = ["configure"]}
 install = { cmd = [ "cmake", "--install", "build_qt5" ], depends-on = ["build"]}
 
 [feature.qt6.tasks]
-build = { cmd = [ "cmake", "--build", "build_qt6" ], depends-on = ["configure"]}
+build = { cmd = [ "cmake", "--build", "build_qt6", "-j", "2" ], depends-on = ["configure"]}
 install = { cmd = [ "cmake", "--install", "build_qt6" ], depends-on = ["build"]}
 
 [tasks]
