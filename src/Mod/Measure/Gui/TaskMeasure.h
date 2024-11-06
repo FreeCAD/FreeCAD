@@ -78,8 +78,8 @@ private:
     QComboBox* modeSwitch {nullptr};
     QCheckBox* showDelta {nullptr};
     QLabel* showDeltaLabel {nullptr};
-    QCheckBox* autoSaveCheckBox{nullptr};
-    QLabel* autoSaveLabel{nullptr};
+    QCheckBox* autoSaveCheckBox {nullptr};
+    QLabel* autoSaveLabel {nullptr};
 
     void removeObject();
     void onModeChanged(int index);

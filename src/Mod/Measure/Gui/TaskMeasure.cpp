@@ -112,7 +112,8 @@ TaskMeasure::TaskMeasure()
     formLayout->addRow(tr("Result:"), valueResult);
     layout->addLayout(formLayout);
     auto* endLayout = new QHBoxLayout();
-    endLayout->addWidget(new QLabel(tr("Use CTRL modifier to add a selection to the current measurement.")));
+    endLayout->addWidget(
+        new QLabel(tr("Use CTRL modifier to add a selection to the current measurement.")));
     layout->addLayout(endLayout);
 
     Content.emplace_back(taskbox);
@@ -353,7 +354,8 @@ void TaskMeasure::invoke()
     update();
 }
 
-bool TaskMeasure::apply() {
+bool TaskMeasure::apply()
+{
     return apply(true);
 }
 
@@ -431,7 +433,7 @@ void TaskMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
     // If the control modifier is not pressed, a new measurement will be started. If autosave is on,
     // The old measurement will be saved otherwise discharded
     if (!(QGuiApplication::keyboardModifiers() & Qt::ControlModifier)) {
-        if (mAutoSave &&  this->buttonBox->button(QDialogButtonBox::Apply)->isEnabled()) {
+        if (mAutoSave && this->buttonBox->button(QDialogButtonBox::Apply)->isEnabled()) {
             apply(false);
         }
 
@@ -502,7 +504,8 @@ void TaskMeasure::showDeltaChanged(int checkState)
     this->update();
 }
 
-void TaskMeasure::autoSaveChanged(int checkState) {
+void TaskMeasure::autoSaveChanged(int checkState)
+{
     mAutoSave = checkState == Qt::CheckState::Checked;
 
     QSettings settings;
