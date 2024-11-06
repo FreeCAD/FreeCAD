@@ -134,11 +134,3 @@ jobs:
           name: ${{ inputs.artifactBasename }}-Logs
           path: |
             ${{ env.logdir }}
-
-      - name: Upload Freecad
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ inputs.artifactBasename }}-Binary
-          path: |
-            ${{ env.builddir }}
