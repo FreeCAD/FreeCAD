@@ -442,7 +442,12 @@ void TaskMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
         App::Document* doc = App::GetApplication().getActiveDocument();
         if (doc) {
             // Select only last added object, because it is the first object of the new measurement
-            Gui::Selection().setSelection(doc->getName(), {Gui::Selection().getSelection().back().pObject});
+            const auto& selection = Gui::Selection().getSelection();
+            if (selection.size() > 1) {
+                auto* lastSelection = selection.back().pObject;
+                Gui::Selection().clearSelection(doc->getName());
+                Gui::Selection().setSelection(doc->getName(), {lastSelection});
+            }
         }
         mSkipSelectionChange = false;
     }
