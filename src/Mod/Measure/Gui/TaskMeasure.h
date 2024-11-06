@@ -99,8 +99,6 @@ private:
     // Stores if delta measures shall be shown
     bool delta = true;
     bool mAutoSave = true;
-
-    bool mSkipSelectionChange = false;
 };
 
 }  // namespace Gui

@@ -419,9 +419,6 @@ void TaskMeasure::clearSelection()
 
 void TaskMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    if (mSkipSelectionChange) {
-        return;
-    }
     // Skip non-relevant events
     if (msg.Type != SelectionChanges::AddSelection && msg.Type != SelectionChanges::RmvSelection
         && msg.Type != SelectionChanges::SetSelection
@@ -434,7 +431,6 @@ void TaskMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
     // If the control modifier is not pressed, a new measurement will be started. If autosave is on,
     // The old measurement will be saved otherwise discharded
     if (!(QGuiApplication::keyboardModifiers() & Qt::ControlModifier)) {
-        mSkipSelectionChange = true;
         if (mAutoSave &&  this->buttonBox->button(QDialogButtonBox::Apply)->isEnabled()) {
             apply(false);
         }
@@ -449,7 +445,6 @@ void TaskMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
                 Gui::Selection().setSelection(doc->getName(), {lastSelection});
             }
         }
-        mSkipSelectionChange = false;
     }
     update();
 }
