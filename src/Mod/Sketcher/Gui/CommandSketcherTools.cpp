@@ -92,7 +92,7 @@ std::vector<int> getListOfSelectedGeoIds(bool forceInternalSelection)
                 int geoId = std::atoi(name.substr(4, 4000).c_str()) - 1;
                 listOfGeoIds.push_back(geoId);
             }
-            else if (name.size() > 4 && name.substr(0, 12) == "ExternalEdge") {
+            else if (name.size() > 12 && name.substr(0, 12) == "ExternalEdge") {
                 int geoId = -std::atoi(name.substr(12, 4000).c_str()) - 2;
                 listOfGeoIds.push_back(geoId);
             }
