@@ -632,8 +632,14 @@ def removeObjsAndChilds(objs):
 # It does not include Part::Features that are within App::Parts.
 # It includes things inside Groups.
 def getMovablePartsWithin(group, partsAsSolid=False):
+    children = []
+    if isLinkGroup(group):
+        children = group.ElementList
+    elif hasattr(group, "Group"):
+        children = group.Group
+
     parts = []
-    for obj in group.OutList:
+    for obj in children:
         parts = parts + getSubMovingParts(obj, partsAsSolid)
     return parts
 
@@ -654,7 +660,7 @@ def getSubMovingParts(obj, partsAsSolid):
 
     if isLink(obj):
         linked_obj = obj.getLinkedObject()
-        if linked_obj.TypeId == "App::Part" or linked_obj.isDerivedFrom("Part::Feature"):
+        if linked_obj.isDerivedFrom("App::Part") or linked_obj.isDerivedFrom("Part::Feature"):
             return [obj]
 
     return []
