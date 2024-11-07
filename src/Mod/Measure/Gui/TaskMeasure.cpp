@@ -443,10 +443,10 @@ void TaskMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
             const auto& selection = Gui::Selection().getSelection();
             if (selection.size() > 1) {
                 auto* lastSelection = selection.back().pObject;
-                Gui::Selection().blockSelection(true);
+                blockSelection(true);
                 Gui::Selection().clearSelection(doc->getName());
                 Gui::Selection().setSelection(doc->getName(), {lastSelection});
-                Gui::Selection().blockSelection(false);
+                blockSelection(false);
             }
         }
     }
