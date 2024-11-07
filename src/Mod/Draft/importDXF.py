@@ -104,10 +104,21 @@ def errorDXFLib(gui):
     -----
     Use local variables, not global variables.
     """
+    
+    def show_addon_message(gui):
+        if gui:
+            message = translate("Draft", """Download of dxf libraries failed.
+Please install the dxf Library addon manually
+from menu Tools -> Addon Manager""")
+            QtWidgets.QMessageBox.information(None, "", message)
+        else:
+            FCC.PrintWarning("The DXF import/export libraries needed by FreeCAD to handle the DXF format are not installed.\n")
+            FCC.PrintWarning("Please install the dxf Library addon from Tools -> Addon Manager\n")
     try:
         import ArchCommands
     except:
         # BIM not present
+        show_addon_message(gui)
         return
     dxfAllowDownload = params.get_param("dxfAllowDownload")
     if dxfAllowDownload:
@@ -124,14 +135,7 @@ def errorDXFLib(gui):
             p = None
             p = ArchCommands.download(baseurl + f, force=True)
             if not p:
-                if gui:
-                    message = translate("Draft", """Download of dxf libraries failed.
-Please install the dxf Library addon manually
-from menu Tools -> Addon Manager""")
-                    QtWidgets.QMessageBox.information(None, "", message)
-                else:
-                    FCC.PrintWarning("The DXF import/export libraries needed by FreeCAD to handle the DXF format are not installed.\n")
-                    FCC.PrintWarning("Please install the dxf Library addon from Tools -> Addon Manager\n")
+                show_addon_message(gui)
                 break
         progressbar.stop()
         sys.path.append(FreeCAD.ConfigGet("UserAppData"))
