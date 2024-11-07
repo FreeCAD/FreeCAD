@@ -2346,7 +2346,7 @@ void CmdSketcherOffset::activated(int iMsg)
             if (name.size() > 4 && name.substr(0, 4) == "Edge") {
                 geoId = std::atoi(name.substr(4, 4000).c_str()) - 1;
             }
-            else if (name.size() > 4 && name.substr(0, 12) == "ExternalEdge") {
+            else if (name.size() > 12 && name.substr(0, 12) == "ExternalEdge") {
                 geoId = -std::atoi(name.substr(12, 4000).c_str()) - 2;
             }
             else {
