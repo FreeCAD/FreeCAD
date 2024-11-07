@@ -1436,7 +1436,7 @@ public:
 
 // ======================================================================================
 
-DEF_STD_CMD_A(CmdSketcherExternal)
+DEF_STD_CMD_AU(CmdSketcherExternal)
 
 CmdSketcherExternal::CmdSketcherExternal()
     : Command("Sketcher_External")
@@ -1451,6 +1451,8 @@ CmdSketcherExternal::CmdSketcherExternal()
     sAccel = "G, X";
     eType = ForEdit;
 }
+
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherExternal, "Sketcher_External")
 
 void CmdSketcherExternal::activated(int iMsg)
 {

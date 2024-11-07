@@ -320,7 +320,6 @@ static bool inline checkSmallEdge(const Part::TopoShape &s) {
 }
 
 void SketchObject::buildShape() {
-
     // Shape.setValue(solvedSketch.toShape());
     // We use the following instead to map element names
 
@@ -1860,22 +1859,36 @@ int SketchObject::toggleConstruction(int GeoId)
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
 
-    const std::vector<Part::Geometry*>& vals = getInternalGeometry();
-    if (GeoId < 0 || GeoId >= int(vals.size()))
-        return -1;
+    if (GeoId >= 0) {
+        const std::vector<Part::Geometry*>& vals = getInternalGeometry();
+        if (GeoId >= int(vals.size())) {
+            return -1;
+        }
 
-    if (getGeometryFacade(GeoId)->isInternalAligned())
-        return -1;
+        if (getGeometryFacade(GeoId)->isInternalAligned()) {
+            return -1;
+        }
 
-    // While it may seem that there is not a need to trigger an update at this time, because the
-    // solver has its own copy of the geometry, and updateColors of the viewprovider may be
-    // triggered by the clearselection of the UI command, this won't update the elements widget, in
-    // the accumulative of actions it is judged that it is worth to trigger an update here.
+        // While it may seem that there is not a need to trigger an update at this time, because the
+        // solver has its own copy of the geometry, and updateColors of the viewprovider may be
+        // triggered by the clearselection of the UI command, this won't update the elements widget, in
+        // the accumulative of actions it is judged that it is worth to trigger an update here.
 
-    std::unique_ptr<Part::Geometry> geo(vals[GeoId]->clone());
-    auto gft = GeometryFacade::getFacade(geo.get());
-    gft->setConstruction(!gft->getConstruction());
-    this->Geometry.set1Value(GeoId, std::move(geo));
+        auto gft = GeometryFacade::getFacade(vals[GeoId]);
+        gft->setConstruction(!gft->getConstruction());
+        this->Geometry.touch();
+    }
+    else {
+        if (GeoId > GeoEnum::RefExt) {
+            return -1;
+        }
+
+        const std::vector<Part::Geometry*>& extGeos = getExternalGeometry();
+        auto geo = extGeos[-GeoId - 1];
+        auto egf = ExternalGeometryFacade::getFacade(geo);
+        egf->setFlag(ExternalGeometryExtension::Defining, !egf->testFlag(ExternalGeometryExtension::Defining));
+        this->ExternalGeo.touch();
+    }
 
     solverNeedsUpdate = true;
     signalSolverUpdate();  // FIXME:  In theory this is totally redundant, but now seems required
