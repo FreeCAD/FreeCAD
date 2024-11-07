@@ -43,6 +43,9 @@ class TestPathHelix(PathTestUtils.PathTestBase):
         self.doc = FreeCAD.open(FreeCAD.getHomePath() + "Mod/CAM/CAMTests/test_holes00.fcstd")
         self.job = PathJob.Create("Job", [self.doc.Body])
 
+        # the smallest hole in the fixture is 1mm in diameter, so our tool must be smaller.
+        self.job.Tools.Group[0].Tool.Diameter = 0.9
+
     def tearDown(self):
         FreeCAD.closeDocument(self.doc.Name)
 
@@ -65,8 +68,6 @@ class TestPathHelix(PathTestUtils.PathTestBase):
 
     def test02(self):
         """Verify Helix generates proper holes for rotated model"""
-
-        self.job.Tools.Group[0].Tool.Diameter = 0.5
 
         op = PathHelix.Create("Helix")
         proxy = op.Proxy
