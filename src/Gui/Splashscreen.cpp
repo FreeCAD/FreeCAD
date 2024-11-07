@@ -410,10 +410,17 @@ void AboutDialog::setupLabels()
     os.replace(QString::fromLatin1("Unknown"), prettyProductInfoWrapper());
     ui->labelBuildOS->setText(os);
 
-    QString platform = ui->labelBuildPlatform->text();
-    platform.replace(QString::fromLatin1("Unknown"),
-        QString::fromLatin1("%1-bit").arg(QSysInfo::WordSize));
-    ui->labelBuildPlatform->setText(platform);
+    QString architecture = ui->labelBuildRunArchitecture->text();
+    if (QSysInfo::buildCpuArchitecture() == QSysInfo::currentCpuArchitecture()) {
+        architecture.replace(QString::fromLatin1("Unknown"), QSysInfo::buildCpuArchitecture());
+    }
+    else {
+        architecture.replace(
+            QString::fromLatin1("Unknown"),
+            QString::fromLatin1("%1 (running on: %2)")
+                .arg(QSysInfo::buildCpuArchitecture(), QSysInfo::currentCpuArchitecture()));
+    }
+    ui->labelBuildRunArchitecture->setText(architecture);
 
     // branch name
     it = config.find("BuildRevisionBranch");
@@ -665,7 +672,11 @@ void AboutDialog::copyToClipboard()
     }
 
     str << "OS: " << prettyProductInfoWrapper() << deskInfo << '\n';
-    str << "Word size of " << exe << ": " << QSysInfo::WordSize << "-bit\n";
+    if (QSysInfo::buildCpuArchitecture() == QSysInfo::currentCpuArchitecture()){
+        str << "Architecture: " << QSysInfo::buildCpuArchitecture() << "\n";
+    } else {
+        str << "Architecture: " << QSysInfo::buildCpuArchitecture() << "(running on: " << QSysInfo::currentCpuArchitecture() << ")\n";
+    }
     str << "Version: " << major << "." << minor << "." << point << suffix << "." << build;
     char *appimage = getenv("APPIMAGE");
     if (appimage)

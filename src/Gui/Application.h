@@ -97,6 +97,8 @@ public:
     void detachView(Gui::BaseView* pcView);
     /// get called if a view gets activated, this manage the whole activation scheme
     void viewActivated(Gui::MDIView* pcView);
+    /// get called if a view gets closed
+    void viewClosed(Gui::MDIView* pcView);
     /// call update to all documents and all views (costly!)
     void onUpdate();
     /// call update to all views of the active document
@@ -137,6 +139,8 @@ public:
     boost::signals2::signal<void (const Gui::Document&)> signalShowHidden;
     /// signal on activating view
     boost::signals2::signal<void (const Gui::MDIView*)> signalActivateView;
+    /// signal on closing view
+    boost::signals2::signal<void (const Gui::MDIView*)> signalCloseView;
     /// signal on entering in edit mode
     boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&)> signalInEdit;
     /// signal on leaving edit mode

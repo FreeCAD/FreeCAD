@@ -40,6 +40,8 @@ SET(AssemblyGui_SRCS_Module
     PreCompiled.h
     ViewProviderAssembly.cpp
     ViewProviderAssembly.h
+    ViewProviderAssemblyLink.cpp
+    ViewProviderAssemblyLink.h
     ViewProviderBom.cpp
     ViewProviderBom.h
     ViewProviderBomGroup.cpp

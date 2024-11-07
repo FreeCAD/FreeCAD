@@ -47,6 +47,8 @@ using namespace Gui::Dialog;
 const std::string DlgAddPropertyVarSet::GROUP_BASE = "Base";
 
 const bool CLEAR_NAME = true;
+const bool ABORT = true;
+const bool COMMIT = false;
 
 DlgAddPropertyVarSet::DlgAddPropertyVarSet(QWidget* parent,
                                            ViewProviderVarSet* viewProvider)
@@ -55,7 +57,8 @@ DlgAddPropertyVarSet::DlgAddPropertyVarSet(QWidget* parent,
       ui(new Ui_DlgAddPropertyVarSet),
       comboBoxGroup(this),
       completerType(this),
-      editor(nullptr)
+      editor(nullptr),
+      transactionID(0)
 {
     ui->setupUi(this);
 
@@ -329,13 +332,40 @@ void DlgAddPropertyVarSet::changePropertyToAdd() {
 }
 
 
+/* We use these functions rather than the functions provided by App::Document
+ * because this dialog may be opened when another transaction is in progress.
+ * An example is opening a sketch.  If this dialog uses the functions provided
+ * by App::Document, a reject of the dialog would close that transaction.  By
+ * checking whether the transaction ID is "our" transaction ID, we prevent this
+ * behavior.
+ */
+void DlgAddPropertyVarSet::openTransaction()
+{
+    transactionID = App::GetApplication().setActiveTransaction("Add property VarSet");
+}
+
+
+bool DlgAddPropertyVarSet::hasPendingTransaction()
+{
+    return transactionID != 0;
+}
+
+
+void DlgAddPropertyVarSet::closeTransaction(bool abort)
+{
+    if (transactionID != 0) {
+        App::GetApplication().closeActiveTransaction(abort, transactionID);
+        transactionID = 0;
+    }
+}
+
+
 void DlgAddPropertyVarSet::clearCurrentProperty()
 {
     removeEditor();
     varSet->removeDynamicProperty(namePropertyToAdd.c_str());
-    App::Document* doc = varSet->getDocument();
-    if (doc->hasPendingTransaction()) {
-        doc->abortTransaction();
+    if (hasPendingTransaction()) {
+        closeTransaction(ABORT);
     }
     setOkEnabled(false);
     namePropertyToAdd.clear();
@@ -429,8 +459,7 @@ void DlgAddPropertyVarSet::onEditFinished() {
 
     if (namePropertyToAdd.empty()) {
         // we are adding a new property
-        App::Document* doc = varSet->getDocument();
-        doc->openTransaction("Add property VarSet");
+        openTransaction();
         createProperty();
     }
     else {
@@ -487,12 +516,11 @@ void DlgAddPropertyVarSet::addDocumentation() {
 void DlgAddPropertyVarSet::accept()
 {
     addDocumentation();
-    App::Document* doc = varSet->getDocument();
-    doc->commitTransaction();
+    closeTransaction(COMMIT);
 
     if (ui->checkBoxAdd->isChecked()) {
         clearEditors();
-        doc->openTransaction();
+        openTransaction();
         ui->lineEditName->setFocus();
         return;
     }
@@ -508,7 +536,6 @@ void DlgAddPropertyVarSet::accept()
 
 void DlgAddPropertyVarSet::reject()
 {
-    App::Document* doc = varSet->getDocument();
     // On reject we can disconnect the signal handlers because nothing useful
     // is to be done.  Otherwise, signals may activate the handlers that assume
     // that a new property has been created, an assumption that will be
@@ -520,8 +547,8 @@ void DlgAddPropertyVarSet::reject()
     disconnect(connLineEditNameTextChanged);
 
     // a transaction is not pending if a name has not been determined.
-    if (doc->hasPendingTransaction()) {
-        doc->abortTransaction();
+    if (hasPendingTransaction()) {
+        closeTransaction(ABORT);
     }
     QDialog::reject();
 }

@@ -931,18 +931,21 @@ Document::~Document()
 std::string Document::getTransientDirectoryName(const std::string& uuid, const std::string& filename) const
 {
     // Create a directory name of the form: {ExeName}_Doc_{UUID}_{HASH}_{PID}
-    std::stringstream s;
+    std::stringstream out;
     QCryptographicHash hash(QCryptographicHash::Sha1);
 #if QT_VERSION < QT_VERSION_CHECK(6,3,0)
     hash.addData(filename.c_str(), filename.size());
 #else
     hash.addData(QByteArrayView(filename.c_str(), filename.size()));
 #endif
-    s << App::Application::getUserCachePath() << App::Application::getExecutableName()
-      << "_Doc_" << uuid
-      << "_" << hash.result().toHex().left(6).constData()
-      << "_" << QCoreApplication::applicationPid();
-    return s.str();
+    out << App::Application::getUserCachePath() << App::Application::getExecutableName()
+        << "_Doc_"
+        << uuid
+        << "_"
+        << hash.result().toHex().left(6).constData()
+        << "_"
+        << App::Application::applicationPid();
+    return out.str();
 }
 
 //--------------------------------------------------------------------------
@@ -3625,8 +3628,9 @@ void Document::_removeObject(DocumentObject* pcObject)
     else {
         // for a rollback delete the object
         signalTransactionRemove(*pcObject, 0);
-        breakDependency(pcObject, true);
     }
+
+    breakDependency(pcObject, true);
 
     // remove from map
     pcObject->setStatus(ObjectStatus::Remove, false); // Unset the bit to be on the safe side

@@ -63,6 +63,7 @@
 #include <Mod/Assembly/App/AssemblyUtils.h>
 #include <Mod/Assembly/App/JointGroup.h>
 #include <Mod/Assembly/App/ViewGroup.h>
+#include <Mod/Assembly/App/BomGroup.h>
 #include <Mod/PartDesign/App/Body.h>
 
 #include "ViewProviderAssembly.h"
@@ -1024,7 +1025,7 @@ bool ViewProviderAssembly::onDelete(const std::vector<std::string>& subNames)
     for (auto obj : getObject()->getOutList()) {
         if (obj->getTypeId() == Assembly::JointGroup::getClassTypeId()
             || obj->getTypeId() == Assembly::ViewGroup::getClassTypeId()
-            /* || obj->getTypeId() == Assembly::BomGroup::getClassTypeId()*/) {
+            || obj->getTypeId() == Assembly::BomGroup::getClassTypeId()) {
 
             // Delete the group content first.
             Gui::Command::doCommand(Gui::Command::Doc,

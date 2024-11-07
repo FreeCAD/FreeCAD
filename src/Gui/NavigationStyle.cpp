@@ -219,6 +219,7 @@ void NavigationStyle::initialize()
     this->spinsamplecounter = 0;
     this->spinincrement = SbRotation::identity();
     this->rotationCenterFound = false;
+    this->rotationCenterIsScenePointAtCursor = false;
 
     // FIXME: use a smaller sphere than the default one to have a larger
     // area close to the borders that gives us "z-axis rotation"?
@@ -866,15 +867,19 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
     lastpos[0] = float(this->log.position[1][0]) / float(std::max((int)(glsize[0]-1), 1));
     lastpos[1] = float(this->log.position[1][1]) / float(std::max((int)(glsize[1]-1), 1));
 
-    // Adjust the spin projector sphere to the screen position of the rotation center
-    if (rotationCenterFound) {
+    float sensitivity = getSensitivity();
+
+    // Adjust the spin projector sphere to the screen position of the rotation center when the mouse intersects an object
+    if (getOrbitStyle() == Trackball && rotationCenterMode & RotationCenterMode::ScenePointAtCursor && rotationCenterFound && rotationCenterIsScenePointAtCursor) {
         const auto pointOnScreen = viewer->getPointOnViewport(rotationCenter);
         const auto sphereCenter = 2 * normalizePixelPos(pointOnScreen) - SbVec2f {1, 1};
 
         float x, y;
         sphereCenter.getValue(x, y);
 
-        const float radius = FCSphereSheetProjector::defaultSphereRadius * (1 + sphereCenter.length());
+        const float sphereScale = 1 + sphereCenter.length();
+        const float radius = FCSphereSheetProjector::defaultSphereRadius * sphereScale;
+        sensitivity *= sphereScale;
 
         spinprojector->setSphere(SbSphere {SbVec3f {x, y, 0}, radius});
     }
@@ -899,7 +904,6 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
     this->spinprojector->project(lastpos);
     SbRotation r;
     this->spinprojector->projectAndGetRotation(pointerpos, r);
-    float sensitivity = getSensitivity();
     if (sensitivity > 1.0f) {
         SbVec3f axis;
         float radians{};
@@ -1037,6 +1041,7 @@ void NavigationStyle::saveCursorPosition(const SoEvent * const ev)
 {
     this->globalPos.setValue(QCursor::pos().x(), QCursor::pos().y());
     this->localPos = ev->getPosition();
+    rotationCenterIsScenePointAtCursor = false;
 
     // mode is WindowCenter
     if (!this->rotationCenterMode) {
@@ -1055,6 +1060,7 @@ void NavigationStyle::saveCursorPosition(const SoEvent * const ev)
         SoPickedPoint * picked = rpaction.getPickedPoint();
         if (picked) {
             setRotationCenter(picked->getPoint());
+            rotationCenterIsScenePointAtCursor = true;
             return;
         }
     }
