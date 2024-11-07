@@ -421,6 +421,9 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
                     if (egf->testFlag(ExternalGeometryExtension::Missing)) {
                         color[i] = drawingParameters.InvalidSketchColor;
                     }
+                    else if (egf->testFlag(ExternalGeometryExtension::Defining)) {
+                        color[i] = drawingParameters.CurveColor;
+                    }
                     else {
                         color[i] = drawingParameters.CurveExternalColor;
                     }

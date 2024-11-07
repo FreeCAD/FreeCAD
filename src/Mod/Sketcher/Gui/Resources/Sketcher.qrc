@@ -199,6 +199,7 @@
         <file>icons/geometry/Sketcher_CreateTriangle_Constr.svg</file>
         <file>icons/geometry/Sketcher_Extend.svg</file>
         <file>icons/geometry/Sketcher_External.svg</file>
+        <file>icons/geometry/Sketcher_External_Constr.svg</file>
         <file>icons/geometry/Sketcher_Split.svg</file>
         <file>icons/geometry/Sketcher_ToggleConstruction.svg</file>
         <file>icons/geometry/Sketcher_ToggleConstruction_Constr.svg</file>

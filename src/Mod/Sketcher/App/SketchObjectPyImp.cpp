@@ -557,8 +557,19 @@ PyObject* SketchObjectPy::addExternal(PyObject* args)
 {
     char* ObjectName;
     char* SubName;
-    if (!PyArg_ParseTuple(args, "ss", &ObjectName, &SubName)) {
-        return nullptr;
+    PyObject* defining;  // this is an optional argument default false
+    bool isDefining;
+    if (!PyArg_ParseTuple(args, "ssO!", &ObjectName, &SubName, &PyBool_Type, &defining)) {
+        PyErr_Clear();
+        if (!PyArg_ParseTuple(args, "ss", &ObjectName, &SubName)) {
+            return nullptr;
+        }
+        else {
+            isDefining = false;
+        }
+    }
+    else {
+        isDefining = Base::asBoolean(defining);
     }
 
     // get the target object for the external link
@@ -579,7 +590,7 @@ PyObject* SketchObjectPy::addExternal(PyObject* args)
     }
 
     // add the external
-    if (skObj->addExternal(Obj, SubName) < 0) {
+    if (skObj->addExternal(Obj, SubName, isDefining) < 0) {
         std::stringstream str;
         str << "Not able to add external shape element " << SubName;
         PyErr_SetString(PyExc_ValueError, str.str().c_str());

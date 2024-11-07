@@ -163,9 +163,11 @@ public:
                     Gui::Command::openCommand(
                         QT_TRANSLATE_NOOP("Command", "Add external geometry"));
                     Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                          "addExternal(\"%s\",\"%s\")",
+                                          "addExternal(\"%s\",\"%s\", %s)",
                                           msg.pObjectName,
-                                          msg.pSubName);
+                                          msg.pSubName,
+                                          isConstructionMode() ? "False" : "True");
+
                     Gui::Command::commitCommand();
 
                     // adding external geometry does not require a solve() per se (the DoF is the
