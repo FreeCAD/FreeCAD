@@ -151,12 +151,12 @@ Markdown 版本的情况下，这才会起作用。</translation>
     <message>
       <location filename="../../Help.py" line="75"/>
       <source>Contents for this page could not be retrieved. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
-      <translation type="unfinished">Contents for this page could not be retrieved. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</translation>
+      <translation>无法检索此页面的内容。请检查菜单编辑下的设置 -&gt; 首选项 -&gt; 常规-&gt; 帮助</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="79"/>
       <source>Help files location could not be determined. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
-      <translation type="unfinished">Help files location could not be determined. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</translation>
+      <translation>无法确定帮助文件位置。请检查菜单下的设置：编辑 -&gt; 首选项 -&gt; 常规-&gt; 帮助</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="83"/>
@@ -177,7 +177,7 @@ Markdown 版本的情况下，这才会起作用。</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="425"/>
+      <location filename="../../Help.py" line="432"/>
       <source>General</source>
       <translation>常规</translation>
     </message>

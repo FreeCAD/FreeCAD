@@ -75,8 +75,8 @@ of the FreeCAD wiki,hosted on FreeCAD&apos;s GitHub account. This can be styled 
 custom stylesheet below and can look nicer than the wiki option. The &apos;Markdown&apos; or
 &apos;Pandoc&apos; Python module should be installed for optimal results.</source>
       <translation>Strani dokumentacije se pridobijo s samodejno Markdownovo pretvorbo FreeCADove vikistrani,
-ki gostuje na FreeCADovem GitHub računu. S spodnjimi slogovniki po meri se lahko
-složi iziris strani, da je lepši, kot na vikistrani. Za boljši učinek je treba namestiti
+ki gostuje na FreeCADovem GitHub računu. S spodnjimi slogovniki po meri se lahko 
+složi iziris strani, da je lepši, kot na vikistrani. Za boljši učinek je treba namestiti 
 pythonov modul "Markdown" ali "Pandoc".</translation>
     </message>
     <message>
@@ -177,7 +177,7 @@ Markdown version above.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="425"/>
+      <location filename="../../Help.py" line="432"/>
       <source>General</source>
       <translation>Splošne nastavitve</translation>
     </message>
