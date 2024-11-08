@@ -141,6 +141,11 @@ SketchObject::SketchObject()
                       "Sketch",
                       (App::PropertyType)(App::Prop_None | App::Prop_ReadOnly),
                       "Sketch external geometry");
+    ADD_PROPERTY_TYPE(ExternalTypes,
+                      ({}),
+                      "Sketch",
+                      (App::PropertyType)(App::Prop_None | App::Prop_Hidden),
+                      "Sketch external geometry type: 0 = projection, 1 = intersection, 2 = both.");
     ADD_PROPERTY_TYPE(FullyConstrained,
                       (false),
                       "Sketch",
@@ -7721,8 +7726,12 @@ int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName, boo
     }
 
     // get the actual lists of the externals
+    std::vector<long> Types = ExternalTypes.getValues();
     std::vector<DocumentObject*> Objects = ExternalGeometry.getValues();
     std::vector<std::string> SubElements = ExternalGeometry.getSubValues();
+    if (Types.size() != Objects.size()) {
+        Types.resize(Objects.size(), 0);
+    }
 
     const std::vector<DocumentObject*> originalObjects = Objects;
     const std::vector<std::string> originalSubElements = SubElements;
@@ -7734,21 +7743,35 @@ int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName, boo
         return -1;
     }
 
+    bool add = true;
     for (size_t i = 0; i < Objects.size(); ++i) {
         if (Objects[i] == Obj && std::string(SubName) == SubElements[i]) {
-            Base::Console().Error("Link to %s already exists in this sketch.\n", SubName);
-            return -1;
+            if (Types[i] == (int)ExtType::Both
+                || (Types[i] == (int)ExtType::Projection && !intersection)
+                || (Types[i] == (int)ExtType::Intersection && intersection)) {
+                Base::Console().Error("Link to %s already exists in this sketch.\n", SubName);
+                return -1;
+            }
+            // Case where projections are already there when adding intersections.
+            add = false;
+            Types[i] = (int)ExtType::Both;
         }
     }
+    if (add) {
+        // add the new ones
+        Objects.push_back(Obj);
+        SubElements.emplace_back(SubName);
+        Types.push_back((int)(intersection ? ExtType::Intersection : ExtType::Projection));
+        if (intersection) {}
 
-    // add the new ones
-    Objects.push_back(Obj);
-    SubElements.emplace_back(SubName);
+        // set the Link list.
+        ExternalGeometry.setValues(Objects, SubElements);
+    }
+    ExternalTypes.setValues(Types);
 
-    // set the Link list.
-    ExternalGeometry.setValues(Objects, SubElements);
     try {
-        rebuildExternalGeometry(defining, intersection);
+        ExternalToAdd ext{ Obj, std::string(SubName), defining, intersection };
+        rebuildExternalGeometry(ext);
     }
     catch (const Base::Exception& e) {
         Base::Console().Error("%s\n", e.what());
@@ -8731,6 +8754,8 @@ void processEdge(const TopoDS_Edge& edge,
     }
     else if (curve.GetType() == GeomAbs_Ellipse) {
 
+        gp_Pnt P1 = curve.Value(curve.FirstParameter());
+        gp_Pnt P2 = curve.Value(curve.LastParameter());
         gp_Elips elipsOrig = curve.Ellipse();
         gp_Elips elipsDest;
         gp_Pnt origCenter = elipsOrig.Location();
@@ -8792,11 +8817,22 @@ void processEdge(const TopoDS_Edge& edge,
 
         // projection is a circle
         if ((RDest - rDest) < (double)Precision::Confusion()) {
-            Handle(Geom_Circle) curve = new Geom_Circle(destCurveAx2, 0.5 * (rDest + RDest));
-            auto* circle = new Part::GeomCircle();
-            circle->setHandle(curve);
-            GeometryFacade::setConstruction(circle, true);
-            geos.emplace_back(circle);
+            Handle(Geom_Circle) curve2 = new Geom_Circle(destCurveAx2, 0.5 * (rDest + RDest));
+            if (P1.SquareDistance(P2) < Precision::Confusion()) {
+                auto* circle = new Part::GeomCircle();
+                circle->setHandle(curve2);
+                GeometryFacade::setConstruction(circle, true);
+                geos.emplace_back(circle);
+            }
+            else {
+                auto* arc = new Part::GeomArcOfCircle();
+                Handle(Geom_TrimmedCurve) tCurve = new Geom_TrimmedCurve(curve2,
+                    curve.FirstParameter(),
+                    curve.LastParameter());
+                arc->setHandle(tCurve);
+                GeometryFacade::setConstruction(arc, true);
+                geos.emplace_back(arc);
+            }
         }
         else {
             if (sketchPlane.Position().Direction().IsNormal(
@@ -8818,11 +8854,23 @@ void processEdge(const TopoDS_Edge& edge,
                 elipsDest.SetMinorRadius(destAxisMinor.Magnitude());
 
 
-                Handle(Geom_Ellipse) curve = new Geom_Ellipse(elipsDest);
-                auto* ellipse = new Part::GeomEllipse();
-                ellipse->setHandle(curve);
-                GeometryFacade::setConstruction(ellipse, true);
-                geos.emplace_back(ellipse);
+                if (P1.SquareDistance(P2) < Precision::Confusion()) {
+                    Handle(Geom_Ellipse) curve = new Geom_Ellipse(elipsDest);
+                    auto* ellipse = new Part::GeomEllipse();
+                    ellipse->setHandle(curve);
+                    GeometryFacade::setConstruction(ellipse, true);
+                    geos.emplace_back(ellipse);
+                }
+                else {
+                    auto* aoe = new Part::GeomArcOfEllipse();
+                    Handle(Geom_Curve) curve2 = new Geom_Ellipse(elipsDest);
+                    Handle(Geom_TrimmedCurve) tCurve = new Geom_TrimmedCurve(curve2,
+                        curve.FirstParameter(),
+                        curve.LastParameter());
+                    aoe->setHandle(tCurve);
+                    GeometryFacade::setConstruction(aoe, true);
+                    geos.emplace_back(aoe);
+                }
             }
         }
     }
@@ -8929,15 +8977,19 @@ std::vector<TopoDS_Shape> projectShape(const TopoDS_Shape& inShape, const gp_Ax3
 }
 }
 
-void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
+void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd)
 {
     Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
 
     // get the actual lists of the externals
+    auto Types       = ExternalTypes.getValues();
     auto Objects     = ExternalGeometry.getValues();
     auto SubElements = ExternalGeometry.getSubValues();
     assert(externalGeoRef.size() == Objects.size());
     auto keys = externalGeoRef;
+    if (Types.size() != Objects.size()) {
+        Types.resize(Objects.size(), 0);
+    }
 
     // re-check for any missing geometry element. The code here has a side
     // effect that the linked external geometry will continue to work even if
@@ -9007,169 +9059,211 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
         const std::string &SubElement=SubElements[i];
         const std::string &key = keys[i];
 
+        bool beingCreated = false;
+        if (extToAdd) {
+            beingCreated = extToAdd->obj == Obj && extToAdd->subname == SubElement;
+        }
+
+        bool projection = Types[i] == (int)ExtType::Projection || Types[i] == (int)ExtType::Both;
+        bool intersection = Types[i] == (int)ExtType::Intersection || Types[i] == (int)ExtType::Both;
+
         // Skip frozen geometries
         bool frozen = false;
         bool sync = false;
-        bool intersection = addIntersection && (i+1 == (int)Objects.size());
         for(auto id : externalGeoRefMap[key]) {
             auto it = externalGeoMap.find(id);
             if(it != externalGeoMap.end()) {
                 auto egf = ExternalGeometryFacade::getFacade(ExternalGeo[it->second]);
-                if(egf->testFlag(ExternalGeometryExtension::Frozen))
+                if(egf->testFlag(ExternalGeometryExtension::Frozen)) {
                     frozen = true;
-                if(egf->testFlag(ExternalGeometryExtension::Sync))
+                }
+                if (egf->testFlag(ExternalGeometryExtension::Sync)) {
                     sync = true;
+                }
             }
         }
         if(frozen && !sync) {
             refSet.insert(std::move(key));
             continue;
         }
-        if(!Obj || !Obj->getNameInDocument())
+        if (!Obj || !Obj->getNameInDocument()) {
             continue;
+        }
 
         std::vector<std::unique_ptr<Part::Geometry> > geos;
 
-        try {
-        TopoDS_Shape refSubShape;
+        auto importVertex = [&](const TopoDS_Shape& refSubShape) {
+            gp_Pnt P = BRep_Tool::Pnt(TopoDS::Vertex(refSubShape));
+            GeomAPI_ProjectPointOnSurf proj(P, gPlane);
+            P = proj.NearestPoint();
+            Base::Vector3d p(P.X(), P.Y(), P.Z());
+            invPlm.multVec(p, p);
 
-        if (Obj->isDerivedFrom<Part::Datum>()) {
-            auto* datum = static_cast<const Part::Datum*>(Obj);
-            refSubShape = datum->getShape();
-        }
-        else if (Obj->isDerivedFrom<Part::Feature>()) {
-            try {
+            Part::GeomPoint* point = new Part::GeomPoint(p);
+            GeometryFacade::setConstruction(point, true);
+            geos.emplace_back(point);
+        };
+
+        try {
+            TopoDS_Shape refSubShape;
+
+            if (Obj->isDerivedFrom<Part::Datum>()) {
+                auto* datum = static_cast<const Part::Datum*>(Obj);
+                refSubShape = datum->getShape();
+            }
+            else if (Obj->isDerivedFrom<Part::Feature>()) {
                 auto* refObj = static_cast<const Part::Feature*>(Obj);
                 const Part::TopoShape& refShape = refObj->Shape.getShape();
                 refSubShape = refShape.getSubShape(SubElement.c_str());
             }
-            catch (Standard_Failure& e) {
-                throw Base::CADKernelError(e.GetMessageString());
+            else if (Obj->isDerivedFrom<App::Plane>()) {
+                auto* pl = static_cast<const App::Plane*>(Obj);
+                Base::Placement plm = pl->Placement.getValue();
+                Base::Vector3d base = plm.getPosition();
+                Base::Rotation rot = plm.getRotation();
+                Base::Vector3d normal(0, 0, 1);
+                rot.multVec(normal, normal);
+                gp_Pln plane(gp_Pnt(base.x, base.y, base.z), gp_Dir(normal.x, normal.y, normal.z));
+                BRepBuilderAPI_MakeFace fBuilder(plane);
+                if (!fBuilder.IsDone())
+                    throw Base::RuntimeError(
+                        "Sketcher: addExternal(): Failed to build face from App::Plane");
+
+                TopoDS_Face f = TopoDS::Face(fBuilder.Shape());
+                refSubShape = f;
             }
-        }
-        else if (Obj->isDerivedFrom<App::Plane>()) {
-            auto* pl = static_cast<const App::Plane*>(Obj);
-            Base::Placement plm = pl->Placement.getValue();
-            Base::Vector3d base = plm.getPosition();
-            Base::Rotation rot = plm.getRotation();
-            Base::Vector3d normal(0, 0, 1);
-            rot.multVec(normal, normal);
-            gp_Pln plane(gp_Pnt(base.x, base.y, base.z), gp_Dir(normal.x, normal.y, normal.z));
-            BRepBuilderAPI_MakeFace fBuilder(plane);
-            if (!fBuilder.IsDone())
-                throw Base::RuntimeError(
-                    "Sketcher: addExternal(): Failed to build face from App::Plane");
+            else {
+                throw Base::TypeError(
+                    "Datum feature type is not yet supported as external geometry for a sketch");
+            }
 
-            TopoDS_Face f = TopoDS::Face(fBuilder.Shape());
-            refSubShape = f;
-        }
-        else {
-            throw Base::TypeError(
-                "Datum feature type is not yet supported as external geometry for a sketch");
-        }
+            if (projection) {
+                switch (refSubShape.ShapeType()) {
+                case TopAbs_FACE: {
+                    const TopoDS_Face& face = TopoDS::Face(refSubShape);
+                    BRepAdaptor_Surface surface(face);
+                    if (surface.GetType() == GeomAbs_Plane) {
+                        // Check that the plane is perpendicular to the sketch plane
+                        Geom_Plane plane = surface.Plane();
+                        gp_Dir dnormal = plane.Axis().Direction();
+                        gp_Dir snormal = sketchPlane.Axis().Direction();
 
-        switch (refSubShape.ShapeType()) {
-            case TopAbs_FACE: {
-                const TopoDS_Face& face = TopoDS::Face(refSubShape);
-                BRepAdaptor_Surface surface(face);
-                if (surface.GetType() == GeomAbs_Plane) {
-                    // Check that the plane is perpendicular to the sketch plane
-                    Geom_Plane plane = surface.Plane();
-                    gp_Dir dnormal = plane.Axis().Direction();
-                    gp_Dir snormal = sketchPlane.Axis().Direction();
+                        // Extract all edges from the face
+                        TopExp_Explorer edgeExp;
+                        for (edgeExp.Init(face, TopAbs_EDGE); edgeExp.More(); edgeExp.Next()) {
+                            TopoDS_Edge edge = TopoDS::Edge(edgeExp.Current());
+                            // Process each edge
+                            processEdge(edge, geos, gPlane, invPlm, mov, sketchPlane, invRot, sketchAx3, aProjFace);
+                        }
 
-                    // Extract all edges from the face
-                    TopExp_Explorer edgeExp;
-                    for (edgeExp.Init(face, TopAbs_EDGE); edgeExp.More(); edgeExp.Next()) {
-                        TopoDS_Edge edge = TopoDS::Edge(edgeExp.Current());
-                        // Process each edge
-                        processEdge(edge, geos, gPlane, invPlm, mov, sketchPlane, invRot, sketchAx3, aProjFace);
-                    }
-
-                    if (fabs(dnormal.Angle(snormal) - M_PI_2) < Precision::Confusion()) {
-                        // The face is normal to the sketch plane
-                        // We don't want to keep the projection of all the edges of the face.
-                        // We need a single line that goes from min to max of all the projections.
-                        bool initialized = false;
-                        Base::Vector3d start, end;
-                        // Lambda to determine if a point should replace start or end
-                        auto updateExtremes = [&](const Base::Vector3d& point) {
-                            if ((point - start).Length() < (point - end).Length()) {
-                                // `point` is closer to `start` than `end`, check if it's further out than `start`
-                                if ((point - end).Length() > (end - start).Length()) {
-                                    start = point;
+                        if (fabs(dnormal.Angle(snormal) - M_PI_2) < Precision::Confusion()) {
+                            // The face is normal to the sketch plane
+                            // We don't want to keep the projection of all the edges of the face.
+                            // We need a single line that goes from min to max of all the projections.
+                            bool initialized = false;
+                            Base::Vector3d start, end;
+                            // Lambda to determine if a point should replace start or end
+                            auto updateExtremes = [&](const Base::Vector3d& point) {
+                                if ((point - start).Length() < (point - end).Length()) {
+                                    // `point` is closer to `start` than `end`, check if it's further out than `start`
+                                    if ((point - end).Length() > (end - start).Length()) {
+                                        start = point;
+                                    }
                                 }
+                                else {
+                                    // `point` is closer to `end`, check if it's further out than `end`
+                                    if ((point - start).Length() > (end - start).Length()) {
+                                        end = point;
+                                    }
+                                }
+                            };
+                            for (auto& geo : geos) {
+                                auto* line = dynamic_cast<Part::GeomLineSegment*>(geo.get());
+                                if (!line) {
+                                    // The face being normal to the sketch, we should have
+                                    // only lines. This is just a fail-safe in case there's a
+                                    // straight bspline or something like this.
+                                    continue;
+                                }
+                                if (!initialized) {
+                                    start = line->getStartPoint();
+                                    end = line->getEndPoint();
+                                    initialized = true;
+                                    continue;
+                                }
+
+                                updateExtremes(line->getStartPoint());
+                                updateExtremes(line->getEndPoint());
+                            }
+                            if (initialized) {
+                                auto* unifiedLine = new Part::GeomLineSegment();
+                                unifiedLine->setPoints(start, end);
+                                geos.clear(); // Clear other segments
+                                geos.emplace_back(unifiedLine);
                             }
                             else {
-                                // `point` is closer to `end`, check if it's further out than `end`
-                                if ((point - start).Length() > (end - start).Length()) {
-                                    end = point;
+                                // In case we have not initialized, perhaps the projections were
+                                // only straight bsplines.
+                                // Then we use the old method that will give a line with 20000 length:
+                                // Get vector that is normal to both sketch plane normal and plane normal.
+                                // This is the line's direction
+                                gp_Dir lnormal = dnormal.Crossed(snormal);
+                                BRepBuilderAPI_MakeEdge builder(gp_Lin(plane.Location(), lnormal));
+                                builder.Build();
+                                if (builder.IsDone()) {
+                                    const TopoDS_Edge& edge = TopoDS::Edge(builder.Shape());
+                                    BRepAdaptor_Curve curve(edge);
+                                    if (curve.GetType() == GeomAbs_Line) {
+                                        geos.emplace_back(projectLine(curve, gPlane, invPlm));
+                                    }
                                 }
                             }
-                        };
-                        for (auto& geo : geos) {
-                            auto* line = dynamic_cast<Part::GeomLineSegment*>(geo.get());
-                            if (!line) {
-                                continue; // we should have only lines
-                            }
-                            if (!initialized) {
-                                start = line->getStartPoint();
-                                end = line->getEndPoint();
-                                initialized = true;
-                                continue;
-                            }
-
-                            updateExtremes(line->getStartPoint());
-                            updateExtremes(line->getEndPoint());
-                        }
-
-                        auto* unifiedLine = new Part::GeomLineSegment();
-                        unifiedLine->setPoints(start, end);
-                        geos.clear(); // Clear other segments
-                        geos.emplace_back(unifiedLine);
-                    }
-                }
-                else {
-                    std::vector<TopoDS_Shape> res = projectShape(face, sketchAx3);
-                    for (auto& resShape : res) {
-                        TopExp_Explorer explorer(resShape, TopAbs_EDGE);
-                        while (explorer.More()) {
-                            TopoDS_Edge projEdge = TopoDS::Edge(explorer.Current());
-                            processEdge2(projEdge, geos);
-                            explorer.Next();
                         }
                     }
+                    else {
+                        std::vector<TopoDS_Shape> res = projectShape(face, sketchAx3);
+                        for (auto& resShape : res) {
+                            TopExp_Explorer explorer(resShape, TopAbs_EDGE);
+                            while (explorer.More()) {
+                                TopoDS_Edge projEdge = TopoDS::Edge(explorer.Current());
+                                processEdge2(projEdge, geos);
+                                explorer.Next();
+                            }
+                        }
+                    }
+                } break;
+                case TopAbs_EDGE: {
+                    const TopoDS_Edge& edge = TopoDS::Edge(refSubShape);
+                    processEdge(edge, geos, gPlane, invPlm, mov, sketchPlane, invRot, sketchAx3, aProjFace);
+                } break;
+                case TopAbs_VERTEX: {
+                    importVertex(refSubShape);
+                } break;
+                default:
+                    throw Base::TypeError("Unknown type of geometry");
+                    break;
                 }
-            } break;
-            case TopAbs_EDGE: {
-                const TopoDS_Edge& edge = TopoDS::Edge(refSubShape);
-                processEdge(edge, geos, gPlane, invPlm, mov, sketchPlane, invRot, sketchAx3, aProjFace);
-            } break;
-            case TopAbs_VERTEX: {
-                gp_Pnt P = BRep_Tool::Pnt(TopoDS::Vertex(refSubShape));
-                GeomAPI_ProjectPointOnSurf proj(P, gPlane);
-                P = proj.NearestPoint();
-                Base::Vector3d p(P.X(), P.Y(), P.Z());
-                invPlm.multVec(p, p);
-
-                auto* point = new Part::GeomPoint(p);
-                GeometryFacade::setConstruction(point, true);
-                geos.emplace_back(point);
-            } break;
-            default:
-                throw Base::TypeError("Unknown type of geometry");
-                break;
+                if (beingCreated && !extToAdd->intersection) {
+                    // We are adding the projections, so we need to initialize those
+                    for (auto& geo : geos) {
+                        auto egf = ExternalGeometryFacade::getFacade(geo.get());
+                        egf->setFlag(ExternalGeometryExtension::Defining, extToAdd->defining);
+                    }
+                }
             }
+            int projSize = geos.size();
 
-            if (intersection && (refSubShape.ShapeType() == TopAbs_EDGE
-                                 || refSubShape.ShapeType() == TopAbs_FACE))
-            {
+            if (intersection) {
                 FCBRepAlgoAPI_Section maker(refSubShape, sketchPlane);
                 maker.Approximation(Standard_True);
                 if (!maker.IsDone())
-                    FC_THROWM(Base::CADKernelError,"Failed to get intersection");
+                    FC_THROWM(Base::CADKernelError, "Failed to get intersection");
                 Part::TopoShape intersectionShape(maker.Shape());
                 auto edges = intersectionShape.getSubTopoShapes(TopAbs_EDGE);
+                for (const auto& s : edges) {
+                    TopoDS_Edge edge = TopoDS::Edge(s.getShape());
+                    processEdge(edge, geos, gPlane, invPlm, mov, sketchPlane, invRot, sketchAx3, aProjFace);
+                }
                 // Section of some face (e.g. sphere) produce more than one arcs
                 // from the same circle. So we try to fit the arcs with a single
                 // circle/arc.
@@ -9188,6 +9282,17 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
                             geos.clear();
                             geos.emplace_back(geo);
                         }
+                    }
+                }
+                for (const auto& s : intersectionShape.getSubShapes(TopAbs_VERTEX, TopAbs_EDGE)) {
+                    importVertex(s);
+                }
+
+                if (beingCreated && extToAdd->intersection) {
+                    // We are adding the projections, so we need to initialize those
+                    for (size_t i = projSize; i < geos.size(); ++i) {
+                        auto egf = ExternalGeometryFacade::getFacade(geos[i].get());
+                        egf->setFlag(ExternalGeometryExtension::Defining, extToAdd->defining);
                     }
                 }
             }
@@ -9209,25 +9314,18 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
                    << getFullName() << ": " << key << std::endl << "Unknown exception");
             continue;
         }
-        if(geos.empty())
+        if (geos.empty()) {
             continue;
+        }
 
         if(!refSet.emplace(key).second) {
             FC_WARN("Duplicated external reference in " << getFullName() << ": " << key);
             continue;
         }
-        if (intersection) {
-            for(auto &geo : geos) {
-                auto egf = ExternalGeometryFacade::getFacade(geo.get());
-                egf->setFlag(ExternalGeometryExtension::Defining, defining);
-            }
-        } else if (defining && i+1==(int)Objects.size()) {
-            for(auto &geo : geos)
-                ExternalGeometryFacade::getFacade(geo.get())->setFlag(
-                        ExternalGeometryExtension::Defining);
-        }
-        for(auto &geo : geos)
+
+        for (auto& geo : geos) {
             ExternalGeometryFacade::getFacade(geo.get())->setRef(key);
+        }
         newGeos.push_back(std::move(geos));
     }
 
@@ -9308,8 +9406,9 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
     solverNeedsUpdate=true;
     Constraints.acceptGeometry(getCompleteGeometry());
 
-    if(hasError && this->isRecomputing())
+    if (hasError && this->isRecomputing()) {
         throw Base::RuntimeError("Missing external geometry reference");
+    }
 }
 
 void SketchObject::fixExternalGeometry(const std::vector<int> &geoIds) {

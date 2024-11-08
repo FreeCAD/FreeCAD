@@ -116,7 +116,9 @@ public:
 class DrawSketchHandlerExternal: public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerExternal() = default;
+    DrawSketchHandlerExternal(bool intersection = false)
+        : intersection(intersection)
+    {}
     ~DrawSketchHandlerExternal() override
     {
         Gui::Selection().rmvSelectionGate();
@@ -163,10 +165,11 @@ public:
                     Gui::Command::openCommand(
                         QT_TRANSLATE_NOOP("Command", "Add external geometry"));
                     Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                          "addExternal(\"%s\",\"%s\", %s)",
+                                          "addExternal(\"%s\",\"%s\", %s, %s)",
                                           msg.pObjectName,
                                           msg.pSubName,
-                                          isConstructionMode() ? "False" : "True");
+                                          isConstructionMode() ? "False" : "True",
+                                          intersection ? "True" : "False");
 
                     Gui::Command::commitCommand();
 
@@ -214,6 +217,10 @@ private:
 
     QString getCrosshairCursorSVGName() const override
     {
+        if (intersection) {
+            return QString::fromLatin1("Sketcher_Pointer_External_Intersection");
+        }
+
         return QString::fromLatin1("Sketcher_Pointer_External");
     }
 
@@ -222,6 +229,8 @@ private:
         Q_UNUSED(sketchgui);
         setAxisPickStyle(true);
     }
+
+    bool intersection;
 };
 
 
