@@ -1048,11 +1048,13 @@ class _Wall(ArchComponent.Component):
                                     curWidth = abs(layers[i])
                                     off = totalwidth/2-layeroffset
                                     d1 = Vector(dvec).multiply(off)
-                                    w1 = DraftGeomUtils.offsetWire(wire, d1)
+                                    wNe1 = DraftGeomUtils.offsetWire(wire, d1,
+                                                                     wireNedge=True)
                                     layeroffset += curWidth
                                     off = totalwidth/2-layeroffset
                                     d1 = Vector(dvec).multiply(off)
-                                    w2 = DraftGeomUtils.offsetWire(wire, d1)
+                                    wNe2 = DraftGeomUtils.offsetWire(wire, d1)
+                                                                     wireNedge=True)
                                 else:
                                     dvec.multiply(width)
                                     wNe2 = DraftGeomUtils.offsetWire(wire, dvec,
