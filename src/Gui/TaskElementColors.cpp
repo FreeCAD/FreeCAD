@@ -75,10 +75,10 @@ public:
     explicit Private(ViewProviderDocumentObject* vp, const char* element = "")
         : ui(new Ui_TaskElementColors())
         , vp(vp)
+        , vpParent(vp)
+        , vpDoc(vp->getDocument())
         , editElement(element)
     {
-        vpDoc = vp->getDocument();
-        vpParent = vp;
         auto doc = Application::Instance->editDocument();
         if (doc) {
             auto editVp = doc->getInEdit(&vpParent, &editSub);
@@ -164,7 +164,7 @@ public:
         }
 
         for (auto& v : vp->getElementColors(sub)) {
-            auto it = elements.find(v.first.c_str());
+            auto it = elements.find(v.first);
             if (it != elements.end()) {
                 if (push) {
                     items.push_back(it->second);
@@ -194,10 +194,9 @@ public:
         int count = ui->elementList->count();
         for (int i = 0; i < count; ++i) {
             auto item = ui->elementList->item(i);
-            auto color = item->data(Qt::UserRole).value<QColor>();
-            info.emplace(
-                qPrintable(item->data(Qt::UserRole + 1).value<QString>()),
-                App::Color(color.redF(), color.greenF(), color.blueF(), color.alphaF()));
+            auto col = item->data(Qt::UserRole).value<QColor>();
+            std::string sub = qPrintable(item->data(Qt::UserRole + 1).value<QString>());
+            info.emplace(sub, App::Color(col.redF(), col.greenF(), col.blueF(), col.alphaF()));
         }
         if (!App::GetApplication().getActiveTransaction()) {
             App::GetApplication().setActiveTransaction("Set colors");
@@ -621,8 +620,9 @@ TaskElementColors::~TaskElementColors() = default;
 void TaskElementColors::open()
 {}
 
-void TaskElementColors::clicked(int)
+void TaskElementColors::clicked(int id)
 {
+    Q_UNUSED(id)
 }
 
 bool TaskElementColors::accept()
