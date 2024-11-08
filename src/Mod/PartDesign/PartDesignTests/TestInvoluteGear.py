@@ -254,6 +254,7 @@ class TestInvoluteGear(unittest.TestCase):
         profile.HighPrecision = False
         profile.NumberOfTeeth = 8
         body = self.Doc.addObject('PartDesign::Body','GearBody')
+        body.AllowCompound = False
         body.addObject(profile)
         cylinder = body.newObject('PartDesign::AdditiveCylinder','GearCylinder')
         default_dedendum = 1.25

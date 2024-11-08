@@ -28,6 +28,7 @@
 #include <Base/PyObjectBase.h>
 
 #include "ViewProviderAssembly.h"
+#include "ViewProviderAssemblyLink.h"
 #include "ViewProviderBom.h"
 #include "ViewProviderBomGroup.h"
 #include "ViewProviderJointGroup.h"
@@ -60,6 +61,7 @@ PyMOD_INIT_FUNC(AssemblyGui)
     // This function is responsible for adding inherited slots from a type's base class.
 
     AssemblyGui::ViewProviderAssembly::init();
+    AssemblyGui::ViewProviderAssemblyLink::init();
     AssemblyGui::ViewProviderBom::init();
     AssemblyGui::ViewProviderBomGroup::init();
     AssemblyGui::ViewProviderJointGroup::init();

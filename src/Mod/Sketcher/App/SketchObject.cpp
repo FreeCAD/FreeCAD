@@ -28,7 +28,7 @@
 
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
-#include <BRepAlgoAPI_Section.hxx>
+#include <Mod/Part/App/FCBRepAlgoAPI_Section.h>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
@@ -610,9 +610,7 @@ class SketchObject::GeoHistory
 private:
     static constexpr int bgiMaxElements = 16;
 
-public:
     using Parameters = bgi::linear<bgiMaxElements>;
-
     using IdSet = std::set<long>;
     using IdSets = std::pair<IdSet, IdSet>;
     using AdjList = std::list<IdSet>;
@@ -627,6 +625,7 @@ public:
     AdjMap adjmap;
     bgi::rtree<Value,Parameters> rtree;
 
+public:
     AdjList::iterator find(const Base::Vector3d &pt,bool strict=true){
         std::vector<Value> ret;
         rtree.query(bgi::nearest(pt, 1), std::back_inserter(ret));
@@ -4757,13 +4756,8 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList, int refGeoId,
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
 
-    const std::vector<Part::Geometry*>& geovals = getInternalGeometry();
-    std::vector<Part::Geometry*> newgeoVals(geovals);
-
     const std::vector<Constraint*>& constrvals = this->Constraints.getValues();
     std::vector<Constraint*> newconstrVals(constrvals);
-
-    newgeoVals.reserve(geovals.size() + geoIdList.size());
 
     std::map<int, int> geoIdMap;
     std::map<int, bool> isStartEndInverted;
@@ -4784,15 +4778,10 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList, int refGeoId,
         }
     }
 
-    // add the geometry
-    std::vector<Part::Geometry*> symmetricVals = getSymmetric(geoIdList, geoIdMap, isStartEndInverted, refGeoId, refPosId);
-    newgeoVals.insert(newgeoVals.end(), symmetricVals.begin(), symmetricVals.end());
+    std::vector<Part::Geometry*> symgeos = getSymmetric(geoIdList, geoIdMap, isStartEndInverted, refGeoId, refPosId);
 
-    // Block acceptGeometry in OnChanged to avoid unnecessary checks and updates
     {
-        Base::StateLocker lock(internaltransaction, true);
-        Geometry.setValues(std::move(newgeoVals));
-
+        addGeometry(symgeos);
 
         for (auto* constr :  constrvals) {
             // we look in the map, because we might have skipped internal alignment geometry
@@ -4813,6 +4802,7 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList, int refGeoId,
                         if (constr->Type != Sketcher::DistanceX
                             && constr->Type != Sketcher::DistanceY) {
                             Constraint* constNew = constr->copy();
+                            constNew->Name = ""; // Make sure we don't have 2 constraint with same name.
                             constNew->First = fit->second;
                             newconstrVals.push_back(constNew);
                         }
@@ -4825,6 +4815,7 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList, int refGeoId,
                         // diameter, weight,...
 
                         Constraint* constNew = constr->copy();
+                        constNew->Name = "";
                         constNew->First = fit->second;
                         newconstrVals.push_back(constNew);
                     }
@@ -4845,7 +4836,7 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList, int refGeoId,
                                 || constr->Type == Sketcher::PointOnObject
                                 || constr->Type == Sketcher::InternalAlignment) {
                                 Constraint* constNew = constr->copy();
-
+                                constNew->Name = "";
                                 constNew->First = fit->second;
                                 constNew->Second = sit->second;
                                 if (isStartEndInverted[constr->First]) {
@@ -4877,6 +4868,7 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList, int refGeoId,
 
                             if (tit != geoIdMap.end()) {// Third is also in the list
                                 Constraint* constNew = constr->copy();
+                                constNew->Name = "";
                                 constNew->First = fit->second;
                                 constNew->Second = sit->second;
                                 constNew->Third = tit->second;
@@ -7672,7 +7664,7 @@ int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName, boo
                 continue;
             if (intersection) {
                 try {
-                    BRepAlgoAPI_Section maker(subShape, sketchPlane);
+                    FCBRepAlgoAPI_Section maker(subShape, sketchPlane);
                     if (!maker.IsDone() || maker.Shape().IsNull())
                         continue;
                 } catch (Standard_Failure &) {
@@ -9026,7 +9018,7 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
             if (intersection && (refSubShape.ShapeType() == TopAbs_EDGE
                                  || refSubShape.ShapeType() == TopAbs_FACE))
             {
-                BRepAlgoAPI_Section maker(refSubShape, sketchPlane);
+                FCBRepAlgoAPI_Section maker(refSubShape, sketchPlane);
                 maker.Approximation(Standard_True);
                 if (!maker.IsDone())
                     FC_THROWM(Base::CADKernelError,"Failed to get intersection");

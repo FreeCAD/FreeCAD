@@ -312,6 +312,7 @@ void QGIPrimPath::setCurrentPen()
 {
     m_pen.setWidthF(m_width);
     m_pen.setColor(m_colCurrent);
+    m_pen.setStyle(m_styleCurrent);
 }
 
 void QGIPrimPath::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {

@@ -503,6 +503,8 @@ class _Site(ArchIFC.IfcProduct):
         obj.Proxy = self
         self.setProperties(obj)
         obj.IfcType = "Site"
+        obj.CompositionType = "ELEMENT"
+
 
     def setProperties(self,obj):
         """Gives the object properties unique to sites.

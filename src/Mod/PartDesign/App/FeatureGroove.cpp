@@ -23,7 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRepAlgoAPI_Cut.hxx>
+# include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
 # include <BRepPrimAPI_MakeRevol.hxx>
 # include <BRepFeat_MakeRevol.hxx>
 # include <gp_Lin.hxx>
@@ -57,8 +57,8 @@ Groove::Groove()
 
     ADD_PROPERTY_TYPE(Type, (0L), "Groove", App::Prop_None, "Groove type");
     Type.setEnums(TypeEnums);
-    ADD_PROPERTY_TYPE(Base, (Base::Vector3d(0.0f,0.0f,0.0f)), "Groove", App::Prop_ReadOnly, "Base");
-    ADD_PROPERTY_TYPE(Axis, (Base::Vector3d(0.0f,1.0f,0.0f)), "Groove", App::Prop_ReadOnly, "Axis");
+    ADD_PROPERTY_TYPE(Base, (Base::Vector3d(0.0f,0.0f,0.0f)), "Groove", App::PropertyType(App::Prop_ReadOnly | App::Prop_Hidden), "Base");
+    ADD_PROPERTY_TYPE(Axis, (Base::Vector3d(0.0f,1.0f,0.0f)), "Groove", App::PropertyType(App::Prop_ReadOnly | App::Prop_Hidden), "Axis");
     ADD_PROPERTY_TYPE(Angle, (360.0),"Groove", App::Prop_None, "Angle");
     ADD_PROPERTY_TYPE(Angle2, (60.0), "Groove", App::Prop_None, "Groove length in 2nd direction");
     ADD_PROPERTY_TYPE(UpToFace, (nullptr), "Groove", App::Prop_None, "Face where groove will end");

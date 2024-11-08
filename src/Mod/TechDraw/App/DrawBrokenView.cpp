@@ -43,7 +43,7 @@
 
 #ifndef _PreComp_
 #include <BRepAdaptor_Curve.hxx>
-#include <BRepAlgoAPI_Cut.hxx>
+#include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
@@ -206,7 +206,7 @@ TopoDS_Shape DrawBrokenView::apply1Break(const App::DocumentObject& breakObj, co
     moveDir0.Normalize();
     moveDir0 = DU::closestBasisOriented(moveDir0);
     auto halfSpace0 = makeHalfSpace(breakPoints.first, moveDir0, breakPoints.second);
-    BRepAlgoAPI_Cut mkCut0(inShape, halfSpace0);
+    FCBRepAlgoAPI_Cut mkCut0(inShape, halfSpace0);
     if (!mkCut0.IsDone()) {
         Base::Console().Message("DBV::apply1Break - cut0 failed\n");
     }
@@ -218,7 +218,7 @@ TopoDS_Shape DrawBrokenView::apply1Break(const App::DocumentObject& breakObj, co
     moveDir1.Normalize();
     moveDir1 = DU::closestBasisOriented(moveDir1);
     auto halfSpace1 = makeHalfSpace(breakPoints.second, moveDir1, breakPoints.first);
-    BRepAlgoAPI_Cut mkCut1(inShape, halfSpace1);
+    FCBRepAlgoAPI_Cut mkCut1(inShape, halfSpace1);
     if (!mkCut1.IsDone()) {
         Base::Console().Message("DBV::apply1Break - cut1 failed\n");
     }
