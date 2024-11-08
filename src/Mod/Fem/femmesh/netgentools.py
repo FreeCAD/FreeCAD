@@ -66,7 +66,7 @@ class NetgenTools:
     }
 
     meshing_step = {
-        "AnalizeGeometry": 1,  # MESHCONST_ANALYSE
+        "AnalyzeGeometry": 1,  # MESHCONST_ANALYSE
         "MeshEdges": 2,  # MESHCONST_MESHEDGES
         "MeshSurface": 3,  # MESHCONST_MESHSURFACE
         "OptimizeSurface": 4,  # MESHCONST_OPTSURFACE
@@ -130,6 +130,19 @@ NetgenTools.run_netgen(**{params})
             if heal:
                 geom.Heal()
             mesh = geom.GenerateMesh(mp=meshing.MeshingParameters(**params))
+
+        result = {
+            "coords": [],
+            "Edges": [[], []],
+            "Faces": [[], []],
+            "Volumes": [[], []],
+        }
+        groups = {"Edges": [], "Faces": [], "Solids": []}
+
+        # save empty data if last step is geometry analysis
+        if params["perfstepsend"] == NetgenTools.meshing_step["AnalyzeGeometry"]:
+            np.save(result_file, [result, groups])
+            return None
 
         if second_order:
             mesh.SecondOrder()
