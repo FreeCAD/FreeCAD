@@ -147,10 +147,10 @@ def getAngle(vector):
     return a
 
 
-def diffAngle(a1, a2, direction="Climb"):
-    """diffAngle(a1, a2, [direction='Climb'])
+def diffAngle(a1, a2, direction="CW"):
+    """diffAngle(a1, a2, [direction='CW'])
     Returns the difference between two angles (a1 -> a2) into a given direction."""
-    if direction == "Climb":
+    if direction == "CW":
         while a1 < a2:
             a1 += 2 * math.pi
         a = a1 - a2
@@ -453,7 +453,7 @@ def edgeForCmd(cmd, startPoint):
             cw = True
         else:
             cw = False
-        angle = diffAngle(getAngle(A), getAngle(B), "Climb" if cw else "CCW")
+        angle = diffAngle(getAngle(A), getAngle(B), "CW" if cw else "CCW")
         height = endPoint.z - startPoint.z
         pitch = height * math.fabs(2 * math.pi / angle)
         if angle > 0:
