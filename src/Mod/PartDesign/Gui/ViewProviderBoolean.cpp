@@ -120,11 +120,14 @@ bool ViewProviderBoolean::onDelete(const std::vector<std::string> &s)
     return ViewProvider::onDelete(s);
 }
 
-void ViewProviderBoolean::attach(App::DocumentObject* obj) {
+void ViewProviderBoolean::attach(App::DocumentObject* obj)
+{
     PartGui::ViewProviderPartExt::attach(obj);
+}
 
-    //set default display mode to override the "Group" display mode
-    setDisplayMode("Flat Lines");
+const char* ViewProviderBoolean::getDefaultDisplayMode() const
+{
+    return "Flat Lines";
 }
 
 void ViewProviderBoolean::onChanged(const App::Property* prop) {

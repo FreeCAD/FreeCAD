@@ -651,12 +651,12 @@ void DocumentRecoveryHandler::checkForPreviousCrashes(const std::function<void(Q
 
     QString exeName = QString::fromStdString(App::Application::getExecutableName());
     QList<QFileInfo> locks = tmp.entryInfoList();
-    for (QList<QFileInfo>::iterator it = locks.begin(); it != locks.end(); ++it) {
-        QString bn = it->baseName();
+    for (const QFileInfo&  it : locks) {
+        QString bn = it.baseName();
         // ignore the lock file for this instance
-        QString pid = QString::number(QCoreApplication::applicationPid());
+        QString pid = QString::number(App::Application::applicationPid());
         if (bn.startsWith(exeName) && bn.indexOf(pid) < 0) {
-            QString fn = it->absoluteFilePath();
+            QString fn = it.absoluteFilePath();
 
 #if !defined(FC_OS_WIN32) || (BOOST_VERSION < 107600)
             boost::interprocess::file_lock flock(fn.toUtf8());
@@ -665,7 +665,7 @@ void DocumentRecoveryHandler::checkForPreviousCrashes(const std::function<void(Q
 #endif
             if (flock.try_lock()) {
                 // OK, this file is a leftover from a previous crash
-                QString crashed_pid = bn.mid(exeName.length()+1);
+                QString crashed_pid = bn.mid(exeName.length() + 1);
                 // search for transient directories with this PID
                 QString filter;
                 QTextStream str(&filter);
@@ -674,7 +674,10 @@ void DocumentRecoveryHandler::checkForPreviousCrashes(const std::function<void(Q
                 tmp.setFilter(QDir::Dirs);
                 QList<QFileInfo> dirs = tmp.entryInfoList();
 
-                callableFunc(tmp, dirs, it->fileName());
+                callableFunc(tmp, dirs, it.fileName());
+            }
+            else {
+                Base::Console().Log("Failed to lock file %s\n", fn.toUtf8().constData());
             }
         }
     }

@@ -160,15 +160,20 @@ def location_url(url_localized: str, url_english: str) -> tuple:
     """
     Returns localized documentation url and page name, if they exist,
     otherwise defaults to english version.
+    Page name is gotten from:
+      a) Name/* metadata tag on raw markdown files from github,
+         Wiki translators should make sure to add it.
+      b) <title> HTML tag
     """
     try:
         req = urllib.request.Request(url_localized)
         with urllib.request.urlopen(req) as response:
             html = response.read().decode("utf-8")
-            if re.search(r"https://wiki.freecad.org", url_localized):
-                pagename_match = re.search(r"<title>(.*?) - .*?</title>", html)
-            else:
+            if re.search(MD_RAW_URL, url_localized):
                 pagename_match = re.search(r"Name/.*?:\s*(.+)", html)
+            else:
+                # Pages from FreeCAD Wiki fall here
+                pagename_match = re.search(r"<title>(.*?) - .*?</title>", html)
             if pagename_match is not None:
                 return (url_localized, pagename_match.group(1))
             else:
@@ -177,17 +182,19 @@ def location_url(url_localized: str, url_english: str) -> tuple:
         return (url_english, "")
 
 
-def get_location(page):
-    """retrieves the location (online or offline) of a given page"""
+def get_location(page) -> tuple:
+    """retrieves the location (online or offline) of a given page. Returns the location and the page name"""
 
     location = ""
     if page.startswith("http"):
-        return page
+        # NOTE: This gets activated when you open a link on the built-in browser, since
+        # we don't know the URL, using location_url() fallback to the HTML <title> tag
+        return location_url(page, page)
     if page.startswith("file://"):
-        return page[7:]
+        return (page[7:], "")
     # offline location
     if os.path.exists(page):
-        return page
+        return (page, "")
     page = page.replace(".md", "")
     page = page.replace(" ", "_")
     page = page.replace("wiki/", "")

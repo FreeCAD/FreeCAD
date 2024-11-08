@@ -120,7 +120,14 @@ void Document::exportGraphviz(std::ostream& out) const
          */
 
         std::string getId(const DocumentObject * docObj) {
-            return std::string((docObj)->getDocument()->getName()) + "#" + docObj->getNameInDocument();
+            std::string id;
+            if (docObj->isAttachedToDocument()) {
+                auto doc = docObj->getDocument();
+                id.append(doc->getName());
+                id.append("#");
+                id.append(docObj->getNameInDocument());
+            }
+            return id;
         }
 
         /**
@@ -437,11 +444,14 @@ void Document::exportGraphviz(std::ostream& out) const
                     if (obj) {
                         std::map<std::string,Vertex>::const_iterator item = GlobalVertexList.find(getId(obj));
 
-                        if (item == GlobalVertexList.end())
-                            add(obj,
-                                std::string(obj->getDocument()->getName()) + "#" + obj->getNameInDocument(),
-                                std::string(obj->getDocument()->getName()) + "#" + obj->Label.getValue(),
-                                CSSubgraphs);
+                        if (item == GlobalVertexList.end()) {
+                            if (obj->isAttachedToDocument()) {
+                                add(obj,
+                                    std::string(obj->getDocument()->getName()) + "#" + obj->getNameInDocument(),
+                                    std::string(obj->getDocument()->getName()) + "#" + obj->Label.getValue(),
+                                    CSSubgraphs);
+                            }
+                        }
                     }
                 }
             }

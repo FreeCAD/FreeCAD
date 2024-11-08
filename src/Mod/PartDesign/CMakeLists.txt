@@ -55,6 +55,7 @@ set(PartDesign_TestScripts
     PartDesignTests/TestThickness.py
     PartDesignTests/TestTopologicalNamingProblem.py
     PartDesignTests/TestInvoluteGear.py
+    PartDesignTests/TestSketch.py
 )
 
 if(BUILD_GUI)

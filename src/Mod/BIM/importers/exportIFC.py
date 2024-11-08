@@ -202,6 +202,7 @@ def export(exportList, filename, colors=None, preferences=None):
              "Visit https://wiki.freecad.org/IfcOpenShell "
              "to learn about installing it.")
         return
+    from ifcopenshell import guid
     if str(filename).lower().endswith("json"):
         import json
         try:

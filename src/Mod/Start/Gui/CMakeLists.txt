@@ -88,6 +88,16 @@ if (FREECAD_USE_PCH)
     ADD_MSVC_PRECOMPILED_HEADER(StartGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
 endif (FREECAD_USE_PCH)
 
+# Add CoreFoundation to StartGui_LIBS on macOS
+if (APPLE)
+    find_library(COREFOUNDATION_LIBRARY CoreFoundation)
+    if (COREFOUNDATION_LIBRARY)
+        list(APPEND StartGui_LIBS ${COREFOUNDATION_LIBRARY})
+    else()
+        message(SEND_ERROR "CoreFoundation not found. Please ensure you're building on macOS.")
+    endif()
+endif()
+
 add_library(StartGui SHARED ${StartGui_SRCS} ${StartGuiIcon_SVG} ${StartGuiThumbnail_PNG})
 # target_link_libraries(StartGui ${StartGui_LIBS} Qt::Quick Qt::Qml Qt::QuickWidgets)
 target_link_libraries(StartGui ${StartGui_LIBS})

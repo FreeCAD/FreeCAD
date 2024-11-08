@@ -60,7 +60,6 @@ class BIM_IfcExplorer:
 
         # setting up a font
         self.bold = QtGui.QFont()
-        self.bold.setWeight(75)
         self.bold.setBold(True)
 
         # setting up a link fint
@@ -108,15 +107,16 @@ class BIM_IfcExplorer:
         self.dialog.resize(720, 540)
         toolbar = FreeCADGui.UiLoader().createWidget("Gui::ToolBar")
 
-        layout = QtGui.QVBoxLayout(self.dialog)
+        layout = QtGui.QVBoxLayout()
         layout.addWidget(toolbar)
-        hlayout = QtGui.QHBoxLayout(self.dialog)
+        hlayout = QtGui.QHBoxLayout()
         hlayout.addWidget(self.tree)
         layout.addLayout(hlayout)
-        vlayout = QtGui.QVBoxLayout(self.dialog)
+        vlayout = QtGui.QVBoxLayout()
         hlayout.addLayout(vlayout)
         vlayout.addWidget(self.attributes)
         vlayout.addWidget(self.properties)
+        self.dialog.setLayout(layout)
 
         # draw the toolbar buttons
         self.openAction = QtGui.QAction(translate("BIM", "Open"), None)
@@ -217,6 +217,17 @@ class BIM_IfcExplorer:
         self.ifc = ifcopenshell.open(self.filename)
         root = self.getEntitiesTree()
 
+        # unable to find IfcSite
+        if not root:
+            FreeCAD.Console.PrintError(
+                translate(
+                    "BIM",
+                    "IfcSite element was not found in %s. Unable to explore.",
+                )
+                % self.filename + "\n"
+            )
+            return
+
         # populate tree contents
         for eid, children in root.items():
             self.addEntity(eid, children, self.tree)
@@ -241,7 +252,7 @@ class BIM_IfcExplorer:
     def insert(self):
         "inserts selected objects in the active document"
 
-        import importIFC
+        from importers import importIFC
         from PySide import QtCore, QtGui
 
         doc = FreeCAD.ActiveDocument
@@ -274,11 +285,11 @@ class BIM_IfcExplorer:
                     self.mesh.ViewObject.show()
                 else:
                     try:
-                        import importIFCHelper
+                        from importers import importIFCHelper
 
                         s = importIFCHelper.getScaling(self.ifc)
                     except:
-                        import importIFC
+                        from importers import importIFC
 
                         s = importIFC.getScaling(self.ifc)
                     s *= 1000  # ifcopenshell outputs its meshes in metres
@@ -451,7 +462,7 @@ class BIM_IfcExplorer:
                 item.setIcon(0, QtGui.QIcon(":icons/Arch_Rebar.svg"))
             elif entity.is_a("IfcProduct"):
                 item.setIcon(0, QtGui.QIcon(":icons/Arch_Component.svg"))
-            self.tree.setFirstItemColumnSpanned(item, True)
+            item.setFirstColumnSpanned(True)
             item.setData(0, QtCore.Qt.UserRole, eid)
             for childid, grandchildren in children.items():
                 self.addEntity(childid, grandchildren, item)
@@ -558,7 +569,7 @@ class BIM_IfcExplorer:
                             + self.tostr(rel.RelatingPropertyDefinition.Name),
                         )
                         item.setFont(0, self.bold)
-                        self.properties.setFirstItemColumnSpanned(item, True)
+                        item.setFirstColumnSpanned(True)
                         if hasattr(rel.RelatingPropertyDefinition, "HasProperties"):
                             for prop in rel.RelatingPropertyDefinition.HasProperties:
                                 subitem = QtGui.QTreeWidgetItem(item)

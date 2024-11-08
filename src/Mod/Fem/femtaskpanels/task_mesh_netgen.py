@@ -46,12 +46,19 @@ class _TaskPanel(base_femmeshtaskpanel._BaseMeshTaskPanel):
     """
 
     def __init__(self, obj):
-        super().__init__(obj)
+        super().__init__(obj, netgentools.NetgenTools(obj))
+
         self.form = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshNetgen.ui"
         )
 
-        self.tool = netgentools.NetgenTools(obj)
+        self.text_log = self.form.te_output
+        self.text_time = self.form.l_time
+
+        self.setup_connections()
+
+    def setup_connections(self):
+        super().setup_connections()
 
         QtCore.QObject.connect(
             self.form.qsb_max_size,
@@ -86,7 +93,6 @@ class _TaskPanel(base_femmeshtaskpanel._BaseMeshTaskPanel):
             QtCore.SIGNAL("currentIndexChanged(int)"),
             self.fineness_changed,
         )
-        QtCore.QObject.connect(self.timer, QtCore.SIGNAL("timeout()"), self.update_timer_text)
         QtCore.QObject.connect(
             self.form.pb_get_netgen_version, QtCore.SIGNAL("clicked()"), self.get_version
         )

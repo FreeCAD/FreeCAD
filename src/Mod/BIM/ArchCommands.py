@@ -608,7 +608,7 @@ def removeCurves(shape,dae=False,tolerance=5):
     with faceted segments. If dae is True, DAE triangulation options are used'''
     import Mesh
     if dae:
-        import importDAE
+        from importers import importDAE
         t = importDAE.triangulate(shape.cleaned())
     else:
         t = shape.cleaned().tessellate(tolerance)
@@ -770,6 +770,9 @@ def pruneIncluded(objectslist,strict=False):
                     elif parent.isDerivedFrom("PartDesign::Body") and obj == parent.BaseFeature:
                         # don't consider a PartDesign_Body with a PartDesign_Clone that references obj
                         pass
+                    elif parent.isDerivedFrom("PartDesign::SubShapeBinder") or (hasattr(parent, "TypeId") and parent.TypeId == "PartDesign::ShapeBinder"):
+                        # don't consider a PartDesign_SubShapeBinder or PartDesign_ShapeBinder referncing this object from another object
+                        pass
                     elif hasattr(parent,"Host") and parent.Host == obj:
                         pass
                     elif hasattr(parent,"Hosts") and obj in parent.Hosts:
@@ -791,7 +794,7 @@ def pruneIncluded(objectslist,strict=False):
         if toplevel:
             newlist.append(obj)
         else:
-            FreeCAD.Console.PrintLog("pruning "+obj.Label+"\n")
+            FreeCAD.Console.PrintWarning("pruning "+obj.Label+"\n")
     return newlist
 
 def getAllChildren(objectlist):

@@ -399,6 +399,7 @@ public:
     static std::map<std::string, std::string> &Config(){return mConfig;}
     static int GetARGC(){return _argc;}
     static char** GetARGV(){return _argv;}
+    static int64_t applicationPid();
     //@}
 
     /** @name Application directories */

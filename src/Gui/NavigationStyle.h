@@ -284,6 +284,7 @@ private:
 
     SbVec3f rotationCenter;
     SbBool rotationCenterFound;
+    SbBool rotationCenterIsScenePointAtCursor;
     NavigationStyle::RotationCenterModes rotationCenterMode;
     float sensitivity;
     SbBool resetcursorpos;

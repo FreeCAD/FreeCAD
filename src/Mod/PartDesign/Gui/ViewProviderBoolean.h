@@ -49,6 +49,7 @@ public:
 
     bool onDelete(const std::vector<std::string> &) override;
     void attach(App::DocumentObject*) override;
+    const char* getDefaultDisplayMode() const override;
     void onChanged(const App::Property* prop) override;
 
 protected:
