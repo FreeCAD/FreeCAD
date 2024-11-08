@@ -1053,7 +1053,7 @@ class _Wall(ArchComponent.Component):
                                     layeroffset += curWidth
                                     off = totalwidth/2-layeroffset
                                     d1 = Vector(dvec).multiply(off)
-                                    wNe2 = DraftGeomUtils.offsetWire(wire, d1)
+                                    wNe2 = DraftGeomUtils.offsetWire(wire, d1,
                                                                      wireNedge=True)
                                 else:
                                     dvec.multiply(width)
