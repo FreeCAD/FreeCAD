@@ -259,8 +259,18 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
                                                    QtWidgets.QMessageBox.No)
             if reply == QtWidgets.QMessageBox.No:
                 return
-        self.form.comboBoxStyles.removeItem(index)
+
         del self.styles[style]
+        # We need to reset self.current_style, which is the deleted style,
+        # to stop on_style_changed from adding that style again:
+        self.current_style = None
+
+        self.form.comboBoxStyles.currentIndexChanged.disconnect(self.on_style_changed)
+        self.form.comboBoxStyles.removeItem(index)
+        if not self.styles:
+            self.form.comboBoxStyles.setCurrentIndex(0)
+        self.on_style_changed(self.form.comboBoxStyles.currentIndex())  # Updates the dialog.
+        self.form.comboBoxStyles.currentIndexChanged.connect(self.on_style_changed)
 
     def on_rename(self):
         """Execute as a callback when the rename button is pressed."""
