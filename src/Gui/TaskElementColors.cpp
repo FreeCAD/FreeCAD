@@ -234,7 +234,7 @@ public:
         QColorDialog cd(color, parent);
         cd.setOption(QColorDialog::ShowAlphaChannel);
         if (DialogOptions::dontUseNativeColorDialog())
-            cd.setOptions(QColorDialog::DontUseNativeDialog);
+            cd.setOption(QColorDialog::DontUseNativeDialog);
         if (cd.exec()!=QDialog::Accepted || color==cd.selectedColor())
             return;
         color = cd.selectedColor();
@@ -459,7 +459,7 @@ void ElementColors::onAddSelectionClicked()
         QColorDialog cd(color, this);
         cd.setOption(QColorDialog::ShowAlphaChannel);
         if (DialogOptions::dontUseNativeColorDialog())
-            cd.setOptions(QColorDialog::DontUseNativeDialog);
+            cd.setOption(QColorDialog::DontUseNativeDialog);
         if (cd.exec()!=QDialog::Accepted)
             return;
         color = cd.selectedColor();
