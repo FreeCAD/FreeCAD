@@ -115,7 +115,9 @@ CmdSketcherToggleConstruction::CmdSketcherToggleConstruction()
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreatePeriodicBSplineByInterpolation");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompCreateBSpline");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CarbonCopy");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompExternal");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_External");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_Intersection");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_ToggleConstruction");
 }
 
