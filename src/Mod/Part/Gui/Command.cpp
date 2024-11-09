@@ -368,7 +368,7 @@ void CmdPartCommon::activated(int iMsg)
     std::vector<Gui::SelectionObject> Sel =
         getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(), Gui::ResolveMode::FollowLink);
 
-    if (Sel.size() < 1) {
+    if (Sel.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Please select two shapes or more. Or, select one compound containing two or more shapes to compute the intersection between."));
         return;
