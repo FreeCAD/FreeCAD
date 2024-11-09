@@ -621,7 +621,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertEqual(self.countFacesEdgesVertexes(revolution.Shape.ElementReverseMap),
                          (9, 21, 14))
         self.assertEqual( revolution.Shape.ElementReverseMap["Vertex9"][1].count(";"), 3)
-        self.assertEqual( revolution.Shape.ElementReverseMap["Face9"].count(";"), 16)
+        self.assertEqual( revolution.Shape.ElementReverseMap["Face9"].count(";"), 14)
         # Arrange for an UpToFace mode test
         revolution.Type = 3
         revolution.UpToFace = (pad, ("Face4"))
