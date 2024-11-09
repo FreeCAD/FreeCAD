@@ -269,7 +269,8 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         self.form.comboBoxStyles.removeItem(index)
         if not self.styles:
             self.form.comboBoxStyles.setCurrentIndex(0)
-        self.on_style_changed(self.form.comboBoxStyles.currentIndex())  # Updates the dialog.
+        # Update the dialog and self.current_style:
+        self.on_style_changed(self.form.comboBoxStyles.currentIndex())
         self.form.comboBoxStyles.currentIndexChanged.connect(self.on_style_changed)
 
     def on_rename(self):
@@ -295,6 +296,7 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
                 del self.styles[style]
                 self.styles[newname] = value
                 self.renamed[style] = newname
+                self.current_style = newname
 
     def on_import(self):
         """Import styles from a json file."""
