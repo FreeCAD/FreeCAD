@@ -72,22 +72,27 @@ bool ViewProviderGroupExtension::extensionCanDropObjects() const {
     return true;
 }
 
-bool ViewProviderGroupExtension::extensionCanDropObject(App::DocumentObject* obj) const {
-
+bool ViewProviderGroupExtension::extensionCanDropObject(App::DocumentObject* obj) const
+{
 #ifdef FC_DEBUG
     Base::Console().Log("Check ViewProviderGroupExtension");
 #endif
 
-    auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
+    auto extobj = getExtendedViewProvider()->getObject();
+    auto group = extobj->getExtensionByType<App::GroupExtension>();
 
     //we cannot drop thing of this group into it again if it does not allow reorder
-    if (group->hasObject(obj) && !getExtendedViewProvider()->acceptReorderingObjects())
+    if (group->hasObject(obj) && !getExtendedViewProvider()->acceptReorderingObjects()) {
         return false;
+    }
 
-    if (group->allowObject(obj))
-        return true;
+    // Check for possible cyclic dependencies if we allowed to drop the object
+    const auto& list = obj->getOutList();
+    if (std::find(list.begin(), list.end(), extobj) != list.end()) {
+        return false;
+    }
 
-    return false;
+    return group->allowObject(obj);
 }
 
 void ViewProviderGroupExtension::extensionDropObject(App::DocumentObject* obj) {
