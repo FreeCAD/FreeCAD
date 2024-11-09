@@ -4630,7 +4630,7 @@ public:
             if (it.Key().IsNull()) {
                 continue;
             }
-            mapper.populate(MappingStatus::Generated, it.Key(), it.Value());
+            mapper.populate(MappingStatus::Modified, it.Key(), it.Value());
         }
     }
 };
