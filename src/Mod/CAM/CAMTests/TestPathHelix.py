@@ -25,6 +25,7 @@ import pathlib
 import Draft
 import FreeCAD
 import Path
+import Path.Base.SetupSheetOpPrototype as PathSetupSheetOpPrototype
 import Path.Main.Job as PathJob
 import Path.Op.Helix as PathHelix
 import CAMTests.PathTestUtils as PathTestUtils
@@ -54,6 +55,12 @@ class TestPathHelix(PathTestUtils.PathTestBase):
 
         op = PathHelix.Create("Helix")
         op.Proxy.execute(op)
+
+    def testCreateWithPrototype(self):
+        """Verify a Helix can be created on a SetupSheet's prototype instead of a real document object"""
+
+        ptt = PathSetupSheetOpPrototype.OpPrototype("Helix")
+        op = PathHelix.Create("OpPrototype.Helix", ptt)
 
     def test01(self):
         """Verify Helix generates proper holes from model"""
@@ -132,6 +139,33 @@ class TestPathHelix(PathTestUtils.PathTestBase):
                         round(pos.Length / 10, 0), proxy.holeDiameter(op, model, sub)
                     )
 
+    def testPathDirection(self):
+        """Verify that the generated paths obays the given parameters"""
+        helix = PathHelix.Create("Helix")
+
+        def check(start_side, cut_mode, expected_direction):
+            with self.subTest(f"({start_side}, {cut_mode}) => {expected_direction}"):
+                helix.StartSide = start_side
+                helix.CutMode = cut_mode
+
+                self.assertSuccessfulRecompute(self.doc, helix)
+
+                self.assertEqual(
+                    helix.Direction,
+                    expected_direction,
+                    msg=f"Direction was not correctly determined",
+                )
+                self.assertPathDirection(
+                    helix.Path,
+                    expected_direction,
+                    msg=f"Path with wrong direction generated",
+                )
+
+        check("Inside", "Conventional", "CW")
+        check("Outside", "Climb", "CW")
+        check("Inside", "Climb", "CCW")
+        check("Outside", "Conventional", "CCW")
+
     def testRecomputeHelixFromV021(self):
         """Verify that we can still open and recompute a Helix created with older FreeCAD"""
         self.tearDown()
@@ -139,39 +173,68 @@ class TestPathHelix(PathTestUtils.PathTestBase):
         created_with = f"created with {self.doc.getProgramVersion()}"
 
         def check(helix, direction, start_side, cut_mode):
-            with self.subTest(f"{helix.Name}: {direction}, {start_side}, {cut_mode}"):
+            with self.subTest(f"{helix.Name}: ({direction}, {start_side}) => {cut_mode}"):
                 # no recompute yet, i.e. check original as precondition
+                self.assertPathDirection(
+                    helix.Path,
+                    direction,
+                    msg=f"Path direction does not match fixture for {helix.Name} {created_with}",
+                )
                 self.assertEqual(
                     helix.Direction,
                     direction,
-                    msg=f"Direction does not match fixture for helix {created_with}",
+                    msg=f"Direction does not match fixture for {helix.Name} {created_with}",
                 )
                 self.assertEqual(
                     helix.StartSide,
                     start_side,
-                    msg=f"StartSide does not match fixture for helix {created_with}",
+                    msg=f"StartSide does not match fixture for {helix.Name} {created_with}",
                 )
 
                 # now see whether we can recompute the object from the old document
                 helix.enforceRecompute()
                 self.assertSuccessfulRecompute(
-                    self.doc, helix, msg=f"Cannot recompute helix {created_with}"
+                    self.doc, helix, msg=f"Cannot recompute {helix.Name} {created_with}"
                 )
                 self.assertEqual(
                     helix.Direction,
                     direction,
-                    msg=f"Direction changed after recomputing helix {created_with}",
+                    msg=f"Direction changed after recomputing {helix.Name} {created_with}",
                 )
                 self.assertEqual(
                     helix.StartSide,
                     start_side,
-                    msg=f"StartSide changed after recomputing helix {created_with}",
+                    msg=f"StartSide changed after recomputing {helix.Name} {created_with}",
                 )
-                # self.assertEqual(helix.CutMode, cut_mode,
-                #    msg=f"CutMode not correctly derived for helix {created_with}")
+                self.assertEqual(
+                    helix.CutMode,
+                    cut_mode,
+                    msg=f"CutMode not correctly derived for {helix.Name} {created_with}",
+                )
+                self.assertPathDirection(
+                    helix.Path,
+                    direction,
+                    msg=f"Path with wrong direction generated for {helix.Name} {created_with}",
+                )
 
         # object names and expected values defined in the fixture
         check(self.doc.Helix, "CW", "Inside", "Conventional")
         check(self.doc.Helix001, "CW", "Outside", "Climb")
         check(self.doc.Helix002, "CCW", "Inside", "Climb")
         check(self.doc.Helix003, "CCW", "Outside", "Conventional")
+
+    def assertPathDirection(self, path, expected_direction, msg=None):
+        """Asserts that the given path goes into the expected direction.
+
+        For the general case we'd need to check the sign of the second derivative,
+        but as we know we work on a helix here, we can take a short cut and just
+        look at the G2/G3 arc commands.
+        """
+        has_g2 = any(filter(lambda cmd: cmd.Name == "G2", path.Commands))
+        has_g3 = any(filter(lambda cmd: cmd.Name == "G3", path.Commands))
+        if has_g2 and not has_g3:
+            self.assertEqual("CW", expected_direction, msg)
+        elif has_g3 and not has_g2:
+            self.assertEqual("CCW", expected_direction, msg)
+        else:
+            raise NotImplementedError("Cannot determine direction for arbitrary paths")
