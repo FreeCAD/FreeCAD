@@ -71,8 +71,8 @@ def read(filename):
 
     pi = Base.ProgressIndicator()
     try:
-        importer = BIM.importers.importSH3DHelper.SH3DImporter(filename, pi)
-        importer.import_sh3d()
+        importer = BIM.importers.importSH3DHelper.SH3DImporter(pi)
+        importer.import_sh3d_from_filename(filename)
     finally:
         pi.stop()
 

@@ -108,7 +108,7 @@ class SH3DImporter:
     the different <wall> elements)
     """
 
-    def __init__(self, filename, progress_bar=None):
+    def __init__(self, progress_bar=None):
         """Create a SH3DImporter instance to import the given SH3D file.
 
         Args:
@@ -118,9 +118,9 @@ class SH3DImporter:
               called to let the User monitor the import process
         """
         super().__init__()
-        self.filename = filename
+        self.filename = None
         self.progress_bar = progress_bar
-        self.preferences = None
+        self.preferences = {}
         self.handlers = {}
         self.total_object_count = 0
         self.current_object_count = 0
@@ -133,8 +133,8 @@ class SH3DImporter:
         self.floors = {}
         self.walls = []
 
-    def import_sh3d(self):
-        """Import the SH3D file.
+    def import_sh3d_from_string(self, home:str):
+        """Import the SH3D Home from a String.
 
         Raises:
             ValueError: if an invalid SH3D file is detected
@@ -142,7 +142,23 @@ class SH3DImporter:
         self._get_preferences()
         self._setup_handlers()
 
-        doc = App.ActiveDocument
+        if self.progress_bar:
+            self.progress_bar.start(f"Importing SweetHome 3D Home. Please wait ...", -1)
+        self._import_home(ET.fromstring(home))
+
+    def import_sh3d_from_filename(self, filename:str):
+        """Import the SH3D file.
+
+        Raises:
+            ValueError: if an invalid SH3D file is detected
+        """
+        self.filename = filename
+        if App.GuiUp and get_param_arch("sh3dShowDialog"):
+            Gui.showPreferences("Import-Export", 7)
+
+        self._get_preferences()
+        self._setup_handlers()
+
         if self.progress_bar:
             self.progress_bar.start(f"Importing SweetHome 3D file '{self.filename}'. Please wait ...", -1)
         with zipfile.ZipFile(self.filename, 'r') as zip:
@@ -150,76 +166,78 @@ class SH3DImporter:
             entries = zip.namelist()
             if "Home.xml" not in entries:
                 raise ValueError(f"Invalid SweetHome3D file {self.filename}: missing Home.xml")
-            home = ET.fromstring(zip.read("Home.xml"))
-            self.total_object_count = self._get_object_count(home)
+            self._import_home(ET.fromstring(zip.read("Home.xml")))
 
+    def _import_home(self, home):
+        doc = App.ActiveDocument
+        self.total_object_count = self._get_object_count(home)
+        _msg(f"Importing home '{home.get('name')}' ...")
+        # Create the groups to organize the different resources together
+        self._create_groups()
 
-            _msg(f"Importing home '{home.get('name')}' ...")
-            # Create the groups to organize the different resources together
-            self._create_groups()
+        # Get all the FreeCAD object in the active doc, in order to allow
+        # for merge of existing object
+        if self.preferences["MERGE"]:
+            for object in doc.Objects:
+                if hasattr(object, 'id'):
+                    self.fc_objects[object.id] = object
 
-            # Get all the FreeCAD object in the active doc, in order to allow
-            # for merge of existing object
-            if self.preferences["MERGE"]:
-                for object in doc.Objects:
-                    if hasattr(object, 'id'):
-                        self.fc_objects[object.id] = object
+        # Let's create the project and site for this import
+        self._setup_project(home)
 
-            # Let's create the project and site for this import
-            self._setup_project(home)
+        # Import the <level> element if any. If none are defined
+        # create a default one.
+        if home.find(path='level') != None:
+            self._import_elements(home, 'level')
+        else:
+            # Has the default floor already been created from a
+            # previous import?
+            if self.preferences["DEBUG"]: _log("No level defined. Using default level ...")
+            self.default_floor = self.fc_objects.get('Level') if 'Level' in self.fc_objects else self._create_default_floor()
+            self.add_floor(self.default_floor)
 
-            # Import the <level> element if any. If none are defined
-            # create a default one.
-            if home.find(path='level') != None:
-                self._import_elements(home, 'level')
-            else:
-                # Has the default floor already been created from a
-                # previous import?
-                if self.preferences["DEBUG"]: _log("No level defined. Using default level ...")
-                self.default_floor = self.fc_objects.get('Level') if 'Level' in self.fc_objects else self._create_default_floor()
-                self.add_floor(self.default_floor)
+        # Importing <room> elements ...
+        self._import_elements(home, 'room')
 
-            # Importing <room> elements ...
-            self._import_elements(home, 'room')
+        # Importing <wall> elements ...
+        self._import_elements(home, 'wall')
 
-            # Importing <wall> elements ...
-            self._import_elements(home, 'wall')
+        self._refresh()
+        if App.GuiUp and self.preferences["FIT_VIEW"]:
+            Gui.SendMsgToActiveView("ViewFit")
 
+        # Importing <doorOrWindow> elements ...
+        if self.preferences["IMPORT_DOORS_AND_WINDOWS"]:
+            self._import_elements(home, 'doorOrWindow')
             self._refresh()
-            if App.GuiUp and self.preferences["FIT_VIEW"]:
-                Gui.SendMsgToActiveView("ViewFit")
 
-            # Importing <doorOrWindow> elements ...
-            if self.preferences["IMPORT_DOORS_AND_WINDOWS"]:
-                self._import_elements(home, 'doorOrWindow')
-                self._refresh()
+        # Importing <pieceOfFurniture> && <furnitureGroup> elements ...
+        if self.preferences["IMPORT_FURNITURES"]:
+            self._import_elements(home, 'pieceOfFurniture')
+            for furniture_group in home.findall('furnitureGroup'):
+                self._import_elements(furniture_group, 'pieceOfFurniture', False)
+            self._refresh()
 
-            # Importing <pieceOfFurniture> && <furnitureGroup> elements ...
-            if self.preferences["IMPORT_FURNITURES"]:
-                self._import_elements(home, 'pieceOfFurniture')
-                for furniture_group in home.findall('furnitureGroup'):
-                    self._import_elements(furniture_group, 'pieceOfFurniture', False)
-                self._refresh()
+        # Importing <light> elements ...
+        if self.preferences["IMPORT_LIGHTS"]:
+            self._import_elements(home, 'light')
+            self._refresh()
 
-            # Importing <light> elements ...
-            if self.preferences["IMPORT_LIGHTS"]:
-                self._import_elements(home, 'light')
-                self._refresh()
+        # Importing <observerCamera> elements ...
+        if self.preferences["IMPORT_CAMERAS"]:
+            self._import_elements(home, 'observerCamera')
+            self._import_elements(home, 'camera')
+            self._refresh()
 
-            # Importing <observerCamera> elements ...
-            if self.preferences["IMPORT_CAMERAS"]:
-                self._import_elements(home, 'observerCamera')
-                self._import_elements(home, 'camera')
-                self._refresh()
+        if self.preferences["CREATE_RENDER_PROJECT"] and self.project:
+            Project.create(doc, renderer="Povray", template="povray_standard.pov")
+            Gui.Selection.clearSelection()
+            Gui.Selection.addSelection(self.project)
+            Gui.runCommand('Render_View', 0)
+            self._refresh()
 
-            if self.preferences["CREATE_RENDER_PROJECT"] and self.project:
-                Project.create(doc, renderer="Povray", template="povray_standard.pov")
-                Gui.Selection.clearSelection()
-                Gui.Selection.addSelection(self.project)
-                Gui.runCommand('Render_View', 0)
-                self._refresh()
+        _msg(f"Successfully imported home '{home.get('name')}' ...")
 
-            _msg(f"Successfully imported home '{home.get('name')}' ...")
 
     def _get_object_count(self, home):
         """Get an approximate count of object to be imported
@@ -231,9 +249,6 @@ class SH3DImporter:
 
     def _get_preferences(self):
         """Retrieve the SH3D preferences available in Mod/Arch."""
-        if App.GuiUp and get_param_arch("sh3dShowDialog"):
-            Gui.showPreferences("Import-Export", 7)
-
         self.preferences = {
             'DEBUG': get_param_arch("sh3dDebug"),
             'IMPORT_DOORS_AND_WINDOWS': get_param_arch("sh3dImportDoorsAndWindows"),
@@ -709,9 +724,10 @@ class WallHandler(BaseHandler):
         self.setp(obj, "App::PropertyFloat", "rightSideShininess", "The wall's right hand side shininess", elm)
 
     def _create_wall(self, floor, prev, next, elm):
-        """Create an Arch Wall from a line.
+        """Create an Arch::Structure from an SH3D Element.
 
-        The constructed wall will be a simple solid with the length width height found in imported_wall
+        The constructed wall will acn either be a straight wall or a curved
+        wall depending on the `elm` attributes.
 
         Args:
             floor (Arch::Structure): The floor the wall belongs to
@@ -725,6 +741,7 @@ class WallHandler(BaseHandler):
         wall_details = self._get_wall_details(floor, elm)
         assert wall_details is not None, f"Fail to get details of wall {elm.get('id')}. Bailing out! {elm} / {wall_details}"
 
+        # Both the wall at start or the wall at end can be None.
         prev_wall_details = self._get_wall_details(floor, prev)
         next_wall_details = self._get_wall_details(floor, next)
 
@@ -831,8 +848,8 @@ class WallHandler(BaseHandler):
         section_end = self._get_section(wall_details, False, next_wall_details)
 
         spine = Draft.makeLine(start, end)
+        App.ActiveDocument.recompute([section_start, section_end, spine])
         if self.importer.preferences["DEBUG"]:
-            App.ActiveDocument.recompute([section_start, section_end, spine])
             _log(f"_create_straight_segment(): wall {self._pv(start)}->{self._pv(end)} => section_start={self._ps(section_start)}, section_end={self._ps(section_end)}")
 
         return section_start, section_end, spine
@@ -848,6 +865,8 @@ class WallHandler(BaseHandler):
         Returns:
             Rectangle, Rectangle, spine: both section and the arc for the wall
         # """
+        (start, end, _, _, _, arc_extent) = wall_details
+
         section_start = self._get_section(wall_details, True, prev_wall_details)
         section_end = self._get_section(wall_details, False, next_wall_details)
 
@@ -862,6 +881,11 @@ class WallHandler(BaseHandler):
             spine = Draft.makeCircle(radius, placement, False, a1, a2)
         else:
             spine = Draft.makeCircle(radius, placement, False, a2, a1)
+
+        App.ActiveDocument.recompute([section_start, section_end, spine])
+        if self.importer.preferences["DEBUG"]:
+            _log(f"_create_curved_segment(): wall {self._pv(start)}->{self._pv(end)} => section_start={self._ps(section_start)}, section_end={self._ps(section_end)}")
+
         return section_start, section_end, spine
 
     def _get_section(self, wall_details, at_start, sibling_details):
@@ -1050,9 +1074,12 @@ class WallHandler(BaseHandler):
         leftSideColor = hex2rgb(elm.get('leftSideColor', topColor))
         rightSideColor = hex2rgb(elm.get('rightSideColor', topColor))
         topColor = hex2rgb(topColor)
+        diffuse_color = [topColor, leftSideColor, topColor, rightSideColor, topColor, topColor]
+        if ang_sh2fc(elm.get('arcExtent', 0)) > 0:
+            diffuse_color = [topColor, rightSideColor, topColor, leftSideColor, topColor, topColor]
 
         if hasattr(wall.ViewObject, "DiffuseColor"):
-            wall.ViewObject.DiffuseColor = [topColor, leftSideColor, topColor, rightSideColor, topColor, topColor]
+            wall.ViewObject.DiffuseColor = diffuse_color
 
     def _import_baseboard(self, floor, wall, elm):
         """Creates and returns a Part::Extrusion from the imported_baseboard object
