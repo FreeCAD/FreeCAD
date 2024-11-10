@@ -148,7 +148,7 @@ def export(exportList,filename,colors=None):
     offsetvn = 1
     objectslist = Draft.get_group_contents(exportList, walls=True,
                                            addgroups=True)
-    objectslist = Arch.pruneIncluded(objectslist)
+    objectslist = Arch.pruneIncluded(objectslist, strict=True)
     filenamemtl = filename[:-4] + ".mtl"
     materials = []
     outfile.write("mtllib " + os.path.basename(filenamemtl) + "\n")

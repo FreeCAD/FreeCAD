@@ -5,8 +5,7 @@
 #
 # This module provides support for importing airfoil .dat files
 '''@package importAirfoilDAT
-\ingroup DRAFT
-\brief Airfoil (.dat) file importer
+Airfoil (.dat) file importer
 
 This module provides support for importing airfoil .dat files.
 '''

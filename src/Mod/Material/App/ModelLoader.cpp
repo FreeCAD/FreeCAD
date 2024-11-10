@@ -27,7 +27,9 @@
 #endif
 
 #include <App/Application.h>
+#include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
+#include <Base/Stream.h>
 
 
 #include "Model.h"
@@ -76,7 +78,9 @@ const QString ModelLoader::getUUIDFromPath(const QString& path)
     }
 
     try {
-        YAML::Node yamlroot = YAML::LoadFile(path.toStdString());
+        Base::FileInfo fi(path.toStdString());
+        Base::ifstream str(fi);
+        YAML::Node yamlroot = YAML::Load(str);
         std::string base = "Model";
         if (yamlroot["AppearanceModel"]) {
             base = "AppearanceModel";
@@ -103,7 +107,9 @@ std::shared_ptr<ModelEntry> ModelLoader::getModelFromPath(std::shared_ptr<ModelL
     std::string uuid;
     std::string name;
     try {
-        yamlroot = YAML::LoadFile(path.toStdString());
+        Base::FileInfo fi(path.toStdString());
+        Base::ifstream str(fi);
+        yamlroot = YAML::Load(str);
         if (yamlroot["AppearanceModel"]) {
             base = "AppearanceModel";
         }

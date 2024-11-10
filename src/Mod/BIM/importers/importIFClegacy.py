@@ -956,7 +956,7 @@ def export(exportList,filename):
     # get all children and reorder list to get buildings and floors processed first
     objectslist = Draft.get_group_contents(exportList, walls=True,
                                            addgroups=True)
-    objectslist = Arch.pruneIncluded(objectslist)
+    objectslist = Arch.pruneIncluded(objectslist, strict=True)
 
     sites = []
     buildings = []
@@ -1433,9 +1433,9 @@ class IfcSchema:
             entity = {}
             raw_entity_str = m.groups()[0]
 
-            entity["name"] = re.search("(.*?)[;|\s]", raw_entity_str).groups()[0].upper()
+            entity["name"] = re.search(r"(.*?)[;|\s]", raw_entity_str).groups()[0].upper()
 
-            subtypeofmatch = re.search(".*SUBTYPE OF \((.*?)\);", raw_entity_str)
+            subtypeofmatch = re.search(r".*SUBTYPE OF \((.*?)\);", raw_entity_str)
             entity["supertype"] = subtypeofmatch.groups()[0].upper() if subtypeofmatch else None
 
             # find the shortest string matched from the end of the entity type header to the
