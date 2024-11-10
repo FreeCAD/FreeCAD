@@ -15,122 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QGroupBox" name="groupBox_desc">
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>1677215</height>
-      </size>
-     </property>
-     <property name="title">
-      <string>Material</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_5">
-      <item>
-       <layout class="QGridLayout" name="gridLayout_2">
-        <item row="1" column="0">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Category</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QLabel" name="label_category">
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>Material card</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QComboBox" name="cb_materials">
-          <item>
-           <property name="text">
-            <string>choose...</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>Material name</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="QLabel" name="l_mat_name">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="QLabel" name="l_mat_description">
-        <property name="text">
-         <string>Material Description</string>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="groupBox_basic_2">
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>1677215</height>
-      </size>
-     </property>
-     <property name="title">
-      <string>Editing material</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_28">
-      <item>
-       <layout class="QGridLayout" name="gridLayout_3">
-        <item row="1" column="1">
-         <widget class="QPushButton" name="pushButton_editMat">
-          <property name="text">
-           <string>Use FreeCAD material editor</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2">
-         <widget class="QCheckBox" name="chbu_allow_edit">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="layoutDirection">
-           <enum>Qt::RightToLeft</enum>
-          </property>
-          <property name="text">
-           <string>Use this task panel</string>
-          </property>
-          <property name="checked">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </widget>
+    <widget class="MatGui::MaterialTreeWidget" name="wgt_material_tree"/>
    </item>
    <item>
     <widget class="QGroupBox" name="groupBox_basic">
@@ -590,18 +475,21 @@
      </layout>
     </widget>
    </item>
-   <item>
-    <spacer name="verticalSpacer_2">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+   <item row="0" column="0">
+    <widget class="QCheckBox" name="chbu_allow_edit">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
+     <property name="text">
+      <string>Use this task panel</string>
      </property>
-    </spacer>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
@@ -610,6 +498,11 @@
    <class>Gui::InputField</class>
    <extends>QLineEdit</extends>
    <header>Gui/InputField.h</header>
+  </customwidget>
+  <customwidget>
+   <class>MatGui::MaterialTreeWidget</class>
+   <extends>QWidget</extends>
+   <header>Mod/Material/Gui/MaterialTreeWidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
