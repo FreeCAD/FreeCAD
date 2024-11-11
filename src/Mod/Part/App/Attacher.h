@@ -363,7 +363,7 @@ public://helper functions that may be useful outside of the class
 
     static eRefType getRefTypeByName(const std::string &typeName);
 
-    static GProp_GProps getInertialPropsOfShape(const std::vector<const TopoDS_Shape*> &shapes);
+    static GProp_GProps getInertialPropsOfShape(const std::vector<const Part::TopoShape*> &shapes);
 
     std::vector<App::DocumentObject*> getRefObjects() const;
     const std::vector<std::string> &getSubValues() const {return subnames;}
@@ -430,7 +430,9 @@ protected:
     }
     static void readLinks(const std::vector<App::DocumentObject*> &objs,
                           const std::vector<std::string> &subs,
-                          std::vector<const TopoDS_Shape*>& shapes, std::vector<TopoDS_Shape> &storage,
+
+                          std::vector<const Part::TopoShape*>& shapes,
+                          std::vector<Part::TopoShape> &storage,
                           std::vector<eRefType> &types);
 
     static void throwWrongMode(eMapMode mmode);
