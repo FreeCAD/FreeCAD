@@ -90,7 +90,10 @@ def _param_observer_callback_tray():
 
 
 def _param_observer_callback_scalemultiplier(value):
-    value = float(value)  # value is a string
+    # value is a string.
+    if not value:
+        return
+    value = float(value)
     if value <= 0:
         return
     mw = Gui.getMainWindow()

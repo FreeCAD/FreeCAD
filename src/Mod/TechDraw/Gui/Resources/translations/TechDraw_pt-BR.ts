@@ -2036,7 +2036,7 @@ Caso não haja seleção, um navegador permitirá selecionar um arquivo no forma
       <translation>Criar vista de planilha</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="396"/>
+      <location filename="../../PagePrinter.cpp" line="404"/>
       <source>Save page to dxf</source>
       <translation>Salvar página para dxf</translation>
     </message>
@@ -2267,12 +2267,12 @@ Caso não haja seleção, um navegador permitirá selecionar um arquivo no forma
       <translation>Arrastar Balão</translation>
     </message>
     <message>
-      <location filename="../../QGIViewDimension.cpp" line="873"/>
+      <location filename="../../QGIViewDimension.cpp" line="875"/>
       <source>Drag Dimension</source>
       <translation>Arrastar Dimensão</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="598"/>
+      <location filename="../../QGSPage.cpp" line="589"/>
       <source>Create Balloon</source>
       <translation>Criar Balão</translation>
     </message>
@@ -2395,82 +2395,82 @@ Caso não haja seleção, um navegador permitirá selecionar um arquivo no forma
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="698"/>
       <source>Pos Vert Chain Dim</source>
-      <translation type="unfinished">Pos Vert Chain Dim</translation>
+      <translation>Dimensão da Cadeia Vertical Positiva</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="760"/>
       <source>Pos Oblique Chain Dim</source>
-      <translation type="unfinished">Pos Oblique Chain Dim</translation>
+      <translation>Dimensão da Cadeia Oblíqua Positiva</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="946"/>
       <source>Cascade Horiz Dim</source>
-      <translation type="unfinished">Cascade Horiz Dim</translation>
+      <translation>Dimensão Horizontal em Cascata</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1012"/>
       <source>Cascade Vert Dim</source>
-      <translation type="unfinished">Cascade Vert Dim</translation>
+      <translation>Dimensão Vertical em Cascata</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1079"/>
       <source>Cascade Oblique Dim</source>
-      <translation type="unfinished">Cascade Oblique Dim</translation>
+      <translation>Dimensão Oblíqua em Cascata</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1278"/>
       <source>Create Horiz Chain Dim</source>
-      <translation type="unfinished">Create Horiz Chain Dim</translation>
+      <translation>Criar Dimensão Horizontal em Cadeia</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1344"/>
       <source>Create Vert Chain Dim</source>
-      <translation type="unfinished">Create Vert Chain Dim</translation>
+      <translation>Criar Dimensão Vertical de Cadeia</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1410"/>
       <source>Create Oblique Chain Dim</source>
-      <translation type="unfinished">Create Oblique Chain Dim</translation>
+      <translation>Criar Dimensão Oblíqua de Cadeia</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1649"/>
       <source>Create Horiz Coord Dim</source>
-      <translation type="unfinished">Create Horiz Coord Dim</translation>
+      <translation>Criar Cota de Coordenada Horizontal</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1721"/>
       <source>Create Vert Coord Dim</source>
-      <translation type="unfinished">Create Vert Coord Dim</translation>
+      <translation>Criar Cota de Coordenada Vertical</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1795"/>
       <source>Create Oblique Coord Dim</source>
-      <translation type="unfinished">Create Oblique Coord Dim</translation>
+      <translation>Criar Cota de Coordenada Obliquá</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2048"/>
       <source>Create Horiz Chamfer Dim</source>
-      <translation type="unfinished">Create Horiz Chamfer Dim</translation>
+      <translation>Criar Cota Horizontal em Chanfro</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2117"/>
       <source>Create Vert Chamfer Dim</source>
-      <translation type="unfinished">Create Vert Chamfer Dim</translation>
+      <translation>Criar Cota Vertical em Chanfro</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2303"/>
       <source>Create Arc Length Dim</source>
-      <translation type="unfinished">Create Arc Length Dim</translation>
+      <translation>Criar Cota de Comprimento do Arco</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="107"/>
       <source>TechDraw Hole Circle</source>
-      <translation type="unfinished">TechDraw Hole Circle</translation>
+      <translation>Círculo de Furos TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="128"/>
       <source>Bolt Circle Centerlines</source>
-      <translation type="unfinished">Bolt Circle Centerlines</translation>
+      <translation>Linhas de Centro do Círculo de Furos</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="206"/>
@@ -2480,7 +2480,7 @@ Caso não haja seleção, um navegador permitirá selecionar um arquivo no forma
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="209"/>
       <source>Circle Centerlines</source>
-      <translation type="unfinished">Circle Centerlines</translation>
+      <translation>Linhas de Centro do Círculo</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="387"/>
@@ -2490,7 +2490,7 @@ Caso não haja seleção, um navegador permitirá selecionar um arquivo no forma
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="390"/>
       <source>Cosmetic Thread Hole Side</source>
-      <translation type="unfinished">Cosmetic Thread Hole Side</translation>
+      <translation>Vista Lateral do Furo com Rosca Cosmética</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="441"/>
@@ -2500,7 +2500,7 @@ Caso não haja seleção, um navegador permitirá selecionar um arquivo no forma
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="444"/>
       <source>Cosmetic Thread Bolt Side</source>
-      <translation type="unfinished">Cosmetic Thread Bolt Side</translation>
+      <translation>Vista Lateral do Parafuso com Rosca Cosmética</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="495"/>
@@ -2510,7 +2510,7 @@ Caso não haja seleção, um navegador permitirá selecionar um arquivo no forma
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="498"/>
       <source>Cosmetic Thread Hole Bottom</source>
-      <translation type="unfinished">Cosmetic Thread Hole Bottom</translation>
+      <translation>Vista Inferior do Furo com Rosca Cosmética</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="549"/>
@@ -2520,7 +2520,7 @@ Caso não haja seleção, um navegador permitirá selecionar um arquivo no forma
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="552"/>
       <source>Cosmetic Thread Bolt Bottom</source>
-      <translation type="unfinished">Cosmetic Thread Bolt Bottom</translation>
+      <translation>Vista Inferior do Parafuso com Rosca Cosmética</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="797"/>
@@ -2540,7 +2540,7 @@ Caso não haja seleção, um navegador permitirá selecionar um arquivo no forma
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="861"/>
       <source>Cosmetic Intersection Vertex(es)</source>
-      <translation type="unfinished">Cosmetic Intersection Vertex(es)</translation>
+      <translation>Vértice(s) de Interseção Cosmética</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="904"/>
@@ -2550,7 +2550,7 @@ Caso não haja seleção, um navegador permitirá selecionar um arquivo no forma
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="907"/>
       <source>Cosmetic Arc</source>
-      <translation type="unfinished">Cosmetic Arc</translation>
+      <translation>Arco Cosmético</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="977"/>
@@ -2560,7 +2560,7 @@ Caso não haja seleção, um navegador permitirá selecionar um arquivo no forma
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="980"/>
       <source>Cosmetic Circle</source>
-      <translation type="unfinished">Cosmetic Circle</translation>
+      <translation>Círculo Cosmético</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1040"/>
@@ -2570,7 +2570,7 @@ Caso não haja seleção, um navegador permitirá selecionar um arquivo no forma
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1043"/>
       <source>Cosmetic Circle 3 Points</source>
-      <translation type="unfinished">Cosmetic Circle 3 Points</translation>
+      <translation>Círculo Cosmético de 3 Pontos</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1231"/>
@@ -2580,7 +2580,7 @@ Caso não haja seleção, um navegador permitirá selecionar um arquivo no forma
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1234"/>
       <source>Cosmetic Line Parallel/Perpendicular</source>
-      <translation type="unfinished">Cosmetic Line Parallel/Perpendicular</translation>
+      <translation>Linha cosmética Paralela/Perpendicular</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1480"/>
@@ -2600,7 +2600,7 @@ Caso não haja seleção, um navegador permitirá selecionar um arquivo no forma
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1511"/>
       <source>Extend/Shorten Line</source>
-      <translation type="unfinished">Extend/Shorten Line</translation>
+      <translation>"Estender/Encurtar Linha</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1780"/>
@@ -2610,17 +2610,17 @@ Caso não haja seleção, um navegador permitirá selecionar um arquivo no forma
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1822"/>
       <source>Calculate Face Area</source>
-      <translation type="unfinished">Calculate Face Area</translation>
+      <translation>Calcular Área da Face</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1912"/>
       <source>TechDraw calculate selected arc length</source>
-      <translation type="unfinished">TechDraw calculate selected arc length</translation>
+      <translation>Calcular comprimento do arco selecionada de Desenho Técnico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1949"/>
       <source>Calculate Edge Length</source>
-      <translation type="unfinished">Calculate Edge Length</translation>
+      <translation>Calcular Comprimento da Aresta</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.cpp" line="191"/>
@@ -2630,12 +2630,12 @@ Caso não haja seleção, um navegador permitirá selecionar um arquivo no forma
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.cpp" line="398"/>
       <source>Surface Finish Symbols</source>
-      <translation type="unfinished">Surface Finish Symbols</translation>
+      <translation>Símbolos de Acabamento Superficial</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.cpp" line="406"/>
       <source>Create Centerline</source>
-      <translation type="unfinished">Create Centerline</translation>
+      <translation>Criar linha central</translation>
     </message>
   </context>
   <context>
@@ -2643,22 +2643,22 @@ Caso não haja seleção, um navegador permitirá selecionar um arquivo no forma
     <message>
       <location filename="../../Widgets/CompassWidget.cpp" line="158"/>
       <source>View Direction as Angle</source>
-      <translation type="unfinished">View Direction as Angle</translation>
+      <translation>Direção de Visualização como Ângulo</translation>
     </message>
     <message>
       <location filename="../../Widgets/CompassWidget.cpp" line="160"/>
       <source>The view direction angle relative to +X in the BaseView.</source>
-      <translation type="unfinished">The view direction angle relative to +X in the BaseView.</translation>
+      <translation>O ângulo da direção de visualização em relação ao eixo +X na BaseView.</translation>
     </message>
     <message>
       <location filename="../../Widgets/CompassWidget.cpp" line="162"/>
       <source>Advance the view direction in clockwise direction.</source>
-      <translation type="unfinished">Advance the view direction in clockwise direction.</translation>
+      <translation>Avançar a direção de visualização no sentido horário.</translation>
     </message>
     <message>
       <location filename="../../Widgets/CompassWidget.cpp" line="164"/>
       <source>Advance the view direction in anti-clockwise direction.</source>
-      <translation type="unfinished">Advance the view direction in anti-clockwise direction.</translation>
+      <translation>Avançar a direção de visualização no sentido anti-horário.</translation>
     </message>
   </context>
   <context>
@@ -2944,22 +2944,22 @@ Caso não haja seleção, um navegador permitirá selecionar um arquivo no forma
     <message>
       <location filename="../../Command.cpp" line="444"/>
       <source>Select a SVG or Image file to open</source>
-      <translation type="unfinished">Select a SVG or Image file to open</translation>
+      <translation>Selecione um arquivo SVG ou Imagem para abrir</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="447"/>
       <source>SVG or Image files</source>
-      <translation type="unfinished">SVG or Image files</translation>
+      <translation>Arquivos SVG ou de Imagem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="582"/>
       <source>Please select objects to break or a base view and break definition objects.</source>
-      <translation type="unfinished">Please select objects to break or a base view and break definition objects.</translation>
+      <translation>Por favor, selecione objetos para quebrar ou uma vista base e objetos de definição de quebra.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="621"/>
       <source>No Break objects found in this selection</source>
-      <translation type="unfinished">No Break objects found in this selection</translation>
+      <translation>Nenhum objeto de Quebra encontrado nesta seleção</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="847"/>
@@ -2975,22 +2975,22 @@ Caso não haja seleção, um navegador permitirá selecionar um arquivo no forma
     <message>
       <location filename="../../Command.cpp" line="971"/>
       <source>No Base View, Shapes, Groups or Links in this selection</source>
-      <translation type="unfinished">No Base View, Shapes, Groups or Links in this selection</translation>
+      <translation>Sem Vista Base, Formas, Grupos ou Links nesta seleção</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="976"/>
       <source>No profile object found in selection</source>
-      <translation type="unfinished">No profile object found in selection</translation>
+      <translation>Nenhum objeto de perfil encontrado na seleção</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1669"/>
       <source>Please select only 1 BIM Section.</source>
-      <translation type="unfinished">Please select only 1 BIM Section.</translation>
+      <translation>Por favor, selecione apenas 1 Seção BIM.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1675"/>
       <source>No BIM Sections in selection.</source>
-      <translation type="unfinished">No BIM Sections in selection.</translation>
+      <translation>Nenhum plano de corte na seleção.</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="370"/>
@@ -3142,22 +3142,22 @@ Caso não haja seleção, um navegador permitirá selecionar um arquivo no forma
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2454"/>
       <source>BSpline Curve Error</source>
-      <translation type="unfinished">BSpline Curve Error</translation>
+      <translation>Erro na Curva BSpline</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2109"/>
       <source>Selection contains both 2d and 3d geometry</source>
-      <translation type="unfinished">Selection contains both 2d and 3d geometry</translation>
+      <translation>A seleção contém tanto geometria 2D quanto 3D</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2134"/>
       <source>Can not make 2d extent dimension from selection</source>
-      <translation type="unfinished">Can not make 2d extent dimension from selection</translation>
+      <translation>Não é possível criar uma dimensão de extensão 2D a partir da seleção</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2149"/>
       <source>Can not make 3d extent dimension from selection</source>
-      <translation type="unfinished">Can not make 3d extent dimension from selection</translation>
+      <translation>Não é possível criar uma dimensão de extensão 3D a partir da seleção</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2227"/>
@@ -3167,27 +3167,27 @@ Caso não haja seleção, um navegador permitirá selecionar um arquivo no forma
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2403"/>
       <source>Can not make 2D dimension from selection</source>
-      <translation type="unfinished">Can not make 2D dimension from selection</translation>
+      <translation>Não é possível criar uma dimensão 2D a partir da seleção</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2419"/>
       <source>Can not make 3D dimension from selection</source>
-      <translation type="unfinished">Can not make 3D dimension from selection</translation>
+      <translation>Não é possível criar uma dimensão 3D a partir da seleção</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2433"/>
       <source>Selected edge is an Ellipse. Value will be approximate. Continue?</source>
-      <translation type="unfinished">Selected edge is an Ellipse. Value will be approximate. Continue?</translation>
+      <translation>A aresta selecionada é uma elipse. O valor será aproximado. Continuar?</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2444"/>
       <source>Selected edge is a B-spline. Value will be approximate. Continue?</source>
-      <translation type="unfinished">Selected edge is a B-spline. Value will be approximate. Continue?</translation>
+      <translation>A aresta selecionada é uma Bspline. O valor será aproximado. Continuar?</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2455"/>
       <source>Selected edge is a B-spline and a radius/diameter can not be calculated.</source>
-      <translation type="unfinished">Selected edge is a B-spline and a radius/diameter can not be calculated.</translation>
+      <translation>A aresta selecionada é uma B-spline e não é possível calcular um raio/diâmetro.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1926"/>
@@ -3423,12 +3423,12 @@ Caso não haja seleção, um navegador permitirá selecionar um arquivo no forma
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1197"/>
       <source>You must select a base View for the circle.</source>
-      <translation type="unfinished">You must select a base View for the circle.</translation>
+      <translation>Você deve selecionar uma Vista Base para o círculo.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1255"/>
       <source>Please select a center for the circle.</source>
-      <translation type="unfinished">Please select a center for the circle.</translation>
+      <translation>Por favor, selecione um centro para o círculo.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1310"/>
@@ -3459,7 +3459,7 @@ Caso não haja seleção, um navegador permitirá selecionar um arquivo no forma
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1219"/>
       <source>Selection is not a Cosmetic Circle or a Cosmetic Arc of Circle.</source>
-      <translation type="unfinished">Selection is not a Cosmetic Circle or a Cosmetic Arc of Circle.</translation>
+      <translation>A seleção não é um Círculo Cosmético ou um Arco de Círculo Cosmético.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1514"/>
@@ -3474,22 +3474,22 @@ Caso não haja seleção, um navegador permitirá selecionar um arquivo no forma
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1639"/>
       <source>SurfaceFinishSymbols</source>
-      <translation type="unfinished">SurfaceFinishSymbols</translation>
+      <translation>Símbolos de Acabamento Superficial</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1640"/>
       <source>Selected object is not a part view, nor a leader line</source>
-      <translation type="unfinished">Selected object is not a part view, nor a leader line</translation>
+      <translation>O objeto selecionado não é uma vista parcial, nem uma linha de chamada</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1713"/>
       <source>No Part View in Selection</source>
-      <translation type="unfinished">No Part View in Selection</translation>
+      <translation>Sem Vista de Peça na Seleção</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1726"/>
       <source>No %1 in Selection</source>
-      <translation type="unfinished">No %1 in Selection</translation>
+      <translation>Sem %1 na Seleção</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="110"/>
@@ -3541,7 +3541,7 @@ Caso não haja seleção, um navegador permitirá selecionar um arquivo no forma
     <message>
       <location filename="../../DrawGuiUtil.cpp" line="307"/>
       <source>No Drawing Pages available.</source>
-      <translation type="unfinished">No Drawing Pages available.</translation>
+      <translation>Nenhuma Página de Desenho disponível.</translation>
     </message>
     <message>
       <location filename="../../DrawGuiUtil.cpp" line="341"/>
@@ -3549,28 +3549,28 @@ Caso não haja seleção, um navegador permitirá selecionar um arquivo no forma
       <translation>Não há páginas no documento.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="318"/>
+      <location filename="../../MDIViewPage.cpp" line="347"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="319"/>
-      <location filename="../../MDIViewPage.cpp" line="493"/>
+      <location filename="../../MDIViewPage.cpp" line="348"/>
+      <location filename="../../MDIViewPage.cpp" line="556"/>
       <source>All Files (*.*)</source>
       <translation>Todos os arquivos (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="321"/>
+      <location filename="../../MDIViewPage.cpp" line="350"/>
       <source>Export Page As PDF</source>
       <translation>Exportar página para PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="492"/>
+      <location filename="../../MDIViewPage.cpp" line="555"/>
       <source>SVG (*.svg)</source>
       <translation>SVG (*.svg)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="495"/>
+      <location filename="../../MDIViewPage.cpp" line="558"/>
       <source>Export page as SVG</source>
       <translation>Exportar página para SVG</translation>
     </message>
@@ -3589,7 +3589,7 @@ Caso não haja seleção, um navegador permitirá selecionar um arquivo no forma
     <message>
       <location filename="../../ViewProviderPage.cpp" line="235"/>
       <source>Toggle Keep Updated</source>
-      <translation type="unfinished">Toggle Keep Updated</translation>
+      <translation>Alternar Manter Atualizado</translation>
     </message>
     <message>
       <location filename="../../TemplateTextField.cpp" line="51"/>
@@ -3687,13 +3687,13 @@ Caso não haja seleção, um navegador permitirá selecionar um arquivo no forma
       <location filename="../../TaskComplexSection.cpp" line="217"/>
       <location filename="../../TaskSectionView.cpp" line="232"/>
       <source>Current View Direction</source>
-      <translation type="unfinished">Current View Direction</translation>
+      <translation>Direção Atual da Vista</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="218"/>
       <location filename="../../TaskSectionView.cpp" line="233"/>
       <source>The view direction in BaseView coordinates</source>
-      <translation type="unfinished">The view direction in BaseView coordinates</translation>
+      <translation>A direção da vista nas coordenadas da Vista Base</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="716"/>
@@ -3740,19 +3740,19 @@ Caso não haja seleção, um navegador permitirá selecionar um arquivo no forma
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="438"/>
       <source>TechDraw Increase/Decrease Decimal</source>
-      <translation type="unfinished">TechDraw Increase/Decrease Decimal</translation>
+      <translation>TechDraw Aumentar/Diminuir Decimal</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="633"/>
       <location filename="../../CommandExtensionDims.cpp" line="642"/>
       <source>TechDraw PosHorizChainDimension</source>
-      <translation type="unfinished">TechDraw PosHorizChainDimension</translation>
+      <translation>TechDraw Cota de Cadeia Horizontal de Posição</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="643"/>
       <location filename="../../CommandExtensionDims.cpp" line="952"/>
       <source>No horizontal dimensions selected</source>
-      <translation type="unfinished">No horizontal dimensions selected</translation>
+      <translation>Nenhuma dimensão horizontal selecionada</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="694"/>
@@ -3876,7 +3876,7 @@ Caso não haja seleção, um navegador permitirá selecionar um arquivo no forma
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1797"/>
       <source>No faces in selection.</source>
-      <translation type="unfinished">No faces in selection.</translation>
+      <translation>Nenhuma face na seleção.</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1927"/>
@@ -4015,12 +4015,12 @@ Caso não haja seleção, um navegador permitirá selecionar um arquivo no forma
     <message>
       <location filename="../../TaskCosmeticCircle.cpp" line="183"/>
       <source>Parameter Error</source>
-      <translation type="unfinished">Parameter Error</translation>
+      <translation>Erro de Parâmetro</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="330"/>
+      <location filename="../../PagePrinter.cpp" line="338"/>
       <source>Document Name:</source>
-      <translation type="unfinished">Document Name:</translation>
+      <translation>Nome do Documento:</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.cpp" line="181"/>
@@ -4136,7 +4136,7 @@ ele tem uma solda de terra que ficaria quebrada.</translation>
     <message>
       <location filename="../../TaskActiveView.ui" line="92"/>
       <source>Crop To Height</source>
-      <translation type="unfinished">Crop To Height</translation>
+      <translation>Cortar Para Altura</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="99"/>
@@ -4210,7 +4210,7 @@ ele tem uma solda de terra que ficaria quebrada.</translation>
     <message>
       <location filename="../../TaskSectionView.cpp" line="154"/>
       <source>No direction set</source>
-      <translation type="unfinished">No direction set</translation>
+      <translation>Sem direção definida</translation>
     </message>
   </context>
   <context>
@@ -4365,17 +4365,17 @@ This directory will be used for the symbol selection.</translation>
     <message>
       <location filename="../../DlgPageChooser.ui" line="17"/>
       <source>Page Chooser</source>
-      <translation type="unfinished">Page Chooser</translation>
+      <translation>Seletor de Página</translation>
     </message>
     <message>
       <location filename="../../DlgPageChooser.ui" line="29"/>
       <source>FreeCAD could not determine which Page to use.  Please select a Page.</source>
-      <translation type="unfinished">FreeCAD could not determine which Page to use.  Please select a Page.</translation>
+      <translation>O FreeCAD não pôde determinar qual página usar. Por favor, selecione uma página.</translation>
     </message>
     <message>
       <location filename="../../DlgPageChooser.ui" line="39"/>
       <source>Select a Page that should be used</source>
-      <translation type="unfinished">Select a Page that should be used</translation>
+      <translation>Selecione uma página que deve ser usada</translation>
     </message>
   </context>
   <context>
@@ -4479,7 +4479,7 @@ Cada unidade é aproximadamente 0,1 mm de largura</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="350"/>
       <source>If checked, system will attempt to automatically correct dimension references when the model changes.</source>
-      <translation type="unfinished">If checked, system will attempt to automatically correct dimension references when the model changes.</translation>
+      <translation>Se marcado, o sistema tentará automaticamente corrigir referências de dimensão quando o modelo mudar.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="356"/>
@@ -5029,7 +5029,7 @@ if you are planning to use a drawing as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="411"/>
       <source>Page Color</source>
-      <translation type="unfinished">Page Color</translation>
+      <translation>Cor da Página</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="300"/>
@@ -5074,7 +5074,7 @@ if you are planning to use a drawing as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="592"/>
       <source>Grid Color</source>
-      <translation type="unfinished">Grid Color</translation>
+      <translation>Cor da Grade</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="425"/>
@@ -5099,12 +5099,12 @@ if you are planning to use a drawing as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="87"/>
       <source>Monochrome</source>
-      <translation type="unfinished">Monochrome</translation>
+      <translation>Monocromático</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="643"/>
       <source>Template Underline</source>
-      <translation type="unfinished">Template Underline</translation>
+      <translation>Modelo Sublinhado</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="678"/>
@@ -5183,7 +5183,7 @@ if you are planning to use a drawing as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="543"/>
       <source>Dimensioning tools:</source>
-      <translation type="unfinished">Dimensioning tools:</translation>
+      <translation>Ferramentas de dimensão:</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="550"/>
@@ -5201,7 +5201,8 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="561"/>
       <source>Dimension tool diameter/radius mode:</source>
-      <translation type="unfinished">Dimension tool diameter/radius mode:</translation>
+      <translation>Modo de
+ diâmetro/raio da ferramenta de dimensionamento:</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="568"/>
@@ -5342,12 +5343,12 @@ Multiplicador do &apos;tamanho do texto normal&apos;</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="163"/>
       <source>Single tool</source>
-      <translation type="unfinished">Single tool</translation>
+      <translation>Ferramenta única</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="164"/>
       <source>Separated tools</source>
-      <translation type="unfinished">Separated tools</translation>
+      <translation>Ferramentas separadas</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="165"/>
@@ -5578,12 +5579,12 @@ para grupos de projeção</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="348"/>
       <source>First-angle</source>
-      <translation type="unfinished">First-angle</translation>
+      <translation>Primeiro-ângulo</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="353"/>
       <source>Third-angle</source>
-      <translation type="unfinished">Third-angle</translation>
+      <translation>Terceiro-ângulo</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="599"/>
@@ -5613,7 +5614,7 @@ para grupos de projeção</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="729"/>
       <source>Show Grid</source>
-      <translation type="unfinished">Show Grid</translation>
+      <translation>Mostrar grade</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="750"/>
@@ -5947,50 +5948,50 @@ Rápido, mas produz uma coleção de linhas retas simples.</translation>
       <translation>Imprimir todas as páginas</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="412"/>
+      <location filename="../../MDIViewPage.cpp" line="465"/>
       <source>Different orientation</source>
       <translation>Orientação diferente</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="413"/>
+      <location filename="../../MDIViewPage.cpp" line="466"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>A impressora utiliza uma orientação diferente do que o desenho. 
 Deseja continuar?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="422"/>
+      <location filename="../../MDIViewPage.cpp" line="475"/>
       <source>Different paper size</source>
       <translation>Tamanho de papel diferente</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="423"/>
+      <location filename="../../MDIViewPage.cpp" line="476"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>A impressora usa um tamanho de papel diferente do que o desenho. Deseja continuar?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="516"/>
+      <location filename="../../MDIViewPage.cpp" line="579"/>
       <source>Save DXF file</source>
       <translation>Salvar arquivo DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="517"/>
+      <location filename="../../MDIViewPage.cpp" line="580"/>
       <source>DXF (*.dxf)</source>
       <translation>DXF (*.dxf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="537"/>
+      <location filename="../../MDIViewPage.cpp" line="607"/>
       <source>Save PDF file</source>
-      <translation type="unfinished">Save PDF file</translation>
+      <translation>Salve o arquivo PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="538"/>
+      <location filename="../../MDIViewPage.cpp" line="608"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1082"/>
+      <location filename="../../MDIViewPage.cpp" line="1152"/>
       <source>Selected:</source>
       <translation>Selecionado:</translation>
     </message>
@@ -6447,7 +6448,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="174"/>
       <source>No direction set</source>
-      <translation type="unfinished">No direction set</translation>
+      <translation>Sem direção definida</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="562"/>
@@ -6589,32 +6590,32 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="51"/>
       <source>Flatness</source>
-      <translation type="unfinished">Flatness</translation>
+      <translation>Nitidez</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="61"/>
       <source>Circularity</source>
-      <translation type="unfinished">Circularity</translation>
+      <translation>Circularidade</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="71"/>
       <source>Cylindricity</source>
-      <translation type="unfinished">Cylindricity</translation>
+      <translation>Cilindricidade</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="81"/>
       <source>Parallelism</source>
-      <translation type="unfinished">Parallelism</translation>
+      <translation>Paralelismo</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="91"/>
       <source>Perpendicularity</source>
-      <translation type="unfinished">Perpendicularity</translation>
+      <translation>Perpendicularidade</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="101"/>
       <source>Angularity</source>
-      <translation type="unfinished">Angularity</translation>
+      <translation>Angularidade</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="116"/>
@@ -6629,12 +6630,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="136"/>
       <source>Circular runout</source>
-      <translation type="unfinished">Circular runout</translation>
+      <translation>Desvio circular</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="146"/>
       <source>Total runout</source>
-      <translation type="unfinished">Total runout</translation>
+      <translation>Desvio total</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="156"/>
@@ -6644,7 +6645,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="166"/>
       <source>Concentricity</source>
-      <translation type="unfinished">Concentricity</translation>
+      <translation>Concentricidade</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="176"/>
@@ -6654,7 +6655,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="188"/>
       <source>Modifiers</source>
-      <translation type="unfinished">Modifiers</translation>
+      <translation>Modificadores</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="202"/>
@@ -6679,47 +6680,47 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="262"/>
       <source>Least square geometry element</source>
-      <translation type="unfinished">Least square geometry element</translation>
+      <translation>Elemento geométrico por mínimos quadrados</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="277"/>
       <source>Least material condition (LMC)</source>
-      <translation type="unfinished">Least material condition (LMC)</translation>
+      <translation>Condição de Mínimo Material (LMC)</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="292"/>
       <source>Maximum material condition (MMC)</source>
-      <translation type="unfinished">Maximum material condition (MMC)</translation>
+      <translation>Condição de Máximo Material (MMC)</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="307"/>
       <source>least inscribed geometry element</source>
-      <translation type="unfinished">least inscribed geometry element</translation>
+      <translation>elemento geométrico de menor inscrição</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="322"/>
       <source>Projected tolerance zone</source>
-      <translation type="unfinished">Projected tolerance zone</translation>
+      <translation>Zona de tolerância projetada</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="337"/>
       <source>Reciprocity condition</source>
-      <translation type="unfinished">Reciprocity condition</translation>
+      <translation>Condição de reciprocidade</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="352"/>
       <source>Regardless of feature size (RFS)</source>
-      <translation type="unfinished">Regardless of feature size (RFS)</translation>
+      <translation>Independentemente do tamanho do recurso (RFS)</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="367"/>
       <source>Tangent plane</source>
-      <translation type="unfinished">Tangent plane</translation>
+      <translation>Plano tangente</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="382"/>
       <source>Unequal Bilateral</source>
-      <translation type="unfinished">Unequal Bilateral</translation>
+      <translation>Bilateral Desigual</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="397"/>
@@ -6729,7 +6730,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="409"/>
       <source>Radius &amp; Diameter</source>
-      <translation type="unfinished">Radius &amp; Diameter</translation>
+      <translation>Raio &amp; Diâmetro</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="418"/>
@@ -6744,12 +6745,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="438"/>
       <source>Radius of sphere</source>
-      <translation type="unfinished">Radius of sphere</translation>
+      <translation>Raio da esfera</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="448"/>
       <source>Diameter of sphere</source>
-      <translation type="unfinished">Diameter of sphere</translation>
+      <translation>Diâmetro da esfera</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="458"/>
@@ -7280,7 +7281,7 @@ be used instead of the dimension value</translation>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="77"/>
       <source>Rotation</source>
-      <translation type="unfinished">Rotation</translation>
+      <translation>Rotação</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="97"/>
@@ -7290,7 +7291,7 @@ be used instead of the dimension value</translation>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="104"/>
       <source>Offset X</source>
-      <translation type="unfinished">Offset X</translation>
+      <translation>Deslocamento X</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="117"/>
@@ -7300,12 +7301,12 @@ be used instead of the dimension value</translation>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="124"/>
       <source>Line Width</source>
-      <translation type="unfinished">Line Width</translation>
+      <translation>Espessura de linha</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="223"/>
       <source>Offset Y</source>
-      <translation type="unfinished">Offset Y</translation>
+      <translation>Deslocamento Y</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="70"/>
@@ -7348,7 +7349,7 @@ be used instead of the dimension value</translation>
     <message>
       <location filename="../../TaskHatch.ui" line="114"/>
       <source>Offset X</source>
-      <translation type="unfinished">Offset X</translation>
+      <translation>Deslocamento X</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="38"/>
@@ -7378,12 +7379,12 @@ be used instead of the dimension value</translation>
     <message>
       <location filename="../../TaskHatch.ui" line="166"/>
       <source>Rotation</source>
-      <translation type="unfinished">Rotation</translation>
+      <translation>Rotação</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="173"/>
       <source>Offset Y</source>
-      <translation type="unfinished">Offset Y</translation>
+      <translation>Deslocamento Y</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="140"/>
@@ -7393,7 +7394,7 @@ be used instead of the dimension value</translation>
     <message>
       <location filename="../../TaskHatch.ui" line="107"/>
       <source>Svg Line Color</source>
-      <translation type="unfinished">Svg Line Color</translation>
+      <translation>Cor da Linha SVG</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="62"/>
@@ -7481,7 +7482,7 @@ Você pode indicar mais pontos para obter segmentos de linha.</translation>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="287"/>
       <source>Continuous</source>
-      <translation type="unfinished">Continuous</translation>
+      <translation>Contínuo</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="296"/>
@@ -7506,7 +7507,7 @@ Você pode indicar mais pontos para obter segmentos de linha.</translation>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="227"/>
       <source>Pick points</source>
-      <translation type="unfinished">Pick points</translation>
+      <translation>Indicar pontos</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="276"/>
@@ -7514,12 +7515,12 @@ Você pode indicar mais pontos para obter segmentos de linha.</translation>
       <location filename="../../TaskLeaderLine.cpp" line="751"/>
       <location filename="../../TaskLeaderLine.cpp" line="773"/>
       <source>Edit points</source>
-      <translation type="unfinished">Edit points</translation>
+      <translation>Editar pontos</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="521"/>
       <source>Edit Points</source>
-      <translation type="unfinished">Edit Points</translation>
+      <translation>Editar Pontos</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="538"/>
@@ -7647,7 +7648,7 @@ Você pode indicar mais pontos para obter segmentos de linha.</translation>
     <message>
       <location filename="../../TaskLinkDim.ui" line="127"/>
       <source>Geometry2:</source>
-      <translation type="unfinished">Geometry2:</translation>
+      <translation>Geometria2:</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="153"/>
@@ -7680,7 +7681,7 @@ Você pode indicar mais pontos para obter segmentos de linha.</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="126"/>
       <source>Spin clock wise</source>
-      <translation type="unfinished">Spin clock wise</translation>
+      <translation>Girar no sentido horário</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="552"/>
@@ -8323,7 +8324,7 @@ usando o espaçamento X/Y fornecido</translation>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="26"/>
       <location filename="../../TaskSurfaceFinishSymbols.cpp" line="246"/>
       <source>Surface Finish Symbols</source>
-      <translation type="unfinished">Surface Finish Symbols</translation>
+      <translation>Símbolos de Acabamento Superficial</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="61"/>
@@ -8928,7 +8929,7 @@ usando o espaçamento X/Y fornecido</translation>
     <message>
       <location filename="../../TaskDimRepair.ui" line="187"/>
       <source>References 3D</source>
-      <translation type="unfinished">References 3D</translation>
+      <translation>Referências 3D</translation>
     </message>
   </context>
   <context>
@@ -8962,12 +8963,12 @@ usando o espaçamento X/Y fornecido</translation>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="82"/>
       <source>Object Name</source>
-      <translation type="unfinished">Object Name</translation>
+      <translation>Nome do Objeto</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="82"/>
       <source>Object Label</source>
-      <translation type="unfinished">Object Label</translation>
+      <translation>Rótulo do Objeto</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="82"/>
@@ -9320,7 +9321,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="26"/>
       <source>Cosmetic Circle</source>
-      <translation type="unfinished">Cosmetic Circle</translation>
+      <translation>Círculo Cosmético</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="34"/>
@@ -9464,17 +9465,17 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="48"/>
       <source>X-Offset</source>
-      <translation type="unfinished">X-Offset</translation>
+      <translation>Deslocamento-X</translation>
     </message>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="55"/>
       <source>Y-Offset</source>
-      <translation type="unfinished">Y-Offset</translation>
+      <translation>Deslocamento-Y</translation>
     </message>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="72"/>
       <source>Enter X offset value</source>
-      <translation type="unfinished">Enter X offset value</translation>
+      <translation>Digite o valor de deslocamento X</translation>
     </message>
   </context>
   <context>
@@ -9482,7 +9483,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="77"/>
       <source>Add an offset vertex</source>
-      <translation type="unfinished">Add an offset vertex</translation>
+      <translation>Adicionar um vértice de deslocamento</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="83"/>
@@ -9526,7 +9527,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="352"/>
       <source>Update All</source>
-      <translation type="unfinished">Update All</translation>
+      <translation>Atualizar todos</translation>
     </message>
   </context>
   <context>
@@ -9737,7 +9738,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="98"/>
       <source>Leader</source>
-      <translation type="unfinished">Leader</translation>
+      <translation>Linha de chamada</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="99"/>
@@ -9757,12 +9758,12 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="102"/>
       <source>Break1</source>
-      <translation type="unfinished">Break1</translation>
+      <translation>Pausa1</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="103"/>
       <source>Break2</source>
-      <translation type="unfinished">Break2</translation>
+      <translation>Pausa2</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="104"/>
@@ -9772,12 +9773,12 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="105"/>
       <source>Stitch1</source>
-      <translation type="unfinished">Stitch1</translation>
+      <translation>Costura1</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="106"/>
       <source>Stitch2</source>
-      <translation type="unfinished">Stitch2</translation>
+      <translation>Costura2</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="107"/>
@@ -9790,7 +9791,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="51"/>
       <source>Position Section View</source>
-      <translation type="unfinished">Position Section View</translation>
+      <translation>Posição da Vista de Corte</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="59"/>

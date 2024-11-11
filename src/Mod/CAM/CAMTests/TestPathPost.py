@@ -40,7 +40,7 @@ Path.Log.setLevel(Path.Log.Level.INFO, PathCommand.LOG_MODULE)
 
 
 class TestFileNameGenerator(unittest.TestCase):
-    """
+    r"""
     String substitution allows the following:
     %D ... directory of the active document
     %d ... name of the active document (with extension)
