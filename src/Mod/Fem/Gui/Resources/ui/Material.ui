@@ -34,15 +34,15 @@
         <property name="fieldGrowthPolicy">
          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
         </property>
-        <item row="4" column="0">
+        <item row="0" column="0">
          <widget class="QLabel" name="label_8">
           <property name="text">
-           <string>Density</string>
+           <string>Density:</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="1">
-         <widget class="Gui::InputField" name="input_fd_density">
+        <item row="0" column="1">
+         <widget class="Gui::QuantitySpinBox" name="qsb_density">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -55,26 +55,19 @@
           <property name="minimumSize">
            <size>
             <width>80</width>
-            <height>20</height>
            </size>
           </property>
-          <property name="text">
-           <string>0 kg/m^3</string>
-          </property>
           <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           <set>Qt::AlignLeft|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="singleStep">
-           <double>2.000000000000000</double>
+           <double>1.000000000000000</double>
           </property>
           <property name="maximum">
-           <double>99999999999.000000000000000</double>
+           <double>100000000000.00000000000000</double>
           </property>
           <property name="unit" stdset="0">
            <string notr="true">kg/m^3</string>
-          </property>
-          <property name="decimals" stdset="0">
-           <number>3</number>
           </property>
           <property name="value" stdset="0">
            <double>0.000000000000000</double>
@@ -111,7 +104,7 @@
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="Gui::InputField" name="input_fd_young_modulus">
+         <widget class="Gui::QuantitySpinBox" name="qsb_young_modulus">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -124,26 +117,19 @@
           <property name="minimumSize">
            <size>
             <width>80</width>
-            <height>20</height>
            </size>
           </property>
-          <property name="text">
-           <string>0 Pa</string>
-          </property>
           <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           <set>Qt::AlignLeft|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="singleStep">
-           <double>2.000000000000000</double>
+           <double>1.000000000000000</double>
           </property>
           <property name="maximum">
-           <double>99999999999.000000000000000</double>
+           <double>100000000000.00000000000000</double>
           </property>
           <property name="unit" stdset="0">
            <string notr="true">Pa</string>
-          </property>
-          <property name="decimals" stdset="0">
-           <number>3</number>
           </property>
           <property name="value" stdset="0">
            <double>0.000000000000000</double>
@@ -158,7 +144,7 @@
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QDoubleSpinBox" name="spinBox_poisson_ratio">
+         <widget class="Gui::QuantitySpinBox" name="qsb_poisson_ratio">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -171,14 +157,10 @@
           <property name="minimumSize">
            <size>
             <width>80</width>
-            <height>20</height>
            </size>
           </property>
           <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="decimals">
-           <number>3</number>
+           <set>Qt::AlignLeft|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="maximum">
            <double>1.000000000000000</double>
@@ -187,7 +169,7 @@
            <double>0.100000000000000</double>
           </property>
           <property name="value">
-           <double>0.300000000000000</double>
+           <double>0.000000000000000</double>
           </property>
          </widget>
         </item>
@@ -221,7 +203,7 @@
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="Gui::InputField" name="input_fd_kinematic_viscosity">
+         <widget class="Gui::QuantitySpinBox" name="qsb_kinematic_viscosity">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -234,26 +216,19 @@
           <property name="minimumSize">
            <size>
             <width>80</width>
-            <height>20</height>
            </size>
           </property>
-          <property name="text">
-           <string>0 m^2/s</string>
-          </property>
           <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           <set>Qt::AlignLeft|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="singleStep">
            <double>0.000001000000000</double>
           </property>
           <property name="maximum">
-           <double>99999999999.000000000000000</double>
+           <double>100000000000.00000000000000</double>
           </property>
           <property name="unit" stdset="0">
            <string notr="true">m^2/s</string>
-          </property>
-          <property name="decimals" stdset="0">
-           <number>6</number>
           </property>
           <property name="value" stdset="0">
            <double>0.000000000000000</double>
@@ -290,7 +265,7 @@
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="Gui::InputField" name="input_fd_thermal_conductivity">
+         <widget class="Gui::QuantitySpinBox" name="qsb_thermal_conductivity">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -303,26 +278,19 @@
           <property name="minimumSize">
            <size>
             <width>80</width>
-            <height>20</height>
            </size>
           </property>
-          <property name="text">
-           <string>0 W/m/K</string>
-          </property>
           <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           <set>Qt::AlignLeft|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="singleStep">
-           <double>2.000000000000000</double>
+           <double>1.000000000000000</double>
           </property>
           <property name="maximum">
-           <double>99999999999.000000000000000</double>
+           <double>100000000000.00000000000000</double>
           </property>
           <property name="unit" stdset="0">
            <string notr="true">W/m/K</string>
-          </property>
-          <property name="decimals" stdset="0">
-           <number>3</number>
           </property>
           <property name="value" stdset="0">
            <double>0.000000000000000</double>
@@ -337,7 +305,7 @@
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="Gui::InputField" name="input_fd_expansion_coefficient">
+         <widget class="Gui::QuantitySpinBox" name="qsb_expansion_coefficient">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -350,26 +318,19 @@
           <property name="minimumSize">
            <size>
             <width>80</width>
-            <height>20</height>
            </size>
           </property>
-          <property name="text">
-           <string>0 m/m/K</string>
-          </property>
           <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           <set>Qt::AlignLeft|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="singleStep">
-           <double>2.000000000000000</double>
+           <double>1.000000000000000</double>
           </property>
           <property name="maximum">
-           <double>99999999999.000000000000000</double>
+           <double>100000000000.00000000000000</double>
           </property>
           <property name="unit" stdset="0">
            <string notr="true">m/m/K</string>
-          </property>
-          <property name="decimals" stdset="0">
-           <number>3</number>
           </property>
           <property name="value" stdset="0">
            <double>0.000000000000000</double>
@@ -384,7 +345,7 @@
          </widget>
         </item>
         <item row="2" column="1">
-         <widget class="Gui::InputField" name="input_fd_specific_heat">
+         <widget class="Gui::QuantitySpinBox" name="qsb_specific_heat">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -397,73 +358,19 @@
           <property name="minimumSize">
            <size>
             <width>80</width>
-            <height>20</height>
            </size>
           </property>
-          <property name="text">
-           <string>0 J/kg/K</string>
-          </property>
           <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           <set>Qt::AlignLeft|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="singleStep">
-           <double>2.000000000000000</double>
+           <double>1.000000000000000</double>
           </property>
           <property name="maximum">
-           <double>99999999999.000000000000000</double>
+           <double>100000000000.00000000000000</double>
           </property>
           <property name="unit" stdset="0">
            <string notr="true">J/kg/K</string>
-          </property>
-          <property name="decimals" stdset="0">
-           <number>3</number>
-          </property>
-          <property name="value" stdset="0">
-           <double>0.000000000000000</double>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label_vol_expansion_coefficient">
-          <property name="text">
-           <string>Vol Expansion Coeff</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="Gui::InputField" name="input_fd_vol_expansion_coefficient">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>80</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>0 m/m/K</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="singleStep">
-           <double>0.001000000000000</double>
-          </property>
-          <property name="maximum">
-           <double>1.000000000000000</double>
-          </property>
-          <property name="unit" stdset="0">
-           <string notr="true">m/m/K</string>
-          </property>
-          <property name="decimals" stdset="0">
-           <number>6</number>
           </property>
           <property name="value" stdset="0">
            <double>0.000000000000000</double>
@@ -495,9 +402,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Gui::InputField</class>
-   <extends>QLineEdit</extends>
-   <header>Gui/InputField.h</header>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
   <customwidget>
    <class>MatGui::MaterialTreeWidget</class>
@@ -510,7 +417,7 @@
   <connection>
    <sender>chbu_allow_edit</sender>
    <signal>toggled(bool)</signal>
-   <receiver>input_fd_density</receiver>
+   <receiver>qsb_density</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -526,7 +433,7 @@
   <connection>
    <sender>chbu_allow_edit</sender>
    <signal>toggled(bool)</signal>
-   <receiver>input_fd_young_modulus</receiver>
+   <receiver>qsb_young_modulus</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -542,7 +449,7 @@
   <connection>
    <sender>chbu_allow_edit</sender>
    <signal>toggled(bool)</signal>
-   <receiver>spinBox_poisson_ratio</receiver>
+   <receiver>qsb_poisson_ratio</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -558,7 +465,7 @@
   <connection>
    <sender>chbu_allow_edit</sender>
    <signal>toggled(bool)</signal>
-   <receiver>input_fd_kinematic_viscosity</receiver>
+   <receiver>qsb_kinematic_viscosity</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -574,7 +481,7 @@
   <connection>
    <sender>chbu_allow_edit</sender>
    <signal>toggled(bool)</signal>
-   <receiver>input_fd_thermal_conductivity</receiver>
+   <receiver>qsb_thermal_conductivity</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -590,7 +497,7 @@
   <connection>
    <sender>chbu_allow_edit</sender>
    <signal>toggled(bool)</signal>
-   <receiver>input_fd_expansion_coefficient</receiver>
+   <receiver>qsb_expansion_coefficient</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -606,7 +513,7 @@
   <connection>
    <sender>chbu_allow_edit</sender>
    <signal>toggled(bool)</signal>
-   <receiver>input_fd_specific_heat</receiver>
+   <receiver>qsb_specific_heat</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
