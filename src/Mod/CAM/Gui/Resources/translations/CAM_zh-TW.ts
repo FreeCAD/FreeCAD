@@ -1297,7 +1297,7 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="85"/>
       <source>Set the extent of the dimension -the default value is half the tool diameter</source>
-      <translation>Set the extent of the dimension -the default value is half the tool diameter</translation>
+      <translation>設定標註尺寸範圍 - 預設值為刀具直徑的一半</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="101"/>
@@ -4409,7 +4409,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Dressup/Tags.py" line="944"/>
       <source>IDs of disabled holding tags</source>
-      <translation>IDs of disabled holding tags</translation>
+      <translation>停用持有標籤的 ID</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Tags.py" line="953"/>
@@ -5126,7 +5126,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="138"/>
       <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
-      <translation>Extra offset to apply to the operation. Direction is operation dependent.</translation>
+      <translation>應用於操作的額外偏移。方向取決於操作。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="144"/>
@@ -5475,7 +5475,7 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Op/Surface.py" line="400"/>
       <location filename="../../../Path/Op/Waterline.py" line="437"/>
       <source>Feedback: three smallest gaps identified in the path geometry.</source>
-      <translation>Feedback: three smallest gaps identified in the path geometry.</translation>
+      <translation>回饋：路徑幾何中確定的三個最小間隙。.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="327"/>
@@ -5559,9 +5559,9 @@ Default: 3 mm</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Vcarve.py" line="327"/>
-      <source>Cutoff for removing colinear segments (degrees).
+      <source>Cutoff for removing colinear segments (degrees). 
                         default=10.0.</source>
-      <translation>Cutoff for removing colinear segments (degrees).
+      <translation>Cutoff for removing colinear segments (degrees). 
                         default=10.0.</translation>
     </message>
     <message>
@@ -5955,7 +5955,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/SurfaceSupport.py" line="2665"/>
       <source>Failed to identify tool for operation.</source>
-      <translation>Failed to identify tool for operation.</translation>
+      <translation>無法辨識操作工具。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/SurfaceSupport.py" line="2675"/>
@@ -6013,7 +6013,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/SurfaceSupport.py" line="2584"/>
       <source>Diameter dimension missing from ToolBit shape.</source>
-      <translation>Diameter dimension missing from ToolBit shape.</translation>
+      <translation>ToolBit 形狀中缺少直徑尺寸。</translation>
     </message>
   </context>
   <context>
@@ -6947,23 +6947,23 @@ Aborting op creation</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="69"/>
-      <source>The currently selected unit schema:
+      <source>The currently selected unit schema: 
      &apos;{}&apos; for this document
- Does not use &apos;minutes&apos; for velocity values.
-
-CNC machines require feed rate to be expressed in
-unit/minute. To ensure correct G-code:
+ Does not use &apos;minutes&apos; for velocity values. 
+ 
+CNC machines require feed rate to be expressed in 
+unit/minute. To ensure correct G-code: 
 Select a minute-based schema in preferences.
 For example:
     &apos;Metric, Small Parts &amp; CNC&apos;
     &apos;US Customary&apos;
     &apos;Imperial Decimal&apos;</source>
-      <translation type="unfinished">The currently selected unit schema:
+      <translation type="unfinished">The currently selected unit schema: 
      &apos;{}&apos; for this document
- Does not use &apos;minutes&apos; for velocity values.
-
-CNC machines require feed rate to be expressed in
-unit/minute. To ensure correct G-code:
+ Does not use &apos;minutes&apos; for velocity values. 
+ 
+CNC machines require feed rate to be expressed in 
+unit/minute. To ensure correct G-code: 
 Select a minute-based schema in preferences.
 For example:
     &apos;Metric, Small Parts &amp; CNC&apos;
@@ -7033,9 +7033,9 @@ For example:
     <name>CAM_Inspect</name>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="132"/>
-      <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s).
+      <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s). 
  Values will be converted to the desired unit during post processing.</source>
-      <translation>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s).
+      <translation>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s). 
  Values will be converted to the desired unit during post processing.</translation>
     </message>
     <message>
@@ -7351,9 +7351,9 @@ For example:
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="364"/>
-      <source>Tool number {} is a legacy tool. Legacy tools not
+      <source>Tool number {} is a legacy tool. Legacy tools not 
                     supported by Path-Sanity</source>
-      <translation>編號為 {} 的工具是舊版工具。舊版工具不
+      <translation>編號為 {} 的工具是舊版工具。舊版工具不 
                     被 Path-Sanity 支援</translation>
     </message>
     <message>
@@ -7863,7 +7863,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Slot.py" line="607"/>
       <source>Custom points are identical. No slot path will be generated</source>
-      <translation type="unfinished">Custom points are identical. No slot path will be generated</translation>
+      <translation>自訂點是相同的。不會產生插槽路徑</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="616"/>
@@ -7910,7 +7910,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Slot.py" line="1023"/>
       <source>No parallel edges identified.</source>
-      <translation>No parallel edges identified.</translation>
+      <translation>未識別出平行邊緣。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="1047"/>
@@ -8493,10 +8493,10 @@ For example:
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="126"/>
       <source>Toolbit Working directory {} needs these sudirectories:
- {}
+ {} 
  Create them?</source>
       <translation>Toolbit Working directory {} needs these sudirectories:
- {}
+ {} 
  Create them?</translation>
     </message>
     <message>

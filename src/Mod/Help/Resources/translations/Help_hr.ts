@@ -21,10 +21,10 @@ You can easily download the documentation for offline use by using the Addon
 Manager and installing the &quot;offline-documentation&quot; addon. If this
 field is left blank, FreeCAD will automatically search for the help files at
 the default location ($USERAPPDATADIR/Mod/offline-documentation).</source>
-      <translation>Postavite ovo na prilagođeni URL ili mapu gdje se nalaze datoteke pomoći.
-Lako možete preuzeti dokumentaciju za korištenje izvan mreže pomoću
-Upravitelja Dodataka i instaliranjem dodatka &quot;offline dokumentacija&amp;quot.
-Ako je ovo polje prazno, FreeCAD će automatski pretraživati datoteke za pomoć na
+      <translation>Postavite ovo na prilagođeni URL ili mapu gdje se nalaze datoteke pomoći. 
+Lako možete preuzeti dokumentaciju za korištenje izvan mreže pomoću 
+Upravitelja Dodataka i instaliranjem dodatka &quot;offline dokumentacija&amp;quot. 
+Ako je ovo polje prazno, FreeCAD će automatski pretraživati datoteke za pomoć na 
 zadanoj lokaciji ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     </message>
     <message>
@@ -87,7 +87,7 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="170"/>
       <source>Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</source>
-      <translation type="unfinished">Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</translation>
+      <translation>Napomena: ako PySide web komponente nisu pronađene na vašem sustavu, stranice pomoći će se otvoriti u vašem zadanom web pregledniku bez obzira na opcije ispod</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="202"/>
@@ -103,16 +103,16 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
       <location filename="../../dlgPreferencesHelp.ui" line="221"/>
       <source>The documentation will open in a dockable dialog inside the FreeCAD window,
 which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</source>
-      <translation type="unfinished">The documentation will open in a dockable dialog inside the FreeCAD window,
-which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</translation>
+      <translation>Dokumentacija će se otvoriti u Ugrađenom dijalogu koji se može pohraniti u prozoru FreeCAD-a, 
+što vam omogućuje da ga držite otvorenim dok radite u 3D prikazu.Ovo zahtijeva komponentu PySide QtWebengineWidgets</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="256"/>
       <source>You can here indicate the path to an alternative CSS file to be used
 to style the Markdown pages. This will only work if you have selected the
 Markdown version above.</source>
-      <translation>Ovdje možete navesti putanju do alternativne CSS datoteke
-koja će se koristiti za oblikovanje stranica Markdowna.
+      <translation>Ovdje možete navesti putanju do alternativne CSS datoteke 
+koja će se koristiti za oblikovanje stranica Markdowna. 
 Ova opcija će raditi samo ako ste odabrali Markdown verziju gore.</translation>
     </message>
     <message>
@@ -123,7 +123,7 @@ Ova opcija će raditi samo ako ste odabrali Markdown verziju gore.</translation>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="199"/>
       <source>The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component</source>
-      <translation type="unfinished">The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component</translation>
+      <translation>Dokumentacija će se otvoriti u novoj kartici unutar FreeCAD sučelja. Ovo zahtijeva komponentu PySide QtWebengineWidgets</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="225"/>
@@ -156,12 +156,12 @@ Ova opcija će raditi samo ako ste odabrali Markdown verziju gore.</translation>
     <message>
       <location filename="../../Help.py" line="83"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
-      <translation type="unfinished">PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</translation>
+      <translation>PySide QtWebEngineWidgets modul nije dostupan. Prikazivanje pomoći vrši se preglednikom sustava</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="87"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
-      <translation type="unfinished">There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</translation>
+      <translation>Na vašem sustavu nije instaliran Markdown renderer, pa se ova stranica pomoći prikazuje kakva jest. Instalirajte module Markdown ili Pandoc Python kako biste poboljšali prikaz ove stranice.</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="119"/>
@@ -172,7 +172,7 @@ Ova opcija će raditi samo ako ste odabrali Markdown verziju gore.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="425"/>
+      <location filename="../../Help.py" line="432"/>
       <source>General</source>
       <translation>Općenito</translation>
     </message>

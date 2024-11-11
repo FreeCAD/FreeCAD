@@ -59,87 +59,87 @@
   <context>
     <name>StartGui::StartView</name>
     <message>
-      <location filename="../../StartView.cpp" line="213"/>
+      <location filename="../../StartView.cpp" line="289"/>
       <source>Empty file</source>
       <translation>空文件</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="214"/>
+      <location filename="../../StartView.cpp" line="290"/>
       <source>Create a new empty FreeCAD file</source>
       <translation>新建一个空白FreeCAD文件</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="216"/>
+      <location filename="../../StartView.cpp" line="293"/>
       <source>Open File</source>
       <translation>打开文件</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="217"/>
+      <location filename="../../StartView.cpp" line="294"/>
       <source>Open an existing CAD file or 3D model</source>
       <translation>打开现有的 CAD 文件或 3D 模型</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="219"/>
+      <location filename="../../StartView.cpp" line="297"/>
       <source>Parametric Part</source>
       <translation>参数视图</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="220"/>
+      <location filename="../../StartView.cpp" line="298"/>
       <source>Create a part with the Part Design workbench</source>
       <translation>使用零件设计工作台创建一个零件</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="222"/>
+      <location filename="../../StartView.cpp" line="301"/>
       <source>Assembly</source>
       <translation>装配</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="223"/>
+      <location filename="../../StartView.cpp" line="302"/>
       <source>Create an assembly project</source>
       <translation>创建装配项目</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="225"/>
+      <location filename="../../StartView.cpp" line="305"/>
       <source>2D Draft</source>
       <translation>2D草图</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="226"/>
+      <location filename="../../StartView.cpp" line="306"/>
       <source>Create a 2D Draft with the Draft workbench</source>
       <translation>使用草图工作台创建 2D 草图</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="228"/>
+      <location filename="../../StartView.cpp" line="309"/>
       <source>BIM/Architecture</source>
       <translation>BIM/结构</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="229"/>
+      <location filename="../../StartView.cpp" line="310"/>
       <source>Create an architectural project</source>
       <translation>创建一个建筑项目</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="506"/>
+      <location filename="../../StartView.cpp" line="525"/>
       <source>New File</source>
       <translation>新建文件</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="507"/>
+      <location filename="../../StartView.cpp" line="526"/>
       <source>Examples</source>
       <translation>示例</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="508"/>
+      <location filename="../../StartView.cpp" line="527"/>
       <source>Recent Files</source>
       <translation>最近打开的文件</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="511"/>
+      <location filename="../../StartView.cpp" line="530"/>
       <source>Open first start setup</source>
       <translation>打开首次启动设置</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="513"/>
+      <location filename="../../StartView.cpp" line="532"/>
       <source>Don't show this Start page again (start with blank screen)</source>
       <translation>不再显示此开始页 (将以空白开头)</translation>
     </message>
@@ -147,7 +147,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="500"/>
+      <location filename="../../StartView.cpp" line="519"/>
       <source>Start</source>
       <translation>开始</translation>
     </message>
@@ -155,44 +155,44 @@
   <context>
     <name>StartGui::ThemeSelectorWidget</name>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="58"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="113"/>
       <source>FreeCAD Classic</source>
       <translation>FreeCAD 经典</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="59"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="114"/>
       <source>FreeCAD Dark</source>
       <translation>FreeCAD 暗色</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="60"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="115"/>
       <source>FreeCAD Light</source>
       <translation>FreeCAD 浅色</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="166"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="238"/>
       <source>Theme</source>
       <translation>主题</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="167"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="239"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
-      <translation type="unfinished">Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</translation>
+      <translation>寻找更多主题？您可以使用&lt;a href=“freecad:Std_AddonMgr”&gt;插件管理器&lt;/a&gt;获取。</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="169"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="241"/>
       <source>FreeCAD Dark</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD 暗色</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="170"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="242"/>
       <source>FreeCAD Light</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD 浅色</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="171"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="243"/>
       <source>FreeCAD Classic</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD 经典</translation>

@@ -456,7 +456,7 @@ L'expression doit être interprétée comme une chaîne de caractères d'une cer
       <source>The dependency with the referenced spreadsheet will
 be hidden to the dependency checking.
 Useful to avoid cyclic dependencies, but use with caution!</source>
-      <translation>La dépendance avec la feuille de calcul référencée sera masquée lors de la
+      <translation>La dépendance avec la feuille de calcul référencée sera masquée lors de la 
 vérification des dépendances.
 Utile pour éviter les dépendances cycliques, mais à utiliser avec précaution !</translation>
     </message>
@@ -542,7 +542,7 @@ par cette propriété.</translation>
       <location filename="../../DlgSheetConf.ui" line="64"/>
       <source>Type in an expression to specify the object and property name to dynamically
 switch the design configuration. The property will be created if not exist.</source>
-      <translation>Saisir une expression pour spécifier le nom de l'objet et de la propriété. Cela
+      <translation>Saisir une expression pour spécifier le nom de l'objet et de la propriété. Cela 
 changera dynamiquement la configuration de la conception. La propriété sera
 créée si elle n'existe pas.</translation>
     </message>
@@ -739,7 +739,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
 Spreadsheet.my_alias_name au lieu de Spreadsheet.B1</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="152"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="149"/>
       <source>Spreadsheet</source>
       <translation>Spreadsheet</translation>
     </message>
@@ -1163,7 +1163,8 @@ Par défaut : %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="81"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="93"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="111"/>
       <source>Unnamed</source>
       <translation>Nouveau</translation>
     </message>

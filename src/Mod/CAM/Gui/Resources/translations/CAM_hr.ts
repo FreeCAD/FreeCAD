@@ -224,11 +224,11 @@ Svaka vrijednost Tabele postavki koja je promijenjena u odnosu na zadano je unap
 This option is most useful if stock is a box or cylinder, or if the machine has a standard placement for machining.
 
 Note that this option is disabled if a stock object from an existing solid is used in the job - they cannot be stored in a template.</source>
-      <translation type="unfinished">If enabled the creation of stock is included in the template. If a template does not include a stock definition the default stock creation algorithm will be used (creation from the Base object&apos;s bounding box).
+      <translation>Ako je omogućeno, stvaranje materijala je uključeno u predložak.Ako predložak ne sadrži definiciju materijala, koristit će se standardni algoritam za stvaranje materijala (stvaranje iz okvirnog okvira objekta baze).
 
-This option is most useful if stock is a box or cylinder, or if the machine has a standard placement for machining.
+Ova je opcija najkorisnija ako je materijal blok ili cilindar, ili ako stroj ima standardnu poziciju za obradu.
 
-Note that this option is disabled if a stock object from an existing solid is used in the job - they cannot be stored in a template.</translation>
+Imajte na umu da je ova opcija onemogućena ako se u poslu koristi predmet materijala iz postojećeg čvrstog tijela - oni se ne mogu pohraniti u predlošku.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="184"/>
@@ -276,11 +276,11 @@ Imajte na umu da su navedene samo operacije koje trenutno imaju postavljene konf
 For Box and Cylinder stocks this means the actual size of the stock solid being created.
 
 For stock from the Base object&apos;s bounding box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job&apos;s Base object and apply the stored extra settings.</source>
-      <translation type="unfinished">If enabled the current size settings for the stock object are included in the template.
+      <translation>Ako je omogućeno, trenutne postavke veličine materijala obrade  su uključene u predložak.
 
-For Box and Cylinder stocks this means the actual size of the stock solid being created.
+Za blokove i cilindre to znači stvarnu veličinu materijala obrade koji se koristi.
 
-For stock from the Base object&apos;s bounding box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job&apos;s Base object and apply the stored extra settings.</translation>
+Za materijal obrade iz graničnog okvira to znači dodatni materijal u svim smjerovima. Objekt materijala stvoren iz takvog predloška dobit će svoju osnovnu veličinu iz novog posla osnovnog objekta i primijeniti pohranjene dodatne postavke.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="168"/>
@@ -387,7 +387,7 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/PropertyCreate.ui" line="27"/>
       <source>Name of property. Can only contain letters, numbers, and underscores. MixedCase names will display with spaces &quot;Mixed Case&quot;</source>
-      <translation type="unfinished">Name of property. Can only contain letters, numbers, and underscores. MixedCase names will display with spaces &quot;Mixed Case&quot;</translation>
+      <translation>Naziv svojstva. Može sadržavati samo slova, brojeve i podcrte. Imena sa velikim-malim slovima će se prikazivati s razmacima</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="34"/>
@@ -525,7 +525,7 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../../DlgJobChooser.ui" line="17"/>
       <source>Choose a CAM Job</source>
-      <translation type="unfinished">Choose a CAM Job</translation>
+      <translation>Izaberi CAM posao</translation>
     </message>
   </context>
   <context>
@@ -586,12 +586,12 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="107"/>
       <source>Extension of bounding box&apos;s MinX</source>
-      <translation type="unfinished">Extension of bounding box&apos;s MinX</translation>
+      <translation>Proširenje minX okvira omeđenja</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="120"/>
       <source>Extension of bounding box&apos;s MaxX</source>
-      <translation type="unfinished">Extension of bounding box&apos;s MaxX</translation>
+      <translation>Proširenje maxX okvira omeđenja</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="127"/>
@@ -601,12 +601,12 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="134"/>
       <source>Extension of bounding box&apos;s MinY</source>
-      <translation type="unfinished">Extension of bounding box&apos;s MinY</translation>
+      <translation>Proširenje minY okvira omeđenja</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="141"/>
       <source>Extension of bounding box&apos;s MaxY</source>
-      <translation type="unfinished">Extension of bounding box&apos;s MaxY</translation>
+      <translation>Proširenje maxY okvira omeđenja</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="148"/>
@@ -616,12 +616,12 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="155"/>
       <source>Extension of bounding box&apos;s MinZ</source>
-      <translation type="unfinished">Extension of bounding box&apos;s MinZ</translation>
+      <translation>Proširenje minZ okvira omeđenja</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="162"/>
       <source>Extension of bounding box&apos;s MaxZ</source>
-      <translation type="unfinished">Extension of bounding box&apos;s MaxZ</translation>
+      <translation>Proširenje maxZ okvira omeđenja</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="182"/>
@@ -651,12 +651,12 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="257"/>
       <source>If checked the path is constrained by the solid. Otherwise the volume of the solid describes a &apos;keep out&apos; zone</source>
-      <translation type="unfinished">If checked the path is constrained by the solid. Otherwise the volume of the solid describes a &apos;keep out&apos; zone</translation>
+      <translation>Ako je označeno, staza je ograničena čvrstim tijelom. Inače, volumen čvrstog tijela opisuje 'Isključenu zonu'.</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="55"/>
       <source>Extend Model&apos;s Bounding Box</source>
-      <translation type="unfinished">Extend Model&apos;s Bounding Box</translation>
+      <translation>Proširi granični okvir modela</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="175"/>
@@ -697,7 +697,7 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="59"/>
       <source>Select one or more features in the 3d view and press &apos;Add&apos; to add them as the base items for this operation. Selected features can be deleted entirely.</source>
-      <translation type="unfinished">Select one or more features in the 3d view and press &apos;Add&apos; to add them as the base items for this operation. Selected features can be deleted entirely.</translation>
+      <translation>Odaberite jednu ili više značajki u 3D prikazu i pritisnite 'Dodaj' da biste ih dodali kao osnovne stavke za ovu operaciju. Odabrane značajke mogu se u potpunosti izbrisati.</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="69"/>
@@ -774,7 +774,7 @@ Resetiranje briše sve trenutne stavke s popisa i popunjava popis svim okruglim 
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="66"/>
       <source>Remove all list items and fill list with all eligible features from the job&apos;s base object.</source>
-      <translation type="unfinished">Remove all list items and fill list with all eligible features from the job&apos;s base object.</translation>
+      <translation>Ukloni sve stavke popisa i popuni popis sa svim odobrenim značajkama iz objekta osnove posla.</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="69"/>
@@ -1175,7 +1175,7 @@ Resetiranje briše sve trenutne stavke s popisa i popunjava popis svim okruglim 
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="63"/>
       <source>Don&apos;t retract after every hole</source>
-      <translation type="unfinished">Don&apos;t retract after every hole</translation>
+      <translation>Ne povlači alat nazad nakon svake rupe</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="66"/>
@@ -1828,7 +1828,7 @@ Ovo se može koristiti za obradu cijelog područja obrade kako bi se osigurala u
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="140"/>
       <source>Avoid cutting the last &apos;N&apos; faces in the Base Geometry list of selected faces.</source>
-      <translation type="unfinished">Avoid cutting the last &apos;N&apos; faces in the Base Geometry list of selected faces.</translation>
+      <translation>Izbjegavajte rezanje zadnjih 'N' lica na popisu Osnovna geometrija lista odabranih površina.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="147"/>
@@ -1908,7 +1908,7 @@ Ovo se može koristiti za obradu cijelog područja obrade kako bi se osigurala u
       <source>The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter.
 
 A step over of 100% results in no overlap between two different cycles.</source>
-      <translation>Količina pomaka alata u bočnom smjeru u svakom ciklusu uzorka (step over), specificirana u procentima promjera alata.
+      <translation>Količina pomaka alata u bočnom smjeru u svakom ciklusu uzorka (step over), specificirana u procentima promjera alata. 
 
 Preklapanje od 100% rezultira bez preklapanja između dva različita ciklusa.</translation>
     </message>
@@ -1949,7 +1949,7 @@ Preklapanje od 100% rezultira bez preklapanja između dva različita ciklusa.</t
       <source>Expression set as the StartDepth of a newly created operation.
 
 Default: OpStartDepth</source>
-      <translation>Izraz postavljen kao Početna dubina novo kreirane operacije.
+      <translation>Izraz postavljen kao Početna dubina novo kreirane operacije. 
 
 Zadano: OpStartDepth.</translation>
     </message>
@@ -1958,7 +1958,7 @@ Zadano: OpStartDepth.</translation>
       <source>Expression set as the FinalDepth for a newly created operation.
 
 Default: OpFinalDepth</source>
-      <translation>Izraz postavljen kao Završna dubina novo kreirane operacije.
+      <translation>Izraz postavljen kao Završna dubina novo kreirane operacije. 
 
 Zadano: OpFinalDepth</translation>
     </message>
@@ -1967,7 +1967,7 @@ Zadano: OpFinalDepth</translation>
       <source>Expression set as the StepDown of a newly created operation.
 
 Default: OpToolDiameter</source>
-      <translation>Izraz postavljen kao Korak upuštanja novo kreirane operacije.
+      <translation>Izraz postavljen kao Korak upuštanja novo kreirane operacije. 
 
 Zadano: OpToolDiameter</translation>
     </message>
@@ -2295,7 +2295,7 @@ Ako je zadana visina 0, priprema će koristiti polovicu visine dijela. Ako je vi
       <source>Default height of holding tags.
 
 If the specified height is 0 the dressup will use half the height of the part. Should the height be bigger than the height of the part the dressup will reduce the height to the height of the part.</source>
-      <translation>Zadana visina mostića držača.
+      <translation>Zadana visina mostića držača. 
 
 Ako je zadana visina 0, priprema će koristiti polovicu visine dijela. Ako je visina veća od visine dijela, priprema će smanjiti visinu na visinu dijela.</translation>
     </message>
@@ -2452,7 +2452,7 @@ If the radius is bigger than that which the tag shape itself supports, the resul
       <source>Path to look for templates, post processors, tool tables and other external files.
 
 If left empty the macro directory is used.</source>
-      <translation>Putanja za traženje predložaka, post-procesora, tablica alata i drugih vanjskih datoteka.
+      <translation>Putanja za traženje predložaka, post-procesora, tablica alata i drugih vanjskih datoteka. 
 
 Ako je prazno koristi se mapa makroa.</translation>
     </message>
@@ -2463,9 +2463,9 @@ Ako je prazno koristi se mapa makroa.</translation>
 This can be helpful when almost all jobs will be processed by the same machine with a similar setup.
 
 If left empty no template will be preselected.</source>
-      <translation>Zadani predložak koji će se odabrati prilikom stvaranja novog posla.
+      <translation>Zadani predložak koji će se odabrati prilikom stvaranja novog posla. 
 
-To može biti korisno kada su gotovo svi poslovi obrađeni istim strojem sa sličnim postavkama.
+To može biti korisno kada su gotovo svi poslovi obrađeni istim strojem sa sličnim postavkama. 
 
 Ako se ostavi prazno, nijedan predložak neće biti unaprijed odabran.</translation>
     </message>
@@ -2570,7 +2570,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="405"/>
       <source>Extend Model&apos;s Bounding Box</source>
-      <translation type="unfinished">Extend Model&apos;s Bounding Box</translation>
+      <translation>Proširi granični okvir modela</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="429"/>
@@ -2638,8 +2638,8 @@ See the file save policy below on how to deal with name conflicts.</translation>
       <source>References to Tool Bits and their shapes can either be stored with an absolute path or with a relative path to the search path.
 Generally it is recommended to use relative paths due to their flexibility and robustness to layout changes.
 Should multiple tools or tool shapes with the same name exist in different directories it can be required to use absolute paths.</source>
-      <translation>Reference na alatne nastavake i njihove oblike mogu se pohraniti s apsolutnom putanjom ili relativnom putanjom do putanje pretraživanja.
-Općenito se preporučuje korištenje relativnih putanja zbog njihove fleksibilnosti i otpornosti na promjene rasporeda.
+      <translation>Reference na alatne nastavake i njihove oblike mogu se pohraniti s apsolutnom putanjom ili relativnom putanjom do putanje pretraživanja. 
+Općenito se preporučuje korištenje relativnih putanja zbog njihove fleksibilnosti i otpornosti na promjene rasporeda. 
 Ako u različitim direktorijima postoje više alata ili oblika alata s istim imenom, možda će biti potrebno koristiti apsolutne putanje.</translation>
     </message>
     <message>
@@ -3717,7 +3717,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="488"/>
       <source>Extend Model&apos;s Bounding Box</source>
-      <translation type="unfinished">Extend Model&apos;s Bounding Box</translation>
+      <translation>Proširi granični okvir modela</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="493"/>
@@ -3950,7 +3950,7 @@ If &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is se
       <source>Expression set as the StartDepth of a newly created operation.
 
 Default: OpStartDepth</source>
-      <translation>Izraz postavljen kao Početna dubina novo kreirane operacije.
+      <translation>Izraz postavljen kao Početna dubina novo kreirane operacije. 
 
 Zadano: OpStartDepth.</translation>
     </message>
@@ -3959,7 +3959,7 @@ Zadano: OpStartDepth.</translation>
       <source>Expression set as the FinalDepth for a newly created operation.
 
 Default: OpFinalDepth</source>
-      <translation>Izraz postavljen kao Završna dubina novo kreirane operacije.
+      <translation>Izraz postavljen kao Završna dubina novo kreirane operacije. 
 
 Zadano: OpFinalDepth</translation>
     </message>
@@ -3973,7 +3973,7 @@ Zadano: OpFinalDepth</translation>
       <source>Expression set as the StepDown of a newly created operation.
 
 Default: OpToolDiameter</source>
-      <translation>Izraz postavljen kao Korak upuštanja novo kreirane operacije.
+      <translation>Izraz postavljen kao Korak upuštanja novo kreirane operacije. 
 
 Zadano: OpToolDiameter</translation>
     </message>
@@ -4238,7 +4238,7 @@ Zadano: "3mm"</translation>
     <message>
       <location filename="../../../PathScripts/PathUtilsGui.py" line="89"/>
       <source>Choose a CAM Job</source>
-      <translation type="unfinished">Choose a CAM Job</translation>
+      <translation>Izaberi CAM posao</translation>
     </message>
   </context>
   <context>
@@ -4941,7 +4941,7 @@ Visina potpornih mostića.</translation>
     <message>
       <location filename="../../../Path/Op/Base.py" line="306"/>
       <source>Lower limit of the turning diameter</source>
-      <translation>Donja granica okretnog promjera
+      <translation>Donja granica okretnog promjera 
 </translation>
     </message>
     <message>
@@ -5379,7 +5379,7 @@ Visina potpornih mostića.</translation>
       <location filename="../../../Path/Op/Surface.py" line="202"/>
       <location filename="../../../Path/Op/Waterline.py" line="230"/>
       <source>Avoid cutting the last &apos;N&apos; faces in the Base Geometry list of selected faces.</source>
-      <translation type="unfinished">Avoid cutting the last &apos;N&apos; faces in the Base Geometry list of selected faces.</translation>
+      <translation>Izbjegavajte rezanje zadnjih 'N' lica na popisu Osnovna geometrija lista odabranih površina.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="210"/>
@@ -5433,7 +5433,7 @@ Visina potpornih mostića.</translation>
       <location filename="../../../Path/Op/Surface.py" line="298"/>
       <location filename="../../../Path/Op/Waterline.py" line="344"/>
       <source>Reverse the cut order of the stepover paths. For circular cut patterns, begin at the outside and work toward the center.</source>
-      <translation>Obrnite redoslijed glodanja preklapajućih staza. Za kružne uzorke glodanja,
+      <translation>Obrnite redoslijed glodanja preklapajućih staza. Za kružne uzorke glodanja, 
 započnite s vanjske strane i radite prema sredini.</translation>
     </message>
     <message>
@@ -5582,9 +5582,9 @@ započnite s vanjske strane i radite prema sredini.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Vcarve.py" line="327"/>
-      <source>Cutoff for removing colinear segments (degrees).
+      <source>Cutoff for removing colinear segments (degrees). 
                         default=10.0.</source>
-      <translation>Gornja granica za uklanjanje kolinearnih segmenata (u stupnjevima).
+      <translation>Gornja granica za uklanjanje kolinearnih segmenata (u stupnjevima). 
                 zadana vrijednost = 10,0. </translation>
     </message>
     <message>
@@ -6979,23 +6979,23 @@ Prekidam OP-stvaranje.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="69"/>
-      <source>The currently selected unit schema:
+      <source>The currently selected unit schema: 
      &apos;{}&apos; for this document
- Does not use &apos;minutes&apos; for velocity values.
-
-CNC machines require feed rate to be expressed in
-unit/minute. To ensure correct G-code:
+ Does not use &apos;minutes&apos; for velocity values. 
+ 
+CNC machines require feed rate to be expressed in 
+unit/minute. To ensure correct G-code: 
 Select a minute-based schema in preferences.
 For example:
     &apos;Metric, Small Parts &amp; CNC&apos;
     &apos;US Customary&apos;
     &apos;Imperial Decimal&apos;</source>
-      <translation type="unfinished">The currently selected unit schema:
+      <translation type="unfinished">The currently selected unit schema: 
      &apos;{}&apos; for this document
- Does not use &apos;minutes&apos; for velocity values.
-
-CNC machines require feed rate to be expressed in
-unit/minute. To ensure correct G-code:
+ Does not use &apos;minutes&apos; for velocity values. 
+ 
+CNC machines require feed rate to be expressed in 
+unit/minute. To ensure correct G-code: 
 Select a minute-based schema in preferences.
 For example:
     &apos;Metric, Small Parts &amp; CNC&apos;
@@ -7065,7 +7065,7 @@ For example:
     <name>CAM_Inspect</name>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="132"/>
-      <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s).
+      <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s). 
  Values will be converted to the desired unit during post processing.</source>
       <translation>&lt;b>Napomena&lt;b>: Ovaj dijalog prikazuje Naredbe staze u osnovnim jedinicama FreeCAD-a (mm/s). Vrijednosti će se pretvoriti u željenu jedinicu tijekom naknadne obrade.</translation>
     </message>
@@ -7382,9 +7382,9 @@ For example:
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="364"/>
-      <source>Tool number {} is a legacy tool. Legacy tools not
+      <source>Tool number {} is a legacy tool. Legacy tools not 
                     supported by Path-Sanity</source>
-      <translation type="unfinished">Tool number {} is a legacy tool. Legacy tools not
+      <translation type="unfinished">Tool number {} is a legacy tool. Legacy tools not 
                     supported by Path-Sanity</translation>
     </message>
     <message>
@@ -8532,10 +8532,10 @@ Razmotrite specificiranje Materijala obrade</translation>
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="126"/>
       <source>Toolbit Working directory {} needs these sudirectories:
- {}
+ {} 
  Create them?</source>
       <translation>Radni direktorij alatnih nastavaka {} treba poddirektorije:
- {}
+ {} 
  Stvori ih?</translation>
     </message>
     <message>
