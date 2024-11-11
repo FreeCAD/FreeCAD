@@ -124,9 +124,6 @@ TaskMeasure::TaskMeasure()
     // engage the selectionObserver
     attachSelection();
 
-    // Set selection style
-    Gui::Selection().setSelectionStyle(Gui::SelectionSingleton::SelectionStyle::NormalSelection);
-
     if (!App::GetApplication().getActiveTransaction()) {
         App::GetApplication().setActiveTransaction("Add Measurement");
     }
@@ -138,7 +135,6 @@ TaskMeasure::TaskMeasure()
 
 TaskMeasure::~TaskMeasure()
 {
-    Gui::Selection().setSelectionStyle(Gui::SelectionSingleton::SelectionStyle::NormalSelection);
     detachSelection();
     qApp->removeEventFilter(this);
 }
