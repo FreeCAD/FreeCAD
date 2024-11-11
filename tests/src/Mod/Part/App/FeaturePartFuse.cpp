@@ -4,6 +4,7 @@
 
 #include "Mod/Part/App/FeaturePartFuse.h"
 #include <src/App/InitApplication.h>
+#include "Mod/Part/App/FeatureCompound.h"
 
 #include "PartTestHelpers.h"
 
@@ -20,12 +21,14 @@ protected:
     {
         createTestDoc();
         _fuse = dynamic_cast<Part::Fuse*>(_doc->addObject("Part::Fuse"));
+        _multiFuse = dynamic_cast<Part::MultiFuse*>(_doc->addObject("Part::MultiFuse"));
     }
 
     void TearDown() override
     {}
 
-    Part::Fuse* _fuse = nullptr;  // NOLINT Can't be private in a test framework
+    Part::Fuse* _fuse = nullptr;            // NOLINT Can't be private in a test framework
+    Part::MultiFuse* _multiFuse = nullptr;  // NOLINT Can't be private in a test framework
 };
 
 TEST_F(FeaturePartFuseTest, testIntersecting)
@@ -37,6 +40,64 @@ TEST_F(FeaturePartFuseTest, testIntersecting)
     // Act
     _fuse->execute();
     Part::TopoShape ts = _fuse->Shape.getValue();
+    double volume = PartTestHelpers::getVolume(ts.getShape());
+    Base::BoundBox3d bb = ts.getBoundBox();
+
+    // Assert
+    EXPECT_DOUBLE_EQ(volume, 9.0);
+    // double check using bounds:
+    EXPECT_DOUBLE_EQ(bb.MinX, 0.0);
+    EXPECT_DOUBLE_EQ(bb.MinY, 0.0);
+    EXPECT_DOUBLE_EQ(bb.MinZ, 0.0);
+    EXPECT_DOUBLE_EQ(bb.MaxX, 1.0);
+    EXPECT_DOUBLE_EQ(bb.MaxY, 3.0);
+    EXPECT_DOUBLE_EQ(bb.MaxZ, 3.0);
+}
+
+TEST_F(FeaturePartFuseTest, testCompound)
+{
+    // Arrange
+    Part::Compound* _compound = nullptr;
+    _compound = dynamic_cast<Part::Compound*>(_doc->addObject("Part::Compound"));
+    _compound->Links.setValues({_boxes[0], _boxes[1]});
+    _multiFuse->Shapes.setValues({_compound});
+
+    // Act
+    _compound->execute();
+    _multiFuse->execute();
+    Part::TopoShape ts = _multiFuse->Shape.getValue();
+    double volume = PartTestHelpers::getVolume(ts.getShape());
+    Base::BoundBox3d bb = ts.getBoundBox();
+
+    // Assert
+    EXPECT_DOUBLE_EQ(volume, 9.0);
+    // double check using bounds:
+    EXPECT_DOUBLE_EQ(bb.MinX, 0.0);
+    EXPECT_DOUBLE_EQ(bb.MinY, 0.0);
+    EXPECT_DOUBLE_EQ(bb.MinZ, 0.0);
+    EXPECT_DOUBLE_EQ(bb.MaxX, 1.0);
+    EXPECT_DOUBLE_EQ(bb.MaxY, 3.0);
+    EXPECT_DOUBLE_EQ(bb.MaxZ, 3.0);
+}
+TEST_F(FeaturePartFuseTest, testRecursiveCompound)
+{
+    // Arrange
+    Part::Compound* _compound[3] = {nullptr};
+    int t;
+    for (t = 0; t < 3; t++) {
+        _compound[t] = dynamic_cast<Part::Compound*>(_doc->addObject("Part::Compound"));
+    }
+    _compound[0]->Links.setValues({_boxes[0], _boxes[1]});
+    _compound[1]->Links.setValues({_compound[0]});
+    _compound[2]->Links.setValues({_compound[1]});
+    _multiFuse->Shapes.setValues({_compound[2]});
+
+    // Act
+    for (t = 0; t < 3; t++) {
+        _compound[t]->execute();
+    }
+    _multiFuse->execute();
+    Part::TopoShape ts = _multiFuse->Shape.getValue();
     double volume = PartTestHelpers::getVolume(ts.getShape());
     Base::BoundBox3d bb = ts.getBoundBox();
 
