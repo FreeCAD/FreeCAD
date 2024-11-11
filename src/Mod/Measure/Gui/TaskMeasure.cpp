@@ -74,9 +74,12 @@ TaskMeasure::TaskMeasure()
     showDeltaLabel = new QLabel(tr("Show Delta:"));
     connect(showDelta, &QCheckBox::stateChanged, this, &TaskMeasure::showDeltaChanged);
 
+    const auto autosave_tooltip = tr("Auto saving of the last measurement when starting a new measurement. Use SHIFT to temporarly invert the behaviour.");
     autoSaveCheckBox = new QCheckBox();
     autoSaveCheckBox->setChecked(mAutoSave);
+    autoSaveCheckBox->setToolTip(autosave_tooltip);
     autoSaveLabel = new QLabel(tr("Auto Save Measurement:"));
+    autoSaveLabel->setToolTip(autosave_tooltip);
     connect(autoSaveCheckBox, &QCheckBox::stateChanged, this, &TaskMeasure::autoSaveChanged);
 
     // Create mode dropdown and add all registered measuretypes
