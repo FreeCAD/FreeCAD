@@ -74,6 +74,7 @@
 #include "Inventor/SoFCBackgroundGradient.h"
 #include "Inventor/SoFCBoundingBox.h"
 #include "Inventor/SoMouseWheelEvent.h"
+#include "Inventor/SoFCTransform.h"
 #include "propertyeditor/PropertyItem.h"
 #include "ArcEngine.h"
 
@@ -134,6 +135,7 @@ void Gui::SoFCDB::init()
     SoAxisCrossKit                  ::initClass();
     SoRegPoint                      ::initClass();
     SoDrawingGrid                   ::initClass();
+    SoFCTransform                   ::initClass();
     SoAutoZoomTranslation           ::initClass();
     MarkerBitmaps                   ::initClass();
     SoFCCSysDragger                 ::initClass();
