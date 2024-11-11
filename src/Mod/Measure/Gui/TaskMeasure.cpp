@@ -430,23 +430,16 @@ void TaskMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
 
     // If the control modifier is pressed, the object is just added to the current measurement
     // If the control modifier is not pressed, a new measurement will be started. If autosave is on,
-    // The old measurement will be saved otherwise discharded
-    if (!(QGuiApplication::keyboardModifiers() & Qt::ControlModifier)) {
-        if (mAutoSave && this->buttonBox->button(QDialogButtonBox::Apply)->isEnabled()) {
+    // the old measurement will be saved otherwise discharded. Shift inverts the autosave behaviour temporarly
+    const auto modifier = QGuiApplication::keyboardModifiers();
+    const bool ctrl = modifier & Qt::ControlModifier;
+    const bool shift = modifier & Qt::ShiftModifier;
+    // shift inverts the current state temporarly
+    const auto autosave = (mAutoSave && !shift) || (!mAutoSave && shift);
+    if ((!ctrl && Selection().getSelectionStyle() == SelectionSingleton::SelectionStyle::NormalSelection) ||
+        ctrl && Selection().getSelectionStyle() == SelectionSingleton::SelectionStyle::GreedySelection) {
+        if (autosave && this->buttonBox->button(QDialogButtonBox::Apply)->isEnabled()) {
             apply(false);
-        }
-
-        App::Document* doc = App::GetApplication().getActiveDocument();
-        if (doc) {
-            // Select only last added object, because it is the first object of the new measurement
-            const auto& selection = Gui::Selection().getSelection();
-            if (selection.size() > 1) {
-                auto* lastSelection = selection.back().pObject;
-                blockSelection(true);
-                Gui::Selection().clearSelection(doc->getName());
-                Gui::Selection().setSelection(doc->getName(), {lastSelection});
-                blockSelection(false);
-            }
         }
     }
     update();
