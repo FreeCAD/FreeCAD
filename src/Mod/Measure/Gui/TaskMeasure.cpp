@@ -74,7 +74,8 @@ TaskMeasure::TaskMeasure()
     showDeltaLabel = new QLabel(tr("Show Delta:"));
     connect(showDelta, &QCheckBox::stateChanged, this, &TaskMeasure::showDeltaChanged);
 
-    const auto autosave_tooltip = tr("Auto saving of the last measurement when starting a new measurement. Use SHIFT to temporarly invert the behaviour.");
+    const auto autosave_tooltip = tr("Auto saving of the last measurement when starting a new "
+                                     "measurement. Use SHIFT to temporarly invert the behaviour.");
     autoSaveCheckBox = new QCheckBox();
     autoSaveCheckBox->setChecked(mAutoSave);
     autoSaveCheckBox->setToolTip(autosave_tooltip);
@@ -430,14 +431,18 @@ void TaskMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
 
     // If the control modifier is pressed, the object is just added to the current measurement
     // If the control modifier is not pressed, a new measurement will be started. If autosave is on,
-    // the old measurement will be saved otherwise discharded. Shift inverts the autosave behaviour temporarly
+    // the old measurement will be saved otherwise discharded. Shift inverts the autosave behaviour
+    // temporarly
     const auto modifier = QGuiApplication::keyboardModifiers();
     const bool ctrl = modifier & Qt::ControlModifier;
     const bool shift = modifier & Qt::ShiftModifier;
     // shift inverts the current state temporarly
     const auto autosave = (mAutoSave && !shift) || (!mAutoSave && shift);
-    if ((!ctrl && Selection().getSelectionStyle() == SelectionSingleton::SelectionStyle::NormalSelection) ||
-        ctrl && Selection().getSelectionStyle() == SelectionSingleton::SelectionStyle::GreedySelection) {
+    if ((!ctrl
+         && Selection().getSelectionStyle() == SelectionSingleton::SelectionStyle::NormalSelection)
+        || ctrl
+            && Selection().getSelectionStyle()
+                == SelectionSingleton::SelectionStyle::GreedySelection) {
         if (autosave && this->buttonBox->button(QDialogButtonBox::Apply)->isEnabled()) {
             apply(false);
         }
