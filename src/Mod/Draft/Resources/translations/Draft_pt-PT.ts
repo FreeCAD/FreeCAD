@@ -3075,7 +3075,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="536"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="226"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="232"/>
       <source>Angle</source>
       <translation>Ângulo</translation>
     </message>
@@ -3296,14 +3296,14 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="../../DraftGui.py" line="784"/>
       <location filename="../../DraftGui.py" line="802"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="221"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="227"/>
       <source>Distance</source>
       <translation>Distância</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="785"/>
       <location filename="../../DraftGui.py" line="803"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="223"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="229"/>
       <source>Offset distance</source>
       <translation type="unfinished">Offset distance</translation>
     </message>
@@ -4142,33 +4142,38 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">Only a single face can be extruded.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="182"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="158"/>
+      <source>Trimex is not supported yet on this type of object.</source>
+      <translation type="unfinished">Trimex is not supported yet on this type of object.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="188"/>
       <location filename="../../draftguitools/gui_offset.py" line="143"/>
       <source>Pick distance</source>
       <translation type="unfinished">Pick distance</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="228"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="234"/>
       <source>Offset angle</source>
       <translation type="unfinished">Offset angle</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="488"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="500"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
       <translation type="unfinished">Unable to trim these objects, only Draft wires and arcs are supported.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="493"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="505"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation type="unfinished">Unable to trim these objects, too many wires</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="510"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="522"/>
       <source>These objects don't intersect.</source>
       <translation type="unfinished">These objects don't intersect.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="513"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="525"/>
       <source>Too many intersection points.</source>
       <translation type="unfinished">Too many intersection points.</translation>
     </message>
@@ -4874,39 +4879,39 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">added 'Fuse' property</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="466"/>
+      <location filename="../../draftobjects/patharray.py" line="472"/>
       <source>Start Offset too large for path length. Using zero instead.</source>
       <translation type="unfinished">Start Offset too large for path length. Using zero instead.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="472"/>
+      <location filename="../../draftobjects/patharray.py" line="484"/>
       <source>End Offset too large for path length minus Start Offset. Using zero instead.</source>
       <translation type="unfinished">End Offset too large for path length minus Start Offset. Using zero instead.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="537"/>
+      <location filename="../../draftobjects/patharray.py" line="549"/>
       <source>Length of tangent vector is zero. Copy not aligned.</source>
       <translation>O comprimento do vetor tangente é zero. Copia não alinhada.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="551"/>
-      <location filename="../../draftobjects/patharray.py" line="573"/>
+      <location filename="../../draftobjects/patharray.py" line="563"/>
+      <location filename="../../draftobjects/patharray.py" line="585"/>
       <source>Length of normal vector is zero. Using a default axis instead.</source>
       <translation>Comprimento do vetor normal é zero. Usando um eixo predefinido em substituição.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="557"/>
-      <location filename="../../draftobjects/patharray.py" line="579"/>
+      <location filename="../../draftobjects/patharray.py" line="569"/>
+      <location filename="../../draftobjects/patharray.py" line="591"/>
       <source>Tangent and normal vectors are parallel. Normal replaced by a default axis.</source>
       <translation>Os vetores Tangentes e normais são paralelos. Normal substituído por um eixo predefinido.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="569"/>
+      <location filename="../../draftobjects/patharray.py" line="581"/>
       <source>Cannot calculate normal vector. Using the default normal instead.</source>
       <translation>Não é possível calcular o vetor normal. Usando o normal predefinido em substituição.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="585"/>
+      <location filename="../../draftobjects/patharray.py" line="597"/>
       <source>AlignMode {} is not implemented</source>
       <translation type="unfinished">AlignMode {} is not implemented</translation>
     </message>
@@ -5247,24 +5252,24 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">Wrong input: must be a number between 0 and 100.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="490"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="495"/>
       <source>Activate this layer</source>
       <translation type="unfinished">Activate this layer</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="496"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="501"/>
       <source>Select layer contents</source>
       <translation type="unfinished">Select layer contents</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="534"/>
-      <location filename="../../draftviewproviders/view_layer.py" line="548"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="539"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="553"/>
       <source>Merge layer duplicates</source>
       <translation type="unfinished">Merge layer duplicates</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="540"/>
-      <location filename="../../draftviewproviders/view_layer.py" line="593"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="545"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="598"/>
       <source>Add new layer</source>
       <translation type="unfinished">Add new layer</translation>
     </message>
@@ -5388,53 +5393,53 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">Found object with several coplanar faces: refine them</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="488"/>
+      <location filename="../../draftfunctions/upgrade.py" line="489"/>
       <source>Found 1 non-parametric objects: draftifying it</source>
       <translation type="unfinished">Found 1 non-parametric objects: draftifying it</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="499"/>
+      <location filename="../../draftfunctions/upgrade.py" line="500"/>
       <source>Found 1 closed sketch object: creating a face from it</source>
       <translation type="unfinished">Found 1 closed sketch object: creating a face from it</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="504"/>
+      <location filename="../../draftfunctions/upgrade.py" line="505"/>
       <source>Found closed wires: creating faces</source>
       <translation type="unfinished">Found closed wires: creating faces</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="509"/>
+      <location filename="../../draftfunctions/upgrade.py" line="510"/>
       <source>Found several wires or edges: wiring them</source>
       <translation type="unfinished">Found several wires or edges: wiring them</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="511"/>
-      <location filename="../../draftfunctions/upgrade.py" line="546"/>
+      <location filename="../../draftfunctions/upgrade.py" line="512"/>
+      <location filename="../../draftfunctions/upgrade.py" line="540"/>
       <source>Found several non-treatable objects: creating compound</source>
       <translation type="unfinished">Found several non-treatable objects: creating compound</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="516"/>
+      <location filename="../../draftfunctions/upgrade.py" line="517"/>
       <source>trying: closing it</source>
       <translation type="unfinished">trying: closing it</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="518"/>
+      <location filename="../../draftfunctions/upgrade.py" line="519"/>
       <source>Found 1 open wire: closing it</source>
       <translation type="unfinished">Found 1 open wire: closing it</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="536"/>
+      <location filename="../../draftfunctions/upgrade.py" line="530"/>
       <source>Found 1 object: draftifying it</source>
       <translation type="unfinished">Found 1 object: draftifying it</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="541"/>
+      <location filename="../../draftfunctions/upgrade.py" line="535"/>
       <source>Found points: creating compound</source>
       <translation type="unfinished">Found points: creating compound</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="549"/>
+      <location filename="../../draftfunctions/upgrade.py" line="543"/>
       <source>Unable to upgrade these objects.</source>
       <translation type="unfinished">Unable to upgrade these objects.</translation>
     </message>
@@ -5931,12 +5936,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>importOCA</name>
     <message>
-      <location filename="../../importOCA.py" line="414"/>
+      <location filename="../../importOCA.py" line="413"/>
       <source>OCA: found no data to export</source>
       <translation type="unfinished">OCA: found no data to export</translation>
     </message>
     <message>
-      <location filename="../../importOCA.py" line="459"/>
+      <location filename="../../importOCA.py" line="458"/>
       <source>successfully exported</source>
       <translation type="unfinished">successfully exported</translation>
     </message>
@@ -5944,7 +5949,7 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>ImportAirfoilDAT</name>
     <message>
-      <location filename="../../importAirfoilDAT.py" line="164"/>
+      <location filename="../../importAirfoilDAT.py" line="163"/>
       <source>Did not find enough coordinates</source>
       <translation type="unfinished">Did not find enough coordinates</translation>
     </message>

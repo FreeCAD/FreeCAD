@@ -257,7 +257,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManager.ui" line="14"/>
       <source>Addon Manager</source>
-      <translation>拡張機能の管理</translation>
+      <translation>アドオン・マネージャー</translation>
     </message>
     <message>
       <location filename="../../developer_mode_tags.ui" line="14"/>
@@ -276,48 +276,23 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     </message>
     <message>
       <location filename="../../first_run.ui" line="17"/>
-      <source>Welcome to the Addon Manager</source>
-      <translation>拡張機能の管理へようこそ</translation>
+      <source>Add-on Manager: Warning!</source>
+      <translation type="unfinished">Add-on Manager: Warning!</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="23"/>
-      <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
-      <translation>拡張機能はFreeCAD開発チームの精査を受けていません。気をつけてインストールしてください。</translation>
+      <location filename="../../first_run.ui" line="62"/>
+      <source>The Add-on Manager provides access to an extensive library of useful third-party FreeCAD extensions. No guarantees can be made regarding their safety or functionality.</source>
+      <translation type="unfinished">The Add-on Manager provides access to an extensive library of useful third-party FreeCAD extensions. No guarantees can be made regarding their safety or functionality.</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="39"/>
-      <source>Download Settings</source>
-      <translation>ダウンロード設定</translation>
+      <location filename="../../first_run.ui" line="96"/>
+      <source>Continue</source>
+      <translation>続行</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="46"/>
-      <source>Automatically check installed Addons for updates</source>
-      <translation>インストールした拡張機能の更新を自動的に確認</translation>
-    </message>
-    <message>
-      <location filename="../../first_run.ui" line="53"/>
-      <source>Download Macro metadata (approximately 10MB)</source>
-      <translation>マクロのメタデータ（約10MB）をダウンロード</translation>
-    </message>
-    <message>
-      <location filename="../../first_run.ui" line="63"/>
-      <source>No proxy</source>
-      <translation>プロキシを使用しない</translation>
-    </message>
-    <message>
-      <location filename="../../first_run.ui" line="68"/>
-      <source>System proxy</source>
-      <translation>システムのプロキシ</translation>
-    </message>
-    <message>
-      <location filename="../../first_run.ui" line="73"/>
-      <source>User-defined proxy:</source>
-      <translation>ユーザー定義プロキシ:</translation>
-    </message>
-    <message>
-      <location filename="../../first_run.ui" line="86"/>
-      <source>These and other settings are available in the FreeCAD Preferences window.</source>
-      <translation>これらは「設定」で設定できます。</translation>
+      <location filename="../../first_run.ui" line="103"/>
+      <source>Cancel</source>
+      <translation>キャンセル</translation>
     </message>
   </context>
   <context>
@@ -1144,7 +1119,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../AddonManager.py" line="416"/>
       <source>Addon manager</source>
-      <translation>拡張機能の管理</translation>
+      <translation>アドオン・マネージャー</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="423"/>
@@ -1588,7 +1563,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="429"/>
       <source>Addon</source>
-      <translation>拡張機能</translation>
+      <translation>アドオン</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="430"/>
@@ -2510,7 +2485,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../AddonManager.py" line="187"/>
       <source>Addon Manager</source>
-      <translation>拡張機能の管理</translation>
+      <translation>アドオン・マネージャー</translation>
     </message>
   </context>
 </TS>

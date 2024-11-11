@@ -229,7 +229,7 @@
     <message>
       <location filename="../ui/ArchSchedule.ui" line="79"/>
       <source>An optional unit to express the resulting value. Ex: m^3 (you can also write m³ or m3)</source>
-      <translation>表示結果值的可選單位。例如 m^3 (你也可以寫成 m³ 或 m3)</translation>
+      <translation>表示結果值的可選單位。例如：m^3 (你也可以寫成 m³ 或 m3)</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="84"/>
@@ -360,7 +360,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="22"/>
       <source>BimServer URL:</source>
-      <translation>BimServer URL:</translation>
+      <translation>BimServer 網址：</translation>
     </message>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="36"/>
@@ -865,7 +865,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPhases.ui" line="48"/>
       <source>Add...</source>
-      <translation>Add...</translation>
+      <translation>新增...</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflightResults.ui" line="14"/>
@@ -1075,7 +1075,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="454"/>
       <source>Levels</source>
-      <translation>樓層</translation>
+      <translation>總層數</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="472"/>
@@ -1339,12 +1339,12 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="55"/>
       <source>Refresh</source>
-      <translation>重新運算</translation>
+      <translation>重新整理</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="64"/>
       <source>List of files to be committed:</source>
-      <translation>要提交的檔案列表:</translation>
+      <translation>要提交的檔案列表：</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="93"/>
@@ -1532,7 +1532,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogClasses.ui" line="14"/>
       <source>classManager</source>
-      <translation>classManager</translation>
+      <translation>分類管理員</translation>
     </message>
     <message>
       <location filename="../ui/dialogClasses.ui" line="25"/>
@@ -1956,7 +1956,7 @@ Utils -&gt; Make IFC project</translation>
       <location filename="../ui/dialogViews.ui" line="14"/>
       <location filename="../ui/dialogReorder.ui" line="14"/>
       <source>Form</source>
-      <translation>格式</translation>
+      <translation>形式</translation>
     </message>
     <message>
       <location filename="../ui/dialogReorder.ui" line="20"/>
@@ -2336,12 +2336,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="109"/>
       <source>By default, new objects will have their "Move with host" property set to False, which means they won't move when their host object is moved.</source>
-      <translation>新物件之"跟隨主體(host)移動"屬性預設是 False, 這表示當主體物件移動時他們不會跟著動.</translation>
+      <translation>新物件之"跟隨宿主移動"屬性預設是 False，這表示當宿主物件移動時他們不會跟著動。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="112"/>
       <source>Set "Move with host" property to True by default</source>
-      <translation>設定"跟隨主體移動"屬性預設值為 True</translation>
+      <translation>設定"跟隨宿主移動"屬性預設值為 True</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="128"/>
@@ -2766,7 +2766,7 @@ if you start getting crashes when you set multiple cores.</source>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="188"/>
       <source>One compound per floor</source>
-      <translation>每一層一個組件</translation>
+      <translation>每層樓一個組件</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="193"/>
@@ -2936,7 +2936,7 @@ are placed in a 'Group' instead.
     <message>
       <location filename="../ui/preferences-dae.ui" line="34"/>
       <source>Scaling factor</source>
-      <translation>縮放因數</translation>
+      <translation>縮放係數</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="41"/>
@@ -2988,7 +2988,7 @@ If using Netgen, make sure that it is available.</source>
     <message>
       <location filename="../ui/preferences-dae.ui" line="147"/>
       <source>Netgen mesher options</source>
-      <translation>Netgen 網格產生器參數</translation>
+      <translation>Netgen 網格產生器選項</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="155"/>
@@ -3000,9 +3000,9 @@ If using Netgen, make sure that it is available.</source>
       <source>Grading value to use for meshing using Netgen.
 This value describes how fast the mesh size decreases.
 The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</source>
-      <translation>使用 Netgen 作網格之分級值.
-此值描述網格尺寸減小的速度.
-局部網格尺寸的梯度 h(x) 是以 |Δh(x)| ≤ 1/值 為界.</translation>
+      <translation>使用 Netgen 作網格之分級值。
+此值描述網格尺寸減小的速度。
+局部網格尺寸的梯度 h(x) 是以 |Δh(x)| ≤ 1/值 為界。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="187"/>
@@ -3359,7 +3359,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchStructure.py" line="257"/>
       <source>Please select at least an axis object</source>
-      <translation>Please select at least an axis object</translation>
+      <translation>請至少選擇一個軸物件</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="302"/>
@@ -3390,7 +3390,7 @@ unit to work with when opening the file.</source>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="456"/>
-      <location filename="../../ArchCommands.py" line="1361"/>
+      <location filename="../../ArchCommands.py" line="1364"/>
       <location filename="../../bimcommands/BimProfile.py" line="74"/>
       <source>Category</source>
       <translation>類別</translation>
@@ -3406,7 +3406,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchStructure.py" line="472"/>
       <location filename="../../ArchPrecast.py" line="1412"/>
-      <location filename="../../ArchCommands.py" line="1036"/>
+      <location filename="../../ArchCommands.py" line="1039"/>
       <location filename="../../bimcommands/BimWall.py" line="295"/>
       <location filename="../../bimcommands/BimPanel.py" line="148"/>
       <source>Length</source>
@@ -3464,7 +3464,7 @@ unit to work with when opening the file.</source>
       <location filename="../../ArchStructure.py" line="873"/>
       <location filename="../../ArchPanel.py" line="205"/>
       <source>Facemaker returned an error</source>
-      <translation>Facemaker returned an error</translation>
+      <translation>Facemaker 回傳錯誤</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1188"/>
@@ -3531,13 +3531,13 @@ unit to work with when opening the file.</source>
       <location filename="../../ArchStructure.py" line="1255"/>
       <location filename="../../ArchStructure.py" line="1287"/>
       <source>Choose another Structure object:</source>
-      <translation>Choose another Structure object:</translation>
+      <translation>選擇另一個結構物件：</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1260"/>
       <location filename="../../ArchStructure.py" line="1292"/>
       <source>The chosen object is not a Structure</source>
-      <translation>The chosen object is not a Structure</translation>
+      <translation>所選物件不是結構</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1263"/>
@@ -3581,14 +3581,14 @@ unit to work with when opening the file.</source>
       <translation>無法計算形狀</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="221"/>
+      <location filename="../../Arch.py" line="225"/>
       <source>Equipment</source>
       <translation>設備</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimEquipment.py" line="56"/>
       <source>You must select a base shape object and optionally a mesh object</source>
-      <translation>您必須選擇一個基本形狀物件和一個網格物件（可選）</translation>
+      <translation>您必須選擇一個基本形狀物件和可選擇性地選擇一個網格物件</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimEquipment.py" line="76"/>
@@ -3674,17 +3674,17 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../bimcommands/BimProfile.py" line="60"/>
       <source>Create profile</source>
-      <translation>Create profile</translation>
+      <translation>建立輪廓</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProfile.py" line="70"/>
       <source>Profile settings</source>
-      <translation>Profile settings</translation>
+      <translation>輪廓設定</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProfile.py" line="116"/>
       <source>Create Profile</source>
-      <translation>Create Profile</translation>
+      <translation>建立輪廓</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="467"/>
@@ -3692,7 +3692,7 @@ unit to work with when opening the file.</source>
       <translation>輪廓</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="716"/>
+      <location filename="../../Arch.py" line="720"/>
       <source>Site</source>
       <translation>基地</translation>
     </message>
@@ -3722,7 +3722,7 @@ unit to work with when opening the file.</source>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="945"/>
-      <location filename="../../Arch.py" line="639"/>
+      <location filename="../../Arch.py" line="643"/>
       <source>Roof</source>
       <translation>屋頂</translation>
     </message>
@@ -3825,7 +3825,7 @@ IdRel：用於自動計算的相對輪廓的 ID。
     <message>
       <location filename="../../bimcommands/BimCutPlane.py" line="125"/>
       <source>Cut Plane options</source>
-      <translation>Cut Plane options</translation>
+      <translation>剖切面選項</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimCutPlane.py" line="126"/>
@@ -3835,7 +3835,7 @@ IdRel：用於自動計算的相對輪廓的 ID。
     <message>
       <location filename="../../bimcommands/BimCutPlane.py" line="127"/>
       <source>Behind</source>
-      <translation>Behind</translation>
+      <translation>背後</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimCutPlane.py" line="127"/>
@@ -3843,24 +3843,24 @@ IdRel：用於自動計算的相對輪廓的 ID。
       <translation>前視圖</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="600"/>
+      <location filename="../../Arch.py" line="604"/>
       <source>External Reference</source>
       <translation>外部參考</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="85"/>
       <source>TransientReference property to ReferenceMode</source>
-      <translation>TransientReference property to ReferenceMode</translation>
+      <translation>參考模式的瞬態參考屬性</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="85"/>
       <source>Upgrading</source>
-      <translation>Upgrading</translation>
+      <translation>升級中</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="160"/>
       <source>Part not found in file</source>
-      <translation>Part not found in file</translation>
+      <translation>檔案中未找到零件</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="181"/>
@@ -3873,7 +3873,7 @@ IdRel：用於自動計算的相對輪廓的 ID。
     <message>
       <location filename="../../ArchReference.py" line="281"/>
       <source>Error removing splitter</source>
-      <translation>Error removing splitter</translation>
+      <translation>移除分離器時發生錯誤</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="660"/>
@@ -3888,13 +3888,13 @@ IdRel：用於自動計算的相對輪廓的 ID。
     <message>
       <location filename="../../ArchReference.py" line="715"/>
       <source>Unable to get lightWeight node for object referenced in</source>
-      <translation>Unable to get lightWeight node for object referenced in</translation>
+      <translation>無法取得引用的物件的 lightWeight 節點</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="723"/>
       <location filename="../../ArchReference.py" line="727"/>
       <source>Invalid lightWeight node for object referenced in</source>
-      <translation>Invalid lightWeight node for object referenced in</translation>
+      <translation>引用的物件的 lightWeight 節點無效</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="736"/>
@@ -3902,7 +3902,7 @@ IdRel：用於自動計算的相對輪廓的 ID。
       <location filename="../../ArchReference.py" line="768"/>
       <location filename="../../ArchReference.py" line="772"/>
       <source>Invalid root node in</source>
-      <translation>Invalid root node in</translation>
+      <translation>無效的根節點</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="862"/>
@@ -3922,7 +3922,7 @@ IdRel：用於自動計算的相對輪廓的 ID。
     <message>
       <location filename="../../ArchReference.py" line="875"/>
       <source>Part to use:</source>
-      <translation>Part to use:</translation>
+      <translation>使用零件：</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="880"/>
@@ -3933,17 +3933,17 @@ IdRel：用於自動計算的相對輪廓的 ID。
       <location filename="../../ArchReference.py" line="891"/>
       <location filename="../../ArchReference.py" line="955"/>
       <source>None (Use whole object)</source>
-      <translation>None (Use whole object)</translation>
+      <translation>無（使用整個物件）</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="942"/>
       <source>Reference files</source>
-      <translation>Reference files</translation>
+      <translation>參考檔案</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="944"/>
       <source>Choose reference file</source>
-      <translation>Choose reference file</translation>
+      <translation>選擇參考檔案</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimReference.py" line="54"/>
@@ -3951,7 +3951,7 @@ IdRel：用於自動計算的相對輪廓的 ID。
       <translation>建立外部參考</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="265"/>
+      <location filename="../../Arch.py" line="269"/>
       <source>Frame</source>
       <translation>框架</translation>
     </message>
@@ -3968,22 +3968,22 @@ IdRel：用於自動計算的相對輪廓的 ID。
     <message>
       <location filename="../../importers/importSHP.py" line="66"/>
       <source>Shapes elevation</source>
-      <translation>Shapes elevation</translation>
+      <translation>形狀立面圖</translation>
     </message>
     <message>
       <location filename="../../importers/importSHP.py" line="67"/>
       <source>Choose which field provides shapes elevations:</source>
-      <translation>Choose which field provides shapes elevations:</translation>
+      <translation>選擇提供形狀高程的欄位：</translation>
     </message>
     <message>
       <location filename="../../importers/importSHP.py" line="108"/>
       <source>No shape found in this file</source>
-      <translation>No shape found in this file</translation>
+      <translation>在此檔中找不到形狀</translation>
     </message>
     <message>
       <location filename="../../importers/importSHP.py" line="133"/>
       <source>Shapefile module not found</source>
-      <translation>Shapefile module not found</translation>
+      <translation>找不到 shapefile 模組</translation>
     </message>
     <message>
       <location filename="../../importers/importSHP.py" line="134"/>
@@ -3998,17 +3998,17 @@ IdRel：用於自動計算的相對輪廓的 ID。
     <message>
       <location filename="../../importers/importSHP.py" line="150"/>
       <source>Could not download shapefile module. Aborting.</source>
-      <translation>Could not download shapefile module. Aborting.</translation>
+      <translation>無法下載 shapefile 模組，中斷。</translation>
     </message>
     <message>
       <location filename="../../importers/importSHP.py" line="153"/>
       <source>Shapefile module not downloaded. Aborting.</source>
-      <translation>Shapefile module not downloaded. Aborting.</translation>
+      <translation>Shapefile 模組未下載，中斷。</translation>
     </message>
     <message>
       <location filename="../../importers/importSHP.py" line="156"/>
       <source>Shapefile module not found. Aborting.</source>
-      <translation>Shapefile module not found. Aborting.</translation>
+      <translation>找不到 shapefile 模組，中斷。</translation>
     </message>
     <message>
       <location filename="../../importers/importSHP.py" line="157"/>
@@ -4016,7 +4016,7 @@ IdRel：用於自動計算的相對輪廓的 ID。
       <translation>Shapefile 函式庫可以自以下網址下載並安裝在您的巨集目錄：</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1103"/>
+      <location filename="../../Arch.py" line="1107"/>
       <source>Window</source>
       <translation>窗</translation>
     </message>
@@ -4025,12 +4025,12 @@ IdRel：用於自動計算的相對輪廓的 ID。
       <location filename="../../bimcommands/BimWindow.py" line="119"/>
       <location filename="../../bimcommands/BimWindow.py" line="167"/>
       <source>Create Window</source>
-      <translation>Create Window</translation>
+      <translation>建立窗戶</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWindow.py" line="134"/>
       <source>Choose a face on an existing object or select a preset</source>
-      <translation>Choose a face on an existing object or select a preset</translation>
+      <translation>選擇現有物件上的面或選擇預設</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWindow.py" line="191"/>
@@ -4040,39 +4040,39 @@ IdRel：用於自動計算的相對輪廓的 ID。
     <message>
       <location filename="../../bimcommands/BimWindow.py" line="201"/>
       <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
-      <translation>No Width and/or Height constraint in window sketch. Window not resized.</translation>
+      <translation>窗戶草圖中沒有寬度和/或高度拘束。窗戶未調整大小。</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWindow.py" line="204"/>
       <source>No window found. Cannot continue.</source>
-      <translation>No window found. Cannot continue.</translation>
+      <translation>找不到窗戶，無法繼續。</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWindow.py" line="266"/>
       <source>Window options</source>
-      <translation>Window options</translation>
+      <translation>窗戶選項</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWindow.py" line="270"/>
       <source>Auto include in host object</source>
-      <translation>Auto include in host object</translation>
+      <translation>自動包含在宿主物件</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWindow.py" line="276"/>
       <source>Sill height</source>
-      <translation>Sill height</translation>
+      <translation>窗臺高度</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="896"/>
       <source>This window has no defined opening</source>
-      <translation>This window has no defined opening</translation>
+      <translation>此窗戶有沒定義的開口</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1173"/>
       <location filename="../../ArchWindow.py" line="1222"/>
       <location filename="../../ArchWindow.py" line="1383"/>
       <source>Get selected edge</source>
-      <translation>Get selected edge</translation>
+      <translation>取得選定的邊</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1322"/>
@@ -4082,12 +4082,12 @@ IdRel：用於自動計算的相對輪廓的 ID。
     <message>
       <location filename="../../ArchWindow.py" line="1360"/>
       <source>Window elements</source>
-      <translation>Window elements</translation>
+      <translation>窗戶元件</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1361"/>
       <source>Hole wire</source>
-      <translation>Hole wire</translation>
+      <translation>孔線</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1362"/>
@@ -4097,7 +4097,7 @@ IdRel：用於自動計算的相對輪廓的 ID。
     <message>
       <location filename="../../ArchWindow.py" line="1363"/>
       <source>Pick selected</source>
-      <translation>挑選</translation>
+      <translation>挑選選定的</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1364"/>
@@ -4105,7 +4105,7 @@ IdRel：用於自動計算的相對輪廓的 ID。
       <location filename="../../ArchAxis.py" line="752"/>
       <location filename="../../ArchComponent.py" line="1949"/>
       <location filename="../../ArchSectionPlane.py" line="1324"/>
-      <location filename="../../ArchSpace.py" line="738"/>
+      <location filename="../../ArchSpace.py" line="739"/>
       <source>Remove</source>
       <translation>移除</translation>
     </message>
@@ -4114,12 +4114,12 @@ IdRel：用於自動計算的相對輪廓的 ID。
       <location filename="../../ArchAxisSystem.py" line="324"/>
       <location filename="../../ArchAxis.py" line="753"/>
       <location filename="../../ArchComponent.py" line="1950"/>
-      <location filename="../../ArchSpace.py" line="732"/>
+      <location filename="../../ArchSpace.py" line="733"/>
       <source>Add</source>
       <translation>新增</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="856"/>
+      <location filename="../../ArchSite.py" line="858"/>
       <location filename="../../ArchReference.py" line="652"/>
       <location filename="../../ArchWindow.py" line="1366"/>
       <location filename="../../ArchIFCView.py" line="56"/>
@@ -4148,7 +4148,7 @@ IdRel：用於自動計算的相對輪廓的 ID。
       <location filename="../../ArchWindow.py" line="1369"/>
       <location filename="../../ArchWindow.py" line="1374"/>
       <source>Wires</source>
-      <translation>Wires</translation>
+      <translation>線</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1370"/>
@@ -4171,7 +4171,7 @@ IdRel：用於自動計算的相對輪廓的 ID。
     <message>
       <location filename="../../ArchWindow.py" line="1373"/>
       <location filename="../../ArchComponent.py" line="2012"/>
-      <location filename="../../ArchCommands.py" line="1363"/>
+      <location filename="../../ArchCommands.py" line="1366"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="461"/>
       <source>Type</source>
       <translation>類型</translation>
@@ -4193,18 +4193,18 @@ IdRel：用於自動計算的相對輪廓的 ID。
     <message>
       <location filename="../../ArchWindow.py" line="1377"/>
       <source>Hinge</source>
-      <translation>Hinge</translation>
+      <translation>轉軸</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1378"/>
       <source>Opening mode</source>
-      <translation>Opening mode</translation>
+      <translation>開啟模式</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1379"/>
       <location filename="../../ArchWindow.py" line="1381"/>
       <source>+ default</source>
-      <translation>+ default</translation>
+      <translation>+ 預設</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1380"/>
@@ -4214,29 +4214,29 @@ IdRel：用於自動計算的相對輪廓的 ID。
     <message>
       <location filename="../../ArchWindow.py" line="1382"/>
       <source>If this is checked, the default Offset value of this window will be added to the value entered here</source>
-      <translation>If this is checked, the default Offset value of this window will be added to the value entered here</translation>
+      <translation>如果選取此選項，則該視窗的預設偏移值將新增至此處輸入的值</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1384"/>
       <source>Press to retrieve the selected edge</source>
-      <translation>Press to retrieve the selected edge</translation>
+      <translation>按此鍵擷取選定的邊緣</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="826"/>
       <location filename="../../ArchWindow.py" line="1385"/>
       <source>Invert opening direction</source>
-      <translation>Invert opening direction</translation>
+      <translation>反轉開啟方向</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="835"/>
       <location filename="../../ArchWindow.py" line="1386"/>
       <source>Invert hinge position</source>
-      <translation>Invert hinge position</translation>
+      <translation>反轉轉軸位置</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="95"/>
       <source>Axis System</source>
-      <translation>Axis System</translation>
+      <translation>軸系統</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimAxis.py" line="79"/>
@@ -4246,7 +4246,7 @@ IdRel：用於自動計算的相對輪廓的 ID。
     <message>
       <location filename="../../bimcommands/BimAxis.py" line="83"/>
       <source>Create Axis System</source>
-      <translation>Create Axis System</translation>
+      <translation>建立軸系統</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimAxis.py" line="88"/>
@@ -4272,10 +4272,10 @@ IdRel：用於自動計算的相對輪廓的 ID。
       <location filename="../../importers/importOBJ.py" line="258"/>
       <location filename="../../importers/importOBJ.py" line="282"/>
       <source>Successfully written</source>
-      <translation>Successfully written</translation>
+      <translation>成功寫入</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="919"/>
+      <location filename="../../Arch.py" line="923"/>
       <source>Truss</source>
       <translation>桁架</translation>
     </message>
@@ -4316,17 +4316,17 @@ IdRel：用於自動計算的相對輪廓的 ID。
       <translation>錯誤：您的 IfcOpenShell 版本太舊</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="531"/>
+      <location filename="../../Arch.py" line="535"/>
       <source>Project</source>
       <translation>專案</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="774"/>
+      <location filename="../../Arch.py" line="778"/>
       <source>Stairs</source>
       <translation>樓梯</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="877"/>
+      <location filename="../../Arch.py" line="881"/>
       <source>Railing</source>
       <translation>扶手</translation>
     </message>
@@ -4363,12 +4363,12 @@ IdRel：用於自動計算的相對輪廓的 ID。
     <message>
       <location filename="../../ArchMaterial.py" line="743"/>
       <location filename="../../ArchMaterial.py" line="762"/>
-      <location filename="../../Arch.py" line="302"/>
+      <location filename="../../Arch.py" line="306"/>
       <source>Material</source>
       <translation>材質</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="322"/>
+      <location filename="../../Arch.py" line="326"/>
       <source>MultiMaterial</source>
       <translation>多重材質</translation>
     </message>
@@ -4406,7 +4406,7 @@ IdRel：用於自動計算的相對輪廓的 ID。
     <message>
       <location filename="../../importers/importDAE.py" line="311"/>
       <source>file %s successfully created.</source>
-      <translation>file %s successfully created.</translation>
+      <translation>檔案 %s 已成功建立。</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimAxis.py" line="109"/>
@@ -4435,7 +4435,7 @@ IdRel：用於自動計算的相對輪廓的 ID。
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="385"/>
-      <location filename="../../Arch.py" line="284"/>
+      <location filename="../../Arch.py" line="288"/>
       <source>Grid</source>
       <translation>格線</translation>
     </message>
@@ -4517,7 +4517,7 @@ IdRel：用於自動計算的相對輪廓的 ID。
     <message>
       <location filename="../../ArchPrecast.py" line="1010"/>
       <source>Dent height</source>
-      <translation>Dent height</translation>
+      <translation>凸面高度</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1011"/>
@@ -4532,37 +4532,37 @@ IdRel：用於自動計算的相對輪廓的 ID。
     <message>
       <location filename="../../ArchPrecast.py" line="1013"/>
       <source>Major diameter of holes</source>
-      <translation>Major diameter of holes</translation>
+      <translation>孔的大徑</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1014"/>
       <source>Minor diameter of holes</source>
-      <translation>Minor diameter of holes</translation>
+      <translation>孔的小徑</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1015"/>
       <source>Spacing between holes</source>
-      <translation>Spacing between holes</translation>
+      <translation>孔間距</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1016"/>
       <source>Number of grooves</source>
-      <translation>Number of grooves</translation>
+      <translation>溝槽數目</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1017"/>
       <source>Depth of grooves</source>
-      <translation>Depth of grooves</translation>
+      <translation>溝槽深度</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1018"/>
       <source>Height of grooves</source>
-      <translation>Height of grooves</translation>
+      <translation>溝槽高度</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1019"/>
       <source>Spacing between grooves</source>
-      <translation>Spacing between grooves</translation>
+      <translation>溝槽之間的間距</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1020"/>
@@ -4572,7 +4572,7 @@ IdRel：用於自動計算的相對輪廓的 ID。
     <message>
       <location filename="../../ArchPrecast.py" line="1021"/>
       <source>Length of down floor</source>
-      <translation>Length of down floor</translation>
+      <translation>下樓板長度</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1022"/>
@@ -4582,32 +4582,32 @@ IdRel：用於自動計算的相對輪廓的 ID。
     <message>
       <location filename="../../ArchPrecast.py" line="1023"/>
       <source>Depth of treads</source>
-      <translation>Depth of treads</translation>
+      <translation>踏步深度</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1408"/>
       <source>Precast options</source>
-      <translation>Precast options</translation>
+      <translation>預製選項</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1409"/>
       <source>Dents list</source>
-      <translation>Dents list</translation>
+      <translation>凸面清單</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1410"/>
       <source>Add dent</source>
-      <translation>Add dent</translation>
+      <translation>加上凸面</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1411"/>
       <source>Remove dent</source>
-      <translation>Remove dent</translation>
+      <translation>移除凸面</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1415"/>
       <source>Slant</source>
-      <translation>Slant</translation>
+      <translation>傾斜</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1416"/>
@@ -4621,17 +4621,17 @@ IdRel：用於自動計算的相對輪廓的 ID。
       <translation>旋轉</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="372"/>
+      <location filename="../../Arch.py" line="376"/>
       <source>Panel</source>
       <translation>面板</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="395"/>
+      <location filename="../../Arch.py" line="399"/>
       <source>View of</source>
       <translation>View of</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="411"/>
+      <location filename="../../Arch.py" line="415"/>
       <source>PanelSheet</source>
       <translation>面板表格</translation>
     </message>
@@ -4682,7 +4682,7 @@ IdRel：用於自動計算的相對輪廓的 ID。
       <translation>此物件沒有面</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="200"/>
+      <location filename="../../Arch.py" line="204"/>
       <source>Curtain Wall</source>
       <translation>帷幕牆</translation>
     </message>
@@ -4693,12 +4693,12 @@ IdRel：用於自動計算的相對輪廓的 ID。
       <translation>建立帷幕牆</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="429"/>
+      <location filename="../../Arch.py" line="433"/>
       <source>Pipe</source>
       <translation>管</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="462"/>
+      <location filename="../../Arch.py" line="466"/>
       <source>Connector</source>
       <translation>連接器</translation>
     </message>
@@ -4802,7 +4802,7 @@ IdRel：用於自動計算的相對輪廓的 ID。
     <message>
       <location filename="../../ArchSchedule.py" line="341"/>
       <source>Unable to retrieve value from object</source>
-      <translation>Unable to retrieve value from object</translation>
+      <translation>無法從物件中檢索值</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="441"/>
@@ -4817,27 +4817,27 @@ IdRel：用於自動計算的相對輪廓的 ID。
     <message>
       <location filename="../../ArchSchedule.py" line="569"/>
       <source>Import CSV file</source>
-      <translation>Import CSV file</translation>
+      <translation>匯入 CSV 檔</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="602"/>
       <source>Export CSV file</source>
-      <translation>Export CSV file</translation>
+      <translation>匯出 CSV 檔</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1124"/>
+      <location filename="../../ArchCommands.py" line="1127"/>
       <source>Export CSV File</source>
-      <translation>Export CSV File</translation>
+      <translation>匯出 CSV 檔</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="623"/>
       <source>Unable to recognize that file type</source>
-      <translation>Unable to recognize that file type</translation>
+      <translation>無法辨識該檔案類型</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="645"/>
       <location filename="../../ArchSchedule.py" line="663"/>
-      <location filename="../../ArchCommands.py" line="1035"/>
+      <location filename="../../ArchCommands.py" line="1038"/>
       <source>Description</source>
       <translation>說明</translation>
     </message>
@@ -4845,7 +4845,7 @@ IdRel：用於自動計算的相對輪廓的 ID。
       <location filename="../../ArchSchedule.py" line="645"/>
       <location filename="../../ArchSchedule.py" line="663"/>
       <location filename="../../ArchComponent.py" line="2013"/>
-      <location filename="../../ArchCommands.py" line="1364"/>
+      <location filename="../../ArchCommands.py" line="1367"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="462"/>
       <source>Value</source>
       <translation>值</translation>
@@ -4853,14 +4853,14 @@ IdRel：用於自動計算的相對輪廓的 ID。
     <message>
       <location filename="../../ArchSchedule.py" line="645"/>
       <location filename="../../ArchSchedule.py" line="663"/>
-      <location filename="../../ArchCommands.py" line="1365"/>
+      <location filename="../../ArchCommands.py" line="1368"/>
       <source>Unit</source>
       <translation>單位</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="724"/>
       <source>Schedule</source>
-      <translation>Schedule</translation>
+      <translation>排程</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="155"/>
@@ -4884,24 +4884,24 @@ You can change that in the preferences.</source>
       <source>There is no valid object in the selection.
 
 Floor creation aborted.</source>
-      <translation>There is no valid object in the selection.
+      <translation>選擇中沒有有效物件。
 
-Floor creation aborted.</translation>
+樓板建立已中止。</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="166"/>
       <source>Create Floor</source>
-      <translation>Create Floor</translation>
+      <translation>建立樓板</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimAxis.py" line="48"/>
       <source>Create Axis</source>
-      <translation>Create Axis</translation>
+      <translation>建立軸</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="754"/>
       <source>Distances (mm) and angles (deg) between axes</source>
-      <translation>軸之間的距離 (毫米) 和角度 (度)</translation>
+      <translation>軸之間的距離 (mm) 和角度 (度)</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="755"/>
@@ -4926,12 +4926,12 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../importers/importOBJ.py" line="84"/>
       <source>Found a shape containing curves, triangulating</source>
-      <translation>Found a shape containing curves, triangulating</translation>
+      <translation>找出一個包含曲線的形狀，進行三角測量</translation>
     </message>
     <message>
       <location filename="../../importers/importOBJ.py" line="364"/>
       <source>Successfully imported</source>
-      <translation>Successfully imported</translation>
+      <translation>成功匯入</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="930"/>
@@ -4960,7 +4960,7 @@ Floor creation aborted.</translation>
       <translation>有一空形狀</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="864"/>
+      <location filename="../../ArchSite.py" line="866"/>
       <location filename="../../ArchComponent.py" line="1514"/>
       <source>Toggle subcomponents</source>
       <translation>切換子組件</translation>
@@ -5014,7 +5014,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="1960"/>
       <source>Hosts</source>
-      <translation>主體</translation>
+      <translation>宿主</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1961"/>
@@ -5060,7 +5060,7 @@ Floor creation aborted.</translation>
       <translation>新增屬性集</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="551"/>
+      <location filename="../../Arch.py" line="555"/>
       <source>Rebar</source>
       <translation>鋼筋</translation>
     </message>
@@ -5076,7 +5076,7 @@ Floor creation aborted.</translation>
       <translation>請於結構物件上選取一個基礎面</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="686"/>
+      <location filename="../../Arch.py" line="690"/>
       <source>Section</source>
       <translation>剖面</translation>
     </message>
@@ -5172,7 +5172,7 @@ Floor creation aborted.</translation>
       <translation>將平面置於上面列表中物件的中心</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="138"/>
+      <location filename="../../Arch.py" line="139"/>
       <location filename="../../ArchBuilding.py" line="206"/>
       <source>Building</source>
       <translation>建築</translation>
@@ -5186,31 +5186,29 @@ Building object is not allowed to accept Site and Building objects.
 Site and Building objects will be removed from the selection.
 
 You can change that in the preferences.</source>
-      <translation>You can put anything but Site and Building objects in a Building object.
+      <translation>您可以將基地和建築物件以外的任何物件放入建築物件中。
 
-Building object is not allowed to accept Site and Building objects.
+建築物件不允許接受基地和建築物件。
 
-Site and Building objects will be removed from the selection.
+基地和建築物件將從選擇中刪除。
 
-You can change that in the preferences.</translation>
+您可以在偏好設定中更改它。</translation>
     </message>
     <message>
       <location filename="../../ArchBuilding.py" line="251"/>
       <source>There is no valid object in the selection.
 
 Building creation aborted.</source>
-      <translation>There is no valid object in the selection.
-
-Building creation aborted.</translation>
+      <translation>選擇中沒有有效物件，中斷建築物建立。</translation>
     </message>
     <message>
       <location filename="../../ArchBuilding.py" line="258"/>
       <location filename="../../bimcommands/BimBuildingPart.py" line="84"/>
       <source>Create Building</source>
-      <translation>Create Building</translation>
+      <translation>建立建築物</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="743"/>
+      <location filename="../../Arch.py" line="747"/>
       <source>Space</source>
       <translation>空間</translation>
     </message>
@@ -5220,22 +5218,22 @@ Building creation aborted.</translation>
       <translation>建立空間</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="721"/>
+      <location filename="../../ArchSpace.py" line="722"/>
       <source>Set text position</source>
       <translation>設定文字位置</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="725"/>
+      <location filename="../../ArchSpace.py" line="726"/>
       <source>Space boundaries</source>
       <translation>空間邊界</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="982"/>
+      <location filename="../../Arch.py" line="986"/>
       <source>Wall</source>
       <translation>牆</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="989"/>
+      <location filename="../../Arch.py" line="993"/>
       <source>Walls can only be based on Part or Mesh objects</source>
       <translation>牆壁只能基於零件或網格物件</translation>
     </message>
@@ -5306,7 +5304,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWall.py" line="243"/>
       <source>changed 'Normal' to [0, 0, 1] to preserve extrusion direction</source>
-      <translation type="unfinished">changed 'Normal' to [0, 0, 1] to preserve extrusion direction</translation>
+      <translation>將「正常」改為 [0, 0, 1] 以保留擠壓方向</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="430"/>
@@ -5331,81 +5329,81 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="717"/>
       <source>is not closed</source>
-      <translation>is not closed</translation>
+      <translation>未封閉</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="719"/>
       <source>is not valid</source>
-      <translation>is not valid</translation>
+      <translation>無效</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="721"/>
       <source>doesn't contain any solid</source>
-      <translation>doesn't contain any solid</translation>
+      <translation>不包含任何實心</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="727"/>
       <source>contains a non-closed solid</source>
-      <translation>contains a non-closed solid</translation>
+      <translation>包含非封閉實心</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="729"/>
       <source>contains faces that are not part of any solid</source>
-      <translation>contains faces that are not part of any solid</translation>
+      <translation>包含不屬於任何實心的面</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1029"/>
+      <location filename="../../ArchCommands.py" line="1032"/>
       <source>Survey</source>
       <translation>查詢</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1030"/>
+      <location filename="../../ArchCommands.py" line="1033"/>
       <source>Set description</source>
-      <translation>Set description</translation>
+      <translation>設定描述</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1031"/>
+      <location filename="../../ArchCommands.py" line="1034"/>
       <source>Clear</source>
       <translation>清除</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1032"/>
+      <location filename="../../ArchCommands.py" line="1035"/>
       <source>Copy Length</source>
       <translation>拷貝長度</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1033"/>
+      <location filename="../../ArchCommands.py" line="1036"/>
       <source>Copy Area</source>
       <translation>拷貝區域</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1034"/>
+      <location filename="../../ArchCommands.py" line="1037"/>
       <source>Export CSV</source>
-      <translation>Export CSV</translation>
+      <translation>匯出 CSV</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1037"/>
+      <location filename="../../ArchCommands.py" line="1040"/>
       <source>Area</source>
       <translation>區域</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1082"/>
+      <location filename="../../ArchCommands.py" line="1085"/>
       <source>Total</source>
-      <translation>Total</translation>
+      <translation>總計</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1162"/>
+      <location filename="../../ArchCommands.py" line="1165"/>
       <source>Object doesn't have settable IFC attributes</source>
       <translation>物件沒有可設定的 IFC 屬性</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1168"/>
+      <location filename="../../ArchCommands.py" line="1171"/>
       <source>Disabling B-rep force flag of object</source>
       <translation>停用物件的 B-rep 強制旗標</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1171"/>
       <location filename="../../ArchCommands.py" line="1174"/>
+      <location filename="../../ArchCommands.py" line="1177"/>
       <source>Enabling B-rep force flag of object</source>
       <translation>啟用物件的 B-rep 強制旗標</translation>
     </message>
@@ -5417,7 +5415,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="58"/>
       <source>Grouping</source>
-      <translation>Grouping</translation>
+      <translation>分組</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="89"/>
@@ -5427,22 +5425,22 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="93"/>
       <source>Ungrouping</source>
-      <translation>Ungrouping</translation>
+      <translation>取消群組</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="127"/>
       <source>Split Mesh</source>
-      <translation>Split Mesh</translation>
+      <translation>分割網格</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="170"/>
       <source>Mesh to Shape</source>
-      <translation>Mesh to Shape</translation>
+      <translation>網格(Mesh) 轉換為形狀(Shape)</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="260"/>
       <source>All good! No problems found</source>
-      <translation>All good! No problems found</translation>
+      <translation>一切都好！沒有發現問題</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="319"/>
@@ -5451,12 +5449,12 @@ Building creation aborted.</translation>
       <translation>建立組件</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1362"/>
+      <location filename="../../ArchCommands.py" line="1365"/>
       <source>Key</source>
       <translation>Key</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1372"/>
+      <location filename="../../ArchCommands.py" line="1375"/>
       <source>The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</source>
       <translation>此物件沒有 IfcProperties 屬性，取消建立物件試算表：</translation>
     </message>
@@ -5499,12 +5497,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="234"/>
       <source>Structural System</source>
-      <translation>Structural System</translation>
+      <translation>結構系統</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="237"/>
       <source>Create a structural system from a selected structure and axis</source>
-      <translation>Create a structural system from a selected structure and axis</translation>
+      <translation>從選定的結構和軸建立結構系統</translation>
     </message>
   </context>
   <context>
@@ -5517,7 +5515,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="275"/>
       <source>Creates a structure from scratch or from a selected object (sketch, wire, face or solid)</source>
-      <translation>Creates a structure from scratch or from a selected object (sketch, wire, face or solid)</translation>
+      <translation>從頭開始或從選取的物件（草圖、線、面或實心）建立結構</translation>
     </message>
   </context>
   <context>
@@ -5612,7 +5610,7 @@ Building creation aborted.</translation>
       <location filename="../../ArchStructure.py" line="716"/>
       <location filename="../../ArchPanel.py" line="99"/>
       <source>The facemaker type to use to build the profile of this object</source>
-      <translation>The facemaker type to use to build the profile of this object</translation>
+      <translation>用於建構該物件輪廓的facemaker類型</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="719"/>
@@ -5687,11 +5685,11 @@ Building creation aborted.</translation>
       <translation>此設備所需要的電力(瓦特)</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="140"/>
-      <location filename="../../Arch.py" line="168"/>
+      <location filename="../../Arch.py" line="142"/>
+      <location filename="../../Arch.py" line="172"/>
       <location filename="../../ArchBuilding.py" line="281"/>
       <source>The type of this building</source>
-      <translation>The type of this building</translation>
+      <translation>這個建築的類型</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="217"/>
@@ -5777,7 +5775,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="463"/>
       <source>If true, display offset will affect the origin mark too</source>
-      <translation>If true, display offset will affect the origin mark too</translation>
+      <translation>如果為真，顯示偏移也會影響原點標記</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="465"/>
@@ -5787,7 +5785,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="468"/>
       <source>The font to be used for texts</source>
-      <translation>The font to be used for texts</translation>
+      <translation>用於文字的字體</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="471"/>
@@ -5797,7 +5795,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="474"/>
       <source>The individual face colors</source>
-      <translation>The individual face colors</translation>
+      <translation>個別面顏色</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="478"/>
@@ -5887,7 +5885,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="528"/>
       <source>Automatically set size from contents</source>
-      <translation>Automatically set size from contents</translation>
+      <translation>根據內容自動設定大小</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="530"/>
@@ -5928,13 +5926,13 @@ Building creation aborted.</translation>
       <location filename="../../ArchProfile.py" line="152"/>
       <location filename="../../ArchProfile.py" line="300"/>
       <source>Thickness of the web</source>
-      <translation>Thickness of the web</translation>
+      <translation>腹板厚度</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="153"/>
       <location filename="../../ArchProfile.py" line="301"/>
       <source>Thickness of the flanges</source>
-      <translation>Thickness of the flanges</translation>
+      <translation>法蘭厚度</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="210"/>
@@ -5944,12 +5942,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchProfile.py" line="243"/>
       <source>Thickness of the webs</source>
-      <translation>Thickness of the webs</translation>
+      <translation>腹板厚度</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="244"/>
       <source>Thickness of the flange</source>
-      <translation>Thickness of the flange</translation>
+      <translation>法蘭厚度</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="273"/>
@@ -5957,169 +5955,169 @@ Building creation aborted.</translation>
       <translation>Thickness of the legs</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="521"/>
+      <location filename="../../ArchSite.py" line="523"/>
       <source>The base terrain of this site</source>
       <translation>本基地的基礎地形</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="523"/>
-      <source>The street and house number of this site, with postal box or apartment number if needed</source>
-      <translation>此場地的街道名稱與門牌號碼，如有需要，請填寫郵政信箱或公寓號碼。</translation>
-    </message>
-    <message>
       <location filename="../../ArchSite.py" line="525"/>
-      <source>The postal or zip code of this site</source>
-      <translation>The postal or zip code of this site</translation>
+      <source>The street and house number of this site, with postal box or apartment number if needed</source>
+      <translation>此基地的街道名稱與門牌號碼，如有需要，請填寫郵政信箱或公寓號碼。</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="527"/>
+      <source>The postal or zip code of this site</source>
+      <translation>本基地的郵政或郵遞區號</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="529"/>
       <source>The city of this site</source>
       <translation>此基地所在城市</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="529"/>
+      <location filename="../../ArchSite.py" line="531"/>
       <source>The region, province or county of this site</source>
-      <translation>The region, province or county of this site</translation>
+      <translation>本基地所在地區、省或縣</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="531"/>
+      <location filename="../../ArchSite.py" line="533"/>
       <source>The country of this site</source>
       <translation>此基地所在國家</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="533"/>
       <location filename="../../ArchSite.py" line="535"/>
-      <source>The latitude of this site</source>
-      <translation>The latitude of this site</translation>
-    </message>
-    <message>
       <location filename="../../ArchSite.py" line="537"/>
-      <source>Angle between the true North and the North direction in this document</source>
-      <translation>Angle between the true North and the North direction in this document</translation>
+      <source>The latitude of this site</source>
+      <translation>本基地的緯度</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="542"/>
+      <location filename="../../ArchSite.py" line="539"/>
+      <source>Angle between the true North and the North direction in this document</source>
+      <translation>本文件中正北方與朝北方向之間的夾角</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="544"/>
       <source>The elevation of level 0 of this site</source>
       <translation>此基地的樓層 0 的標高。</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="544"/>
+      <location filename="../../ArchSite.py" line="546"/>
       <source>A URL that shows this site in a mapping website</source>
-      <translation>A URL that shows this site in a mapping website</translation>
+      <translation>在地圖網站中顯示此網站的網址</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="546"/>
+      <location filename="../../ArchSite.py" line="548"/>
       <location filename="../../ArchComponent.py" line="201"/>
       <source>Other shapes that are appended to this object</source>
       <translation>附加到此物件的其他形狀</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="548"/>
+      <location filename="../../ArchSite.py" line="550"/>
       <location filename="../../ArchComponent.py" line="203"/>
       <source>Other shapes that are subtracted from this object</source>
       <translation>從此物件中減去的其他形狀</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="550"/>
+      <location filename="../../ArchSite.py" line="552"/>
       <location filename="../../ArchComponent.py" line="226"/>
       <source>The area of the projection of this object onto the XY plane</source>
       <translation>這個物件在 XY 平面上的投影面積</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="552"/>
+      <location filename="../../ArchSite.py" line="554"/>
       <source>The perimeter length of the projected area</source>
       <translation>投影區域的周長</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="554"/>
-      <source>The volume of earth to be added to this terrain</source>
-      <translation>The volume of earth to be added to this terrain</translation>
-    </message>
-    <message>
       <location filename="../../ArchSite.py" line="556"/>
-      <source>The volume of earth to be removed from this terrain</source>
-      <translation>The volume of earth to be removed from this terrain</translation>
+      <source>The volume of earth to be added to this terrain</source>
+      <translation>要加到該地形的土方體積</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="558"/>
+      <source>The volume of earth to be removed from this terrain</source>
+      <translation>從此地形移除的土方體積</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="560"/>
       <source>An extrusion vector to use when performing boolean operations</source>
       <translation>執行布林運算時使用的擠壓向量</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="561"/>
-      <source>Remove splitters from the resulting shape</source>
-      <translation>Remove splitters from the resulting shape</translation>
-    </message>
-    <message>
       <location filename="../../ArchSite.py" line="563"/>
-      <source>An optional offset between the model (0,0,0) origin and the point indicated by the geocoordinates</source>
-      <translation>An optional offset between the model (0,0,0) origin and the point indicated by the geocoordinates</translation>
+      <source>Remove splitters from the resulting shape</source>
+      <translation>從生成的形狀中移除分離器</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="567"/>
+      <location filename="../../ArchSite.py" line="565"/>
+      <source>An optional offset between the model (0,0,0) origin and the point indicated by the geocoordinates</source>
+      <translation>模型 (0,0,0) 原點和地理座標指示的點之間的可選偏移量</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="569"/>
       <location filename="../../ArchIFC.py" line="70"/>
       <source>The type of this object</source>
       <translation>此物件的類型</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="571"/>
-      <source>The time zone where this site is located</source>
-      <translation>The time zone where this site is located</translation>
-    </message>
-    <message>
       <location filename="../../ArchSite.py" line="573"/>
-      <source>An optional EPW File for the location of this site. Refer to the Site documentation to know how to obtain one</source>
-      <translation>An optional EPW File for the location of this site. Refer to the Site documentation to know how to obtain one</translation>
+      <source>The time zone where this site is located</source>
+      <translation>該基地所在的時區</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="777"/>
-      <source>Show wind rose diagram or not. Uses solar diagram scale. Needs Ladybug module</source>
-      <translation>Show wind rose diagram or not. Uses solar diagram scale. Needs Ladybug module</translation>
+      <location filename="../../ArchSite.py" line="575"/>
+      <source>An optional EPW File for the location of this site. Refer to the Site documentation to know how to obtain one</source>
+      <translation>此網站位置的可選 EPW 檔案。請參閱網站文件以了解如何取得</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="779"/>
-      <source>Show solar diagram or not</source>
-      <translation>Show solar diagram or not</translation>
+      <source>Show wind rose diagram or not. Uses solar diagram scale. Needs Ladybug module</source>
+      <translation>是否顯示風玫瑰圖。使用太陽圖比例。需要瓢蟲模組</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="781"/>
-      <source>The scale of the solar diagram</source>
-      <translation>The scale of the solar diagram</translation>
+      <source>Show solar diagram or not</source>
+      <translation>是否顯示太陽軌跡圖</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="784"/>
-      <source>The position of the solar diagram</source>
-      <translation>The position of the solar diagram</translation>
+      <location filename="../../ArchSite.py" line="783"/>
+      <source>The scale of the solar diagram</source>
+      <translation>太陽軌跡圖的比例尺</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="786"/>
+      <source>The position of the solar diagram</source>
+      <translation>太陽軌跡圖的位置</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="788"/>
       <source>The color of the solar diagram</source>
-      <translation>The color of the solar diagram</translation>
+      <translation>太陽軌跡圖的顏色</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="790"/>
+      <location filename="../../ArchSite.py" line="792"/>
       <source>When set to 'True North' the whole geometry will be rotated to match the true north of this site</source>
-      <translation>When set to 'True North' the whole geometry will be rotated to match the true north of this site</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="794"/>
-      <source>Show compass or not</source>
-      <translation>Show compass or not</translation>
+      <translation>當設定為“真北”時，整個幾何圖形將旋轉以匹配該基地的真北</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="796"/>
-      <source>The rotation of the Compass relative to the Site</source>
-      <translation>The rotation of the Compass relative to the Site</translation>
+      <source>Show compass or not</source>
+      <translation>是否顯示指南針</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="798"/>
-      <source>The position of the Compass relative to the Site placement</source>
-      <translation>The position of the Compass relative to the Site placement</translation>
+      <source>The rotation of the Compass relative to the Site</source>
+      <translation>指南針相對於此基地的旋轉</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="800"/>
+      <source>The position of the Compass relative to the Site placement</source>
+      <translation>指南針相對於基地放置的位置</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="802"/>
       <source>Update the Declination value based on the compass rotation</source>
-      <translation>根據羅盤旋轉更新磁偏角值</translation>
+      <translation>根據指南針旋轉更新磁偏角值</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="162"/>
@@ -6139,7 +6137,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchRoof.py" line="177"/>
       <source>The list of thicknesses of the roof segments</source>
-      <translation>The list of thicknesses of the roof segments</translation>
+      <translation>屋頂分段的厚度列表</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="182"/>
@@ -6199,12 +6197,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchReference.py" line="525"/>
       <source>The latest time stamp of the linked file</source>
-      <translation>The latest time stamp of the linked file</translation>
+      <translation>連結檔案的最新時間戳記</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="529"/>
       <source>If true, the colors from the linked file will be kept updated</source>
-      <translation>If true, the colors from the linked file will be kept updated</translation>
+      <translation>如果為真，則連結檔案中的顏色將保持更新</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="65"/>
@@ -6249,7 +6247,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWindow.py" line="126"/>
       <source>The objects that host this window</source>
-      <translation>The objects that host this window</translation>
+      <translation>承載該窗戶的物件</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="128"/>
@@ -6264,22 +6262,22 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWindow.py" line="133"/>
       <source>An optional object that defines a volume to be subtracted from hosts of this window</source>
-      <translation>An optional object that defines a volume to be subtracted from hosts of this window</translation>
+      <translation>一個可選物件其定義要從此視窗宿主中減去的體積</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="135"/>
       <source>The width of this window</source>
-      <translation>The width of this window</translation>
+      <translation>此窗戶的寬度</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="137"/>
       <source>The height of this window</source>
-      <translation>The height of this window</translation>
+      <translation>此窗戶的高度</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="139"/>
       <source>The normal direction of this window</source>
-      <translation>The normal direction of this window</translation>
+      <translation>此窗戶之法線方向</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="141"/>
@@ -6294,7 +6292,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWindow.py" line="146"/>
       <source>The offset size of this window</source>
-      <translation>The offset size of this window</translation>
+      <translation>此窗戶的偏移尺寸</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="148"/>
@@ -6304,7 +6302,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWindow.py" line="150"/>
       <source>The width of louvre elements</source>
-      <translation>The width of louvre elements</translation>
+      <translation>百葉窗元件的寬度</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="152"/>
@@ -6314,7 +6312,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWindow.py" line="154"/>
       <source>Opens the subcomponents that have a hinge defined</source>
-      <translation>開啟已定義鉸鏈的子組件</translation>
+      <translation>開啟已定義轉軸的子組件</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="156"/>
@@ -6324,17 +6322,17 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWindow.py" line="158"/>
       <source>Shows plan opening symbols if available</source>
-      <translation>Shows plan opening symbols if available</translation>
+      <translation>在可獲得的情況下顯示開口符號</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="160"/>
       <source>Show elevation opening symbols if available</source>
-      <translation>Show elevation opening symbols if available</translation>
+      <translation>在可獲得的情況下顯示立面圖開口符號</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1112"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
-      <translation>The number of the wire that defines the hole. A value of 0 means automatic</translation>
+      <translation>定義孔的導線數量。值為 0 表示自動</translation>
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="64"/>
@@ -6344,7 +6342,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchAxisSystem.py" line="66"/>
       <source>The placement of this axis system</source>
-      <translation>The placement of this axis system</translation>
+      <translation>此軸系統的放置</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="70"/>
@@ -6444,7 +6442,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchStairs.py" line="84"/>
       <source>The width of a Landing (Second edge and after - First edge follows Width property)</source>
-      <translation>The width of a Landing (Second edge and after - First edge follows Width property)</translation>
+      <translation>樓梯平台的寬度（第二邊及以後 - 第一邊遵循寬度屬性）</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="89"/>
@@ -6561,22 +6559,22 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchStairs.py" line="196"/>
       <source>The thickness of the lower floor slab</source>
-      <translation>下層樓地板的厚度</translation>
+      <translation>下方樓地板的厚度</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="198"/>
       <source>The thickness of the upper floor slab</source>
-      <translation>上層樓地板的厚度</translation>
+      <translation>上方樓地板的厚度</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="200"/>
       <source>The type of connection between the lower floor slab and the start of the stairs</source>
-      <translation>下層樓地板與樓梯起點之間的連接類型</translation>
+      <translation>下方樓地板與樓梯起點之間的連接類型</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="203"/>
       <source>The type of connection between the end of the stairs and the upper floor slab</source>
-      <translation>上層樓地板與樓梯終點之間的連接類型</translation>
+      <translation>上方樓地板與樓梯終點之間的連接類型</translation>
     </message>
     <message>
       <location filename="../../ArchFence.py" line="62"/>
@@ -6669,46 +6667,46 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchPrecast.py" line="64"/>
       <source>The length of this element</source>
-      <translation>The length of this element</translation>
+      <translation>此元件的長度</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="66"/>
       <source>The width of this element</source>
-      <translation>The width of this element</translation>
+      <translation>此元件的寬度</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="68"/>
       <source>The height of this element</source>
-      <translation>The height of this element</translation>
+      <translation>此元件的高度</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="98"/>
       <location filename="../../ArchPrecast.py" line="286"/>
       <location filename="../../ArchPrecast.py" line="427"/>
       <source>The size of the chamfer of this element</source>
-      <translation>The size of the chamfer of this element</translation>
+      <translation>此元件的倒角尺寸</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="100"/>
       <source>The dent length of this element</source>
-      <translation>The dent length of this element</translation>
+      <translation>此元件的凹槽長度</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="102"/>
       <location filename="../../ArchPrecast.py" line="431"/>
       <source>The dent height of this element</source>
-      <translation>The dent height of this element</translation>
+      <translation>此元件之凹槽高度</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="104"/>
       <location filename="../../ArchPrecast.py" line="296"/>
       <source>The dents of this element</source>
-      <translation>The dents of this element</translation>
+      <translation>此元件之凸面</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="220"/>
       <source>The chamfer length of this element</source>
-      <translation>The chamfer length of this element</translation>
+      <translation>此元件的倒角長度</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="222"/>
@@ -6718,27 +6716,27 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchPrecast.py" line="288"/>
       <source>The groove depth of this element</source>
-      <translation>The groove depth of this element</translation>
+      <translation>該元件的溝槽深度</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="290"/>
       <source>The groove height of this element</source>
-      <translation>The groove height of this element</translation>
+      <translation>該元件的溝槽高度</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="292"/>
       <source>The spacing between the grooves of this element</source>
-      <translation>The spacing between the grooves of this element</translation>
+      <translation>此元件溝槽間的距離</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="294"/>
       <source>The number of grooves of this element</source>
-      <translation>The number of grooves of this element</translation>
+      <translation>此元件溝槽的數目</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="429"/>
       <source>The dent width of this element</source>
-      <translation>The dent width of this element</translation>
+      <translation>此元件之凸面寬度</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="538"/>
@@ -6753,7 +6751,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchPrecast.py" line="543"/>
       <source>The number of holes in this element</source>
-      <translation>The number of holes in this element</translation>
+      <translation>此元件的孔洞數目</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="545"/>
@@ -6768,12 +6766,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchPrecast.py" line="549"/>
       <source>The spacing between the holes of this element</source>
-      <translation>The spacing between the holes of this element</translation>
+      <translation>此元件孔洞間的距離</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="649"/>
       <source>The length of the down floor of this element</source>
-      <translation>The length of the down floor of this element</translation>
+      <translation>此元件下層樓板的長度</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="651"/>
@@ -6788,17 +6786,17 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchPrecast.py" line="655"/>
       <source>The tread depth of this element</source>
-      <translation>The tread depth of this element</translation>
+      <translation>此元件之踏步深度</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="77"/>
       <source>The thickness or extrusion depth of this element</source>
-      <translation>該元件的厚度或擠壓深度</translation>
+      <translation>此元件的厚度或擠壓深度</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="79"/>
       <source>The number of sheets to use</source>
-      <translation>The number of sheets to use</translation>
+      <translation>要使用的工作表數</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="82"/>
@@ -6808,32 +6806,32 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchPanel.py" line="84"/>
       <source>The length of waves for corrugated elements</source>
-      <translation>The length of waves for corrugated elements</translation>
+      <translation>波紋元件的波浪長度</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="86"/>
       <source>The height of waves for corrugated elements</source>
-      <translation>The height of waves for corrugated elements</translation>
+      <translation>波紋元件的波浪高度</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="88"/>
       <source>The horizontal offset of waves for corrugated elements</source>
-      <translation>The horizontal offset of waves for corrugated elements</translation>
+      <translation>波紋元件波浪的水平偏移</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="90"/>
       <source>The direction of waves for corrugated elements</source>
-      <translation>The direction of waves for corrugated elements</translation>
+      <translation>波紋元件的波浪方向</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="92"/>
       <source>The type of waves for corrugated elements</source>
-      <translation>The type of waves for corrugated elements</translation>
+      <translation>波紋元件的波浪類型</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="95"/>
       <source>If the wave also affects the bottom side or not</source>
-      <translation>If the wave also affects the bottom side or not</translation>
+      <translation>波浪是否也影響底部</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="97"/>
@@ -6843,7 +6841,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchPanel.py" line="504"/>
       <source>The linked object</source>
-      <translation>The linked object</translation>
+      <translation>該連結物件</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="509"/>
@@ -6883,12 +6881,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchPanel.py" line="521"/>
       <source>The allowed angles this object can be rotated to when placed on sheets</source>
-      <translation>The allowed angles this object can be rotated to when placed on sheets</translation>
+      <translation>放置在紙張上時該物件可以旋轉到的允許角度</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="524"/>
       <source>An offset value to move the cut plane from the center point</source>
-      <translation>An offset value to move the cut plane from the center point</translation>
+      <translation>用於將剖切平面從中心點移動的偏移值</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="697"/>
@@ -6905,7 +6903,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchPanel.py" line="785"/>
       <source>The linked Panel cuts</source>
-      <translation>The linked Panel cuts</translation>
+      <translation>連結的面板切割</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="787"/>
@@ -6915,32 +6913,32 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchPanel.py" line="799"/>
       <source>The width of the sheet</source>
-      <translation>The width of the sheet</translation>
+      <translation>板材寬度</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="802"/>
       <source>The height of the sheet</source>
-      <translation>The height of the sheet</translation>
+      <translation>板材高度</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="805"/>
       <source>The fill ratio of this sheet</source>
-      <translation>The fill ratio of this sheet</translation>
+      <translation>該板材的填充率</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="810"/>
       <source>Specifies an angle for the wood grain (Clockwise, 0 is North)</source>
-      <translation>Specifies an angle for the wood grain (Clockwise, 0 is North)</translation>
+      <translation>指定木紋的角度（順時針方向，0 為北）</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="812"/>
       <source>Specifies the scale applied to each panel view.</source>
-      <translation>Specifies the scale applied to each panel view.</translation>
+      <translation>指定應用於每個面板視圖的比例。</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="815"/>
       <source>A list of possible rotations for the nester</source>
-      <translation>A list of possible rotations for the nester</translation>
+      <translation>築巢者可能的輪換列表</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="964"/>
@@ -7155,7 +7153,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSchedule.py" line="114"/>
       <source>If True, a spreadsheet containing the results is recreated when needed</source>
-      <translation>If True, a spreadsheet containing the results is recreated when needed</translation>
+      <translation>若為真，則在需要時重新建立包含結果的試算表</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="118"/>
@@ -7170,7 +7168,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSchedule.py" line="116"/>
       <source>If True, additional lines with each individual object are added to the results</source>
-      <translation>If True, additional lines with each individual object are added to the results</translation>
+      <translation>若為真，則每個單獨物件的附加行將會新增至結果中</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="214"/>
@@ -7186,7 +7184,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="72"/>
       <source>The angles of each axis</source>
-      <translation>The angles of each axis</translation>
+      <translation>每個軸的角度</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="74"/>
@@ -7196,7 +7194,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="76"/>
       <source>An optional custom bubble number</source>
-      <translation>An optional custom bubble number</translation>
+      <translation>可選的自定氣泡數</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="78"/>
@@ -7211,37 +7209,37 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="177"/>
       <source>The size of the axis bubbles</source>
-      <translation>The size of the axis bubbles</translation>
+      <translation>軸氣泡大小</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="180"/>
       <source>The numbering style</source>
-      <translation>The numbering style</translation>
+      <translation>編號樣式</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="184"/>
       <source>The type of line to draw this axis</source>
-      <translation>The type of line to draw this axis</translation>
+      <translation>繪製此軸的線類型</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="188"/>
       <source>Where to add bubbles to this axis: Start, end, both or none</source>
-      <translation>Where to add bubbles to this axis: Start, end, both or none</translation>
+      <translation>在此軸的何處添加氣泡：開始點、結束點、兩者或都不要</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="191"/>
       <source>The line width to draw this axis</source>
-      <translation>The line width to draw this axis</translation>
+      <translation>繪製此軸的線寬</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="194"/>
       <source>The color of this axis</source>
-      <translation>The color of this axis</translation>
+      <translation>此軸的顏色</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="197"/>
       <source>The number of the first axis</source>
-      <translation>The number of the first axis</translation>
+      <translation>第一軸編號</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="200"/>
@@ -7251,12 +7249,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="203"/>
       <source>The font size</source>
-      <translation>The font size</translation>
+      <translation>字體大小</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="206"/>
       <source>If true, show the labels</source>
-      <translation>如果為 true，顯示標籤</translation>
+      <translation>若為真，顯示標籤</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="208"/>
@@ -7346,7 +7344,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchRebar.py" line="84"/>
       <source>The total distance to span the rebars over. Keep 0 to automatically use the host shape size.</source>
-      <translation>跨越鋼筋的總距離。保留 0 以自動使用主體形狀大小。</translation>
+      <translation>跨越鋼筋的總距離。保留 0 以自動使用宿主形狀大小。</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="86"/>
@@ -7461,128 +7459,128 @@ Building creation aborted.</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="918"/>
-      <location filename="../../ArchSpace.py" line="454"/>
+      <location filename="../../ArchSpace.py" line="455"/>
       <source>The name of the font</source>
-      <translation>字型名稱</translation>
+      <translation>字體名稱</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="921"/>
-      <location filename="../../ArchSpace.py" line="460"/>
+      <location filename="../../ArchSpace.py" line="461"/>
       <source>The size of the text font</source>
       <translation>字體大小</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="220"/>
+      <location filename="../../ArchSpace.py" line="221"/>
       <source>The objects that make the boundaries of this space object</source>
       <translation>構成該空間物件邊界的物件</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="222"/>
+      <location filename="../../ArchSpace.py" line="223"/>
       <source>Identical to Horizontal Area</source>
       <translation>與水平面積相同</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="224"/>
+      <location filename="../../ArchSpace.py" line="225"/>
       <source>The finishing of the floor of this space</source>
       <translation>此空間地板的裝修</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="226"/>
+      <location filename="../../ArchSpace.py" line="227"/>
       <source>The finishing of the walls of this space</source>
       <translation>此空間牆面的裝修</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="228"/>
+      <location filename="../../ArchSpace.py" line="229"/>
       <source>The finishing of the ceiling of this space</source>
       <translation>此空間天花板的裝修</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="230"/>
+      <location filename="../../ArchSpace.py" line="231"/>
       <source>Objects that are included inside this space, such as furniture</source>
       <translation>包含在此空間的物件，例如家俱</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="232"/>
+      <location filename="../../ArchSpace.py" line="233"/>
       <source>The type of this space</source>
       <translation>此空間的類型</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="235"/>
+      <location filename="../../ArchSpace.py" line="236"/>
       <source>The thickness of the floor finish</source>
       <translation>地板飾面的厚度</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="237"/>
+      <location filename="../../ArchSpace.py" line="238"/>
       <source>The number of people who typically occupy this space</source>
       <translation>通常佔據此空間的人數</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="239"/>
+      <location filename="../../ArchSpace.py" line="240"/>
       <source>The electric power needed to light this space in Watts</source>
       <translation>照亮此空間所需要的電力(瓦特)</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="241"/>
+      <location filename="../../ArchSpace.py" line="242"/>
       <source>The electric power needed by the equipment of this space in Watts</source>
       <translation>此空間設備所需要的電力(瓦特)</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="243"/>
+      <location filename="../../ArchSpace.py" line="244"/>
       <source>If True, Equipment Power will be automatically filled by the equipment included in this space</source>
       <translation>如果為真，則設備功率將自動由此空間內包含的設備填充</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="245"/>
+      <location filename="../../ArchSpace.py" line="246"/>
       <source>The type of air conditioning of this space</source>
       <translation>此空間的空調類型</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="248"/>
+      <location filename="../../ArchSpace.py" line="249"/>
       <source>Specifies if this space is internal or external</source>
       <translation>指定此空間是內部的還是外部的</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="251"/>
+      <location filename="../../ArchSpace.py" line="252"/>
       <source>Defines the calculation type for the horizontal area and its perimeter length</source>
       <translation>定義水平面積及其周長的計算類型</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="451"/>
+      <location filename="../../ArchSpace.py" line="452"/>
       <source>The text to show. Use $area, $label, $tag, $longname, $description and for finishes $floor, $walls, $ceiling to insert the respective data</source>
       <translation>要顯示的文字。使用 $area、$label、$tag、$longname、$description，並且對於表面處理可使用 $floor、$walls、$ceiling 插入相應的資料</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="457"/>
+      <location filename="../../ArchSpace.py" line="458"/>
       <source>The color of the area text</source>
       <translation>區域文字的顏色</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="463"/>
+      <location filename="../../ArchSpace.py" line="464"/>
       <source>The size of the first line of text</source>
       <translation>首行文字大小</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="466"/>
+      <location filename="../../ArchSpace.py" line="467"/>
       <source>The space between the lines of text</source>
       <translation>文字列之間的間距</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="469"/>
+      <location filename="../../ArchSpace.py" line="470"/>
       <source>The position of the text. Leave (0,0,0) for automatic position</source>
       <translation>文字的位置。保持 (0,0,0) 為自動位置</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="471"/>
+      <location filename="../../ArchSpace.py" line="472"/>
       <source>The justification of the text</source>
       <translation>文字對齊</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="475"/>
+      <location filename="../../ArchSpace.py" line="476"/>
       <source>The number of decimals to use for calculated texts</source>
       <translation>用於計算文字的小數點後位數</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="478"/>
+      <location filename="../../ArchSpace.py" line="479"/>
       <source>Show the unit suffix</source>
       <translation>在字尾顯示單位</translation>
     </message>
@@ -7639,42 +7637,42 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWall.py" line="193"/>
       <source>Enable this to make the wall generate blocks</source>
-      <translation>Enable this to make the wall generate blocks</translation>
+      <translation>啟用此功能可以使牆生成磚塊</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="195"/>
       <source>The length of each block</source>
-      <translation>每個區塊的長度</translation>
+      <translation>每個磚塊的長度</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="197"/>
       <source>The height of each block</source>
-      <translation>The height of each block</translation>
+      <translation>每個磚塊的高度</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="199"/>
       <source>The horizontal offset of the first line of blocks</source>
-      <translation>The horizontal offset of the first line of blocks</translation>
+      <translation>第一行磚塊的水平偏移</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="201"/>
       <source>The horizontal offset of the second line of blocks</source>
-      <translation>The horizontal offset of the second line of blocks</translation>
+      <translation>區塊第二行的水平偏移</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="203"/>
       <source>The size of the joints between each block</source>
-      <translation>每個區塊間的接頭尺寸</translation>
+      <translation>每個磚塊間的接頭尺寸</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="205"/>
       <source>The number of entire blocks</source>
-      <translation>The number of entire blocks</translation>
+      <translation>全部磚塊的數目</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="208"/>
       <source>The number of broken blocks</source>
-      <translation>The number of broken blocks</translation>
+      <translation>破損磚塊的數目</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="211"/>
@@ -7688,7 +7686,7 @@ Building creation aborted.</translation>
       <location filename="../../ArchStructure.py" line="1509"/>
       <location filename="../../ArchStructure.py" line="1512"/>
       <source>Structure tools</source>
-      <translation>Structure tools</translation>
+      <translation>結構工具</translation>
     </message>
   </context>
   <context>
@@ -7838,7 +7836,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimProfile.py" line="46"/>
       <source>Creates a profile</source>
-      <translation>Creates a profile</translation>
+      <translation>建立設定檔</translation>
     </message>
   </context>
   <context>
@@ -7916,7 +7914,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimWindow.py" line="51"/>
       <source>Creates a window object from a selected object (wire, rectangle or sketch)</source>
-      <translation>Creates a window object from a selected object (wire, rectangle or sketch)</translation>
+      <translation>由選定之物件(線、矩形或草圖) 建立窗戶物件</translation>
     </message>
   </context>
   <context>
@@ -7924,7 +7922,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimAxis.py" line="68"/>
       <source>Axis System</source>
-      <translation>Axis System</translation>
+      <translation>軸系統</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimAxis.py" line="72"/>
@@ -8097,12 +8095,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="54"/>
       <source>Panel</source>
-      <translation>Panel</translation>
+      <translation>面板</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="58"/>
       <source>Creates a panel object from scratch or from a selected object (sketch, wire, face or solid)</source>
-      <translation>Creates a panel object from scratch or from a selected object (sketch, wire, face or solid)</translation>
+      <translation>從頭開始或從選取的物件（草圖、線、面或實心）建立面板物件</translation>
     </message>
   </context>
   <context>
@@ -8110,12 +8108,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="249"/>
       <source>Panel Cut</source>
-      <translation>Panel Cut</translation>
+      <translation>面板切割</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="253"/>
       <source>Creates 2D views of selected panels</source>
-      <translation>Creates 2D views of selected panels</translation>
+      <translation>建立選取面板的 2D 視圖</translation>
     </message>
   </context>
   <context>
@@ -8123,12 +8121,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="278"/>
       <source>Panel Sheet</source>
-      <translation>Panel Sheet</translation>
+      <translation>面板片材</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="282"/>
       <source>Creates a 2D sheet which can contain panel cuts</source>
-      <translation>Creates a 2D sheet which can contain panel cuts</translation>
+      <translation>建立可包含面板切割的 2D 圖紙</translation>
     </message>
   </context>
   <context>
@@ -8136,7 +8134,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="314"/>
       <source>Nest</source>
-      <translation>Nest</translation>
+      <translation>巢</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="318"/>
@@ -8150,7 +8148,7 @@ Building creation aborted.</translation>
       <location filename="../../bimcommands/BimPanel.py" line="485"/>
       <location filename="../../bimcommands/BimPanel.py" line="489"/>
       <source>Panel tools</source>
-      <translation>Panel tools</translation>
+      <translation>面板工具</translation>
     </message>
   </context>
   <context>
@@ -8206,12 +8204,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimSchedule.py" line="41"/>
       <source>Schedule</source>
-      <translation>Schedule</translation>
+      <translation>行程</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSchedule.py" line="44"/>
       <source>Creates a schedule to collect data from the model</source>
-      <translation>Creates a schedule to collect data from the model</translation>
+      <translation>建立行程以從模型收集資料</translation>
     </message>
   </context>
   <context>
@@ -8219,7 +8217,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchFloor.py" line="118"/>
       <source>Level</source>
-      <translation>樓層</translation>
+      <translation>高程</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="122"/>
@@ -8299,12 +8297,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="52"/>
       <source>Wall</source>
-      <translation>Wall</translation>
+      <translation>牆</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="56"/>
       <source>Creates a wall object from scratch or from a selected object (wire, face or solid)</source>
-      <translation>Creates a wall object from scratch or from a selected object (wire, face or solid)</translation>
+      <translation>從頭開始或從選取的物件（線、面或實心）建立牆物件</translation>
     </message>
   </context>
   <context>
@@ -8312,12 +8310,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="428"/>
       <source>Merge Walls</source>
-      <translation>Merge Walls</translation>
+      <translation>合併牆</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="431"/>
       <source>Merges the selected walls, if possible</source>
-      <translation>Merges the selected walls, if possible</translation>
+      <translation>如果可能，合併選定的牆</translation>
     </message>
   </context>
   <context>
@@ -8351,12 +8349,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="116"/>
       <source>Split Mesh</source>
-      <translation>Split Mesh</translation>
+      <translation>分割網格</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="119"/>
       <source>Splits selected meshes into independent components</source>
-      <translation>將選定的網格拆分為獨立組件</translation>
+      <translation>將選定的網格分割為獨立組件</translation>
     </message>
   </context>
   <context>
@@ -8364,12 +8362,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="144"/>
       <source>Mesh to Shape</source>
-      <translation>Mesh to Shape</translation>
+      <translation>網格(Mesh) 轉換為形狀(Shape)</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="147"/>
       <source>Turns selected meshes into Part Shape objects</source>
-      <translation>Turns selected meshes into Part Shape objects</translation>
+      <translation>轉換選定之網格為零件造型物件</translation>
     </message>
   </context>
   <context>
@@ -8390,12 +8388,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="230"/>
       <source>Close holes</source>
-      <translation>Close holes</translation>
+      <translation>封閉孔洞</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="233"/>
       <source>Closes holes in open shapes, turning them solids</source>
-      <translation>Closes holes in open shapes, turning them solids</translation>
+      <translation>封閉開放形狀中的孔洞，將其變成實心</translation>
     </message>
   </context>
   <context>
@@ -8403,12 +8401,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="249"/>
       <source>Check</source>
-      <translation>Check</translation>
+      <translation>檢查</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="252"/>
       <source>Checks the selected objects for problems</source>
-      <translation>Checks the selected objects for problems</translation>
+      <translation>檢查選取物件是否有問題</translation>
     </message>
   </context>
   <context>
@@ -8479,7 +8477,7 @@ Building creation aborted.</translation>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../ArchSite.py" line="876"/>
+      <location filename="../../ArchSite.py" line="878"/>
       <location filename="../../ArchIFCView.py" line="68"/>
       <location filename="../../ArchAxis.py" line="593"/>
       <source>Transform</source>
@@ -8701,23 +8699,23 @@ CTRL+/ 在自動和手動模式之間切換</translation>
       <translation>在此系統上未找到 IfcOpenShell。 IFC 支援已停用</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="80"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="79"/>
       <source>Objects structure</source>
       <translation>物件結構</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="90"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="89"/>
       <source>Attribute</source>
       <translation>屬性</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="91"/>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="102"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="90"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="101"/>
       <source>Value</source>
       <translation>值</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="101"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="100"/>
       <source>Property</source>
       <translation>屬性</translation>
     </message>
@@ -8777,13 +8775,18 @@ CTRL+/ 在自動和手動模式之間切換</translation>
       <translation>找不到檔案</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="107"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="106"/>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="202"/>
       <source>IFC Explorer</source>
       <translation>IFC 瀏覽器</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="480"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="227"/>
+      <source>IfcSite element was not found in %s. Unable to explore.</source>
+      <translation type="unfinished">IfcSite element was not found in %s. Unable to explore.</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="491"/>
       <source>Error in entity</source>
       <translation>實體中的錯誤</translation>
     </message>
@@ -8923,22 +8926,22 @@ CTRL+/ 在自動和手動模式之間切換</translation>
       <translation>新增圖層</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLeader.py" line="92"/>
+      <location filename="../../bimcommands/BimLeader.py" line="93"/>
       <source>Create Leader</source>
       <translation>建立指線</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="186"/>
       <location filename="../../bimcommands/BimLibrary.py" line="189"/>
-      <location filename="../../bimcommands/BimLibrary.py" line="979"/>
-      <location filename="../../bimcommands/BimLibrary.py" line="983"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="984"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="988"/>
       <source>Preview</source>
       <translation>預覽</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="192"/>
-      <location filename="../../bimcommands/BimLibrary.py" line="969"/>
-      <location filename="../../bimcommands/BimLibrary.py" line="972"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="974"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="977"/>
       <source>Options</source>
       <translation>選項</translation>
     </message>
@@ -8953,97 +8956,97 @@ CTRL+/ 在自動和手動模式之間切換</translation>
       <translation>無法建立連結，因為主要檔案已關閉。</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="493"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="498"/>
       <source>No structure in cache. Please refresh.</source>
       <translation>快取中沒有結構。請重新整理。</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="559"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="564"/>
       <source>It is not possible to insert this object because the document has been closed.</source>
       <translation>無法插入此物件，因為文件已關閉。</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="607"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="612"/>
       <source>Error: Unable to import SAT files - InventorLoader or CadExchanger addon must be installed</source>
-      <translation>錯誤：無法匯入 SAT 檔案 - 必須安裝 InventorLoader 或 CadExchanger 外掛程式。</translation>
+      <translation>錯誤：無法匯入 SAT 檔案 - 必須安裝 InventorLoader 或 CadExchanger 附加元件</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="635"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="640"/>
       <source>Error: Unable to download</source>
       <translation>錯誤: 無法下載</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="676"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="681"/>
       <source>Insertion point</source>
       <translation>插入點</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="689"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="694"/>
       <source>Origin</source>
       <translation>原點</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="690"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="695"/>
       <source>Top left</source>
       <translation>左上</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="691"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="696"/>
       <source>Top center</source>
       <translation>頂部中心</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="692"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="697"/>
       <source>Top right</source>
       <translation>右上</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="693"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="698"/>
       <source>Middle left</source>
       <translation>中間靠左</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="694"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="699"/>
       <source>Middle center</source>
       <translation>中間中心</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="695"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="700"/>
       <source>Middle right</source>
       <translation>中右</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="696"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="701"/>
       <source>Bottom left</source>
       <translation>左下</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="697"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="702"/>
       <source>Bottom center</source>
       <translation>底部中心</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="698"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="703"/>
       <source>Bottom right</source>
       <translation>右下</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="804"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="809"/>
       <source>Cannot open URL</source>
       <translation>無法開啟網址</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="850"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="855"/>
       <source>Could not fetch library contents</source>
       <translation>無法擷取函式庫內容</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="855"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="860"/>
       <source>No results fetched from online library</source>
       <translation>從線上庫中未獲得任何結果。</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="915"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="920"/>
       <source>Warning, this can take several minutes!</source>
       <translation>警告，這可能需要幾分鐘的時間！</translation>
     </message>

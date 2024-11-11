@@ -3075,7 +3075,7 @@ będzie widoczny tylko podczas wykonywania poleceń</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="536"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="226"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="232"/>
       <source>Angle</source>
       <translation>Kąt</translation>
     </message>
@@ -3297,14 +3297,14 @@ Opcja jest niedostępna, jeśli opcja preferencji Rysunku Roboczego "używaj ele
     <message>
       <location filename="../../DraftGui.py" line="784"/>
       <location filename="../../DraftGui.py" line="802"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="221"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="227"/>
       <source>Distance</source>
       <translation>Odległość</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="785"/>
       <location filename="../../DraftGui.py" line="803"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="223"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="229"/>
       <source>Offset distance</source>
       <translation>Odległość przesunięcia</translation>
     </message>
@@ -4145,33 +4145,38 @@ Kąt końcowy będzie równy kątowi podstawowemu plus ta wartość.</translatio
       <translation>Tylko jedna ściana może być wyciągana.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="182"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="158"/>
+      <source>Trimex is not supported yet on this type of object.</source>
+      <translation type="unfinished">Trimex is not supported yet on this type of object.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="188"/>
       <location filename="../../draftguitools/gui_offset.py" line="143"/>
       <source>Pick distance</source>
       <translation>Wybierz odległość</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="228"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="234"/>
       <source>Offset angle</source>
       <translation>Kąt odsunięcia</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="488"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="500"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
       <translation>Nie można przyciąć tych obiektów, obsługiwane są tylko linie łamane i łuki.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="493"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="505"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation>Nie można przyciąć tych obiektów,  za dużo linii</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="510"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="522"/>
       <source>These objects don't intersect.</source>
       <translation>Te obiekty nie przecinają się.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="513"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="525"/>
       <source>Too many intersection points.</source>
       <translation>Zbyt wiele punktów przecięcia.</translation>
     </message>
@@ -4877,39 +4882,39 @@ Kąt końcowy będzie równy kątowi podstawowemu plus ta wartość.</translatio
       <translation>dodano właściwość "Fuse".</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="466"/>
+      <location filename="../../draftobjects/patharray.py" line="472"/>
       <source>Start Offset too large for path length. Using zero instead.</source>
       <translation>Rozpoczęcie odsunięcia zbyt duże dla długości ścieżki. Zamiast tego użyj zera.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="472"/>
+      <location filename="../../draftobjects/patharray.py" line="484"/>
       <source>End Offset too large for path length minus Start Offset. Using zero instead.</source>
       <translation>Zakończenie odsunięcia zbyt duże dla długości ścieżki pomniejszonej o rozpoczęcie odsunięcia. Zamiast tego użyj zera.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="537"/>
+      <location filename="../../draftobjects/patharray.py" line="549"/>
       <source>Length of tangent vector is zero. Copy not aligned.</source>
       <translation>Długość stycznej wektora wynosi zero. Kopia nie będzie ustawiona.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="551"/>
-      <location filename="../../draftobjects/patharray.py" line="573"/>
+      <location filename="../../draftobjects/patharray.py" line="563"/>
+      <location filename="../../draftobjects/patharray.py" line="585"/>
       <source>Length of normal vector is zero. Using a default axis instead.</source>
       <translation>Długość wektora normalnego wynosi zero. Używanie domyślnej osi zamiast niego.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="557"/>
-      <location filename="../../draftobjects/patharray.py" line="579"/>
+      <location filename="../../draftobjects/patharray.py" line="569"/>
+      <location filename="../../draftobjects/patharray.py" line="591"/>
       <source>Tangent and normal vectors are parallel. Normal replaced by a default axis.</source>
       <translation>Styczne i normalne wektory są równoległe. Normalne zastąpione przez oś domyślną.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="569"/>
+      <location filename="../../draftobjects/patharray.py" line="581"/>
       <source>Cannot calculate normal vector. Using the default normal instead.</source>
       <translation>Nie można obliczyć wektora normalnego. Używanie domyślnego normalnego zamiast niego.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="585"/>
+      <location filename="../../draftobjects/patharray.py" line="597"/>
       <source>AlignMode {} is not implemented</source>
       <translation>Tryb wyrównania {} nie jest zaimplementowany</translation>
     </message>
@@ -5251,24 +5256,24 @@ typ_etykiety musi być jednym z następujących:</translation>
       <translation>Błędne dane wejściowe: spodziewana liczba z zakresu od 0 do 100.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="490"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="495"/>
       <source>Activate this layer</source>
       <translation>Aktywuj wybraną warstwę</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="496"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="501"/>
       <source>Select layer contents</source>
       <translation>Wybierz zawartość warstwy</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="534"/>
-      <location filename="../../draftviewproviders/view_layer.py" line="548"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="539"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="553"/>
       <source>Merge layer duplicates</source>
       <translation>Scal zduplikowane warstwy</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="540"/>
-      <location filename="../../draftviewproviders/view_layer.py" line="593"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="545"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="598"/>
       <source>Add new layer</source>
       <translation>Dodaj nową warstwę</translation>
     </message>
@@ -5392,53 +5397,53 @@ typ_etykiety musi być jednym z następujących:</translation>
       <translation>Znaleziono obiekt z kilkoma współpłaszczyznowymi ścianami: ulepsz je</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="488"/>
+      <location filename="../../draftfunctions/upgrade.py" line="489"/>
       <source>Found 1 non-parametric objects: draftifying it</source>
       <translation>Znaleziono 1 nieparametryczny obiekt: szkicowanie go</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="499"/>
+      <location filename="../../draftfunctions/upgrade.py" line="500"/>
       <source>Found 1 closed sketch object: creating a face from it</source>
       <translation>Znaleziono 1 zamknięty obiekt rysunku: tworzenie z niego ściany</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="504"/>
+      <location filename="../../draftfunctions/upgrade.py" line="505"/>
       <source>Found closed wires: creating faces</source>
       <translation>Znaleziono zamknięte polilinie: tworzenie ścian</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="509"/>
+      <location filename="../../draftfunctions/upgrade.py" line="510"/>
       <source>Found several wires or edges: wiring them</source>
       <translation>Znaleziono kilka polilinii lub krawędzi: łączenie ich</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="511"/>
-      <location filename="../../draftfunctions/upgrade.py" line="546"/>
+      <location filename="../../draftfunctions/upgrade.py" line="512"/>
+      <location filename="../../draftfunctions/upgrade.py" line="540"/>
       <source>Found several non-treatable objects: creating compound</source>
       <translation>Znaleziono kilka nieobsługiwanych obiektów: tworzenie obiektu złożonego</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="516"/>
+      <location filename="../../draftfunctions/upgrade.py" line="517"/>
       <source>trying: closing it</source>
       <translation>próba: zamykanie</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="518"/>
+      <location filename="../../draftfunctions/upgrade.py" line="519"/>
       <source>Found 1 open wire: closing it</source>
       <translation>Znaleziono 1 otwartą polilinię: zamykanie jej</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="536"/>
+      <location filename="../../draftfunctions/upgrade.py" line="530"/>
       <source>Found 1 object: draftifying it</source>
       <translation>Znaleziono 1 obiekt: szkicowanie go</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="541"/>
+      <location filename="../../draftfunctions/upgrade.py" line="535"/>
       <source>Found points: creating compound</source>
       <translation>Znalezione punkty: tworzenie kształtu złożonego</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="549"/>
+      <location filename="../../draftfunctions/upgrade.py" line="543"/>
       <source>Unable to upgrade these objects.</source>
       <translation>Nie można ulepszyć tych obiektów.</translation>
     </message>
@@ -5933,12 +5938,12 @@ Proszę zainstalować dodatek bibliotek dxf ręcznie z narzędzi Menu -&gt; Mene
   <context>
     <name>importOCA</name>
     <message>
-      <location filename="../../importOCA.py" line="414"/>
+      <location filename="../../importOCA.py" line="413"/>
       <source>OCA: found no data to export</source>
       <translation>OCA: nie znaleziono danych do eksportu</translation>
     </message>
     <message>
-      <location filename="../../importOCA.py" line="459"/>
+      <location filename="../../importOCA.py" line="458"/>
       <source>successfully exported</source>
       <translation>wyeksportowano pomyślnie</translation>
     </message>
@@ -5946,7 +5951,7 @@ Proszę zainstalować dodatek bibliotek dxf ręcznie z narzędzi Menu -&gt; Mene
   <context>
     <name>ImportAirfoilDAT</name>
     <message>
-      <location filename="../../importAirfoilDAT.py" line="164"/>
+      <location filename="../../importAirfoilDAT.py" line="163"/>
       <source>Did not find enough coordinates</source>
       <translation>Nie znaleziono wystarczającej liczby współrzędnych</translation>
     </message>
