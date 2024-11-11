@@ -223,6 +223,9 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
             self.parameterWidget.qsb_expansion_coefficient.setReadOnly(False)
             self.parameterWidget.qsb_specific_heat.setReadOnly(False)
             self.parameterWidget.qsb_kinematic_viscosity.setReadOnly(False)
+            self.parameterWidget.wgt_material_tree.setEnabled(False)
+            self.uuid = ""
+            self.mat_from_input_fields()
         else:
             self.parameterWidget.qsb_density.setReadOnly(True)
             self.parameterWidget.qsb_young_modulus.setReadOnly(True)
@@ -231,6 +234,8 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
             self.parameterWidget.qsb_expansion_coefficient.setReadOnly(True)
             self.parameterWidget.qsb_specific_heat.setReadOnly(True)
             self.parameterWidget.qsb_kinematic_viscosity.setReadOnly(True)
+            self.parameterWidget.wgt_material_tree.setEnabled(True)
+            self.set_from_editor(self.material_tree.UUID)
 
     # material parameter input fields ************************************************************
     # mechanical input fields
@@ -246,9 +251,9 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
 
     def pr_changed(self):
         if self.parameterWidget.chbu_allow_edit.isChecked():
-            self.material["PoissonRatio"] = self.parameterWidget.qsb_poisson_ratio.property(
-                "value"
-            ).UserString
+            self.material["PoissonRatio"] = str(
+                self.parameterWidget.qsb_poisson_ratio.property("value").Value
+            )
 
     # thermal input fields
     def tc_changed(self):
@@ -324,7 +329,24 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
             self.parameterWidget.qsb_specific_heat.setProperty("rawValue", 0.0)
 
     def set_from_editor(self, value):
+        if not value:
+            return
         mat = self.material_manager.getMaterial(value)
         self.material = mat.Properties
         self.uuid = mat.UUID
         self.set_mat_params_in_input_fields(self.material)
+
+    def mat_from_input_fields(self):
+        d = {}
+        d["Name"] = "Custom"
+        p = self.parameterWidget
+        d["Density"] = p.qsb_density.property("value").UserString
+        d["ThermalConductivity"] = p.qsb_thermal_conductivity.property("value").UserString
+        d["ThermalExpansionCoefficient"] = p.qsb_expansion_coefficient.property("value").UserString
+        d["SpecificHeat"] = p.qsb_specific_heat.property("value").UserString
+        if self.obj.Category == "Solid":
+            d["YoungsModulus"] = p.qsb_young_modulus.property("value").UserString
+            d["PoissonRatio"] = str(p.qsb_poisson_ratio.property("value").Value)
+        elif self.obj.Category == "Fluid":
+            d["KinematicViscosity"] = p.qsb_kinematic_viscosity.property("value").UserString
+        self.material = d
