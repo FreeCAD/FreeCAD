@@ -678,12 +678,20 @@ void AboutDialog::copyToClipboard()
         str << "Architecture: " << QSysInfo::buildCpuArchitecture() << "(running on: " << QSysInfo::currentCpuArchitecture() << ")\n";
     }
     str << "Version: " << major << "." << minor << "." << point << suffix << "." << build;
-    char *appimage = getenv("APPIMAGE");
-    if (appimage)
+#ifdef FC_CONDA
+    str << " Conda";
+#endif
+#ifdef FC_FLATPAK
+    str << " Flatpak";
+#endif
+    char* appimage = getenv("APPIMAGE");
+    if (appimage) {
         str << " AppImage";
+    }
     char* snap = getenv("SNAP_REVISION");
-    if (snap)
+    if (snap) {
         str << " Snap " << snap;
+    }
     str << '\n';
 
 #if defined(_DEBUG) || defined(DEBUG)
