@@ -69,6 +69,8 @@
 #include "AttachExtension.h"
 #include "Tools.h"
 
+#include <Geometry.h>
+
 
 using namespace Part;
 using namespace Attacher;
@@ -136,6 +138,7 @@ const char* AttachEngine::eMapModeStrings[]= {
     "OYX",
 
     "ParallelPlane",
+    "MidPoint",
 
     nullptr};
 
@@ -1895,6 +1898,83 @@ AttachEngine3D::_calculateAttachedPlacement(const std::vector<App::DocumentObjec
             plm *= this->attachmentOffset;
             return plm;
         } break;
+        case mmMidpoint: {
+            Base::Placement placement;
+
+            auto shape = shapes.front();
+            auto geom = Geometry::fromShape(shape->getShape());
+
+            switch (shape->shapeType()) {
+                case TopAbs_VERTEX: {
+                    if (auto point = dynamic_cast<GeomPoint*>(geom.get())) {
+                        placement.setPosition(point->getPoint());
+                    }
+                }
+                break;
+
+                case TopAbs_EDGE: {
+                    if (auto conic = dynamic_cast<GeomConic*>(geom.get())) {
+                        placement.setPosition(conic->getLocation());
+                        placement.setRotation(conic->getRotation().value_or(Base::Rotation {}));
+                    } else if (auto line = dynamic_cast<GeomCurve*>(geom.get())) {
+                        auto u1 = line->getFirstParameter();
+                        auto u2 = line->getLastParameter();
+
+                        auto middle = (u1 + u2) / 2;
+
+                        placement.setPosition(line->pointAtParameter(middle));
+
+                        Base::Vector3d direction;
+                        if (!line->normalAt(middle, direction)) {
+                            line->tangent(middle, direction);
+                        }
+
+                        placement.setRotation(Base::Rotation::fromNormalVector(-direction));
+                    }
+                }
+                break;
+
+                case TopAbs_FACE: {
+                    auto surface = dynamic_cast<GeomSurface*>(geom.get());
+
+                    if (auto sphere = dynamic_cast<GeomSphere*>(geom.get())) {
+                        placement.setPosition(sphere->getLocation());
+                    } else if (auto cone = dynamic_cast<GeomCone*>(geom.get())) {
+                        placement.setPosition(cone->getApex());
+                    } else {
+                        placement.setPosition(shape->centerOfGravity().value());
+                    }
+
+                    if (auto rotation = surface->getRotation()) {
+                        placement.setRotation(*rotation);
+                    } else {
+                        auto adaptorSurface = BRepAdaptor_Surface(TopoDS::Face(shape->getShape()), true);
+
+                        auto u1 = adaptorSurface.FirstUParameter();
+                        auto u2 = adaptorSurface.LastUParameter();
+                        auto v1 = adaptorSurface.FirstVParameter();
+                        auto v2 = adaptorSurface.LastVParameter();
+
+                        // calculate the normal at midpoint of the surface and use it as Z axis
+                        gp_Dir dir;
+                        surface->normal((u1 + u2) / 2, (v1 + v2) / 2, dir);
+
+                        placement.setRotation(Base::Rotation::fromNormalVector(Base::convertTo<Base::Vector3d>(-dir)));
+                    }
+                }
+                break;
+
+                default:
+                    THROWM(Base::TypeError,
+                           "AttachEngine3D::calculateAttachedPlacement: Unsupported shape type, "
+                           "must be one of: Vertex, Edge, Face");
+                    break;
+            }
+
+            return placement * attachmentOffset;
+
+            break;
+        }
         default:
             throwWrongMode(mmode);
     }  // switch (MapMode)
