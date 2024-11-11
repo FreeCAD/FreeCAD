@@ -67,7 +67,7 @@ TaskMeasure::TaskMeasure()
     QSettings settings;
     settings.beginGroup(QLatin1String(taskMeasureSettingsGroup));
     delta = settings.value(QLatin1String(taskMeasureShowDeltaSettingsName), true).toBool();
-    mAutoSave = settings.value(QLatin1String(taskMeasureAutoSaveSettingsName), true).toBool();
+    mAutoSave = settings.value(QLatin1String(taskMeasureAutoSaveSettingsName), false).toBool();
 
     showDelta = new QCheckBox();
     showDelta->setChecked(delta);
