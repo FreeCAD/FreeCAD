@@ -44,7 +44,7 @@ def _resetArgs():
         "step_over": 0.5,
         "tool_diameter": 5.0,
         "inner_radius": 0.0,
-        "direction": "Climb",
+        "direction": "CW",
         "startAt": "Inside",
     }
 

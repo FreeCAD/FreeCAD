@@ -65,14 +65,14 @@ class PathTestBase(unittest.TestCase):
         for i in range(0, len(edges)):
             self.assertLine(edges[i], points[i], points[i + 1])
 
-    def assertArc(self, edge, pt1, pt2, direction="Climb"):
+    def assertArc(self, edge, pt1, pt2, direction="CW"):
         """Verify that edge is an arc between pt1 and pt2 with the given direction."""
         self.assertIs(type(edge.Curve), Part.Circle)
         self.assertCoincide(edge.valueAt(edge.FirstParameter), pt1)
         self.assertCoincide(edge.valueAt(edge.LastParameter), pt2)
         ptm = edge.valueAt((edge.LastParameter + edge.FirstParameter) / 2)
         side = Path.Geom.Side.of(pt2 - pt1, ptm - pt1)
-        if "Climb" == direction:
+        if "CW" == direction:
             self.assertEqual(side, Path.Geom.Side.Left)
         else:
             self.assertEqual(side, Path.Geom.Side.Right)
@@ -185,3 +185,14 @@ class PathTestBase(unittest.TestCase):
         self.assertEqual(len(pts0), len(pts1))
         for i in range(len(pts0)):
             self.assertCoincide(pts0[i], pts1[i])
+
+    def assertSuccessfulRecompute(self, doc, *objs, msg=None):
+        """Asserts that the given objects can be successfully recomputed."""
+        if len(objs) == 0:
+            doc.recompute()
+            objs = doc.Objects
+        else:
+            doc.recompute(objs)
+        failed_objects = [o.Name for o in objs if "Invalid" in o.State]
+        if len(failed_objects) > 0:
+            self.fail(msg or f"Recompute failed for {failed_objects}")
