@@ -184,6 +184,17 @@ bool ComplexGeoData::getCenterOfGravity(Base::Vector3d& unused) const
     return false;
 }
 
+std::optional<Base::Vector3d> ComplexGeoData::centerOfGravity() const
+{
+    Base::Vector3d centerOfGravity;
+
+    if (getCenterOfGravity(centerOfGravity)) {
+        return centerOfGravity;
+    }
+
+    return {};
+}
+
 const std::string& ComplexGeoData::elementMapPrefix()
 {
     static std::string prefix(ELEMENT_MAP_PREFIX);
