@@ -49,6 +49,9 @@ public:
     Rotation(const Rotation& rot) = default;
     Rotation(Rotation&& rot) = default;
     ~Rotation() = default;
+
+    /// Utility function to create Rotation based on direction / normal vector
+    static Rotation fromNormalVector(const Vector3d& normal);
     //@}
 
     /** Methods to get or set rotations. */

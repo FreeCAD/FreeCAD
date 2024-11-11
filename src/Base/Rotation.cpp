@@ -81,6 +81,12 @@ Rotation::Rotation(const Vector3d& rotateFrom, const Vector3d& rotateTo)
     this->setValue(rotateFrom, rotateTo);
 }
 
+Rotation Rotation::fromNormalVector(const Vector3d& normal)
+{
+    // We rotate Z axis to be aligned with the supplied normal vector
+    return Rotation(Vector3d(0, 0, 1), normal);
+}
+
 const double* Rotation::getValue() const
 {
     return &this->quat[0];
