@@ -389,8 +389,8 @@ QVariant SheetModel::data(const QModelIndex& index, int role) const
     else if (prop->isDerivedFrom(App::PropertyFloat::getClassTypeId())
              || prop->isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
         /* Number */
-        double d;
-        long l;
+        double d {};
+        long l {};
         bool isInteger = false;
         if (prop->isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
             d = static_cast<const App::PropertyFloat*>(prop)->getValue();

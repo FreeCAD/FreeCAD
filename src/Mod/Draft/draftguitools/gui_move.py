@@ -108,9 +108,10 @@ class Move(gui_base_original.Modifier):
             Restart (continue) the command if `True`, or if `None` and
             `ui.continueMode` is `True`.
         """
-        super().finish()
+        self.end_callbacks(self.call)
         for ghost in self.ghosts:
             ghost.finalize()
+        super().finish()
         if cont or (cont is None and self.ui and self.ui.continueMode):
             todo.ToDo.delayAfter(self.Activated, [])
 
@@ -141,9 +142,13 @@ class Move(gui_base_original.Modifier):
         self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg)
         if len(self.node) > 0:
             last = self.node[len(self.node) - 1]
-            self.vector = self.point.sub(last)
+            if self.point:
+                self.vector = self.point.sub(last)
+            else:
+                self.vector = None
             for ghost in self.ghosts:
-                ghost.move(self.vector)
+                if self.vector:
+                    ghost.move(self.vector)
                 ghost.on()
         if self.extendedCopy:
             if not gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()):

@@ -173,12 +173,6 @@ QColor QGIHighlight::getHighlightColor()
     return PreferencesGui::sectionLineQColor();
 }
 
-//obs??
-Qt::PenStyle QGIHighlight::getHighlightStyle()
-{
-    return PreferencesGui::sectionLineStyle();
-}
-
 int QGIHighlight::getHoleStyle()
 {
     return TechDraw::Preferences::mattingStyle();
@@ -197,7 +191,6 @@ void QGIHighlight::setTools()
 {
     m_pen.setWidthF(m_width);
     m_pen.setColor(m_colCurrent);
-    m_pen.setStyle(Qt::CustomDashLine);
 
     m_brush.setStyle(m_brushCurrent);
     m_brush.setColor(m_colCurrent);

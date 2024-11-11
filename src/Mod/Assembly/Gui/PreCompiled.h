@@ -21,8 +21,8 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef POINTSGUI_PRECOMPILED_H
-#define POINTSGUI_PRECOMPILED_H
+#ifndef ASSEMBLYGUI_PRECOMPILED_H
+#define ASSEMBLYGUI_PRECOMPILED_H
 
 #include <FCConfig.h>
 
@@ -30,12 +30,15 @@
 
 // STL
 #include <algorithm>
+#include <cmath>
 #include <limits>
 #include <memory>
 
 #include <vector>
 #include <sstream>
 #include <iostream>
+
+#include <boost/core/ignore_unused.hpp>
 
 // Qt
 #ifndef __QtAll__
@@ -51,4 +54,4 @@
 
 #endif  //_PreComp_
 
-#endif  // POINTSGUI_PRECOMPILED_H
+#endif  // ASSEMBLYGUI_PRECOMPILED_H

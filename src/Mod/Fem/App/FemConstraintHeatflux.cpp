@@ -31,33 +31,25 @@ using namespace Fem;
 
 PROPERTY_SOURCE(Fem::ConstraintHeatflux, Fem::Constraint)
 
-static const char* ConstraintTypes[] = {"DFlux", "Convection", nullptr};
+static const char* ConstraintTypes[] = {"DFlux", "Convection", "Radiation", nullptr};
 
 ConstraintHeatflux::ConstraintHeatflux()
 {
-    ADD_PROPERTY(AmbientTemp, (0.0));
+    ADD_PROPERTY_TYPE(AmbientTemp,
+                      (0.0),
+                      "ConstraintHeatflux",
+                      App::Prop_None,
+                      "Ambient temperature");
     /*ADD_PROPERTY(FaceTemp,(0.0));*/
-    ADD_PROPERTY(FilmCoef, (0.0));
-    ADD_PROPERTY(DFlux, (0.0));
+    ADD_PROPERTY_TYPE(FilmCoef, (0.0), "ConstraintHeatflux", App::Prop_None, "Film coefficient");
+    ADD_PROPERTY_TYPE(Emissivity, (0.0), "ConstraintHeatflux", App::Prop_None, "Emissivity");
+    ADD_PROPERTY_TYPE(DFlux, (0.0), "ConstraintHeatflux", App::Prop_None, "Distributed heat flux");
     ADD_PROPERTY_TYPE(ConstraintType,
                       (1),
                       "ConstraintHeatflux",
-                      (App::PropertyType)(App::Prop_None),
-                      "Type of constraint, surface convection or surface heat flux");
+                      App::Prop_None,
+                      "Type of constraint, surface convection, radiation or surface heat flux");
     ConstraintType.setEnums(ConstraintTypes);
-
-    ADD_PROPERTY_TYPE(Points,
-                      (Base::Vector3d()),
-                      "ConstraintHeatflux",
-                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Points where symbols are drawn");
-    ADD_PROPERTY_TYPE(Normals,
-                      (Base::Vector3d()),
-                      "ConstraintHeatflux",
-                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Normals where symbols are drawn");
-    Points.setValues(std::vector<Base::Vector3d>());
-    Normals.setValues(std::vector<Base::Vector3d>());
 }
 
 App::DocumentObjectExecReturn* ConstraintHeatflux::execute()
@@ -70,21 +62,31 @@ const char* ConstraintHeatflux::getViewProviderName() const
     return "FemGui::ViewProviderFemConstraintHeatflux";
 }
 
+void ConstraintHeatflux::handleChangedPropertyType(Base::XMLReader& reader,
+                                                   const char* typeName,
+                                                   App::Property* prop)
+{
+    if (prop == &FilmCoef && strcmp(typeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat filmCoefProperty;
+        filmCoefProperty.Restore(reader);
+        FilmCoef.setValue(filmCoefProperty.getValue());
+    }
+    else if (prop == &DFlux && strcmp(typeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat dFluxProperty;
+        dFluxProperty.Restore(reader);
+        DFlux.setValue(dFluxProperty.getValue());
+    }
+    else if (prop == &AmbientTemp && strcmp(typeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat tempProperty;
+        tempProperty.Restore(reader);
+        AmbientTemp.setValue(tempProperty.getValue());
+    }
+    else {
+        Constraint::handleChangedPropertyType(reader, typeName, prop);
+    }
+}
+
 void ConstraintHeatflux::onChanged(const App::Property* prop)
 {
-    // Note: If we call this at the end, then the arrows are not oriented correctly initially
-    // because the NormalDirection has not been calculated yet
     Constraint::onChanged(prop);
-
-    if (prop == &References) {
-        std::vector<Base::Vector3d> points;
-        std::vector<Base::Vector3d> normals;
-        int scale = 1;  // OvG: Enforce use of scale
-        if (getPoints(points, normals, &scale)) {
-            Points.setValues(points);
-            Normals.setValues(normals);
-            Scale.setValue(scale);  // OvG: Scale
-            Points.touch();         // This triggers ViewProvider::updateData()
-        }
-    }
 }

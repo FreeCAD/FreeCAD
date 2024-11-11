@@ -34,7 +34,7 @@
 \**************************************************************************/
 
 #include <Quarter/Basic.h>
-#include <QtCore/QObject>
+#include <QObject>
 
 class QEvent;
 class QPoint;

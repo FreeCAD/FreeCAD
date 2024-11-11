@@ -31,11 +31,13 @@ AppearanceModel:
     - BasicRendering:
       UUID: 'f006c7e4-35b7-43d5-bbf9-c5d572309e6e'
   FragmentShader:
+    DisplayName: "Fragment Shader"
     Type: 'String'
     Units: ''
     URL: ''
     Description: " "
   VertexShader:
+    DisplayName: "Vertex Shader"
     Type: 'String'
     Units: ''
     URL: ''

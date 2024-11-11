@@ -469,7 +469,7 @@ public:
 
     ~NotificationsAction() override
     {
-        for (auto* item : qAsConst(pushedItems)) {
+        for (auto* item : std::as_const(pushedItems)) {
             if (item) {
                 delete item; // NOLINT
             }
@@ -683,7 +683,7 @@ protected:
                 QMenu menu;
 
                 QAction* del = menu.addAction(tr("Delete"), this, [&]() {
-                    for (auto it : qAsConst(selectedItems)) {
+                    for (auto it : std::as_const(selectedItems)) {
                         delete it;
                     }
                 });
@@ -1084,7 +1084,7 @@ bool NotificationArea::confirmationRequired(Base::LogStyle level)
 
 void NotificationArea::showConfirmationDialog(const QString& notifiername, const QString& message)
 {
-    auto confirmMsg = QObject::tr("Notifier: ") + notifiername + QStringLiteral("\n\n") + message
+    auto confirmMsg = QObject::tr("Notifier:") + QStringLiteral(" ") + notifiername + QStringLiteral("\n\n") + message
         + QStringLiteral("\n\n")
         + QObject::tr("Do you want to skip confirmation of further critical message notifications "
                       "while loading the file?");

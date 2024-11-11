@@ -117,7 +117,6 @@ public:
 
 private:
     DlgExtrusion* widget;
-    Gui::TaskView::TaskBox* taskbox;
 };
 
 } // namespace PartGui

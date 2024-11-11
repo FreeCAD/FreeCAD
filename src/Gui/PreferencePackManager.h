@@ -34,7 +34,7 @@ namespace Gui {
     /**
      * \class PreferencePack A collection of user preferences stored in files on disk
      */
-    class PreferencePack {
+    class GuiExport PreferencePack {
 
     public:
 
@@ -83,7 +83,7 @@ namespace Gui {
      * preferences as a PreferencePack based on a set of template files provided either in the main
      * FreeCAD distribution, or inside various installed mods.
      */
-    class PreferencePackManager {
+    class GuiExport PreferencePackManager {
     public:
         PreferencePackManager();
         ~PreferencePackManager() = default;

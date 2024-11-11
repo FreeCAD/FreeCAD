@@ -37,7 +37,7 @@ class ConstraintMagnetization(base_fempythonobject.BaseFemPythonObject):
     Type = "Fem::ConstraintMagnetization"
 
     def __init__(self, obj):
-        super(ConstraintMagnetization, self).__init__(obj)
+        super().__init__(obj)
         self.add_properties(obj)
 
     def onDocumentRestored(self, obj):
@@ -49,96 +49,90 @@ class ConstraintMagnetization(base_fempythonobject.BaseFemPythonObject):
                 "App::PropertyMagnetization",
                 "Magnetization_re_1",
                 "Vector Potential",
-                "Real part of magnetization x-component"
+                "Real part of magnetization x-component",
             )
+            obj.setPropertyStatus("Magnetization_re_1", "LockDynamic")
             obj.Magnetization_re_1 = "0 A/m"
         if not hasattr(obj, "Magnetization_re_2"):
             obj.addProperty(
                 "App::PropertyMagnetization",
                 "Magnetization_re_2",
                 "Vector Potential",
-                "Real part of magnetization y-component"
+                "Real part of magnetization y-component",
             )
+            obj.setPropertyStatus("Magnetization_re_2", "LockDynamic")
             obj.Magnetization_re_2 = "0 A/m"
         if not hasattr(obj, "Magnetization_re_3"):
             obj.addProperty(
                 "App::PropertyMagnetization",
                 "Magnetization_re_3",
                 "Vector Potential",
-                "Real part of magnetization z-component"
+                "Real part of magnetization z-component",
             )
+            obj.setPropertyStatus("Magnetization_re_3", "LockDynamic")
             obj.Magnetization_re_3 = "0 A/m"
         if not hasattr(obj, "Magnetization_im_1"):
             obj.addProperty(
                 "App::PropertyMagnetization",
                 "Magnetization_im_1",
                 "Vector Potential",
-                "Imaginary part of magnetization x-component"
+                "Imaginary part of magnetization x-component",
             )
+            obj.setPropertyStatus("Magnetization_im_1", "LockDynamic")
             obj.Magnetization_im_1 = "0 A/m"
         if not hasattr(obj, "Magnetization_im_2"):
             obj.addProperty(
                 "App::PropertyMagnetization",
                 "Magnetization_im_2",
                 "Vector Potential",
-                "Imaginary part of magnetization y-component"
+                "Imaginary part of magnetization y-component",
             )
+            obj.setPropertyStatus("Magnetization_im_2", "LockDynamic")
             obj.Magnetization_im_2 = "0 A/m"
         if not hasattr(obj, "Magnetization_im_3"):
             obj.addProperty(
                 "App::PropertyMagnetization",
                 "Magnetization_im_3",
                 "Vector Potential",
-                "Imaginary part of magnetization z-component"
+                "Imaginary part of magnetization z-component",
             )
+            obj.setPropertyStatus("Magnetization_im_3", "LockDynamic")
             obj.Magnetization_im_3 = "0 A/m"
 
         # now the enable bools
         if not hasattr(obj, "Magnetization_re_1_Disabled"):
             obj.addProperty(
-                "App::PropertyBool",
-                "Magnetization_re_1_Disabled",
-                "Vector Potential",
-                ""
+                "App::PropertyBool", "Magnetization_re_1_Disabled", "Vector Potential", ""
             )
+            obj.setPropertyStatus("Magnetization_re_1_Disabled", "LockDynamic")
             obj.Magnetization_re_1_Disabled = True
         if not hasattr(obj, "Magnetization_re_2_Disabled"):
             obj.addProperty(
-                "App::PropertyBool",
-                "Magnetization_re_2_Disabled",
-                "Vector Potential",
-                ""
+                "App::PropertyBool", "Magnetization_re_2_Disabled", "Vector Potential", ""
             )
+            obj.setPropertyStatus("Magnetization_re_2_Disabled", "LockDynamic")
             obj.Magnetization_re_2_Disabled = True
         if not hasattr(obj, "Magnetization_re_3_Disabled"):
             obj.addProperty(
-                "App::PropertyBool",
-                "Magnetization_re_3_Disabled",
-                "Vector Potential",
-                ""
+                "App::PropertyBool", "Magnetization_re_3_Disabled", "Vector Potential", ""
             )
+            obj.setPropertyStatus("Magnetization_re_3_Disabled", "LockDynamic")
             obj.Magnetization_re_3_Disabled = True
         if not hasattr(obj, "Magnetization_im_1_Disabled"):
             obj.addProperty(
-                "App::PropertyBool",
-                "Magnetization_im_1_Disabled",
-                "Vector Potential",
-                ""
+                "App::PropertyBool", "Magnetization_im_1_Disabled", "Vector Potential", ""
             )
+            obj.setPropertyStatus("Magnetization_im_1_Disabled", "LockDynamic")
             obj.Magnetization_im_1_Disabled = True
         if not hasattr(obj, "Magnetization_im_2_Disabled"):
             obj.addProperty(
-                "App::PropertyBool",
-                "Magnetization_im_2_Disabled",
-                "Vector Potential",
-                ""
+                "App::PropertyBool", "Magnetization_im_2_Disabled", "Vector Potential", ""
             )
+            obj.setPropertyStatus("Magnetization_im_2_Disabled", "LockDynamic")
             obj.Magnetization_im_2_Disabled = True
         if not hasattr(obj, "Magnetization_im_3_Disabled"):
             obj.addProperty(
-                "App::PropertyBool",
-                "Magnetization_im_3_Disabled",
-                "Vector Potential",
-                ""
+                "App::PropertyBool", "Magnetization_im_3_Disabled", "Vector Potential", ""
             )
+            obj.setPropertyStatus("Magnetization_im_3_Disabled", "LockDynamic")
             obj.Magnetization_im_3_Disabled = True

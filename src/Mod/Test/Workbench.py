@@ -52,7 +52,11 @@ class WorkbenchTestCase(unittest.TestCase):
                 print("Activate workbench '{}'".format(i))
                 cobj = CallableCheckWarning()
                 QtCore.QTimer.singleShot(500, cobj)
-                success = FreeCADGui.activateWorkbench(i)
+                if FreeCADGui.activeWorkbench().name() != i:
+                    success = FreeCADGui.activateWorkbench(i)
+                else:
+                    # Cannot test activation of an already-active workbench
+                    success = True
                 FreeCAD.Console.PrintLog(
                     "Active: " + FreeCADGui.activeWorkbench().name() + " Expected: " + i + "\n"
                 )

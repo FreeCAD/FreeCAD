@@ -107,6 +107,7 @@ void SketcherSettings::saveSettings()
     ui->checkBoxAdvancedSolverTaskBox->onSave();
     ui->checkBoxRecalculateInitialSolutionWhileDragging->onSave();
     ui->checkBoxEnableEscape->onSave();
+    ui->checkBoxDisableShading->onSave();
     ui->checkBoxNotifyConstraintSubstitutions->onSave();
     ui->checkBoxAutoRemoveRedundants->onSave();
     ui->checkBoxUnifiedCoincident->onSave();
@@ -168,6 +169,8 @@ void SketcherSettings::saveSettings()
 
     index = ui->ovpVisibility->currentIndex();
     hGrp->SetInt("OnViewParameterVisibility", index);
+
+    checkForRestart();
 }
 
 void SketcherSettings::loadSettings()
@@ -176,10 +179,13 @@ void SketcherSettings::loadSettings()
     ui->checkBoxAdvancedSolverTaskBox->onRestore();
     ui->checkBoxRecalculateInitialSolutionWhileDragging->onRestore();
     ui->checkBoxEnableEscape->onRestore();
+    ui->checkBoxDisableShading->onRestore();
     ui->checkBoxNotifyConstraintSubstitutions->onRestore();
     ui->checkBoxAutoRemoveRedundants->onRestore();
     ui->checkBoxUnifiedCoincident->onRestore();
+    setProperty("checkBoxUnifiedCoincident", ui->checkBoxUnifiedCoincident->isChecked());
     ui->checkBoxHorVerAuto->onRestore();
+    setProperty("checkBoxHorVerAuto", ui->checkBoxHorVerAuto->isChecked());
 
     // Dimensioning constraints mode
     ui->dimensioningMode->clear();
@@ -193,6 +199,7 @@ void SketcherSettings::loadSettings()
     bool SeparatedTools = hGrp->GetBool("SeparatedDimensioningTools", false);
     int index = SeparatedTools ? (singleTool ? 2 : 1) : 0;
     ui->dimensioningMode->setCurrentIndex(index);
+    setProperty("dimensioningMode", index);
     connect(ui->dimensioningMode,
             QOverload<int>::of(&QComboBox::currentIndexChanged),
             this,
@@ -214,9 +221,9 @@ void SketcherSettings::loadSettings()
     hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools");
     ui->ovpVisibility->clear();
-    ui->ovpVisibility->addItem(tr("Disabled"));
-    ui->ovpVisibility->addItem(tr("Only dimensional"));
-    ui->ovpVisibility->addItem(tr("All"));
+    ui->ovpVisibility->addItem(tr("None"));
+    ui->ovpVisibility->addItem(tr("Dimensions only"));
+    ui->ovpVisibility->addItem(tr("Position and dimensions"));
 
     index = hGrp->GetInt("OnViewParameterVisibility", 1);
     ui->ovpVisibility->setCurrentIndex(index);
@@ -225,7 +232,20 @@ void SketcherSettings::loadSettings()
 void SketcherSettings::dimensioningModeChanged(int index)
 {
     ui->radiusDiameterMode->setEnabled(index != 1);
-    SketcherSettings::requireRestart();
+}
+
+void SketcherSettings::checkForRestart()
+{
+    if (property("dimensioningMode").toInt() != ui->dimensioningMode->currentIndex()) {
+        SketcherSettings::requireRestart();
+    }
+    if (property("checkBoxUnifiedCoincident").toBool()
+        != ui->checkBoxUnifiedCoincident->isChecked()) {
+        SketcherSettings::requireRestart();
+    }
+    if (property("checkBoxHorVerAuto").toBool() != ui->checkBoxHorVerAuto->isChecked()) {
+        SketcherSettings::requireRestart();
+    }
 }
 
 /**
@@ -239,6 +259,29 @@ void SketcherSettings::changeEvent(QEvent* e)
     else {
         QWidget::changeEvent(e);
     }
+}
+
+void SketcherSettings::resetSettingsToDefaults()
+{
+    ParameterGrp::handle hGrp;
+
+    hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
+    // reset "Dimension tools" parameters
+    hGrp->RemoveBool("SingleDimensioningTool");
+    hGrp->RemoveBool("SeparatedDimensioningTools");
+
+    // reset "radius/diameter mode for dimensioning" parameter
+    hGrp->RemoveBool("DimensioningDiameter");
+    hGrp->RemoveBool("DimensioningRadius");
+
+    hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools");
+    // reset "OVP visibility" parameter
+    hGrp->RemoveInt("OnViewParameterVisibility");
+
+    // finally reset all the parameters associated to Gui::Pref* widgets
+    PreferencePage::resetSettingsToDefaults();
 }
 
 /* TRANSLATOR SketcherGui::SketcherSettingsGrid */
@@ -505,7 +548,6 @@ void SketcherSettingsAppearance::saveSettings()
     ui->SketchEdgeColor->onSave();
     ui->SketchVertexColor->onSave();
     ui->EditedEdgeColor->onSave();
-    ui->EditedVertexColor->onSave();
     ui->ConstructionColor->onSave();
     ui->ExternalColor->onSave();
     ui->InvalidSketchColor->onSave();
@@ -514,7 +556,6 @@ void SketcherSettingsAppearance::saveSettings()
     ui->FullyConstraintElementColor->onSave();
     ui->FullyConstraintConstructionElementColor->onSave();
     ui->FullyConstraintInternalAlignmentColor->onSave();
-    ui->FullyConstraintConstructionPointColor->onSave();
 
     ui->ConstrainedColor->onSave();
     ui->NonDrivingConstraintColor->onSave();
@@ -556,7 +597,6 @@ void SketcherSettingsAppearance::loadSettings()
     ui->SketchEdgeColor->onRestore();
     ui->SketchVertexColor->onRestore();
     ui->EditedEdgeColor->onRestore();
-    ui->EditedVertexColor->onRestore();
     ui->ConstructionColor->onRestore();
     ui->ExternalColor->onRestore();
     ui->InvalidSketchColor->onRestore();
@@ -565,7 +605,6 @@ void SketcherSettingsAppearance::loadSettings()
     ui->FullyConstraintElementColor->onRestore();
     ui->FullyConstraintConstructionElementColor->onRestore();
     ui->FullyConstraintInternalAlignmentColor->onRestore();
-    ui->FullyConstraintConstructionPointColor->onRestore();
 
     ui->ConstrainedColor->onRestore();
     ui->NonDrivingConstraintColor->onRestore();

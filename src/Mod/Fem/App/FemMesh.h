@@ -47,6 +47,35 @@ class TopoDS_Solid;
 namespace Fem
 {
 
+enum class ABAQUS_VolumeVariant
+{
+    Standard,
+    Reduced,
+    Incompatible,
+    Modified,
+    Fluid
+};
+enum class ABAQUS_FaceVariant
+{
+    Shell,
+    Shell_Reduced,
+    Membrane,
+    Membrane_Reduced,
+    Stress,
+    Stress_Reduced,
+    Strain,
+    Strain_Reduced,
+    Axisymmetric,
+    Axisymmetric_Reduced
+};
+enum class ABAQUS_EdgeVariant
+{
+    Beam,
+    Beam_Reduced,
+    Truss,
+    Network
+};
+
 using SMESH_HypothesisPtr = std::shared_ptr<SMESH_Hypothesis>;
 
 /** The representation of a FemMesh
@@ -66,6 +95,9 @@ public:
     static SMESH_Gen* getGenerator();
     void addHypothesis(const TopoDS_Shape& aSubShape, SMESH_HypothesisPtr hyp);
     void setStandardHypotheses();
+    template<typename T>
+    SMESH_HypothesisPtr createHypothesis(int hypId);
+
     void compute();
 
     // from base class
@@ -172,7 +204,12 @@ public:
     /// import from files
     void read(const char* FileName);
     void write(const char* FileName) const;
-    void writeABAQUS(const std::string& Filename, int elemParam, bool groupParam) const;
+    void writeABAQUS(const std::string& Filename,
+                     int elemParam,
+                     bool groupParam,
+                     ABAQUS_VolumeVariant volVariant = ABAQUS_VolumeVariant::Standard,
+                     ABAQUS_FaceVariant faceVariant = ABAQUS_FaceVariant::Shell,
+                     ABAQUS_EdgeVariant edgeVariant = ABAQUS_EdgeVariant::Beam) const;
     void writeZ88(const std::string& FileName) const;
 
 private:
@@ -186,10 +223,25 @@ private:
     /// positioning matrix
     Base::Matrix4D _Mtrx;
     SMESH_Mesh* myMesh;
+    const int myStudyId;
 
     std::list<SMESH_HypothesisPtr> hypoth;
     static SMESH_Gen* _mesh_gen;
 };
+
+
+template<typename T>
+inline SMESH_HypothesisPtr FemMesh::createHypothesis(int hypId)
+{
+    SMESH_Gen* myGen = getGenerator();
+#if SMESH_VERSION_MAJOR >= 9
+    SMESH_HypothesisPtr hypo(new T(hypId, myGen));
+#else
+    // use own StudyContextStruct
+    SMESH_HypothesisPtr hypo(new T(hypId, myStudyId, myGen));
+#endif
+    return hypo;
+}
 
 }  // namespace Fem
 

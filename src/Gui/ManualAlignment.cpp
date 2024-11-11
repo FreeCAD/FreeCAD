@@ -201,9 +201,11 @@ void AlignmentGroup::setAlignable(bool align)
         }
         // leaving alignment mode
         else if (!align){
-            auto pColor = dynamic_cast<App::PropertyColor*>((*it)->getPropertyByName("ShapeColor"));
-            if (pColor)
-                pColor->touch(); // resets to color defined by property
+            auto pAppearance =
+                 dynamic_cast<App::PropertyMaterial*>((*it)->getPropertyByName("ShapeAppearance"));
+             if (pAppearance) {
+                 pAppearance->touch();  // resets to color defined by property
+             }
         }
     }
 }

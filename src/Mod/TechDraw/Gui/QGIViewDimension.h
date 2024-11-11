@@ -28,6 +28,7 @@
 #include <QColor>
 #include <QFont>
 #include <QGraphicsItem>
+#include <QGraphicsItemGroup>
 #include <QGraphicsObject>
 #include <QStyleOptionGraphicsItem>
 
@@ -76,6 +77,7 @@ public:
     void setPosFromCenter(const double &xCenter, const double &yCenter);
     double X() const { return posX; }
     double Y() const { return posY; }              //minus posY?
+    Base::Vector2d getPosToCenterVec();
 
     void setFont(QFont font);
     QFont getFont() const { return m_dimText->font(); }
@@ -87,6 +89,8 @@ public:
     void setPrettyPre();
     void setPrettyNormal();
     void setColor(QColor color);
+    void setSelectability(bool val);
+    void setFrameColor(QColor color);
 
     QGCustomText* getDimText() { return m_dimText; }
     void setDimText(QGCustomText* newText) { m_dimText = newText; }
@@ -97,11 +101,11 @@ public:
 
     double getTolAdjust();
 
-    bool isFramed() const { return m_isFramed; }
-    void setFramed(bool framed) { m_isFramed = framed; }
+    bool isFramed() const { return m_frame->parentItem(); }  // If empty pointer, then no frame
+    void setFramed(bool framed);
 
-    double getLineWidth() const { return m_lineWidth; }
-    void setLineWidth(double lineWidth) { m_lineWidth = lineWidth; }
+    double getLineWidth() const { return m_frame->pen().widthF(); }
+    void setLineWidth(double lineWidth);
     void setQDim(QGIViewDimension* qDim) { parent = qDim;}
 
 Q_SIGNALS:
@@ -117,8 +121,11 @@ protected:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) override;
+    void updateFrameRect();
 
     int getPrecision();
+
+    void snapPosition(QPointF& position);
 
     bool getVerticalSep() const { return verticalSep; }
     void setVerticalSep(bool sep) { verticalSep = sep; }
@@ -135,14 +142,13 @@ private:
     QGCustomText* m_tolTextOver;
     QGCustomText* m_tolTextUnder;
     QGCustomText* m_unitText;
+    QGraphicsItemGroup* m_textItems;
+    QGraphicsRectItem* m_frame;
     QColor m_colNormal;
     bool m_ctrl;
 
     double posX;
     double posY;
-
-    bool m_isFramed;
-    double m_lineWidth;
 
     int m_dragState;
 
@@ -232,7 +238,7 @@ protected:
     void draw() override;
 
     void resetArrows() const;
-    void drawArrows(int count, const Base::Vector2d positions[], double angles[], bool flipped) const;
+    void drawArrows(int count, const Base::Vector2d positions[], double angles[], bool flipped, bool forcePoint = false) const;
 
     void drawSingleLine(QPainterPath &painterPath, const Base::Vector2d &lineOrigin, double lineAngle,
                         double startPosition, double endPosition) const;
@@ -245,7 +251,7 @@ protected:
 
     void drawDimensionLine(QPainterPath &painterPath, const Base::Vector2d &targetPoint, double lineAngle,
                            double startPosition, double jointPosition, const Base::BoundBox2d &labelRectangle,
-                           int arrowCount, int standardStyle, bool flipArrows) const;
+                           int arrowCount, int standardStyle, bool flipArrows, bool forcePointStyle = false) const;
     void drawDimensionArc(QPainterPath &painterPath, const Base::Vector2d &arcCenter, double arcRadius,
                           double endAngle, double startRotation, double jointAngle,
                           const Base::BoundBox2d &labelRectangle, int arrowCount,
@@ -261,10 +267,14 @@ protected:
                              double endAngle, double startRotation, const Base::BoundBox2d &labelRectangle,
                              double centerOverhang, int standardStyle, int renderExtent, bool flipArrow) const;
 
+    void drawAreaExecutive(const Base::Vector2d &centerPoint, double area, const Base::BoundBox2d &labelRectangle,
+                             double centerOverhang, int standardStyle, int renderExtent, bool flipArrow) const;
+
     void drawDistance(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const;
     void drawRadius(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const;
     void drawDiameter(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const;
     void drawAngle(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const;
+    void drawArea(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const;
 
     QVariant itemChange( GraphicsItemChange change,
                                  const QVariant &value ) override;
@@ -307,7 +317,8 @@ private:
     QGIArrow* aHead2;
     double m_lineWidth;
 
-    QGCustomSvg* m_refFlag;
+    // needs Phase2 of autocorrect to be useful
+    // QGCustomSvg* m_refFlag;
 
 };
 

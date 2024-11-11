@@ -37,14 +37,16 @@ def get_information():
         "meshtype": "solid",
         "meshelement": "Tet10",
         "constraints": [],
-        "solvers": ["calculix", "ccxtools", "elmer"],
+        "solvers": ["ccxtools", "elmer"],
         "material": "solid",
-        "equations": ["elasticity"]  # "frequency", but list not allowed here
+        "equations": ["elasticity"],  # "frequency", but list not allowed here
     }
 
 
 def get_explanation(header=""):
-    return header + """
+    return (
+        header
+        + """
 
 To run the example from Python console use:
 from femexamples.elmer_nonguitutorial01_eigenvalue_of_elastic_beam import setup
@@ -55,6 +57,7 @@ See forum topic post:
 https://forum.freecad.org/viewtopic.php?t=56590
 
 """
+    )
 
 
 def setup(doc=None, solvertype="elmer"):
@@ -81,11 +84,9 @@ def setup(doc=None, solvertype="elmer"):
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
 
     # solver
-    if solvertype == "calculix":
-        solver_obj = ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
-    elif solvertype == "ccxtools":
-        solver_obj = ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
-        solver_obj.WorkingDir = u""
+    if solvertype == "ccxtools":
+        solver_obj = ObjectsFem.makeSolverCalculiXCcxTools(doc, "CalculiXCcxTools")
+        solver_obj.WorkingDir = ""
     elif solvertype == "elmer":
         solver_obj = ObjectsFem.makeSolverElmer(doc, "SolverElmer")
         eq_obj = ObjectsFem.makeEquationElasticity(doc, solver_obj)
@@ -97,7 +98,7 @@ def setup(doc=None, solvertype="elmer"):
             "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
-    if solvertype == "calculix" or solvertype == "ccxtools":
+    if solvertype == "ccxtools":
         solver_obj.AnalysisType = "frequency"
         solver_obj.GeometricalNonlinearity = "linear"
         solver_obj.ThermoMechSteadyState = False
@@ -120,15 +121,13 @@ def setup(doc=None, solvertype="elmer"):
 
     # constraint fixed
     con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
-    con_fixed.References = [
-        (geom_obj, "Face1"),
-        (geom_obj, "Face2")
-    ]
+    con_fixed.References = [(geom_obj, "Face1"), (geom_obj, "Face2")]
     analysis.addObject(con_fixed)
 
     # mesh
     from .meshes.mesh_eigenvalue_of_elastic_beam_tetra10 import create_nodes
     from .meshes.mesh_eigenvalue_of_elastic_beam_tetra10 import create_elements
+
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
@@ -138,7 +137,7 @@ def setup(doc=None, solvertype="elmer"):
         FreeCAD.Console.PrintError("Error on creating elements.\n")
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.FemMesh = fem_mesh
-    femmesh_obj.Part = geom_obj
+    femmesh_obj.Shape = geom_obj
     femmesh_obj.SecondOrderLinear = False
     femmesh_obj.CharacteristicLengthMax = "40.80 mm"
 

@@ -93,7 +93,7 @@ Defaults to: %V = %A
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Delimiter Character: </string>
+         <string>Delimiter Character:</string>
         </property>
        </widget>
       </item>
@@ -153,7 +153,7 @@ Defaults to: %V = %A
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Quote Character: </string>
+         <string>Quote Character:</string>
         </property>
        </widget>
       </item>
@@ -185,7 +185,7 @@ Defaults to: %V = %A
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Escape Character: </string>
+         <string>Escape Character:</string>
         </property>
        </widget>
       </item>

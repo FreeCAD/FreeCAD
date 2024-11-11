@@ -66,12 +66,13 @@ class SubelementHighlight(gui_base_original.Modifier):
         if self.is_running:
             return self.finish()
         self.is_running = True
-        super(SubelementHighlight, self).Activated(name="Subelement highlight")
+        super().Activated(name="Subelement highlight")
         self.get_selection()
 
     def proceed(self):
         """Continue with the command."""
-        self.remove_view_callback()
+        if self.call:
+            self.view.removeEventCallback("SoEvent", self.call)
         self.get_editable_objects_from_selection()
         if not self.editable_objects:
             return self.finish()
@@ -83,9 +84,9 @@ class SubelementHighlight(gui_base_original.Modifier):
 
         Re-initialize by running __init__ again at the end.
         """
-        super(SubelementHighlight, self).finish()
-        self.remove_view_callback()
+        self.end_callbacks(self.call)
         self.restore_editable_objects_graphics()
+        super().finish()
         self.__init__()
 
     def action(self, event):
@@ -110,11 +111,6 @@ class SubelementHighlight(gui_base_original.Modifier):
                                                    gui_tool_utils.selectObject)
         else:
             self.proceed()
-
-    def remove_view_callback(self):
-        """Remove the installed callback if it exists."""
-        if self.call:
-            self.view.removeEventCallback("SoEvent", self.call)
 
     def get_editable_objects_from_selection(self):
         """Get editable Draft objects for the selection."""

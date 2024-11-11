@@ -190,6 +190,8 @@ def get_point(target, args, noTracker=False):
         returned by the `Snapper` or by the `ActiveView`.
     """
     ui = Gui.draftToolBar
+    if not ui.mouse:
+        return None, None, None
 
     if target.node:
         last = target.node[-1]

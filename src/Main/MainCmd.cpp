@@ -24,16 +24,16 @@
 #include "../FCConfig.h"
 
 #ifdef _PreComp_
-# undef _PreComp_
+#undef _PreComp_
 #endif
 
 #ifdef FC_OS_LINUX
-# include <unistd.h>
+#include <unistd.h>
 #endif
 
 #if HAVE_CONFIG_H
-# include <config.h>
-#endif // HAVE_CONFIG_H
+#include <config.h>
+#endif  // HAVE_CONFIG_H
 
 #include <cstdio>
 #include <sstream>
@@ -47,23 +47,14 @@
 #include <App/Application.h>
 
 
-using Base::Console;
 using App::Application;
+using Base::Console;
 
-const char sBanner[] = "(c) Juergen Riegel, Werner Mayer, Yorik van Havre and others 2001-2023\n"\
-                       "FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n"\
-                       "FreeCAD wouldn't be possible without FreeCAD community.\n"\
-                       "  #####                 ####  ###   ####  \n" \
-                       "  #                    #      # #   #   # \n" \
-                       "  #     ##  #### ####  #     #   #  #   # \n" \
-                       "  ####  # # #  # #  #  #     #####  #   # \n" \
-                       "  #     #   #### ####  #    #     # #   # \n" \
-                       "  #     #   #    #     #    #     # #   #  ##  ##  ##\n" \
-                       "  #     #   #### ####   ### #     # ####   ##  ##  ##\n\n" ;
+const char sBanner[] =
+    "(C) 2001-2024 FreeCAD contributors\n"
+    "FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n\n";
 
-
-
-int main( int argc, char ** argv )
+int main(int argc, char** argv)
 {
     // Make sure that we use '.' as decimal point
     setlocale(LC_ALL, "");
@@ -72,8 +63,9 @@ int main( int argc, char ** argv )
 #if defined(__MINGW32__)
     const char* mingw_prefix = getenv("MINGW_PREFIX");
     const char* py_home = getenv("PYTHONHOME");
-    if (!py_home && mingw_prefix)
+    if (!py_home && mingw_prefix) {
         _putenv_s("PYTHONHOME", mingw_prefix);
+    }
 #endif
 
     // Name and Version of the Application
@@ -86,12 +78,13 @@ int main( int argc, char ** argv )
 
     try {
         // Init phase ===========================================================
-        // sets the default run mode for FC, starts with command prompt if not overridden in InitConfig...
+        // sets the default run mode for FC, starts with command prompt if not overridden in
+        // InitConfig...
         App::Application::Config()["RunMode"] = "Exit";
         App::Application::Config()["LoggingConsole"] = "1";
 
         // Inits the Application
-        App::Application::init(argc,argv);
+        App::Application::init(argc, argv);
     }
     catch (const Base::UnknownProgramOption& e) {
         std::cerr << e.what();
@@ -104,13 +97,16 @@ int main( int argc, char ** argv )
     catch (const Base::Exception& e) {
         std::string appName = App::Application::Config()["ExeName"];
         std::stringstream msg;
-        msg << "While initializing " << appName << " the following exception occurred: '" << e.what() << "'\n\n";
-        msg << "Python is searching for its runtime files in the following directories:\n" << Py_EncodeLocale(Py_GetPath(),nullptr) << "\n\n";
+        msg << "While initializing " << appName << " the following exception occurred: '"
+            << e.what() << "'\n\n";
+        msg << "Python is searching for its runtime files in the following directories:\n"
+            << Py_EncodeLocale(Py_GetPath(), nullptr) << "\n\n";
         msg << "Python version information:\n" << Py_GetVersion() << "\n";
         const char* pythonhome = getenv("PYTHONHOME");
-        if ( pythonhome ) {
+        if (pythonhome) {
             msg << "\nThe environment variable PYTHONHOME is set to '" << pythonhome << "'.";
-            msg << "\nSetting this environment variable might cause Python to fail. Please contact your administrator to unset it on your system.\n\n";
+            msg << "\nSetting this environment variable might cause Python to fail. Please contact "
+                   "your administrator to unset it on your system.\n\n";
         }
         else {
             msg << "\nPlease contact the application's support team for more information.\n\n";
@@ -122,7 +118,7 @@ int main( int argc, char ** argv )
     catch (...) {
         std::string appName = App::Application::Config()["ExeName"];
         std::stringstream msg;
-        msg << "Unknown runtime error occurred while initializing " << appName <<".\n\n";
+        msg << "Unknown runtime error occurred while initializing " << appName << ".\n\n";
         msg << "Please contact the application's support team for more information.\n\n";
         printf("Initialization of %s failed:\n%s", appName.c_str(), msg.str().c_str());
         exit(101);
@@ -132,7 +128,7 @@ int main( int argc, char ** argv )
     try {
         Application::runApplication();
     }
-    catch (const Base::SystemExitException &e) {
+    catch (const Base::SystemExitException& e) {
         exit(e.getExitCode());
     }
     catch (const Base::Exception& e) {
@@ -151,7 +147,7 @@ int main( int argc, char ** argv )
         // close open documents
         App::GetApplication().closeAllDocuments();
     }
-    catch(...) {
+    catch (...) {
     }
 
     // cleans up
@@ -161,4 +157,3 @@ int main( int argc, char ** argv )
 
     return 0;
 }
-

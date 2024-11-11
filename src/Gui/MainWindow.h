@@ -265,6 +265,10 @@ public Q_SLOTS:
     void statusMessageChanged();
 
     void showMessage (const QString & message, int timeout = 0);
+    void setRightSideMessage(const QString & message);
+
+    // Set main window title
+    void setWindowTitle(const QString& string);
 
 protected:
     /**
@@ -305,7 +309,10 @@ private:
     bool updateComboView(bool show);
     bool updateDAGView(bool show);
 
-    static void renderDevBuildWarning(QPainter &painter, const QPoint startPosition, const QSize maxSize);
+    void populateToolBarMenu(QMenu *);
+    void populateDockWindowMenu(QMenu *);
+
+    static void renderDevBuildWarning(QPainter &painter, const QPoint startPosition, const QSize maxSize, QColor color);
 
 private Q_SLOTS:
     /**
@@ -343,7 +350,7 @@ private Q_SLOTS:
     /**
      * \internal
      */
-    void processMessages(const QList<QByteArray> &);
+    void processMessages(const QList<QString> &);
     /**
      * \internal
      */

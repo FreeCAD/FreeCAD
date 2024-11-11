@@ -54,21 +54,92 @@ const char* Extrusion::eDirModeStrings[] = {
     "Normal",
     nullptr };
 
+namespace
+{
+    std::vector<std::string> MakerEnums = {"Simple",
+                                           "Cheese",
+                                           "Extrusion",
+                                           "Bullseye"};
+
+    const char* enumToClass(const char* mode)
+    {
+        if (MakerEnums.at(0) == mode) {
+            return "Part::FaceMakerSimple";
+        }
+        if (MakerEnums.at(1) == mode) {
+            return "Part::FaceMakerCheese";
+        }
+        if (MakerEnums.at(2) == mode) {
+            return "Part::FaceMakerExtrusion";
+        }
+        if (MakerEnums.at(3) == mode) {
+            return "Part::FaceMakerBullseye";
+        }
+
+        return "Part::FaceMakerBullseye";
+    }
+
+    const char* classToEnum(const char* type)
+    {
+        if (strcmp(type, "Part::FaceMakerSimple") == 0) {
+            return MakerEnums.at(0).c_str();
+        }
+        if (strcmp(type, "Part::FaceMakerCheese") == 0) {
+            return MakerEnums.at(1).c_str();
+        }
+        if (strcmp(type, "Part::FaceMakerExtrusion") == 0) {
+            return MakerEnums.at(2).c_str();
+        }
+        if (strcmp(type, "Part::FaceMakerBullseye") == 0) {
+            return MakerEnums.at(3).c_str();
+        }
+
+        return MakerEnums.at(3).c_str();
+    }
+
+    void restoreFaceMakerMode(Extrusion* self)
+    {
+        const char* mode = enumToClass(self->FaceMakerMode.getValueAsString());
+        const char* type = self->FaceMakerClass.getValue();
+        if (strcmp(mode, type) != 0) {
+            self->FaceMakerMode.setValue(classToEnum(type));
+        }
+    }
+}
+
 Extrusion::Extrusion()
 {
-    ADD_PROPERTY_TYPE(Base, (nullptr), "Extrude", App::Prop_None, "Shape to extrude");
-    ADD_PROPERTY_TYPE(Dir, (Base::Vector3d(0.0, 0.0, 1.0)), "Extrude", App::Prop_None, "Direction of extrusion (also magnitude, if both lengths are zero).");
-    ADD_PROPERTY_TYPE(DirMode, (dmCustom), "Extrude", App::Prop_None, "Sets, how Dir is updated.");
+    // clang-format off
+    ADD_PROPERTY_TYPE(Base, (nullptr), "Extrude", App::Prop_None,
+                      "Shape to extrude");
+    ADD_PROPERTY_TYPE(Dir, (Base::Vector3d(0.0, 0.0, 1.0)), "Extrude", App::Prop_None,
+                      "Direction of extrusion (also magnitude, if both lengths are zero).");
+    ADD_PROPERTY_TYPE(DirMode, (dmCustom), "Extrude", App::Prop_None,
+                      "Sets, how Dir is updated.");
     DirMode.setEnums(eDirModeStrings);
-    ADD_PROPERTY_TYPE(DirLink, (nullptr), "Extrude", App::Prop_None, "Link to edge defining extrusion direction.");
-    ADD_PROPERTY_TYPE(LengthFwd, (0.0), "Extrude", App::Prop_None, "Length of extrusion along direction. If both LengthFwd and LengthRev are zero, magnitude of Dir is used.");
-    ADD_PROPERTY_TYPE(LengthRev, (0.0), "Extrude", App::Prop_None, "Length of additional extrusion, against direction.");
-    ADD_PROPERTY_TYPE(Solid, (false), "Extrude", App::Prop_None, "If true, extruding a wire yields a solid. If false, a shell.");
-    ADD_PROPERTY_TYPE(Reversed, (false), "Extrude", App::Prop_None, "Set to true to swap the direction of extrusion.");
-    ADD_PROPERTY_TYPE(Symmetric, (false), "Extrude", App::Prop_None, "If true, extrusion is done in both directions to a total of LengthFwd. LengthRev is ignored.");
-    ADD_PROPERTY_TYPE(TaperAngle, (0.0), "Extrude", App::Prop_None, "Sets the angle of slope (draft) to apply to the sides. The angle is for outward taper; negative value yields inward tapering.");
-    ADD_PROPERTY_TYPE(TaperAngleRev, (0.0), "Extrude", App::Prop_None, "Taper angle of reverse part of extrusion.");
-    ADD_PROPERTY_TYPE(FaceMakerClass, ("Part::FaceMakerExtrusion"), "Extrude", App::Prop_None, "If Solid is true, this sets the facemaker class to use when converting wires to faces. Otherwise, ignored."); //default for old documents. See setupObject for default for new extrusions.
+    ADD_PROPERTY_TYPE(DirLink, (nullptr), "Extrude", App::Prop_None,
+                      "Link to edge defining extrusion direction.");
+    ADD_PROPERTY_TYPE(LengthFwd, (0.0), "Extrude", App::Prop_None,
+                      "Length of extrusion along direction. If both LengthFwd and LengthRev are zero, magnitude of Dir is used.");
+    ADD_PROPERTY_TYPE(LengthRev, (0.0), "Extrude", App::Prop_None,
+                      "Length of additional extrusion, against direction.");
+    ADD_PROPERTY_TYPE(Solid, (false), "Extrude", App::Prop_None,
+                      "If true, extruding a wire yields a solid. If false, a shell.");
+    ADD_PROPERTY_TYPE(Reversed, (false), "Extrude", App::Prop_None,
+                      "Set to true to swap the direction of extrusion.");
+    ADD_PROPERTY_TYPE(Symmetric, (false), "Extrude", App::Prop_None,
+                      "If true, extrusion is done in both directions to a total of LengthFwd. LengthRev is ignored.");
+    ADD_PROPERTY_TYPE(TaperAngle, (0.0), "Extrude", App::Prop_None,
+                      "Sets the angle of slope (draft) to apply to the sides. The angle is for outward taper; negative value yields inward tapering.");
+    ADD_PROPERTY_TYPE(TaperAngleRev, (0.0), "Extrude", App::Prop_None,
+                      "Taper angle of reverse part of extrusion.");
+    // Default for old documents. See setupObject for default for new extrusions.
+    ADD_PROPERTY_TYPE(FaceMakerClass, ("Part::FaceMakerExtrusion"), "Extrude", (App::PropertyType)(App::Prop_ReadOnly | App::Prop_Hidden),
+                      "If Solid is true, this sets the facemaker class to use when converting wires to faces. Otherwise, ignored.");
+    ADD_PROPERTY_TYPE(FaceMakerMode, (3L), "Extrude", App::Prop_None,
+                      "If Solid is true, this sets the facemaker class to use when converting wires to faces. Otherwise, ignored.");
+    FaceMakerMode.setEnums(MakerEnums);
+    // clang-format on
 }
 
 short Extrusion::mustExecute() const
@@ -127,9 +198,9 @@ bool Extrusion::fetchAxisLink(const App::PropertyLinkSub& axisLink, Base::Vector
     return true;
 }
 
-Extrusion::ExtrusionParameters Extrusion::computeFinalParameters()
+ExtrusionParameters Extrusion::computeFinalParameters()
 {
-    Extrusion::ExtrusionParameters result;
+    ExtrusionParameters result;
     Base::Vector3d dir;
     switch (this->DirMode.getValue()) {
     case dmCustom:
@@ -229,97 +300,70 @@ Base::Vector3d Extrusion::calculateShapeNormal(const App::PropertyLink& shapeLin
     return Base::Vector3d(normal.X(), normal.Y(), normal.Z());
 }
 
-TopoShape Extrusion::extrudeShape(const TopoShape& source, const Extrusion::ExtrusionParameters& params)
+void Extrusion::extrudeShape(TopoShape &result, const TopoShape &source, const ExtrusionParameters& params)
 {
-    TopoDS_Shape result;
     gp_Vec vec = gp_Vec(params.dir).Multiplied(params.lengthFwd + params.lengthRev);//total vector of extrusion
 
-    if (std::fabs(params.taperAngleFwd) >= Precision::Angular() ||
-        std::fabs(params.taperAngleRev) >= Precision::Angular()) {
-        //Tapered extrusion!
-#if defined(__GNUC__) && defined (FC_OS_LINUX)
+    // #0000910: Circles Extrude Only Surfaces, thus use BRepBuilderAPI_Copy
+    TopoShape myShape(source.makeElementCopy());
+
+    if (std::fabs(params.taperAngleFwd) >= Precision::Angular()
+        || std::fabs(params.taperAngleRev) >= Precision::Angular()) {
+        // Tapered extrusion!
+#if defined(__GNUC__) && defined(FC_OS_LINUX)
         Base::SignalException se;
 #endif
-        TopoDS_Shape myShape = source.getShape();
-        if (myShape.IsNull())
-            Standard_Failure::Raise("Cannot extrude empty shape");
-        // #0000910: Circles Extrude Only Surfaces, thus use BRepBuilderAPI_Copy
-        myShape = BRepBuilderAPI_Copy(myShape).Shape();
-
-        std::list<TopoDS_Shape> drafts;
-        bool isPartDesign = false; // there is an OCC bug with single-edge wires (circles) we need to treat differently for PD and Part
-        ExtrusionHelper::makeDraft(myShape, params.dir, params.lengthFwd, params.lengthRev,
-                                   params.taperAngleFwd, params.taperAngleRev, params.solid, drafts, isPartDesign);
+        std::vector<TopoShape> drafts;
+        ExtrusionHelper::makeElementDraft(params, myShape, drafts, result.Hasher);
         if (drafts.empty()) {
             Standard_Failure::Raise("Drafting shape failed");
         }
-        else if (drafts.size() == 1) {
-            result = drafts.front();
-        }
         else {
-            TopoDS_Compound comp;
-            BRep_Builder builder;
-            builder.MakeCompound(comp);
-            for (const auto & draft : drafts)
-                builder.Add(comp, draft);
-            result = comp;
+            result.makeElementCompound(drafts,
+                                       0,
+                                       TopoShape::SingleShapeCompoundCreationPolicy::returnShape);
         }
     }
     else {
-        //Regular (non-tapered) extrusion!
-        TopoDS_Shape myShape = source.getShape();
-        if (myShape.IsNull())
+        // Regular (non-tapered) extrusion!
+        if (source.isNull()) {
             Standard_Failure::Raise("Cannot extrude empty shape");
+        }
 
-        // #0000910: Circles Extrude Only Surfaces, thus use BRepBuilderAPI_Copy
-        myShape = BRepBuilderAPI_Copy(myShape).Shape();
-
-        //apply reverse part of extrusion by shifting the source shape
+        // apply reverse part of extrusion by shifting the source shape
         if (fabs(params.lengthRev) > Precision::Confusion()) {
             gp_Trsf mov;
             mov.SetTranslation(gp_Vec(params.dir) * (-params.lengthRev));
-            TopLoc_Location loc(mov);
-            myShape.Move(loc);
+            myShape = myShape.makeElementTransform(mov);
         }
 
-        //make faces from wires
+        // make faces from wires
         if (params.solid) {
-            //test if we need to make faces from wires. If there are faces - we don't.
-            TopExp_Explorer xp(myShape, TopAbs_FACE);
-            if (xp.More()) {
-                //source shape has faces. Just extrude as-is.
-            }
-            else {
-                std::unique_ptr<FaceMaker> mkFace = FaceMaker::ConstructFromType(params.faceMakerClass.c_str());
-
-                if (myShape.ShapeType() == TopAbs_COMPOUND)
-                    mkFace->useCompound(TopoDS::Compound(myShape));
-                else
-                    mkFace->addShape(myShape);
-                mkFace->Build();
-                myShape = mkFace->Shape();
+            // test if we need to make faces from wires. If there are faces - we don't.
+            if (!myShape.hasSubShape(TopAbs_FACE)) {
+                if (!myShape.Hasher) {
+                    myShape.Hasher = result.Hasher;
+                }
+                myShape = myShape.makeElementFace(nullptr, params.faceMakerClass.c_str());
             }
         }
 
-        //extrude!
-        BRepPrimAPI_MakePrism mkPrism(myShape, vec);
-        result = mkPrism.Shape();
+        // extrude!
+        result.makeElementPrism(myShape, vec);
     }
-
-    if (result.IsNull())
-        throw NullShapeException("Result of extrusion is null shape.");
-    return TopoShape(result);
 }
 
 App::DocumentObjectExecReturn* Extrusion::execute()
 {
     App::DocumentObject* link = Base.getValue();
-    if (!link)
+    if (!link) {
         return new App::DocumentObjectExecReturn("No object linked");
+    }
 
     try {
-        Extrusion::ExtrusionParameters params = computeFinalParameters();
-        TopoShape result = extrudeShape(Feature::getShape(link), params);
+        ExtrusionParameters params = computeFinalParameters();
+        TopoShape result(0);
+        extrudeShape(result, Feature::getTopoShape(link), params);
         this->Shape.setValue(result);
         return App::DocumentObject::StdReturn;
     }
@@ -334,12 +378,12 @@ TYPESYSTEM_SOURCE(Part::FaceMakerExtrusion, Part::FaceMakerCheese)
 
 std::string FaceMakerExtrusion::getUserFriendlyName() const
 {
-    return {QT_TRANSLATE_NOOP("Part_FaceMaker", "Part Extrude facemaker")};
+    return {tr("Part Extrude facemaker").toStdString()};
 }
 
 std::string FaceMakerExtrusion::getBriefExplanation() const
 {
-    return {QT_TRANSLATE_NOOP("Part_FaceMaker", "Supports making faces with holes, does not support nesting.")};
+    return {tr("Supports making faces with holes, does not support nesting.").toStdString()};
 }
 
 #if OCC_VERSION_HEX >= 0x070600
@@ -406,5 +450,23 @@ void FaceMakerExtrusion::Build()
 void Part::Extrusion::setupObject()
 {
     Part::Feature::setupObject();
-    this->FaceMakerClass.setValue("Part::FaceMakerBullseye"); //default for newly created features
+     //default for newly created features
+    this->FaceMakerMode.setValue(MakerEnums.at(3).c_str());
+    this->FaceMakerClass.setValue("Part::FaceMakerBullseye");
+}
+
+void Extrusion::onDocumentRestored()
+{
+    restoreFaceMakerMode(this);
+}
+
+void Part::Extrusion::onChanged(const App::Property* prop)
+{
+    if (prop == &FaceMakerMode) {
+        if (!isRestoring()) {
+            FaceMakerClass.setValue(enumToClass(FaceMakerMode.getValueAsString()));
+        }
+    }
+
+    Part::Feature::onChanged(prop);
 }

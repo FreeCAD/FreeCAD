@@ -49,14 +49,14 @@ std::string DocumentObjectPy::representation() const
     return str.str();
 }
 
-Py::String DocumentObjectPy::getName() const
+Py::Object DocumentObjectPy::getName() const
 {
     DocumentObject* object = this->getDocumentObjectPtr();
     const char* internal = object->getNameInDocument();
     if (!internal) {
-        throw Py::RuntimeError(std::string("This object is currently not part of a document"));
+        return Py::None();
     }
-    return {std::string(internal)};
+    return Py::String(internal);
 }
 
 Py::String DocumentObjectPy::getFullName() const
@@ -74,6 +74,17 @@ Py::Object DocumentObjectPy::getDocument() const
     else {
         return Py::Object(doc->getPyObject(), true);
     }
+}
+
+PyObject* DocumentObjectPy::isAttachedToDocument(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    DocumentObject* object = this->getDocumentObjectPtr();
+    bool ok = object->isAttachedToDocument();
+    return Py::new_reference_to(Py::Boolean(ok));
 }
 
 PyObject*  DocumentObjectPy::addProperty(PyObject *args, PyObject *kwd)
@@ -100,14 +111,8 @@ PyObject*  DocumentObjectPy::addProperty(PyObject *args, PyObject *kwd)
 
     // enum support
     auto* propEnum = dynamic_cast<App::PropertyEnumeration*>(prop);
-    if (propEnum) {
-        if (enumVals && PySequence_Check(enumVals)) {
-            std::vector<std::string> enumValsAsVector;
-            for (Py_ssize_t i = 0; i < PySequence_Length(enumVals); ++i) {
-                enumValsAsVector.emplace_back(PyUnicode_AsUTF8(PySequence_GetItem(enumVals,i)));
-            }
-            propEnum->setEnums(enumValsAsVector);
-        }
+    if (propEnum && enumVals) {
+        propEnum->setPyObject(enumVals);
     }
 
     return Py::new_reference_to(this);
@@ -745,6 +750,22 @@ PyObject*  DocumentObjectPy::getPathsByOutList(PyObject *args)
     }
 }
 
+PyObject* DocumentObjectPy::getElementMapVersion(PyObject* args)
+{
+    const char* name;
+    PyObject* restored = Py_False;
+    if (!PyArg_ParseTuple(args, "s|O", &name, &restored)) {
+        return NULL;
+    }
+
+    Property* prop = getDocumentObjectPtr()->getPropertyByName(name);
+    if (!prop) {
+        throw Py::ValueError("property not found");
+    }
+    return Py::new_reference_to(
+        Py::String(getDocumentObjectPtr()->getElementMapVersion(prop, Base::asBoolean(restored))));
+}
+
 PyObject *DocumentObjectPy::getCustomAttributes(const char* ) const
 {
         return nullptr;
@@ -795,13 +816,13 @@ PyObject *DocumentObjectPy::resolveSubElement(PyObject *args)
         return nullptr;
 
     PY_TRY {
-        std::pair<std::string,std::string> elementName;
+        ElementNamePair elementName;
         auto obj = GeoFeature::resolveElement(getDocumentObjectPtr(), subname,elementName,
                 Base::asBoolean(append), static_cast<GeoFeature::ElementNameType>(type));
         Py::Tuple ret(3);
         ret.setItem(0,obj?Py::Object(obj->getPyObject(),true):Py::None());
-        ret.setItem(1,Py::String(elementName.first));
-        ret.setItem(2,Py::String(elementName.second));
+        ret.setItem(1,Py::String(elementName.newName));
+        ret.setItem(2,Py::String(elementName.oldName));
         return Py::new_reference_to(ret);
     } PY_CATCH;
 

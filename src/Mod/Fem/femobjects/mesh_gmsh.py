@@ -29,7 +29,10 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief mesh gmsh object
 
+from FreeCAD import Base
 from . import base_fempythonobject
+
+_PropHelper = base_fempythonobject._PropHelper
 
 
 class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
@@ -39,269 +42,268 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
 
     Type = "Fem::FemMeshGmsh"
 
-    # they will be used from the task panel too, thus they need to be outside of the __init__
-    known_element_dimensions = ["From Shape", "1D", "2D", "3D"]
-    known_element_orders = ["1st", "2nd"]
-    known_mesh_algorithm_2D = [
-        "Automatic",
-        "MeshAdapt",
-        "Delaunay",
-        "Frontal",
-        "BAMG",
-        "DelQuad",
-        "Packing Parallelograms"
-    ]
-    known_mesh_algorithm_3D = [
-        "Automatic",
-        "Delaunay",
-        "New Delaunay",
-        "Frontal",
-        "MMG3D",
-        "R-tree",
-        "HXT"
-    ]
-    known_mesh_RecombinationAlgorithms = [
-        "Simple",
-        "Blossom",
-        "Simple full-quad",
-        "Blossom full-quad"
-    ]
-    known_mesh_HighOrderOptimizers = [
-        "None",
-        "Optimization",
-        "Elastic+Optimization",
-        "Elastic",
-        "Fast curving"
-    ]
-
     def __init__(self, obj):
-        super(MeshGmsh, self).__init__(obj)
-        self.add_properties(obj)
+        super().__init__(obj)
+
+        for prop in self._get_properties():
+            prop.add_to_object(obj)
+
+    def _get_properties(self):
+        prop = []
+
+        prop.append(
+            _PropHelper(
+                type="App::PropertyLinkList",
+                name="MeshBoundaryLayerList",
+                group="Base",
+                doc="Mesh boundaries need inflation layers",
+                value=[],
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyLinkList",
+                name="MeshRegionList",
+                group="Base",
+                doc="Mesh refinments of the mesh",
+                value=[],
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyLinkList",
+                name="MeshGroupList",
+                group="Base",
+                doc="Mesh groups of the mesh",
+                value=[],
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyLength",
+                name="CharacteristicLengthMax",
+                group="FEM Gmsh Mesh Params",
+                doc="Max mesh element size (0.0 means infinity)",
+                value=0.0,  # will be 1e+22
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyLength",
+                name="CharacteristicLengthMin",
+                group="FEM Gmsh Mesh Params",
+                doc="Min mesh element size",
+                value=0.0,
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyEnumeration",
+                name="ElementDimension",
+                group="FEM Gmsh Mesh Params",
+                doc="Dimension of mesh elements ('From Shape': according ShapeType of part to mesh)",
+                value=["From Shape", "1D", "2D", "3D"],
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyEnumeration",
+                name="ElementOrder",
+                group="FEM Gmsh Mesh Params",
+                doc="Order of mesh elements",
+                value=["1st", "2nd"],
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyBool",
+                name="OptimizeStd",
+                group="FEM Gmsh Mesh Params",
+                doc="Optimize tetrahedral elements",
+                value=True,
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyBool",
+                name="OptimizeNetgen",
+                group="FEM Gmsh Mesh Params",
+                doc="Optimize tetra elements by use of Netgen",
+                value=False,
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyEnumeration",
+                name="HighOrderOptimize",
+                group="FEM Gmsh Mesh Params",
+                doc="Optimization of high order meshes",
+                value=[
+                    "None",
+                    "Optimization",
+                    "Elastic+Optimization",
+                    "Elastic",
+                    "Fast curving",
+                ],
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyBool",
+                name="RecombineAll",
+                group="FEM Gmsh Mesh Params",
+                doc="Apply recombination algorithm to all surfaces",
+                value=False,
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyBool",
+                name="Recombine3DAll",
+                group="FEM Gmsh Mesh Params",
+                doc="Apply recombination algorithm to all volumes",
+                value=False,
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyEnumeration",
+                name="RecombinationAlgorithm",
+                group="FEM Gmsh Mesh Params",
+                doc="Recombination algorithm",
+                value=[
+                    "Simple",
+                    "Blossom",
+                    "Simple full-quad",
+                    "Blossom full-quad",
+                ],
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyBool",
+                name="CoherenceMesh",
+                group="FEM Gmsh Mesh Params",
+                doc="Removes all duplicate mesh vertices",
+                value=True,
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyFloat",
+                name="GeometryTolerance",
+                group="FEM Gmsh Mesh Params",
+                doc="Geometrical Tolerance (0.0 means GMSH std = 1e-08)",
+                value=1e-06,
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyBool",
+                name="SecondOrderLinear",
+                group="FEM Gmsh Mesh Params",
+                doc="Second order nodes are created by linear interpolation",
+                value=False,
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyIntegerConstraint",
+                name="MeshSizeFromCurvature",
+                group="FEM Gmsh Mesh Params",
+                doc="Number of elements per 2*pi radians, 0 to deactivate",
+                value=(12, 0, 10000, 1),
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyEnumeration",
+                name="Algorithm2D",
+                group="FEM Gmsh Mesh Params",
+                doc="Mesh algorithm 2D",
+                value=[
+                    "Automatic",
+                    "MeshAdapt",
+                    "Delaunay",
+                    "Frontal",
+                    "BAMG",
+                    "DelQuad",
+                    "Packing Parallelograms",
+                    "Quasi-structured Quad",
+                ],
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyEnumeration",
+                name="Algorithm3D",
+                group="FEM Gmsh Mesh Params",
+                doc="Mesh algorithm 3D",
+                value=[
+                    "Automatic",
+                    "Delaunay",
+                    "New Delaunay",
+                    "Frontal",
+                    "MMG3D",
+                    "R-tree",
+                    "HXT",
+                ],
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyBool",
+                name="GroupsOfNodes",
+                group="FEM Gmsh Mesh Params",
+                doc="For each group create not only the elements but the nodes too",
+                value=False,
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyEnumeration",
+                name="SubdivisionAlgorithm",
+                group="FEM Gmsh Mesh Params",
+                doc="Mesh subdivision algorithm",
+                value=["None", "All Quadrangles", "All Hexahedra", "Barycentric"],
+            )
+        )
+
+        return prop
 
     def onDocumentRestored(self, obj):
+        # update old project with new properties
+        for prop in self._get_properties():
+            try:
+                obj.getPropertyByName(prop.name)
+            except Base.PropertyError:
+                prop.add_to_object(obj)
 
-        # HighOrderOptimize
-        # was once App::PropertyBool, so check this
-        high_order_optimizer = ""
-        if obj.HighOrderOptimize is True:
-            high_order_optimizer = "Optimization"
-        elif obj.HighOrderOptimize is False:
-            high_order_optimizer = "None"
-        obj.removeProperty("HighOrderOptimize")
-        # add new HighOrderOptimize property
-        self.add_properties(obj)
-        # write the stored high_order_optimizer
-        if high_order_optimizer:
-            obj.HighOrderOptimize = high_order_optimizer
+            if prop.name == "Algorithm2D":
+                # refresh the list of known 2D algorithms for old projects
+                obj.Algorithm2D = prop.value
+            elif prop.name == "Algorithm3D":
+                # refresh the list of known 3D algorithms for old projects
+                obj.Algorithm3D = prop.value
+            elif prop.name == "HighOrderOptimize":
+                # HighOrderOptimize was once App::PropertyBool, so check this
+                prop.handle_change_type(
+                    obj, "App::PropertyBool", lambda x: "Optimization" if x else "None"
+                )
 
-        # Algorithm3D
-        # refresh the list of known 3D algorithms for existing meshes
-        # since some algos are meanwhile deprecated and new algos are available
-        obj.Algorithm3D = MeshGmsh.known_mesh_algorithm_3D
-
-    def add_properties(self, obj):
-
-        # this method is called from onDocumentRestored
-        # thus only add and or set a attribute
-        # if the attribute does not exist
-
-        if not hasattr(obj, "MeshBoundaryLayerList"):
-            obj.addProperty(
-                "App::PropertyLinkList",
-                "MeshBoundaryLayerList",
-                "Base",
-                "Mesh boundaries need inflation layers"
+        # migrate old Part property to Shape property
+        try:
+            value_part = obj.getPropertyByName("Part")
+            obj.setPropertyStatus("Part", "-LockDynamic")
+            obj.removeProperty("Part")
+            # old object is Fem::FemMeshObjectPython (does not have Shape property with global scope)
+            prop = _PropHelper(
+                type="App::PropertyLinkGlobal",
+                name="Shape",
+                group="FEM Mesh",
+                doc="Geometry object, the mesh is made from. The geometry object has to have a Shape.",
+                value=value_part,
             )
-            obj.MeshBoundaryLayerList = []
-
-        if not hasattr(obj, "MeshRegionList"):
-            obj.addProperty(
-                "App::PropertyLinkList",
-                "MeshRegionList",
-                "Base",
-                "Mesh refinments of the mesh"
-            )
-            obj.MeshRegionList = []
-
-        if not hasattr(obj, "MeshGroupList"):
-            obj.addProperty(
-                "App::PropertyLinkList",
-                "MeshGroupList",
-                "Base",
-                "Mesh groups of the mesh"
-            )
-            obj.MeshGroupList = []
-
-        if not hasattr(obj, "Part"):
-            obj.addProperty(
-                "App::PropertyLink",
-                "Part",
-                "FEM Mesh",
-                "Geometry object, the mesh is made from. The geometry object has to have a Shape."
-            )
-            obj.Part = None
-
-        if not hasattr(obj, "CharacteristicLengthMax"):
-            obj.addProperty(
-                "App::PropertyLength",
-                "CharacteristicLengthMax",
-                "FEM Gmsh Mesh Params",
-                "Max mesh element size (0.0 = infinity)"
-            )
-            obj.CharacteristicLengthMax = 0.0  # will be 1e+22
-
-        if not hasattr(obj, "CharacteristicLengthMin"):
-            obj.addProperty(
-                "App::PropertyLength",
-                "CharacteristicLengthMin",
-                "FEM Gmsh Mesh Params",
-                "Min mesh element size"
-            )
-            obj.CharacteristicLengthMin = 0.0
-
-        if not hasattr(obj, "ElementDimension"):
-            obj.addProperty(
-                "App::PropertyEnumeration",
-                "ElementDimension",
-                "FEM Gmsh Mesh Params",
-                "Dimension of mesh elements (Auto = according ShapeType of part to mesh)"
-            )
-            obj.ElementDimension = MeshGmsh.known_element_dimensions
-            obj.ElementDimension = "From Shape"  # according ShapeType of Part to mesh
-
-        if not hasattr(obj, "ElementOrder"):
-            obj.addProperty(
-                "App::PropertyEnumeration",
-                "ElementOrder",
-                "FEM Gmsh Mesh Params",
-                "Order of mesh elements"
-            )
-            obj.ElementOrder = MeshGmsh.known_element_orders
-            obj.ElementOrder = "2nd"
-
-        if not hasattr(obj, "OptimizeStd"):
-            obj.addProperty(
-                "App::PropertyBool",
-                "OptimizeStd",
-                "FEM Gmsh Mesh Params",
-                "Optimize tetrahedral elements"
-            )
-            obj.OptimizeStd = True
-
-        if not hasattr(obj, "OptimizeNetgen"):
-            obj.addProperty(
-                "App::PropertyBool",
-                "OptimizeNetgen",
-                "FEM Gmsh Mesh Params",
-                "Optimize tetra elements by use of Netgen"
-            )
-            obj.OptimizeNetgen = False
-
-        if not hasattr(obj, "HighOrderOptimize"):
-            obj.addProperty(
-                "App::PropertyEnumeration",
-                "HighOrderOptimize",
-                "FEM Gmsh Mesh Params",
-                "Optimization of high order meshes"
-            )
-            obj.HighOrderOptimize = MeshGmsh.known_mesh_HighOrderOptimizers
-            obj.HighOrderOptimize = "None"
-
-        if not hasattr(obj, "RecombineAll"):
-            obj.addProperty(
-                "App::PropertyBool",
-                "RecombineAll",
-                "FEM Gmsh Mesh Params",
-                "Apply recombination algorithm to all surfaces"
-            )
-            obj.RecombineAll = False
-
-        if not hasattr(obj, "Recombine3DAll"):
-            obj.addProperty(
-                "App::PropertyBool",
-                "Recombine3DAll",
-                "FEM Gmsh Mesh Params",
-                "Apply recombination algorithm to all volumes"
-            )
-            obj.Recombine3DAll = False
-
-        if not hasattr(obj, "RecombinationAlgorithm"):
-            obj.addProperty(
-                "App::PropertyEnumeration",
-                "RecombinationAlgorithm",
-                "FEM Gmsh Mesh Params",
-                "Recombination algorithm"
-            )
-            obj.RecombinationAlgorithm = MeshGmsh.known_mesh_RecombinationAlgorithms
-            obj.RecombinationAlgorithm = "Simple"
-
-        if not hasattr(obj, "CoherenceMesh"):
-            obj.addProperty(
-                "App::PropertyBool",
-                "CoherenceMesh",
-                "FEM Gmsh Mesh Params",
-                "Removes all duplicate mesh vertices"
-            )
-            obj.CoherenceMesh = True
-
-        if not hasattr(obj, "GeometryTolerance"):
-            obj.addProperty(
-                "App::PropertyFloat",
-                "GeometryTolerance",
-                "FEM Gmsh Mesh Params",
-                "Geometrical Tolerance (0.0 = GMSH std = 1e-08)"
-            )
-            obj.GeometryTolerance = 1e-06
-
-        if not hasattr(obj, "SecondOrderLinear"):
-            obj.addProperty(
-                "App::PropertyBool",
-                "SecondOrderLinear",
-                "FEM Gmsh Mesh Params",
-                "Second order nodes are created by linear interpolation"
-            )
-            obj.SecondOrderLinear = False
-            # gives much better meshes in the regard of nonpositive jacobians
-            # but
-            # on curved faces the constraint nodes will no longer found
-            # thus standard will be False
-            # https://forum.freecad.org/viewtopic.php?t=41738
-            # https://forum.freecad.org/viewtopic.php?f=18&t=45260&start=20#p389494
-
-        if not hasattr(obj, "MeshSizeFromCurvature"):
-            obj.addProperty(
-                "App::PropertyIntegerConstraint",
-                "MeshSizeFromCurvature",
-                "FEM Gmsh Mesh Params",
-                "number of elements per 2*pi radians, 0 to deactivate"
-            )
-            obj.MeshSizeFromCurvature = (12, 0, 10000, 1)
-
-        if not hasattr(obj, "Algorithm2D"):
-            obj.addProperty(
-                "App::PropertyEnumeration",
-                "Algorithm2D",
-                "FEM Gmsh Mesh Params",
-                "mesh algorithm 2D"
-            )
-            obj.Algorithm2D = MeshGmsh.known_mesh_algorithm_2D
-            obj.Algorithm2D = "Automatic"
-
-        if not hasattr(obj, "Algorithm3D"):
-            obj.addProperty(
-                "App::PropertyEnumeration",
-                "Algorithm3D",
-                "FEM Gmsh Mesh Params",
-                "mesh algorithm 3D"
-            )
-            obj.Algorithm3D = MeshGmsh.known_mesh_algorithm_3D
-            obj.Algorithm3D = "Automatic"
-
-        if not hasattr(obj, "GroupsOfNodes"):
-            obj.addProperty(
-                "App::PropertyBool",
-                "GroupsOfNodes",
-                "FEM Gmsh Mesh Params",
-                "For each group create not only the elements but the nodes too."
-            )
-            obj.GroupsOfNodes = False
+            prop.add_to_object(obj)
+        except Base.PropertyError:
+            pass

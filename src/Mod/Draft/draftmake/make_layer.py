@@ -58,16 +58,16 @@ def get_layer_container():
         if obj.Name == "LayerContainer":
             return obj
 
-    new_obj = doc.addObject("App::DocumentObjectGroupPython",
+    obj = doc.addObject("App::DocumentObjectGroupPython",
                             "LayerContainer")
-    new_obj.Label = translate("draft", "Layers")
+    obj.Label = translate("draft", "Layers")
 
-    LayerContainer(new_obj)
+    LayerContainer(obj)
 
     if App.GuiUp:
-        ViewProviderLayerContainer(new_obj.ViewObject)
+        ViewProviderLayerContainer(obj.ViewObject)
 
-    return new_obj
+    return obj
 
 
 def getLayerContainer():
@@ -79,7 +79,7 @@ def getLayerContainer():
 
 def make_layer(name=None,
                line_color=(0.0, 0.0, 0.0),   # does not match default DefaultShapeLineColor
-               shape_color=(0.8, 0.8, 0.8),  # matches default DefaultShapeColor
+               shape_color=(0.8, 0.8, 0.8),  # does not match default DefaultShapeColor
                line_width=2.0,
                draw_style="Solid",
                transparency=0):
@@ -201,27 +201,28 @@ def make_layer(name=None,
             _err(translate("draft","Wrong input: must be a number between 0 and 100."))
             return None
 
-    new_obj = doc.addObject("App::FeaturePython", "Layer")
-    Layer(new_obj)
+    obj = doc.addObject("App::FeaturePython", "Layer")
+    Layer(obj)
 
-    new_obj.Label = name
+    obj.Label = name
 
     if App.GuiUp:
-        ViewProviderLayer(new_obj.ViewObject)
+        vobj = obj.ViewObject
+        ViewProviderLayer(vobj)
         if line_color is not None:
-            new_obj.ViewObject.LineColor = line_color
+            vobj.LineColor = line_color
         if shape_color is not None:
-            new_obj.ViewObject.ShapeColor = shape_color
+            vobj.ShapeColor = shape_color
         if line_width is not None:
-            new_obj.ViewObject.LineWidth = line_width
+            vobj.LineWidth = line_width
         if draw_style is not None:
-            new_obj.ViewObject.DrawStyle = draw_style
+            vobj.DrawStyle = draw_style
         if transparency is not None:
-            new_obj.ViewObject.Transparency = transparency
+            vobj.Transparency = transparency
 
     container = get_layer_container()
-    container.addObject(new_obj)
+    container.addObject(obj)
 
-    return new_obj
+    return obj
 
 ## @}

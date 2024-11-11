@@ -115,6 +115,7 @@ class TaskFillTemplateFields:
                     msgBox.exec_()
                     break
 
+                projgrp_view = None
                 for pageObj in obj.Views:
                     if pageObj.isDerivedFrom("TechDraw::DrawViewPart"):
                         projgrp_view = self.page.Views[0]

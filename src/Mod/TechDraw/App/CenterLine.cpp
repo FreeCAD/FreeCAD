@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+    #include <boost/random.hpp>
     #include <boost/uuid/uuid_io.hpp>
     #include <boost/uuid/uuid_generators.hpp>
     #include <BRepBuilderAPI_MakeEdge.hxx>
@@ -34,6 +35,8 @@
 #include <BRepTools.hxx>
 
 #include <Base/Console.h>
+#include <boost/thread/mutex.hpp>
+#include <boost/thread/thread.hpp>
 
 #include "CenterLine.h"
 #include "DrawUtil.h"
@@ -885,10 +888,10 @@ void CenterLine::Save(Base::Writer &writer) const
 
     // style is deprecated in favour of line number, but we still save and restore it
     // to avoid problems with old documents.
-    writer.Stream() << writer.ind() << "<Style value=\"" <<  m_format.m_style << "\"/>" << std::endl;
-    writer.Stream() << writer.ind() << "<Weight value=\"" <<  m_format.m_weight << "\"/>" << std::endl;
-    writer.Stream() << writer.ind() << "<Color value=\"" <<  m_format.m_color.asHexString() << "\"/>" << std::endl;
-    const char v = m_format.m_visible?'1':'0';
+    writer.Stream() << writer.ind() << "<Style value=\"" <<  m_format.getStyle() << "\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<Weight value=\"" <<  m_format.getWidth() << "\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<Color value=\"" <<  m_format.getColor().asHexString() << "\"/>" << std::endl;
+    const char v = m_format.getVisible() ? '1' : '0';
     writer.Stream() << writer.ind() << "<Visible value=\"" <<  v << "\"/>" << std::endl;
 
 //stored geometry
@@ -984,14 +987,16 @@ void CenterLine::Restore(Base::XMLReader &reader)
     // style is deprecated in favour of line number, but we still save and restore it
     // to avoid problems with old documents.
     reader.readElement("Style");
-    m_format.m_style = reader.getAttributeAsInteger("value");
+    m_format.setStyle(reader.getAttributeAsInteger("value"));
     reader.readElement("Weight");
-    m_format.m_weight = reader.getAttributeAsFloat("value");
+    m_format.setWidth(reader.getAttributeAsFloat("value"));
     reader.readElement("Color");
-    std::string temp = reader.getAttribute("value");
-    m_format.m_color.fromHexString(temp);
+    std::string tempHex = reader.getAttribute("value");
+    App::Color tempColor;
+    tempColor.fromHexString(tempHex);
+    m_format.setColor(tempColor);
     reader.readElement("Visible");
-    m_format.m_visible = (int)reader.getAttributeAsInteger("value")==0?false:true;
+    m_format.setVisible( (int)reader.getAttributeAsInteger("value")==0 ? false : true);
 
 //stored geometry
     reader.readElement("GeometryType");
@@ -1070,8 +1075,13 @@ std::string CenterLine::getTagAsString() const
 void CenterLine::createNewTag()
 {
     // Initialize a random number generator, to avoid Valgrind false positives.
+    // The random number generator is not threadsafe so we guard it.  See
+    // https://www.boost.org/doc/libs/1_62_0/libs/uuid/uuid.html#Design%20notes
     static boost::mt19937 ran;
     static bool seeded = false;
+    static boost::mutex random_number_mutex;
+
+    boost::lock_guard<boost::mutex> guard(random_number_mutex);
 
     if (!seeded) {
         ran.seed(static_cast<unsigned int>(std::time(nullptr)));

@@ -26,7 +26,7 @@
 #include <sstream>
 #include <locale>
 #include <iostream>
-#include <QElapsedTimer>
+#include <QDateTime>
 #endif
 
 #include "PyExport.h"
@@ -365,61 +365,31 @@ std::string Base::Tools::joinList(const std::vector<std::string>& vec, const std
     return str.str();
 }
 
-// ----------------------------------------------------------------------------
-
-using namespace Base;
-
-struct StopWatch::Private
+std::string Base::Tools::currentDateTimeString()
 {
-    QElapsedTimer t;
-};
-
-StopWatch::StopWatch()
-    : d(new Private)
-{}
-
-StopWatch::~StopWatch()
-{
-    delete d;
+    return QDateTime::currentDateTime()
+        .toTimeSpec(Qt::OffsetFromUTC)
+        .toString(Qt::ISODate)
+        .toStdString();
 }
 
-void StopWatch::start()
+std::vector<std::string> Base::Tools::splitSubName(const std::string& subname)
 {
-    d->t.start();
-}
+    // Turns 'Part.Part001.Body.Pad.Edge1'
+    // Into ['Part', 'Part001', 'Body', 'Pad', 'Edge1']
+    std::vector<std::string> subNames;
+    std::string subName;
+    std::istringstream subNameStream(subname);
+    while (std::getline(subNameStream, subName, '.')) {
+        subNames.push_back(subName);
+    }
 
-int StopWatch::restart()
-{
-    return d->t.restart();
-}
+    // Check if the last character of the input string is the delimiter.
+    // If so, add an empty string to the subNames vector.
+    // Because the last subname is the element name and can be empty.
+    if (!subname.empty() && subname.back() == '.') {
+        subNames.push_back("");  // Append empty string for trailing dot.
+    }
 
-int StopWatch::elapsed()
-{
-    return d->t.elapsed();
-}
-
-std::string StopWatch::toString(int ms) const
-{
-    int total = ms;
-    int msec = total % 1000;
-    total = total / 1000;
-    int secs = total % 60;
-    total = total / 60;
-    int mins = total % 60;
-    int hour = total / 60;
-    std::stringstream str;
-    str << "Needed time: ";
-    if (hour > 0) {
-        str << hour << "h " << mins << "m " << secs << "s";
-    }
-    else if (mins > 0) {
-        str << mins << "m " << secs << "s";
-    }
-    else if (secs > 0) {
-        str << secs << "s";
-    }
-    else {
-        str << msec << "ms";
-    }
-    return str.str();
+    return subNames;
 }

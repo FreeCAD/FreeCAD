@@ -37,7 +37,6 @@
 
 #include "DlgSettingsImp.h"
 #include "SheetTableViewAccessibleInterface.h"
-#include "SpreadsheetView.h"
 #include "ViewProviderSpreadsheet.h"
 #include "Workbench.h"
 
@@ -61,10 +60,25 @@ public:
         : Py::ExtensionModule<Module>("SpreadsheetGui")
     {
         add_varargs_method("open", &Module::open);
+        add_varargs_method("insert", &Module::insert);
         initialize("This module is the SpreadsheetGui module.");  // register with Python
     }
 
 private:
+    void load(App::Document* pcDoc, const std::string& Name)
+    {
+        try {
+            Base::FileInfo file(Name);
+            Spreadsheet::Sheet* pcSheet = static_cast<Spreadsheet::Sheet*>(
+                pcDoc->addObject("Spreadsheet::Sheet", file.fileNamePure().c_str()));
+
+            pcSheet->importFromFile(Name, '\t', '"', '\\');
+            pcSheet->execute();
+        }
+        catch (const Base::Exception& e) {
+            throw Py::RuntimeError(e.what());
+        }
+    }
     Py::Object open(const Py::Tuple& args)
     {
         char* Name;
@@ -75,19 +89,28 @@ private:
         std::string EncodedName = std::string(Name);
         PyMem_Free(Name);
 
-        try {
-            Base::FileInfo file(EncodedName);
-            App::Document* pcDoc =
-                App::GetApplication().newDocument(DocName ? DocName : QT_TR_NOOP("Unnamed"));
-            Spreadsheet::Sheet* pcSheet = static_cast<Spreadsheet::Sheet*>(
-                pcDoc->addObject("Spreadsheet::Sheet", file.fileNamePure().c_str()));
+        App::Document* pcDoc =
+            App::GetApplication().newDocument(DocName ? DocName : QT_TR_NOOP("Unnamed"));
+        load(pcDoc, EncodedName);
 
-            pcSheet->importFromFile(EncodedName, '\t', '"', '\\');
-            pcSheet->execute();
+        return Py::None();
+    }
+
+    Py::Object insert(const Py::Tuple& args)
+    {
+        char* Name;
+        const char* DocName = nullptr;
+        if (!PyArg_ParseTuple(args.ptr(), "et|s", "utf-8", &Name, &DocName)) {
+            throw Py::Exception();
         }
-        catch (const Base::Exception& e) {
-            throw Py::RuntimeError(e.what());
+        std::string EncodedName = std::string(Name);
+        PyMem_Free(Name);
+
+        App::Document* pcDoc = App::GetApplication().getDocument(DocName);
+        if (!pcDoc) {
+            pcDoc = App::GetApplication().newDocument(DocName ? DocName : QT_TR_NOOP("Unnamed"));
         }
+        load(pcDoc, EncodedName);
 
         return Py::None();
     }

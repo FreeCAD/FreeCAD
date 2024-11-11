@@ -1,4 +1,4 @@
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 #include "App/ExpressionParser.h"
 #include "App/ExpressionTokenizer.h"
@@ -15,7 +15,246 @@ TEST(Expression, tokenize)
     EXPECT_EQ(App::ExpressionTokenizer().perform(QString::fromUtf8("0.00000 deg"), 11), QString::fromLatin1("deg"));
 }
 
+TEST(Expression, tokenizeCompletion)
+{
+    EXPECT_EQ(App::ExpressionTokenizer().perform(QString::fromUtf8("My Cube"), 7), QString::fromUtf8("MyCube"));
+    EXPECT_EQ(App::ExpressionTokenizer().perform(QString::fromUtf8("My Cube0"), 8), QString::fromUtf8("MyCube0"));
+    EXPECT_EQ(App::ExpressionTokenizer().perform(QString::fromUtf8("My Cube 0"), 9), QString::fromUtf8("MyCube0"));
+    EXPECT_EQ(App::ExpressionTokenizer().perform(QString::fromUtf8("My Cube1"), 8), QString::fromUtf8("MyCube1"));
+    EXPECT_EQ(App::ExpressionTokenizer().perform(QString::fromUtf8("My Cube 1"), 9), QString::fromUtf8("MyCube1"));
+}
+
+TEST(Expression, tokenizeQuantity)
+{
+    auto result = App::ExpressionParser::tokenize("0.00000 deg");
+    EXPECT_EQ(result.size(), 2);
+    EXPECT_EQ(std::get<0>(result[0]), App::ExpressionParser::NUM);
+    EXPECT_EQ(std::get<1>(result[0]), 0);
+    EXPECT_EQ(std::get<2>(result[0]), "0.00000");
+    EXPECT_EQ(std::get<0>(result[1]), App::ExpressionParser::UNIT);
+    EXPECT_EQ(std::get<1>(result[1]), 8);
+    EXPECT_EQ(std::get<2>(result[1]), "deg");
+}
+
+TEST(Expression, tokenizeFunc)
+{
+    auto result = App::ExpressionParser::tokenize("sin(0.00000)");
+    EXPECT_EQ(result.size(), 3);
+    EXPECT_EQ(std::get<0>(result[0]), App::ExpressionParser::FUNC);
+    EXPECT_EQ(std::get<1>(result[0]), 0);
+    EXPECT_EQ(std::get<2>(result[0]), "sin(");
+    EXPECT_EQ(std::get<0>(result[1]), App::ExpressionParser::NUM);
+    EXPECT_EQ(std::get<1>(result[1]), 4);
+    EXPECT_EQ(std::get<2>(result[1]), "0.00000");
+    EXPECT_EQ(std::get<1>(result[2]), 11);
+    EXPECT_EQ(std::get<2>(result[2]), ")");
+}
+
+TEST(Expression, tokenizeOne)
+{
+    auto result = App::ExpressionParser::tokenize("1");
+    EXPECT_EQ(result.size(), 1);
+    EXPECT_EQ(std::get<0>(result[0]), App::ExpressionParser::ONE);
+    EXPECT_EQ(std::get<1>(result[0]), 0);
+    EXPECT_EQ(std::get<2>(result[0]), "1");
+}
+
+TEST(Expression, tokenizeNum)
+{
+    auto result = App::ExpressionParser::tokenize("1.2341");
+    EXPECT_EQ(result.size(), 1);
+    EXPECT_EQ(std::get<0>(result[0]), App::ExpressionParser::NUM);
+    EXPECT_EQ(std::get<1>(result[0]), 0);
+    EXPECT_EQ(std::get<2>(result[0]), "1.2341");
+}
+
+TEST(Expression, tokenizeID)
+{
+    auto result = App::ExpressionParser::tokenize("Something");
+    EXPECT_EQ(result.size(), 1);
+    EXPECT_EQ(std::get<0>(result[0]), App::ExpressionParser::IDENTIFIER);
+    EXPECT_EQ(std::get<1>(result[0]), 0);
+    EXPECT_EQ(std::get<2>(result[0]), "Something");
+}
+
+TEST(Expression, tokenizeUnit)
+{
+    auto result = App::ExpressionParser::tokenize("km");
+    EXPECT_EQ(result.size(), 1);
+    EXPECT_EQ(std::get<0>(result[0]), App::ExpressionParser::UNIT);
+    EXPECT_EQ(std::get<1>(result[0]), 0);
+    EXPECT_EQ(std::get<2>(result[0]), "km");
+}
+
+TEST(Expression, tokenizeUSUnit)
+{
+    auto result = App::ExpressionParser::tokenize("\"");
+    EXPECT_EQ(result.size(), 1);
+    EXPECT_EQ(std::get<0>(result[0]), App::ExpressionParser::USUNIT);
+    EXPECT_EQ(std::get<1>(result[0]), 0);
+    EXPECT_EQ(std::get<2>(result[0]), "\"");
+}
+
+TEST(Expression, tokenizeInt)
+{
+    auto result = App::ExpressionParser::tokenize("123456");
+    EXPECT_EQ(result.size(), 1);
+    EXPECT_EQ(std::get<0>(result[0]), App::ExpressionParser::INTEGER);
+    EXPECT_EQ(std::get<1>(result[0]), 0);
+    EXPECT_EQ(std::get<2>(result[0]), "123456");
+}
+
 TEST(Expression, tokenizePi)
+{
+    auto result = App::ExpressionParser::tokenize("pi");
+    EXPECT_EQ(result.size(), 1);
+    EXPECT_EQ(std::get<0>(result[0]), App::ExpressionParser::CONSTANT);
+    EXPECT_EQ(std::get<1>(result[0]), 0);
+    EXPECT_EQ(std::get<2>(result[0]), "pi");
+}
+
+TEST(Expression, tokenizeE)
+{
+    auto result = App::ExpressionParser::tokenize("e");
+    EXPECT_EQ(result.size(), 1);
+    EXPECT_EQ(std::get<0>(result[0]), App::ExpressionParser::CONSTANT);
+    EXPECT_EQ(std::get<1>(result[0]), 0);
+    EXPECT_EQ(std::get<2>(result[0]), "e");
+}
+
+TEST(Expression, tokenizeConstant)
+{
+    auto result = App::ExpressionParser::tokenize("True False true false None");
+    EXPECT_EQ(result.size(), 5);
+    EXPECT_EQ(std::get<0>(result[0]), App::ExpressionParser::CONSTANT);
+    EXPECT_EQ(std::get<1>(result[0]), 0);
+    EXPECT_EQ(std::get<2>(result[0]), "True");
+    EXPECT_EQ(std::get<0>(result[1]), App::ExpressionParser::CONSTANT);
+    EXPECT_EQ(std::get<0>(result[2]), App::ExpressionParser::CONSTANT);
+    EXPECT_EQ(std::get<0>(result[3]), App::ExpressionParser::CONSTANT);
+    EXPECT_EQ(std::get<0>(result[4]), App::ExpressionParser::CONSTANT);
+}
+
+TEST(Expression, tokenizeEqual)
+{
+    auto result = App::ExpressionParser::tokenize("==");
+    EXPECT_EQ(result.size(), 1);
+    EXPECT_EQ(std::get<0>(result[0]), App::ExpressionParser::EQ);
+    EXPECT_EQ(std::get<1>(result[0]), 0);
+    EXPECT_EQ(std::get<2>(result[0]), "==");
+}
+
+TEST(Expression, tokenizeNotEqual)
+{
+    auto result = App::ExpressionParser::tokenize("!=");
+    EXPECT_EQ(result.size(), 1);
+    EXPECT_EQ(std::get<0>(result[0]), App::ExpressionParser::NEQ);
+    EXPECT_EQ(std::get<1>(result[0]), 0);
+    EXPECT_EQ(std::get<2>(result[0]), "!=");
+}
+
+TEST(Expression, tokenizeLessThan)
+{
+    auto result = App::ExpressionParser::tokenize("<");
+    EXPECT_EQ(result.size(), 1);
+    EXPECT_EQ(std::get<0>(result[0]), App::ExpressionParser::LT);
+    EXPECT_EQ(std::get<1>(result[0]), 0);
+    EXPECT_EQ(std::get<2>(result[0]), "<");
+}
+
+TEST(Expression, tokenizeLessThanEqual)
+{
+    auto result = App::ExpressionParser::tokenize("<=");
+    EXPECT_EQ(result.size(), 1);
+    EXPECT_EQ(std::get<0>(result[0]), App::ExpressionParser::LTE);
+    EXPECT_EQ(std::get<1>(result[0]), 0);
+    EXPECT_EQ(std::get<2>(result[0]), "<=");
+}
+
+TEST(Expression, tokenizeGreaterThan)
+{
+    auto result = App::ExpressionParser::tokenize(">");
+    EXPECT_EQ(result.size(), 1);
+    EXPECT_EQ(std::get<0>(result[0]), App::ExpressionParser::GT);
+    EXPECT_EQ(std::get<1>(result[0]), 0);
+    EXPECT_EQ(std::get<2>(result[0]), ">");
+}
+
+TEST(Expression, tokenizeGreaterThanEqual)
+{
+    auto result = App::ExpressionParser::tokenize(">=");
+    EXPECT_EQ(result.size(), 1);
+    EXPECT_EQ(std::get<0>(result[0]), App::ExpressionParser::GTE);
+    EXPECT_EQ(std::get<1>(result[0]), 0);
+    EXPECT_EQ(std::get<2>(result[0]), ">=");
+}
+
+TEST(Expression, tokenizeMinus)
+{
+    auto result = App::ExpressionParser::tokenize("1-1");
+    EXPECT_EQ(result.size(), 3);
+    EXPECT_EQ(std::get<0>(result[1]), App::ExpressionParser::MINUSSIGN);
+    EXPECT_EQ(std::get<1>(result[1]), 1);
+    EXPECT_EQ(std::get<2>(result[1]), "-");
+}
+
+TEST(Expression, tokenizeCell1)
+{
+    auto result = App::ExpressionParser::tokenize("$A$12");
+    EXPECT_EQ(result.size(), 1);
+    EXPECT_EQ(std::get<0>(result[0]), App::ExpressionParser::CELLADDRESS);
+    EXPECT_EQ(std::get<1>(result[0]), 0);
+    EXPECT_EQ(std::get<2>(result[0]), "$A$12");
+}
+
+TEST(Expression, tokenizeCell2)
+{
+    auto result = App::ExpressionParser::tokenize("A$12");
+    EXPECT_EQ(result.size(), 1);
+    EXPECT_EQ(std::get<0>(result[0]), App::ExpressionParser::CELLADDRESS);
+    EXPECT_EQ(std::get<1>(result[0]), 0);
+    EXPECT_EQ(std::get<2>(result[0]), "A$12");
+}
+
+TEST(Expression, tokenizeCell3)
+{
+    auto result = App::ExpressionParser::tokenize("$A12");
+    EXPECT_EQ(result.size(), 1);
+    EXPECT_EQ(std::get<0>(result[0]), App::ExpressionParser::CELLADDRESS);
+    EXPECT_EQ(std::get<1>(result[0]), 0);
+    EXPECT_EQ(std::get<2>(result[0]), "$A12");
+}
+
+TEST(Expression, tokenizeString)
+{
+    auto result = App::ExpressionParser::tokenize("<<Test>>");
+    EXPECT_EQ(result.size(), 1);
+    EXPECT_EQ(std::get<0>(result[0]), App::ExpressionParser::STRING);
+    EXPECT_EQ(std::get<1>(result[0]), 0);
+    EXPECT_EQ(std::get<2>(result[0]), "<<Test>>");
+}
+
+TEST(Expression, tokenizeExponent)
+{
+    // TODO
+}
+
+TEST(Expression, tokenizeNumAndUnit)
+{
+    // TODO
+}
+
+TEST(Expression, tokenizePos)
+{
+    // TODO
+}
+
+TEST(Expression, tokenizeNeg)
+{
+    // TODO
+}
+
+TEST(Expression, tokenizePi_rad)
 {
     EXPECT_EQ(App::ExpressionTokenizer().perform(QString::fromLatin1("p"), 1), QString::fromLatin1("p"));
     EXPECT_EQ(App::ExpressionTokenizer().perform(QString::fromLatin1("pi"), 2), QString());
@@ -48,48 +287,5 @@ TEST(Expression, test_e_rad)
     auto op = std::make_unique<App::OperatorExpression>(nullptr, constant.get(), App::OperatorExpression::UNIT, unit.get());
     EXPECT_EQ(op->toString(), "e rad");
     op.release();
-}
-
-TEST(Expression, parseQuantityFromText)
-{
-    EXPECT_ANY_THROW(App::parseQuantityFromText("")) << "should not parse empty";
-    EXPECT_ANY_THROW(App::parseQuantityFromText("mm")) << "should not parse missing value";
-    EXPECT_NO_THROW(App::parseQuantityFromText("2")) << "ok to parse missing unit";
-    EXPECT_NO_THROW(App::parseQuantityFromText("2mm"));
-    EXPECT_NO_THROW(App::parseQuantityFromText("2 mm"));
-    EXPECT_NO_THROW(App::parseQuantityFromText("\t \n .5e-3kg/m^3 \t"));
-    EXPECT_NO_THROW(App::parseQuantityFromText("\n \t -6.7E3 \t A/m^2 \t"));
-    EXPECT_EQ(App::parseQuantityFromText("2mm"), Base::Quantity(2.0, QString::fromStdString("mm"))); // exact ULP form
-    EXPECT_EQ(App::parseQuantityFromText("2 mm"), Base::Quantity(2.0, QString::fromStdString("mm"))); // exact ULP form
-    auto quant_one = App::parseQuantityFromText("\t \n.5e-3kg/m^3 \t");
-    EXPECT_DOUBLE_EQ(quant_one.getValue(), 0.5e-3); // approximately equal, to within 4 ULPs
-    EXPECT_EQ(quant_one.getUnit(), Base::Unit(QString::fromStdString("kg/m^3")));
-    auto quant_two = App::parseQuantityFromText("\n \t -6.7E3 \t A/m^2 \t");
-    EXPECT_DOUBLE_EQ(quant_two.getValue(), -6.7e+3); // approximately equal, to within 4 ULPs
-    EXPECT_EQ(quant_two.getUnit(), Base::Unit(QString::fromStdString("A/m^2")));
-}
-
-TEST(Expression, anyToQuantity)
-{
-    EXPECT_EQ(App::anyToQuantity(Base::Quantity()), Base::Quantity());
-    EXPECT_EQ(App::anyToQuantity(true), Base::Quantity(1.0));
-    EXPECT_EQ(App::anyToQuantity(false), Base::Quantity(0.0));
-    EXPECT_EQ(App::anyToQuantity(123), Base::Quantity(123.0));
-    EXPECT_EQ(App::anyToQuantity(123L), Base::Quantity(123.0));
-    EXPECT_EQ(App::anyToQuantity(123.0F), Base::Quantity(123.0));
-    EXPECT_EQ(App::anyToQuantity(123.0), Base::Quantity(123.0));
-    EXPECT_EQ(App::anyToQuantity("123"), Base::Quantity(123.0));
-    EXPECT_EQ(App::anyToQuantity(std::string("123")), Base::Quantity(123.0));
-    EXPECT_EQ(App::anyToQuantity("123 mm"), Base::Quantity(123.0, QString::fromStdString("mm")));
-    EXPECT_EQ(App::anyToQuantity(std::string("123 mm")), Base::Quantity(123.0, QString::fromStdString("mm")));
-    EXPECT_ANY_THROW(App::anyToQuantity(""));
-    EXPECT_ANY_THROW(App::anyToQuantity("mm"));
-}
-
-TEST(Expression, isAnyEqual)
-{
-    EXPECT_TRUE(App::isAnyEqual("123 mm", "123 mm"));
-    EXPECT_TRUE(App::isAnyEqual("123 mm", Base::Quantity(123.0, QString::fromStdString("mm"))));
-    EXPECT_TRUE(App::isAnyEqual(Base::Quantity(123.0, QString::fromStdString("mm")), "123 mm"));
 }
 // clang-format on

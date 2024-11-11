@@ -26,7 +26,11 @@
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/View3DSettings.h>
 
+class SoGroup;
 class SoMaterial;
+class SoSwitch;
+class SoTexture2;
+class SoTextureCoordinateEnvironment;
 
 namespace MatGui
 {
@@ -57,6 +61,8 @@ public:
     void setEmissiveColor(const QColor& color);
     void setShininess(double value);
     void setTransparency(double value);
+    void setTexture(const QImage& image);
+    void setTextureScaling(double scale);
 
     void resetAmbientColor();
     void resetDiffuseColor();
@@ -64,12 +70,20 @@ public:
     void resetEmissiveColor();
     void resetShininess();
     void resetTransparency();
+    void resetTexture();
+    void resetTextureScaling();
 
 private:
+    SoSeparator* _group;
+    SoSwitch* _switch;
     SoMaterial* _material;
+    SoTexture2* _texture;
+    SoTextureCoordinateEnvironment* _environment;
     std::unique_ptr<AppearanceSettings> viewSettings;
 
     void applySettings();
+    void setCoinTexture();
+    void setCoinMaterial();
 };
 
 }  // namespace MatGui

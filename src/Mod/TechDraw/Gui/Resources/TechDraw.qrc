@@ -57,6 +57,7 @@
         <file>icons/actions/TechDraw_SurfaceFinishSymbols.svg</file>
         <file>icons/actions/TechDraw_ComplexSection.svg</file>
         <file>icons/actions/TechDraw_CosmeticCircle.svg</file>
+        <file>icons/actions/TechDraw_BrokenView.svg</file>
         <file>icons/arrow-ccw.svg</file>
         <file>icons/arrow-cw.svg</file>
         <file>icons/arrow-down.svg</file>
@@ -85,9 +86,12 @@
         <file>icons/square.svg</file>
         <file>icons/TechDraw_3PtAngleDimension.svg</file>
         <file>icons/TechDraw_AngleDimension.svg</file>
+        <file>icons/TechDraw_AreaDimension.svg</file>
         <file>icons/TechDraw_Balloon.svg</file>
+        <file>icons/TechDraw_CameraOrientation.svg</file>
         <file>icons/TechDraw_DiameterDimension.svg</file>
         <file>icons/TechDraw_Dimension.svg</file>
+        <file>icons/TechDraw_Dimension_Pointer.svg</file>
         <file>icons/TechDraw_DimensionRepair.svg</file>
         <file>icons/TechDraw_ExtensionAreaAnnotation.svg</file>
         <file>icons/TechDraw_ExtensionArcLengthAnnotation.svg</file>
@@ -114,6 +118,7 @@
         <file>icons/TechDraw_ExtensionHoleCircle.svg</file>
         <file>icons/TechDraw_ExtensionIncreaseDecimal.svg</file>
         <file>icons/TechDraw_ExtensionInsertDiameter.svg</file>
+        <file>icons/TechDraw_ExtensionInsertRepetition.svg</file>
         <file>icons/TechDraw_ExtensionInsertSquare.svg</file>
         <file>icons/TechDraw_ExtensionLineParallel.svg</file>
         <file>icons/TechDraw_ExtensionLinePerpendicular.svg</file>

@@ -36,14 +36,16 @@ def get_information():
         "meshtype": "solid",
         "meshelement": "Tetra4",
         "constraints": ["fixed", "force"],
-        "solvers": ["calculix", "ccxtools", "elmer", "mystran", "z88"],
+        "solvers": ["ccxtools", "elmer", "mystran", "z88"],
         "material": "solid",
-        "equations": ["mechanical"]
+        "equations": ["mechanical"],
     }
 
 
 def get_explanation(header=""):
-    return header + """
+    return (
+        header
+        + """
 
 To run the example from Python console use:
 from femexamples.ccx_cantilever_ele_tetra4 import setup
@@ -55,6 +57,7 @@ Mesh before run the example.
 ...
 
 """
+    )
 
 
 def setup(doc=None, solvertype="ccxtools"):
@@ -79,7 +82,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # clear mesh and set meshing parameter
     femmesh_obj.FemMesh = Fem.FemMesh()
-    femmesh_obj.Part = geom_obj
+    femmesh_obj.Shape = geom_obj
     femmesh_obj.SecondOrderLinear = False
     femmesh_obj.ElementDimension = "3D"
     femmesh_obj.ElementOrder = "1st"

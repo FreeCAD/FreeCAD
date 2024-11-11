@@ -540,6 +540,19 @@ public:
     ~PropertyMass() override = default;
 };
 
+/** Moment property
+ * This is a property for representing moment. It is basically a float
+ * property. On the Gui it has a quantity like N*m.
+ */
+class AppExport PropertyMoment: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyMoment();
+    ~PropertyMoment() override = default;
+};
+
 /** Pressure property
  * This is a property for representing pressure. It basically a float
  * property. On the Gui it has a quantity like Pa.

@@ -20,6 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
+// clang-format off
 #ifndef APP_FEATUREPYTHONPYIMP_H
 #define APP_FEATUREPYTHONPYIMP_H
 
@@ -117,3 +118,4 @@ private:
 #endif
 
 #endif // APP_FEATUREPYTHONPYIMP_H
+// clang-format on

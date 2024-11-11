@@ -63,7 +63,7 @@ std::string ViewProviderDressUp::featureIcon() const
 
 
 bool ViewProviderDressUp::setEdit(int ModNum) {
-    if (ModNum == ViewProvider::Default ) {
+    if (ModNum == ViewProvider::Default) {
         // Here we should prevent edit of a Feature with missing base
         // Otherwise it could call unhandled exception.
         PartDesign::DressUp* dressUp = static_cast<PartDesign::DressUp*>(getObject());
@@ -84,7 +84,6 @@ bool ViewProviderDressUp::setEdit(int ModNum) {
     }
 }
 
-
 void ViewProviderDressUp::highlightReferences(const bool on)
 {
     PartDesign::DressUp* pcDressUp = static_cast<PartDesign::DressUp*>(getObject());
@@ -100,31 +99,25 @@ void ViewProviderDressUp::highlightReferences(const bool on)
     std::vector<std::string> edges = pcDressUp->Base.getSubValuesStartsWith("Edge");
 
     if (on) {
-        if (!faces.empty() && originalFaceColors.empty()) {
-            originalFaceColors = vp->DiffuseColor.getValues();
-            std::vector<App::Color> colors = originalFaceColors;
+        if (!faces.empty()) {
+            std::vector<App::Material> materials = vp->ShapeAppearance.getValues();
 
-            PartGui::ReferenceHighlighter highlighter(base->Shape.getValue(), ShapeColor.getValue());
-            highlighter.getFaceColors(faces, colors);
-            vp->DiffuseColor.setValues(colors);
+            PartGui::ReferenceHighlighter highlighter(base->Shape.getValue(), ShapeAppearance.getDiffuseColor());
+            highlighter.getFaceMaterials(faces, materials);
+
+            vp->setHighlightedFaces(materials);
         }
-        if (!edges.empty() && originalLineColors.empty()) {
-            originalLineColors = vp->LineColorArray.getValues();
-            std::vector<App::Color> colors = originalLineColors;
+        if (!edges.empty()) {
+            std::vector<App::Color> colors = vp->LineColorArray.getValues();
 
             PartGui::ReferenceHighlighter highlighter(base->Shape.getValue(), LineColor.getValue());
             highlighter.getEdgeColors(edges, colors);
-            vp->LineColorArray.setValues(colors);
+
+            vp->setHighlightedEdges(colors);
         }
     } else {
-        if (!faces.empty() && !originalFaceColors.empty()) {
-            vp->DiffuseColor.setValues(originalFaceColors);
-            originalFaceColors.clear();
-        }
-        if (!edges.empty() && !originalLineColors.empty()) {
-            vp->LineColorArray.setValues(originalLineColors);
-            originalLineColors.clear();
-        }
+        vp->unsetHighlightedFaces();
+        vp->unsetHighlightedEdges();
     }
 }
 

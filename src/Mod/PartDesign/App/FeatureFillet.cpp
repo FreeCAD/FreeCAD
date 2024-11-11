@@ -65,80 +65,62 @@ short Fillet::mustExecute() const
 
 App::DocumentObjectExecReturn *Fillet::execute()
 {
-    Part::TopoShape TopShape;
+    Part::TopoShape baseShape;
     try {
-        TopShape = getBaseShape();
+        baseShape = getBaseTopoShape();
     }
     catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
-    std::vector<std::string> SubNames = std::vector<std::string>(Base.getSubValues());
+    baseShape.setTransform(Base::Matrix4D());
 
-    if (UseAllEdges.getValue()){
-        SubNames.clear();
-        std::string edgeTypeName = Part::TopoShape::shapeName(TopAbs_EDGE); //"Edge"
-        int count = TopShape.countSubElements(edgeTypeName.c_str());
-        for (int ii = 0; ii < count; ii++){
-            std::ostringstream edgeName;
-            edgeName << edgeTypeName << ii+1;
-            SubNames.push_back(edgeName.str());
-        }
+    auto edges = UseAllEdges.getValue() ? baseShape.getSubTopoShapes(TopAbs_EDGE)
+                                        : getContinuousEdges(baseShape);
+    if (edges.empty()) {
+        return new App::DocumentObjectExecReturn(
+            QT_TRANSLATE_NOOP("Exception", "Fillet not possible on selected shapes"));
     }
-
-    getContinuousEdges(TopShape, SubNames);
 
     double radius = Radius.getValue();
 
-    if(radius <= 0)
-        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Fillet radius must be greater than zero"));
+    if (radius <= 0) {
+        return new App::DocumentObjectExecReturn(
+            QT_TRANSLATE_NOOP("Exception", "Fillet radius must be greater than zero"));
+    }
 
     this->positionByBaseFeature();
 
-    //If no element is selected, then we use a copy of previous feature.
-    if (SubNames.empty()) {
-        this->Shape.setValue(TopShape);
-        return App::DocumentObject::StdReturn;
-    }
-
-    // create an untransformed copy of the base shape
-    Part::TopoShape baseShape(TopShape);
-    baseShape.setTransform(Base::Matrix4D());
     try {
-        BRepFilletAPI_MakeFillet mkFillet(baseShape.getShape());
-
-        for (const auto & it : SubNames) {
-            TopoDS_Edge edge = TopoDS::Edge(baseShape.getSubShape(it.c_str()));
-            mkFillet.Add(radius, edge);
+        TopoShape shape(0);  //,getDocument()->getStringHasher());
+        shape.makeElementFillet(baseShape, edges, Radius.getValue(), Radius.getValue());
+        if (shape.isNull()) {
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Resulting shape is null"));
         }
-
-        mkFillet.Build();
-        if (!mkFillet.IsDone())
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Failed to create fillet"));
-
-        TopoDS_Shape shape = mkFillet.Shape();
-        if (shape.IsNull())
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is null"));
 
         TopTools_ListOfShape aLarg;
         aLarg.Append(baseShape.getShape());
-        if (!BRepAlgo::IsValid(aLarg, shape, Standard_False, Standard_False)) {
+        bool failed = false;
+        if (!BRepAlgo::IsValid(aLarg, shape.getShape(), Standard_False, Standard_False)) {
             ShapeFix_ShapeTolerance aSFT;
-            aSFT.LimitTolerance(shape, Precision::Confusion(), Precision::Confusion(), TopAbs_SHAPE);
-            Handle(ShapeFix_Shape) aSfs = new ShapeFix_Shape(shape);
-            aSfs->Perform();
-            shape = aSfs->Shape();
-            if (!BRepAlgo::IsValid(aLarg, shape, Standard_False, Standard_False)) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is invalid"));
-            }
+            aSFT.LimitTolerance(shape.getShape(),
+                                Precision::Confusion(),
+                                Precision::Confusion(),
+                                TopAbs_SHAPE);
         }
 
-        int solidCount = countSolids(shape);
-        if (solidCount > 1) {
+        if (!failed) {
+            shape = refineShapeIfActive(shape);
+            shape = getSolid(shape);
+        }
+        if (!isSingleSolidRuleSatisfied(shape.getShape())) {
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
         }
+        this->Shape.setValue(shape);
 
-        shape = refineShapeIfActive(shape);
-        this->Shape.setValue(getSolid(shape));
+        if (failed) {
+            return new App::DocumentObjectExecReturn("Resulting shape is invalid");
+        }
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {

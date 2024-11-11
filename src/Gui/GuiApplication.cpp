@@ -28,7 +28,7 @@
 # include <QAbstractSpinBox>
 # include <QByteArray>
 # include <QComboBox>
-# include <QDataStream>
+# include <QTextStream>
 # include <QFileInfo>
 # include <QFileOpenEvent>
 # include <QSessionManager>
@@ -75,6 +75,16 @@ bool GUIApplication::notify (QObject * receiver, QEvent * event)
             (int)event->type());
         return false;
     }
+
+    // https://github.com/FreeCAD/FreeCAD/issues/16905
+    std::string exceptionWarning =
+#if FC_DEBUG
+        "Exceptions must be caught before they go through Qt."
+        " Ignoring this will cause crashes on some systems.\n";
+#else
+        "";
+#endif
+
     try {
         if (event->type() == Spaceball::ButtonEvent::ButtonEventType ||
             event->type() == Spaceball::MotionEvent::MotionEventType)
@@ -89,14 +99,15 @@ bool GUIApplication::notify (QObject * receiver, QEvent * event)
     }
     catch (const Base::Exception& e) {
         Base::Console().Error("Unhandled Base::Exception caught in GUIApplication::notify.\n"
-                              "The error message is: %s\n", e.what());
+                              "The error message is: %s\n%s", e.what(), exceptionWarning);
     }
     catch (const std::exception& e) {
         Base::Console().Error("Unhandled std::exception caught in GUIApplication::notify.\n"
-                              "The error message is: %s\n", e.what());
+                              "The error message is: %s\n%s", e.what(), exceptionWarning);
     }
     catch (...) {
-        Base::Console().Error("Unhandled unknown exception caught in GUIApplication::notify.\n");
+        Base::Console().Error("Unhandled unknown exception caught in GUIApplication::notify.\n%s",
+                              exceptionWarning);
     }
 
     // Print some more information to the log file (if active) to ease bug fixing
@@ -148,6 +159,20 @@ void GUIApplication::commitData(QSessionManager &manager)
 bool GUIApplication::event(QEvent * ev)
 {
     if (ev->type() == QEvent::FileOpen) {
+        // (macOS workaround when opening FreeCAD by opening a .FCStd file in 1.0)
+        // With the current implementation of the splash screen boot procedure, Qt will
+        // start an event loop before FreeCAD is fully initalized. This event loop will
+        // process the QFileOpenEvent that is sent by macOS before the main window is ready.
+        if (!Gui::getMainWindow()->property("eventLoop").toBool()) {
+            // If we never reach this point when opening FreeCAD by double clicking an
+            // .FCStd file, then the workaround isn't needed anymore and can be removed
+            QEvent* eventCopy = new QFileOpenEvent(static_cast<QFileOpenEvent*>(ev)->file());
+            QTimer::singleShot(0, [eventCopy, this]() {
+                QCoreApplication::postEvent(this, eventCopy);
+            });
+            return true;
+        }
+
         QString file = static_cast<QFileOpenEvent*>(ev)->file();
         QFileInfo fi(file);
         if (fi.suffix().toLower() == QLatin1String("fcstd")) {
@@ -218,7 +243,7 @@ public:
     QTimer *timer;
     QLocalServer *server{nullptr};
     QString serverName;
-    QList<QByteArray> messages;
+    QList<QString> messages;
     bool running{false};
 };
 
@@ -237,15 +262,16 @@ bool GUISingleApplication::isRunning() const
     return d_ptr->running;
 }
 
-bool GUISingleApplication::sendMessage(const QByteArray &message, int timeout)
+bool GUISingleApplication::sendMessage(const QString &message, int timeout)
 {
     QLocalSocket socket;
     bool connected = false;
     for(int i = 0; i < 2; i++) {
         socket.connectToServer(d_ptr->serverName);
         connected = socket.waitForConnected(timeout/2);
-        if (connected || i > 0)
+        if (connected || i > 0) {
             break;
+        }
         int ms = 250;
 #if defined(Q_OS_WIN)
         Sleep(DWORD(ms));
@@ -253,41 +279,60 @@ bool GUISingleApplication::sendMessage(const QByteArray &message, int timeout)
         usleep(ms*1000);
 #endif
     }
-    if (!connected)
+    if (!connected) {
         return false;
+    }
 
-    QDataStream ds(&socket);
-    ds << message;
-    socket.waitForBytesWritten(timeout);
-    return true;
+    QTextStream ts(&socket);
+#if QT_VERSION <= QT_VERSION_CHECK(6, 0, 0)
+    ts.setCodec("UTF-8");
+#else
+    ts.setEncoding(QStringConverter::Utf8);
+#endif
+#if QT_VERSION <= QT_VERSION_CHECK(5, 15, 0)
+    ts << message << endl;
+#else
+    ts << message << Qt::endl;
+#endif
+
+    return socket.waitForBytesWritten(timeout);
+}
+
+void GUISingleApplication::readFromSocket()
+{
+    auto socket = qobject_cast<QLocalSocket*>(sender());
+    if (socket) {
+        QTextStream in(socket);
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+        in.setCodec("UTF-8");
+#else
+        in.setEncoding(QStringConverter::Utf8);
+#endif
+        while (socket->canReadLine()) {
+            d_ptr->timer->stop();
+            QString message = in.readLine();
+            Base::Console().Log("Received message: %s\n", message.toStdString());
+            d_ptr->messages.push_back(message);
+            d_ptr->timer->start(1000);
+        }
+    }
 }
 
 void GUISingleApplication::receiveConnection()
 {
     QLocalSocket *socket = d_ptr->server->nextPendingConnection();
-    if (!socket)
+    if (!socket) {
         return;
+    }
 
     connect(socket, &QLocalSocket::disconnected,
             socket, &QLocalSocket::deleteLater);
-    if (socket->waitForReadyRead()) {
-        QDataStream in(socket);
-        if (!in.atEnd()) {
-            d_ptr->timer->stop();
-            QByteArray message;
-            in >> message;
-            Base::Console().Log("Received message: %s\n", message.constData());
-            d_ptr->messages.push_back(message);
-            d_ptr->timer->start(1000);
-        }
-    }
-
-    socket->disconnectFromServer();
+    connect(socket, &QLocalSocket::readyRead, this, &GUISingleApplication::readFromSocket);
 }
 
 void GUISingleApplication::processMessages()
 {
-    QList<QByteArray> msg = d_ptr->messages;
+    QList<QString> msg = d_ptr->messages;
     d_ptr->messages.clear();
     Q_EMIT messageReceived(msg);
 }

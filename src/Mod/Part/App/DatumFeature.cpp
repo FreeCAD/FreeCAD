@@ -44,7 +44,7 @@ Datum::~Datum() = default;
 void Datum::onDocumentRestored()
 {
     // This seems to be the only way to make the ViewProvider display the datum feature
-    Support.touch();
+    AttachmentSupport.touch();
     Part::Feature::onDocumentRestored();
 }
 
@@ -82,9 +82,4 @@ App::DocumentObject *Datum::getSubObject(const char *subname,
 
 Base::Vector3d Datum::getBasePoint () const {
     return Placement.getValue().getPosition();
-}
-
-void Datum::handleChangedPropertyName(Base::XMLReader &reader, const char* TypeName, const char* PropName)
-{
-    extHandleChangedPropertyName(reader, TypeName, PropName); // AttachExtension
 }

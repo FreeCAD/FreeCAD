@@ -1,13 +1,17 @@
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
+    ${COIN3D_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
+    ${PYTHON_INCLUDE_DIRS}
 )
 
 set(AssemblyGui_LIBS
     Assembly
     PartDesign
     PartGui
+    Spreadsheet
+    SpreadsheetGui
     FreeCADGui
 )
 
@@ -36,8 +40,16 @@ SET(AssemblyGui_SRCS_Module
     PreCompiled.h
     ViewProviderAssembly.cpp
     ViewProviderAssembly.h
+    ViewProviderAssemblyLink.cpp
+    ViewProviderAssemblyLink.h
+    ViewProviderBom.cpp
+    ViewProviderBom.h
+    ViewProviderBomGroup.cpp
+    ViewProviderBomGroup.h
     ViewProviderJointGroup.cpp
     ViewProviderJointGroup.h
+    ViewProviderViewGroup.cpp
+    ViewProviderViewGroup.h
     ${Assembly_QRC_SRCS}
 )
 
@@ -62,7 +74,15 @@ SET(AssemblyGuiIcon_SVG
 )
 
 add_library(AssemblyGui SHARED ${AssemblyGui_SRCS} ${AssemblyGuiIcon_SVG})
+
+if(WIN32)
+    target_compile_definitions(AssemblyGui PRIVATE _USE_MATH_DEFINES)
+endif(WIN32)
+
 target_link_libraries(AssemblyGui ${AssemblyGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(AssemblyGui)
+endif()
 
 SET_BIN_DIR(AssemblyGui AssemblyGui /Mod/Assembly)
 SET_PYTHON_PREFIX_SUFFIX(AssemblyGui)

@@ -70,6 +70,7 @@
 #include "SoBrepFaceSet.h"
 #include "SoBrepPointSet.h"
 
+FC_LOG_LEVEL_INIT("Part", true, true)
 
 using namespace PartGui;
 namespace sp = std::placeholders;
@@ -265,7 +266,7 @@ DlgFilletEdges::DlgFilletEdges(FilletType type, Part::FilletBase* fillet, QWidge
 
     d->filletType = type;
     if (d->filletType == DlgFilletEdges::CHAMFER) {
-        ui->parameterName->setTitle(tr("Chamfer Parameter"));
+        ui->parameterName->setTitle(tr("Chamfer Parameters"));
         ui->labelfillet->setText(tr("Chamfer type"));
         ui->labelRadius->setText(tr("Length:"));
         ui->filletType->setItemText(0, tr("Equal distance"));
@@ -307,6 +308,7 @@ DlgFilletEdges::~DlgFilletEdges()
 
 void DlgFilletEdges::setupConnections()
 {
+    // clang-format off
     connect(ui->shapeObject, qOverload<int>(&QComboBox::activated),
             this, &DlgFilletEdges::onShapeObjectActivated);
     connect(ui->selectEdges, &QRadioButton::toggled,
@@ -325,6 +327,7 @@ void DlgFilletEdges::setupConnections()
     connect(ui->filletEndRadius,
             qOverload<const Base::Quantity&>(&Gui::QuantitySpinBox::valueChanged),
             this, &DlgFilletEdges::onFilletEndRadiusValueChanged);
+    // clang-format on
 }
 
 void DlgFilletEdges::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -592,6 +595,16 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
 {
     App::DocumentObject* base = d->fillet->Base.getValue();
     const std::vector<Part::FilletElement>& e = d->fillet->Edges.getValues();
+    const auto &subs = d->fillet->EdgeLinks.getShadowSubs();
+    if(subs.size()!=e.size()) {
+        FC_ERR("edge link size mismatch");
+        return;
+    }
+    std::set<std::string> subSet;
+    for(auto &sub : subs)
+        subSet.insert(sub.newName.empty()?sub.oldName:sub.newName);
+
+    std::string tmp;
     std::vector<App::DocumentObject*>::const_iterator it = std::find(objs.begin(), objs.end(), base);
     if (it != objs.end()) {
         // toggle visibility
@@ -613,6 +626,40 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
         std::vector<std::string> subElements;
         QStandardItemModel *model = qobject_cast<QStandardItemModel*>(ui->treeView->model());
         bool block = model->blockSignals(true); // do not call toggleCheckState
+        auto baseShape = Part::Feature::getTopoShape(base);
+        std::set<Part::FilletElement> elements;
+        for(size_t i=0;i<e.size();++i) {
+            auto &sub = subs[i];
+            if(sub.newName.empty()) {
+                int idx = 0;
+                sscanf(sub.oldName.c_str(),"Edge%d",&idx);
+                if(idx==0)
+                    FC_WARN("missing element reference: " << sub.oldName);
+                else
+                    elements.insert(e[i]);
+                continue;
+            }
+            auto &ref = sub.newName;
+            Part::TopoShape edge;
+            try {
+                edge = baseShape.getSubShape(ref.c_str());
+            }catch(...) {}
+            if(!edge.isNull())  {
+                elements.insert(e[i]);
+                continue;
+            }
+            FC_WARN("missing element reference: " << base->getFullName() << "." << ref);
+
+            for(auto &mapped : Part::Feature::getRelatedElements(base,ref.c_str())) {
+                tmp.clear();
+                if(!subSet.insert(mapped.index.appendToStringBuffer(tmp)).second
+                    || !subSet.insert(mapped.name.toString(0)).second)
+                    continue;
+                FC_WARN("guess element reference: " << ref << " -> " << mapped.index);
+                elements.emplace(mapped.index.getIndex(),e[i].radius1,e[i].radius2);
+            }
+        }
+
         for (const auto & et : e) {
             std::vector<int>::iterator it = std::find(d->edge_ids.begin(), d->edge_ids.end(), et.edgeid);
             if (it != d->edge_ids.end()) {
@@ -1024,11 +1071,7 @@ void FilletEdgesDialog::accept()
 TaskFilletEdges::TaskFilletEdges(Part::Fillet* fillet)
 {
     widget = new DlgFilletEdges(DlgFilletEdges::FILLET, fillet);
-    taskbox = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("Part_Fillet"),
-        widget->windowTitle(), true, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(Gui::BitmapFactory().pixmap("Part_Fillet"), widget);
 }
 
 TaskFilletEdges::~TaskFilletEdges()
@@ -1081,11 +1124,7 @@ const char* DlgChamferEdges::getFilletType() const
 TaskChamferEdges::TaskChamferEdges(Part::Chamfer* chamfer)
 {
     widget = new DlgChamferEdges(chamfer);
-    taskbox = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("Part_Chamfer"),
-        widget->windowTitle(), true, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(Gui::BitmapFactory().pixmap("Part_Chamfer"), widget);
 }
 
 TaskChamferEdges::~TaskChamferEdges()

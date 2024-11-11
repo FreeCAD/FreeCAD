@@ -54,12 +54,24 @@ public:
     const char* getViewProviderName() const override {
         return "PartDesignGui::ViewProviderPipe";
     }
+    App::DocumentObjectExecReturn *_execute(ProfileBased *feat,
+                                                   const TopoShape &path,
+                                                   const TopLoc_Location &invObjLoc = TopLoc_Location(),
+                                                   int transition = 0,
+                                                   const TopoShape &auxpath = TopoShape(),
+                                                   bool auxCurveLinear = true,
+                                                   int mode = 2,
+                                                   const Base::Vector3d &binormalVector = Base::Vector3d(),
+                                                   int transformation = 0,
+                                                   const std::vector<App::PropertyLinkSubList::SubSet> &multisections = {},
+                                                   bool moveProfile = false,
+                                                   bool rotateProfile = false);
 
 protected:
     /// get the given edges and all their tangent ones
     void getContinuousEdges(Part::TopoShape TopShape, std::vector< std::string >& SubNames);
     void buildPipePath(const Part::TopoShape& input, const  std::vector<std::string>& edges, TopoDS_Shape& result);
-    void setupAlgorithm(BRepOffsetAPI_MakePipeShell& mkPipeShell, TopoDS_Shape& auxshape);
+    void setupAlgorithm(BRepOffsetAPI_MakePipeShell& mkPipeShell, const TopoDS_Shape& auxshape);
     /// handle changed property
     void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop) override;
 

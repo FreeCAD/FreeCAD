@@ -275,20 +275,30 @@ class AddonInstaller(QtCore.QObject):
         self._finalize_successful_installation()
         return True
 
+    def _can_use_update(self) -> bool:
+        addon = self.addon_to_install
+        install_path = os.path.join(self.installation_path, self.addon_to_install.name)
+        if not os.path.isdir(install_path):
+            return False
+        if addon.metadata is None or addon.installed_metadata is None:
+            return True  # We can't check if the branch name changed, but the install path exists
+        old_branch = get_branch_from_metadata(self.addon_to_install.installed_metadata)
+        new_branch = get_branch_from_metadata(self.addon_to_install.metadata)
+        if old_branch != new_branch:
+            return False  # Branch name changed, we have to re-clone
+        return True  # Checkout exists, same branch as last time, update OK
+
     def _install_by_git(self) -> bool:
         """Installs the specified url by using git to clone from it. The URL can be local or remote,
         but must represent a git repository, and the url must be in a format that git can handle
         (git, ssh, rsync, file, or a bare filesystem path)."""
         install_path = os.path.join(self.installation_path, self.addon_to_install.name)
         try:
-            if os.path.isdir(install_path):
-                old_branch = get_branch_from_metadata(self.addon_to_install.installed_metadata)
-                new_branch = get_branch_from_metadata(self.addon_to_install.metadata)
-                if old_branch != new_branch:
-                    self.git_manager.migrate_branch(install_path, old_branch, new_branch)
-                else:
-                    self.git_manager.update(install_path)
+            if self._can_use_update():
+                self.git_manager.update(install_path)
             else:
+                if os.path.isdir(install_path):
+                    utils.rmdir(install_path)
                 self.git_manager.clone(self.addon_to_install.url, install_path)
             self.git_manager.checkout(install_path, self.addon_to_install.branch)
         except GitFailed as e:
@@ -367,6 +377,12 @@ class AddonInstaller(QtCore.QObject):
         subdirectory of the main directory."""
 
         destination = os.path.join(self.installation_path, self.addon_to_install.name)
+        if os.path.exists(destination):
+            remove_succeeded = utils.rmdir(destination)
+            if not remove_succeeded:
+                FreeCAD.Console.PrintError(f"Failed to remove {destination}, aborting update")
+                raise RuntimeError(f"Failed to remove outdated Addon from {destination}")
+
         with zipfile.ZipFile(filename, "r") as zfile:
             zfile.extractall(destination)
 
@@ -374,23 +390,36 @@ class AddonInstaller(QtCore.QObject):
         # after the branch. If that is the setup that we just extracted, move all files out of
         # that subdirectory.
         if self._code_in_branch_subdirectory(destination):
+            actual_path = os.path.join(
+                destination, f"{self.addon_to_install.name}-{self.addon_to_install.branch}"
+            )
+            FreeCAD.Console.PrintLog(
+                f"ZIP installation moving code from {actual_path} to {destination}"
+            )
             self._move_code_out_of_subdirectory(destination)
 
         FreeCAD.Console.PrintLog("ZIP installation complete.\n")
         self._finalize_successful_installation()
 
     def _code_in_branch_subdirectory(self, destination: str) -> bool:
-        subdirectories = os.listdir(destination)
-        if len(subdirectories) == 1:
-            subdir_name = subdirectories[0]
-            if subdir_name.endswith(os.path.sep):
-                subdir_name = subdir_name[:-1]  # Strip trailing slash if present
-            if subdir_name.endswith(self.addon_to_install.branch):
-                return True
+        test_path = os.path.join(destination, self._expected_subdirectory_name())
+        FreeCAD.Console.PrintLog(f"Checking for possible zip sub-path {test_path}...")
+        if os.path.isdir(test_path):
+            FreeCAD.Console.PrintLog(f"path exists.\n")
+            return True
+        FreeCAD.Console.PrintLog(f"path does not exist.\n")
         return False
 
+    def _expected_subdirectory_name(self) -> str:
+        url = self.addon_to_install.url
+        if url.endswith(".git"):
+            url = url[:-4]
+        _, _, name = url.rpartition("/")
+        branch = self.addon_to_install.branch
+        return f"{name}-{branch}"
+
     def _move_code_out_of_subdirectory(self, destination):
-        subdirectory = os.listdir(destination)[0]
+        subdirectory = os.path.join(destination, self._expected_subdirectory_name())
         for extracted_filename in os.listdir(os.path.join(destination, subdirectory)):
             shutil.move(
                 os.path.join(destination, subdirectory, extracted_filename),

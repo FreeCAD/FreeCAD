@@ -100,27 +100,27 @@ void ViewProviderBoolean::updateData(const App::Property* prop)
             auto vpTool = dynamic_cast<PartGui::ViewProviderPart*>(
                     Gui::Application::Instance->getViewProvider(objTool));
             if (vpBase && vpTool) {
-                std::vector<App::Color> colBase = vpBase->DiffuseColor.getValues();
-                std::vector<App::Color> colTool = vpTool->DiffuseColor.getValues();
-                std::vector<App::Color> colBool;
-                colBool.resize(boolMap.Extent(), this->ShapeColor.getValue());
+                std::vector<App::Material> colBase = vpBase->ShapeAppearance.getValues();
+                std::vector<App::Material> colTool = vpTool->ShapeAppearance.getValues();
+                std::vector<App::Material> colBool;
+                colBool.resize(boolMap.Extent(), this->ShapeAppearance[0]);
                 applyTransparency(vpBase->Transparency.getValue(),colBase);
                 applyTransparency(vpTool->Transparency.getValue(),colTool);
 
                 if (static_cast<int>(colBase.size()) == baseMap.Extent()) {
-                    applyColor(hist[0], colBase, colBool);
+                    applyMaterial(hist[0], colBase, colBool);
                 }
-                else if (!colBase.empty() && colBase[0] != this->ShapeColor.getValue()) {
+                else if (!colBase.empty() && colBase[0] != this->ShapeAppearance[0]) {
                     colBase.resize(baseMap.Extent(), colBase[0]);
-                    applyColor(hist[0], colBase, colBool);
+                    applyMaterial(hist[0], colBase, colBool);
                 }
 
                 if (static_cast<int>(colTool.size()) == toolMap.Extent()) {
-                    applyColor(hist[1], colTool, colBool);
+                    applyMaterial(hist[1], colTool, colBool);
                 }
-                else if (!colTool.empty() && colTool[0] != this->ShapeColor.getValue()) {
+                else if (!colTool.empty() && colTool[0] != this->ShapeAppearance[0]) {
                     colTool.resize(toolMap.Extent(), colTool[0]);
-                    applyColor(hist[1], colTool, colBool);
+                    applyMaterial(hist[1], colTool, colBool);
                 }
 
                 // If the view provider has set a transparency then override the values
@@ -129,7 +129,7 @@ void ViewProviderBoolean::updateData(const App::Property* prop)
                     applyTransparency(Transparency.getValue(), colBool);
                 }
 
-                this->DiffuseColor.setValues(colBool);
+                this->ShapeAppearance.setValues(colBool);
             }
         }
     }
@@ -186,8 +186,8 @@ void ViewProviderMultiFuse::updateData(const App::Property* prop)
         TopTools_IndexedMapOfShape boolMap;
         TopExp::MapShapes(boolShape, TopAbs_FACE, boolMap);
 
-        std::vector<App::Color> colBool;
-        colBool.resize(boolMap.Extent(), this->ShapeColor.getValue());
+        std::vector<App::Material> colBool;
+        colBool.resize(boolMap.Extent(), this->ShapeAppearance[0]);
 
         int index=0;
         for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end(); ++it, ++index) {
@@ -201,14 +201,14 @@ void ViewProviderMultiFuse::updateData(const App::Property* prop)
 
             auto vpBase = dynamic_cast<PartGui::ViewProviderPart*>(Gui::Application::Instance->getViewProvider(objBase));
             if (vpBase) {
-                std::vector<App::Color> colBase = vpBase->DiffuseColor.getValues();
+                std::vector<App::Material> colBase = vpBase->ShapeAppearance.getValues();
                 applyTransparency(vpBase->Transparency.getValue(),colBase);
                 if (static_cast<int>(colBase.size()) == baseMap.Extent()) {
-                    applyColor(hist[index], colBase, colBool);
+                    applyMaterial(hist[index], colBase, colBool);
                 }
-                else if (!colBase.empty() && colBase[0] != this->ShapeColor.getValue()) {
+                else if (!colBase.empty() && colBase[0] != this->ShapeAppearance[0]) {
                     colBase.resize(baseMap.Extent(), colBase[0]);
-                    applyColor(hist[index], colBase, colBool);
+                    applyMaterial(hist[index], colBase, colBool);
                 }
             }
         }
@@ -219,7 +219,7 @@ void ViewProviderMultiFuse::updateData(const App::Property* prop)
             applyTransparency(Transparency.getValue(), colBool);
         }
 
-        this->DiffuseColor.setValues(colBool);
+        this->ShapeAppearance.setValues(colBool);
     }
     else if (prop->isDerivedFrom<App::PropertyLinkList>()) {
         std::vector<App::DocumentObject*> pShapes = static_cast<const App::PropertyLinkList*>(prop)->getValues();
@@ -321,8 +321,8 @@ void ViewProviderMultiCommon::updateData(const App::Property* prop)
         TopTools_IndexedMapOfShape boolMap;
         TopExp::MapShapes(boolShape, TopAbs_FACE, boolMap);
 
-        std::vector<App::Color> colBool;
-        colBool.resize(boolMap.Extent(), this->ShapeColor.getValue());
+        std::vector<App::Material> colBool;
+        colBool.resize(boolMap.Extent(), this->ShapeAppearance[0]);
 
         int index=0;
         for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end(); ++it, ++index) {
@@ -336,14 +336,14 @@ void ViewProviderMultiCommon::updateData(const App::Property* prop)
 
             auto vpBase = dynamic_cast<PartGui::ViewProviderPart*>(Gui::Application::Instance->getViewProvider(objBase));
             if (vpBase) {
-                std::vector<App::Color> colBase = vpBase->DiffuseColor.getValues();
+                std::vector<App::Material> colBase = vpBase->ShapeAppearance.getValues();
                 applyTransparency(vpBase->Transparency.getValue(),colBase);
                 if (static_cast<int>(colBase.size()) == baseMap.Extent()) {
-                    applyColor(hist[index], colBase, colBool);
+                    applyMaterial(hist[index], colBase, colBool);
                 }
-                else if (!colBase.empty() && colBase[0] != this->ShapeColor.getValue()) {
+                else if (!colBase.empty() && colBase[0] != this->ShapeAppearance[0]) {
                     colBase.resize(baseMap.Extent(), colBase[0]);
-                    applyColor(hist[index], colBase, colBool);
+                    applyMaterial(hist[index], colBase, colBool);
                 }
             }
         }
@@ -354,7 +354,7 @@ void ViewProviderMultiCommon::updateData(const App::Property* prop)
             applyTransparency(Transparency.getValue(), colBool);
         }
 
-        this->DiffuseColor.setValues(colBool);
+        this->ShapeAppearance.setValues(colBool);
     }
     else if (prop->isDerivedFrom<App::PropertyLinkList>()) {
         std::vector<App::DocumentObject*> pShapes = static_cast<const App::PropertyLinkList*>(prop)->getValues();

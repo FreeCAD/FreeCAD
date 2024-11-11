@@ -3615,6 +3615,9 @@ Evolumes
 241,
 2088,
 
+** Physical constants for SI(mm) unit system with Kelvins
+*PHYSICAL CONSTANTS, ABSOLUTE ZERO=0, STEFAN BOLTZMANN=5.670374419e-11
+
 ***********************************************************
 ** Materials
 ** see information about units at file end
@@ -3632,14 +3635,14 @@ Evolumes
 ** Transform Constraints
 ** FemConstraintTransform1
 *TRANSFORM, NSET=CylinFemConstraintTransform1, TYPE=C
-10,27,10,10,7,10
+10,5,10,10,6,10
 ** FemConstraintTransform2
 *TRANSFORM, NSET=CylinFemConstraintTransform2, TYPE=C
-190,27,10,190,7,10
+190,5,10,190,6,10
 
 ***********************************************************
 ** At least one step is needed to run an CalculiX analysis of FreeCAD
-*STEP
+*STEP, INC=2000
 *STATIC
 
 
@@ -3647,7 +3650,7 @@ Evolumes
 ** Displacement constraint applied
 ** FemConstraintDisplacment
 *BOUNDARY
-FemConstraintDisplacment,1
+FemConstraintDisplacment,1,1,0.0
 
 
 ***********************************************************
@@ -3785,9 +3788,9 @@ S, E
 *NODE PRINT, NSET=FemConstraintDisplacment, TOTALS=ONLY
 RF
 
-
+*OUTPUT, FREQUENCY=1
 ***********************************************************
-*END STEP 
+*END STEP
 
 ***********************************************************
 ** CalculiX Input file

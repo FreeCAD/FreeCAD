@@ -80,8 +80,8 @@ void TaskCSysDragger::dragStartCallback(void *, SoDragger *)
 void TaskCSysDragger::setupGui()
 {
     auto incrementsBox = new Gui::TaskView::TaskBox(
-      Gui::BitmapFactory().pixmap("button_valid"),
-      tr("Increments"), true, nullptr);
+      Gui::BitmapFactory().pixmap("Std_TransformManip"),
+      tr("Transform"), true, nullptr);
 
     auto gridLayout = new QGridLayout();
   gridLayout->setColumnStretch(1, 1);

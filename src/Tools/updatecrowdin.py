@@ -83,7 +83,11 @@ from urllib.parse import quote_plus
 from urllib.request import Request
 from urllib.request import urlopen
 from urllib.request import urlretrieve
-from PySide2 import QtCore
+
+try:
+    from PySide6 import QtCore
+except ImportError:
+    from PySide2 import QtCore
 
 TsFile = namedtuple("TsFile", ["filename", "src_path"])
 
@@ -110,7 +114,7 @@ locations = [
         "../Mod/AddonManager/Resources/AddonManager.qrc",
     ],
     ["App", "../App/Resources/translations", "../App/Resources/App.qrc"],
-    ["Arch", "../Mod/Arch/Resources/translations", "../Mod/Arch/Resources/Arch.qrc"],
+    ["Arch", "../Mod/BIM/Resources/translations", "../Mod/BIM/Resources/Arch.qrc"],
     [
         "Assembly",
         "../Mod/Assembly/Gui/Resources/translations",
@@ -170,9 +174,9 @@ locations = [
         "../Mod/PartDesign/Gui/Resources/PartDesign.qrc",
     ],
     [
-        "Path",
-        "../Mod/Path/Gui/Resources/translations",
-        "../Mod/Path/Gui/Resources/Path.qrc",
+        "CAM",
+        "../Mod/CAM/Gui/Resources/translations",
+        "../Mod/CAM/Gui/Resources/CAM.qrc",
     ],
     [
         "Points",
@@ -215,11 +219,6 @@ locations = [
         "../Mod/TechDraw/Gui/Resources/TechDraw.qrc",
     ],
     ["Tux", "../Mod/Tux/Resources/translations", "../Mod/Tux/Resources/Tux.qrc"],
-    [
-        "Web",
-        "../Mod/Web/Gui/Resources/translations",
-        "../Mod/Web/Gui/Resources/Web.qrc",
-    ],
 ]
 
 THRESHOLD = 25  # how many % must be translated for the translation to be included in FreeCAD
@@ -381,7 +380,7 @@ def updateqrc(qrcpath, lncode):
     # inserting new entry just after the last one
     line = resources[pos]
     if ".qm" in line:
-        line = re.sub("_.*\.qm", "_" + lncode + ".qm", line)
+        line = re.sub(r"_.*\.qm", "_" + lncode + ".qm", line)
     else:
         modname = os.path.splitext(os.path.basename(qrcpath))[0]
         line = "        <file>translations/" + modname + "_" + lncode + ".qm</file>\n"
@@ -404,7 +403,7 @@ def updateTranslatorCpp(lncode):
 
     cppfile = os.path.join(os.path.dirname(__file__), "..", "Gui", "Language", "Translator.cpp")
     l = QtCore.QLocale(lncode)
-    lnname = l.languageToString(l.language())
+    lnname = QtCore.QLocale.languageToString(l.language())
 
     # read file contents
     f = open(cppfile, "r")
@@ -452,12 +451,12 @@ def doFile(tsfilepath, targetpath, lncode, qrcpath):
         ][:-3]
     newname = basename + "_" + lncode + ".ts"
     newpath = targetpath + os.sep + newname
-    if not os.path.exists(newpath):
+    if not os.path.exists(tsfilepath):
         # If this language code does not exist for the given TS file, bail out
         return
     shutil.copyfile(tsfilepath, newpath)
     if basename in GENERATE_QM:
-        print(f"Generating QM for {basename}")
+        # print("generating qm files for",newpath,"...")
         try:
             subprocess.run(
                 [

@@ -55,7 +55,9 @@ class ConnectionChecker(QtCore.QThread):
         url = "https://api.github.com/zen"
         self.done = False
         NetworkManager.AM_NETWORK_MANAGER.completed.connect(self.connection_data_received)
-        self.request_id = NetworkManager.AM_NETWORK_MANAGER.submit_unmonitored_get(url)
+        self.request_id = NetworkManager.AM_NETWORK_MANAGER.submit_unmonitored_get(
+            url, timeout_ms=10000
+        )
         while not self.done:
             if QtCore.QThread.currentThread().isInterruptionRequested():
                 FreeCAD.Console.PrintLog("Connection check cancelled\n")

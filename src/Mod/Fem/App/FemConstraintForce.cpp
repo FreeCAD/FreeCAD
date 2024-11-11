@@ -46,11 +46,6 @@ ConstraintForce::ConstraintForce()
     Direction.setScope(App::LinkScope::Global);
 
     ADD_PROPERTY(Reversed, (0));
-    ADD_PROPERTY_TYPE(Points,
-                      (Base::Vector3d()),
-                      "ConstraintForce",
-                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Points where arrows are drawn");
     ADD_PROPERTY_TYPE(DirectionVector,
                       (Base::Vector3d(0, 0, 1)),
                       "ConstraintForce",
@@ -59,7 +54,6 @@ ConstraintForce::ConstraintForce()
 
     // by default use the null vector to indicate an invalid value
     naturalDirectionVector = Base::Vector3d(0, 0, 0);
-    Points.setValues(std::vector<Base::Vector3d>());
 }
 
 App::DocumentObjectExecReturn* ConstraintForce::execute()
@@ -91,19 +85,7 @@ void ConstraintForce::onChanged(const App::Property* prop)
     // because the NormalDirection has not been calculated yet
     Constraint::onChanged(prop);
 
-    if (prop == &References) {
-        std::vector<Base::Vector3d> points;
-        std::vector<Base::Vector3d> normals;
-        int scale = 1;  // OvG: Enforce use of scale
-        if (getPoints(points, normals, &scale)) {
-            // We don't use the normals because all arrows should have
-            // the same direction
-            Points.setValues(points);
-            Scale.setValue(scale);
-            Points.touch();
-        }
-    }
-    else if (prop == &Direction) {
+    if (prop == &Direction) {
         Base::Vector3d direction = getDirection(Direction);
         if (direction.Length() < Precision::Confusion()) {
             return;

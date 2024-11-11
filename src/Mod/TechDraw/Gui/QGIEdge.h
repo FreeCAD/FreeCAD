@@ -55,6 +55,10 @@ public:
 
     void setLinePen(QPen isoPen);
 
+    void setSource(int source) { m_source = source; }
+    int getSource() const { return m_source;}
+
+    void setCurrentPen() override;
 
 protected:
 
@@ -71,6 +75,7 @@ protected:
     Qt::PenStyle getHiddenStyle();
 
 private:
+    int m_source{0};
 };
 
 }

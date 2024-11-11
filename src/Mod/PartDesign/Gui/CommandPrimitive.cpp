@@ -76,8 +76,6 @@ CmdPrimtiveCompAdditive::CmdPrimtiveCompAdditive()
 void CmdPrimtiveCompAdditive::activated(int iMsg)
 {
     App::Document *doc = getDocument();
-    if (!PartDesignGui::assureModernWorkflow(doc))
-        return;
 
     // We need either an active Body, or for there to be no Body objects
     // (in which case, just make one) to make a new additive shape.
@@ -128,7 +126,7 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
 
     if(!base)
         base = pcActiveBody;
-    copyVisual(prm, "ShapeColor", base);
+    copyVisual(prm, "ShapeAppearance", base);
     copyVisual(prm, "LineColor", base);
     copyVisual(prm, "PointColor", base);
     copyVisual(prm, "Transparency", base);
@@ -250,10 +248,6 @@ CmdPrimtiveCompSubtractive::CmdPrimtiveCompSubtractive()
 
 void CmdPrimtiveCompSubtractive::activated(int iMsg)
 {
-    App::Document *doc = getDocument();
-    if (!PartDesignGui::assureModernWorkflow(doc))
-        return;
-
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
 
     if (!pcActiveBody)
@@ -279,7 +273,7 @@ void CmdPrimtiveCompSubtractive::activated(int iMsg)
     Gui::Command::updateActive();
 
     auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
-    copyVisual(Feat, "ShapeColor", prevSolid);
+    copyVisual(Feat, "ShapeAppearance", prevSolid);
     copyVisual(Feat, "LineColor", prevSolid);
     copyVisual(Feat, "PointColor", prevSolid);
     copyVisual(Feat, "Transparency", prevSolid);

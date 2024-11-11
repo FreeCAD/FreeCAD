@@ -51,6 +51,7 @@
 #include <Mod/Points/App/Structured.h>
 #include <Mod/ReverseEngineering/App/ApproxSurface.h>
 
+#include "FitBSplineCurve.h"
 #include "FitBSplineSurface.h"
 #include "Poisson.h"
 #include "Segmentation.h"
@@ -58,6 +59,39 @@
 
 
 using namespace std;
+
+DEF_STD_CMD_A(CmdApproxCurve)
+
+CmdApproxCurve::CmdApproxCurve()
+    : Command("Reen_ApproxCurve")
+{
+    sAppModule = "Reen";
+    sGroup = QT_TR_NOOP("Reverse Engineering");
+    sMenuText = QT_TR_NOOP("Approximate B-spline curve...");
+    sToolTipText = QT_TR_NOOP("Approximate a B-spline curve");
+    sWhatsThis = "Reen_ApproxCurve";
+    sStatusTip = sToolTipText;
+}
+
+void CmdApproxCurve::activated(int)
+{
+    App::DocumentObjectT objT;
+    auto obj = Gui::Selection().getObjectsOfType(App::GeoFeature::getClassTypeId());
+    if (obj.size() != 1 || !(obj.at(0)->isDerivedFrom(Points::Feature::getClassTypeId()))) {
+        QMessageBox::warning(Gui::getMainWindow(),
+                             qApp->translate("Reen_ApproxSurface", "Wrong selection"),
+                             qApp->translate("Reen_ApproxSurface", "Please select a point cloud."));
+        return;
+    }
+
+    objT = obj.front();
+    Gui::Control().showDialog(new ReenGui::TaskFitBSplineCurve(objT));
+}
+
+bool CmdApproxCurve::isActive()
+{
+    return (hasActiveDocument() && !Gui::Control().activeDialog());
+}
 
 DEF_STD_CMD_A(CmdApproxSurface)
 
@@ -648,6 +682,7 @@ bool CmdViewTriangulation::isActive()
 void CreateReverseEngineeringCommands()
 {
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
+    rcCmdMgr.addCommand(new CmdApproxCurve());
     rcCmdMgr.addCommand(new CmdApproxSurface());
     rcCmdMgr.addCommand(new CmdApproxPlane());
     rcCmdMgr.addCommand(new CmdApproxCylinder());

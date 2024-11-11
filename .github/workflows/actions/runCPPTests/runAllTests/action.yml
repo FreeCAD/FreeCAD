@@ -68,6 +68,13 @@ runs:
           testCommand: ${{ inputs.builddir }}/tests/Part_tests_run --gtest_output=json:${{ inputs.reportdir }}part_gtest_results.json
           testLogFile: ${{ inputs.reportdir }}Part_gtest_test_log.txt
           testName: Part
+      - name: C++ PartDesign tests
+        id: partdesign
+        uses: ./.github/workflows/actions/runCPPTests/runSingleTest
+        with:
+          testCommand: ${{ inputs.builddir }}/tests/PartDesign_tests_run --gtest_output=json:${{ inputs.reportdir }}partdesign_gtest_results.json
+          testLogFile: ${{ inputs.reportdir }}PartDesign_gtest_test_log.txt
+          testName: PartDesign
       - name: C++ Points tests
         id: points
         uses: ./.github/workflows/actions/runCPPTests/runSingleTest

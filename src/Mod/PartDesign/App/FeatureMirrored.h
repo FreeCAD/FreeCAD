@@ -56,6 +56,9 @@ public:
       * the given face, which must be planar
       */
     const std::list<gp_Trsf> getTransformations(const std::vector<App::DocumentObject*>) override;
+
+private:
+    std::list<gp_Trsf> createTransformations(gp_Pnt& axbase, gp_Dir& axdir) const;
 };
 
 } //namespace PartDesign

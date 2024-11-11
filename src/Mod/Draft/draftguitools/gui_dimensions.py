@@ -89,12 +89,6 @@ class Dimension(gui_base_original.Creator):
         """Execute when the command is called."""
         if self.cont:
             self.finish()
-        elif self.selected_app_measure():
-            super().Activated(name="Dimension")
-            self.dimtrack = trackers.dimTracker()
-            self.arctrack = trackers.arcTracker()
-            self.create_with_app_measure()
-            self.finish()
         else:
             super().Activated(name="Dimension")
             if self.ui:
@@ -162,24 +156,15 @@ class Dimension(gui_base_original.Creator):
                 self.arcmode = "diameter"
                 self.link = [sel_object.Object, n]
 
-    def selected_app_measure(self):
-        """Check if App::MeasureDistance objects are selected."""
-        sel = Gui.Selection.getSelection()
-        if not sel:
-            return False
-        for o in sel:
-            if not o.isDerivedFrom("App::MeasureDistance"):
-                return False
-        return True
-
     def finish(self, cont=False):
         """Terminate the operation."""
+        self.end_callbacks(self.call)
         self.cont = None
         self.dir = None
-        super().finish()
         if self.ui:
             self.dimtrack.finalize()
             self.arctrack.finalize()
+        super().finish()
 
     def angle_dimension_normal(self, edge1, edge2):
         rot = App.Rotation(DraftGeomUtils.vec(edge1),
@@ -191,37 +176,6 @@ class Dimension(gui_base_original.Creator):
         if vnorm.getAngle(norm) < math.pi / 2:
             norm = norm.negative()
         return norm
-
-    def create_with_app_measure(self):
-        """Create on measurement objects.
-
-        This is used when the selection is an `'App::MeasureDistance'`,
-        which is created with the basic tool `Std_MeasureDistance`.
-        This object is removed and in its place a `Draft Dimension`
-        is created.
-        """
-        for o in Gui.Selection.getSelection():
-            p1 = o.P1
-            p2 = o.P2
-            _root = o.ViewObject.RootNode
-            _ch = _root.getChildren()[1].getChildren()[0].getChildren()[0]
-            pt = _ch.getChildren()[3]
-            p3 = App.Vector(pt.point.getValues()[2].getValue())
-
-            Gui.addModule("Draft")
-            _cmd = 'Draft.make_linear_dimension'
-            _cmd += '('
-            _cmd += DraftVecUtils.toString(p1) + ', '
-            _cmd += DraftVecUtils.toString(p2) + ', '
-            _cmd += 'dim_line=' + DraftVecUtils.toString(p3)
-            _cmd += ')'
-            _rem = 'FreeCAD.ActiveDocument.removeObject("' + o.Name + '")'
-            _cmd_list = ['_dim_ = ' + _cmd,
-                         _rem,
-                         'Draft.autogroup(_dim_)',
-                         'FreeCAD.ActiveDocument.recompute()']
-            self.commit(translate("draft", "Create Dimension"),
-                        _cmd_list)
 
     def create_angle_dimension(self):
         """Create an angular dimension from a center and two angles."""

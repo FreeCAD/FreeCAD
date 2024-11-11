@@ -131,7 +131,7 @@ class DraftTaskPanel:
         else:
             self.form = widget
     def getStandardButtons(self):
-        return int(QtWidgets.QDialogButtonBox.Close)
+        return QtWidgets.QDialogButtonBox.Close
     def accept(self):
         if hasattr(FreeCADGui,"draftToolBar"):
             return FreeCADGui.draftToolBar.validatePoint()
@@ -140,6 +140,11 @@ class DraftTaskPanel:
                 FreeCADGui.ActiveDocument.resetEdit()
             return True
     def reject(self):
+        # https://github.com/FreeCAD/FreeCAD/issues/17027
+        # Function can be called multiple times if Esc is pressed during mouse
+        # move. We need to prevent multiple calls to draftToolBar.escape():
+        if not FreeCADGui.draftToolBar.isTaskOn:
+            return
         FreeCADGui.draftToolBar.isTaskOn = False
         FreeCADGui.draftToolBar.escape()
         if FreeCADGui.ActiveDocument:
@@ -160,6 +165,7 @@ class DraftToolBar:
     def __init__(self):
         self.tray = None
         self.sourceCmd = None
+        self.mouse = True
         self.cancel = None
         self.pointcallback = None
 
@@ -204,7 +210,7 @@ class DraftToolBar:
 
         # add only a dummy widget, since widgets are created on demand
         self.baseWidget = DraftBaseWidget()
-        self.tray = QtWidgets.QToolBar(None)
+        self.tray = FreeCADGui.UiLoader().createWidget("Gui::ToolBar")
         self.tray.setObjectName("Draft tray")
         self.tray.setWindowTitle("Draft tray")
         self.toptray = self.tray
@@ -311,7 +317,6 @@ class DraftToolBar:
         self.promptlabel = self._label("promptlabel", self.layout, hide=task)
         self.cmdlabel = self._label("cmdlabel", self.layout, hide=task)
         boldtxt = QtGui.QFont()
-        boldtxt.setWeight(75)
         boldtxt.setBold(True)
         self.cmdlabel.setFont(boldtxt)
 
@@ -919,7 +924,7 @@ class DraftToolBar:
                     self.form = [extra]
                 self.callback = callback
             def getStandardButtons(self):
-                return int(QtWidgets.QDialogButtonBox.Close)
+                return QtWidgets.QDialogButtonBox.Close
             def reject(self):
                 if self.callback:
                     self.callback()
@@ -1094,8 +1099,13 @@ class DraftToolBar:
         treated as shortcuts
         """
 
-        if txt == "" or txt[0] in "0123456789.,-":
+        if txt == "":
             self.updateSnapper()
+            return
+
+        if txt[0] in "0123456789.,-":
+            self.updateSnapper()
+            self.setMouseMode(False)
             return
 
         txt = txt[0].upper()
@@ -1207,6 +1217,20 @@ class DraftToolBar:
                         FreeCAD.Vector(self.x,self.y,self.z))
                     FreeCADGui.Snapper.trackLine.p2(last.add(delta))
 
+    def setMouseMode(self, mode=True):
+        """Sets self.mouse True (default) or False and sets a timer
+        to set it back to True if applicable. self.mouse is then
+        used by gui_tools_utils.get_point() to know if the mouse can
+        update field values and point position or not."""
+        if mode == True:
+            self.mouse = True
+        else:
+            delay = params.get_param("MouseDelay")
+            if delay:
+                if self.mouse is True:
+                    self.mouse = False
+                    QtCore.QTimer.singleShot(delay*1000, self.setMouseMode)
+
     def checkEnterText(self):
         """this function checks if the entered text ends with two blank lines"""
         t = self.textValue.toPlainText()
@@ -1286,18 +1310,24 @@ class DraftToolBar:
             self.xValue.setEnabled(True)
             self.yValue.setEnabled(False)
             self.zValue.setEnabled(False)
+            self.yValue.setText("0")
+            self.zValue.setText("0")
             self.angleValue.setEnabled(False)
             self.setFocus()
         elif (mask == "y") or (self.mask == "y"):
             self.xValue.setEnabled(False)
             self.yValue.setEnabled(True)
             self.zValue.setEnabled(False)
+            self.xValue.setText("0")
+            self.zValue.setText("0")
             self.angleValue.setEnabled(False)
             self.setFocus("y")
         elif (mask == "z") or (self.mask == "z"):
             self.xValue.setEnabled(False)
             self.yValue.setEnabled(False)
             self.zValue.setEnabled(True)
+            self.xValue.setText("0")
+            self.yValue.setText("0")
             self.angleValue.setEnabled(False)
             self.setFocus("z")
         else:
@@ -1590,7 +1620,7 @@ class DraftToolBar:
                                  "Draft_Scale","Draft_Offset",
                                  "Draft_Trimex","Draft_Upgrade",
                                  "Draft_Downgrade","Draft_Edit"]
-                self.title = "Modify objects"
+                self.title = translate("draft", "Modify objects")
             def shouldShow(self):
                 return (FreeCAD.ActiveDocument is not None) and (FreeCADGui.Selection.getSelection() != [])
 
@@ -1668,7 +1698,7 @@ class FacebinderTaskPanel:
         return True
 
     def getStandardButtons(self):
-        return int(QtWidgets.QDialogButtonBox.Ok)
+        return QtWidgets.QDialogButtonBox.Ok
 
     def update(self):
         """fills the treewidget"""

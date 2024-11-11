@@ -62,6 +62,8 @@ public:
     bool isTailRightSide();
     std::vector<DrawTileWeld*> getTiles() const;
 
+    App::PropertyLink *getOwnerProperty() override { return &Leader; }
+
 protected:
     void onChanged(const App::Property* prop) override;
 

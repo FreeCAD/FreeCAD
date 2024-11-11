@@ -94,7 +94,7 @@ void SoPolygon::GLRender(SoGLRenderAction* action)
  */
 void SoPolygon::drawPolygon(const SbVec3f* points, int32_t len) const
 {
-    glLineWidth(3.0f);
+    glLineWidth(3.0F);
     int32_t beg = startIndex.getValue();
     int32_t cnt = numVertices.getValue();
     int32_t end = beg + cnt;
@@ -162,10 +162,10 @@ void SoPolygon::computeBBox(SoAction* action, SbBox3f& box, SbVec3f& center)
         }
 
         box.setBounds(minX, minY, minZ, maxX, maxY, maxZ);
-        center.setValue(0.5f * (minX + maxX), 0.5f * (minY + maxY), 0.5f * (minZ + maxZ));
+        center.setValue(0.5F * (minX + maxX), 0.5F * (minY + maxY), 0.5F * (minZ + maxZ));
     }
     else {
         box.setBounds(SbVec3f(0, 0, 0), SbVec3f(0, 0, 0));
-        center.setValue(0.0f, 0.0f, 0.0f);
+        center.setValue(0.0F, 0.0F, 0.0F);
     }
 }

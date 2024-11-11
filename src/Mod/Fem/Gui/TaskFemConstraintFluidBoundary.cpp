@@ -44,6 +44,7 @@
 #include <Mod/Fem/App/FemMeshObject.h>
 #include <Mod/Fem/App/FemSolverObject.h>
 #include <Mod/Fem/App/FemTools.h>
+#include <Mod/Part/App/PartFeature.h>
 
 #include "ActiveAnalysisObserver.h"
 #include "TaskFemConstraintFluidBoundary.h"
@@ -179,7 +180,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
             this,
             &TaskFemConstraintFluidBoundary::onThermalBoundaryTypeChanged);
 
-    connect(ui->buttonDirection, &QPushButton::pressed, this, [=] {
+    connect(ui->buttonDirection, &QPushButton::pressed, this, [this] {
         onButtonDirection(true);
     });
     connect(ui->checkReverse,
@@ -508,7 +509,7 @@ void TaskFemConstraintFluidBoundary::updateTurbulenceUI()
         ui->labelTurbulentLengthValue->setText(tr("Dissipation Rate [m2/s3]"));
     }
     else if (turbulenceSpec == "intensity&LengthScale") {
-        ui->labelTurbulentLengthValue->setText(tr("Length Scale[m]"));
+        ui->labelTurbulentLengthValue->setText(tr("Length Scale [m]"));
     }
     else if (turbulenceSpec == "intensity&ViscosityRatio") {
         ui->labelTurbulentLengthValue->setText(tr("Viscosity Ratio [1]"));
@@ -950,11 +951,6 @@ void TaskFemConstraintFluidBoundary::updateUI()
     }
 }
 
-bool TaskFemConstraintFluidBoundary::event(QEvent* e)
-{
-    return TaskFemConstraint::KeyEvent(e);
-}
-
 void TaskFemConstraintFluidBoundary::changeEvent(QEvent* e)
 {
     TaskBox::changeEvent(e);
@@ -993,15 +989,6 @@ TaskDlgFemConstraintFluidBoundary::TaskDlgFemConstraintFluidBoundary(
 }
 
 //==== calls from the TaskView ===============================================================
-
-void TaskDlgFemConstraintFluidBoundary::open()
-{
-    // a transaction is already open when creating this panel
-    if (!Gui::Command::hasPendingCommand()) {
-        QString msg = QObject::tr("Fluid boundary condition");
-        Gui::Command::openCommand((const char*)msg.toUtf8());
-    }
-}
 
 bool TaskDlgFemConstraintFluidBoundary::accept()
 {
@@ -1047,12 +1034,6 @@ bool TaskDlgFemConstraintFluidBoundary::accept()
         // Reverse control is done at BoundaryType selection, this UI is hidden from user
         // Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %s",
         // name.c_str(), boundary->getReverse() ? "True" : "False");
-
-        std::string scale = boundary->getScale();  // OvG: determine modified scale
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.Scale = %s",
-                                name.c_str(),
-                                scale.c_str());  // OvG: implement modified scale
 
         // solver specific setting, physical model selection
         const Fem::FemSolverObject* pcSolver = boundary->getFemSolver();
@@ -1113,15 +1094,6 @@ bool TaskDlgFemConstraintFluidBoundary::accept()
     }
 
     return TaskDlgFemConstraint::accept();
-}
-
-bool TaskDlgFemConstraintFluidBoundary::reject()
-{
-    Gui::Command::abortCommand();  // recover properties content
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-    Gui::Command::updateActive();
-
-    return true;
 }
 
 #include "moc_TaskFemConstraintFluidBoundary.cpp"

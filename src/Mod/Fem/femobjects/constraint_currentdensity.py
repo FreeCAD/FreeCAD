@@ -37,7 +37,7 @@ class ConstraintCurrentDensity(base_fempythonobject.BaseFemPythonObject):
     Type = "Fem::ConstraintCurrentDensity"
 
     def __init__(self, obj):
-        super(ConstraintCurrentDensity, self).__init__(obj)
+        super().__init__(obj)
         self.add_properties(obj)
 
     def onDocumentRestored(self, obj):
@@ -49,96 +49,90 @@ class ConstraintCurrentDensity(base_fempythonobject.BaseFemPythonObject):
                 "App::PropertyCurrentDensity",
                 "CurrentDensity_re_1",
                 "Vector Potential",
-                "Real part of current density x-component"
+                "Real part of current density x-component",
             )
+            obj.setPropertyStatus("CurrentDensity_re_1", "LockDynamic")
             obj.CurrentDensity_re_1 = "0 A/m^2"
         if not hasattr(obj, "CurrentDensity_re_2"):
             obj.addProperty(
                 "App::PropertyCurrentDensity",
                 "CurrentDensity_re_2",
                 "Vector Potential",
-                "Real part of current density y-component"
+                "Real part of current density y-component",
             )
+            obj.setPropertyStatus("CurrentDensity_re_2", "LockDynamic")
             obj.CurrentDensity_re_2 = "0 A/m^2"
         if not hasattr(obj, "CurrentDensity_re_3"):
             obj.addProperty(
                 "App::PropertyCurrentDensity",
                 "CurrentDensity_re_3",
                 "Vector Potential",
-                "Real part of current density z-component"
+                "Real part of current density z-component",
             )
+            obj.setPropertyStatus("CurrentDensity_re_3", "LockDynamic")
             obj.CurrentDensity_re_3 = "0 A/m^2"
         if not hasattr(obj, "CurrentDensity_im_1"):
             obj.addProperty(
                 "App::PropertyCurrentDensity",
                 "CurrentDensity_im_1",
                 "Vector Potential",
-                "Imaginary part of current density x-component"
+                "Imaginary part of current density x-component",
             )
+            obj.setPropertyStatus("CurrentDensity_im_1", "LockDynamic")
             obj.CurrentDensity_im_1 = "0 A/m^2"
         if not hasattr(obj, "CurrentDensity_im_2"):
             obj.addProperty(
                 "App::PropertyCurrentDensity",
                 "CurrentDensity_im_2",
                 "Vector Potential",
-                "Imaginary part of current density y-component"
+                "Imaginary part of current density y-component",
             )
+            obj.setPropertyStatus("CurrentDensity_im_2", "LockDynamic")
             obj.CurrentDensity_im_2 = "0 A/m^2"
         if not hasattr(obj, "CurrentDensity_im_3"):
             obj.addProperty(
                 "App::PropertyCurrentDensity",
                 "CurrentDensity_im_3",
                 "Vector Potential",
-                "Imaginary part of current density z-component"
+                "Imaginary part of current density z-component",
             )
+            obj.setPropertyStatus("CurrentDensity_im_3", "LockDynamic")
             obj.CurrentDensity_im_3 = "0 A/m^2"
 
         # now the enable bools
         if not hasattr(obj, "CurrentDensity_re_1_Disabled"):
             obj.addProperty(
-                "App::PropertyBool",
-                "CurrentDensity_re_1_Disabled",
-                "Vector Potential",
-                ""
+                "App::PropertyBool", "CurrentDensity_re_1_Disabled", "Vector Potential", ""
             )
+            obj.setPropertyStatus("CurrentDensity_re_1_Disabled", "LockDynamic")
             obj.CurrentDensity_re_1_Disabled = True
         if not hasattr(obj, "CurrentDensity_re_2_Disabled"):
             obj.addProperty(
-                "App::PropertyBool",
-                "CurrentDensity_re_2_Disabled",
-                "Vector Potential",
-                ""
+                "App::PropertyBool", "CurrentDensity_re_2_Disabled", "Vector Potential", ""
             )
+            obj.setPropertyStatus("CurrentDensity_re_2_Disabled", "LockDynamic")
             obj.CurrentDensity_re_2_Disabled = True
         if not hasattr(obj, "CurrentDensity_re_3_Disabled"):
             obj.addProperty(
-                "App::PropertyBool",
-                "CurrentDensity_re_3_Disabled",
-                "Vector Potential",
-                ""
+                "App::PropertyBool", "CurrentDensity_re_3_Disabled", "Vector Potential", ""
             )
+            obj.setPropertyStatus("CurrentDensity_re_3_Disabled", "LockDynamic")
             obj.CurrentDensity_re_3_Disabled = True
         if not hasattr(obj, "CurrentDensity_im_1_Disabled"):
             obj.addProperty(
-                "App::PropertyBool",
-                "CurrentDensity_im_1_Disabled",
-                "Vector Potential",
-                ""
+                "App::PropertyBool", "CurrentDensity_im_1_Disabled", "Vector Potential", ""
             )
+            obj.setPropertyStatus("CurrentDensity_im_1_Disabled", "LockDynamic")
             obj.CurrentDensity_im_1_Disabled = True
         if not hasattr(obj, "CurrentDensity_im_2_Disabled"):
             obj.addProperty(
-                "App::PropertyBool",
-                "CurrentDensity_im_2_Disabled",
-                "Vector Potential",
-                ""
+                "App::PropertyBool", "CurrentDensity_im_2_Disabled", "Vector Potential", ""
             )
+            obj.setPropertyStatus("CurrentDensity_im_2_Disabled", "LockDynamic")
             obj.CurrentDensity_im_2_Disabled = True
         if not hasattr(obj, "CurrentDensity_im_3_Disabled"):
             obj.addProperty(
-                "App::PropertyBool",
-                "CurrentDensity_im_3_Disabled",
-                "Vector Potential",
-                ""
+                "App::PropertyBool", "CurrentDensity_im_3_Disabled", "Vector Potential", ""
             )
+            obj.setPropertyStatus("CurrentDensity_im_3_Disabled", "LockDynamic")
             obj.CurrentDensity_im_3_Disabled = True

@@ -35,14 +35,16 @@ def get_information():
         "meshtype": "solid",
         "meshelement": "Tet10",
         "constraints": ["fixed", "displacement"],
-        "solvers": ["calculix", "ccxtools", "elmer"],
+        "solvers": ["ccxtools", "elmer"],
         "material": "solid",
-        "equations": ["mechanical"]
+        "equations": ["mechanical"],
     }
 
 
 def get_explanation(header=""):
-    return header + """
+    return (
+        header
+        + """
 
 To run the example from Python console use:
 from femexamples.ccx_cantilever_prescribeddisplacement import setup
@@ -53,6 +55,7 @@ See forum topic post:
 ...
 
 """
+    )
 
 
 def setup(doc=None, solvertype="ccxtools"):
@@ -79,7 +82,6 @@ def setup(doc=None, solvertype="ccxtools"):
     # constraint displacement
     con_disp = ObjectsFem.makeConstraintDisplacement(doc, name="ConstraintDisplacmentPrescribed")
     con_disp.References = [(geom_obj, "Face2")]
-    con_disp.zFix = False
     con_disp.zFree = False
     con_disp.zDisplacement = -250.0
     analysis.addObject(con_disp)

@@ -63,6 +63,7 @@
 #include "QGVNavStyleTouchpad.h"
 #include "QGVPage.h"
 #include "Rez.h"
+#include "TechDrawHandler.h"
 #include "ViewProviderPage.h"
 
 
@@ -167,7 +168,7 @@ public:
 QGVPage::QGVPage(ViewProviderPage* vpPage, QGSPage* scenePage, QWidget* parent)
     : QGraphicsView(parent), m_renderer(Native), drawBkg(true), m_vpPage(nullptr),
       m_scene(scenePage), balloonPlacing(false), m_showGrid(false),
-      m_navStyle(nullptr), d(new Private(this))
+      m_navStyle(nullptr), d(new Private(this)), toolHandler(nullptr)
 {
     assert(vpPage);
     m_vpPage = vpPage;
@@ -278,6 +279,25 @@ void QGVPage::setNavigationStyle(std::string navParm)
     }
     else {
         m_navStyle = new QGVNavStyle(this);
+    }
+}
+
+
+void QGVPage::activateHandler(TechDrawHandler* newHandler)
+{
+    if (toolHandler) {
+        toolHandler->deactivate();
+    }
+
+    toolHandler = std::unique_ptr<TechDrawHandler>(newHandler);
+    toolHandler->activate(this);
+}
+
+void QGVPage::deactivateHandler()
+{
+    if (toolHandler) {
+        toolHandler->deactivate();
+        toolHandler = nullptr;
     }
 }
 
@@ -421,7 +441,12 @@ void QGVPage::wheelEvent(QWheelEvent* event)
 
 void QGVPage::keyPressEvent(QKeyEvent* event)
 {
-    m_navStyle->handleKeyPressEvent(event);
+    if (toolHandler) {
+        toolHandler->keyPressEvent(event);
+    }
+    else {
+        m_navStyle->handleKeyPressEvent(event);
+    }
     if (!event->isAccepted()) {
         QGraphicsView::keyPressEvent(event);
     }
@@ -429,7 +454,12 @@ void QGVPage::keyPressEvent(QKeyEvent* event)
 
 void QGVPage::keyReleaseEvent(QKeyEvent* event)
 {
-    m_navStyle->handleKeyReleaseEvent(event);
+    if (toolHandler) {
+        toolHandler->keyReleaseEvent(event);
+    }
+    else {
+        m_navStyle->handleKeyReleaseEvent(event);
+    }
     if (!event->isAccepted()) {
         QGraphicsView::keyReleaseEvent(event);
     }
@@ -465,6 +495,11 @@ void QGVPage::enterEvent(QEvent* event)
 void QGVPage::enterEvent(QEnterEvent* event)
 #endif
 {
+    if (toolHandler) {
+        // if the user interacted with another widget than the mdi, the cursor got unset.
+        // So we reapply it.
+        toolHandler->updateCursor();
+    }
     QGraphicsView::enterEvent(event);
     m_navStyle->handleEnterEvent(event);
     QGraphicsView::enterEvent(event);
@@ -478,21 +513,40 @@ void QGVPage::leaveEvent(QEvent* event)
 
 void QGVPage::mousePressEvent(QMouseEvent* event)
 {
-    m_navStyle->handleMousePressEvent(event);
+    if (toolHandler && (event->button() != Qt::MiddleButton)) {
+        toolHandler->mousePressEvent(event);
+    }
+    else {
+        m_navStyle->handleMousePressEvent(event);
+    }
     QGraphicsView::mousePressEvent(event);
 }
 
 void QGVPage::mouseMoveEvent(QMouseEvent* event)
 {
+    if (toolHandler) {
+        toolHandler->mouseMoveEvent(event);
+    }
     m_navStyle->handleMouseMoveEvent(event);
     QGraphicsView::mouseMoveEvent(event);
 }
 
 void QGVPage::mouseReleaseEvent(QMouseEvent* event)
 {
-    m_navStyle->handleMouseReleaseEvent(event);
-    QGraphicsView::mouseReleaseEvent(event);
-    resetCursor();
+    if (toolHandler && (event->button() != Qt::MiddleButton)) {
+        QGraphicsView::mouseReleaseEvent(event);
+        toolHandler->mouseReleaseEvent(event);
+    }
+    else {
+        m_navStyle->handleMouseReleaseEvent(event);
+        QGraphicsView::mouseReleaseEvent(event);
+        if (toolHandler) {
+            toolHandler->updateCursor();
+        }
+        else {
+            resetCursor();
+        }
+    }
 }
 
 TechDraw::DrawPage* QGVPage::getDrawPage() { return m_vpPage->getDrawPage(); }
@@ -532,7 +586,7 @@ QPixmap QGVPage::prepareCursorPixmap(const char* iconName, QPoint& hotspot)
     // the 64x64 based hotspot position for our 32x32 based cursor pixmaps accordingly
     floatHotspot *= 0.5;
 
-#if !defined(Q_OS_WIN32) && !defined(Q_OS_MAC)
+#if !defined(Q_OS_WIN32) && !defined(Q_OS_MACOS)
     // On XCB platform, the pixmap device pixel ratio is not taken into account for cursor hot spot,
     // therefore we must take care of the transformation ourselves...
     // Refer to QTBUG-68571 - https://bugreports.qt.io/browse/QTBUG-68571
@@ -553,8 +607,7 @@ void QGVPage::activateCursor(QCursor cursor)
 
 void QGVPage::resetCursor()
 {
-    this->setCursor(Qt::ArrowCursor);
-    viewport()->setCursor(Qt::ArrowCursor);
+    activateCursor(Qt::ArrowCursor);
 }
 
 void QGVPage::setPanCursor() { activateCursor(panCursor); }
@@ -630,24 +683,36 @@ Base::Type QGVPage::getStyleType(std::string model)
     return type;
 }
 
+static QCursor createCursor(QBitmap &bitmap, QBitmap &mask, int hotX, int hotY, double dpr)
+{
+#if defined(Q_OS_WIN32)
+    bitmap.setDevicePixelRatio(dpr);
+    mask.setDevicePixelRatio(dpr);
+#else
+    Q_UNUSED(dpr)
+#endif
+#if defined(Q_OS_LINUX) && QT_VERSION < QT_VERSION_CHECK(6,6,0) && QT_VERSION >= QT_VERSION_CHECK(5,13,0)
+    if (qGuiApp->platformName() == QLatin1String("wayland")) {
+        QImage img = bitmap.toImage();
+        img.convertTo(QImage::Format_ARGB32);
+        QPixmap pixmap = QPixmap::fromImage(img);
+        pixmap.setMask(mask);
+        return QCursor(pixmap, hotX, hotY);
+    }
+#endif
+
+    return QCursor(bitmap, mask, hotX, hotY);
+}
+
 void QGVPage::createStandardCursors(double dpr)
 {
-    (void)dpr;//avoid clang warning re unused parameter
     QBitmap cursor = QBitmap::fromData(QSize(PAN_WIDTH, PAN_HEIGHT), pan_bitmap);
     QBitmap mask = QBitmap::fromData(QSize(PAN_WIDTH, PAN_HEIGHT), pan_mask_bitmap);
-#if defined(Q_OS_WIN32)
-    cursor.setDevicePixelRatio(dpr);
-    mask.setDevicePixelRatio(dpr);
-#endif
-    panCursor = QCursor(cursor, mask, PAN_HOT_X, PAN_HOT_Y);
+    panCursor = createCursor(cursor, mask, PAN_HOT_X, PAN_HOT_Y, dpr);
 
     cursor = QBitmap::fromData(QSize(ZOOM_WIDTH, ZOOM_HEIGHT), zoom_bitmap);
     mask = QBitmap::fromData(QSize(ZOOM_WIDTH, ZOOM_HEIGHT), zoom_mask_bitmap);
-#if defined(Q_OS_WIN32)
-    cursor.setDevicePixelRatio(dpr);
-    mask.setDevicePixelRatio(dpr);
-#endif
-    zoomCursor = QCursor(cursor, mask, ZOOM_HOT_X, ZOOM_HOT_Y);
+    zoomCursor = createCursor(cursor, mask, ZOOM_HOT_X, ZOOM_HOT_Y, dpr);
 }
 
 #include <Mod/TechDraw/Gui/moc_QGVPage.cpp>

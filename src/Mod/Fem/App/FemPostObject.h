@@ -45,7 +45,10 @@ public:
 
     Fem::PropertyPostDataObject Data;
 
+    PyObject* getPyObject() override;
+
     vtkBoundingBox getBoundingBox();
+    void writeVTK(const char* filename) const;
 };
 
 }  // namespace Fem

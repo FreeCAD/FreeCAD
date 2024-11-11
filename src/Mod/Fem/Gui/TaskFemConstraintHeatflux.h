@@ -45,9 +45,11 @@ public:
     explicit TaskFemConstraintHeatflux(ViewProviderFemConstraintHeatflux* ConstraintView,
                                        QWidget* parent = nullptr);
     ~TaskFemConstraintHeatflux() override;
-    double getAmbientTemp() const;
+    std::string getAmbientTemp() const;
     /*double getFaceTemp(void) const;*/
-    double getFilmCoef() const;
+    std::string getFilmCoef() const;
+    std::string getDFlux() const;
+    double getEmissivity() const;
     std::string get_constraint_type() const;
     const std::string getReferences() const override;
 
@@ -56,14 +58,15 @@ private Q_SLOTS:
     void onAmbientTempChanged(double val);
     /*void onFaceTempChanged(double val);*/
     void onFilmCoefChanged(double val);
+    void onEmissivityChanged(double val);
     void onHeatFluxChanged(double val);
     void Conv();
+    void Rad();
     void Flux();
     void addToSelection() override;
     void removeFromSelection() override;
 
 protected:
-    bool event(QEvent* e) override;
     void changeEvent(QEvent* e) override;
     void clearButtons(const SelectionChangeModes notThis) override;
 
@@ -78,9 +81,7 @@ class TaskDlgFemConstraintHeatflux: public TaskDlgFemConstraint
 
 public:
     explicit TaskDlgFemConstraintHeatflux(ViewProviderFemConstraintHeatflux* ConstraintView);
-    void open() override;
     bool accept() override;
-    bool reject() override;
 };
 
 }  // namespace FemGui

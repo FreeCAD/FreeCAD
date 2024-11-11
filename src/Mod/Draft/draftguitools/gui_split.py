@@ -33,16 +33,11 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
-import Draft_rc
 import DraftVecUtils
-import draftguitools.gui_base_original as gui_base_original
-import draftguitools.gui_tool_utils as gui_tool_utils
-
+from draftguitools import gui_base_original
+from draftguitools import gui_tool_utils
 from draftutils.messages import _toolmsg
 from draftutils.translate import translate
-
-# The module is used to prevent complaints from code checkers (flake8)
-True if Draft_rc.__name__ else False
 
 
 class Split(gui_base_original.Modifier):
@@ -51,17 +46,18 @@ class Split(gui_base_original.Modifier):
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
-        return {'Pixmap': 'Draft_Split',
-                'Accel': "S, P",
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Split", "Split"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Split", "Splits the selected line or polyline into two independent lines\nor polylines by clicking anywhere along the original object.\nIt works best when choosing a point on a straight segment and not a corner vertex.")}
+        return {"Pixmap": "Draft_Split",
+                "Accel": "S, P",
+                "MenuText": QT_TRANSLATE_NOOP("Draft_Split", "Split"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_Split", "Splits the selected line or polyline into two independent lines\nor polylines by clicking anywhere along the original object.\nIt works best when choosing a point on a straight segment and not a corner vertex.")}
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Split, self).Activated(name="Split")
+        super().Activated(name="Split")
         if not self.ui:
             return
         _toolmsg(translate("draft", "Click anywhere on a line to split it."))
+        self.view.graphicsView().setFocus()  # Make sure using Esc works.
         self.call = self.view.addEventCallback("SoEvent", self.action)
 
     def action(self, arg):
@@ -85,11 +81,12 @@ class Split(gui_base_original.Modifier):
               and arg["Button"] == "BUTTON1"
               and arg["State"] == "DOWN"):
             self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg)
-            if "Edge" in info["Component"]:
+            if info is not None and "Edge" in info["Component"]:
                 return self.proceed(info)
 
     def proceed(self, info):
         """Proceed with execution of the command after click on an edge."""
+        self.end_callbacks(self.call)
         wire = App.ActiveDocument.getObject(info["Object"])
         edge_index = int(info["Component"][4:])
 
@@ -107,6 +104,11 @@ class Split(gui_base_original.Modifier):
                     _cmd_list)
 
         self.finish()
+
+    def finish(self, cont=False):
+        """Terminate the operation."""
+        self.end_callbacks(self.call)
+        super().finish()
 
 
 Gui.addCommand('Draft_Split', Split())

@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #include <App/Document.h>
+#include <App/VarSet.h>
 #include <App/Origin.h>
 #include <Base/Placement.h>
 
@@ -31,6 +32,7 @@
 #include "BodyPy.h"
 #include "FeatureBase.h"
 #include "FeatureSketchBased.h"
+#include "FeatureSolid.h"
 #include "FeatureTransformed.h"
 #include "ShapeBinder.h"
 
@@ -40,7 +42,17 @@ using namespace PartDesign;
 PROPERTY_SOURCE(PartDesign::Body, Part::BodyBase)
 
 Body::Body() {
-    _GroupTouched.setStatus(App::Property::Output,true);
+    ADD_PROPERTY_TYPE(AllowCompound, (false), "Experimental", App::Prop_None, "Allow multiple solids in Body (experimental)");
+
+    _GroupTouched.setStatus(App::Property::Output, true);
+
+    static Base::Reference<ParameterGrp> hGrp = App::GetApplication()
+        .GetUserParameter()
+        .GetGroup("BaseApp/Preferences/Mod/PartDesign");
+
+    auto allowCompoundDefaultValue = hGrp->GetBool("AllowCompoundDefault", false);
+
+    ADD_PROPERTY(AllowCompound, (allowCompoundDefaultValue));
 }
 
 /*
@@ -125,7 +137,6 @@ App::DocumentObject* Body::getPrevSolidFeature(App::DocumentObject *start)
     if (rvIt != features.rend()) { // the solid found in model list
         return *rvIt;
     }
-
     return nullptr;
 }
 
@@ -156,7 +167,6 @@ App::DocumentObject* Body::getNextSolidFeature(App::DocumentObject *start)
     if (rvIt != features.end()) { // the solid found in model list
         return *rvIt;
     }
-
     return nullptr;
 }
 
@@ -173,35 +183,22 @@ bool Body::isAfterInsertPoint(App::DocumentObject* feature) {
     }
 }
 
-bool Body::isMemberOfMultiTransform(const App::DocumentObject* obj)
-{
-    if (!obj)
-        return false;
-
-    // ORIGINAL COMMENT:
-    // This can be recognized because the Originals property is empty (it is contained
-    // in the MultiTransform instead)
-    // COMMENT ON THE COMMENT:
-    // This is wrong because at the creation (addObject) and before assigning the originals, that
-    // is when this code is executed, the originals property is indeed empty.
-    //
-    // However, for the purpose of setting the base feature, the transform feature has been modified
-    // to auto set it when the originals are not null. See:
-    // App::DocumentObjectExecReturn *Transformed::execute(void)
-    //
-    return (obj->isDerivedFrom<PartDesign::Transformed>() &&
-            static_cast<const PartDesign::Transformed*>(obj)->Originals.getValues().empty());
-}
-
 bool Body::isSolidFeature(const App::DocumentObject *obj)
 {
-    if (!obj)
+    if (!obj) {
         return false;
+    }
 
-    if (obj->isDerivedFrom<PartDesign::Feature>() &&
-        !PartDesign::Feature::isDatum(obj)) {
-        // Transformed Features inside a MultiTransform are not solid features
-        return !isMemberOfMultiTransform(obj);
+    if (obj->isDerivedFrom<PartDesign::Feature>()) {
+        if (PartDesign::Feature::isDatum(obj)) {
+            // Datum objects are not solid
+            return false;
+        }
+        if (auto transFeature = Base::freecad_dynamic_cast<PartDesign::Transformed>(obj)) {
+            // Transformed Features inside a MultiTransform are not solid features
+            return !transFeature->isMultiTransformChild();
+        }
+        return true;
     }
     return false;//DeepSOIC: work-in-progress?
 }
@@ -217,10 +214,12 @@ bool Body::isAllowed(const App::DocumentObject *obj)
             // TODO Shouldn't we replace it with Sketcher::SketchObject? (2015-08-13, Fat-Zer)
             obj->isDerivedFrom<Part::Part2DObject>() ||
             obj->isDerivedFrom<PartDesign::ShapeBinder>() ||
-            obj->isDerivedFrom<PartDesign::SubShapeBinder>()
+            obj->isDerivedFrom<PartDesign::SubShapeBinder>() ||
             // TODO Why this lines was here? why should we allow anything of those? (2015-08-13, Fat-Zer)
             //obj->isDerivedFrom<Part::FeaturePython>() // trouble with this line on Windows!? Linker fails to find getClassTypeId() of the Part::FeaturePython...
             //obj->isDerivedFrom<Part::Feature>()
+            // allow VarSets for parameterization
+            obj->isDerivedFrom<App::VarSet>()
             );
 }
 
@@ -375,6 +374,7 @@ std::vector<App::DocumentObject*> Body::removeObject(App::DocumentObject* featur
 
 App::DocumentObjectExecReturn *Body::execute()
 {
+    Part::BodyBase::execute();
     /*
     Base::Console().Error("Body '%s':\n", getNameInDocument());
     App::DocumentObject* tip = Tip.getValue();
@@ -428,7 +428,7 @@ void Body::onSettingDocument() {
     Part::BodyBase::onSettingDocument();
 }
 
-void Body::onChanged (const App::Property* prop) {
+void Body::onChanged(const App::Property* prop) {
     // we neither load a project nor perform undo/redo
     if (!this->isRestoring()
             && this->getDocument()
@@ -438,7 +438,6 @@ void Body::onChanged (const App::Property* prop) {
             auto first = Group.getValues().empty() ? nullptr : Group.getValues().front();
 
             if (BaseFeature.getValue()) {
-
                 //setup the FeatureBase if needed
                 if (!first || !first->isDerivedFrom(FeatureBase::getClassTypeId())) {
                     bf = static_cast<FeatureBase*>(getDocument()->addObject("PartDesign::FeatureBase", "BaseFeature"));
@@ -452,15 +451,38 @@ void Body::onChanged (const App::Property* prop) {
                 }
             }
 
-            if (bf && (bf->BaseFeature.getValue() != BaseFeature.getValue()))
+            if (bf && (bf->BaseFeature.getValue() != BaseFeature.getValue())) {
                 bf->BaseFeature.setValue(BaseFeature.getValue());
+            }
         }
-        else if( prop == &Group ) {
-
+        else if (prop == &Group) {
             //if the FeatureBase was deleted we set the BaseFeature link to nullptr
             if (BaseFeature.getValue() &&
                (Group.getValues().empty() || !Group.getValues().front()->isDerivedFrom(FeatureBase::getClassTypeId()))) {
                     BaseFeature.setValue(nullptr);
+            }
+        }
+        else if (prop == &AllowCompound) {
+            // As disallowing compounds can break the model we need to recompute the whole tree.
+            // This will inform user about first place where there is more than one solid.
+            // On allowing compounds we must also recompute the entire feature tree
+            for (auto feature : getFullModel()) {
+                feature->enforceRecompute();
+            }
+
+        }
+        else if (prop == &ShapeMaterial) {
+            std::vector<App::DocumentObject*> features = Group.getValues();
+            if (!features.empty()) {
+                for (auto it : features) {
+                    auto feature = dynamic_cast<Part::Feature*>(it);
+                    if (feature) {
+                        if (feature->ShapeMaterial.getValue().getUUID()
+                            != ShapeMaterial.getValue().getUUID()) {
+                            feature->ShapeMaterial.setValue(ShapeMaterial.getValue());
+                        }
+                    }
+                }
             }
         }
     }
@@ -494,6 +516,35 @@ std::vector<std::string> Body::getSubObjects(int reason) const {
 App::DocumentObject *Body::getSubObject(const char *subname,
         PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const
 {
+    while (subname && *subname == '.') {
+        ++subname;  // skip leading .
+    }
+
+    // PartDesign::Feature now support grouping sibling features, and the user
+    // is free to expand/collapse at any time. To not disrupt subname path
+    // because of this, the body will peek the next two sub-objects reference,
+    // and skip the first sub-object if possible.
+    if (subname) {
+        const char* firstDot = strchr(subname, '.');
+        if (firstDot) {
+            const char* secondDot = strchr(firstDot + 1, '.');
+            if (secondDot) {
+                auto firstObj = Group.find(std::string(subname, firstDot).c_str());
+                if (!firstObj || firstObj->isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
+                    auto secondObj = Group.find(std::string(firstDot + 1, secondDot).c_str());
+                    if (secondObj) {
+                        // we support only one level of sibling grouping, so no
+                        // recursive call to our own getSubObject()
+                        return Part::BodyBase::getSubObject(firstDot + 1,
+                                                            pyObj,
+                                                            pmat,
+                                                            transform,
+                                                            depth + 1);
+                    }
+                }
+            }
+        }
+    }
 #if 1
     return Part::BodyBase::getSubObject(subname,pyObj,pmat,transform,depth);
 #else

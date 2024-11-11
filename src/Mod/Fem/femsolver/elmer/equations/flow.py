@@ -38,8 +38,7 @@ FLOW_MODEL = ["Full", "No convection", "Stokes"]
 
 
 def create(doc, name="Flow"):
-    return femutils.createObject(
-        doc, name, Proxy, ViewProxy)
+    return femutils.createObject(doc, name, Proxy, ViewProxy)
 
 
 class Proxy(nonlinear.Proxy, equationbase.FlowProxy):
@@ -47,7 +46,7 @@ class Proxy(nonlinear.Proxy, equationbase.FlowProxy):
     Type = "Fem::EquationElmerFlow"
 
     def __init__(self, obj):
-        super(Proxy, self).__init__(obj)
+        super().__init__(obj)
 
         obj.addProperty(
             "App::PropertyBool",
@@ -56,14 +55,9 @@ class Proxy(nonlinear.Proxy, equationbase.FlowProxy):
             (
                 "Set to true for incompressible flow for more stable\n"
                 "discretization when Reynolds number increases"
-            )
+            ),
         )
-        obj.addProperty(
-            "App::PropertyEnumeration",
-            "FlowModel",
-            "Flow",
-            "Flow model to be used"
-        )
+        obj.addProperty("App::PropertyEnumeration", "FlowModel", "Flow", "Flow model to be used")
         obj.addProperty(
             "App::PropertyBool",
             "GradpDiscretization",
@@ -71,20 +65,14 @@ class Proxy(nonlinear.Proxy, equationbase.FlowProxy):
             (
                 "If true pressure Dirichlet boundary conditions can be used.\n"
                 "Also mass flux is available as a natural boundary condition."
-            )
+            ),
         )
         obj.addProperty(
-            "App::PropertyString",
-            "Variable",
-            "Flow",
-            "Only for a 2D model change the '3' to '2'"
+            "App::PropertyString", "Variable", "Flow", "Only for a 2D model change the '3' to '2'"
         )
 
         obj.addProperty(
-            "App::PropertyEnumeration",
-            "Convection",
-            "Equation",
-            "Type of convection to be used"
+            "App::PropertyEnumeration", "Convection", "Equation", "Type of convection to be used"
         )
         obj.addProperty(
             "App::PropertyBool",
@@ -93,7 +81,7 @@ class Proxy(nonlinear.Proxy, equationbase.FlowProxy):
             (
                 "Magnetic induction equation will be solved\n"
                 "along with the Navier-Stokes equations"
-            )
+            ),
         )
         obj.FlowModel = FLOW_MODEL
         obj.FlowModel = "Full"
@@ -105,5 +93,6 @@ class Proxy(nonlinear.Proxy, equationbase.FlowProxy):
 
 class ViewProxy(nonlinear.ViewProxy, equationbase.FlowViewProxy):
     pass
+
 
 ##  @}

@@ -45,6 +45,7 @@
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
+#include <Mod/TechDraw/App/Preferences.h>
 
 #include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
@@ -55,6 +56,8 @@
 
 
 using namespace TechDrawGui;
+using namespace TechDraw;
+using DU = DrawUtil;
 
 //internal functions
 bool _checkSelectionHatch(Gui::Command* cmd);
@@ -256,7 +259,7 @@ void CmdTechDrawImage::activated(int iMsg)
     // Reading an image
     QString fileName = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
         QString::fromUtf8(QT_TR_NOOP("Select an Image File")),
-        QString(),
+        Preferences::defaultSymbolDir(),
         QString::fromUtf8(QT_TR_NOOP("Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)")));
     if (fileName.isEmpty()) {
         return;
@@ -264,11 +267,12 @@ void CmdTechDrawImage::activated(int iMsg)
 
     std::string FeatName = getUniqueObjectName("Image");
     fileName = Base::Tools::escapeEncodeFilename(fileName);
+    auto filespec = DU::cleanFilespecBackslash(Base::Tools::toStdString(fileName));
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Image"));
     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewImage', '%s')", FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewImage', 'Image', '%s')",
               FeatName.c_str(), FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.ImageFile = '%s'", FeatName.c_str(), fileName.toUtf8().constData());
+    doCommand(Doc, "App.activeDocument().%s.ImageFile = '%s'", FeatName.c_str(), filespec.c_str());
     doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
     updateActive();
     commitCommand();

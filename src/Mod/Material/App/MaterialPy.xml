@@ -33,7 +33,7 @@
       </Documentation>
       <Parameter Name="LibraryIcon" Type="String"/>
     </Attribute>
-    <Attribute Name="Name" ReadOnly="true">
+    <Attribute Name="Name" ReadOnly="false">
       <Documentation>
         <UserDocu>Model name.</UserDocu>
       </Documentation>
@@ -47,23 +47,23 @@
     </Attribute>
     <Attribute Name="UUID" ReadOnly="true">
       <Documentation>
-        <UserDocu>Unique model identifier.</UserDocu>
+        <UserDocu>Unique model identifier. This is only valid after the material is saved.</UserDocu>
       </Documentation>
       <Parameter Name="UUID" Type="String"/>
     </Attribute>
-    <Attribute Name="Description" ReadOnly="true">
+    <Attribute Name="Description" ReadOnly="false">
       <Documentation>
         <UserDocu>Description of the material.</UserDocu>
       </Documentation>
       <Parameter Name="Description" Type="String"/>
     </Attribute>
-    <Attribute Name="URL" ReadOnly="true">
+    <Attribute Name="URL" ReadOnly="false">
       <Documentation>
         <UserDocu>URL to a material reference.</UserDocu>
       </Documentation>
       <Parameter Name="URL" Type="String"/>
     </Attribute>
-    <Attribute Name="Reference" ReadOnly="true">
+    <Attribute Name="Reference" ReadOnly="false">
       <Documentation>
         <UserDocu>Reference for material data.</UserDocu>
       </Documentation>
@@ -81,13 +81,13 @@
       </Documentation>
       <Parameter Name="AuthorAndLicense" Type="String"/>
     </Attribute>
-    <Attribute Name="Author" ReadOnly="true">
+    <Attribute Name="Author" ReadOnly="false">
       <Documentation>
         <UserDocu>Author information.</UserDocu>
       </Documentation>
       <Parameter Name="Author" Type="String"/>
     </Attribute>
-    <Attribute Name="License" ReadOnly="true">
+    <Attribute Name="License" ReadOnly="false">
       <Documentation>
         <UserDocu>License information.</UserDocu>
       </Documentation>
@@ -111,9 +111,29 @@
       </Documentation>
       <Parameter Name="Tags" Type="List"/>
     </Attribute>
+    <Methode Name="addPhysicalModel" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Add the physical model with the given UUID</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="removePhysicalModel" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Remove the physical model with the given UUID</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="hasPhysicalModel" ReadOnly="true">
       <Documentation>
         <UserDocu>Check if the material implements the physical model with the given UUID</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="addAppearanceModel" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Add the appearance model with the given UUID</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="removeAppearanceModel" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Remove the appearance model with the given UUID</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="hasAppearanceModel" ReadOnly="true">
@@ -141,6 +161,11 @@
         <UserDocu>Check if the material implements the appearance property with the given name</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="hasLegacyProperties" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Returns true of there are legacy properties</UserDocu>
+      </Documentation>
+    </Methode>
     <Attribute Name="Properties" ReadOnly="true">
       <Documentation>
         <UserDocu>deprecated -- Dictionary of all material properties.</UserDocu>
@@ -159,14 +184,30 @@
       </Documentation>
       <Parameter Name="AppearanceProperties" Type="Dict"/>
     </Attribute>
+    <Attribute Name="LegacyProperties" ReadOnly="true">
+      <Documentation>
+        <UserDocu>deprecated -- Dictionary of material legacy properties.</UserDocu>
+      </Documentation>
+      <Parameter Name="LegacyProperties" Type="Dict"/>
+    </Attribute>
     <Methode Name="getPhysicalValue" ReadOnly="true">
       <Documentation>
         <UserDocu>Get the value associated with the property</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="setPhysicalValue" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Set the value associated with the property</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="getAppearanceValue" ReadOnly="true">
       <Documentation>
         <UserDocu>Get the value associated with the property</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setAppearanceValue" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Set the value associated with the property</UserDocu>
       </Documentation>
     </Methode>
   </PythonExport>

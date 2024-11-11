@@ -57,6 +57,8 @@ protected:
 private:
     Ui_Segmentation* ui;
     Mesh::Feature* myMesh;
+
+    Q_DISABLE_COPY_MOVE(Segmentation)
 };
 
 /**
@@ -77,7 +79,6 @@ public:
 
 private:
     Segmentation* widget;
-    Gui::TaskView::TaskBox* taskbox;
 };
 
 }  // namespace MeshGui

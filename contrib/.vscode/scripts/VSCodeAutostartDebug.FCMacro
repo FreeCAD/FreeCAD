@@ -11,8 +11,8 @@ debugpy.listen(('localhost', 5678))
 
 # Turns out you cannot probe debugpy to see if it is up:
 # https://github.com/microsoft/debugpy/issues/974
-# Open another port that the script WaitForDebugpy can probe to see if 
+# Open another port that the script WaitForDebugpy can probe to see if
 # debugpy is running
-listener = Listener(('localhost', 6000), backlog=10)
+listener = Listener(('localhost', 39999), backlog=10)
 
 debugpy.wait_for_client()

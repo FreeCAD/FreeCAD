@@ -59,6 +59,7 @@ TechDraw::DrawViewPart* TechDraw::getReferencesFromSelection(ReferenceVector& re
                 //subName to a null string to avoid later misunderstandings.
                 ReferenceEntry ref(dvp, std::string());
                 references2d.push_back(ref);
+                continue;
             }
             for (auto& sub : selItem.getSubNames()) {
                 ReferenceEntry ref(dvp, sub);
@@ -116,7 +117,7 @@ DimensionGeometryType TechDraw::validateDimSelection(
     StringVector subNames;
     TechDraw::DrawViewPart* dvpSave(nullptr);
     for (auto& ref : references) {
-        TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(ref.getObject());
+        auto* dvp = dynamic_cast<TechDraw::DrawViewPart*>(ref.getObject());
         if (dvp) {
             dvpSave = dvp;
             if (!ref.getSubName().empty()) {
@@ -151,7 +152,7 @@ DimensionGeometryType TechDraw::validateDimSelection(
     //check for wrong number of geometry
     GeomCountVector foundCounts;
     GeomCountMap minimumCountMap = loadRequiredCounts(acceptableGeometry, minimumCounts);
-    if (!checkGeometryOccurences(subNames, minimumCountMap)) {
+    if (!checkGeometryOccurrences(subNames, minimumCountMap)) {
         //too many or too few geometry descriptors.
         return isInvalid;
     }
@@ -192,7 +193,6 @@ DimensionGeometryType TechDraw::validateDimSelection3d(
         }
     }
 
-
     //check for invalid geometry descriptors in the subNames
     std::unordered_set<std::string> acceptableGeometrySet(acceptableGeometry.begin(),
                                                           acceptableGeometry.end());
@@ -203,7 +203,7 @@ DimensionGeometryType TechDraw::validateDimSelection3d(
 
     //check for wrong number of geometry
     GeomCountMap minimumCountMap = loadRequiredCounts(acceptableGeometry, minimumCounts);
-    if (!checkGeometryOccurences(subNames, minimumCountMap)) {
+    if (!checkGeometryOccurrences(subNames, minimumCountMap)) {
         //too many or too few geometry descriptors.
         return isInvalid;
     }
@@ -235,7 +235,7 @@ bool TechDraw::validateSubnameList(StringVector subNames, GeometrySet acceptable
 }
 
 //count how many of each "Edge", "Vertex, etc and compare totals to required minimum
-bool TechDraw::checkGeometryOccurences(StringVector subNames, GeomCountMap keyedMinimumCounts)
+bool TechDraw::checkGeometryOccurrences(StringVector subNames, GeomCountMap keyedMinimumCounts)
 {
     //how many of each geometry descriptor are input
     GeomCountMap foundCounts;
@@ -295,6 +295,10 @@ DimensionGeometryType TechDraw::getGeometryConfiguration(ReferenceVector valid2d
     if (config > isInvalid) {
         return config;
     }
+    config = isValidSingleFace(valid2dReferences.front());
+    if (config > isInvalid) {
+        return config;
+    }
 
     // no valid configuration found
     return isInvalid;
@@ -333,6 +337,10 @@ DimensionGeometryType TechDraw::getGeometryConfiguration3d(DrawViewPart* dvp,
         return config;
     }
     config = isValidSingleEdge3d(dvp, valid3dReferences.front());
+    if (config > isInvalid) {
+        return config;
+    }
+    config = isValidSingleFace3d(dvp, valid3dReferences.front());
     if (config > isInvalid) {
         return config;
     }
@@ -461,6 +469,47 @@ DimensionGeometryType TechDraw::isValidSingleEdge3d(DrawViewPart* dvp, Reference
     return isInvalid;
 }
 
+//! verify that Selection contains a valid Geometry for a single Edge Dimension
+DimensionGeometryType TechDraw::isValidSingleFace(ReferenceEntry ref)
+{
+    auto objFeat(dynamic_cast<TechDraw::DrawViewPart*>(ref.getObject()));
+    if (!objFeat) {
+        return isInvalid;
+    }
+
+    //the Name starts with "Edge"
+    std::string geomName = DrawUtil::getGeomTypeFromName(ref.getSubName());
+    if (geomName != "Face") {
+        return isInvalid;
+    }
+
+    auto geom = objFeat->getFace(ref.getSubName());
+    if (!geom) {
+        return isInvalid;
+    }
+
+    return isFace;
+}
+
+//! verify that Selection contains a valid Geometry for a single Edge Dimension
+DimensionGeometryType TechDraw::isValidSingleFace3d(DrawViewPart* dvp, ReferenceEntry ref)
+{
+    (void)dvp;
+    //the Name starts with "Edge"
+    std::string geomName = DrawUtil::getGeomTypeFromName(ref.getSubName());
+    if (geomName != "Face") {
+        return isInvalid;
+    }
+
+    TopoDS_Shape refShape = ref.getGeometry();
+    if (refShape.IsNull() || refShape.ShapeType() != TopAbs_FACE) {
+        Base::Console().Warning("Geometry for reference is not a face.\n");
+        return isInvalid;
+    }
+
+    return isFace;
+}
+
 //! verify that the edge references can make a dimension. Currently only extent
 //! dimensions support more than 2 edges
 DimensionGeometryType TechDraw::isValidMultiEdge(ReferenceVector refs)
@@ -500,18 +549,16 @@ DimensionGeometryType TechDraw::isValidMultiEdge(ReferenceVector refs)
             return isInvalid;                                    //not supported yet
         }
         Base::Vector3d line0 = gen0->points.at(1) - gen0->points.at(0);
+        line0.Normalize();
         Base::Vector3d line1 = gen1->points.at(1) - gen1->points.at(0);
-        double xprod = fabs(line0.x * line1.y - line0.y * line1.x);
-        if (xprod > FLT_EPSILON) {//edges are not parallel
-            return isAngle;       //angle or distance
-        } else {
-            return isDiagonal;//distance || line
+        line1.Normalize();
+        double dot = fabs(line0.Dot(line1));
+        if (DU::fpCompare(dot, 1.0, EWTOLERANCE)) {
+            return isDiagonal;    //distance || line
         }
-    } else {
-        return isDiagonal;//two edges, not both straight lines
+        return isAngle;       //angle or distance
     }
-
-    return isInvalid;
+    return isDiagonal;  //two edges, not both straight lines
 }
 
 //! verify that the edge references can make a dimension. Currently only extent
@@ -556,20 +603,24 @@ DimensionGeometryType TechDraw::isValidMultiEdge3d(DrawViewPart* dvp, ReferenceV
     if (edgesAll.size() > 2) {
         //must be an extent dimension of lines?
         return isMultiEdge;
-    } else if (edgesAll.size() == 2) {
+    }
+
+    if (edgesAll.size() == 2) {
         Base::Vector3d first0 = DU::toVector3d(BRep_Tool::Pnt(TopExp::FirstVertex(edgesAll.at(0))));
         Base::Vector3d last0 = DU::toVector3d(BRep_Tool::Pnt(TopExp::LastVertex(edgesAll.at(1))));
         Base::Vector3d line0 = last0 - first0;
         Base::Vector3d first1 = DU::toVector3d(BRep_Tool::Pnt(TopExp::FirstVertex(edgesAll.at(0))));
         Base::Vector3d last1 = DU::toVector3d(BRep_Tool::Pnt(TopExp::LastVertex(edgesAll.at(1))));
         Base::Vector3d line1 = last1 - first1;
-        if (DU::fpCompare(fabs(line0.Dot(line1)), 1)) {
+        line0.Normalize();
+        line1.Normalize();
+        auto dot = fabs(line0.Dot(line1));
+        if (DU::fpCompare(dot, 1.0, EWTOLERANCE)) {
             //lines are parallel, must be distance dim
             return isDiagonal;
-        } else {
-            //lines are skew, could be angle, could be distance?
-            return isAngle;
         }
+        //lines are skew, could be angle, could be distance?
+        return isAngle;
     }
 
     return isInvalid;

@@ -1,6 +1,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2024 Mario Passaglia <mpassaglia@cbc.uba.ar>            *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -23,14 +24,18 @@
 # ***************************************************************************
 
 __title__ = "FreeCAD FEM constraint body heat source document object"
-__author__ = "Markus Hovorka, Bernd Hahnebach"
+__author__ = "Markus Hovorka, Bernd Hahnebach, Mario Passaglia"
 __url__ = "https://www.freecad.org"
 
 ## @package constraint_bodyheatsource
 #  \ingroup FEM
 #  \brief constraint body heat source object
 
+import FreeCAD
+
 from . import base_fempythonobject
+
+_PropHelper = base_fempythonobject._PropHelper
 
 
 class ConstraintBodyHeatSource(base_fempythonobject.BaseFemPythonObject):
@@ -38,18 +43,58 @@ class ConstraintBodyHeatSource(base_fempythonobject.BaseFemPythonObject):
     Type = "Fem::ConstraintBodyHeatSource"
 
     def __init__(self, obj):
-        super(ConstraintBodyHeatSource, self).__init__(obj)
-        self.add_properties(obj)
+        super().__init__(obj)
+
+        for prop in self._get_properties():
+            prop.add_to_object(obj)
+
+    def _get_properties(self):
+        prop = []
+
+        prop.append(
+            _PropHelper(
+                type="App::PropertyDissipationRate",
+                name="DissipationRate",
+                group="Constraint Body Heat Source",
+                doc="Power dissipated per unit mass",
+                value="0 W/kg",
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyPower",
+                name="TotalPower",
+                group="Constraint Body Heat Source",
+                doc="Total power dissipated",
+                value="0 W",
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyEnumeration",
+                name="Mode",
+                group="Constraint Body Heat Source",
+                doc="Switch quantity input mode",
+                value=["Dissipation Rate", "Total Power"],
+            )
+        )
+
+        return prop
 
     def onDocumentRestored(self, obj):
-        self.add_properties(obj)
+        # update old project with new properties
+        for prop in self._get_properties():
+            try:
+                obj.getPropertyByName(prop.name)
+            except FreeCAD.Base.PropertyError:
+                prop.add_to_object(obj)
 
-    def add_properties(self, obj):
-        if not hasattr(obj, "HeatSource"):
-            obj.addProperty(
-                "App::PropertyFloat",
-                "HeatSource",
-                "Base",
-                "Body heat source"
-            )
-            obj.HeatSource = 0.0
+        # migrate old HeatSource property
+        try:
+            value = obj.getPropertyByName("HeatSource")
+            obj.DissipationRate = FreeCAD.Units.Quantity(value, "W/kg")
+            obj.Mode = "Dissipation Rate"
+            obj.setPropertyStatus("HeatSource", "-LockDynamic")
+            obj.removeProperty("HeatSource")
+        except FreeCAD.Base.PropertyError:
+            pass

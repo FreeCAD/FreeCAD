@@ -32,10 +32,8 @@
 
 #include "Points.h"
 // inclusion of the generated files (generated out of PointsPy.xml)
-// clang-format off
 #include "PointsPy.h"
 #include "PointsPy.cpp"
-// clang-format on
 
 
 using namespace Points;
@@ -102,7 +100,7 @@ PyObject* PointsPy::copy(PyObject* args)
 
 PyObject* PointsPy::read(PyObject* args)
 {
-    const char* Name;
+    const char* Name {};
     if (!PyArg_ParseTuple(args, "s", &Name)) {
         return nullptr;
     }
@@ -118,7 +116,7 @@ PyObject* PointsPy::read(PyObject* args)
 
 PyObject* PointsPy::write(PyObject* args)
 {
-    const char* Name;
+    const char* Name {};
     if (!PyArg_ParseTuple(args, "s", &Name)) {
         return nullptr;
     }
@@ -156,7 +154,7 @@ PyObject* PointsPy::writeInventor(PyObject* args)
 
 PyObject* PointsPy::addPoints(PyObject* args)
 {
-    PyObject* obj;
+    PyObject* obj {};
     if (!PyArg_ParseTuple(args, "O", &obj)) {
         return nullptr;
     }
@@ -193,7 +191,7 @@ PyObject* PointsPy::addPoints(PyObject* args)
 
 PyObject* PointsPy::fromSegment(PyObject* args)
 {
-    PyObject* obj;
+    PyObject* obj {};
     if (!PyArg_ParseTuple(args, "O", &obj)) {
         return nullptr;
     }

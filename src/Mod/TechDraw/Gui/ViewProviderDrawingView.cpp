@@ -40,6 +40,7 @@
 
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawView.h>
+#include <Mod/TechDraw/App/Preferences.h>
 
 #include "ViewProviderDrawingView.h"
 #include "ViewProviderDrawingViewExtension.h"
@@ -49,6 +50,7 @@
 #include "ViewProviderPage.h"
 
 using namespace TechDrawGui;
+using namespace TechDraw;
 namespace sp = std::placeholders;
 
 PROPERTY_SOURCE(TechDrawGui::ViewProviderDrawingView, Gui::ViewProviderDocumentObject)
@@ -62,7 +64,8 @@ ViewProviderDrawingView::ViewProviderDrawingView() :
     sPixmap = "TechDraw_TreeView";
     static const char *group = "Base";
 
-    ADD_PROPERTY_TYPE(KeepLabel ,(false), group, App::Prop_None, "Keep Label on Page even if toggled off");
+    auto showLabel = Preferences::alwaysShowLabel();
+    ADD_PROPERTY_TYPE(KeepLabel ,(showLabel), group, App::Prop_None, "Keep Label on Page even if toggled off");
     ADD_PROPERTY_TYPE(StackOrder,(0),group,App::Prop_None,"Over or under lap relative to other views");
 
     // Do not show in property editor   why? wf  WF: because DisplayMode applies only to coin and we
@@ -220,12 +223,45 @@ void ViewProviderDrawingView::finishRestoring()
 
 void ViewProviderDrawingView::updateData(const App::Property* prop)
 {
+    TechDraw::DrawView *obj = getViewObject();
+    App::PropertyLink *ownerProp = obj->getOwnerProperty();
+
     //only move the view on X, Y change
-    if (prop == &(getViewObject()->X)  ||
-        prop == &(getViewObject()->Y) ){
+    if (prop == &obj->X
+        || prop == &obj->Y) {
+        QGIView* qgiv = getQView();
+        if (qgiv && !qgiv->isSnapping()) {
+            qgiv->QGIView::updateView(true);
+
+            // Update also the owner/parent view, if there is any
+            if (ownerProp) {
+                auto owner = dynamic_cast<TechDraw::DrawView *>(ownerProp->getValue());
+                if (owner) {
+                    auto page = dynamic_cast<QGSPage *>(qgiv->scene());
+                    if (page) {
+                        QGIView *ownerView = page->getQGIVByName(owner->getNameInDocument());
+                        if (ownerView) {
+                            ownerView->updateView();
+                        }
+                    }
+                }
+            }
+        }
+    }
+    else if (ownerProp && prop == ownerProp) {
         QGIView* qgiv = getQView();
         if (qgiv) {
-            qgiv->QGIView::updateView(true);
+            QGIView *ownerView = nullptr;
+            auto owner = dynamic_cast<TechDraw::DrawView *>(ownerProp->getValue());
+            if (owner) {
+                auto page = dynamic_cast<QGSPage *>(qgiv->scene());
+                if (page) {
+                    ownerView = page->getQGIVByName(owner->getNameInDocument());
+                }
+            }
+
+            qgiv->switchParentItem(ownerView);
+            qgiv->updateView();
         }
     }
 
@@ -441,24 +477,4 @@ const char*  ViewProviderDrawingView::whoAmI() const
 TechDraw::DrawView* ViewProviderDrawingView::getViewObject() const
 {
     return dynamic_cast<TechDraw::DrawView*>(pcObject);
-}
-
-void ViewProviderDrawingView::switchOwnerProperty(App::PropertyLink &prop)
-{
-    QGIView *qv = getQView();
-    if (!qv) {
-        return;
-    }
-
-    QGIView *targetParent = nullptr;
-    auto owner = dynamic_cast<TechDraw::DrawView *>(prop.getValue());
-    if (owner) {
-        auto vp = dynamic_cast<ViewProviderDrawingView *>(QGIView::getViewProvider(owner));
-        if (vp) {
-            targetParent = vp->getQView();
-        }
-    }
-
-    qv->switchParentItem(targetParent);
-    qv->updateView();
 }

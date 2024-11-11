@@ -34,26 +34,12 @@ using namespace Gui::Dialog;
 
 /* TRANSLATOR Gui::Dialog::DlgMaterialPropertiesImp */
 
-/**
- *  Constructs a Gui::Dialog::DlgMaterialPropertiesImp as a child of 'parent', with the
- *  name 'name' and widget flags set to 'f'.
- *
- *  The dialog will by default be modeless, unless you set 'modal' to
- *  true to construct a modal dialog.
- */
-DlgMaterialPropertiesImp::DlgMaterialPropertiesImp(const std::string& mat, QWidget* parent,
-                                                   Qt::WindowFlags fl)
-  : QDialog(parent, fl)
-  , ui(new Ui_DlgMaterialProperties)
-  , material(mat)
+DlgMaterialPropertiesImp::DlgMaterialPropertiesImp(QWidget* parent, Qt::WindowFlags fl)
+    : QDialog(parent, fl)
+    , ui(new Ui_DlgMaterialProperties)
 {
     ui->setupUi(this);
     setupConnections();
-
-    if (material != "ShapeMaterial") {
-        ui->textLabel1->hide();
-        ui->diffuseColor->hide();
-    }
 
     ui->ambientColor->setAutoChangeColor(true);
     ui->diffuseColor->setAutoChangeColor(true);
@@ -61,13 +47,11 @@ DlgMaterialPropertiesImp::DlgMaterialPropertiesImp(const std::string& mat, QWidg
     ui->specularColor->setAutoChangeColor(true);
 }
 
-/**
- *  Destroys the object and frees any allocated resources
- */
 DlgMaterialPropertiesImp::~DlgMaterialPropertiesImp() = default;
 
 void DlgMaterialPropertiesImp::setupConnections()
 {
+    // clang-format off
     connect(ui->ambientColor, &ColorButton::changed,
             this, &DlgMaterialPropertiesImp::onAmbientColorChanged);
     connect(ui->diffuseColor, &ColorButton::changed,
@@ -78,11 +62,34 @@ void DlgMaterialPropertiesImp::setupConnections()
             this, &DlgMaterialPropertiesImp::onSpecularColorChanged);
     connect(ui->shininess, qOverload<int>(&QSpinBox::valueChanged),
             this, &DlgMaterialPropertiesImp::onShininessValueChanged);
+    connect(ui->transparency, qOverload<int>(&QSpinBox::valueChanged),
+            this, &DlgMaterialPropertiesImp::onTransparencyValueChanged);
+    connect(ui->buttonReset, &QPushButton::clicked,
+            this, &DlgMaterialPropertiesImp::onButtonReset);
+    connect(ui->buttonDefault, &QPushButton::clicked,
+            this, &DlgMaterialPropertiesImp::onButtonDefault);
+    // clang-format on
 }
 
-QColor DlgMaterialPropertiesImp::diffuseColor() const
+void DlgMaterialPropertiesImp::setCustomMaterial(const App::Material& mat)
 {
-    return ui->diffuseColor->color();
+    customMaterial = mat;
+    setButtonColors(customMaterial);
+}
+
+App::Material DlgMaterialPropertiesImp::getCustomMaterial() const
+{
+    return customMaterial;
+}
+
+void DlgMaterialPropertiesImp::setDefaultMaterial(const App::Material& mat)
+{
+    defaultMaterial = mat;
+}
+
+App::Material DlgMaterialPropertiesImp::getDefaultMaterial() const
+{
+    return defaultMaterial;
 }
 
 /**
@@ -90,21 +97,7 @@ QColor DlgMaterialPropertiesImp::diffuseColor() const
  */
 void DlgMaterialPropertiesImp::onAmbientColorChanged()
 {
-    QColor col = ui->ambientColor->color();
-    float r = (float)col.red() / 255.0f;
-    float g = (float)col.green() / 255.0f;
-    float b = (float)col.blue() / 255.0f;
-    App::Color ambient(r, g, b);
-
-    for (std::vector<ViewProvider*>::iterator it= Objects.begin(); it != Objects.end(); ++it) {
-        App::Property* prop = (*it)->getPropertyByName(material.c_str());
-        if (prop && prop->isDerivedFrom<App::PropertyMaterial>()) {
-            auto ShapeMaterial = static_cast<App::PropertyMaterial*>(prop);
-            App::Material mat = ShapeMaterial->getValue();
-            mat.ambientColor = ambient;
-            ShapeMaterial->setValue(mat);
-        }
-    }
+    customMaterial.ambientColor.setValue(ui->ambientColor->color());
 }
 
 /**
@@ -112,21 +105,7 @@ void DlgMaterialPropertiesImp::onAmbientColorChanged()
  */
 void DlgMaterialPropertiesImp::onDiffuseColorChanged()
 {
-    QColor col = ui->diffuseColor->color();
-    float r = (float)col.red() / 255.0f;
-    float g = (float)col.green() / 255.0f;
-    float b = (float)col.blue() / 255.0f;
-    App::Color diffuse(r, g, b);
-
-    for (std::vector<ViewProvider*>::iterator it = Objects.begin(); it != Objects.end(); ++it) {
-        App::Property* prop = (*it)->getPropertyByName(material.c_str());
-        if (prop && prop->isDerivedFrom<App::PropertyMaterial>()) {
-            auto ShapeMaterial = static_cast<App::PropertyMaterial*>(prop);
-            App::Material mat = ShapeMaterial->getValue();
-            mat.diffuseColor = diffuse;
-            ShapeMaterial->setValue(mat);
-        }
-    }
+    customMaterial.diffuseColor.setValue(ui->diffuseColor->color());
 }
 
 /**
@@ -134,21 +113,7 @@ void DlgMaterialPropertiesImp::onDiffuseColorChanged()
  */
 void DlgMaterialPropertiesImp::onEmissiveColorChanged()
 {
-    QColor col = ui->emissiveColor->color();
-    float r = (float)col.red() / 255.0f;
-    float g = (float)col.green() / 255.0f;
-    float b = (float)col.blue() / 255.0f;
-    App::Color emissive(r, g, b);
-
-    for (std::vector<ViewProvider*>::iterator it = Objects.begin(); it != Objects.end(); ++it) {
-        App::Property* prop = (*it)->getPropertyByName(material.c_str());
-        if (prop && prop->isDerivedFrom<App::PropertyMaterial>()) {
-            auto ShapeMaterial = static_cast<App::PropertyMaterial*>(prop);
-            App::Material mat = ShapeMaterial->getValue();
-            mat.emissiveColor = emissive;
-            ShapeMaterial->setValue(mat);
-        }
-    }
+    customMaterial.emissiveColor.setValue(ui->emissiveColor->color());
 }
 
 /**
@@ -156,21 +121,7 @@ void DlgMaterialPropertiesImp::onEmissiveColorChanged()
  */
 void DlgMaterialPropertiesImp::onSpecularColorChanged()
 {
-    QColor col = ui->specularColor->color();
-    float r = (float)col.red() / 255.0f;
-    float g = (float)col.green() / 255.0f;
-    float b = (float)col.blue() / 255.0f;
-    App::Color specular(r, g, b);
-
-    for (std::vector<ViewProvider*>::iterator it = Objects.begin(); it != Objects.end(); ++it) {
-        App::Property* prop = (*it)->getPropertyByName(material.c_str());
-        if (prop && prop->isDerivedFrom<App::PropertyMaterial>()) {
-            auto ShapeMaterial = static_cast<App::PropertyMaterial*>(prop);
-            App::Material mat = ShapeMaterial->getValue();
-            mat.specularColor = specular;
-            ShapeMaterial->setValue(mat);
-        }
-    }
+    customMaterial.specularColor.setValue(ui->specularColor->color());
 }
 
 /**
@@ -178,52 +129,49 @@ void DlgMaterialPropertiesImp::onSpecularColorChanged()
  */
 void DlgMaterialPropertiesImp::onShininessValueChanged(int sh)
 {
-    float shininess = (float)sh / 100.0f;
-    for (std::vector<ViewProvider*>::iterator it = Objects.begin(); it != Objects.end(); ++it) {
-        App::Property* prop = (*it)->getPropertyByName(material.c_str());
-        if (prop && prop->isDerivedFrom<App::PropertyMaterial>()) {
-            auto ShapeMaterial = static_cast<App::PropertyMaterial*>(prop);
-            App::Material mat = ShapeMaterial->getValue();
-            mat.shininess = shininess;
-            ShapeMaterial->setValue(mat);
-        }
-    }
+    customMaterial.shininess = (float)sh / 100.0F;
 }
 
 /**
- * Sets the document objects and their view providers to manipulate the material.
+ * Sets the current transparency.
  */
-void DlgMaterialPropertiesImp::setViewProviders(const std::vector<Gui::ViewProvider*>& Obj)
+void DlgMaterialPropertiesImp::onTransparencyValueChanged(int sh)
 {
-    Objects = Obj;
+    customMaterial.transparency = (float)sh / 100.0F;
+}
 
-    for (std::vector<ViewProvider*>::iterator it = Objects.begin(); it != Objects.end(); ++it) {
-        App::Property* prop = (*it)->getPropertyByName(material.c_str());
-        if (prop && prop->isDerivedFrom<App::PropertyMaterial>()) {
-            auto ShapeMaterial = static_cast<App::PropertyMaterial*>(prop);
-            App::Material mat = ShapeMaterial->getValue();
-            int r = int(mat.ambientColor.r * 255.0f);
-            int g = int(mat.ambientColor.g * 255.0f);
-            int b = int(mat.ambientColor.b * 255.0f);
-            ui->ambientColor->setColor(QColor(r, g, b));
-            r = int(mat.diffuseColor.r * 255.0f);
-            g = int(mat.diffuseColor.g * 255.0f);
-            b = int(mat.diffuseColor.b * 255.0f);
-            ui->diffuseColor->setColor(QColor(r, g, b));
-            r = int(mat.emissiveColor.r * 255.0f);
-            g = int(mat.emissiveColor.g * 255.0f);
-            b = int(mat.emissiveColor.b * 255.0f);
-            ui->emissiveColor->setColor(QColor(r, g, b));
-            r = int(mat.specularColor.r * 255.0f);
-            g = int(mat.specularColor.g * 255.0f);
-            b = int(mat.specularColor.b * 255.0f);
-            ui->specularColor->setColor(QColor(r, g, b));
-            ui->shininess->blockSignals(true);
-            ui->shininess->setValue((int)(100.0f * (mat.shininess + 0.001f)));
-            ui->shininess->blockSignals(false);
-            break;
-        }
-    }
+/**
+ * Reset the colors to the Coin3D defaults
+ */
+void DlgMaterialPropertiesImp::onButtonReset()
+{
+    setCustomMaterial(getDefaultMaterial());
+}
+
+/**
+ * Reset the colors to the current default
+ */
+void DlgMaterialPropertiesImp::onButtonDefault()
+{
+    App::Material mat = App::Material::getDefaultAppearance();
+    setCustomMaterial(mat);
+}
+
+/**
+ * Sets the button colors to match the current material settings.
+ */
+void DlgMaterialPropertiesImp::setButtonColors(const App::Material& mat)
+{
+    ui->ambientColor->setColor(mat.ambientColor.asValue<QColor>());
+    ui->diffuseColor->setColor(mat.diffuseColor.asValue<QColor>());
+    ui->emissiveColor->setColor(mat.emissiveColor.asValue<QColor>());
+    ui->specularColor->setColor(mat.specularColor.asValue<QColor>());
+    ui->shininess->blockSignals(true);
+    ui->shininess->setValue((int)(100.0F * (mat.shininess + 0.001F)));
+    ui->shininess->blockSignals(false);
+    ui->transparency->blockSignals(true);
+    ui->transparency->setValue((int)(100.0F * (mat.transparency + 0.001F)));
+    ui->transparency->blockSignals(false);
 }
 
 #include "moc_DlgMaterialPropertiesImp.cpp"

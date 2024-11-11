@@ -61,6 +61,8 @@ public:
     bool activate(const std::string& name, const std::string& className);
     /** Returns the active workbench. */
     Workbench* active() const;
+    /** Returns the name of the active workbench. */
+    std::string activeName() const;
     /** Returns a list of all created workbench objects. */
     std::list<std::string> workbenches() const;
 

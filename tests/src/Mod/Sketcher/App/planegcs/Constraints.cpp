@@ -1,11 +1,8 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
-#ifdef WIN32
-#define _USE_MATH_DEFINES
-#endif
 #include <cmath>
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 #include "Mod/Sketcher/App/planegcs/GCS.h"
 #include "Mod/Sketcher/App/planegcs/Geo.h"
@@ -85,13 +82,15 @@ TEST_F(ConstraintsTest, tangentBSplineAndArc)  // NOLINT
     }
     std::vector<double> weights(bSplineControlPoints.size(), 1.0);
     std::vector<double*> weightsAsPtr;
-    std::vector<double> knots(bSplineControlPoints.size());
+    std::vector<double> knots(bSplineControlPoints.size() - 2);  // Hardcoded for cubic
     std::vector<double*> knotsAsPtr;
-    std::vector<int> mult(bSplineControlPoints.size(), 1);
-    mult.front() = 4;  // Hardcoded for cubic
-    mult.back() = 4;   // Hardcoded for cubic
+    std::vector<int> mult(bSplineControlPoints.size() - 2, 1);  // Hardcoded for cubic
+    mult.front() = 4;                                           // Hardcoded for cubic
+    mult.back() = 4;                                            // Hardcoded for cubic
     for (size_t i = 0; i < bSplineControlPoints.size(); ++i) {
         weightsAsPtr.push_back(&weights[i]);
+    }
+    for (size_t i = 0; i < knots.size(); ++i) {
         knots[i] = i;
         knotsAsPtr.push_back(&knots[i]);
     }

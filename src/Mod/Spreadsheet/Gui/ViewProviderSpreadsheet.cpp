@@ -31,12 +31,13 @@
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/CommandT.h>
 #include <Gui/Document.h>
+#include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>
 #include <Gui/View3DInventor.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
 
-#include "SpreadsheetView.h"
 #include "ViewProviderSpreadsheet.h"
 #include "ViewProviderSpreadsheetPy.h"
 
@@ -49,15 +50,12 @@ using namespace Spreadsheet;
 
 PROPERTY_SOURCE(SpreadsheetGui::ViewProviderSheet, Gui::ViewProviderDocumentObject)
 
-ViewProviderSheet::ViewProviderSheet()
-    : Gui::ViewProviderDocumentObject()
-{}
+ViewProviderSheet::ViewProviderSheet() = default;
 
 ViewProviderSheet::~ViewProviderSheet()
 {
     if (!view.isNull()) {
         Gui::getMainWindow()->removeWindow(view);
-        //        delete view;
     }
 }
 
@@ -75,36 +73,68 @@ std::vector<std::string> ViewProviderSheet::getDisplayModes() const
 
 QIcon ViewProviderSheet::getIcon() const
 {
-    static const char* const Points_Feature_xpm[] = {
-        "16 16 3 1",        "       c None",    ".      c #000000", "+      c #FFFFFF",
-        "                ", "                ", "................", ".++++.++++.++++.",
-        ".++++.++++.++++.", "................", ".++++.++++.++++.", ".++++.++++.++++.",
-        "................", ".++++.++++.++++.", ".++++.++++.++++.", "................",
-        ".++++.++++.++++.", ".++++.++++.++++.", "................", "                "};
-    QPixmap px(Points_Feature_xpm);
-    return px;
+    return QIcon(QLatin1String(":icons/Spreadsheet.svg"));
 }
 
 bool ViewProviderSheet::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
-        if (!this->view) {
-            showSpreadsheetView();
-            view->viewAll();
-        }
-        Gui::getMainWindow()->setActiveWindow(this->view);
+        showSheetMdi();
     }
     return false;
 }
 
 bool ViewProviderSheet::doubleClicked()
 {
+    // assure the SpreadSheet workbench
+    if (App::GetApplication()
+            .GetUserParameter()
+            .GetGroup("BaseApp")
+            ->GetGroup("Preferences")
+            ->GetGroup("Mod/Spreadsheet")
+            ->GetBool("SwitchToWB", true)) {
+        Gui::Command::assureWorkbench("SpreadsheetWorkbench");
+    }
+
+    showSheetMdi();
+    return true;
+}
+
+void ViewProviderSheet::showSheetMdi()
+{
     if (!this->view) {
         showSpreadsheetView();
         view->viewAll();
     }
     Gui::getMainWindow()->setActiveWindow(this->view);
-    return true;
+}
+
+void ViewProviderSheet::exportAsFile()
+{
+    auto* sheet = static_cast<Spreadsheet::Sheet*>(getObject());
+    QString selectedFilter;
+    QString formatList = QObject::tr("CSV (*.csv *.CSV);;All (*)");
+    QString fileName = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
+                                                        QObject::tr("Export file"),
+                                                        QString(),
+                                                        formatList,
+                                                        &selectedFilter);
+    if (!fileName.isEmpty()) {
+        if (sheet) {
+            char delim = '\0';
+            char quote = '\0';
+            char escape = '\0';
+            std::string errMsg = "Export";
+            bool isValid = sheet->getCharsFromPrefs(delim, quote, escape, errMsg);
+
+            if (isValid) {
+                sheet->exportToFile(fileName.toStdString(), delim, quote, escape);
+            }
+            else {
+                Base::Console().Error(errMsg.c_str());
+            }
+        }
+    }
 }
 
 void ViewProviderSheet::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
@@ -176,5 +206,5 @@ PROPERTY_SOURCE_TEMPLATE(SpreadsheetGui::ViewProviderSheetPython, SpreadsheetGui
 /// @endcond
 
 // explicit template instantiation
-template class SpreadsheetGuiExport ViewProviderPythonFeatureT<ViewProviderSheet>;
+template class SpreadsheetGuiExport ViewProviderFeaturePythonT<ViewProviderSheet>;
 }  // namespace Gui

@@ -177,11 +177,6 @@ public:
     }
 
 protected:
-    void CalculateGridLength(unsigned long /*ulCtGrid*/, unsigned long /*ulMaxGrids*/) override
-    {
-        // do nothing
-    }
-
     void CalculateGridLength(int /*iCtGridPerAxis*/) override
     {
         // do nothing

@@ -54,47 +54,26 @@ short Compound::mustExecute() const
 App::DocumentObjectExecReturn *Compound::execute()
 {
     try {
-        std::vector<ShapeHistory> history;
-        int countFaces = 0;
-
-        BRep_Builder builder;
-        TopoDS_Compound comp;
-        builder.MakeCompound(comp);
-
         // avoid duplicates without changing the order
         // See also ViewProviderCompound::updateData
         std::set<DocumentObject*> tempLinks;
 
-        const std::vector<DocumentObject*>& links = Links.getValues();
-        for (auto link : links) {
-            if (link) {
-                auto pos = tempLinks.insert(link);
-                if (pos.second) {
-                    const TopoDS_Shape& sh = Feature::getShape(link);
-                    if (!sh.IsNull()) {
-                        builder.Add(comp, sh);
-                        TopTools_IndexedMapOfShape faceMap;
-                        TopExp::MapShapes(sh, TopAbs_FACE, faceMap);
-                        ShapeHistory hist;
-                        hist.type = TopAbs_FACE;
-                        for (int i=1; i<=faceMap.Extent(); i++) {
-                            hist.shapeMap[i-1].push_back(countFaces++);
-                        }
-                        history.push_back(hist);
-                    }
-                }
+        std::vector<TopoShape> shapes;
+        for (auto obj : Links.getValues()) {
+            if (!tempLinks.insert(obj).second) {
+                continue;
+            }
+            auto sh = Feature::getTopoShape(obj);
+            if (!sh.isNull()) {
+                shapes.push_back(sh);
             }
         }
-
-        this->Shape.setValue(comp);
-
-        // make sure the 'PropertyShapeHistory' is not safed in undo/redo (#0001889)
-        PropertyShapeHistory prop;
-        prop.setValues(history);
-        prop.setContainer(this);
-        prop.touch();
-
-        return App::DocumentObject::StdReturn;
+        this->Shape.setValue(TopoShape().makeElementCompound(shapes));
+        if (Links.getSize() > 0) {
+            App::DocumentObject* link = Links.getValues()[0];
+            copyMaterial(link);
+        }
+        return Part::Feature::execute();
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());

@@ -41,12 +41,12 @@ class TestDraft(unittest.TestCase):
         self.Box.Height=10.00
         self.Doc.recompute()
         self.DatumPlane = self.Doc.addObject('PartDesign::Plane','DatumPlane')
-        self.DatumPlane.Support = [(self.Doc.YZ_Plane,'')]
+        self.DatumPlane.AttachmentSupport = [(self.Doc.YZ_Plane,'')]
         self.DatumPlane.MapMode = 'FlatFace'
         self.Body.addObject(self.DatumPlane)
         self.Doc.recompute()
         self.DatumLine = self.Doc.addObject('PartDesign::Line','DatumLine')
-        self.DatumLine.Support = [(self.Doc.X_Axis,'')]
+        self.DatumLine.AttachmentSupport = [(self.Doc.X_Axis,'')]
         self.DatumLine.MapMode = 'TwoPointLine'
         self.Body.addObject(self.DatumLine)
         self.Doc.recompute()

@@ -29,6 +29,7 @@
 #include <FCGlobal.h>
 
 QT_BEGIN_NAMESPACE
+class QAction;
 class QDir;
 class QIcon;
 class QImage;
@@ -53,11 +54,15 @@ public:
 
     bool toCString(const Py::Object&, std::string&);
     QObject* toQObject(const Py::Object&);
+    qsizetype toEnum(PyObject* pyPtr);
+    qsizetype toEnum(const Py::Object& pyobject);
+    Py::Object toStandardButton(qsizetype);
     QGraphicsItem* toQGraphicsItem(PyObject* ptr);
     QGraphicsItem* toQGraphicsItem(const Py::Object& pyObject);
     QGraphicsObject* toQGraphicsObject(PyObject* pyPtr);
     QGraphicsObject* toQGraphicsObject(const Py::Object& pyObject);
 
+    Py::Object fromQAction(QAction*);
     Py::Object fromQPrinter(QPrinter*);
     Py::Object fromQObject(QObject*, const char* className=nullptr);
     Py::Object fromQWidget(QWidget*, const char* className=nullptr);
@@ -77,8 +82,8 @@ public:
     static void setParent(PyObject* pyWdg, QObject* parent);
 
 private:
-    static std::string shiboken;
-    static std::string PySide;
+    qsizetype tryEnum(PyObject* pyPtr);
+    Py::Object tryToStandardButton(qsizetype value);
 };
 
 } // namespace Gui

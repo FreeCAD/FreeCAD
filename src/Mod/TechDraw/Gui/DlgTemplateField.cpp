@@ -51,15 +51,31 @@ void DlgTemplateField::setFieldName(std::string name)
     ui->lblName->setText(qs);
 }
 
+void DlgTemplateField::setFieldLength(int length)
+{
+    ui->leInput->setMaxLength(length);
+}
+
 void DlgTemplateField::setFieldContent(std::string content)
 {
     QString qs = QString::fromUtf8(content.data(), content.size());
     ui->leInput->setText(qs);
 }
 
+void DlgTemplateField::setAutofillContent(std::string content)
+{
+    QString qs = QString::fromUtf8(content.data(), content.size());
+    ui->leAutofill->setText(qs);
+}
+
 QString DlgTemplateField::getFieldContent()
 {
     return ui->leInput->text();
+}
+
+bool DlgTemplateField::getAutofillState()
+{
+    return ui->cbAutofill->isChecked();
 }
 
 void DlgTemplateField::accept()

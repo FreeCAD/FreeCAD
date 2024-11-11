@@ -27,19 +27,13 @@
 #include <QPointer>
 
 #include <Gui/ViewProviderDocumentObject.h>
-#include <Gui/ViewProviderPythonFeature.h>
+#include <Gui/ViewProviderFeaturePython.h>
 #include <Mod/Spreadsheet/SpreadsheetGlobal.h>
+#include <Mod/Spreadsheet/Gui/SpreadsheetView.h>
 
-
-namespace Spreadsheet
-{
-class Sheet;
-}
 
 namespace SpreadsheetGui
 {
-
-class SheetView;
 
 class SpreadsheetGuiExport ViewProviderSheet: public Gui::ViewProviderDocumentObject
 {
@@ -84,6 +78,10 @@ public:
 
     PyObject* getPyObject() override;
 
+    void showSheetMdi();
+
+    void exportAsFile();
+
 protected:
     SheetView* showSpreadsheetView();
     void updateData(const App::Property* prop) override;
@@ -92,7 +90,7 @@ private:
     QPointer<SheetView> view;
 };
 
-using ViewProviderSheetPython = Gui::ViewProviderPythonFeatureT<ViewProviderSheet>;
+using ViewProviderSheetPython = Gui::ViewProviderFeaturePythonT<ViewProviderSheet>;
 
 }  // namespace SpreadsheetGui
 

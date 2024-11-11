@@ -82,20 +82,38 @@ Color& Color::setPackedValue(uint32_t rgba)
 uint32_t Color::getPackedValue() const
 {
     // clang-format off
-    return (static_cast<uint32_t>(r * 255.0F + 0.5F) << 24 |
-            static_cast<uint32_t>(g * 255.0F + 0.5F) << 16 |
-            static_cast<uint32_t>(b * 255.0F + 0.5F) << 8  |
-            static_cast<uint32_t>(a * 255.0F + 0.5F));
+    return (static_cast<uint32_t>(std::lround(r * 255.0F)) << 24 |
+            static_cast<uint32_t>(std::lround(g * 255.0F)) << 16 |
+            static_cast<uint32_t>(std::lround(b * 255.0F)) << 8  |
+            static_cast<uint32_t>(std::lround(a * 255.0F)));
+    // clang-format on
+}
+
+void Color::setPackedRGB(uint32_t rgb)
+{
+    // clang-format off
+    this->set(static_cast<float>((rgb >> 24) & 0xff) / 255.0F,
+              static_cast<float>((rgb >> 16) & 0xff) / 255.0F,
+              static_cast<float>((rgb >>  8) & 0xff) / 255.0F);
+    // clang-format on
+}
+
+uint32_t Color::getPackedRGB() const
+{
+    // clang-format off
+    return (static_cast<uint32_t>(std::lround(r * 255.0F)) << 24 |
+            static_cast<uint32_t>(std::lround(g * 255.0F)) << 16 |
+            static_cast<uint32_t>(std::lround(b * 255.0F)) << 8);
     // clang-format on
 }
 
 uint32_t Color::getPackedARGB() const
 {
     // clang-format off
-    return (static_cast<uint32_t>(a * 255.0F + 0.5F) << 24 |
-            static_cast<uint32_t>(r * 255.0F + 0.5F) << 16 |
-            static_cast<uint32_t>(g * 255.0F + 0.5F) << 8  |
-            static_cast<uint32_t>(b * 255.0F + 0.5F));
+    return (static_cast<uint32_t>(std::lround(a * 255.0F)) << 24 |
+            static_cast<uint32_t>(std::lround(r * 255.0F)) << 16 |
+            static_cast<uint32_t>(std::lround(g * 255.0F)) << 8  |
+            static_cast<uint32_t>(std::lround(b * 255.0F)));
     // clang-format on
 }
 
@@ -111,12 +129,14 @@ void Color::setPackedARGB(uint32_t argb)
 
 std::string Color::asHexString() const
 {
+    // clang-format off
     std::stringstream ss;
     ss << "#" << std::hex << std::uppercase << std::setfill('0')
-       << std::setw(2) << int(r * 255.0F)
-       << std::setw(2) << int(g * 255.0F)
-       << std::setw(2) << int(b * 255.0F);
+       << std::setw(2) << int(std::lround(r * 255.0F))
+       << std::setw(2) << int(std::lround(g * 255.0F))
+       << std::setw(2) << int(std::lround(b * 255.0F));
     return ss.str();
+    // clang-format on
 }
 
 bool Color::fromHexString(const std::string& hex)

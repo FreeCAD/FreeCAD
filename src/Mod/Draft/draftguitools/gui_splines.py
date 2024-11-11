@@ -84,24 +84,26 @@ class BSpline(gui_lines.Line):
         if arg["Type"] == "SoKeyboardEvent":
             if arg["Key"] == "ESCAPE":
                 self.finish()
-        elif arg["Type"] == "SoLocation2Event":  # mouse movement detection
-            (self.point,
-             ctrlPoint, info) = gui_tool_utils.getPoint(self, arg,
-                                                        noTracker=True)
+            return
+        if arg["Type"] == "SoLocation2Event":  # mouse movement detection
+            self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg, noTracker=True)
             self.bsplinetrack.update(self.node + [self.point])
             gui_tool_utils.redraw3DView()
-        elif (arg["Type"] == "SoMouseButtonEvent"
-              and arg["State"] == "DOWN"
-              and arg["Button"] == "BUTTON1"):
+            return
+        if arg["Type"] != "SoMouseButtonEvent":
+            return
+        if arg["State"] == "UP":
+            self.obj.ViewObject.Selectable = True
+            return
+        if arg["State"] == "DOWN" and arg["Button"] == "BUTTON1":
+            # Stop self.obj from being selected to avoid its display in the tree:
+            self.obj.ViewObject.Selectable = False
             if arg["Position"] == self.pos:
                 self.finish(cont=None)
                 return
-
             if (not self.node) and (not self.support):
                 gui_tool_utils.getSupport(arg)
-                (self.point,
-                 ctrlPoint, info) = gui_tool_utils.getPoint(self, arg,
-                                                            noTracker=True)
+                self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg, noTracker=True)
             if self.point:
                 self.ui.redraw()
                 self.pos = arg["Position"]
@@ -155,6 +157,7 @@ class BSpline(gui_lines.Line):
         closed: bool, optional
             Close the spline if `True`.
         """
+        self.end_callbacks(self.call)
         if self.ui:
             self.bsplinetrack.finalize()
         if self.obj:

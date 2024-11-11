@@ -45,9 +45,7 @@ class MeshGuiExport PropertyMeshKernelItem: public Gui::PropertyEditor::Property
     PROPERTYITEM_HEADER
 
     // clang-format off
-    QWidget* createEditor(QWidget* parent,
-                          const QObject* receiver,
-                          const char* method) const override;
+    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
     // clang-format on
     void setEditorData(QWidget* editor, const QVariant& data) const override;
     QVariant editorData(QWidget* editor) const override;

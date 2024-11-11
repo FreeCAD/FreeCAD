@@ -41,8 +41,6 @@ public:
     App::PropertyForce Force;
     App::PropertyLinkSub Direction;
     App::PropertyBool Reversed;
-    // Read-only (calculated values). These trigger changes in the ViewProvider
-    App::PropertyVectorList Points;
     App::PropertyVector DirectionVector;
 
     /// recalculate the object

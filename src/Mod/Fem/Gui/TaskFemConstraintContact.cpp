@@ -520,21 +520,6 @@ TaskDlgFemConstraintContact::TaskDlgFemConstraintContact(
 
 //==== calls from the TaskView ===============================================================
 
-void TaskDlgFemConstraintContact::open()
-{
-    // a transaction is already open at creation time of the panel
-    if (!Gui::Command::hasPendingCommand()) {
-        QString msg = QObject::tr("Contact constraint");
-        Gui::Command::openCommand(static_cast<const char*>(msg.toUtf8()));
-        ConstraintView->setVisible(true);
-        Gui::Command::runCommand(
-            Gui::Command::Doc,
-            ViewProviderFemConstraint::gethideMeshShowPartStr(
-                (static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument())
-                .c_str());  // OvG: Hide meshes and show parts
-    }
-}
-
 bool TaskDlgFemConstraintContact::accept()
 {
     /* Note: */
@@ -563,11 +548,6 @@ bool TaskDlgFemConstraintContact::accept()
                                 "App.ActiveDocument.%s.StickSlope = \"%s\"",
                                 name.c_str(),
                                 parameterContact->getStickSlope().c_str());
-        std::string scale = parameterContact->getScale();  // OvG: determine modified scale
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.Scale = %s",
-                                name.c_str(),
-                                scale.c_str());  // OvG: implement modified scale
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
@@ -577,12 +557,4 @@ bool TaskDlgFemConstraintContact::accept()
     return TaskDlgFemConstraint::accept();
 }
 
-bool TaskDlgFemConstraintContact::reject()
-{
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-    Gui::Command::updateActive();
-
-    return true;
-}
 #include "moc_TaskFemConstraintContact.cpp"

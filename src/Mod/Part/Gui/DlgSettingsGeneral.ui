@@ -13,8 +13,8 @@
   <property name="windowTitle">
    <string>General</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_3">
-   <item row="0" column="0">
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
       <string>Model settings</string>
@@ -24,6 +24,9 @@
        <widget class="Gui::PrefCheckBox" name="checkBooleanCheck">
         <property name="text">
          <string>Automatically check model after boolean operation</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>CheckModel</cstring>
@@ -38,6 +41,9 @@
         <property name="text">
          <string>Automatically refine model after boolean operation</string>
         </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
         <property name="prefEntry" stdset="0">
          <cstring>RefineModel</cstring>
         </property>
@@ -51,6 +57,9 @@
         <property name="text">
          <string>Automatically refine model after sketch-based operation</string>
         </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
         <property name="prefEntry" stdset="0">
          <cstring>RefineModel</cstring>
         </property>
@@ -62,13 +71,16 @@
      </layout>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item>
     <widget class="QGroupBox" name="groupBox_3">
-     <property name="title">
-      <string>Object naming</string>
+     <property name="enabled">
+      <bool>true</bool>
      </property>
      <property name="visible">
       <bool>false</bool>
+     </property>
+     <property name="title">
+      <string>Object naming</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
@@ -87,7 +99,45 @@
      </layout>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item>
+    <widget class="QGroupBox" name="groupBoxExperimental">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="title">
+      <string>Experimental</string>
+     </property>
+     <property name="flat">
+      <bool>false</bool>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QLabel" name="warningLabel">
+        <property name="text">
+         <string>These settings are experimental and may result in decreased stability, more problems and undefined behaviors.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkAllowCompoundBody">
+        <property name="text">
+         <string>Allow multiple solids in Part Design Body by default (experimental)</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>AllowCompoundDefault</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/PartDesign</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <spacer>
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -106,6 +156,11 @@
   <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

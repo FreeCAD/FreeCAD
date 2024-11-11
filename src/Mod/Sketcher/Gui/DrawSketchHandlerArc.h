@@ -97,10 +97,9 @@ private:
                     firstPoint = onSketchPos;
                 }
 
-                if (seekAutoConstraint(sugConstraints[0], onSketchPos, Base::Vector2d(0.f, 0.f))) {
-                    renderSuggestConstraintsCursor(sugConstraints[0]);
-                    return;
-                }
+                seekAndRenderAutoConstraint(sugConstraints[0],
+                                            onSketchPos,
+                                            Base::Vector2d(0.f, 0.f));
             } break;
             case SelectMode::SeekSecond: {
                 if (constructionMethod() == ConstructionMethod::Center) {
@@ -123,10 +122,9 @@ private:
                     toolWidgetManager.drawPositionAtCursor(onSketchPos);
                 }
 
-                if (seekAutoConstraint(sugConstraints[1], onSketchPos, Base::Vector2d(0.f, 0.f))) {
-                    renderSuggestConstraintsCursor(sugConstraints[1]);
-                    return;
-                }
+                seekAndRenderAutoConstraint(sugConstraints[1],
+                                            onSketchPos,
+                                            Base::Vector2d(0.f, 0.f));
             } break;
             case SelectMode::SeekThird: {
                 double startAngleBackup = startAngle;
@@ -146,8 +144,8 @@ private:
                     }
                 }
                 else {
-                    if (areColinear(firstPoint, secondPoint, onSketchPos)) {
-                        // If points are colinear then we can't calculate the center.
+                    if (areCollinear(firstPoint, secondPoint, onSketchPos)) {
+                        // If points are collinear then we can't calculate the center.
                         return;
                     }
                     centerPoint =
@@ -197,22 +195,16 @@ private:
 
                 if (constructionMethod() == ConstructionMethod::Center) {
                     toolWidgetManager.drawDoubleAtCursor(onSketchPos, arcAngle, Base::Unit::Angle);
-                    if (seekAutoConstraint(sugConstraints[2],
-                                           onSketchPos,
-                                           Base::Vector2d(0.0, 0.0))) {
-                        renderSuggestConstraintsCursor(sugConstraints[2]);
-                        return;
-                    }
+                    seekAndRenderAutoConstraint(sugConstraints[2],
+                                                onSketchPos,
+                                                Base::Vector2d(0.0, 0.0));
                 }
                 else {
                     toolWidgetManager.drawPositionAtCursor(onSketchPos);
-                    if (seekAutoConstraint(sugConstraints[2],
-                                           onSketchPos,
-                                           Base::Vector2d(0.f, 0.f),
-                                           AutoConstraint::CURVE)) {
-                        renderSuggestConstraintsCursor(sugConstraints[2]);
-                        return;
-                    }
+                    seekAndRenderAutoConstraint(sugConstraints[2],
+                                                onSketchPos,
+                                                Base::Vector2d(0.f, 0.f),
+                                                AutoConstraint::CURVE);
                 }
 
             } break;
@@ -465,7 +457,8 @@ template<>
 void DSHArcController::configureToolWidget()
 {
     if (!init) {  // Code to be executed only upon initialisation
-        QStringList names = {QStringLiteral("Center"), QStringLiteral("3 rim points")};
+        QStringList names = {QApplication::translate("Sketcher_CreateArc", "Center"),
+                             QApplication::translate("Sketcher_CreateArc", "3 rim points")};
         toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
 
         if (isConstructionMode()) {
@@ -832,6 +825,12 @@ void DSHArcController::addConstraints()
         }
     }
     else {  // Valid diagnosis. Must check which constraints may be added.
+
+        // if no curve exists a crash occurs #12755
+        if (firstCurve < 0) {
+            return;
+        }
+
         auto startpointinfo = handler->getPointInfo(GeoElementId(firstCurve, pos1));
 
         if (x0set && startpointinfo.isXDoF()) {

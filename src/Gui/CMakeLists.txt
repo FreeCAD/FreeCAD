@@ -20,6 +20,14 @@ if (FREECAD_USE_3DCONNEXION)
     endif(APPLE)
 endif(FREECAD_USE_3DCONNEXION)
 
+if(FREECAD_USE_3DCONNEXION_NAVLIB AND (MSVC OR APPLE))
+    add_definitions(-DUSE_3DCONNEXION_NAVLIB)
+    if(APPLE)
+        add_definitions(-D__APPLE__)
+    endif(APPLE)
+    set(3DCONNEXION_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/3Dconnexion/inc)
+endif(FREECAD_USE_3DCONNEXION_NAVLIB AND (MSVC OR APPLE))
+
 if (BUILD_VR)
     add_definitions(-DBUILD_VR )
 endif(BUILD_VR)
@@ -78,8 +86,12 @@ else(MSVC)
     )
 endif(MSVC)
 
-if (QtWebEngineWidgets_FOUND AND BUILD_WITH_CONDA)
-    add_definitions(-DQTWEBENGINE)
+if (WIN32)
+    if(FREECAD_QT_MAJOR_VERSION EQUAL 6)
+        list(APPEND FreeCADGui_LIBS
+            Qt6::GuiPrivate
+        )
+    endif()
 endif()
 
 include_directories(
@@ -220,6 +232,7 @@ generate_from_xml(DocumentPy)
 generate_from_xml(PythonWorkbenchPy)
 generate_from_xml(ViewProviderPy)
 generate_from_xml(ViewProviderDocumentObjectPy)
+generate_from_xml(ViewProviderGeometryObjectPy)
 generate_from_xml(ViewProviderExtensionPy)
 generate_from_xml(WorkbenchPy)
 generate_from_xml(SelectionObjectPy)
@@ -233,6 +246,7 @@ generate_from_py(FreeCADGuiInit GuiInitScript.h)
 # The XML files
 SET(FreeCADGui_XML_SRCS
     ViewProviderDocumentObjectPy.xml
+    ViewProviderGeometryObjectPy.xml
     ViewProviderPy.xml
     ViewProviderExtensionPy.xml
     PythonWorkbenchPy.xml
@@ -274,6 +288,21 @@ SET(FreeCADGui_SDK_MOC_HDRS
 )
 endif(FREECAD_USE_3DCONNEXION AND APPLE)
 
+if(FREECAD_USE_3DCONNEXION_NAVLIB AND (MSVC OR APPLE))
+    SET(NAVLIB_STUB_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/3Dconnexion/src)
+    SET(FreeCADGui_SDK_SRCS
+        3Dconnexion/navlib/NavlibCmds.cpp
+        3Dconnexion/navlib/NavlibNavigation.cpp
+        3Dconnexion/navlib/NavlibPivot.cpp
+        ${NAVLIB_STUB_DIR}/navlib_load.cpp
+        ${NAVLIB_STUB_DIR}/navlib_stub.c
+    )
+    SOURCE_GROUP("3Dconnexion Navlib" FILES ${FreeCADGui_SDK_SRCS})
+	SET(FreeCADGui_SDK_MOC_HDRS
+        3Dconnexion/navlib/NavlibInterface.h
+	)
+endif(FREECAD_USE_3DCONNEXION_NAVLIB AND (MSVC OR APPLE))
+
 set_property(SOURCE GraphvizView.h GraphvizView.cpp PROPERTY SKIP_AUTOMOC ON)
 add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp
     COMMAND ${QtCore_MOC_EXECUTABLE} -o ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp ${CMAKE_CURRENT_SOURCE_DIR}/GraphvizView.cpp
@@ -296,8 +325,6 @@ SET(Gui_UIC_SRCS
     DlgAuthorization.ui
     DlgChooseIcon.ui
     DlgCreateNewPreferencePack.ui
-    DlgCustomizeSpNavSettings.ui
-    DlgDisplayProperties.ui
     DlgInputDialog.ui
     DlgKeyboard.ui
     DlgMacroExecute.ui
@@ -327,7 +354,7 @@ SET(Gui_UIC_SRCS
     PreferencePages/DlgSettingsPythonConsole.ui
     PreferencePages/DlgSettingsReportView.ui
     PreferencePages/DlgSettingsSelection.ui
-    PreferencePages/DlgSettingsTheme.ui
+    PreferencePages/DlgSettingsUI.ui
     PreferencePages/DlgSettingsViewColor.ui
     PreferencePages/DlgSettingsWorkbenches.ui
     DlgCheckableMessageBox.ui
@@ -351,8 +378,13 @@ SET(Gui_UIC_SRCS
     TaskElementColors.ui
     DlgObjectSelection.ui
     DlgAddProperty.ui
+    DlgAddPropertyVarSet.ui
     VectorListEditor.ui
 )
+
+if(FREECAD_3DCONNEXION_SUPPORT STREQUAL "Raw input")
+	list(APPEND Gui_UIC_SRCS DlgCustomizeSpNavSettings.ui)
+endif(FREECAD_3DCONNEXION_SUPPORT STREQUAL "Raw input")
 
 set (FreeCAD_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Language/FreeCAD_translation.qrc)
 qt_find_and_add_translation(QM_SRCS "Language/FreeCAD_*.ts"
@@ -407,7 +439,6 @@ SET(Dialog_CPP_SRCS
     DlgActivateWindowImp.cpp
     DlgCreateNewPreferencePackImp.cpp
     DlgUnitsCalculatorImp.cpp
-    DlgDisplayPropertiesImp.cpp
     DlgInputDialogImp.cpp
     DlgMacroExecuteImp.cpp
     DlgRunExternal.cpp
@@ -438,6 +469,7 @@ SET(Dialog_CPP_SRCS
     TaskElementColors.cpp
     DlgObjectSelection.cpp
     DlgAddProperty.cpp
+    DlgAddPropertyVarSet.cpp
     VectorListEditor.cpp
 )
 
@@ -447,7 +479,6 @@ SET(Dialog_HPP_SRCS
     DlgActivateWindowImp.h
     DlgCreateNewPreferencePackImp.h
     DlgUnitsCalculatorImp.h
-    DlgDisplayPropertiesImp.h
     DlgInputDialogImp.h
     DlgMacroExecuteImp.h
     DlgRunExternal.h
@@ -478,6 +509,7 @@ SET(Dialog_HPP_SRCS
     TaskElementColors.h
     DlgObjectSelection.h
     DlgAddProperty.h
+    DlgAddPropertyVarSet.h
     VectorListEditor.h
 )
 
@@ -490,7 +522,6 @@ SET(Dialog_SRCS
     DlgActivateWindow.ui
     DlgUnitsCalculator.ui
     DlgAuthorization.ui
-    DlgDisplayProperties.ui
     DlgInputDialog.ui
     DlgAddProperty.ui
     DlgLocationAngle.ui
@@ -528,32 +559,36 @@ SOURCE_GROUP("Dialog" FILES ${Dialog_SRCS})
 SET(Dialog_Customize_CPP_SRCS
     DlgActionsImp.cpp
     DlgCustomizeImp.cpp
-    DlgCustomizeSpaceball.cpp
-    DlgCustomizeSpNavSettings.cpp
     DlgKeyboardImp.cpp
     DlgToolbarsImp.cpp
-    QListWidgetCustom.cpp
     ListWidgetDragBugFix.cpp
 )
 SET(Dialog_Customize_HPP_SRCS
     DlgActionsImp.h
     DlgCustomizeImp.h
-    DlgCustomizeSpaceball.h
-    DlgCustomizeSpNavSettings.h
     DlgKeyboardImp.h
     DlgToolbarsImp.h
-    QListWidgetCustom.h
     ListWidgetDragBugFix.h
 )
+
+if(FREECAD_3DCONNEXION_SUPPORT STREQUAL "Raw input")
+	list(APPEND Dialog_Customize_CPP_SRCS DlgCustomizeSpaceball.cpp DlgCustomizeSpNavSettings.cpp)
+	list(APPEND Dialog_Customize_HPP_SRCS DlgCustomizeSpaceball.h DlgCustomizeSpNavSettings.h)
+endif(FREECAD_3DCONNEXION_SUPPORT STREQUAL "Raw input")
+
 SET(Dialog_Customize_SRCS
     ${Dialog_Customize_CPP_SRCS}
     ${Dialog_Customize_HPP_SRCS}
     DlgActions.ui
     DlgChooseIcon.ui
-    DlgCustomizeSpNavSettings.ui
     DlgKeyboard.ui
     DlgToolbars.ui
 )
+
+if(FREECAD_3DCONNEXION_SUPPORT STREQUAL "Raw input")
+	list(APPEND Dialog_Customize_SRCS  DlgCustomizeSpNavSettings.ui)
+endif(FREECAD_3DCONNEXION_SUPPORT STREQUAL "Raw input")
+
 SOURCE_GROUP("Dialog\\Customize" FILES ${Dialog_Customize_SRCS})
 
 # The settings dialog sources
@@ -574,10 +609,10 @@ SET(Dialog_Settings_CPP_SRCS
     PreferencePages/DlgSettingsPythonConsole.cpp
     PreferencePages/DlgSettingsReportView.cpp
     PreferencePages/DlgSettingsSelection.cpp
-    PreferencePages/DlgSettingsTheme.cpp
+    PreferencePages/DlgSettingsUI.cpp
     PreferencePages/DlgSettingsViewColor.cpp
     PreferencePages/DlgSettingsWorkbenchesImp.cpp
-    PreferencePages/DlgSettingsUI.cpp
+    PreferencePages/DlgSettingsAdvanced.cpp
 )
 SET(Dialog_Settings_HPP_SRCS
     DlgOnlineHelpImp.h
@@ -596,10 +631,10 @@ SET(Dialog_Settings_HPP_SRCS
     PreferencePages/DlgSettingsPythonConsole.h
     PreferencePages/DlgSettingsReportView.h
     PreferencePages/DlgSettingsSelection.h
-    PreferencePages/DlgSettingsTheme.h
+    PreferencePages/DlgSettingsUI.h
     PreferencePages/DlgSettingsViewColor.h
     PreferencePages/DlgSettingsWorkbenchesImp.h
-    PreferencePages/DlgSettingsUI.h
+    PreferencePages/DlgSettingsAdvanced.h
 )
 SET(Dialog_Settings_SRCS
     ${Dialog_Settings_CPP_SRCS}
@@ -620,7 +655,7 @@ SET(Dialog_Settings_SRCS
     PreferencePages/DlgSettingsPythonConsole.ui
     PreferencePages/DlgSettingsReportView.ui
     PreferencePages/DlgSettingsSelection.ui
-    PreferencePages/DlgSettingsTheme.ui
+    PreferencePages/DlgSettingsUI.ui
     PreferencePages/DlgSettingsViewColor.ui
     PreferencePages/DlgSettingsWorkbenches.ui
 )
@@ -636,7 +671,6 @@ SET(Dock_Windows_CPP_SRCS
     ToolBox.cpp
     Tree.cpp
     TreeView.cpp
-    ProjectView.cpp
     DAGView/DAGView.cpp
     DAGView/DAGModel.cpp
     DAGView/DAGRectItem.cpp
@@ -652,7 +686,6 @@ SET(Dock_Windows_HPP_SRCS
     ToolBox.h
     Tree.h
     TreeView.h
-    ProjectView.h
     DAGView/DAGView.h
     DAGView/DAGModel.h
     DAGView/DAGRectItem.h
@@ -816,6 +849,7 @@ SET(View3D_CPP_SRCS
     Flag.cpp
     GLBuffer.cpp
     GLPainter.cpp
+    Multisample.cpp
     MouseSelection.cpp
     NavigationStyle.cpp
     InventorNavigationStyle.cpp
@@ -848,6 +882,7 @@ SET(View3D_SRCS
     Flag.h
     GLBuffer.h
     GLPainter.h
+    Multisample.h
     MouseSelection.h
     NavigationStyle.h
     GestureNavigationStyle.h
@@ -899,19 +934,20 @@ SET(Viewprovider_CPP_SRCS
     ViewProviderGroupExtension.cpp
     ViewProviderGeoFeatureGroupExtension.cpp
     ViewProviderOriginGroupExtension.cpp
+    ViewProviderSuppressibleExtension.cpp
     ViewProviderAnnotation.cpp
     ViewProviderDocumentObject.cpp
     ViewProviderDocumentObjectGroup.cpp
     ViewProviderDocumentObjectPyImp.cpp
+    ViewProviderGeometryObjectPyImp.cpp
     ViewProviderDragger.cpp
     ViewProviderExtern.cpp
     ViewProviderFeature.cpp
     ViewProviderGeometryObject.cpp
     ViewProviderImagePlane.cpp
     ViewProviderInventorObject.cpp
-    ViewProviderMeasureDistance.cpp
     ViewProviderPyImp.cpp
-    ViewProviderPythonFeature.cpp
+    ViewProviderFeaturePython.cpp
     ViewProviderVRMLObject.cpp
     ViewProviderBuilder.cpp
     ViewProviderPlacement.cpp
@@ -924,9 +960,11 @@ SET(Viewprovider_CPP_SRCS
     ViewProviderOrigin.cpp
     ViewProviderMaterialObject.cpp
     ViewProviderTextDocument.cpp
+    ViewProviderTextureExtension.cpp
     ViewProviderLink.cpp
     LinkViewPyImp.cpp
     ViewProviderLinkPyImp.cpp
+    ViewProviderVarSet.cpp
     AxisOriginPyImp.cpp
     AxisOrigin.cpp
 )
@@ -946,8 +984,7 @@ SET(Viewprovider_SRCS
     ViewProviderGeometryObject.h
     ViewProviderImagePlane.h
     ViewProviderInventorObject.h
-    ViewProviderMeasureDistance.h
-    ViewProviderPythonFeature.h
+    ViewProviderFeaturePython.h
     ViewProviderVRMLObject.h
     ViewProviderBuilder.h
     ViewProviderPlacement.h
@@ -960,7 +997,9 @@ SET(Viewprovider_SRCS
     ViewProviderOrigin.h
     ViewProviderMaterialObject.h
     ViewProviderTextDocument.h
+    ViewProviderTextureExtension.h
     ViewProviderLink.h
+    ViewProviderVarSet.h
     AxisOrigin.h
 )
 SOURCE_GROUP("View3D\\Viewprovider" FILES ${Viewprovider_SRCS})
@@ -974,6 +1013,7 @@ SET(Inventor_CPP_SRCS
     SoFCBackgroundGradient.cpp
     SoFCBoundingBox.cpp
     SoFCColorBar.cpp
+    SoFCColorBarNotifier.cpp
     SoFCColorGradient.cpp
     SoFCColorLegend.cpp
     SoFCDB.cpp
@@ -986,13 +1026,14 @@ SET(Inventor_CPP_SRCS
     SoFCSelectionAction.cpp
     SoFCVectorizeSVGAction.cpp
     SoFCVectorizeU3DAction.cpp
-    SoNavigationDragger.cpp
+    So3DAnnotation.cpp
     SoAxisCrossKit.cpp
     SoTextLabel.cpp
     SoDatumLabel.cpp
     SoTouchEvents.cpp
     SoMouseWheelEvent.cpp
     SoFCCSysDragger.cpp
+    ArcEngine.cpp
 )
 SET(Inventor_SRCS
     ${Inventor_CPP_SRCS}
@@ -1003,6 +1044,7 @@ SET(Inventor_SRCS
     SoFCBackgroundGradient.h
     SoFCBoundingBox.h
     SoFCColorBar.h
+    SoFCColorBarNotifier.h
     SoFCColorGradient.h
     SoFCColorLegend.h
     SoFCDB.h
@@ -1015,13 +1057,13 @@ SET(Inventor_SRCS
     SoFCSelectionAction.h
     SoFCVectorizeSVGAction.h
     SoFCVectorizeU3DAction.h
-    SoNavigationDragger.h
     SoAxisCrossKit.h
     SoTextLabel.h
     SoDatumLabel.h
     SoTouchEvents.h
     SoMouseWheelEvent.h
     SoFCCSysDragger.h
+    ArcEngine.h
 )
 SOURCE_GROUP("View3D\\Inventor" FILES ${Inventor_SRCS})
 
@@ -1044,6 +1086,7 @@ SET(Widget_CPP_SRCS
     WidgetFactory.cpp
     Widgets.cpp
     Window.cpp
+    WorkbenchSelector.cpp
 )
 SET(Widget_HPP_SRCS
     FileDialog.h
@@ -1064,6 +1107,7 @@ SET(Widget_HPP_SRCS
     WidgetFactory.h
     Widgets.h
     Window.h
+    WorkbenchSelector.h
 )
 SET(Widget_SRCS
     ${Widget_CPP_SRCS}
@@ -1120,6 +1164,7 @@ SET(Workbench_CPP_SRCS
     OverlayWidgets.cpp
     MenuManager.cpp
     PythonWorkbenchPyImp.cpp
+    ToolBarAreaWidget.cpp
     ToolBarManager.cpp
     ToolBoxManager.cpp
     Workbench.cpp
@@ -1135,6 +1180,7 @@ SET(Workbench_SRCS
     OverlayManager.h
     OverlayWidgets.h
     MenuManager.h
+    ToolBarAreaWidget.h
     ToolBarManager.h
     ToolBoxManager.h
     Workbench.h
@@ -1185,6 +1231,7 @@ SET(FreeCADGui_CPP_SRCS
     GuiConsole.cpp
     Macro.cpp
     MergeDocuments.cpp
+    ModuleIO.cpp
     Namespace.h
     resource.cpp
     Control.cpp
@@ -1194,8 +1241,9 @@ SET(FreeCADGui_CPP_SRCS
     Utilities.cpp
     WaitCursor.cpp
     ManualAlignment.cpp
+    StartupProcess.cpp
     TransactionObject.cpp
-    UserSettings.cpp
+    ToolHandler.cpp
 )
 SET(FreeCADGui_SRCS
     Application.h
@@ -1219,6 +1267,7 @@ SET(FreeCADGui_SRCS
     Macro.h
     MergeDocuments.h
     MetaTypes.h
+    ModuleIO.h
     Notifications.h
     PreCompiled.cpp
     PreCompiled.h
@@ -1231,8 +1280,9 @@ SET(FreeCADGui_SRCS
     Utilities.h
     WaitCursor.h
     ManualAlignment.h
+    StartupProcess.h
     TransactionObject.h
-    UserSettings.h
+    ToolHandler.h
     ${FreeCADGui_SDK_MOC_HDRS}
 )
 
@@ -1313,7 +1363,6 @@ if (EIGEN3_NO_DEPRECATED_COPY)
         Inventor/SoAutoZoomTranslation.cpp
         SoFCOffscreenRenderer.cpp
         SoFCSelectionAction.cpp
-        SoNavigationDragger.cpp
         SoFCCSysDragger.cpp
         Quarter/QuarterWidget.cpp
         View3DInventorViewer.cpp
@@ -1322,6 +1371,9 @@ endif ()
 
 add_library(FreeCADGui SHARED ${FreeCADGui_SRCS})
 target_link_libraries(FreeCADGui ${FreeCADGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(FreeCADGui)
+endif()
 
 SET_BIN_DIR(FreeCADGui FreeCADGui)
 

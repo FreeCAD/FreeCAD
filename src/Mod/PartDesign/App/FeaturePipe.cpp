@@ -23,8 +23,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRepAlgoAPI_Cut.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
+# include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 # include <BRepBndLib.hxx>
 # include <BRepBuilderAPI_Sewing.hxx>
 # include <BRepBuilderAPI_MakeSolid.hxx>
@@ -48,7 +48,11 @@
 #include <Mod/Part/App/FaceMakerCheese.h>
 
 #include "FeaturePipe.h"
+#include "Mod/Part/App/TopoShapeOpCode.h"
+#include "Mod/Part/App/TopoShapeMapper.h"
+#include "FeatureLoft.h"
 
+FC_LOG_LEVEL_INIT("PartDesign",true,true);
 
 using namespace PartDesign;
 
@@ -151,19 +155,19 @@ App::DocumentObjectExecReturn *Pipe::execute()
     TopoDS_Shape profilePoint;
 
     // if the Base property has a valid shape, fuse the pipe into it
-    TopoDS_Shape base;
+    TopoShape base;
     try {
-        base = getBaseShape();
+        base = getBaseTopoShape();
     } catch (const Base::Exception&) {
-        base = TopoDS_Shape();
+        base = TopoShape();
     }
 
     try {
         // setup the location
         this->positionByPrevious();
         TopLoc_Location invObjLoc = this->getLocation().Inverted();
-        if (!base.IsNull())
-            base.Move(invObjLoc);
+        if (!base.isNull())
+            base.move(invObjLoc);
 
         // setup the profile section
         TopoDS_Shape profileShape = getSectionShape(Profile.getValue(),
@@ -209,13 +213,13 @@ App::DocumentObjectExecReturn *Pipe::execute()
                 profilePoint = ex.Current();
             if (i > 1)
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception",
-                    "Pipe: Only one isolated point is needed if using a sketch with isolated "
-                    "points for section"));
+                                                                           "Pipe: Only one isolated point is needed if using a sketch with isolated "
+                                                                           "points for section"));
         }
 
         if (!profilePoint.IsNull() && (Transformation.getValue() != 1 || multisections.empty()))
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception",
-                "Pipe: At least one section is needed when using a single point for profile"));
+                                                                       "Pipe: At least one section is needed when using a single point for profile"));
 
         // maybe we need a scaling law
         Handle(Law_Function) scalinglaw;
@@ -229,13 +233,13 @@ App::DocumentObjectExecReturn *Pipe::execute()
             for (auto& subSet : multisections) {
                 if (!subSet.first->isDerivedFrom(Part::Feature::getClassTypeId()))
                     return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception",
-                        "Pipe: All sections need to be part features"));
+                                                                               "Pipe: All sections need to be part features"));
 
                 // if the section is an object's face then take just the face
                 TopoDS_Shape shape = getSectionShape(subSet.first, subSet.second);
                 if (shape.IsNull())
                     return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception",
-                        "Pipe: Could not obtain section shape"));
+                                                                               "Pipe: Could not obtain section shape"));
 
                 size_t nWiresAdded = addWiresToWireSections(shape, wiresections);
                 if (nWiresAdded == 0) {
@@ -244,7 +248,7 @@ App::DocumentObjectExecReturn *Pipe::execute()
                     for (ex.Init(shape, TopAbs_VERTEX); ex.More(); ex.Next(), ++i) {
                         if (isLastSectionVertex)
                             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception",
-                                "Pipe: Only the profile and last section can be vertices"));
+                                                                                       "Pipe: Only the profile and last section can be vertices"));
                         isLastSectionVertex = true;
                         for (auto& wires : wiresections)
                             wires.push_back(ex.Current());
@@ -253,8 +257,8 @@ App::DocumentObjectExecReturn *Pipe::execute()
 
                 if (!isLastSectionVertex && nWiresAdded < wiresections.size())
                     return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception",
-                        "Multisections need to have the same amount of inner wires as the base "
-                        "section"));
+                                                                               "Multisections need to have the same amount of inner wires as the base "
+                                                                               "section"));
             }
         }
         /*//build the law functions instead
@@ -351,8 +355,7 @@ App::DocumentObjectExecReturn *Pipe::execute()
                 sewer.Add(s);
 
             sewer.Perform();
-            mkSolid.Add(TopoDS::Shell(sewer.SewedShape()));
-        } else {
+            mkSolid.Add(TopoDS::Shell(sewer.SewedShape()));        } else {
             // shells are already closed - add them directly
             for (TopoDS_Shape& s : shells) {
                 mkSolid.Add(TopoDS::Shell(s));
@@ -370,33 +373,33 @@ App::DocumentObjectExecReturn *Pipe::execute()
         }
 
         //result.Move(invObjLoc);
-        AddSubShape.setValue(result);
+        AddSubShape.setValue(result); // Converts result to a TopoShape, but no tag.
 
-        if (base.IsNull()) {
+        if (base.isNull()) {
             if (getAddSubType() == FeatureAddSub::Subtractive)
                 return new App::DocumentObjectExecReturn(
                     QT_TRANSLATE_NOOP("Exception", "Pipe: There is nothing to subtract from"));
 
-            result = refineShapeIfActive(result);
-            Shape.setValue(getSolid(result));
+            auto ts_result = refineShapeIfActive(result);
+            Shape.setValue(getSolid(ts_result));
             return App::DocumentObject::StdReturn;
         }
 
         if (getAddSubType() == FeatureAddSub::Additive) {
 
-            BRepAlgoAPI_Fuse mkFuse(base, result);
+            FCBRepAlgoAPI_Fuse mkFuse(base.getShape(), result);
             if (!mkFuse.IsDone())
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Adding the pipe failed"));
             // we have to get the solids (fuse sometimes creates compounds)
-            TopoDS_Shape boolOp = this->getSolid(mkFuse.Shape());
+            TopoShape boolOp = this->getSolid(mkFuse.Shape());
             // lets check if the result is a solid
-            if (boolOp.IsNull())
+            if (boolOp.isNull())
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
 
-            int solidCount = countSolids(boolOp);
+            int solidCount = countSolids(boolOp.getShape());
             if (solidCount > 1) {
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception",
-                    "Result has multiple solids: that is not currently supported."));
+                                                                           "Result has multiple solids: that is not currently supported."));
             }
 
             boolOp = refineShapeIfActive(boolOp);
@@ -404,19 +407,19 @@ App::DocumentObjectExecReturn *Pipe::execute()
         }
         else if (getAddSubType() == FeatureAddSub::Subtractive) {
 
-            BRepAlgoAPI_Cut mkCut(base, result);
+            FCBRepAlgoAPI_Cut mkCut(base.getShape(), result);
             if (!mkCut.IsDone())
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Subtracting the pipe failed"));
             // we have to get the solids (fuse sometimes creates compounds)
-            TopoDS_Shape boolOp = this->getSolid(mkCut.Shape());
+            TopoShape boolOp = this->getSolid(mkCut.Shape());
             // lets check if the result is a solid
-            if (boolOp.IsNull())
+            if (boolOp.isNull())
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
 
-            int solidCount = countSolids(boolOp);
+            int solidCount = countSolids(boolOp.getShape());
             if (solidCount > 1) {
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception",
-                    "Result has multiple solids: that is not currently supported."));
+                                                                           "Result has multiple solids: that is not currently supported."));
             }
 
             boolOp = refineShapeIfActive(boolOp);
@@ -434,7 +437,7 @@ App::DocumentObjectExecReturn *Pipe::execute()
     }
 }
 
-void Pipe::setupAlgorithm(BRepOffsetAPI_MakePipeShell& mkPipeShell, TopoDS_Shape& auxshape) {
+void Pipe::setupAlgorithm(BRepOffsetAPI_MakePipeShell& mkPipeShell, const TopoDS_Shape& auxshape) {
 
     mkPipeShell.SetTolerance(Precision::Confusion());
 
@@ -581,7 +584,6 @@ void Pipe::buildPipePath(const Part::TopoShape& shape, const std::vector<std::st
         }
     }
 }
-
 PROPERTY_SOURCE(PartDesign::AdditivePipe, PartDesign::Pipe)
 AdditivePipe::AdditivePipe() {
     addSubType = Additive;

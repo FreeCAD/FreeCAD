@@ -31,6 +31,7 @@
 
 #include <App/Application.h>
 #include <Base/Interpreter.h>
+#include <Base/Stream.h>
 #include <Gui/MetaTypes.h>
 
 #include "Materials.h"
@@ -405,9 +406,16 @@ MaterialLoader::getMaterialFromPath(const std::shared_ptr<MaterialLibrary>& libr
         return model;
     }
 
+    Base::FileInfo info(pathName);
+    Base::ifstream fin(info);
+    if (!fin) {
+        Base::Console().Error("YAML file open error: '%s'\n", pathName.c_str());
+        return model;
+    }
+
     YAML::Node yamlroot;
     try {
-        yamlroot = YAML::LoadFile(pathName);
+        yamlroot = YAML::Load(fin);
 
         model = getMaterialFromYAML(library, yamlroot, path);
     }

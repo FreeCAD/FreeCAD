@@ -244,8 +244,9 @@ class MacroUninstaller(QObject):
                 errors.append(
                     translate(
                         "AddonsInstaller",
-                        "Error while trying to remove macro file {}: ",
+                        "Error while trying to remove macro file {}:",
                     ).format(full_path)
+                    + " "
                     + str(e)
                 )
                 success = False

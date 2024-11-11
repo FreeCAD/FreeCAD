@@ -94,10 +94,9 @@ private:
 
                 startPoint = onSketchPos;
 
-                if (seekAutoConstraint(sugConstraints[0], onSketchPos, Base::Vector2d(0.f, 0.f))) {
-                    renderSuggestConstraintsCursor(sugConstraints[0]);
-                    return;
-                }
+                seekAndRenderAutoConstraint(sugConstraints[0],
+                                            onSketchPos,
+                                            Base::Vector2d(0.f, 0.f));
             } break;
             case SelectMode::SeekSecond: {
                 toolWidgetManager.drawDirectionAtCursor(onSketchPos, startPoint);
@@ -110,10 +109,9 @@ private:
                 catch (const Base::ValueError&) {
                 }  // equal points while hovering raise an objection that can be safely ignored
 
-                if (seekAutoConstraint(sugConstraints[1], onSketchPos, onSketchPos - startPoint)) {
-                    renderSuggestConstraintsCursor(sugConstraints[1]);
-                    return;
-                }
+                seekAndRenderAutoConstraint(sugConstraints[1],
+                                            onSketchPos,
+                                            onSketchPos - startPoint);
             } break;
             default:
                 break;
@@ -276,9 +274,9 @@ template<>
 void DSHLineController::configureToolWidget()
 {
     if (!init) {  // Code to be executed only upon initialisation
-        QStringList names = {QStringLiteral("Point, length, angle"),
-                             QStringLiteral("Point, width, height"),
-                             QStringLiteral("2 points")};
+        QStringList names = {QApplication::translate("Sketcher_CreateLine", "Point, length, angle"),
+                             QApplication::translate("Sketcher_CreateLine", "Point, width, height"),
+                             QApplication::translate("Sketcher_CreateLine", "2 points")};
         toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
 
         if (isConstructionMode()) {
@@ -357,13 +355,37 @@ void DSHLineControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchP
         case SelectMode::SeekSecond: {
             if (handler->constructionMethod() == ConstructionMethod::OnePointWidthHeight) {
                 if (onViewParameters[OnViewParameter::Third]->isSet) {
-                    onSketchPos.x = handler->startPoint.x
-                        + onViewParameters[OnViewParameter::Third]->getValue();
+                    double length = onViewParameters[OnViewParameter::Third]->getValue();
+                    if (fabs(length) < Precision::Confusion()) {
+                        // Both cannot be 0
+                        if (onViewParameters[OnViewParameter::Fourth]->isSet) {
+                            double width = onViewParameters[OnViewParameter::Fourth]->getValue();
+                            if (fabs(width) < Precision::Confusion()) {
+                                unsetOnViewParameter(
+                                    onViewParameters[OnViewParameter::Third].get());
+                                return;
+                            }
+                        }
+                    }
+                    int sign = (onSketchPos.x - handler->startPoint.x) >= 0 ? 1 : -1;
+                    onSketchPos.x = handler->startPoint.x + sign * length;
                 }
 
                 if (onViewParameters[OnViewParameter::Fourth]->isSet) {
-                    onSketchPos.y = handler->startPoint.y
-                        + onViewParameters[OnViewParameter::Fourth]->getValue();
+                    double width = onViewParameters[OnViewParameter::Fourth]->getValue();
+                    if (fabs(width) < Precision::Confusion()) {
+                        // Both cannot be 0
+                        if (onViewParameters[OnViewParameter::Third]->isSet) {
+                            double length = onViewParameters[OnViewParameter::Third]->getValue();
+                            if (fabs(length) < Precision::Confusion()) {
+                                unsetOnViewParameter(
+                                    onViewParameters[OnViewParameter::Fourth].get());
+                                return;
+                            }
+                        }
+                    }
+                    int sign = (onSketchPos.y - handler->startPoint.y) >= 0 ? 1 : -1;
+                    onSketchPos.y = handler->startPoint.y + sign * width;
                 }
             }
             else if (handler->constructionMethod() == ConstructionMethod::OnePointLengthAngle) {
@@ -440,11 +462,11 @@ void DSHLineController::adaptParameters(Base::Vector2d onSketchPos)
                 Base::Vector3d vec = end - start;
 
                 if (!onViewParameters[OnViewParameter::Third]->isSet) {
-                    setOnViewParameterValue(OnViewParameter::Third, vec.x);
+                    setOnViewParameterValue(OnViewParameter::Third, fabs(vec.x));
                 }
 
                 if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
-                    setOnViewParameterValue(OnViewParameter::Fourth, vec.y);
+                    setOnViewParameterValue(OnViewParameter::Fourth, fabs(vec.y));
                 }
 
                 bool sameSign = vec.x * vec.y > 0.;
@@ -570,12 +592,13 @@ void DSHLineController::addConstraints()
                                   firstCurve);
         }
         else {
+            bool reverse = (handler->endPoint.x - handler->startPoint.x) < 0;
             Gui::cmdAppObjectArgs(obj,
                                   "addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%d,%d,%f)) ",
                                   firstCurve,
-                                  1,
+                                  reverse ? 2 : 1,
                                   firstCurve,
-                                  2,
+                                  reverse ? 1 : 2,
                                   fabs(p3));
         }
     };
@@ -601,12 +624,13 @@ void DSHLineController::addConstraints()
                                   firstCurve);
         }
         else {
+            bool reverse = (handler->endPoint.y - handler->startPoint.y) < 0;
             Gui::cmdAppObjectArgs(obj,
                                   "addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%d,%d,%f)) ",
                                   firstCurve,
-                                  1,
+                                  reverse ? 2 : 1,
                                   firstCurve,
-                                  2,
+                                  reverse ? 1 : 2,
                                   fabs(p4));
         }
     };

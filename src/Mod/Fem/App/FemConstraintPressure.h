@@ -39,8 +39,6 @@ public:
 
     App::PropertyPressure Pressure;
     App::PropertyBool Reversed;
-    App::PropertyVectorList Points;
-    App::PropertyVectorList Normals;
 
     /// recalculate the object
     App::DocumentObjectExecReturn* execute() override;
@@ -52,7 +50,6 @@ protected:
     void handleChangedPropertyType(Base::XMLReader& reader,
                                    const char* TypeName,
                                    App::Property* prop) override;
-    void onChanged(const App::Property* prop) override;
 };
 
 }  // namespace Fem

@@ -77,7 +77,7 @@
     <message>
       <location filename="../../VisualInspection.ui" line="97"/>
       <source>Search distance</source>
-      <translation type="unfinished">Search distance</translation>
+      <translation>Претрага растојања</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="129"/>
@@ -88,44 +88,44 @@
     <message>
       <location filename="../../VisualInspection.ui" line="145"/>
       <source>Thickness</source>
-      <translation>Дебљина</translation>
+      <translation>Танкозидни објекат</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="482"/>
+      <location filename="../../ViewProviderInspection.cpp" line="489"/>
       <source>Remove annotations</source>
       <translation>Уклони напомене</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="483"/>
+      <location filename="../../ViewProviderInspection.cpp" line="490"/>
       <source>Do you want to remove all annotations?</source>
       <translation>Да ли желиш да уклониш све напомене?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="541"/>
+      <location filename="../../ViewProviderInspection.cpp" line="548"/>
       <source>Annotation</source>
       <translation>Напомена</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="544"/>
+      <location filename="../../ViewProviderInspection.cpp" line="551"/>
       <source>Leave info mode</source>
       <translation>Напусти инфо режим</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="675"/>
+      <location filename="../../ViewProviderInspection.cpp" line="682"/>
       <source>Distance: &gt; %1</source>
       <translation>Растојање: &gt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="679"/>
+      <location filename="../../ViewProviderInspection.cpp" line="686"/>
       <source>Distance: &lt; %1</source>
       <translation>Растојање: &lt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="699"/>
-      <location filename="../../ViewProviderInspection.cpp" line="716"/>
+      <location filename="../../ViewProviderInspection.cpp" line="706"/>
+      <location filename="../../ViewProviderInspection.cpp" line="723"/>
       <source>Distance: %1</source>
       <translation>Растојање: %1</translation>
     </message>

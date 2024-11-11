@@ -29,10 +29,19 @@
 // Measure
 #ifndef MeasureExport
 #ifdef Measure_EXPORTS
-#       define MeasureExport   FREECAD_DECL_EXPORT
+#define MeasureExport FREECAD_DECL_EXPORT
 #else
-#       define MeasureExport   FREECAD_DECL_IMPORT
+#define MeasureExport FREECAD_DECL_IMPORT
 #endif
 #endif
 
-#endif //MEASURE_GLOBAL_H
+// MeasureGui
+#ifndef MeasureGuiExport
+#ifdef MeasureGui_EXPORTS
+#define MeasureGuiExport FREECAD_DECL_EXPORT
+#else
+#define MeasureGuiExport FREECAD_DECL_IMPORT
+#endif
+#endif
+
+#endif  // MEASURE_GLOBAL_H

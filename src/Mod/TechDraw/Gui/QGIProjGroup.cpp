@@ -65,7 +65,7 @@ bool QGIProjGroup::sceneEventFilter(QGraphicsItem* watched, QEvent *event)
 
         QGIView *qAnchor = getAnchorQItem();
         if(qAnchor && watched == qAnchor) {
-            QGraphicsSceneMouseEvent *mEvent = dynamic_cast<QGraphicsSceneMouseEvent*>(event);
+            auto *mEvent = dynamic_cast<QGraphicsSceneMouseEvent*>(event);
 
             switch(event->type()) {
               case QEvent::GraphicsSceneMousePress:
@@ -99,24 +99,27 @@ QVariant QGIProjGroup::itemChange(GraphicsItemChange change, const QVariant &val
          if(gView) {
             TechDraw::DrawView *fView = gView->getViewObject();
             if(fView->isDerivedFrom<TechDraw::DrawProjGroupItem>()) {
-                TechDraw::DrawProjGroupItem *projItemPtr = static_cast<TechDraw::DrawProjGroupItem *>(fView);
+                auto *projItemPtr = static_cast<TechDraw::DrawProjGroupItem *>(fView);
                 QString type = QString::fromLatin1(projItemPtr->Type.getValueAsString());
 
                 if (type == QString::fromLatin1("Front")) {
-                    gView->setLocked(true);                  //this locks in GUI only
                     gView->alignTo(m_origin, QString::fromLatin1("None"));
                     installSceneEventFilter(gView);
-                } else if ( type == QString::fromLatin1("Top") ||
+                }
+                else if ( type == QString::fromLatin1("Top") ||
                     type == QString::fromLatin1("Bottom")) {
                     gView->alignTo(m_origin, QString::fromLatin1("Vertical"));
-                } else if ( type == QString::fromLatin1("Left")  ||
+                }
+                else if ( type == QString::fromLatin1("Left")  ||
                             type == QString::fromLatin1("Right") ||
                             type == QString::fromLatin1("Rear") ) {
                     gView->alignTo(m_origin, QString::fromLatin1("Horizontal"));
-                } else if ( type == QString::fromLatin1("FrontTopRight") ||
+                }
+                else if ( type == QString::fromLatin1("FrontTopRight") ||
                             type == QString::fromLatin1("FrontBottomLeft") ) {
                     gView->alignTo(m_origin, QString::fromLatin1("45slash"));
-                } else if ( type == QString::fromLatin1("FrontTopLeft") ||
+                }
+                else if ( type == QString::fromLatin1("FrontTopLeft") ||
                             type == QString::fromLatin1("FrontBottomRight") ) {
                     gView->alignTo(m_origin, QString::fromLatin1("45backslash"));
                 }
@@ -159,7 +162,8 @@ void QGIProjGroup::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
                 event->ignore();
                 qAnchor->mouseReleaseEvent(event);
             }
-        } else if(scene() && qAnchor) {
+        }
+        else if(scene() && qAnchor) {
             // End of Drag
             getViewObject()->setPosition(Rez::appX(x()), Rez::appX(getY()));
         }

@@ -34,8 +34,10 @@ FIXTURE_PATH = pathlib.Path(__file__).parent / "Fixtures"
 class TestInvoluteGear(unittest.TestCase):
     def setUp(self):
         self.Doc = FreeCAD.newDocument("PartDesignTestInvoluteGear")
+        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
 
     def tearDown(self):
+        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "")
         FreeCAD.closeDocument(self.Doc.Name)
 
     def testDefaultGearProfile(self):
@@ -252,6 +254,7 @@ class TestInvoluteGear(unittest.TestCase):
         profile.HighPrecision = False
         profile.NumberOfTeeth = 8
         body = self.Doc.addObject('PartDesign::Body','GearBody')
+        body.AllowCompound = False
         body.addObject(profile)
         cylinder = body.newObject('PartDesign::AdditiveCylinder','GearCylinder')
         default_dedendum = 1.25

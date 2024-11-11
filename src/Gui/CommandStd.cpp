@@ -29,6 +29,9 @@
 # include <QRegularExpression>
 # include <QRegularExpressionMatch>
 # include <QWhatsThis>
+# include <QAbstractButton>
+# include <QTimer>
+# include <QProcess>
 #endif
 
 #include <App/Document.h>
@@ -317,6 +320,53 @@ void StdCmdWhatsThis::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     QWhatsThis::enterWhatsThisMode();
+}
+
+//===========================================================================
+// Std_RestartInSafeMode
+//===========================================================================
+DEF_STD_CMD(StdCmdRestartInSafeMode)
+
+StdCmdRestartInSafeMode::StdCmdRestartInSafeMode()
+  :Command("Std_RestartInSafeMode")
+{
+    sGroup        = "Help";
+    sMenuText     = QT_TR_NOOP("Restart in safe mode");
+    sToolTipText  = QT_TR_NOOP("Restart in safe mode");
+    sWhatsThis    = "Std_RestartInSafeMode";
+    sStatusTip    = QT_TR_NOOP("Restart in safe mode");
+    sPixmap       = "safe-mode-restart";
+    eType         = 0;
+}
+
+void StdCmdRestartInSafeMode::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    QMessageBox restartBox;
+    restartBox.setIcon(QMessageBox::Warning);
+    restartBox.setWindowTitle(QObject::tr("Restart in safe mode"));
+    restartBox.setText(QObject::tr("Are you sure you want to restart FreeCAD and enter safe mode?"));
+    restartBox.setInformativeText(QObject::tr("Safe mode temporarily disables your configuration and addons."));
+    restartBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    restartBox.setDefaultButton(QMessageBox::No);
+
+    if (restartBox.exec() == QMessageBox::Yes) {
+        //restart FreeCAD after a delay to give time to this dialog to close
+        const int ms = 1000;
+        QTimer::singleShot(ms, []()
+        {
+            QStringList args = QApplication::arguments();
+            args.pop_front();
+            auto const safeModeArgument = QString::fromLatin1("--safe-mode");
+            if (!args.contains(safeModeArgument)) {
+                args.append(safeModeArgument);
+            }
+            if (getMainWindow()->close()) {
+                QProcess::startDetached(QApplication::applicationFilePath(), args);
+            }
+        });
+    }
 }
 
 //===========================================================================
@@ -732,64 +782,6 @@ void StdCmdReportBug::activated(int iMsg)
     OpenURLInBrowser(url.c_str());
 }
 
-
-//===========================================================================
-// Std_MeasurementSimple
-//===========================================================================
-
-DEF_STD_CMD(StdCmdMeasurementSimple)
-
-StdCmdMeasurementSimple::StdCmdMeasurementSimple()
-  :Command("Std_MeasurementSimple")
-{
-    sGroup        = "Tools";
-    sMenuText     = QT_TR_NOOP("Measure distance");
-    sToolTipText  = QT_TR_NOOP("Measures distance between two selected objects");
-    sWhatsThis    = "Std_MeasurementSimple";
-    sStatusTip    = QT_TR_NOOP("Measures distance between two selected objects");
-    sPixmap       = "view-measurement";
-    eType         = 0;
-}
-
-void StdCmdMeasurementSimple::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    unsigned int n = getSelection().countObjectsOfType(App::DocumentObject::getClassTypeId());
-
-    if (n == 1) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Only one object selected. Please select two objects.\n"
-                        "Be aware the point where you click matters."));
-        return;
-    }
-    if (n < 1 || n > 2) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Please select two objects.\n"
-                        "Be aware the point where you click matters."));
-        return;
-    }
-
-    std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
-
-    std::string name;
-    name += "Dist ";
-    name += Sel[0].FeatName;
-    name += "-";
-    name += Sel[0].SubName;
-    name += " to ";
-    name += Sel[1].FeatName;
-    name += "-";
-    name += Sel[1].SubName;
-
-    openCommand(QT_TRANSLATE_NOOP("Command", "Insert measurement"));
-    doCommand(Doc,"_f = App.activeDocument().addObject(\"App::MeasureDistance\",\"%s\")","Measurement");
-    doCommand(Doc,"_f.Label ='%s'",name.c_str());
-    doCommand(Doc,"_f.P1 = FreeCAD.Vector(%f,%f,%f)",Sel[0].x,Sel[0].y,Sel[0].z);
-    doCommand(Doc,"_f.P2 = FreeCAD.Vector(%f,%f,%f)",Sel[1].x,Sel[1].y,Sel[1].z);
-    updateActive();
-    commitCommand();
-}
-
 //===========================================================================
 // Std_TextDocument
 //===========================================================================
@@ -833,10 +825,10 @@ StdCmdUnitsCalculator::StdCmdUnitsCalculator()
   : Command("Std_UnitsCalculator")
 {
     sGroup        = "Tools";
-    sMenuText     = QT_TR_NOOP("&Units calculator...");
-    sToolTipText  = QT_TR_NOOP("Start the units calculator");
+    sMenuText     = QT_TR_NOOP("&Units converter...");
+    sToolTipText  = QT_TR_NOOP("Start the units converter");
     sWhatsThis    = "Std_UnitsCalculator";
-    sStatusTip    = QT_TR_NOOP("Start the units calculator");
+    sStatusTip    = QT_TR_NOOP("Start the units converter");
     sPixmap       = "accessories-calculator";
     eType         = 0;
 }
@@ -952,6 +944,33 @@ bool StdCmdUserEditMode::isActive()
     return true;
 }
 
+//===========================================================================
+// Std_ReloadStylesheet
+//===========================================================================
+DEF_STD_CMD(StdCmdReloadStyleSheet)
+
+StdCmdReloadStyleSheet::StdCmdReloadStyleSheet()
+  : Command("Std_ReloadStyleSheet")
+{
+    sGroup        = "View";
+    sMenuText     = QT_TR_NOOP("&Reload stylesheet");
+    sToolTipText  = QT_TR_NOOP("Reloads the current stylesheet");
+    sWhatsThis    = "Std_ReloadStyleSheet";
+    sStatusTip    = QT_TR_NOOP("Reloads the current stylesheet");
+    sPixmap       = "view-refresh";
+    sWhatsThis    = "Std_ReloadStyleSheet";
+}
+
+void StdCmdReloadStyleSheet::activated(int )
+{
+    auto mw = getMainWindow();
+
+    auto qssFile = mw->property("fc_currentStyleSheet").toString();
+    auto tiledBackground = mw->property("fc_tiledBackground").toBool();
+
+    Gui::Application::Instance->setStyleSheet(qssFile, tiledBackground);
+}
+
 namespace Gui {
 
 void CreateStdCommands()
@@ -969,6 +988,7 @@ void CreateStdCommands()
     rcCmdMgr.addCommand(new StdCmdRecentFiles());
     rcCmdMgr.addCommand(new StdCmdRecentMacros());
     rcCmdMgr.addCommand(new StdCmdWhatsThis());
+    rcCmdMgr.addCommand(new StdCmdRestartInSafeMode());
     rcCmdMgr.addCommand(new StdCmdPythonHelp());
     rcCmdMgr.addCommand(new StdCmdOnlineHelp());
     rcCmdMgr.addCommand(new StdCmdOnlineHelpWebsite());
@@ -983,7 +1003,7 @@ void CreateStdCommands()
     rcCmdMgr.addCommand(new StdCmdTextDocument());
     rcCmdMgr.addCommand(new StdCmdUnitsCalculator());
     rcCmdMgr.addCommand(new StdCmdUserEditMode());
-    //rcCmdMgr.addCommand(new StdCmdMeasurementSimple());
+    rcCmdMgr.addCommand(new StdCmdReloadStyleSheet());
     //rcCmdMgr.addCommand(new StdCmdDownloadOnlineHelp());
     //rcCmdMgr.addCommand(new StdCmdDescription());
 }

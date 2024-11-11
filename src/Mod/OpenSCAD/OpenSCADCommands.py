@@ -379,7 +379,7 @@ class AddSCADTask:
         self.form.buttonrefresh.clicked.connect(self.refreshelement)
 
     def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Close)
+        return QtGui.QDialogButtonBox.Close
 
     def isAllowedAlterSelection(self):
         return True
@@ -492,7 +492,7 @@ class OpenSCADMeshBooleanTask:
         self.form.buttonadd.clicked.connect(self.doboolean)
 
     def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Close)
+        return QtGui.QDialogButtonBox.Close
 
     def isAllowedAlterSelection(self):
         return False

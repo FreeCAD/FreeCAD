@@ -105,9 +105,9 @@ class ShapeString(DraftObject):
         super().onDocumentRestored(obj)
         if hasattr(obj, "ObliqueAngle"): # several more properties were added
             return
-        self.update_properties_0v22(obj)
+        self.update_properties_1v0(obj)
 
-    def update_properties_0v22(self, obj):
+    def update_properties_1v0(self, obj):
         """Update view properties."""
         old_tracking = obj.Tracking # no need for obj.getTypeIdOfProperty("Tracking")
         obj.removeProperty("Tracking")
@@ -115,9 +115,9 @@ class ShapeString(DraftObject):
         obj.KeepLeftMargin = True
         obj.ScaleToSize = False
         obj.Tracking = old_tracking
-        _wrn("v0.22, " + obj.Label + ", "
+        _wrn("v1.0, " + obj.Label + ", "
              + translate("draft", "added 'Fuse', 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ObliqueAngle' and 'ScaleToSize'  properties"))
-        _wrn("v0.22, " + obj.Label + ", "
+        _wrn("v1.0, " + obj.Label + ", "
              + translate("draft", "changed 'Tracking' property type"))
 
     def execute(self, obj):
@@ -127,8 +127,7 @@ class ShapeString(DraftObject):
             return
 
         if obj.String and obj.FontFile:
-            if obj.Placement:
-                plm = obj.Placement
+            plm = obj.Placement
 
             fill = obj.MakeFace
             if fill is True:
@@ -159,6 +158,10 @@ class ShapeString(DraftObject):
                 if fill and obj.Fuse:
                     ss_shape = shapes[0].fuse(shapes[1:])
                     ss_shape = faces.concatenate(ss_shape)
+                    # Concatenate returns a Face or a Compound. We always
+                    # need a Compound as we use ss_shape.SubShapes later.
+                    if ss_shape.ShapeType == "Face":
+                        ss_shape = Part.Compound([ss_shape])
                 else:
                     ss_shape = Part.Compound(shapes)
                 cap_char = Part.makeWireString("M", obj.FontFile, obj.Size, obj.Tracking)[0]
@@ -186,8 +189,7 @@ class ShapeString(DraftObject):
             else:
                 App.Console.PrintWarning(translate("draft", "ShapeString: string has no wires") + "\n")
 
-            if plm:
-                obj.Placement = plm
+            obj.Placement = plm
 
         obj.positionBySupport()
         self.props_changed_clear()

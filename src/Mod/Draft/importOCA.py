@@ -3,8 +3,7 @@
 #  \ingroup DRAFT
 #  \brief OCA (Open CAD Format) file importer & exporter
 '''@package importOCA
-\ingroup DRAFT
-\brief OCA (Open CAD Format) file importer & exporter
+OCA (Open CAD Format) file importer & exporter
 
 This module provides support for importing from and exporting to
 the OCA format or GCAD format from GCAD3D (http://www.gcad3d.org/).
@@ -45,6 +44,7 @@ import FreeCAD, os, Part, DraftVecUtils, DraftGeomUtils
 from FreeCAD import Vector
 from FreeCAD import Console as FCC
 from draftutils import params
+from builtins import open as pyopen
 
 if FreeCAD.GuiUp:
     from draftutils.translate import translate
@@ -52,9 +52,7 @@ else:
     def translate(context, txt):
         return txt
 
-# Save the native open function to avoid collisions
-if open.__module__ in ['__builtin__', 'io']:
-    pythonopen = open
+
 
 
 def getpoint(data):
@@ -286,7 +284,7 @@ def parse(filename, doc):
     -------
     None
     """
-    filebuffer = pythonopen(filename)
+    filebuffer = pyopen(filename)
     global objects
     objects = {}
     global color
@@ -416,7 +414,7 @@ def export(exportList, filename):
         return
 
     # writing file
-    oca = pythonopen(filename, 'w')
+    oca = pyopen(filename, 'w')
     oca.write("#oca file generated from FreeCAD\r\n")
     oca.write("# edges\r\n")
     count = 1

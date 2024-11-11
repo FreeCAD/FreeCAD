@@ -39,21 +39,24 @@
 #include "QGIPrimPath.h"
 #include "PreferencesGui.h"
 #include "QGIView.h"
+#include "DrawGuiUtil.h"
 
 
 using namespace TechDrawGui;
 using namespace TechDraw;
+using DGU = DrawGuiUtil;
 
 QGIPrimPath::QGIPrimPath():
     m_width(0),
     m_capStyle(Qt::RoundCap),
     m_fillStyleCurrent (Qt::NoBrush),
-//    m_fillStyleCurrent (Qt::SolidPattern),
     m_fillOverride(false)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setFlag(QGraphicsItem::ItemIsMovable, false);
+    setFlag(QGraphicsItem::ItemIsFocusable, true);      // to get key press events
+
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
     setAcceptHoverEvents(true);
@@ -77,7 +80,6 @@ QGIPrimPath::QGIPrimPath():
     m_fillStyleCurrent = m_fillNormal;
 
     m_colDefFill = Qt::white;
-//    m_colDefFill = Qt::transparent;
     setFillColor(m_colDefFill);
 
     setPrettyNormal();
@@ -85,10 +87,10 @@ QGIPrimPath::QGIPrimPath():
 
 QVariant QGIPrimPath::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-//    Base::Console().Message("QGIPP::itemChange(%d) - type: %d\n", change, type() - QGraphicsItem::UserType);
     if (change == ItemSelectedHasChanged && scene()) {
         if(isSelected()) {
             setPrettySel();
+            setFocus();
         } else {
             setPrettyNormal();
         }
@@ -98,16 +100,15 @@ QVariant QGIPrimPath::itemChange(GraphicsItemChange change, const QVariant &valu
 
 void QGIPrimPath::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
-//    Base::Console().Message("QGIPP::hoverEnter() - selected; %d\n", isSelected());
     if (!isSelected()) {
         setPrettyPre();
     }
+    setFocus();
     QGraphicsPathItem::hoverEnterEvent(event);
 }
 
 void QGIPrimPath::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
-//    Base::Console().Message("QGIPP::hoverLeave() - selected; %d\n", isSelected());
     if(!isSelected()) {
         setPrettyNormal();
     }
@@ -115,25 +116,14 @@ void QGIPrimPath::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     QGraphicsPathItem::hoverLeaveEvent(event);
 }
 
-//set highlighted is obsolete
-void QGIPrimPath::setHighlighted(bool b)
-{
-    isHighlighted = b;
-    if(isHighlighted) {
-        setPrettySel();
-    } else {
-        setPrettyNormal();
-    }
-}
 
 void QGIPrimPath::setPrettyNormal() {
-//    Base::Console().Message("QGIPP::setPrettyNormal()\n");
+
     m_colCurrent = m_colNormal;
     m_fillColorCurrent = m_colNormalFill;
 }
 
 void QGIPrimPath::setPrettyPre() {
-//    Base::Console().Message("QGIPP::setPrettyPre()\n");
     m_colCurrent = getPreColor();
     if (!m_fillOverride) {
         m_fillColorCurrent = getPreColor();
@@ -141,7 +131,6 @@ void QGIPrimPath::setPrettyPre() {
 }
 
 void QGIPrimPath::setPrettySel() {
-//    Base::Console().Message("QGIPP::setPrettySel()\n");
     m_colCurrent = getSelectColor();
     if (!m_fillOverride) {
         m_fillColorCurrent = getSelectColor();
@@ -264,9 +253,9 @@ void QGIPrimPath::mousePressEvent(QGraphicsSceneMouseEvent *event)
         auto parent = dynamic_cast<QGIView *>(parentItem());
         if (parent) {
             std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
-            if (selection.size() == 1
-                && selection.front().getObject() == parent->getViewObject()) {
-
+            if (DGU::findObjectInSelection(selection, *(parent->getViewObject()))) {
+                // if our parent is already in the selection, then allow addition
+                // primitives to be selected.
                 multiselectActivated = true;
                 event->setModifiers(originalModifiers | Qt::ControlModifier);
             }
@@ -323,6 +312,7 @@ void QGIPrimPath::setCurrentPen()
 {
     m_pen.setWidthF(m_width);
     m_pen.setColor(m_colCurrent);
+    m_pen.setStyle(m_styleCurrent);
 }
 
 void QGIPrimPath::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {

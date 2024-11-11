@@ -63,7 +63,7 @@ public:
 
 protected:
     void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName) override;
-    TopoDS_Shape refineShapeIfActive(const TopoDS_Shape&) const;
+    TopoShape refineShapeIfActive(const TopoShape&) const;
 
 
 private:

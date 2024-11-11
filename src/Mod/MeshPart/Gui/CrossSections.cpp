@@ -627,12 +627,7 @@ void CrossSections::makePlanes(Plane type, const std::vector<double>& d, double 
 TaskCrossSections::TaskCrossSections(const Base::BoundBox3d& bb)
 {
     widget = new CrossSections(bb);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("Mesh_CrossSections"),
-                                         widget->windowTitle(),
-                                         true,
-                                         nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(Gui::BitmapFactory().pixmap("Mesh_CrossSections"), widget, true);
 }
 
 bool TaskCrossSections::accept()

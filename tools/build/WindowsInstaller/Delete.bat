@@ -79,17 +79,10 @@ del Qt5Svgd.dll
 del Qt5Testd.dll
 del Qt5TextToSpeechd.dll
 del Qt5VirtualKeyboardd.dll
-del Qt5WebChanneld.dll
-del Qt5WebEngineCored.dll
-del Qt5WebEngined.dll
-del Qt5WebEngineWidgetsd.dll
-del Qt5WebSocketsd.dll
-del Qt5WebViewd.dll
 del Qt5Widgetsd.dll
 del Qt5WinExtrasd.dll
 del Qt5Xmld.dll
 del Qt5XmlPatternsd.dll
-del QtWebEngineProcessd.exe
 del Quarter1d.dll
 del xerces-c_3_2D.dll
 del zlibd.dll

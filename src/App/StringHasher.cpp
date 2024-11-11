@@ -462,18 +462,7 @@ const std::string& StringHasher::getPersistenceFileName() const
 void StringHasher::Save(Base::Writer& writer) const
 {
 
-    size_t count = 0;
-    if (_hashes->SaveAll) {
-        count = _hashes->size();
-    }
-    else {
-        count = 0;
-        for (auto& hasher : _hashes->right) {
-            if (hasher.second->isMarked() || hasher.second->isPersistent()) {
-                ++count;
-            }
-        }
-    }
+    std::size_t count = _hashes->SaveAll ? _hashes->size() : this->count();
 
     writer.Stream() << writer.ind() << "<StringHasher saveall=\"" << _hashes->SaveAll
                     << "\" threshold=\"" << _hashes->Threshold << "\"";
@@ -507,6 +496,7 @@ void StringHasher::SaveDocFile(Base::Writer& writer) const
 
 void StringHasher::saveStream(std::ostream& stream) const
 {
+    Base::TextOutputStream textStreamWrapper(stream);
     boost::io::ios_flags_saver ifs(stream);
     stream << std::hex;
 
@@ -594,8 +584,9 @@ void StringHasher::saveStream(std::ostream& stream) const
         }
         else {
             // Reaching here means the string may contain space and newlines
+            // We rely on OutputStream (i.e. textStreamWrapper) to save the string.
             stream << ' ';
-            stream << std::dec << d._data.constData() << std::hex;
+            textStreamWrapper << d._data.constData();
         }
     }
 }
@@ -615,12 +606,13 @@ void StringHasher::RestoreDocFile(Base::Reader& reader)
         restoreStreamNew(reader, count);
         return;
     }
-    count = atoi(marker.c_str());
+    reader >> count;
     restoreStream(reader, count);
 }
 
 void StringHasher::restoreStreamNew(std::istream& stream, std::size_t count)
 {
+    Base::TextInputStream asciiStream (stream);
     _hashes->clear();
     std::string content;
     boost::io::ios_flags_saver ifs(stream);
@@ -688,7 +680,7 @@ void StringHasher::restoreStreamNew(std::istream& stream, std::size_t count)
         }
 
         if (!d.isPostfixed()) {
-            stream >> content;
+            asciiStream >> content;
             if (d.isHashed() || d.isBinary()) {
                 d._data = QByteArray::fromBase64(content.c_str());
             }
@@ -785,7 +777,7 @@ size_t StringHasher::count() const
 {
     size_t count = 0;
     for (auto& hasher : _hashes->right) {
-        if (hasher.second->getRefCount() > 1) {
+        if (hasher.second->isMarked() || hasher.second->isPersistent() ) {
             ++count;
         }
     }
@@ -815,7 +807,12 @@ void StringHasher::Restore(Base::XMLReader& reader)
 
     std::size_t count = reader.getAttributeAsUnsigned("count");
     if (newTag) {
+        try {
         restoreStreamNew(reader.beginCharStream(), count);
+        } catch (const Base::Exception &e) {
+            e.ReportException();
+            FC_ERR("Failed to restore string table: full-document recompute strongly recommended.");
+        }
         reader.readEndElement("StringHasher2");
         return;
     }

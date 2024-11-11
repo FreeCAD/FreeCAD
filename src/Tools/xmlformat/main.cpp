@@ -87,7 +87,7 @@ int main(int argc, char* argv[])
         }
 
         // add the rest
-        for (const auto& it : qAsConst(attr)) {
+        for (const auto& it : std::as_const(attr)) {
             sorted.append(it);
         }
 

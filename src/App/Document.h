@@ -77,6 +77,7 @@ public:
         RestoreError = 10,
         LinkStampChanged = 11, // Indicates during restore time if any linked document's time stamp has changed
         IgnoreErrorOnRecompute = 12, // Don't report errors if the recompute failed
+        RecomputeOnRestore = 13, // Mark pending recompute on restore for migration purposes
     };
 
     /** @name Properties */
@@ -117,6 +118,8 @@ public:
     PropertyString TipName;
     /// Whether to show hidden items in TreeView
     PropertyBool ShowHidden;
+    /// Whether to use hasher on topological naming
+    PropertyBool UseHasher;
     //@}
 
     /** @name Signals of the document */
@@ -470,6 +473,8 @@ public:
     std::vector<App::DocumentObject*> topologicalSort() const;
     /// get all root objects (objects no other one reference too)
     std::vector<App::DocumentObject*> getRootObjects() const;
+    /// get all tree root objects (objects that are at the root of the object tree)
+    std::vector<App::DocumentObject*> getRootObjectsIgnoreLinks() const;
     /// get all possible paths from one object to another following the OutList
     std::vector<std::list<App::DocumentObject*> > getPathsByOutList
     (const App::DocumentObject* from, const App::DocumentObject* to) const;

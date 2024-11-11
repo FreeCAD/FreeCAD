@@ -76,9 +76,6 @@ public:
      * rebuilt automatically. */
     virtual void Attach(const MeshKernel& rclM);
     /** Rebuilds the grid structure. */
-    virtual void Rebuild(unsigned long ulPerGrid = MESH_CT_GRID,
-                         unsigned long ulMaxGrid = MESH_MAX_GRIDS);
-    /** Rebuilds the grid structure. */
     virtual void Rebuild(int iCtGridPerAxis = MESH_CT_GRID_PER_AXIS);
     /** Rebuilds the grid structure. */
     virtual void Rebuild(unsigned long ulX, unsigned long ulY, unsigned long ulZ);
@@ -100,7 +97,7 @@ public:
                                  bool bDelDoubles = true) const;
     /** Searches for the nearest grids that contain elements from a point, the result are grid
      * indices. */
-    void SearchNearestFromPoint(const Base::Vector3f& rclPt, std::set<ElementIndex>& rclInd) const;
+    void SearchNearestFromPoint(const Base::Vector3f& pnt, std::set<ElementIndex>& indices) const;
     //@}
 
     /** @name Getters */
@@ -189,8 +186,6 @@ protected:
     virtual void InitGrid();
     /** Deletes the grid structure. */
     virtual void Clear();
-    /** Calculates the grid length dependent on maximum number of grids. */
-    virtual void CalculateGridLength(unsigned long ulCtGrid, unsigned long ulMaxGrids);
     /** Calculates the grid length dependent on the number of grids per axis. */
     virtual void CalculateGridLength(int iCtGridPerAxis);
     /** Rebuilds the grid structure. Must be implemented in sub-classes. */
@@ -231,9 +226,7 @@ public:
     /// Construction
     explicit MeshFacetGrid(const MeshKernel& rclM);
     /// Construction
-    MeshFacetGrid()
-        : MeshGrid()
-    {}
+    MeshFacetGrid() = default;
     /// Construction
     MeshFacetGrid(const MeshKernel& rclM, unsigned long ulX, unsigned long ulY, unsigned long ulZ);
     /// Construction
@@ -295,7 +288,7 @@ protected:
      * ulFacetIndex the corresponding index in the mesh kernel. The facet is added to each grid
      * element that intersects the facet. */
     inline void
-    AddFacet(const MeshGeomFacet& rclFacet, ElementIndex ulFacetIndex, float fEpsilon = 0.0f);
+    AddFacet(const MeshGeomFacet& rclFacet, ElementIndex ulFacetIndex, float fEpsilon = 0.0F);
     /** Returns the number of stored elements. */
     unsigned long HasElements() const override
     {
@@ -345,7 +338,7 @@ public:
 protected:
     /** Adds a new point element to the grid structure. \a rclPt is the geometric point and \a
      * ulPtIndex the corresponding index in the mesh kernel. */
-    void AddPoint(const MeshPoint& rclPt, ElementIndex ulPtIndex, float fEpsilon = 0.0f);
+    void AddPoint(const MeshPoint& rclPt, ElementIndex ulPtIndex, float fEpsilon = 0.0F);
     /** Returns the grid numbers to the given point \a rclPoint. */
     void Pos(const Base::Vector3f& rclPoint,
              unsigned long& rulX,
@@ -469,13 +462,9 @@ private:
                 if (y == pos.y) {
                     return z < pos.z;
                 }
-                else {
-                    return y < pos.y;
-                }
+                return y < pos.y;
             }
-            else {
-                return x < pos.x;
-            }
+            return x < pos.x;
         }
 
     private:
@@ -489,11 +478,9 @@ private:
 inline Base::BoundBox3f
 MeshGrid::GetBoundBox(unsigned long ulX, unsigned long ulY, unsigned long ulZ) const
 {
-    float fX {}, fY {}, fZ {};
-
-    fX = _fMinX + (float(ulX) * _fGridLenX);
-    fY = _fMinY + (float(ulY) * _fGridLenY);
-    fZ = _fMinZ + (float(ulZ) * _fGridLenZ);
+    float fX = _fMinX + (float(ulX) * _fGridLenX);
+    float fY = _fMinY + (float(ulY) * _fGridLenY);
+    float fZ = _fMinZ + (float(ulZ) * _fGridLenZ);
 
     return Base::BoundBox3f(fX, fY, fZ, fX + _fGridLenX, fY + _fGridLenY, fZ + _fGridLenZ);
 }
@@ -577,9 +564,16 @@ inline void MeshFacetGrid::AddFacet(const MeshGeomFacet& rclFacet,
                                     ElementIndex ulFacetIndex,
                                     float /*fEpsilon*/)
 {
-    unsigned long ulX {}, ulY {}, ulZ {};
+    unsigned long ulX {};
+    unsigned long ulY {};
+    unsigned long ulZ {};
 
-    unsigned long ulX1 {}, ulY1 {}, ulZ1 {}, ulX2 {}, ulY2 {}, ulZ2 {};
+    unsigned long ulX1 {};
+    unsigned long ulY1 {};
+    unsigned long ulZ1 {};
+    unsigned long ulX2 {};
+    unsigned long ulY2 {};
+    unsigned long ulZ2 {};
 
     Base::BoundBox3f clBB;
 

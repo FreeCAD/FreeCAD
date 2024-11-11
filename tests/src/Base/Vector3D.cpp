@@ -1,4 +1,4 @@
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 #include <Base/Vector3D.h>
 
 // NOLINTBEGIN
@@ -328,4 +328,3 @@ TEST(Vector, TestAngleOriented)
 }
 
 // NOLINTEND
-

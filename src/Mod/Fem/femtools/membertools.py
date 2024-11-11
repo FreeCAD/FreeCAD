@@ -37,7 +37,7 @@ from . import femutils
 
 
 def get_member(analysis, t):
-    """ Return list of all members of *analysis* of type *t*.
+    """Return list of all members of *analysis* of type *t*.
 
     Search *analysis* for members of type *t*. This method checks the custom
     python typesystem (BaseType class property) used by the Fem module if
@@ -59,13 +59,15 @@ def get_member(analysis, t):
     for m in analysis.Group:
         # since is _derived_from is used the father could be used
         # to test too (ex. "Fem::FemMeshObject")
-        if femutils.is_derived_from(m, t):
+        if femutils.is_derived_from(m, t) and not (
+            m.hasExtension("App::SuppressibleExtension") and m.Suppressed
+        ):
             matching.append(m)
     return matching
 
 
 def get_single_member(analysis, t):
-    """ Return one object of type *t* and part of *analysis*.
+    """Return one object of type *t* and part of *analysis*.
 
     Search *analysis* for members of type *t* and return the first one that's
     found. This method checks the custom python typesystem (BaseType class
@@ -87,7 +89,7 @@ def get_single_member(analysis, t):
 
 
 def get_several_member(analysis, t):
-    """ Get members and pack them for Calculix/Z88.
+    """Get members and pack them for Calculix/Z88.
 
     Collect members by calling :py:func:`get_member` and pack them into a
     data structure that can be consumed by calculix and Z88 solver modules.
@@ -129,7 +131,7 @@ def get_several_member(analysis, t):
 
 
 def get_mesh_to_solve(analysis):
-    """ Find one and only mesh object of *analysis*.
+    """Find one and only mesh object of *analysis*.
 
     :returns:
      A tuple ``(object, message)``. If and only if the analysis contains
@@ -154,7 +156,7 @@ def get_mesh_to_solve(analysis):
         return (None, "FEM: no mesh object found in analysis.")
 
 
-class AnalysisMember():
+class AnalysisMember:
 
     def __init__(self, analysis):
         self.analysis = analysis
@@ -204,6 +206,10 @@ class AnalysisMember():
             list of fixed constraints from the analysis.
             [{"Object":fixed_obj, "NodeSupports":bool}, {}, ...]
 
+        constraints_rigidbody : list of dictionaries
+            list of displacements for the analysis.
+            [{"Object":rigidbody_obj, "xxxxxxxx":value}, {}, ...]
+
         constraints_force : list of dictionaries
             list of force constraints from the analysis.
             [{"Object":force_obj, "NodeLoad":value}, {}, ...
@@ -247,80 +253,39 @@ class AnalysisMember():
 
         # get member
         # constants
-        self.cota_vacuumpermittivity = self.get_several_member(
-            "Fem::ConstantVacuumPermittivity"
-        )
+        self.cota_vacuumpermittivity = self.get_several_member("Fem::ConstantVacuumPermittivity")
 
         # materials
-        std_mats = self.get_several_member(
-            "Fem::MaterialCommon"
-        )
-        rei_mats = self.get_several_member(
-            "Fem::MaterialReinforced"
-        )
+        std_mats = self.get_several_member("Fem::MaterialCommon")
+        rei_mats = self.get_several_member("Fem::MaterialReinforced")
         self.mats_linear = std_mats + rei_mats
 
-        self.mats_nonlinear = self.get_several_member(
-            "Fem::MaterialMechanicalNonlinear"
-        )
+        self.mats_nonlinear = self.get_several_member("Fem::MaterialMechanicalNonlinear")
 
         # geometries
-        self.geos_beamsection = self.get_several_member(
-            "Fem::ElementGeometry1D"
-        )
-        self.geos_beamrotation = self.get_several_member(
-            "Fem::ElementRotation1D"
-        )
-        self.geos_fluidsection = self.get_several_member(
-            "Fem::ElementFluid1D"
-        )
-        self.geos_shellthickness = self.get_several_member(
-            "Fem::ElementGeometry2D"
-        )
+        self.geos_beamsection = self.get_several_member("Fem::ElementGeometry1D")
+        self.geos_beamrotation = self.get_several_member("Fem::ElementRotation1D")
+        self.geos_fluidsection = self.get_several_member("Fem::ElementFluid1D")
+        self.geos_shellthickness = self.get_several_member("Fem::ElementGeometry2D")
 
         # constraints
-        self.cons_centrif = self.get_several_member(
-            "Fem::ConstraintCentrif"
-        )
-        self.cons_contact = self.get_several_member(
-            "Fem::ConstraintContact"
-        )
-        self.cons_displacement = self.get_several_member(
-            "Fem::ConstraintDisplacement"
-        )
-        self.cons_fixed = self.get_several_member(
-            "Fem::ConstraintFixed"
-        )
-        self.cons_force = self.get_several_member(
-            "Fem::ConstraintForce"
-        )
-        self.cons_heatflux = self.get_several_member(
-            "Fem::ConstraintHeatflux"
-        )
-        self.cons_initialtemperature = self.get_several_member(
-            "Fem::ConstraintInitialTemperature"
-        )
-        self.cons_planerotation = self.get_several_member(
-            "Fem::ConstraintPlaneRotation"
-        )
-        self.cons_pressure = self.get_several_member(
-            "Fem::ConstraintPressure"
-        )
-        self.cons_sectionprint = self.get_several_member(
-            "Fem::ConstraintSectionPrint"
-        )
-        self.cons_selfweight = self.get_several_member(
-            "Fem::ConstraintSelfWeight"
-        )
-        self.cons_temperature = self.get_several_member(
-            "Fem::ConstraintTemperature"
-        )
-        self.cons_tie = self.get_several_member(
-            "Fem::ConstraintTie"
-        )
-        self.cons_transform = self.get_several_member(
-            "Fem::ConstraintTransform"
-        )
+        self.cons_centrif = self.get_several_member("Fem::ConstraintCentrif")
+        self.cons_bodyheatsource = self.get_several_member("Fem::ConstraintBodyHeatSource")
+        self.cons_contact = self.get_several_member("Fem::ConstraintContact")
+        self.cons_displacement = self.get_several_member("Fem::ConstraintDisplacement")
+        self.cons_fixed = self.get_several_member("Fem::ConstraintFixed")
+        self.cons_rigidbody = self.get_several_member("Fem::ConstraintRigidBody")
+        self.cons_rigidbody_step = self.get_several_member("Fem::ConstraintRigidBody")
+        self.cons_force = self.get_several_member("Fem::ConstraintForce")
+        self.cons_heatflux = self.get_several_member("Fem::ConstraintHeatflux")
+        self.cons_initialtemperature = self.get_several_member("Fem::ConstraintInitialTemperature")
+        self.cons_planerotation = self.get_several_member("Fem::ConstraintPlaneRotation")
+        self.cons_pressure = self.get_several_member("Fem::ConstraintPressure")
+        self.cons_sectionprint = self.get_several_member("Fem::ConstraintSectionPrint")
+        self.cons_selfweight = self.get_several_member("Fem::ConstraintSelfWeight")
+        self.cons_temperature = self.get_several_member("Fem::ConstraintTemperature")
+        self.cons_tie = self.get_several_member("Fem::ConstraintTie")
+        self.cons_transform = self.get_several_member("Fem::ConstraintTransform")
 
     def get_several_member(self, t):
         return get_several_member(self.analysis, t)

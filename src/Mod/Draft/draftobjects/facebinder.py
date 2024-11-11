@@ -57,73 +57,80 @@ class Facebinder(DraftObject):
 
         _tip = QT_TRANSLATE_NOOP("App::Property","The area of the faces of this Facebinder")
         obj.addProperty("App::PropertyArea","Area", "Draft", _tip)
-        obj.setEditorMode("Area",1)
+        obj.setEditorMode("Area", 1)
 
     def execute(self, obj):
         if self.props_changed_placement_only(obj):
             self.props_changed_clear()
             return
 
-        import Part
-        pl = obj.Placement
         if not obj.Faces:
             return
+
+        import Part
         faces = []
-        area = 0
-        offs_val = obj.Offset.Value if hasattr(obj, "Offset") else 0
-        extr_val = obj.Extrusion.Value if hasattr(obj, "Extrusion") else 0
-        for sel in obj.Faces:
-            for sub in sel[1]:
-                if "Face" in sub:
-                    try:
-                        face = Part.getShape(sel[0], sub, needSubElement=True, retType=0)
-                        area += face.Area
-                        if offs_val:
-                            if face.Surface.isPlanar():
-                                norm = face.normalAt(0, 0)
-                                dist = norm.multiply(offs_val)
-                                face.translate(dist)
-                                faces.append(face)
-                            else:
-                                offs = face.makeOffsetShape(offs_val, 1e-7)
-                                faces.extend(offs.Faces)
-                        else:
-                            faces.append(face)
-                    except Part.OCCError:
-                        print("Draft: error building facebinder")
-                        return
-        if not faces:
-            return
         try:
-            if extr_val:
-                extrs = []
-                for face in faces:
-                    if face.Surface.isPlanar():
-                        extr = face.extrude(face.normalAt(0, 0).multiply(extr_val))
-                        extrs.append(extr)
-                    else:
-                        extr = face.makeOffsetShape(extr_val, 1e-7, fill=True)
-                        extrs.extend(extr.Solids)
-                shp = Part.Shape()           # create empty shape to ensure default Placement
-                shp = shp.fuse(extrs.pop())  # add 1st shape, multiFuse does not work otherwise
-                if extrs:
-                    shp = shp.multiFuse(extrs)  # multiFuse is more reliable than serial fuse
-            else:
-                shp = Part.Shape()
-                shp = shp.fuse(faces.pop())
-                if faces:
-                    shp = shp.multiFuse(faces)
-            if len(faces) > 1:
-                if hasattr(obj, "Sew") and obj.Sew:
-                    shp.sewShape()
-                if not hasattr(obj, "RemoveSplitter"):
-                    shp = shp.removeSplitter()
-                elif obj.RemoveSplitter:
-                    shp = shp.removeSplitter()
-        except Part.OCCError:
+            for sel in obj.Faces:
+                for sub in sel[1]:
+                    if "Face" in sub:
+                        face = Part.getShape(sel[0], sub, needSubElement=True, retType=0)
+                        faces.append(face)
+        except Exception:
             print("Draft: error building facebinder")
             return
-        obj.Shape = shp
+
+        if not faces:
+            return
+
+        offset_val = obj.Offset.Value if hasattr(obj, "Offset") else 0
+        extrusion_val = obj.Extrusion.Value if hasattr(obj, "Extrusion") else 0
+
+        try:
+            if offset_val:
+                offsets = []
+                for face in faces:
+                    if face.Surface.isPlanar():
+                        norm = face.normalAt(0, 0)
+                        dist = norm.multiply(offset_val)
+                        face.translate(dist)
+                        offsets.append(face)
+                    else:
+                        offset = face.makeOffsetShape(offset_val, 1e-7)
+                        offsets.extend(offset.Faces)
+                faces = offsets
+
+            shp = faces.pop()
+            if faces:
+                shp = shp.fuse(faces)
+            area = shp.Area  # take area after offsetting and fusing, but before extruding
+
+            if extrusion_val:
+                extrusions = []
+                for face in shp.Faces:
+                    if face.Surface.isPlanar():
+                        extrusion = face.extrude(face.normalAt(0, 0).multiply(extrusion_val))
+                        extrusions.append(extrusion)
+                    else:
+                        extrusion = face.makeOffsetShape(extrusion_val, 1e-7, fill=True)
+                        extrusions.extend(extrusion.Solids)
+                shp = extrusions.pop()
+                if extrusions:
+                    shp = shp.fuse(extrusions)
+
+            if len(shp.Faces) > 1:
+                if getattr(obj, "Sew", True):
+                    shp.sewShape()
+                if getattr(obj, "RemoveSplitter", True):
+                    shp = shp.removeSplitter()
+
+        except Exception:
+            print("Draft: error building facebinder")
+            return
+
+        if shp.__class__.__name__ == "Compound":
+            obj.Shape = shp
+        else:
+            obj.Shape = Part.Compound([shp])  # nest in compound to ensure default Placement
         obj.Area = area
         self.props_changed_clear()
 

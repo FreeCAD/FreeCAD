@@ -297,12 +297,35 @@ int SelectionFilterlex();
 # pragma GCC diagnostic pop
 #endif
 #endif // DOXYGEN_SHOULD_SKIP_THIS
+
+class StringBufferCleaner
+{
+public:
+    explicit StringBufferCleaner(YY_BUFFER_STATE buffer)
+        : my_string_buffer {buffer}
+    {}
+    ~StringBufferCleaner()
+    {
+        // free the scan buffer
+        yy_delete_buffer(my_string_buffer);
+    }
+
+    StringBufferCleaner(const StringBufferCleaner&) = delete;
+    StringBufferCleaner(StringBufferCleaner&&) = delete;
+    StringBufferCleaner& operator=(const StringBufferCleaner&) = delete;
+    StringBufferCleaner& operator=(StringBufferCleaner&&) = delete;
+
+private:
+    YY_BUFFER_STATE my_string_buffer;
+};
+
 }
 
 bool SelectionFilter::parse()
 {
     Errors = "";
     SelectionParser::YY_BUFFER_STATE my_string_buffer = SelectionParser::SelectionFilter_scan_string (Filter.c_str());
+    SelectionParser::StringBufferCleaner cleaner(my_string_buffer);
     // be aware that this parser is not reentrant! Don't use with Threats!!!
     assert(!ActFilter);
     ActFilter = this;
@@ -310,7 +333,6 @@ bool SelectionFilter::parse()
     ActFilter = nullptr;
     Ast.reset(TopBlock);
     TopBlock = nullptr;
-    SelectionParser::SelectionFilter_delete_buffer (my_string_buffer);
     SelectionParser::StringFactory::instance()->clear();
 
     if (Errors.empty()) {

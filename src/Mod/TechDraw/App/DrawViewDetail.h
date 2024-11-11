@@ -92,6 +92,8 @@ public:
     std::vector<DrawViewDetail*> getDetailRefs() const override;
     TopoDS_Shape getDetailShape() const { return m_detailShape; }
 
+    Base::Vector3d mapPoint3dToDetail(const Base::Vector3d& inPoint) const;
+
 public Q_SLOTS:
     void onMakeDetailFinished(void);
 

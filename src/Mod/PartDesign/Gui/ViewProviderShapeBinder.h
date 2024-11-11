@@ -23,7 +23,7 @@
 #ifndef PARTGUI_ViewProviderShapeBinder_H
 #define PARTGUI_ViewProviderShapeBinder_H
 
-#include <Gui/ViewProviderPythonFeature.h>
+#include <Gui/ViewProviderFeaturePython.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 #include <Mod/PartDesign/PartDesignGlobal.h>
 
@@ -44,10 +44,11 @@ public:
 protected:
     bool setEdit(int ModNum) override;
     void unsetEdit(int ModNum) override;
+    void attach(App::DocumentObject *obj) override;
 
 private:
     std::vector<App::Color> originalLineColors;
-    std::vector<App::Color> originalFaceColors;
+    std::vector<App::Material> originalFaceAppearance;
 
 };
 
@@ -78,12 +79,12 @@ public:
 private:
     enum {
         Synchronize = 0,
-        SelectObject = 1
+        SelectObject = 4  // must be higher than 3 (EditMode::Color)
     };
     void updatePlacement(bool transaction);
 };
 
-using ViewProviderSubShapeBinderPython = Gui::ViewProviderPythonFeatureT<ViewProviderSubShapeBinder>;
+using ViewProviderSubShapeBinderPython = Gui::ViewProviderFeaturePythonT<ViewProviderSubShapeBinder>;
 
 } // namespace PartDesignGui
 

@@ -66,7 +66,7 @@ class Mirror(gui_base_original.Modifier):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Mirror, self).Activated(name="Mirror")
+        super().Activated(name="Mirror")
         self.ghost = None
         if self.ui:
             if not Gui.Selection.getSelection():
@@ -94,9 +94,10 @@ class Mirror(gui_base_original.Modifier):
 
     def finish(self, cont=False):
         """Terminate the operation of the tool."""
+        self.end_callbacks(self.call)
         if self.ghost:
             self.ghost.finalize()
-        super(Mirror, self).finish()
+        super().finish()
 
     def mirror(self, p1, p2, copy=False):
         """Mirror the real shapes."""

@@ -61,7 +61,6 @@
 #include <QtOpenGL.h>
 
 #include "SoTextLabel.h"
-#include "BitmapFactory.h"
 #include "SoFCInteractiveElement.h"
 #include "Tools.h"
 
@@ -383,6 +382,13 @@ SoFrameLabel::SoFrameLabel()
   //SO_NODE_ADD_FIELD(image, (SbVec2s(0,0), 0, NULL));
 }
 
+void SoFrameLabel::setIcon(const QPixmap &pixMap)
+{
+    iconPixmap = pixMap;
+    drawImage();
+}
+
+
 void SoFrameLabel::notify(SoNotList * list)
 {
     SoField *f = list->getLastField();
@@ -425,7 +431,27 @@ void SoFrameLabel::drawImage()
         lines << line;
     }
 
-    QImage image(w+10,h+10,QImage::Format_ARGB32_Premultiplied);
+    int padding = 5;
+    
+    bool drawIcon = false;
+    QImage iconImg;
+    int widthIcon = 0;
+    int heightIcon = 0;
+    if (!iconPixmap.isNull()) {
+        drawIcon = true;
+        iconImg = iconPixmap.toImage();
+        widthIcon = iconImg.width() + 2*padding;
+        heightIcon = iconImg.height() + 2*padding;
+    }
+
+    int widthText = w + 2*padding;
+    int heightText = h + 2*padding;
+    int widthTotal = widthText + widthIcon;
+    int heightTotal = heightText > heightIcon ? heightText : heightIcon;
+    int paddingTextV = (heightTotal - h) / 2;
+    int paddingIconV = (heightTotal - iconImg.height()) / 2;
+
+    QImage image(widthTotal, heightTotal, QImage::Format_ARGB32_Premultiplied);
     image.fill(0x00000000);
     QPainter painter(&image);
     painter.setRenderHint(QPainter::Antialiasing);
@@ -435,8 +461,14 @@ void SoFrameLabel::drawImage()
         painter.setPen(QPen(QColor(0,0,127), 2, Qt::SolidLine, Qt::RoundCap,
                             Qt::RoundJoin));
         painter.setBrush(QBrush(brush, Qt::SolidPattern));
-        QRectF rectangle(0.0, 0.0, w+10, h+10);
+        QRectF rectangle(0.0, 0.0, widthTotal, heightTotal);
         painter.drawRoundedRect(rectangle, 5, 5);
+    }
+
+
+    if (drawIcon) {
+        painter.drawImage(QPoint(padding, paddingIconV), iconImg); 
+        
     }
 
     painter.setPen(front);
@@ -450,7 +482,7 @@ void SoFrameLabel::drawImage()
         align = Qt::AlignVCenter | Qt::AlignHCenter;
     QString text = lines.join(QLatin1String("\n"));
     painter.setFont(font);
-    painter.drawText(5,5,w,h,align,text);
+    painter.drawText(widthIcon + padding, paddingTextV, w, h, align, text);
     painter.end();
 
     SoSFImage sfimage;

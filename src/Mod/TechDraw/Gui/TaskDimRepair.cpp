@@ -90,7 +90,6 @@ void TaskDimRepair::saveDimState()
 {
     m_saveMeasureType = m_dim->MeasureType.getValue();
     m_saveDimType = m_dim->Type.getValue();
-    m_dimType = m_dim->Type.getValue();
     m_saveRefs3d = m_dim->getReferences3d();
     m_saveRefs2d = m_dim->getReferences2d();
     m_saveDvp = m_dim->getViewPart();
@@ -128,8 +127,8 @@ void TaskDimRepair::slotUseSelection()
         return;
     }
 
-    StringVector acceptableGeometry({"Edge", "Vertex"});
-    std::vector<int> minimumCounts({1, 1});
+    StringVector acceptableGeometry({ "Edge", "Vertex", "Face" });
+    std::vector<int> minimumCounts({1, 1, 1});
     std::vector<DimensionGeometryType> acceptableDimensionGeometrys;//accept anything
     DimensionGeometryType geometryRefs2d = validateDimSelection(
         references2d, acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
@@ -152,7 +151,6 @@ void TaskDimRepair::slotUseSelection()
         }
     }
 
-    m_dimType = mapGeometryTypeToDimType(m_dim->Type.getValue(), geometryRefs2d, geometryRefs3d);
     m_toApply2d = references2d;
     if (references3d.empty()) {
         m_toApply3d.clear();
@@ -236,12 +234,12 @@ bool TaskDimRepair::accept()
 {
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Repair Dimension"));
+    Gui::Command::openCommand(Base::Tools::toStdString(tr("Repair Dimension")).c_str());
     replaceReferences();
-    m_dim->Type.setValue(m_dimType);
     Gui::Command::commitCommand();
 
     m_dim->recomputeFeature();
+    Gui::Selection().clearSelection();
     return true;
 }
 
@@ -249,6 +247,7 @@ bool TaskDimRepair::reject()
 {
     restoreDimState();
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
+    Gui::Selection().clearSelection();
     return false;
 }
 

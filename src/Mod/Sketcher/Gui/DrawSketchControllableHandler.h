@@ -157,13 +157,15 @@ private:
         toolWidgetManager.resetControls();
     }
 
-    void onModeChanged() override
+    bool onModeChanged() override
     {
         DrawSketchHandler::resetPositionText();
         toolWidgetManager.onHandlerModeChanged();
-        DSDefaultHandler::onModeChanged();
-
-        toolWidgetManager.afterHandlerModeChanged();
+        if (DSDefaultHandler::onModeChanged()) {
+            // If onModeChanged returns false, then the handler has been purged.
+            toolWidgetManager.afterHandlerModeChanged();
+        }
+        return true;
     }
 
     void onConstructionMethodChanged() override

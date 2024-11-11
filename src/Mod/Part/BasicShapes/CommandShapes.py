@@ -44,7 +44,7 @@ class CommandTube:
         return {'MenuText': Qt.QT_TRANSLATE_NOOP("Part_Tube","Create tube"),
                 'Accel': "",
                 'CmdType': "AlterDoc:Alter3DView:AlterSelection",
-                'Pixmap': "Part_Tube",
+                'Pixmap': "Part_Tube_Parametric",
                 'ToolTip': Qt.QT_TRANSLATE_NOOP("Part_Tube","Creates a tube")}
 
     def Activated(self):

@@ -116,7 +116,7 @@ public:
     const char* getViewProviderName() const override { return "TechDrawGui::ViewProviderViewPart"; }
     PyObject* getPyObject() override;
 
-    static TopoDS_Shape centerScaleRotate(DrawViewPart* dvp, TopoDS_Shape& inOutShape,
+    static TopoDS_Shape centerScaleRotate(const DrawViewPart* dvp, TopoDS_Shape& inOutShape,
                                           Base::Vector3d centroid);
 
     std::vector<TechDraw::DrawHatch*> getHatches() const;
@@ -171,6 +171,12 @@ public:
     virtual Base::Vector3d getCurrentCentroid() const;
     virtual Base::Vector3d getLegacyX(const Base::Vector3d& pt, const Base::Vector3d& axis,
                                       const bool flip = true) const;
+
+    void rotate(const std::string& rotationdirection);
+    void spin(const std::string& spindirection);
+    void spin(double val);
+    std::pair<Base::Vector3d, Base::Vector3d> getDirsFromFront(std::string viewType);
+    Base::Vector3d dir2vec(gp_Dir d);
 
     gp_Ax2 localVectorToCS(const Base::Vector3d localUnit) const;
     Base::Vector3d localVectorToDirection(const Base::Vector3d localUnit) const;

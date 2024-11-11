@@ -25,7 +25,7 @@
    (e.g., after import from IGES)
    Returns: True, if does not match, removed (status DONE)
    False, (status OK) if matches or (status FAIL) if no pcurve,
-   nothing done</UserDocu>
+   nothing done.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="fixRemoveCurve3d">
@@ -33,13 +33,12 @@
         <UserDocu>Removes 3d curve of the edge if it does not match the vertices
    Returns: True,  if does not match, removed (status DONE)
    False, (status OK) if matches or (status FAIL) if no 3d curve,
-   nothing done
-</UserDocu>
+   nothing done.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="fixAddPCurve">
       <Documentation>
-        <UserDocu> Adds pcurve(s) of the edge if missing (by projecting 3d curve)
+        <UserDocu>Adds pcurve(s) of the edge if missing (by projecting 3d curve)
    Parameter isSeam indicates if the edge is a seam.
    The parameter 'prec' defines the precision for calculations.
    If it is 0 (default), the tolerance of the edge is taken.
@@ -55,7 +54,7 @@
    DONE1: Pcurve was added
    DONE2: specific case of pcurve going through degenerated point on
    sphere encountered during projection (see class
-   ShapeConstruct_ProjectCurveOnSurface for more info)</UserDocu>
+   ShapeConstruct_ProjectCurveOnSurface for more info).</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="fixAddCurve3d">
@@ -67,24 +66,24 @@
    Status :
    OK   : 3d curve exists
    FAIL1: BRepLib::BuildCurve3d() has failed
-   DONE1: 3d curve was added</UserDocu>
+   DONE1: 3d curve was added.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="fixVertexTolerance">
       <Documentation>
-        <UserDocu> Increases the tolerances of the edge vertices to comprise
+        <UserDocu>Increases the tolerances of the edge vertices to comprise
    the ends of 3d curve and pcurve on the given face
    (first method) or all pcurves stored in an edge (second one)
    Returns: True, if tolerances have been increased, otherwise False
    Status:
    OK   : the original tolerances have not been changed
    DONE1: the tolerance of first vertex has been increased
-   DONE2: the tolerance of last  vertex has been increased</UserDocu>
+   DONE2: the tolerance of last  vertex has been increased.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="fixReversed2d">
       <Documentation>
-        <UserDocu> Fixes edge if pcurve is directed opposite to 3d curve
+        <UserDocu>Fixes edge if pcurve is directed opposite to 3d curve
    Check is done by call to the function
    ShapeAnalysis_Edge::CheckCurve3dWithPCurve()
    Warning: For seam edge this method will check and fix the pcurve in only
@@ -94,7 +93,7 @@
    Status:  OK    - pcurve OK, nothing done
    FAIL1 - no pcurve
    FAIL2 - no 3d curve
-   DONE1 - pcurve was reversed</UserDocu>
+   DONE1 - pcurve was reversed.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="fixSameParameter">
@@ -108,7 +107,7 @@
    its 3d curve. If deviation &gt; tolerance, the tolerance of edge
    is increased to a value of deviation. If deviation &lt; tolerance
    nothing happens.
-  
+
    If flag SameParameter is not set, this method chooses the best
    variant (one that has minimal tolerance), either
    a. only after computing deviation (as above) or
@@ -116,7 +115,7 @@
    and computing deviation (as above). If 'tolerance' &gt; 0, it is
    used as parameter for BRepLib::SameParameter, otherwise,
    tolerance of the edge is used.
-  
+
    Use    : Is to be called after all pcurves and 3d curve of the edge are
    correctly computed
    Remark : SameParameter flag is always set to True after this method
@@ -130,7 +129,7 @@
    DONE3 - edge was modified by BRepLib::SameParameter() to SameParameter
    DONE4 - not used anymore
    DONE5 - if the edge resulting from BRepLib has been chosen, i.e. variant b. above
-   (only for edges with not set SameParameter)</UserDocu>
+   (only for edges with not set SameParameter).</UserDocu>
       </Documentation>
     </Methode>
     <ClassDeclarations>

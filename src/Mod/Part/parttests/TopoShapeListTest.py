@@ -27,6 +27,7 @@ class TopoShapeListTest(unittest.TestCase):
         obj.Shapes = [box, box2, box3]
         doc.saveAs(self.fileName)
         App.closeDocument(doc.Name)
+        del obj, doc, box, box2, box3
         print("TopoShapeListTest: setUp complete")
 
     def tearDown(self):

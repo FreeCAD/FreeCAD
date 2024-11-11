@@ -30,6 +30,7 @@
 #endif
 
 #include <App/Document.h>
+#include <App/GeoFeatureGroupExtension.h>
 #include <App/Origin.h>
 #include <App/Part.h>
 #include <Base/Console.h>
@@ -94,9 +95,6 @@ CmdPartDesignBody::CmdPartDesignBody()
 void CmdPartDesignBody::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    // if user decides for old-style workflow then abort the command
-    if (PartDesignGui::assureLegacyWorkflow(getDocument()))
-        return;
 
     App::Part *actPart = PartDesignGui::getActivePart ();
     App::Part* partOfBaseFeature = nullptr;
@@ -271,7 +269,7 @@ void CmdPartDesignBody::activated(int iMsg)
                         App::Plane* plane = static_cast<App::Plane*>(features.front());
                         std::string supportString = Gui::Command::getObjectCmd(plane,"(",", [''])");
 
-                        FCMD_OBJ_CMD(baseFeature,"Support = " << supportString);
+                        FCMD_OBJ_CMD(baseFeature,"AttachmentSupport = " << supportString);
                         FCMD_OBJ_CMD(baseFeature,"MapMode = '" << Attacher::AttachEngine::getModeName(Attacher::mmFlatFace) << "'");
                         Gui::Command::updateActive();
                     };
@@ -300,7 +298,7 @@ void CmdPartDesignBody::activated(int iMsg)
 
 bool CmdPartDesignBody::isActive()
 {
-    return hasActiveDocument() && !PartDesignGui::isLegacyWorkflow ( getDocument () );
+    return hasActiveDocument();
 }
 
 //===========================================================================
@@ -431,7 +429,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
     }
 
     // do the actual migration
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Migrate legacy part design features to Bodies"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Migrate legacy Part Design features to Bodies"));
 
     for ( auto chainIt = featureChains.begin(); !featureChains.empty();
             featureChains.erase (chainIt), chainIt = featureChains.begin () ) {
@@ -635,8 +633,12 @@ void CmdPartDesignDuplicateSelection::activated(int iMsg)
 
         for (auto feature : newFeatures) {
             if (PartDesign::Body::isAllowed(feature)) {
-                FCMD_OBJ_CMD(pcActiveBody,"addObject(" << getObjectCmd(feature) << ")");
-                FCMD_OBJ_HIDE(feature);
+                // if feature already is in a body, then we don't put it into the active body issue #6278
+                auto body = App::GeoFeatureGroupExtension::getGroupOfObject(feature);
+                if (!body) {
+                    FCMD_OBJ_CMD(pcActiveBody,"addObject(" << getObjectCmd(feature) << ")");
+                    FCMD_OBJ_HIDE(feature);
+                }
             }
         }
 
@@ -821,7 +823,7 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
 
 bool CmdPartDesignMoveFeature::isActive()
 {
-    return hasActiveDocument () && !PartDesignGui::isLegacyWorkflow ( getDocument () );
+    return hasActiveDocument();
 }
 
 DEF_STD_CMD_A(CmdPartDesignMoveFeatureInTree)
@@ -897,18 +899,17 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Move an object inside tree"));
 
-    App::DocumentObject* lastObject = nullptr;
+    App::DocumentObject* lastObject = target;
     for ( auto feat: features ) {
         if ( feat == target ) continue;
 
-        // Remove and re-insert the feature to/from the Body
+        // Remove and re-insert the feature to/from the Body, preserving their order.
         // TODO: if tip was moved the new position of tip is quite undetermined (2015-08-07, Fat-Zer)
         // TODO: warn the user if we are moving an object to some place before the object's link (2015-08-07, Fat-Zer)
         FCMD_OBJ_CMD(body,"removeObject(" << getObjectCmd(feat) << ")");
-        FCMD_OBJ_CMD(body,"insertObject(" << getObjectCmd(feat) << ","<< getObjectCmd(target) << ", True)");
+        FCMD_OBJ_CMD(body,"insertObject(" << getObjectCmd(feat) << ","<< getObjectCmd(lastObject) << ", True)");
 
-        if (!lastObject)
-            lastObject = feat;
+        lastObject = feat;
     }
 
     // Dependency order check.
@@ -954,7 +955,7 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
     // If the selected objects have been moved after the current tip then ask the
     // user if they want the last object to be the new tip.
     // Only do this for features that can hold a tip (not for e.g. datums)
-    if ( lastObject && body->Tip.getValue() == target
+    if ( lastObject != target && body->Tip.getValue() == target
         && lastObject->isDerivedFrom(PartDesign::Feature::getClassTypeId()) ) {
         QMessageBox msgBox(Gui::getMainWindow());
         msgBox.setIcon(QMessageBox::Question);
@@ -973,7 +974,7 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
 
 bool CmdPartDesignMoveFeatureInTree::isActive()
 {
-    return hasActiveDocument () && !PartDesignGui::isLegacyWorkflow ( getDocument () );
+    return hasActiveDocument();
 }
 
 

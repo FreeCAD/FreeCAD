@@ -168,7 +168,7 @@ private:
                 "User parameter:BaseApp/Preferences/View");
 
             dimConstrColor = SbColor(1.0f, 0.149f, 0.0f);           // NOLINT
-            dimConstrDeactivatedColor = SbColor(0.8f, 0.8f, 0.8f);  // NOLINT
+            dimConstrDeactivatedColor = SbColor(0.5f, 0.5f, 0.5f);  // NOLINT
 
             float transparency = 0.f;
             unsigned long color = (unsigned long)(dimConstrColor.getPackedValue());
@@ -323,9 +323,18 @@ public:
 
         handler->updateCursor();
 
-        handler->reset();  // reset of handler to restart.
+        if (resetOnConstructionMethodeChanged()) {
+            handler->reset();  // reset of handler to restart.
+        }
 
         handler->mouseMove(prevCursorPosition);
+    }
+    //@}
+
+    /** function that define if the handler should be reset on construction methode change */
+    virtual bool resetOnConstructionMethodeChanged()
+    {
+        return true;
     }
     //@}
 
@@ -520,7 +529,7 @@ protected:
     virtual void afterEnforceControlParameters()
     {
         // Give focus to current on-view parameter. In case user interacted outside of 3dview.
-        if (parameterWithFocus >= 0) {
+        if (focusAutoPassing && parameterWithFocus >= 0) {
             setFocusToOnViewParameter(parameterWithFocus);
         }
     }
@@ -556,6 +565,9 @@ protected:
         auto currentstate = handler->state();
         // ensure that object at point is preselected, so that autoconstraints are generated
         handler->preselectAtPoint(lastControlEnforcedPosition);
+        // We have to redo an update to regenerate the correct autoconstraints after the
+        // preselectAtPoint.
+        handler->updateDataAndDrawToPosition(lastControlEnforcedPosition);
 
         doChangeDrawSketchHandlerMode();
 
@@ -571,7 +583,7 @@ protected:
     void initNOnViewParameters(int n)
     {
         Gui::View3DInventorViewer* viewer = handler->getViewer();
-        Base::Placement placement = handler->sketchgui->getSketchObject()->Placement.getValue();
+        Base::Placement placement = handler->sketchgui->getSketchObject()->globalPlacement();
 
         onViewParameters.clear();
 
@@ -587,10 +599,12 @@ protected:
                                      /*avoidMouseCursor = */ true))
                                  .get();
 
-            QObject::connect(parameter, &Gui::EditableDatumLabel::valueChanged, [=](double value) {
-                parameter->setColor(colorManager.dimConstrColor);
-                onViewValueChanged(i, value);
-            });
+            QObject::connect(parameter,
+                             &Gui::EditableDatumLabel::valueChanged,
+                             [this, parameter, i](double value) {
+                                 parameter->setColor(colorManager.dimConstrColor);
+                                 onViewValueChanged(i, value);
+                             });
         }
     }
 
@@ -735,6 +749,8 @@ protected:
     {
         return keymanager.get();
     }
+
+    bool focusAutoPassing = true;
 
 private:
     /** @name helper functions */

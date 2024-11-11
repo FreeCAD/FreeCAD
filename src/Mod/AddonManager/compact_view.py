@@ -42,7 +42,12 @@ class Ui_CompactView(object):
         self.labelPackageName = QLabel(CompactView)
         self.labelPackageName.setObjectName("labelPackageName")
 
+        self.labelPackageNameSpacer = QLabel(CompactView)
+        self.labelPackageNameSpacer.setText(" — ")
+        self.labelPackageNameSpacer.setObjectName("labelPackageNameSpacer")
+
         self.horizontalLayout_2.addWidget(self.labelPackageName)
+        self.horizontalLayout_2.addWidget(self.labelPackageNameSpacer)
 
         self.labelVersion = QLabel(CompactView)
         self.labelVersion.setObjectName("labelVersion")

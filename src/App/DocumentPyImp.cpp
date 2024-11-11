@@ -70,14 +70,8 @@ PyObject*  DocumentPy::addProperty(PyObject *args, PyObject *kwd)
 
     // enum support
     auto* propEnum = dynamic_cast<App::PropertyEnumeration*>(prop);
-    if (propEnum) {
-        if (enumVals && PySequence_Check(enumVals)) {
-            std::vector<std::string> enumValsAsVector;
-            for (Py_ssize_t i = 0; i < PySequence_Length(enumVals); ++i) {
-                enumValsAsVector.emplace_back(PyUnicode_AsUTF8(PySequence_GetItem(enumVals,i)));
-            }
-            propEnum->setEnums(enumValsAsVector);
-        }
+    if (propEnum && enumVals) {
+        propEnum->setPyObject(enumVals);
     }
 
     return Py::new_reference_to(this);
@@ -221,6 +215,18 @@ PyObject* DocumentPy::getFileName(PyObject* args)
         return nullptr;
     const char* fn = getDocumentPtr()->getFileName();
     return Py::new_reference_to(Py::String(fn));
+}
+
+PyObject* DocumentPy::getUniqueObjectName(PyObject *args)
+{
+    char *sName;
+    if (!PyArg_ParseTuple(args, "s", &sName))
+        return nullptr;
+    PY_TRY {
+        auto newName  = getDocumentPtr()->getUniqueObjectName(sName);
+        return Py::new_reference_to(Py::String(newName));
+    }
+    PY_CATCH;
 }
 
 PyObject*  DocumentPy::mergeProject(PyObject * args)
@@ -743,6 +749,18 @@ Py::List DocumentPy::getTopologicalSortedObjects() const
 Py::List DocumentPy::getRootObjects() const
 {
     std::vector<DocumentObject*> objs = getDocumentPtr()->getRootObjects();
+    Py::List res;
+
+    for (auto obj : objs)
+        //Note: Here we must force the Py::Object to own this Python object as getPyObject() increments the counter
+        res.append(Py::Object(obj->getPyObject(), true));
+
+    return res;
+}
+
+Py::List DocumentPy::getRootObjectsIgnoreLinks() const
+{
+    std::vector<App::DocumentObject*> objs = getDocumentPtr()->getRootObjectsIgnoreLinks();
     Py::List res;
 
     for (auto obj : objs)

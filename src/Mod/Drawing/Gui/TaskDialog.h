@@ -60,7 +60,6 @@ public:
 private:
     QWidget* widget;
     std::vector<QCheckBox*> boxes;
-    Gui::TaskView::TaskBox* taskbox;
 };
 
 }  // namespace DrawingGui

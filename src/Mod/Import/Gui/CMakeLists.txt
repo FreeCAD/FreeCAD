@@ -39,6 +39,9 @@ SET(ImportGui_SRCS
 
 add_library(ImportGui SHARED ${ImportGui_SRCS})
 target_link_libraries(ImportGui ${ImportGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(ImportGui)
+endif()
 
 
 SET_BIN_DIR(ImportGui ImportGui /Mod/Import)

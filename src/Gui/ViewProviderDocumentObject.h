@@ -123,6 +123,18 @@ public:
     virtual void finishRestoring();
     //@}
 
+    /** @name Tree rank */
+    //@{
+    int getTreeRank() const
+    {
+        return treeRank;
+    }
+    void setTreeRank(int value)
+    {
+        treeRank = value;
+    }
+    //@}
+
     bool removeDynamicProperty(const char* prop) override;
 
     App::Property* addDynamicProperty(
@@ -217,6 +229,7 @@ protected:
 
 private:
     bool _Showable = true;
+    int treeRank = -1;
 
     std::vector<const char*> aDisplayEnumsArray;
     std::vector<std::string> aDisplayModesArray;

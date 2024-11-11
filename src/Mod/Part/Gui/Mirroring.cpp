@@ -342,7 +342,7 @@ bool Mirroring::accept()
             .arg(selectionString);
         Gui::Command::runCommand(Gui::Command::App, code.toLatin1());
         QByteArray from = shape.toLatin1();
-        Gui::Command::copyVisual("ActiveObject", "ShapeColor", from);
+        Gui::Command::copyVisual("ActiveObject", "ShapeAppearance", from);
         Gui::Command::copyVisual("ActiveObject", "LineColor", from);
         Gui::Command::copyVisual("ActiveObject", "PointColor", from);
     }
@@ -358,11 +358,7 @@ bool Mirroring::accept()
 TaskMirroring::TaskMirroring()
 {
     widget = new Mirroring();
-    taskbox = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("Part_Mirror.svg"),
-        widget->windowTitle(), false, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(Gui::BitmapFactory().pixmap("Part_Mirror.svg"), widget, false);
 }
 
 bool TaskMirroring::accept()

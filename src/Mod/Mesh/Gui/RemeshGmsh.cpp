@@ -92,7 +92,8 @@ GmshWidget::GmshWidget(QWidget* parent, Qt::WindowFlags fl)
         FrontalDelaunay = 6,
         BAMG = 7,
         FrontalDelaunayForQuads = 8,
-        PackingOfParallelograms = 9
+        PackingOfParallelograms = 9,
+        QuasiStructuredQuad = 11
     };
 
     d->ui.method->addItem(tr("Automatic"), static_cast<int>(Automatic));
@@ -102,6 +103,7 @@ GmshWidget::GmshWidget(QWidget* parent, Qt::WindowFlags fl)
     d->ui.method->addItem(QString::fromLatin1("BAMG"), static_cast<int>(BAMG));
     d->ui.method->addItem(tr("Frontal Quad"), static_cast<int>(FrontalDelaunayForQuads));
     d->ui.method->addItem(tr("Parallelograms"), static_cast<int>(PackingOfParallelograms));
+    d->ui.method->addItem(tr("Quasi-structured Quad"), static_cast<int>(QuasiStructuredQuad));
 }
 
 GmshWidget::~GmshWidget()
@@ -238,7 +240,7 @@ void GmshWidget::started()
     if (!d->label) {
         d->label = new Gui::StatusWidget(this);
         d->label->setAttribute(Qt::WA_DeleteOnClose);
-        d->label->setStatusText(tr("Running gmsh..."));
+        d->label->setStatusText(tr("Running Gmsh..."));
         d->label->show();
     }
 }
@@ -338,7 +340,7 @@ bool RemeshGmsh::writeProject(QString& inpFile, QString& outFile)
             << "   Exit;\n"
             << "EndIf\n"
             << "Merge \"" << stl.filePath() << "\";\n\n"
-            << "// 2D mesh algorithm (1=MeshAdapt, 2=Automatic, 5=Delaunay, 6=Frontal, 7=BAMG, 8=Frontal Quad, 9=Packing of Parallelograms)\n"
+            << "// 2D mesh algorithm (1=MeshAdapt, 2=Automatic, 5=Delaunay, 6=Frontal, 7=BAMG, 8=Frontal Quad, 9=Packing of Parallelograms, 11=Quasi-structured Quad)\n"
             << "Mesh.Algorithm = " << algorithm << ";\n\n"
             << "// 3D mesh algorithm (1=Delaunay, 2=New Delaunay, 4=Frontal, 7=MMG3D, 9=R-tree, 10=HTX)\n"
             << "// Mesh.Algorithm3D = 1;\n\n"
@@ -406,9 +408,7 @@ bool RemeshGmsh::loadOutput()
 TaskRemeshGmsh::TaskRemeshGmsh(Mesh::Feature* mesh)
 {
     widget = new RemeshGmsh(mesh);
-    taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(), false, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(widget, false);
 }
 
 void TaskRemeshGmsh::clicked(int id)

@@ -116,35 +116,37 @@ void PropertyTopoShapeList::afterRestore()
 
 PyObject *PropertyTopoShapeList::getPyObject()
 {
-    PyObject* list = PyList_New(getSize());
-    for (int i = 0; i < getSize(); i++)
-        PyList_SetItem( list, i, _lValueList[i].getPyObject());
-    return list;
+    Py::List list;
+    for (int i = 0; i < getSize(); i++) {
+        list.append(Py::asObject(_lValueList[i].getPyObject()));
+    }
+    return Py::new_reference_to(list);
 }
 
 void PropertyTopoShapeList::setPyObject(PyObject *value)
 {
     if (PySequence_Check(value)) {
-        Py_ssize_t nSize = PySequence_Size(value);
+        Py::Sequence sequence(value);
+        Py_ssize_t nSize = sequence.size();
         std::vector<TopoShape> values;
         values.resize(nSize);
 
         for (Py_ssize_t i=0; i < nSize; ++i) {
-            PyObject* item = PySequence_GetItem(value, i);
-            if (!PyObject_TypeCheck(item, &(TopoShapePy::Type))) {
+            Py::Object item = sequence.getItem(i);
+            if (!PyObject_TypeCheck(item.ptr(), &(TopoShapePy::Type))) {
                 std::string error = std::string("types in list must be 'Shape', not ");
-                error += item->ob_type->tp_name;
+                error += item.ptr()->ob_type->tp_name;
                 throw Base::TypeError(error);
             }
 
-            values[i] = *static_cast<TopoShapePy*>(item)->getTopoShapePtr();
+            values[i] = *static_cast<TopoShapePy*>(item.ptr())->getTopoShapePtr();
         }
         setValues(values);
     }
     else if (PyObject_TypeCheck(value, &(TopoShapePy::Type))) {
         TopoShapePy  *pcObject = static_cast<TopoShapePy*>(value);
         setValue(*pcObject->getTopoShapePtr());
-   }
+    }
     else {
         std::string error = std::string("type must be 'Shape' or list of 'Shape', not ");
         error += value->ob_type->tp_name;
@@ -152,29 +154,99 @@ void PropertyTopoShapeList::setPyObject(PyObject *value)
     }
 }
 
-void PropertyTopoShapeList::Save(Writer &writer) const
+void PropertyTopoShapeList::Save(Writer& writer) const
 {
-    writer.Stream() << writer.ind() << "<ShapeList count=\"" << getSize() <<"\">" << endl;
+    writer.Stream() << writer.ind() << "<ShapeList count=\"" << getSize() << "\">" << endl;
     writer.incInd();
     for (int i = 0; i < getSize(); i++) {
-        _lValueList[i].Save(writer);
+        bool binary = writer.getMode("BinaryBrep");
+        writer.Stream() << writer.ind() << "<TopoShape";
+        if (!writer.isForceXML()) {
+            // See SaveDocFile(), RestoreDocFile()
+            //  add a filename to the writer's list.  Each file on the list is eventually
+            //  processed by SaveDocFile().
+            std::string ext(".");
+            ext += std::to_string(i);
+            if (binary) {
+                ext += ".bin";
+            }
+            else {
+                ext += ".brp";
+            }
+            writer.Stream() << writer.ind() << " file=\""
+                            << writer.addFile(getFileName(ext.c_str()).c_str(), this) << "\"/>\n";
+        }
+        else if (binary) {
+            writer.Stream() << " binary=\"1\">\n";
+            _lValueList[i].exportBinary(writer.beginCharStream());
+            writer.endCharStream() << writer.ind() << "</TopoShape>\n";
+        }
+        else {
+            writer.Stream() << " brep=\"1\">\n";
+            _lValueList[i].exportBrep(writer.beginCharStream() << '\n');
+            writer.endCharStream() << '\n' << writer.ind() << "</TopoShape>\n";
+        }
     }
     writer.decInd();
-    writer.Stream() << writer.ind() << "</ShapeList>" << endl ;
+    writer.Stream() << writer.ind() << "</ShapeList>" << endl;
 }
 
-void PropertyTopoShapeList::Restore(Base::XMLReader &reader)
+void PropertyTopoShapeList::SaveDocFile(Base::Writer& writer) const
+{
+    Base::FileInfo finfo(writer.ObjectName);
+    bool binary = finfo.hasExtension("bin");
+    int index = atoi(Base::FileInfo(finfo.fileNamePure()).extension().c_str());
+    if (index < 0 || index >= static_cast<int>(_lValueList.size())) {
+        return;
+    }
+
+    const TopoShape& shape = _lValueList[index];
+    if (binary) {
+        shape.exportBinary(writer.Stream());
+    }
+    else {
+        shape.exportBrep(writer.Stream());
+    }
+}
+
+void PropertyTopoShapeList::Restore(Base::XMLReader& reader)
 {
     reader.readElement("ShapeList");
     int count = reader.getAttributeAsInteger("count");
-    m_restorePointers.clear();      // just in case
+    m_restorePointers.clear();  // just in case
     m_restorePointers.reserve(count);
     for (int i = 0; i < count; i++) {
         auto newShape = std::make_shared<TopoShape>();
-        newShape->Restore(reader);
+        reader.readElement("TopoShape");
+        std::string file(reader.getAttribute("file"));
+        if (!file.empty()) {
+            reader.addFile(file.c_str(), this);
+        }
+        else if (reader.hasAttribute("binary") && reader.getAttributeAsInteger("binary")) {
+            newShape->importBinary(reader.beginCharStream());
+        }
+        else if (reader.hasAttribute("brep") && reader.getAttributeAsInteger("brep")) {
+            newShape->importBrep(reader.beginCharStream());
+        }
         m_restorePointers.push_back(newShape);
     }
     reader.readEndElement("ShapeList");
+}
+
+void PropertyTopoShapeList::RestoreDocFile(Base::Reader& reader)
+{
+    Base::FileInfo finfo(reader.getFileName());
+    bool binary = finfo.hasExtension("bin");
+    int index = atoi(Base::FileInfo(finfo.fileNamePure()).extension().c_str());
+    if (index < 0 || index >= static_cast<int>(m_restorePointers.size())) {
+        return;
+    }
+    if (binary) {
+        m_restorePointers[index]->importBinary(reader);
+    }
+    else {
+        m_restorePointers[index]->importBrep(reader);
+    }
 }
 
 App::Property *PropertyTopoShapeList::Copy() const
@@ -183,8 +255,7 @@ App::Property *PropertyTopoShapeList::Copy() const
     std::vector<TopoShape> copiedShapes;
     for (auto& shape : _lValueList) {
         BRepBuilderAPI_Copy copy(shape.getShape());
-        TopoDS_Shape* newShape = new TopoDS_Shape(copy.Shape());
-        copiedShapes.emplace_back(*newShape);
+        copiedShapes.emplace_back(copy.Shape());
     }
     p->setValues(copiedShapes);
     return p;

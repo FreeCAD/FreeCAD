@@ -28,12 +28,15 @@
 #include <map>
 #include <string>
 
-#define  putpix()
-
 #include <App/Application.h>
+
+#if QT_VERSION >= QT_VERSION_CHECK(6,0,0) && QT_VERSION < QT_VERSION_CHECK(6,8,1)
+# define HAS_QTBUG_129596
+#endif
 
 class QCloseEvent;
 class SoNode;
+class NavlibInterface;
 
 namespace Gui{
 class BaseView;
@@ -73,6 +76,8 @@ public:
     void exportTo(const char* FileName, const char* DocName, const char* Module);
     /// Reload a partial opened document
     App::Document *reopen(App::Document *doc);
+    /// Prompt about recomputing if needed
+    static void checkForRecomputes();
     //@}
 
 
@@ -92,6 +97,8 @@ public:
     void detachView(Gui::BaseView* pcView);
     /// get called if a view gets activated, this manage the whole activation scheme
     void viewActivated(Gui::MDIView* pcView);
+    /// get called if a view gets closed
+    void viewClosed(Gui::MDIView* pcView);
     /// call update to all documents and all views (costly!)
     void onUpdate();
     /// call update to all views of the active document
@@ -132,6 +139,8 @@ public:
     boost::signals2::signal<void (const Gui::Document&)> signalShowHidden;
     /// signal on activating view
     boost::signals2::signal<void (const Gui::MDIView*)> signalActivateView;
+    /// signal on closing view
+    boost::signals2::signal<void (const Gui::MDIView*)> signalCloseView;
     /// signal on entering in edit mode
     boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&)> signalInEdit;
     /// signal on leaving edit mode
@@ -270,7 +279,7 @@ protected:
          std::make_pair(QT_TRANSLATE_NOOP("EditMode", "Color"),
                         QT_TRANSLATE_NOOP("EditMode",
                                           "The object will have the color of its individual faces "
-                                          "editable with the Part FaceColors command"))},
+                                          "editable with the Part FaceAppearances command"))},
     };
     int userEditMode = userEditModes.begin()->first;
 
@@ -337,6 +346,8 @@ public:
 
     static PyObject* sDoCommand                (PyObject *self,PyObject *args);
     static PyObject* sDoCommandGui             (PyObject *self,PyObject *args);
+    static PyObject* sDoCommandEval            (PyObject *self,PyObject *args);
+    static PyObject* sDoCommandSkip            (PyObject *self,PyObject *args);
     static PyObject* sAddModule                (PyObject *self,PyObject *args);
 
     static PyObject* sShowDownloads            (PyObject *self,PyObject *args);
@@ -361,6 +372,7 @@ private:
     struct ApplicationP* d;
     /// workbench python dictionary
     PyObject*             _pcWorkbenchDictionary;
+    NavlibInterface* pNavlibInterface;
 };
 
 } //namespace Gui

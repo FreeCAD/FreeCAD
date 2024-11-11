@@ -47,7 +47,7 @@
 
 #ifndef _PreComp_
 #include <BRepAdaptor_Surface.hxx>
-#include <BRepAlgoAPI_Cut.hxx>
+#include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
@@ -80,6 +80,7 @@
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
+#include <Base/Tools.h>
 
 #include <Mod/Part/App/PartFeature.h>
 
@@ -385,7 +386,7 @@ TopoDS_Shape DrawViewSection::getShapeForDetail() const
 
 App::DocumentObjectExecReturn* DrawViewSection::execute()
 {
-    //    Base::Console().Message("DVS::execute() - %s\n", getNameInDocument());
+    // Base::Console().Message("DVS::execute() - %s\n", Label.getValue());
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
@@ -445,9 +446,7 @@ bool DrawViewSection::isBaseValid() const
 
 void DrawViewSection::sectionExec(TopoDS_Shape& baseShape)
 {
-    //    Base::Console().Message("DVS::sectionExec() - %s baseShape.IsNull:
-    //    %d\n",
-    //                            getNameInDocument(), baseShape.IsNull());
+    // Base::Console().Message("DVS::sectionExec() - %s baseShape.IsNull: %d\n", Label.getValue(), baseShape.IsNull());
 
     if (waitingForHlr() || waitingForCut()) {
         return;
@@ -486,9 +485,7 @@ void DrawViewSection::sectionExec(TopoDS_Shape& baseShape)
 
 void DrawViewSection::makeSectionCut(const TopoDS_Shape& baseShape)
 {
-    //    Base::Console().Message("DVS::makeSectionCut() - %s - baseShape.IsNull:
-    //    %d\n",
-    //                            getNameInDocument(), baseShape.IsNull());
+    // Base::Console().Message("DVS::makeSectionCut() - %s - baseShape.IsNull:%d\n", Label.getValue(), baseShape.IsNull());
 
     showProgressMessage(getNameInDocument(), "is making section cut");
 
@@ -513,7 +510,7 @@ void DrawViewSection::makeSectionCut(const TopoDS_Shape& baseShape)
     TopExp_Explorer expl(myShape, TopAbs_SOLID);
     for (; expl.More(); expl.Next()) {
         const TopoDS_Solid& s = TopoDS::Solid(expl.Current());
-        BRepAlgoAPI_Cut mkCut(s, m_cuttingTool);
+        FCBRepAlgoAPI_Cut mkCut(s, m_cuttingTool);
         if (!mkCut.IsDone()) {
             Base::Console().Warning("DVS: Section cut has failed in %s\n", getNameInDocument());
             continue;
@@ -530,7 +527,7 @@ void DrawViewSection::makeSectionCut(const TopoDS_Shape& baseShape)
     // second cut if requested.  Sometimes the first cut includes extra uncut
     // pieces.
     if (trimAfterCut()) {
-        BRepAlgoAPI_Cut mkCut2(cutPieces, m_cuttingTool);
+        FCBRepAlgoAPI_Cut mkCut2(cutPieces, m_cuttingTool);
         if (mkCut2.IsDone()) {
             m_cutPieces = mkCut2.Shape();
             if (debugSection()) {
@@ -638,8 +635,7 @@ void DrawViewSection::onSectionCutFinished()
 // activities that depend on updated geometry object
 void DrawViewSection::postHlrTasks(void)
 {
-    //    Base::Console().Message("DVS::postHlrTasks() - %s\n",
-    //    getNameInDocument());
+    // Base::Console().Message("DVS::postHlrTasks() - %s\n", Label.getValue());
 
     DrawViewPart::postHlrTasks();
 
@@ -937,27 +933,29 @@ std::vector<TechDraw::FacePtr> DrawViewSection::makeTDSectionFaces(TopoDS_Compou
 std::pair<Base::Vector3d, Base::Vector3d> DrawViewSection::sectionLineEnds()
 {
     std::pair<Base::Vector3d, Base::Vector3d> result;
-    Base::Vector3d stdZ(0.0, 0.0, 1.0);
-    double baseRotation = getBaseDVP()->Rotation.getValue();// Qt degrees are clockwise
-    Base::Rotation rotator(stdZ, baseRotation * M_PI / 180.0);
-    Base::Rotation unrotator(stdZ, -baseRotation * M_PI / 180.0);
 
+    Base::Vector3d dir = getSectionDirectionOnBaseView();
+
+    Base::Vector3d sectionOrg = SectionOrigin.getValue() - getBaseDVP()->getOriginalCentroid();
+    sectionOrg = getBaseDVP()->projectPoint(sectionOrg);// convert to base view CS
+    double halfSize = (getBaseDVP()->getSizeAlongVector(dir) / 2.0) * SectionLineStretch.getValue();
+    result.first = sectionOrg + dir * halfSize;
+    result.second = sectionOrg - dir * halfSize;
+
+    return result;
+}
+
+// calculate the direction of the section in 2d on the base view.
+Base::Vector3d DrawViewSection::getSectionDirectionOnBaseView()
+{
     auto sNorm = SectionNormal.getValue();
     auto axis = getBaseDVP()->Direction.getValue();
-    Base::Vector3d stdOrg(0.0, 0.0, 0.0);
     Base::Vector3d sectionLineDir = -axis.Cross(sNorm);
     sectionLineDir.Normalize();
     sectionLineDir = getBaseDVP()->projectPoint(sectionLineDir);// convert to base view CS
     sectionLineDir.Normalize();
 
-    Base::Vector3d sectionOrg = SectionOrigin.getValue() - getBaseDVP()->getOriginalCentroid();
-    sectionOrg = getBaseDVP()->projectPoint(sectionOrg);// convert to base view
-                                                        // CS
-    double halfSize = (getBaseDVP()->getSizeAlongVector(sectionLineDir) / 2.0) * SectionLineStretch.getValue();
-    result.first = sectionOrg + sectionLineDir * halfSize;
-    result.second = sectionOrg - sectionLineDir * halfSize;
-
-    return result;
+    return sectionLineDir;
 }
 
 // find the points and directions to make the change point marks.
@@ -1155,25 +1153,21 @@ gp_Ax2 DrawViewSection::getSectionCS() const
     return sectionCS;
 }
 
-gp_Ax2 DrawViewSection::getProjectionCS(const Base::Vector3d pt) const
+
+//! return the center of the shape resulting from the cut operation
+Base::Vector3d DrawViewSection::getCutCentroid() const
 {
-    Base::Vector3d vNormal = SectionNormal.getValue();
-    gp_Dir gNormal(vNormal.x, vNormal.y, vNormal.z);
-    Base::Vector3d vXDir = getXDirection();
-    gp_Dir gXDir(vXDir.x, vXDir.y, vXDir.z);
-    if (DrawUtil::fpCompare(fabs(gNormal.Dot(gXDir)), 1.0)) {
-        // can not build a gp_Ax2 from these values
-        throw Base::RuntimeError(
-            "DVS::getProjectionCS - SectionNormal and XDirection are parallel");
-    }
-    gp_Pnt gOrigin(pt.x, pt.y, pt.z);
-    return {gOrigin, gNormal, gXDir};
+    gp_Pnt inputCenter = ShapeUtils::findCentroid(m_cutPieces, getProjectionCS());
+    return Base::Vector3d(inputCenter.X(), inputCenter.Y(), inputCenter.Z());
 }
+
 
 std::vector<LineSet> DrawViewSection::getDrawableLines(int i)
 {
-    //    Base::Console().Message("DVS::getDrawableLines(%d) - lineSets: %d\n", i,
-    //    m_lineSets.size());
+    // Base::Console().Message("DVS::getDrawableLines(%d) - lineSets: %d\n", i, m_lineSets.size());
+    if (m_lineSets.empty()) {
+        makeLineSets();
+    }
     std::vector<LineSet> result;
     return DrawGeomHatch::getTrimmedLinesSection(this,
                                                  m_lineSets,
@@ -1236,7 +1230,7 @@ void DrawViewSection::setupObject()
 // create geometric hatch lines
 void DrawViewSection::makeLineSets(void)
 {
-    //    Base::Console().Message("DVS::makeLineSets()\n");
+    // Base::Console().Message("DVS::makeLineSets()\n");
     if (PatIncluded.isEmpty()) {
         return;
     }
@@ -1277,8 +1271,7 @@ void DrawViewSection::replaceSvgIncluded(std::string newSvgFile)
 
 void DrawViewSection::replacePatIncluded(std::string newPatFile)
 {
-    //    Base::Console().Message("DVS::replacePatIncluded(%s)\n",
-    //    newPatFile.c_str());
+    // Base::Console().Message("DVS::replacePatIncluded(%s)\n", newPatFile.c_str());
     if (newPatFile.empty()) {
         return;
     }

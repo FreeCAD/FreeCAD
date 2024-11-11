@@ -50,16 +50,22 @@ from femtools import femutils
 if FreeCAD.GuiUp:
     import FemGui
 
-COORDINATE_SYSTEM = ["Cartesian", "Cartesian 1D", "Cartesian 2D", "Cartesian 3D",
-                     "Polar 2D", "Polar 3D",
-                     "Cylindric", "Cylindric Symmetric",
-                     "Axi Symmetric"]
+COORDINATE_SYSTEM = [
+    "Cartesian",
+    "Cartesian 1D",
+    "Cartesian 2D",
+    "Cartesian 3D",
+    "Polar 2D",
+    "Polar 3D",
+    "Cylindric",
+    "Cylindric Symmetric",
+    "Axi Symmetric",
+]
 SIMULATION_TYPE = ["Scanning", "Steady State", "Transient"]
 
 
 def create(doc, name="ElmerSolver"):
-    return femutils.createObject(
-        doc, name, Proxy, ViewProxy)
+    return femutils.createObject(doc, name, Proxy, ViewProxy)
 
 
 class Proxy(solverbase.Proxy):
@@ -80,14 +86,9 @@ class Proxy(solverbase.Proxy):
     }
 
     def __init__(self, obj):
-        super(Proxy, self).__init__(obj)
+        super().__init__(obj)
 
-        obj.addProperty(
-            "App::PropertyEnumeration",
-            "CoordinateSystem",
-            "Coordinate System",
-            ""
-        )
+        obj.addProperty("App::PropertyEnumeration", "CoordinateSystem", "Coordinate System", "")
         obj.CoordinateSystem = COORDINATE_SYSTEM
         obj.CoordinateSystem = "Cartesian"
 
@@ -95,7 +96,7 @@ class Proxy(solverbase.Proxy):
             "App::PropertyIntegerConstraint",
             "BDFOrder",
             "Timestepping",
-            "Order of time stepping method 'BDF'"
+            "Order of time stepping method 'BDF'",
         )
         # according to the Elmer manual recommended is order 2
         # possible ranage is 1 - 5
@@ -105,7 +106,7 @@ class Proxy(solverbase.Proxy):
             "App::PropertyIntegerList",
             "OutputIntervals",
             "Timestepping",
-            "After how many time steps a result file is output"
+            "After how many time steps a result file is output",
         )
         obj.OutputIntervals = [1]
 
@@ -113,10 +114,7 @@ class Proxy(solverbase.Proxy):
             "App::PropertyIntegerList",
             "TimestepIntervals",
             "Timestepping",
-            (
-                "List of times if 'Simulation Type'\n"
-                "is either 'Scanning' or 'Transient'"
-            )
+            ("List of times if 'Simulation Type'\nis either 'Scanning' or 'Transient'"),
         )
         obj.addProperty(
             "App::PropertyFloatList",
@@ -125,19 +123,14 @@ class Proxy(solverbase.Proxy):
             (
                 "List of time steps sizes if 'Simulation Type'\n"
                 "is either 'Scanning' or 'Transient'"
-            )
+            ),
         )
         # there is no universal default, it all depends on the analysis, however
         # we have to set something and set 10 seconds in steps of 0.1s
         obj.TimestepIntervals = [100]
         obj.TimestepSizes = [0.1]
 
-        obj.addProperty(
-            "App::PropertyEnumeration",
-            "SimulationType",
-            "Type",
-            ""
-        )
+        obj.addProperty("App::PropertyEnumeration", "SimulationType", "Type", "")
         obj.SimulationType = SIMULATION_TYPE
         obj.SimulationType = "Steady State"
 
@@ -145,7 +138,7 @@ class Proxy(solverbase.Proxy):
             "App::PropertyInteger",
             "SteadyStateMaxIterations",
             "Type",
-            "Maximal steady state iterations"
+            "Maximal steady state iterations",
         )
         obj.SteadyStateMaxIterations = 1
 
@@ -153,42 +146,26 @@ class Proxy(solverbase.Proxy):
             "App::PropertyInteger",
             "SteadyStateMinIterations",
             "Type",
-            "Minimal steady state iterations"
+            "Minimal steady state iterations",
         )
         obj.SteadyStateMinIterations = 0
 
-        obj.addProperty(
-            "App::PropertyLink",
-            "ElmerResult",
-            "Base",
-            "",
-            4 | 8
-        )
+        obj.addProperty("App::PropertyLink", "ElmerResult", "Base", "", 4 | 8)
 
-        obj.addProperty(
-            "App::PropertyLinkList",
-            "ElmerTimeResults",
-            "Base",
-            "",
-            4 | 8
-        )
+        obj.addProperty("App::PropertyLinkList", "ElmerTimeResults", "Base", "", 4 | 8)
 
-        obj.addProperty(
-            "App::PropertyLink",
-            "ElmerOutput",
-            "Base",
-            "",
-            4 | 8
-        )
+        obj.addProperty("App::PropertyLink", "ElmerOutput", "Base", "", 4 | 8)
 
     def createMachine(self, obj, directory, testmode=False):
         return run.Machine(
-            solver=obj, directory=directory,
+            solver=obj,
+            directory=directory,
             check=tasks.Check(),
             prepare=tasks.Prepare(),
             solve=tasks.Solve(),
             results=tasks.Results(),
-            testmode=testmode)
+            testmode=testmode,
+        )
 
     def createEquation(self, doc, eqId):
         return self._EQUATIONS[eqId].create(doc)
@@ -201,7 +178,7 @@ class Proxy(solverbase.Proxy):
 
     def edit(self, directory):
         pattern = os.path.join(directory, "case.sif")
-        FreeCAD.Console.PrintMessage("{}\n".format(pattern))
+        FreeCAD.Console.PrintMessage(f"{pattern}\n")
         f = glob.glob(pattern)[0]
         FemGui.open(f)
 
@@ -211,5 +188,6 @@ class ViewProxy(solverbase.ViewProxy):
 
     def getIcon(self):
         return ":/icons/FEM_SolverElmer.svg"
+
 
 ##  @}

@@ -90,13 +90,10 @@ class GuiExport PropertyItemFactory : public Base::Factory
 {
 public:
     static PropertyItemFactory& instance();
-    static void destruct ();
 
     PropertyItem* createPropertyItem (const char* sName) const;
 
 private:
-    static PropertyItemFactory* _singleton;
-
     PropertyItemFactory() = default;
     ~PropertyItemFactory() override = default;
 };
@@ -138,12 +135,12 @@ public:
     const App::Property* getFirstProperty() const;
 
     /** Creates the appropriate editor for this item and sets the editor to the value of overrideValue(). */
-    virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
+    virtual QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const;
     virtual void setEditorData(QWidget *editor, const QVariant& data) const;
     virtual QVariant editorData(QWidget *editor) const;
     virtual bool isSeparator() const { return false; }
 
-    QWidget* createExpressionEditor(QWidget* parent, const QObject* receiver, const char* method) const;
+    QWidget* createExpressionEditor(QWidget* parent, const std::function<void()>& method) const;
     void setExpressionEditorData(QWidget *editor, const QVariant& data) const;
     QVariant expressionEditorData(QWidget *editor) const;
 
@@ -180,7 +177,7 @@ public:
     int childCount() const;
     int columnCount() const;
     QString propertyName() const;
-    void setPropertyName(QString name, QString realName=QString());
+    void setPropertyName(const QString& name, const QString& realName=QString());
     void setPropertyValue(const QString&);
     virtual QVariant data(int column, int role) const;
     bool setData (const QVariant& value);
@@ -203,6 +200,15 @@ protected:
 
     //gets called when the bound expression is changed
     void onChange() override;
+
+private:
+    QVariant dataProperty(int role) const;
+    QVariant dataValue(int role) const;
+    QString toString(const Py::Object&) const;
+    QString asNone(const Py::Object&) const;
+    QString asString(const Py::Object&) const;
+    QString asSequence(const Py::Object&) const;
+    QString asMapping(const Py::Object&) const;
 
 protected:
     QString propName;
@@ -227,7 +233,7 @@ class GuiExport PropertyStringItem: public PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const override;
+    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
     void setEditorData(QWidget *editor, const QVariant& data) const override;
     QVariant editorData(QWidget *editor) const override;
 
@@ -248,7 +254,7 @@ class GuiExport PropertyFontItem: public PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const override;
+    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
     void setEditorData(QWidget *editor, const QVariant& data) const override;
     QVariant editorData(QWidget *editor) const override;
 
@@ -270,7 +276,7 @@ class GuiExport PropertySeparatorItem : public PropertyItem
     PROPERTYITEM_HEADER
 
     bool isSeparator() const override { return true; }
-    QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const override;
+    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
 
     int row() const override {
         return _row<0?PropertyItem::row():_row;
@@ -290,7 +296,7 @@ class GuiExport PropertyIntegerItem: public PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const override;
+    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
     void setEditorData(QWidget *editor, const QVariant& data) const override;
     QVariant editorData(QWidget *editor) const override;
 
@@ -312,9 +318,20 @@ class GuiExport PropertyIntegerConstraintItem: public PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const override;
+    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
     void setEditorData(QWidget *editor, const QVariant& data) const override;
     QVariant editorData(QWidget *editor) const override;
+
+    void setRange(int min, int max)
+    {
+        this->min = min;
+        this->max = max;
+    }
+
+    void setStepSize(int steps)
+    {
+        this->steps = steps;
+    }
 
 protected:
     QVariant toString(const QVariant&) const override;
@@ -323,6 +340,11 @@ protected:
 
 protected:
     PropertyIntegerConstraintItem();
+
+private:
+    int min = INT_MIN;
+    int max = INT_MAX;
+    int steps = 1;
 };
 
 /**
@@ -334,7 +356,7 @@ class GuiExport PropertyFloatItem: public PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const override;
+    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
     void setEditorData(QWidget *editor, const QVariant& data) const override;
     QVariant editorData(QWidget *editor) const override;
 
@@ -356,7 +378,7 @@ class GuiExport PropertyUnitItem: public PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const override;
+    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
     void setEditorData(QWidget *editor, const QVariant& data) const override;
     QVariant editorData(QWidget *editor) const override;
 
@@ -379,8 +401,24 @@ class GuiExport PropertyUnitConstraintItem: public PropertyUnitItem
 
     void setEditorData(QWidget *editor, const QVariant& data) const override;
 
+    void setRange(double min, double max)
+    {
+        this->min = min;
+        this->max = max;
+    }
+
+    void setStepSize(double steps)
+    {
+        this->steps = steps;
+    }
+
 protected:
     PropertyUnitConstraintItem();
+
+private:
+    double min = double(INT_MIN);
+    double max = double(INT_MAX);
+    double steps = 0.1;
 };
 
 /**
@@ -392,9 +430,20 @@ class GuiExport PropertyFloatConstraintItem: public PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const override;
+    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
     void setEditorData(QWidget *editor, const QVariant& data) const override;
     QVariant editorData(QWidget *editor) const override;
+
+    void setRange(double min, double max)
+    {
+        this->min = min;
+        this->max = max;
+    }
+
+    void setStepSize(double steps)
+    {
+        this->steps = steps;
+    }
 
 protected:
     QVariant toString(const QVariant&) const override;
@@ -403,6 +452,11 @@ protected:
 
 protected:
     PropertyFloatConstraintItem();
+
+private:
+    double min = double(INT_MIN);
+    double max = double(INT_MAX);
+    double steps = 0.1;
 };
 
 /**
@@ -442,7 +496,7 @@ class GuiExport PropertyBoolItem: public PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const override;
+    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
     void setEditorData(QWidget *editor, const QVariant& data) const override;
     QVariant editorData(QWidget *editor) const override;
 
@@ -467,7 +521,7 @@ class GuiExport PropertyVectorItem: public PropertyItem
     Q_PROPERTY(double z READ z WRITE setZ DESIGNABLE true USER true) // clazy:exclude=qproperty-without-notify
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const override;
+    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
     void setEditorData(QWidget *editor, const QVariant& data) const override;
     QVariant editorData(QWidget *editor) const override;
 
@@ -546,7 +600,7 @@ class GuiExport PropertyVectorListItem : public PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const override;
+    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
     void setEditorData(QWidget *editor, const QVariant& data) const override;
     QVariant editorData(QWidget *editor) const override;
 
@@ -572,7 +626,7 @@ class GuiExport PropertyVectorDistanceItem: public PropertyItem
     Q_PROPERTY(Base::Quantity z READ z WRITE setZ DESIGNABLE true USER true) // clazy:exclude=qproperty-without-notify
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const override;
+    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
     void setEditorData(QWidget *editor, const QVariant& data) const override;
     QVariant editorData(QWidget *editor) const override;
 
@@ -632,7 +686,7 @@ class GuiExport PropertyMatrixItem: public PropertyItem
     Q_PROPERTY(double A44 READ getA44 WRITE setA44 DESIGNABLE true USER true) // clazy:exclude=qproperty-without-notify
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const override;
+    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
     void setEditorData(QWidget *editor, const QVariant& data) const override;
     QVariant editorData(QWidget *editor) const override;
 
@@ -730,7 +784,7 @@ class GuiExport PropertyRotationItem: public PropertyItem
     Q_PROPERTY(Base::Vector3d Axis READ getAxis WRITE setAxis DESIGNABLE true USER true) // clazy:exclude=qproperty-without-notify
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const override;
+    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
     void setEditorData(QWidget *editor, const QVariant& data) const override;
     QVariant editorData(QWidget *editor) const override;
 
@@ -761,7 +815,7 @@ class PlacementEditor : public Gui::LabelButton
     Q_OBJECT
 
 public:
-    explicit PlacementEditor(const QString& name, QWidget * parent = nullptr);
+    explicit PlacementEditor(QString name, QWidget * parent = nullptr);
     ~PlacementEditor() override;
 
 private Q_SLOTS:
@@ -788,7 +842,7 @@ class GuiExport PropertyPlacementItem: public PropertyItem
     Q_PROPERTY(Base::Vector3d Position READ getPosition WRITE setPosition DESIGNABLE true USER true) // clazy:exclude=qproperty-without-notify
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const override;
+    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
     void setEditorData(QWidget *editor, const QVariant& data) const override;
     QVariant editorData(QWidget *editor) const override;
 
@@ -829,12 +883,15 @@ class GuiExport PropertyEnumItem: public PropertyItem
     Q_PROPERTY(QStringList Enum READ getEnum WRITE setEnum DESIGNABLE true USER true) // clazy:exclude=qproperty-without-notify
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const override;
+    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
     void setEditorData(QWidget *editor, const QVariant& data) const override;
     QVariant editorData(QWidget *editor) const override;
 
     QStringList getEnum() const;
-    void setEnum(QStringList);
+    void setEnum(const QStringList&);
+
+private:
+    QStringList getCommonModes() const;
 
 protected:
     QVariant value(const App::Property*) const override;
@@ -869,7 +926,7 @@ class GuiExport PropertyStringListItem: public PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const override;
+    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
     void setEditorData(QWidget *editor, const QVariant& data) const override;
     QVariant editorData(QWidget *editor) const override;
 
@@ -891,7 +948,7 @@ class GuiExport PropertyFloatListItem: public PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const override;
+    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
     void setEditorData(QWidget *editor, const QVariant& data) const override;
     QVariant editorData(QWidget *editor) const override;
 
@@ -913,7 +970,7 @@ class GuiExport PropertyIntegerListItem: public PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const override;
+    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
     void setEditorData(QWidget *editor, const QVariant& data) const override;
     QVariant editorData(QWidget *editor) const override;
 
@@ -935,7 +992,7 @@ class GuiExport PropertyColorItem: public PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const override;
+    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
     void setEditorData(QWidget *editor, const QVariant& data) const override;
     QVariant editorData(QWidget *editor) const override;
 
@@ -964,7 +1021,7 @@ class GuiExport PropertyMaterialItem : public PropertyItem
     Q_PROPERTY(float Transparency READ getTransparency WRITE setTransparency DESIGNABLE true USER true) // clazy:exclude=qproperty-without-notify
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const override;
+    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
     void setEditorData(QWidget *editor, const QVariant& data) const override;
     QVariant editorData(QWidget *editor) const override;
 
@@ -978,10 +1035,10 @@ class GuiExport PropertyMaterialItem : public PropertyItem
     void setSpecularColor(const QColor&);
     QColor getEmissiveColor() const;
     void setEmissiveColor(const QColor&);
-    float getShininess() const;
-    void setShininess(float);
-    float getTransparency() const;
-    void setTransparency(float);
+    int getShininess() const;
+    void setShininess(int);
+    int getTransparency() const;
+    void setTransparency(int);
 
 protected:
     PropertyMaterialItem();
@@ -998,8 +1055,8 @@ private:
     PropertyColorItem* diffuse;
     PropertyColorItem* specular;
     PropertyColorItem* emissive;
-    PropertyFloatItem* shininess;
-    PropertyFloatItem* transparency;
+    PropertyIntegerConstraintItem* shininess;
+    PropertyIntegerConstraintItem* transparency;
 };
 
 class GuiExport PropertyMaterialListItem : public PropertyItem
@@ -1013,7 +1070,7 @@ class GuiExport PropertyMaterialListItem : public PropertyItem
     Q_PROPERTY(float Transparency READ getTransparency WRITE setTransparency DESIGNABLE true USER true) // clazy:exclude=qproperty-without-notify
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const override;
+    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
     void setEditorData(QWidget *editor, const QVariant& data) const override;
     QVariant editorData(QWidget *editor) const override;
 
@@ -1027,10 +1084,10 @@ class GuiExport PropertyMaterialListItem : public PropertyItem
     void setSpecularColor(const QColor&);
     QColor getEmissiveColor() const;
     void setEmissiveColor(const QColor&);
-    float getShininess() const;
-    void setShininess(float);
-    float getTransparency() const;
-    void setTransparency(float);
+    int getShininess() const;
+    void setShininess(int);
+    int getTransparency() const;
+    void setTransparency(int);
 
 protected:
     PropertyMaterialListItem();
@@ -1047,8 +1104,8 @@ private:
     PropertyColorItem* diffuse;
     PropertyColorItem* specular;
     PropertyColorItem* emissive;
-    PropertyFloatItem* shininess;
-    PropertyFloatItem* transparency;
+    PropertyIntegerConstraintItem* shininess;
+    PropertyIntegerConstraintItem* transparency;
 };
 
 /**
@@ -1060,7 +1117,7 @@ class GuiExport PropertyFileItem: public PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const override;
+    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
     void setEditorData(QWidget *editor, const QVariant& data) const override;
     QVariant editorData(QWidget *editor) const override;
 
@@ -1082,7 +1139,7 @@ class GuiExport PropertyPathItem: public PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const override;
+    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
     void setEditorData(QWidget *editor, const QVariant& data) const override;
     QVariant editorData(QWidget *editor) const override;
 
@@ -1104,7 +1161,7 @@ class GuiExport PropertyTransientFileItem: public PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const override;
+    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
     void setEditorData(QWidget *editor, const QVariant& data) const override;
     QVariant editorData(QWidget *editor) const override;
 
@@ -1122,7 +1179,7 @@ class LinkSelection : public QObject
     Q_OBJECT
 
 public:
-    explicit LinkSelection(const App::SubObjectT &);
+    explicit LinkSelection(App::SubObjectT);
     ~LinkSelection() override;
 
 public Q_SLOTS:
@@ -1172,7 +1229,7 @@ class GuiExport PropertyLinkItem: public PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const override;
+    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
     void setEditorData(QWidget *editor, const QVariant& data) const override;
     QVariant editorData(QWidget *editor) const override;
 

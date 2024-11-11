@@ -46,12 +46,14 @@ def get_information():
         "constraints": ["electrostatic potential"],
         "solvers": ["elmer"],
         "material": "fluid",
-        "equations": ["electrostatic"]
+        "equations": ["electrostatic"],
     }
 
 
 def get_explanation(header=""):
-    return header + """
+    return (
+        header
+        + """
 
 To run the example from Python console use:
 from femexamples.equation_electrostatics_electricforce_elmer_nongui6 import setup
@@ -64,6 +66,7 @@ https://forum.freecad.org/viewtopic.php?f=18&t=41488&start=40#p373292
 Electrostatics equation in FreeCAD FEM-Elmer
 
 """
+    )
 
 
 def setup(doc=None, solvertype="elmer"):
@@ -80,13 +83,14 @@ def setup(doc=None, solvertype="elmer"):
     # name is important because the other method in this module use obj name
     geom_obj = doc.addObject("PartDesign::Body", "Body")
     base_sketch = geom_obj.newObject("Sketcher::SketchObject", "Base_Sketch")
-    base_sketch.Support = (doc.getObject("XY_Plane"), [""])
+    base_sketch.AttachmentSupport = (doc.getObject("XY_Plane"), [""])
     base_sketch.MapMode = "FlatFace"
     base_geoList = [
         Part.LineSegment(Vector(0.000000, 0.000000, 0), Vector(57.407921, 0.000000, 0)),
         Part.LineSegment(Vector(57.407921, 0.000000, 0), Vector(57.407921, 35.205284, 0)),
         Part.LineSegment(Vector(57.407921, 35.205284, 0), Vector(0.000000, 35.205284, 0)),
-        Part.LineSegment(Vector(0.000000, 35.205284, 0), Vector(0.000000, 0.000000, 0))]
+        Part.LineSegment(Vector(0.000000, 35.205284, 0), Vector(0.000000, 0.000000, 0)),
+    ]
     base_sketch.addGeometry(base_geoList, False)
     base_conList = [
         Sketcher.Constraint("Coincident", 0, 2, 1, 1),
@@ -99,7 +103,8 @@ def setup(doc=None, solvertype="elmer"):
         Sketcher.Constraint("Vertical", 3),
         Sketcher.Constraint("Coincident", 0, 1, -1, 1),
         Sketcher.Constraint("DistanceY", 1, 1, 1, 2, 35.205284),
-        Sketcher.Constraint("DistanceX", 0, 1, 0, 2, 57.407921)]
+        Sketcher.Constraint("DistanceX", 0, 1, 0, 2, 57.407921),
+    ]
     base_sketch.addConstraint(base_conList)
     base_sketch.setDatum(9, Units.Quantity("5000.000000 mm"))
     base_sketch.setDatum(10, Units.Quantity("5000.000000 mm"))
@@ -111,7 +116,7 @@ def setup(doc=None, solvertype="elmer"):
     pad.Length2 = 1000.0
 
     upper_sketch = geom_obj.newObject("Sketcher::SketchObject", "Upper_Sketch")
-    upper_sketch.Support = None
+    upper_sketch.AttachmentSupport = None
     upper_sketch.MapMode = "Deactivated"
     upper_sketch.Placement = FreeCAD.Placement(Vector(0, 0, 1000), Rotation(Vector(0, 0, 1), 0))
     upper_geoList = [
@@ -120,7 +125,8 @@ def setup(doc=None, solvertype="elmer"):
         Part.LineSegment(Vector(5037.082520, 0.000000, 0), Vector(1309.763672, -21.422216, 0)),
         Part.LineSegment(Vector(1309.763672, 0.000000, 0), Vector(1372.406982, 1544.678467, 0)),
         Part.LineSegment(Vector(1372.406982, 1544.678467, 0), Vector(-37.083382, 1544.678467, 0)),
-        Part.LineSegment(Vector(0.000000, 1544.678467, 0), Vector(25.560951, 4958.778320, 0))]
+        Part.LineSegment(Vector(0.000000, 1544.678467, 0), Vector(25.560951, 4958.778320, 0)),
+    ]
     upper_sketch.addGeometry(upper_geoList, False)
     upper_conList = [
         Sketcher.Constraint("Horizontal", 0),
@@ -140,7 +146,8 @@ def setup(doc=None, solvertype="elmer"):
         Sketcher.Constraint("DistanceX", 0, 1, 0, 2, 5037.082520),
         Sketcher.Constraint("DistanceY", 1, 2, 1, 1, 4958.778320),
         Sketcher.Constraint("DistanceY", 3, 1, 3, 2, 1544.678467),
-        Sketcher.Constraint("DistanceX", 4, 2, 4, 1, 1309.763672)]
+        Sketcher.Constraint("DistanceX", 4, 2, 4, 1, 1309.763672),
+    ]
     upper_sketch.addConstraint(upper_conList)
     upper_sketch.setDatum(14, Units.Quantity("5000.000000 mm"))
     upper_sketch.setDatum(15, Units.Quantity("5000.000000 mm"))
@@ -163,6 +170,7 @@ def setup(doc=None, solvertype="elmer"):
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
     if FreeCAD.GuiUp:
         import FemGui
+
         FemGui.setActiveAnalysis(analysis)
 
     # solver
@@ -209,7 +217,8 @@ def setup(doc=None, solvertype="elmer"):
         (geom_obj, "Face4"),
         (geom_obj, "Face5"),
         (geom_obj, "Face6"),
-        (geom_obj, "Face11")]
+        (geom_obj, "Face11"),
+    ]
     con_elect_pot2.Potential = "1 V"
     con_elect_pot2.CapacitanceBody = 2
     con_elect_pot2.CapacitanceBodyEnabled = True
@@ -219,7 +228,7 @@ def setup(doc=None, solvertype="elmer"):
 
     # mesh
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
-    femmesh_obj.Part = geom_obj
+    femmesh_obj.Shape = geom_obj
     femmesh_obj.SecondOrderLinear = False
     femmesh_obj.CharacteristicLengthMax = "500 mm"
     femmesh_obj.ViewObject.Visibility = False
@@ -231,23 +240,26 @@ def setup(doc=None, solvertype="elmer"):
         (geom_obj, "Face4"),
         (geom_obj, "Face5"),
         (geom_obj, "Face6"),
-        (geom_obj, "Face11")]
+        (geom_obj, "Face11"),
+    ]
     mesh_region.ViewObject.Visibility = False
 
     # generate the mesh
     from femmesh import gmshtools
+
     gmsh_mesh = gmshtools.GmshTools(femmesh_obj, analysis)
     try:
         error = gmsh_mesh.create_mesh()
     except Exception:
         error = sys.exc_info()[1]
-        FreeCAD.Console.PrintError(
-            "Unexpected error when creating mesh: {}\n"
-            .format(error)
-        )
+        FreeCAD.Console.PrintError(f"Unexpected error when creating mesh: {error}\n")
     if error:
         # try to create from existing rough mesh
-        from .meshes.mesh_electricforce_elmer_nongui6_tetra10 import create_nodes, create_elements
+        from .meshes.mesh_electricforce_elmer_nongui6_tetra10 import (
+            create_nodes,
+            create_elements,
+        )
+
         fem_mesh = Fem.FemMesh()
         control = create_nodes(fem_mesh)
         if not control:

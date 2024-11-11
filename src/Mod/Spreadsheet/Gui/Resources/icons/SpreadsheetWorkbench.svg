@@ -1,77 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   version="1.1"
-   id="svg2860"
+   width="64px"
    height="64px"
-   width="64px">
+   id="svg2860"
+   version="1.1"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <defs
      id="defs2862">
     <linearGradient
        id="linearGradient3783">
       <stop
-         id="stop3785"
+         style="stop-color:#d3d7cf;stop-opacity:1"
          offset="0"
-         style="stop-color:#d3d7cf;stop-opacity:1" />
+         id="stop3785" />
       <stop
-         id="stop3787"
+         style="stop-color:#ffffff;stop-opacity:1"
          offset="1"
-         style="stop-color:#ffffff;stop-opacity:1" />
+         id="stop3787" />
     </linearGradient>
-    <radialGradient
-       gradientUnits="userSpaceOnUse"
-       r="19.467436"
-       fy="28.869568"
-       fx="45.883327"
-       cy="28.869568"
-       cx="45.883327"
-       id="radialGradient3692"
-       xlink:href="#linearGradient3377" />
-    <radialGradient
-       gradientTransform="matrix(0.97435,0.2250379,-0.4623105,2.0016728,48.487554,-127.99883)"
-       r="19.467436"
-       fy="97.369568"
-       fx="135.38333"
-       cy="97.369568"
-       cx="135.38333"
-       gradientUnits="userSpaceOnUse"
-       id="radialGradient3703"
-       xlink:href="#linearGradient3377" />
     <linearGradient
-       id="linearGradient3377">
-      <stop
-         style="stop-color:#faff2b;stop-opacity:1;"
-         offset="0"
-         id="stop3379" />
-      <stop
-         style="stop-color:#ffaa00;stop-opacity:1;"
-         offset="1"
-         id="stop3381" />
-    </linearGradient>
-    <radialGradient
-       gradientTransform="matrix(1.3852588,-0.05136783,0.03705629,0.9993132,-60.392403,7.7040438)"
-       r="19.467436"
-       fy="81.869568"
-       fx="148.88333"
-       cy="81.869568"
-       cx="148.88333"
-       gradientUnits="userSpaceOnUse"
-       id="radialGradient3705"
-       xlink:href="#linearGradient3377" />
-    <linearGradient
-       gradientTransform="matrix(1,0,0,0.77777777,0,5.1111114)"
-       gradientUnits="userSpaceOnUse"
-       y2="5"
-       x2="21"
-       y1="58"
-       x1="38"
+       xlink:href="#linearGradient3783"
        id="linearGradient3789"
-       xlink:href="#linearGradient3783" />
+       x1="38"
+       y1="58"
+       x2="21"
+       y2="5"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1,0,0,0.77777777,0,7.1111114)" />
   </defs>
   <metadata
      id="metadata2865">
@@ -81,66 +43,80 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
         <dc:creator>
           <cc:Agent>
-            <dc:title>[triplus]</dc:title>
+            <dc:title>[Eivind Kvedalen]</dc:title>
           </cc:Agent>
         </dc:creator>
-        <dc:title>SpreadsheetWorkbench</dc:title>
-        <dc:date>2016-02-26</dc:date>
+        <dc:date>2013-09-29</dc:date>
         <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:publisher>
           <cc:Agent>
             <dc:title>FreeCAD</dc:title>
           </cc:Agent>
         </dc:publisher>
-        <dc:identifier>FreeCAD/src/Mod/Spreadsheet/Gui/Resources/icons/SpreadsheetWorkbench.svg</dc:identifier>
+        <dc:identifier>FreeCAD/src/Mod/Spreadsheet/Gui/Resources/icons/Spreadsheet.svg</dc:identifier>
         <dc:rights>
           <cc:Agent>
             <dc:title>FreeCAD LGPL2+</dc:title>
           </cc:Agent>
         </dc:rights>
-        <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
         <dc:contributor>
           <cc:Agent>
             <dc:title>[agryson] Alexander Gryson</dc:title>
           </cc:Agent>
         </dc:contributor>
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/by-sa/4.0/" />
       </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/by-sa/4.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Notice" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Attribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#ShareAlike" />
+      </cc:License>
     </rdf:RDF>
   </metadata>
   <g
      id="layer1">
     <rect
-       y="8"
-       x="4"
-       height="44"
-       width="56"
+       style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:#ffffff;stroke:#2e3436;stroke-width:4;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
        id="rect3002-9"
-       style="color:#000000;fill:#ffffff;stroke:#2e3436;stroke-width:4;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+       width="56"
+       height="44"
+       x="4"
+       y="10" />
     <rect
-       y="9"
-       x="5"
-       height="42"
-       width="54"
+       style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:url(#linearGradient3789);fill-opacity:1;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
        id="rect3002-9-3"
-       style="color:#000000;fill:url(#linearGradient3789);fill-opacity:1;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+       width="54"
+       height="42"
+       x="5"
+       y="11" />
     <path
-       id="path3790"
-       d="m 3,18 58,0"
-       style="fill:none;stroke:#2e3436;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+       style="fill:none;stroke:#2e3436;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 3,20 H 61"
+       id="path3790" />
     <path
-       id="path3792"
-       d="m 22,6 0,48"
-       style="fill:none;stroke:#2e3436;stroke-width:3.99999976;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+       style="fill:none;stroke:#2e3436;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 22,9 V 55"
+       id="path3792" />
     <path
-       id="path3794"
-       d="m 3,30 58,0"
-       style="fill:none;stroke:#2e3436;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+       style="fill:none;stroke:#2e3436;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 3,32 H 61"
+       id="path3794" />
     <path
-       id="path3796"
-       d="m 3,42 58,0"
-       style="fill:none;stroke:#2e3436;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+       style="fill:none;stroke:#2e3436;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 3,44 H 61"
+       id="path3796" />
   </g>
 </svg>

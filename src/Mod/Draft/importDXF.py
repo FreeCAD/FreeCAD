@@ -64,8 +64,10 @@ import WorkingPlane
 from FreeCAD import Vector
 from FreeCAD import Console as FCC
 from Draft import LinearDimension
+from draftobjects.dimension import _Dimension
 from draftutils import params
 from draftutils import utils
+from builtins import open as pyopen
 
 gui = FreeCAD.GuiUp
 draftui = None
@@ -84,11 +86,6 @@ else:
 dxfReader = None
 dxfColorMap = None
 dxfLibrary = None
-
-# Save the native open function to avoid collisions
-# with the function declared here
-if open.__module__ in ['__builtin__', 'io']:
-    pythonopen = open
 
 
 def errorDXFLib(gui):
@@ -138,7 +135,7 @@ from menu Tools -> Addon Manager""")
         if gui:
             message = translate('draft', """The DXF import/export libraries needed by FreeCAD to handle
 the DXF format were not found on this system.
-Please either enable FreeCAD to download these libraries:
+Please either allow FreeCAD to download these libraries:
   1 - Load Draft workbench
   2 - Menu Edit > Preferences > Import-Export > DXF > Enable downloads
 Or download these libraries manually, as explained on
@@ -198,7 +195,11 @@ def getDXFlibs():
         errorDXFLib(gui)
         try:
             import dxfColorMap, dxfLibrary, dxfReader
-        except ImportError:
+            import importlib
+            importlib.reload(dxfColorMap)
+            importlib.reload(dxfLibrary)
+            importlib.reload(dxfReader)
+        except Exception:
             dxfReader = None
             dxfLibrary = None
             FCC.PrintWarning("DXF libraries not available. Aborting.\n")
@@ -220,18 +221,18 @@ def deformat(text):
         The deformatted string.
     """
     # remove ACAD string formatation
-    # t = re.sub('{([^!}]([^}]|\n)*)}', '', text)
+    # t = re.sub(r'{([^!}]([^}]|\n)*)}', '', text)
     # print("input text: ",text)
     t = text.strip("{}")
-    t = re.sub("\\\\.*?;", "", t)
+    t = re.sub(r"\\\\.*?;", "", t)
     # replace UTF codes by utf chars
     sts = re.split("\\\\(U\\+....)", t)
     t = u"".join(sts)
     # replace degrees, diameters chars
-    t = re.sub('%%d', u'°', t)
-    t = re.sub('%%c', u'Ø', t)
-    t = re.sub('%%D', u'°', t)
-    t = re.sub('%%C', u'Ø', t)
+    t = re.sub(r'%%d', u'°', t)
+    t = re.sub(r'%%c', u'Ø', t)
+    t = re.sub(r'%%D', u'°', t)
+    t = re.sub(r'%%C', u'Ø', t)
     # print("output text: ", t)
     return t
 
@@ -626,7 +627,10 @@ def getColor():
 def formatObject(obj, dxfobj=None):
     """Apply text and line color to an object from a DXF object.
 
-    This function only works when the graphical user interface is loaded
+    If `dxfUseDraftVisGroups` is `True` the function returns immediately.
+    The color of the object then depends on the Draft Layer the object is in.
+
+    Else this function only works if the graphical user interface is loaded
     as it needs access to the `ViewObject` attribute of the objects.
 
     If `dxfobj` and the global variable `dxfGetColors` exist
@@ -652,6 +656,9 @@ def formatObject(obj, dxfobj=None):
     -----
     Use local variables, not global variables.
     """
+    if dxfUseDraftVisGroups:
+        return
+
     if dxfGetColors and dxfobj and hasattr(dxfobj, "color_index"):
         if hasattr(obj.ViewObject, "TextColor"):
             if dxfobj.color_index == 256:
@@ -1920,11 +1927,24 @@ def addObject(shape, name="Shape", layer=None):
     if layer:
         lay = locateLayer(layer)
         # For old style layers, which are just groups
-        if hasattr(lay, "addObject"):
-            lay.addObject(newob)
+        if hasattr(lay, "Group"):
+            pass
         # For new Draft Layers
-        elif hasattr(lay, "Proxy") and hasattr(lay.Proxy, "addObject"):
-            lay.Proxy.addObject(lay, newob)
+        elif hasattr(lay, "Proxy") and hasattr(lay.Proxy, "Group"):
+            lay = lay.Proxy
+        else:
+            lay = None
+
+        if lay != None:
+            if lay not in layerObjects:
+                l = []
+                layerObjects[lay] = l
+            else:
+                l = layerObjects[lay]
+            l.append(newob)
+            
+
+
     formatObject(newob)
     return newob
 
@@ -2208,7 +2228,8 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
     global resolvedScale
     resolvedScale = getScaleFromDXF(drawing.header) * dxfScaling
     global layers
-    layers = []
+    typ = "Layer" if dxfUseDraftVisGroups else "App::DocumentObjectGroup"
+    layers = [o for o in FreeCAD.ActiveDocument.Objects if Draft.getType(o) == typ]
     global doc
     doc = document
     global blockshapes
@@ -2219,6 +2240,8 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
     badobjects = []
     global layerBlocks
     layerBlocks = {}
+    global layerObjects
+    layerObjects = {}
     sketch = None
     shapes = []
 
@@ -2589,7 +2612,10 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
                         elif angle in [90, 270]:
                             p2 = vec([x2, y3, z2])
                     newob = doc.addObject("App::FeaturePython", "Dimension")
-                    lay.addObject(newob)
+                    if hasattr(lay, "addObject"):
+                        lay.addObject(newob)
+                    elif hasattr(lay, "Proxy") and hasattr(lay.Proxy, "addObject"):
+                        lay.Proxy.addObject(lay, newob)
                     _Dimension(newob)
                     if gui:
                         from Draft import _ViewProviderDimension
@@ -2713,6 +2739,10 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
                         formatObject(newob, insert)
             num += 1
 
+    # Move layer contents to layers
+    for (l, contents) in layerObjects.items():
+        l.Group += contents
+
     # Make blocks, if any
     if dxfMakeBlocks:
         print("creating layerblocks...")
@@ -2802,10 +2832,11 @@ def open(filename):
         FreeCAD.setActiveDocument(doc.Name)
         try:
             import ImportGui
-            ImportGui.readDXF(filename)
         except Exception:
             import Import
             Import.readDXF(filename)
+        else:
+            ImportGui.readDXF(filename)
         Draft.convert_draft_texts() # convert annotations to Draft texts
         doc.recompute()
 
@@ -2838,20 +2869,17 @@ def insert(filename, docname):
     if dxfUseLegacyImporter:
         getDXFlibs()
         if dxfReader:
-            groupname = os.path.splitext(os.path.basename(filename))[0]
-            importgroup = doc.addObject("App::DocumentObjectGroup", groupname)
             processdxf(doc, filename)
-            for l in layers:
-                importgroup.addObject(l)
         else:
             errorDXFLib(gui)
     else:
         try:
             import ImportGui
-            ImportGui.readDXF(filename)
         except Exception:
             import Import
             Import.readDXF(filename)
+        else:
+            ImportGui.readDXF(filename)
         Draft.convert_draft_texts() # convert annotations to Draft texts
         doc.recompute()
 
@@ -3618,7 +3646,7 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
             # arch view: export it "as is"
             dxf = exportList[0].Proxy.getDXF()
             if dxf:
-                f = pythonopen(filename, "w")
+                f = pyopen(filename, "w")
                 f.write(dxf)
                 f.close()
 
@@ -3899,14 +3927,14 @@ def exportPage(page, filename):
         template = os.path.splitext(page.Template)[0] + ".dxf"
         views = page.Group
     if os.path.exists(template):
-        f = pythonopen(template, "U")
+        f = pyopen(template, "U")
         template = f.read()
         f.close()
         # find & replace editable texts
-        f = pythonopen(page.Template, "rb")
+        f = pyopen(page.Template, "rb")
         svgtemplate = f.read()
         f.close()
-        editables = re.findall("freecad:editable=\"(.*?)\"", svgtemplate)
+        editables = re.findall(r"freecad:editable=\"(.*?)\"", svgtemplate)
         values = page.EditableTexts
         for i in range(len(editables)):
             if len(values) > i:
@@ -3925,7 +3953,7 @@ def exportPage(page, filename):
     blocks = ""
     entities = ""
     r12 = False
-    ver = re.findall("\\$ACADVER\n.*?\n(.*?)\n", template)
+    ver = re.findall(r"\\$ACADVER\n.*?\n(.*?)\n", template)
     if ver:
         # at the moment this is not used.
         # TODO: if r12, do not print ellipses or splines
@@ -3941,9 +3969,9 @@ def exportPage(page, filename):
     if entities:
         template = template.replace("999\n$entities", entities[:-1])
     c = dxfcounter()
-    pat = re.compile("(_handle_)")
+    pat = re.compile(r"(_handle_)")
     template = pat.sub(c.incr, template)
-    f = pythonopen(filename, "w")
+    f = pyopen(filename, "w")
     f.write(template)
     f.close()
 

@@ -399,6 +399,7 @@ public:
     static std::map<std::string, std::string> &Config(){return mConfig;}
     static int GetARGC(){return _argc;}
     static char** GetARGV(){return _argv;}
+    static int64_t applicationPid();
     //@}
 
     /** @name Application directories */
@@ -513,6 +514,7 @@ private:
     static void setupPythonTypes();
     static void setupPythonException(PyObject*);
 
+    // clang-format off
     // static python wrapper of the exported functions
     static PyObject* sGetParam          (PyObject *self, PyObject *args);
     static PyObject* sSaveParameter     (PyObject *self, PyObject *args);
@@ -563,6 +565,7 @@ private:
     static PyObject *sCloseActiveTransaction(PyObject *self,PyObject *args);
     static PyObject *sCheckAbort(PyObject *self,PyObject *args);
     static PyMethodDef    Methods[];
+    // clang-format on
 
     friend class ApplicationObserver;
 

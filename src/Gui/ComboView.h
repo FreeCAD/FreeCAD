@@ -36,7 +36,6 @@ namespace App {
 namespace Gui {
     class TreeWidget;
     class PropertyView;
-    class ProjectWidget;
     class TreePanel;
 namespace PropertyEditor {
 class EditableListView;

@@ -62,6 +62,35 @@ TechDraw::DrawViewPart*  CosmeticExtension::getOwner()
     return static_cast<TechDraw::DrawViewPart*>(getExtendedObject());
 }
 
+//! remove cosmetic elements for a list of subelement names
+void CosmeticExtension::deleteCosmeticElements(std::vector<std::string> removables)
+{
+    // Base::Console().Message("CEx::deleteCosmeticElements(%d removables)\n", removables.size());
+    for (auto& name : removables) {
+        if (DU::getGeomTypeFromName(name) == "Vertex" &&
+         DU::isCosmeticVertex(getOwner(), name)) {
+         CosmeticVertex* vert = getCosmeticVertexBySelection(name);
+         removeCosmeticVertex(vert->getTagAsString());
+         continue;
+        }
+        if (DU::getGeomTypeFromName(name) == "Edge" &&
+         ( DU::isCosmeticEdge(getOwner(), name)  ||
+           DU::isCenterLine(getOwner(), name) ) ) {
+             CosmeticEdge* edge = getCosmeticEdgeBySelection(name);
+             if (edge) {
+                 // if not edge, something has gone very wrong!
+                 removeCosmeticEdge(edge->getTagAsString());
+                 continue;
+             }
+             CenterLine* line = getCenterLineBySelection(name);
+             if (line) {
+                 removeCenterLine(line->getTagAsString());
+                 continue;
+             }
+        }
+    }
+}
+
 //==============================================================================
 //CosmeticVertex x, y are stored as unscaled, but mirrored (inverted Y) values.
 //if you are creating a CV based on calculations of scaled geometry, you need to
@@ -161,13 +190,18 @@ int CosmeticExtension::getCVIndex(const std::string& tag)
 }
 
 /// adds a cosmetic vertex to the property list.  does not add to display geometry until dvp executes.
-/// returns unique CV id
-std::string CosmeticExtension::addCosmeticVertex(const Base::Vector3d& pos)
+/// returns unique CV id.  if the pos parameter is in real world coordinates, then invert should be true
+/// (the default).  if pos is in TD geometry or scene coordinates, then it is already inverted, and
+/// invert should be set to false.
+std::string CosmeticExtension::addCosmeticVertex(const Base::Vector3d& pos, bool invert)
 {
 //    Base::Console().Message("CEx::addCosmeticVertex(%s)\n",
 //                             DrawUtil::formatVector(pos).c_str());
     std::vector<CosmeticVertex*> verts = CosmeticVertexes.getValues();
-    Base::Vector3d tempPos = DrawUtil::invertY(pos);
+    Base::Vector3d tempPos = pos;
+    if (invert) {
+        tempPos = DrawUtil::invertY(pos);
+    }
     TechDraw::CosmeticVertex* cv = new TechDraw::CosmeticVertex(tempPos);
     verts.push_back(cv);
     CosmeticVertexes.setValues(verts);
@@ -349,7 +383,7 @@ TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdge(const std::string& ta
 /// used when selecting
 TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdgeBySelection(const std::string& name) const
 {
-//    Base::Console().Message("CEx::getCEBySelection(%s)\n", name.c_str());
+    // Base::Console().Message("CEx::getCEBySelection(%s)\n", name.c_str());
     App::DocumentObject* extObj = const_cast<App::DocumentObject*> (getExtendedObject());
     TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(extObj);
     if (!dvp) {
@@ -367,7 +401,7 @@ TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdgeBySelection(const std:
 /// find the cosmetic edge corresponding to the input parameter (the 5 in Edge5)
 TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdgeBySelection(int i) const
 {
-//    Base::Console().Message("CEx::getCEBySelection(%d)\n", i);
+    // Base::Console().Message("CEx::getCEBySelection(%d)\n", i);
     std::stringstream edgeName;
     edgeName << "Edge" << i;
     return getCosmeticEdgeBySelection(edgeName.str());
@@ -376,7 +410,7 @@ TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdgeBySelection(int i) con
 /// remove the cosmetic edge with the given tag from the list property
 void CosmeticExtension::removeCosmeticEdge(const std::string& delTag)
 {
-//    Base::Console().Message("DVP::removeCE(%s)\n", delTag.c_str());
+    // Base::Console().Message("DVP::removeCE(%s)\n", delTag.c_str());
     std::vector<CosmeticEdge*> cEdges = CosmeticEdges.getValues();
     std::vector<CosmeticEdge*> newEdges;
     for (auto& ce: cEdges) {
@@ -393,6 +427,8 @@ void CosmeticExtension::removeCosmeticEdge(const std::string& delTag)
 /// remove the cosmetic edges with the given tags from the list property
 void CosmeticExtension::removeCosmeticEdge(const std::vector<std::string>& delTags)
 {
+    // Base::Console().Message("DVP::removeCE(%d tages)\n", delTags.size());
+    std::vector<CosmeticEdge*> cEdges = CosmeticEdges.getValues();
     for (auto& t: delTags) {
         removeCosmeticEdge(t);
     }
@@ -420,7 +456,6 @@ int CosmeticExtension::add1CLToGE(const std::string& tag)
         return -1;
     }
     TechDraw::BaseGeomPtr scaledGeom = cl->scaledAndRotatedGeometry(getOwner());
-//    TechDraw::BaseGeomPtr scaledGeom = cl->scaledGeometry(getOwner());
     int iGE = getOwner()->getGeometryObject()->addCenterLine(scaledGeom, tag);
 
     return iGE;
@@ -429,7 +464,7 @@ int CosmeticExtension::add1CLToGE(const std::string& tag)
 //update Edge geometry with current CL's
 void CosmeticExtension::refreshCLGeoms()
 {
-    //    Base::Console().Message("CE::refreshCLGeoms()\n");
+    // Base::Console().Message("CE::refreshCLGeoms()\n");
     std::vector<TechDraw::BaseGeomPtr> gEdges = getOwner()->getEdgeGeometry();
     std::vector<TechDraw::BaseGeomPtr> newGEdges;
     for (auto& ge : gEdges) {
@@ -447,7 +482,6 @@ void CosmeticExtension::addCenterLinesToGeom()
     //   Base::Console().Message("CE::addCenterLinesToGeom()\n");
     const std::vector<TechDraw::CenterLine*> lines = CenterLines.getValues();
     for (auto& cl : lines) {
-//        TechDraw::BaseGeomPtr scaledGeom = cl->scaledGeometry(getOwner());
         TechDraw::BaseGeomPtr scaledGeom = cl->scaledAndRotatedGeometry(getOwner());
         if (!scaledGeom) {
             Base::Console().Error("CE::addCenterLinesToGeom - scaledGeometry is null\n");
@@ -536,7 +570,7 @@ TechDraw::CenterLine* CosmeticExtension::getCenterLineBySelection(int i) const
 
 void CosmeticExtension::removeCenterLine(const std::string& delTag)
 {
-//    Base::Console().Message("DVP::removeCL(%s)\n", delTag.c_str());
+    // Base::Console().Message("DVP::removeCL(%s)\n", delTag.c_str());
     std::vector<CenterLine*> cLines = CenterLines.getValues();
     std::vector<CenterLine*> newLines;
     for (auto& cl: cLines) {

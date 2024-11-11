@@ -71,6 +71,7 @@
 #endif
 
 #include <App/Document.h>
+#include <App/GeoFeature.h>
 #include <App/ElementNamingUtils.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
@@ -396,8 +397,15 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
             if (vp && (useNewSelection.getValue()||vp->useNewSelectionModel()) && vp->isSelectable()) {
                 SoDetail *detail = nullptr;
                 detailPath->truncate(0);
+                auto subName = selaction->SelChange.pSubName;
+                App::ElementNamePair elementName;;
+                App::GeoFeature::resolveElement(obj, subName, elementName);
+                if (Data::isMappedElement(subName)
+                    && !elementName.oldName.empty()) {      // If we have a shortened element name
+                    subName = elementName.oldName.c_str();  // use it.
+                }
                 if(!selaction->SelChange.pSubName || !selaction->SelChange.pSubName[0] ||
-                    vp->getDetailPath(selaction->SelChange.pSubName,detailPath,true,detail))
+                    vp->getDetailPath(subName,detailPath,true,detail))
                 {
                     SoSelectionElementAction::Type type = SoSelectionElementAction::None;
                     if (selaction->SelChange.Type == SelectionChanges::AddSelection) {
@@ -538,13 +546,13 @@ bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det,
 }
 
 bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bool ctrlDown) {
-    if(infos.empty() || !infos[0].vpd)
+    if (infos.empty() || !infos[0].vpd)
         return false;
 
     std::vector<SelectionSingleton::SelObj> sels;
-    if(infos.size()>1) {
-        for(auto &info : infos) {
-            if(!info.vpd) continue;
+    if (infos.size() > 1) {
+        for (auto &info: infos) {
+            if (!info.vpd) continue;
 
             SelectionSingleton::SelObj sel;
             sel.pResolvedObject = nullptr;
@@ -564,114 +572,134 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
 
     const auto &info = infos[0];
     auto vpd = info.vpd;
-    if(!vpd)
+    if (!vpd)
         return false;
-    if(!vpd->getObject()->isAttachedToDocument())
+    if (!vpd->getObject()->isAttachedToDocument())
         return false;
     const char *objname = vpd->getObject()->getNameInDocument();
     const char *docname = vpd->getObject()->getDocument()->getName();
 
+    auto getFullSubElementName = [vpd](std::string &subName) {
+        App::ElementNamePair elementName;
+        App::GeoFeature::resolveElement(vpd->getObject(), subName.c_str(), elementName);
+        if (!elementName.newName.empty()) {      // If we have a mapped name use it
+            auto elementNameSuffix = Data::findElementName(subName.c_str()); // Only suffix
+            subName.erase(subName.find(elementNameSuffix)); // Everything except original suffix
+            subName = subName.append(elementName.newName);  // Add the mapped name suffix,
+        }
+    };
+
     bool hasNext = false;
-    const SoPickedPoint * pp = info.pp;
+    const SoPickedPoint *pp = info.pp;
     const SoDetail *det = pp->getDetail();
     SoDetail *detNext = nullptr;
-    auto pPath = static_cast<SoFullPath*>(pp->getPath());
+    auto pPath = static_cast<SoFullPath *>(pp->getPath());
     const auto &pt = pp->getPoint();
     SoSelectionElementAction::Type type = SoSelectionElementAction::None;
     auto mymode = static_cast<HighlightModes>(this->highlightMode.getValue());
     static char buf[513];
+    auto subName = info.element;
+    std::string objectName = objname;
 
     if (ctrlDown) {
-        if(Gui::Selection().isSelected(docname, objname, info.element.c_str(), ResolveMode::NoResolve))
-            Gui::Selection().rmvSelection(docname, objname,info.element.c_str(), &sels);
+        if (Gui::Selection().isSelected(docname, objname, info.element.c_str(), ResolveMode::NoResolve)) {
+            Gui::Selection().rmvSelection(docname, objname, info.element.c_str(), &sels);
+            return true;
+        }
         else {
-            bool ok = Gui::Selection().addSelection(docname,objname,
-                    info.element.c_str(), pt[0] ,pt[1] ,pt[2], &sels);
+            getFullSubElementName(subName);
+            bool ok = Gui::Selection().addSelection(docname, objname,
+                                                    subName.c_str(), pt[0], pt[1], pt[2], &sels);
             if (ok && mymode == OFF) {
-                snprintf(buf,512,"Selected: %s.%s.%s (%g, %g, %g)",
-                        docname,objname,info.element.c_str()
-                        ,fabs(pt[0])>1e-7?pt[0]:0.0
-                        ,fabs(pt[1])>1e-7?pt[1]:0.0
-                        ,fabs(pt[2])>1e-7?pt[2]:0.0);
+                snprintf(buf, 512, "Selected: %s.%s.%s (%g, %g, %g)",
+                         docname, objname, info.element.c_str(), fabs(pt[0]) > 1e-7 ? pt[0] : 0.0,
+                         fabs(pt[1]) > 1e-7 ? pt[1] : 0.0, fabs(pt[2]) > 1e-7 ? pt[2] : 0.0);
 
                 getMainWindow()->showMessage(QString::fromLatin1(buf));
             }
-        }
-        return true;
-    }
-
-    // Hierarchy ascending
-    //
-    // If the clicked subelement is already selected, check if there is an
-    // upper hierarchy, and select that hierarchy instead.
-    //
-    // For example, let's suppose PickedInfo above reports
-    // 'link.link2.box.Face1', and below Selection().getSelectedElement returns
-    // 'link.link2.box.', meaning that 'box' is the current selected hierarchy,
-    // and the user is clicking the box again.  So we shall go up one level,
-    // and select 'link.link2.'
-    //
-
-    std::string subName = info.element;
-    std::string objectName = objname;
-
-    const char *subSelected = Gui::Selection().getSelectedElement(
-                                vpd->getObject(),subName.c_str());
-
-    FC_TRACE("select " << (subSelected?subSelected:"'null'") << ", " <<
-            objectName << ", " << subName);
-    std::string newElement;
-    if(subSelected) {
-        newElement = Data::newElementName(subSelected);
-        subSelected = newElement.c_str();
-        std::string nextsub;
-        const char *next = strrchr(subSelected,'.');
-        if(next && next!=subSelected) {
-            if(next[1]==0) {
-                // The convention of dot separated SubName demands a mandatory
-                // ending dot for every object name reference inside SubName.
-                // The non-object sub-element, however, must not end with a dot.
-                // So, next[1]==0 here means current selection is a whole object
-                // selection (because no sub-element), so we shall search
-                // upwards for the second last dot, which is the end of the
-                // parent name of the current selected object
-                for(--next;next!=subSelected;--next) {
-                    if(*next == '.') break;
-                }
-            }
-            if(*next == '.')
-                nextsub = std::string(subSelected,next-subSelected+1);
-        }
-        if(nextsub.length() || *subSelected!=0) {
-            hasNext = true;
-            subName = nextsub;
             detailPath->truncate(0);
-            if(vpd->getDetailPath(subName.c_str(),detailPath,true,detNext) &&
-               detailPath->getLength())
-            {
+            if (vpd->getDetailPath(info.element.c_str(), detailPath, true, detNext) &&
+                detailPath->getLength()) {
                 pPath = detailPath;
                 det = detNext;
                 FC_TRACE("select next " << objectName << ", " << subName);
+                if (ok)
+                    type = hasNext ? SoSelectionElementAction::All : SoSelectionElementAction::Append;
             }
         }
     }
+    else {
+        // Hierarchy ascending
+        //
+        // If the clicked subelement is already selected, check if there is an
+        // upper hierarchy, and select that hierarchy instead.
+        //
+        // For example, let's suppose PickedInfo above reports
+        // 'link.link2.box.Face1', and below Selection().getSelectedElement returns
+        // 'link.link2.box.', meaning that 'box' is the current selected hierarchy,
+        // and the user is clicking the box again.  So we shall go up one level,
+        // and select 'link.link2.'
+        //
 
-    FC_TRACE("clearing selection");
-    Gui::Selection().clearSelection();
-    FC_TRACE("add selection");
-    bool ok = Gui::Selection().addSelection(docname, objectName.c_str() ,subName.c_str(),
-            pt[0] ,pt[1] ,pt[2], &sels);
-    if (ok)
-        type = hasNext?SoSelectionElementAction::All:SoSelectionElementAction::Append;
 
-    if (mymode == OFF) {
-        snprintf(buf,512,"Selected: %s.%s.%s (%g, %g, %g)",
-                docname, objectName.c_str() ,subName.c_str()
-                ,fabs(pt[0])>1e-7?pt[0]:0.0
-                ,fabs(pt[1])>1e-7?pt[1]:0.0
-                ,fabs(pt[2])>1e-7?pt[2]:0.0);
+        // We need to convert the short name in the selection to a full element path to look it up
+        // Ex:  Body.Pad.Face9  to Body.Pad.;g3;SKT;:H12dc,E;FAC;:H12dc:4,F;:G0;XTR;:H12dc:8,F.Face9
+        getFullSubElementName(subName);
+        const char *subSelected = Gui::Selection().getSelectedElement(
+                vpd->getObject(), subName.c_str());
 
-        getMainWindow()->showMessage(QString::fromLatin1(buf));
+        FC_TRACE("select " << (subSelected ? subSelected : "'null'") << ", " <<
+                           objectName << ", " << subName);
+        std::string newElement;
+        if (subSelected) {
+            newElement = Data::newElementName(subSelected);
+            subSelected = newElement.c_str();
+            std::string nextsub;
+            const char *next = strrchr(subSelected, '.');
+            if (next && next != subSelected) {
+                if (next[1] == 0) {
+                    // The convention of dot separated SubName demands a mandatory
+                    // ending dot for every object name reference inside SubName.
+                    // The non-object sub-element, however, must not end with a dot.
+                    // So, next[1]==0 here means current selection is a whole object
+                    // selection (because no sub-element), so we shall search
+                    // upwards for the second last dot, which is the end of the
+                    // parent name of the current selected object
+                    for (--next; next != subSelected; --next) {
+                        if (*next == '.') break;
+                    }
+                }
+                if (*next == '.')
+                    nextsub = std::string(subSelected, next - subSelected + 1);
+            }
+            if (nextsub.length() || *subSelected != 0) {
+                hasNext = true;
+                subName = nextsub;
+                detailPath->truncate(0);
+                if (vpd->getDetailPath(subName.c_str(), detailPath, true, detNext) &&
+                    detailPath->getLength()) {
+                    pPath = detailPath;
+                    det = detNext;
+                    FC_TRACE("select next " << objectName << ", " << subName);
+                }
+            }
+        }
+
+        FC_TRACE("clearing selection");
+        Gui::Selection().clearSelection();
+        FC_TRACE("add selection");
+        bool ok = Gui::Selection().addSelection(docname, objectName.c_str(), subName.c_str(),
+                                                pt[0], pt[1], pt[2], &sels);
+        if (ok)
+            type = hasNext ? SoSelectionElementAction::All : SoSelectionElementAction::Append;
+
+        if (mymode == OFF) {
+            snprintf(buf, 512, "Selected: %s.%s.%s (%g, %g, %g)",
+                     docname, objectName.c_str(), subName.c_str(), fabs(pt[0]) > 1e-7 ? pt[0] : 0.0,
+                     fabs(pt[1]) > 1e-7 ? pt[1] : 0.0, fabs(pt[2]) > 1e-7 ? pt[2] : 0.0);
+
+            getMainWindow()->showMessage(QString::fromLatin1(buf));
+        }
     }
 
     if (pPath) {
@@ -684,7 +712,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
         this->touch();
     }
 
-    if(detNext) delete detNext;
+    if (detNext) delete detNext;
     return true;
 }
 
@@ -742,7 +770,8 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
             // check to see if the mouse is over a geometry...
             auto infos = this->getPickedList(action,!Selection().needPickedList());
             bool greedySel = Gui::Selection().getSelectionStyle() == Gui::SelectionSingleton::SelectionStyle::GreedySelection;
-            if(setSelection(infos, event->wasCtrlDown() || greedySel))
+            greedySel = greedySel || event->wasCtrlDown();
+            if(setSelection(infos, greedySel) || greedySel)
                 action->setHandled();
         } // mouse release
     }
@@ -782,6 +811,7 @@ void SoHighlightElementAction::initClass()
     SO_ACTION_INIT_CLASS(SoHighlightElementAction,SoAction);
 
     SO_ENABLE(SoHighlightElementAction, SoSwitchElement);
+    SO_ENABLE(SoHighlightElementAction, SoModelMatrixElement);
 
     SO_ACTION_ADD_METHOD(SoNode,nullAction);
 
@@ -849,6 +879,7 @@ void SoSelectionElementAction::initClass()
     SO_ACTION_INIT_CLASS(SoSelectionElementAction,SoAction);
 
     SO_ENABLE(SoSelectionElementAction, SoSwitchElement);
+    SO_ENABLE(SoSelectionElementAction, SoModelMatrixElement);
 
     SO_ACTION_ADD_METHOD(SoNode,nullAction);
 
@@ -1710,7 +1741,7 @@ void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction * action)
 
     if(path->getLength() != tmpPath->getLength()) {
         // The auditing SoPath may be truncated due to harmless things such as
-        // fliping a SoSwitch sibling node. So we keep an unauditing SoTempPath
+        // flipping a SoSwitch sibling node. So we keep an unauditing SoTempPath
         // around to try to restore the path.
         for(int i=path->getLength()-1;i<tmpPath->getLength()-1;++i) {
             auto children = path->getNode(i)->getChildren();

@@ -74,6 +74,9 @@ endif(FREECAD_USE_PCH)
 
 add_library(ReverseEngineering SHARED ${Reen_SRCS})
 target_link_libraries(ReverseEngineering ${Reen_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(ReverseEngineering)
+endif()
 
 SET_BIN_DIR(ReverseEngineering ReverseEngineering /Mod/ReverseEngineering)
 SET_PYTHON_PREFIX_SUFFIX(ReverseEngineering)

@@ -50,9 +50,8 @@ class ParameterGrpObserver: public ParameterGrp::ObserverType  // NOLINT
 {
 public:
     explicit ParameterGrpObserver(const Py::Object& obj)
-    {
-        inst = obj;
-    }
+        : inst {obj}
+    {}
     ParameterGrpObserver(const Py::Object& obj, const Py::Object& callable, ParameterGrp* target)
         : callable(callable)
         , _target(target)
@@ -68,7 +67,7 @@ public:
     {
         Base::PyGILStateLocker lock;
         try {
-            ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
+            auto& rGrp = dynamic_cast<ParameterGrp&>(rCaller);
             ParameterGrp::handle hGrp(&rGrp);
             Py::Callable method(this->inst.getAttr(std::string("onChange")));
             Py::Tuple args(2);
@@ -90,9 +89,11 @@ public:
     }
 
 public:
+    // NOLINTBEGIN
     Py::Object callable;
     boost::signals2::scoped_connection conn;
     ParameterGrp* _target = nullptr;  // no reference counted, do not access
+    // NOLINTEND
 
 private:
     Py::Object inst;
@@ -110,11 +111,14 @@ public:
 
     Py::Object repr() override;
 
+    // NOLINTBEGIN
     Py::Object getGroup(const Py::Tuple&);
     Py::Object getGroupName(const Py::Tuple&);
     Py::Object getGroups(const Py::Tuple&);
     Py::Object remGroup(const Py::Tuple&);
     Py::Object hasGroup(const Py::Tuple&);
+    Py::Object renameGroup(const Py::Tuple&);
+    Py::Object copyTo(const Py::Tuple&);
 
     Py::Object getManager(const Py::Tuple&);
     Py::Object getParent(const Py::Tuple&);
@@ -158,6 +162,14 @@ public:
     Py::Object exportTo(const Py::Tuple&);
 
     Py::Object getContents(const Py::Tuple&);
+    // NOLINTEND
+
+private:
+    void tryCall(ParameterGrpObserver* obs,
+                 ParameterGrp* Param,
+                 ParameterGrp::ParamType Type,
+                 const char* Name,
+                 const char* Value);
 
 private:
     ParameterGrp::handle _cParamGrp;
@@ -181,6 +193,8 @@ void ParameterGrpPy::init_type()
     add_varargs_method("GetGroups", &ParameterGrpPy::getGroups, "GetGroups()");
     add_varargs_method("RemGroup", &ParameterGrpPy::remGroup, "RemGroup(str)");
     add_varargs_method("HasGroup", &ParameterGrpPy::hasGroup, "HasGroup(str)");
+    add_varargs_method("RenameGroup", &ParameterGrpPy::renameGroup, "RenameGroup(str, str)");
+    add_varargs_method("CopyTo", &ParameterGrpPy::copyTo, "copyTo(ParameterGrp)");
 
     add_varargs_method("Manager", &ParameterGrpPy::getManager, "Manager()");
     add_varargs_method("Parent", &ParameterGrpPy::getParent, "Parent()");
@@ -277,8 +291,14 @@ Py::Object ParameterGrpPy::importFrom(const Py::Tuple& args)
         throw Py::Exception();
     }
 
-    _cParamGrp->importFrom(pstr);
-    return Py::None();
+    try {
+        _cParamGrp->importFrom(pstr);
+        return Py::None();
+    }
+    catch (const Base::Exception& e) {
+        e.setPyException();
+        throw Py::Exception();
+    }
 }
 
 Py::Object ParameterGrpPy::insert(const Py::Tuple& args)
@@ -288,8 +308,14 @@ Py::Object ParameterGrpPy::insert(const Py::Tuple& args)
         throw Py::Exception();
     }
 
-    _cParamGrp->insert(pstr);
-    return Py::None();
+    try {
+        _cParamGrp->insert(pstr);
+        return Py::None();
+    }
+    catch (const Base::Exception& e) {
+        e.setPyException();
+        throw Py::Exception();
+    }
 }
 
 Py::Object ParameterGrpPy::exportTo(const Py::Tuple& args)
@@ -299,8 +325,14 @@ Py::Object ParameterGrpPy::exportTo(const Py::Tuple& args)
         throw Py::Exception();
     }
 
-    _cParamGrp->exportTo(pstr);
-    return Py::None();
+    try {
+        _cParamGrp->exportTo(pstr);
+        return Py::None();
+    }
+    catch (const Base::Exception& e) {
+        e.setPyException();
+        throw Py::Exception();
+    }
 }
 
 Py::Object ParameterGrpPy::getGroup(const Py::Tuple& args)
@@ -315,7 +347,7 @@ Py::Object ParameterGrpPy::getGroup(const Py::Tuple& args)
         Base::Reference<ParameterGrp> handle = _cParamGrp->GetGroup(pstr);
         if (handle.isValid()) {
             // create a python wrapper class
-            ParameterGrpPy* pcParamGrp = new ParameterGrpPy(handle);
+            auto pcParamGrp = new ParameterGrpPy(handle);
             // increment the ref count
             return Py::asObject(pcParamGrp);
         }
@@ -338,7 +370,7 @@ Py::Object ParameterGrpPy::getManager(const Py::Tuple& args)
     Base::Reference<ParameterGrp> handle = _cParamGrp->Manager();
     if (handle.isValid()) {
         // create a python wrapper class
-        ParameterGrpPy* pcParamGrp = new ParameterGrpPy(handle);
+        auto pcParamGrp = new ParameterGrpPy(handle);
         // increment the ref count
         return Py::asObject(pcParamGrp);
     }
@@ -356,7 +388,7 @@ Py::Object ParameterGrpPy::getParent(const Py::Tuple& args)
     Base::Reference<ParameterGrp> handle = _cParamGrp->Parent();
     if (handle.isValid()) {
         // create a python wrapper class
-        ParameterGrpPy* pcParamGrp = new ParameterGrpPy(handle);
+        auto pcParamGrp = new ParameterGrpPy(handle);
         // increment the ref count
         return Py::asObject(pcParamGrp);
     }
@@ -560,7 +592,7 @@ Py::Object ParameterGrpPy::setString(const Py::Tuple& args)
 Py::Object ParameterGrpPy::getString(const Py::Tuple& args)
 {
     char* pstr = nullptr;
-    char* str = "";
+    const char* str = "";
     if (!PyArg_ParseTuple(args.ptr(), "s|s", &pstr, &str)) {
         throw Py::Exception();
     }
@@ -679,6 +711,29 @@ Py::Object ParameterGrpPy::hasGroup(const Py::Tuple& args)
     return Py::Boolean(_cParamGrp->HasGroup(pstr));  // NOLINT
 }
 
+Py::Object ParameterGrpPy::renameGroup(const Py::Tuple& args)
+{
+    char* oldname = nullptr;
+    char* newname = nullptr;
+    if (!PyArg_ParseTuple(args.ptr(), "ss", &oldname, &newname)) {
+        throw Py::Exception();
+    }
+
+    return Py::Boolean(_cParamGrp->RenameGrp(oldname, newname));  // NOLINT
+}
+
+Py::Object ParameterGrpPy::copyTo(const Py::Tuple& args)
+{
+    PyObject* pygrp {};
+    if (!PyArg_ParseTuple(args.ptr(), "O!", ParameterGrpPy::type_object(), &pygrp)) {
+        throw Py::Exception();
+    }
+
+    auto grp = static_cast<ParameterGrpPy*>(pygrp);  // NOLINT
+    _cParamGrp->copyTo(grp->_cParamGrp);
+    return Py::None();
+}
+
 Py::Object ParameterGrpPy::attach(const Py::Tuple& args)
 {
     PyObject* obj = nullptr;
@@ -697,11 +752,31 @@ Py::Object ParameterGrpPy::attach(const Py::Tuple& args)
         }
     }
 
-    ParameterGrpObserver* obs = new ParameterGrpObserver(o);
+    auto obs = new ParameterGrpObserver(o);
     _cParamGrp->Attach(obs);
     _observers.push_back(obs);
 
     return Py::None();
+}
+
+void ParameterGrpPy::tryCall(ParameterGrpObserver* obs,
+                             ParameterGrp* Param,
+                             ParameterGrp::ParamType Type,
+                             const char* Name,
+                             const char* Value)
+{
+    Base::PyGILStateLocker lock;
+    Py::TupleN args(Py::asObject(new ParameterGrpPy(Param)),
+                    Py::String(ParameterGrp::TypeName(Type)),
+                    Py::String(Name ? Name : ""),
+                    Py::String(Value ? Value : ""));
+    try {
+        Py::Callable(obs->callable).apply(args);
+    }
+    catch (Py::Exception&) {
+        Base::PyException e;
+        e.ReportException();
+    }
 }
 
 Py::Object ParameterGrpPy::attachManager(const Py::Tuple& args)
@@ -731,33 +806,22 @@ Py::Object ParameterGrpPy::attachManager(const Py::Tuple& args)
         }
     }
 
-    ParameterGrpObserver* obs = new ParameterGrpObserver(o, attr, _cParamGrp);
-    obs->conn =
-        _cParamGrp->Manager()->signalParamChanged.connect([obs](ParameterGrp* Param,
-                                                                ParameterGrp::ParamType Type,
-                                                                const char* Name,
-                                                                const char* Value) {
-            if (!Param) {
-                return;
+    auto obs = new ParameterGrpObserver(o, attr, _cParamGrp);
+    ParameterManager* man = _cParamGrp->Manager();
+    obs->conn = man->signalParamChanged.connect([obs, this](ParameterGrp* Param,
+                                                            ParameterGrp::ParamType Type,
+                                                            const char* Name,
+                                                            const char* Value) {
+        if (!Param) {
+            return;
+        }
+        for (auto p = Param; p; p = p->Parent()) {
+            if (p == obs->_target) {
+                tryCall(obs, Param, Type, Name, Value);
+                break;
             }
-            for (auto p = Param; p; p = p->Parent()) {
-                if (p == obs->_target) {
-                    Base::PyGILStateLocker lock;
-                    Py::TupleN args(Py::asObject(new ParameterGrpPy(Param)),
-                                    Py::String(ParameterGrp::TypeName(Type)),
-                                    Py::String(Name ? Name : ""),
-                                    Py::String(Value ? Value : ""));
-                    try {
-                        Py::Callable(obs->callable).apply(args);
-                    }
-                    catch (Py::Exception&) {
-                        Base::PyException e;
-                        e.ReportException();
-                    }
-                    break;
-                }
-            }
-        });
+        }
+    });
 
     _observers.push_back(obs);
     return Py::None();
@@ -775,7 +839,7 @@ Py::Object ParameterGrpPy::detach(const Py::Tuple& args)
         throw Py::TypeError("Object has no onChange attribute");
     }
 
-    for (ParameterGrpObserverList::iterator it = _observers.begin(); it != _observers.end(); ++it) {
+    for (auto it = _observers.begin(); it != _observers.end(); ++it) {
         if ((*it)->isEqual(o)) {
             ParameterGrpObserver* obs = *it;
             _observers.erase(it);

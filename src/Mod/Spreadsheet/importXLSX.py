@@ -63,9 +63,6 @@ except ValueError:
 else:
     gui = True
 
-if open.__module__ in ["__builtin__", "io"]:
-    pythonopen = open
-
 
 # The sepToken structure is used in the tokenizer functions isKey and
 # getNextToken.
@@ -228,7 +225,7 @@ class FormulaTranslator(object):
             else:
                 # print('There is a branch. look up: ', theExpr[1])
                 if (lenExpr > 1) and (theExpr[1] in treeDict[branch]):
-                    branch = treeDict[branch][theExpr[0]]
+                    branch = treeDict[branch][theExpr[1]]
                     if branch is None:
                         keyToken = True
                     else:
@@ -332,7 +329,7 @@ def handleCells(cellList, actCellSheet, sList):
         if refType:
             cellType = getText(refType.childNodes)
         else:
-            cellType = "n"  # FIXME: some cells don't have t and s attributes
+            cellType = "n"
 
         # print("reference: ", ref, ' Cell type: ', cellType)
 
@@ -391,12 +388,12 @@ def handleWorkBook(theBook, sheetDict, Doc):
         aliasRef = getText(theAlias.childNodes)  # aliasRef can be None
         if aliasRef and "$" in aliasRef:
             refList = aliasRef.split("!$")
-            adressList = refList[1].split("$")
+            addressList = refList[1].split("$")
             # print("aliasRef: ", aliasRef)
             # print('Sheet Name: ', refList[0])
-            # print('Adress: ', adressList[0] + adressList[1])
+            # print('Address: ', addressList[0] + addressList[1])
             actSheet, sheetFile = sheetDict[refList[0]]
-            actSheet.setAlias(adressList[0] + adressList[1], aliasName)
+            actSheet.setAlias(addressList[0] + addressList[1], aliasName)
 
 
 def handleStrings(theStr, sList):

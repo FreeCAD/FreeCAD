@@ -7,19 +7,21 @@
     <x>0</x>
     <y>0</y>
     <width>757</width>
-    <height>621</height>
+    <height>783</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Addon manager options</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="margin">
+    <number>0</number>
+   </property>
    <item>
     <widget class="Gui::PrefCheckBox" name="guiprefcheckboxcheckupdates">
      <property name="toolTip">
       <string>If this option is selected, when launching the Addon Manager,
-installed addons will be checked for available updates
-(this requires the GitPython package installed on your system)</string>
+installed addons will be checked for available updates</string>
      </property>
      <property name="text">
       <string>Automatically check for updates at start (requires git)</string>
@@ -89,6 +91,54 @@ installed addons will be checked for available updates
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="Gui::PrefCheckBox" name="guiprefcheckboxhideunlicensed">
+     <property name="text">
+      <string>Hide Addons without a license</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>HideUnlicensed</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Addons</cstring>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="Gui::PrefCheckBox" name="guiprefcheckboxhidenonfsf">
+     <property name="text">
+      <string>Hide Addons with non-FSF Free/Libre license</string>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>HideNonFSFFreeLibre</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Addons</cstring>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="Gui::PrefCheckBox" name="guiprefcheckboxnonosi">
+     <property name="text">
+      <string>Hide Addons with non-OSI-approved license</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>HideNonOSIApproved</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Addons</cstring>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="Gui::PrefCheckBox" name="guiprefcheckboxhidepy2">
@@ -251,12 +301,6 @@ installed addons will be checked for available updates
       </item>
       <item>
        <widget class="Gui::PrefLineEdit" name="guipreflineedituserproxy">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>24</height>
-         </size>
-        </property>
         <property name="prefEntry" stdset="0">
          <cstring>ProxyUrl</cstring>
         </property>
@@ -269,11 +313,41 @@ installed addons will be checked for available updates
     </widget>
    </item>
    <item>
+    <layout class="QHBoxLayout" name="horizontalLayoutScore">
+     <item>
+      <widget class="QLabel" name="label_score">
+       <property name="text">
+        <string>Score source URL</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefLineEdit" name="guipreflineeditscoresourceurl">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>The URL for the Addon Score data (see Addon Manager wiki page for formatting and hosting details).</string>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>AddonsScoreURL</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Addons</cstring>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
     <layout class="QGridLayout" name="gridLayout">
      <item row="1" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>Path to git executable (optional):</string>
+        <string>Path to Git executable (optional):</string>
        </property>
       </widget>
      </item>

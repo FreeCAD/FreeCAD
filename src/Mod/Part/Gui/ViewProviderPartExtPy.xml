@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+    <PythonExport
+        Father="ViewProviderGeometryObjectPy"
+        Name="ViewProviderPartExtPy"
+        Twin="ViewProviderPartExt"
+        TwinPointer="ViewProviderPartExt"
+        Include="Mod/Part/Gui/ViewProviderExt.h"
+        Namespace="PartGui"
+        FatherInclude="Gui/ViewProviderGeometryObjectPy.h"
+        FatherNamespace="Gui">
+        <Documentation>
+            <Author Licence="LGPL" Name="David Carter" EMail="dcarter@davidcarter.ca" />
+            <UserDocu>This is the ViewProvider geometry class</UserDocu>
+        </Documentation>
+    </PythonExport>
+</GenerateModel>

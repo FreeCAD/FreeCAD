@@ -44,7 +44,6 @@ class ComplexGeoData;
 
 namespace App
 {
-class Feature;
 class Placement;
 
 
@@ -541,6 +540,16 @@ public:
     virtual const Data::ComplexGeoData* getComplexData() const = 0;
     Base::BoundBox3d getBoundingBox() const override = 0;
     //@}
+
+    /** Return the element map version
+     *
+     * @param persisted: if true, return the restored element map version. Or
+     * else, return the current element map version
+     */
+    virtual std::string getElementMapVersion(bool restored=false) const;
+
+    /// Return true to signal element map version change
+    virtual bool checkElementMapVersion(const char * ver) const;
 
     void afterRestore() override;
 };

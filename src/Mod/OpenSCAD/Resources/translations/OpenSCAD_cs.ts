@@ -97,7 +97,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="243"/>
       <source>The path to the directory for transferring files to and from OpenSCAD</source>
-      <translation>Cesta k adresáři pro přenos souborů do az OpenSCAD</translation>
+      <translation>Cesta k adresáři pro přenos souborů do a z OpenSCADu</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="261"/>
@@ -242,7 +242,7 @@
       <location filename="../../OpenSCADCommands.py" line="339"/>
       <location filename="../../OpenSCADCommands.py" line="370"/>
       <source>as Mesh</source>
-      <translation>jako Mesh</translation>
+      <translation>jako Síť</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="352"/>
@@ -276,7 +276,7 @@
       <location filename="../../OpenSCADCommands.py" line="482"/>
       <location filename="../../OpenSCADCommands.py" line="486"/>
       <source>Mesh Boolean</source>
-      <translation>Mesh Boolean</translation>
+      <translation>Boolean sítě</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="487"/>
@@ -294,14 +294,14 @@
       <translation>Chyba: buď všechny tvary musí být 2D, nebo všechny tvary musí být 3D</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="550"/>
-      <location filename="../../importCSG.py" line="1432"/>
+      <location filename="../../importCSG.py" line="549"/>
+      <location filename="../../importCSG.py" line="1434"/>
       <source>Unsupported Function</source>
       <translation>Nepodporovaná funkce</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="550"/>
-      <location filename="../../importCSG.py" line="1432"/>
+      <location filename="../../importCSG.py" line="549"/>
+      <location filename="../../importCSG.py" line="1434"/>
       <source>Press OK</source>
       <translation>Stiskněte OK</translation>
     </message>

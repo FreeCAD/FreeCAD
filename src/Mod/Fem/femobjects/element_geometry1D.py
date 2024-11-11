@@ -29,10 +29,10 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief element geometry 1D object
 
-from . import base_fempythonobject
+from . import base_femelement
 
 
-class ElementGeometry1D(base_fempythonobject.BaseFemPythonObject):
+class ElementGeometry1D(base_femelement.BaseFemElement):
     """
     The ElementGeometry1D object
     """
@@ -41,56 +41,52 @@ class ElementGeometry1D(base_fempythonobject.BaseFemPythonObject):
     known_beam_types = ["Rectangular", "Circular", "Pipe"]
 
     def __init__(self, obj):
-        super(ElementGeometry1D, self).__init__(obj)
+        super().__init__(obj)
 
         obj.addProperty(
             "App::PropertyLength",
             "RectWidth",
             "RectBeamSection",
-            "set width of the rectangular beam elements"
+            "set width of the rectangular beam elements",
         )
+        obj.setPropertyStatus("RectWidth", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyLength",
             "RectHeight",
             "RectBeamSection",
-            "set height of therectangular beam elements"
+            "set height of therectangular beam elements",
         )
+        obj.setPropertyStatus("RectHeight", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyLength",
             "CircDiameter",
             "CircBeamSection",
-            "set diameter of the circular beam elements"
+            "set diameter of the circular beam elements",
         )
+        obj.setPropertyStatus("CircDiameter", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyLength",
             "PipeDiameter",
             "PipeBeamSection",
-            "set outer diameter of the pipe beam elements"
+            "set outer diameter of the pipe beam elements",
         )
+        obj.setPropertyStatus("PipeDiameter", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyLength",
             "PipeThickness",
             "PipeBeamSection",
-            "set thickness of the pipe beam elements"
+            "set thickness of the pipe beam elements",
         )
+        obj.setPropertyStatus("PipeThickness", "LockDynamic")
 
         obj.addProperty(
-            "App::PropertyEnumeration",
-            "SectionType",
-            "BeamSection",
-            "select beam section type"
+            "App::PropertyEnumeration", "SectionType", "BeamSection", "select beam section type"
         )
-
-        obj.addProperty(
-            "App::PropertyLinkSubList",
-            "References",
-            "BeamSection",
-            "List of beam section shapes"
-        )
+        obj.setPropertyStatus("SectionType", "LockDynamic")
 
         obj.SectionType = ElementGeometry1D.known_beam_types
         obj.SectionType = "Rectangular"

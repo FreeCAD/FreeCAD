@@ -305,6 +305,7 @@ public:
         ROTATIONY, // Create y-axis rotation object.
         ROTATIONZ, // Create z-axis rotation object.
         STR, // stringify
+        PARSEQUANT, // parse string quantity
         TRANSLATIONM, // Create translation matrix object.
         TUPLE, // Create Python tuple.
         VECTOR, // Create vector object.
@@ -499,6 +500,7 @@ AppExport Expression * parse(const App::DocumentObject *owner, const char *buffe
 AppExport UnitExpression * parseUnit(const App::DocumentObject *owner, const char *buffer);
 AppExport ObjectIdentifier parsePath(const App::DocumentObject *owner, const char* buffer);
 AppExport bool isTokenAnIndentifier(const std::string & str);
+AppExport bool isTokenAConstant(const std::string & str);
 AppExport bool isTokenAUnit(const std::string & str);
 AppExport std::vector<std::tuple<int, int, std::string> > tokenize(const std::string & str);
 

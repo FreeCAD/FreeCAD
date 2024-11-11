@@ -332,7 +332,7 @@ public:
     MappedName& operator+=(const char* other)
     {
         if (other && (other[0] != 0)) {
-            this->postfix.append(other, -1);
+            this->postfix.append(other, static_cast<int>(qstrlen(other)));
         }
         return *this;
     }

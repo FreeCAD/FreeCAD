@@ -49,26 +49,28 @@ def write_meshdata_constraint(f, femobj, heatflux_obj, ccxwriter):
     if heatflux_obj.ConstraintType == "Convection":
         heatflux_key_word = "FILM"
         heatflux_facetype = "F"
-        # SvdW: add factor to force heatflux to units system of t/mm/s/K
         heatflux_values = "{:.13G},{:.13G}".format(
-            heatflux_obj.AmbientTemp,
-            heatflux_obj.FilmCoef * 0.001
+            heatflux_obj.AmbientTemp.getValueAs("K").Value,
+            heatflux_obj.FilmCoef.getValueAs("t/s^3/K").Value,
         )
+
+    elif heatflux_obj.ConstraintType == "Radiation":
+        heatflux_key_word = "RADIATE"
+        heatflux_facetype = "R"
+        heatflux_values = "{:.13G},{:.13G}".format(
+            heatflux_obj.AmbientTemp.getValueAs("K").Value, heatflux_obj.Emissivity
+        )
+
     elif heatflux_obj.ConstraintType == "DFlux":
         heatflux_key_word = "DFLUX"
         heatflux_facetype = "S"
-        heatflux_values = "{:.13G}".format(heatflux_obj.DFlux * 0.001)
+        heatflux_values = "{:.13G}".format(heatflux_obj.DFlux.getValueAs("t/s^3").Value)
 
-    f.write("*{}\n".format(heatflux_key_word))
+    f.write(f"*{heatflux_key_word}\n")
     for ref_shape in femobj["HeatFluxFaceTable"]:
         elem_string = ref_shape[0]
         face_table = ref_shape[1]
-        f.write("** Heat flux on face {}\n".format(elem_string))
+        f.write(f"** Heat flux on face {elem_string}\n")
         for i in face_table:
             # OvG: Only write out the VolumeIDs linked to a particular face
-            f.write("{},{}{},{}\n".format(
-                i[0],
-                heatflux_facetype,
-                i[1],
-                heatflux_values
-            ))
+            f.write(f"{i[0]},{heatflux_facetype}{i[1]},{heatflux_values}\n")

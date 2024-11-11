@@ -35,14 +35,16 @@ def get_information():
         "meshtype": "solid",
         "meshelement": "Tet10",
         "constraints": ["fixed", "force"],
-        "solvers": ["calculix", "ccxtools", "elmer", "mystran", "z88"],
+        "solvers": ["ccxtools", "elmer", "mystran", "z88"],
         "material": "solid",
-        "equations": ["mechanical"]
+        "equations": ["mechanical"],
     }
 
 
 def get_explanation(header=""):
-    return header + """
+    return (
+        header
+        + """
 
 To run the example from Python console use:
 from femexamples.ccx_cantilever_nodeload import setup
@@ -53,6 +55,7 @@ See forum topic post:
 ...
 
 """
+    )
 
 
 def setup(doc=None, solvertype="ccxtools"):
@@ -76,7 +79,7 @@ def setup(doc=None, solvertype="ccxtools"):
         (geom_obj, "Vertex5"),
         (geom_obj, "Vertex6"),
         (geom_obj, "Vertex7"),
-        (geom_obj, "Vertex8")
+        (geom_obj, "Vertex8"),
     ]
     con_force.Force = "9000000.0 N"
     con_force.Direction = (doc.Box, ["Edge5"])

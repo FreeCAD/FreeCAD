@@ -4,18 +4,18 @@
   <context>
     <name>CmdDrawingAnnotation</name>
     <message>
-      <location filename="../../Command.cpp" line="508"/>
+      <location filename="../../Command.cpp" line="510"/>
       <source>Drawing</source>
       <translation>Risba</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="509"/>
+      <location filename="../../Command.cpp" line="511"/>
       <source>&amp;Annotation</source>
       <translation>&amp;Opisi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="510"/>
       <location filename="../../Command.cpp" line="512"/>
+      <location filename="../../Command.cpp" line="514"/>
       <source>Inserts an Annotation view in the active drawing</source>
       <translation>Vstavi pogled za opise v dejavno risbo</translation>
     </message>
@@ -23,18 +23,18 @@
   <context>
     <name>CmdDrawingClip</name>
     <message>
-      <location filename="../../Command.cpp" line="563"/>
+      <location filename="../../Command.cpp" line="565"/>
       <source>Drawing</source>
       <translation>Risba</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="564"/>
+      <location filename="../../Command.cpp" line="566"/>
       <source>&amp;Clip</source>
       <translation>&amp;Obreži</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="565"/>
       <location filename="../../Command.cpp" line="567"/>
+      <location filename="../../Command.cpp" line="569"/>
       <source>Inserts a clip group in the active drawing</source>
       <translation>Vstavi izbrani obrez v dejavno risbo</translation>
     </message>
@@ -42,18 +42,18 @@
   <context>
     <name>CmdDrawingDraftView</name>
     <message>
-      <location filename="../../Command.cpp" line="773"/>
+      <location filename="../../Command.cpp" line="775"/>
       <source>Drawing</source>
       <translation>Risba</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="774"/>
+      <location filename="../../Command.cpp" line="776"/>
       <source>&amp;Draft View</source>
       <translation>&amp;Izrisni pogled</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="776"/>
       <location filename="../../Command.cpp" line="778"/>
+      <location filename="../../Command.cpp" line="780"/>
       <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
       <translation>Vstavi izrisni pogled izbranih predmeov v dejavno risbo</translation>
     </message>
@@ -61,18 +61,18 @@
   <context>
     <name>CmdDrawingExportPage</name>
     <message>
-      <location filename="../../Command.cpp" line="681"/>
+      <location filename="../../Command.cpp" line="683"/>
       <source>File</source>
       <translation>Datoteka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="682"/>
+      <location filename="../../Command.cpp" line="684"/>
       <source>&amp;Export page...</source>
       <translation>I&amp;zvozi stran …</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="683"/>
       <location filename="../../Command.cpp" line="685"/>
+      <location filename="../../Command.cpp" line="687"/>
       <source>Export a page to an SVG file</source>
       <translation>Izvozi stran v datoteko SVG</translation>
     </message>
@@ -80,13 +80,13 @@
   <context>
     <name>CmdDrawingNewA3Landscape</name>
     <message>
-      <location filename="../../Command.cpp" line="273"/>
+      <location filename="../../Command.cpp" line="275"/>
       <source>Drawing</source>
       <translation>Risba</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="274"/>
-      <location filename="../../Command.cpp" line="275"/>
+      <location filename="../../Command.cpp" line="276"/>
+      <location filename="../../Command.cpp" line="277"/>
       <source>Insert new A3 landscape drawing</source>
       <translation type="unfinished">Insert new A3 landscape drawing</translation>
     </message>
@@ -108,17 +108,17 @@
   <context>
     <name>CmdDrawingNewView</name>
     <message>
-      <location filename="../../Command.cpp" line="314"/>
+      <location filename="../../Command.cpp" line="316"/>
       <source>Drawing</source>
       <translation>Risba</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="315"/>
+      <location filename="../../Command.cpp" line="317"/>
       <source>Insert view in drawing</source>
       <translation>Vstavi pogled v risbo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="316"/>
+      <location filename="../../Command.cpp" line="318"/>
       <source>Insert a new View of a Part in the active drawing</source>
       <translation>Vstavi nov pogled dela v dejavno risbo</translation>
     </message>
@@ -144,18 +144,18 @@
   <context>
     <name>CmdDrawingOpenBrowserView</name>
     <message>
-      <location filename="../../Command.cpp" line="469"/>
+      <location filename="../../Command.cpp" line="471"/>
       <source>Drawing</source>
       <translation>Risba</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="470"/>
+      <location filename="../../Command.cpp" line="472"/>
       <source>Open &amp;browser view</source>
       <translation>Odpri pogled &amp;brskalnika</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="471"/>
       <location filename="../../Command.cpp" line="473"/>
+      <location filename="../../Command.cpp" line="475"/>
       <source>Opens the selected page in a browser view</source>
       <translation>Odpre izbrano stran v pogledu brskalnika</translation>
     </message>
@@ -163,17 +163,17 @@
   <context>
     <name>CmdDrawingOrthoViews</name>
     <message>
-      <location filename="../../Command.cpp" line="414"/>
+      <location filename="../../Command.cpp" line="416"/>
       <source>Drawing</source>
       <translation>Risba</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="415"/>
+      <location filename="../../Command.cpp" line="417"/>
       <source>Insert orthographic views</source>
       <translation>Vstavi pravokotne poglede</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="416"/>
+      <location filename="../../Command.cpp" line="418"/>
       <source>Insert an orthographic projection of a part in the active drawing</source>
       <translation>Vstavi pravokotno preslikavo dela v dejavno risbo</translation>
     </message>
@@ -181,18 +181,18 @@
   <context>
     <name>CmdDrawingProjectShape</name>
     <message>
-      <location filename="../../Command.cpp" line="738"/>
+      <location filename="../../Command.cpp" line="740"/>
       <source>Drawing</source>
       <translation>Risba</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="739"/>
+      <location filename="../../Command.cpp" line="741"/>
       <source>Project shape...</source>
       <translation>Preslikaj obliko …</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="740"/>
-      <location filename="../../Command.cpp" line="741"/>
+      <location filename="../../Command.cpp" line="742"/>
+      <location filename="../../Command.cpp" line="743"/>
       <source>Project shape onto a user-defined plane</source>
       <translation>Preslikaj obliko na ravnino, ki jo izbere uporabnik</translation>
     </message>
@@ -200,18 +200,18 @@
   <context>
     <name>CmdDrawingSpreadsheetView</name>
     <message>
-      <location filename="../../Command.cpp" line="805"/>
+      <location filename="../../Command.cpp" line="807"/>
       <source>Drawing</source>
       <translation>Risba</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="806"/>
+      <location filename="../../Command.cpp" line="808"/>
       <source>&amp;Spreadsheet View</source>
       <translation>&amp;Preglednični pogled</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="807"/>
       <location filename="../../Command.cpp" line="809"/>
+      <location filename="../../Command.cpp" line="811"/>
       <source>Inserts a view of a selected spreadsheet in the active drawing</source>
       <translation>Vstavi pogled izbranih preglednic v dejavno risbo</translation>
     </message>
@@ -219,147 +219,147 @@
   <context>
     <name>CmdDrawingSymbol</name>
     <message>
-      <location filename="../../Command.cpp" line="613"/>
+      <location filename="../../Command.cpp" line="615"/>
       <source>Drawing</source>
       <translation>Risba</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="614"/>
+      <location filename="../../Command.cpp" line="616"/>
       <source>&amp;Symbol</source>
       <translation>&amp;Znak</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="615"/>
       <location filename="../../Command.cpp" line="617"/>
-      <source>Inserts a symbol from a svg file in the active drawing</source>
-      <translation>Vstavi znak iz datoteke Svg v dejavno risbo</translation>
+      <location filename="../../Command.cpp" line="619"/>
+      <source>Inserts a symbol from a SVG file in the active drawing</source>
+      <translation type="unfinished">Inserts a symbol from a SVG file in the active drawing</translation>
     </message>
   </context>
   <context>
     <name>DrawingGui::DrawingView</name>
     <message>
-      <location filename="../../DrawingView.cpp" line="215"/>
+      <location filename="../../DrawingView.cpp" line="217"/>
       <source>&amp;Background</source>
       <translation>&amp;Ozadje</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="221"/>
+      <location filename="../../DrawingView.cpp" line="223"/>
       <source>&amp;Outline</source>
       <translation>&amp;Obris</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="227"/>
+      <location filename="../../DrawingView.cpp" line="229"/>
       <source>&amp;Native</source>
       <translation>I&amp;zvoren</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="231"/>
+      <location filename="../../DrawingView.cpp" line="233"/>
       <source>&amp;OpenGL</source>
       <translation>&amp;OpenGL</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="234"/>
+      <location filename="../../DrawingView.cpp" line="236"/>
       <source>&amp;Image</source>
       <translation>&amp;Slika</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="238"/>
+      <location filename="../../DrawingView.cpp" line="240"/>
       <source>&amp;High Quality Antialiasing</source>
       <translation>&amp;Visokokakovostno glajenje robov</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="276"/>
+      <location filename="../../DrawingView.cpp" line="278"/>
       <source>Open SVG File</source>
       <translation>Odpri datoteko SVG</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="277"/>
+      <location filename="../../DrawingView.cpp" line="279"/>
       <source>Could not open file '%1'.</source>
       <translation>Ni bilo možno odpreti datoteke '%1'.</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="368"/>
+      <location filename="../../DrawingView.cpp" line="370"/>
       <source>&amp;Renderer</source>
       <translation>I&amp;zrisovalnik</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="480"/>
+      <location filename="../../DrawingView.cpp" line="485"/>
       <source>Export PDF</source>
       <translation>Izvozi v PDF</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="481"/>
+      <location filename="../../DrawingView.cpp" line="486"/>
       <source>PDF file</source>
       <translation>Datoteka PDF</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="497"/>
+      <location filename="../../DrawingView.cpp" line="502"/>
       <source>Page sizes</source>
       <translation>Velikosti strani</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="498"/>
+      <location filename="../../DrawingView.cpp" line="503"/>
       <source>A0</source>
       <translation>A0</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="500"/>
+      <location filename="../../DrawingView.cpp" line="505"/>
       <source>A1</source>
       <translation>A1</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="502"/>
+      <location filename="../../DrawingView.cpp" line="507"/>
       <source>A2</source>
       <translation>A2</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="504"/>
+      <location filename="../../DrawingView.cpp" line="509"/>
       <source>A3</source>
       <translation>A3</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="506"/>
+      <location filename="../../DrawingView.cpp" line="511"/>
       <source>A4</source>
       <translation>A4</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="508"/>
+      <location filename="../../DrawingView.cpp" line="513"/>
       <source>A5</source>
       <translation>A5</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="592"/>
+      <location filename="../../DrawingView.cpp" line="597"/>
       <source>Different orientation</source>
       <translation>Druga usmerjenost</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="593"/>
+      <location filename="../../DrawingView.cpp" line="598"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
       <translation>Tiskalnik uporablja drugačno usmerjenost kot risba.
 Ali želite nadaljevati?</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="603"/>
-      <location filename="../../DrawingView.cpp" line="614"/>
+      <location filename="../../DrawingView.cpp" line="608"/>
+      <location filename="../../DrawingView.cpp" line="619"/>
       <source>Different paper size</source>
       <translation>Druga velikost papirja</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="604"/>
-      <location filename="../../DrawingView.cpp" line="615"/>
+      <location filename="../../DrawingView.cpp" line="609"/>
+      <location filename="../../DrawingView.cpp" line="620"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>Tiskalnik uporablja drugo velikost papirja kot risba.
 Ali želite nadaljevati?</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="629"/>
+      <location filename="../../DrawingView.cpp" line="634"/>
       <source>Opening file failed</source>
       <translation>Odpiranje datoteke ni uspelo</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="630"/>
+      <location filename="../../DrawingView.cpp" line="635"/>
       <source>Can't open file '%1' for writing.</source>
       <translation>Datoteke '%1' ni mogoče odpreti za pisanje.</translation>
     </message>
@@ -607,27 +607,27 @@ Ali želite nadaljevati?</translation>
       <translation>Skrite izoparametre</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="71"/>
+      <location filename="../../TaskDialog.cpp" line="70"/>
       <source>Project shapes</source>
       <translation>Preslikaj oblike</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="86"/>
+      <location filename="../../TaskDialog.cpp" line="85"/>
       <source>No active document</source>
       <translation>Ni dejavnega dokumenta</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="87"/>
+      <location filename="../../TaskDialog.cpp" line="86"/>
       <source>There is currently no active document to complete the operation</source>
       <translation>Trenutno ni dejavnega dokumenta za dokončanje opravila</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="94"/>
+      <location filename="../../TaskDialog.cpp" line="93"/>
       <source>No active view</source>
       <translation>Ni dejavnega pogleda</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="95"/>
+      <location filename="../../TaskDialog.cpp" line="94"/>
       <source>There is currently no active view to complete the operation</source>
       <translation>Trenutno ni dejavnega pogleda za dokončanje opravila</translation>
     </message>
@@ -640,32 +640,32 @@ Ali želite nadaljevati?</translation>
       <translation>Stran</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="229"/>
+      <location filename="../../Command.cpp" line="231"/>
       <source>Landscape</source>
       <translation>Ležeče</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="232"/>
+      <location filename="../../Command.cpp" line="234"/>
       <source>Portrait</source>
       <translation>Pokončno</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="237"/>
+      <location filename="../../Command.cpp" line="239"/>
       <source>%1%2 %3</source>
       <translation>%1%2 %3</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="240"/>
+      <location filename="../../Command.cpp" line="242"/>
       <source>Insert new %1%2 %3 drawing</source>
       <translation>Vstavi novo risbo %1 %2 %3</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="244"/>
+      <location filename="../../Command.cpp" line="246"/>
       <source>%1%2 %3 (%4)</source>
       <translation>%1%2 %3 (%4)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="247"/>
+      <location filename="../../Command.cpp" line="249"/>
       <source>Insert new %1%2 %3 (%4) drawing</source>
       <translation>Vstavi novo risbo %1%2 %3 (%4)</translation>
     </message>
@@ -674,92 +674,92 @@ Ali želite nadaljevati?</translation>
     <name>QObject</name>
     <message>
       <location filename="../../Command.cpp" line="72"/>
-      <location filename="../../Command.cpp" line="638"/>
+      <location filename="../../Command.cpp" line="640"/>
       <source>Choose an SVG file to open</source>
       <translation>Izberite datoteko SVG, ki jo želite odpreti</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="74"/>
-      <location filename="../../Command.cpp" line="640"/>
-      <location filename="../../Command.cpp" line="701"/>
+      <location filename="../../Command.cpp" line="642"/>
+      <location filename="../../Command.cpp" line="703"/>
       <source>Scalable Vector Graphic</source>
       <translation>Vektorska slika spremenljive velikosti</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="329"/>
-      <location filename="../../Command.cpp" line="429"/>
-      <location filename="../../Command.cpp" line="483"/>
-      <location filename="../../Command.cpp" line="695"/>
-      <location filename="../../Command.cpp" line="820"/>
+      <location filename="../../Command.cpp" line="331"/>
+      <location filename="../../Command.cpp" line="431"/>
+      <location filename="../../Command.cpp" line="485"/>
+      <location filename="../../Command.cpp" line="697"/>
+      <location filename="../../Command.cpp" line="822"/>
       <source>Wrong selection</source>
       <translation>Napačen izbor</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="330"/>
+      <location filename="../../Command.cpp" line="332"/>
       <source>Select a Part object.</source>
       <translation>Izberite del.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="340"/>
-      <location filename="../../Command.cpp" line="440"/>
-      <location filename="../../Command.cpp" line="525"/>
-      <location filename="../../Command.cpp" line="580"/>
-      <location filename="../../Command.cpp" line="630"/>
-      <location filename="../../Command.cpp" line="828"/>
+      <location filename="../../Command.cpp" line="342"/>
+      <location filename="../../Command.cpp" line="442"/>
+      <location filename="../../Command.cpp" line="527"/>
+      <location filename="../../Command.cpp" line="582"/>
+      <location filename="../../Command.cpp" line="632"/>
+      <location filename="../../Command.cpp" line="830"/>
       <source>No page found</source>
       <translation>Stran ni bila najdena</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="341"/>
-      <location filename="../../Command.cpp" line="441"/>
-      <location filename="../../Command.cpp" line="526"/>
-      <location filename="../../Command.cpp" line="581"/>
-      <location filename="../../Command.cpp" line="631"/>
-      <location filename="../../Command.cpp" line="829"/>
+      <location filename="../../Command.cpp" line="343"/>
+      <location filename="../../Command.cpp" line="443"/>
+      <location filename="../../Command.cpp" line="528"/>
+      <location filename="../../Command.cpp" line="583"/>
+      <location filename="../../Command.cpp" line="633"/>
+      <location filename="../../Command.cpp" line="831"/>
       <source>Create a page first.</source>
       <translation>Najprej ustvarite stran.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="430"/>
+      <location filename="../../Command.cpp" line="432"/>
       <source>Select exactly one Part object.</source>
       <translation>Izberite natanko en del.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="484"/>
-      <location filename="../../Command.cpp" line="696"/>
+      <location filename="../../Command.cpp" line="486"/>
+      <location filename="../../Command.cpp" line="698"/>
       <source>Select one Page object.</source>
       <translation>Izberite predmet - stran.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="702"/>
+      <location filename="../../Command.cpp" line="704"/>
       <source>All Files</source>
       <translation>Vse datoteke</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="705"/>
+      <location filename="../../Command.cpp" line="707"/>
       <source>Export page</source>
       <translation>Izvozi stran</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="821"/>
+      <location filename="../../Command.cpp" line="823"/>
       <source>Select exactly one Spreadsheet object.</source>
       <translation>Izberite natanko eno preglednico.</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="46"/>
-      <location filename="../../TaskOrthoViews.cpp" line="1040"/>
+      <location filename="../../TaskOrthoViews.cpp" line="47"/>
+      <location filename="../../TaskOrthoViews.cpp" line="1041"/>
       <source>Make axonometric...</source>
       <translation>Izdelaj aksonometrijo ...</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="47"/>
-      <location filename="../../TaskOrthoViews.cpp" line="1041"/>
+      <location filename="../../TaskOrthoViews.cpp" line="48"/>
+      <location filename="../../TaskOrthoViews.cpp" line="1042"/>
       <source>Edit axonometric settings...</source>
       <translation>Uredi nastavitve aksonometrije...</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="48"/>
-      <location filename="../../TaskOrthoViews.cpp" line="1042"/>
+      <location filename="../../TaskOrthoViews.cpp" line="49"/>
+      <location filename="../../TaskOrthoViews.cpp" line="1043"/>
       <source>Make orthographic</source>
       <translation>Izdelaj pravokotno preslikavo</translation>
     </message>

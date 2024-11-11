@@ -294,14 +294,14 @@
       <translation>შეცდომა: ყველა მოხაზულობა ან 2D უნდა იყოს, ან 3D. არა შერეული</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="550"/>
-      <location filename="../../importCSG.py" line="1432"/>
+      <location filename="../../importCSG.py" line="549"/>
+      <location filename="../../importCSG.py" line="1434"/>
       <source>Unsupported Function</source>
       <translation>მხარდაუჭერელი ფუნქცია</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="550"/>
-      <location filename="../../importCSG.py" line="1432"/>
+      <location filename="../../importCSG.py" line="549"/>
+      <location filename="../../importCSG.py" line="1434"/>
       <source>Press OK</source>
       <translation>დააჭირეთ დიახ-ს</translation>
     </message>

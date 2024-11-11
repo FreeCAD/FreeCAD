@@ -7,6 +7,7 @@
 #include "BRepBuilderAPI_MakeEdge.hxx"
 
 #include "PartTestHelpers.h"
+#include "Mod/Sketcher/App/SketchObject.h"
 
 class FeatureExtrusionTest: public ::testing::Test, public PartTestHelpers::PartTestHelperClass
 {
@@ -297,4 +298,30 @@ TEST_F(FeatureExtrusionTest, testExecuteFaceMaker)
     // Assert
     EXPECT_FLOAT_EQ(volume, len * wid * ext1);
     EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(0, 0, 0, len, wid, ext1)));
+}
+
+TEST_F(FeatureExtrusionTest, testFaceWithHoles)
+{
+    // Arrange
+    float radius = 0.75;
+    auto [face1, wire1, wire2] = PartTestHelpers::CreateFaceWithRoundHole(len, wid, radius);
+    // face1 is the sum of the outside (wire1) and the internal hole (wire2).
+    Part::TopoShape newFace = Part::TopoShape(face1).makeElementFace(nullptr);
+    // newFace cleans that up and is the outside minus the internal hole.
+    auto face2 = newFace.getShape();
+
+    auto partFeature = dynamic_cast<Part::Feature*>(_doc->addObject("Part::Feature"));
+    partFeature->Shape.setValue(face2);
+    _extrusion->Base.setValue(_doc->getObjects().back());
+    _extrusion->FaceMakerClass.setValue("Part::FaceMakerCheese");
+    // Act
+    _extrusion->execute();
+    Part::TopoShape ts = _extrusion->Shape.getValue();
+    double volume = PartTestHelpers::getVolume(ts.getShape());
+    Base::BoundBox3d bb = ts.getBoundBox();
+    // Assert
+    EXPECT_FLOAT_EQ(volume, len * wid * ext1 - radius * radius * M_PI * ext1);
+    EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(0, 0, 0, len, wid, ext1)));
+    EXPECT_FLOAT_EQ(PartTestHelpers::getArea(face1), len * wid + radius * radius * M_PI);
+    EXPECT_FLOAT_EQ(PartTestHelpers::getArea(face2), len * wid - radius * radius * M_PI);
 }

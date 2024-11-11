@@ -85,6 +85,7 @@ public:
 
         QGroupBox* box = new QGroupBox();
         box->setTitle(tr("Mesh info box"));
+        box->setWindowTitle(tr("Mesh info"));
         // box->setAutoFillBackground(true);
         QGridLayout* grid = new QGridLayout(box);
         grid->addWidget(labelPoints, 0, 0);
@@ -97,10 +98,7 @@ public:
         grid->addWidget(labelMax, 3, 0);
         grid->addWidget(numMax, 3, 1);
 
-        Gui::TaskView::TaskBox* taskbox =
-            new Gui::TaskView::TaskBox(QPixmap(), tr("Mesh info"), false, nullptr);
-        taskbox->groupLayout()->addWidget(box);
-        Content.push_back(taskbox);
+        addTaskBox(box, false);
     }
     bool shouldShow() override
     {

@@ -28,11 +28,13 @@ Model:
   Description: "default cost model"
   DOI: ""
   ProductURL:
+    DisplayName: "Product URL"
     Type: 'URL'
     Units: ''
     URL: 'https://de.wikipedia.org/wiki/Hyperlink'
     Description: "Product URL, recommended are wikipedia links"
   SpecificPrice:
+    DisplayName: "Specific Price"
     Type: 'Float'
     Units: ''
     URL: ''

@@ -54,6 +54,7 @@
 
 #include <Python.h>
 #include <QFileInfo>
+#include <QStandardPaths>
 
 // Salomesh
 #include <SMDSAbs_ElementType.hxx>
@@ -102,9 +103,6 @@
 #include <StdMeshers_SegmentAroundVertex_0D.hxx>
 #include <StdMeshers_SegmentLengthAroundVertex.hxx>
 #include <StdMeshers_StartEndLength.hxx>
-#if SMESH_VERSION_MAJOR < 7
-#include <StdMeshers_TrianglePreference.hxx>
-#endif
 #include <StdMeshers_UseExisting_1D2D.hxx>
 
 // Opencascade
@@ -128,6 +126,7 @@
 #include <GCPnts_AbscissaPoint.hxx>
 #include <GProp_GProps.hxx>
 #include <GeomAPI_IntCS.hxx>
+#include <GeomAPI_ProjectPointOnCurve.hxx>
 #include <GeomAPI_ProjectPointOnSurf.hxx>
 #include <Geom_BSplineCurve.hxx>
 #include <Geom_BSplineSurface.hxx>
@@ -164,12 +163,14 @@
 #include <vtkHexahedron.h>
 #include <vtkIdList.h>
 #include <vtkImageData.h>
+#include <vtkLine.h>
 #include <vtkMultiBlockDataSet.h>
 #include <vtkMultiPieceDataSet.h>
 #include <vtkPointData.h>
 #include <vtkPolyData.h>
 #include <vtkPyramid.h>
 #include <vtkQuad.h>
+#include <vtkQuadraticEdge.h>
 #include <vtkQuadraticHexahedron.h>
 #include <vtkQuadraticPyramid.h>
 #include <vtkQuadraticQuad.h>

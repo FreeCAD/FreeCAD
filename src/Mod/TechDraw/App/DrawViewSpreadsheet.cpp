@@ -31,6 +31,8 @@
 
 #include <App/Property.h>
 #include <Base/Console.h>
+#include <Base/Tools.h>
+
 #include <Mod/Spreadsheet/App/Cell.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
 
@@ -268,12 +270,13 @@ std::string DrawViewSpreadsheet::getSheetImage()
             App::Property* prop = sheet->getPropertyByName(address.toString().c_str());
             std::stringstream field;
             if (prop && cell) {
-                if (
-                    prop->isDerivedFrom(App::PropertyQuantity::getClassTypeId()) ||
-                    prop->isDerivedFrom(App::PropertyFloat::getClassTypeId()) ||
-                    prop->isDerivedFrom(App::PropertyInteger::getClassTypeId())
-                ) {
-                    std::string temp = cell->getFormattedQuantity();    //writable
+                if (prop->isDerivedFrom(App::PropertyQuantity::getClassTypeId())) {
+                    auto contentAsQuantity = static_cast<App::PropertyQuantity*>(prop)->getQuantityValue();
+                    auto ustring = contentAsQuantity.getUserString();
+                    field << Base::Tools::toStdString(ustring);
+                } else if (prop->isDerivedFrom(App::PropertyFloat::getClassTypeId()) ||
+                           prop->isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+                    std::string temp = cell->getFormattedQuantity();
                     DrawUtil::encodeXmlSpecialChars(temp);
                     field << temp;
                 } else if (prop->isDerivedFrom(App::PropertyString::getClassTypeId())) {
@@ -346,6 +349,18 @@ std::string DrawViewSpreadsheet::getSheetImage()
                 if ((alignment & Spreadsheet::Cell::ALIGNMENT_LEFT)
                     || (alignment & Spreadsheet::Cell::ALIGNMENT_HCENTER)
                     || (alignment & Spreadsheet::Cell::ALIGNMENT_RIGHT)) {
+                    result << Font.getValue() << "\""
+                           << " font-size=\"" << TextSize.getValue() << "\""
+                           << " fill=\"" << fcolor << "\">" << celltext << "</text>" << std::endl;
+                }
+                if (!(alignment & Spreadsheet::Cell::ALIGNMENT_LEFT) &&
+                    !(alignment & Spreadsheet::Cell::ALIGNMENT_RIGHT) &&
+                    !(alignment & Spreadsheet::Cell::ALIGNMENT_HCENTER) ) {
+                    // no horizontal alignment specified, so we will default to
+                    // Spreadsheet::Cell::ALIGNMENT_LEFT
+                    result << "    <text style=\"" << textstyle << "\" x=\""
+                           << coloffset + TextSize.getValue() / 2 << "\" y=\""
+                           << rowoffset + 0.75 * cellheight << "\" font-family=\"";
                     result << Font.getValue() << "\""
                            << " font-size=\"" << TextSize.getValue() << "\""
                            << " fill=\"" << fcolor << "\">" << celltext << "</text>" << std::endl;

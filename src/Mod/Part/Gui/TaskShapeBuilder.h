@@ -83,7 +83,6 @@ public:
 
 private:
     ShapeBuilderWidget* widget;
-    Gui::TaskView::TaskBox* taskbox;
 };
 
 } //namespace PartGui

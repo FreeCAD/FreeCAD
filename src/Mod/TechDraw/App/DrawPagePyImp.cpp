@@ -77,6 +77,38 @@ PyObject* DrawPagePy::removeView(PyObject* args)
     return PyLong_FromLong(rc);
 }
 
+PyObject* DrawPagePy::getViews(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    DrawPage* page = getDrawPagePtr();
+    std::vector<App::DocumentObject*> allViews = page->getViews();
+
+    Py::List ret;
+    for (auto v: allViews) {
+        if (v->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
+            TechDraw::DrawProjGroupItem* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(v);
+            ret.append(Py::asObject(new TechDraw::DrawProjGroupItemPy(dpgi)));
+        }
+        else if (v->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+            TechDraw::DrawViewPart* dvp = static_cast<TechDraw::DrawViewPart*>(v);
+            ret.append(Py::asObject(new TechDraw::DrawViewPartPy(dvp)));
+        }
+        else if (v->isDerivedFrom(TechDraw::DrawViewAnnotation::getClassTypeId())) {
+            TechDraw::DrawViewAnnotation* dva = static_cast<TechDraw::DrawViewAnnotation*>(v);
+            ret.append(Py::asObject(new TechDraw::DrawViewAnnotationPy(dva)));
+        }
+        else {
+            TechDraw::DrawView* dv = static_cast<TechDraw::DrawView*>(v);
+            ret.append(Py::asObject(new TechDraw::DrawViewPy(dv)));
+        }
+    }
+
+    return Py::new_reference_to(ret);
+}
+
 PyObject* DrawPagePy::getAllViews(PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {

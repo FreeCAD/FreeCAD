@@ -59,19 +59,20 @@ class Draft2Sketch(gui_base_original.Modifier):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Draft2Sketch, self).Activated(name="Convert Draft/Sketch")
+        super().Activated(name="Convert Draft/Sketch")
+        if not self.ui:
+            return
         if not Gui.Selection.getSelection():
-            if self.ui:
-                self.ui.selectUi(on_close_call=self.finish)
-                _msg(translate("draft", "Select an object to convert."))
-                self.call = self.view.addEventCallback(
-                    "SoEvent",
-                    gui_tool_utils.selectObject)
+            self.ui.selectUi(on_close_call=self.finish)
+            _msg(translate("draft", "Select an object to convert."))
+            self.call = self.view.addEventCallback("SoEvent", gui_tool_utils.selectObject)
         else:
             self.proceed()
 
     def proceed(self):
         """Proceed with the command if one object was selected."""
+        if self.call is not None:
+            self.end_callbacks(self.call)
         sel = Gui.Selection.getSelection()
         allSketches = True
         allDraft = True

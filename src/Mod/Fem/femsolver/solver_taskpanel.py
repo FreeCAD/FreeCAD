@@ -39,10 +39,7 @@ import femsolver.run
 
 _UPDATE_INTERVAL = 50
 _REPORT_TITLE = "Run Report"
-_REPORT_ERR = (
-    "Failed to run. Please try again after all "
-    "of the following errors are resolved."
-)
+_REPORT_ERR = "Failed to run. Please try again after all of the following errors are resolved."
 
 
 class ControlTaskPanel(QtCore.QObject):
@@ -56,7 +53,7 @@ class ControlTaskPanel(QtCore.QObject):
     machineStateChanged = QtCore.Signal(float)
 
     def __init__(self, machine):
-        super(ControlTaskPanel, self).__init__()
+        super().__init__()
         self.form = ControlWidget()
         self._machine = None
 
@@ -89,14 +86,12 @@ class ControlTaskPanel(QtCore.QObject):
         self.machineStatusChanged.connect(self.form.appendStatus)
         self.machineStatusCleared.connect(self.form.clearStatus)
         self.machineTimeChanged.connect(self.form.setTime)
-        self.machineStateChanged.connect(
-            lambda: self.form.updateState(self.machine))
+        self.machineStateChanged.connect(lambda: self.form.updateState(self.machine))
         self.machineChanged.connect(self._updateTimer)
 
         # Set initial machine. Signal updates the widget.
         self.machineChanged.connect(self.updateWidget)
-        self.form.destroyed.connect(
-            lambda: self.machineChanged.disconnect(self.updateWidget))
+        self.form.destroyed.connect(lambda: self.machineChanged.disconnect(self.updateWidget))
 
         self.machine = machine
 
@@ -125,8 +120,7 @@ class ControlTaskPanel(QtCore.QObject):
     @QtCore.Slot()
     def edit(self):
         self.machine.reset(femsolver.run.SOLVE)
-        self.machine.solver.Proxy.edit(
-            self.machine.directory)
+        self.machine.solver.Proxy.edit(self.machine.directory)
 
     @QtCore.Slot()
     def abort(self):
@@ -142,8 +136,7 @@ class ControlTaskPanel(QtCore.QObject):
     @QtCore.Slot()
     def updateMachine(self):
         if self.form.directory() != self.machine.directory:
-            self.machine = femsolver.run.getMachine(
-                self.machine.solver, self.form.directory())
+            self.machine = femsolver.run.getMachine(self.machine.solver, self.form.directory())
 
     @QtCore.Slot()
     def _updateTimer(self):
@@ -156,7 +149,7 @@ class ControlTaskPanel(QtCore.QObject):
         femsolver.report.display(machine.report, _REPORT_TITLE, text)
 
     def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Close)
+        return QtGui.QDialogButtonBox.Close
 
     def reject(self):
         Gui.ActiveDocument.resetEdit()
@@ -207,7 +200,7 @@ class ControlWidget(QtGui.QWidget):
     directoryChanged = QtCore.Signal()
 
     def __init__(self, parent=None):
-        super(ControlWidget, self).__init__(parent)
+        super().__init__(parent)
         self._setupUi()
         self._inputFileName = ""
 
@@ -339,8 +332,8 @@ class ControlWidget(QtGui.QWidget):
             self._directoryGrp.setDisabled(False)
             self._writeBtt.setDisabled(False)
             self._editBtt.setDisabled(
-                not machine.solver.Proxy.editSupported()
-                or machine.state <= femsolver.run.PREPARE
+                not machine.solver.Proxy.editSupported() or machine.state <= femsolver.run.PREPARE
             )
+
 
 ##  @}

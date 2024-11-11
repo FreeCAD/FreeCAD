@@ -408,6 +408,10 @@ bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
         getGuiDocument()->saveCopy();
         return true;
     }
+    else if (strcmp("AlignToSelection", pMsg) == 0) {
+        _viewer->alignToSelection();
+        return true;
+    }
     else if (strcmp("ZoomIn", pMsg) == 0) {
         View3DInventorViewer* viewer = getViewer();
         viewer->navigationStyle()->zoomIn();
@@ -511,10 +515,16 @@ bool View3DInventor::onHasMsg(const char* pMsg) const
     else if(strncmp("Dump",pMsg,4) == 0) {
         return true;
     }
+    else if (strcmp("AlignToSelection", pMsg) == 0) {
+        return true;
+    }
     if (strcmp("ZoomIn", pMsg) == 0) {
         return true;
     }
     if (strcmp("ZoomOut", pMsg) == 0) {
+        return true;
+    }
+    if (strcmp("AllowsOverlayOnHover", pMsg) == 0) {
         return true;
     }
 

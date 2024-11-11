@@ -24,7 +24,7 @@
 #ifndef _PreComp_
 # include <memory>
 
-# include <BRepAlgoAPI_BooleanOperation.hxx>
+# include <Mod/Part/App/FCBRepAlgoAPI_BooleanOperation.h>
 # include <BRepCheck_Analyzer.hxx>
 # include <Standard_Failure.hxx>
 #endif
@@ -33,6 +33,7 @@
 #include <Base/Parameter.h>
 
 #include "FeaturePartBoolean.h"
+#include "TopoShapeOpCode.h"
 #include "modelRefine.h"
 
 
@@ -70,6 +71,11 @@ short Boolean::mustExecute() const
     return 0;
 }
 
+const char *Boolean::opCode() const
+{
+    return Part::OpCodes::Boolean;
+}
+
 App::DocumentObjectExecReturn* Boolean::execute()
 {
     try {
@@ -82,13 +88,16 @@ App::DocumentObjectExecReturn* Boolean::execute()
         if (!base || !tool) {
             return new App::DocumentObjectExecReturn("Linked object is not a Part object");
         }
-
+        std::vector<TopoShape> shapes;
+        shapes.reserve(2);
         // Now, let's get the TopoDS_Shape
-        TopoDS_Shape BaseShape = Feature::getShape(base);
+        shapes.push_back(Feature::getTopoShape(Base.getValue()));
+        auto BaseShape = shapes[0].getShape();
         if (BaseShape.IsNull()) {
             throw NullShapeException("Base shape is null");
         }
-        TopoDS_Shape ToolShape = Feature::getShape(tool);
+        shapes.push_back(Feature::getTopoShape(Tool.getValue()));
+        auto ToolShape = shapes[1].getShape();
         if (ToolShape.IsNull()) {
             throw NullShapeException("Tool shape is null");
         }
@@ -115,43 +124,20 @@ App::DocumentObjectExecReturn* Boolean::execute()
                                                  ->GetGroup("Preferences")
                                                  ->GetGroup("Mod/Part/Boolean");
 
-        if (hGrp->GetBool("CheckModel", false)) {
+        if (hGrp->GetBool("CheckModel", true)) {
             BRepCheck_Analyzer aChecker(resShape);
             if (!aChecker.IsValid()) {
                 return new App::DocumentObjectExecReturn("Resulting shape is invalid");
             }
         }
-#ifndef FC_USE_TNP_FIX
-        std::vector<ShapeHistory> history;
-        history.push_back(buildHistory(*mkBool.get(), TopAbs_FACE, resShape, BaseShape));
-        history.push_back(buildHistory(*mkBool.get(), TopAbs_FACE, resShape, ToolShape));
-
-        if (this->Refine.getValue()) {
-            try {
-                TopoDS_Shape oldShape = resShape;
-                BRepBuilderAPI_RefineModel mkRefine(oldShape);
-                resShape = mkRefine.Shape();
-                ShapeHistory hist = buildHistory(mkRefine, TopAbs_FACE, resShape, oldShape);
-                history[0] = joinHistory(history[0], hist);
-                history[1] = joinHistory(history[1], hist);
-            }
-            catch (Standard_Failure&) {
-                // do nothing
-            }
-        }
-
-        this->Shape.setValue(resShape);
-        this->History.setValues(history);
-        return App::DocumentObject::StdReturn;
-#else
-        TopoShape res(0, getDocument()->getStringHasher());
+        TopoShape res(0);
         res.makeElementShape(*mkBool, shapes, opCode());
         if (this->Refine.getValue()) {
             res = res.makeElementRefine();
         }
         this->Shape.setValue(res);
+        copyMaterial(base);
         return Part::Feature::execute();
-#endif
     }
     catch (...) {
         return new App::DocumentObjectExecReturn(

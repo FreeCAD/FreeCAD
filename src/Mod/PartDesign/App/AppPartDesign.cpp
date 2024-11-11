@@ -31,6 +31,7 @@
 #include "DatumLine.h"
 #include "DatumPlane.h"
 #include "DatumPoint.h"
+#include "Measure.h"
 #include "FeatureBase.h"
 #include "FeatureBoolean.h"
 #include "FeatureChamfer.h"
@@ -58,7 +59,8 @@
 #include "ShapeBinder.h"
 
 
-namespace PartDesign {
+namespace PartDesign
+{
 extern PyObject* initModule();
 }
 
@@ -70,7 +72,7 @@ PyMOD_INIT_FUNC(_PartDesign)
         Base::Interpreter().runString("import Part");
         Base::Interpreter().runString("import Sketcher");
     }
-    catch(const Base::Exception& e) {
+    catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
         PyMOD_Return(nullptr);
     }
@@ -83,6 +85,7 @@ PyMOD_INIT_FUNC(_PartDesign)
     // call PyType_Ready, otherwise we run into a segmentation fault, later on.
     // This function is responsible for adding inherited slots from a type's base class.
 
+    // clang-format off
     PartDesign::Feature                     ::init();
     PartDesign::FeaturePython               ::init();
     PartDesign::Solid                       ::init();
@@ -152,6 +155,9 @@ PyMOD_INIT_FUNC(_PartDesign)
     PartDesign::AdditiveWedge               ::init();
     PartDesign::SubtractiveWedge            ::init();
     PartDesign::FeatureBase                 ::init();
+
+    PartDesign::Measure ::initialize();
+    // clang-format on
 
     PyMOD_Return(mod);
 }

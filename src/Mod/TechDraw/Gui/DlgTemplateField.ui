@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>340</width>
-    <height>90</height>
+    <height>132</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -45,6 +45,29 @@
      </item>
      <item row="1" column="1">
       <widget class="QLineEdit" name="leInput"/>
+     </item>
+     <item row="2" column="0">
+      <widget class="QCheckBox" name="cbAutofill">
+       <property name="toolTip">
+        <string>Check this box to reapply autofill to this field.  </string>
+       </property>
+       <property name="text">
+        <string>Autofill</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLineEdit" name="leAutofill">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>The autofill replacement value.</string>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

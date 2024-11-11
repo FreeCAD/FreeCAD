@@ -544,9 +544,7 @@ void SegmentationBestFit::changeEvent(QEvent* e)
 TaskSegmentationBestFit::TaskSegmentationBestFit(Mesh::Feature* mesh)
 {
     widget = new SegmentationBestFit(mesh);  // NOLINT
-    taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(), false, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(widget, false);
 }
 
 bool TaskSegmentationBestFit::accept()

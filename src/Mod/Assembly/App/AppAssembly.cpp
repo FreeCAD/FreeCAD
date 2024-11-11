@@ -28,7 +28,11 @@
 #include <Base/PyObjectBase.h>
 
 #include "AssemblyObject.h"
+#include "AssemblyLink.h"
+#include "BomObject.h"
+#include "BomGroup.h"
 #include "JointGroup.h"
+#include "ViewGroup.h"
 
 
 namespace Assembly
@@ -42,6 +46,7 @@ PyMOD_INIT_FUNC(AssemblyApp)
     // load dependent module
     try {
         Base::Interpreter().runString("import Part");
+        Base::Interpreter().runString("import Spreadsheet");
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
@@ -57,7 +62,12 @@ PyMOD_INIT_FUNC(AssemblyApp)
     // This function is responsible for adding inherited slots from a type's base class.
 
     Assembly::AssemblyObject ::init();
+    Assembly::AssemblyLink ::init();
+    Assembly::BomObject ::init();
+
+    Assembly::BomGroup ::init();
     Assembly::JointGroup ::init();
+    Assembly::ViewGroup ::init();
 
     PyMOD_Return(mod);
 }

@@ -476,16 +476,15 @@ void SketcherGui::GetCirclesMinimalDistance(const Part::Geometry* geom1,
     }
 }
 
-void SketcherGui::ActivateHandler(Gui::Document* doc, DrawSketchHandler* handler)
+void SketcherGui::ActivateHandler(Gui::Document* doc, std::unique_ptr<DrawSketchHandler> handler)
 {
-    std::unique_ptr<DrawSketchHandler> ptr(handler);
     if (doc) {
         if (doc->getInEdit()
             && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
             SketcherGui::ViewProviderSketch* vp =
                 static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
             vp->purgeHandler();
-            vp->activateHandler(ptr.release());
+            vp->activateHandler(std::move(handler));
         }
     }
 }
@@ -832,9 +831,9 @@ std::string SketcherGui::angleToDisplayFormat(double value, int digits)
 }
 
 
-bool SketcherGui::areColinear(const Base::Vector2d& p1,
-                              const Base::Vector2d& p2,
-                              const Base::Vector2d& p3)
+bool SketcherGui::areCollinear(const Base::Vector2d& p1,
+                               const Base::Vector2d& p2,
+                               const Base::Vector2d& p3)
 {
     Base::Vector2d u = p2 - p1;
     Base::Vector2d v = p3 - p2;

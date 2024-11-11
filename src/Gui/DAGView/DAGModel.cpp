@@ -308,15 +308,21 @@ void Model::slotChangeObject(const ViewProviderDocumentObject &VPDObjectIn, cons
   //renaming of objects.
   if (std::string("Label") == name)
   {
-    const GraphLinkRecord &record = findRecord(&VPDObjectIn, *graphLink);
-    auto text = (*theGraph)[record.vertex].text.get();
-    text->setPlainText(QString::fromUtf8(record.DObject->Label.getValue()));
+    if (hasRecord(&VPDObjectIn, *graphLink))
+    {
+      const GraphLinkRecord &record = findRecord(&VPDObjectIn, *graphLink);
+      auto text = (*theGraph)[record.vertex].text.get();
+      text->setPlainText(QString::fromUtf8(record.DObject->Label.getValue()));
+    }
   }
   else if (propertyIn.isDerivedFrom(App::PropertyLinkBase::getClassTypeId()))
   {
-    const GraphLinkRecord &record = findRecord(&VPDObjectIn, *graphLink);
-    boost::clear_vertex(record.vertex, *theGraph);
-    graphDirty = true;
+    if (hasRecord(&VPDObjectIn, *graphLink))
+    {
+      const GraphLinkRecord &record = findRecord(&VPDObjectIn, *graphLink);
+      boost::clear_vertex(record.vertex, *theGraph);
+      graphDirty = true;
+    }
   }
 }
 
@@ -460,7 +466,7 @@ void Model::updateSlot()
   //for speed. Not doing yet, as I want a simple algorithm until
   //a more complete picture is formed.
 
-  Base::TimeInfo startTime;
+  Base::TimeElapsed startTime;
 
   //here we will cycle through the graph updating edges.
   //we have to do this first and in isolation because everything is dependent on an up to date graph.
@@ -761,7 +767,7 @@ void Model::updateSlot()
 
   //Modeling_Challenge_Casting_ta4 with 59 features: "Initialize DAG View time: 0.007"
   //keeping algo simple with extra loops only added 0.002 to above number.
-//   std::cout << "Initialize DAG View time: " << Base::TimeInfo::diffTimeF(startTime, Base::TimeInfo()) << std::endl;
+//   std::cout << "Initialize DAG View time: " << Base::TimeElapsed::diffTimeF(startTime, Base::TimeElapsed()) << std::endl;
 
 //   outputGraphviz<Graph>(*theGraph, "./graphviz.dot");
   graphDirty = false;

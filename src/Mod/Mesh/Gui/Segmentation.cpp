@@ -159,9 +159,7 @@ void Segmentation::changeEvent(QEvent* e)
 TaskSegmentation::TaskSegmentation(Mesh::Feature* mesh)
 {
     widget = new Segmentation(mesh);  // NOLINT
-    taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(), false, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(widget, false);
 }
 
 bool TaskSegmentation::accept()

@@ -28,31 +28,37 @@ AppearanceModel:
   Description: "default vector rendering model"
   DOI: ""
   SectionFillPattern:
+    DisplayName: "Section Fill Pattern"
     Type: 'File'
     Units: ''
     URL: ''
     Description: " "
   SectionLinewidth:
+    DisplayName: "Section Linewidth"
     Type: 'Float'
     Units: ''
     URL: ''
     Description: " "
   SectionColor:
+    DisplayName: "Section Color"
     Type: 'Color'
     Units: ''
     URL: ''
     Description: " "
   ViewColor:
+    DisplayName: "View Color"
     Type: 'Color'
     Units: ''
     URL: ''
     Description: " "
   ViewFillPattern:
+    DisplayName: "View Fill Pattern"
     Type: 'Boolean'
     Units: ''
     URL: ''
     Description: " "
   ViewLinewidth:
+    DisplayName: "View Linewidth"
     Type: 'Float'
     Units: ''
     URL: ''

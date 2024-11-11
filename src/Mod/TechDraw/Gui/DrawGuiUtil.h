@@ -27,7 +27,9 @@
 #include <QCoreApplication>
 #include <QGraphicsItem>
 
+#include <App/DocumentObject.h>
 #include <Base/Vector3D.h>
+#include <Gui/Selection.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 
@@ -35,16 +37,13 @@ class QComboBox;
 class QPointF;
 class QRectF;
 
-namespace App {
-class DocumentObject;
-}
-
 namespace Part {
 class Feature;
 }
 
 namespace TechDraw {
 class DrawPage;
+class DrawView;
 class LineGenerator;
 }
 namespace Gui {
@@ -72,15 +71,29 @@ class TechDrawGuiExport DrawGuiUtil {
     static std::pair<Base::Vector3d, Base::Vector3d> getProjDirFromFace(App::DocumentObject* obj,
                                                                        std::string faceName);
     static void loadArrowBox(QComboBox* qcb);
+    static void loadBalloonShapeBox(QComboBox* qballooncb);
+    static void loadMattingStyleBox(QComboBox* qmattingcb);
     static void loadLineStandardsChoices(QComboBox* combo);
-    static void loadLineStyleChoices(QComboBox* combo, TechDraw::LineGenerator* generator = nullptr);
+    static void loadLineStyleChoices(QComboBox* combo,
+                                     TechDraw::LineGenerator* generator = nullptr);
+    static void loadLineGroupChoices(QComboBox* combo);
     static QIcon iconForLine(size_t lineNumber, TechDraw::LineGenerator* generator);
 
     static double roundToDigits(double original, int digits);
 
-    static bool isSelectedInTree(QGraphicsItem *item);
-    static void setSelectedTree(QGraphicsItem *item, bool selected);
+    static bool isSelectedInTree(QGraphicsItem* item);
+    static void setSelectedTree(QGraphicsItem* item, bool selected);
+    static bool isStyleSheetDark(std::string curStyleSheet);
+    static QIcon maskBlackPixels(QIcon itemIcon, QSize iconSize, QColor textColor);
 
+    static Base::Vector3d fromSceneCoords(const Base::Vector3d& sceneCoord, bool invert = true);
+    static Base::Vector3d toSceneCoords(const Base::Vector3d& pageCoord, bool invert = true);
+    static Base::Vector3d toGuiPoint(TechDraw::DrawView* obj, const Base::Vector3d& toConvert);
+
+    static bool findObjectInSelection(const std::vector<Gui::SelectionObject>& selection,
+                                      const App::DocumentObject& targetObject);
+    static std::vector<std::string>  getSubsForSelectedObject(const std::vector<Gui::SelectionObject>& selection,
+                                                                App::DocumentObject* selectedObj);
 };
 
 } //end namespace TechDrawGui

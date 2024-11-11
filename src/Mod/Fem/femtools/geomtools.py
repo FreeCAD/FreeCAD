@@ -29,10 +29,7 @@ import FreeCAD
 
 
 # ************************************************************************************************
-def find_element_in_shape(
-    aShape,
-    anElement
-):
+def find_element_in_shape(aShape, anElement):
     # import Part
     ele_st = anElement.ShapeType
     if ele_st == "Solid" or ele_st == "CompSolid":
@@ -84,10 +81,7 @@ def find_element_in_shape(
 
 
 # ************************************************************************************************
-def get_vertexes_by_element(
-    aShape,
-    anElement
-):
+def get_vertexes_by_element(aShape, anElement):
     # we're going to extend the method find_element_in_shape and return the vertexes
     # import Part
     ele_vertexes = []
@@ -133,10 +127,7 @@ def get_vertexes_by_element(
 
 
 # ************************************************************************************************
-def is_same_geometry(
-    shape1,
-    shape2
-):
+def is_same_geometry(shape1, shape2):
     # the vertexes and the CenterOfMass are compared
     # it is a hack, but I do not know any better !
     # check of Volume and Area before starting with the vertices could be added
@@ -172,10 +163,7 @@ def is_same_geometry(
 
 
 # ************************************************************************************************
-def get_element(
-    part,
-    element
-):
+def get_element(part, element):
     if element.startswith("Solid"):
         index = int(element.lstrip("Solid")) - 1
         if index >= len(part.Shape.Solids):
@@ -187,52 +175,3 @@ def get_element(
             return part.Shape.Solids[index]  # Solid
     else:
         return part.Shape.getElement(element)  # Face, Edge, Vertex
-
-
-# ************************************************************************************************
-def get_rectangular_coords(
-    obj
-):
-    from math import cos, sin, radians
-    A = [1, 0, 0]
-    B = [0, 1, 0]
-    a_x = A[0]
-    a_y = A[1]
-    a_z = A[2]
-    b_x = B[0]
-    b_y = B[1]
-    b_z = B[2]
-    x_rot = radians(obj.X_rot)
-    y_rot = radians(obj.Y_rot)
-    z_rot = radians(obj.Z_rot)
-    if obj.X_rot != 0:
-        a_y = A[1] * cos(x_rot) + A[2] * sin(x_rot)
-        a_z = A[2] * cos(x_rot) - A[1] * sin(x_rot)
-        b_y = B[1] * cos(x_rot) + B[2] * sin(x_rot)
-        b_z = B[2] * cos(x_rot) - B[1] * sin(x_rot)
-    if obj.Y_rot != 0:
-        a_x = A[0] * cos(y_rot) - A[2] * sin(y_rot)
-        a_z = A[2] * cos(y_rot) + A[0] * sin(y_rot)
-        b_x = B[0] * cos(y_rot) - B[2] * sin(y_rot)
-        b_z = B[2] * cos(y_rot) + B[0] * sin(z_rot)
-    if obj.Z_rot != 0:
-        a_x = A[0] * cos(z_rot) + A[1] * sin(z_rot)
-        a_y = A[1] * cos(z_rot) - A[0] * sin(z_rot)
-        b_x = B[0] * cos(z_rot) + B[1] * sin(z_rot)
-        b_y = B[1] * cos(z_rot) - B[0] * sin(z_rot)
-    return (a_x, a_y, a_z, b_x, b_y, b_z)
-
-
-# ************************************************************************************************
-def get_cylindrical_coords(
-    obj
-):
-    vec = obj.Axis
-    base = obj.BasePoint
-    a_x = base[0] + 10 * vec[0]
-    a_y = base[1] + 10 * vec[1]
-    a_z = base[2] + 10 * vec[2]
-    b_x = base[0] - 10 * vec[0]
-    b_y = base[1] - 10 * vec[1]
-    b_z = base[2] - 10 * vec[2]
-    return (a_x, a_y, a_z, b_x, b_y, b_z)

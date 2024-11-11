@@ -98,7 +98,7 @@ void CmdSurfaceCut::activated(int iMsg)
        App.activeDocument().%s",FeatName.c_str(),ToolName.c_str());
         doCommand(Gui,"Gui.activeDocument().hide('%s')",BaseName.c_str());
         doCommand(Gui,"Gui.activeDocument().hide('%s')",ToolName.c_str());
-        copyVisual(FeatName.c_str(), "ShapeColor", BaseName.c_str());
+        copyVisual(FeatName.c_str(), "ShapeAppearance", BaseName.c_str());
         copyVisual(FeatName.c_str(), "DisplayMode", BaseName.c_str());
         updateActive();
         commitCommand();*/

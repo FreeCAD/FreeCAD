@@ -28,6 +28,7 @@
 #include <QAction>
 #include <QComboBox>
 #include <QKeySequence>
+#include <QMap>
 #include <FCGlobal.h>
 
 namespace Gui
@@ -153,7 +154,6 @@ public:
     int checkedAction() const;
     void setCheckedAction(int);
 
-protected:
     QActionGroup* groupAction() const {
         return _group;
     }
@@ -180,22 +180,6 @@ private:
     Q_DISABLE_COPY(ActionGroup)
 };
 
-// --------------------------------------------------------------------
-class GuiExport WorkbenchComboBox : public QComboBox
-{
-    Q_OBJECT
-
-public:
-    explicit WorkbenchComboBox(QWidget* parent=nullptr);
-    void showPopup() override;
-
-public Q_SLOTS:
-    void refreshList(QList<QAction*>);
-
-private:
-    Q_DISABLE_COPY(WorkbenchComboBox)
-};
-
 /**
  * The WorkbenchGroup class represents a list of workbenches. When it is added
  * to a menu a submenu gets created, if added to a toolbar a combo box gets created.
@@ -205,16 +189,22 @@ class GuiExport WorkbenchGroup : public ActionGroup
 {
     Q_OBJECT
 
+    QAction* getOrCreateAction(const QString& wbName);
+
 public:
     /**
      * Creates an action for the command \a pcCmd to load the workbench \a name
      * when it gets activated.
      */
-    WorkbenchGroup (Command* pcCmd, QObject * parent);
-    void addTo (QWidget * widget) override;
+    WorkbenchGroup(Command* pcCmd, QObject* parent);
+
+    void addTo(QWidget * widget) override;
     void refreshWorkbenchList();
 
     void slotActivateWorkbench(const char*);
+
+    QList<QAction*> getEnabledWbActions() const;
+    QList<QAction*> getDisabledWbActions() const;
 
 Q_SIGNALS:
     void workbenchListRefreshed(QList<QAction*>);
@@ -223,6 +213,11 @@ protected Q_SLOTS:
     void onWorkbenchActivated(const QString&);
 
 private:
+    QList<QAction*> enabledWbsActions;
+    QList<QAction*> disabledWbsActions;
+
+    QMap<QString, QAction*> actionByWorkbenchName;
+
     Q_DISABLE_COPY(WorkbenchGroup)
 };
 

@@ -28,15 +28,14 @@
 # include <QActionGroup>
 # include <QApplication>
 # include <QEvent>
+# include <QFileInfo>
 # include <QMenu>
-# include <QMessageBox>
 # include <QRegularExpression>
 # include <QScreen>
 # include <QTimer>
 # include <QToolBar>
 # include <QToolButton>
 # include <QToolTip>
-# include <QMenuBar>
 #endif
 
 #include <Base/Exception.h>
@@ -51,15 +50,15 @@
 #include "PreferencePages/DlgSettingsWorkbenchesImp.h"
 #include "Document.h"
 #include "EditorView.h"
-#include "FileDialog.h"
 #include "Macro.h"
+#include "ModuleIO.h"
 #include "MainWindow.h"
 #include "PythonEditor.h"
-#include "UserSettings.h"
 #include "WhatsThis.h"
 #include "Widgets.h"
 #include "Workbench.h"
 #include "WorkbenchManager.h"
+#include "WorkbenchSelector.h"
 #include "ShortcutManager.h"
 #include "Tools.h"
 
@@ -325,7 +324,7 @@ QString Action::createToolTip(QString helpText,
     //
     // The long winding code is to deal with the fact that Qt will auto wrap
     // a rich text tooltip but the width is too short. We can escape the auto
-    // wrappin using <p style='white-space:pre'>.
+    // wrapping using <p style='white-space:pre'>.
 
     QString shortcut = shortCut;
     if (!shortcut.isEmpty() && helpText.endsWith(shortcut)) {
@@ -539,18 +538,12 @@ bool ActionGroup::doesRememberLast() const
 
 QAction* ActionGroup::addAction(QAction* action)
 {
-    int index = groupAction()->actions().size();
-    action = groupAction()->addAction(action);
-    action->setData(QVariant(index));
-    return action;
+    return groupAction()->addAction(action);
 }
 
 QAction* ActionGroup::addAction(const QString& text)
 {
-    int index = groupAction()->actions().size();
-    QAction* action = groupAction()->addAction(text);
-    action->setData(QVariant(index));
-    return action;
+    return groupAction()->addAction(text);
 }
 
 QList<QAction*> ActionGroup::actions() const
@@ -560,8 +553,9 @@ QList<QAction*> ActionGroup::actions() const
 
 int ActionGroup::checkedAction() const
 {
-    QAction* checked = groupAction()->checkedAction();
-    return checked ? checked->data().toInt() : -1;
+    auto checked = groupAction()->checkedAction();
+    
+    return actions().indexOf(checked);
 }
 
 void ActionGroup::setCheckedAction(int index)
@@ -614,43 +608,6 @@ void ActionGroup::onHovered (QAction *act)
 }
 
 
-// --------------------------------------------------------------------
-
-WorkbenchComboBox::WorkbenchComboBox(QWidget* parent) : QComboBox(parent)
-{
-}
-
-void WorkbenchComboBox::showPopup()
-{
-    int rows = count();
-    if (rows > 0) {
-        int height = view()->sizeHintForRow(0);
-        int maxHeight = QApplication::primaryScreen()->size().height();
-        view()->setMinimumHeight(qMin(height * rows, maxHeight/2));
-    }
-
-    QComboBox::showPopup();
-}
-
-void WorkbenchComboBox::refreshList(QList<QAction*> actionList)
-{
-    clear();
-
-    for (QAction* action : actionList) {
-        QIcon icon = action->icon();
-        if (icon.isNull()) {
-            this->addItem(action->text());
-        }
-        else {
-            this->addItem(icon, action->text());
-        }
-
-        if (action->isChecked()) {
-            this->setCurrentIndex(this->count() - 1);
-        }
-    }
-}
-
 /* TRANSLATOR Gui::WorkbenchGroup */
 WorkbenchGroup::WorkbenchGroup (  Command* pcCmd, QObject * parent )
   : ActionGroup( pcCmd, parent )
@@ -665,39 +622,35 @@ WorkbenchGroup::WorkbenchGroup (  Command* pcCmd, QObject * parent )
         this, &WorkbenchGroup::onWorkbenchActivated);
 }
 
+QAction* WorkbenchGroup::getOrCreateAction(const QString& wbName)
+{
+    if (!actionByWorkbenchName.contains(wbName)) {
+        actionByWorkbenchName[wbName] = new QAction(QApplication::instance());
+    }
+
+    return actionByWorkbenchName[wbName];
+}
+
 void WorkbenchGroup::addTo(QWidget *widget)
 {
-    auto setupBox = [&](WorkbenchComboBox* box) {
-        box->setIconSize(QSize(16, 16));
-        box->setToolTip(toolTip());
-        box->setStatusTip(action()->statusTip());
-        box->setWhatsThis(action()->whatsThis());
-        box->refreshList(actions());
-        connect(this, &WorkbenchGroup::workbenchListRefreshed, box, &WorkbenchComboBox::refreshList);
-        connect(groupAction(), &QActionGroup::triggered, box, [this, box](QAction* action) {
-            box->setCurrentIndex(actions().indexOf(action));
-        });
-        connect(box, qOverload<int>(&WorkbenchComboBox::activated), this, [this](int index) {
-            actions()[index]->trigger();
-        });
-    };
     if (widget->inherits("QToolBar")) {
-        auto* box = new WorkbenchComboBox(widget);
-        setupBox(box);
+        ParameterGrp::handle hGrp;
+        hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
 
-        qobject_cast<QToolBar*>(widget)->addWidget(box);
-    }
-    else if (widget->inherits("QMenuBar")) {
-        auto* box = new WorkbenchComboBox(widget);
-        setupBox(box);
+        QWidget* workbenchSelectorWidget;
+        if (hGrp->GetInt("WorkbenchSelectorType", 0) == 0) {
+            workbenchSelectorWidget = new WorkbenchComboBox(this, widget);
+        }
+        else {
+            workbenchSelectorWidget = new WorkbenchTabWidget(this, widget);
+        }
 
-        bool left = WorkbenchSwitcher::isLeftCorner(WorkbenchSwitcher::getValue());
-        qobject_cast<QMenuBar*>(widget)->setCornerWidget(box, left ? Qt::TopLeftCorner : Qt::TopRightCorner);
+        static_cast<QToolBar*>(widget)->addWidget(workbenchSelectorWidget);
     }
     else if (widget->inherits("QMenu")) {
         auto menu = qobject_cast<QMenu*>(widget);
         menu = menu->addMenu(action()->text());
-        menu->addActions(actions());
+        menu->addActions(getEnabledWbActions());
 
         connect(this, &WorkbenchGroup::workbenchListRefreshed, this, [menu](QList<QAction*> actions) {
             menu->clear();
@@ -708,27 +661,30 @@ void WorkbenchGroup::addTo(QWidget *widget)
 
 void WorkbenchGroup::refreshWorkbenchList()
 {
-    QStringList enabled_wbs_list = DlgSettingsWorkbenchesImp::getEnabledWorkbenches();
+    QStringList enabledWbNames = DlgSettingsWorkbenchesImp::getEnabledWorkbenches();
 
     // Clear the actions.
     for (QAction* action : actions()) {
         groupAction()->removeAction(action);
-        delete action;
     }
 
-    std::string activeWbName = "";
-    Workbench* activeWB = WorkbenchManager::instance()->active();
-    if (activeWB)
-        activeWbName = activeWB->name();
+    enabledWbsActions.clear();
+    disabledWbsActions.clear();
+
+    std::string activeWbName = WorkbenchManager::instance()->activeName();
 
     // Create action list of enabled wb
     int index = 0;
-    for (const auto& wbName : enabled_wbs_list) {
+    for (const auto& wbName : enabledWbNames) {
         QString name = Application::Instance->workbenchMenuText(wbName);
         QPixmap px = Application::Instance->workbenchIcon(wbName);
         QString tip = Application::Instance->workbenchToolTip(wbName);
 
-        QAction* action = groupAction()->addAction(name);
+        QAction* action = getOrCreateAction(wbName);
+        
+        groupAction()->addAction(action);
+
+        action->setText(name);
         action->setCheckable(true);
         action->setData(QVariant(index)); // set the index
         action->setObjectName(wbName);
@@ -741,12 +697,37 @@ void WorkbenchGroup::refreshWorkbenchList()
         if (wbName.toStdString() == activeWbName) {
             action->setChecked(true);
         }
+        enabledWbsActions.push_back(action);
+        index++;
+    }
 
+    // Also create action list of disabled wbs
+    QStringList disabledWbNames = DlgSettingsWorkbenchesImp::getDisabledWorkbenches();
+    for (const auto& wbName : disabledWbNames) {
+        QString name = Application::Instance->workbenchMenuText(wbName);
+        QPixmap px = Application::Instance->workbenchIcon(wbName);
+        QString tip = Application::Instance->workbenchToolTip(wbName);
+
+        QAction* action = getOrCreateAction(wbName);
+
+        groupAction()->addAction(action);
+
+        action->setText(name);
+        action->setCheckable(true);
+        action->setData(QVariant(index)); // set the index
+        action->setObjectName(wbName);
+        action->setIcon(px);
+        action->setToolTip(tip);
+        action->setStatusTip(tr("Select the '%1' workbench").arg(name));
+        if (wbName.toStdString() == activeWbName) {
+            action->setChecked(true);
+        }
+        disabledWbsActions.push_back(action);
         index++;
     }
 
     // Signal to the widgets (WorkbenchComboBox & menu) to update the wb list
-    workbenchListRefreshed(actions());
+    workbenchListRefreshed(enabledWbsActions);
 }
 
 void WorkbenchGroup::onWorkbenchActivated(const QString& name)
@@ -770,6 +751,16 @@ void WorkbenchGroup::onWorkbenchActivated(const QString& name)
             break;
         }
     }
+}
+
+QList<QAction*> WorkbenchGroup::getEnabledWbActions() const
+{
+    return enabledWbsActions;
+}
+
+QList<QAction*> WorkbenchGroup::getDisabledWbActions() const
+{
+    return disabledWbsActions;
 }
 
 // --------------------------------------------------------------------
@@ -911,20 +902,13 @@ void RecentFilesAction::activateFile(int id)
     }
 
     QString filename = files[id];
-    QFileInfo fi(filename);
-    if (!fi.exists() || !fi.isFile()) {
-        QMessageBox::critical(getMainWindow(), tr("File not found"), tr("The file '%1' cannot be opened.").arg(filename));
+    if (!ModuleIO::verifyFile(filename)) {
         files.removeAll(filename);
         setFiles(files);
         save();
     }
     else {
-        // invokes appendFile()
-        SelectModule::Dict dict = SelectModule::importHandler(filename);
-        for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
-            Application::Instance->open(it.key().toUtf8(), it.value().toLatin1());
-            break;
-        }
+        ModuleIO::openFile(filename);
     }
 }
 
@@ -1111,8 +1095,7 @@ void RecentMacrosAction::activateFile(int id)
 
     QString filename = files[id];
     QFileInfo fi(filename);
-    if (!fi.exists() || !fi.isFile()) {
-        QMessageBox::critical(getMainWindow(), tr("File not found"), tr("The file '%1' cannot be opened.").arg(filename));
+    if (!ModuleIO::verifyFile(filename)) {
         files.removeAll(filename);
         setFiles(files);
     }

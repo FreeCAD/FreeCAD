@@ -70,6 +70,8 @@ private:
     SoFCIndexedFaceSet* pcMeshFaces;
     SoFCMeshObjectNode* pcMeshNode;
     SoFCMeshObjectShape* pcMeshShape;
+
+    FC_DISABLE_COPY_MOVE(ViewProviderMeshFaceSet)
 };
 
 }  // namespace MeshGui

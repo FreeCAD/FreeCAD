@@ -128,7 +128,11 @@ void TaskShapeBinder::setupContextMenu()
 {
     // Create context menu
     QAction* remove = new QAction(tr("Remove"), this);
-    remove->setShortcut(QKeySequence::Delete);
+    {
+        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
+        auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
+        remove->setShortcut(QKeySequence(shortcut));
+    }
     remove->setShortcutContext(Qt::WidgetShortcut);
 #if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     // display shortcut behind the context menu entry
@@ -229,7 +233,7 @@ void TaskShapeBinder::removeFromListWidget(QListWidget* widget, QString itemstr)
 
 void TaskShapeBinder::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    auto setObjectLabel = [=](const Gui::SelectionChanges& msg) {
+    auto setObjectLabel = [this](const Gui::SelectionChanges& msg) {
         App::DocumentObject* obj = msg.Object.getObject();
         if (obj) {
             ui->baseEdit->setText(QString::fromStdString(obj->Label.getStrValue()));

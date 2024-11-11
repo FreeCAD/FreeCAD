@@ -20,6 +20,13 @@
         </UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="getScale">
+      <Documentation>
+        <UserDocu>float scale = getScale().  Returns the correct scale for this view.  Handles whether to
+        use this view's scale property or a parent's view (as in a projection group).
+        </UserDocu>
+      </Documentation>
+    </Methode>
    <CustomAttributes />
   </PythonExport>
 </GenerateModel>

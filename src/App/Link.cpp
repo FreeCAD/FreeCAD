@@ -237,9 +237,13 @@ void LinkBaseExtension::setProperty(int idx, Property *prop) {
             propEnum->setEnums(enums);
         break;
     }
-    case PropLinkCopyOnChangeTouched:
     case PropLinkCopyOnChangeSource:
     case PropLinkCopyOnChangeGroup:
+        if (auto linkProp = Base::freecad_dynamic_cast<PropertyLinkBase>(prop)) {
+            linkProp->setScope(LinkScope::Global);
+        }
+        // fall through
+    case PropLinkCopyOnChangeTouched:
         prop->setStatus(Property::Hidden, true);
         break;
     case PropLinkTransform:
@@ -261,9 +265,13 @@ void LinkBaseExtension::setProperty(int idx, Property *prop) {
     case PropLinkedObject:
         // Make ElementList as read-only if we are not a group (i.e. having
         // LinkedObject property), because it is for holding array elements.
-        if(getElementListProperty())
+        if(getElementListProperty()) {
             getElementListProperty()->setStatus(
                 Property::Immutable, getLinkedObjectProperty() != nullptr);
+        }
+        if (auto linkProp = getLinkedObjectProperty()) {
+            linkProp->setScope(LinkScope::Global);
+        }
         break;
     case PropVisibilityList:
         getVisibilityListProperty()->setStatus(Property::Immutable, true);
@@ -317,6 +325,12 @@ App::DocumentObjectExecReturn *LinkBaseExtension::extensionExecute() {
                    && getLinkCopyOnChangeTouchedValue())
         {
             syncCopyOnChange();
+        }
+
+        // the previous linked object could be deleted by syncCopyOnChange - #12281
+        linked = getTrueLinkedObject(true);
+        if(!linked) {
+            return new App::DocumentObjectExecReturn("Error in processing variable link");
         }
 
         PropertyPythonObject *proxy = nullptr;
@@ -1133,7 +1147,7 @@ int LinkBaseExtension::getElementIndex(const char *subname, const char **psubnam
         // Try search by element objects' name
         std::string name(subname,dot);
         if(_ChildCache.getSize()) {
-            auto obj=_ChildCache.find(name,&idx);
+            auto obj=_ChildCache.findUsingMap(name,&idx);
             if(obj) {
                 auto group = obj->getExtensionByType<GroupExtension>(true,false);
                 if(group) {
@@ -1406,8 +1420,22 @@ void LinkBaseExtension::checkGeoElementMap(const App::DocumentObject *obj,
        !PyObject_TypeCheck(*pyObj, &Data::ComplexGeoDataPy::Type))
         return;
 
-    // auto geoData = static_cast<Data::ComplexGeoDataPy*>(*pyObj)->getComplexGeoDataPtr();
-    // geoData->reTagElementMap(obj->getID(),obj->getDocument()->Hasher,postfix);
+//     auto geoData = static_cast<Data::ComplexGeoDataPy*>(*pyObj)->getComplexGeoDataPtr();
+//     geoData->reTagElementMap(obj->getID(),obj->getDocument()->Hasher,postfix);
+
+    auto geoData = static_cast<Data::ComplexGeoDataPy*>(*pyObj)->getComplexGeoDataPtr();
+    std::string _postfix;
+    if (linked && obj && linked->getDocument() != obj->getDocument()) {
+        _postfix = Data::POSTFIX_EXTERNAL_TAG;
+        if (postfix) {
+            if (!boost::starts_with(postfix, Data::ComplexGeoData::elementMapPrefix()))
+                _postfix += Data::ComplexGeoData::elementMapPrefix();
+            _postfix += postfix;
+        }
+        postfix = _postfix.c_str();
+    }
+    geoData->reTagElementMap(obj->getID(),obj->getDocument()->getStringHasher(),postfix);
+
 }
 
 void LinkBaseExtension::onExtendedUnsetupObject() {
@@ -2254,6 +2282,16 @@ bool Link::canLinkProperties() const {
     return true;
 }
 
+bool Link::isLink() const
+{
+    return ElementCount.getValue() == 0;
+}
+
+bool Link::isLinkGroup() const
+{
+    return ElementCount.getValue() > 0;
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////
 
 namespace App {
@@ -2279,6 +2317,29 @@ bool LinkElement::canDelete() const {
 
     auto owner = getContainer();
     return !owner || !owner->getDocument()->getObjectByID(_LinkOwner.getValue());
+}
+
+bool LinkElement::isLink() const
+{
+    return true;
+}
+
+App::Link* LinkElement::getLinkGroup() const
+{
+    std::vector<App::DocumentObject*> inList = getInList();
+    for (auto* obj : inList) {
+        auto* link = dynamic_cast<App::Link*>(obj);
+        if (!link) {
+            continue;
+        }
+        std::vector<App::DocumentObject*> elts = link->ElementList.getValues();
+        for (auto* elt : elts) {
+            if (elt == this) {
+                return link;
+            }
+        }
+    }
+    return nullptr;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////

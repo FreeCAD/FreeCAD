@@ -73,14 +73,8 @@ class DraftTool:
         self.commitList = []
 
     def IsActive(self):
-        """Return True when this command should be available.
-
-        It is `True` when there is a document.
-        """
-        if Gui.ActiveDocument:
-            return True
-        else:
-            return False
+        """Return True when this command should be available."""
+        return bool(gui_utils.get_3d_view())
 
     def Activated(self, name="None", is_subtool=False):
         """Execute when the command is called.
@@ -128,6 +122,7 @@ class DraftTool:
         self.pos = []
         self.support = None
         self.ui = Gui.draftToolBar
+        self.ui.mouse = True  # reset mouse movement
         self.ui.sourceCmd = self
         self.view = gui_utils.get_3d_view()
         self.wp = WorkingPlane.get_working_plane()
@@ -140,6 +135,15 @@ class DraftTool:
 
         _toolmsg("{}".format(16*"-"))
         _toolmsg("GuiCommand: {}".format(self.featureName))
+
+    def end_callbacks(self, call):
+        try:
+            self.view.removeEventCallback("SoEvent", call)
+            gui_utils.end_all_events()
+        except RuntimeError:
+            # the view has been deleted already
+            pass
+        call = None
 
     def finish(self, cont=False):
         """Finish the current command.
@@ -165,22 +169,11 @@ class DraftTool:
         if self.ui:
             self.ui.offUi()
             self.ui.sourceCmd = None
+        if hasattr(Gui, "Snapper"):
+            Gui.Snapper.off()
         if self.planetrack:
             self.planetrack.finalize()
         self.wp._restore()
-        if hasattr(Gui, "Snapper"):
-            Gui.Snapper.off()
-        if self.call:
-            try:
-                self.view.removeEventCallback("SoEvent", self.call)
-                # Next line fixes https://github.com/FreeCAD/FreeCAD/issues/10469:
-                QtCore.QCoreApplication.processEvents()
-                # It seems to work in most cases. If it does not, use this instead:
-                # gui_utils.end_all_events()
-            except RuntimeError:
-                # the view has been deleted already
-                pass
-            self.call = None
         if self.commitList:
             last_cmd = self.commitList[-1][1][-1]
             if last_cmd.find("recompute") >= 0:

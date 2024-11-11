@@ -433,11 +433,16 @@ void TaskCheckGeometryResults::goCheck()
     for(const auto &sel :  selection) {
         selectedCount++;
         TopoDS_Shape shape = Part::Feature::getShape(sel.pObject,sel.SubName,true);
-        if (shape.IsNull())
+        if (shape.IsNull()) {
             continue;
+        }
+        if (shape.Infinite()) {
+            continue;
+        }
         currentSeparator = Gui::Application::Instance->getViewProvider(sel.pObject)->getRoot();
-        if (!currentSeparator)
+        if (!currentSeparator) {
             continue;
+        }
         QString baseName;
         QTextStream baseStream(&baseName);
         baseStream << sel.DocName;
@@ -594,13 +599,35 @@ void TaskCheckGeometryResults::buildShapeContent(App::DocumentObject *pObject, c
         if (!module) {
             throw Py::Exception();
         }
-        Py::Tuple args(3);
-        args.setItem(0, Py::asObject(pObject->getPyObject()));
-        args.setItem(1, Py::Long(decimals));
-        args.setItem(2, Py::Boolean(advancedShapeContent));
-        Py::Module shapecontent(module, true);
-        Py::String result(shapecontent.callMemberFunction("buildShapeContent", args));
-        stream << result.as_std_string("utf-8");
+        {
+            Py::Tuple args(3);
+            args.setItem(0, Py::asObject(pObject->getPyObject()));
+            args.setItem(1, Py::Long(decimals));
+            args.setItem(2, Py::Boolean(advancedShapeContent));
+            Py::Module shapecontent(module, true);
+            Py::String result(shapecontent.callMemberFunction("buildShapeContent", args));
+            stream << result.as_std_string("utf-8");
+        }
+        {
+            stream << std::endl << tr("Tolerance information").toStdString() << ": " << std::endl;
+            Py::Tuple args(1);
+            {
+                args.setItem(0, Py::Long(-1));
+                Py::Float result(Py::asObject(Part::TopoShape(shape).getPyObject()).callMemberFunction("globalTolerance",args));
+                stream << " " << tr("Global Minimum").toStdString() << ": " << result << std::endl;
+            }
+            {
+                args.setItem(0, Py::Long(0));
+                Py::Float result(Py::asObject(Part::TopoShape(shape).getPyObject()).callMemberFunction("globalTolerance",args));
+                stream << " " << tr("Global Average").toStdString() << ": " << result << std::endl;
+            }
+            {
+                args.setItem(0, Py::Long(1));
+                Py::Float result(Py::asObject(Part::TopoShape(shape).getPyObject()).callMemberFunction("globalTolerance",args));
+                stream << " " << tr("Global Maximum").toStdString() << ": " << result;
+            }
+        }
+
     }
     catch (Py::Exception&) {
         Base::PyException e;
@@ -678,13 +705,13 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   BOPCheck.CurveOnSurfaceMode() = curveOnSurfaceMode;
 
 #ifdef FC_DEBUG
-  Base::TimeInfo start_time;
+  Base::TimeElapsed start_time;
 #endif
 
   BOPCheck.Perform();
 
 #ifdef FC_DEBUG
-  float bopAlgoTime = Base::TimeInfo::diffTimeF(start_time,Base::TimeInfo());
+  float bopAlgoTime = Base::TimeElapsed::diffTimeF(start_time, Base::TimeElapsed());
   std::cout << std::endl << "BopAlgo check time is: " << bopAlgoTime << std::endl << std::endl;
 #endif
 
@@ -1010,7 +1037,7 @@ TaskCheckGeometryDialog::TaskCheckGeometryDialog()
     Content.push_back(settingsBox);
 
     autoRunCheckBox = new QCheckBox();
-    autoRunCheckBox->setText(tr("Skip settings page"));
+    autoRunCheckBox->setText(tr("Skip this settings page"));
     autoRunCheckBox->setToolTip(
         tr("Skip this settings page and run the geometry check automatically.")
         + QStringLiteral("\n")

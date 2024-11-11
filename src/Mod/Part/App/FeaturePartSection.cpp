@@ -22,12 +22,12 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRepAlgoAPI_Section.hxx>
+# include <Mod/Part/App/FCBRepAlgoAPI_Section.h>
 # include <Standard_Version.hxx>
 #endif
 
 #include "FeaturePartSection.h"
-
+#include "TopoShapeOpCode.h"
 
 using namespace Part;
 
@@ -46,15 +46,22 @@ short Section::mustExecute() const
     return 0;
 }
 
+
+const char *Section::opCode() const
+{
+    return Part::OpCodes::Section;
+}
+
 BRepAlgoAPI_BooleanOperation* Section::makeOperation(const TopoDS_Shape& base, const TopoDS_Shape& tool) const
 {
     // Let's call algorithm computing a section operation:
 
     bool approx = Approximation.getValue();
-    std::unique_ptr<BRepAlgoAPI_Section> mkSection(new BRepAlgoAPI_Section());
+    std::unique_ptr<FCBRepAlgoAPI_Section> mkSection(new FCBRepAlgoAPI_Section());
     mkSection->Init1(base);
     mkSection->Init2(tool);
     mkSection->Approximation(approx);
+    mkSection->setAutoFuzzy();
     mkSection->Build();
     if (!mkSection->IsDone())
         throw Base::RuntimeError("Section failed");

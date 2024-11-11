@@ -1,0 +1,95 @@
+---
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2023 David Carter <dcarter@davidcarter.ca>              *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+
+Model:
+  Name: 'OgdenN3'
+  UUID: 'a917d6b8-209f-429e-9972-fe4bbb97af3f'
+  URL: 'http://www.dhondt.de/ccx_2.21.pdf'
+  Description: >
+    The Ogden material model is a hyperelastic material model used to
+    describe the non-linear stress–strain behaviour of complex materials
+    such as rubbers, polymers, and biological tissue.
+  OgdenN3:
+    DisplayName: "Ogden N=3"
+    Type: '2DArray'
+    Columns:
+      Temperature:
+        Type: 'Quantity'
+        Units: 'C'
+        URL: ''
+        Description: "Temperature"
+      Mu1:
+        DisplayName: 'μ1'
+        Type: 'Quantity'
+        Units: 'Pa'
+        URL: ''
+        Description: "μ1 [FreeCAD Pressure unit]"
+      Mu2:
+        DisplayName: 'μ2'
+        Type: 'Quantity'
+        Units: 'Pa'
+        URL: ''
+        Description: "μ2 [FreeCAD Pressure unit]"
+      Mu3:
+        DisplayName: 'μ3'
+        Type: 'Quantity'
+        Units: 'Pa'
+        URL: ''
+        Description: "μ1 [FreeCAD Pressure unit]"
+      Alpha1:
+        DisplayName: 'α1'
+        Type: 'Float'
+        Units: ''
+        URL: ''
+        Description: "α1"
+      Alpha2:
+        DisplayName: 'α2'
+        Type: 'Float'
+        Units: ''
+        URL: ''
+        Description: "α2"
+      Alpha3:
+        DisplayName: 'α3'
+        Type: 'Float'
+        Units: ''
+        URL: ''
+        Description: "α3"
+      D1:
+        Type: 'Quantity'
+        Units: '1/Pa'
+        URL: ''
+        Description: "D1 [1/FreeCAD Pressure unit]"
+      D2:
+        Type: 'Quantity'
+        Units: '1/Pa'
+        URL: ''
+        Description: "D2 [1/FreeCAD Pressure unit]"
+      D3:
+        Type: 'Quantity'
+        Units: '1/Pa'
+        URL: ''
+        Description: "D3 [1/FreeCAD Pressure unit]"
+    URL: ''
+    Description: >
+      2 Dimensional array showing Ogden N=3 properties as
+      a function of temperature

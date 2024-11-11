@@ -29,6 +29,7 @@
         <file>icons/FEM_ConstraintPlaneRotation.svg</file>
         <file>icons/FEM_ConstraintPressure.svg</file>
         <file>icons/FEM_ConstraintPulley.svg</file>
+        <file>icons/FEM_ConstraintRigidBody.svg</file>
         <file>icons/FEM_ConstraintSectionPrint.svg</file>
         <file>icons/FEM_ConstraintSelfWeight.svg</file>
         <file>icons/FEM_ConstraintSpring.svg</file>
@@ -52,6 +53,7 @@
         <file>icons/FEM_EquationMagnetodynamic2D.svg</file>
 
         <!-- gui command icons: meshes -->
+        <file>icons/FEM_CreateElementsSet.svg</file>
         <file>icons/FEM_CreateNodesSet.svg</file>
         <file>icons/FEM_FEMMesh2Mesh.svg</file>
         <file>icons/FEM_MeshBoundaryLayer.svg</file>
@@ -121,6 +123,7 @@
         <file>ui/ConstraintSectionPrint.ui</file>
         <file>ui/ConstraintTie.ui</file>
         <file>ui/CurrentDensity.ui</file>
+        <file>ui/DlgSettingsNetgen.ui</file>
         <file>ui/ElectrostaticPotential.ui</file>
         <file>ui/ElementFluid1D.ui</file>
         <file>ui/ElementGeometry1D.ui</file>

@@ -50,12 +50,15 @@
 #include <vector>
 
 // boost
+#include <boost/algorithm/string.hpp>
 #include <boost/bind/bind.hpp>
 #include <boost/lexical_cast.hpp>
 
 #ifdef FC_OS_WIN32
 #define WIN32_LEAN_AND_MEAN
+#ifndef NOMINMAX
 #define NOMINMAX
+#endif
 #include <windows.h>
 #endif
 
@@ -115,6 +118,7 @@
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoCube.h>
 #include <Inventor/nodes/SoCylinder.h>
+#include <Inventor/nodes/SoDepthBuffer.h>
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoEventCallback.h>
 #include <Inventor/nodes/SoFont.h>
@@ -140,15 +144,19 @@
 #include <Inventor/nodes/SoShapeHints.h>
 #include <Inventor/nodes/SoSphere.h>
 #include <Inventor/nodes/SoSurroundScale.h>
+#include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoText3.h>
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodes/SoTranslation.h>
+#include <Inventor/nodes/SoTransparencyType.h>
+
 
 // Salomesh
 #include <SMDSAbs_ElementType.hxx>
 #include <SMESHDS_Mesh.hxx>
 #include <SMESH_Mesh.hxx>
+#include <SMESH_MeshEditor.hxx>
 
 // VTK
 #include <vtkCellArray.h>

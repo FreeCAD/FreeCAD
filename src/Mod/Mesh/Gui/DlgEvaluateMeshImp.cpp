@@ -90,7 +90,7 @@ public:
     bool enableFoldsCheck {false};
     bool checkNonManfoldPoints {false};
     bool strictlyDegenerated {true};
-    float epsilonDegenerated {0.0f};
+    float epsilonDegenerated {0.0F};
 };
 
 /* TRANSLATOR MeshGui::DlgEvaluateMeshImp */
@@ -129,7 +129,7 @@ DlgEvaluateMeshImp::DlgEvaluateMeshImp(QWidget* parent, Qt::WindowFlags fl)
     d->enableFoldsCheck = hGrp->GetBool("EnableFoldsCheck", false);
     d->strictlyDegenerated = hGrp->GetBool("StrictlyDegenerated", true);
     if (d->strictlyDegenerated) {
-        d->epsilonDegenerated = 0.0f;
+        d->epsilonDegenerated = 0.0F;
     }
     else {
         d->epsilonDegenerated = MeshCore::MeshDefinitions::_fMinPointDistanceP2;
@@ -350,8 +350,7 @@ void DlgEvaluateMeshImp::addViewProvider(const char* name,
     removeViewProvider(name);
 
     if (d->view) {
-        ViewProviderMeshDefects* vp =
-            static_cast<ViewProviderMeshDefects*>(Base::Type::createInstanceByName(name));
+        auto vp = static_cast<ViewProviderMeshDefects*>(Base::Type::createInstanceByName(name));
         assert(vp->isDerivedFrom<Gui::ViewProvider>());
         vp->attach(d->meshFeature);
         d->view->getViewer()->addViewProvider(vp);
@@ -362,7 +361,7 @@ void DlgEvaluateMeshImp::addViewProvider(const char* name,
 
 void DlgEvaluateMeshImp::removeViewProvider(const char* name)
 {
-    std::map<std::string, ViewProviderMeshDefects*>::iterator it = d->vp.find(name);
+    auto it = d->vp.find(name);
     if (it != d->vp.end()) {
         if (d->view) {
             d->view->getViewer()->removeViewProvider(it->second);
@@ -499,8 +498,7 @@ void DlgEvaluateMeshImp::onRefreshButtonClicked()
 
 void DlgEvaluateMeshImp::onCheckOrientationButtonClicked()
 {
-    std::map<std::string, ViewProviderMeshDefects*>::iterator it =
-        d->vp.find("MeshGui::ViewProviderMeshOrientation");
+    auto it = d->vp.find("MeshGui::ViewProviderMeshOrientation");
     if (it != d->vp.end()) {
         if (d->ui.checkOrientationButton->isChecked()) {
             it->second->show();
@@ -692,8 +690,7 @@ void DlgEvaluateMeshImp::onRepairNonmanifoldsButtonClicked()
 
 void DlgEvaluateMeshImp::onCheckIndicesButtonClicked()
 {
-    std::map<std::string, ViewProviderMeshDefects*>::iterator it =
-        d->vp.find("MeshGui::ViewProviderMeshIndices");
+    auto it = d->vp.find("MeshGui::ViewProviderMeshIndices");
     if (it != d->vp.end()) {
         if (d->ui.checkIndicesButton->isChecked()) {
             it->second->show();
@@ -785,8 +782,7 @@ void DlgEvaluateMeshImp::onRepairIndicesButtonClicked()
 
 void DlgEvaluateMeshImp::onCheckDegenerationButtonClicked()
 {
-    std::map<std::string, ViewProviderMeshDefects*>::iterator it =
-        d->vp.find("MeshGui::ViewProviderMeshDegenerations");
+    auto it = d->vp.find("MeshGui::ViewProviderMeshDegenerations");
     if (it != d->vp.end()) {
         if (d->ui.checkDegenerationButton->isChecked()) {
             it->second->show();
@@ -856,8 +852,7 @@ void DlgEvaluateMeshImp::onRepairDegeneratedButtonClicked()
 
 void DlgEvaluateMeshImp::onCheckDuplicatedFacesButtonClicked()
 {
-    std::map<std::string, ViewProviderMeshDefects*>::iterator it =
-        d->vp.find("MeshGui::ViewProviderMeshDuplicatedFaces");
+    auto it = d->vp.find("MeshGui::ViewProviderMeshDuplicatedFaces");
     if (it != d->vp.end()) {
         if (d->ui.checkDuplicatedFacesButton->isChecked()) {
             it->second->show();
@@ -928,8 +923,7 @@ void DlgEvaluateMeshImp::onRepairDuplicatedFacesButtonClicked()
 
 void DlgEvaluateMeshImp::onCheckDuplicatedPointsButtonClicked()
 {
-    std::map<std::string, ViewProviderMeshDefects*>::iterator it =
-        d->vp.find("MeshGui::ViewProviderMeshDuplicatedPoints");
+    auto it = d->vp.find("MeshGui::ViewProviderMeshDuplicatedPoints");
     if (it != d->vp.end()) {
         if (d->ui.checkDuplicatedPointsButton->isChecked()) {
             it->second->show();
@@ -998,8 +992,7 @@ void DlgEvaluateMeshImp::onRepairDuplicatedPointsButtonClicked()
 
 void DlgEvaluateMeshImp::onCheckSelfIntersectionButtonClicked()
 {
-    std::map<std::string, ViewProviderMeshDefects*>::iterator it =
-        d->vp.find("MeshGui::ViewProviderMeshSelfIntersections");
+    auto it = d->vp.find("MeshGui::ViewProviderMeshSelfIntersections");
     if (it != d->vp.end()) {
         if (d->ui.checkSelfIntersectionButton->isChecked()) {
             it->second->show();
@@ -1077,8 +1070,7 @@ void DlgEvaluateMeshImp::onRepairSelfIntersectionButtonClicked()
 
 void DlgEvaluateMeshImp::onCheckFoldsButtonClicked()
 {
-    std::map<std::string, ViewProviderMeshDefects*>::iterator it =
-        d->vp.find("MeshGui::ViewProviderMeshFolds");
+    auto it = d->vp.find("MeshGui::ViewProviderMeshFolds");
     if (it != d->vp.end()) {
         if (d->ui.checkFoldsButton->isChecked()) {
             it->second->show();
@@ -1309,7 +1301,7 @@ void DlgEvaluateMeshImp::onButtonBoxClicked(QAbstractButton* button)
             d->showFoldsFunction(d->enableFoldsCheck);
             d->strictlyDegenerated = dlg.isDegeneratedFacetsChecked();
             if (d->strictlyDegenerated) {
-                d->epsilonDegenerated = 0.0f;
+                d->epsilonDegenerated = 0.0F;
             }
             else {
                 d->epsilonDegenerated = MeshCore::MeshDefinitions::_fMinPointDistanceP2;
@@ -1397,8 +1389,9 @@ DockEvaluateMeshImp::~DockEvaluateMeshImp()
 /**
  * Destroys the dock window this object is embedded into without destroying itself.
  */
-void DockEvaluateMeshImp::closeEvent(QCloseEvent*)
+void DockEvaluateMeshImp::closeEvent(QCloseEvent* event)
 {
+    Q_UNUSED(event)
     // closes the dock window
     Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();
     pDockMgr->removeDockWindow(scrollArea);

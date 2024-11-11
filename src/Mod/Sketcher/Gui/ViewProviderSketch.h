@@ -174,6 +174,8 @@ private:
         /** Observer for parameter group. */
         void OnChange(Base::Subject<const char*>& rCaller, const char* sReason) override;
 
+        void updateFromParameter(const char* property);
+
     private:
         void
         updateBoolProperty(const std::string& string, App::Property* property, bool defaultvalue);
@@ -517,6 +519,7 @@ public:
     App::PropertyBool RestoreCamera;
     App::PropertyBool ForceOrtho;
     App::PropertyBool SectionView;
+    App::PropertyBool AutoColor;
     App::PropertyString EditingWorkbench;
     SketcherGui::PropertyVisualLayerList VisualLayerList;
     //@}
@@ -528,7 +531,7 @@ public:
     /** @name handler control */
     //@{
     /// sets an DrawSketchHandler in control
-    void activateHandler(DrawSketchHandler* newHandler);
+    void activateHandler(std::unique_ptr<DrawSketchHandler> newHandler);
     /// removes the active handler
     void purgeHandler();
     //@}
@@ -656,6 +659,9 @@ public:
     {
         return nullptr;
     }
+    /// is called when the provider is in edit and a "Select All" command was issued
+    /// Provider shall return 'false' is it ignores the command, 'true' otherwise
+    bool selectAll() override;
     /// is called by the tree if the user double clicks on the object
     bool doubleClicked() override;
     /// is called when the Provider is in edit and the mouse is moved
@@ -741,6 +747,7 @@ protected:
     //@{
     void slotUndoDocument(const Gui::Document&);
     void slotRedoDocument(const Gui::Document&);
+    void slotSolverUpdate();
     void forceUpdateData();
     //@}
 
@@ -749,6 +756,10 @@ protected:
     /// get called by the container whenever a property has been changed
     void onChanged(const App::Property* prop) override;
     //@}
+
+    /// hook after property restoring to change some property statuses
+    void startRestoring() override;
+    void finishRestoring() override;
 
 private:
     /// function to handle OCCT BSpline weight calculation singularities and representation
@@ -804,7 +815,8 @@ private:
     //@{
     /// moves a selected constraint
     void moveConstraint(int constNum, const Base::Vector2d& toPos);
-    void moveAngleConstraint(int constNum, const Base::Vector2d& toPos);
+    void moveConstraint(Sketcher::Constraint*, int constNum, const Base::Vector2d& toPos);
+    void moveAngleConstraint(Sketcher::Constraint*, int constNum, const Base::Vector2d& toPos);
 
     /// returns whether the sketch is in edit mode.
     bool isInEditMode() const;
@@ -830,6 +842,9 @@ private:
     bool constraintHasExpression(int constrid) const;
 
     const std::vector<Sketcher::Constraint*> getConstraints() const;
+    /// gets the corresponding constraint to the given \a constid
+    /// or null if it doesn't exist.
+    Sketcher::Constraint* getConstraint(int constid) const;
 
     // gets the list of geometry of the sketchobject or of the solver instance
     const GeoList getGeoList() const;
@@ -912,6 +927,7 @@ private:
 private:
     boost::signals2::connection connectUndoDocument;
     boost::signals2::connection connectRedoDocument;
+    boost::signals2::connection connectSolverUpdate;
 
     // modes while sketching
     SketchMode Mode;

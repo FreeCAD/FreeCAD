@@ -33,11 +33,9 @@ import FreeCAD
 from FreeCAD import Console
 
 
-def get_FemMeshObjectMeshGroups(
-    fem_mesh_obj
-):
+def get_FemMeshObjectMeshGroups(fem_mesh_obj):
     """
-        Get mesh groups from mesh.
+    Get mesh groups from mesh.
     """
     # this method is not really needed. It is used in Fenics mesh only.
     # there was an exception handling if there was no Group property, but
@@ -47,16 +45,14 @@ def get_FemMeshObjectMeshGroups(
     return fem_mesh_obj.FemMesh.Groups
 
 
-def get_FemMeshObjectOrder(
-    fem_mesh_obj
-):
+def get_FemMeshObjectOrder(fem_mesh_obj):
     """
-        Gets element order. Element order counting based on number of nodes on
-        edges. Edge with 2 nodes -> linear elements, Edge with 3 nodes ->
-        quadratic elements, and so on. No edges in mesh -> not determined.
-        (Is this possible? Seems to be a very degenerate case.)
-        If there are edges with different number of nodes appearing, return
-        list of orders.
+    Gets element order. Element order counting based on number of nodes on
+    edges. Edge with 2 nodes -> linear elements, Edge with 3 nodes ->
+    quadratic elements, and so on. No edges in mesh -> not determined.
+    (Is this possible? Seems to be a very degenerate case.)
+    If there are edges with different number of nodes appearing, return
+    list of orders.
     """
     presumable_order = None
 
@@ -78,11 +74,9 @@ def get_FemMeshObjectOrder(
     return presumable_order
 
 
-def get_FemMeshObjectDimension(
-    fem_mesh_obj
-):
-    """ Count all entities in an abstract sense, to distinguish which dimension the mesh is
-        (i.e. linemesh, facemesh, volumemesh)
+def get_FemMeshObjectDimension(fem_mesh_obj):
+    """Count all entities in an abstract sense, to distinguish which dimension the mesh is
+    (i.e. linemesh, facemesh, volumemesh)
     """
     dim = None
 
@@ -98,21 +92,28 @@ def get_FemMeshObjectDimension(
     return dim
 
 
-def get_FemMeshObjectElementTypes(
-    fem_mesh_obj,
-    remove_zero_element_entries=True
-):
+def get_FemMeshObjectElementTypes(fem_mesh_obj, remove_zero_element_entries=True):
     """
-        Spit out all elements in the mesh with their appropriate dimension.
+    Spit out all elements in the mesh with their appropriate dimension.
     """
     FreeCAD_element_names_dims = {
-        "Node": 0, "Edge": 1, "Hexa": 3, "Polygon": 2, "Polyhedron": 3,
-        "Prism": 3, "Pyramid": 3, "Quadrangle": 2, "Tetra": 3, "Triangle": 2}
+        "Node": 0,
+        "Edge": 1,
+        "Hexa": 3,
+        "Polygon": 2,
+        "Polyhedron": 3,
+        "Prism": 3,
+        "Pyramid": 3,
+        "Quadrangle": 2,
+        "Tetra": 3,
+        "Triangle": 2,
+    }
 
     eval_dict = locals()  # to access local variables from eval
-    elements_list_with_zero = [(
-        eval("fem_mesh_obj.FemMesh." + s + "Count", eval_dict), s, d
-    ) for (s, d) in FreeCAD_element_names_dims.items()]
+    elements_list_with_zero = [
+        (eval("fem_mesh_obj.FemMesh." + s + "Count", eval_dict), s, d)
+        for (s, d) in FreeCAD_element_names_dims.items()
+    ]
     # ugly but necessary
     if remove_zero_element_entries:
         elements_list = [(num, s, d) for (num, s, d) in elements_list_with_zero if num > 0]
@@ -122,22 +123,18 @@ def get_FemMeshObjectElementTypes(
     return elements_list
 
 
-def get_MaxDimElementFromList(
-    elem_list
-):
+def get_MaxDimElementFromList(elem_list):
     """
-        Gets element with the maximal dimension in the mesh to determine cells.
+    Gets element with the maximal dimension in the mesh to determine cells.
     """
     elem_list.sort(key=lambda t: t[2])
     return elem_list[-1]
 
 
-def make_femmesh(
-    mesh_data
-):
-    """ makes an FreeCAD FEM Mesh object from FEM Mesh data
-    """
+def make_femmesh(mesh_data):
+    """makes an FreeCAD FEM Mesh object from FEM Mesh data"""
     import Fem
+
     mesh = Fem.FemMesh()
     m = mesh_data
     if ("Nodes" in m) and (len(m["Nodes"]) > 0):
@@ -181,15 +178,54 @@ def make_femmesh(
             elms_penta15 = m["Penta15Elem"]
             for i in elms_penta15:
                 e = elms_penta15[i]
-                mesh.addVolume([e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7], e[8], e[9],
-                                e[10], e[11], e[12], e[13], e[14]], i)
+                mesh.addVolume(
+                    [
+                        e[0],
+                        e[1],
+                        e[2],
+                        e[3],
+                        e[4],
+                        e[5],
+                        e[6],
+                        e[7],
+                        e[8],
+                        e[9],
+                        e[10],
+                        e[11],
+                        e[12],
+                        e[13],
+                        e[14],
+                    ],
+                    i,
+                )
             elms_hexa20 = m["Hexa20Elem"]
             for i in elms_hexa20:
                 e = elms_hexa20[i]
-                mesh.addVolume([
-                    e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7], e[8], e[9],
-                    e[10], e[11], e[12], e[13], e[14], e[15], e[16], e[17], e[18], e[19]
-                ], i)
+                mesh.addVolume(
+                    [
+                        e[0],
+                        e[1],
+                        e[2],
+                        e[3],
+                        e[4],
+                        e[5],
+                        e[6],
+                        e[7],
+                        e[8],
+                        e[9],
+                        e[10],
+                        e[11],
+                        e[12],
+                        e[13],
+                        e[14],
+                        e[15],
+                        e[16],
+                        e[17],
+                        e[18],
+                        e[19],
+                    ],
+                    i,
+                )
             elms_tria3 = m["Tria3Elem"]
             for i in elms_tria3:
                 e = elms_tria3[i]
@@ -215,27 +251,25 @@ def make_femmesh(
                 e = elms_seg3[i]
                 mesh.addEdge([e[0], e[1], e[2]], i)
             Console.PrintLog(
-                "imported mesh: {} nodes, {} HEXA8, {} PENTA6, {} TETRA4, {} TETRA10, {} PENTA15\n"
-                .format(
+                "imported mesh: {} nodes, {} HEXA8, {} PENTA6, {} TETRA4, {} TETRA10, {} PENTA15\n".format(
                     len(nds),
                     len(elms_hexa8),
                     len(elms_penta6),
                     len(elms_tetra4),
                     len(elms_tetra10),
-                    len(elms_penta15)
+                    len(elms_penta15),
                 )
             )
             Console.PrintLog(
                 "imported mesh: {} "
-                "HEXA20, {} TRIA3, {} TRIA6, {} QUAD4, {} QUAD8, {} SEG2, {} SEG3\n"
-                .format(
+                "HEXA20, {} TRIA3, {} TRIA6, {} QUAD4, {} QUAD8, {} SEG2, {} SEG3\n".format(
                     len(elms_hexa20),
                     len(elms_tria3),
                     len(elms_tria6),
                     len(elms_quad4),
                     len(elms_quad8),
                     len(elms_seg2),
-                    len(elms_seg3)
+                    len(elms_seg3),
                 )
             )
         else:
@@ -245,9 +279,7 @@ def make_femmesh(
     return mesh
 
 
-def make_dict_from_femmesh(
-    femmesh
-):
+def make_dict_from_femmesh(femmesh):
     """
     Converts FemMesh into dictionary structure which can immediately used
     from importToolsFem.make_femmesh(mesh_data) to create a valid FEM mesh.
@@ -277,14 +309,7 @@ def make_dict_from_femmesh(
 
     len_to_edge = {2: seg2, 3: seg3}
     len_to_face = {3: tri3, 6: tri6, 4: quad4, 8: quad8}
-    len_to_volume = {
-        4: tet4,
-        10: tet10,
-        8: hex8,
-        20: hex20,
-        6: pent6,
-        15: pent15
-    }
+    len_to_volume = {4: tet4, 10: tet10, 8: hex8, 20: hex20, 6: pent6, 15: pent15}
 
     # analyze edges
 
@@ -305,42 +330,31 @@ def make_dict_from_femmesh(
         len_to_volume[len(t)].append((v, t))
 
     mesh_data = {
-        "Nodes": dict([(k, (v.x, v.y, v.z))
-                       for (k, v) in femmesh.Nodes.items()]),
+        "Nodes": {k: (v.x, v.y, v.z) for (k, v) in femmesh.Nodes.items()},
         "Seg2Elem": dict(seg2),
         "Seg3Elem": dict(seg3),
-
         "Tria3Elem": dict(tri3),
         "Tria6Elem": dict(tri6),
         "Quad4Elem": dict(quad4),
         "Quad8Elem": dict(quad8),
-
         "Tetra4Elem": dict(tet4),
         "Tetra10Elem": dict(tet10),
         "Hexa8Elem": dict(hex8),
         "Hexa20Elem": dict(hex20),
         "Penta6Elem": dict(pent6),
         "Penta15Elem": dict(pent15),
-
-        "Groups": dict([(
-            group_num, (
-                femmesh.getGroupName(group_num),
-                femmesh.getGroupElements(group_num)
-            )
-        ) for group_num in femmesh.Groups])
-
+        "Groups": {
+            group_num: (femmesh.getGroupName(group_num), femmesh.getGroupElements(group_num))
+            for group_num in femmesh.Groups
+        },
     }
     # no pyr5, pyr13?
     # no groups?
     return mesh_data
 
 
-def fill_femresult_mechanical(
-    res_obj,
-    result_set
-):
-    """ fills a FreeCAD FEM mechanical result object with result data
-    """
+def fill_femresult_mechanical(res_obj, result_set):
+    """fills a FreeCAD FEM mechanical result object with result data"""
     if "number" in result_set:
         eigenmode_number = result_set["number"]
     else:
@@ -350,6 +364,7 @@ def fill_femresult_mechanical(
         step_time = result_set["time"]
         step_time = round(step_time, 2)
 
+    disp = None
     # if disp exists, fill res_obj.NodeNumbers and
     # res_obj.DisplacementVectors as well as stress and strain
     # furthermore the eigenmode number
@@ -430,26 +445,34 @@ def fill_femresult_mechanical(
         if eigenmode_number > 0:
             res_obj.Eigenmode = eigenmode_number
 
-        # it is assumed Temperature can not exist without disp
-        # TODO really proof this
-        # if temperature can exist without disp:
-        # move them out of disp if conditiona and set NodeNumbers
-        if "temp" in result_set:
-            Temperature = result_set["temp"]
-            if len(Temperature) > 0:
-                if len(Temperature.values()) != len(disp.values()):
-                    Temp = []
-                    Temp_extra_nodes = list(Temperature.values())
-                    nodes = len(disp.values())
-                    for i in range(nodes):
-                        # how is this possible? An example is needed!
-                        Console.PrintError("Temperature seams to have exptra nodes.\n")
-                        Temp_value = Temp_extra_nodes[i]
-                        Temp.append(Temp_value)
-                    res_obj.Temperature = list(map((lambda x: x), Temp))
-                else:
-                    res_obj.Temperature = list(map((lambda x: x), Temperature.values()))
-                res_obj.Time = step_time
+    # it is assumed Temperature can not exist without disp
+    # TODO really proof this
+    # if temperature can exist without disp:
+    # move them out of disp if conditiona and set NodeNumbers
+    if "temp" in result_set:
+        Temperature = result_set["temp"]
+        if len(Temperature) > 0:
+            if disp is None:
+                res_obj.Temperature = list(Temperature.values())
+                res_obj.NodeNumbers = list(Temperature.keys())
+            elif len(Temperature.values()) != len(disp.values()):
+                Temp = []
+                Temp_extra_nodes = list(Temperature.values())
+                nodes = len(disp.values())
+                for i in range(nodes):
+                    # how is this possible? An example is needed!
+                    Console.PrintError("Temperature seems to have extra nodes.\n")
+                    Temp_value = Temp_extra_nodes[i]
+                    Temp.append(Temp_value)
+                res_obj.Temperature = list(map((lambda x: x), Temp))
+            else:
+                res_obj.Temperature = list(map((lambda x: x), Temperature.values()))
+            res_obj.Time = step_time
+
+    if "heatflux" in result_set:
+        HeatFlux = result_set["heatflux"]
+        if HeatFlux:
+            res_obj.HeatFlux = list(map((lambda x: x), HeatFlux.values()))
 
     # fill res_obj.MassFlow
     if "mflow" in result_set:

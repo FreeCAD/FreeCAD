@@ -37,14 +37,16 @@ def get_information():
         "meshtype": "edge",
         "meshelement": "Seg2",
         "constraints": ["fixed", "force"],
-        "solvers": ["calculix", "ccxtools", "mystran"],
+        "solvers": ["ccxtools", "mystran"],
         "material": "solid",
-        "equations": ["mechanical"]
+        "equations": ["mechanical"],
     }
 
 
 def get_explanation(header=""):
-    return header + """
+    return (
+        header
+        + """
 
 To run the example from Python console use:
 from femexamples.ccx_cantilever_ele_seg2 import setup
@@ -57,6 +59,7 @@ https://forum.freecad.org/viewtopic.php?f=18&t=16044
 CalculiX cantilever modeled with seg2 beam elements
 
 """
+    )
 
 
 def setup(doc=None, solvertype="ccxtools"):
@@ -76,6 +79,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # load the seg2 mesh
     from .meshes.mesh_canticcx_seg2 import create_nodes, create_elements
+
     new_fem_mesh = Fem.FemMesh()
     control = create_nodes(new_fem_mesh)
     if not control:
@@ -88,7 +92,7 @@ def setup(doc=None, solvertype="ccxtools"):
     femmesh_obj.FemMesh = new_fem_mesh
 
     # set mesh obj parameter
-    femmesh_obj.Part = geom_obj
+    femmesh_obj.Shape = geom_obj
     femmesh_obj.SecondOrderLinear = False
     femmesh_obj.ElementDimension = "1D"
     femmesh_obj.ElementOrder = "1st"

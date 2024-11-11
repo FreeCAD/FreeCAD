@@ -29,70 +29,64 @@
 
 class Ui_TaskMirroredParameters;
 
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
 }
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
 class TaskMultiTransformParameters;
 
-class TaskMirroredParameters : public TaskTransformedParameters
+class TaskMirroredParameters: public TaskTransformedParameters
 {
     Q_OBJECT
 
 public:
     /// Constructor for task with ViewProvider
-    explicit TaskMirroredParameters(ViewProviderTransformed *TransformedView, QWidget *parent = nullptr);
+    explicit TaskMirroredParameters(ViewProviderTransformed* TransformedView,
+                                    QWidget* parent = nullptr);
     /// Constructor for task with parent task (MultiTransform mode)
-    TaskMirroredParameters(TaskMultiTransformParameters *parentTask, QLayout *layout);
+    TaskMirroredParameters(TaskMultiTransformParameters* parentTask, QWidget* parameterWidget);
 
     ~TaskMirroredParameters() override;
 
-    void getMirrorPlane(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
-
     void apply() override;
+
+protected:
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
 private Q_SLOTS:
     void onPlaneChanged(int num);
-    void onUpdateView(bool) override;
-    void onFeatureDeleted() override;
-
-protected:
-    void addObject(App::DocumentObject*) override;
-    void removeObject(App::DocumentObject*) override;
-    void changeEvent(QEvent *e) override;
-    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
-    void clearButtons() override;
+    void onUpdateView(bool /*unused*/) override;
 
 private:
-    void setupUI();
+    void setupParameterUI(QWidget* widget) override;
+    void retranslateParameterUI(QWidget* widget) override;
     void updateUI();
-    ComboLinks planeLinks;
+    void getMirrorPlane(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
 
 private:
+    ComboLinks planeLinks;
     std::unique_ptr<Ui_TaskMirroredParameters> ui;
 };
 
 
 /// simulation dialog for the TaskView
-class TaskDlgMirroredParameters : public TaskDlgTransformedParameters
+class TaskDlgMirroredParameters: public TaskDlgTransformedParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgMirroredParameters(ViewProviderMirrored *MirroredView);
-    ~TaskDlgMirroredParameters() override = default;
-
-public:
-    /// is called by the framework if the dialog is accepted (Ok)
-    bool accept() override;
+    explicit TaskDlgMirroredParameters(ViewProviderMirrored* MirroredView);
 };
 
-} //namespace PartDesignGui
+}  // namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

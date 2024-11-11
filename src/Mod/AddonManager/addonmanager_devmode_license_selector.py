@@ -75,23 +75,23 @@ class LicenseSelector:
             "The 3-Clause BSD License",
             "https://opensource.org/licenses/BSD-3-Clause",
         ),
-        "CC0v1": (
+        "CC0-1.0": (
             "No Rights Reserved/Public Domain",
             "https://creativecommons.org/choose/zero/",
         ),
-        "GPLv2": (
+        "GPL-2.0-or-later": (
             "GNU General Public License version 2",
             "https://opensource.org/licenses/GPL-2.0",
         ),
-        "GPLv3": (
+        "GPL-3.0-or-later": (
             "GNU General Public License version 3",
             "https://opensource.org/licenses/GPL-3.0",
         ),
-        "LGPLv2.1": (
+        "LGPL-2.1-or-later": (
             "GNU Lesser General Public License version 2.1",
             "https://opensource.org/licenses/LGPL-2.1",
         ),
-        "LGPLv3": (
+        "LGPL-3.0-or-later": (
             "GNU Lesser General Public License version 3",
             "https://opensource.org/licenses/LGPL-3.0",
         ),
@@ -129,7 +129,7 @@ class LicenseSelector:
         self.dialog.createButton.clicked.connect(self._create_clicked)
 
         # Set up the first selection to whatever the user chose last time
-        short_code = self.pref.GetString("devModeLastSelectedLicense", "LGPLv2.1")
+        short_code = self.pref.GetString("devModeLastSelectedLicense", "LGPL-2.1-or-later")
         self.set_license(short_code)
 
     def exec(self, short_code: str = None, license_path: str = "") -> Optional[Tuple[str, str]]:

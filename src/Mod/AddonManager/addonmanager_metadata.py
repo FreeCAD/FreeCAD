@@ -30,6 +30,9 @@ from dataclasses import dataclass, field
 from enum import IntEnum, auto
 from typing import Tuple, Dict, List, Optional
 
+from addonmanager_licenses import get_license_manager
+import addonmanager_freecad_interface as fci
+
 try:
     # If this system provides a secure parser, use that:
     import defusedxml.ElementTree as ET
@@ -315,7 +318,10 @@ class MetadataReader:
     @staticmethod
     def _parse_license(child: ET.Element) -> License:
         file = child.attrib["file"] if "file" in child.attrib else ""
-        return License(name=child.text, file=file)
+        license_id = child.text
+        lm = get_license_manager()
+        license_id = lm.normalize(license_id)
+        return License(name=license_id, file=file)
 
     @staticmethod
     def _parse_url(child: ET.Element) -> Url:

@@ -27,7 +27,7 @@ __url__ = "https://www.freecad.org"
 
 
 def get_analysis_types():
-    return "all"    # write for all analysis types
+    return "all"  # write for all analysis types
 
 
 def get_sets_name():
@@ -55,17 +55,26 @@ def get_after_write_constraint():
 
 
 def write_meshdata_constraint(f, femobj, sectionprint_obj, ccxwriter):
-    f.write("*SURFACE, NAME=SECTIONFACE{}\n".format(sectionprint_obj.Name))
+    f.write(f"*SURFACE, NAME=SECTIONFACE{sectionprint_obj.Name}\n")
     for i in femobj["SectionPrintFaces"]:
-        f.write("{},S{}\n".format(i[0], i[1]))
+        f.write(f"{i[0]},S{i[1]}\n")
 
 
 def write_constraint(f, femobj, sectionprint_obj, ccxwriter):
 
     # floats read from ccx should use {:.13G}, see comment in writer module
 
+    variable = sectionprint_obj.Variable
+    if variable == "Section Force":
+        key = "SOF, SOM, SOAREA"
+    elif variable == "Heat Flux":
+        key = "FLUX"
+    elif variable == "Drag Stress":
+        key = "DRAG"
+
     f.write(
-        "*SECTION PRINT, SURFACE=SECTIONFACE{}, NAME=SECTIONPRINT{}\n"
-        .format(sectionprint_obj.Name, sectionprint_obj.Name)
+        "*SECTION PRINT, SURFACE=SECTIONFACE{}, NAME=SECTIONPRINT{}\n".format(
+            sectionprint_obj.Name, sectionprint_obj.Name
+        )
     )
-    f.write("SOF, SOM, SOAREA\n")
+    f.write(key + "\n")

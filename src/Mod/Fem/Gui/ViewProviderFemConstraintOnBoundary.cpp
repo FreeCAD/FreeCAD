@@ -23,8 +23,9 @@
 
 #include "PreCompiled.h"
 
-#include "Mod/Fem/App/FemConstraint.h"
 #include <Gui/Application.h>
+#include "Mod/Fem/App/FemConstraint.h"
+#include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/Gui/ReferenceHighlighter.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 
@@ -69,10 +70,10 @@ void ViewProviderFemConstraintOnBoundary::highlightReferences(const bool on)
                 std::vector<App::Color> colors = originalPointColors[base];
 
                 // go through the subelements with constraint and recolor them
-                // TODO: Replace `ShapeColor` with anything more appropriate
-                PartGui::ReferenceHighlighter highlighter(base->Shape.getValue(),
-                                                          colors.empty() ? ShapeColor.getValue()
-                                                                         : colors[0]);
+                // TODO: Replace `ShapeAppearance` with anything more appropriate
+                PartGui::ReferenceHighlighter highlighter(
+                    base->Shape.getValue(),
+                    colors.empty() ? ShapeAppearance.getDiffuseColor() : colors[0]);
                 highlighter.getVertexColors(subSet.second, colors);
                 vp->PointColorArray.setValues(colors);
             }
@@ -84,27 +85,27 @@ void ViewProviderFemConstraintOnBoundary::highlightReferences(const bool on)
                 std::vector<App::Color> colors = originalLineColors[base];
 
                 // go through the subelements with constraint and recolor them
-                // TODO: Replace `ShapeColor` with anything more appropriate
-                PartGui::ReferenceHighlighter highlighter(base->Shape.getValue(),
-                                                          colors.empty() ? ShapeColor.getValue()
-                                                                         : colors[0]);
+                // TODO: Replace `ShapeAppearance` with anything more appropriate
+                PartGui::ReferenceHighlighter highlighter(
+                    base->Shape.getValue(),
+                    colors.empty() ? ShapeAppearance.getDiffuseColor() : colors[0]);
                 highlighter.getEdgeColors(subSet.second, colors);
                 vp->LineColorArray.setValues(colors);
             }
             else if (subSet.second[0].find("Face") != std::string::npos) {
                 // make sure original colors are remembered
                 if (originalFaceColors[base].empty()) {
-                    originalFaceColors[base] = vp->DiffuseColor.getValues();
+                    originalFaceColors[base] = vp->ShapeAppearance.getDiffuseColors();
                 }
                 std::vector<App::Color> colors = originalFaceColors[base];
 
                 // go through the subelements with constraint and recolor them
-                // TODO: Replace `FaceColor` with anything more appropriate
-                PartGui::ReferenceHighlighter highlighter(base->Shape.getValue(),
-                                                          colors.empty() ? FaceColor.getValue()
-                                                                         : colors[0]);
+                // TODO: Replace shape DiffuseColor with anything more appropriate
+                PartGui::ReferenceHighlighter highlighter(
+                    base->Shape.getValue(),
+                    colors.empty() ? ShapeAppearance.getDiffuseColor() : colors[0]);
                 highlighter.getFaceColors(subSet.second, colors);
-                vp->DiffuseColor.setValues(colors);
+                vp->ShapeAppearance.setDiffuseColors(colors);
             }
         }
         else {
@@ -117,7 +118,7 @@ void ViewProviderFemConstraintOnBoundary::highlightReferences(const bool on)
                 originalLineColors[base].clear();
             }
             else if (!originalFaceColors[base].empty()) {
-                vp->DiffuseColor.setValues(originalFaceColors[base]);
+                vp->ShapeAppearance.setDiffuseColors(originalFaceColors[base]);
                 originalFaceColors[base].clear();
             }
         }
@@ -164,7 +165,7 @@ void ViewProviderFemConstraintOnBoundary::highlightReferences(const bool on)
                 continue;
             }
 
-            vp->DiffuseColor.setValues(ogPair.second);
+            vp->ShapeAppearance.setDiffuseColors(ogPair.second);
             ogPair.second.clear();
         }
     }

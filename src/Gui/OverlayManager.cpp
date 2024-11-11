@@ -78,7 +78,7 @@ static inline OverlayTabWidget *findTabWidget(QWidget *widget=nullptr, bool filt
         widget = qApp->focusWidget();
     for(auto w=widget; w; w=w->parentWidget()) {
         auto tabWidget = qobject_cast<OverlayTabWidget*>(w);
-        if(tabWidget) 
+        if(tabWidget)
             return tabWidget;
         auto proxy = qobject_cast<OverlayProxyWidget*>(w);
         if(proxy)
@@ -95,7 +95,7 @@ public:
     OverlayStyleSheet() {
         handle = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/MainWindow");
-        
+
         update();
 
         handle->Attach(this);
@@ -136,7 +136,7 @@ public:
 
     ParameterGrp::handle handle;
     QString activeStyleSheet;
-    bool hideTab;
+    bool hideTab = false;
 
 private:
     QString detectOverlayStyleSheetFileName() const {
@@ -146,18 +146,18 @@ private:
         if (overlayStyleSheet.isEmpty()) {
             // User did not choose any stylesheet, we need to choose one based on main stylesheet
             if (mainStyleSheet.contains(QStringLiteral("light"), Qt::CaseInsensitive)) {
-                overlayStyleSheet = QStringLiteral("overlay:Light-Outline.qss");
+                overlayStyleSheet = QStringLiteral("overlay:Light Theme + Dark Background.qss");
             }
             else {
                 // by default FreeCAD uses somewhat dark background for 3D View.
                 // if user has not explicitly selected light theme, the "Dark Outline" looks best
-                overlayStyleSheet = QStringLiteral("overlay:Dark-Outline.qss");
+                overlayStyleSheet = QStringLiteral("overlay:Dark Theme + Dark Background.qss");
             }
         }
         else if (!overlayStyleSheet.isEmpty() && !QFile::exists(overlayStyleSheet)) {
             // User did choose one of predefined stylesheets, we need to qualify it with namespace
-            overlayStyleSheet = QStringLiteral("overlay:%1").arg(overlayStyleSheet);
-        } 
+                overlayStyleSheet = QStringLiteral("overlay:%1").arg(overlayStyleSheet);
+        }
 
         return overlayStyleSheet;
     }
@@ -177,70 +177,7 @@ private:
     static const QString _default;
 };
 
-const QString OverlayStyleSheet::_default = QStringLiteral(
-        "* {alternate-background-color: rgba(250,250,250,120)}"
-
-        "QComboBox, QComboBox:editable, QComboBox:!editable, QLineEdit,"
-        "QTextEdit, QPlainTextEdit, QAbstractSpinBox, QDateEdit, QDateTimeEdit,"
-        "Gui--PropertyEditor--PropertyEditor QLabel "
-            "{background : palette(base);}"
-
-        "QScrollBar { background: rgba(0,0,0,10);}"
-        "QTabWidget::pane { background-color: transparent; border: transparent }"
-        "Gui--OverlayTabWidget { qproperty-effectColor: rgba(0,0,0,0) }"
-        "Gui--OverlayTabWidget::pane { background-color: rgba(250,250,250,80) }"
-
-        "QTabBar {border : none;}"
-        "QTabBar::tab {color: palette(text);"
-                        "background-color: rgba(100,100,100,50);"
-                        "padding: 5px}"
-        "QTabBar::tab:selected {background-color: rgba(250,250,250,80);}"
-        "QTabBar::tab:hover {background-color: rgba(250,250,250,200);}"
-
-        "QHeaderView { background:transparent }"
-        "QHeaderView::section {color: palette(text);"
-                                "background-color: rgba(250,250,250,50);"
-                                "border: 1px solid palette(dark);"
-                                "padding: 2px}"
-
-        "QTreeView, QListView, QTableView {"
-                    "background: rgb(250,250,250);"
-                    "border: transparent;"
-                    "selection-background-color: rgba(94, 144, 250, 0.7);}"
-        "QListView::item:selected, QTreeView::item:selected {"
-                    "background-color: rgba(94, 144, 250, 0.7);}"
-
-        "Gui--PropertyEditor--PropertyEditor {"
-                    "border: 1px solid palette(dark);"
-                    "qproperty-groupTextColor: rgb(100, 100, 100);"
-                    "qproperty-groupBackground: rgba(180, 180, 180, 0.7);}"
-
-        "QToolTip {background-color: rgba(250,250,250,180);}"
-
-        "Gui--TreeWidget QHeaderView:section {"
-                    "height: 0px;"
-                    "background-color: transparent;"
-                    "padding: 0px;"
-                    "border: transparent;}"
-
-        "Gui--CallTipsList::item { background-color: rgba(200,200,200,200);}"
-        "Gui--CallTipsList::item::selected { background-color: palette(highlight);}"
-
-        "QPushButton { background: rgba(250,250,250,80);padding: 2px 4px;}"
-        "QPushButton::hover { background: rgba(250,250,250,200);}"
-        "QPushButton::focus { background: rgba(250,250,250,255);}"
-        "QPushButton::pressed { background-color: #5e90fa;"
-                                    "border: 1px inset palette(dark) }"
-        "QPushButton::checked { background: rgba(100,100,100,100);"
-                                    "border: 1px inset palette(dark) }"
-        "QPushButton::checked:hover { background: rgba(150,150,150,200);"
-                                            "border: 1px inset palette(dark) }"
-        "Gui--OverlayToolButton { background: transparent; padding: 0px; border: none }"
-        "Gui--OverlayTitleBar,"
-        "Gui--OverlaySplitterHandle { background-color: rgba(200, 200, 200, 150); }"
-        "QWidget#ClippingScrollAreaContents, "
-        "QScrollArea#ClippingScrollArea { border: none; background-color: #a0e6e6e6; }"
-        "Gui--PropertyEditor--PropertyEditor > QWidget > QPushButton {text-align:left;padding-left:2px;}"
+const QString OverlayStyleSheet::_default = QStringLiteral("overlay:Light Theme + Dark Background.qss"
     );
 
 // -----------------------------------------------------------
@@ -270,7 +207,7 @@ struct OverlayInfo {
                 if (hGrp == Param && Name && !tabWidget->isSaving()) {
                     // This will prevent saving settings which will mess up the
                     // just restored ones
-                    tabWidget->restore(nullptr); 
+                    tabWidget->restore(nullptr);
                     OverlayManager::instance()->reload();
                 }
             });
@@ -411,7 +348,7 @@ public:
         ,_overlayInfos({&_left,&_right,&_top,&_bottom})
         ,_actions({&_actOverlay,&_actFloat,&_actClose})
     {
-        _Overlays = {OverlayTabWidget::_LeftOverlay, 
+        _Overlays = {OverlayTabWidget::_LeftOverlay,
                      OverlayTabWidget::_RightOverlay,
                      OverlayTabWidget::_TopOverlay,
                      OverlayTabWidget::_BottomOverlay};
@@ -465,9 +402,9 @@ public:
 
     void refreshIcons()
     {
-        _actFloat.setIcon(BitmapFactory().pixmap("qss:overlay/float.svg"));
-        _actOverlay.setIcon(BitmapFactory().pixmap("qss:overlay/overlay.svg"));
-        _actClose.setIcon(BitmapFactory().pixmap("qss:overlay/close.svg"));
+        _actFloat.setIcon(BitmapFactory().pixmap("qss:overlay/icons/float.svg"));
+        _actOverlay.setIcon(BitmapFactory().pixmap("qss:overlay/icons/overlay.svg"));
+        _actClose.setIcon(BitmapFactory().pixmap("qss:overlay/icons/close.svg"));
         for (OverlayTabWidget *tabWidget : _Overlays) {
             tabWidget->refreshIcons();
             for (auto handle : tabWidget->findChildren<OverlaySplitterHandle*>())
@@ -610,7 +547,7 @@ public:
                     updateFocus = true;
                 else if(o->tabWidget == active)
                     updateActive = true;
-                else 
+                else
                     o->tabWidget->setOverlayMode(true);
             }
             if(!o->tabWidget->getRevealTime().isNull()) {
@@ -628,12 +565,12 @@ public:
                 focus->raise();
                 if(reveal == focus)
                     reveal = nullptr;
-            } else 
+            } else
                 focus->updateSplitterHandles();
         }
 
         if(active) {
-            if(active != focus && (active->isOverlaid(OverlayTabWidget::QueryOption::TransparencyChanged) || updateActive)) 
+            if(active != focus && (active->isOverlaid(OverlayTabWidget::QueryOption::TransparencyChanged) || updateActive))
                 active->setOverlayMode(false);
             active->raise();
             if(reveal == active)
@@ -646,7 +583,7 @@ public:
         }
 
         for(auto o : _overlayInfos) {
-            if(o->tabWidget != focus 
+            if(o->tabWidget != focus
                     && o->tabWidget != active
                     && o->tabWidget != reveal
                     && o->tabWidget->count()
@@ -703,7 +640,7 @@ public:
         _bottom.tabWidget->setRect(QRect(ofs.width(),h-rect.height(),bw,rect.height()));
 
         if (_bottom.tabWidget->count()
-                && _bottom.tabWidget->isVisible() 
+                && _bottom.tabWidget->isVisible()
                 && _bottom.tabWidget->getState() <= OverlayTabWidget::State::Normal)
             rectBottom = _bottom.tabWidget->getRect();
 
@@ -722,7 +659,7 @@ public:
         _left.tabWidget->setRect(QRect(ofs.height(),ofs.width(),rect.width(),lh));
 
         if (_left.tabWidget->count()
-                && _left.tabWidget->isVisible() 
+                && _left.tabWidget->isVisible()
                 && _left.tabWidget->getState() <= OverlayTabWidget::State::Normal)
             rectLeft = _left.tabWidget->getRect();
 
@@ -742,7 +679,7 @@ public:
         _right.tabWidget->setRect(QRect(w-rect.width(),ofs.width(),rect.width(),rh));
 
         if (_right.tabWidget->count()
-                && _right.tabWidget->isVisible() 
+                && _right.tabWidget->isVisible()
                 && _right.tabWidget->getState() <= OverlayTabWidget::State::Normal)
             rectRight = _right.tabWidget->getRect();
 
@@ -989,11 +926,23 @@ public:
     {
         OverlayTitleBar *widget = new OverlayTitleBar(parent);
         widget->setObjectName(QStringLiteral("OverlayTitle"));
+
         QList<QAction*> actions;
         if (auto tabWidget = qobject_cast<OverlayTabWidget*>(parent))
             actions = tabWidget->actions();
+        else if (auto dockWidget = qobject_cast<QDockWidget*>(parent))
+        {
+            const QDockWidget::DockWidgetFeatures features = dockWidget->features();
+
+            actions.append(&_actOverlay);
+            if (features.testFlag(QDockWidget::DockWidgetFloatable))
+                actions.append(&_actFloat);
+            if (features.testFlag(QDockWidget::DockWidgetClosable))
+                actions.append(&_actClose);
+        }
         else
             actions = _actions;
+
         widget->setTitleItem(OverlayTabWidget::prepareTitleWidget(widget, actions));
         return widget;
     }
@@ -1018,7 +967,7 @@ public:
                         dock->show();
                         dock->setFloating(true);
                         refresh();
-                    } else 
+                    } else
                         dock->setFloating(!dock->isFloating());
                 }
                 return;
@@ -1208,7 +1157,7 @@ public:
                                 resizeOffset = -1;
                                 ++i;
                             }
-                            else 
+                            else
                                 rect.setHeight(size/2);
                         }
                         else if (pos.x() > pt.x() + size/2) {
@@ -1229,7 +1178,7 @@ public:
         OverlayTabWidget *dst = nullptr;
         int dstIndex = -1;
         QDockWidget *dstDock = nullptr;
-        Qt::DockWidgetArea dstDockArea;
+        Qt::DockWidgetArea dstDockArea {};
 
         if (!tabWidget) {
             rect = QRect(pos - dragOffset, dragSize);
@@ -1468,7 +1417,7 @@ public:
 
     void unregisterDockWidget(const QString &name, OverlayTabWidget *widget) {
         auto it = _dockWidgetNameMap.find(name);
-        if (it != _dockWidgetNameMap.end() && it->second == widget) 
+        if (it != _dockWidgetNameMap.end() && it->second == widget)
             _dockWidgetNameMap.erase(it);
     }
 
@@ -1528,6 +1477,8 @@ void OverlayManager::initDockWidget(QDockWidget *dw)
             this, &OverlayManager::onToggleDockWidget);
     QObject::connect(dw, &QDockWidget::visibilityChanged,
             this, &OverlayManager::onDockVisibleChange);
+    QObject::connect(dw, &QDockWidget::featuresChanged,
+            this, &OverlayManager::onDockFeaturesChange);
     if (auto widget = dw->widget()) {
         QObject::connect(widget, &QWidget::windowTitleChanged,
                 this, &OverlayManager::onDockWidgetTitleChange);
@@ -1575,6 +1526,25 @@ void OverlayManager::onDockVisibleChange(bool visible)
         return;
     FC_TRACE("dock " << dock->objectName().toUtf8().constData()
             << " visible change " << visible << ", " << dock->isVisible());
+}
+
+void OverlayManager::onDockFeaturesChange(QDockWidget::DockWidgetFeatures features)
+{
+    Q_UNUSED(features);
+
+    auto dw = qobject_cast<QDockWidget*>(sender());
+
+    if (!dw) {
+        return;
+    }
+
+    // Rebuild the title widget as it may have a different set of buttons shown.
+    if (auto *titleBarWidget = qobject_cast<OverlayTitleBar*>(dw->titleBarWidget())) {
+        dw->setTitleBarWidget(nullptr);
+        delete titleBarWidget;
+    }
+
+    setupTitleBar(dw);
 }
 
 void OverlayManager::onTaskViewUpdate()
@@ -1758,8 +1728,8 @@ bool OverlayManager::eventFilter(QObject *o, QEvent *ev)
             if(!isTreeViewDragging())
                 d->interceptEvent(d->_trackingWidget, ev);
             if(isTreeViewDragging()
-                    || ev->type() == QEvent::MouseButtonRelease
-                    || QApplication::mouseButtons() == Qt::NoButton)
+                    || (ev->type() == QEvent::MouseButtonRelease
+                    && QApplication::mouseButtons() == Qt::NoButton))
             {
                 d->_trackingWidget = nullptr;
                 if (d->_trackingOverlay == grabber
@@ -1991,7 +1961,7 @@ void OverlayManager::Private::interceptEvent(QWidget *widget, QEvent *ev)
     case QEvent::ContextMenu: {
         auto ce = static_cast<QContextMenuEvent*>(ev);
         lastIntercept = getChildAt(widget, ce->globalPos());
-        QContextMenuEvent contextMenuEvent(ce->reason(), 
+        QContextMenuEvent contextMenuEvent(ce->reason(),
                                            lastIntercept->mapFromGlobal(ce->globalPos()),
                                            ce->globalPos());
         QApplication::sendEvent(lastIntercept, &contextMenuEvent);

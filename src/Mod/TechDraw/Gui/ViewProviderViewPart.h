@@ -53,12 +53,15 @@ public:
     App::PropertyBool   HorizCenterLine;
     App::PropertyBool   VertCenterLine;
     App::PropertyBool   ShowSectionLine;
+    App::PropertyBool   IncludeCutLine;
     App::PropertyEnumeration   SectionLineStyle;
     App::PropertyColor  SectionLineColor;
     App::PropertyBool   SectionLineMarks;
     App::PropertyEnumeration   HighlightLineStyle;
     App::PropertyColor  HighlightLineColor;
     App::PropertyFloat  HighlightAdjust;
+    App::PropertyEnumeration BreakLineType;
+    App::PropertyEnumeration BreakLineStyle;
     App::PropertyBool   ShowAllEdges;
     App::PropertyColor   FaceColor;
     App::PropertyPercent FaceTransparency;
@@ -77,9 +80,6 @@ public:
 
     std::vector<App::DocumentObject*> claimChildren(void) const override;
     void fixSceneDependencies();
-
-    std::vector<std::string> getSelectedCosmetics(std::vector<std::string> subNames);
-    void deleteCosmeticElements(std::vector<std::string> removables);
 
     TechDraw::DrawViewPart* getViewObject() const override;
     TechDraw::DrawViewPart* getViewPart() const;

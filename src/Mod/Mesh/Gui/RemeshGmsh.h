@@ -82,6 +82,8 @@ private:
 private:
     class Private;
     std::unique_ptr<Private> d;
+
+    Q_DISABLE_COPY_MOVE(GmshWidget)
 };
 
 /**
@@ -105,6 +107,8 @@ protected:
 private:
     class Private;
     std::unique_ptr<Private> d;
+
+    Q_DISABLE_COPY_MOVE(RemeshGmsh)
 };
 
 /**
@@ -131,7 +135,6 @@ public:
 
 private:
     RemeshGmsh* widget;
-    Gui::TaskView::TaskBox* taskbox;
 };
 
 }  // namespace MeshGui

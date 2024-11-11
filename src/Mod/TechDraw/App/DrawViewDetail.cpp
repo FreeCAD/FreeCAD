@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <BRepAlgoAPI_Common.hxx>
+#include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
@@ -294,7 +294,7 @@ void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape3d, DrawViewPart* 
     TopExp_Explorer expl1(copyShape, TopAbs_SOLID);
     for (; expl1.More(); expl1.Next()) {
         const TopoDS_Solid& s = TopoDS::Solid(expl1.Current());
-        BRepAlgoAPI_Common mkCommon(s, tool);
+        FCBRepAlgoAPI_Common mkCommon(s, tool);
         if (!mkCommon.IsDone()) {
             continue;
         }
@@ -313,7 +313,7 @@ void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape3d, DrawViewPart* 
     TopExp_Explorer expl2(copyShape, TopAbs_SHELL, TopAbs_SOLID);
     for (; expl2.More(); expl2.Next()) {
         const TopoDS_Shell& s = TopoDS::Shell(expl2.Current());
-        BRepAlgoAPI_Common mkCommon(s, tool);
+        FCBRepAlgoAPI_Common mkCommon(s, tool);
         if (!mkCommon.IsDone()) {
             continue;
         }
@@ -333,7 +333,7 @@ void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape3d, DrawViewPart* 
     TopExp_Explorer expl3(copyShape, TopAbs_EDGE, TopAbs_FACE);
     for (; expl3.More(); expl3.Next()) {
         const TopoDS_Edge& e = TopoDS::Edge(expl3.Current());
-        BRepAlgoAPI_Common mkCommon(e, tool);
+        FCBRepAlgoAPI_Common mkCommon(e, tool);
         if (!mkCommon.IsDone()) {
             continue;
         }
@@ -435,6 +435,20 @@ TopoDS_Shape DrawViewDetail::projectEdgesOntoFace(TopoDS_Shape& edgeShape, TopoD
     }
 
     return TopoDS_Shape(std::move(edges));
+}
+
+//! given a 3d point, find the corresponding point in this view.
+Base::Vector3d DrawViewDetail::mapPoint3dToDetail(const Base::Vector3d& inPoint) const
+{
+    auto baseObj = BaseView.getValue();
+    auto baseDvp = dynamic_cast<DrawViewPart*>(baseObj);
+    if (!baseDvp) {
+        throw Base::RuntimeError("Detail has no BaseView");
+    }
+    auto pointOnBase = baseDvp->projectPoint(inPoint, false);
+    auto detailCenter = AnchorPoint.getValue();
+    auto pointOnDetail = DU::invertY(pointOnBase - detailCenter);
+    return pointOnDetail;
 }
 
 //we don't want to paint detail highlights on top of detail views,

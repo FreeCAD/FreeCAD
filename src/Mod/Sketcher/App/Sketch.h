@@ -521,7 +521,7 @@ public:
         BSpline = 9
     };
 
-protected:
+private:
     float SolveTime;
     bool RecalculateInitialSolutionWhileMovingPoint;
 
@@ -530,7 +530,7 @@ protected:
     // non-driving constraints)
     bool resolveAfterGeometryUpdated;
 
-protected:
+private:
     /// container element to store and work with the geometric elements of this sketch
     struct GeoDef
     {
@@ -712,11 +712,22 @@ public:
         GCSsys.DL_tolfRedundant = val;
     }
 
-protected:
+private:
     GCS::DebugMode debugMode;
 
 private:
     bool updateGeometry();
+    void tryUpdateGeometry();
+    void updateGeometry(const GeoDef&);
+    void updatePoint(const GeoDef&);
+    void updateLineSegment(const GeoDef&);
+    void updateArcOfCircle(const GeoDef&);
+    void updateArcOfEllipse(const GeoDef&);
+    void updateArcOfHyperbola(const GeoDef&);
+    void updateArcOfParabola(const GeoDef&);
+    void updateCircle(const GeoDef&);
+    void updateEllipse(const GeoDef&);
+    void updateBSpline(const GeoDef&);
     bool updateNonDrivingConstraints();
 
     void calculateDependentParametersElements();

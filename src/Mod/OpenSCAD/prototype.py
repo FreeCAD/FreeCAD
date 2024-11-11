@@ -12,9 +12,9 @@ import re
 from OpenSCADFeatures import *
 from OpenSCAD2Dgeom import *
 from OpenSCADUtils import *
+from builtins import open as pyopen
 
-if open.__module__ in ['__builtin__','io']:
-    pythonopen = open # to distinguish python built-in open function from the one declared here
+
 
 
 def openscadmesh(doc, scadstr, objname):
@@ -661,9 +661,9 @@ def readfile(filename):
         tmpfile=callopenscad(filename)
         if OpenSCADUtils.workaroundforissue128needed():
             lastimportpath = os.getcwd() #https://github.com/openscad/openscad/issues/128
-        f = pythonopen(tmpfile)
+        f = pyopen(tmpfile)
     else:
-        f = pythonopen(filename)
+        f = pyopen(filename)
     rootnode =  parsenode(f.read())[0]
     f.close()
     if isopenscad and tmpfile:

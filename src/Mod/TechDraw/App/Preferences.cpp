@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <string>
-
+# include <QApplication>
 # include <QString>
 #endif
 
@@ -155,6 +155,21 @@ int Preferences::projectionAngle()
     return getPreferenceGroup("General")->GetInt("ProjectionAngle", 0);  //First Angle
 }
 
+bool Preferences::groupAutoDistribute()
+{
+    return getPreferenceGroup("General")->GetBool("AutoDist", true);
+}
+
+double Preferences::groupSpaceX()
+{
+    return getPreferenceGroup("General")->GetFloat("GroupSpaceX", 15.0);
+}
+
+double Preferences::groupSpaceY()
+{
+    return getPreferenceGroup("General")->GetFloat("GroupSpaceY", 15.0);
+}
+
 int Preferences::lineGroup()
 {
     return getPreferenceGroup("Decorations")->GetInt("LineGroup", 3);  // FC 0.70mm
@@ -178,7 +193,7 @@ int Preferences::balloonShape()
 QString Preferences::defaultTemplate()
 {
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Templates/";
-    std::string defaultFileName = defaultDir + "A4_LandscapeTD.svg";
+    std::string defaultFileName = defaultDir + "Default_Template_A4_Landscape.svg";
     std::string prefFileName = getPreferenceGroup("Files")->GetASCII("TemplateFile", defaultFileName.c_str());
     if (prefFileName.empty()) {
         prefFileName = defaultFileName;
@@ -248,6 +263,24 @@ bool Preferences::showDetailMatting()
 bool Preferences::showDetailHighlight()
 {
     return getPreferenceGroup("General")->GetBool("ShowDetailHighlight", true);
+}
+
+//! returns the default or preferred directory to search for svg symbols
+QString Preferences::defaultSymbolDir()
+{
+    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Templates";
+    std::string prefSymbolDir = getPreferenceGroup("Files")->GetASCII("DirSymbol", defaultDir.c_str());
+    if (prefSymbolDir.empty()) {
+        prefSymbolDir = defaultDir;
+    }
+    QString symbolDir = QString::fromStdString(prefSymbolDir);
+    Base::FileInfo fi(prefSymbolDir);
+    if (!fi.isReadable()) {
+        Base::Console().Warning("Symbol Directory: %s is not readable\n",
+                                prefSymbolDir.c_str());
+        symbolDir = QString::fromStdString(defaultDir);
+    }
+    return symbolDir;
 }
 
 std::string Preferences::svgFile()
@@ -402,7 +435,7 @@ bool Preferences::autoCorrectDimRefs()
 //! number of times to clean the output edges from HLR
 int Preferences::scrubCount()
 {
-    return getPreferenceGroup("General")->GetInt("ScrubCount", 0);
+    return getPreferenceGroup("General")->GetInt("ScrubCount", 1);
 }
 
 //! Returns the factor for the overlap of svg tiles when hatching faces
@@ -422,6 +455,18 @@ bool Preferences::SectionUsePreviousCut()
 //! an index into the list of available line standards/version found in LineGroupDirectory
 int Preferences::lineStandard()
 {
+    // there is a condition where the LineStandard parameter exists, but is -1 (the
+    // qt value for no current index in a combobox).  This is likely caused by an old
+    // development version writing an unvalidated value.  In this case, the
+    // existing but invalid value will be returned.  This is a temporary fix and
+    // can be removed for production.
+    // this message will appear many times if the parameter is invalid.
+    int parameterValue = getPreferenceGroup("Standards")->GetInt("LineStandard", 1);
+    if (parameterValue < 0) {
+        Base::Console().Warning(qPrintable(QApplication::translate(
+        "Preferences", "The LineStandard parameter is invalid. Using zero instead.", nullptr)));
+        return 0;
+    }
     return getPreferenceGroup("Standards")->GetInt("LineStandard", 1);
 }
 
@@ -470,6 +515,11 @@ int Preferences::HiddenLineStyle()
 {
     // default is line #2 dashed, which is index 1
     return getPreferenceGroup("Decorations")->GetInt("LineStyleHidden", 1) + 1;
+}
+
+int Preferences::BreakLineStyle()
+{
+    return getPreferenceGroup("Decorations")->GetInt("LineStyleBreak", 0) + 1;
 }
 
 int Preferences::LineSpacingISO()
@@ -521,4 +571,88 @@ int Preferences::LineCapIndex()
 {
     return getPreferenceGroup("General")->GetInt("EdgeCapStyle", 0x20);
 }
+
+//! returns 0 (use ANSI style section cut line) or 1 (use ISO style section cut line)
+int Preferences::sectionLineConvention()
+{
+    return getPreferenceGroup("Standards")->GetInt("SectionLineStandard", 1);
+}
+
+//! true if a section line annotation should be drawn on the source view.  If false,
+//! no cut line, change marks, arrows or symbol will be drawn.
+bool Preferences::showSectionLine()
+{
+    return getPreferenceGroup("Decorations")->GetBool("ShowSectionLine", true);
+}
+
+//! true if the section cut line should be drawn on the source view. Some conventions do not draw the
+//! actual cut line, but only the change points, arrows and symbols.
+bool Preferences::includeCutLine()
+{
+    return getPreferenceGroup("Decorations")->GetBool("IncludeCutLine", true);
+}
+
+//! true if the GeometryMatcher should be used in correcting Dimension references
+bool Preferences::useExactMatchOnDims()
+{
+    return getPreferenceGroup("Dimensions")->GetBool("UseMatcher", true);
+}
+
+int Preferences::BreakType()
+{
+    return getPreferenceGroup("Decorations")->GetInt("BreakType", 2);
+}
+
+
+bool Preferences::useCameraDirection()
+{
+    return getPreferenceGroup("General")->GetBool("UseCameraDirection", false);
+}
+
+
+bool Preferences::alwaysShowLabel()
+{
+    return getPreferenceGroup("General")->GetBool("AlwaysShowLabel", false);
+}
+
+bool Preferences::SnapViews()
+{
+    return getPreferenceGroup("General")->GetBool("SnapViews", true);
+}
+
+//! percentage of view size to use in deciding to snap view or not
+double Preferences::SnapLimitFactor()
+{
+    return getPreferenceGroup("General")->GetFloat("SnapLimitFactor", 0.05);
+}
+
+
+//! returns the key combination that simulates multiple selection. Traditionally Ctrl+pick, as that
+//! is how QGraphicsScene implements multiple selection.  This method is likely to only be used by
+//! developers.
+Qt::KeyboardModifiers Preferences::multiselectModifiers()
+{
+    uint iModifiers = getPreferenceGroup("General")->GetUnsigned("MultiselectModifiers", (uint)Qt::ControlModifier);
+    return (Qt::KeyboardModifiers)iModifiers;
+//    Qt::KeyboardModifiers testMods = Qt::ControlModifier;
+//    return testMods;
+}
+
+
+//! returns the key combination that modifies Balloon drag behaviour so that the bubble and leader
+//! are moved together.  Traditionally Ctrl+drag, but that can be in conflict with multi selection.
+Qt::KeyboardModifiers Preferences::balloonDragModifiers()
+{
+    uint iModifiers = getPreferenceGroup("General")->GetUnsigned("BalloonDragModifier", (uint)Qt::ControlModifier);
+    return (Qt::KeyboardModifiers)iModifiers;
+//    Qt::KeyboardModifiers testMods = Qt::ShiftModifier | Qt::ControlModifier;
+//    return testMods;
+}
+
+
+void Preferences::setBalloonDragModifiers(Qt::KeyboardModifiers newModifiers)
+{
+    getPreferenceGroup("General")->SetUnsigned("BalloonDragModifier", (uint)newModifiers);
+}
+
 

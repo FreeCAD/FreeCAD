@@ -70,10 +70,11 @@ protected:
                   const QModelIndex& index,
                   const QVariant& value) const override;
     void notifyChanged(const QAbstractItemModel* model, const QModelIndex& index) const override;
+    bool newRow(const QAbstractItemModel* model, const QModelIndex& index) const override;
 
 Q_SIGNALS:
     /** Emits this signal when a property has changed */
-    void propertyChange(const QString& property, const QString value);
+    void propertyChange(const QString& property, const QVariant& value);
 
 private:
     QWidget* createWidget(QWidget* parent, const QVariant& item, const QModelIndex& index) const;

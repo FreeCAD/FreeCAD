@@ -41,6 +41,7 @@ class PartDesignExport Body : public Part::BodyBase
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Body);
 
 public:
+    App::PropertyBool AllowCompound;
 
     /// True if this body feature is active or was active when the document was last closed
     //App::PropertyBool IsActive;
@@ -89,9 +90,6 @@ public:
      * (place before next solid after the Tip)
      */
     bool isAfterInsertPoint(App::DocumentObject* feature);
-
-    /// Return true if the given feature is member of a MultiTransform feature
-    static bool isMemberOfMultiTransform(const App::DocumentObject *obj);
 
     /**
       * Return true if the given feature is a solid feature allowed in a Body. Currently this is only valid

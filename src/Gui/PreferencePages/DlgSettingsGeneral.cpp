@@ -31,6 +31,7 @@
 # include <QFileDialog>
 # include <QLocale>
 # include <QMessageBox>
+# include <QString>
 # include <algorithm>
 # include <boost/filesystem.hpp>
 #endif
@@ -40,6 +41,7 @@
 #include <Base/UnitsApi.h>
 
 #include <Gui/Document.h>
+#include <Gui/Command.h>
 
 #include <Gui/Action.h>
 #include <Gui/Application.h>
@@ -51,6 +53,8 @@
 #include <Gui/OverlayManager.h>
 #include <Gui/ParamHandler.h>
 #include <Gui/PreferencePackManager.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <Gui/Language/Translator.h>
 
 #include "DlgSettingsGeneral.h"
@@ -80,12 +84,30 @@ DlgSettingsGeneral::DlgSettingsGeneral( QWidget* parent )
 
     recreatePreferencePackMenu();
 
-    connect(ui->ImportConfig, &QPushButton::clicked, this, &DlgSettingsGeneral::onImportConfigClicked);
-    connect(ui->SaveNewPreferencePack, &QPushButton::clicked, this, &DlgSettingsGeneral::saveAsNewPreferencePack);
-    connect(ui->themesCombobox, qOverload<int>(&QComboBox::activated), this, &DlgSettingsGeneral::onThemeChanged);
 
-    ui->ManagePreferencePacks->setToolTip(tr("Manage preference packs"));
-    connect(ui->ManagePreferencePacks, &QPushButton::clicked, this, &DlgSettingsGeneral::onManagePreferencePacksClicked);
+    ui->themesCombobox->setEnabled(true);
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    if (doc) {
+        Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
+        if (view) {
+            Gui::View3DInventorViewer* viewer = view->getViewer();
+            if (viewer->isEditing()) {
+                ui->ImportConfig->setEnabled(false);
+                ui->SaveNewPreferencePack->setEnabled(false);
+                ui->ManagePreferencePacks->setEnabled(false);
+                ui->themesCombobox->setEnabled(false);
+                ui->moreThemesLabel->setEnabled(false);
+            }
+        }
+    }
+    if (ui->themesCombobox->isEnabled()) {
+        connect(ui->ImportConfig, &QPushButton::clicked, this, &DlgSettingsGeneral::onImportConfigClicked);
+        connect(ui->SaveNewPreferencePack, &QPushButton::clicked, this, &DlgSettingsGeneral::saveAsNewPreferencePack);
+        ui->ManagePreferencePacks->setToolTip(tr("Manage preference packs"));
+        connect(ui->ManagePreferencePacks, &QPushButton::clicked, this, &DlgSettingsGeneral::onManagePreferencePacksClicked);
+        connect(ui->themesCombobox, qOverload<int>(&QComboBox::activated), this, &DlgSettingsGeneral::onThemeChanged);
+        connect(ui->moreThemesLabel, &QLabel::linkActivated, this, &DlgSettingsGeneral::onLinkActivated);
+    }
 
     // If there are any saved config file backs, show the revert button, otherwise hide it:
     const auto & backups = Application::Instance->prefPackManager()->configBackups();
@@ -180,13 +202,8 @@ void DlgSettingsGeneral::setDecimalPointConversion(bool on)
     }
 }
 
-void DlgSettingsGeneral::saveSettings()
+void DlgSettingsGeneral::saveUnitSystemSettings()
 {
-    // must be done as very first because we create a new instance of NavigatorStyle
-    // where we set some attributes afterwards
-    int FracInch;  // minimum fractional inch to display
-    int viewSystemIndex; // currently selected View System (unit system)
-
     ParameterGrp::handle hGrpu = App::GetApplication().GetParameterGroupByPath
     ("User parameter:BaseApp/Preferences/Units");
     hGrpu->SetInt("UserSchema", ui->comboBox_UnitSystem->currentIndex());
@@ -202,25 +219,37 @@ void DlgSettingsGeneral::saveSettings()
     //
     // The inverse conversion is done when loaded. That way only one thing (the
     // numerical fractional inch value) needs to be stored.
-    FracInch = std::pow(2, ui->comboBox_FracInch->currentIndex() + 1);
+
+    // minimum fractional inch to display
+    int FracInch = std::pow(2, ui->comboBox_FracInch->currentIndex() + 1);
     hGrpu->SetInt("FracInch", FracInch);
 
     // Set the actual format value
     Base::QuantityFormat::setDefaultDenominator(FracInch);
 
     // Set and save the Unit System
-    if ( ui->checkBox_projectUnitSystemIgnore->isChecked() ) {
-        viewSystemIndex = ui->comboBox_UnitSystem->currentIndex();
+    if (ui->checkBox_projectUnitSystemIgnore->isChecked()) {
+        // currently selected View System (unit system)
+        int viewSystemIndex = ui->comboBox_UnitSystem->currentIndex();
         UnitsApi::setSchema(static_cast<UnitSystem>(viewSystemIndex));
-    } else {
-        App::Document* doc = App::GetApplication().getActiveDocument();
-        if ( doc != nullptr ) {
-            UnitsApi::setSchema(static_cast<UnitSystem>(doc->UnitSystem.getValue()));
-        }
+    }
+    else if (App::Document* doc = App::GetApplication().getActiveDocument()) {
+        UnitsApi::setSchema(static_cast<UnitSystem>(doc->UnitSystem.getValue()));
+    }
+    else {
+        // if there is no existing document then the unit must still be set
+        int viewSystemIndex = ui->comboBox_UnitSystem->currentIndex();
+        UnitsApi::setSchema(static_cast<UnitSystem>(viewSystemIndex));
     }
 
     ui->SubstituteDecimal->onSave();
     ui->UseLocaleFormatting->onSave();
+}
+
+void DlgSettingsGeneral::saveSettings()
+{
+    saveUnitSystemSettings();
+
     ui->RecentFiles->onSave();
     ui->EnableCursorBlinking->onSave();
     ui->SplashScreen->onSave();
@@ -249,8 +278,12 @@ void DlgSettingsGeneral::saveSettings()
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
     hGrp->SetBool("TiledBackground", ui->tiledBackground->isChecked());
 
-    if (themeChanged)
+    if (themeChanged) {
+        auto qtStyle = QString::fromStdString(hGrp->GetASCII("QtStyle"));
+
         saveThemes();
+        qApp->setStyle(qtStyle);
+    }
 }
 
 void DlgSettingsGeneral::loadSettings()
@@ -315,22 +348,11 @@ void DlgSettingsGeneral::loadSettings()
     }
 
     QAbstractItemModel* model = ui->Languages->model();
-    if (model)
+    if (model) {
         model->sort(0);
-
-    int current = getMainWindow()->iconSize().width();
-    current = hGrp->GetInt("ToolbarIconSize", current);
-    ui->toolbarIconSize->clear();
-    ui->toolbarIconSize->addItem(tr("Small (%1px)").arg(16), QVariant((int)16));
-    ui->toolbarIconSize->addItem(tr("Medium (%1px)").arg(24), QVariant((int)24));
-    ui->toolbarIconSize->addItem(tr("Large (%1px)").arg(32), QVariant((int)32));
-    ui->toolbarIconSize->addItem(tr("Extra large (%1px)").arg(48), QVariant((int)48));
-    index = ui->toolbarIconSize->findData(QVariant(current));
-    if (index < 0) {
-        ui->toolbarIconSize->addItem(tr("Custom (%1px)").arg(current), QVariant((int)current));
-        index = ui->toolbarIconSize->findData(QVariant(current));
     }
-    ui->toolbarIconSize->setCurrentIndex(index);
+
+    addIconSizes(getCurrentIconSize());
 
     //TreeMode combobox setup.
     loadDockWindowVisibility();
@@ -423,15 +445,41 @@ void DlgSettingsGeneral::loadThemes()
 {
     ui->themesCombobox->clear();
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/MainWindow");
 
     QString currentTheme = QString::fromLatin1(hGrp->GetASCII("Theme", "").c_str());
 
     Application::Instance->prefPackManager()->rescan();
     auto packs = Application::Instance->prefPackManager()->preferencePacks();
+    QString currentStyleSheet = QString::fromLatin1(hGrp->GetASCII("StyleSheet", "").c_str());
+    QFileInfo fi(currentStyleSheet);
+    currentStyleSheet = fi.baseName();
+    QString themeClassic = QStringLiteral("classic");  // handle the upcoming name change
+    QString similarTheme;
+    QString packName;
     for (const auto& pack : packs) {
         if (pack.second.metadata().type() == "Theme") {
+            packName = QString::fromStdString(pack.first);
+            if (packName.contains(themeClassic, Qt::CaseInsensitive)) {
+                themeClassic = QString::fromStdString(pack.first);
+            }
+            if (packName.contains(currentStyleSheet, Qt::CaseInsensitive)) {
+                similarTheme = QString::fromStdString(pack.first);
+            }
             ui->themesCombobox->addItem(QString::fromStdString(pack.first));
+        }
+    }
+
+    if (currentTheme.isEmpty()) {
+        if (!currentStyleSheet.isEmpty()
+            && !similarTheme.isEmpty()) {  // a user upgrading from 0.21 or earlier
+            hGrp->SetASCII("Theme", similarTheme.toStdString());
+            currentTheme = QString::fromLatin1(hGrp->GetASCII("Theme", "").c_str());
+        }
+        else {  // a brand new user
+            hGrp->SetASCII("Theme", themeClassic.toStdString());
+            currentTheme = QString::fromLatin1(hGrp->GetASCII("Theme", "").c_str());
         }
     }
 
@@ -441,14 +489,68 @@ void DlgSettingsGeneral::loadThemes()
     }
 }
 
+int DlgSettingsGeneral::getCurrentIconSize() const
+{
+    ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
+    int current = getMainWindow()->iconSize().width();
+    return hGrp->GetInt("ToolbarIconSize", current);
+}
+
+void DlgSettingsGeneral::addIconSizes(int current)
+{
+    ui->toolbarIconSize->clear();
+
+    QList<int> sizes{16, 24, 32, 48};
+    if (!sizes.contains(current)) {
+        sizes.append(current);
+    }
+
+    for (int size : sizes) {
+        ui->toolbarIconSize->addItem(QString(), QVariant(size));
+    }
+
+    int index = ui->toolbarIconSize->findData(QVariant(current));
+    ui->toolbarIconSize->setCurrentIndex(index);
+    translateIconSizes();
+}
+
+void DlgSettingsGeneral::translateIconSizes()
+{
+    auto getSize = [this](int index) {
+        return ui->toolbarIconSize->itemData(index).toInt();
+    };
+
+    QStringList sizes;
+    sizes << tr("Small (%1px)").arg(getSize(0));
+    sizes << tr("Medium (%1px)").arg(getSize(1));
+    sizes << tr("Large (%1px)").arg(getSize(2));
+    sizes << tr("Extra large (%1px)").arg(getSize(3));
+    if (ui->toolbarIconSize->count() > 4) {
+        sizes << tr("Custom (%1px)").arg(getSize(4));
+    }
+
+    for (int index = 0; index < sizes.size(); index++) {
+        ui->toolbarIconSize->setItemText(index, sizes[index]);
+    }
+}
+
+void DlgSettingsGeneral::retranslateUnits()
+{
+    int num = ui->comboBox_UnitSystem->count();
+    for (int i = 0; i < num; i++) {
+        QString item = Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i));
+        ui->comboBox_UnitSystem->setItemText(i, item);
+    }
+}
+
 void DlgSettingsGeneral::changeEvent(QEvent *event)
 {
     if (event->type() == QEvent::LanguageChange) {
+        translateIconSizes();
+        retranslateUnits();
         int index = ui->UseLocaleFormatting->currentIndex();
-        int index2 = ui->comboBox_UnitSystem->currentIndex();
         ui->retranslateUi(this);
         ui->UseLocaleFormatting->setCurrentIndex(index);
-        ui->comboBox_UnitSystem->setCurrentIndex(index2);
     }
     else {
         QWidget::changeEvent(event);
@@ -493,8 +595,8 @@ void DlgSettingsGeneral::saveDockWindowVisibility()
 void DlgSettingsGeneral::loadDockWindowVisibility()
 {
     ui->treeMode->clear();
-    ui->treeMode->addItem(tr("Combo View"));
-    ui->treeMode->addItem(tr("TreeView and PropertyView"));
+    ui->treeMode->addItem(tr("Combined"));
+    ui->treeMode->addItem(tr("Independent"));
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DockWindows");
     bool propertyView = hGrp->GetGroup("PropertyView")->GetBool("Enabled", false);
@@ -560,8 +662,21 @@ void DlgSettingsGeneral::recreatePreferencePackMenu()
         auto kind = new QTableWidgetItem(tagString);
         ui->PreferencePacks->setItem(row, 1, kind);
         auto button = new QPushButton(icon, tr("Apply"));
-        button->setToolTip(tr("Apply the %1 preference pack").arg(QString::fromStdString(pack.first)));
-        connect(button, &QPushButton::clicked, this, [this, pack]() { onLoadPreferencePackClicked(pack.first); });
+        button->setEnabled(true);
+        Gui::Document* doc = Gui::Application::Instance->activeDocument();
+        if (doc) {
+            Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
+            if (view) {
+                Gui::View3DInventorViewer* viewer = view->getViewer();
+                if (viewer->isEditing()) {
+                    button->setEnabled(false);
+                }
+            }
+        }
+        if (button->isEnabled()) {
+            button->setToolTip(tr("Apply the %1 preference pack").arg(QString::fromStdString(pack.first)));
+            connect(button, &QPushButton::clicked, this, [this, pack]() { onLoadPreferencePackClicked(pack.first); });
+        }
         ui->PreferencePacks->setCellWidget(row, 2, button);
         ++row;
     }
@@ -673,6 +788,23 @@ void DlgSettingsGeneral::onUnitSystemIndexChanged(int index)
 void DlgSettingsGeneral::onThemeChanged(int index) {
     Q_UNUSED(index);
     themeChanged = true;
+}
+
+void DlgSettingsGeneral::onLinkActivated(const QString& link)
+{
+    auto const addonManagerLink = QStringLiteral("freecad:Std_AddonMgr");
+
+    if (link != addonManagerLink) {
+        return;
+    }
+
+    // Set the user preferences to include only preference packs.
+    // This is a quick and dirty way to open Addon Manager with only themes.
+    auto pref = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Addons");
+    pref->SetInt("PackageTypeSelection", 3); // 3 stands for Preference Packs
+    pref->SetInt("StatusSelection", 0);      // 0 stands for any installation status 
+
+    Gui::Application::Instance->commandManager().runCommandByName("Std_AddonMgr");
 }
 
 ///////////////////////////////////////////////////////////

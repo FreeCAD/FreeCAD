@@ -53,6 +53,8 @@ public:
 
 private:
     Ui_DlgEvaluateSettings* ui;
+
+    Q_DISABLE_COPY_MOVE(DlgEvaluateSettings)
 };
 
 }  // namespace MeshGui

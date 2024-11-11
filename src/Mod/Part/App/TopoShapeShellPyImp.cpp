@@ -38,6 +38,7 @@
 #include <Base/VectorPy.h>
 
 #include "OCCError.h"
+#include "PartPyCXX.h"
 #include "Tools.h"
 #include "TopoShapeCompoundPy.h"
 #include "TopoShapeCompoundPy.h"
@@ -45,7 +46,7 @@
 #include "TopoShapeShellPy.h"
 #include "TopoShapeShellPy.cpp"
 #include "TopoShapeSolidPy.h"
-
+#include "TopoShapeOpCode.h"
 
 using namespace Part;
 
@@ -85,42 +86,10 @@ int TopoShapeShellPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     if (!PyArg_ParseTuple(args, "O", &obj))
         return -1;
 
-    BRep_Builder builder;
-    TopoDS_Shape shape;
-    TopoDS_Shell shell;
-    //BRepOffsetAPI_Sewing mkShell;
-    builder.MakeShell(shell);
-
     try {
-        Py::Sequence list(obj);
-        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-            if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapeFacePy::Type))) {
-                const TopoDS_Shape& sh = static_cast<TopoShapeFacePy*>((*it).ptr())->
-                    getTopoShapePtr()->getShape();
-                if (!sh.IsNull())
-                    builder.Add(shell, sh);
-            }
-        }
-
-        shape = shell;
-        BRepCheck_Analyzer check(shell);
-        if (!check.IsValid()) {
-            ShapeUpgrade_ShellSewing sewShell;
-            shape = sewShell.ApplySewing(shell);
-        }
-
-        if (shape.IsNull())
-            Standard_Failure::Raise("Shape is null");
-
-        if (shape.ShapeType() != TopAbs_SHELL)
-            Standard_Failure::Raise("Shape is not a shell");
+        getTopoShapePtr()->makeElementBoolean(Part::OpCodes::Shell, getPyShapes(obj));
     }
-    catch (Standard_Failure& e) {
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return -1;
-    }
-
-    getTopoShapePtr()->setShape(shape);
+    _PY_CATCH_OCC(return (-1))
     return 0;
 }
 
@@ -132,13 +101,17 @@ PyObject*  TopoShapeShellPy::add(PyObject *args)
 
     BRep_Builder builder;
     TopoDS_Shape shell = getTopoShapePtr()->getShape();
+    if (shell.IsNull()) {
+        builder.MakeShell(TopoDS::Shell(shell));
+    }
 
     try {
-        const TopoDS_Shape& sh = static_cast<TopoShapeFacePy*>(obj)->
-            getTopoShapePtr()->getShape();
+        const TopoShape& shape = *static_cast<TopoShapeFacePy*>(obj)->getTopoShapePtr();
+        const auto &sh = shape.getShape();
         if (!sh.IsNull()) {
             builder.Add(shell, sh);
             BRepCheck_Analyzer check(shell);
+            getTopoShapePtr()->mapSubElement(shape);
             if (!check.IsValid()) {
                 ShapeUpgrade_ShellSewing sewShell;
                 getTopoShapePtr()->setShape(sewShell.ApplySewing(shell));
@@ -167,7 +140,10 @@ PyObject*  TopoShapeShellPy::getFreeEdges(PyObject *args)
     as.CheckOrientedShells(getTopoShapePtr()->getShape(), Standard_True, Standard_True);
 
     TopoDS_Compound comp = as.FreeEdges();
-    return new TopoShapeCompoundPy(new TopoShape(comp));
+    TopoShape res;
+    res.setShape(comp);
+    res.mapSubElement(*getTopoShapePtr());
+    return Py::new_reference_to(shape2pyshape(res));
 }
 
 PyObject*  TopoShapeShellPy::getBadEdges(PyObject *args)
@@ -179,7 +155,10 @@ PyObject*  TopoShapeShellPy::getBadEdges(PyObject *args)
     as.CheckOrientedShells(getTopoShapePtr()->getShape(), Standard_True, Standard_True);
 
     TopoDS_Compound comp = as.BadEdges();
-    return new TopoShapeCompoundPy(new TopoShape(comp));
+    TopoShape res;
+    res.setShape(comp);
+    res.mapSubElement(*getTopoShapePtr());
+    return Py::new_reference_to(shape2pyshape(res));
 }
 
 PyObject* TopoShapeShellPy::makeHalfSpace(PyObject *args)

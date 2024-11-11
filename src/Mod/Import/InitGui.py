@@ -35,6 +35,8 @@ FreeCAD.changeImportModule("STEP with colors (*.step *.STEP *.stp *.STP)", "Impo
 FreeCAD.changeExportModule("STEP with colors (*.step *.stp)", "Import", "ImportGui")
 FreeCAD.changeExportModule("glTF (*.gltf *.glb)", "Import", "ImportGui")
 
+App.__unit_test__ += ["TestImportGui"]
+
 """
 class ImportWorkbench ( Workbench ):
     "Import workbench object"

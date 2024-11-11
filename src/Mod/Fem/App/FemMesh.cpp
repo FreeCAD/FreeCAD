@@ -82,39 +82,35 @@ using namespace Fem;
 using namespace Base;
 using namespace boost;
 
-#if SMESH_VERSION_MAJOR < 9
-static int StatCount = 0;
-#endif
-
 SMESH_Gen* FemMesh::_mesh_gen = nullptr;
 
 TYPESYSTEM_SOURCE(Fem::FemMesh, Base::Persistence)
 
 FemMesh::FemMesh()
+    : myMesh(nullptr)
+    , myStudyId(0)
 {
-    // Base::Console().Log("FemMesh::FemMesh():%p (id=%i)\n",this,StatCount);
-    //  create a mesh always with new StudyId to avoid overlapping destruction
 #if SMESH_VERSION_MAJOR >= 9
     myMesh = getGenerator()->CreateMesh(false);
 #else
-    myMesh = getGenerator()->CreateMesh(StatCount++, false);
+    myMesh = getGenerator()->CreateMesh(myStudyId, false);
 #endif
 }
 
 FemMesh::FemMesh(const FemMesh& mesh)
+    : myMesh(nullptr)
+    , myStudyId(0)
 {
 #if SMESH_VERSION_MAJOR >= 9
     myMesh = getGenerator()->CreateMesh(false);
 #else
-    myMesh = getGenerator()->CreateMesh(StatCount++, false);
+    myMesh = getGenerator()->CreateMesh(myStudyId, false);
 #endif
     copyMeshData(mesh);
 }
 
 FemMesh::~FemMesh()
 {
-    // Base::Console().Log("FemMesh::~FemMesh():%p\n",this);
-
     try {
         TopoDS_Shape aNull;
         myMesh->ShapeToMesh(aNull);
@@ -132,7 +128,7 @@ FemMesh& FemMesh::operator=(const FemMesh& mesh)
 #if SMESH_VERSION_MAJOR >= 9
         myMesh = getGenerator()->CreateMesh(true);
 #else
-        myMesh = getGenerator()->CreateMesh(0, true);
+        myMesh = getGenerator()->CreateMesh(myStudyId, true);
 #endif
         copyMeshData(mesh);
     }
@@ -537,83 +533,41 @@ void FemMesh::addHypothesis(const TopoDS_Shape& aSubShape, SMESH_HypothesisPtr h
 
 void FemMesh::setStandardHypotheses()
 {
-    if (!hypoth.empty()) {
+    TopoDS_Shape shape = getSMesh()->GetShapeToMesh();
+    if (shape.IsNull()) {
         return;
     }
-#if SMESH_VERSION_MAJOR >= 9
+
     int hyp = 0;
-    SMESH_HypothesisPtr len(new StdMeshers_MaxLength(hyp++, getGenerator()));
+
+    auto len = createHypothesis<StdMeshers_MaxLength>(hyp++);
     static_cast<StdMeshers_MaxLength*>(len.get())->SetLength(1.0);
-    hypoth.push_back(len);
+    addHypothesis(shape, len);
 
-    SMESH_HypothesisPtr loc(new StdMeshers_LocalLength(hyp++, getGenerator()));
+    auto loc = createHypothesis<StdMeshers_LocalLength>(hyp++);
     static_cast<StdMeshers_LocalLength*>(loc.get())->SetLength(1.0);
-    hypoth.push_back(loc);
+    addHypothesis(shape, loc);
 
-    SMESH_HypothesisPtr area(new StdMeshers_MaxElementArea(hyp++, getGenerator()));
+    auto area = createHypothesis<StdMeshers_MaxElementArea>(hyp++);
     static_cast<StdMeshers_MaxElementArea*>(area.get())->SetMaxArea(1.0);
-    hypoth.push_back(area);
+    addHypothesis(shape, area);
 
-    SMESH_HypothesisPtr segm(new StdMeshers_NumberOfSegments(hyp++, getGenerator()));
+    auto segm = createHypothesis<StdMeshers_NumberOfSegments>(hyp++);
     static_cast<StdMeshers_NumberOfSegments*>(segm.get())->SetNumberOfSegments(1);
-    hypoth.push_back(segm);
+    addHypothesis(shape, segm);
 
-    SMESH_HypothesisPtr defl(new StdMeshers_Deflection1D(hyp++, getGenerator()));
+    auto defl = createHypothesis<StdMeshers_Deflection1D>(hyp++);
     static_cast<StdMeshers_Deflection1D*>(defl.get())->SetDeflection(0.01);
-    hypoth.push_back(defl);
+    addHypothesis(shape, defl);
 
-    SMESH_HypothesisPtr reg(new StdMeshers_Regular_1D(hyp++, getGenerator()));
-    hypoth.push_back(reg);
+    auto reg = createHypothesis<StdMeshers_Regular_1D>(hyp++);
+    addHypothesis(shape, reg);
 
-    // SMESH_HypothesisPtr sel(new StdMeshers_StartEndLength(hyp++, getGenerator()));
-    // static_cast<StdMeshers_StartEndLength*>(sel.get())->SetLength(1.0, true);
-    // hypoth.push_back(sel);
+    auto qdp = createHypothesis<StdMeshers_QuadranglePreference>(hyp++);
+    addHypothesis(shape, qdp);
 
-    SMESH_HypothesisPtr qdp(new StdMeshers_QuadranglePreference(hyp++, getGenerator()));
-    hypoth.push_back(qdp);
-
-    SMESH_HypothesisPtr q2d(new StdMeshers_Quadrangle_2D(hyp++, getGenerator()));
-    hypoth.push_back(q2d);
-#else
-    int hyp = 0;
-    SMESH_HypothesisPtr len(new StdMeshers_MaxLength(hyp++, 1, getGenerator()));
-    static_cast<StdMeshers_MaxLength*>(len.get())->SetLength(1.0);
-    hypoth.push_back(len);
-
-    SMESH_HypothesisPtr loc(new StdMeshers_LocalLength(hyp++, 1, getGenerator()));
-    static_cast<StdMeshers_LocalLength*>(loc.get())->SetLength(1.0);
-    hypoth.push_back(loc);
-
-    SMESH_HypothesisPtr area(new StdMeshers_MaxElementArea(hyp++, 1, getGenerator()));
-    static_cast<StdMeshers_MaxElementArea*>(area.get())->SetMaxArea(1.0);
-    hypoth.push_back(area);
-
-    SMESH_HypothesisPtr segm(new StdMeshers_NumberOfSegments(hyp++, 1, getGenerator()));
-    static_cast<StdMeshers_NumberOfSegments*>(segm.get())->SetNumberOfSegments(1);
-    hypoth.push_back(segm);
-
-    SMESH_HypothesisPtr defl(new StdMeshers_Deflection1D(hyp++, 1, getGenerator()));
-    static_cast<StdMeshers_Deflection1D*>(defl.get())->SetDeflection(0.01);
-    hypoth.push_back(defl);
-
-    SMESH_HypothesisPtr reg(new StdMeshers_Regular_1D(hyp++, 1, getGenerator()));
-    hypoth.push_back(reg);
-
-    // SMESH_HypothesisPtr sel(new StdMeshers_StartEndLength(hyp++, 1, getGenerator()));
-    // static_cast<StdMeshers_StartEndLength*>(sel.get())->SetLength(1.0, true);
-    // hypoth.push_back(sel);
-
-    SMESH_HypothesisPtr qdp(new StdMeshers_QuadranglePreference(hyp++, 1, getGenerator()));
-    hypoth.push_back(qdp);
-
-    SMESH_HypothesisPtr q2d(new StdMeshers_Quadrangle_2D(hyp++, 1, getGenerator()));
-    hypoth.push_back(q2d);
-#endif
-
-    // Apply hypothesis
-    for (int i = 0; i < hyp; i++) {
-        myMesh->AddHypothesis(myMesh->GetShapeToMesh(), i);
-    }
+    auto q2d = createHypothesis<StdMeshers_Quadrangle_2D>(hyp++);
+    addHypothesis(shape, q2d);
 }
 
 void FemMesh::compute()
@@ -624,12 +578,6 @@ void FemMesh::compute()
 std::set<long> FemMesh::getSurfaceNodes(long /*ElemId*/, short /*FaceId*/, float /*Angle*/) const
 {
     std::set<long> result;
-    // const SMESHDS_Mesh* data = myMesh->GetMeshDS();
-
-    // const SMDS_MeshElement * element = data->FindElement(ElemId);
-    // int fNbr = element->NbFaces();
-    // element->
-
     return result;
 }
 
@@ -640,7 +588,6 @@ std::list<std::pair<int, int>> FemMesh::getVolumesByFace(const TopoDS_Face& face
     std::list<std::pair<int, int>> result;
     std::set<int> nodes_on_face = getNodesByFace(face);
 
-#if SMESH_VERSION_MAJOR >= 7
     // SMDS_MeshVolume::facesIterator() is broken with SMESH7 as it is impossible
     // to iterate volume faces
     // In SMESH9 this function has been removed
@@ -697,36 +644,6 @@ std::list<std::pair<int, int>> FemMesh::getVolumesByFace(const TopoDS_Face& face
             }
         }
     }
-#else
-    SMDS_VolumeIteratorPtr vol_iter = myMesh->GetMeshDS()->volumesIterator();
-    while (vol_iter->more()) {
-        const SMDS_MeshVolume* vol = vol_iter->next();
-        SMDS_ElemIteratorPtr face_iter = vol->facesIterator();
-
-        while (face_iter && face_iter->more()) {
-            const SMDS_MeshFace* face = static_cast<const SMDS_MeshFace*>(face_iter->next());
-            int numNodes = face->NbNodes();
-
-            std::set<int> face_nodes;
-            for (int i = 0; i < numNodes; i++) {
-                face_nodes.insert(face->GetNode(i)->GetID());
-            }
-
-            std::vector<int> element_face_nodes;
-            std::set_intersection(nodes_on_face.begin(),
-                                  nodes_on_face.end(),
-                                  face_nodes.begin(),
-                                  face_nodes.end(),
-                                  std::back_insert_iterator<std::vector<int>>(element_face_nodes));
-
-            // For curved faces it is possible that a volume contributes more than one face
-            if (element_face_nodes.size() == static_cast<std::size_t>(numNodes)) {
-                result.emplace_back(vol->GetID(), face->GetID());
-            }
-        }
-    }
-#endif
-
     result.sort();
     return result;
 }
@@ -910,7 +827,8 @@ std::set<int> FemMesh::getNodesBySolid(const TopoDS_Solid& solid) const
     }
 
 #pragma omp parallel for schedule(dynamic)
-    for (auto aNode : nodes) {
+    for (size_t i = 0; i < nodes.size(); ++i) {
+        const SMDS_MeshNode* aNode = nodes[i];
         double xyz[3];
         aNode->GetXYZ(xyz);
         Base::Vector3d vec(xyz[0], xyz[1], xyz[2]);
@@ -962,7 +880,8 @@ std::set<int> FemMesh::getNodesByFace(const TopoDS_Face& face) const
     }
 
 #pragma omp parallel for schedule(dynamic)
-    for (auto aNode : nodes) {
+    for (size_t i = 0; i < nodes.size(); ++i) {
+        const SMDS_MeshNode* aNode = nodes[i];
         double xyz[3];
         aNode->GetXYZ(xyz);
         Base::Vector3d vec(xyz[0], xyz[1], xyz[2]);
@@ -1012,7 +931,8 @@ std::set<int> FemMesh::getNodesByEdge(const TopoDS_Edge& edge) const
     }
 
 #pragma omp parallel for schedule(dynamic)
-    for (auto aNode : nodes) {
+    for (size_t i = 0; i < nodes.size(); ++i) {
+        const SMDS_MeshNode* aNode = nodes[i];
         double xyz[3];
         aNode->GetXYZ(xyz);
         Base::Vector3d vec(xyz[0], xyz[1], xyz[2]);
@@ -1061,7 +981,8 @@ std::set<int> FemMesh::getNodesByVertex(const TopoDS_Vertex& vertex) const
     }
 
 #pragma omp parallel for schedule(dynamic)
-    for (auto aNode : nodes) {
+    for (size_t i = 0; i < nodes.size(); ++i) {
+        const SMDS_MeshNode* aNode = nodes[i];
         double xyz[3];
         aNode->GetXYZ(xyz);
         Base::Vector3d vec(xyz[0], xyz[1], xyz[2]);
@@ -1617,7 +1538,7 @@ class CHEXA2Element: public NastranElement
 
 void FemMesh::readNastran(const std::string& Filename)
 {
-    Base::TimeInfo Start;
+    Base::TimeElapsed Start;
     Base::Console().Log("Start: FemMesh::readNastran() =================================\n");
 
     _Mtrx = Base::Matrix4D();
@@ -1695,7 +1616,7 @@ void FemMesh::readNastran(const std::string& Filename)
     inputfile.close();
 
     Base::Console().Log("    %f: File read, start building mesh\n",
-                        Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 
     // Now fill the SMESH datastructure
     SMESHDS_Mesh* meshds = this->myMesh->GetMeshDS();
@@ -1705,12 +1626,13 @@ void FemMesh::readNastran(const std::string& Filename)
         it->addToMesh(meshds);
     }
 
-    Base::Console().Log("    %f: Done \n", Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+    Base::Console().Log("    %f: Done \n",
+                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 }
 
 void FemMesh::readNastran95(const std::string& Filename)
 {
-    Base::TimeInfo Start;
+    Base::TimeElapsed Start;
     Base::Console().Log("Start: FemMesh::readNastran95() =================================\n");
 
     _Mtrx = Base::Matrix4D();
@@ -1821,7 +1743,7 @@ void FemMesh::readNastran95(const std::string& Filename)
     inputfile.close();
 
     Base::Console().Log("    %f: File read, start building mesh\n",
-                        Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 
     // Now fill the SMESH datastructure
     SMESHDS_Mesh* meshds = this->myMesh->GetMeshDS();
@@ -1835,12 +1757,13 @@ void FemMesh::readNastran95(const std::string& Filename)
         it->addToMesh(meshds);
     }
 
-    Base::Console().Log("    %f: Done \n", Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+    Base::Console().Log("    %f: Done \n",
+                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 }
 
 void FemMesh::readAbaqus(const std::string& FileName)
 {
-    Base::TimeInfo Start;
+    Base::TimeElapsed Start;
     Base::Console().Log("Start: FemMesh::readAbaqus() =================================\n");
 
     /*
@@ -1874,12 +1797,13 @@ void FemMesh::readAbaqus(const std::string& FileName)
     catch (Py::Exception& e) {
         e.clear();
     }
-    Base::Console().Log("    %f: Done \n", Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+    Base::Console().Log("    %f: Done \n",
+                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 }
 
 void FemMesh::readZ88(const std::string& FileName)
 {
-    Base::TimeInfo Start;
+    Base::TimeElapsed Start;
     Base::Console().Log("Start: FemMesh::readZ88() =================================\n");
 
     /*
@@ -1913,7 +1837,8 @@ void FemMesh::readZ88(const std::string& FileName)
     catch (Py::Exception& e) {
         e.clear();
     }
-    Base::Console().Log("    %f: Done \n", Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+    Base::Console().Log("    %f: Done \n",
+                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 }
 
 void FemMesh::read(const char* FileName)
@@ -1947,13 +1872,6 @@ void FemMesh::read(const char* FileName)
         // read brep-file
         myMesh->STLToMesh(File.filePath().c_str());
     }
-#if SMESH_VERSION_MAJOR < 7
-    else if (File.hasExtension("dat")) {
-        // read brep-file
-        // vejmarie disable
-        myMesh->DATToMesh(File.filePath().c_str());
-    }
-#endif
     else if (File.hasExtension("bdf")) {
         // read Nastran-file
         readNastran(File.filePath());
@@ -1973,7 +1891,12 @@ void FemMesh::read(const char* FileName)
     }
 }
 
-void FemMesh::writeABAQUS(const std::string& Filename, int elemParam, bool groupParam) const
+void FemMesh::writeABAQUS(const std::string& Filename,
+                          int elemParam,
+                          bool groupParam,
+                          ABAQUS_VolumeVariant volVariant,
+                          ABAQUS_FaceVariant faceVariant,
+                          ABAQUS_EdgeVariant edgeVariant) const
 {
     /*
      * elemParam:
@@ -1984,120 +1907,219 @@ void FemMesh::writeABAQUS(const std::string& Filename, int elemParam, bool group
      * groupParam:
      * true = write group data
      * false = do not write group data
+
+     * volVariant, faceVariant, edgeVariant:
+     * Element type according to availability in CalculiX
      */
 
-    static std::map<std::string, std::vector<int>> elemOrderMap;
-    static std::map<int, std::string> edgeTypeMap;
-    static std::map<int, std::string> faceTypeMap;
-    static std::map<int, std::string> volTypeMap;
-    if (elemOrderMap.empty()) {
-        // node order fits with node order in importCcxFrdResults.py module to import
-        // CalculiX result meshes
+    std::map<std::string, std::string> variants;
 
-        // dimension 1
-        //
-        // seg2 FreeCAD --> CalculiX B31
-        // N1, N2
-        std::vector<int> b31 = boost::assign::list_of(0)(1);
-        //
-        // seg3 FreeCAD --> CalculiX B32
-        // N1, N3, N2
-        std::vector<int> b32 = boost::assign::list_of(0)(2)(1);
+    // volume elements
+    variants["Tetra4"] = "C3D4";
+    variants["Penta6"] = "C3D6";
+    variants["Hexa8"] = "C3D8";
+    variants["Tetra10"] = "C3D10";
+    variants["Penta15"] = "C3D15";
+    variants["Hexa20"] = "C3D20";
 
-        elemOrderMap.insert(std::make_pair("B31", b31));
-        edgeTypeMap.insert(std::make_pair(elemOrderMap["B31"].size(), "B31"));
-        elemOrderMap.insert(std::make_pair("B32", b32));
-        edgeTypeMap.insert(std::make_pair(elemOrderMap["B32"].size(), "B32"));
-
-        // dimension 2
-        //
-        // tria3 FreeCAD --> S3 CalculiX
-        // N1, N2, N3
-        std::vector<int> s3 = boost::assign::list_of(0)(1)(2);
-        //
-        // tria6 FreeCAD --> S6 CalculiX
-        // N1, N2, N3, N4, N5, N6
-        std::vector<int> s6 = boost::assign::list_of(0)(1)(2)(3)(4)(5);
-        //
-        // quad4 FreeCAD --> S4 CalculiX
-        // N1, N2, N3, N4
-        std::vector<int> s4 = boost::assign::list_of(0)(1)(2)(3);
-        //
-        // quad8 FreeCAD --> S8 CalculiX
-        // N1, N2, N3, N4, N5, N6, N7, N8
-        std::vector<int> s8 = boost::assign::list_of(0)(1)(2)(3)(4)(5)(6)(7);
-
-        elemOrderMap.insert(std::make_pair("S3", s3));
-        faceTypeMap.insert(std::make_pair(elemOrderMap["S3"].size(), "S3"));
-        elemOrderMap.insert(std::make_pair("S6", s6));
-        faceTypeMap.insert(std::make_pair(elemOrderMap["S6"].size(), "S6"));
-        elemOrderMap.insert(std::make_pair("S4", s4));
-        faceTypeMap.insert(std::make_pair(elemOrderMap["S4"].size(), "S4"));
-        elemOrderMap.insert(std::make_pair("S8", s8));
-        faceTypeMap.insert(std::make_pair(elemOrderMap["S8"].size(), "S8"));
-
-        // dimension 3
-        //
-        // tetras
-        // master 0.14 release
-        // changed to this in August 2013, committed by juergen (jriedel)
-        // https://github.com/FreeCAD/FreeCAD/commit/af56b324b9566b20f3b6e7880c29354c1dbe7a99
-        // std::vector<int> c3d4  = boost::assign::list_of(0)(3)(1)(2);
-        // std::vector<int> c3d10 = boost::assign::list_of(0)(2)(1)(3)(6)(5)(4)(7)(9)(8);
-
-        // since master 0.15
-        // added by werner (wmayer) March 2015,
-        // https://forum.freecad.org/viewtopic.php?f=18&t=10110&start=10#p81681
-        // https://github.com/FreeCAD/FreeCAD/commit/5d159f5cf352a93b1aff4fb7b82e8b747ee4f35b
-        // https://github.com/FreeCAD/FreeCAD/commit/b007bd19e4e4608caa4cdad350a9f480287fac6b
-        // tetra4 FreeCAD --> C3D4 CalculiX
-        // N2, N1, N3, N4
-        std::vector<int> c3d4 = boost::assign::list_of(1)(0)(2)(3);
-        // tetra10: FreeCAD --> C3D10 CalculiX
-        // N2, N1, N3, N4, N5, N7, N6, N9, N8, N10
-        std::vector<int> c3d10 = boost::assign::list_of(1)(0)(2)(3)(4)(6)(5)(8)(7)(9);
-
-        // tetra node order for the system which is used for hexa8, hexa20, penta6 and penda15
-        // be careful with activating because of method getccxVolumesByFace())
-        // tetra4 FreeCAD --> C3D4 CalculiX
-        // N2, N3, N4, N1
-        // std::vector<int> c3d4  = boost::assign::list_of(1)(2)(3)(0);
-        //
-        // tetra10: FreeCAD --> C3D10 CalculiX
-        // N2, N3, N4, N1, N6, N10, N9, N5, N7, N8
-        // std::vector<int> c3d10 = boost::assign::list_of(1)(2)(3)(0)(5)(9)(8)(4)(6)(7);
-
-        // hexa8 FreeCAD --> C3D8 CalculiX
-        // N6, N7, N8, N5, N2, N3, N4, N1
-        std::vector<int> c3d8 = boost::assign::list_of(5)(6)(7)(4)(1)(2)(3)(0);
-        //
-        // hexa20 FreeCAD --> C3D20 CalculiX
-        // N6, N7, N8, N5, N2, N3, N4, N1, N14, N15, N16, N13, N10, N11, N12, N9, N18, N19, N20, N17
-        std::vector<int> c3d20 = boost::assign::list_of(5)(6)(7)(4)(1)(2)(3)(0)(13)(14)(15)(12)(9)(
-            10)(11)(8)(17)(18)(19)(16);
-        //
-        // penta6 FreeCAD --> C3D6 CalculiX
-        // N5, N6, N4, N2, N3, N1
-        std::vector<int> c3d6 = boost::assign::list_of(4)(5)(3)(1)(2)(0);
-        //
-        // penta15 FreeCAD --> C3D15 CalculiX
-        // N5, N6, N4, N2, N3, N1, N11, N12, N10, N8, N9, N7, N14, N15, N13
-        std::vector<int> c3d15 =
-            boost::assign::list_of(4)(5)(3)(1)(2)(0)(10)(11)(9)(7)(8)(6)(13)(14)(12);
-
-        elemOrderMap.insert(std::make_pair("C3D4", c3d4));
-        volTypeMap.insert(std::make_pair(elemOrderMap["C3D4"].size(), "C3D4"));
-        elemOrderMap.insert(std::make_pair("C3D10", c3d10));
-        volTypeMap.insert(std::make_pair(elemOrderMap["C3D10"].size(), "C3D10"));
-        elemOrderMap.insert(std::make_pair("C3D8", c3d8));
-        volTypeMap.insert(std::make_pair(elemOrderMap["C3D8"].size(), "C3D8"));
-        elemOrderMap.insert(std::make_pair("C3D20", c3d20));
-        volTypeMap.insert(std::make_pair(elemOrderMap["C3D20"].size(), "C3D20"));
-        elemOrderMap.insert(std::make_pair("C3D6", c3d6));
-        volTypeMap.insert(std::make_pair(elemOrderMap["C3D6"].size(), "C3D6"));
-        elemOrderMap.insert(std::make_pair("C3D15", c3d15));
-        volTypeMap.insert(std::make_pair(elemOrderMap["C3D15"].size(), "C3D15"));
+    switch (volVariant) {
+        case ABAQUS_VolumeVariant::Standard:
+            break;
+        case ABAQUS_VolumeVariant::Reduced:
+            variants["Hexa8"] = "C3D8R";
+            variants["Hexa20"] = "C3D20R";
+            break;
+        case ABAQUS_VolumeVariant::Incompatible:
+            variants["Hexa8"] = "C3D8I";
+            break;
+        case ABAQUS_VolumeVariant::Modified:
+            variants["Tetra10"] = "C3D10T";
+            break;
+        case ABAQUS_VolumeVariant::Fluid:
+            variants["Tetra4"] = "F3D4";
+            variants["Penta6"] = "F3D6";
+            variants["Hexa8"] = "F3D8";
+            break;
     }
+
+    // face elements
+    switch (faceVariant) {
+        case ABAQUS_FaceVariant::Shell:
+            variants["Tria3"] = "S3";
+            variants["Quad4"] = "S4";
+            variants["Tria6"] = "S6";
+            variants["Quad8"] = "S8";
+            break;
+        case ABAQUS_FaceVariant::Shell_Reduced:
+            variants["Tria3"] = "S3";
+            variants["Quad4"] = "S4R";
+            variants["Tria6"] = "S6";
+            variants["Quad8"] = "S8R";
+            break;
+        case ABAQUS_FaceVariant::Membrane:
+            variants["Tria3"] = "M3D3";
+            variants["Quad4"] = "M3D4";
+            variants["Tria6"] = "M3D6";
+            variants["Quad8"] = "M3D8";
+            break;
+        case ABAQUS_FaceVariant::Membrane_Reduced:
+            variants["Tria3"] = "M3D3";
+            variants["Quad4"] = "M3D4R";
+            variants["Tria6"] = "M3D6";
+            variants["Quad8"] = "M3D8R";
+            break;
+        case ABAQUS_FaceVariant::Stress:
+            variants["Tria3"] = "CPS3";
+            variants["Quad4"] = "CPS4";
+            variants["Tria6"] = "CPS6";
+            variants["Quad8"] = "CPS8";
+            break;
+        case ABAQUS_FaceVariant::Stress_Reduced:
+            variants["Tria3"] = "CPS3";
+            variants["Quad4"] = "CPS4R";
+            variants["Tria6"] = "CPS6";
+            variants["Quad8"] = "CPS8R";
+            break;
+        case ABAQUS_FaceVariant::Strain:
+            variants["Tria3"] = "CPE3";
+            variants["Quad4"] = "CPE4";
+            variants["Tria6"] = "CPE6";
+            variants["Quad8"] = "CPE8";
+            break;
+        case ABAQUS_FaceVariant::Strain_Reduced:
+            variants["Tria3"] = "CPE3";
+            variants["Quad4"] = "CPE4R";
+            variants["Tria6"] = "CPE6";
+            variants["Quad8"] = "CPE8R";
+            break;
+        case ABAQUS_FaceVariant::Axisymmetric:
+            variants["Tria3"] = "CAX3";
+            variants["Quad4"] = "CAX4";
+            variants["Tria6"] = "CAX6";
+            variants["Quad8"] = "CAX8";
+            break;
+        case ABAQUS_FaceVariant::Axisymmetric_Reduced:
+            variants["Tria3"] = "CAX3";
+            variants["Quad4"] = "CAX4R";
+            variants["Tria6"] = "CAX6";
+            variants["Quad8"] = "CAX8R";
+            break;
+    }
+
+    // edge elements
+    switch (edgeVariant) {
+        case ABAQUS_EdgeVariant::Beam:
+            variants["Seg2"] = "B31";
+            variants["Seg3"] = "B32";
+            break;
+        case ABAQUS_EdgeVariant::Beam_Reduced:
+            variants["Seg2"] = "B31R";
+            variants["Seg3"] = "B32R";
+            break;
+        case ABAQUS_EdgeVariant::Truss:
+            variants["Seg2"] = "T3D2";
+            variants["Seg3"] = "T3D3";
+            break;
+        case ABAQUS_EdgeVariant::Network:
+            variants["Seg2"] = "B31";
+            variants["Seg3"] = "D";
+            break;
+    }
+
+    std::map<std::string, std::vector<int>> elemOrderMap;
+    std::map<int, std::string> edgeTypeMap;
+    std::map<int, std::string> faceTypeMap;
+    std::map<int, std::string> volTypeMap;
+
+
+    // node order fits with node order in importCcxFrdResults.py module to import
+    // CalculiX result meshes
+
+    // dimension 1
+    //
+    // seg2 FreeCAD --> B31, B31R, T3D2 CalculiX
+    // N1, N2
+    std::vector<int> seg2 = boost::assign::list_of(0)(1);
+    //
+    // seg3 FreeCAD --> B32, B32R, T3D3 D CalculiX
+    // N1, N3, N2
+    std::vector<int> seg3 = boost::assign::list_of(0)(2)(1);
+
+    elemOrderMap.insert(std::make_pair(variants["Seg2"], seg2));
+    edgeTypeMap.insert(std::make_pair(seg2.size(), variants["Seg2"]));
+    elemOrderMap.insert(std::make_pair(variants["Seg3"], seg3));
+    edgeTypeMap.insert(std::make_pair(seg3.size(), variants["Seg3"]));
+
+    // dimension 2
+    //
+    // tria3 FreeCAD --> S3, M3D3, CPS3, CPE3, CAX3 CalculiX
+    // N1, N2, N3
+    std::vector<int> tria3 = boost::assign::list_of(0)(1)(2);
+    //
+    // tria6 FreeCAD --> S6 M3D6, CPS6, CPE6, CAX6 CalculiX
+    // N1, N2, N3, N4, N5, N6
+    std::vector<int> tria6 = boost::assign::list_of(0)(1)(2)(3)(4)(5);
+    //
+    // quad4 FreeCAD --> S4, S4R, M3D4, M3D4R, CPS4, CPS4R, CPE4, CPE4R, CAX4, CAX4R CalculiX
+    // N1, N2, N3, N4
+    std::vector<int> quad4 = boost::assign::list_of(0)(1)(2)(3);
+    //
+    // quad8 FreeCAD --> S8, S8R, M3D8, M3D8R, CPS8, CPS8R, CPE8, CPE8R, CAX8, CAX8R CalculiX
+    // N1, N2, N3, N4, N5, N6, N7, N8
+    std::vector<int> quad8 = boost::assign::list_of(0)(1)(2)(3)(4)(5)(6)(7);
+
+    elemOrderMap.insert(std::make_pair(variants["Tria3"], tria3));
+    faceTypeMap.insert(std::make_pair(tria3.size(), variants["Tria3"]));
+    elemOrderMap.insert(std::make_pair(variants["Tria6"], tria6));
+    faceTypeMap.insert(std::make_pair(tria6.size(), variants["Tria6"]));
+    elemOrderMap.insert(std::make_pair(variants["Quad4"], quad4));
+    faceTypeMap.insert(std::make_pair(quad4.size(), variants["Quad4"]));
+    elemOrderMap.insert(std::make_pair(variants["Quad8"], quad8));
+    faceTypeMap.insert(std::make_pair(quad8.size(), variants["Quad8"]));
+
+
+    // dimension 3
+    //
+    // tetra4 FreeCAD --> C3D4, F3D4 CalculiX
+    // N2, N1, N3, N4
+    std::vector<int> tetra4 = boost::assign::list_of(1)(0)(2)(3);
+    // tetra10: FreeCAD --> C3D10, C3D10T CalculiX
+    // N2, N1, N3, N4, N5, N7, N6, N9, N8, N10
+    std::vector<int> tetra10 = boost::assign::list_of(1)(0)(2)(3)(4)(6)(5)(8)(7)(9);
+
+    // tetra node order for the system which is used for hexa8, hexa20, penta6 and penta15
+    // be careful with activating because of method getccxVolumesByFace())
+    // hexa8 FreeCAD --> C3D8, C3D8R, C3D8I, F3D8 CalculiX
+    // N6, N7, N8, N5, N2, N3, N4, N1
+    std::vector<int> hexa8 = boost::assign::list_of(5)(6)(7)(4)(1)(2)(3)(0);
+    //
+    // hexa20 FreeCAD --> C3D20, C3D20R CalculiX
+    // N6, N7, N8, N5, N2, N3, N4, N1, N14, N15, N16, N13, N10, N11, N12, N9, N18, N19, N20, N17
+    std::vector<int> hexa20 = boost::assign::list_of(5)(6)(7)(4)(1)(2)(3)(0)(13)(14)(15)(12)(9)(10)(
+        11)(8)(17)(18)(19)(16);
+    //
+    // penta6 FreeCAD --> C3D6, F3D6 CalculiX
+    // N5, N6, N4, N2, N3, N1
+    std::vector<int> penta6 = boost::assign::list_of(4)(5)(3)(1)(2)(0);
+    //
+    // penta15 FreeCAD --> C3D15 CalculiX
+    // N5, N6, N4, N2, N3, N1, N11, N12, N10, N8, N9, N7, N14, N15, N13
+    std::vector<int> penta15 =
+        boost::assign::list_of(4)(5)(3)(1)(2)(0)(10)(11)(9)(7)(8)(6)(13)(14)(12);
+
+    elemOrderMap.insert(std::make_pair(variants["Tetra4"], tetra4));
+    volTypeMap.insert(std::make_pair(tetra4.size(), variants["Tetra4"]));
+    elemOrderMap.insert(std::make_pair(variants["Tetra10"], tetra10));
+    volTypeMap.insert(std::make_pair(tetra10.size(), variants["Tetra10"]));
+    elemOrderMap.insert(std::make_pair(variants["Hexa8"], hexa8));
+    volTypeMap.insert(std::make_pair(hexa8.size(), variants["Hexa8"]));
+    elemOrderMap.insert(std::make_pair(variants["Hexa20"], hexa20));
+    volTypeMap.insert(std::make_pair(hexa20.size(), variants["Hexa20"]));
+    elemOrderMap.insert(std::make_pair(variants["Penta6"], penta6));
+    volTypeMap.insert(std::make_pair(penta6.size(), variants["Penta6"]));
+    elemOrderMap.insert(std::make_pair(variants["Penta15"], penta15));
+    volTypeMap.insert(std::make_pair(penta15.size(), variants["Penta15"]));
+
 
     // get all data --> Extract Nodes and Elements of the current SMESH datastructure
     using VertexMap = std::map<int, Base::Vector3d>;
@@ -2249,6 +2271,30 @@ void FemMesh::writeABAQUS(const std::string& Filename, int elemParam, bool group
     // write nodes
     anABAQUS_Output << "** Nodes" << std::endl;
     anABAQUS_Output << "*Node, NSET=Nall" << std::endl;
+
+    // Axisymmetric, plane strain and plane stress elements expect nodes in the plane z=0.
+    // Set the z coordinate to 0 to avoid possible rounding errors.
+    switch (faceVariant) {
+        case ABAQUS_FaceVariant::Stress:
+        case ABAQUS_FaceVariant::Stress_Reduced:
+        case ABAQUS_FaceVariant::Strain:
+        case ABAQUS_FaceVariant::Strain_Reduced:
+        case ABAQUS_FaceVariant::Axisymmetric:
+        case ABAQUS_FaceVariant::Axisymmetric_Reduced:
+            for (const auto& elMap : elementsMapFac) {
+                const NodesMap& nodeMap = elMap.second;
+                for (const auto& nodes : nodeMap) {
+                    for (int n : nodes.second) {
+                        Base::Vector3d& vertex = vertexMap[n];
+                        vertex.z = 0.0;
+                    }
+                }
+            }
+            break;
+        default:
+            break;
+    }
+
     // This way we get sorted output.
     // See https://forum.freecad.org/viewtopic.php?f=18&t=12646&start=40#p103004
     for (const auto& it : vertexMap) {
@@ -2276,10 +2322,12 @@ void FemMesh::writeABAQUS(const std::string& Filename, int elemParam, bool group
                     }
                     else {
                         if (first_line) {
-                            anABAQUS_Output << "," << std::endl;
+                            anABAQUS_Output << "," << std::endl << *kt;
                             first_line = false;
                         }
-                        anABAQUS_Output << *kt << ", ";
+                        else {
+                            anABAQUS_Output << ", " << *kt;
+                        }
                     }
                 }
                 anABAQUS_Output << std::endl;
@@ -2412,7 +2460,7 @@ void FemMesh::writeABAQUS(const std::string& Filename, int elemParam, bool group
 
 void FemMesh::writeZ88(const std::string& FileName) const
 {
-    Base::TimeInfo Start;
+    Base::TimeElapsed Start;
     Base::Console().Log("Start: FemMesh::writeZ88() =================================\n");
 
     /*

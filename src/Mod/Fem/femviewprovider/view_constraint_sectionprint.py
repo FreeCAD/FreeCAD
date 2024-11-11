@@ -38,10 +38,17 @@ class VPConstraintSectionPrint(view_base_femconstraint.VPBaseFemConstraint):
     A View Provider for the ConstraintSectionPrint object
     """
 
+    def __init__(self, vobj):
+        super().__init__(vobj)
+        mat = vobj.ShapeAppearance[0]
+        mat.DiffuseColor = (0.0, 0.165, 1.0, 0.0)
+        vobj.ShapeAppearance = mat
+
     def setEdit(self, vobj, mode=0):
         view_base_femconstraint.VPBaseFemConstraint.setEdit(
-            self,
-            vobj,
-            mode,
-            task_constraint_sectionprint._TaskPanel
+            self, vobj, mode, task_constraint_sectionprint._TaskPanel
         )
+
+    def attach(self, vobj):
+        super().attach(vobj)
+        vobj.loadSymbol(self.resource_symbol_dir + "ConstraintSectionPrint.iv")

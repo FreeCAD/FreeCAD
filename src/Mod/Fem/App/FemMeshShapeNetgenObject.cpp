@@ -45,7 +45,7 @@
 using namespace Fem;
 using namespace App;
 
-PROPERTY_SOURCE(Fem::FemMeshShapeNetgenObject, Fem::FemMeshShapeObject)
+PROPERTY_SOURCE(Fem::FemMeshShapeNetgenObject, Fem::FemMeshShapeBaseObject)
 
 const char* FinenessEnums[] =
     {"VeryCoarse", "Coarse", "Moderate", "Fine", "VeryFine", "UserDefined", nullptr};
@@ -53,6 +53,7 @@ const char* FinenessEnums[] =
 FemMeshShapeNetgenObject::FemMeshShapeNetgenObject()
 {
     ADD_PROPERTY_TYPE(MaxSize, (1000), "MeshParams", Prop_None, "Maximum element size");
+    ADD_PROPERTY_TYPE(MinSize, (0), "MeshParams", Prop_None, "Minimum element size");
     ADD_PROPERTY_TYPE(SecondOrder, (true), "MeshParams", Prop_None, "Create quadric elements");
     ADD_PROPERTY_TYPE(Fineness, (2), "MeshParams", Prop_None, "Fineness level of the mesh");
     Fineness.setEnums(FinenessEnums);
@@ -92,9 +93,10 @@ App::DocumentObjectExecReturn* FemMeshShapeNetgenObject::execute()
 #if SMESH_VERSION_MAJOR >= 9
     NETGENPlugin_Hypothesis* tet = new NETGENPlugin_Hypothesis(0, newMesh.getGenerator());
 #else
-    NETGENPlugin_Hypothesis* tet = new NETGENPlugin_Hypothesis(0, 1, newMesh.getGenerator());
+    NETGENPlugin_Hypothesis* tet = new NETGENPlugin_Hypothesis(0, 0, newMesh.getGenerator());
 #endif
     tet->SetMaxSize(MaxSize.getValue());
+    tet->SetMinSize(MinSize.getValue());
     tet->SetSecondOrder(SecondOrder.getValue());
     tet->SetOptimize(Optimize.getValue());
     int iFineness = Fineness.getValue();

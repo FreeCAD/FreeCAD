@@ -20,17 +20,19 @@
  *                                                                         *
  **************************************************************************/
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 #include <Mod/Material/App/PreCompiled.h>
 #ifndef _PreComp_
 #endif
 
+#include <QLocale>
 #include <QMetaType>
 #include <QString>
 
 #include <App/Application.h>
 #include <Base/Quantity.h>
+#include <Base/Interpreter.h>
 #include <Gui/MetaTypes.h>
 #include <src/App/InitApplication.h>
 
@@ -54,6 +56,7 @@ class TestMaterial : public ::testing::Test {
   }
 
   void SetUp() override {
+    Base::Interpreter().runString("import Part");
     _modelManager = new Materials::ModelManager();
     _materialManager = new Materials::MaterialManager();
   }
@@ -239,7 +242,7 @@ TEST_F(TestMaterial, TestCalculiXSteel)
 
     EXPECT_TRUE(steel->isPhysicalModelComplete(Materials::ModelUUIDs::ModelUUID_Mechanical_Density)); // Density
     EXPECT_FALSE(steel->isPhysicalModelComplete(Materials::ModelUUIDs::ModelUUID_Mechanical_IsotropicLinearElastic)); // IsotropicLinearElastic - incomplete
-    EXPECT_TRUE(steel->isPhysicalModelComplete(Materials::ModelUUIDs::ModelUUID_Thermal_Default)); // Thermal
+    EXPECT_FALSE(steel->isPhysicalModelComplete(Materials::ModelUUIDs::ModelUUID_Thermal_Default)); // Thermal
     EXPECT_FALSE(steel->isPhysicalModelComplete(Materials::ModelUUIDs::ModelUUID_Mechanical_LinearElastic)); // Legacy linear elastic - Not in the model
     EXPECT_TRUE(steel->isAppearanceModelComplete(Materials::ModelUUIDs::ModelUUID_Rendering_Basic)); // BasicRendering - inherited from Steel.FCMat
 
@@ -305,8 +308,9 @@ TEST_F(TestMaterial, TestCalculiXSteel)
     EXPECT_FALSE(properties1[QString::fromStdString("SpecularColor")]->isNull());
     EXPECT_FALSE(properties1[QString::fromStdString("Transparency")]->isNull());
 
+    QLocale locale;
     EXPECT_EQ(properties[QString::fromStdString("Density")]->getString(), parseQuantity("7900.00 kg/m^3"));
-    EXPECT_EQ(properties[QString::fromStdString("PoissonRatio")]->getString(), QString::fromStdString("0.3"));
+    EXPECT_EQ(properties[QString::fromStdString("PoissonRatio")]->getString(), locale.toString(0.3));
     EXPECT_EQ(properties[QString::fromStdString("YoungsModulus")]->getString(), parseQuantity("210.00 GPa"));
     EXPECT_EQ(properties[QString::fromStdString("SpecificHeat")]->getString(), parseQuantity("590.00 J/kg/K"));
     EXPECT_EQ(properties[QString::fromStdString("ThermalConductivity")]->getString(), parseQuantity("43.00 W/m/K"));
@@ -314,7 +318,7 @@ TEST_F(TestMaterial, TestCalculiXSteel)
     EXPECT_EQ(properties1[QString::fromStdString("AmbientColor")]->getString(), QString::fromStdString("(0.0020, 0.0020, 0.0020, 1.0)"));
     EXPECT_EQ(properties1[QString::fromStdString("DiffuseColor")]->getString(), QString::fromStdString("(0.0000, 0.0000, 0.0000, 1.0)"));
     EXPECT_EQ(properties1[QString::fromStdString("EmissiveColor")]->getString(), QString::fromStdString("(0.0000, 0.0000, 0.0000, 1.0)"));
-    EXPECT_EQ(properties1[QString::fromStdString("Shininess")]->getString(), QString::fromStdString("0.06"));
+    EXPECT_EQ(properties1[QString::fromStdString("Shininess")]->getString(), locale.toString(0.06));
     EXPECT_EQ(properties1[QString::fromStdString("SpecularColor")]->getString(), QString::fromStdString("(0.9800, 0.9800, 0.9800, 1.0)"));
     EXPECT_EQ(properties1[QString::fromStdString("Transparency")]->getString(), QString::fromStdString("0"));
 
@@ -323,18 +327,18 @@ TEST_F(TestMaterial, TestCalculiXSteel)
 
     // These are the preferred method of access
     //
-    EXPECT_FLOAT_EQ(steel->getPhysicalQuantity(QString::fromStdString("Density")).getValue(), 7.9e-06);
-    EXPECT_FLOAT_EQ(steel->getPhysicalValue(QString::fromStdString("PoissonRatio")).toDouble(), 0.3);
-    EXPECT_FLOAT_EQ(steel->getPhysicalQuantity(QString::fromStdString("YoungsModulus")).getValue(), 210000000.0);
-    EXPECT_FLOAT_EQ(steel->getPhysicalQuantity(QString::fromStdString("SpecificHeat")).getValue(), 590000000.0);
-    EXPECT_FLOAT_EQ(steel->getPhysicalQuantity(QString::fromStdString("ThermalConductivity")).getValue(), 43000.0);
-    EXPECT_FLOAT_EQ(steel->getPhysicalQuantity(QString::fromStdString("ThermalExpansionCoefficient")).getValue(), 1.2e-05);
+    EXPECT_DOUBLE_EQ(steel->getPhysicalQuantity(QString::fromStdString("Density")).getValue(), 7.9e-06);
+    EXPECT_NEAR(steel->getPhysicalValue(QString::fromStdString("PoissonRatio")).toDouble(), 0.3, 1e-6);
+    EXPECT_DOUBLE_EQ(steel->getPhysicalQuantity(QString::fromStdString("YoungsModulus")).getValue(), 210000000.0);
+    EXPECT_DOUBLE_EQ(steel->getPhysicalQuantity(QString::fromStdString("SpecificHeat")).getValue(), 590000000.0);
+    EXPECT_DOUBLE_EQ(steel->getPhysicalQuantity(QString::fromStdString("ThermalConductivity")).getValue(), 43000.0);
+    EXPECT_DOUBLE_EQ(steel->getPhysicalQuantity(QString::fromStdString("ThermalExpansionCoefficient")).getValue(), 1.2e-05);
     EXPECT_EQ(steel->getAppearanceValue(QString::fromStdString("AmbientColor")), QString::fromStdString("(0.0020, 0.0020, 0.0020, 1.0)"));
     EXPECT_EQ(steel->getAppearanceValue(QString::fromStdString("DiffuseColor")), QString::fromStdString("(0.0000, 0.0000, 0.0000, 1.0)"));
     EXPECT_EQ(steel->getAppearanceValue(QString::fromStdString("EmissiveColor")), QString::fromStdString("(0.0000, 0.0000, 0.0000, 1.0)"));
-    EXPECT_FLOAT_EQ(steel->getAppearanceValue(QString::fromStdString("Shininess")).toDouble(), 0.06);
+    EXPECT_NEAR(steel->getAppearanceValue(QString::fromStdString("Shininess")).toDouble(), 0.06, 1e-6);
     EXPECT_EQ(steel->getAppearanceValue(QString::fromStdString("SpecularColor")), QString::fromStdString("(0.9800, 0.9800, 0.9800, 1.0)"));
-    EXPECT_FLOAT_EQ(steel->getAppearanceValue(QString::fromStdString("Transparency")).toDouble(), 0.0);
+    EXPECT_DOUBLE_EQ(steel->getAppearanceValue(QString::fromStdString("Transparency")).toDouble(), 0.0);
 
     EXPECT_EQ(steel->getPhysicalQuantity(QString::fromStdString("Density")).getUserString(), parseQuantity("7900.00 kg/m^3"));
     EXPECT_EQ(steel->getPhysicalQuantity(QString::fromStdString("YoungsModulus")).getUserString(), parseQuantity("210.00 GPa"));

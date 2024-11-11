@@ -30,7 +30,6 @@
 
 #include "Base/Console.h"
 
-//#include <boost/functional/hash.hpp>
 #include <boost/iostreams/device/array.hpp>
 #include <boost/iostreams/stream.hpp>
 
@@ -47,15 +46,6 @@ void MappedName::compact() const
         self->data = QByteArray(self->data.constData(), self->data.size());
         self->raw = false;
     }
-
-#if 0
-    static std::unordered_set<QByteArray, ByteArrayHasher> PostfixSet;
-    if (this->postfix.size()) {
-        auto res = PostfixSet.insert(this->postfix);
-        if (!res.second)
-            self->postfix = *res.first;
-    }
-#endif
 }
 
 

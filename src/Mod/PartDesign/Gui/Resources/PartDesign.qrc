@@ -14,8 +14,6 @@
         <file>icons/PartDesign_BaseFeature.svg</file>
         <file>icons/PartDesign_Body.svg</file>
         <file alias="icons/PartDesign_Body_Create_New.svg">icons/PartDesign_Body.svg</file>
-        <file>icons/PartDesign_Body_old.svg</file>
-        <file>icons/PartDesign_Body_Tree.svg</file>
         <file>icons/PartDesign_Boolean.svg</file>
         <file>icons/PartDesign_Chamfer.svg</file>
         <file>icons/PartDesign_Clone.svg</file>
@@ -26,7 +24,6 @@
         <file>icons/PartDesign_Groove.svg</file>
         <file>icons/PartDesign_Hole.svg</file>
         <file>icons/PartDesign_InternalExternalGear.svg</file>
-        <file>icons/PartDesign_InvoluteGear.svg</file>
         <file>icons/PartDesign_Line.svg</file>
         <file>icons/PartDesign_LinearPattern.svg</file>
         <file>icons/PartDesign_Migrate.svg</file>
@@ -35,6 +32,7 @@
         <file>icons/PartDesign_MoveFeatureInTree.svg</file>
         <file>icons/PartDesign_MoveTip.svg</file>
         <file>icons/PartDesign_MultiTransform.svg</file>
+        <file>icons/PartDesign_Overlay_Tip.svg</file>
         <file>icons/PartDesign_Pad.svg</file>
         <file>icons/PartDesign_Plane.svg</file>
         <file>icons/PartDesign_Pocket.svg</file>
@@ -58,7 +56,5 @@
         <file>icons/PartDesign_SubtractiveWedge.svg</file>
         <file>icons/PartDesign_Thickness.svg</file>
         <file>icons/PartDesignWorkbench.svg</file>
-        <file>icons/Tree_PartDesign_Pad.svg</file>
-        <file>icons/Tree_PartDesign_Revolution.svg</file>
     </qresource>
 </RCC>

@@ -23,7 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRepAlgoAPI_Cut.hxx>
+# include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
 # include <BRepPrimAPI_MakeRevol.hxx>
 # include <BRepFeat_MakeRevol.hxx>
 # include <gp_Lin.hxx>
@@ -36,6 +36,7 @@
 #include <Base/Tools.h>
 
 #include "FeatureGroove.h"
+#include "Mod/Part/App/TopoShapeOpCode.h"
 
 
 using namespace PartDesign;
@@ -56,8 +57,8 @@ Groove::Groove()
 
     ADD_PROPERTY_TYPE(Type, (0L), "Groove", App::Prop_None, "Groove type");
     Type.setEnums(TypeEnums);
-    ADD_PROPERTY_TYPE(Base, (Base::Vector3d(0.0f,0.0f,0.0f)), "Groove", App::Prop_ReadOnly, "Base");
-    ADD_PROPERTY_TYPE(Axis, (Base::Vector3d(0.0f,1.0f,0.0f)), "Groove", App::Prop_ReadOnly, "Axis");
+    ADD_PROPERTY_TYPE(Base, (Base::Vector3d(0.0f,0.0f,0.0f)), "Groove", App::PropertyType(App::Prop_ReadOnly | App::Prop_Hidden), "Base");
+    ADD_PROPERTY_TYPE(Axis, (Base::Vector3d(0.0f,1.0f,0.0f)), "Groove", App::PropertyType(App::Prop_ReadOnly | App::Prop_Hidden), "Axis");
     ADD_PROPERTY_TYPE(Angle, (360.0),"Groove", App::Prop_None, "Angle");
     ADD_PROPERTY_TYPE(Angle2, (60.0), "Groove", App::Prop_None, "Groove length in 2nd direction");
     ADD_PROPERTY_TYPE(UpToFace, (nullptr), "Groove", App::Prop_None, "Face where groove will end");
@@ -81,43 +82,39 @@ short Groove::mustExecute() const
 App::DocumentObjectExecReturn *Groove::execute()
 {
     // Validate parameters
-    // All angles are in radians unless explicitly stated
-    double angleDeg = Angle.getValue();
-    if (angleDeg > 360.0)
+    double angle = Angle.getValue();
+    if (angle > 360.0)
         return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Angle of groove too large"));
 
-    double angle = Base::toRadians<double>(angleDeg);
+    angle = Base::toRadians<double>(angle);
     if (angle < Precision::Angular())
         return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Angle of groove too small"));
 
-    double angle2 = Base::toRadians(Angle2.getValue());
+    // Reverse angle if selected
+    if (Reversed.getValue() && !Midplane.getValue())
+        angle *= (-1.0);
 
-    TopoDS_Shape sketchshape;
+    TopoShape sketchshape;
     try {
-        sketchshape = getVerifiedFace();
+        sketchshape = getTopoShapeVerifiedFace();
     } catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
 
     // if the Base property has a valid shape, fuse the prism into it
-    TopoDS_Shape base;
+    TopoShape base;
     try {
-        base = getBaseShape();
+        base = getBaseTopoShape();
     }
     catch (const Base::Exception&) {
         std::string text(QT_TRANSLATE_NOOP("Exception", "The requested feature cannot be created. The reason may be that:\n"
-                                    "  - the active Body does not contain a base shape, so there is no\n"
-                                    "  material to be removed;\n"
-                                    "  - the selected sketch does not belong to the active Body."));
+                                                        "  - the active Body does not contain a base shape, so there is no\n"
+                                                        "  material to be removed;\n"
+                                                        "  - the selected sketch does not belong to the active Body."));
         return new App::DocumentObjectExecReturn(text);
     }
 
-    // update Axis from ReferenceAxis
-    try {
-        updateAxis();
-    } catch (const Base::Exception& e) {
-        return new App::DocumentObjectExecReturn(e.what());
-    }
+    updateAxis();
 
     // get revolve axis
     Base::Vector3d b = Base.getValue();
@@ -126,115 +123,83 @@ App::DocumentObjectExecReturn *Groove::execute()
     gp_Dir dir(v.x,v.y,v.z);
 
     try {
-        if (sketchshape.IsNull())
+        if (sketchshape.isNull())
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Creating a face from sketch failed"));
 
-        RevolMethod method = methodFromString(Type.getValueAsString());
+        // Rotate the face by half the angle to get Groove symmetric to sketch plane
+        if (Midplane.getValue()) {
+            gp_Trsf mov;
+            mov.SetRotation(gp_Ax1(pnt, dir), Base::toRadians<double>(Angle.getValue()) * (-1.0) / 2.0);
+            TopLoc_Location loc(mov);
+            sketchshape.move(loc);
+        }
 
         this->positionByPrevious();
-        TopLoc_Location invObjLoc = this->getLocation().Inverted();
+        auto invObjLoc = getLocation().Inverted();
         pnt.Transform(invObjLoc.Transformation());
         dir.Transform(invObjLoc.Transformation());
-        base.Move(invObjLoc);
-        sketchshape.Move(invObjLoc);
+        base.move(invObjLoc);
+        sketchshape.move(invObjLoc);
 
         // Check distance between sketchshape and axis - to avoid failures and crashes
         TopExp_Explorer xp;
-        xp.Init(sketchshape, TopAbs_FACE);
+        xp.Init(sketchshape.getShape(), TopAbs_FACE);
         for (;xp.More(); xp.Next()) {
             if (checkLineCrossesFace(gp_Lin(pnt, dir), TopoDS::Face(xp.Current())))
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Revolve axis intersects the sketch"));
         }
 
-        // Create a fresh support even when base exists so that it can be used for patterns
-        TopoDS_Shape result;
-        TopoDS_Face supportface = getSupportFace();
-        supportface.Move(invObjLoc);
-
-        if (method == RevolMethod::ToFace || method == RevolMethod::ToFirst) {
-            TopoDS_Face upToFace;
-            if (method == RevolMethod::ToFace) {
-                getFaceFromLinkSub(upToFace, UpToFace);
-                upToFace.Move(invObjLoc);
-            }
-            else
-                throw Base::RuntimeError("ProfileBased: Groove up to first is not yet supported");
-
-            // TODO: This method is designed for extrusions. needs to be adapted for grooves.
-            // getUpToFace(upToFace, base, supportface, sketchshape, method, dir);
-
-            TopoDS_Face supportface = getSupportFace();
-            supportface.Move(invObjLoc);
-
-            if (Reversed.getValue())
-                dir.Reverse();
-
-            TopExp_Explorer Ex(supportface,TopAbs_WIRE);
-            if (!Ex.More())
-                supportface = TopoDS_Face();
-            RevolMode mode = RevolMode::CutFromBase;
-            generateRevolution(result, base, sketchshape, supportface, upToFace, gp_Ax1(pnt, dir), method, mode, Standard_True);
-
-            result = refineShapeIfActive(result);
-
-            // the result we get here is the shape _after_ the operation is done
-            // And the really expensive way to get the SubShape...
-            BRepAlgoAPI_Cut mkCut(base, result);
-            if (!mkCut.IsDone())
-                return new App::DocumentObjectExecReturn("Groove: Up to face: Could not get SubShape!");
-            // FIXME: In some cases this affects the Shape property: It is set to the same shape as the SubShape!!!!
-            TopoDS_Shape subshape = refineShapeIfActive(mkCut.Shape());
-            this->AddSubShape.setValue(subshape);
-
-            int resultCount = countSolids(result);
-            if (resultCount > 1) {
-                return new App::DocumentObjectExecReturn("Groove: Result has multiple solids. This is not supported at this time.");
-            }
-
-            this->Shape.setValue(getSolid(result));
+        // revolve the face to a solid
+        TopoShape result(0);
+        try {
+            result.makeElementRevolve(sketchshape, gp_Ax1(pnt, dir), angle);
+        }catch(Standard_Failure &) {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Could not revolve the sketch!"));
         }
-        else {
-            bool midplane = Midplane.getValue();
-            bool reversed = Reversed.getValue();
-            generateRevolution(result, sketchshape, gp_Ax1(pnt, dir), angle, angle2, midplane, reversed, method);
+        this->AddSubShape.setValue(result);
 
-            if (result.IsNull())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Could not revolve the sketch!"));
-
-            // set the subtractive shape property for later usage in e.g. pattern
-            result = refineShapeIfActive(result);
-            this->AddSubShape.setValue(result);
-
-            // cut out groove to get one result object
-            BRepAlgoAPI_Cut mkCut(base, result);
-            // Let's check if the fusion has been successful
-            if (!mkCut.IsDone())
-                throw Base::CADKernelError(QT_TRANSLATE_NOOP("Exception", "Cut out of base feature failed"));
-
-            // we have to get the solids (fuse sometimes creates compounds)
-            TopoDS_Shape solRes = this->getSolid(mkCut.Shape());
-            if (solRes.IsNull())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
-
-            solRes = refineShapeIfActive(solRes);
-            this->Shape.setValue(getSolid(solRes));
-
-            int solidCount = countSolids(solRes);
-            if (solidCount > 1) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
-            }
+        if(base.isNull()) {
+            Shape.setValue(getSolid(result));
+            return App::DocumentObject::StdReturn;
         }
 
-        // eventually disable some settings that are not valid for the current method
-        updateProperties(method);
+        result.Tag = -getID();
+        TopoShape boolOp(0);
 
+        try {
+            const char *maker;
+            switch (getAddSubType()) {
+                case Additive:
+                    maker = Part::OpCodes::Fuse;
+                    break;
+//                case Intersecting:
+//                    maker = Part::OpCodes::Common;
+//                    break;
+                default:
+                    maker = Part::OpCodes::Cut;
+            }
+//            this->fixShape(result);
+            boolOp.makeElementBoolean(maker, {base,result});
+        }catch(Standard_Failure &) {
+            return new App::DocumentObjectExecReturn("Failed to cut base feature");
+        }
+        boolOp = this->getSolid(boolOp);
+        if (boolOp.isNull())
+            return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
+
+        boolOp = refineShapeIfActive(boolOp);
+        boolOp = getSolid(boolOp);
+        if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+        }
+        Shape.setValue(boolOp);
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {
 
         if (std::string(e.GetMessageString()) == "TopoDS::Face")
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Could not create face from sketch.\n"
-                "Intersecting sketch entities in a sketch are not allowed."));
+                                                                                    "Intersecting sketch entities in a sketch are not allowed."));
         else
             return new App::DocumentObjectExecReturn(e.GetMessageString());
     }

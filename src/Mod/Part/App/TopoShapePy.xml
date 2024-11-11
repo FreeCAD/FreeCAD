@@ -511,6 +511,11 @@ Returns: result of offsetting (wire or face or compound of those). Compounding
 structure follows that of source shape.</UserDocu>
       </Documentation>
     </Methode>
+      <Methode Name="makeEvolved" Const="true" Keyword="true">
+          <Documentation>
+              <UserDocu>Profile along the spine</UserDocu>
+          </Documentation>
+      </Methode>
     <Methode Name="makeWires" Const="true">
       <Documentation>
         <UserDocu>make wire(s) using the edges of this shape
@@ -784,7 +789,7 @@ proximity(shape,[tolerance]) -> (selfFaces, shapeFaces)
     <Methode Name="distToShape" Const="true">
       <Documentation>
         <UserDocu>Find the minimum distance to another shape.
-distToShape(shape) -> (dist, vectors, infos)
+distToShape(shape, tol=1e-7) -> (dist, vectors, infos)
 --
 dist is the minimum distance, in mm (float value).
 
@@ -808,8 +813,12 @@ infos contains additional info on the solutions. It is a list of tuples:
     </Methode>
     <Methode Name="getElement" Const="true">
       <Documentation>
-        <UserDocu>Returns a SubElement
-getElement(elementName) -> Face | Edge | Vertex
+        <UserDocu>
+Returns a SubElement
+getElement(elementName, [silent = False]) -> Face | Edge | Vertex
+elementName:  SubElement name - i.e. 'Edge1', 'Face3' etc. 
+              Accepts TNP mitigation mapped names as well
+silent:  True to suppress the exception throw if the shape isn't found.
         </UserDocu>
       </Documentation>
     </Methode>
@@ -820,6 +829,45 @@ countElement(type) -> int
         </UserDocu>
       </Documentation>
     </Methode>
+      <Methode Name="mapSubElement">
+          <Documentation>
+              <UserDocu>
+                  mapSubElement(shape|[shape...], op='') - maps the sub element of other shape
+
+                  shape:  other shape or sequence of shapes to map the sub-elements
+                  op:     optional string prefix to append before the mapped sub element names
+              </UserDocu>
+          </Documentation>
+      </Methode>
+      <Methode Name="mapShapes">
+          <Documentation>
+              <UserDocu>
+                  mapShapes(generated, modified, op='')
+
+                  generate element names with user defined mapping
+
+                  generated: a list of tuple(src, dst) that indicating src shape or shapes
+                  generates dst shape or shapes. Note that the dst shape or shapes
+                  must be sub-shapes of this shape.
+                  modified: a list of tuple(src, dst) that indicating src shape or shapes
+                  modifies into dst shape or shapes. Note that the dst shape or
+                  shapes must be sub-shapes of this shape.
+                  op: optional string prefix to append before the mapped sub element names
+              </UserDocu>
+          </Documentation>
+      </Methode>
+      <Methode Name="getElementHistory" Const="true">
+          <Documentation>
+              <UserDocu>
+                  getElementHistory(name) - returns the element mapped name history
+
+                  name: mapped element name belonging to this shape
+
+                  Returns tuple(sourceShapeTag, sourceName, [intermediateNames...]),
+                  or None if no history.
+              </UserDocu>
+          </Documentation>
+      </Methode>
     <Methode Name="getTolerance" Const="true">
       <Documentation>
         <UserDocu>Determines a tolerance from the ones stored in a shape
@@ -906,6 +954,55 @@ optimalBoundingBox([useTriangulation = True, useShapeTolerance = False]) -> boun
         </UserDocu>
       </Documentation>
     </Methode>
+      <Methode Name="clearCache" Const="true">
+          <Documentation>
+              <UserDocu>Clear internal sub-shape cache</UserDocu>
+          </Documentation>
+      </Methode>
+      <Methode Name="findSubShape" Const="true">
+          <Documentation>
+              <UserDocu>
+                  findSubShape(shape) -> (type_name, index)
+
+                  Find sub shape and return the shape type name and index. If not found,
+                  then return (None, 0)
+              </UserDocu>
+          </Documentation>
+      </Methode>
+      <Methode Name="findSubShapesWithSharedVertex" Const="true" Keyword="true">
+          <Documentation>
+              <UserDocu>
+                  findSubShapesWithSharedVertex(shape, needName=False, checkGeometry=True, tol=1e-7, atol=1e-12) -> Shape
+
+                  shape: input elementary shape, currently only support Face, Edge, or Vertex
+
+                  needName: if True, return a list of tuple(name, shape), or else return a list
+                  of shapes.
+
+                  checkGeometry: whether to compare geometry
+
+                  tol: distance tolerance
+
+                  atol: angular tolerance
+
+                  Search sub shape by checking vertex coordinates and comparing the underlying
+                  geometries, This can find shapes that are copied. It currently only works with
+                  elementary shapes, Face, Edge, Vertex.
+              </UserDocu>
+          </Documentation>
+      </Methode>
+      <Methode Name="getChildShapes" Const="true">
+          <Documentation>
+              <UserDocu>
+                  getChildShapes(shapetype, avoidtype='') -> list(Shape)
+
+                  Return a list of child sub-shapes of given type.
+
+                  shapetype: the type of requesting sub shapes
+                  avoidtype: optional shape type to skip when exploring
+              </UserDocu>
+          </Documentation>
+      </Methode>
     <!--
     <Attribute Name="Location" ReadOnly="false">
       <Documentation>

@@ -46,7 +46,6 @@ from draftobjects.patharray import PathArray
 from draftobjects.pathtwistedarray import PathTwistedArray
 
 if App.GuiUp:
-    from draftutils.todo import ToDo
     from draftviewproviders.view_array import ViewProviderDraftArray
     from draftviewproviders.view_draftlink import ViewProviderDraftLink
 
@@ -300,8 +299,6 @@ def make_path_array(base_object, path_object, count=4,
             ViewProviderDraftArray(new_obj.ViewObject)
             gui_utils.formatObject(new_obj, new_obj.Base)
             new_obj.ViewObject.Proxy.resetColors(new_obj.ViewObject)
-            # Workaround to trigger update of DiffuseColor:
-            ToDo.delay(reapply_diffuse_color, new_obj.ViewObject)
         new_obj.Base.ViewObject.hide()
         gui_utils.select(new_obj)
 

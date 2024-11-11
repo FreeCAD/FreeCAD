@@ -59,19 +59,23 @@ def get_3d_view():
     Returns
     -------
     Gui::View3DInventor
-        Return the current `ActiveView` in the active document or `None`.
+        The Active 3D View or `None`.
     """
-    if App.GuiUp:
-        # FIXME The following two imports were added as part of PR4926
-        # Also see discussion https://forum.freecad.org/viewtopic.php?f=3&t=60251
-        import FreeCADGui as Gui
-        from pivy import coin
-        if Gui.ActiveDocument:
-            v = Gui.ActiveDocument.ActiveView
-            if "View3DInventor" in str(type(v)):
-                return v
+    if not App.GuiUp:
+        return None
 
-    return None
+    # FIXME The following two imports were added as part of PR4926
+    # Also see discussion https://forum.freecadweb.org/viewtopic.php?f=3&t=60251
+    import FreeCADGui as Gui
+    from pivy import coin
+
+    mw = Gui.getMainWindow()
+    view = mw.getActiveWindow()
+    if view is None:
+        return None
+    if not hasattr(view, "getSceneGraph"):
+        return None
+    return view
 
 
 get3DView = get_3d_view
@@ -734,7 +738,7 @@ def load_texture(filename, size=None, gui=App.GuiUp):
             # else:
             #    p = QtGui.QImage(filename)
             size = coin.SbVec2s(p.width(), p.height())
-            buffersize = p.byteCount()
+            buffersize = p.sizeInBytes()
             width = size[0]
             height = size[1]
             numcomponents = int(buffersize / (width * height))
@@ -862,6 +866,14 @@ def get_bbox(obj, debug=False):
 # See https://forum.freecadweb.org/viewtopic.php?p=656362#p656362.
 # Used to fix https://github.com/FreeCAD/FreeCAD/issues/10469.
 def end_all_events():
+    view = get_3d_view()
+    if view is None:
+        return
+    if view.getNavigationType() in (
+            "Gui::GestureNavigationStyle", "Gui::MayaGestureNavigationStyle"
+    ):
+        return
+
     class DelayEnder:
         def __init__(self):
             self.delay_is_done = False

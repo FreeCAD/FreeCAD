@@ -48,6 +48,7 @@ public:
     bool doubleClicked() override;
     void setupContextMenu(QMenu*, QObject*, const char*) override;
     void updateData(const App::Property*) override;
+    void updateIcon();
 
     TechDraw::DrawProjGroupItem* getViewObject() const override;
     TechDraw::DrawProjGroupItem* getObject() const;

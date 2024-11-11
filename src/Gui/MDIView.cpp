@@ -209,6 +209,8 @@ void MDIView::closeEvent(QCloseEvent *e)
 {
     if (canClose()) {
         e->accept();
+        Application::Instance->viewClosed(this);
+
         if (!bIsPassive) {
             // must be detached so that the last view can get asked
             Document* doc = this->getGuiDocument();
@@ -446,6 +448,16 @@ void MDIView::setCurrentViewMode(ViewMode mode)
                 update();
             }   break;
     }
+}
+
+QString MDIView::buildWindowTitle() const
+{
+    QString windowTitle;
+    if (auto document = getAppDocument()) {
+        windowTitle.append(QString::fromStdString(document->Label.getStrValue()));
+    }
+
+    return windowTitle;
 }
 
 #include "moc_MDIView.cpp"

@@ -294,14 +294,14 @@
       <translation>Error: Todas las formas deben ser 2D o todas las formas deben ser 3D</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="550"/>
-      <location filename="../../importCSG.py" line="1432"/>
+      <location filename="../../importCSG.py" line="549"/>
+      <location filename="../../importCSG.py" line="1434"/>
       <source>Unsupported Function</source>
       <translation>Operación no soportada</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="550"/>
-      <location filename="../../importCSG.py" line="1432"/>
+      <location filename="../../importCSG.py" line="549"/>
+      <location filename="../../importCSG.py" line="1434"/>
       <source>Press OK</source>
       <translation>Presione Aceptar</translation>
     </message>
@@ -493,7 +493,7 @@
     <message>
       <location filename="../../InitGui.py" line="156"/>
       <source>Frequently-used Part WB tools</source>
-      <translation>Herramientas de uso frecuente del entorno de trabajo Part</translation>
+      <translation>Herramientas de uso frecuente del banco de trabajo Part</translation>
     </message>
   </context>
   <context>
