@@ -32,6 +32,7 @@
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoFont.h>
 #include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoPickStyle.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
 #endif
@@ -92,6 +93,9 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
                       App::Prop_None,
                       "Set if the object is selectable in the 3d view");
 
+    pcPickStyle = new SoPickStyle();
+    pcPickStyle->ref();
+
     Selectable.setValue(isSelectionEnabled());
 
     pcShapeMaterial = new SoMaterial;
@@ -112,6 +116,7 @@ ViewProviderGeometryObject::~ViewProviderGeometryObject()
     pcShapeMaterial->unref();
     pcBoundingBox->unref();
     pcBoundColor->unref();
+    pcPickStyle->unref();
 }
 
 bool ViewProviderGeometryObject::isSelectionEnabled() const
@@ -163,6 +168,7 @@ void ViewProviderGeometryObject::onChanged(const App::Property* prop)
 void ViewProviderGeometryObject::attach(App::DocumentObject* pcObj)
 {
     ViewProviderDragger::attach(pcObj);
+    pcRoot->addChild(pcPickStyle);
 }
 
 void ViewProviderGeometryObject::updateData(const App::Property* prop)
@@ -326,30 +332,7 @@ void ViewProviderGeometryObject::showBoundingBox(bool show)
 
 void ViewProviderGeometryObject::setSelectable(bool selectable)
 {
-    SoSearchAction sa;
-    sa.setInterest(SoSearchAction::ALL);
-    sa.setSearchingAll(true);
-    sa.setType(Gui::SoFCSelection::getClassTypeId());
-    sa.apply(pcRoot);
-
-    SoPathList& pathList = sa.getPaths();
-
-    for (int i = 0; i < pathList.getLength(); i++) {
-        auto selNode = dynamic_cast<SoFCSelection*>(pathList[i]->getTail());
-        if (selectable) {
-            if (selNode) {
-                selNode->selectionMode = SoFCSelection::SEL_ON;
-                selNode->highlightMode = SoFCSelection::AUTO;
-            }
-        }
-        else {
-            if (selNode) {
-                selNode->selectionMode = SoFCSelection::SEL_OFF;
-                selNode->highlightMode = SoFCSelection::OFF;
-                selNode->selected = SoFCSelection::NOTSELECTED;
-            }
-        }
-    }
+    pcPickStyle->style = selectable ? SoPickStyle::SHAPE : SoPickStyle::UNPICKABLE;
 }
 
 PyObject* ViewProviderGeometryObject::getPyObject()

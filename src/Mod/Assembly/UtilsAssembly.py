@@ -538,6 +538,37 @@ def findVertexNameInObject(vertex, obj):
     return ""
 
 
+def get_transparency_backups(obj, transparency_backups=None):
+    if transparency_backups is None:
+        transparency_backups = {}
+
+    vobj = obj.ViewObject
+    if hasattr(vobj, "Transparency"):
+        transparency_backups[obj] = vobj.Transparency
+        return transparency_backups
+
+    if obj.isDerivedFrom("App::Part"):
+        for obji in obj.Group:
+            transparency_backups = get_transparency_backups(obji, transparency_backups)
+
+    return transparency_backups
+
+
+def restore_transparency_backups(transparency_backups):
+    """
+    Restores the Transparency attributes of FreeCAD objects from a backup dictionary.
+
+    Args:
+        transparency_backups (dict): A dictionary mapping object identifiers (e.g., objects or names)
+                                     to their Transparency values.
+    """
+    for obj, transparency_value in transparency_backups.items():
+        vobj = obj.ViewObject
+        if hasattr(vobj, "Transparency"):
+            vobj.Transparency = transparency_value
+            vobj.Selectable = True
+
+
 def color_from_unsigned(c):
     return [
         float(int((c >> 24) & 0xFF) / 255),

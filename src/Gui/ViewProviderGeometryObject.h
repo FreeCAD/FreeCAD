@@ -32,6 +32,7 @@ class SoSwitch;
 class SoSensor;
 class SbVec2s;
 class SoBaseColor;
+class SoPickStyle;
 
 namespace Gui
 {
@@ -116,6 +117,7 @@ protected:
     SoFCBoundingBox* pcBoundingBox {nullptr};
     SoSwitch* pcBoundSwitch {nullptr};
     SoBaseColor* pcBoundColor {nullptr};
+    SoPickStyle* pcPickStyle {nullptr};
 
     App::Material materialAppearance;
 };
