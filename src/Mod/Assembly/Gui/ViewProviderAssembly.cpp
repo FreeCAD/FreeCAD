@@ -343,6 +343,17 @@ bool ViewProviderAssembly::keyPressed(bool pressed, int key)
 
 bool ViewProviderAssembly::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer)
 {
+    try {
+        return tryMouseMove(cursorPos, viewer);
+    }
+    catch (const Base::Exception& e) {
+        Base::Console().Warning("%s\n", e.what());
+        return false;
+    }
+}
+
+bool ViewProviderAssembly::tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer)
+{
     if (!isInEditMode()) {
         return false;
     }
@@ -819,6 +830,16 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
 }
 
 void ViewProviderAssembly::initMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer)
+{
+    try {
+        tryInitMove(cursorPos, viewer);
+    }
+    catch (const Base::Exception& e) {
+        Base::Console().Warning("%s\n", e.what());
+    }
+}
+
+void ViewProviderAssembly::tryInitMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer)
 {
     dragMode = findDragMode();
     if (dragMode == DragMode::None) {

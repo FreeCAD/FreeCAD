@@ -1297,7 +1297,7 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="85"/>
       <source>Set the extent of the dimension -the default value is half the tool diameter</source>
-      <translation>Set the extent of the dimension -the default value is half the tool diameter</translation>
+      <translation>設定標註尺寸範圍 - 預設值為刀具直徑的一半</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="101"/>
@@ -4409,7 +4409,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Dressup/Tags.py" line="944"/>
       <source>IDs of disabled holding tags</source>
-      <translation>IDs of disabled holding tags</translation>
+      <translation>停用持有標籤的 ID</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Tags.py" line="953"/>
@@ -5126,7 +5126,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="138"/>
       <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
-      <translation>Extra offset to apply to the operation. Direction is operation dependent.</translation>
+      <translation>應用於操作的額外偏移。方向取決於操作。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="144"/>
@@ -5475,7 +5475,7 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Op/Surface.py" line="400"/>
       <location filename="../../../Path/Op/Waterline.py" line="437"/>
       <source>Feedback: three smallest gaps identified in the path geometry.</source>
-      <translation>Feedback: three smallest gaps identified in the path geometry.</translation>
+      <translation>回饋：路徑幾何中確定的三個最小間隙。.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="327"/>
@@ -5955,7 +5955,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/SurfaceSupport.py" line="2665"/>
       <source>Failed to identify tool for operation.</source>
-      <translation>Failed to identify tool for operation.</translation>
+      <translation>無法辨識操作工具。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/SurfaceSupport.py" line="2675"/>
@@ -6013,7 +6013,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/SurfaceSupport.py" line="2584"/>
       <source>Diameter dimension missing from ToolBit shape.</source>
-      <translation>Diameter dimension missing from ToolBit shape.</translation>
+      <translation>ToolBit 形狀中缺少直徑尺寸。</translation>
     </message>
   </context>
   <context>
@@ -7863,7 +7863,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Slot.py" line="607"/>
       <source>Custom points are identical. No slot path will be generated</source>
-      <translation type="unfinished">Custom points are identical. No slot path will be generated</translation>
+      <translation>自訂點是相同的。不會產生插槽路徑</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="616"/>
@@ -7910,7 +7910,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Slot.py" line="1023"/>
       <source>No parallel edges identified.</source>
-      <translation>No parallel edges identified.</translation>
+      <translation>未識別出平行邊緣。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="1047"/>

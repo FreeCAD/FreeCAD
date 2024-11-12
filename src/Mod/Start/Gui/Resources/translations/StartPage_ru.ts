@@ -59,87 +59,87 @@
   <context>
     <name>StartGui::StartView</name>
     <message>
-      <location filename="../../StartView.cpp" line="213"/>
+      <location filename="../../StartView.cpp" line="289"/>
       <source>Empty file</source>
       <translation>Пустой файл</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="214"/>
+      <location filename="../../StartView.cpp" line="290"/>
       <source>Create a new empty FreeCAD file</source>
       <translation>Создать пустой файл FreeCAD</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="216"/>
+      <location filename="../../StartView.cpp" line="293"/>
       <source>Open File</source>
       <translation>Открыть файл</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="217"/>
+      <location filename="../../StartView.cpp" line="294"/>
       <source>Open an existing CAD file or 3D model</source>
       <translation>Открыть существующий CAD файл или 3D модель</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="219"/>
+      <location filename="../../StartView.cpp" line="297"/>
       <source>Parametric Part</source>
       <translation>Параметрическая деталь</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="220"/>
+      <location filename="../../StartView.cpp" line="298"/>
       <source>Create a part with the Part Design workbench</source>
       <translation>Создать деталь на верстаке для проектирования деталей</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="222"/>
+      <location filename="../../StartView.cpp" line="301"/>
       <source>Assembly</source>
       <translation>Сборка</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="223"/>
+      <location filename="../../StartView.cpp" line="302"/>
       <source>Create an assembly project</source>
       <translation>Создать сборку проекта</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="225"/>
+      <location filename="../../StartView.cpp" line="305"/>
       <source>2D Draft</source>
       <translation>2D эскиз</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="226"/>
+      <location filename="../../StartView.cpp" line="306"/>
       <source>Create a 2D Draft with the Draft workbench</source>
       <translation>Создать 2D эскиз на верстаке эскизов</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="228"/>
+      <location filename="../../StartView.cpp" line="309"/>
       <source>BIM/Architecture</source>
       <translation>BIM/Архитектура</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="229"/>
+      <location filename="../../StartView.cpp" line="310"/>
       <source>Create an architectural project</source>
       <translation>Создать архитектурный проект</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="506"/>
+      <location filename="../../StartView.cpp" line="525"/>
       <source>New File</source>
       <translation>Новый файл</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="507"/>
+      <location filename="../../StartView.cpp" line="526"/>
       <source>Examples</source>
       <translation>Примеры</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="508"/>
+      <location filename="../../StartView.cpp" line="527"/>
       <source>Recent Files</source>
       <translation>Недавние файлы</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="511"/>
+      <location filename="../../StartView.cpp" line="530"/>
       <source>Open first start setup</source>
       <translation>Открыть первую настройку запуска</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="513"/>
+      <location filename="../../StartView.cpp" line="532"/>
       <source>Don't show this Start page again (start with blank screen)</source>
       <translation>Не показывать эту начальную страницу снова (начните с пустого экрана)</translation>
     </message>
@@ -147,7 +147,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="500"/>
+      <location filename="../../StartView.cpp" line="519"/>
       <source>Start</source>
       <translation>Запустить</translation>
     </message>
@@ -155,44 +155,44 @@
   <context>
     <name>StartGui::ThemeSelectorWidget</name>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="58"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="113"/>
       <source>FreeCAD Classic</source>
       <translation>Классический FreeCAD</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="59"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="114"/>
       <source>FreeCAD Dark</source>
       <translation>Темный FreeCAD</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="60"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="115"/>
       <source>FreeCAD Light</source>
       <translation>Светлый FreeCAD</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="166"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="238"/>
       <source>Theme</source>
       <translation>Тема</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="167"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="239"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
       <translation>Ищете новые темы? Вы можете получить их с помощью &lt;a href="freecad:Std_AddonMgr"&gt;Менеджера дополнений&lt;/a&gt;.</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="169"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="241"/>
       <source>FreeCAD Dark</source>
       <comment>Visual theme name</comment>
       <translation>Темный FreeCAD</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="170"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="242"/>
       <source>FreeCAD Light</source>
       <comment>Visual theme name</comment>
       <translation>Светлый FreeCAD</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="171"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="243"/>
       <source>FreeCAD Classic</source>
       <comment>Visual theme name</comment>
       <translation>Классический FreeCAD</translation>

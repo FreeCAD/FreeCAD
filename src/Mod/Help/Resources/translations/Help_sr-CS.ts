@@ -172,7 +172,7 @@ Markdown version above.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="425"/>
+      <location filename="../../Help.py" line="432"/>
       <source>General</source>
       <translation>Opšte</translation>
     </message>
