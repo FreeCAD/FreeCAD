@@ -1452,7 +1452,7 @@ public:
 
         setCheckable(false);
 
-        addCommand("Sketcher_External");
+        addCommand("Sketcher_Projection");
         addCommand("Sketcher_Intersection");
     }
 
@@ -1467,12 +1467,12 @@ public:
         int index = pcAction->property("defaultAction").toInt();
         switch (static_cast<GeometryCreationMode>(mode)) {
             case GeometryCreationMode::Normal:
-                al[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_External"));
+                al[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Projection"));
                 al[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Intersection"));
                 getAction()->setIcon(al[index]->icon());
                 break;
             case GeometryCreationMode::Construction:
-                al[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_External_Constr"));
+                al[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Projection_Constr"));
                 al[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Intersection_Constr"));
                 getAction()->setIcon(al[index]->icon());
                 break;
@@ -1492,10 +1492,10 @@ public:
 
 // Externals - Projection ==================================================================
 
-DEF_STD_CMD_AU(CmdSketcherExternal)
+DEF_STD_CMD_AU(CmdSketcherProjection)
 
-CmdSketcherExternal::CmdSketcherExternal()
-    : Command("Sketcher_External")
+CmdSketcherProjection::CmdSketcherProjection()
+    : Command("Sketcher_Projection")
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
@@ -1503,22 +1503,22 @@ CmdSketcherExternal::CmdSketcherExternal()
     sToolTipText = QT_TR_NOOP("Create the projection edges of an external geometry.\n"
                               "External edges can be either defining or construction geometries.\n"
                               "You can use the toggle construction tool.");
-    sWhatsThis = "Sketcher_External";
+    sWhatsThis = "Sketcher_Projection";
     sStatusTip = sToolTipText;
-    sPixmap = "Sketcher_External";
+    sPixmap = "Sketcher_Projection";
     sAccel = "G, X";
     eType = ForEdit;
 }
 
-CONSTRUCTION_UPDATE_ACTION(CmdSketcherExternal, "Sketcher_External")
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherProjection, "Sketcher_Projection")
 
-void CmdSketcherExternal::activated(int iMsg)
+void CmdSketcherProjection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerExternal>());
 }
 
-bool CmdSketcherExternal::isActive()
+bool CmdSketcherProjection::isActive()
 {
     return isCommandActive(getActiveGuiDocument());
 }
@@ -2159,7 +2159,7 @@ void CreateSketcherCommandsCreateGeo()
     rcCmdMgr.addCommand(new CmdSketcherExtend());
     rcCmdMgr.addCommand(new CmdSketcherSplit());
     rcCmdMgr.addCommand(new CmdSketcherCompCurveEdition());
-    rcCmdMgr.addCommand(new CmdSketcherExternal());
+    rcCmdMgr.addCommand(new CmdSketcherProjection());
     rcCmdMgr.addCommand(new CmdSketcherIntersection());
     rcCmdMgr.addCommand(new CmdSketcherCompExternal());
     rcCmdMgr.addCommand(new CmdSketcherCarbonCopy());

@@ -198,8 +198,8 @@
         <file>icons/geometry/Sketcher_CreateTriangle.svg</file>
         <file>icons/geometry/Sketcher_CreateTriangle_Constr.svg</file>
         <file>icons/geometry/Sketcher_Extend.svg</file>
-        <file>icons/geometry/Sketcher_External.svg</file>
-        <file>icons/geometry/Sketcher_External_Constr.svg</file>
+        <file>icons/geometry/Sketcher_Projection.svg</file>
+        <file>icons/geometry/Sketcher_Projection_Constr.svg</file>
         <file>icons/geometry/Sketcher_Intersection.svg</file>
         <file>icons/geometry/Sketcher_Intersection_Constr.svg</file>
         <file>icons/geometry/Sketcher_Split.svg</file>
