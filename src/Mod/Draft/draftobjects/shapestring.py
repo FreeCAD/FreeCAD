@@ -133,7 +133,7 @@ class ShapeString(DraftObject):
             if obj.FontFile[0] == ".":
               # FontFile path relative to the FreeCAD file directory.
               # Retrieve active document directory
-              directory = os.path.dirname(App.ActiveDocument.FileName)
+              directory = os.path.dirname(obj.Document.FileName)
             else:
               directory = ""
 
