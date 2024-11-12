@@ -175,7 +175,7 @@ void EditModeCoinManager::ParameterObserver::initParameters()
          }},
         {"ExternalPattern",
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
-             updatePattern(drawingParameters.ExternalPattern, param, 0b1110010011100100);
+             updatePattern(drawingParameters.ExternalPattern, param, 0b1111110011111100);
          }},
         {"CreateLineColor",
          [this, drawingParameters = Client.drawingParameters](const std::string& param) {
