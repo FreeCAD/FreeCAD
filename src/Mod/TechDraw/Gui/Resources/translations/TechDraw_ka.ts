@@ -2036,7 +2036,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <translation>ელცხრილის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="396"/>
+      <location filename="../../PagePrinter.cpp" line="404"/>
       <source>Save page to dxf</source>
       <translation>გვერდის DXF-ში შენახვა</translation>
     </message>
@@ -2267,12 +2267,12 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <translation>სქოლიოს გადათრევა</translation>
     </message>
     <message>
-      <location filename="../../QGIViewDimension.cpp" line="873"/>
+      <location filename="../../QGIViewDimension.cpp" line="875"/>
       <source>Drag Dimension</source>
       <translation>ზომის გადათრევა</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="598"/>
+      <location filename="../../QGSPage.cpp" line="589"/>
       <source>Create Balloon</source>
       <translation>სქოლიოს შექმნა</translation>
     </message>
@@ -3549,28 +3549,28 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <translation>დოკუმენტში ნახაზის გვერდები არაა.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="318"/>
+      <location filename="../../MDIViewPage.cpp" line="347"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="319"/>
-      <location filename="../../MDIViewPage.cpp" line="493"/>
+      <location filename="../../MDIViewPage.cpp" line="348"/>
+      <location filename="../../MDIViewPage.cpp" line="556"/>
       <source>All Files (*.*)</source>
       <translation>ყველა ფაილი (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="321"/>
+      <location filename="../../MDIViewPage.cpp" line="350"/>
       <source>Export Page As PDF</source>
       <translation>გვერდის PDF ფაილად გატანა</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="492"/>
+      <location filename="../../MDIViewPage.cpp" line="555"/>
       <source>SVG (*.svg)</source>
       <translation>SVG (*.svg)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="495"/>
+      <location filename="../../MDIViewPage.cpp" line="558"/>
       <source>Export page as SVG</source>
       <translation>გვერდის SVG ფაილად გატანა</translation>
     </message>
@@ -4018,7 +4018,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <translation>პარამეტრის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="330"/>
+      <location filename="../../PagePrinter.cpp" line="338"/>
       <source>Document Name:</source>
       <translation>დოკუმენტის სახელი:</translation>
     </message>
@@ -5946,51 +5946,51 @@ Fast, but result is a collection of short straight lines.</source>
       <translation>ყველა გვერდის დაბეჭდვა</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="412"/>
+      <location filename="../../MDIViewPage.cpp" line="465"/>
       <source>Different orientation</source>
       <translation>განსხვავებული ორიენტაცია</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="413"/>
+      <location filename="../../MDIViewPage.cpp" line="466"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>პრინტერი ნახაზისგან განსხვავებულ ორიენტაციას იყენებს.
 გნებავთ გაგრძელება?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="422"/>
+      <location filename="../../MDIViewPage.cpp" line="475"/>
       <source>Different paper size</source>
       <translation>ფურცლის განსხვავებული ზომა</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="423"/>
+      <location filename="../../MDIViewPage.cpp" line="476"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>პრინტერი იყენებს ქაღალდის განსხვავებულ ზომას, ვიდრე ნახაზი.
 გნებავთ, გააგრძელოთ?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="516"/>
+      <location filename="../../MDIViewPage.cpp" line="579"/>
       <source>Save DXF file</source>
       <translation>DXF ფაილის შენახვა</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="517"/>
+      <location filename="../../MDIViewPage.cpp" line="580"/>
       <source>DXF (*.dxf)</source>
       <translation>DXF (*.dxf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="537"/>
+      <location filename="../../MDIViewPage.cpp" line="607"/>
       <source>Save PDF file</source>
       <translation>PDF ფაილის შენახვა</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="538"/>
+      <location filename="../../MDIViewPage.cpp" line="608"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1082"/>
+      <location filename="../../MDIViewPage.cpp" line="1152"/>
       <source>Selected:</source>
       <translation>არჩეულია:</translation>
     </message>

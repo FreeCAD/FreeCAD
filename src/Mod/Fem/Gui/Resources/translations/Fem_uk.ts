@@ -5685,12 +5685,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_ResultShow</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="873"/>
+      <location filename="../../../femcommands/commands.py" line="876"/>
       <source>Show result</source>
       <translation>Показати результат</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="877"/>
+      <location filename="../../../femcommands/commands.py" line="880"/>
       <source>Shows and visualizes selected result data</source>
       <translation>Показує та візуалізує вибрані дані результатів</translation>
     </message>
@@ -5698,12 +5698,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_ResultsPurge</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="889"/>
+      <location filename="../../../femcommands/commands.py" line="892"/>
       <source>Purge results</source>
       <translation>Очистити результати</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="893"/>
+      <location filename="../../../femcommands/commands.py" line="896"/>
       <source>Purges all results from active analysis</source>
       <translation>Видаляє всі результати активного аналізу</translation>
     </message>
@@ -5711,12 +5711,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_SolverCalculiXCcxTools</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1003"/>
+      <location filename="../../../femcommands/commands.py" line="1006"/>
       <source>Solver CalculiX Standard</source>
       <translation>Розв’язувач CalculiX Standard</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1008"/>
+      <location filename="../../../femcommands/commands.py" line="1011"/>
       <source>Creates a standard FEM solver CalculiX with ccx tools</source>
       <translation>Створює стандартний МСЕ розв'язувач CalculiX за допомогою інструментів ccx</translation>
     </message>
@@ -5724,12 +5724,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_SolverControl</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1056"/>
+      <location filename="../../../femcommands/commands.py" line="1059"/>
       <source>Solver job control</source>
       <translation>Керування завданнями розв'язувача</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1061"/>
+      <location filename="../../../femcommands/commands.py" line="1064"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
       <translation>Змінює атрибути розв'язувача та запускає обчислення для вибраного розв'язувача</translation>
     </message>
@@ -5737,12 +5737,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_SolverElmer</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1073"/>
+      <location filename="../../../femcommands/commands.py" line="1076"/>
       <source>Solver Elmer</source>
       <translation>Розв'язувач Elmer</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1075"/>
+      <location filename="../../../femcommands/commands.py" line="1078"/>
       <source>Creates a FEM solver Elmer</source>
       <translation>Створює розв'язувач МСЕ Elmer</translation>
     </message>
@@ -5750,12 +5750,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_SolverMystran</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1086"/>
+      <location filename="../../../femcommands/commands.py" line="1089"/>
       <source>Solver Mystran</source>
       <translation>Розв'язувач Містрана</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1088"/>
+      <location filename="../../../femcommands/commands.py" line="1091"/>
       <source>Creates a FEM solver Mystran</source>
       <translation>Створено МСЕ розв'язувач Mystran</translation>
     </message>
@@ -5763,12 +5763,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_SolverRun</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1098"/>
+      <location filename="../../../femcommands/commands.py" line="1101"/>
       <source>Run solver calculations</source>
       <translation>Запустити обчислення розв'язувача</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1102"/>
+      <location filename="../../../femcommands/commands.py" line="1105"/>
       <source>Runs the calculations for the selected solver</source>
       <translation>Запускає обчислення для обраного розв'язувача</translation>
     </message>
@@ -5776,12 +5776,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_SolverZ88</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1118"/>
+      <location filename="../../../femcommands/commands.py" line="1121"/>
       <source>Solver Z88</source>
       <translation>Розв'язувач Z88</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1120"/>
+      <location filename="../../../femcommands/commands.py" line="1123"/>
       <source>Creates a FEM solver Z88</source>
       <translation>Створює розв'язувач Z88 МСЕ</translation>
     </message>
@@ -6223,12 +6223,12 @@ Please select a result type first.</source>
   <context>
     <name>FEM_SolverCalculiX</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1031"/>
+      <location filename="../../../femcommands/commands.py" line="1034"/>
       <source>Solver CalculiX (new framework)</source>
       <translation>Розв'язувач CalculiX (новий фреймворк)</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1036"/>
+      <location filename="../../../femcommands/commands.py" line="1039"/>
       <source>Creates a FEM solver CalculiX new framework (less result error handling)</source>
       <translation>Створює нову платформу для МСЕ-розв'язувача CalculiX (менше обробки помилок у результатах)</translation>
     </message>
@@ -6379,12 +6379,12 @@ Please select a result type first.</source>
   <context>
     <name>FEM_MeshRegion</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="862"/>
+      <location filename="../../../femcommands/commands.py" line="865"/>
       <source>FEM mesh refinement</source>
       <translation>Уточнення сітки МСЕ</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="863"/>
+      <location filename="../../../femcommands/commands.py" line="866"/>
       <source>Creates a FEM mesh refinement</source>
       <translation>Створює уточнення сітки МСЕ</translation>
     </message>

@@ -2036,7 +2036,7 @@ Kijelölés nélkül a fájlböngésző lehetővé teszi egy SVG- vagy képfájl
       <translation>Számolótábla nézet létrehozása</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="396"/>
+      <location filename="../../PagePrinter.cpp" line="404"/>
       <source>Save page to dxf</source>
       <translation>Oldal mentése dxf-be</translation>
     </message>
@@ -2267,12 +2267,12 @@ Kijelölés nélkül a fájlböngésző lehetővé teszi egy SVG- vagy képfájl
       <translation>Léggömb ballon húzása</translation>
     </message>
     <message>
-      <location filename="../../QGIViewDimension.cpp" line="873"/>
+      <location filename="../../QGIViewDimension.cpp" line="875"/>
       <source>Drag Dimension</source>
       <translation>Dimenzió húzása</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="598"/>
+      <location filename="../../QGSPage.cpp" line="589"/>
       <source>Create Balloon</source>
       <translation>Ballon létrehozása</translation>
     </message>
@@ -3549,28 +3549,28 @@ Kijelölés nélkül a fájlböngésző lehetővé teszi egy SVG- vagy képfájl
       <translation>A dokumentumban nincsenek rajzok.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="318"/>
+      <location filename="../../MDIViewPage.cpp" line="347"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="319"/>
-      <location filename="../../MDIViewPage.cpp" line="493"/>
+      <location filename="../../MDIViewPage.cpp" line="348"/>
+      <location filename="../../MDIViewPage.cpp" line="556"/>
       <source>All Files (*.*)</source>
       <translation>Összes fájl (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="321"/>
+      <location filename="../../MDIViewPage.cpp" line="350"/>
       <source>Export Page As PDF</source>
       <translation>Oldal export PDF formában</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="492"/>
+      <location filename="../../MDIViewPage.cpp" line="555"/>
       <source>SVG (*.svg)</source>
       <translation>SVG (*.svg)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="495"/>
+      <location filename="../../MDIViewPage.cpp" line="558"/>
       <source>Export page as SVG</source>
       <translation>Oldal export SVG formában</translation>
     </message>
@@ -4018,7 +4018,7 @@ Kijelölés nélkül a fájlböngésző lehetővé teszi egy SVG- vagy képfájl
       <translation>Paraméter hiba</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="330"/>
+      <location filename="../../PagePrinter.cpp" line="338"/>
       <source>Document Name:</source>
       <translation>Dokumentum neve:</translation>
     </message>
@@ -4544,32 +4544,32 @@ Ezután növelnie kell a csempe határértékét.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="449"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Some combinations of OS and Navigation style key bindings may conflict with the default modifier keys for Ballon dragging and View snapping override.  You can make adjustments here to find a non-conflicting key binding.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Some combinations of OS and Navigation style key bindings may conflict with the default modifier keys for Ballon dragging and View snapping override.  You can make adjustments here to find a non-conflicting key binding.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Az OS és a navigációs stílusú billentyűkombinációk egyes kombinációi ütközhetnek a gömbhúzás és a nézeti rögzítés felülbírálásának alapértelmezett módosító billentyűivel.  Itt végezhet kiigazításokat, hogy találjon egy nem ütköző billentyűkombinációt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="452"/>
       <source>Behaviour Overrides</source>
-      <translation type="unfinished">Behaviour Overrides</translation>
+      <translation>Viselkedési felülbírálások</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="460"/>
       <source>Check this box to use the default modifier keys.  Uncheck this box to set a different key combination.</source>
-      <translation type="unfinished">Check this box to use the default modifier keys.  Uncheck this box to set a different key combination.</translation>
+      <translation>Jelölje be ezt a négyzetet az alapértelmezett módosító billentyűk használatához.  Ha más billentyűkombinációt szeretne beállítani, vegye ki a jelölést a jelölőnégyzetből.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="463"/>
       <source>Use Default</source>
-      <translation type="unfinished">Use Default</translation>
+      <translation>Alapértelmezett használata</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="480"/>
       <source>Balloon Drag</source>
-      <translation type="unfinished">Balloon Drag</translation>
+      <translation>Léggömb húzás</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="487"/>
       <source>Check this box to include the Alt key in the modifiers.</source>
-      <translation type="unfinished">Check this box to include the Alt key in the modifiers.</translation>
+      <translation>Jelölje be ezt a négyzetet, hogy az Alt billentyű is szerepeljen a módosítók között.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="490"/>
@@ -4579,7 +4579,7 @@ Ezután növelnie kell a csempe határértékét.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="497"/>
       <source>Check this box to include the Shift key in the modifiers.</source>
-      <translation type="unfinished">Check this box to include the Shift key in the modifiers.</translation>
+      <translation>Jelölje be ezt a négyzetet, hogy a Shift billentyű is szerepeljen a módosítók között.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="500"/>
@@ -4589,22 +4589,22 @@ Ezután növelnie kell a csempe határértékét.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="507"/>
       <source>Check this box to include the Meta/Start/Super key in the modifiers.</source>
-      <translation type="unfinished">Check this box to include the Meta/Start/Super key in the modifiers.</translation>
+      <translation>Jelölje be ezt a négyzetet, hogy a Meta/Start/Super billentyű szerepeljen a módosítók között.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="510"/>
       <source>Meta</source>
-      <translation type="unfinished">Meta</translation>
+      <translation>Meta billentyű</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="517"/>
       <source>Check this box to include the Control key in the modifiers.</source>
-      <translation type="unfinished">Check this box to include the Control key in the modifiers.</translation>
+      <translation>Jelölje be ezt a négyzetet, hogy a Ctrl billentyű is szerepeljen a módosítók között.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="520"/>
       <source>Control</source>
-      <translation type="unfinished">Control</translation>
+      <translation>Ctrl billentyű</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="538"/>
@@ -5945,50 +5945,50 @@ Gyors, de az eredmény rövid egyenesek gyűjteménye.</translation>
       <translation>Összes oldal nyomtatása</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="412"/>
+      <location filename="../../MDIViewPage.cpp" line="465"/>
       <source>Different orientation</source>
       <translation>Eltérő tájolású</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="413"/>
+      <location filename="../../MDIViewPage.cpp" line="466"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>A nyomtató a rajztól eltérő tájolást használ. Szeretné fojtatni?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="422"/>
+      <location filename="../../MDIViewPage.cpp" line="475"/>
       <source>Different paper size</source>
       <translation>Eltérő papírméret</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="423"/>
+      <location filename="../../MDIViewPage.cpp" line="476"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>A nyomtató a rajztól eltérő méretű papír méretet használ. 
 Szeretné folytatni?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="516"/>
+      <location filename="../../MDIViewPage.cpp" line="579"/>
       <source>Save DXF file</source>
       <translation>DXF-fájl mentése</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="517"/>
+      <location filename="../../MDIViewPage.cpp" line="580"/>
       <source>DXF (*.dxf)</source>
       <translation>Dxf (*.dxf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="537"/>
+      <location filename="../../MDIViewPage.cpp" line="607"/>
       <source>Save PDF file</source>
       <translation>PDF-fájl mentése</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="538"/>
+      <location filename="../../MDIViewPage.cpp" line="608"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1082"/>
+      <location filename="../../MDIViewPage.cpp" line="1152"/>
       <source>Selected:</source>
       <translation>Kiválasztott:</translation>
     </message>

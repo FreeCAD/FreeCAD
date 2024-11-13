@@ -2657,14 +2657,14 @@ SbVec2f View3DInventorViewer::getNormalizedPosition(const SbVec2s& pnt) const
     return {pX, pY};
 }
 
-SbVec3f View3DInventorViewer::getPointOnXYPlaneOfPlacement(const SbVec2s& pnt, Base::Placement& plc) const
+SbVec3f View3DInventorViewer::getPointOnXYPlaneOfPlacement(const SbVec2s& pnt,
+                                                           const Base::Placement& plc) const
 {
     SbVec2f pnt2d = getNormalizedPosition(pnt);
     SoCamera* pCam = this->getSoRenderManager()->getCamera();
 
     if (!pCam) {
-        // return invalid point
-        return {};
+        throw Base::RuntimeError("No camera node found");
     }
 
     SbViewVolume  vol = pCam->getViewVolume();
@@ -2674,23 +2674,19 @@ SbVec3f View3DInventorViewer::getPointOnXYPlaneOfPlacement(const SbVec2s& pnt, B
     // Calculate the plane using plc
     Base::Rotation rot = plc.getRotation();
     Base::Vector3d normalVector = rot.multVec(Base::Vector3d(0, 0, 1));
-    SbVec3f planeNormal(normalVector.x, normalVector.y, normalVector.z);
+    SbVec3f planeNormal = Base::convertTo<SbVec3f>(normalVector);
 
     // Get the position and convert Base::Vector3d to SbVec3f
     Base::Vector3d pos = plc.getPosition();
-    SbVec3f planePosition(pos.x, pos.y, pos.z);
+    SbVec3f planePosition = Base::convertTo<SbVec3f>(pos);
     SbPlane xyPlane(planeNormal, planePosition);
 
     SbVec3f pt;
     if (xyPlane.intersect(line, pt)) {
         return pt; // Intersection point on the XY plane
     }
-    else {
-        // No intersection found
-        return {};
-    }
 
-    return pt;
+    throw Base::RuntimeError("No intersection found");
 }
 
 SbVec3f projectPointOntoPlane(const SbVec3f& point, const SbPlane& plane) {

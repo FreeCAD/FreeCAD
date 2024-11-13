@@ -204,17 +204,17 @@
   <context>
     <name>MatGui::DlgDisplayPropertiesImp</name>
     <message>
-      <location filename="../../DlgDisplayPropertiesImp.cpp" line="214"/>
+      <location filename="../../DlgDisplayPropertiesImp.cpp" line="181"/>
       <source>Basic Appearance</source>
       <translation>Aparência básica</translation>
     </message>
     <message>
-      <location filename="../../DlgDisplayPropertiesImp.cpp" line="219"/>
+      <location filename="../../DlgDisplayPropertiesImp.cpp" line="186"/>
       <source>Texture Appearance</source>
       <translation>Aparência de textura</translation>
     </message>
     <message>
-      <location filename="../../DlgDisplayPropertiesImp.cpp" line="224"/>
+      <location filename="../../DlgDisplayPropertiesImp.cpp" line="191"/>
       <source>All Materials</source>
       <translation>Todos os materiais</translation>
     </message>
@@ -888,76 +888,76 @@ Se desmarcado, eles serão classificados pelo nome.</translation>
       <translation>Excluir modelo de aparência</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="481"/>
+      <location filename="../../MaterialsEditor.cpp" line="484"/>
       <source>Unnamed</source>
       <translation>Sem nome</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="603"/>
+      <location filename="../../MaterialsEditor.cpp" line="606"/>
       <source>Old Format Material</source>
       <translation>Formato antigo de material</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="605"/>
+      <location filename="../../MaterialsEditor.cpp" line="608"/>
       <source>This file is in the old material card format.</source>
       <translation>Este arquivo está no formato antigo de cartão de material.</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="687"/>
+      <location filename="../../MaterialsEditor.cpp" line="690"/>
       <source>This card uses the old format and must be saved before use</source>
       <translation>Este cartão utiliza o formato antigo e deve ser salvo antes de ser usado</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="745"/>
-      <location filename="../../MaterialsEditor.cpp" line="777"/>
-      <location filename="../../MaterialsEditor.cpp" line="1051"/>
-      <location filename="../../MaterialsEditor.cpp" line="1113"/>
+      <location filename="../../MaterialsEditor.cpp" line="748"/>
+      <location filename="../../MaterialsEditor.cpp" line="780"/>
+      <location filename="../../MaterialsEditor.cpp" line="1054"/>
+      <location filename="../../MaterialsEditor.cpp" line="1116"/>
       <source>Property</source>
       <translation>Propriedade</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="746"/>
-      <location filename="../../MaterialsEditor.cpp" line="778"/>
-      <location filename="../../MaterialsEditor.cpp" line="1052"/>
-      <location filename="../../MaterialsEditor.cpp" line="1114"/>
+      <location filename="../../MaterialsEditor.cpp" line="749"/>
+      <location filename="../../MaterialsEditor.cpp" line="781"/>
+      <location filename="../../MaterialsEditor.cpp" line="1055"/>
+      <location filename="../../MaterialsEditor.cpp" line="1117"/>
       <source>Value</source>
       <translation>Valor</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="747"/>
-      <location filename="../../MaterialsEditor.cpp" line="779"/>
-      <location filename="../../MaterialsEditor.cpp" line="1053"/>
-      <location filename="../../MaterialsEditor.cpp" line="1115"/>
+      <location filename="../../MaterialsEditor.cpp" line="750"/>
+      <location filename="../../MaterialsEditor.cpp" line="782"/>
+      <location filename="../../MaterialsEditor.cpp" line="1056"/>
+      <location filename="../../MaterialsEditor.cpp" line="1118"/>
       <source>Type</source>
       <translation>Tipo</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="843"/>
+      <location filename="../../MaterialsEditor.cpp" line="846"/>
       <source>Favorites</source>
       <translation>Favoritos</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="850"/>
+      <location filename="../../MaterialsEditor.cpp" line="853"/>
       <source>Recent</source>
       <translation>Recente</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1116"/>
+      <location filename="../../MaterialsEditor.cpp" line="1119"/>
       <source>Units</source>
       <translation>Unidades</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1283"/>
+      <location filename="../../MaterialsEditor.cpp" line="1286"/>
       <source>Context menu</source>
       <translation>Menu de contexto</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1285"/>
+      <location filename="../../MaterialsEditor.cpp" line="1288"/>
       <source>Inherit from</source>
       <translation>Herdado de</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1289"/>
+      <location filename="../../MaterialsEditor.cpp" line="1292"/>
       <source>Inherit new material</source>
       <translation>Herdar novo material</translation>
     </message>
@@ -1113,11 +1113,6 @@ Se desmarcado, eles serão classificados pelo nome.</translation>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../../DlgDisplayPropertiesImp.cpp" line="54"/>
-      <source>Display properties</source>
-      <translation>Propriedades de exibição</translation>
-    </message>
-    <message>
       <location filename="../../DlgMaterialImp.cpp" line="57"/>
       <source>Material</source>
       <translation>Material</translation>
@@ -1158,22 +1153,22 @@ Se desmarcado, eles serão classificados pelo nome.</translation>
       <translation>Remover isto também irá remover todo o conteúdo.</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="606"/>
+      <location filename="../../MaterialsEditor.cpp" line="609"/>
       <source>You must save the material before using it.</source>
       <translation>Você deve salvar o material antes de utilizá-lo.</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1310"/>
+      <location filename="../../MaterialsEditor.cpp" line="1313"/>
       <source>Unsaved Material</source>
       <translation>Material não salvo</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1311"/>
+      <location filename="../../MaterialsEditor.cpp" line="1314"/>
       <source>Do you want to save your changes to the material before closing?</source>
       <translation>Deseja salvar suas alterações no material antes de fechar?</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1313"/>
+      <location filename="../../MaterialsEditor.cpp" line="1316"/>
       <source>If you don&apos;t save, your changes will be lost.</source>
       <translation>Se você não for salvar, suas alterações serão perdidas.</translation>
     </message>

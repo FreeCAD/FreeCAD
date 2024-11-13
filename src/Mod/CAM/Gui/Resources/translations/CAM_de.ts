@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="48"/>
       <source>Area</source>
-      <translation>Fläche</translation>
+      <translation>Der Schneidemodus geht davon aus, dass der Schnitt auf einer Seite des Werkzeugs das resultierende Teil darstellt und die andere Seite entweder bereits weggefräst ist oder später entfernt wird. Im Gleichlaufmodus (Climb mode) wird das Werkzeug bei jeder Umdrehung in den Schnitt bewegt, während im Gegenlaufmodus (Conventional mode) die Drehung des Werkzeuges und die Bewegung des Werkzeugs in dieselbe Richtung gehen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="49"/>
       <source>Creates a feature area from selected objects</source>
-      <translation>Erstellt einen Merkmalbereich aus den ausgewählten Objekten</translation>
+      <translation>onventionalErstellt einen Merkmalbereich aus den ausgewählten Objekten</translation>
     </message>
   </context>
   <context>
@@ -384,7 +384,7 @@ Für Rohmaterial aus dem Basis-Objekt Hüllkörper ist es zusätzliches Material
     <message>
       <location filename="../panels/PropertyCreate.ui" line="27"/>
       <source>Name of property. Can only contain letters, numbers, and underscores. MixedCase names will display with spaces &quot;Mixed Case&quot;</source>
-      <translation>Name der Eigenschaft. Darf nur Buchstaben, Zahlen und Unterstriche enthalten. Gemischte Groß- und Kleinschreibung wird mit Leerzeichen angezeigt &quot;Mixed Case&quot;</translation>
+      <translation>Name der Eigenschaft. Darf nur Buchstaben, Zahlen und Unterstriche enthalten. Namen mit interner Großschreibung (MixedCase) werden mit Leerzeichen angezeigt &quot;Mixed Case&quot;</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="34"/>
@@ -429,7 +429,7 @@ Für Rohmaterial aus dem Basis-Objekt Hüllkörper ist es zusätzliches Material
     <message>
       <location filename="../panels/PropertyCreate.ui" line="89"/>
       <source>ToolTip</source>
-      <translation>Tooltip</translation>
+      <translation>Tooltipp</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="120"/>
@@ -844,7 +844,7 @@ Reset löscht alle aktuellen Elemente aus der Liste und füllt die Liste mit all
       <location filename="../panels/PageDiametersEdit.ui" line="64"/>
       <location filename="../panels/PageDepthsEdit.ui" line="92"/>
       <source>The depth of the operation which corresponds to the lowest value in Z-axis the operation needs to process.</source>
-      <translation>Die Tiefe der Bearbeitung, die dem niedrigsten Wert in der Z-Achse entspricht, den die Bearbeitung bearbeiten muss.</translation>
+      <translation>Zustelltiefe, die dem niedrigsten zu bearbeitenden Wert in der Z-Achse entspricht.</translation>
     </message>
     <message>
       <location filename="../panels/PageDiametersEdit.ui" line="80"/>
@@ -1296,7 +1296,7 @@ Reset löscht alle aktuellen Elemente aus der Liste und füllt die Liste mit all
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="85"/>
       <source>Set the extent of the dimension -the default value is half the tool diameter</source>
-      <translation>Größe der Bemaßung einstellen - der Standardwert ist der halbe Werkzeugdurchmesser</translation>
+      <translation>Größe der Bemaßung einstellen - Standardwert ist der halbe Werkzeugdurchmesser</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="101"/>
@@ -1316,7 +1316,7 @@ Reset löscht alle aktuellen Elemente aus der Liste und füllt die Liste mit all
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="146"/>
       <source>Remove all currently enabled extensions - leaving the plain pocket operation</source>
-      <translation>Entfernt alle derzeit aktivierten Erweiterungen - Die normalen Taschenbearbeitung verlassen</translation>
+      <translation>Entfernt alle derzeit aktivierten Erweiterungen - Die normale Taschenbearbeitung verlassen</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="129"/>
@@ -1326,7 +1326,7 @@ Reset löscht alle aktuellen Elemente aus der Liste und füllt die Liste mit all
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="65"/>
       <source>Extend the corner between two edges of a pocket. Selected adjacent edges are combined.</source>
-      <translation>Die Ecke zwischen zwei Kanten einer Tasche erweitern. Ausgewählte benachbarte Kanten werden kombiniert.</translation>
+      <translation>Die Ecke zwischen zwei Kanten einer Tasche erweitern. Die ausgewählten benachbarten Kanten werden verbunden.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="139"/>
@@ -1349,14 +1349,14 @@ Reset löscht alle aktuellen Elemente aus der Liste und füllt die Liste mit all
       <location filename="../panels/PageOpDeburrEdit.ui" line="141"/>
       <location filename="../panels/PageOpDeburrEdit.ui" line="148"/>
       <source>Climb</source>
-      <translation>Gegenlauf</translation>
+      <translation>Gleichlauf</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="103"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="104"/>
       <location filename="../panels/PageOpDeburrEdit.ui" line="153"/>
       <source>Conventional</source>
-      <translation>Gleichlauf</translation>
+      <translation>Gegenlauf</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="112"/>
@@ -1386,7 +1386,7 @@ Letzteres kann zur Bearbeitung der gesamten Rohmaterialfläche verwendet werden,
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="95"/>
       <source>The cutting mode assumes that the cut on one side of the tool bit represents the resulting part and the other side is either already milled away or will be removed later on. Climb mode is when the tool bit is moved into the cut on each rotation, whereas in conventional mode the tool bit&apos;s rotation and the tool&apos;s lateral movement are in the same direction</source>
-      <translation>Der Schneidemodus geht davon aus, dass der Schnitt auf einer Seite des Werkzeugs das resultierende Teil darstellt und die andere Seite entweder bereits weggefräst ist oder später entfernt wird. Im Gegenlaufmodus (Climb mode) wird das Werkzeug bei jeder Umdrehung in den Schnitt bewegt, während im Gleichlaufmodus (Conventional mode) die Drehung des Werkzeuges und die Bewegung des Werkzeugs in dieselbe Richtung gehen</translation>
+      <translation>Der Schneidemodus geht davon aus, dass der Schnitt auf einer Seite des Werkzeugs das resultierende Teil darstellt und die andere Seite entweder bereits weggefräst ist oder später entfernt wird. Im Gleichlaufmodus (Climb mode) wird das Werkzeug bei jeder Umdrehung in den Schnitt bewegt, während im Gegenlaufmodus (Conventional mode) die Drehung des Werkzeuges und die Bewegung des Werkzeugs in dieselbe Richtung gehen</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="119"/>
@@ -1805,7 +1805,7 @@ Letzteres kann zur Bearbeitung der gesamten Rohmaterialfläche verwendet werden,
       <location filename="../panels/PageOpWaterlineEdit.ui" line="110"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="98"/>
       <source>Complete the operation in a single pass at depth, or multiple passes to final depth.</source>
-      <translation>Die Bearbeitung in einem Durchgang der ausgewählten Tiefe durchführen, oder in mehreren Durchgängen bis zur Zieltiefe.</translation>
+      <translation>Die Bearbeitung in einem Durchgang bei der ausgewählten Tiefe, oder in mehreren Durchgängen bis zur Zieltiefe durchführen.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="129"/>
@@ -2100,7 +2100,7 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="177"/>
       <source>Lead In/Out</source>
-      <translation>Ein-/Ausfahrt</translation>
+      <translation>An-/Abfahrt</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="65"/>
@@ -2981,7 +2981,7 @@ Sollten mehrere Werkzeuge oder Werkzeugformen mit dem gleichen Namen in verschie
     <message>
       <location filename="../panels/DogboneEdit.ui" line="87"/>
       <source>On which side of the profile bones are inserted - this also determines which corners are dressed up. The default value is determined based on the profile being dressed up.</source>
-      <translation>Auf welcher Seite des Profils die Knochen eingefügt werden - dies bestimmt auch, welche Ecken Aufbereitet werden. Der Standardwert wird anhand des Profils ermittelt, das aufbereitet wird.</translation>
+      <translation>Auf welcher Seite des Profils die Knochen eingefügt werden - dies bestimmt auch, welche Ecken aufbereitet werden. Der Standardwert wird anhand des Profils ermittelt, das aufbereitet wird.</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="94"/>
@@ -3376,7 +3376,7 @@ Sollten mehrere Werkzeuge oder Werkzeugformen mit dem gleichen Namen in verschie
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="300"/>
       <source>* Note: Volumetric simulation, inaccuracies are inherent.</source>
-      <translation>* Anmerkung: volumetrische Simulationen bedingen gewisse Ungenauigkeiten.</translation>
+      <translation>* Anmerkung: volumetrische Simulationen unterliegen gewissen Ungenauigkeiten.</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="29"/>
@@ -4215,12 +4215,12 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../../../Path/Op/Deburr.py" line="181"/>
       <source>Climb</source>
-      <translation>Gegenlauf</translation>
+      <translation>Gleichlauf</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Deburr.py" line="182"/>
       <source>Conventional</source>
-      <translation>Gleichlauf</translation>
+      <translation>Gegenlauf</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathUtilsGui.py" line="89"/>
@@ -4233,12 +4233,12 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../../../Path/Geom.py" line="183"/>
       <source>face %s not handled, assuming not vertical</source>
-      <translation>Fläche %s nicht bearbeitet da diese nicht als vertikal angenommen wird</translation>
+      <translation>Fläche %s nicht bearbeitet da diese nicht als vertikal erkannt wird</translation>
     </message>
     <message>
       <location filename="../../../Path/Geom.py" line="200"/>
       <source>edge %s not handled, assuming not vertical</source>
-      <translation>Kante %s nicht behandelt, es wird angenommen sie ist nicht Vertikal</translation>
+      <translation>Kante %s nicht bearbeitet da diese nicht als vertikal erkannt wird</translation>
     </message>
     <message>
       <location filename="../../../Path/Geom.py" line="204"/>
@@ -4484,12 +4484,12 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="111"/>
       <source>Extends LeadIn distance</source>
-      <translation>Erweitert Anfahrdistanz</translation>
+      <translation>Vergrößert die Anfahrdistanz</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="117"/>
       <source>Extends LeadOut distance</source>
-      <translation>Erweitert Abfahrdistanz</translation>
+      <translation>Vergrößert die Abfahrtsdistanz</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="123"/>
@@ -5108,7 +5108,7 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../../../Path/Op/Pocket.py" line="77"/>
       <source>Use adaptive algorithm to eliminate excessive air milling above planar pocket top.</source>
-      <translation>Adaptiven Algorithmus verwenden, um übermäßiges Luftfräsen über Taschen zu vermeiden.</translation>
+      <translation>Adaptiven Algorithmus verwenden, um übermäßiges Luftfräsen oberhalb von Taschen zu vermeiden.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Pocket.py" line="87"/>
@@ -5138,7 +5138,7 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="164"/>
       <source>Clearing pattern to use</source>
-      <translation>Zu nutzendes Räummuster</translation>
+      <translation>Anzuwendendes Räummuster</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="170"/>
@@ -5201,7 +5201,7 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../../../Path/Op/Profile.py" line="132"/>
       <source>Maximum distance before a miter joint is truncated</source>
-      <translation>Maximale Entfernung, bevor Gehrungsverbindungen abgeschnitten werden</translation>
+      <translation>Maximale Entfernung, bevor eine Gehrungsverbindung abgeschnitten wird</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="147"/>
@@ -5221,12 +5221,12 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../../../Path/Op/Profile.py" line="165"/>
       <source>Side of edge that tool should cut</source>
-      <translation>Die Seite der Kante, an welcher das Werkzeug fräsen soll</translation>
+      <translation>Die Seite der Kante, auf der das Werkzeug fräsen soll</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="173"/>
       <source>Make True, if using Cutter Radius Compensation</source>
-      <translation>Aktivieren, falls die Fräsradiuskompensation verwendet wird</translation>
+      <translation>Aktivieren, falls die Fräsradiuskompensation verwendet werden soll</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="125"/>
@@ -5246,7 +5246,7 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
       <location filename="../../../Path/Op/Slot.py" line="174"/>
       <location filename="../../../Path/Op/Waterline.py" line="368"/>
       <source>Complete the operation in a single pass at depth, or multiple passes to final depth.</source>
-      <translation>Die Operation in einem Durchgang der ausgewählten Tiefe durchführen, oder in mehreren Durchgängen bis zur Zieltiefe.</translation>
+      <translation>Die Operation in einem Durchgang mit der ausgewählten Tiefe durchführen, oder in mehreren Durchgängen bis zur Zieltiefe.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="122"/>
@@ -5437,7 +5437,7 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
       <location filename="../../../Path/Op/Surface.py" line="346"/>
       <location filename="../../../Path/Op/Waterline.py" line="392"/>
       <source>Set the sampling resolution. Smaller values quickly increase processing time.</source>
-      <translation>Setzt die Auflösung der Abtastrate. Kleinere Werte erhöhen schnell die Bearbeitungszeit.</translation>
+      <translation>Setzt die Auflösung der Abtastrate. Kleinere Werte können die Bearbeitungszeit stark verlängern.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="355"/>
@@ -5691,7 +5691,7 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
       <location filename="../../../Path/Tool/Bit.py" line="168"/>
       <location filename="../../../Path/Tool/Bit.py" line="204"/>
       <source>List of all properties inherited from the bit</source>
-      <translation>Liste aller von der Werkzeugspitze geerbten Eigenschaften</translation>
+      <translation>Liste aller von Werkzeug-Bit geerbten Eigenschaften</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Controller.py" line="68"/>
@@ -5701,7 +5701,7 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../../../Path/Tool/Controller.py" line="75"/>
       <source>The speed of the cutting spindle in RPM</source>
-      <translation>Die Drehzahl der Frässpindel in U/min</translation>
+      <translation>Drehzahl der Frässpindel in U/min</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Controller.py" line="81"/>
@@ -5825,12 +5825,12 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../../../Path/Op/Profile.py" line="191"/>
       <source>Climb</source>
-      <translation>Gegenlauf</translation>
+      <translation>Gleichlauf</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="192"/>
       <source>Conventional</source>
-      <translation>Gleichlauf</translation>
+      <translation>Gegenlauf</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="195"/>
@@ -5901,7 +5901,7 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../../../Path/Op/Surface.py" line="545"/>
       <source>Initializing LinearDeflection to 0.001 mm.</source>
-      <translation>Initialisierung der linearen Abweichung auf 0.001 mm.</translation>
+      <translation>Initialisierung der linearen Abweichung auf 0,001 mm.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="768"/>
@@ -5916,7 +5916,7 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../../../Path/Op/Surface.py" line="1004"/>
       <source>operation time is</source>
-      <translation>Durchlaufszeit beträgt</translation>
+      <translation>Durchlaufzeit beträgt</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="1009"/>
@@ -6009,7 +6009,7 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../../../Path/Op/SurfaceSupport.py" line="2584"/>
       <source>Diameter dimension missing from ToolBit shape.</source>
-      <translation>Der Durchmesser der Werkzeugspitze fehlt.</translation>
+      <translation>Durchmesser des Werkzeug-Bits nicht bekannt.</translation>
     </message>
   </context>
   <context>
@@ -6111,12 +6111,12 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="119"/>
       <source>Conventional</source>
-      <translation>Gleichlauf</translation>
+      <translation>Gegenlauf</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="120"/>
       <source>Climb</source>
-      <translation>Gegenlauf</translation>
+      <translation>Gleichlauf</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="123"/>
@@ -6164,7 +6164,7 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="500"/>
       <source>Initializing LinearDeflection to 0.0001 mm.</source>
-      <translation>Initialisierung der linearen Abweichung auf 0.0001 mm.</translation>
+      <translation>Initialisierung der linearen Abweichung auf 0,0001 mm.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="638"/>
@@ -6635,8 +6635,7 @@ Abbruch der OP-Erstellung</translation>
       <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="272"/>
       <source>Please select one toolpath object
 </source>
-      <translation>Bitte ein Werkzeugweg-Objekt auswählen
-</translation>
+      <translation>Bitte ein Werkzeugweg-Objekt auswählen</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="358"/>
@@ -6690,12 +6689,12 @@ Abbruch der OP-Erstellung</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="583"/>
       <source>Modifies a toolpath to add dragknife corner actions</source>
-      <translation>Ändert einen Werkzeugweg so ab, das Schleppmesserecken hinzugefügt werden</translation>
+      <translation>Ergänzung des Werkzeugwegs mit Schleppmesser-Ecken</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="599"/>
       <source>Please select one toolpath object</source>
-      <translation>Bitte wählen Sie ein Pfad-Objekt aus</translation>
+      <translation>Bitte wählen Sie ein einzelnes Pfad-Objekt aus</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="604"/>
@@ -6771,7 +6770,7 @@ Abbruch der OP-Erstellung</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="883"/>
       <source>Please select one toolpath object</source>
-      <translation>Bitte wählen Sie ein Werkzeugweg-Objekt aus</translation>
+      <translation>Bitte wählen Sie ein einzelnes Werkzeugweg-Objekt aus</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="889"/>
@@ -6831,7 +6830,7 @@ Abbruch der OP-Erstellung</translation>
     <message>
       <location filename="../../../Path/Main/Job.py" line="249"/>
       <source>Fixture</source>
-      <translation>Befestigung</translation>
+      <translation>Halterung</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="250"/>
@@ -7017,7 +7016,7 @@ Zum Beispiel:
     <message>
       <location filename="../../../Path/Main/Gui/Fixture.py" line="153"/>
       <source>Fixture</source>
-      <translation>Befestigung</translation>
+      <translation>Halterung</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Fixture.py" line="154"/>
@@ -7508,7 +7507,7 @@ Zum Beispiel:
     <message>
       <location filename="../../../Path/Op/Base.py" line="819"/>
       <source>Tool Controller feedrates required to calculate the cycle time.</source>
-      <translation>Die Werkzeugsteuerung benötigt eine Vorschubgeschwindigkeit um die Bearbeitungszeit zu berechnen.</translation>
+      <translation>Die Werkzeugsteuerung benötigt eine Vorschubgeschwindigkeit, um die Bearbeitungszeit zu berechnen.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="822"/>
@@ -7663,12 +7662,12 @@ Zum Beispiel:
     <message>
       <location filename="../../../Path/Op/Helix.py" line="71"/>
       <source>Climb</source>
-      <translation>Gegenlauf</translation>
+      <translation>Gleichlauf</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="72"/>
       <source>Conventional</source>
-      <translation>Gleichlauf</translation>
+      <translation>Gegenlauf</translation>
     </message>
   </context>
   <context>
@@ -7706,12 +7705,12 @@ Zum Beispiel:
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="61"/>
       <source>Climb</source>
-      <translation>Gegenlauf</translation>
+      <translation>Gleichlauf</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="62"/>
       <source>Conventional</source>
-      <translation>Gleichlauf</translation>
+      <translation>Gegenlauf</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="65"/>
@@ -7995,12 +7994,12 @@ Zum Beispiel:
     <message>
       <location filename="../../../Path/Op/Surface.py" line="443"/>
       <source>Conventional</source>
-      <translation>Gleichlauf</translation>
+      <translation>Gegenlauf</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="444"/>
       <source>Climb</source>
-      <translation>Gegenlauf</translation>
+      <translation>Gleichlauf</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="447"/>
@@ -8165,12 +8164,12 @@ Zum Beispiel:
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="293"/>
       <source>Climb</source>
-      <translation>Gegenlauf</translation>
+      <translation>Gleichlauf</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="297"/>
       <source>Conventional</source>
-      <translation>Gleichlauf</translation>
+      <translation>Gegenlauf</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="249"/>
@@ -8437,7 +8436,7 @@ Zum Beispiel:
     <message>
       <location filename="../../../Path/Tool/Gui/BitCmd.py" line="50"/>
       <source>Creates a new ToolBit object</source>
-      <translation>Erstellt ein Neues Werkzeug Objekt</translation>
+      <translation>Erstellt ein neues Werkzeug-Objekt</translation>
     </message>
   </context>
   <context>
@@ -8458,7 +8457,7 @@ Zum Beispiel:
     <message>
       <location filename="../../../Path/Tool/Gui/BitCmd.py" line="79"/>
       <source>Save an existing ToolBit object to a file</source>
-      <translation>Vorhandenes Werkzeugspitze Objekt als Datei speichern</translation>
+      <translation>Vorhandenes Werkzeugspitze-Objekt als Datei speichern</translation>
     </message>
   </context>
   <context>
@@ -8556,7 +8555,7 @@ Zum Beispiel:
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibraryCmd.py" line="78"/>
       <source>Open an editor to manage ToolBit libraries</source>
-      <translation>Öffne den Werzeug Editor</translation>
+      <translation>Öffne den Werkzeug-Editor</translation>
     </message>
   </context>
   <context>

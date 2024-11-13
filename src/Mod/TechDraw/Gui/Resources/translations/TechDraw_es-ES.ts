@@ -2036,7 +2036,7 @@ Sin una selección, un explorador de archivos le permite seleccionar un archivo 
       <translation>Crear vista de hoja de cálculo</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="396"/>
+      <location filename="../../PagePrinter.cpp" line="404"/>
       <source>Save page to dxf</source>
       <translation>Guardar página como dxf</translation>
     </message>
@@ -2267,12 +2267,12 @@ Sin una selección, un explorador de archivos le permite seleccionar un archivo 
       <translation>Arrastrar Globo</translation>
     </message>
     <message>
-      <location filename="../../QGIViewDimension.cpp" line="873"/>
+      <location filename="../../QGIViewDimension.cpp" line="875"/>
       <source>Drag Dimension</source>
       <translation>Arrastrar Cota</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="598"/>
+      <location filename="../../QGSPage.cpp" line="589"/>
       <source>Create Balloon</source>
       <translation>Crear Globo</translation>
     </message>
@@ -3549,28 +3549,28 @@ Sin una selección, un explorador de archivos le permite seleccionar un archivo 
       <translation>No hay páginas de dibujo en el documento.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="318"/>
+      <location filename="../../MDIViewPage.cpp" line="347"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="319"/>
-      <location filename="../../MDIViewPage.cpp" line="493"/>
+      <location filename="../../MDIViewPage.cpp" line="348"/>
+      <location filename="../../MDIViewPage.cpp" line="556"/>
       <source>All Files (*.*)</source>
       <translation>Todos los archivos (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="321"/>
+      <location filename="../../MDIViewPage.cpp" line="350"/>
       <source>Export Page As PDF</source>
       <translation>Exportar página como PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="492"/>
+      <location filename="../../MDIViewPage.cpp" line="555"/>
       <source>SVG (*.svg)</source>
       <translation>SVG (*.svg)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="495"/>
+      <location filename="../../MDIViewPage.cpp" line="558"/>
       <source>Export page as SVG</source>
       <translation>Exportar página como SVG</translation>
     </message>
@@ -4018,7 +4018,7 @@ Sin una selección, un explorador de archivos le permite seleccionar un archivo 
       <translation>Error de parámetro</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="330"/>
+      <location filename="../../PagePrinter.cpp" line="338"/>
       <source>Document Name:</source>
       <translation>Nombre del documento:</translation>
     </message>
@@ -4554,12 +4554,12 @@ Por tanto, necesitará aumentar el límite de recuadros.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="460"/>
       <source>Check this box to use the default modifier keys.  Uncheck this box to set a different key combination.</source>
-      <translation type="unfinished">Check this box to use the default modifier keys.  Uncheck this box to set a different key combination.</translation>
+      <translation>Marque esta casilla para usar los modificadores de tecla predeterminados. Desmarque esta casilla para establecer una combinación de teclas diferente.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="463"/>
       <source>Use Default</source>
-      <translation type="unfinished">Use Default</translation>
+      <translation>Usar predeterminado</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="480"/>
@@ -4569,7 +4569,7 @@ Por tanto, necesitará aumentar el límite de recuadros.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="487"/>
       <source>Check this box to include the Alt key in the modifiers.</source>
-      <translation type="unfinished">Check this box to include the Alt key in the modifiers.</translation>
+      <translation>Marcar esta casilla para incluir la tecla Alt en los modificadores.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="490"/>
@@ -4579,7 +4579,7 @@ Por tanto, necesitará aumentar el límite de recuadros.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="497"/>
       <source>Check this box to include the Shift key in the modifiers.</source>
-      <translation type="unfinished">Check this box to include the Shift key in the modifiers.</translation>
+      <translation>Marcar esta casilla para incluir la tecla Shift en los modificadores.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="500"/>
@@ -4589,22 +4589,22 @@ Por tanto, necesitará aumentar el límite de recuadros.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="507"/>
       <source>Check this box to include the Meta/Start/Super key in the modifiers.</source>
-      <translation type="unfinished">Check this box to include the Meta/Start/Super key in the modifiers.</translation>
+      <translation>Marcar esta casilla para incluir la tecla Meta/Inicio/Super en los modificadores.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="510"/>
       <source>Meta</source>
-      <translation type="unfinished">Meta</translation>
+      <translation>Meta</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="517"/>
       <source>Check this box to include the Control key in the modifiers.</source>
-      <translation type="unfinished">Check this box to include the Control key in the modifiers.</translation>
+      <translation>Marcar esta casilla para incluir la tecla Control en los modificadores.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="520"/>
       <source>Control</source>
-      <translation type="unfinished">Control</translation>
+      <translation>Control</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="538"/>
@@ -5945,51 +5945,51 @@ Rápido, pero los resultados son una colección de líneas rectas cortas.</trans
       <translation>Imprimir todas las páginas</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="412"/>
+      <location filename="../../MDIViewPage.cpp" line="465"/>
       <source>Different orientation</source>
       <translation>Orientación diferente de la hoja</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="413"/>
+      <location filename="../../MDIViewPage.cpp" line="466"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>La impresora utiliza una orientación de papel distinta a la del dibujo.
 ¿Desea continuar?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="422"/>
+      <location filename="../../MDIViewPage.cpp" line="475"/>
       <source>Different paper size</source>
       <translation>Tamaño de papel diferente</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="423"/>
+      <location filename="../../MDIViewPage.cpp" line="476"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>La impresora usa un tamaño de papel distinto al del dibujo.
 ¿Desea continuar?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="516"/>
+      <location filename="../../MDIViewPage.cpp" line="579"/>
       <source>Save DXF file</source>
       <translation>Guardar archivo DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="517"/>
+      <location filename="../../MDIViewPage.cpp" line="580"/>
       <source>DXF (*.dxf)</source>
       <translation>DXF (*.dxf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="537"/>
+      <location filename="../../MDIViewPage.cpp" line="607"/>
       <source>Save PDF file</source>
       <translation>Guardar archivo PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="538"/>
+      <location filename="../../MDIViewPage.cpp" line="608"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1082"/>
+      <location filename="../../MDIViewPage.cpp" line="1152"/>
       <source>Selected:</source>
       <translation>Seleccionado:</translation>
     </message>

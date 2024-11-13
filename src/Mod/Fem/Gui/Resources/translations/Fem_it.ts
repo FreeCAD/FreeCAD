@@ -621,7 +621,7 @@
     <message>
       <location filename="../../Command.cpp" line="474"/>
       <source>Make rigid body constraint</source>
-      <translation type="unfinished">Make rigid body constraint</translation>
+      <translation>Rendere un vincolo di corpo rigido</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="578"/>
@@ -2980,12 +2980,12 @@ Specificare un altro file.</translation>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="34"/>
       <source>Rotation Frequency:</source>
-      <translation type="unfinished">Rotation Frequency:</translation>
+      <translation>Frequenza di rotazione:</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="47"/>
       <source>Revolutions per second</source>
-      <translation type="unfinished">Revolutions per second</translation>
+      <translation>Rivoluzioni al secondo</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="26"/>
@@ -4542,28 +4542,28 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="102"/>
       <source>Film Coefficient</source>
-      <translation type="unfinished">Film Coefficient</translation>
+      <translation>Coefficiente di film</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="109"/>
       <source>W/m^2/K</source>
-      <translation type="unfinished">W/m^2/K</translation>
+      <translation>W/m^2/K</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="136"/>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="198"/>
       <source>K</source>
-      <translation type="unfinished">K</translation>
+      <translation>K</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="227"/>
       <source>Surface Heat Flux</source>
-      <translation type="unfinished">Surface Heat Flux</translation>
+      <translation>Flusso di calore superficiale</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="234"/>
       <source>W/m^2</source>
-      <translation type="unfinished">W/m^2</translation>
+      <translation>W/m^2</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="129"/>
@@ -4662,7 +4662,7 @@ normale della faccia è usata come direzione</translation>
       <location filename="../../TaskFemConstraintSpring.ui" line="82"/>
       <location filename="../../TaskFemConstraintSpring.ui" line="105"/>
       <source>N/m</source>
-      <translation type="unfinished">N/m</translation>
+      <translation>N/m</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="115"/>
@@ -5685,12 +5685,12 @@ usata per il solutore Elmer</translation>
   <context>
     <name>FEM_ResultShow</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="873"/>
+      <location filename="../../../femcommands/commands.py" line="876"/>
       <source>Show result</source>
       <translation>Mostra i risultati</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="877"/>
+      <location filename="../../../femcommands/commands.py" line="880"/>
       <source>Shows and visualizes selected result data</source>
       <translation>Mostra e visualizza i dati dei risultati selezionati</translation>
     </message>
@@ -5698,12 +5698,12 @@ usata per il solutore Elmer</translation>
   <context>
     <name>FEM_ResultsPurge</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="889"/>
+      <location filename="../../../femcommands/commands.py" line="892"/>
       <source>Purge results</source>
       <translation>Azzera i risultati</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="893"/>
+      <location filename="../../../femcommands/commands.py" line="896"/>
       <source>Purges all results from active analysis</source>
       <translation>Elimina tutti i risultati dall'analisi attiva</translation>
     </message>
@@ -5711,12 +5711,12 @@ usata per il solutore Elmer</translation>
   <context>
     <name>FEM_SolverCalculiXCcxTools</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1003"/>
+      <location filename="../../../femcommands/commands.py" line="1006"/>
       <source>Solver CalculiX Standard</source>
       <translation>Risolutore CalculiX Standard</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1008"/>
+      <location filename="../../../femcommands/commands.py" line="1011"/>
       <source>Creates a standard FEM solver CalculiX with ccx tools</source>
       <translation>Crea un risolutore FEM standard CalculiX con strumenti ccx</translation>
     </message>
@@ -5724,12 +5724,12 @@ usata per il solutore Elmer</translation>
   <context>
     <name>FEM_SolverControl</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1056"/>
+      <location filename="../../../femcommands/commands.py" line="1059"/>
       <source>Solver job control</source>
       <translation>Controlli del solutore</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1061"/>
+      <location filename="../../../femcommands/commands.py" line="1064"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
       <translation>Cambia gli attributi di solutore ed esegue i calcoli per il solutore selezionato</translation>
     </message>
@@ -5737,12 +5737,12 @@ usata per il solutore Elmer</translation>
   <context>
     <name>FEM_SolverElmer</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1073"/>
+      <location filename="../../../femcommands/commands.py" line="1076"/>
       <source>Solver Elmer</source>
       <translation>Risolutore Elmer</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1075"/>
+      <location filename="../../../femcommands/commands.py" line="1078"/>
       <source>Creates a FEM solver Elmer</source>
       <translation>Crea un risolutore FEM Elmer</translation>
     </message>
@@ -5750,12 +5750,12 @@ usata per il solutore Elmer</translation>
   <context>
     <name>FEM_SolverMystran</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1086"/>
+      <location filename="../../../femcommands/commands.py" line="1089"/>
       <source>Solver Mystran</source>
       <translation>Risolutore Mystran</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1088"/>
+      <location filename="../../../femcommands/commands.py" line="1091"/>
       <source>Creates a FEM solver Mystran</source>
       <translation>Crea un risolutore FEM Mystran</translation>
     </message>
@@ -5763,12 +5763,12 @@ usata per il solutore Elmer</translation>
   <context>
     <name>FEM_SolverRun</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1098"/>
+      <location filename="../../../femcommands/commands.py" line="1101"/>
       <source>Run solver calculations</source>
       <translation>Esegue calcoli del risolutore</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1102"/>
+      <location filename="../../../femcommands/commands.py" line="1105"/>
       <source>Runs the calculations for the selected solver</source>
       <translation>Esegue i calcoli per il risolutore selezionato</translation>
     </message>
@@ -5776,12 +5776,12 @@ usata per il solutore Elmer</translation>
   <context>
     <name>FEM_SolverZ88</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1118"/>
+      <location filename="../../../femcommands/commands.py" line="1121"/>
       <source>Solver Z88</source>
       <translation>Risolutore Z88</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1120"/>
+      <location filename="../../../femcommands/commands.py" line="1123"/>
       <source>Creates a FEM solver Z88</source>
       <translation>Crea un solutore FEM Z88</translation>
     </message>
@@ -5884,7 +5884,7 @@ usata per il solutore Elmer</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="264"/>
       <source>Geometry reference selector</source>
-      <translation type="unfinished">Geometry reference selector</translation>
+      <translation>Selettore della geometria di riferimento</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="266"/>
@@ -6223,12 +6223,12 @@ Per favore seleziona prima un tipo di risultato.</translation>
   <context>
     <name>FEM_SolverCalculiX</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1031"/>
+      <location filename="../../../femcommands/commands.py" line="1034"/>
       <source>Solver CalculiX (new framework)</source>
       <translation>Solutore CalculiX (nuovo framework)</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1036"/>
+      <location filename="../../../femcommands/commands.py" line="1039"/>
       <source>Creates a FEM solver CalculiX new framework (less result error handling)</source>
       <translation>Crea un solutore FEM CalculiX nuovo framework (meno gestione degli errori di risultato)</translation>
     </message>
@@ -6379,12 +6379,12 @@ Per favore seleziona prima un tipo di risultato.</translation>
   <context>
     <name>FEM_MeshRegion</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="862"/>
+      <location filename="../../../femcommands/commands.py" line="865"/>
       <source>FEM mesh refinement</source>
       <translation>Raffinamento della mesh FEM</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="863"/>
+      <location filename="../../../femcommands/commands.py" line="866"/>
       <source>Creates a FEM mesh refinement</source>
       <translation>Crea un raffinamento della mesh FEM</translation>
     </message>
@@ -6495,12 +6495,12 @@ Per favore seleziona prima un tipo di risultato.</translation>
     <message>
       <location filename="../../Command.cpp" line="457"/>
       <source>Rigid body constraint</source>
-      <translation type="unfinished">Rigid body constraint</translation>
+      <translation>Vincolo rigido del corpo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="458"/>
       <source>Creates a rigid body constraint for a geometric entity</source>
-      <translation type="unfinished">Creates a rigid body constraint for a geometric entity</translation>
+      <translation>Crea un vincolo di corpo rigido per un'entità geometrica</translation>
     </message>
   </context>
   <context>
@@ -6529,7 +6529,7 @@ Per favore seleziona prima un tipo di risultato.</translation>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="322"/>
       <source>Only one type of selection (vertex, face or edge) per constraint allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex, face or edge) per constraint allowed!</translation>
+      <translation>Solo un tipo di selezione (vertice, faccia o bordo) per vincolo permesso!</translation>
     </message>
   </context>
   <context>
@@ -6664,7 +6664,7 @@ Per favore seleziona prima un tipo di risultato.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="14"/>
       <source>FEM Mesh by Netgen</source>
-      <translation type="unfinished">FEM Mesh by Netgen</translation>
+      <translation>FEM Mesh di Netgen</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="26"/>
@@ -6699,7 +6699,7 @@ Per favore seleziona prima un tipo di risultato.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="147"/>
       <source>Curvature Safety:</source>
-      <translation type="unfinished">Curvature Safety:</translation>
+      <translation>Sicurezza Curvatura:</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="164"/>
@@ -6733,12 +6733,12 @@ Per favore seleziona prima un tipo di risultato.</translation>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="26"/>
       <source>Use legacy Netgen object implementation</source>
-      <translation type="unfinished">Use legacy Netgen object implementation</translation>
+      <translation>Usa implementazione precedente dell'oggetto Netgen</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="35"/>
       <source>Legacy Netgen</source>
-      <translation type="unfinished">Legacy Netgen</translation>
+      <translation>Netgen obsoleto</translation>
     </message>
   </context>
 </TS>
