@@ -166,6 +166,7 @@ private:
     void updateFromCache(bool notify, bool updateUnit = true);
     QString getUserString(const Base::Quantity& val, double& factor, QString& unitString) const;
     QString getUserString(const Base::Quantity& val) const;
+    QSize sizeHintCalculator(int height) const;
 
 Q_SIGNALS:
     /** Gets emitted if the user has entered a VALID input

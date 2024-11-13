@@ -792,41 +792,22 @@ QSize QuantitySpinBox::sizeForText(const QString& txt) const
 
 QSize QuantitySpinBox::sizeHint() const
 {
-    Q_D(const QuantitySpinBox);
-    ensurePolished();
-
-    const QFontMetrics fm(fontMetrics());
-    int h = lineEdit()->sizeHint().height();
-    int w = 0;
-
-    QString s;
-    QString fixedContent = QLatin1String(" ");
-
-    Base::Quantity q(d->quantity);
-    q.setValue(d->maximum);
-    s = textFromValue(q);
-    s.truncate(18);
-    s += fixedContent;
-    w = qMax(w, QtTools::horizontalAdvance(fm, s));
-
-    w += 2; // cursor blinking space
-    w += iconHeight;
-
-    QStyleOptionSpinBox opt;
-    initStyleOption(&opt);
-    QSize hint(w, h);
-    QSize size = style()->sizeFromContents(QStyle::CT_SpinBox, &opt, hint, this);
-    return size;
+    return sizeHintCalculator(lineEdit()->sizeHint().height());
 }
 
 QSize QuantitySpinBox::minimumSizeHint() const
+{
+    return sizeHintCalculator(lineEdit()->minimumSizeHint().height());
+}
+
+QSize QuantitySpinBox::sizeHintCalculator(int h) const
 {
     Q_D(const QuantitySpinBox);
     ensurePolished();
 
     const QFontMetrics fm(fontMetrics());
-    int h = lineEdit()->minimumSizeHint().height();
     int w = 0;
+    constexpr int maxStrLen = 12;
 
     QString s;
     QString fixedContent = QLatin1String(" ");
@@ -834,7 +815,7 @@ QSize QuantitySpinBox::minimumSizeHint() const
     Base::Quantity q(d->quantity);
     q.setValue(d->maximum);
     s = textFromValue(q);
-    s.truncate(18);
+    s.truncate(maxStrLen);
     s += fixedContent;
     w = qMax(w, QtTools::horizontalAdvance(fm, s));
 
