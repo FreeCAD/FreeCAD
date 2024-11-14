@@ -53,6 +53,7 @@
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
+#include <Gui/Control.h>
 #include <Gui/MDIView.h>
 #include <Gui/SoFCCSysDragger.h>
 #include <Gui/View3DInventor.h>
@@ -326,6 +327,9 @@ bool ViewProviderAssembly::keyPressed(bool pressed, int key)
 {
     if (key == SoKeyboardEvent::ESCAPE) {
         if (isInEditMode()) {
+            if (Gui::Control().activeDialog()) {
+                return true;
+            }
 
             ParameterGrp::handle hPgr = App::GetApplication().GetParameterGroupByPath(
                 "User parameter:BaseApp/Preferences/Mod/Assembly");
