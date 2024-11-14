@@ -179,13 +179,15 @@ def get_object_type(ifcentity, objecttype=None):
                 objecttype = "dimension"
             elif get_text(ifcentity):
                 objecttype = "text"
+        elif ifcentity.is_a("IfcGridAxis"):
+            objecttype = "axis"
     return objecttype
 
 
 def is_annotation(obj):
     """Determines if the given FreeCAD object should be saved as an IfcAnnotation"""
 
-    if getattr(obj, "IfcClass", None) == "IfcAnnotation":
+    if getattr(obj, "IfcClass", None) in ["IfcAnnotation", "IfcGridAxis"]:
         return True
     if getattr(obj, "IfcType", None) == "Annotation":
         return True
@@ -267,6 +269,30 @@ def get_sectionplane(annotation):
                             result.append(item.TreeRootExpression.YLength*s)
                             result.append(item.TreeRootExpression.ZLength*s)
             return result
+    return None
+
+
+def get_axis(obj):
+    """Determines if a given IFC entity is an IfcGridAxis. Returns a tuple
+    containing a Placement, a length value in millimeters, and a tag"""
+
+    if obj.is_a("IfcGridAxis"):
+        tag = obj.AxisTag
+        s = ifcopenshell.util.unit.calculate_unit_scale(obj.file) * 1000
+        shape = importIFCHelper.get2DShape(obj.AxisCurve, s, notext=True)
+        if shape:
+            edge = shape[0].Edges[0]  # we suppose here the axis shape is a single straight line
+            if obj.SameSense:
+                p0 = edge.Vertexes[0].Point
+                p1 = edge.Vertexes[-1].Point
+            else:
+                p0 = edge.Vertexes[-1].Point
+                p1 = edge.Vertexes[0].Point
+            length = edge.Length
+            placement = FreeCAD.Placement()
+            placement.Base = p0
+            placement.Rotation = FreeCAD.Rotation(FreeCAD.Vector(0,1,0), p1.sub(p0))
+            return (placement, length, tag)
     return None
 
 

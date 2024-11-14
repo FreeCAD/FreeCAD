@@ -2474,6 +2474,29 @@ def create_annotation(anno, ifcfile, context, history, preferences):
             objectType = "LEADER"
         elif anno.Shape.Faces:
             objectType = "AREA"
+        elif Draft.getType(anno) == "Axis":
+            axdata = anno.Proxy.getAxisData(anno)
+            axes = []
+            for ax in axdata:
+                p1 = ifcbin.createIfcCartesianPoint(tuple(FreeCAD.Vector(ax[0]).multiply(preferences['SCALE_FACTOR'])[:2]))
+                p2 = ifcbin.createIfcCartesianPoint(tuple(FreeCAD.Vector(ax[1]).multiply(preferences['SCALE_FACTOR'])[:2]))
+                pol = ifcbin.createIfcPolyline([p1,p2])
+                axis = ifcfile.createIfcGridAxis(ax[2],pol,True)
+                axes.append(axis)
+            if axes:
+                if len(axes) > 1:
+                    xvc =  ifcbin.createIfcDirection((1.0,0.0,0.0))
+                    zvc =  ifcbin.createIfcDirection((0.0,0.0,1.0))
+                    ovc =  ifcbin.createIfcCartesianPoint((0.0,0.0,0.0))
+                    gpl =  ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
+                    plac = ifcbin.createIfcLocalPlacement(gpl)
+                    grid = ifcfile.createIfcGrid(uid,history,name,description,None,plac,None,axes,None,None)
+                    return grid
+                else:
+                    return axes[0]
+            else:
+                print("Unable to handle object",anno.Label)
+                return None
         else:
             objectType = "LINEWORK"
         sh = anno.Shape.copy()

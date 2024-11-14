@@ -465,21 +465,39 @@ def set_representation(vobj, node):
     """Sets the correct coin nodes for the given Part object"""
 
     # node = [colors, verts, faces, edges, parts]
+    if not vobj.RootNode:
+        return
+    if vobj.RootNode.getNumChildren() < 3:
+        return
     coords = vobj.RootNode.getChild(1)  # SoCoordinate3
-    fset = vobj.RootNode.getChild(2).getChild(1).getChild(6)  # SoBrepFaceSet
-    eset = (
-        vobj.RootNode.getChild(2).getChild(2).getChild(0).getChild(3)
-    )  # SoBrepEdgeSet
+    switch = vobj.RootNode.getChild(2)
+    num_modes = switch.getNumChildren()
+    if num_modes < 3:
+        return
+    # the number of display modes under switch can vary.
+    # the last 4 ones are the ones that are defined for
+    # Part features
+    faces = switch.getChild(num_modes-3)
+    edges = switch.getChild(num_modes-2)
+    fset = None
+    if faces.getNumChildren() >= 7:
+        fset = faces.getChild(6)  # SoBrepFaceSet
+    eset = None
+    if edges.getNumChildren() >= 1:
+        if edges.getChild(0).getNumChildren() >= 4:
+            eset = edges.getChild(0).getChild(3)  # SoBrepEdgeSet
     # reset faces and edges
-    fset.coordIndex.deleteValues(0)
-    eset.coordIndex.deleteValues(0)
+    if fset:
+        fset.coordIndex.deleteValues(0)
+    if eset:
+        eset.coordIndex.deleteValues(0)
     coords.point.deleteValues(0)
     if not node:
         return
-    if node[1] and node[3]:
+    if node[1] and node[3] and eset:
         coords.point.setValues(node[1])
         eset.coordIndex.setValues(node[3])
-        if node[2] and node[4]:
+        if node[2] and node[4] and fset:
             fset.coordIndex.setValues(node[2])
             fset.partIndex.setValues(node[4])
 
@@ -553,7 +571,9 @@ def delete_ghost(document):
 
 
 def get_annotation_shape(annotation, ifcfile, coin=False):
-    """Returns a shape or a coin node form an IFC annotation"""
+    """Returns a shape or a coin node form an IFC annotation.
+    Returns [colors, verts, faces, edges], colors and faces
+    being normally None for 2D shapes."""
 
     import Part
     from importers import importIFCHelper
@@ -562,14 +582,21 @@ def get_annotation_shape(annotation, ifcfile, coin=False):
     placement = None
     ifcscale = importIFCHelper.getScaling(ifcfile)
     shapes2d = []
-    for rep in annotation.Representation.Representations:
-        if rep.RepresentationIdentifier in ["Annotation", "FootPrint", "Axis"]:
-            sh = importIFCHelper.get2DShape(rep, ifcscale, notext=True)
-            if sh:
-                shapes2d.extend(sh)
+    if hasattr(annotation, "Representation"):
+        for rep in annotation.Representation.Representations:
+            if rep.RepresentationIdentifier in ["Annotation", "FootPrint", "Axis"]:
+                sh = importIFCHelper.get2DShape(rep, ifcscale, notext=True)
+                if sh:
+                    shapes2d.extend(sh)
+    elif hasattr(annotation, "AxisCurve"):
+        sh = importIFCHelper.get2DShape(annotation.AxisCurve, ifcscale, notext=True)
+        shapes2d.extend(sh)
     if shapes2d:
         shape = Part.makeCompound(shapes2d)
-        placement = importIFCHelper.getPlacement(annotation.ObjectPlacement, ifcscale)
+        if hasattr(annotation, "ObjectPlacement"):
+            placement = importIFCHelper.getPlacement(annotation.ObjectPlacement, ifcscale)
+        else:
+            placement = None
         if coin:
             iv = shape.writeInventor()
             iv = iv.replace("\n", "")
