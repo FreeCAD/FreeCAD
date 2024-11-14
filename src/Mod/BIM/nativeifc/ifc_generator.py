@@ -515,17 +515,10 @@ def set_representation(vobj, node):
     coords.point.deleteValues(0)
     if not node:
         return
-<<<<<<< HEAD
     if node[1] and node[3] and eset:
         coords.point.setValues(node[1])
         eset.coordIndex.setValues(node[3])
         if node[2] and node[4] and fset:
-=======
-    if node[1] and node[3]:
-        coords.point.setValues(node[1])
-        eset.coordIndex.setValues(node[3])
-        if node[2] and node[4]:
->>>>>>> 7de1143308 (BIM: NativeIFC 2D support - basic import/export + linework annotations)
             fset.coordIndex.setValues(node[2])
             fset.partIndex.setValues(node[4])
 
@@ -599,13 +592,9 @@ def delete_ghost(document):
 
 
 def get_annotation_shape(annotation, ifcfile, coin=False):
-<<<<<<< HEAD
     """Returns a shape or a coin node form an IFC annotation.
     Returns [colors, verts, faces, edges], colors and faces
     being normally None for 2D shapes."""
-=======
-    """Returns a shape or a coin node form an IFC annotation"""
->>>>>>> 7de1143308 (BIM: NativeIFC 2D support - basic import/export + linework annotations)
 
     import Part
     from importers import importIFCHelper
@@ -614,7 +603,6 @@ def get_annotation_shape(annotation, ifcfile, coin=False):
     placement = None
     ifcscale = importIFCHelper.getScaling(ifcfile)
     shapes2d = []
-<<<<<<< HEAD
     if hasattr(annotation, "Representation"):
         for rep in annotation.Representation.Representations:
             if rep.RepresentationIdentifier in ["Annotation", "FootPrint", "Axis"]:
@@ -630,16 +618,6 @@ def get_annotation_shape(annotation, ifcfile, coin=False):
             placement = importIFCHelper.getPlacement(annotation.ObjectPlacement, ifcscale)
         else:
             placement = None
-=======
-    for rep in annotation.Representation.Representations:
-        if rep.RepresentationIdentifier in ["Annotation", "FootPrint", "Axis"]:
-            sh = importIFCHelper.get2DShape(rep, ifcscale, notext=True)
-            if sh:
-                shapes2d.extend(sh)
-    if shapes2d:
-        shape = Part.makeCompound(shapes2d)
-        placement = importIFCHelper.getPlacement(annotation.ObjectPlacement, ifcscale)
->>>>>>> 7de1143308 (BIM: NativeIFC 2D support - basic import/export + linework annotations)
         if coin:
             iv = shape.writeInventor()
             iv = iv.replace("\n", "")
