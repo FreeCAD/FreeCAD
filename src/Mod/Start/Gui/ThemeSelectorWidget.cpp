@@ -79,14 +79,9 @@ static bool isSystemInDarkMode()
 
 static bool shouldHideClassicTheme()
 {
-    // Classic on macOS and windows 11 with qt6(.4+?) doesn't work when system
-    // is in dark mode and to make matter worse, on macOS there's a setting that
-    // changes mode depending on time of day.
-#if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0) || defined(FC_OS_MACOSX) || defined(FC_OS_WIN32)
+    // Classic has been reported not to work on macOS, windows 11 and linux.
+    // Note, this function had conditionals but was removed when linux workaround was added.
     return true;
-#else
-    return false;
-#endif
 }
 
 
