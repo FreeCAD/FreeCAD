@@ -2106,7 +2106,7 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
             if (!ref.getSubName().empty()) {
                 QMessageBox::warning(Gui::getMainWindow(),
                     QObject::tr("Incorrect selection"),
-                    QObject::tr("Selection contains both 2d and 3d geometry"));
+                    QObject::tr("Selection contains both 2D and 3D geometry"));
                 return;
             }
         }
@@ -2131,7 +2131,7 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
     if (geometryRefs2d == TechDraw::isInvalid) {
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("Incorrect Selection"),
-                             QObject::tr("Can not make 2d extent dimension from selection"));
+                             QObject::tr("Can not make 2D extent dimension from selection"));
         return;
     }
 
@@ -2146,7 +2146,7 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
         if (geometryRefs3d == isInvalid) {
             QMessageBox::warning(Gui::getMainWindow(),
                                  QObject::tr("Incorrect Selection"),
-                                 QObject::tr("Can not make 3d extent dimension from selection"));
+                                 QObject::tr("Can not make 3D extent dimension from selection"));
             return;
         }
     }

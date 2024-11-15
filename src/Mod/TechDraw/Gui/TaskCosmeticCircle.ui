@@ -58,10 +58,10 @@
      <item row="1" column="0">
       <widget class="QRadioButton" name="rb2d1">
        <property name="toolTip">
-        <string>Treat the center point as a 2d point within the parent View.  Z coordinate is ignored.</string>
+        <string>Treat the center point as a 2D point within the parent View.  Z coordinate is ignored.</string>
        </property>
        <property name="text">
-        <string>2d Point</string>
+        <string>2D Point</string>
        </property>
        <property name="checked">
         <bool>true</bool>
@@ -74,10 +74,10 @@
      <item row="1" column="1">
       <widget class="QRadioButton" name="rb3d1">
        <property name="toolTip">
-        <string>Treat the center point as a 3d point and project it onto the parent View.</string>
+        <string>Treat the center point as a 3D point and project it onto the parent View.</string>
        </property>
        <property name="text">
-        <string>3d Point</string>
+        <string>3D Point</string>
        </property>
        <property name="autoExclusive">
         <bool>true</bool>
