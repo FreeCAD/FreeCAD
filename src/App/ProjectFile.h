@@ -35,7 +35,12 @@
 #ifndef XERCES_CPP_NAMESPACE_BEGIN
 #define XERCES_CPP_NAMESPACE_QUALIFIER
 using namespace XERCES_CPP_NAMESPACE;
-namespace XERCES_CPP_NAMESPACE { class DOMNode; class DOMElement; class DOMDocument; }
+namespace XERCES_CPP_NAMESPACE
+{
+class DOMNode;
+class DOMElement;
+class DOMDocument;
+}  // namespace XERCES_CPP_NAMESPACE
 #else
 XERCES_CPP_NAMESPACE_BEGIN
 class DOMDocument;
@@ -210,6 +215,6 @@ private:
 };
 
 
-}  // namespace APP
+}  // namespace App
 
 #endif  // APP_PROJECTFILE_H

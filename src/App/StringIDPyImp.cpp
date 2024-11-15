@@ -1,24 +1,24 @@
 /***************************************************************************
-*   Copyright (c) 2018 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
-*                                                                          *
-*   This file is part of the FreeCAD CAx development system.               *
-*                                                                          *
-*   This library is free software; you can redistribute it and/or          *
-*   modify it under the terms of the GNU Library General Public            *
-*   License as published by the Free Software Foundation; either           *
-*   version 2 of the License, or (at your option) any later version.       *
-*                                                                          *
-*   This library  is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of         *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
-*   GNU Library General Public License for more details.                   *
-*                                                                          *
-*   You should have received a copy of the GNU Library General Public      *
-*   License along with this library; see the file COPYING.LIB. If not,     *
-*   write to the Free Software Foundation, Inc., 59 Temple Place,          *
-*   Suite 330, Boston, MA  02111-1307, USA                                 *
-*                                                                          *
-****************************************************************************/
+ *   Copyright (c) 2018 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
+ *                                                                          *
+ *   This file is part of the FreeCAD CAx development system.               *
+ *                                                                          *
+ *   This library is free software; you can redistribute it and/or          *
+ *   modify it under the terms of the GNU Library General Public            *
+ *   License as published by the Free Software Foundation; either           *
+ *   version 2 of the License, or (at your option) any later version.       *
+ *                                                                          *
+ *   This library  is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of         *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
+ *   GNU Library General Public License for more details.                   *
+ *                                                                          *
+ *   You should have received a copy of the GNU Library General Public      *
+ *   License along with this library; see the file COPYING.LIB. If not,     *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,          *
+ *   Suite 330, Boston, MA  02111-1307, USA                                 *
+ *                                                                          *
+ ****************************************************************************/
 
 #include "PreCompiled.h"
 
@@ -35,16 +35,16 @@ std::string StringIDPy::representation() const
     return getStringIDPtr()->toString(this->_index);
 }
 
-PyObject* StringIDPy::isSame(PyObject *args)
+PyObject* StringIDPy::isSame(PyObject* args)
 {
-    PyObject *other = nullptr;
+    PyObject* other = nullptr;
     if (!PyArg_ParseTuple(args, "O!", &StringIDPy::Type, &other)) {
         return nullptr;
     }
 
-    auto *otherPy = static_cast<StringIDPy*>(other);
-    bool same = (otherPy->getStringIDPtr() == this->getStringIDPtr())
-                && (otherPy->_index == this->_index);
+    auto* otherPy = static_cast<StringIDPy*>(other);
+    bool same =
+        (otherPy->getStringIDPtr() == this->getStringIDPtr()) && (otherPy->_index == this->_index);
 
     return PyBool_FromLong(same ? 1 : 0);
 }
@@ -57,7 +57,7 @@ Py::Long StringIDPy::getValue() const
 Py::List StringIDPy::getRelated() const
 {
     Py::List list;
-    for (const auto &id : getStringIDPtr()->relatedIDs()) {
+    for (const auto& id : getStringIDPtr()->relatedIDs()) {
         list.append(Py::Long(id.value()));
     }
 
@@ -89,7 +89,7 @@ void StringIDPy::setIndex(Py::Long index)
     this->_index = index;
 }
 
-PyObject *StringIDPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* StringIDPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

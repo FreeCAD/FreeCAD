@@ -210,7 +210,7 @@ void StringHasher::compact()
         pendings.pop_front();
         // Try to erase the map entry for this StringID
         if (_hashes->right.erase(sid.value()) == 0U) {
-            continue;// If nothing was erased, there's nothing more to do
+            continue;  // If nothing was erased, there's nothing more to do
         }
         sid._sid->_hasher = nullptr;
         sid._sid->unref();
@@ -403,10 +403,10 @@ StringIDRef StringHasher::getID(const Data::MappedName& name, const QVector<Stri
     if ((newStringID._postfix.size() != 0) && !indexed) {
         // Use the fromString function to parse the new StringID's data field for a possible index
         StringID::IndexID res = StringID::fromString(newStringID._data);
-        if (res.id > 0) {// If the data had an index
+        if (res.id > 0) {  // If the data had an index
             if (res.index != 0) {
                 indexed.setIndex(res.index);
-                newStringID._data.resize(newStringID._data.lastIndexOf(':')+1);
+                newStringID._data.resize(newStringID._data.lastIndexOf(':') + 1);
             }
             int offset = newStringID.isPostfixEncoded() ? 1 : 0;
             // Search for the SID with that index
@@ -612,7 +612,7 @@ void StringHasher::RestoreDocFile(Base::Reader& reader)
 
 void StringHasher::restoreStreamNew(std::istream& stream, std::size_t count)
 {
-    Base::TextInputStream asciiStream (stream);
+    Base::TextInputStream asciiStream(stream);
     _hashes->clear();
     std::string content;
     boost::io::ios_flags_saver ifs(stream);
@@ -708,8 +708,9 @@ void StringHasher::restoreStreamNew(std::istream& stream, std::size_t count)
                     FC_THROWM(Base::RuntimeError, "Missing string prefix id");
                 }
                 d._data = d._sids[offset]._sid->toString(0).c_str();
-                if (d.isPrefixIDIndex())
+                if (d.isPrefixIDIndex()) {
                     d._data += ":";
+                }
             }
             else {
                 stream >> content;
@@ -777,7 +778,7 @@ size_t StringHasher::count() const
 {
     size_t count = 0;
     for (auto& hasher : _hashes->right) {
-        if (hasher.second->isMarked() || hasher.second->isPersistent() ) {
+        if (hasher.second->isMarked() || hasher.second->isPersistent()) {
             ++count;
         }
     }
@@ -808,8 +809,9 @@ void StringHasher::Restore(Base::XMLReader& reader)
     std::size_t count = reader.getAttributeAsUnsigned("count");
     if (newTag) {
         try {
-        restoreStreamNew(reader.beginCharStream(), count);
-        } catch (const Base::Exception &e) {
+            restoreStreamNew(reader.beginCharStream(), count);
+        }
+        catch (const Base::Exception& e) {
             e.ReportException();
             FC_ERR("Failed to restore string table: full-document recompute strongly recommended.");
         }
