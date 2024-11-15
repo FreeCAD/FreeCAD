@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-    <PythonExport 
-        Father="BaseClassPy" 
-        Name="StringIDPy" 
-        Twin="StringID" 
-        TwinPointer="StringID" 
-        Include="App/StringHasher.h" 
-        FatherInclude="Base/BaseClassPy.h" 
-        Namespace="App" 
+    <PythonExport
+        Father="BaseClassPy"
+        Name="StringIDPy"
+        Twin="StringID"
+        TwinPointer="StringID"
+        Include="App/StringHasher.h"
+        FatherInclude="Base/BaseClassPy.h"
+        Namespace="App"
         FatherNamespace="Base"
         Reference="true">
         <Documentation>
@@ -62,4 +62,3 @@
 		</ClassDeclarations>
     </PythonExport>
 </GenerateModel>
-
