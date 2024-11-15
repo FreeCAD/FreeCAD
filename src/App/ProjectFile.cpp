@@ -461,6 +461,13 @@ void ProjectFile::findFiles(XERCES_CPP_NAMESPACE_QUALIFIER DOMNode* node,
     }
 }
 
+bool ProjectFile::containsFile(const std::string& name) const
+{
+    zipios::ZipFile project(stdFile);
+    auto entry = project.getEntry(name);
+    return entry != nullptr;
+}
+
 std::list<std::string> ProjectFile::getInputFiles(const std::string& name) const
 {
     // <ObjectData Count="1">
