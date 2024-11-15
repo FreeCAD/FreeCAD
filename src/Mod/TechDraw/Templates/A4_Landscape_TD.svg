@@ -5,37 +5,14 @@
    height="210mm"
    version="1.1"
    viewBox="0 0 297 210"
-   sodipodi:docname="A4_Landscape_TD.svg"
-   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:freecad="https://www.freecad.org/wiki/index.php?title=Svg_Namespace">
+   xmlns:freecad="http://www.freecad.org/wiki/index.php?title=Svg_Namespace">
   <defs
      id="defs1" />
-  <sodipodi:namedview
-     id="namedview1"
-     pagecolor="#ffffff"
-     bordercolor="#000000"
-     borderopacity="0.25"
-     inkscape:showpageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1"
-     inkscape:document-units="mm"
-     inkscape:zoom="3.6435046"
-     inkscape:cx="902.42785"
-     inkscape:cy="618.49792"
-     inkscape:window-width="2560"
-     inkscape:window-height="1369"
-     inkscape:window-x="2728"
-     inkscape:window-y="-8"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="g4419" />
   <!-- Working space 10 10 287 200 -->
   <!-- Title block 147 153 287 200 -->
   <metadata
@@ -46,7 +23,6 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -884,7 +860,8 @@
        y="198.72655"
        fill="#000000"
        font-family="Arial"
-       style="line-height:0%"><tspan
+       style="line-height:0%"
+       freecad:editable="copyright"><tspan
          id="tspan4185"
          x="301.2355"
          y="198.72655"
@@ -919,8 +896,8 @@
        x="147.9312"
        y="160.67236"
        style="line-height:0%"
-       freecad:editable="Designed_by_Name"
-       freecad:autofill="author"><tspan
+       freecad:autofill="author"
+       freecad:editable="Designed_by_Name"><tspan
          id="tspan3268"
          x="147.9312"
          y="160.67236"
@@ -931,8 +908,8 @@
        x="147.93056"
        y="168.59135"
        style="line-height:0%"
-       freecad:editable="FC-Date"
-       freecad:autofill="date"><tspan
+       freecad:autofill="date"
+       freecad:editable="FC-Date"><tspan
          id="tspan3272"
          x="147.93056"
          y="168.59135"
@@ -945,8 +922,8 @@
        text-align="center"
        text-anchor="middle"
        style="line-height:0%"
-       freecad:editable="FC-SC"
-       freecad:autofill="scale"><tspan
+       freecad:autofill="scale"
+       freecad:editable="FC-SC"><tspan
          id="tspan3276"
          x="154.46243"
          y="191.45177"
@@ -970,8 +947,8 @@
        x="186.05237"
        y="158.72597"
        style="line-height:0%"
-       freecad:editable="FC-Title"
-       freecad:autofill="title"><tspan
+       freecad:autofill="title"
+       freecad:editable="FC-Title"><tspan
          id="tspan3284"
          x="186.05237"
          y="158.72597"
@@ -1004,8 +981,8 @@
        x="248.32477"
        y="191.45177"
        style="line-height:0%"
-       freecad:editable="FC-SH"
-       freecad:autofill="sheet"><tspan
+       freecad:autofill="sheet"
+       freecad:editable="FC-SH"><tspan
          id="tspan3296"
          x="248.32477"
          y="191.45177"

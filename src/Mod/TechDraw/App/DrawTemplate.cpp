@@ -145,8 +145,11 @@ QString DrawTemplate::getAutofillValue(const QString &id) const
         QDateTime date = QDateTime::currentDateTime();
         return date.toString(QLocale().dateFormat(QLocale::ShortFormat));
     }
-    // organization
-    else if (id.compare(QString::fromUtf8(Autofill::Organization)) == 0) {
+    // organization ( also organisation/owner/company )
+    else if (id.compare(QString::fromUtf8(Autofill::Organization)) == 0 ||
+             id.compare(QString::fromUtf8(Autofill::Organisation)) == 0 ||
+             id.compare(QString::fromUtf8(Autofill::Owner)) == 0 ||
+             id.compare(QString::fromUtf8(Autofill::Company)) == 0 ) {
         auto value = QString::fromUtf8(doc->Company.getValue());
         if (!value.isEmpty()) {
             return value;

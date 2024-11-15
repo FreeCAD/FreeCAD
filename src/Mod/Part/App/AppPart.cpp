@@ -186,7 +186,7 @@
 
 #include <OCAF/ImportExportSettings.h>
 #include "MeasureClient.h"
-
+#include <FuzzyHelper.h>
 
 namespace Part {
 extern PyObject* initModule();
@@ -200,6 +200,7 @@ PyObject* Part::PartExceptionOCCRangeError;
 PyObject* Part::PartExceptionOCCConstructionError;
 PyObject* Part::PartExceptionOCCDimensionError;
 
+// clang-format off
 PyMOD_INIT_FUNC(Part)
 {
     // load dependent module
@@ -498,6 +499,7 @@ PyMOD_INIT_FUNC(Part)
     Part::GeometryBoolExtension   	::init();
     Part::GeometryDoubleExtension 	::init();
     Part::GeometryMigrationExtension	::init();
+    Part::GeometryMigrationPersistenceExtension	::init();
     Part::Geometry                	::init();
     Part::GeomPoint               	::init();
     Part::GeomCurve               	::init();
@@ -560,6 +562,12 @@ PyMOD_INIT_FUNC(Part)
 
     OCAF::ImportExportSettings::initialize();
     Part::MeasureClient::initialize();
+
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
+    
+    Part::FuzzyHelper::setBooleanFuzzy(hGrp->GetFloat("BooleanFuzzy",10.0));
     
     PyMOD_Return(partModule);
 }
+// clang-format on

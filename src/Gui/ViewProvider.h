@@ -264,6 +264,11 @@ public:
     virtual std::vector<App::DocumentObject*> claimChildren() const;
     //@}
 
+    /** deliver the children belonging to this object recursively.
+      */
+    virtual std::vector<App::DocumentObject*> claimChildrenRecursive() const;
+    //@}
+
     /** @name Drag and drop
      * To enable drag and drop you have to re-implement \ref canDragObjects() and
      * \ref canDropObjects() to return true. For finer control you can also re-implement
@@ -277,6 +282,8 @@ public:
     virtual bool canDragObjects() const;
     /** Check whether the object can be removed from the view provider by drag and drop */
     virtual bool canDragObject(App::DocumentObject*) const;
+    /** Check whether the object can be removed from the view provider by drag and drop to a determined target*/
+    virtual bool canDragObjectToTarget(App::DocumentObject* obj, App::DocumentObject* target) const;
     /** Remove a child from the view provider by drag and drop */
     virtual void dragObject(App::DocumentObject*);
     /** Check whether objects can be added to the view provider by drag and drop or drop only */

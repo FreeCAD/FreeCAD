@@ -38,26 +38,26 @@ using namespace Path;
 namespace PathSimulator
 {
 
-    /** The representation of a CNC Toolpath Simulator */
+/** The representation of a CNC Toolpath Simulator */
 
-	class PathSimulatorExport PathSim : public Base::BaseClass
-    {
-        TYPESYSTEM_HEADER();
+class PathSimulatorExport PathSim: public Base::BaseClass
+{
+    TYPESYSTEM_HEADER();
 
-        public:
-			PathSim();
-			~PathSim();
+public:
+    PathSim();
+    ~PathSim();
 
-			void BeginSimulation(Part::TopoShape * stock, float resolution);
-			void SetToolShape(const TopoDS_Shape& toolShape, float resolution);
-			Base::Placement * ApplyCommand(Base::Placement * pos, Command * cmd);
+    void BeginSimulation(Part::TopoShape* stock, float resolution);
+    void SetToolShape(const TopoDS_Shape& toolShape, float resolution);
+    Base::Placement* ApplyCommand(Base::Placement* pos, Command* cmd);
 
-		public:
-			std::unique_ptr<cStock> m_stock;
-			std::unique_ptr<cSimTool> m_tool;
-	};
+public:
+    std::unique_ptr<cStock> m_stock;
+    std::unique_ptr<cSimTool> m_tool;
+};
 
-} //namespace Path
+}  // namespace PathSimulator
 
 
-#endif // PATHSIMULATOR_PathSim_H
+#endif  // PATHSIMULATOR_PathSim_H

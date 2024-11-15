@@ -130,6 +130,9 @@ class GuiExport DlgPreferencesImp : public QDialog
 {
     Q_OBJECT
 
+    static constexpr double maxScreenWidthCoveragePercent = 0.8; // maximum % of screen width taken by the dialog
+    static constexpr int minVerticalEmptySpace = 100;            // px of vertical space to leave
+
 public:
     static void addPage(const std::string& className, const std::string& group);
     static void removePage(const std::string& className, const std::string& group);

@@ -149,21 +149,19 @@ class Shape2DView(DraftObject):
         edges = []
         _groups = TechDraw.projectEx(shape, direction)
         for g in _groups[0:5]:
-            if g:
+            if not g.isNull():
                 edges.append(g)
-        if hasattr(obj,"HiddenLines"):
-            if obj.HiddenLines:
-                for g in _groups[5:]:
+        if getattr(obj, "HiddenLines", False):
+            for g in _groups[5:]:
+                if not g.isNull():
                     edges.append(g)
         edges = self.cleanExcluded(obj,edges)
-        #return Part.makeCompound(edges)
-        if hasattr(obj,"Tessellation") and obj.Tessellation:
+        if getattr(obj, "Tessellation", False):
             return DraftGeomUtils.cleanProjection(Part.makeCompound(edges),
                                                   obj.Tessellation,
                                                   obj.SegmentLength)
         else:
             return Part.makeCompound(edges)
-            #return DraftGeomUtils.cleanProjection(Part.makeCompound(edges))
 
     def cleanExcluded(self,obj,shapes):
 

@@ -199,12 +199,15 @@ class IFC_Save:
         from nativeifc import ifc_tools  # lazy loading
 
         doc = FreeCAD.ActiveDocument
-        ifc_tools.save(doc)
-        gdoc = FreeCADGui.getDocument(doc.Name)
-        try:
-            gdoc.Modified = False
-        except:
-            pass
+        if getattr(doc, "IfcFilePath", None):
+            ifc_tools.save(doc)
+            gdoc = FreeCADGui.getDocument(doc.Name)
+            try:
+                gdoc.Modified = False
+            except:
+                pass
+        else:
+            FreeCADGui.runCommand("IFC_SaveAs")
 
 
 class IFC_SaveAs:

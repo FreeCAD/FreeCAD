@@ -42,14 +42,21 @@ namespace Dialog {
 class EditFinishedComboBox : public QComboBox {
     Q_OBJECT
 public:
-    explicit EditFinishedComboBox(QWidget *parent = nullptr) : QComboBox(parent) {}
+    explicit EditFinishedComboBox(QWidget *parent = nullptr) : QComboBox(parent) {
+        setEditable(true);
+        connect(this, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &EditFinishedComboBox::onIndexChanged);
+        connect(this->lineEdit(), &QLineEdit::editingFinished, this, &EditFinishedComboBox::onEditingFinished);
+    }
 
 Q_SIGNALS:
     void editFinished();
 
-protected:
-    void focusOutEvent(QFocusEvent *event) override {
-        QComboBox::focusOutEvent(event);
+private:
+    void onEditingFinished() {
+        Q_EMIT editFinished();
+    }
+
+    void onIndexChanged() {
         Q_EMIT editFinished();
     }
 };
@@ -79,22 +86,39 @@ private:
     void initializeWidgets(ViewProviderVarSet* viewProvider);
 
     void setOkEnabled(bool enabled);
-    void clearEditors();
+    void clearEditors(bool clearName = true);
+    void clearCurrentProperty();
 
     void removeEditor();
     void addEditor(PropertyEditor::PropertyItem* propertyItem, std::string& type);
 
-    bool isSupportedType(std::string& type);
-    void createProperty(std::string& name, std::string& group);
+    bool isTypeWithEditor(const std::string& type);
+    void createProperty();
+    void changePropertyToAdd();
 
-    void onNamePropertyDetermined();
-    void onGroupDetermined();
-    void onTypePropertyDetermined();
+    void openTransaction();
+    bool hasPendingTransaction();
+    void abortTransaction();
+    void closeTransaction(bool abort);
+
+    void checkName();
+    void checkGroup();
+    void checkType();
+    void onEditFinished();
+    void onNamePropertyChanged(const QString& text);
+    void critical(const QString& title, const QString& text);
+
+    void getSupportedTypes(std::vector<Base::Type>& types);
+    App::Property* getPropertyToAdd();
+    void addDocumentation();
 
 private:
-    std::unordered_set<std::string> unsupportedTypes = {
+    std::unordered_set<std::string> typesWithoutEditor = {
         "App::PropertyVector", "App::PropertyVectorDistance", "App::PropertyMatrix",
-        "App::PropertyRotation", "App::PropertyPlacement", "App::PropertyEnumeration"};
+        "App::PropertyRotation", "App::PropertyPlacement", "App::PropertyEnumeration",
+        "App::PropertyDirection", "App::PropertyPlacementList", "App::PropertyPosition",
+        "App::PropertyExpressionEngine", "App::PropertyIntegerSet",
+        "Sketcher::PropertyConstraintList"};
 
     App::VarSet* varSet;
     std::unique_ptr<Ui_DlgAddPropertyVarSet> ui;
@@ -108,6 +132,15 @@ private:
     std::string namePropertyToAdd;
     std::unique_ptr<PropertyEditor::PropertyItem> propertyItem;
     std::unique_ptr<App::ObjectIdentifier> objectIdentifier;
+
+    // a transactionID of 0 means that there is no active transaction.
+    int transactionID;
+
+    // connections
+    QMetaObject::Connection connComboBoxGroup;
+    QMetaObject::Connection connComboBoxType;
+    QMetaObject::Connection connLineEditNameEditFinished;
+    QMetaObject::Connection connLineEditNameTextChanged;
 };
 
 } // namespace Dialog

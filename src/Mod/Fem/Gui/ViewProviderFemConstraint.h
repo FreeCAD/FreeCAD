@@ -25,24 +25,21 @@
 #ifndef GUI_VIEWPROVIDERFEMCONSTRAINT_H
 #define GUI_VIEWPROVIDERFEMCONSTRAINT_H
 
-#include <QObject>
-#include <QVBoxLayout>
-
 #include <Gui/ViewProviderGeometryObject.h>
-#include <Gui/ViewProviderPythonFeature.h>
+#include <Gui/ViewProviderFeaturePython.h>
 #include <Mod/Fem/FemGlobal.h>
 
 #include <Gui/ViewProviderSuppressibleExtension.h>
 
 
+class QMenu;
+class QObject;
 class SbRotation;
 class SoMultipleCopy;
 class SoTransform;
 
 namespace FemGui
 {
-
-class TaskFemConstraint;
 
 class FemGuiExport ViewProviderFemConstraint: public Gui::ViewProviderGeometryObject,
                                               public Gui::ViewProviderSuppressibleExtension
@@ -111,16 +108,6 @@ protected:
     const char* ivFile;
 
     static std::string resourceSymbolDir;
-
-    // Shaft design wizard integration
-protected:
-    friend class TaskFemConstraint;
-    QVBoxLayout* wizardWidget;
-    QVBoxLayout* wizardSubLayout;
-    TaskFemConstraint* constraintDialog;
-
-    void checkForWizard();
-    static QObject* findChildByName(const QObject* parent, const QString& name);
 };
 
 
@@ -149,7 +136,7 @@ inline void ViewProviderFemConstraint::setRotateSymbol(bool rotate)
     rotateSymbol = rotate;
 }
 
-using ViewProviderFemConstraintPython = Gui::ViewProviderPythonFeatureT<ViewProviderFemConstraint>;
+using ViewProviderFemConstraintPython = Gui::ViewProviderFeaturePythonT<ViewProviderFemConstraint>;
 
 
 }  // namespace FemGui

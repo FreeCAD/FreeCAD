@@ -68,9 +68,7 @@ class TestCcxTools(unittest.TestCase):
         # this test just prints a line with stars
 
         fcc_print(
-            "\n{0}\n{1} run FEM TestCcxTools tests {2}\n{0}".format(
-                100 * "*", 10 * "*", 62 * "*"
-            )
+            "\n{0}\n{1} run FEM TestCcxTools tests {2}\n{0}".format(100 * "*", 10 * "*", 62 * "*")
         )
 
     # ********************************************************************************************
@@ -332,8 +330,8 @@ class TestCcxTools(unittest.TestCase):
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
-    def test_thermomech_bimetall(self):
-        from femexamples.thermomech_bimetall import setup
+    def test_thermomech_bimetal(self):
+        from femexamples.thermomech_bimetal import setup
 
         setup(self.document, "ccxtools")
         self.input_file_writing_test(get_namefromdef("test_"))
@@ -345,11 +343,7 @@ class TestCcxTools(unittest.TestCase):
         analysis_dir=None,
         test_end=False,
     ):
-        fcc_print(
-            "\n--------------- "
-            "Start of FEM ccxtools {} test"
-            "---------------".format(base_name)
-        )
+        fcc_print(f"\n--------------- Start of FEM ccxtools {base_name} test---------------")
 
         if analysis_dir is None:
             analysis_dir = testtools.get_fem_test_tmp_dir(self.pre_dir_name + base_name)
@@ -358,44 +352,40 @@ class TestCcxTools(unittest.TestCase):
         fea = ccxtools.FemToolsCcx(analysis, solver_object, test_mode=True)
         fea.update_objects()
 
-        fcc_print("Setting up working directory {}".format(analysis_dir))
+        fcc_print(f"Setting up working directory {analysis_dir}")
         fea.setup_working_dir(analysis_dir)
         self.assertTrue(
             True if fea.working_dir == analysis_dir else False,
-            "Setting working directory {} failed".format(analysis_dir),
+            f"Setting working directory {analysis_dir} failed",
         )
 
-        fcc_print("Checking FEM inp file prerequisites for {} ...".format(base_name))
+        fcc_print(f"Checking FEM inp file prerequisites for {base_name} ...")
         error = fea.check_prerequisites()
         self.assertFalse(
             error,
-            "ccxtools check_prerequisites returned error message: {}".format(error),
+            f"ccxtools check_prerequisites returned error message: {error}",
         )
 
         inpfile_given = join(self.test_file_dir, (base_name + ".inp"))
         inpfile_totest = join(analysis_dir, (self.mesh_name + ".inp"))
         fcc_print("Checking FEM inp file write...")
-        fcc_print("Writing {} for {}".format(inpfile_totest, base_name))
+        fcc_print(f"Writing {inpfile_totest} for {base_name}")
         error = fea.write_inp_file()
         self.assertFalse(error, "Writing failed")
 
-        fcc_print("Comparing {} to {}".format(inpfile_given, inpfile_totest))
+        fcc_print(f"Comparing {inpfile_given} to {inpfile_totest}")
         ret = testtools.compare_inp_files(inpfile_given, inpfile_totest)
-        self.assertFalse(ret, "ccxtools write_inp_file test failed.\n{}".format(ret))
+        self.assertFalse(ret, f"ccxtools write_inp_file test failed.\n{ret}")
 
         if test_end is True:
             # do not save and print End of tests
             return fea
 
         save_fc_file = join(analysis_dir, base_name + ".FCStd")
-        fcc_print("Save FreeCAD file for {} to {}...".format(base_name, save_fc_file))
+        fcc_print(f"Save FreeCAD file for {base_name} to {save_fc_file}...")
         self.document.saveAs(save_fc_file)
 
-        fcc_print(
-            "\n--------------- " "End of FEM ccxtools {}" "---------------".format(
-                base_name
-            )
-        )
+        fcc_print(f"\n--------------- End of FEM ccxtools {base_name}---------------")
 
     # ********************************************************************************************
     def result_reading_test(
@@ -415,40 +405,40 @@ class TestCcxTools(unittest.TestCase):
         fea.setup_working_dir(self.test_file_dir)
         self.assertTrue(
             True if fea.working_dir == self.test_file_dir else False,
-            "Setting working directory {} failed".format(self.test_file_dir),
+            f"Setting working directory {self.test_file_dir} failed",
         )
 
-        fcc_print("Setting base name to read test {}.frd file...".format(base_name))
+        fcc_print(f"Setting base name to read test {base_name}.frd file...")
         fea.set_base_name(base_name)
         self.assertTrue(
             True if fea.base_name == base_name else False,
-            "Setting base name to {} failed".format(base_name),
+            f"Setting base name to {base_name} failed",
         )
 
-        fcc_print("Setting inp file name to read test {}.frd file...".format(base_name))
+        fcc_print(f"Setting inp file name to read test {base_name}.frd file...")
         fea.set_inp_file_name()
         self.assertTrue(
             True if fea.inp_file_name == inpfile_given else False,
-            "Setting inp file name to {} failed".format(inpfile_given),
+            f"Setting inp file name to {inpfile_given} failed",
         )
 
-        fcc_print("Checking FEM frd file read from {}...".format(base_name))
+        fcc_print(f"Checking FEM frd file read from {base_name}...")
         fea.load_results()
         self.assertTrue(
             fea.results_present,
-            "Cannot read results from {}.frd frd file".format(fea.base_name),
+            f"Cannot read results from {fea.base_name}.frd frd file",
         )
 
-        fcc_print("Reading stats from result object for {}...".format(base_name))
+        fcc_print(f"Reading stats from result object for {base_name}...")
         expected_values = join(self.test_file_dir, base_name + "_expected_values")
         ret = testtools.compare_stats(fea, expected_values, res_obj_name)
         self.assertFalse(ret, "Invalid results read from .frd file")
 
         save_fc_file = join(analysis_dir, base_name + ".FCStd")
-        fcc_print("Save FreeCAD file for {} to {}...".format(base_name, save_fc_file))
+        fcc_print(f"Save FreeCAD file for {base_name} to {save_fc_file}...")
         self.document.saveAs(save_fc_file)
 
-        fcc_print("--------------- End of {} -------------------".format(base_name))
+        fcc_print(f"--------------- End of {base_name} -------------------")
 
 
 # ************************************************************************************************
@@ -498,12 +488,8 @@ def create_test_results():
     res_obj_static = doc_static_cube.getObject("CCX_Results")
     for s in stat_types:
         statval = resulttools.get_stats(res_obj_static, s)
-        stats_static.append(
-            "{0}: ({1:.14g}, {2:.14g}, )\n".format(s, statval[0], statval[1])
-        )
-    static_expected_values_file = join(
-        static_analysis_dir, "cube_static_expected_values"
-    )
+        stats_static.append(f"{s}: ({statval[0]:.14g}, {statval[1]:.14g}, )\n")
+    static_expected_values_file = join(static_analysis_dir, "cube_static_expected_values")
     f = open(static_expected_values_file, "w")
     for s in stats_static:
         f.write(s)
@@ -523,9 +509,7 @@ def create_test_results():
         unittest.TestLoader().loadTestsFromName(test_class + ".test_freq_analysis")
     )
     frequency_analysis_dir = join(temp_dir, "FEM_ccx_frequency")
-    doc_frequency_cube = FreeCAD.open(
-        join(frequency_analysis_dir, "cube_frequency.FCStd")
-    )
+    doc_frequency_cube = FreeCAD.open(join(frequency_analysis_dir, "cube_frequency.FCStd"))
     FemGui.setActiveAnalysis(doc_frequency_cube.Analysis)
     fea = ccxtools.FemToolsCcx()
     fea.update_objects()
@@ -539,12 +523,8 @@ def create_test_results():
     res_obj_freq = doc_frequency_cube.getObject("CCX_Mode7_Results")
     for s in stat_types:
         statval = resulttools.get_stats(res_obj_freq, s)
-        stats_frequency.append(
-            "{0}: ({1:.14g}, {2:.14g})\n".format(s, statval[0], statval[1])
-        )
-    frequency_expected_values_file = join(
-        frequency_analysis_dir, "cube_frequency_expected_values"
-    )
+        stats_frequency.append(f"{s}: ({statval[0]:.14g}, {statval[1]:.14g})\n")
+    frequency_expected_values_file = join(frequency_analysis_dir, "cube_frequency_expected_values")
     f = open(frequency_expected_values_file, "w")
     for s in stats_frequency:
         f.write(s)

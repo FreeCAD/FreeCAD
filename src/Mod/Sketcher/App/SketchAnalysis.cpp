@@ -673,7 +673,7 @@ void SketchAnalysis::makeMissingPointOnPointCoincidentOneByOne()
 {
     makeConstraintsOneByOne(vertexConstraints,
                             QT_TRANSLATE_NOOP("Exceptions",
-                                              "Autoconstrain error: Unsolvable sketch while "
+                                              "Autoconstraint error: Unsolvable sketch while "
                                               "applying coincident constraints."));
 }
 
@@ -720,7 +720,7 @@ void SketchAnalysis::makeMissingVerticalHorizontalOneByOne()
 {
     makeConstraintsOneByOne(verthorizConstraints,
                             QT_TRANSLATE_NOOP("Exceptions",
-                                              "Autoconstrain error: Unsolvable sketch while "
+                                              "Autoconstraint error: Unsolvable sketch while "
                                               "applying vertical/horizontal constraints."));
 }
 
@@ -812,7 +812,7 @@ void SketchAnalysis::makeMissingEqualityOneByOne()
 
     makeConstraintsOneByOne(equalities,
                             QT_TRANSLATE_NOOP("Exceptions",
-                                              "Autoconstrain error: Unsolvable sketch while "
+                                              "Autoconstraint error: Unsolvable sketch while "
                                               "applying equality constraints."));
     lineequalityConstraints.clear();
     radiusequalityConstraints.clear();
@@ -852,7 +852,7 @@ void SketchAnalysis::autoDeleteAllConstraints()
 
     // a failure should not be possible at this moment as we start from a clean situation
     solveSketch(QT_TRANSLATE_NOOP("Exceptions",
-                                  "Autoconstrain error: Unsolvable sketch without constraints."));
+                                  "Autoconstraint error: Unsolvable sketch without constraints."));
 }
 
 void SketchAnalysis::autoHorizontalVerticalConstraints()
@@ -866,7 +866,7 @@ void SketchAnalysis::autoHorizontalVerticalConstraints()
     doc->commitTransaction();
 
     solveSketch(QT_TRANSLATE_NOOP("Exceptions",
-                                  "Autoconstrain error: Unsolvable sketch after applying "
+                                  "Autoconstraint error: Unsolvable sketch after applying "
                                   "horizontal and vertical constraints."));
 }
 
@@ -881,7 +881,7 @@ void SketchAnalysis::autoPointOnPointCoincident()
     doc->commitTransaction();
 
     solveSketch(QT_TRANSLATE_NOOP("Exceptions",
-                                  "Autoconstrain error: Unsolvable sketch after applying "
+                                  "Autoconstraint error: Unsolvable sketch after applying "
                                   "point-on-point constraints."));
 }
 
@@ -902,7 +902,7 @@ void SketchAnalysis::autoMissingEquality()
     doc->commitTransaction();
 
     solveSketch(QT_TRANSLATE_NOOP("Exceptions",
-                                  "Autoconstrain error: Unsolvable sketch after "
+                                  "Autoconstraint error: Unsolvable sketch after "
                                   "applying equality constraints."));
 }
 

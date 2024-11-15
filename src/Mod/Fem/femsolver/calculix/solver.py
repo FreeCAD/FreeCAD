@@ -45,8 +45,7 @@ ANALYSIS_TYPES = ["static", "frequency", "thermomech", "check", "buckling"]
 
 
 def create(doc, name="SolverCalculiX"):
-    return femutils.createObject(
-        doc, name, Proxy, ViewProxy)
+    return femutils.createObject(doc, name, Proxy, ViewProxy)
 
 
 class _BaseSolverCalculix:
@@ -58,21 +57,16 @@ class _BaseSolverCalculix:
             obj.AnalysisType = temp_analysis_type
         else:
             FreeCAD.Console.PrintWarning(
-                "Analysis type {} not found. Standard is used.\n"
-                .format(temp_analysis_type)
+                f"Analysis type {temp_analysis_type} not found. Standard is used.\n"
             )
             obj.AnalysisType = ANALYSIS_TYPES[0]
 
         self.add_attributes(obj)
 
-
     def add_attributes(self, obj):
         if not hasattr(obj, "AnalysisType"):
             obj.addProperty(
-                "App::PropertyEnumeration",
-                "AnalysisType",
-                "Fem",
-                "Type of the analysis"
+                "App::PropertyEnumeration", "AnalysisType", "Fem", "Type of the analysis"
             )
             obj.AnalysisType = ANALYSIS_TYPES
             obj.AnalysisType = ANALYSIS_TYPES[0]
@@ -83,7 +77,7 @@ class _BaseSolverCalculix:
                 "App::PropertyEnumeration",
                 "GeometricalNonlinearity",
                 "Fem",
-                "Set geometrical nonlinearity"
+                "Set geometrical nonlinearity",
             )
             obj.GeometricalNonlinearity = choices_geom_nonlinear
             obj.GeometricalNonlinearity = choices_geom_nonlinear[0]
@@ -94,7 +88,7 @@ class _BaseSolverCalculix:
                 "App::PropertyEnumeration",
                 "MaterialNonlinearity",
                 "Fem",
-                "Set material nonlinearity"
+                "Set material nonlinearity",
             )
             obj.MaterialNonlinearity = choices_material_nonlinear
             obj.MaterialNonlinearity = choices_material_nonlinear[0]
@@ -104,7 +98,7 @@ class _BaseSolverCalculix:
                 "App::PropertyIntegerConstraint",
                 "EigenmodesCount",
                 "Fem",
-                "Number of modes for frequency calculations"
+                "Number of modes for frequency calculations",
             )
             obj.EigenmodesCount = (10, 1, 100, 1)
 
@@ -113,7 +107,7 @@ class _BaseSolverCalculix:
                 "App::PropertyFloatConstraint",
                 "EigenmodeLowLimit",
                 "Fem",
-                "Low frequency limit for eigenmode calculations"
+                "Low frequency limit for eigenmode calculations",
             )
             obj.EigenmodeLowLimit = (0.0, 0.0, 1000000.0, 10000.0)
 
@@ -122,20 +116,19 @@ class _BaseSolverCalculix:
                 "App::PropertyFloatConstraint",
                 "EigenmodeHighLimit",
                 "Fem",
-                "High frequency limit for eigenmode calculations"
+                "High frequency limit for eigenmode calculations",
             )
             obj.EigenmodeHighLimit = (1000000.0, 0.0, 1000000.0, 10000.0)
 
         if not hasattr(obj, "IterationsMaximum"):
             help_string_IterationsMaximum = (
-                "Maximum Number of iterations "
-                "in each time step before stopping jobs"
+                "Maximum Number of iterations in each time step before stopping jobs"
             )
             obj.addProperty(
                 "App::PropertyIntegerConstraint",
                 "IterationsMaximum",
                 "Fem",
-                help_string_IterationsMaximum
+                help_string_IterationsMaximum,
             )
             obj.IterationsMaximum = 2000
 
@@ -148,43 +141,29 @@ class _BaseSolverCalculix:
                 "App::PropertyIntegerConstraint",
                 "BucklingFactors",
                 "Fem",
-                "Calculates the lowest buckling modes to the corresponding buckling factors"
+                "Calculates the lowest buckling modes to the corresponding buckling factors",
             )
             obj.BucklingFactors = 1
 
         if not hasattr(obj, "TimeInitialStep"):
             obj.addProperty(
-                "App::PropertyFloatConstraint",
-                "TimeInitialStep",
-                "Fem",
-                "Initial time steps"
+                "App::PropertyFloatConstraint", "TimeInitialStep", "Fem", "Initial time steps"
             )
             obj.TimeInitialStep = 0.01
 
         if not hasattr(obj, "TimeEnd"):
-            obj.addProperty(
-                "App::PropertyFloatConstraint",
-                "TimeEnd",
-                "Fem",
-                "End time analysis"
-            )
+            obj.addProperty("App::PropertyFloatConstraint", "TimeEnd", "Fem", "End time analysis")
             obj.TimeEnd = 1.0
 
         if not hasattr(obj, "TimeMinimumStep"):
             obj.addProperty(
-                "App::PropertyFloatConstraint",
-                "TimeMinimumStep",
-                "Fem",
-                "Minimum time step"
+                "App::PropertyFloatConstraint", "TimeMinimumStep", "Fem", "Minimum time step"
             )
             obj.TimeMinimumStep = 0.00001
 
         if not hasattr(obj, "TimeMaximumStep"):
             obj.addProperty(
-                "App::PropertyFloatConstraint",
-                "TimeMaximumStep",
-                "Fem",
-                "Maximum time step"
+                "App::PropertyFloatConstraint", "TimeMaximumStep", "Fem", "Maximum time step"
             )
             obj.TimeMaximumStep = 1.0
 
@@ -193,7 +172,7 @@ class _BaseSolverCalculix:
                 "App::PropertyBool",
                 "ThermoMechSteadyState",
                 "Fem",
-                "Choose between steady state thermo mech or transient thermo mech analysis"
+                "Choose between steady state thermo mech or transient thermo mech analysis",
             )
             obj.ThermoMechSteadyState = True
 
@@ -202,16 +181,13 @@ class _BaseSolverCalculix:
                 "App::PropertyBool",
                 "IterationsControlParameterTimeUse",
                 "Fem",
-                "Use the user defined time incrementation control parameter"
+                "Use the user defined time incrementation control parameter",
             )
             obj.IterationsControlParameterTimeUse = False
 
         if not hasattr(obj, "SplitInputWriter"):
             obj.addProperty(
-                "App::PropertyBool",
-                "SplitInputWriter",
-                "Fem",
-                "Split writing of ccx input file"
+                "App::PropertyBool", "SplitInputWriter", "Fem", "Split writing of ccx input file"
             )
             obj.SplitInputWriter = False
 
@@ -234,28 +210,26 @@ class _BaseSolverCalculix:
                 "App::PropertyString",
                 "IterationsControlParameterIter",
                 "Fem",
-                "User defined time incrementation iterations control parameter"
+                "User defined time incrementation iterations control parameter",
             )
             obj.IterationsControlParameterIter = control_parameter_iterations
 
         if not hasattr(obj, "IterationsControlParameterCutb"):
-            control_parameter_cutback = (
-                "{D_f},{D_C},{D_B},{D_A},{D_S},{D_H},{D_D},{W_G}".format(
-                    D_f=0.25,
-                    D_C=0.5,
-                    D_B=0.75,
-                    D_A=0.85,
-                    D_S="",
-                    D_H="",
-                    D_D=1.5,
-                    W_G="",
-                )
+            control_parameter_cutback = "{D_f},{D_C},{D_B},{D_A},{D_S},{D_H},{D_D},{W_G}".format(
+                D_f=0.25,
+                D_C=0.5,
+                D_B=0.75,
+                D_A=0.85,
+                D_S="",
+                D_H="",
+                D_D=1.5,
+                W_G="",
             )
             obj.addProperty(
                 "App::PropertyString",
                 "IterationsControlParameterCutb",
                 "Fem",
-                "User defined time incrementation cutbacks control parameter"
+                "User defined time incrementation cutbacks control parameter",
             )
             obj.IterationsControlParameterCutb = control_parameter_cutback
 
@@ -268,7 +242,7 @@ class _BaseSolverCalculix:
                 "App::PropertyBool",
                 "IterationsUserDefinedIncrementations",
                 "Fem",
-                stringIterationsUserDefinedIncrementations
+                stringIterationsUserDefinedIncrementations,
             )
             obj.IterationsUserDefinedIncrementations = False
 
@@ -281,7 +255,7 @@ class _BaseSolverCalculix:
                 "App::PropertyBool",
                 "IterationsUserDefinedTimeStepLength",
                 "Fem",
-                help_string_IterationsUserDefinedTimeStepLength
+                help_string_IterationsUserDefinedTimeStepLength,
             )
             obj.IterationsUserDefinedTimeStepLength = False
 
@@ -292,13 +266,10 @@ class _BaseSolverCalculix:
                 "pardiso",
                 "spooles",
                 "iterativescaling",
-                "iterativecholesky"
+                "iterativecholesky",
             ]
             obj.addProperty(
-                "App::PropertyEnumeration",
-                "MatrixSolverType",
-                "Fem",
-                "Type of solver to use"
+                "App::PropertyEnumeration", "MatrixSolverType", "Fem", "Type of solver to use"
             )
             obj.MatrixSolverType = known_ccx_solver_types
             obj.MatrixSolverType = known_ccx_solver_types[0]
@@ -308,7 +279,7 @@ class _BaseSolverCalculix:
                 "App::PropertyBool",
                 "BeamShellResultOutput3D",
                 "Fem",
-                "Output 3D results for 1D and 2D analysis "
+                "Output 3D results for 1D and 2D analysis ",
             )
             obj.BeamShellResultOutput3D = True
 
@@ -317,7 +288,7 @@ class _BaseSolverCalculix:
                 "App::PropertyBool",
                 "BeamReducedIntegration",
                 "Fem",
-                "Set to True to use beam elements with reduced integration"
+                "Set to True to use beam elements with reduced integration",
             )
             obj.BeamReducedIntegration = True
 
@@ -326,48 +297,33 @@ class _BaseSolverCalculix:
                 "App::PropertyIntegerConstraint",
                 "OutputFrequency",
                 "Fem",
-                "Set the output frequency in increments"
+                "Set the output frequency in increments",
             )
             obj.OutputFrequency = 1
 
         if not hasattr(obj, "ModelSpace"):
-            model_space_types = [
-                "3D",
-                "plane stress",
-                "plane strain",
-                "axisymmetric"
-            ]
-            obj.addProperty(
-                "App::PropertyEnumeration",
-                "ModelSpace",
-                "Fem",
-                "Type of model space"
-            )
+            model_space_types = ["3D", "plane stress", "plane strain", "axisymmetric"]
+            obj.addProperty("App::PropertyEnumeration", "ModelSpace", "Fem", "Type of model space")
             obj.ModelSpace = model_space_types
 
         if not hasattr(obj, "ThermoMechType"):
-            thermomech_types = [
-                "coupled",
-                "uncoupled",
-                "pure heat transfer"
-            ]
+            thermomech_types = ["coupled", "uncoupled", "pure heat transfer"]
             obj.addProperty(
                 "App::PropertyEnumeration",
                 "ThermoMechType",
                 "Fem",
-                "Type of thermomechanical analysis"
+                "Type of thermomechanical analysis",
             )
             obj.ThermoMechType = thermomech_types
 
 
 class Proxy(solverbase.Proxy, _BaseSolverCalculix):
-    """The Fem::FemSolver's Proxy python type, add solver specific properties
-    """
+    """The Fem::FemSolver's Proxy python type, add solver specific properties"""
 
     Type = "Fem::SolverCalculix"
 
     def __init__(self, obj):
-        super(Proxy, self).__init__(obj)
+        super().__init__(obj)
         obj.Proxy = self
         self.add_attributes(obj)
 
@@ -376,19 +332,21 @@ class Proxy(solverbase.Proxy, _BaseSolverCalculix):
 
     def createMachine(self, obj, directory, testmode=False):
         return run.Machine(
-            solver=obj, directory=directory,
+            solver=obj,
+            directory=directory,
             check=tasks.Check(),
             prepare=tasks.Prepare(),
             solve=tasks.Solve(),
             results=tasks.Results(),
-            testmode=testmode)
+            testmode=testmode,
+        )
 
     def editSupported(self):
         return True
 
     def edit(self, directory):
         pattern = os.path.join(directory, "*.inp")
-        FreeCAD.Console.PrintMessage("{}\n".format(pattern))
+        FreeCAD.Console.PrintMessage(f"{pattern}\n")
         f = glob.glob(pattern)[0]
         FemGui.open(f)
 

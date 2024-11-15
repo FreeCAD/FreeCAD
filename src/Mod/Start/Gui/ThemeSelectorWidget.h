@@ -36,9 +36,9 @@ namespace StartGui
 
 enum class Theme
 {
-    Dark,
+    Classic,
     Light,
-    Classic
+    Dark
 };
 
 /// A widget to allow selection of the UI theme (color scheme).
@@ -56,6 +56,8 @@ private:
     void retranslateUi();
     void setupUi();
     void setupButtons(QBoxLayout* layout);
+    void onLinkActivated(const QString& link);
+    void preselectThemeFromSystemSettings();
 
     QLabel* _titleLabel;
     QLabel* _descriptionLabel;

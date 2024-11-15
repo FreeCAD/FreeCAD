@@ -55,8 +55,4 @@ class VPMaterialCommon(view_base_femmaterial.VPBaseFemMaterial):
             return ""
 
     def setEdit(self, vobj, mode=0):
-        super().setEdit(
-            vobj,
-            mode,
-            task_material_common._TaskPanel
-        )
+        super().setEdit(vobj, mode, task_material_common._TaskPanel)

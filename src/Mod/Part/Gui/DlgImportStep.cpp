@@ -22,6 +22,10 @@
 
 #include "PreCompiled.h"
 
+#ifndef _PreComp_
+# include <QDialogButtonBox>
+#endif
+
 #include <Mod/Part/App/OCAF/ImportExportSettings.h>
 #include <Mod/Part/App/STEP/ImportExportSettings.h>
 
@@ -45,7 +49,6 @@ DlgImportStep::DlgImportStep(QWidget* parent)
     ui->checkBoxExpandCompound->setChecked(settings.getExpandCompound());
     ui->checkBoxShowProgress->setChecked(settings.getShowProgress());
 #if OCC_VERSION_HEX >= 0x070800
-    ui->checkBoxShowOnImport->setChecked(settings.getReadShowDialogImport());
     std::list<Part::OCAF::ImportExportSettings::CodePage> codepagelist;
     codepagelist = settings.getCodePageList();
     for (const auto& codePage : codepagelist) {
@@ -54,10 +57,8 @@ DlgImportStep::DlgImportStep(QWidget* parent)
 #else
     // hide options that not supported in this OCCT version (7.8.0)
     ui->label_6->hide();
-    ui->checkBoxShowOnImport->hide();
     ui->comboBoxImportCodePage->hide();
 #endif
-
 }
 
 /**
@@ -69,7 +70,6 @@ void DlgImportStep::saveSettings()
 {
     // (h)STEP of Import module
 #if OCC_VERSION_HEX >= 0x070800
-    ui->checkBoxShowOnImport->onSave();
     ui->comboBoxImportCodePage->onSave();
 #endif
     ui->checkBoxMergeCompound->onSave();
@@ -86,7 +86,6 @@ void DlgImportStep::loadSettings()
 {
     // (h)STEP of Import module
 #if OCC_VERSION_HEX >= 0x070800
-    ui->checkBoxShowOnImport->onRestore();
     ui->comboBoxImportCodePage->onRestore();
 #endif
     ui->checkBoxMergeCompound->onRestore();
@@ -97,6 +96,25 @@ void DlgImportStep::loadSettings()
     ui->checkBoxExpandCompound->onRestore();
     ui->checkBoxShowProgress->onRestore();
     ui->comboBoxImportMode->onRestore();
+}
+
+StepImportSettings DlgImportStep::getSettings() const
+{
+    StepImportSettings set;
+    Part::OCAF::ImportExportSettings settings;
+    set.merge = settings.getReadShapeCompoundMode();
+    set.useLinkGroup = settings.getUseLinkGroup();
+    set.useBaseName = settings.getUseBaseName();
+    set.importHidden = settings.getImportHiddenObject();
+    set.reduceObjects = settings.getReduceObjects();
+    set.showProgress = settings.getShowProgress();
+    set.expandCompound = settings.getExpandCompound();
+    set.mode = static_cast<int>(settings.getImportMode());
+#if OCC_VERSION_HEX >= 0x070800
+    Resource_FormatType cp = settings.getImportCodePage();
+    set.codePage = static_cast<int>(cp);
+#endif
+    return set;
 }
 
 /**
@@ -110,6 +128,58 @@ void DlgImportStep::changeEvent(QEvent *e)
     else {
         QWidget::changeEvent(e);
     }
+}
+
+// ----------------------------------------------------------------------------
+
+TaskImportStep::TaskImportStep(QWidget* parent)
+  : QDialog(parent)
+  , ui(new DlgImportStep(this))
+{
+    QApplication::setOverrideCursor(Qt::ArrowCursor);
+
+    ui->loadSettings();
+    setWindowTitle(ui->windowTitle());
+
+    QVBoxLayout* layout = new QVBoxLayout(this);
+    layout->addWidget(ui.get());
+    setLayout(layout);
+
+    showThis = new QCheckBox(this);
+    showThis->setText(tr("Don't show this dialog again"));
+    layout->addWidget(showThis);
+
+    QDialogButtonBox* buttonBox = new QDialogButtonBox(this);
+    buttonBox->setStandardButtons(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+    layout->addWidget(buttonBox);
+
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &TaskImportStep::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &TaskImportStep::reject);
+}
+
+TaskImportStep::~TaskImportStep()
+{
+    QApplication::restoreOverrideCursor();
+}
+
+void TaskImportStep::accept()
+{
+    QDialog::accept();
+    ui->saveSettings();
+
+    Part::STEP::ImportExportSettings settings;
+    settings.setVisibleImportDialog(!showThis->isChecked());
+}
+
+bool TaskImportStep::showDialog() const
+{
+    Part::STEP::ImportExportSettings settings;
+    return settings.isVisibleImportDialog();
+}
+
+StepImportSettings TaskImportStep::getSettings() const
+{
+    return ui->getSettings();
 }
 
 

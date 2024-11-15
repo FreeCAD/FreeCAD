@@ -19,6 +19,7 @@ include_directories(
     ${SMESH_INCLUDE_DIR}
     ${VTK_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIR}
+    ${pybind11_INCLUDE_DIR}
 )
 
 
@@ -113,9 +114,13 @@ if (BUILD_FLAT_MESH)
         SET_BIN_DIR(flatmesh flatmesh /Mod/MeshPart)
         install(TARGETS flatmesh DESTINATION ${CMAKE_INSTALL_LIBDIR})
     else()
-        if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
+        if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIBPACK_CHECKFILE_VERSION)
             # boost-python >= 1.67 on some platforms has suffix
-            set(BOOST_PY_SUFFIX ${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR})
+            if (FORCE_BOOST_PY_SUFFIX)
+                set(BOOST_PY_SUFFIX ${FORCE_BOOST_PY_SUFFIX})
+            else ()
+                set(BOOST_PY_SUFFIX ${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR})
+            endif ()
 
             find_package( Boost COMPONENTS python${BOOST_PY_SUFFIX} )
             if (NOT Boost_PYTHON${BOOST_PY_SUFFIX}_FOUND)

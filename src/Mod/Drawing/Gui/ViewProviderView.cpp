@@ -127,7 +127,7 @@ PROPERTY_SOURCE_TEMPLATE(DrawingGui::ViewProviderDrawingViewPython,
 /// @endcond
 
 // explicit template instantiation
-template class DrawingGuiExport ViewProviderPythonFeatureT<DrawingGui::ViewProviderDrawingView>;
+template class DrawingGuiExport ViewProviderFeaturePythonT<DrawingGui::ViewProviderDrawingView>;
 }  // namespace Gui
 
 

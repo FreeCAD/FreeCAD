@@ -94,6 +94,6 @@ class Arch_Rebar:
         FreeCADGui.Control.showDialog(ArchComponent.SelectionTaskPanel())
         FreeCAD.ArchObserver = ArchComponent.ArchSelectionObserver(nextCommand="Arch_Rebar")
         FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)
-        
+
 
 FreeCADGui.addCommand('Arch_Rebar',Arch_Rebar())

@@ -124,12 +124,13 @@ bool ViewProviderDragger::setEdit(int ModNum)
 {
   Q_UNUSED(ModNum);
 
-  if(checkLink())
+  if (checkLink()) {
       return true;
+  }
 
   App::DocumentObject *genericObject = this->getObject();
-  if (genericObject->isDerivedFrom(App::GeoFeature::getClassTypeId()))
-  {
+
+  if (genericObject->isDerivedFrom(App::GeoFeature::getClassTypeId())) {
     auto geoFeature = static_cast<App::GeoFeature *>(genericObject);
     const Base::Placement &placement = geoFeature->Placement.getValue();
     auto tempTransform = new SoTransform();
@@ -143,7 +144,7 @@ bool ViewProviderDragger::setEdit(int ModNum)
       Gui::ViewParams::instance()->getAxisYColor(),
       Gui::ViewParams::instance()->getAxisZColor()
     );
-    csysDragger->draggerSize.setValue(0.05f);
+    csysDragger->draggerSize.setValue(ViewParams::instance()->getDraggerScale());
     csysDragger->translation.setValue(tempTransform->translation.getValue());
     csysDragger->rotation.setValue(tempTransform->rotation.getValue());
 

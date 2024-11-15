@@ -35,7 +35,7 @@ from importlib.util import spec_from_loader
 import FreeCAD
 
 
-class FemMigrateApp(object):
+class FemMigrateApp:
 
     def find_spec(self, fullname, path, target=None):
         if fullname in {

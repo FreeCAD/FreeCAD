@@ -27,7 +27,7 @@ __url__ = "https://www.freecadweb.org"
 
 
 def get_analysis_types():
-    return "all"    # write for all analysis types
+    return "all"  # write for all analysis types
 
 
 def get_sets_name():
@@ -58,7 +58,7 @@ def write_meshdata_constraint(f, femobj, rb_obj, ccxwriter):
 
     f.write("*NSET,NSET=" + rb_obj.Name + "\n")
     for n in femobj["Nodes"]:
-        f.write("{},\n".format(n))
+        f.write(f"{n},\n")
 
 
 def write_constraint(f, femobj, rb_obj, ccxwriter):
@@ -66,19 +66,18 @@ def write_constraint(f, femobj, rb_obj, ccxwriter):
     rb_obj_idx = ccxwriter.analysis.Group.index(rb_obj)
     node_count = ccxwriter.mesh_object.FemMesh.NodeCount
     # factor 2 is to prevent conflict with other rigid body constraint
-    ref_node_idx = node_count + 2*rb_obj_idx + 1
-    rot_node_idx = node_count + 2*rb_obj_idx + 2
+    ref_node_idx = node_count + 2 * rb_obj_idx + 1
+    rot_node_idx = node_count + 2 * rb_obj_idx + 2
 
     f.write("*NODE\n")
     f.write("{},{},{},{}\n".format(ref_node_idx, *rb_obj.ReferenceNode))
     f.write("{},{},{},{}\n".format(rot_node_idx, *rb_obj.ReferenceNode))
 
-    f.write("*NSET,NSET={}_RefNode\n".format(rb_obj.Name))
-    f.write("{},\n".format(ref_node_idx))
-    f.write("*NSET,NSET={}_RotNode\n".format(rb_obj.Name))
-    f.write("{},\n".format(rot_node_idx))
+    f.write(f"*NSET,NSET={rb_obj.Name}_RefNode\n")
+    f.write(f"{ref_node_idx},\n")
+    f.write(f"*NSET,NSET={rb_obj.Name}_RotNode\n")
+    f.write(f"{rot_node_idx},\n")
 
-    kw_line = "*RIGID BODY, NSET={}, REF NODE={}, ROT NODE={}".format(rb_obj.Name, ref_node_idx, rot_node_idx)
+    kw_line = f"*RIGID BODY, NSET={rb_obj.Name}, REF NODE={ref_node_idx}, ROT NODE={rot_node_idx}"
 
     f.write(kw_line + "\n")
-

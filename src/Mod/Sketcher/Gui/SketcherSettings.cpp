@@ -261,6 +261,29 @@ void SketcherSettings::changeEvent(QEvent* e)
     }
 }
 
+void SketcherSettings::resetSettingsToDefaults()
+{
+    ParameterGrp::handle hGrp;
+
+    hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
+    // reset "Dimension tools" parameters
+    hGrp->RemoveBool("SingleDimensioningTool");
+    hGrp->RemoveBool("SeparatedDimensioningTools");
+
+    // reset "radius/diameter mode for dimensioning" parameter
+    hGrp->RemoveBool("DimensioningDiameter");
+    hGrp->RemoveBool("DimensioningRadius");
+
+    hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools");
+    // reset "OVP visibility" parameter
+    hGrp->RemoveInt("OnViewParameterVisibility");
+
+    // finally reset all the parameters associated to Gui::Pref* widgets
+    PreferencePage::resetSettingsToDefaults();
+}
+
 /* TRANSLATOR SketcherGui::SketcherSettingsGrid */
 
 SketcherSettingsGrid::SketcherSettingsGrid(QWidget* parent)

@@ -176,9 +176,9 @@ void ViewProviderTransformed::recomputeFeature(bool recompute)
     if (rejected > 0) {
         msg = QString::fromLatin1("<font color='orange'>%1<br/></font>\r\n%2");
         if (rejected == 1)
-            msg = msg.arg(QObject::tr("One transformed shape does not intersect support"));
+            msg = msg.arg(QObject::tr("One transformed shape does not intersect the support"));
         else {
-            msg = msg.arg(QObject::tr("%1 transformed shapes do not intersect support"));
+            msg = msg.arg(QObject::tr("%1 transformed shapes do not intersect the support"));
             msg = msg.arg(rejected);
         }
     }

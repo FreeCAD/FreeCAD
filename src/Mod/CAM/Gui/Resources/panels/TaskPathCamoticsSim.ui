@@ -65,14 +65,14 @@
    <item>
     <widget class="QPushButton" name="btnLaunchCamotics">
      <property name="text">
-      <string>Launch Camotics</string>
+      <string>Launch CAMotics</string>
      </property>
     </widget>
    </item>
    <item>
     <widget class="QPushButton" name="btnMakeFile">
      <property name="text">
-      <string>Make Camotics File</string>
+      <string>Make CAMotics File</string>
      </property>
     </widget>
    </item>

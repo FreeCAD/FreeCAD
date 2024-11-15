@@ -32,7 +32,7 @@ QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 
 
 class BIM_Beam(ArchStructure._CommandStructure):
-    
+
     def __init__(self):
         super().__init__()
         self.beammode = True

@@ -53,40 +53,14 @@ ViewProviderFemConstraintTransform::ViewProviderFemConstraintTransform()
 
 ViewProviderFemConstraintTransform::~ViewProviderFemConstraintTransform() = default;
 
-// FIXME setEdit needs a careful review
 bool ViewProviderFemConstraintTransform::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
-        // When double-clicking on the item for this constraint the
-        // object unsets and sets its edit mode without closing
-        // the task panel
-        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-        TaskDlgFemConstraintTransform* constrDlg =
-            qobject_cast<TaskDlgFemConstraintTransform*>(dlg);
-        if (constrDlg && constrDlg->getConstraintView() != this) {
-            constrDlg = nullptr;  // another constraint left open its task panel
-        }
-        if (dlg && !constrDlg) {
-            if (constraintDialog) {
-                // Ignore the request to open another dialog
-                return false;
-            }
-            else {
-                constraintDialog = new TaskFemConstraintTransform(this);
-                return true;
-            }
-        }
-
+        Gui::Control().closeDialog();
         // clear the selection (convenience)
         Gui::Selection().clearSelection();
+        Gui::Control().showDialog(new TaskDlgFemConstraintTransform(this));
 
-        // start the edit dialog
-        if (constrDlg) {
-            Gui::Control().showDialog(constrDlg);
-        }
-        else {
-            Gui::Control().showDialog(new TaskDlgFemConstraintTransform(this));
-        }
         return true;
     }
     else {

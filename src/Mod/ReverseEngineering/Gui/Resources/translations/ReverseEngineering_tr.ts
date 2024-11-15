@@ -233,10 +233,10 @@
       <translation>Yerleşim</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineCurve.cpp" line="139"/>
       <location filename="../../FitBSplineSurface.cpp" line="231"/>
-      <source>Fit B-Spline</source>
-      <translation>B-Spline'e sığdır</translation>
+      <location filename="../../FitBSplineCurve.cpp" line="139"/>
+      <source>Fit B-spline</source>
+      <translation type="unfinished">Fit B-spline</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="83"/>

@@ -583,7 +583,7 @@ void TaskSectionView::updateSectionView()
     const std::string objectName("SectionView");
     std::string baseName = m_base->getNameInDocument();
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit SectionView"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Section View"));
     if (m_section) {
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionDirection = '%s'",
                            m_sectionName.c_str(), m_dirName.c_str());

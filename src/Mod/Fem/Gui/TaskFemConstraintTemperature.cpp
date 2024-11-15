@@ -36,6 +36,7 @@
 #include <Gui/QuantitySpinBox.h>
 #include <Gui/SelectionObject.h>
 #include <Mod/Fem/App/FemConstraintTemperature.h>
+#include <Mod/Part/App/PartFeature.h>
 
 #include "TaskFemConstraintTemperature.h"
 #include "ui_TaskFemConstraintTemperature.h"
@@ -318,11 +319,6 @@ std::string TaskFemConstraintTemperature::get_constraint_type() const
     return ui->cb_constr_type->currentText().toStdString();
 }
 
-bool TaskFemConstraintTemperature::event(QEvent* e)
-{
-    return TaskFemConstraint::KeyEvent(e);
-}
-
 void TaskFemConstraintTemperature::changeEvent(QEvent*)
 {
     //    TaskBox::changeEvent(e);
@@ -359,21 +355,6 @@ TaskDlgFemConstraintTemperature::TaskDlgFemConstraintTemperature(
 
 //==== calls from the TaskView ===============================================================
 
-void TaskDlgFemConstraintTemperature::open()
-{
-    // a transaction is already open at creation time of the panel
-    if (!Gui::Command::hasPendingCommand()) {
-        QString msg = QObject::tr("Temperature boundary condition");
-        Gui::Command::openCommand((const char*)msg.toUtf8());
-        ConstraintView->setVisible(true);
-        Gui::Command::doCommand(
-            Gui::Command::Doc,
-            ViewProviderFemConstraint::gethideMeshShowPartStr(
-                (static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument())
-                .c_str());  // OvG: Hide meshes and show parts
-    }
-}
-
 bool TaskDlgFemConstraintTemperature::accept()
 {
     std::string name = ConstraintView->getObject()->getNameInDocument();
@@ -399,11 +380,6 @@ bool TaskDlgFemConstraintTemperature::accept()
                                     name.c_str(),
                                     parameterTemperature->get_cflux().c_str());
         }
-        std::string scale = parameterTemperature->getScale();  // OvG: determine modified scale
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.Scale = %s",
-                                name.c_str(),
-                                scale.c_str());  // OvG: implement modified scale
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
@@ -411,15 +387,6 @@ bool TaskDlgFemConstraintTemperature::accept()
     }
 
     return TaskDlgFemConstraint::accept();
-}
-
-bool TaskDlgFemConstraintTemperature::reject()
-{
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-    Gui::Command::updateActive();
-
-    return true;
 }
 
 #include "moc_TaskFemConstraintTemperature.cpp"

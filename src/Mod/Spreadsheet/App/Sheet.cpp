@@ -342,7 +342,8 @@ bool Sheet::exportToFile(const std::string& filename,
 
         std::string str = field.str();
 
-        if (quoteChar && str.find(quoteChar) != std::string::npos) {
+        if (quoteChar
+            && str.find_first_of(std::string(quoteChar, delimiter)) != std::string::npos) {
             writeEscaped(str, quoteChar, escapeChar, file);
         }
         else {
@@ -1785,7 +1786,7 @@ PROPERTY_SOURCE_TEMPLATE(Spreadsheet::SheetPython, Spreadsheet::Sheet)
 template<>
 const char* Spreadsheet::SheetPython::getViewProviderName() const
 {
-    return "SpreadsheetGui::ViewProviderSheet";
+    return "SpreadsheetGui::ViewProviderSheetPython";
 }
 template<>
 PyObject* Spreadsheet::SheetPython::getPyObject()

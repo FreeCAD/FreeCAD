@@ -341,8 +341,16 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     }
     else if (prop == &_diffuseColor) {
         // Used to load the old DiffuseColor values asynchronously
-        ShapeAppearance.setDiffuseColors(_diffuseColor.getValues());
-        ShapeAppearance.setTransparency(Transparency.getValue() / 100.0F);
+        // v0.21 used the alpha channel to store transparency values
+        std::vector<App::Color> colors = _diffuseColor.getValues();
+        std::vector<float> transparencies;
+        transparencies.resize(static_cast<int>(colors.size()));
+        for (int i = 0; i < static_cast<int>(colors.size()); i++) {
+            transparencies[i] = colors[i].a;
+            colors[i].a = 1.0;
+        }
+        ShapeAppearance.setDiffuseColors(colors);
+        ShapeAppearance.setTransparencies(transparencies);
     }
     else if (prop == &ShapeAppearance) {
         setHighlightedFaces(ShapeAppearance);
@@ -616,12 +624,14 @@ void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Material>& 
         pcShapeMaterial->specularColor.setNum(size);
         pcShapeMaterial->emissiveColor.setNum(size);
         pcShapeMaterial->shininess.setNum(size);
+        pcShapeMaterial->transparency.setNum(size);
 
         SbColor* dc = pcShapeMaterial->diffuseColor.startEditing();
         SbColor* ac = pcShapeMaterial->ambientColor.startEditing();
         SbColor* sc = pcShapeMaterial->specularColor.startEditing();
         SbColor* ec = pcShapeMaterial->emissiveColor.startEditing();
         float* sh = pcShapeMaterial->shininess.startEditing();
+        float* tr = pcShapeMaterial->transparency.startEditing();
 
         for (int i = 0; i < size; i++) {
             dc[i].setValue(materials[i].diffuseColor.r, materials[i].diffuseColor.g, materials[i].diffuseColor.b);
@@ -629,6 +639,7 @@ void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Material>& 
             sc[i].setValue(materials[i].specularColor.r, materials[i].specularColor.g, materials[i].specularColor.b);
             ec[i].setValue(materials[i].emissiveColor.r, materials[i].emissiveColor.g, materials[i].emissiveColor.b);
             sh[i] = materials[i].shininess;
+            tr[i] = materials[i].transparency;
         }
 
         pcShapeMaterial->diffuseColor.finishEditing();
@@ -636,6 +647,7 @@ void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Material>& 
         pcShapeMaterial->specularColor.finishEditing();
         pcShapeMaterial->emissiveColor.finishEditing();
         pcShapeMaterial->shininess.finishEditing();
+        pcShapeMaterial->transparency.finishEditing();
     }
     else if (size == 1) {
         pcFaceBind->value = SoMaterialBinding::OVERALL;
@@ -963,7 +975,7 @@ void ViewProviderPartExt::updateVisual()
         // For very big objects the computed deflection can become very high and thus leads to a useless
         // tessellation. To avoid this the upper limit is set to 20.0
         // See also forum: https://forum.freecad.org/viewtopic.php?t=77521
-        deflection = std::min(deflection, 20.0);
+        //deflection = std::min(deflection, 20.0);
 
         // create or use the mesh on the data structure
         Standard_Real AngDeflectionRads = AngularDeflection.getValue() / 180.0 * M_PI;

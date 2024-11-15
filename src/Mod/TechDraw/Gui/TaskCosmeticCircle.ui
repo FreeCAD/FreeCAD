@@ -209,7 +209,7 @@
      <item row="3" column="0">
       <widget class="QCheckBox" name="cbClockwise">
        <property name="toolTip">
-        <string>Check this box to make an arc from atart angle to end angle in a clockwise direction.</string>
+        <string>Check this box to make an arc from start angle to end angle in a clockwise direction.</string>
        </property>
        <property name="text">
         <string>Clockwise Angle</string>

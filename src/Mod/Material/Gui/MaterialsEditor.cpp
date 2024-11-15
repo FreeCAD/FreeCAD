@@ -161,11 +161,14 @@ void MaterialsEditor::setup()
             &MaterialsEditor::onSelectMaterial);
     connect(ui->treeMaterials, &QTreeView::doubleClicked, this, &MaterialsEditor::onDoubleClick);
 
+    // Disabled for now. This will be revisited post 1.0
+#if 0
     ui->treeMaterials->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->treeMaterials,
             &QWidget::customContextMenuRequested,
             this,
             &MaterialsEditor::onContextMenu);
+#endif
 }
 
 void MaterialsEditor::getFavorites()
@@ -1283,12 +1286,10 @@ void MaterialsEditor::onContextMenu(const QPoint& pos)
     QMenu contextMenu(tr("Context menu"), this);
 
     QAction action1(tr("Inherit from"), this);
-    // action1.setShortcut(Qt::Key_Delete);
     connect(&action1, &QAction::triggered, this, &MaterialsEditor::onInherit);
     contextMenu.addAction(&action1);
 
     QAction action2(tr("Inherit new material"), this);
-    // action1.setShortcut(Qt::Key_Delete);
     connect(&action2, &QAction::triggered, this, &MaterialsEditor::onInheritNew);
     contextMenu.addAction(&action2);
 

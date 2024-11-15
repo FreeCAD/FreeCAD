@@ -33,7 +33,6 @@
 #include <QMessageBox>
 #include <SMESH_Mesh.hxx>
 #include <SMESHDS_Mesh.hxx>
-#include <Standard_math.hxx>
 #include <SMESH_MeshEditor.hxx>
 #endif
 
@@ -412,11 +411,11 @@ void writeToFile(std::string fileName,
         }
         SMDS_ElemIteratorPtr nIt = elem->nodesIterator();
         fprintf(fptr, "%d", EID);
-        for (int iN = 0; nIt->more(); ++iN) {
+        while (nIt->more()) {
             nSrc = static_cast<const SMDS_MeshNode*>(nIt->next());
             NID = nSrc->GetID();
             fprintf(fptr, ", %d", NID);
-        }  // for iN
+        }
         fprintf(fptr, "\n");
     }  // while print
     if (requiredType == 4) {

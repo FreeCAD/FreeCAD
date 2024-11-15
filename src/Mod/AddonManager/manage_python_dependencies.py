@@ -174,7 +174,6 @@ class PythonPackageManager:
 
         self._add_current_python_version()
         self._create_list_from_pip()
-        self.dlg.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
         self.dlg.tableWidget.setSortingEnabled(False)
         self.dlg.labelInstallationPath.setText(self.vendor_path)
         self.dlg.exec()

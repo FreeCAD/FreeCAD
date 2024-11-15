@@ -33,7 +33,7 @@ __url__ = "https://www.freecad.org"
 from importlib.util import spec_from_loader
 
 
-class FemMigrateGui(object):
+class FemMigrateGui:
 
     def find_spec(self, fullname, path, target=None):
 

@@ -68,6 +68,7 @@
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/LineGenerator.h>
+#include <Mod/TechDraw/App/LineGroup.h>
 #include <Mod/TechDraw/App/Preferences.h>
 
 #include "DlgPageChooser.h"
@@ -179,14 +180,32 @@ void DrawGuiUtil::loadLineStyleChoices(QComboBox* combo, LineGenerator* generato
         choices = LineGenerator::getLineDescriptions();
     }
 
+    auto translationContext = LineName::currentTranslationContext();
     int itemNumber {0};
     for (auto& entry : choices) {
-        QString qentry = Base::Tools::fromStdString(entry);
+        QString qentry = QCoreApplication::translate(translationContext.c_str(), entry.c_str());
         combo->addItem(qentry);
         if (generator) {
             combo->setItemIcon(itemNumber, iconForLine(itemNumber + 1, generator));
         }
         itemNumber++;
+    }
+}
+
+void DrawGuiUtil::loadLineGroupChoices(QComboBox* combo)
+{
+    combo->clear();
+    std::string lgFileName = Preferences::lineGroupFile();
+    std::string lgRecord = LineGroup::getGroupNamesFromFile(lgFileName);
+    // split collected groups
+    std::stringstream ss(lgRecord);
+    std::vector<QString> lgNames;
+    while (std::getline(ss, lgRecord, ',')) {
+        lgNames.push_back(Base::Tools::fromStdString(lgRecord));
+    }
+    // fill the combobox with the found names
+    for (auto& name : lgNames) {
+        combo->addItem(name);
     }
 }
 

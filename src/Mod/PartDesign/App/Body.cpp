@@ -32,6 +32,7 @@
 #include "BodyPy.h"
 #include "FeatureBase.h"
 #include "FeatureSketchBased.h"
+#include "FeatureSolid.h"
 #include "FeatureTransformed.h"
 #include "ShapeBinder.h"
 
@@ -136,7 +137,6 @@ App::DocumentObject* Body::getPrevSolidFeature(App::DocumentObject *start)
     if (rvIt != features.rend()) { // the solid found in model list
         return *rvIt;
     }
-
     return nullptr;
 }
 
@@ -167,7 +167,6 @@ App::DocumentObject* Body::getNextSolidFeature(App::DocumentObject *start)
     if (rvIt != features.end()) { // the solid found in model list
         return *rvIt;
     }
-
     return nullptr;
 }
 
@@ -375,6 +374,7 @@ std::vector<App::DocumentObject*> Body::removeObject(App::DocumentObject* featur
 
 App::DocumentObjectExecReturn *Body::execute()
 {
+    Part::BodyBase::execute();
     /*
     Base::Console().Error("Body '%s':\n", getNameInDocument());
     App::DocumentObject* tip = Tip.getValue();
@@ -465,9 +465,23 @@ void Body::onChanged(const App::Property* prop) {
         else if (prop == &AllowCompound) {
             // As disallowing compounds can break the model we need to recompute the whole tree.
             // This will inform user about first place where there is more than one solid.
-            if (!AllowCompound.getValue()) {
-                for (auto feature : getFullModel()) {
-                    feature->enforceRecompute();
+            // On allowing compounds we must also recompute the entire feature tree
+            for (auto feature : getFullModel()) {
+                feature->enforceRecompute();
+            }
+
+        }
+        else if (prop == &ShapeMaterial) {
+            std::vector<App::DocumentObject*> features = Group.getValues();
+            if (!features.empty()) {
+                for (auto it : features) {
+                    auto feature = dynamic_cast<Part::Feature*>(it);
+                    if (feature) {
+                        if (feature->ShapeMaterial.getValue().getUUID()
+                            != ShapeMaterial.getValue().getUUID()) {
+                            feature->ShapeMaterial.setValue(ShapeMaterial.getValue());
+                        }
+                    }
                 }
             }
         }
@@ -502,6 +516,35 @@ std::vector<std::string> Body::getSubObjects(int reason) const {
 App::DocumentObject *Body::getSubObject(const char *subname,
         PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const
 {
+    while (subname && *subname == '.') {
+        ++subname;  // skip leading .
+    }
+
+    // PartDesign::Feature now support grouping sibling features, and the user
+    // is free to expand/collapse at any time. To not disrupt subname path
+    // because of this, the body will peek the next two sub-objects reference,
+    // and skip the first sub-object if possible.
+    if (subname) {
+        const char* firstDot = strchr(subname, '.');
+        if (firstDot) {
+            const char* secondDot = strchr(firstDot + 1, '.');
+            if (secondDot) {
+                auto firstObj = Group.find(std::string(subname, firstDot).c_str());
+                if (!firstObj || firstObj->isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
+                    auto secondObj = Group.find(std::string(firstDot + 1, secondDot).c_str());
+                    if (secondObj) {
+                        // we support only one level of sibling grouping, so no
+                        // recursive call to our own getSubObject()
+                        return Part::BodyBase::getSubObject(firstDot + 1,
+                                                            pyObj,
+                                                            pmat,
+                                                            transform,
+                                                            depth + 1);
+                    }
+                }
+            }
+        }
+    }
 #if 1
     return Part::BodyBase::getSubObject(subname,pyObj,pmat,transform,depth);
 #else

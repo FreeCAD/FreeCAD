@@ -171,6 +171,7 @@ if HAVE_QTNETWORK:
             self.QNAM = QtNetwork.QNetworkAccessManager()
             self.QNAM.proxyAuthenticationRequired.connect(self.__authenticate_proxy)
             self.QNAM.authenticationRequired.connect(self.__authenticate_resource)
+            self.QNAM.setRedirectPolicy(QtNetwork.QNetworkRequest.ManualRedirectPolicy)
 
             qnam_cache = QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.CacheLocation)
             os.makedirs(qnam_cache, exist_ok=True)
@@ -325,7 +326,6 @@ if HAVE_QTNETWORK:
 
             self.__last_started_index = index
             reply.finished.connect(self.__reply_finished)
-            reply.redirected.connect(self.__follow_redirect)
             reply.sslErrors.connect(self.__on_ssl_error)
             if index in self.monitored_connections:
                 reply.readyRead.connect(self.__ready_to_read)
@@ -429,7 +429,7 @@ if HAVE_QTNETWORK:
             request = QtNetwork.QNetworkRequest(QtCore.QUrl(url))
             request.setAttribute(
                 QtNetwork.QNetworkRequest.RedirectPolicyAttribute,
-                QtNetwork.QNetworkRequest.UserVerifiedRedirectPolicy,
+                QtNetwork.QNetworkRequest.ManualRedirectPolicy,
             )
             request.setAttribute(QtNetwork.QNetworkRequest.CacheSaveControlAttribute, True)
             request.setAttribute(
@@ -478,7 +478,6 @@ if HAVE_QTNETWORK:
                 proxy_authentication = FreeCADGui.PySideUic.loadUi(
                     os.path.join(os.path.dirname(__file__), "proxy_authentication.ui")
                 )
-                proxy_authentication.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
                 # Show the right labels, etc.
                 proxy_authentication.labelProxyAddress.setText(f"{reply.hostName()}:{reply.port()}")
                 if authenticator.realm():
@@ -504,21 +503,6 @@ if HAVE_QTNETWORK:
             _authenticator: QtNetwork.QAuthenticator,
         ):
             """Unused."""
-
-        def __follow_redirect(self, url):
-            """Used with the QNetworkAccessManager to follow redirects."""
-            sender = self.sender()
-            current_index = -1
-            timeout_ms = default_timeout
-            # TODO: Figure out what the actual timeout value should be from the original request
-            if sender:
-                for index, reply in self.replies.items():
-                    if reply == sender:
-                        current_index = index
-                        break
-
-                if current_index != -1:
-                    self.__launch_request(current_index, self.__create_get_request(url, timeout_ms))
 
         def __on_ssl_error(self, reply: str, errors: List[str] = None):
             """Called when an SSL error occurs: prints the error information."""
@@ -593,8 +577,16 @@ if HAVE_QTNETWORK:
                 return
 
             response_code = reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute)
-            if response_code == 301 or response_code == 302:  # This is a redirect, bail out
-                return
+            redirect_codes = [301, 302, 303, 305, 307, 308]
+            if response_code in redirect_codes:  # This is a redirect
+                timeout_ms = default_timeout
+                if hasattr(reply, "request"):
+                    request = reply.request()
+                    if hasattr(request, "transferTimeout"):
+                        timeout_ms = request.transferTimeout()
+                new_url = reply.attribute(QtNetwork.QNetworkRequest.RedirectionTargetAttribute)
+                self.__launch_request(index, self.__create_get_request(new_url, timeout_ms))
+                return  # The task is not done, so get out of this method now
             if reply.error() != QtNetwork.QNetworkReply.NetworkError.OperationCanceledError:
                 # It this was not a timeout, make sure we mark the queue task done
                 self.queue.task_done()

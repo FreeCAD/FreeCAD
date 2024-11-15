@@ -456,13 +456,14 @@ private:
     /// Syncs the construction method selection in the combobox to the handler selection
     void syncConstructionMethodComboboxToHandler()
     {
-
         if constexpr (PFirstComboboxIsConstructionMethod == true) {
             auto constructionmethod = toolWidget->getComboboxIndex(WCombobox::FirstCombo);
 
             auto actualconstructionmethod = static_cast<int>(handler->constructionMethod());
 
             if (constructionmethod != actualconstructionmethod) {
+                boost::signals2::shared_connection_block combobox_block(
+                    connectionComboboxSelectionChanged);
                 toolWidget->setComboboxIndex(WCombobox::FirstCombo, actualconstructionmethod);
             }
         }

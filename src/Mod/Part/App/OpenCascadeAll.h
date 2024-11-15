@@ -26,8 +26,11 @@
 // OpenCASCADE
 
 // Standard*
+#include <Standard_Version.hxx>
 #include <Standard_AbortiveTransaction.hxx>
+#if OCC_VERSION_HEX < 0x070800
 #include <Standard_Address.hxx>
+#endif
 #include <Standard_Boolean.hxx>
 #include <Standard_Byte.hxx>
 #include <Standard_Character.hxx>
@@ -41,7 +44,9 @@
 #include <Standard_DomainError.hxx>
 #include <Standard_ErrorHandler.hxx>
 #include <Standard_ExtCharacter.hxx>
+#if OCC_VERSION_HEX < 0x070800
 #include <Standard_ExtString.hxx>
+#endif
 #include <Standard_Failure.hxx>
 #include <Standard_GUID.hxx>
 #include <Standard_ImmutableObject.hxx>
@@ -76,7 +81,6 @@
 #include <Standard_TypeMismatch.hxx>
 #include <Standard_Underflow.hxx>
 #include <Standard_UUID.hxx>
-#include <Standard_Version.hxx>
 
 #if OCC_VERSION_HEX < 0x070700
 # include <Standard_TooManyUsers.hxx>
@@ -111,12 +115,17 @@
 
 #include <BRepAlgo.hxx>
 #include <BRepAlgo_NormalProjection.hxx>
-#include <BRepAlgoAPI_BooleanOperation.hxx>
-#include <BRepAlgoAPI_Common.hxx>
-#include <BRepAlgoAPI_Cut.hxx>
+//#include <BRepAlgoAPI_BooleanOperation.hxx>
+#include <Mod/Part/App/FCBRepAlgoAPI_BooleanOperation.h>
+//#include <BRepAlgoAPI_Common.hxx>
+#include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
+//#include <BRepAlgoAPI_Cut.hxx>
+#include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
 # include <BRepAlgoAPI_Defeaturing.hxx>
-#include <BRepAlgoAPI_Fuse.hxx>
-#include <BRepAlgoAPI_Section.hxx>
+//#include <BRepAlgoAPI_Fuse.hxx>
+#include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
+//#include <BRepAlgoAPI_Section.hxx>
+#include <Mod/Part/App/FCBRepAlgoAPI_Section.h>
 
 #include <BRepBndLib.hxx>
 

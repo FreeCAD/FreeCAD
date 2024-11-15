@@ -385,6 +385,7 @@ SoFrameLabel::SoFrameLabel()
 void SoFrameLabel::setIcon(const QPixmap &pixMap)
 {
     iconPixmap = pixMap;
+    drawImage();
 }
 
 

@@ -32,22 +32,21 @@ namespace Path
 
 class Voronoi;
 
-class PathExport VoronoiVertex
-  : public Base::BaseClass
+class PathExport VoronoiVertex: public Base::BaseClass
 {
-  TYPESYSTEM_HEADER_WITH_OVERRIDE();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
 public:
+    VoronoiVertex(Voronoi::diagram_type* dia = nullptr, long index = Voronoi::InvalidIndex);
+    VoronoiVertex(Voronoi::diagram_type* dia, const Voronoi::diagram_type::vertex_type* v);
+    ~VoronoiVertex() override;
 
-  VoronoiVertex(Voronoi::diagram_type *dia = nullptr, long index = Voronoi::InvalidIndex);
-  VoronoiVertex(Voronoi::diagram_type *dia, const Voronoi::diagram_type::vertex_type *v);
-  ~VoronoiVertex() override;
+    bool isBound() const;
 
-  bool isBound() const;
-
-  Base::Reference<Voronoi::diagram_type> dia;
-  long index;
-  mutable const Voronoi::diagram_type::vertex_type *ptr;
+    Base::Reference<Voronoi::diagram_type> dia;
+    long index;
+    mutable const Voronoi::diagram_type::vertex_type* ptr;
 };
 
-}
+}  // namespace Path
 #endif

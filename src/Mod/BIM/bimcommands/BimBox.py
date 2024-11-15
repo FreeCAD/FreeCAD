@@ -66,6 +66,7 @@ class BIM_Box:
             )
 
     def MoveCallback(self, point, snapinfo):
+        import DraftGeomUtils
         import DraftVecUtils
 
         self.currentpoint = point
@@ -73,7 +74,7 @@ class BIM_Box:
             # we have the base point already
             self.Length.setText(
                 FreeCAD.Units.Quantity(
-                    str(self.points[-1].sub(point).Length) + "mm"
+                    self.points[-1].sub(point).Length,  FreeCAD.Units.Length
                 ).UserString
             )
             self.Length.selectAll()
@@ -91,35 +92,32 @@ class BIM_Box:
             self.cubetracker[0].p3(p)
             self.Width.setText(
                 FreeCAD.Units.Quantity(
-                    str(self.cubetracker[0].getSize()[1]) + "mm"
+                    self.cubetracker[0].getSize()[1], FreeCAD.Units.Length
                 ).UserString
             )
             self.Width.selectAll()
             self.Width.setFocus()
         elif len(self.points) == 3:
-            # we must first find our height point by projecting on the normal
-            w = DraftVecUtils.project(point.sub(self.cubetracker[0].p3()), self.normal)
+            h = DraftGeomUtils.distance_to_plane(point, self.cubetracker[0].p3(), self.normal)
+            w = self.normal * h
             # then we update all rectangles
             self.cubetracker[1].p3((self.cubetracker[0].p2()).add(w))
             self.cubetracker[2].p3((self.cubetracker[0].p4()).add(w))
             self.cubetracker[3].p1((self.cubetracker[0].p1()).add(w))
             self.cubetracker[3].p3((self.cubetracker[0].p3()).add(w))
-            self.Height.setText(FreeCAD.Units.Quantity(str(w.Length) + "mm").UserString)
+            self.Height.setText(FreeCAD.Units.Quantity(h, FreeCAD.Units.Length).UserString)
             self.Height.selectAll()
             self.Height.setFocus()
 
     def PointCallback(self, point, snapinfo):
         if not point:
             # cancelled
-            if hasattr(FreeCAD, "DraftWorkingPlane"):
-                FreeCAD.DraftWorkingPlane.restore()
-            FreeCADGui.Snapper.setGrid()
-            for c in self.cubetracker:
-                c.off()
+            self._finish()
             return
 
         if len(self.points) == 0:
             # this is our first clicked point, nothing to do just yet
+            self.points.append(point)
             FreeCADGui.Snapper.getPoint(
                 last=point,
                 callback=self.PointCallback,
@@ -128,70 +126,17 @@ class BIM_Box:
             )
         elif len(self.points) == 1:
             # this is our second point
-            # we turn on only one of the rectangles
             baseline = point.sub(self.points[0])
-            self.cubetracker[0].setPlane(baseline)
-            self.cubetracker[0].p1(self.points[0])
-            self.cubetracker[0].on()
-            FreeCADGui.Snapper.getPoint(
-                last=point,
-                callback=self.PointCallback,
-                movecallback=self.MoveCallback,
-                extradlg=self.taskbox(),
-            )
+            self.points.append(point)
+            self._setupForWidthInput(baseline)
         elif len(self.points) == 2:
             # this is our third point
-            # we can get the cubes Z axis from our first rectangle
-            self.normal = self.cubetracker[0].getNormal()
-            # we can therefore define the (u,v) planes of all rectangles
-            u = self.cubetracker[0].u
-            v = self.cubetracker[0].v
-            self.cubetracker[1].setPlane(u, self.normal)
-            self.cubetracker[2].setPlane(u, self.normal)
-            self.cubetracker[3].setPlane(u, v)
-            # and the origin points of the vertical rectangles
-            self.cubetracker[1].p1(self.cubetracker[0].p1())
-            self.cubetracker[2].p1(self.cubetracker[0].p3())
-            # finally we turn all rectangles on
-            for r in self.cubetracker:
-                r.on()
-            if hasattr(FreeCAD, "DraftWorkingPlane"):
-                FreeCAD.DraftWorkingPlane.save()
-                FreeCAD.DraftWorkingPlane.position = self.cubetracker[0].p3()
-                FreeCAD.DraftWorkingPlane.u = (
-                    self.cubetracker[0].p4().sub(self.cubetracker[0].p3())
-                ).normalize()
-                FreeCAD.DraftWorkingPlane.v = FreeCAD.Vector(self.normal).normalize()
-                FreeCAD.DraftWorkingPlane.axis = (
-                    self.cubetracker[0].p2().sub(self.cubetracker[0].p3())
-                ).normalize()
-                FreeCADGui.Snapper.setGrid()
-            FreeCADGui.Snapper.getPoint(
-                last=self.cubetracker[0].p3(),
-                callback=self.PointCallback,
-                movecallback=self.MoveCallback,
-                extradlg=self.taskbox(),
-            )
+            self.points.append(point)
+            self._setupForHeightInput()
         elif len(self.points) == 3:
             # finally we have all our points. Let's create the actual cube
-            cube = FreeCAD.ActiveDocument.addObject("Part::Box", "Cube")
-            cube.Length = self.LengthValue
-            cube.Width = self.WidthValue
-            cube.Height = self.HeightValue
-            # we get 3 points that define our cube orientation
-            p1 = self.cubetracker[0].p1()
-            p2 = self.cubetracker[0].p2()
-            p3 = self.cubetracker[0].p4()
-            import WorkingPlane
-
-            cube.Placement = WorkingPlane.getPlacementFromPoints([p1, p2, p3])
-            if hasattr(FreeCAD, "DraftWorkingPlane"):
-                FreeCAD.DraftWorkingPlane.restore()
-            FreeCADGui.Snapper.setGrid()
-            for c in self.cubetracker:
-                c.off()
-            FreeCAD.ActiveDocument.recompute()
-        self.points.append(point)
+            self._makeBox()
+            self._finish()
 
     def taskbox(self):
         "sets up a taskbox widget"
@@ -254,15 +199,7 @@ class BIM_Box:
             baseline.multiply(self.LengthValue)
             p2 = self.points[0].add(baseline)
             self.points.append(p2)
-            self.cubetracker[0].setPlane(baseline)
-            self.cubetracker[0].p1(self.points[0])
-            self.cubetracker[0].on()
-            FreeCADGui.Snapper.getPoint(
-                last=p2,
-                callback=self.PointCallback,
-                movecallback=self.MoveCallback,
-                extradlg=self.taskbox(),
-            )
+            self._setupForWidthInput(baseline)
 
     def setWidthUI(self):
         if (len(self.points) == 2) and self.currentpoint and self.WidthValue:
@@ -275,57 +212,93 @@ class BIM_Box:
                     p2 = self.points[1].add(n)
             self.cubetracker[0].p3(p2)
             self.points.append(p2)
-            u = self.cubetracker[0].u
-            v = self.cubetracker[0].v
-            self.cubetracker[1].setPlane(u, self.normal)
-            self.cubetracker[2].setPlane(u, self.normal)
-            self.cubetracker[3].setPlane(u, v)
-            self.cubetracker[1].p1(self.cubetracker[0].p1())
-            self.cubetracker[2].p1(self.cubetracker[0].p3())
-            for r in self.cubetracker:
-                r.on()
-            if hasattr(FreeCAD, "DraftWorkingPlane"):
-                FreeCAD.DraftWorkingPlane.save()
-                FreeCAD.DraftWorkingPlane.position = self.cubetracker[0].p3()
-                FreeCAD.DraftWorkingPlane.u = (
-                    self.cubetracker[0].p4().sub(self.cubetracker[0].p3())
-                ).normalize()
-                FreeCAD.DraftWorkingPlane.v = self.normal
-                FreeCAD.DraftWorkingPlane.axis = (
-                    self.cubetracker[0].p2().sub(self.cubetracker[0].p3())
-                ).normalize()
-                FreeCADGui.Snapper.setGrid()
-            FreeCADGui.Snapper.getPoint(
-                last=p2,
-                callback=self.PointCallback,
-                movecallback=self.MoveCallback,
-                extradlg=self.taskbox(),
-            )
+            self._setupForHeightInput()
 
     def setHeightUI(self):
         if (len(self.points) == 3) and self.HeightValue:
-            cube = FreeCAD.ActiveDocument.addObject("Part::Box", "Cube")
-            cube.Length = self.LengthValue
-            cube.Width = self.WidthValue
-            cube.Height = self.HeightValue
-            # we get 3 points that define our cube orientation
-            p1 = self.cubetracker[0].p1()
-            p2 = self.cubetracker[0].p2()
-            p3 = self.cubetracker[0].p4()
-            FreeCADGui.Snapper.off()
-            import WorkingPlane
+            self._makeBox()
+            self._finish()
 
-            cube.Placement = WorkingPlane.getPlacementFromPoints([p1, p2, p3])
-            if hasattr(FreeCAD, "DraftWorkingPlane"):
-                FreeCAD.DraftWorkingPlane.restore()
+    def _setupForWidthInput(self, baseline):
+        # we turn on only one of the rectangles
+        self.cubetracker[0].setPlane(baseline)
+        self.cubetracker[0].p1(self.points[0])
+        self.cubetracker[0].on()
+        FreeCADGui.Snapper.getPoint(
+            last=self.points[-1],
+            callback=self.PointCallback,
+            movecallback=self.MoveCallback,
+            extradlg=self.taskbox(),
+        )
+
+    def _setupForHeightInput(self):
+        # we can get the cubes Z axis from our first rectangle
+        self.normal = self.cubetracker[0].getNormal()
+        # we can therefore define the (u,v) planes of all rectangles
+        u = self.cubetracker[0].u
+        v = self.cubetracker[0].v
+        self.cubetracker[1].setPlane(u, self.normal)
+        self.cubetracker[2].setPlane(u, self.normal)
+        self.cubetracker[3].setPlane(u, v)
+        # and the origin points of the vertical rectangles
+        self.cubetracker[1].p1(self.cubetracker[0].p1())
+        self.cubetracker[2].p1(self.cubetracker[0].p3())
+        # finally we turn all rectangles on
+        for r in self.cubetracker:
+            r.on()
+        if hasattr(FreeCAD, "DraftWorkingPlane"):
+            FreeCAD.DraftWorkingPlane.save()
+            FreeCAD.DraftWorkingPlane.position = self.cubetracker[0].p3()
+            FreeCAD.DraftWorkingPlane.u = (
+                self.cubetracker[0].p3().sub(self.cubetracker[0].p4())
+            ).normalize()
+            FreeCAD.DraftWorkingPlane.v = self.normal
+            FreeCAD.DraftWorkingPlane.axis = (
+                self.cubetracker[0].p2().sub(self.cubetracker[0].p3())
+            ).normalize()
             FreeCADGui.Snapper.setGrid()
-            for c in self.cubetracker:
-                c.off()
-            FreeCADGui.Snapper.getPoint()
-            FreeCADGui.Snapper.off()
-            if hasattr(FreeCADGui, "draftToolBar"):
-                FreeCADGui.draftToolBar.offUi()
-            FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.Snapper.getPoint(
+            last=self.cubetracker[0].p3(),
+            callback=self.PointCallback,
+            movecallback=self.MoveCallback,
+            extradlg=self.taskbox(),
+        )
+
+    def _makeBox(self):
+        import DraftGeomUtils
+
+        p1 = self.cubetracker[0].p1()
+        p2 = self.cubetracker[0].p2()
+        p3 = self.cubetracker[0].p4()
+        pla = DraftGeomUtils.placement_from_points(p1, p2, p3)
+        if self.normal.isEqual(pla.Rotation.multVec(FreeCAD.Vector(0, 0, 1)), 1e-6):
+            if self.HeightValue < 0.0:
+                pla = DraftGeomUtils.placement_from_points(p1, p3, p2)
+                self.LengthValue, self.WidthValue = self.WidthValue, self.LengthValue
+        else:
+            if self.HeightValue > 0.0:
+                pla = DraftGeomUtils.placement_from_points(p1, p3, p2)
+                self.LengthValue, self.WidthValue = self.WidthValue, self.LengthValue
+        doc = FreeCAD.ActiveDocument
+        doc.openTransaction(translate("Arch","Create Box"))
+        cube = doc.addObject("Part::Box", "Cube")
+        cube.Placement = pla
+        cube.Length = self.LengthValue
+        cube.Width = self.WidthValue
+        cube.Height = abs(self.HeightValue)
+        doc.commitTransaction()
+        doc.recompute()
+
+    def _finish(self):
+        FreeCADGui.Snapper.getPoint()
+        FreeCADGui.Snapper.off()
+        for c in self.cubetracker:
+            c.finalize()
+        if hasattr(FreeCADGui, "draftToolBar"):
+            FreeCADGui.draftToolBar.offUi()
+        if hasattr(FreeCAD, "DraftWorkingPlane"):
+            FreeCAD.DraftWorkingPlane.restore()
+        FreeCADGui.Snapper.setGrid()
 
 
 FreeCADGui.addCommand("BIM_Box", BIM_Box())

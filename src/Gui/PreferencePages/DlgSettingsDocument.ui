@@ -411,7 +411,7 @@ Common sizes are 128, 256 and 512</string>
          <string>Add the program logo to the generated thumbnail</string>
         </property>
         <property name="checked">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>AddThumbnailLogo</cstring>

@@ -63,7 +63,7 @@ Params = [
     ParamInt('Indentation', 0, on_change=True),
     ParamBool('LabelExpression', False),
     ParamInt('IconSize', 0, on_change=True),
-    ParamInt('FontSize', 0, on_change=True),
+    ParamInt('FontSize', 0, on_change=True, title='Font size'),
     ParamInt('ItemSpacing', 0, on_change=True),
     ParamHex('ItemBackground', 0, on_change=True, title='Item background color', proxy=ParamColor(),
         doc = "Tree view item background. Only effective in overlay."),

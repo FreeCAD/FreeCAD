@@ -88,6 +88,31 @@ std::string Property::getFullName() const {
     return name;
 }
 
+std::string Property::getFileName(const char* postfix, const char* prefix) const
+{
+    std::ostringstream ss;
+    if (prefix) {
+        ss << prefix;
+    }
+    if (!myName) {
+        ss << "Property";
+    }
+    else {
+        std::string name = getFullName();
+        auto pos = name.find('#');
+        if (pos == std::string::npos) {
+            ss << name;
+        }
+        else {
+            ss << (name.c_str() + pos + 1);
+        }
+    }
+    if (postfix) {
+        ss << postfix;
+    }
+    return ss.str();
+}
+
 short Property::getType() const
 {
     short type = 0;

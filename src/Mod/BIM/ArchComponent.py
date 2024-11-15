@@ -1137,7 +1137,7 @@ class Component(ArchIFC.IfcProduct):
         Returns
         -------
         list of <Arch._Structure>
-            The Arch Structures hosting this component.
+            The BIM Structures hosting this component.
         """
 
         hosts = []

@@ -42,50 +42,23 @@ ViewProviderFemConstraintContact::ViewProviderFemConstraintContact()
 {
     sPixmap = "FEM_ConstraintContact";
     loadSymbol((resourceSymbolDir + "ConstraintContact.iv").c_str());
-    // Note change "Contact" in line above to new constraint name, make sure it is the same as in
-    // taskFem* cpp file
     ShapeAppearance.setDiffuseColor(0.2f, 0.3f, 0.2f);
 }
 
 ViewProviderFemConstraintContact::~ViewProviderFemConstraintContact() = default;
 
-// FIXME setEdit needs a careful review
 bool ViewProviderFemConstraintContact::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
-        // When double-clicking on the item for this constraint the
-        // object unsets and sets its edit mode without closing
-        // the task panel
-        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-        TaskDlgFemConstraintContact* constrDlg = qobject_cast<TaskDlgFemConstraintContact*>(dlg);
-        if (constrDlg && constrDlg->getConstraintView() != this) {
-            constrDlg = nullptr;  // another constraint left open its task panel
-        }
-        if (dlg && !constrDlg) {
-            if (constraintDialog) {
-                // Ignore the request to open another dialog
-                return false;
-            }
-            else {
-                constraintDialog = new TaskFemConstraintContact(this);
-                return true;
-            }
-        }
-
+        Gui::Control().closeDialog();
         // clear the selection (convenience)
         Gui::Selection().clearSelection();
+        Gui::Control().showDialog(new TaskDlgFemConstraintContact(this));
 
-        // start the edit dialog
-        if (constrDlg) {
-            Gui::Control().showDialog(constrDlg);
-        }
-        else {
-            Gui::Control().showDialog(new TaskDlgFemConstraintContact(this));
-        }
         return true;
     }
     else {
-        return ViewProviderDocumentObject::setEdit(ModNum);  // clazy:exclude=skipped-base-method
+        return ViewProviderFemConstraint::setEdit(ModNum);
     }
 }
 

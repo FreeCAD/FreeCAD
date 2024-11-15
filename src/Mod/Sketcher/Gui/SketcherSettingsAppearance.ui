@@ -42,9 +42,9 @@
           </property>
           <property name="color" stdset="0">
            <color>
-            <red>204</red>
-            <green>204</green>
-            <blue>204</blue>
+            <red>127</red>
+            <green>127</green>
+            <blue>127</blue>
            </color>
           </property>
           <property name="prefEntry" stdset="0">
@@ -371,7 +371,7 @@
          <number>99</number>
         </property>
         <property name="value">
-         <number>1</number>
+         <number>2</number>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>ConstructionWidth</cstring>
@@ -465,7 +465,7 @@
          <number>99</number>
         </property>
         <property name="value">
-         <number>1</number>
+         <number>2</number>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>InternalWidth</cstring>
@@ -533,7 +533,7 @@
          <number>99</number>
         </property>
         <property name="value">
-         <number>1</number>
+         <number>2</number>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>ExternalWidth</cstring>
@@ -754,9 +754,9 @@
           </property>
           <property name="color" stdset="0">
            <color>
-            <red>204</red>
-            <green>204</green>
-            <blue>204</blue>
+            <red>127</red>
+            <green>127</green>
+            <blue>127</blue>
            </color>
           </property>
           <property name="prefEntry" stdset="0">

@@ -30,7 +30,7 @@ from FreeCAD import Units, Vector
 
 
 def get_analysis_types():
-    return "all"    # write for all analysis types
+    return "all"  # write for all analysis types
 
 
 def get_sets_name():
@@ -59,13 +59,13 @@ def get_after_write_constraint():
 
 def write_meshdata_constraint(f, femobj, tie_obj, ccxwriter):
     # slave DEP
-    f.write("*SURFACE, NAME=TIE_DEP{}\n".format(tie_obj.Name))
+    f.write(f"*SURFACE, NAME=TIE_DEP{tie_obj.Name}\n")
     for i in femobj["TieSlaveFaces"]:
-        f.write("{},S{}\n".format(i[0], i[1]))
+        f.write(f"{i[0]},S{i[1]}\n")
     # master IND
-    f.write("*SURFACE, NAME=TIE_IND{}\n".format(tie_obj.Name))
+    f.write(f"*SURFACE, NAME=TIE_IND{tie_obj.Name}\n")
     for i in femobj["TieMasterFaces"]:
-        f.write("{},S{}\n".format(i[0], i[1]))
+        f.write(f"{i[0]},S{i[1]}\n")
 
 
 def write_constraint(f, femobj, tie_obj, ccxwriter):
@@ -83,18 +83,20 @@ def write_constraint(f, femobj, tie_obj, ccxwriter):
         symmetry = ", CYCLIC SYMMETRY"
 
     f.write(
-        "*TIE, POSITION TOLERANCE={:.13G}{}{}, NAME=TIE{}\n"
-        .format(tolerance, adjust, symmetry, tie_name)
+        "*TIE, POSITION TOLERANCE={:.13G}{}{}, NAME=TIE{}\n".format(
+            tolerance, adjust, symmetry, tie_name
+        )
     )
-    ind_surf = "TIE_IND{}".format(tie_name)
-    dep_surf = "TIE_DEP{}".format(tie_name)
-    f.write("{}, {}\n".format(dep_surf, ind_surf))
+    ind_surf = f"TIE_IND{tie_name}"
+    dep_surf = f"TIE_DEP{tie_name}"
+    f.write(f"{dep_surf}, {ind_surf}\n")
 
     # write CYCLIC SYMMETRY MODEL card
     if tie_obj.CyclicSymmetry:
         f.write(
-            "*CYCLIC SYMMETRY MODEL, N={}, NGRAPH={}, TIE=TIE{}, ELSET=Eall\n"
-            .format(tie_obj.Sectors, tie_obj.ConnectedSectors, tie_name)
+            "*CYCLIC SYMMETRY MODEL, N={}, NGRAPH={}, TIE=TIE{}, ELSET=Eall\n".format(
+                tie_obj.Sectors, tie_obj.ConnectedSectors, tie_name
+            )
         )
 
         # get symmetry axis points
@@ -105,7 +107,4 @@ def write_constraint(f, femobj, tie_obj, ccxwriter):
         point_a = [set_unit(coord) for coord in vec_a]
         point_b = [set_unit(coord) for coord in vec_b]
 
-        f.write(
-            "{:.13G},{:.13G},{:.13G},{:.13G},{:.13G},{:.13G}\n"
-            .format(*point_a, *point_b)
-        )
+        f.write("{:.13G},{:.13G},{:.13G},{:.13G},{:.13G},{:.13G}\n".format(*point_a, *point_b))

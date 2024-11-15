@@ -67,7 +67,7 @@ def toNode(shape):
 
     from pivy import coin
     buf = shape.writeInventor(2,0.01).replace("\n","")
-    buf = re.findall("point \[(.*?)\]",buf)
+    buf = re.findall(r"point \[(.*?)\]",buf)
     pts = []
     for c in buf:
         pts.extend(zip(*[iter( c.split() )]*3) )
@@ -503,6 +503,8 @@ class _Site(ArchIFC.IfcProduct):
         obj.Proxy = self
         self.setProperties(obj)
         obj.IfcType = "Site"
+        obj.CompositionType = "ELEMENT"
+
 
     def setProperties(self,obj):
         """Gives the object properties unique to sites.

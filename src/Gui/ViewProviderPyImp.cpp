@@ -319,6 +319,10 @@ PyObject* ViewProviderPy::addDisplayMode(PyObject * args)
     void* ptr = nullptr;
     try {
         Base::Interpreter().convertSWIGPointerObj("pivy.coin","_p_SoNode", obj, &ptr, 0);
+        if (!ptr) {
+            PyErr_SetString(PyExc_RuntimeError, "Conversion of coin.SoNode failed");
+            return nullptr;
+        }
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_RuntimeError, e.what());
@@ -393,7 +397,23 @@ PyObject* ViewProviderPy::claimChildren(PyObject* args)
 
     std::vector<App::DocumentObject*> children = this->getViewProviderPtr()->claimChildren();
     Py::List ret;
-    for(App::DocumentObject* child: children){
+    for(auto* child : children){
+        if (child)
+            ret.append(Py::asObject(child->getPyObject()));
+        else
+            ret.append(Py::None());
+    }
+    return Py::new_reference_to(ret);
+}
+
+PyObject* ViewProviderPy::claimChildrenRecursive(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    std::vector<App::DocumentObject*> children = this->getViewProviderPtr()->claimChildrenRecursive();
+    Py::List ret;
+    for(auto* child : children){
         if (child)
             ret.append(Py::asObject(child->getPyObject()));
         else

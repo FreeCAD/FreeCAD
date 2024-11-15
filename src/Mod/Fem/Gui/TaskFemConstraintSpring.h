@@ -44,8 +44,8 @@ public:
                                      QWidget* parent = nullptr);
     ~TaskFemConstraintSpring() override;
     const std::string getReferences() const override;
-    std::string get_normalStiffness() const;
-    std::string get_tangentialStiffness() const;
+    std::string getNormalStiffness() const;
+    std::string getTangentialStiffness() const;
     std::string getElmerStiffness() const;
 
 private Q_SLOTS:
@@ -54,7 +54,6 @@ private Q_SLOTS:
     void removeFromSelection() override;
 
 protected:
-    bool event(QEvent* e) override;
     void changeEvent(QEvent* e) override;
     void clearButtons(const SelectionChangeModes notThis) override;
 
@@ -69,9 +68,7 @@ class TaskDlgFemConstraintSpring: public TaskDlgFemConstraint
 
 public:
     explicit TaskDlgFemConstraintSpring(ViewProviderFemConstraintSpring* ConstraintView);
-    void open() override;
     bool accept() override;
-    bool reject() override;
 };
 
 }  // namespace FemGui

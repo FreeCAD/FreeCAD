@@ -607,7 +607,7 @@ bool Mesh2ShapeGmsh::writeProject(QString& inpFile, QString& outFile)
                    << "// mesh algorithm, only a few algorithms are usable with 3D boundary layer "
                       "generation\n"
                    << "// 2D mesh algorithm (1=MeshAdapt, 2=Automatic, 5=Delaunay, 6=Frontal, "
-                      "7=BAMG, 8=DelQuad, 9=Packing of Parallelograms)\n"
+                      "7=BAMG, 8=DelQuad, 9=Packing of Parallelograms, 11=Quasi-structured Quad)\n"
                    << "Mesh.Algorithm = " << algorithm << ";\n"
                    << "// 3D mesh algorithm (1=Delaunay, 2=New Delaunay, 4=Frontal, 7=MMG3D, "
                       "9=R-tree, 10=HTX)\n"

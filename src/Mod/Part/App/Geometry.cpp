@@ -102,6 +102,7 @@
 # include <GeomAdaptor_HCurve.hxx>
 # endif
 
+# include <boost/random.hpp>
 # include <cmath>
 # include <ctime>
 #endif //_PreComp_
@@ -1894,19 +1895,10 @@ void GeomBSplineCurve::Trim(double u, double v)
     };
 
     try {
-        if(!isPeriodic()) {
-            splitUnwrappedBSpline(u, v);
+        if (isPeriodic() && (v < u)) {
+            v = v + (getLastParameter() - getFirstParameter()); // v needs one extra lap
         }
-        else { // periodic
-            if( v < u ) { // wraps over origin
-                v = v + 1.0; // v needs one extra lap (1.0)
-
-                splitUnwrappedBSpline(u, v);
-            }
-            else {
-                splitUnwrappedBSpline(u, v);
-            }
-        }
+        splitUnwrappedBSpline(u, v);
     }
     catch (Standard_Failure& e) {
         THROWM(Base::CADKernelError,e.GetMessageString())

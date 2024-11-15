@@ -23,8 +23,9 @@
 
 #include "PreCompiled.h"
 
-#include "Mod/Fem/App/FemConstraint.h"
 #include <Gui/Application.h>
+#include "Mod/Fem/App/FemConstraint.h"
+#include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/Gui/ReferenceHighlighter.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 

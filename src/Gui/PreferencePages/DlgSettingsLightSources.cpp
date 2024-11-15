@@ -24,9 +24,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <QColor>
-#include <QEvent>
-#include <QGridLayout>
 #include <Inventor/draggers/SoDirectionalLightDragger.h>
 #include <Inventor/events/SoEvent.h>
 #include <Inventor/nodes/SoDirectionalLight.h>
@@ -34,6 +31,8 @@
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoPickStyle.h>
 #include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoSphere.h>
 #endif
 
 #include "DlgSettingsLightSources.h"
@@ -52,62 +51,108 @@ DlgSettingsLightSources::DlgSettingsLightSources(QWidget* parent)
   , ui(new Ui_DlgSettingsLightSources)
 {
     ui->setupUi(this);
-    setupConnection();
+
+    view = ui->viewer;
+    createViewer();
 }
 
-DlgSettingsLightSources::~DlgSettingsLightSources()
+static inline
+SbVec3f getDirectionVector(const SbRotation &rotation)
 {
-    delete view;
+    SbVec3f dir {0.0f, 0.0f, -1.0f};
+    rotation.multVec(dir, dir);
+    return dir;
 }
 
-void DlgSettingsLightSources::setupConnection()
+static inline
+void setLightDirection(const SbRotation &rotation, Gui::View3DInventorViewer *viewer)
 {
-    connect(ui->checkBoxLight1, &QCheckBox::toggled,
-            this, &DlgSettingsLightSources::toggleLight);
-    connect(ui->sliderIntensity1, &QSlider::valueChanged,
-            this, &DlgSettingsLightSources::lightIntensity);
-    connect(ui->light1Color, &Gui::ColorButton::changed,
-            this, &DlgSettingsLightSources::lightColor);
+    viewer->getHeadlight()->direction = getDirectionVector(rotation);
 }
 
-void DlgSettingsLightSources::showEvent(QShowEvent* event)
+static inline
+void setLightDraggerDirection(const SbRotation &rotation, SoDirectionalLightDragger *light_dragger)
 {
-    Q_UNUSED(event)
-    if (!view) {
-        QGroupBox* box = ui->groupBoxLight;
-        QWidget* widget = createViewer(box);
-        auto grid = new QGridLayout(box);
-        grid->addWidget(widget);
-        box->setLayout(grid);
+    light_dragger->rotation = rotation;
+}
 
-        loadDirection();
-    }
+static inline
+void setValueSilently(QDoubleSpinBox *spn, const float val)
+{
+    Q_ASSERT_X(spn, "setValueSilently", "QDoubleSpinBox has been deleted");
+
+    spn->blockSignals(true);
+    spn->setValue(val);
+    spn->blockSignals(false);
 }
 
 void DlgSettingsLightSources::dragMotionCallback(void *data, SoDragger *drag)
 {
-    auto lightdrag = static_cast<SoDirectionalLightDragger*>(drag);  // NOLINT
+    auto lightdrag = dynamic_cast <SoDirectionalLightDragger *> (drag);
     auto self = static_cast<DlgSettingsLightSources*>(data);
-    SbRotation rotation = lightdrag->rotation.getValue();
-    SbVec3f dir(0, 0, -1);
-    rotation.multVec(dir, dir);
-    self->view->getHeadlight()->direction = dir;
+
+    const SbRotation rotation = lightdrag->rotation.getValue();
+
+    setLightDirection(rotation, self->view);
+
+    setValueSilently(self->ui->q0_spnBox, rotation[0]);
+    setValueSilently(self->ui->q1_spnBox, rotation[1]);
+    setValueSilently(self->ui->q2_spnBox, rotation[2]);
+    setValueSilently(self->ui->q3_spnBox, rotation[3]);
+
+    const SbVec3f dir = getDirectionVector(rotation);
+
+    setValueSilently(self->ui->x_spnBox, dir[0]);
+    setValueSilently(self->ui->y_spnBox, dir[1]);
+    setValueSilently(self->ui->z_spnBox, dir[2]);
 }
 
-QWidget* DlgSettingsLightSources::createViewer(QWidget* parent)
+static inline
+SoMaterial *createMaterial(void)
 {
+    const QColor  ambientColor {0xff333333},
+                  diffuseColor {0xffd2d2ff},
+                 emissiveColor {0xff000000},
+                 specularColor {0xffcccccc};
+
+    auto material = new SoMaterial ();
+    material->ambientColor.setValue  (ambientColor.redF(),  ambientColor.greenF(),  ambientColor.blueF());
+    material->diffuseColor.setValue  (diffuseColor.redF(),  diffuseColor.greenF(),  diffuseColor.blueF());
+    material->emissiveColor.setValue(emissiveColor.redF(), emissiveColor.greenF(), emissiveColor.blueF());
+    material->specularColor.setValue(specularColor.redF(), specularColor.greenF(), specularColor.blueF());
+
+    material->shininess = 0.9f;
+
+    return material;
+}
+
+static inline
+SoSphere *createSphere(void)
+{
+    auto sphere = new SoSphere();
+    sphere->radius = 2;
+
+    return sphere;
+}
+
+void DlgSettingsLightSources::createViewer()
+{
+    const QColor default_bg_color {180, 180, 180};
+    const SbVec3f default_view_direction {1.0f, 1.0f, -5.0f};
+
     // NOLINTBEGIN
-    view = new Gui::View3DInventorViewer(parent);
     view->setRedirectToSceneGraph(true);
     view->setViewing(true);
     view->setPopupMenuEnabled(false);
 
-    view->setBackgroundColor(QColor(255, 255, 255));
+    view->setBackgroundColor(default_bg_color);
     view->setGradientBackground(Gui::View3DInventorViewer::NoGradient);
     view->setEnabledNaviCube(false);
 
     auto root = static_cast<SoSeparator*>(view->getSceneGraph());
     root->addChild(createDragger());
+    root->addChild(createMaterial());
+    root->addChild(createSphere());
 
     auto callback = new SoEventCallback();
     root->addChild(callback);
@@ -118,20 +163,14 @@ QWidget* DlgSettingsLightSources::createViewer(QWidget* parent)
     });
 
     view->setCameraType(SoOrthographicCamera::getClassTypeId());
-    view->setViewDirection(SbVec3f(1, 1, -5));
+    view->setViewDirection(default_view_direction);
     view->viewAll();
-    float height = static_cast<SoOrthographicCamera*>(view->getCamera())->height.getValue();
-    static_cast<SoOrthographicCamera*>(view->getCamera())->height.setValue(height / 2.0F);
+
+    camera = dynamic_cast <SoOrthographicCamera *> (view->getCamera());
+    const float camera_height = camera->height.getValue() * 2.0f;
+    camera->height = camera_height;
+    cam_step = camera_height / 14.0f;
     // NOLINTEND
-
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    View3DSettings viewSettings(hGrp, view);
-    viewSettings.OnChange(*hGrp,"BackgroundColor");
-
-    const int size = 250;
-    view->resize(size, size);
-
-    return view;
 }
 
 SoDirectionalLightDragger* DlgSettingsLightSources::createDragger()
@@ -171,23 +210,39 @@ void DlgSettingsLightSources::loadSettings()
     ui->checkBoxLight1->onRestore();
     ui->light1Color->onRestore();
     ui->sliderIntensity1->onRestore();
+    loadDirection();
+    lightColor();
+}
+
+void DlgSettingsLightSources::resetSettingsToDefaults()
+{
+    ParameterGrp::handle grp = ui->sliderIntensity1->getWindowParameter();
+
+    grp->SetFloat("HeadlightRotationX", 0.0);
+    grp->SetFloat("HeadlightRotationY", 0.0);
+    grp->SetFloat("HeadlightRotationZ", 0.0);
+    grp->SetFloat("HeadlightRotationW", 1.0);
+
+    grp->SetASCII("HeadlightDirection", "(0.0,0.0,-1.0)");
+
+    PreferencePage::resetSettingsToDefaults();
 }
 
 void DlgSettingsLightSources::saveDirection()
 {
     if (lightDragger) {
+        const SbRotation rotation = lightDragger->rotation.getValue();
+        const SbVec3f dir = getDirectionVector(rotation);
+        const QString headlightDir = QString::fromLatin1("(%1,%2,%3)").arg(dir[0]).arg(dir[1]).arg(dir[2]);
+
         ParameterGrp::handle grp = ui->sliderIntensity1->getWindowParameter();
-        SbRotation rotation = lightDragger->rotation.getValue();
+
         grp->SetFloat("HeadlightRotationX", rotation[0]);
         grp->SetFloat("HeadlightRotationY", rotation[1]);
         grp->SetFloat("HeadlightRotationZ", rotation[2]);
         grp->SetFloat("HeadlightRotationW", rotation[3]);
 
-        SbVec3f dir(0, 0, -1);
-        rotation.multVec(dir, dir);
-
-        QString headlightDir = QString::fromLatin1("(%1,%2,%3)").arg(dir[0]).arg(dir[1]).arg(dir[2]);
-        grp->SetASCII("HeadlightDirection", headlightDir.toLatin1());
+        grp->SetASCII("HeadlightDirection", qPrintable(headlightDir));
     }
 }
 
@@ -195,18 +250,29 @@ void DlgSettingsLightSources::loadDirection()
 {
     ParameterGrp::handle grp = ui->sliderIntensity1->getWindowParameter();
     SbRotation rotation = lightDragger->rotation.getValue();
-    // NOLINTBEGIN
-    float q1 = float(grp->GetFloat("HeadlightRotationX", rotation[0]));
-    float q2 = float(grp->GetFloat("HeadlightRotationY", rotation[1]));
-    float q3 = float(grp->GetFloat("HeadlightRotationZ", rotation[2]));
-    float q4 = float(grp->GetFloat("HeadlightRotationW", rotation[3]));
-    // NOLINTEND
-    rotation.setValue(q1, q2, q3, q4);
-    lightDragger->rotation.setValue(rotation);
 
-    SbVec3f direction(0, 0, -1);
-    rotation.multVec(direction, direction);
-    view->getHeadlight()->direction = direction;
+    auto get_q = [&grp](const char *name, const float def){return static_cast <float> (grp->GetFloat(name, def));};
+
+    const float q0 = get_q("HeadlightRotationX", rotation[0]),
+                q1 = get_q("HeadlightRotationY", rotation[1]),
+                q2 = get_q("HeadlightRotationZ", rotation[2]),
+                q3 = get_q("HeadlightRotationW", rotation[3]);
+
+    rotation.setValue(q0, q1, q2, q3);
+
+    setLightDirection(rotation, ui->viewer);
+    setLightDraggerDirection(rotation, lightDragger);
+
+    setValueSilently(ui->q0_spnBox, rotation[0]);
+    setValueSilently(ui->q1_spnBox, rotation[1]);
+    setValueSilently(ui->q2_spnBox, rotation[2]);
+    setValueSilently(ui->q3_spnBox, rotation[3]);
+
+    const SbVec3f dir = getDirectionVector(rotation);
+
+    setValueSilently(ui->x_spnBox, dir[0]);
+    setValueSilently(ui->y_spnBox, dir[1]);
+    setValueSilently(ui->z_spnBox, dir[2]);
 }
 
 void DlgSettingsLightSources::toggleLight(bool on)
@@ -219,20 +285,34 @@ void DlgSettingsLightSources::toggleLight(bool on)
 void DlgSettingsLightSources::lightIntensity(int value)
 {
     if (view) {
-        float intensity = float(value) / 100.0F;
-        view->getHeadlight()->intensity = intensity;
+        view->getHeadlight()->intensity = static_cast <float> (value) / 100.0f;
     }
 }
 
 void DlgSettingsLightSources::lightColor()
 {
     if (view) {
-        QColor color = ui->light1Color->color();
-        float red = float(color.redF());
-        float green = float(color.greenF());
-        float blue = float(color.blueF());
-        view->getHeadlight()->color = SbColor(red, green, blue);
+        const QColor color = ui->light1Color->color();
+        view->getHeadlight()->color.setValue(color.redF(),
+                                             color.greenF(),
+                                             color.blueF());
     }
+}
+
+void DlgSettingsLightSources::pushIn(void)
+{
+    if (camera == nullptr)
+        return;
+
+    camera->height = camera->height.getValue() - cam_step;
+}
+
+void DlgSettingsLightSources::pullOut(void)
+{
+    if (camera == nullptr)
+        return;
+
+    camera->height = camera->height.getValue() + cam_step;
 }
 
 void DlgSettingsLightSources::changeEvent(QEvent* event)
@@ -241,6 +321,42 @@ void DlgSettingsLightSources::changeEvent(QEvent* event)
         ui->retranslateUi(this);
     }
     PreferencePage::changeEvent(event);
+}
+
+void DlgSettingsLightSources::updateDraggerQS()
+{
+    const float q0 = ui->q0_spnBox->value(),
+                q1 = ui->q1_spnBox->value(),
+                q2 = ui->q2_spnBox->value(),
+                q3 = ui->q3_spnBox->value();
+
+    const SbRotation rotation {q0, q1, q2, q3};
+
+    setLightDirection(rotation, view);
+    setLightDraggerDirection(rotation, lightDragger);
+
+    const SbVec3f dir = getDirectionVector(rotation);
+
+    setValueSilently(ui->x_spnBox, dir[0]);
+    setValueSilently(ui->y_spnBox, dir[1]);
+    setValueSilently(ui->z_spnBox, dir[2]);
+}
+
+void DlgSettingsLightSources::updateDraggerXYZ()
+{
+    const float x = ui->x_spnBox->value(),
+                y = ui->y_spnBox->value(),
+                z = ui->z_spnBox->value();
+
+    const SbRotation rotation {SbVec3f{0.0f, 0.0f, -1.0f}, SbVec3f{x, y, z}};
+
+    setLightDirection(rotation, view);
+    setLightDraggerDirection(rotation, lightDragger);
+
+    setValueSilently(ui->q0_spnBox, rotation[0]);
+    setValueSilently(ui->q1_spnBox, rotation[1]);
+    setValueSilently(ui->q2_spnBox, rotation[2]);
+    setValueSilently(ui->q3_spnBox, rotation[3]);
 }
 
 

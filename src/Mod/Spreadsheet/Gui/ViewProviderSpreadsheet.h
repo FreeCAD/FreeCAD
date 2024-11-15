@@ -27,7 +27,7 @@
 #include <QPointer>
 
 #include <Gui/ViewProviderDocumentObject.h>
-#include <Gui/ViewProviderPythonFeature.h>
+#include <Gui/ViewProviderFeaturePython.h>
 #include <Mod/Spreadsheet/SpreadsheetGlobal.h>
 #include <Mod/Spreadsheet/Gui/SpreadsheetView.h>
 
@@ -90,7 +90,7 @@ private:
     QPointer<SheetView> view;
 };
 
-using ViewProviderSheetPython = Gui::ViewProviderPythonFeatureT<ViewProviderSheet>;
+using ViewProviderSheetPython = Gui::ViewProviderFeaturePythonT<ViewProviderSheet>;
 
 }  // namespace SpreadsheetGui
 

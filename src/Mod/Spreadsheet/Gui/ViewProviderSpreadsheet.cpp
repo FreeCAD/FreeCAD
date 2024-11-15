@@ -73,31 +73,7 @@ std::vector<std::string> ViewProviderSheet::getDisplayModes() const
 
 QIcon ViewProviderSheet::getIcon() const
 {
-    // clang-format off
-    static const char* const Points_Feature_xpm[] = {
-        "16 16 3 1",
-        "       c None",
-        ".      c #000000",
-        "+      c #FFFFFF",
-        "                ",
-        "                ",
-        "................",
-        ".++++.++++.++++.",
-        ".++++.++++.++++.",
-        "................",
-        ".++++.++++.++++.",
-        ".++++.++++.++++.",
-        "................",
-        ".++++.++++.++++.",
-        ".++++.++++.++++.",
-        "................",
-        ".++++.++++.++++.",
-        ".++++.++++.++++.",
-        "................",
-        "                "};
-    QPixmap px(Points_Feature_xpm);
-    return px;
-    // clang-format on
+    return QIcon(QLatin1String(":icons/Spreadsheet.svg"));
 }
 
 bool ViewProviderSheet::setEdit(int ModNum)
@@ -145,7 +121,9 @@ void ViewProviderSheet::exportAsFile()
                                                         &selectedFilter);
     if (!fileName.isEmpty()) {
         if (sheet) {
-            char delim, quote, escape;
+            char delim = '\0';
+            char quote = '\0';
+            char escape = '\0';
             std::string errMsg = "Export";
             bool isValid = sheet->getCharsFromPrefs(delim, quote, escape, errMsg);
 
@@ -154,7 +132,6 @@ void ViewProviderSheet::exportAsFile()
             }
             else {
                 Base::Console().Error(errMsg.c_str());
-                return;
             }
         }
     }
@@ -229,5 +206,5 @@ PROPERTY_SOURCE_TEMPLATE(SpreadsheetGui::ViewProviderSheetPython, SpreadsheetGui
 /// @endcond
 
 // explicit template instantiation
-template class SpreadsheetGuiExport ViewProviderPythonFeatureT<ViewProviderSheet>;
+template class SpreadsheetGuiExport ViewProviderFeaturePythonT<ViewProviderSheet>;
 }  // namespace Gui

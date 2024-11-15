@@ -87,15 +87,11 @@ class ObjectDressup:
 
         for p in path:
             if p.Name in Path.Geom.CmdMoveArc:
-                curVec = FreeCAD.Vector(
-                    currLocation["X"], currLocation["Y"], currLocation["Z"]
-                )
+                curVec = FreeCAD.Vector(currLocation["X"], currLocation["Y"], currLocation["Z"])
                 arcwire = Path.Geom.edgeForCmd(p, curVec)
                 pointlist = arcwire.discretize(Deflection=d)
                 for point in pointlist:
-                    newcommand = Path.Command(
-                        "G1", {"X": point.x, "Y": point.y, "Z": point.z}
-                    )
+                    newcommand = Path.Command("G1", {"X": point.x, "Y": point.y, "Z": point.z})
                     newcommandlist.append(newcommand)
                     currLocation.update(newcommand.Parameters)
             else:
@@ -127,12 +123,8 @@ class ObjectDressup:
                             newparams = dict(c.Parameters)
                             remapvar = newparams.pop(inAxis, None)
                             if remapvar is not None:
-                                newparams[outAxis] = self._linear2angular(
-                                    obj.Radius, remapvar
-                                )
-                                locdiff = dict(
-                                    set(newparams.items()) - set(currLocation.items())
-                                )
+                                newparams[outAxis] = self._linear2angular(obj.Radius, remapvar)
+                                locdiff = dict(set(newparams.items()) - set(currLocation.items()))
                                 if (
                                     len(locdiff) == 1 and outAxis in locdiff
                                 ):  # pure rotation.  Calculate rotational feed rate
@@ -140,9 +132,7 @@ class ObjectDressup:
                                         feed = c.Parameters["F"]
                                     else:
                                         feed = currLocation["F"]
-                                    newparams.update(
-                                        {"F": self._linear2angular(obj.Radius, feed)}
-                                    )
+                                    newparams.update({"F": self._linear2angular(obj.Radius, feed)})
                                 newcommand = Path.Command(c.Name, newparams)
                                 newcommandlist.append(newcommand)
                                 currLocation.update(newparams)
@@ -262,9 +252,7 @@ class CommandPathDressup:
             "Pixmap": "CAM_Dressup",
             "MenuText": QT_TRANSLATE_NOOP("CAM_DressupAxisMap", "Axis Map"),
             "Accel": "",
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_DressupAxisMap", "Remap one axis to another."
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("CAM_DressupAxisMap", "Remap one axis to another."),
         }
 
     def IsActive(self):
@@ -289,9 +277,7 @@ class CommandPathDressup:
             )
             return
         if selection[0].isDerivedFrom("Path::FeatureCompoundPython"):
-            FreeCAD.Console.PrintError(
-                translate("CAM_Dressup", "Please select a toolpath object")
-            )
+            FreeCAD.Console.PrintError(translate("CAM_Dressup", "Please select a toolpath object"))
             return
 
         # everything ok!
@@ -310,9 +296,7 @@ class CommandPathDressup:
         FreeCADGui.doCommand(
             "obj.ViewObject.Proxy = Path.Dressup.Gui.AxisMap.ViewProviderDressup(obj.ViewObject)"
         )
-        FreeCADGui.doCommand(
-            "Gui.ActiveDocument.getObject(base.Name).Visibility = False"
-        )
+        FreeCADGui.doCommand("Gui.ActiveDocument.getObject(base.Name).Visibility = False")
         FreeCADGui.doCommand("obj.ViewObject.Document.setEdit(obj.ViewObject, 0)")
         # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()
         FreeCAD.ActiveDocument.recompute()

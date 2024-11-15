@@ -813,8 +813,12 @@ infos contains additional info on the solutions. It is a list of tuples:
     </Methode>
     <Methode Name="getElement" Const="true">
       <Documentation>
-        <UserDocu>Returns a SubElement
-getElement(elementName) -> Face | Edge | Vertex
+        <UserDocu>
+Returns a SubElement
+getElement(elementName, [silent = False]) -> Face | Edge | Vertex
+elementName:  SubElement name - i.e. 'Edge1', 'Face3' etc. 
+              Accepts TNP mitigation mapped names as well
+silent:  True to suppress the exception throw if the shape isn't found.
         </UserDocu>
       </Documentation>
     </Methode>
