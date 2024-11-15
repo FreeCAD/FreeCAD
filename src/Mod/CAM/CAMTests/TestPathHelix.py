@@ -25,6 +25,7 @@ import pathlib
 import Draft
 import FreeCAD
 import Path
+import Path.Base.SetupSheetOpPrototype as PathSetupSheetOpPrototype
 import Path.Main.Job as PathJob
 import Path.Op.Helix as PathHelix
 import CAMTests.PathTestUtils as PathTestUtils
@@ -54,6 +55,12 @@ class TestPathHelix(PathTestUtils.PathTestBase):
 
         op = PathHelix.Create("Helix")
         op.Proxy.execute(op)
+
+    def testCreateWithPrototype(self):
+        """Verify a Helix can be created on a SetupSheet's prototype instead of a real document object"""
+
+        ptt = PathSetupSheetOpPrototype.OpPrototype("Helix")
+        op = PathHelix.Create("OpPrototype.Helix", ptt)
 
     def test01(self):
         """Verify Helix generates proper holes from model"""
