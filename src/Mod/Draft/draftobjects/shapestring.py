@@ -132,9 +132,9 @@ class ShapeString(DraftObject):
 
             if obj.FontFile[0] == ".":
                 # FontFile path relative to the FreeCAD file directory.
-                FontFile = os.path.join(os.path.dirname(obj.Document.FileName), obj.FontFile)
+                font_file = os.path.join(os.path.dirname(obj.Document.FileName), obj.FontFile)
             else:
-                FontFile = obj.FontFile
+                font_file = obj.FontFile
 
             fill = obj.MakeFace
             if fill is True:
@@ -143,7 +143,7 @@ class ShapeString(DraftObject):
                 # The 0.03 total area minimum is based on tests with:
                 # 1CamBam_Stick_0.ttf and 1CamBam_Stick_0C.ttf.
                 # See the make_faces function for more information.
-                char = Part.makeWireString("L", FontFile, 1, 0)[0]
+                char = Part.makeWireString("L", font_file, 1, 0)[0]
                 shapes = self.make_faces(char)  # char is list of wires
                 if not shapes:
                     fill = False
@@ -153,7 +153,7 @@ class ShapeString(DraftObject):
                                              Part.Compound(shapes).BoundBox.DiagonalLength,
                                              rel_tol=1e-7)
 
-            chars = Part.makeWireString(obj.String, FontFile, obj.Size, obj.Tracking)
+            chars = Part.makeWireString(obj.String, font_file, obj.Size, obj.Tracking)
             shapes = []
 
             for char in chars:
@@ -171,7 +171,7 @@ class ShapeString(DraftObject):
                         ss_shape = Part.Compound([ss_shape])
                 else:
                     ss_shape = Part.Compound(shapes)
-                cap_char = Part.makeWireString("M", FontFile, obj.Size, obj.Tracking)[0]
+                cap_char = Part.makeWireString("M", font_file, obj.Size, obj.Tracking)[0]
                 cap_height = Part.Compound(cap_char).BoundBox.YMax
                 if obj.ScaleToSize:
                     ss_shape.scale(obj.Size / cap_height)
