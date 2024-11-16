@@ -99,8 +99,9 @@ public:
 
     PyObject* getPyObject() override;
     TechDraw::DrawPage * getPage() { return m_vpPage->getDrawPage(); }
-
     ViewProviderPage* getViewProviderPage() {return m_vpPage;}
+    void savePageExportState(ViewProviderPage* page);
+    void resetPageExportState(ViewProviderPage* page) const;
 
     void setTabText(std::string tabText);
 
@@ -131,7 +132,7 @@ protected:
 
     bool compareSelections(std::vector<Gui::SelectionObject> treeSel, QList<QGraphicsItem*> sceneSel);
     void addSceneItemToTreeSel(QGraphicsItem* sceneItem, std::vector<Gui::SelectionObject> treeSel);
-    void removeSelFromTreeSel(QList<QGraphicsItem*> sceneSel, Gui::SelectionObject& sel);
+    void removeUnselectedTreeSelection(QList<QGraphicsItem*> sceneSel, Gui::SelectionObject& treeSelection);
     std::string getSceneSubName(QGraphicsItem* scene);
     void setTreeToSceneSelect();
     void sceneSelectionManager();
@@ -160,6 +161,8 @@ private:
 
     void getPaperAttributes();
     PagePrinter* m_pagePrinter;
+
+    bool m_docModStateBeforePrint{false};
 
 };
 

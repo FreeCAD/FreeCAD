@@ -386,11 +386,6 @@ bool TaskFemConstraintForce::getReverse() const
 
 TaskFemConstraintForce::~TaskFemConstraintForce() = default;
 
-bool TaskFemConstraintForce::event(QEvent* e)
-{
-    return TaskFemConstraint::KeyEvent(e);
-}
-
 void TaskFemConstraintForce::changeEvent(QEvent* e)
 {
     TaskBox::changeEvent(e);

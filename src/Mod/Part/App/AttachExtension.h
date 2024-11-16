@@ -40,7 +40,6 @@
 
 namespace Part
 {
-#ifdef FC_USE_TNP_FIX
 
 class PartExport AttachEngineException: public Base::Exception
 {
@@ -163,98 +162,6 @@ private:
 
 using AttachExtensionPython = App::ExtensionPythonT<AttachExtension>;
 
-#else
-class PartExport AttachEngineException : public Base::Exception
-{
-public:
-   /// Construction
-   AttachEngineException();
-   explicit AttachEngineException(const char * sMessage);
-   explicit AttachEngineException(const std::string& sMessage);
-   /// Destruction
-   ~AttachEngineException() noexcept override = default;
-};
-
-/**
- * @brief The AttachableObject class is the thing to extend an object with
- * that should be attachable. It includes the required properties, and
- * shortcuts for accessing the attachment math class.
- */
-class PartExport AttachExtension : public App::DocumentObjectExtension
-{
-    EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(Part::AttachableObject);
-public:
-    AttachExtension();
-    ~AttachExtension() override;
-
-    /**
-     * @brief setAttacher sets the AttachEngine object. The class takes the
-     * ownership of the pointer, it will be deleted when the class is
-     * destroyed, or when a new attacher is set. The default attacher is AttachEngine3D.
-     * @param attacher. AttachableObject takes ownership and will delete it eventually.
-     */
-    virtual void setAttacher(Attacher::AttachEngine* attacher);
-
-    /**
-     * @brief changeAttacherType
-     * @param typeName is the typename of new attacher class. Must be derived
-     * from Attacher::AttachEngine.
-     * @return true if attacher was changed. false if attacher is already of the
-     * type requested. Throws if invalid type is supplied.
-     */
-    bool changeAttacherType(const char* typeName);
-
-    Attacher::AttachEngine &attacher() const {if(!_attacher) throw AttachEngineException("AttachableObject: no attacher is set."); return *_attacher;}
-
-
-    App::PropertyString         AttacherType;
-    App::PropertyLinkSubList    AttachmentSupport;
-    App::PropertyEnumeration    MapMode; //see AttachEngine::eMapMode
-    App::PropertyBool           MapReversed; //inverts Z and X internal axes
-    App::PropertyPlacement      AttachmentOffset;
-
-    /**
-      * @brief MapPathParameter is a parameter value for mmNormalToPath (the
-      * sketch will be mapped normal to a curve at point specified by parameter
-      * (from 0.0 to 1.0, from start to end) )
-      */
-    App::PropertyFloat MapPathParameter;
-
-    /** calculate and update the Placement property based on the AttachmentSupport, and
-      * mode. Can throw FreeCAD and OCC exceptions. Returns true if attached,
-      * false if not, throws if attachment failed.
-      */
-    virtual bool positionBySupport();
-
-    /** Return whether this attacher is active
-     */
-    bool isAttacherActive() const;
-
-    virtual bool isTouched_Mapping()
-    {return true; /*AttachmentSupport.isTouched isn't true when linked objects are changed... why?..*/}
-
-    short int extensionMustExecute() override;
-    App::DocumentObjectExecReturn *extensionExecute() override;
-    PyObject* getExtensionPyObject() override;
-    void onExtendedDocumentRestored() override;
-
-protected:
-    void extensionOnChanged(const App::Property* /*prop*/) override;
-    virtual bool extensionHandleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName) override;
-
-    App::PropertyPlacement& getPlacement() const;
-
-public:
-    void updateAttacherVals();
-
-private:
-    Attacher::AttachEngine* _attacher = nullptr;
-    mutable int _active = -1;
-};
-
-
-using AttachExtensionPython = App::ExtensionPythonT<AttachExtension>;
-#endif
 } // namespace Part
 
 #endif // PARTATTACHABLEOBJECT_H

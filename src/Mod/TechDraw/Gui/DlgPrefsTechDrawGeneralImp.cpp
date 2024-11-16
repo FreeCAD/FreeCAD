@@ -76,6 +76,11 @@ void DlgPrefsTechDrawGeneralImp::saveSettings()
     ui->psb_GridSpacing->onSave();
 
     ui->cbMultiSelection->onSave();
+
+    ui->cb_useCameraDirection->onSave();
+    ui->cb_alwaysShowLabel->onSave();
+    ui->cb_SnapViews->onSave();
+    ui->psb_SnapFactor->onSave();
 }
 
 void DlgPrefsTechDrawGeneralImp::loadSettings()
@@ -118,6 +123,12 @@ void DlgPrefsTechDrawGeneralImp::loadSettings()
     bool multiSelectionDefault = PreferencesGui::multiSelection();
     ui->cbMultiSelection->setChecked(multiSelectionDefault);
     ui->cbMultiSelection->onRestore();
+
+    ui->cb_useCameraDirection->onRestore();
+    ui->cb_alwaysShowLabel->onRestore();
+
+    ui->cb_SnapViews->onRestore();
+    ui->psb_SnapFactor->onRestore();
 }
 
 /**

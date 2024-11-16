@@ -23,14 +23,13 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <cmath>
 # include <boost/uuid/uuid_generators.hpp>
 # include <boost/uuid/uuid_io.hpp>
-
+# include <boost/random.hpp>
 # include <Approx_Curve3d.hxx>
 # include <BRep_Tool.hxx>
 # include <BRepAdaptor_Curve.hxx>
-# include <BRepAlgoAPI_Section.hxx>
+# include <Mod/Part/App/FCBRepAlgoAPI_Section.h>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
@@ -40,6 +39,7 @@
 # include <BRepLib.hxx>
 # include <BRepLProp_CLProps.hxx>
 # include <BRepTools.hxx>
+#include <BRepLProp_CurveTool.hxx>
 # include <GC_MakeArcOfCircle.hxx>
 # include <GC_MakeEllipse.hxx>
 #include <GC_MakeCircle.hxx>
@@ -51,8 +51,6 @@
 # include <GProp_GProps.hxx>
 # include <Geom_BSplineCurve.hxx>
 # include <Geom_BezierCurve.hxx>
-# include <Geom_Circle.hxx>
-# include <Geom_TrimmedCurve.hxx>
 # include <GeomAPI_PointsToBSpline.hxx>
 # include <GeomAPI_ProjectPointOnCurve.hxx>
 # include <GeomConvert_BSplineCurveToBezierCurve.hxx>
@@ -474,13 +472,16 @@ std::string BaseGeom::geomTypeName()
 }
 
 //! Convert 1 OCC edge into 1 BaseGeom (static factory method)
-BaseGeomPtr BaseGeom::baseFactory(TopoDS_Edge edge)
+// this should not return nullptr as things will break later on.
+// regular geometry is stored scaled, but cosmetic geometry is stored in 1:1 scale, so the crazy edge
+// check is not appropriate.
+BaseGeomPtr BaseGeom::baseFactory(TopoDS_Edge edge, bool isCosmetic)
 {
     if (edge.IsNull()) {
         Base::Console().Message("BG::baseFactory - input edge is NULL \n");
     }
     //weed out rubbish edges before making geometry
-    if (!validateEdge(edge)) {
+    if (!isCosmetic && !validateEdge(edge)) {
         return nullptr;
     }
 
@@ -534,7 +535,9 @@ BaseGeomPtr BaseGeom::baseFactory(TopoDS_Edge edge)
                 result = std::make_shared<Generic>(edge);
             } else if (bspline->isCircle())  {
                 circEdge = bspline->asCircle(isArc);
-                if (!circEdge.IsNull()) {
+                if (circEdge.IsNull()) {
+                    result = bspline;
+                } else {
                     if (isArc) {
                         result = std::make_shared<AOC>(circEdge);
                     } else {
@@ -612,7 +615,7 @@ std::vector<Base::Vector3d> BaseGeom::intersection(TechDraw::BaseGeomPtr geom2)
         return interPoints;
     }
 
-    BRepAlgoAPI_Section sectionOp(edge1, edge2);
+    FCBRepAlgoAPI_Section sectionOp(edge1, edge2);
     sectionOp.SetFuzzyValue(FUZZYADJUST*EWTOLERANCE);
     sectionOp.SetNonDestructive(true);
 
@@ -1552,9 +1555,12 @@ bool GeometryUtils::isCircle(TopoDS_Edge occEdge)
     return GeometryUtils::getCircleParms(occEdge, radius, center, isArc);
 }
 
-//tries to interpret a BSpline edge as a circle. Used by DVDim for approximate dimensions.
+//! tries to interpret a BSpline edge as a circle. Used by DVDim for approximate dimensions.
+//! calculates the curvature of the spline at a number of places and measures the deviation from the average
+//! a true circle has constant curvature and would have no deviation from the average.
 bool GeometryUtils::getCircleParms(TopoDS_Edge occEdge, double& radius, Base::Vector3d& center, bool& isArc)
 {
+    int testCount = 5;
     double curveLimit = EWTOLERANCE;
     BRepAdaptor_Curve c(occEdge);
     Handle(Geom_BSplineCurve) spline = c.BSpline();
@@ -1562,7 +1568,6 @@ bool GeometryUtils::getCircleParms(TopoDS_Edge occEdge, double& radius, Base::Ve
     f = c.FirstParameter();
     l = c.LastParameter();
     double parmRange = fabs(l - f);
-    int testCount = 6;
     double parmStep = parmRange/testCount;
     std::vector<double> curvatures;
     std::vector<gp_Pnt> centers;
@@ -1571,12 +1576,8 @@ bool GeometryUtils::getCircleParms(TopoDS_Edge occEdge, double& radius, Base::Ve
     Base::Vector3d sumCenter, valueAt;
     try {
         GeomLProp_CLProps prop(spline, f, 3, Precision::Confusion());
-        curvatures.push_back(prop.Curvature());
-        sumCurvature += prop.Curvature();
-        prop.CentreOfCurvature(curveCenter);
-        centers.push_back(curveCenter);
-        sumCenter += DrawUtil::toVector3d(curveCenter);
 
+        // check only the interior points of the edge
         for (int i = 1; i < (testCount - 1); i++) {
             prop.SetParameter(parmStep * i);
             curvatures.push_back(prop.Curvature());
@@ -1585,70 +1586,83 @@ bool GeometryUtils::getCircleParms(TopoDS_Edge occEdge, double& radius, Base::Ve
             centers.push_back(curveCenter);
             sumCenter += DrawUtil::toVector3d(curveCenter);
         }
-        prop.SetParameter(l);
-        curvatures.push_back(prop.Curvature());
-        sumCurvature += prop.Curvature();
-        prop.CentreOfCurvature(curveCenter);
-        centers.push_back(curveCenter);
-        sumCenter += DrawUtil::toVector3d(curveCenter);
+
     }
     catch (Standard_Failure&) {
-        // Base::Console().Error("OCC error.  Could not interpret BSpline as Circle\n");
         return false;
     }
-    Base::Vector3d avgCenter = sumCenter/testCount;
+    Base::Vector3d avgCenter = sumCenter/ centers.size();
 
-    double avgCurve = sumCurvature/testCount;
+    double avgCurve = sumCurvature/ centers.size();
     double errorCurve  = 0;
+    // sum the errors in curvature
     for (auto& cv: curvatures) {
-        errorCurve += fabs(avgCurve - cv);    //fabs???
+        errorCurve += avgCurve - cv;
     }
-    errorCurve  = errorCurve/testCount;
+
+    double errorCenter{0};
+    for (auto& observe : centers) {
+        auto error = (DU::toVector3d(observe)- avgCenter).Length();
+        errorCenter += error;
+    }
+
+    // calculate average error in curvature.  we are only interested in the magnitude of the error
+    errorCurve  = fabs(errorCurve / curvatures.size());
+    // calculate the average error in center of curvature
+    errorCenter = errorCenter / curvatures.size();
+    auto edgeLong = edgeLength(occEdge);
+    double centerLimit = edgeLong * 0.01;
 
     isArc = !c.IsClosed();
     bool isCircle(false);
-    if ( errorCurve < curveLimit ) {
+    if ( errorCurve <= curveLimit  &&
+         errorCenter <= centerLimit) {
         isCircle = true;
         radius = 1.0/avgCurve;
         center = avgCenter;
     }
+
     return isCircle;
 }
 
 //! make a circle or arc of circle Edge from BSpline Edge
-//! assumes the spline is generally circular but does not check
+// Note that the input edge has been inverted by GeometryObject, so +Y points down.
 TopoDS_Edge GeometryUtils::asCircle(TopoDS_Edge splineEdge, bool& arc)
 {
-    BRepAdaptor_Curve curveAdapt(splineEdge);
+    double radius{0};
+    Base::Vector3d center;
+    bool isArc = false;
+    bool canMakeCircle = GeometryUtils::getCircleParms(splineEdge, radius, center, isArc);
+    if (!canMakeCircle) {
+        throw Base::RuntimeError("GU::asCircle received non-circular edge!");
+    }
+
+    gp_Pnt gCenter = DU::togp_Pnt(center);
+    gp_Dir gNormal{0, 0, 1};
+    Handle(Geom_Circle) circleFromParms = GC_MakeCircle(gCenter, gNormal, radius);
 
     // find the ends of the edge from the underlying curve
-    Handle(Geom_Curve) curve = curveAdapt.Curve().Curve();
+    BRepAdaptor_Curve curveAdapt(splineEdge);
     double firstParam = curveAdapt.FirstParameter();
     double lastParam = curveAdapt.LastParameter();
     gp_Pnt startPoint = curveAdapt.Value(firstParam);
     gp_Pnt endPoint = curveAdapt.Value(lastParam);
 
-    arc = true;
-    if (startPoint.IsEqual(endPoint, 0.001)) {    //more reliable than IsClosed flag
+    if (startPoint.IsEqual(endPoint, EWTOLERANCE)) {    //more reliable than IsClosed flag
         arc = false;
+        return BRepBuilderAPI_MakeEdge(circleFromParms);
     }
+
+    arc = true;
     double midRange = (lastParam + firstParam) / 2;
     gp_Pnt midPoint = curveAdapt.Value(midRange);
-    Handle(Geom_Circle) circle3Points = GC_MakeCircle(startPoint, midPoint, endPoint);
 
-    if (circle3Points.IsNull()) {
-        return {};
-    }
+    GC_MakeArcOfCircle mkArc(startPoint, midPoint, endPoint);
+    auto circleArc = mkArc.Value();
 
-    if (!arc) {
-        // whole circle
-        return BRepBuilderAPI_MakeEdge(circle3Points);
-    }
-
-    Handle(Geom_TrimmedCurve) circleArc =
-                                GC_MakeArcOfCircle (startPoint, midPoint, endPoint);
     return BRepBuilderAPI_MakeEdge(circleArc);
 }
+
 
 bool GeometryUtils::isLine(TopoDS_Edge occEdge)
 {
@@ -1702,5 +1716,21 @@ TopoDS_Edge GeometryUtils::asLine(TopoDS_Edge occEdge)
 
     TopoDS_Edge result = BRepBuilderAPI_MakeEdge(start, end);
     return result;
+}
+
+
+double GeometryUtils::edgeLength(TopoDS_Edge occEdge)
+{
+    BRepAdaptor_Curve adapt(occEdge);
+    const Handle(Geom_Curve) curve = adapt.Curve().Curve();
+    double first = BRepLProp_CurveTool::FirstParameter(adapt);
+    double last = BRepLProp_CurveTool::LastParameter(adapt);
+    try {
+        GeomAdaptor_Curve adaptor(curve);
+        return GCPnts_AbscissaPoint::Length(adaptor,first,last,Precision::Confusion());
+    }
+    catch (Standard_Failure& exc) {
+        THROWM(Base::CADKernelError, exc.GetMessageString())
+    }
 }
 

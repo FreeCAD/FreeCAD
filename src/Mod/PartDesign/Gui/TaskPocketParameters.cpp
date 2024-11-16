@@ -87,7 +87,7 @@ void TaskPocketParameters::updateUI(int index)
 
 void TaskPocketParameters::onModeChanged(int index)
 {
-    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
+    auto pcPocket = getObject<PartDesign::Pocket>();
 
     switch (static_cast<Mode>(index)) {
         case Mode::Dimension:

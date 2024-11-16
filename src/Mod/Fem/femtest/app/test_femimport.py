@@ -125,6 +125,7 @@ class TestObjectExistance(unittest.TestCase):
             "Fem::FemAnalysisPython",
             "Fem::FemMeshObject",
             "Fem::FemMeshObjectPython",
+            "Fem::FemMeshShapeBaseObjectPython",
             "Fem::FemMeshShapeNetgenObject",
             "Fem::FemMeshShapeObject",
             "Fem::FemResultObject",

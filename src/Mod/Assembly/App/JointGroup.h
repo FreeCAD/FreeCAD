@@ -49,6 +49,8 @@ public:
     {
         return "AssemblyGui::ViewProviderJointGroup";
     }
+
+    std::vector<App::DocumentObject*> getJoints();
 };
 
 

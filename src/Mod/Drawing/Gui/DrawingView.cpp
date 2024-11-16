@@ -461,6 +461,9 @@ bool DrawingView::onHasMsg(const char* pMsg) const
     else if (strcmp("PrintPdf", pMsg) == 0) {
         return true;
     }
+    else if (strcmp("AllowsOverlayOnHover", pMsg) == 0) {
+        return true;
+    }
     return false;
 }
 

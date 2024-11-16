@@ -86,7 +86,7 @@ void TaskPadParameters::updateUI(int index)
 
 void TaskPadParameters::onModeChanged(int index)
 {
-    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
+   auto pcPad = getObject<PartDesign::Pad>();
 
     switch (static_cast<Mode>(index)) {
     case Mode::Dimension:

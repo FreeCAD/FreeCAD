@@ -40,9 +40,11 @@
 #include <vtkDoubleArray.h>
 #include <vtkHexahedron.h>
 #include <vtkIdList.h>
+#include <vtkLine.h>
 #include <vtkPointData.h>
 #include <vtkPyramid.h>
 #include <vtkQuad.h>
+#include <vtkQuadraticEdge.h>
 #include <vtkQuadraticHexahedron.h>
 #include <vtkQuadraticPyramid.h>
 #include <vtkQuadraticQuad.h>
@@ -166,6 +168,13 @@ void FemVTKTools::importVTKMesh(vtkSmartPointer<vtkDataSet> dataset, FemMesh* me
         std::vector<int> ids;
         fillMeshElementIds(cell, ids);
         switch (cell->GetCellType()) {
+            // 1D edges
+            case VTK_LINE:  // seg2
+                meshds->AddEdgeWithID(ids[0], ids[1], iCell + 1);
+                break;
+            case VTK_QUADRATIC_EDGE:  // seg3
+                meshds->AddEdgeWithID(ids[0], ids[1], ids[2], iCell + 1);
+                break;
             // 2D faces
             case VTK_TRIANGLE:  // tria3
                 meshds->AddFaceWithID(ids[0], ids[1], ids[2], iCell + 1);
@@ -282,7 +291,7 @@ void FemVTKTools::importVTKMesh(vtkSmartPointer<vtkDataSet> dataset, FemMesh* me
             // not handled cases
             default: {
                 Base::Console().Error(
-                    "Only common 2D and 3D Cells are supported in VTK mesh import\n");
+                    "Only common 1D, 2D and 3D Cells are supported in VTK mesh import\n");
                 break;
             }
         }
@@ -328,6 +337,36 @@ FemMesh* FemVTKTools::readVTKMesh(const char* filename, FemMesh* mesh)
     Base::Console().Log("    %f: Done \n",
                         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
     return mesh;
+}
+
+void exportFemMeshEdges(vtkSmartPointer<vtkUnstructuredGrid> grid,
+                        const SMDS_EdgeIteratorPtr& aEdgeIter)
+{
+    Base::Console().Log("  Start: VTK mesh builder edges.\n");
+
+    vtkSmartPointer<vtkCellArray> elemArray = vtkSmartPointer<vtkCellArray>::New();
+    std::vector<int> types;
+
+    while (aEdgeIter->more()) {
+        const SMDS_MeshEdge* aEdge = aEdgeIter->next();
+        // edge
+        if (aEdge->GetEntityType() == SMDSEntity_Edge) {
+            fillVtkArray<vtkLine>(elemArray, types, aEdge);
+        }
+        // quadratic edge
+        else if (aEdge->GetEntityType() == SMDSEntity_Quad_Edge) {
+            fillVtkArray<vtkQuadraticEdge>(elemArray, types, aEdge);
+        }
+        else {
+            throw Base::TypeError("Edge not yet supported by FreeCAD's VTK mesh builder\n");
+        }
+    }
+
+    if (elemArray->GetNumberOfCells() > 0) {
+        grid->SetCells(types.data(), elemArray);
+    }
+
+    Base::Console().Log("  End: VTK mesh builder edges.\n");
 }
 
 void exportFemMeshFaces(vtkSmartPointer<vtkUnstructuredGrid> grid,
@@ -449,6 +488,10 @@ void FemVTKTools::exportVTKMesh(const FemMesh* mesh,
     const vtkIdType nNodes = grid->GetNumberOfPoints();
     Base::Console().Log("    Size of nodes in VTK grid: %i.\n", nNodes);
     Base::Console().Log("  End: VTK mesh builder nodes.\n");
+
+    // edges
+    SMDS_EdgeIteratorPtr aEdgeIter = meshDS->edgesIterator();
+    exportFemMeshEdges(grid, aEdgeIter);
 
     // faces
     SMDS_FaceIteratorPtr aFaceIter = meshDS->facesIterator();

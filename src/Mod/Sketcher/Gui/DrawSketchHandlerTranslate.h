@@ -485,14 +485,14 @@ void DSHTranslateController::configureToolWidget()
     if (!init) {  // Code to be executed only upon initialisation
         toolWidget->setCheckboxLabel(
             WCheckbox::FirstBox,
-            QApplication::translate("TaskSketcherTool_c1_translate", "Clone constraints"));
+            QApplication::translate("TaskSketcherTool_c1_translate", "Apply equal constraints"));
         toolWidget->setCheckboxToolTip(
             WCheckbox::FirstBox,
-            QApplication::translate(
-                "TaskSketcherTool_c1_translate",
-                "This concerns the datum constraints like distances. If you activate Clone, "
-                "then the tool will copy the datum. Else it will try to replace them with "
-                "equalities between the initial geometries and the new copies."));
+            QApplication::translate("TaskSketcherTool_c1_translate",
+                                    "If this option is selected dimensional constraints are "
+                                    "excluded from the operation.\n"
+                                    "Instead equal constraints are applied between the original "
+                                    "objects and their copies."));
     }
 
     onViewParameters[OnViewParameter::First]->setLabelType(Gui::SoDatumLabel::DISTANCEX);
@@ -640,8 +640,8 @@ void DSHTranslateController::adaptParameters(Base::Vector2d onSketchPos)
         } break;
         case SelectMode::SeekSecond: {
             if (!onViewParameters[OnViewParameter::Third]->isSet) {
-                onViewParameters[OnViewParameter::Third]->setSpinboxValue(
-                    (onSketchPos - handler->referencePoint).Length());
+                double length = (onSketchPos - handler->referencePoint).Length();
+                setOnViewParameterValue(OnViewParameter::Third, length);
             }
 
             Base::Vector2d vec2d = Base::Vector2d(handler->firstTranslationVector.x,
@@ -650,8 +650,7 @@ void DSHTranslateController::adaptParameters(Base::Vector2d onSketchPos)
             double range = angle * 180 / M_PI;
 
             if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
-                onViewParameters[OnViewParameter::Fourth]->setSpinboxValue(range,
-                                                                           Base::Unit::Angle);
+                setOnViewParameterValue(OnViewParameter::Fourth, range, Base::Unit::Angle);
             }
 
             Base::Vector3d start = toVector3d(handler->referencePoint);
@@ -663,8 +662,8 @@ void DSHTranslateController::adaptParameters(Base::Vector2d onSketchPos)
         } break;
         case SelectMode::SeekThird: {
             if (!onViewParameters[OnViewParameter::Fifth]->isSet) {
-                onViewParameters[OnViewParameter::Fifth]->setSpinboxValue(
-                    (onSketchPos - handler->referencePoint).Length());
+                double length = (onSketchPos - handler->referencePoint).Length();
+                setOnViewParameterValue(OnViewParameter::Fifth, length);
             }
 
             Base::Vector2d vec2d = Base::Vector2d(handler->secondTranslationVector.x,

@@ -109,6 +109,8 @@ def check_member_for_solver_calculix(analysis, solver, mesh, member):
     mat_ref_shty = ""
     for m in member.mats_linear:
         ref_shty = femutils.get_refshape_type(m["Object"])
+        if ref_shty == "Compound":
+            ref_shty = "Solid"
         if not mat_ref_shty:
             mat_ref_shty = ref_shty
         if mat_ref_shty and ref_shty and ref_shty != mat_ref_shty:

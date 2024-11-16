@@ -319,8 +319,8 @@ void TaskFemConstraintRigidBody::addToSelection()
             }
             for (size_t iStr = 0; iStr < (SubElements.size()); ++iStr) {
                 if (SubElements[iStr].find(searchStr) == std::string::npos) {
-                    QString msg = tr(
-                        "Only one type of selection (vertex,face or edge) per constraint allowed!");
+                    QString msg = tr("Only one type of selection (vertex, face or edge) per "
+                                     "constraint allowed!");
                     QMessageBox::warning(this, tr("Selection error"), msg);
                     addMe = false;
                     break;
@@ -617,11 +617,6 @@ std::vector<std::string> TaskFemConstraintRigidBody::getRotationalMode() const
     rotModes[2] = ui->cb_z_rot_mode->currentText().toStdString();
 
     return rotModes;
-}
-
-bool TaskFemConstraintRigidBody::event(QEvent* e)
-{
-    return TaskFemConstraint::KeyEvent(e);
 }
 
 void TaskFemConstraintRigidBody::changeEvent(QEvent*)

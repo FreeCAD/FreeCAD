@@ -102,7 +102,11 @@ void TaskTransformedParameters::setupUI()
 
     // Create context menu
     auto action = new QAction(tr("Remove"), this);
-    action->setShortcut(QKeySequence::Delete);
+    {
+        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
+        auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
+        action->setShortcut(QKeySequence(shortcut));
+    }
     // display shortcut behind the context menu entry
     action->setShortcutVisibleInContextMenu(true);
     ui->listWidgetFeatures->addAction(action);
@@ -615,13 +619,10 @@ void TaskTransformedParameters::indexesMoved()
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgTransformedParameters::TaskDlgTransformedParameters(
-    ViewProviderTransformed* TransformedView_)
-    : TaskDlgFeatureParameters(TransformedView_)
+TaskDlgTransformedParameters::TaskDlgTransformedParameters(ViewProviderTransformed* viewProvider)
+    : TaskDlgFeatureParameters(viewProvider)
 {
-    assert(vp);
-    message = new TaskTransformedMessages(getTransformedView());
-
+    message = new TaskTransformedMessages(viewProvider);
     Content.push_back(message);
 }
 
@@ -639,7 +640,6 @@ bool TaskDlgTransformedParameters::reject()
 {
     // ensure that we are not in selection mode
     parameter->exitSelectionMode();
-
     return TaskDlgFeatureParameters::reject();
 }
 

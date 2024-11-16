@@ -70,8 +70,16 @@ class ifc_vp_object:
                 obj.ViewObject.DiffuseColor = colors
 
     def getIcon(self):
-        if self.Object.IfcClass == "IfcGroup":
-            from PySide import QtGui
+        from PySide import QtCore, QtGui  # lazy import
+        
+        rclass = self.Object.IfcClass.replace("StandardCase","") 
+        ifcicon = ":/icons/IFC/" + rclass + ".svg"
+        if QtCore.QFile.exists(ifcicon):
+            if getattr(self, "ifcclass", "") != rclass:
+                self.ifcclass = rclass
+                self.ifcicon = overlay(ifcicon, ":/icons/IFC.svg")
+            return getattr(self, "ifcicon", overlay(ifcicon, ":/icons/IFC.svg"))
+        elif self.Object.IfcClass == "IfcGroup":
             return QtGui.QIcon.fromTheme("folder", QtGui.QIcon(":/icons/folder.svg"))
         elif self.Object.ShapeMode == "Shape":
             return ":/icons/IFC_object.svg"
@@ -187,13 +195,14 @@ class ifc_vp_object:
         tree = mw.findChild(QtGui.QDockWidget, "Model")
         model = tree.findChild(QtGui.QWidget, "Model")
         splitter = model.findChild(QtGui.QSplitter)
-        tree = splitter.children()[1].children()[0]
-        it = tree.findItems(obj.Label, QtCore.Qt.MatchRecursive, 0)
-        if it:
-            it[0].setExpanded(True)
-            for i in range(it[0].childCount()):
-                it[0].child(i).setExpanded(True)
-
+        if splitter and len(splitter.children()) > 1:
+            if splitter.children()[1].children():
+                tree = splitter.children()[1].children()[0]
+                it = tree.findItems(obj.Label, QtCore.Qt.MatchRecursive, 0)
+                if it:
+                    it[0].setExpanded(True)
+                    for i in range(it[0].childCount()):
+                        it[0].child(i).setExpanded(True)
         return nc
 
     def collapseChildren(self):
@@ -314,12 +323,18 @@ class ifc_vp_object:
     def dropObject(self, vobj, incoming_object):
         """Add an object to the view provider by d&d"""
 
-        from nativeifc import ifc_tools  # lazy import
+        from PySide import QtCore  # lazy import
+        # delay the action to prevent the object to be deleted
+        # before the end of the drop
+        QtCore.QTimer.singleShot(100, lambda: self.onDrop(incoming_object))
 
-        parent = vobj.Object
-        ifc_tools.aggregate(incoming_object, parent)
-        if self.hasChildren(parent):
-            self.expandChildren(parent)
+    def onDrop(self, incoming_object):
+        """Delayed action to be taken when dropping an object"""
+
+        from nativeifc import ifc_tools  # lazy import
+        ifc_tools.aggregate(incoming_object, self.Object)
+        if self.hasChildren(self.Object):
+            self.expandChildren(self.Object)
 
     def activate(self):
         """Marks this container as active"""
@@ -419,10 +434,11 @@ class ifc_vp_document(ifc_vp_object):
 
         from nativeifc import ifc_tools  # lazy import
 
-        get_filepath(self.Object)
-        ifc_tools.save(self.Object)
-        self.replace_file(self.Object, sf)
-        self.Object.Document.recompute()
+        sf = get_filepath(self.Object)
+        if sf:
+            ifc_tools.save(self.Object)
+            self.replace_file(self.Object, sf)
+            self.Object.Document.recompute()
 
     def replace_file(self, obj, newfile):
         """Asks the user if the attached file path needs to be replaced"""
@@ -627,5 +643,5 @@ def get_filepath(project):
         if not sf.lower().endswith(".ifc"):
             sf += ".ifc"
         project.IfcFilePath = sf
-        return True
-    return False
+        return sf
+    return None

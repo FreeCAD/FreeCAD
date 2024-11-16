@@ -55,10 +55,6 @@ __url__    = "https://www.freecad.org"
 DEBUG = False  # Set to True to see debug messages. Otherwise, totally silent
 ZOOMOUT = True  # Set to False to not zoom extents after import
 
-# Save the Python open function because it will be redefined
-if open.__module__ in ['__builtin__', 'io']:
-    pyopen = open
-
 # Templates and other definitions ****
 # which IFC type must create which FreeCAD type
 
@@ -743,7 +739,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
 
         elif (preferences['MERGE_MODE_ARCH'] == 1 and archobj) or (preferences['MERGE_MODE_STRUCT'] == 0 and not archobj):
 
-            # non-parametric Arch objects (just Arch components with a shape)
+            # non-parametric BIM objects (just Arch components with a shape)
 
             if ptype in ["IfcSite","IfcBuilding","IfcBuildingStorey"]:
                 for freecadtype,ifctypes in typesmap.items():

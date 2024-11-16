@@ -65,11 +65,11 @@ class TaskDlgPocketParameters : public TaskDlgExtrudeParameters
 public:
     explicit TaskDlgPocketParameters(ViewProviderPocket *PocketView);
 
-    ViewProviderPocket* getPocketView() const
-    { return static_cast<ViewProviderPocket*>(vp); }
-
 protected:
-    TaskExtrudeParameters* getTaskParameters() override { return parameters; }
+    TaskExtrudeParameters* getTaskParameters() override
+    {
+        return parameters;
+    }
 
 private:
     TaskPocketParameters* parameters;

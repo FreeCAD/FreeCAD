@@ -29,10 +29,10 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief mesh boundary layer object
 
-from . import base_fempythonobject
+from . import base_femmeshelement
 
 
-class MeshBoundaryLayer(base_fempythonobject.BaseFemPythonObject):
+class MeshBoundaryLayer(base_femmeshelement.BaseFemMeshElement):
     """
     The MeshBoundaryLayer object
     """
@@ -68,11 +68,3 @@ class MeshBoundaryLayer(base_fempythonobject.BaseFemPythonObject):
         )
         obj.setPropertyStatus("GrowthRate", "LockDynamic")
         obj.GrowthRate = 1.5
-
-        obj.addProperty(
-            "App::PropertyLinkSubList",
-            "References",
-            "MeshBoundaryLayerShapes",
-            "List of FEM mesh region shapes",
-        )
-        obj.setPropertyStatus("References", "LockDynamic")

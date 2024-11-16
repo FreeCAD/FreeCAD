@@ -47,7 +47,7 @@
 
 #ifndef _PreComp_
 #include <BRepAdaptor_Surface.hxx>
-#include <BRepAlgoAPI_Cut.hxx>
+#include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
@@ -80,6 +80,7 @@
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
+#include <Base/Tools.h>
 
 #include <Mod/Part/App/PartFeature.h>
 
@@ -509,7 +510,7 @@ void DrawViewSection::makeSectionCut(const TopoDS_Shape& baseShape)
     TopExp_Explorer expl(myShape, TopAbs_SOLID);
     for (; expl.More(); expl.Next()) {
         const TopoDS_Solid& s = TopoDS::Solid(expl.Current());
-        BRepAlgoAPI_Cut mkCut(s, m_cuttingTool);
+        FCBRepAlgoAPI_Cut mkCut(s, m_cuttingTool);
         if (!mkCut.IsDone()) {
             Base::Console().Warning("DVS: Section cut has failed in %s\n", getNameInDocument());
             continue;
@@ -526,7 +527,7 @@ void DrawViewSection::makeSectionCut(const TopoDS_Shape& baseShape)
     // second cut if requested.  Sometimes the first cut includes extra uncut
     // pieces.
     if (trimAfterCut()) {
-        BRepAlgoAPI_Cut mkCut2(cutPieces, m_cuttingTool);
+        FCBRepAlgoAPI_Cut mkCut2(cutPieces, m_cuttingTool);
         if (mkCut2.IsDone()) {
             m_cutPieces = mkCut2.Shape();
             if (debugSection()) {
@@ -1152,20 +1153,14 @@ gp_Ax2 DrawViewSection::getSectionCS() const
     return sectionCS;
 }
 
-gp_Ax2 DrawViewSection::getProjectionCS(const Base::Vector3d pt) const
+
+//! return the center of the shape resulting from the cut operation
+Base::Vector3d DrawViewSection::getCutCentroid() const
 {
-    Base::Vector3d vNormal = SectionNormal.getValue();
-    gp_Dir gNormal(vNormal.x, vNormal.y, vNormal.z);
-    Base::Vector3d vXDir = getXDirection();
-    gp_Dir gXDir(vXDir.x, vXDir.y, vXDir.z);
-    if (DrawUtil::fpCompare(fabs(gNormal.Dot(gXDir)), 1.0)) {
-        // can not build a gp_Ax2 from these values
-        throw Base::RuntimeError(
-            "DVS::getProjectionCS - SectionNormal and XDirection are parallel");
-    }
-    gp_Pnt gOrigin(pt.x, pt.y, pt.z);
-    return {gOrigin, gNormal, gXDir};
+    gp_Pnt inputCenter = ShapeUtils::findCentroid(m_cutPieces, getProjectionCS());
+    return Base::Vector3d(inputCenter.X(), inputCenter.Y(), inputCenter.Z());
 }
+
 
 std::vector<LineSet> DrawViewSection::getDrawableLines(int i)
 {

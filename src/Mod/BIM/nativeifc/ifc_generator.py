@@ -30,16 +30,18 @@ import FreeCAD
 from FreeCAD import Base
 import Part
 import ifcopenshell
+from ifcopenshell.util import element
 from nativeifc import ifc_tools
 import multiprocessing
 import FreeCADGui
 from pivy import coin
+from PySide import QtCore
 
 
 def generate_geometry(obj, cached=False):
     """Sets the geometry of the given object from a corresponding IFC element.
     This is the main function called by the execute method of FreeCAD document objects
-    It is only meant to be called form there, as it is always the responsability of the
+    It is only meant to be called form there, as it is always the responsibility of the
     NativeIFC document object to know when it needs to regenerate its geometry.
 
     The generate_geometry will call either generate_shape or generate_coin, depending
@@ -75,6 +77,7 @@ def generate_geometry(obj, cached=False):
     elif obj.ViewObject and obj.ShapeMode == "Coin":
         node, placement = generate_coin(ifcfile, elements, cached)
         if node:
+            #QtCore.QTimer.singleShot(0, lambda: set_representation(obj.ViewObject, node))
             set_representation(obj.ViewObject, node)
             colors = node[0]
         else:
@@ -85,7 +88,7 @@ def generate_geometry(obj, cached=False):
 
     # set shape and diffuse colors
     if colors:
-        ifc_tools.set_colors(obj, colors)  # TODO migrate here?
+        QtCore.QTimer.singleShot(0, lambda: ifc_tools.set_colors(obj, colors))  # TODO migrate here?
 
 
 def generate_shape(ifcfile, elements, cached=False):
@@ -139,7 +142,12 @@ def generate_shape(ifcfile, elements, cached=False):
             brep = item.geometry.brep_data
             shape = Part.Shape()
             shape.importBrepFromString(brep, False)
-            mat = ifc_tools.get_freecad_matrix(item.transformation.matrix.data)
+            if hasattr(item.transformation.matrix, "data"):
+                # IfcOpenShell 0.7
+                mat = ifc_tools.get_freecad_matrix(item.transformation.matrix.data)
+            else:
+                # IfcOpenShell 0.8
+                mat = ifc_tools.get_freecad_matrix(item.transformation.matrix)
             shape.scale(ifc_tools.SCALE)
             shape.transformShape(mat)
             shapes.append(shape)
@@ -247,7 +255,12 @@ def generate_coin(ifcfile, elements, cached=False):
             # colors
             if item.geometry.materials:
                 color = item.geometry.materials[0].diffuse
-                color = (float(color[0]), float(color[1]), float(color[2]))
+                if hasattr(color, "r") and hasattr(color, "g"):
+                    # IfcOpenShell 0.8
+                    color = (color.r(), color.g(), color.b())
+                else:
+                    # IfcOpenShell 0.7
+                    color = (float(color[0]), float(color[1]), float(color[2]))
                 trans = item.geometry.materials[0].transparency
                 if trans >= 0:
                     color += (float(trans),)
@@ -255,7 +268,12 @@ def generate_coin(ifcfile, elements, cached=False):
                 color = (0.85, 0.85, 0.85)
 
             # verts
-            matrix = ifc_tools.get_freecad_matrix(item.transformation.matrix.data)
+            if hasattr(item.transformation.matrix, "data"):
+                # IfcOpenShell 0.7
+                matrix = ifc_tools.get_freecad_matrix(item.transformation.matrix.data)
+            else:
+                # IfcOpenShell 0.8
+                matrix = ifc_tools.get_freecad_matrix(item.transformation.matrix)
             placement = FreeCAD.Placement(matrix)
             verts = item.geometry.verts
             verts = [FreeCAD.Vector(verts[i : i + 3]) for i in range(0, len(verts), 3)]
@@ -338,9 +356,12 @@ def get_decomposed_elements(element, obj=None):
     else:
         # add child elements that are not yet rendered
         child_ids = [c.StepId for c in obj.Group if hasattr(c, "StepId")]
-    for child in ifcopenshell.util.element.get_decomposition(
-        element, is_recursive=False
-    ):
+    try:
+        dec = ifcopenshell.util.element.get_decomposition(element, is_recursive=False)
+    except:
+        # older version of IfcOpenShell
+        dec = ifcopenshell.util.element.get_decomposition(element)
+    for child in dec:
         if child.id() not in child_ids:
             if child not in result:
                 result.append(child)
@@ -357,13 +378,24 @@ def get_geom_iterator(ifcfile, elements, brep_mode):
     if we want brep data or not"""
 
     settings = ifcopenshell.geom.settings()
-    if brep_mode:
-        settings.set(settings.DISABLE_TRIANGULATION, True)
-        settings.set(settings.USE_BREP_DATA, True)
-        settings.set(settings.SEW_SHELLS, True)
     body_contexts = ifc_tools.get_body_context_ids(ifcfile)  # TODO migrate here?
-    if body_contexts:
-        settings.set_context_ids(body_contexts)
+    if brep_mode:
+        if hasattr(settings, "DISABLE_TRIANGULATION"):
+            # IfcOpenShell 0.7
+            settings.set(settings.DISABLE_TRIANGULATION, True)
+            settings.set(settings.USE_BREP_DATA, True)
+            settings.set(settings.SEW_SHELLS, True)
+            if body_contexts:
+                settings.set_context_ids(body_contexts)
+        elif hasattr(settings, "ITERATOR_OUTPUT"):
+            # IfcOpenShell 0.8
+            settings.set("ITERATOR_OUTPUT", ifcopenshell.ifcopenshell_wrapper.SERIALIZED)
+            if body_contexts:
+                # Is this the right way? It works, but not sure.
+                settings.set("CONTEXT_IDENTIFIERS", [str(s) for s in body_contexts])
+        else:
+            # We print a debug message but we continue
+            print("DEBUG: ifc_tools.get_geom_iterator: Iterator could not be set up correctly")
     cores = multiprocessing.cpu_count()
     iterator = ifcopenshell.geom.iterator(settings, ifcfile, cores, include=elements)
     if not iterator.initialize():

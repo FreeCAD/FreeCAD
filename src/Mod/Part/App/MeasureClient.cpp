@@ -48,6 +48,7 @@
 #include <App/DocumentObject.h>
 #include <App/MeasureManager.h>
 #include <App/DocumentObserver.h>
+#include <App/GeoFeature.h>
 #include <Base/Console.h>
 #include <Base/Matrix.h>
 #include <Base/Rotation.h>
@@ -59,6 +60,7 @@
 #include "MeasureClient.h"
 
 using namespace Part;
+
 
 // From: https://github.com/Celemation/FreeCAD/blob/joel_selection_summary_demo/src/Gui/SelectionSummary.cpp
 
@@ -89,20 +91,21 @@ static float getRadius(TopoDS_Shape& edge){
     return 0.0;
 }
 
-TopoDS_Shape getLocatedShape(const App::SubObjectT& subject)
+TopoDS_Shape getLocatedShape(const App::SubObjectT& subject, Base::Matrix4D* mat = nullptr)
 {
-    App::DocumentObject* obj = subject.getObject();
+    App::DocumentObject* obj = subject.getSubObjectList().back();
     if (!obj) {
         return {};
     }
-    Part::TopoShape shape = Part::Feature::getTopoShape(obj);
+
+    Part::TopoShape shape = Part::Feature::getTopoShape(obj, subject.getElementName(), false, mat, nullptr, true);
     if (shape.isNull()) {
+        Base::Console().Log("Part::MeasureClient::getLocatedShape: Did not retrieve shape for %s, %s\n", obj->getNameInDocument(), subject.getElementName());
         return {};
     }
-    auto geoFeat = dynamic_cast<App::GeoFeature*>(obj);
-    if (geoFeat) {
-        shape.setPlacement(geoFeat->globalPlacement());
-    }
+
+    auto placement = App::GeoFeature::getGlobalPlacement(obj, subject.getObject(), subject.getSubName());
+    shape.setPlacement(placement);
 
     // Don't get the subShape from datum elements
     if (obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
@@ -180,31 +183,22 @@ bool getShapeFromStrings(TopoDS_Shape &shapeOut, const App::SubObjectT& subject,
 }
 
 
-
 Part::VectorAdapter buildAdapter(const App::SubObjectT& subject)
 {
-    if (!subject.getObject()) {
-        return Part::VectorAdapter();
-    }
     Base::Matrix4D mat;
-    TopoDS_Shape shape = Part::Feature::getShape(subject.getObject(), subject.getElementName(), true);
+    TopoDS_Shape shape = getLocatedShape(subject, &mat);
+
     if (shape.IsNull()) {
         // failure here on loading document with existing measurement.
         Base::Console().Message("Part::buildAdapter did not retrieve shape for %s, %s\n",
                                 subject.getObjectName(), subject.getElementName());
         return Part::VectorAdapter();
     }
-
     TopAbs_ShapeEnum shapeType = shape.ShapeType();
-
 
     if (shapeType == TopAbs_EDGE)
     {
-      TopoDS_Shape edgeShape;
-      if (!getShapeFromStrings(edgeShape, subject, &mat)) {
-        return {};
-      }
-      TopoDS_Edge edge = TopoDS::Edge(edgeShape);
+      TopoDS_Edge edge = TopoDS::Edge(shape);
       // make edge orientation so that end of edge closest to pick is head of vector.
       TopoDS_Vertex firstVertex = TopExp::FirstVertex(edge, Standard_True);
       TopoDS_Vertex lastVertex = TopExp::LastVertex(edge, Standard_True);
@@ -231,12 +225,7 @@ Part::VectorAdapter buildAdapter(const App::SubObjectT& subject)
     }
     if (shapeType == TopAbs_FACE)
     {
-      TopoDS_Shape faceShape;
-      if (!getShapeFromStrings(faceShape, subject, &mat)) {
-        return {};
-      }
-
-      TopoDS_Face face = TopoDS::Face(faceShape);
+      TopoDS_Face face = TopoDS::Face(shape);
       Base::Vector3d vTemp(0.0, 0.0, 0.0); //v(current.x, current.y, current.z);
       vTemp = mat*vTemp;
       gp_Vec pickPoint(vTemp.x, vTemp.y, vTemp.z);
@@ -314,7 +303,7 @@ MeasureAreaInfoPtr MeasureAreaHandler(const App::SubObjectT& subject)
 
     if (shape.IsNull()) {
         // failure here on loading document with existing measurement.
-        Base::Console().Message("MeasureLengthHandler did not retrieve shape for %s, %s\n",
+        Base::Console().Message("MeasureAreaHandler did not retrieve shape for %s, %s\n",
                                 subject.getObjectName(), subject.getElementName());
         return std::make_shared<MeasureAreaInfo>(false, 0.0, Base::Matrix4D());
     }
@@ -409,8 +398,7 @@ MeasureDistanceInfoPtr MeasureDistanceHandler(const App::SubObjectT& subject)
 
     // return a persistent copy of the TopoDS_Shape here as shape will go out of scope at end
     BRepBuilderAPI_Copy copy(shape);
-    const TopoDS_Shape* newShape = new TopoDS_Shape(copy.Shape());
-    return std::make_shared<MeasureDistanceInfo>(true, newShape);
+    return std::make_shared<MeasureDistanceInfo>(true, copy.Shape());
 }
 
 

@@ -490,7 +490,7 @@ def makeMeshBoundaryLayer(doc, base_mesh, name="MeshBoundaryLayer"):
 def makeMeshGmsh(doc, name="MeshGmsh"):
     """makeMeshGmsh(document, [name]):
     makes a Gmsh FEM mesh object"""
-    obj = doc.addObject("Fem::FemMeshObjectPython", name)
+    obj = doc.addObject("Fem::FemMeshShapeBaseObjectPython", name)
     from femobjects import mesh_gmsh
 
     mesh_gmsh.MeshGmsh(obj)
@@ -525,7 +525,21 @@ def makeMeshGroup(doc, base_mesh, use_label=False, name="MeshGroup"):
 
 def makeMeshNetgen(doc, name="MeshNetgen"):
     """makeMeshNetgen(document, [name]):
-    makes a Fem MeshShapeNetgenObject object"""
+    makes a Netgen FEM mesh object"""
+    obj = doc.addObject("Fem::FemMeshShapeBaseObjectPython", name)
+    from femobjects import mesh_netgen
+
+    mesh_netgen.MeshNetgen(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_mesh_netgen
+
+        view_mesh_netgen.VPMeshNetgen(obj.ViewObject)
+    return obj
+
+
+def makeMeshNetgenLegacy(doc, name="MeshNetgen"):
+    """makeMeshNetgenLegacy(document, [name]):
+    makes a old implementation Netgen FEM mesh object"""
     obj = doc.addObject("Fem::FemMeshShapeNetgenObject", name)
     return obj
 

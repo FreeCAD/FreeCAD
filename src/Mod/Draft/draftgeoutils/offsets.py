@@ -169,7 +169,8 @@ def offset(edge, vector, trim=False):
 
 def offsetWire(wire, dvec, bind=False, occ=False,
                widthList=None, offsetMode=None, alignList=[],
-               normal=None, basewireOffset=0):
+               normal=None, basewireOffset=0, wireNedge=False):
+               # normal=None, basewireOffset=0):
     """Offset the wire along the given vector.
 
     Parameters
@@ -323,7 +324,7 @@ def offsetWire(wire, dvec, bind=False, occ=False,
     if not isinstance(basewireOffset, list):
         basewireOffset = [basewireOffset]
     else:
-        basewireOffset = basewireOffset  # for backward compatability
+        basewireOffset = basewireOffset  # for backward compatibility
 
     for i in range(len(edges)):
         # make a copy so it do not reverse the self.baseWires edges
@@ -343,7 +344,9 @@ def offsetWire(wire, dvec, bind=False, occ=False,
         # record current edge's Orientation, and set Delta
         if i != 0:  # else:
             # TODO Should also calculate 1st edge direction above
-            if isinstance(curredge.Curve, Part.Circle):
+            if isinstance(curredge.Curve, (Part.Circle,Part.Ellipse)):
+            # Seems Circle/Ellipse (1 geometry) would be sorted in 1 list,
+            # so i=0; should not happen here in fact (i != 0). 2024.8.25.
                 delta = curredge.tangentAt(curredge.FirstParameter).cross(norm)
             else:
                 delta = vec(curredge).cross(norm)
@@ -441,15 +444,12 @@ def offsetWire(wire, dvec, bind=False, occ=False,
             # TODO arc always in counter-clockwise directinon
             # ... ( not necessarily 'reversed')
             if curOrientation == "Reversed":
-                # need to test against Part.Circle, not Part.ArcOfCircle
-                if not isinstance(curredge.Curve, Part.Circle):
-                    # if not arc/circle, assume straight line, reverse it
+                if not isinstance(curredge.Curve, (Part.Circle,Part.Ellipse)):
+                    # assume straight line, reverse it
                     nedge = Part.Edge(nedge.Vertexes[1], nedge.Vertexes[0])
+                elif nedge.isClosed():
+                    pass
                 else:
-                    # if arc/circle
-                    # Part.ArcOfCircle(edge.Curve,
-                    #                  edge.FirstParameter, edge.LastParameter,
-                    #                  edge.Curve.Axis.z > 0)
                     midParameter = nedge.FirstParameter + (nedge.LastParameter - nedge.FirstParameter)/2
                     midOfArc = nedge.valueAt(midParameter)
                     nedge = Part.ArcOfCircle(nedge.Vertexes[1].Point,
@@ -485,16 +485,12 @@ def offsetWire(wire, dvec, bind=False, occ=False,
                 elif curAlign == 'Center':
                     nedge = offset(curredge, delta, trim=True)
             if curOrientation == "Reversed":
-                # need to test against Part.Circle, not Part.ArcOfCircle
-                if not isinstance(curredge.Curve, Part.Circle):
-                    # if not arc/circle, assume straight line, reverse it
+                if not isinstance(curredge.Curve, (Part.Circle,Part.Ellipse)):
+                    # assume straight line, reverse it
                     nedge = Part.Edge(nedge.Vertexes[1], nedge.Vertexes[0])
+                elif nedge.isClosed():
+                    pass
                 else:
-                    # if arc/circle
-                    # Part.ArcOfCircle(edge.Curve,
-                    #                  edge.FirstParameter,
-                    #                  edge.LastParameter,
-                    #                  edge.Curve.Axis.z > 0)
                     midParameter = nedge.FirstParameter + (nedge.LastParameter - nedge.FirstParameter)/2
                     midOfArc = nedge.valueAt(midParameter)
                     nedge = Part.ArcOfCircle(nedge.Vertexes[1].Point,
@@ -508,23 +504,33 @@ def offsetWire(wire, dvec, bind=False, occ=False,
         if not nedge:
             return None
 
+        # nedges is offset edges
         nedges.append(nedge)
 
     if len(edges) > 1:
-        nedges = connect(nedges, closed)
+        # TODO May phase out wire if bind() can do without it later and do with
+        # only connectEdges so no need bind() to find 'touching edges' there
+        wire,connectEdgesF,connectEdges = connect(nedges,closed,wireNedge=True)
     else:
-        nedges = Part.Wire(nedges[0])
+        # TODO May phase out wire if bind() can do without it later and do with
+        # only connectEdges so no need bind() to find 'touching edges' there
+        wire = Part.Wire(nedges[0])
+        connectEdgesF = connectEdges = nedges  # nedges[0]
 
     if bind and not closed:
         e1 = Part.LineSegment(edges[0].Vertexes[0].Point,
-                              nedges[0].Vertexes[0].Point).toShape()
+                              wire[0].Vertexes[0].Point).toShape()
         e2 = Part.LineSegment(edges[-1].Vertexes[-1].Point,
-                              nedges[-1].Vertexes[-1].Point).toShape()
-        alledges = edges.extend(nedges)
+                              wire[-1].Vertexes[-1].Point).toShape()
+                              #nedges[-1].Vertexes[-1].Point).toShape()
+        alledges = edges.extend(nedges)  # TODO nedges is a wire or are edges?
         alledges = alledges.extend([e1, e2])
         w = Part.Wire(alledges)
         return w
     else:
-        return nedges
+        if wireNedge:
+            return (wire,connectEdgesF,connectEdges,nedges)
+        else:
+            return wire
 
 ## @}

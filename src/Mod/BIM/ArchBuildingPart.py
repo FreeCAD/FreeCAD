@@ -229,7 +229,7 @@ class BuildingPart(ArchIFC.IfcProduct):
         if not "Shape" in pl:
             obj.addProperty("Part::PropertyPartShape","Shape","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The shape of this object"))
         if not "SavedInventor" in pl:
-            obj.addProperty("App::PropertyFileIncluded","SavedInventor","BuildingPart",QT_TRANSLATE_NOOP("App::Property","This property stores an inventor representation for this object"))
+            obj.addProperty("App::PropertyFileIncluded","SavedInventor","BuildingPart",QT_TRANSLATE_NOOP("App::Property","This property stores an OpenInventor representation for this object"))
             obj.setEditorMode("SavedInventor",2)
         if not "OnlySolids" in pl:
             obj.addProperty("App::PropertyBool","OnlySolids","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If true, only solids will be collected by this object when referenced from other files"))
@@ -300,7 +300,7 @@ class BuildingPart(ArchIFC.IfcProduct):
     def execute(self,obj):
 
         "gather all the child shapes into a compound"
-        
+
         pl = obj.Placement
         shapes,materialstable = self.getShapes(obj)
         if shapes:
@@ -323,7 +323,7 @@ class BuildingPart(ArchIFC.IfcProduct):
             obj.ViewObject.Proxy.onChanged(obj.ViewObject,"AutoGroupBox")
 
     def getMovableChildren(self, obj):
-    
+
         "recursively get movable children"
 
         result = []
@@ -489,9 +489,9 @@ class ViewProviderBuildingPart:
 
         # inventor saving
         if not "SaveInventor" in pl:
-            vobj.addProperty("App::PropertyBool","SaveInventor","Interaction",QT_TRANSLATE_NOOP("App::Property","If this is enabled, the inventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode."))
+            vobj.addProperty("App::PropertyBool","SaveInventor","Interaction",QT_TRANSLATE_NOOP("App::Property","If this is enabled, the OpenInventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode."))
         if not "SavedInventor" in pl:
-            vobj.addProperty("App::PropertyFileIncluded","SavedInventor","Interaction",QT_TRANSLATE_NOOP("App::Property","A slot to save the inventor representation of this object, if enabled"))
+            vobj.addProperty("App::PropertyFileIncluded","SavedInventor","Interaction",QT_TRANSLATE_NOOP("App::Property","A slot to save the OpenInventor representation of this object, if enabled"))
             vobj.setEditorMode("SavedInventor",2)
 
         # children properties
@@ -971,12 +971,12 @@ class ViewProviderBuildingPart:
                 iv = self.Object.Shape.writeInventor()
                 import re
                 if colors:
-                    if len(re.findall("IndexedFaceSet",iv)) == len(obj.Shape.Faces):
+                    if len(re.findall(r"IndexedFaceSet",iv)) == len(obj.Shape.Faces):
                         # convert colors to iv representations
                         colors = ["Material { diffuseColor "+str(color[0])+" "+str(color[1])+" "+str(color[2])+"}\n    IndexedFaceSet" for color in colors]
                         # replace
                         callback.v=iter(colors)
-                        iv = re.sub("IndexedFaceSet",callback,iv)
+                        iv = re.sub(r"IndexedFaceSet",callback,iv)
                     else:
                         print("Debug: IndexedFaceSet mismatch in",obj.Label)
                 # save embedded file

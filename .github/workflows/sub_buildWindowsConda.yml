@@ -71,7 +71,7 @@ jobs:
         with:
           activate-environment: .conda/freecad
           environment-file: conda/conda-env.yaml
-          channels: conda-forge,defaults
+          channels: conda-forge
           channel-priority: true
           miniforge-version: latest
       - name: Install FreeCAD dependencies

@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <QApplication>
 #include <QDomDocument>
 #include <QFile>
 #include <QGraphicsSceneEvent>
@@ -34,6 +35,7 @@
 #include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
+#include <Base/Tools.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
@@ -109,47 +111,65 @@ QGSPage::QGSPage(ViewProviderPage* vpPage, QWidget* parent)
 
 void QGSPage::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
-    constexpr int QGITemplateType{QGraphicsItem::UserType + 150};
-    constexpr int QGIDrawingTemplateType{QGraphicsItem::UserType + 151};
-    constexpr int QGISVGTemplateType{QGraphicsItem::UserType + 153};
-    // type 13 is the itemUnderMouse on a page outside of any views. It is not
-    // the template or background or foreground.  QGraphicsItem type = 13 is not
-    // documented and not found in QGraphicsItem.h.
-    constexpr int MysteryType{13};
-
     Qt::KeyboardModifiers originalModifiers = event->modifiers();
     auto itemUnderMouse = itemAt(event->scenePos().x(), event->scenePos().y(), QTransform());
 
     if (!itemUnderMouse ||
-        itemUnderMouse->type() == QGITemplateType ||
-        itemUnderMouse->type() == QGIDrawingTemplateType ||
-        itemUnderMouse->type() == QGISVGTemplateType ||
-        itemUnderMouse->type() == MysteryType) {
-        // click without item clears selection
-        for (auto& item : selectedItems()) {
-            item->setSelected(false);
-        }
+        itemClearsSelection(itemUnderMouse->type()) ) {
+        Gui::Selection().clearSelection();
         QGraphicsScene::mousePressEvent(event);
         return;
     }
 
-    if (event->button() == Qt::LeftButton && PreferencesGui::multiSelection()) {
-        event->setModifiers(originalModifiers | Qt::ControlModifier);
+    if (event->button() == Qt::LeftButton &&
+        PreferencesGui::multiSelection() &&
+        (cleanModifierList(QApplication::keyboardModifiers()) == Preferences::multiselectModifiers()) ) {
+        event->setModifiers(originalModifiers | Preferences::multiselectModifiers());
     }
 
     QGraphicsScene::mousePressEvent(event);
 }
 
-void QGSPage::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
+
+//! returns true if clicking on the item should clear the selection
+bool QGSPage::itemClearsSelection(int itemTypeIn)
 {
-    Qt::KeyboardModifiers originalModifiers = event->modifiers();
-    if ((event->button() == Qt::LeftButton) && PreferencesGui::multiSelection()) {
-        event->setModifiers(originalModifiers | Qt::ControlModifier);
+    // type 13 is the itemUnderMouse on a page outside of any views. It is not
+    // the template or background or foreground.  QGraphicsItem type = 13 is not
+    // documented and not found in QGraphicsItem.h.
+    const std::vector<int> ClearingTypes { 13,                        // MysteryType
+                                     QGraphicsItem::UserType + 150,   // QGITemplateType
+                                     QGraphicsItem::UserType + 151,   // QGIDrawingTemplateType
+                                     QGraphicsItem::UserType + 153 }; // QGISVGTemplateType
+
+    for (auto& type : ClearingTypes) {
+        if (itemTypeIn == type) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
+//! return only the modifiers that are relevant to snapping/balloon drag.
+//! this is a substitute for !modifiers (ie no modifiers in use) since keypad or group modifiers
+//! (which don't apply to snapping/dragging) would give a misleading result.
+Qt::KeyboardModifiers QGSPage::cleanModifierList(Qt::KeyboardModifiers mods)
+{
+    if (!mods) {
+        return mods;
     }
 
-    QGraphicsScene::mouseReleaseEvent(event);
+    // remove misleading modifiers if present
+    auto newMods = mods;
+    if (newMods & Qt::KeypadModifier) {
+        newMods = newMods & ~Qt::KeypadModifier;
+    }
+    if (newMods & Qt::GroupSwitchModifier) {
+        newMods = newMods & ~Qt::GroupSwitchModifier;
+    }
 
-    event->setModifiers(originalModifiers);
+    return newMods;
 }
 
 
@@ -533,7 +553,6 @@ QGIView* QGSPage::addDrawViewImage(TechDraw::DrawViewImage* imageFeat)
 
 QGIView* QGSPage::addViewBalloon(TechDraw::DrawViewBalloon* balloonFeat)
 {
-    //    Base::Console().Message("QGSP::addViewBalloon(%s)\n", balloonFeat->getNameInDocument());
     auto vBalloon(new QGIViewBalloon);
 
     addItem(vBalloon);
@@ -552,7 +571,6 @@ QGIView* QGSPage::addViewBalloon(TechDraw::DrawViewBalloon* balloonFeat)
 
 void QGSPage::addBalloonToParent(QGIViewBalloon* balloon, QGIView* parent)
 {
-    //    Base::Console().Message("QGSP::addBalloonToParent()\n");
     assert(balloon);
     assert(parent);//blow up if we don't have Dimension or Parent
     QPointF posRef(0., 0.);
@@ -562,10 +580,9 @@ void QGSPage::addBalloonToParent(QGIViewBalloon* balloon, QGIView* parent)
     balloon->setZValue(ZVALUE::DIMENSION);
 }
 
-//origin is in scene coordinates from QGViewPage
+// origin is in scene coordinates from QGVPage widget
 void QGSPage::createBalloon(QPointF origin, DrawView* parent)
 {
-    //    Base::Console().Message("QGSP::createBalloon(%s)\n", DrawUtil::formatVector(origin).c_str());
     std::string featName = getDrawPage()->getDocument()->getUniqueObjectName("Balloon");
     std::string pageName = getDrawPage()->getNameInDocument();
 
@@ -584,18 +601,20 @@ void QGSPage::createBalloon(QPointF origin, DrawView* parent)
     Command::doCommand(Command::Doc,
                        "App.activeDocument().%s.SourceView = (App.activeDocument().%s)",
                        featName.c_str(), parent->getNameInDocument());
+
+    // convert from scene coords to parent DrawView's coords, unscaled, unrotated
     QGIView* qgParent = getQGIVByName(parent->getNameInDocument());
-    //convert from scene coords to qgParent coords and unscale
-    QPointF parentOrigin = qgParent->mapFromScene(origin) / parent->getScale();
+    auto parentOrigin = DU::toVector3d(qgParent->mapFromScene(origin));     // from scene to view
+    parentOrigin = Rez::appX(parentOrigin) / parent->getScale();            // unrez & unscale
+    parentOrigin = DrawUtil::invertY(parentOrigin);                         // +Y up
+    auto parentRotationDeg = parent->Rotation.getValue();
+    parentOrigin.RotateZ(Base::toRadians(-parentRotationDeg));               // unrotated
+
     balloon->setOrigin(parentOrigin);
-    //convert origin to App side coords
-    QPointF appOrigin = Rez::appPt(parentOrigin);
-    appOrigin = DrawUtil::invertY(appOrigin);
-    balloon->OriginX.setValue(appOrigin.x());
-    balloon->OriginY.setValue(appOrigin.y());
+
     double textOffset = 20.0 / parent->getScale();
-    balloon->X.setValue(appOrigin.x() + textOffset);
-    balloon->Y.setValue(appOrigin.y() + textOffset);
+    balloon->setPosition(parentOrigin.x + textOffset,
+                         parentOrigin.y + textOffset);
 
     int idx = getDrawPage()->getNextBalloonIndex();
     balloon->Text.setValue(std::to_string(idx).c_str());

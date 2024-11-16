@@ -119,13 +119,10 @@ def setup(doc=None, solvertype="ccxtools"):
     # constraint displacement xyz
     con_disp_xyz = ObjectsFem.makeConstraintDisplacement(doc, "Fix_XYZ")
     con_disp_xyz.References = [(doc.Box, "Edge4")]
-    con_disp_xyz.xFix = True
     con_disp_xyz.xFree = False
     con_disp_xyz.xDisplacement = 0.0
-    con_disp_xyz.yFix = True
     con_disp_xyz.yFree = False
     con_disp_xyz.yDisplacement = 0.0
-    con_disp_xyz.zFix = True
     con_disp_xyz.zFree = False
     con_disp_xyz.zDisplacement = 0.0
     analysis.addObject(con_disp_xyz)
@@ -133,13 +130,10 @@ def setup(doc=None, solvertype="ccxtools"):
     # constraint displacement yz
     con_disp_yz = ObjectsFem.makeConstraintDisplacement(doc, "Fix_YZ")
     con_disp_yz.References = [(doc.Box, "Edge8")]
-    con_disp_yz.xFix = False
     con_disp_yz.xFree = True
     con_disp_yz.xDisplacement = 0.0
-    con_disp_yz.yFix = True
     con_disp_yz.yFree = False
     con_disp_yz.yDisplacement = 0.0
-    con_disp_yz.zFix = True
     con_disp_yz.zFree = False
     con_disp_yz.zDisplacement = 0.0
     analysis.addObject(con_disp_yz)
@@ -156,7 +150,7 @@ def setup(doc=None, solvertype="ccxtools"):
         FreeCAD.Console.PrintError("Error on creating elements.\n")
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.FemMesh = fem_mesh
-    femmesh_obj.Part = geom_obj
+    femmesh_obj.Shape = geom_obj
     femmesh_obj.SecondOrderLinear = False
     femmesh_obj.CharacteristicLengthMax = "25.0 mm"
 

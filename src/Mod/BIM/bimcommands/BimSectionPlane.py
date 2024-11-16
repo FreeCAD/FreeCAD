@@ -62,7 +62,7 @@ class Arch_SectionPlane:
         FreeCADGui.doCommand("section = Arch.makeSectionPlane("+ss+")")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
-        
+
 
 
 FreeCADGui.addCommand('Arch_SectionPlane', Arch_SectionPlane())

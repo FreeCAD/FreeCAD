@@ -38,6 +38,7 @@
 #include "Persistence.h"
 #include "Sequencer.h"
 #include "Stream.h"
+#include "Tools.h"
 #include "XMLTools.h"
 
 #ifdef _MSC_VER
@@ -46,8 +47,12 @@
 #include <zipios++/zipinputstream.h>
 #include <boost/iostreams/filtering_stream.hpp>
 
-
+#ifndef XERCES_CPP_NAMESPACE_BEGIN
+#define XERCES_CPP_NAMESPACE_QUALIFIER
+using namespace XERCES_CPP_NAMESPACE;
+#else
 XERCES_CPP_NAMESPACE_USE
+#endif
 
 using namespace std;
 
@@ -109,51 +114,32 @@ unsigned int Base::XMLReader::getAttributeCount() const
     return static_cast<unsigned int>(AttrMap.size());
 }
 
-long Base::XMLReader::getAttributeAsInteger(const char* AttrName) const
+long Base::XMLReader::getAttributeAsInteger(const char* AttrName, const char* defaultValue) const
 {
-    AttrMapType::const_iterator pos = AttrMap.find(AttrName);
-
-    if (pos != AttrMap.end()) {
-        return atol(pos->second.c_str());
-    }
-    // wrong name, use hasAttribute if not sure!
-    std::ostringstream msg;
-    msg << "XML Attribute: \"" << AttrName << "\" not found";
-    throw Base::XMLAttributeError(msg.str());
+    return stol(getAttribute(AttrName, defaultValue));
 }
 
-unsigned long Base::XMLReader::getAttributeAsUnsigned(const char* AttrName) const
+unsigned long Base::XMLReader::getAttributeAsUnsigned(const char* AttrName,
+                                                      const char* defaultValue) const
 {
-    AttrMapType::const_iterator pos = AttrMap.find(AttrName);
-
-    if (pos != AttrMap.end()) {
-        return strtoul(pos->second.c_str(), nullptr, 10);
-    }
-    // wrong name, use hasAttribute if not sure!
-    std::ostringstream msg;
-    msg << "XML Attribute: \"" << AttrName << "\" not found";
-    throw Base::XMLAttributeError(msg.str());
+    return stoul(getAttribute(AttrName, defaultValue), nullptr);
 }
 
-double Base::XMLReader::getAttributeAsFloat(const char* AttrName) const
+double Base::XMLReader::getAttributeAsFloat(const char* AttrName, const char* defaultValue) const
 {
-    AttrMapType::const_iterator pos = AttrMap.find(AttrName);
-
-    if (pos != AttrMap.end()) {
-        return atof(pos->second.c_str());
-    }
-    // wrong name, use hasAttribute if not sure!
-    std::ostringstream msg;
-    msg << "XML Attribute: \"" << AttrName << "\" not found";
-    throw Base::XMLAttributeError(msg.str());
+    return stod(getAttribute(AttrName, defaultValue), nullptr);
 }
 
-const char* Base::XMLReader::getAttribute(const char* AttrName) const
+const char* Base::XMLReader::getAttribute(const char* AttrName,            // NOLINT
+                                          const char* defaultValue) const  // NOLINT
 {
-    AttrMapType::const_iterator pos = AttrMap.find(AttrName);
+    auto pos = AttrMap.find(AttrName);
 
     if (pos != AttrMap.end()) {
         return pos->second.c_str();
+    }
+    if (defaultValue) {
+        return defaultValue;
     }
     // wrong name, use hasAttribute if not sure!
     std::ostringstream msg;
@@ -196,6 +182,8 @@ bool Base::XMLReader::read()
 void Base::XMLReader::readElement(const char* ElementName)
 {
     bool ok {};
+
+    endCharStream();
     int currentLevel = Level;
     std::string currentName = LocalName;
     do {
@@ -263,6 +251,8 @@ bool Base::XMLReader::isEndOfDocument() const
 
 void Base::XMLReader::readEndElement(const char* ElementName, int level)
 {
+    endCharStream();
+
     // if we are already at the end of the current element
     if ((ReadType == EndElement || ReadType == StartEndElement) && ElementName
         && LocalName == ElementName && (level < 0 || level == Level)) {
@@ -448,6 +438,13 @@ void Base::XMLReader::readFiles(zipios::ZipInputStream& zipstream) const
                 // failure.
                 Base::Console().Error("Reading failed from embedded file: %s\n",
                                       entry->toString().c_str());
+                if (jt->FileName == "StringHasher.Table.txt") {
+                    Base::Console().Error(QT_TRANSLATE_NOOP(
+                        "Notifications",
+                        "\nIt is recommended that the user right-click the root of "
+                        "the document and select Mark to recompute.\n"
+                        "The user should then click the Refresh button in the main toolbar.\n"));
+                }
             }
             // Go to the next registered file name
             it = jt + 1;

@@ -463,26 +463,41 @@ def placements_on_path(shapeRotation, pathwire, count, xlate, align,
         ends.append(cdist)
 
     if startOffset > (cdist - 1e-6):
-        _wrn(translate("draft", "Start Offset too large for path length. Using zero instead."))
+        if startOffset != 0:
+            _wrn(
+                translate(
+                    "draft",
+                    "Start Offset too large for path length. Using zero instead."
+                )
+            )
         start = 0
     else:
         start = startOffset
 
     if endOffset > (cdist - start - 1e-6):
-        _wrn(translate("draft", "End Offset too large for path length minus Start Offset. Using zero instead."))
+        if endOffset != 0:
+            _wrn(
+                translate(
+                    "draft",
+                    "End Offset too large for path length minus Start Offset. Using zero instead."
+                )
+            )
         end = 0
     else:
         end = endOffset
 
     cdist = cdist - start - end
-    step = cdist / (count if (DraftGeomUtils.isReallyClosed(pathwire) and not (start or end)) else count - 1)
+    count = max(count, 1)
+    n = count if (DraftGeomUtils.isReallyClosed(pathwire) and not (start or end)) else count - 1
+    n = max(n, 1)
+    step = cdist / n
     remains = 0
     travel = start
     placements = []
 
-    for i in range(0, count):
+    for i in range(count):
         # which edge in path should contain this shape?
-        for j in range(0, len(ends)):
+        for j in range(len(ends)):
             if travel <= ends[j]:
                 iend = j
                 remains = ends[iend] - travel

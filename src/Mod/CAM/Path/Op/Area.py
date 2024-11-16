@@ -109,18 +109,12 @@ class ObjectOp(PathOp.ObjectOp):
         The default implementation returns the job's Base.Shape"""
         if job:
             if job.Stock:
-                Path.Log.debug(
-                    "job=%s base=%s shape=%s" % (job, job.Stock, job.Stock.Shape)
-                )
+                Path.Log.debug("job=%s base=%s shape=%s" % (job, job.Stock, job.Stock.Shape))
                 return job.Stock.Shape
             else:
-                Path.Log.warning(
-                    translate("PathAreaOp", "job %s has no Base.") % job.Label
-                )
+                Path.Log.warning(translate("PathAreaOp", "job %s has no Base.") % job.Label)
         else:
-            Path.Log.warning(
-                translate("PathAreaOp", "no job for operation %s found.") % obj.Label
-            )
+            Path.Log.warning(translate("PathAreaOp", "no job for operation %s found.") % obj.Label)
         return None
 
     def areaOpOnChanged(self, obj, prop):
@@ -203,9 +197,7 @@ class ObjectOp(PathOp.ObjectOp):
                 )
             )
             Path.Log.debug(
-                "Default Depths are Start: {}, and Final: {}".format(
-                    startDepth, finalDepth
-                )
+                "Default Depths are Start: {}, and Final: {}".format(startDepth, finalDepth)
             )
 
         self.areaOpSetDefaultValues(obj, job)
@@ -223,9 +215,7 @@ class ObjectOp(PathOp.ObjectOp):
         area.add(baseobject)
 
         areaParams = self.areaOpAreaParams(obj, isHole)
-        areaParams["SectionTolerance"] = (
-            FreeCAD.Base.Precision.confusion() * 10
-        )  # basically 1e-06
+        areaParams["SectionTolerance"] = FreeCAD.Base.Precision.confusion() * 10  # basically 1e-06
 
         heights = [i for i in self.depthparams]
         Path.Log.debug("depths: {}".format(heights))
@@ -234,15 +224,11 @@ class ObjectOp(PathOp.ObjectOp):
 
         Path.Log.debug("Area with params: {}".format(area.getParams()))
 
-        sections = area.makeSections(
-            mode=0, project=self.areaOpUseProjection(obj), heights=heights
-        )
+        sections = area.makeSections(mode=0, project=self.areaOpUseProjection(obj), heights=heights)
         Path.Log.debug("sections = %s" % sections)
 
         # Rest machining
-        self.sectionShapes = self.sectionShapes + [
-            section.toTopoShape() for section in sections
-        ]
+        self.sectionShapes = self.sectionShapes + [section.toTopoShape() for section in sections]
         if hasattr(obj, "UseRestMachining") and obj.UseRestMachining:
             restSections = []
             for section in sections:
@@ -250,11 +236,7 @@ class ObjectOp(PathOp.ObjectOp):
                 z = bbox.ZMin
                 sectionClearedAreas = []
                 for op in self.job.Operations.Group:
-                    if self in [
-                        x.Proxy
-                        for x in [op] + op.OutListRecursive
-                        if hasattr(x, "Proxy")
-                    ]:
+                    if self in [x.Proxy for x in [op] + op.OutListRecursive if hasattr(x, "Proxy")]:
                         break
                     if hasattr(op, "Active") and op.Active and op.Path:
                         tool = (
@@ -264,9 +246,7 @@ class ObjectOp(PathOp.ObjectOp):
                         )
                         diameter = tool.Diameter.getValueAs("mm")
                         dz = (
-                            0
-                            if not hasattr(tool, "TipAngle")
-                            else -PathUtils.drillTipLength(tool)
+                            0 if not hasattr(tool, "TipAngle") else -PathUtils.drillTipLength(tool)
                         )  # for drills, dz translates to the full width part of the tool
                         sectionClearedAreas.append(
                             section.getClearedArea(
@@ -314,9 +294,7 @@ class ObjectOp(PathOp.ObjectOp):
         elif PathOp.FeatureStartPoint & self.opFeatures(obj) and obj.UseStartPoint:
             pathParams["start"] = obj.StartPoint
 
-        obj.PathParams = str(
-            {key: value for key, value in pathParams.items() if key != "shapes"}
-        )
+        obj.PathParams = str({key: value for key, value in pathParams.items() if key != "shapes"})
         Path.Log.debug("Path with params: {}".format(obj.PathParams))
 
         (pp, end_vector) = Path.fromShapes(**pathParams)
@@ -331,9 +309,7 @@ class ObjectOp(PathOp.ObjectOp):
             areaParams["Thicken"] = True
             areaParams["ToolRadius"] = self.radius - self.radius * 0.005
             area.setParams(**areaParams)
-            sec = area.makeSections(mode=0, project=False, heights=heights)[
-                -1
-            ].getShape()
+            sec = area.makeSections(mode=0, project=False, heights=heights)[-1].getShape()
             simobj = sec.extrude(FreeCAD.Vector(0, 0, baseobject.BoundBox.ZMax))
 
         return pp, simobj
@@ -411,9 +387,7 @@ class ObjectOp(PathOp.ObjectOp):
         self.leadIn = 2.0
 
         # Initiate depthparams and calculate operation heights for operation
-        self.depthparams = self._customDepthParams(
-            obj, obj.StartDepth.Value, obj.FinalDepth.Value
-        )
+        self.depthparams = self._customDepthParams(obj, obj.StartDepth.Value, obj.FinalDepth.Value)
 
         # Set start point
         if PathOp.FeatureStartPoint & self.opFeatures(obj) and obj.UseStartPoint:
@@ -439,9 +413,7 @@ class ObjectOp(PathOp.ObjectOp):
                     shp = Part.makeCompound(s[0])
                 else:
                     shp = s[0]
-                locations.append(
-                    {"x": shp.BoundBox.XMax, "y": shp.BoundBox.YMax, "shape": s}
-                )
+                locations.append({"x": shp.BoundBox.XMax, "y": shp.BoundBox.YMax, "shape": s})
 
             locations = PathUtils.sort_locations(locations, ["x", "y"])
 
@@ -454,22 +426,15 @@ class ObjectOp(PathOp.ObjectOp):
 
             if sub == "OpenEdge":
                 profileEdgesIsOpen = True
-                if (
-                    PathOp.FeatureStartPoint & self.opFeatures(obj)
-                    and obj.UseStartPoint
-                ):
+                if PathOp.FeatureStartPoint & self.opFeatures(obj) and obj.UseStartPoint:
                     osp = obj.StartPoint
                     self.commandlist.append(
-                        Path.Command(
-                            "G0", {"X": osp.x, "Y": osp.y, "F": self.horizRapid}
-                        )
+                        Path.Command("G0", {"X": osp.x, "Y": osp.y, "F": self.horizRapid})
                     )
 
             try:
                 if profileEdgesIsOpen:
-                    (pp, sim) = self._buildProfileOpenEdges(
-                        obj, shape, isHole, start, getsim
-                    )
+                    (pp, sim) = self._buildProfileOpenEdges(obj, shape, isHole, start, getsim)
                 else:
                     (pp, sim) = self._buildPathArea(obj, shape, isHole, start, getsim)
             except Exception as e:
@@ -491,9 +456,7 @@ class ObjectOp(PathOp.ObjectOp):
             ):
                 self.endVector[2] = obj.ClearanceHeight.Value
                 self.commandlist.append(
-                    Path.Command(
-                        "G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid}
-                    )
+                    Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
                 )
 
         Path.Log.debug("obj.Name: " + str(obj.Name) + "\n\n")

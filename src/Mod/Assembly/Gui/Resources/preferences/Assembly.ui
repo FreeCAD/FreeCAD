@@ -20,7 +20,7 @@
       <string>Allow to leave edit mode when pressing Esc button</string>
      </property>
      <property name="text">
-      <string>Esc leave edit mode</string>
+      <string>Esc leaves edit mode</string>
      </property>
      <property name="checked">
       <bool>true</bool>

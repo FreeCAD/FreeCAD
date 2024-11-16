@@ -62,19 +62,15 @@
 #include <Mod/TechDraw/App/DrawTemplate.h>
 #include <Mod/TechDraw/App/Preferences.h>
 
-#include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
 #include "QGIEdge.h"
 #include "QGIFace.h"
-#include "QGITemplate.h"
 #include "QGIVertex.h"
 #include "QGIView.h"
-#include "QGIViewBalloon.h"
 #include "QGIViewDimension.h"
 #include "QGMText.h"
 #include "QGSPage.h"
 #include "QGVPage.h"
-#include "Rez.h"
 #include "ViewProviderPage.h"
 #include "PagePrinter.h"
 
@@ -204,6 +200,10 @@ bool MDIViewPage::onMsg(const char* pMsg, const char**)
         doc->saveAs();
         return true;
     }
+    else if (strcmp("SaveCopy", pMsg) == 0) {
+        doc->saveCopy();
+        return true;
+    }
     else if (strcmp("Undo", pMsg) == 0) {
         doc->undo(1);
         Gui::Command::updateActive();
@@ -232,6 +232,9 @@ bool MDIViewPage::onHasMsg(const char* pMsg) const
     if (strcmp("ViewFit", pMsg) == 0) {
         return true;
     }
+    else if (strcmp("AllowsOverlayOnHover", pMsg) == 0) {
+        return true;
+    }
     else if (strcmp("CanPan",pMsg) == 0) {
         return true;
     }
@@ -248,6 +251,9 @@ bool MDIViewPage::onHasMsg(const char* pMsg) const
         return true;
     }
     else if (strcmp("SaveAs", pMsg) == 0) {
+        return true;
+    }
+    else if (strcmp("SaveCopy", pMsg) == 0) {
         return true;
     }
     else if (strcmp("PrintPreview", pMsg) == 0) {
@@ -303,11 +309,40 @@ void MDIViewPage::fixSceneDependencies()
 /// as file name selection and error messages
 /// PagePrinter handles the actual printing mechanics.
 
+/// save the page state so it can be restore after printing
+void MDIViewPage::savePageExportState(ViewProviderPage* page)
+{
+    auto guiDoc = page->getDocument();
+    if (!guiDoc) {
+        return;
+    }
+    m_docModStateBeforePrint = guiDoc->isModified();
+}
+/// ensure that the page reverts to its normal state after any changes made for printing.
+void MDIViewPage::resetPageExportState(ViewProviderPage* page) const
+{
+    auto pageFeature  = page->getDrawPage();
+    if (!pageFeature) {
+        // how did this happen?
+        return;
+    }
+
+    auto guiDoc = page->getDocument();
+    if (!guiDoc) {
+        return;
+    }
+    auto scene = page->getQGSPage();
+    scene->setExportingPdf(false);
+    scene->setExportingSvg(false);
+    guiDoc->setModified(m_docModStateBeforePrint);
+    pageFeature->redrawCommand();
+}
+
+
 /// overrides of MDIView print methods so that they print the QGraphicsScene instead
 /// of the COIN3d scenegraph.
 void MDIViewPage::printPdf()
 {
-//    Base::Console().Message("MDIVP::printPdf()\n");
     QStringList filter;
     filter << QObject::tr("PDF (*.pdf)");
     filter << QObject::tr("All Files (*.*)");
@@ -319,19 +354,35 @@ void MDIViewPage::printPdf()
     }
 
     Gui::WaitCursor wc;
+    auto vpp = getViewProviderPage();
+    if (!vpp) {
+        // how did this happen?
+        return;
+    }
+
+    savePageExportState(vpp);
+
     std::string utf8Content = fn.toUtf8().constData();
     if (m_pagePrinter) {
         m_pagePrinter->printPdf(utf8Content);
+        resetPageExportState(vpp);
     }
 }
 
 void MDIViewPage::print()
 {
-//    Base::Console().Message("MDIVP::print()\n");
-
     if (!m_pagePrinter) {
         return;
     }
+
+    auto vpp = getViewProviderPage();
+    if (!vpp) {
+        // how did this happen?
+        return;
+    }
+
+    savePageExportState(vpp);
+
     m_pagePrinter->getPaperAttributes();
 
     QPrinter printer(QPrinter::HighResolution);
@@ -347,6 +398,7 @@ void MDIViewPage::print()
     QPrintDialog dlg(&printer, this);
     if (dlg.exec() == QDialog::Accepted) {
         print(&printer);
+        resetPageExportState(vpp);
     }
 }
 
@@ -377,10 +429,17 @@ void MDIViewPage::printPreview()
 
 void MDIViewPage::print(QPrinter* printer)
 {
-//    Base::Console().Message("MDIVP::print(printer)\n");
+    // Base::Console().Message("MDIVP::print(printer)\n");
     if (!m_pagePrinter) {
         return;
     }
+    auto vpp = getViewProviderPage();
+    if (!vpp) {
+        // how did this happen?
+        return;
+    }
+    savePageExportState(vpp);
+
     m_pagePrinter->getPaperAttributes();
     // As size of the render area paperRect() should be used. When performing a real
     // print pageRect() may also work but the output is cropped at the bottom part.
@@ -423,21 +482,9 @@ void MDIViewPage::print(QPrinter* printer)
         }
     }
 
-    QPainter p(printer);
-    // why use a QPainter to determine if we can write to a file?
-    if (!p.isActive() && !printer->outputFileName().isEmpty()) {
-        qApp->setOverrideCursor(Qt::ArrowCursor);
-        QMessageBox::critical(
-            this, tr("Opening file failed"),
-            tr("Can not open file %1 for writing.").arg(printer->outputFileName()));
-        qApp->restoreOverrideCursor();
-        return;
-    }
-    // free the printer from the painter
-    p.end();
-
     if (m_pagePrinter) {
         m_pagePrinter->print(printer);
+        resetPageExportState(vpp);
     }
 
 }
@@ -445,7 +492,7 @@ void MDIViewPage::print(QPrinter* printer)
 //static routine to print all pages in a document
 void MDIViewPage::printAll(QPrinter* printer, App::Document* doc)
 {
-//    Base::Console().Message("MDIVP::printAll()\n");
+    // Base::Console().Message("MDIVP::printAll()\n");
     PagePrinter::printAll(printer, doc);
 }
 
@@ -489,10 +536,19 @@ void MDIViewPage::viewAll()
 
 void MDIViewPage::saveSVG(std::string filename)
 {
+    auto vpp = getViewProviderPage();
+    if (!vpp) {
+        // how did this happen?
+        return;
+    }
+    savePageExportState(vpp);
     if (m_pagePrinter) {
         m_pagePrinter->saveSVG(filename);
+        resetPageExportState(vpp);
     }
 }
+
+
 void MDIViewPage::saveSVG()
 {
     QStringList filter;
@@ -532,8 +588,15 @@ void MDIViewPage::saveDXF()
 
 void MDIViewPage::savePDF(std::string filename)
 {
+    auto vpp = getViewProviderPage();
+    if (!vpp) {
+        // how did this happen?
+        return;
+    }
+    savePageExportState(vpp);
     if (m_pagePrinter) {
         m_pagePrinter->savePDF(filename);
+        resetPageExportState(vpp);
     }
 }
 
@@ -775,7 +838,7 @@ void MDIViewPage::sceneSelectionChanged()
     else {
         for (auto& sel : treeSel) {
             // unselect the stored items
-            removeSelFromTreeSel(sceneSel, sel);
+            removeUnselectedTreeSelection(sceneSel, sel);
         }
 
         for (auto* item : sceneSel) {
@@ -820,7 +883,6 @@ void MDIViewPage::setTreeToSceneSelect()
             }
             else if (dynamic_cast<QGIDatumLabel*>(scene) || dynamic_cast<QGMText*>(scene)) {
                 if (!obj_name) {//can happen during undo/redo if Dim is selected???
-                    //Base::Console().Log("INFO - MDIVP::sceneSelectionChanged - dimObj name is null!\n");
                     continue;
                 }
 
@@ -912,19 +974,43 @@ void MDIViewPage::addSceneItemToTreeSel(QGraphicsItem* sn, [[maybe_unused]]std::
     }
 }
 
-// remove core selection if scene is not selected anymore
-void MDIViewPage::removeSelFromTreeSel(QList<QGraphicsItem*> sceneSel, Gui::SelectionObject& sel)
+// remove tree selection if it is no longer selected in the scene
+void MDIViewPage::removeUnselectedTreeSelection(QList<QGraphicsItem*> sceneSelectedItems,
+                                                Gui::SelectionObject& treeSelection)
 {
-    std::string selDocName = sel.getDocName();
-    App::DocumentObject* selObj = sel.getObject();
+    std::string selDocName = treeSelection.getDocName();
+    App::DocumentObject* selObj = treeSelection.getObject();
 
-    for (auto& sub : sel.getSubNames()) {
-        bool found = false;
-        for (auto& sn : sceneSel) {
-            auto* itemView = dynamic_cast<QGIView*>(sn);
+    // If the selected item is not a geometry item (vertex/edge/face) then the
+    // loop on subnames below will not handle the item and it will not be removed.
+    if (treeSelection.getSubNames().empty()) {
+        bool matchFound{false};
+        for (auto& sceneItem : sceneSelectedItems) {
+            auto* itemView = dynamic_cast<QGIView*>(sceneItem);
             if (!itemView) {
-                auto* parent = dynamic_cast<QGIView*>(sn->parentItem());
+                continue;
+            }
+            auto itemFeature = itemView->getViewObject();
+            auto itemDocName = itemFeature->getDocument()->getName();
+            if (selDocName == itemDocName && selObj == itemFeature) {
+                matchFound = true;
+                break;
+            }
+        }
+        if (!matchFound) {
+            Gui::Selection().rmvSelection(treeSelection.getDocName(), treeSelection.getObject()->getNameInDocument());
+        }
+        return;
+    }
+
+    for (auto& sub : treeSelection.getSubNames()) {
+        bool found = false;
+        for (auto& sceneItem : sceneSelectedItems) {
+            auto* itemView = dynamic_cast<QGIView*>(sceneItem);
+            if (!itemView) {
+                auto* parent = dynamic_cast<QGIView*>(sceneItem->parentItem());
                 if (!parent) {
+                    // neither sceneItem or its parent are Views
                     continue;
                 }
                 TechDraw::DrawView* viewObj = parent->getViewObject();
@@ -936,11 +1022,11 @@ void MDIViewPage::removeSelFromTreeSel(QList<QGraphicsItem*> sceneSel, Gui::Sele
                 const char* obj_name = viewObj->getNameInDocument();
                 std::string sub_name;
 
-                if (dynamic_cast<QGIEdge*>(sn) || dynamic_cast<QGIVertex*>(sn) || dynamic_cast<QGIFace*>(sn)) {
-                    sub_name = getSceneSubName(sn);
+                if (dynamic_cast<QGIEdge*>(sceneItem) || dynamic_cast<QGIVertex*>(sceneItem) || dynamic_cast<QGIFace*>(sceneItem)) {
+                    sub_name = getSceneSubName(sceneItem);
                 }
 
-                else if (dynamic_cast<QGIDatumLabel*>(sn) || dynamic_cast<QGMText*>(sn)) {
+                else if (dynamic_cast<QGIDatumLabel*>(sceneItem) || dynamic_cast<QGMText*>(sceneItem)) {
                     if (!obj_name) {//can happen during undo/redo if Dim is selected???
                         continue;
                     }
@@ -967,7 +1053,7 @@ void MDIViewPage::removeSelFromTreeSel(QList<QGraphicsItem*> sceneSel, Gui::Sele
             }
         }
         if (!found) {
-            Gui::Selection().rmvSelection(sel.getDocName(), sel.getObject()->getNameInDocument(), sub.c_str());
+            Gui::Selection().rmvSelection(treeSelection.getDocName(), treeSelection.getObject()->getNameInDocument());
         }
     }
 }

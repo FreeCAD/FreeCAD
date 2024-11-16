@@ -1107,7 +1107,10 @@ protected:
         const std::string postfix {";:M;FUS;:Hb:7,F"};
         auto mappedName = givenMappedName(prefix.c_str(), postfix.c_str());
         QVector<App::StringIDRef> sids;
-        return Hasher()->getID(mappedName, sids);
+        auto ID = Hasher()->getID(mappedName, sids);
+        ID.mark();  // For this to be included in the count, and thus the memsize in needs to be
+                    // marked.
+        return ID;
     }
 
 private:

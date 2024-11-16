@@ -28,6 +28,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/ExpressionParser.h>
 #include <Base/Tools.h>
 
 #include "DlgAddProperty.h"
@@ -54,9 +55,15 @@ DlgAddProperty::DlgAddProperty(QWidget* parent,
     if(defType.isBad())
         defType = App::PropertyString::getClassTypeId();
 
+    std::vector<Base::Type> proptypes;
     std::vector<Base::Type> types;
-    Base::Type::getAllDerivedFrom(Base::Type::fromName("App::Property"),types);
-    std::sort(types.begin(), types.end(), [](Base::Type a, Base::Type b) { return strcmp(a.getName(), b.getName()) < 0; });
+    Base::Type::getAllDerivedFrom(Base::Type::fromName("App::Property"), proptypes);
+    std::copy_if (proptypes.begin(), proptypes.end(), std::back_inserter(types), [](const Base::Type& type) {
+        return type.canInstantiate();
+    });
+    std::sort(types.begin(), types.end(), [](Base::Type a, Base::Type b) {
+        return strcmp(a.getName(), b.getName()) < 0;
+    });
 
     for(const auto& type : types) {
         ui->comboType->addItem(QString::fromLatin1(type.getName()));
@@ -104,6 +111,13 @@ void DlgAddProperty::accept()
 
     if(ui->chkAppend->isChecked())
         name = group + "_" + name;
+
+    if (App::ExpressionParser::isTokenAUnit(name) || App::ExpressionParser::isTokenAConstant(name)) {
+        QMessageBox::critical(getMainWindow(),
+            QObject::tr("Invalid name"),
+            QObject::tr("The property name is a reserved word."));
+        return;
+    }
 
     for(auto c : containers) {
         auto prop = c->getPropertyByName(name.c_str());

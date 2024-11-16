@@ -300,7 +300,6 @@ class CommandManager:
         FreeCADGui.doCommand(
             "FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)"
         )
-        FreeCAD.ActiveDocument.recompute()
 
     def add_obj_on_gui_noset_edit(self, objtype):
         FreeCAD.ActiveDocument.openTransaction(f"Create Fem{objtype}")
@@ -312,7 +311,6 @@ class CommandManager:
         )
         # FreeCAD.ActiveDocument.commitTransaction()  # solver command class had this line
         # no clear selection is done
-        FreeCAD.ActiveDocument.recompute()
 
     def add_obj_on_gui_expand_noset_edit(self, objtype):
         # like add_obj_on_gui_noset_edit but the parent object
@@ -332,7 +330,6 @@ class CommandManager:
         FreeCADGui.Selection.clearSelection()
         FreeCADGui.doCommand("addedObjDocObj = FreeCAD.ActiveDocument.getObject(addedObj.Name)")
         FreeCADGui.doCommand("FreeCADGui.Selection.addSelection(addedObjDocObj)")
-        FreeCAD.ActiveDocument.recompute()
 
     def add_obj_on_gui_selobj_set_edit(self, objtype):
         FreeCAD.ActiveDocument.openTransaction(f"Create Fem{objtype}")
@@ -345,7 +342,6 @@ class CommandManager:
         FreeCADGui.doCommand(
             "FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)"
         )
-        FreeCAD.ActiveDocument.recompute()
 
     def add_obj_on_gui_selobj_noset_edit(self, objtype):
         FreeCAD.ActiveDocument.openTransaction(f"Create Fem{objtype}")
@@ -355,7 +351,6 @@ class CommandManager:
             "FreeCAD.ActiveDocument, FreeCAD.ActiveDocument.{})".format(objtype, self.selobj.Name)
         )
         FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
 
     def add_obj_on_gui_selobj_expand_noset_edit(self, objtype):
         # like add_obj_on_gui_selobj_noset_edit but the selection is kept
@@ -368,4 +363,3 @@ class CommandManager:
         )
         # expand selobj in tree view
         expandParentObject()
-        FreeCAD.ActiveDocument.recompute()

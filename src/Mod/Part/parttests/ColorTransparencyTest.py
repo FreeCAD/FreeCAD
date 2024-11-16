@@ -43,7 +43,7 @@ class ColorTransparencyTest(unittest.TestCase):
         This test isn't currently valid as it draws from the hard coded default material.
 
         The preference editor doesn't allow for setting transparencies. The default value
-        of 0 corresponds to a fully transparent color, which is not desireable. It changes
+        of 0 corresponds to a fully transparent color, which is not desirable. It changes
         the transparency when loading to 1.0
         """
         

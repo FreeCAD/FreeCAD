@@ -75,7 +75,9 @@ class PathDressupTagTaskPanel:
         self.editItem = None
 
     def getStandardButtons(self):
-        return QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Cancel
+        return (
+            QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Cancel
+        )
 
     def clicked(self, button):
         if button == QtGui.QDialogButtonBox.Apply:
@@ -240,9 +242,7 @@ class PathDressupTagTaskPanel:
             self.Positions.append(FreeCAD.Vector(point.x, point.y, 0))
             self.updateTagsView()
         else:
-            Path.Log.notice(
-                "ignore new tag at %s (obj=%s, on-path=%d" % (point, obj, 0)
-            )
+            Path.Log.notice("ignore new tag at %s (obj=%s, on-path=%d" % (point, obj, 0))
 
     def addNewTag(self):
         self.tags = self.getTags(True)
@@ -346,14 +346,10 @@ class HoldingTagMarker:
     def setEnabled(self, enabled):
         self.enabled = enabled
         if enabled:
-            self.material.diffuseColor = (
-                self.color[0] if not self.selected else self.color[2]
-            )
+            self.material.diffuseColor = self.color[0] if not self.selected else self.color[2]
             self.material.transparency = 0.0
         else:
-            self.material.diffuseColor = (
-                self.color[1] if not self.selected else self.color[2]
-            )
+            self.material.diffuseColor = self.color[1] if not self.selected else self.color[2]
             self.material.transparency = 0.6
 
 
@@ -393,9 +389,7 @@ class PathDressupTagViewProvider:
 
         pref = Path.Preferences.preferences()
         #                                                      R         G          B          A
-        npc = pref.GetUnsigned(
-            "DefaultPathMarkerColor", ((85 * 256 + 255) * 256 + 0) * 256 + 255
-        )
+        npc = pref.GetUnsigned("DefaultPathMarkerColor", ((85 * 256 + 255) * 256 + 0) * 256 + 255)
         hpc = pref.GetUnsigned(
             "DefaultHighlightPathColor", ((255 * 256 + 125) * 256 + 0) * 256 + 255
         )
@@ -420,9 +414,7 @@ class PathDressupTagViewProvider:
 
         if self.obj and self.obj.Base:
             for i in self.obj.Base.InList:
-                if hasattr(i, "Group") and self.obj.Base.Name in [
-                    o.Name for o in i.Group
-                ]:
+                if hasattr(i, "Group") and self.obj.Base.Name in [o.Name for o in i.Group]:
                     i.Group = [o for o in i.Group if o.Name != self.obj.Base.Name]
             if self.obj.Base.ViewObject:
                 self.obj.Base.ViewObject.Visibility = False
@@ -459,9 +451,7 @@ class PathDressupTagViewProvider:
             self.switch.removeChild(tag.sep)
         tags = []
         for i, p in enumerate(positions):
-            tag = HoldingTagMarker(
-                self.obj.Proxy.pointAtBottom(self.obj, p), self.colors
-            )
+            tag = HoldingTagMarker(self.obj.Proxy.pointAtBottom(self.obj, p), self.colors)
             tag.setEnabled(not i in disabled)
             tags.append(tag)
             self.switch.addChild(tag.sep)
@@ -523,9 +513,7 @@ class PathDressupTagViewProvider:
             z = self.tags[0].point.z
         p = FreeCAD.Vector(x, y, z)
         for i, tag in enumerate(self.tags):
-            if Path.Geom.pointsCoincide(
-                p, tag.point, tag.sphere.radius.getValue() * 1.3
-            ):
+            if Path.Geom.pointsCoincide(p, tag.point, tag.sphere.radius.getValue() * 1.3):
                 return i
         return -1
 
@@ -576,9 +564,7 @@ class CommandPathDressupTag:
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
-            Path.Log.error(
-                translate("CAM_DressupTag", "Please select one toolpath object") + "\n"
-            )
+            Path.Log.error(translate("CAM_DressupTag", "Please select one toolpath object") + "\n")
             return
         baseObject = selection[0]
 

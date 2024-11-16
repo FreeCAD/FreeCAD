@@ -59,21 +59,7 @@ class TestResult(unittest.TestCase):
 
     # ********************************************************************************************
     def get_stress_values(self):
-        # node 5 von calculix cantilver 3D example
-        # doc = FreeCAD.open(
-        #     FreeCAD.ConfigGet("AppHomePath") + "data/examples/FemCalculixCantilever3D.FCStd"
-        # )
-        # doc.Box_Mesh.FemMesh.Nodes[5]
-        # Vector (0.0, 1000.0, 0.0)
-        # res = doc.CalculiX_static_results
-        # stress = (
-        #     res.NodeStressXX[4],
-        #     res.NodeStressYY[4],
-        #     res.NodeStressZZ[4],
-        #     res.NodeStressXY[4],
-        #     res.NodeStressXZ[4],
-        #     res.NodeStressYZ[4]
-        # )
+        # stress at node 4 of CalculiX cantilever face load
         stress = (
             -4.52840e02,  # Sxx
             -1.94075e02,  # Syy
@@ -196,7 +182,7 @@ class TestResult(unittest.TestCase):
     # ********************************************************************************************
     def test_disp_abs(self):
         expected_dispabs = 87.302986
-        # x, y, z in node 4 of CalculiX cantilver face load
+        # x, y, z at node 4 of CalculiX cantilever face load
         disp_xyz = [FreeCAD.Vector(8.12900e00, 3.38889e-02, -8.69237e01)]
         from femresult.resulttools import calculate_disp_abs as dp
 
