@@ -8213,7 +8213,7 @@ CNC工作機械に指令を送るGコードでは、送り速度を1分間当た
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="448"/>
       <source>Array</source>
-      <translation type="unfinished">Array</translation>
+      <translation>整列</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="449"/>

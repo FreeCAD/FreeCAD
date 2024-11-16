@@ -287,7 +287,7 @@ class BIM_Preflight_TaskPanel:
         label = test.replace("test", "label")
         tooltip = getattr(self.form, label).toolTip()
         tooltip = tooltip.replace("</p>", "</p>\n\n")
-        tooltip = re.sub("<.*?>", "", tooltip)  # strip html tags
+        tooltip = re.sub(r"<.*?>", "", tooltip)  # strip html tags
         return tooltip
 
     def testAll(self):

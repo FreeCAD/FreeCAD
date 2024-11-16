@@ -653,10 +653,10 @@ void DrawView::setScaleAttribute()
     }
 }
 
-//! due to changes made for the "intelligent" view creation tool, testing for a view being an
+//! Due to changes made for the "intelligent" view creation tool, testing for a view being an
 //! instance of DrawProjGroupItem is no longer reliable, as views not in a group are sometimes
-//! created as DrawProjGroupItem without belonging to a group.  We now need to test for the existance
-//! of the parent DrawProjGroup
+//! created as DrawProjGroupItem without belonging to a group.  We now need to test for the
+//! existence of the parent DrawProjGroup
 bool DrawView::isProjGroupItem(DrawViewPart* item)
 {
     auto dpgi = dynamic_cast<DrawProjGroupItem*>(item);

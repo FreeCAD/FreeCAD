@@ -526,9 +526,9 @@ class TaskAssemblyCreateView(QtCore.QObject):
         UtilsAssembly.restoreAssemblyPartsPlacements(self.assembly, self.initialPlcs)
         for move in self.viewObj.Moves:
             move.Visibility = False
-        commands = f'obj = App.ActiveDocument.getObject("{self.viewObj.Name}")\n'
+        commands = ""
         for move in self.viewObj.Moves:
-            more = UtilsAssembly.generatePropertySettings("obj.Moves[0]", move)
+            more = UtilsAssembly.generatePropertySettings(move)
             commands = commands + more
         Gui.doCommand(commands[:-1])  # Don't use the last \n
         App.closeActiveTransaction()

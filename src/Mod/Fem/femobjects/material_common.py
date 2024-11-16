@@ -70,6 +70,16 @@ class MaterialCommon(base_fempythonobject.BaseFemPythonObject):
                 value=["Solid", "Fluid"],
             )
         )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyString",
+                name="UUID",
+                group="Material",
+                doc="Material UUID",
+                hidden=True,
+                value="",
+            )
+        )
 
         return prop
 

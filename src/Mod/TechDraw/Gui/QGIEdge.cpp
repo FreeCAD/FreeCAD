@@ -133,9 +133,13 @@ void QGIEdge::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
     }
 }
 
-
-
 void QGIEdge::setLinePen(QPen linePen)
 {
     m_pen = linePen;
+}
+
+void QGIEdge::setCurrentPen()
+{
+    m_pen.setWidthF(m_width);
+    m_pen.setColor(m_colCurrent);
 }

@@ -169,7 +169,8 @@ def offset(edge, vector, trim=False):
 
 def offsetWire(wire, dvec, bind=False, occ=False,
                widthList=None, offsetMode=None, alignList=[],
-               normal=None, basewireOffset=0):
+               normal=None, basewireOffset=0, wireNedge=False):
+               # normal=None, basewireOffset=0):
     """Offset the wire along the given vector.
 
     Parameters
@@ -503,23 +504,33 @@ def offsetWire(wire, dvec, bind=False, occ=False,
         if not nedge:
             return None
 
+        # nedges is offset edges
         nedges.append(nedge)
 
     if len(edges) > 1:
-        nedges = connect(nedges, closed)
+        # TODO May phase out wire if bind() can do without it later and do with
+        # only connectEdges so no need bind() to find 'touching edges' there
+        wire,connectEdgesF,connectEdges = connect(nedges,closed,wireNedge=True)
     else:
-        nedges = Part.Wire(nedges[0])
+        # TODO May phase out wire if bind() can do without it later and do with
+        # only connectEdges so no need bind() to find 'touching edges' there
+        wire = Part.Wire(nedges[0])
+        connectEdgesF = connectEdges = nedges  # nedges[0]
 
     if bind and not closed:
         e1 = Part.LineSegment(edges[0].Vertexes[0].Point,
-                              nedges[0].Vertexes[0].Point).toShape()
+                              wire[0].Vertexes[0].Point).toShape()
         e2 = Part.LineSegment(edges[-1].Vertexes[-1].Point,
-                              nedges[-1].Vertexes[-1].Point).toShape()
-        alledges = edges.extend(nedges)
+                              wire[-1].Vertexes[-1].Point).toShape()
+                              #nedges[-1].Vertexes[-1].Point).toShape()
+        alledges = edges.extend(nedges)  # TODO nedges is a wire or are edges?
         alledges = alledges.extend([e1, e2])
         w = Part.Wire(alledges)
         return w
     else:
-        return nedges
+        if wireNedge:
+            return (wire,connectEdgesF,connectEdges,nedges)
+        else:
+            return wire
 
 ## @}

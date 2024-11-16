@@ -141,10 +141,10 @@ def replace(template, dict, file):
     "Test: copy a block of lines, with full processing"
     import re
 
-    rex = re.compile("@([^@]+)@")
+    rex = re.compile(r"@([^@]+)@")
     rbe = re.compile(r"\+")
-    ren = re.compile("-")
-    rco = re.compile("= ")
+    ren = re.compile(r"-")
+    rco = re.compile(r"= ")
     x = 23  # just a variable to try substitution
     cop = copier(rex, dict, rbe, ren, rco)
     lines_block = [line + "\n" for line in template.split("\n")]
@@ -156,10 +156,10 @@ if __name__ == "__main__":
     "Test: copy a block of lines, with full processing"
     import re
 
-    rex = re.compile("@([^@]+)@")
+    rex = re.compile(r"@([^@]+)@")
     rbe = re.compile(r"\+")
-    ren = re.compile("-")
-    rco = re.compile("= ")
+    ren = re.compile(r"-")
+    rco = re.compile(r"= ")
     x = 23  # just a variable to try substitution
     cop = copier(rex, globals(), rbe, ren, rco)
     lines_block = [

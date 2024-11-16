@@ -1,7 +1,12 @@
-def OpenInsertObject(importerModule, objectPath, importMethod, docName = ""):
+from FreeCAD import Base
+import importlib
+
+def OpenInsertObject(importerName, objectPath, importMethod, docName = ""):
     try:
         importArgs = []
         importKwargs = {}
+
+        importerModule = importlib.import_module(importerName)
 
         if docName:
             importArgs.append(docName)
@@ -9,5 +14,5 @@ def OpenInsertObject(importerModule, objectPath, importMethod, docName = ""):
             importKwargs["options"] = importerModule.importOptions(objectPath)
 
         getattr(importerModule, importMethod)(objectPath, *importArgs, **importKwargs)
-    except PyExc_FC_AbortIOException:
+    except Base.AbortIOException:
         pass

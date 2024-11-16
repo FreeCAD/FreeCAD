@@ -28,6 +28,7 @@
 #include <QComboBox>
 #include <QSignalBlocker>
 #include <QTextStream>
+#include <QTimer>
 #endif
 
 #include <App/Document.h>
@@ -45,6 +46,8 @@
 #include "Macro.h"
 #include "MainWindow.h"
 #include "PythonEditor.h"
+#include "Workbench.h"
+#include "WorkbenchManager.h"
 
 
 using namespace Gui;
@@ -757,7 +760,7 @@ Note: your changes will be applied when you next switch workbenches\n"));
      **/
 
     QString instructions2 =
-        tr("Walkthrough instructions: Click right arrow button (->), then Close.");
+        tr("Walkthrough instructions: Select macro from list, then click right arrow button (->), then Close.");
     auto workbenchBox =
         setupToolbarPage->findChild<QComboBox*>(QString::fromLatin1("workbenchBox"));
     if (!workbenchBox) {
@@ -769,10 +772,7 @@ Note: your changes will be applied when you next switch workbenches\n"));
         int globalIdx = workbenchBox->findData(QString::fromLatin1("Global"));
         if (globalIdx != -1) {
             workbenchBox->setCurrentIndex(globalIdx);
-            QMetaObject::invokeMethod(setupToolbarPage,
-                                      "on_workbenchBox_activated",
-                                      Qt::DirectConnection,
-                                      Q_ARG(int, globalIdx));
+            setupToolbarPage->activateWorkbenchBox(globalIdx);
         }
         else {
             Base::Console().Warning("Toolbar walkthrough: Unable to find Global workbench\n");
@@ -786,7 +786,7 @@ Note: your changes will be applied when you next switch workbenches\n"));
             }
             else {
                 newButton->setStyleSheet(QString::fromLatin1("color:red"));
-                instructions2 = tr("Walkthrough instructions: Click New, then right arrow (->) "
+                instructions2 = tr("Walkthrough instructions: Click New, select macro, then right arrow (->) "
                                    "button, then Close.");
             }
         }
@@ -812,10 +812,6 @@ Note: your changes will be applied when you next switch workbenches\n"));
         int macrosIdx = categoryBox->findText(tr("Macros"));
         if (macrosIdx != -1) {
             categoryBox->setCurrentIndex(macrosIdx);
-            QMetaObject::invokeMethod(setupToolbarPage,
-                                      "on_categoryBox_activated",
-                                      Qt::DirectConnection,
-                                      Q_ARG(int, macrosIdx));
         }
         else {
             Base::Console().Warning("Toolbar walkthrough: Unable to find Macros in categoryBox\n");
@@ -832,31 +828,39 @@ Note: your changes will be applied when you next switch workbenches\n"));
         toolbarTreeWidget->expandAll();
     }
 
-    /** preselect macro command for user **/
-
-    auto commandTreeWidget =
-        setupToolbarPage->findChild<QTreeWidget*>(QString::fromLatin1("commandTreeWidget"));
-    if (!commandTreeWidget) {
-        Base::Console().Warning("Toolbar walkthrough: Unable to find commandTreeWidget\n");
-    }
-    else {
-        if (!hasMacroCommand) {  // will be the last in the list, the one just created
-            commandTreeWidget->setCurrentItem(
-                commandTreeWidget->topLevelItem(commandTreeWidget->topLevelItemCount() - 1));
-            commandTreeWidget->scrollToItem(commandTreeWidget->currentItem());
+    /** preselect macro command for user after a short delay to allow time for the
+     tree widget to populate all the actions
+     **/
+    QTimer::singleShot(500, [=]() {
+        auto commandTreeWidget =
+            setupToolbarPage->findChild<QTreeWidget*>(QString::fromLatin1("commandTreeWidget"));
+        if (!commandTreeWidget) {
+            Base::Console().Warning("Toolbar walkthrough: Unable to find commandTreeWidget\n");
         }
-        else {  // pre-select it for the user (will be the macro menu text)
-            QList<QTreeWidgetItem*> items =
-                commandTreeWidget->findItems(macroMenuText,
-                                             Qt::MatchFixedString | Qt::MatchWrap,
-                                             1);
-            if (!items.empty()) {
-                commandTreeWidget->setCurrentItem(items[0]);
+        else {
+            if (!hasMacroCommand) {  // will be the last in the list, the one just created
+                commandTreeWidget->setCurrentItem(
+                    commandTreeWidget->topLevelItem(commandTreeWidget->topLevelItemCount() - 1));
                 commandTreeWidget->scrollToItem(commandTreeWidget->currentItem());
             }
+            else {  // pre-select it for the user (will be the macro menu text)
+                QList<QTreeWidgetItem*> items =
+                    commandTreeWidget->findItems(macroMenuText,
+                                                 Qt::MatchFixedString | Qt::MatchWrap,
+                                                 1);
+                if (!items.empty()) {
+                    commandTreeWidget->setCurrentItem(items[0]);
+                    commandTreeWidget->scrollToItem(commandTreeWidget->currentItem());
+                }
+            }
         }
-    }
+    });
     dlg.exec();
+    // refresh toolbar so new icon shows up immediately
+    Workbench* active = Gui::WorkbenchManager::instance()->active();
+    if (active) {
+        active->activate();
+    }
 }
 
 

@@ -172,6 +172,11 @@ void DlgCustomToolbars::hideEvent(QHideEvent* event)
 void DlgCustomToolbars::onActivateCategoryBox()
 {}
 
+// called from DlgMacroExecuteImp toolbar walkthrough function
+void DlgCustomToolbars::activateWorkbenchBox(int index) {
+    onWorkbenchBoxActivated(index);
+}
+
 void DlgCustomToolbars::onWorkbenchBoxActivated(int index)
 {
     QVariant data = ui->workbenchBox->itemData(index, Qt::UserRole);

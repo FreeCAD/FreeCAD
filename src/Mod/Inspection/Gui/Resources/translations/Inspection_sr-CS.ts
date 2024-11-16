@@ -88,7 +88,7 @@
     <message>
       <location filename="../../VisualInspection.ui" line="145"/>
       <source>Thickness</source>
-      <translation>Debljina</translation>
+      <translation>Tankozidni objekat</translation>
     </message>
   </context>
   <context>

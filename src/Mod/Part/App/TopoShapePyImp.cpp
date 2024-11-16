@@ -74,6 +74,7 @@
 #include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/Rotation.h>
 #include <Base/Stream.h>
+#include <Base/Tools.h>
 #include <Base/Vector3D.h>
 #include <Base/VectorPy.h>
 
@@ -99,14 +100,6 @@
 
 
 using namespace Part;
-
-#ifndef M_PI
-    #define M_PI    3.14159265358979323846 /* pi */
-#endif
-
-#ifndef M_PI_2
-    #define M_PI_2  1.57079632679489661923 /* pi/2 */
-#endif
 
 static Py_hash_t _TopoShapeHash(PyObject* self)
 {
@@ -647,15 +640,15 @@ PyObject* TopoShapePy::extrude(PyObject *args)
 PyObject* TopoShapePy::revolve(PyObject *args)
 {
     PyObject *pPos,*pDir;
-    double d=360;
-    if (!PyArg_ParseTuple(args, "O!O!|d", &(Base::VectorPy::Type), &pPos, &(Base::VectorPy::Type), &pDir,&d))
+    double angle=360;
+    if (!PyArg_ParseTuple(args, "O!O!|d", &(Base::VectorPy::Type), &pPos, &(Base::VectorPy::Type), &pDir,&angle))
         return nullptr;
     Base::Vector3d pos = static_cast<Base::VectorPy*>(pPos)->value();
     Base::Vector3d dir = static_cast<Base::VectorPy*>(pDir)->value();
     try {
         return Py::new_reference_to(shape2pyshape(getTopoShapePtr()->makeElementRevolve(
             gp_Ax1(gp_Pnt(pos.x, pos.y, pos.z), gp_Dir(dir.x, dir.y, dir.z)),
-            d * (M_PI / 180))));
+            Base::toRadians<double>(angle))));
     }
     catch (Standard_Failure& e) {
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
@@ -1081,7 +1074,7 @@ PyObject*  TopoShapePy::rotate(PyObject *args)
 
         gp_Ax1 axis(pos, dir);
         gp_Trsf mov;
-        mov.SetRotation(axis, angle*(M_PI/180));
+        mov.SetRotation(axis, Base::toRadians<double>(angle));
         TopLoc_Location loc(mov);
         TopoDS_Shape shape = getTopoShapePtr()->getShape();
         shape.Move(loc);

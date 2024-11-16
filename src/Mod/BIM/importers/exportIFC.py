@@ -202,6 +202,7 @@ def export(exportList, filename, colors=None, preferences=None):
              "Visit https://wiki.freecad.org/IfcOpenShell "
              "to learn about installing it.")
         return
+    from ifcopenshell import guid
     if str(filename).lower().endswith("json"):
         import json
         try:
@@ -1106,22 +1107,22 @@ def export(exportList, filename, colors=None, preferences=None):
                 None,
                 None
             )]
-        if buildings and (not sites):
-            ifcfile.createIfcRelAggregates(
-                ifcopenshell.guid.new(),
-                history,
-                'ProjectLink',
-                '',
-                project,buildings
-            )
-        if floors and buildings:
-            ifcfile.createIfcRelAggregates(
-                ifcopenshell.guid.new(),
-                history,
-                'BuildingLink',
-                '',
-                buildings[0],floors
-            )
+    if buildings and (not sites):
+        ifcfile.createIfcRelAggregates(
+            ifcopenshell.guid.new(),
+            history,
+            'ProjectLink',
+            '',
+            project,buildings
+        )
+    if floors and buildings:
+        ifcfile.createIfcRelAggregates(
+            ifcopenshell.guid.new(),
+            history,
+            'BuildingLink',
+            '',
+            buildings[0],floors
+        )
     if sites and buildings:
         ifcfile.createIfcRelAggregates(
             ifcopenshell.guid.new(),
@@ -1657,12 +1658,16 @@ def getPropertyData(key,value,preferences):
     if ptype in ["IfcLabel","IfcText","IfcIdentifier",'IfcDescriptiveMeasure']:
         pass
     elif ptype == "IfcBoolean":
-        if pvalue == ".T.":
+        if pvalue in ["True", "False"]:
+            pvalue = eval(pvalue)
+        elif pvalue == ".T.":
             pvalue = True
         else:
             pvalue = False
     elif ptype == "IfcLogical":
-        if pvalue.upper() == "TRUE":
+        if pvalue in ["True", "False"]:
+            pvalue = eval(pvalue)
+        elif pvalue.upper() == "TRUE":
             pvalue = True
         else:
             pvalue = False
@@ -1762,7 +1767,7 @@ def exportIfcAttributes(obj, kwargs, scale=0.001):
             value = obj.getPropertyByName(property)
             if isinstance(value, FreeCAD.Units.Quantity):
                 value = float(value)
-                if property in ["ElevationWithFlooring","Elevation"]:
+                if "Elevation" in property:
                     value = value*scale # some properties must be changed to meters
             if (ifctype == "IfcFurnishingElement") and (property == "PredefinedType"):
                 pass # IFC2x3 Furniture objects get converted to IfcFurnishingElement and have no PredefinedType anymore

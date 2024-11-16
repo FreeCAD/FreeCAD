@@ -65,7 +65,7 @@
     <message>
       <location filename="../../Command.cpp" line="301"/>
       <source>From Shape</source>
-      <translation>À partir d'une forme</translation>
+      <translation>Créer un parcours à partir d'une forme</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="302"/>
@@ -800,7 +800,7 @@ Réinitialiser supprime tous les éléments en cours de la liste et remplit la l
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="40"/>
       <source>Opens a dialog to add arbitrary locations.</source>
-      <translation>Ouvrir une boîte de dialogue pour ajouter des positions arbitraires.</translation>
+      <translation>Ouvrir une fenêtre de dialogue pour ajouter des positions arbitraires.</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="50"/>
@@ -2414,12 +2414,12 @@ Une valeur plus petite augmente la précision mais ralentit le calcul.</translat
     <message>
       <location filename="../preferences/PathJob.ui" line="251"/>
       <source>Open File Dialog</source>
-      <translation>Ouvrir la boîte de dialogue des fichiers</translation>
+      <translation>Ouvrir la fenêtre de dialogue des fichiers</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="256"/>
       <source>Open File Dialog on conflict</source>
-      <translation>Ouvrir la boîte de dialogue des fichiers en cas de conflit</translation>
+      <translation>Ouvrir la fenêtre de dialogue des fichiers en cas de conflit</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="261"/>
@@ -2516,9 +2516,9 @@ Voir la politique d'enregistrement des fichiers ci-dessous pour savoir comment t
       <location filename="../preferences/PathJob.ui" line="247"/>
       <source>Choose how to deal with potential file name conflicts. Always open a dialog, only open a dialog if the output file already exists, overwrite any existing file or add a unique (3 digit) sequential ID to the file name.</source>
       <translation>Choisir comment traiter les conflits potentiels de noms de fichiers :
-- Toujours ouvrir une boîte de dialogue
-- Ouvrir une boîte de dialogue uniquement si le fichier de sortie existe déjà
-- Écraser tout fichier existant ou ajouter un identifiant séquentiel unique (3 chiffres) au nom du fichier.</translation>
+- toujours ouvrir une fenêtre de dialogue
+- ouvrir une fenêtre de dialogue uniquement si le fichier de sortie existe déjà
+- écraser tout fichier existant ou ajouter un identifiant séquentiel unique (3 chiffres) au nom du fichier.</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="288"/>
@@ -5677,7 +5677,7 @@ Rotationnel : balayage rotationnel sur le 4ᵉ axe.</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Comment.py" line="41"/>
       <source>Comment or note for CNC program</source>
-      <translation>Commenter ou annoter pour un programme CNC</translation>
+      <translation>Commenter ou annoter un programme CNC</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Stop.py" line="40"/>
@@ -6580,7 +6580,7 @@ Annulation de la création de l'opération</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/Boundary.py" line="256"/>
       <source>Boundary</source>
-      <translation>Limite</translation>
+      <translation>Limiter à une zone</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Boundary.py" line="260"/>
@@ -6673,7 +6673,7 @@ Annulation de la création de l'opération</translation>
       <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="1322"/>
       <location filename="../../../Path/Dressup/Gui/DogboneII.py" line="323"/>
       <source>Dogbone</source>
-      <translation>Dégagement des angles</translation>
+      <translation>Dégager des angles</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="1326"/>
@@ -6770,7 +6770,7 @@ Annulation de la création de l'opération</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="149"/>
       <source>Custom</source>
-      <translation>Personnalisée</translation>
+      <translation>Personnaliser</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="864"/>
@@ -6845,7 +6845,7 @@ Annulation de la création de l'opération</translation>
     <message>
       <location filename="../../../Path/Main/Job.py" line="249"/>
       <source>Fixture</source>
-      <translation>Fixations</translation>
+      <translation>Décaler l'origine</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="250"/>
@@ -7028,7 +7028,7 @@ Par exemple :
     <message>
       <location filename="../../../Path/Main/Gui/Fixture.py" line="153"/>
       <source>Fixture</source>
-      <translation>Fixations</translation>
+      <translation>Décalage de l'origine</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Fixture.py" line="154"/>
@@ -7042,7 +7042,7 @@ Par exemple :
       <location filename="../../../Path/Main/Gui/Inspect.py" line="132"/>
       <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s).
  Values will be converted to the desired unit during post processing.</source>
-      <translation>&lt;b&gt;Remarque &lt;/b&gt;: cette boîte de dialogue montre les commandes de parcours avec les unités de base de FreeCAD (mm/s).
+      <translation>&lt;b&gt;Remarque &lt;/b&gt;: cette fenêtre de dialogue montre les commandes de parcours avec les unités de base de FreeCAD (mm/s).
 Les valeurs seront converties dans l'unité souhaitée pendant le post-traitement.</translation>
     </message>
     <message>

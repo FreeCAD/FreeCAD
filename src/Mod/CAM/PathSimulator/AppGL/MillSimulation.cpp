@@ -372,9 +372,11 @@ void MillSimulation::Render()
         RenderBaseShape();
         RenderPath();
         simDisplay.updateDisplay = false;
+        simDisplay.RenderResult(true);
     }
-
-    simDisplay.RenderResult();
+    else {
+        simDisplay.RenderResult(false);
+    }
 
     /*   if (mDebug > 0) {
            mat4x4 test;

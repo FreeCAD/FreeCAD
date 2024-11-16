@@ -47,37 +47,40 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         super().__init__(obj)
 
         # parameter widget
-        self.parameterWidget = FreeCADGui.PySideUic.loadUi(
+        self.parameter_widget = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/ElementGeometry2D.ui"
         )
         QtCore.QObject.connect(
-            self.parameterWidget.if_thickness,
+            self.parameter_widget.qsb_thickness,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
             self.thickness_changed,
         )
         self.init_parameter_widget()
 
         # geometry selection widget
-        self.selectionWidget = selection_widgets.GeometryElementsSelection(
+        self.selection_widget = selection_widgets.GeometryElementsSelection(
             obj.References, ["Face"], False, True
         )
 
         # form made from param and selection widget
-        self.form = [self.parameterWidget, self.selectionWidget]
+        self.form = [self.parameter_widget, self.selection_widget]
 
     def accept(self):
         self.obj.Thickness = self.thickness
-        self.obj.References = self.selectionWidget.references
-        self.selectionWidget.finish_selection()
+        self.obj.References = self.selection_widget.references
+        self.selection_widget.finish_selection()
         return super().accept()
 
     def reject(self):
-        self.selectionWidget.finish_selection()
+        self.selection_widget.finish_selection()
         return super().reject()
 
     def init_parameter_widget(self):
         self.thickness = self.obj.Thickness
-        self.parameterWidget.if_thickness.setText(self.thickness.UserString)
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_thickness).bind(
+            self.obj, "Thickness"
+        )
+        self.parameter_widget.qsb_thickness.setProperty("value", self.thickness)
 
     def thickness_changed(self, base_quantity_value):
         self.thickness = base_quantity_value

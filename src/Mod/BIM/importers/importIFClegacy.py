@@ -41,7 +41,7 @@ SCHEMA = "http://www.steptools.com/support/stdev_docs/ifcbim/ifc4.exp" # only fo
 MAKETEMPFILES = False # if True, shapes are passed from ifcopenshell to freecad through temp files
 DEBUG = True # this is only for the python console, this value is overridden when importing through the GUI
 SKIP = ["IfcBuildingElementProxy","IfcFlowTerminal","IfcFurnishingElement"] # default. overwritten by the GUI options
-IFCLINE_RE = re.compile("#(\d+)[ ]?=[ ]?(.*?)\((.*)\);[\\r]?$")
+IFCLINE_RE = re.compile(r"#(\d+)[ ]?=[ ]?(.*?)\((.*)\);[\\r]?$")
 APPLYFIX = True # if true, the ifcopenshell bug-fixing function is applied when saving files
 # end config
 
@@ -956,7 +956,7 @@ def export(exportList,filename):
     # get all children and reorder list to get buildings and floors processed first
     objectslist = Draft.get_group_contents(exportList, walls=True,
                                            addgroups=True)
-    objectslist = Arch.pruneIncluded(objectslist)
+    objectslist = Arch.pruneIncluded(objectslist, strict=True)
 
     sites = []
     buildings = []
@@ -1433,9 +1433,9 @@ class IfcSchema:
             entity = {}
             raw_entity_str = m.groups()[0]
 
-            entity["name"] = re.search("(.*?)[;|\s]", raw_entity_str).groups()[0].upper()
+            entity["name"] = re.search(r"(.*?)[;|\s]", raw_entity_str).groups()[0].upper()
 
-            subtypeofmatch = re.search(".*SUBTYPE OF \((.*?)\);", raw_entity_str)
+            subtypeofmatch = re.search(r".*SUBTYPE OF \((.*?)\);", raw_entity_str)
             entity["supertype"] = subtypeofmatch.groups()[0].upper() if subtypeofmatch else None
 
             # find the shortest string matched from the end of the entity type header to the
@@ -1793,7 +1793,6 @@ def explorer(filename,schema="IFC2X3_TC1.exp"):
     tree.headerItem().setText(1, "")
     tree.headerItem().setText(2, "Item and Properties")
     bold = QtGui.QFont()
-    bold.setWeight(75)
     bold.setBold(True)
 
     #print(ifc.Entities)

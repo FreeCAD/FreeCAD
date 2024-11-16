@@ -306,8 +306,7 @@ def wiresIntersect(wire1, wire2):
                 return True
     return False
 
-
-def connect(edges, closed=False):
+def connect(edges, closed=False, wireNedge=False):
     """Connect the edges in the given list by their intersections."""
 
     inters_list = [] # List of intersections (with the previous edge).
@@ -330,7 +329,9 @@ def connect(edges, closed=False):
                                                             curr_inters_list)]
             inters_list.append(inters)
 
+    new_edges_full = []
     new_edges = []
+
     for i, curr in enumerate(edges):
         curr_sta = inters_list[i]
         if i < (len(edges) - 1):
@@ -350,19 +351,32 @@ def connect(edges, closed=False):
                 prev = None
             if prev is not None:
                 prev_end = prev.Vertexes[-1].Point
-                new_edges.append(Part.LineSegment(prev_end, curr_sta).toShape())
+                new_edges_full.append(Part.LineSegment(prev_end, curr_sta).toShape())
 
         if curr_end is None:
             curr_end = curr.Vertexes[-1].Point
 
         if curr_sta != curr_end:
             if geomType(curr) == "Line":
-                new_edges.append(Part.LineSegment(curr_sta, curr_end).toShape())
+                n = Part.LineSegment(curr_sta, curr_end).toShape()
+                new_edges.append(n)
+                new_edges_full.append(n)
+
             elif geomType(curr) == "Circle":
-                new_edges.append(Part.Arc(curr_sta, findMidpoint(curr), curr_end).toShape())
+                n = Part.Arc(curr_sta, findMidpoint(curr), curr_end).toShape()
+                new_edges.append(n)
+                new_edges_full.append(n)
 
     try:
-        return Part.Wire(new_edges)
+        wire = Part.Wire(new_edges_full)
+
+        # TODO May phase out wire if bind() can do without it later and do with
+        # only connectEdges so no need bind() to find 'touching edges' there
+        if wireNedge:
+            return (wire, new_edges_full, new_edges)
+        else:
+            return wire
+
     except Part.OCCError:
         print("DraftGeomUtils.connect: unable to connect edges")
         for edge in new_edges:

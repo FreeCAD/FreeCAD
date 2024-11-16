@@ -90,7 +90,7 @@ App::DocumentObjectExecReturn *Fillet::execute()
 
         TopoShape res(0);
         this->Shape.setValue(res.makeElementShape(mkFillet,baseTopoShape,Part::OpCodes::Fillet));
-        return Part::Feature::execute();
+        return Part::FilletBase::execute();
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());

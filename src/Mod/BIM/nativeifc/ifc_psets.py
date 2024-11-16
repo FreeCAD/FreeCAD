@@ -96,7 +96,7 @@ def show_psets(obj):
             ptype, value = pvalue.split("(", 1)
             value = value.strip(")")
             value = value.strip("'")
-            pname = re.sub("[^0-9a-zA-Z]+", "", pname)
+            pname = re.sub(r"[^0-9a-zA-Z]+", "", pname)
             if pname[0].isdigit():
                 pname = "_" + pname
             ttip = (

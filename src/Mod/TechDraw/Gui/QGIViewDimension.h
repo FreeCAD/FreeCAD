@@ -317,7 +317,8 @@ private:
     QGIArrow* aHead2;
     double m_lineWidth;
 
-    QGCustomSvg* m_refFlag;
+    // needs Phase2 of autocorrect to be useful
+    // QGCustomSvg* m_refFlag;
 
 };
 

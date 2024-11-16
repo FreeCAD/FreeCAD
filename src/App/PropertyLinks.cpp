@@ -272,7 +272,7 @@ void PropertyLinkBase::_registerElementReference(App::DocumentObject *obj, std::
         return;
     }
     if (shadow.newName.empty()) {
-        _updateElementReference(0, obj, sub, shadow, false);
+        _updateElementReference(nullptr, obj, sub, shadow, false);
         return;
     }
     GeoFeature* geo = nullptr;
@@ -283,7 +283,7 @@ void PropertyLinkBase::_registerElementReference(App::DocumentObject *obj, std::
                                elementName,
                                true,
                                GeoFeature::ElementNameType::Export,
-                               0,
+                               nullptr,
                                &element,
                                &geo);
     if (!geo || !element || !element[0]) {

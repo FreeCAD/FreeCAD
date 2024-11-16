@@ -37,7 +37,7 @@ u = urlopen(
 )
 p = u.read().decode('utf-8')
 u.close()
-psets = re.findall(">Pset_(.*?)</a>", p)
+psets = re.findall(r">Pset_(.*?)</a>", p)
 
 # retrieve xml data from each Pset type
 psetdefs = ""

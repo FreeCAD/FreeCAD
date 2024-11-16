@@ -301,7 +301,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="231"/>
       <source>Create placement</source>
-      <translation>Placement erstellen</translation>
+      <translation>Platzierung erstellen</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="238"/>

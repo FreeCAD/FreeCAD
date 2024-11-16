@@ -295,6 +295,9 @@ TaskView::TaskView(QWidget *parent)
     connectApplicationDeleteDocument = 
     App::GetApplication().signalDeleteDocument.connect
         (std::bind(&Gui::TaskView::TaskView::slotDeletedDocument, this, sp::_1));
+    connectApplicationClosedView =
+    Gui::Application::Instance->signalCloseView.connect
+        (std::bind(&Gui::TaskView::TaskView::slotViewClosed, this, sp::_1));
     connectApplicationUndoDocument = 
     App::GetApplication().signalUndoDocument.connect
         (std::bind(&Gui::TaskView::TaskView::slotUndoDocument, this, sp::_1));
@@ -310,6 +313,7 @@ TaskView::~TaskView()
 {
     connectApplicationActiveDocument.disconnect();
     connectApplicationDeleteDocument.disconnect();
+    connectApplicationClosedView.disconnect();
     connectApplicationUndoDocument.disconnect();
     connectApplicationRedoDocument.disconnect();
     Gui::Selection().Detach(this);
@@ -469,6 +473,29 @@ void TaskView::slotDeletedDocument(const App::Document& doc)
 
             if (name == doc.getName()) {
                 ActiveDialog->autoClosedOnDeletedDocument();
+                removeDialog();
+            }
+        }
+    }
+
+    if (!ActiveDialog) {
+        updateWatcher();
+    }
+}
+
+void TaskView::slotViewClosed(const Gui::MDIView* view)
+{
+    // It can happen that only a view is closed an not the document
+    if (ActiveDialog) {
+        if (ActiveDialog->isAutoCloseOnClosedView()) {
+            const Gui::MDIView* associatedView = ActiveDialog->getAssociatedView();
+            if (!associatedView) {
+                Base::Console().Warning(std::string("TaskView::slotViewClosed"),
+                    "No view associated\n");
+            }
+
+            if (associatedView == view) {
+                ActiveDialog->autoClosedOnClosedView();
                 removeDialog();
             }
         }

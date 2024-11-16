@@ -204,7 +204,11 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
         return tips;
 
     try {
+        PyErr_Clear();
         Py::Module module("__main__");
+        if (module.ptr() == nullptr) {
+            return tips;
+        }
         Py::Dict dict = module.getDict();
 
         // this is used to filter out input of the form "1."

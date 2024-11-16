@@ -209,6 +209,8 @@ void MDIView::closeEvent(QCloseEvent *e)
 {
     if (canClose()) {
         e->accept();
+        Application::Instance->viewClosed(this);
+
         if (!bIsPassive) {
             // must be detached so that the last view can get asked
             Document* doc = this->getGuiDocument();

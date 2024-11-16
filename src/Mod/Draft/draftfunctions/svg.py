@@ -910,9 +910,14 @@ def _get_layer(obj):
     finds = obj.Document.findObjects(Name="LayerContainer")
     if not finds:
         return None
+    # First look in the LayerContainer:
     for layer in finds[0].Group:
         if utils.get_type(layer) == "Layer" and obj in layer.Group:
             return layer
+    # If not found, look through all App::FeaturePython objects (not just layers):
+    for find in obj.Document.findObjects(Type="App::FeaturePython"):
+        if utils.get_type(find) == "Layer" and obj in find.Group:
+            return find
     return None
 
 

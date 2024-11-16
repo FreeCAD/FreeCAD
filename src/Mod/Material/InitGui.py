@@ -45,3 +45,5 @@ class MaterialWorkbench(Gui.Workbench):
 
 
 Gui.addWorkbench(MaterialWorkbench())
+
+FreeCAD.__unit_test__ += [ "TestMaterialsGui" ]

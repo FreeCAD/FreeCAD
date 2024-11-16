@@ -1712,7 +1712,7 @@ def getContents(filename, tag, stringmode=False):
     searchpat = '<' + tag + '.*?</' + tag + '>'
     tags = re.findall(searchpat, contents)
     for t in tags:
-        tagid = re.findall('id="(.*?)"', t)
+        tagid = re.findall(r'id="(.*?)"', t)
         if tagid:
             tagid = tagid[0]
         else:

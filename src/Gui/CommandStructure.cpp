@@ -166,6 +166,7 @@ void StdCmdVarSet::activated(int iMsg)
             group->addObject(doc->getObject(VarSetName.c_str()));
         }
     }
+    commitCommand();
 
     doCommand(Doc, "App.ActiveDocument.getObject('%s').ViewObject.doubleClicked()", VarSetName.c_str());
 }

@@ -401,6 +401,9 @@ Base::Vector3d  QGIView::projItemPagePos(DrawViewPart* item)
 
 void QGIView::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
+    // this is never called for balloons (and dimensions?) because the label objects do not
+    // inherit from QGIView, but directly from QGraphicsItem. - wf
+
     Qt::KeyboardModifiers originalModifiers = event->modifiers();
     if (event->button()&Qt::LeftButton) {
         m_multiselectActivated = false;

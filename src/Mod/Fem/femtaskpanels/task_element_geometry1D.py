@@ -48,108 +48,133 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         super().__init__(obj)
 
         # parameter widget
-        self.parameterWidget = FreeCADGui.PySideUic.loadUi(
+        self.parameter_widget = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/ElementGeometry1D.ui"
         )
         QtCore.QObject.connect(
-            self.parameterWidget.cb_crosssectiontype,
+            self.parameter_widget.cb_crosssectiontype,
             QtCore.SIGNAL("activated(int)"),
             self.sectiontype_changed,
         )
         QtCore.QObject.connect(
-            self.parameterWidget.if_rec_height,
+            self.parameter_widget.qsb_rec_height,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
             self.rec_height_changed,
         )
         QtCore.QObject.connect(
-            self.parameterWidget.if_rec_width,
+            self.parameter_widget.qsb_rec_width,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
             self.rec_width_changed,
         )
         QtCore.QObject.connect(
-            self.parameterWidget.if_circ_diameter,
+            self.parameter_widget.qsb_circ_diameter,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
             self.circ_diameter_changed,
         )
         QtCore.QObject.connect(
-            self.parameterWidget.if_pipe_diameter,
+            self.parameter_widget.qsb_pipe_diameter,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
             self.pipe_diameter_changed,
         )
         QtCore.QObject.connect(
-            self.parameterWidget.if_pipe_thickness,
+            self.parameter_widget.qsb_pipe_thickness,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
             self.pipe_thickness_changed,
         )
 
-        self.parameterWidget.cb_crosssectiontype.addItems(
+        self.parameter_widget.cb_crosssectiontype.addItems(
             element_geometry1D.ElementGeometry1D.known_beam_types
         )
         self.get_beamsection_props()
-        self.updateParameterWidget()
+        self.update_parameter_widget()
 
         # geometry selection widget
-        self.selectionWidget = selection_widgets.GeometryElementsSelection(
+        self.selection_widget = selection_widgets.GeometryElementsSelection(
             obj.References, ["Edge"], False, True
         )
 
         # form made from param and selection widget
-        self.form = [self.parameterWidget, self.selectionWidget]
+        self.form = [self.parameter_widget, self.selection_widget]
 
     def accept(self):
         self.set_beamsection_props()
-        self.obj.References = self.selectionWidget.references
-        self.selectionWidget.finish_selection()
+        self.obj.References = self.selection_widget.references
+        self.selection_widget.finish_selection()
         return super().accept()
 
     def reject(self):
-        self.selectionWidget.finish_selection()
+        self.selection_widget.finish_selection()
         return super().reject()
 
     def get_beamsection_props(self):
-        self.SectionType = self.obj.SectionType
-        self.RectHeight = self.obj.RectHeight
-        self.RectWidth = self.obj.RectWidth
-        self.CircDiameter = self.obj.CircDiameter
-        self.PipeDiameter = self.obj.PipeDiameter
-        self.PipeThickness = self.obj.PipeThickness
+        self.section_type = self.obj.SectionType
+        self.rect_height = self.obj.RectHeight
+        self.rect_width = self.obj.RectWidth
+        self.circ_diameter = self.obj.CircDiameter
+        self.pipe_diameter = self.obj.PipeDiameter
+        self.pipe_thickness = self.obj.PipeThickness
 
     def set_beamsection_props(self):
-        self.obj.SectionType = self.SectionType
-        self.obj.RectHeight = self.RectHeight
-        self.obj.RectWidth = self.RectWidth
-        self.obj.CircDiameter = self.CircDiameter
-        self.obj.PipeDiameter = self.PipeDiameter
-        self.obj.PipeThickness = self.PipeThickness
+        self.obj.SectionType = self.section_type
+        self.obj.RectHeight = self.rect_height
+        self.obj.RectWidth = self.rect_width
+        self.obj.CircDiameter = self.circ_diameter
+        self.obj.PipeDiameter = self.pipe_diameter
+        self.obj.PipeThickness = self.pipe_thickness
 
-    def updateParameterWidget(self):
+    def update_parameter_widget(self):
         "fills the widgets"
-        index_crosssectiontype = self.parameterWidget.cb_crosssectiontype.findText(self.SectionType)
-        self.parameterWidget.cb_crosssectiontype.setCurrentIndex(index_crosssectiontype)
-        self.parameterWidget.if_rec_height.setText(self.RectHeight.UserString)
-        self.parameterWidget.if_rec_width.setText(self.RectWidth.UserString)
-        self.parameterWidget.if_circ_diameter.setText(self.CircDiameter.UserString)
-        self.parameterWidget.if_pipe_diameter.setText(self.PipeDiameter.UserString)
-        self.parameterWidget.if_pipe_thickness.setText(self.PipeThickness.UserString)
+        self.rect_height = self.obj.RectHeight
+        self.rect_width = self.obj.RectWidth
+        self.circ_diameter = self.obj.CircDiameter
+        self.pipe_diameter = self.obj.PipeDiameter
+        self.pipe_thickness = self.obj.PipeThickness
+
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_rec_height).bind(
+            self.obj, "RectHeight"
+        )
+        self.parameter_widget.qsb_rec_height.setProperty("value", self.rect_height)
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_rec_width).bind(
+            self.obj, "RectWidth"
+        )
+        self.parameter_widget.qsb_rec_width.setProperty("value", self.rect_width)
+
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_circ_diameter).bind(
+            self.obj, "CircDiameter"
+        )
+        self.parameter_widget.qsb_circ_diameter.setProperty("value", self.circ_diameter)
+
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_pipe_diameter).bind(
+            self.obj, "PipeDiameter"
+        )
+        self.parameter_widget.qsb_pipe_diameter.setProperty("value", self.pipe_diameter)
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_pipe_thickness).bind(
+            self.obj, "PipeThickness"
+        )
+        self.parameter_widget.qsb_pipe_thickness.setProperty("value", self.pipe_thickness)
+
+        index_crosssectiontype = self.parameter_widget.cb_crosssectiontype.findText(
+            self.section_type
+        )
+        self.parameter_widget.cb_crosssectiontype.setCurrentIndex(index_crosssectiontype)
 
     def sectiontype_changed(self, index):
         if index < 0:
             return
-        self.parameterWidget.cb_crosssectiontype.setCurrentIndex(index)
-        # parameterWidget returns unicode
-        self.SectionType = str(self.parameterWidget.cb_crosssectiontype.itemText(index))
+        self.parameter_widget.cb_crosssectiontype.setCurrentIndex(index)
+        self.section_type = self.parameter_widget.cb_crosssectiontype.itemText(index)
 
     def rec_height_changed(self, base_quantity_value):
-        self.RectHeight = base_quantity_value
+        self.rect_height = base_quantity_value
 
     def rec_width_changed(self, base_quantity_value):
-        self.RectWidth = base_quantity_value
+        self.rect_width = base_quantity_value
 
     def circ_diameter_changed(self, base_quantity_value):
-        self.CircDiameter = base_quantity_value
+        self.circ_diameter = base_quantity_value
 
     def pipe_diameter_changed(self, base_quantity_value):
-        self.PipeDiameter = base_quantity_value
+        self.pipe_diameter = base_quantity_value
 
     def pipe_thickness_changed(self, base_quantity_value):
-        self.PipeThickness = base_quantity_value
+        self.pipe_thickness = base_quantity_value

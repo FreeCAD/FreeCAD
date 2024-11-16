@@ -23,7 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRepAlgoAPI_Fuse.hxx>
+# include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 # include <BRepPrimAPI_MakeRevol.hxx>
 # include <BRepFeat_MakeRevol.hxx>
 # include <gp_Lin.hxx>
@@ -56,12 +56,11 @@ Revolution::Revolution()
 
     ADD_PROPERTY_TYPE(Type, (0L), "Revolution", App::Prop_None, "Revolution type");
     Type.setEnums(TypeEnums);
-    ADD_PROPERTY_TYPE(Base,(Base::Vector3d(0.0,0.0,0.0)),"Revolution", App::Prop_ReadOnly, "Base");
-    ADD_PROPERTY_TYPE(Axis,(Base::Vector3d(0.0,1.0,0.0)),"Revolution", App::Prop_ReadOnly, "Axis");
+    ADD_PROPERTY_TYPE(Base,(Base::Vector3d(0.0,0.0,0.0)),"Revolution", App::PropertyType(App::Prop_ReadOnly | App::Prop_Hidden), "Base");
+    ADD_PROPERTY_TYPE(Axis,(Base::Vector3d(0.0,1.0,0.0)),"Revolution", App::PropertyType(App::Prop_ReadOnly | App::Prop_Hidden), "Axis");
     ADD_PROPERTY_TYPE(Angle,(360.0),"Revolution", App::Prop_None, "Angle");
-    ADD_PROPERTY_TYPE(UpToFace, (nullptr), "Revolution", App::Prop_None, "Face where revolution will end");
     ADD_PROPERTY_TYPE(Angle2, (60.0), "Revolution", App::Prop_None, "Revolution length in 2nd direction");
-
+    ADD_PROPERTY_TYPE(UpToFace, (nullptr), "Revolution", App::Prop_None, "Face where revolution will end");
     Angle.setConstraints(&floatAngle);
     ADD_PROPERTY_TYPE(ReferenceAxis,(nullptr),"Revolution",(App::Prop_None),"Reference axis of revolution");
 }
@@ -97,13 +96,7 @@ App::DocumentObjectExecReturn* Revolution::execute()
 
     double angle2 = Base::toRadians(Angle2.getValue());
 
-    TopoShape sketchshape;
-    try {
-        sketchshape = getTopoShapeVerifiedFace();
-    }
-    catch (const Base::Exception& e) {
-        return new App::DocumentObjectExecReturn(e.what());
-    }
+    TopoShape sketchshape = getTopoShapeVerifiedFace();
 
     // if the Base property has a valid shape, fuse the AddShape into it
     TopoShape base;
@@ -161,7 +154,14 @@ App::DocumentObjectExecReturn* Revolution::execute()
 
         // Create a fresh support even when base exists so that it can be used for patterns
         TopoShape result(0);
-        TopoShape supportface = getSupportFace();
+        TopoShape supportface(0);
+        try {
+            supportface = getSupportFace();
+        }
+        catch(...) {
+            //do nothing, null shape is handle below
+        }
+
         supportface.move(invObjLoc);
 
         if (method == RevolMethod::ToFace || method == RevolMethod::ToFirst

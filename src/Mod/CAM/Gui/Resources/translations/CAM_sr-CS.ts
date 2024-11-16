@@ -6377,7 +6377,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../PathCommands.py" line="63"/>
       <source>Complete the selection of edges that form a loop</source>
-      <translation>Dovrši izabor svih ivica koje formiraju zatvorenu konturu</translation>
+      <translation>Dovrši izbor svih ivica koje formiraju konturu</translation>
     </message>
     <message>
       <location filename="../../../PathCommands.py" line="116"/>
@@ -6387,7 +6387,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../PathCommands.py" line="117"/>
       <source>Closed loop detection failed.</source>
-      <translation>Detekcija zatvorenih kontura nije uspela.</translation>
+      <translation>Pronalaženje zatvorenih kontura nije uspelo.</translation>
     </message>
   </context>
   <context>

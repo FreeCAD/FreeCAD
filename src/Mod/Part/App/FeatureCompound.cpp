@@ -69,6 +69,10 @@ App::DocumentObjectExecReturn *Compound::execute()
             }
         }
         this->Shape.setValue(TopoShape().makeElementCompound(shapes));
+        if (Links.getSize() > 0) {
+            App::DocumentObject* link = Links.getValues()[0];
+            copyMaterial(link);
+        }
         return Part::Feature::execute();
     }
     catch (Standard_Failure& e) {

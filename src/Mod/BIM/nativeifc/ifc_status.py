@@ -193,6 +193,7 @@ def lock_document():
     doc = FreeCAD.ActiveDocument
     products = []
     spatial = []
+    ifcfile = None
     if "IfcFilePath" not in doc.PropertiesList:
         # this is not a locked document
         projects = [o for o in doc.Objects if getattr(o, "Class", None) == "IfcProject"]
@@ -249,7 +250,8 @@ def lock_document():
             prefs, context = ifc_tools.get_export_preferences(ifcfile)
             exportIFC.export(objs, ifcfile, preferences=prefs)
             for n in [o.Name for o in doc.Objects]:
-                doc.removeObject(n)
+                if doc.getObject(n):
+                    doc.removeObject(n)
             ifc_tools.create_children(doc, ifcfile, recursive=True)
             doc.Modified = True
             doc.commitTransaction()
@@ -260,11 +262,24 @@ def lock_document():
             ifc_tools.convert_document(doc)
             doc.commitTransaction()
             doc.recompute()
+        # reveal file contents if needed
+        if "IfcFilePath" in doc.PropertiesList:
+            create = True
+            for o in doc.Objects:
+                # scan for site or building
+                if getattr(o, "IfcClass", "") in ("IfcSite", "IfcBuilding"):
+                    create = False
+                    break
+            if create:
+                if not ifcfile:
+                    ifcfile = doc.Proxy.ifcfile
+                ifc_tools.create_children(doc, recursive=False)
 
 
 def find_toplevel(objs):
     """Finds the top-level objects from the list"""
 
+    import Draft
     # filter out any object that depend on another from the list
     nobjs = []
     for obj in objs:
@@ -278,17 +293,35 @@ def find_toplevel(objs):
                 break
         else:
             nobjs.append(obj)
-    # filter out 2D objects
-    objs = nobjs
+    # filter out non-convertible objects
+    objs = filter_out(nobjs)
+    return objs
+
+
+def filter_out(objs):
+    """Filter out objects that should not be converted to IFC"""
+
     nobjs = []
     for obj in objs:
         if obj.isDerivedFrom("Part::Feature"):
-            if obj.Shape.Edges and not obj.Shape.Solids:
-                print("Excluding", obj.Label, "- 2D objects not supported yet")
-            else:
-                nobjs.append(obj)
-        else:
             nobjs.append(obj)
+        elif obj.isDerivedFrom("Mesh::Feature"):
+            nobjs.append(obj)
+        elif obj.isDerivedFrom("App::DocumentObjectGroup"):
+            if filter_out(obj.Group):
+                # only append groups that contain exportable objects
+                nobjs.append(obj)
+            else:
+                print("DEBUG: Filtering out",obj.Label)
+        elif obj.isDerivedFrom("Mesh::Feature"):
+            nobjs.append(obj)
+        elif obj.isDerivedFrom("App::Feature"):
+            if Draft.get_type(obj) in ("Dimension","LinearDimension","Layer","Text","DraftText"):
+                nobjs.append(obj)
+            else:
+                print("DEBUG: Filtering out",obj.Label)
+        else:
+            print("DEBUG: Filtering out",obj.Label)
     return nobjs
 
 

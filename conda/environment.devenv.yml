@@ -2,6 +2,7 @@ name: freecad
 channels:
 - conda-forge
 dependencies:
+- conda-forge/noarch::conda-libmamba-solver==24.7.0
 - libspnav                             # [linux]
 - kernel-headers_linux-64              # [linux and x86_64]
 - libdrm-cos6-x86_64                   # [linux and x86_64]
@@ -91,7 +92,6 @@ dependencies:
 - python==3.11.*
 - pyyaml
 - qt-main
-- six
 - smesh
 - swig
 - vtk==9.2.6

@@ -1634,7 +1634,7 @@ void ExpLineEdit::resizeEvent(QResizeEvent * event)
     int frameWidth = style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
 
     QSize sz = iconLabel->sizeHint();
-    iconLabel->move(rect().right() - frameWidth - sz.width(), 0);
+    iconLabel->move(rect().right() - frameWidth - sz.width(), rect().center().y() - sz.height() / 2);
 
     try {
         if (isBound() && getExpression()) {

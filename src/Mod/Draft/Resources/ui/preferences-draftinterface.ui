@@ -771,7 +771,7 @@
       <item row="1" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBox_DisplayStatusbarSnapWidget">
         <property name="toolTip">
-         <string>If checked, the Snap widget is displayed in the Draft statusbar</string>
+         <string>If checked, the Snap widget is displayed in the Draft status bar</string>
         </property>
         <property name="text">
          <string>Show the Snap widget in the Draft Workbench</string>
@@ -790,7 +790,7 @@
       <item row="2" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBox_DisplayStatusbarScaleWidget">
         <property name="toolTip">
-         <string>If checked, the Annotation scale widget is displayed in the Draft statusbar</string>
+         <string>If checked, the Annotation scale widget is displayed in the Draft status bar</string>
         </property>
         <property name="text">
          <string>Show the Annotation scale widget in the Draft Workbench</string>

@@ -36,7 +36,7 @@
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
+#include <Gui/Control.h>
 
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/TopoShape.h>
@@ -47,6 +47,8 @@
 
 using namespace Measure;
 using namespace MeasureGui;
+
+FC_LOG_LEVEL_INIT("QuickMeasure", true, true)
 
 QuickMeasure::QuickMeasure(QObject* parent)
     : QObject(parent)
@@ -65,7 +67,7 @@ QuickMeasure::~QuickMeasure()
 
 void QuickMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    if (canMeasureSelection(msg)) {
+    if (shouldMeasure(msg)) {
         if (!pendingProcessing) {
             selectionTimer->start(100);
         }
@@ -91,42 +93,58 @@ void QuickMeasure::processSelection()
         catch (const Base::Exception& e) {
             e.ReportException();
         }
+        catch (const Standard_Failure& e) {
+            FC_ERR(e);
+        }
+        catch (...) {
+            FC_ERR("Unhandled unknown exception");
+        }
     }
 }
 
 void QuickMeasure::tryMeasureSelection()
 {
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
     measurement->clear();
-    addSelectionToMeasurement();
+    if (doc && Gui::Control().activeDialog() == nullptr) {
+        // we (still) have a doc and are not in a tool dialog where the user needs to click on stuff
+        addSelectionToMeasurement();
+    }
     printResult();
 }
 
-bool QuickMeasure::canMeasureSelection(const Gui::SelectionChanges& msg) const
+bool QuickMeasure::shouldMeasure(const Gui::SelectionChanges& msg) const
 {
-    if (msg.Type == Gui::SelectionChanges::SetPreselect
-        || msg.Type == Gui::SelectionChanges::RmvPreselect) {
-        return false;
+
+    // measure only IF
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    if (doc) {
+        // we have a document
+        if (msg.Type == Gui::SelectionChanges::AddSelection
+            || msg.Type == Gui::SelectionChanges::RmvSelection
+            || msg.Type == Gui::SelectionChanges::SetSelection
+            || msg.Type == Gui::SelectionChanges::ClrSelection) {
+            // the event is about a change in selected objects
+            return true;
+        }
+    }
+    return false;
+}
+
+bool QuickMeasure::isObjAcceptable(App::DocumentObject* obj)
+{
+    // only measure shapes
+    if (obj && obj->isDerivedFrom(Part::Feature::getClassTypeId())) {
+        return true;
     }
 
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    return doc != nullptr;
+    return false;
 }
 
 void QuickMeasure::addSelectionToMeasurement()
 {
     int count = 0;
     int limit = 100;
-
-    // Lambda function to check whether to continue
-    auto shouldSkip = [](App::DocumentObject* obj) {
-        std::string vpType = obj->getViewProviderName();
-        auto* vp = Gui::Application::Instance->getViewProvider(obj);
-        return (vpType == "SketcherGui::ViewProviderSketch" && vp->isEditing())
-            || vpType.find("Gui::ViewProviderOrigin") != std::string::npos
-            || vpType.find("Gui::ViewProviderPart") != std::string::npos
-            || vpType.find("SpreadsheetGui") != std::string::npos
-            || vpType.find("TechDrawGui") != std::string::npos;
-    };
 
     auto selObjs = Gui::Selection().getSelectionEx(nullptr,
                                                    App::DocumentObject::getClassTypeId(),
@@ -144,7 +162,7 @@ void QuickMeasure::addSelectionToMeasurement()
         }
 
         if (subNames.empty()) {
-            if (!shouldSkip(rootObj)) {
+            if (isObjAcceptable(rootObj)) {
                 measurement->addReference3D(rootObj, "");
             }
             continue;
@@ -153,7 +171,7 @@ void QuickMeasure::addSelectionToMeasurement()
         for (auto& subName : subNames) {
             App::DocumentObject* obj = rootObj->getSubObject(subName.c_str());
 
-            if (shouldSkip(obj)) {
+            if (!isObjAcceptable(obj)) {
                 continue;
             }
             measurement->addReference3D(rootObj, subName);

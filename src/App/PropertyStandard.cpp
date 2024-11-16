@@ -3099,6 +3099,16 @@ float PropertyMaterialList::getTransparency(int index) const
     return _lValueList[index].transparency;
 }
 
+std::vector<float> PropertyMaterialList::getTransparencies() const
+{
+    std::vector<float> list;
+    for (auto& material : _lValueList) {
+        list.push_back(material.transparency);
+    }
+
+    return list;
+}
+
 Material PropertyMaterialList::getPyValue(PyObject* value) const
 {
     if (PyObject_TypeCheck(value, &(MaterialPy::Type))) {

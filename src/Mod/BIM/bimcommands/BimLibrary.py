@@ -383,25 +383,30 @@ class BIM_Library_TaskPanel:
         import PartGui
         from PySide import QtGui
 
+        def add_line(f, dp):
+            if self.isAllowed(f) and (text.lower() in f.lower()):
+                it = QtGui.QStandardItem(f)
+                it.setToolTip(os.path.join(dp, f))
+                self.filemodel.appendRow(it)
+                if f.lower().endswith(".fcstd"):
+                    it.setIcon(QtGui.QIcon(":icons/freecad-doc.png"))
+                elif f.lower().endswith(".ifc"):
+                    it.setIcon(QtGui.QIcon(":/icons/IFC.svg"))
+                else:
+                    it.setIcon(QtGui.QIcon(":/icons/Part_document.svg"))
+
         self.form.tree.setModel(self.filemodel)
         self.filemodel.clear()
         if self.form.checkOnline.isChecked():
             res = self.getOfflineLib(structured=True)
+            for i in range(len(res[0])):
+                add_line(res[0][i], res[2][i])
         else:
             res = os.walk(self.librarypath)
-        for dp, dn, fn in res:
-            for f in fn:
-                if self.isAllowed(f) and (text.lower() in f.lower()):
+            for dp, dn, fn in res:
+                for f in fn:
                     if not os.path.isdir(os.path.join(dp, f)):
-                        it = QtGui.QStandardItem(f)
-                        it.setToolTip(os.path.join(dp, f))
-                        self.filemodel.appendRow(it)
-                        if f.endswith(".fcstd"):
-                            it.setIcon(QtGui.QIcon(":icons/freecad-doc.png"))
-                        elif f.endswith(".ifc"):
-                            it.setIcon(QtGui.QIcon(":/icons/IFC.svg"))
-                        else:
-                            it.setIcon(QtGui.QIcon(":/icons/Part_document.svg"))
+                        add_line(f, dp)
         self.modelmode = 0
 
     def getFilters(self):
@@ -476,16 +481,16 @@ class BIM_Library_TaskPanel:
             dn = []
             dp = []
             for k, v in d.items():
-                if isinstance(v, dict):
+                if isinstance(v, dict) and v:
                     fn2, dn2, dp2 = addDir(v, root + "/" + k)
                     fn.extend(fn2)
                     dn.extend(dn2)
                     dp.extend(dp2)
-                else:
-                    fn += k
-                    dn += root
-                    dp += root + "/" + k
-            return dp, dn, fn
+                elif v:
+                    fn.append(k)
+                    dn.append(root)
+                    dp.append(root)
+            return fn, dn, dp
 
         templibfile = os.path.join(TEMPLIBPATH, LIBINDEXFILE)
         if not os.path.exists(templibfile):
@@ -583,7 +588,7 @@ class BIM_Library_TaskPanel:
 
             todo.delay(self.reject, None)
         elif ext == ".ifc":
-            import importIFC
+            from importers import importIFC
 
             importIFC.ZOOMOUT = False
             importIFC.insert(path, FreeCAD.ActiveDocument.Name)
@@ -779,8 +784,8 @@ class BIM_Library_TaskPanel:
             p = u.read()
             if sys.version_info.major >= 3:
                 p = str(p)
-            dirs = re.findall("<.*?octicon-file-directory.*?href.*?>(.*?)</a>", p)
-            files = re.findall('<.*?octicon-file".*?href.*?>(.*?)</a>', p)
+            dirs = re.findall(r"<.*?octicon-file-directory.*?href.*?>(.*?)</a>", p)
+            files = re.findall(r'<.*?octicon-file".*?href.*?>(.*?)</a>', p)
             nfiles = []
             for f in files:
                 for ft in self.getFilters():
@@ -791,8 +796,8 @@ class BIM_Library_TaskPanel:
             for d in dirs:
                 # <spans>
                 if "</span" in d:
-                    d1 = re.findall("<span.*?>(.*?)<", d)
-                    d2 = re.findall("</span>(.*?)$", d)
+                    d1 = re.findall(r"<span.*?>(.*?)<", d)
+                    d2 = re.findall(r"</span>(.*?)$", d)
                     if d1 and d2:
                         d = d1[0] + "/" + d2[0]
                 r = self.getOnlineContentsWEB(url + "/" + d.replace(" ", "%20"))

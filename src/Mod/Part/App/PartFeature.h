@@ -169,6 +169,9 @@ protected:
     void onBeforeChange(const App::Property* prop) override;
     void onChanged(const App::Property* prop) override;
 
+    void copyMaterial(Feature* feature);
+    void copyMaterial(App::DocumentObject* link);
+
     void registerElementCache(const std::string &prefix, PropertyPartShape *prop);
 
     /** Helper function to obtain mapped and indexed element name from a shape
@@ -184,7 +187,7 @@ protected:
 
     /**
      * Build a history of changes
-     * MakeShape: The operation that created the changes, e.g. BRepAlgoAPI_Common
+     * MakeShape: The operation that created the changes, e.g. FCBRepAlgoAPI_Common
      * type: The type of object we are interested in, e.g. TopAbs_FACE
      * newS: The new shape that was created by the operation
      * oldS: The original shape prior to the operation
@@ -210,7 +213,8 @@ public:
     App::PropertyLinkSub   EdgeLinks;
 
     short mustExecute() const override;
-    void onUpdateElementReference(const App::Property *prop) override;
+    App::DocumentObjectExecReturn* execute() override;
+    void onUpdateElementReference(const App::Property* prop) override;
 
 protected:
     void onDocumentRestored() override;

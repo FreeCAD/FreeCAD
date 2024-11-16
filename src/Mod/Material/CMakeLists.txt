@@ -10,6 +10,7 @@ SET(MaterialScripts_Files
     importFCMat.py
     MaterialEditor.py
     TestMaterialsApp.py
+    TestMaterialsGui.py
     Templatematerial.yml
 )
 
@@ -292,6 +293,7 @@ set(MaterialTest_Files
     materialtests/TestModels.py
     materialtests/TestMaterials.py
     materialtests/TestMaterialCreation.py
+    materialtests/TestMaterialDocument.py
     materialtests/TestMaterialFilter.py
 )
 

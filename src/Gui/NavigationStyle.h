@@ -284,6 +284,7 @@ private:
 
     SbVec3f rotationCenter;
     SbBool rotationCenterFound;
+    SbBool rotationCenterIsScenePointAtCursor;
     NavigationStyle::RotationCenterModes rotationCenterMode;
     float sensitivity;
     SbBool resetcursorpos;
@@ -415,6 +416,9 @@ public:
 
 protected:
     SbBool processSoEvent(const SoEvent * const ev) override;
+
+private:
+    SbBool blockPan {false}; // Used to block the first pan in a mouse movement to prevent big jumps
 };
 
 class GuiExport OpenCascadeNavigationStyle : public UserNavigationStyle {

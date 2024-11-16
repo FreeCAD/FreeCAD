@@ -397,8 +397,10 @@ void TaskExtrudeParameters::selectedShapeFace(const Gui::SelectionChanges& msg)
     }
 
     auto base = static_cast<Part::Feature*>(extrude->UpToShape.getValue());
-
-    if (strcmp(msg.pObjectName, base->getNameInDocument()) != 0) {
+    if (!base){
+        base = static_cast<Part::Feature*>(extrude);
+    }
+    else if (strcmp(msg.pObjectName, base->getNameInDocument()) != 0) {
         return;
     }
 

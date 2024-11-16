@@ -65,91 +65,55 @@
             <property name="fieldGrowthPolicy">
              <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
             </property>
-            <item row="1" column="0">
+            <item row="0" column="0">
              <widget class="QLabel" name="l_rec_width">
               <property name="text">
                <string>Width:</string>
               </property>
              </widget>
             </item>
-            <item row="1" column="1">
-             <widget class="Gui::InputField" name="if_rec_width">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>80</width>
-                <height>20</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>0 mm</string>
+            <item row="0" column="1">
+             <widget class="Gui::QuantitySpinBox" name="qsb_rec_width">
+              <property name="unit" stdset="0">
+               <string>mm</string>
               </property>
               <property name="alignment">
-               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               <set>Qt::AlignLeft|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
               <property name="singleStep">
                <double>1.000000000000000</double>
               </property>
-              <property name="maximum">
-               <double>1000000000.000000000000000</double>
-              </property>
-              <property name="unit" stdset="0">
-               <string notr="true">mm</string>
-              </property>
-              <property name="decimals" stdset="0">
-               <number>2</number>
+              <property name="minimum">
+               <double>0.000000000000000</double>
               </property>
               <property name="value" stdset="0">
-               <double>0.000000000000000</double>
+               <double>0.0000000000000</double>
               </property>
              </widget>
             </item>
-            <item row="2" column="0">
+            <item row="1" column="0">
              <widget class="QLabel" name="l_rec_height">
               <property name="text">
                <string>Height:</string>
               </property>
              </widget>
             </item>
-            <item row="2" column="1">
-             <widget class="Gui::InputField" name="if_rec_height">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>80</width>
-                <height>20</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>0 mm</string>
+            <item row="1" column="1">
+             <widget class="Gui::QuantitySpinBox" name="qsb_rec_height">
+              <property name="unit" stdset="0">
+               <string>mm</string>
               </property>
               <property name="alignment">
-               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               <set>Qt::AlignLeft|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
               <property name="singleStep">
                <double>1.000000000000000</double>
               </property>
-              <property name="maximum">
-               <double>1000000000.000000000000000</double>
-              </property>
-              <property name="unit" stdset="0">
-               <string notr="true">mm</string>
-              </property>
-              <property name="decimals" stdset="0">
-               <number>2</number>
+              <property name="minimum">
+               <double>0.000000000000000</double>
               </property>
               <property name="value" stdset="0">
-               <double>0.000000000000000</double>
+               <double>0.0000000000000</double>
               </property>
              </widget>
             </item>
@@ -179,50 +143,29 @@
             <property name="fieldGrowthPolicy">
              <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
             </property>
-            <item row="1" column="1">
-             <widget class="Gui::InputField" name="if_circ_diameter">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>80</width>
-                <height>20</height>
-               </size>
-              </property>
-              <property name="layoutDirection">
-               <enum>Qt::LeftToRight</enum>
-              </property>
+            <item row="0" column="0">
+             <widget class="QLabel" name="l_circ_diameter">
               <property name="text">
-               <string>0 mm</string>
+               <string>Diameter:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="Gui::QuantitySpinBox" name="qsb_circ_diameter">
+              <property name="unit" stdset="0">
+               <string>mm</string>
               </property>
               <property name="alignment">
-               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               <set>Qt::AlignLeft|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
               <property name="singleStep">
                <double>1.000000000000000</double>
               </property>
-              <property name="maximum">
-               <double>1000000000.000000000000000</double>
-              </property>
-              <property name="unit" stdset="0">
-               <string notr="true">mm</string>
-              </property>
-              <property name="decimals" stdset="0">
-               <number>2</number>
-              </property>
-              <property name="value" stdset="0">
+              <property name="minimum">
                <double>0.000000000000000</double>
               </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="l_circ_diameter">
-              <property name="text">
-               <string>Diameter:</string>
+              <property name="value" stdset="0">
+               <double>0.0000000000000</double>
               </property>
              </widget>
             </item>
@@ -237,91 +180,55 @@
             <property name="fieldGrowthPolicy">
              <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
             </property>
-            <item row="1" column="0">
+            <item row="0" column="0">
              <widget class="QLabel" name="l_pipe_diameter">
               <property name="text">
                <string>Outer diameter:</string>
               </property>
              </widget>
             </item>
-            <item row="1" column="1">
-             <widget class="Gui::InputField" name="if_pipe_diameter">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>80</width>
-                <height>20</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>0 mm</string>
+            <item row="0" column="1">
+             <widget class="Gui::QuantitySpinBox" name="qsb_pipe_diameter">
+              <property name="unit" stdset="0">
+               <string>mm</string>
               </property>
               <property name="alignment">
-               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               <set>Qt::AlignLeft|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
               <property name="singleStep">
                <double>1.000000000000000</double>
               </property>
-              <property name="maximum">
-               <double>1000000000.000000000000000</double>
-              </property>
-              <property name="unit" stdset="0">
-               <string notr="true">mm</string>
-              </property>
-              <property name="decimals" stdset="0">
-               <number>2</number>
+              <property name="minimum">
+               <double>0.000000000000000</double>
               </property>
               <property name="value" stdset="0">
-               <double>0.000000000000000</double>
+               <double>0.0000000000000</double>
               </property>
              </widget>
             </item>
-            <item row="2" column="0">
+            <item row="1" column="0">
              <widget class="QLabel" name="l_pipe_thickness">
               <property name="text">
                <string>Thickness:</string>
               </property>
              </widget>
             </item>
-            <item row="2" column="1">
-             <widget class="Gui::InputField" name="if_pipe_thickness">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>80</width>
-                <height>20</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>0 mm</string>
+            <item row="1" column="1">
+             <widget class="Gui::QuantitySpinBox" name="qsb_pipe_thickness">
+              <property name="unit" stdset="0">
+               <string>mm</string>
               </property>
               <property name="alignment">
-               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               <set>Qt::AlignLeft|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
               <property name="singleStep">
                <double>1.000000000000000</double>
               </property>
-              <property name="maximum">
-               <double>1000000000.000000000000000</double>
-              </property>
-              <property name="unit" stdset="0">
-               <string notr="true">mm</string>
-              </property>
-              <property name="decimals" stdset="0">
-               <number>2</number>
+              <property name="minimum">
+               <double>0.000000000000000</double>
               </property>
               <property name="value" stdset="0">
-               <double>0.000000000000000</double>
+               <double>0.0000000000000</double>
               </property>
              </widget>
             </item>
@@ -351,9 +258,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Gui::InputField</class>
-   <extends>QLineEdit</extends>
-   <header>Gui/InputField.h</header>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -68,7 +68,8 @@ int MaterialTreeWidgetPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
     PyErr_Clear();
     if (PyArg_ParseTuple(args, "O", &obj)) {
-        if (QLatin1String(obj->ob_type->tp_name) == QLatin1String("PySide2.QtWidgets.QWidget")) {
+        if ((QLatin1String(obj->ob_type->tp_name) == QLatin1String("PySide2.QtWidgets.QWidget")) ||
+            (QLatin1String(obj->ob_type->tp_name) == QLatin1String("PySide6.QtWidgets.QWidget"))) {
             Gui::PythonWrapper wrap;
             wrap.loadWidgetsModule();
             auto qObject = wrap.toQObject(Py::Object(obj));

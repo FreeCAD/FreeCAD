@@ -48,10 +48,6 @@
 
 FC_LOG_LEVEL_INIT("PartDesign",true,true)
 
-#ifndef M_PI
-# define M_PI       3.14159265358979323846
-#endif
-
 using namespace PartDesign;
 namespace sp = std::placeholders;
 

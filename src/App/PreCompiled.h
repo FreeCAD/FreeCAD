@@ -69,6 +69,7 @@
 
 // STL
 #include <bitset>
+#include <chrono>
 #include <exception>
 #include <functional>
 #include <iterator>

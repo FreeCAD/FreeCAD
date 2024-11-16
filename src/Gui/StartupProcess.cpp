@@ -107,6 +107,8 @@ void StartupProcess::setupApplication()
     // compression for tablet events here to solve that.
     QCoreApplication::setAttribute(Qt::AA_CompressTabletEvents);
 #endif
+    // https://forum.freecad.org/viewtopic.php?f=3&t=15540
+    QApplication::setAttribute(Qt::AA_DontShowIconsInMenus, false);
 }
 
 void StartupProcess::execute()
@@ -212,7 +214,6 @@ void StartupPostProcess::setLoadFromPythonModule(bool value)
 
 void StartupPostProcess::execute()
 {
-    showSplashScreen();
     setWindowTitle();
     setProcessMessages();
     setAutoSaving();
@@ -409,30 +410,13 @@ void StartupPostProcess::setImportImageFormats()
     App::GetApplication().addImportType(filter.c_str(), "FreeCADGui");
 }
 
-bool StartupPostProcess::hiddenMainWindow() const
-{
-    const std::map<std::string,std::string>& cfg = App::Application::Config();
-    bool hidden = false;
-    auto it = cfg.find("StartHidden");
-    if (it != cfg.end()) {
-        hidden = true;
-    }
-
-    return hidden;
-}
-
-void StartupPostProcess::showSplashScreen()
-{
-    bool hidden = hiddenMainWindow();
-
-    // show splasher while initializing the GUI
-    if (!hidden && !loadFromPythonModule) {
-        mainWindow->startSplasher();
-    }
-}
-
 void StartupPostProcess::showMainWindow()
 {
+    // show splasher while initializing the GUI
+    if (!Application::hiddenMainWindow() && !loadFromPythonModule) {
+        mainWindow->startSplasher();
+    }
+
     // running the GUI init script
     try {
         Base::Console().Log("Run Gui init script\n");
@@ -492,7 +476,7 @@ void StartupPostProcess::activateWorkbench()
     guiApp.activateWorkbench(start.c_str());
 
     // show the main window
-    if (!hiddenMainWindow()) {
+    if (!Application::hiddenMainWindow()) {
         Base::Console().Log("Init: Showing main window\n");
         mainWindow->loadWindowSettings();
     }

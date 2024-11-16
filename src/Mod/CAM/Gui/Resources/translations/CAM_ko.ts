@@ -1330,7 +1330,7 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="139"/>
       <source>Disable</source>
-      <translation type="unfinished">Disable</translation>
+      <translation>비활성화</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="63"/>
@@ -2257,7 +2257,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/ToolEditor.ui" line="308"/>
       <source>Image</source>
-      <translation>이미지</translation>
+      <translation>화상</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="20"/>
@@ -3475,7 +3475,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="174"/>
       <source>Image</source>
-      <translation>이미지</translation>
+      <translation>화상</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="198"/>
@@ -6037,7 +6037,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="97"/>
       <source>Experimental</source>
-      <translation type="unfinished">Experimental</translation>
+      <translation>실험적</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="100"/>

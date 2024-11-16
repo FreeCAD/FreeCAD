@@ -602,8 +602,10 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
     std::string objectName = objname;
 
     if (ctrlDown) {
-        if (Gui::Selection().isSelected(docname, objname, info.element.c_str(), ResolveMode::NoResolve))
+        if (Gui::Selection().isSelected(docname, objname, info.element.c_str(), ResolveMode::NoResolve)) {
             Gui::Selection().rmvSelection(docname, objname, info.element.c_str(), &sels);
+            return true;
+        }
         else {
             getFullSubElementName(subName);
             bool ok = Gui::Selection().addSelection(docname, objname,
@@ -625,7 +627,8 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
                     type = hasNext ? SoSelectionElementAction::All : SoSelectionElementAction::Append;
             }
         }
-    } else {
+    }
+    else {
         // Hierarchy ascending
         //
         // If the clicked subelement is already selected, check if there is an
@@ -698,6 +701,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
             getMainWindow()->showMessage(QString::fromLatin1(buf));
         }
     }
+
     if (pPath) {
         FC_TRACE("applying action");
         SoSelectionElementAction action(type);

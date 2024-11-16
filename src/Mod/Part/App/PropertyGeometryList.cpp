@@ -229,12 +229,12 @@ void PropertyGeometryList::Save(Writer &writer) const
     writer.incInd();
     for (int i = 0; i < getSize(); i++) {
         writer.Stream() << writer.ind() << "<Geometry type=\""
-                                        << _lValueList[i]->getTypeId().getName() << "\"" << endl;
-        for( auto &e : _lValueList[i]->getExtensions() ) {
+                                        << _lValueList[i]->getTypeId().getName() << "\"";
+        for (auto &e : _lValueList[i]->getExtensions() ) {
             auto ext = e.lock();
-            auto gpe = freecad_dynamic_cast<GeometryMigrationPersistenceExtension>(ext.get());
-            if (gpe)
+            if (auto gpe = freecad_dynamic_cast<GeometryMigrationPersistenceExtension>(ext.get())) {
                 gpe->preSave(writer);
+            }
         }
         writer.Stream() << " migrated=\"1\">\n";
 

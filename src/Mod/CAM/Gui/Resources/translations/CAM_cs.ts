@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="144"/>
       <source>Select a workplane for a FeatureArea</source>
-      <translation>Vyberte pracovní rovinu pro ploché fukce</translation>
+      <translation>Vyberte pracovní rovinu pro oblast funkce</translation>
     </message>
   </context>
   <context>
@@ -47,7 +47,7 @@
     <message>
       <location filename="../../Command.cpp" line="238"/>
       <source>Compound</source>
-      <translation>Složený</translation>
+      <translation>Složenina</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="239"/>
@@ -93,12 +93,12 @@
     <message>
       <location filename="../../Command.cpp" line="268"/>
       <source>Create Path Compound</source>
-      <translation>Vytvořit dráhu Složený</translation>
+      <translation>Vytvořit dráhu Složeniny</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="346"/>
       <source>Create Path Shape</source>
-      <translation>Vytvořit dráhu Tvar</translation>
+      <translation>Vytvořit dráhu Tvaru</translation>
     </message>
   </context>
   <context>
@@ -116,7 +116,7 @@
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="32"/>
       <source>Select a template to be used for the job. In case there are no templates you can create one through the popup menu of an existing job. Name the file job_*.json and place it in the macro or the path directory (see preferences) in order to be selectable from this list.</source>
-      <translation>Vyberte šablonu, která bude použita pro úlohu. V případě, že neexistují žádné šablony, můžete je vytvořit prostřednictvím vyskakovacího menu existující zakázky. Pojmenujte soubor job_*.json a umístěte jej do makra nebo adresáře cesty (viz předvolby), aby bylo možné vybrat z tohoto seznamu.</translation>
+      <translation>Vyberte šablonu, která bude použita pro úlohu. V případě, že neexistují žádné šablony, můžete je vytvořit prostřednictvím vyskakovacího menu u existující úlohy. Pojmenujte soubor job_*.json a umístěte jej do makra nebo cesty adresáře (viz předvolby), aby bylo možné ji vybrat z tohoto seznamu.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="42"/>
@@ -126,7 +126,7 @@
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="14"/>
       <source>Select Base Models</source>
-      <translation>Vybrat základní modely</translation>
+      <translation>Vybrat Základní modely</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="24"/>
@@ -146,12 +146,12 @@
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="14"/>
       <source>Job Template Export</source>
-      <translation>Export šablony</translation>
+      <translation>Export šablony úlohy</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="23"/>
       <source>Post Processing</source>
-      <translation>Postprocesorování</translation>
+      <translation>Postprocesování</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="51"/>
@@ -198,12 +198,12 @@ Any values of the SetupSheet that are changed from their default are preselected
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="87"/>
       <source>Operation Heights</source>
-      <translation>Operační výška</translation>
+      <translation>Operační výšky</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="97"/>
       <source>Operation Depths</source>
-      <translation>Operační hloubka</translation>
+      <translation>Operační hloubky</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="107"/>
@@ -222,16 +222,16 @@ Any values of the SetupSheet that are changed from their default are preselected
 This option is most useful if stock is a box or cylinder, or if the machine has a standard placement for machining.
 
 Note that this option is disabled if a stock object from an existing solid is used in the job - they cannot be stored in a template.</source>
-      <translation type="unfinished">If enabled the creation of stock is included in the template. If a template does not include a stock definition the default stock creation algorithm will be used (creation from the Base object&apos;s bounding box).
+      <translation>Je-li povoleno, v šabloně je zahrnuto vytvoření polotovaru. Pokud šablona neobsahuje definici polotovaru, bude použit výchozí algoritmus pro tvorbu polotovaru (tvorba z ohraničení Základního objektu)
 
-This option is most useful if stock is a box or cylinder, or if the machine has a standard placement for machining.
+Tato možnost je nejužitečnější tehdy, je-li polotovarem Kvádr nebo Válec, anebo je-li na stroji definované standardní umístění pro obrábění.
 
-Note that this option is disabled if a stock object from an existing solid is used in the job - they cannot be stored in a template.</translation>
+Všimněte si, že volba je nedostupná, pokud je v úloze použit objekt polotovaru ze stávajícího tělesa - tyto nemohou být uloženy do šablony.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="184"/>
       <source>Hint about the current stock extent setting.</source>
-      <translation>Nápověda k aktuálnímu nastavení rozsahu polotovaru.</translation>
+      <translation>Nápověda k aktuálnímu nastavení rozšíření polotovaru.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="191"/>
@@ -246,7 +246,7 @@ Note that this option is disabled if a stock object from an existing solid is us
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="110"/>
       <source>Tool Rapid Speeds</source>
-      <translation>Rychlé otáčky nástroje</translation>
+      <translation>Rychloposuvy nástroje</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="123"/>
@@ -260,7 +260,7 @@ Note that this option is disabled if a stock object from an existing solid is us
 Note that only operations which currently have configuration values set are listed.</source>
       <translation>Povolit všechny operace, pro které mají být exportovány konfigurační hodnoty.
 
-Všimněte si, že jsou uvedeny pouze operace, které mají aktuálně nastavené konfigurační hodnoty.</translation>
+Všimněte si, že jsou uvedeny pouze operace, které momentálně mají nastavené konfigurační hodnoty.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="152"/>
@@ -274,16 +274,16 @@ Všimněte si, že jsou uvedeny pouze operace, které mají aktuálně nastaven�
 For Box and Cylinder stocks this means the actual size of the stock solid being created.
 
 For stock from the Base object&apos;s bounding box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job&apos;s Base object and apply the stored extra settings.</source>
-      <translation type="unfinished">If enabled the current size settings for the stock object are included in the template.
+      <translation>Je-li povoleno, aktuální nastavení velikosti objektu polotovaru bude zahrnuto v šabloně.
 
-For Box and Cylinder stocks this means the actual size of the stock solid being created.
+Pro polotovary typu Kvádr a Válec to znamená skutečnou velikost vytvářeného polotovaru.
 
-For stock from the Base object&apos;s bounding box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job&apos;s Base object and apply the stored extra settings.</translation>
+Pro polotovary z ohraničení Základního objektu to znamená přídavek materiálu ve všech směrech. Objekt polotovaru vytvořený ze šablony pak dostane základní rozměry z nového Základního objektu úlohy a použije uložené nastavení přídavku.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="168"/>
       <source>Extent</source>
-      <translation>Rozsah</translation>
+      <translation>Rozloha</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="194"/>
@@ -318,7 +318,7 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="35"/>
       <source>Controller Name /  Tool Number</source>
-      <translation>Název řídícho systému / Číslo nástroje</translation>
+      <translation>Název řídícího systému / Číslo nástroje</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="67"/>
@@ -378,7 +378,7 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/PropertyCreate.ui" line="20"/>
       <source>Name</source>
-      <translation>Jméno</translation>
+      <translation>Název</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="27"/>
@@ -521,7 +521,7 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../../DlgJobChooser.ui" line="17"/>
       <source>Choose a CAM Job</source>
-      <translation type="unfinished">Choose a CAM Job</translation>
+      <translation>Vyberte CAM úlohu</translation>
     </message>
   </context>
   <context>
@@ -547,7 +547,7 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="20"/>
       <source>Boundary Body</source>
-      <translation>Hraniční těleso</translation>
+      <translation>Ohraničující těleso</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="38"/>
@@ -572,7 +572,7 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="87"/>
       <source>Select the body to be used to constrain the underlying Path.</source>
-      <translation>Vyberat těleso, které se použije k omezení podkladové dráhy.</translation>
+      <translation>Vybrat těleso, které se použije k omezení podkladové dráhy.</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="100"/>
@@ -582,12 +582,12 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="107"/>
       <source>Extension of bounding box&apos;s MinX</source>
-      <translation type="unfinished">Extension of bounding box&apos;s MinX</translation>
+      <translation>Rozšíření ohraničujícího kvádru MinX</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="120"/>
       <source>Extension of bounding box&apos;s MaxX</source>
-      <translation type="unfinished">Extension of bounding box&apos;s MaxX</translation>
+      <translation>Rozšíření ohraničujícího kvádru MaxX</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="127"/>
@@ -597,12 +597,12 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="134"/>
       <source>Extension of bounding box&apos;s MinY</source>
-      <translation type="unfinished">Extension of bounding box&apos;s MinY</translation>
+      <translation>Rozšíření ohraničujícího kvádru MinY</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="141"/>
       <source>Extension of bounding box&apos;s MaxY</source>
-      <translation type="unfinished">Extension of bounding box&apos;s MaxY</translation>
+      <translation>Rozšíření ohraničujícího kvádru MaxY</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="148"/>
@@ -612,12 +612,12 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="155"/>
       <source>Extension of bounding box&apos;s MinZ</source>
-      <translation type="unfinished">Extension of bounding box&apos;s MinZ</translation>
+      <translation>Rozšíření ohraničujícího kvádru MinZ</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="162"/>
       <source>Extension of bounding box&apos;s MaxZ</source>
-      <translation type="unfinished">Extension of bounding box&apos;s MaxZ</translation>
+      <translation>Rozšíření ohraničujícího kvádru MaxZ</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="182"/>
@@ -627,7 +627,7 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="196"/>
       <source>Height of the Cylinder</source>
-      <translation>Poloměr válce</translation>
+      <translation>Výška válce</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="216"/>
@@ -647,12 +647,12 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="257"/>
       <source>If checked the path is constrained by the solid. Otherwise the volume of the solid describes a &apos;keep out&apos; zone</source>
-      <translation>Je-li zaškrtnuto, cesta je zavazbena tělesem. V opačném případě popisuje objem tělesa zónu &apos;nevstupovat&apos;</translation>
+      <translation>Je-li zaškrtnuto, cesta je zavazbena tělesem. V opačném případě objem tělesa popisuje &apos;zakázanou&apos; zónu</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="55"/>
       <source>Extend Model&apos;s Bounding Box</source>
-      <translation type="unfinished">Extend Model&apos;s Bounding Box</translation>
+      <translation>Rozšířit ohraničující kvádr Modelu</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="175"/>
@@ -876,7 +876,7 @@ Funkce Obnovit odstraní ze seznamu všechny aktuální prvky a doplní seznam v
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="163"/>
       <source>Finish Step Down</source>
-      <translation>Dokončit krok dolů</translation>
+      <translation>Dokončovací krok dolů</translation>
     </message>
     <message>
       <location filename="../panels/PageDiametersEdit.ui" line="20"/>
@@ -1015,7 +1015,7 @@ Funkce Obnovit odstraní ze seznamu všechny aktuální prvky a doplní seznam v
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="62"/>
       <source>Keep Tool Down Ratio</source>
-      <translation>Udržet poměr nástrojů dole</translation>
+      <translation>Poměr Držení nástroje dole</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="111"/>
@@ -1477,7 +1477,7 @@ Poslední možnost lze použít k zajištění rovnoměrných výšek celého po
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="244"/>
       <source>Clear Edges</source>
-      <translation>Vymazat okraje</translation>
+      <translation>Vyčistit okraje</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="251"/>
@@ -1558,7 +1558,7 @@ Poslední možnost lze použít k zajištění rovnoměrných výšek celého po
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="114"/>
       <source>The amount of extra material left by this operation in relation to the target shape</source>
-      <translation>Množství znytkového materiálu, které zůstane po této operaci ve vztahu k cílovému tvaru.</translation>
+      <translation>Množství zbytkového materiálu, které zůstane po této operaci ve vztahu k cílovému tvaru</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="127"/>
@@ -1730,7 +1730,7 @@ Poslední možnost lze použít k zajištění rovnoměrných výšek celého po
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="366"/>
       <source>Multi-pass</source>
-      <translation>Vícenásobný</translation>
+      <translation>Více průchodů</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="374"/>
@@ -1820,7 +1820,7 @@ Poslední možnost lze použít k zajištění rovnoměrných výšek celého po
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="140"/>
       <source>Avoid cutting the last &apos;N&apos; faces in the Base Geometry list of selected faces.</source>
-      <translation type="unfinished">Avoid cutting the last &apos;N&apos; faces in the Base Geometry list of selected faces.</translation>
+      <translation>Vyhnout se řezání posledních &apos;N&apos; ploch v seznamu vybraných ploch Základní geometrie.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="147"/>
@@ -1921,7 +1921,7 @@ Krok 100 % vede k tomu, že se dva různé cykly nepřekrývají.</translation>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="290"/>
       <source>Optimize StepOver Transitions</source>
-      <translation>Optimalizovat krok přejezdů</translation>
+      <translation>Optimalizovat přechody kroku</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="14"/>
@@ -1985,27 +1985,29 @@ Výchozí: OpToolDiameter</translation>
       <source>Expression set as ClearanceHeight for new operations.
 
 Default: &quot;OpStockZMax+SetupSheet.ClearanceHeightOffset&quot;</source>
-      <translation type="unfinished">Expression set as ClearanceHeight for new operations.
+      <translation>Výraz nastavený jako Světlá výška pro nové operace.
 
-Default: &quot;OpStockZMax+SetupSheet.ClearanceHeightOffset&quot;</translation>
+Výchozí:
+&quot;OpStockZMax+SetupSheet.ClearanceHeightOffset&quot;</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="145"/>
       <source>Expression set as SafeHeight for new operations.
 
 Default: &quot;OpStockZMax+SetupSheet.SafeHeightOffset&quot;</source>
-      <translation type="unfinished">Expression set as SafeHeight for new operations.
+      <translation>Výraz nastavený jako Bezpečná výška pro nové operace.
 
-Default: &quot;OpStockZMax+SetupSheet.SafeHeightOffset&quot;</translation>
+Výchozí:
+&quot;OpStockZMax+SetupSheet.SafeHeightOffset&quot;</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="154"/>
       <source>SafeHeightOffset can be for expressions to set the SafeHeight for new operations.
 
 Default: &quot;5mm&quot;</source>
-      <translation type="unfinished">SafeHeightOffset can be for expressions to set the SafeHeight for new operations.
+      <translation>Offset SafeHeightOffset může být použit ve výrazech pro nastavení Bezpečné výšky pro nové operace.
 
-Default: &quot;5mm&quot;</translation>
+Výchozí: &quot;5mm&quot;</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="205"/>
@@ -2101,7 +2103,7 @@ Výchozí: 3 mm</translation>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="177"/>
       <source>Lead In/Out</source>
-      <translation>Zavedení vstup/výstup</translation>
+      <translation>Zajetí / vyjetí</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="65"/>
@@ -2121,7 +2123,7 @@ Výchozí: 3 mm</translation>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="117"/>
       <source>Finishing pass Z offset</source>
-      <translation type="unfinished">Finishing pass Z offset</translation>
+      <translation>Z-offset Dokončovacího průchodu</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="124"/>
@@ -2136,7 +2138,7 @@ Výchozí: 3 mm</translation>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="146"/>
       <source>Finishing pass</source>
-      <translation type="unfinished">Finishing pass</translation>
+      <translation>Dokončovací průchod</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="153"/>
@@ -2146,7 +2148,7 @@ Výchozí: 3 mm</translation>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="156"/>
       <source>Optimize movements</source>
-      <translation type="unfinished">Optimize movements</translation>
+      <translation>Optimalizuj pohyby</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="97"/>
@@ -2334,7 +2336,7 @@ Pokud je poloměr větší než ten, který podporuje samotný tvar štítku, v�
     <message>
       <location filename="../panels/PageOpCustomEdit.ui" line="62"/>
       <source>G-Code</source>
-      <translation type="unfinished">G-Code</translation>
+      <translation>G-kód</translation>
     </message>
   </context>
   <context>
@@ -2558,7 +2560,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="405"/>
       <source>Extend Model&apos;s Bounding Box</source>
-      <translation type="unfinished">Extend Model&apos;s Bounding Box</translation>
+      <translation>Rozšířit ohraničující kvádr Modelu</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="429"/>
@@ -3705,7 +3707,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="488"/>
       <source>Extend Model&apos;s Bounding Box</source>
-      <translation type="unfinished">Extend Model&apos;s Bounding Box</translation>
+      <translation>Rozšířit ohraničující kvádr Modelu</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="493"/>
@@ -3859,27 +3861,29 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
       <source>Expression set as ClearanceHeight for new operations.
 
 Default: &quot;OpStockZMax+SetupSheet.ClearanceHeightOffset&quot;</source>
-      <translation type="unfinished">Expression set as ClearanceHeight for new operations.
+      <translation>Výraz nastavený jako Světlá výška pro nové operace.
 
-Default: &quot;OpStockZMax+SetupSheet.ClearanceHeightOffset&quot;</translation>
+Výchozí:
+&quot;OpStockZMax+SetupSheet.ClearanceHeightOffset&quot;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1162"/>
       <source>Expression set as SafeHeight for new operations.
 
 Default: &quot;OpStockZMax+SetupSheet.SafeHeightOffset&quot;</source>
-      <translation type="unfinished">Expression set as SafeHeight for new operations.
+      <translation>Výraz nastavený jako Bezpečná výška pro nové operace.
 
-Default: &quot;OpStockZMax+SetupSheet.SafeHeightOffset&quot;</translation>
+Výchozí:
+&quot;OpStockZMax+SetupSheet.SafeHeightOffset&quot;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1171"/>
       <source>SafeHeightOffset can be for expressions to set the SafeHeight for new operations.
 
 Default: &quot;5mm&quot;</source>
-      <translation type="unfinished">SafeHeightOffset can be for expressions to set the SafeHeight for new operations.
+      <translation>Offset SafeHeightOffset může být použit ve výrazech pro nastavení Bezpečné výšky pro nové operace.
 
-Default: &quot;5mm&quot;</translation>
+Výchozí: &quot;5mm&quot;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1270"/>
@@ -4226,7 +4230,7 @@ Výchozí: 3 mm</translation>
     <message>
       <location filename="../../../PathScripts/PathUtilsGui.py" line="89"/>
       <source>Choose a CAM Job</source>
-      <translation type="unfinished">Choose a CAM Job</translation>
+      <translation>Vyberte CAM úlohu</translation>
     </message>
   </context>
   <context>
@@ -5355,7 +5359,7 @@ Výchozí: 3 mm</translation>
       <location filename="../../../Path/Op/Surface.py" line="202"/>
       <location filename="../../../Path/Op/Waterline.py" line="230"/>
       <source>Avoid cutting the last &apos;N&apos; faces in the Base Geometry list of selected faces.</source>
-      <translation type="unfinished">Avoid cutting the last &apos;N&apos; faces in the Base Geometry list of selected faces.</translation>
+      <translation>Vyhnout se řezání posledních &apos;N&apos; ploch v seznamu vybraných ploch Základní geometrie.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="210"/>
@@ -5538,7 +5542,7 @@ Výchozí: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Vcarve.py" line="291"/>
       <source>Optimize movements</source>
-      <translation type="unfinished">Optimize movements</translation>
+      <translation>Optimalizuj pohyby</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Vcarve.py" line="298"/>
@@ -5548,7 +5552,7 @@ Výchozí: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Vcarve.py" line="305"/>
       <source>Finishing pass Z offset</source>
-      <translation type="unfinished">Finishing pass Z offset</translation>
+      <translation>Z-offset Dokončovacího průchodu</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Vcarve.py" line="317"/>
@@ -8182,7 +8186,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="253"/>
       <source>Creates a Thread Milling toolpath from features of a base object</source>
-      <translation type="unfinished">Creates a Thread Milling toolpath from features of a base object</translation>
+      <translation>Vytvoří dráhu nástroje frézování závitu z prvků Základního objektu</translation>
     </message>
   </context>
   <context>

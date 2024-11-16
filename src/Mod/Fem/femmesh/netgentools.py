@@ -27,15 +27,16 @@ __url__ = "https://www.freecad.org"
 
 import numpy as np
 import shutil
-import subprocess
 import sys
 import tempfile
+from PySide.QtCore import QProcess
 
 import FreeCAD
 import Fem
 
 try:
-    from netgen import occ, config as ng_config
+    from netgen import occ, meshing, config as ng_config
+    import pyngcore as ngcore
 except ModuleNotFoundError:
     FreeCAD.Console.PrintError("To use FemMesh Netgen objects, install the Netgen Python bindings")
 
@@ -64,6 +65,15 @@ class NetgenTools:
         15: [0, 1, 2, 3, 4, 5, 6, 8, 7, 12, 14, 13, 9, 10, 11, 15, 16, 17, 18, 19],  # penta15
     }
 
+    meshing_step = {
+        "AnalyzeGeometry": 1,  # MESHCONST_ANALYSE
+        "MeshEdges": 2,  # MESHCONST_MESHEDGES
+        "MeshSurface": 3,  # MESHCONST_MESHSURFACE
+        "OptimizeSurface": 4,  # MESHCONST_OPTSURFACE
+        "MeshVolume": 5,  # MESHCONST_MESHVOLUME
+        "OptimizeVolume": 6,  # MESHCONST_OPTVOLUME
+    }
+
     name = "Netgen"
 
     def __init__(self, obj):
@@ -71,6 +81,8 @@ class NetgenTools:
         self.fem_mesh = None
         self.process = None
         self.tmpdir = ""
+        self.process = QProcess()
+        self.mesh_params = {}
 
     def write_geom(self):
         if not self.tmpdir:
@@ -91,57 +103,46 @@ from femmesh.netgentools import NetgenTools
 NetgenTools.run_netgen(**{params})
 """
 
-    def compute(self):
+    def prepare(self):
         self.write_geom()
-        mesh_params = {
+        self.mesh_params = {
             "brep_file": self.brep_file,
             "threads": self.obj.Threads,
             "heal": self.obj.HealShape,
-            "fineness": self.obj.Fineness,
             "params": self.get_meshing_parameters(),
             "second_order": self.obj.SecondOrder,
             "result_file": self.result_file,
         }
 
-        code_str = self.code.format(params=mesh_params)
+    def compute(self):
+        code_str = self.code.format(params=self.mesh_params)
+        self.process.start(sys.executable, ["-c", code_str])
 
-        cmd_list = [
-            sys.executable,
-            "-c",
-            code_str,
-        ]
-        self.process = subprocess.Popen(cmd_list, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        out, err = self.process.communicate()
-        if self.process.returncode != 0:
-            raise RuntimeError(err.decode("utf-8"))
-
-        return True
+        return self.process
 
     @staticmethod
-    def run_netgen(brep_file, threads, heal, fineness, params, second_order, result_file):
-        import pyngcore as ngcore
-        from netgen import meshing
+    def run_netgen(brep_file, threads, heal, params, second_order, result_file):
 
         geom = occ.OCCGeometry(brep_file)
         ngcore.SetNumThreads(threads)
 
-        if fineness == "UserDefined":
-            mp = meshing.MeshingParameters(**params)
-        elif fineness == "VeryCoarse":
-            mp = meshing.meshsize.very_coarse
-        elif fineness == "Coarse":
-            mp = meshing.meshsize.coarse
-        elif fineness == "Moderate":
-            mp = meshing.meshsize.moderate
-        elif fineness == "Fine":
-            mp = meshing.meshsize.fine
-        elif fineness == "VeryFine":
-            mp = meshing.meshsize.very_fine
-
         with ngcore.TaskManager():
             if heal:
                 geom.Heal()
-            mesh = geom.GenerateMesh(mp=mp)
+            mesh = geom.GenerateMesh(mp=meshing.MeshingParameters(**params))
+
+        result = {
+            "coords": [],
+            "Edges": [[], []],
+            "Faces": [[], []],
+            "Volumes": [[], []],
+        }
+        groups = {"Edges": [], "Faces": [], "Solids": []}
+
+        # save empty data if last step is geometry analysis
+        if params["perfstepsend"] == NetgenTools.meshing_step["AnalyzeGeometry"]:
+            np.save(result_file, [result, groups])
+            return None
 
         if second_order:
             mesh.SecondOrder()
@@ -187,7 +188,6 @@ NetgenTools.run_netgen(**{params})
         idx_faces = faces["index"]
         idx_volumes = volumes["index"]
 
-        groups = {"Edges": [], "Faces": [], "Solids": []}
         for i in np.unique(idx_edges):
             edge_i = (np.nonzero(idx_edges == i)[0] + 1).tolist()
             groups["Edges"].append([i, edge_i])
@@ -256,8 +256,8 @@ NetgenTools.run_netgen(**{params})
             "segmentsperedge": self.obj.SegmentsPerEdge,
             "elsizeweight": self.obj.ElementSizeWeight,
             "parthread": self.obj.ParallelMeshing,
-            "perfstepsstart": self.obj.StartStep,
-            "perfstepsend": self.obj.EndStep,
+            "perfstepsstart": NetgenTools.meshing_step[self.obj.StartStep],
+            "perfstepsend": NetgenTools.meshing_step[self.obj.EndStep],
             "giveuptol2d": self.obj.GiveUpTolerance2d,
             "giveuptol": self.obj.GiveUpTolerance,
             "giveuptolopenquads": self.obj.GiveUpToleranceOpenQuads,
@@ -279,6 +279,42 @@ NetgenTools.run_netgen(**{params})
             "nthreads": self.obj.Threads,
             "closeedgefac": self.obj.CloseEdgeFactor,
         }
+
+        # set specific parameters by fineness
+        if self.obj.Fineness == "VeryCoarse":
+            params["curvaturesafety"] = 1
+            params["segmentsperedge"] = 0.3
+            params["grading"] = 0.7
+            params["closeedgefac"] = 0.5
+            params["optsteps3d"] = 5
+
+        elif self.obj.Fineness == "Coarse":
+            params["curvaturesafety"] = 1.5
+            params["segmentsperedge"] = 0.5
+            params["grading"] = 0.5
+            params["closeedgefac"] = 1
+            params["optsteps3d"] = 5
+
+        elif self.obj.Fineness == "Moderate":
+            params["curvaturesafety"] = 2
+            params["segmentsperedge"] = 1
+            params["grading"] = 0.3
+            params["closeedgefac"] = 2
+            params["optsteps3d"] = 5
+
+        elif self.obj.Fineness == "Fine":
+            params["curvaturesafety"] = 3
+            params["segmentsperedge"] = 2
+            params["grading"] = 0.2
+            params["closeedgefac"] = 3.5
+            params["optsteps3d"] = 5
+
+        elif self.obj.Fineness == "VeryFine":
+            params["curvaturesafety"] = 5
+            params["segmentsperedge"] = 3
+            params["grading"] = 0.1
+            params["closeedgefac"] = 5
+            params["optsteps3d"] = 5
 
         return params
 

@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRepAlgoAPI_Common.hxx>
+# include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
 # include <BRepCheck_Analyzer.hxx>
 # include <Standard_Failure.hxx>
 # include <TopExp.hxx>
@@ -53,7 +53,7 @@ const char *Common::opCode() const
 BRepAlgoAPI_BooleanOperation* Common::makeOperation(const TopoDS_Shape& base, const TopoDS_Shape& tool) const
 {
     // Let's call algorithm computing a section operation:
-    return new BRepAlgoAPI_Common(base, tool);
+    return new FCBRepAlgoAPI_Common(base, tool);
 }
 
 // ----------------------------------------------------
@@ -117,6 +117,10 @@ App::DocumentObjectExecReturn *MultiCommon::execute()
         res = res.makeElementRefine();
     }
     this->Shape.setValue(res);
+    if (Shapes.getSize() > 0) {
+        App::DocumentObject* link = Shapes.getValues()[0];
+        copyMaterial(link);
+    }
 
     return Part::Feature::execute();
 }

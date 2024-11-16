@@ -47,64 +47,75 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         super().__init__(obj)
 
         # parameter widget
-        self.parameterWidget = FreeCADGui.PySideUic.loadUi(
+        self.parameter_widget = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshBoundaryLayer.ui"
         )
         QtCore.QObject.connect(
-            self.parameterWidget.bl_number_of_layers,
+            self.parameter_widget.isb_number_of_layers,
             QtCore.SIGNAL("valueChanged(int)"),
-            self.bl_number_of_layers_changed,
+            self.number_of_layers_changed,
         )
         QtCore.QObject.connect(
-            self.parameterWidget.bl_min_thickness,
+            self.parameter_widget.qsb_min_thickness,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
-            self.bl_min_thickness_changed,
+            self.min_thickness_changed,
         )
         # be careful of signal signature for QDoubleSpinbox
         QtCore.QObject.connect(
-            self.parameterWidget.bl_growth_rate,
+            self.parameter_widget.dsb_growth_rate,
             QtCore.SIGNAL("valueChanged(double)"),
-            self.bl_growth_rate_changed,
+            self.growth_rate_changed,
         )
         self.init_parameter_widget()
 
         # geometry selection widget
         # start with Solid in list!
-        self.selectionWidget = selection_widgets.GeometryElementsSelection(
+        self.selection_widget = selection_widgets.GeometryElementsSelection(
             obj.References, ["Solid", "Face", "Edge", "Vertex"], True, False
         )
 
         # form made from param and selection widget
-        self.form = [self.parameterWidget, self.selectionWidget]
+        self.form = [self.parameter_widget, self.selection_widget]
 
     def accept(self):
         self.set_mesh_boundarylayer_props()
-        self.obj.References = self.selectionWidget.references
-        self.selectionWidget.finish_selection()
+        self.obj.References = self.selection_widget.references
+        self.selection_widget.finish_selection()
         return super().accept()
 
     def reject(self):
-        self.selectionWidget.finish_selection()
+        self.selection_widget.finish_selection()
         return super().reject()
 
     def init_parameter_widget(self):
-        self.bl_min_thickness = self.obj.MinimumThickness
-        self.bl_number_of_layers = self.obj.NumberOfLayers
-        self.bl_growth_rate = self.obj.GrowthRate
-        self.parameterWidget.bl_min_thickness.setText(self.bl_min_thickness.UserString)
-        self.parameterWidget.bl_number_of_layers.setValue(self.bl_number_of_layers)
-        self.parameterWidget.bl_growth_rate.setValue(self.bl_growth_rate)
+        self.min_thickness = self.obj.MinimumThickness
+        self.number_of_layers = self.obj.NumberOfLayers
+        self.growth_rate = self.obj.GrowthRate
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_min_thickness).bind(
+            self.obj, "MinimumThickness"
+        )
+        self.parameter_widget.qsb_min_thickness.setProperty("value", self.min_thickness)
+
+        FreeCADGui.ExpressionBinding(self.parameter_widget.dsb_growth_rate).bind(
+            self.obj, "GrowthRate"
+        )
+        self.parameter_widget.dsb_growth_rate.setProperty("value", self.growth_rate)
+
+        FreeCADGui.ExpressionBinding(self.parameter_widget.isb_number_of_layers).bind(
+            self.obj, "NumberOfLayers"
+        )
+        self.parameter_widget.isb_number_of_layers.setProperty("value", self.number_of_layers)
 
     def set_mesh_boundarylayer_props(self):
-        self.obj.MinimumThickness = self.bl_min_thickness
-        self.obj.NumberOfLayers = self.bl_number_of_layers
-        self.obj.GrowthRate = self.bl_growth_rate
+        self.obj.MinimumThickness = self.min_thickness
+        self.obj.NumberOfLayers = self.number_of_layers
+        self.obj.GrowthRate = self.growth_rate
 
-    def bl_min_thickness_changed(self, base_quantity_value):
-        self.bl_min_thickness = base_quantity_value
+    def min_thickness_changed(self, base_quantity_value):
+        self.min_thickness = base_quantity_value
 
-    def bl_number_of_layers_changed(self, value):
-        self.bl_number_of_layers = value
+    def number_of_layers_changed(self, value):
+        self.number_of_layers = value
 
-    def bl_growth_rate_changed(self, value):
-        self.bl_growth_rate = value
+    def growth_rate_changed(self, value):
+        self.growth_rate = value

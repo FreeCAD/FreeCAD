@@ -1267,7 +1267,7 @@ Restablecer elimina todos los elementos actuales de la lista y llena la lista co
       <location filename="../panels/PageOpHelixEdit.ui" line="137"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="101"/>
       <source>Extra Offset</source>
-      <translation>Desplazamiento extra</translation>
+      <translation>Desfase extra</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="22"/>
@@ -1407,7 +1407,7 @@ Este último se puede utilizar para hacer frente a todo el área de stock para a
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="141"/>
       <source>ZigZagOffset</source>
-      <translation>ZigZagDesface</translation>
+      <translation>ZigZagDesfase</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="146"/>
@@ -1509,12 +1509,12 @@ Este último se puede utilizar para hacer frente a todo el área de stock para a
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="101"/>
       <source>X Offset</source>
-      <translation>Desface X</translation>
+      <translation>Desfase X</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="115"/>
       <source>Y Offset</source>
-      <translation>Desface Y</translation>
+      <translation>Desfase Y</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="132"/>
@@ -1570,12 +1570,12 @@ Este último se puede utilizar para hacer frente a todo el área de stock para a
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="137"/>
       <source>Check if this profile operation should also process holes in the base geometry. Found holes are automatically offset on the opposite cut side and performed in the opposite direction as perimeters. Note that this does not include cylindrical holes, the assumption being that they will get drilled</source>
-      <translation>Compruebe si esta operación de perfil también debe procesar agujeros en la geometría base. Los orificios encontrados se compensan automáticamente en el lado opuesto del corte y se realizan en la dirección opuesta como perímetros. Tenga en cuenta que esto no incluye agujeros cilíndricos, asumiendo que serán perforados</translation>
+      <translation>Compruebe si esta operación de perfil también debe procesar agujeros en la geometría base. Los orificios encontrados se desfasan automáticamente en el lado opuesto del corte y se realizan en la dirección opuesta como perímetros. Tenga en cuenta que esto no incluye agujeros cilíndricos, asumiendo que serán perforados</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="147"/>
       <source>If checked the profile operation is offset by the tool radius. The offset direction is determined by the Cut Side</source>
-      <translation>Si se marca, la operación del perfil es desplazada por el radio de la herramienta. La dirección del desplazamiento es determinada por el lado cortado</translation>
+      <translation>Si se marca, la operación del perfil es desfasada por el radio de la herramienta. La dirección del desfase es determinada por el lado cortado</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="157"/>
@@ -1838,7 +1838,7 @@ Este último se puede utilizar para hacer frente a todo el área de stock para a
       <location filename="../panels/PageOpWaterlineEdit.ui" line="149"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="205"/>
       <source>Set the Z-axis depth offset from the target surface.</source>
-      <translation>Define el desplazamiento de profundidad del eje Z desde la superficie objetivo.</translation>
+      <translation>Define el desfase de profundidad del eje Z desde la superficie objetivo.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="194"/>
@@ -1875,17 +1875,17 @@ Este último se puede utilizar para hacer frente a todo el área de stock para a
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="162"/>
       <source>Additional offset to the selected bounding box along the X axis.</source>
-      <translation>Desplazamiento adicional del cuadro delimitador seleccionado a lo largo del eje X.</translation>
+      <translation>Desfase adicional del cuadro delimitador seleccionado a lo largo del eje X.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="172"/>
       <source>Additional offset to the selected bounding box along the Y axis.</source>
-      <translation>Desplazamiento adicional del cuadro delimitador seleccionado a lo largo del eje X.</translation>
+      <translation>Desfase adicional del cuadro delimitador seleccionado a lo largo del eje X.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="198"/>
       <source>Depth offset</source>
-      <translation>Desplazamiento de profundidad</translation>
+      <translation>Desfase de profundidad</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="159"/>
@@ -1975,7 +1975,7 @@ Por defecto: OpToolDiameter</translation>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="103"/>
       <source>Offset</source>
-      <translation>Desplazamiento</translation>
+      <translation>Desfase</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="113"/>
@@ -2123,12 +2123,12 @@ Por defecto: 3 mm</translation>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="117"/>
       <source>Finishing pass Z offset</source>
-      <translation>Desplazamiento Z para pasada de acabado</translation>
+      <translation>Desfase Z para pasada de acabado</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="124"/>
       <source>Endmill offset for the finishing pass run. Use small value like -0.2 mm to help clean &quot;fuzzy skin&quot; or other artefacts.</source>
-      <translation>Desplazamiento de la fresa para la pasada de acabado. Utilice un valor pequeño como -0,2 mm para ayudar a limpiar la "piel difusa" u otros artefactos.</translation>
+      <translation>Desfase de la fresa para la pasada de acabado. Utilice un valor pequeño como -0,2 mm para ayudar a limpiar la "piel difusa" u otros artefactos.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="140"/>
@@ -2228,7 +2228,7 @@ Por defecto: 3 mm</translation>
     <message>
       <location filename="../panels/ToolEditor.ui" line="67"/>
       <source>Length Offset</source>
-      <translation>Desplazamiento de longitud</translation>
+      <translation>Desfase de longitud</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="87"/>
@@ -3064,7 +3064,7 @@ Si existen múltiples herramientas o formas de herramientas con el mismo nombre 
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="37"/>
       <source>Offset Distance</source>
-      <translation>Distancia de Desplazamiento</translation>
+      <translation>Distancia de Desfase</translation>
     </message>
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="63"/>
@@ -3671,7 +3671,7 @@ Ordenar por operación hará cada operación en todos los sistemas de coordenada
       <location filename="../panels/PathEdit.ui" line="254"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=&quot; font-style:italic;&quot;&gt;Work Offsets&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=&quot; font-style:italic;&quot;&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.
 FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your G-code output. The exact way in which the output is affected is controlled by the &apos;order by&apos; setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Sistemas de coordenadas de trabajo&lt;/span&gt; también llamadas &lt;span style=&quot; font-style:italic;&quot;&gt;Desplazamientos de trabajo&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;Desplazamientos de fijaciones&lt;/span&gt;, o &lt;span style=&quot; font-style:italic;&quot;&gt;Fijaciones &lt;/span&gt;son útiles para crear trabajos de producción eficientes en los que la misma pieza se realiza muchas veces en la máquina.
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Sistemas de coordenadas de trabajo&lt;/span&gt; también llamadas &lt;span style=&quot; font-style:italic;&quot;&gt;Desfases de trabajo&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;Desfases de fijaciones&lt;/span&gt;, o &lt;span style=&quot; font-style:italic;&quot;&gt;Fijaciones &lt;/span&gt;son útiles para crear trabajos de producción eficientes en los que la misma pieza se realiza muchas veces en la máquina.
 FreeCAD no tiene conocimiento de dónde existe un sistema de coordenadas particular dentro del sistema de coordenadas de la máquina, por lo que agregar sistemas de coordenadas adicionales a su trabajo no tendrá ningún cambio visual dentro de su trabajo. Sin embargo, cambiará la salida del código G. La forma exacta en que se ve afectada la salida está controlada por el ajuste de &apos;order by&apos;ordenar por&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
@@ -3980,7 +3980,7 @@ Por defecto: OpToolDiameter</translation>
     <message>
       <location filename="../panels/PathEdit.ui" line="1120"/>
       <source>Offset</source>
-      <translation>Desplazamiento</translation>
+      <translation>Desfase</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1130"/>
@@ -5126,7 +5126,7 @@ Por defecto: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="138"/>
       <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
-      <translation>Desplazamiento extra para aplicar a la operación. La dirección es dependiente de la operación.</translation>
+      <translation>Desfase extra para aplicar a la operación. La dirección es dependiente de la operación.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="144"/>
@@ -5168,12 +5168,12 @@ Por defecto: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Probe.py" line="55"/>
       <source>X offset between tool and probe</source>
-      <translation>Desplazamiento en X entre herramienta y la sonda</translation>
+      <translation>Desfase en X entre herramienta y la sonda</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Probe.py" line="61"/>
       <source>Y offset between tool and probe</source>
-      <translation>Desplazamiento en Y entre herramienta y la sonda</translation>
+      <translation>Desfase en Y entre herramienta y la sonda</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Probe.py" line="67"/>
@@ -5294,7 +5294,7 @@ Por defecto: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="210"/>
       <source>For arcs/circular edges, offset the radius for the toolpath.</source>
-      <translation>Para arcos/bordes circulares, desplazar el radio de la trayectoria.</translation>
+      <translation>Para arcos/bordes circulares, desfasar el radio de la trayectoria.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="219"/>
@@ -5336,7 +5336,7 @@ Por defecto: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="166"/>
       <source>Additional offset to the selected bounding box</source>
-      <translation>Desplazamiento adicional al cuadro delimitador seleccionado</translation>
+      <translation>Desfase adicional al cuadro delimitador seleccionado</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="172"/>
@@ -5417,7 +5417,7 @@ Por defecto: 3 mm</translation>
       <location filename="../../../Path/Op/Surface.py" line="307"/>
       <location filename="../../../Path/Op/Waterline.py" line="353"/>
       <source>Set the Z-axis depth offset from the target surface.</source>
-      <translation>Define el desplazamiento de profundidad del eje Z desde la superficie objetivo.</translation>
+      <translation>Define el desfase de profundidad del eje Z desde la superficie objetivo.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="322"/>
@@ -5550,7 +5550,7 @@ Por defecto: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Vcarve.py" line="305"/>
       <source>Finishing pass Z offset</source>
-      <translation>Desplazamiento Z para pasada de acabado</translation>
+      <translation>Desfase Z para pasada de acabado</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Vcarve.py" line="317"/>
@@ -5642,12 +5642,12 @@ Por defecto: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="111"/>
       <source>Percent of copies to randomly offset</source>
-      <translation>Porcentaje de copias a desplazar aleatoriamente</translation>
+      <translation>Porcentaje de copias a desfasar aleatoriamente</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="117"/>
       <source>Maximum random offset of copies</source>
-      <translation>Máximo desplazamiento aleatorio de copias</translation>
+      <translation>Máximo desfase aleatorio de copias</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="123"/>
@@ -6098,7 +6098,7 @@ Por defecto: 3 mm</translation>
       <location filename="../../../Path/Op/Waterline.py" line="114"/>
       <location filename="../../../Path/Op/Waterline.py" line="127"/>
       <source>Offset</source>
-      <translation>Desplazamiento</translation>
+      <translation>Desfase</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="115"/>
@@ -7025,7 +7025,7 @@ Por ejemplo:
     <message>
       <location filename="../../../Path/Main/Gui/Fixture.py" line="154"/>
       <source>Creates a Fixture Offset</source>
-      <translation>Crea un desplazamiento de accesorio</translation>
+      <translation>Crea un desfase de fijación</translation>
     </message>
   </context>
   <context>
@@ -7271,7 +7271,7 @@ Por ejemplo:
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="73"/>
       <source>Work Offsets</source>
-      <translation>Desplazamientos de trabajo</translation>
+      <translation>Desfases de trabajo</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="76"/>
@@ -7734,12 +7734,12 @@ Por ejemplo:
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="70"/>
       <source>Offset</source>
-      <translation>Desplazamiento</translation>
+      <translation>Desfase</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="71"/>
       <source>ZigZagOffset</source>
-      <translation>ZigZagDesface</translation>
+      <translation>ZigZagDesfase</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="72"/>
@@ -7950,7 +7950,7 @@ Por ejemplo:
       <location filename="../../../Path/Op/Slot.py" line="1869"/>
       <location filename="../../../Path/Op/Slot.py" line="1881"/>
       <source>Current offset value produces negative radius.</source>
-      <translation>El valor del desplazamiento actual produce un radio negativo.</translation>
+      <translation>El valor del desfase actual produce un radio negativo.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Slot.py" line="275"/>
@@ -8023,7 +8023,7 @@ Por ejemplo:
     <message>
       <location filename="../../../Path/Op/Surface.py" line="450"/>
       <source>Offset</source>
-      <translation>Desplazamiento</translation>
+      <translation>Desfase</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="451"/>

@@ -30,13 +30,13 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/ExpressionParser.h>
 #include <App/PropertyUnits.h>
 #include <Base/Tools.h>
 
 #include "DlgAddPropertyVarSet.h"
 #include "ui_DlgAddPropertyVarSet.h"
 #include "MainWindow.h"
-#include "ViewProviderDocumentObject.h"
 #include "ViewProviderVarSet.h"
 
 FC_LOG_LEVEL_INIT("DlgAddPropertyVarSet", true, true)
@@ -47,6 +47,8 @@ using namespace Gui::Dialog;
 const std::string DlgAddPropertyVarSet::GROUP_BASE = "Base";
 
 const bool CLEAR_NAME = true;
+const bool ABORT = true;
+const bool COMMIT = false;
 
 DlgAddPropertyVarSet::DlgAddPropertyVarSet(QWidget* parent,
                                            ViewProviderVarSet* viewProvider)
@@ -55,7 +57,8 @@ DlgAddPropertyVarSet::DlgAddPropertyVarSet(QWidget* parent,
       ui(new Ui_DlgAddPropertyVarSet),
       comboBoxGroup(this),
       completerType(this),
-      editor(nullptr)
+      editor(nullptr),
+      transactionID(0)
 {
     ui->setupUi(this);
 
@@ -66,12 +69,9 @@ DlgAddPropertyVarSet::~DlgAddPropertyVarSet() = default;
 
 void DlgAddPropertyVarSet::initializeGroup()
 {
-    connect(&comboBoxGroup, &EditFinishedComboBox::editFinished,
-            this, &DlgAddPropertyVarSet::onEditFinished);
     comboBoxGroup.setObjectName(QString::fromUtf8("comboBoxGroup"));
     comboBoxGroup.setInsertPolicy(QComboBox::InsertAtTop);
     comboBoxGroup.setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-    comboBoxGroup.setEditable(true);
     auto formLayout = qobject_cast<QFormLayout*>(layout());
     formLayout->setWidget(1, QFormLayout::FieldRole, &comboBoxGroup);
 
@@ -101,6 +101,8 @@ void DlgAddPropertyVarSet::initializeGroup()
     }
 
     comboBoxGroup.setEditText(QString::fromStdString(groupNamesSorted[0]));
+    connComboBoxGroup = connect(&comboBoxGroup, &EditFinishedComboBox::editFinished,
+                                this, &DlgAddPropertyVarSet::onEditFinished);
 }
 
 void DlgAddPropertyVarSet::getSupportedTypes(std::vector<Base::Type>& types)
@@ -140,8 +142,8 @@ void DlgAddPropertyVarSet::initializeTypes()
     ui->comboBoxType->setCompleter(&completerType);
     ui->comboBoxType->setInsertPolicy(QComboBox::NoInsert);
 
-    connect(ui->comboBoxType, &QComboBox::currentTextChanged,
-            this, &DlgAddPropertyVarSet::onEditFinished);
+    connComboBoxType = connect(ui->comboBoxType, &QComboBox::currentTextChanged,
+                               this, &DlgAddPropertyVarSet::onEditFinished);
 }
 
 /*
@@ -167,9 +169,9 @@ void DlgAddPropertyVarSet::initializeWidgets(ViewProviderVarSet* viewProvider)
 
     connect(this, &QDialog::finished,
             this, [viewProvider](int result) { viewProvider->onFinished(result); });
-    connect(ui->lineEditName, &QLineEdit::editingFinished,
-            this, &DlgAddPropertyVarSet::onEditFinished);
-    connect(ui->lineEditName, &QLineEdit::textChanged,
+    connLineEditNameEditFinished = connect(ui->lineEditName, &QLineEdit::editingFinished,
+                                           this, &DlgAddPropertyVarSet::onEditFinished);
+    connLineEditNameTextChanged = connect(ui->lineEditName, &QLineEdit::textChanged,
             this, &DlgAddPropertyVarSet::onNamePropertyChanged);
 
     std::string title = "Add a property to " + varSet->getFullName();
@@ -200,6 +202,7 @@ void DlgAddPropertyVarSet::clearEditors(bool clearName)
         ui->lineEditName->blockSignals(beforeBlocked);
     }
     removeEditor();
+    ui->lineEditToolTip->clear();
     setOkEnabled(false);
     namePropertyToAdd.clear();
 }
@@ -260,19 +263,19 @@ void DlgAddPropertyVarSet::createProperty()
     std::string name = ui->lineEditName->text().toStdString();
     std::string group = comboBoxGroup.currentText().toStdString();
     std::string type = ui->comboBoxType->currentText().toStdString();
+    std::string doc = ui->lineEditToolTip->text().toStdString();
 
     App::Property* prop;
     try {
         prop = varSet->addDynamicProperty(type.c_str(), name.c_str(),
-                                          group.c_str());
+                                          group.c_str(), doc.c_str());
     }
     catch (Base::Exception& e) {
         e.ReportException();
-        QMessageBox::critical(this,
-                              QObject::tr("Add property"),
-                              QObject::tr("Failed to add property to '%1': %2").arg(
-                                      QString::fromLatin1(varSet->getFullName().c_str()),
-                                      QString::fromUtf8(e.what())));
+        critical(QObject::tr("Add property"),
+                 QObject::tr("Failed to add property to '%1': %2").arg(
+                         QString::fromLatin1(varSet->getFullName().c_str()),
+                         QString::fromUtf8(e.what())));
         clearEditors();
         return;
     }
@@ -293,6 +296,17 @@ void DlgAddPropertyVarSet::createProperty()
     setOkEnabled(true);
 }
 
+App::Property* DlgAddPropertyVarSet::getPropertyToAdd() {
+    // This function should be called only if it is certain the property exists.
+    // It will throw a runtime error if not.
+    App::Property* prop = varSet->getPropertyByName(namePropertyToAdd.c_str());
+    if (prop == nullptr) {
+        FC_THROWM(Base::RuntimeError, "A property with name '" << namePropertyToAdd << "' does not exist.");
+    }
+
+    return prop;
+}
+
 void DlgAddPropertyVarSet::changePropertyToAdd() {
     // we were already adding a new property, the only option to get here
     // is a change of type or group.
@@ -300,11 +314,13 @@ void DlgAddPropertyVarSet::changePropertyToAdd() {
     std::string name = ui->lineEditName->text().toStdString();
     assert(name == namePropertyToAdd);
 
-    App::Property* prop = varSet->getPropertyByName(namePropertyToAdd.c_str());
+    // performs a check for nullptr
+    App::Property* prop = getPropertyToAdd();
 
     std::string group = comboBoxGroup.currentText().toStdString();
+    std::string doc = ui->lineEditToolTip->text().toStdString();
     if (prop->getGroup() != group) {
-        varSet->changeDynamicProperty(prop, group.c_str(), nullptr);
+        varSet->changeDynamicProperty(prop, group.c_str(), doc.c_str());
     }
 
     std::string type = ui->comboBoxType->currentText().toStdString();
@@ -316,13 +332,40 @@ void DlgAddPropertyVarSet::changePropertyToAdd() {
 }
 
 
+/* We use these functions rather than the functions provided by App::Document
+ * because this dialog may be opened when another transaction is in progress.
+ * An example is opening a sketch.  If this dialog uses the functions provided
+ * by App::Document, a reject of the dialog would close that transaction.  By
+ * checking whether the transaction ID is "our" transaction ID, we prevent this
+ * behavior.
+ */
+void DlgAddPropertyVarSet::openTransaction()
+{
+    transactionID = App::GetApplication().setActiveTransaction("Add property VarSet");
+}
+
+
+bool DlgAddPropertyVarSet::hasPendingTransaction()
+{
+    return transactionID != 0;
+}
+
+
+void DlgAddPropertyVarSet::closeTransaction(bool abort)
+{
+    if (transactionID != 0) {
+        App::GetApplication().closeActiveTransaction(abort, transactionID);
+        transactionID = 0;
+    }
+}
+
+
 void DlgAddPropertyVarSet::clearCurrentProperty()
 {
     removeEditor();
     varSet->removeDynamicProperty(namePropertyToAdd.c_str());
-    App::Document* doc = varSet->getDocument();
-    if (doc->hasPendingTransaction()) {
-        doc->abortTransaction();
+    if (hasPendingTransaction()) {
+        closeTransaction(ABORT);
     }
     setOkEnabled(false);
     namePropertyToAdd.clear();
@@ -343,10 +386,16 @@ private:
 void DlgAddPropertyVarSet::checkName() {
     std::string name = ui->lineEditName->text().toStdString();
     if(name.empty() || name != Base::Tools::getIdentifier(name)) {
-        QMessageBox::critical(getMainWindow(),
-                              QObject::tr("Invalid name"),
-                              QObject::tr("The property name must only contain alpha numericals,\n"
-                                          "underscore, and must not start with a digit."));
+        critical(QObject::tr("Invalid name"),
+                 QObject::tr("The property name must only contain alpha numericals,\n"
+                             "underscore, and must not start with a digit."));
+        clearEditors(!CLEAR_NAME);
+        throw CreatePropertyException("Invalid name");
+    }
+
+    if(App::ExpressionParser::isTokenAUnit(name) || App::ExpressionParser::isTokenAConstant(name)) {
+        critical(QObject::tr("Invalid name"),
+                 QObject::tr("The property name is a reserved word."));
         clearEditors(!CLEAR_NAME);
         throw CreatePropertyException("Invalid name");
     }
@@ -355,11 +404,10 @@ void DlgAddPropertyVarSet::checkName() {
         // we are adding a new property, check whether it doesn't already exist
         auto prop = varSet->getPropertyByName(name.c_str());
         if(prop && prop->getContainer() == varSet) {
-            QMessageBox::critical(this,
-                                  QObject::tr("Invalid name"),
-                                  QObject::tr("The property '%1' already exists in '%2'").arg(
-                                          QString::fromLatin1(name.c_str()),
-                                          QString::fromLatin1(varSet->getFullName().c_str())));
+            critical(QObject::tr("Invalid name"),
+                     QObject::tr("The property '%1' already exists in '%2'").arg(
+                             QString::fromLatin1(name.c_str()),
+                             QString::fromLatin1(varSet->getFullName().c_str())));
             clearEditors(!CLEAR_NAME);
             throw CreatePropertyException("Invalid name");
         }
@@ -370,10 +418,9 @@ void DlgAddPropertyVarSet::checkGroup() {
     std::string group = comboBoxGroup.currentText().toStdString();
 
     if (group.empty() || group != Base::Tools::getIdentifier(group)) {
-        QMessageBox::critical(this,
-            QObject::tr("Invalid name"),
-            QObject::tr("The group name must only contain alpha numericals,\n"
-                        "underscore, and must not start with a digit."));
+        critical(QObject::tr("Invalid name"),
+                 QObject::tr("The group name must only contain alpha numericals,\n"
+                             "underscore, and must not start with a digit."));
         comboBoxGroup.setEditText(QString::fromUtf8("Base"));
         throw CreatePropertyException("Invalid name");
     }
@@ -401,6 +448,7 @@ void DlgAddPropertyVarSet::onEditFinished() {
         checkName();
         checkGroup();
         checkType();
+        // no check for tooltip, we accept any string
     }
     catch (const CreatePropertyException&) {
         if (!namePropertyToAdd.empty()) {
@@ -411,8 +459,7 @@ void DlgAddPropertyVarSet::onEditFinished() {
 
     if (namePropertyToAdd.empty()) {
         // we are adding a new property
-        App::Document* doc = varSet->getDocument();
-        doc->openTransaction("Add property VarSet");
+        openTransaction();
         createProperty();
     }
     else {
@@ -430,6 +477,15 @@ void DlgAddPropertyVarSet::onNamePropertyChanged(const QString& text)
     }
 }
 
+void DlgAddPropertyVarSet::critical(const QString& title, const QString& text) {
+    static bool criticalDialogShown = false;
+    if (!criticalDialogShown) {
+        criticalDialogShown = true;
+        QMessageBox::critical(this, title, text);
+        criticalDialogShown = false;
+    }
+}
+
 void DlgAddPropertyVarSet::valueChanged()
 {
     QVariant data;
@@ -437,14 +493,34 @@ void DlgAddPropertyVarSet::valueChanged()
     propertyItem->setData(data);
 }
 
+void DlgAddPropertyVarSet::addDocumentation() {
+    /* Add the documentation to an existing property.
+     * Note that this method assumes the property exists.
+     *
+     * Since there is no check on documentation (we accept any string), there
+     * is no signal handler for the documentation field.  This method updates
+     * the property that is being added with the text inserted as
+     * documentation/tooltip.
+     *
+     * This function should be called at a late stage, before doing the accept.
+     */
+
+    std::string group = comboBoxGroup.currentText().toStdString();
+    std::string doc = ui->lineEditToolTip->text().toStdString();
+
+    // performs a check for nullptr
+    App::Property* prop = getPropertyToAdd();
+    varSet->changeDynamicProperty(prop, group.c_str(), doc.c_str());
+}
+
 void DlgAddPropertyVarSet::accept()
 {
-    App::Document* doc = varSet->getDocument();
-    doc->commitTransaction();
+    addDocumentation();
+    closeTransaction(COMMIT);
 
     if (ui->checkBoxAdd->isChecked()) {
         clearEditors();
-        doc->openTransaction();
+        openTransaction();
         ui->lineEditName->setFocus();
         return;
     }
@@ -460,10 +536,19 @@ void DlgAddPropertyVarSet::accept()
 
 void DlgAddPropertyVarSet::reject()
 {
-    App::Document* doc = varSet->getDocument();
+    // On reject we can disconnect the signal handlers because nothing useful
+    // is to be done.  Otherwise, signals may activate the handlers that assume
+    // that a new property has been created, an assumption that will be
+    // violated by aborting the transaction because it will remove the newly
+    // created property.
+    disconnect(connComboBoxGroup);
+    disconnect(connComboBoxType);
+    disconnect(connLineEditNameEditFinished);
+    disconnect(connLineEditNameTextChanged);
+
     // a transaction is not pending if a name has not been determined.
-    if (doc->hasPendingTransaction()) {
-        doc->abortTransaction();
+    if (hasPendingTransaction()) {
+        closeTransaction(ABORT);
     }
     QDialog::reject();
 }

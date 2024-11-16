@@ -144,7 +144,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../developer_mode.ui" line="77"/>
       <location filename="../../developer_mode.ui" line="160"/>
       <source>Explanation of what this Addon provides. Displayed in the Addon Manager. It is not necessary for this to state that this is a FreeCAD Addon.</source>
-      <translation>說明此附加元件提供什麼。在附加元件管理器中顯示。沒有必要指明這是 FreeCAD 附加元件。</translation>
+      <translation>說明此附加元件提供什麼。在附加元件管理員中顯示。沒有必要指明這是 FreeCAD 附加元件</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="80"/>
@@ -218,7 +218,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="228"/>
       <source>Addon Name</source>
-      <translation>附加元件名稱：</translation>
+      <translation>附加元件名稱</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="235"/>
@@ -275,48 +275,23 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     </message>
     <message>
       <location filename="../../first_run.ui" line="17"/>
-      <source>Welcome to the Addon Manager</source>
-      <translation>觀迎光臨附加元件管理器</translation>
+      <source>Add-on Manager: Warning!</source>
+      <translation type="unfinished">Add-on Manager: Warning!</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="23"/>
-      <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
-      <translation>這裡可以安裝的附加元件並不是 FreeCAD 官方的一部分，也未經 FreeCAD 團隊審查。請確保您知道您正在安裝什麼！</translation>
+      <location filename="../../first_run.ui" line="62"/>
+      <source>The Add-on Manager provides access to an extensive library of useful third-party FreeCAD extensions. No guarantees can be made regarding their safety or functionality.</source>
+      <translation type="unfinished">The Add-on Manager provides access to an extensive library of useful third-party FreeCAD extensions. No guarantees can be made regarding their safety or functionality.</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="39"/>
-      <source>Download Settings</source>
-      <translation>下載設定</translation>
+      <location filename="../../first_run.ui" line="96"/>
+      <source>Continue</source>
+      <translation>繼續</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="46"/>
-      <source>Automatically check installed Addons for updates</source>
-      <translation>自動檢查已安裝的附加元件是否有更新</translation>
-    </message>
-    <message>
-      <location filename="../../first_run.ui" line="53"/>
-      <source>Download Macro metadata (approximately 10MB)</source>
-      <translation>下載巨集後設資料(約 10 MB)</translation>
-    </message>
-    <message>
-      <location filename="../../first_run.ui" line="63"/>
-      <source>No proxy</source>
-      <translation>不使用代理伺服器</translation>
-    </message>
-    <message>
-      <location filename="../../first_run.ui" line="68"/>
-      <source>System proxy</source>
-      <translation>系統的代理伺服器</translation>
-    </message>
-    <message>
-      <location filename="../../first_run.ui" line="73"/>
-      <source>User-defined proxy:</source>
-      <translation>使用者定義的代理伺服器：</translation>
-    </message>
-    <message>
-      <location filename="../../first_run.ui" line="86"/>
-      <source>These and other settings are available in the FreeCAD Preferences window.</source>
-      <translation>這些和其他設定可以在 FreeCAD 偏好設定視窗中找到。</translation>
+      <location filename="../../first_run.ui" line="103"/>
+      <source>Cancel</source>
+      <translation>取消</translation>
     </message>
   </context>
   <context>
@@ -506,14 +481,14 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManagerOptions.ui" line="14"/>
       <source>Addon manager options</source>
-      <translation>附加元件管理器選項</translation>
+      <translation>附加元件管理員選項</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="23"/>
       <source>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates</source>
-      <translation>如果選擇此選項, 則啟動插件管理器時,
-將檢查已安裝的插件是否有可用更新</translation>
+      <translation>如果選擇此選項,，則啟動附加元件管理員時，
+將檢查已安裝的附件元件是否有可用更新</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="27"/>
@@ -699,7 +674,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="64"/>
       <source>Installed version</source>
-      <translation/>
+      <translation>已安裝版本</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="69"/>
@@ -1144,7 +1119,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../AddonManager.py" line="416"/>
       <source>Addon manager</source>
-      <translation>附加元件管理器</translation>
+      <translation>附加元件管理員</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="423"/>
@@ -1688,7 +1663,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="344"/>
       <source>Failed to automatically locate your Python executable, or the path is set incorrectly. Please check the Addon Manager preferences setting for the path to Python.</source>
-      <translation>自動定位您的 Python 可執行檔失敗，或者設置的路徑不正確。請檢查附加元件管理器偏好設定中 Python 路徑的設置。</translation>
+      <translation>自動定位您的 Python 可執行檔失敗，或者設置的路徑不正確。請檢查附加元件管理員偏好設定中 Python 路徑的設置。</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="348"/>
@@ -1769,7 +1744,7 @@ installed addons will be checked for available updates</source>
       <location filename="../../addonmanager_installer_gui.py" line="731"/>
       <location filename="../../install_to_toolbar.py" line="251"/>
       <source>A macro installed with the FreeCAD Addon Manager</source>
-      <translation>使用 FreeCAD 附加元件管理器安裝的巨集</translation>
+      <translation>使用 FreeCAD 附加元件管理員安裝的巨集</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="733"/>
@@ -1983,7 +1958,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../package_list.py" line="474"/>
       <source>Installed version</source>
-      <translation/>
+      <translation>已安裝版本</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="483"/>
@@ -2471,7 +2446,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../AddonManager.py" line="233"/>
       <source>&amp;Addon manager</source>
-      <translation>&amp;附加元件管理器</translation>
+      <translation>&amp;附加元件管理員</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="237"/>

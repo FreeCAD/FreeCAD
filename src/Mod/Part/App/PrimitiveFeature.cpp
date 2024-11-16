@@ -52,11 +52,6 @@
 #include "PrimitiveFeature.h"
 #include "PartFeaturePy.h"
 
-#ifndef M_PI
-#define M_PI       3.14159265358979323846
-#endif
-
-
 namespace Part {
     const App::PropertyQuantityConstraint::Constraints apexRange = {-89.9, 89.9, 0.1};
     const App::PropertyQuantityConstraint::Constraints torusRangeV = {-180.0, 180.0, 1.0};
@@ -363,9 +358,9 @@ App::DocumentObjectExecReturn *Sphere::execute()
         return new App::DocumentObjectExecReturn("Radius of sphere too small");
     try {
         BRepPrimAPI_MakeSphere mkSphere(Radius.getValue(),
-                                        Angle1.getValue()/180.0f*M_PI,
-                                        Angle2.getValue()/180.0f*M_PI,
-                                        Angle3.getValue()/180.0f*M_PI);
+                                        Base::toRadians<double>(Angle1.getValue()),
+                                        Base::toRadians<double>(Angle2.getValue()),
+                                        Base::toRadians<double>(Angle3.getValue()));
         TopoDS_Shape ResultShape = mkSphere.Shape();
         this->Shape.setValue(ResultShape);
     }
@@ -426,9 +421,9 @@ App::DocumentObjectExecReturn *Ellipsoid::execute()
         gp_Ax2 ax2(pnt,dir);
         BRepPrimAPI_MakeSphere mkSphere(ax2,
                                         Radius2.getValue(),
-                                        Angle1.getValue()/180.0f*M_PI,
-                                        Angle2.getValue()/180.0f*M_PI,
-                                        Angle3.getValue()/180.0f*M_PI);
+                                        Base::toRadians<double>(Angle1.getValue()),
+                                        Base::toRadians<double>(Angle2.getValue()),
+                                        Base::toRadians<double>(Angle3.getValue()));
         Standard_Real scaleX = 1.0;
         Standard_Real scaleZ = Radius1.getValue()/Radius2.getValue();
         // issue #1798: A third radius has been introduced. To be backward
@@ -652,27 +647,20 @@ App::DocumentObjectExecReturn *Cone::execute()
         return new App::DocumentObjectExecReturn("Radius of cone too small");
     if (Height.getValue() < Precision::Confusion())
         return new App::DocumentObjectExecReturn("Height of cone too small");
-    double angle = Angle.getValue();
-#if OCC_VERSION_HEX == 0x070702
-    // OCCT 7.7.2 will not model a cone with an angle of exactly 360, so we cheat:
-    if ( angle == 360.0) {
-        angle = 359.99;
-    }
-#endif
     try {
         TopoDS_Shape ResultShape;
         if (std::abs(Radius1.getValue() - Radius2.getValue()) < Precision::Confusion()){
             //Build a cylinder
             BRepPrimAPI_MakeCylinder mkCylr(Radius1.getValue(),
                                             Height.getValue(),
-                                            2.0 * M_PI);
+                                            Base::toRadians<double>(Angle.getValue()));
             ResultShape = mkCylr.Shape();
         } else {
             // Build a cone
             BRepPrimAPI_MakeCone mkCone(Radius1.getValue(),
                                         Radius2.getValue(),
                                         Height.getValue(),
-                                        angle/180.0f*M_PI);
+                                        Base::toRadians<double>(Angle.getValue()));
             ResultShape = mkCone.Shape();
         }
         this->Shape.setValue(ResultShape);
@@ -810,7 +798,7 @@ App::DocumentObjectExecReturn *Helix::execute()
         Standard_Real nbTurns = myHeight / myPitch;
         if (nbTurns > 1e4)
             Standard_Failure::Raise("Number of turns too high (> 1e4)");
-        Standard_Real myRadiusTop = myRadius + myHeight * tan(myAngle/180.0f*M_PI);
+        Standard_Real myRadiusTop = myRadius + myHeight * tan(Base::toRadians<double>(myAngle));
 
         this->Shape.setValue(TopoShape().makeSpiralHelix(myRadius, myRadiusTop, myHeight, nbTurns, mySegLen, myLocalCS));
         // props.Mass() may seem a strange way to get the Length, but 

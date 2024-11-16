@@ -59,6 +59,7 @@ class Rotation;
 namespace Assembly
 {
 
+class AssemblyLink;
 class JointGroup;
 class ViewGroup;
 
@@ -170,6 +171,7 @@ public:
     void setNewPlacements();
     static void recomputeJointPlacements(std::vector<App::DocumentObject*> joints);
     static void redrawJointPlacements(std::vector<App::DocumentObject*> joints);
+    static void redrawJointPlacement(App::DocumentObject* joint);
 
     // This makes sure that LinkGroups or sub-assemblies have identity placements.
     void ensureIdentityPlacements();
@@ -179,6 +181,16 @@ public:
     std::shared_ptr<MbD::ASMTPart>
     makeMbdPart(std::string& name, Base::Placement plc = Base::Placement(), double mass = 1.0);
     std::shared_ptr<MbD::ASMTPart> getMbDPart(App::DocumentObject* obj);
+    // To help the solver, during dragging, we are bundling parts connected by a fixed joint.
+    // So several assembly components are bundled in a single ASMTPart.
+    // So we need to store the plc of each bundled object relative to the bundle origin (first obj
+    // of objectPartMap).
+    struct MbDPartData
+    {
+        std::shared_ptr<MbD::ASMTPart> part;
+        Base::Placement offsetPlc;  // This is the offset within the bundled parts
+    };
+    MbDPartData getMbDData(App::DocumentObject* obj);
     std::shared_ptr<MbD::ASMTMarker> makeMbdMarker(std::string& name, Base::Placement& plc);
     std::vector<std::shared_ptr<MbD::ASMTJoint>> makeMbdJoint(App::DocumentObject* joint);
     std::shared_ptr<MbD::ASMTJoint> makeMbdJointOfType(App::DocumentObject* joint,
@@ -230,18 +242,19 @@ public:
     double getObjMass(App::DocumentObject* obj);
     void setObjMasses(std::vector<std::pair<App::DocumentObject*, double>> objectMasses);
 
-    std::vector<AssemblyObject*> getSubAssemblies();
+    std::vector<AssemblyLink*> getSubAssemblies();
     void updateGroundedJointsPlacements();
 
 private:
     std::shared_ptr<MbD::ASMTAssembly> mbdAssembly;
 
-    std::unordered_map<App::DocumentObject*, std::shared_ptr<MbD::ASMTPart>> objectPartMap;
+    std::unordered_map<App::DocumentObject*, MbDPartData> objectPartMap;
     std::vector<std::pair<App::DocumentObject*, double>> objMasses;
     std::vector<std::shared_ptr<MbD::ASMTPart>> dragMbdParts;
 
     std::vector<std::pair<App::DocumentObject*, Base::Placement>> previousPositions;
 
+    bool bundleFixed;
     // void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property
     // *prop) override;
 

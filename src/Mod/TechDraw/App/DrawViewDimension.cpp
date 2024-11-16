@@ -206,6 +206,9 @@ DrawViewDimension::DrawViewDimension()
         (App::Prop_None),
         "Feature bounding box corners as of last reference update.  Used by autocorrect");
 
+    // changing the references in the property editor will only cause problems
+    References2D.setStatus(App::Property::ReadOnly, true);
+    References3D.setStatus(App::Property::ReadOnly, true);
 
     // hide the DrawView properties that don't apply to Dimensions
     ScaleType.setStatus(App::Property::ReadOnly, true);
@@ -454,7 +457,7 @@ short DrawViewDimension::mustExecute() const
 App::DocumentObjectExecReturn* DrawViewDimension::execute()
 {
     if (!okToProceed()) {
-        // if we set an error here, it will be triggering many times during
+        // if we set an error here, it will be triggered many times during
         // document load.
         return  DrawView::execute();
     }
@@ -464,11 +467,10 @@ App::DocumentObjectExecReturn* DrawViewDimension::execute()
         m_referencesCorrect = autocorrectReferences();
     }
     if (!m_referencesCorrect) {
-        m_referencesCorrect = true;
-        new App::DocumentObjectExecReturn("Autocorrect failed to fix broken references", this);
+        // this test needs Phase 2 of auto correct to be useful
+        Base::Console().Log("The references for %s have changed and autocorrect could not match the geometry\n", Label.getValue());
     }
 
-    // references are good, we can proceed
     resetLinear();
     resetAngular();
     resetArc();
@@ -1675,7 +1677,7 @@ pointPair DrawViewDimension::closestPoints(TopoDS_Shape s1, TopoDS_Shape s2) con
 }
 
 // set the reference property from a reference vector
-void DrawViewDimension::setReferences2d(ReferenceVector refsAll)
+void DrawViewDimension::setReferences2d(const ReferenceVector& refsAll)
 {
     // Base::Console().Message("DVD::setReferences2d(%d)\n", refs.size());
     std::vector<App::DocumentObject*> objects;
@@ -1690,10 +1692,11 @@ void DrawViewDimension::setReferences2d(ReferenceVector refsAll)
     }
 
     References2D.setValues(objects, subNames);
+    m_referencesCorrect = true;
 }
 
 // set the reference property from a reference vector
-void DrawViewDimension::setReferences3d(ReferenceVector refsAll)
+void DrawViewDimension::setReferences3d(const ReferenceVector &refsAll)
 {
     // Base::Console().Message("DVD::setReferences3d()\n");
     if (refsAll.empty() && !References3D.getValues().empty()) {
@@ -1724,6 +1727,7 @@ void DrawViewDimension::setReferences3d(ReferenceVector refsAll)
     }
 
     References3D.setValues(objects, subNames);
+    m_referencesCorrect = true;
 }
 
 //! add Dimension 3D references to measurement

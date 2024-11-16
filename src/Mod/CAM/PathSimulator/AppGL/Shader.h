@@ -41,18 +41,20 @@ public:
     void UpdateProjectionMat(mat4x4 mat);
     void UpdateViewMat(mat4x4 mat);
     void UpdateEnvColor(vec3 lightPos, vec3 lightColor, vec3 ambient, float linearity);
+    void UpdateScreenDimension(int width, int height);
     void UpdateObjColor(vec3 objColor);
     void UpdateObjColorAlpha(vec4 objColor);
     void UpdateNormalState(bool isInverted);
+    void UpdateSsaoActive(bool isInverted);
     void UpdateTextureSlot(int slot);
-    void UpdateAlbedoTexSlot(int albedoSlot);
+    void UpdateColorTexSlot(int albedoSlot);
     void UpdatePositionTexSlot(int positionSlot);
     void UpdateNormalTexSlot(int normalSlot);
-    void UpdateNoiseTexSlot(int noiseSlot);
+    void UpdateRandomTexSlot(int noiseSlot);
     void UpdateSsaoTexSlot(int ssaoSlot);
     void UpdateKernelVals(int nVals, float* vals);
     void UpdateCurSegment(int curSeg);
-    unsigned int CompileShader(const char* vertShader, const char* fragShader);
+    unsigned int CompileShader(const char* name, const char* vertShader, const char* fragShader);
     void Activate();
     void Destroy();
     bool IsValid()
@@ -74,14 +76,16 @@ protected:
     int mObjectColorAlphaPos = -1;
     int mTexSlotPos = -1;
     int mInvertedNormalsPos = -1;
-    int mSsaoSamplesPos = -1;
+    int mSsaoActivePos = -1;
     int mAlbedoPos = -1;
     int mPositionPos = -1;
     int mNormalPos = -1;
     int mSsaoPos = -1;
-    int mNoisePos = -1;
+    int mRandTexPos = -1;
     int mSamplesPos = -1;
     int mCurSegmentPos = -1;
+    int mScreenWidthPos = -1;
+    int mScreenHeightPos = -1;
 
     const char* vertShader = nullptr;
     const char* fragShader = nullptr;

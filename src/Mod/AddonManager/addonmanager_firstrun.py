@@ -26,6 +26,7 @@
 import os
 
 from PySide import QtCore, QtWidgets
+from PySide.QtGui import QPixmap
 
 import FreeCAD
 import FreeCADGui
@@ -51,55 +52,15 @@ class FirstRunDialog:
             warning_dialog = FreeCADGui.PySideUic.loadUi(
                 os.path.join(os.path.dirname(__file__), "first_run.ui")
             )
-            autocheck = self.pref.GetBool("AutoCheck", False)
-            download_macros = self.pref.GetBool("DownloadMacros", False)
-            proxy_string = self.pref.GetString("ProxyUrl", "")
-            if self.pref.GetBool("NoProxyCheck", True):
-                proxy_option = 0
-            elif self.pref.GetBool("SystemProxyCheck", False):
-                proxy_option = 1
-            elif self.pref.GetBool("UserProxyCheck", False):
-                proxy_option = 2
 
-            def toggle_proxy_list(option: int):
-                if option == 2:
-                    warning_dialog.lineEditProxy.show()
-                else:
-                    warning_dialog.lineEditProxy.hide()
+            # Set signal handlers for accept/reject buttons
+            warning_dialog.buttonContinue.clicked.connect(warning_dialog.accept)
+            warning_dialog.buttonQuit.clicked.connect(warning_dialog.reject)
 
-            warning_dialog.checkBoxAutoCheck.setChecked(autocheck)
-            warning_dialog.checkBoxDownloadMacroMetadata.setChecked(download_macros)
-            warning_dialog.comboBoxProxy.setCurrentIndex(proxy_option)
-            toggle_proxy_list(proxy_option)
-            if proxy_option == 2:
-                warning_dialog.lineEditProxy.setText(proxy_string)
-
-            warning_dialog.comboBoxProxy.currentIndexChanged.connect(toggle_proxy_list)
-
-            warning_dialog.labelWarning.setStyleSheet(
-                f"color:{utils.warning_color_string()};font-weight:bold;"
-            )
-
+            # Show the dialog and check whether the user accepted or canceled
             if warning_dialog.exec() == QtWidgets.QDialog.Accepted:
+                # Store warning as read/accepted
                 self.readWarning = True
                 self.pref.SetBool("readWarning2022", True)
-                self.pref.SetBool("AutoCheck", warning_dialog.checkBoxAutoCheck.isChecked())
-                self.pref.SetBool(
-                    "DownloadMacros",
-                    warning_dialog.checkBoxDownloadMacroMetadata.isChecked(),
-                )
-                selected_proxy_option = warning_dialog.comboBoxProxy.currentIndex()
-                if selected_proxy_option == 0:
-                    self.pref.SetBool("NoProxyCheck", True)
-                    self.pref.SetBool("SystemProxyCheck", False)
-                    self.pref.SetBool("UserProxyCheck", False)
-                elif selected_proxy_option == 1:
-                    self.pref.SetBool("NoProxyCheck", False)
-                    self.pref.SetBool("SystemProxyCheck", True)
-                    self.pref.SetBool("UserProxyCheck", False)
-                else:
-                    self.pref.SetBool("NoProxyCheck", False)
-                    self.pref.SetBool("SystemProxyCheck", False)
-                    self.pref.SetBool("UserProxyCheck", True)
-                    self.pref.SetString("ProxyUrl", warning_dialog.lineEditProxy.text())
+
         return self.readWarning

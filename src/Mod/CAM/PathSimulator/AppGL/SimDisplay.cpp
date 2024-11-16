@@ -18,14 +18,19 @@
  *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
+ *                                                                         *
+ *   Portions of this code are taken from:                                 *
+ *   "OpenGL 4 Shading Language cookbook" Third edition                    *
+ *   Written by: David Wolff                                               *
+ *   Published by: <packt> www.packt.com                                   *
+ *   License: MIT License                                                  *
+ *                                                                         *
+ *                                                                         *
  ***************************************************************************/
 
 #include "SimDisplay.h"
 #include "linmath.h"
 #include "OpenGlWrapper.h"
-#include <random>
-
-#define GL_UBYTE GL_UNSIGNED_BYTE
 
 
 namespace MillSim
@@ -35,51 +40,44 @@ void SimDisplay::InitShaders()
 {
     // use shaders
     //   standard diffuse shader
-    shader3D.CompileShader(VertShader3DNorm, FragShaderNorm);
+    shader3D.CompileShader("StdDiffuse", VertShader3DNorm, FragShaderNorm);
     shader3D.UpdateEnvColor(lightPos, lightColor, ambientCol, 0.0f);
 
     //   invarted normal diffuse shader for inner mesh
-    shaderInv3D.CompileShader(VertShader3DInvNorm, FragShaderNorm);
+    shaderInv3D.CompileShader("InvertNormal", VertShader3DInvNorm, FragShaderNorm);
     shaderInv3D.UpdateEnvColor(lightPos, lightColor, ambientCol, 0.0f);
 
     //   null shader to calculate meshes only (simulation stage)
-    shaderFlat.CompileShader(VertShader3DNorm, FragShaderFlat);
+    shaderFlat.CompileShader("Null", VertShader3DNorm, FragShaderFlat);
 
     //   texture shader to render Simulator FBO
-    shaderSimFbo.CompileShader(VertShader2DFbo, FragShader2dFbo);
+    shaderSimFbo.CompileShader("Texture", VertShader2DFbo, FragShader2dFbo);
     shaderSimFbo.UpdateTextureSlot(0);
 
     // geometric shader - generate texture with all geometric info for further processing
-    shaderGeom.CompileShader(VertShaderGeom, FragShaderGeom);
-    shaderGeomCloser.CompileShader(VertShaderGeom, FragShaderGeom);
-
-    // lighting shader - apply standard lighting based on geometric buffers
-    shaderLighting.CompileShader(VertShader2DFbo, FragShaderStdLighting);
-    shaderLighting.UpdateAlbedoTexSlot(0);
-    shaderLighting.UpdatePositionTexSlot(1);
-    shaderLighting.UpdateNormalTexSlot(2);
-    shaderLighting.UpdateEnvColor(lightPos, lightColor, ambientCol, 0.01f);
+    shaderGeom.CompileShader("Geometric", VertShaderGeom, FragShaderGeom);
+    shaderGeomCloser.CompileShader("GeomCloser", VertShaderGeom, FragShaderGeom);
 
     // SSAO shader - generate SSAO info and embed in texture buffer
-    shaderSSAO.CompileShader(VertShader2DFbo, FragShaderSSAO);
-    shaderSSAO.UpdateNoiseTexSlot(0);
+    shaderSSAO.CompileShader("SSAO", VertShader2DFbo, FragShaderSSAO);
+    shaderSSAO.UpdateRandomTexSlot(0);
     shaderSSAO.UpdatePositionTexSlot(1);
     shaderSSAO.UpdateNormalTexSlot(2);
 
     // SSAO blur shader - smooth generated SSAO texture
-    shaderSSAOBlur.CompileShader(VertShader2DFbo, FragShaderSSAOBlur);
+    shaderSSAOBlur.CompileShader("Blur", VertShader2DFbo, FragShaderSSAOBlur);
     shaderSSAOBlur.UpdateSsaoTexSlot(0);
 
     // SSAO lighting shader - apply lightig modified by SSAO calculations
-    shaderSSAOLighting.CompileShader(VertShader2DFbo, FragShaderSSAOLighting);
-    shaderSSAOLighting.UpdateAlbedoTexSlot(0);
+    shaderSSAOLighting.CompileShader("SsaoLighting", VertShader2DFbo, FragShaderSSAOLighting);
+    shaderSSAOLighting.UpdateColorTexSlot(0);
     shaderSSAOLighting.UpdatePositionTexSlot(1);
     shaderSSAOLighting.UpdateNormalTexSlot(2);
     shaderSSAOLighting.UpdateSsaoTexSlot(3);
     shaderSSAOLighting.UpdateEnvColor(lightPos, lightColor, ambientCol, 0.01f);
 
     // Mill Path Line Shader
-    shaderLinePath.CompileShader(VertShader3DLine, FragShader3DLine);
+    shaderLinePath.CompileShader("PathLine", VertShader3DLine, FragShader3DLine);
 }
 
 void SimDisplay::CreateFboQuad()
@@ -101,6 +99,40 @@ void SimDisplay::CreateFboQuad()
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 }
 
+void SimDisplay::CreateGBufTex(GLenum texUnit,
+                               GLint intFormat,
+                               GLenum format,
+                               GLenum type,
+                               GLuint& texid)
+{
+    glActiveTexture(texUnit);
+    glGenTextures(1, &texid);
+    glBindTexture(GL_TEXTURE_2D, texid);
+    glTexImage2D(GL_TEXTURE_2D, 0, intFormat, mWidth, mHeight, 0, format, type, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
+}
+
+void SimDisplay::UniformHemisphere(vec3& randVec)
+{
+    float x1 = distr01(generator);
+    float x2 = distr01(generator);
+    float s = sqrt(1.0f - x1 * x1);
+    randVec[0] = cosf(PI2 * x2) * s;
+    randVec[1] = sinf(PI2 * x2) * s;
+    randVec[2] = x1;
+}
+
+void SimDisplay::UniformCircle(vec3& randVec)
+{
+    float x = distr01(generator);
+    randVec[0] = cosf(PI2 * x);
+    randVec[1] = sinf(PI2 * x);
+    randVec[2] = 0;
+}
+
+
 void SimDisplay::CreateDisplayFbos()
 {
     // setup frame buffer for simulation
@@ -108,51 +140,15 @@ void SimDisplay::CreateDisplayFbos()
     glBindFramebuffer(GL_FRAMEBUFFER, mFbo);
 
     // a color texture for the frame buffer
-    glGenTextures(1, &mFboColTexture);
-    glBindTexture(GL_TEXTURE_2D, mFboColTexture);
-    glTexImage2D(GL_TEXTURE_2D,
-                 0,
-                 GL_RGBA8,
-                 gWindowSizeW,
-                 gWindowSizeH,
-                 0,
-                 GL_RGBA,
-                 GL_UBYTE,
-                 NULL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    CreateGBufTex(GL_TEXTURE0, GL_RGBA8, GL_RGBA, GL_UNSIGNED_BYTE, mFboColTexture);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mFboColTexture, 0);
 
     // a position texture for the frame buffer
-    glGenTextures(1, &mFboPosTexture);
-    glBindTexture(GL_TEXTURE_2D, mFboPosTexture);
-    glTexImage2D(GL_TEXTURE_2D,
-                 0,
-                 GL_RGBA16F,
-                 gWindowSizeW,
-                 gWindowSizeH,
-                 0,
-                 GL_RGBA,
-                 GL_FLOAT,
-                 NULL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    CreateGBufTex(GL_TEXTURE1, GL_RGB32F, GL_RGBA, GL_FLOAT, mFboPosTexture);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, mFboPosTexture, 0);
 
     // a normal texture for the frame buffer
-    glGenTextures(1, &mFboNormTexture);
-    glBindTexture(GL_TEXTURE_2D, mFboNormTexture);
-    glTexImage2D(GL_TEXTURE_2D,
-                 0,
-                 GL_RGBA16F,
-                 gWindowSizeW,
-                 gWindowSizeH,
-                 0,
-                 GL_RGBA,
-                 GL_FLOAT,
-                 NULL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    CreateGBufTex(GL_TEXTURE2, GL_RGB32F, GL_RGBA, GL_FLOAT, mFboNormTexture);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, mFboNormTexture, 0);
 
 
@@ -166,8 +162,8 @@ void SimDisplay::CreateDisplayFbos()
     glRenderbufferStorage(
         GL_RENDERBUFFER,
         GL_DEPTH24_STENCIL8,
-        gWindowSizeW,
-        gWindowSizeH);  // use a single renderbuffer object for both a depth AND stencil buffer.
+        mWidth,
+        mHeight);  // use a single renderbuffer object for both a depth AND stencil buffer.
     glFramebufferRenderbuffer(GL_FRAMEBUFFER,
                               GL_DEPTH_STENCIL_ATTACHMENT,
                               GL_RENDERBUFFER,
@@ -180,7 +176,6 @@ void SimDisplay::CreateDisplayFbos()
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-
 void SimDisplay::CreateSsaoFbos()
 {
 
@@ -190,11 +185,7 @@ void SimDisplay::CreateSsaoFbos()
     glGenFramebuffers(1, &mSsaoFbo);
     glBindFramebuffer(GL_FRAMEBUFFER, mSsaoFbo);
     // SSAO color buffer
-    glGenTextures(1, &mFboSsaoTexture);
-    glBindTexture(GL_TEXTURE_2D, mFboSsaoTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, gWindowSizeW, gWindowSizeH, 0, GL_RED, GL_FLOAT, NULL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    CreateGBufTex(GL_TEXTURE0, GL_R16F, GL_RED, GL_FLOAT, mFboSsaoTexture);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mFboSsaoTexture, 0);
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
         mSsaoValid = false;
@@ -204,11 +195,7 @@ void SimDisplay::CreateSsaoFbos()
     // setup framebuffer for SSAO blur processing
     glGenFramebuffers(1, &mSsaoBlurFbo);
     glBindFramebuffer(GL_FRAMEBUFFER, mSsaoBlurFbo);
-    glGenTextures(1, &mFboSsaoBlurTexture);
-    glBindTexture(GL_TEXTURE_2D, mFboSsaoBlurTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, gWindowSizeW, gWindowSizeH, 0, GL_RED, GL_FLOAT, NULL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    CreateGBufTex(GL_TEXTURE0, GL_R16F, GL_RED, GL_FLOAT, mFboSsaoBlurTexture);
     glFramebufferTexture2D(GL_FRAMEBUFFER,
                            GL_COLOR_ATTACHMENT0,
                            GL_TEXTURE_2D,
@@ -222,45 +209,35 @@ void SimDisplay::CreateSsaoFbos()
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
     // generate sample kernel
-    std::uniform_real_distribution<GLfloat> randomFloats(0.0, 1.0);
-    std::default_random_engine generator;
-    for (unsigned int i = 0; i < 64; ++i) {
+    int kernSize = 64;
+    for (int i = 0; i < kernSize; i++) {
         vec3 sample;
-        vec3_set(sample,
-                 randomFloats(generator) * 2.0f - 1.0f,
-                 randomFloats(generator) * 2.0f - 1.0f,
-                 randomFloats(generator));  // * 2.0f - 1.0f);
-        vec3_norm(sample, sample);
-        vec3_scale(sample, sample, randomFloats(generator));
-        float scale = float(i) / 64.0f;
-
-        // scale samples s.t. they're more aligned to center of kernel
-        scale = Lerp(0.1f, 1.0f, scale * scale);
-        vec3_scale(sample, sample, scale);
+        UniformHemisphere(sample);
+        float scale = ((float)(i * i)) / (kernSize * kernSize);
+        float interpScale = 0.1f * (1.0f - scale) + scale;
+        vec3_scale(sample, sample, interpScale);
         mSsaoKernel.push_back(*(Point3D*)sample);
     }
     shaderSSAO.Activate();
     shaderSSAO.UpdateKernelVals(mSsaoKernel.size(), &mSsaoKernel[0].x);
 
-    // generate noise texture
-    std::vector<Point3D> ssaoNoise;
-    for (unsigned int i = 0; i < 16; i++) {
-        vec3 noise;
-        vec3_set(noise,
-                 randomFloats(generator) * 2.0f - 1.0f,
-                 randomFloats(generator) * 2.0f - 1.0f,
-                 0.0f);  // rotate around z-axis (in tangent space)
-        ssaoNoise.push_back(*(Point3D*)noise);
+    // generate random direction texture
+    int randSize = 4 * 4;
+    std::vector<Point3D> randDirections;
+    for (int i = 0; i < randSize; i++) {
+        vec3 randvec;
+        UniformCircle(randvec);
+        randDirections.push_back(*(Point3D*)randvec);
     }
-    glGenTextures(1, &mFboSsaoNoiseTexture);
-    glBindTexture(GL_TEXTURE_2D, mFboSsaoNoiseTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, 4, 4, 0, GL_RGB, GL_FLOAT, &ssaoNoise[0]);
+
+    glGenTextures(1, &mFboRandTexture);
+    glBindTexture(GL_TEXTURE_2D, mFboRandTexture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, 4, 4, 0, GL_RGB, GL_FLOAT, &randDirections[0].x);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 }
-
 
 SimDisplay::~SimDisplay()
 {
@@ -276,6 +253,8 @@ void SimDisplay::InitGL()
     // setup light object
     mlightObject.GenerateBoxStock(-0.5f, -0.5f, -0.5f, 1, 1, 1);
 
+    mWidth = gWindowSizeW;
+    mHeight = gWindowSizeH;
     InitShaders();
     CreateDisplayFbos();
     CreateSsaoFbos();
@@ -298,7 +277,7 @@ void SimDisplay::CleanFbos()
     GLDELETE_TEXTURE(mFboNormTexture);
     GLDELETE_TEXTURE(mFboSsaoTexture);
     GLDELETE_TEXTURE(mFboSsaoBlurTexture);
-    GLDELETE_TEXTURE(mFboSsaoNoiseTexture);
+    GLDELETE_TEXTURE(mFboRandTexture);
     GLDELETE_RENDERBUFFER(mRboDepthStencil);
 }
 
@@ -317,7 +296,6 @@ void SimDisplay::CleanGL()
     shaderSimFbo.Destroy();
     shaderGeom.Destroy();
     shaderSSAO.Destroy();
-    shaderLighting.Destroy();
     shaderSSAOLighting.Destroy();
     shaderSSAOBlur.Destroy();
 
@@ -394,10 +372,10 @@ void SimDisplay::ScaleViewToStock(StockObject* obj)
     mlightObject.SetPosition(lightPos);
 }
 
-void SimDisplay::RenderResult()
+void SimDisplay::RenderResult(bool recalculate)
 {
     if (mSsaoValid && applySSAO) {
-        RenderResultSSAO();
+        RenderResultSSAO(recalculate);
     }
     else {
         RenderResultStandard();
@@ -410,7 +388,11 @@ void SimDisplay::RenderResultStandard()
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
     // display the sim result within the FBO
-    shaderLighting.Activate();
+    shaderSSAOLighting.Activate();
+    shaderSSAOLighting.UpdateColorTexSlot(0);
+    shaderSSAOLighting.UpdatePositionTexSlot(1);
+    shaderSSAOLighting.UpdateNormalTexSlot(2);
+    shaderSSAOLighting.UpdateSsaoActive(false);
     // shaderSimFbo.Activate();
     glBindVertexArray(mFboQuadVAO);
     glDisable(GL_DEPTH_TEST);
@@ -426,47 +408,57 @@ void SimDisplay::RenderResultStandard()
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
-void SimDisplay::RenderResultSSAO()
+void SimDisplay::RenderResultSSAO(bool recalculate)
 {
+    glDisable(GL_BLEND);
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
-    // generate SSAO texture
-    glBindFramebuffer(GL_FRAMEBUFFER, mSsaoFbo);
-    shaderSSAO.Activate();
 
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, mFboSsaoNoiseTexture);
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, mFboPosTexture);
-    glActiveTexture(GL_TEXTURE2);
-    glBindTexture(GL_TEXTURE_2D, mFboNormTexture);
-    glBindVertexArray(mFboQuadVAO);
-    glDrawArrays(GL_TRIANGLES, 0, 6);
+    if (recalculate) {
+        // generate SSAO texture
+        glBindFramebuffer(GL_FRAMEBUFFER, mSsaoFbo);
+        shaderSSAO.Activate();
+        shaderSSAO.UpdateRandomTexSlot(0);
+        shaderSSAO.UpdatePositionTexSlot(1);
+        shaderSSAO.UpdateNormalTexSlot(2);
+        shaderSSAO.UpdateScreenDimension(mWidth, mHeight);
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, mFboRandTexture);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, mFboPosTexture);
+        glActiveTexture(GL_TEXTURE2);
+        glBindTexture(GL_TEXTURE_2D, mFboNormTexture);
+        glBindVertexArray(mFboQuadVAO);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+        // blur SSAO texture to remove noise
+        glBindFramebuffer(GL_FRAMEBUFFER, mSsaoBlurFbo);
+        glClear(GL_COLOR_BUFFER_BIT);
+        shaderSSAOBlur.Activate();
+        shaderSSAOBlur.UpdateSsaoTexSlot(0);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, mFboSsaoTexture);
+        glBindVertexArray(mFboQuadVAO);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+    }
+
+    // lighting pass:
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-    // blur SSAO texture to remove noise
-    glBindFramebuffer(GL_FRAMEBUFFER, mSsaoBlurFbo);
-    glClear(GL_COLOR_BUFFER_BIT);
-    shaderSSAOBlur.Activate();
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, mFboSsaoTexture);
-    glBindVertexArray(mFboQuadVAO);
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-    // lighting pass: deferred Blinn-Phong lighting with added screen-space ambient occlusion
     shaderSSAOLighting.Activate();
-    shaderSSAOLighting.UpdateAlbedoTexSlot(0);
+    shaderSSAOLighting.UpdateColorTexSlot(0);
     shaderSSAOLighting.UpdatePositionTexSlot(1);
     shaderSSAOLighting.UpdateNormalTexSlot(2);
     shaderSSAOLighting.UpdateSsaoTexSlot(3);
+    shaderSSAOLighting.UpdateSsaoActive(true);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, mFboColTexture);
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, mFboPosTexture);
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, mFboNormTexture);
-    glActiveTexture(GL_TEXTURE3);  // add extra SSAO texture to lighting pass
+    glActiveTexture(GL_TEXTURE3);
     glBindTexture(GL_TEXTURE_2D, mFboSsaoBlurTexture);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -544,6 +536,8 @@ void SimDisplay::UpdateEyeFactor(float factor)
 
 void SimDisplay::UpdateWindowScale()
 {
+    mWidth = gWindowSizeW;
+    mHeight = gWindowSizeH;
     glBindFramebuffer(GL_FRAMEBUFFER, mFbo);
     CleanFbos();
     CreateDisplayFbos();

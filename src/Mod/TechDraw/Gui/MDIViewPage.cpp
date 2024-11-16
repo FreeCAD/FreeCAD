@@ -309,11 +309,40 @@ void MDIViewPage::fixSceneDependencies()
 /// as file name selection and error messages
 /// PagePrinter handles the actual printing mechanics.
 
+/// save the page state so it can be restore after printing
+void MDIViewPage::savePageExportState(ViewProviderPage* page)
+{
+    auto guiDoc = page->getDocument();
+    if (!guiDoc) {
+        return;
+    }
+    m_docModStateBeforePrint = guiDoc->isModified();
+}
+/// ensure that the page reverts to its normal state after any changes made for printing.
+void MDIViewPage::resetPageExportState(ViewProviderPage* page) const
+{
+    auto pageFeature  = page->getDrawPage();
+    if (!pageFeature) {
+        // how did this happen?
+        return;
+    }
+
+    auto guiDoc = page->getDocument();
+    if (!guiDoc) {
+        return;
+    }
+    auto scene = page->getQGSPage();
+    scene->setExportingPdf(false);
+    scene->setExportingSvg(false);
+    guiDoc->setModified(m_docModStateBeforePrint);
+    pageFeature->redrawCommand();
+}
+
+
 /// overrides of MDIView print methods so that they print the QGraphicsScene instead
 /// of the COIN3d scenegraph.
 void MDIViewPage::printPdf()
 {
-//    Base::Console().Message("MDIVP::printPdf()\n");
     QStringList filter;
     filter << QObject::tr("PDF (*.pdf)");
     filter << QObject::tr("All Files (*.*)");
@@ -325,19 +354,35 @@ void MDIViewPage::printPdf()
     }
 
     Gui::WaitCursor wc;
+    auto vpp = getViewProviderPage();
+    if (!vpp) {
+        // how did this happen?
+        return;
+    }
+
+    savePageExportState(vpp);
+
     std::string utf8Content = fn.toUtf8().constData();
     if (m_pagePrinter) {
         m_pagePrinter->printPdf(utf8Content);
+        resetPageExportState(vpp);
     }
 }
 
 void MDIViewPage::print()
 {
-//    Base::Console().Message("MDIVP::print()\n");
-
     if (!m_pagePrinter) {
         return;
     }
+
+    auto vpp = getViewProviderPage();
+    if (!vpp) {
+        // how did this happen?
+        return;
+    }
+
+    savePageExportState(vpp);
+
     m_pagePrinter->getPaperAttributes();
 
     QPrinter printer(QPrinter::HighResolution);
@@ -353,6 +398,7 @@ void MDIViewPage::print()
     QPrintDialog dlg(&printer, this);
     if (dlg.exec() == QDialog::Accepted) {
         print(&printer);
+        resetPageExportState(vpp);
     }
 }
 
@@ -383,10 +429,17 @@ void MDIViewPage::printPreview()
 
 void MDIViewPage::print(QPrinter* printer)
 {
-//    Base::Console().Message("MDIVP::print(printer)\n");
+    // Base::Console().Message("MDIVP::print(printer)\n");
     if (!m_pagePrinter) {
         return;
     }
+    auto vpp = getViewProviderPage();
+    if (!vpp) {
+        // how did this happen?
+        return;
+    }
+    savePageExportState(vpp);
+
     m_pagePrinter->getPaperAttributes();
     // As size of the render area paperRect() should be used. When performing a real
     // print pageRect() may also work but the output is cropped at the bottom part.
@@ -431,6 +484,7 @@ void MDIViewPage::print(QPrinter* printer)
 
     if (m_pagePrinter) {
         m_pagePrinter->print(printer);
+        resetPageExportState(vpp);
     }
 
 }
@@ -438,7 +492,7 @@ void MDIViewPage::print(QPrinter* printer)
 //static routine to print all pages in a document
 void MDIViewPage::printAll(QPrinter* printer, App::Document* doc)
 {
-//    Base::Console().Message("MDIVP::printAll()\n");
+    // Base::Console().Message("MDIVP::printAll()\n");
     PagePrinter::printAll(printer, doc);
 }
 
@@ -482,10 +536,19 @@ void MDIViewPage::viewAll()
 
 void MDIViewPage::saveSVG(std::string filename)
 {
+    auto vpp = getViewProviderPage();
+    if (!vpp) {
+        // how did this happen?
+        return;
+    }
+    savePageExportState(vpp);
     if (m_pagePrinter) {
         m_pagePrinter->saveSVG(filename);
+        resetPageExportState(vpp);
     }
 }
+
+
 void MDIViewPage::saveSVG()
 {
     QStringList filter;
@@ -525,8 +588,15 @@ void MDIViewPage::saveDXF()
 
 void MDIViewPage::savePDF(std::string filename)
 {
+    auto vpp = getViewProviderPage();
+    if (!vpp) {
+        // how did this happen?
+        return;
+    }
+    savePageExportState(vpp);
     if (m_pagePrinter) {
         m_pagePrinter->savePDF(filename);
+        resetPageExportState(vpp);
     }
 }
 

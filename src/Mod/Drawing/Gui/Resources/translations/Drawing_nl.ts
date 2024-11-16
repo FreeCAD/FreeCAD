@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="511"/>
       <source>&amp;Annotation</source>
-      <translation>Aantekening </translation>
+      <translation>Aantekening</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="512"/>

@@ -52,8 +52,9 @@ private:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void tryMeasureSelection();
 
-    bool canMeasureSelection(const Gui::SelectionChanges& msg) const;
+    bool shouldMeasure(const Gui::SelectionChanges& msg) const;
     void addSelectionToMeasurement();
+    bool isObjAcceptable(App::DocumentObject* obj);
     void printResult();
     void print(const QString& message);
 

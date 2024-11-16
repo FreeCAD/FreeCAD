@@ -56,7 +56,7 @@
     <message>
       <location filename="../../VisualInspection.ui" line="23"/>
       <source>Actual</source>
-      <translation>Actual</translation>
+      <translation>實際</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="39"/>
@@ -67,7 +67,7 @@
     <message>
       <location filename="../../VisualInspection.ui" line="50"/>
       <source>Nominal</source>
-      <translation>Nominal</translation>
+      <translation>名義上</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="77"/>

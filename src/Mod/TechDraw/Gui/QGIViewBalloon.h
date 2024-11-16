@@ -158,8 +158,8 @@ private:
 
     QColor m_colNormal;
 
-    bool m_ctrl;
-    bool m_drag;
+    bool m_originDrag;
+    bool m_dragging;
 };
 
 //*******************************************************************
@@ -220,7 +220,7 @@ public Q_SLOTS:
 
 protected:
     void draw() override;
-    void drawBalloon(bool dragged = false);
+    void drawBalloon(bool originDrag = false);
     QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
     virtual void setSvgPens();
     virtual void setPens();
@@ -248,7 +248,6 @@ private:
 
     bool m_dragInProgress;
     bool m_originDragged = false;
-    bool m_ctrl;
     Base::Vector3d m_saveOriginOffset;
     Base::Vector3d m_saveOrigin;
     Base::Vector3d m_savePosition;

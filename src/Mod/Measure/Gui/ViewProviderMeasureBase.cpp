@@ -101,7 +101,12 @@ ViewProviderMeasureBase::ViewProviderMeasureBase()
 
     pGlobalSeparator = new SoSeparator();
     pGlobalSeparator->ref();
-    getRoot()->insertChild(pGlobalSeparator, 0);
+
+    // Connect visibility of delta measurements to the ModeSwitch
+    auto visibilitySwitch = new SoSwitch();
+    getRoot()->insertChild(visibilitySwitch, 0);
+    visibilitySwitch->addChild(pGlobalSeparator);
+    visibilitySwitch->whichChild.connectFrom(&pcModeSwitch->whichChild);
 
     // setupAnnoSceneGraph() - sets up the annotation scene graph
     pLabel = new Gui::SoFrameLabel();

@@ -811,7 +811,7 @@ class Edit(gui_base_original.Modifier):
         """
         for obj in objs:
             obj_gui_tools = self.get_obj_gui_tools(obj)
-            if obj_gui_tools:
+            if obj_gui_tools and obj.isAttachedToDocument():
                 obj_gui_tools.restore_object_style(obj, self.objs_formats[obj.Name])
 
 

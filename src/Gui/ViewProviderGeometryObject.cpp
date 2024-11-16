@@ -188,8 +188,19 @@ void ViewProviderGeometryObject::updateData(const App::Property* prop)
         // Set the appearance from the material
         auto geometry = dynamic_cast<App::GeoFeature*>(getObject());
         if (geometry) {
+            /*
+             * Change the appearance only if the appearance hasn't been set explicitly. A cached
+             * material appearance is used to see if the current appearance matches the last
+             * material. It is also compared against an empty material to see if the saved
+             * material value has been initialized.
+             */
+            App::Material defaultMaterial;
             auto material = geometry->getMaterialAppearance();
-            ShapeAppearance.setValue(material);
+            if ((materialAppearance == defaultMaterial)
+                || (ShapeAppearance.getSize() == 1 && ShapeAppearance[0] == materialAppearance)) {
+                ShapeAppearance.setValue(material);
+            }
+            materialAppearance = material;
         }
     }
 

@@ -7338,7 +7338,7 @@ Például:
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="231"/>
       <source>The Job&apos;s last post-processed file is missing</source>
-      <translation>A feladathoz az utolsó utófeldolgozott fájl hiányzik</translation>
+      <translation>A feladat utolsó utófeldolgozott fájlja hiányzik</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="364"/>

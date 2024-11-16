@@ -333,9 +333,14 @@ class ViewProviderLayer:
         """Get the layer the object belongs to.
         """
         from draftmake.make_layer import get_layer_container
+        # First look in the LayerContainer:
         for layer in get_layer_container().Group:
             if utils.get_type(layer) == "Layer" and obj in layer.Group:
                 return layer
+        # If not found, look through all App::FeaturePython objects (not just layers):
+        for find in obj.Document.findObjects(Type="App::FeaturePython"):
+            if utils.get_type(find) == "Layer" and obj in find.Group:
+                return find
         return None
 
     def canDragObject(self, obj):

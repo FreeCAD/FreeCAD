@@ -1643,6 +1643,11 @@ QSint--ActionGroup QFrame[class="content"] QToolButton {
   border-radius: 3px;
 }
 
+QSint--ActionGroup QFrame[class="content"] QToolButton:checked {
+  background-color: qlineargradient(x1:0, y1:0.3, x2:0, y2:1, stop:0 #333333, stop:1 #444444);
+  border: 1px solid @ThemeAccentColor2;
+}
+
 /* QToolButtons with a menu found in Sketcher task panel*/
 QSint--ActionGroup QToolButton::menu-button {
   border-left: 1px solid #000000;

@@ -123,6 +123,7 @@
         <file>ui/ConstraintSectionPrint.ui</file>
         <file>ui/ConstraintTie.ui</file>
         <file>ui/CurrentDensity.ui</file>
+        <file>ui/DlgSettingsNetgen.ui</file>
         <file>ui/ElectrostaticPotential.ui</file>
         <file>ui/ElementFluid1D.ui</file>
         <file>ui/ElementGeometry1D.ui</file>
