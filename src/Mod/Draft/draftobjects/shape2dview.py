@@ -291,15 +291,20 @@ class Shape2DView(DraftObject):
                             for s in shapes:
                                 shapes_to_cut.extend(s.Faces)
                         for sh in shapes_to_cut:
-                            if cutv:
+                            if cutv and (not cutv.isNull()) and (not sh.isNull()):
                                 if sh.Volume < 0:
                                     sh.reverse()
                                 #if cutv.BoundBox.intersect(sh.BoundBox):
                                 #    c = sh.cut(cutv)
                                 #else:
                                 #    c = sh.copy()
-                                c = sh.cut(cutv)
-                                cuts.extend(self._get_shapes(c, onlysolids))
+                                try:
+                                    c = sh.cut(cutv)
+                                except ValueError:
+                                    print("DEBUG: Error subtracting shapes in", obj.Label)
+                                    cuts.extend(self._get_shapes(sh, onlysolids))
+                                else:
+                                    cuts.extend(self._get_shapes(c, onlysolids))
                             else:
                                 cuts.extend(self._get_shapes(sh, onlysolids))
                         comp = Part.makeCompound(cuts)
