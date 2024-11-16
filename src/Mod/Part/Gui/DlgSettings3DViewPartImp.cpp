@@ -91,6 +91,11 @@ void DlgSettings3DViewPart::onMaxAngularDeflectionValueChanged(double vMaxAngle)
     if (!this->isVisible()) {
         return;
     }
+    /**
+     *  The lower threshold of 2.0 was determined by testing
+     *  as laid out in the table as per comment hyperlink:
+     *  https://github.com/FreeCAD/FreeCAD/issues/15951#issuecomment-2304308163
+     */
     const double vMaxAngleMinThreshold = 2.0;
     if (vMaxAngle < vMaxAngleMinThreshold && !checkValue) {
         checkValue = true;
