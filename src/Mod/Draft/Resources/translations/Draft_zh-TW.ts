@@ -87,7 +87,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="130"/>
       <source>Export styles to json file</source>
-      <translation>將樣式匯出至 JSON 檔案</translation>
+      <translation>將樣式匯出至 json 檔案</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="164"/>
@@ -98,18 +98,18 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="170"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="192"/>
       <source>The font to use for texts and dimensions</source>
-      <translation>文字與尺寸使用的字型</translation>
+      <translation>文字與標註尺寸使用的字體</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="173"/>
       <source>Font name</source>
-      <translation>字型名稱</translation>
+      <translation>字體名稱</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="199"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="209"/>
       <source>The font size in system units</source>
-      <translation>系統單位中的字型大小</translation>
+      <translation>系統單位中的字體大小</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="256"/>
@@ -170,7 +170,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="202"/>
       <source>Font size</source>
-      <translation>字型尺寸</translation>
+      <translation>字體大小</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="219"/>
@@ -187,7 +187,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="236"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="246"/>
       <source>The color of texts, dimension texts and label texts</source>
-      <translation>文字、尺寸文字和標籤文字的顏色</translation>
+      <translation>文字、標註尺寸文字和標籤文字的顏色</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="239"/>
@@ -225,7 +225,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="454"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="464"/>
       <source>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</source>
-      <translation>指定一個有效的長度單位，如毫米(mm)、公尺(m)、英寸(in)、英尺(ft)，以強制顯示該單位的尺寸值。</translation>
+      <translation>指定一個有效的長度單位，如毫米(mm)、公尺(m)、英寸(in)、英尺(ft)，以強制顯示該單位的標註值。</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="457"/>
@@ -236,7 +236,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="471"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="481"/>
       <source>The number of decimals to show for dimension values</source>
-      <translation>尺寸值顯示的小數位數</translation>
+      <translation>標註值顯示的小數位數</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="474"/>
@@ -308,7 +308,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="500"/>
       <source>Dimension overshoot</source>
-      <translation>尺寸超越量</translation>
+      <translation>標註尺寸超越量</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="517"/>
@@ -1101,7 +1101,7 @@ will be moved to the center of the view.</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="464"/>
       <source>Dimensions</source>
-      <translation>尺寸</translation>
+      <translation>標註尺寸</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="408"/>
@@ -1158,12 +1158,12 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="477"/>
       <source>If checked, a unit symbol is added to dimension texts</source>
-      <translation>若被勾選，則會將單位符號添加到標註尺寸文字中</translation>
+      <translation>若被勾選，則會將單位符號添加到標註文字中</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="494"/>
       <source>The unit override for dimensions. Leave blank to use the current FreeCAD unit.</source>
-      <translation>覆蓋尺寸的單位. 留空以使用目前的 FreeCAD 單位.</translation>
+      <translation>覆蓋標註尺寸的單位。留空以使用目前的 FreeCAD 單位。</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="508"/>
@@ -1173,27 +1173,27 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="370"/>
       <source>The color for texts, dimension texts and label texts</source>
-      <translation>文字, 尺寸文字和標籤文字的顏色</translation>
+      <translation>文字、標註文字和標籤文字的顏色</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="291"/>
       <source>Font name</source>
-      <translation>字型名稱</translation>
+      <translation>字體名稱</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="304"/>
       <source>The font for texts, dimensions and labels</source>
-      <translation>文字, 尺寸和標籤的字型</translation>
+      <translation>文字、標註尺寸和標籤的字體</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="311"/>
       <source>Font size</source>
-      <translation>字型尺寸</translation>
+      <translation>字體大小</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="318"/>
       <source>The height for texts, dimension texts and label texts</source>
-      <translation>文字, 尺寸文字和標籤文字的高度</translation>
+      <translation>文字、標註文字和標籤文字的高度</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="335"/>
@@ -1639,7 +1639,7 @@ pattern definitions to be added to the standard patterns</source>
       <source>The default font for texts, dimensions and labels. It can be a font name such
 as "Arial", a style such as "sans", "serif" or "mono", or a family such as
 "Arial,Helvetica,sans", or a name with a style such as "Arial:Bold".</source>
-      <translation>文字、尺寸和標籤的預設字體。它可以是一個字體名稱，例如
+      <translation>文字、標註尺寸和標籤的預設字體。它可以是一個字體名稱，例如
 如「Arial」、「sans」、「serif」或「mono」等樣式，或諸如此類的家族
 “Arial,Helvetica,sans”，或具有“Arial:Bold”等樣式的名稱。</translation>
     </message>
@@ -1774,7 +1774,7 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</so
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="365"/>
       <source>If checked, a unit symbol is added to dimension texts by default</source>
-      <translation>若被勾選，則預設會將單位符號添加到標註尺寸文字中</translation>
+      <translation>若被勾選，則預設會將單位符號添加到標註文字中</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="368"/>
@@ -1796,7 +1796,7 @@ or cm, leave blank to use the current unit defined in FreeCAD.</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="425"/>
       <source>The default number of decimal places for dimension texts</source>
-      <translation>標註尺寸文字的預設小數位數</translation>
+      <translation>標註文字的預設小數位數</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="460"/>
@@ -2225,7 +2225,7 @@ as closed wires with correct width</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="562"/>
       <source>Max Spline Segment:</source>
-      <translation>最大 Spline 線段：</translation>
+      <translation>最大 Spline 曲線線段：</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="572"/>
@@ -2281,7 +2281,7 @@ This might fail for post DXF R12 templates.</source>
       <location filename="../ui/preferences-draftsnap.ui" line="458"/>
       <location filename="../ui/preferences-draftsnap.ui" line="496"/>
       <source>Shift</source>
-      <translation>Shift</translation>
+      <translation>Shift 鍵</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="375"/>
@@ -2326,14 +2326,14 @@ Major grid lines are thicker than minor grid lines.</source>
       <location filename="../ui/preferences-draftsnap.ui" line="463"/>
       <location filename="../ui/preferences-draftsnap.ui" line="501"/>
       <source>Ctrl</source>
-      <translation>Ctrl</translation>
+      <translation>Ctrl 鍵</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="433"/>
       <location filename="../ui/preferences-draftsnap.ui" line="468"/>
       <location filename="../ui/preferences-draftsnap.ui" line="506"/>
       <source>Alt</source>
-      <translation>Alt</translation>
+      <translation>Alt 鍵</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="441"/>
@@ -2761,7 +2761,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="554"/>
       <source>Snap</source>
-      <translation>貼齊</translation>
+      <translation>鎖點</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="567"/>
@@ -2855,7 +2855,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../../DraftGui.py" line="66"/>
       <source>Snap On/Off</source>
-      <translation>貼齊開啟/關閉</translation>
+      <translation>鎖點開啟/關閉</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="67"/>
@@ -3047,7 +3047,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="536"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="226"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="232"/>
       <source>Angle</source>
       <translation>角度</translation>
     </message>
@@ -3268,14 +3268,14 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="../../DraftGui.py" line="784"/>
       <location filename="../../DraftGui.py" line="802"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="221"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="227"/>
       <source>Distance</source>
       <translation>距離</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="785"/>
       <location filename="../../DraftGui.py" line="803"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="223"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="229"/>
       <source>Offset distance</source>
       <translation>偏移距離</translation>
     </message>
@@ -4044,7 +4044,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_dimension_ops.py" line="55"/>
       <source>Flip dimension</source>
-      <translation>翻轉標註</translation>
+      <translation>翻轉標註尺寸</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="77"/>
@@ -4112,40 +4112,45 @@ The final angle will be the base angle plus this amount.</source>
       <translation>只有單一面可以被拉伸。</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="182"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="158"/>
+      <source>Trimex is not supported yet on this type of object.</source>
+      <translation type="unfinished">Trimex is not supported yet on this type of object.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="188"/>
       <location filename="../../draftguitools/gui_offset.py" line="143"/>
       <source>Pick distance</source>
       <translation>挑選距離</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="228"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="234"/>
       <source>Offset angle</source>
       <translation>偏移角度</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="488"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="500"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
       <translation>無法修剪這些物件，僅支援草稿線段及弧</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="493"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="505"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation>過多線段導致這些物件無法修剪</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="510"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="522"/>
       <source>These objects don't intersect.</source>
       <translation>這些物件並未相交</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="513"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="525"/>
       <source>Too many intersection points.</source>
       <translation>過多交點</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="68"/>
       <source>B-Spline</source>
-      <translation>B-Spline 曲線</translation>
+      <translation>B 雲形線 (B-Spline)</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="122"/>
@@ -4162,7 +4167,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="185"/>
       <source>Create B-spline</source>
-      <translation>建立 B-Spline 曲線</translation>
+      <translation>建立 B 雲形線</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_styles.py" line="66"/>
@@ -4419,19 +4424,19 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="95"/>
       <source>Dimension</source>
-      <translation>標註</translation>
+      <translation>標註尺寸</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="200"/>
       <location filename="../../draftguitools/gui_dimensions.py" line="214"/>
       <location filename="../../draftguitools/gui_dimensions.py" line="246"/>
       <source>Create Dimension</source>
-      <translation>建立標註</translation>
+      <translation>建立標註尺寸</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="261"/>
       <source>Create Dimension (radial)</source>
-      <translation>建立尺寸（圓弧）</translation>
+      <translation>建立標註尺寸（圓弧）</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="471"/>
@@ -4844,39 +4849,39 @@ The final angle will be the base angle plus this amount.</source>
       <translation>添加 'Fuse' 屬性</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="466"/>
+      <location filename="../../draftobjects/patharray.py" line="472"/>
       <source>Start Offset too large for path length. Using zero instead.</source>
       <translation>起始偏移過大超出路徑長度。將使用零值代替。</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="472"/>
+      <location filename="../../draftobjects/patharray.py" line="484"/>
       <source>End Offset too large for path length minus Start Offset. Using zero instead.</source>
       <translation>結束偏移超出路徑長度減去開始偏移的範圍。將使用零值代替。</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="537"/>
+      <location filename="../../draftobjects/patharray.py" line="549"/>
       <source>Length of tangent vector is zero. Copy not aligned.</source>
       <translation>切線向量的長度為零。副本未對齊。</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="551"/>
-      <location filename="../../draftobjects/patharray.py" line="573"/>
+      <location filename="../../draftobjects/patharray.py" line="563"/>
+      <location filename="../../draftobjects/patharray.py" line="585"/>
       <source>Length of normal vector is zero. Using a default axis instead.</source>
       <translation>法線向量的長度為零。將使用預設軸代替。</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="557"/>
-      <location filename="../../draftobjects/patharray.py" line="579"/>
+      <location filename="../../draftobjects/patharray.py" line="569"/>
+      <location filename="../../draftobjects/patharray.py" line="591"/>
       <source>Tangent and normal vectors are parallel. Normal replaced by a default axis.</source>
       <translation>切線和法向量平行。法線被替換為預設軸。</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="569"/>
+      <location filename="../../draftobjects/patharray.py" line="581"/>
       <source>Cannot calculate normal vector. Using the default normal instead.</source>
       <translation>無法計算法向量。將使用預設法線。</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="585"/>
+      <location filename="../../draftobjects/patharray.py" line="597"/>
       <source>AlignMode {} is not implemented</source>
       <translation>對齊模式 {} 並未實施</translation>
     </message>
@@ -4982,7 +4987,7 @@ The final angle will be the base angle plus this amount.</source>
       <location filename="../../draftmake/make_circulararray.py" line="147"/>
       <location filename="../../draftmake/make_polararray.py" line="115"/>
       <source>Wrong input: must be a vector.</source>
-      <translation>錯誤輸入: 必須為一向量。</translation>
+      <translation>錯誤輸入：必須為一向量。</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_patharray.py" line="206"/>
@@ -5217,24 +5222,24 @@ The final angle will be the base angle plus this amount.</source>
       <translation>錯誤輸入: 必須是在 0 到 100 間的數字。</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="490"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="495"/>
       <source>Activate this layer</source>
       <translation>啟動圖層</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="496"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="501"/>
       <source>Select layer contents</source>
       <translation>選擇圖層內容</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="534"/>
-      <location filename="../../draftviewproviders/view_layer.py" line="548"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="539"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="553"/>
       <source>Merge layer duplicates</source>
       <translation>合併重複圖層</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="540"/>
-      <location filename="../../draftviewproviders/view_layer.py" line="593"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="545"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="598"/>
       <source>Add new layer</source>
       <translation>新增圖層</translation>
     </message>
@@ -5358,53 +5363,53 @@ The final angle will be the base angle plus this amount.</source>
       <translation>找到物件，具有多個面在同一平面上：對它們進行改進</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="488"/>
+      <location filename="../../draftfunctions/upgrade.py" line="489"/>
       <source>Found 1 non-parametric objects: draftifying it</source>
       <translation>找到一個未參數化物件：將其轉為草稿</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="499"/>
+      <location filename="../../draftfunctions/upgrade.py" line="500"/>
       <source>Found 1 closed sketch object: creating a face from it</source>
       <translation>找到一個封閉草圖物件：由此建立面</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="504"/>
+      <location filename="../../draftfunctions/upgrade.py" line="505"/>
       <source>Found closed wires: creating faces</source>
       <translation>找到封閉線段：建立面</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="509"/>
+      <location filename="../../draftfunctions/upgrade.py" line="510"/>
       <source>Found several wires or edges: wiring them</source>
       <translation>找到數個線段或邊：將其連接起來</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="511"/>
-      <location filename="../../draftfunctions/upgrade.py" line="546"/>
+      <location filename="../../draftfunctions/upgrade.py" line="512"/>
+      <location filename="../../draftfunctions/upgrade.py" line="540"/>
       <source>Found several non-treatable objects: creating compound</source>
       <translation>找到幾個無法處理的物件：將其建立組件</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="516"/>
+      <location filename="../../draftfunctions/upgrade.py" line="517"/>
       <source>trying: closing it</source>
       <translation>嘗試：關閉它</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="518"/>
+      <location filename="../../draftfunctions/upgrade.py" line="519"/>
       <source>Found 1 open wire: closing it</source>
       <translation>找到一開放線段：將其封閉</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="536"/>
+      <location filename="../../draftfunctions/upgrade.py" line="530"/>
       <source>Found 1 object: draftifying it</source>
       <translation>找到一個物件：將其轉為草稿</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="541"/>
+      <location filename="../../draftfunctions/upgrade.py" line="535"/>
       <source>Found points: creating compound</source>
       <translation>找到點：將其建立組件</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="549"/>
+      <location filename="../../draftfunctions/upgrade.py" line="543"/>
       <source>Unable to upgrade these objects.</source>
       <translation>無法升級這些物件</translation>
     </message>
@@ -5900,12 +5905,12 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>importOCA</name>
     <message>
-      <location filename="../../importOCA.py" line="414"/>
+      <location filename="../../importOCA.py" line="413"/>
       <source>OCA: found no data to export</source>
       <translation>OCA：找不到要匯出的資料</translation>
     </message>
     <message>
-      <location filename="../../importOCA.py" line="459"/>
+      <location filename="../../importOCA.py" line="458"/>
       <source>successfully exported</source>
       <translation>成功匯出</translation>
     </message>
@@ -5913,7 +5918,7 @@ from menu Tools -&gt; Addon Manager</source>
   <context>
     <name>ImportAirfoilDAT</name>
     <message>
-      <location filename="../../importAirfoilDAT.py" line="164"/>
+      <location filename="../../importAirfoilDAT.py" line="163"/>
       <source>Did not find enough coordinates</source>
       <translation>找不到足夠的座標</translation>
     </message>
@@ -5958,7 +5963,7 @@ First select the object, and then select the path.
 The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</source>
       <translation>建立所選物件的複本，沿著選定的路徑。
 首先選擇物件，然後選擇路徑。
-路徑可以是折線、B-spline 曲線、貝茲曲線，甚至來自其他物件的邊緣。</translation>
+路徑可以是折線、B 雲形線、貝茲曲線，甚至來自其他物件的邊緣。</translation>
     </message>
   </context>
   <context>
@@ -6266,7 +6271,7 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="251"/>
       <source>Shows temporary X and Y dimensions.</source>
-      <translation>顯示暫時的 X 與 Y 尺寸。</translation>
+      <translation>顯示暫時的 X 與 Y 標註尺寸。</translation>
     </message>
   </context>
   <context>
@@ -6552,12 +6557,12 @@ Then you can use it to save a different camera position and objects' states any 
     <message>
       <location filename="../../draftguitools/gui_wire2spline.py" line="64"/>
       <source>Wire to B-spline</source>
-      <translation>線段轉換為 B-spline</translation>
+      <translation>線段轉換為 B 雲形線</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_wire2spline.py" line="67"/>
       <source>Converts a selected polyline to a B-spline, or a B-spline to a polyline.</source>
-      <translation>將所選折線轉換為 B-spline 曲線，或將 B-spline 曲線轉換為折線。</translation>
+      <translation>將所選折線轉換為 B 雲形線，或將 B 雲形線轉換為折線。</translation>
     </message>
   </context>
   <context>
@@ -6565,7 +6570,7 @@ Then you can use it to save a different camera position and objects' states any 
     <message>
       <location filename="../../draftguitools/gui_dimension_ops.py" line="62"/>
       <source>Flip dimension</source>
-      <translation>翻轉標註</translation>
+      <translation>翻轉標註尺寸</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimension_ops.py" line="66"/>
@@ -6652,7 +6657,7 @@ CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</sour
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="60"/>
       <source>B-spline</source>
-      <translation>B-spline 曲線</translation>
+      <translation>B 雲形線 (B-spline)</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="63"/>
@@ -6888,7 +6893,7 @@ This is intended to be used with closed shapes and solids, and doesn't affect op
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="85"/>
       <source>Dimension</source>
-      <translation>標註</translation>
+      <translation>標註尺寸</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="88"/>
@@ -7718,7 +7723,7 @@ This property is read-only, as the number depends on the points in 'Point Object
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="103"/>
       <source>Length of line segments if tessellating Ellipses or B-splines into line segments</source>
-      <translation>如果將橢圓或 B-spline 細分為線段，其線段的長度</translation>
+      <translation>如果將橢圓或 B 雲形線細分為線段，其線段的長度</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="109"/>
@@ -8114,7 +8119,7 @@ the 'First Angle' and 'Last Angle' properties.</source>
       <location filename="../../draftviewproviders/view_label.py" line="86"/>
       <location filename="../../draftviewproviders/view_text.py" line="62"/>
       <source>Line spacing (relative to font size)</source>
-      <translation>行距（相對於字型大小）</translation>
+      <translation>行距（相對於字體大小）</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_label.py" line="58"/>
@@ -8215,12 +8220,12 @@ the 'First Angle' and 'Last Angle' properties.</source>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="117"/>
       <source>Font name</source>
-      <translation>字型名稱</translation>
+      <translation>字體名稱</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="126"/>
       <source>Font size</source>
-      <translation>字型尺寸</translation>
+      <translation>字體大小</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="124"/>

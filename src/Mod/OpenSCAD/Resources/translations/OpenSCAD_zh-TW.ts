@@ -168,7 +168,7 @@
     <message>
       <location filename="../../InitGui.py" line="130"/>
       <source>It looks like you may be using a Snap version of OpenSCAD.</source>
-      <translation>看起來您可能正在使用 Snap 版本的 OpenSCAD.</translation>
+      <translation>看起來您可能正在使用鎖點版本的 OpenSCAD。</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="135"/>

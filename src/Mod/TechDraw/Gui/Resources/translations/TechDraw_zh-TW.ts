@@ -116,7 +116,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="533"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="534"/>
@@ -328,7 +328,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1409"/>
       <source>Insert Dimension</source>
-      <translation>插入標註</translation>
+      <translation>插入標註尺寸</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1410"/>
@@ -409,7 +409,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1664"/>
       <source>Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
-      <translation>由兩端延伸裝飾線或是在中心線:&lt;br&gt;- 指定增量距離(可選)&lt;br&gt;- 選擇單一線段&lt;br&gt;- 點選此工具</translation>
+      <translation>由兩端延伸裝飾線或是在中心線:&lt;br&gt;- 指定增量距離(選填)&lt;br&gt;- 選擇單一線段&lt;br&gt;- 點選此工具</translation>
     </message>
   </context>
   <context>
@@ -445,7 +445,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1156"/>
       <source>Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation>平均水平標註間距:&lt;br&gt;- 指定串級間距 (可選)&lt;br&gt;- 選擇二個或更多個水平尺寸&lt;br&gt;- 第一個標註定義其位置&lt;br&gt;- 點選此工具</translation>
+      <translation>平均水平標註間距:&lt;br&gt;- 指定串級間距 (選填)&lt;br&gt;- 選擇二個或更多個水平標註&lt;br&gt;- 第一個標註定義其位置&lt;br&gt;- 點選此工具</translation>
     </message>
   </context>
   <context>
@@ -465,7 +465,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="978"/>
       <location filename="../../CommandExtensionDims.cpp" line="1232"/>
       <source>Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation>平均水平標註間距:&lt;br&gt;- 指定串級間距 (可選)&lt;br&gt;- 選擇二個或更多個水平尺寸&lt;br&gt;- 第一個標註定義其位置&lt;br&gt;- 點選此工具</translation>
+      <translation>平均水平標註間距:&lt;br&gt;- 指定串級間距 (選填)&lt;br&gt;- 選擇二個或更多個水平標註&lt;br&gt;- 第一個標註定義其位置&lt;br&gt;- 點選此工具</translation>
     </message>
   </context>
   <context>
@@ -485,7 +485,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="1120"/>
       <location filename="../../CommandExtensionDims.cpp" line="1250"/>
       <source>Evenly space oblique dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation>平均傾斜標註間距:&lt;br&gt;- 指定串級間距 (可選)&lt;br&gt;- 選擇二個或更多個平行傾斜尺寸&lt;br&gt;- 第一個標註定義其位置&lt;br&gt;- 點選此工具</translation>
+      <translation>平均傾斜標註間距:&lt;br&gt;- 指定串級間距 (選填)&lt;br&gt;- 選擇二個或更多個平行傾斜標註&lt;br&gt;- 第一個標註定義其位置&lt;br&gt;- 點選此工具</translation>
     </message>
   </context>
   <context>
@@ -505,7 +505,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="1045"/>
       <location filename="../../CommandExtensionDims.cpp" line="1241"/>
       <source>Evenly space vertical dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation>平均垂直標註間距:&lt;br&gt;- 指定串級間距 (可選)&lt;br&gt;- 選擇二個或更多個垂直尺寸&lt;br&gt;- 第一個標註定義其位置&lt;br&gt;- 點選此工具</translation>
+      <translation>平均垂直標註間距:&lt;br&gt;- 指定串級間距 (選填)&lt;br&gt;- 選擇二個或更多個垂直標註&lt;br&gt;- 第一個標註定義其位置&lt;br&gt;- 點選此工具</translation>
     </message>
   </context>
   <context>
@@ -541,7 +541,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="782"/>
       <source>Change the attributes of cosmetic lines and centerlines:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more lines&lt;br&gt;- Click this tool</source>
-      <translation>改變裝飾線及中心線之屬性：&lt;br&gt;- 指定線屬性 (可選)&lt;br&gt;- 選擇一或多條線&lt;br&gt;- 點選此工具</translation>
+      <translation>改變裝飾線及中心線之屬性：&lt;br&gt;- 指定線屬性 (選填)&lt;br&gt;- 選擇一或多條線&lt;br&gt;- 點選此工具</translation>
     </message>
   </context>
   <context>
@@ -561,7 +561,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="250"/>
       <location filename="../../CommandExtensionPack.cpp" line="353"/>
       <source>Add centerlines to circles and arcs:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles or arcs&lt;br&gt;- Click this tool</source>
-      <translation>添加中心線到圓或弧:&lt;br&gt;- 指定線屬性 (可選)&lt;br&gt;- 選擇一或多圓或弧&lt;br&gt;- 點選此工具</translation>
+      <translation>添加中心線到圓或弧:&lt;br&gt;- 指定線屬性 (選填)&lt;br&gt;- 選擇一或多圓或弧&lt;br&gt;- 點選此工具</translation>
     </message>
   </context>
   <context>
@@ -579,7 +579,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="284"/>
       <source>Add centerlines to circles and arcs:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles or arcs&lt;br&gt;- Click this tool</source>
-      <translation>添加中心線到圓或弧:&lt;br&gt;- 指定線屬性 (可選)&lt;br&gt;- 選擇一或多圓或弧&lt;br&gt;- 點選此工具</translation>
+      <translation>添加中心線到圓或弧:&lt;br&gt;- 指定線屬性 (選填)&lt;br&gt;- 選擇一或多圓或弧&lt;br&gt;- 點選此工具</translation>
     </message>
   </context>
   <context>
@@ -615,7 +615,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1925"/>
       <source>Create multiple evenly spaced horizontal dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</source>
-      <translation>從同一基線開始建立多個均勻間距的水平標註:&lt;br&gt;- 指定串級間距 (可選)&lt;br&gt;- 選擇三個或更多頂點&lt;br&gt;- 選擇順序中的前兩個頂點決定了基線的位置&lt;br&gt;- 點選此工具</translation>
+      <translation>從同一基線開始建立多個均勻間距的水平標註:&lt;br&gt;- 指定串級間距 (選填)&lt;br&gt;- 選擇三個或更多頂點&lt;br&gt;- 選擇順序中的前兩個頂點決定了基線的位置&lt;br&gt;- 點選此工具</translation>
     </message>
   </context>
   <context>
@@ -675,7 +675,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="1687"/>
       <location filename="../../CommandExtensionDims.cpp" line="2001"/>
       <source>Create multiple evenly spaced horizontal dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</source>
-      <translation>從同一基線開始建立多個均勻間距的水平標註:&lt;br&gt;- 指定串級間距 (可選)&lt;br&gt;- 選擇三個或更多頂點&lt;br&gt;- 選擇順序中的前兩個頂點決定了基線的位置&lt;br&gt;- 點選此工具</translation>
+      <translation>從同一基線開始建立多個均勻間距的水平標註:&lt;br&gt;- 指定串級間距 (選填)&lt;br&gt;- 選擇三個或更多頂點&lt;br&gt;- 選擇順序中的前兩個頂點決定了基線的位置&lt;br&gt;- 點選此工具</translation>
     </message>
   </context>
   <context>
@@ -733,7 +733,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="1889"/>
       <location filename="../../CommandExtensionDims.cpp" line="2019"/>
       <source>Create multiple evenly spaced oblique dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- The first two vertexes also define the direction&lt;br&gt;- Click this tool</source>
-      <translation>從同一基線開始建立多個均勻間距的傾斜尺寸:&lt;br&gt;- 指定串級間距 (可選)&lt;br&gt;- 選擇三個或更多頂點&lt;br&gt;- 選擇順序中的前兩個頂點決定了基線的位置&lt;br&gt;- 前兩個頂點也同時定義了方向&lt;br&gt;- 點選此工具</translation>
+      <translation>從同一基線開始建立多個均勻間距的傾斜標註:&lt;br&gt;- 指定串級間距 (選填)&lt;br&gt;- 選擇三個或更多頂點&lt;br&gt;- 選擇順序中的前兩個頂點決定了基線的位置&lt;br&gt;- 前兩個頂點也同時定義了方向&lt;br&gt;- 點選此工具</translation>
     </message>
   </context>
   <context>
@@ -793,7 +793,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="1760"/>
       <location filename="../../CommandExtensionDims.cpp" line="2010"/>
       <source>Create multiple evenly spaced vertical dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</source>
-      <translation>從同一基線開始建立多個均勻間距的垂直標註:&lt;br&gt;- 指定串級間距 (可選)&lt;br&gt;- 選擇三個或更多頂點&lt;br&gt;- 選擇順序中的前兩個頂點決定了基線的位置&lt;br&gt;- 點選此工具</translation>
+      <translation>從同一基線開始建立多個均勻間距的垂直標註:&lt;br&gt;- 指定串級間距 (選填)&lt;br&gt;- 選擇三個或更多頂點&lt;br&gt;- 選擇順序中的前兩個頂點決定了基線的位置&lt;br&gt;- 點選此工具</translation>
     </message>
   </context>
   <context>
@@ -849,7 +849,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1108"/>
       <source>Add a cosmetic circle based on two vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius)&lt;br&gt;- Click this tool</source>
-      <translation>基於兩頂點添加一個裝飾圓:&lt;br&gt;- 指定線屬性(可選) &lt;br&gt;- 選擇頂點 1 (中心點)&lt;br&gt;- 選擇頂點 2 (半徑)&lt;br&gt;- 點選此工具</translation>
+      <translation>基於兩頂點添加一個裝飾圓:&lt;br&gt;- 指定線屬性(選填) &lt;br&gt;- 選擇頂點 1 (中心點)&lt;br&gt;- 選擇頂點 2 (半徑)&lt;br&gt;- 點選此工具</translation>
     </message>
   </context>
   <context>
@@ -869,7 +869,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="943"/>
       <location filename="../../CommandExtensionPack.cpp" line="1196"/>
       <source>Add a cosmetic counter clockwise arc based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius and start angle)&lt;br&gt;- Select vertex 3 (end angle)&lt;br&gt;- Click this tool</source>
-      <translation>基於三個頂點添加裝飾性逆時針弧:&lt;br&gt;- 指定線屬性 (可選)&lt;br&gt;- 選擇頂點 1 (中心點)&lt;br&gt;- 選擇頂點 2 (半徑與起始角度)&lt;br&gt;- 選擇頂點 3 (結束角度)&lt;br&gt;- 點選此工具</translation>
+      <translation>基於三個頂點添加裝飾性逆時針弧:&lt;br&gt;- 指定線屬性 (選填)&lt;br&gt;- 選擇頂點 1 (中心點)&lt;br&gt;- 選擇頂點 2 (半徑與起始角度)&lt;br&gt;- 選擇頂點 3 (結束角度)&lt;br&gt;- 點選此工具</translation>
     </message>
   </context>
   <context>
@@ -889,7 +889,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="1007"/>
       <location filename="../../CommandExtensionPack.cpp" line="1186"/>
       <source>Add a cosmetic circle based on two vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius)&lt;br&gt;- Click this tool</source>
-      <translation>基於兩頂點添加一個裝飾圓:&lt;br&gt;- 指定線屬性(可選) &lt;br&gt;- 選擇頂點 1 (中心點)&lt;br&gt;- 選擇頂點 2 (半徑)&lt;br&gt;- 點選此工具</translation>
+      <translation>基於兩頂點添加一個裝飾圓:&lt;br&gt;- 指定線屬性(選填) &lt;br&gt;- 選擇頂點 1 (中心點)&lt;br&gt;- 選擇頂點 2 (半徑)&lt;br&gt;- 點選此工具</translation>
     </message>
   </context>
   <context>
@@ -908,12 +908,12 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1073"/>
       <source>Add a cosmetic circle based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select 3 vertexes&lt;br&gt;- Click this tool</source>
-      <translation>基於三個頂點添加一個裝飾圓:&lt;br&gt;- 指定線屬性 (可選)&lt;br&gt;- 選擇 3 個頂點&lt;br&gt;- 點選此工具</translation>
+      <translation>基於三個頂點添加一個裝飾圓:&lt;br&gt;- 指定線屬性 (選填)&lt;br&gt;- 選擇 3 個頂點&lt;br&gt;- 點選此工具</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1207"/>
       <source>Add a cosmetic circle based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select three vertexes&lt;br&gt;- Click this tool</source>
-      <translation>基於三個頂點添加一個裝飾圓:&lt;br&gt;- 指定線屬性 (可選)&lt;br&gt;- 選擇 3 個頂點&lt;br&gt;- 點選此工具</translation>
+      <translation>基於三個頂點添加一個裝飾圓:&lt;br&gt;- 指定線屬性 (選填)&lt;br&gt;- 選擇 3 個頂點&lt;br&gt;- 點選此工具</translation>
     </message>
   </context>
   <context>
@@ -921,7 +921,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1592"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1593"/>
@@ -933,7 +933,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="1594"/>
       <location filename="../../CommandExtensionPack.cpp" line="1733"/>
       <source>Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
-      <translation>由兩端延伸裝飾線或是在中心線:&lt;br&gt;- 指定增量距離(可選)&lt;br&gt;- 選擇單一線段&lt;br&gt;- 點選此工具</translation>
+      <translation>由兩端延伸裝飾線或是在中心線:&lt;br&gt;- 指定增量距離(選填)&lt;br&gt;- 選擇單一線段&lt;br&gt;- 點選此工具</translation>
     </message>
   </context>
   <context>
@@ -941,7 +941,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="172"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="173"/>
@@ -953,7 +953,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="174"/>
       <location filename="../../CommandExtensionPack.cpp" line="362"/>
       <source>Add centerlines to a circular pattern of circles:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select three or more circles forming a circular pattern&lt;br&gt;- Click this tool</source>
-      <translation>添加中心線到一圓的圓形圖樣:&lt;br&gt;- 指定線屬性 (可選)&lt;br&gt;- 選擇三個以上的圓以形成圓圖樣&lt;br&gt;- 點選此工具</translation>
+      <translation>添加中心線到一圓的圓形圖樣:&lt;br&gt;- 指定線屬性 (選填)&lt;br&gt;- 選擇三個以上的圓以形成圓圖樣&lt;br&gt;- 點選此工具</translation>
     </message>
   </context>
   <context>
@@ -961,7 +961,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="470"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="471"/>
@@ -981,7 +981,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="536"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="537"/>
@@ -999,7 +999,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="155"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="156"/>
@@ -1037,7 +1037,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="188"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="189"/>
@@ -1057,7 +1057,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1356"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1357"/>
@@ -1075,7 +1075,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1287"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1288"/>
@@ -1095,7 +1095,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1321"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1322"/>
@@ -1115,7 +1115,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1464"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1465"/>
@@ -1229,7 +1229,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="745"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="746"/>
@@ -1247,7 +1247,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1627"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1628"/>
@@ -1259,7 +1259,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="1629"/>
       <location filename="../../CommandExtensionPack.cpp" line="1741"/>
       <source>Shorten a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
-      <translation>在兩端縮短裝飾線或中心線:&lt;br&gt;- 指定增量距離(可選)&lt;br&gt;- 選擇單一線段&lt;br&gt;- 點選此工具</translation>
+      <translation>在兩端縮短裝飾線或中心線:&lt;br&gt;- 指定增量距離(選填)&lt;br&gt;- 選擇單一線段&lt;br&gt;- 點選此工具</translation>
     </message>
   </context>
   <context>
@@ -1267,7 +1267,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="569"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="570"/>
@@ -1279,7 +1279,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="572"/>
       <location filename="../../CommandExtensionPack.cpp" line="719"/>
       <source>Add a cosmetic thread to the top or bottom view of bolts/screws/rods:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles&lt;br&gt;- Click this tool</source>
-      <translation>將裝飾螺紋添加到螺栓/螺釘/桿的上視圖或底視圖:&lt;br&gt;- 指定線屬性 (可選)&lt;br&gt;- 選擇一或多的圓形&lt;br&gt;- 點選此工具</translation>
+      <translation>將裝飾螺紋添加到螺栓/螺釘/桿的上視圖或底視圖:&lt;br&gt;- 指定線屬性 (選填)&lt;br&gt;- 選擇一或多的圓形&lt;br&gt;- 點選此工具</translation>
     </message>
   </context>
   <context>
@@ -1287,7 +1287,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="461"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="462"/>
@@ -1299,7 +1299,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="463"/>
       <location filename="../../CommandExtensionPack.cpp" line="710"/>
       <source>Add a cosmetic thread to the side view of a bolt/screw/rod:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
-      <translation>將裝飾螺紋添加到螺栓/螺釘/桿的側視圖:&lt;br&gt;- 指定線屬性 (可選)&lt;br&gt;- 選擇兩條平行線&lt;br&gt;- 點選此工具</translation>
+      <translation>將裝飾螺紋添加到螺栓/螺釘/桿的側視圖:&lt;br&gt;- 指定線屬性 (選填)&lt;br&gt;- 選擇兩條平行線&lt;br&gt;- 點選此工具</translation>
     </message>
   </context>
   <context>
@@ -1307,7 +1307,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="515"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="516"/>
@@ -1319,7 +1319,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="517"/>
       <location filename="../../CommandExtensionPack.cpp" line="700"/>
       <source>Add a cosmetic thread to the top or bottom view of holes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles&lt;br&gt;- Click this tool</source>
-      <translation>將裝飾螺紋添加到孔的上視圖或底視圖:&lt;br&gt;- 指定線屬性 (可選)&lt;br&gt;- 選擇一或多的圓形&lt;br&gt;- 點選此工具</translation>
+      <translation>將裝飾螺紋添加到孔的上視圖或底視圖:&lt;br&gt;- 指定線屬性 (選填)&lt;br&gt;- 選擇一或多的圓形&lt;br&gt;- 點選此工具</translation>
     </message>
   </context>
   <context>
@@ -1327,7 +1327,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="407"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="408"/>
@@ -1339,7 +1339,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="409"/>
       <location filename="../../CommandExtensionPack.cpp" line="690"/>
       <source>Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
-      <translation>將裝飾螺紋添加到孔的側視圖:&lt;br&gt;- 指定線屬性 (可選)&lt;br&gt;- 選擇兩條平行線&lt;br&gt;- 點選此工具</translation>
+      <translation>將裝飾螺紋添加到孔的側視圖:&lt;br&gt;- 指定線屬性 (選填)&lt;br&gt;- 選擇兩條平行線&lt;br&gt;- 點選此工具</translation>
     </message>
   </context>
   <context>
@@ -1347,7 +1347,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="604"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="605"/>
@@ -1357,7 +1357,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="606"/>
       <source>Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
-      <translation>將裝飾螺紋添加到孔的側視圖:&lt;br&gt;- 指定線屬性 (可選)&lt;br&gt;- 選擇兩條平行線&lt;br&gt;- 點選此工具</translation>
+      <translation>將裝飾螺紋添加到孔的側視圖:&lt;br&gt;- 指定線屬性 (選填)&lt;br&gt;- 選擇兩條平行線&lt;br&gt;- 點選此工具</translation>
     </message>
   </context>
   <context>
@@ -1406,7 +1406,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandAnnotate.cpp" line="679"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="680"/>
@@ -1419,7 +1419,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandDecorate.cpp" line="171"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="172"/>
@@ -1445,7 +1445,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1644"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1645"/>
@@ -1471,7 +1471,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandDecorate.cpp" line="242"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="243"/>
@@ -1500,7 +1500,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2259"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2260"/>
@@ -1513,7 +1513,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandAnnotate.cpp" line="93"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="94"/>
@@ -1526,7 +1526,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1597"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1598"/>
@@ -1539,7 +1539,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1885"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1886"/>
@@ -1552,7 +1552,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandAnnotate.cpp" line="455"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="456"/>
@@ -1565,7 +1565,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="108"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="109"/>
@@ -1578,7 +1578,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="170"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="171"/>
@@ -1601,7 +1601,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="277"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="278"/>
@@ -1614,7 +1614,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="1880"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1881"/>
@@ -1627,7 +1627,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="1042"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1043"/>
@@ -1645,7 +1645,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandAnnotate.cpp" line="494"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="495"/>
@@ -1658,7 +1658,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1501"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1502"/>
@@ -1671,7 +1671,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="241"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="242"/>
@@ -1684,7 +1684,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandAnnotate.cpp" line="155"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="156"/>
@@ -1733,7 +1733,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1480"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1481"/>
@@ -1746,7 +1746,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="1711"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1712"/>
@@ -1764,7 +1764,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandStack.cpp" line="237"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="238"/>
@@ -1777,7 +1777,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandStack.cpp" line="357"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="358"/>
@@ -1790,7 +1790,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandStack.cpp" line="64"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="65"/>
@@ -1823,7 +1823,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandStack.cpp" line="177"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="178"/>
@@ -1836,7 +1836,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandStack.cpp" line="297"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="298"/>
@@ -1849,7 +1849,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1609"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1610"/>
@@ -1867,7 +1867,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="1522"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1523"/>
@@ -1885,7 +1885,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandDecorate.cpp" line="296"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="297"/>
@@ -1899,7 +1899,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1692"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1693"/>
@@ -1925,7 +1925,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="302"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="303"/>
@@ -1957,7 +1957,7 @@ Without a selection, a file browser lets you select a SVG or image file.</source
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1545"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1546"/>
@@ -2036,7 +2036,7 @@ Without a selection, a file browser lets you select a SVG or image file.</source
       <translation>建立試算表視圖</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="396"/>
+      <location filename="../../PagePrinter.cpp" line="404"/>
       <source>Save page to dxf</source>
       <translation>儲存頁面為 DXF 格式</translation>
     </message>
@@ -2058,7 +2058,7 @@ Without a selection, a file browser lets you select a SVG or image file.</source
     <message>
       <location filename="../../CommandCreateDims.cpp" line="241"/>
       <source>Insert Dimension</source>
-      <translation>插入標註</translation>
+      <translation>插入標註尺寸</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="469"/>
@@ -2227,7 +2227,7 @@ Without a selection, a file browser lets you select a SVG or image file.</source
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1383"/>
       <source>Dimension</source>
-      <translation>標註</translation>
+      <translation>標註尺寸</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2307"/>
@@ -2267,12 +2267,12 @@ Without a selection, a file browser lets you select a SVG or image file.</source
       <translation>拖曳件號圓圈</translation>
     </message>
     <message>
-      <location filename="../../QGIViewDimension.cpp" line="873"/>
+      <location filename="../../QGIViewDimension.cpp" line="875"/>
       <source>Drag Dimension</source>
       <translation>拖曳標註</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="598"/>
+      <location filename="../../QGSPage.cpp" line="589"/>
       <source>Create Balloon</source>
       <translation>建立件號圓圈</translation>
     </message>
@@ -3120,7 +3120,7 @@ Without a selection, a file browser lets you select a SVG or image file.</source
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2443"/>
       <source>BSpline Curve Warning</source>
-      <translation>BSpline 曲線警告</translation>
+      <translation>B 雲形線警告</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="391"/>
@@ -3182,12 +3182,12 @@ Without a selection, a file browser lets you select a SVG or image file.</source
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2444"/>
       <source>Selected edge is a B-spline. Value will be approximate. Continue?</source>
-      <translation>選取的邊是 B-spline。其值將是近似值。是否繼續？</translation>
+      <translation>選取的邊是 B 雲形線。其值將是近似值。是否繼續？</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2455"/>
       <source>Selected edge is a B-spline and a radius/diameter can not be calculated.</source>
-      <translation>選取邊為 B-spline 而半徑/直徑無法被計算出來。</translation>
+      <translation>選取邊為 B 雲形線而半徑/直徑無法被計算出來。</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1926"/>
@@ -3549,28 +3549,28 @@ Without a selection, a file browser lets you select a SVG or image file.</source
       <translation>文件中沒有繪圖頁面</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="318"/>
+      <location filename="../../MDIViewPage.cpp" line="347"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="319"/>
-      <location filename="../../MDIViewPage.cpp" line="493"/>
+      <location filename="../../MDIViewPage.cpp" line="348"/>
+      <location filename="../../MDIViewPage.cpp" line="556"/>
       <source>All Files (*.*)</source>
       <translation>所有檔 (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="321"/>
+      <location filename="../../MDIViewPage.cpp" line="350"/>
       <source>Export Page As PDF</source>
       <translation>匯出頁面為 PDF 檔</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="492"/>
+      <location filename="../../MDIViewPage.cpp" line="555"/>
       <source>SVG (*.svg)</source>
       <translation>SVG (*.svg)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="495"/>
+      <location filename="../../MDIViewPage.cpp" line="558"/>
       <source>Export page as SVG</source>
       <translation>匯出頁面為 SVG 檔</translation>
     </message>
@@ -3782,19 +3782,19 @@ Without a selection, a file browser lets you select a SVG or image file.</source
       <location filename="../../CommandExtensionDims.cpp" line="942"/>
       <location filename="../../CommandExtensionDims.cpp" line="951"/>
       <source>TechDraw CascadeHorizDimension</source>
-      <translation>TechDraw 串聯水平尺寸(CascadeHorizDimension)</translation>
+      <translation>工程製圖串聯水平標註尺寸(CascadeHorizDimension)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1008"/>
       <location filename="../../CommandExtensionDims.cpp" line="1017"/>
       <source>TechDraw CascadeVertDimension</source>
-      <translation>TechDraw 串聯垂直尺寸(CascadeVertDimension)</translation>
+      <translation>工程製圖串聯垂直標註尺寸(CascadeVertDimension)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1075"/>
       <location filename="../../CommandExtensionDims.cpp" line="1084"/>
       <source>TechDraw CascadeObliqueDimension</source>
-      <translation>TechDraw 串聯傾斜尺寸(CascadeObliqueDimension)</translation>
+      <translation>工程製圖串聯傾斜標註尺寸(CascadeObliqueDimension)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1274"/>
@@ -4000,7 +4000,7 @@ Without a selection, a file browser lets you select a SVG or image file.</source
       <location filename="../../AppTechDrawGui.cpp" line="176"/>
       <location filename="../../AppTechDrawGui.cpp" line="177"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.cpp" line="119"/>
@@ -4018,7 +4018,7 @@ Without a selection, a file browser lets you select a SVG or image file.</source
       <translation>參數錯誤</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="330"/>
+      <location filename="../../PagePrinter.cpp" line="338"/>
       <source>Document Name:</source>
       <translation>文件名稱：</translation>
     </message>
@@ -4540,67 +4540,67 @@ Then you need to increase the tile limit.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="449"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Some combinations of OS and Navigation style key bindings may conflict with the default modifier keys for Ballon dragging and View snapping override.  You can make adjustments here to find a non-conflicting key binding.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Some combinations of OS and Navigation style key bindings may conflict with the default modifier keys for Ballon dragging and View snapping override.  You can make adjustments here to find a non-conflicting key binding.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;作業系統和導航樣式鍵綁定的某些組合可能與氣球拖曳和視圖捕捉覆蓋的預設修飾鍵衝突。 您可以在此處進行調整以找到不衝突的綁定按鍵。</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="452"/>
       <source>Behaviour Overrides</source>
-      <translation type="unfinished">Behaviour Overrides</translation>
+      <translation>行為覆蓋</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="460"/>
       <source>Check this box to use the default modifier keys.  Uncheck this box to set a different key combination.</source>
-      <translation type="unfinished">Check this box to use the default modifier keys.  Uncheck this box to set a different key combination.</translation>
+      <translation>選取此方塊以使用預設修飾鍵。 取消選取此方塊可設定不同的組合鍵。</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="463"/>
       <source>Use Default</source>
-      <translation type="unfinished">Use Default</translation>
+      <translation>使用預設</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="480"/>
       <source>Balloon Drag</source>
-      <translation type="unfinished">Balloon Drag</translation>
+      <translation>件號圓圈拖曳</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="487"/>
       <source>Check this box to include the Alt key in the modifiers.</source>
-      <translation type="unfinished">Check this box to include the Alt key in the modifiers.</translation>
+      <translation>勾選此方塊可將 Alt 鍵包含在修飾鍵中。</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="490"/>
       <source>Alt</source>
-      <translation>Alt</translation>
+      <translation>Alt 鍵</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="497"/>
       <source>Check this box to include the Shift key in the modifiers.</source>
-      <translation type="unfinished">Check this box to include the Shift key in the modifiers.</translation>
+      <translation>勾選此方塊可將 Shift 鍵包含在修飾鍵中。</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="500"/>
       <source>Shift</source>
-      <translation>Shift</translation>
+      <translation>Shift 鍵</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="507"/>
       <source>Check this box to include the Meta/Start/Super key in the modifiers.</source>
-      <translation type="unfinished">Check this box to include the Meta/Start/Super key in the modifiers.</translation>
+      <translation>勾選此方塊可將 Meta/Start/Super 鍵包含在修飾鍵中。</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="510"/>
       <source>Meta</source>
-      <translation type="unfinished">Meta</translation>
+      <translation>修飾鍵</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="517"/>
       <source>Check this box to include the Control key in the modifiers.</source>
-      <translation type="unfinished">Check this box to include the Control key in the modifiers.</translation>
+      <translation>勾選此方塊可將 Control 鍵包含在修飾鍵中。</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="520"/>
       <source>Control</source>
-      <translation type="unfinished">Control</translation>
+      <translation>控制</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="538"/>
@@ -4684,7 +4684,7 @@ Then you need to increase the tile limit.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="435"/>
       <source>Balloon Leader Kink Length</source>
-      <translation>氣球指線扭結長度</translation>
+      <translation>件號圓圈指線扭結長度</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="447"/>
@@ -4989,7 +4989,7 @@ if you are planning to use a drawing as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="565"/>
       <source>Dimension</source>
-      <translation>標註</translation>
+      <translation>標註尺寸</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="280"/>
@@ -5113,7 +5113,7 @@ if you are planning to use a drawing as a 1:1 cutting guide.
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="20"/>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="32"/>
       <source>Dimensions</source>
-      <translation>尺寸</translation>
+      <translation>標註尺寸</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="181"/>
@@ -5941,49 +5941,49 @@ Fast, but result is a collection of short straight lines.</source>
       <translation>列印全部頁面</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="412"/>
+      <location filename="../../MDIViewPage.cpp" line="465"/>
       <source>Different orientation</source>
       <translation>不同方向</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="413"/>
+      <location filename="../../MDIViewPage.cpp" line="466"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>印表機與圖面使用之方向不同，您要繼續嗎？</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="422"/>
+      <location filename="../../MDIViewPage.cpp" line="475"/>
       <source>Different paper size</source>
       <translation>紙張尺寸不同</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="423"/>
+      <location filename="../../MDIViewPage.cpp" line="476"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>印表機與圖面之紙張尺寸不同，您要繼續嗎？</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="516"/>
+      <location filename="../../MDIViewPage.cpp" line="579"/>
       <source>Save DXF file</source>
       <translation>儲存DXF檔</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="517"/>
+      <location filename="../../MDIViewPage.cpp" line="580"/>
       <source>DXF (*.dxf)</source>
       <translation>DXF (*.dxf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="537"/>
+      <location filename="../../MDIViewPage.cpp" line="607"/>
       <source>Save PDF file</source>
       <translation>儲存 PDF 檔</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="538"/>
+      <location filename="../../MDIViewPage.cpp" line="608"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1082"/>
+      <location filename="../../MDIViewPage.cpp" line="1152"/>
       <source>Selected:</source>
       <translation>已選取：</translation>
     </message>
@@ -6106,7 +6106,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="194"/>
       <source>Bubble shape scale factor</source>
-      <translation>氣泡形狀縮放因數</translation>
+      <translation>氣泡形狀縮放係數</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="213"/>
@@ -6126,7 +6126,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="240"/>
       <source>End symbol scale factor</source>
-      <translation>結束符號縮放因數</translation>
+      <translation>結束符號縮放係數</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="259"/>
@@ -6756,7 +6756,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="479"/>
       <source>Degree</source>
-      <translation>程度</translation>
+      <translation>角度</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="489"/>
@@ -6994,7 +6994,7 @@ Custom: custom scale factor is used</source>
     <message>
       <location filename="../../TaskDimension.ui" line="14"/>
       <source>Dimension</source>
-      <translation>標註</translation>
+      <translation>標註尺寸</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="20"/>
@@ -7128,7 +7128,7 @@ be used instead of the dimension value</source>
     <message>
       <location filename="../../TaskDimension.ui" line="216"/>
       <source>Color of the dimension</source>
-      <translation>尺寸之顏色</translation>
+      <translation>標註尺寸之顏色</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="230"/>
@@ -7148,7 +7148,7 @@ be used instead of the dimension value</source>
     <message>
       <location filename="../../TaskDimension.ui" line="278"/>
       <source>Standard and style according to which dimension is drawn</source>
-      <translation>繪製尺寸所根據的標準和式樣</translation>
+      <translation>繪製標註尺寸所根據的標準和式樣</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="282"/>
@@ -8641,7 +8641,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
       <source>Dimensions</source>
-      <translation>尺寸</translation>
+      <translation>標註尺寸</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
@@ -8686,7 +8686,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
@@ -8721,7 +8721,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../Workbench.cpp" line="54"/>
       <source>TechDraw Dimensions</source>
-      <translation>TechDraw 標註</translation>
+      <translation>工程製圖標註</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="59"/>
@@ -8872,7 +8872,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../TaskDimRepair.ui" line="20"/>
       <source>Dimension</source>
-      <translation>標註</translation>
+      <translation>標註尺寸</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="28"/>
@@ -8938,7 +8938,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2210"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2211"/>
@@ -9276,7 +9276,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../App/DrawView.cpp" line="72"/>
       <source>Dimension</source>
-      <translation>標註</translation>
+      <translation>標註尺寸</translation>
     </message>
   </context>
   <context>
@@ -9406,7 +9406,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1129"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1130"/>
@@ -9419,7 +9419,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1896"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1897"/>
@@ -9715,7 +9715,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="96"/>
       <source>Dimension</source>
-      <translation>標註</translation>
+      <translation>標註尺寸</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="97"/>
@@ -9799,7 +9799,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="221"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="222"/>
@@ -9842,7 +9842,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../Command.cpp" line="538"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="539"/>
@@ -9894,7 +9894,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1448"/>
       <source>Dimension</source>
-      <translation>標註</translation>
+      <translation>標註尺寸</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1449"/>
@@ -9907,7 +9907,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1834"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>工程製圖</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1835"/>

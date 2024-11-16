@@ -3,6 +3,14 @@ add_subdirectory(Stylesheets)
 add_subdirectory(PreferencePacks)
 add_subdirectory(PreferencePackTemplates)
 
+if(BUILD_WITH_CONDA)
+    add_definitions(-DFC_CONDA)
+endif(BUILD_WITH_CONDA)
+
+if(FC_FLATPAK)
+    add_definitions(-DFC_FLATPAK)
+endif(FC_FLATPAK)
+
 if(WIN32)
 add_definitions(-DFCGui -DQSINT_MAKEDLL -DOVR_OS_WIN32 -DQUARTER_INTERNAL -DQUARTER_MAKE_DLL -DCOIN_DLL)
 endif(WIN32)
@@ -436,6 +444,7 @@ SOURCE_GROUP("Command" FILES ${Command_SRCS})
 SET(Dialog_CPP_SRCS
     Clipping.cpp
     DemoMode.cpp
+    DlgAbout.cpp
     DlgActivateWindowImp.cpp
     DlgCreateNewPreferencePackImp.cpp
     DlgUnitsCalculatorImp.cpp
@@ -476,6 +485,7 @@ SET(Dialog_CPP_SRCS
 SET(Dialog_HPP_SRCS
     Clipping.h
     DemoMode.h
+    DlgAbout.h
     DlgActivateWindowImp.h
     DlgCreateNewPreferencePackImp.h
     DlgUnitsCalculatorImp.h
@@ -1080,7 +1090,7 @@ SET(Widget_CPP_SRCS
     ProgressDialog.cpp
     QuantitySpinBox.cpp
     SpinBox.cpp
-    Splashscreen.cpp
+    SplashScreen.cpp
     PythonWrapper.cpp
     UiLoader.cpp
     WidgetFactory.cpp
@@ -1101,7 +1111,7 @@ SET(Widget_HPP_SRCS
     QuantitySpinBox.h
     QuantitySpinBox_p.h
     SpinBox.h
-    Splashscreen.h
+    SplashScreen.h
     PythonWrapper.h
     UiLoader.h
     WidgetFactory.h

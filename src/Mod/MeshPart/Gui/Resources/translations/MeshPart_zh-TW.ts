@@ -305,7 +305,7 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
     <message>
       <location filename="../../Tessellation.ui" line="67"/>
       <source>Angular deviation:</source>
-      <translation>Angular deviation:</translation>
+      <translation>角度偏差：</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="74"/>
@@ -316,8 +316,8 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
       <location filename="../../Tessellation.ui" line="98"/>
       <source>The maximal linear deviation of a mesh segment will be the specified
 Surface deviation multiplied by the length of the current mesh segment (edge)</source>
-      <translation>The maximal linear deviation of a mesh segment will be the specified
-Surface deviation multiplied by the length of the current mesh segment (edge)</translation>
+      <translation>網格段的最大線性偏差將被指定
+表面偏差乘以目前網格段（邊）的長度</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="102"/>
@@ -327,7 +327,7 @@ Surface deviation multiplied by the length of the current mesh segment (edge)</t
     <message>
       <location filename="../../Tessellation.ui" line="109"/>
       <source>Mesh will get face colors of the object</source>
-      <translation>Mesh will get face colors of the object</translation>
+      <translation>網格將取得物件的面顏色</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="112"/>
@@ -344,7 +344,7 @@ this feature (e.g. the format OBJ).</source>
     <message>
       <location filename="../../Tessellation.ui" line="124"/>
       <source>Define segments by face colors</source>
-      <translation>Define segments by face colors</translation>
+      <translation>透過面顏色定義段</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="145"/>
@@ -365,8 +365,8 @@ this feature (e.g. the format OBJ).</source>
       <location filename="../../Tessellation.ui" line="162"/>
       <source>If this number is smaller the mesh becomes finer.
 The smallest value is 0.</source>
-      <translation>如果該數字較小則網格會變得更細.
-最小值為 0.</translation>
+      <translation>如果該數字較小則網格會變得更細。
+最小值為 0。</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="183"/>
@@ -451,7 +451,7 @@ A value in the range of 0.2-10.</source>
     <message>
       <location filename="../../Tessellation.ui" line="370"/>
       <source>Whether optimization of surface shape will be done</source>
-      <translation>Whether optimization of surface shape will be done</translation>
+      <translation>是否會進行表面形狀的最佳化</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="373"/>
@@ -461,17 +461,17 @@ A value in the range of 0.2-10.</source>
     <message>
       <location filename="../../Tessellation.ui" line="383"/>
       <source>Whether second order elements will be generated</source>
-      <translation>Whether second order elements will be generated</translation>
+      <translation>是否產生二階元件</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="386"/>
       <source>Second order elements</source>
-      <translation>二階元素</translation>
+      <translation>二階元件</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="393"/>
       <source>Whether meshes will be arranged preferably using quadrilateral faces</source>
-      <translation>Whether meshes will be arranged preferably using quadrilateral faces</translation>
+      <translation>是否優先使用四邊形面來排列網格</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="396"/>
@@ -481,7 +481,7 @@ A value in the range of 0.2-10.</source>
     <message>
       <location filename="../../Tessellation.ui" line="422"/>
       <source>Leave panel open</source>
-      <translation>Leave panel open</translation>
+      <translation>讓面板保持開啟狀態</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="62"/>
@@ -492,21 +492,21 @@ A value in the range of 0.2-10.</source>
       <location filename="../../Tessellation.cpp" line="237"/>
       <location filename="../../Tessellation.cpp" line="243"/>
       <source>No active document</source>
-      <translation>無可用文件</translation>
+      <translation>無作業中文件</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="273"/>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
-      <translation>You have selected a body without tip.
-Either set the tip of the body or select a different shape, please.</translation>
+      <translation>您選擇了不帶尖端的主體。
+請設定主體的尖端或選擇不同的形狀。</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="279"/>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
-      <translation>You have selected a shape without faces.
-Select a different shape, please.</translation>
+      <translation>您選擇了一個沒有面的形狀。
+請選擇不同的形狀。</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="283"/>
@@ -542,27 +542,27 @@ Select a different shape, please.</translation>
     <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>Trim by plane</source>
-      <translation>Trim by plane</translation>
+      <translation>用平面修剪</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="104"/>
       <source>Select the side you want to keep.</source>
-      <translation>Select the side you want to keep.</translation>
+      <translation>選擇您要保留的一側。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="106"/>
       <source>Below</source>
-      <translation>Below</translation>
+      <translation>以下</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="108"/>
       <source>Above</source>
-      <translation>Above</translation>
+      <translation>以上</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="110"/>
       <source>Split</source>
-      <translation>Split</translation>
+      <translation>分割</translation>
     </message>
   </context>
   <context>
@@ -578,12 +578,12 @@ Select a different shape, please.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="49"/>
       <source>Unwrap mesh</source>
-      <translation>Unwrap mesh</translation>
+      <translation>展開網格</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="52"/>
       <source>Find a flat representation of a mesh.</source>
-      <translation>Find a flat representation of a mesh.</translation>
+      <translation>求網格的平面表示方式。</translation>
     </message>
   </context>
   <context>
@@ -591,12 +591,12 @@ Select a different shape, please.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="88"/>
       <source>Unwrap face</source>
-      <translation>Unwrap face</translation>
+      <translation>展開面</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="91"/>
       <source>Find a flat representation of a face.</source>
-      <translation>Find a flat representation of a face.</translation>
+      <translation>求面的平面表示方式。</translation>
     </message>
   </context>
 </TS>

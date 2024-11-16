@@ -475,7 +475,7 @@ class TestPostProcessorClass(unittest.TestCase):
 #    #
 #    PATHTESTS_LOCATION = "Mod/CAM/CAMTests"
 #    #
-#    # The following code tries to re-use an open FreeCAD document
+#    # The following code tries to reuse an open FreeCAD document
 #    # as much as possible.  It compares the current document with
 #    # the document for the next test.  If the names are different
 #    # then the current document is closed and the new document is

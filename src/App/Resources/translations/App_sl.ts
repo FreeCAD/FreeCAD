@@ -14,7 +14,7 @@ za vse povezave, ki se sklicujejo na isti nastavljivi predmet</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="463"/>
+      <location filename="../../Application.cpp" line="468"/>
       <source>Unnamed</source>
       <translation>Neimenovan</translation>
     </message>

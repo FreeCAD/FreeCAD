@@ -67,6 +67,16 @@ void Color::set(float red, float green, float blue, float alpha)
     a = alpha;
 }
 
+float Color::transparency() const
+{
+    return 1.0F - a;
+}
+
+void Color::setTransparency(float value)
+{
+    a = 1.0F - value;
+}
+
 // NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 Color& Color::setPackedValue(uint32_t rgba)
 {

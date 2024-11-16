@@ -278,7 +278,7 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
 
         # Netgen meshing steps
         meshing_step = [
-            "AnalizeGeometry",
+            "AnalyzeGeometry",
             "MeshEdges",
             "MeshSurface",
             "OptimizeSurface",
@@ -534,6 +534,8 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
                 prop.handle_change_type(
                     obj, "App::PropertyInteger", lambda x: 0 if x <= 1 else 5 if x >= 6 else x - 1
                 )
+                # update enum values
+                setattr(obj, prop.name, prop.value)
 
     def get_predef_fineness_params(self, fineness):
         # set specific parameters by fineness

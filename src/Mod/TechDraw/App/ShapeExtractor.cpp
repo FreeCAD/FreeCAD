@@ -137,9 +137,10 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
         else {
             auto shape = Part::Feature::getShape(obj);
             // if link obj has a shape, we use that shape.
-            if(!SU::isShapeReallyNull((shape))) {
+            if(!SU::isShapeReallyNull(shape) && !isExplodedView) {
                 sourceShapes.push_back(getLocatedShape(obj));
-            } else {
+            }
+            else {
                 std::vector<TopoDS_Shape> shapeList = getShapesFromObject(obj);
                 sourceShapes.insert(sourceShapes.end(), shapeList.begin(), shapeList.end());
             }

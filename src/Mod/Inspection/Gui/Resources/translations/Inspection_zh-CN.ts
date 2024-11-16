@@ -67,7 +67,7 @@
     <message>
       <location filename="../../VisualInspection.ui" line="50"/>
       <source>Nominal</source>
-      <translation type="unfinished">Nominal</translation>
+      <translation>标称量</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="77"/>
@@ -116,18 +116,18 @@
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="682"/>
       <source>Distance: &gt; %1</source>
-      <translation type="unfinished">Distance: &gt; %1</translation>
+      <translation>距离: &gt; %1</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="686"/>
       <source>Distance: &lt; %1</source>
-      <translation type="unfinished">Distance: &lt; %1</translation>
+      <translation>距离: &lt; %1</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="706"/>
       <location filename="../../ViewProviderInspection.cpp" line="723"/>
       <source>Distance: %1</source>
-      <translation type="unfinished">Distance: %1</translation>
+      <translation>距离: %1</translation>
     </message>
   </context>
 </TS>

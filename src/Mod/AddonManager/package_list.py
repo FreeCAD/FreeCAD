@@ -306,7 +306,7 @@ class PackageListItemDelegate(QtWidgets.QStyledItemDelegate):
             self.widget = self.compact
             self._setup_compact_view(repo)
         elif self.displayStyle == AddonManagerDisplayStyle.COMPOSITE:
-            self.widget = self.compact  # For now re-use the compact list
+            self.widget = self.compact  # For now reuse the compact list
             self._setup_composite_view(repo)
         self.widget.adjustSize()
 

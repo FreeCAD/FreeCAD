@@ -646,6 +646,46 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertEqual( revolution.Shape.ElementReverseMap["Face8"].count("Face8"), 3)
         self.assertEqual( revolution.Shape.ElementReverseMap["Face8"].count("Face10"), 3)
 
+    def testPartDesignBinderRevolution(self):
+        doc = self.Doc
+        body = doc.addObject('PartDesign::Body', 'Body')
+        sketch = body.newObject('Sketcher::SketchObject', 'Sketch')
+        sketch.AttachmentSupport = (doc.getObject('XY_Plane'), [''])
+        sketch.MapMode = 'FlatFace'
+        doc.recompute()
+
+        geoList = []
+        geoList.append(Part.LineSegment(App.Vector(-44.107212, 34.404858, 0.000000), App.Vector(-44.107212, 9.881049, 0.000000)))
+        geoList.append(Part.LineSegment(App.Vector(-44.107212, 9.881049, 0.0000000), App.Vector(-10.297691, 9.881049, 0.000000)))
+        geoList.append(Part.LineSegment(App.Vector(-10.297691, 9.881049, 0.0000000), App.Vector(-10.297691, 34.404858, 0.00000)))
+        geoList.append(Part.LineSegment(App.Vector(-10.297691, 34.404858, 0.000000), App.Vector(-44.107212, 34.404858, 0.00000)))
+        sketch.addGeometry(geoList, False)
+        del geoList
+
+        constraintList = []
+        constraintList.append(Sketcher.Constraint('Coincident', 0, 2, 1, 1))
+        constraintList.append(Sketcher.Constraint('Coincident', 1, 2, 2, 1))
+        constraintList.append(Sketcher.Constraint('Coincident', 2, 2, 3, 1))
+        constraintList.append(Sketcher.Constraint('Coincident', 3, 2, 0, 1))
+        constraintList.append(Sketcher.Constraint('Vertical', 0))
+        constraintList.append(Sketcher.Constraint('Vertical', 2))
+        constraintList.append(Sketcher.Constraint('Horizontal', 1))
+        constraintList.append(Sketcher.Constraint('Horizontal', 3))
+        sketch.addConstraint(constraintList)
+        del constraintList
+
+        doc.recompute()
+        binder = body.newObject('PartDesign::ShapeBinder','ShapeBinder')
+        binder.Support = [sketch, (''),]
+        binder.Visibility = False
+        doc.recompute()
+        revolve = body.newObject('PartDesign::Revolution','Revolution')
+        revolve.Profile = (doc.getObject('ShapeBinder'), ['',])
+        revolve.ReferenceAxis = (doc.getObject('Y_Axis'), [''])
+        revolve.Angle = 360.0
+        doc.recompute()
+        self.assertTrue(revolve.isValid())
+
     def testPartDesignElementMapLoft(self):
         # Arrange
         body = self.Doc.addObject("PartDesign::Body", "Body")

@@ -2781,6 +2781,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
     // double(entryPoint.Y)/scaleFactor << endl;
 
     AdaptiveOutput output;
+    output.ReturnMotionType = 0;
     output.HelixCenterPoint.first = double(entryPoint.X) / scaleFactor;
     output.HelixCenterPoint.second = double(entryPoint.Y) / scaleFactor;
 

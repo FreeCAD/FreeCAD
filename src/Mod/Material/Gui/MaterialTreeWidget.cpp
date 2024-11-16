@@ -324,10 +324,6 @@ QModelIndex MaterialTreeWidget::findInTree(const QString& uuid)
 
 void MaterialTreeWidget::setMaterial(const QString& uuid)
 {
-    if (uuid == m_uuid) {
-        return;
-    }
-
     if (uuid.isEmpty()) {
         // Nothing is selected
         QItemSelectionModel* selectionModel = m_materialTree->selectionModel();

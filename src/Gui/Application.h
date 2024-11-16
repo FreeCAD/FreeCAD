@@ -247,6 +247,8 @@ public:
     void tryClose( QCloseEvent * e );
     //@}
 
+    /// whenever GUI is about to start with the main window hidden
+    static bool hiddenMainWindow();
     /// return the status bits
     bool testStatus(Status pos) const;
     /// set the status bits

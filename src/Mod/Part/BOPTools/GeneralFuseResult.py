@@ -270,7 +270,7 @@ def myCustomFusionRoutine(list_of_shapes):
         """Splits aggregates inside compound. Returns None if nothing is split, otherwise
         returns compound.
         existing_pieces is a dict. Key is deep hash. Value is tuple (int, shape). It is
-        used to search for if this split piece was already generated, and re-use the old
+        used to search for if this split piece was already generated, and reuse the old
         one."""
 
         changed = False

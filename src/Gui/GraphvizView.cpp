@@ -280,7 +280,10 @@ void GraphvizView::updateSvgItem(const App::Document &doc)
     QProcess * dotProc = thread->dotProcess();
     QProcess * flatProc = thread->unflattenProcess();
     QStringList args, flatArgs;
-    args << QLatin1String("-Tsvg");
+    // TODO: Make -Granksep flag value variable depending on number of edges,
+    // the downside is that the value affects all subgraphs
+    args << QLatin1String("-Granksep=2") << QLatin1String("-Goutputorder=edgesfirst")
+         << QLatin1String("-Gsplines=ortho") << QLatin1String("-Tsvg");
     flatArgs << QLatin1String("-c2 -l2");
     auto dot = QString::fromLatin1("dot");
     auto unflatten = QString::fromLatin1("unflatten");
