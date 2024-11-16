@@ -160,10 +160,10 @@ public:
                 throw Base::ValueError("Sketcher: Carbon Copy: Invalid object in selection");
             }
 
-            static const char* sketchArchType = "Sketcher::SketchObjectPython";
+            std::string sketchArchType ("Sketcher::SketchObjectPython");
 
             if (obj->is<Sketcher::SketchObject>()
-                || strcmp(obj->getTypeId().getName(), sketchArchType) == 0) {
+                || sketchArchType.compare(obj->getTypeId().getName()) == 0) {
 
                 try {
                     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create a carbon copy"));
