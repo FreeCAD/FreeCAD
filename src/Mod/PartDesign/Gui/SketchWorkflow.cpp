@@ -45,6 +45,7 @@
 #include <Mod/Part/App/TopoShape.h>
 
 #include <App/Document.h>
+#include <App/Link.h>
 #include <App/Origin.h>
 #include <App/OriginFeature.h>
 #include <App/Part.h>
@@ -617,8 +618,13 @@ private:
         std::string FeatName = documentOfBody->getUniqueObjectName("Sketch");
         std::string supportString = Gui::Command::getObjectCmd(plane,"(",",[''])");
 
+        App::Document* doc = partDesignBody->getDocument();
+        if (!doc->hasPendingTransaction()) {
+            doc->openTransaction(QT_TRANSLATE_NOOP("Command", "Create a new Sketch"));
+        }
+
         FCMD_OBJ_CMD(partDesignBody,"newObject('Sketcher::SketchObject','" << FeatName << "')");
-        auto Feat = partDesignBody->getDocument()->getObject(FeatName.c_str());
+        auto Feat = doc->getObject(FeatName.c_str());
         FCMD_OBJ_CMD(Feat,"AttachmentSupport = " << supportString);
         FCMD_OBJ_CMD(Feat,"MapMode = '" << Attacher::AttachEngine::getModeName(Attacher::mmFlatFace)<<"'");
         Gui::Command::updateActive(); // Make sure the AttachmentSupport's Placement property is updated
@@ -666,12 +672,24 @@ void SketchWorkflow::createSketch()
 
 void SketchWorkflow::tryCreateSketch()
 {
-    if (PartDesignGui::assureModernWorkflow(appdocument)) {
-        createSketchWithModernWorkflow();
+    auto result = shouldCreateBody();
+    auto shouldMakeBody = std::get<0>(result);
+    activeBody = std::get<1>(result);
+    if (shouldAbort(shouldMakeBody)) {
+        return;
     }
-    // No PartDesign feature without Body past FreeCAD 0.13
-    else if (PartDesignGui::isLegacyWorkflow(appdocument)) {
-        createSketchWithLegacyWorkflow();
+
+    auto faceOrPlaneFilter = getFaceAndPlaneFilter();
+    SketchPreselection sketchOnFace{ guidocument, activeBody, faceOrPlaneFilter };
+
+    if (sketchOnFace.matches()) {
+        // create Sketch on Face or Plane
+        sketchOnFace.createSupport();
+        sketchOnFace.createSketchOnSupport(sketchOnFace.getSupport());
+    }
+    else {
+        SketchRequestSelection requestSelection{ guidocument, activeBody };
+        requestSelection.findSupport();
     }
 }
 
@@ -681,7 +699,13 @@ std::tuple<bool, PartDesign::Body*> SketchWorkflow::shouldCreateBody()
 
     // We need either an active Body, or for there to be no Body
     // objects (in which case, just make one) to make a new sketch.
-    PartDesign::Body* pdBody = PartDesignGui::getBody(/* messageIfNot = */ false);
+    // If we are inside a link, we need to use its placement.
+    App::DocumentObject *topParent;
+    PartDesign::Body *pdBody = PartDesignGui::getBody(/* messageIfNot = */ false, true, true, &topParent);
+    if (pdBody && topParent->isLink()) {
+        auto *xLink = dynamic_cast<App::Link *>(topParent);
+        pdBody->Placement.setValue(xLink->Placement.getValue());
+    }
     if (!pdBody) {
         if (appdocument->countObjectsOfType(PartDesign::Body::getClassTypeId()) == 0) {
             shouldMakeBody = true;
@@ -720,31 +744,4 @@ std::tuple<Gui::SelectionFilter, Gui::SelectionFilter> SketchWorkflow::getFaceAn
     return std::make_tuple(FaceFilter, PlaneFilter);
 }
 
-void SketchWorkflow::createSketchWithModernWorkflow()
-{
-    auto result = shouldCreateBody();
-    auto shouldMakeBody = std::get<0>(result);
-    activeBody = std::get<1>(result);
-    if (shouldAbort(shouldMakeBody)) {
-        return;
-    }
 
-    auto faceOrPlaneFilter = getFaceAndPlaneFilter();
-    SketchPreselection sketchOnFace{guidocument, activeBody, faceOrPlaneFilter};
-
-    if (sketchOnFace.matches()) {
-        // create Sketch on Face or Plane
-        sketchOnFace.createSupport();
-        sketchOnFace.createSketchOnSupport(sketchOnFace.getSupport());
-    }
-    else {
-        SketchRequestSelection requestSelection{guidocument, activeBody};
-        requestSelection.findSupport();
-    }
-}
-
-void SketchWorkflow::createSketchWithLegacyWorkflow()
-{
-    Gui::CommandManager& cmdMgr = Gui::Application::Instance->commandManager();
-    cmdMgr.runCommandByName("Sketcher_NewSketch");
-}

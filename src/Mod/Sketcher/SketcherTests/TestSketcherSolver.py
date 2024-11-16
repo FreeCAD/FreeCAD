@@ -520,7 +520,7 @@ class TestSketcherSolver(unittest.TestCase):
         hole.DrillForDepth = 0
         hole.Tapered = 0
         self.Doc.recompute()
-        self.assertEqual(len(hole.Shape.Edges), 12)
+        self.assertEqual(len(hole.Shape.Edges), 13)
         hole.Threaded = True
         hole.ModelThread = True
         body.addObject(hole)
@@ -530,11 +530,11 @@ class TestSketcherSolver(unittest.TestCase):
         body.addObject(sketch2)
         self.Doc.recompute()
         sketch2.addExternal("Hole", "Edge29")  # Edge29 will disappear when we stop modeling threads
-        self.assertEqual(len(hole.Shape.Edges), 32)
+        self.assertEqual(len(hole.Shape.Edges), 38)
         hole.ModelThread = False
         hole.Refine = True
         self.Doc.recompute()
-        self.assertEqual(len(hole.Shape.Edges), 32)
+        self.assertEqual(len(hole.Shape.Edges), 38)
         self.assertEqual(len(sketch2.ExternalGeometry), 1)
 
     def testSaveLoadWithExternalGeometryReference(self):

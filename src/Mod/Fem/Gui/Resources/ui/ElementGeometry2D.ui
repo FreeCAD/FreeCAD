@@ -31,50 +31,29 @@
         <property name="fieldGrowthPolicy">
          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
         </property>
-        <item row="1" column="1">
-         <widget class="Gui::InputField" name="if_thickness">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>80</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="layoutDirection">
-           <enum>Qt::LeftToRight</enum>
-          </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="l_thickness">
           <property name="text">
-           <string>0 mm</string>
+           <string>Thickness:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="Gui::QuantitySpinBox" name="qsb_thickness">
+          <property name="unit" stdset="0">
+           <string>mm</string>
           </property>
           <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           <set>Qt::AlignLeft|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="singleStep">
            <double>1.000000000000000</double>
           </property>
-          <property name="maximum">
-           <double>1000000000.000000000000000</double>
-          </property>
-          <property name="unit" stdset="0">
-           <string notr="true">mm</string>
-          </property>
-          <property name="decimals" stdset="0">
-           <number>2</number>
-          </property>
-          <property name="value" stdset="0">
+          <property name="minimum">
            <double>0.000000000000000</double>
           </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="l_thickness">
-          <property name="text">
-           <string>Thickness:</string>
+          <property name="value" stdset="0">
+           <double>0.0000000000000</double>
           </property>
          </widget>
         </item>

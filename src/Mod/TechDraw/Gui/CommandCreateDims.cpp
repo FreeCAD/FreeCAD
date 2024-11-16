@@ -87,6 +87,13 @@ using DimensionType = TechDraw::DrawViewDimension::DimensionType;
 bool _checkSelection(Gui::Command* cmd, unsigned maxObjs = 2);
 bool _checkDrawViewPart(Gui::Command* cmd);
 
+bool isDimCmdActive(Gui::Command* cmd)
+{
+    bool havePage = DrawGuiUtil::needPage(cmd);
+    bool haveView = DrawGuiUtil::needView(cmd);
+    return (havePage && haveView);
+}
+
 
 void execDistance(Gui::Command* cmd);
 void execDistanceX(Gui::Command* cmd);
@@ -1407,7 +1414,6 @@ CmdTechDrawDimension::CmdTechDrawDimension()
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_Dimension";
     sAccel = "D";
-    eType = ForEdit;
 }
 
 void CmdTechDrawDimension::activated(int iMsg)
@@ -1425,9 +1431,7 @@ void CmdTechDrawDimension::activated(int iMsg)
 
 bool CmdTechDrawDimension::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 
@@ -1445,7 +1449,6 @@ public:
         sToolTipText = QT_TR_NOOP("Dimension tools.");
         sWhatsThis = "TechDraw_CompDimensionTools";
         sStatusTip = sToolTipText;
-        eType = ForEdit;
 
         setCheckable(false);
         setRememberLast(false);
@@ -1478,6 +1481,11 @@ public:
     }
 
     const char* className() const override { return "CmdTechDrawCompDimensionTools"; }
+
+    bool isActive() override
+    {
+        return isDimCmdActive(this);
+    }
 };
 
 //===========================================================================
@@ -1514,9 +1522,7 @@ void CmdTechDrawRadiusDimension::activated(int iMsg)
 
 bool CmdTechDrawRadiusDimension::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 void execRadius(Gui::Command* cmd)
@@ -1564,9 +1570,7 @@ void CmdTechDrawDiameterDimension::activated(int iMsg)
 
 bool CmdTechDrawDiameterDimension::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 void execDiameter(Gui::Command* cmd)
@@ -1614,9 +1618,7 @@ void CmdTechDrawLengthDimension::activated(int iMsg)
 
 bool CmdTechDrawLengthDimension::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 void execDistance(Gui::Command* cmd)
@@ -1664,9 +1666,7 @@ void CmdTechDrawHorizontalDimension::activated(int iMsg)
 
 bool CmdTechDrawHorizontalDimension::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 void execDistanceX(Gui::Command* cmd)
@@ -1714,9 +1714,7 @@ void CmdTechDrawVerticalDimension::activated(int iMsg)
 
 bool CmdTechDrawVerticalDimension::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 void execDistanceY(Gui::Command* cmd)
@@ -1763,9 +1761,7 @@ void CmdTechDrawAngleDimension::activated(int iMsg)
 
 bool CmdTechDrawAngleDimension::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 void execAngle(Gui::Command* cmd)
@@ -1812,9 +1808,7 @@ void CmdTechDraw3PtAngleDimension::activated(int iMsg)
 
 bool CmdTechDraw3PtAngleDimension::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 void execAngle3Pt(Gui::Command* cmd)
@@ -1861,9 +1855,7 @@ void CmdTechDrawAreaDimension::activated(int iMsg)
 
 bool CmdTechDrawAreaDimension::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 void execArea(Gui::Command* cmd)
@@ -2052,9 +2044,7 @@ void CmdTechDrawExtentGroup::languageChange()
 
 bool CmdTechDrawExtentGroup::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this, false);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 //===========================================================================
@@ -2092,9 +2082,7 @@ void CmdTechDrawHorizontalExtentDimension::activated(int iMsg)
 
 bool CmdTechDrawHorizontalExtentDimension::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this, false);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 void execExtent(Gui::Command* cmd, const std::string& dimType)
@@ -2118,7 +2106,7 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
             if (!ref.getSubName().empty()) {
                 QMessageBox::warning(Gui::getMainWindow(),
                     QObject::tr("Incorrect selection"),
-                    QObject::tr("Selection contains both 2d and 3d geometry"));
+                    QObject::tr("Selection contains both 2D and 3D geometry"));
                 return;
             }
         }
@@ -2143,7 +2131,7 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
     if (geometryRefs2d == TechDraw::isInvalid) {
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("Incorrect Selection"),
-                             QObject::tr("Can not make 2d extent dimension from selection"));
+                             QObject::tr("Can not make 2D extent dimension from selection"));
         return;
     }
 
@@ -2158,7 +2146,7 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
         if (geometryRefs3d == isInvalid) {
             QMessageBox::warning(Gui::getMainWindow(),
                                  QObject::tr("Incorrect Selection"),
-                                 QObject::tr("Can not make 3d extent dimension from selection"));
+                                 QObject::tr("Can not make 3D extent dimension from selection"));
             return;
         }
     }
@@ -2206,9 +2194,7 @@ void CmdTechDrawVerticalExtentDimension::activated(int iMsg)
 
 bool CmdTechDrawVerticalExtentDimension::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this, false);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 //===========================================================================
@@ -2362,9 +2348,7 @@ void CmdTechDrawLandmarkDimension::activated(int iMsg)
 
 bool CmdTechDrawLandmarkDimension::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 //------------------------------------------------------------------------------
@@ -2413,7 +2397,6 @@ void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometr
     //what 2d geometry configuration did we receive?
     DimensionGeometryType geometryRefs2d = validateDimSelection(
         references2d, acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
-
     if (geometryRefs2d == TechDraw::isInvalid) {
         QMessageBox::warning(Gui::getMainWindow(),
             QObject::tr("Incorrect Selection"),
@@ -2422,7 +2405,7 @@ void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometr
     }
 
     //what 3d geometry configuration did we receive?
-    DimensionGeometryType geometryRefs3d;
+    DimensionGeometryType geometryRefs3d{TechDraw::isInvalid};
     if (geometryRefs2d == TechDraw::isViewReference && !references3d.empty()) {
         geometryRefs3d = validateDimSelection3d(partFeat,
             references3d,

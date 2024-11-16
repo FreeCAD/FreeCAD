@@ -161,11 +161,14 @@ void MaterialsEditor::setup()
             &MaterialsEditor::onSelectMaterial);
     connect(ui->treeMaterials, &QTreeView::doubleClicked, this, &MaterialsEditor::onDoubleClick);
 
+    // Disabled for now. This will be revisited post 1.0
+#if 0
     ui->treeMaterials->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->treeMaterials,
             &QWidget::customContextMenuRequested,
             this,
             &MaterialsEditor::onContextMenu);
+#endif
 }
 
 void MaterialsEditor::getFavorites()

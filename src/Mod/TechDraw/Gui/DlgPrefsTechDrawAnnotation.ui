@@ -432,7 +432,7 @@
            <string>Length of horizontal portion of Balloon leader</string>
           </property>
           <property name="text">
-           <string>Ballon Leader Kink Length</string>
+           <string>Balloon Leader Kink Length</string>
           </property>
          </widget>
         </item>

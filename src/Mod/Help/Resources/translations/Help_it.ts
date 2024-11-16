@@ -92,7 +92,7 @@ qui sotto e il risultato può sembrare più bello dell'opzione wiki. Il modulo &
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="170"/>
       <source>Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</source>
-      <translation type="unfinished">Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</translation>
+      <translation>Nota: se i componenti Web di PySide non sono trovati sul tuo sistema, le pagine di aiuto si apriranno nel browser web predefinito indipendentemente dalle opzioni qui sotto</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="202"/>
@@ -149,27 +149,27 @@ Markdown sopra.</translation>
   <context>
     <name>Help</name>
     <message>
-      <location filename="../../Help.py" line="72"/>
+      <location filename="../../Help.py" line="75"/>
       <source>Contents for this page could not be retrieved. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
       <translation>Non è stato possibile recuperare i contenuti di questa pagina. Controlla le impostazioni nel menu Modifica -&gt; Preferenze -&gt; Generale -&gt; Aiuto</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="76"/>
+      <location filename="../../Help.py" line="79"/>
       <source>Help files location could not be determined. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
       <translation>Impossibile determinare la posizione dei file di aiuto. Controlla le impostazioni nel menu Modifica -&gt; Preferenze -&gt; Generale -&gt; Aiuto</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="80"/>
+      <location filename="../../Help.py" line="83"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
       <translation>Il modulo PySide QtWebEngineWidgets non è disponibile. Il rendering della guida è fatto con il browser di sistema</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="84"/>
+      <location filename="../../Help.py" line="87"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
-      <translation type="unfinished">There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</translation>
+      <translation>Non c'è nessun visualizzatore Markdown installato sul sistema, quindi questa pagina di aiuto viene resa come è. Installare i moduli Markdown o Pandoc Python per migliorare il rendering di questa pagina.</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="113"/>
+      <location filename="../../Help.py" line="119"/>
       <source>Help</source>
       <translation>Aiuto</translation>
     </message>
@@ -177,7 +177,7 @@ Markdown sopra.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="389"/>
+      <location filename="../../Help.py" line="432"/>
       <source>General</source>
       <translation>Generale</translation>
     </message>

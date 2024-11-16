@@ -7,14 +7,13 @@
       <location filename="../../Link.cpp" line="118"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all links
 that reference the same configurable object</source>
-      <translation type="unfinished">Stores the last user choice of whether to apply CopyOnChange setup to all links
-that reference the same configurable object</translation>
+      <translation>동일한 물체를 참조하는 모든 연결에 CopyOnChange 설정을 적용할지 사용자의 최종 선택값을 저장</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="456"/>
+      <location filename="../../Application.cpp" line="468"/>
       <source>Unnamed</source>
       <translation>이름없음</translation>
     </message>

@@ -24,9 +24,9 @@
 #ifndef _PreComp_
 # include <algorithm>
 # include <BRepAdaptor_Surface.hxx>
-# include <BRepAlgoAPI_Common.hxx>
-# include <BRepAlgoAPI_Cut.hxx>
-# include <BRepAlgoAPI_Section.hxx>
+# include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Section.h>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepPrimAPI_MakeHalfSpace.hxx>
@@ -109,7 +109,7 @@ std::list<TopoDS_Wire> CrossSection::removeDuplicates(const std::list<TopoDS_Wir
 
 void CrossSection::sliceNonSolid(double d, const TopoDS_Shape& shape, std::list<TopoDS_Wire>& wires) const
 {
-    BRepAlgoAPI_Section cs(shape, gp_Pln(a,b,c,-d));
+    FCBRepAlgoAPI_Section cs(shape, gp_Pln(a,b,c,-d));
     if (cs.IsDone()) {
         std::list<TopoDS_Edge> edges;
         TopExp_Explorer xp;
@@ -134,7 +134,7 @@ void CrossSection::sliceSolid(double d, const TopoDS_Shape& shape, std::list<Top
 
     BRepPrimAPI_MakeHalfSpace mkSolid(face, refPoint);
     TopoDS_Solid solid = mkSolid.Solid();
-    BRepAlgoAPI_Cut mkCut(shape, solid);
+    FCBRepAlgoAPI_Cut mkCut(shape, solid);
 
     if (mkCut.IsDone()) {
         TopTools_IndexedMapOfShape mapOfFaces;
@@ -262,13 +262,10 @@ void TopoCrossSection::sliceNonSolid(int idx,
                                      const TopoShape& shape,
                                      std::vector<TopoShape>& wires) const
 {
-    BRepAlgoAPI_Section cs(shape.getShape(), gp_Pln(a, b, c, -d));
+    FCBRepAlgoAPI_Section cs(shape.getShape(), gp_Pln(a, b, c, -d));
     if (cs.IsDone()) {
         std::string prefix(op);
-        if (idx > 1) {
-            prefix += '_';
-            prefix += std::to_string(idx);
-        }
+        prefix += Data::indexSuffix(idx);
         auto res = TopoShape()
                        .makeElementShape(cs, shape, prefix.c_str())
                        .makeElementWires()
@@ -297,12 +294,9 @@ void TopoCrossSection::sliceSolid(int idx,
     BRepPrimAPI_MakeHalfSpace mkSolid(TopoDS::Face(face.getShape()), refPoint);
     TopoShape solid(idx);
     std::string prefix(op);
-    if (idx > 1) {
-        prefix += '_';
-        prefix += std::to_string(idx);
-    }
+    prefix += Data::indexSuffix(idx);
     solid.makeElementShape(mkSolid, face, prefix.c_str());
-    BRepAlgoAPI_Cut mkCut(shape.getShape(), solid.getShape());
+    FCBRepAlgoAPI_Cut mkCut(shape.getShape(), solid.getShape());
 
     if (mkCut.IsDone()) {
         TopoShape res(shape.Tag, shape.Hasher);

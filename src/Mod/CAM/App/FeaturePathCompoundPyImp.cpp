@@ -36,19 +36,23 @@ std::string FeaturePathCompoundPy::representation() const
 }
 
 
-PyObject*  FeaturePathCompoundPy::addObject(PyObject *args)
+PyObject* FeaturePathCompoundPy::addObject(PyObject* args)
 {
-    PyObject *object;
-    if (!PyArg_ParseTuple(args, "O!", &(DocumentObjectPy::Type), &object))
+    PyObject* object;
+    if (!PyArg_ParseTuple(args, "O!", &(DocumentObjectPy::Type), &object)) {
         return nullptr;
+    }
 
     DocumentObjectPy* docObj = static_cast<DocumentObjectPy*>(object);
-    if (!docObj->getDocumentObjectPtr() || !docObj->getDocumentObjectPtr()->isAttachedToDocument()) {
+    if (!docObj->getDocumentObjectPtr()
+        || !docObj->getDocumentObjectPtr()->isAttachedToDocument()) {
         PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot add an invalid object");
         return nullptr;
     }
-    if (docObj->getDocumentObjectPtr()->getDocument() != getFeaturePathCompoundPtr()->getDocument()) {
-        PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot add an object from another document to this group");
+    if (docObj->getDocumentObjectPtr()->getDocument()
+        != getFeaturePathCompoundPtr()->getDocument()) {
+        PyErr_SetString(Base::PyExc_FC_GeneralError,
+                        "Cannot add an object from another document to this group");
         return nullptr;
     }
     if (docObj->getDocumentObjectPtr() == this->getFeaturePathCompoundPtr()) {
@@ -81,19 +85,23 @@ PyObject*  FeaturePathCompoundPy::addObject(PyObject *args)
 }
 
 
-PyObject*  FeaturePathCompoundPy::removeObject(PyObject *args)
+PyObject* FeaturePathCompoundPy::removeObject(PyObject* args)
 {
-    PyObject *object;
-    if (!PyArg_ParseTuple(args, "O!", &(DocumentObjectPy::Type), &object))
+    PyObject* object;
+    if (!PyArg_ParseTuple(args, "O!", &(DocumentObjectPy::Type), &object)) {
         return nullptr;
+    }
 
     DocumentObjectPy* docObj = static_cast<DocumentObjectPy*>(object);
-    if (!docObj->getDocumentObjectPtr() || !docObj->getDocumentObjectPtr()->isAttachedToDocument()) {
+    if (!docObj->getDocumentObjectPtr()
+        || !docObj->getDocumentObjectPtr()->isAttachedToDocument()) {
         PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot remove an invalid object");
         return nullptr;
     }
-    if (docObj->getDocumentObjectPtr()->getDocument() != getFeaturePathCompoundPtr()->getDocument()) {
-        PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot remove an object from another document from this group");
+    if (docObj->getDocumentObjectPtr()->getDocument()
+        != getFeaturePathCompoundPtr()->getDocument()) {
+        PyErr_SetString(Base::PyExc_FC_GeneralError,
+                        "Cannot remove an object from another document from this group");
         return nullptr;
     }
 
@@ -122,8 +130,7 @@ PyObject*  FeaturePathCompoundPy::removeObject(PyObject *args)
 }
 
 
-
-PyObject *FeaturePathCompoundPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* FeaturePathCompoundPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

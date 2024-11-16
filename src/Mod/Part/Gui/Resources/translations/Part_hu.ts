@@ -148,7 +148,7 @@
       <location filename="../../AttacherTexts.cpp" line="281"/>
       <source>Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+      <translation>A pont az adott tárgy elhelyezési pozíciójába kerül. Működik elhelyezéssel rendelkező tárgyakra és ellipszis/parabola/hiperbola élekre.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="283"/>
@@ -1562,7 +1562,7 @@
     <message>
       <location filename="../../Command.cpp" line="1010"/>
       <source>Export CAD file...</source>
-      <translation type="unfinished">Export CAD file...</translation>
+      <translation>CAD fájl exportálása...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1011"/>
@@ -1634,7 +1634,7 @@
     <message>
       <location filename="../../Command.cpp" line="947"/>
       <source>Import CAD file...</source>
-      <translation type="unfinished">Import CAD file...</translation>
+      <translation>CAD fájl importálása...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="948"/>
@@ -2206,17 +2206,17 @@ irányát.</translation>
       <translation>Rács konvertálása</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1076"/>
+      <location filename="../../TaskAttacher.cpp" line="1077"/>
       <source>Edit attachment</source>
       <translation>Csatolmány szerkesztése</translation>
     </message>
     <message>
-      <location filename="../../TaskFaceAppearances.cpp" line="456"/>
+      <location filename="../../TaskFaceAppearances.cpp" line="454"/>
       <source>Change face colors</source>
       <translation>Felületi színek megváltoztatása</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="199"/>
+      <location filename="../../TaskLoft.cpp" line="202"/>
       <source>Loft</source>
       <translation>Szint</translation>
     </message>
@@ -2247,7 +2247,7 @@ irányát.</translation>
       <translation>Szilárd test</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="365"/>
+      <location filename="../../TaskSweep.cpp" line="368"/>
       <source>Sweep</source>
       <translation>Húzás</translation>
     </message>
@@ -2257,7 +2257,7 @@ irányát.</translation>
       <translation>Tükrözés szerkesztése</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1557"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1559"/>
       <source>Project on surface</source>
       <translation>Felszínre vetít</translation>
     </message>
@@ -2531,7 +2531,7 @@ Megjegyzés: A pozíciót a mellékelt tárgy helyi terében fejezzük ki.</tran
   <context>
     <name>PartGui::DlgChamferEdges</name>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="1109"/>
+      <location filename="../../DlgFilletEdges.cpp" line="1111"/>
       <source>Chamfer Edges</source>
       <translation>Élek letörése</translation>
     </message>
@@ -2567,68 +2567,68 @@ Megjegyzés: A pozíciót a mellékelt tárgy helyi terében fejezzük ki.</tran
   <context>
     <name>PartGui::DlgExportStep</name>
     <message>
-      <location filename="../../DlgExportStep.ui" line="20"/>
+      <location filename="../../DlgExportStep.ui" line="23"/>
       <source>Export</source>
       <translation>Export</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="26"/>
+      <location filename="../../DlgExportStep.ui" line="36"/>
       <source>Units for export of STEP</source>
       <translation>STEP export mértékegysége</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="47"/>
+      <location filename="../../DlgExportStep.ui" line="44"/>
       <source>Millimeter</source>
       <translation>Milliméter</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="52"/>
+      <location filename="../../DlgExportStep.ui" line="49"/>
       <source>Meter</source>
       <translation>Méter</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="57"/>
+      <location filename="../../DlgExportStep.ui" line="54"/>
       <source>Inch</source>
       <translation>Hüvelyk</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="65"/>
+      <location filename="../../DlgExportStep.ui" line="139"/>
       <source>Write out curves in parametric space of surface</source>
       <translation>Írja ki a görbéket, a felület parametrikus terében</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="72"/>
+      <location filename="../../DlgExportStep.ui" line="123"/>
       <source>Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</source>
-      <translation type="unfinished">Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</translation>
+      <translation>Ha ezt a jelölést kikapcsolja, akkor az exportáláskor kihagyja a láthatatlan tárgyakat, ami hasznos az olyan CAD-ek esetében, amelyek nem támogatják a láthatatlanná tétel STEP stílust.</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="88"/>
+      <location filename="../../DlgExportStep.ui" line="104"/>
       <source>Check this option to keep the placement information when exporting
 a single object. Please note that when importing back the STEP file, the
 placement will be encoded into the shape geometry, instead of keeping
 it inside the Placement property.</source>
-      <translation type="unfinished">Check this option to keep the placement information when exporting
-a single object. Please note that when importing back the STEP file, the
-placement will be encoded into the shape geometry, instead of keeping
-it inside the Placement property.</translation>
+      <translation>Válassza ezt a beállítást, ha meg szeretné őrizni az elhelyezési adatokat
+egyetlen tárgy exportálásakor. Ne feledje, hogy a STEP-fájl újbóli importálásakor 
+az elhelyezés az alakzatgeometriában van kódolva, de nem az elhelyezés 
+tulajdonságon belül található.</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="75"/>
+      <location filename="../../DlgExportStep.ui" line="126"/>
       <source>Export invisible objects</source>
       <translation>Láthatatlan tárgyak exportálása</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="94"/>
+      <location filename="../../DlgExportStep.ui" line="110"/>
       <source>Export single object placement</source>
       <translation>Egyetlen tárgy elhelyezésének exportálása</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="107"/>
+      <location filename="../../DlgExportStep.ui" line="91"/>
       <source>Use legacy export function</source>
       <translation>Örökölt exportálási funkció használata</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="120"/>
+      <location filename="../../DlgExportStep.ui" line="29"/>
       <source>Scheme</source>
       <translation>Terv</translation>
     </message>
@@ -2691,7 +2691,7 @@ STEP fájlméretet.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="71"/>
-      <location filename="../../DlgExtrusion.cpp" line="230"/>
+      <location filename="../../DlgExtrusion.cpp" line="232"/>
       <source>Select</source>
       <translation>Kiválaszt</translation>
     </message>
@@ -2798,40 +2798,40 @@ Ha mindkét hossz nulla, akkor az irány magnitúdóértékét kell használni.<
       <translation>Alakzat</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="204"/>
+      <location filename="../../DlgExtrusion.cpp" line="206"/>
       <source>Selecting...</source>
       <translation>Kiválasztás...</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="452"/>
+      <location filename="../../DlgExtrusion.cpp" line="454"/>
       <source>The document '%1' doesn't exist.</source>
       <translation>A '%1' dokumentum nem létezik.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="500"/>
-      <location filename="../../DlgExtrusion.cpp" line="506"/>
+      <location filename="../../DlgExtrusion.cpp" line="502"/>
+      <location filename="../../DlgExtrusion.cpp" line="508"/>
       <source>Creating Extrusion failed.
 %1</source>
       <translation>Kihúzás létrehozás sikertelen.
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="573"/>
+      <location filename="../../DlgExtrusion.cpp" line="575"/>
       <source>Object not found: %1</source>
       <translation>Objektum nem található: %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="635"/>
+      <location filename="../../DlgExtrusion.cpp" line="637"/>
       <source>No shapes selected for extrusion. Select some, first.</source>
       <translation>Kihúzáshoz nem jelölt ki alakzatot. Először válasszon néhányat.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="652"/>
+      <location filename="../../DlgExtrusion.cpp" line="654"/>
       <source>Unknown error</source>
       <translation>Ismeretlen hiba</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="656"/>
+      <location filename="../../DlgExtrusion.cpp" line="658"/>
       <source>Extrusion direction link is invalid.
 
 %1</source>
@@ -2840,12 +2840,12 @@ Ha mindkét hossz nulla, akkor az irány magnitúdóértékét kell használni.<
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="658"/>
+      <location filename="../../DlgExtrusion.cpp" line="660"/>
       <source>Direction mode is to use an edge, but no edge is linked.</source>
       <translation>Irányba mód egy él használatához, de az él nincs összekötve.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="681"/>
+      <location filename="../../DlgExtrusion.cpp" line="683"/>
       <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
 
 (%1)</source>
@@ -2854,12 +2854,12 @@ Ha mindkét hossz nulla, akkor az irány magnitúdóértékét kell használni.<
 (%1)</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="691"/>
+      <location filename="../../DlgExtrusion.cpp" line="693"/>
       <source>Extrusion direction vector is zero-length. It must be non-zero.</source>
       <translation>Kihúzás irány vektora nulla hosszúságú. Nem lehet nulla.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="702"/>
+      <location filename="../../DlgExtrusion.cpp" line="704"/>
       <source>Total extrusion length is zero (length1 == -length2). It must be nonzero.</source>
       <translation>Teljes kihúzás hossza nulla (length1 == - length2). Nem lehet nulla.</translation>
     </message>
@@ -2957,7 +2957,7 @@ Ha mindkét hossz nulla, akkor az irány magnitúdóértékét kell használni.<
       <translation>Élek letörése</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="912"/>
+      <location filename="../../DlgFilletEdges.cpp" line="914"/>
       <source>Start length</source>
       <translation>Hossz kezdete</translation>
     </message>
@@ -2969,7 +2969,7 @@ Ha mindkét hossz nulla, akkor az irány magnitúdóértékét kell használni.<
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="269"/>
       <source>Chamfer Parameters</source>
-      <translation type="unfinished">Chamfer Parameters</translation>
+      <translation>Letörés paraméterek</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="273"/>
@@ -2998,7 +2998,7 @@ Ha mindkét hossz nulla, akkor az irány magnitúdóértékét kell használni.<
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="283"/>
-      <location filename="../../DlgFilletEdges.cpp" line="914"/>
+      <location filename="../../DlgFilletEdges.cpp" line="916"/>
       <source>Start radius</source>
       <translation>Kezdeti sugár</translation>
     </message>
@@ -3008,39 +3008,39 @@ Ha mindkét hossz nulla, akkor az irány magnitúdóértékét kell használni.<
       <translation>Vég sugár</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="761"/>
-      <location filename="../../DlgFilletEdges.cpp" line="821"/>
+      <location filename="../../DlgFilletEdges.cpp" line="763"/>
+      <location filename="../../DlgFilletEdges.cpp" line="823"/>
       <source>Edge%1</source>
       <translation>Él%1</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="904"/>
+      <location filename="../../DlgFilletEdges.cpp" line="906"/>
       <source>Length</source>
       <translation>Hossz</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="906"/>
+      <location filename="../../DlgFilletEdges.cpp" line="908"/>
       <source>Radius</source>
       <translation>Sugár</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="960"/>
+      <location filename="../../DlgFilletEdges.cpp" line="962"/>
       <source>No shape selected</source>
       <translation>Nincs kijelölve alakzat</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="961"/>
+      <location filename="../../DlgFilletEdges.cpp" line="963"/>
       <source>No valid shape is selected.
 Please select a valid shape in the drop-down box first.</source>
       <translation>Nem érvényes alakzat van kijelölve. Kérjük, először válasszon egy érvényes alakzatot a legördülő listában.</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="1012"/>
+      <location filename="../../DlgFilletEdges.cpp" line="1014"/>
       <source>No edge selected</source>
       <translation>Nincs kiválasztott él</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="1013"/>
+      <location filename="../../DlgFilletEdges.cpp" line="1015"/>
       <source>No edge entity is checked to fillet.
 Please check one or more edge entities first.</source>
       <translation>Egyetlen élet sem választott ki.
@@ -3082,7 +3082,7 @@ Kérem, válasszon ki legalább egyet.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="65"/>
       <source>Export solids and shells as</source>
-      <translation type="unfinished">Export solids and shells as</translation>
+      <translation>Szilárd anyagok és külső héjak exportálása</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="71"/>
@@ -3154,9 +3154,9 @@ Kérem, válasszon ki legalább egyet.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="26"/>
-      <source>If checked, no Compound merge will be done
+      <source>If checked, Compound merge will be done
 during file reading (slower but higher details).</source>
-      <translation>Ha ez bejelölt, nem történik kapcsolat egyesítés
+      <translation>Ha ez bejelölt, kapcsolat egyesítés történik
 a fájl olvasása közben (lassabb, de pontosabb).</translation>
     </message>
     <message>
@@ -3213,7 +3213,7 @@ a fájl olvasása közben (lassabb, de pontosabb).</translation>
     <message>
       <location filename="../../DlgImportStep.ui" line="123"/>
       <source>Do not use instance names. Useful for some legacy STEP files with non-meaningful auto-generated instance names.</source>
-      <translation type="unfinished">Do not use instance names. Useful for some legacy STEP files with non-meaningful auto-generated instance names.</translation>
+      <translation>Ne használjon példányneveket. Hasznos néhány régi STEP-fájl esetében, amelyek nem értelmes, automatikusan generált példányneveket tartalmaznak.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="126"/>
@@ -3388,7 +3388,7 @@ a fájl olvasása közben (lassabb, de pontosabb).</translation>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="14"/>
       <source>STEP input file</source>
-      <translation type="unfinished">STEP input file</translation>
+      <translation>STEP bemeneti fájl</translation>
     </message>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="20"/>
@@ -3911,7 +3911,7 @@ a fájl olvasása közben (lassabb, de pontosabb).</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="250"/>
-      <location filename="../../DlgRevolution.cpp" line="463"/>
+      <location filename="../../DlgRevolution.cpp" line="465"/>
       <source>Select reference</source>
       <translation>Válassz referenciát</translation>
     </message>
@@ -3941,19 +3941,19 @@ a fájl olvasása közben (lassabb, de pontosabb).</translation>
       <translation>Szilárdtest létrehozás</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="183"/>
+      <location filename="../../DlgRevolution.cpp" line="185"/>
       <source>Object not found: %1</source>
       <translation>Objektum nem található: %1</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="264"/>
+      <location filename="../../DlgRevolution.cpp" line="266"/>
       <source>Select a shape for revolution, first.</source>
       <translation>Először válasszon ki egy alakzatot a forgatáshoz.</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="280"/>
-      <location filename="../../DlgRevolution.cpp" line="285"/>
-      <location filename="../../DlgRevolution.cpp" line="290"/>
+      <location filename="../../DlgRevolution.cpp" line="282"/>
+      <location filename="../../DlgRevolution.cpp" line="287"/>
+      <location filename="../../DlgRevolution.cpp" line="292"/>
       <source>Revolution axis link is invalid.
 
 %1</source>
@@ -3962,23 +3962,23 @@ a fájl olvasása közben (lassabb, de pontosabb).</translation>
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="290"/>
+      <location filename="../../DlgRevolution.cpp" line="292"/>
       <source>Unknown error</source>
       <translation>Ismeretlen hiba</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="299"/>
+      <location filename="../../DlgRevolution.cpp" line="301"/>
       <source>Revolution axis direction is zero-length. It must be non-zero.</source>
       <translation>Kiforgatás iránya nulla hosszúságú. Nem lehet nulla.</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="309"/>
+      <location filename="../../DlgRevolution.cpp" line="311"/>
       <source>Revolution angle span is zero. It must be non-zero.</source>
       <translation>Kiforgatás szög nagysága nulla. Nem lehet nulla.</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="443"/>
-      <location filename="../../DlgRevolution.cpp" line="447"/>
+      <location filename="../../DlgRevolution.cpp" line="445"/>
+      <location filename="../../DlgRevolution.cpp" line="449"/>
       <source>Creating Revolve failed.
 
 %1</source>
@@ -3987,7 +3987,7 @@ a fájl olvasása közben (lassabb, de pontosabb).</translation>
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="459"/>
+      <location filename="../../DlgRevolution.cpp" line="461"/>
       <source>Selecting... (line or arc)</source>
       <translation>Kiválasztás... (egyenes vagy ív)</translation>
     </message>
@@ -4242,10 +4242,10 @@ a fájl olvasása közben (lassabb, de pontosabb).</translation>
 If not checked, it depends on the option "Backlight color"
 (preferences section Display -&gt; 3D View); either the backlight color
 will be used or black.</source>
-      <translation type="unfinished">The bottom side of the surface will be rendered the same way as the top.
-If not checked, it depends on the option "Backlight color"
-(preferences section Display -&gt; 3D View); either the backlight color
-will be used or black.</translation>
+      <translation>A felület alsó oldala ugyanúgy lesz megjelenítve, mint a felső.
+Ha nincs bejelölve, akkor a "Háttérvilágítás színe" beállítástól függ.
+("Beállítások", "Megjelenítés" -&gt; "3D nézet"); a háttérvilágítás színét vagy
+a fekete színt fogja használni.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="471"/>
@@ -4360,27 +4360,27 @@ the sketch plane's normal vector will be used</source>
       <translation>Kiválasztott profilok</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="177"/>
+      <location filename="../../TaskLoft.cpp" line="180"/>
       <source>Too few elements</source>
       <translation>Túl kevés elem</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="177"/>
+      <location filename="../../TaskLoft.cpp" line="180"/>
       <source>At least two vertices, edges, wires or faces are required.</source>
       <translation>Szükséges legalább két csúcspont, él, drótháló vagy felület.</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="211"/>
+      <location filename="../../TaskLoft.cpp" line="214"/>
       <source>Input error</source>
       <translation>Bemeneti hiba</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="240"/>
+      <location filename="../../TaskLoft.cpp" line="243"/>
       <source>Vertex/Edge/Wire/Face</source>
       <translation>Csúcspont/Él/Drótváz/Felület</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="241"/>
+      <location filename="../../TaskLoft.cpp" line="244"/>
       <source>Loft</source>
       <translation>Szint</translation>
     </message>
@@ -4472,7 +4472,7 @@ the sketch plane's normal vector will be used</source>
   <context>
     <name>PartGui::OffsetWidget</name>
     <message>
-      <location filename="../../TaskOffset.cpp" line="204"/>
+      <location filename="../../TaskOffset.cpp" line="206"/>
       <source>Input error</source>
       <translation>Bemeneti hiba</translation>
     </message>
@@ -4500,7 +4500,7 @@ the sketch plane's normal vector will be used</source>
     <message>
       <location filename="../../SectionCutting.ui" line="20"/>
       <source>Persistent Section Cutting</source>
-      <translation type="unfinished">Persistent Section Cutting</translation>
+      <translation>Tartós szakaszvágás</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="32"/>
@@ -4736,69 +4736,69 @@ only created cuts will be visible</source>
       <translation>Kiválasztott profilok</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="328"/>
+      <location filename="../../TaskSweep.cpp" line="331"/>
       <source>Too few elements</source>
       <translation>Túl kevés elem</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="328"/>
+      <location filename="../../TaskSweep.cpp" line="331"/>
       <source>At least one edge or wire is required.</source>
       <translation>Szükséges legalább egy él vagy háló.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="332"/>
+      <location filename="../../TaskSweep.cpp" line="335"/>
       <source>Invalid selection</source>
       <translation>Érvénytelen kijelölés</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="332"/>
+      <location filename="../../TaskSweep.cpp" line="335"/>
       <source>Select one or more edges from a single object.</source>
       <translation>Jelöljön ki egy vagy több szegélyt egyetlen tárgyból.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="339"/>
+      <location filename="../../TaskSweep.cpp" line="342"/>
       <source>Wrong selection</source>
       <translation>Rossz kijelölés</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="339"/>
+      <location filename="../../TaskSweep.cpp" line="342"/>
       <source>'%1' cannot be used as profile and path.</source>
       <translation>'%1' profilként és elérési útként nem használható.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="377"/>
+      <location filename="../../TaskSweep.cpp" line="380"/>
       <source>Input error</source>
       <translation>Bemeneti hiba</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="410"/>
+      <location filename="../../TaskSweep.cpp" line="413"/>
       <source>Done</source>
       <translation>Kész</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="412"/>
+      <location filename="../../TaskSweep.cpp" line="415"/>
       <source>Select one or more connected edges in the 3d view and press 'Done'</source>
       <translation>Jelöljön ki egy vagy több csatlakoztatott élt a 3D-s nézetben, és nyomjon a "Kész"-re</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="434"/>
-      <location filename="../../TaskSweep.cpp" line="442"/>
+      <location filename="../../TaskSweep.cpp" line="437"/>
+      <location filename="../../TaskSweep.cpp" line="445"/>
       <source>Sweep path</source>
       <translation>Húzás elérési útja</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="434"/>
-      <location filename="../../TaskSweep.cpp" line="442"/>
+      <location filename="../../TaskSweep.cpp" line="437"/>
+      <location filename="../../TaskSweep.cpp" line="445"/>
       <source>The selected sweep path is invalid.</source>
       <translation>A kijelölt pásztázási (sweep) út érvénytelen.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="454"/>
+      <location filename="../../TaskSweep.cpp" line="457"/>
       <source>Vertex/Wire</source>
       <translation>Végpont/Vonal</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="455"/>
+      <location filename="../../TaskSweep.cpp" line="458"/>
       <source>Sweep</source>
       <translation>Húzás</translation>
     </message>
@@ -4837,7 +4837,7 @@ only created cuts will be visible</source>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="124"/>
-      <location filename="../../TaskAttacher.cpp" line="337"/>
+      <location filename="../../TaskAttacher.cpp" line="339"/>
       <source>Attachment Offset (in local coordinates):</source>
       <translation>Csatolás eltolása (helyi koordinátákban):</translation>
     </message>
@@ -4918,77 +4918,77 @@ rendszerében fejezzük ki.</translation>
       <translation>Oldalak megfordítása</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="320"/>
+      <location filename="../../TaskAttacher.cpp" line="322"/>
       <source>OCC error: %1</source>
       <translation>OCC hiba: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="322"/>
+      <location filename="../../TaskAttacher.cpp" line="324"/>
       <source>unknown error</source>
       <translation>ismeretlen hiba</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="325"/>
+      <location filename="../../TaskAttacher.cpp" line="327"/>
       <source>Attachment mode failed: %1</source>
       <translation>Csatolási mód sikertelen: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="329"/>
+      <location filename="../../TaskAttacher.cpp" line="331"/>
       <source>Not attached</source>
       <translation>Nem csatolt</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="333"/>
+      <location filename="../../TaskAttacher.cpp" line="335"/>
       <source>Attached with mode %1</source>
       <translation>Csatolt ezzel a móddal %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="337"/>
+      <location filename="../../TaskAttacher.cpp" line="339"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>Csatolás eltolás (inaktív - nem csatolt):</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="634"/>
+      <location filename="../../TaskAttacher.cpp" line="636"/>
       <source>Face</source>
       <translation>Felület</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="641"/>
+      <location filename="../../TaskAttacher.cpp" line="643"/>
       <source>Edge</source>
       <translation>Él</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="648"/>
+      <location filename="../../TaskAttacher.cpp" line="650"/>
       <source>Vertex</source>
       <translation>Végpont</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="713"/>
+      <location filename="../../TaskAttacher.cpp" line="715"/>
       <source>Selecting...</source>
       <translation>Kiválasztás...</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="717"/>
+      <location filename="../../TaskAttacher.cpp" line="719"/>
       <source>Reference%1</source>
       <translation>Hivatkozás%1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="764"/>
+      <location filename="../../TaskAttacher.cpp" line="766"/>
       <source>Not editable because rotation of AttachmentOffset is bound by expressions.</source>
       <translation>Nem szerkeszthető, mert a csatolt eltolás elforgatás egy kifejezéssel kényszerített.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="830"/>
+      <location filename="../../TaskAttacher.cpp" line="832"/>
       <source>Reference combinations:</source>
       <translation>Hivatkozás kombinációk:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="847"/>
+      <location filename="../../TaskAttacher.cpp" line="849"/>
       <source>%1 (add %2)</source>
       <translation>%1 (hozzáad %2)</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="852"/>
+      <location filename="../../TaskAttacher.cpp" line="854"/>
       <source>%1 (add more references)</source>
       <translation>%1 (további hivatkozás hozzáadása)</translation>
     </message>
@@ -4996,193 +4996,193 @@ rendszerében fejezzük ki.</translation>
   <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1001"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1028"/>
       <source>Shape Content</source>
       <translation>Alakzat tartalma</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1009"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="1204"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1036"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1231"/>
       <source>Settings</source>
       <translation>Beállítások</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1015"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1042"/>
       <source>Skip this settings page and run the geometry check automatically.</source>
       <translation>Hagyja ki ezt a beállítási oldalt, és futtassa automatikusan a geometriai ellenőrzést.</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1017"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1044"/>
       <source>Default: false</source>
       <translation>Alapértelmezett: hamis</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1024"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1051"/>
       <source>Run boolean operation check</source>
       <translation>Logikai művelet ellenőrzés futtatása</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1025"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1052"/>
       <source>Extra boolean operations check that can sometimes find errors that
 the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</source>
       <translation>Extra logikai műveletek ellenőrzése, amely néha hibákat talál, melyeket a szabványos BRep geometria-ellenőrzés elmulaszt. Ezek a hibák nem mindig jelentik azt, hogy a vizsgált tárgy használhatatlan.  Alapértelmezett: hamis</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1035"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1062"/>
       <source>Single-threaded</source>
       <translation>Egyszálas</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1036"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1063"/>
       <source>Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</source>
       <translation>Futtassa a geometria-ellenőrzést egyetlen szálban.  Ez lassabb, 
 de stabilabb.  Alapértelmezett: hamis</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1045"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1072"/>
       <source>Log errors</source>
       <translation>Hibák naplózása</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1046"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1073"/>
       <source>Log errors to report view.  Default: true</source>
       <translation>Hibák naplózása a jelentés nézethez.  Alapértelmezett: igaz</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1053"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1080"/>
       <source>Expand shape content</source>
       <translation>Alakzat tartalom kibontása</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1054"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1081"/>
       <source>Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>Alakzat tartalom kibontás.  A módosítások legközelebb a geometria ellenőrző eszköz 
 használata esetén lépnek életbe.  Alapértelmezett: hamis</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1063"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1090"/>
       <source>Advanced shape content</source>
       <translation>Speciális alakzat tartalom kibontása</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1064"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
       <source>Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>Speciális alakzat tartalom kibontás.  A módosítások legközelebb a geometria ellenőrző eszköz 
 használata esetén lépnek életbe.  Alapértelmezett: hamis</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1072"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1099"/>
       <source>
 Individual boolean operation checks:</source>
       <translation>
 Egyedi logikai művelet ellenőrzés:</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1075"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1102"/>
       <source>Bad type</source>
       <translation>Rossz típus</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1083"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1110"/>
       <source>Self-intersect</source>
       <translation>Ön-metszés</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1118"/>
       <source>Too small edge</source>
       <translation>Túl kicsi él</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1099"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1126"/>
       <source>Nonrecoverable face</source>
       <translation>Nem visszavehető felület</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1107"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1134"/>
       <source>Continuity</source>
       <translation>Folytonosság</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1115"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1142"/>
       <source>Incompatibility of face</source>
       <translation>A felület inkompatibilitása</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1123"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1150"/>
       <source>Incompatibility of vertex</source>
       <translation>A végpont inkompatibilitása</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1131"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1158"/>
       <source>Incompatibility of edge</source>
       <translation>Az él inkompatibilitása</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1139"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1166"/>
       <source>Invalid curve on surface</source>
       <translation>Érvénytelen görbe a felületen</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1076"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1103"/>
       <source>Check for bad argument types.  Default: true</source>
       <translation>Ellenőrizze a rossz argumentumtípusokat.  Alapértelmezett: igaz</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1013"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1040"/>
       <source>Skip this settings page</source>
-      <translation type="unfinished">Skip this settings page</translation>
+      <translation>Hagyja ki ezt a beállítási oldalt</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1084"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1111"/>
       <source>Check for self-intersections.  Default: true</source>
       <translation>Ellenőrizze az ön-metszéseket.  Alapértelmezett: igaz</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1092"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1119"/>
       <source>Check for edges that are too small.  Default: true</source>
       <translation>Ellenőrizze, hogy vannak-e túl kicsi élek.  Alapértelmezett: igaz</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1100"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1127"/>
       <source>Check for nonrecoverable faces.  Default: true</source>
       <translation>Ellenőrizze a nem visszavehető felületeket.  Alapértelmezett: igaz</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1108"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1135"/>
       <source>Check for continuity.  Default: true</source>
       <translation>Ellenőrizze a folytonosságot.  Alapértelmezett: igaz</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1116"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1143"/>
       <source>Check for incompatible faces.  Default: true</source>
       <translation>Ellenőrizze a felületek inkompatibilitását.  Alapértelmezett: igaz</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1124"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1151"/>
       <source>Check for incompatible vertices.  Default: true</source>
       <translation>Ellenőrizze a végpontok inkompatibilitását.  Alapértelmezett: igaz</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1132"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1159"/>
       <source>Check for incompatible edges.  Default: true</source>
       <translation>Ellenőrizze az élek inkompatibilitását.  Alapértelmezett: igaz</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1140"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1167"/>
       <source>Check for invalid curves on surfaces.  Default: true</source>
       <translation>Érvénytelen görbék ellenőrzése a felületen.  Alapértelmezett: igaz</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1203"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1230"/>
       <source>Run check</source>
       <translation>Ellenőrzés futtatás</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1209"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1236"/>
       <source>Results</source>
       <translation>Eredmények</translation>
     </message>
@@ -5211,22 +5211,22 @@ Egyedi logikai művelet ellenőrzés:</translation>
       <translation>Geometria ellenőrzése</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="459"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="464"/>
       <source>Invalid</source>
       <translation>Érvénytelen</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="478"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="483"/>
       <source>Checking</source>
       <translation>Ellenőriz</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="501"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="506"/>
       <source>%1 processed out of %2 selected</source>
       <translation>%1 feldolgozott a %2 kiválasztottból</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../TaskCheckGeometry.cpp" line="502"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="507"/>
       <source>%n invalid shapes.</source>
       <translation>
         <numerusform>%n érvénytelen alakzat.</numerusform>
@@ -5234,20 +5234,40 @@ Egyedi logikai művelet ellenőrzés:</translation>
       </translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="590"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="595"/>
       <source>Checked object</source>
       <translation>Ellenőrzött tárgy</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="612"/>
+      <source>Tolerance information</source>
+      <translation type="unfinished">Tolerance information</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="617"/>
+      <source>Global Minimum</source>
+      <translation type="unfinished">Global Minimum</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="622"/>
+      <source>Global Average</source>
+      <translation type="unfinished">Global Average</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="627"/>
+      <source>Global Maximum</source>
+      <translation type="unfinished">Global Maximum</translation>
     </message>
   </context>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1062"/>
+      <location filename="../../TaskAttacher.cpp" line="1064"/>
       <source>Attachment</source>
       <translation>Melléklet</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1117"/>
+      <location filename="../../TaskAttacher.cpp" line="1119"/>
       <source>Datum dialog: Input error</source>
       <translation>Referencia párbeszédpanel: bemenet hiba</translation>
     </message>
@@ -5440,7 +5460,7 @@ Egyedi logikai művelet ellenőrzés:</translation>
       <translation>Frenet</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="480"/>
+      <location filename="../../TaskSweep.cpp" line="483"/>
       <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
       <translation>Válassz egy vagy több profilt és válassza ki a szegélyt vagy hálót 3D nézetben a húzás irányához.</translation>
@@ -5478,23 +5498,23 @@ in the 3D view for the sweep path.</source>
     <name>PartGui::ThicknessWidget</name>
     <message>
       <location filename="../../TaskThickness.cpp" line="89"/>
-      <location filename="../../TaskThickness.cpp" line="288"/>
-      <location filename="../../TaskThickness.cpp" line="298"/>
+      <location filename="../../TaskThickness.cpp" line="290"/>
+      <location filename="../../TaskThickness.cpp" line="300"/>
       <source>Thickness</source>
       <translation>Vastagság</translation>
     </message>
     <message>
-      <location filename="../../TaskThickness.cpp" line="185"/>
+      <location filename="../../TaskThickness.cpp" line="187"/>
       <source>Select faces of the source object and press 'Done'</source>
       <translation>Válassza ki az adatforrás-objektum felületeit, és kattintson a "Kész" gombra</translation>
     </message>
     <message>
-      <location filename="../../TaskThickness.cpp" line="188"/>
+      <location filename="../../TaskThickness.cpp" line="190"/>
       <source>Done</source>
       <translation>Kész</translation>
     </message>
     <message>
-      <location filename="../../TaskThickness.cpp" line="253"/>
+      <location filename="../../TaskThickness.cpp" line="255"/>
       <source>Input error</source>
       <translation>Bemeneti hiba</translation>
     </message>
@@ -5561,12 +5581,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="389"/>
       <source>Please select two shapes or more. Or, select one compound containing two or more shapes to compute the intersection between.</source>
-      <translation type="unfinished">Please select two shapes or more. Or, select one compound containing two or more shapes to compute the intersection between.</translation>
+      <translation>Kérjük, válasszon két vagy több formát. Vagy válasszon ki egy olyan összetételt, amely két vagy több alakzatot tartalmaz a metszéspont kiszámításához.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="465"/>
       <source>Please select two shapes or more. Or, select one compound containing two or more shapes to be fused.</source>
-      <translation type="unfinished">Please select two shapes or more. Or, select one compound containing two or more shapes to be fused.</translation>
+      <translation>Kérjük, válasszon két vagy több formát. Vagy válasszon ki egy olyan összetételt, amely két vagy több egyesítendő alakzatot tartalmaz.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="856"/>
@@ -5883,7 +5903,7 @@ Do you want to continue?</source>
       <translation>Logikai művelet: Érvénytelen</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="699"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="726"/>
       <source>Invalid</source>
       <translation>Érvénytelen</translation>
     </message>
@@ -5943,7 +5963,7 @@ Do you want to continue?</source>
       <translation>Kivetítés szerkesztése</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="878"/>
+      <location filename="../../ViewProviderExt.cpp" line="886"/>
       <source>Set appearance per face...</source>
       <translation>Megjelenés beállítása felületenként...</translation>
     </message>
@@ -5951,57 +5971,57 @@ Do you want to continue?</source>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="33"/>
+      <location filename="../../Workbench.cpp" line="34"/>
       <source>&amp;Part</source>
       <translation>Rész</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="34"/>
+      <location filename="../../Workbench.cpp" line="35"/>
       <source>&amp;Simple</source>
       <translation>Egyszerű</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="35"/>
+      <location filename="../../Workbench.cpp" line="36"/>
       <source>&amp;Parametric</source>
       <translation>Változós</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="36"/>
+      <location filename="../../Workbench.cpp" line="37"/>
       <source>Solids</source>
       <translation>Szilárd testek</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="37"/>
+      <location filename="../../Workbench.cpp" line="38"/>
       <source>Part tools</source>
       <translation>Rész eszközök</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="38"/>
+      <location filename="../../Workbench.cpp" line="39"/>
       <source>Boolean</source>
       <translation>Logikai érték</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="39"/>
+      <location filename="../../Workbench.cpp" line="40"/>
       <source>Primitives</source>
       <translation>Alaptestek</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="40"/>
+      <location filename="../../Workbench.cpp" line="41"/>
       <source>Join</source>
       <translation>Csatlakoztatás</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="41"/>
+      <location filename="../../Workbench.cpp" line="42"/>
       <source>Split</source>
       <translation>Feloszt</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="42"/>
+      <location filename="../../Workbench.cpp" line="43"/>
       <source>Compound</source>
       <translation>Összetétel</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="43"/>
+      <location filename="../../Workbench.cpp" line="44"/>
       <source>Create a copy</source>
       <translation>Másolat létrehozása</translation>
     </message>
@@ -6681,7 +6701,7 @@ A fennmaradó darabok kivonására az 'összetevő szűrő' használható.</tran
   <context>
     <name>FaceMaker</name>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="75"/>
+      <location filename="../../../App/FaceMaker.cpp" line="79"/>
       <source>Shape must be a wire, edge or compound. Something else was supplied.</source>
       <translation>Az alakzatnak drótnak, élnek vagy összetettnek kell lennie. Valami mást szállítottak.</translation>
     </message>
@@ -6689,12 +6709,12 @@ A fennmaradó darabok kivonására az 'összetevő szűrő' használható.</tran
   <context>
     <name>Part::FaceMakerSimple</name>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="281"/>
+      <location filename="../../../App/FaceMaker.cpp" line="278"/>
       <source>Simple</source>
       <translation>Egyszerű</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="286"/>
+      <location filename="../../../App/FaceMaker.cpp" line="283"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
       <translation>Külön sík felület létrehozása minden dróthálóhoz függetlenül. Nincs lyuk támogatás; drótok lehetnek különböző síkokon.</translation>
     </message>
@@ -6728,12 +6748,12 @@ A fennmaradó darabok kivonására az 'összetevő szűrő' használható.</tran
   <context>
     <name>Part::FaceMakerExtrusion</name>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="459"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="381"/>
       <source>Part Extrude facemaker</source>
       <translation>Tárgy kihúzás felületlétrehozás</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="464"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="386"/>
       <source>Supports making faces with holes, does not support nesting.</source>
       <translation>Lyukas felületek létrehozásának támogatása, nem támogatja a hálósítást.</translation>
     </message>
@@ -6771,14 +6791,14 @@ A fennmaradó darabok kivonására az 'összetevő szűrő' használható.</tran
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="73"/>
       <source>Custom appearance:</source>
-      <translation type="unfinished">Custom appearance:</translation>
+      <translation>Egyedi megjelenítés:</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="97"/>
       <source>When checked, you can select multiple faces
 by dragging a selection rectangle in the 3D view</source>
-      <translation type="unfinished">When checked, you can select multiple faces
-by dragging a selection rectangle in the 3D view</translation>
+      <translation>Ha bejelölt, több felületet is kijelölhet
+egy kijelölési téglalap húzásával a 3D nézetben</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="87"/>
@@ -6802,6 +6822,52 @@ by dragging a selection rectangle in the 3D view</translation>
       <location filename="../../DlgImportStep.cpp" line="149"/>
       <source>Don't show this dialog again</source>
       <translation>Ne jelenjen meg újra ez az ablak</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_ToleranceFeatures</name>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="70"/>
+      <source>Computing the result failed with an error:</source>
+      <translation>Az eredmény kiszámítása hiba miatt nem sikerült:</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="71"/>
+      <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Kattintson a 'Folytatás' gombra a funkció létrehozásához, vagy a 'Megszakítás' gombra a törléshez.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="72"/>
+      <source>Bad selection</source>
+      <translation>Rossz kiválasztás</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="74"/>
+      <source>Continue</source>
+      <translation>Tovább</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_ToleranceSet</name>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="192"/>
+      <source>Set Tolerance</source>
+      <translation type="unfinished">Set Tolerance</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="197"/>
+      <source>Set Tolerance for selected objects.</source>
+      <translation type="unfinished">Set Tolerance for selected objects.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="204"/>
+      <source>Select at least one object or compounds</source>
+      <translation type="unfinished">Select at least one object or compounds</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="205"/>
+      <source>Bad selection</source>
+      <translation>Rossz kiválasztás</translation>
     </message>
   </context>
 </TS>

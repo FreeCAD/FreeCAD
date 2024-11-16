@@ -27,11 +27,17 @@ namespace MillSim
 {
 Texture::~Texture()
 {
-    glDeleteTextures(1, &mTextureId);
+    DestroyTexture();
+}
+
+void Texture::DestroyTexture()
+{
+    GLDELETE_TEXTURE(mTextureId);
 }
 
 bool Texture::LoadImage(unsigned int* image, int _width, int _height)
 {
+    DestroyTexture();
     width = _width;
     height = _height;
     glGenTextures(1, &mTextureId);

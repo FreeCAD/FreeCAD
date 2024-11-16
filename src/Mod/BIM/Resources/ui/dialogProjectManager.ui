@@ -638,6 +638,43 @@
    <header>Gui/Widgets.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>presets</tabstop>
+  <tabstop>buttonSaveTemplate</tabstop>
+  <tabstop>buttonLoadTemplate</tabstop>
+  <tabstop>scrollArea</tabstop>
+  <tabstop>groupNewDocument</tabstop>
+  <tabstop>projectName</tabstop>
+  <tabstop>addHumanFigure</tabstop>
+  <tabstop>groupSite</tabstop>
+  <tabstop>siteName</tabstop>
+  <tabstop>siteAddress</tabstop>
+  <tabstop>siteLatitude</tabstop>
+  <tabstop>siteLongitude</tabstop>
+  <tabstop>siteDeviation</tabstop>
+  <tabstop>siteElevation</tabstop>
+  <tabstop>groupBuilding</tabstop>
+  <tabstop>buildingName</tabstop>
+  <tabstop>buildingUse</tabstop>
+  <tabstop>buildingLength</tabstop>
+  <tabstop>buildingWidth</tabstop>
+  <tabstop>countVAxes</tabstop>
+  <tabstop>distVAxes</tabstop>
+  <tabstop>countHAxes</tabstop>
+  <tabstop>distHAxes</tabstop>
+  <tabstop>lineWidth</tabstop>
+  <tabstop>lineColor</tabstop>
+  <tabstop>countLevels</tabstop>
+  <tabstop>levelHeight</tabstop>
+  <tabstop>levelsAxis</tabstop>
+  <tabstop>levelsWP</tabstop>
+  <tabstop>groupsList</tabstop>
+  <tabstop>buttonAdd</tabstop>
+  <tabstop>buttonDel</tabstop>
+  <tabstop>buttonSave</tabstop>
+  <tabstop>buttonOK</tabstop>
+  <tabstop>buttonCancel</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

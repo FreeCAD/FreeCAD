@@ -106,6 +106,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # all geom fusion
     geom_obj = doc.addObject("Part::MultiFuse", "AllGeomFusion")
     geom_obj.Shapes = [bottom_box_obj, top_halfcyl_obj]
+    geom_obj.Refine = True
     if FreeCAD.GuiUp:
         bottom_box_obj.ViewObject.hide()
         top_halfcyl_obj.ViewObject.hide()

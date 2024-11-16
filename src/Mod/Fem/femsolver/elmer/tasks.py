@@ -131,18 +131,13 @@ class Solve(run.Solve):
                     args.extend(["mpiexec"])
                 args.extend(["-np", str(num_cores)])
             args.extend([binary])
-            if system() == "Windows":
-                self._process = subprocess.Popen(
-                    args,
-                    cwd=self.directory,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE,
-                    startupinfo=femutils.startProgramInfo("hide"),
-                )
-            else:
-                self._process = subprocess.Popen(
-                    args, cwd=self.directory, stdout=subprocess.PIPE, stderr=subprocess.PIPE
-                )
+            self._process = subprocess.Popen(
+                args,
+                cwd=self.directory,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                startupinfo=femutils.startProgramInfo("hide"),
+            )
             self.signalAbort.add(self._process.terminate)
             output = self._observeSolver(self._process)
             self._process.communicate()

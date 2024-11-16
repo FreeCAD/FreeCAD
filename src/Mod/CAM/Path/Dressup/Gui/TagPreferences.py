@@ -42,71 +42,53 @@ class HoldingTagPreferences:
 
     @classmethod
     def defaultWidth(cls, ifNotSet):
-        value = Path.Preferences.preferences().GetFloat(
-            cls.DefaultHoldingTagWidth, ifNotSet
-        )
+        value = Path.Preferences.preferences().GetFloat(cls.DefaultHoldingTagWidth, ifNotSet)
         if value == 0.0:
             return ifNotSet
         return value
 
     @classmethod
     def defaultHeight(cls, ifNotSet):
-        value = Path.Preferences.preferences().GetFloat(
-            cls.DefaultHoldingTagHeight, ifNotSet
-        )
+        value = Path.Preferences.preferences().GetFloat(cls.DefaultHoldingTagHeight, ifNotSet)
         if value == 0.0:
             return ifNotSet
         return value
 
     @classmethod
     def defaultAngle(cls, ifNotSet=45.0):
-        value = Path.Preferences.preferences().GetFloat(
-            cls.DefaultHoldingTagAngle, ifNotSet
-        )
+        value = Path.Preferences.preferences().GetFloat(cls.DefaultHoldingTagAngle, ifNotSet)
         if value < 10.0:
             return ifNotSet
         return value
 
     @classmethod
     def defaultCount(cls, ifNotSet=4):
-        value = Path.Preferences.preferences().GetUnsigned(
-            cls.DefaultHoldingTagCount, ifNotSet
-        )
+        value = Path.Preferences.preferences().GetUnsigned(cls.DefaultHoldingTagCount, ifNotSet)
         if value < 2:
             return float(ifNotSet)
         return float(value)
 
     @classmethod
     def defaultRadius(cls, ifNotSet=0.0):
-        return Path.Preferences.preferences().GetFloat(
-            cls.DefaultHoldingTagRadius, ifNotSet
-        )
+        return Path.Preferences.preferences().GetFloat(cls.DefaultHoldingTagRadius, ifNotSet)
 
     def __init__(self):
         if FreeCAD.GuiUp:
             import FreeCADGui
 
-            self.form = FreeCADGui.PySideUic.loadUi(
-                ":/preferences/PathDressupHoldingTags.ui"
-            )
+            self.form = FreeCADGui.PySideUic.loadUi(":/preferences/PathDressupHoldingTags.ui")
             self.label = translate("CAM_DressupTag", "Holding Tag")
 
     def loadSettings(self):
         self.form.ifWidth.setText(
-            FreeCAD.Units.Quantity(
-                self.defaultWidth(0), FreeCAD.Units.Length
-            ).UserString
+            FreeCAD.Units.Quantity(self.defaultWidth(0), FreeCAD.Units.Length).UserString
         )
         self.form.ifHeight.setText(
-            FreeCAD.Units.Quantity(
-                self.defaultHeight(0), FreeCAD.Units.Length
-            ).UserString
+            FreeCAD.Units.Quantity(self.defaultHeight(0), FreeCAD.Units.Length).UserString
         )
         self.form.dsbAngle.setValue(self.defaultAngle())
         self.form.ifRadius.setText(
-            FreeCAD.Units.Quantity(
-                self.defaultRadius(), FreeCAD.Units.Length
-            ).UserString
+            FreeCAD.Units.Quantity(self.defaultRadius(), FreeCAD.Units.Length).UserString
         )
         self.form.sbCount.setValue(self.defaultCount())
 

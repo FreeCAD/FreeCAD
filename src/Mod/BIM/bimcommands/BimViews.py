@@ -23,10 +23,8 @@
 """The BIM Views command"""
 
 import sys
-
-import FreeCADGui
-
 import FreeCAD
+import FreeCADGui
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
@@ -269,12 +267,12 @@ class BIM_Views:
                     top = QtGui.QTreeWidgetItem([translate("BIM","2D Views"), ""])
                     top.setIcon(0, ficon)
                     for v in views:
-                        i = QtGui.QTreeWidgetItem([v.Label, ""])
-                        if hasattr(v.ViewObject, "Proxy"):
-                            if hasattr(v.ViewObject.Proxy, "getIcon"):
-                                i.setIcon(0, QtGui.QIcon(v.ViewObject.Proxy.getIcon()))
-                        i.setToolTip(0, v.Name)
-                        top.addChild(i)
+                        if hasattr(v, "Label"):
+                            i = QtGui.QTreeWidgetItem([v.Label, ""])
+                            if hasattr(v.ViewObject, "Icon"):
+                                i.setIcon(0, v.ViewObject.Icon)
+                            i.setToolTip(0, v.Name)
+                            top.addChild(i)
                     vm.tree.addTopLevelItem(top)
 
                 # add pages
@@ -284,9 +282,8 @@ class BIM_Views:
                     top.setIcon(0, ficon)
                     for p in pages:
                         i = QtGui.QTreeWidgetItem([p.Label, ""])
-                        if hasattr(v.ViewObject, "Proxy"):
-                            if hasattr(v.ViewObject.Proxy, "getIcon"):
-                                i.setIcon(0, QtGui.QIcon(v.ViewObject.Proxy.getIcon()))
+                        if hasattr(p.ViewObject, "Icon"):
+                                i.setIcon(0, p.ViewObject.Icon)
                         i.setToolTip(0, p.Name)
                         top.addChild(i)
                     vm.tree.addTopLevelItem(top)
@@ -499,11 +496,16 @@ def show(item, column=None):
         FreeCADGui.Selection.clearSelection()
         FreeCADGui.Selection.addSelection(obj)
         if obj.isDerivedFrom("TechDraw::DrawPage"):
+
+            # case 1: the object is a TD page. We switch to it simply
             obj.ViewObject.Visibility=True
         elif isView(obj):
+
+            # case 2: the object is a 2D view
             ssel = [obj]+obj.OutListRecursive
             FreeCADGui.Selection.clearSelection()
             for o in ssel:
+                o.ViewObject.Visibility = True
                 FreeCADGui.Selection.addSelection(o)
             if not hasattr(FreeCADGui.ActiveDocument.ActiveView, "getSceneGraph"):
                 # Find first 3d view and switch to it
@@ -511,12 +513,15 @@ def show(item, column=None):
                     if hasattr(w, "getSceneGraph"):
                         FreeCADGui.getMainWindow().setActiveWindow(w)
                         break
+            FreeCADGui.runCommand('Std_OrthographicCamera')
             FreeCADGui.ActiveDocument.ActiveView.viewTop()
             FreeCADGui.SendMsgToActiveView("ViewSelection")
             FreeCADGui.ActiveDocument.ActiveView.viewTop()
             FreeCADGui.Selection.clearSelection()
             FreeCADGui.Selection.addSelection(obj)
         else:
+
+            # case 3: This is maybe a BuildingPart. Place the WP on it
             FreeCADGui.runCommand("Draft_SelectPlane")
     if vm:
         # store the last double-clicked item for the BIM WPView command
@@ -536,6 +541,8 @@ def isView(obj):
             if hasattr(p, "Source"):
                 if p.Source == obj:
                     return True
+    if getattr(obj,"DrawingView",False):
+        return True
     return False
 
 

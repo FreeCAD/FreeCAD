@@ -164,7 +164,7 @@
       <location filename="../../Command.cpp" line="1047"/>
       <location filename="../../Command.cpp" line="1049"/>
       <source>Opens a dialog to analyze and repair a mesh</source>
-      <translation>Ouvrir une boîte de dialogue pour analyser et réparer un maillage</translation>
+      <translation>Ouvrir une fenêtre de dialogue pour analyser et réparer un maillage</translation>
     </message>
   </context>
   <context>

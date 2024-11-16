@@ -153,6 +153,22 @@ void FileDialog::accept()
     QFileDialog::accept();
 }
 
+void FileDialog::getSuffixesDescription(QStringList& suffixes, const QString* suffixDescriptions)
+{
+    QRegularExpression rx;
+    // start the raw string with a (
+    // match a *, a . and at least one word character (a-z, A-Z, 0-9, _) with \*\.\w+
+    // end the raw string with a )
+    rx.setPattern(QLatin1String(R"(\*\.\w+)"));
+
+    QRegularExpressionMatchIterator i = rx.globalMatch(*suffixDescriptions);
+    while (i.hasNext()) {
+        QRegularExpressionMatch match = i.next();
+        QString suffix = match.captured(0);
+        suffixes << suffix;
+    }
+}
+
 /**
  * This is a convenience static function that will return a file name selected by the user. The file does not have to exist.
  */
@@ -177,25 +193,20 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
         // get the suffix for the filter: use the selected filter if there is one,
         // otherwise find the first valid suffix in the complete list of filters
         const QString *filterToSearch;
-        if (selectedFilter) {
+        if (selectedFilter && !selectedFilter->isEmpty()) {
             filterToSearch = selectedFilter;
         }
         else {
             filterToSearch = &filter;
         }
 
-        QRegularExpression rx;
-        rx.setPattern(QLatin1String(R"(\s(\(\*\.\w{1,})\W)"));
-        auto match = rx.match(*filterToSearch);
-        if (match.hasMatch()) {
-            int index = match.capturedStart();
-            int length = match.capturedLength();
-            // get the suffix with the leading dot but ignore the surrounding ' (*' and ')'
-            int offsetStart = 3;
-            int offsetEnd = 4;
-            QString suffix = filterToSearch->mid(index + offsetStart, length - offsetEnd);
-            if (fi.suffix().isEmpty())
-                dirName += suffix;
+        QStringList filterSuffixes;
+        getSuffixesDescription(filterSuffixes, filterToSearch);
+        QString fiSuffix = QLatin1String("*.") + fi.suffix();  // To match with filterSuffixes
+        if (fi.suffix().isEmpty() || !filterSuffixes.contains(fiSuffix)) {
+            // there is no suffix or not a suffix that matches the filter, so
+            // default to the first suffix of the filter
+            dirName += filterSuffixes[0].mid(1);
         }
     }
 
@@ -673,7 +684,7 @@ FileChooser::FileChooser ( QWidget * parent )
 
     button = new QPushButton(QLatin1String("..."), this);
 
-#if defined (Q_OS_MAC)
+#if defined (Q_OS_MACOS)
     button->setAttribute(Qt::WA_LayoutUsesWidgetRect); // layout size from QMacStyle was not correct
 #endif
 

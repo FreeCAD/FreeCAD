@@ -35,12 +35,13 @@ import FreeCADGui
 from femguiutils import selection_widgets
 
 from femtools import membertools
+from . import base_femtaskpanel
 
 
-class _TaskPanel:
+class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
 
     def __init__(self, obj):
-        self._obj = obj
+        super().__init__(obj)
 
         self._paramWidget = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/Magnetization.ui"
@@ -76,18 +77,15 @@ class _TaskPanel:
     def reject(self):
         self._restoreVisibility()
         self._selectionWidget.finish_selection()
-        FreeCADGui.ActiveDocument.resetEdit()
-        return True
+        return super().reject()
 
     def accept(self):
-        if self._obj.References != self._selectionWidget.references:
-            self._obj.References = self._selectionWidget.references
+        if self.obj.References != self._selectionWidget.references:
+            self.obj.References = self._selectionWidget.references
         self._applyWidgetChanges()
-        self._obj.Document.recompute()
         self._selectionWidget.finish_selection()
-        FreeCADGui.ActiveDocument.resetEdit()
         self._restoreVisibility()
-        return True
+        return super().accept()
 
     def _restoreVisibility(self):
         if self._mesh is not None and self._part is not None:
@@ -101,37 +99,37 @@ class _TaskPanel:
                 self._part.ViewObject.hide()
 
     def _initParamWidget(self):
-        self._paramWidget.realXQSB.setProperty("value", self._obj.Magnetization_re_1)
+        self._paramWidget.realXQSB.setProperty("value", self.obj.Magnetization_re_1)
         FreeCADGui.ExpressionBinding(self._paramWidget.realXQSB).bind(
-            self._obj, "Magnetization_re_1"
+            self.obj, "Magnetization_re_1"
         )
-        self._paramWidget.realYQSB.setProperty("value", self._obj.Magnetization_re_2)
+        self._paramWidget.realYQSB.setProperty("value", self.obj.Magnetization_re_2)
         FreeCADGui.ExpressionBinding(self._paramWidget.realYQSB).bind(
-            self._obj, "Magnetization_re_2"
+            self.obj, "Magnetization_re_2"
         )
-        self._paramWidget.realZQSB.setProperty("value", self._obj.Magnetization_re_3)
+        self._paramWidget.realZQSB.setProperty("value", self.obj.Magnetization_re_3)
         FreeCADGui.ExpressionBinding(self._paramWidget.realZQSB).bind(
-            self._obj, "Magnetization_re_3"
+            self.obj, "Magnetization_re_3"
         )
-        self._paramWidget.imagXQSB.setProperty("value", self._obj.Magnetization_im_1)
+        self._paramWidget.imagXQSB.setProperty("value", self.obj.Magnetization_im_1)
         FreeCADGui.ExpressionBinding(self._paramWidget.imagXQSB).bind(
-            self._obj, "Magnetization_im_1"
+            self.obj, "Magnetization_im_1"
         )
-        self._paramWidget.imagYQSB.setProperty("value", self._obj.Magnetization_im_2)
+        self._paramWidget.imagYQSB.setProperty("value", self.obj.Magnetization_im_2)
         FreeCADGui.ExpressionBinding(self._paramWidget.imagYQSB).bind(
-            self._obj, "Magnetization_im_2"
+            self.obj, "Magnetization_im_2"
         )
-        self._paramWidget.imagZQSB.setProperty("value", self._obj.Magnetization_im_3)
+        self._paramWidget.imagZQSB.setProperty("value", self.obj.Magnetization_im_3)
         FreeCADGui.ExpressionBinding(self._paramWidget.imagZQSB).bind(
-            self._obj, "Magnetization_im_3"
+            self.obj, "Magnetization_im_3"
         )
 
-        self._paramWidget.reXunspecBox.setChecked(self._obj.Magnetization_re_1_Disabled)
-        self._paramWidget.reYunspecBox.setChecked(self._obj.Magnetization_re_2_Disabled)
-        self._paramWidget.reZunspecBox.setChecked(self._obj.Magnetization_re_3_Disabled)
-        self._paramWidget.imXunspecBox.setChecked(self._obj.Magnetization_im_1_Disabled)
-        self._paramWidget.imYunspecBox.setChecked(self._obj.Magnetization_im_2_Disabled)
-        self._paramWidget.imZunspecBox.setChecked(self._obj.Magnetization_im_3_Disabled)
+        self._paramWidget.reXunspecBox.setChecked(self.obj.Magnetization_re_1_Disabled)
+        self._paramWidget.reYunspecBox.setChecked(self.obj.Magnetization_re_2_Disabled)
+        self._paramWidget.reZunspecBox.setChecked(self.obj.Magnetization_re_3_Disabled)
+        self._paramWidget.imXunspecBox.setChecked(self.obj.Magnetization_im_1_Disabled)
+        self._paramWidget.imYunspecBox.setChecked(self.obj.Magnetization_im_2_Disabled)
+        self._paramWidget.imZunspecBox.setChecked(self.obj.Magnetization_im_3_Disabled)
 
     def _applyMagnetizationChanges(self, enabledBox, magnetizationQSB):
         enabled = enabledBox.isChecked()
@@ -148,32 +146,32 @@ class _TaskPanel:
 
     def _applyWidgetChanges(self):
         # apply the magnetizations and their enabled state
-        self._obj.Magnetization_re_1_Disabled, self._obj.Magnetization_re_1 = (
+        self.obj.Magnetization_re_1_Disabled, self.obj.Magnetization_re_1 = (
             self._applyMagnetizationChanges(
                 self._paramWidget.reXunspecBox, self._paramWidget.realXQSB
             )
         )
-        self._obj.Magnetization_re_2_Disabled, self._obj.Magnetization_re_2 = (
+        self.obj.Magnetization_re_2_Disabled, self.obj.Magnetization_re_2 = (
             self._applyMagnetizationChanges(
                 self._paramWidget.reYunspecBox, self._paramWidget.realYQSB
             )
         )
-        self._obj.Magnetization_re_3_Disabled, self._obj.Magnetization_re_3 = (
+        self.obj.Magnetization_re_3_Disabled, self.obj.Magnetization_re_3 = (
             self._applyMagnetizationChanges(
                 self._paramWidget.reZunspecBox, self._paramWidget.realZQSB
             )
         )
-        self._obj.Magnetization_im_1_Disabled, self._obj.Magnetization_im_1 = (
+        self.obj.Magnetization_im_1_Disabled, self.obj.Magnetization_im_1 = (
             self._applyMagnetizationChanges(
                 self._paramWidget.imXunspecBox, self._paramWidget.imagXQSB
             )
         )
-        self._obj.Magnetization_im_2_Disabled, self._obj.Magnetization_im_2 = (
+        self.obj.Magnetization_im_2_Disabled, self.obj.Magnetization_im_2 = (
             self._applyMagnetizationChanges(
                 self._paramWidget.imYunspecBox, self._paramWidget.imagYQSB
             )
         )
-        self._obj.Magnetization_im_3_Disabled, self._obj.Magnetization_im_3 = (
+        self.obj.Magnetization_im_3_Disabled, self.obj.Magnetization_im_3 = (
             self._applyMagnetizationChanges(
                 self._paramWidget.imZunspecBox, self._paramWidget.imagZQSB
             )

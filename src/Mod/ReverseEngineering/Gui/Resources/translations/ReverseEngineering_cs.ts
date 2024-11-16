@@ -236,7 +236,7 @@
       <location filename="../../FitBSplineSurface.cpp" line="231"/>
       <location filename="../../FitBSplineCurve.cpp" line="139"/>
       <source>Fit B-spline</source>
-      <translation type="unfinished">Fit B-spline</translation>
+      <translation>Přizpůsobit B-splajn</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="83"/>

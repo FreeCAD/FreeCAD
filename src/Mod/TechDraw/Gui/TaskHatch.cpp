@@ -48,6 +48,7 @@
 using namespace Gui;
 using namespace TechDraw;
 using namespace TechDrawGui;
+using DU = DrawUtil;
 
 //ctor for creation
 TaskHatch::TaskHatch(TechDraw::DrawViewPart* inDvp, std::vector<std::string> subs) :
@@ -208,9 +209,11 @@ void TaskHatch::createHatch()
     m_hatch = static_cast<TechDraw::DrawHatch *>(doc->getObject(FeatName.c_str()));
     m_hatch->Source.setValue(m_dvp, m_subs);
 
+    auto filespec = Base::Tools::toStdString(ui->fcFile->fileName());
+    filespec = DU::cleanFilespecBackslash(filespec);
     Command::doCommand(Command::Doc, "App.activeDocument().%s.HatchPattern = '%s'",
                        FeatName.c_str(),
-                       Base::Tools::toStdString(ui->fcFile->fileName()).c_str());
+                       filespec.c_str());
 
     //view provider properties
     Gui::ViewProvider* vp = Gui::Application::Instance->getDocument(doc)->getViewProvider(m_hatch);
@@ -236,9 +239,11 @@ void TaskHatch::updateHatch()
 
     Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update Hatch"));
 
+    auto filespec = Base::Tools::toStdString(ui->fcFile->fileName());
+    filespec = DU::cleanFilespecBackslash(filespec);
     Command::doCommand(Command::Doc, "App.activeDocument().%s.HatchPattern = '%s'",
                        FeatName.c_str(),
-                       Base::Tools::toStdString(ui->fcFile->fileName()).c_str());
+                       filespec.c_str());
 
     App::Color ac;
     ac.setValue<QColor>(ui->ccColor->color());

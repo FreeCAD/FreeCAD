@@ -44,12 +44,15 @@ try:
     # running built-in BIM without the addon, or the addon without built-in BIM
 except:
     # Arch_rc not importable: We have both the BIM addon and the built-in BIM
-    import os
+    from pathlib import Path
     import FreeCAD
 
-    modpath = os.path.join(FreeCAD.getUserAppDataDir(), "Mod")
-    if "BIM" in os.listdir(modpath):
-        os.rename(os.path.join(modpath, "BIM"), os.path.join(modpath, "BIM021"))
+    bim_modpath = Path(FreeCAD.getUserAppDataDir(), "Mod", "BIM")
+    try:
+        bim_modpath.rename(bim_modpath.with_name("BIM021"))
+    except FileNotFoundError:
+        pass
+    else:
         FreeCAD.Console.PrintWarning(
             "BIM addon path has been renamed to BIM021 to avoid conflicts with the builtin BIM workbench. Please restart FreeCAD\n"
         )

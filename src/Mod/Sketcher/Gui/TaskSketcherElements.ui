@@ -102,6 +102,12 @@
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
+     <property name="iconSize">
+      <size>
+       <width>24</width>
+       <height>24</height>
+      </size>
+     </property>
      <property name="modelColumn">
       <number>0</number>
      </property>

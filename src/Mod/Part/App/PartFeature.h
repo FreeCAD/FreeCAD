@@ -153,14 +153,14 @@ public:
 
     static bool isElementMappingDisabled(App::PropertyContainer *container);
 
-    bool getCameraAlignmentDirection(Base::Vector3d& direction, const char* subname) const override;
-#ifdef FC_USE_TNP_FIX
+    bool getCameraAlignmentDirection(Base::Vector3d &direction, const char *subname) const override;
+
+    static void guessNewLink(std::string &replacementName, DocumentObject *base, const char *oldLink);
 
     const std::vector<std::string>& searchElementCache(const std::string &element,
                                                        Data::SearchOptions options = Data::SearchOption::CheckGeometry,
                                                        double tol = 1e-7,
                                                        double atol = 1e-10) const override;
-#endif
 protected:
     /// recompute only this object
     App::DocumentObjectExecReturn *recompute() override;
@@ -168,6 +168,9 @@ protected:
     App::DocumentObjectExecReturn *execute() override;
     void onBeforeChange(const App::Property* prop) override;
     void onChanged(const App::Property* prop) override;
+
+    void copyMaterial(Feature* feature);
+    void copyMaterial(App::DocumentObject* link);
 
     void registerElementCache(const std::string &prefix, PropertyPartShape *prop);
 
@@ -184,7 +187,7 @@ protected:
 
     /**
      * Build a history of changes
-     * MakeShape: The operation that created the changes, e.g. BRepAlgoAPI_Common
+     * MakeShape: The operation that created the changes, e.g. FCBRepAlgoAPI_Common
      * type: The type of object we are interested in, e.g. TopAbs_FACE
      * newS: The new shape that was created by the operation
      * oldS: The original shape prior to the operation
@@ -210,7 +213,8 @@ public:
     App::PropertyLinkSub   EdgeLinks;
 
     short mustExecute() const override;
-    void onUpdateElementReference(const App::Property *prop) override;
+    App::DocumentObjectExecReturn* execute() override;
+    void onUpdateElementReference(const App::Property* prop) override;
 
 protected:
     void onDocumentRestored() override;

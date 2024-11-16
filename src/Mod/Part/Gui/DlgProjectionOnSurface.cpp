@@ -207,6 +207,7 @@ DlgProjectionOnSurface::~DlgProjectionOnSurface()
 
 void PartGui::DlgProjectionOnSurface::setupConnections()
 {
+    // clang-format off
     connect(ui->pushButtonAddFace,
             &QPushButton::clicked,
             this,
@@ -259,6 +260,7 @@ void PartGui::DlgProjectionOnSurface::setupConnections()
             qOverload<double>(&QDoubleSpinBox::valueChanged),
             this,
             &DlgProjectionOnSurface::onDoubleSpinBoxSolidDepthValueChanged);
+    // clang-format on
 }
 
 void PartGui::DlgProjectionOnSurface::slotDeletedDocument(const App::Document& Doc)

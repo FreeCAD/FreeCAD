@@ -59,8 +59,8 @@
 #ifndef _PreComp_
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
-#include <BRepAlgoAPI_Common.hxx>
-#include <BRepAlgoAPI_Cut.hxx>
+#include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
+#include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
 #include <BRepAlgo_NormalProjection.hxx>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
@@ -503,13 +503,6 @@ void DrawComplexSection::makeAlignedPieces(const TopoDS_Shape& rawShape)
 
     if (pieces.empty()) {
         m_alignResult = TopoDS_Compound();
-        return;
-    }
-
-    int pieceCount = pieces.size();
-    if (pieceCount < 2) {
-        //no need to space out the pieces
-        m_alignResult = TopoDS::Compound(pieces.front());
         return;
     }
 
@@ -1176,7 +1169,7 @@ bool DrawComplexSection::boxesIntersect(TopoDS_Face& face, TopoDS_Shape& shape)
 TopoDS_Shape DrawComplexSection::shapeShapeIntersect(const TopoDS_Shape& shape0,
                                                      const TopoDS_Shape& shape1)
 {
-    BRepAlgoAPI_Common anOp;
+    FCBRepAlgoAPI_Common anOp;
     anOp.SetFuzzyValue(EWTOLERANCE);
     TopTools_ListOfShape anArg1, anArg2;
     anArg1.Append(shape0);

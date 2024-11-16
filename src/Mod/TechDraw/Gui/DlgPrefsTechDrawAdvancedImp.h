@@ -44,7 +44,19 @@ public:
 protected:
     void saveSettings() override;
     void loadSettings() override;
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent *event) override;
+
+    void loadBalloonOverride();
+    void saveBalloonOverride();
+
+    void clearBalloonOptions();
+
+    static bool flagsContainValue(uint flags, uint value);
+
+    void makeBalloonBoxConnections();
+    void slotBalloonBoxChecked();
+    void enableBalloonOptions(bool newState);
+
 
 private:
     std::unique_ptr<Ui_DlgPrefsTechDrawAdvancedImp> ui;

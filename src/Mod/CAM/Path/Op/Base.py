@@ -121,9 +121,7 @@ class ObjectOp(object):
                 "App::PropertyDistance",
                 "OpStartDepth",
                 "Op Values",
-                QT_TRANSLATE_NOOP(
-                    "App::Property", "Holds the calculated value for the StartDepth"
-                ),
+                QT_TRANSLATE_NOOP("App::Property", "Holds the calculated value for the StartDepth"),
             )
             obj.setEditorMode("OpStartDepth", 1)  # read-only
         if "final" in values:
@@ -131,9 +129,7 @@ class ObjectOp(object):
                 "App::PropertyDistance",
                 "OpFinalDepth",
                 "Op Values",
-                QT_TRANSLATE_NOOP(
-                    "App::Property", "Holds the calculated value for the FinalDepth"
-                ),
+                QT_TRANSLATE_NOOP("App::Property", "Holds the calculated value for the FinalDepth"),
             )
             obj.setEditorMode("OpFinalDepth", 1)  # read-only
         if "tooldia" in values:
@@ -175,9 +171,7 @@ class ObjectOp(object):
             "App::PropertyString",
             "Comment",
             "Path",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "An optional comment for this Operation"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "An optional comment for this Operation"),
         )
         obj.addProperty(
             "App::PropertyString",
@@ -231,17 +225,13 @@ class ObjectOp(object):
                 "App::PropertyDistance",
                 "StartDepth",
                 "Depth",
-                QT_TRANSLATE_NOOP(
-                    "App::Property", "Starting Depth of Tool- first cut depth in Z"
-                ),
+                QT_TRANSLATE_NOOP("App::Property", "Starting Depth of Tool- first cut depth in Z"),
             )
             obj.addProperty(
                 "App::PropertyDistance",
                 "FinalDepth",
                 "Depth",
-                QT_TRANSLATE_NOOP(
-                    "App::Property", "Final Depth of Tool- lowest value in Z"
-                ),
+                QT_TRANSLATE_NOOP("App::Property", "Final Depth of Tool- lowest value in Z"),
             )
             if FeatureNoFinalDepth & features:
                 obj.setEditorMode("FinalDepth", 2)  # hide
@@ -274,9 +264,7 @@ class ObjectOp(object):
                 "App::PropertyDistance",
                 "FinishDepth",
                 "Depth",
-                QT_TRANSLATE_NOOP(
-                    "App::Property", "Maximum material removed on final pass."
-                ),
+                QT_TRANSLATE_NOOP("App::Property", "Maximum material removed on final pass."),
             )
 
         if FeatureHeights & features:
@@ -293,9 +281,7 @@ class ObjectOp(object):
                 "App::PropertyDistance",
                 "SafeHeight",
                 "Depth",
-                QT_TRANSLATE_NOOP(
-                    "App::Property", "Rapid Safety Height between locations."
-                ),
+                QT_TRANSLATE_NOOP("App::Property", "Rapid Safety Height between locations."),
             )
 
         if FeatureStartPoint & features:
@@ -309,9 +295,7 @@ class ObjectOp(object):
                 "App::PropertyBool",
                 "UseStartPoint",
                 "Start Point",
-                QT_TRANSLATE_NOOP(
-                    "App::Property", "Make True, if specifying a Start Point"
-                ),
+                QT_TRANSLATE_NOOP("App::Property", "Make True, if specifying a Start Point"),
             )
 
         if FeatureDiameters & features:
@@ -319,17 +303,13 @@ class ObjectOp(object):
                 "App::PropertyDistance",
                 "MinDiameter",
                 "Diameter",
-                QT_TRANSLATE_NOOP(
-                    "App::Property", "Lower limit of the turning diameter"
-                ),
+                QT_TRANSLATE_NOOP("App::Property", "Lower limit of the turning diameter"),
             )
             obj.addProperty(
                 "App::PropertyDistance",
                 "MaxDiameter",
                 "Diameter",
-                QT_TRANSLATE_NOOP(
-                    "App::Property", "Upper limit of the turning diameter."
-                ),
+                QT_TRANSLATE_NOOP("App::Property", "Upper limit of the turning diameter."),
             )
 
         # members being set later
@@ -428,8 +408,7 @@ class ObjectOp(object):
             oldvalue = str(obj.CoolantMode) if hasattr(obj, "CoolantMode") else "None"
             if (
                 hasattr(obj, "CoolantMode")
-                and not obj.getTypeIdOfProperty("CoolantMode")
-                == "App::PropertyEnumeration"
+                and not obj.getTypeIdOfProperty("CoolantMode") == "App::PropertyEnumeration"
             ):
                 obj.removeProperty("CoolantMode")
 
@@ -438,9 +417,7 @@ class ObjectOp(object):
                     "App::PropertyEnumeration",
                     "CoolantMode",
                     "Path",
-                    QT_TRANSLATE_NOOP(
-                        "App::Property", "Coolant option for this operation"
-                    ),
+                    QT_TRANSLATE_NOOP("App::Property", "Coolant option for this operation"),
                 )
                 for n in self.opPropertyEnumerations():
                     if n[0] == "CoolantMode":
@@ -576,9 +553,7 @@ class ObjectOp(object):
 
         if FeatureTool & features:
             if 1 < len(job.Operations.Group):
-                obj.ToolController = PathUtil.toolControllerForOp(
-                    job.Operations.Group[-2]
-                )
+                obj.ToolController = PathUtil.toolControllerForOp(job.Operations.Group[-2])
             else:
                 obj.ToolController = PathUtils.findToolController(obj, self)
             if not obj.ToolController:
@@ -591,15 +566,11 @@ class ObjectOp(object):
             obj.CoolantMode = job.SetupSheet.CoolantMode
 
         if FeatureDepths & features:
-            if self.applyExpression(
-                obj, "StartDepth", job.SetupSheet.StartDepthExpression
-            ):
+            if self.applyExpression(obj, "StartDepth", job.SetupSheet.StartDepthExpression):
                 obj.OpStartDepth = 1.0
             else:
                 obj.StartDepth = 1.0
-            if self.applyExpression(
-                obj, "FinalDepth", job.SetupSheet.FinalDepthExpression
-            ):
+            if self.applyExpression(obj, "FinalDepth", job.SetupSheet.FinalDepthExpression):
                 obj.OpFinalDepth = 0.0
             else:
                 obj.FinalDepth = 0.0
@@ -607,16 +578,12 @@ class ObjectOp(object):
             obj.StartDepth = 1.0
 
         if FeatureStepDown & features:
-            if not self.applyExpression(
-                obj, "StepDown", job.SetupSheet.StepDownExpression
-            ):
+            if not self.applyExpression(obj, "StepDown", job.SetupSheet.StepDownExpression):
                 obj.StepDown = "1 mm"
 
         if FeatureHeights & features:
             if job.SetupSheet.SafeHeightExpression:
-                if not self.applyExpression(
-                    obj, "SafeHeight", job.SetupSheet.SafeHeightExpression
-                ):
+                if not self.applyExpression(obj, "SafeHeight", job.SetupSheet.SafeHeightExpression):
                     obj.SafeHeight = "3 mm"
             if job.SetupSheet.ClearanceHeightExpression:
                 if not self.applyExpression(
@@ -646,8 +613,7 @@ class ObjectOp(object):
         if not job.Model.Group:
             if not ignoreErrors:
                 Path.Log.error(
-                    translate("CAM", "Parent job %s doesn't have a base object")
-                    % job.Label
+                    translate("CAM", "Parent job %s doesn't have a base object") % job.Label
                 )
             return False
         self.job = job
@@ -715,9 +681,7 @@ class ObjectOp(object):
             zmin = obj.OpFinalDepth.Value
 
             def minZmax(z):
-                if hasattr(obj, "StepDown") and not Path.Geom.isRoughly(
-                    obj.StepDown.Value, 0
-                ):
+                if hasattr(obj, "StepDown") and not Path.Geom.isRoughly(obj.StepDown.Value, 0):
                     return z + obj.StepDown.Value
                 else:
                     return z + 1
@@ -740,13 +704,11 @@ class ObjectOp(object):
         """sanitizeBase(obj) ... check if Base is valid and clear on errors."""
         if hasattr(obj, "Base"):
             try:
-                for (o, sublist) in obj.Base:
+                for o, sublist in obj.Base:
                     for sub in sublist:
                         o.Shape.getElement(sub)
             except Part.OCCError:
-                Path.Log.error(
-                    "{} - stale base geometry detected - clearing.".format(obj.Label)
-                )
+                Path.Log.error("{} - stale base geometry detected - clearing.".format(obj.Label))
                 obj.Base = []
                 return True
         return False
@@ -827,9 +789,7 @@ class ObjectOp(object):
 
         if self.commandlist and (FeatureHeights & self.opFeatures(obj)):
             # Let's finish by rapid to clearance...just for safety
-            self.commandlist.append(
-                Path.Command("G0", {"Z": obj.ClearanceHeight.Value})
-            )
+            self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
 
         path = Path.Path(self.commandlist)
         obj.Path = path
@@ -850,9 +810,7 @@ class ObjectOp(object):
         hRapidrate = tc.HorizRapid.Value
         vRapidrate = tc.VertRapid.Value
 
-        if (
-            hFeedrate == 0 or vFeedrate == 0
-        ) and not Path.Preferences.suppressAllSpeedsWarning():
+        if (hFeedrate == 0 or vFeedrate == 0) and not Path.Preferences.suppressAllSpeedsWarning():
             Path.Log.warning(
                 translate(
                     "CAM",
@@ -899,10 +857,7 @@ class ObjectOp(object):
             for p, el in baselist:
                 if p == base and sub in el:
                     Path.Log.notice(
-                        (
-                            translate("CAM", "Base object %s.%s already in the list")
-                            + "\n"
-                        )
+                        (translate("CAM", "Base object %s.%s already in the list") + "\n")
                         % (base.Label, sub)
                     )
                     return

@@ -134,7 +134,7 @@ by negative value of 'Over Tolerance'.</string>
         <item row="1" column="0">
          <widget class="QCheckBox" name="cbArbitrary">
           <property name="toolTip">
-           <string>If checked the content of 'Format Spec' will
+           <string>If checked, the content of 'Format Spec' will
 be used instead of the dimension value</string>
           </property>
           <property name="text">
@@ -173,7 +173,7 @@ be used instead of the dimension value</string>
         <item row="4" column="0">
          <widget class="QCheckBox" name="cbArbitraryTolerances">
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked the content of tolerance format spec  will&lt;/p&gt;&lt;p&gt;be used instead of the tolerance value&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, the content of tolerance format spec  will&lt;/p&gt;&lt;p&gt;be used instead of the tolerance value&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Arbitrary Tolerance Text</string>

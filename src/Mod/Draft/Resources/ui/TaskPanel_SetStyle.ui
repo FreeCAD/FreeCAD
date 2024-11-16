@@ -349,6 +349,12 @@
              <string>The annotation scale multiplier is the inverse of the scale set in the
 Annotation scale widget. If the scale is 1:100 the multiplier is 100.</string>
             </property>
+            <property name="minimum">
+             <number>0</number>
+            </property>
+            <property name="maximum">
+             <number>10000</number>
+            </property>
            </widget>
           </item>
           <item row="4" column="0">

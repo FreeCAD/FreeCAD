@@ -42,9 +42,9 @@ import Fem
 
 """
 from os.path import join
-the_file = join(FreeCAD.getResourceDir(), "examples", "FemCalculixCantilever3D.FCStd")
+the_file = join(FreeCAD.getResourceDir(), "examples", "FEMExample.FCStd")
 fc_file = FreeCAD.openDocument(the_file)
-fem_mesh = fc_file.getObject("Box_Mesh").FemMesh  # do not remove the _
+fem_mesh = fc_file.getObject("FEMMeshGmsh").FemMesh
 result = fc_file.getObject("CCX_Results")
 scale = 1  # displacement scale factor
 from femmesh import femmesh2mesh

@@ -127,8 +127,8 @@ void TaskDimRepair::slotUseSelection()
         return;
     }
 
-    StringVector acceptableGeometry({"Edge", "Vertex"});
-    std::vector<int> minimumCounts({1, 1});
+    StringVector acceptableGeometry({ "Edge", "Vertex", "Face" });
+    std::vector<int> minimumCounts({1, 1, 1});
     std::vector<DimensionGeometryType> acceptableDimensionGeometrys;//accept anything
     DimensionGeometryType geometryRefs2d = validateDimSelection(
         references2d, acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);

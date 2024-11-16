@@ -549,18 +549,16 @@ DimensionGeometryType TechDraw::isValidMultiEdge(ReferenceVector refs)
             return isInvalid;                                    //not supported yet
         }
         Base::Vector3d line0 = gen0->points.at(1) - gen0->points.at(0);
+        line0.Normalize();
         Base::Vector3d line1 = gen1->points.at(1) - gen1->points.at(0);
-        double xprod = fabs(line0.x * line1.y - line0.y * line1.x);
-        if (xprod > FLT_EPSILON) {//edges are not parallel
-            return isAngle;       //angle or distance
-        } else {
-            return isDiagonal;//distance || line
+        line1.Normalize();
+        double dot = fabs(line0.Dot(line1));
+        if (DU::fpCompare(dot, 1.0, EWTOLERANCE)) {
+            return isDiagonal;    //distance || line
         }
-    } else {
-        return isDiagonal;//two edges, not both straight lines
+        return isAngle;       //angle or distance
     }
-
-    return isInvalid;
+    return isDiagonal;  //two edges, not both straight lines
 }
 
 //! verify that the edge references can make a dimension. Currently only extent
@@ -605,20 +603,24 @@ DimensionGeometryType TechDraw::isValidMultiEdge3d(DrawViewPart* dvp, ReferenceV
     if (edgesAll.size() > 2) {
         //must be an extent dimension of lines?
         return isMultiEdge;
-    } else if (edgesAll.size() == 2) {
+    }
+
+    if (edgesAll.size() == 2) {
         Base::Vector3d first0 = DU::toVector3d(BRep_Tool::Pnt(TopExp::FirstVertex(edgesAll.at(0))));
         Base::Vector3d last0 = DU::toVector3d(BRep_Tool::Pnt(TopExp::LastVertex(edgesAll.at(1))));
         Base::Vector3d line0 = last0 - first0;
         Base::Vector3d first1 = DU::toVector3d(BRep_Tool::Pnt(TopExp::FirstVertex(edgesAll.at(0))));
         Base::Vector3d last1 = DU::toVector3d(BRep_Tool::Pnt(TopExp::LastVertex(edgesAll.at(1))));
         Base::Vector3d line1 = last1 - first1;
-        if (DU::fpCompare(fabs(line0.Dot(line1)), 1)) {
+        line0.Normalize();
+        line1.Normalize();
+        auto dot = fabs(line0.Dot(line1));
+        if (DU::fpCompare(dot, 1.0, EWTOLERANCE)) {
             //lines are parallel, must be distance dim
             return isDiagonal;
-        } else {
-            //lines are skew, could be angle, could be distance?
-            return isAngle;
         }
+        //lines are skew, could be angle, could be distance?
+        return isAngle;
     }
 
     return isInvalid;

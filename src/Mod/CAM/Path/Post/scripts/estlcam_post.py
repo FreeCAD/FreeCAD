@@ -61,7 +61,7 @@ OUTPUT_HEADER = True  # default output header in output gCode file
 OUTPUT_LINE_NUMBERS = False  # default doesn't output line numbers in output gCode file
 
 OUTPUT_TOOL_CHANGE = True  # default output tool change
-TOOL_CHANGE_USE_ALTCMD = False   # default doesn't use alternative command for tool change
+TOOL_CHANGE_USE_ALTCMD = False  # default doesn't use alternative command for tool change
 
 SHOW_EDITOR = True  # default show the resulting file dialog output in GUI
 PRECISION = 3  # Default precision for metric
@@ -83,14 +83,18 @@ POSTAMBLE = """M5
 LINENR = 100  # line number starting value
 LINEINCR = 10  # line number increment
 
-DRILL_RETRACT_MODE = "G98"  # Default value of drill retractations (CURRENT_Z) other possible value is G99
+DRILL_RETRACT_MODE = (
+    "G98"  # Default value of drill retractations (CURRENT_Z) other possible value is G99
+)
 
 MOTION_MODE = "G90"  # only G90 for absolute moves
 UNITS = "G21"  # G21 for metric, G20 for us standard
 UNIT_FORMAT = "mm"
 UNIT_SPEED_FORMAT = "mm/min"
 
-TOOL_CHANGE_ALTERNATIVE_CMD = "M0" # alternative Tool Change command, only if TOOL_CHANGE_USE_ALTCMD is true
+TOOL_CHANGE_ALTERNATIVE_CMD = (
+    "M0"  # alternative Tool Change command, only if TOOL_CHANGE_USE_ALTCMD is true
+)
 TOOL_CHANGE = """M5
 """  # Tool Change commands will be inserted before a tool change
 
@@ -100,13 +104,9 @@ TOOL_CHANGE = """M5
 
 # Parser arguments list & definition
 parser = argparse.ArgumentParser(prog="estlcam", add_help=False)
-parser.add_argument(
-    "--no-comments", action="store_true", help="suppress comment output"
-)
+parser.add_argument("--no-comments", action="store_true", help="suppress comment output")
 parser.add_argument("--no-header", action="store_true", help="suppress header output")
-parser.add_argument(
-    "--line-numbers", action="store_true", help="prefix with line numbers"
-)
+parser.add_argument("--line-numbers", action="store_true", help="prefix with line numbers")
 parser.add_argument(
     "--no-show-editor",
     action="store_true",
@@ -114,21 +114,15 @@ parser.add_argument(
 )
 parser.add_argument(
     "--preamble",
-    help='set commands to be issued before the first command',
+    help="set commands to be issued before the first command",
 )
 parser.add_argument(
     "--postamble",
-    help='set commands to be issued after the last command',
+    help="set commands to be issued after the last command",
 )
-parser.add_argument(
-    "--precision", default="3", help="number of digits of precision, default=3"
-)
-parser.add_argument(
-    "--inches", action="store_true", help="convert output for US imperial mode"
-)
-parser.add_argument(
-    "--no-tool-change", action="store_true", help="comment out tool changes"
-)
+parser.add_argument("--precision", default="3", help="number of digits of precision, default=3")
+parser.add_argument("--inches", action="store_true", help="convert output for US imperial mode")
+parser.add_argument("--no-tool-change", action="store_true", help="comment out tool changes")
 parser.add_argument(
     "--tool-change-use-altcmd", action="store_true", help="use alternative command for tool change"
 )
@@ -156,6 +150,7 @@ COMMAND_SPACE = " "
 CURRENT_X = 0
 CURRENT_Y = 0
 CURRENT_Z = 0
+
 
 def processArguments(argstring):
 
@@ -259,9 +254,7 @@ def export(objectslist, filename, argstring):
         # print("*"*70 + "\n")
         if not hasattr(obj, "Path"):
             print(
-                "The object "
-                + obj.Name
-                + " is not a path. Please select only path and Compounds."
+                "The object " + obj.Name + " is not a path. Please select only path and Compounds."
             )
             return
 
@@ -281,11 +274,7 @@ def export(objectslist, filename, argstring):
 
         # get coolant mode
         coolantMode = "None"
-        if (
-            hasattr(obj, "CoolantMode")
-            or hasattr(obj, "Base")
-            and hasattr(obj.Base, "CoolantMode")
-        ):
+        if hasattr(obj, "CoolantMode") or hasattr(obj, "Base") and hasattr(obj.Base, "CoolantMode"):
             if hasattr(obj, "CoolantMode"):
                 coolantMode = obj.CoolantMode
             else:
@@ -317,7 +306,6 @@ def export(objectslist, filename, argstring):
                 gcode += linenumber() + "M9" + "\n"
             if coolantMode == "Mist":
                 gcode += linenumber() + "M11" + "\n"
-
 
     # do the post_amble
     if OUTPUT_COMMENTS:
@@ -406,9 +394,7 @@ def parse(pathobj):
         return out
 
     else:  # parsing simple path
-        if not hasattr(
-            pathobj, "Path"
-        ):  # groups might contain non-path things like stock.
+        if not hasattr(pathobj, "Path"):  # groups might contain non-path things like stock.
             return out
 
         if OUTPUT_COMMENTS:
@@ -425,9 +411,7 @@ def parse(pathobj):
                 if param in c.Parameters:
                     if param == "F":
                         if command not in RAPID_MOVES:
-                            speed = Units.Quantity(
-                                c.Parameters["F"], FreeCAD.Units.Velocity
-                            )
+                            speed = Units.Quantity(c.Parameters["F"], FreeCAD.Units.Velocity)
                             if speed.getValueAs(UNIT_SPEED_FORMAT) > 0.0:
                                 outstring.append(
                                     param
@@ -441,16 +425,11 @@ def parse(pathobj):
                     elif param in ["D", "P", "L"]:
                         outstring.append(param + str(c.Parameters[param]))
                     elif param in ["A", "B", "C"]:
-                        outstring.append(
-                            param + format(c.Parameters[param], precision_string)
-                        )
+                        outstring.append(param + format(c.Parameters[param], precision_string))
                     else:  # [X, Y, Z, U, V, W, I, J, K, R, Q] (Conversion eventuelle mm/inches)
                         pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
                         outstring.append(
-                            param
-                            + format(
-                                float(pos.getValueAs(UNIT_FORMAT)), precision_string
-                            )
+                            param + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string)
                         )
 
             # store the latest command
@@ -490,7 +469,6 @@ def parse(pathobj):
                 else:
                     for line in TOOL_CHANGE.splitlines(True):
                         out += linenumber() + line
-
 
             if command == "message":
                 if OUTPUT_COMMENTS is False:
@@ -571,9 +549,7 @@ def drill_translate(outstring, cmd, params):
             "G0 Z" + format(float(RETRACT_Z.getValueAs(UNIT_FORMAT)), strFormat) + "\n"
         )
         strF_Feedrate = (
-            " F"
-            + format(float(drill_feedrate.getValueAs(UNIT_SPEED_FORMAT)), ".2f")
-            + "\n"
+            " F" + format(float(drill_feedrate.getValueAs(UNIT_SPEED_FORMAT)), ".2f") + "\n"
         )
         print(strF_Feedrate)
 
@@ -631,9 +607,7 @@ def drill_translate(outstring, cmd, params):
                         trBuff += (
                             linenumber()
                             + "G1 Z"
-                            + format(
-                                float(next_Stop_Z.getValueAs(UNIT_FORMAT)), strFormat
-                            )
+                            + format(float(next_Stop_Z.getValueAs(UNIT_FORMAT)), strFormat)
                             + strF_Feedrate
                         )
                         trBuff += linenumber() + strG0_RETRACT_Z

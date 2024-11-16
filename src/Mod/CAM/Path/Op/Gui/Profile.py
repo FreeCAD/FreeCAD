@@ -98,9 +98,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.selectInComboBox(obj.Side, self.form.cutSide)
         self.selectInComboBox(obj.Direction, self.form.direction)
         self.form.extraOffset.setText(
-            FreeCAD.Units.Quantity(
-                obj.OffsetExtra.Value, FreeCAD.Units.Length
-            ).UserString
+            FreeCAD.Units.Quantity(obj.OffsetExtra.Value, FreeCAD.Units.Length).UserString
         )
 
         self.form.useCompensation.setChecked(obj.UseComp)
@@ -135,7 +133,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             objBase = self.obj.Base
 
         if objBase.__len__() > 0:
-            for (base, subsList) in objBase:
+            for base, subsList in objBase:
                 for sub in subsList:
                     if sub[:4] == "Face":
                         hasFace = True
@@ -163,9 +161,7 @@ Command = PathOpGui.SetupOperation(
     TaskPanelOpPage,
     "CAM_Profile",
     QT_TRANSLATE_NOOP("CAM_Profile", "Profile"),
-    QT_TRANSLATE_NOOP(
-        "CAM_Profile", "Profile entire model, selected face(s) or selected edge(s)"
-    ),
+    QT_TRANSLATE_NOOP("CAM_Profile", "Profile entire model, selected face(s) or selected edge(s)"),
     PathProfile.SetupProperties,
 )
 

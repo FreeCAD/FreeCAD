@@ -35,8 +35,8 @@ using namespace Gui::Dialog;
 /* TRANSLATOR Gui::Dialog::DlgMaterialPropertiesImp */
 
 DlgMaterialPropertiesImp::DlgMaterialPropertiesImp(QWidget* parent, Qt::WindowFlags fl)
-  : QDialog(parent, fl)
-  , ui(new Ui_DlgMaterialProperties)
+    : QDialog(parent, fl)
+    , ui(new Ui_DlgMaterialProperties)
 {
     ui->setupUi(this);
     setupConnections();
@@ -51,6 +51,7 @@ DlgMaterialPropertiesImp::~DlgMaterialPropertiesImp() = default;
 
 void DlgMaterialPropertiesImp::setupConnections()
 {
+    // clang-format off
     connect(ui->ambientColor, &ColorButton::changed,
             this, &DlgMaterialPropertiesImp::onAmbientColorChanged);
     connect(ui->diffuseColor, &ColorButton::changed,
@@ -61,10 +62,13 @@ void DlgMaterialPropertiesImp::setupConnections()
             this, &DlgMaterialPropertiesImp::onSpecularColorChanged);
     connect(ui->shininess, qOverload<int>(&QSpinBox::valueChanged),
             this, &DlgMaterialPropertiesImp::onShininessValueChanged);
+    connect(ui->transparency, qOverload<int>(&QSpinBox::valueChanged),
+            this, &DlgMaterialPropertiesImp::onTransparencyValueChanged);
     connect(ui->buttonReset, &QPushButton::clicked,
             this, &DlgMaterialPropertiesImp::onButtonReset);
     connect(ui->buttonDefault, &QPushButton::clicked,
             this, &DlgMaterialPropertiesImp::onButtonDefault);
+    // clang-format on
 }
 
 void DlgMaterialPropertiesImp::setCustomMaterial(const App::Material& mat)
@@ -129,6 +133,14 @@ void DlgMaterialPropertiesImp::onShininessValueChanged(int sh)
 }
 
 /**
+ * Sets the current transparency.
+ */
+void DlgMaterialPropertiesImp::onTransparencyValueChanged(int sh)
+{
+    customMaterial.transparency = (float)sh / 100.0F;
+}
+
+/**
  * Reset the colors to the Coin3D defaults
  */
 void DlgMaterialPropertiesImp::onButtonReset()
@@ -157,6 +169,9 @@ void DlgMaterialPropertiesImp::setButtonColors(const App::Material& mat)
     ui->shininess->blockSignals(true);
     ui->shininess->setValue((int)(100.0F * (mat.shininess + 0.001F)));
     ui->shininess->blockSignals(false);
+    ui->transparency->blockSignals(true);
+    ui->transparency->setValue((int)(100.0F * (mat.transparency + 0.001F)));
+    ui->transparency->blockSignals(false);
 }
 
 #include "moc_DlgMaterialPropertiesImp.cpp"

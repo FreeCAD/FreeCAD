@@ -30,6 +30,7 @@ from urllib.parse import urlparse
 from typing import Dict, Set, List, Optional
 from threading import Lock
 from enum import IntEnum, auto
+import xml.etree.ElementTree
 
 import addonmanager_freecad_interface as fci
 from addonmanager_macro import Macro
@@ -372,7 +373,14 @@ class Addon:
         """Read a given metadata file and set it as this object's metadata"""
 
         if os.path.exists(file):
-            metadata = MetadataReader.from_file(file)
+            try:
+                metadata = MetadataReader.from_file(file)
+            except xml.etree.ElementTree.ParseError:
+                fci.Console.PrintWarning(
+                    "An invalid or corrupted package.xml file was found in the cache for"
+                )
+                fci.Console.PrintWarning(f" {self.name}... ignoring the bad data.\n")
+                return
             self.set_metadata(metadata)
             self._clean_url()
         else:
@@ -384,7 +392,14 @@ class Addon:
         mod_dir = os.path.join(self.mod_directory, self.name)
         installed_metadata_path = os.path.join(mod_dir, "package.xml")
         if os.path.isfile(installed_metadata_path):
-            self.installed_metadata = MetadataReader.from_file(installed_metadata_path)
+            try:
+                self.installed_metadata = MetadataReader.from_file(installed_metadata_path)
+            except xml.etree.ElementTree.ParseError:
+                fci.Console.PrintWarning(
+                    "An invalid or corrupted package.xml file was found in installation of"
+                )
+                fci.Console.PrintWarning(f" {self.name}... ignoring the bad data.\n")
+                return
 
     def set_metadata(self, metadata: Metadata) -> None:
         """Set the given metadata object as this object's metadata, updating the

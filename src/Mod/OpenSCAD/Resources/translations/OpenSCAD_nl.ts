@@ -174,7 +174,7 @@
       <location filename="../../InitGui.py" line="135"/>
       <location filename="../../InitGui.py" line="148"/>
       <source>If OpenSCAD execution fails to load the temporary file, use FreeCAD's OpenSCAD Workbench Preferences to change the transfer mechanism.</source>
-      <translation type="unfinished">If OpenSCAD execution fails to load the temporary file, use FreeCAD's OpenSCAD Workbench Preferences to change the transfer mechanism.</translation>
+      <translation>Als de OpenSCAD uitvoering het tijdelijke bestand niet kan laden, gebruik dan de voorkeuren van de FreeCAD OpenScad werkbank om het overdrachtsmechanisme te wijzigen.</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="143"/>
@@ -189,7 +189,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="139"/>
       <source>Convert Edges to Faces</source>
-      <translation type="unfinished">Convert Edges to Faces</translation>
+      <translation>Randen omzetten naar vlakken</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="301"/>
@@ -242,7 +242,7 @@
       <location filename="../../OpenSCADCommands.py" line="339"/>
       <location filename="../../OpenSCADCommands.py" line="370"/>
       <source>as Mesh</source>
-      <translation type="unfinished">as Mesh</translation>
+      <translation>als Mesh</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="352"/>
@@ -281,17 +281,17 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="487"/>
       <source>Minkowski sum</source>
-      <translation type="unfinished">Minkowski sum</translation>
+      <translation>Minkowski-som</translation>
     </message>
     <message>
       <location filename="../../OpenSCADUtils.py" line="654"/>
       <source>OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</source>
-      <translation type="unfinished">OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</translation>
+      <translation>OpenSCAD bestand bevat zowel 2D als 3D vormen. Dat wordt niet ondersteund in deze import, alle vormen moeten dezelfde dimensionaliteit hebben.</translation>
     </message>
     <message>
       <location filename="../../OpenSCADUtils.py" line="665"/>
       <source>Error: either all shapes must be 2D or all shapes must be 3D</source>
-      <translation type="unfinished">Error: either all shapes must be 2D or all shapes must be 3D</translation>
+      <translation>Fout: ofwel alle vormen moeten 2D zijn of alle vormen moeten 3D zijn</translation>
     </message>
     <message>
       <location filename="../../importCSG.py" line="549"/>
@@ -428,7 +428,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="307"/>
       <source>Replace an object in the Tree view. Please select old, new, and parent object</source>
-      <translation type="unfinished">Replace an object in the Tree view. Please select old, new, and parent object</translation>
+      <translation>Vervang een object in de boomstructuur. Selecteer oude, nieuwe en bovenliggende object</translation>
     </message>
   </context>
   <context>
@@ -493,7 +493,7 @@
     <message>
       <location filename="../../InitGui.py" line="156"/>
       <source>Frequently-used Part WB tools</source>
-      <translation type="unfinished">Frequently-used Part WB tools</translation>
+      <translation>Vaak gebruikte Part workbench gereedschappen</translation>
     </message>
   </context>
   <context>
@@ -501,12 +501,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="586"/>
       <source>Minkowski sum</source>
-      <translation type="unfinished">Minkowski sum</translation>
+      <translation>Minkowski-som</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="589"/>
       <source>Use OpenSCAD to create a Minkowski sum</source>
-      <translation type="unfinished">Use OpenSCAD to create a Minkowski sum</translation>
+      <translation>Gebruik OpenSCAD om een Minkowski-som te maken</translation>
     </message>
   </context>
 </TS>

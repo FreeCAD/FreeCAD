@@ -26,8 +26,8 @@
 # include <sstream>
 # include <Bnd_Box.hxx>
 # include <BRepAdaptor_Curve.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
-# include <BRepAlgoAPI_Common.hxx>
+# include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
 # include <BRepBndLib.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
@@ -128,6 +128,26 @@ PyObject *Feature::getPyObject()
     return Py::new_reference_to(PythonObject);
 }
 
+void Feature::copyMaterial(Feature* feature)
+{
+    auto mat = Materials::MaterialManager::defaultMaterial();
+    if (feature) {
+        if (ShapeMaterial.getValue().getUUID() != feature->ShapeMaterial.getValue().getUUID()) {
+            if (ShapeMaterial.getValue().getUUID() == mat->getUUID()) {
+                ShapeMaterial.setValue(feature->ShapeMaterial.getValue());
+            }
+        }
+    }
+}
+
+void Feature::copyMaterial(App::DocumentObject* link)
+{
+    auto feature = dynamic_cast<Part::Feature*>(link);
+    if (feature) {
+        copyMaterial(feature);
+    }
+}
+
 /**
  * Override getElementName to support the Export type.  Other calls are passed to the original
  * method
@@ -207,7 +227,7 @@ App::ElementNamePair Feature::getExportElementName(TopoShape shape,
                     if (!name) {
                         continue;
                     }
-                    indices.emplace_back(name.size(),
+                    indices.emplace_back(names.size(),
                                          shape.findAncestors(ss.getShape(), res.first));
                     names.push_back(name);
                     if (indices.back().second.size() == 1 && ++count >= MinLowerTopoNames) {
@@ -313,6 +333,9 @@ App::ElementNamePair Feature::getExportElementName(TopoShape shape,
                 auto names =
                     shape.decodeElementComboName(idxName, mapped.name, idxName.getType(), &postfix);
                 std::vector<int> ancestors;
+                // TODO:  if names.empty() then the existing heuristic has failed to find anything
+                //   and we're going to flag this element as missing.  This is the place to add
+                //   heuristics as we develop them.
                 for (auto& name : names) {
                     auto index = shape.getIndexedName(name);
                     if (!index) {
@@ -838,7 +861,12 @@ App::Material Feature::getMaterialAppearance() const
 
 void Feature::setMaterialAppearance(const App::Material& material)
 {
-    ShapeMaterial.setValue(material);
+    try {
+        ShapeMaterial.setValue(material);
+    }
+    catch (const Base::Exception& e) {
+        e.ReportException();
+    }
 }
 
 // Toponaming project March 2024:  This method should be going away when we get to the python layer.
@@ -1254,7 +1282,6 @@ TopoShape Feature::getTopoShape(const App::DocumentObject* obj,
                                noElementMap,
                                hiddens,
                                lastLink);
-#ifdef FC_USE_TNP_FIX
     if (needSubElement && shape.shapeType(true) == TopAbs_COMPOUND) {
         if (shape.countSubShapes(TopAbs_SOLID) == 1)
             shape = shape.getSubTopoShape(TopAbs_SOLID, 1);
@@ -1271,7 +1298,6 @@ TopoShape Feature::getTopoShape(const App::DocumentObject* obj,
         else if (shape.countSubShapes(TopAbs_VERTEX) == 1)
             shape = shape.getSubTopoShape(TopAbs_VERTEX, 1);
     }
-#endif
     Base::Matrix4D topMat;
     if (pmat || transform) {
         // Obtain top level transformation
@@ -1423,7 +1449,6 @@ void Feature::onChanged(const App::Property* prop)
 {
     // if the placement has changed apply the change to the point data as well
     if (prop == &this->Placement) {
-#ifdef FC_USE_TNP_FIX
         TopoShape shape = this->Shape.getShape();
         auto oldTransform = shape.getTransform();
         auto newTransform = this->Placement.getValue().toMatrix();
@@ -1434,19 +1459,11 @@ void Feature::onChanged(const App::Property* prop)
         if ( oldTransform != newTransform) {
             this->Shape.setValue(shape);
         }
-
-#else
-        this->Shape.setTransform(this->Placement.getValue().toMatrix());
-#endif
     }
     // if the point data has changed check and adjust the transformation as well
     else if (prop == &this->Shape) {
         if (this->isRecomputing()) {
-#ifdef FC_USE_TNP_FIX
             this->Shape._Shape.setTransform(this->Placement.getValue().toMatrix());
-#else
-            this->Shape.setTransform(this->Placement.getValue().toMatrix());
-#endif
         }
         else {
             Base::Placement p;
@@ -1454,13 +1471,7 @@ void Feature::onChanged(const App::Property* prop)
             if (!this->Shape.getValue().IsNull()) {
                 try {
                     p.fromMatrix(this->Shape.getShape().getTransform());
-#ifdef FC_USE_TNP_FIX
                     this->Placement.setValueIfChanged(p);
-#else
-                    if (p != this->Placement.getValue()) {
-                        this->Placement.setValue(p);
-                    }
-#endif
                 }
                 catch (const Base::ValueError&) {
                 }
@@ -1471,7 +1482,6 @@ void Feature::onChanged(const App::Property* prop)
     GeoFeature::onChanged(prop);
 }
 
-#ifdef FC_USE_TNP_FIX
 
 const std::vector<std::string>& Feature::searchElementCache(const std::string& element,
                                                             Data::SearchOptions options,
@@ -1515,7 +1525,7 @@ const std::vector<std::string>& Feature::searchElementCache(const std::string& e
     }
     return it->second.names;
 }
-#endif
+
 TopLoc_Location Feature::getLocation() const
 {
     Base::Placement pl = this->Placement.getValue();
@@ -1636,11 +1646,8 @@ const App::PropertyComplexGeoData* Feature::getPropertyOfGeometry() const
 bool Feature::isElementMappingDisabled(App::PropertyContainer* container)
 {
     (void)container;
-#ifdef FC_USE_TNP_FIX
     return false;
-#else
-    return true;
-#endif
+
     // TODO:  March 2024 consider if any of this RT branch logic makes sense:
 //    if (!container) {
 //        return false;
@@ -1697,6 +1704,16 @@ bool Feature::getCameraAlignmentDirection(Base::Vector3d& direction, const char*
     return GeoFeature::getCameraAlignmentDirection(direction, subname);
 }
 
+void Feature::guessNewLink(std::string &replacementName, DocumentObject *base, const char *oldLink) {
+    for (auto &element : Part::Feature::getRelatedElements(base, oldLink)) {
+        replacementName.clear();
+        element.index.appendToStringBuffer(replacementName);
+        FC_WARN("Feature guess element reference " << oldLink << " -> " << replacementName);
+        return;
+    }
+    replacementName = oldLink;
+}
+
 // ---------------------------------------------------------
 
 PROPERTY_SOURCE(Part::FilletBase, Part::Feature)
@@ -1715,6 +1732,16 @@ short FilletBase::mustExecute() const
     if (Base.isTouched() || Edges.isTouched() || EdgeLinks.isTouched())
         return 1;
     return 0;
+}
+
+App::DocumentObjectExecReturn* FilletBase::execute()
+{
+    App::DocumentObject* link = this->Base.getValue();
+    if (!link) {
+        return new App::DocumentObjectExecReturn("No object linked");
+    }
+    copyMaterial(link);
+    return Part::Feature::execute();
 }
 
 void FilletBase::onChanged(const App::Property *prop) {
@@ -1899,7 +1926,7 @@ bool Part::checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& seco
 
     if (touch_is_intersection) {
         // If both shapes fuse to a single solid, then they intersect
-        BRepAlgoAPI_Fuse mkFuse(first, second);
+        FCBRepAlgoAPI_Fuse mkFuse(first, second);
         if (!mkFuse.IsDone())
             return false;
         if (mkFuse.Shape().IsNull())
@@ -1917,7 +1944,7 @@ bool Part::checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& seco
         }
     } else {
         // If both shapes have common material, then they intersect
-        BRepAlgoAPI_Common mkCommon(first, second);
+        FCBRepAlgoAPI_Common mkCommon(first, second);
         if (!mkCommon.IsDone())
             return false;
         if (mkCommon.Shape().IsNull())

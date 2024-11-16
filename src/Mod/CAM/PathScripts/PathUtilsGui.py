@@ -58,9 +58,7 @@ class PathUtilsUserInput(object):
         r = form.exec_()
         if not r:
             return None
-        return [
-            i for i in controllers if i.Label == form.uiToolController.currentText()
-        ][0]
+        return [i for i in controllers if i.Label == form.uiToolController.currentText()][0]
 
     def chooseJob(self, jobs):
         job = None

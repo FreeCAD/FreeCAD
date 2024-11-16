@@ -81,12 +81,6 @@
    </item>
   </layout>
  </widget>
- <tabstops>
-  <tabstop>lineEditName</tabstop>
-  <tabstop>comboBoxType</tabstop>
-  <tabstop>checkBoxAdd</tabstop>
-  <tabstop>lineEditToolTip</tabstop>
- </tabstops>
  <resources/>
  <connections>
   <connection>

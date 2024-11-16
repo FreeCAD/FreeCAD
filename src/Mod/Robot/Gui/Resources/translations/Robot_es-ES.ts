@@ -11,12 +11,12 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="241"/>
       <source>Add tool</source>
-      <translation>Agregar herramienta</translation>
+      <translation>Añadir herramienta</translation>
     </message>
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="242"/>
       <source>Add a tool shape to the robot</source>
-      <translation>Agregar una forma de herramienta para el robot</translation>
+      <translation>Añadir una forma de herramienta para el robot</translation>
     </message>
   </context>
   <context>

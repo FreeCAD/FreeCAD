@@ -9,65 +9,62 @@
   <summary>An open source parametric 3D CAD modeler</summary>
   <description>
     <p>
-      FreeCAD is an open-source parametric 3D modeler made 
-      primarily to design real-life objects of any size. 
-      Parametric modeling allows you to easily modify your 
-      design by going back into your model history and 
-      changing its parameters. It is designed to fit a 
-      wide range of uses including product design, mechanical 
-      engineering, architecture and 3D printing.
+      FreeCAD is an open-source parametric 3D modeler built to help you design real-world objects of
+      any size. With parametric modeling, you can easily modify your designs by adjusting parameters
+      in the model history. FreeCAD is suitable for a wide range of uses, from product design and
+      mechanical engineering to architecture and 3D printing.
     </p>
     <p>
-      FreeCAD allows you to sketch geometry constrained 
-      2D shapes and use them as a base to build other objects. 
-      It contains many components to adjust dimensions or 
-      extract design details from 3D models to create high 
-      quality production-ready drawings. it is a multiplatfom 
-      (Windows, Mac and Linux), highly customizable using the 
-      Python language. It reads and writes to many open file 
-      formats such as STEP, IGES, STL, SVG, DXF, OBJ, IFC, 
-      DAE and many others, making it possible to seamlessly 
-      integrate it into your workflow. 
+      The software allows you to create constrained 2D sketches, which can be used as the basis for more
+      complex 3D models. It includes tools to adjust dimensions, extract design details, and produce
+      production-ready technical drawings. FreeCAD is available on Windows, Mac, and Linux, and
+      supports various file formats like STEP, IGES, STL, SVG, DXF, OBJ, IFC, and more, making it easy to
+      fit into existing workflows. It also supports customization through Python scripting for those
+      who want to automate tasks or develop custom features.
     </p>
     <p>
-      FreeCAD includes a modern Finite Element Analysis (FEA) 
-      tools, experimental CFD, BIM, Geodata workbenches, 
-      a Path (CNC) workbench, a robot simulation module that 
-      allows you to study robot movements and many more, and
-      a rich collection of plugins and macros installable
-      directly from within the application.
+      FreeCAD offers several specialized workbenches, including tools for Finite Element Analysis
+      (FEA), Building Information Modeling (BIM), CAM / CNC and robot movement simulation. You can expand its
+      capabilities with add-ons, plugins, and macros created by the FreeCAD community, which can be
+      installed directly from the application. This flexibility makes it a practical choice for both
+      professionals and hobbyists.
     </p>
   </description>
   <screenshots>
     <screenshot type="default">
       <caption>Part Design</caption>
-      <image>https://wiki.freecad.org/images/7/72/Freecad016_screenshot1.jpg</image>
+      <image>https://raw.githubusercontent.com/FreeCAD/FreeCAD/main/.github/images/partdesign.png</image>
     </screenshot>
     <screenshot>
-      <caption>An assembly</caption>
-      <image>https://wiki.freecad.org/images/f/f7/FreeCAD_highlight_3_0.19.jpg</image>
+      <caption>Assembly</caption>
+      <image>https://raw.githubusercontent.com/FreeCAD/FreeCAD/main/.github/images/assembly.png</image>
     </screenshot>
     <screenshot>
-      <caption>Arch Workbench</caption>
-      <image>https://wiki.freecad.org/images/c/c3/Arch_tutorial_43.jpg</image>
+      <caption>BIM</caption>
+      <image>https://raw.githubusercontent.com/FreeCAD/FreeCAD/main/.github/images/bim.png</image>
     </screenshot>
     <screenshot>
-      <caption>Part Design</caption>
-      <image>https://wiki.freecad.org/images/f/f4/Freecad-document-01.jpg</image>
+      <caption>FEM</caption>
+      <image>https://raw.githubusercontent.com/FreeCAD/FreeCAD/main/.github/images/fem.png</image>
     </screenshot>
   </screenshots>
   <keywords>
-    <!-- copied from https://www.freecad.org/ HTML: <meta name="keywords" [...] />  -->
     <keyword>engineering</keyword>
-    <keyword translate="no">opencascade</keyword>
-    <keyword >architecture</keyword>
     <keyword translate="no">cad</keyword>
     <keyword translate="no">bim</keyword>
-    <keyword translate="no">fem</keyword>
+    <keyword translate="no">fea</keyword>
+	<keyword translate="no">fem</keyword>
+    <keyword translate="no">cam</keyword>
+	<keyword translate="no">cnc</keyword>
+    <keyword translate="no">design</keyword>
     <keyword translate="no">3d</keyword>
     <keyword translate="no">3d-printing</keyword>
-    <keyword translate="no">coin</keyword>
-    <keyword translate="no">parametric-modeler</keyword>
+    <keyword translate="no">opencascade</keyword>
+	<keyword translate="no">parametric-modeler</keyword>
+    <keyword>architecture</keyword>
+	<keyword>assembly</keyword>
+	<keyword>part</keyword>
+    <keyword translate="no">coin</keyword>  
   </keywords>
   <url type="homepage">https://www.freecad.org/</url>
   <url type="bugtracker">https://github.com/FreeCAD/FreeCAD/issues</url>

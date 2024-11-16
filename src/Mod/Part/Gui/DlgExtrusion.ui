@@ -65,7 +65,7 @@
       <item row="5" column="2">
        <widget class="QPushButton" name="btnSelectEdge">
         <property name="toolTip">
-         <string>Click to start selecting an edge in 3d view.</string>
+         <string>Click to start selecting an edge in 3D view.</string>
         </property>
         <property name="text">
          <string>Select</string>

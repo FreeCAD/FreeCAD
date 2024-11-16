@@ -230,7 +230,7 @@ typedef DWORD64(__stdcall* PTRANSLATE_ADDRESS_ROUTINE64)(HANDLE      hProcess,
 
 // Some missing defines (for VC5/6):
 #ifndef INVALID_FILE_ATTRIBUTES
-#define INVALID_FILE_ATTRIBUTES ((DWORD)-1)
+#define INVALID_FILE_ATTRIBUTES ((DWORD) - 1)
 #endif
 
 // secure-CRT_functions are only available starting with VC8

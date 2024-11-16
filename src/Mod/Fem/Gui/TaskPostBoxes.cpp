@@ -831,7 +831,7 @@ void TaskPostDataAlongLine::pointCallback(void* ud, SoEventCallback* n)
             QApplication::postEvent(pm, e);
         }
     }
-    else if (mbe->getButton() != SoMouseButtonEvent::BUTTON1
+    else if (mbe->getButton() == SoMouseButtonEvent::BUTTON2
              && mbe->getState() == SoButtonEvent::UP) {
         n->setHandled();
         view->setEditing(false);
@@ -1103,7 +1103,7 @@ void TaskPostDataAtPoint::pointCallback(void* ud, SoEventCallback* n)
         const SbVec3f& pt = point->getPoint();
         Q_EMIT taskPost->PointsChanged(pt[0], pt[1], pt[2]);
     }
-    else if (mbe->getButton() != SoMouseButtonEvent::BUTTON1
+    else if (mbe->getButton() == SoMouseButtonEvent::BUTTON2
              && mbe->getState() == SoButtonEvent::UP) {
         n->setHandled();
         view->setEditing(false);

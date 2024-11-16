@@ -50,6 +50,7 @@
 #include <boost/geometry/geometries/register/point.hpp>
 #include <boost/iostreams/device/array.hpp>
 #include <boost/iostreams/stream.hpp>
+#include <boost/random.hpp>
 #include <boost/range/adaptor/map.hpp>
 #include <boost/uuid/uuid_io.hpp>
 #include <boost_geometry.hpp>
@@ -57,7 +58,7 @@
 // OpenCasCade
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
-#include <BRepAlgoAPI_Section.hxx>
+#include <Mod/Part/App/FCBRepAlgoAPI_Section.h>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>

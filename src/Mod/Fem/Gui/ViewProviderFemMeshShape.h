@@ -24,7 +24,7 @@
 #ifndef FEM_ViewProviderFemMeshShape_H
 #define FEM_ViewProviderFemMeshShape_H
 
-#include <Gui/ViewProviderPythonFeature.h>
+#include <Gui/ViewProviderFeaturePython.h>
 
 #include "ViewProviderFemMesh.h"
 
@@ -58,7 +58,7 @@ public:
 };
 
 using ViewProviderFemMeshShapeBasePython =
-    Gui::ViewProviderPythonFeatureT<ViewProviderFemMeshShapeBase>;
+    Gui::ViewProviderFeaturePythonT<ViewProviderFemMeshShapeBase>;
 
 }  // namespace FemGui
 

@@ -114,14 +114,12 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges &Reason)
     std::string key(obj->getNameInDocument());
     key += '.';
     auto subname = Reason.pSubName;
-#ifdef FC_USE_TNP_FIX
     App::ElementNamePair element;
     App::GeoFeature::resolveElement(obj, Reason.pSubName, element);
     if (Data::isMappedElement(subname)
         && !element.oldName.empty()) {      // If we have a shortened element name
         subname = element.oldName.c_str();  // use if
     }
-#endif
     if(subname)
         key += subname;
     if(Reason.Type == SelectionChanges::RmvSelection) {

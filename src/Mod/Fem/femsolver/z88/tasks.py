@@ -126,21 +126,13 @@ class Solve(run.Solve):
     def runZ88(self, command, binary, solver, state):
         solver_name = solver
         # minimize or hide the popups on Windows
-        if system() == "Windows":
-            self._process = subprocess.Popen(
-                [binary, command, "-" + solver_name],
-                cwd=self.directory,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                startupinfo=femutils.startProgramInfo(state),
-            )
-        else:
-            self._process = subprocess.Popen(
-                [binary, command, "-" + solver_name],
-                cwd=self.directory,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-            )
+        self._process = subprocess.Popen(
+            [binary, command, "-" + solver_name],
+            cwd=self.directory,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            startupinfo=femutils.startProgramInfo(state),
+        )
         self.signalAbort.add(self._process.terminate)
         self._process.communicate()
         self.signalAbort.remove(self._process.terminate)

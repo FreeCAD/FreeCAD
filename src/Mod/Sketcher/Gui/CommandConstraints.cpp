@@ -406,7 +406,7 @@ void SketcherGui::makeTangentToEllipseviaNewPoint(Sketcher::SketchObject* Obj,
 
     try {
         // Add a point
-        Gui::cmdAppObjectArgs(Obj, "addGeometry(Part.Point(App.Vector(%f,%f,0)))", PoE.x, PoE.y);
+        Gui::cmdAppObjectArgs(Obj, "addGeometry(Part.Point(App.Vector(%f,%f,0)), True)", PoE.x, PoE.y);
         int GeoIdPoint = Obj->getHighestCurveIndex();
 
         // Point on first object
@@ -486,7 +486,7 @@ void SketcherGui::makeTangentToArcOfEllipseviaNewPoint(Sketcher::SketchObject* O
 
     try {
         // Add a point
-        Gui::cmdAppObjectArgs(Obj, "addGeometry(Part.Point(App.Vector(%f,%f,0)))", PoE.x, PoE.y);
+        Gui::cmdAppObjectArgs(Obj, "addGeometry(Part.Point(App.Vector(%f,%f,0)), True)", PoE.x, PoE.y);
         int GeoIdPoint = Obj->getHighestCurveIndex();
 
         // Point on first object
@@ -583,7 +583,7 @@ void SketcherGui::makeTangentToArcOfHyperbolaviaNewPoint(Sketcher::SketchObject*
 
     try {
         // Add a point
-        Gui::cmdAppObjectArgs(Obj, "addGeometry(Part.Point(App.Vector(%f,%f,0)))", PoH.x, PoH.y);
+        Gui::cmdAppObjectArgs(Obj, "addGeometry(Part.Point(App.Vector(%f,%f,0)), True)", PoH.x, PoH.y);
         int GeoIdPoint = Obj->getHighestCurveIndex();
 
         // Point on first object
@@ -673,7 +673,7 @@ void SketcherGui::makeTangentToArcOfParabolaviaNewPoint(Sketcher::SketchObject* 
 
     try {
         // Add a point
-        Gui::cmdAppObjectArgs(Obj, "addGeometry(Part.Point(App.Vector(%f,%f,0)))", PoP.x, PoP.y);
+        Gui::cmdAppObjectArgs(Obj, "addGeometry(Part.Point(App.Vector(%f,%f,0)), True)", PoP.x, PoP.y);
         int GeoIdPoint = Obj->getHighestCurveIndex();
 
         // Point on first object
@@ -1812,9 +1812,13 @@ protected:
     {
         //distance, lock
         if (availableConstraint == AvailableConstraint::FIRST) {
+            selAllowed = true;
+            if(selPoints[0].GeoId == Sketcher::GeoEnum::RtPnt) {
+                // Cannot do distance to origin if origin selected
+                return;
+            }
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add 'Distance to origin' constraint"));
             createDistanceConstrain(selPoints[0].GeoId, selPoints[0].PosId, Sketcher::GeoEnum::RtPnt, Sketcher::PointPos::start, onSketchPos);
-            selAllowed = true;
         }
         if (availableConstraint == AvailableConstraint::SECOND) {
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add lock constraint"));
@@ -2486,6 +2490,20 @@ protected:
 
     void createVerticalConstrain(int GeoId1, Sketcher::PointPos PosId1, int GeoId2, Sketcher::PointPos PosId2) {
         if (selLine.size() == 1) {
+            // If the line is horizontal (should be without constraint if we're here), then we need to modify
+            // its point or we'll get a null line.
+            const Part::Geometry* geo = Obj->getGeometry(GeoId1);
+            if (!(geo->is<Part::GeomLineSegment>())) {
+                return;
+            }
+            auto* line = static_cast<const Part::GeomLineSegment*>(geo);
+
+            Base::Vector3d p1 = line->getStartPoint();
+            Base::Vector3d p2 = line->getEndPoint();
+            if (fabs(p1.y - p2.y) < Precision::Confusion()) { // effectively vertical
+                p2 = p1 + (p2 - p1).Length() * Base::Vector3d(0.0, 1.0, 0.0);
+                Gui::cmdAppObjectArgs(Obj, "movePoint(%d,2,App.Vector(%f, %f, 0),0) ", GeoId1, p2.x, p2.y);
+            }
             Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Vertical',%d)) ", GeoId1);
         }
         else { //2points
@@ -2500,7 +2518,21 @@ protected:
     }
     void createHorizontalConstrain(int GeoId1, Sketcher::PointPos PosId1, int GeoId2, Sketcher::PointPos PosId2) {
         if (selLine.size() == 1) {
-            Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Horizontal',%d)) ", GeoId1);
+            // If the line is vertical (should be without constraint if we're here), then we need to modify
+            // its point or we'll get a null line.
+            const Part::Geometry* geo = Obj->getGeometry(GeoId1);
+            if (!(geo->is<Part::GeomLineSegment>())) {
+                return;
+            }
+            auto* line = static_cast<const Part::GeomLineSegment*>(geo);
+
+            Base::Vector3d p1 = line->getStartPoint();
+            Base::Vector3d p2 = line->getEndPoint();
+            if (fabs(p1.x - p2.x) < Precision::Confusion()) { // effectively vertical
+                p2 = p1 + (p2 - p1).Length() * Base::Vector3d(1.0, 0.0, 0.0);
+                Gui::cmdAppObjectArgs(Obj, "movePoint(%d,2,App.Vector(%f, %f, 0),0) ", GeoId1, p2.x, p2.y);
+            }
+            Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Horizontal',%d)) ", GeoId1);
         }
         else { //2points
             if (areBothPointsOrSegmentsFixed(Obj, GeoId1, GeoId2)) {
@@ -3777,7 +3809,9 @@ bool CmdSketcherConstrainCoincidentUnified::substituteConstraintCombinationsPoin
         if ((*it)->Type == Sketcher::Tangent && (*it)->FirstPos == Sketcher::PointPos::none
             && (*it)->SecondPos == Sketcher::PointPos::none && (*it)->Third == GeoEnum::GeoUndef
             && (((*it)->First == GeoId1 && (*it)->Second == GeoId2)
-                || ((*it)->Second == GeoId1 && (*it)->First == GeoId2))) {
+                || ((*it)->Second == GeoId1 && (*it)->First == GeoId2))
+            && (PosId1 == Sketcher::PointPos::start
+                || PosId1 == Sketcher::PointPos::end)) {
 
             // NOTE: This function does not either open or commit a command as it is used for group
             // addition it relies on such infrastructure being provided by the caller.
@@ -3813,6 +3847,12 @@ bool CmdSketcherConstrainCoincidentUnified::substituteConstraintCombinationsCoin
         if ((*it)->Type == Sketcher::Tangent && (*it)->Third == GeoEnum::GeoUndef
             && (((*it)->First == GeoId1 && (*it)->Second == GeoId2)
                 || ((*it)->Second == GeoId1 && (*it)->First == GeoId2))) {
+            if (!(PosId1 == Sketcher::PointPos::start
+                  || PosId1 == Sketcher::PointPos::end)
+                || !(PosId2 == Sketcher::PointPos::start
+                     || PosId2 == Sketcher::PointPos::end)) {
+                continue;
+            }
             if ((*it)->FirstPos == Sketcher::PointPos::none
                 && (*it)->SecondPos == Sketcher::PointPos::none) {
 
@@ -6142,7 +6182,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                 try {
                     // Add a point
                     Gui::cmdAppObjectArgs(Obj,
-                                          "addGeometry(Part.Point(App.Vector(%f,%f,0)))",
+                                          "addGeometry(Part.Point(App.Vector(%f,%f,0)), True)",
                                           PoO.x,
                                           PoO.y);
                     int GeoIdPoint = Obj->getHighestCurveIndex();
@@ -6343,7 +6383,7 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair>& 
                 try {
                     // Add a point
                     Gui::cmdAppObjectArgs(Obj,
-                                          "addGeometry(Part.Point(App.Vector(%f,%f,0)))",
+                                          "addGeometry(Part.Point(App.Vector(%f,%f,0)), True)",
                                           PoO.x,
                                           PoO.y);
                     int GeoIdPoint = Obj->getHighestCurveIndex();
@@ -6569,8 +6609,11 @@ bool CmdSketcherConstrainTangent::substituteConstraintCombinations(SketchObject*
          ++it, ++cid) {
         if ((*it)->Type == Sketcher::Coincident
             && (((*it)->First == GeoId1 && (*it)->Second == GeoId2)
-                || ((*it)->Second == GeoId1 && (*it)->First == GeoId2))) {
-
+                || ((*it)->Second == GeoId1 && (*it)->First == GeoId2))
+            && ((*it)->FirstPos == Sketcher::PointPos::start
+                || (*it)->FirstPos == Sketcher::PointPos::end)
+            && ((*it)->SecondPos == Sketcher::PointPos::start
+                || (*it)->SecondPos == Sketcher::PointPos::end)) {
             // save values because 'doEndpointTangency' changes the
             // constraint property and thus invalidates this iterator
             int first = (*it)->First;
@@ -6596,8 +6639,9 @@ bool CmdSketcherConstrainTangent::substituteConstraintCombinations(SketchObject*
         }
         else if ((*it)->Type == Sketcher::PointOnObject
                  && (((*it)->First == GeoId1 && (*it)->Second == GeoId2)
-                     || ((*it)->Second == GeoId1 && (*it)->First == GeoId2))) {
-
+                     || ((*it)->Second == GeoId1 && (*it)->First == GeoId2))
+                 && ((*it)->FirstPos == Sketcher::PointPos::start
+                     || (*it)->FirstPos == Sketcher::PointPos::end)) {
             Gui::Command::openCommand(
                 QT_TRANSLATE_NOOP("Command",
                                   "Swap point on object and tangency with point to curve tangency"));

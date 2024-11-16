@@ -4,17 +4,17 @@
   <context>
     <name>CmdMeshPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="268"/>
+      <location filename="../../Command.cpp" line="281"/>
       <source>MeshPart</source>
       <translation>Tinklo detalė</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="269"/>
+      <location filename="../../Command.cpp" line="282"/>
       <source>Cross-sections...</source>
       <translation>Skerspjūviai...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="270"/>
+      <location filename="../../Command.cpp" line="283"/>
       <source>Cross-sections</source>
       <translation>Skerspjūviai</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="304"/>
+      <location filename="../../Command.cpp" line="317"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="305"/>
+      <location filename="../../Command.cpp" line="318"/>
       <source>Curve on mesh...</source>
       <translation>Kreivė ant tinklo...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="306"/>
+      <location filename="../../Command.cpp" line="319"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</source>
       <translation type="unfinished">Creates an approximated curve on top of a mesh.
@@ -60,17 +60,17 @@ This command only works with a 'mesh' object.</translation>
   <context>
     <name>CmdMeshPartSection</name>
     <message>
-      <location filename="../../Command.cpp" line="184"/>
+      <location filename="../../Command.cpp" line="192"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="185"/>
+      <location filename="../../Command.cpp" line="193"/>
       <source>Create section from mesh and plane</source>
       <translation>Sukurti pjūvį iš tinklo ir plokštumos</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="186"/>
+      <location filename="../../Command.cpp" line="194"/>
       <source>Section</source>
       <translation>Pjūvis</translation>
     </message>
@@ -97,12 +97,12 @@ This command only works with a 'mesh' object.</translation>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="128"/>
+      <location filename="../../Command.cpp" line="134"/>
       <source>Trim with plane</source>
       <translation type="unfinished">Trim with plane</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="207"/>
+      <location filename="../../Command.cpp" line="217"/>
       <source>Section with plane</source>
       <translation type="unfinished">Section with plane</translation>
     </message>
@@ -170,7 +170,7 @@ This command only works with a 'mesh' object.</translation>
       <translation>Sujungti kraštines esant atstumui mažesniam, nei</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="343"/>
+      <location filename="../../CrossSections.cpp" line="384"/>
       <source>Failure</source>
       <translation>Triktys</translation>
     </message>
@@ -178,32 +178,32 @@ This command only works with a 'mesh' object.</translation>
   <context>
     <name>MeshPartGui::CurveOnMeshHandler</name>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="364"/>
+      <location filename="../../CurveOnMesh.cpp" line="362"/>
       <source>Create</source>
       <translation>Sukurti</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="366"/>
+      <location filename="../../CurveOnMesh.cpp" line="364"/>
       <source>Close wire</source>
       <translation>Uždaryti laužtę</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="368"/>
+      <location filename="../../CurveOnMesh.cpp" line="366"/>
       <source>Clear</source>
       <translation>Išvalyti</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="369"/>
+      <location filename="../../CurveOnMesh.cpp" line="367"/>
       <source>Cancel</source>
       <translation>Atšaukti</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="615"/>
+      <location filename="../../CurveOnMesh.cpp" line="624"/>
       <source>Wrong mesh picked</source>
       <translation>Pasirinktas netinkamas tinklas</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="655"/>
+      <location filename="../../CurveOnMesh.cpp" line="663"/>
       <source>No point was picked</source>
       <translation>Nėra pasirinkta taškų</translation>
     </message>
@@ -340,7 +340,7 @@ Paviršiaus nuotolis padaugintas iš esamos tinklo atkarpos (kraštinės) ilgio<
 These groups will be exported for mesh output formats supporting
 this feature (e.g. the format OBJ).</source>
       <translation>Tinklo daugiakampiai bus suskirstyti pagal kūno sienų spalvas.
-Šie daugiakampių junginiai bus eksportuoti rinkmenų formatais, turinčiais šią ypatybę (pvz., OBJ formatu).</translation>
+Šie daugiakampių junginiai bus eksportuoti rinkmenų formatais, turinčiais šią savybę (pvz., OBJ formatu).</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="124"/>
@@ -406,7 +406,7 @@ The smallest value is 0.</source>
     <message>
       <location filename="../../Tessellation.ui" line="249"/>
       <source>Fine</source>
-      <translation type="unfinished">Fine</translation>
+      <translation>Smulkus</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="254"/>
@@ -484,32 +484,32 @@ Dydis kinta 0,2-10 verčių ribose.</translation>
       <translation>Palikti skydelį atvertą</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="61"/>
+      <location filename="../../Tessellation.cpp" line="62"/>
       <source>Gmsh</source>
       <translation>„Gmsh“</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="212"/>
-      <location filename="../../Tessellation.cpp" line="218"/>
+      <location filename="../../Tessellation.cpp" line="237"/>
+      <location filename="../../Tessellation.cpp" line="243"/>
       <source>No active document</source>
       <translation>Nėra taisytino dokumento</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="246"/>
+      <location filename="../../Tessellation.cpp" line="273"/>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
       <translation type="unfinished">You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="250"/>
+      <location filename="../../Tessellation.cpp" line="279"/>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
       <translation type="unfinished">You have selected a shape without faces.
 Select a different shape, please.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="254"/>
+      <location filename="../../Tessellation.cpp" line="283"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Pirmiausia pasirinkite daiktą tinklui sukurti.</translation>
     </message>
@@ -517,12 +517,12 @@ Select a different shape, please.</translation>
   <context>
     <name>MeshPart_Section</name>
     <message>
-      <location filename="../../Command.cpp" line="197"/>
+      <location filename="../../Command.cpp" line="206"/>
       <source>Select plane</source>
       <translation>Pasirinkti plokštumą</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="198"/>
+      <location filename="../../Command.cpp" line="207"/>
       <source>Please select a plane at which you section the mesh.</source>
       <translation>Prašome pasirinkti plokštumą, kuri perpjaus tinklą.</translation>
     </message>
@@ -540,27 +540,27 @@ Select a different shape, please.</translation>
       <translation>Prašome pasirinkti plokštumą, kuri perpjaus tinklą.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="102"/>
+      <location filename="../../Command.cpp" line="103"/>
       <source>Trim by plane</source>
       <translation>Nupjauti pagal plokštumą</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="103"/>
+      <location filename="../../Command.cpp" line="104"/>
       <source>Select the side you want to keep.</source>
       <translation>Pasirinkite pusę, kurią norite palikti.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="104"/>
+      <location filename="../../Command.cpp" line="106"/>
       <source>Below</source>
       <translation>Žemiau</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="105"/>
+      <location filename="../../Command.cpp" line="108"/>
       <source>Above</source>
       <translation>Aukščiau</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="106"/>
+      <location filename="../../Command.cpp" line="110"/>
       <source>Split</source>
       <translation>Skelti</translation>
     </message>
@@ -571,6 +571,32 @@ Select a different shape, please.</translation>
       <location filename="../../Workbench.cpp" line="36"/>
       <source>MeshPart</source>
       <translation>Tinklo detalė</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshPart_CreateFlatMesh</name>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="49"/>
+      <source>Unwrap mesh</source>
+      <translation type="unfinished">Unwrap mesh</translation>
+    </message>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="52"/>
+      <source>Find a flat representation of a mesh.</source>
+      <translation type="unfinished">Find a flat representation of a mesh.</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshPart_CreateFlatFace</name>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="88"/>
+      <source>Unwrap face</source>
+      <translation type="unfinished">Unwrap face</translation>
+    </message>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="91"/>
+      <source>Find a flat representation of a face.</source>
+      <translation type="unfinished">Find a flat representation of a face.</translation>
     </message>
   </context>
 </TS>

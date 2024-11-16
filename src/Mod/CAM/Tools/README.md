@@ -115,4 +115,3 @@ representation.
 Not that 'Shape' is the only property group which has special meaning
 for tool bits. All other property groups are copied verbatim to the
 tool bit object when one is created.
-

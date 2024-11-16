@@ -314,6 +314,6 @@ PROPERTY_SOURCE_TEMPLATE(PartDesignGui::ViewProviderPython, PartDesignGui::ViewP
 /// @endcond
 
 // explicit template instantiation
-template class PartDesignGuiExport ViewProviderPythonFeatureT<PartDesignGui::ViewProvider>;
+template class PartDesignGuiExport ViewProviderFeaturePythonT<PartDesignGui::ViewProvider>;
 }
 

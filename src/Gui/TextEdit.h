@@ -70,6 +70,7 @@ Q_SIGNALS:
 
 protected:
     void keyPressEvent(QKeyEvent *) override;
+    void wheelEvent(QWheelEvent* e) override;
 
 private:
     void createListBox();

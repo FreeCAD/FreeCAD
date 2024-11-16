@@ -136,7 +136,12 @@ def create_layer(name, project):
 
     group = ifc_tools.get_group(project, "IfcLayersGroup")
     ifcfile = ifc_tools.get_ifcfile(project)
-    layer = ifc_tools.api_run("layer.add_layer", ifcfile, Name=name)
+    try:
+        # IfcopenShell 0.8
+        layer = ifc_tools.api_run("layer.add_layer", ifcfile, name=name)
+    except:
+        # IfcopenShell 0.7
+        layer = ifc_tools.api_run("layer.add_layer", ifcfile, Name=name)
     return get_layer(layer, project)
 
 

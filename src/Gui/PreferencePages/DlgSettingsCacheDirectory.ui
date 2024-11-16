@@ -48,7 +48,7 @@
            </sizepolicy>
           </property>
           <property name="icon">
-           <iconset resource="Icons/resource.qrc">
+           <iconset resource="../Icons/resource.qrc">
             <normaloff>:/icons/document-open.svg</normaloff>:/icons/document-open.svg</iconset>
           </property>
          </widget>
@@ -198,7 +198,7 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="Icons/resource.qrc"/>
+  <include location="../Icons/resource.qrc"/>
  </resources>
  <connections/>
 </ui>

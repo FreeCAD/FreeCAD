@@ -680,7 +680,7 @@ switch the design configuration. The property will be created if not exist.</tra
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="140"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="116"/>
       <location filename="../../Command.cpp" line="195"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
       <translation>CSV (*.csv *.CSV);;Alla (*)</translation>
@@ -691,12 +691,12 @@ switch the design configuration. The property will be created if not exist.</tra
       <translation>importera fil</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="142"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="118"/>
       <source>Export file</source>
       <translation>Exportera fil</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="167"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="143"/>
       <source>Show spreadsheet</source>
       <translation>Visa kalkylark</translation>
     </message>
@@ -728,19 +728,19 @@ switch the design configuration. The property will be created if not exist.</tra
       <translation>Kopiera och klistra in misslyckades</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="485"/>
+      <location filename="../../SpreadsheetView.cpp" line="488"/>
       <source>Alias contains invalid characters!</source>
       <translation>Alias innehåller ogiltiga tecken!</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="491"/>
+      <location filename="../../SpreadsheetView.cpp" line="494"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Referera till cellen via alias, till exempel
 Spreadsheet.my_alias_name, istället för Spreadsheet.B1</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="125"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="149"/>
       <source>Spreadsheet</source>
       <translation>Kalkylark</translation>
     </message>
@@ -1004,24 +1004,24 @@ Defaults to: %V = %A
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="129"/>
       <source>Insert %n row(s) above</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n row(s) above</numerusform>
-        <numerusform>Insert %n row(s) above</numerusform>
+      <translation>
+        <numerusform>Infoga %n rad ovan</numerusform>
+        <numerusform>Infoga %n rader ovan</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="134"/>
       <source>Insert %n row(s) below</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n row(s) below</numerusform>
-        <numerusform>Insert %n row(s) below</numerusform>
+      <translation>
+        <numerusform>Infoga %n rad nedan</numerusform>
+        <numerusform>Infoga %n rader nedan</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="139"/>
       <source>Insert %n non-contiguous rows</source>
       <translation type="unfinished">
-        <numerusform>Insert %n non-contiguous rows</numerusform>
+        <numerusform>Infoga %n ej sammanhängande rader</numerusform>
         <numerusform>Insert %n non-contiguous rows</numerusform>
       </translation>
     </message>
@@ -1036,17 +1036,17 @@ Defaults to: %V = %A
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="155"/>
       <source>Insert %n column(s) left</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n column(s) left</numerusform>
-        <numerusform>Insert %n column(s) left</numerusform>
+      <translation>
+        <numerusform>Infoga %n kolumn till vänster</numerusform>
+        <numerusform>Infoga %n kolumner till vänster</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="160"/>
       <source>Insert %n column(s) right</source>
-      <translation type="unfinished">
-        <numerusform>Infoga %n kolumn(er) till höger</numerusform>
-        <numerusform>Insert %n column(s) right</numerusform>
+      <translation>
+        <numerusform>Infoga %n kolumn till höger</numerusform>
+        <numerusform>Infoga %n kolumner till höger</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -1129,12 +1129,12 @@ Defaults to: %V = %A
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="294"/>
+      <location filename="../../SpreadsheetView.cpp" line="297"/>
       <source>Export PDF</source>
       <translation>Exportera PDF</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="296"/>
+      <location filename="../../SpreadsheetView.cpp" line="299"/>
       <source>PDF file</source>
       <translation>PDF-fil</translation>
     </message>
@@ -1165,7 +1165,8 @@ Defaults to: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="93"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="111"/>
       <source>Unnamed</source>
       <translation>Namnlös</translation>
     </message>

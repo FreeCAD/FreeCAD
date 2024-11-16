@@ -35,8 +35,6 @@ to GCode.
 now = datetime.datetime.now()
 
 
-
-
 def export(objectslist, filename, argstring):
     "called when freecad exports a list of objects"
     if len(objectslist) > 1:

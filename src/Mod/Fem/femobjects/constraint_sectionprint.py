@@ -29,6 +29,7 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief constraint section print object
 
+from FreeCAD import Base
 from . import base_fempythonobject
 
 _PropHelper = base_fempythonobject._PropHelper
@@ -67,5 +68,5 @@ class ConstraintSectionPrint(base_fempythonobject.BaseFemPythonObject):
         for prop in self._get_properties():
             try:
                 obj.getPropertyByName(prop.name)
-            except:
+            except Base.PropertyError:
                 prop.add_to_object(obj)

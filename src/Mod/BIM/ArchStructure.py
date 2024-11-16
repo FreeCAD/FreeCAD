@@ -412,7 +412,7 @@ class _CommandStructure:
         FreeCADGui.doCommand("Draft.autogroup(s)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
-        gui_utils.end_all_events()
+        # gui_utils.end_all_events()  # Causes a crash on Linux.
         self.tracker.finalize()
         if self.continueCmd:
             self.Activated()

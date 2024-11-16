@@ -143,8 +143,8 @@ public:
     static int
     getRefTypeSubElements(const std::vector<std::string>&);  // Vertex-Vertex, Edge, Edge-Edge
 
-    void setReferences2d(ReferenceVector refs);
-    void setReferences3d(ReferenceVector refs);
+    void setReferences2d(const ReferenceVector& refs);
+    void setReferences3d(const ReferenceVector& refs);
     ReferenceVector getReferences2d() const;
     ReferenceVector getReferences3d() const;
     bool hasGoodReferences() const
@@ -158,10 +158,8 @@ public:
     bool hasBroken3dReferences() const;
 
 
-    virtual pointPair getLinearPoints() const
-    {
-        return m_linearPoints;
-    }
+    virtual pointPair getLinearPoints() const;
+
     virtual void setLinearPoints(Base::Vector3d point0, Base::Vector3d point1)
     {
         m_linearPoints.first(point0);

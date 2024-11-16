@@ -107,6 +107,8 @@ void StartupProcess::setupApplication()
     // compression for tablet events here to solve that.
     QCoreApplication::setAttribute(Qt::AA_CompressTabletEvents);
 #endif
+    // https://forum.freecad.org/viewtopic.php?f=3&t=15540
+    QApplication::setAttribute(Qt::AA_DontShowIconsInMenus, false);
 }
 
 void StartupProcess::execute()
@@ -163,23 +165,13 @@ void StartupProcess::registerEventType()
 
 void StartupProcess::setThemePaths()
 {
-    ParameterGrp::handle hTheme = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Bitmaps/Theme");
 #if !defined(Q_OS_LINUX)
     QIcon::setThemeSearchPaths(QIcon::themeSearchPaths()
                             << QString::fromLatin1(":/icons/FreeCAD-default"));
-    QIcon::setThemeName(QLatin1String("FreeCAD-default"));
-#else
-    // Option to opt-in into using a Linux desktop icon theme.
-    // https://forum.freecad.org/viewtopic.php?f=4&t=35624
-    bool themePaths = hTheme->GetBool("ThemeSearchPaths", false);
-    if (!themePaths) {
-        QStringList searchPaths;
-        searchPaths.prepend(QString::fromUtf8(":/icons"));
-        QIcon::setThemeSearchPaths(searchPaths);
-        QIcon::setThemeName(QLatin1String("FreeCAD-default"));
-    }
 #endif
+
+    ParameterGrp::handle hTheme = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Bitmaps/Theme");
 
     std::string searchpath = hTheme->GetASCII("SearchPath");
     if (!searchpath.empty()) {
@@ -309,7 +301,7 @@ void StartupPostProcess::setCursorFlashing()
 
 void StartupPostProcess::setQtStyle()
 {
-    ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
+    ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("MainWindow");
     auto qtStyle = hGrp->GetASCII("QtStyle");
     QApplication::setStyle(QString::fromStdString(qtStyle));
 }
@@ -418,24 +410,10 @@ void StartupPostProcess::setImportImageFormats()
     App::GetApplication().addImportType(filter.c_str(), "FreeCADGui");
 }
 
-bool StartupPostProcess::hiddenMainWindow() const
-{
-    const std::map<std::string,std::string>& cfg = App::Application::Config();
-    bool hidden = false;
-    auto it = cfg.find("StartHidden");
-    if (it != cfg.end()) {
-        hidden = true;
-    }
-
-    return hidden;
-}
-
 void StartupPostProcess::showMainWindow()
 {
-    bool hidden = hiddenMainWindow();
-
     // show splasher while initializing the GUI
-    if (!hidden && !loadFromPythonModule) {
+    if (!Application::hiddenMainWindow() && !loadFromPythonModule) {
         mainWindow->startSplasher();
     }
 
@@ -498,7 +476,7 @@ void StartupPostProcess::activateWorkbench()
     guiApp.activateWorkbench(start.c_str());
 
     // show the main window
-    if (!hiddenMainWindow()) {
+    if (!Application::hiddenMainWindow()) {
         Base::Console().Log("Init: Showing main window\n");
         mainWindow->loadWindowSettings();
     }

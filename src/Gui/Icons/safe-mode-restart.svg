@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="64"
+   height="64"
+   id="svg2869"
+   version="1.1"
+   viewBox="0 0 64 64"
+   sodipodi:docname="freecad-safe-mode.svg"
+   inkscape:version="1.3.2 (091e20ef0f, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <title
+     id="title1">Safe Mode Icon</title>
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#111111"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="11.313709"
+     inkscape:cx="43.884815"
+     inkscape:cy="27.665553"
+     inkscape:window-width="1920"
+     inkscape:window-height="975"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2869" />
+  <defs
+     id="defs2871">
+    <linearGradient
+       id="linearGradient5">
+      <stop
+         style="stop-color:#ef2929;stop-opacity:1;"
+         offset="0"
+         id="stop19" />
+      <stop
+         style="stop-color:#ef2929;stop-opacity:0;"
+         offset="1"
+         id="stop20" />
+    </linearGradient>
+    <linearGradient
+       id="swatch18">
+      <stop
+         style="stop-color:#ef2929;stop-opacity:1;"
+         offset="0"
+         id="stop18" />
+    </linearGradient>
+    <linearGradient
+       id="swatch15">
+      <stop
+         style="stop-color:#3d0000;stop-opacity:1;"
+         offset="0"
+         id="stop15" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient5-1">
+      <stop
+         style="stop-color:#ef2929;stop-opacity:1;"
+         offset="0"
+         id="stop5" />
+      <stop
+         style="stop-color:#ef2929;stop-opacity:0;"
+         offset="1"
+         id="stop6" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3836-9">
+      <stop
+         style="stop-color:#a40000;stop-opacity:1"
+         offset="0"
+         id="stop3838-8" />
+      <stop
+         style="stop-color:#ef2929;stop-opacity:1"
+         offset="1"
+         id="stop3840-1" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3836-9-3">
+      <stop
+         style="stop-color:#a40000;stop-opacity:1"
+         offset="0"
+         id="stop3838-8-5" />
+      <stop
+         style="stop-color:#ef2929;stop-opacity:1"
+         offset="1"
+         id="stop3840-1-6" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient2">
+      <stop
+         style="stop-color:#73d216;stop-opacity:1;"
+         offset="0"
+         id="stop1" />
+      <stop
+         style="stop-color:#8ae234;stop-opacity:1;"
+         offset="1"
+         id="stop2" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient5-8"
+       id="linearGradient4"
+       x1="-0.46279547"
+       y1="-9.6076241"
+       x2="0.91240209"
+       y2="-7.7955847"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(8.4654504,0,0,8.4688188,91.099985,166.20721)" />
+    <linearGradient
+       id="linearGradient5-8">
+      <stop
+         style="stop-color:#8ae234;stop-opacity:1"
+         offset="0"
+         id="stop1-7" />
+      <stop
+         style="stop-color:#4e9a06;stop-opacity:1"
+         offset="1"
+         id="stop2-6" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient8"
+       id="linearGradient9-6"
+       x1="90.842628"
+       y1="89.354988"
+       x2="99.443108"
+       y2="98.956932"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       id="linearGradient8">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1"
+         offset="0"
+         id="stop8" />
+      <stop
+         style="stop-color:#babdb6;stop-opacity:1"
+         offset="1"
+         id="stop9" />
+    </linearGradient>
+  </defs>
+  <metadata
+     id="metadata2874">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Gabriel A. Zorril</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:date>September 26, 2024</dc:date>
+        <dc:title>Safe Mode Icon</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer3"
+     style="display:inline">
+    <g
+       id="g11"
+       transform="matrix(3.7795276,0,0,3.7795276,-327.50758,-326.66261)">
+      <path
+         d="m 101.42832,96.903456 c 0,2.151154 -2.102879,4.033414 -6.308611,5.646794 -4.205733,-1.61338 -6.308603,-3.49564 -6.308603,-5.646794 0,-2.151154 0,-4.840101 0,-8.066841 2.826362,-1.075568 4.929223,-1.613361 6.308603,-1.613361 1.37937,0 3.48225,0.537793 6.308611,1.613361 0,3.22674 0,5.915687 0,8.066841 z"
+         id="path1-4"
+         style="display:inline;fill:#8ae234;fill-opacity:1;stroke:#17230b;stroke-width:0.529166;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         d="m 95.119141,87.751953 c 1.255627,0 3.149703,0.472658 5.779299,1.453125 v 7.699219 c 0,1.788278 -1.781815,3.510143 -5.779299,5.076173 -3.997486,-1.56603 -5.779297,-3.287895 -5.779297,-5.076173 v -7.699219 c 2.629594,-0.980467 4.523659,-1.453125 5.779297,-1.453125 z"
+         id="path2"
+         style="display:inline;fill:url(#linearGradient4);fill-opacity:1;stroke:#8ae234;stroke-width:0.529166;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         id="path1880"
+         style="color:#000000;display:block;overflow:visible;visibility:visible;fill:url(#linearGradient9-6);fill-opacity:1;fill-rule:nonzero;stroke:#17230b;stroke-width:0.529166;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none"
+         d="m 94.257694,89.521531 c -2.15801,0.002 -3.708676,1.519832 -3.170866,4.048848 -0.04051,-2.920011 3.296068,-3.066458 5.901448,-1.107943 l -1.138948,1.26969 3.422013,0.0036 0.0217,-3.886585 -1.091923,1.189075 C 96.86977,89.996462 95.468284,89.520421 94.257694,89.521531 Z m -3.289722,5.048787 -0.0217,3.886585 1.091923,-1.189075 c 3.704631,2.898842 7.953803,1.415588 7.114294,-2.532145 0.04051,2.920012 -3.296068,3.066974 -5.901448,1.108459 l 1.138948,-1.270206 z" />
+    </g>
+  </g>
+</svg>

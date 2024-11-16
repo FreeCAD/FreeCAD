@@ -42,11 +42,11 @@ class FirstStartWidget: public QGroupBox
 public:
     explicit FirstStartWidget(QWidget* parent = nullptr);
     bool eventFilter(QObject* object, QEvent* event) override;
+    Q_SIGNAL void dismissed();
 
 private:
     void retranslateUi();
     void setupUi();
-    void doneClicked();
 
     ThemeSelectorWidget* _themeSelectorWidget;
     GeneralSettingsWidget* _generalSettingsWidget;

@@ -45,8 +45,8 @@ CmdStart::CmdStart()
 {
     sAppModule = "Start";
     sGroup = QT_TR_NOOP("Start");
-    sMenuText = QT_TR_NOOP("Start");
-    sToolTipText = QT_TR_NOOP("Displays the Start in an MDI view");
+    sMenuText = QT_TR_NOOP("Start Page");
+    sToolTipText = QT_TR_NOOP("Displays the Start Page");
     sWhatsThis = "Start_Start";
     sStatusTip = sToolTipText;
     sPixmap = "StartCommandIcon";
@@ -75,6 +75,10 @@ void StartGui::Manipulator::modifyMenuBar(Gui::MenuItem* menuBar)
 
     Gui::MenuItem* helpMenu = menuBar->findItem("&Help");
     Gui::MenuItem* loadStart = new Gui::MenuItem();
+    Gui::MenuItem* loadSeparator = new Gui::MenuItem();
     loadStart->setCommand("Start_Start");
-    helpMenu->appendItem(loadStart);
+    loadSeparator->setCommand("Separator");
+    Gui::MenuItem* firstItem = helpMenu->findItem("Std_FreeCADUserHub");
+    helpMenu->insertItem(firstItem, loadStart);
+    helpMenu->insertItem(firstItem, loadSeparator);
 }

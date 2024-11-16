@@ -54,9 +54,7 @@ def _resolve_post_processor_name(job):
     elif Path.Preferences.defaultPostProcessor():
         valid_name = Path.Preferences.defaultPostProcessor()
     elif FreeCAD.GuiUp:
-        valid_name = (
-            DlgSelectPostProcessor().exec_()
-        )  # Ensure DlgSelectPostProcessor is defined
+        valid_name = DlgSelectPostProcessor().exec_()  # Ensure DlgSelectPostProcessor is defined
     else:
         valid_name = None
 
@@ -75,9 +73,7 @@ class DlgSelectPostProcessor:
         firstItem = None
         for post in Path.Preferences.allEnabledPostProcessors():
             item = QtGui.QListWidgetItem(post)
-            item.setFlags(
-                QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled
-            )
+            item.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled)
             self.dialog.lwPostProcessor.addItem(item)
             if not firstItem:
                 firstItem = item
@@ -137,6 +133,8 @@ class CommandPathPost:
                 Path.Log.debug(filename)
                 with open(filename, "w") as f:
                     f.write(gcode)
+            else:
+                return
 
         elif policy == "Append Unique ID on conflict":
             while os.path.isfile(filename):
@@ -157,12 +155,16 @@ class CommandPathPost:
                     Path.Log.debug(filename)
                     with open(filename, "w") as f:
                         f.write(gcode)
+                else:
+                    return
             else:
                 with open(filename, "w") as f:
                     f.write(gcode)
+
         else:  # Overwrite
             with open(filename, "w") as f:
                 f.write(gcode)
+
         FreeCAD.Console.PrintMessage(f"File written to {filename}\n")
 
     def Activated(self):
@@ -181,9 +183,7 @@ class CommandPathPost:
             return
 
         # get a postprocessor
-        postprocessor = PostProcessorFactory.get_post_processor(
-            self.candidate, postprocessor_name
-        )
+        postprocessor = PostProcessorFactory.get_post_processor(self.candidate, postprocessor_name)
 
         post_data = postprocessor.export()
         if not post_data:

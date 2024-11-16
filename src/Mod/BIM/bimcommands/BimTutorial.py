@@ -141,16 +141,16 @@ class BIM_Tutorial:
             f.close()
 
         # setup title and progress bar
-        self.steps = len(re.findall("infotext", html)) - 1
+        self.steps = len(re.findall(r"infotext", html)) - 1
 
         # setup description texts and goals
         self.descriptions = [""] + re.findall(
             "<p><br /> </p><p><br /> </p> (.*?)<p><b>Tutorial step", html
         )
-        self.goal1 = re.findall('goal1">(.*?)</div', html)
-        self.goal2 = re.findall('goal2">(.*?)</div', html)
-        self.test1 = re.findall('test1".*?>(.*?)</div', html)
-        self.test2 = re.findall('test2".*?>(.*?)</div', html)
+        self.goal1 = re.findall(r'goal1">(.*?)</div', html)
+        self.goal2 = re.findall(r'goal2">(.*?)</div', html)
+        self.test1 = re.findall(r'test1".*?>(.*?)</div', html)
+        self.test2 = re.findall(r'test2".*?>(.*?)</div', html)
 
         # fix mediawiki encodes
         self.test1 = [t.replace("&lt;", "<").replace("&gt;", ">") for t in self.test1]
@@ -162,14 +162,14 @@ class BIM_Tutorial:
         )
         nd = []
         for descr in self.descriptions:
-            imagepaths = re.findall('<img.*?src="(.*?)"', descr)
+            imagepaths = re.findall(r'<img.*?src="(.*?)"', descr)
             if imagepaths:
                 store = os.path.join(FreeCAD.getUserAppDataDir(), "BIM", "Tutorial")
                 if not os.path.exists(store):
                     os.makedirs(store)
                 for path in imagepaths:
-                    # name = re.findall("[\\w.-]+\\.(?i)(?:jpg|png|gif|bmp)",path)
-                    name = re.findall("(?i)[\\w.-]+\\.(?:jpg|png|gif|bmp)", path)
+                    # name = re.findall(r"[\\w.-]+\\.(?i)(?:jpg|png|gif|bmp)",path)
+                    name = re.findall(r"(?i)[\\w.-]+\\.(?:jpg|png|gif|bmp)", path)
                     if name:
                         name = name[-1]
                         storename = os.path.join(store, name)

@@ -68,13 +68,13 @@
     <message>
       <location filename="../../Command.cpp" line="343"/>
       <source>Merge point clouds</source>
-      <translation type="unfinished">Merge point clouds</translation>
+      <translation>合併點雲</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="344"/>
       <location filename="../../Command.cpp" line="346"/>
       <source>Merge several point clouds into one</source>
-      <translation type="unfinished">Merge several point clouds into one</translation>
+      <translation>合併數個點雲為一</translation>
     </message>
   </context>
   <context>
@@ -106,13 +106,13 @@
     <message>
       <location filename="../../Command.cpp" line="406"/>
       <source>Structured point cloud</source>
-      <translation type="unfinished">Structured point cloud</translation>
+      <translation>結構化點雲</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="407"/>
       <location filename="../../Command.cpp" line="409"/>
       <source>Convert points to structured point cloud</source>
-      <translation type="unfinished">Convert points to structured point cloud</translation>
+      <translation>將點轉換為結構化點雲</translation>
     </message>
   </context>
   <context>
@@ -139,12 +139,12 @@
     <message>
       <location filename="../../Command.cpp" line="92"/>
       <source>Import points</source>
-      <translation type="unfinished">Import points</translation>
+      <translation>匯入點</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="183"/>
       <source>Transform points</source>
-      <translation type="unfinished">Transform points</translation>
+      <translation>轉換點</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="240"/>
@@ -155,7 +155,7 @@
       <location filename="../../ViewProvider.cpp" line="485"/>
       <location filename="../../ViewProvider.cpp" line="653"/>
       <source>Cut points</source>
-      <translation type="unfinished">Cut points</translation>
+      <translation>切割點</translation>
     </message>
   </context>
   <context>
@@ -294,7 +294,7 @@
       <location filename="../../Command.cpp" line="84"/>
       <location filename="../../Command.cpp" line="141"/>
       <source>Point formats</source>
-      <translation type="unfinished">Point formats</translation>
+      <translation>點格式</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>

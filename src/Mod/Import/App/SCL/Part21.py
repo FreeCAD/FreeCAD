@@ -34,7 +34,7 @@ from . import Utils
 import time
 
 
-INSTANCE_DEFINITION_RE = re.compile("#(\d+)[^\S\n]?=[^\S\n]?(.*?)\((.*)\)[^\S\n]?;[\\r]?$")
+INSTANCE_DEFINITION_RE = re.compile(r"#(\d+)[^\S\n]?=[^\S\n]?(.*?)\((.*)\)[^\S\n]?;[\\r]?$")
 
 
 def map_string_to_num(stri):

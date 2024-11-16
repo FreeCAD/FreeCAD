@@ -77,6 +77,7 @@ public:
         RestoreError = 10,
         LinkStampChanged = 11, // Indicates during restore time if any linked document's time stamp has changed
         IgnoreErrorOnRecompute = 12, // Don't report errors if the recompute failed
+        RecomputeOnRestore = 13, // Mark pending recompute on restore for migration purposes
     };
 
     /** @name Properties */
@@ -117,6 +118,8 @@ public:
     PropertyString TipName;
     /// Whether to show hidden items in TreeView
     PropertyBool ShowHidden;
+    /// Whether to use hasher on topological naming
+    PropertyBool UseHasher;
     //@}
 
     /** @name Signals of the document */

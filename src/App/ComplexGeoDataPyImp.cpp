@@ -555,14 +555,7 @@ void ComplexGeoDataPy::setPlacement(Py::Object arg)
 
 Py::String ComplexGeoDataPy::getElementMapVersion() const
 {
-#ifdef FC_USE_TNP_FIX
     return Py::String(getComplexGeoDataPtr()->getElementMapVersion());
-#else
-    // This is to allow python level tests visibility into whether element maps are in use, so that
-    // expectations can be adjusted.  Eventually this ifdef and clause should be removed, and at the
-    // same time all python tests checking for ElementMapVersion != '' should also be removed.
-    return Py::String();
-#endif
 }
 
 

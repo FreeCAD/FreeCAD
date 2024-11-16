@@ -57,6 +57,27 @@ PyObject* GeoFeaturePy::getGlobalPlacement(PyObject * args) {
     }
 }
 
+PyObject* GeoFeaturePy::getGlobalPlacementOf(PyObject * args) {
+
+    PyObject* pyTargetObj {nullptr};
+    PyObject* pyRootObj {nullptr};
+    char* pname;
+
+    if (!PyArg_ParseTuple(args, "OOs", &pyTargetObj, &pyRootObj, &pname)) {
+        return nullptr;
+    }
+    auto* targetObj = static_cast<App::DocumentObjectPy*>(pyTargetObj)->getDocumentObjectPtr();
+    auto* rootObj = static_cast<App::DocumentObjectPy*>(pyRootObj)->getDocumentObjectPtr();
+
+    try {
+        Base::Placement p = GeoFeature::getGlobalPlacement(targetObj, rootObj, pname);
+        return new Base::PlacementPy(new Base::Placement(p));
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+}
+
 PyObject* GeoFeaturePy::getPropertyNameOfGeometry(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))

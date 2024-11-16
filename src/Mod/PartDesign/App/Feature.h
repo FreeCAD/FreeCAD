@@ -99,10 +99,6 @@ protected:
     /**
      * Get a solid of the given shape. If no solid is found an exception is raised.
      */
-#ifndef FC_USE_TNP_FIX
-    // TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
-    TopoDS_Shape getSolid(const TopoDS_Shape&);
-#endif
     TopoShape getSolid(const TopoShape&);
     static int countSolids(const TopoDS_Shape&, TopAbs_ShapeEnum type = TopAbs_SOLID);
 
@@ -113,6 +109,11 @@ protected:
     SingleSolidRuleMode singleSolidRuleMode();
 
     void updateSuppressedShape();
+
+    /**
+     * Set the Material To Body Material object
+     */
+    void setMaterialToBodyMaterial();
 
     /// Grab any point from the given face
     static const gp_Pnt getPointFromFace(const TopoDS_Face& f);

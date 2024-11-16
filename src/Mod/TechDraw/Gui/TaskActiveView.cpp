@@ -40,6 +40,7 @@
 #include <Gui/ViewProvider.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawViewImage.h>
+#include <Mod/TechDraw/App/DrawUtil.h>
 
 #include "TaskActiveView.h"
 #include "ui_TaskActiveView.h"
@@ -51,6 +52,7 @@
 using namespace Gui;
 using namespace TechDraw;
 using namespace TechDrawGui;
+using DU = DrawUtil;
 
 constexpr int SXGAWidth{1280};
 constexpr int SXGAHeight{1024};
@@ -207,12 +209,9 @@ TechDraw::DrawViewImage* TaskActiveView::createActiveView()
         Base::Console().Error("ActiveView could not save file: %s\n", fileSpec.c_str());
     }
 
-    //backslashes in windows fileSpec upsets python
-    std::regex rxBackslash("\\\\");    //this rx really means match to a single '\'
-    std::string noBackslash = std::regex_replace(tempName, rxBackslash, "/");
-
+    tempName = DU::cleanFilespecBackslash(tempName);
     Command::doCommand(Command::Doc, "App.getDocument('%s').%s.ImageFile = '%s'",
-                       documentName.c_str(), imageName.c_str(), noBackslash.c_str());
+                       documentName.c_str(), imageName.c_str(), tempName.c_str());
     Command::doCommand(Command::Doc, "App.getDocument('%s').%s.Width = %.5f", documentName.c_str(),
                        imageName.c_str(), ui->qsbWidth->rawValue());
     Command::doCommand(Command::Doc, "App.getDocument('%s').%s.Height = %.5f", documentName.c_str(),

@@ -88,12 +88,12 @@ PROPERTY_SOURCE_TEMPLATE(SketcherGui::ViewProviderPython, SketcherGui::ViewProvi
 /// @endcond
 
 // explicit template instantiation
-template class SketcherGuiExport ViewProviderPythonFeatureT<SketcherGui::ViewProviderSketch>;
+template class SketcherGuiExport ViewProviderFeaturePythonT<SketcherGui::ViewProviderSketch>;
 
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(SketcherGui::ViewProviderCustomPython, SketcherGui::ViewProviderCustom)
 /// @endcond
 
 // explicit template instantiation
-template class SketcherGuiExport ViewProviderPythonFeatureT<SketcherGui::ViewProviderCustom>;
+template class SketcherGuiExport ViewProviderFeaturePythonT<SketcherGui::ViewProviderCustom>;
 }  // namespace Gui

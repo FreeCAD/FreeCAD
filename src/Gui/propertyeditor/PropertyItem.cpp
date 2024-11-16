@@ -1600,7 +1600,7 @@ PropertyEditorWidget::PropertyEditorWidget (QWidget * parent)
     layout->addWidget(lineEdit);
 
     button = new QPushButton(QLatin1String("..."), this);
-#if defined (Q_OS_MAC)
+#if defined (Q_OS_MACOS)
     button->setAttribute(Qt::WA_LayoutUsesWidgetRect); // layout size from QMacStyle was not correct
 #endif
     layout->addWidget(button);
@@ -4574,7 +4574,7 @@ LinkLabel::LinkLabel (QWidget * parent, const App::Property *prop)
     layout->addWidget(label);
 
     editButton = new QPushButton(QLatin1String("..."), this);
-#if defined (Q_OS_MAC)
+#if defined (Q_OS_MACOS)
     editButton->setAttribute(Qt::WA_LayoutUsesWidgetRect); // layout size from QMacStyle was not correct
 #endif
     editButton->setToolTip(tr("Change the linked object"));

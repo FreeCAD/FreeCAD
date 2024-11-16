@@ -86,7 +86,7 @@ PyMethodDef Application::Methods[] = {
     {"getUserAppDataDir", (PyCFunction) Application::sGetUserAppDataPath, METH_VARARGS,
      "Get the root directory of application data"},
     {"getUserMacroDir", (PyCFunction) Application::sGetUserMacroPath, METH_VARARGS,
-     "getUserMacroDir(bool=False) -> string"
+     "getUserMacroDir(bool=False) -> str\n\n"
      "Get the directory of the user's macro directory\n"
      "If parameter is False (the default) it returns the standard path in the"
      "user's home directory, otherwise it returns the user-defined path."},
@@ -169,11 +169,13 @@ PyMethodDef Application::Methods[] = {
      "active transaction causes any document changes to open a transaction with\n"
      "the given name and ID."},
     {"getActiveTransaction", (PyCFunction) Application::sGetActiveTransaction, METH_VARARGS,
-     "getActiveTransaction() -> (name,id) return the current active transaction name and ID"},
+     "getActiveTransaction() -> (name,id)\n\n"
+     "return the current active transaction name and ID"},
     {"closeActiveTransaction", (PyCFunction) Application::sCloseActiveTransaction, METH_VARARGS,
      "closeActiveTransaction(abort=False) -- commit or abort current active transaction"},
     {"isRestoring", (PyCFunction) Application::sIsRestoring, METH_VARARGS,
-     "isRestoring() -> Bool -- Test if the application is opening some document"},
+     "isRestoring() -> bool\n\n"
+     "Test if the application is opening some document"},
     {"checkAbort", (PyCFunction) Application::sCheckAbort, METH_VARARGS,
      "checkAbort() -- check for user abort in length operation.\n\n"
      "This only works if there is an active sequencer (or ProgressIndicator in Python).\n"

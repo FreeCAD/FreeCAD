@@ -36,7 +36,8 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="99"/>
       <source>If this is checked, Features will claim their children in the tree view</source>
-      <translation>Jeśli ta opcja jest zaznaczona, funkcje będą wymagać swoich elementów podrzędnych w widoku drzewa</translation>
+      <translation>Jeśli ta opcja jest zaznaczona, 
+funkcje będą wymagać swoich elementów podrzędnych w widoku drzewa</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="102"/>

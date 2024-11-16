@@ -22,7 +22,7 @@ Manager and installing the &quot;offline-documentation&quot; addon. If this
 field is left blank, FreeCAD will automatically search for the help files at
 the default location ($USERAPPDATADIR/Mod/offline-documentation).</source>
       <translation>ここにヘルプファイルがあるカスタム URL またはフォルダを設定してください。
-アドオンマネージャーを使用して &quot;offline-documentation&quot; アドオンをインストールするとオフラインで利用するためのドキュメントのダウンロードを簡単に行えます。この入力欄が空白の場合には FreeCAD はデフォルト位置 ($USERAPPDATADIR/Mod/offline-documentation) にあるヘルプファイルを自動で検索します。</translation>
+拡張機能の管理を使用して &quot;offline-documentation&quot; 拡張機能をインストールするとオフラインで利用するためのドキュメントのダウンロードを簡単に行えます。この入力欄が空白の場合には FreeCAD はデフォルト位置 ($USERAPPDATADIR/Mod/offline-documentation) にあるヘルプファイルを自動で検索します。</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="53"/>
@@ -84,7 +84,7 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="170"/>
       <source>Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</source>
-      <translation type="unfinished">Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</translation>
+      <translation>注意: システムに PySide Web コンポーネントが見つからない場合、以下の設定に関係なくヘルプページはデフォルトのウェブブラウザで開きます。</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="202"/>
@@ -133,33 +133,33 @@ Markdown version above.</source>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="249"/>
       <source>      Custom stylesheet:</source>
-      <translation>      カスタム・スタイルシート:</translation>
+      <translation>      カスタムスタイルシート：</translation>
     </message>
   </context>
   <context>
     <name>Help</name>
     <message>
-      <location filename="../../Help.py" line="72"/>
+      <location filename="../../Help.py" line="75"/>
       <source>Contents for this page could not be retrieved. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
       <translation>このページのコンテンツを取得できませんでした。メニューの 編集 -&gt; 設定 -&gt; 全般 -&gt; ヘルプ にある設定を確認してください。</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="76"/>
+      <location filename="../../Help.py" line="79"/>
       <source>Help files location could not be determined. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
       <translation>ヘルプファイルの場所が特定できませんでした。メニューの 編集 -&gt; 設定 -&gt; 全般 -&gt; ヘルプ にある設定を確認してください。</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="80"/>
+      <location filename="../../Help.py" line="83"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
       <translation>PySide QtWebEngineWidgetsモジュールは利用できません。システムブラウザによる補助レンダリングが行なわれました。</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="84"/>
+      <location filename="../../Help.py" line="87"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
-      <translation type="unfinished">There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</translation>
+      <translation>システムにMarkdownレンダラーがインストールされていないため、このヘルプページはそのままレンダリングされます。このページのレンダリングを改善するには、MarkdownまたはPandoc Pythonモジュールをインストールしてください。</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="113"/>
+      <location filename="../../Help.py" line="119"/>
       <source>Help</source>
       <translation>ヘルプ</translation>
     </message>
@@ -167,7 +167,7 @@ Markdown version above.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="389"/>
+      <location filename="../../Help.py" line="432"/>
       <source>General</source>
       <translation>標準</translation>
     </message>

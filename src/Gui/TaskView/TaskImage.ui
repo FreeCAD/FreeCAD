@@ -27,9 +27,6 @@
           <property name="text">
            <string>XY-Plane</string>
           </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
          </widget>
         </item>
         <item>

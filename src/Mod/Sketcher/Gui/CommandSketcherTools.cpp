@@ -1387,7 +1387,7 @@ void SketcherCopy::activate(SketcherCopy::Op op)
         int GeoId;
         Sketcher::PointPos PosId;
         Obj->getGeoVertexIndex(VtId, GeoId, PosId);
-        if (Obj->getGeometry(GeoId)->getTypeId() != Part::GeomPoint::getClassTypeId()) {
+        if (!Obj->getGeometry(GeoId)->is<Part::GeomPoint>()) {
             LastGeoId = GeoId;
             LastPointPos = PosId;
         }
@@ -1990,7 +1990,7 @@ void CmdSketcherRectangularArray::activated(int iMsg)
         int GeoId;
         Sketcher::PointPos PosId;
         Obj->getGeoVertexIndex(VtId, GeoId, PosId);
-        if (Obj->getGeometry(GeoId)->getTypeId() != Part::GeomPoint::getClassTypeId()) {
+        if (!Obj->getGeometry(GeoId)->is<Part::GeomPoint>()) {
             LastGeoId = GeoId;
             LastPointPos = PosId;
         }

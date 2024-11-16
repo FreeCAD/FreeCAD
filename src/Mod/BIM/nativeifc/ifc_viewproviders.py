@@ -70,8 +70,16 @@ class ifc_vp_object:
                 obj.ViewObject.DiffuseColor = colors
 
     def getIcon(self):
-        if self.Object.IfcClass == "IfcGroup":
-            from PySide import QtGui
+        from PySide import QtCore, QtGui  # lazy import
+        
+        rclass = self.Object.IfcClass.replace("StandardCase","") 
+        ifcicon = ":/icons/IFC/" + rclass + ".svg"
+        if QtCore.QFile.exists(ifcicon):
+            if getattr(self, "ifcclass", "") != rclass:
+                self.ifcclass = rclass
+                self.ifcicon = overlay(ifcicon, ":/icons/IFC.svg")
+            return getattr(self, "ifcicon", overlay(ifcicon, ":/icons/IFC.svg"))
+        elif self.Object.IfcClass == "IfcGroup":
             return QtGui.QIcon.fromTheme("folder", QtGui.QIcon(":/icons/folder.svg"))
         elif self.Object.ShapeMode == "Shape":
             return ":/icons/IFC_object.svg"
@@ -426,10 +434,11 @@ class ifc_vp_document(ifc_vp_object):
 
         from nativeifc import ifc_tools  # lazy import
 
-        get_filepath(self.Object)
-        ifc_tools.save(self.Object)
-        self.replace_file(self.Object, sf)
-        self.Object.Document.recompute()
+        sf = get_filepath(self.Object)
+        if sf:
+            ifc_tools.save(self.Object)
+            self.replace_file(self.Object, sf)
+            self.Object.Document.recompute()
 
     def replace_file(self, obj, newfile):
         """Asks the user if the attached file path needs to be replaced"""
@@ -634,5 +643,5 @@ def get_filepath(project):
         if not sf.lower().endswith(".ifc"):
             sf += ".ifc"
         project.IfcFilePath = sf
-        return True
-    return False
+        return sf
+    return None

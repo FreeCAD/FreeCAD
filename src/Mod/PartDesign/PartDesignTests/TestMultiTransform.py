@@ -29,6 +29,7 @@ App = FreeCAD
 class TestMultiTransform(unittest.TestCase):
     def setUp(self):
         self.Doc = FreeCAD.newDocument("PartDesignTestMultiTransform")
+        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
 
     def testMultiTransform(self):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
@@ -65,8 +66,74 @@ class TestMultiTransform(unittest.TestCase):
         self.Doc.recompute()
         self.assertAlmostEqual(self.MultiTransform.Shape.Volume, 20000)
 
+    def testMultiTransformDressup(self):
+        # Arrange
+        Doc = self.Doc
+        Body = Doc.addObject('PartDesign::Body','Body')
+        Body.AllowCompound = False
+        # Make first offset cube Pad
+        PadSketch = Doc.addObject('Sketcher::SketchObject', 'SketchPad')
+        Body.addObject(PadSketch)
+        TestSketcherApp.CreateRectangleSketch(PadSketch, (0, 0), (10, 10))
+        Doc.recompute()
+        Pad = Doc.addObject("PartDesign::Pad", "Pad")
+        Body.addObject(Pad)
+        Pad.Profile = PadSketch
+        Pad.Length = 10
+        Doc.recompute()
+
+        PadSketch2 = Doc.addObject('Sketcher::SketchObject', 'SketchPad')
+        PadSketch2.AttachmentSupport = (Pad, ('Face6',))
+        Body.addObject(PadSketch2)
+        TestSketcherApp.CreateRectangleSketch(PadSketch, (9, 9), (1, 1))
+        Doc.recompute()
+        Pad2 = Doc.addObject("PartDesign::Pad", "Pad2")
+        Body.addObject(Pad2)
+        Pad2.Profile = PadSketch2
+        Pad2.Length = 10
+        Doc.recompute()
+
+
+        MultiTransform = Doc.addObject("PartDesign::MultiTransform","MultiTransform")
+        Doc.recompute()
+        MultiTransform.Originals = [Pad]
+        MultiTransform.Shape = Pad.Shape
+        Body.addObject(MultiTransform)
+        Doc.recompute()
+        Mirrored = Doc.addObject("PartDesign::Mirrored","Mirrored")
+        Mirrored.MirrorPlane = (Doc.getObject('XY_Plane'), [''])
+        Body.addObject(Mirrored)
+        Mirrored2 = Doc.addObject("PartDesign::Mirrored","Mirrored")
+        Mirrored2.MirrorPlane = (Doc.getObject('XZ_Plane'), [""])
+        Body.addObject(Mirrored2)
+        MultiTransform.Transformations = [Mirrored,Mirrored2]
+        Doc.recompute()
+        Fillet = Doc.addObject("PartDesign::Fillet","Fillet")
+        Fillet.Base = (MultiTransform, ['Face'+str(i+1) for i in range(2)])
+        Fillet.Radius = 3
+        Body.addObject(Fillet)
+        # Add a fillet here.
+        # Now do that copy thing...
+        Link = Doc.addObject('App::Link','Link001')
+        Link.setLink(Doc.Body)
+        Link.Label='Body001'
+        # Act
+        #  There are properties on those objects with values
+        # Link.addProperty("App::PropertyInteger","test2","Table2")
+        # Assert
+        self.assertAlmostEqual(Body.Shape.Volume, 990)
+        self.assertAlmostEqual(Link.Shape.Volume, 990)
+
+    def testMultiTransformBody(self):
+        pass
+        # TODO:  Someone who understands the second mode added to transform needs to
+        #  write a test here.  Maybe close to  testMultiTransform but with
+        #  self.Mirrored.TransformMode="Transform body"  instead of
+        #  self.Mirrored.TransformMode="Transform tools"
+
     def tearDown(self):
         #closing doc
         FreeCAD.closeDocument("PartDesignTestMultiTransform")
+        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "")
         #print ("omit closing document for debugging")
 

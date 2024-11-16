@@ -64,21 +64,21 @@ public:
     App::PropertyFloat       PatternRotation;
     App::PropertyVector      PatternOffset;
 
-    App::DocumentObjectExecReturn *execute(void) override;
+    App::DocumentObjectExecReturn *execute() override;
     void onChanged(const App::Property* prop) override;
-    const char* getViewProviderName(void) const override {
+    const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderGeomHatch";
     }
-    PyObject *getPyObject(void) override;
+    PyObject *getPyObject() override;
     void setupObject() override;
-    void unsetupObject(void) override;
+    void unsetupObject() override;
     void onDocumentRestored() override;
 
 
-    DrawViewPart* getSourceView(void) const;
+    DrawViewPart* getSourceView() const;
 
-    std::vector<LineSet> getFaceOverlay(int i = 0);
-    std::vector<LineSet> getTrimmedLines(int i = 0);
+    std::vector<LineSet> getFaceOverlay(int iFace = 0);
+    std::vector<LineSet> getTrimmedLines(int iFace = 0);
     static std::vector<LineSet> getTrimmedLines(DrawViewPart* dvp, std::vector<LineSet> lineSets, int iface,
                                                 double scale, double hatchRotation = 0.0,
                                                 Base::Vector3d hatchOffset = Base::Vector3d(0.0, 0.0, 0.0));
@@ -89,16 +89,16 @@ public:
                                                 Base::Vector3d hatchOffset = Base::Vector3d(0.0, 0.0, 0.0));
     static std::vector<LineSet> getTrimmedLinesSection(DrawViewSection* source,
                                                                 std::vector<LineSet> lineSets,
-                                                                TopoDS_Face f,
+                                                                TopoDS_Face face,
                                                                 double scale , double hatchRotation = 0.0,
                                                                 Base::Vector3d hatchOffset = Base::Vector3d(0.0, 0.0, 0.0));
 
-    static std::vector<TopoDS_Edge> makeEdgeOverlay(PATLineSpec hl, Bnd_Box bBox,
+    static std::vector<TopoDS_Edge> makeEdgeOverlay(PATLineSpec hatchLine, Bnd_Box bBox,
                                     double scale);
-    static TopoDS_Edge makeLine(Base::Vector3d s, Base::Vector3d e);
+    static TopoDS_Edge makeLine(Base::Vector3d start, Base::Vector3d end);
     static std::vector<PATLineSpec> getDecodedSpecsFromFile(std::string fileSpec, std::string myPattern);
     static TopoDS_Face extractFace(DrawViewPart* source, int iface );
-    static std::string prefGeomHatchFile(void);
+    static std::string prefGeomHatchFile();
     static std::string prefGeomHatchName();
     static App::Color prefGeomHatchColor();
     static std::vector<LineSet> makeLineSets(std::string fileSpec, std::string myPattern);
@@ -108,7 +108,7 @@ public:
 protected:
     void replacePatIncluded(std::string newHatchFileName);
 
-    void makeLineSets(void);
+    void makeLineSets();
 
     std::vector<PATLineSpec> getDecodedSpecsFromFile();
 

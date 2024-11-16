@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <array>
 # include <boost/algorithm/string/predicate.hpp>
 # include <QApplication>
 #endif

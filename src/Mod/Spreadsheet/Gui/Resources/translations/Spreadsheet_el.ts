@@ -652,7 +652,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="239"/>
       <source>Text for the unit</source>
-      <translation type="unfinished">Text for the unit</translation>
+      <translation>Κείμενο για τη μονάδα</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="263"/>
@@ -668,7 +668,7 @@ switch the design configuration. The property will be created if not exist.</sou
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="140"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="116"/>
       <location filename="../../Command.cpp" line="195"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
       <translation>CSV (*.csv *.CSV);;Όλα (*)</translation>
@@ -679,12 +679,12 @@ switch the design configuration. The property will be created if not exist.</sou
       <translation>Εισαγωγή αρχείου</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="142"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="118"/>
       <source>Export file</source>
       <translation>Εξαγωγή αρχείου</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="167"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="143"/>
       <source>Show spreadsheet</source>
       <translation>Εμφάνιση υπολογιστικού φύλλου</translation>
     </message>
@@ -716,19 +716,19 @@ switch the design configuration. The property will be created if not exist.</sou
       <translation>Η αντιγραφή &amp; επικόλληση απέτυχε</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="485"/>
+      <location filename="../../SpreadsheetView.cpp" line="488"/>
       <source>Alias contains invalid characters!</source>
       <translation>Το ψευδώνυμο περιέχει μη έγκυρους χαρακτήρες!</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="491"/>
+      <location filename="../../SpreadsheetView.cpp" line="494"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Ανατρέξτε στο κελί με το ψευδώνυμο, για παράδειγμα
 Spreadsheet.my_alias_name αντί του Spreadsheet.B1</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="125"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="149"/>
       <source>Spreadsheet</source>
       <translation>Υπολογιστικό Φύλλο</translation>
     </message>
@@ -1117,12 +1117,12 @@ Defaults to: %V = %A
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="294"/>
+      <location filename="../../SpreadsheetView.cpp" line="297"/>
       <source>Export PDF</source>
       <translation>Εξαγωγή σε PDF</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="296"/>
+      <location filename="../../SpreadsheetView.cpp" line="299"/>
       <source>PDF file</source>
       <translation>Αρχείο PDF</translation>
     </message>
@@ -1153,7 +1153,8 @@ Defaults to: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="93"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="111"/>
       <source>Unnamed</source>
       <translation>Ανώνυμο</translation>
     </message>

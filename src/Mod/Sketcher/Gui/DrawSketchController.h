@@ -565,6 +565,9 @@ protected:
         auto currentstate = handler->state();
         // ensure that object at point is preselected, so that autoconstraints are generated
         handler->preselectAtPoint(lastControlEnforcedPosition);
+        // We have to redo an update to regenerate the correct autoconstraints after the
+        // preselectAtPoint.
+        handler->updateDataAndDrawToPosition(lastControlEnforcedPosition);
 
         doChangeDrawSketchHandlerMode();
 

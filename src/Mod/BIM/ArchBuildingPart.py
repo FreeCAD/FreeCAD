@@ -971,12 +971,12 @@ class ViewProviderBuildingPart:
                 iv = self.Object.Shape.writeInventor()
                 import re
                 if colors:
-                    if len(re.findall("IndexedFaceSet",iv)) == len(obj.Shape.Faces):
+                    if len(re.findall(r"IndexedFaceSet",iv)) == len(obj.Shape.Faces):
                         # convert colors to iv representations
                         colors = ["Material { diffuseColor "+str(color[0])+" "+str(color[1])+" "+str(color[2])+"}\n    IndexedFaceSet" for color in colors]
                         # replace
                         callback.v=iter(colors)
-                        iv = re.sub("IndexedFaceSet",callback,iv)
+                        iv = re.sub(r"IndexedFaceSet",callback,iv)
                     else:
                         print("Debug: IndexedFaceSet mismatch in",obj.Label)
                 # save embedded file

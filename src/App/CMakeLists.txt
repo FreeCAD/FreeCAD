@@ -288,6 +288,7 @@ SET(FreeCADApp_CPP_SRCS
     Metadata.cpp
     MetadataPyImp.cpp
     ElementNamingUtils.cpp
+    SafeMode.cpp
     StringHasher.cpp
     StringHasherPyImp.cpp
     StringIDPyImp.cpp

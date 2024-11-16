@@ -48,8 +48,6 @@ public:
 
 private:
     void tryCreateSketch();
-    void createSketchWithModernWorkflow();
-    void createSketchWithLegacyWorkflow();
     std::tuple<bool, PartDesign::Body*> shouldCreateBody();
     bool shouldAbort(bool) const;
     std::tuple<Gui::SelectionFilter, Gui::SelectionFilter> getFaceAndPlaneFilter() const;

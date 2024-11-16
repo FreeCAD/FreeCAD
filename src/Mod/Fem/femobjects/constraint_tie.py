@@ -114,5 +114,5 @@ class ConstraintTie(base_fempythonobject.BaseFemPythonObject):
         for prop in self._get_properties():
             try:
                 obj.getPropertyByName(prop.name)
-            except:
+            except FreeCAD.Base.PropertyError:
                 prop.add_to_object(obj)

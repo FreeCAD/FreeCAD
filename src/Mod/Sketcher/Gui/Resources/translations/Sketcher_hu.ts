@@ -128,27 +128,27 @@
   <context>
     <name>CmdSketcherCompConstrainRadDia</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8445"/>
+      <location filename="../../CommandConstraints.cpp" line="8502"/>
       <source>Constrain arc or circle</source>
       <translation>Kör vagy körív kényszer</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8446"/>
+      <location filename="../../CommandConstraints.cpp" line="8503"/>
       <source>Constrain an arc or a circle</source>
       <translation>Egy kör vagy körív kényszerítése</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8556"/>
+      <location filename="../../CommandConstraints.cpp" line="8613"/>
       <source>Constrain radius</source>
       <translation>Sugár illesztés</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8562"/>
+      <location filename="../../CommandConstraints.cpp" line="8619"/>
       <source>Constrain diameter</source>
       <translation>Átmérő kényszer</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8568"/>
+      <location filename="../../CommandConstraints.cpp" line="8625"/>
       <source>Constrain auto radius/diameter</source>
       <translation>Kényszeríti az automatikus sugarat/átmérőt</translation>
     </message>
@@ -307,12 +307,12 @@
   <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8605"/>
+      <location filename="../../CommandConstraints.cpp" line="8662"/>
       <source>Constrain angle</source>
       <translation>Szög zárolása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8606"/>
+      <location filename="../../CommandConstraints.cpp" line="8663"/>
       <source>Fix the angle of a line or the angle between two lines</source>
       <translation>Rögzítsen szöget a vonalon, vagy a szöget két vonalon</translation>
     </message>
@@ -320,12 +320,12 @@
   <context>
     <name>CmdSketcherConstrainBlock</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3530"/>
+      <location filename="../../CommandConstraints.cpp" line="3575"/>
       <source>Constrain block</source>
       <translation>Kényszerítő kocka</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3531"/>
+      <location filename="../../CommandConstraints.cpp" line="3576"/>
       <source>Block the selected edge from moving</source>
       <translation>A kijelölt él mozgásának letiltása</translation>
     </message>
@@ -333,12 +333,12 @@
   <context>
     <name>CmdSketcherConstrainCoincident</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4238"/>
+      <location filename="../../CommandConstraints.cpp" line="4291"/>
       <source>Constrain coincident</source>
       <translation>Egymásra llesztés</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4239"/>
+      <location filename="../../CommandConstraints.cpp" line="4292"/>
       <source>Create a coincident constraint between points, or a concentric constraint between circles, arcs, and ellipses</source>
       <translation>Konvergens kényszer létrehozása pontok között vagy koncentrikus kötés létrehozása körök, ívek és ellipszisek között</translation>
     </message>
@@ -346,12 +346,12 @@
   <context>
     <name>CmdSketcherConstrainDiameter</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7758"/>
+      <location filename="../../CommandConstraints.cpp" line="7815"/>
       <source>Constrain diameter</source>
       <translation>Átmérő kényszer</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7759"/>
+      <location filename="../../CommandConstraints.cpp" line="7816"/>
       <source>Fix the diameter of a circle or an arc</source>
       <translation>Rögzíteni egy kör vagy egy ív átmérőjét</translation>
     </message>
@@ -359,12 +359,12 @@
   <context>
     <name>CmdSketcherConstrainDistance</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4342"/>
+      <location filename="../../CommandConstraints.cpp" line="4395"/>
       <source>Constrain distance</source>
       <translation>Távolság kényszer</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4343"/>
+      <location filename="../../CommandConstraints.cpp" line="4396"/>
       <source>Fix a length of a line or the distance between a line and a vertex or between two circles</source>
       <translation>Vonal hosszának rögzítése vagy adott távolság tartása két kör között</translation>
     </message>
@@ -372,12 +372,12 @@
   <context>
     <name>CmdSketcherConstrainDistanceX</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4994"/>
+      <location filename="../../CommandConstraints.cpp" line="5047"/>
       <source>Constrain horizontal distance</source>
       <translation>Vízszintes távolság zárolása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4995"/>
+      <location filename="../../CommandConstraints.cpp" line="5048"/>
       <source>Fix the horizontal distance between two points or line ends</source>
       <translation>Két pont közötti vagy vonal végek közötti vízszintes távolság zárolása</translation>
     </message>
@@ -385,12 +385,12 @@
   <context>
     <name>CmdSketcherConstrainDistanceY</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5298"/>
+      <location filename="../../CommandConstraints.cpp" line="5351"/>
       <source>Constrain vertical distance</source>
       <translation>Függőleges távolság kényszerítése</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5299"/>
+      <location filename="../../CommandConstraints.cpp" line="5352"/>
       <source>Fix the vertical distance between two points or line ends</source>
       <translation>Két pont közötti vagy vonal végek közötti függőleges távolság zárolása</translation>
     </message>
@@ -398,12 +398,12 @@
   <context>
     <name>CmdSketcherConstrainEqual</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9058"/>
+      <location filename="../../CommandConstraints.cpp" line="9115"/>
       <source>Constrain equal</source>
       <translation>Illesztás megtartása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9060"/>
+      <location filename="../../CommandConstraints.cpp" line="9117"/>
       <source>Create an equality constraint between two lines or between circles and arcs</source>
       <translation>Hozzon létre egy egyenlőség illesztést két vonal között, illetve körök és ívek között</translation>
     </message>
@@ -411,12 +411,12 @@
   <context>
     <name>CmdSketcherConstrainHorizontal</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3152"/>
+      <location filename="../../CommandConstraints.cpp" line="3197"/>
       <source>Constrain horizontal</source>
       <translation>Vîzszintes kényszerítés</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3153"/>
+      <location filename="../../CommandConstraints.cpp" line="3198"/>
       <source>Create a horizontal constraint on the selected item</source>
       <translation>Vízszintes illesztés létrehozása a kiválasztott elemen</translation>
     </message>
@@ -424,12 +424,12 @@
   <context>
     <name>CmdSketcherConstrainLock</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3243"/>
+      <location filename="../../CommandConstraints.cpp" line="3288"/>
       <source>Constrain lock</source>
       <translation>Illesztés zárolása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3244"/>
+      <location filename="../../CommandConstraints.cpp" line="3289"/>
       <source>Create both a horizontal and a vertical distance constraint
 on the selected vertex</source>
       <translation>Vízszintes és függőleges távolságkényszerítés létrehozása
@@ -439,12 +439,12 @@ a kijelölt csúcsponton</translation>
   <context>
     <name>CmdSketcherConstrainParallel</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5596"/>
+      <location filename="../../CommandConstraints.cpp" line="5649"/>
       <source>Constrain parallel</source>
       <translation>Párhuzamosság tartása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5597"/>
+      <location filename="../../CommandConstraints.cpp" line="5650"/>
       <source>Create a parallel constraint between two lines</source>
       <translation>Két vonal közötti párhuzamos kényszerítés</translation>
     </message>
@@ -452,12 +452,12 @@ a kijelölt csúcsponton</translation>
   <context>
     <name>CmdSketcherConstrainPerpendicular</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5759"/>
+      <location filename="../../CommandConstraints.cpp" line="5812"/>
       <source>Constrain perpendicular</source>
       <translation>Merőleges illesztés</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5760"/>
+      <location filename="../../CommandConstraints.cpp" line="5813"/>
       <source>Create a perpendicular constraint between two lines</source>
       <translation>Merőleges illesztést hoz létre két vonal közt</translation>
     </message>
@@ -465,12 +465,12 @@ a kijelölt csúcsponton</translation>
   <context>
     <name>CmdSketcherConstrainPointOnObject</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4290"/>
+      <location filename="../../CommandConstraints.cpp" line="4343"/>
       <source>Constrain point on object</source>
       <translation>Pont kényszerítése a tárgyon</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4291"/>
+      <location filename="../../CommandConstraints.cpp" line="4344"/>
       <source>Fix a point onto an object</source>
       <translation>Pont rögzítése egy tárgyra</translation>
     </message>
@@ -478,12 +478,12 @@ a kijelölt csúcsponton</translation>
   <context>
     <name>CmdSketcherConstrainRadiam</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8076"/>
+      <location filename="../../CommandConstraints.cpp" line="8133"/>
       <source>Constrain auto radius/diameter</source>
       <translation>Kényszeríti az automatikus sugarat/átmérőt</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8077"/>
+      <location filename="../../CommandConstraints.cpp" line="8134"/>
       <source>Fix the diameter if a circle is chosen, or the radius if an arc/spline pole is chosen</source>
       <translation>Beállítja az átmérőt kör kiválasztásakor, illetve a sugarat, ha ív/görbe pólus van kiválasztva</translation>
     </message>
@@ -491,12 +491,12 @@ a kijelölt csúcsponton</translation>
   <context>
     <name>CmdSketcherConstrainSnellsLaw</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9657"/>
+      <location filename="../../CommandConstraints.cpp" line="9714"/>
       <source>Constrain refraction (Snell's law)</source>
       <translation>Illesztés törésmutatója (Snellius–Descartes-törvény)</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9658"/>
+      <location filename="../../CommandConstraints.cpp" line="9715"/>
       <source>Create a refraction law (Snell's law)constraint between two endpoints of rays
 and an edge as an interface.</source>
       <translation>Hozzon létre egy fénytörés törvény (Snellius-törvény) kényszerítést sugarak két végpontja között és egy élt mint határfelületet.</translation>
@@ -505,12 +505,12 @@ and an edge as an interface.</source>
   <context>
     <name>CmdSketcherConstrainSymmetric</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9300"/>
+      <location filename="../../CommandConstraints.cpp" line="9357"/>
       <source>Constrain symmetric</source>
       <translation>Szimmetria kényszerítés</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9301"/>
+      <location filename="../../CommandConstraints.cpp" line="9358"/>
       <source>Create a symmetry constraint between two points
 with respect to a line or a third point</source>
       <translation>Állítsa be a szimmetriát két pont között egy vonalhoz vagy egy harmadik ponthoz képest</translation>
@@ -519,12 +519,12 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherConstrainVertical</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3197"/>
+      <location filename="../../CommandConstraints.cpp" line="3242"/>
       <source>Constrain vertical</source>
       <translation>Függőleges kényszerítés</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3198"/>
+      <location filename="../../CommandConstraints.cpp" line="3243"/>
       <source>Create a vertical constraint on the selected item</source>
       <translation>Függőleges kényszerítés alkalmazása a kijelölt elemen</translation>
     </message>
@@ -1066,7 +1066,7 @@ Először válassza ki a támogató geometriát, például egy felületet vagy e
 majd hívja meg ezt a parancsot, majd válassza ki a kívánt vázlatot.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="617"/>
+      <location filename="../../Command.cpp" line="644"/>
       <source>Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed.</source>
       <translation>Néhány kiválasztott tárgy a leképzett vázlattól függ. Körkörös függőség nem megengedett.</translation>
     </message>
@@ -1074,22 +1074,22 @@ majd hívja meg ezt a parancsot, majd válassza ki a kívánt vázlatot.</transl
   <context>
     <name>CmdSketcherMergeSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="953"/>
+      <location filename="../../Command.cpp" line="980"/>
       <source>Merge sketches</source>
       <translation>Vázlatok egyesítése</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="954"/>
+      <location filename="../../Command.cpp" line="981"/>
       <source>Create a new sketch from merging two or more selected sketches.</source>
       <translation>Hozzon létre egy új vázlatot két vagy több kijelölt vázlat egyesítésével.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="969"/>
+      <location filename="../../Command.cpp" line="996"/>
       <source>Wrong selection</source>
       <translation>Hibás kijelölés</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="970"/>
+      <location filename="../../Command.cpp" line="997"/>
       <source>Select at least two sketches.</source>
       <translation>Válasszon ki legalább két vázlatot.</translation>
     </message>
@@ -1097,26 +1097,26 @@ majd hívja meg ezt a parancsot, majd válassza ki a kívánt vázlatot.</transl
   <context>
     <name>CmdSketcherMirrorSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="826"/>
+      <location filename="../../Command.cpp" line="853"/>
       <source>Mirror sketch</source>
       <translation>Vázlat tükrözés</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="827"/>
+      <location filename="../../Command.cpp" line="854"/>
       <source>Creates a new mirrored sketch for each selected sketch
 by using the X or Y axes, or the origin point,
 as mirroring reference.</source>
-      <translation type="unfinished">Creates a new mirrored sketch for each selected sketch
-by using the X or Y axes, or the origin point,
-as mirroring reference.</translation>
+      <translation>Új tükrözött vázlatot hoz létre minden egyes kiválasztott vázlathoz.
+az X- vagy Y-tengelyek, illetve az kezdőpont segítségével,
+tükrözési hivatkozásként.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="844"/>
+      <location filename="../../Command.cpp" line="871"/>
       <source>Wrong selection</source>
       <translation>Rossz kijelölés</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="845"/>
+      <location filename="../../Command.cpp" line="872"/>
       <source>Select one or more sketches.</source>
       <translation>Válasszon egy vagy több vázlatot.</translation>
     </message>
@@ -1241,7 +1241,7 @@ A 'Melléklet támogatás' tulajdonság törlődik, ha van.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="890"/>
       <source>Select under-constrained elements</source>
-      <translation type="unfinished">Select under-constrained elements</translation>
+      <translation>Kényszerítés alatt lévő elemek kiválasztása</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="891"/>
@@ -1370,12 +1370,12 @@ A 'Melléklet támogatás' tulajdonság törlődik, ha van.</translation>
   <context>
     <name>CmdSketcherToggleActiveConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10067"/>
+      <location filename="../../CommandConstraints.cpp" line="10124"/>
       <source>Activate/deactivate constraint</source>
       <translation>Kényszerítés bekapcsolása/kikapcsolása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10068"/>
+      <location filename="../../CommandConstraints.cpp" line="10125"/>
       <source>Activates or deactivates the selected constraints</source>
       <translation>A kijelölt kényszerítések engedélyezése vagy letiltása</translation>
     </message>
@@ -1396,12 +1396,12 @@ A 'Melléklet támogatás' tulajdonság törlődik, ha van.</translation>
   <context>
     <name>CmdSketcherToggleDrivingConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9910"/>
+      <location filename="../../CommandConstraints.cpp" line="9967"/>
       <source>Toggle driving/reference constraint</source>
       <translation>Kényszerítés váltása a meghatározott és a megjelenített között</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9911"/>
+      <location filename="../../CommandConstraints.cpp" line="9968"/>
       <source>Set the toolbar, or the selected constraints,
 into driving or reference mode</source>
       <translation>Állítsa be az eszköztárat vagy a kijelölt kényszerítéseket,
@@ -1424,24 +1424,24 @@ megvezetett vagy hivatkozási üzemmódban</translation>
   <context>
     <name>CmdSketcherValidateSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="786"/>
+      <location filename="../../Command.cpp" line="813"/>
       <source>Validate sketch...</source>
       <translation>Érvényesíti a vázlatot...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="787"/>
+      <location filename="../../Command.cpp" line="814"/>
       <source>Validates a sketch by looking at missing coincidences,
 invalid constraints, degenerated geometry, etc.</source>
-      <translation type="unfinished">Validates a sketch by looking at missing coincidences,
-invalid constraints, degenerated geometry, etc.</translation>
+      <translation>Érvényesíti a vázlatot a hiányzó egyezőségek keresésével,
+érvénytelen kényszerítések, elkorcsosult geometriát stb.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="803"/>
+      <location filename="../../Command.cpp" line="830"/>
       <source>Wrong selection</source>
       <translation>Rossz kijelölés</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="804"/>
+      <location filename="../../Command.cpp" line="831"/>
       <source>Select only one sketch.</source>
       <translation>Egyetlen vázlat kiválasztása.</translation>
     </message>
@@ -1449,12 +1449,12 @@ invalid constraints, degenerated geometry, etc.</translation>
   <context>
     <name>CmdSketcherViewSection</name>
     <message>
-      <location filename="../../Command.cpp" line="1045"/>
+      <location filename="../../Command.cpp" line="1072"/>
       <source>View section</source>
       <translation>Szakasz nézete</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1046"/>
+      <location filename="../../Command.cpp" line="1073"/>
       <source>When in edit mode, switch between section view and full view.</source>
       <translation>Szerkesztési módban váltson a szakasznézet és a teljes nézet között.</translation>
     </message>
@@ -1462,12 +1462,12 @@ invalid constraints, degenerated geometry, etc.</translation>
   <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="751"/>
+      <location filename="../../Command.cpp" line="778"/>
       <source>View sketch</source>
       <translation>vázlat nézet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="752"/>
+      <location filename="../../Command.cpp" line="779"/>
       <source>When in edit mode, set the camera orientation perpendicular to the sketch plane.</source>
       <translation>Szerkesztési módban állítsa be a kamera tájolását merőlegesre a vázlatsíkra.</translation>
     </message>
@@ -1475,361 +1475,361 @@ invalid constraints, degenerated geometry, etc.</translation>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3331"/>
+      <location filename="../../CommandConstraints.cpp" line="3376"/>
       <source>Add 'Lock' constraint</source>
       <translation>'Zár' kényszerítés hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3385"/>
+      <location filename="../../CommandConstraints.cpp" line="3430"/>
       <source>Add relative 'Lock' constraint</source>
       <translation>Viszonyított 'Zár' kényszerítés hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3450"/>
+      <location filename="../../CommandConstraints.cpp" line="3495"/>
       <source>Add fixed constraint</source>
       <translation>Rögzített kényszerítést ad hozzá</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3621"/>
+      <location filename="../../CommandConstraints.cpp" line="3666"/>
       <source>Add 'Block' constraint</source>
       <translation>'Blokk' kényszerítés hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3670"/>
+      <location filename="../../CommandConstraints.cpp" line="3715"/>
       <source>Add block constraint</source>
       <translation>Blokk kényszerítés hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4004"/>
-      <location filename="../../CommandConstraints.cpp" line="4193"/>
+      <location filename="../../CommandConstraints.cpp" line="4057"/>
+      <location filename="../../CommandConstraints.cpp" line="4246"/>
       <source>Add coincident constraint</source>
       <translation>Véletlenszerű kényszerítés hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4425"/>
-      <location filename="../../CommandConstraints.cpp" line="4749"/>
+      <location filename="../../CommandConstraints.cpp" line="4478"/>
+      <location filename="../../CommandConstraints.cpp" line="4802"/>
       <source>Add distance from horizontal axis constraint</source>
       <translation>Vízszintes tengelymegkötéstől való távolság hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4437"/>
-      <location filename="../../CommandConstraints.cpp" line="4763"/>
+      <location filename="../../CommandConstraints.cpp" line="4490"/>
+      <location filename="../../CommandConstraints.cpp" line="4816"/>
       <source>Add distance from vertical axis constraint</source>
       <translation>Függőleges tengelymegkötéstől való távolság hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4449"/>
-      <location filename="../../CommandConstraints.cpp" line="4776"/>
+      <location filename="../../CommandConstraints.cpp" line="4502"/>
+      <location filename="../../CommandConstraints.cpp" line="4829"/>
       <source>Add point to point distance constraint</source>
       <translation>Ponttól pontig távolság kényszerítést ad hozzá</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1839"/>
-      <location filename="../../CommandConstraints.cpp" line="4492"/>
-      <location filename="../../CommandConstraints.cpp" line="4864"/>
+      <location filename="../../CommandConstraints.cpp" line="1855"/>
+      <location filename="../../CommandConstraints.cpp" line="4545"/>
+      <location filename="../../CommandConstraints.cpp" line="4917"/>
       <source>Add point to line Distance constraint</source>
       <translation>Ponttól a vonalig távolság kényszerítést ad hozzá</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4573"/>
-      <location filename="../../CommandConstraints.cpp" line="4919"/>
+      <location filename="../../CommandConstraints.cpp" line="4626"/>
+      <location filename="../../CommandConstraints.cpp" line="4972"/>
       <source>Add circle to circle distance constraint</source>
       <translation>Kör hozzáadása a kör távolsági kényszerítéséhez</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4616"/>
+      <location filename="../../CommandConstraints.cpp" line="4669"/>
       <source>Add circle to line distance constraint</source>
       <translation>Kör hozzáadása a vonal távolsági kényszerítéséhez</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1937"/>
-      <location filename="../../CommandConstraints.cpp" line="1960"/>
-      <location filename="../../CommandConstraints.cpp" line="2028"/>
-      <location filename="../../CommandConstraints.cpp" line="2112"/>
-      <location filename="../../CommandConstraints.cpp" line="4664"/>
-      <location filename="../../CommandConstraints.cpp" line="4691"/>
-      <location filename="../../CommandConstraints.cpp" line="4813"/>
+      <location filename="../../CommandConstraints.cpp" line="1953"/>
+      <location filename="../../CommandConstraints.cpp" line="1976"/>
+      <location filename="../../CommandConstraints.cpp" line="2044"/>
+      <location filename="../../CommandConstraints.cpp" line="2128"/>
+      <location filename="../../CommandConstraints.cpp" line="4717"/>
+      <location filename="../../CommandConstraints.cpp" line="4744"/>
+      <location filename="../../CommandConstraints.cpp" line="4866"/>
       <source>Add length constraint</source>
       <translation>Hossz kényszerítés hozzáadása</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1414"/>
       <location filename="../../CommandConstraints.cpp" line="1603"/>
-      <location filename="../../CommandConstraints.cpp" line="2716"/>
+      <location filename="../../CommandConstraints.cpp" line="2761"/>
       <source>Dimension</source>
       <translation>Dimenzió</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1808"/>
+      <location filename="../../CommandConstraints.cpp" line="1824"/>
       <source>Add lock constraint</source>
       <translation>Zárolási kényszerítés hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1803"/>
+      <location filename="../../CommandConstraints.cpp" line="1820"/>
       <source>Add 'Distance to origin' constraint</source>
       <translation>'Eredettől való távolság' kényszerítés hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1820"/>
-      <location filename="../../CommandConstraints.cpp" line="2434"/>
-      <location filename="../../CommandConstraints.cpp" line="2635"/>
+      <location filename="../../CommandConstraints.cpp" line="1836"/>
+      <location filename="../../CommandConstraints.cpp" line="2450"/>
+      <location filename="../../CommandConstraints.cpp" line="2679"/>
       <source>Add Distance constraint</source>
       <translation>Távolság kényszerítés hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1825"/>
-      <location filename="../../CommandConstraints.cpp" line="1854"/>
-      <location filename="../../CommandConstraints.cpp" line="1888"/>
+      <location filename="../../CommandConstraints.cpp" line="1841"/>
+      <location filename="../../CommandConstraints.cpp" line="1870"/>
+      <location filename="../../CommandConstraints.cpp" line="1904"/>
       <source>Add 'Horizontal' constraints</source>
       <translation>'Vízszintes' kényszerítések hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1829"/>
-      <location filename="../../CommandConstraints.cpp" line="1861"/>
-      <location filename="../../CommandConstraints.cpp" line="1895"/>
+      <location filename="../../CommandConstraints.cpp" line="1845"/>
+      <location filename="../../CommandConstraints.cpp" line="1877"/>
+      <location filename="../../CommandConstraints.cpp" line="1911"/>
       <source>Add 'Vertical' constraints</source>
       <translation>'Függőleges' kényszerítések hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1844"/>
-      <location filename="../../CommandConstraints.cpp" line="1907"/>
+      <location filename="../../CommandConstraints.cpp" line="1860"/>
+      <location filename="../../CommandConstraints.cpp" line="1923"/>
       <source>Add Symmetry constraint</source>
       <translation>Szimmetria kényszerítés hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1867"/>
-      <location filename="../../CommandConstraints.cpp" line="2039"/>
+      <location filename="../../CommandConstraints.cpp" line="1883"/>
+      <location filename="../../CommandConstraints.cpp" line="2055"/>
       <source>Add Symmetry constraints</source>
       <translation>Szimmetria kényszerítések hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1912"/>
-      <location filename="../../CommandConstraints.cpp" line="1924"/>
+      <location filename="../../CommandConstraints.cpp" line="1928"/>
+      <location filename="../../CommandConstraints.cpp" line="1940"/>
       <source>Add Distance constraints</source>
       <translation>Távolság kényszerítések hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1970"/>
+      <location filename="../../CommandConstraints.cpp" line="1986"/>
       <source>Add Horizontal constraint</source>
       <translation>Vízszintes kényszerítés hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1975"/>
+      <location filename="../../CommandConstraints.cpp" line="1991"/>
       <source>Add Vertical constraint</source>
       <translation>Függőleges kényszerítést hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1979"/>
+      <location filename="../../CommandConstraints.cpp" line="1995"/>
       <source>Add Block constraint</source>
       <translation>Blokk kényszerítés hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1994"/>
+      <location filename="../../CommandConstraints.cpp" line="2010"/>
       <source>Add Angle constraint</source>
       <translation>Szöghöz kényszerítés hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2004"/>
-      <location filename="../../CommandConstraints.cpp" line="2127"/>
-      <location filename="../../CommandConstraints.cpp" line="2137"/>
-      <location filename="../../CommandConstraints.cpp" line="2175"/>
+      <location filename="../../CommandConstraints.cpp" line="2020"/>
+      <location filename="../../CommandConstraints.cpp" line="2143"/>
+      <location filename="../../CommandConstraints.cpp" line="2153"/>
+      <location filename="../../CommandConstraints.cpp" line="2191"/>
       <source>Add Equality constraint</source>
       <translation>Egyenlőség kényszerítés hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2015"/>
+      <location filename="../../CommandConstraints.cpp" line="2031"/>
       <source>Add Equality constraints</source>
       <translation>Egyenlőség kényszerítés hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2072"/>
-      <location filename="../../CommandConstraints.cpp" line="2076"/>
-      <location filename="../../CommandConstraints.cpp" line="2083"/>
       <location filename="../../CommandConstraints.cpp" line="2088"/>
+      <location filename="../../CommandConstraints.cpp" line="2092"/>
+      <location filename="../../CommandConstraints.cpp" line="2099"/>
+      <location filename="../../CommandConstraints.cpp" line="2104"/>
       <source>Add Radius constraint</source>
       <translation>Sugár kényszerítés hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10111"/>
+      <location filename="../../CommandConstraints.cpp" line="10168"/>
       <source>Activate/Deactivate constraints</source>
-      <translation type="unfinished">Activate/Deactivate constraints</translation>
+      <translation>Kényszerítések bekapcsolása/kikapcsolása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2063"/>
-      <location filename="../../CommandConstraints.cpp" line="2096"/>
+      <location filename="../../CommandConstraints.cpp" line="2079"/>
+      <location filename="../../CommandConstraints.cpp" line="2112"/>
       <source>Add arc angle constraint</source>
       <translation>Ív szöghöz kényszerítés hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2117"/>
+      <location filename="../../CommandConstraints.cpp" line="2133"/>
       <source>Add concentric and length constraint</source>
       <translation>Koncentrikus és hosszúsági kényszerítés hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2613"/>
+      <location filename="../../CommandConstraints.cpp" line="2657"/>
       <source>Add DistanceX constraint</source>
       <translation>X távolság kényszerítés hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2624"/>
+      <location filename="../../CommandConstraints.cpp" line="2668"/>
       <source>Add DistanceY constraint</source>
       <translation>Y távolság kényszerítés hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4522"/>
+      <location filename="../../CommandConstraints.cpp" line="4575"/>
       <source>Add point to circle Distance constraint</source>
       <translation>Ponttól a körig távolság kényszerítés hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3922"/>
-      <location filename="../../CommandConstraints.cpp" line="4107"/>
+      <location filename="../../CommandConstraints.cpp" line="3975"/>
+      <location filename="../../CommandConstraints.cpp" line="4160"/>
       <source>Add point on object constraint</source>
       <translation>Pont a tárgyon kényszerítés hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2068"/>
-      <location filename="../../CommandConstraints.cpp" line="2100"/>
+      <location filename="../../CommandConstraints.cpp" line="2084"/>
+      <location filename="../../CommandConstraints.cpp" line="2116"/>
       <source>Add arc length constraint</source>
       <translation>Ív hossz kényszerítés hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5107"/>
-      <location filename="../../CommandConstraints.cpp" line="5234"/>
+      <location filename="../../CommandConstraints.cpp" line="5160"/>
+      <location filename="../../CommandConstraints.cpp" line="5287"/>
       <source>Add point to point horizontal distance constraint</source>
       <translation>Ponttól pontig vízszintes távolság kényszerítés hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5148"/>
+      <location filename="../../CommandConstraints.cpp" line="5201"/>
       <source>Add fixed x-coordinate constraint</source>
       <translation>Rögzített x-koordináta kényszerítés hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5409"/>
-      <location filename="../../CommandConstraints.cpp" line="5533"/>
+      <location filename="../../CommandConstraints.cpp" line="5462"/>
+      <location filename="../../CommandConstraints.cpp" line="5586"/>
       <source>Add point to point vertical distance constraint</source>
       <translation>Ponttól pontig függőleges távolság kényszerítés hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5447"/>
+      <location filename="../../CommandConstraints.cpp" line="5500"/>
       <source>Add fixed y-coordinate constraint</source>
       <translation>Rögzített y-koordináta kényszerítés hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5681"/>
-      <location filename="../../CommandConstraints.cpp" line="5725"/>
+      <location filename="../../CommandConstraints.cpp" line="5734"/>
+      <location filename="../../CommandConstraints.cpp" line="5778"/>
       <source>Add parallel constraint</source>
       <translation>Párhuzamos kényszerítés hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5865"/>
-      <location filename="../../CommandConstraints.cpp" line="5964"/>
-      <location filename="../../CommandConstraints.cpp" line="6127"/>
-      <location filename="../../CommandConstraints.cpp" line="6177"/>
-      <location filename="../../CommandConstraints.cpp" line="6328"/>
-      <location filename="../../CommandConstraints.cpp" line="6377"/>
-      <location filename="../../CommandConstraints.cpp" line="6433"/>
+      <location filename="../../CommandConstraints.cpp" line="5918"/>
+      <location filename="../../CommandConstraints.cpp" line="6017"/>
+      <location filename="../../CommandConstraints.cpp" line="6180"/>
+      <location filename="../../CommandConstraints.cpp" line="6230"/>
+      <location filename="../../CommandConstraints.cpp" line="6381"/>
+      <location filename="../../CommandConstraints.cpp" line="6430"/>
+      <location filename="../../CommandConstraints.cpp" line="6486"/>
       <source>Add perpendicular constraint</source>
       <translation>Merőleges kényszerítés hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6003"/>
+      <location filename="../../CommandConstraints.cpp" line="6056"/>
       <source>Add perpendicularity constraint</source>
       <translation>Függőlegesség kényszerítés hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6567"/>
+      <location filename="../../CommandConstraints.cpp" line="6623"/>
       <source>Swap coincident+tangency with ptp tangency</source>
       <translation>Egybeeső érintő felcserélése ptp érintővel</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6696"/>
-      <location filename="../../CommandConstraints.cpp" line="6798"/>
-      <location filename="../../CommandConstraints.cpp" line="6847"/>
-      <location filename="../../CommandConstraints.cpp" line="7034"/>
-      <location filename="../../CommandConstraints.cpp" line="7202"/>
-      <location filename="../../CommandConstraints.cpp" line="7272"/>
-      <location filename="../../CommandConstraints.cpp" line="7305"/>
+      <location filename="../../CommandConstraints.cpp" line="6753"/>
+      <location filename="../../CommandConstraints.cpp" line="6855"/>
+      <location filename="../../CommandConstraints.cpp" line="6904"/>
+      <location filename="../../CommandConstraints.cpp" line="7091"/>
+      <location filename="../../CommandConstraints.cpp" line="7259"/>
+      <location filename="../../CommandConstraints.cpp" line="7329"/>
+      <location filename="../../CommandConstraints.cpp" line="7362"/>
       <source>Add tangent constraint</source>
       <translation>Érintő kényszerítés hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6893"/>
-      <location filename="../../CommandConstraints.cpp" line="6904"/>
-      <location filename="../../CommandConstraints.cpp" line="6916"/>
-      <location filename="../../CommandConstraints.cpp" line="6940"/>
-      <location filename="../../CommandConstraints.cpp" line="6953"/>
-      <location filename="../../CommandConstraints.cpp" line="6977"/>
-      <location filename="../../CommandConstraints.cpp" line="6989"/>
-      <location filename="../../CommandConstraints.cpp" line="7014"/>
-      <location filename="../../CommandConstraints.cpp" line="7107"/>
-      <location filename="../../CommandConstraints.cpp" line="7118"/>
-      <location filename="../../CommandConstraints.cpp" line="7130"/>
-      <location filename="../../CommandConstraints.cpp" line="7154"/>
-      <location filename="../../CommandConstraints.cpp" line="7166"/>
-      <location filename="../../CommandConstraints.cpp" line="7190"/>
+      <location filename="../../CommandConstraints.cpp" line="6950"/>
+      <location filename="../../CommandConstraints.cpp" line="6961"/>
+      <location filename="../../CommandConstraints.cpp" line="6973"/>
+      <location filename="../../CommandConstraints.cpp" line="6997"/>
+      <location filename="../../CommandConstraints.cpp" line="7010"/>
+      <location filename="../../CommandConstraints.cpp" line="7034"/>
+      <location filename="../../CommandConstraints.cpp" line="7046"/>
+      <location filename="../../CommandConstraints.cpp" line="7071"/>
+      <location filename="../../CommandConstraints.cpp" line="7164"/>
+      <location filename="../../CommandConstraints.cpp" line="7175"/>
+      <location filename="../../CommandConstraints.cpp" line="7187"/>
+      <location filename="../../CommandConstraints.cpp" line="7211"/>
+      <location filename="../../CommandConstraints.cpp" line="7223"/>
+      <location filename="../../CommandConstraints.cpp" line="7247"/>
       <source>Add tangent constraint point</source>
       <translation>Érintő pont kényszerítés hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7525"/>
-      <location filename="../../CommandConstraints.cpp" line="7569"/>
-      <location filename="../../CommandConstraints.cpp" line="7598"/>
-      <location filename="../../CommandConstraints.cpp" line="7675"/>
+      <location filename="../../CommandConstraints.cpp" line="7582"/>
+      <location filename="../../CommandConstraints.cpp" line="7626"/>
+      <location filename="../../CommandConstraints.cpp" line="7655"/>
+      <location filename="../../CommandConstraints.cpp" line="7732"/>
       <source>Add radius constraint</source>
       <translation>Sugár kényszerítés hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7876"/>
-      <location filename="../../CommandConstraints.cpp" line="7908"/>
-      <location filename="../../CommandConstraints.cpp" line="7929"/>
-      <location filename="../../CommandConstraints.cpp" line="8005"/>
+      <location filename="../../CommandConstraints.cpp" line="7933"/>
+      <location filename="../../CommandConstraints.cpp" line="7965"/>
+      <location filename="../../CommandConstraints.cpp" line="7986"/>
+      <location filename="../../CommandConstraints.cpp" line="8062"/>
       <source>Add diameter constraint</source>
       <translation>Átmérőhöz kényszerítés hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8202"/>
-      <location filename="../../CommandConstraints.cpp" line="8250"/>
-      <location filename="../../CommandConstraints.cpp" line="8285"/>
-      <location filename="../../CommandConstraints.cpp" line="8374"/>
+      <location filename="../../CommandConstraints.cpp" line="8259"/>
+      <location filename="../../CommandConstraints.cpp" line="8307"/>
+      <location filename="../../CommandConstraints.cpp" line="8342"/>
+      <location filename="../../CommandConstraints.cpp" line="8431"/>
       <source>Add radiam constraint</source>
       <translation>Sugár/átm-kényszer hozzáadása</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="263"/>
-      <location filename="../../CommandConstraints.cpp" line="8707"/>
-      <location filename="../../CommandConstraints.cpp" line="8823"/>
-      <location filename="../../CommandConstraints.cpp" line="8849"/>
-      <location filename="../../CommandConstraints.cpp" line="8944"/>
+      <location filename="../../CommandConstraints.cpp" line="8764"/>
+      <location filename="../../CommandConstraints.cpp" line="8880"/>
+      <location filename="../../CommandConstraints.cpp" line="8906"/>
+      <location filename="../../CommandConstraints.cpp" line="9001"/>
       <source>Add angle constraint</source>
       <translation>Szöghöz kényszerítés hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6589"/>
+      <location filename="../../CommandConstraints.cpp" line="6646"/>
       <source>Swap point on object and tangency with point to curve tangency</source>
-      <translation type="unfinished">Swap point on object and tangency with point to curve tangency</translation>
+      <translation>A tárgyon lévő pont és az érintőpont felcserélése a görbe érintőpontjával</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9206"/>
-      <location filename="../../CommandConstraints.cpp" line="9261"/>
+      <location filename="../../CommandConstraints.cpp" line="9263"/>
+      <location filename="../../CommandConstraints.cpp" line="9318"/>
       <source>Add equality constraint</source>
       <translation>Egyenlőség kényszerítés hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9395"/>
-      <location filename="../../CommandConstraints.cpp" line="9454"/>
-      <location filename="../../CommandConstraints.cpp" line="9475"/>
-      <location filename="../../CommandConstraints.cpp" line="9582"/>
-      <location filename="../../CommandConstraints.cpp" line="9628"/>
+      <location filename="../../CommandConstraints.cpp" line="9452"/>
+      <location filename="../../CommandConstraints.cpp" line="9511"/>
+      <location filename="../../CommandConstraints.cpp" line="9532"/>
+      <location filename="../../CommandConstraints.cpp" line="9639"/>
+      <location filename="../../CommandConstraints.cpp" line="9685"/>
       <source>Add symmetric constraint</source>
       <translation>Szimmetrikus kényszerítés hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9792"/>
+      <location filename="../../CommandConstraints.cpp" line="9849"/>
       <source>Add Snell's law constraint</source>
       <translation>Fénytörés (Snellius-törvény) kényszerítés hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10023"/>
+      <location filename="../../CommandConstraints.cpp" line="10080"/>
       <source>Toggle constraint to driving/reference</source>
       <translation>Kényszerítés váltása megvezetés/hivatkozás közt</translation>
     </message>
@@ -1849,22 +1849,22 @@ invalid constraints, degenerated geometry, etc.</translation>
       <translation>Vázlat elforgatása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="707"/>
+      <location filename="../../Command.cpp" line="734"/>
       <source>Attach sketch</source>
       <translation>Vázlat csatolás</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="715"/>
+      <location filename="../../Command.cpp" line="742"/>
       <source>Detach sketch</source>
       <translation>Vázlat leválasztás</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="860"/>
+      <location filename="../../Command.cpp" line="887"/>
       <source>Create a mirrored sketch for each selected sketch</source>
       <translation>Tükrözött vázlat létrehozása minden kijelölt vázlathoz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="979"/>
+      <location filename="../../Command.cpp" line="1006"/>
       <source>Merge sketches</source>
       <translation>Vázlatok egyesítése</translation>
     </message>
@@ -1874,47 +1874,47 @@ invalid constraints, degenerated geometry, etc.</translation>
       <translation>Vázlat váltása piszkozatról/vázlatra</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="128"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="126"/>
       <source>Add sketch line</source>
       <translation>Vázlat egyenes hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="346"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="342"/>
       <source>Add sketch box</source>
       <translation>Vázlat téglateste hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="240"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="232"/>
       <source>Add sketch arc</source>
       <translation>Vázlat ív hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="169"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="158"/>
       <source>Add sketch circle</source>
       <translation>Vázlat kör hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="167"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="155"/>
       <source>Add sketch ellipse</source>
       <translation>Vázlat ellipszis hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="307"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="292"/>
       <source>Add sketch arc of ellipse</source>
       <translation>Ellipszis vázlatív hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="316"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="302"/>
       <source>Add sketch arc of hyperbola</source>
       <translation>Hiperbola vázlatív hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="243"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="229"/>
       <source>Add sketch arc of Parabola</source>
       <translation>Parabola vázlatív hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPoint.h" line="83"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="82"/>
       <source>Add sketch point</source>
       <translation>Vázlat pont hozzáadása</translation>
     </message>
@@ -1930,7 +1930,7 @@ invalid constraints, degenerated geometry, etc.</translation>
       <translation>Él vágása</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExtend.h" line="290"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="288"/>
       <source>Extend edge</source>
       <translation>Él meghosszabbítás</translation>
     </message>
@@ -1945,7 +1945,7 @@ invalid constraints, degenerated geometry, etc.</translation>
       <translation>Külső geometria hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSlot.h" line="154"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="150"/>
       <source>Add slot</source>
       <translation>Horony hozzáadása</translation>
     </message>
@@ -2038,8 +2038,8 @@ invalid constraints, degenerated geometry, etc.</translation>
       <translation>A kényszerítés virtuális helyének frissítése</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandler.cpp" line="751"/>
-      <location filename="../../DrawSketchDefaultHandler.h" line="863"/>
+      <location filename="../../DrawSketchHandler.cpp" line="761"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="903"/>
       <source>Add auto constraints</source>
       <translation>Automatikus kényszerítés hozzáadása</translation>
     </message>
@@ -2054,22 +2054,22 @@ invalid constraints, degenerated geometry, etc.</translation>
       <translation>Vázlat kényszerítés átnevezése</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1057"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1063"/>
       <source>Drag Point</source>
       <translation>Pont húzása</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1095"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1101"/>
       <source>Drag Curve</source>
       <translation>Ív húzása</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1165"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1171"/>
       <source>Drag Constraint</source>
       <translation>Kényszerítés húzása</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1364"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1371"/>
       <source>Modify sketch constraints</source>
       <translation>Vázlat kényszerítés módosítása</translation>
     </message>
@@ -2084,12 +2084,12 @@ invalid constraints, degenerated geometry, etc.</translation>
       <translation>Eltolás</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="112"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="110"/>
       <source>Add polygon</source>
       <translation>Sokszög hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="175"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="172"/>
       <source>Add sketch arc slot</source>
       <translation>Vázlat íves rés hozzáadása</translation>
     </message>
@@ -2119,20 +2119,20 @@ invalid constraints, degenerated geometry, etc.</translation>
       <translation>Vázlat hozzáadása b-görbe</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="560"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="698"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="558"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="696"/>
       <source>Add sketch B-spline</source>
-      <translation type="unfinished">Add sketch B-spline</translation>
+      <translation>B-görbe vázlat hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="457"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="449"/>
       <source>Add line to sketch polyline</source>
-      <translation type="unfinished">Add line to sketch polyline</translation>
+      <translation>Vonal hozzáadása a vázlat többes vonalához</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="485"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="477"/>
       <source>Add arc to sketch polyline</source>
-      <translation type="unfinished">Add arc to sketch polyline</translation>
+      <translation>Ív hozzáadása a vázlat többes vonalához</translation>
     </message>
   </context>
   <context>
@@ -2146,61 +2146,61 @@ invalid constraints, degenerated geometry, etc.</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2372"/>
+      <location filename="../../../App/SketchObject.cpp" line="2799"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Nem tudja meghatározni a görbék metszéspontját. Próbáljon meg hozzáadni egybeesés kényszerítést a görbék csúcsaihoz, melyeket le szeretné kerekíteni.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6621"/>
+      <location filename="../../../App/SketchObject.cpp" line="7065"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Nem kér változtatást a csomó többszörözésére.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6616"/>
-      <location filename="../../../App/SketchObject.cpp" line="6800"/>
+      <location filename="../../../App/SketchObject.cpp" line="7059"/>
+      <location filename="../../../App/SketchObject.cpp" line="7245"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
-      <translation type="unfinished">B-spline Geometry Index (GeoID) is out of bounds.</translation>
+      <translation>A B-görbe geometriai indexe (GeoID) határon kívüli.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6627"/>
-      <location filename="../../../App/SketchObject.cpp" line="6810"/>
+      <location filename="../../../App/SketchObject.cpp" line="7071"/>
+      <location filename="../../../App/SketchObject.cpp" line="7255"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
-      <translation type="unfinished">The Geometry Index (GeoId) provided is not a B-spline.</translation>
+      <translation>A megadott geometriai index (GeoId) nem B-görbe.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6636"/>
+      <location filename="../../../App/SketchObject.cpp" line="7080"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>A csomó jelölés határvonalakon kívülre esik. Ne feledje, hogy a megfelelő OCC jelölés szerint, az első csomót jelölése 1 és nem nulla.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6647"/>
+      <location filename="../../../App/SketchObject.cpp" line="7091"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>A sokszorozás nem nőhet a B-görbe szögének értéke fölé.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6655"/>
+      <location filename="../../../App/SketchObject.cpp" line="7099"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>A sokszorozást nem csökkentheti nulla alá.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6669"/>
+      <location filename="../../../App/SketchObject.cpp" line="7113"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC képtelen csökkenteni a sokszorozást a maximális megengedett tűrésen belül.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6804"/>
+      <location filename="../../../App/SketchObject.cpp" line="7249"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>A csomónak nem lehet nulla sokszorozása.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6821"/>
-      <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
-      <translation>Csomó sokszorozás nem lehet magasabb, mint a B-görbe mértéke.</translation>
+      <location filename="../../../App/SketchObject.cpp" line="7266"/>
+      <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
+      <translation>A csomópontok száma nem lehet nagyobb, mint a B-görbe fokozata.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6827"/>
+      <location filename="../../../App/SketchObject.cpp" line="7272"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
-      <translation type="unfinished">Knot cannot be inserted outside the B-spline parameter range.</translation>
+      <translation>A csomó nem illeszthető be a B-görbe paramétertartományán kívül.</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.cpp" line="321"/>
@@ -2219,37 +2219,37 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../../App/SketchAnalysis.cpp" line="675"/>
       <source>Autoconstraint error: Unsolvable sketch while applying coincident constraints.</source>
-      <translation type="unfinished">Autoconstraint error: Unsolvable sketch while applying coincident constraints.</translation>
+      <translation>Automatikus kényszerítés hiba: Megoldhatatlan vázlat egybeeső kényszerítések alkalmazása közben.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchAnalysis.cpp" line="722"/>
       <source>Autoconstraint error: Unsolvable sketch while applying vertical/horizontal constraints.</source>
-      <translation type="unfinished">Autoconstraint error: Unsolvable sketch while applying vertical/horizontal constraints.</translation>
+      <translation>Automatikus kényszerítés hiba: Megoldhatatlan vázlat függőleges/vízszintes kényszerítések alkalmazása mellett.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchAnalysis.cpp" line="814"/>
       <source>Autoconstraint error: Unsolvable sketch while applying equality constraints.</source>
-      <translation type="unfinished">Autoconstraint error: Unsolvable sketch while applying equality constraints.</translation>
+      <translation>Autókényszerítés hiba: megoldhatatlan vázlat egyenlőség kényszerítések alkalmazása mellett.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchAnalysis.cpp" line="854"/>
       <source>Autoconstraint error: Unsolvable sketch without constraints.</source>
-      <translation type="unfinished">Autoconstraint error: Unsolvable sketch without constraints.</translation>
+      <translation>Autókényszerítés hiba: megoldhatatlan vázlat kényszerítések nélkül.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchAnalysis.cpp" line="868"/>
       <source>Autoconstraint error: Unsolvable sketch after applying horizontal and vertical constraints.</source>
-      <translation type="unfinished">Autoconstraint error: Unsolvable sketch after applying horizontal and vertical constraints.</translation>
+      <translation>Autókényszerítés hiba: megoldhatatlan vázlat függőleges/vízszintes kényszerítések alkalmazása után.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchAnalysis.cpp" line="883"/>
       <source>Autoconstraint error: Unsolvable sketch after applying point-on-point constraints.</source>
-      <translation type="unfinished">Autoconstraint error: Unsolvable sketch after applying point-on-point constraints.</translation>
+      <translation>Autókényszerítés hiba: megoldhatatlan vázlat pont-a-ponton kényszerítések alkalmazása után.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchAnalysis.cpp" line="904"/>
       <source>Autoconstraint error: Unsolvable sketch after applying equality constraints.</source>
-      <translation type="unfinished">Autoconstraint error: Unsolvable sketch after applying equality constraints.</translation>
+      <translation>Autókényszerítés hiba: megoldhatatlan vázlat egyenlőségi kényszerítés alkalmazása után.</translation>
     </message>
   </context>
   <context>
@@ -2308,7 +2308,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="186"/>
-      <location filename="../../Command.cpp" line="646"/>
+      <location filename="../../Command.cpp" line="673"/>
       <source>Don't attach</source>
       <translation>Ne csatolja</translation>
     </message>
@@ -2329,124 +2329,124 @@ invalid constraints, degenerated geometry, etc.</translation>
       <location filename="../../CommandSketcherBSpline.cpp" line="1048"/>
       <location filename="../../CommandConstraints.cpp" line="173"/>
       <location filename="../../CommandConstraints.cpp" line="180"/>
-      <location filename="../../CommandConstraints.cpp" line="2413"/>
-      <location filename="../../CommandConstraints.cpp" line="2544"/>
-      <location filename="../../CommandConstraints.cpp" line="2560"/>
-      <location filename="../../CommandConstraints.cpp" line="2867"/>
-      <location filename="../../CommandConstraints.cpp" line="3276"/>
-      <location filename="../../CommandConstraints.cpp" line="3303"/>
-      <location filename="../../CommandConstraints.cpp" line="3308"/>
-      <location filename="../../CommandConstraints.cpp" line="3561"/>
-      <location filename="../../CommandConstraints.cpp" line="3594"/>
-      <location filename="../../CommandConstraints.cpp" line="3599"/>
-      <location filename="../../CommandConstraints.cpp" line="3886"/>
-      <location filename="../../CommandConstraints.cpp" line="3916"/>
+      <location filename="../../CommandConstraints.cpp" line="2429"/>
+      <location filename="../../CommandConstraints.cpp" line="2588"/>
+      <location filename="../../CommandConstraints.cpp" line="2604"/>
+      <location filename="../../CommandConstraints.cpp" line="2912"/>
+      <location filename="../../CommandConstraints.cpp" line="3321"/>
+      <location filename="../../CommandConstraints.cpp" line="3348"/>
+      <location filename="../../CommandConstraints.cpp" line="3353"/>
+      <location filename="../../CommandConstraints.cpp" line="3606"/>
+      <location filename="../../CommandConstraints.cpp" line="3639"/>
+      <location filename="../../CommandConstraints.cpp" line="3644"/>
       <location filename="../../CommandConstraints.cpp" line="3939"/>
-      <location filename="../../CommandConstraints.cpp" line="3970"/>
-      <location filename="../../CommandConstraints.cpp" line="3988"/>
-      <location filename="../../CommandConstraints.cpp" line="4122"/>
-      <location filename="../../CommandConstraints.cpp" line="4144"/>
+      <location filename="../../CommandConstraints.cpp" line="3969"/>
+      <location filename="../../CommandConstraints.cpp" line="3992"/>
+      <location filename="../../CommandConstraints.cpp" line="4023"/>
+      <location filename="../../CommandConstraints.cpp" line="4041"/>
       <location filename="../../CommandConstraints.cpp" line="4175"/>
-      <location filename="../../CommandConstraints.cpp" line="4382"/>
-      <location filename="../../CommandConstraints.cpp" line="4394"/>
-      <location filename="../../CommandConstraints.cpp" line="4643"/>
-      <location filename="../../CommandConstraints.cpp" line="4651"/>
-      <location filename="../../CommandConstraints.cpp" line="4717"/>
-      <location filename="../../CommandConstraints.cpp" line="4837"/>
-      <location filename="../../CommandConstraints.cpp" line="4943"/>
-      <location filename="../../CommandConstraints.cpp" line="5030"/>
-      <location filename="../../CommandConstraints.cpp" line="5043"/>
-      <location filename="../../CommandConstraints.cpp" line="5076"/>
-      <location filename="../../CommandConstraints.cpp" line="5138"/>
-      <location filename="../../CommandConstraints.cpp" line="5174"/>
-      <location filename="../../CommandConstraints.cpp" line="5210"/>
-      <location filename="../../CommandConstraints.cpp" line="5333"/>
-      <location filename="../../CommandConstraints.cpp" line="5346"/>
-      <location filename="../../CommandConstraints.cpp" line="5377"/>
-      <location filename="../../CommandConstraints.cpp" line="5439"/>
-      <location filename="../../CommandConstraints.cpp" line="5473"/>
-      <location filename="../../CommandConstraints.cpp" line="5509"/>
-      <location filename="../../CommandConstraints.cpp" line="5631"/>
-      <location filename="../../CommandConstraints.cpp" line="5666"/>
-      <location filename="../../CommandConstraints.cpp" line="5675"/>
-      <location filename="../../CommandConstraints.cpp" line="5714"/>
-      <location filename="../../CommandConstraints.cpp" line="5813"/>
-      <location filename="../../CommandConstraints.cpp" line="5825"/>
-      <location filename="../../CommandConstraints.cpp" line="5860"/>
-      <location filename="../../CommandConstraints.cpp" line="5936"/>
-      <location filename="../../CommandConstraints.cpp" line="5946"/>
-      <location filename="../../CommandConstraints.cpp" line="5987"/>
-      <location filename="../../CommandConstraints.cpp" line="5998"/>
-      <location filename="../../CommandConstraints.cpp" line="6027"/>
-      <location filename="../../CommandConstraints.cpp" line="6048"/>
-      <location filename="../../CommandConstraints.cpp" line="6228"/>
-      <location filename="../../CommandConstraints.cpp" line="6249"/>
-      <location filename="../../CommandConstraints.cpp" line="6428"/>
-      <location filename="../../CommandConstraints.cpp" line="6645"/>
-      <location filename="../../CommandConstraints.cpp" line="6657"/>
-      <location filename="../../CommandConstraints.cpp" line="6691"/>
-      <location filename="../../CommandConstraints.cpp" line="6763"/>
-      <location filename="../../CommandConstraints.cpp" line="6783"/>
-      <location filename="../../CommandConstraints.cpp" line="6792"/>
-      <location filename="../../CommandConstraints.cpp" line="6821"/>
-      <location filename="../../CommandConstraints.cpp" line="6830"/>
-      <location filename="../../CommandConstraints.cpp" line="6841"/>
-      <location filename="../../CommandConstraints.cpp" line="6869"/>
-      <location filename="../../CommandConstraints.cpp" line="7028"/>
-      <location filename="../../CommandConstraints.cpp" line="7081"/>
-      <location filename="../../CommandConstraints.cpp" line="7255"/>
-      <location filename="../../CommandConstraints.cpp" line="7300"/>
-      <location filename="../../CommandConstraints.cpp" line="7426"/>
-      <location filename="../../CommandConstraints.cpp" line="7439"/>
-      <location filename="../../CommandConstraints.cpp" line="7505"/>
-      <location filename="../../CommandConstraints.cpp" line="7513"/>
-      <location filename="../../CommandConstraints.cpp" line="7669"/>
-      <location filename="../../CommandConstraints.cpp" line="7789"/>
-      <location filename="../../CommandConstraints.cpp" line="7802"/>
-      <location filename="../../CommandConstraints.cpp" line="7847"/>
-      <location filename="../../CommandConstraints.cpp" line="7865"/>
-      <location filename="../../CommandConstraints.cpp" line="7991"/>
-      <location filename="../../CommandConstraints.cpp" line="7999"/>
-      <location filename="../../CommandConstraints.cpp" line="8108"/>
-      <location filename="../../CommandConstraints.cpp" line="8121"/>
-      <location filename="../../CommandConstraints.cpp" line="8182"/>
-      <location filename="../../CommandConstraints.cpp" line="8190"/>
-      <location filename="../../CommandConstraints.cpp" line="8368"/>
-      <location filename="../../CommandConstraints.cpp" line="8651"/>
-      <location filename="../../CommandConstraints.cpp" line="8664"/>
-      <location filename="../../CommandConstraints.cpp" line="8700"/>
-      <location filename="../../CommandConstraints.cpp" line="8798"/>
-      <location filename="../../CommandConstraints.cpp" line="8811"/>
-      <location filename="../../CommandConstraints.cpp" line="8876"/>
-      <location filename="../../CommandConstraints.cpp" line="8937"/>
-      <location filename="../../CommandConstraints.cpp" line="9091"/>
-      <location filename="../../CommandConstraints.cpp" line="9105"/>
-      <location filename="../../CommandConstraints.cpp" line="9123"/>
-      <location filename="../../CommandConstraints.cpp" line="9130"/>
-      <location filename="../../CommandConstraints.cpp" line="9151"/>
-      <location filename="../../CommandConstraints.cpp" line="9184"/>
-      <location filename="../../CommandConstraints.cpp" line="9200"/>
-      <location filename="../../CommandConstraints.cpp" line="9255"/>
-      <location filename="../../CommandConstraints.cpp" line="9347"/>
-      <location filename="../../CommandConstraints.cpp" line="9361"/>
-      <location filename="../../CommandConstraints.cpp" line="9388"/>
-      <location filename="../../CommandConstraints.cpp" line="9417"/>
-      <location filename="../../CommandConstraints.cpp" line="9447"/>
-      <location filename="../../CommandConstraints.cpp" line="9497"/>
-      <location filename="../../CommandConstraints.cpp" line="9526"/>
-      <location filename="../../CommandConstraints.cpp" line="9575"/>
-      <location filename="../../CommandConstraints.cpp" line="9599"/>
-      <location filename="../../CommandConstraints.cpp" line="9693"/>
-      <location filename="../../CommandConstraints.cpp" line="9703"/>
-      <location filename="../../CommandConstraints.cpp" line="9728"/>
-      <location filename="../../CommandConstraints.cpp" line="9738"/>
-      <location filename="../../CommandConstraints.cpp" line="9756"/>
-      <location filename="../../CommandConstraints.cpp" line="9891"/>
-      <location filename="../../CommandConstraints.cpp" line="9969"/>
-      <location filename="../../CommandConstraints.cpp" line="9981"/>
-      <location filename="../../CommandConstraints.cpp" line="10017"/>
-      <location filename="../../CommandConstraints.cpp" line="10093"/>
-      <location filename="../../CommandConstraints.cpp" line="10105"/>
+      <location filename="../../CommandConstraints.cpp" line="4197"/>
+      <location filename="../../CommandConstraints.cpp" line="4228"/>
+      <location filename="../../CommandConstraints.cpp" line="4435"/>
+      <location filename="../../CommandConstraints.cpp" line="4447"/>
+      <location filename="../../CommandConstraints.cpp" line="4696"/>
+      <location filename="../../CommandConstraints.cpp" line="4704"/>
+      <location filename="../../CommandConstraints.cpp" line="4770"/>
+      <location filename="../../CommandConstraints.cpp" line="4890"/>
+      <location filename="../../CommandConstraints.cpp" line="4996"/>
+      <location filename="../../CommandConstraints.cpp" line="5083"/>
+      <location filename="../../CommandConstraints.cpp" line="5096"/>
+      <location filename="../../CommandConstraints.cpp" line="5129"/>
+      <location filename="../../CommandConstraints.cpp" line="5191"/>
+      <location filename="../../CommandConstraints.cpp" line="5227"/>
+      <location filename="../../CommandConstraints.cpp" line="5263"/>
+      <location filename="../../CommandConstraints.cpp" line="5386"/>
+      <location filename="../../CommandConstraints.cpp" line="5399"/>
+      <location filename="../../CommandConstraints.cpp" line="5430"/>
+      <location filename="../../CommandConstraints.cpp" line="5492"/>
+      <location filename="../../CommandConstraints.cpp" line="5526"/>
+      <location filename="../../CommandConstraints.cpp" line="5562"/>
+      <location filename="../../CommandConstraints.cpp" line="5684"/>
+      <location filename="../../CommandConstraints.cpp" line="5719"/>
+      <location filename="../../CommandConstraints.cpp" line="5728"/>
+      <location filename="../../CommandConstraints.cpp" line="5767"/>
+      <location filename="../../CommandConstraints.cpp" line="5866"/>
+      <location filename="../../CommandConstraints.cpp" line="5878"/>
+      <location filename="../../CommandConstraints.cpp" line="5913"/>
+      <location filename="../../CommandConstraints.cpp" line="5989"/>
+      <location filename="../../CommandConstraints.cpp" line="5999"/>
+      <location filename="../../CommandConstraints.cpp" line="6040"/>
+      <location filename="../../CommandConstraints.cpp" line="6051"/>
+      <location filename="../../CommandConstraints.cpp" line="6080"/>
+      <location filename="../../CommandConstraints.cpp" line="6101"/>
+      <location filename="../../CommandConstraints.cpp" line="6281"/>
+      <location filename="../../CommandConstraints.cpp" line="6302"/>
+      <location filename="../../CommandConstraints.cpp" line="6481"/>
+      <location filename="../../CommandConstraints.cpp" line="6702"/>
+      <location filename="../../CommandConstraints.cpp" line="6714"/>
+      <location filename="../../CommandConstraints.cpp" line="6748"/>
+      <location filename="../../CommandConstraints.cpp" line="6820"/>
+      <location filename="../../CommandConstraints.cpp" line="6840"/>
+      <location filename="../../CommandConstraints.cpp" line="6849"/>
+      <location filename="../../CommandConstraints.cpp" line="6878"/>
+      <location filename="../../CommandConstraints.cpp" line="6887"/>
+      <location filename="../../CommandConstraints.cpp" line="6898"/>
+      <location filename="../../CommandConstraints.cpp" line="6926"/>
+      <location filename="../../CommandConstraints.cpp" line="7085"/>
+      <location filename="../../CommandConstraints.cpp" line="7138"/>
+      <location filename="../../CommandConstraints.cpp" line="7312"/>
+      <location filename="../../CommandConstraints.cpp" line="7357"/>
+      <location filename="../../CommandConstraints.cpp" line="7483"/>
+      <location filename="../../CommandConstraints.cpp" line="7496"/>
+      <location filename="../../CommandConstraints.cpp" line="7562"/>
+      <location filename="../../CommandConstraints.cpp" line="7570"/>
+      <location filename="../../CommandConstraints.cpp" line="7726"/>
+      <location filename="../../CommandConstraints.cpp" line="7846"/>
+      <location filename="../../CommandConstraints.cpp" line="7859"/>
+      <location filename="../../CommandConstraints.cpp" line="7904"/>
+      <location filename="../../CommandConstraints.cpp" line="7922"/>
+      <location filename="../../CommandConstraints.cpp" line="8048"/>
+      <location filename="../../CommandConstraints.cpp" line="8056"/>
+      <location filename="../../CommandConstraints.cpp" line="8165"/>
+      <location filename="../../CommandConstraints.cpp" line="8178"/>
+      <location filename="../../CommandConstraints.cpp" line="8239"/>
+      <location filename="../../CommandConstraints.cpp" line="8247"/>
+      <location filename="../../CommandConstraints.cpp" line="8425"/>
+      <location filename="../../CommandConstraints.cpp" line="8708"/>
+      <location filename="../../CommandConstraints.cpp" line="8721"/>
+      <location filename="../../CommandConstraints.cpp" line="8757"/>
+      <location filename="../../CommandConstraints.cpp" line="8855"/>
+      <location filename="../../CommandConstraints.cpp" line="8868"/>
+      <location filename="../../CommandConstraints.cpp" line="8933"/>
+      <location filename="../../CommandConstraints.cpp" line="8994"/>
+      <location filename="../../CommandConstraints.cpp" line="9148"/>
+      <location filename="../../CommandConstraints.cpp" line="9162"/>
+      <location filename="../../CommandConstraints.cpp" line="9180"/>
+      <location filename="../../CommandConstraints.cpp" line="9187"/>
+      <location filename="../../CommandConstraints.cpp" line="9208"/>
+      <location filename="../../CommandConstraints.cpp" line="9241"/>
+      <location filename="../../CommandConstraints.cpp" line="9257"/>
+      <location filename="../../CommandConstraints.cpp" line="9312"/>
+      <location filename="../../CommandConstraints.cpp" line="9404"/>
+      <location filename="../../CommandConstraints.cpp" line="9418"/>
+      <location filename="../../CommandConstraints.cpp" line="9445"/>
+      <location filename="../../CommandConstraints.cpp" line="9474"/>
+      <location filename="../../CommandConstraints.cpp" line="9504"/>
+      <location filename="../../CommandConstraints.cpp" line="9554"/>
+      <location filename="../../CommandConstraints.cpp" line="9583"/>
+      <location filename="../../CommandConstraints.cpp" line="9632"/>
+      <location filename="../../CommandConstraints.cpp" line="9656"/>
+      <location filename="../../CommandConstraints.cpp" line="9750"/>
+      <location filename="../../CommandConstraints.cpp" line="9760"/>
+      <location filename="../../CommandConstraints.cpp" line="9785"/>
+      <location filename="../../CommandConstraints.cpp" line="9795"/>
+      <location filename="../../CommandConstraints.cpp" line="9813"/>
+      <location filename="../../CommandConstraints.cpp" line="9948"/>
+      <location filename="../../CommandConstraints.cpp" line="10026"/>
+      <location filename="../../CommandConstraints.cpp" line="10038"/>
+      <location filename="../../CommandConstraints.cpp" line="10074"/>
+      <location filename="../../CommandConstraints.cpp" line="10150"/>
+      <location filename="../../CommandConstraints.cpp" line="10162"/>
       <location filename="../../CommandSketcherTools.cpp" line="80"/>
       <location filename="../../CommandSketcherTools.cpp" line="362"/>
       <location filename="../../CommandSketcherTools.cpp" line="1003"/>
@@ -2512,116 +2512,116 @@ invalid constraints, degenerated geometry, etc.</translation>
       <translation>Az egyik kiválasztottnak szerepelnie kell a vázlaton.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2868"/>
+      <location filename="../../CommandConstraints.cpp" line="2913"/>
       <source>Select an edge from the sketch.</source>
       <translation>Egy él kiválasztása a vázlaton.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2832"/>
-      <location filename="../../CommandConstraints.cpp" line="2841"/>
-      <location filename="../../CommandConstraints.cpp" line="2893"/>
-      <location filename="../../CommandConstraints.cpp" line="2917"/>
-      <location filename="../../CommandConstraints.cpp" line="2971"/>
-      <location filename="../../CommandConstraints.cpp" line="3005"/>
+      <location filename="../../CommandConstraints.cpp" line="2877"/>
+      <location filename="../../CommandConstraints.cpp" line="2886"/>
+      <location filename="../../CommandConstraints.cpp" line="2938"/>
+      <location filename="../../CommandConstraints.cpp" line="2962"/>
+      <location filename="../../CommandConstraints.cpp" line="3016"/>
+      <location filename="../../CommandConstraints.cpp" line="3050"/>
       <source>Impossible constraint</source>
       <translation>Lehetetlen kényszerítés</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2894"/>
-      <location filename="../../CommandConstraints.cpp" line="3006"/>
+      <location filename="../../CommandConstraints.cpp" line="2939"/>
+      <location filename="../../CommandConstraints.cpp" line="3051"/>
       <source>The selected edge is not a line segment.</source>
       <translation>A kiválasztott él nem egy egyenes szakasz.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2824"/>
-      <location filename="../../CommandConstraints.cpp" line="3611"/>
-      <location filename="../../CommandConstraints.cpp" line="3664"/>
+      <location filename="../../CommandConstraints.cpp" line="2869"/>
+      <location filename="../../CommandConstraints.cpp" line="3656"/>
+      <location filename="../../CommandConstraints.cpp" line="3709"/>
       <source>Double constraint</source>
       <translation>Kettős kényszerítés</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2825"/>
+      <location filename="../../CommandConstraints.cpp" line="2870"/>
       <source>The selected edge already has a horizontal constraint!</source>
       <translation>A kiválasztott él már rendelkezik egy vízszintes kényszerítéssel!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2833"/>
+      <location filename="../../CommandConstraints.cpp" line="2878"/>
       <source>The selected edge already has a vertical constraint!</source>
       <translation>A kiválasztott él már rendelkezik egy függőleges kényszerítéssel!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2842"/>
-      <location filename="../../CommandConstraints.cpp" line="3612"/>
-      <location filename="../../CommandConstraints.cpp" line="3665"/>
+      <location filename="../../CommandConstraints.cpp" line="2887"/>
+      <location filename="../../CommandConstraints.cpp" line="3657"/>
+      <location filename="../../CommandConstraints.cpp" line="3710"/>
       <source>The selected edge already has a Block constraint!</source>
       <translation>A kijelölt élnek már van blokk kényszerítése!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2972"/>
+      <location filename="../../CommandConstraints.cpp" line="3017"/>
       <source>There are more than one fixed points selected. Select a maximum of one fixed point!</source>
       <translation>Több mint egy rögzített pontot választott. Válasszon legfeljebb egy rögzített pontot!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3277"/>
-      <location filename="../../CommandConstraints.cpp" line="3562"/>
-      <location filename="../../CommandConstraints.cpp" line="4383"/>
+      <location filename="../../CommandConstraints.cpp" line="3322"/>
+      <location filename="../../CommandConstraints.cpp" line="3607"/>
+      <location filename="../../CommandConstraints.cpp" line="4436"/>
       <source>Select vertices from the sketch.</source>
       <translation>Válasszon sarkokat a vázlatból.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3304"/>
+      <location filename="../../CommandConstraints.cpp" line="3349"/>
       <source>Select one vertex from the sketch other than the origin.</source>
       <translation>Jelöljön ki a vázlaton egy, a kiindulási ponttól eltérő, végpontot.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3309"/>
+      <location filename="../../CommandConstraints.cpp" line="3354"/>
       <source>Select only vertices from the sketch. The last selected vertex may be the origin.</source>
       <translation>Csak sarkokat válasszon a vázlatból. Az utoljára kiválasztott végpont lehet a kezdőpont.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3575"/>
+      <location filename="../../CommandConstraints.cpp" line="3620"/>
       <source>Wrong solver status</source>
       <translation>Rossz a megoldó állapota</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3576"/>
+      <location filename="../../CommandConstraints.cpp" line="3621"/>
       <source>A Block constraint cannot be added if the sketch is unsolved or there are redundant and conflicting constraints.</source>
       <translation>Egy blokk kényszerítést nem adhat hozzá, ha a vázlat megoldatlan vagy felesleges és ellentmondó kényszerítései vannak.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3595"/>
+      <location filename="../../CommandConstraints.cpp" line="3640"/>
       <source>Select one edge from the sketch.</source>
       <translation>Válasszon egy élt a vázlaton.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3600"/>
+      <location filename="../../CommandConstraints.cpp" line="3645"/>
       <source>Select only edges from the sketch.</source>
       <translation>Csak éleket válasszon a vázlaton.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3971"/>
+      <location filename="../../CommandConstraints.cpp" line="4024"/>
       <source>None of the selected points were constrained onto the respective curves, because they are part of the same element, they are both external geometry, or the edge is not eligible.</source>
-      <translation type="unfinished">None of the selected points were constrained onto the respective curves, because they are part of the same element, they are both external geometry, or the edge is not eligible.</translation>
+      <translation>A kiválasztott pontok egyike sem volt a megfelelő görbékre kényszerítve, mert ugyanannak az elemnek a részei, mindkettő külső geometria, vagy az él nem támogatható.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7029"/>
+      <location filename="../../CommandConstraints.cpp" line="7086"/>
       <source>Only tangent-via-point is supported with a B-spline.</source>
       <translation>A B-görbe csak a pont-általi-érintőt támogatja.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7514"/>
-      <location filename="../../CommandConstraints.cpp" line="8191"/>
+      <location filename="../../CommandConstraints.cpp" line="7571"/>
+      <location filename="../../CommandConstraints.cpp" line="8248"/>
       <source>Select either only one or more B-spline poles or only one or more arcs or circles from the sketch, but not mixed.</source>
-      <translation type="unfinished">Select either only one or more B-spline poles or only one or more arcs or circles from the sketch, but not mixed.</translation>
+      <translation>Jelöljön ki egy vagy több B-görbe pólust, vagy egy vagy több ívet vagy kört a vázlatból, de nem keverve.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9678"/>
+      <location filename="../../CommandConstraints.cpp" line="9735"/>
       <source>Select two endpoints of lines to act as rays, and an edge representing a boundary. The first selected point corresponds to index n1, second to n2, and the value sets the ratio n2/n1.</source>
       <comment>Constraint_SnellsLaw</comment>
-      <translation type="unfinished">Select two endpoints of lines to act as rays, and an edge representing a boundary. The first selected point corresponds to index n1, second to n2, and the value sets the ratio n2/n1.</translation>
+      <translation>Jelöljön ki két vonalvégpontot sugarakként, és egy szegélyt jelölő élt. Az első kijelölt pont megfelel az n1 indexnek, a második az n2-nek, és az adat állítja be az n2/n1 arányt.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9704"/>
+      <location filename="../../CommandConstraints.cpp" line="9761"/>
       <source>Number of selected objects is not 3</source>
       <translation>A kijelölt tárgyak száma nem 3</translation>
     </message>
@@ -2638,80 +2638,80 @@ invalid constraints, degenerated geometry, etc.</translation>
       <translation>Váratlan hiba. További információ a Jelentés nézetben érhető el.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2918"/>
+      <location filename="../../CommandConstraints.cpp" line="2963"/>
       <source>The selected item(s) can't accept a horizontal or vertical constraint!</source>
       <translation>A kiválasztott elem(ek) nem fogadják el a függőleges illesztést!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3819"/>
+      <location filename="../../CommandConstraints.cpp" line="3872"/>
       <source>Endpoint to endpoint tangency was applied instead.</source>
       <translation>Végpont-végpont érintőt alkalmazott helyette.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3989"/>
+      <location filename="../../CommandConstraints.cpp" line="4042"/>
       <source>Select two or more vertices from the sketch for a coincident constraint, or two or more circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</source>
       <translation>Válasszon két vagy több csúcsot a vázlatból az egybeeső kényszerítéshez, vagy legalább két kört, ellipszist, ívet vagy elliptikus ívet a koncentrikus kényszerhez.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4176"/>
+      <location filename="../../CommandConstraints.cpp" line="4229"/>
       <source>Select two vertices from the sketch for a coincident constraint, or two circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</source>
       <translation>Válasszon két csúcsot a vázlatból az egybeeső kényszerítéshez, vagy két kört, ellipszist, ívet vagy elliptikus ívet a koncentrikus kényszerhez.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4395"/>
+      <location filename="../../CommandConstraints.cpp" line="4448"/>
       <source>Select exactly one line or one point and one line or two points from the sketch.</source>
       <translation>Válasszon ki pontosan egy sort vagy egy pontot és egy sort és két pontot a vázlatból.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4652"/>
+      <location filename="../../CommandConstraints.cpp" line="4705"/>
       <source>Cannot add a length constraint on an axis!</source>
       <translation>Nem adható hozzá a hosszanti illesztés egy tengelyen!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4718"/>
-      <location filename="../../CommandConstraints.cpp" line="4944"/>
+      <location filename="../../CommandConstraints.cpp" line="4771"/>
+      <location filename="../../CommandConstraints.cpp" line="4997"/>
       <source>Select exactly one line or one point and one line or two points or two circles from the sketch.</source>
       <translation>Válasszon ki pontosan egy vonalat vagy egy pontot és egy vonalat vagy két pontot vagy két kört a vázlatból.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4838"/>
+      <location filename="../../CommandConstraints.cpp" line="4891"/>
       <source>This constraint does not make sense for non-linear curves.</source>
       <translation>Ennek a kényszerítésnek nincs értelme a nem-lineáris görbéknél.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3777"/>
+      <location filename="../../CommandConstraints.cpp" line="3824"/>
       <source>Endpoint to edge tangency was applied instead.</source>
       <translation>Ehelyett a végpont és az él érintője került alkalmazásra.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5031"/>
-      <location filename="../../CommandConstraints.cpp" line="5334"/>
-      <location filename="../../CommandConstraints.cpp" line="7427"/>
-      <location filename="../../CommandConstraints.cpp" line="7790"/>
-      <location filename="../../CommandConstraints.cpp" line="8109"/>
-      <location filename="../../CommandConstraints.cpp" line="8652"/>
+      <location filename="../../CommandConstraints.cpp" line="5084"/>
+      <location filename="../../CommandConstraints.cpp" line="5387"/>
+      <location filename="../../CommandConstraints.cpp" line="7484"/>
+      <location filename="../../CommandConstraints.cpp" line="7847"/>
+      <location filename="../../CommandConstraints.cpp" line="8166"/>
+      <location filename="../../CommandConstraints.cpp" line="8709"/>
       <source>Select the right things from the sketch.</source>
       <translation>Válassza ki a megfelelő dolgokat a vázlatból.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3940"/>
-      <location filename="../../CommandConstraints.cpp" line="4123"/>
-      <location filename="../../CommandConstraints.cpp" line="5861"/>
-      <location filename="../../CommandConstraints.cpp" line="5999"/>
-      <location filename="../../CommandConstraints.cpp" line="6049"/>
-      <location filename="../../CommandConstraints.cpp" line="6250"/>
-      <location filename="../../CommandConstraints.cpp" line="6429"/>
-      <location filename="../../CommandConstraints.cpp" line="6692"/>
-      <location filename="../../CommandConstraints.cpp" line="6842"/>
-      <location filename="../../CommandConstraints.cpp" line="6870"/>
-      <location filename="../../CommandConstraints.cpp" line="7082"/>
-      <location filename="../../CommandConstraints.cpp" line="7301"/>
-      <location filename="../../CommandConstraints.cpp" line="7848"/>
-      <location filename="../../CommandConstraints.cpp" line="8000"/>
-      <location filename="../../CommandConstraints.cpp" line="8701"/>
-      <location filename="../../CommandConstraints.cpp" line="8799"/>
-      <location filename="../../CommandConstraints.cpp" line="8938"/>
-      <location filename="../../CommandConstraints.cpp" line="9757"/>
+      <location filename="../../CommandConstraints.cpp" line="3993"/>
+      <location filename="../../CommandConstraints.cpp" line="4176"/>
+      <location filename="../../CommandConstraints.cpp" line="5914"/>
+      <location filename="../../CommandConstraints.cpp" line="6052"/>
+      <location filename="../../CommandConstraints.cpp" line="6102"/>
+      <location filename="../../CommandConstraints.cpp" line="6303"/>
+      <location filename="../../CommandConstraints.cpp" line="6482"/>
+      <location filename="../../CommandConstraints.cpp" line="6749"/>
+      <location filename="../../CommandConstraints.cpp" line="6899"/>
+      <location filename="../../CommandConstraints.cpp" line="6927"/>
+      <location filename="../../CommandConstraints.cpp" line="7139"/>
+      <location filename="../../CommandConstraints.cpp" line="7358"/>
+      <location filename="../../CommandConstraints.cpp" line="7905"/>
+      <location filename="../../CommandConstraints.cpp" line="8057"/>
+      <location filename="../../CommandConstraints.cpp" line="8758"/>
+      <location filename="../../CommandConstraints.cpp" line="8856"/>
+      <location filename="../../CommandConstraints.cpp" line="8995"/>
+      <location filename="../../CommandConstraints.cpp" line="9814"/>
       <source>Select an edge that is not a B-spline weight.</source>
       <translation>Jelöljön ki egy olyan élt, amely nem B-görbe vastagságú.</translation>
     </message>
@@ -2721,87 +2721,87 @@ invalid constraints, degenerated geometry, etc.</translation>
       <translation>Egy vagy két pont-tárgyra vonatkozó kényszerítés(ek) törlésre került(ek), mivel a legutóbbi belsőleg alkalmazott kényszerítés is pont-tárgyra vonatkozik.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3861"/>
+      <location filename="../../CommandConstraints.cpp" line="3914"/>
       <source>Select either several points, or several conics for concentricity.</source>
       <translation>Válasszon ki több pontot vagy több kúpot a koncentrikusság.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3864"/>
+      <location filename="../../CommandConstraints.cpp" line="3917"/>
       <source>Select either one point and several curves, or one curve and several points</source>
       <translation>Válasszon ki egy pontot és több görbét, vagy egy görbét és több pontot</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3867"/>
+      <location filename="../../CommandConstraints.cpp" line="3920"/>
       <source>Select either one point and several curves or one curve and several points for pointOnObject, or several points for coincidence, or several conics for concentricity.</source>
       <translation>Válasszon ki egy pontot és több görbét vagy egy görbét és több pontot a pontATárgyon, vagy több pontot a egybeesések, vagy több kúpot a kúpszelet esetén.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4145"/>
+      <location filename="../../CommandConstraints.cpp" line="4198"/>
       <source>None of the selected points were constrained onto the respective curves, either because they are parts of the same element, or because they are both external geometry.</source>
       <translation>A kijelölt pontok egyike sincs kényszerítve a vonatkozó görbékhez, mert azok részei ugyanannak az elemnek, vagy azért, mert mindkét külső geometria.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4644"/>
+      <location filename="../../CommandConstraints.cpp" line="4697"/>
       <source>Cannot add a length constraint on this selection!</source>
       <translation>Nem adható hozzá a hosszanti illesztés ezen a kijelölésen!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5044"/>
-      <location filename="../../CommandConstraints.cpp" line="5175"/>
-      <location filename="../../CommandConstraints.cpp" line="5347"/>
-      <location filename="../../CommandConstraints.cpp" line="5474"/>
+      <location filename="../../CommandConstraints.cpp" line="5097"/>
+      <location filename="../../CommandConstraints.cpp" line="5228"/>
+      <location filename="../../CommandConstraints.cpp" line="5400"/>
+      <location filename="../../CommandConstraints.cpp" line="5527"/>
       <source>Select exactly one line or up to two points from the sketch.</source>
       <translation>Válasszon ki pontosan egy vonalat, vagy legfeljebb két pontot a vázlatból.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5077"/>
+      <location filename="../../CommandConstraints.cpp" line="5130"/>
       <source>Cannot add a horizontal length constraint on an axis!</source>
       <translation>Nem lehet hozzáadni egy vízszintes hosszanti illesztést egy tengelyen!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5139"/>
+      <location filename="../../CommandConstraints.cpp" line="5192"/>
       <source>Cannot add a fixed x-coordinate constraint on the origin point!</source>
       <translation>Nem adható hozzá a rögzített x-koordináta illesztése a kezdő ponthoz!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5211"/>
-      <location filename="../../CommandConstraints.cpp" line="5510"/>
+      <location filename="../../CommandConstraints.cpp" line="5264"/>
+      <location filename="../../CommandConstraints.cpp" line="5563"/>
       <source>This constraint only makes sense on a line segment or a pair of points.</source>
       <translation>Ez a kényszerítés csak egy vonalszakaszon vagy egy pont páron érvényesül.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5378"/>
+      <location filename="../../CommandConstraints.cpp" line="5431"/>
       <source>Cannot add a vertical length constraint on an axis!</source>
       <translation>Nem adható hozzá a függőleges hosszanti illesztés egy tengelyen!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5440"/>
+      <location filename="../../CommandConstraints.cpp" line="5493"/>
       <source>Cannot add a fixed y-coordinate constraint on the origin point!</source>
       <translation>Nem adható hozzá a rögzített y-koordináta illesztése a kezdő ponthoz!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5632"/>
+      <location filename="../../CommandConstraints.cpp" line="5685"/>
       <source>Select two or more lines from the sketch.</source>
       <translation>Válasszon ki két vagy több vonalat a vázlatból.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5667"/>
+      <location filename="../../CommandConstraints.cpp" line="5720"/>
       <source>One selected edge is not a valid line.</source>
       <translation>A kiválasztott egy él nem egy érvényes egyenes.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5676"/>
-      <location filename="../../CommandConstraints.cpp" line="9106"/>
+      <location filename="../../CommandConstraints.cpp" line="5729"/>
+      <location filename="../../CommandConstraints.cpp" line="9163"/>
       <source>Select at least two lines from the sketch.</source>
       <translation>Válasszon ki legalább két  vonalat a vázlatból.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5715"/>
+      <location filename="../../CommandConstraints.cpp" line="5768"/>
       <source>The selected edge is not a valid line.</source>
       <translation>A kiválasztott él nem egy érvényes egyenes.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5804"/>
+      <location filename="../../CommandConstraints.cpp" line="5857"/>
       <source>There is a number of ways this constraint can be applied.
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
@@ -2811,35 +2811,35 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
 Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpont; két görbe és egy pont.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5809"/>
+      <location filename="../../CommandConstraints.cpp" line="5862"/>
       <source>Select some geometry from the sketch.</source>
       <comment>perpendicular constraint</comment>
       <translation>Válasszon ki néhány geometriát a vázlatból.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5947"/>
-      <location filename="../../CommandConstraints.cpp" line="5988"/>
+      <location filename="../../CommandConstraints.cpp" line="6000"/>
+      <location filename="../../CommandConstraints.cpp" line="6041"/>
       <source>Cannot add a perpendicularity constraint at an unconnected point!</source>
       <translation>Nem lehet hozzáadni a függőlegesség illesztést a független ponton!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6028"/>
-      <location filename="../../CommandConstraints.cpp" line="6229"/>
+      <location filename="../../CommandConstraints.cpp" line="6081"/>
+      <location filename="../../CommandConstraints.cpp" line="6282"/>
       <source>One of the selected edges should be a line.</source>
       <translation>Az egyik kijelölt élnek egy vonalnak kell lennie.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6578"/>
+      <location filename="../../CommandConstraints.cpp" line="6634"/>
       <source>Endpoint to endpoint tangency was applied. The coincident constraint was deleted.</source>
       <translation>Végpont-végpont érintőt alkalmazott. Az egybeeső kényszerítést törölve lett.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6605"/>
+      <location filename="../../CommandConstraints.cpp" line="6662"/>
       <source>Endpoint to edge tangency was applied. The point on object constraint was deleted.</source>
       <translation>Végponttól az élig érintőt alkalmaztak. A tárgy kényszerítés pontját törölték.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6636"/>
+      <location filename="../../CommandConstraints.cpp" line="6693"/>
       <source>There are a number of ways this constraint can be applied.
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
@@ -2849,61 +2849,61 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
 Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpont; két görbe és egy pont.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6641"/>
+      <location filename="../../CommandConstraints.cpp" line="6698"/>
       <source>Select some geometry from the sketch.</source>
       <comment>tangent constraint</comment>
       <translation>Válasszon ki néhány geometriát a vázlatból.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6793"/>
-      <location filename="../../CommandConstraints.cpp" line="6831"/>
-      <location filename="../../CommandConstraints.cpp" line="7256"/>
+      <location filename="../../CommandConstraints.cpp" line="6850"/>
+      <location filename="../../CommandConstraints.cpp" line="6888"/>
+      <location filename="../../CommandConstraints.cpp" line="7313"/>
       <source>Cannot add a tangency constraint at an unconnected point!</source>
       <translation>Nem lehet hozzáadni egy érintő illesztést a független ponton!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6784"/>
-      <location filename="../../CommandConstraints.cpp" line="6822"/>
+      <location filename="../../CommandConstraints.cpp" line="6841"/>
+      <location filename="../../CommandConstraints.cpp" line="6879"/>
       <source>Tangent constraint at B-spline knot is only supported with lines!</source>
       <translation>A B-görbe csomó érintő kényszerítését csak vonalak támogatják!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3839"/>
+      <location filename="../../CommandConstraints.cpp" line="3892"/>
       <source>B-spline knot to endpoint tangency was applied instead.</source>
       <translation>B-görbe csomó a végponthoz érintőt alkalmazott helyette.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5826"/>
-      <location filename="../../CommandConstraints.cpp" line="6658"/>
+      <location filename="../../CommandConstraints.cpp" line="5879"/>
+      <location filename="../../CommandConstraints.cpp" line="6715"/>
       <source>Wrong number of selected objects!</source>
       <translation>Kijelölt objektumok téves mennyisége!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5937"/>
-      <location filename="../../CommandConstraints.cpp" line="6764"/>
+      <location filename="../../CommandConstraints.cpp" line="5990"/>
+      <location filename="../../CommandConstraints.cpp" line="6821"/>
       <source>With 3 objects, there must be 2 curves and 1 point.</source>
       <translation>3 tárggyal, két görbének és 1 pontnak kell lennie.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7440"/>
-      <location filename="../../CommandConstraints.cpp" line="7506"/>
-      <location filename="../../CommandConstraints.cpp" line="7803"/>
-      <location filename="../../CommandConstraints.cpp" line="7866"/>
-      <location filename="../../CommandConstraints.cpp" line="8122"/>
-      <location filename="../../CommandConstraints.cpp" line="8183"/>
+      <location filename="../../CommandConstraints.cpp" line="7497"/>
+      <location filename="../../CommandConstraints.cpp" line="7563"/>
+      <location filename="../../CommandConstraints.cpp" line="7860"/>
+      <location filename="../../CommandConstraints.cpp" line="7923"/>
+      <location filename="../../CommandConstraints.cpp" line="8179"/>
+      <location filename="../../CommandConstraints.cpp" line="8240"/>
       <source>Select one or more arcs or circles from the sketch.</source>
       <translation>Válasszon egy vagy több ívet vagy kört a vázlatból.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7670"/>
-      <location filename="../../CommandConstraints.cpp" line="7992"/>
-      <location filename="../../CommandConstraints.cpp" line="8369"/>
+      <location filename="../../CommandConstraints.cpp" line="7727"/>
+      <location filename="../../CommandConstraints.cpp" line="8049"/>
+      <location filename="../../CommandConstraints.cpp" line="8426"/>
       <source>Constraint only applies to arcs or circles.</source>
       <translation>Kényszerítés csak az ívekre és körökre vonatkozik.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8665"/>
-      <location filename="../../CommandConstraints.cpp" line="8877"/>
+      <location filename="../../CommandConstraints.cpp" line="8722"/>
+      <location filename="../../CommandConstraints.cpp" line="8934"/>
       <source>Select one or two lines from the sketch. Or select two edges and a point.</source>
       <translation>Válasszon egy vagy két vonalat a vázlatból. Vagy válasszon ki két élet és egy pontot.</translation>
     </message>
@@ -2918,87 +2918,87 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <translation>Egy szög kényszerítést nem lehet beállítani két párhuzamos vonalra.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8812"/>
+      <location filename="../../CommandConstraints.cpp" line="8869"/>
       <source>Cannot add an angle constraint on an axis!</source>
       <translation>Nem lehet hozzáadni egy szög illesztést egy tengelyhez!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9092"/>
+      <location filename="../../CommandConstraints.cpp" line="9149"/>
       <source>Select two edges from the sketch.</source>
       <translation>Két él kiválasztása a vázlaton.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9124"/>
+      <location filename="../../CommandConstraints.cpp" line="9181"/>
       <source>Select two or more compatible edges.</source>
       <translation>Válasszon ki két vagy több kompatibilis élt.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9131"/>
+      <location filename="../../CommandConstraints.cpp" line="9188"/>
       <source>Sketch axes cannot be used in equality constraints.</source>
       <translation>Vázlat tengelyek nem használhatók egyenlőségi kényszerítésekhez.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9152"/>
+      <location filename="../../CommandConstraints.cpp" line="9209"/>
       <source>Equality for B-spline edge currently unsupported.</source>
       <translation>Egyenlőség B-görbe élével jelenleg nem támogatott.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2414"/>
-      <location filename="../../CommandConstraints.cpp" line="9185"/>
-      <location filename="../../CommandConstraints.cpp" line="9201"/>
-      <location filename="../../CommandConstraints.cpp" line="9256"/>
+      <location filename="../../CommandConstraints.cpp" line="2430"/>
+      <location filename="../../CommandConstraints.cpp" line="9242"/>
+      <location filename="../../CommandConstraints.cpp" line="9258"/>
+      <location filename="../../CommandConstraints.cpp" line="9313"/>
       <source>Select two or more edges of similar type.</source>
       <translation>Jelöljön ki két vagy több hasonló típusú élt.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9348"/>
-      <location filename="../../CommandConstraints.cpp" line="9362"/>
-      <location filename="../../CommandConstraints.cpp" line="9418"/>
-      <location filename="../../CommandConstraints.cpp" line="9498"/>
-      <location filename="../../CommandConstraints.cpp" line="9600"/>
+      <location filename="../../CommandConstraints.cpp" line="9405"/>
+      <location filename="../../CommandConstraints.cpp" line="9419"/>
+      <location filename="../../CommandConstraints.cpp" line="9475"/>
+      <location filename="../../CommandConstraints.cpp" line="9555"/>
+      <location filename="../../CommandConstraints.cpp" line="9657"/>
       <source>Select two points and a symmetry line, two points and a symmetry point or a line and a symmetry point from the sketch.</source>
       <translation>Válasszon ki két pontot és egy szimmetria vonalat, két pontot és egy szimmetria pontot vagy egy vonalat és egy szimmetria pontot a vázlatból.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9389"/>
-      <location filename="../../CommandConstraints.cpp" line="9576"/>
+      <location filename="../../CommandConstraints.cpp" line="9446"/>
+      <location filename="../../CommandConstraints.cpp" line="9633"/>
       <source>Cannot add a symmetry constraint between a line and its end points.</source>
       <translation>Nem lehet hozzáadni a szimmetria kényszerítést a vonalhoz és annak végpontjaihoz.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2545"/>
-      <location filename="../../CommandConstraints.cpp" line="2561"/>
-      <location filename="../../CommandConstraints.cpp" line="9448"/>
-      <location filename="../../CommandConstraints.cpp" line="9527"/>
+      <location filename="../../CommandConstraints.cpp" line="2589"/>
+      <location filename="../../CommandConstraints.cpp" line="2605"/>
+      <location filename="../../CommandConstraints.cpp" line="9505"/>
+      <location filename="../../CommandConstraints.cpp" line="9584"/>
       <source>Cannot add a symmetry constraint between a line and its end points!</source>
       <translation>Nem lehet hozzáadni a szimmetria illesztést a vonalhoz és annak végpontjaihoz!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9687"/>
+      <location filename="../../CommandConstraints.cpp" line="9744"/>
       <source>Selected objects are not just geometry from one sketch.</source>
       <translation>A kijelölt tárgyak nem csak egy vázlat geometriái.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9729"/>
+      <location filename="../../CommandConstraints.cpp" line="9786"/>
       <source>Cannot create constraint with external geometry only.</source>
       <translation>Kényszerítést nem lehet szimplán külső geometriával létrehozni.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9739"/>
+      <location filename="../../CommandConstraints.cpp" line="9796"/>
       <source>Incompatible geometry is selected.</source>
       <translation>Inkompatibilis geometriát jelölt ki.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9892"/>
+      <location filename="../../CommandConstraints.cpp" line="9949"/>
       <source>Select one dimensional constraint from the sketch.</source>
       <translation>Válasszon ki egy dimenziós kényszert a vázlatból.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9970"/>
-      <location filename="../../CommandConstraints.cpp" line="9982"/>
-      <location filename="../../CommandConstraints.cpp" line="10018"/>
-      <location filename="../../CommandConstraints.cpp" line="10094"/>
-      <location filename="../../CommandConstraints.cpp" line="10106"/>
+      <location filename="../../CommandConstraints.cpp" line="10027"/>
+      <location filename="../../CommandConstraints.cpp" line="10039"/>
+      <location filename="../../CommandConstraints.cpp" line="10075"/>
+      <location filename="../../CommandConstraints.cpp" line="10151"/>
+      <location filename="../../CommandConstraints.cpp" line="10163"/>
       <source>Select constraints from the sketch.</source>
       <translation>Válasszon kényszerítéseket a vázlatból.</translation>
     </message>
@@ -3049,17 +3049,17 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <location filename="../../CommandSketcherBSpline.cpp" line="245"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="328"/>
       <source>At least one of the selected objects was not a B-spline and was ignored.</source>
-      <translation type="unfinished">At least one of the selected objects was not a B-spline and was ignored.</translation>
+      <translation>A kijelölt tárgyak legalább egyike nem volt egy B-görbe, és felvetette.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="921"/>
       <source>Nothing is selected. Please select a B-spline.</source>
-      <translation type="unfinished">Nothing is selected. Please select a B-spline.</translation>
+      <translation>Semmi sincs kiválasztva. Kérjük, válasszon egy B-görbét.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="939"/>
       <source>Please select a B-spline to insert a knot (not a knot on it). If the curve is not a B-spline, please convert it into one first.</source>
-      <translation type="unfinished">Please select a B-spline to insert a knot (not a knot on it). If the curve is not a B-spline, please convert it into one first.</translation>
+      <translation>Válasszon ki egy összetett B-görbét egy csomópont beszúrásához (ne csomópontot rajta). Ha a görbe nem összetett B-görbe, először alakítsa át eggyé.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="994"/>
@@ -3143,14 +3143,14 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <translation>A tengelyek igazításának eltávolításához legalább egy kiválasztott nem külső geometriai elemre van szükség</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="587"/>
-      <location filename="../../TaskSketcherElements.cpp" line="634"/>
+      <location filename="../../TaskSketcherElements.cpp" line="603"/>
+      <location filename="../../TaskSketcherElements.cpp" line="650"/>
       <source>Unsupported visual layer operation</source>
       <translation>Nem támogatott vizuális réteg művelet</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="588"/>
-      <location filename="../../TaskSketcherElements.cpp" line="635"/>
+      <location filename="../../TaskSketcherElements.cpp" line="604"/>
+      <location filename="../../TaskSketcherElements.cpp" line="651"/>
       <source>It is currently unsupported to move external geometry to another visual layer. External geometry will be omitted</source>
       <translation>Jelenleg nem támogatott a külső geometria áthelyezése egy másik vizuális rétegre. A külső geometria kimarad</translation>
     </message>
@@ -3165,7 +3165,7 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <translation>Lekerekítés/letörés paraméterei</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="215"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="213"/>
       <source>Line parameters</source>
       <translation>Vonal paraméterek</translation>
     </message>
@@ -3175,32 +3175,32 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <translation>Eltolás paraméterei</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="205"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="203"/>
       <source>Polygon parameters</source>
       <translation>Sokszög paraméterei</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="591"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="587"/>
       <source>Rectangle parameters</source>
       <translation>Négyszög paraméterei</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="347"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="339"/>
       <source>Arc parameters</source>
       <translation>Ív paraméterei</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="272"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="269"/>
       <source>Arc Slot parameters</source>
       <translation>Ív horony paraméterei</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="274"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="263"/>
       <source>Circle parameters</source>
       <translation>Kör paraméterei</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="289"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="276"/>
       <source>Ellipse parameters</source>
       <translation>Ellipszis paraméterei</translation>
     </message>
@@ -3225,9 +3225,9 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <translation>Szimmetria paraméterei</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="453"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="451"/>
       <source>B-spline parameters</source>
-      <translation type="unfinished">B-spline parameters</translation>
+      <translation>B-görbe paraméterei</translation>
     </message>
   </context>
   <context>
@@ -3539,12 +3539,12 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <translation>Hossz:</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9768"/>
+      <location filename="../../CommandConstraints.cpp" line="9825"/>
       <source>Refractive index ratio</source>
       <translation>Refraktív index arány</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9769"/>
+      <location filename="../../CommandConstraints.cpp" line="9826"/>
       <source>Ratio n2/n1:</source>
       <translation>Arány n2/n1:</translation>
     </message>
@@ -3552,72 +3552,72 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
   <context>
     <name>SketcherGui::ElementFilterList</name>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="295"/>
+      <location filename="../../TaskSketcherElements.cpp" line="311"/>
       <source>Normal</source>
       <translation>Alapértelmezett</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="296"/>
+      <location filename="../../TaskSketcherElements.cpp" line="312"/>
       <source>Construction</source>
       <translation>Építési</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="297"/>
+      <location filename="../../TaskSketcherElements.cpp" line="313"/>
       <source>Internal</source>
       <translation>Belső</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="298"/>
+      <location filename="../../TaskSketcherElements.cpp" line="314"/>
       <source>External</source>
       <translation>Külső</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="299"/>
+      <location filename="../../TaskSketcherElements.cpp" line="315"/>
       <source>All types</source>
       <translation>Minden típus</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="300"/>
+      <location filename="../../TaskSketcherElements.cpp" line="316"/>
       <source>Point</source>
       <translation>Pont</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="301"/>
+      <location filename="../../TaskSketcherElements.cpp" line="317"/>
       <source>Line</source>
       <translation>Vonal</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="302"/>
+      <location filename="../../TaskSketcherElements.cpp" line="318"/>
       <source>Circle</source>
       <translation>Kör</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="303"/>
+      <location filename="../../TaskSketcherElements.cpp" line="319"/>
       <source>Ellipse</source>
       <translation>Ellipszis</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="304"/>
+      <location filename="../../TaskSketcherElements.cpp" line="320"/>
       <source>Arc of circle</source>
       <translation>A kör íve</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="305"/>
+      <location filename="../../TaskSketcherElements.cpp" line="321"/>
       <source>Arc of ellipse</source>
       <translation>Az ellipszis íve</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="306"/>
+      <location filename="../../TaskSketcherElements.cpp" line="322"/>
       <source>Arc of hyperbola</source>
       <translation>A hiperbola íve</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="307"/>
+      <location filename="../../TaskSketcherElements.cpp" line="323"/>
       <source>Arc of parabola</source>
       <translation>A parabola íve</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="308"/>
+      <location filename="../../TaskSketcherElements.cpp" line="324"/>
       <source>B-spline</source>
       <translation>B-görbe</translation>
     </message>
@@ -3740,27 +3740,27 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <translation>Függőleges tengely kiválasztás</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="767"/>
+      <location filename="../../TaskSketcherElements.cpp" line="783"/>
       <source>Layer</source>
       <translation>Réteg</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="777"/>
+      <location filename="../../TaskSketcherElements.cpp" line="793"/>
       <source>Layer 0</source>
       <translation>Réteg 0</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="778"/>
+      <location filename="../../TaskSketcherElements.cpp" line="794"/>
       <source>Layer 1</source>
       <translation>Réteg 1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="779"/>
+      <location filename="../../TaskSketcherElements.cpp" line="795"/>
       <source>Hidden</source>
       <translation>Rejtett</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="784"/>
+      <location filename="../../TaskSketcherElements.cpp" line="800"/>
       <source>Delete</source>
       <translation>Törlés</translation>
     </message>
@@ -4402,12 +4402,12 @@ A tárgyak csak a vázlatsík mögött lesznek láthatók.</translation>
       <translation>Alkalmazza a meglévő vázlatokhoz</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="470"/>
+      <location filename="../../SketcherSettings.cpp" line="493"/>
       <source>Unexpected C++ exception</source>
       <translation>Váratlan C++ kivétel</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="473"/>
+      <location filename="../../SketcherSettings.cpp" line="496"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítő</translation>
     </message>
@@ -4644,120 +4644,120 @@ Azonban, nem találhatók a végpontokhoz kötött kényszerítések.</translati
       <translation>Beállítások</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1802"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1809"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1816"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1823"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1829"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1836"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1843"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1850"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1857"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1864"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1871"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1878"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1885"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1891"/>
+      <source>Construction</source>
+      <translation>Építési</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="1185"/>
+      <source>Elements</source>
+      <translation>Elemek</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="1827"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1832"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1968"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1969"/>
+      <source>Point</source>
+      <translation>Pont</translation>
+    </message>
+    <message>
       <location filename="../../TaskSketcherElements.cpp" line="1830"/>
       <location filename="../../TaskSketcherElements.cpp" line="1837"/>
       <location filename="../../TaskSketcherElements.cpp" line="1844"/>
       <location filename="../../TaskSketcherElements.cpp" line="1851"/>
       <location filename="../../TaskSketcherElements.cpp" line="1858"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1864"/>
-      <source>Construction</source>
-      <translation>Építési</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1162"/>
-      <source>Elements</source>
-      <translation>Elemek</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1800"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1805"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1941"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1942"/>
-      <source>Point</source>
-      <translation>Pont</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1803"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1810"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1817"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1824"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1831"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1838"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1845"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1852"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1859"/>
       <location filename="../../TaskSketcherElements.cpp" line="1865"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1872"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1879"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1886"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1892"/>
       <source>Internal</source>
       <translation>Belső</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1807"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1812"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1944"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1945"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1834"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1839"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1971"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1972"/>
       <source>Line</source>
       <translation>Vonal</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1814"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1819"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1947"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1948"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1841"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1846"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1974"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1975"/>
       <source>Arc</source>
       <translation>Ív</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1821"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1826"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1950"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1951"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1848"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1853"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1977"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1978"/>
       <source>Circle</source>
       <translation>Kör</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1828"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1833"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1953"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1954"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1855"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1860"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1980"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1981"/>
       <source>Ellipse</source>
       <translation>Ellipszis</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1835"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1840"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1957"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1958"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1862"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1867"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1984"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1985"/>
       <source>Elliptical Arc</source>
       <translation>Elliptikus ív</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1842"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1847"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1961"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1962"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1869"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1874"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1988"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1989"/>
       <source>Hyperbolic Arc</source>
       <translation>Hiperbolikus ív</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1849"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1854"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1965"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1966"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1876"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1881"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1992"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1993"/>
       <source>Parabolic Arc</source>
       <translation>Parabolikus ív</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1856"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1861"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1968"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1969"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1883"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1888"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1995"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1996"/>
       <source>B-spline</source>
       <translation>B-görbe</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1862"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1867"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1970"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1971"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1889"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1894"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1997"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1998"/>
       <source>Other</source>
       <translation>Egyéb</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2011"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2038"/>
       <source>Extended information</source>
       <translation>Részletes információ</translation>
     </message>
@@ -4782,27 +4782,27 @@ Azonban, nem találhatók a végpontokhoz kötött kényszerítések.</translati
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="142"/>
       <source>Click to select these conflicting constraints.</source>
-      <translation type="unfinished">Click to select these conflicting constraints.</translation>
+      <translation>Kattintással jelölje ki ezeket az ütköző kényszerítéseket.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="144"/>
       <source>Click to select these redundant constraints.</source>
-      <translation type="unfinished">Click to select these redundant constraints.</translation>
+      <translation>Kattintással jelölje ki ezeket a felesleges kényszerítéseket.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="147"/>
       <source>The sketch has unconstrained elements giving rise to those Degrees Of Freedom. Click to select these unconstrained elements.</source>
-      <translation type="unfinished">The sketch has unconstrained elements giving rise to those Degrees Of Freedom. Click to select these unconstrained elements.</translation>
+      <translation>A vázlat kényszerítés nélküli elemeket tartalmaz, amelyek a szabadság ezen fokait eredményezik. Kattintással jelölje ki ezeket a kényszerítés nélküli elemeket.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="150"/>
       <source>Click to select these malformed constraints.</source>
-      <translation type="unfinished">Click to select these malformed constraints.</translation>
+      <translation>Kattintással jelölje ki ezeket a hibás kényszerítéseket.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="153"/>
       <source>Some constraints in combination are partially redundant. Click to select these partially redundant constraints.</source>
-      <translation type="unfinished">Some constraints in combination are partially redundant. Click to select these partially redundant constraints.</translation>
+      <translation>Egyes kényszerítések együttesen részben feleslegesek. Kattintással jelölje ki ezeket a részben felesleges kényszerítéseket.</translation>
     </message>
   </context>
   <context>
@@ -4978,112 +4978,112 @@ Ez a vázlat geometriáinak és kényszerítéseinek elemzésével történik.</
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2992"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2997"/>
       <source>Edit sketch</source>
       <translation>Vázlat szerkesztése</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3009"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3014"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Egy párbeszédablak már nyitva van a feladat panelen</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3010"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3015"/>
       <source>Do you want to close this dialog?</source>
       <translation>Szeretné bezárni a párbeszédpanelt?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3024"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3029"/>
       <source>Invalid sketch</source>
       <translation>Érvénytelen vázlat</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3025"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3030"/>
       <source>Do you want to open the sketch validation tool?</source>
       <translation>Szeretné megnyitni a vázlat érvényesítés eszközt?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3026"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3031"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>A vázlat érvénytelen, és nem szerkeszthető.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3168"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3175"/>
       <source>Please remove the following constraint:</source>
       <translation>Kérjük, távolítsa el az alábbi ilesztést:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3169"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3176"/>
       <source>Please remove at least one of the following constraints:</source>
       <translation>Kérjük, távolítsa el, legalább az egyiket a következő kényszerítésekből:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3175"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3182"/>
       <source>Please remove the following redundant constraint:</source>
       <translation>Kérjük, távolítsa el a következő felesleges kényszerítést:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3176"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3183"/>
       <source>Please remove the following redundant constraints:</source>
       <translation>Kérjük, távolítsa el a következő felesleges kényszerítéseket:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3182"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3189"/>
       <source>The following constraint is partially redundant:</source>
       <translation>A következő kényszerítés részben felesleges:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3183"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3190"/>
       <source>The following constraints are partially redundant:</source>
       <translation>A következő kényszerítések részben feleslegesek:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3189"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3196"/>
       <source>Please remove the following malformed constraint:</source>
       <translation>Távolítsa el a következő hibás kényszerítést:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3190"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3197"/>
       <source>Please remove the following malformed constraints:</source>
       <translation>Távolítsa el a következő hibás kényszerítéseket:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3248"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3255"/>
       <source>Empty sketch</source>
       <translation>Üres vázlat</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3253"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3260"/>
       <source>Over-constrained:</source>
       <translation>Eltúlzott kényszertés:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3259"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3266"/>
       <source>Malformed constraints:</source>
       <translation>Hibásan formázott kényszerítés:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3267"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3274"/>
       <source>Redundant constraints:</source>
       <translation>Felesleges kényszerítések:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3273"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3280"/>
       <source>Partially redundant:</source>
       <translation>Részben felesleges:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3280"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3287"/>
       <source>Solver failed to converge</source>
       <translation>A megoldó nem tudott hasonlítani</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3286"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3293"/>
       <source>Under-constrained:</source>
-      <translation type="unfinished">Under-constrained:</translation>
+      <translation>Nem eléggé kényszerített:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="3288"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3295"/>
       <source>%n DoF(s)</source>
       <translation>
         <numerusform>%n szabadságfok(ok)</numerusform>
@@ -5091,7 +5091,7 @@ Ez a vázlat geometriáinak és kényszerítéseinek elemzésével történik.</
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3292"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3299"/>
       <source>Fully constrained</source>
       <translation>Teljesen kényszertett</translation>
     </message>
@@ -5189,8 +5189,8 @@ Ez a vázlat geometriáinak és kényszerítéseinek elemzésével történik.</
   <context>
     <name>Sketcher_ConstrainDiameter</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8563"/>
-      <location filename="../../CommandConstraints.cpp" line="8565"/>
+      <location filename="../../CommandConstraints.cpp" line="8620"/>
+      <location filename="../../CommandConstraints.cpp" line="8622"/>
       <source>Fix the diameter of a circle or an arc</source>
       <translation>Rögzíteni egy kör vagy egy ív átmérőjét</translation>
     </message>
@@ -5218,12 +5218,12 @@ Ez a vázlat geometriáinak és kényszerítéseinek elemzésével történik.</
       <translation>Létrehoz egy B-görbét ellenőrzési pontokkal</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="851"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="849"/>
       <source>By control points</source>
       <translation>Ellenőrzési pontok szerint</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="852"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="850"/>
       <source>By knots</source>
       <translation>Csomókkal</translation>
     </message>
@@ -5231,12 +5231,12 @@ Ez a vázlat geometriáinak és kényszerítéseinek elemzésével történik.</
   <context>
     <name>Sketcher_CreateCircle</name>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="362"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="352"/>
       <source>Center</source>
       <translation>Középre</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="363"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="353"/>
       <source>3 rim points</source>
       <translation>3 perem pont</translation>
     </message>
@@ -5342,64 +5342,74 @@ Ez a vázlat geometriáinak és kényszerítéseinek elemzésével történik.</
   <context>
     <name>Sketcher_MapSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="580"/>
+      <location filename="../../Command.cpp" line="601"/>
       <source>No sketch found</source>
       <translation>Nem található vázlat</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="581"/>
+      <location filename="../../Command.cpp" line="603"/>
+      <source>Cannot attach sketch to itself!</source>
+      <translation type="unfinished">Cannot attach sketch to itself!</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="604"/>
       <source>The document doesn't have a sketch</source>
       <translation>A dokumentum nem rendelkezik vázlattal</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="593"/>
+      <location filename="../../Command.cpp" line="617"/>
       <source>Select sketch</source>
       <translation>Válassza ki a vázlatot</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="594"/>
+      <location filename="../../Command.cpp" line="619"/>
+      <source>Select a sketch (some sketches not shown to prevent a circular dependency)</source>
+      <translation type="unfinished">Select a sketch (some sketches not shown to prevent a circular dependency)</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="621"/>
       <source>Select a sketch from the list</source>
       <translation>Válasszon ki a listából egy vázlatot</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="659"/>
+      <location filename="../../Command.cpp" line="686"/>
       <source> (incompatible with selection)</source>
       <translation> (inkompatibilis a kijelöléssel)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="660"/>
+      <location filename="../../Command.cpp" line="687"/>
       <source> (current)</source>
       <translation> (aktuális)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="668"/>
+      <location filename="../../Command.cpp" line="695"/>
       <source> (suggested)</source>
       <translation> (javasolt)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="675"/>
+      <location filename="../../Command.cpp" line="702"/>
       <source>Sketch attachment</source>
       <translation>Vázlat melléklet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="677"/>
+      <location filename="../../Command.cpp" line="704"/>
       <source>Current attachment mode is incompatible with the new selection.
 Select the method to attach this sketch to selected objects.</source>
       <translation>Az aktuális csatolási mód nem kompatibilis az új kijelölésre.
 Jelölje ki azt a módszert, amely a vázlatot a kijelölt tárgyakhoz csatolja.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="681"/>
+      <location filename="../../Command.cpp" line="708"/>
       <source>Select the method to attach this sketch to selected objects.</source>
       <translation>Válassza ki a módszert, a vázlat csatolásához a kijelölt objektumokhoz.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="725"/>
+      <location filename="../../Command.cpp" line="752"/>
       <source>Map sketch</source>
       <translation>Vázlat leképzés</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="726"/>
+      <location filename="../../Command.cpp" line="753"/>
       <source>Can't map a sketch to support:
 %1</source>
       <translation>Nem képezhető le a vázlatot a támogatáshoz:%1</translation>
@@ -5734,7 +5744,7 @@ Az Eigen Sparse QR algoritmus ritka mátrixokra van optimalizálva; általában 
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3232"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3239"/>
       <source>and %1 more</source>
       <translation>és további %1</translation>
     </message>
@@ -5929,22 +5939,22 @@ A rácsháló távolsága megváltozik, ha kisebb lesz, mint ez a pixelszám.</t
   <context>
     <name>GridSpaceAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1120"/>
+      <location filename="../../Command.cpp" line="1147"/>
       <source>Grid auto spacing</source>
       <translation>Rács automatikus térköze</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1121"/>
+      <location filename="../../Command.cpp" line="1148"/>
       <source>Resize grid automatically depending on zoom.</source>
       <translation>A rács méretének automatikus módosítása a nagyítástól függően.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1124"/>
+      <location filename="../../Command.cpp" line="1151"/>
       <source>Spacing</source>
       <translation>Távolságtartás</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1125"/>
+      <location filename="../../Command.cpp" line="1152"/>
       <source>Distance between two subsequent grid lines.</source>
       <translation>Két egymást követő rácsvonal közötti távolság.</translation>
     </message>
@@ -5952,17 +5962,17 @@ A rácsháló távolsága megváltozik, ha kisebb lesz, mint ez a pixelszám.</t
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="428"/>
+      <location filename="../../../App/SketchObject.cpp" line="561"/>
       <source>The Sketch has malformed constraints!</source>
       <translation>A vázlat hibásan formázott kényszerítéseket tartalmaz!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="434"/>
+      <location filename="../../../App/SketchObject.cpp" line="567"/>
       <source>The Sketch has partially redundant constraints!</source>
       <translation>A vázlat részlegesen felesleges kényszerítéseket tartalmaz!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="9220"/>
+      <location filename="../../../App/SketchObject.cpp" line="10733"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>A parabolákat áttelepítették. Az áttelepített fájlok nem nyílnak meg a FreeCAD korábbi verzióiban!!
@@ -5970,34 +5980,34 @@ A rácsháló távolsága megváltozik, ha kisebb lesz, mint ez a pixelszám.</t
     </message>
     <message>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="150"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="136"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="354"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="134"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="350"/>
       <location filename="../../DrawSketchHandlerTrimming.h" line="182"/>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="332"/>
-      <location filename="../../DrawSketchHandlerExtend.h" line="336"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="164"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="317"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="334"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="160"/>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="186"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="129"/>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="267"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="177"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="253"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="166"/>
       <location filename="../../DrawSketchHandlerRotate.h" line="134"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="265"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="344"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="251"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="330"/>
       <location filename="../../DrawSketchHandlerSplitting.h" line="158"/>
       <location filename="../../DrawSketchHandlerExternal.h" line="188"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="134"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="470"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="500"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="380"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="611"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="681"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="132"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="462"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="492"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="378"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="609"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="679"/>
       <location filename="../../DrawSketchHandlerScale.h" line="130"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="188"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="175"/>
       <location filename="../../CommandSketcherTools.cpp" line="1277"/>
       <location filename="../../CommandSketcherTools.cpp" line="1854"/>
       <location filename="../../CommandSketcherTools.cpp" line="2291"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="183"/>
-      <location filename="../../DrawSketchHandlerPoint.h" line="99"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="180"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="93"/>
       <source>Error</source>
       <translation>Hiba</translation>
     </message>
@@ -6014,7 +6024,7 @@ A rácsháló távolsága megváltozik, ha kisebb lesz, mint ez a pixelszám.</t
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2372"/>
       <source>Selection has no valid geometries. B-splines and points are not supported yet.</source>
-      <translation type="unfinished">Selection has no valid geometries. B-splines and points are not supported yet.</translation>
+      <translation>A kiválasztás nem rendelkezik érvényes geometriákkal. A B-görbék és a pontok még nem támogatottak.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="133"/>
@@ -6041,51 +6051,51 @@ A rácsháló távolsága megváltozik, ha kisebb lesz, mint ez a pixelszám.</t
       <location filename="../../CommandConstraints.cpp" line="611"/>
       <location filename="../../CommandConstraints.cpp" line="701"/>
       <location filename="../../CommandConstraints.cpp" line="775"/>
-      <location filename="../../CommandConstraints.cpp" line="6162"/>
-      <location filename="../../CommandConstraints.cpp" line="6366"/>
+      <location filename="../../CommandConstraints.cpp" line="6215"/>
+      <location filename="../../CommandConstraints.cpp" line="6419"/>
       <location filename="../../CommandSketcherTools.cpp" line="1067"/>
       <source>Invalid Constraint</source>
       <translation>Érvénytelen kényszerítés</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="501"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="493"/>
       <source>Failed to add arc</source>
       <translation>Ív hozzáadása sikertelen</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="333"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="318"/>
       <source>Failed to add arc of ellipse</source>
       <translation>Ellipszis ívének hozzáadása sikertelen</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="266"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="252"/>
       <source>Cannot create arc of hyperbola from invalid angles, try again!</source>
       <translation>Nem lehet létrehozni a hiperbola ívét érvénytelen szögekből, próbáld újra!</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="345"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="331"/>
       <source>Cannot create arc of hyperbola</source>
       <translation>Nem tudja létrehozni a hiperbola ívét</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="268"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="254"/>
       <source>Cannot create arc of parabola</source>
       <translation>Nem tudja létrehozni a parabola ívét</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="381"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="379"/>
       <source>Error creating B-spline</source>
       <translation>Hiba a B-görbe létrehozásakor</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="612"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="610"/>
       <source>Error deleting last pole/knot</source>
       <translation>Az utolsó pólus/csomópont törlési hibája</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="682"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="680"/>
       <source>Error adding B-spline pole/knot</source>
-      <translation type="unfinished">Error adding B-spline pole/knot</translation>
+      <translation>Hibás B-görbe pólus/csomópont hozzáadása</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="187"/>
@@ -6093,12 +6103,12 @@ A rácsháló távolsága megváltozik, ha kisebb lesz, mint ez a pixelszám.</t
       <translation>Sikertelen másolat hozzáadás</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="178"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="167"/>
       <source>Failed to add circle</source>
       <translation>Simertelen kör hozzáadás</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExtend.h" line="337"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="335"/>
       <source>Failed to extend edge</source>
       <translation>Él nyújtása sikertelen</translation>
     </message>
@@ -6113,44 +6123,44 @@ A rácsháló távolsága megváltozik, ha kisebb lesz, mint ez a pixelszám.</t
       <translation>Lekerekítés létrehozása sikertelen</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="137"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="471"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="135"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="463"/>
       <source>Failed to add line</source>
       <translation>Sikertelen a vonal hozzáadása</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="155"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="141"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="359"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="169"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="139"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="355"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="165"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="134"/>
-      <location filename="../../DrawSketchHandlerArc.h" line="253"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="182"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="245"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="171"/>
       <location filename="../../DrawSketchHandlerRotate.h" line="139"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="139"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="137"/>
       <location filename="../../DrawSketchHandlerScale.h" line="135"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="193"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="188"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="180"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="185"/>
       <source>Tool execution aborted</source>
       <translation>Az eszköz végrehajtása megszakadt</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPoint.h" line="100"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="94"/>
       <source>Failed to add point</source>
       <translation>Sikertelen a pont hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="135"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="133"/>
       <source>Failed to add polygon</source>
       <translation>Sikertelen a sokszög hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="355"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="351"/>
       <source>Failed to add box</source>
       <translation>Sikertelen a mező hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSlot.h" line="165"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="161"/>
       <source>Failed to add slot</source>
       <translation>Sikertelen a horony hozzáadása</translation>
     </message>
@@ -6172,42 +6182,42 @@ A rácsháló távolsága megváltozik, ha kisebb lesz, mint ez a pixelszám.</t
       <translation>Értékhiba</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="921"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="961"/>
       <source>Autoconstraints cause redundancy. Removing them</source>
       <translation>Az automatikus kényszerítések felesleget okoznak. Eltávolításuk</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="940"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="980"/>
       <source>Redundant constraint is not an autoconstraint. No autoconstraints or additional constraints were added. Please report!</source>
       <translation>A felesleges kényszerítés nem automatikus kényszerítés. Nem kerültek hozzá automatikus vagy további kényszerítések. Kérjük, jelentse!</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="955"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="995"/>
       <source>Autoconstraints cause conflicting constraints - Please report!</source>
       <translation>Az automatikus kényszerítés ellentmondásos kényszerítéseket okoznak - Kérjük, jelezze!</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="981"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="1021"/>
       <source>Unexpected Redundancy/Conflicting constraint. Check the constraints and autoconstraints of this operation.</source>
       <translation>Váratlan felesleges/ellentmondásos kényszerítés. Ellenőrizze a művelet kényszerítéseit és automatikus kényszerítéseket.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1121"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1133"/>
       <source>Invalid Value</source>
       <translation>Hibás érték</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1122"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1134"/>
       <source>Offset value can't be 0.</source>
       <translation>Az eltolási érték nem lehet 0.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="184"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="181"/>
       <source>Failed to add arc slot</source>
       <translation>Sikertelen az ívhorony hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="189"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="176"/>
       <source>Failed to add ellipse</source>
       <translation>Sikertelen az ellipszis hozzáadása</translation>
     </message>
@@ -6249,34 +6259,34 @@ A rácsháló távolsága megváltozik, ha kisebb lesz, mint ez a pixelszám.</t
   <context>
     <name>SnapSpaceAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1364"/>
+      <location filename="../../Command.cpp" line="1391"/>
       <source>Snap to objects</source>
       <translation>Tárgyhoz illeszt</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1365"/>
+      <location filename="../../Command.cpp" line="1392"/>
       <source>New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</source>
       <translation>Az új pontok az aktuálisan előzetesen kiválasztott tárgyhoz illeszkednek. A vonalak és ívek közepére is illeszt.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1369"/>
+      <location filename="../../Command.cpp" line="1396"/>
       <source>Snap to grid</source>
       <translation>Rácshoz illeszt</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1371"/>
+      <location filename="../../Command.cpp" line="1398"/>
       <source>New points will snap to the nearest grid line.
 Points must be set closer than a fifth of the grid spacing to a grid line to snap.</source>
       <translation>Az új pontok a legközelebbi rácsvonalhoz kapcsolódnak.
 A pontokat a rácsháló távolságának egyötödénél közelebb kell állítani a rácsvonalhoz, hogy beilleszkedjenek.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1375"/>
+      <location filename="../../Command.cpp" line="1402"/>
       <source>Snap angle</source>
       <translation>Szög illesztés</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1377"/>
+      <location filename="../../Command.cpp" line="1404"/>
       <source>Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle starts from the positive X axis of the sketch.</source>
       <translation>Szög lépés a 'Szög illesztés' funkciót használó eszközökhöz (például vonal). Tartsa lenyomva a CTRL billentyűt a 'Szög illesztés' engedélyezéséhez. A szög a vázlat pozitív X tengelyétől indul.</translation>
     </message>
@@ -6284,23 +6294,23 @@ A pontokat a rácsháló távolságának egyötödénél közelebb kell állíta
   <context>
     <name>RenderingOrderAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1612"/>
-      <location filename="../../Command.cpp" line="1619"/>
-      <location filename="../../Command.cpp" line="1626"/>
+      <location filename="../../Command.cpp" line="1639"/>
+      <location filename="../../Command.cpp" line="1646"/>
+      <location filename="../../Command.cpp" line="1653"/>
       <source>Normal Geometry</source>
       <translation>Aktuális geometria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1613"/>
-      <location filename="../../Command.cpp" line="1620"/>
-      <location filename="../../Command.cpp" line="1627"/>
+      <location filename="../../Command.cpp" line="1640"/>
+      <location filename="../../Command.cpp" line="1647"/>
+      <location filename="../../Command.cpp" line="1654"/>
       <source>Construction Geometry</source>
       <translation>Építési geometria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1614"/>
-      <location filename="../../Command.cpp" line="1621"/>
-      <location filename="../../Command.cpp" line="1628"/>
+      <location filename="../../Command.cpp" line="1641"/>
+      <location filename="../../Command.cpp" line="1648"/>
+      <location filename="../../Command.cpp" line="1655"/>
       <source>External Geometry</source>
       <translation>Külső geometria</translation>
     </message>
@@ -6308,12 +6318,12 @@ A pontokat a rácsháló távolságának egyötödénél közelebb kell állíta
   <context>
     <name>CmdRenderingOrder</name>
     <message>
-      <location filename="../../Command.cpp" line="1737"/>
+      <location filename="../../Command.cpp" line="1764"/>
       <source>Configure rendering order</source>
       <translation>Igazítási sorrend beállítása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1738"/>
+      <location filename="../../Command.cpp" line="1765"/>
       <source>Reorder the items in the list to configure rendering order.</source>
       <translation>A lista elemeinek átrendezése a megjelenítési sorrend beállításához.</translation>
     </message>
@@ -6321,12 +6331,12 @@ A pontokat a rácsháló távolságának egyötödénél közelebb kell állíta
   <context>
     <name>CmdSketcherGrid</name>
     <message>
-      <location filename="../../Command.cpp" line="1221"/>
+      <location filename="../../Command.cpp" line="1248"/>
       <source>Toggle grid</source>
       <translation>Rács kapcsolása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1223"/>
+      <location filename="../../Command.cpp" line="1250"/>
       <source>Toggle the grid in the sketch. In the menu you can change grid settings.</source>
       <translation>Kapcsolja ki a rácsot a vázlatban. A menüben módosíthatja a rács beállításait.</translation>
     </message>
@@ -6334,12 +6344,12 @@ A pontokat a rácsháló távolságának egyötödénél közelebb kell állíta
   <context>
     <name>CmdSketcherSnap</name>
     <message>
-      <location filename="../../Command.cpp" line="1477"/>
+      <location filename="../../Command.cpp" line="1504"/>
       <source>Toggle snap</source>
       <translation>Illesztés kapcsoló</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1479"/>
+      <location filename="../../Command.cpp" line="1506"/>
       <source>Toggle all snap functionality. In the menu you can toggle 'Snap to grid' and 'Snap to objects' individually, and change further snap settings.</source>
       <translation>Az összes illesztés funkció átkapcsolása. A menüben egyénileg kapcsolhatja be a 'Rácshoz illeszt' és a 'Tárgyhoz illeszt' funkciót, valamint módosíthatja a további illesztés beállításokat.</translation>
     </message>
@@ -6373,12 +6383,12 @@ A pontokat a rácsháló távolságának egyötödénél közelebb kell állíta
   <context>
     <name>CmdSketcherDimension</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2731"/>
+      <location filename="../../CommandConstraints.cpp" line="2776"/>
       <source>Dimension</source>
       <translation>Dimenzió</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2732"/>
+      <location filename="../../CommandConstraints.cpp" line="2777"/>
       <source>Constrain contextually based on your selection.
 Depending on your selection you might have several constraints available. You can cycle through them using M key.
 Left clicking on empty space will validate the current constraint. Right clicking or pressing Esc will cancel.</source>
@@ -6416,12 +6426,12 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdSketcherConstrainRadius</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7395"/>
+      <location filename="../../CommandConstraints.cpp" line="7452"/>
       <source>Constrain radius</source>
       <translation>Sugár illesztés</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7396"/>
+      <location filename="../../CommandConstraints.cpp" line="7453"/>
       <source>Fix the radius of a circle or an arc</source>
       <translation>Sugár illesztése körre vagy ívre</translation>
     </message>
@@ -6551,25 +6561,27 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>TaskSketcherTool_c1_offset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1098"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1110"/>
       <source>Delete original geometries (U)</source>
       <translation>Eredeti geometriák törlése (U)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="477"/>
-      <source>Clone constraints</source>
-      <translation>Kényszerítések klónozása</translation>
+      <location filename="../../DrawSketchHandlerRotate.h" line="500"/>
+      <source>Apply equal constraints</source>
+      <translation>Egyenlő kényszerítések alkalmazása</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="481"/>
-      <source>This concerns the datum constraints (e.g. distance).If you activate Clone, the tool will copy the datum.Else it will try to replace them with equalities.</source>
-      <translation>Ez a vonatkoztatási kényszerítéseket (pl. távolság) érinti.Ha aktiválja a Klónozás lehetőséget, az eszköz lemásolja a vonatkoztatási adatokat.Ellenkező esetben megpróbálja azokat egyenlőségekkel helyettesíteni.</translation>
+      <location filename="../../DrawSketchHandlerRotate.h" line="504"/>
+      <source>If this option is selected dimensional constraints are excluded from the operation.
+Instead equal constraints are applied between the original objects and their copies.</source>
+      <translation>Ha ez a lehetőség bejelölt, a méretkényszerek kizárásra kerülnek a műveletből.
+Ehelyett az eredeti tárgyak és másolataik között egyenlő kényszereket alkalmazunk.</translation>
     </message>
   </context>
   <context>
     <name>TaskSketcherTool_c2_offset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1102"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1114"/>
       <source>Add offset constraint (J)</source>
       <translation>Eltolási kényszerítést ad hozzá (J)</translation>
     </message>
@@ -6577,32 +6589,32 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>TaskSketcherTool_c1_rectangle</name>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1651"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1657"/>
       <source>Corner, width, height</source>
       <translation>Sarok, szélesség, magasság</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1652"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1658"/>
       <source>Center, width, height</source>
       <translation>Középpont, szélesség, magasság</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1653"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1659"/>
       <source>3 corners</source>
       <translation>3 sarok</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1654"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1660"/>
       <source>Center, 2 corners</source>
       <translation>Középpont, 2 sarok</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1659"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1665"/>
       <source>Rounded corners (U)</source>
       <translation>Lekerekített sarkok (U)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1662"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1668"/>
       <source>Create a rectangle with rounded corners.</source>
       <translation>Létrehoz egy téglalapot lekerekített sarkokkal.</translation>
     </message>
@@ -6610,12 +6622,12 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>TaskSketcherTool_c2_rectangle</name>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1668"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1674"/>
       <source>Frame (J)</source>
       <translation>Keret (J)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1671"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1677"/>
       <source>Create two rectangles with a constant offset.</source>
       <translation>Hozzon létre két téglalapot állandó eltolással.</translation>
     </message>
@@ -6631,12 +6643,12 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdSketcherCompHorizontalVertical</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2788"/>
+      <location filename="../../CommandConstraints.cpp" line="2833"/>
       <source>Constrain horizontal/vertical</source>
       <translation>Vízszintes/függőleges kényszerítés</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2789"/>
+      <location filename="../../CommandConstraints.cpp" line="2834"/>
       <source>Constrains a single line to either horizontal or vertical.</source>
       <translation>Egyetlen vonal vízszintes vagy függőleges vonalra kényszeríti.</translation>
     </message>
@@ -6644,12 +6656,12 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdSketcherConstrainHorVer</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3106"/>
+      <location filename="../../CommandConstraints.cpp" line="3151"/>
       <source>Constrain horizontal/vertical</source>
       <translation>Vízszintes/függőleges kényszerítés</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3107"/>
+      <location filename="../../CommandConstraints.cpp" line="3152"/>
       <source>Constrains a single line to either horizontal or vertical, whichever is closer to current alignment.</source>
       <translation>Egyetlen sort vízszintes vagy függőleges vonalra kényszerít, attól függően, hogy melyik áll közelebb az aktuális igazításhoz.</translation>
     </message>
@@ -6696,12 +6708,12 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdSketcherConstrainCoincidentUnified</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3730"/>
+      <location filename="../../CommandConstraints.cpp" line="3775"/>
       <source>Constrain coincident</source>
       <translation>Egymásra llesztés</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3731"/>
+      <location filename="../../CommandConstraints.cpp" line="3776"/>
       <source>Create a coincident constraint between points, or fix a point on an edge, or a concentric constraint between circles, arcs, and ellipses</source>
       <translation>Egybevágó kényszerítés létrehozása pontok között, vagy egy pont rögzítése egy élen, vagy koncentrikus kényszerítés létrehozása körök, ívek és ellipszisek között</translation>
     </message>
@@ -6987,7 +6999,7 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>TaskSketcherTool_p4_rotate</name>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="499"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="523"/>
       <source>Copies (+'U'/ -'J')</source>
       <translation>Másolatok (+'U'/-'J')</translation>
     </message>
@@ -6995,12 +7007,12 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>ToolWidgetManager_p4</name>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="307"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="305"/>
       <source>Sides (+'U'/ -'J')</source>
       <translation>Oldalak (+'U'/-'J')</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="892"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="890"/>
       <source>Degree (+'U'/ -'J')</source>
       <translation>Fok (+'U'/ -'J')</translation>
     </message>
@@ -7092,19 +7104,6 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
     </message>
   </context>
   <context>
-    <name>TaskSketcherTool_c1_translate</name>
-    <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="488"/>
-      <source>Clone constraints</source>
-      <translation>Kényszerítések klónozása</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="491"/>
-      <source>This concerns the datum constraints like distances. If you activate Clone, then the tool will copy the datum. Else it will try to replace them with equalities between the initial geometries and the new copies.</source>
-      <translation>Ez a távolságokhoz hasonló adatkövető korlátozásokra vonatkozik. Ha aktiválja a Klónozás funkciót, akkor az eszköz lemásolja az adatpontot. Ellenkező esetben megpróbálja azokat a kiindulási geometriák és az új másolatok közötti egyenlőségekkel helyettesíteni.</translation>
-    </message>
-  </context>
-  <context>
     <name>TaskSketcherTool_p3_translate</name>
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="516"/>
@@ -7123,12 +7122,12 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>Sketcher_CreateArc</name>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="468"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="460"/>
       <source>Center</source>
       <translation>Középre</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="469"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="461"/>
       <source>3 rim points</source>
       <translation>3 perem pont</translation>
     </message>
@@ -7162,12 +7161,12 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>Sketcher_CreateArcSlot</name>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="549"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="546"/>
       <source>Arc ends</source>
       <translation>Íves végződések</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="550"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="547"/>
       <source>Flat ends</source>
       <translation>Lapos végződések</translation>
     </message>
@@ -7175,12 +7174,12 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>Sketcher_CreateEllipse</name>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="433"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="420"/>
       <source>Center</source>
       <translation>Középre</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="434"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="421"/>
       <source>Axis endpoints</source>
       <translation>Tengely végpont</translation>
     </message>
@@ -7201,17 +7200,17 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>Sketcher_CreateLine</name>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="279"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="277"/>
       <source>Point, length, angle</source>
       <translation>Pont, hossz, szög</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="280"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="278"/>
       <source>Point, width, height</source>
       <translation>Pont, szélesség, magasság</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="281"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="279"/>
       <source>2 points</source>
       <translation>2 pont</translation>
     </message>
@@ -7219,12 +7218,12 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>Sketcher_CreateOffset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1085"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1097"/>
       <source>Arc</source>
       <translation>Ív</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1086"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1098"/>
       <source>Intersection</source>
       <translation>Metszet</translation>
     </message>
@@ -7248,12 +7247,12 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdSketcherConstrainTangent</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6524"/>
+      <location filename="../../CommandConstraints.cpp" line="6577"/>
       <source>Constrain tangent or collinear</source>
       <translation>Érintő vagy egy vonalba eső kényszerítés</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6525"/>
+      <location filename="../../CommandConstraints.cpp" line="6578"/>
       <source>Create a tangent or collinear constraint between two entities</source>
       <translation>Hozzon létre egy érintő vagy egy vonalba eső kényszerítést két rész között</translation>
     </message>
@@ -7261,12 +7260,12 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdSketcherChangeDimensionConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9856"/>
+      <location filename="../../CommandConstraints.cpp" line="9913"/>
       <source>Change value</source>
       <translation>Érték módosítása</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9857"/>
+      <location filename="../../CommandConstraints.cpp" line="9914"/>
       <source>Change the value of a dimensional constraint</source>
       <translation>Egy méretezett kényszerítés értékének módosítása</translation>
     </message>
@@ -7314,37 +7313,52 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>TaskSketcherTool_c1_bspline</name>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="849"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="847"/>
       <source>Press F to undo last point.</source>
       <translation>Nyomja meg az F gombot az utolsó pont visszavonásához.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="857"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="855"/>
       <source>Periodic (R)</source>
       <translation>Rendszeres (R)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="860"/>
-      <source>Create a periodic bspline.</source>
-      <translation>Hozzon létre egy rendszeres összetett görbét.</translation>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="858"/>
+      <source>Create a periodic B-spline.</source>
+      <translation>Hozzon létre egy rendszeres B-görbét.</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_ConstrainRadius</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8557"/>
-      <location filename="../../CommandConstraints.cpp" line="8559"/>
+      <location filename="../../CommandConstraints.cpp" line="8614"/>
+      <location filename="../../CommandConstraints.cpp" line="8616"/>
       <source>Fix the radius of an arc or a circle</source>
-      <translation type="unfinished">Fix the radius of an arc or a circle</translation>
+      <translation>Egy ív vagy kör sugarának rögzítése</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_ConstrainRadiam</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8570"/>
-      <location filename="../../CommandConstraints.cpp" line="8572"/>
+      <location filename="../../CommandConstraints.cpp" line="8627"/>
+      <location filename="../../CommandConstraints.cpp" line="8629"/>
       <source>Fix the radius/diameter of an arc or a circle</source>
-      <translation type="unfinished">Fix the radius/diameter of an arc or a circle</translation>
+      <translation>Ív vagy kör sugarának/átmérőjének rögzítése</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_c1_translate</name>
+    <message>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="488"/>
+      <source>Apply equal constraints</source>
+      <translation>Egyenlő kényszerítések alkalmazása</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="491"/>
+      <source>If this option is selected dimensional constraints are excluded from the operation.
+Instead equal constraints are applied between the original objects and their copies.</source>
+      <translation>Ha ez a lehetőség bejelölt, a méretkényszerek kizárásra kerülnek a műveletből.
+Ehelyett az eredeti tárgyak és másolataik között egyenlő kényszereket alkalmazunk.</translation>
     </message>
   </context>
 </TS>

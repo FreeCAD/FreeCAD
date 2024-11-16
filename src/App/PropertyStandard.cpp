@@ -3018,6 +3018,17 @@ void PropertyMaterialList::setTransparency(int index, float val)
     hasSetValue();
 }
 
+void PropertyMaterialList::setTransparencies(const std::vector<float>& transparencies)
+{
+    aboutToSetValue();
+    setSize(transparencies.size(), _lValueList[0]);
+
+    for (std::size_t i = 0; i < transparencies.size(); i++) {
+        _lValueList[i].transparency = transparencies[i];
+    }
+    hasSetValue();
+}
+
 const Color& PropertyMaterialList::getAmbientColor() const
 {
     return _lValueList[0].ambientColor;
@@ -3086,6 +3097,16 @@ float PropertyMaterialList::getTransparency() const
 float PropertyMaterialList::getTransparency(int index) const
 {
     return _lValueList[index].transparency;
+}
+
+std::vector<float> PropertyMaterialList::getTransparencies() const
+{
+    std::vector<float> list;
+    for (auto& material : _lValueList) {
+        list.push_back(material.transparency);
+    }
+
+    return list;
 }
 
 Material PropertyMaterialList::getPyValue(PyObject* value) const

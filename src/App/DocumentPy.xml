@@ -56,6 +56,18 @@ For a temporary document it returns its transient directory.
         </UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="getUniqueObjectName">
+      <Documentation>
+        <UserDocu>getUniqueObjectName(objName) -> objName
+
+          Return the same name, or the name made unique, for Example Box -> Box002 if there are conflicting name
+          already in the document.
+
+          ObjName : str
+          Object name.
+        </UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="mergeProject">
       <Documentation>
         <UserDocu>Merges this document with another project file</UserDocu>

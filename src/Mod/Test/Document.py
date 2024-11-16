@@ -1451,11 +1451,11 @@ class DocumentPlatformCases(unittest.TestCase):
         self.assertTrue(abs(self.Doc.Test.ColourList[0][0] - 1.0) < 0.01)
         self.assertTrue(abs(self.Doc.Test.ColourList[0][1] - 0.5) < 0.01)
         self.assertTrue(abs(self.Doc.Test.ColourList[0][2] - 0.0) < 0.01)
-        self.assertTrue(abs(self.Doc.Test.ColourList[0][3] - 0.0) < 0.01)
+        self.assertTrue(abs(self.Doc.Test.ColourList[0][3] - 1.0) < 0.01)
         self.assertTrue(abs(self.Doc.Test.ColourList[1][0] - 0.0) < 0.01)
         self.assertTrue(abs(self.Doc.Test.ColourList[1][1] - 0.5) < 0.01)
         self.assertTrue(abs(self.Doc.Test.ColourList[1][2] - 1.0) < 0.01)
-        self.assertTrue(abs(self.Doc.Test.ColourList[1][3] - 0.0) < 0.01)
+        self.assertTrue(abs(self.Doc.Test.ColourList[1][3] - 1.0) < 0.01)
 
     def testVectorList(self):
         self.Doc.Test.VectorList = [(-0.05, 2.5, 5.2), (-0.05, 2.5, 5.2)]
@@ -2092,7 +2092,7 @@ class DocumentObserverCases(unittest.TestCase):
         FreeCAD.closeDocument(self.Doc2.Name)
         self.assertEqual(self.Obs.signal.pop(), "DocDeleted")
         self.assertTrue(self.Obs.parameter.pop() is self.Doc2)
-        if FreeCAD.GuiUp:
+        if FreeCAD.GuiUp and not FreeCAD.Gui.HasQtBug_129596:
             # only has document activated signal when running in GUI mode
             self.assertEqual(self.Obs.signal.pop(), "DocActivated")
             self.assertTrue(self.Obs.parameter.pop() is self.Doc1)

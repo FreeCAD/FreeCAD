@@ -234,9 +234,7 @@ class Proxy(object):
             "App::PropertyEnumeration",
             "Incision",
             "Dressup",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "The algorithm to determine the bone length"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "The algorithm to determine the bone length"),
         )
         obj.Incision = Incision.All
         obj.Incision = Incision.Adaptive
@@ -245,9 +243,7 @@ class Proxy(object):
             "App::PropertyLength",
             "Custom",
             "Dressup",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Dressup length if incision is set to 'custom'"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Dressup length if incision is set to 'custom'"),
         )
         obj.Custom = 0.0
 
@@ -301,11 +297,7 @@ class Proxy(object):
                     thisMove = instr
                     bone = None
                     if thisMove.isPlunge():
-                        if (
-                            lastMove
-                            and moveAfterPlunge
-                            and lastMove.leadsInto(moveAfterPlunge)
-                        ):
+                        if lastMove and moveAfterPlunge and lastMove.leadsInto(moveAfterPlunge):
                             bone = self.createBone(obj, lastMove, moveAfterPlunge)
                         lastMove = None
                         moveAfterPlunge = None
@@ -318,8 +310,7 @@ class Proxy(object):
                     if bone:
                         enabled = not len(bones) in obj.BoneBlacklist
                         if enabled and not (
-                            dressingUpDogbone
-                            and obj.Base.Proxy.includesBoneAt(bone.position())
+                            dressingUpDogbone and obj.Base.Proxy.includesBoneAt(bone.position())
                         ):
                             maneuver.addInstructions(bone.instr)
                         else:
