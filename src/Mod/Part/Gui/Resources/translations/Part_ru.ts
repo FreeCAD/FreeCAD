@@ -148,7 +148,7 @@
       <location filename="../../AttacherTexts.cpp" line="281"/>
       <source>Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+      <translation>Точка ставится в позицию размещения объекта. Работает с объектами с размещениями и краями эллипса/параболы/гиперболы.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="283"/>
@@ -570,13 +570,13 @@
       <location filename="../../AttacherTexts.cpp" line="145"/>
       <source>XY parallel to plane</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">XY parallel to plane</translation>
+      <translation>Параллельно XY плоскости</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="146"/>
       <source>X' Y' plane is parallel to the plane (object's XY) and passes through the vertex</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">X' Y' plane is parallel to the plane (object's XY) and passes through the vertex</translation>
+      <translation>Плоскость X' Y' параллельна плоскости (объект XY) и проходит через вершину</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="148"/>
@@ -779,13 +779,13 @@
       <location filename="../../AttacherTexts.cpp" line="67"/>
       <source>XY parallel to plane</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XY parallel to plane</translation>
+      <translation>Параллельно XY плоскости</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="68"/>
       <source>X' Y' plane is parallel to the plane (object's XY) and passes through the vertex.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">X' Y' plane is parallel to the plane (object's XY) and passes through the vertex.</translation>
+      <translation>Плоскость X' Y' параллельна плоскости (XY объекта) и проходит через вершину.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="70"/>
@@ -1562,7 +1562,7 @@
     <message>
       <location filename="../../Command.cpp" line="1010"/>
       <source>Export CAD file...</source>
-      <translation type="unfinished">Export CAD file...</translation>
+      <translation>Экспорт CAD файла...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1011"/>
@@ -1634,7 +1634,7 @@
     <message>
       <location filename="../../Command.cpp" line="947"/>
       <source>Import CAD file...</source>
-      <translation type="unfinished">Import CAD file...</translation>
+      <translation>Импорт CAD файла...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="948"/>
@@ -2207,7 +2207,7 @@ of projection.</source>
       <translation>Конвертировать сетку</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1078"/>
+      <location filename="../../TaskAttacher.cpp" line="1077"/>
       <source>Edit attachment</source>
       <translation>Изменить вложение</translation>
     </message>
@@ -2217,7 +2217,7 @@ of projection.</source>
       <translation>Изменить цвета грани</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="201"/>
+      <location filename="../../TaskLoft.cpp" line="202"/>
       <source>Loft</source>
       <translation>Профиль</translation>
     </message>
@@ -2248,7 +2248,7 @@ of projection.</source>
       <translation>Твердотельный объект</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="367"/>
+      <location filename="../../TaskSweep.cpp" line="368"/>
       <source>Sweep</source>
       <translation>Профиль по траектории</translation>
     </message>
@@ -2600,7 +2600,7 @@ Note: The placement is expressed in local space of object being attached.</sourc
     <message>
       <location filename="../../DlgExportStep.ui" line="123"/>
       <source>Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</source>
-      <translation type="unfinished">Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</translation>
+      <translation>Снимите этот флажок, чтобы пропустить невидимые объекты при экспорте, что полезно для САПР, которые не поддерживают невидимость стилей STEP.</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="104"/>
@@ -2608,10 +2608,8 @@ Note: The placement is expressed in local space of object being attached.</sourc
 a single object. Please note that when importing back the STEP file, the
 placement will be encoded into the shape geometry, instead of keeping
 it inside the Placement property.</source>
-      <translation type="unfinished">Check this option to keep the placement information when exporting
-a single object. Please note that when importing back the STEP file, the
-placement will be encoded into the shape geometry, instead of keeping
-it inside the Placement property.</translation>
+      <translation>Установите этот флажок, чтобы сохранить информацию о размещении при экспорте
+отдельного объекта. Обратите внимание, что при обратном импорте файла STEP размещение будет закодировано в геометрию формы, а не сохранено внутри свойства Placement.</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="126"/>
@@ -2969,7 +2967,7 @@ If both lengths are zero, magnitude of direction is used.</source>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="269"/>
       <source>Chamfer Parameters</source>
-      <translation type="unfinished">Chamfer Parameters</translation>
+      <translation>Параметры Фаски</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="273"/>
@@ -3081,7 +3079,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="65"/>
       <source>Export solids and shells as</source>
-      <translation type="unfinished">Export solids and shells as</translation>
+      <translation>Экспортировать твердотельное и оболочки как</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="71"/>
@@ -3153,10 +3151,9 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="26"/>
-      <source>If checked, no Compound merge will be done
+      <source>If checked, Compound merge will be done
 during file reading (slower but higher details).</source>
-      <translation>Если флажок установлен, составное слияние выполняться не будет.
-во время чтения файла (медленнее, но подробнее).</translation>
+      <translation>Если этот флажок установлен, то во время чтения файла будет выполнено слияние составных файлов (медленнее, но с более высокой детализацией).</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="30"/>
@@ -3212,7 +3209,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="123"/>
       <source>Do not use instance names. Useful for some legacy STEP files with non-meaningful auto-generated instance names.</source>
-      <translation type="unfinished">Do not use instance names. Useful for some legacy STEP files with non-meaningful auto-generated instance names.</translation>
+      <translation>Не используйте имена экземпляров. Полезно для некоторых устаревших файлов STEP с не имеющими смысла автоматически сгенерированными именами экземпляров.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="126"/>
@@ -3222,7 +3219,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="150"/>
       <source>CodePage</source>
-      <translation type="unfinished">CodePage</translation>
+      <translation>Код страницы</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="177"/>
@@ -3387,7 +3384,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="14"/>
       <source>STEP input file</source>
-      <translation type="unfinished">STEP input file</translation>
+      <translation>STEP входной файл</translation>
     </message>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="20"/>
@@ -4079,12 +4076,12 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="117"/>
       <source>These settings are experimental and may result in decreased stability, more problems and undefined behaviors.</source>
-      <translation type="unfinished">These settings are experimental and may result in decreased stability, more problems and undefined behaviors.</translation>
+      <translation>Эти настройки являются экспериментальными и могут привести к снижению стабильности, появлению дополнительных проблем и неопределенному поведению.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="127"/>
       <source>Allow multiple solids in Part Design Body by default (experimental)</source>
-      <translation type="unfinished">Allow multiple solids in Part Design Body by default (experimental)</translation>
+      <translation>Разрешить несколько твердых тел в теле конструкции детали по умолчанию (экспериментальная функция)</translation>
     </message>
   </context>
   <context>
@@ -4241,10 +4238,9 @@ during file reading (slower but higher details).</source>
 If not checked, it depends on the option "Backlight color"
 (preferences section Display -&gt; 3D View); either the backlight color
 will be used or black.</source>
-      <translation type="unfinished">The bottom side of the surface will be rendered the same way as the top.
-If not checked, it depends on the option "Backlight color"
-(preferences section Display -&gt; 3D View); either the backlight color
-will be used or black.</translation>
+      <translation>Нижняя сторона поверхности будет визуализироваться так же, как и верхняя.
+Если не отмечено, это зависит от параметра «Цвет подсветки»
+(раздел настроек Дисплей -&gt; 3D-вид); будет использоваться либо цвет подсветки, либо черный.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="471"/>
@@ -4360,27 +4356,27 @@ the sketch plane's normal vector will be used</source>
       <translation>Выбранные профили</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="179"/>
+      <location filename="../../TaskLoft.cpp" line="180"/>
       <source>Too few elements</source>
       <translation>Слишком мало элементов</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="179"/>
+      <location filename="../../TaskLoft.cpp" line="180"/>
       <source>At least two vertices, edges, wires or faces are required.</source>
       <translation>Необходимы две вершины, линии или грани.</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="213"/>
+      <location filename="../../TaskLoft.cpp" line="214"/>
       <source>Input error</source>
       <translation>Ошибка ввода</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="242"/>
+      <location filename="../../TaskLoft.cpp" line="243"/>
       <source>Vertex/Edge/Wire/Face</source>
       <translation>Точка/Ребро/Ломаная/грань</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="243"/>
+      <location filename="../../TaskLoft.cpp" line="244"/>
       <source>Loft</source>
       <translation>Чердак (под крышей)</translation>
     </message>
@@ -4500,7 +4496,7 @@ the sketch plane's normal vector will be used</source>
     <message>
       <location filename="../../SectionCutting.ui" line="20"/>
       <source>Persistent Section Cutting</source>
-      <translation type="unfinished">Persistent Section Cutting</translation>
+      <translation>Постоянная резка секции</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="32"/>
@@ -4737,69 +4733,69 @@ only created cuts will be visible</source>
       <translation>Выбранные профили</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="330"/>
+      <location filename="../../TaskSweep.cpp" line="331"/>
       <source>Too few elements</source>
       <translation>Слишком мало элементов</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="330"/>
+      <location filename="../../TaskSweep.cpp" line="331"/>
       <source>At least one edge or wire is required.</source>
       <translation>Требуется по крайней мере одна кривая линия или ломаная.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="334"/>
+      <location filename="../../TaskSweep.cpp" line="335"/>
       <source>Invalid selection</source>
       <translation>Неправильное выделение</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="334"/>
+      <location filename="../../TaskSweep.cpp" line="335"/>
       <source>Select one or more edges from a single object.</source>
       <translation>Выберите один или несколько ребер одного объекта.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="341"/>
+      <location filename="../../TaskSweep.cpp" line="342"/>
       <source>Wrong selection</source>
       <translation>Неправильный выбор</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="341"/>
+      <location filename="../../TaskSweep.cpp" line="342"/>
       <source>'%1' cannot be used as profile and path.</source>
       <translation>'%1' не может использоваться в качестве профиля и пути.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="379"/>
+      <location filename="../../TaskSweep.cpp" line="380"/>
       <source>Input error</source>
       <translation>Ошибка ввода</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="412"/>
+      <location filename="../../TaskSweep.cpp" line="413"/>
       <source>Done</source>
       <translation>Готово</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="414"/>
+      <location filename="../../TaskSweep.cpp" line="415"/>
       <source>Select one or more connected edges in the 3d view and press 'Done'</source>
       <translation>Выберите один или несколько соединенных ребер в трёхмерном виде и нажмите «OK»</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="436"/>
-      <location filename="../../TaskSweep.cpp" line="444"/>
+      <location filename="../../TaskSweep.cpp" line="437"/>
+      <location filename="../../TaskSweep.cpp" line="445"/>
       <source>Sweep path</source>
       <translation>Траектория построения</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="436"/>
-      <location filename="../../TaskSweep.cpp" line="444"/>
+      <location filename="../../TaskSweep.cpp" line="437"/>
+      <location filename="../../TaskSweep.cpp" line="445"/>
       <source>The selected sweep path is invalid.</source>
       <translation>Недопустимый путь траектории равёртки с заметанием.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="456"/>
+      <location filename="../../TaskSweep.cpp" line="457"/>
       <source>Vertex/Wire</source>
       <translation>Вершина/проволока</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="457"/>
+      <location filename="../../TaskSweep.cpp" line="458"/>
       <source>Sweep</source>
       <translation>Профиль по траектории</translation>
     </message>
@@ -4997,193 +4993,193 @@ of object being attached.</source>
   <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1001"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1028"/>
       <source>Shape Content</source>
       <translation>Содержимое фигуры</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1009"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="1204"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1036"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1231"/>
       <source>Settings</source>
       <translation>Настройки</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1015"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1042"/>
       <source>Skip this settings page and run the geometry check automatically.</source>
       <translation>Пропустить эту страницу настроек и выполнить проверку геометрии автоматически.</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1017"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1044"/>
       <source>Default: false</source>
       <translation>По умолчанию: false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1024"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1051"/>
       <source>Run boolean operation check</source>
       <translation>Запустить проверку логической операции</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1025"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1052"/>
       <source>Extra boolean operations check that can sometimes find errors that
 the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</source>
       <translation>Проверка дополнительных логических операций, которая иногда может найти ошибки, которые стандартная проверка геометрии BRep не выполняются. Эти ошибки не всегда означают, что проверенный объект непригоден для использования. По умолчанию: ложь</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1035"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1062"/>
       <source>Single-threaded</source>
       <translation>Однопоточный</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1036"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1063"/>
       <source>Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</source>
       <translation>Запустите проверку геометрии в одном потоке. Это медленнее,
 но более стабильно. По умолчанию: ложь</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1045"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1072"/>
       <source>Log errors</source>
       <translation>Журнал ошибок</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1046"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1073"/>
       <source>Log errors to report view.  Default: true</source>
       <translation>Журнал ошибок в Просмотре отчёта. По умолчанию: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1053"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1080"/>
       <source>Expand shape content</source>
       <translation>Развернуть содержимое фигуры</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1054"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1081"/>
       <source>Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>Развернуть содержимое формы. Изменения вступят в силу при следующем использовании 
 инструмента геометрии проверки. По умолчанию: false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1063"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1090"/>
       <source>Advanced shape content</source>
       <translation>Расширенное содержимое формы</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1064"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
       <source>Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>Развернуть содержимое формы. Изменения вступят в силу при следующем использовании 
 инструмента геометрии проверки. По умолчанию: false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1072"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1099"/>
       <source>
 Individual boolean operation checks:</source>
       <translation>
 Проверка индивидуальных логических операций:</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1075"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1102"/>
       <source>Bad type</source>
       <translation>Некорректный тип</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1083"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1110"/>
       <source>Self-intersect</source>
       <translation>Самопересечение</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1118"/>
       <source>Too small edge</source>
       <translation>Слишком маленькое ребро</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1099"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1126"/>
       <source>Nonrecoverable face</source>
       <translation>Невосстанавливаемая грань</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1107"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1134"/>
       <source>Continuity</source>
       <translation>Непрерывность</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1115"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1142"/>
       <source>Incompatibility of face</source>
       <translation>Несовместимость грани</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1123"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1150"/>
       <source>Incompatibility of vertex</source>
       <translation>Несовместимость вершины</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1131"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1158"/>
       <source>Incompatibility of edge</source>
       <translation>Несовместимость края</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1139"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1166"/>
       <source>Invalid curve on surface</source>
       <translation>Недопустимая кривая на поверхности</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1076"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1103"/>
       <source>Check for bad argument types.  Default: true</source>
       <translation>Отметьте для некорректных типов аргументов. По умолчанию: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1013"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1040"/>
       <source>Skip this settings page</source>
-      <translation type="unfinished">Skip this settings page</translation>
+      <translation>Пропустить страницу настроек</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1084"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1111"/>
       <source>Check for self-intersections.  Default: true</source>
       <translation>Проверка на самопересечения. По умолчанию: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1092"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1119"/>
       <source>Check for edges that are too small.  Default: true</source>
       <translation>Проверка слишком маленького ребра. По умолчанию: да</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1100"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1127"/>
       <source>Check for nonrecoverable faces.  Default: true</source>
       <translation>Отметьте для невосстановимых граней. По умолчанию: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1108"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1135"/>
       <source>Check for continuity.  Default: true</source>
       <translation>Проверьте непрерывность. По умолчанию: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1116"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1143"/>
       <source>Check for incompatible faces.  Default: true</source>
       <translation>Проверять несовместимые грани. По умолчанию: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1124"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1151"/>
       <source>Check for incompatible vertices.  Default: true</source>
       <translation>Отметьте для несовместимых вершин. По умолчанию: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1132"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1159"/>
       <source>Check for incompatible edges.  Default: true</source>
       <translation>Проверять несовместимые грани. По умолчанию: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1140"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1167"/>
       <source>Check for invalid curves on surfaces.  Default: true</source>
       <translation>Проверять на недопустимые кривые на поверхностях. По умолчанию: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1203"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1230"/>
       <source>Run check</source>
       <translation>Запустить проверку</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1209"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1236"/>
       <source>Results</source>
       <translation>Результаты</translation>
     </message>
@@ -5212,22 +5208,22 @@ Individual boolean operation checks:</source>
       <translation>Проверить геометрию</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="459"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="464"/>
       <source>Invalid</source>
       <translation>Недопустимый</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="478"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="483"/>
       <source>Checking</source>
       <translation>Проверка</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="501"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="506"/>
       <source>%1 processed out of %2 selected</source>
       <translation>%1 обработано из %2 выбрано</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../TaskCheckGeometry.cpp" line="502"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="507"/>
       <source>%n invalid shapes.</source>
       <translation>
         <numerusform>%n неверной фигуры.</numerusform>
@@ -5237,9 +5233,29 @@ Individual boolean operation checks:</source>
       </translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="590"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="595"/>
       <source>Checked object</source>
       <translation>Проверяемый объект</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="612"/>
+      <source>Tolerance information</source>
+      <translation type="unfinished">Tolerance information</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="617"/>
+      <source>Global Minimum</source>
+      <translation type="unfinished">Global Minimum</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="622"/>
+      <source>Global Average</source>
+      <translation type="unfinished">Global Average</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="627"/>
+      <source>Global Maximum</source>
+      <translation type="unfinished">Global Maximum</translation>
     </message>
   </context>
   <context>
@@ -5443,7 +5459,7 @@ Individual boolean operation checks:</source>
       <translation>Френе</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="482"/>
+      <location filename="../../TaskSweep.cpp" line="483"/>
       <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
       <translation>Выберите один или более профилей, а также выберите грань или последовательность граней в трёхмерном виде для пути заметания.</translation>
@@ -5564,12 +5580,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="389"/>
       <source>Please select two shapes or more. Or, select one compound containing two or more shapes to compute the intersection between.</source>
-      <translation type="unfinished">Please select two shapes or more. Or, select one compound containing two or more shapes to compute the intersection between.</translation>
+      <translation>Пожалуйста, выберите две фигуры или более. Или выберите одно соединение, содержащее две или более фигур, чтобы вычислить пересечение между ними.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="465"/>
       <source>Please select two shapes or more. Or, select one compound containing two or more shapes to be fused.</source>
-      <translation type="unfinished">Please select two shapes or more. Or, select one compound containing two or more shapes to be fused.</translation>
+      <translation>Пожалуйста, выберите две формы или более. Или выберите одно соединение, содержащее две или более форм для слияния.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="856"/>
@@ -5886,7 +5902,7 @@ Do you want to continue?</source>
       <translation>Булева операция: Недопустимое действие</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="699"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="726"/>
       <source>Invalid</source>
       <translation>Недопустимый</translation>
     </message>
@@ -5946,66 +5962,66 @@ Do you want to continue?</source>
       <translation>Изменить проекцию</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="878"/>
+      <location filename="../../ViewProviderExt.cpp" line="886"/>
       <source>Set appearance per face...</source>
-      <translation type="unfinished">Set appearance per face...</translation>
+      <translation>Установить внешний вид для каждой стороны...</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="33"/>
+      <location filename="../../Workbench.cpp" line="34"/>
       <source>&amp;Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="34"/>
+      <location filename="../../Workbench.cpp" line="35"/>
       <source>&amp;Simple</source>
       <translation>Простая</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="35"/>
+      <location filename="../../Workbench.cpp" line="36"/>
       <source>&amp;Parametric</source>
       <translation>&amp;Параметрическая</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="36"/>
+      <location filename="../../Workbench.cpp" line="37"/>
       <source>Solids</source>
       <translation>Твердотельные объекты</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="37"/>
+      <location filename="../../Workbench.cpp" line="38"/>
       <source>Part tools</source>
       <translation>Инструменты детали</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="38"/>
+      <location filename="../../Workbench.cpp" line="39"/>
       <source>Boolean</source>
       <translation>Булевы операции</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="39"/>
+      <location filename="../../Workbench.cpp" line="40"/>
       <source>Primitives</source>
       <translation>Примитивы</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="40"/>
+      <location filename="../../Workbench.cpp" line="41"/>
       <source>Join</source>
       <translation>Соединить</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="41"/>
+      <location filename="../../Workbench.cpp" line="42"/>
       <source>Split</source>
       <translation>Разделить</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="42"/>
+      <location filename="../../Workbench.cpp" line="43"/>
       <source>Compound</source>
       <translation>Соединить
 Группировка</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="43"/>
+      <location filename="../../Workbench.cpp" line="44"/>
       <source>Create a copy</source>
       <translation>Создать копию</translation>
     </message>
@@ -6594,7 +6610,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
     <message>
       <location filename="../../DlgScale.cpp" line="206"/>
       <source>The document '%1' doesn't exist.</source>
-      <translation type="unfinished">The document '%1' doesn't exist.</translation>
+      <translation>Документ «%1» не существует.</translation>
     </message>
     <message>
       <location filename="../../DlgScale.cpp" line="254"/>
@@ -6762,7 +6778,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="14"/>
       <source>Set appearance per face</source>
-      <translation type="unfinished">Set appearance per face</translation>
+      <translation>Установить внешний вид для каждой стороны</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="20"/>
@@ -6782,14 +6798,13 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="73"/>
       <source>Custom appearance:</source>
-      <translation type="unfinished">Custom appearance:</translation>
+      <translation>Пользовательский вид:</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="97"/>
       <source>When checked, you can select multiple faces
 by dragging a selection rectangle in the 3D view</source>
-      <translation type="unfinished">When checked, you can select multiple faces
-by dragging a selection rectangle in the 3D view</translation>
+      <translation>Если этот флажок установлен, вы можете выбрать несколько граней, перетащив прямоугольник выбора в 3D-виде</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="87"/>
@@ -6813,6 +6828,52 @@ by dragging a selection rectangle in the 3D view</translation>
       <location filename="../../DlgImportStep.cpp" line="149"/>
       <source>Don't show this dialog again</source>
       <translation>Больше не показывать этот диалог</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_ToleranceFeatures</name>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="70"/>
+      <source>Computing the result failed with an error:</source>
+      <translation>Вычисление результата завершилось ошибкой:</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="71"/>
+      <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Нажмите 'Продолжить', чтобы все равно создать этот элемент, или 'Прервать' для отмены.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="72"/>
+      <source>Bad selection</source>
+      <translation>Некорректное выделение</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="74"/>
+      <source>Continue</source>
+      <translation>Продолжить</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_ToleranceSet</name>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="192"/>
+      <source>Set Tolerance</source>
+      <translation type="unfinished">Set Tolerance</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="197"/>
+      <source>Set Tolerance for selected objects.</source>
+      <translation type="unfinished">Set Tolerance for selected objects.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="204"/>
+      <source>Select at least one object or compounds</source>
+      <translation type="unfinished">Select at least one object or compounds</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="205"/>
+      <source>Bad selection</source>
+      <translation>Некорректное выделение</translation>
     </message>
   </context>
 </TS>

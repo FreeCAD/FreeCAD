@@ -30,6 +30,7 @@ __url__ = "https://www.freecad.org"
 import os
 import re
 import subprocess
+from PySide.QtCore import QProcess
 
 import FreeCAD
 from FreeCAD import Console
@@ -46,17 +47,29 @@ class GmshError(Exception):
 
 
 class GmshTools:
+
+    name = "Gmsh"
+
     def __init__(self, gmsh_mesh_obj, analysis=None):
 
         # mesh obj
         self.mesh_obj = gmsh_mesh_obj
 
+        self.process = QProcess()
         # analysis
+        self.analysis = None
         if analysis:
             self.analysis = analysis
         else:
-            self.analysis = None
+            for i in self.mesh_obj.InList:
+                if i.isDerivedFrom("Fem::FemAnalysis"):
+                    self.analysis = i
+                    break
 
+        self.load_properties()
+        self.error = False
+
+    def load_properties(self):
         # part to mesh
         self.part_obj = self.mesh_obj.Shape
 
@@ -186,7 +199,6 @@ class GmshTools:
         self.temp_file_geo = ""
         self.mesh_name = ""
         self.gmsh_bin = ""
-        self.error = False
 
     def update_mesh_data(self):
         self.start_logs()
@@ -198,6 +210,21 @@ class GmshTools:
     def write_gmsh_input_files(self):
         self.write_part_file()
         self.write_geo()
+
+    def prepare(self):
+        self.load_properties()
+        self.update_mesh_data()
+        self.get_tmp_file_paths()
+        self.get_gmsh_command()
+        self.write_gmsh_input_files()
+
+    def compute(self):
+        command_list = ["-v", "4", "-", self.temp_file_geo]
+        self.process.start(self.gmsh_bin, command_list)
+        return self.process
+
+    def update_properties(self):
+        self.mesh_obj.FemMesh = Fem.read(self.temp_file_mesh)
 
     def create_mesh(self):
         try:
@@ -363,10 +390,7 @@ class GmshTools:
         Console.PrintMessage("  " + self.gmsh_bin + "\n")
 
     def get_group_data(self):
-        # TODO: solids, faces, edges and vertexes don't seem to work together in one group,
-        #       some output message or make them work together
-
-        # mesh group objects
+        # mesh group objects. Only one shape type is expected
         if not self.mesh_obj.MeshGroupList:
             # print("  No mesh group objects.")
             pass
@@ -402,7 +426,7 @@ class GmshTools:
         # if self.group_elements:
         #    Console.PrintMessage("  {}\n".format(self.group_elements))
 
-    def get_gmsh_version(self):
+    def version(self):
         self.get_gmsh_command()
         if os.path.exists(self.gmsh_bin):
             found_message = "file found: " + self.gmsh_bin
@@ -410,7 +434,7 @@ class GmshTools:
         else:
             found_message = "file not found: " + self.gmsh_bin
             Console.PrintError(found_message + "\n")
-            return (None, None, None), found_message
+            return found_message
 
         command_list = [self.gmsh_bin, "--info"]
         try:
@@ -420,29 +444,14 @@ class GmshTools:
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 universal_newlines=True,
+                startupinfo=femutils.startProgramInfo("hide"),
             )
         except Exception as e:
             Console.PrintMessage(str(e) + "\n")
-            return (None, None, None), found_message + "\n\n" + "Error: " + str(e)
+            return found_message + "\n\n" + "Error: " + str(e)
 
         gmsh_stdout, gmsh_stderr = p.communicate()
-        Console.PrintMessage("Gmsh: StdOut:\n" + gmsh_stdout + "\n")
-        if gmsh_stderr:
-            Console.PrintError("Gmsh: StdErr:\n" + gmsh_stderr + "\n")
-
-        from re import search
-
-        # use raw string mode to get pep8 quiet
-        # https://stackoverflow.com/q/61497292
-        # https://github.com/MathSci/fecon236/issues/6
-        match = search(r"^Version\s*:\s*(\d+)\.(\d+)\.(\d+)", gmsh_stdout)
-        # return (major, minor, patch), fullmessage
-        if match:
-            mess = found_message + "\n\n" + gmsh_stdout
-            return match.group(1, 2, 3), mess
-        else:
-            mess = found_message + "\n\n" + "Warning: Output not recognized\n\n" + gmsh_stdout
-            return (None, None, None), mess
+        return gmsh_stdout
 
     def get_region_data(self):
         # mesh regions
@@ -674,9 +683,8 @@ class GmshTools:
 
                 for phys in ele:
                     if ele[phys]:
-                        name = group + "_{}".format(phys)
                         items = "{" + ", ".join(ele[phys]) + "}"
-                        geo.write('Physical {}("{}") = {};\n'.format(phys, name, items))
+                        geo.write('Physical {}("{}") = {};\n'.format(phys, group, items))
 
             geo.write("\n")
 
@@ -918,7 +926,11 @@ class GmshTools:
         # print(command_list)
         try:
             p = subprocess.Popen(
-                command_list, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+                command_list,
+                shell=False,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                startupinfo=femutils.startProgramInfo("hide"),
             )
             output, error = p.communicate()
             error = error.decode("utf-8")

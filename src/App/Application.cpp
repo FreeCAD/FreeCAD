@@ -35,6 +35,8 @@
 # endif
 # include <boost/program_options.hpp>
 # include <boost/date_time/posix_time/posix_time.hpp>
+# include <chrono>
+# include <random>
 #endif
 
 #ifdef FC_OS_WIN32
@@ -47,6 +49,7 @@
 #include <sys/sysctl.h>
 #endif
 
+#include <QCoreApplication>
 #include <QDir>
 #include <QFileInfo>
 #include <QProcessEnvironment>
@@ -136,6 +139,8 @@
 #include <App/InitScript.h>
 #include <App/TestScript.h>
 #include <App/CMakeScript.h>
+
+#include "SafeMode.h"
 
 #ifdef _MSC_VER // New handler for Microsoft Visual C++ compiler
 # pragma warning( disable : 4535 )
@@ -427,6 +432,10 @@ void Application::setupPythonException(PyObject* module)
     Base::PyExc_FC_PropertyError = PyErr_NewException("Base.PropertyError", PyExc_AttributeError, nullptr);
     Py_INCREF(Base::PyExc_FC_PropertyError);
     PyModule_AddObject(module, "PropertyError", Base::PyExc_FC_PropertyError);
+
+    Base::PyExc_FC_AbortIOException = PyErr_NewException("Base.PyExc_FC_AbortIOException", PyExc_BaseException, nullptr);
+    Py_INCREF(Base::PyExc_FC_AbortIOException);
+    PyModule_AddObject(module, "AbortIOException", Base::PyExc_FC_AbortIOException);
 }
 // clang-format on
 
@@ -1108,6 +1117,21 @@ Application::TransactionSignaller::~TransactionSignaller() {
     }
 }
 
+int64_t Application::applicationPid()
+{
+    static int64_t randomNumber = []() {
+        auto tp = std::chrono::high_resolution_clock::now();
+        auto dur = tp.time_since_epoch();
+        auto seed = dur.count();
+        std::mt19937 generator(static_cast<unsigned>(seed));
+        constexpr int64_t minValue {1};
+        constexpr int64_t maxValue {1000000};
+        std::uniform_int_distribution<int64_t> distribution(minValue, maxValue);
+        return distribution(generator);
+    }();
+    return randomNumber;
+}
+
 std::string Application::getHomePath()
 {
     return mConfig["AppHomePath"];
@@ -1738,6 +1762,7 @@ void Application::destruct()
     Base::InterpreterSingleton::Destruct();
     Base::Type::destruct();
     ParameterManager::Terminate();
+    SafeMode::Destruct();
 }
 
 void Application::destructObserver()
@@ -2226,6 +2251,7 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
     ("module-path,M", value< vector<string> >()->composing(),"Additional module paths")
     ("python-path,P", value< vector<string> >()->composing(),"Additional python paths")
     ("single-instance", "Allow to run a single instance of the application")
+    ("safe-mode", "Force enable safe mode")
     ("pass", value< vector<string> >()->multitoken(), "Ignores the following arguments and pass them through to be used by a script")
     ;
 
@@ -2553,6 +2579,10 @@ void Application::initConfig(int argc, char ** argv)
 
     // extract home paths
     ExtractUserPath();
+    
+    if (vm.count("safe-mode")) {
+        SafeMode::StartSafeMode();
+    }
 
 #   ifdef FC_DEBUG
     mConfig["Debug"] = "1";
@@ -2641,6 +2671,12 @@ void Application::initConfig(int argc, char ** argv)
                               mConfig["BuildVersionPoint"].c_str(),
                               mConfig["BuildVersionSuffix"].c_str(),
                               mConfig["BuildRevision"].c_str());
+
+        if (SafeMode::SafeModeEnabled()) {
+            Base::Console().Message("FreeCAD is running in _SAFE_MODE_.\n"
+                                    "Safe mode temporarily disables your configurations and "
+                                    "addons. Restart the application to exit safe mode.\n\n");
+        }
     }
     LoadParameters();
 
@@ -3323,7 +3359,46 @@ void Application::ExtractUserPath()
     mConfig["UserMacroPath"] = Base::FileInfo::pathToString(macro) + PATHSEP;
 }
 
-#if defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD)
+// TODO: Consider using this for all UNIX-like OSes
+#if defined(__OpenBSD__)
+#include <cstdio>
+#include <cstdlib>
+#include <sys/param.h>
+#include <QCoreApplication>
+
+std::string Application::FindHomePath(const char* sCall)
+{
+    // We have three ways to start this application either use one of the two executables or
+    // import the FreeCAD.so module from a running Python session. In the latter case the
+    // Python interpreter is already initialized.
+    std::string absPath;
+    std::string homePath;
+    if (Py_IsInitialized()) {
+        // Note: realpath is known to cause a buffer overflow because it
+        // expands the given path to an absolute path of unknown length.
+        // Even setting PATH_MAX does not necessarily solve the problem
+        // for sure but the risk of overflow is rather small.
+        char resolved[PATH_MAX];
+        char* path = realpath(sCall, resolved);
+        if (path)
+            absPath = path;
+    }
+    else {
+        int argc = 1;
+        QCoreApplication app(argc, (char**)(&sCall));
+        absPath = QCoreApplication::applicationFilePath().toStdString();
+    }
+
+    // should be an absolute path now
+    std::string::size_type pos = absPath.find_last_of("/");
+    homePath.assign(absPath,0,pos);
+    pos = homePath.find_last_of("/");
+    homePath.assign(homePath,0,pos+1);
+
+    return homePath;
+}
+
+#elif defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD)
 #include <cstdio>
 #include <cstdlib>
 #include <sys/param.h>

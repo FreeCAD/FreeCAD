@@ -267,12 +267,12 @@ class BIM_Views:
                     top = QtGui.QTreeWidgetItem([translate("BIM","2D Views"), ""])
                     top.setIcon(0, ficon)
                     for v in views:
-                        i = QtGui.QTreeWidgetItem([v.Label, ""])
-                        if hasattr(v.ViewObject, "Proxy"):
-                            if hasattr(v.ViewObject.Proxy, "getIcon"):
-                                i.setIcon(0, QtGui.QIcon(v.ViewObject.Proxy.getIcon()))
-                        i.setToolTip(0, v.Name)
-                        top.addChild(i)
+                        if hasattr(v, "Label"):
+                            i = QtGui.QTreeWidgetItem([v.Label, ""])
+                            if hasattr(v.ViewObject, "Icon"):
+                                i.setIcon(0, v.ViewObject.Icon)
+                            i.setToolTip(0, v.Name)
+                            top.addChild(i)
                     vm.tree.addTopLevelItem(top)
 
                 # add pages
@@ -282,9 +282,8 @@ class BIM_Views:
                     top.setIcon(0, ficon)
                     for p in pages:
                         i = QtGui.QTreeWidgetItem([p.Label, ""])
-                        if hasattr(v.ViewObject, "Proxy"):
-                            if hasattr(v.ViewObject.Proxy, "getIcon"):
-                                i.setIcon(0, QtGui.QIcon(v.ViewObject.Proxy.getIcon()))
+                        if hasattr(p.ViewObject, "Icon"):
+                                i.setIcon(0, p.ViewObject.Icon)
                         i.setToolTip(0, p.Name)
                         top.addChild(i)
                     vm.tree.addTopLevelItem(top)

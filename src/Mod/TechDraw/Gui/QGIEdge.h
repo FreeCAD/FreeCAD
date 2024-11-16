@@ -58,6 +58,7 @@ public:
     void setSource(int source) { m_source = source; }
     int getSource() const { return m_source;}
 
+    void setCurrentPen() override;
 
 protected:
 

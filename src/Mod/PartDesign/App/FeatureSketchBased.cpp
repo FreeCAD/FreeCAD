@@ -708,12 +708,10 @@ int ProfileBased::getUpToShapeFromLinkSubList(TopoShape& upToShape, const App::P
         }
     }
     if (ret == 0){
-        throw Base::ValueError("SketchBased: No face selected");
+        return 0;
     }
-
-    upToShape = faceList[0];
-
     if (ret == 1){
+        upToShape = faceList[0];
         return 1;
     }
 
@@ -850,7 +848,6 @@ void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
 
 void ProfileBased::getUpToFace(TopoShape& upToFace,
                                const TopoShape& support,
-                               const TopoShape& supportface,
                                const TopoShape& sketchshape,
                                const std::string& method,
                                gp_Dir& dir)
@@ -889,13 +886,11 @@ void ProfileBased::getUpToFace(TopoShape& upToFace,
     TopoDS_Face face = TopoDS::Face(upToFace.getShape());
 
     // Check that the upToFace does not intersect the sketch face and
-    // is not parallel to the extrusion direction (for simplicity, supportface is used instead of
-    // sketchshape)
-    BRepAdaptor_Surface adapt1(TopoDS::Face(supportface.getShape()));
-    BRepAdaptor_Surface adapt2(face);
+    // is not parallel to the extrusion direction
+    BRepAdaptor_Surface adapt(face);
 
-    if (adapt2.GetType() == GeomAbs_Plane) {
-        if (adapt1.Plane().Axis().IsNormal(adapt2.Plane().Axis(), Precision::Confusion())) {
+    if (adapt.GetType() == GeomAbs_Plane) {
+        if (dir.IsNormal(adapt.Plane().Axis().Direction(), Precision::Confusion())) {
             throw Base::ValueError(
                 "SketchBased: Up to face: Must not be parallel to extrusion direction!");
         }

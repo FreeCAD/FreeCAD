@@ -2205,7 +2205,7 @@ of projection.</source>
       <translation>მრავალკუთხა ბადის გარდაქმნა</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1078"/>
+      <location filename="../../TaskAttacher.cpp" line="1077"/>
       <source>Edit attachment</source>
       <translation>მიმაგრების ჩასწორება</translation>
     </message>
@@ -2215,7 +2215,7 @@ of projection.</source>
       <translation>ზედაპირის ფერების შეცვლა</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="201"/>
+      <location filename="../../TaskLoft.cpp" line="202"/>
       <source>Loft</source>
       <translation>პროფილი</translation>
     </message>
@@ -2246,7 +2246,7 @@ of projection.</source>
       <translation>მყარი</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="367"/>
+      <location filename="../../TaskSweep.cpp" line="368"/>
       <source>Sweep</source>
       <translation>შლილი</translation>
     </message>
@@ -3152,10 +3152,10 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="26"/>
-      <source>If checked, no Compound merge will be done
+      <source>If checked, Compound merge will be done
 during file reading (slower but higher details).</source>
-      <translation>თუ ჩართულია, ფაილის კითხვისას გადაბმების შერწყმა არ მოხდება.
-(ნელია, მაგრამ უფრო დეტალური).</translation>
+      <translation type="unfinished">If checked, Compound merge will be done
+during file reading (slower but higher details).</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="30"/>
@@ -4359,27 +4359,27 @@ the sketch plane's normal vector will be used</source>
       <translation>მონიშნული პროფილები</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="179"/>
+      <location filename="../../TaskLoft.cpp" line="180"/>
       <source>Too few elements</source>
       <translation>ძალიან ცოტა ელემენტი</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="179"/>
+      <location filename="../../TaskLoft.cpp" line="180"/>
       <source>At least two vertices, edges, wires or faces are required.</source>
       <translation>სულ ცოტა, საჭიროა ორი წვერო, წიბო, პოლიხაზი ან ზედაპირი.</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="213"/>
+      <location filename="../../TaskLoft.cpp" line="214"/>
       <source>Input error</source>
       <translation>შეყვანის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="242"/>
+      <location filename="../../TaskLoft.cpp" line="243"/>
       <source>Vertex/Edge/Wire/Face</source>
       <translation>წვერო/წიბო/პოლიხაზი/ზედაპირი</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="243"/>
+      <location filename="../../TaskLoft.cpp" line="244"/>
       <source>Loft</source>
       <translation>პროფილი</translation>
     </message>
@@ -4735,69 +4735,69 @@ only created cuts will be visible</source>
       <translation>მონიშნული პროფილები</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="330"/>
+      <location filename="../../TaskSweep.cpp" line="331"/>
       <source>Too few elements</source>
       <translation>ძალიან ცოტა ელემენტი</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="330"/>
+      <location filename="../../TaskSweep.cpp" line="331"/>
       <source>At least one edge or wire is required.</source>
       <translation>საჭიროა ერთი წიბო ან პოლიხაზი მაინც.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="334"/>
+      <location filename="../../TaskSweep.cpp" line="335"/>
       <source>Invalid selection</source>
       <translation>არასწორი მონიშნული</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="334"/>
+      <location filename="../../TaskSweep.cpp" line="335"/>
       <source>Select one or more edges from a single object.</source>
       <translation>მონიშნეთ ერთი ობიექტის ერთი ან მეტი წიბო.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="341"/>
+      <location filename="../../TaskSweep.cpp" line="342"/>
       <source>Wrong selection</source>
       <translation>არასწორი არჩევანი</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="341"/>
+      <location filename="../../TaskSweep.cpp" line="342"/>
       <source>'%1' cannot be used as profile and path.</source>
       <translation>%1-ის გამოყენება პროფილად და ტრაექტორიად შეუძლებელია.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="379"/>
+      <location filename="../../TaskSweep.cpp" line="380"/>
       <source>Input error</source>
       <translation>შეყვანის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="412"/>
+      <location filename="../../TaskSweep.cpp" line="413"/>
       <source>Done</source>
       <translation>მზადაა</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="414"/>
+      <location filename="../../TaskSweep.cpp" line="415"/>
       <source>Select one or more connected edges in the 3d view and press 'Done'</source>
       <translation>3D ხედში მონიშნეთ ერთი ან მეტი დაკავშირებული წიბო და დააწექით "დასრულება"-ს</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="436"/>
-      <location filename="../../TaskSweep.cpp" line="444"/>
+      <location filename="../../TaskSweep.cpp" line="437"/>
+      <location filename="../../TaskSweep.cpp" line="445"/>
       <source>Sweep path</source>
       <translation>შლილის ტრაექტორია</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="436"/>
-      <location filename="../../TaskSweep.cpp" line="444"/>
+      <location filename="../../TaskSweep.cpp" line="437"/>
+      <location filename="../../TaskSweep.cpp" line="445"/>
       <source>The selected sweep path is invalid.</source>
       <translation>მონიშნული შლილის ტრაექტორია არასწორია.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="456"/>
+      <location filename="../../TaskSweep.cpp" line="457"/>
       <source>Vertex/Wire</source>
       <translation type="unfinished">Vertex/Wire</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="457"/>
+      <location filename="../../TaskSweep.cpp" line="458"/>
       <source>Sweep</source>
       <translation>შლილი</translation>
     </message>
@@ -4992,193 +4992,193 @@ of object being attached.</source>
   <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1001"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1028"/>
       <source>Shape Content</source>
       <translation>მოხაზულობის შემცველობა</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1009"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="1204"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1036"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1231"/>
       <source>Settings</source>
       <translation>მორგება</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1015"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1042"/>
       <source>Skip this settings page and run the geometry check automatically.</source>
       <translation>მორგების გვერდის გამოტოვება და გეომეტრიის ავტომატური შემოწმების გაშვება.</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1017"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1044"/>
       <source>Default: false</source>
       <translation>ნაგულისხმევი: false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1024"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1051"/>
       <source>Run boolean operation check</source>
       <translation>ლოგიკური ოპერაციის შემოწმების გაშვება</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1025"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1052"/>
       <source>Extra boolean operations check that can sometimes find errors that
 the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</source>
       <translation>დამატებით ბულევურ შემოწმებას ხანდახან შეუძლია იპოვოს შეცდომები, რომელიც სტანდარტულ BRep გეომეტრიის შემოწმებამ გამოტოვა. ეს შეცდომები ყოველთვის არ ნიშნავს, რომ შემოწმებული ობიექტის გამოყენება შეუძლებელია. ნაგულისხმევი მნიშვნელობა: არა</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1035"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1062"/>
       <source>Single-threaded</source>
       <translation>ერთ ნაკადად</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1036"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1063"/>
       <source>Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</source>
       <translation>გეომეტრიის შემოწმების ერთ ნაკადად გაშვება. ეს უფრო ნელია,
 მაგრამ უფრო სტაბილური. ნაგულისხმევად: გამორთულია</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1045"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1072"/>
       <source>Log errors</source>
       <translation>შეცდომების ჟურნალი</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1046"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1073"/>
       <source>Log errors to report view.  Default: true</source>
       <translation>შეცდომების ანგარიშის ხედში ჩვენება. ნაგულისხმევი: დიახ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1053"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1080"/>
       <source>Expand shape content</source>
       <translation>მონახაზის შემცველობის გაფართოება</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1054"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1081"/>
       <source>Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>მოხაზულობის შემცველობის გაფართოება. ცვლილებები ზალაში შევა  
 შემდეგ ჯერზე, როცა გეომეტრიის შემოწმების ხელსაწყოს გამოიყენებთ. ნაგულისხმევად: არა</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1063"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1090"/>
       <source>Advanced shape content</source>
       <translation>გაფართოებული მონახაზის შემცველობა</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1064"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
       <source>Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>მოხაზულობის დამატებითი შემცველობის ჩვენება. ცვლილებები ზალაში შევა  
 შემდეგ ჯერზე, როცა გეომეტრიის შემოწმების ხელსაწყოს გამოიყენებთ. ნაგულისხმევად: არა</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1072"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1099"/>
       <source>
 Individual boolean operation checks:</source>
       <translation>
 ინდივიდუალური ლოგიკური ოპერაციების შემოწმებები:</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1075"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1102"/>
       <source>Bad type</source>
       <translation>არასწორი ტიპი</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1083"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1110"/>
       <source>Self-intersect</source>
       <translation>თვით-თანაკვეთა</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1118"/>
       <source>Too small edge</source>
       <translation>წიბო ძალიან პატარაა</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1099"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1126"/>
       <source>Nonrecoverable face</source>
       <translation>აღუდგენელი ზედაპირი</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1107"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1134"/>
       <source>Continuity</source>
       <translation>უწყვეტობა</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1115"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1142"/>
       <source>Incompatibility of face</source>
       <translation>ზედაპირის შეუთავსებლობა</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1123"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1150"/>
       <source>Incompatibility of vertex</source>
       <translation>წვეროს შეუთავსებლობა</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1131"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1158"/>
       <source>Incompatibility of edge</source>
       <translation>წიბოს შეუთავსებლობა</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1139"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1166"/>
       <source>Invalid curve on surface</source>
       <translation>არასწორი არასწორი მრუდი ზედაპირზე</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1076"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1103"/>
       <source>Check for bad argument types.  Default: true</source>
       <translation>არგუმენტების არასწორ ტიპებზე შემოწმება. ნაგულისხმევი: დიახ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1013"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1040"/>
       <source>Skip this settings page</source>
       <translation>ამ მორგების გვერდის გამოტოვება</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1084"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1111"/>
       <source>Check for self-intersections.  Default: true</source>
       <translation>თვითკვეთებზე შემოწმება. ნაგულისხმევი: დიახ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1092"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1119"/>
       <source>Check for edges that are too small.  Default: true</source>
       <translation>ძალიან პატარა წიბოებზე შემოწმება. ნაგულისხმევი: დიახ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1100"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1127"/>
       <source>Check for nonrecoverable faces.  Default: true</source>
       <translation>აღუდგენელი ზედაპირების არსებობის შემოწმება. ნაგულისხმევი: დიახ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1108"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1135"/>
       <source>Check for continuity.  Default: true</source>
       <translation>უწყვეტობაზე შემოწმება. ნაგულისხმევი: დიახ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1116"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1143"/>
       <source>Check for incompatible faces.  Default: true</source>
       <translation>შეუთავსებელ ზედაპირებზე შემოწმება. ნაგულისხმევი: დიახ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1124"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1151"/>
       <source>Check for incompatible vertices.  Default: true</source>
       <translation>შეუთავსებელ წვეროებზე შემოწმება. ნაგულისხმევი: დიახ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1132"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1159"/>
       <source>Check for incompatible edges.  Default: true</source>
       <translation>შეუთავსებელ წიბოებზე შემოწმება. ნაგულისხმევი: დიახ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1140"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1167"/>
       <source>Check for invalid curves on surfaces.  Default: true</source>
       <translation>ზედაპირების არასწორ მრუდებზე შემოწმება. ნაგულისხმევი: დიახ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1203"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1230"/>
       <source>Run check</source>
       <translation>შემოწმების გაშვება</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1209"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1236"/>
       <source>Results</source>
       <translation>შედეგები</translation>
     </message>
@@ -5207,22 +5207,22 @@ Individual boolean operation checks:</source>
       <translation>გეომეტრიის შემოწმება</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="459"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="464"/>
       <source>Invalid</source>
       <translation>არასწორი</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="478"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="483"/>
       <source>Checking</source>
       <translation>შემოწმება</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="501"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="506"/>
       <source>%1 processed out of %2 selected</source>
       <translation>%2 მონიშნულიდან %1 დამუშავებულია</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../TaskCheckGeometry.cpp" line="502"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="507"/>
       <source>%n invalid shapes.</source>
       <translation>
         <numerusform>%n არასწორი მოხაზულობა.</numerusform>
@@ -5230,9 +5230,29 @@ Individual boolean operation checks:</source>
       </translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="590"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="595"/>
       <source>Checked object</source>
       <translation>ჩართული ობიექტი</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="612"/>
+      <source>Tolerance information</source>
+      <translation type="unfinished">Tolerance information</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="617"/>
+      <source>Global Minimum</source>
+      <translation type="unfinished">Global Minimum</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="622"/>
+      <source>Global Average</source>
+      <translation type="unfinished">Global Average</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="627"/>
+      <source>Global Maximum</source>
+      <translation type="unfinished">Global Maximum</translation>
     </message>
   </context>
   <context>
@@ -5436,7 +5456,7 @@ Individual boolean operation checks:</source>
       <translation>ფრენე</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="482"/>
+      <location filename="../../TaskSweep.cpp" line="483"/>
       <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
       <translation>3D ხედში შლილის ტრეაქტორიისთვის აირჩიეთ 
@@ -5881,7 +5901,7 @@ Do you want to continue?</source>
       <translation>ლოგიკური ოპერაცია: არასწორია</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="699"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="726"/>
       <source>Invalid</source>
       <translation>არასწორი</translation>
     </message>
@@ -5941,7 +5961,7 @@ Do you want to continue?</source>
       <translation>პროექციის ჩასწორება</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="878"/>
+      <location filename="../../ViewProviderExt.cpp" line="886"/>
       <source>Set appearance per face...</source>
       <translation>გარეგნობის დაყენება თითოეული ზედაპირისთვის...</translation>
     </message>
@@ -5949,57 +5969,57 @@ Do you want to continue?</source>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="33"/>
+      <location filename="../../Workbench.cpp" line="34"/>
       <source>&amp;Part</source>
       <translation>&amp;ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="34"/>
+      <location filename="../../Workbench.cpp" line="35"/>
       <source>&amp;Simple</source>
       <translation>&amp;მარტივი</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="35"/>
+      <location filename="../../Workbench.cpp" line="36"/>
       <source>&amp;Parametric</source>
       <translation>&amp;პარამეტრული</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="36"/>
+      <location filename="../../Workbench.cpp" line="37"/>
       <source>Solids</source>
       <translation>მყარი სხეულები</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="37"/>
+      <location filename="../../Workbench.cpp" line="38"/>
       <source>Part tools</source>
       <translation>ნაწილის ხელსაწყოები</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="38"/>
+      <location filename="../../Workbench.cpp" line="39"/>
       <source>Boolean</source>
       <translation>ბულევური ოპერაციები</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="39"/>
+      <location filename="../../Workbench.cpp" line="40"/>
       <source>Primitives</source>
       <translation>პრიმიტივები</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="40"/>
+      <location filename="../../Workbench.cpp" line="41"/>
       <source>Join</source>
       <translation>შეერთება</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="41"/>
+      <location filename="../../Workbench.cpp" line="42"/>
       <source>Split</source>
       <translation>გაყოფა</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="42"/>
+      <location filename="../../Workbench.cpp" line="43"/>
       <source>Compound</source>
       <translation>გადაბმა</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="43"/>
+      <location filename="../../Workbench.cpp" line="44"/>
       <source>Create a copy</source>
       <translation>ასლის შექმნა</translation>
     </message>
@@ -6802,6 +6822,52 @@ by dragging a selection rectangle in the 3D view</source>
       <location filename="../../DlgImportStep.cpp" line="149"/>
       <source>Don't show this dialog again</source>
       <translation>აღარ მაჩვენო</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_ToleranceFeatures</name>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="70"/>
+      <source>Computing the result failed with an error:</source>
+      <translation>შედეგის გამოთვლა დასრულდა შეცდომით:</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="71"/>
+      <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>დააწექით "გაგრძელება"-ს თვისების მაინც შესაქმნელად, ან "შეწყვეტა"-ს, გაუქმებისთვის.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="72"/>
+      <source>Bad selection</source>
+      <translation>არასწორი მონიშნული</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="74"/>
+      <source>Continue</source>
+      <translation>გაგრძელება</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_ToleranceSet</name>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="192"/>
+      <source>Set Tolerance</source>
+      <translation type="unfinished">Set Tolerance</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="197"/>
+      <source>Set Tolerance for selected objects.</source>
+      <translation type="unfinished">Set Tolerance for selected objects.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="204"/>
+      <source>Select at least one object or compounds</source>
+      <translation type="unfinished">Select at least one object or compounds</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="205"/>
+      <source>Bad selection</source>
+      <translation>არასწორი მონიშნული</translation>
     </message>
   </context>
 </TS>

@@ -475,7 +475,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="556"/>
       <source>Scale</source>
-      <translation>Escalar</translation>
+      <translation>Escala</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="588"/>

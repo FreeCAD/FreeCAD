@@ -30,6 +30,7 @@
 #include <Base/Writer.h>
 #include <Gui/MetaTypes.h>
 
+#include "MaterialManager.h"
 #include "MaterialPy.h"
 #include "PropertyMaterial.h"
 
@@ -87,13 +88,14 @@ void PropertyMaterial::Save(Base::Writer& writer) const
 
 void PropertyMaterial::Restore(Base::XMLReader& reader)
 {
+    MaterialManager manager;
+
     // read my Element
     reader.readElement("PropertyMaterial");
     // get the value of my Attribute
-    aboutToSetValue();
     auto uuid = reader.getAttribute("uuid");
-    _material.setUUID(QString::fromLatin1(uuid));
-    hasSetValue();
+
+    setValue(*manager.getMaterial(QString::fromLatin1(uuid)));
 }
 
 const char* PropertyMaterial::getEditorName() const

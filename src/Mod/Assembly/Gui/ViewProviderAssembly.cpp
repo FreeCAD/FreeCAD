@@ -27,6 +27,7 @@
 #include <boost/core/ignore_unused.hpp>
 #include <QMessageBox>
 #include <QTimer>
+#include <QMenu>
 #include <vector>
 #include <sstream>
 #include <iostream>
@@ -46,6 +47,9 @@
 #include <App/DocumentObject.h>
 #include <App/Part.h>
 
+#include <Base/Tools.h>
+
+#include <Gui/ActionFunction.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
@@ -59,6 +63,7 @@
 #include <Mod/Assembly/App/AssemblyUtils.h>
 #include <Mod/Assembly/App/JointGroup.h>
 #include <Mod/Assembly/App/ViewGroup.h>
+#include <Mod/Assembly/App/BomGroup.h>
 #include <Mod/PartDesign/App/Body.h>
 
 #include "ViewProviderAssembly.h"
@@ -97,9 +102,9 @@ ViewProviderAssembly::ViewProviderAssembly()
     , enableMovement(true)
     , moveOnlyPreselected(false)
     , moveInCommand(true)
-    , jointVisibilityBackup(false)
     , ctrlPressed(false)
     , lastClickTime(0)
+    , jointVisibilitiesBackup({})
     , docsToMove({})
 {}
 
@@ -108,6 +113,20 @@ ViewProviderAssembly::~ViewProviderAssembly() = default;
 QIcon ViewProviderAssembly::getIcon() const
 {
     return Gui::BitmapFactory().pixmap("Geoassembly.svg");
+}
+
+void ViewProviderAssembly::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    auto func = new Gui::ActionFunction(menu);
+
+    QAction* act = menu->addAction(QObject::tr("Active object"));
+    act->setCheckable(true);
+    act->setChecked(isActivePart());
+    func->trigger(act, [this]() {
+        this->doubleClicked();
+    });
+
+    ViewProviderDragger::setupContextMenu(menu, receiver, member);  // NOLINT
 }
 
 bool ViewProviderAssembly::doubleClicked()
@@ -290,12 +309,7 @@ void ViewProviderAssembly::setEditViewer(Gui::View3DInventorViewer* viewer, int 
 
 bool ViewProviderAssembly::isInEditMode() const
 {
-    App::DocumentObject* activePart = getActivePart();
-    if (!activePart) {
-        return false;
-    }
-
-    return activePart == this->getObject();
+    return asmDragger != nullptr;
 }
 
 App::DocumentObject* ViewProviderAssembly::getActivePart() const
@@ -328,6 +342,17 @@ bool ViewProviderAssembly::keyPressed(bool pressed, int key)
 }
 
 bool ViewProviderAssembly::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer)
+{
+    try {
+        return tryMouseMove(cursorPos, viewer);
+    }
+    catch (const Base::Exception& e) {
+        Base::Console().Warning("%s\n", e.what());
+        return false;
+    }
+}
+
+bool ViewProviderAssembly::tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer)
 {
     if (!isInEditMode()) {
         return false;
@@ -618,7 +643,7 @@ bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection
 
             std::vector<std::string> objsSubNames = selObj.getSubNames();
             for (auto& subNamesStr : objsSubNames) {
-                std::vector<std::string> subNames = AssemblyObject::splitSubName(subNamesStr);
+                std::vector<std::string> subNames = Base::Tools::splitSubName(subNamesStr);
                 if (subNames.empty()) {
                     continue;
                 }
@@ -764,7 +789,7 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
         const char* plcPropName = (pName == "Reference1") ? "Placement1" : "Placement2";
 
         // jcsPlc is relative to the Object
-        jcsPlc = AssemblyObject::getPlacementFromProp(movingJoint, plcPropName);
+        jcsPlc = App::GeoFeature::getPlacementFromProp(movingJoint, plcPropName);
 
         // Make jcsGlobalPlc relative to the origin of the doc
         auto* ref =
@@ -773,18 +798,13 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
             return DragMode::Translation;
         }
         auto* obj = assemblyPart->getObjFromRef(movingJoint, pName.c_str());
-        Base::Placement global_plc = AssemblyObject::getGlobalPlacement(obj, ref);
+        Base::Placement global_plc = App::GeoFeature::getGlobalPlacement(obj, ref);
         jcsGlobalPlc = global_plc * jcsPlc;
 
         // Add downstream parts so that they move together
         std::vector<Assembly::ObjRef> downstreamParts =
             assemblyPart->getDownstreamParts(docsToMove[0].obj, movingJoint);
         addPartsToMove(downstreamParts);
-
-        jointVisibilityBackup = movingJoint->Visibility.getValue();
-        if (!jointVisibilityBackup) {
-            movingJoint->Visibility.setValue(true);
-        }
 
         if (jointType == JointType::Revolute) {
             return DragMode::RotationOnPlane;
@@ -811,9 +831,39 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
 
 void ViewProviderAssembly::initMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer)
 {
+    try {
+        tryInitMove(cursorPos, viewer);
+    }
+    catch (const Base::Exception& e) {
+        Base::Console().Warning("%s\n", e.what());
+    }
+}
+
+void ViewProviderAssembly::tryInitMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer)
+{
     dragMode = findDragMode();
     if (dragMode == DragMode::None) {
         return;
+    }
+
+    auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
+    // When the user drag parts, we switch off all joints visibility and only show the movingjoint
+    jointVisibilitiesBackup.clear();
+    auto joints = assemblyPart->getJoints();
+    for (auto* joint : joints) {
+        if (!joint) {
+            continue;
+        }
+        bool visible = joint->Visibility.getValue();
+        jointVisibilitiesBackup.push_back({joint, visible});
+        if (movingJoint == joint) {
+            if (!visible) {
+                joint->Visibility.setValue(true);
+            }
+        }
+        else if (visible) {
+            joint->Visibility.setValue(false);
+        }
     }
 
     SbVec3f vec;
@@ -858,7 +908,6 @@ void ViewProviderAssembly::initMove(const SbVec2s& cursorPos, Gui::View3DInvento
     // prevent selection while moving
     viewer->setSelectionEnabled(false);
 
-    auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Assembly");
     bool solveOnMove = hGrp->GetBool("SolveOnMove", true);
@@ -886,8 +935,13 @@ void ViewProviderAssembly::endMove()
     partMoving = false;
     canStartDragging = false;
 
-    if (movingJoint && !jointVisibilityBackup) {
-        movingJoint->Visibility.setValue(false);
+    auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
+    auto joints = assemblyPart->getJoints();
+    for (auto pair : jointVisibilitiesBackup) {
+        bool visible = pair.first->Visibility.getValue();
+        if (visible != pair.second) {
+            pair.first->Visibility.setValue(pair.second);
+        }
     }
 
     movingJoint = nullptr;
@@ -902,7 +956,6 @@ void ViewProviderAssembly::endMove()
         "User parameter:BaseApp/Preferences/Mod/Assembly");
     bool solveOnMove = hGrp->GetBool("SolveOnMove", true);
     if (solveOnMove) {
-        auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
         assemblyPart->postDrag();
         assemblyPart->setObjMasses({});
     }
@@ -920,7 +973,7 @@ void ViewProviderAssembly::initMoveDragger()
     App::DocumentObject* part = docsToMove[0].obj;
 
     draggerInitPlc =
-        AssemblyObject::getGlobalPlacement(part, docsToMove[0].rootObj, docsToMove[0].sub);
+        App::GeoFeature::getGlobalPlacement(part, docsToMove[0].rootObj, docsToMove[0].sub);
     std::vector<App::DocumentObject*> listOfObjs;
     std::vector<App::PropertyXLinkSub*> listOfRefs;
     for (auto& movingObj : docsToMove) {
@@ -993,7 +1046,7 @@ bool ViewProviderAssembly::onDelete(const std::vector<std::string>& subNames)
     for (auto obj : getObject()->getOutList()) {
         if (obj->getTypeId() == Assembly::JointGroup::getClassTypeId()
             || obj->getTypeId() == Assembly::ViewGroup::getClassTypeId()
-            /* || obj->getTypeId() == Assembly::BomGroup::getClassTypeId()*/) {
+            || obj->getTypeId() == Assembly::BomGroup::getClassTypeId()) {
 
             // Delete the group content first.
             Gui::Command::doCommand(Gui::Command::Doc,
@@ -1130,11 +1183,11 @@ ViewProviderAssembly::getCenterOfBoundingBox(const std::vector<MovingObject>& mo
         // bboxCenter does not take into account obj global placement
         Base::Placement plc(bboxCenter, Base::Rotation());
         // Change plc to be relative to the object placement.
-        Base::Placement objPlc = AssemblyObject::getPlacementFromProp(movingObj.obj, "Placement");
+        Base::Placement objPlc = App::GeoFeature::getPlacementFromProp(movingObj.obj, "Placement");
         plc = objPlc.inverse() * plc;
         // Change plc to be relative to the origin of the document.
         Base::Placement global_plc =
-            AssemblyObject::getGlobalPlacement(movingObj.obj, movingObj.rootObj, movingObj.sub);
+            App::GeoFeature::getGlobalPlacement(movingObj.obj, movingObj.rootObj, movingObj.sub);
         plc = global_plc * plc;
         bboxCenter = plc.getPosition();
 

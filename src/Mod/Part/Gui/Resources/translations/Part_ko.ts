@@ -1219,7 +1219,7 @@
     <message>
       <location filename="../../Command.cpp" line="2098"/>
       <source>Set the color of each individual face of the selected object.</source>
-      <translation type="unfinished">Set the color of each individual face of the selected object.</translation>
+      <translation>선택한 객체의 각각의 면의 색상을 설정합니다.</translation>
     </message>
   </context>
   <context>
@@ -1252,7 +1252,7 @@
       <location filename="../../CommandParametric.cpp" line="118"/>
       <location filename="../../CommandParametric.cpp" line="123"/>
       <source>Cube</source>
-      <translation type="unfinished">Cube</translation>
+      <translation>입방체</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="108"/>
@@ -1688,7 +1688,7 @@
     <message>
       <location filename="../../Command.cpp" line="1335"/>
       <source>Make face from wires</source>
-      <translation type="unfinished">Make face from wires</translation>
+      <translation>철사로부터 면을 만듦</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1336"/>
@@ -1913,7 +1913,7 @@ of projection.</source>
     <message>
       <location filename="../../Command.cpp" line="1960"/>
       <source>Create a ruled surface from either two Edges or two wires</source>
-      <translation>두 모서리 혹은 두 와이어(로프)를 이용하여 선직면 생성</translation>
+      <translation>두 모서리 혹은 두 철사를 이용하여 선직면 생성</translation>
     </message>
   </context>
   <context>
@@ -2204,17 +2204,17 @@ of projection.</source>
       <translation type="unfinished">Convert mesh</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1078"/>
+      <location filename="../../TaskAttacher.cpp" line="1077"/>
       <source>Edit attachment</source>
       <translation>부착 정보 편집</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.cpp" line="454"/>
       <source>Change face colors</source>
-      <translation type="unfinished">Change face colors</translation>
+      <translation>면의 색상 변경</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="201"/>
+      <location filename="../../TaskLoft.cpp" line="202"/>
       <source>Loft</source>
       <translation>로프트</translation>
     </message>
@@ -2245,7 +2245,7 @@ of projection.</source>
       <translation>고체</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="367"/>
+      <location filename="../../TaskSweep.cpp" line="368"/>
       <source>Sweep</source>
       <translation>스윕</translation>
     </message>
@@ -2493,7 +2493,7 @@ Note: The placement is expressed in local space of object being attached.</sourc
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="392"/>
       <source>Select a shape on the right side, first</source>
-      <translation>오른쪽 면의 셰이프를 먼저 선택</translation>
+      <translation>오른쪽의 형상을 먼저 선택</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="397"/>
@@ -2885,7 +2885,7 @@ If both lengths are zero, magnitude of direction is used.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="280"/>
       <source>Fillet Parameter</source>
-      <translation>필렛 파라메터</translation>
+      <translation>모깎기 매개변수</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="51"/>
@@ -3028,8 +3028,8 @@ If both lengths are zero, magnitude of direction is used.</translation>
       <location filename="../../DlgFilletEdges.cpp" line="963"/>
       <source>No valid shape is selected.
 Please select a valid shape in the drop-down box first.</source>
-      <translation>유효한 셰이프가 선택되지 않았습니다.
-드롭다운 상자에서 유효한 셰이프를 선택하세요.</translation>
+      <translation>유효한 형상이 선택되지 않았습니다.
+드롭다운 상자에서 유효한 형상 선택하세요.</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="1014"/>
@@ -3150,9 +3150,9 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="26"/>
-      <source>If checked, no Compound merge will be done
+      <source>If checked, Compound merge will be done
 during file reading (slower but higher details).</source>
-      <translation type="unfinished">If checked, no Compound merge will be done
+      <translation type="unfinished">If checked, Compound merge will be done
 during file reading (slower but higher details).</translation>
     </message>
     <message>
@@ -3993,7 +3993,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="14"/>
       <source>Shape view</source>
-      <translation>셰이프 보기</translation>
+      <translation>형상 보기</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="26"/>
@@ -4003,7 +4003,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="46"/>
       <source>Defines the deviation of tessellation to the actual surface</source>
-      <translation>실제 표면과 공간 분할의 편차를 정의</translation>
+      <translation>실제 표면에 대한 쪽매붙임의 편차를 정의합니다</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="49"/>
@@ -4056,7 +4056,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="58"/>
       <source>Automatically refine model after sketch-based operation</source>
-      <translation>스케치 기반 작업 후 자동으로 모델을 수정</translation>
+      <translation>스케치 기반 작업 후 자동으로 모형의 선 정리</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="83"/>
@@ -4071,12 +4071,12 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="108"/>
       <source>Experimental</source>
-      <translation type="unfinished">Experimental</translation>
+      <translation>실험적</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="117"/>
       <source>These settings are experimental and may result in decreased stability, more problems and undefined behaviors.</source>
-      <translation type="unfinished">These settings are experimental and may result in decreased stability, more problems and undefined behaviors.</translation>
+      <translation>이러한 설정은 실험적이며 안정성 저하, 더 많은 문제 및 정의되지 않은 동작이 발생할 수 있습니다.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="127"/>
@@ -4089,7 +4089,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="14"/>
       <source>Shape appearance</source>
-      <translation type="unfinished">Shape appearance</translation>
+      <translation>형상의 외관</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="20"/>
@@ -4099,12 +4099,12 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="34"/>
       <source>Shape color</source>
-      <translation>모양 색상</translation>
+      <translation>형상의 색상</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="41"/>
       <source>The default color for new shapes</source>
-      <translation>새 셰이프에 대한 기본 색상</translation>
+      <translation>새 형상의 기본 색상</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="61"/>
@@ -4149,22 +4149,22 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="182"/>
       <source>Shape transparency</source>
-      <translation type="unfinished">Shape transparency</translation>
+      <translation>형상 투명도</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="189"/>
       <source>The default transparency for new shapes</source>
-      <translation type="unfinished">The default transparency for new shapes</translation>
+      <translation>새 형상의 기본 투명도</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="217"/>
       <source>Shape shininess</source>
-      <translation type="unfinished">Shape shininess</translation>
+      <translation>형상의 광택</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="224"/>
       <source>The default shininess for new shapes</source>
-      <translation type="unfinished">The default shininess for new shapes</translation>
+      <translation>새 형상의 기본 광택</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="255"/>
@@ -4174,7 +4174,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="262"/>
       <source>The default line color for new shapes</source>
-      <translation>새 셰이프의 기본 선 색</translation>
+      <translation>새 형상의 기본 선 색</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="288"/>
@@ -4184,7 +4184,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="295"/>
       <source>The default line thickness for new shapes</source>
-      <translation>새 셰이프의 기본 선 두께</translation>
+      <translation>새 형상의 기본 선 두께</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="298"/>
@@ -4195,17 +4195,17 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="323"/>
       <source>Vertex color</source>
-      <translation type="unfinished">Vertex color</translation>
+      <translation>꼭지점 색</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="330"/>
       <source>The default color for new vertices</source>
-      <translation type="unfinished">The default color for new vertices</translation>
+      <translation>새 꼭지점의 기본 색</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="356"/>
       <source>Vertex size</source>
-      <translation type="unfinished">Vertex size</translation>
+      <translation>꼭지점 크기</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="363"/>
@@ -4220,7 +4220,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="398"/>
       <source>The color of bounding boxes in the 3D view</source>
-      <translation>3D 뷰에서 테두리 상자 색상</translation>
+      <translation>3D보기에서 경계 상자 색상</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="424"/>
@@ -4251,12 +4251,12 @@ will be used or black.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="505"/>
       <source>Default Annotation color</source>
-      <translation type="unfinished">Default Annotation color</translation>
+      <translation>기본 주석의 색상</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="519"/>
       <source>Text color</source>
-      <translation>텍스트 색</translation>
+      <translation>문자 색</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="526"/>
@@ -4356,27 +4356,27 @@ the sketch plane's normal vector will be used</source>
       <translation>선택된 윤곽</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="179"/>
+      <location filename="../../TaskLoft.cpp" line="180"/>
       <source>Too few elements</source>
       <translation>너무 적은 요소들</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="179"/>
+      <location filename="../../TaskLoft.cpp" line="180"/>
       <source>At least two vertices, edges, wires or faces are required.</source>
-      <translation>적어도 두 개의 꼭지점과 모서리, 선이나 면이 필요 합니다.</translation>
+      <translation>적어도 두 개의 꼭지점과 모서리, 철사나 면이 필요 합니다.</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="213"/>
+      <location filename="../../TaskLoft.cpp" line="214"/>
       <source>Input error</source>
       <translation>입력 오류</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="242"/>
+      <location filename="../../TaskLoft.cpp" line="243"/>
       <source>Vertex/Edge/Wire/Face</source>
-      <translation>꼭지점/가장자리/선/면</translation>
+      <translation>꼭지점/모서리/철사/면</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="243"/>
+      <location filename="../../TaskLoft.cpp" line="244"/>
       <source>Loft</source>
       <translation>로프트</translation>
     </message>
@@ -4536,7 +4536,7 @@ the sketch plane's normal vector will be used</source>
       <location filename="../../SectionCutting.ui" line="254"/>
       <location filename="../../SectionCutting.ui" line="394"/>
       <source>Color of cut face</source>
-      <translation type="unfinished">Color of cut face</translation>
+      <translation>단면의 색상</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="257"/>
@@ -4591,7 +4591,7 @@ will get the same color</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="419"/>
       <source>Color for all objects</source>
-      <translation type="unfinished">Color for all objects</translation>
+      <translation>모든 객체들의 색상</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="511"/>
@@ -4733,69 +4733,69 @@ only created cuts will be visible</translation>
       <translation>선택된 윤곽</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="330"/>
+      <location filename="../../TaskSweep.cpp" line="331"/>
       <source>Too few elements</source>
       <translation>너무 적은 요소들</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="330"/>
+      <location filename="../../TaskSweep.cpp" line="331"/>
       <source>At least one edge or wire is required.</source>
       <translation type="unfinished">At least one edge or wire is required.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="334"/>
+      <location filename="../../TaskSweep.cpp" line="335"/>
       <source>Invalid selection</source>
       <translation>잘못된 선택</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="334"/>
+      <location filename="../../TaskSweep.cpp" line="335"/>
       <source>Select one or more edges from a single object.</source>
       <translation type="unfinished">Select one or more edges from a single object.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="341"/>
+      <location filename="../../TaskSweep.cpp" line="342"/>
       <source>Wrong selection</source>
       <translation>잘못 된 선택</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="341"/>
+      <location filename="../../TaskSweep.cpp" line="342"/>
       <source>'%1' cannot be used as profile and path.</source>
       <translation>'%'은 윤곽과 경로로써 사용할 수 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="379"/>
+      <location filename="../../TaskSweep.cpp" line="380"/>
       <source>Input error</source>
       <translation>입력 오류</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="412"/>
+      <location filename="../../TaskSweep.cpp" line="413"/>
       <source>Done</source>
       <translation>완료</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="414"/>
+      <location filename="../../TaskSweep.cpp" line="415"/>
       <source>Select one or more connected edges in the 3d view and press 'Done'</source>
       <translation type="unfinished">Select one or more connected edges in the 3d view and press 'Done'</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="436"/>
-      <location filename="../../TaskSweep.cpp" line="444"/>
+      <location filename="../../TaskSweep.cpp" line="437"/>
+      <location filename="../../TaskSweep.cpp" line="445"/>
       <source>Sweep path</source>
       <translation>스윕 경로</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="436"/>
-      <location filename="../../TaskSweep.cpp" line="444"/>
+      <location filename="../../TaskSweep.cpp" line="437"/>
+      <location filename="../../TaskSweep.cpp" line="445"/>
       <source>The selected sweep path is invalid.</source>
       <translation type="unfinished">The selected sweep path is invalid.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="456"/>
+      <location filename="../../TaskSweep.cpp" line="457"/>
       <source>Vertex/Wire</source>
       <translation type="unfinished">Vertex/Wire</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="457"/>
+      <location filename="../../TaskSweep.cpp" line="458"/>
       <source>Sweep</source>
       <translation>스윕</translation>
     </message>
@@ -4989,33 +4989,33 @@ of object being attached.</source>
   <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1001"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1028"/>
       <source>Shape Content</source>
       <translation type="unfinished">Shape Content</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1009"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="1204"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1036"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1231"/>
       <source>Settings</source>
       <translation type="unfinished">Settings</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1015"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1042"/>
       <source>Skip this settings page and run the geometry check automatically.</source>
       <translation type="unfinished">Skip this settings page and run the geometry check automatically.</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1017"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1044"/>
       <source>Default: false</source>
       <translation type="unfinished">Default: false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1024"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1051"/>
       <source>Run boolean operation check</source>
       <translation type="unfinished">Run boolean operation check</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1025"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1052"/>
       <source>Extra boolean operations check that can sometimes find errors that
 the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</source>
@@ -5024,160 +5024,160 @@ the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1035"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1062"/>
       <source>Single-threaded</source>
       <translation type="unfinished">Single-threaded</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1036"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1063"/>
       <source>Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</source>
       <translation type="unfinished">Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1045"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1072"/>
       <source>Log errors</source>
       <translation type="unfinished">Log errors</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1046"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1073"/>
       <source>Log errors to report view.  Default: true</source>
       <translation type="unfinished">Log errors to report view.  Default: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1053"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1080"/>
       <source>Expand shape content</source>
       <translation type="unfinished">Expand shape content</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1054"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1081"/>
       <source>Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation type="unfinished">Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1063"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1090"/>
       <source>Advanced shape content</source>
       <translation type="unfinished">Advanced shape content</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1064"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
       <source>Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation type="unfinished">Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1072"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1099"/>
       <source>
 Individual boolean operation checks:</source>
       <translation type="unfinished">
 Individual boolean operation checks:</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1075"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1102"/>
       <source>Bad type</source>
       <translation type="unfinished">Bad type</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1083"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1110"/>
       <source>Self-intersect</source>
       <translation type="unfinished">Self-intersect</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1118"/>
       <source>Too small edge</source>
       <translation>너무 작은 모서리</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1099"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1126"/>
       <source>Nonrecoverable face</source>
       <translation type="unfinished">Nonrecoverable face</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1107"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1134"/>
       <source>Continuity</source>
       <translation>연속성</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1115"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1142"/>
       <source>Incompatibility of face</source>
       <translation type="unfinished">Incompatibility of face</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1123"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1150"/>
       <source>Incompatibility of vertex</source>
       <translation type="unfinished">Incompatibility of vertex</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1131"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1158"/>
       <source>Incompatibility of edge</source>
       <translation>모서리의 비호환성</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1139"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1166"/>
       <source>Invalid curve on surface</source>
       <translation type="unfinished">Invalid curve on surface</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1076"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1103"/>
       <source>Check for bad argument types.  Default: true</source>
       <translation type="unfinished">Check for bad argument types.  Default: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1013"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1040"/>
       <source>Skip this settings page</source>
       <translation type="unfinished">Skip this settings page</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1084"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1111"/>
       <source>Check for self-intersections.  Default: true</source>
       <translation type="unfinished">Check for self-intersections.  Default: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1092"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1119"/>
       <source>Check for edges that are too small.  Default: true</source>
       <translation type="unfinished">Check for edges that are too small.  Default: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1100"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1127"/>
       <source>Check for nonrecoverable faces.  Default: true</source>
       <translation type="unfinished">Check for nonrecoverable faces.  Default: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1108"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1135"/>
       <source>Check for continuity.  Default: true</source>
       <translation type="unfinished">Check for continuity.  Default: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1116"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1143"/>
       <source>Check for incompatible faces.  Default: true</source>
       <translation type="unfinished">Check for incompatible faces.  Default: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1124"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1151"/>
       <source>Check for incompatible vertices.  Default: true</source>
       <translation type="unfinished">Check for incompatible vertices.  Default: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1132"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1159"/>
       <source>Check for incompatible edges.  Default: true</source>
       <translation type="unfinished">Check for incompatible edges.  Default: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1140"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1167"/>
       <source>Check for invalid curves on surfaces.  Default: true</source>
       <translation type="unfinished">Check for invalid curves on surfaces.  Default: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1203"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1230"/>
       <source>Run check</source>
       <translation type="unfinished">Run check</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1209"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1236"/>
       <source>Results</source>
       <translation type="unfinished">Results</translation>
     </message>
@@ -5206,31 +5206,51 @@ Individual boolean operation checks:</translation>
       <translation type="unfinished">Check geometry</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="459"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="464"/>
       <source>Invalid</source>
       <translation>올바르지 않음</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="478"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="483"/>
       <source>Checking</source>
       <translation type="unfinished">Checking</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="501"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="506"/>
       <source>%1 processed out of %2 selected</source>
       <translation type="unfinished">%1 processed out of %2 selected</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../TaskCheckGeometry.cpp" line="502"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="507"/>
       <source>%n invalid shapes.</source>
       <translation type="unfinished">
         <numerusform>%n invalid shapes.</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="590"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="595"/>
       <source>Checked object</source>
       <translation type="unfinished">Checked object</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="612"/>
+      <source>Tolerance information</source>
+      <translation type="unfinished">Tolerance information</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="617"/>
+      <source>Global Minimum</source>
+      <translation type="unfinished">Global Minimum</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="622"/>
+      <source>Global Average</source>
+      <translation type="unfinished">Global Average</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="627"/>
+      <source>Global Maximum</source>
+      <translation type="unfinished">Global Maximum</translation>
     </message>
   </context>
   <context>
@@ -5434,7 +5454,7 @@ Individual boolean operation checks:</translation>
       <translation>프레네</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="482"/>
+      <location filename="../../TaskSweep.cpp" line="483"/>
       <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
       <translation>쓸기경로를 설정하기 위해 하나 이상의 윤곽을 선택하고 3D 보기에서 모서리나 철사를 선택</translation>
@@ -5719,7 +5739,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="116"/>
       <source>Empty Wire</source>
-      <translation>빈 와이어</translation>
+      <translation>빈 철사</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="117"/>
@@ -5729,7 +5749,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="118"/>
       <source>Self Intersecting Wire</source>
-      <translation>스스로 교차하는 와이어</translation>
+      <translation>자기 교차하는 철사</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="119"/>
@@ -5739,22 +5759,22 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="120"/>
       <source>Invalid Wire</source>
-      <translation>잘못 된 와이어</translation>
+      <translation>잘못 된 철사</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="121"/>
       <source>Redundant Wire</source>
-      <translation>중복 와이어</translation>
+      <translation>중복된 철사</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="122"/>
       <source>Intersecting Wires</source>
-      <translation>교차 와이어</translation>
+      <translation>교차하는 철사</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="123"/>
       <source>Invalid Imbrication Of Wires</source>
-      <translation>와이어의 잘못 된 Imbrication</translation>
+      <translation>철사의 잘못된 중첩</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="124"/>
@@ -5877,7 +5897,7 @@ Do you want to continue?</source>
       <translation type="unfinished">Boolean operation: Not valid</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="699"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="726"/>
       <source>Invalid</source>
       <translation>올바르지 않음</translation>
     </message>
@@ -5937,7 +5957,7 @@ Do you want to continue?</source>
       <translation>투상 편집</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="878"/>
+      <location filename="../../ViewProviderExt.cpp" line="886"/>
       <source>Set appearance per face...</source>
       <translation type="unfinished">Set appearance per face...</translation>
     </message>
@@ -5945,57 +5965,57 @@ Do you want to continue?</source>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="33"/>
+      <location filename="../../Workbench.cpp" line="34"/>
       <source>&amp;Part</source>
       <translation>부품(&amp;P)</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="34"/>
+      <location filename="../../Workbench.cpp" line="35"/>
       <source>&amp;Simple</source>
       <translation>단순(&amp;S)</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="35"/>
+      <location filename="../../Workbench.cpp" line="36"/>
       <source>&amp;Parametric</source>
       <translation>&amp; 파라메트릭</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="36"/>
+      <location filename="../../Workbench.cpp" line="37"/>
       <source>Solids</source>
       <translation>고체</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="37"/>
+      <location filename="../../Workbench.cpp" line="38"/>
       <source>Part tools</source>
       <translation>파트 도구</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="38"/>
+      <location filename="../../Workbench.cpp" line="39"/>
       <source>Boolean</source>
       <translation>부울</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="39"/>
+      <location filename="../../Workbench.cpp" line="40"/>
       <source>Primitives</source>
       <translation>기본 형상</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="40"/>
+      <location filename="../../Workbench.cpp" line="41"/>
       <source>Join</source>
       <translation type="unfinished">Join</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="41"/>
+      <location filename="../../Workbench.cpp" line="42"/>
       <source>Split</source>
       <translation>분할</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="42"/>
+      <location filename="../../Workbench.cpp" line="43"/>
       <source>Compound</source>
       <translation>복합체</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="43"/>
+      <location filename="../../Workbench.cpp" line="44"/>
       <source>Create a copy</source>
       <translation type="unfinished">Create a copy</translation>
     </message>
@@ -6344,7 +6364,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="47"/>
       <source>Wires</source>
-      <translation>와이어</translation>
+      <translation>철사</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="53"/>
@@ -6739,7 +6759,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="74"/>
       <source>Wire is not closed.</source>
-      <translation type="unfinished">Wire is not closed.</translation>
+      <translation>철사가 닫히지 않았습니다.</translation>
     </message>
   </context>
   <context>
@@ -6798,6 +6818,52 @@ by dragging a selection rectangle in the 3D view</translation>
       <location filename="../../DlgImportStep.cpp" line="149"/>
       <source>Don't show this dialog again</source>
       <translation type="unfinished">Don't show this dialog again</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_ToleranceFeatures</name>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="70"/>
+      <source>Computing the result failed with an error:</source>
+      <translation type="unfinished">Computing the result failed with an error:</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="71"/>
+      <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation type="unfinished">Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="72"/>
+      <source>Bad selection</source>
+      <translation>잘못된 선택</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="74"/>
+      <source>Continue</source>
+      <translation>계속</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_ToleranceSet</name>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="192"/>
+      <source>Set Tolerance</source>
+      <translation type="unfinished">Set Tolerance</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="197"/>
+      <source>Set Tolerance for selected objects.</source>
+      <translation type="unfinished">Set Tolerance for selected objects.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="204"/>
+      <source>Select at least one object or compounds</source>
+      <translation type="unfinished">Select at least one object or compounds</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="205"/>
+      <source>Bad selection</source>
+      <translation>잘못된 선택</translation>
     </message>
   </context>
 </TS>

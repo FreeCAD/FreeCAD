@@ -1899,6 +1899,18 @@ bool DrawUtil::isCenterLine(App::DocumentObject* owner, std::string element)
     return false;
 }
 
+//! convert a filespec (string) containing '\' to only use '/'.
+//! prevents situation where '\' is interpreted as an escape of the next character in Python
+//! commands.
+std::string DrawUtil::cleanFilespecBackslash(const std::string& filespec)
+{
+    std::string forwardSlash{"/"};
+    boost::regex rxBackslash("\\\\");    //this rx really means match to a single '\'
+    std::string noBackslash = boost::regex_replace(filespec, rxBackslash, forwardSlash);
+    return noBackslash;
+}
+
+
 //============================
 // various debugging routines.
 void DrawUtil::dumpVertexes(const char* text, const TopoDS_Shape& s)

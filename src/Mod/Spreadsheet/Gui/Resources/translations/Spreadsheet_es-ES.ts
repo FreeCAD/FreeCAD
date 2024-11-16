@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="944"/>
       <source>Spreadsheet</source>
-      <translation>Hoja de cálculo</translation>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="945"/>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="510"/>
       <source>Spreadsheet</source>
-      <translation>Hoja de cálculo</translation>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="511"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="339"/>
       <source>Spreadsheet</source>
-      <translation>Hoja de cálculo</translation>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="340"/>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../Command.cpp" line="282"/>
       <source>Spreadsheet</source>
-      <translation>Hoja de cálculo</translation>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="283"/>
@@ -78,7 +78,7 @@
     <message>
       <location filename="../../Command.cpp" line="396"/>
       <source>Spreadsheet</source>
-      <translation>Hoja de cálculo</translation>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="397"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../Command.cpp" line="453"/>
       <source>Spreadsheet</source>
-      <translation>Hoja de cálculo</translation>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="454"/>
@@ -114,7 +114,7 @@
     <message>
       <location filename="../../Command.cpp" line="567"/>
       <source>Spreadsheet</source>
-      <translation>Hoja de cálculo</translation>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="568"/>
@@ -132,7 +132,7 @@
     <message>
       <location filename="../../Command.cpp" line="236"/>
       <source>Spreadsheet</source>
-      <translation>Hoja de cálculo</translation>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="237"/>
@@ -150,7 +150,7 @@
     <message>
       <location filename="../../Command.cpp" line="183"/>
       <source>Spreadsheet</source>
-      <translation>Hoja de cálculo</translation>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="184"/>
@@ -168,7 +168,7 @@
     <message>
       <location filename="../../Command.cpp" line="60"/>
       <source>Spreadsheet</source>
-      <translation>Hoja de cálculo</translation>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="61"/>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../../Command.cpp" line="873"/>
       <source>Spreadsheet</source>
-      <translation>Hoja de cálculo</translation>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="874"/>
@@ -204,7 +204,7 @@
     <message>
       <location filename="../../Command.cpp" line="121"/>
       <source>Spreadsheet</source>
-      <translation>Hoja de cálculo</translation>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="122"/>
@@ -222,7 +222,7 @@
     <message>
       <location filename="../../Command.cpp" line="624"/>
       <source>Spreadsheet</source>
-      <translation>Hoja de cálculo</translation>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="625"/>
@@ -240,7 +240,7 @@
     <message>
       <location filename="../../Command.cpp" line="707"/>
       <source>Spreadsheet</source>
-      <translation>Hoja de cálculo</translation>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="708"/>
@@ -258,7 +258,7 @@
     <message>
       <location filename="../../Command.cpp" line="790"/>
       <source>Spreadsheet</source>
-      <translation>Hoja de cálculo</translation>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="791"/>
@@ -680,7 +680,7 @@ la configuración de diseño. La propiedad se creará si no existe.</translation
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="140"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="116"/>
       <location filename="../../Command.cpp" line="195"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
       <translation>CSV (*.csv *.CSV);;Todo (*)</translation>
@@ -691,12 +691,12 @@ la configuración de diseño. La propiedad se creará si no existe.</translation
       <translation>Importar archivo</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="142"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="118"/>
       <source>Export file</source>
       <translation>Exportar archivo</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="167"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="143"/>
       <source>Show spreadsheet</source>
       <translation>Mostrar la hoja de cálculo</translation>
     </message>
@@ -740,9 +740,9 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
 Spreadsheet.my_alias_name en lugar de Spreadsheet.B1</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="125"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="149"/>
       <source>Spreadsheet</source>
-      <translation>Hoja de cálculo</translation>
+      <translation>Spreadsheet</translation>
     </message>
   </context>
   <context>
@@ -915,7 +915,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DlgSettings.ui" line="20"/>
       <source>Spreadsheet</source>
-      <translation>Hoja de cálculo</translation>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="26"/>
@@ -1144,7 +1144,7 @@ Por defecto: %V = %A
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Spreadsheet</source>
-      <translation>Hoja de cálculo</translation>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
@@ -1165,7 +1165,8 @@ Por defecto: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="93"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="111"/>
       <source>Unnamed</source>
       <translation>Sin nombre</translation>
     </message>

@@ -42,6 +42,7 @@
 #endif
 
 #include <QLoggingCategory>
+#include <fmt/format.h>
 
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
@@ -81,6 +82,7 @@
 #include "PythonDebugger.h"
 #include "MainWindowPy.h"
 #include "MDIViewPy.h"
+#include "Placement.h"
 #include "SoFCDB.h"
 #include "Selection.h"
 #include "SelectionFilterPy.h"
@@ -359,6 +361,7 @@ struct PyMethodDef FreeCADGui_methods[] = {
 
 }  // namespace Gui
 
+// clang-format off
 Application::Application(bool GUIenabled)
 {
     // App::GetApplication().Attach(this);
@@ -377,7 +380,6 @@ Application::Application(bool GUIenabled)
         App::GetApplication().signalShowHidden.connect(
             std::bind(&Gui::Application::slotShowHidden, this, sp::_1));
         // NOLINTEND
-
         // install the last active language
         ParameterGrp::handle hPGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp");
         hPGrp = hPGrp->GetGroup("Preferences")->GetGroup("General");
@@ -447,10 +449,21 @@ Application::Application(bool GUIenabled)
             PyModule_AddFunctions(module, Application::Methods);
         }
         Py::Module(module).setAttr(std::string("ActiveDocument"), Py::None());
+        Py::Module(module).setAttr(std::string("HasQtBug_129596"),
+#ifdef HAS_QTBUG_129596
+            Py::True()
+#else
+            Py::False()
+#endif
+        );
 
         UiLoaderPy::init_type();
         Base::Interpreter().addType(UiLoaderPy::type_object(), module, "UiLoader");
         PyResource::init_type();
+
+        Gui::Dialog::TaskPlacementPy::init_type();
+        Base::Interpreter().addType(Gui::Dialog::TaskPlacementPy::type_object(),
+            module, "TaskPlacement");
 
         // PySide additions
         PyModule_AddObject(module, "PySideUic", Base::Interpreter().addModule(new PySideUicModule));
@@ -555,6 +568,7 @@ Application::Application(bool GUIenabled)
         MacroCommand::load();
     }
 }
+// clang-format on
 
 Application::~Application()
 {
@@ -588,6 +602,7 @@ Application::~Application()
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // creating std commands
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 
 void Application::open(const char* FileName, const char* Module)
 {
@@ -626,21 +641,13 @@ void Application::open(const char* FileName, const char* Module)
                     Command::doCommand(Command::App,
                                        "FreeCAD.openDocument('%s')",
                                        unicodepath.c_str());
+                    Gui::Application::checkForRecomputes();
                 }
             }
             else {
-                // issue module loading
-                Command::doCommand(Command::App, "import %s", Module);
-
-                // check for additional import options
-                std::stringstream str;
-                str << "if hasattr(" << Module << ", \"importOptions\"):\n"
-                    << "    options = " << Module << ".importOptions(u\"" << unicodepath << "\")\n"
-                    << "    " << Module << ".open(u\"" << unicodepath << "\", options = options)\n"
-                    << "else:\n"
-                    << "    " << Module << ".open(u\"" << unicodepath << "\")\n";
-
-                std::string code = str.str();
+                std::string code = fmt::format("from freecad import module_io\n"
+                                               "module_io.OpenInsertObject(\"{}\", \"{}\", \"{}\")\n",
+                                               Module, unicodepath, "open");
                 Gui::Command::runCommand(Gui::Command::App, code.c_str());
 
                 // ViewFit
@@ -680,7 +687,7 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
     wc.setIgnoreEvents(WaitCursor::NoEvents);
     Base::FileInfo File(FileName);
     std::string te = File.extension();
-    string unicodepath = Base::Tools::escapedUnicodeFromUtf8(File.filePath().c_str());
+    string unicodepath = File.filePath().c_str();
     unicodepath = Base::Tools::escapeEncodeFilename(unicodepath);
 
     if (Module) {
@@ -706,29 +713,9 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
                     }
                 }
 
-                // check for additional import options
-                std::stringstream str;
-                if (DocName) {
-                    str << "if hasattr(" << Module << ", \"importOptions\"):\n"
-                        << "    options = " << Module << ".importOptions(u\"" << unicodepath
-                        << "\")\n"
-                        << "    " << Module << ".insert(u\"" << unicodepath << "\", \"" << DocName
-                        << "\", options = options)\n"
-                        << "else:\n"
-                        << "    " << Module << ".insert(u\"" << unicodepath << "\", \"" << DocName
-                        << "\")\n";
-                }
-                else {
-                    str << "if hasattr(" << Module << ", \"importOptions\"):\n"
-                        << "    options = " << Module << ".importOptions(u\"" << unicodepath
-                        << "\")\n"
-                        << "    " << Module << ".insert(u\"" << unicodepath
-                        << "\", options = options)\n"
-                        << "else:\n"
-                        << "    " << Module << ".insert(u\"" << unicodepath << "\")\n";
-                }
-
-                std::string code = str.str();
+                std::string code = fmt::format("from freecad import module_io\n"
+                                               "module_io.OpenInsertObject(\"{}\", \"{}\", \"{}\", \"{}\")\n",
+                                               Module, unicodepath, "insert", DocName);
                 Gui::Command::runCommand(Gui::Command::App, code.c_str());
 
                 // Commit the transaction
@@ -971,6 +958,46 @@ void Application::slotShowHidden(const App::Document& Doc)
     signalShowHidden(*doc->second);
 }
 
+void Application::checkForRecomputes() {
+    std::vector<App::Document *> docs;
+    for (auto doc: App::GetApplication().getDocuments()) {
+        if (doc->testStatus(App::Document::RecomputeOnRestore)) {
+            docs.push_back(doc);
+            doc->setStatus(App::Document::RecomputeOnRestore, false);
+        }
+    }
+    // Certain tests want to use very old .FCStd files.  We should not prompt during those tests, so this
+    // allows them to 'FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")`
+    const std::map<std::string, std::string>& Map = App::Application::Config();
+    auto value = Map.find("SuppressRecomputeRequiredDialog");
+    bool skip = value != Map.end() && ! value->second.empty();   // Any non empty string is true.
+    if (docs.empty() || skip )
+        return;
+    WaitCursor wc;
+    wc.restoreCursor();
+    auto res = QMessageBox::warning(getMainWindow(), QObject::tr("Recomputation required"),
+                                    QObject::tr("Some document(s) require recomputation for migration purposes. "
+                                                "It is highly recommended to perform a recomputation before "
+                                                "any modification to avoid compatibility problems.\n\n"
+                                                "Do you want to recompute now?"),
+                                    QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+    if (res != QMessageBox::Yes)
+        return;
+    bool hasError = false;
+    for (auto doc: App::Document::getDependentDocuments(docs, true)) {
+        try {
+            doc->recompute({}, false, &hasError);
+        } catch (Base::Exception &e) {
+            e.ReportException();
+            hasError = true;
+        }
+    }
+    if (hasError)
+        QMessageBox::critical(getMainWindow(), QObject::tr("Recompute error"),
+                              QObject::tr("Failed to recompute some document(s).\n"
+                                          "Please check report view for more details."));
+}
+
 void Application::slotActiveDocument(const App::Document& Doc)
 {
     std::map<const App::Document*, Gui::Document*>::iterator doc = d->documents.find(&Doc);
@@ -1000,7 +1027,7 @@ void Application::slotActiveDocument(const App::Document& Doc)
         // Update the application to show the unit change
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Units");
-        if (Doc.FileName.getValue()[0] != '\0' && !hGrp->GetBool("IgnoreProjectSchema")) {
+        if (!hGrp->GetBool("IgnoreProjectSchema")) {
             int userSchema = Doc.UnitSystem.getValue();
             Base::UnitsApi::setSchema(static_cast<Base::UnitSystem>(userSchema));
             getMainWindow()->setUserSchema(userSchema);
@@ -1384,6 +1411,11 @@ void Application::viewActivated(MDIView* pcView)
     }
 }
 
+/// Gets called if a view gets closed
+void Application::viewClosed(MDIView* pcView)
+{
+    signalCloseView(pcView);
+}
 
 void Application::updateActive()
 {
@@ -1881,8 +1913,11 @@ void setCategoryFilterRules()
     QTextStream stream(&filter);
     stream << "qt.qpa.xcb.warning=false\n";
     stream << "qt.qpa.mime.warning=false\n";
+    stream << "qt.qpa.wayland.warning=false\n";
+    stream << "qt.qpa.wayland.*.warning=false\n";
     stream << "qt.svg.warning=false\n";
     stream << "qt.xkb.compose.warning=false\n";
+    stream << "kf.*.warning=false\n";
     stream.flush();
     QLoggingCategory::setFilterRules(filter);
 }
@@ -2137,46 +2172,51 @@ void setAppNameAndIcon()
 
 void tryRunEventLoop(GUISingleApplication& mainApp)
 {
-    std::stringstream s;
-    s << App::Application::getUserCachePath() << App::Application::getExecutableName() << "_"
-      << QCoreApplication::applicationPid() << ".lock";
+    std::stringstream out;
+    out << App::Application::getUserCachePath()
+        << App::Application::getExecutableName()
+        << "_"
+        << App::Application::applicationPid()
+        << ".lock";
+
     // open a lock file with the PID
-    Base::FileInfo fi(s.str());
+    Base::FileInfo fi(out.str());
     Base::ofstream lock(fi);
 
     // In case the file_lock cannot be created start FreeCAD without IPC support.
 #if !defined(FC_OS_WIN32) || (BOOST_VERSION < 107600)
-    std::string filename = s.str();
+    std::string filename = out.str();
 #else
     std::wstring filename = fi.toStdWString();
 #endif
-    std::unique_ptr<boost::interprocess::file_lock> flock;
     try {
-        flock = std::make_unique<boost::interprocess::file_lock>(filename.c_str());
-        flock->lock();
+        boost::interprocess::file_lock flock(filename.c_str());
+        if (flock.try_lock()) {
+            Base::Console().Log("Init: Executing event loop...\n");
+            QApplication::exec();
+
+            // Qt can't handle exceptions thrown from event handlers, so we need
+            // to manually rethrow SystemExitExceptions.
+            if (mainApp.caughtException) {
+                throw Base::SystemExitException(*mainApp.caughtException.get());
+            }
+
+            // close the lock file, in case of a crash we can see the existing lock file
+            // on the next restart and try to repair the documents, if needed.
+            flock.unlock();
+            lock.close();
+            fi.deleteFile();
+        }
+        else {
+            Base::Console().Warning("Failed to create a file lock for the IPC.\n"
+                                    "The application will be terminated\n");
+        }
     }
     catch (const boost::interprocess::interprocess_exception& e) {
         QString msg = QString::fromLocal8Bit(e.what());
         Base::Console().Warning("Failed to create a file lock for the IPC: %s\n",
                                 msg.toUtf8().constData());
     }
-
-    Base::Console().Log("Init: Executing event loop...\n");
-    QApplication::exec();
-
-    // Qt can't handle exceptions thrown from event handlers, so we need
-    // to manually rethrow SystemExitExceptions.
-    if (mainApp.caughtException) {
-        throw Base::SystemExitException(*mainApp.caughtException.get());
-    }
-
-    // close the lock file, in case of a crash we can see the existing lock file
-    // on the next restart and try to repair the documents, if needed.
-    if (flock) {
-        flock->unlock();
-    }
-    lock.close();
-    fi.deleteFile();
 }
 
 void runEventLoop(GUISingleApplication& mainApp)
@@ -2210,11 +2250,8 @@ void Application::runApplication()
     // A new QApplication
     Base::Console().Log("Init: Creating Gui::Application and QApplication\n");
 
-    // if application not yet created by the splasher
     int argc = App::Application::GetARGC();
     GUISingleApplication mainApp(argc, App::Application::GetARGV());
-    // https://forum.freecad.org/viewtopic.php?f=3&t=15540
-    QApplication::setAttribute(Qt::AA_DontShowIconsInMenus, false);
 
     // Make sure that we use '.' as decimal point. See also
     // http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=559846
@@ -2262,6 +2299,14 @@ void Application::runApplication()
     runEventLoop(mainApp);
 
     Base::Console().Log("Finish: Event loop left\n");
+}
+
+bool Application::hiddenMainWindow()
+{
+    const std::map<std::string,std::string>& cfg = App::Application::Config();
+    auto it = cfg.find("StartHidden");
+
+    return it != cfg.end();
 }
 
 bool Application::testStatus(Status pos) const

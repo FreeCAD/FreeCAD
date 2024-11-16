@@ -156,14 +156,14 @@
       <translation>선과 화살표 색상</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="491"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="501"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="497"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="507"/>
       <source>The distance the dimension line is additionally extended</source>
       <translation>치수선의 길이가 늘어 났습니다.</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="531"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="541"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="537"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="547"/>
       <source>The distance the extension lines are additionally extended beyond the dimension line</source>
       <translation>치수선 보조선들의 길이가 치수선 위치를 넘어 가도록 증가 되었습니다</translation>
     </message>
@@ -192,7 +192,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="239"/>
       <source>Text color</source>
-      <translation>텍스트 색</translation>
+      <translation>문자 색</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="402"/>
@@ -211,46 +211,46 @@
       <translation>축척 계수</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="425"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="435"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="431"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="441"/>
       <source>If it is checked it will show the unit next to the dimension value</source>
       <translation>선택하면 치수 값 옆에 장치가 표시됩니다.</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="428"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="434"/>
       <source>Show unit</source>
       <translation>단위 표시</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="448"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="458"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="454"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="464"/>
       <source>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</source>
       <translation>mm, m, in, ft와 같은 유효한 길이 단위를 지정하여 이 단위에 치수 값을 표시합니다.</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="451"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="457"/>
       <source>Unit override</source>
       <translation>단위 재정의</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="465"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="475"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="471"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="481"/>
       <source>The number of decimals to show for dimension values</source>
       <translation>치수 값에 대해 표시할 소수점 수</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="468"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="474"/>
       <source>Decimals</source>
       <translation>소수점</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="551"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="561"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="557"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="567"/>
       <source>The distance between the dimension text and the dimension line</source>
       <translation>치수선과 치수문자 사이의 간격</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="554"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="560"/>
       <source>Text spacing</source>
       <translation>문자 간격</translation>
     </message>
@@ -301,28 +301,28 @@
       <translation>화살표 크기</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="485"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="491"/>
       <source>Dimension details</source>
       <translation>치수 상세</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="494"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="500"/>
       <source>Dimension overshoot</source>
       <translation>치수선 돌출</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="511"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="521"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="517"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="527"/>
       <source>The length of the extension lines</source>
       <translation>연장선의 길이</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="514"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="520"/>
       <source>Extension lines</source>
       <translation>연장선</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="534"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="540"/>
       <source>Extension overshoot</source>
       <translation>연장선 돌출</translation>
     </message>
@@ -720,7 +720,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskShapeString.ui" line="138"/>
       <source>Text to be made into ShapeString</source>
-      <translation type="unfinished">Text to be made into ShapeString</translation>
+      <translation>문자 형상으로 만들 문자</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="149"/>
@@ -855,24 +855,24 @@ will be moved to the center of the view.</translation>
       <location filename="../ui/TaskSelectPlane.ui" line="159"/>
       <location filename="../ui/TaskSelectPlane.ui" line="169"/>
       <source>The color of the grid</source>
-      <translation>그리드의 색상</translation>
+      <translation>격자의 색상</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="162"/>
       <source>Grid color</source>
-      <translation type="unfinished">Grid color</translation>
+      <translation>격자선 색상</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="176"/>
       <location filename="../ui/TaskSelectPlane.ui" line="186"/>
       <source>The distance between grid lines</source>
-      <translation type="unfinished">The distance between grid lines</translation>
+      <translation>격자선 사이의 거리</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="196"/>
       <location filename="../ui/TaskSelectPlane.ui" line="206"/>
       <source>The number of squares between major grid lines</source>
-      <translation type="unfinished">The number of squares between major grid lines</translation>
+      <translation>주 격자선 사이의 사각형 갯수</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="199"/>
@@ -889,12 +889,12 @@ will be moved to the center of the view.</translation>
       <location filename="../ui/TaskSelectPlane.ui" line="216"/>
       <location filename="../ui/TaskSelectPlane.ui" line="226"/>
       <source>The number of squares in the X and Y direction of the grid</source>
-      <translation type="unfinished">The number of squares in the X and Y direction of the grid</translation>
+      <translation>격자의 X 및 Y방향의 사각형 갯수</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="219"/>
       <source>Grid size</source>
-      <translation>그리드 크기</translation>
+      <translation>격자 크기</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="242"/>
@@ -920,7 +920,7 @@ will be moved to the center of the view.</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="179"/>
       <source>Grid spacing</source>
-      <translation>그리드 간격</translation>
+      <translation>격자 간격</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="245"/>
@@ -965,7 +965,7 @@ will be moved to the center of the view.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="63"/>
       <source>Shape appearance</source>
-      <translation type="unfinished">Shape appearance</translation>
+      <translation>형상의 외관</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="80"/>
@@ -985,12 +985,12 @@ will be moved to the center of the view.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="113"/>
       <source>Shape transparency</source>
-      <translation type="unfinished">Shape transparency</translation>
+      <translation>형상 투명도</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="130"/>
       <source>Shape shininess</source>
-      <translation type="unfinished">Shape shininess</translation>
+      <translation>형상의 광택</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="150"/>
@@ -1004,7 +1004,7 @@ will be moved to the center of the view.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="167"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="380"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="386"/>
       <source>Line width</source>
       <translation>선 두께</translation>
     </message>
@@ -1012,7 +1012,7 @@ will be moved to the center of the view.</translation>
       <location filename="../ui/TaskSelectPlane.ui" line="255"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="174"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="199"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="387"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="393"/>
       <source> px</source>
       <translation> px</translation>
     </message>
@@ -1054,7 +1054,7 @@ will be moved to the center of the view.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="255"/>
       <source>Wireframe</source>
-      <translation>와이어 프레임</translation>
+      <translation>철사틀</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="250"/>
@@ -1074,12 +1074,12 @@ will be moved to the center of the view.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="181"/>
       <source>Point color</source>
-      <translation type="unfinished">Point color</translation>
+      <translation>점 색상</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="192"/>
       <source>Point size</source>
-      <translation type="unfinished">Point size</translation>
+      <translation>점 크기</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="260"/>
@@ -1092,34 +1092,34 @@ will be moved to the center of the view.</translation>
       <translation>모양 색상</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="592"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="598"/>
       <source>Annotations</source>
       <translation>주석</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="549"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="555"/>
       <source>Text spacing</source>
       <translation>문자 간격</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="357"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="363"/>
       <source>Text color</source>
-      <translation>텍스트 색</translation>
+      <translation>문자 색</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="458"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="464"/>
       <source>Dimensions</source>
       <translation>면적</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="402"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="408"/>
       <source>Dot</source>
       <translation>점</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="279"/>
       <source>Annotation</source>
-      <translation type="unfinished">Annotation</translation>
+      <translation>주석</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="285"/>
@@ -1139,47 +1139,47 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
 Annotation scale widget. If the scale is 1:100 the multiplier is 100.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="374"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="380"/>
       <source>Lines and arrows</source>
       <translation>선과 화살표</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="407"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="413"/>
       <source>Circle</source>
       <translation>원</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="412"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="418"/>
       <source>Arrow</source>
       <translation>화살표</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="417"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="423"/>
       <source>Tick</source>
       <translation>두꺼움</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="422"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="428"/>
       <source>Tick-2</source>
       <translation>확인-2</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="471"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="477"/>
       <source>If checked, a unit symbol is added to dimension texts</source>
       <translation type="unfinished">If checked, a unit symbol is added to dimension texts</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="488"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="494"/>
       <source>The unit override for dimensions. Leave blank to use the current FreeCAD unit.</source>
       <translation type="unfinished">The unit override for dimensions. Leave blank to use the current FreeCAD unit.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="502"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="508"/>
       <source>The distance the dimension line is extended past the extension lines</source>
       <translation type="unfinished">The distance the dimension line is extended past the extension lines</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="364"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="370"/>
       <source>The color for texts, dimension texts and label texts</source>
       <translation type="unfinished">The color for texts, dimension texts and label texts</translation>
     </message>
@@ -1214,32 +1214,32 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</translati
       <translation>축척 계수</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="444"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="450"/>
       <source>Line and arrow color</source>
       <translation>선과 화살표 색상</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="394"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="400"/>
       <source>Arrow type</source>
       <translation>화살표 유형</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="430"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="436"/>
       <source>Arrow size</source>
       <translation>화살표 크기</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="495"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="501"/>
       <source>Dim line overshoot</source>
       <translation type="unfinished">Dim line overshoot</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="512"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="518"/>
       <source>Ext line length</source>
       <translation type="unfinished">Ext line length</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="519"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="525"/>
       <source>The length of extension lines. Use 0 for full extension lines. A negative value
 defines the gap between the ends of the extension lines and the measured points.
 A positive value defines the maximum length of the extension lines. Only used
@@ -1250,42 +1250,42 @@ A positive value defines the maximum length of the extension lines. Only used
 for linear dimensions.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="532"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="538"/>
       <source>Ext line overshoot</source>
       <translation type="unfinished">Ext line overshoot</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="539"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="545"/>
       <source>The length of extension lines above the dimension line</source>
       <translation type="unfinished">The length of extension lines above the dimension line</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="556"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="562"/>
       <source>The space between the dimension line and the dimension text</source>
       <translation>치수 선과 치수 텍스트의 간격</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="575"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="581"/>
       <source>Apply the above style to selected object(s)</source>
       <translation type="unfinished">Apply the above style to selected object(s)</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="589"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="595"/>
       <source>Apply the above style to all annotations (texts, dimensions and labels)</source>
       <translation type="unfinished">Apply the above style to all annotations (texts, dimensions and labels)</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="464"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="470"/>
       <source>Show unit</source>
       <translation>단위 표시</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="481"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="487"/>
       <source>Unit override</source>
       <translation>단위 재정의</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="578"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="584"/>
       <source>Selected</source>
       <translation type="unfinished">Selected</translation>
     </message>
@@ -1526,7 +1526,7 @@ accidentally and modifying the entered value.</translation>
     <message>
       <location filename="../ui/preferences-draft.ui" line="402"/>
       <source>Construction</source>
-      <translation>Construction</translation>
+      <translation>보조선</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="415"/>
@@ -1694,7 +1694,7 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</tr
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="155"/>
       <source>Text color</source>
-      <translation>텍스트 색</translation>
+      <translation>문자 색</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="162"/>
@@ -1724,7 +1724,7 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</tr
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="217"/>
       <source>The default line width</source>
-      <translation type="unfinished">The default line width</translation>
+      <translation>기본 선 두께</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="220"/>
@@ -2323,8 +2323,8 @@ DXF R12 이후 템플릿 에서는 실패할 수도 있습니다.</translation>
       <location filename="../ui/preferences-draftsnap.ui" line="146"/>
       <source>The number of squares between major grid lines.
 Major grid lines are thicker than minor grid lines.</source>
-      <translation type="unfinished">The number of squares between major grid lines.
-Major grid lines are thicker than minor grid lines.</translation>
+      <translation>주 격자선 사이의 사각형 갯수입니다.
+주 격자선은 보조 격자선보다 두껍습니다.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="150"/>
@@ -2335,7 +2335,7 @@ Major grid lines are thicker than minor grid lines.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="218"/>
       <source>The number of squares in the X and Y direction of the grid</source>
-      <translation type="unfinished">The number of squares in the X and Y direction of the grid</translation>
+      <translation>격자의 X 및 Y방향의 사각형 갯수</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="394"/>
@@ -2391,7 +2391,7 @@ Use Draft ToggleGrid to change this for the active view.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="186"/>
       <source>The distance between grid lines</source>
-      <translation type="unfinished">The distance between grid lines</translation>
+      <translation>격자선 사이의 거리</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="303"/>
@@ -2411,7 +2411,7 @@ Use Draft ToggleGrid to change this for the active view.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="30"/>
       <source>Always show the grid</source>
-      <translation>항상 그리드 표시</translation>
+      <translation>항상 격자 표시</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="49"/>
@@ -2435,7 +2435,7 @@ showing the main square size in the bottom left corner</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="73"/>
       <source>Show grid border</source>
-      <translation>그리드 경계 표시</translation>
+      <translation>격자 경계 표시</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="92"/>
@@ -2466,17 +2466,17 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="179"/>
       <source>Grid spacing</source>
-      <translation>그리드 간격</translation>
+      <translation>격자 간격</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="211"/>
       <source>Grid size</source>
-      <translation>그리드 크기</translation>
+      <translation>격자 크기</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="240"/>
       <source>Grid transparency</source>
-      <translation type="unfinished">Grid transparency</translation>
+      <translation>격자 투명도</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="250"/>
@@ -2486,7 +2486,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="266"/>
       <source>Grid color</source>
-      <translation type="unfinished">Grid color</translation>
+      <translation>격자선 색상</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="296"/>
@@ -2531,7 +2531,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="273"/>
       <source>The color of the grid</source>
-      <translation>그리드의 색상</translation>
+      <translation>격자의 색상</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="247"/>
@@ -2762,7 +2762,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="298"/>
       <source>Undo</source>
-      <translation type="unfinished">Undo</translation>
+      <translation>실행취소</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="439"/>
@@ -2787,7 +2787,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="554"/>
       <source>Snap</source>
-      <translation>스냅</translation>
+      <translation>포착</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="567"/>
@@ -2829,32 +2829,32 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <name>draft</name>
     <message>
       <location filename="../../DraftGui.py" line="58"/>
-      <location filename="../../DraftGui.py" line="540"/>
+      <location filename="../../DraftGui.py" line="545"/>
       <source>Relative</source>
       <translation type="unfinished">Relative</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="59"/>
-      <location filename="../../DraftGui.py" line="545"/>
+      <location filename="../../DraftGui.py" line="550"/>
       <source>Global</source>
       <translation>전역</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="60"/>
-      <location filename="../../DraftGui.py" line="563"/>
-      <location filename="../../DraftGui.py" line="823"/>
+      <location filename="../../DraftGui.py" line="568"/>
+      <location filename="../../DraftGui.py" line="828"/>
       <source>Continue</source>
       <translation>계속</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="61"/>
-      <location filename="../../DraftGui.py" line="571"/>
+      <location filename="../../DraftGui.py" line="576"/>
       <source>Close</source>
       <translation>닫기</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="62"/>
-      <location filename="../../DraftGui.py" line="582"/>
+      <location filename="../../DraftGui.py" line="587"/>
       <location filename="../../draftguitools/gui_move.py" line="216"/>
       <location filename="../../draftguitools/gui_rotate.py" line="287"/>
       <location filename="../../draftguitools/gui_scale.py" line="203"/>
@@ -2910,7 +2910,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="72"/>
-      <location filename="../../DraftGui.py" line="577"/>
+      <location filename="../../DraftGui.py" line="582"/>
       <source>Select edge</source>
       <translation>모서리 선택</translation>
     </message>
@@ -2926,7 +2926,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="75"/>
-      <location filename="../../DraftGui.py" line="573"/>
+      <location filename="../../DraftGui.py" line="578"/>
       <source>Wipe</source>
       <translation type="unfinished">Wipe</translation>
     </message>
@@ -3007,285 +3007,285 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
       <translation>위치:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="491"/>
-      <location filename="../../DraftGui.py" line="519"/>
-      <location filename="../../DraftGui.py" line="1463"/>
-      <location filename="../../DraftGui.py" line="1478"/>
+      <location filename="../../DraftGui.py" line="496"/>
+      <location filename="../../DraftGui.py" line="524"/>
+      <location filename="../../DraftGui.py" line="1474"/>
+      <location filename="../../DraftGui.py" line="1489"/>
       <location filename="../../draftguitools/gui_groups.py" line="239"/>
       <location filename="../../draftguitools/gui_groups.py" line="244"/>
       <source>None</source>
       <translation>없음</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="518"/>
+      <location filename="../../DraftGui.py" line="523"/>
       <source>active command:</source>
       <translation type="unfinished">active command:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="520"/>
+      <location filename="../../DraftGui.py" line="525"/>
       <source>Active Draft command</source>
       <translation type="unfinished">Active Draft command</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="521"/>
+      <location filename="../../DraftGui.py" line="526"/>
       <source>X coordinate of next point</source>
       <translation type="unfinished">X coordinate of next point</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="522"/>
+      <location filename="../../DraftGui.py" line="527"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="523"/>
+      <location filename="../../DraftGui.py" line="528"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="524"/>
+      <location filename="../../DraftGui.py" line="529"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="525"/>
+      <location filename="../../DraftGui.py" line="530"/>
       <source>Y coordinate of next point</source>
       <translation type="unfinished">Y coordinate of next point</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="526"/>
+      <location filename="../../DraftGui.py" line="531"/>
       <source>Z coordinate of next point</source>
       <translation type="unfinished">Z coordinate of next point</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="527"/>
+      <location filename="../../DraftGui.py" line="532"/>
       <source>Enter point</source>
       <translation type="unfinished">Enter point</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="529"/>
+      <location filename="../../DraftGui.py" line="534"/>
       <source>Enter a new point with the given coordinates</source>
       <translation type="unfinished">Enter a new point with the given coordinates</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="530"/>
+      <location filename="../../DraftGui.py" line="535"/>
       <source>Length</source>
       <translation>길이:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="531"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="217"/>
+      <location filename="../../DraftGui.py" line="536"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="232"/>
       <source>Angle</source>
       <translation>각</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="532"/>
+      <location filename="../../DraftGui.py" line="537"/>
       <source>Length of current segment</source>
       <translation type="unfinished">Length of current segment</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="533"/>
+      <location filename="../../DraftGui.py" line="538"/>
       <source>Angle of current segment</source>
       <translation type="unfinished">Angle of current segment</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="536"/>
+      <location filename="../../DraftGui.py" line="541"/>
       <source>Check this to lock the current angle</source>
       <translation type="unfinished">Check this to lock the current angle</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="537"/>
-      <location filename="../../DraftGui.py" line="805"/>
+      <location filename="../../DraftGui.py" line="542"/>
+      <location filename="../../DraftGui.py" line="810"/>
       <source>Radius</source>
       <translation>반지름</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="538"/>
-      <location filename="../../DraftGui.py" line="806"/>
+      <location filename="../../DraftGui.py" line="543"/>
+      <location filename="../../DraftGui.py" line="811"/>
       <source>Radius of Circle</source>
       <translation>원의 반지름</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="543"/>
+      <location filename="../../DraftGui.py" line="548"/>
       <source>Coordinates relative to last point or to coordinate system origin
 if is the first point to set</source>
       <translation>마지막 점에 대한 좌표 또는 좌표계 원점
 설정할 첫 번째 포인트인 경우</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="548"/>
+      <location filename="../../DraftGui.py" line="553"/>
       <source>Coordinates relative to global coordinate system.
 Uncheck to use working plane coordinate system</source>
       <translation>전역 좌표계에 상대적인 좌표입니다.
 작업 기준면 좌표계를 사용하려면 선택 취소</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="550"/>
+      <location filename="../../DraftGui.py" line="555"/>
       <source>Filled</source>
       <translation type="unfinished">Filled</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="554"/>
+      <location filename="../../DraftGui.py" line="559"/>
       <source>Check this if the object should appear as filled, otherwise it will appear as wireframe.
 Not available if Draft preference option 'Use Part Primitives' is enabled</source>
       <translation type="unfinished">Check this if the object should appear as filled, otherwise it will appear as wireframe.
 Not available if Draft preference option 'Use Part Primitives' is enabled</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="556"/>
+      <location filename="../../DraftGui.py" line="561"/>
       <source>Finish</source>
       <translation>마침</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="558"/>
+      <location filename="../../DraftGui.py" line="563"/>
       <source>Finishes the current drawing or editing operation</source>
       <translation>현재 그리기 또는 편집 작업을 마칩니다.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="561"/>
+      <location filename="../../DraftGui.py" line="566"/>
       <source>If checked, command will not finish until you press the command button again</source>
       <translation>이 옵션을 선택하면 명령어 버튼을 다시 누를 때까지 명령어가 완료되지 않습니다.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="566"/>
+      <location filename="../../DraftGui.py" line="571"/>
       <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
       <translation>이것을 선택하면 고전적 편차 대신 OCC 방식의 편차가 적용됩니다</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="567"/>
+      <location filename="../../DraftGui.py" line="572"/>
       <source>OCC-style offset</source>
       <translation>OCC 방식의 편차</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="569"/>
+      <location filename="../../DraftGui.py" line="574"/>
       <source>Undo</source>
-      <translation type="unfinished">Undo</translation>
+      <translation>실행취소</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="583"/>
+      <location filename="../../DraftGui.py" line="588"/>
       <source>If checked, objects will be copied instead of moved</source>
       <translation type="unfinished">If checked, objects will be copied instead of moved</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="570"/>
+      <location filename="../../DraftGui.py" line="575"/>
       <source>Undo the last segment</source>
       <translation>마지막 세그먼트 실행 취소</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="572"/>
+      <location filename="../../DraftGui.py" line="577"/>
       <source>Finishes and closes the current line</source>
       <translation>현재 라인을 완료하고 닫습니다.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="574"/>
+      <location filename="../../DraftGui.py" line="579"/>
       <source>Wipes the existing segments of this line and starts again from the last point</source>
       <translation type="unfinished">Wipes the existing segments of this line and starts again from the last point</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="575"/>
+      <location filename="../../DraftGui.py" line="580"/>
       <source>Set WP</source>
       <translation type="unfinished">Set WP</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="576"/>
+      <location filename="../../DraftGui.py" line="581"/>
       <source>Reorients the working plane on the last segment</source>
       <translation type="unfinished">Reorients the working plane on the last segment</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="578"/>
+      <location filename="../../DraftGui.py" line="583"/>
       <source>Selects an existing edge to be measured by this dimension</source>
       <translation type="unfinished">Selects an existing edge to be measured by this dimension</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="579"/>
+      <location filename="../../DraftGui.py" line="584"/>
       <source>Sides</source>
       <translation type="unfinished">Sides</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="580"/>
+      <location filename="../../DraftGui.py" line="585"/>
       <source>Number of sides</source>
       <translation type="unfinished">Number of sides</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="584"/>
+      <location filename="../../DraftGui.py" line="589"/>
       <source>Modify subelements</source>
       <translation type="unfinished">Modify subelements</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="585"/>
+      <location filename="../../DraftGui.py" line="590"/>
       <source>If checked, subelements will be modified instead of entire objects</source>
       <translation type="unfinished">If checked, subelements will be modified instead of entire objects</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="586"/>
+      <location filename="../../DraftGui.py" line="591"/>
       <source>Create text</source>
-      <translation type="unfinished">Create text</translation>
+      <translation>문자 생성</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="587"/>
+      <location filename="../../DraftGui.py" line="592"/>
       <source>Press this button to create the text object, or finish your text with two blank lines</source>
-      <translation type="unfinished">Press this button to create the text object, or finish your text with two blank lines</translation>
+      <translation>이 단추를 눌러 문자를 생성하거나, 빈 줄 두개로 문자를 마무리 하세요.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="609"/>
+      <location filename="../../DraftGui.py" line="614"/>
       <source>Change default style for new objects</source>
       <translation type="unfinished">Change default style for new objects</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="610"/>
+      <location filename="../../DraftGui.py" line="615"/>
       <source>Toggle construction mode</source>
       <translation type="unfinished">Toggle construction mode</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="611"/>
-      <location filename="../../DraftGui.py" line="1466"/>
-      <location filename="../../DraftGui.py" line="1481"/>
+      <location filename="../../DraftGui.py" line="616"/>
+      <location filename="../../DraftGui.py" line="1477"/>
+      <location filename="../../DraftGui.py" line="1492"/>
       <source>Autogroup off</source>
       <translation type="unfinished">Autogroup off</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="688"/>
+      <location filename="../../DraftGui.py" line="693"/>
       <location filename="../../draftguitools/gui_lines.py" line="66"/>
       <source>Line</source>
       <translation>선</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="696"/>
+      <location filename="../../DraftGui.py" line="701"/>
       <source>DWire</source>
       <translation>DWire</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="714"/>
+      <location filename="../../DraftGui.py" line="719"/>
       <source>Circle</source>
       <translation>원</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="719"/>
+      <location filename="../../DraftGui.py" line="724"/>
       <source>Arc</source>
       <translation>호</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="724"/>
+      <location filename="../../DraftGui.py" line="729"/>
       <location filename="../../draftguitools/gui_rotate.py" line="290"/>
       <source>Rotate</source>
       <translation>회전하기</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="728"/>
+      <location filename="../../DraftGui.py" line="733"/>
       <source>Point</source>
       <translation>점</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="756"/>
+      <location filename="../../DraftGui.py" line="761"/>
       <source>Label</source>
       <translation type="unfinished">Label</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="758"/>
+      <location filename="../../DraftGui.py" line="763"/>
       <source>Label type</source>
       <translation type="unfinished">Label type</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="774"/>
+      <location filename="../../DraftGui.py" line="779"/>
       <location filename="../../draftguitools/gui_offset.py" line="241"/>
       <location filename="../../draftguitools/gui_offset.py" line="258"/>
       <location filename="../../draftguitools/gui_offset.py" line="323"/>
@@ -3293,71 +3293,71 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>편차</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="779"/>
-      <location filename="../../DraftGui.py" line="797"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="212"/>
+      <location filename="../../DraftGui.py" line="784"/>
+      <location filename="../../DraftGui.py" line="802"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="227"/>
       <source>Distance</source>
       <translation type="unfinished">Distance</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="780"/>
-      <location filename="../../DraftGui.py" line="798"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="214"/>
+      <location filename="../../DraftGui.py" line="785"/>
+      <location filename="../../DraftGui.py" line="803"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="229"/>
       <source>Offset distance</source>
       <translation>편차 거리</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="794"/>
+      <location filename="../../DraftGui.py" line="799"/>
       <source>Trimex</source>
       <translation type="unfinished">Trimex</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="872"/>
-      <location filename="../../DraftGui.py" line="873"/>
-      <location filename="../../DraftGui.py" line="874"/>
-      <location filename="../../DraftGui.py" line="876"/>
       <location filename="../../DraftGui.py" line="877"/>
       <location filename="../../DraftGui.py" line="878"/>
+      <location filename="../../DraftGui.py" line="879"/>
+      <location filename="../../DraftGui.py" line="881"/>
+      <location filename="../../DraftGui.py" line="882"/>
+      <location filename="../../DraftGui.py" line="883"/>
       <source>Local {}</source>
       <translation type="unfinished">Local {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="880"/>
-      <location filename="../../DraftGui.py" line="881"/>
-      <location filename="../../DraftGui.py" line="882"/>
-      <location filename="../../DraftGui.py" line="884"/>
       <location filename="../../DraftGui.py" line="885"/>
       <location filename="../../DraftGui.py" line="886"/>
+      <location filename="../../DraftGui.py" line="887"/>
+      <location filename="../../DraftGui.py" line="889"/>
+      <location filename="../../DraftGui.py" line="890"/>
+      <location filename="../../DraftGui.py" line="891"/>
       <source>Global {}</source>
       <translation type="unfinished">Global {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1474"/>
+      <location filename="../../DraftGui.py" line="1485"/>
       <source>Autogroup:</source>
       <translation type="unfinished">Autogroup:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1613"/>
+      <location filename="../../DraftGui.py" line="1624"/>
       <source>Modify objects</source>
       <translation type="unfinished">Modify objects</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1762"/>
+      <location filename="../../DraftGui.py" line="1773"/>
       <source>Faces</source>
       <translation type="unfinished">Faces</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1763"/>
+      <location filename="../../DraftGui.py" line="1774"/>
       <source>Remove</source>
       <translation>제거</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1764"/>
+      <location filename="../../DraftGui.py" line="1775"/>
       <source>Add</source>
       <translation>추가하기</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1765"/>
+      <location filename="../../DraftGui.py" line="1776"/>
       <source>Facebinder elements</source>
       <translation type="unfinished">Facebinder elements</translation>
     </message>
@@ -3427,7 +3427,7 @@ or try saving to a lower DWG version.</translation>
       <location filename="../../draftmake/make_sketch.py" line="126"/>
       <location filename="../../draftmake/make_sketch.py" line="138"/>
       <source>All Shapes must be coplanar</source>
-      <translation type="unfinished">All Shapes must be coplanar</translation>
+      <translation>모든 형상들은 동일 평면상에 있어야 합니다.</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="861"/>
@@ -3506,7 +3506,7 @@ or try saving to a lower DWG version.</translation>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="715"/>
       <source>image is Null</source>
-      <translation type="unfinished">image is Null</translation>
+      <translation>화상이 비어 있음</translation>
     </message>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="721"/>
@@ -3711,7 +3711,7 @@ or try saving to a lower DWG version.</translation>
     <message>
       <location filename="../../draftguitools/gui_texts.py" line="126"/>
       <source>Create Text</source>
-      <translation type="unfinished">Create Text</translation>
+      <translation>문자 생성</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="67"/>
@@ -3842,7 +3842,7 @@ or try saving to a lower DWG version.</translation>
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="54"/>
       <source>Toggle grid</source>
-      <translation type="unfinished">Toggle grid</translation>
+      <translation>격자 전환</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="109"/>
@@ -4078,27 +4078,27 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="77"/>
       <source>Fillet radius</source>
-      <translation type="unfinished">Fillet radius</translation>
+      <translation>모깎기 반지름</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="80"/>
       <source>Radius of fillet</source>
-      <translation type="unfinished">Radius of fillet</translation>
+      <translation>모깎기 반지름</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="108"/>
       <source>Enter radius.</source>
-      <translation type="unfinished">Enter radius.</translation>
+      <translation>반지름 입력.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="146"/>
       <source>Fillet cannot be created</source>
-      <translation type="unfinished">Fillet cannot be created</translation>
+      <translation>모깎기를 만들 수 없습니다</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="171"/>
       <source>Create fillet</source>
-      <translation>생성: 모깍기(Fillet)</translation>
+      <translation>모깍기</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_polygons.py" line="69"/>
@@ -4131,40 +4131,55 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">Select objects to trim or extend</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="173"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="120"/>
+      <source>This object is not supported.</source>
+      <translation type="unfinished">This object is not supported.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="143"/>
+      <source>Only a single face can be extruded.</source>
+      <translation type="unfinished">Only a single face can be extruded.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="158"/>
+      <source>Trimex is not supported yet on this type of object.</source>
+      <translation type="unfinished">Trimex is not supported yet on this type of object.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="188"/>
       <location filename="../../draftguitools/gui_offset.py" line="143"/>
       <source>Pick distance</source>
       <translation type="unfinished">Pick distance</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="219"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="234"/>
       <source>Offset angle</source>
       <translation>편차 각도</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="479"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="500"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
       <translation type="unfinished">Unable to trim these objects, only Draft wires and arcs are supported.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="484"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="505"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation type="unfinished">Unable to trim these objects, too many wires</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="501"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="522"/>
       <source>These objects don't intersect.</source>
       <translation type="unfinished">These objects don't intersect.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="504"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="525"/>
       <source>Too many intersection points.</source>
       <translation type="unfinished">Too many intersection points.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="68"/>
       <source>B-Spline</source>
-      <translation>B-스플라인</translation>
+      <translation>B-조절곡선</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="122"/>
@@ -4811,17 +4826,17 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">changed 'Tracking' property type</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="175"/>
+      <location filename="../../draftobjects/shapestring.py" line="178"/>
       <source>ShapeString: oblique angle must be in the -80 to +80 degree range</source>
       <translation type="unfinished">ShapeString: oblique angle must be in the -80 to +80 degree range</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="187"/>
+      <location filename="../../draftobjects/shapestring.py" line="190"/>
       <source>ShapeString: string has no wires</source>
       <translation type="unfinished">ShapeString: string has no wires</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="221"/>
+      <location filename="../../draftobjects/shapestring.py" line="223"/>
       <source>ShapeString: face creation failed for one character</source>
       <translation type="unfinished">ShapeString: face creation failed for one character</translation>
     </message>
@@ -4863,39 +4878,39 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">added 'Fuse' property</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="466"/>
+      <location filename="../../draftobjects/patharray.py" line="472"/>
       <source>Start Offset too large for path length. Using zero instead.</source>
       <translation>경로 길이에 비해 시작 편차가 너무 큽니다. 대신 0을 사용하세요.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="472"/>
+      <location filename="../../draftobjects/patharray.py" line="484"/>
       <source>End Offset too large for path length minus Start Offset. Using zero instead.</source>
       <translation>경로 길이에 비해 종료 편차가 너무 큽니다. 대신 0을 사용하세요.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="534"/>
+      <location filename="../../draftobjects/patharray.py" line="549"/>
       <source>Length of tangent vector is zero. Copy not aligned.</source>
       <translation type="unfinished">Length of tangent vector is zero. Copy not aligned.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="548"/>
-      <location filename="../../draftobjects/patharray.py" line="570"/>
+      <location filename="../../draftobjects/patharray.py" line="563"/>
+      <location filename="../../draftobjects/patharray.py" line="585"/>
       <source>Length of normal vector is zero. Using a default axis instead.</source>
       <translation type="unfinished">Length of normal vector is zero. Using a default axis instead.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="554"/>
-      <location filename="../../draftobjects/patharray.py" line="576"/>
+      <location filename="../../draftobjects/patharray.py" line="569"/>
+      <location filename="../../draftobjects/patharray.py" line="591"/>
       <source>Tangent and normal vectors are parallel. Normal replaced by a default axis.</source>
       <translation type="unfinished">Tangent and normal vectors are parallel. Normal replaced by a default axis.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="566"/>
+      <location filename="../../draftobjects/patharray.py" line="581"/>
       <source>Cannot calculate normal vector. Using the default normal instead.</source>
       <translation type="unfinished">Cannot calculate normal vector. Using the default normal instead.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="582"/>
+      <location filename="../../draftobjects/patharray.py" line="597"/>
       <source>AlignMode {} is not implemented</source>
       <translation type="unfinished">AlignMode {} is not implemented</translation>
     </message>
@@ -4912,17 +4927,17 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="62"/>
       <source>Two objects are needed.</source>
-      <translation type="unfinished">Two objects are needed.</translation>
+      <translation>두 대상이 필요합니다.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="69"/>
       <source>One object is not valid.</source>
-      <translation type="unfinished">One object is not valid.</translation>
+      <translation>한쪽이 유효하지 않습니다.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="74"/>
       <source>Edges are not connected or radius is too large.</source>
-      <translation type="unfinished">Edges are not connected or radius is too large.</translation>
+      <translation>모서리가 연결되지 않았거나 반지름이 너무 큽니다.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="124"/>
@@ -5377,53 +5392,53 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">Found object with several coplanar faces: refine them</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="488"/>
+      <location filename="../../draftfunctions/upgrade.py" line="489"/>
       <source>Found 1 non-parametric objects: draftifying it</source>
       <translation type="unfinished">Found 1 non-parametric objects: draftifying it</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="499"/>
+      <location filename="../../draftfunctions/upgrade.py" line="500"/>
       <source>Found 1 closed sketch object: creating a face from it</source>
       <translation type="unfinished">Found 1 closed sketch object: creating a face from it</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="504"/>
+      <location filename="../../draftfunctions/upgrade.py" line="505"/>
       <source>Found closed wires: creating faces</source>
       <translation type="unfinished">Found closed wires: creating faces</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="509"/>
+      <location filename="../../draftfunctions/upgrade.py" line="510"/>
       <source>Found several wires or edges: wiring them</source>
       <translation type="unfinished">Found several wires or edges: wiring them</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="511"/>
-      <location filename="../../draftfunctions/upgrade.py" line="546"/>
+      <location filename="../../draftfunctions/upgrade.py" line="512"/>
+      <location filename="../../draftfunctions/upgrade.py" line="540"/>
       <source>Found several non-treatable objects: creating compound</source>
       <translation type="unfinished">Found several non-treatable objects: creating compound</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="516"/>
+      <location filename="../../draftfunctions/upgrade.py" line="517"/>
       <source>trying: closing it</source>
       <translation type="unfinished">trying: closing it</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="518"/>
+      <location filename="../../draftfunctions/upgrade.py" line="519"/>
       <source>Found 1 open wire: closing it</source>
       <translation type="unfinished">Found 1 open wire: closing it</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="536"/>
+      <location filename="../../draftfunctions/upgrade.py" line="530"/>
       <source>Found 1 object: draftifying it</source>
       <translation type="unfinished">Found 1 object: draftifying it</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="541"/>
+      <location filename="../../draftfunctions/upgrade.py" line="535"/>
       <source>Found points: creating compound</source>
       <translation type="unfinished">Found points: creating compound</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="549"/>
+      <location filename="../../draftfunctions/upgrade.py" line="543"/>
       <source>Unable to upgrade these objects.</source>
       <translation type="unfinished">Unable to upgrade these objects.</translation>
     </message>
@@ -5530,7 +5545,7 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">Select 3 vertices, one or more shapes or an object to define a working plane</translation>
     </message>
     <message>
-      <location filename="../../draftutils/params.py" line="182"/>
+      <location filename="../../draftutils/params.py" line="194"/>
       <source>Do you want to update the SVG pattern options
 of existing objects in all opened documents?</source>
       <translation type="unfinished">Do you want to update the SVG pattern options
@@ -5557,7 +5572,7 @@ of existing objects in all opened documents?</translation>
       <translation type="unfinished">updated view properties</translation>
     </message>
     <message>
-      <location filename="../../importDXF.py" line="143"/>
+      <location filename="../../importDXF.py" line="144"/>
       <source>The DXF import/export libraries needed by FreeCAD to handle
 the DXF format were not found on this system.
 Please either allow FreeCAD to download these libraries:
@@ -5647,7 +5662,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../importDXF.py" line="126"/>
+      <location filename="../../importDXF.py" line="127"/>
       <source>Download of dxf libraries failed.
 Please install the dxf Library addon manually
 from menu Tools -&gt; Addon Manager</source>
@@ -5668,12 +5683,12 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="90"/>
       <source>Delete original objects</source>
-      <translation type="unfinished">Delete original objects</translation>
+      <translation>원본을 삭제합니다</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="96"/>
       <source>Create chamfer</source>
-      <translation type="unfinished">Create chamfer</translation>
+      <translation>모따기</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="421"/>
@@ -5920,12 +5935,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>importOCA</name>
     <message>
-      <location filename="../../importOCA.py" line="414"/>
+      <location filename="../../importOCA.py" line="413"/>
       <source>OCA: found no data to export</source>
       <translation type="unfinished">OCA: found no data to export</translation>
     </message>
     <message>
-      <location filename="../../importOCA.py" line="459"/>
+      <location filename="../../importOCA.py" line="458"/>
       <source>successfully exported</source>
       <translation type="unfinished">successfully exported</translation>
     </message>
@@ -5933,7 +5948,7 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>ImportAirfoilDAT</name>
     <message>
-      <location filename="../../importAirfoilDAT.py" line="164"/>
+      <location filename="../../importAirfoilDAT.py" line="163"/>
       <source>Did not find enough coordinates</source>
       <translation type="unfinished">Did not find enough coordinates</translation>
     </message>
@@ -6205,7 +6220,7 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="166"/>
       <source>Snap angle</source>
-      <translation type="unfinished">Snap angle</translation>
+      <translation>포착 각도</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="167"/>
@@ -6382,7 +6397,7 @@ CTRL to snap, SHIFT to constrain.</translation>
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="60"/>
       <source>Toggle grid</source>
-      <translation type="unfinished">Toggle grid</translation>
+      <translation>격자 전환</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="62"/>
@@ -7352,7 +7367,7 @@ set True for fusion or False for compound</translation>
       <location filename="../../draftobjects/rectangle.py" line="51"/>
       <location filename="../../draftobjects/wire.py" line="76"/>
       <source>Radius to use to fillet the corners</source>
-      <translation type="unfinished">Radius to use to fillet the corners</translation>
+      <translation>모퉁이를 모깎기하는데 사용할 반지름</translation>
     </message>
     <message>
       <location filename="../../draftobjects/polygon.py" line="63"/>
@@ -7893,7 +7908,7 @@ This property is read-only, as the number depends on the points in 'Point Object
     <message>
       <location filename="../../draftobjects/fillet.py" line="69"/>
       <source>Radius to use to fillet the corner.</source>
-      <translation type="unfinished">Radius to use to fillet the corner.</translation>
+      <translation>모퉁이를 모깎기하는데 사용할 반지름</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="136"/>
@@ -8163,7 +8178,7 @@ the 'First Angle' and 'Last Angle' properties.</translation>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="135"/>
       <source>Text color</source>
-      <translation>텍스트 색</translation>
+      <translation>문자 색</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_label.py" line="86"/>

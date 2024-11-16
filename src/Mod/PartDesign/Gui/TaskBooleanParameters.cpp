@@ -84,7 +84,11 @@ TaskBooleanParameters::TaskBooleanParameters(ViewProviderBoolean* BooleanView, Q
 
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
-    action->setShortcut(QKeySequence::Delete);
+    {
+        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
+        auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
+        action->setShortcut(QKeySequence(shortcut));
+    }
 #if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     // display shortcut behind the context menu entry
     action->setShortcutVisibleInContextMenu(true);

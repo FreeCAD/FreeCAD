@@ -98,9 +98,6 @@ protected:
     void setVisualBodyMode(bool bodymode);
 
 private:
-    void copyColorsfromTip(App::DocumentObject* tip);
-
-private:
     static const char* BodyModeEnum[];
 
     boost::signals2::connection connectChangedObjectApp;

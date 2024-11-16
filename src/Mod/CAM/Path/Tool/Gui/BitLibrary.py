@@ -593,6 +593,7 @@ class ToolBitLibrary(object):
 
         # add it to the model
         self.factory.new_tool(self.toolModel, fullpath)
+        self.librarySave()
 
     def toolBitExisting(self):
 
@@ -608,12 +609,14 @@ class ToolBitLibrary(object):
             fullpath = "{}{}{}.fctb".format(loc, os.path.sep, fname)
 
             self.factory.new_tool(self.toolModel, fullpath)
+        self.librarySave()
 
     def toolDelete(self):
         Path.Log.track()
         selectedRows = set([index.row() for index in self.toolTableView.selectedIndexes()])
         for row in sorted(list(selectedRows), key=lambda r: -r):
             self.toolModel.removeRows(row, 1)
+        self.librarySave()
 
     def toolSelect(self, selected, deselected):
         sel = len(self.toolTableView.selectedIndexes()) > 0

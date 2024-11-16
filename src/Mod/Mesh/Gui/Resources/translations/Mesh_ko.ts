@@ -1954,7 +1954,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="427"/>
       <source>Center</source>
-      <translation>센터</translation>
+      <translation>중심</translation>
     </message>
   </context>
   <context>

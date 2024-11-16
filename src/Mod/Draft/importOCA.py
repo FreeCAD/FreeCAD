@@ -3,8 +3,7 @@
 #  \ingroup DRAFT
 #  \brief OCA (Open CAD Format) file importer & exporter
 '''@package importOCA
-\ingroup DRAFT
-\brief OCA (Open CAD Format) file importer & exporter
+OCA (Open CAD Format) file importer & exporter
 
 This module provides support for importing from and exporting to
 the OCA format or GCAD format from GCAD3D (http://www.gcad3d.org/).

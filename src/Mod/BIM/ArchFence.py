@@ -301,11 +301,23 @@ class _ViewProviderFence(ArchComponent.ViewProviderComponent):
             super().onChanged(vobj, prop)
 
     def applyColors(self, obj):
-        if not hasattr(obj.ViewObject, "UseOriginalColors") or not obj.ViewObject.UseOriginalColors:
-            obj.ViewObject.DiffuseColor = [obj.ViewObject.ShapeAppeaarance[0].DiffuseColor]
+        # Note that the clipSection function changes the face numbering of the
+        # fence section. This happens even if the total number of faces does not
+        # change. If UseOriginalColors is True, the end result of this function
+        # will only be correct if all faces of the section have the same color.
+
+        vobj = obj.ViewObject
+        if not vobj.UseOriginalColors:
+            vobj.ShapeAppearance = [vobj.ShapeAppearance[0]]
         else:
             post = obj.Post
             section = obj.Section
+
+            # If post and/or section are Std_Parts they may not have a Shape attr (yet):
+            if not hasattr(post, "Shape"):
+                return
+            if not hasattr(section, "Shape"):
+                return
 
             numberOfPostFaces = len(post.Shape.Faces)
             numberOfSectionFaces = len(section.Shape.Faces)
@@ -338,114 +350,42 @@ class _ViewProviderFence(ArchComponent.ViewProviderComponent):
                     ownColors.extend(self.normalizeColors(
                         section, actualSectionFaceCount))
 
-            viewObject = obj.ViewObject
-            viewObject.DiffuseColor = ownColors
+            vobj.DiffuseColor = ownColors
 
     def normalizeColors(self, obj, numberOfFaces):
-        colors = obj.ViewObject.DiffuseColor
-
-        if obj.TypeId == 'PartDesign::Body':
+        if obj.TypeId == "PartDesign::Body":
             # When colorizing a PartDesign Body we have two options
             # 1. The whole body got a shape color, that means the tip has only a single diffuse color set
             #   so we use the shape color of the body
             # 2. "Set colors" was called on the tip and the individual faces where colorized.
             #   We use the diffuseColors of the tip in that case
-            tipColors = obj.Tip.ViewObject.DiffuseColor
-
-            if len(tipColors) > 1:
-                colors = tipColors
+            if len(obj.Tip.ViewObject.DiffuseColor) > 1:
+                colors = obj.Tip.ViewObject.DiffuseColor
+            else:
+                colors = obj.ViewObject.DiffuseColor
+        else:
+            import Draft
+            colors = Draft.get_diffuse_color(obj)  # To handle Std_Parts for example.
 
         numberOfColors = len(colors)
 
         if numberOfColors == 1:
             return colors * numberOfFaces
 
-        colorsToUse = colors.copy()
-
         if numberOfColors == numberOfFaces:
-            return colorsToUse
-        else:
-            # It is possible, that we have less faces than colors when something got clipped.
-            # Remove the unneeded colors at the beginning and end
-            halfNumberOfFacesToRemove = (numberOfColors - numberOfFaces) / 2
-            start = int(math.ceil(halfNumberOfFacesToRemove))
-            end = start + numberOfFaces
+            return colors
 
-            return colorsToUse[start:end]
+        # It is possible, that we have fewer faces than colors when something
+        # got clipped. Remove the unneeded colors at the beginning and end.
+
+        # Even if clipSection did not change the face numbering this code would
+        # not work properly.
+        halfNumberOfFacesToRemove = (numberOfColors - numberOfFaces) / 2
+        start = int(math.ceil(halfNumberOfFacesToRemove))
+        end = start + numberOfFaces
+        return colors[start:end]
 
 
 def hide(obj):
     if hasattr(obj, 'ViewObject') and obj.ViewObject:
         obj.ViewObject.Visibility = False
-
-
-
-
-if __name__ == '__main__':
-    # For testing purposes. When someone runs the File as a macro a default fence will be generated
-    import Part
-
-    def buildSection():
-        parts = []
-
-        parts.append(Part.makeBox(
-            2000, 50, 30, FreeCAD.Vector(0, 0, 1000 - 30)))
-        parts.append(Part.makeBox(2000, 50, 30))
-        parts.append(Part.makeBox(20, 20, 1000 -
-                                  60, FreeCAD.Vector(0, 15, 30)))
-        parts.append(Part.makeBox(20, 20, 1000 - 60,
-                                  FreeCAD.Vector(1980, 15, 30)))
-
-        for i in range(8):
-            parts.append(Part.makeBox(20, 20, 1000 - 60,
-                                      FreeCAD.Vector((2000.0 / 9 * (i + 1)) - 10, 15, 30)))
-
-        Part.show(Part.makeCompound(parts), "Section")
-
-        return FreeCAD.ActiveDocument.getObject('Section')
-
-    def buildPath():
-        sketch = FreeCAD.ActiveDocument.addObject(
-            'Sketcher::SketchObject', 'Path')
-        sketch.Placement = FreeCAD.Placement(
-            FreeCAD.Vector(0, 0, 0), FreeCAD.Rotation(0, 0, 0, 1))
-
-        sketch.addGeometry(Part.LineSegment(FreeCAD.Vector(
-            0, 0, 0), FreeCAD.Vector(20000, 0, 0)), False)
-        sketch.addGeometry(Part.LineSegment(FreeCAD.Vector(
-            20000, 0, 0), FreeCAD.Vector(20000, 20000, 0)), False)
-
-        return sketch
-
-    def buildPost():
-        post = Part.makeBox(100, 100, 1000, FreeCAD.Vector(0, 0, 0))
-
-        Part.show(post, 'Post')
-
-        return FreeCAD.ActiveDocument.getObject('Post')
-
-    def colorizeFaces(o, color=(0.6, 0.0, 0.0, 0.0), faceIndizes=[2]):
-        numberOfFaces = len(o.Shape.Faces)
-        vo = o.ViewObject
-
-        originalColors = vo.DiffuseColor
-
-        if len(originalColors) == 1:
-            newColors = originalColors * numberOfFaces
-        else:
-            newColors = originalColors.copy()
-
-        for i in faceIndizes:
-            newColors[i] = color
-
-        vo.DiffuseColor = newColors
-
-    section = buildSection()
-    path = buildPath()
-    post = buildPost()
-
-    colorizeFaces(post)
-
-    print(makeFence(section, post, path))
-
-    # _CommandFence().Activated()

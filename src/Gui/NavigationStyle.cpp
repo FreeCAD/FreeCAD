@@ -62,6 +62,8 @@ public:
         FreeTurntable
     };
 
+    static constexpr float defaultSphereRadius = 0.8;
+
     FCSphereSheetProjector(const SbSphere & sph, const SbBool orienttoeye = true)
         : SbSphereSheetProjector(sph, orienttoeye)
     {
@@ -217,11 +219,12 @@ void NavigationStyle::initialize()
     this->spinsamplecounter = 0;
     this->spinincrement = SbRotation::identity();
     this->rotationCenterFound = false;
+    this->rotationCenterIsScenePointAtCursor = false;
 
     // FIXME: use a smaller sphere than the default one to have a larger
     // area close to the borders that gives us "z-axis rotation"?
     // 19990425 mortene.
-    this->spinprojector = new FCSphereSheetProjector(SbSphere(SbVec3f(0, 0, 0), 0.8f));
+    this->spinprojector = new FCSphereSheetProjector(SbSphere(SbVec3f(0, 0, 0), FCSphereSheetProjector::defaultSphereRadius));
     SbViewVolume volume;
     volume.ortho(-1, 1, -1, 1, -1, 1);
     this->spinprojector->setViewVolume(volume);
@@ -516,12 +519,14 @@ void NavigationStyle::viewAll()
     }
 }
 
+#if (COIN_MAJOR_VERSION * 100 + COIN_MINOR_VERSION * 10 + COIN_MICRO_VERSION < 403)
 void NavigationStyle::findBoundingSphere() {
     // Find a bounding sphere for the scene
     SoGetBoundingBoxAction action(viewer->getSoRenderManager()->getViewportRegion());
     action.apply(viewer->getSceneGraph());
     boundingSphere.circumscribe(action.getBoundingBox());
 }
+#endif
 
 /** Rotate the camera by the given amount, then reposition it so we're still pointing at the same
  * focal point
@@ -554,8 +559,9 @@ void NavigationStyle::reorientCamera(SoCamera* camera, const SbRotation& rotatio
     // Reposition camera so the rotation center stays in the same place
     camera->position = rotationCenter + newRotationCenterDistance;
 
+#if (COIN_MAJOR_VERSION * 100 + COIN_MINOR_VERSION * 10 + COIN_MICRO_VERSION < 403)
     // Fix issue with near clipping in orthogonal view
-     if (camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId())) {
+    if (camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId())) {
 
          // The center of the bounding sphere in camera coordinate system
          SbVec3f center;
@@ -569,9 +575,10 @@ void NavigationStyle::reorientCamera(SoCamera* camera, const SbRotation& rotatio
          float repositionDistance = -center.getValue()[2] - boundingSphere.getRadius();
          camera->position = camera->position.getValue() + repositionDistance * dir;
          camera->nearDistance = 0;
-         camera->farDistance = 2 * boundingSphere.getRadius();
+         camera->farDistance = 2 * boundingSphere.getRadius() + 1;
          camera->focalDistance = camera->focalDistance.getValue() - repositionDistance;
      }
+#endif
 }
 
 void NavigationStyle::panCamera(SoCamera * cam, float aspectratio, const SbPlane & panplane,
@@ -782,7 +789,10 @@ void NavigationStyle::doZoom(SoCamera* camera, float logfactor, const SbVec2f& p
         // Rotation mode is WindowCenter
         if (!rotationCenterMode) {
             viewer->changeRotationCenterPosition(getFocalPoint());
+
+#if (COIN_MAJOR_VERSION * 100 + COIN_MINOR_VERSION * 10 + COIN_MICRO_VERSION < 403)
             findBoundingSphere();
+#endif
         }
     }
 }
@@ -842,7 +852,7 @@ SbVec3f NavigationStyle::getFocalPoint() const
     return focal;
 }
 
-/** Uses the sphere sheet projector to map the mouseposition onto
+/** Uses the sphere sheet projector to map the mouse position onto
  * a 3D point and find a rotation from this and the last calculated point.
  */
 void NavigationStyle::spin(const SbVec2f & pointerpos)
@@ -856,6 +866,26 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
     SbVec2f lastpos;
     lastpos[0] = float(this->log.position[1][0]) / float(std::max((int)(glsize[0]-1), 1));
     lastpos[1] = float(this->log.position[1][1]) / float(std::max((int)(glsize[1]-1), 1));
+
+    float sensitivity = getSensitivity();
+
+    // Adjust the spin projector sphere to the screen position of the rotation center when the mouse intersects an object
+    if (getOrbitStyle() == Trackball && rotationCenterMode & RotationCenterMode::ScenePointAtCursor && rotationCenterFound && rotationCenterIsScenePointAtCursor) {
+        const auto pointOnScreen = viewer->getPointOnViewport(rotationCenter);
+        const auto sphereCenter = 2 * normalizePixelPos(pointOnScreen) - SbVec2f {1, 1};
+
+        float x, y;
+        sphereCenter.getValue(x, y);
+
+        const float sphereScale = 1 + sphereCenter.length();
+        const float radius = FCSphereSheetProjector::defaultSphereRadius * sphereScale;
+        sensitivity *= sphereScale;
+
+        spinprojector->setSphere(SbSphere {SbVec3f {x, y, 0}, radius});
+    }
+    else {
+        spinprojector->setSphere(SbSphere {SbVec3f {0, 0, 0}, FCSphereSheetProjector::defaultSphereRadius});
+    }
 
     if (this->rotationCenterMode && this->rotationCenterFound) {
         SbVec3f hitpoint = this->rotationCenter;
@@ -874,7 +904,6 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
     this->spinprojector->project(lastpos);
     SbRotation r;
     this->spinprojector->projectAndGetRotation(pointerpos, r);
-    float sensitivity = getSensitivity();
     if (sensitivity > 1.0f) {
         SbVec3f axis;
         float radians{};
@@ -1012,6 +1041,7 @@ void NavigationStyle::saveCursorPosition(const SoEvent * const ev)
 {
     this->globalPos.setValue(QCursor::pos().x(), QCursor::pos().y());
     this->localPos = ev->getPosition();
+    rotationCenterIsScenePointAtCursor = false;
 
     // mode is WindowCenter
     if (!this->rotationCenterMode) {
@@ -1030,6 +1060,7 @@ void NavigationStyle::saveCursorPosition(const SoEvent * const ev)
         SoPickedPoint * picked = rpaction.getPickedPoint();
         if (picked) {
             setRotationCenter(picked->getPoint());
+            rotationCenterIsScenePointAtCursor = true;
             return;
         }
     }
@@ -1405,7 +1436,11 @@ void NavigationStyle::setViewingMode(const ViewerMode newmode)
         // first starting a drag operation.
         animator->stop();
         viewer->showRotationCenter(true);
+
+#if (COIN_MAJOR_VERSION * 100 + COIN_MINOR_VERSION * 10 + COIN_MICRO_VERSION < 403)
         findBoundingSphere();
+#endif
+
         this->spinprojector->project(this->lastmouseposition);
         this->interactiveCountInc();
         this->clearLog();

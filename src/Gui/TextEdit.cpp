@@ -96,6 +96,17 @@ void TextEdit::keyPressEvent(QKeyEvent* e)
     }
 }
 
+void TextEdit::wheelEvent(QWheelEvent* e)
+{
+    // Reimplement from QPlainText::wheelEvent as zoom is only allowed natively if !isReadOnly
+    if (e->modifiers() & Qt::ControlModifier) {
+        float delta = e->angleDelta().y() / 120.f;
+        zoomInF(delta);
+        return;
+    }
+    QPlainTextEdit::wheelEvent(e);
+}
+
 /**
  * Completes the word.
  */

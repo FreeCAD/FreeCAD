@@ -1452,6 +1452,7 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
                                     static_cast<ElementItem*>(ui->listWidgetElements->item(i));
                                 if (item->ElementNbr == ElementId) {
                                     item->isLineSelected = select;
+                                    modified_item = item;
                                     break;
                                 }
                             }
@@ -1676,8 +1677,11 @@ void TaskSketcherElements::onListWidgetElementsItemPressed(QListWidgetItem* it)
             selectVertex(item->isMidPointSelected, item->MidVertex);
         }
 
-        if (!elementSubNames.empty()) {
-            Gui::Selection().addSelections(doc_name.c_str(), obj_name.c_str(), elementSubNames);
+        for (const auto& elementSubName : elementSubNames) {
+            Gui::Selection().addSelection2(
+                doc_name.c_str(),
+                obj_name.c_str(),
+                sketchView->getSketchObject()->convertSubName(elementSubName).c_str());
         }
 
         this->blockSelection(block);

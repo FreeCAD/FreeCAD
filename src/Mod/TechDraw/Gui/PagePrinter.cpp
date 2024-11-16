@@ -49,15 +49,18 @@
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawPagePy.h>
 #include <Mod/TechDraw/App/DrawTemplate.h>
+#include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/Preferences.h>
 
 #include "PagePrinter.h"
 #include "QGSPage.h"
 #include "Rez.h"
 #include "ViewProviderPage.h"
+#include "MDIViewPage.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;
+using DU = DrawUtil;
 
 constexpr double A4Heightmm = 297.0;
 constexpr double A4Widthmm = 210.0;
@@ -141,14 +144,16 @@ void PagePrinter::makePageLayout(TechDraw::DrawPage* dPage, QPageLayout& pageLay
 /// print the Page associated with the parent MDIViewPage as a Pdf file
 void PagePrinter::printPdf(std::string file)
 {
-//    Base::Console().Message("PP::printPdf(%s)\n", file.c_str());
+    // Base::Console().Message("PP::printPdf(%s)\n", file.c_str());
     if (file.empty()) {
         Base::Console().Warning("PagePrinter - no file specified\n");
         return;
     }
 
     // set up the pdfwriter
-    QString outputFile = QString::fromUtf8(file.data(), file.size());
+    auto filespec = Base::Tools::escapeEncodeFilename(file);
+    filespec = DU::cleanFilespecBackslash(filespec);
+    QString outputFile = Base::Tools::fromStdString(filespec);
     QPdfWriter pdfWriter(outputFile);
     QPageLayout pageLayout = pdfWriter.pageLayout();
     auto marginsdb = pageLayout.margins(QPageLayout::Millimeter);
@@ -202,7 +207,7 @@ void PagePrinter::print(QPrinter* printer)
 //static routine to print all pages in a document
 void PagePrinter::printAll(QPrinter* printer, App::Document* doc)
 {
-//    Base::Console().Message("PP::printAll()\n");
+    Base::Console().Message("PP::printAll()\n");
 
     QPageLayout pageLayout = printer->pageLayout();
     std::vector<App::DocumentObject*> docObjs =
@@ -226,6 +231,9 @@ void PagePrinter::printAll(QPrinter* printer, App::Document* doc)
         if (!vpp) {
             continue;// can't print this one
         }
+        // is there always a mdi when printAll is called?
+        auto mdi = vpp->getMDIViewPage();
+        mdi->savePageExportState(vpp);
 
         auto dPage = static_cast<TechDraw::DrawPage*>(obj);
         double width = A4Heightmm;//default to A4 Landscape 297 x 210
@@ -241,14 +249,14 @@ void PagePrinter::printAll(QPrinter* printer, App::Document* doc)
         QRect targetRect = printer->pageLayout().fullRectPixels(printer->resolution());
 
         renderPage(vpp, painter, sourceRect, targetRect);
-
+        mdi->resetPageExportState(vpp);
     }
 }
 
 //static routine to print all pages in a document to pdf
 void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
 {
-//    Base::Console().Message("PP::printAllPdf()\n");
+    // Base::Console().Message("PP::printAllPdf()\n");
     double dpmm = printer->resolution() / mmPerInch;
 
     QString outputFile = printer->outputFileName();
@@ -287,6 +295,9 @@ void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
         if (!vpp) {
             continue;// can't print this one
         }
+        // is there always a mdi when printAll is called?
+        auto mdi = vpp->getMDIViewPage();
+        mdi->savePageExportState(vpp);
 
         auto scene = vpp->getQGSPage();
         scene->setExportingPdf(true);
@@ -304,7 +315,8 @@ void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
         QRectF sourceRect(0.0, Rez::guiX(-height), Rez::guiX(width), Rez::guiX(height));
         QRect targetRect(0, 0, width * dpmm, height * dpmm);
         renderPage(vpp, painter, sourceRect, targetRect);
-        scene->setExportingPdf(false);
+        mdi->resetPageExportState(vpp);
+
     }
 }
 
@@ -375,22 +387,25 @@ void PagePrinter::saveSVG(std::string file)
         Base::Console().Warning("PagePrinter - no file specified\n");
         return;
     }
-    QString filename = QString::fromUtf8(file.data(), file.size());
+    auto filespec = Base::Tools::escapeEncodeFilename(file);
+    filespec = DU::cleanFilespecBackslash(file);
+    QString filename = Base::Tools::fromStdString(filespec);
     if (m_scene) {
         m_scene->saveSvg(filename);
     }
 }
 
-void PagePrinter::saveDXF(std::string fileName)
+void PagePrinter::saveDXF(std::string inFileName)
 {
     TechDraw::DrawPage* page = m_vpPage->getDrawPage();
     std::string PageName = page->getNameInDocument();
-    fileName = Base::Tools::escapeEncodeFilename(fileName);
+    auto filespec = Base::Tools::escapeEncodeFilename(inFileName);
+    filespec = DU::cleanFilespecBackslash(filespec);
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Save page to dxf"));
     Gui::Command::doCommand(Gui::Command::Doc, "import TechDraw");
     Gui::Command::doCommand(Gui::Command::Doc,
                             "TechDraw.writeDXFPage(App.activeDocument().%s, u\"%s\")",
-                            PageName.c_str(), (const char*)fileName.c_str());
+                            PageName.c_str(), filespec.c_str());
     Gui::Command::commitCommand();
 }
 

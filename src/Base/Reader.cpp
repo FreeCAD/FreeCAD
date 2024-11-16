@@ -38,6 +38,7 @@
 #include "Persistence.h"
 #include "Sequencer.h"
 #include "Stream.h"
+#include "Tools.h"
 #include "XMLTools.h"
 
 #ifdef _MSC_VER
@@ -46,8 +47,12 @@
 #include <zipios++/zipinputstream.h>
 #include <boost/iostreams/filtering_stream.hpp>
 
-
+#ifndef XERCES_CPP_NAMESPACE_BEGIN
+#define XERCES_CPP_NAMESPACE_QUALIFIER
+using namespace XERCES_CPP_NAMESPACE;
+#else
 XERCES_CPP_NAMESPACE_USE
+#endif
 
 using namespace std;
 
@@ -177,6 +182,8 @@ bool Base::XMLReader::read()
 void Base::XMLReader::readElement(const char* ElementName)
 {
     bool ok {};
+
+    endCharStream();
     int currentLevel = Level;
     std::string currentName = LocalName;
     do {
@@ -244,6 +251,8 @@ bool Base::XMLReader::isEndOfDocument() const
 
 void Base::XMLReader::readEndElement(const char* ElementName, int level)
 {
+    endCharStream();
+
     // if we are already at the end of the current element
     if ((ReadType == EndElement || ReadType == StartEndElement) && ElementName
         && LocalName == ElementName && (level < 0 || level == Level)) {
@@ -429,6 +438,13 @@ void Base::XMLReader::readFiles(zipios::ZipInputStream& zipstream) const
                 // failure.
                 Base::Console().Error("Reading failed from embedded file: %s\n",
                                       entry->toString().c_str());
+                if (jt->FileName == "StringHasher.Table.txt") {
+                    Base::Console().Error(QT_TRANSLATE_NOOP(
+                        "Notifications",
+                        "\nIt is recommended that the user right-click the root of "
+                        "the document and select Mark to recompute.\n"
+                        "The user should then click the Refresh button in the main toolbar.\n"));
+                }
             }
             // Go to the next registered file name
             it = jt + 1;

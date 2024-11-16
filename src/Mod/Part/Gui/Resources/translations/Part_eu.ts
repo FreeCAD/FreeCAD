@@ -2206,7 +2206,7 @@ zehazten du.</translation>
       <translation>Bihurtu amarauna</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1078"/>
+      <location filename="../../TaskAttacher.cpp" line="1077"/>
       <source>Edit attachment</source>
       <translation>Editatu eranskina</translation>
     </message>
@@ -2216,7 +2216,7 @@ zehazten du.</translation>
       <translation>Aldatu aurpegi-koloreak</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="201"/>
+      <location filename="../../TaskLoft.cpp" line="202"/>
       <source>Loft</source>
       <translation>Jaurti</translation>
     </message>
@@ -2247,7 +2247,7 @@ zehazten du.</translation>
       <translation>Solidoa</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="367"/>
+      <location filename="../../TaskSweep.cpp" line="368"/>
       <source>Sweep</source>
       <translation>Ekortu</translation>
     </message>
@@ -3153,10 +3153,10 @@ Markatu ertz-entitate bat edo gehiago.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="26"/>
-      <source>If checked, no Compound merge will be done
+      <source>If checked, Compound merge will be done
 during file reading (slower but higher details).</source>
-      <translation>Hau markatuta badago, ez da konposaturik fusionatuko fitxategia
-irakurtzen den bitartean (motelagoa baino xehetasun gehiagokoa).</translation>
+      <translation type="unfinished">If checked, Compound merge will be done
+during file reading (slower but higher details).</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="30"/>
@@ -4360,27 +4360,27 @@ bestela krokisaren planoren bektore normala erabiliko da</translation>
       <translation>Hautatutako profilak</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="179"/>
+      <location filename="../../TaskLoft.cpp" line="180"/>
       <source>Too few elements</source>
       <translation>Elementu gutxiegi</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="179"/>
+      <location filename="../../TaskLoft.cpp" line="180"/>
       <source>At least two vertices, edges, wires or faces are required.</source>
       <translation>Gutxienez bi erpin, ertz, alanbre edo aurpegi behar dira.</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="213"/>
+      <location filename="../../TaskLoft.cpp" line="214"/>
       <source>Input error</source>
       <translation>Sarrera-errorea</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="242"/>
+      <location filename="../../TaskLoft.cpp" line="243"/>
       <source>Vertex/Edge/Wire/Face</source>
       <translation>Erpina/Ertza/Alanbrea/Aurpegia</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="243"/>
+      <location filename="../../TaskLoft.cpp" line="244"/>
       <source>Loft</source>
       <translation>Jaurti</translation>
     </message>
@@ -4737,69 +4737,69 @@ sortutako mozketak soilik daude ikusgai</translation>
       <translation>Hautatutako profilak</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="330"/>
+      <location filename="../../TaskSweep.cpp" line="331"/>
       <source>Too few elements</source>
       <translation>Elementu gutxiegi</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="330"/>
+      <location filename="../../TaskSweep.cpp" line="331"/>
       <source>At least one edge or wire is required.</source>
       <translation>Gutxienez ertz bat edo alanbre bat behar da.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="334"/>
+      <location filename="../../TaskSweep.cpp" line="335"/>
       <source>Invalid selection</source>
       <translation>Baliogabeko hautapena</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="334"/>
+      <location filename="../../TaskSweep.cpp" line="335"/>
       <source>Select one or more edges from a single object.</source>
       <translation>Hautatu objektu bakar baten ertz bat edo gehiago.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="341"/>
+      <location filename="../../TaskSweep.cpp" line="342"/>
       <source>Wrong selection</source>
       <translation>Hautapen okerra</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="341"/>
+      <location filename="../../TaskSweep.cpp" line="342"/>
       <source>'%1' cannot be used as profile and path.</source>
       <translation>'%1' ezin da erabili profil eta bide gisa.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="379"/>
+      <location filename="../../TaskSweep.cpp" line="380"/>
       <source>Input error</source>
       <translation>Sarrera-errorea</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="412"/>
+      <location filename="../../TaskSweep.cpp" line="413"/>
       <source>Done</source>
       <translation>Egina</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="414"/>
+      <location filename="../../TaskSweep.cpp" line="415"/>
       <source>Select one or more connected edges in the 3d view and press 'Done'</source>
       <translation>Hautatu konektatutako ertz bat edo gehiago 3D bistan eta sakatu 'Egina'</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="436"/>
-      <location filename="../../TaskSweep.cpp" line="444"/>
+      <location filename="../../TaskSweep.cpp" line="437"/>
+      <location filename="../../TaskSweep.cpp" line="445"/>
       <source>Sweep path</source>
       <translation>Ekortze-bidea</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="436"/>
-      <location filename="../../TaskSweep.cpp" line="444"/>
+      <location filename="../../TaskSweep.cpp" line="437"/>
+      <location filename="../../TaskSweep.cpp" line="445"/>
       <source>The selected sweep path is invalid.</source>
       <translation>Hautatutako ekortze-bidea baliogabea da.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="456"/>
+      <location filename="../../TaskSweep.cpp" line="457"/>
       <source>Vertex/Wire</source>
       <translation>Erpina/alanbrea</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="457"/>
+      <location filename="../../TaskSweep.cpp" line="458"/>
       <source>Sweep</source>
       <translation>Ekortu</translation>
     </message>
@@ -4995,33 +4995,33 @@ koordenatu-sistema lokalean adierazten da.</translation>
   <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1001"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1028"/>
       <source>Shape Content</source>
       <translation>Formaren edukia</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1009"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="1204"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1036"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1231"/>
       <source>Settings</source>
       <translation>Ezarpenak</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1015"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1042"/>
       <source>Skip this settings page and run the geometry check automatically.</source>
       <translation>Saltatu ezarpenen orri hau eta exekutatu geometria-egiaztatzea automatikoki.</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1017"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1044"/>
       <source>Default: false</source>
       <translation>Balio lehenetsia: faltsua</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1024"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1051"/>
       <source>Run boolean operation check</source>
       <translation>Exekutatu eragiketa boolearraren egiaztatzea</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1025"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1052"/>
       <source>Extra boolean operations check that can sometimes find errors that
 the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</source>
@@ -5030,160 +5030,160 @@ estandarrak aurkitzen ez dituen erroreak aurkitzen dituena. Errore horiek ez dut
 beti adierazten egiaztatutako objektua erabilezina denik. Lehenetsia: faltsua</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1035"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1062"/>
       <source>Single-threaded</source>
       <translation>Hari bakarrekoa</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1036"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1063"/>
       <source>Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</source>
       <translation>Exekutatu geometria-egiaztatzea hari bakarrean. Motelagoa da,
 baina egonkorragoa. Lehenetsia: faltsua</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1045"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1072"/>
       <source>Log errors</source>
       <translation>Erregistratu erroreak</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1046"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1073"/>
       <source>Log errors to report view.  Default: true</source>
       <translation>Erregistratu txosten-bistaren erroreak. Lehenetsia: egia</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1053"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1080"/>
       <source>Expand shape content</source>
       <translation>Hedatu formaren edukia</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1054"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1081"/>
       <source>Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>Hedatu formaren edukia. Geometria egiaztatzeko tresna erabiltzen den
 hurrengoan sartuko dira indarrean aldaketak. Lehenetsia: faltsua</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1063"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1090"/>
       <source>Advanced shape content</source>
       <translation>Formaren eduki aurreratua</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1064"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
       <source>Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>Erakutsi formaren eduki aurreratua. Geometria egiaztatzeko tresna erabiltzen den
 hurrengoan sartuko dira indarrean aldaketak. Lehenetsia: faltsua</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1072"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1099"/>
       <source>
 Individual boolean operation checks:</source>
       <translation>
 Eragiketa boolearren banakako egiaztatzeak:</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1075"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1102"/>
       <source>Bad type</source>
       <translation>Mota okerra</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1083"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1110"/>
       <source>Self-intersect</source>
       <translation>Autoebaki</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1118"/>
       <source>Too small edge</source>
       <translation>Ertz txikiegia</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1099"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1126"/>
       <source>Nonrecoverable face</source>
       <translation>Aurpegi berreskuraezina</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1107"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1134"/>
       <source>Continuity</source>
       <translation>Jarraitutasuna</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1115"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1142"/>
       <source>Incompatibility of face</source>
       <translation>Aurpegien bateraezintasuna</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1123"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1150"/>
       <source>Incompatibility of vertex</source>
       <translation>Erpinen bateraezintasuna</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1131"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1158"/>
       <source>Incompatibility of edge</source>
       <translation>Ertzen bateraezintasuna</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1139"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1166"/>
       <source>Invalid curve on surface</source>
       <translation>Kurba baliogabea gainazalean</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1076"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1103"/>
       <source>Check for bad argument types.  Default: true</source>
       <translation>Egiaztatu argumentu mota okerrak. Lehenetsia: egia</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1013"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1040"/>
       <source>Skip this settings page</source>
       <translation type="unfinished">Skip this settings page</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1084"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1111"/>
       <source>Check for self-intersections.  Default: true</source>
       <translation>Egiaztatu autoebakidurak. Lehenetsia: egia</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1092"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1119"/>
       <source>Check for edges that are too small.  Default: true</source>
       <translation>Egiaztatu txikiegiak diren ertzak. Lehenetsia: egia</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1100"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1127"/>
       <source>Check for nonrecoverable faces.  Default: true</source>
       <translation>Egiaztatu aurpegi berreskuraezinak. Lehenetsia: egia</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1108"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1135"/>
       <source>Check for continuity.  Default: true</source>
       <translation>Egiaztatu jarraitutasuna. Balio lehenetsia: egia</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1116"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1143"/>
       <source>Check for incompatible faces.  Default: true</source>
       <translation>Egiaztatu aurpegi bateraezinak. Lehenetsia: egia</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1124"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1151"/>
       <source>Check for incompatible vertices.  Default: true</source>
       <translation>Egiaztatu erpin bateraezinak. Lehenetsia: egia</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1132"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1159"/>
       <source>Check for incompatible edges.  Default: true</source>
       <translation>Egiaztatu ertz bateraezinak. Lehenetsia: egia</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1140"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1167"/>
       <source>Check for invalid curves on surfaces.  Default: true</source>
       <translation>Egiaztatu kurba baliogabeak gainazaletan. Lehenetsia: egia</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1203"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1230"/>
       <source>Run check</source>
       <translation>Exekutatu egiaztatzea</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1209"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1236"/>
       <source>Results</source>
       <translation>Emaitzak</translation>
     </message>
@@ -5212,22 +5212,22 @@ Eragiketa boolearren banakako egiaztatzeak:</translation>
       <translation>Egiaztatu geometria</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="459"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="464"/>
       <source>Invalid</source>
       <translation>Baliogabea</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="478"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="483"/>
       <source>Checking</source>
       <translation>Egiaztatzen</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="501"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="506"/>
       <source>%1 processed out of %2 selected</source>
       <translation>%1 prozesatu dira (%2 hautatuta)</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../TaskCheckGeometry.cpp" line="502"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="507"/>
       <source>%n invalid shapes.</source>
       <translation>
         <numerusform>Baliogabeko forma %n.</numerusform>
@@ -5235,9 +5235,29 @@ Eragiketa boolearren banakako egiaztatzeak:</translation>
       </translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="590"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="595"/>
       <source>Checked object</source>
       <translation>Objektu markatua</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="612"/>
+      <source>Tolerance information</source>
+      <translation type="unfinished">Tolerance information</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="617"/>
+      <source>Global Minimum</source>
+      <translation type="unfinished">Global Minimum</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="622"/>
+      <source>Global Average</source>
+      <translation type="unfinished">Global Average</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="627"/>
+      <source>Global Maximum</source>
+      <translation type="unfinished">Global Maximum</translation>
     </message>
   </context>
   <context>
@@ -5441,7 +5461,7 @@ Eragiketa boolearren banakako egiaztatzeak:</translation>
       <translation>Frenet</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="482"/>
+      <location filename="../../TaskSweep.cpp" line="483"/>
       <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
       <translation>Hautatu profil bat edo gehiago eta hautatu ertz bat edo alanbre bat
@@ -5885,7 +5905,7 @@ Do you want to continue?</source>
       <translation>Eragiketa boolearra: Ez da baliozkoa</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="699"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="726"/>
       <source>Invalid</source>
       <translation>Baliogabea</translation>
     </message>
@@ -5945,7 +5965,7 @@ Do you want to continue?</source>
       <translation type="unfinished">Edit projection</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="878"/>
+      <location filename="../../ViewProviderExt.cpp" line="886"/>
       <source>Set appearance per face...</source>
       <translation type="unfinished">Set appearance per face...</translation>
     </message>
@@ -5953,57 +5973,57 @@ Do you want to continue?</source>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="33"/>
+      <location filename="../../Workbench.cpp" line="34"/>
       <source>&amp;Part</source>
       <translation>&amp;Pieza</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="34"/>
+      <location filename="../../Workbench.cpp" line="35"/>
       <source>&amp;Simple</source>
       <translation>&amp;Sinplea</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="35"/>
+      <location filename="../../Workbench.cpp" line="36"/>
       <source>&amp;Parametric</source>
       <translation>&amp;Parametrikoa</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="36"/>
+      <location filename="../../Workbench.cpp" line="37"/>
       <source>Solids</source>
       <translation>Solidoak</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="37"/>
+      <location filename="../../Workbench.cpp" line="38"/>
       <source>Part tools</source>
       <translation>Pieza-tresnak</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="38"/>
+      <location filename="../../Workbench.cpp" line="39"/>
       <source>Boolean</source>
       <translation>Boolearra</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="39"/>
+      <location filename="../../Workbench.cpp" line="40"/>
       <source>Primitives</source>
       <translation>Jatorrizkoak</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="40"/>
+      <location filename="../../Workbench.cpp" line="41"/>
       <source>Join</source>
       <translation>Elkartu</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="41"/>
+      <location filename="../../Workbench.cpp" line="42"/>
       <source>Split</source>
       <translation>Zatitu</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="42"/>
+      <location filename="../../Workbench.cpp" line="43"/>
       <source>Compound</source>
       <translation>Konposatua</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="43"/>
+      <location filename="../../Workbench.cpp" line="44"/>
       <source>Create a copy</source>
       <translation>Sortu kopia bat</translation>
     </message>
@@ -6805,6 +6825,52 @@ by dragging a selection rectangle in the 3D view</translation>
       <location filename="../../DlgImportStep.cpp" line="149"/>
       <source>Don't show this dialog again</source>
       <translation>Ez erakutsi elkarrizketa-koadro hau berriro</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_ToleranceFeatures</name>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="70"/>
+      <source>Computing the result failed with an error:</source>
+      <translation>Emaitza kalkulatzean errore bat gertatu da:</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="71"/>
+      <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Egin klik 'Jarraitu' aukeran elementua sortzeko, edo sakatu 'Abortatu' bertan behera uzteko.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="72"/>
+      <source>Bad selection</source>
+      <translation>Hautapen okerra</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="74"/>
+      <source>Continue</source>
+      <translation>Jarraitu</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_ToleranceSet</name>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="192"/>
+      <source>Set Tolerance</source>
+      <translation type="unfinished">Set Tolerance</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="197"/>
+      <source>Set Tolerance for selected objects.</source>
+      <translation type="unfinished">Set Tolerance for selected objects.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="204"/>
+      <source>Select at least one object or compounds</source>
+      <translation type="unfinished">Select at least one object or compounds</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="205"/>
+      <source>Bad selection</source>
+      <translation>Hautapen okerra</translation>
     </message>
   </context>
 </TS>

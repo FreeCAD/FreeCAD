@@ -277,6 +277,8 @@ public:
 
     static bool isWithinRange(double actualAngleIn, double targetAngleIn, double allowableError);
 
+    static std::string cleanFilespecBackslash(const std::string& filespec);
+
 
     //debugging routines
     static void dumpVertexes(const char* text, const TopoDS_Shape& s);

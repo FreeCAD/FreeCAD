@@ -678,7 +678,7 @@ cambiare dinamicamente la configurazione del progetto. La proprietà verrà crea
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="140"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="116"/>
       <location filename="../../Command.cpp" line="195"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
       <translation>CSV (*.csv *.CSV);;Tutti (*)</translation>
@@ -689,12 +689,12 @@ cambiare dinamicamente la configurazione del progetto. La proprietà verrà crea
       <translation>Importa file</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="142"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="118"/>
       <source>Export file</source>
       <translation>Esporta file</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="167"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="143"/>
       <source>Show spreadsheet</source>
       <translation>Visualizza il foglio di calcolo</translation>
     </message>
@@ -738,7 +738,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
 Spreadsheet.my_alias_name invece di Spreadsheet.B1</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="125"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="149"/>
       <source>Spreadsheet</source>
       <translation>Foglio di calcolo</translation>
     </message>
@@ -1163,7 +1163,8 @@ Predefinito a: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="93"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="111"/>
       <source>Unnamed</source>
       <translation>Senza nome</translation>
     </message>
