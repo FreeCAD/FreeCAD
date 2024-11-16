@@ -55,7 +55,7 @@ EditModeInformationOverlayCoinConverter::EditModeInformationOverlayCoinConverter
     , drawingParameters(drawingparameters)
     , nodeId(0) {
 
-      };
+    };
 
 void EditModeInformationOverlayCoinConverter::convert(const Part::Geometry* geometry, int geoid)
 {

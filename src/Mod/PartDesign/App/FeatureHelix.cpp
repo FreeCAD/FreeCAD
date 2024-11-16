@@ -24,9 +24,9 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepAdaptor_Surface.hxx>
-# include <BRepAlgoAPI_Common.hxx>
-# include <BRepAlgoAPI_Cut.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
+# include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 # include <BRepBndLib.hxx>
 # include <BRepBuilderAPI_MakeSolid.hxx>
 # include <BRepBuilderAPI_Sewing.hxx>
@@ -34,6 +34,7 @@
 # include <BRepOffsetAPI_MakePipe.hxx>
 # include <BRepOffsetAPI_MakePipeShell.hxx>
 # include <BRepPrimAPI_MakeRevol.hxx>
+# include <ShapeFix_ShapeTolerance.hxx>
 # include <Precision.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
@@ -61,6 +62,7 @@ PROPERTY_SOURCE(PartDesign::Helix, PartDesign::ProfileBased)
 
 // we purposely use not FLT_MAX because this would not be computable
 const App::PropertyFloatConstraint::Constraints Helix::floatTurns = { Precision::Confusion(), INT_MAX, 1.0 };
+const App::PropertyFloatConstraint::Constraints Helix::floatTolerance = { 0.1, INT_MAX, 1.0 };
 const App::PropertyAngle::Constraints Helix::floatAngle = { -89.0, 89.0, 1.0 };
 
 Helix::Helix()
@@ -104,6 +106,9 @@ Helix::Helix()
     ADD_PROPERTY_TYPE(HasBeenEdited, (false), group, App::Prop_Hidden,
         QT_TRANSLATE_NOOP("App::Property", "If false, the tool will propose an initial value for the pitch based on the profile bounding box,\n"
             "so that self intersection is avoided."));
+    ADD_PROPERTY_TYPE(Tolerance, (0.1), group, App::Prop_None,
+        QT_TRANSLATE_NOOP("App::Property", "Fusion Tolerance for the Helix, increase if helical shape does not merge nicely with part."));
+    Tolerance.setConstraints(&floatTolerance);
 
     setReadWriteStatusForMode(initialMode);
 }
@@ -215,41 +220,49 @@ App::DocumentObjectExecReturn* Helix::execute()
 
         base.move(invObjLoc);
 
-
-        std::vector<TopoDS_Wire> wires;
-        try {
-            // Iterate over wires in sketch shape.
-            for (TopExp_Explorer explorer(sketchshape, TopAbs_WIRE); explorer.More(); explorer.Next())
-            {
-                const TopoDS_Wire& aWire = TopoDS::Wire(explorer.Current());
-                wires.push_back(aWire);
-            }
-        }
-        catch (const Base::Exception& e) {
-            return new App::DocumentObjectExecReturn(e.what());
-        }
         TopoDS_Shape result;
 
         // generate the helix path
-        TopoDS_Shape path = generateHelixPath();
+        TopoDS_Shape path;
+        if (Angle.getValue()==0.){
+            // breaking the path at each turn prevents an OCC issue
+            path = generateHelixPath();
+        } else {
+            // don't break the path or the generated solid is invalid
+            path = generateHelixPath(1000.);
+        }
 
-        TopoDS_Shape face = Part::FaceMakerCheese::makeFace(wires);
+        TopoDS_Shape face = sketchshape;
         face.Move(invObjLoc);
+
+        Bnd_Box bounds;
+        BRepBndLib::Add(path, bounds);
+        double size=sqrt(bounds.SquareExtent());
+        ShapeFix_ShapeTolerance fix;
+        fix.LimitTolerance(path, Precision::Confusion() * 1e-6 * size ); // needed to produce valid Pipe for very big parts
+        // We introduce final part tolerance with the second call to LimitTolerance below, however
+        // OCCT has a bug where the side-walls of the Pipe disappear with very large (km range) pieces
+        // increasing a tiny bit of extra tolerance to the path fixes this. This will in any case
+        // be less than the tolerance lower limit below, but sufficient to avoid the bug
+
         BRepOffsetAPI_MakePipe mkPS(TopoDS::Wire(path), face, GeomFill_Trihedron::GeomFill_IsFrenet, Standard_False);
-        mkPS.Build();
         result = mkPS.Shape();
 
         BRepClass3d_SolidClassifier SC(result);
         SC.PerformInfinitePoint(Precision::Confusion());
-        if (SC.State() == TopAbs_IN)
+        if (SC.State() == TopAbs_IN) {
             result.Reverse();
+        }
+ 
+        fix.LimitTolerance(result, Precision::Confusion() * size * Tolerance.getValue() ); // significant precision reduction due to helical approximation - needed to allow fusion to succeed
 
         AddSubShape.setValue(result);
 
         if (base.isNull()) {
 
-            if (getAddSubType() == FeatureAddSub::Subtractive)
+            if (getAddSubType() == FeatureAddSub::Subtractive){
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: There is nothing to subtract"));
+            }
 
             if (!isSingleSolidRuleSatisfied(result)) {
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids"));
@@ -261,51 +274,52 @@ App::DocumentObjectExecReturn* Helix::execute()
 
         if (getAddSubType() == FeatureAddSub::Additive) {
 
-            BRepAlgoAPI_Fuse mkFuse(base.getShape(), result);
-            if (!mkFuse.IsDone())
+            FCBRepAlgoAPI_Fuse mkFuse(base.getShape(), result);
+            if (!mkFuse.IsDone()){
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Adding the helix failed"));
+            }
             // we have to get the solids (fuse sometimes creates compounds)
-            TopoDS_Shape boolOp = this->getSolid(mkFuse.Shape());
+            TopoShape boolOp = this->getSolid(mkFuse.Shape());
 
             // lets check if the result is a solid
-            if (boolOp.IsNull())
+            if (boolOp.isNull()){
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid"));
+            }
 
-
-            if (!isSingleSolidRuleSatisfied(boolOp)) {
+            if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids"));
             }
 
-            boolOp = refineShapeIfActive(boolOp);
+            boolOp = refineShapeIfActive(boolOp, RefineErrorPolicy::Warn);
             Shape.setValue(getSolid(boolOp));
         }
         else if (getAddSubType() == FeatureAddSub::Subtractive) {
 
-            TopoDS_Shape boolOp;
+            TopoShape boolOp;
 
             if (Outside.getValue()) {  // are we subtracting the inside or the outside of the profile.
-                BRepAlgoAPI_Common mkCom(result, base.getShape());
+                FCBRepAlgoAPI_Common mkCom(result, base.getShape());
                 if (!mkCom.IsDone())
                     return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Intersecting the helix failed"));
                 boolOp = this->getSolid(mkCom.Shape());
 
             }
             else {
-                BRepAlgoAPI_Cut mkCut(base.getShape(), result);
+                FCBRepAlgoAPI_Cut mkCut(base.getShape(), result);
                 if (!mkCut.IsDone())
                     return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Subtracting the helix failed"));
                 boolOp = this->getSolid(mkCut.Shape());
             }
 
             // lets check if the result is a solid
-            if (boolOp.IsNull())
+            if (boolOp.isNull())
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid"));
 
-            if (!isSingleSolidRuleSatisfied(boolOp)) {
+            if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids"));
             }
 
-            boolOp = refineShapeIfActive(boolOp);
+            boolOp = refineShapeIfActive(boolOp, RefineErrorPolicy::Warn);
             Shape.setValue(getSolid(boolOp));
         }
 
@@ -335,7 +349,7 @@ void Helix::updateAxis()
     Axis.setValue(dir.x, dir.y, dir.z);
 }
 
-TopoDS_Shape Helix::generateHelixPath()
+TopoDS_Shape Helix::generateHelixPath(double breakAtTurn)
 {
     double turns = Turns.getValue();
     double height = Height.getValue();
@@ -381,7 +395,8 @@ TopoDS_Shape Helix::generateHelixPath()
     bool turned = axisOffset < 0;
     // since the factor does not only change the radius but also the path position, we must shift its offset back
     // using the square of the factor
-    double startOffset = 10000.0 * std::fabs(baseVector * axisVector);
+    double noAngle = angle == 0. ? 1. : 0.; // alternative to the legacy use of an auxiliary path
+    double startOffset = 10000.0 * std::fabs(noAngle * (profileCenter * axisVector) - baseVector * axisVector);
 
     if (radius < Precision::Confusion()) {
         // in this case ensure that axis is not in the sketch plane
@@ -398,7 +413,7 @@ TopoDS_Shape Helix::generateHelixPath()
         radiusTop = radius + height * tan(Base::toRadians(angle));
 
     //build the helix path
-    TopoDS_Shape path = TopoShape().makeSpiralHelix(radius, radiusTop, height, turns, 1000, leftHanded);
+    TopoDS_Shape path = TopoShape().makeSpiralHelix(radius, radiusTop, height, turns, breakAtTurn, leftHanded);
 
     /*
      * The helix wire is created with the axis coinciding with z-axis and the start point at (radius, 0, 0)

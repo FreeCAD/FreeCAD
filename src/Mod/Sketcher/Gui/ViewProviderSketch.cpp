@@ -401,7 +401,13 @@ void ViewProviderSketch::ParameterObserver::OnChange(Base::Subject<const char*>&
 {
     (void)rCaller;
 
-    auto key = parameterMap.find(sReason);
+    updateFromParameter(sReason);
+}
+
+void SketcherGui::ViewProviderSketch::ParameterObserver::updateFromParameter(const char* parameter)
+{
+    auto key = parameterMap.find(parameter);
+
     if (key != parameterMap.end()) {
         auto string = key->first;
         auto update = std::get<0>(key->second);
@@ -2884,41 +2890,38 @@ void ViewProviderSketch::drawEditMarkers(const std::vector<Base::Vector2d>& Edit
     editCoinManager->drawEditMarkers(EditMarkers, augmentationlevel);
 }
 
-void ViewProviderSketch::updateData(const App::Property* prop)
-{
+void ViewProviderSketch::updateData(const App::Property* prop) {
     ViewProvider2DObject::updateData(prop);
 
-    // In the case of an undo/redo transaction, updateData is triggered by
-    // SketchObject::onUndoRedoFinished() in the solve() In the case of an internal transaction,
-    // touching the geometry results in a call to updateData.
-    if (isInEditMode() && !getSketchObject()->getDocument()->isPerformingTransaction()
-        && !getSketchObject()->isPerformingInternalTransaction()
-        && (prop == &(getSketchObject()->Geometry) || prop == &(getSketchObject()->Constraints))) {
+    if (prop != &getSketchObject()->Constraints)
+        signalElementsChanged();
+}
 
-        // At this point, we do not need to solve the Sketch
-        // If we are adding geometry an update can be triggered before the sketch is actually
-        // solved. Because a solve is mandatory to any addition (at least to update the DoF of the
-        // solver), only when the solver geometry is the same in number than the sketch geometry an
-        // update should trigger a redraw. This reduces even more the number of redraws per
-        // insertion of geometry
+void ViewProviderSketch::slotSolverUpdate()
+{
+    if (!isInEditMode() )
+        return;
 
-        // solver information is also updated when no matching geometry, so that if a solving fails
-        // this failed solving info is presented to the user
-        UpdateSolverInformation();// just update the solver window with the last SketchObject
-                                  // solving information
+    // At this point, we do not need to solve the Sketch
+    // If we are adding geometry an update can be triggered before the sketch is actually
+    // solved. Because a solve is mandatory to any addition (at least to update the DoF of the
+    // solver), only when the solver geometry is the same in number than the sketch geometry an
+    // update should trigger a redraw. This reduces even more the number of redraws per
+    // insertion of geometry
 
-        if (getSketchObject()->getExternalGeometryCount()
-                + getSketchObject()->getHighestCurveIndex() + 1
-            == getSolvedSketch().getGeometrySize()) {
-            Gui::MDIView* mdi = Gui::Application::Instance->editDocument()->getActiveView();
-            if (mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId()))
-                draw(false, true);
+    // solver information is also updated when no matching geometry, so that if a solving fails
+    // this failed solving info is presented to the user
+    UpdateSolverInformation();// just update the solver window with the last SketchObject
+                              // solving information
 
-            signalConstraintsChanged();
-        }
+    if (getSketchObject()->getExternalGeometryCount()
+            + getSketchObject()->getHighestCurveIndex() + 1
+        == getSolvedSketch().getGeometrySize()) {
+        Gui::MDIView* mdi = Gui::Application::Instance->editDocument()->getActiveView();
+        if (mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId()))
+            draw(false, true);
 
-        if (prop != &getSketchObject()->Constraints)
-            signalElementsChanged();
+        signalConstraintsChanged();
     }
 }
 
@@ -2979,7 +2982,8 @@ void SketcherGui::ViewProviderSketch::finishRestoring()
 
     if (AutoColor.getValue()) {
         // update colors according to current user preferences
-        pObserver->initParameters();
+        pObserver->updateFromParameter("SketchEdgeColor");
+        pObserver->updateFromParameter("SketchVertexColor");
     }
 }
 
@@ -3124,6 +3128,15 @@ bool ViewProviderSketch::setEdit(int ModNum)
             getSketchObject()->validateExternalLinks();
     }
 
+    //NOLINTBEGIN
+    connectUndoDocument = getDocument()->signalUndoDocument.connect(
+        std::bind(&ViewProviderSketch::slotUndoDocument, this, sp::_1));
+    connectRedoDocument = getDocument()->signalRedoDocument.connect(
+        std::bind(&ViewProviderSketch::slotRedoDocument, this, sp::_1));
+    connectSolverUpdate = getSketchObject()
+            ->signalSolverUpdate.connect(boost::bind(&ViewProviderSketch::slotSolverUpdate, this));
+    //NOLINTEND
+
     // There are geometry extensions introduced by the solver and geometry extensions introduced by
     // the viewprovider.
     // 1. It is important that the solver has geometry with updated extensions.
@@ -3138,13 +3151,6 @@ bool ViewProviderSketch::setEdit(int ModNum)
     // property to be updated with the solver information, including solver extensions, and triggers
     // a draw(true) via ViewProvider::UpdateData.
     getSketchObject()->solve(true);
-
-    //NOLINTBEGIN
-    connectUndoDocument = getDocument()->signalUndoDocument.connect(
-        std::bind(&ViewProviderSketch::slotUndoDocument, this, sp::_1));
-    connectRedoDocument = getDocument()->signalRedoDocument.connect(
-        std::bind(&ViewProviderSketch::slotRedoDocument, this, sp::_1));
-    //NOLINTEND
 
     // Enable solver initial solution update while dragging.
     getSketchObject()->setRecalculateInitialSolutionWhileMovingPoint(
@@ -3313,23 +3319,28 @@ void ViewProviderSketch::unsetEdit(int ModNum)
         if (sketchHandler)
             deactivateHandler();
 
-        // Resets the override draw style mode when leaving the sketch edit mode.
-        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-        auto disableShadedView = hGrp->GetBool("DisableShadedView", true);
-        if (disableShadedView) {
-            Gui::Document* doc = Gui::Application::Instance->activeDocument();
-            Gui::MDIView* mdi = doc->getActiveView();
-            Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(mdi)->getViewer();
+        Gui::MDIView* mdi = getInventorView();
 
+        // handle the override draw style mode only if there's a 3D view, otherwise SIGSEGV may
+        // occur as described in https://github.com/FreeCAD/FreeCAD/issues/15918
+        if (mdi) {
+
+            // Resets the override draw style mode when leaving the sketch edit mode.
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-            auto OverrideMode = hGrp->GetASCII("OverrideMode", "As Is");
+                "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+            auto disableShadedView = hGrp->GetBool("DisableShadedView", true);
+            if (disableShadedView) {
+                Gui::View3DInventorViewer* viewer =
+                    static_cast<Gui::View3DInventor*>(mdi)->getViewer();
 
-            if (viewer)
-            {
-                viewer->updateOverrideMode(OverrideMode);
-                viewer->setOverrideMode(OverrideMode);
+                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+                    "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+                auto OverrideMode = hGrp->GetASCII("OverrideMode", "As Is");
+
+                if (viewer) {
+                    viewer->updateOverrideMode(OverrideMode);
+                    viewer->setOverrideMode(OverrideMode);
+                }
             }
         }
 
@@ -3355,6 +3366,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
 
     connectUndoDocument.disconnect();
     connectRedoDocument.disconnect();
+    connectSolverUpdate.disconnect();
 
     // when pressing ESC make sure to close the dialog
     Gui::Control().closeDialog();
@@ -3385,6 +3397,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
 void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
 {
     Q_UNUSED(ModNum);
+    Base::PyGILStateLocker lock;
     // visibility automation: save camera
     if (!this->TempoVis.getValue().isNone()) {
         try {
@@ -3849,25 +3862,30 @@ void ViewProviderSketch::clearSelectPoints()
 bool ViewProviderSketch::isSelected(const std::string& subNameSuffix) const
 {
     return Gui::Selection().isSelected(
-        editDocName.c_str(), editObjName.c_str(), (editSubName + subNameSuffix).c_str());
+        editDocName.c_str(), editObjName.c_str(), (editSubName + getSketchObject()->convertSubName(subNameSuffix)).c_str());
 }
 
 void ViewProviderSketch::rmvSelection(const std::string& subNameSuffix)
 {
     Gui::Selection().rmvSelection(
-        editDocName.c_str(), editObjName.c_str(), (editSubName + subNameSuffix).c_str());
+        editDocName.c_str(), editObjName.c_str(), (editSubName + getSketchObject()->convertSubName(subNameSuffix)).c_str());
 }
 
 bool ViewProviderSketch::addSelection(const std::string& subNameSuffix, float x, float y, float z)
 {
     return Gui::Selection().addSelection(
-        editDocName.c_str(), editObjName.c_str(), (editSubName + subNameSuffix).c_str(), x, y, z);
+        editDocName.c_str(), editObjName.c_str(), (editSubName + getSketchObject()->convertSubName(subNameSuffix)).c_str(), x, y, z);
 }
 
 bool ViewProviderSketch::addSelection2(const std::string& subNameSuffix, float x, float y, float z)
 {
     return Gui::Selection().addSelection2(
-        editDocName.c_str(), editObjName.c_str(), (editSubName + subNameSuffix).c_str(), x, y, z);
+        editDocName.c_str(),
+        editObjName.c_str(),
+        (editSubName + getSketchObject()->convertSubName(subNameSuffix)).c_str(),
+        x,
+        y,
+        z);
 }
 
 bool ViewProviderSketch::setPreselect(const std::string& subNameSuffix, float x, float y, float z)

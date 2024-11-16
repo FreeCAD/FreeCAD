@@ -36,7 +36,7 @@
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
+#include <Gui/Control.h>
 
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/TopoShape.h>
@@ -48,9 +48,11 @@
 using namespace Measure;
 using namespace MeasureGui;
 
+FC_LOG_LEVEL_INIT("QuickMeasure", true, true)
+
 QuickMeasure::QuickMeasure(QObject* parent)
     : QObject(parent)
-    , measurement{new Measure::Measurement()}
+    , measurement {new Measure::Measurement()}
 {
     selectionTimer = new QTimer(this);
     pendingProcessing = false;
@@ -65,7 +67,7 @@ QuickMeasure::~QuickMeasure()
 
 void QuickMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    if (canMeasureSelection(msg)) {
+    if (shouldMeasure(msg)) {
         if (!pendingProcessing) {
             selectionTimer->start(100);
         }
@@ -91,25 +93,52 @@ void QuickMeasure::processSelection()
         catch (const Base::Exception& e) {
             e.ReportException();
         }
+        catch (const Standard_Failure& e) {
+            FC_ERR(e);
+        }
+        catch (...) {
+            FC_ERR("Unhandled unknown exception");
+        }
     }
 }
 
 void QuickMeasure::tryMeasureSelection()
 {
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
     measurement->clear();
-    addSelectionToMeasurement();
+    if (doc && Gui::Control().activeDialog() == nullptr) {
+        // we (still) have a doc and are not in a tool dialog where the user needs to click on stuff
+        addSelectionToMeasurement();
+    }
     printResult();
 }
 
-bool QuickMeasure::canMeasureSelection(const Gui::SelectionChanges& msg) const
+bool QuickMeasure::shouldMeasure(const Gui::SelectionChanges& msg) const
 {
-    if (msg.Type == Gui::SelectionChanges::SetPreselect ||
-        msg.Type == Gui::SelectionChanges::RmvPreselect) {
-        return false;
+
+    // measure only IF
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    if (doc) {
+        // we have a document
+        if (msg.Type == Gui::SelectionChanges::AddSelection
+            || msg.Type == Gui::SelectionChanges::RmvSelection
+            || msg.Type == Gui::SelectionChanges::SetSelection
+            || msg.Type == Gui::SelectionChanges::ClrSelection) {
+            // the event is about a change in selected objects
+            return true;
+        }
+    }
+    return false;
+}
+
+bool QuickMeasure::isObjAcceptable(App::DocumentObject* obj)
+{
+    // only measure shapes
+    if (obj && obj->isDerivedFrom(Part::Feature::getClassTypeId())) {
+        return true;
     }
 
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    return doc != nullptr;
+    return false;
 }
 
 void QuickMeasure::addSelectionToMeasurement()
@@ -117,15 +146,12 @@ void QuickMeasure::addSelectionToMeasurement()
     int count = 0;
     int limit = 100;
 
-    for (auto& selObj : Gui::Selection().getSelectionEx()) {
-        App::DocumentObject* obj = selObj.getObject();
+    auto selObjs = Gui::Selection().getSelectionEx(nullptr,
+                                                   App::DocumentObject::getClassTypeId(),
+                                                   Gui::ResolveMode::NoResolve);
 
-        std::string vpType = obj->getViewProviderName();
-        auto* vp = Gui::Application::Instance->getViewProvider(obj);
-        if (vpType == "SketcherGui::ViewProviderSketch" && vp->isEditing()) {
-            continue;
-        }
-
+    for (auto& selObj : selObjs) {
+        App::DocumentObject* rootObj = selObj.getObject();
         const std::vector<std::string> subNames = selObj.getSubNames();
 
         // Check that there's not too many selection
@@ -136,12 +162,19 @@ void QuickMeasure::addSelectionToMeasurement()
         }
 
         if (subNames.empty()) {
-            measurement->addReference3D(obj, "");
-        }
-        else {
-            for (auto& subName : subNames) {
-                measurement->addReference3D(obj, subName);
+            if (isObjAcceptable(rootObj)) {
+                measurement->addReference3D(rootObj, "");
             }
+            continue;
+        }
+
+        for (auto& subName : subNames) {
+            App::DocumentObject* obj = rootObj->getSubObject(subName.c_str());
+
+            if (!isObjAcceptable(obj)) {
+                continue;
+            }
+            measurement->addReference3D(rootObj, subName);
         }
     }
 }
@@ -158,7 +191,8 @@ void QuickMeasure::printResult()
     else if (mtype == MeasureType::Volumes) {
         Base::Quantity area(measurement->area(), Base::Unit::Area);
         Base::Quantity vol(measurement->volume(), Base::Unit::Volume);
-        print(tr("Volume: %1, Area: %2").arg(vol.getSafeUserString()).arg(area.getSafeUserString()));
+        print(tr("Volume: %1, Area:
+    %2").arg(vol.getSafeUserString()).arg(area.getSafeUserString()));
     }*/
     else if (mtype == MeasureType::TwoPlanes) {
         Base::Quantity dist(measurement->planePlaneDistance(), Base::Unit::Length);
@@ -168,7 +202,8 @@ void QuickMeasure::printResult()
         Base::Quantity area(measurement->area(), Base::Unit::Area);
         print(tr("Area: %1").arg(area.getUserString()));
     }
-    else if (mtype == MeasureType::Cylinder || mtype == MeasureType::Sphere || mtype == MeasureType::Torus) {
+    else if (mtype == MeasureType::Cylinder || mtype == MeasureType::Sphere
+             || mtype == MeasureType::Torus) {
         Base::Quantity area(measurement->area(), Base::Unit::Area);
         Base::Quantity rad(measurement->radius(), Base::Unit::Length);
         print(tr("Area: %1, Radius: %2").arg(area.getSafeUserString(), rad.getSafeUserString()));
@@ -184,7 +219,8 @@ void QuickMeasure::printResult()
     else if (mtype == MeasureType::TwoLines) {
         Base::Quantity angle(measurement->angle(), Base::Unit::Length);
         Base::Quantity dist(measurement->length(), Base::Unit::Length);
-        print(tr("Angle: %1, Total length: %2").arg(angle.getSafeUserString(), dist.getSafeUserString()));
+        print(tr("Angle: %1, Total length: %2")
+                  .arg(angle.getSafeUserString(), dist.getSafeUserString()));
     }
     else if (mtype == MeasureType::Line) {
         Base::Quantity dist(measurement->length(), Base::Unit::Length);

@@ -108,8 +108,9 @@ public:
             const DocumentObject *filter=nullptr,const char **element=nullptr, GeoFeature **geo=nullptr);
 
     /**
-     * @brief Calculates the placement in the global reference coordinate system
+     * @brief Deprecated. Calculates the placement in the global reference coordinate system
      * 
+     * Deprecated: This does not handle App::Links correctly. Use getGlobalPlacement() instead.
      * In FreeCAD the GeoFeature placement describes the local placement of the object in its parent
      * coordinate system. This is however not always the same as the global reference system. If the
      * object is in a GeoFeatureGroup, hence in another local coordinate system, the Placement
@@ -148,7 +149,6 @@ public:
      * @return bool whether or not a direction is found.
      */
     virtual bool getCameraAlignmentDirection(Base::Vector3d& direction, const char* subname = nullptr) const;
-#ifdef FC_USE_TNP_FIX
     /** Search sub element using internal cached geometry
      *
      * @param element: element name
@@ -177,13 +177,17 @@ public:
 
     virtual std::vector<const char *> getElementTypes(bool all=true) const;
 
+    /// Return the higher level element names of the given element
+    virtual std::vector<Data::IndexedName> getHigherElements(const char *name, bool silent=false) const;
+
+    static Base::Placement getPlacementFromProp(DocumentObject* obj, const char* propName);
+    static Base::Placement getGlobalPlacement(DocumentObject* targetObj, DocumentObject* rootObj, const std::string& sub);
+    static Base::Placement getGlobalPlacement(DocumentObject* targetObj, PropertyXLinkSub* prop);
 
 protected:
     void onChanged(const Property* prop) override;
 //    void onDocumentRestored() override;
     void updateElementReference();
-#endif
-
 protected:
     ElementNamePair _getElementName(const char* name,
                                     const Data::MappedElement& mapped) const;

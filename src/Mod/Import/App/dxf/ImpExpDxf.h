@@ -122,7 +122,11 @@ protected:
     PyObject* getDraftModule()
     {
         if (DraftModule == nullptr) {
+            static int times = 0;
             DraftModule = PyImport_ImportModule("Draft");
+            if (DraftModule == nullptr && times++ == 0) {
+                ImportError("Unable to locate \"Draft\" module");
+            }
         }
         return DraftModule;
     }
@@ -143,8 +147,10 @@ protected:
         void operator=(const Layer&) = delete;
         void operator=(Layer&&) = delete;
         ~Layer() override;
-        PyObject* const DraftLayer;
         PyObject* const DraftLayerView;
+        std::vector<App::DocumentObject*> Contents;
+        void FinishLayer() const;
+        App::PropertyLinkListHidden* GroupContents;
     };
 
     using FeaturePythonBuilder =

@@ -64,32 +64,21 @@ short FeatureAddSub::mustExecute() const
     return PartDesign::Feature::mustExecute();
 }
 
-// TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
-TopoDS_Shape FeatureAddSub::refineShapeIfActive(const TopoDS_Shape& oldShape) const
-{
-    if (this->Refine.getValue()) {
-        try {
-            Part::BRepBuilderAPI_RefineModel mkRefine(oldShape);
-            TopoDS_Shape resShape = mkRefine.Shape();
-            if (!TopoShape(resShape).isClosed()) {
-                return oldShape;
-            }
-            return resShape;
-        }
-        catch (Standard_Failure&) {
-            return oldShape;
-        }
-    }
-
-    return oldShape;
-}
-
-TopoShape FeatureAddSub::refineShapeIfActive(const TopoShape& oldShape) const
+TopoShape FeatureAddSub::refineShapeIfActive(const TopoShape& oldShape, const RefineErrorPolicy onError) const
 {
     if (this->Refine.getValue()) {
         TopoShape shape(oldShape);
         //        this->fixShape(shape);        // Todo:  Not clear that this is required
-        return shape.makeElementRefine();
+        try{
+            return shape.makeElementRefine();
+        }
+        catch (Standard_Failure& err) {
+            if(onError == RefineErrorPolicy::Warn){
+                Base::Console().Warning((std::string("Refine failed: ") + err.GetMessageString()).c_str());
+            } else {
+                throw;
+            }
+        }
     }
     return oldShape;
 }

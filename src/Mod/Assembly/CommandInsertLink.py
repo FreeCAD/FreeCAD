@@ -80,7 +80,6 @@ class CommandInsertLink:
         if not assembly:
             return
         view = Gui.activeDocument().activeView()
-
         self.panel = TaskAssemblyInsertLink(assembly, view)
         Gui.Control.showDialog(self.panel)
 
@@ -92,6 +91,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
         self.assembly = assembly
         self.view = view
         self.doc = App.ActiveDocument
+        self.showHidden = False
 
         self.form = Gui.PySideUic.loadUi(":/panels/TaskAssemblyInsertLink.ui")
         self.form.installEventFilter(self)
@@ -99,6 +99,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
         pref = Preferences.preferences()
         self.form.CheckBox_ShowOnlyParts.setChecked(pref.GetBool("InsertShowOnlyParts", False))
+        self.form.CheckBox_RigidSubAsm.setChecked(pref.GetBool("InsertRigidSubAssemblies", True))
 
         # Actions
         self.form.openFileButton.clicked.connect(self.openFiles)
@@ -125,7 +126,32 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
         # if self.partMoving:
         #    self.endMove()
+        Gui.addModule("UtilsAssembly")
+        commands = "assembly = UtilsAssembly.activeAssembly()\n"
+        for insertionItem in self.insertionStack:
+            object = insertionItem["addedObject"]
+            translation = insertionItem["translation"]
+            commands = commands + (
+                f'item = assembly.newObject("App::Link", "{object.Name}")\n'
+                f'item.LinkedObject = App.ActiveDocument.getObject("{object.LinkedObject.Name}")\n'
+                f'item.Label = "{object.Label}"\n'
+            )
 
+            if translation != App.Vector():
+                commands = commands + (
+                    f"item.Placement.base = App.Vector({translation.x}."
+                    f"{translation.y},"
+                    f"{translation.z})\n"
+                )
+
+        # Ground the first item if that happened
+        if self.groundedObj:
+            commands = (
+                commands
+                + f'CommandCreateJoint.createGroundedJoint(App.ActiveDocument.getObject("{self.groundedObj.Name}"))\n'
+            )
+
+        Gui.doCommandSkip(commands[:-1])  # Get rid of last \n
         App.closeActiveTransaction()
         return True
 
@@ -141,6 +167,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
     def deactivated(self):
         pref = Preferences.preferences()
         pref.SetBool("InsertShowOnlyParts", self.form.CheckBox_ShowOnlyParts.isChecked())
+        pref.SetBool("InsertRigidSubAssemblies", self.form.CheckBox_RigidSubAsm.isChecked())
         Gui.Selection.clearSelection()
 
     def buildPartList(self):
@@ -171,6 +198,9 @@ class TaskAssemblyInsertLink(QtCore.QObject):
                     if obj in self.assembly.InListRecursive:
                         continue  # Prevent dependency loop.
                         # For instance if asm1/asm2 with asm2 active, we don't want to have asm1 in the list
+
+                    if not obj.ViewObject.ShowInTree and not self.showHidden:
+                        continue
 
                     if (
                         obj.isDerivedFrom("Part::Feature")
@@ -329,7 +359,16 @@ class TaskAssemblyInsertLink(QtCore.QObject):
                 print(selectedPart.Document.Name)
                 documentItem.setText(0, f"{newDocName}.FCStd")"""
 
-        addedObject = self.assembly.newObject("App::Link", selectedPart.Label)
+        if selectedPart.isDerivedFrom("Assembly::AssemblyObject"):
+            objType = "Assembly::AssemblyLink"
+        else:
+            objType = "App::Link"
+
+        addedObject = self.assembly.newObject(objType, selectedPart.Label)
+
+        if selectedPart.isDerivedFrom("Assembly::AssemblyObject"):
+            addedObject.Rigid = self.form.CheckBox_RigidSubAsm.isChecked()
+
         # set placement of the added object to the center of the screen.
         view = Gui.activeView()
         x, y = view.getSize()
@@ -541,8 +580,25 @@ class TaskAssemblyInsertLink(QtCore.QObject):
                         self.form.partList.setItemSelected(item, False)
 
                         return True
+            else:
+                menu = QtWidgets.QMenu()
+
+                # Add the checkbox action
+                showHiddenAction = QtWidgets.QAction("Show objects hidden in tree view", menu)
+                showHiddenAction.setCheckable(True)
+                showHiddenAction.setChecked(self.showHidden)
+
+                # Connect the action to toggle `self.showHidden`
+                showHiddenAction.toggled.connect(self.toggleShowHidden)
+                menu.addAction(showHiddenAction)
+                menu.exec_(event.globalPos())
+                return True
 
         return super().eventFilter(watched, event)
+
+    def toggleShowHidden(self, checked):
+        self.showHidden = checked
+        self.buildPartList()
 
     def getTranslationVec(self, part):
         bb = part.Shape.BoundBox

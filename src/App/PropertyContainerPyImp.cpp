@@ -63,7 +63,7 @@ PyObject*  PropertyContainerPy::getPropertyByName(PyObject *args)
 
     App::Property* prop = getPropertyContainerPtr()->getPropertyByName(pstr);
     if (!prop) {
-        PyErr_Format(PyExc_AttributeError, "Property container has no property '%s'", pstr);
+        PyErr_Format(Base::PyExc_FC_PropertyError, "Property container has no property '%s'", pstr);
         return nullptr;
     }
 

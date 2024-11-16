@@ -762,10 +762,18 @@ class _MeshGmshFromShape(CommandManager):
             "ObjectsFem.makeMeshGmsh(FreeCAD.ActiveDocument, '" + mesh_obj_name + "')"
         )
         FreeCADGui.doCommand(
-            "FreeCAD.ActiveDocument.ActiveObject.Part = FreeCAD.ActiveDocument.{}".format(
+            "FreeCAD.ActiveDocument.ActiveObject.Shape = FreeCAD.ActiveDocument.{}".format(
                 self.selobj.Name
             )
         )
+        FreeCADGui.doCommand("FreeCAD.ActiveDocument.ActiveObject.ElementOrder = '2nd'")
+        # SecondOrderLinear gives much better meshes in the regard of
+        # nonpositive jacobians but on curved faces the constraint nodes
+        # will no longer found thus standard will be False
+        # https://forum.freecad.org/viewtopic.php?t=41738
+        # https://forum.freecad.org/viewtopic.php?f=18&t=45260&start=20#p389494
+        FreeCADGui.doCommand("FreeCAD.ActiveDocument.ActiveObject.SecondOrderLinear = False")
+
         # Gmsh mesh object could be added without an active analysis
         # but if there is an active analysis move it in there
         import FemGui
@@ -778,9 +786,7 @@ class _MeshGmshFromShape(CommandManager):
         FreeCADGui.doCommand(
             "FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)"
         )
-        FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
 
 
 class _MeshGroup(CommandManager):
@@ -811,19 +817,29 @@ class _MeshNetgenFromShape(CommandManager):
     def Activated(self):
         # a mesh could be made with and without an analysis,
         # we're going to check not for an analysis in command manager module
+        netgen_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Netgen")
         FreeCAD.ActiveDocument.openTransaction("Create FEM mesh Netgen")
         mesh_obj_name = "FEMMeshNetgen"
         # if requested by some people add Preference for this
         # mesh_obj_name = sel[0].Name + "_Mesh"
         FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand(
-            "ObjectsFem.makeMeshNetgen(FreeCAD.ActiveDocument, '" + mesh_obj_name + "')"
-        )
+        if netgen_prefs.GetBool("UseLegacyNetgen", 1):
+            FreeCADGui.doCommand(
+                "ObjectsFem.makeMeshNetgenLegacy(FreeCAD.ActiveDocument, '" + mesh_obj_name + "')"
+            )
+        else:
+            FreeCADGui.doCommand(
+                "ObjectsFem.makeMeshNetgen(FreeCAD.ActiveDocument, '" + mesh_obj_name + "')"
+            )
+            FreeCADGui.doCommand("FreeCAD.ActiveDocument.ActiveObject.EndStep = 'OptimizeVolume'")
+
         FreeCADGui.doCommand(
             "FreeCAD.ActiveDocument.ActiveObject.Shape = FreeCAD.ActiveDocument.{}".format(
                 self.selobj.Name
             )
         )
+        FreeCADGui.doCommand("FreeCAD.ActiveDocument.ActiveObject.Fineness = 'Moderate'")
+
         # Netgen mesh object could be added without an active analysis
         # but if there is an active analysis move it in there
         import FemGui
@@ -836,7 +852,6 @@ class _MeshNetgenFromShape(CommandManager):
         FreeCADGui.doCommand(
             "FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)"
         )
-        FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Selection.clearSelection()
         # a recompute immediately starts meshing when task panel is opened, this is not intended
 
@@ -946,7 +961,7 @@ class _SolverCalculixContextManager:
         )
         FreeCADGui.doCommand(
             "{}.IterationsControlParameterTimeUse = {}".format(
-                self.cli_name, ccx_prefs.GetInt("UseNonCcxIterationParam", False)
+                self.cli_name, ccx_prefs.GetBool("UseNonCcxIterationParam", False)
             )
         )
         FreeCADGui.doCommand(

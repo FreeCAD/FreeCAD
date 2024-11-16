@@ -56,7 +56,12 @@
 #include <Base/Stream.h>
 #include <Base/XMLTools.h>
 
+#ifndef XERCES_CPP_NAMESPACE_BEGIN
+#define XERCES_CPP_NAMESPACE_QUALIFIER
+using namespace XERCES_CPP_NAMESPACE;
+#else
 XERCES_CPP_NAMESPACE_USE
+#endif
 using namespace App;
 
 namespace {

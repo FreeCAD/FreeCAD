@@ -94,7 +94,7 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
         ("User parameter:BaseApp/Preferences/Expression")->GetBool("NoSystemBackground", false);
 
     if (noBackground) {
-#if defined(Q_OS_MAC)
+#if defined(Q_OS_MACOS)
         setWindowFlags(Qt::Widget | Qt::Popup | Qt::FramelessWindowHint);
 #else
         setWindowFlags(Qt::SubWindow | Qt::Widget | Qt::Popup | Qt::FramelessWindowHint);
@@ -118,6 +118,15 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
 
 DlgExpressionInput::~DlgExpressionInput()
 {
+    disconnect(ui->checkBoxVarSets, &QCheckBox::stateChanged,
+               this, &DlgExpressionInput::onCheckVarSets);
+    disconnect(ui->comboBoxVarSet, qOverload<int>(&QComboBox::currentIndexChanged),
+               this, &DlgExpressionInput::onVarSetSelected);
+    disconnect(ui->lineEditGroup, &QLineEdit::textChanged,
+               this, &DlgExpressionInput::onTextChangedGroup);
+    disconnect(ui->lineEditPropNew, &QLineEdit::textChanged,
+               this, &DlgExpressionInput::namePropChanged);
+
     delete ui;
 }
 
@@ -425,6 +434,11 @@ static bool isNamePropOk(const QString& nameProp, App::DocumentObject* obj,
     if (name != Base::Tools::getIdentifier(name)) {
         message << "Invalid property name (must only contain alphanumericals, underscore, "
                 << "and must not start with digit";
+        return false;
+    }
+
+    if (ExpressionParser::isTokenAUnit(name) || ExpressionParser::isTokenAConstant(name)) {
+        message << name << " is a reserved word";
         return false;
     }
 

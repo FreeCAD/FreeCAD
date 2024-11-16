@@ -64,7 +64,7 @@ class ArchGrid:
         if not "Columns" in pl:
             obj.addProperty("App::PropertyInteger","Columns","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'The number of columns'))
         if not "RowSize" in pl:
-            obj.addProperty("App::PropertyFloatList","RowSize","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'The sizes for rows'))
+            obj.addProperty("App::PropertyFloatList","RowSize","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'The sizes of rows'))
         if not "ColumnSize" in pl:
             obj.addProperty("App::PropertyFloatList","ColumnSize","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'The sizes of columns'))
         if not "Spans" in pl:

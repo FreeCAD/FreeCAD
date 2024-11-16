@@ -97,6 +97,11 @@ static bool isVisibilityIconEnabled() {
     return TreeParams::getVisibilityIcon();
 }
 
+static bool isOnlyNameColumnDisplayed() {
+    return TreeParams::getHideInternalNames() 
+        && TreeParams::getHideColumn();
+}
+
 static bool isSelectionCheckBoxesEnabled() {
     return TreeParams::getCheckBoxesSelection();
 }
@@ -478,19 +483,18 @@ void TreeWidgetItemDelegate::paint(QPainter *painter,
     auto tree = static_cast<TreeWidget*>(parent());
     auto style = tree->style();
 
-    // If the second column is not shown, we'll trim the color background when
+    // If only the first column is shown, we'll trim the color background when
     // rendering as transparent overlay.
-
-    bool trimBG = TreeParams::getHideColumn() || TreeParams::getHideInternalNames();
+    bool trimColumnSize = isOnlyNameColumnDisplayed(); 
 
     if (index.column() == 0) {
         if (tree->testAttribute(Qt::WA_NoSystemBackground)
-                && (trimBG || (opt.backgroundBrush.style() == Qt::NoBrush
+                && (trimColumnSize || (opt.backgroundBrush.style() == Qt::NoBrush
                                 && _TreeItemBackground.style() != Qt::NoBrush)))
         {
             QRect rect = calculateItemRect(option);
 
-            if (trimBG && opt.backgroundBrush.style() == Qt::NoBrush) {
+            if (trimColumnSize && opt.backgroundBrush.style() == Qt::NoBrush) {
                 painter->fillRect(rect, _TreeItemBackground);
             } else if (!opt.state.testFlag(QStyle::State_Selected)) {
                 painter->fillRect(rect, _TreeItemBackground);
@@ -527,7 +531,7 @@ void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem *option,
         );
     }
 
-    if (TreeParams::getHideColumn()) {
+    if (isOnlyNameColumnDisplayed()) {
         option->rect = calculateItemRect(*option);
 
         // we need to extend this shape a bit, 3px on each side
@@ -1673,10 +1677,6 @@ void TreeWidget::keyPressEvent(QKeyEvent* event)
 
 void TreeWidget::mousePressEvent(QMouseEvent* event)
 {
-    QTreeWidget::mousePressEvent(event);
-
-    // Handle the visibility icon after the normal event processing to not interfere with
-    // the selection logic.
     if (isVisibilityIconEnabled()) {
         QTreeWidgetItem* item = itemAt(event->pos());
         if (item && item->type() == TreeWidget::ObjectType && event->button() == Qt::LeftButton) {
@@ -1724,12 +1724,11 @@ void TreeWidget::mousePressEvent(QMouseEvent* event)
                     visible = obj->Visibility.getValue();
                     obj->Visibility.setValue(!visible);
                 }
-
-                event->setAccepted(true);
-                return;
             }
         }
     }
+
+    QTreeWidget::mousePressEvent(event);
 }
 
 void TreeWidget::mouseDoubleClickEvent(QMouseEvent* event)
@@ -2983,8 +2982,12 @@ void TreeWidget::onUpdateStatus()
 
     std::vector<App::DocumentObject*> errors;
 
+    // Use a local copy in case of nested calls
+    auto localNewObjects = NewObjects;
+    NewObjects.clear();
+
     // Checking for new objects
-    for (auto& v : NewObjects) {
+    for (auto& v : localNewObjects) {
         auto doc = App::GetApplication().getDocument(v.first.c_str());
         if (!doc)
             continue;
@@ -3007,10 +3010,13 @@ void TreeWidget::onUpdateStatus()
                 docItem->createNewItem(*vpd);
         }
     }
-    NewObjects.clear();
+
+    // Use a local copy in case of nested calls
+    auto localChangedObjects = ChangedObjects;
+    ChangedObjects.clear();
 
     // Update children of changed objects
-    for (auto& v : ChangedObjects) {
+    for (auto& v : localChangedObjects) {
         auto obj = v.first;
 
         auto iter = ObjectTable.find(obj);
@@ -3036,7 +3042,6 @@ void TreeWidget::onUpdateStatus()
 
         updateChildren(iter->first, iter->second, v.second.test(CS_Output), false);
     }
-    ChangedObjects.clear();
 
     FC_LOG("update item status");
     TimingInit();
@@ -3791,7 +3796,7 @@ void DocumentItem::slotInEdit(const Gui::ViewProviderDocumentObject& v)
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/TreeView");
-    unsigned long col = hGrp->GetUnsigned("TreeEditColor", 4294902015);
+    unsigned long col = hGrp->GetUnsigned("TreeEditColor", 563609599);
     QColor color(App::Color::fromPackedRGB<QColor>(col));
 
     if (!getTree()->editingItem) {
@@ -5234,7 +5239,7 @@ void DocumentObjectItem::setHighlight(bool set, Gui::HighlightMode high) {
             f.setUnderline(underlined);
             f.setOverline(overlined);
 
-            unsigned long col = hGrp->GetUnsigned("TreeActiveColor", 3873898495);
+            unsigned long col = hGrp->GetUnsigned("TreeActiveColor", 1538528255);
             color = App::Color::fromPackedRGB<QColor>(col);
         }
         else {
@@ -5418,9 +5423,10 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
 
         if (currentStatus & Status::External) {
             static QPixmap pxExternal;
+            int px = 12 * getMainWindow()->devicePixelRatioF();
             if (pxExternal.isNull()) {
                 pxExternal = Gui::BitmapFactory().pixmapFromSvg("LinkOverlay",
-                                                              QSize(24, 24));
+                                                              QSize(px, px));
             }
             pxOff = BitmapFactory().merge(pxOff, pxExternal, BitmapFactoryInst::BottomRight);
             pxOn = BitmapFactory().merge(pxOn, pxExternal, BitmapFactoryInst::BottomRight);

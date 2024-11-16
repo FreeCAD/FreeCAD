@@ -29,7 +29,7 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief base object for FEM Element Features
 
-
+from FreeCAD import Base
 from . import base_fempythonobject
 
 _PropHelper = base_fempythonobject._PropHelper
@@ -50,7 +50,7 @@ class BaseFemElement(base_fempythonobject.BaseFemPythonObject):
 
         prop.append(
             _PropHelper(
-                type="App::PropertyLinkSubList",
+                type="App::PropertyLinkSubListGlobal",
                 name="References",
                 group="Element",
                 doc="List of element shapes",
@@ -59,3 +59,15 @@ class BaseFemElement(base_fempythonobject.BaseFemPythonObject):
         )
 
         return prop
+
+    def onDocumentRestored(self, obj):
+        # update old project with new properties
+        for prop in self._get_properties():
+            try:
+                obj.getPropertyByName(prop.name)
+            except Base.PropertyError:
+                prop.add_to_object(obj)
+
+            if prop.name == "References":
+                # change References to App::PropertyLinkSubListGlobal
+                prop.handle_change_type(obj, old_type="App::PropertyLinkSubList")

@@ -43,13 +43,9 @@ TEST_F(FeatureOffsetTest, testOffset3D)
     EXPECT_EQ(getVolume(_offset->Shape.getShape().getShape()), 60);
     EXPECT_TRUE(boxesMatch(bb, Base::BoundBox3d(-1, -1, -1, 2, 3, 4)));
     // Assert correct element Map
-#ifdef FC_USE_TNP_FIX
     EXPECT_EQ(_offset->Shape.getShape().countSubElements("Vertex"), 8);
     EXPECT_EQ(_offset->Shape.getShape().countSubElements("Edge"), 12);
     EXPECT_EQ(_offset->Shape.getShape().countSubElements("Face"), 6);
-#else
-    EXPECT_EQ(_offset->Shape.getShape().getElementMapSize(), 0);
-#endif
 }
 
 TEST_F(FeatureOffsetTest, testOffset3DWithExistingElementMap)
@@ -72,13 +68,9 @@ TEST_F(FeatureOffsetTest, testOffset3DWithExistingElementMap)
     EXPECT_EQ(getVolume(_offset->Shape.getShape().getShape()), 245);
     EXPECT_TRUE(boxesMatch(bb, Base::BoundBox3d(-2, -2, -2, 3, 5, 5)));
     // Assert correct element Map
-#ifdef FC_USE_TNP_FIX
     EXPECT_EQ(_offset->Shape.getShape().countSubElements("Vertex"), 8);
     EXPECT_EQ(_offset->Shape.getShape().countSubElements("Edge"), 12);
     EXPECT_EQ(_offset->Shape.getShape().countSubElements("Face"), 6);
-#else
-    EXPECT_EQ(_offset->Shape.getShape().getElementMapSize(), 0);
-#endif
 }
 
 TEST_F(FeatureOffsetTest, testOffset2D)

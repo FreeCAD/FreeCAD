@@ -65,7 +65,7 @@ PyObject* initModule()
 PyMOD_INIT_FUNC(Materials)
 {
 #ifdef FC_DEBUG
-    App::CleanupProcess::registerCleanup([](){
+    App::CleanupProcess::registerCleanup([]() {
         Materials::MaterialManager::cleanup();
         Materials::ModelManager::cleanup();
     });
@@ -83,6 +83,7 @@ PyMOD_INIT_FUNC(Materials)
     Base::Interpreter().addType(&Materials::UUIDsPy::Type, module, "UUIDs");
 
 
+    // clang-format off
     // Initialize types
 
     Materials::Material                 ::init();
@@ -105,6 +106,7 @@ PyMOD_INIT_FUNC(Materials)
     Materials::Material3DArray          ::init();
 
     Materials::PropertyMaterial         ::init();
+    // clang-format on
 
     PyMOD_Return(module);
 }

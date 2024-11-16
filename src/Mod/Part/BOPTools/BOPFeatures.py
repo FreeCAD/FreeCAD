@@ -103,10 +103,12 @@ class BOPFeatures:
 
     def copy_visual_attributes(self, target, source):
         if target.ViewObject:
-            target.ViewObject.ShapeAppearance = source.ViewObject.ShapeAppearance
+            if hasattr(target.ViewObject,"ShapeAppearance") and hasattr(source.ViewObject, "ShapeAppearance"):
+                target.ViewObject.ShapeAppearance = source.ViewObject.ShapeAppearance
             displayMode = source.ViewObject.DisplayMode
             src = source
             while displayMode == "Link":
                 src = src.LinkedObject
                 displayMode = src.ViewObject.DisplayMode
-            target.ViewObject.DisplayMode = displayMode
+            if displayMode in target.ViewObject.getEnumerationsOfProperty("DisplayMode"):
+                target.ViewObject.DisplayMode = displayMode

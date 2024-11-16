@@ -34,6 +34,8 @@ import tempfile
 from PySide import QtGui, QtCore
 from PySide.QtGui import QApplication
 
+from PartDesignTests.TestMaterial import TestMaterial
+
 #timer runs this class in order to access modal dialog
 class CallableCheckWorkflow:
     def __init__(self, test):

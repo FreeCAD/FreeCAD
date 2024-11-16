@@ -2282,6 +2282,16 @@ bool Link::canLinkProperties() const {
     return true;
 }
 
+bool Link::isLink() const
+{
+    return ElementCount.getValue() == 0;
+}
+
+bool Link::isLinkGroup() const
+{
+    return ElementCount.getValue() > 0;
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////
 
 namespace App {
@@ -2307,6 +2317,29 @@ bool LinkElement::canDelete() const {
 
     auto owner = getContainer();
     return !owner || !owner->getDocument()->getObjectByID(_LinkOwner.getValue());
+}
+
+bool LinkElement::isLink() const
+{
+    return true;
+}
+
+App::Link* LinkElement::getLinkGroup() const
+{
+    std::vector<App::DocumentObject*> inList = getInList();
+    for (auto* obj : inList) {
+        auto* link = dynamic_cast<App::Link*>(obj);
+        if (!link) {
+            continue;
+        }
+        std::vector<App::DocumentObject*> elts = link->ElementList.getValues();
+        for (auto* elt : elts) {
+            if (elt == this) {
+                return link;
+            }
+        }
+    }
+    return nullptr;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////

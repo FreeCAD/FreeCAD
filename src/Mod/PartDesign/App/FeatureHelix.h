@@ -56,6 +56,7 @@ public:
     App::PropertyEnumeration Mode;
     App::PropertyBool        Outside;
     App::PropertyBool        HasBeenEdited;
+    App::PropertyFloatConstraint   Tolerance;
 
     /** if this property is set to a valid link, both Axis and Base properties
      *  are calculated according to the linked line
@@ -80,7 +81,7 @@ protected:
     void updateAxis();
 
     /// generate helix and move it to the right location.
-    TopoDS_Shape generateHelixPath();
+    TopoDS_Shape generateHelixPath(double breakAtTurn = 1.);
 
     // project shape on plane. Used for detecting self intersection.
     TopoDS_Shape projectShape(const TopoDS_Shape& input, const gp_Ax2& plane);
@@ -95,6 +96,7 @@ protected:
 
     static const App::PropertyFloatConstraint::Constraints floatTurns;
     static const App::PropertyAngle::Constraints floatAngle;
+    static const App::PropertyFloatConstraint::Constraints floatTolerance;
 
 private:
     static const char* ModeEnums[];
