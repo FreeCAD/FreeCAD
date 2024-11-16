@@ -51,12 +51,9 @@ from draftutils.translate import translate
 class Line(gui_base_original.Creator):
     """Gui command for the Line tool."""
 
-    def __init__(self, wiremode=False, leader=False):
+    def __init__(self, mode="line"):
         super().__init__()
-        self.isWire = wiremode
-        self.isLeader = leader
-        if leader:
-            self.isWire = True
+        self.mode = mode
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -73,13 +70,14 @@ class Line(gui_base_original.Creator):
             title = translate("draft", name)
         else:
             title = task_title
-        if self.isWire:
+        if self.mode == "wire":
             self.ui.wireUi(title=title, icon=icon)
-        else:
-            self.ui.lineUi(title=title, icon=icon)
-        if self.isLeader:
+        elif self.mode == "leader":
+            self.ui.wireUi(title=title, icon=icon)
             self.ui.closeButton.hide()
             self.ui.hasFill.hide()
+        else:
+            self.ui.lineUi(title=title, icon=icon)
 
         self.obj = self.doc.addObject("Part::Feature", self.featureName)
         gui_utils.format_object(self.obj)
@@ -126,7 +124,7 @@ class Line(gui_base_original.Creator):
                 self.pos = arg["Position"]
                 self.node.append(self.point)
                 self.drawSegment(self.point)
-                if not self.isWire and len(self.node) == 2:
+                if self.mode == "line" and len(self.node) == 2:
                     self.finish(cont=None, closed=False)
                 if len(self.node) > 2:
                     # The wire is closed
@@ -242,7 +240,7 @@ class Line(gui_base_original.Creator):
             newseg = Part.LineSegment(last, point).toShape()
             self.obj.Shape = newseg
             self.obj.ViewObject.Visibility = True
-            if self.isWire:
+            if self.mode != "line":
                 _toolmsg(translate("draft", "Pick next point"))
         else:
             currentshape = self.obj.Shape.copy()
@@ -285,7 +283,7 @@ class Line(gui_base_original.Creator):
         self.point = App.Vector(numx, numy, numz)
         self.node.append(self.point)
         self.drawSegment(self.point)
-        if not self.isWire and len(self.node) == 2:
+        if self.mode == "line" and len(self.node) == 2:
             self.finish(cont=None, closed=False)
         self.ui.setNextFocus()
 
@@ -297,12 +295,12 @@ class Wire(Line):
     """Gui command for the Wire or Polyline tool.
 
     It inherits the `Line` class, and calls essentially the same code,
-    only this time the `wiremode` is set to `True`,
+    only this time the `mode` is set to `"wire"`,
     so we are allowed to place more than two points.
     """
 
     def __init__(self):
-        super().__init__(wiremode=True)
+        super().__init__(mode="wire")
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
