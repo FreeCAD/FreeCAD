@@ -160,7 +160,7 @@ public:
                 throw Base::ValueError("Sketcher: Carbon Copy: Invalid object in selection");
             }
 
-            std::string sketchArchType ("Sketcher::SketchObjectPython");
+            std::string sketchArchType("Sketcher::SketchObjectPython");
 
             if (obj->is<Sketcher::SketchObject>()
                 || sketchArchType.compare(obj->getTypeId().getName()) == 0) {
