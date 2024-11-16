@@ -2423,7 +2423,8 @@ def getUID(obj,preferences):
                 obj.IfcData = d
             if hasattr(obj, "GlobalId"):
                 obj.GlobalId = uid
-    uids.append(uid)
+    if "uids" in globals():
+        uids.append(uid)
     return uid
 
 
@@ -2529,15 +2530,8 @@ def create_annotation(anno, ifcfile, context, history, preferences):
                 axes.append(axis)
             if axes:
                 if len(axes) > 1:
-                    xvc =  ifcbin.createIfcDirection((1.0,0.0,0.0))
-                    zvc =  ifcbin.createIfcDirection((0.0,0.0,1.0))
-                    ovc =  ifcbin.createIfcCartesianPoint((0.0,0.0,0.0))
-                    gpl =  ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
-                    plac = ifcbin.createIfcLocalPlacement(gpl)
-                    grid = ifcfile.createIfcGrid(uid,history,name,description,None,plac,None,axes,None,None)
-                    return grid
-                else:
-                    return axes[0]
+                    print("DEBUG: exportIFC.create_annotation: Cannot create more thna one axis",anno.Label)
+                return axes[0]
             else:
                 print("Unable to handle object",anno.Label)
                 return None

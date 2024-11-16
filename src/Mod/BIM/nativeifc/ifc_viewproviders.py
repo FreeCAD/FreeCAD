@@ -22,6 +22,7 @@
 
 
 import FreeCADGui
+import ArchBuildingPart
 
 
 class ifc_vp_object:
@@ -70,22 +71,7 @@ class ifc_vp_object:
                 obj.ViewObject.DiffuseColor = colors
 
     def getIcon(self):
-        from PySide import QtCore, QtGui  # lazy import
-
-        rclass = self.Object.IfcClass.replace("StandardCase","")
-        rclass = self.Object.IfcClass.replace("Type","")
-        ifcicon = ":/icons/IFC/" + rclass + ".svg"
-        if QtCore.QFile.exists(ifcicon):
-            if getattr(self, "ifcclass", "") != rclass:
-                self.ifcclass = rclass
-                self.ifcicon = overlay(ifcicon, ":/icons/IFC.svg")
-            return getattr(self, "ifcicon", overlay(ifcicon, ":/icons/IFC.svg"))
-        elif self.Object.IfcClass == "IfcGroup":
-            return QtGui.QIcon.fromTheme("folder", QtGui.QIcon(":/icons/folder.svg"))
-        elif self.Object.ShapeMode == "Shape":
-            return ":/icons/IFC_object.svg"
-        else:
-            return ":/icons/IFC_mesh.svg"
+        return get_icon(self)
 
     def claimChildren(self):
         if hasattr(self.Object, "Group"):
@@ -632,6 +618,13 @@ class ifc_vp_material:
         self.Object.Document.recompute()
 
 
+class ifc_vp_buildingpart(ifc_vp_object, ArchBuildingPart.ViewProviderBuildingPart):
+    """A vp that inherits the Arch BuildingPart vp, but keeps aggregating properties of ifc vp"""
+
+    def __init__(self, vobj):
+        ArchBuildingPart.ViewProviderBuildingPart.__init__(self,vobj)
+
+
 def overlay(icon1, icon2):
     """Overlays icon2 onto icon1"""
 
@@ -678,3 +671,27 @@ def get_filepath(project):
         project.IfcFilePath = sf
         return sf
     return None
+
+
+def get_icon(vp):
+    """Returns an icon for a view provider"""
+
+    from PySide import QtCore, QtGui  # lazy import
+
+    if hasattr(vp, "Object"):
+        if hasattr(vp.Object, "IfcClass"):
+            rclass = vp.Object.IfcClass.replace("StandardCase","")
+            rclass = vp.Object.IfcClass.replace("Type","")
+            ifcicon = ":/icons/IFC/" + rclass + ".svg"
+            if QtCore.QFile.exists(ifcicon):
+                if getattr(self, "ifcclass", "") != rclass:
+                    vp.ifcclass = rclass
+                    vp.ifcicon = overlay(ifcicon, ":/icons/IFC.svg")
+                return getattr(vp, "ifcicon", overlay(ifcicon, ":/icons/IFC.svg"))
+            elif vp.Object.IfcClass == "IfcGroup":
+                return QtGui.QIcon.fromTheme("folder", QtGui.QIcon(":/icons/folder.svg"))
+            elif vp.Object.ShapeMode == "Shape":
+                return ":/icons/IFC_object.svg"
+            else:
+                return ":/icons/IFC_mesh.svg"
+    return ":/icons/IFC_object.svg"

@@ -194,11 +194,10 @@ def get_object_type(ifcentity, objecttype=None):
                 objecttype = "text"
         elif ifcentity.is_a("IfcGridAxis"):
             objecttype = "axis"
-<<<<<<< HEAD
         elif ifcentity.is_a("IfcControl"):
             objecttype = "schedule"
-=======
->>>>>>> f85d9014ba (BIM: NativeIFC 2D support - axes)
+        elif ifcentity.is_a() in ["IfcBuilding", "IfcBuildingStorey"]:
+            objecttype = "buildingpart"
     return objecttype
 
 

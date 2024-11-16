@@ -61,6 +61,7 @@ from nativeifc import ifc_export
 from nativeifc import ifc_psets
 
 from draftviewproviders import view_layer
+import ArchBuildingPart
 from PySide import QtCore
 
 SCALE = 1000.0  # IfcOpenShell works in meters, FreeCAD works in mm
@@ -396,7 +397,7 @@ def assign_groups(children, ifcfile=None):
 
 
 def get_children(
-    obj, ifcfile=None, only_structure=False, assemblies=True, expand=False, iftype=None
+    obj, ifcfile=None, only_structure=False, assemblies=True, expand=False, ifctype=None
 ):
     """Returns the direct descendants of an object"""
 
@@ -417,7 +418,7 @@ def get_children(
     result = filter_elements(
         children, ifcfile, expand=expand, spaces=True, assemblies=assemblies
     )
-    if iftype:
+    if ifctype:
         result = [r for r in result if r.is_a(ifctype)]
     return result
 
@@ -524,6 +525,7 @@ def add_object(document, otype=None, oname="IfcObject"):
     'sectionplane',
     'axis',
     'schedule'
+    'buildingpart'
     or anything else for a standard IFC object"""
 
     if not document:
@@ -572,6 +574,16 @@ def add_object(document, otype=None, oname="IfcObject"):
         proxy = ifc_objects.ifc_object(otype)
         vproxy = ifc_viewproviders.ifc_vp_document()
         obj = document.addObject("Part::FeaturePython", oname, proxy, vproxy, False)
+    elif otype == "buildingpart":
+        obj = Arch.makeBuildingPart()
+        if obj.ViewObject:
+            obj.ViewObject.ShowLevel = False
+            obj.ViewObject.ShowLabel = False
+            obj.ViewObject.Proxy = ifc_viewproviders.ifc_vp_buildingpart(obj.ViewObject)
+        for p in obj.PropertiesList:
+            if obj.getGroupOfProperty(p) in ["BuildingPart","IFC Attributes","Children"]:
+                obj.removeProperty(p)
+        obj.Proxy = ifc_objects.ifc_object(otype)
     else:  # default case, standard IFC object
         proxy = ifc_objects.ifc_object(otype)
         vproxy = ifc_viewproviders.ifc_vp_object()
@@ -701,6 +713,12 @@ def add_properties(
                 setattr(obj, attr, [value])
                 setattr(obj, attr, value)
                 setattr(obj, attr, items)
+        elif attr in ["RefLongitude", "RefLatitude"]:
+            obj.addProperty("App::PropertyFloat", attr, "IFC")
+            if value is not None:
+                # convert from list of 4 ints
+                value = value[0] + value[1]/60. + value[2]/3600. + value[3]/3600.e6
+                setattr(obj, attr, value)
         else:
             if attr not in obj.PropertiesList:
                 obj.addProperty("App::PropertyString", attr, "IFC")
@@ -933,6 +951,12 @@ def set_attribute(ifcfile, element, attribute, value):
                 product = api_run(cmd, ifcfile, product=element, ifc_class=value)
                 # TODO fix attributes
                 return product
+    if attribute in ["RefLongitude", "RefLatitude"]:
+      c = [int(value)]
+      c.append(int((value - c[0]) * 60))
+      c.append(int(((value - c[0]) * 60 - c[1]) * 60))
+      c.append(int((((value - c[0]) * 60 - c[1]) * 60 - c[2]) * 1.e6))
+      value = c
     cmd = "attribute.edit_attributes"
     attribs = {attribute: value}
     if hasattr(element, attribute):
@@ -1229,6 +1253,9 @@ def aggregate(obj, parent, mode=None):
             aggregate(child, newobj)
         elif hasattr(child,"Hosts") and obj in child.Hosts:
             #op = create_product(child, newobj, ifcfile, ifcclass="IfcOpeningElement")
+            aggregate(child, newobj)
+    for child in getattr(obj, "Group", []):
+        if newobj.IfcClass == "IfcGroup" and child in obj.Group:
             aggregate(child, newobj)
     delete = not (PARAMS.GetBool("KeepAggregated", False))
     if new and delete and base:

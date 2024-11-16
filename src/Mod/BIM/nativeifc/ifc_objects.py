@@ -28,7 +28,7 @@ translate = FreeCAD.Qt.translate
 
 # the property groups below should not be treated as psets
 NON_PSETS = ["Base", "IFC", "", "Geometry", "Dimension", "Linear/radial dimension",
-             "SectionPlane", "Axis", "PhysicalProperties"]
+             "SectionPlane", "Axis", "PhysicalProperties", "BuildingPart", "IFC Attributes"]
 
 class ifc_object:
     """Base class for all IFC-based objects"""
