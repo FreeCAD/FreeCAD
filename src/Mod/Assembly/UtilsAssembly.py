@@ -1223,6 +1223,24 @@ def addVertexToReference(ref, vertex_name):
     return ref
 
 
+def createPart(partName, doc):
+    if not doc:
+        raise ValueError("No active document to add a part to.")
+
+    part = doc.addObject("App::Part", partName)
+    body = part.newObject("PartDesign::Body", "Body")
+    # Gui.ActiveDocument.ActiveView.setActiveObject('pdbody', body)
+    sketch = body.newObject("Sketcher::SketchObject", "Sketch")
+    sketch.MapMode = "FlatFace"
+    sketch.AttachmentSupport = [(body.Origin.OriginFeatures[3], "")]  # XY_Plane
+
+    # add a circle as a base shape for visualisation
+    sketch.addGeometry(Part.Circle(App.Vector(0, 0), App.Vector(0, 0, 1), 5), False)
+    doc.recompute()
+
+    return part, body
+
+
 def getLinkGroup(linkElement):
     if linkElement.TypeId == "App::LinkElement":
         for obj in linkElement.InList:

@@ -9,6 +9,7 @@ set(Assembly_Scripts
     CommandCreateAssembly.py
     CommandCreateBom.py
     CommandInsertLink.py
+    CommandInsertNewPart.py
     CommandSolveAssembly.py
     CommandCreateJoint.py
     CommandCreateView.py
