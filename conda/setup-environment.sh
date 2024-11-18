@@ -1,5 +1,8 @@
 #!/bin/sh
 
+set -e
+set -x
+
 # create the conda environment as a subdirectory
 mamba env create -p .conda/freecad -f conda/conda-env.yaml
 
