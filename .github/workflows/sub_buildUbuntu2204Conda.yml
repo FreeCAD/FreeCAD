@@ -81,6 +81,7 @@ jobs:
           channel-priority: true
           miniforge-version: latest
           mamba-version: "*"
+          use-mamba: true
       - name: Install FreeCAD dependencies
         env:
           CONDA_VERBOSITY: 2
