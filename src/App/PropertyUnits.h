@@ -23,7 +23,6 @@
 #ifndef APP_PROPERTYUNITS_H
 #define APP_PROPERTYUNITS_H
 
-#include <Base/Quantity.h>
 #include <Base/Unit.h>
 
 #include "PropertyStandard.h"
@@ -31,6 +30,7 @@
 
 namespace Base {
 class Writer;
+class Quantity;
 }
 
 namespace App

@@ -330,7 +330,7 @@ bool FileInfo::hasExtension(const char* Ext) const
 #endif
 }
 
-bool FileInfo::hasExtension(std::initializer_list<const char*> Exts) const
+bool FileInfo::hasExtension(const std::initializer_list<const char*> Exts) const
 {
     return std::any_of(Exts.begin(), Exts.end(), [this](const char* ext) {
         return hasExtension(ext);

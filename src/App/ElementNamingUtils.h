@@ -2,7 +2,6 @@
 #define ELEMENT_NAMING_UTILS_H
 
 #include <string>
-#include <utility>
 #include "FCGlobal.h"
 
 namespace App
