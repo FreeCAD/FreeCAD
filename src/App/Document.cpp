@@ -3989,14 +3989,14 @@ void Document::_removeObject(DocumentObject* pcObject)
     if (!d->rollback && d->activeUndoTransaction) {
         // Undo stuff
         signalTransactionRemove(*pcObject, d->activeUndoTransaction);
+        breakDependency(pcObject, true);
         d->activeUndoTransaction->addObjectNew(pcObject);
     }
     else {
         // for a rollback delete the object
         signalTransactionRemove(*pcObject, 0);
+        breakDependency(pcObject, true);
     }
-
-    breakDependency(pcObject, true);
 
     // remove from map
     pcObject->setStatus(ObjectStatus::Remove, false);  // Unset the bit to be on the safe side
