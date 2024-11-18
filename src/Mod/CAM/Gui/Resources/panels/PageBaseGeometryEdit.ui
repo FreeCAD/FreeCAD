@@ -56,7 +56,7 @@
       </sizepolicy>
      </property>
      <property name="toolTip">
-      <string>Select one or more features in the 3d view and press 'Add' to add them as the base items for this operation. Selected features can be deleted entirely.</string>
+      <string>Select one or more features in the 3D view and press 'Add' to add them as the base items for this operation. Selected features can be deleted entirely.</string>
      </property>
      <property name="selectionMode">
       <enum>QAbstractItemView::ExtendedSelection</enum>

@@ -42,11 +42,20 @@ namespace zipios
 {
 class ZipInputStream;
 }
-
+#ifndef XERCES_CPP_NAMESPACE_BEGIN
+#define XERCES_CPP_NAMESPACE_QUALIFIER
+using namespace XERCES_CPP_NAMESPACE;
+namespace XERCES_CPP_NAMESPACE
+{
+class DefaultHandler;
+class SAX2XMLReader;
+}  // namespace XERCES_CPP_NAMESPACE
+#else
 XERCES_CPP_NAMESPACE_BEGIN
 class DefaultHandler;
 class SAX2XMLReader;
 XERCES_CPP_NAMESPACE_END
+#endif
 
 namespace Base
 {
@@ -244,6 +253,8 @@ public:
     void readFiles(zipios::ZipInputStream& zipstream) const;
     /// get all registered file names
     const std::vector<std::string>& getFilenames() const;
+    /// returns true if reading the file \a filename has failed
+    bool hasReadFailed(const std::string& filename) const;
     bool isRegistered(Base::Persistence* Object) const;
     virtual void addName(const char*, const char*);
     virtual const char* getName(const char*) const;
@@ -354,6 +365,7 @@ public:
 
 private:
     std::vector<std::string> FileNames;
+    mutable std::vector<std::string> FailedFiles;
 
     std::bitset<32> StatusBits;
 

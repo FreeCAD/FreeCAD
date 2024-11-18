@@ -5,8 +5,8 @@
     <name>ArchMaterial</name>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="14"/>
-      <source>Arch material</source>
-      <translation>建材の品質表示</translation>
+      <source>BIM material</source>
+      <translation>BIMマテリアル</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="26"/>
@@ -26,7 +26,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="48"/>
       <source>Copy existing...</source>
-      <translation>コピーが存在しています...</translation>
+      <translation>コピーが存在します…</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="58"/>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="268"/>
       <source>Parent</source>
-      <translation type="unfinished">Parent</translation>
+      <translation>親</translation>
     </message>
   </context>
   <context>
@@ -144,17 +144,17 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="28"/>
       <source>The name of the BIM Server you are currently connecting to. Change settings in the BIM preferences</source>
-      <translation type="unfinished">The name of the BIM Server you are currently connecting to. Change settings in the BIM preferences</translation>
+      <translation>現在接続しているBIMサーバの名前。BIM設定で変更をします</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="31"/>
       <source>BIM Server</source>
-      <translation type="unfinished">BIM Server</translation>
+      <translation>BIMサーバー</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="97"/>
       <source>The list of projects present on the BIM Server</source>
-      <translation type="unfinished">The list of projects present on the BIM Server</translation>
+      <translation>BIMサーバーに存在するプロジェクトのリスト</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="109"/>
@@ -164,7 +164,7 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="115"/>
       <source>Available revisions:</source>
-      <translation>使用可能なリビジョン:</translation>
+      <translation>使用可能な改訂版</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="144"/>
@@ -198,12 +198,12 @@
     <message>
       <location filename="../ui/ArchSchedule.ui" line="22"/>
       <source>Schedule name:</source>
-      <translation>スケジュール名:</translation>
+      <translation>スケジュールの名前</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="29"/>
       <source>Unnamed schedule</source>
-      <translation>無名のスケジュール</translation>
+      <translation>名前のないスケジュール</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="60"/>
@@ -254,7 +254,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="71"/>
       <source>The property to retrieve from each object.Can be 'Count' to count the objects, or property names like 'Length' or 'Shape.Volume' to retrieve a certain property.</source>
-      <translation type="unfinished">The property to retrieve from each object.Can be 'Count' to count the objects, or property names like 'Length' or 'Shape.Volume' to retrieve a certain property.</translation>
+      <translation>各オブジェクトから取得するプロパティ。オブジェクトを数えるには 'Count' とし、特定のプロパティを取得するには 'Length' あるいは 'Shape.Volume' のようにプロパティを指定します。</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="108"/>
@@ -284,7 +284,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="131"/>
       <source>Auto update</source>
-      <translation>自動更新</translation>
+      <translation>自動的に更新</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="142"/>
@@ -359,7 +359,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="22"/>
       <source>BimServer URL:</source>
-      <translation>BimサーバーのURL:</translation>
+      <translation>BIMサーバーのURL:</translation>
     </message>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="36"/>
@@ -438,7 +438,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="131"/>
       <source>Only show matches</source>
-      <translation type="unfinished">Only show matches</translation>
+      <translation>一致するものを表示</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="141"/>
@@ -474,7 +474,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/dialogClassification.ui" line="42"/>
       <source>Objects &amp;&amp; Materials</source>
-      <translation type="unfinished">Objects &amp;&amp; Materials</translation>
+      <translation>オブジェクト&amp;&amp;マテリアル</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="48"/>
@@ -498,7 +498,7 @@ Leave blank to use all objects from the document</source>
       <location filename="../ui/dialogIfcProperties.ui" line="68"/>
       <location filename="../ui/dialogIfcElements.ui" line="57"/>
       <source>IFC type</source>
-      <translation type="unfinished">IFC type</translation>
+      <translation>IFCタイプ</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="88"/>
@@ -598,7 +598,7 @@ Utils -&gt; Make IFC project</translation>
       <location filename="../ui/dialogConvertDocument.ui" line="46"/>
       <location filename="../ui/dialogCreateProject.ui" line="30"/>
       <source>Do not ask again</source>
-      <translation type="unfinished">Do not ask again</translation>
+      <translation>次回から表示しない</translation>
     </message>
     <message>
       <location filename="../ui/dialogCreateProject.ui" line="14"/>
@@ -619,7 +619,7 @@ Utils -&gt; Make IFC project</translation>
       <location filename="../ui/dialogImport.ui" line="152"/>
       <location filename="../ui/dialogExport.ui" line="30"/>
       <source>Ask me again next time</source>
-      <translation type="unfinished">Ask me again next time</translation>
+      <translation>次回も確認する</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="14"/>
@@ -671,7 +671,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogImport.ui" line="14"/>
       <source>IFC import options</source>
-      <translation type="unfinished">IFC import options</translation>
+      <translation>IFCインポートオプション</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="22"/>
@@ -696,7 +696,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogImport.ui" line="44"/>
       <source>Initial import</source>
-      <translation type="unfinished">Initial import</translation>
+      <translation>初回のインポート</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="51"/>
@@ -716,7 +716,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogImport.ui" line="68"/>
       <source>Lock document</source>
-      <translation type="unfinished">Lock document</translation>
+      <translation>ドキュメントをロック</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="75"/>
@@ -851,12 +851,12 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogNudgeValue.ui" line="14"/>
       <source>Nudge</source>
-      <translation type="unfinished">Nudge</translation>
+      <translation>微調整</translation>
     </message>
     <message>
       <location filename="../ui/dialogNudgeValue.ui" line="20"/>
       <source>New nudge value:</source>
-      <translation type="unfinished">New nudge value:</translation>
+      <translation>新規微調整値:</translation>
     </message>
     <message>
       <location filename="../ui/dialogPhases.ui" line="20"/>
@@ -866,7 +866,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPhases.ui" line="48"/>
       <source>Add...</source>
-      <translation type="unfinished">Add...</translation>
+      <translation>追加...</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflightResults.ui" line="14"/>
@@ -881,7 +881,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPreflightResults.ui" line="91"/>
       <source>to Report panel</source>
-      <translation type="unfinished">to Report panel</translation>
+      <translation>リポートパネルに</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="14"/>
@@ -956,7 +956,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="154"/>
       <source> E</source>
-      <translation type="unfinished"> E</translation>
+      <translation> E</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="170"/>
@@ -982,7 +982,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="198"/>
       <source> °</source>
-      <translation type="unfinished"> °</translation>
+      <translation> °</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="208"/>
@@ -1002,7 +1002,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="239"/>
       <source> N</source>
-      <translation type="unfinished"> N</translation>
+      <translation> N</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="260"/>
@@ -1032,22 +1032,22 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="309"/>
       <source>Number of H axes</source>
-      <translation type="unfinished">Number of H axes</translation>
+      <translation>H軸の数</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="316"/>
       <source>Distance between H axes</source>
-      <translation type="unfinished">Distance between H axes</translation>
+      <translation>H軸間の距離</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="323"/>
       <source>Number of V axes</source>
-      <translation type="unfinished">Number of V axes</translation>
+      <translation>V軸の数</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="346"/>
       <source>Distance between V axes</source>
-      <translation type="unfinished">Distance between V axes</translation>
+      <translation>V軸間の距離</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="363"/>
@@ -1061,17 +1061,17 @@ Utils -&gt; Make IFC project</translation>
       <location filename="../ui/dialogProjectManager.ui" line="414"/>
       <location filename="../ui/dialogProjectManager.ui" line="479"/>
       <source>0 </source>
-      <translation type="unfinished">0 </translation>
+      <translation>0 </translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="424"/>
       <source>Axes line width</source>
-      <translation type="unfinished">Axes line width</translation>
+      <translation>軸の線幅</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="442"/>
       <source>Axes color</source>
-      <translation type="unfinished">Axes color</translation>
+      <translation>軸の色</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="454"/>
@@ -1121,7 +1121,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="579"/>
       <source>Save preset</source>
-      <translation type="unfinished">Save preset</translation>
+      <translation>プリセットを保存</translation>
     </message>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="62"/>
@@ -1171,7 +1171,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="14"/>
       <source>Spaces manager</source>
-      <translation type="unfinished">Spaces manager</translation>
+      <translation>空間の管理</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="20"/>
@@ -1222,17 +1222,17 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="92"/>
       <source>0</source>
-      <translation type="unfinished">0</translation>
+      <translation>0</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="102"/>
       <source>0 W</source>
-      <translation type="unfinished">0 W</translation>
+      <translation>0 W</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="115"/>
       <source>Space information</source>
-      <translation type="unfinished">Space information</translation>
+      <translation>空間の情報</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="155"/>
@@ -1252,7 +1252,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="205"/>
       <source> W</source>
-      <translation type="unfinished"> W</translation>
+      <translation> W</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="212"/>
@@ -1267,7 +1267,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogTree.ui" line="40"/>
       <source>GroupBox</source>
-      <translation type="unfinished">GroupBox</translation>
+      <translation>グループボックス</translation>
     </message>
     <message>
       <location filename="../ui/dialogTree.ui" line="70"/>
@@ -1296,13 +1296,13 @@ Utils -&gt; Make IFC project</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="85"/>
-      <source>FreeCAD is a complex application. If this is your first contact with FreeCAD, or you have never worked with 3D or BIM before, you might want to take our &lt;a href="https://www.freecadweb.org/wiki/BIM_Start_Tutorial"&gt;BIM tutorial&lt;/a&gt; first (Also available under menu &lt;span style=" font-weight:600;"&gt;Help -&amp;gt; BIM Tutorial&lt;/span&gt;).</source>
-      <translation type="unfinished">FreeCAD is a complex application. If this is your first contact with FreeCAD, or you have never worked with 3D or BIM before, you might want to take our &lt;a href="https://www.freecadweb.org/wiki/BIM_Start_Tutorial"&gt;BIM tutorial&lt;/a&gt; first (Also available under menu &lt;span style=" font-weight:600;"&gt;Help -&amp;gt; BIM Tutorial&lt;/span&gt;).</translation>
+      <source>FreeCAD is a complex application. If this is your first contact with FreeCAD, or you have never worked with 3D or BIM before, you might want to take our &lt;a href="https://wiki.freecad.org/BIM_ingame_tutorial"&gt;BIM tutorial&lt;/a&gt; first (Also available under menu &lt;span style=" font-weight:600;"&gt;Help -&amp;gt; BIM Tutorial&lt;/span&gt;).</source>
+      <translation type="unfinished">FreeCAD is a complex application. If this is your first contact with FreeCAD, or you have never worked with 3D or BIM before, you might want to take our &lt;a href="https://wiki.freecad.org/BIM_ingame_tutorial"&gt;BIM tutorial&lt;/a&gt; first (Also available under menu &lt;span style=" font-weight:600;"&gt;Help -&amp;gt; BIM Tutorial&lt;/span&gt;).</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="95"/>
-      <source>The BIM workbench also has a &lt;a href="https://wiki.freecadweb.org/BIM_Workbench"&gt;complete documentation&lt;/a&gt;  available under the Help menu. The "what's this?" button will also open the help page of any tool from the toolbars.</source>
-      <translation type="unfinished">The BIM workbench also has a &lt;a href="https://wiki.freecadweb.org/BIM_Workbench"&gt;complete documentation&lt;/a&gt;  available under the Help menu. The "what's this?" button will also open the help page of any tool from the toolbars.</translation>
+      <source>The BIM workbench also has a &lt;a href="https://wiki.freecad.org/BIM_Workbench"&gt;complete documentation&lt;/a&gt;  available under the Help menu. The "what's this?" button will also open the help page of any tool from the toolbars.</source>
+      <translation type="unfinished">The BIM workbench also has a &lt;a href="https://wiki.freecad.org/BIM_Workbench"&gt;complete documentation&lt;/a&gt;  available under the Help menu. The "what's this?" button will also open the help page of any tool from the toolbars.</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="105"/>
@@ -1371,7 +1371,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="159"/>
       <source>Remote repositories</source>
-      <translation>リモートリポジトリー</translation>
+      <translation>リモートリポジトリ</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="183"/>
@@ -1386,12 +1386,12 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="14"/>
       <source>Multi-material definition</source>
-      <translation type="unfinished">Multi-material definition</translation>
+      <translation>複合マテリアルの設定</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="21"/>
       <source>Copy existing...</source>
-      <translation>コピーが存在しています...</translation>
+      <translation>コピーが存在します…</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="29"/>
@@ -1401,17 +1401,17 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="37"/>
       <source>Name:</source>
-      <translation>名前:</translation>
+      <translation>名前</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="49"/>
       <source>Composition:</source>
-      <translation>コンポジション:</translation>
+      <translation>コンポジション</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="59"/>
       <source>Total thickness</source>
-      <translation type="unfinished">Total thickness</translation>
+      <translation>厚さの合計</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="68"/>
@@ -1533,7 +1533,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogClasses.ui" line="14"/>
       <source>classManager</source>
-      <translation type="unfinished">classManager</translation>
+      <translation>クラスマネージャー</translation>
     </message>
     <message>
       <location filename="../ui/dialogClasses.ui" line="25"/>
@@ -1550,7 +1550,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="14"/>
       <source>Custom properties</source>
-      <translation type="unfinished">Custom properties</translation>
+      <translation>カスタムプロパティ</translation>
     </message>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="23"/>
@@ -1576,7 +1576,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="51"/>
       <source>The property will be hidden in the interface, and can only be modified via Python script</source>
-      <translation type="unfinished">The property will be hidden in the interface, and can only be modified via Python script</translation>
+      <translation>このプロパティはインターフェースでは非表示になり、Pythonスクリプトでのみ変更できます</translation>
     </message>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="54"/>
@@ -1616,7 +1616,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="39"/>
       <source>or</source>
-      <translation type="unfinished">or</translation>
+      <translation>か</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="49"/>
@@ -1631,17 +1631,17 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="63"/>
       <source>Search:</source>
-      <translation type="unfinished">Search:</translation>
+      <translation>検索</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="79"/>
       <source>Search external websites</source>
-      <translation type="unfinished">Search external websites</translation>
+      <translation>外部のウェブサイトを検索</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="83"/>
       <source>...</source>
-      <translation type="unfinished">...</translation>
+      <translation>...</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="153"/>
@@ -1661,7 +1661,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="196"/>
       <source>Online mode</source>
-      <translation type="unfinished">Online mode</translation>
+      <translation>オンラインモード</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="206"/>
@@ -1831,7 +1831,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="191"/>
       <source>Geometry</source>
-      <translation>ジオメトリー</translation>
+      <translation>ジオメトリ</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="204"/>
@@ -2071,7 +2071,7 @@ p, li { white-space: pre-wrap; }
       <location filename="../ui/dialogWindows.ui" line="151"/>
       <location filename="../ui/dialogWindows.ui" line="196"/>
       <source>Tag</source>
-      <translation type="unfinished">Tag</translation>
+      <translation>タグ</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="97"/>
@@ -2087,7 +2087,7 @@ p, li { white-space: pre-wrap; }
       <location filename="../ui/dialogWindows.ui" line="111"/>
       <location filename="../ui/dialogWindows.ui" line="121"/>
       <source>0</source>
-      <translation type="unfinished">0</translation>
+      <translation>0</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="161"/>
@@ -2113,7 +2113,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/dialogWindows.ui" line="233"/>
       <source>Spaces</source>
-      <translation type="unfinished">Spaces</translation>
+      <translation>空間</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="14"/>
@@ -2128,7 +2128,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="28"/>
       <source>Initial import</source>
-      <translation type="unfinished">Initial import</translation>
+      <translation>初回のインポート</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="35"/>
@@ -2297,12 +2297,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="26"/>
       <source>Auto-join walls</source>
-      <translation>壁の自動結合</translation>
+      <translation>壁を自動で結合する</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="42"/>
       <source>If this is checked, when 2 similar walls are being connected, their underlying sketches will be joined into one, and the two walls will become one</source>
-      <translation>チェックされている場合、2つの同じような壁がつながっている時にはその元となるスケッチを1つに結合し、2つの壁を1つにします。</translation>
+      <translation>チェックした場合、2枚の壁を結合して1枚にしたとき、スケッチも結合して1個にします。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="58"/>
@@ -2407,7 +2407,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="45"/>
       <source>Join base sketches of walls if possible</source>
-      <translation type="unfinished">Join base sketches of walls if possible</translation>
+      <translation>可能な場合、壁にスケッチを結合する</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="61"/>
@@ -2472,7 +2472,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="449"/>
       <source>Hidden geometry pattern</source>
-      <translation>ジオメトリーパターンを非表示</translation>
+      <translation>ジオメトリパターンを非表示</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="462"/>
@@ -2495,7 +2495,7 @@ a Footprint display mode</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="515"/>
       <source>BIM server</source>
-      <translation type="unfinished">BIM server</translation>
+      <translation>BIMサーバー</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="528"/>
@@ -2554,12 +2554,12 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="20"/>
       <source>Visual</source>
-      <translation type="unfinished">Visual</translation>
+      <translation>表示</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="26"/>
       <source>Wall color</source>
-      <translation type="unfinished">Wall color</translation>
+      <translation>壁の色</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="57"/>
@@ -2580,7 +2580,7 @@ instead of the FreeCAD web workbench</translation>
       <location filename="../ui/preferences-archdefaults.ui" line="118"/>
       <location filename="../ui/preferences-archdefaults.ui" line="216"/>
       <source> %</source>
-      <translation type="unfinished"> %</translation>
+      <translation> %</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="137"/>
@@ -2590,22 +2590,22 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="161"/>
       <source>Panel color</source>
-      <translation type="unfinished">Panel color</translation>
+      <translation>パネルの色</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="185"/>
       <source>Helper color (grids, axes, etc.)</source>
-      <translation type="unfinished">Helper color (grids, axes, etc.)</translation>
+      <translation>作図補助の色（グリッド、軸など）</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="209"/>
       <source>Space transparency</source>
-      <translation type="unfinished">Space transparency</translation>
+      <translation>空間の透明度</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="235"/>
       <source>Space line style</source>
-      <translation type="unfinished">Space line style</translation>
+      <translation>空間の線のスタイル</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="252"/>
@@ -2630,7 +2630,7 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="275"/>
       <source>Space line color</source>
-      <translation type="unfinished">Space line color</translation>
+      <translation>スペースの線の色</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="302"/>
@@ -2640,12 +2640,12 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="308"/>
       <source>Use sketches for walls</source>
-      <translation type="unfinished">Use sketches for walls</translation>
+      <translation>壁の作成時にスケッチも作成する</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="324"/>
       <source>Pipe diameter</source>
-      <translation type="unfinished">Pipe diameter</translation>
+      <translation>パイプの直径</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="357"/>
@@ -2670,7 +2670,7 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="467"/>
       <source>Stair height</source>
-      <translation type="unfinished">Stair height</translation>
+      <translation>階段の高さ</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="493"/>
@@ -2683,37 +2683,37 @@ instead of the FreeCAD web workbench</translation>
       <translation>IFC インポート</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="41"/>
+      <location filename="../ui/preferences-ifc.ui" line="32"/>
       <source>Show this dialog when importing</source>
       <translation>インポート時にこのダイアログを表示する</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="54"/>
+      <location filename="../ui/preferences-ifc.ui" line="45"/>
       <source>Shows verbose debug messages during import and export
 of IFC files in the Report view panel</source>
       <translation type="unfinished">Shows verbose debug messages during import and export
 of IFC files in the Report view panel</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="58"/>
+      <location filename="../ui/preferences-ifc.ui" line="49"/>
       <source>Show debug messages</source>
       <translation>デバッグ情報を表示</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="71"/>
+      <location filename="../ui/preferences-ifc.ui" line="62"/>
       <source>Clones are used when objects have shared geometry
 One object is the base object, the others are clones.</source>
       <translation type="unfinished">Clones are used when objects have shared geometry
 One object is the base object, the others are clones.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="75"/>
+      <location filename="../ui/preferences-ifc.ui" line="66"/>
       <source>Create clones when objects have shared geometry</source>
-      <translation>オブジェクトがジオメトリーを共有している場合、クローンを作成</translation>
+      <translation>オブジェクトがジオメトリを共有している場合、クローンを作成</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="99"/>
-      <location filename="../ui/preferences-ifc.ui" line="119"/>
+      <location filename="../ui/preferences-ifc.ui" line="90"/>
+      <location filename="../ui/preferences-ifc.ui" line="110"/>
       <source>EXPERIMENTAL
 The number of cores to use in multicore mode.
 Keep 0 to disable multicore mode.
@@ -2731,190 +2731,190 @@ if you start getting crashes when you set multiple cores.</source>
 これに1を設定するとシングルコア・モードでマルチコア・モードが用いられます；マルチコアが設定してある場合に、いつそやクラッシュが始まても安全です。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="129"/>
+      <location filename="../ui/preferences-ifc.ui" line="120"/>
       <source>Number of cores to use (experimental)</source>
       <translation>使用するCPUコアの数 (実験的)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="157"/>
+      <location filename="../ui/preferences-ifc.ui" line="148"/>
       <source>Import options</source>
       <translation>インポート・オプション</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="165"/>
+      <location filename="../ui/preferences-ifc.ui" line="156"/>
       <source>Import arch IFC objects as</source>
       <translation>建築IFCオブジェクトを以下の様にインポート</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="172"/>
-      <location filename="../ui/preferences-ifc.ui" line="221"/>
+      <location filename="../ui/preferences-ifc.ui" line="163"/>
+      <location filename="../ui/preferences-ifc.ui" line="212"/>
       <source>Specifies what kind of objects will be created in FreeCAD</source>
       <translation>FreeCADで作成するオブジェクトの種類を指定</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="182"/>
+      <location filename="../ui/preferences-ifc.ui" line="173"/>
       <source>Parametric BIM objects</source>
       <translation type="unfinished">Parametric BIM objects</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="187"/>
-      <location filename="../ui/preferences-ifc.ui" line="231"/>
+      <location filename="../ui/preferences-ifc.ui" line="178"/>
+      <location filename="../ui/preferences-ifc.ui" line="222"/>
       <source>Non-parametric BIM objects</source>
       <translation type="unfinished">Non-parametric BIM objects</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="192"/>
-      <location filename="../ui/preferences-ifc.ui" line="236"/>
+      <location filename="../ui/preferences-ifc.ui" line="183"/>
+      <location filename="../ui/preferences-ifc.ui" line="227"/>
       <source>Simple Part shapes</source>
       <translation>単純な部品形状</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="197"/>
+      <location filename="../ui/preferences-ifc.ui" line="188"/>
       <source>One compound per floor</source>
       <translation>フロアあたりひとつのコンパウンド</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="202"/>
+      <location filename="../ui/preferences-ifc.ui" line="193"/>
       <source>Do not import Arch objects</source>
       <translation>建築オブジェクトをインポートできません</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="214"/>
+      <location filename="../ui/preferences-ifc.ui" line="205"/>
       <source>Import struct IFC objects as</source>
       <translation>構造化IFCオブジェクトを以下の様にインポート</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="241"/>
+      <location filename="../ui/preferences-ifc.ui" line="232"/>
       <source>One compound for all</source>
       <translation>全てでひとつのコンパウンド</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="246"/>
+      <location filename="../ui/preferences-ifc.ui" line="237"/>
       <source>Do not import structural objects</source>
       <translation>構造オブジェクトはインポートできません</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="258"/>
+      <location filename="../ui/preferences-ifc.ui" line="249"/>
       <source>Root element:</source>
       <translation>ルート要素:</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="265"/>
+      <location filename="../ui/preferences-ifc.ui" line="256"/>
       <source>Only subtypes of the specified element will be imported.
 Keep the element IfcProduct to import all building elements.</source>
       <translation type="unfinished">Only subtypes of the specified element will be imported.
 Keep the element IfcProduct to import all building elements.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="284"/>
+      <location filename="../ui/preferences-ifc.ui" line="275"/>
       <source>Openings will be imported as subtractions, otherwise wall shapes
 will already have their openings subtracted</source>
       <translation type="unfinished">Openings will be imported as subtractions, otherwise wall shapes
 will already have their openings subtracted</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="288"/>
+      <location filename="../ui/preferences-ifc.ui" line="279"/>
       <source>Separate openings</source>
       <translation>開口部を識別</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="301"/>
+      <location filename="../ui/preferences-ifc.ui" line="292"/>
       <source>The importer will try to detect extrusions.
 Note that this might slow things down.</source>
       <translation>インポーターが、押し出しを検出しようとします。
 これは物事が遅くなる可能性があることに注意してください。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="305"/>
+      <location filename="../ui/preferences-ifc.ui" line="296"/>
       <source>Detect extrusions</source>
       <translation>押し出しを検出</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="318"/>
+      <location filename="../ui/preferences-ifc.ui" line="309"/>
       <source>Split walls made of multiple layers</source>
       <translation>複数の層で作られた壁を分割</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="321"/>
+      <location filename="../ui/preferences-ifc.ui" line="312"/>
       <source>Split multilayer walls</source>
       <translation>多層壁を分割</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="334"/>
+      <location filename="../ui/preferences-ifc.ui" line="325"/>
       <source>Object names will be prefixed with the IFC ID number</source>
       <translation type="unfinished">Object names will be prefixed with the IFC ID number</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="337"/>
+      <location filename="../ui/preferences-ifc.ui" line="328"/>
       <source>Prefix names with ID number</source>
       <translation>ID番号の接頭辞</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="350"/>
+      <location filename="../ui/preferences-ifc.ui" line="341"/>
       <source>If several materials with the same name and color are found in the IFC file,
 they will be treated as one.</source>
       <translation>同じ名前や色を持つ幾つかの材料がIFC ファイル内に見つかった場合には、同一のものとして扱われます。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="354"/>
+      <location filename="../ui/preferences-ifc.ui" line="345"/>
       <source>Merge materials with same name and same color</source>
       <translation>同じ名前で同じ色のマテリアルをマージ</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="367"/>
+      <location filename="../ui/preferences-ifc.ui" line="358"/>
       <source>Each object will have their IFC properties stored in a spreadsheet object</source>
       <translation type="unfinished">Each object will have their IFC properties stored in a spreadsheet object</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="370"/>
+      <location filename="../ui/preferences-ifc.ui" line="361"/>
       <source>Import IFC properties in spreadsheet</source>
       <translation>スプレッドシートにIFCプロパティをインポート</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="383"/>
+      <location filename="../ui/preferences-ifc.ui" line="374"/>
       <source>IFC files can contain unclean or non-solid geometry. If this option is checked, all the geometry is imported, regardless of their validity.</source>
-      <translation>IFCファイルには、妥当でなかったり非ソリッドのジオメトリーが含まれていることがあります。このオプションにチェックが入っている場合、妥当性に関係なくすべてのジオメトリーがインポートされます。</translation>
+      <translation>IFCファイルには、妥当でなかったり非ソリッドのジオメトリが含まれていることがあります。このオプションにチェックが入っている場合、妥当性に関係なくすべてのジオメトリがインポートされます。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="386"/>
+      <location filename="../ui/preferences-ifc.ui" line="377"/>
       <source>Allow invalid shapes</source>
       <translation>無効なシェイプを許可する</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="401"/>
+      <location filename="../ui/preferences-ifc.ui" line="392"/>
       <source>Exclude list:</source>
       <translation>除外リスト：</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="408"/>
+      <location filename="../ui/preferences-ifc.ui" line="399"/>
       <source>Comma-separated list of IFC entities to be excluded from imports</source>
       <translation type="unfinished">Comma-separated list of IFC entities to be excluded from imports</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="429"/>
+      <location filename="../ui/preferences-ifc.ui" line="420"/>
       <source>Fit view during import on the imported objects.
 This will slow down the import, but one can watch the import.</source>
       <translation type="unfinished">Fit view during import on the imported objects.
 This will slow down the import, but one can watch the import.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="433"/>
+      <location filename="../ui/preferences-ifc.ui" line="424"/>
       <source>Fit view while importing</source>
       <translation>インポート中に表示をフィット</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="446"/>
+      <location filename="../ui/preferences-ifc.ui" line="437"/>
       <source>Creates a full parametric model on import using stored
 FreeCAD object properties</source>
       <translation>インポート時に読み込まれたFreeCADオブジェクトのプロパティを使用して、完全なパラメトリックモデルを作成します</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="450"/>
+      <location filename="../ui/preferences-ifc.ui" line="441"/>
       <source>Import full FreeCAD parametric definitions if available</source>
       <translation>利用可能な場合は、完全な FreeCAD パラメトリック定義をインポート</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="463"/>
+      <location filename="../ui/preferences-ifc.ui" line="454"/>
       <source>If this option is checked, the default 'Project', 'Site', 'Building', and 'Storeys'
 objects that are usually found in an IFC file are not imported, and all objects
 are placed in a 'Group' instead.
@@ -2925,7 +2925,7 @@ are placed in a 'Group' instead.
 'Buildings' and 'Storeys' are still imported if there is more than one.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="469"/>
+      <location filename="../ui/preferences-ifc.ui" line="460"/>
       <source>Replace 'Project', 'Site', 'Building', and 'Storey' with 'Group'</source>
       <translation type="unfinished">Replace 'Project', 'Site', 'Building', and 'Storey' with 'Group'</translation>
     </message>
@@ -2935,7 +2935,7 @@ are placed in a 'Group' instead.
       <translation>DAE</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="57"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="48"/>
       <location filename="../ui/preferences-dae.ui" line="26"/>
       <source>Export options</source>
       <translation>エクスポート・オプション</translation>
@@ -3067,19 +3067,19 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</sour
       <translation>IFC エクスポート</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="35"/>
-      <location filename="../ui/preferences-ifc.ui" line="35"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="26"/>
+      <location filename="../ui/preferences-ifc.ui" line="26"/>
       <source>General options</source>
       <translation>一般設定</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="41"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="32"/>
       <source>Show this dialog when exporting</source>
       <translation>エクスポート時にこのダイアログを表示する</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="65"/>
-      <location filename="../ui/preferences-ifc-export.ui" line="78"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="56"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="69"/>
       <source>The type of objects that you wish to export:
 - Standard model: solid objects.
 - Structural analysis: wireframe model for structural calculations.
@@ -3090,48 +3090,48 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</sour
 - Standard + structural: both types of models.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="71"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="62"/>
       <source>Export type</source>
       <translation>エクスポートの種類</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="91"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="82"/>
       <source>Standard model</source>
-      <translation type="unfinished">Standard model</translation>
+      <translation>標準モデル</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="96"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="87"/>
       <source>Structural analysis</source>
       <translation>構造解析</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="101"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="92"/>
       <source>Standard + structural</source>
       <translation type="unfinished">Standard + structural</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="111"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="102"/>
       <source>Some IFC viewers don't like objects exported as extrusions.
 Use this to force all objects to be exported as BREP geometry.</source>
-      <translation>一部のIFCビューワーでは押し出し部品としてエクスポートされたオブジェクトを読み取れないことがあります。これを使用するとすべてのオブジェクトを強制的にBREPジオメトリーとしてエクスポートします。</translation>
+      <translation>一部のIFCビューワーでは押し出し部品としてエクスポートされたオブジェクトを読み取れないことがあります。これを使用するとすべてのオブジェクトを強制的にBREPジオメトリとしてエクスポートします。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="115"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="106"/>
       <source>Force export as Brep</source>
       <translation>Brepとして強制エクスポート</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="128"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="119"/>
       <source>Use triangulation options set in the DAE options page</source>
       <translation>DAEオプションページで三角形分割オプションを使用</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="131"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="122"/>
       <source>Use DAE triangulation options</source>
       <translation>DAE三角形分割オプションを使用</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="144"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="135"/>
       <source>Curved shapes that cannot be represented as curves in IFC
 are decomposed into flat facets.
 If this is checked, an additional calculation is done to join coplanar facets.</source>
@@ -3140,72 +3140,72 @@ are decomposed into flat facets.
 If this is checked, an additional calculation is done to join coplanar facets.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="149"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="140"/>
       <source>Join coplanar facets when triangulating</source>
       <translation>三角形分割時に同一平面上の面を結合</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="162"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="153"/>
       <source>When exporting objects without unique ID (UID), the generated UID
 will be stored inside the FreeCAD object for reuse next time that object
 is exported. This leads to smaller differences between file versions.</source>
       <translation>一意のID (UID) の無いオブジェクトをエクスポートする場合、生成されたUIDがFreeCADオブジェクトの内部に保存され、そのオブジェクトを次回エクスポートする場合に再使用されます。これによってバージョン間の差分を小さくできます。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="167"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="158"/>
       <source>Store IFC unique ID in FreeCAD objects</source>
       <translation>FreeCADオブジェクトにIFC一意のIDを保存</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="183"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="174"/>
       <source>IFCOpenShell is a library that allows to import IFC files.
 Its serializer functionality allows to give it an OCC shape and it will
 produce adequate IFC geometry: NURBS, faceted, or anything else.
 Note: The serializer is still an experimental feature!</source>
       <translation>IFCOpenShell は IFCファイルをインポートできるライブラリです。
-このシリアライザ機能により OCCシェイプ を提供でき、適切な IFCジオメトリー（NURBS,、ファセット、等々）を生成できます。
-注: シリアライザはまだ実験的な機能です。</translation>
+このシリアライザ機能により OCCシェイプ を提供でき、適切な IFCジオメトリ（NURBS,、ファセット等）を生成できます。
+注：シリアライザはまだ実験的な機能です。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="189"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="180"/>
       <source>Use IfcOpenShell serializer if available</source>
       <translation>利用可能な場合にはIfcOpenShellシリアライザーを使用</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="202"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="193"/>
       <source>2D objects will be exported as IfcAnnotation</source>
       <translation>2D オブジェクトは IfcAnnotation としてエクスポートされます</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="205"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="196"/>
       <source>Export 2D objects as IfcAnnotations</source>
       <translation>2DオブジェクトをIfcAnnotationsとしてエクスポート</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="221"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="212"/>
       <source>All FreeCAD object properties will be stored inside the exported objects,
 allowing to recreate a full parametric model on reimport.</source>
       <translation>全ての FreeCADオブジェクトプロパティがエクスポートされたオブジェクトに保存されており、再インポートの際には完全なパラメトリックモデルを再作成することができます。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="225"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="216"/>
       <source>Export full FreeCAD parametric model</source>
       <translation>完全なFreeCADパラメトリックモデルをエクスポート</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="238"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="229"/>
       <source>When possible, similar entities will be used only once in the file if possible.
 This can reduce the file size a lot, but will make it less easily readable.</source>
       <translation>可能であれば、同様のエンティティはファイル内で一度だけ使用されます。
 これはファイルサイズを大幅に減らすことができますが、読みにくくなります。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="242"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="233"/>
       <source>Reuse similar entities</source>
       <translation>類似のエンティティを再利用する</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="258"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="249"/>
       <source>When possible, IFC objects that are extruded rectangles will be
 exported as IfcRectangleProfileDef.
 However, some other applications might have problems importing that entity.
@@ -3216,62 +3216,62 @@ However, some other applications might have problems importing that entity.
 If this is your case, you can disable this and then all profiles will be exported as IfcArbitraryClosedProfileDef.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="264"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="255"/>
       <source>Disable IfcRectangleProfileDef</source>
       <translation>IfcRectangleProfileDef を無効にする</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="277"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="268"/>
       <source>Some IFC types such as IfcWall or IfcBeam have special standard versions like IfcWallStandardCase or IfcBeamStandardCase. If this option is turned on, FreeCAD will automatically export such objects
 as standard cases when the necessary conditions are met.</source>
       <translation type="unfinished">Some IFC types such as IfcWall or IfcBeam have special standard versions like IfcWallStandardCase or IfcBeamStandardCase. If this option is turned on, FreeCAD will automatically export such objects
 as standard cases when the necessary conditions are met.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="396"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="387"/>
       <source>Add default building if one is not found in the document</source>
       <translation type="unfinished">Add default building if one is not found in the document</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="412"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="403"/>
       <source>In FreeCAD, it is possible to nest groups inside buildings or storeys. If this option is disabled, FreeCAD groups will be saved as IfcGroups and aggregated to the building structure. Aggregating non-building elements such as IfcGroups is however not recommended by the IFC standards. It is therefore also possible to export these groups as IfcElementAssemblies, which produces an IFC-compliant file. However, at FreeCAD, we believe nesting groups inside structures should be possible, and this option is there to have a chance to demonstrate our point of view.</source>
       <translation type="unfinished">In FreeCAD, it is possible to nest groups inside buildings or storeys. If this option is disabled, FreeCAD groups will be saved as IfcGroups and aggregated to the building structure. Aggregating non-building elements such as IfcGroups is however not recommended by the IFC standards. It is therefore also possible to export these groups as IfcElementAssemblies, which produces an IFC-compliant file. However, at FreeCAD, we believe nesting groups inside structures should be possible, and this option is there to have a chance to demonstrate our point of view.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="415"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="406"/>
       <source>Export nested groups as assemblies</source>
       <translation type="unfinished">Export nested groups as assemblies</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="281"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="272"/>
       <source>Auto-detect and export as standard cases when applicable</source>
       <translation>自動検出とエクスポートをするときに標準ケースが適用できる場合</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="294"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="285"/>
       <source>If no site is found in the FreeCAD document, a default one will be added.
 A site is not mandatory but a common practice is to have at least one in the file.</source>
       <translation>FreeCAD ドキュメントにサイトが見つからない場合、既定のサイトが追加されます。
 サイトは必須ではありませんが、一般的な方法としては、ファイル内に少なくとも1つ以上のサイトを含めることです。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="298"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="289"/>
       <source>Add default site if one is not found in the document</source>
       <translation>ドキュメントに未記載の場合は、既定のサイトを付加します。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="375"/>
-      <location filename="../ui/preferences-ifc.ui" line="482"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="366"/>
+      <location filename="../ui/preferences-ifc.ui" line="473"/>
       <source>Check also NativeIFC-specific preferences under BIM -&gt; NativeIFC</source>
       <translation type="unfinished">Check also NativeIFC-specific preferences under BIM -&gt; NativeIFC</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="385"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="376"/>
       <source>IFC standard compliance</source>
       <translation type="unfinished">IFC standard compliance</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="391"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="382"/>
       <source>If no building is found in the FreeCAD document, a default one will be added.
 Warning: The IFC standard asks for at least one building in each file. By turning this option off, you will produce a non-standard IFC file.
 However, at FreeCAD, we believe having a building should not be mandatory, and this option is there to have a chance to demonstrate our point of view.</source>
@@ -3280,45 +3280,44 @@ However, at FreeCAD, we believe having a building should not be mandatory, and t
 但し、FreeCADにおいては、ビルディング含めることを義務的に要求すべきではないと考えており、このオプションはプロジェクトチームの見解を実証するために設けてあります。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="311"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="302"/>
       <source>If no building storey is found in the FreeCAD document, a default one will be added.
 A building storey is not mandatory but a common practice to have at least one in the file.</source>
       <translation>ビルディングのストーリーがFreeCAD ドキュメントに見つからない場合、既定の一つが追加されます。
 ビルディングのストーリーは必須ではありませんが、一般的な方法としては、ファイル内に少なくとも一つ以上を含めます。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="315"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="306"/>
       <source>Add default building storey if one is not found in the document</source>
       <translation type="unfinished">Add default building storey if one is not found in the document</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="330"/>
-      <location filename="../ui/preferences-ifc-export.ui" line="345"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="321"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="336"/>
       <source>The units you want your IFC file to be exported to.
 
 Note that IFC files are ALWAYS written in metric units; imperial units
 are only a conversion factor applied on top of them.
 However, some BIM applications will use this factor to choose which
 unit to work with when opening the file.</source>
-      <translation type="unfinished">The units you want your IFC file to be exported to.
+      <translation>エクスポートするIFCファイルで使用する単位。
 
-Note that IFC files are ALWAYS written in metric units; imperial units
-are only a conversion factor applied on top of them.
-However, some BIM applications will use this factor to choose which
-unit to work with when opening the file.</translation>
+数値はIFCファイルにメートル法で記録されます。
+帝国単位の使用時は、IFCファイルに記録されたメートル法の数値に変換係数が適用されます。
+一部のBIMアプリケーションは、ファイルを開くときにこの係数を使用して、どの単位で作業するかを選択します。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="338"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="329"/>
       <source>IFC file units</source>
       <translation>IFCファイルの単位</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="360"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="351"/>
       <source>Metric</source>
       <translation>メートル法</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="365"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="356"/>
       <source>Imperial</source>
       <translation>帝国単位</translation>
     </message>
@@ -3385,7 +3384,7 @@ unit to work with when opening the file.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="345"/>
-      <location filename="../../bimcommands/BimWall.py" line="156"/>
+      <location filename="../../bimcommands/BimWall.py" line="158"/>
       <source>Next point</source>
       <translation type="unfinished">Next point</translation>
     </message>
@@ -3396,24 +3395,24 @@ unit to work with when opening the file.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="456"/>
-      <location filename="../../ArchCommands.py" line="1336"/>
+      <location filename="../../ArchCommands.py" line="1364"/>
       <location filename="../../bimcommands/BimProfile.py" line="74"/>
       <source>Category</source>
       <translation>カテゴリ</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="463"/>
-      <location filename="../../bimcommands/BimWindow.py" line="306"/>
+      <location filename="../../bimcommands/BimWindow.py" line="307"/>
       <location filename="../../bimcommands/BimProfile.py" line="81"/>
       <location filename="../../bimcommands/BimPanel.py" line="138"/>
       <source>Preset</source>
-      <translation type="unfinished">Preset</translation>
+      <translation>プリセット</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="472"/>
       <location filename="../../ArchPrecast.py" line="1412"/>
-      <location filename="../../ArchCommands.py" line="1011"/>
-      <location filename="../../bimcommands/BimWall.py" line="293"/>
+      <location filename="../../ArchCommands.py" line="1039"/>
+      <location filename="../../bimcommands/BimWall.py" line="295"/>
       <location filename="../../bimcommands/BimPanel.py" line="148"/>
       <source>Length</source>
       <translation>長さ</translation>
@@ -3421,7 +3420,7 @@ unit to work with when opening the file.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="482"/>
       <location filename="../../ArchPrecast.py" line="1413"/>
-      <location filename="../../bimcommands/BimWall.py" line="299"/>
+      <location filename="../../bimcommands/BimWall.py" line="301"/>
       <location filename="../../bimcommands/BimPanel.py" line="155"/>
       <source>Width</source>
       <translation>幅</translation>
@@ -3429,7 +3428,7 @@ unit to work with when opening the file.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="489"/>
       <location filename="../../ArchPrecast.py" line="1414"/>
-      <location filename="../../bimcommands/BimWall.py" line="305"/>
+      <location filename="../../bimcommands/BimWall.py" line="307"/>
       <source>Height</source>
       <translation>高さ</translation>
     </message>
@@ -3450,7 +3449,7 @@ unit to work with when opening the file.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="505"/>
-      <location filename="../../bimcommands/BimWall.py" line="319"/>
+      <location filename="../../bimcommands/BimWall.py" line="321"/>
       <location filename="../../bimcommands/BimPanel.py" line="173"/>
       <source>Con&amp;tinue</source>
       <translation type="unfinished">Con&amp;tinue</translation>
@@ -3462,7 +3461,7 @@ unit to work with when opening the file.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="809"/>
-      <location filename="../../ArchWall.py" line="416"/>
+      <location filename="../../ArchWall.py" line="439"/>
       <source>This mesh is an invalid solid</source>
       <translation type="unfinished">This mesh is an invalid solid</translation>
     </message>
@@ -3587,7 +3586,7 @@ unit to work with when opening the file.</translation>
       <translation type="unfinished">Couldn't compute a shape</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="221"/>
+      <location filename="../../Arch.py" line="225"/>
       <source>Equipment</source>
       <translation>設備品</translation>
     </message>
@@ -3659,7 +3658,7 @@ unit to work with when opening the file.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="828"/>
       <source>Write camera position</source>
-      <translation type="unfinished">Write camera position</translation>
+      <translation>カメラ位置の書き込み</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="835"/>
@@ -3668,7 +3667,7 @@ unit to work with when opening the file.</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="842"/>
-      <location filename="../../ArchMaterial.py" line="95"/>
+      <location filename="../../ArchMaterial.py" line="93"/>
       <source>Reorder children alphabetically</source>
       <translation type="unfinished">Reorder children alphabetically</translation>
     </message>
@@ -3680,17 +3679,17 @@ unit to work with when opening the file.</translation>
     <message>
       <location filename="../../bimcommands/BimProfile.py" line="60"/>
       <source>Create profile</source>
-      <translation type="unfinished">Create profile</translation>
+      <translation>プロファイルを作成</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProfile.py" line="70"/>
       <source>Profile settings</source>
-      <translation type="unfinished">Profile settings</translation>
+      <translation>プロファイルの設定</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProfile.py" line="116"/>
       <source>Create Profile</source>
-      <translation type="unfinished">Create Profile</translation>
+      <translation>プロファイルを作成</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="467"/>
@@ -3698,7 +3697,7 @@ unit to work with when opening the file.</translation>
       <translation>プロファイル</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="716"/>
+      <location filename="../../Arch.py" line="720"/>
       <source>Site</source>
       <translation>サイト</translation>
     </message>
@@ -3728,7 +3727,7 @@ unit to work with when opening the file.</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="945"/>
-      <location filename="../../Arch.py" line="639"/>
+      <location filename="../../Arch.py" line="643"/>
       <source>Roof</source>
       <translation type="unfinished">Roof</translation>
     </message>
@@ -3780,7 +3779,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchRoof.py" line="951"/>
       <source>Thickness (mm)</source>
-      <translation type="unfinished">Thickness (mm)</translation>
+      <translation>厚さ（mm）</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="952"/>
@@ -3790,7 +3789,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchRoof.py" line="953"/>
       <source>Height (mm)</source>
-      <translation type="unfinished">Height (mm)</translation>
+      <translation>高さ（mm）</translation>
     </message>
     <message>
       <location filename="../../ArchWindowPresets.py" line="519"/>
@@ -3845,10 +3844,10 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../bimcommands/BimCutPlane.py" line="127"/>
       <source>Front</source>
-      <translation>正面図</translation>
+      <translation>前面</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="600"/>
+      <location filename="../../Arch.py" line="604"/>
       <source>External Reference</source>
       <translation type="unfinished">External Reference</translation>
     </message>
@@ -3917,7 +3916,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchReference.py" line="864"/>
       <source>External file</source>
-      <translation type="unfinished">External file</translation>
+      <translation>外部ファイル</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="868"/>
@@ -3927,12 +3926,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchReference.py" line="875"/>
       <source>Part to use:</source>
-      <translation type="unfinished">Part to use:</translation>
+      <translation>使用するパーツ：</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="880"/>
       <source>Choose file...</source>
-      <translation type="unfinished">Choose file...</translation>
+      <translation>ファイルを選択</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="891"/>
@@ -3943,12 +3942,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchReference.py" line="942"/>
       <source>Reference files</source>
-      <translation type="unfinished">Reference files</translation>
+      <translation>参照ファイル</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="944"/>
       <source>Choose reference file</source>
-      <translation type="unfinished">Choose reference file</translation>
+      <translation>参照ファイルを選択</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimReference.py" line="54"/>
@@ -3956,7 +3955,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation type="unfinished">Create external reference</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="265"/>
+      <location filename="../../Arch.py" line="269"/>
       <source>Frame</source>
       <translation type="unfinished">Frame</translation>
     </message>
@@ -3971,66 +3970,66 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation type="unfinished">Crossing point not found in profile.</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="67"/>
+      <location filename="../../importers/importSHP.py" line="66"/>
       <source>Shapes elevation</source>
       <translation type="unfinished">Shapes elevation</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="68"/>
+      <location filename="../../importers/importSHP.py" line="67"/>
       <source>Choose which field provides shapes elevations:</source>
       <translation type="unfinished">Choose which field provides shapes elevations:</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="109"/>
+      <location filename="../../importers/importSHP.py" line="108"/>
       <source>No shape found in this file</source>
       <translation type="unfinished">No shape found in this file</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="134"/>
+      <location filename="../../importers/importSHP.py" line="133"/>
       <source>Shapefile module not found</source>
       <translation type="unfinished">Shapefile module not found</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="135"/>
+      <location filename="../../importers/importSHP.py" line="134"/>
       <source>The shapefile Python library was not found on your system. Would you like to download it now from %1? It will be placed in your macros folder.</source>
       <translation type="unfinished">The shapefile Python library was not found on your system. Would you like to download it now from %1? It will be placed in your macros folder.</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="141"/>
+      <location filename="../../importers/importSHP.py" line="140"/>
       <source>Error: Unable to download from %1</source>
       <translation type="unfinished">Error: Unable to download from %1</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="151"/>
+      <location filename="../../importers/importSHP.py" line="150"/>
       <source>Could not download shapefile module. Aborting.</source>
       <translation type="unfinished">Could not download shapefile module. Aborting.</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="154"/>
+      <location filename="../../importers/importSHP.py" line="153"/>
       <source>Shapefile module not downloaded. Aborting.</source>
       <translation type="unfinished">Shapefile module not downloaded. Aborting.</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="157"/>
+      <location filename="../../importers/importSHP.py" line="156"/>
       <source>Shapefile module not found. Aborting.</source>
       <translation type="unfinished">Shapefile module not found. Aborting.</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="158"/>
+      <location filename="../../importers/importSHP.py" line="157"/>
       <source>The shapefile library can be downloaded from the following URL and installed in your macros folder:</source>
       <translation type="unfinished">The shapefile library can be downloaded from the following URL and installed in your macros folder:</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1103"/>
+      <location filename="../../Arch.py" line="1107"/>
       <source>Window</source>
       <translation>ウィンドウ</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWindow.py" line="100"/>
       <location filename="../../bimcommands/BimWindow.py" line="119"/>
-      <location filename="../../bimcommands/BimWindow.py" line="166"/>
+      <location filename="../../bimcommands/BimWindow.py" line="167"/>
       <source>Create Window</source>
-      <translation type="unfinished">Create Window</translation>
+      <translation>窓の作成</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWindow.py" line="134"/>
@@ -4038,99 +4037,99 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation type="unfinished">Choose a face on an existing object or select a preset</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="190"/>
+      <location filename="../../bimcommands/BimWindow.py" line="191"/>
       <source>Window not based on sketch. Window not aligned or resized.</source>
       <translation type="unfinished">Window not based on sketch. Window not aligned or resized.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="200"/>
+      <location filename="../../bimcommands/BimWindow.py" line="201"/>
       <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
       <translation type="unfinished">No Width and/or Height constraint in window sketch. Window not resized.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="203"/>
+      <location filename="../../bimcommands/BimWindow.py" line="204"/>
       <source>No window found. Cannot continue.</source>
       <translation type="unfinished">No window found. Cannot continue.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="265"/>
+      <location filename="../../bimcommands/BimWindow.py" line="266"/>
       <source>Window options</source>
       <translation type="unfinished">Window options</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="269"/>
+      <location filename="../../bimcommands/BimWindow.py" line="270"/>
       <source>Auto include in host object</source>
       <translation type="unfinished">Auto include in host object</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="275"/>
+      <location filename="../../bimcommands/BimWindow.py" line="276"/>
       <source>Sill height</source>
       <translation type="unfinished">Sill height</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="869"/>
+      <location filename="../../ArchWindow.py" line="896"/>
       <source>This window has no defined opening</source>
       <translation type="unfinished">This window has no defined opening</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1146"/>
-      <location filename="../../ArchWindow.py" line="1195"/>
-      <location filename="../../ArchWindow.py" line="1356"/>
+      <location filename="../../ArchWindow.py" line="1173"/>
+      <location filename="../../ArchWindow.py" line="1222"/>
+      <location filename="../../ArchWindow.py" line="1383"/>
       <source>Get selected edge</source>
       <translation type="unfinished">Get selected edge</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1295"/>
+      <location filename="../../ArchWindow.py" line="1322"/>
       <source>Unable to create component</source>
       <translation type="unfinished">Unable to create component</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1333"/>
+      <location filename="../../ArchWindow.py" line="1360"/>
       <source>Window elements</source>
       <translation type="unfinished">Window elements</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1334"/>
+      <location filename="../../ArchWindow.py" line="1361"/>
       <source>Hole wire</source>
       <translation type="unfinished">Hole wire</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1335"/>
+      <location filename="../../ArchWindow.py" line="1362"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
       <translation type="unfinished">The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1336"/>
+      <location filename="../../ArchWindow.py" line="1363"/>
       <source>Pick selected</source>
       <translation>ピック選択</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1337"/>
+      <location filename="../../ArchWindow.py" line="1364"/>
       <location filename="../../ArchAxisSystem.py" line="323"/>
       <location filename="../../ArchAxis.py" line="752"/>
       <location filename="../../ArchComponent.py" line="1949"/>
       <location filename="../../ArchSectionPlane.py" line="1324"/>
-      <location filename="../../ArchSpace.py" line="744"/>
+      <location filename="../../ArchSpace.py" line="739"/>
       <source>Remove</source>
       <translation>削除</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1338"/>
+      <location filename="../../ArchWindow.py" line="1365"/>
       <location filename="../../ArchAxisSystem.py" line="324"/>
       <location filename="../../ArchAxis.py" line="753"/>
       <location filename="../../ArchComponent.py" line="1950"/>
-      <location filename="../../ArchSpace.py" line="738"/>
+      <location filename="../../ArchSpace.py" line="733"/>
       <source>Add</source>
       <translation>追加</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="856"/>
+      <location filename="../../ArchSite.py" line="858"/>
       <location filename="../../ArchReference.py" line="652"/>
-      <location filename="../../ArchWindow.py" line="1339"/>
+      <location filename="../../ArchWindow.py" line="1366"/>
       <location filename="../../ArchIFCView.py" line="56"/>
       <location filename="../../ArchAxisSystem.py" line="203"/>
-      <location filename="../../ArchMaterial.py" line="367"/>
-      <location filename="../../ArchMaterial.py" line="665"/>
+      <location filename="../../ArchMaterial.py" line="363"/>
+      <location filename="../../ArchMaterial.py" line="663"/>
       <location filename="../../ArchGrid.py" line="285"/>
       <location filename="../../ArchSchedule.py" line="432"/>
       <location filename="../../ArchAxis.py" line="581"/>
@@ -4140,103 +4139,103 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>編集</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1340"/>
+      <location filename="../../ArchWindow.py" line="1367"/>
       <source>Create/update component</source>
       <translation type="unfinished">Create/update component</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1341"/>
+      <location filename="../../ArchWindow.py" line="1368"/>
       <source>Base 2D object</source>
       <translation type="unfinished">Base 2D object</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1342"/>
-      <location filename="../../ArchWindow.py" line="1347"/>
+      <location filename="../../ArchWindow.py" line="1369"/>
+      <location filename="../../ArchWindow.py" line="1374"/>
       <source>Wires</source>
       <translation type="unfinished">Wires</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1343"/>
+      <location filename="../../ArchWindow.py" line="1370"/>
       <location filename="../../ArchComponent.py" line="1957"/>
       <source>Components</source>
       <translation>コンポーネント</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1344"/>
+      <location filename="../../ArchWindow.py" line="1371"/>
       <source>Create new component</source>
       <translation type="unfinished">Create new component</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1345"/>
-      <location filename="../../ArchMaterial.py" line="747"/>
-      <location filename="../../ArchMaterial.py" line="766"/>
+      <location filename="../../ArchWindow.py" line="1372"/>
+      <location filename="../../ArchMaterial.py" line="743"/>
+      <location filename="../../ArchMaterial.py" line="762"/>
       <source>Name</source>
       <translation>名前</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1346"/>
+      <location filename="../../ArchWindow.py" line="1373"/>
       <location filename="../../ArchComponent.py" line="2012"/>
-      <location filename="../../ArchCommands.py" line="1338"/>
+      <location filename="../../ArchCommands.py" line="1366"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="461"/>
       <source>Type</source>
       <translation>タイプ</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1348"/>
-      <location filename="../../ArchMaterial.py" line="747"/>
-      <location filename="../../ArchMaterial.py" line="766"/>
+      <location filename="../../ArchWindow.py" line="1375"/>
+      <location filename="../../ArchMaterial.py" line="743"/>
+      <location filename="../../ArchMaterial.py" line="762"/>
       <location filename="../../bimcommands/BimPanel.py" line="162"/>
       <source>Thickness</source>
       <translation>厚み</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1349"/>
+      <location filename="../../ArchWindow.py" line="1376"/>
       <location filename="../../ArchPrecast.py" line="1418"/>
       <source>Offset</source>
       <translation>オフセット</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1350"/>
+      <location filename="../../ArchWindow.py" line="1377"/>
       <source>Hinge</source>
-      <translation type="unfinished">Hinge</translation>
+      <translation>ヒンジ</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1351"/>
+      <location filename="../../ArchWindow.py" line="1378"/>
       <source>Opening mode</source>
       <translation type="unfinished">Opening mode</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1352"/>
-      <location filename="../../ArchWindow.py" line="1354"/>
+      <location filename="../../ArchWindow.py" line="1379"/>
+      <location filename="../../ArchWindow.py" line="1381"/>
       <source>+ default</source>
       <translation type="unfinished">+ default</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1353"/>
+      <location filename="../../ArchWindow.py" line="1380"/>
       <source>If this is checked, the default Frame value of this window will be added to the value entered here</source>
       <translation type="unfinished">If this is checked, the default Frame value of this window will be added to the value entered here</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1355"/>
+      <location filename="../../ArchWindow.py" line="1382"/>
       <source>If this is checked, the default Offset value of this window will be added to the value entered here</source>
       <translation type="unfinished">If this is checked, the default Offset value of this window will be added to the value entered here</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1357"/>
+      <location filename="../../ArchWindow.py" line="1384"/>
       <source>Press to retrieve the selected edge</source>
       <translation type="unfinished">Press to retrieve the selected edge</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="799"/>
-      <location filename="../../ArchWindow.py" line="1358"/>
+      <location filename="../../ArchWindow.py" line="826"/>
+      <location filename="../../ArchWindow.py" line="1385"/>
       <source>Invert opening direction</source>
       <translation type="unfinished">Invert opening direction</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="808"/>
-      <location filename="../../ArchWindow.py" line="1359"/>
+      <location filename="../../ArchWindow.py" line="835"/>
+      <location filename="../../ArchWindow.py" line="1386"/>
       <source>Invert hinge position</source>
-      <translation type="unfinished">Invert hinge position</translation>
+      <translation>ヒンジの位置を反転</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="95"/>
@@ -4256,7 +4255,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../bimcommands/BimAxis.py" line="88"/>
       <source>Please select at least one axis</source>
-      <translation type="unfinished">Please select at least one axis</translation>
+      <translation>軸を選択してください</translation>
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="322"/>
@@ -4264,7 +4263,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../Arch.py" line="68"/>
       <location filename="../../ArchComponent.py" line="1956"/>
       <source>Axes</source>
-      <translation type="unfinished">Axes</translation>
+      <translation>軸</translation>
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="325"/>
@@ -4272,15 +4271,15 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation type="unfinished">Axis system components</translation>
     </message>
     <message>
-      <location filename="../../importers/importJSON.py" line="61"/>
-      <location filename="../../importers/importWebGL.py" line="874"/>
-      <location filename="../../importers/importOBJ.py" line="261"/>
-      <location filename="../../importers/importOBJ.py" line="285"/>
+      <location filename="../../importers/importJSON.py" line="58"/>
+      <location filename="../../importers/importWebGL.py" line="873"/>
+      <location filename="../../importers/importOBJ.py" line="258"/>
+      <location filename="../../importers/importOBJ.py" line="282"/>
       <source>Successfully written</source>
       <translation type="unfinished">Successfully written</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="919"/>
+      <location filename="../../Arch.py" line="923"/>
       <source>Truss</source>
       <translation type="unfinished">Truss</translation>
     </message>
@@ -4296,42 +4295,42 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation type="unfinished">Create Truss</translation>
     </message>
     <message>
-      <location filename="../../importers/importIFClegacy.py" line="112"/>
+      <location filename="../../importers/importIFClegacy.py" line="110"/>
       <source>Couldn't locate IfcOpenShell</source>
       <translation type="unfinished">Couldn't locate IfcOpenShell</translation>
     </message>
     <message>
-      <location filename="../../importers/importIFClegacy.py" line="389"/>
+      <location filename="../../importers/importIFClegacy.py" line="387"/>
       <source>IfcOpenShell not found or disabled, falling back on internal parser.</source>
       <translation type="unfinished">IfcOpenShell not found or disabled, falling back on internal parser.</translation>
     </message>
     <message>
-      <location filename="../../importers/importIFClegacy.py" line="395"/>
+      <location filename="../../importers/importIFClegacy.py" line="393"/>
       <source>IFC Schema not found, IFC import disabled.</source>
       <translation type="unfinished">IFC Schema not found, IFC import disabled.</translation>
     </message>
     <message>
-      <location filename="../../importers/importIFClegacy.py" line="930"/>
+      <location filename="../../importers/importIFClegacy.py" line="928"/>
       <source>Error: IfcOpenShell is not installed</source>
       <translation type="unfinished">Error: IfcOpenShell is not installed</translation>
     </message>
     <message>
-      <location filename="../../importers/importIFClegacy.py" line="937"/>
+      <location filename="../../importers/importIFClegacy.py" line="935"/>
       <source>Error: your IfcOpenShell version is too old</source>
       <translation type="unfinished">Error: your IfcOpenShell version is too old</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="531"/>
+      <location filename="../../Arch.py" line="535"/>
       <source>Project</source>
       <translation>プロジェクト</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="774"/>
+      <location filename="../../Arch.py" line="778"/>
       <source>Stairs</source>
       <translation>階段</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="877"/>
+      <location filename="../../Arch.py" line="881"/>
       <source>Railing</source>
       <translation type="unfinished">Railing</translation>
     </message>
@@ -4358,7 +4357,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="598"/>
       <source>Create multi-material</source>
-      <translation type="unfinished">Create multi-material</translation>
+      <translation>複合マテリアルを作成</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="88"/>
@@ -4366,29 +4365,29 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation type="unfinished">Merge duplicates</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="747"/>
-      <location filename="../../ArchMaterial.py" line="766"/>
-      <location filename="../../Arch.py" line="302"/>
+      <location filename="../../ArchMaterial.py" line="743"/>
+      <location filename="../../ArchMaterial.py" line="762"/>
+      <location filename="../../Arch.py" line="306"/>
       <source>Material</source>
       <translation>マテリアル</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="322"/>
+      <location filename="../../Arch.py" line="326"/>
       <source>MultiMaterial</source>
-      <translation type="unfinished">MultiMaterial</translation>
+      <translation>複合マテリアル</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="797"/>
+      <location filename="../../ArchMaterial.py" line="793"/>
       <source>New layer</source>
-      <translation type="unfinished">New layer</translation>
+      <translation>新規レイヤー</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="834"/>
+      <location filename="../../ArchMaterial.py" line="830"/>
       <source>Total thickness</source>
-      <translation type="unfinished">Total thickness</translation>
+      <translation>厚さの合計</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="848"/>
+      <location filename="../../ArchMaterial.py" line="844"/>
       <source>depends on the object</source>
       <translation type="unfinished">depends on the object</translation>
     </message>
@@ -4416,7 +4415,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../bimcommands/BimAxis.py" line="109"/>
       <source>Create Grid</source>
-      <translation type="unfinished">Create Grid</translation>
+      <translation>グリッドを作成</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="109"/>
@@ -4440,19 +4439,19 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="385"/>
-      <location filename="../../Arch.py" line="284"/>
+      <location filename="../../Arch.py" line="288"/>
       <source>Grid</source>
       <translation>グリッド</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="386"/>
       <source>Total width</source>
-      <translation type="unfinished">Total width</translation>
+      <translation>全体の幅</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="387"/>
       <source>Total height</source>
-      <translation type="unfinished">Total height</translation>
+      <translation>全体の高さ</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="388"/>
@@ -4472,7 +4471,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchGrid.py" line="391"/>
       <source>Del column</source>
-      <translation type="unfinished">Del column</translation>
+      <translation>列を削除</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="392"/>
@@ -4487,12 +4486,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchGrid.py" line="394"/>
       <source>Rows</source>
-      <translation type="unfinished">Rows</translation>
+      <translation>行</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="394"/>
       <source>Columns</source>
-      <translation type="unfinished">Columns</translation>
+      <translation>列</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1005"/>
@@ -4626,17 +4625,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>回転</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="372"/>
+      <location filename="../../Arch.py" line="376"/>
       <source>Panel</source>
       <translation type="unfinished">Panel</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="395"/>
+      <location filename="../../Arch.py" line="399"/>
       <source>View of</source>
       <translation type="unfinished">View of</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="411"/>
+      <location filename="../../Arch.py" line="415"/>
       <source>PanelSheet</source>
       <translation type="unfinished">PanelSheet</translation>
     </message>
@@ -4687,23 +4686,23 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation type="unfinished">This object has no face</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="200"/>
+      <location filename="../../Arch.py" line="204"/>
       <source>Curtain Wall</source>
-      <translation type="unfinished">Curtain Wall</translation>
+      <translation>カーテンウォール</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimCurtainwall.py" line="60"/>
       <location filename="../../bimcommands/BimCurtainwall.py" line="87"/>
       <source>Create Curtain Wall</source>
-      <translation type="unfinished">Create Curtain Wall</translation>
+      <translation>カーテンウォールを作成</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="429"/>
+      <location filename="../../Arch.py" line="433"/>
       <source>Pipe</source>
       <translation>パイプ</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="462"/>
+      <location filename="../../Arch.py" line="466"/>
       <source>Connector</source>
       <translation type="unfinished">Connector</translation>
     </message>
@@ -4787,7 +4786,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPipe.py" line="380"/>
       <source>Unable to revolve this connector</source>
-      <translation type="unfinished">Unable to revolve this connector</translation>
+      <translation>このコネクタは回転できません</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="403"/>
@@ -4820,50 +4819,50 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation type="unfinished">Attach spreadsheet</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="568"/>
+      <location filename="../../ArchSchedule.py" line="569"/>
       <source>Import CSV file</source>
-      <translation type="unfinished">Import CSV file</translation>
+      <translation>CSVファイルをインポート</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="601"/>
+      <location filename="../../ArchSchedule.py" line="602"/>
       <source>Export CSV file</source>
-      <translation type="unfinished">Export CSV file</translation>
+      <translation>CSVファイルをエクスポート</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1099"/>
+      <location filename="../../ArchCommands.py" line="1127"/>
       <source>Export CSV File</source>
-      <translation type="unfinished">Export CSV File</translation>
+      <translation>CSVファイルをエクスポート</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="622"/>
+      <location filename="../../ArchSchedule.py" line="623"/>
       <source>Unable to recognize that file type</source>
       <translation type="unfinished">Unable to recognize that file type</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="644"/>
-      <location filename="../../ArchSchedule.py" line="662"/>
-      <location filename="../../ArchCommands.py" line="1010"/>
+      <location filename="../../ArchSchedule.py" line="645"/>
+      <location filename="../../ArchSchedule.py" line="663"/>
+      <location filename="../../ArchCommands.py" line="1038"/>
       <source>Description</source>
       <translation>説明</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="644"/>
-      <location filename="../../ArchSchedule.py" line="662"/>
+      <location filename="../../ArchSchedule.py" line="645"/>
+      <location filename="../../ArchSchedule.py" line="663"/>
       <location filename="../../ArchComponent.py" line="2013"/>
-      <location filename="../../ArchCommands.py" line="1339"/>
+      <location filename="../../ArchCommands.py" line="1367"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="462"/>
       <source>Value</source>
       <translation>値</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="644"/>
-      <location filename="../../ArchSchedule.py" line="662"/>
-      <location filename="../../ArchCommands.py" line="1340"/>
+      <location filename="../../ArchSchedule.py" line="645"/>
+      <location filename="../../ArchSchedule.py" line="663"/>
+      <location filename="../../ArchCommands.py" line="1368"/>
       <source>Unit</source>
       <translation>単位</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="723"/>
+      <location filename="../../ArchSchedule.py" line="724"/>
       <source>Schedule</source>
       <translation type="unfinished">Schedule</translation>
     </message>
@@ -4901,7 +4900,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimAxis.py" line="48"/>
       <source>Create Axis</source>
-      <translation type="unfinished">Create Axis</translation>
+      <translation>軸を作成</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="754"/>
@@ -4929,12 +4928,12 @@ Floor creation aborted.</translation>
       <translation>ラベル</translation>
     </message>
     <message>
-      <location filename="../../importers/importOBJ.py" line="87"/>
+      <location filename="../../importers/importOBJ.py" line="84"/>
       <source>Found a shape containing curves, triangulating</source>
       <translation type="unfinished">Found a shape containing curves, triangulating</translation>
     </message>
     <message>
-      <location filename="../../importers/importOBJ.py" line="367"/>
+      <location filename="../../importers/importOBJ.py" line="364"/>
       <source>Successfully imported</source>
       <translation type="unfinished">Successfully imported</translation>
     </message>
@@ -4965,7 +4964,7 @@ Floor creation aborted.</translation>
       <translation type="unfinished">has a null shape</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="864"/>
+      <location filename="../../ArchSite.py" line="866"/>
       <location filename="../../ArchComponent.py" line="1514"/>
       <source>Toggle subcomponents</source>
       <translation type="unfinished">Toggle subcomponents</translation>
@@ -4977,7 +4976,7 @@ Floor creation aborted.</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1948"/>
-      <location filename="../../ArchCommands.py" line="214"/>
+      <location filename="../../ArchCommands.py" line="240"/>
       <source>Component</source>
       <translation type="unfinished">Component</translation>
     </message>
@@ -5065,7 +5064,7 @@ Floor creation aborted.</translation>
       <translation type="unfinished">New property set</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="551"/>
+      <location filename="../../Arch.py" line="555"/>
       <source>Rebar</source>
       <translation>鉄筋</translation>
     </message>
@@ -5081,7 +5080,7 @@ Floor creation aborted.</translation>
       <translation type="unfinished">Please select a base face on a structural object</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="686"/>
+      <location filename="../../Arch.py" line="690"/>
       <source>Section</source>
       <translation>セクション</translation>
     </message>
@@ -5167,7 +5166,7 @@ Floor creation aborted.</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1338"/>
-      <location filename="../../bimcommands/BimWall.py" line="313"/>
+      <location filename="../../bimcommands/BimWall.py" line="315"/>
       <source>Center</source>
       <translation>中心</translation>
     </message>
@@ -5177,7 +5176,7 @@ Floor creation aborted.</translation>
       <translation type="unfinished">Centers the plane on the objects in the list above</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="138"/>
+      <location filename="../../Arch.py" line="139"/>
       <location filename="../../ArchBuilding.py" line="206"/>
       <source>Building</source>
       <translation>ビルディング</translation>
@@ -5215,7 +5214,7 @@ Building creation aborted.</translation>
       <translation type="unfinished">Create Building</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="743"/>
+      <location filename="../../Arch.py" line="747"/>
       <source>Space</source>
       <translation>スペース</translation>
     </message>
@@ -5225,31 +5224,31 @@ Building creation aborted.</translation>
       <translation type="unfinished">Create Space</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="727"/>
+      <location filename="../../ArchSpace.py" line="722"/>
       <source>Set text position</source>
       <translation type="unfinished">Set text position</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="731"/>
+      <location filename="../../ArchSpace.py" line="726"/>
       <source>Space boundaries</source>
       <translation type="unfinished">Space boundaries</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="982"/>
+      <location filename="../../Arch.py" line="986"/>
       <source>Wall</source>
-      <translation type="unfinished">Wall</translation>
+      <translation>壁</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="989"/>
+      <location filename="../../Arch.py" line="993"/>
       <source>Walls can only be based on Part or Mesh objects</source>
       <translation type="unfinished">Walls can only be based on Part or Mesh objects</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="90"/>
-      <location filename="../../bimcommands/BimWall.py" line="164"/>
-      <location filename="../../bimcommands/BimWall.py" line="416"/>
+      <location filename="../../bimcommands/BimWall.py" line="166"/>
+      <location filename="../../bimcommands/BimWall.py" line="418"/>
       <source>Create Wall</source>
-      <translation type="unfinished">Create Wall</translation>
+      <translation>壁を作成</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="119"/>
@@ -5257,37 +5256,37 @@ Building creation aborted.</translation>
       <translation type="unfinished">First point of wall</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="274"/>
+      <location filename="../../bimcommands/BimWall.py" line="276"/>
       <source>Wall options</source>
-      <translation type="unfinished">Wall options</translation>
+      <translation>壁のオプション</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="278"/>
+      <location filename="../../bimcommands/BimWall.py" line="280"/>
       <source>Wall Presets...</source>
-      <translation type="unfinished">Wall Presets...</translation>
+      <translation>壁のプリセット...</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="279"/>
+      <location filename="../../bimcommands/BimWall.py" line="281"/>
       <source>This list shows all the MultiMaterials objects of this document. Create some to define wall types.</source>
-      <translation type="unfinished">This list shows all the MultiMaterials objects of this document. Create some to define wall types.</translation>
+      <translation>このドキュメント内の全ての複合マテリアルオブジェクトのリストです。壁の種類を定義するためにいくつか作成してください。</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="311"/>
+      <location filename="../../bimcommands/BimWall.py" line="313"/>
       <source>Alignment</source>
       <translation type="unfinished">Alignment</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="313"/>
+      <location filename="../../bimcommands/BimWall.py" line="315"/>
       <source>Left</source>
-      <translation>左面図</translation>
+      <translation>左面</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="314"/>
+      <location filename="../../bimcommands/BimWall.py" line="316"/>
       <source>Right</source>
-      <translation>右面図</translation>
+      <translation>右面</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="329"/>
+      <location filename="../../bimcommands/BimWall.py" line="331"/>
       <source>Use sketches</source>
       <translation>スケッチを使用</translation>
     </message>
@@ -5306,106 +5305,111 @@ Building creation aborted.</translation>
       <location filename="../../bimcommands/BimArchUtils.py" line="461"/>
       <location filename="../../bimcommands/BimArchUtils.py" line="476"/>
       <source>Merge Walls</source>
-      <translation type="unfinished">Merge Walls</translation>
+      <translation>壁を結合</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="407"/>
+      <location filename="../../ArchWall.py" line="243"/>
+      <source>changed 'Normal' to [0, 0, 1] to preserve extrusion direction</source>
+      <translation>押し出し方向を維持するために 'Normal' を [0, 0, 1] に変更しました</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="430"/>
       <source>Cannot compute blocks for wall</source>
       <translation type="unfinished">Cannot compute blocks for wall</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="518"/>
+      <location filename="../../ArchWall.py" line="541"/>
       <source>Error: Unable to modify the base object of this wall</source>
       <translation type="unfinished">Error: Unable to modify the base object of this wall</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1280"/>
+      <location filename="../../ArchWall.py" line="1303"/>
       <source>Flip direction</source>
       <translation>方向転換</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="408"/>
+      <location filename="../../ArchCommands.py" line="434"/>
       <source>Invalid cut plane</source>
       <translation type="unfinished">Invalid cut plane</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="691"/>
+      <location filename="../../ArchCommands.py" line="717"/>
       <source>is not closed</source>
       <translation type="unfinished">is not closed</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="693"/>
+      <location filename="../../ArchCommands.py" line="719"/>
       <source>is not valid</source>
       <translation type="unfinished">is not valid</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="695"/>
+      <location filename="../../ArchCommands.py" line="721"/>
       <source>doesn't contain any solid</source>
       <translation type="unfinished">doesn't contain any solid</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="701"/>
+      <location filename="../../ArchCommands.py" line="727"/>
       <source>contains a non-closed solid</source>
       <translation type="unfinished">contains a non-closed solid</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="703"/>
+      <location filename="../../ArchCommands.py" line="729"/>
       <source>contains faces that are not part of any solid</source>
       <translation type="unfinished">contains faces that are not part of any solid</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1004"/>
+      <location filename="../../ArchCommands.py" line="1032"/>
       <source>Survey</source>
       <translation>調査</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1005"/>
+      <location filename="../../ArchCommands.py" line="1033"/>
       <source>Set description</source>
       <translation type="unfinished">Set description</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1006"/>
+      <location filename="../../ArchCommands.py" line="1034"/>
       <source>Clear</source>
       <translation>クリア</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1007"/>
+      <location filename="../../ArchCommands.py" line="1035"/>
       <source>Copy Length</source>
       <translation type="unfinished">Copy Length</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1008"/>
+      <location filename="../../ArchCommands.py" line="1036"/>
       <source>Copy Area</source>
       <translation type="unfinished">Copy Area</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1009"/>
+      <location filename="../../ArchCommands.py" line="1037"/>
       <source>Export CSV</source>
       <translation type="unfinished">Export CSV</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1012"/>
+      <location filename="../../ArchCommands.py" line="1040"/>
       <source>Area</source>
       <translation>面積</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1057"/>
+      <location filename="../../ArchCommands.py" line="1085"/>
       <source>Total</source>
       <translation>合計</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1137"/>
+      <location filename="../../ArchCommands.py" line="1165"/>
       <source>Object doesn't have settable IFC attributes</source>
       <translation type="unfinished">Object doesn't have settable IFC attributes</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1143"/>
+      <location filename="../../ArchCommands.py" line="1171"/>
       <source>Disabling B-rep force flag of object</source>
       <translation type="unfinished">Disabling B-rep force flag of object</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1146"/>
-      <location filename="../../ArchCommands.py" line="1149"/>
+      <location filename="../../ArchCommands.py" line="1174"/>
+      <location filename="../../ArchCommands.py" line="1177"/>
       <source>Enabling B-rep force flag of object</source>
       <translation type="unfinished">Enabling B-rep force flag of object</translation>
     </message>
@@ -5451,12 +5455,12 @@ Building creation aborted.</translation>
       <translation type="unfinished">Create Component</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1337"/>
+      <location filename="../../ArchCommands.py" line="1365"/>
       <source>Key</source>
       <translation type="unfinished">Key</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1347"/>
+      <location filename="../../ArchCommands.py" line="1375"/>
       <source>The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</source>
       <translation type="unfinished">The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</translation>
     </message>
@@ -5471,7 +5475,7 @@ Building creation aborted.</translation>
       <translation type="unfinished">Create Level</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimFence.py" line="51"/>
+      <location filename="../../bimcommands/BimFence.py" line="52"/>
       <source>Create Fence</source>
       <translation type="unfinished">Create Fence</translation>
     </message>
@@ -5638,7 +5642,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="1059"/>
       <source>The color of the nodes line</source>
-      <translation type="unfinished">The color of the nodes line</translation>
+      <translation>節間の線の色</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1062"/>
@@ -5672,7 +5676,7 @@ Building creation aborted.</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="192"/>
-      <location filename="../../ArchMaterial.py" line="170"/>
+      <location filename="../../ArchMaterial.py" line="166"/>
       <source>A standard code (MasterFormat, OmniClass,...)</source>
       <translation type="unfinished">A standard code (MasterFormat, OmniClass,...)</translation>
     </message>
@@ -5687,8 +5691,8 @@ Building creation aborted.</translation>
       <translation type="unfinished">The electric power needed by this equipment in Watts</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="140"/>
-      <location filename="../../Arch.py" line="168"/>
+      <location filename="../../Arch.py" line="142"/>
+      <location filename="../../Arch.py" line="172"/>
       <location filename="../../ArchBuilding.py" line="281"/>
       <source>The type of this building</source>
       <translation type="unfinished">The type of this building</translation>
@@ -5787,12 +5791,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="468"/>
       <source>The font to be used for texts</source>
-      <translation type="unfinished">The font to be used for texts</translation>
+      <translation>文字列に使用するフォント</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="471"/>
       <source>The font size of texts</source>
-      <translation type="unfinished">The font size of texts</translation>
+      <translation>文字列のフォントサイズ</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="474"/>
@@ -5837,7 +5841,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="499"/>
       <source>If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</source>
-      <translation type="unfinished">If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</translation>
+      <translation>Trueの場合、このビルディング・パートに含まれるオブジェクトを表示すると、これらの線、色、透明度の設定が適用されます。</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="501"/>
@@ -5847,7 +5851,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="504"/>
       <source>The line color of child objects</source>
-      <translation type="unfinished">The line color of child objects</translation>
+      <translation>子オブジェクトの線の色</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="507"/>
@@ -5902,7 +5906,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchProfile.py" line="126"/>
       <source>Wall thickness</source>
-      <translation type="unfinished">Wall thickness</translation>
+      <translation>壁の厚さ</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="150"/>
@@ -5957,167 +5961,167 @@ Building creation aborted.</translation>
       <translation type="unfinished">Thickness of the legs</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="521"/>
+      <location filename="../../ArchSite.py" line="523"/>
       <source>The base terrain of this site</source>
       <translation type="unfinished">The base terrain of this site</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="523"/>
+      <location filename="../../ArchSite.py" line="525"/>
       <source>The street and house number of this site, with postal box or apartment number if needed</source>
       <translation type="unfinished">The street and house number of this site, with postal box or apartment number if needed</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="525"/>
+      <location filename="../../ArchSite.py" line="527"/>
       <source>The postal or zip code of this site</source>
       <translation type="unfinished">The postal or zip code of this site</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="527"/>
+      <location filename="../../ArchSite.py" line="529"/>
       <source>The city of this site</source>
       <translation type="unfinished">The city of this site</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="529"/>
+      <location filename="../../ArchSite.py" line="531"/>
       <source>The region, province or county of this site</source>
       <translation type="unfinished">The region, province or county of this site</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="531"/>
+      <location filename="../../ArchSite.py" line="533"/>
       <source>The country of this site</source>
       <translation type="unfinished">The country of this site</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="533"/>
       <location filename="../../ArchSite.py" line="535"/>
+      <location filename="../../ArchSite.py" line="537"/>
       <source>The latitude of this site</source>
       <translation type="unfinished">The latitude of this site</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="537"/>
+      <location filename="../../ArchSite.py" line="539"/>
       <source>Angle between the true North and the North direction in this document</source>
       <translation type="unfinished">Angle between the true North and the North direction in this document</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="542"/>
+      <location filename="../../ArchSite.py" line="544"/>
       <source>The elevation of level 0 of this site</source>
       <translation type="unfinished">The elevation of level 0 of this site</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="544"/>
+      <location filename="../../ArchSite.py" line="546"/>
       <source>A URL that shows this site in a mapping website</source>
       <translation type="unfinished">A URL that shows this site in a mapping website</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="546"/>
+      <location filename="../../ArchSite.py" line="548"/>
       <location filename="../../ArchComponent.py" line="201"/>
       <source>Other shapes that are appended to this object</source>
       <translation type="unfinished">Other shapes that are appended to this object</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="548"/>
+      <location filename="../../ArchSite.py" line="550"/>
       <location filename="../../ArchComponent.py" line="203"/>
       <source>Other shapes that are subtracted from this object</source>
       <translation type="unfinished">Other shapes that are subtracted from this object</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="550"/>
+      <location filename="../../ArchSite.py" line="552"/>
       <location filename="../../ArchComponent.py" line="226"/>
       <source>The area of the projection of this object onto the XY plane</source>
       <translation type="unfinished">The area of the projection of this object onto the XY plane</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="552"/>
+      <location filename="../../ArchSite.py" line="554"/>
       <source>The perimeter length of the projected area</source>
       <translation type="unfinished">The perimeter length of the projected area</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="554"/>
+      <location filename="../../ArchSite.py" line="556"/>
       <source>The volume of earth to be added to this terrain</source>
       <translation type="unfinished">The volume of earth to be added to this terrain</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="556"/>
+      <location filename="../../ArchSite.py" line="558"/>
       <source>The volume of earth to be removed from this terrain</source>
       <translation type="unfinished">The volume of earth to be removed from this terrain</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="558"/>
+      <location filename="../../ArchSite.py" line="560"/>
       <source>An extrusion vector to use when performing boolean operations</source>
       <translation type="unfinished">An extrusion vector to use when performing boolean operations</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="561"/>
+      <location filename="../../ArchSite.py" line="563"/>
       <source>Remove splitters from the resulting shape</source>
       <translation type="unfinished">Remove splitters from the resulting shape</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="563"/>
+      <location filename="../../ArchSite.py" line="565"/>
       <source>An optional offset between the model (0,0,0) origin and the point indicated by the geocoordinates</source>
       <translation type="unfinished">An optional offset between the model (0,0,0) origin and the point indicated by the geocoordinates</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="567"/>
+      <location filename="../../ArchSite.py" line="569"/>
       <location filename="../../ArchIFC.py" line="70"/>
       <source>The type of this object</source>
       <translation type="unfinished">The type of this object</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="571"/>
+      <location filename="../../ArchSite.py" line="573"/>
       <source>The time zone where this site is located</source>
       <translation type="unfinished">The time zone where this site is located</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="573"/>
+      <location filename="../../ArchSite.py" line="575"/>
       <source>An optional EPW File for the location of this site. Refer to the Site documentation to know how to obtain one</source>
       <translation type="unfinished">An optional EPW File for the location of this site. Refer to the Site documentation to know how to obtain one</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="777"/>
-      <source>Show wind rose diagram or not. Uses solar diagram scale. Needs Ladybug module</source>
-      <translation type="unfinished">Show wind rose diagram or not. Uses solar diagram scale. Needs Ladybug module</translation>
-    </message>
-    <message>
       <location filename="../../ArchSite.py" line="779"/>
-      <source>Show solar diagram or not</source>
-      <translation type="unfinished">Show solar diagram or not</translation>
+      <source>Show wind rose diagram or not. Uses solar diagram scale. Needs Ladybug module</source>
+      <translation>風配図の表示の有無。 太陽位置図の尺度が使われます。これにはLadybugモジュールが必要です。</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="781"/>
-      <source>The scale of the solar diagram</source>
-      <translation type="unfinished">The scale of the solar diagram</translation>
+      <source>Show solar diagram or not</source>
+      <translation>太陽位置図の表示の有無</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="784"/>
-      <source>The position of the solar diagram</source>
-      <translation type="unfinished">The position of the solar diagram</translation>
+      <location filename="../../ArchSite.py" line="783"/>
+      <source>The scale of the solar diagram</source>
+      <translation>太陽位置図の尺度</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="786"/>
-      <source>The color of the solar diagram</source>
-      <translation type="unfinished">The color of the solar diagram</translation>
+      <source>The position of the solar diagram</source>
+      <translation>太陽位置図の位置</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="790"/>
+      <location filename="../../ArchSite.py" line="788"/>
+      <source>The color of the solar diagram</source>
+      <translation>太陽位置図の色</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="792"/>
       <source>When set to 'True North' the whole geometry will be rotated to match the true north of this site</source>
       <translation type="unfinished">When set to 'True North' the whole geometry will be rotated to match the true north of this site</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="794"/>
+      <location filename="../../ArchSite.py" line="796"/>
       <source>Show compass or not</source>
       <translation type="unfinished">Show compass or not</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="796"/>
+      <location filename="../../ArchSite.py" line="798"/>
       <source>The rotation of the Compass relative to the Site</source>
       <translation type="unfinished">The rotation of the Compass relative to the Site</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="798"/>
+      <location filename="../../ArchSite.py" line="800"/>
       <source>The position of the Compass relative to the Site placement</source>
       <translation type="unfinished">The position of the Compass relative to the Site placement</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="800"/>
+      <location filename="../../ArchSite.py" line="802"/>
       <source>Update the Declination value based on the compass rotation</source>
       <translation type="unfinished">Update the Declination value based on the compass rotation</translation>
     </message>
@@ -6154,7 +6158,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchRoof.py" line="192"/>
       <source>The face number of the base object used to build the roof</source>
-      <translation type="unfinished">The face number of the base object used to build the roof</translation>
+      <translation>この屋根に使用されているベースオブジェクトの面の数</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="197"/>
@@ -6314,7 +6318,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWindow.py" line="154"/>
       <source>Opens the subcomponents that have a hinge defined</source>
-      <translation type="unfinished">Opens the subcomponents that have a hinge defined</translation>
+      <translation>ヒンジが定義されたサブコンポートネントを開く</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="156"/>
@@ -6332,7 +6336,7 @@ Building creation aborted.</translation>
       <translation type="unfinished">Show elevation opening symbols if available</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1085"/>
+      <location filename="../../ArchWindow.py" line="1112"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
       <translation type="unfinished">The number of the wire that defines the hole. A value of 0 means automatic</translation>
     </message>
@@ -6609,43 +6613,43 @@ Building creation aborted.</translation>
       <translation type="unfinished">When true, the fence will be colored like the original post and section.</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="168"/>
-      <location filename="../../ArchMaterial.py" line="620"/>
+      <location filename="../../ArchMaterial.py" line="164"/>
+      <location filename="../../ArchMaterial.py" line="618"/>
       <source>A description for this material</source>
       <translation type="unfinished">A description for this material</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="172"/>
+      <location filename="../../ArchMaterial.py" line="168"/>
       <source>A URL where to find information about this material</source>
       <translation type="unfinished">A URL where to find information about this material</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="174"/>
+      <location filename="../../ArchMaterial.py" line="170"/>
       <source>The transparency value of this material</source>
       <translation type="unfinished">The transparency value of this material</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="176"/>
+      <location filename="../../ArchMaterial.py" line="172"/>
       <source>The color of this material</source>
       <translation>このマテリアルの色</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="178"/>
+      <location filename="../../ArchMaterial.py" line="174"/>
       <source>The color of this material when cut</source>
       <translation type="unfinished">The color of this material when cut</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="621"/>
+      <location filename="../../ArchMaterial.py" line="619"/>
       <source>The list of layer names</source>
       <translation type="unfinished">The list of layer names</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="622"/>
+      <location filename="../../ArchMaterial.py" line="620"/>
       <source>The list of layer materials</source>
       <translation type="unfinished">The list of layer materials</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="623"/>
+      <location filename="../../ArchMaterial.py" line="621"/>
       <source>The list of layer thicknesses</source>
       <translation type="unfinished">The list of layer thicknesses</translation>
     </message>
@@ -7035,17 +7039,17 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCurtainWall.py" line="160"/>
       <source>The number of panels</source>
-      <translation type="unfinished">The number of panels</translation>
+      <translation>パネルの数</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="164"/>
       <source>The thickness of the panels</source>
-      <translation type="unfinished">The thickness of the panels</translation>
+      <translation>パネルの厚さ</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="168"/>
       <source>Swaps horizontal and vertical lines</source>
-      <translation type="unfinished">Swaps horizontal and vertical lines</translation>
+      <translation>水平線と垂直線を入れ替えます</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="171"/>
@@ -7181,17 +7185,17 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="70"/>
       <source>The intervals between axes</source>
-      <translation type="unfinished">The intervals between axes</translation>
+      <translation>軸の間隔</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="72"/>
       <source>The angles of each axis</source>
-      <translation type="unfinished">The angles of each axis</translation>
+      <translation>軸の角度</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="74"/>
       <source>The label of each axis</source>
-      <translation type="unfinished">The label of each axis</translation>
+      <translation>軸のラベル</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="76"/>
@@ -7201,7 +7205,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="78"/>
       <source>The length of the axes</source>
-      <translation type="unfinished">The length of the axes</translation>
+      <translation>軸の長さ</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="85"/>
@@ -7251,7 +7255,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="203"/>
       <source>The font size</source>
-      <translation type="unfinished">The font size</translation>
+      <translation>フォントの大きさ</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="206"/>
@@ -7447,7 +7451,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="908"/>
       <source>The color of this object</source>
-      <translation type="unfinished">The color of this object</translation>
+      <translation>このオブジェクトの色</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="913"/>
@@ -7461,128 +7465,128 @@ Building creation aborted.</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="918"/>
-      <location filename="../../ArchSpace.py" line="456"/>
+      <location filename="../../ArchSpace.py" line="455"/>
       <source>The name of the font</source>
-      <translation type="unfinished">The name of the font</translation>
+      <translation>フォントの名前</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="921"/>
-      <location filename="../../ArchSpace.py" line="462"/>
+      <location filename="../../ArchSpace.py" line="461"/>
       <source>The size of the text font</source>
-      <translation type="unfinished">The size of the text font</translation>
+      <translation>文字のフォントの大きさ</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="220"/>
+      <location filename="../../ArchSpace.py" line="221"/>
       <source>The objects that make the boundaries of this space object</source>
       <translation type="unfinished">The objects that make the boundaries of this space object</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="222"/>
+      <location filename="../../ArchSpace.py" line="223"/>
       <source>Identical to Horizontal Area</source>
       <translation type="unfinished">Identical to Horizontal Area</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="224"/>
+      <location filename="../../ArchSpace.py" line="225"/>
       <source>The finishing of the floor of this space</source>
       <translation type="unfinished">The finishing of the floor of this space</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="226"/>
+      <location filename="../../ArchSpace.py" line="227"/>
       <source>The finishing of the walls of this space</source>
       <translation type="unfinished">The finishing of the walls of this space</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="228"/>
+      <location filename="../../ArchSpace.py" line="229"/>
       <source>The finishing of the ceiling of this space</source>
       <translation type="unfinished">The finishing of the ceiling of this space</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="230"/>
+      <location filename="../../ArchSpace.py" line="231"/>
       <source>Objects that are included inside this space, such as furniture</source>
       <translation type="unfinished">Objects that are included inside this space, such as furniture</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="232"/>
+      <location filename="../../ArchSpace.py" line="233"/>
       <source>The type of this space</source>
       <translation type="unfinished">The type of this space</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="235"/>
+      <location filename="../../ArchSpace.py" line="236"/>
       <source>The thickness of the floor finish</source>
       <translation type="unfinished">The thickness of the floor finish</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="237"/>
+      <location filename="../../ArchSpace.py" line="238"/>
       <source>The number of people who typically occupy this space</source>
       <translation type="unfinished">The number of people who typically occupy this space</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="239"/>
+      <location filename="../../ArchSpace.py" line="240"/>
       <source>The electric power needed to light this space in Watts</source>
       <translation type="unfinished">The electric power needed to light this space in Watts</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="241"/>
+      <location filename="../../ArchSpace.py" line="242"/>
       <source>The electric power needed by the equipment of this space in Watts</source>
       <translation type="unfinished">The electric power needed by the equipment of this space in Watts</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="243"/>
+      <location filename="../../ArchSpace.py" line="244"/>
       <source>If True, Equipment Power will be automatically filled by the equipment included in this space</source>
       <translation type="unfinished">If True, Equipment Power will be automatically filled by the equipment included in this space</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="245"/>
+      <location filename="../../ArchSpace.py" line="246"/>
       <source>The type of air conditioning of this space</source>
       <translation type="unfinished">The type of air conditioning of this space</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="248"/>
+      <location filename="../../ArchSpace.py" line="249"/>
       <source>Specifies if this space is internal or external</source>
       <translation type="unfinished">Specifies if this space is internal or external</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="251"/>
+      <location filename="../../ArchSpace.py" line="252"/>
       <source>Defines the calculation type for the horizontal area and its perimeter length</source>
       <translation type="unfinished">Defines the calculation type for the horizontal area and its perimeter length</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="453"/>
+      <location filename="../../ArchSpace.py" line="452"/>
       <source>The text to show. Use $area, $label, $tag, $longname, $description and for finishes $floor, $walls, $ceiling to insert the respective data</source>
       <translation type="unfinished">The text to show. Use $area, $label, $tag, $longname, $description and for finishes $floor, $walls, $ceiling to insert the respective data</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="459"/>
+      <location filename="../../ArchSpace.py" line="458"/>
       <source>The color of the area text</source>
       <translation type="unfinished">The color of the area text</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="465"/>
+      <location filename="../../ArchSpace.py" line="464"/>
       <source>The size of the first line of text</source>
       <translation type="unfinished">The size of the first line of text</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="468"/>
+      <location filename="../../ArchSpace.py" line="467"/>
       <source>The space between the lines of text</source>
       <translation type="unfinished">The space between the lines of text</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="471"/>
+      <location filename="../../ArchSpace.py" line="470"/>
       <source>The position of the text. Leave (0,0,0) for automatic position</source>
       <translation type="unfinished">The position of the text. Leave (0,0,0) for automatic position</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="473"/>
+      <location filename="../../ArchSpace.py" line="472"/>
       <source>The justification of the text</source>
       <translation type="unfinished">The justification of the text</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="477"/>
+      <location filename="../../ArchSpace.py" line="476"/>
       <source>The number of decimals to use for calculated texts</source>
       <translation type="unfinished">The number of decimals to use for calculated texts</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="480"/>
+      <location filename="../../ArchSpace.py" line="479"/>
       <source>Show the unit suffix</source>
       <translation type="unfinished">Show the unit suffix</translation>
     </message>
@@ -7599,12 +7603,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWall.py" line="174"/>
       <source>The area of this wall as a simple Height * Length calculation</source>
-      <translation type="unfinished">The area of this wall as a simple Height * Length calculation</translation>
+      <translation>この壁の面積は高さ×長さで計算されます</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="182"/>
       <source>The face number of the base object used to build this wall</source>
-      <translation type="unfinished">The face number of the base object used to build this wall</translation>
+      <translation>この壁に使用されているベースオブジェクトの面の数</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="162"/>
@@ -7644,12 +7648,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWall.py" line="195"/>
       <source>The length of each block</source>
-      <translation type="unfinished">The length of each block</translation>
+      <translation>各ブロックの長さ</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="197"/>
       <source>The height of each block</source>
-      <translation type="unfinished">The height of each block</translation>
+      <translation>各ブロックの高さ</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="199"/>
@@ -7669,12 +7673,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWall.py" line="205"/>
       <source>The number of entire blocks</source>
-      <translation type="unfinished">The number of entire blocks</translation>
+      <translation>全体のブロック数</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="208"/>
       <source>The number of broken blocks</source>
-      <translation type="unfinished">The number of broken blocks</translation>
+      <translation>壊れたブロック数</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="211"/>
@@ -7714,7 +7718,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimEquipment.py" line="105"/>
       <source>Creates 3 views (top, front, side) from a mesh-based object</source>
-      <translation type="unfinished">Creates 3 views (top, front, side) from a mesh-based object</translation>
+      <translation>メッシュベースのオブジェクトから三面図（平面図、正面図、側面図）を作成</translation>
     </message>
   </context>
   <context>
@@ -7730,12 +7734,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../InitGui.py" line="387"/>
       <source>Drafting tools</source>
-      <translation type="unfinished">Drafting tools</translation>
+      <translation>基本設計ツール</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="388"/>
       <source>Draft snap</source>
-      <translation type="unfinished">Draft snap</translation>
+      <translation>基本設計スナップ</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="389"/>
@@ -7775,7 +7779,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../InitGui.py" line="408"/>
       <source>&amp;2D Drafting</source>
-      <translation type="unfinished">&amp;2D Drafting</translation>
+      <translation>&amp;2D基本設計</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="409"/>
@@ -7825,7 +7829,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../InitGui.py" line="423"/>
       <source>Nudge</source>
-      <translation type="unfinished">Nudge</translation>
+      <translation>微調整</translation>
     </message>
   </context>
   <context>
@@ -7838,7 +7842,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimProfile.py" line="46"/>
       <source>Creates a profile</source>
-      <translation type="unfinished">Creates a profile</translation>
+      <translation>プロファイルを作成</translation>
     </message>
   </context>
   <context>
@@ -8002,12 +8006,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="591"/>
       <source>Multi-Material</source>
-      <translation type="unfinished">Multi-Material</translation>
+      <translation>複合マテリアル</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="595"/>
       <source>Creates or edits multi-materials</source>
-      <translation type="unfinished">Creates or edits multi-materials</translation>
+      <translation>複合マテリアルの作成・編集</translation>
     </message>
   </context>
   <context>
@@ -8029,27 +8033,27 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimAxis.py" line="107"/>
       <source>Creates a customizable grid object</source>
-      <translation type="unfinished">Creates a customizable grid object</translation>
+      <translation>カスタマイズできるグリッドオブジェクトを作成</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="63"/>
       <source>The number of rows</source>
-      <translation type="unfinished">The number of rows</translation>
+      <translation>行数</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="65"/>
       <source>The number of columns</source>
-      <translation type="unfinished">The number of columns</translation>
+      <translation>列数</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="67"/>
-      <source>The sizes for rows</source>
-      <translation type="unfinished">The sizes for rows</translation>
+      <source>The sizes of rows</source>
+      <translation type="unfinished">The sizes of rows</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="69"/>
       <source>The sizes of columns</source>
-      <translation type="unfinished">The sizes of columns</translation>
+      <translation>列サイズ</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="71"/>
@@ -8059,17 +8063,17 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchGrid.py" line="73"/>
       <source>The type of 3D points produced by this grid object</source>
-      <translation type="unfinished">The type of 3D points produced by this grid object</translation>
+      <translation>このグリッドオブジェクトが作成した3D点の種類</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="76"/>
       <source>The total width of this grid</source>
-      <translation type="unfinished">The total width of this grid</translation>
+      <translation>グリッドの幅</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="78"/>
       <source>The total height of this grid</source>
-      <translation type="unfinished">The total height of this grid</translation>
+      <translation>グリッドの高さ</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="80"/>
@@ -8084,7 +8088,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchGrid.py" line="84"/>
       <source>When in edge midpoint mode, if this grid must reorient its children along edge normals or not</source>
-      <translation type="unfinished">When in edge midpoint mode, if this grid must reorient its children along edge normals or not</translation>
+      <translation>エッジ中点モードで、このグリッドがエッジ法線に沿って子の向きを変更するか</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="86"/>
@@ -8115,7 +8119,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="253"/>
       <source>Creates 2D views of selected panels</source>
-      <translation type="unfinished">Creates 2D views of selected panels</translation>
+      <translation>選択したパネルの2Dビューを作成</translation>
     </message>
   </context>
   <context>
@@ -8158,12 +8162,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimCurtainwall.py" line="43"/>
       <source>Curtain Wall</source>
-      <translation type="unfinished">Curtain Wall</translation>
+      <translation>カーテンウォール</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimCurtainwall.py" line="47"/>
       <source>Creates a curtain wall object from selected line or from scratch</source>
-      <translation type="unfinished">Creates a curtain wall object from selected line or from scratch</translation>
+      <translation>選択した線またはスクラッチからカーテンウォールオブジェクトを作成</translation>
     </message>
   </context>
   <context>
@@ -8267,7 +8271,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimSectionPlane.py" line="43"/>
       <source>Section Plane</source>
-      <translation type="unfinished">Section Plane</translation>
+      <translation>断面</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSectionPlane.py" line="46"/>
@@ -8299,12 +8303,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="52"/>
       <source>Wall</source>
-      <translation type="unfinished">Wall</translation>
+      <translation>壁</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="56"/>
       <source>Creates a wall object from scratch or from a selected object (wire, face or solid)</source>
-      <translation type="unfinished">Creates a wall object from scratch or from a selected object (wire, face or solid)</translation>
+      <translation>スクラッチまたは選択されているオブジェクト（ワイヤー、面、ソリッド）から壁オブジェクトを作成</translation>
     </message>
   </context>
   <context>
@@ -8312,12 +8316,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="428"/>
       <source>Merge Walls</source>
-      <translation type="unfinished">Merge Walls</translation>
+      <translation>壁を結合</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="431"/>
       <source>Merges the selected walls, if possible</source>
-      <translation type="unfinished">Merges the selected walls, if possible</translation>
+      <translation>可能な場合、選択した壁を結合します</translation>
     </message>
   </context>
   <context>
@@ -8479,7 +8483,7 @@ Building creation aborted.</translation>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../ArchSite.py" line="876"/>
+      <location filename="../../ArchSite.py" line="878"/>
       <location filename="../../ArchIFCView.py" line="68"/>
       <location filename="../../ArchAxis.py" line="593"/>
       <source>Transform</source>
@@ -8491,7 +8495,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../InitGui.py" line="448"/>
       <source>BIM</source>
-      <translation type="unfinished">BIM</translation>
+      <translation>BIM</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="449"/>
@@ -8551,9 +8555,9 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     </message>
     <message>
       <location filename="../../InitGui.py" line="40"/>
-      <location filename="../../bimcommands/BimViews.py" line="138"/>
+      <location filename="../../bimcommands/BimViews.py" line="136"/>
       <source>BIM</source>
-      <translation type="unfinished">BIM</translation>
+      <translation>BIM</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="641"/>
@@ -8671,7 +8675,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <location filename="../../bimcommands/BimIfcElements.py" line="471"/>
       <location filename="../../bimcommands/BimMaterial.py" line="132"/>
       <source>Create new multi-material</source>
-      <translation type="unfinished">Create new multi-material</translation>
+      <translation>新しい複合マテリアルを作成</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="145"/>
@@ -8684,7 +8688,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <location filename="../../bimcommands/BimIfcElements.py" line="137"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="202"/>
       <source>IFC type</source>
-      <translation type="unfinished">IFC type</translation>
+      <translation>IFCタイプ</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcElements.py" line="138"/>
@@ -8697,23 +8701,23 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <translation type="unfinished">IfcOpenShell was not found on this system. IFC support is disabled</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="80"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="79"/>
       <source>Objects structure</source>
       <translation type="unfinished">Objects structure</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="90"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="89"/>
       <source>Attribute</source>
       <translation type="unfinished">Attribute</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="91"/>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="102"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="90"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="101"/>
       <source>Value</source>
       <translation>値</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="101"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="100"/>
       <source>Property</source>
       <translation>プロパティ</translation>
     </message>
@@ -8725,7 +8729,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="123"/>
       <source>Open another IFC file...</source>
-      <translation type="unfinished">Open another IFC file...</translation>
+      <translation>他のIFCファイルを開く</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="128"/>
@@ -8760,12 +8764,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="185"/>
       <source>Select an IFC file</source>
-      <translation type="unfinished">Select an IFC file</translation>
+      <translation>IFCファイルを選択</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="187"/>
       <source>IFC files (*.ifc)</source>
-      <translation type="unfinished">IFC files (*.ifc)</translation>
+      <translation>IFCファイル (*.ifc)</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="195"/>
@@ -8773,13 +8777,18 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <translation>ファイルが見つかりませんでした</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="107"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="106"/>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="202"/>
       <source>IFC Explorer</source>
       <translation type="unfinished">IFC Explorer</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="480"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="227"/>
+      <source>IfcSite element was not found in %s. Unable to explore.</source>
+      <translation type="unfinished">IfcSite element was not found in %s. Unable to explore.</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="491"/>
       <source>Error in entity</source>
       <translation type="unfinished">Error in entity</translation>
     </message>
@@ -8806,7 +8815,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="203"/>
       <source>Search results</source>
-      <translation type="unfinished">Search results</translation>
+      <translation>検索結果</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="396"/>
@@ -8861,12 +8870,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimImagePlane.py" line="60"/>
       <source>Image file (*.png *.jpg *.bmp)</source>
-      <translation type="unfinished">Image file (*.png *.jpg *.bmp)</translation>
+      <translation>画像ファイル (*.jpg *.png *.jpeg)</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLayers.py" line="197"/>
       <source>Warning: The new layer was added to the project</source>
-      <translation type="unfinished">Warning: The new layer was added to the project</translation>
+      <translation>警告: 新規レイヤーがプロジェクトに追加されました。</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLayers.py" line="206"/>
@@ -8911,30 +8920,30 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimLayers.py" line="327"/>
       <source>Line print color</source>
-      <translation type="unfinished">Line print color</translation>
+      <translation>印刷時の線の色</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLayers.py" line="353"/>
       <source>New Layer</source>
-      <translation type="unfinished">New Layer</translation>
+      <translation>新規レイヤー</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLeader.py" line="92"/>
+      <location filename="../../bimcommands/BimLeader.py" line="93"/>
       <source>Create Leader</source>
-      <translation>引き出し線を作成</translation>
+      <translation>引出線を作成</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="186"/>
       <location filename="../../bimcommands/BimLibrary.py" line="189"/>
-      <location filename="../../bimcommands/BimLibrary.py" line="979"/>
-      <location filename="../../bimcommands/BimLibrary.py" line="983"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="984"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="988"/>
       <source>Preview</source>
       <translation>プレビュー</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="192"/>
-      <location filename="../../bimcommands/BimLibrary.py" line="969"/>
-      <location filename="../../bimcommands/BimLibrary.py" line="972"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="974"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="977"/>
       <source>Options</source>
       <translation>オプション</translation>
     </message>
@@ -8949,97 +8958,97 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <translation type="unfinished">It is not possible to link because the main document is closed.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="493"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="498"/>
       <source>No structure in cache. Please refresh.</source>
       <translation type="unfinished">No structure in cache. Please refresh.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="559"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="564"/>
       <source>It is not possible to insert this object because the document has been closed.</source>
       <translation type="unfinished">It is not possible to insert this object because the document has been closed.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="607"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="612"/>
       <source>Error: Unable to import SAT files - InventorLoader or CadExchanger addon must be installed</source>
-      <translation type="unfinished">Error: Unable to import SAT files - InventorLoader or CadExchanger addon must be installed</translation>
+      <translation>エラー：SATファイルをインポートできません。InventorLoaderまたはCadExchanger拡張機能がインストールされている必要があります。</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="635"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="640"/>
       <source>Error: Unable to download</source>
       <translation type="unfinished">Error: Unable to download</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="676"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="681"/>
       <source>Insertion point</source>
       <translation type="unfinished">Insertion point</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="689"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="694"/>
       <source>Origin</source>
       <translation>原点</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="690"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="695"/>
       <source>Top left</source>
       <translation>左上</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="691"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="696"/>
       <source>Top center</source>
       <translation type="unfinished">Top center</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="692"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="697"/>
       <source>Top right</source>
       <translation>右上</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="693"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="698"/>
       <source>Middle left</source>
       <translation type="unfinished">Middle left</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="694"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="699"/>
       <source>Middle center</source>
       <translation type="unfinished">Middle center</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="695"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="700"/>
       <source>Middle right</source>
       <translation type="unfinished">Middle right</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="696"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="701"/>
       <source>Bottom left</source>
       <translation>左下</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="697"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="702"/>
       <source>Bottom center</source>
       <translation type="unfinished">Bottom center</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="698"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="703"/>
       <source>Bottom right</source>
       <translation>右下</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="804"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="809"/>
       <source>Cannot open URL</source>
       <translation type="unfinished">Cannot open URL</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="850"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="855"/>
       <source>Could not fetch library contents</source>
       <translation type="unfinished">Could not fetch library contents</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="855"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="860"/>
       <source>No results fetched from online library</source>
       <translation type="unfinished">No results fetched from online library</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="915"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="920"/>
       <source>Warning, this can take several minutes!</source>
       <translation type="unfinished">Warning, this can take several minutes!</translation>
     </message>
@@ -9069,7 +9078,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <translation type="unfinished">Delete unused</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="91"/>
+      <location filename="../../bimcommands/BimViews.py" line="89"/>
       <location filename="../../bimcommands/BimMaterial.py" line="169"/>
       <source>Rename</source>
       <translation>名前の変更</translation>
@@ -9077,7 +9086,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="171"/>
       <source>Duplicate</source>
-      <translation>複製する</translation>
+      <translation>複製</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="173"/>
@@ -9085,7 +9094,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <translation type="unfinished">Merge to...</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="87"/>
+      <location filename="../../bimcommands/BimViews.py" line="85"/>
       <location filename="../../bimcommands/BimMaterial.py" line="175"/>
       <source>Delete</source>
       <translation>削除</translation>
@@ -9119,7 +9128,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="406"/>
       <source>This material is used by:</source>
-      <translation type="unfinished">This material is used by:</translation>
+      <translation>このマテリアルは以下で使用されています：</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="94"/>
@@ -9300,12 +9309,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="213"/>
       <source>Horizontal Axes</source>
-      <translation type="unfinished">Horizontal Axes</translation>
+      <translation>水平軸</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="235"/>
       <source>Axes</source>
-      <translation type="unfinished">Axes</translation>
+      <translation>軸</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="249"/>
@@ -9320,42 +9329,42 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="319"/>
       <source>New Group</source>
-      <translation type="unfinished">New Group</translation>
+      <translation>新規グループ</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="334"/>
       <source>Save preset</source>
-      <translation type="unfinished">Save preset</translation>
+      <translation>プリセットを保存</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="335"/>
       <source>Preset name:</source>
-      <translation type="unfinished">Preset name:</translation>
+      <translation>プリセット名：</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="400"/>
       <source>User preset...</source>
-      <translation type="unfinished">User preset...</translation>
+      <translation>ユーザープリセット...</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="568"/>
       <source>Save template file</source>
-      <translation type="unfinished">Save template file</translation>
+      <translation>テンプレートファイルを保存</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="578"/>
       <source>Template saved successfully</source>
-      <translation type="unfinished">Template saved successfully</translation>
+      <translation>テンプレートが保存されました</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="590"/>
       <source>Open template file</source>
-      <translation type="unfinished">Open template file</translation>
+      <translation>テンプレートファイルを開く</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="712"/>
       <source>Template successfully loaded into current document</source>
-      <translation type="unfinished">Template successfully loaded into current document</translation>
+      <translation>テンプレートは現在のドキュメントに正常に読み込まれました</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimReextrude.py" line="163"/>
@@ -9375,7 +9384,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimSetup.py" line="141"/>
       <source>You can install them from menu Tools -&gt; Addon manager.</source>
-      <translation type="unfinished">You can install them from menu Tools -&gt; Addon manager.</translation>
+      <translation>メニューバーの「ツール」→「拡張機能の管理」からインストールできます。</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSetup.py" line="182"/>
@@ -9388,12 +9397,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <translation type="unfinished">Unit system updated for all opened documents</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="670"/>
+      <location filename="../../bimcommands/BimSetup.py" line="673"/>
       <source>IfcOpenShell not found</source>
-      <translation type="unfinished">IfcOpenShell not found</translation>
+      <translation>IfcOpenShell が見つかりませんでした</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="674"/>
+      <location filename="../../bimcommands/BimSetup.py" line="677"/>
       <source>IfcOpenShell is needed to import and export IFC files. It appears to be missing on your system. Would you like to download and install it now? It will be installed in FreeCAD's Macros directory.</source>
       <translation type="unfinished">IfcOpenShell is needed to import and export IFC files. It appears to be missing on your system. Would you like to download and install it now? It will be installed in FreeCAD's Macros directory.</translation>
     </message>
@@ -9410,7 +9419,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimTDPage.py" line="61"/>
       <source>Select page template</source>
-      <translation type="unfinished">Select page template</translation>
+      <translation>用紙のテンプレートを選択</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTDPage.py" line="76"/>
@@ -9440,7 +9449,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimUnclone.py" line="134"/>
       <source>Draft Clones are not supported yet!</source>
-      <translation type="unfinished">Draft Clones are not supported yet!</translation>
+      <translation>基本設計のクローンは未実装です。</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimUnclone.py" line="138"/>
@@ -9453,72 +9462,72 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <translation type="unfinished">Please select exactly one object</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="85"/>
+      <location filename="../../bimcommands/BimViews.py" line="83"/>
       <source>Add level</source>
       <translation type="unfinished">Add level</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="86"/>
+      <location filename="../../bimcommands/BimViews.py" line="84"/>
       <source>Add proxy</source>
-      <translation type="unfinished">Add proxy</translation>
+      <translation>プロキシを追加</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="88"/>
+      <location filename="../../bimcommands/BimViews.py" line="86"/>
       <source>Toggle on/off</source>
       <translation>オン/オフを切り替えます</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="89"/>
+      <location filename="../../bimcommands/BimViews.py" line="87"/>
       <source>Isolate</source>
       <translation>分離</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="90"/>
+      <location filename="../../bimcommands/BimViews.py" line="88"/>
       <source>Save view position</source>
       <translation type="unfinished">Save view position</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="108"/>
+      <location filename="../../bimcommands/BimViews.py" line="106"/>
       <source>Creates a new level</source>
       <translation type="unfinished">Creates a new level</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="109"/>
+      <location filename="../../bimcommands/BimViews.py" line="107"/>
       <source>Creates a new Working Plane Proxy</source>
       <translation type="unfinished">Creates a new Working Plane Proxy</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="110"/>
+      <location filename="../../bimcommands/BimViews.py" line="108"/>
       <source>Deletes the selected item</source>
       <translation type="unfinished">Deletes the selected item</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="111"/>
+      <location filename="../../bimcommands/BimViews.py" line="109"/>
       <source>Toggles selected items on/off</source>
       <translation type="unfinished">Toggles selected items on/off</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="112"/>
+      <location filename="../../bimcommands/BimViews.py" line="110"/>
       <source>Turns all items off except the selected ones</source>
       <translation type="unfinished">Turns all items off except the selected ones</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="113"/>
+      <location filename="../../bimcommands/BimViews.py" line="111"/>
       <source>Saves the current camera position to the selected items</source>
       <translation type="unfinished">Saves the current camera position to the selected items</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="114"/>
+      <location filename="../../bimcommands/BimViews.py" line="112"/>
       <source>Renames the selected item</source>
       <translation type="unfinished">Renames the selected item</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="260"/>
+      <location filename="../../bimcommands/BimViews.py" line="267"/>
       <source>2D Views</source>
-      <translation type="unfinished">2D Views</translation>
+      <translation>2Dビュー</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="274"/>
+      <location filename="../../bimcommands/BimViews.py" line="281"/>
       <source>Sheets</source>
       <translation type="unfinished">Sheets</translation>
     </message>
@@ -9550,7 +9559,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="74"/>
       <source>An update to your installed IfcOpenShell version is available</source>
-      <translation type="unfinished">An update to your installed IfcOpenShell version is available</translation>
+      <translation>IfcOpenShellの更新があります</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="76"/>
@@ -9580,7 +9589,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="96"/>
       <source>IfcOpenShell update successfully installed.</source>
-      <translation type="unfinished">IfcOpenShell update successfully installed.</translation>
+      <translation>IfcOpenShellを更新しました</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="125"/>
@@ -10022,7 +10031,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimLayers.py" line="55"/>
       <source>Manage layers...</source>
-      <translation type="unfinished">Manage layers...</translation>
+      <translation>レイヤーの管理</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLayers.py" line="58"/>
@@ -10035,7 +10044,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimLeader.py" line="44"/>
       <source>Leader</source>
-      <translation type="unfinished">Leader</translation>
+      <translation>引出線</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLeader.py" line="47"/>
@@ -10087,7 +10096,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimNudge.py" line="134"/>
       <source>Nudge Switch</source>
-      <translation type="unfinished">Nudge Switch</translation>
+      <translation>微調整</translation>
     </message>
   </context>
   <context>
@@ -10095,7 +10104,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimNudge.py" line="160"/>
       <source>Nudge Up</source>
-      <translation type="unfinished">Nudge Up</translation>
+      <translation>上へ微調整</translation>
     </message>
   </context>
   <context>
@@ -10103,7 +10112,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimNudge.py" line="180"/>
       <source>Nudge Down</source>
-      <translation type="unfinished">Nudge Down</translation>
+      <translation>下へ微調整</translation>
     </message>
   </context>
   <context>
@@ -10111,7 +10120,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimNudge.py" line="200"/>
       <source>Nudge Left</source>
-      <translation type="unfinished">Nudge Left</translation>
+      <translation>左へ微調整</translation>
     </message>
   </context>
   <context>
@@ -10119,7 +10128,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimNudge.py" line="220"/>
       <source>Nudge Right</source>
-      <translation type="unfinished">Nudge Right</translation>
+      <translation>右へ微調整</translation>
     </message>
   </context>
   <context>
@@ -10127,7 +10136,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimNudge.py" line="240"/>
       <source>Nudge Extend</source>
-      <translation type="unfinished">Nudge Extend</translation>
+      <translation>微調整の拡大</translation>
     </message>
   </context>
   <context>
@@ -10135,7 +10144,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimNudge.py" line="264"/>
       <source>Nudge Shrink</source>
-      <translation type="unfinished">Nudge Shrink</translation>
+      <translation>微調整の縮小</translation>
     </message>
   </context>
   <context>
@@ -10143,7 +10152,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimNudge.py" line="288"/>
       <source>Nudge Rotate Left</source>
-      <translation type="unfinished">Nudge Rotate Left</translation>
+      <translation>微調整の左回転</translation>
     </message>
   </context>
   <context>
@@ -10151,7 +10160,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimNudge.py" line="316"/>
       <source>Nudge Rotate Right</source>
-      <translation type="unfinished">Nudge Rotate Right</translation>
+      <translation>微調整の右回転</translation>
     </message>
   </context>
   <context>
@@ -10331,12 +10340,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimTDPage.py" line="40"/>
       <source>Page</source>
-      <translation>ページ</translation>
+      <translation>用紙</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTDPage.py" line="43"/>
       <source>Creates a new TechDraw page from a template</source>
-      <translation type="unfinished">Creates a new TechDraw page from a template</translation>
+      <translation>テンプレートから技術図面ページを作成</translation>
     </message>
   </context>
   <context>
@@ -10349,7 +10358,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimTDView.py" line="43"/>
       <source>Creates a TechDraw view from a section plane or 2D objects</source>
-      <translation type="unfinished">Creates a TechDraw view from a section plane or 2D objects</translation>
+      <translation>断面平面または2Dオブジェクトから技術図面ビューを作成</translation>
     </message>
   </context>
   <context>
@@ -10362,7 +10371,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimText.py" line="41"/>
       <source>Create a text in the current 3D view or TechDraw page</source>
-      <translation type="unfinished">Create a text in the current 3D view or TechDraw page</translation>
+      <translation>現在の3Dビューまたは技術図面ページに文字列を作成</translation>
     </message>
   </context>
   <context>
@@ -10420,12 +10429,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
   <context>
     <name>BIM_Views</name>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="42"/>
+      <location filename="../../bimcommands/BimViews.py" line="40"/>
       <source>Views manager</source>
       <translation type="unfinished">Views manager</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="45"/>
+      <location filename="../../bimcommands/BimViews.py" line="43"/>
       <source>Shows or hides the views manager</source>
       <translation type="unfinished">Shows or hides the views manager</translation>
     </message>
@@ -10576,12 +10585,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
   <context>
     <name>IFC_SaveAs</name>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="217"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="220"/>
       <source>Saves the current IFC document as another file</source>
       <translation type="unfinished">Saves the current IFC document as another file</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="219"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="222"/>
       <source>Save IFC file as...</source>
       <translation type="unfinished">Save IFC file as...</translation>
     </message>
@@ -10632,19 +10641,19 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../ui/dialogSetup.ui" line="313"/>
       <source>Default size of a grid square</source>
-      <translation type="unfinished">Default size of a grid square</translation>
+      <translation>既定のグリッド線の間隔</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="108"/>
       <source>Main grid line every</source>
-      <translation type="unfinished">Main grid line every</translation>
+      <translation>主グリッド線ごと</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="337"/>
       <location filename="../ui/dialogSetup.ui" line="489"/>
       <location filename="../ui/dialogSetup.ui" line="546"/>
       <source>0 </source>
-      <translation type="unfinished">0 </translation>
+      <translation>0 </translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="152"/>
@@ -10684,7 +10693,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../ui/dialogSetup.ui" line="290"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default line width. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Part colors &amp;gt; Default line width, Draft &amp;gt; Visual settings &amp;gt; Default line width&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default line width. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Part colors &amp;gt; Default line width, Draft &amp;gt; Visual settings &amp;gt; Default line width&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;既定の線幅。設定する場所: &lt;span style=" font-weight:600;"&gt;表示&amp;gt; パーツの色 &amp;gt; 既定の線幅, ドラフト &amp;gt; 表示の設定 &amp;gt; 既定の線幅&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="293"/>
@@ -10714,12 +10723,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../ui/dialogSetup.ui" line="589"/>
       <source>Side (YZ)</source>
-      <translation>側面 (YZ)</translation>
+      <translation>側面（YZ）</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="223"/>
       <source>Default grid position</source>
-      <translation type="unfinished">Default grid position</translation>
+      <translation>既定のグリッドの位置</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="166"/>
@@ -10729,27 +10738,27 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../ui/dialogSetup.ui" line="556"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default font. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Texts and dimensions &amp;gt; Font family, TechDraw &amp;gt; TechDraw 1 &amp;gt; Label Font&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default font. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Texts and dimensions &amp;gt; Font family, TechDraw &amp;gt; TechDraw 1 &amp;gt; Label Font&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;既定のフォント。「設定」での場所: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; 文字と寸法線 &amp;gt; フォントファミリー、技術図面 &amp;gt; 技術図面1 &amp;gt; ラベルのフォント&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="543"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default dimension arrow size. Location in preferences: &lt;span style=" font-weight:600;"&gt;TechDraw &amp;gt; TechDraw 2 &amp;gt; Arrow size, Draft &amp;gt; Texts and dimensions &amp;gt; Arrow size&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default dimension arrow size. Location in preferences: &lt;span style=" font-weight:600;"&gt;TechDraw &amp;gt; TechDraw 2 &amp;gt; Arrow size, Draft &amp;gt; Texts and dimensions &amp;gt; Arrow size&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;既定の寸法矢印の大きさ。「設定」での場所: &lt;span style=" font-weight:600;"&gt;技術図面 &amp;gt; 技術図面2 &amp;gt; 矢印の大きさ, Draft &amp;gt; 文字列と寸法 &amp;gt; 矢印の大きさ&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="189"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default dimension style. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Texts and dimensions &amp;gt; Arrow style, TechDraw &amp;gt; TechDraw 2 &amp;gt; Arrow Style&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default dimension style. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Texts and dimensions &amp;gt; Arrow style, TechDraw &amp;gt; TechDraw 2 &amp;gt; Arrow Style&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;既定の寸法のスタイル。「設定」での場所: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; 文字列と寸法 &amp;gt; 矢印のスタイル、技術図面 &amp;gt; 技術図面2 &amp;gt; 矢印のスタイル&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="193"/>
       <source>dot</source>
-      <translation type="unfinished">dot</translation>
+      <translation>点</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="198"/>
       <source>arrow</source>
-      <translation>矢印</translation>
+      <translation>矢</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="203"/>
@@ -10769,7 +10778,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../ui/dialogSetup.ui" line="176"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;How many small squares between each main line of the grid. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Grid and snapping &amp;gt; Main line every&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;How many small squares between each main line of the grid. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Grid and snapping &amp;gt; Main line every&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;主グリッド線の間隔。「設定」での場所：&lt;span style=" font-weight:600;"&gt;Draft &amp;gt; グリッドとスナップ &amp;gt; 主グリッド線の間隔&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="115"/>
@@ -10795,26 +10804,6 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <location filename="../ui/dialogSetup.ui" line="510"/>
       <source>All rights reserved (no specific license)</source>
       <translation type="unfinished">All rights reserved (no specific license)</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogSetup.ui" line="515"/>
-      <source>CC-BY</source>
-      <translation type="unfinished">CC-BY</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogSetup.ui" line="520"/>
-      <source>CC-BY-SA</source>
-      <translation type="unfinished">CC-BY-SA</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogSetup.ui" line="525"/>
-      <source>CC-BY-NC</source>
-      <translation type="unfinished">CC-BY-NC</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogSetup.ui" line="530"/>
-      <source>CC-BY-SA-NC</source>
-      <translation type="unfinished">CC-BY-SA-NC</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="119"/>
@@ -10844,17 +10833,17 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../ui/dialogSetup.ui" line="144"/>
       <source>architectural</source>
-      <translation type="unfinished">architectural</translation>
+      <translation>建築</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="320"/>
       <source>Default license for new files</source>
-      <translation type="unfinished">Default license for new files</translation>
+      <translation>新規ファイルにおける既定のライセンス</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="334"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is the size of the smallest square of the grid. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Grid and snapping &amp;gt; Grid spacing&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is the size of the smallest square of the grid. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Grid and snapping &amp;gt; Grid spacing&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;グリッド線の間隔。「設定」での場所：&lt;span style=" font-weight:600;"&gt;Draft &amp;gt; グリッドとスナップ &amp;gt; グリッド線の間隔&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="349"/>
@@ -10864,7 +10853,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../ui/dialogSetup.ui" line="384"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color for helper objects such as grids and axes. Location in preferences: &lt;span style=" font-weight:600;"&gt;BIM  &amp;gt; Defaults &amp;gt; Helpers&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color for helper objects such as grids and axes. Location in preferences: &lt;span style=" font-weight:600;"&gt;BIM  &amp;gt; Defaults &amp;gt; Helpers&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;作図補助（グリッドや軸）の既定の色。設定：&lt;span style=" font-weight:600;"&gt;BIM  &amp;gt; 既定 &amp;gt; 作図補助&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="433"/>
@@ -10874,7 +10863,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../ui/dialogSetup.ui" line="486"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default size of texts and dimension texts. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Texts and dimensions &amp;gt; Font size, TechDraw &amp;gt; TechDraw 2 &amp;gt; Font size&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default size of texts and dimension texts. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Texts and dimensions &amp;gt; Font size, TechDraw &amp;gt; TechDraw 2 &amp;gt; Font size&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;文字と寸法文字の既定のサイズ。「設定」での場所: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; 文字と寸法線 &amp;gt; フォントサイズ, 技術図面 &amp;gt; 技術図面2 &amp;gt; フォントサイズ&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="499"/>
@@ -10914,7 +10903,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../ui/dialogSetup.ui" line="100"/>
       <source>US / Imperial</source>
-      <translation type="unfinished">US / Imperial</translation>
+      <translation>米国慣用単位／帝国単位</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="216"/>
@@ -10959,7 +10948,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../ui/dialogSetup.ui" line="398"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color of lines in the 3D view. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Part Colors &amp;gt; Default line color, Draft &amp;gt; Visual settings &amp;gt; Default line color&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color of lines in the 3D view. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Part Colors &amp;gt; Default line color, Draft &amp;gt; Visual settings &amp;gt; Default line color&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;3Dビューでの既定の線色。設定する場所: &lt;span style=" font-weight:600;"&gt;表示 &amp;gt; パーツの色 &amp;gt; 既定の線の色、ドラフト &amp;gt; 表示の設定 &amp;gt; 既定の線の色&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="405"/>
@@ -10984,12 +10973,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../ui/dialogSetup.ui" line="570"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Where the grid appears at FreeCAD startup. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; General &amp;gt; Default working plane&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Where the grid appears at FreeCAD startup. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; General &amp;gt; Default working plane&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;起動時にグリッドを表示するか。設定：&lt;span style=" font-weight:600;"&gt;Draft &amp;gt; 一般 &amp;gt; 既定の作業平面&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="613"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;b&gt;Tip&lt;/b&gt;: You are currently using FreeCAD version %1. Consider using the &lt;a href="https://github.com/FreeCAD/FreeCAD/releases"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;latest development version %2&lt;/span&gt;&lt;/a&gt;, which brings all the latest improvements to FreeCAD.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;b&gt;Tip&lt;/b&gt;: You are currently using FreeCAD version %1. Consider using the &lt;a href="https://github.com/FreeCAD/FreeCAD/releases"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;latest development version %2&lt;/span&gt;&lt;/a&gt;, which brings all the latest improvements to FreeCAD.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;b&gt;補足&lt;/b&gt;：今お使いのFreeCADはversion %1です。様々な改良がもりこまれた&lt;a href="https://github.com/FreeCAD/FreeCAD/releases"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;最新版のFreeCAD version %2&lt;/span&gt;&lt;/a&gt;の使用をご検討ください。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="440"/>
@@ -11009,7 +10998,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../ui/dialogSetup.ui" line="253"/>
       <source>3D view background</source>
-      <translation type="unfinished">3D view background</translation>
+      <translation>3Dビューの背景</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="267"/>

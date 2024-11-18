@@ -73,7 +73,7 @@ class PackageList(QtWidgets.QWidget):
 
         # Set up the view the same as the last time:
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
-        package_type = pref.GetInt("PackageTypeSelection", 1)
+        package_type = pref.GetInt("PackageTypeSelection", 0)
         status = pref.GetInt("StatusSelection", 0)
         search_string = pref.GetString("SearchString", "")
         self.ui.view_bar.filter_selector.set_contents_filter(package_type)
@@ -306,7 +306,7 @@ class PackageListItemDelegate(QtWidgets.QStyledItemDelegate):
             self.widget = self.compact
             self._setup_compact_view(repo)
         elif self.displayStyle == AddonManagerDisplayStyle.COMPOSITE:
-            self.widget = self.compact  # For now re-use the compact list
+            self.widget = self.compact  # For now reuse the compact list
             self._setup_composite_view(repo)
         self.widget.adjustSize()
 

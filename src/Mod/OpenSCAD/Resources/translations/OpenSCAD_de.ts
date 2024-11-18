@@ -276,7 +276,7 @@
       <location filename="../../OpenSCADCommands.py" line="482"/>
       <location filename="../../OpenSCADCommands.py" line="486"/>
       <source>Mesh Boolean</source>
-      <translation>Boolsche Operation am Netz-Element</translation>
+      <translation>Boolsche Netzverknüpfung</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="487"/>
@@ -345,12 +345,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="156"/>
       <source>Refine Shape Feature</source>
-      <translation>Form Feature verfeinern</translation>
+      <translation>Formelement aufbereiten</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="159"/>
       <source>Create Refine Shape Feature</source>
-      <translation>Erstelle verfeinertes Form Feature</translation>
+      <translation>Erstellt ein verfeinertes Formelement</translation>
     </message>
   </context>
   <context>
@@ -462,12 +462,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="545"/>
       <source>Mesh Boolean...</source>
-      <translation>Boolsche Operation am Netz-Element...</translation>
+      <translation>Boolsche Netzverknüpfung...</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="549"/>
       <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
-      <translation>Exportiert Objekte als Netze und verwendet OpenSCAD, um eine boolesche Operation auszuführen</translation>
+      <translation>Exportiert Objekte als Netze und verwendet OpenSCAD, um eine boolesche Verknüpfung auszuführen</translation>
     </message>
   </context>
   <context>

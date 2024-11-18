@@ -37,12 +37,13 @@ import FreeCADGui
 
 from femguiutils import selection_widgets
 from femtools import membertools
+from . import base_femtaskpanel
 
 
-class _TaskPanel:
+class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
 
     def __init__(self, obj):
-        self._obj = obj
+        super().__init__(obj)
 
         self._paramWidget = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/InitialFlowVelocity.ui"
@@ -154,19 +155,16 @@ class _TaskPanel:
 
     def reject(self):
         self._selectionWidget.finish_selection()
-        FreeCADGui.ActiveDocument.resetEdit()
         self._restoreVisibility()
-        return True
+        return super().reject()
 
     def accept(self):
-        if self._obj.References != self._selectionWidget.references:
-            self._obj.References = self._selectionWidget.references
+        if self.obj.References != self._selectionWidget.references:
+            self.obj.References = self._selectionWidget.references
         self._applyWidgetChanges()
-        self._obj.Document.recompute()
         self._selectionWidget.finish_selection()
-        FreeCADGui.ActiveDocument.resetEdit()
         self._restoreVisibility()
-        return True
+        return super().accept()
 
     def _restoreVisibility(self):
         if self._mesh is not None and self._part is not None:
@@ -185,23 +183,23 @@ class _TaskPanel:
         self._paramWidget.velocityY.setProperty("unit", unit)
         self._paramWidget.velocityZ.setProperty("unit", unit)
 
-        self._paramWidget.velocityX.setProperty("value", self._obj.VelocityX)
-        FreeCADGui.ExpressionBinding(self._paramWidget.velocityX).bind(self._obj, "VelocityX")
-        self._paramWidget.velocityXBox.setChecked(self._obj.VelocityXUnspecified)
-        self._paramWidget.formulaX.setText(self._obj.VelocityXFormula)
-        self._paramWidget.formulaXCB.setChecked(self._obj.VelocityXHasFormula)
+        self._paramWidget.velocityX.setProperty("value", self.obj.VelocityX)
+        FreeCADGui.ExpressionBinding(self._paramWidget.velocityX).bind(self.obj, "VelocityX")
+        self._paramWidget.velocityXBox.setChecked(self.obj.VelocityXUnspecified)
+        self._paramWidget.formulaX.setText(self.obj.VelocityXFormula)
+        self._paramWidget.formulaXCB.setChecked(self.obj.VelocityXHasFormula)
 
-        self._paramWidget.velocityY.setProperty("value", self._obj.VelocityY)
-        FreeCADGui.ExpressionBinding(self._paramWidget.velocityY).bind(self._obj, "VelocityY")
-        self._paramWidget.velocityYBox.setChecked(self._obj.VelocityYUnspecified)
-        self._paramWidget.formulaY.setText(self._obj.VelocityYFormula)
-        self._paramWidget.formulaYCB.setChecked(self._obj.VelocityYHasFormula)
+        self._paramWidget.velocityY.setProperty("value", self.obj.VelocityY)
+        FreeCADGui.ExpressionBinding(self._paramWidget.velocityY).bind(self.obj, "VelocityY")
+        self._paramWidget.velocityYBox.setChecked(self.obj.VelocityYUnspecified)
+        self._paramWidget.formulaY.setText(self.obj.VelocityYFormula)
+        self._paramWidget.formulaYCB.setChecked(self.obj.VelocityYHasFormula)
 
-        self._paramWidget.velocityZ.setProperty("value", self._obj.VelocityZ)
-        FreeCADGui.ExpressionBinding(self._paramWidget.velocityZ).bind(self._obj, "VelocityZ")
-        self._paramWidget.velocityZBox.setChecked(self._obj.VelocityZUnspecified)
-        self._paramWidget.formulaZ.setText(self._obj.VelocityZFormula)
-        self._paramWidget.formulaZCB.setChecked(self._obj.VelocityZHasFormula)
+        self._paramWidget.velocityZ.setProperty("value", self.obj.VelocityZ)
+        FreeCADGui.ExpressionBinding(self._paramWidget.velocityZ).bind(self.obj, "VelocityZ")
+        self._paramWidget.velocityZBox.setChecked(self.obj.VelocityZUnspecified)
+        self._paramWidget.formulaZ.setText(self.obj.VelocityZFormula)
+        self._paramWidget.formulaZCB.setChecked(self.obj.VelocityZHasFormula)
 
     def _applyVelocityChanges(self, enabledBox, velocityQSB):
         enabled = enabledBox.isChecked()
@@ -218,20 +216,20 @@ class _TaskPanel:
 
     def _applyWidgetChanges(self):
         # apply the velocities and their enabled state
-        self._obj.VelocityXUnspecified, self._obj.VelocityX = self._applyVelocityChanges(
+        self.obj.VelocityXUnspecified, self.obj.VelocityX = self._applyVelocityChanges(
             self._paramWidget.velocityXBox, self._paramWidget.velocityX
         )
-        self._obj.VelocityXHasFormula = self._paramWidget.formulaXCB.isChecked()
-        self._obj.VelocityXFormula = self._paramWidget.formulaX.text()
+        self.obj.VelocityXHasFormula = self._paramWidget.formulaXCB.isChecked()
+        self.obj.VelocityXFormula = self._paramWidget.formulaX.text()
 
-        self._obj.VelocityYUnspecified, self._obj.VelocityY = self._applyVelocityChanges(
+        self.obj.VelocityYUnspecified, self.obj.VelocityY = self._applyVelocityChanges(
             self._paramWidget.velocityYBox, self._paramWidget.velocityY
         )
-        self._obj.VelocityYHasFormula = self._paramWidget.formulaYCB.isChecked()
-        self._obj.VelocityYFormula = self._paramWidget.formulaY.text()
+        self.obj.VelocityYHasFormula = self._paramWidget.formulaYCB.isChecked()
+        self.obj.VelocityYFormula = self._paramWidget.formulaY.text()
 
-        self._obj.VelocityZUnspecified, self._obj.VelocityZ = self._applyVelocityChanges(
+        self.obj.VelocityZUnspecified, self.obj.VelocityZ = self._applyVelocityChanges(
             self._paramWidget.velocityZBox, self._paramWidget.velocityZ
         )
-        self._obj.VelocityZHasFormula = self._paramWidget.formulaZCB.isChecked()
-        self._obj.VelocityZFormula = self._paramWidget.formulaZ.text()
+        self.obj.VelocityZHasFormula = self._paramWidget.formulaZCB.isChecked()
+        self.obj.VelocityZFormula = self._paramWidget.formulaZ.text()

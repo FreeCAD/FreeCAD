@@ -49,11 +49,7 @@ TEST_F(PropertyTopoShapeTest, testPropertyPartShapeTopoShape)
     EXPECT_TRUE(topoShapeOut.isSame(topoShapeIn));
     EXPECT_TRUE(topoDsShapeOut.IsSame(topoDsShapeIn));
     EXPECT_EQ(getVolume(topoDsShapeOut), 3);
-#ifdef FC_USE_TNP_FIX
     EXPECT_EQ(topoShapeOut.getElementMapSize(), 26);
-#else
-    EXPECT_EQ(topoShapeOut.getElementMapSize(), 0);
-#endif
 }
 
 TEST_F(PropertyTopoShapeTest, testPropertyPartShapeTopoDSShape)

@@ -20,6 +20,7 @@
 
 // stdlib
 #include <exception>
+#include <stdexcept>
 #include <iterator>
 #include <memory>
 

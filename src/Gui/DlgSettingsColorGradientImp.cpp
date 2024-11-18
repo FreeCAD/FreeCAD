@@ -22,13 +22,13 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <cmath>
-# include <limits>
-# include <QButtonGroup>
-# include <QDoubleValidator>
-# include <QFontMetrics>
-# include <QLocale>
-# include <QMessageBox>
+#include <cmath>
+#include <limits>
+#include <QButtonGroup>
+#include <QDoubleValidator>
+#include <QFontMetrics>
+#include <QLocale>
+#include <QMessageBox>
 #endif
 
 #include "DlgSettingsColorGradientImp.h"
@@ -46,10 +46,11 @@ using namespace Gui::Dialog;
  *  name 'name' and widget flags set to 'f'.
  */
 DlgSettingsColorGradientImp::DlgSettingsColorGradientImp(const App::ColorGradient& cg,
-                                                         QWidget* parent, Qt::WindowFlags fl)
-  : QDialog( parent, fl )
-  , validator(nullptr)
-  , ui(new Ui_DlgSettingsColorGradient)
+                                                         QWidget* parent,
+                                                         Qt::WindowFlags fl)
+    : QDialog(parent, fl)
+    , validator(nullptr)
+    , ui(new Ui_DlgSettingsColorGradient)
 {
     ui->setupUi(this);
     ui->spinBoxLabel->setRange(5, 30);
@@ -67,7 +68,8 @@ DlgSettingsColorGradientImp::DlgSettingsColorGradientImp(const App::ColorGradien
 
     // assure that the LineEdit is as wide to contain numbers with 4 digits and 6 decimals
     QFontMetrics fm(ui->floatLineEditMax->font());
-    ui->floatLineEditMax->setMinimumWidth(QtTools::horizontalAdvance(fm, QString::fromLatin1("-8000.000000")));
+    ui->floatLineEditMax->setMinimumWidth(
+        QtTools::horizontalAdvance(fm, QString::fromLatin1("-8000.000000")));
 
     setColorModelNames(cg.getColorModelNames());
     setProfile(cg.getProfile());
@@ -81,6 +83,7 @@ DlgSettingsColorGradientImp::~DlgSettingsColorGradientImp() = default;
 
 void DlgSettingsColorGradientImp::setupConnections()
 {
+    // clang-format off
     auto group = new QButtonGroup(this);
     group->setExclusive(true);
     group->addButton(ui->radioButtonFlow);
@@ -112,6 +115,7 @@ void DlgSettingsColorGradientImp::setupConnections()
 
     connect(ui->spinBoxDecimals, qOverload<int>(&QSpinBox::valueChanged),
             this, &DlgSettingsColorGradientImp::colorModelChanged);
+    // clang-format on
 }
 
 App::ColorGradientProfile DlgSettingsColorGradientImp::getProfile() const
@@ -154,16 +158,15 @@ void DlgSettingsColorGradientImp::setColorModelNames(const std::vector<std::stri
     }
 }
 
-void DlgSettingsColorGradientImp::setColorStyle( App::ColorBarStyle tStyle )
+void DlgSettingsColorGradientImp::setColorStyle(App::ColorBarStyle tStyle)
 {
-    switch ( tStyle )
-    {
-    case App::ColorBarStyle::FLOW:
-        ui->radioButtonFlow->setChecked(true);
-        break;
-    case App::ColorBarStyle::ZERO_BASED:
-        ui->radioButtonZero->setChecked(true);
-        break;
+    switch (tStyle) {
+        case App::ColorBarStyle::FLOW:
+            ui->radioButtonFlow->setChecked(true);
+            break;
+        case App::ColorBarStyle::ZERO_BASED:
+            ui->radioButtonZero->setChecked(true);
+            break;
     }
 }
 
@@ -173,9 +176,9 @@ App::ColorBarStyle DlgSettingsColorGradientImp::colorStyle() const
                                             : App::ColorBarStyle::FLOW;
 }
 
-void DlgSettingsColorGradientImp::setOutGrayed( bool grayed )
+void DlgSettingsColorGradientImp::setOutGrayed(bool grayed)
 {
-    ui->checkBoxGrayed->setChecked( grayed );
+    ui->checkBoxGrayed->setChecked(grayed);
 }
 
 bool DlgSettingsColorGradientImp::isOutGrayed() const
@@ -183,9 +186,9 @@ bool DlgSettingsColorGradientImp::isOutGrayed() const
     return ui->checkBoxGrayed->isChecked();
 }
 
-void DlgSettingsColorGradientImp::setOutInvisible( bool invisible )
+void DlgSettingsColorGradientImp::setOutInvisible(bool invisible)
 {
-    ui->checkBoxInvisible->setChecked( invisible );
+    ui->checkBoxInvisible->setChecked(invisible);
 }
 
 bool DlgSettingsColorGradientImp::isOutInvisible() const
@@ -224,7 +227,7 @@ void DlgSettingsColorGradientImp::getRange(float& fMin, float& fMax) const
 
 void DlgSettingsColorGradientImp::setNumberOfLabels(int val)
 {
-    ui->spinBoxLabel->setValue( val );
+    ui->spinBoxLabel->setValue(val);
 }
 
 int DlgSettingsColorGradientImp::numberOfLabels() const
@@ -249,8 +252,9 @@ void DlgSettingsColorGradientImp::accept()
     double fMin = QLocale().toDouble(ui->floatLineEditMin->text());
 
     if (fMax <= fMin) {
-        QMessageBox::warning(this, tr("Wrong parameter"),
-            tr("The maximum value must be higher than the minimum value."));
+        QMessageBox::warning(this,
+                             tr("Wrong parameter"),
+                             tr("The maximum value must be higher than the minimum value."));
     }
     else {
         QDialog::accept();
@@ -258,4 +262,3 @@ void DlgSettingsColorGradientImp::accept()
 }
 
 #include "moc_DlgSettingsColorGradientImp.cpp"
-

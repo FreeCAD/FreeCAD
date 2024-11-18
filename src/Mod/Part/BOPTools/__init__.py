@@ -30,6 +30,7 @@ BOP-like operations"""
 #  \ingroup PART
 
 __all__ = [
+"BOPFeatures",
 "GeneralFuseResult",
 "JoinAPI",
 "JoinFeatures",
@@ -41,6 +42,7 @@ __all__ = [
 
 def importAll():
     "importAll(): imports all modules of BOPTools package"
+    from . import BOPFeatures
     from . import GeneralFuseResult
     from . import JoinAPI
     from . import JoinFeatures
@@ -48,6 +50,7 @@ def importAll():
     from . import Utils
     from . import SplitAPI
     from . import SplitFeatures
+    from . import ToleranceFeatures
 
 def reloadAll():
     "reloadAll(): reloads all modules of BOPTools package. Useful for debugging."
@@ -61,4 +64,5 @@ def addCommands():
     "addCommands(): add all GUI commands of BOPTools package to FreeCAD command manager."
     JoinFeatures.addCommands()
     SplitFeatures.addCommands()
+    ToleranceFeatures.addCommands()
 

@@ -78,10 +78,7 @@ def check_for_drill_translate(
     comment: str
     nl: str = "\n"
 
-    if (
-        values["TRANSLATE_DRILL_CYCLES"]
-        and command in values["DRILL_CYCLES_TO_TRANSLATE"]
-    ):
+    if values["TRANSLATE_DRILL_CYCLES"] and command in values["DRILL_CYCLES_TO_TRANSLATE"]:
         if values["OUTPUT_COMMENTS"]:  # Comment the original command
             comment = create_comment(
                 values,
@@ -111,9 +108,7 @@ def check_for_drill_translate(
     return False
 
 
-def check_for_machine_specific_commands(
-    values: Values, gcode: Gcode, command: str
-) -> None:
+def check_for_machine_specific_commands(values: Values, gcode: Gcode, command: str) -> None:
     """Check for comments containing machine-specific commands."""
     m: object
     nl: str = "\n"
@@ -162,9 +157,7 @@ def check_for_suppressed_commands(
     return False
 
 
-def check_for_tlo(
-    values: Values, gcode: Gcode, command: str, params: PathParameters
-) -> None:
+def check_for_tlo(values: Values, gcode: Gcode, command: str, params: PathParameters) -> None:
     """Output a tool length command if USE_TLO is True."""
     nl: str = "\n"
 
@@ -356,9 +349,7 @@ def determine_adaptive_op(values: Values, pathobj) -> Tuple[bool, float, float]:
             if hasattr(tc, "VertRapid") and tc.VertRapid > 0:
                 opVertRapid = Units.Quantity(tc.VertRapid, Units.Velocity)
             else:
-                FreeCAD.Console.PrintWarning(
-                    f"Tool Controller Vertical Rapid Values are unset{nl}"
-                )
+                FreeCAD.Console.PrintWarning(f"Tool Controller Vertical Rapid Values are unset{nl}")
     return (adaptiveOp, opHorizRapid, opVertRapid)
 
 
@@ -428,9 +419,7 @@ def drill_translate(
     if motion_z > retract_z:
         # NIST GCODE 3.5.16.1 Preliminary and In-Between Motion says G0 to retract_z
         # Here use G1 since retract height may be below surface !
-        cmd = format_command_line(
-            values, ["G1", f"Z{format_for_axis(values, retract_z)}"]
-        )
+        cmd = format_command_line(values, ["G1", f"Z{format_for_axis(values, retract_z)}"])
         gcode.append(f"{linenumber(values)}{cmd}{F_feedrate}")
 
         # drill moves
@@ -512,9 +501,7 @@ def init_parameter_functions(parameter_functions: Dict[str, ParameterFunction]) 
         "Z": default_axis_parameter,
         # "$" is used by LinuxCNC (and others?) to designate which spindle
     }
-    for (
-        parameter
-    ) in default_parameter_functions:  # pylint: disable=consider-using-dict-items
+    for parameter in default_parameter_functions:  # pylint: disable=consider-using-dict-items
         parameter_functions[parameter] = default_parameter_functions[parameter]
 
 
@@ -587,9 +574,7 @@ def output_G73_G83_drill_moves(
                     gcode.append(f"{linenumber(values)}{G0_retract_z}")
                 last_stop_z = next_stop_z
             else:
-                cmd = format_command_line(
-                    values, ["G1", f"Z{format_for_axis(values, drill_z)}"]
-                )
+                cmd = format_command_line(values, ["G1", f"Z{format_for_axis(values, drill_z)}"])
                 gcode.append(f"{linenumber(values)}{cmd}{F_feedrate}")
                 gcode.append(f"{linenumber(values)}{G0_retract_z}")
                 break
@@ -652,9 +637,7 @@ def parse_a_path(values: Values, gcode: Gcode, pathobj) -> None:
     parameter: str
     parameter_value: str
 
-    current_location.update(
-        Path.Command("G0", {"X": -1, "Y": -1, "Z": -1, "F": 0.0}).Parameters
-    )
+    current_location.update(Path.Command("G0", {"X": -1, "Y": -1, "Z": -1, "F": 0.0}).Parameters)
     adaptive_op_variables = determine_adaptive_op(values, pathobj)
 
     for c in pathobj.Path.Commands:
@@ -667,9 +650,7 @@ def parse_a_path(values: Values, gcode: Gcode, pathobj) -> None:
                 continue
             if values["COMMENT_SYMBOL"] != "(" and len(command) > 2:
                 command = create_comment(values, command[1:-1])
-        cmd = check_for_an_adaptive_op(
-            values, command, command_line, adaptive_op_variables
-        )
+        cmd = check_for_an_adaptive_op(values, command, command_line, adaptive_op_variables)
         if cmd:
             command = cmd
         # Add the command name to the command line
@@ -691,9 +672,7 @@ def parse_a_path(values: Values, gcode: Gcode, pathobj) -> None:
                 if parameter_value:
                     command_line.append(f"{parameter}{parameter_value}")
 
-        set_adaptive_op_speed(
-            values, command, command_line, c.Parameters, adaptive_op_variables
-        )
+        set_adaptive_op_speed(values, command, command_line, c.Parameters, adaptive_op_variables)
         # Remember the current command
         lastcommand = command
         # Remember the current location
@@ -724,9 +703,7 @@ def parse_a_path(values: Values, gcode: Gcode, pathobj) -> None:
             command_line = []
         # Add a line number to the front and a newline to the end of the command line
         if command_line:
-            gcode += (
-                f"{linenumber(values)}{format_command_line(values, command_line)}{nl}"
-            )
+            gcode += f"{linenumber(values)}{format_command_line(values, command_line)}{nl}"
         check_for_tlo(values, gcode, command, c.Parameters)
         check_for_machine_specific_commands(values, gcode, command)
 

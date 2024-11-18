@@ -21,31 +21,6 @@ Gui--OverlaySplitterHandle {
   background-color: #f0f0f0;
  }
 
-Gui--OverlayTabWidget[transparent="false"] QTreeView::item {
-  color: #000000;
-  selection-background-color: #ff8800;
-}
-
-Gui--OverlayTabWidget[transparent="true"] QTreeView::item {
-  color: #000000;
-  selection-background-color: #850000;
-}
-
- Gui--OverlayTabWidget[transparent="true"] QTreeView::item:selected {
-  color: #000000;
-  background-color: #c7def5;
-}
-
-Gui--OverlayTabWidget[transparent="true"] QTreeView::item:focus {
-  color: #000000;
-  background-color: #c7def5;
-}
-
- Gui--OverlayTabWidget[transparent="true"] QTreeView::item:selected:focus {
-  color: #000000;
-  background-color: #c7def5;
-}
-
 /* The OverlayTabWidget is named as OverlayLeft, OverlayRight, OverlayTop, OverlayBottom.
 To customize for each overlay docking site, use the following selector
 
@@ -53,8 +28,8 @@ Gui--OverlayTabWidget#OverlayLeft {}
 */
 
 Gui--OverlayTabWidget {
-  qproperty-effectColor: rgba(225, 225, 225, 220);
-  qproperty-effectBlurRadius: 5;
+  qproperty-effectColor: rgba(247, 247, 247, 255);
+  qproperty-effectBlurRadius: 0;
   qproperty-effectOffsetX: 0;
   qproperty-effectOffsetY: 0;
   qproperty-effectWidth: 1;
@@ -62,8 +37,8 @@ Gui--OverlayTabWidget {
   qproperty-enableEffect: 1;
 }
  Gui--OverlayTabWidget#OverlayBottom {
-  qproperty-effectColor: rgba(225, 225, 225, 220);
-  qproperty-effectBlurRadius: 5;
+  qproperty-effectColor: rgba(247, 247, 247, 255);
+  qproperty-effectBlurRadius: 0;
   qproperty-effectOffsetX: 0.0;
   qproperty-effectOffsetY: 0.0;
   qproperty-effectWidth: 1;

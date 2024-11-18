@@ -310,7 +310,7 @@
     <message>
       <location filename="../../Command.cpp" line="228"/>
       <source>Enter maximum distance:</source>
-      <translation>最大距離を入力:</translation>
+      <translation>最大距離を入力：</translation>
     </message>
   </context>
   <context>

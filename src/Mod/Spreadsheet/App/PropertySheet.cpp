@@ -137,8 +137,9 @@ bool PropertySheet::isValidAlias(const std::string& candidate)
         return false;
     }
 
-    /* Check to make sure it doesn't clash with a predefined unit */
-    if (ExpressionParser::isTokenAUnit(candidate)) {
+    /* Check to make sure it doesn't clash with a reserved name */
+    if (ExpressionParser::isTokenAUnit(candidate)
+        || ExpressionParser::isTokenAConstant(candidate)) {
         return false;
     }
 
@@ -2251,9 +2252,7 @@ void PropertySheet::setPathValue(const ObjectIdentifier& path, const boost::any&
         }
     }
 
-    FC_THROWM(Base::TypeError,
-              "Invalid path value '"
-                  << "' for " << getFullName());
+    FC_THROWM(Base::TypeError, "Invalid path value '" << "' for " << getFullName());
 }
 
 const boost::any PropertySheet::getPathValue(const App::ObjectIdentifier& path) const

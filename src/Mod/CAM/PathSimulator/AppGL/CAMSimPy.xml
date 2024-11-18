@@ -35,16 +35,25 @@
         <UserDocu>
           ResetSimulation():
 
-          Clear the simulation and all gcode commands 
+          Clear the simulation and all gcode commands
         </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="AddTool" Keyword='true'>
       <Documentation>
         <UserDocu>
-          SetToolShape(shape, toolnumber, diameter, resolution):
+          AddTool(shape, toolnumber, diameter, resolution):
 
           Set the shape of the tool to be used for simulation
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="SetBaseShape" Keyword='true'>
+      <Documentation>
+        <UserDocu>
+          SetBaseShape(shape, resolution):
+
+          Set the shape of the base object of the job
         </UserDocu>
       </Documentation>
     </Methode>

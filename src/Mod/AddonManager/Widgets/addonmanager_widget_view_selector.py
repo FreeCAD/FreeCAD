@@ -113,9 +113,10 @@ class WidgetViewSelector(QtWidgets.QWidget):
 
         self.composite_button = QtWidgets.QToolButton(self)
         self.composite_button.setObjectName("composite_button")
-        qtcore_major_ver = int(float(QtCore.qVersion()[0]))
-        qtcore_minor_ver = int(float(QtCore.qVersion()[2]))
-        if qtcore_major_ver == 5 and qtcore_minor_ver < 15:
+        if (
+            QtCore.QLibraryInfo.version().majorVersion() == 5
+            and QtCore.QLibraryInfo.version().minorVersion() < 15
+        ):
             self.composite_button.setEnabled(False)
             self.composite_button.setCheckable(False)
             self.composite_button.setChecked(False)

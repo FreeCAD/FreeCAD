@@ -556,6 +556,10 @@ public:
     }
 
     bool canLinkProperties() const override;
+
+    bool isLink() const override;
+
+    bool isLinkGroup() const override;
 };
 
 using LinkPython = App::FeaturePythonT<Link>;
@@ -599,6 +603,10 @@ public:
     {
         _handleChangedPropertyName(reader,TypeName,PropName);
     }
+
+    bool isLink() const override;
+
+    App::Link* getLinkGroup() const;
 };
 
 using LinkElementPython = App::FeaturePythonT<LinkElement>;

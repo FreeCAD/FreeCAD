@@ -65,7 +65,6 @@ short Fillet::mustExecute() const
 
 App::DocumentObjectExecReturn *Fillet::execute()
 {
-#ifdef FC_USE_TNP_FIX
     Part::TopoShape baseShape;
     try {
         baseShape = getBaseTopoShape();
@@ -127,87 +126,6 @@ App::DocumentObjectExecReturn *Fillet::execute()
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
-
-#else
-    Part::TopoShape TopShape;
-    try {
-        TopShape = getBaseTopoShape();
-    }
-    catch (Base::Exception& e) {
-        return new App::DocumentObjectExecReturn(e.what());
-    }
-    std::vector<std::string> SubNames = std::vector<std::string>(Base.getSubValues());
-
-    if (UseAllEdges.getValue()){
-        SubNames.clear();
-        std::string edgeTypeName = Part::TopoShape::shapeName(TopAbs_EDGE); //"Edge"
-        int count = TopShape.countSubElements(edgeTypeName.c_str());
-        for (int ii = 0; ii < count; ii++){
-            std::ostringstream edgeName;
-            edgeName << edgeTypeName << ii+1;
-            SubNames.push_back(edgeName.str());
-        }
-    }
-
-    getContinuousEdges(TopShape, SubNames);
-
-    double radius = Radius.getValue();
-
-    if(radius <= 0)
-        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Fillet radius must be greater than zero"));
-
-    this->positionByBaseFeature();
-
-    //If no element is selected, then we use a copy of previous feature.
-    if (SubNames.empty()) {
-        this->Shape.setValue(TopShape);
-        return App::DocumentObject::StdReturn;
-    }
-
-    // create an untransformed copy of the base shape
-    Part::TopoShape baseShape(TopShape);
-    baseShape.setTransform(Base::Matrix4D());
-    try {
-        BRepFilletAPI_MakeFillet mkFillet(baseShape.getShape());
-
-        for (const auto & it : SubNames) {
-            TopoDS_Edge edge = TopoDS::Edge(baseShape.getSubShape(it.c_str()));
-            mkFillet.Add(radius, edge);
-        }
-
-        mkFillet.Build();
-        if (!mkFillet.IsDone())
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Failed to create fillet"));
-
-        TopoDS_Shape shape = mkFillet.Shape();
-        if (shape.IsNull())
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is null"));
-
-        TopTools_ListOfShape aLarg;
-        aLarg.Append(baseShape.getShape());
-        if (!BRepAlgo::IsValid(aLarg, shape, Standard_False, Standard_False)) {
-            ShapeFix_ShapeTolerance aSFT;
-            aSFT.LimitTolerance(shape, Precision::Confusion(), Precision::Confusion(), TopAbs_SHAPE);
-            Handle(ShapeFix_Shape) aSfs = new ShapeFix_Shape(shape);
-            aSfs->Perform();
-            shape = aSfs->Shape();
-            if (!BRepAlgo::IsValid(aLarg, shape, Standard_False, Standard_False)) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is invalid"));
-            }
-        }
-
-        if (!isSingleSolidRuleSatisfied(shape)) {
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
-        }
-
-        shape = refineShapeIfActive(shape);
-        this->Shape.setValue(getSolid(shape));
-        return App::DocumentObject::StdReturn;
-    }
-    catch (Standard_Failure& e) {
-        return new App::DocumentObjectExecReturn(e.GetMessageString());
-    }
-#endif
 }
 
 void Fillet::Restore(Base::XMLReader &reader)

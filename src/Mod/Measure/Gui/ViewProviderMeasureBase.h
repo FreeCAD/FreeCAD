@@ -35,7 +35,7 @@
 
 #include <Mod/Measure/App/MeasureBase.h>
 
-//NOLINTBEGIN
+// NOLINTBEGIN
 class SbVec2s;
 class SoFontStyle;
 class SoBaseColor;
@@ -45,13 +45,14 @@ class SoPickStyle;
 class SoCoordinate3;
 class SoIndexedLineSet;
 class SoTranslate2Dragger;
-//NOLINTEND
+// NOLINTEND
 
 
-namespace MeasureGui {
+namespace MeasureGui
+{
 
 
-class MeasureGuiExport ViewProviderMeasureGroup : public Gui::ViewProviderDocumentObjectGroup
+class MeasureGuiExport ViewProviderMeasureGroup: public Gui::ViewProviderDocumentObjectGroup
 {
     PROPERTY_HEADER_WITH_OVERRIDE(MeasureGui::ViewProviderMeasureGroup);
 
@@ -59,7 +60,8 @@ public:
     ViewProviderMeasureGroup();
     ~ViewProviderMeasureGroup() override;
 
-    bool allowOverride(const App::DocumentObject &) const override {
+    bool allowOverride(const App::DocumentObject&) const override
+    {
         return true;
     }
 
@@ -67,9 +69,8 @@ public:
 };
 
 
-
-//NOLINTBEGIN
-class MeasureGuiExport ViewProviderMeasureBase :public Gui::ViewProviderDocumentObject
+// NOLINTBEGIN
+class MeasureGuiExport ViewProviderMeasureBase: public Gui::ViewProviderDocumentObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(ViewProviderMeasureBase);
 
@@ -81,22 +82,28 @@ public:
     ~ViewProviderMeasureBase() override;
 
     // Display properties
-    App::PropertyColor          TextColor;
-    App::PropertyColor          TextBackgroundColor;
-    App::PropertyColor          LineColor;
-    App::PropertyInteger        FontSize;
-//NOLINTEND
+    App::PropertyColor TextColor;
+    App::PropertyColor TextBackgroundColor;
+    App::PropertyColor LineColor;
+    App::PropertyInteger FontSize;
+    // NOLINTEND
 
     /**
      * Attaches the document object to this view provider.
      */
-    bool isPartOfPhysicalObject() const override {return false;};
-    void attach(App::DocumentObject *pcObj) override;
+    bool isPartOfPhysicalObject() const override
+    {
+        return false;
+    };
+    void attach(App::DocumentObject* pcObj) override;
     void updateData(const App::Property* prop) override;
     virtual void positionAnno(const Measure::MeasureBase* measureObject);
     void finishRestoring() override;
 
-    bool useNewSelectionModel() const override {return true;}
+    bool useNewSelectionModel() const override
+    {
+        return true;
+    }
     std::vector<std::string> getDisplayModes() const override;
     void setDisplayMode(const char* ModeName) override;
     /// Show the annotation in the 3d window
@@ -107,8 +114,14 @@ public:
 
     virtual bool isSubjectVisible();
 
-    static Base::Vector3d toVector3d(SbVec3f svec) { return Base::Vector3d(svec[0], svec[1], svec[2]); }
-    static SbVec3f toSbVec3f(Base::Vector3d vec3) { return SbVec3f(vec3.x, vec3.y, vec3.z); }
+    static Base::Vector3d toVector3d(SbVec3f svec)
+    {
+        return Base::Vector3d(svec[0], svec[1], svec[2]);
+    }
+    static SbVec3f toSbVec3f(Base::Vector3d vec3)
+    {
+        return SbVec3f(vec3.x, vec3.y, vec3.z);
+    }
 
     void onSubjectVisibilityChanged(const App::DocumentObject& docObj, const App::Property& prop);
     void connectToSubject(App::DocumentObject* subject);
@@ -129,32 +142,34 @@ protected:
     SoSeparator* getSoSeparatorText();
 
     static constexpr double defaultTolerance = 10e-6;
-    virtual Base::Vector3d getTextDirection(Base::Vector3d elementDirection, double tolerance = defaultTolerance);
+    virtual Base::Vector3d getTextDirection(Base::Vector3d elementDirection,
+                                            double tolerance = defaultTolerance);
     float getViewScale();
 
     // TODO: getters & setters and move variables to private?
     bool _mShowTree = true;
 
-    SoSeparator* pGlobalSeparator; // Separator in the global coordinate space
-    Gui::SoFrameLabel * pLabel;
+    SoSeparator* pGlobalSeparator;  // Separator in the global coordinate space
+    Gui::SoFrameLabel* pLabel;
     SoTranslate2Dragger* pDragger;
     SoTransform* pDraggerOrientation;
-    SoTransform    * pLabelTranslation;
-    SoBaseColor      * pColor;
+    SoTransform* pLabelTranslation;
+    SoBaseColor* pColor;
     SoSeparator* pRootSeparator;
     SoSeparator* pTextSeparator;
     SoSeparator* pLineSeparator;
     SoSeparator* pLineSeparatorSecondary;
+
 private:
     boost::signals2::connection _mVisibilityChangedConnection;
 };
 
 
-//NOLINTBEGIN
-class MeasureGuiExport ViewProviderMeasure : public MeasureGui::ViewProviderMeasureBase
+// NOLINTBEGIN
+class MeasureGuiExport ViewProviderMeasure: public MeasureGui::ViewProviderMeasureBase
 {
     PROPERTY_HEADER_WITH_OVERRIDE(MeasureGui::ViewProviderMeasure);
-//NOLINTEND
+    // NOLINTEND
 
 public:
     /// Constructor
@@ -171,56 +186,59 @@ protected:
     virtual Base::Vector3d getTextPosition();
 
 private:
-    SoCoordinate3    * pCoords;
-    SoIndexedLineSet * pLines;
+    SoCoordinate3* pCoords;
+    SoIndexedLineSet* pLines;
 };
 
 
-class ViewProviderMeasureArea : public ViewProviderMeasure
+class ViewProviderMeasureArea: public ViewProviderMeasure
 {
     PROPERTY_HEADER(MeasureGui::ViewProviderMeasureArea);
 
 public:
-    ViewProviderMeasureArea() {
+    ViewProviderMeasureArea()
+    {
         sPixmap = "Measurement-Area";
     }
 };
 
 
-class ViewProviderMeasureLength : public ViewProviderMeasure
+class ViewProviderMeasureLength: public ViewProviderMeasure
 {
     PROPERTY_HEADER(MeasureGui::ViewProviderMeasureLength);
 
 public:
-    ViewProviderMeasureLength() {
+    ViewProviderMeasureLength()
+    {
         sPixmap = "Measurement-Distance";
     }
 };
 
 
-class ViewProviderMeasurePosition : public ViewProviderMeasure
+class ViewProviderMeasurePosition: public ViewProviderMeasure
 {
     PROPERTY_HEADER(MeasureGui::ViewProviderMeasurePosition);
 
 public:
-    ViewProviderMeasurePosition() {
+    ViewProviderMeasurePosition()
+    {
         sPixmap = "Measurement-Position";
     }
 };
 
 
-class ViewProviderMeasureRadius : public ViewProviderMeasure
+class ViewProviderMeasureRadius: public ViewProviderMeasure
 {
     PROPERTY_HEADER(MeasureGui::ViewProviderMeasureRadius);
 
 public:
-    ViewProviderMeasureRadius() {
+    ViewProviderMeasureRadius()
+    {
         sPixmap = "Measurement-Radius";
     }
 };
 
 
-} // namespace Gui
+}  // namespace MeasureGui
 
-#endif // GUI_VIEWPROVIDER_MEASUREMENTBASE_H
-
+#endif  // GUI_VIEWPROVIDER_MEASUREMENTBASE_H

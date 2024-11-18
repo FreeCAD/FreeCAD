@@ -1,9 +1,17 @@
-from FreeCAD import Vector, newDocument, closeDocument
+from FreeCAD import Vector, Base, newDocument, closeDocument
 import Part
+import Sketcher
 
 import unittest
 
 class RegressionTests(unittest.TestCase):
+
+    # pylint: disable=attribute-defined-outside-init
+
+    def setUp(self):
+        """Create a document for each test in the test suite"""
+        self.Doc = newDocument("PartRegressionTest." + self._testMethodName)
+        self.KeepTestDoc = False
 
     def test_issue_4456(self):
         """
@@ -20,13 +28,79 @@ class RegressionTests(unittest.TestCase):
         with self.assertRaises(IndexError):
             result.pop()
 
+    def test_issue_15735(self):
+        """
+        15735: Point in sketch as loft profile won't work in dev, but works in stable
+        The following test is a simplified version of the issue, but the outcome is the same
+        """
+
+        # Arrange
+        ArcSketch = self.Doc.addObject("Sketcher::SketchObject", "ArcSketch")
+        ArcSketch.Placement = Base.Placement(
+            Base.Vector(0.000000, 0.000000, 0.000000),
+            Base.Rotation(0.500000, 0.500000, 0.500000, 0.500000),
+        )
+        ArcSketch.MapMode = "Deactivated"
+
+        geoList = []
+        geoList.append(
+            Part.ArcOfCircle(
+                Part.Circle(
+                    Base.Vector(0.000000, 0.000000, 0.000000),
+                    Base.Vector(0.000000, 0.000000, 1.000000),
+                    10.000000,
+                ),
+                3.141593,
+                6.283185,
+            )
+        )
+        ArcSketch.addGeometry(geoList, False)
+        del geoList
+
+        constraintList = []
+        ArcSketch.addConstraint(Sketcher.Constraint("Radius", 0, 10.000000))
+        constraintList.append(Sketcher.Constraint("Coincident", 0, 3, -1, 1))
+        constraintList.append(Sketcher.Constraint("PointOnObject", 0, 2, -1))
+        constraintList.append(Sketcher.Constraint("PointOnObject", 0, 1, -1))
+        ArcSketch.addConstraint(constraintList)
+        del constraintList
+
+        self.Doc.recompute()
+
+        PointSketch = self.Doc.addObject("Sketcher::SketchObject", "PointSketch")
+        PointSketch.Placement = Base.Placement(
+            Base.Vector(-10.000000, 0.000000, 0.000000),
+            Base.Rotation(0.500000, 0.500000, 0.500000, 0.500000),
+        )
+        PointSketch.MapMode = "Deactivated"
+
+        PointSketch.addGeometry(Part.Point(Base.Vector(0.000000, 0.000000, 0)))
+
+        PointSketch.addConstraint(Sketcher.Constraint("Coincident", 0, 1, -1, 1))
+
+        self.Doc.recompute()
+
+        Loft = self.Doc.addObject("Part::Loft", "Loft")
+        Loft.Sections = [
+            ArcSketch,
+            PointSketch,
+        ]
+        Loft.Solid = False
+        Loft.Ruled = False
+        Loft.Closed = False
+
+        # Act
+        self.Doc.recompute()
+
+        # Assert
+        self.assertTrue(Loft.isValid())
+        self.KeepTestDoc = not Loft.isValid()
+
     def test_OptimalBox(self):
         box = Part.makeBox(1, 1, 1)
         self.assertTrue(box.optimalBoundingBox(True, False).isValid())
 
     def test_CircularReference(self):
-        # put me in def setup(self): ?
-        self.Doc = newDocument("TestSketchExpr")
 
         cube = self.Doc.addObject("Part::Box","Cube")
         cube.setExpression('Length', 'Width + 10mm')
@@ -44,6 +118,13 @@ class RegressionTests(unittest.TestCase):
         cube.recompute()
         assert cube.Placement.Base.isEqual(v1,1e-6)
 
-        # Put me in def tearDown(self): ?
+    def tearDown(self):
+        """Clean up our test, optionally preserving the test document"""
+        # This flag allows doing something like this:
+        #   self.KeepTestDoc = True
+        #   import TestApp
+        #   TestApp.Test("TestPartApp.RegressionTests.test_issue_15735")
+        # to leave the test document(s) around for further examination in an interactive setting.
+        if hasattr(self, "KeepTestDoc") and self.KeepTestDoc:
+            return
         closeDocument(self.Doc.Name)
-

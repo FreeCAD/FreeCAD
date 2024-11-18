@@ -112,6 +112,7 @@ OffsetWidget::~OffsetWidget()
 
 void OffsetWidget::setupConnections()
 {
+    // clang-format off
     connect(d->ui.spinOffset, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
             this, &OffsetWidget::onSpinOffsetValueChanged);
     connect(d->ui.modeType, qOverload<int>(&QComboBox::activated),
@@ -126,6 +127,7 @@ void OffsetWidget::setupConnections()
             this, &OffsetWidget::onFillOffsetToggled);
     connect(d->ui.updateView, &QCheckBox::toggled,
             this, &OffsetWidget::onUpdateViewToggled);
+    // clang-format on
 }
 
 Part::Offset* OffsetWidget::getObject() const

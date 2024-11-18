@@ -205,7 +205,7 @@ def export(exportList,filename,tessellation=1,colors=None):
     scenenodes = []
     objectslist = Draft.get_group_contents(exportList, walls=True,
                                            addgroups=True)
-    objectslist = Arch.pruneIncluded(objectslist)
+    objectslist = Arch.pruneIncluded(objectslist, strict=True)
     for obj in objectslist:
         findex = numpy.array([])
         m = None
@@ -308,4 +308,4 @@ def export(exportList,filename,tessellation=1,colors=None):
     colmesh.scenes.append(myscene)
     colmesh.scene = myscene
     colmesh.write(filename)
-    FreeCAD.Console.PrintMessage(translate("Arch","file %s successfully created.") % filename)
+    FreeCAD.Console.PrintMessage(translate("Arch","file %s successfully created.") % filename + "\n")

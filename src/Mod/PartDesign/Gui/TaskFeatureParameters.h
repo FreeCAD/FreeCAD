@@ -51,6 +51,11 @@ public:
 
     void recomputeFeature();
 
+    bool isUpdateBlocked() const
+    {
+        return blockUpdate;
+    }
+
 protected Q_SLOTS:
     // TODO Add update view to all dialogs (2015-12-05, Fat-Zer)
     void onUpdateView(bool on);
@@ -86,11 +91,6 @@ protected:
     {
         auto obj = getObject();
         return obj ? obj->getDocument() : nullptr;
-    }
-
-    bool isUpdateBlocked() const
-    {
-        return blockUpdate;
     }
 
     bool& getUpdateBlockRef()

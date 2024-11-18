@@ -400,6 +400,7 @@ SET(FemGuiPythonUI_SRCS
     Resources/ui/ConstraintTie.ui
     Resources/ui/ConstraintSectionPrint.ui
     Resources/ui/CurrentDensity.ui
+    Resources/ui/DlgSettingsNetgen.ui
     Resources/ui/ElectrostaticPotential.ui
     Resources/ui/ElementFluid1D.ui
     Resources/ui/ElementGeometry1D.ui
@@ -415,6 +416,7 @@ SET(FemGuiPythonUI_SRCS
     Resources/ui/MeshGmsh.ui
     Resources/ui/MeshGroup.ui
     Resources/ui/MeshGroupXDMFExport.ui
+    Resources/ui/MeshNetgen.ui
     Resources/ui/MeshRegion.ui
     Resources/ui/ResultHints.ui
     Resources/ui/ResultShow.ui

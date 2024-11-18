@@ -33,6 +33,7 @@ import stat
 import threading
 import time
 from typing import List
+import xml.etree.ElementTree
 
 from PySide import QtCore
 
@@ -44,6 +45,7 @@ from AddonStats import AddonStats
 import NetworkManager
 from addonmanager_git import initialize_git, GitFailed
 from addonmanager_metadata import MetadataReader, get_branch_from_metadata
+import addonmanager_freecad_interface as fci
 
 translate = FreeCAD.Qt.translate
 
@@ -193,10 +195,18 @@ class CreateAddonListWorker(QtCore.QThread):
                 repo = Addon(name, addon["url"], state, addon["branch"])
                 md_file = os.path.join(addondir, "package.xml")
                 if os.path.isfile(md_file):
-                    repo.installed_metadata = MetadataReader.from_file(md_file)
-                    repo.installed_version = repo.installed_metadata.version
-                    repo.updated_timestamp = os.path.getmtime(md_file)
-                    repo.verify_url_and_branch(addon["url"], addon["branch"])
+                    try:
+                        repo.installed_metadata = MetadataReader.from_file(md_file)
+                        repo.installed_version = repo.installed_metadata.version
+                        repo.updated_timestamp = os.path.getmtime(md_file)
+                        repo.verify_url_and_branch(addon["url"], addon["branch"])
+                    except xml.etree.ElementTree.ParseError:
+                        fci.Console.PrintWarning(
+                            "An invalid or corrupted package.xml file was installed for"
+                        )
+                        fci.Console.PrintWarning(
+                            f" custom addon {self.name}... ignoring the bad data.\n"
+                        )
 
                 self.addon_repo.emit(repo)
 
@@ -236,10 +246,16 @@ class CreateAddonListWorker(QtCore.QThread):
             repo = Addon(name, url, state, branch)
             md_file = os.path.join(addondir, "package.xml")
             if os.path.isfile(md_file):
-                repo.installed_metadata = MetadataReader.from_file(md_file)
-                repo.installed_version = repo.installed_metadata.version
-                repo.updated_timestamp = os.path.getmtime(md_file)
-                repo.verify_url_and_branch(url, branch)
+                try:
+                    repo.installed_metadata = MetadataReader.from_file(md_file)
+                    repo.installed_version = repo.installed_metadata.version
+                    repo.updated_timestamp = os.path.getmtime(md_file)
+                    repo.verify_url_and_branch(url, branch)
+                except xml.etree.ElementTree.ParseError:
+                    fci.Console.PrintWarning(
+                        "An invalid or corrupted package.xml file was installed for"
+                    )
+                    fci.Console.PrintWarning(f" addon {self.name}... ignoring the bad data.\n")
 
             if name in self.py2only:
                 repo.python2 = True
@@ -263,7 +279,7 @@ class CreateAddonListWorker(QtCore.QThread):
         if not self.git_manager:
             message = translate(
                 "AddonsInstaller",
-                "Git is disabled, skipping git macros",
+                "Git is disabled, skipping Git macros",
             )
             self.status_message.emit(message)
             FreeCAD.Console.PrintWarning(message + "\n")
@@ -311,7 +327,7 @@ class CreateAddonListWorker(QtCore.QThread):
                     FreeCAD.Console.PrintWarning(
                         translate(
                             "AddonsInstaller",
-                            "Attempting to change non-git Macro setup to use git\n",
+                            "Attempting to change non-Git Macro setup to use Git\n",
                         )
                     )
                     self.git_manager.repair(
@@ -383,7 +399,7 @@ class CreateAddonListWorker(QtCore.QThread):
             )
             return
         p = p.data().decode("utf8")
-        macros = re.findall('title="(Macro.*?)"', p)
+        macros = re.findall(r'title="(Macro.*?)"', p)
         macros = [mac for mac in macros if "translated" not in mac]
         macro_names = []
         for _, mac in enumerate(macros):
@@ -587,7 +603,7 @@ class UpdateChecker:
                         "AddonManager: "
                         + translate(
                             "AddonsInstaller",
-                            "Unable to fetch git updates for workbench {}",
+                            "Unable to fetch Git updates for workbench {}",
                         ).format(wb.name)
                         + "\n"
                     )
@@ -601,7 +617,7 @@ class UpdateChecker:
                             wb.set_status(Addon.Status.NO_UPDATE_AVAILABLE)
                     except GitFailed:
                         FreeCAD.Console.PrintWarning(
-                            translate("AddonsInstaller", "git status failed for {}").format(wb.name)
+                            translate("AddonsInstaller", "Git status failed for {}").format(wb.name)
                             + "\n"
                         )
                         wb.set_status(Addon.Status.CANNOT_CHECK)
@@ -610,6 +626,8 @@ class UpdateChecker:
         clone_dir = os.path.join(self.moddir, package.name)
         installed_metadata_file = os.path.join(clone_dir, "package.xml")
         if not os.path.isfile(installed_metadata_file):
+            return False
+        if not hasattr(package, "metadata") or package.metadata is None:
             return False
         try:
             installed_metadata = MetadataReader.from_file(installed_metadata_file)
@@ -891,7 +909,7 @@ class GetMacroDetailsWorker(QtCore.QThread):
 
         self.status_message.emit(translate("AddonsInstaller", "Retrieving macro description..."))
         if not self.macro.parsed and self.macro.on_git:
-            self.status_message.emit(translate("AddonsInstaller", "Retrieving info from git"))
+            self.status_message.emit(translate("AddonsInstaller", "Retrieving info from Git"))
             self.macro.fill_details_from_file(self.macro.src_filename)
         if not self.macro.parsed and self.macro.on_wiki:
             self.status_message.emit(translate("AddonsInstaller", "Retrieving info from wiki"))

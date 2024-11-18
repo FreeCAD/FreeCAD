@@ -761,10 +761,10 @@ void DlgPreferencesImp::showEvent(QShowEvent* ev)
     auto screen = windowHandle()->screen();
     auto availableSize = screen->availableSize();
 
-    // leave at least 100 px of height so preferences window does not take
+    // leave some portion of height so preferences window does not take
     // entire screen height. User will still be able to resize the window,
     // but it should never start too tall.
-    auto maxStartHeight = availableSize.height() - 100;
+    auto maxStartHeight = availableSize.height() - minVerticalEmptySpace;
 
     if (height() > maxStartHeight) {
         auto heightDifference = availableSize.height() - maxStartHeight;
@@ -782,11 +782,9 @@ void DlgPreferencesImp::expandToMinimumDialogWidth()
     auto screen = windowHandle()->screen();
     auto availableSize = screen->availableSize();
 
-    // if the expanded dialog occupies less than 50% of the screen
     int mw = minimumDialogWidth(minimumPageWidth());
-    if (availableSize.width() > 2 * mw) {
-        resize(mw, height());
-    }
+    // expand dialog to minimum size required but do not use more than specified width portion
+    resize(std::min(int(maxScreenWidthCoveragePercent * availableSize.width()), mw), height());
 }
 
 void DlgPreferencesImp::onPageSelected(const QModelIndex& index)

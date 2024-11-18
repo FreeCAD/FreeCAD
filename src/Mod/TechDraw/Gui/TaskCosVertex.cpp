@@ -206,7 +206,6 @@ void TaskCosVertex::startTracker()
 
 void TaskCosVertex::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParent)
 {
-    //    Base::Console().Message("TCV::onTrackerFinished()\n");
     (void)qgParent;
     if (pts.empty()) {
         Base::Console().Error("TaskCosVertex - no points available\n");
@@ -222,13 +221,10 @@ void TaskCosVertex::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParen
     DrawProjGroupItem* dpgi = dynamic_cast<DrawProjGroupItem*>(dvp);
     if (dpgi) {
         DrawProjGroup* dpg = dpgi->getPGroup();
-        if (!dpg) {
-            Base::Console().Message("TCV:onTrackerFinished - projection group is confused\n");
-            //TODO::throw something.
-            return;
+        if (dpg) {
+            x += Rez::guiX(dpg->X.getValue());
+            y += Rez::guiX(dpg->Y.getValue());
         }
-        x += Rez::guiX(dpg->X.getValue());
-        y += Rez::guiX(dpg->Y.getValue());
     }
     //x, y are scene pos of dvp/dpgi
 

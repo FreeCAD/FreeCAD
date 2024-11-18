@@ -4,18 +4,18 @@
   <context>
     <name>CmdMeshAddFacet</name>
     <message>
-      <location filename="../../Command.cpp" line="844"/>
+      <location filename="../../Command.cpp" line="719"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="845"/>
+      <location filename="../../Command.cpp" line="720"/>
       <source>Add triangle</source>
       <translation>Pridėti trikampį</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="846"/>
-      <location filename="../../Command.cpp" line="848"/>
+      <location filename="../../Command.cpp" line="721"/>
+      <location filename="../../Command.cpp" line="723"/>
       <source>Add triangle manually to a mesh</source>
       <translation>Pridėti trikampį prie tinklo rankiniu būdu</translation>
     </message>
@@ -23,18 +23,18 @@
   <context>
     <name>CmdMeshBoundingBox</name>
     <message>
-      <location filename="../../Command.cpp" line="1559"/>
+      <location filename="../../Command.cpp" line="1438"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1560"/>
+      <location filename="../../Command.cpp" line="1439"/>
       <source>Boundings info...</source>
       <translation>Ribiniai matmenys...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1561"/>
-      <location filename="../../Command.cpp" line="1563"/>
+      <location filename="../../Command.cpp" line="1440"/>
+      <location filename="../../Command.cpp" line="1442"/>
       <source>Shows the boundings of the selected mesh</source>
       <translation>Rodyti pasirinkto tinklo ribinius matmenis</translation>
     </message>
@@ -42,18 +42,18 @@
   <context>
     <name>CmdMeshBuildRegularSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1601"/>
+      <location filename="../../Command.cpp" line="1490"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1602"/>
+      <location filename="../../Command.cpp" line="1491"/>
       <source>Regular solid...</source>
       <translation>Taisyklingasis pilnaviduris daugiasienis...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1603"/>
-      <location filename="../../Command.cpp" line="1605"/>
+      <location filename="../../Command.cpp" line="1492"/>
+      <location filename="../../Command.cpp" line="1494"/>
       <source>Builds a regular solid</source>
       <translation>Sukuria taisyklingąjį pilnavidurį daugiasienį</translation>
     </message>
@@ -61,18 +61,18 @@
   <context>
     <name>CmdMeshCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="1071"/>
+      <location filename="../../Command.cpp" line="960"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1072"/>
+      <location filename="../../Command.cpp" line="961"/>
       <source>Cross-sections...</source>
       <translation>Skerspjūviai...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1073"/>
-      <location filename="../../Command.cpp" line="1074"/>
+      <location filename="../../Command.cpp" line="962"/>
+      <location filename="../../Command.cpp" line="963"/>
       <source>Cross-sections</source>
       <translation>Skerspjūviai</translation>
     </message>
@@ -80,45 +80,32 @@
   <context>
     <name>CmdMeshDecimating</name>
     <message>
-      <location filename="../../Command.cpp" line="1460"/>
+      <location filename="../../Command.cpp" line="1334"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1461"/>
+      <location filename="../../Command.cpp" line="1335"/>
       <source>Decimation...</source>
       <translation type="unfinished">Decimation...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1462"/>
-      <location filename="../../Command.cpp" line="1463"/>
-      <location filename="../../Command.cpp" line="1464"/>
+      <location filename="../../Command.cpp" line="1336"/>
+      <location filename="../../Command.cpp" line="1337"/>
+      <location filename="../../Command.cpp" line="1338"/>
       <source>Decimates a mesh</source>
       <translation type="unfinished">Decimates a mesh</translation>
     </message>
   </context>
   <context>
-    <name>CmdMeshDemolding</name>
-    <message>
-      <location filename="../../Command.cpp" line="127"/>
-      <source>Mesh</source>
-      <translation>Tinklas</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="128"/>
-      <source>Interactive demolding direction</source>
-      <translation>Sąveikus krypties gavimas iš pavidalo</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdMeshDifference</name>
     <message>
-      <location filename="../../Command.cpp" line="293"/>
+      <location filename="../../Command.cpp" line="165"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="294"/>
+      <location filename="../../Command.cpp" line="166"/>
       <source>Difference</source>
       <translation>Atimtis</translation>
     </message>
@@ -126,18 +113,18 @@
   <context>
     <name>CmdMeshEvaluateFacet</name>
     <message>
-      <location filename="../../Command.cpp" line="1194"/>
+      <location filename="../../Command.cpp" line="1089"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1195"/>
+      <location filename="../../Command.cpp" line="1090"/>
       <source>Face info</source>
       <translation>Daugiakampio duomenys</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1196"/>
-      <location filename="../../Command.cpp" line="1198"/>
+      <location filename="../../Command.cpp" line="1091"/>
+      <location filename="../../Command.cpp" line="1093"/>
       <source>Information about face</source>
       <translation>Duomenys apie daugiakampį</translation>
     </message>
@@ -145,18 +132,18 @@
   <context>
     <name>CmdMeshEvaluateSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1359"/>
+      <location filename="../../Command.cpp" line="1264"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1360"/>
+      <location filename="../../Command.cpp" line="1265"/>
       <source>Check solid mesh</source>
       <translation>Tikrinti tinklo vientisumą</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1361"/>
-      <location filename="../../Command.cpp" line="1363"/>
+      <location filename="../../Command.cpp" line="1266"/>
+      <location filename="../../Command.cpp" line="1268"/>
       <source>Checks whether the mesh is a solid</source>
       <translation>Tikrinti, ar tinklas sudaro pilnavidurį kūną</translation>
     </message>
@@ -164,18 +151,18 @@
   <context>
     <name>CmdMeshEvaluation</name>
     <message>
-      <location filename="../../Command.cpp" line="1151"/>
+      <location filename="../../Command.cpp" line="1044"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1153"/>
+      <location filename="../../Command.cpp" line="1046"/>
       <source>Evaluate and repair mesh...</source>
       <translation>Tinklo patikra ir taisa...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1154"/>
-      <location filename="../../Command.cpp" line="1156"/>
+      <location filename="../../Command.cpp" line="1047"/>
+      <location filename="../../Command.cpp" line="1049"/>
       <source>Opens a dialog to analyze and repair a mesh</source>
       <translation>Atveria tinklo patikros ir taisos įrankį</translation>
     </message>
@@ -183,18 +170,18 @@
   <context>
     <name>CmdMeshExport</name>
     <message>
-      <location filename="../../Command.cpp" line="486"/>
+      <location filename="../../Command.cpp" line="376"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="487"/>
+      <location filename="../../Command.cpp" line="377"/>
       <source>Export mesh...</source>
       <translation>Eksportuoti tinklą...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="488"/>
-      <location filename="../../Command.cpp" line="490"/>
+      <location filename="../../Command.cpp" line="378"/>
+      <location filename="../../Command.cpp" line="380"/>
       <source>Exports a mesh to file</source>
       <translation>Eksportuoja tinklą į failą</translation>
     </message>
@@ -202,18 +189,18 @@
   <context>
     <name>CmdMeshFillInteractiveHole</name>
     <message>
-      <location filename="../../Command.cpp" line="1671"/>
+      <location filename="../../Command.cpp" line="1573"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1672"/>
+      <location filename="../../Command.cpp" line="1574"/>
       <source>Close hole</source>
       <translation>Užaklinti skylę</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1673"/>
-      <location filename="../../Command.cpp" line="1675"/>
+      <location filename="../../Command.cpp" line="1575"/>
+      <location filename="../../Command.cpp" line="1577"/>
       <source>Close holes interactively</source>
       <translation>Užaklinti skyles perklausiant</translation>
     </message>
@@ -221,18 +208,18 @@
   <context>
     <name>CmdMeshFillupHoles</name>
     <message>
-      <location filename="../../Command.cpp" line="1632"/>
+      <location filename="../../Command.cpp" line="1522"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1633"/>
+      <location filename="../../Command.cpp" line="1523"/>
       <source>Fill holes...</source>
       <translation>Užpildyti skyles...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1634"/>
-      <location filename="../../Command.cpp" line="1636"/>
+      <location filename="../../Command.cpp" line="1524"/>
+      <location filename="../../Command.cpp" line="1526"/>
       <source>Fill holes of the mesh</source>
       <translation>Užpildyti tinklo skyles</translation>
     </message>
@@ -240,18 +227,18 @@
   <context>
     <name>CmdMeshFlipNormals</name>
     <message>
-      <location filename="../../Command.cpp" line="1525"/>
+      <location filename="../../Command.cpp" line="1402"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1526"/>
+      <location filename="../../Command.cpp" line="1403"/>
       <source>Flip normals</source>
       <translation>Apgręžti normales</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1527"/>
-      <location filename="../../Command.cpp" line="1529"/>
+      <location filename="../../Command.cpp" line="1404"/>
+      <location filename="../../Command.cpp" line="1406"/>
       <source>Flips the normals of the mesh</source>
       <translation>Apgręžia tinklo normales</translation>
     </message>
@@ -259,18 +246,18 @@
   <context>
     <name>CmdMeshFromGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="561"/>
+      <location filename="../../Command.cpp" line="459"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="562"/>
+      <location filename="../../Command.cpp" line="460"/>
       <source>Create mesh from geometry...</source>
       <translation>Sukurti tinklą iš geometrijos...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="563"/>
-      <location filename="../../Command.cpp" line="565"/>
+      <location filename="../../Command.cpp" line="461"/>
+      <location filename="../../Command.cpp" line="463"/>
       <source>Create mesh from the selected geometry</source>
       <translation>Sukurti tinklą iš pasirinktos geometrijos</translation>
     </message>
@@ -278,17 +265,17 @@
   <context>
     <name>CmdMeshFromPartShape</name>
     <message>
-      <location filename="../../Command.cpp" line="620"/>
+      <location filename="../../Command.cpp" line="531"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="621"/>
+      <location filename="../../Command.cpp" line="532"/>
       <source>Create mesh from shape...</source>
       <translation>Sukurti daikto tinklą...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="622"/>
+      <location filename="../../Command.cpp" line="533"/>
       <source>Tessellate shape</source>
       <translation>Versti paviršių į daugiasienį</translation>
     </message>
@@ -296,18 +283,18 @@
   <context>
     <name>CmdMeshHarmonizeNormals</name>
     <message>
-      <location filename="../../Command.cpp" line="1491"/>
+      <location filename="../../Command.cpp" line="1366"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1492"/>
+      <location filename="../../Command.cpp" line="1367"/>
       <source>Harmonize normals</source>
       <translation>Suderinti normales</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1493"/>
-      <location filename="../../Command.cpp" line="1495"/>
+      <location filename="../../Command.cpp" line="1368"/>
+      <location filename="../../Command.cpp" line="1370"/>
       <source>Harmonizes the normals of the mesh</source>
       <translation>Suderina tinklo normales</translation>
     </message>
@@ -315,18 +302,18 @@
   <context>
     <name>CmdMeshImport</name>
     <message>
-      <location filename="../../Command.cpp" line="435"/>
+      <location filename="../../Command.cpp" line="323"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="436"/>
+      <location filename="../../Command.cpp" line="324"/>
       <source>Import mesh...</source>
       <translation>Importuoti tinklą...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="437"/>
-      <location filename="../../Command.cpp" line="439"/>
+      <location filename="../../Command.cpp" line="325"/>
+      <location filename="../../Command.cpp" line="327"/>
       <source>Imports a mesh from file</source>
       <translation>Importuoja tinklą iš failo</translation>
     </message>
@@ -334,12 +321,12 @@
   <context>
     <name>CmdMeshIntersection</name>
     <message>
-      <location filename="../../Command.cpp" line="364"/>
+      <location filename="../../Command.cpp" line="244"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="365"/>
+      <location filename="../../Command.cpp" line="245"/>
       <source>Intersection</source>
       <translation>Sankirta</translation>
     </message>
@@ -347,17 +334,17 @@
   <context>
     <name>CmdMeshMerge</name>
     <message>
-      <location filename="../../Command.cpp" line="1785"/>
+      <location filename="../../Command.cpp" line="1692"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1786"/>
+      <location filename="../../Command.cpp" line="1693"/>
       <source>Merge</source>
       <translation>Apjungti</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1787"/>
+      <location filename="../../Command.cpp" line="1694"/>
       <source>Merges selected meshes into one</source>
       <translation>Apjungia pažymėtus tinklus į vieną</translation>
     </message>
@@ -365,18 +352,18 @@
   <context>
     <name>CmdMeshPolyCut</name>
     <message>
-      <location filename="../../Command.cpp" line="891"/>
+      <location filename="../../Command.cpp" line="768"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="892"/>
+      <location filename="../../Command.cpp" line="769"/>
       <source>Cut mesh</source>
       <translation>Apkarpyti tinklą</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="893"/>
-      <location filename="../../Command.cpp" line="895"/>
+      <location filename="../../Command.cpp" line="770"/>
+      <location filename="../../Command.cpp" line="772"/>
       <source>Cuts a mesh with a picked polygon</source>
       <translation>Apkarpo tinklą pasirinktu daugiakampiu</translation>
     </message>
@@ -384,56 +371,37 @@
   <context>
     <name>CmdMeshPolySegm</name>
     <message>
-      <location filename="../../Command.cpp" line="735"/>
+      <location filename="../../Command.cpp" line="660"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="736"/>
+      <location filename="../../Command.cpp" line="661"/>
       <source>Make segment</source>
       <translation>Sukurti atkarpą</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="737"/>
-      <location filename="../../Command.cpp" line="739"/>
+      <location filename="../../Command.cpp" line="662"/>
+      <location filename="../../Command.cpp" line="664"/>
       <source>Creates a mesh segment</source>
       <translation>Sukuria tinklo atkarpą</translation>
     </message>
   </context>
   <context>
-    <name>CmdMeshPolySelect</name>
-    <message>
-      <location filename="../../Command.cpp" line="791"/>
-      <source>Mesh</source>
-      <translation>Tinklas</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="792"/>
-      <source>Select mesh</source>
-      <translation>Pasirinkti tinklą</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="793"/>
-      <location filename="../../Command.cpp" line="795"/>
-      <source>Select an area of the mesh</source>
-      <translation>Pasirinkite tinklo sritį</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdMeshPolySplit</name>
     <message>
-      <location filename="../../Command.cpp" line="1097"/>
+      <location filename="../../Command.cpp" line="987"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1098"/>
+      <location filename="../../Command.cpp" line="988"/>
       <source>Split mesh</source>
       <translation>Skelti tinklą</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1099"/>
-      <location filename="../../Command.cpp" line="1101"/>
+      <location filename="../../Command.cpp" line="989"/>
+      <location filename="../../Command.cpp" line="991"/>
       <source>Splits a mesh into two meshes</source>
       <translation>Skelia tinklą į du tinklelius</translation>
     </message>
@@ -441,18 +409,18 @@
   <context>
     <name>CmdMeshPolyTrim</name>
     <message>
-      <location filename="../../Command.cpp" line="952"/>
+      <location filename="../../Command.cpp" line="833"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="953"/>
+      <location filename="../../Command.cpp" line="834"/>
       <source>Trim mesh</source>
       <translation>Apipjauti tinklą</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="954"/>
-      <location filename="../../Command.cpp" line="956"/>
+      <location filename="../../Command.cpp" line="835"/>
+      <location filename="../../Command.cpp" line="837"/>
       <source>Trims a mesh with a picked polygon</source>
       <translation>Apkarpo tinklą pasirinktu daugiakampiu</translation>
     </message>
@@ -460,18 +428,18 @@
   <context>
     <name>CmdMeshRemeshGmsh</name>
     <message>
-      <location filename="../../Command.cpp" line="1282"/>
+      <location filename="../../Command.cpp" line="1183"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1283"/>
+      <location filename="../../Command.cpp" line="1184"/>
       <source>Refinement...</source>
       <translation>Patobulinti...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1284"/>
-      <location filename="../../Command.cpp" line="1285"/>
+      <location filename="../../Command.cpp" line="1185"/>
+      <location filename="../../Command.cpp" line="1186"/>
       <source>Refine existing mesh</source>
       <translation>Patobulinti esamą tinklą</translation>
     </message>
@@ -479,18 +447,18 @@
   <context>
     <name>CmdMeshRemoveCompByHand</name>
     <message>
-      <location filename="../../Command.cpp" line="1315"/>
+      <location filename="../../Command.cpp" line="1217"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1316"/>
+      <location filename="../../Command.cpp" line="1218"/>
       <source>Remove components by hand...</source>
       <translation>Pašalinti dalis rankiniu būdu...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1317"/>
-      <location filename="../../Command.cpp" line="1319"/>
+      <location filename="../../Command.cpp" line="1219"/>
+      <location filename="../../Command.cpp" line="1221"/>
       <source>Mark a component to remove it from the mesh</source>
       <translation>Pažymėkite dalį pašalinimui iš tinklo</translation>
     </message>
@@ -498,18 +466,18 @@
   <context>
     <name>CmdMeshRemoveComponents</name>
     <message>
-      <location filename="../../Command.cpp" line="1237"/>
+      <location filename="../../Command.cpp" line="1135"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1238"/>
+      <location filename="../../Command.cpp" line="1136"/>
       <source>Remove components...</source>
       <translation>Pašalinti dalis...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1239"/>
-      <location filename="../../Command.cpp" line="1241"/>
+      <location filename="../../Command.cpp" line="1137"/>
+      <location filename="../../Command.cpp" line="1139"/>
       <source>Remove topologic independent components from the mesh</source>
       <translation>Pašalinti topologiškai nepriklausomas dalis iš tinklo</translation>
     </message>
@@ -517,17 +485,17 @@
   <context>
     <name>CmdMeshScale</name>
     <message>
-      <location filename="../../Command.cpp" line="1874"/>
+      <location filename="../../Command.cpp" line="1787"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1875"/>
+      <location filename="../../Command.cpp" line="1788"/>
       <source>Scale...</source>
       <translation>Mastelis...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1876"/>
+      <location filename="../../Command.cpp" line="1789"/>
       <source>Scale selected meshes</source>
       <translation>Pasirinktų tinklų dydžio keitimas</translation>
     </message>
@@ -535,18 +503,18 @@
   <context>
     <name>CmdMeshSectionByPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="1042"/>
+      <location filename="../../Command.cpp" line="929"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1043"/>
+      <location filename="../../Command.cpp" line="930"/>
       <source>Create section from mesh and plane</source>
       <translation>Sukurti pjūvį iš tinklo ir plokštumos</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1044"/>
-      <location filename="../../Command.cpp" line="1045"/>
+      <location filename="../../Command.cpp" line="931"/>
+      <location filename="../../Command.cpp" line="932"/>
       <source>Section from mesh and plane</source>
       <translation>Tinklo ir plokštumos pjūvis</translation>
     </message>
@@ -554,18 +522,18 @@
   <context>
     <name>CmdMeshSegmentation</name>
     <message>
-      <location filename="../../Command.cpp" line="1713"/>
+      <location filename="../../Command.cpp" line="1620"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1714"/>
+      <location filename="../../Command.cpp" line="1621"/>
       <source>Create mesh segments...</source>
       <translation>Tinklo atkarpos kūrimas...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1715"/>
-      <location filename="../../Command.cpp" line="1717"/>
+      <location filename="../../Command.cpp" line="1622"/>
+      <location filename="../../Command.cpp" line="1624"/>
       <source>Create mesh segments</source>
       <translation>Sukuria tinklo atkarpas</translation>
     </message>
@@ -573,18 +541,18 @@
   <context>
     <name>CmdMeshSegmentationBestFit</name>
     <message>
-      <location filename="../../Command.cpp" line="1749"/>
+      <location filename="../../Command.cpp" line="1656"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1750"/>
+      <location filename="../../Command.cpp" line="1657"/>
       <source>Create mesh segments from best-fit surfaces...</source>
       <translation>Sukurti tinklo atkarpas iš geriausiai pritaikytų paviršių...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1751"/>
-      <location filename="../../Command.cpp" line="1753"/>
+      <location filename="../../Command.cpp" line="1658"/>
+      <location filename="../../Command.cpp" line="1660"/>
       <source>Create mesh segments from best-fit surfaces</source>
       <translation>Sukurti tinklo atkarpas iš geriausiai pritaikytų paviršių</translation>
     </message>
@@ -592,18 +560,18 @@
   <context>
     <name>CmdMeshSmoothing</name>
     <message>
-      <location filename="../../Command.cpp" line="1397"/>
+      <location filename="../../Command.cpp" line="1305"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1398"/>
+      <location filename="../../Command.cpp" line="1306"/>
       <source>Smooth...</source>
       <translation>Glodinti...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1399"/>
-      <location filename="../../Command.cpp" line="1401"/>
+      <location filename="../../Command.cpp" line="1307"/>
+      <location filename="../../Command.cpp" line="1309"/>
       <source>Smooth the selected meshes</source>
       <translation>Glodinti pažymėtus tinklus</translation>
     </message>
@@ -611,74 +579,36 @@
   <context>
     <name>CmdMeshSplitComponents</name>
     <message>
-      <location filename="../../Command.cpp" line="1828"/>
+      <location filename="../../Command.cpp" line="1738"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1829"/>
+      <location filename="../../Command.cpp" line="1739"/>
       <source>Split by components</source>
       <translation type="unfinished">Split by components</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1830"/>
+      <location filename="../../Command.cpp" line="1740"/>
       <source>Split selected mesh into its components</source>
       <translation type="unfinished">Split selected mesh into its components</translation>
     </message>
   </context>
   <context>
-    <name>CmdMeshToolMesh</name>
-    <message>
-      <location filename="../../Command.cpp" line="167"/>
-      <source>Mesh</source>
-      <translation>Tinklas</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="168"/>
-      <source>Segment by tool mesh</source>
-      <translation>Tinklo įrankio dalis</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="169"/>
-      <location filename="../../Command.cpp" line="171"/>
-      <source>Creates a segment from a given tool mesh</source>
-      <translation>Kuria atkarpą iš gautojo tinklo įrankio</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdMeshTransform</name>
-    <message>
-      <location filename="../../Command.cpp" line="87"/>
-      <source>Mesh</source>
-      <translation>Tinklas</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="88"/>
-      <source>Transform mesh</source>
-      <translation>Transformuoti tinklą</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="89"/>
-      <location filename="../../Command.cpp" line="91"/>
-      <source>Rotate or move a mesh</source>
-      <translation>Pasukti arba paslinkti tinklą</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdMeshTrimByPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="1013"/>
+      <location filename="../../Command.cpp" line="898"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1014"/>
+      <location filename="../../Command.cpp" line="899"/>
       <source>Trim mesh with a plane</source>
       <translation>Perpjauti tinklą su plokštuma</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1015"/>
-      <location filename="../../Command.cpp" line="1016"/>
+      <location filename="../../Command.cpp" line="900"/>
+      <location filename="../../Command.cpp" line="901"/>
       <source>Trims a mesh with a plane</source>
       <translation>Perpjauna tinklą su plokštuma</translation>
     </message>
@@ -686,12 +616,12 @@
   <context>
     <name>CmdMeshUnion</name>
     <message>
-      <location filename="../../Command.cpp" line="222"/>
+      <location filename="../../Command.cpp" line="86"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="223"/>
+      <location filename="../../Command.cpp" line="87"/>
       <source>Union</source>
       <translation>Sąjunga</translation>
     </message>
@@ -699,18 +629,18 @@
   <context>
     <name>CmdMeshVertexCurvature</name>
     <message>
-      <location filename="../../Command.cpp" line="646"/>
+      <location filename="../../Command.cpp" line="557"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="647"/>
+      <location filename="../../Command.cpp" line="558"/>
       <source>Curvature plot</source>
       <translation>Kreivio diagrama</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="648"/>
-      <location filename="../../Command.cpp" line="650"/>
+      <location filename="../../Command.cpp" line="559"/>
+      <location filename="../../Command.cpp" line="561"/>
       <source>Calculates the curvature of the vertices of a mesh</source>
       <translation>Apskaičiuoja tinklo viršūnių kreivumo spindulius</translation>
     </message>
@@ -718,18 +648,18 @@
   <context>
     <name>CmdMeshVertexCurvatureInfo</name>
     <message>
-      <location filename="../../Command.cpp" line="689"/>
+      <location filename="../../Command.cpp" line="612"/>
       <source>Mesh</source>
       <translation>Tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="690"/>
+      <location filename="../../Command.cpp" line="613"/>
       <source>Curvature info</source>
       <translation>Kreivio duomenys</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="691"/>
-      <location filename="../../Command.cpp" line="693"/>
+      <location filename="../../Command.cpp" line="614"/>
+      <location filename="../../Command.cpp" line="616"/>
       <source>Information about curvature</source>
       <translation>Duomenys apie kreivį</translation>
     </message>
@@ -737,161 +667,149 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="104"/>
-      <location filename="../../Command.cpp" line="144"/>
-      <source>Mesh Create</source>
-      <translation type="unfinished">Mesh Create</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="183"/>
-      <source>Segment by tool mesh</source>
-      <translation>Tinklo įrankio dalis</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="238"/>
+      <location filename="../../Command.cpp" line="103"/>
       <source>Mesh union</source>
       <translation type="unfinished">Mesh union</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="307"/>
+      <location filename="../../Command.cpp" line="180"/>
       <source>Mesh difference</source>
       <translation type="unfinished">Mesh difference</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="378"/>
+      <location filename="../../Command.cpp" line="259"/>
       <source>Mesh intersection</source>
       <translation type="unfinished">Mesh intersection</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="464"/>
+      <location filename="../../Command.cpp" line="355"/>
       <source>Import Mesh</source>
       <translation type="unfinished">Import Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="662"/>
+      <location filename="../../Command.cpp" line="574"/>
       <source>Mesh VertexCurvature</source>
       <translation type="unfinished">Mesh VertexCurvature</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1411"/>
       <location filename="../../DlgSmoothing.cpp" line="175"/>
       <source>Mesh Smoothing</source>
       <translation type="unfinished">Mesh Smoothing</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1502"/>
+      <location filename="../../Command.cpp" line="1378"/>
       <source>Harmonize mesh normals</source>
       <translation type="unfinished">Harmonize mesh normals</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1536"/>
+      <location filename="../../Command.cpp" line="1414"/>
       <source>Flip mesh normals</source>
       <translation type="unfinished">Flip mesh normals</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1648"/>
+      <location filename="../../Command.cpp" line="1548"/>
       <source>Fill up holes</source>
-      <translation type="unfinished">Fill up holes</translation>
+      <translation>Užpildyti skyles</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1799"/>
+      <location filename="../../Command.cpp" line="1707"/>
       <source>Mesh merge</source>
-      <translation type="unfinished">Mesh merge</translation>
+      <translation>Apjungti tinklus</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1842"/>
+      <location filename="../../Command.cpp" line="1753"/>
       <source>Mesh split</source>
-      <translation type="unfinished">Mesh split</translation>
+      <translation>Išskaidyti tinklą</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1894"/>
+      <location filename="../../Command.cpp" line="1816"/>
       <source>Mesh scale</source>
-      <translation type="unfinished">Mesh scale</translation>
+      <translation>Keisti tinklo dydį</translation>
     </message>
     <message>
-      <location filename="../../DlgDecimating.cpp" line="149"/>
+      <location filename="../../DlgDecimating.cpp" line="156"/>
       <source>Mesh Decimating</source>
-      <translation type="unfinished">Mesh Decimating</translation>
+      <translation>Tinklo retinimas</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="481"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="548"/>
       <source>Harmonize normals</source>
       <translation>Suderinti normales</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="584"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="659"/>
       <source>Remove non-manifolds</source>
-      <translation type="unfinished">Remove non-manifolds</translation>
+      <translation>Pašalinti nedaugdaras</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="683"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="763"/>
       <source>Fix indices</source>
       <translation type="unfinished">Fix indices</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="749"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="832"/>
       <source>Remove degenerated faces</source>
       <translation type="unfinished">Remove degenerated faces</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="816"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="903"/>
       <source>Remove duplicated faces</source>
       <translation type="unfinished">Remove duplicated faces</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="881"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="972"/>
       <source>Remove duplicated points</source>
       <translation type="unfinished">Remove duplicated points</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="965"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1057"/>
       <source>Fix self-intersections</source>
       <translation type="unfinished">Fix self-intersections</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1052"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1135"/>
       <source>Remove folds</source>
       <translation type="unfinished">Remove folds</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1092"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1179"/>
       <source>Repair mesh</source>
       <translation type="unfinished">Repair mesh</translation>
     </message>
     <message>
-      <location filename="../../RemoveComponents.cpp" line="130"/>
+      <location filename="../../RemoveComponents.cpp" line="162"/>
       <source>Delete selection</source>
       <translation type="unfinished">Delete selection</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="919"/>
-      <location filename="../../ViewProvider.cpp" line="974"/>
+      <location filename="../../ViewProvider.cpp" line="963"/>
+      <location filename="../../ViewProvider.cpp" line="1024"/>
       <source>Cut</source>
       <translation>Pjaustyti</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="928"/>
-      <location filename="../../ViewProvider.cpp" line="1035"/>
+      <location filename="../../ViewProvider.cpp" line="973"/>
+      <location filename="../../ViewProvider.cpp" line="1094"/>
       <source>Trim</source>
       <translation>Apkarpyti</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1112"/>
+      <location filename="../../ViewProvider.cpp" line="1181"/>
       <source>Split</source>
       <translation>Skelti</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1176"/>
+      <location filename="../../ViewProvider.cpp" line="1254"/>
       <source>Segment</source>
       <translation type="unfinished">Segment</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1761"/>
+      <location filename="../../ViewProvider.cpp" line="1856"/>
       <source>Delete</source>
       <translation>Naikinti</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1868"/>
+      <location filename="../../ViewProvider.cpp" line="1985"/>
       <source>Fill hole</source>
       <translation type="unfinished">Fill hole</translation>
     </message>
@@ -916,11 +834,11 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="57"/>
       <source>Full</source>
-      <translation type="unfinished">Full</translation>
+      <translation>Pilnas</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="66"/>
-      <location filename="../../DlgDecimating.cpp" line="93"/>
+      <location filename="../../DlgDecimating.cpp" line="101"/>
       <source>Absolute number</source>
       <translation type="unfinished">Absolute number</translation>
     </message>
@@ -930,7 +848,7 @@
       <translation>Leidžiamoji nuokrypa</translation>
     </message>
     <message>
-      <location filename="../../DlgDecimating.cpp" line="87"/>
+      <location filename="../../DlgDecimating.cpp" line="95"/>
       <source>Absolute number (Maximum: %1)</source>
       <translation type="unfinished">Absolute number (Maximum: %1)</translation>
     </message>
@@ -1062,179 +980,166 @@
   <context>
     <name>MeshGui::DlgEvaluateMeshImp</name>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="148"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="141"/>
       <source>Settings...</source>
       <translation>Nustatymai...</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="184"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="345"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="253"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="420"/>
       <source>No selection</source>
       <translation>Niekas nepasirinkta</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="372"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="373"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="374"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="375"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="376"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="377"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="378"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="379"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="380"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="381"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="382"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="450"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="451"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="452"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="453"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="454"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="455"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="456"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="457"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="458"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="459"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="460"/>
       <source>No information</source>
       <translation>Nėra duomenų</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="444"/>
-      <source>Flipped normals found</source>
-      <translation>Rasta apgręžtų normalių</translation>
-    </message>
-    <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="448"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="488"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="556"/>
       <source>Orientation</source>
       <translation>Kampinė padėtis</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="449"/>
-      <source>Check failed due to folds on the surface.
-Please run the command to repair folds first</source>
-      <translation>Tikrinimas nepavyko dėl esamų paviršiaus klosčių. Prašome pirmiausia atlikti klosčių taisymo veiksmą</translation>
-    </message>
-    <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="457"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="524"/>
       <source>No flipped normals</source>
       <translation>Nėra jokių apgręžtų normalių</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="463"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="530"/>
       <source>%1 flipped normals</source>
       <translation>apgręžta %1 normalių</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="543"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="616"/>
       <source>No non-manifolds</source>
       <translation>Nėra nedaugdarų</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="550"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="624"/>
       <source>%1 non-manifolds</source>
       <translation>%1 nedaugdarų</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="597"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="600"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="675"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="678"/>
       <source>Non-manifolds</source>
       <translation>Nedaugdaros</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="600"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="678"/>
       <source>Cannot remove non-manifolds</source>
       <translation>Negalima pašalinti nedaugdarų</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="638"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="718"/>
       <source>Invalid face indices</source>
       <translation>Netinkami daugiakampių indeksai</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="645"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="725"/>
       <source>Invalid point indices</source>
       <translation>Netinkami taškų indeksai</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="652"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="732"/>
       <source>Multiple point indices</source>
       <translation>Daugybiniai taškų indeksai</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="659"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="739"/>
       <source>Invalid neighbour indices</source>
       <translation>Netinkami kaimynų indeksai</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="666"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="746"/>
       <source>No invalid indices</source>
       <translation>Nėra netinkamų indeksų</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="690"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="771"/>
       <source>Indices</source>
       <translation>Indeksai</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="725"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="808"/>
       <source>No degenerations</source>
       <translation>Nėra išsigimimų</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="731"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="814"/>
       <source>%1 degenerated faces</source>
       <translation>%1 išsigimusių daugiakampių</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="756"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="841"/>
       <source>Degenerations</source>
       <translation>Išsigimimai</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="791"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="878"/>
       <source>No duplicated faces</source>
       <translation>Nėra sutampančių daugiakampių</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="797"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="884"/>
       <source>%1 duplicated faces</source>
       <translation>%1 sutampančių daugiakampių</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="823"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="912"/>
       <source>Duplicated faces</source>
       <translation>Sutampantys daugiakampiai</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="857"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="948"/>
       <source>No duplicated points</source>
       <translation>Nėra sutampančių taškų</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="863"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="888"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="954"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="981"/>
       <source>Duplicated points</source>
       <translation>Sutampantys taškai</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="929"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1024"/>
       <source>No self-intersections</source>
       <translation>Nėra vidinių persikirtimų</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="935"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="973"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1030"/>
       <source>Self-intersections</source>
       <translation>Vidiniai persikirtimai</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1017"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1100"/>
       <source>No folds on surface</source>
       <translation>Nėra paviršiaus klosčių</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1033"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1116"/>
       <source>%1 folds on surface</source>
       <translation>%1 paviršiaus klosčių</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1059"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1144"/>
       <source>Folds</source>
       <translation>Klostės</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1191"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1194"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1278"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1281"/>
       <source>Mesh repair</source>
       <translation>Tinklo taisymas</translation>
     </message>
@@ -1379,13 +1284,8 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="825"/>
-      <source>Cl&amp;ose</source>
-      <translation>&amp;Užverti</translation>
-    </message>
-    <message>
-      <location filename="../../DlgRegularSolid.ui" line="828"/>
-      <source>Alt+O</source>
-      <translation>Alt+O</translation>
+      <source>Close</source>
+      <translation>Užverti</translation>
     </message>
   </context>
   <context>
@@ -1446,17 +1346,27 @@ Please run the command to repair folds first</source>
       <translation>Eksportuoti glaudintus AMF failus</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsImportExport.ui" line="95"/>
+      <location filename="../../DlgSettingsImportExport.ui" line="82"/>
+      <source>Always export mesh as model type in 3MF format even if not a solid</source>
+      <translation type="unfinished">Always export mesh as model type in 3MF format even if not a solid</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsImportExport.ui" line="85"/>
+      <source>Export 3MF files as model type</source>
+      <translation type="unfinished">Export 3MF files as model type</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsImportExport.ui" line="114"/>
       <source>Width:</source>
       <translation>Plotis:</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsImportExport.ui" line="119"/>
+      <location filename="../../DlgSettingsImportExport.ui" line="138"/>
       <source>Height:</source>
       <translation>Aukštis:</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsImportExportImp.cpp" line="38"/>
+      <location filename="../../DlgSettingsImportExportImp.cpp" line="39"/>
       <source>This parameter indicates whether ZIP compression
 is used when writing a file in AMF format</source>
       <translation>Šis dydis parodo ar ZIP suglaudinimas yra naudojamas įrašant į rinkmeną AMF formatu</translation>
@@ -1635,48 +1545,48 @@ Naudojant plokštuminį šešėliavimą, paviršiaus normalės nėra skaičiuoja
   <context>
     <name>MeshGui::GmshWidget</name>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="103"/>
+      <location filename="../../RemeshGmsh.cpp" line="98"/>
       <source>Automatic</source>
       <translation>Automatinis</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="104"/>
+      <location filename="../../RemeshGmsh.cpp" line="99"/>
       <source>Adaptive</source>
       <translation>Prisitaikantis</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="106"/>
+      <location filename="../../RemeshGmsh.cpp" line="101"/>
       <source>Frontal</source>
       <translation>Priekinis</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="108"/>
+      <location filename="../../RemeshGmsh.cpp" line="103"/>
       <source>Frontal Quad</source>
       <translation>Priekiniai keturkampiai</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="109"/>
+      <location filename="../../RemeshGmsh.cpp" line="104"/>
       <source>Parallelograms</source>
       <translation>Lygiagretainiai</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="180"/>
-      <location filename="../../RemeshGmsh.cpp" line="236"/>
+      <location filename="../../RemeshGmsh.cpp" line="195"/>
+      <location filename="../../RemeshGmsh.cpp" line="254"/>
       <source>Time:</source>
       <translation>Laikas:</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="225"/>
+      <location filename="../../RemeshGmsh.cpp" line="241"/>
       <source>Running gmsh...</source>
       <translation>Paleidžiamas „gmsh“...</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="247"/>
+      <location filename="../../RemeshGmsh.cpp" line="265"/>
       <source>Failed to start</source>
       <translation>Nepavyko pradėti</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="254"/>
+      <location filename="../../RemeshGmsh.cpp" line="272"/>
       <source>Error</source>
       <translation>Klaida</translation>
     </message>
@@ -1684,22 +1594,22 @@ Naudojant plokštuminį šešėliavimą, paviršiaus normalės nėra skaičiuoja
   <context>
     <name>MeshGui::MeshFaceAddition</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="378"/>
+      <location filename="../../MeshEditor.cpp" line="396"/>
       <source>Add triangle</source>
       <translation>Pridėti trikampį</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="379"/>
+      <location filename="../../MeshEditor.cpp" line="397"/>
       <source>Flip normal</source>
       <translation>Apgręžti normalę</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="380"/>
+      <location filename="../../MeshEditor.cpp" line="398"/>
       <source>Clear</source>
       <translation>Išvalyti</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="395"/>
+      <location filename="../../MeshEditor.cpp" line="414"/>
       <source>Finish</source>
       <translation>Užbaigti</translation>
     </message>
@@ -1707,7 +1617,7 @@ Naudojant plokštuminį šešėliavimą, paviršiaus normalės nėra skaičiuoja
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="728"/>
+      <location filename="../../MeshEditor.cpp" line="767"/>
       <source>Finish</source>
       <translation>Užbaigti</translation>
     </message>
@@ -1715,47 +1625,47 @@ Naudojant plokštuminį šešėliavimą, paviršiaus normalės nėra skaičiuoja
   <context>
     <name>MeshGui::ParametersDialog</name>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="159"/>
+      <location filename="../../SegmentationBestFit.cpp" line="172"/>
       <source>Surface fit</source>
       <translation>Paviršiaus pritaikymas</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="166"/>
+      <location filename="../../SegmentationBestFit.cpp" line="179"/>
       <source>Parameters</source>
       <translation>Dydžiai</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="171"/>
+      <location filename="../../SegmentationBestFit.cpp" line="184"/>
       <source>Selection</source>
       <translation>Atranka</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="179"/>
+      <location filename="../../SegmentationBestFit.cpp" line="192"/>
       <source>Region</source>
       <translation>Sritis</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="185"/>
+      <location filename="../../SegmentationBestFit.cpp" line="198"/>
       <source>Triangle</source>
       <translation>Trikampis</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="191"/>
+      <location filename="../../SegmentationBestFit.cpp" line="204"/>
       <source>Clear</source>
       <translation>Išvalyti</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="197"/>
+      <location filename="../../SegmentationBestFit.cpp" line="210"/>
       <source>Compute</source>
       <translation>Skaičiuoti</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="285"/>
+      <location filename="../../SegmentationBestFit.cpp" line="305"/>
       <source>No selection</source>
       <translation>Niekas nepasirinkta</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="285"/>
+      <location filename="../../SegmentationBestFit.cpp" line="306"/>
       <source>Before fitting the surface select an area.</source>
       <translation>Prieš pritaikant prie paviršiaus, pažymėkite sritį.</translation>
     </message>
@@ -1810,7 +1720,7 @@ Naudojant plokštuminį šešėliavimą, paviršiaus normalės nėra skaičiuoja
     <message>
       <location filename="../../RemeshGmsh.ui" line="181"/>
       <source>Time:</source>
-      <translation type="unfinished">Time:</translation>
+      <translation>Laikas:</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="188"/>
@@ -2014,29 +1924,29 @@ Naudojant plokštuminį šešėliavimą, paviršiaus normalės nėra skaičiuoja
       <translation>Rutulys</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="337"/>
-      <location filename="../../SegmentationBestFit.cpp" line="363"/>
+      <location filename="../../SegmentationBestFit.cpp" line="374"/>
+      <location filename="../../SegmentationBestFit.cpp" line="399"/>
       <source>Base</source>
       <translation>Pagrindas</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="338"/>
+      <location filename="../../SegmentationBestFit.cpp" line="375"/>
       <source>Normal</source>
       <translation>Įprastiniai</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="364"/>
+      <location filename="../../SegmentationBestFit.cpp" line="400"/>
       <source>Axis</source>
       <translation>Ašis</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="365"/>
-      <location filename="../../SegmentationBestFit.cpp" line="392"/>
+      <location filename="../../SegmentationBestFit.cpp" line="401"/>
+      <location filename="../../SegmentationBestFit.cpp" line="428"/>
       <source>Radius</source>
       <translation>Spindulys</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="391"/>
+      <location filename="../../SegmentationBestFit.cpp" line="427"/>
       <source>Center</source>
       <translation>Vidurys</translation>
     </message>
@@ -2070,12 +1980,12 @@ Naudojant plokštuminį šešėliavimą, paviršiaus normalės nėra skaičiuoja
       <translation>Priimti tik trikampius, kurių normalės nukreiptos į išorę</translation>
     </message>
     <message>
-      <location filename="../../Selection.cpp" line="70"/>
+      <location filename="../../Selection.cpp" line="86"/>
       <source>Use a brush tool to select the area</source>
       <translation>Naudoti teptuko įrankį sričiai parinkti</translation>
     </message>
     <message>
-      <location filename="../../Selection.cpp" line="73"/>
+      <location filename="../../Selection.cpp" line="89"/>
       <source>Clears completely the selected area</source>
       <translation>Visiškai išvalo pasirinktą sritį</translation>
     </message>
@@ -2083,14 +1993,14 @@ Naudojant plokštuminį šešėliavimą, paviršiaus normalės nėra skaičiuoja
   <context>
     <name>MeshGui::TaskRemoveComponents</name>
     <message>
-      <location filename="../../RemoveComponents.cpp" line="174"/>
-      <location filename="../../RemoveComponents.cpp" line="231"/>
+      <location filename="../../RemoveComponents.cpp" line="208"/>
+      <location filename="../../RemoveComponents.cpp" line="253"/>
       <source>Delete</source>
       <translation>Naikinti</translation>
     </message>
     <message>
-      <location filename="../../RemoveComponents.cpp" line="175"/>
-      <location filename="../../RemoveComponents.cpp" line="232"/>
+      <location filename="../../RemoveComponents.cpp" line="209"/>
+      <location filename="../../RemoveComponents.cpp" line="254"/>
       <source>Invert</source>
       <translation>Apgręžti</translation>
     </message>
@@ -2098,38 +2008,38 @@ Naudojant plokštuminį šešėliavimą, paviršiaus normalės nėra skaičiuoja
   <context>
     <name>MeshInfoWatcher</name>
     <message>
-      <location filename="../../Workbench.cpp" line="72"/>
+      <location filename="../../Workbench.cpp" line="68"/>
       <source>Number of points:</source>
       <translation>Taškų kiekis:</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="75"/>
+      <location filename="../../Workbench.cpp" line="71"/>
       <source>Number of facets:</source>
       <translation type="unfinished">Number of facets:</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="81"/>
+      <location filename="../../Workbench.cpp" line="77"/>
       <source>Minimum bound:</source>
       <translation type="unfinished">Minimum bound:</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="84"/>
+      <location filename="../../Workbench.cpp" line="80"/>
       <source>Maximum bound:</source>
       <translation type="unfinished">Maximum bound:</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="90"/>
+      <location filename="../../Workbench.cpp" line="87"/>
       <source>Mesh info box</source>
       <translation type="unfinished">Mesh info box</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="104"/>
+      <location filename="../../Workbench.cpp" line="88"/>
       <source>Mesh info</source>
       <translation type="unfinished">Mesh info</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="126"/>
-      <location filename="../../Workbench.cpp" line="128"/>
+      <location filename="../../Workbench.cpp" line="121"/>
+      <location filename="../../Workbench.cpp" line="122"/>
       <source>X: %1	Y: %2	Z: %3</source>
       <translation type="unfinished">X: %1	Y: %2	Z: %3</translation>
     </message>
@@ -2137,7 +2047,7 @@ Naudojant plokštuminį šešėliavimą, paviršiaus normalės nėra skaičiuoja
   <context>
     <name>Mesh_BoundingBox</name>
     <message>
-      <location filename="../../Command.cpp" line="1577"/>
+      <location filename="../../Command.cpp" line="1462"/>
       <source>Boundings of %1:</source>
       <translation>%1 gaubiančiojo stačiakampio gretasienio ribos:</translation>
     </message>
@@ -2145,26 +2055,26 @@ Naudojant plokštuminį šešėliavimą, paviršiaus normalės nėra skaičiuoja
   <context>
     <name>Mesh_Union</name>
     <message>
-      <location filename="../../Command.cpp" line="268"/>
-      <location filename="../../Command.cpp" line="273"/>
-      <location filename="../../Command.cpp" line="339"/>
-      <location filename="../../Command.cpp" line="344"/>
-      <location filename="../../Command.cpp" line="410"/>
-      <location filename="../../Command.cpp" line="415"/>
+      <location filename="../../Command.cpp" line="138"/>
+      <location filename="../../Command.cpp" line="144"/>
+      <location filename="../../Command.cpp" line="217"/>
+      <location filename="../../Command.cpp" line="223"/>
+      <location filename="../../Command.cpp" line="296"/>
+      <location filename="../../Command.cpp" line="302"/>
       <source>OpenSCAD</source>
       <translation>OpenSCAD</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="269"/>
-      <location filename="../../Command.cpp" line="340"/>
-      <location filename="../../Command.cpp" line="411"/>
+      <location filename="../../Command.cpp" line="139"/>
+      <location filename="../../Command.cpp" line="218"/>
+      <location filename="../../Command.cpp" line="297"/>
       <source>Unknown error occurred while running OpenSCAD.</source>
       <translation>Leidžiant OpenSCAD įvyko nežinoma klaida.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="274"/>
-      <location filename="../../Command.cpp" line="345"/>
-      <location filename="../../Command.cpp" line="416"/>
+      <location filename="../../Command.cpp" line="145"/>
+      <location filename="../../Command.cpp" line="224"/>
+      <location filename="../../Command.cpp" line="303"/>
       <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>OpenSCAD nerastas jūsų kompiuteryje.
@@ -2174,7 +2084,7 @@ Norėdami įdiegti programą, prašome aplankyti http://www.openscad.org/index.h
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1237"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1328"/>
       <source>Evaluate &amp; Repair Mesh</source>
       <translation>Tinklo patikra ir taisa</translation>
     </message>
@@ -2182,236 +2092,241 @@ Norėdami įdiegti programą, prašome aplankyti http://www.openscad.org/index.h
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../AppMeshGui.cpp" line="157"/>
+      <source>Display</source>
+      <translation>Vaizdavimas</translation>
+    </message>
+    <message>
       <location filename="../../AppMeshGui.cpp" line="159"/>
       <source>Import-Export</source>
       <translation>Importas-Eksportas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="447"/>
+      <location filename="../../Command.cpp" line="336"/>
       <source>All Mesh Files</source>
       <translation>Visų rūšių tinklo failai</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="448"/>
-      <location filename="../../Command.cpp" line="505"/>
+      <location filename="../../Command.cpp" line="337"/>
+      <location filename="../../Command.cpp" line="397"/>
       <source>Binary STL</source>
       <translation>Dvejetainis STL</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="449"/>
-      <location filename="../../Command.cpp" line="506"/>
-      <location filename="../../Command.cpp" line="507"/>
+      <location filename="../../Command.cpp" line="338"/>
+      <location filename="../../Command.cpp" line="398"/>
+      <location filename="../../Command.cpp" line="399"/>
       <source>ASCII STL</source>
       <translation>Tekstinis STL</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="450"/>
-      <location filename="../../Command.cpp" line="508"/>
+      <location filename="../../Command.cpp" line="339"/>
+      <location filename="../../Command.cpp" line="400"/>
       <source>Binary Mesh</source>
       <translation>Dvejetainis tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="451"/>
-      <location filename="../../Command.cpp" line="509"/>
+      <location filename="../../Command.cpp" line="340"/>
+      <location filename="../../Command.cpp" line="401"/>
       <source>Alias Mesh</source>
       <translation>Alias tinklas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="452"/>
-      <location filename="../../Command.cpp" line="511"/>
+      <location filename="../../Command.cpp" line="341"/>
+      <location filename="../../Command.cpp" line="403"/>
       <source>Object File Format</source>
       <translation>Objekto failo formatas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="453"/>
+      <location filename="../../Command.cpp" line="342"/>
       <source>Inventor V2.1 ASCII</source>
       <translation type="unfinished">Inventor V2.1 ASCII</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="454"/>
-      <location filename="../../Command.cpp" line="516"/>
+      <location filename="../../Command.cpp" line="343"/>
+      <location filename="../../Command.cpp" line="408"/>
       <source>Stanford Polygon</source>
       <translation>Stanford Polygon</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="455"/>
+      <location filename="../../Command.cpp" line="344"/>
       <source>NASTRAN</source>
       <translation>NASTRAN</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="456"/>
-      <location filename="../../Command.cpp" line="523"/>
+      <location filename="../../Command.cpp" line="345"/>
+      <location filename="../../Command.cpp" line="415"/>
       <source>All Files</source>
       <translation>Visi failai</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="460"/>
+      <location filename="../../Command.cpp" line="349"/>
       <source>Import mesh</source>
       <translation>Importuoti tinklą</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="510"/>
+      <location filename="../../Command.cpp" line="402"/>
       <source>Simple Model Format</source>
       <translation>Paprastas modelio formatas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="512"/>
+      <location filename="../../Command.cpp" line="404"/>
       <source>Inventor V2.1 ascii</source>
       <translation>Inventor V2.1 ascii</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="513"/>
+      <location filename="../../Command.cpp" line="405"/>
       <source>X3D Extensible 3D</source>
       <translation>X3D Extensible 3D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="514"/>
+      <location filename="../../Command.cpp" line="406"/>
       <source>Compressed X3D</source>
       <translation type="unfinished">Compressed X3D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="515"/>
+      <location filename="../../Command.cpp" line="407"/>
       <source>WebGL/X3D</source>
       <translation type="unfinished">WebGL/X3D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="517"/>
+      <location filename="../../Command.cpp" line="409"/>
       <source>VRML V2.0</source>
       <translation>VRML V2.0</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="518"/>
+      <location filename="../../Command.cpp" line="410"/>
       <source>Compressed VRML 2.0</source>
       <translation>Suglaudintas VRML 2.0</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="519"/>
+      <location filename="../../Command.cpp" line="411"/>
       <source>Nastran</source>
       <translation>Nastran</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="520"/>
+      <location filename="../../Command.cpp" line="412"/>
       <source>Python module def</source>
       <translation>Python modulio def</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="521"/>
+      <location filename="../../Command.cpp" line="413"/>
       <source>Asymptote Format</source>
       <translation type="unfinished">Asymptote Format</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="522"/>
+      <location filename="../../Command.cpp" line="414"/>
       <source>3D Manufacturing Format</source>
       <translation type="unfinished">3D Manufacturing Format</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="530"/>
+      <location filename="../../Command.cpp" line="424"/>
       <source>Export mesh</source>
       <translation>Eksportuoti tinklą</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="571"/>
+      <location filename="../../Command.cpp" line="470"/>
       <source>Meshing Tolerance</source>
       <translation>Leidžiamieji tinklo nuokrypiai</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="572"/>
+      <location filename="../../Command.cpp" line="471"/>
       <source>Enter tolerance for meshing geometry:</source>
       <translation>Įveskite leidžiamą nuokrypį geometriją apibrėžiančiam tinklui:</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1374"/>
+      <location filename="../../Command.cpp" line="1280"/>
       <source>The mesh '%1' is not a solid.</source>
       <translation>Tinklas '%1' nesudaro pilnavidurio kūno.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1377"/>
+      <location filename="../../Command.cpp" line="1284"/>
       <source>The mesh '%1' is a solid.</source>
       <translation>Tinklas '%1' yra pilnaviduris.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1379"/>
+      <location filename="../../Command.cpp" line="1287"/>
       <source>Solid Mesh</source>
       <translation>Tinklo vientisumas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1582"/>
+      <location filename="../../Command.cpp" line="1471"/>
       <source>Boundings</source>
       <translation>Ribiniai matmenys</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1644"/>
+      <location filename="../../Command.cpp" line="1537"/>
       <source>Fill holes</source>
       <translation>Užpildyti skyles</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1645"/>
+      <location filename="../../Command.cpp" line="1538"/>
       <source>Fill holes with maximum number of edges:</source>
       <translation>Užpildyti skyles, turinčias daugiausiai tiek kraštinių:</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1889"/>
+      <location filename="../../Command.cpp" line="1804"/>
       <source>Scaling</source>
       <translation>Pritaikyti dydį</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1890"/>
+      <location filename="../../Command.cpp" line="1805"/>
       <source>Enter scaling factor:</source>
       <translation>Įveskite mastelį:</translation>
     </message>
     <message>
-      <location filename="../../PropertyEditorMesh.cpp" line="75"/>
+      <location filename="../../PropertyEditorMesh.cpp" line="77"/>
       <source>[Points: %1, Edges: %2, Faces: %3]</source>
       <translation>[Taškų: %1, kraštinių: %2, daugiakampių: %3]</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="779"/>
+      <location filename="../../ViewProvider.cpp" line="809"/>
       <source>Display components</source>
       <translation>Atvaizduoti dalis</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="785"/>
+      <location filename="../../ViewProvider.cpp" line="817"/>
       <source>Display segments</source>
       <translation>Rodyti atkarpas</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="791"/>
+      <location filename="../../ViewProvider.cpp" line="825"/>
       <source>Display colors</source>
       <translation type="unfinished">Display colors</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1612"/>
-      <location filename="../../ViewProviderCurvature.cpp" line="497"/>
+      <location filename="../../ViewProvider.cpp" line="1687"/>
+      <location filename="../../ViewProviderCurvature.cpp" line="522"/>
       <source>Leave info mode</source>
       <translation>Išeiti iš duomenų pateikimo režimo</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1671"/>
+      <location filename="../../ViewProvider.cpp" line="1754"/>
       <source>Index: %1</source>
       <translation>Indeksas: %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1694"/>
+      <location filename="../../ViewProvider.cpp" line="1780"/>
       <source>Leave hole-filling mode</source>
       <translation>Išeiti iš skylių užpildymo režimo</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1740"/>
+      <location filename="../../ViewProvider.cpp" line="1830"/>
       <source>Leave removal mode</source>
       <translation>Išeiti iš šalinimo režimo</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1741"/>
+      <location filename="../../ViewProvider.cpp" line="1831"/>
       <source>Delete selected faces</source>
       <translation>Pašalinti pasirinktus daugiakampius</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1742"/>
+      <location filename="../../ViewProvider.cpp" line="1832"/>
       <source>Clear selected faces</source>
       <translation>Išvalyti pasirinktus daugiakampius</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCurvature.cpp" line="494"/>
+      <location filename="../../ViewProviderCurvature.cpp" line="519"/>
       <source>Annotation</source>
       <translation>Santrauka</translation>
     </message>
@@ -2436,7 +2351,7 @@ Norėdami įdiegti programą, prašome aplankyti http://www.openscad.org/index.h
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>Cutting</source>
-      <translation type="unfinished">Cutting</translation>
+      <translation>Pjovimas</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
