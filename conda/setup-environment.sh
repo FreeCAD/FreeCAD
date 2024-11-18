@@ -3,7 +3,7 @@
 set -e
 set -x
 
-# create the conda environment as a subdirectory
+# create the conda environment as a subdirectory x
 if [ ! -d ".conda/freecad" ]; then
     mamba env create -p .conda/freecad -f conda/conda-env.yaml
 else
