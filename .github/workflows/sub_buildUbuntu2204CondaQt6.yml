@@ -85,6 +85,7 @@ jobs:
       - name: Install FreeCAD dependencies
         env:
           CONDA_VERBOSITY: 2
+          MAMBA_ROOT_PREFIX: "/home/runner/miniconda3"
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends \

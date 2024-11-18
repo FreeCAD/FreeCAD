@@ -80,6 +80,7 @@ jobs:
       - name: Install FreeCAD dependencies
         env:
           CONDA_VERBOSITY: 2
+          MAMBA_ROOT_PREFIX: "/home/runner/miniconda3"
         run: |
           conda config --add envs_dirs $PWD/.conda
           mamba-devenv --no-prune -f conda/environment.devenv.yml

@@ -85,6 +85,7 @@ jobs:
       - name: Install FreeCAD dependencies
         env:
           CONDA_VERBOSITY: 2
+          MAMBA_ROOT_PREFIX: "/home/runner/miniconda3"
         run: |
           ./conda/setup-environment.sh
       - name: Set Environment Variables
