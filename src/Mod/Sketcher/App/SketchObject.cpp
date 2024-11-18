@@ -9777,16 +9777,6 @@ std::string SketchObject::validateExpression(const App::ObjectIdentifier& path,
     auto deps = expr->getDeps();
     auto it = deps.find(this);
     if (it != deps.end()) {
-        auto it2 = it->second.find("Constraints");
-        if (it2 != it->second.end()) {
-            for (auto& oid : it2->second) {
-                const Constraint* constraint = Constraints.getConstraint(oid);
-
-                if (!constraint->isDriving)
-                    return "Reference constraint from this sketch cannot be used in this "
-                           "expression.";
-            }
-        }
         geoMap.clear();
         const auto &vals = getInternalGeometry();
         for(long i=0;i<(long)vals.size();++i) {
