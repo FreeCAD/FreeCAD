@@ -59,6 +59,7 @@
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewParams.h>
 
+#include <Mod/Assembly/App/AssemblyLink.h>
 #include <Mod/Assembly/App/AssemblyObject.h>
 #include <Mod/Assembly/App/AssemblyUtils.h>
 #include <Mod/Assembly/App/JointGroup.h>
@@ -1062,36 +1063,63 @@ bool ViewProviderAssembly::onDelete(const std::vector<std::string>& subNames)
     return ViewProviderPart::onDelete(subNames);
 }
 
-bool ViewProviderAssembly::canDelete(App::DocumentObject* obj) const
+bool ViewProviderAssembly::canDelete(App::DocumentObject* objBeingDeleted) const
 {
-    bool res = ViewProviderPart::canDelete(obj);
+    bool res = ViewProviderPart::canDelete(objBeingDeleted);
     if (res) {
         // If a component is deleted, then we delete the joints as well.
         auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
 
         std::vector<App::DocumentObject*> objToDel;
+        std::vector<App::DocumentObject*> objsBeingDeleted;
+        objsBeingDeleted.push_back(objBeingDeleted);
 
-        // List its joints
-        std::vector<App::DocumentObject*> joints = assemblyPart->getJointsOfObj(obj);
-        for (auto* joint : joints) {
-            objToDel.push_back(joint);
+        auto addSubComponents =
+            std::function<void(AssemblyLink*, std::vector<App::DocumentObject*>&)> {};
+        addSubComponents = [&](AssemblyLink* asmLink, std::vector<App::DocumentObject*>& objs) {
+            std::vector<App::DocumentObject*> assemblyLinkGroup = asmLink->Group.getValues();
+            for (auto* obj : assemblyLinkGroup) {
+                auto* subAsmLink = dynamic_cast<AssemblyLink*>(obj);
+                auto* link = dynamic_cast<App::Link*>(obj);
+                if (subAsmLink || link) {
+                    if (std::find(objs.begin(), objs.end(), obj) == objs.end()) {
+                        objs.push_back(obj);
+                        if (subAsmLink && !asmLink->isRigid()) {
+                            addSubComponents(subAsmLink, objs);
+                        }
+                    }
+                }
+            }
+        };
+
+        auto* asmLink = dynamic_cast<Assembly::AssemblyLink*>(objBeingDeleted);
+        if (asmLink && !asmLink->isRigid()) {
+            addSubComponents(asmLink, objsBeingDeleted);
         }
-        joints = assemblyPart->getJointsOfPart(obj);
-        for (auto* joint : joints) {
-            if (std::find(objToDel.begin(), objToDel.end(), joint) == objToDel.end()) {
+
+        for (auto* obj : objsBeingDeleted) {
+            // List its joints
+            std::vector<App::DocumentObject*> joints = assemblyPart->getJointsOfObj(obj);
+            for (auto* joint : joints) {
                 objToDel.push_back(joint);
             }
-        }
-
-        // List its grounded joints
-        std::vector<App::DocumentObject*> inList = obj->getInList();
-        for (auto* parent : inList) {
-            if (!parent) {
-                continue;
+            joints = assemblyPart->getJointsOfPart(obj);
+            for (auto* joint : joints) {
+                if (std::find(objToDel.begin(), objToDel.end(), joint) == objToDel.end()) {
+                    objToDel.push_back(joint);
+                }
             }
 
-            if (dynamic_cast<App::PropertyLink*>(parent->getPropertyByName("ObjectToGround"))) {
-                objToDel.push_back(parent);
+            // List its grounded joints
+            std::vector<App::DocumentObject*> inList = obj->getInList();
+            for (auto* parent : inList) {
+                if (!parent) {
+                    continue;
+                }
+
+                if (dynamic_cast<App::PropertyLink*>(parent->getPropertyByName("ObjectToGround"))) {
+                    objToDel.push_back(parent);
+                }
             }
         }
 
