@@ -76,6 +76,7 @@ jobs:
         with:
           activate-environment: .conda/freecad
           environment-file: conda/conda-env-qt6.yaml
+          conda-remove-defaults: true
           channels: conda-forge
           channel-priority: true
           miniforge-version: latest
