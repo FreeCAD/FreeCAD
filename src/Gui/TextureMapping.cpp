@@ -64,8 +64,8 @@ TextureMapping::TextureMapping(QWidget* parent, Qt::WindowFlags fl)
     // add all supported QImage formats
     QStringList formats;
     QList<QByteArray> qtformats = QImageReader::supportedImageFormats();
-    for (QList<QByteArray>::Iterator it = qtformats.begin(); it != qtformats.end(); ++it) {
-        formats << QString::fromLatin1("*.%1").arg(QLatin1String(*it));
+    for (const auto & it : qtformats) {
+        formats << QString::fromLatin1("*.%1").arg(QLatin1String(it));
     }
 
     ui->fileChooser->setFilter(tr("Image files (%1)").arg(formats.join(QLatin1String(" "))));
@@ -155,7 +155,7 @@ void TextureMapping::onFileChooserFileNameSelected(const QString& s)
     }
 
     if (!this->grp) {
-        QMessageBox::warning(this, tr("No 3d view"), tr("No active 3d view found."));
+        QMessageBox::warning(this, tr("No 3D view"), tr("No active 3D view found."));
         return;
     }
 
@@ -183,15 +183,10 @@ void TextureMapping::onCheckEnvToggled(bool b)
 TaskTextureMapping::TaskTextureMapping()
 {
     dialog = new TextureMapping();
-    taskbox = new Gui::TaskView::TaskBox(QPixmap(), dialog->windowTitle(), true, nullptr);
-    taskbox->groupLayout()->addWidget(dialog);
-    Content.push_back(taskbox);
+    addTaskBox(dialog);
 }
 
-TaskTextureMapping::~TaskTextureMapping()
-{
-    // automatically deleted in the sub-class
-}
+TaskTextureMapping::~TaskTextureMapping() = default;
 
 bool TaskTextureMapping::accept()
 {

@@ -86,9 +86,11 @@
 #include <Inventor/details/SoPointDetail.h>
 
 #include <Inventor/draggers/SoCenterballDragger.h>
+#include <Inventor/draggers/SoDirectionalLightDragger.h>
 #include <Inventor/draggers/SoDragger.h>
 #include <Inventor/draggers/SoTrackballDragger.h>
 #include <Inventor/draggers/SoTransformerDragger.h>
+#include <Inventor/draggers/SoTranslate2Dragger.h>
 
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoComplexityElement.h>
@@ -125,10 +127,13 @@
 #include <Inventor/elements/SoWindowElement.h>
 
 #include <Inventor/engines/SoCalculator.h>
+#include <Inventor/engines/SoComposeMatrix.h>
 #include <Inventor/engines/SoComposeVec3f.h>
 #include <Inventor/engines/SoComposeRotationFromTo.h>
 #include <Inventor/engines/SoComposeRotation.h>
 #include <Inventor/engines/SoConcatenate.h>
+#include <Inventor/engines/SoDecomposeVec3f.h>
+#include <Inventor/engines/SoTransformVec3f.h>
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoError.h>

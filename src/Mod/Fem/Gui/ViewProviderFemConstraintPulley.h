@@ -30,7 +30,7 @@
 namespace FemGui
 {
 
-class FemGuiExport ViewProviderFemConstraintPulley : public FemGui::ViewProviderFemConstraint
+class FemGuiExport ViewProviderFemConstraintPulley: public FemGui::ViewProviderFemConstraint
 {
     PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemConstraintPulley);
 
@@ -45,7 +45,7 @@ protected:
     bool setEdit(int ModNum) override;
 };
 
-} //namespace FemGui
+}  // namespace FemGui
 
 
-#endif // GUI_VIEWPROVIDERFEMCONSTRAINTPulley_H
+#endif  // GUI_VIEWPROVIDERFEMCONSTRAINTPulley_H

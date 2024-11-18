@@ -24,6 +24,7 @@
 #ifndef GUI_GLBUFFER_H
 #define GUI_GLBUFFER_H
 
+#include <FCGlobal.h>
 #include <map>
 #include <Inventor/C/glue/gl.h>
 

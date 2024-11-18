@@ -111,7 +111,7 @@
         <item>
          <widget class="QPushButton" name="pbReset">
           <property name="toolTip">
-           <string>Reset 3d point selection</string>
+           <string>Reset 3D point selection</string>
           </property>
           <property name="statusTip">
            <string/>
@@ -178,7 +178,11 @@
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="Gui::FileChooser" name="fcFontFile"/>
+         <widget class="Gui::FileChooser" name="fcFontFile">
+          <property name="filter">
+           <string>Font files (*.ttf *.otf *.pfb *.TTF *.OTF *.PFB)</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>

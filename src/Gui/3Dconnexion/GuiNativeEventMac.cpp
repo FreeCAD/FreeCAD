@@ -164,9 +164,7 @@ void Gui::GuiNativeEvent::initSpaceball(QMainWindow *window)
     /* register our app with the driver */
     // Pascal string Application name required to register driver for application
     UInt8  tdxAppName[] = {7,'F','r','e','e','C','A','D'};
-    // 32bit appID to register driver for application
-    UInt32 tdxAppID = 'FCAd';
-    tdxClientID = RegisterConnexionClient( tdxAppID, tdxAppName,
+    tdxClientID = RegisterConnexionClient( kConnexionClientWildcard, tdxAppName,
                                            kConnexionClientModeTakeOver,
                                            kConnexionMaskAll );
     if (tdxClientID == 0)

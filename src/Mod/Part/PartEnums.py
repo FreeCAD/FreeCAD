@@ -22,7 +22,7 @@
 
 __title__ = "PartEnums module"
 __author__ = "Werner Mayer"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Enum types"
 
 from enum import IntEnum
@@ -70,4 +70,8 @@ class HLRBRep_TypeOfResultingEdge(IntEnum):
     Rg1Line = 3
     RgNLine = 4
     Sharp = 5
+
+class SingleShapeCompoundCreationPolicy(IntEnum):
+    ReturnShape = 0
+    ForceCompound = 1
 

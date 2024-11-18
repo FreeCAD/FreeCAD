@@ -30,11 +30,14 @@
 # include <QMenu>
 #endif
 
+#include <QMessageBox>
+
 #include <Base/Parameter.h>
 #include <App/Application.h>
 #include <App/DocumentObject.h>
 #include <Gui/ActionFunction.h>
 #include <Gui/Control.h>
+#include <Gui/MainWindow.h>
 
 #include <Mod/TechDraw/App/LineGroup.h>
 #include <Mod/TechDraw/App/LandmarkDimension.h>
@@ -70,6 +73,9 @@ ViewProviderDimension::ViewProviderDimension()
     ADD_PROPERTY_TYPE(Fontsize, (Preferences::dimFontSizeMM()),
                                      group, (App::PropertyType)(App::Prop_None),
                                                                      "Dimension text size in units");
+    ADD_PROPERTY_TYPE(Arrowsize, (Preferences::dimArrowSize()),
+                                     group, (App::PropertyType)(App::Prop_None),
+                                                                     "Arrow size in units");
     ADD_PROPERTY_TYPE(LineWidth, (prefWeight()), group, (App::PropertyType)(App::Prop_None),
                                                         "Dimension line width");
     ADD_PROPERTY_TYPE(Color, (prefColor()), group, App::Prop_None, "Color of the dimension");
@@ -86,7 +92,7 @@ ViewProviderDimension::ViewProviderDimension()
                       "Adjusts the gap between dimension point and extension line");
     ADD_PROPERTY_TYPE(GapFactorASME, (Preferences::GapASME()), group, App::Prop_None,
                       "Adjusts the gap between dimension point and extension line");
-    ADD_PROPERTY_TYPE(LineSpacingFactorISO, (2.0), group, App::Prop_None,
+    ADD_PROPERTY_TYPE(LineSpacingFactorISO, (Preferences::LineSpacingISO()), group, App::Prop_None,
                       "Adjusts the gap between dimension line and dimension text");
 
    StackOrder.setValue(ZVALUE::DIMENSION);
@@ -119,7 +125,9 @@ void ViewProviderDimension::setupContextMenu(QMenu* menu, QObject* receiver, con
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
     QAction* act = menu->addAction(QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue())));
     act->setData(QVariant((int)ViewProvider::Default));
-    func->trigger(act, std::bind(&ViewProviderDimension::startDefaultEditMode, this));
+    func->trigger(act, [this](){
+        this->startDefaultEditMode();
+    });
 
     ViewProviderDrawingView::setupContextMenu(menu, receiver, member);
 }
@@ -188,6 +196,8 @@ void ViewProviderDimension::setPixmapForType()
         sPixmap = "TechDraw_AngleDimension";
     } else if (getViewObject()->Type.isValue("Angle3Pt")) {
         sPixmap = "TechDraw_3PtAngleDimension";
+    } else if (getViewObject()->Type.isValue("Area")) {
+        sPixmap = "TechDraw_AreaDimension";
     }
 }
 
@@ -195,6 +205,7 @@ void ViewProviderDimension::onChanged(const App::Property* p)
 {
     if ((p == &Font)  ||
         (p == &Fontsize) ||
+        (p == &Arrowsize) ||
         (p == &LineWidth) ||
         (p == &StandardAndStyle) ||
         (p == &RenderingExtent) ||
@@ -240,6 +251,11 @@ double ViewProviderDimension::prefFontSize() const
     return Preferences::dimFontSizeMM();
 }
 
+double ViewProviderDimension::prefArrowSize() const
+{
+    return Preferences::dimArrowSize();
+}
+
 double ViewProviderDimension::prefWeight() const
 {
     return TechDraw::LineGroup::getDefaultWidth("Thin");
@@ -272,3 +288,23 @@ bool ViewProviderDimension::canDelete(App::DocumentObject *obj) const
     Q_UNUSED(obj)
     return true;
 }
+
+bool ViewProviderDimension::onDelete(const std::vector<std::string> & parms)
+{
+    Q_UNUSED(parms)
+//    Base::Console().Message("VPB::onDelete() - parms: %d\n", parms.size());
+    auto dlg = Gui::Control().activeDialog();
+    auto ourDlg = dynamic_cast<TaskDlgDimension*>(dlg);
+    if (ourDlg)  {
+        QString bodyMessage;
+        QTextStream bodyMessageStream(&bodyMessage);
+        bodyMessageStream << qApp->translate("TaskDimension",
+            "You cannot delete this dimension now because\nthere is an open task dialog.");
+        QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("TaskDimension", "Can Not Delete"), bodyMessage,
+            QMessageBox::Ok);
+        return false;
+    }
+    return true;
+}
+

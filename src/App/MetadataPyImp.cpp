@@ -30,7 +30,12 @@
 #include "MetadataPy.cpp"
 
 using namespace Base;
+#ifndef XERCES_CPP_NAMESPACE_BEGIN
+#define XERCES_CPP_NAMESPACE_QUALIFIER
+using namespace XERCES_CPP_NAMESPACE;
+#else
 XERCES_CPP_NAMESPACE_USE
+#endif
 
 // Returns a string which represents the object e.g. when printed in Python
 std::string MetadataPy::representation() const
@@ -190,6 +195,19 @@ void MetadataPy::setDescription(Py::Object args)
     if (!PyArg_Parse(args.ptr(), "s", &description))
         throw Py::Exception();
     getMetadataPtr()->setDescription(description);
+}
+
+Py::Object MetadataPy::getType() const
+{
+    return Py::String(getMetadataPtr()->type());
+}
+
+void MetadataPy::setType(Py::Object args)
+{
+    const char *type = nullptr;
+    if (!PyArg_Parse(args.ptr(), "s", &type))
+        throw Py::Exception();
+    getMetadataPtr()->setType(type);
 }
 
 Py::Object MetadataPy::getMaintainer() const

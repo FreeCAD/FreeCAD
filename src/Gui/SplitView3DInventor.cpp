@@ -110,6 +110,12 @@ void AbstractSplitView::setupSettings()
     viewSettings->ignoreRenderCache = true;
     viewSettings->ignoreDimensions = true;
     viewSettings->applySettings();
+
+    for (auto view : _viewer) {
+        NaviCubeSettings naviSettings(App::GetApplication().GetParameterGroupByPath
+                                     ("User parameter:BaseApp/Preferences/NaviCube"), view);
+        naviSettings.applySettings();
+    }
 }
 
 View3DInventorViewer* AbstractSplitView::getViewer(unsigned int n) const
@@ -202,7 +208,10 @@ bool AbstractSplitView::onMsg(const char* pMsg, const char**)
 
 bool AbstractSplitView::onHasMsg(const char* pMsg) const
 {
-    if (strcmp("ViewFit",pMsg) == 0) {
+    if (strcmp("CanPan",pMsg) == 0) {
+        return true;
+    }
+    else if (strcmp("ViewFit",pMsg) == 0) {
         return true;
     }
     else if (strcmp("ViewBottom",pMsg) == 0) {
@@ -224,6 +233,9 @@ bool AbstractSplitView::onHasMsg(const char* pMsg) const
         return true;
     }
     else if (strcmp("ViewAxo",pMsg) == 0) {
+        return true;
+    }
+    else if (strcmp("AllowsOverlayOnHover", pMsg) == 0) {
         return true;
     }
     return false;
@@ -285,9 +297,7 @@ AbstractSplitViewPy::AbstractSplitViewPy(AbstractSplitView *vi)
 {
 }
 
-AbstractSplitViewPy::~AbstractSplitViewPy()
-{
-}
+AbstractSplitViewPy::~AbstractSplitViewPy() = default;
 
 Py::Object AbstractSplitViewPy::cast_to_base(const Py::Tuple&)
 {
@@ -635,8 +645,6 @@ SplitView3DInventor::SplitView3DInventor(int views, Gui::Document* pcDocument, Q
     setupSettings();
 }
 
-SplitView3DInventor::~SplitView3DInventor()
-{
-}
+SplitView3DInventor::~SplitView3DInventor() = default;
 
 #include "moc_SplitView3DInventor.cpp"

@@ -30,6 +30,7 @@
 #include "PropertyContainer.h"
 #include "Property.h"
 #include "DocumentObject.h"
+#include <Base/PyWrapParseTupleAndKeywords.h>
 
 #include <boost/iostreams/device/array.hpp>
 #include <boost/iostreams/stream.hpp>
@@ -45,7 +46,7 @@ using namespace App;
 // returns a string which represent the object e.g. when printed in python
 std::string PropertyContainerPy::representation() const
 {
-    return std::string("<property container>");
+    return {"<property container>"};
 }
 
 PyObject*  PropertyContainerPy::getPropertyByName(PyObject *args)
@@ -62,7 +63,7 @@ PyObject*  PropertyContainerPy::getPropertyByName(PyObject *args)
 
     App::Property* prop = getPropertyContainerPtr()->getPropertyByName(pstr);
     if (!prop) {
-        PyErr_Format(PyExc_AttributeError, "Property container has no property '%s'", pstr);
+        PyErr_Format(Base::PyExc_FC_PropertyError, "Property container has no property '%s'", pstr);
         return nullptr;
     }
 
@@ -216,10 +217,10 @@ static const std::map<std::string, int> &getStatusMap() {
     return statusMap;
 }
 
-PyObject*  PropertyContainerPy::setPropertyStatus(PyObject *args)
+PyObject* PropertyContainerPy::setPropertyStatus(PyObject *args)
 {
-    char* name;
-    PyObject *pyValue;
+    char* name {};
+    PyObject* pyValue {};
     if (!PyArg_ParseTuple(args, "sO", &name, &pyValue))
         return nullptr;
 
@@ -231,47 +232,51 @@ PyObject*  PropertyContainerPy::setPropertyStatus(PyObject *args)
 
     auto linkProp = Base::freecad_dynamic_cast<App::PropertyLinkBase>(prop);
     std::bitset<32> status(prop->getStatus());
-    size_t count = 1;
-    bool isSeq = false;
+
+    std::vector<Py::Object> items;
     if (PyList_Check(pyValue) || PyTuple_Check(pyValue)) {
-        isSeq = true;
-        count = PySequence_Size(pyValue);
+        Py::Sequence seq(pyValue);
+        for (const auto& it : seq) {
+            items.emplace_back(it);
+        }
+    }
+    else {
+        items.emplace_back(pyValue);
     }
 
-    for(size_t i=0; i<count; ++i) {
-        Py::Object item;
-        if (isSeq)
-            item = Py::Object(PySequence_GetItem(pyValue,i));
-        else
-            item = Py::Object(pyValue);
+    for (const auto& item : items) {
         bool value = true;
         if (item.isString()) {
             const auto &statusMap = getStatusMap();
             auto v = static_cast<std::string>(Py::String(item));
-            if(v.size()>1 && v[0] == '-') {
+            if (v.size() > 1 && v[0] == '-') {
                 value = false;
                 v = v.substr(1);
             }
             auto it = statusMap.find(v);
-            if(it == statusMap.end()) {
-                if(linkProp && v == "AllowPartial") {
+            if (it == statusMap.end()) {
+                if (linkProp && v == "AllowPartial") {
                     linkProp->setAllowPartial(value);
                     continue;
                 }
+
                 PyErr_Format(PyExc_ValueError, "Unknown property status '%s'", v.c_str());
                 return nullptr;
             }
-            status.set(it->second,value);
+
+            status.set(it->second, value);
         }
         else if (item.isNumeric()) {
             int v = Py::Int(item);
-            if(v<0) {
+            if (v < 0) {
                 value = false;
                 v = -v;
             }
-            if(v==0 || v>31)
+            if (v == 0 || v > 31) {
                 PyErr_Format(PyExc_ValueError, "Status value out of range '%d'", v);
-            status.set(v,value);
+                return nullptr;
+            }
+            status.set(v, value);
         }
         else {
             PyErr_SetString(PyExc_TypeError, "Expects status type to be Int or String");
@@ -285,7 +290,7 @@ PyObject*  PropertyContainerPy::setPropertyStatus(PyObject *args)
 
 PyObject*  PropertyContainerPy::getPropertyStatus(PyObject *args)
 {
-    char* name = "";
+    const char* name = "";
     if (!PyArg_ParseTuple(args, "|s", &name))
         return nullptr;
 
@@ -442,8 +447,8 @@ PyObject*  PropertyContainerPy::getEnumerationsOfProperty(PyObject *args)
 
     std::vector<std::string> enumerations = enumProp->getEnumVector();
     Py::List ret;
-    for (std::vector<std::string>::const_iterator it = enumerations.begin(); it != enumerations.end(); ++it) {
-        ret.append(Py::String(*it));
+    for (const auto & it : enumerations) {
+        ret.append(Py::String(it));
     }
     return Py::new_reference_to(ret);
 }
@@ -466,10 +471,11 @@ PyObject* PropertyContainerPy::dumpPropertyContent(PyObject *args, PyObject *kwd
 {
     int compression = 3;
     const char* property;
-    static char* kwds_def[] = {"Property", "Compression", nullptr};
+    static const std::array<const char *, 3> kwds_def {"Property", "Compression", nullptr};
     PyErr_Clear();
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "s|i", kwds_def, &property, &compression))
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "s|i", kwds_def, &property, &compression)) {
         return nullptr;
+    }
 
     Property* prop = getPropertyContainerPtr()->getPropertyByName(property);
     if (!prop) {
@@ -583,8 +589,8 @@ PyObject *PropertyContainerPy::getCustomAttributes(const char* attr) const
         getPropertyContainerPtr()->getPropertyMap(Map);
 
         Py::Dict dict;
-        for (std::map<std::string,App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it) {
-            dict.setItem(it->first, Py::String(""));
+        for (const auto & it : Map) {
+            dict.setItem(it.first, Py::String(""));
         }
         return Py::new_reference_to(dict);
     }

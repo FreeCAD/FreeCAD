@@ -51,6 +51,9 @@ DrawViewSymbol::DrawViewSymbol()
     ADD_PROPERTY_TYPE(Symbol, (""), vgroup, App::Prop_None, "The SVG code defining this symbol");
     ADD_PROPERTY_TYPE(EditableTexts, (""), vgroup, App::Prop_None,
                       "Substitution values for the editable strings in this symbol");
+    ADD_PROPERTY_TYPE(Owner, (nullptr), vgroup, (App::PropertyType)(App::Prop_None),
+                      "Feature to which this symbol is attached");
+
     ScaleType.setValue("Custom");
     Scale.setStatus(App::Property::ReadOnly, false);
     Symbol.setStatus(App::Property::Hidden, true);
@@ -74,6 +77,17 @@ void DrawViewSymbol::onChanged(const App::Property* prop)
     }
 
     TechDraw::DrawView::onChanged(prop);
+}
+
+short DrawViewSymbol::mustExecute() const
+{
+    if (!isRestoring()) {
+        if (Owner.isTouched()) {
+            return 1;
+        }
+    }
+
+    return DrawView::mustExecute();
 }
 
 App::DocumentObjectExecReturn* DrawViewSymbol::execute()
@@ -111,7 +125,7 @@ std::vector<std::string> DrawViewSymbol::getEditableFields()
         // has "freecad:editable" attribute
         query.processItems(QString::fromUtf8("declare default element namespace \"" SVG_NS_URI "\"; "
                                              "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
-                                             "//text[@freecad:editable]/tspan"),
+                                             "//text[@" FREECAD_ATTR_EDITABLE "]/tspan"),
                            [&editables](QDomElement& tspan) -> bool {
             QString editableValue = tspan.firstChild().nodeValue();
             editables.emplace_back(editableValue.toStdString());
@@ -140,7 +154,7 @@ void DrawViewSymbol::updateFieldsInSymbol()
         // has "freecad:editable" attribute
         query.processItems(QString::fromUtf8("declare default element namespace \"" SVG_NS_URI "\"; "
                                              "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
-                                             "//text[@freecad:editable]/tspan"),
+                                             "//text[@" FREECAD_ATTR_EDITABLE "]/tspan"),
                            [&symbolDocument, &editText, &count](QDomElement& tspanElement) -> bool {
 
             if (count >= editText.size()) {
@@ -174,6 +188,7 @@ bool DrawViewSymbol::loadQDomDocument(QDomDocument& symbolDocument)
     if (qba.isEmpty()) {
         return false;
     }
+#if QT_VERSION < QT_VERSION_CHECK(6,5,0) // New setContent interface added in Qt 6.5
     QString errorMsg;
     int errorLine;
     int errorCol;
@@ -188,6 +203,18 @@ bool DrawViewSymbol::loadQDomDocument(QDomDocument& symbolDocument)
                             errorLine, errorCol);
     }
     return rc;
+#else
+    QDomDocument::ParseResult rc = symbolDocument.setContent(qba); // Use the default ParseOptions
+    if (!rc) {
+        //invalid SVG message
+        Base::Console().Warning("DrawViewSymbol - %s - SVG for Symbol is not valid. See log.\n",
+                                getNameInDocument());
+        Base::Console().Log("DrawViewSymbol - %s - len: %d error: %s line: %d col: %d\n",
+                            getNameInDocument(), strlen(symbol), qPrintable(rc.errorMessage),
+                            rc.errorLine, rc.errorColumn);
+    }
+    return static_cast<bool>(rc);
+#endif
 }
 
 PyObject* DrawViewSymbol::getPyObject()

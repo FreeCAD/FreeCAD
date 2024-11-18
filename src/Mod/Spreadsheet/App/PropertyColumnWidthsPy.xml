@@ -10,7 +10,6 @@
     FatherInclude="Base/PersistencePy.h"
     FatherNamespace="Base"
     Constructor="true">
-
     <Documentation>
       <Author Licence="LGPL" Name="Eivind Kvedalen" EMail="eivind@kvedalen.name" />
       <UserDocu>Internal spreadsheet object</UserDocu>

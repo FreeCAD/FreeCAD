@@ -88,12 +88,7 @@ void coinRemoveAllChildren(SoGroup *group) {
 PROPERTY_SOURCE_ABSTRACT(Gui::ViewProvider, App::TransactionalObject)
 
 ViewProvider::ViewProvider()
-    : pcAnnotation(nullptr)
-    , pyViewObject(nullptr)
-    , overrideMode("As Is")
-    , _iActualMode(-1)
-    , _iEditMode(-1)
-    , viewOverrideMode(-1)
+    : overrideMode("As Is")
 {
     setStatus(UpdateData, true);
 
@@ -233,7 +228,9 @@ void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
 
                         auto func = new Gui::TimerFunction();
                         func->setAutoDelete(true);
-                        func->setFunction(std::bind(&Document::resetEdit, doc));
+                        func->setFunction([doc]() {
+                            doc->resetEdit();
+                        });
                         func->singleShot(0);
                     }
                 }
@@ -363,12 +360,14 @@ void ViewProvider::setTransformation(const SbMatrix &rcMatrix)
 
 SbMatrix ViewProvider::convert(const Base::Matrix4D &rcMatrix)
 {
+    //NOLINTBEGIN
     double dMtrx[16];
     rcMatrix.getGLMatrix(dMtrx);
-    return SbMatrix(dMtrx[0], dMtrx[1], dMtrx[2],  dMtrx[3],
+    return SbMatrix(dMtrx[0], dMtrx[1], dMtrx[2],  dMtrx[3], // clazy:exclude=rule-of-two-soft
                     dMtrx[4], dMtrx[5], dMtrx[6],  dMtrx[7],
                     dMtrx[8], dMtrx[9], dMtrx[10], dMtrx[11],
                     dMtrx[12],dMtrx[13],dMtrx[14], dMtrx[15]);
+    //NOLINTEND
 }
 
 Base::Matrix4D ViewProvider::convert(const SbMatrix &smat)
@@ -410,9 +409,8 @@ SoNode* ViewProvider::getDisplayMaskMode(const char* type) const
 std::vector<std::string> ViewProvider::getDisplayMaskModes() const
 {
     std::vector<std::string> types;
-    for (std::map<std::string, int>::const_iterator it = _sDisplayMaskModes.begin();
-         it != _sDisplayMaskModes.end(); ++it)
-        types.push_back( it->first );
+    for (const auto & it : _sDisplayMaskModes)
+        types.push_back( it.first );
     return types;
 }
 
@@ -717,6 +715,11 @@ bool ViewProvider::canDragObject(App::DocumentObject* obj) const
     return false;
 }
 
+bool ViewProvider::canDragObjectToTarget(App::DocumentObject* obj, [[maybe_unused]] App::DocumentObject* target) const
+{
+    return canDragObject(obj);
+}
+
 bool ViewProvider::canDragObjects() const
 {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
@@ -771,12 +774,13 @@ bool ViewProvider::canDropObjects() const {
 bool ViewProvider::canDragAndDropObject(App::DocumentObject* obj) const {
 
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector){
-        if(!ext->extensionCanDragAndDropObject(obj))
-            return false;
+    for (Gui::ViewProviderExtension* ext : vector) {
+        if (ext->extensionCanDragAndDropObject(obj)) {
+            return true;
+        }
     }
 
-    return true;
+    return false;
 }
 
 void ViewProvider::dropObject(App::DocumentObject* obj) {
@@ -784,11 +788,9 @@ void ViewProvider::dropObject(App::DocumentObject* obj) {
     for (Gui::ViewProviderExtension* ext : vector) {
         if (ext->extensionCanDropObject(obj)) {
             ext->extensionDropObject(obj);
-            return;
+            break;
         }
     }
-
-    throw Base::RuntimeError("ViewProvider::dropObject: no extension for dropping given object available.");
 }
 
 bool ViewProvider::canDropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner,
@@ -811,7 +813,7 @@ std::string ViewProvider::dropObjectEx(App::DocumentObject* obj, App::DocumentOb
             return ext->extensionDropObjectEx(obj, owner, subname, elements);
     }
     dropObject(obj);
-    return std::string();
+    return {};
 }
 
 int ViewProvider::replaceObject(App::DocumentObject* oldValue, App::DocumentObject* newValue)
@@ -885,10 +887,26 @@ std::vector< App::DocumentObject* > ViewProvider::claimChildren() const
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for (Gui::ViewProviderExtension* ext : vector) {
         std::vector< App::DocumentObject* > nvec = ext->extensionClaimChildren();
-        if (!nvec.empty())
+        if (!nvec.empty()){
             vec.insert(std::end(vec), std::begin(nvec), std::end(nvec));
+        }
     }
     return vec;
+}
+
+std::vector< App::DocumentObject* > ViewProvider::claimChildrenRecursive() const
+{
+    std::vector<App::DocumentObject*> children = claimChildren();
+    for (auto* child : claimChildren()) {
+        auto* vp = Application::Instance->getViewProvider(child);
+        if (!vp) { continue; }
+
+        std::vector<App::DocumentObject*> nvec = vp->claimChildrenRecursive();
+        if (!nvec.empty()){
+            children.insert(std::end(children), std::begin(nvec), std::end(nvec));
+        }
+    }
+    return children;
 }
 
 std::vector< App::DocumentObject* > ViewProvider::claimChildren3D() const

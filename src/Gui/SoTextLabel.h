@@ -34,6 +34,8 @@
 #include <Inventor/nodes/SoText2.h>
 #include <FCGlobal.h>
 
+#include "BitmapFactory.h"
+
 
 namespace Gui {
 
@@ -55,7 +57,7 @@ public:
     SoSFFloat frameSize;
 
 protected:
-    ~SoTextLabel() override {}
+    ~SoTextLabel() override = default;
     void GLRender(SoGLRenderAction *action) override;
 };
 
@@ -91,7 +93,7 @@ public:
     SoSFInt32  size;
 
 protected:
-    ~SoStringLabel() override {}
+    ~SoStringLabel() override = default;
     void GLRender(SoGLRenderAction *action) override;
 };
 
@@ -107,6 +109,7 @@ public:
 
     static void initClass();
     SoFrameLabel();
+    void setIcon(const QPixmap &pixMap);
 
     SoMFString string;
     SoSFColor  textColor;
@@ -116,9 +119,10 @@ public:
     SoSFInt32  size;
     SoSFBool   frame;
   //SoSFImage  image;
+    QPixmap    iconPixmap;
 
 protected:
-    ~SoFrameLabel() override {}
+    ~SoFrameLabel() override = default;
     void notify(SoNotList * list) override;
     void GLRender(SoGLRenderAction *action) override;
 

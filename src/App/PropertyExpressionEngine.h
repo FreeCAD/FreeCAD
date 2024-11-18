@@ -92,16 +92,9 @@ public:
             this->busy = false;
         }
 
-        ExpressionInfo(const ExpressionInfo & other) {
-            expression = other.expression;
-            busy = other.busy;
-        }
+        ExpressionInfo(const ExpressionInfo &) = default;
 
-        ExpressionInfo & operator=(const ExpressionInfo & other) {
-            expression = other.expression;
-            busy = other.busy;
-            return *this;
-        }
+        ExpressionInfo & operator=(const ExpressionInfo &) = default;
     };
 
     PropertyExpressionEngine();
@@ -167,6 +160,11 @@ public:
     void afterRestore() override;
     void onContainerRestored() override;
 
+    void getLinksTo(std::vector<App::ObjectIdentifier> &identifiers,
+                            App::DocumentObject *obj,
+                            const char *subname=nullptr,
+                            bool all=false) const override;
+
     /* Python interface */
     PyObject *getPyObject() override;
     void setPyObject(PyObject *) override;
@@ -179,7 +177,7 @@ private:
     using DiGraph = boost::adjacency_list< boost::listS, boost::vecS, boost::directedS >;
     using Edge = std::pair<int, int>;
     // Note: use std::map instead of unordered_map to keep the binding order stable
-    #if defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
+    #if defined(FC_OS_MACOSX) || defined(FC_OS_BSD) || defined(_LIBCPP_VERSION)
     using ExpressionMap = std::map<App::ObjectIdentifier, ExpressionInfo>;
     #else
     using ExpressionMap = std::map<const App::ObjectIdentifier, ExpressionInfo>;
@@ -199,7 +197,7 @@ private:
     void slotChangedProperty(const App::DocumentObject &obj, const App::Property &prop);
     void updateHiddenReference(const std::string &key);
 
-    bool running; /**< Boolean used to avoid loops */
+    bool running = false; /**< Boolean used to avoid loops */
     bool restoring = false;
 
     ExpressionMap expressions; /**< Stored expressions */

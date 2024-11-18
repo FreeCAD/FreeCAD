@@ -81,7 +81,7 @@ int ChFi2d_AnaFilletAlgoPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 // returns a string which represents the object e.g. when printed in python
 std::string ChFi2d_AnaFilletAlgoPy::representation() const
 {
-    return std::string("<AnaFilletAlgo object>");
+    return {"<AnaFilletAlgo object>"};
 }
 
 PyObject* ChFi2d_AnaFilletAlgoPy::init(PyObject *args)

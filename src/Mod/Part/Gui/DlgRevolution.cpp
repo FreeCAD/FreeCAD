@@ -142,6 +142,7 @@ DlgRevolution::~DlgRevolution()
 
 void DlgRevolution::setupConnections()
 {
+    // clang-format off
     connect(ui->selectLine, &QPushButton::clicked,
             this, &DlgRevolution::onSelectLineClicked);
     connect(ui->btnX, &QPushButton::clicked,
@@ -152,6 +153,7 @@ void DlgRevolution::setupConnections()
             this, &DlgRevolution::onButtonZClicked);
     connect(ui->txtAxisLink, &QLineEdit::textChanged,
             this, &DlgRevolution::onAxisLinkTextChanged);
+    // clang-format on
 }
 
 Base::Vector3d DlgRevolution::getDirection() const
@@ -247,8 +249,8 @@ std::vector<App::DocumentObject*> DlgRevolution::getShapesToRevolve() const
         throw Base::RuntimeError("Document lost");
 
     std::vector<App::DocumentObject*> objects;
-    for (int i = 0; i < items.size(); i++) {
-        App::DocumentObject* obj = doc->getObject(items[i]->data(0, Qt::UserRole).toString().toLatin1());
+    for (auto item : items) {
+        App::DocumentObject* obj = doc->getObject(item->data(0, Qt::UserRole).toString().toLatin1());
         if (!obj)
             throw Base::RuntimeError("Object not found");
         objects.push_back(obj);
@@ -277,7 +279,7 @@ bool DlgRevolution::validate()
         axisLinkHasAngle = angle_edge != 1e100;
     } catch(Base::Exception &err) {
         QMessageBox::critical(this, windowTitle(),
-            tr("Revolution axis link is invalid.\n\n%1").arg(QString::fromUtf8(err.what())));
+            tr("Revolution axis link is invalid.\n\n%1").arg(QCoreApplication::translate("Exception", err.what())));
         ui->txtAxisLink->setFocus();
         return false;
     } catch(Standard_Failure &err) {
@@ -287,7 +289,7 @@ bool DlgRevolution::validate()
         return false;
     } catch(...) {
         QMessageBox::critical(this, windowTitle(),
-            tr("Revolution axis link is invalid.\n\n%1").arg(QString::fromUtf8("Unknown error")));
+            tr("Revolution axis link is invalid.\n\n%1").arg(tr("Unknown error")));
         ui->txtAxisLink->setFocus();
         return false;
     }
@@ -341,8 +343,8 @@ void DlgRevolution::findShapes()
 
     std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType<App::DocumentObject>();
 
-    for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it!=objs.end(); ++it) {
-        Part::TopoShape topoShape = Part::Feature::getTopoShape(*it);
+    for (auto obj : objs) {
+        Part::TopoShape topoShape = Part::Feature::getTopoShape(obj);
         if (topoShape.isNull()) {
             continue;
         }
@@ -356,9 +358,9 @@ void DlgRevolution::findShapes()
         if (xp.More()) continue; // compound solids not allowed
         // So allowed are: vertex, edge, wire, face, shell and compound
         QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget);
-        item->setText(0, QString::fromUtf8((*it)->Label.getValue()));
-        item->setData(0, Qt::UserRole, QString::fromLatin1((*it)->getNameInDocument()));
-        Gui::ViewProvider* vp = activeGui->getViewProvider(*it);
+        item->setText(0, QString::fromUtf8(obj->Label.getValue()));
+        item->setData(0, Qt::UserRole, QString::fromLatin1(obj->getNameInDocument()));
+        Gui::ViewProvider* vp = activeGui->getViewProvider(obj);
         if (vp) item->setIcon(0, vp->getIcon());
     }
 }
@@ -398,8 +400,8 @@ void DlgRevolution::accept()
         else {
             symmetric = QString::fromLatin1("False");}
 
-        for (QList<QTreeWidgetItem *>::iterator it = items.begin(); it != items.end(); ++it) {
-            shape = (*it)->data(0, Qt::UserRole).toString();
+        for (auto item : items) {
+            shape = item->data(0, Qt::UserRole).toString();
             type = QString::fromLatin1("Part::Revolution");
             name = QString::fromLatin1(activeDoc->getUniqueObjectName("Revolve").c_str());
             Base::Vector3d axis = this->getDirection();
@@ -431,7 +433,7 @@ void DlgRevolution::accept()
             Gui::Command::runCommand(Gui::Command::App, code.toLatin1());
             QByteArray to = name.toLatin1();
             QByteArray from = shape.toLatin1();
-            Gui::Command::copyVisual(to, "ShapeColor", from);
+            Gui::Command::copyVisual(to, "ShapeAppearance", from);
             Gui::Command::copyVisual(to, "LineColor", from);
             Gui::Command::copyVisual(to, "PointColor", from);
         }
@@ -440,7 +442,7 @@ void DlgRevolution::accept()
         activeDoc->recompute();
     } catch (Base::Exception &err) {
         QMessageBox::critical(this, windowTitle(),
-            tr("Creating Revolve failed.\n\n%1").arg(QString::fromUtf8(err.what())));
+            tr("Creating Revolve failed.\n\n%1").arg(QCoreApplication::translate("Exception", err.what())));
         return;
     } catch (...){
         QMessageBox::critical(this, windowTitle(),
@@ -570,16 +572,7 @@ void DlgRevolution::autoSolid()
 TaskRevolution::TaskRevolution()
 {
     widget = new DlgRevolution();
-    taskbox = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("Part_Revolve"),
-        widget->windowTitle(), true, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
-}
-
-TaskRevolution::~TaskRevolution()
-{
-    // automatically deleted in the sub-class
+    addTaskBox(Gui::BitmapFactory().pixmap("Part_Revolve"), widget);
 }
 
 bool TaskRevolution::accept()

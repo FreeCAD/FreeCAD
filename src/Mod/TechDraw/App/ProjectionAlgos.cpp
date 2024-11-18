@@ -50,6 +50,18 @@ using namespace std;
 // ProjectionAlgos
 //===========================================================================
 
+namespace TechDraw {
+  //added by tanderson. aka blobfish.
+  //projection algorithms build a 2d curve(pcurve) but no 3d curve.
+  //this causes problems with meshing algorithms after save and load.
+  const TopoDS_Shape& build3dCurves(const TopoDS_Shape &shape)
+  {
+    TopExp_Explorer it;
+    for (it.Init(shape, TopAbs_EDGE); it.More(); it.Next())
+      BRepLib::BuildCurve3d(TopoDS::Edge(it.Current()));
+    return shape;
+  }
+}
 
 ProjectionAlgos::ProjectionAlgos(const TopoDS_Shape &Input, const Base::Vector3d &Dir)
   : Input(Input), Direction(Dir)
@@ -61,16 +73,6 @@ ProjectionAlgos::~ProjectionAlgos()
 {
 }
 
-//added by tanderson. aka blobfish.
-//projection algorithms build a 2d curve(pcurve) but no 3d curve.
-//this causes problems with meshing algorithms after save and load.
-static const TopoDS_Shape& build3dCurves(const TopoDS_Shape &shape)
-{
-  TopExp_Explorer it;
-  for (it.Init(shape, TopAbs_EDGE); it.More(); it.Next())
-    BRepLib::BuildCurve3d(TopoDS::Edge(it.Current()));
-  return shape;
-}
 
 void ProjectionAlgos::execute()
 {

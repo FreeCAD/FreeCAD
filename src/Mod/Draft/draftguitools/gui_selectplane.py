@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2019 Yorik van Havre <yorik@uncreated.net>              *
+# *   Copyright (c) 2023 FreeCAD Project Association                        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -25,137 +26,138 @@
 
 ## \addtogroup draftguitools
 # @{
-import math
-import pivy.coin as coin
-import PySide.QtGui as QtGui
+from PySide import QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-import FreeCAD
-import FreeCADGui
-import Draft
-import Draft_rc
-import DraftVecUtils
-import drafttaskpanels.task_selectplane as task_selectplane
+import FreeCAD as App
+import FreeCADGui as Gui
+import Part
+import WorkingPlane
 
-from draftutils.todo import todo
+from FreeCAD import Units
+from drafttaskpanels import task_selectplane
+from draftutils import gui_utils
+from draftutils import params
+from draftutils import utils
 from draftutils.messages import _msg
+from draftutils.todo import todo
 from draftutils.translate import translate
-
-# The module is used to prevent complaints from code checkers (flake8)
-True if Draft_rc.__name__ else False
 
 __title__ = "FreeCAD Draft Workbench GUI Tools - Working plane-related tools"
 __author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
               "Dmitry Chigrin")
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 
 class Draft_SelectPlane:
     """The Draft_SelectPlane FreeCAD command definition."""
 
-    def __init__(self):
-        self.ac = "FreeCAD.DraftWorkingPlane.alignToPointAndAxis"
-        self.param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-        self.states = []
-
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        d = {'Pixmap': 'Draft_SelectPlane',
-             'Accel': "W, P",
-             'MenuText': QT_TRANSLATE_NOOP("Draft_SelectPlane", "Select Plane"),
-             'ToolTip': QT_TRANSLATE_NOOP("Draft_SelectPlane", "Select the face of solid body to create a working plane on which to sketch Draft objects.\nYou may also select a three vertices or a Working Plane Proxy.")}
-        return d
+        return {"Pixmap": "Draft_SelectPlane",
+                "Accel": "W, P",
+                "MenuText": QT_TRANSLATE_NOOP("Draft_SelectPlane", "Select plane"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_SelectPlane", "Select 3 vertices, one or more shapes or an object to define a working plane.")}
 
     def IsActive(self):
         """Return True when this command should be available."""
-        if FreeCADGui.ActiveDocument:
-            return True
-        else:
-            return False
+        return bool(gui_utils.get_3d_view())
 
     def Activated(self):
         """Execute when the command is called."""
-        # finish active Draft command if any
-        if FreeCAD.activeDraftCommand is not None:
-            FreeCAD.activeDraftCommand.finish()
+        # Finish active Draft command if any
+        if App.activeDraftCommand is not None:
+            App.activeDraftCommand.finish()
 
-        # Reset variables
-        self.view = Draft.get3DView()
-        self.wpButton = FreeCADGui.draftToolBar.wplabel
-        FreeCAD.DraftWorkingPlane.setup()
+        App.activeDraftCommand = self
+        self.call = None
 
-        # Write current WP if states are empty
-        if not self.states:
-            p = FreeCAD.DraftWorkingPlane
-            self.states.append([p.u, p.v, p.axis, p.position])
+        # Set variables
+        self.wp = WorkingPlane.get_working_plane()
+        self.view = self.wp._view
+        self.grid = None
+        if hasattr(Gui, "Snapper"):
+            Gui.Snapper.setTrackers()
+            self.grid = Gui.Snapper.grid
+        self.offset = 0
+        self.center = params.get_param("CenterPlaneOnView")
 
         # Create task panel
-        FreeCADGui.Control.closeDialog()
         self.taskd = task_selectplane.SelectPlaneTaskPanel()
         self.taskd.reject = self.reject
+        form = self.taskd.form
 
         # Fill values
-        self.taskd.form.checkCenter.setChecked(self.param.GetBool("CenterPlaneOnView", False))
+        form.fieldOffset.setText(Units.Quantity(self.offset, Units.Length).UserString)
+        form.checkCenter.setChecked(self.center)
         try:
-            q = FreeCAD.Units.Quantity(self.param.GetString("gridSpacing", "1 mm"))
+            q = Units.Quantity(params.get_param("gridSpacing"))
         except ValueError:
-            q = FreeCAD.Units.Quantity("1 mm")
-        self.taskd.form.fieldGridSpacing.setText(q.UserString)
-        self.taskd.form.fieldGridMainLine.setValue(self.param.GetInt("gridEvery", 10))
-        self.taskd.form.fieldGridExtension.setValue(self.param.GetInt("gridSize", 100))
-        self.taskd.form.fieldSnapRadius.setValue(self.param.GetInt("snapRange", 8))
+            q = Units.Quantity("1 mm")
+        form.fieldGridSpacing.setText(q.UserString)
+        form.fieldGridMainLine.setValue(params.get_param("gridEvery"))
+        form.fieldGridExtension.setValue(params.get_param("gridSize"))
+        form.fieldSnapRadius.setValue(params.get_param("snapRange"))
 
         # Set icons
-        self.taskd.form.setWindowIcon(QtGui.QIcon(":/icons/Draft_SelectPlane.svg"))
-        self.taskd.form.buttonTop.setIcon(QtGui.QIcon(":/icons/view-top.svg"))
-        self.taskd.form.buttonFront.setIcon(QtGui.QIcon(":/icons/view-front.svg"))
-        self.taskd.form.buttonSide.setIcon(QtGui.QIcon(":/icons/view-right.svg"))
-        self.taskd.form.buttonAlign.setIcon(QtGui.QIcon(":/icons/view-isometric.svg"))
-        self.taskd.form.buttonAuto.setIcon(QtGui.QIcon(":/icons/view-axonometric.svg"))
-        self.taskd.form.buttonMove.setIcon(QtGui.QIcon(":/icons/Draft_Move.svg"))
-        self.taskd.form.buttonCenter.setIcon(QtGui.QIcon(":/icons/view-fullscreen.svg"))
-        self.taskd.form.buttonPrevious.setIcon(QtGui.QIcon(":/icons/edit-undo.svg"))
+        form.setWindowIcon(QtGui.QIcon(":/icons/Draft_SelectPlane.svg"))
+        form.buttonTop.setIcon(QtGui.QIcon(":/icons/view-top.svg"))
+        form.buttonFront.setIcon(QtGui.QIcon(":/icons/view-front.svg"))
+        form.buttonSide.setIcon(QtGui.QIcon(":/icons/view-right.svg"))
+        form.buttonAlign.setIcon(QtGui.QIcon(":/icons/view-isometric.svg"))
+        form.buttonAuto.setIcon(QtGui.QIcon(":/icons/view-axonometric.svg"))
+        form.buttonMove.setIcon(QtGui.QIcon(":/icons/Draft_Move.svg"))
+        form.buttonCenter.setIcon(QtGui.QIcon(":/icons/view-fullscreen.svg"))
+        form.buttonPrevious.setIcon(QtGui.QIcon(":/icons/sel-back.svg"))
+        form.buttonNext.setIcon(QtGui.QIcon(":/icons/sel-forward.svg"))
+
+        # Grid color
+        color = params.get_param("gridColor")
+        form.buttonColor.setProperty("color", QtGui.QColor(utils.rgba_to_argb(color)))
 
         # Connect slots
-        self.taskd.form.buttonTop.clicked.connect(self.onClickTop)
-        self.taskd.form.buttonFront.clicked.connect(self.onClickFront)
-        self.taskd.form.buttonSide.clicked.connect(self.onClickSide)
-        self.taskd.form.buttonAlign.clicked.connect(self.onClickAlign)
-        self.taskd.form.buttonAuto.clicked.connect(self.onClickAuto)
-        self.taskd.form.buttonMove.clicked.connect(self.onClickMove)
-        self.taskd.form.buttonCenter.clicked.connect(self.onClickCenter)
-        self.taskd.form.buttonPrevious.clicked.connect(self.onClickPrevious)
-        self.taskd.form.fieldGridSpacing.textEdited.connect(self.onSetGridSize)
-        self.taskd.form.fieldGridMainLine.valueChanged.connect(self.onSetMainline)
-        self.taskd.form.fieldGridExtension.valueChanged.connect(self.onSetExtension)
-        self.taskd.form.fieldSnapRadius.valueChanged.connect(self.onSetSnapRadius)
+        form.buttonTop.clicked.connect(self.on_click_top)
+        form.buttonFront.clicked.connect(self.on_click_front)
+        form.buttonSide.clicked.connect(self.on_click_side)
+        form.buttonAlign.clicked.connect(self.on_click_align)
+        form.buttonAuto.clicked.connect(self.on_click_auto)
+        form.buttonMove.clicked.connect(self.on_click_move)
+        form.buttonCenter.clicked.connect(self.on_click_center)
+        form.buttonPrevious.clicked.connect(self.on_click_previous)
+        form.buttonNext.clicked.connect(self.on_click_next)
+        form.fieldOffset.textEdited.connect(self.on_set_offset)
+        form.checkCenter.stateChanged.connect(self.on_set_center)
+        form.fieldGridSpacing.textEdited.connect(self.on_set_grid_size)
+        form.fieldGridMainLine.valueChanged.connect(self.on_set_main_line)
+        form.fieldGridExtension.valueChanged.connect(self.on_set_extension)
+        form.fieldSnapRadius.valueChanged.connect(self.on_set_snap_radius)
+        form.buttonColor.changed.connect(self.on_color_changed)
 
-        # save previous WP to ensure back to the last used when restored
-        FreeCAD.DraftWorkingPlane.save()
+        # Enable/disable buttons.
+        form.buttonPrevious.setEnabled(self.wp._has_previous())
+        form.buttonNext.setEnabled(self.wp._has_next())
 
         # Try to find a WP from the current selection
-        if FreeCADGui.Selection.getSelectionEx(FreeCAD.ActiveDocument.Name):
-            if self.handle():
-                pass
-            # Try another method
-            elif FreeCAD.DraftWorkingPlane.alignToSelection():
-                FreeCADGui.Selection.clearSelection()
-                self.display(FreeCAD.DraftWorkingPlane.axis)
-            return None
+        if Gui.Selection.hasSelection():
+            if self.wp.align_to_selection(self.offset):
+                Gui.Selection.clearSelection()
+            self.finish()
+            return
 
         # Execute the actual task panel delayed to catch possible active Draft command
-        todo.delay(FreeCADGui.Control.showDialog, self.taskd)
+        todo.delay(Gui.Control.showDialog, self.taskd)
+        todo.delay(form.setFocus, None)
         _msg(translate(
                 "draft",
-                "Pick a face, 3 vertices or a WP Proxy to define the drawing plane"))
+                "Select 3 vertices, one or more shapes or an object to define a working plane"))
         self.call = self.view.addEventCallback("SoEvent", self.action)
 
     def finish(self):
         """Execute when the command is terminated."""
-        # Store values
-        self.param.SetBool("CenterPlaneOnView",
-                           self.taskd.form.checkCenter.isChecked())
-
+        App.activeDraftCommand = None
+        Gui.Control.closeDialog()
+        if hasattr(Gui, "Snapper"):
+            Gui.Snapper.off()
         # Terminate coin callbacks
         if self.call:
             try:
@@ -165,390 +167,123 @@ class Draft_SelectPlane:
                 pass
             self.call = None
 
-        # Reset everything else
-        FreeCADGui.Control.closeDialog()
-        FreeCADGui.ActiveDocument.resetEdit()
-        return True
-
     def reject(self):
         """Execute when clicking the Cancel button."""
         self.finish()
-        return True
 
     def action(self, arg):
         """Set the callbacks for the view."""
         if arg["Type"] == "SoKeyboardEvent" and arg["Key"] == "ESCAPE":
+            self.reject()
+        if arg["Type"] == "SoMouseButtonEvent" \
+                and (arg["State"] == "DOWN") \
+                and (arg["Button"] == "BUTTON1"):
+            self.check_selection()
+
+    def check_selection(self):
+        """Check the selection, if it is usable, finish the command."""
+        if self.wp.align_to_selection(self.offset):
+            Gui.Selection.clearSelection()
             self.finish()
-        if arg["Type"] == "SoMouseButtonEvent":
-            if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
-                # Coin detection happens before the selection
-                # got a chance of being updated, so we must delay
-                todo.delay(self.checkSelection, None)
 
-    def checkSelection(self):
-        """Check the selection, if there is a handle, finish the command."""
-        if self.handle():
+    def on_click_top(self):
+        self.wp.set_to_top(self.offset, self.center)
+        self.finish()
+
+    def on_click_front(self):
+        self.wp.set_to_front(self.offset, self.center)
+        self.finish()
+
+    def on_click_side(self):
+        self.wp.set_to_side(self.offset, self.center)
+        self.finish()
+
+    def on_click_align(self):
+        self.wp.set_to_view(self.offset, self.center)
+        self.finish()
+
+    def on_click_auto(self):
+        self.wp.set_to_auto()
+        self.finish()
+
+    def on_click_move(self):
+        sels = Gui.Selection.getSelectionEx("", 0)
+        if len(sels) == 1 \
+                and len(sels[0].SubObjects) == 1 \
+                and sels[0].SubObjects[0].ShapeType == "Vertex":
+            vert = Part.getShape(sels[0].Object,
+                                 sels[0].SubElementNames[0],
+                                 needSubElement=True,
+                                 retType=0)
+            self.wp.set_to_position(vert.Point)
+            Gui.Selection.clearSelection()
             self.finish()
-
-    def handle(self):
-        """Build a working plane. Return True if successful."""
-        sel = FreeCADGui.Selection.getSelectionEx()
-        if len(sel) == 1:
-            sel = sel[0]
-            if hasattr(sel.Object, 'TypeId') and (sel.Object.TypeId == 'App::Part' or sel.Object.TypeId == 'PartDesign::Plane'):
-                self.setPlaneFromObjPlacement(sel.Object)
-                return True
-            elif Draft.getType(sel.Object) == "Axis":
-                FreeCAD.DraftWorkingPlane.alignToEdges(sel.Object.Shape.Edges)
-                self.display(FreeCAD.DraftWorkingPlane.axis)
-                return True
-            elif Draft.getType(sel.Object) in ("WorkingPlaneProxy", "BuildingPart"):
-                self.setPlaneOnWPProxy(sel.Object)
-                return True
-            elif Draft.getType(sel.Object) == "SectionPlane":
-                self.setPlaneFromObjPlacement(sel.Object)
-                return True
-            elif sel.HasSubObjects:
-                if len(sel.SubElementNames) == 1:
-                    # look for a face or a plane
-                    if "Face" in sel.SubElementNames[0]:
-                        FreeCAD.DraftWorkingPlane.alignToFace(sel.SubObjects[0],
-                                                              self.getOffset(),
-                                                              sel.Object.getParentGeoFeatureGroup())
-                        self.display(FreeCAD.DraftWorkingPlane.axis)
-                        return True
-                    elif sel.SubElementNames[0] == "Plane":
-                        FreeCAD.DraftWorkingPlane.setFromPlacement(sel.Object.Placement, rebase=True)
-                        self.display(FreeCAD.DraftWorkingPlane.axis)
-                        return True
-                elif len(sel.SubElementNames) == 3:
-                    # look for 3 points
-                    if ("Vertex" in sel.SubElementNames[0]) \
-                    and ("Vertex" in sel.SubElementNames[1]) \
-                    and ("Vertex" in sel.SubElementNames[2]):
-                        FreeCAD.DraftWorkingPlane.alignTo3Points(sel.SubObjects[0].Point,
-                                                                 sel.SubObjects[1].Point,
-                                                                 sel.SubObjects[2].Point,
-                                                                 self.getOffset())
-                        self.display(FreeCAD.DraftWorkingPlane.axis)
-                        return True
-            elif sel.Object.isDerivedFrom("Part::Feature"):
-                if sel.Object.Shape:
-                    if len(sel.Object.Shape.Faces) == 1:
-                        FreeCAD.DraftWorkingPlane.alignToFace(sel.Object.Shape.Faces[0], self.getOffset())
-                        self.display(FreeCAD.DraftWorkingPlane.axis)
-                        return True
-            elif hasattr(sel.Object, 'Placement'):
-                self.setPlaneFromObjPlacement(sel.Object)
-                return True
-
-        elif sel:
-            # look for 3 points
-            subs = []
-            import Part
-            for s in sel:
-                for so in s.SubObjects:
-                    if isinstance(so, Part.Vertex):
-                        subs.append(so)
-            if len(subs) == 3:
-                FreeCAD.DraftWorkingPlane.alignTo3Points(subs[0].Point,
-                                                         subs[1].Point,
-                                                         subs[2].Point,
-                                                         self.getOffset())
-                self.display(FreeCAD.DraftWorkingPlane.axis)
-                return True
-        return False
-
-    def setPlaneFromObjPlacement(self, obj):
-        """Called by handle(): set the working plane according to an object placement."""
-        if hasattr(obj, 'getGlobalPlacement'):
-            pl = obj.getGlobalPlacement()
         else:
-            pl = obj.Placement
-        FreeCAD.DraftWorkingPlane.setFromPlacement(pl, rebase=True)
-        FreeCAD.DraftWorkingPlane.weak = False
-        self.display(FreeCAD.DraftWorkingPlane.axis,obj.ViewObject.Icon)
-        self.wpButton.setText(obj.Label)
-        self.wpButton.setToolTip(translate("draft", "Current working plane")+": " + self.wpButton.text())
-        m = translate("draft", "Working plane aligned to global placement of")
-        _msg(m + " " + obj.Label + ".\n")
-        return True
-
-    def setPlaneOnWPProxy(self, obj):
-        """Called by handle(): set the working plane according to a WorkingPlaneProxy or a BuildingPart.
-        This method also apply the clipping view according to object properties.
-        """
-        FreeCAD.DraftWorkingPlane.setFromPlacement(obj.Placement, rebase=True)
-        FreeCAD.DraftWorkingPlane.weak = False
-        if hasattr(obj.ViewObject, "AutoWorkingPlane"):
-            if obj.ViewObject.AutoWorkingPlane:
-                FreeCAD.DraftWorkingPlane.weak = True
-        if hasattr(obj.ViewObject, "CutView") and hasattr(obj.ViewObject, "AutoCutView"):
-            if obj.ViewObject.AutoCutView:
-                obj.ViewObject.CutView = True
-        if hasattr(obj.ViewObject, "RestoreView"):
-            if obj.ViewObject.RestoreView:
-                if hasattr(obj.ViewObject, "ViewData"):
-                    if len(obj.ViewObject.ViewData) >= 12:
-                        d = obj.ViewObject.ViewData
-                        camtype = "orthographic"
-                        if len(obj.ViewObject.ViewData) == 13:
-                            if d[12] == 1:
-                                camtype = "perspective"
-                        c = FreeCADGui.ActiveDocument.ActiveView.getCameraNode()
-                        if isinstance(c, coin.SoOrthographicCamera):
-                            if camtype == "perspective":
-                                FreeCADGui.ActiveDocument.ActiveView.setCameraType("Perspective")
-                        elif isinstance(c, coin.SoPerspectiveCamera):
-                            if camtype == "orthographic":
-                                FreeCADGui.ActiveDocument.ActiveView.setCameraType("Orthographic")
-                        c = FreeCADGui.ActiveDocument.ActiveView.getCameraNode()
-                        c.position.setValue([d[0], d[1], d[2]])
-                        c.orientation.setValue([d[3], d[4], d[5], d[6]])
-                        c.nearDistance.setValue(d[7])
-                        c.farDistance.setValue(d[8])
-                        c.aspectRatio.setValue(d[9])
-                        c.focalDistance.setValue(d[10])
-                        if camtype == "orthographic":
-                            c.height.setValue(d[11])
-                        else:
-                            c.heightAngle.setValue(d[11])
-        if hasattr(obj.ViewObject, "RestoreState"):
-            if obj.ViewObject.RestoreState:
-                if hasattr(obj.ViewObject, "VisibilityMap"):
-                    if obj.ViewObject.VisibilityMap:
-                        for k,v in obj.ViewObject.VisibilityMap.items():
-                            o = FreeCADGui.ActiveDocument.getObject(k)
-                            if o:
-                                if o.Visibility != (v == "True"):
-                                    FreeCADGui.doCommand("FreeCADGui.ActiveDocument.getObject(\""+k+"\").Visibility = "+v)
-        self.display(FreeCAD.DraftWorkingPlane.axis,obj.ViewObject.Icon)
-        self.wpButton.setText(obj.Label)
-        self.wpButton.setToolTip(translate("draft", "Current working plane")+": "+self.wpButton.text())
-
-    def getCenterPoint(self, x, y, z):
-        """Get the center point."""
-        if not self.taskd.form.checkCenter.isChecked():
-            return FreeCAD.Vector()
-        v = FreeCAD.Vector(x, y, z)
-        view = FreeCADGui.ActiveDocument.ActiveView
-        camera = view.getCameraNode()
-        cam1 = FreeCAD.Vector(camera.position.getValue().getValue())
-        cam2 = FreeCADGui.ActiveDocument.ActiveView.getViewDirection()
-        vcam1 = DraftVecUtils.project(cam1, v)
-        a = vcam1.getAngle(cam2)
-        if a < 0.0001:
-            return FreeCAD.Vector()
-        d = vcam1.Length
-        L = d/math.cos(a)
-        vcam2 = DraftVecUtils.scaleTo(cam2, L)
-        cp = cam1.add(vcam2)
-        return cp
-
-    def tostr(self, v):
-        """Make a string from a vector or tuple."""
-        string = "FreeCAD.Vector("
-        string += str(v[0]) + ", "
-        string += str(v[1]) + ", "
-        string += str(v[2]) + ")"
-        return string
-
-    def getOffset(self):
-        """Return the offset value as a float in mm."""
-        try:
-            o = float(self.taskd.form.fieldOffset.text())
-        except Exception:
-            o = FreeCAD.Units.Quantity(self.taskd.form.fieldOffset.text())
-            o = o.Value
-        return o
-
-    def onClickTop(self):
-        """Execute when pressing the top button."""
-        _cmd = self.ac
-        _cmd += "("
-        _cmd += self.tostr(self.getCenterPoint(0, 0, 1)) + ", "
-        _cmd += self.tostr((0, 0, 1)) + ", "
-        _cmd += str(self.getOffset())
-        _cmd += ")"
-        FreeCADGui.doCommandGui(_cmd)
-        self.display(translate("draft",'Top'),QtGui.QIcon(":/icons/view-top.svg"))
-        self.finish()
-
-    def onClickFront(self):
-        """Execute when pressing the front button."""
-        _cmd = self.ac
-        _cmd += "("
-        _cmd += self.tostr(self.getCenterPoint(0, -1, 0)) + ", "
-        _cmd += self.tostr((0, -1, 0)) + ", "
-        _cmd += str(self.getOffset())
-        _cmd += ")"
-        FreeCADGui.doCommandGui(_cmd)
-        self.display(translate("draft",'Front'),QtGui.QIcon(":/icons/view-front.svg"))
-        self.finish()
-
-    def onClickSide(self):
-        """Execute when pressing the side button."""
-        _cmd = self.ac
-        _cmd += "("
-        _cmd += self.tostr(self.getCenterPoint(1, 0, 0)) + ", "
-        _cmd += self.tostr((1, 0, 0)) + ", "
-        _cmd += str(self.getOffset())
-        _cmd += ")"
-        FreeCADGui.doCommandGui(_cmd)
-        self.display(translate("draft",'Side'),QtGui.QIcon(":/icons/view-right.svg"))
-        self.finish()
-
-    def onClickAlign(self):
-        """Execute when pressing the align."""
-        dir = self.view.getViewDirection().negative()
-        camera = self.view.getCameraNode()
-        rot = camera.getField("orientation").getValue()
-        coin_up = coin.SbVec3f(0, 1, 0)
-        upvec = FreeCAD.Vector(rot.multVec(coin_up).getValue())
-        _cmd = self.ac
-        _cmd += "("
-        _cmd += self.tostr(self.getCenterPoint(dir.x, dir.y, dir.z)) + ", "
-        _cmd += self.tostr((dir.x, dir.y, dir.z)) + ", "
-        _cmd += str(self.getOffset()) + ", "
-        _cmd += self.tostr(upvec)
-        _cmd += ")"
-        FreeCADGui.doCommandGui(_cmd)
-        self.display(dir)
-        self.finish()
-
-    def onClickAuto(self):
-        """Execute when pressing the auto button."""
-        FreeCADGui.doCommandGui("FreeCAD.DraftWorkingPlane.reset()")
-        self.display('Auto')
-        self.finish()
-
-    def onClickMove(self):
-        """Execute when pressing the move button."""
-        sel = FreeCADGui.Selection.getSelectionEx()
-        if sel:
-            verts = []
-            import Part
-            for s in sel:
-                for so in s.SubObjects:
-                    if isinstance(so, Part.Vertex):
-                        verts.append(so)
-            if len(verts) == 1:
-                target = verts[0].Point
-                FreeCAD.DraftWorkingPlane.position = target
-                self.display(target)
-                self.finish()
-        else:
-            # move the WP to the center of the current view
-            c = FreeCADGui.ActiveDocument.ActiveView.getCameraNode()
-            p = FreeCAD.Vector(c.position.getValue().getValue())
-            d = FreeCADGui.ActiveDocument.ActiveView.getViewDirection()
-            pp = FreeCAD.DraftWorkingPlane.projectPoint(p, d)
-            FreeCAD.DraftWorkingPlane.position = pp
-            self.display(pp)
+            # Move the WP to the center of the current view
+            self.wp.center_on_view()
             self.finish()
 
-    def onClickCenter(self):
-        """Execute when pressing the center button."""
-        c = FreeCADGui.ActiveDocument.ActiveView.getCameraNode()
-        r = FreeCAD.DraftWorkingPlane.getRotation().Rotation.Q
-        c.orientation.setValue(r)
-        # calculate delta
-        p = FreeCAD.Vector(c.position.getValue().getValue())
-        pp = FreeCAD.DraftWorkingPlane.projectPoint(p)
-        delta = pp.negative()  # to bring it above the (0,0) point
-        np = p.add(delta)
-        c.position.setValue(tuple(np))
+    def on_click_center(self):
+        self.wp.align_view()
         self.finish()
 
-    def onClickPrevious(self):
-        """Execute when pressing the previous button."""
-        p = FreeCAD.DraftWorkingPlane
-        if len(self.states) > 1:
-            self.states.pop()  # discard the last one
-            s = self.states[-1]
-            p.u = s[0]
-            p.v = s[1]
-            p.axis = s[2]
-            p.position = s[3]
-            FreeCADGui.Snapper.setGrid()
-            self.finish()
+    def on_click_previous(self):
+        self.wp._previous()
+        self.finish()
 
-    def onSetGridSize(self, text):
-        """Execute when setting the grid size."""
+    def on_click_next(self):
+        self.wp._next()
+        self.finish()
+
+    def on_set_offset(self, text):
         try:
-            q = FreeCAD.Units.Quantity(text)
+            q = Units.Quantity(text)
         except Exception:
             pass
         else:
-            self.param.SetString("gridSpacing", q.UserString)
-            if hasattr(FreeCADGui, "Snapper"):
-                FreeCADGui.Snapper.setGrid()
+            self.offset = q.Value
 
-    def onSetMainline(self, i):
-        """Execute when setting main line grid spacing."""
-        if i > 1:
-            self.param.SetInt("gridEvery", i)
-            if hasattr(FreeCADGui, "Snapper"):
-                FreeCADGui.Snapper.setGrid()
+    def on_set_center(self, val):
+        self.center = bool(val)
+        params.set_param("CenterPlaneOnView", self.center)
 
-    def onSetExtension(self, i):
-        """Execute when setting grid extension."""
-        if i > 1:
-            self.param.SetInt("gridSize", i)
-            if hasattr(FreeCADGui, "Snapper"):
-                FreeCADGui.Snapper.setGrid()
-
-    def onSetSnapRadius(self, i):
-        """Execute when setting the snap radius."""
-        self.param.SetInt("snapRange", i)
-        if hasattr(FreeCADGui, "Snapper"):
-            FreeCADGui.Snapper.showradius()
-
-    def display(self, arg, icon=None):
-        """Set the text and icon of the working plane button in the toolbar."""
-        o = self.getOffset()
-        if o:
-            if o > 0:
-                suffix = ' +O'
-            else:
-                suffix = ' -O'
+    def on_set_grid_size(self, text):
+        try:
+            q = Units.Quantity(text)
+        except Exception:
+            pass
         else:
-            suffix = ''
-        _vdir = FreeCAD.DraftWorkingPlane.axis
-        vdir = '('
-        vdir += str(_vdir.x)[:4] + ','
-        vdir += str(_vdir.y)[:4] + ','
-        vdir += str(_vdir.z)[:4]
-        vdir += ')'
-        vdir = " " + translate("draft", "Dir") + ": " + vdir
-        if type(arg).__name__ == 'str':
-            self.wpButton.setText(arg + suffix)
-            if o != 0:
-                o = " " + translate("draft", "Offset") + ": " + str(o)
-            else:
-                o = ""
-            _tool = translate("draft", "Current working plane") + ": "
-            _tool += self.wpButton.text() + o + vdir
-            self.wpButton.setToolTip(_tool)
-        elif type(arg).__name__ == 'Vector':
-            plv = '('
-            plv += str(arg.x)[:6] + ','
-            plv += str(arg.y)[:6] + ','
-            plv += str(arg.z)[:6]
-            plv += ')'
-            self.wpButton.setText(translate("draft", "Custom"))
-            _tool = translate("draft", "Current working plane")
-            _tool += ": " + plv + vdir
-            self.wpButton.setToolTip(_tool)
-        if icon:
-            self.wpButton.setIcon(icon)
-        else:
-            self.wpButton.setIcon(QtGui.QIcon(":/icons/Draft_SelectPlane.svg"))
-        p = FreeCAD.DraftWorkingPlane
-        self.states.append([p.u, p.v, p.axis, p.position])
-        FreeCADGui.doCommandGui("FreeCADGui.Snapper.setGrid()")
+            params.set_param("gridSpacing", q.UserString)
+            # ParamObserver handles grid changes. See params.py.
+            if self.grid is not None:
+                self.grid.show_during_command = True
+                self.grid.on()
 
+    def on_set_main_line(self, i):
+        if i > 1:
+            params.set_param("gridEvery", i)
+            # ParamObserver handles grid changes. See params.py.
+            if self.grid is not None:
+                self.grid.show_during_command = True
+                self.grid.on()
 
-FreeCADGui.addCommand('Draft_SelectPlane', Draft_SelectPlane())
+    def on_set_extension(self, i):
+        if i > 1:
+            params.set_param("gridSize", i)
+            # ParamObserver handles grid changes. See params.py.
+            if self.grid is not None:
+                self.grid.show_during_command = True
+                self.grid.on()
+
+    def on_set_snap_radius(self, i):
+        params.set_param("snapRange", i)
+        if hasattr(Gui, "Snapper"):
+            Gui.Snapper.showradius()
+
+    def on_color_changed(self):
+        color = utils.argb_to_rgba(self.taskd.form.buttonColor.property("color").rgba())
+        params.set_param("gridColor", color)
+
+Gui.addCommand('Draft_SelectPlane', Draft_SelectPlane())
 
 ## @}

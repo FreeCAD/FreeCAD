@@ -46,8 +46,8 @@ class CompassWidget: public QWidget
     Q_PROPERTY(double angle READ dialAngle WRITE setDialAngle NOTIFY angleChanged)
 
 public:
-    CompassWidget(QWidget* parent = 0);
-    ~CompassWidget() = default;
+    CompassWidget(QWidget* parent = nullptr);
+    ~CompassWidget() override = default;
 
     QSize sizeHint() const override;
     QSize minimumSizeHint() const override;

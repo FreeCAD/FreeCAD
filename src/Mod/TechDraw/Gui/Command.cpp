@@ -24,7 +24,8 @@
 #include <QApplication>
 #include <QFileInfo>
 #include <QMessageBox>
-#include <sstream>
+#include <QCheckBox>
+#include <QPushButton>
 #include <vector>
 #endif
 
@@ -54,6 +55,7 @@
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
+#include <Mod/TechDraw/App/DrawSVGTemplate.h>
 #include <Mod/TechDraw/App/DrawViewArch.h>
 #include <Mod/TechDraw/App/DrawViewClip.h>
 #include <Mod/TechDraw/App/DrawViewDetail.h>
@@ -61,6 +63,7 @@
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawViewSymbol.h>
 #include <Mod/TechDraw/App/Preferences.h>
+#include <Mod/TechDraw/App/DrawBrokenView.h>
 
 #include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
@@ -75,14 +78,23 @@
 #include "TaskProjection.h"
 #include "TaskSectionView.h"
 #include "ViewProviderPage.h"
-#include "ViewProviderViewPart.h"
+#include "ViewProviderDrawingView.h"
 
 void execSimpleSection(Gui::Command* cmd);
 void execComplexSection(Gui::Command* cmd);
+void getSelectedShapes(Gui::Command* cmd,
+                      std::vector<App::DocumentObject*>& shapes,
+                      std::vector<App::DocumentObject*>& xShapes,
+                      App::DocumentObject* faceObj,
+                      std::string& faceName);
+
+std::pair<App::DocumentObject*, std::string> faceFromSelection();
+std::pair<Base::Vector3d, Base::Vector3d> viewDirection();
 
 class Vertex;
 using namespace TechDrawGui;
 using namespace TechDraw;
+using DU = DrawUtil;
 
 //===========================================================================
 // TechDraw_PageDefault
@@ -106,35 +118,34 @@ void CmdTechDrawPageDefault::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     QString templateFileName = Preferences::defaultTemplate();
-
-    std::string PageName = getUniqueObjectName("Page");
-    std::string TemplateName = getUniqueObjectName("Template");
-
     QFileInfo tfi(templateFileName);
     if (tfi.isReadable()) {
         Gui::WaitCursor wc;
         openCommand(QT_TRANSLATE_NOOP("Command", "Drawing create page"));
-        doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawPage', '%s')",
-                  PageName.c_str());
-        doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawSVGTemplate', '%s')",
-                  TemplateName.c_str());
 
-        doCommand(Doc, "App.activeDocument().%s.Template = '%s'", TemplateName.c_str(),
-                  templateFileName.toStdString().c_str());
-        doCommand(Doc, "App.activeDocument().%s.Template = App.activeDocument().%s",
-                  PageName.c_str(), TemplateName.c_str());
+        auto page = dynamic_cast<TechDraw::DrawPage *>
+                        (getDocument()->addObject("TechDraw::DrawPage", "Page"));
+        if (!page) {
+            throw Base::TypeError("CmdTechDrawPageDefault - page not created");
+        }
+        page->translateLabel("DrawPage", "Page", page->getNameInDocument());
+
+        auto svgTemplate = dynamic_cast<TechDraw::DrawSVGTemplate *>
+                               (getDocument()->addObject("TechDraw::DrawSVGTemplate", "Template"));
+        if (!svgTemplate) {
+            throw Base::TypeError("CmdTechDrawPageDefault - template not created");
+        }
+        svgTemplate->translateLabel("DrawSVGTemplate", "Template", svgTemplate->getNameInDocument());
+
+        page->Template.setValue(svgTemplate);
+        auto filespec = DU::cleanFilespecBackslash(Base::Tools::toStdString(templateFileName));
+        svgTemplate->Template.setValue(filespec);
 
         updateActive();
         commitCommand();
-        TechDraw::DrawPage* fp =
-            dynamic_cast<TechDraw::DrawPage*>(getDocument()->getObject(PageName.c_str()));
-        if (!fp) {
-            throw Base::TypeError("CmdTechDrawPageDefault fp not found\n");
-        }
 
-        Gui::ViewProvider* vp =
-            Gui::Application::Instance->getDocument(getDocument())->getViewProvider(fp);
-        TechDrawGui::ViewProviderPage* dvp = dynamic_cast<TechDrawGui::ViewProviderPage*>(vp);
+        TechDrawGui::ViewProviderPage *dvp = dynamic_cast<TechDrawGui::ViewProviderPage *>
+                                                 (Gui::Application::Instance->getViewProvider(page));
         if (dvp) {
             dvp->show();
         }
@@ -171,47 +182,41 @@ void CmdTechDrawPageTemplate::activated(int iMsg)
     QString templateDir = Preferences::defaultTemplateDir();
     QString templateFileName = Gui::FileDialog::getOpenFileName(
         Gui::getMainWindow(), QString::fromUtf8(QT_TR_NOOP("Select a Template File")), templateDir,
-        QString::fromUtf8(QT_TR_NOOP("Template (*.svg *.dxf)")));
+        QString::fromUtf8(QT_TR_NOOP("Template (*.svg)")));
     Gui::FileDialog::setWorkingDirectory(work_dir);// Don't overwrite WD with templateDir
 
     if (templateFileName.isEmpty()) {
         return;
     }
 
-    std::string PageName = getUniqueObjectName("Page");
-    std::string TemplateName = getUniqueObjectName("Template");
-
     QFileInfo tfi(templateFileName);
     if (tfi.isReadable()) {
         Gui::WaitCursor wc;
         openCommand(QT_TRANSLATE_NOOP("Command", "Drawing create page"));
-        doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawPage', '%s')",
-                  PageName.c_str());
 
-        // Create the Template Object to attach to the page
-        doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawSVGTemplate', '%s')",
-                  TemplateName.c_str());
+        auto page = dynamic_cast<TechDraw::DrawPage *>
+                        (getDocument()->addObject("TechDraw::DrawPage", "Page"));
+        if (!page) {
+            throw Base::TypeError("CmdTechDrawPageTemplate - page not created");
+        }
+        page->translateLabel("DrawPage", "Page", page->getNameInDocument());
 
-        //why is "Template" property set twice? -wf
-        // once to set DrawSVGTemplate.Template to OS template file name
-        templateFileName = Base::Tools::escapeEncodeFilename(templateFileName);
-        doCommand(Doc, "App.activeDocument().%s.Template = \"%s\"", TemplateName.c_str(),
-                  templateFileName.toUtf8().constData());
-        // once to set Page.Template to DrawSVGTemplate.Name
-        doCommand(Doc, "App.activeDocument().%s.Template = App.activeDocument().%s",
-                  PageName.c_str(), TemplateName.c_str());
-        // consider renaming DrawSVGTemplate.Template property?
+        auto svgTemplate = dynamic_cast<TechDraw::DrawSVGTemplate *>
+                               (getDocument()->addObject("TechDraw::DrawSVGTemplate", "Template"));
+        if (!svgTemplate) {
+            throw Base::TypeError("CmdTechDrawPageTemplate - template not created");
+        }
+        svgTemplate->translateLabel("DrawSVGTemplate", "Template", svgTemplate->getNameInDocument());
+
+        page->Template.setValue(svgTemplate);
+        auto filespec = DU::cleanFilespecBackslash(Base::Tools::toStdString(templateFileName));
+        svgTemplate->Template.setValue(filespec);
 
         updateActive();
         commitCommand();
-        TechDraw::DrawPage* fp =
-            dynamic_cast<TechDraw::DrawPage*>(getDocument()->getObject(PageName.c_str()));
-        if (!fp) {
-            throw Base::TypeError("CmdTechDrawNewPagePick fp not found\n");
-        }
-        Gui::ViewProvider* vp =
-            Gui::Application::Instance->getDocument(getDocument())->getViewProvider(fp);
-        TechDrawGui::ViewProviderPage* dvp = dynamic_cast<TechDrawGui::ViewProviderPage*>(vp);
+
+        TechDrawGui::ViewProviderPage *dvp = dynamic_cast<TechDrawGui::ViewProviderPage *>
+                                                 (Gui::Application::Instance->getViewProvider(page));
         if (dvp) {
             dvp->show();
         }
@@ -296,7 +301,9 @@ CmdTechDrawView::CmdTechDrawView() : Command("TechDraw_View")
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Insert View");
-    sToolTipText = QT_TR_NOOP("Insert a View");
+    sToolTipText = QT_TR_NOOP("Insert a View in current page.\n"
+        "Selected objects, spreadsheets or Arch WB section planes will be added.\n"
+        "Without a selection, a file browser lets you select a SVG or image file.");
     sWhatsThis = "TechDraw_View";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_View";
@@ -305,28 +312,70 @@ CmdTechDrawView::CmdTechDrawView() : Command("TechDraw_View")
 void CmdTechDrawView::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+    bool viewCreated = false;
     TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
     if (!page) {
         return;
     }
     std::string PageName = page->getNameInDocument();
 
+    // switch to the page if it's not current active window
+    auto* vpp = dynamic_cast<ViewProviderPage*>
+        (Gui::Application::Instance->getViewProvider(page));
+    if (vpp) {
+        vpp->switchToMdiViewPage();
+    }
+
+
     //set projection direction from selected Face
     //use first object with a face selected
-    std::vector<App::DocumentObject*> shapes;
-    std::vector<App::DocumentObject*> xShapes;
+    std::vector<App::DocumentObject*> shapes, xShapes;
     App::DocumentObject* partObj = nullptr;
     std::string faceName;
-    Gui::ResolveMode resolve = Gui::ResolveMode::OldStyleElement;//mystery
-    bool single = false;                                         //mystery
-    auto selection = getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(),
-                                                   resolve, single);
+    auto selection = getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId());
     for (auto& sel : selection) {
         bool is_linked = false;
         auto obj = sel.getObject();
-        if (obj->isDerivedFrom(TechDraw::DrawPage::getClassTypeId())) {
+        if (obj->isDerivedFrom<TechDraw::DrawPage>() || obj->isDerivedFrom<TechDraw::DrawView>()) {
             continue;
         }
+
+        if (obj->isDerivedFrom<Spreadsheet::Sheet>()) {
+            std::string SpreadName = obj->getNameInDocument();
+
+            openCommand(QT_TRANSLATE_NOOP("Command", "Create spreadsheet view"));
+            std::string FeatName = getUniqueObjectName("Sheet");
+            doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewSpreadsheet', '%s')",
+                FeatName.c_str());
+            doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewSpreadsheet', 'Sheet', '%s')",
+                FeatName.c_str(), FeatName.c_str());
+            doCommand(Doc, "App.activeDocument().%s.Source = App.activeDocument().%s", FeatName.c_str(),
+                SpreadName.c_str());
+            doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
+                FeatName.c_str());
+            updateActive();
+            commitCommand();
+            viewCreated = true;
+            continue;
+        }
+        else if (DrawGuiUtil::isArchSection(obj)) {
+            std::string FeatName = getUniqueObjectName("ArchView");
+            std::string SourceName = obj->getNameInDocument();
+            openCommand(QT_TRANSLATE_NOOP("Command", "Create BIM View"));
+            doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewArch', '%s')",
+                FeatName.c_str());
+            doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewArch', 'ArchView', '%s')",
+                FeatName.c_str(), FeatName.c_str());
+            doCommand(Doc, "App.activeDocument().%s.Source = App.activeDocument().%s", FeatName.c_str(),
+                SourceName.c_str());
+            doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
+                FeatName.c_str());
+            updateActive();
+            commitCommand();
+            viewCreated = true;
+            continue;
+        }
+
         if (obj->isDerivedFrom(App::LinkElement::getClassTypeId())
             || obj->isDerivedFrom(App::LinkGroup::getClassTypeId())
             || obj->isDerivedFrom(App::Link::getClassTypeId())) {
@@ -345,7 +394,7 @@ void CmdTechDrawView::activated(int iMsg)
                 if (parent->isDerivedFrom(App::LinkElement::getClassTypeId())
                     || parent->isDerivedFrom(App::LinkGroup::getClassTypeId())
                     || parent->isDerivedFrom(App::Link::getClassTypeId())) {
-                    // We have a link chain from this document to obj, and obj is in another document -> it's an XLink target
+                    // We have a link chain from this document to obj, and obj is in another document -> it is an XLink target
                     is_linked = true;
                 }
             }
@@ -371,59 +420,262 @@ void CmdTechDrawView::activated(int iMsg)
         }
     }
 
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/TechDraw");
     if (shapes.empty() && xShapes.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("No Shapes, Groups or Links in this selection"));
+        if (!viewCreated) {
+            // If nothing was selected, then we offer to insert SVG or Images files.
+            bool dontShowAgain = hGrp->GetBool("DontShowInsertFileMessage", false);
+            if (!dontShowAgain) {
+                auto msgText = QObject::tr("If you want to insert a view from existing objects, please select them before invoking this tool. Without a selection, a file browser will open, to insert a SVG or image file.");
+                QMessageBox msgBox;
+                msgBox.setText(msgText);
+                auto dontShowMsg = QObject::tr("Do not show this message again");
+                QCheckBox dontShowCheckBox(dontShowMsg, &msgBox);
+                msgBox.setCheckBox(&dontShowCheckBox);
+                QPushButton* okButton = msgBox.addButton(QMessageBox::Ok);
+
+                msgBox.exec();
+
+                if (msgBox.clickedButton() == okButton && dontShowCheckBox.isChecked()) {
+                    // Save the preference to not show the message again
+                    hGrp->SetBool("DontShowInsertFileMessage", true);
+                }
+            }
+
+            QString filename = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
+                QObject::tr("Select a SVG or Image file to open"),
+                Preferences::defaultSymbolDir(),
+                QString::fromLatin1("%1 (*.svg *.svgz *.jpg *.jpeg *.png *.bmp);;%2 (*.*)")
+                .arg(QObject::tr("SVG or Image files"), QObject::tr("All Files")));
+
+            if (!filename.isEmpty()) {
+                if (filename.endsWith(QString::fromLatin1(".svg"), Qt::CaseInsensitive)
+                    || filename.endsWith(QString::fromLatin1(".svgz"), Qt::CaseInsensitive)) {
+                    std::string FeatName = getUniqueObjectName("Symbol");
+                    filename = Base::Tools::escapeEncodeFilename(filename);
+                    auto filespec = DU::cleanFilespecBackslash(Base::Tools::toStdString(filename));
+                    openCommand(QT_TRANSLATE_NOOP("Command", "Create Symbol"));
+                    doCommand(Doc, "f = open(\"%s\", 'r')", filespec.c_str());
+                    doCommand(Doc, "svg = f.read()");
+                    doCommand(Doc, "f.close()");
+                    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewSymbol', '%s')",
+                        FeatName.c_str());
+                    doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewSymbol', 'Symbol', '%s')",
+                        FeatName.c_str(), FeatName.c_str());
+                    doCommand(Doc, "App.activeDocument().%s.Symbol = svg", FeatName.c_str());
+                    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
+                        FeatName.c_str());
+                }
+                else {
+                    std::string FeatName = getUniqueObjectName("Image");
+                    filename = Base::Tools::escapeEncodeFilename(filename);
+                    auto filespec = DU::cleanFilespecBackslash(Base::Tools::toStdString(filename));
+                    openCommand(QT_TRANSLATE_NOOP("Command", "Create Image"));
+                    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewImage', '%s')", FeatName.c_str());
+                    doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewImage', 'Image', '%s')",
+                        FeatName.c_str(), FeatName.c_str());
+                    doCommand(Doc, "App.activeDocument().%s.ImageFile = '%s'", FeatName.c_str(), filespec.c_str());
+                    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
+                    updateActive();
+                    commitCommand();
+                }
+
+                updateActive();
+                commitCommand();
+            }
+        }
         return;
     }
-
-    Base::Vector3d projDir;
 
     Gui::WaitCursor wc;
     openCommand(QT_TRANSLATE_NOOP("Command", "Create view"));
     std::string FeatName = getUniqueObjectName("View");
-    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewPart', '%s')",
-              FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawProjGroupItem', '%s')",
+        FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawProjGroupItem', 'View', '%s')",
+        FeatName.c_str(), FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
-              FeatName.c_str());
+        FeatName.c_str());
 
     App::DocumentObject* docObj = getDocument()->getObject(FeatName.c_str());
-    TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(docObj);
+    auto* dvp = dynamic_cast<TechDraw::DrawViewPart*>(docObj);
     if (!dvp) {
         throw Base::TypeError("CmdTechDrawView DVP not found\n");
     }
     dvp->Source.setValues(shapes);
     dvp->XSource.setValues(xShapes);
-    if (!faceName.empty()) {
-        std::pair<Base::Vector3d, Base::Vector3d> dirs =
-            DrawGuiUtil::getProjDirFromFace(partObj, faceName);
-        projDir = dirs.first;
-        getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
-        doCommand(Doc, "App.activeDocument().%s.Direction = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-                  FeatName.c_str(), projDir.x, projDir.y, projDir.z);
-        //do something clever with dirs.second;
-        //        dvp->setXDir(dirs.second);
-        doCommand(Doc, "App.activeDocument().%s.XDirection = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-                  FeatName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
-        doCommand(Doc, "App.activeDocument().%s.recompute()", FeatName.c_str());
-        getDocument()->setStatus(App::Document::Status::SkipRecompute, false);
-    }
-    else {
-        std::pair<Base::Vector3d, Base::Vector3d> dirs = DrawGuiUtil::get3DDirAndRot();
-        projDir = dirs.first;
-        getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
-        doCommand(Doc, "App.activeDocument().%s.Direction = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-                  FeatName.c_str(), projDir.x, projDir.y, projDir.z);
-        doCommand(Doc, "App.activeDocument().%s.XDirection = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-                  FeatName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
-        //        dvp->setXDir(dirs.second);
-        getDocument()->setStatus(App::Document::Status::SkipRecompute, false);
-        doCommand(Doc, "App.activeDocument().%s.recompute()", FeatName.c_str());
-    }
+
+    getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
+    auto dirs = viewDirection();
+    doCommand(Doc,
+              "App.activeDocument().%s.Direction = FreeCAD.Vector(%.12f, %.12f, %.12f)",
+              FeatName.c_str(), dirs.first.x, dirs.first.y, dirs.first.z);
+    doCommand(Doc,
+              "App.activeDocument().%s.RotationVector = FreeCAD.Vector(%.12f, %.12f, %.12f)",
+              FeatName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
+    doCommand(Doc,
+              "App.activeDocument().%s.XDirection = FreeCAD.Vector(%.12f, %.12f, %.12f)",
+              FeatName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
+
+    getDocument()->setStatus(App::Document::Status::SkipRecompute, false);
+    doCommand(Doc, "App.activeDocument().%s.recompute()", FeatName.c_str());
     commitCommand();
+
+    // create the rest of the desired views
+    Gui::Control().showDialog(new TaskDlgProjGroup(dvp, true));
 }
 
 bool CmdTechDrawView::isActive() { return DrawGuiUtil::needPage(this); }
+
+//===========================================================================
+// TechDraw_BrokenView
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawBrokenView)
+
+CmdTechDrawBrokenView::CmdTechDrawBrokenView()
+  : Command("TechDraw_BrokenView")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Insert Broken View");
+    sToolTipText    = QT_TR_NOOP("Insert Broken View");
+    sWhatsThis      = "TechDraw_BrokenView";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "actions/TechDraw_BrokenView";
+}
+
+void CmdTechDrawBrokenView::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+    if (!page) {
+        return;
+    }
+    std::string PageName = page->getNameInDocument();
+
+    // get shape objects from a base view
+    std::vector<App::DocumentObject*> shapesFromBase;
+    std::vector<App::DocumentObject*> xShapesFromBase;
+    std::vector<App::DocumentObject*> baseViews =
+        getSelection().getObjectsOfType(TechDraw::DrawViewPart::getClassTypeId());
+    TechDraw::DrawViewPart* dvp{nullptr};
+    if (!baseViews.empty()) {
+        dvp = static_cast<TechDraw::DrawViewPart*>(*baseViews.begin());
+        shapesFromBase = dvp->Source.getValues();
+        xShapesFromBase = dvp->XSource.getValues();
+    }
+
+    auto doc = getDocument();
+    if (dvp) {
+        doc = dvp->getDocument();
+    }
+
+    // get the shape objects from the selection
+    std::vector<App::DocumentObject*> shapes;
+    std::vector<App::DocumentObject*> xShapes;
+    App::DocumentObject* faceObj = nullptr;
+    std::string faceName;
+    getSelectedShapes(this, shapes, xShapes, faceObj, faceName);
+
+    // we need either a base view (dvp) or some shape objects in the selection
+    if (!dvp && (shapes.empty() && xShapes.empty())) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Empty selection"),
+            QObject::tr("Please select objects to break or a base view and break definition objects."));
+        return;
+    }
+
+    shapes.insert(shapes.end(), shapesFromBase.begin(), shapesFromBase.end());
+    shapes.insert(xShapes.end(), xShapesFromBase.begin(), xShapesFromBase.end());
+
+
+    // pick the Break objects out of the selected pile
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(
+        nullptr, App::DocumentObject::getClassTypeId(), Gui::ResolveMode::NoResolve);
+
+    std::vector<App::DocumentObject*> breakObjects;
+    for (auto& selObj : selection) {
+        auto temp = selObj.getObject();
+        // a sketch outside a body is returned as an independent object in the selection
+        if (selObj.getSubNames().empty()) {
+            if (DrawBrokenView::isBreakObject(*temp)) {
+                breakObjects.push_back(selObj.getObject());
+            }
+            continue;
+        }
+        // a sketch inside a body is returned as body + subelement, so we have to search through
+        // subnames to find it.  This may(?) apply to App::Part and Group also?
+        auto subname = selObj.getSubNames().front();
+        if (subname.back() == '.') {
+            subname = subname.substr(0, subname.length() - 1);
+            auto objects = doc->getObjects();
+            for (auto& obj : objects) {
+                std::string objname{obj->getNameInDocument()};
+                if (subname == objname  &&
+                    DrawBrokenView::isBreakObject(*obj)) {
+                    breakObjects.push_back(obj);
+                }
+            }
+        }
+    }
+    if (breakObjects.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("No Break objects found in this selection"));
+        return;
+    }
+
+    // remove Break objects from shape pile
+    shapes = DrawBrokenView::removeBreakObjects(breakObjects, shapes);
+    xShapes = DrawBrokenView::removeBreakObjects(breakObjects, xShapes);
+    if (shapes.empty() &&
+        xShapes.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("No Shapes, Groups or Links in this selection"));
+        return;
+    }
+
+    Gui::WaitCursor wc;
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create broken view"));
+    getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
+    std::string FeatName = getUniqueObjectName("BrokenView");
+    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawBrokenView','%s')", FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
+
+    App::DocumentObject* docObj = getDocument()->getObject(FeatName.c_str());
+    TechDraw::DrawBrokenView* dbv = dynamic_cast<TechDraw::DrawBrokenView*>(docObj);
+    if (!dbv) {
+        throw Base::TypeError("CmdTechDrawBrokenView DBV not found\n");
+    }
+    dbv->Source.setValues(shapes);
+    dbv->XSource.setValues(xShapes);
+    dbv->Breaks.setValues(breakObjects);
+
+    //set projection direction from selected Face
+    std::pair<Base::Vector3d, Base::Vector3d> dirs;
+    if (faceName.size()) {
+        dirs = DrawGuiUtil::getProjDirFromFace(faceObj, faceName);
+    }
+    else {
+        dirs = DrawGuiUtil::get3DDirAndRot();
+    }
+
+    Base::Vector3d projDir = dirs.first;
+    doCommand(Doc, "App.activeDocument().%s.Direction = FreeCAD.Vector(%.6f,%.6f,%.6f)",
+              FeatName.c_str(), projDir.x, projDir.y, projDir.z);
+    doCommand(Doc, "App.activeDocument().%s.XDirection = FreeCAD.Vector(%.6f,%.6f,%.6f)",
+                  FeatName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
+    getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
+
+    commitCommand();
+
+    dbv->recomputeFeature();
+}
+
+bool CmdTechDrawBrokenView::isActive(void)
+{
+    return DrawGuiUtil::needPage(this);
+}
+
 
 //===========================================================================
 // TechDraw_ActiveView
@@ -590,11 +842,6 @@ bool CmdTechDrawSectionView::isActive()
 
 void execSimpleSection(Gui::Command* cmd)
 {
-    TechDraw::DrawPage* page = DrawGuiUtil::findPage(cmd);
-    if (!page) {
-        return;
-    }
-
     std::vector<App::DocumentObject*> baseObj =
         cmd->getSelection().getObjectsOfType(TechDraw::DrawViewPart::getClassTypeId());
     if (baseObj.empty()) {
@@ -602,6 +849,12 @@ void execSimpleSection(Gui::Command* cmd)
                              QObject::tr("Select at least 1 DrawViewPart object as Base."));
         return;
     }
+
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(cmd);
+    if (!page) {
+        return;
+    }
+
     TechDraw::DrawViewPart* dvp = static_cast<TechDraw::DrawViewPart*>(*baseObj.begin());
     Gui::Control().showDialog(new TaskDlgSectionView(dvp));
 
@@ -619,8 +872,8 @@ CmdTechDrawComplexSection::CmdTechDrawComplexSection() : Command("TechDraw_Compl
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert Complex Section");
-    sToolTipText = QT_TR_NOOP("Insert a Complex Section");
+    sMenuText = QT_TR_NOOP("Insert Complex Section View");
+    sToolTipText = QT_TR_NOOP("Insert a Complex Section View");
     sWhatsThis = "TechDraw_ComplexSection";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_ComplexSection";
@@ -645,12 +898,6 @@ bool CmdTechDrawComplexSection::isActive() { return DrawGuiUtil::needPage(this);
 //for the dialog is more involved that simple section
 void execComplexSection(Gui::Command* cmd)
 {
-    TechDraw::DrawPage* page = DrawGuiUtil::findPage(cmd);
-    if (!page) {
-        return;
-    }
-    std::string PageName = page->getNameInDocument();
-
     TechDraw::DrawViewPart* baseView(nullptr);
     std::vector<App::DocumentObject*> shapes;
     std::vector<App::DocumentObject*> xShapes;
@@ -695,7 +942,7 @@ void execComplexSection(Gui::Command* cmd)
                 if (parent->isDerivedFrom(App::LinkElement::getClassTypeId())
                     || parent->isDerivedFrom(App::LinkGroup::getClassTypeId())
                     || parent->isDerivedFrom(App::Link::getClassTypeId())) {
-                    // We have a link chain from this document to obj, and obj is in another document -> it's an XLink target
+                    // We have a link chain from this document to obj, and obj is in another document -> it is an XLink target
                     is_linked = true;
                 }
             }
@@ -732,6 +979,11 @@ void execComplexSection(Gui::Command* cmd)
         return;
     }
 
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(cmd);
+    if (!page) {
+        return;
+    }
+
     Gui::Control().showDialog(
         new TaskDlgComplexSection(page, baseView, shapes, xShapes, profileObject, profileSubs));
 }
@@ -756,10 +1008,6 @@ CmdTechDrawDetailView::CmdTechDrawDetailView() : Command("TechDraw_DetailView")
 void CmdTechDrawDetailView::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
-    if (!page) {
-        return;
-    }
 
     std::vector<App::DocumentObject*> baseObj =
         getSelection().getObjectsOfType(TechDraw::DrawViewPart::getClassTypeId());
@@ -804,13 +1052,6 @@ CmdTechDrawProjectionGroup::CmdTechDrawProjectionGroup() : Command("TechDraw_Pro
 void CmdTechDrawProjectionGroup::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
-    if (!page) {
-        return;
-    }
-    std::string PageName = page->getNameInDocument();
-    //    auto inlist = page->getInListEx(true);
-    //    inlist.insert(page);
 
     //set projection direction from selected Face
     //use first object with a face selected
@@ -846,7 +1087,7 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
                 if (parent->isDerivedFrom(App::LinkElement::getClassTypeId())
                     || parent->isDerivedFrom(App::LinkGroup::getClassTypeId())
                     || parent->isDerivedFrom(App::Link::getClassTypeId())) {
-                    // We have a link chain from this document to obj, and obj is in another document -> it's an XLink target
+                    // We have a link chain from this document to obj, and obj is in another document -> it is an XLink target
                     is_linked = true;
                 }
             }
@@ -875,6 +1116,12 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
         return;
     }
 
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+    if (!page) {
+        return;
+    }
+    std::string PageName = page->getNameInDocument();
+
     Base::Vector3d projDir;
     Gui::WaitCursor wc;
 
@@ -892,37 +1139,21 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
     multiView->XSource.setValues(xShapes);
     doCommand(Doc, "App.activeDocument().%s.addProjection('Front')", multiViewName.c_str());
 
-    if (!faceName.empty()) {
-        std::pair<Base::Vector3d, Base::Vector3d> dirs =
-            DrawGuiUtil::getProjDirFromFace(partObj, faceName);
-        getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
-        doCommand(Doc,
-                  "App.activeDocument().%s.Anchor.Direction = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-                  multiViewName.c_str(), dirs.first.x, dirs.first.y, dirs.first.z);
-        doCommand(
-            Doc,
-            "App.activeDocument().%s.Anchor.RotationVector = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-            multiViewName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
-        doCommand(Doc,
-                  "App.activeDocument().%s.Anchor.XDirection = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-                  multiViewName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
-        getDocument()->setStatus(App::Document::Status::SkipRecompute, false);
-    }
-    else {
-        std::pair<Base::Vector3d, Base::Vector3d> dirs = DrawGuiUtil::get3DDirAndRot();
-        getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
-        doCommand(Doc,
-                  "App.activeDocument().%s.Anchor.Direction = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-                  multiViewName.c_str(), dirs.first.x, dirs.first.y, dirs.first.z);
-        doCommand(
-            Doc,
-            "App.activeDocument().%s.Anchor.RotationVector = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-            multiViewName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
-        doCommand(Doc,
-                  "App.activeDocument().%s.Anchor.XDirection = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-                  multiViewName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
-        getDocument()->setStatus(App::Document::Status::SkipRecompute, false);
-    }
+    std::pair<Base::Vector3d, Base::Vector3d> dirs = !faceName.empty() ?
+        DrawGuiUtil::getProjDirFromFace(partObj, faceName)
+        : DrawGuiUtil::get3DDirAndRot();
+
+    getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
+    doCommand(Doc,
+        "App.activeDocument().%s.Anchor.Direction = FreeCAD.Vector(%.12f, %.12f, %.12f)",
+        multiViewName.c_str(), dirs.first.x, dirs.first.y, dirs.first.z);
+    doCommand(Doc,
+        "App.activeDocument().%s.Anchor.RotationVector = FreeCAD.Vector(%.12f, %.12f, %.12f)",
+        multiViewName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
+    doCommand(Doc,
+        "App.activeDocument().%s.Anchor.XDirection = FreeCAD.Vector(%.12f, %.12f, %.12f)",
+        multiViewName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
+    getDocument()->setStatus(App::Document::Status::SkipRecompute, false);
 
     doCommand(Doc, "App.activeDocument().%s.Anchor.recompute()", multiViewName.c_str());
     commitCommand();
@@ -987,8 +1218,8 @@ bool _checkDirectPlacement(const QGIView* view, const std::vector<std::string>& 
 {
     // Let's see, if we can help speed up the placement of the balloon:
     // As of now we support:
-    //     Single selected vertex: place the ballon tip end here
-    //     Single selected edge:   place the ballon tip at its midpoint (suggested placement for e.g. chamfer dimensions)
+    //     Single selected vertex: place the balloon tip end here
+    //     Single selected edge:   place the balloon tip at its midpoint (suggested placement for e.g. chamfer dimensions)
     //
     // Single selected faces are currently not supported, but maybe we could in this case use the center of mass?
 
@@ -1238,7 +1469,7 @@ void CmdTechDrawClipGroupRemove::activated(int iMsg)
     auto view(static_cast<TechDraw::DrawView*>(dObj.front()));
 
     TechDraw::DrawPage* page = view->findParentPage();
-    const std::vector<App::DocumentObject*> pViews = page->Views.getValues();
+    const std::vector<App::DocumentObject*> pViews = page->getViews();
     TechDraw::DrawViewClip* clip(nullptr);
     for (auto& v : pViews) {
         clip = dynamic_cast<TechDraw::DrawViewClip*>(v);
@@ -1309,19 +1540,23 @@ void CmdTechDrawSymbol::activated(int iMsg)
 
     // Reading an image
     QString filename = Gui::FileDialog::getOpenFileName(
-        Gui::getMainWindow(), QObject::tr("Choose an SVG file to open"), QString(),
+        Gui::getMainWindow(), QObject::tr("Choose an SVG file to open"),
+        Preferences::defaultSymbolDir(),
         QString::fromLatin1("%1 (*.svg *.svgz);;%2 (*.*)")
             .arg(QObject::tr("Scalable Vector Graphic"), QObject::tr("All Files")));
 
     if (!filename.isEmpty()) {
         std::string FeatName = getUniqueObjectName("Symbol");
         filename = Base::Tools::escapeEncodeFilename(filename);
+        auto filespec = DU::cleanFilespecBackslash(Base::Tools::toStdString(filename));
         openCommand(QT_TRANSLATE_NOOP("Command", "Create Symbol"));
-        doCommand(Doc, "f = open(\"%s\", 'r')", (const char*)filename.toUtf8());
+        doCommand(Doc, "f = open(\"%s\", 'r')", (const char*)filespec.c_str());
         doCommand(Doc, "svg = f.read()");
         doCommand(Doc, "f.close()");
         doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewSymbol', '%s')",
                   FeatName.c_str());
+        doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewSymbol', 'Symbol', '%s')",
+              FeatName.c_str(), FeatName.c_str());
         doCommand(Doc, "App.activeDocument().%s.Symbol = svg", FeatName.c_str());
         doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
                   FeatName.c_str());
@@ -1352,11 +1587,6 @@ CmdTechDrawDraftView::CmdTechDrawDraftView() : Command("TechDraw_DraftView")
 void CmdTechDrawDraftView::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
-    if (!page) {
-        return;
-    }
-    std::string PageName = page->getNameInDocument();
 
     std::vector<App::DocumentObject*> objects =
         getSelection().getObjectsOfType(App::DocumentObject::getClassTypeId());
@@ -1367,14 +1597,26 @@ void CmdTechDrawDraftView::activated(int iMsg)
         return;
     }
 
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+    if (!page) {
+        return;
+    }
+    std::string PageName = page->getNameInDocument();
+
     std::pair<Base::Vector3d, Base::Vector3d> dirs = DrawGuiUtil::get3DDirAndRot();
-    for (std::vector<App::DocumentObject*>::iterator it = objects.begin(); it != objects.end();
-         ++it) {
+    for (auto* obj : objects) {
+         if (obj->isDerivedFrom(TechDraw::DrawPage::getClassTypeId()) ||
+             obj->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+            // skip over TechDraw objects as they are not valid subjects for a DraftView
+            continue;
+        }
         std::string FeatName = getUniqueObjectName("DraftView");
-        std::string SourceName = (*it)->getNameInDocument();
+        std::string SourceName = obj->getNameInDocument();
         openCommand(QT_TRANSLATE_NOOP("Command", "Create DraftView"));
         doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewDraft', '%s')",
                   FeatName.c_str());
+        doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewDraft', 'DraftView', '%s')",
+              FeatName.c_str(), FeatName.c_str());
         doCommand(Doc, "App.activeDocument().%s.Source = App.activeDocument().%s", FeatName.c_str(),
                   SourceName.c_str());
         doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
@@ -1398,8 +1640,8 @@ CmdTechDrawArchView::CmdTechDrawArchView() : Command("TechDraw_ArchView")
 {
     // setting the Gui eye-candy
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert Arch Workbench Object");
-    sToolTipText = QT_TR_NOOP("Insert a View of a Section Plane from Arch Workbench");
+    sMenuText = QT_TR_NOOP("Insert BIM Workbench Object");
+    sToolTipText = QT_TR_NOOP("Insert a View of a Section Plane from BIM Workbench");
     sWhatsThis = "TechDraw_NewArch";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_ArchView";
@@ -1408,18 +1650,17 @@ CmdTechDrawArchView::CmdTechDrawArchView() : Command("TechDraw_ArchView")
 void CmdTechDrawArchView::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
-    if (!page) {
-        return;
-    }
-    std::string PageName = page->getNameInDocument();
-
 
     const std::vector<App::DocumentObject*> objects =
         getSelection().getObjectsOfType(App::DocumentObject::getClassTypeId());
     App::DocumentObject* archObject = nullptr;
     int archCount = 0;
     for (auto& obj : objects) {
+        if (obj->isDerivedFrom(TechDraw::DrawPage::getClassTypeId()) ||
+            obj->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+            // skip over TechDraw objects as they are not valid subjects for a ArchView
+            continue;
+        }
         if (DrawGuiUtil::isArchSection(obj)) {
             archCount++;
             archObject = obj;
@@ -1427,21 +1668,29 @@ void CmdTechDrawArchView::activated(int iMsg)
     }
     if (archCount > 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Please select only 1 Arch Section."));
+                             QObject::tr("Please select only 1 BIM Section."));
         return;
     }
 
     if (!archObject) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("No Arch Sections in selection."));
+                             QObject::tr("No BIM Sections in selection."));
         return;
     }
+
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+    if (!page) {
+        return;
+    }
+    std::string PageName = page->getNameInDocument();
 
     std::string FeatName = getUniqueObjectName("ArchView");
     std::string SourceName = archObject->getNameInDocument();
     openCommand(QT_TRANSLATE_NOOP("Command", "Create ArchView"));
     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewArch', '%s')",
               FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewArch', 'ArchView', '%s')",
+              FeatName.c_str(), FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.Source = App.activeDocument().%s", FeatName.c_str(),
               SourceName.c_str());
     doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
@@ -1491,6 +1740,8 @@ void CmdTechDrawSpreadsheetView::activated(int iMsg)
     std::string FeatName = getUniqueObjectName("Sheet");
     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewSpreadsheet', '%s')",
               FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewSpreadsheet', 'Sheet', '%s')",
+              FeatName.c_str(), FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.Source = App.activeDocument().%s", FeatName.c_str(),
               SpreadName.c_str());
     doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
@@ -1580,7 +1831,7 @@ void CmdTechDrawExportPageDXF::activated(int iMsg)
         return;
     }
 
-    std::vector<App::DocumentObject*> views = page->Views.getValues();
+    std::vector<App::DocumentObject*> views = page->getViews();
     for (auto& v : views) {
         if (v->isDerivedFrom(TechDraw::DrawViewArch::getClassTypeId())) {
             QMessageBox::StandardButton rc = QMessageBox::question(
@@ -1607,11 +1858,12 @@ void CmdTechDrawExportPageDXF::activated(int iMsg)
     }
 
     std::string PageName = page->getNameInDocument();
-    openCommand(QT_TRANSLATE_NOOP("Command", "Save page to dxf"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Save page to DXF"));
     doCommand(Doc, "import TechDraw");
     fileName = Base::Tools::escapeEncodeFilename(fileName);
+    auto filespec = DU::cleanFilespecBackslash(Base::Tools::toStdString(fileName));
     doCommand(Doc, "TechDraw.writeDXFPage(App.activeDocument().%s, u\"%s\")", PageName.c_str(),
-              (const char*)fileName.toUtf8());
+              filespec.c_str());
     commitCommand();
 }
 
@@ -1672,4 +1924,108 @@ void CreateTechDrawCommands()
     rcCmdMgr.addCommand(new CmdTechDrawSpreadsheetView());
     rcCmdMgr.addCommand(new CmdTechDrawBalloon());
     rcCmdMgr.addCommand(new CmdTechDrawProjectShape());
+    rcCmdMgr.addCommand(new CmdTechDrawBrokenView());
+
 }
+
+//****************************************
+
+
+//! extract the selected shapes and xShapes and determine if a face has been
+//! selected to define the projection direction
+void getSelectedShapes(Gui::Command* cmd,
+                      std::vector<App::DocumentObject*>& shapes,
+                      std::vector<App::DocumentObject*>& xShapes,
+                      App::DocumentObject* faceObj,
+                      std::string& faceName)
+{
+    Gui::ResolveMode resolve = Gui::ResolveMode::OldStyleElement;//mystery
+    bool single = false;                                         //mystery
+    auto selection = cmd->getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(),
+                                                   resolve, single);
+    for (auto& sel : selection) {
+        bool is_linked = false;
+        auto obj = sel.getObject();
+        if (obj->isDerivedFrom(TechDraw::DrawPage::getClassTypeId())) {
+            continue;
+        }
+        if (obj->isDerivedFrom(App::LinkElement::getClassTypeId())
+            || obj->isDerivedFrom(App::LinkGroup::getClassTypeId())
+            || obj->isDerivedFrom(App::Link::getClassTypeId())) {
+            is_linked = true;
+        }
+        // If parent of the obj is a link to another document, we possibly need to treat non-link obj as linked, too
+        // 1st, is obj in another document?
+        if (obj->getDocument() != cmd->getDocument()) {
+            std::set<App::DocumentObject*> parents = obj->getInListEx(true);
+            for (auto& parent : parents) {
+                // Only consider parents in the current document, i.e. possible links in this View's document
+                if (parent->getDocument() != cmd->getDocument()) {
+                    continue;
+                }
+                // 2nd, do we really have a link to obj?
+                if (parent->isDerivedFrom(App::LinkElement::getClassTypeId())
+                    || parent->isDerivedFrom(App::LinkGroup::getClassTypeId())
+                    || parent->isDerivedFrom(App::Link::getClassTypeId())) {
+                    // We have a link chain from this document to obj, and obj is in another document -> it is an XLink target
+                    is_linked = true;
+                }
+            }
+        }
+        if (is_linked) {
+            xShapes.push_back(obj);
+            continue;
+        }
+        //not a Link and not null.  assume to be drawable.  Undrawables will be
+        // skipped later.
+        shapes.push_back(obj);
+        if (faceObj) {
+            continue;
+        }
+        //don't know if this works for an XLink
+        for (auto& sub : sel.getSubNames()) {
+            if (TechDraw::DrawUtil::getGeomTypeFromName(sub) == "Face") {
+                faceName = sub;
+                //
+                faceObj = obj;
+                break;
+            }
+        }
+    }
+}
+
+std::pair<Base::Vector3d, Base::Vector3d> viewDirection()
+{
+    if (!Preferences::useCameraDirection()) {
+        return { Base::Vector3d(0, -1, 0), Base::Vector3d(1, 0, 0) };
+    }
+
+    auto faceInfo = faceFromSelection();
+    if (faceInfo.first) {
+        return DrawGuiUtil::getProjDirFromFace(faceInfo.first, faceInfo.second);
+    }
+
+    return DrawGuiUtil::get3DDirAndRot();
+}
+
+std::pair<App::DocumentObject*, std::string> faceFromSelection()
+{
+    auto selection = Gui::Selection().getSelectionEx(
+        nullptr, App::DocumentObject::getClassTypeId(), Gui::ResolveMode::NoResolve);
+
+    if (selection.empty()) {
+        return { nullptr, "" };
+    }
+
+    for (auto& sel : selection) {
+        for (auto& sub : sel.getSubNames()) {
+            if (TechDraw::DrawUtil::getGeomTypeFromName(sub) == "Face") {
+                return { sel.getObject(), sub };
+            }
+        }
+    }
+
+    return { nullptr, "" };
+}
+
+

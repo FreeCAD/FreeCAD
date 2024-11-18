@@ -30,8 +30,7 @@
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-import draftutils.utils as utils
-
+from draftutils import params
 from draftobjects.base import DraftObject
 
 
@@ -69,7 +68,7 @@ class BezCurve(DraftObject):
                 "The area of this object")
         obj.addProperty("App::PropertyArea", "Area", "Draft", _tip)
 
-        obj.MakeFace = utils.get_param("fillmode", True)
+        obj.MakeFace = params.get_param("fillmode")
         obj.Closed = False
         obj.Degree = 3
         obj.Continuity = []
@@ -134,15 +133,15 @@ class BezCurve(DraftObject):
         import Part
         plm = fp.Placement
         if fp.Points:
-            startpoint=fp.Points[0]
+            startpoint = fp.Points[0]
             edges = []
             for segpoles in self._segpoleslst(fp):
-#                if len(segpoles) == fp.Degree # would skip additional poles
-                 c = Part.BezierCurve() #last segment may have lower degree
-                 c.increase(len(segpoles))
-                 c.setPoles([startpoint]+segpoles)
-                 edges.append(Part.Edge(c))
-                 startpoint = segpoles[-1]
+#               if len(segpoles) == fp.Degree # would skip additional poles
+                c = Part.BezierCurve() #last segment may have lower degree
+                c.increase(len(segpoles))
+                c.setPoles([startpoint]+segpoles)
+                edges.append(Part.Edge(c))
+                startpoint = segpoles[-1]
             w = Part.Wire(edges)
             if fp.Closed and w.isClosed():
                 try:

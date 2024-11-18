@@ -43,11 +43,10 @@ namespace SIM { namespace Coin3D { namespace Quarter {
 
 class QUARTER_DLL_API Keyboard : public InputDevice {
 public:
-  Keyboard(QuarterWidget* quarter);
-  Keyboard();
-  virtual ~Keyboard();
+  explicit Keyboard(QuarterWidget* quarter);
+  ~Keyboard() override;
 
-  virtual const SoEvent * translateEvent(QEvent * event);
+  const SoEvent * translateEvent(QEvent * event) override;
 
 private:
   friend class KeyboardP;

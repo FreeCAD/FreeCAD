@@ -24,66 +24,106 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <cmath> //OvG: Required for log10
-# include <Adaptor3d_IsoCurve.hxx>
-# include <BRep_Tool.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <BRepGProp.hxx>
-# include <BRepGProp_Face.hxx>
-# include <BRepClass_FaceClassifier.hxx>
-# include <GCPnts_AbscissaPoint.hxx>
-# include <Geom_Line.hxx>
-# include <Geom_Plane.hxx>
-# include <GeomAPI_IntCS.hxx>
-# include <GeomAPI_ProjectPointOnSurf.hxx>
-# include <gp_Cylinder.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Pnt.hxx>
-# include <gp_Vec.hxx>
-# include <GProp_GProps.hxx>
-# include <Precision.hxx>
-# include <Standard_Version.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Vertex.hxx>
-# if OCC_VERSION_HEX < 0x070600
-#  include <Adaptor3d_HSurface.hxx>
-#  include <BRepAdaptor_HSurface.hxx>
-# endif
+#include <Adaptor3d_IsoCurve.hxx>
+#include <BRepAdaptor_CompCurve.hxx>
+#include <BRepAdaptor_Curve.hxx>
+#include <BRepAdaptor_Surface.hxx>
+#include <BRepBndLib.hxx>
+#include <BRepClass_FaceClassifier.hxx>
+#include <BRepGProp.hxx>
+#include <BRepGProp_Face.hxx>
+#include <BRep_Tool.hxx>
+#include <BRepTools.hxx>
+#include <GCPnts_AbscissaPoint.hxx>
+#include <GProp_GProps.hxx>
+#include <GeomAPI_IntCS.hxx>
+#include <GeomAPI_ProjectPointOnSurf.hxx>
+#include <Geom_Line.hxx>
+#include <Geom_Plane.hxx>
+#include <Precision.hxx>
+#include <Standard_Version.hxx>
+#include <ShapeAnalysis_Surface.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Vertex.hxx>
+#include <cmath>  //OvG: Required for log10
+#include <gp_Cylinder.hxx>
+#include <gp_Pln.hxx>
+#include <gp_Pnt.hxx>
+#include <gp_Vec.hxx>
+#if OCC_VERSION_HEX < 0x070600
+#include <Adaptor3d_HSurface.hxx>
+#include <BRepAdaptor_HSurface.hxx>
+#endif
 #endif
 
+#include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 #include <App/FeaturePythonPyImp.h>
 #include <App/OriginFeature.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/Tools.h>
 
 #include "FemConstraint.h"
 #include "FemTools.h"
 
 
 using namespace Fem;
+namespace sp = std::placeholders;
 
 #if OCC_VERSION_HEX >= 0x070600
 using Adaptor3d_HSurface = Adaptor3d_Surface;
 using BRepAdaptor_HSurface = BRepAdaptor_Surface;
 #endif
 
+static const App::PropertyFloatConstraint::Constraints scaleConstraint = {0.0, DBL_MAX, 0.1};
+
 PROPERTY_SOURCE(Fem::Constraint, App::DocumentObject)
 
 Constraint::Constraint()
+    : sizeFactor {1}
 {
-    ADD_PROPERTY_TYPE(References, (nullptr, nullptr), "Constraint", (App::PropertyType)(App::Prop_None), "Elements where the constraint is applied");
-    ADD_PROPERTY_TYPE(NormalDirection, (Base::Vector3d(0, 0, 1)), "Constraint", App::PropertyType(App::Prop_ReadOnly | App::Prop_Output), "Normal direction pointing outside of solid");
-    ADD_PROPERTY_TYPE(Scale, (1), "Base", App::PropertyType(App::Prop_Output), "Scale used for drawing constraints"); //OvG: Add scale parameter inherited by all derived constraints
+    ADD_PROPERTY_TYPE(References,
+                      (nullptr, nullptr),
+                      "Constraint",
+                      (App::PropertyType)(App::Prop_None),
+                      "Elements where the constraint is applied");
+    ADD_PROPERTY_TYPE(NormalDirection,
+                      (Base::Vector3d(0, 0, 1)),
+                      "Constraint",
+                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+                      "Normal direction pointing outside of solid");
+    ADD_PROPERTY_TYPE(Scale,
+                      (1),
+                      "Constraint",
+                      App::PropertyType(App::Prop_None),
+                      "Scale used for drawing constraints");
+    ADD_PROPERTY_TYPE(Points,
+                      (Base::Vector3d()),
+                      "Constraint",
+                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output | App::Prop_Hidden),
+                      "Points where symbols are drawn");
+    ADD_PROPERTY_TYPE(Normals,
+                      (Base::Vector3d()),
+                      "Constraint",
+                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output | App::Prop_Hidden),
+                      "Normals where symbols are drawn");
+
+    Scale.setConstraints(&scaleConstraint);
+
+    Points.setValues(std::vector<Base::Vector3d>());
+    Normals.setValues(std::vector<Base::Vector3d>());
 
     References.setScope(App::LinkScope::Global);
+
+    App::SuppressibleExtension::initExtension(this);
 }
 
 Constraint::~Constraint()
 {
+    connDocChangedObject.disconnect();
 }
 
-App::DocumentObjectExecReturn *Constraint::execute()
+App::DocumentObjectExecReturn* Constraint::execute()
 {
     try {
         References.touch();
@@ -95,28 +135,29 @@ App::DocumentObjectExecReturn *Constraint::execute()
     }
 }
 
-//OvG: Provide the ability to determine how big to draw constraint arrows etc.
-int Constraint::calcDrawScaleFactor(double lparam) const
+// Provide the ability to determine how big to draw constraint arrows etc.
+// Try to get symbol size equal to 1/5 of the characteristic length of
+// the object. Typical symbol size is 5, so use 1/25 of the characteristic length.
+double Constraint::calcSizeFactor(double characLen) const
 {
-    return ((int)round(log(lparam)*log(lparam)*log(lparam)/10)>1)?((int)round(log(lparam)*log(lparam)*log(lparam)/10)):1;
+    double l = characLen / 25.0;
+    l = ((round(l)) > 1) ? round(l) : l;
+    return (l > Precision::Confusion() ? l : 1);
 }
 
-int Constraint::calcDrawScaleFactor(double lvparam, double luparam) const
+float Constraint::getScaleFactor() const
 {
-    return calcDrawScaleFactor((lvparam+luparam)/2.0);
+    return Scale.getValue() * sizeFactor;
 }
 
-int Constraint::calcDrawScaleFactor() const
-{
-    return 1;
-}
-#define CONSTRAINTSTEPLIMIT 50
+constexpr int CONSTRAINTSTEPLIMIT = 50;
 
 void Constraint::onChanged(const App::Property* prop)
 {
     if (prop == &References) {
-        // If References are changed, recalculate the normal direction. If no useful reference is found,
-        // use z axis or previous value. If several faces are selected, only the first one is used
+        // If References are changed, recalculate the normal direction. If no useful reference is
+        // found, use z axis or previous value. If several faces are selected, only the first one is
+        // used
         std::vector<App::DocumentObject*> Objects = References.getValues();
         std::vector<std::string> SubElements = References.getSubValues();
 
@@ -127,29 +168,64 @@ void Constraint::onChanged(const App::Property* prop)
         for (std::size_t i = 0; i < Objects.size(); i++) {
             App::DocumentObject* obj = Objects[i];
             Part::Feature* feat = static_cast<Part::Feature*>(obj);
-            const Part::TopoShape& toposhape = feat->Shape.getShape();
-            if (!toposhape.getShape().IsNull()) {
-                sh = toposhape.getSubShape(SubElements[i].c_str(), !execute);
-
-                if (!sh.IsNull() && sh.ShapeType() == TopAbs_FACE) {
-                    // Get face normal in center point
-                    TopoDS_Face face = TopoDS::Face(sh);
-                    BRepGProp_Face props(face);
-                    gp_Vec normal;
-                    gp_Pnt center;
-                    double u1, u2, v1, v2;
-                    props.Bounds(u1, u2, v1, v2);
-                    props.Normal((u1+u2)/2.0, (v1+v2)/2.0, center, normal);
-                    normal.Normalize();
-                    NormalDirection.setValue(normal.X(), normal.Y(), normal.Z());
-                    // One face is enough...
-                    break;
-                }
+            sh = Tools::getFeatureSubShape(feat, SubElements[i].c_str(), !execute);
+            if (!sh.IsNull() && sh.ShapeType() == TopAbs_FACE) {
+                // Get face normal in center point
+                TopoDS_Face face = TopoDS::Face(sh);
+                BRepGProp_Face props(face);
+                gp_Vec normal;
+                gp_Pnt center;
+                double u1, u2, v1, v2;
+                props.Bounds(u1, u2, v1, v2);
+                props.Normal((u1 + u2) / 2.0, (v1 + v2) / 2.0, center, normal);
+                normal.Normalize();
+                NormalDirection.setValue(normal.X(), normal.Y(), normal.Z());
+                // One face is enough...
+                break;
             }
+        }
+
+        std::vector<Base::Vector3d> points;
+        std::vector<Base::Vector3d> normals;
+        if (getPoints(points, normals, &sizeFactor)) {
+            Points.setValues(points);
+            Normals.setValues(normals);
+            Points.touch();
         }
     }
 
     App::DocumentObject::onChanged(prop);
+}
+
+void Constraint::slotChangedObject(const App::DocumentObject& obj, const App::Property& prop)
+{
+    if (obj.isDerivedFrom<App::GeoFeature>()
+        && (prop.isDerivedFrom<App::PropertyPlacement>() || obj.isRemoving())) {
+        auto values = References.getValues();
+        for (const auto ref : values) {
+            auto v = ref->getInListEx(true);
+            if ((&obj == ref) || (std::find(v.begin(), v.end(), &obj) != v.end())) {
+                this->touch();
+                return;
+            }
+        }
+    }
+}
+
+void Constraint::onSettingDocument()
+{
+    App::Document* doc = getDocument();
+    if (doc) {
+        connDocChangedObject = doc->signalChangedObject.connect(
+            std::bind(&Constraint::slotChangedObject, this, sp::_1, sp::_2));
+    }
+
+    App::DocumentObject::onSettingDocument();
+}
+
+void Constraint::unsetupObject()
+{
+    connDocChangedObject.disconnect();
 }
 
 void Constraint::onDocumentRestored()
@@ -159,7 +235,22 @@ void Constraint::onDocumentRestored()
     App::DocumentObject::onDocumentRestored();
 }
 
-bool Constraint::getPoints(std::vector<Base::Vector3d> &points, std::vector<Base::Vector3d> &normals, int * scale) const
+void Constraint::handleChangedPropertyType(Base::XMLReader& reader,
+                                           const char* TypeName,
+                                           App::Property* prop)
+{
+    // Old integer Scale is equal to sizeFactor, now  Scale*sizeFactor is used to scale the symbol
+    if (prop == &Scale && strcmp(TypeName, "App::PropertyInteger") == 0) {
+        Scale.setValue(1.0f);
+    }
+    else {
+        App::DocumentObject::handleChangedPropertyType(reader, TypeName, prop);
+    }
+}
+
+bool Constraint::getPoints(std::vector<Base::Vector3d>& points,
+                           std::vector<Base::Vector3d>& normals,
+                           double* scale) const
 {
     std::vector<App::DocumentObject*> Objects = References.getValues();
     std::vector<std::string> SubElements = References.getSubValues();
@@ -168,54 +259,45 @@ bool Constraint::getPoints(std::vector<Base::Vector3d> &points, std::vector<Base
     TopoDS_Shape sh;
 
     for (std::size_t i = 0; i < Objects.size(); i++) {
-        App::DocumentObject* obj = Objects[i];
-        Part::Feature* feat = static_cast<Part::Feature*>(obj);
-        const Part::TopoShape& toposhape = feat->Shape.getShape();
-        if (toposhape.isNull())
+        Part::Feature* feat = static_cast<Part::Feature*>(Objects[i]);
+        sh = Tools::getFeatureSubShape(feat, SubElements[i].c_str(), true);
+        if (sh.IsNull()) {
             return false;
+        }
 
-        sh = toposhape.getSubShape(SubElements[i].c_str(), true);
-        if (sh.IsNull())
-            return false;
+        // Scale by bounding box of the object
+        Bnd_Box box;
+        BRepBndLib::Add(feat->Shape.getShape().getShape(), box);
+        double l = sqrt(box.SquareExtent() / 3.0);
+        *scale = this->calcSizeFactor(l);
 
         if (sh.ShapeType() == TopAbs_VERTEX) {
             const TopoDS_Vertex& vertex = TopoDS::Vertex(sh);
             gp_Pnt p = BRep_Tool::Pnt(vertex);
             points.emplace_back(p.X(), p.Y(), p.Z());
             normals.push_back(NormalDirection.getValue());
-            //OvG: Scale by whole object mass in case of a vertex
-            GProp_GProps props;
-            BRepGProp::VolumeProperties(toposhape.getShape(), props);
-            double lx = props.Mass();
-            *scale = this->calcDrawScaleFactor(sqrt(lx)*0.5); //OvG: setup draw scale for constraint
         }
         else if (sh.ShapeType() == TopAbs_EDGE) {
             BRepAdaptor_Curve curve(TopoDS::Edge(sh));
             double fp = curve.FirstParameter();
             double lp = curve.LastParameter();
-            GProp_GProps props;
-            BRepGProp::LinearProperties(TopoDS::Edge(sh), props);
-            double l = props.Mass();
-            // Create points with 10 units distance, but at least one at the beginning and end of the edge
+            // Create points with 10 units distance, but at least one at the beginning and end of
+            // the edge
             int steps;
-            if (l >= 30) //OvG: Increase 10 units distance proportionately to l for larger objects.
-            {
-                *scale = this->calcDrawScaleFactor(l); //OvG: setup draw scale for constraint
-                steps = (int)round(l / (10*( *scale)));
-                steps = steps<3?3:steps;
+            // OvG: Increase 10 units distance proportionately to l for larger objects.
+            if (l >= 30) {
+                steps = static_cast<int>(round(l / (10 * (*scale))));
+                steps = steps < 3 ? 3 : steps;
             }
-            else if (l >= 20)
-            {
-                steps = (int)round(l / 10);
-                *scale = this->calcDrawScaleFactor(); //OvG: setup draw scale for constraint
+            else if (l >= 20) {
+                steps = static_cast<int>(round(l / 10));
             }
-            else
-            {
+            else {
                 steps = 1;
-                *scale = this->calcDrawScaleFactor(); //OvG: setup draw scale for constraint
             }
 
-            steps = steps>CONSTRAINTSTEPLIMIT?CONSTRAINTSTEPLIMIT:steps; //OvG: Place upper limit on number of steps
+            // OvG: Place upper limit on number of steps
+            steps = steps > CONSTRAINTSTEPLIMIT ? CONSTRAINTSTEPLIMIT : steps;
             double step = (lp - fp) / steps;
             for (int i = 0; i < steps + 1; i++) {
                 // Parameter values must be in the range [fp, lp] (#0003683)
@@ -258,12 +340,12 @@ bool Constraint::getPoints(std::vector<Base::Vector3d> &points, std::vector<Base
 
             try {
                 isoc.Load(GeomAbs_IsoU, ulp);
-                lv = (l + GCPnts_AbscissaPoint::Length(isoc, Precision::Confusion()))/2.0;
+                lv = (l + GCPnts_AbscissaPoint::Length(isoc, Precision::Confusion())) / 2.0;
             }
             catch (const Standard_Failure&) {
                 gp_Pnt p1 = hsurf->Value(ulp, vfp);
                 gp_Pnt p2 = hsurf->Value(ulp, vlp);
-                lv = (l + p1.Distance(p2))/2.0;
+                lv = (l + p1.Distance(p2)) / 2.0;
             }
 
             try {
@@ -278,67 +360,91 @@ bool Constraint::getPoints(std::vector<Base::Vector3d> &points, std::vector<Base
 
             try {
                 isoc.Load(GeomAbs_IsoV, vlp);
-                lu = (l + GCPnts_AbscissaPoint::Length(isoc, Precision::Confusion()))/2.0;
+                lu = (l + GCPnts_AbscissaPoint::Length(isoc, Precision::Confusion())) / 2.0;
             }
             catch (const Standard_Failure&) {
                 gp_Pnt p1 = hsurf->Value(ufp, vlp);
                 gp_Pnt p2 = hsurf->Value(ulp, vlp);
-                lu = (l + p1.Distance(p2))/2.0;
+                lu = (l + p1.Distance(p2)) / 2.0;
             }
 
+            // OvG: Increase 10 units distance proportionately to lv for larger objects.
             int stepsv;
-            if (lv >= 30) //OvG: Increase 10 units distance proportionately to lv for larger objects.
-            {
-                *scale = this->calcDrawScaleFactor(lv, lu); //OvG: setup draw scale for constraint
-                stepsv = (int)round(lv / (10 * (*scale)));
-                stepsv = stepsv<3?3:stepsv;
+            if (lv >= 30) {
+                stepsv = static_cast<int>(round(lv / (10 * (*scale))));
+                stepsv = stepsv < 3 ? 3 : stepsv;
             }
-            else if (lv >= 20.0)
-            {
-                stepsv = (int)round(lv / 10);
-                *scale = this->calcDrawScaleFactor(); //OvG: setup draw scale for constraint
+            else if (lv >= 20.0) {
+                stepsv = static_cast<int>(round(lv / 10));
             }
-            else
-            {
-                stepsv = 2; // Minimum of three arrows to ensure (as much as possible) that at least one is displayed
-                *scale = this->calcDrawScaleFactor(); //OvG: setup draw scale for constraint
+            else {
+                // Minimum of three arrows to ensure (as much as possible) that at
+                // least one is displayed
+                stepsv = 2;
             }
 
-            stepsv = stepsv>CONSTRAINTSTEPLIMIT?CONSTRAINTSTEPLIMIT:stepsv; //OvG: Place upper limit on number of steps
+            // OvG: Place upper limit on number of steps
+            stepsv = stepsv > CONSTRAINTSTEPLIMIT ? CONSTRAINTSTEPLIMIT : stepsv;
             int stepsu;
-            if (lu >= 30) //OvG: Increase 10 units distance proportionately to lu for larger objects.
-            {
-                *scale = this->calcDrawScaleFactor(lv,lu); //OvG: setup draw scale for constraint
-                stepsu = (int)round(lu / (10*( *scale)));
-                stepsu = stepsu<3?3:stepsu;
+            // OvG: Increase 10 units distance proportionately to lu for larger objects.
+            if (lu >= 30) {
+                stepsu = static_cast<int>(round(lu / (10 * (*scale))));
+                stepsu = stepsu < 3 ? 3 : stepsu;
             }
-            else if (lu >= 20.0)
-            {
-                stepsu = (int)round(lu / 10);
-                *scale = this->calcDrawScaleFactor(); //OvG: setup draw scale for constraint
+            else if (lu >= 20.0) {
+                stepsu = static_cast<int>(round(lu / 10));
             }
-            else
-            {
+            else {
                 stepsu = 2;
-                *scale = this->calcDrawScaleFactor(); //OvG: setup draw scale for constraint
             }
 
-            stepsu = stepsu>CONSTRAINTSTEPLIMIT?CONSTRAINTSTEPLIMIT:stepsu; //OvG: Place upper limit on number of steps
+            // OvG: Place upper limit on number of steps
+            stepsu = stepsu > CONSTRAINTSTEPLIMIT ? CONSTRAINTSTEPLIMIT : stepsu;
             double stepv = (vlp - vfp) / stepsv;
             double stepu = (ulp - ufp) / stepsu;
+
             // Create points and normals
+            auto fillPointsAndNormals = [&](Standard_Real u, Standard_Real v) {
+                gp_Pnt p = surface.Value(u, v);
+                BRepClass_FaceClassifier classifier(face, p, Precision::Confusion());
+                if (classifier.State() != TopAbs_OUT) {
+                    points.emplace_back(p.X(), p.Y(), p.Z());
+                    props.Normal(u, v, center, normal);
+                    if (normal.SquareMagnitude() > 0.0) {
+                        normal.Normalize();
+                    }
+                    normals.emplace_back(normal.X(), normal.Y(), normal.Z());
+                }
+            };
+
+            size_t prevSize = points.size();
             for (int i = 0; i < stepsv + 1; i++) {
                 for (int j = 0; j < stepsu + 1; j++) {
                     double v = vfp + i * stepv;
                     double u = ufp + j * stepu;
-                    gp_Pnt p = surface.Value(u, v);
-                    BRepClass_FaceClassifier classifier(face, p, Precision::Confusion());
-                    if (classifier.State() != TopAbs_OUT) {
-                        points.emplace_back(p.X(), p.Y(), p.Z());
-                        props.Normal(u, v,center,normal);
-                        normal.Normalize();
-                        normals.emplace_back(normal.X(), normal.Y(), normal.Z());
-                    }
+                    fillPointsAndNormals(u, v);
+                }
+            }
+
+            // it could happen that on a trimmed surface the steps on the iso-curves
+            // are outside the surface, so no points are added.
+            // In that case use points on the outer wire.
+            // https://github.com/FreeCAD/FreeCAD/issues/6073
+            if (prevSize == points.size()) {
+                BRepAdaptor_CompCurve compCurve(BRepTools::OuterWire(face), Standard_True);
+                GProp_GProps linProps;
+                BRepGProp::LinearProperties(compCurve.Wire(), linProps);
+                double outWireLength = linProps.Mass();
+                int stepWire = stepsu + stepsv;
+                // apply subshape transformation to the geometry
+                gp_Trsf faceTrans = face.Location().Transformation();
+                Handle(Geom_Geometry) transGeo =
+                    surface.Surface().Surface()->Transformed(faceTrans);
+                ShapeAnalysis_Surface surfAnalysis(Handle(Geom_Surface)::DownCast(transGeo));
+                for (int i = 0; i < stepWire; ++i) {
+                    gp_Pnt p = compCurve.Value(outWireLength * i / stepWire);
+                    gp_Pnt2d pUV = surfAnalysis.ValueOfUV(p, Precision::Confusion());
+                    fillPointsAndNormals(pUV.X(), pUV.Y());
                 }
             }
         }
@@ -347,43 +453,17 @@ bool Constraint::getPoints(std::vector<Base::Vector3d> &points, std::vector<Base
     return true;
 }
 
-bool Constraint::getCylinder(double &radius, double &height, Base::Vector3d& base, Base::Vector3d& axis) const
-{
-    std::vector<App::DocumentObject*> Objects = References.getValues();
-    std::vector<std::string> SubElements = References.getSubValues();
-    if (Objects.empty())
-        return false;
-    App::DocumentObject* obj = Objects[0];
-    Part::Feature* feat = static_cast<Part::Feature*>(obj);
-    const Part::TopoShape& toposhape = feat->Shape.getShape();
-    if (toposhape.isNull())
-        return false;
-    TopoDS_Shape sh = toposhape.getSubShape(SubElements[0].c_str());
-
-    TopoDS_Face face = TopoDS::Face(sh);
-    BRepAdaptor_Surface surface(face);
-    gp_Cylinder cyl = surface.Cylinder();
-    gp_Pnt start = surface.Value(surface.FirstUParameter(), surface.FirstVParameter());
-    gp_Pnt end   = surface.Value(surface.FirstUParameter(), surface.LastVParameter());
-    height = start.Distance(end);
-    radius = cyl.Radius();
-
-    gp_Pnt b = cyl.Location();
-    base = Base::Vector3d(b.X(), b.Y(), b.Z());
-    gp_Dir dir = cyl.Axis().Direction();
-    axis = Base::Vector3d(dir.X(), dir.Y(), dir.Z());
-
-    return true;
-}
-
-Base::Vector3d Constraint::getBasePoint(const Base::Vector3d& base, const Base::Vector3d& axis,
-                                        const App::PropertyLinkSub& location, const double& dist)
+Base::Vector3d Constraint::getBasePoint(const Base::Vector3d& base,
+                                        const Base::Vector3d& axis,
+                                        const App::PropertyLinkSub& location,
+                                        const double& dist)
 {
     // Get the point specified by Location and Distance
     App::DocumentObject* objLoc = location.getValue();
     std::vector<std::string> names = location.getSubValues();
-    if (names.empty())
-        return Base::Vector3d(0,0,0);
+    if (names.empty()) {
+        return Base::Vector3d(0, 0, 0);
+    }
     std::string subName = names.front();
     Part::Feature* featLoc = static_cast<Part::Feature*>(objLoc);
     TopoDS_Shape shloc = featLoc->Shape.getShape().getSubShape(subName.c_str());
@@ -394,7 +474,8 @@ Base::Vector3d Constraint::getBasePoint(const Base::Vector3d& base, const Base::
     if (shloc.ShapeType() == TopAbs_FACE) {
         BRepAdaptor_Surface surface(TopoDS::Face(shloc));
         plane = surface.Plane();
-    } else {
+    }
+    else {
         BRepAdaptor_Curve curve(TopoDS::Edge(shloc));
         gp_Lin line = curve.Line();
         gp_Dir tang = line.Direction().Crossed(cylaxis);
@@ -406,56 +487,62 @@ Base::Vector3d Constraint::getBasePoint(const Base::Vector3d& base, const Base::
     Handle(Geom_Plane) pln = new Geom_Plane(plane);
     gp_Pnt cylbase(base.x, base.y, base.z);
     GeomAPI_ProjectPointOnSurf proj(cylbase, pln);
-    if (!proj.IsDone())
-        return Base::Vector3d(0,0,0);
+    if (!proj.IsDone()) {
+        return Base::Vector3d(0, 0, 0);
+    }
 
     gp_Pnt projPnt = proj.NearestPoint();
-    if ((fabs(dist) > Precision::Confusion()) && (projPnt.IsEqual(cylbase, Precision::Confusion()) == Standard_False))
+    if ((fabs(dist) > Precision::Confusion())
+        && (projPnt.IsEqual(cylbase, Precision::Confusion()) == Standard_False)) {
         plane.Translate(gp_Vec(projPnt, cylbase).Normalized().Multiplied(dist));
+    }
     Handle(Geom_Plane) plnt = new Geom_Plane(plane);
 
     // Intersect translated plane with cylinder axis
     Handle(Geom_Curve) crv = new Geom_Line(cylbase, cylaxis);
     GeomAPI_IntCS intersector(crv, plnt);
-    if (!intersector.IsDone())
-        return Base::Vector3d(0,0,0);
+    if (!intersector.IsDone()) {
+        return Base::Vector3d(0, 0, 0);
+    }
     gp_Pnt inter = intersector.Point(1);
     return Base::Vector3d(inter.X(), inter.Y(), inter.Z());
 }
 
-const Base::Vector3d Constraint::getDirection(const App::PropertyLinkSub &direction)
+const Base::Vector3d Constraint::getDirection(const App::PropertyLinkSub& direction)
 {
     App::DocumentObject* obj = direction.getValue();
     if (!obj) {
-        return Base::Vector3d(0,0,0);
+        return Base::Vector3d(0, 0, 0);
     }
 
-    if (obj->getTypeId().isDerivedFrom(App::Line::getClassTypeId())) {
+    if (obj->isDerivedFrom<App::Line>()) {
         Base::Vector3d vec(1.0, 0.0, 0.0);
         static_cast<App::Line*>(obj)->Placement.getValue().multVec(vec, vec);
         return vec;
     }
 
-    if (obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
+    if (obj->isDerivedFrom<App::Plane>()) {
         Base::Vector3d vec(0.0, 0.0, 1.0);
         static_cast<App::Plane*>(obj)->Placement.getValue().multVec(vec, vec);
         return vec;
     }
 
-    if (!obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+    if (!obj->isDerivedFrom<Part::Feature>()) {
         std::stringstream str;
         str << "Type is not a line, plane or Part object";
         throw Base::TypeError(str.str());
     }
 
     std::vector<std::string> names = direction.getSubValues();
-    if (names.empty())
-        return Base::Vector3d(0,0,0);
+    if (names.empty()) {
+        return Base::Vector3d(0, 0, 0);
+    }
     std::string subName = names.front();
     Part::Feature* feat = static_cast<Part::Feature*>(obj);
     const Part::TopoShape& shape = feat->Shape.getShape();
-    if (shape.isNull())
-        return Base::Vector3d(0,0,0);
+    if (shape.isNull()) {
+        return Base::Vector3d(0, 0, 0);
+    }
     TopoDS_Shape sh;
     try {
         sh = shape.getSubShape(subName.c_str());
@@ -471,17 +558,22 @@ const Base::Vector3d Constraint::getDirection(const App::PropertyLinkSub &direct
 
 // Python feature ---------------------------------------------------------
 
-namespace App {
+namespace App
+{
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Fem::ConstraintPython, Fem::Constraint)
-template<> const char* Fem::ConstraintPython::getViewProviderName() const {
+template<>
+const char* Fem::ConstraintPython::getViewProviderName() const
+{
     return "FemGui::ViewProviderFemConstraintPython";
 }
 
-template<> PyObject* Fem::ConstraintPython::getPyObject() {
+template<>
+PyObject* Fem::ConstraintPython::getPyObject()
+{
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new App::FeaturePythonPyT<App::DocumentObjectPy>(this),true);
+        PythonObject = Py::Object(new App::FeaturePythonPyT<App::DocumentObjectPy>(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }
@@ -491,4 +583,4 @@ template class FemExport FeaturePythonT<Fem::Constraint>;
 
 /// @endcond
 
-}
+}  // namespace App

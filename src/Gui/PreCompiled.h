@@ -64,20 +64,21 @@
 #include <iomanip>
 
 // STL
-#include <atomic>
-#include <vector>
-#include <map>
-#include <string>
-#include <list>
-#include <set>
 #include <algorithm>
-#include <stack>
-#include <queue>
-#include <sstream>
+#include <atomic>
 #include <bitset>
-#include <unordered_set>
-#include <unordered_map>
+#include <list>
+#include <map>
+#include <queue>
+#include <random>
+#include <set>
+#include <sstream>
+#include <stack>
+#include <string>
 #include <tuple>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector>
 
 // Boost
 #include <boost_graph_adjacency_list.hpp>
@@ -89,12 +90,16 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <boost/interprocess/sync/file_lock.hpp>
+#include <boost/math/constants/constants.hpp>
 #include <boost/program_options.hpp>
 #include <boost/utility.hpp>
 
 // Xerces
 #include <xercesc/util/TranscodingException.hpp>
 #include <xercesc/util/XMLString.hpp>
+
+// Qt/OpenGL
+#include <QOpenGLFramebufferObjectFormat>
 
 // Keep this order to avoid compiler warnings
 #include "QtAll.h"

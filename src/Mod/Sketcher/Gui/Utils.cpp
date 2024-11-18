@@ -48,6 +48,79 @@ using namespace std;
 using namespace SketcherGui;
 using namespace Sketcher;
 
+bool Sketcher::isCircle(const Part::Geometry& geom)
+{
+    return geom.is<Part::GeomCircle>();
+}
+
+bool Sketcher::isArcOfCircle(const Part::Geometry& geom)
+{
+    return geom.is<Part::GeomArcOfCircle>();
+}
+
+bool Sketcher::isEllipse(const Part::Geometry& geom)
+{
+    return geom.is<Part::GeomEllipse>();
+}
+
+bool Sketcher::isArcOfEllipse(const Part::Geometry& geom)
+{
+    return geom.is<Part::GeomArcOfEllipse>();
+}
+
+bool Sketcher::isLineSegment(const Part::Geometry& geom)
+{
+    return geom.is<Part::GeomLineSegment>();
+}
+
+bool Sketcher::isArcOfHyperbola(const Part::Geometry& geom)
+{
+    return geom.is<Part::GeomArcOfHyperbola>();
+}
+
+bool Sketcher::isArcOfParabola(const Part::Geometry& geom)
+{
+    return geom.is<Part::GeomArcOfParabola>();
+}
+
+bool Sketcher::isBSplineCurve(const Part::Geometry& geom)
+{
+    return geom.is<Part::GeomBSplineCurve>();
+}
+
+bool Sketcher::isPeriodicBSplineCurve(const Part::Geometry& geom)
+{
+    if (geom.is<Part::GeomBSplineCurve>()) {
+        auto* spline = static_cast<const Part::GeomBSplineCurve*>(&geom);
+        return spline->isPeriodic();
+    }
+    return false;
+}
+
+bool Sketcher::isPoint(const Part::Geometry& geom)
+{
+    return geom.is<Part::GeomPoint>();
+}
+
+bool Sketcher::isCircleOrArc(const Part::Geometry& geo)
+{
+    return isCircle(geo) || isArcOfCircle(geo);
+};
+
+std::tuple<double, Base::Vector3d> Sketcher::getRadiusCenterCircleArc(const Part::Geometry* geo)
+{
+    if (isArcOfCircle(*geo)) {
+        auto arc = static_cast<const Part::GeomArcOfCircle*>(geo);  // NOLINT
+        return std::tuple<double, Base::Vector3d>(arc->getRadius(), arc->getCenter());
+    }
+    else if (isCircle(*geo)) {
+        auto circ = static_cast<const Part::GeomCircle*>(geo);  // NOLINT
+        return std::tuple<double, Base::Vector3d>(circ->getRadius(), circ->getCenter());
+    }
+
+    THROWM(Base::TypeError, "getRadiusCenterCircleArc - Neither an arc nor a circle")
+};
+
 bool SketcherGui::tryAutoRecompute(Sketcher::SketchObject* obj, bool& autoremoveredundants)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
@@ -55,16 +128,19 @@ bool SketcherGui::tryAutoRecompute(Sketcher::SketchObject* obj, bool& autoremove
     bool autoRecompute = hGrp->GetBool("AutoRecompute", false);
     bool autoRemoveRedundants = hGrp->GetBool("AutoRemoveRedundants", false);
 
-    // We need to make sure the solver has right redundancy information before trying to remove the redundants.
-    // for example if a non-driving constraint has been added.
-    if (autoRemoveRedundants && autoRecompute)
+    // We need to make sure the solver has right redundancy information before trying to remove the
+    // redundants. for example if a non-driving constraint has been added.
+    if (autoRemoveRedundants && autoRecompute) {
         obj->solve();
+    }
 
-    if (autoRemoveRedundants)
+    if (autoRemoveRedundants) {
         obj->autoRemoveRedundants();
+    }
 
-    if (autoRecompute)
+    if (autoRecompute) {
         Gui::Command::updateActive();
+    }
 
     autoremoveredundants = autoRemoveRedundants;
 
@@ -98,8 +174,9 @@ std::string SketcherGui::getStrippedPythonExceptionString(const Base::Exception&
     if (msg.length() > 26 && msg.substr(0, 26) == "FreeCAD exception thrown (") {
         return msg.substr(26, msg.length() - 27);
     }
-    else
+    else {
         return msg;
+    }
 }
 
 bool SketcherGui::ReleaseHandler(Gui::Document* doc)
@@ -121,8 +198,10 @@ bool SketcherGui::ReleaseHandler(Gui::Document* doc)
     return false;
 }
 
-void SketcherGui::getIdsFromName(const std::string& name, const Sketcher::SketchObject* Obj,
-                                 int& GeoId, PointPos& PosId)
+void SketcherGui::getIdsFromName(const std::string& name,
+                                 const Sketcher::SketchObject* Obj,
+                                 int& GeoId,
+                                 PointPos& PosId)
 {
     GeoId = GeoEnum::GeoUndef;
     PosId = Sketcher::PointPos::none;
@@ -134,28 +213,33 @@ void SketcherGui::getIdsFromName(const std::string& name, const Sketcher::Sketch
         GeoId = Sketcher::GeoEnum::RtPnt;
         PosId = Sketcher::PointPos::start;
     }
-    else if (name.size() == 6 && name.substr(0, 6) == "H_Axis")
+    else if (name.size() == 6 && name.substr(0, 6) == "H_Axis") {
         GeoId = Sketcher::GeoEnum::HAxis;
-    else if (name.size() == 6 && name.substr(0, 6) == "V_Axis")
+    }
+    else if (name.size() == 6 && name.substr(0, 6) == "V_Axis") {
         GeoId = Sketcher::GeoEnum::VAxis;
-    else if (name.size() > 12 && name.substr(0, 12) == "ExternalEdge")
+    }
+    else if (name.size() > 12 && name.substr(0, 12) == "ExternalEdge") {
         GeoId = Sketcher::GeoEnum::RefExt + 1 - std::atoi(name.substr(12, 4000).c_str());
+    }
     else if (name.size() > 6 && name.substr(0, 6) == "Vertex") {
         int VtId = std::atoi(name.substr(6, 4000).c_str()) - 1;
         Obj->getGeoVertexIndex(VtId, GeoId, PosId);
     }
 }
 
-std::vector<int> SketcherGui::getGeoIdsOfEdgesFromNames(const Sketcher::SketchObject* Obj, const std::vector<std::string> & names)
+std::vector<int> SketcherGui::getGeoIdsOfEdgesFromNames(const Sketcher::SketchObject* Obj,
+                                                        const std::vector<std::string>& names)
 {
     std::vector<int> geoids;
 
-    for(const auto & name : names) {
+    for (const auto& name : names) {
         if (name.size() > 4 && name.substr(0, 4) == "Edge") {
             geoids.push_back(std::atoi(name.substr(4, 4000).c_str()) - 1);
         }
         else if (name.size() > 12 && name.substr(0, 12) == "ExternalEdge") {
-            geoids.push_back(Sketcher::GeoEnum::RefExt + 1 - std::atoi(name.substr(12, 4000).c_str()));
+            geoids.push_back(Sketcher::GeoEnum::RefExt + 1
+                             - std::atoi(name.substr(12, 4000).c_str()));
         }
         else if (name.size() > 6 && name.substr(0, 6) == "Vertex") {
             int VtId = std::atoi(name.substr(6, 4000).c_str()) - 1;
@@ -163,7 +247,7 @@ std::vector<int> SketcherGui::getGeoIdsOfEdgesFromNames(const Sketcher::SketchOb
             Sketcher::PointPos PosId;
             Obj->getGeoVertexIndex(VtId, GeoId, PosId);
             const Part::Geometry* geo = Obj->getGeometry(GeoId);
-            if (geo->getTypeId() == Part::GeomPoint::getClassTypeId()){
+            if (geo->is<Part::GeomPoint>()) {
                 geoids.push_back(GeoId);
             }
         }
@@ -174,65 +258,80 @@ std::vector<int> SketcherGui::getGeoIdsOfEdgesFromNames(const Sketcher::SketchOb
 
 bool SketcherGui::checkBothExternal(int GeoId1, int GeoId2)
 {
-    if (GeoId1 == GeoEnum::GeoUndef || GeoId2 == GeoEnum::GeoUndef)
+    if (GeoId1 == GeoEnum::GeoUndef || GeoId2 == GeoEnum::GeoUndef) {
         return false;
-    else
+    }
+    else {
         return (GeoId1 < 0 && GeoId2 < 0);
+    }
 }
 
 bool SketcherGui::isPointOrSegmentFixed(const Sketcher::SketchObject* Obj, int GeoId)
 {
     const std::vector<Sketcher::Constraint*>& vals = Obj->Constraints.getValues();
 
-    if (GeoId == GeoEnum::GeoUndef)
+    if (GeoId == GeoEnum::GeoUndef) {
         return false;
-    else
+    }
+    else {
         return checkConstraint(vals, Sketcher::Block, GeoId, Sketcher::PointPos::none)
             || GeoId <= Sketcher::GeoEnum::RtPnt;
+    }
 }
 
-bool SketcherGui::areBothPointsOrSegmentsFixed(const Sketcher::SketchObject* Obj, int GeoId1,
+bool SketcherGui::areBothPointsOrSegmentsFixed(const Sketcher::SketchObject* Obj,
+                                               int GeoId1,
                                                int GeoId2)
 {
     const std::vector<Sketcher::Constraint*>& vals = Obj->Constraints.getValues();
 
-    if (GeoId1 == GeoEnum::GeoUndef || GeoId2 == GeoEnum::GeoUndef)
+    if (GeoId1 == GeoEnum::GeoUndef || GeoId2 == GeoEnum::GeoUndef) {
         return false;
-    else
+    }
+    else {
         return ((checkConstraint(vals, Sketcher::Block, GeoId1, Sketcher::PointPos::none)
                  || GeoId1 <= Sketcher::GeoEnum::RtPnt)
                 && (checkConstraint(vals, Sketcher::Block, GeoId2, Sketcher::PointPos::none)
                     || GeoId2 <= Sketcher::GeoEnum::RtPnt));
+    }
 }
 
-bool SketcherGui::areAllPointsOrSegmentsFixed(const Sketcher::SketchObject* Obj, int GeoId1,
-                                              int GeoId2, int GeoId3)
+bool SketcherGui::areAllPointsOrSegmentsFixed(const Sketcher::SketchObject* Obj,
+                                              int GeoId1,
+                                              int GeoId2,
+                                              int GeoId3)
 {
     const std::vector<Sketcher::Constraint*>& vals = Obj->Constraints.getValues();
 
-    if (GeoId1 == GeoEnum::GeoUndef || GeoId2 == GeoEnum::GeoUndef || GeoId3 == GeoEnum::GeoUndef)
+    if (GeoId1 == GeoEnum::GeoUndef || GeoId2 == GeoEnum::GeoUndef || GeoId3 == GeoEnum::GeoUndef) {
         return false;
-    else
+    }
+    else {
         return ((checkConstraint(vals, Sketcher::Block, GeoId1, Sketcher::PointPos::none)
                  || GeoId1 <= Sketcher::GeoEnum::RtPnt)
                 && (checkConstraint(vals, Sketcher::Block, GeoId2, Sketcher::PointPos::none)
                     || GeoId2 <= Sketcher::GeoEnum::RtPnt)
                 && (checkConstraint(vals, Sketcher::Block, GeoId3, Sketcher::PointPos::none)
                     || GeoId3 <= Sketcher::GeoEnum::RtPnt));
+    }
 }
 
 bool SketcherGui::isSimpleVertex(const Sketcher::SketchObject* Obj, int GeoId, PointPos PosId)
 {
     if (PosId == Sketcher::PointPos::start
-        && (GeoId == Sketcher::GeoEnum::HAxis || GeoId == Sketcher::GeoEnum::VAxis))
+        && (GeoId == Sketcher::GeoEnum::HAxis || GeoId == Sketcher::GeoEnum::VAxis)) {
         return true;
+    }
     const Part::Geometry* geo = Obj->getGeometry(GeoId);
-    if (geo->getTypeId() == Part::GeomPoint::getClassTypeId())
+    if (geo->is<Part::GeomPoint>()) {
         return true;
-    else if (PosId == Sketcher::PointPos::mid)
+    }
+    else if (PosId == Sketcher::PointPos::mid) {
         return true;
-    else
+    }
+    else {
         return false;
+    }
 }
 
 bool SketcherGui::isBsplineKnot(const Sketcher::SketchObject* Obj, int GeoId)
@@ -241,43 +340,50 @@ bool SketcherGui::isBsplineKnot(const Sketcher::SketchObject* Obj, int GeoId)
     return (gf && gf->getInternalType() == Sketcher::InternalType::BSplineKnotPoint);
 }
 
-bool SketcherGui::isBsplineKnotOrEndPoint(const Sketcher::SketchObject* Obj, int GeoId,
+bool SketcherGui::isBsplineKnotOrEndPoint(const Sketcher::SketchObject* Obj,
+                                          int GeoId,
                                           Sketcher::PointPos PosId)
 {
     // check first using geometry facade
-    if (isBsplineKnot(Obj, GeoId))
+    if (isBsplineKnot(Obj, GeoId)) {
         return true;
+    }
 
     const Part::Geometry* geo = Obj->getGeometry(GeoId);
     // end points of B-Splines are also knots
-    if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()
-        && (PosId == Sketcher::PointPos::start || PosId == Sketcher::PointPos::end))
+    if (geo->is<Part::GeomBSplineCurve>()
+        && (PosId == Sketcher::PointPos::start || PosId == Sketcher::PointPos::end)) {
         return true;
+    }
 
     return false;
 }
 
-bool SketcherGui::IsPointAlreadyOnCurve(int GeoIdCurve, int GeoIdPoint,
-                                        Sketcher::PointPos PosIdPoint, Sketcher::SketchObject* Obj)
+bool SketcherGui::IsPointAlreadyOnCurve(int GeoIdCurve,
+                                        int GeoIdPoint,
+                                        Sketcher::PointPos PosIdPoint,
+                                        Sketcher::SketchObject* Obj)
 {
-    //This func is a "smartness" behind three-element tangent-, perp.- and angle-via-point.
-    //We want to find out, if the point supplied by user is already on
-    // both of the curves. If not, necessary point-on-object constraints
-    // are to be added automatically.
-    //Simple geometric test seems to be the best, because a point can be
-    // constrained to a curve in a number of ways (e.g. it is an endpoint of an
-    // arc, or is coincident to endpoint of an arc, or it is an endpoint of an
-    // ellipse's major diameter line). Testing all those possibilities is way
-    // too much trouble, IMO(DeepSOIC).
-    // One exception: check for knots on their B-splines, at least until point on B-spline is implemented. (Ajinkya)
+    // This func is a "smartness" behind three-element tangent-, perp.- and angle-via-point.
+    // We want to find out, if the point supplied by user is already on
+    //  both of the curves. If not, necessary point-on-object constraints
+    //  are to be added automatically.
+    // Simple geometric test seems to be the best, because a point can be
+    //  constrained to a curve in a number of ways (e.g. it is an endpoint of an
+    //  arc, or is coincident to endpoint of an arc, or it is an endpoint of an
+    //  ellipse's major diameter line). Testing all those possibilities is way
+    //  too much trouble, IMO(DeepSOIC).
+    //  One exception: check for knots on their B-splines, at least until point on B-spline is
+    //  implemented. (Ajinkya)
     if (isBsplineKnot(Obj, GeoIdPoint)) {
         const Part::Geometry* geoCurve = Obj->getGeometry(GeoIdCurve);
-        if (geoCurve->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+        if (geoCurve->is<Part::GeomBSplineCurve>()) {
             const std::vector<Constraint*>& constraints = Obj->Constraints.getValues();
             for (const auto& constraint : constraints) {
                 if (constraint->Type == Sketcher::ConstraintType::InternalAlignment
-                    && constraint->First == GeoIdPoint && constraint->Second == GeoIdCurve)
+                    && constraint->First == GeoIdPoint && constraint->Second == GeoIdCurve) {
                     return true;
+                }
             }
         }
     }
@@ -290,8 +396,9 @@ bool SketcherGui::isBsplinePole(const Part::Geometry* geo)
 {
     auto gf = GeometryFacade::getFacade(geo);
 
-    if (gf)
+    if (gf) {
         return gf->getInternalType() == InternalType::BSplineControlPoint;
+    }
 
     THROWM(Base::ValueError, "Null geometry in isBsplinePole - please report")
 }
@@ -305,7 +412,9 @@ bool SketcherGui::isBsplinePole(const Sketcher::SketchObject* Obj, int GeoId)
 }
 
 bool SketcherGui::checkConstraint(const std::vector<Sketcher::Constraint*>& vals,
-                                  ConstraintType type, int geoid, PointPos pos)
+                                  ConstraintType type,
+                                  int geoid,
+                                  PointPos pos)
 {
     for (std::vector<Sketcher::Constraint*>::const_iterator itc = vals.begin(); itc != vals.end();
          ++itc) {
@@ -329,52 +438,59 @@ double SketcherGui::GetPointAngle(const Base::Vector2d& p1, const Base::Vector2d
 
 // Set the two points on circles at minimal distance
 // in concentric case set points on relative X axis
-void SketcherGui::GetCirclesMinimalDistance(const Part::GeomCircle *circle1, const Part::GeomCircle *circle2, Base::Vector3d &point1, Base::Vector3d &point2)
+void SketcherGui::GetCirclesMinimalDistance(const Part::Geometry* geom1,
+                                            const Part::Geometry* geom2,
+                                            Base::Vector3d& point1,
+                                            Base::Vector3d& point2)
 {
-    double radius1 = circle1->getRadius();
-    double radius2 = circle2->getRadius();
+    // This will throw if geom1 or geom2 are not circles or arcs
+    auto [radius1, center1] = getRadiusCenterCircleArc(geom1);
+    auto [radius2, center2] = getRadiusCenterCircleArc(geom2);
 
-    point1 = circle1->getCenter();
-    point2 = circle2->getCenter();
+    point1 = center1;
+    point2 = center2;
 
     Base::Vector3d v = point2 - point1;
     double length = v.Length();
 
-    if (length == 0) { //concentric case
+    if (length == 0) {  // concentric case
         point1.x += radius1;
         point2.x += radius2;
-    } else {
+    }
+    else {
         v = v.Normalize();
-        if (length <= std::max(radius1, radius2)){ //inner case
-            if (radius1 > radius2){
+        if (length <= std::max(radius1, radius2)) {  // inner case
+            if (radius1 > radius2) {
                 point1 += v * radius1;
                 point2 += v * radius2;
-            } else {
+            }
+            else {
                 point1 += -v * radius1;
                 point2 += -v * radius2;
             }
-        } else { //outer case
+        }
+        else {  // outer case
             point1 += v * radius1;
             point2 += -v * radius2;
         }
     }
 }
 
-void SketcherGui::ActivateHandler(Gui::Document* doc, DrawSketchHandler* handler)
+void SketcherGui::ActivateHandler(Gui::Document* doc, std::unique_ptr<DrawSketchHandler> handler)
 {
-    std::unique_ptr<DrawSketchHandler> ptr(handler);
     if (doc) {
         if (doc->getInEdit()
             && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
             SketcherGui::ViewProviderSketch* vp =
                 static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
             vp->purgeHandler();
-            vp->activateHandler(ptr.release());
+            vp->activateHandler(std::move(handler));
         }
     }
 }
 
-bool SketcherGui::isSketchInEdit(Gui::Document* doc) {
+bool SketcherGui::isSketchInEdit(Gui::Document* doc)
+{
     if (doc) {
         // checks if a Sketch Viewprovider is in Edit and is in no special mode
         auto* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
@@ -385,16 +501,18 @@ bool SketcherGui::isSketchInEdit(Gui::Document* doc) {
 
 bool SketcherGui::isCommandActive(Gui::Document* doc, bool actsOnSelection)
 {
-    if(isSketchInEdit(doc)) {
-        auto mode = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->getSketchMode();
+    if (isSketchInEdit(doc)) {
+        auto mode =
+            static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->getSketchMode();
 
-        if (mode == ViewProviderSketch::STATUS_NONE ||
-            mode == ViewProviderSketch::STATUS_SKETCH_UseHandler) {
+        if (mode == ViewProviderSketch::STATUS_NONE
+            || mode == ViewProviderSketch::STATUS_SKETCH_UseHandler) {
 
             if (!actsOnSelection) {
                 return true;
             }
-            else if (Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 0) {
+            else if (Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId())
+                     > 0) {
                 return true;
             }
         }
@@ -403,9 +521,32 @@ bool SketcherGui::isCommandActive(Gui::Document* doc, bool actsOnSelection)
     return false;
 }
 
-SketcherGui::ViewProviderSketch* SketcherGui::getInactiveHandlerEditModeSketchViewProvider(Gui::Document* doc)
+bool SketcherGui::isSketcherBSplineActive(Gui::Document* doc, bool actsOnSelection)
 {
-    if(doc) {
+    if (doc) {
+        // checks if a Sketch Viewprovider is in Edit and is in no special mode
+        if (doc->getInEdit()
+            && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
+            if (static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->getSketchMode()
+                == ViewProviderSketch::STATUS_NONE) {
+                if (!actsOnSelection) {
+                    return true;
+                }
+                else if (Gui::Selection().countObjectsOfType(
+                             Sketcher::SketchObject::getClassTypeId())
+                         > 0) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+SketcherGui::ViewProviderSketch*
+SketcherGui::getInactiveHandlerEditModeSketchViewProvider(Gui::Document* doc)
+{
+    if (doc) {
         return dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
     }
 
@@ -414,7 +555,7 @@ SketcherGui::ViewProviderSketch* SketcherGui::getInactiveHandlerEditModeSketchVi
 
 SketcherGui::ViewProviderSketch* SketcherGui::getInactiveHandlerEditModeSketchViewProvider()
 {
-    Gui::Document *doc = Gui::Application::Instance->activeDocument();
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
 
     return getInactiveHandlerEditModeSketchViewProvider(doc);
 }
@@ -430,44 +571,45 @@ void SketcherGui::removeRedundantHorizontalVertical(Sketcher::SketchObject* pske
         // we look for:
         // 1. Coincident to external on both endpoints
         // 2. Coincident in one endpoint to origin and pointonobject/tangent to an axis on the other
-        auto detectredundant = [psketch](std::vector<AutoConstraint>& sug,
-                                         bool& ext,
-                                         bool& orig,
-                                         bool& axis) {
-            ext = false;
-            orig = false;
-            axis = false;
+        auto detectredundant =
+            [psketch](std::vector<AutoConstraint>& sug, bool& ext, bool& orig, bool& axis) {
+                ext = false;
+                orig = false;
+                axis = false;
 
-            for (std::vector<AutoConstraint>::const_iterator it = sug.begin(); it != sug.end();
-                 ++it) {
-                if ((*it).Type == Sketcher::Coincident && !ext) {
-                    const std::map<int, Sketcher::PointPos> coincidents =
-                        psketch->getAllCoincidentPoints((*it).GeoId, (*it).PosId);
+                for (std::vector<AutoConstraint>::const_iterator it = sug.begin(); it != sug.end();
+                     ++it) {
+                    if ((*it).Type == Sketcher::Coincident && !ext) {
+                        const std::map<int, Sketcher::PointPos> coincidents =
+                            psketch->getAllCoincidentPoints((*it).GeoId, (*it).PosId);
 
-                    if (!coincidents.empty()) {
-                        // the keys are ordered, so if the first is negative, it is coincident with external
-                        ext = coincidents.begin()->first < 0;
+                        if (!coincidents.empty()) {
+                            // the keys are ordered, so if the first is negative, it is coincident
+                            // with external
+                            ext = coincidents.begin()->first < 0;
 
-                        std::map<int, Sketcher::PointPos>::const_iterator geoId1iterator;
+                            std::map<int, Sketcher::PointPos>::const_iterator geoId1iterator;
 
-                        geoId1iterator = coincidents.find(-1);
+                            geoId1iterator = coincidents.find(-1);
 
-                        if (geoId1iterator != coincidents.end()) {
-                            if ((*geoId1iterator).second == Sketcher::PointPos::start)
-                                orig = true;
+                            if (geoId1iterator != coincidents.end()) {
+                                if ((*geoId1iterator).second == Sketcher::PointPos::start) {
+                                    orig = true;
+                                }
+                            }
+                        }
+                        else {  // it may be that there is no constraint at all, but there is
+                                // external geometry
+                            ext = (*it).GeoId < 0;
+                            orig = ((*it).GeoId == -1 && (*it).PosId == Sketcher::PointPos::start);
                         }
                     }
-                    else {// it may be that there is no constraint at all, but there is external geometry
-                        ext = (*it).GeoId < 0;
-                        orig = ((*it).GeoId == -1 && (*it).PosId == Sketcher::PointPos::start);
+                    else if ((*it).Type == Sketcher::PointOnObject && !axis) {
+                        axis = (((*it).GeoId == -1 && (*it).PosId == Sketcher::PointPos::none)
+                                || ((*it).GeoId == -2 && (*it).PosId == Sketcher::PointPos::none));
                     }
                 }
-                else if ((*it).Type == Sketcher::PointOnObject && !axis) {
-                    axis = (((*it).GeoId == -1 && (*it).PosId == Sketcher::PointPos::none)
-                            || ((*it).GeoId == -2 && (*it).PosId == Sketcher::PointPos::none));
-                }
-            }
-        };
+            };
 
         bool firstext = false, secondext = false, firstorig = false, secondorig = false,
              firstaxis = false, secondaxis = false;
@@ -476,9 +618,10 @@ void SketcherGui::removeRedundantHorizontalVertical(Sketcher::SketchObject* pske
         detectredundant(sug2, secondext, secondorig, secondaxis);
 
 
-        rmvhorvert = ((firstext && secondext) ||  // coincident with external on both endpoints
-                      (firstorig && secondaxis) ||// coincident origin and point on object on other
-                      (secondorig && firstaxis));
+        rmvhorvert =
+            ((firstext && secondext) ||    // coincident with external on both endpoints
+             (firstorig && secondaxis) ||  // coincident origin and point on object on other
+             (secondorig && firstaxis));
 
         if (rmvhorvert) {
             for (std::vector<AutoConstraint>::reverse_iterator it = sug2.rbegin();
@@ -486,7 +629,7 @@ void SketcherGui::removeRedundantHorizontalVertical(Sketcher::SketchObject* pske
                  ++it) {
                 if ((*it).Type == Sketcher::Horizontal || (*it).Type == Sketcher::Vertical) {
                     sug2.erase(std::next(it).base());
-                    it = sug2.rbegin();// erase invalidates the iterator
+                    it = sug2.rbegin();  // erase invalidates the iterator
                 }
             }
         }
@@ -494,7 +637,8 @@ void SketcherGui::removeRedundantHorizontalVertical(Sketcher::SketchObject* pske
 }
 
 void SketcherGui::ConstraintToAttachment(Sketcher::GeoElementId element,
-                                         Sketcher::GeoElementId attachment, double distance,
+                                         Sketcher::GeoElementId attachment,
+                                         double distance,
                                          App::DocumentObject* obj)
 {
     if (distance == 0.) {
@@ -534,7 +678,7 @@ void SketcherGui::ConstraintToAttachment(Sketcher::GeoElementId element,
 }
 
 
-//convenience functions for cursor display
+// convenience functions for cursor display
 bool SketcherGui::hideUnits()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication()
@@ -552,7 +696,7 @@ bool SketcherGui::showCursorCoords()
                                              .GetGroup("BaseApp")
                                              ->GetGroup("Preferences")
                                              ->GetGroup("Mod/Sketcher");
-    return hGrp->GetBool("ShowCursorCoords", true);//true for testing. set to false for prod.
+    return hGrp->GetBool("ShowCursorCoords", true);  // true for testing. set to false for prod.
 }
 
 bool SketcherGui::useSystemDecimals()
@@ -565,12 +709,12 @@ bool SketcherGui::useSystemDecimals()
     return hGrp->GetBool("UseSystemDecimals", true);
 }
 
-//convert value to display format %0.[digits]f. Units are displayed if
-//preference "ShowUnits" is true, or if the unit schema in effect uses
-//multiple units (ex. Ft/In). Digits parameter is ignored for multi-unit
-//schemata
-//TODO:: if the user string is delivered in 1.23e45 format, this might not work
-//       correctly.
+// convert value to display format %0.[digits]f. Units are displayed if
+// preference "ShowUnits" is true, or if the unit schema in effect uses
+// multiple units (ex. Ft/In). Digits parameter is ignored for multi-unit
+// schemata
+// TODO:: if the user string is delivered in 1.23e45 format, this might not work
+//        correctly.
 std::string SketcherGui::lengthToDisplayFormat(double value, int digits)
 {
     Base::Quantity asQuantity;
@@ -578,28 +722,28 @@ std::string SketcherGui::lengthToDisplayFormat(double value, int digits)
     asQuantity.setUnit(Base::Unit::Length);
     QString qUserString = asQuantity.getUserString();
     if (Base::UnitsApi::isMultiUnitLength() || (!hideUnits() && useSystemDecimals())) {
-        //just return the user string
+        // just return the user string
         return Base::Tools::toStdString(qUserString);
     }
 
-    //find the unit of measure
+    // find the unit of measure
     double factor = 1.0;
     QString qUnitString;
     QString qtranslate = Base::UnitsApi::schemaTranslate(asQuantity, factor, qUnitString);
     QString unitPart = QString::fromUtf8(" ") + qUnitString;
 
-    //get the numeric part of the user string
+    // get the numeric part of the user string
     QRegularExpression rxNoUnits(
-        QString::fromUtf8("(.*) \\D*$"));// text before space + any non digits at end of string
+        QString::fromUtf8("(.*) \\D*$"));  // text before space + any non digits at end of string
     QRegularExpressionMatch match = rxNoUnits.match(qUserString);
     if (!match.hasMatch()) {
-        //no units in userString?
+        // no units in userString?
         return Base::Tools::toStdString(qUserString);
     }
-    QString matched = match.captured(1);//matched is the numeric part of user string
+    QString matched = match.captured(1);  // matched is the numeric part of user string
     int dpPos = matched.indexOf(QLocale().decimalPoint());
     if (dpPos < 0) {
-        //no decimal separator (ie an integer), return all the digits
+        // no decimal separator (ie an integer), return all the digits
         if (hideUnits()) {
             return Base::Tools::toStdString(matched);
         }
@@ -608,16 +752,16 @@ std::string SketcherGui::lengthToDisplayFormat(double value, int digits)
         }
     }
 
-    //real number
+    // real number
     if (useSystemDecimals() && hideUnits()) {
-        //return just the numeric part of the user string
+        // return just the numeric part of the user string
         return Base::Tools::toStdString(matched);
     }
 
-    //real number and not using system decimals
+    // real number and not using system decimals
     int requiredLength = dpPos + digits + 1;
     if (requiredLength > matched.size()) {
-        //just take the whole thing
+        // just take the whole thing
         requiredLength = matched.size();
     }
     QString numericPart = matched.left(requiredLength);
@@ -627,11 +771,11 @@ std::string SketcherGui::lengthToDisplayFormat(double value, int digits)
     return Base::Tools::toStdString(numericPart + unitPart);
 }
 
-//convert value to display format %0.[digits]f. Units are always displayed for
-//angles - 123.456° or 12°34'56". Digits parameter is ignored for multi-unit
-//schemata. Note small differences between this method and lengthToDisplyFormat
-//TODO:: if the user string is delivered in 1.23e45 format, this might not work
-//       correctly.
+// convert value to display format %0.[digits]f. Units are always displayed for
+// angles - 123.456° or 12°34'56". Digits parameter is ignored for multi-unit
+// schemata. Note small differences between this method and lengthToDisplyFormat
+// TODO:: if the user string is delivered in 1.23e45 format, this might not work
+//        correctly.
 std::string SketcherGui::angleToDisplayFormat(double value, int digits)
 {
     Base::Quantity asQuantity;
@@ -639,49 +783,97 @@ std::string SketcherGui::angleToDisplayFormat(double value, int digits)
     asQuantity.setUnit(Base::Unit::Angle);
     QString qUserString = asQuantity.getUserString();
     if (Base::UnitsApi::isMultiUnitAngle()) {
-        //just return the user string
-        //Coin SbString doesn't handle utf8 well, so we convert to ascii
-        QString schemeMinute = QString::fromUtf8("\xE2\x80\xB2");//prime symbol
-        QString schemeSecond = QString::fromUtf8("\xE2\x80\xB3");//double prime symbol
-        QString escapeMinute = QString::fromLatin1("\'");        //substitute ascii single quote
-        QString escapeSecond = QString::fromLatin1("\"");        //substitute ascii double quote
+        // just return the user string
+        // Coin SbString doesn't handle utf8 well, so we convert to ascii
+        QString schemeMinute = QString::fromUtf8("\xE2\x80\xB2");  // prime symbol
+        QString schemeSecond = QString::fromUtf8("\xE2\x80\xB3");  // double prime symbol
+        QString escapeMinute = QString::fromLatin1("\'");          // substitute ascii single quote
+        QString escapeSecond = QString::fromLatin1("\"");          // substitute ascii double quote
         QString displayString = qUserString.replace(schemeMinute, escapeMinute);
         displayString = displayString.replace(schemeSecond, escapeSecond);
         return Base::Tools::toStdString(displayString);
     }
 
-    //we always use use U+00B0 (°) as the unit of measure for angles in
-    //single unit schema.  Will need a change to support rads or grads.
+    // we always use use U+00B0 (°) as the unit of measure for angles in
+    // single unit schema.  Will need a change to support rads or grads.
     auto qUnitString = QString::fromUtf8("°");
     auto decimalSep = QLocale().decimalPoint();
 
-    //get the numeric part of the user string
-    QRegularExpression rxNoUnits(
-        QString::fromUtf8("(\\d*\\%1?\\d*)(\\D*)$").arg(decimalSep));// number + non digits at end of string
+    // get the numeric part of the user string
+    QRegularExpression rxNoUnits(QString::fromUtf8("(\\d*\\%1?\\d*)(\\D*)$")
+                                     .arg(decimalSep));  // number + non digits at end of string
     QRegularExpressionMatch match = rxNoUnits.match(qUserString);
     if (!match.hasMatch()) {
-        //no units in userString?
+        // no units in userString?
         return Base::Tools::toStdString(qUserString);
     }
-    QString matched = match.captured(1);//matched is the numeric part of user string
+    QString matched = match.captured(1);  // matched is the numeric part of user string
     int dpPos = matched.indexOf(decimalSep);
     if (dpPos < 0) {
-        //no decimal separator (ie an integer), return all the digits
+        // no decimal separator (ie an integer), return all the digits
         return Base::Tools::toStdString(matched + qUnitString);
     }
 
-    //real number
+    // real number
     if (useSystemDecimals()) {
-        //return just the numeric part of the user string + degree symbol
+        // return just the numeric part of the user string + degree symbol
         return Base::Tools::toStdString(matched + qUnitString);
     }
 
-    //real number and not using system decimals
+    // real number and not using system decimals
     int requiredLength = dpPos + digits + 1;
     if (requiredLength > matched.size()) {
-        //just take the whole thing
+        // just take the whole thing
         requiredLength = matched.size();
     }
     QString numericPart = matched.left(requiredLength);
     return Base::Tools::toStdString(numericPart + qUnitString);
+}
+
+
+bool SketcherGui::areCollinear(const Base::Vector2d& p1,
+                               const Base::Vector2d& p2,
+                               const Base::Vector2d& p3)
+{
+    Base::Vector2d u = p2 - p1;
+    Base::Vector2d v = p3 - p2;
+    Base::Vector2d w = p1 - p3;
+
+    double uu = u * u;
+    double vv = v * v;
+    double ww = w * w;
+
+    double eps2 = Precision::SquareConfusion();
+    if (uu < eps2 || vv < eps2 || ww < eps2) {
+        return true;
+    }
+
+    double uv = -(u * v);
+    double vw = -(v * w);
+    double uw = -(u * w);
+
+    double w0 = (2 * sqrt(abs(uu * ww - uw * uw)) * uw / (uu * ww));
+    double w1 = (2 * sqrt(abs(uu * vv - uv * uv)) * uv / (uu * vv));
+    double w2 = (2 * sqrt(abs(vv * ww - vw * vw)) * vw / (vv * ww));
+
+    double wx = w0 + w1 + w2;
+
+    if (abs(wx) < Precision::Confusion()) {
+        return true;
+    }
+
+    return false;
+}
+
+int SketcherGui::indexOfGeoId(const std::vector<int>& vec, int elem)
+{
+    if (elem == GeoEnum::GeoUndef) {
+        return GeoEnum::GeoUndef;
+    }
+    for (size_t i = 0; i < vec.size(); i++) {
+        if (vec[i] == elem) {
+            return static_cast<int>(i);
+        }
+    }
+    return -1;
 }

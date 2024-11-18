@@ -44,6 +44,13 @@ class TestUtilities(unittest.TestCase):
             FreeCAD.getHomePath(), "Mod", "AddonManager", "AddonManagerTest", "data"
         )
 
+    @classmethod
+    def tearDownClass(cls):
+        try:
+            os.remove("AM_INSTALLATION_DIGEST.txt")
+        except FileNotFoundError:
+            pass
+
     def test_recognized_git_location(self):
         recognized_urls = [
             "https://github.com/FreeCAD/FreeCAD",
@@ -53,9 +60,7 @@ class TestUtilities(unittest.TestCase):
         ]
         for url in recognized_urls:
             repo = Addon("Test Repo", url, Addon.Status.NOT_INSTALLED, "branch")
-            self.assertTrue(
-                recognized_git_location(repo), f"{url} was unexpectedly not recognized"
-            )
+            self.assertTrue(recognized_git_location(repo), f"{url} was unexpectedly not recognized")
 
         unrecognized_urls = [
             "https://google.com",
@@ -65,9 +70,7 @@ class TestUtilities(unittest.TestCase):
         ]
         for url in unrecognized_urls:
             repo = Addon("Test Repo", url, Addon.Status.NOT_INSTALLED, "branch")
-            self.assertFalse(
-                recognized_git_location(repo), f"{url} was unexpectedly recognized"
-            )
+            self.assertFalse(recognized_git_location(repo), f"{url} was unexpectedly recognized")
 
     def test_get_readme_url(self):
         github_urls = [

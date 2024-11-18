@@ -35,7 +35,7 @@ class GitFailed(RuntimeError):
 
 
 class MockConsole:
-    """Mock for the FreeCAD.Console -- does NOT print anything out, just logs it."""
+    """Spy for the FreeCAD.Console -- does NOT print anything out, just logs it."""
 
     def __init__(self):
         self.log = []
@@ -148,9 +148,7 @@ class MockMacro:
             with open(os.path.join(location, self.icon), "wb") as f:
                 f.write(b"Fake icon data - nothing to see here\n")
         if self.xpm:
-            with open(
-                os.path.join(location, "MockMacro_icon.xpm"), "w", encoding="utf-8"
-            ) as f:
+            with open(os.path.join(location, "MockMacro_icon.xpm"), "w", encoding="utf-8") as f:
                 f.write(self.xpm)
         for name in self.other_files:
             if "/" in name:
@@ -233,12 +231,8 @@ class MockGitManager:
         self.current_branch_response = "main"
         self.get_remote_response = "No remote set"
         self.get_branches_response = ["main"]
-        self.get_last_committers_response = {
-            "John Doe": {"email": "jdoe@freecad.org", "count": 1}
-        }
-        self.get_last_authors_response = {
-            "Jane Doe": {"email": "jdoe@freecad.org", "count": 1}
-        }
+        self.get_last_committers_response = {"John Doe": {"email": "jdoe@freecad.org", "count": 1}}
+        self.get_last_authors_response = {"Jane Doe": {"email": "jdoe@freecad.org", "count": 1}}
         self.should_fail = False
         self.fail_once = False  # Switch back to success after the simulated failure
 
@@ -252,9 +246,7 @@ class MockGitManager:
         self.called_methods.append("clone")
         self._check_for_failure()
 
-    def async_clone(
-        self, _remote, _local_path, _progress_monitor, _args: List[str] = None
-    ):
+    def async_clone(self, _remote, _local_path, _progress_monitor, _args: List[str] = None):
         self.called_methods.append("async_clone")
         self._check_for_failure()
 
@@ -408,4 +400,64 @@ class MockThread:
             and self.interrupt_check_counter >= self.interrupt_after_n_calls
         ):
             return True
+        return False
+
+
+class MockPref:
+    def __init__(self):
+        self.prefs = {}
+        self.pref_set_counter = {}
+        self.pref_get_counter = {}
+
+    def set_prefs(self, pref_dict: dict) -> None:
+        self.prefs = pref_dict
+
+    def GetInt(self, key: str, default: int) -> int:
+        return self.Get(key, default)
+
+    def GetString(self, key: str, default: str) -> str:
+        return self.Get(key, default)
+
+    def GetBool(self, key: str, default: bool) -> bool:
+        return self.Get(key, default)
+
+    def Get(self, key: str, default):
+        if key not in self.pref_set_counter:
+            self.pref_get_counter[key] = 1
+        else:
+            self.pref_get_counter[key] += 1
+        if key in self.prefs:
+            return self.prefs[key]
+        raise ValueError(f"Expected key not in mock preferences: {key}")
+
+    def SetInt(self, key: str, value: int) -> None:
+        return self.Set(key, value)
+
+    def SetString(self, key: str, value: str) -> None:
+        return self.Set(key, value)
+
+    def SetBool(self, key: str, value: bool) -> None:
+        return self.Set(key, value)
+
+    def Set(self, key: str, value):
+        if key not in self.pref_set_counter:
+            self.pref_set_counter[key] = 1
+        else:
+            self.pref_set_counter[key] += 1
+        self.prefs[key] = value
+
+
+class MockExists:
+    def __init__(self, files: List[str] = None):
+        """Returns True for all files in files, and False for all others"""
+        self.files = files
+        self.files_checked = []
+
+    def exists(self, check_file: str):
+        self.files_checked.append(check_file)
+        if not self.files:
+            return False
+        for file in self.files:
+            if check_file.endswith(file):
+                return True
         return False

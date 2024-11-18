@@ -69,11 +69,11 @@ public:
     TRational& operator-= (const TRational& rkR);
     TRational& operator*= (const TRational& rkR);
     TRational& operator/= (const TRational& rkR);
-
+#if 0
     // conversions to float and double
     void ConvertTo (float& rfValue) const;
     void ConvertTo (double& rdValue) const;
-
+#endif
     // compute the absolute value of the rational number
     TRational Abs () const;
 

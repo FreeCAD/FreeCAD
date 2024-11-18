@@ -51,23 +51,40 @@ PROPERTY_SOURCE(PartDesign::LinearPattern, PartDesign::Transformed)
 
 const App::PropertyIntegerConstraint::Constraints LinearPattern::intOccurrences = { 1, INT_MAX, 1 };
 
+const char* LinearPattern::ModeEnums[] = { "length", "offset", nullptr };
+
 LinearPattern::LinearPattern()
 {
+    auto initialMode = LinearPatternMode::length;
+
     ADD_PROPERTY_TYPE(Direction,(nullptr),"LinearPattern",(App::PropertyType)(App::Prop_None),"Direction");
     ADD_PROPERTY(Reversed,(0));
+    ADD_PROPERTY(Mode, (long(initialMode)));
     ADD_PROPERTY(Length,(100.0));
+    ADD_PROPERTY(Offset,(10.0));
     ADD_PROPERTY(Occurrences,(3));
     Occurrences.setConstraints(&intOccurrences);
+    Mode.setEnums(ModeEnums);
+    setReadWriteStatusForMode(initialMode);
 }
 
 short LinearPattern::mustExecute() const
 {
     if (Direction.isTouched() ||
         Reversed.isTouched() ||
-        Length.isTouched() ||
+        Mode.isTouched() ||
+        // Length and Offset are mutually exclusive, only one could be updated at once
+        Length.isTouched() || 
+        Offset.isTouched() || 
         Occurrences.isTouched())
         return 1;
     return Transformed::mustExecute();
+}
+
+void LinearPattern::setReadWriteStatusForMode(LinearPatternMode mode)
+{
+    Length.setReadOnly(mode != LinearPatternMode::length);
+    Offset.setReadOnly(mode != LinearPatternMode::offset);
 }
 
 const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App::DocumentObject*>)
@@ -93,19 +110,27 @@ const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App
         throw Base::ValueError("No direction reference specified");
 
     gp_Dir dir;
-    if (refObject->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+    if (refObject->isDerivedFrom<Part::Part2DObject>()) {
         Part::Part2DObject* refSketch = static_cast<Part::Part2DObject*>(refObject);
         Base::Axis axis;
-        if (subStrings[0] == "H_Axis")
+        if (subStrings[0] == "H_Axis") {
             axis = refSketch->getAxis(Part::Part2DObject::H_Axis);
-        else if (subStrings[0] == "V_Axis")
+            axis *= refSketch->Placement.getValue();
+        }
+        else if (subStrings[0] == "V_Axis") {
             axis = refSketch->getAxis(Part::Part2DObject::V_Axis);
-        else if (subStrings[0] == "N_Axis")
+            axis *= refSketch->Placement.getValue();
+        }
+        else if (subStrings[0] == "N_Axis") {
             axis = refSketch->getAxis(Part::Part2DObject::N_Axis);
+            axis *= refSketch->Placement.getValue();
+        }
         else if (subStrings[0].compare(0, 4, "Axis") == 0) {
             int AxId = std::atoi(subStrings[0].substr(4,4000).c_str());
-            if (AxId >= 0 && AxId < refSketch->getAxisCount())
+            if (AxId >= 0 && AxId < refSketch->getAxisCount()) {
                 axis = refSketch->getAxis(AxId);
+                axis *= refSketch->Placement.getValue();
+            }
         }
         else if (subStrings[0].compare(0, 4, "Edge") == 0) {
             Part::TopoShape refShape = refSketch->Shape.getShape();
@@ -119,26 +144,28 @@ const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App
 
             gp_Pnt p = adapt.Line().Location();
             gp_Dir d = adapt.Line().Direction();
+
+            // the axis is not given in local coordinates and mustn't be multiplied with the
+            // placement
             axis.setBase(Base::Vector3d(p.X(), p.Y(), p.Z()));
             axis.setDirection(Base::Vector3d(d.X(), d.Y(), d.Z()));
         }
-        axis *= refSketch->Placement.getValue();
         dir = gp_Dir(axis.getDirection().x, axis.getDirection().y, axis.getDirection().z);
-    } else if (refObject->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())) {
+    } else if (refObject->isDerivedFrom<PartDesign::Plane>()) {
         PartDesign::Plane* plane = static_cast<PartDesign::Plane*>(refObject);
         Base::Vector3d d = plane->getNormal();
         dir = gp_Dir(d.x, d.y, d.z);
-    } else if (refObject->getTypeId().isDerivedFrom(PartDesign::Line::getClassTypeId())) {
+    } else if (refObject->isDerivedFrom<PartDesign::Line>()) {
         PartDesign::Line* line = static_cast<PartDesign::Line*>(refObject);
         Base::Vector3d d = line->getDirection();
         dir = gp_Dir(d.x, d.y, d.z);
-    } else if (refObject->getTypeId().isDerivedFrom(App::Line::getClassTypeId())) {
+    } else if (refObject->isDerivedFrom<App::Line>()) {
         App::Line* line = static_cast<App::Line*>(refObject);
         Base::Rotation rot = line->Placement.getValue().getRotation();
         Base::Vector3d d(1,0,0);
         rot.multVec(d, d);
         dir = gp_Dir(d.x, d.y, d.z);
-    } else if (refObject->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+    } else if (refObject->isDerivedFrom<Part::Feature>()) {
         if (subStrings[0].empty())
             throw Base::ValueError("No direction reference specified");
         Part::Feature* refFeature = static_cast<Part::Feature*>(refObject);
@@ -173,7 +200,20 @@ const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App
     dir.Transform(invObjLoc.Transformation());
 
     gp_Vec offset(dir.X(), dir.Y(), dir.Z());
-    offset *= distance / (occurrences - 1);
+
+    switch (static_cast<LinearPatternMode>(Mode.getValue())) {
+        case LinearPatternMode::length:
+            offset *= distance / (occurrences - 1);
+            break;
+
+        case LinearPatternMode::offset:
+            offset *= Offset.getValue();
+            break;
+
+        default:
+            throw Base::ValueError("Invalid mode");
+    }
+
     if (reversed)
         offset.Reverse();
 
@@ -181,7 +221,7 @@ const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App
     gp_Trsf trans;
     transformations.push_back(trans);
 
-    // Note: The original feature is already included in the list of transformations!
+    // NOTE: The original feature is already included in the list of transformations!
     // Therefore we start with occurrence number 1
     for (int i = 1; i < occurrences; i++) {
         trans.SetTranslation(offset * i);
@@ -204,6 +244,28 @@ void LinearPattern::handleChangedPropertyType(Base::XMLReader& reader, const cha
     else {
         Transformed::handleChangedPropertyType(reader, TypeName, prop);
     }
+}
+
+void LinearPattern::onChanged(const App::Property* prop)
+{
+    auto mode = static_cast<LinearPatternMode>(Mode.getValue());
+
+    if (prop == &Mode) {
+        setReadWriteStatusForMode(mode);
+    }
+
+    // Keep Length in sync with Offset, catch Occurrences changes
+    if (mode == LinearPatternMode::offset && (prop == &Offset || prop == &Occurrences)
+        && !Length.testStatus(App::Property::Status::Immutable)) {
+        Length.setValue(Offset.getValue() * (Occurrences.getValue() - 1));
+    }
+
+    if (mode == LinearPatternMode::length && (prop == &Length || prop == &Occurrences)
+        && !Offset.testStatus(App::Property::Status::Immutable)) {
+        Offset.setValue(Length.getValue() / (Occurrences.getValue() - 1));
+    }
+
+    Transformed::onChanged(prop);
 }
 
 }

@@ -42,11 +42,9 @@ ViewProviderCompound::ViewProviderCompound()
     sPixmap = "Part_Compound.svg";
 }
 
-ViewProviderCompound::~ViewProviderCompound()
-{
-}
+ViewProviderCompound::~ViewProviderCompound() = default;
 
-std::vector<App::DocumentObject*> ViewProviderCompound::claimChildren(void) const
+std::vector<App::DocumentObject*> ViewProviderCompound::claimChildren() const
 {
     return static_cast<Part::Compound*>(getObject())->Links.getValues();
 }
@@ -56,9 +54,9 @@ bool ViewProviderCompound::onDelete(const std::vector<std::string> &)
     // get the input shapes
     Part::Compound* pComp = static_cast<Part::Compound*>(getObject());
     std::vector<App::DocumentObject*> pLinks = pComp->Links.getValues();
-    for (std::vector<App::DocumentObject*>::iterator it = pLinks.begin(); it != pLinks.end(); ++it) {
-        if (*it)
-            Gui::Application::Instance->showViewProvider(*it);
+    for (auto pLink : pLinks) {
+        if (pLink)
+            Gui::Application::Instance->showViewProvider(pLink);
     }
 
     return true;
@@ -67,7 +65,7 @@ bool ViewProviderCompound::onDelete(const std::vector<std::string> &)
 void ViewProviderCompound::updateData(const App::Property* prop)
 {
     PartGui::ViewProviderPart::updateData(prop);
-    if (prop->getTypeId() == Part::PropertyShapeHistory::getClassTypeId()) {
+    if (prop->is<Part::PropertyShapeHistory>()) {
         const std::vector<Part::ShapeHistory>& hist = static_cast<const Part::PropertyShapeHistory*>
             (prop)->getValues();
         Part::Compound* objComp = static_cast<Part::Compound*>(getObject());
@@ -78,8 +76,8 @@ void ViewProviderCompound::updateData(const App::Property* prop)
             // See also Compound::execute
             std::set<App::DocumentObject*> tempSources;
             std::vector<App::DocumentObject*> filter;
-            for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end(); ++it) {
-                Part::Feature* objBase = dynamic_cast<Part::Feature*>(*it);
+            for (auto source : sources) {
+                Part::Feature* objBase = dynamic_cast<Part::Feature*>(source);
                 if (objBase) {
                     auto pos = tempSources.insert(objBase);
                     if (pos.second) {
@@ -97,8 +95,8 @@ void ViewProviderCompound::updateData(const App::Property* prop)
         TopTools_IndexedMapOfShape compMap;
         TopExp::MapShapes(compShape, TopAbs_FACE, compMap);
 
-        std::vector<App::Color> compCol;
-        compCol.resize(compMap.Extent(), this->ShapeColor.getValue());
+        std::vector<App::Material> compCol;
+        compCol.resize(compMap.Extent(), this->ShapeAppearance[0]);
 
         int index=0;
         for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end(); ++it, ++index) {
@@ -113,14 +111,14 @@ void ViewProviderCompound::updateData(const App::Property* prop)
 
             auto vpBase = dynamic_cast<PartGui::ViewProviderPart*>(Gui::Application::Instance->getViewProvider(objBase));
             if (vpBase) {
-                std::vector<App::Color> baseCol = vpBase->DiffuseColor.getValues();
-                applyTransparency(vpBase->Transparency.getValue(),baseCol);
+                std::vector<App::Material> baseCol = vpBase->ShapeAppearance.getValues();
+                applyTransparency(vpBase->Transparency.getValue(), baseCol);
                 if (static_cast<int>(baseCol.size()) == baseMap.Extent()) {
-                    applyColor(hist[index], baseCol, compCol);
+                    applyMaterial(hist[index], baseCol, compCol);
                 }
-                else if (!baseCol.empty() && baseCol[0] != this->ShapeColor.getValue()) {
+                else if (!baseCol.empty() && baseCol[0] != this->ShapeAppearance[0]) {
                     baseCol.resize(baseMap.Extent(), baseCol[0]);
-                    applyColor(hist[index], baseCol, compCol);
+                    applyMaterial(hist[index], baseCol, compCol);
                 }
             }
         }
@@ -131,12 +129,12 @@ void ViewProviderCompound::updateData(const App::Property* prop)
             applyTransparency(Transparency.getValue(), compCol);
         }
 
-        this->DiffuseColor.setValues(compCol);
+        this->ShapeAppearance.setValues(compCol);
     }
-    else if (prop->getTypeId().isDerivedFrom(App::PropertyLinkList::getClassTypeId())) {
+    else if (prop->isDerivedFrom<App::PropertyLinkList>()) {
         const std::vector<App::DocumentObject *>& pBases = static_cast<const App::PropertyLinkList*>(prop)->getValues();
-        for (std::vector<App::DocumentObject *>::const_iterator it = pBases.begin(); it != pBases.end(); ++it) {
-            if (*it) Gui::Application::Instance->hideViewProvider(*it);
+        for (auto pBase : pBases) {
+            if (pBase) Gui::Application::Instance->hideViewProvider(pBase);
         }
     }
 }
@@ -148,7 +146,7 @@ bool ViewProviderCompound::canDragObjects() const
 
 bool ViewProviderCompound::canDragObject(App::DocumentObject* obj) const
 {
-    return obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId());
+    return obj->isDerivedFrom<Part::Feature>();
 }
 
 void ViewProviderCompound::dragObject(App::DocumentObject* obj)
@@ -171,7 +169,7 @@ bool ViewProviderCompound::canDropObjects() const
 
 bool ViewProviderCompound::canDropObject(App::DocumentObject* obj) const
 {
-    return obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId());
+    return obj->isDerivedFrom<Part::Feature>();
 }
 
 void ViewProviderCompound::dropObject(App::DocumentObject* obj)

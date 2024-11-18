@@ -234,12 +234,12 @@ bool StdMeshers_MEFISTO_2D::Compute(SMESH_Mesh & aMesh, const TopoDS_Shape & aSh
 
   Z nblf;                 //nombre de lignes fermees (enveloppe en tete)
   Z *nudslf = NULL;       //numero du dernier sommet de chaque ligne fermee
-  R2 *uvslf = NULL;       
+  R_2 *uvslf = NULL;
   Z nbpti = 0;            //nombre points internes futurs sommets de la triangulation
-  R2 *uvpti = NULL;
+  R_2 *uvpti = NULL;
   
   Z nbst;
-  R2 *uvst = NULL;
+  R_2 *uvst = NULL;
   Z nbt;
   Z *nust = NULL;
   Z ierr = 0;
@@ -264,7 +264,7 @@ bool StdMeshers_MEFISTO_2D::Compute(SMESH_Mesh & aMesh, const TopoDS_Shape & aSh
     nudslf[iw++] = nbpnt;
   }
 
-  uvslf = new R2[nudslf[nblf]];
+  uvslf = new R_2[nudslf[nblf]];
 
   double scalex, scaley;
   ComputeScaleOnFace(aMesh, F, scalex, scaley);
@@ -390,7 +390,7 @@ bool StdMeshers_MEFISTO_2D::Evaluate(SMESH_Mesh & aMesh,
 //purpose  : prevent failure due to overlapped adjacent links
 //=======================================================================
 
-static bool fixOverlappedLinkUV( R2& uv0, const R2& uv1, const R2& uv2 )
+static bool fixOverlappedLinkUV( R_2& uv0, const R_2& uv1, const R_2& uv2 )
 {
   gp_XY v1( uv0.x - uv1.x, uv0.y - uv1.y );
   gp_XY v2( uv2.x - uv1.x, uv2.y - uv1.y );
@@ -441,7 +441,7 @@ static bool fixOverlappedLinkUV( R2& uv0, const R2& uv1, const R2& uv2 )
 //purpose  : 
 //=======================================================================
 
-static bool fixCommonVertexUV (R2 &                 theUV,
+static bool fixCommonVertexUV (R_2 &                 theUV,
                                const TopoDS_Vertex& theV,
                                const TopoDS_Face&   theF,
                                const TopTools_IndexedDataMapOfShapeListOfShape & theVWMap,
@@ -540,7 +540,7 @@ static bool fixCommonVertexUV (R2 &                 theUV,
       nextUV  = uv;
     }
   }
-  R2 uv0, uv1, uv2;
+  R_2 uv0, uv1, uv2;
   uv0.x = thisUV.X();   uv0.y = thisUV.Y();
   uv1.x = nextUV.X();   uv1.y = nextUV.Y(); 
   uv2.x = thisUV.X();   uv2.y = thisUV.Y();
@@ -574,7 +574,7 @@ static bool fixCommonVertexUV (R2 &                 theUV,
 //=============================================================================
 
 bool StdMeshers_MEFISTO_2D::LoadPoints(TWireVector &                 wires,
-                                       R2 *                          uvslf,
+                                       R_2 *                          uvslf,
                                        vector<const SMDS_MeshNode*>& mefistoToDS,
                                        double                        scalex,
                                        double                        scaley)
@@ -782,7 +782,7 @@ void StdMeshers_MEFISTO_2D::ComputeScaleOnFace(SMESH_Mesh &        aMesh,
  */
 //=============================================================================
 
-void StdMeshers_MEFISTO_2D::StoreResult(Z nbst, R2 * uvst, Z nbt, Z * nust,
+void StdMeshers_MEFISTO_2D::StoreResult(Z nbst, R_2 * uvst, Z nbt, Z * nust,
                                         vector< const SMDS_MeshNode*>&mefistoToDS,
                                         double scalex, double scaley)
 {

@@ -556,6 +556,17 @@ PropertyMass::PropertyMass()
 }
 
 //**************************************************************************
+// PropertyMoment
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyMoment, App::PropertyQuantity)
+
+PropertyMoment::PropertyMoment()
+{
+    setUnit(Base::Unit::Moment);
+}
+
+//**************************************************************************
 // PropertyPressure
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -619,6 +630,17 @@ TYPESYSTEM_SOURCE(App::PropertyStiffness, App::PropertyQuantity)
 PropertyStiffness::PropertyStiffness()
 {
     setUnit(Base::Unit::Stiffness);
+}
+
+//**************************************************************************
+// PropertyStiffnessDensity
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyStiffnessDensity, App::PropertyQuantity)
+
+PropertyStiffnessDensity::PropertyStiffnessDensity()
+{
+    setUnit(Base::Unit::StiffnessDensity);
 }
 
 //**************************************************************************

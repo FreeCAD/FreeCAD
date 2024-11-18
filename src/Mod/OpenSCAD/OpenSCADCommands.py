@@ -21,7 +21,7 @@
 
 __title__ = "FreeCAD OpenSCAD Workbench - GUI Commands"
 __author__ = "Sebastian Hoogen"
-__url__ = ["https://www.freecadweb.org"]
+__url__ = ["https://www.freecad.org"]
 
 '''
 This Script includes the GUI Commands of the OpenSCAD module
@@ -379,7 +379,7 @@ class AddSCADTask:
         self.form.buttonrefresh.clicked.connect(self.refreshelement)
 
     def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Close)
+        return QtGui.QDialogButtonBox.Close
 
     def isAllowedAlterSelection(self):
         return True
@@ -492,7 +492,7 @@ class OpenSCADMeshBooleanTask:
         self.form.buttonadd.clicked.connect(self.doboolean)
 
     def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Close)
+        return QtGui.QDialogButtonBox.Close
 
     def isAllowedAlterSelection(self):
         return False
@@ -548,7 +548,7 @@ class OpenSCADMeshBoolean:
 
 class Hull:
     def IsActive(self):
-        return len(FreeCADGui.Selection.getSelection()) >= 2
+        return len(FreeCADGui.Selection.getSelection()) >= 1
 
     def Activated(self):
         import Part
@@ -568,7 +568,7 @@ class Hull:
 
 class Minkowski:
     def IsActive(self):
-        return len(FreeCADGui.Selection.getSelection()) >= 2
+        return len(FreeCADGui.Selection.getSelection()) >= 1
 
     def Activated(self):
         import Part

@@ -28,6 +28,7 @@
 #include <QAction>
 #include <QComboBox>
 #include <QKeySequence>
+#include <QMap>
 #include <FCGlobal.h>
 
 namespace Gui
@@ -143,6 +144,9 @@ public:
     void setVisible (bool) override;
     void setIsMode(bool check) { _isMode = check; }
 
+    void setRememberLast(bool);
+    bool doesRememberLast() const;
+
     void setDropDownMenu(bool check) { _dropDown = check; }
     QAction* addAction(QAction*);
     QAction* addAction(const QString&);
@@ -150,7 +154,6 @@ public:
     int checkedAction() const;
     void setCheckedAction(int);
 
-protected:
     QActionGroup* groupAction() const {
         return _group;
     }
@@ -171,36 +174,10 @@ private:
     QActionGroup* _group;
     bool _dropDown;
     bool _isMode;
+    bool _rememberLast;
 
 private:
     Q_DISABLE_COPY(ActionGroup)
-};
-
-// --------------------------------------------------------------------
-
-class WorkbenchGroup;
-class GuiExport WorkbenchComboBox : public QComboBox
-{
-    Q_OBJECT
-
-public:
-    explicit WorkbenchComboBox(WorkbenchGroup* wb, QWidget* parent=nullptr);
-    void showPopup() override;
-
-public Q_SLOTS:
-    void onActivated(int);
-    void onActivated(QAction*);
-
-protected Q_SLOTS:
-    void onWorkbenchActivated(const QString&);
-
-protected:
-    void actionEvent (QActionEvent*) override;
-
-private:
-    WorkbenchGroup* group;
-
-    Q_DISABLE_COPY(WorkbenchComboBox)
 };
 
 /**
@@ -212,24 +189,34 @@ class GuiExport WorkbenchGroup : public ActionGroup
 {
     Q_OBJECT
 
+    QAction* getOrCreateAction(const QString& wbName);
+
 public:
     /**
      * Creates an action for the command \a pcCmd to load the workbench \a name
      * when it gets activated.
      */
-    WorkbenchGroup (Command* pcCmd, QObject * parent);
-    void addTo (QWidget * widget) override;
+    WorkbenchGroup(Command* pcCmd, QObject* parent);
+
+    void addTo(QWidget * widget) override;
     void refreshWorkbenchList();
 
     void slotActivateWorkbench(const char*);
-    void slotAddWorkbench(const char*);
-    void slotRemoveWorkbench(const char*);
 
-protected:
-    void customEvent(QEvent* event) override;
+    QList<QAction*> getEnabledWbActions() const;
+    QList<QAction*> getDisabledWbActions() const;
+
+Q_SIGNALS:
+    void workbenchListRefreshed(QList<QAction*>);
+
+protected Q_SLOTS:
+    void onWorkbenchActivated(const QString&);
 
 private:
-    void setWorkbenchData(int index, const QString& wb);
+    QList<QAction*> enabledWbsActions;
+    QList<QAction*> disabledWbsActions;
+
+    QMap<QString, QAction*> actionByWorkbenchName;
 
     Q_DISABLE_COPY(WorkbenchGroup)
 };

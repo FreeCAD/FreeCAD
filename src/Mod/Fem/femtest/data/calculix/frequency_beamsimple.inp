@@ -17021,6 +17021,9 @@ Evolumes
 17,
 18,
 
+** Physical constants for SI(mm) unit system with Kelvins
+*PHYSICAL CONSTANTS, ABSOLUTE ZERO=0, STEFAN BOLTZMANN=5.670374419e-11
+
 ***********************************************************
 ** Materials
 ** see information about units at file end
@@ -17047,13 +17050,13 @@ Evolumes
 ** Displacement constraint applied
 ** Fix_XYZ
 *BOUNDARY
-Fix_XYZ,1
-Fix_XYZ,2
-Fix_XYZ,3
+Fix_XYZ,1,1,0.0
+Fix_XYZ,2,2,0.0
+Fix_XYZ,3,3,0.0
 ** Fix_YZ
 *BOUNDARY
-Fix_YZ,2
-Fix_YZ,3
+Fix_YZ,2,2,0.0
+Fix_YZ,3,3,0.0
 
 
 ***********************************************************
@@ -17069,9 +17072,9 @@ RF
 *NODE PRINT, NSET=Fix_YZ, TOTALS=ONLY
 RF
 
-
+*OUTPUT, FREQUENCY=1
 ***********************************************************
-*END STEP 
+*END STEP
 
 ***********************************************************
 ** CalculiX Input file

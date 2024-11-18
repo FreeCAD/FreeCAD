@@ -24,6 +24,7 @@
 #define APP_LICENSE_H
 
 #include <array>
+#include <cstring>
 #include <string>
 
 namespace App
@@ -64,8 +65,11 @@ constexpr std::array<TLicenseArr, countOfLicenses> licenseItems {{
 
 int constexpr findLicense(const char* identifier)
 {
+    if (!identifier || identifier[0] == '\0') {
+        return -1;
+    }
     for (int i = 0; i < countOfLicenses; i++) {
-        if (licenseItems.at(i).at(posnOfIdentifier) == identifier) {
+        if (strcmp(licenseItems.at(i).at(posnOfIdentifier), identifier) == 0) {
             return i;
         }
     }

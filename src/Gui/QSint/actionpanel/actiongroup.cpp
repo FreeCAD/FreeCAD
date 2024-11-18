@@ -248,10 +248,15 @@ void ActionGroup::setHeaderText(const QString & headerText)
     myHeader->myTitle->setText(headerText);
 }
 
+void ActionGroup::setHeaderIcon(const QPixmap& icon)
+{
+    myHeader->myTitle->setIcon(icon);
+}
+
 
 QSize ActionGroup::minimumSizeHint() const
 {
-    return QSize(200,65);
+    return {200,65};
 }
 
 

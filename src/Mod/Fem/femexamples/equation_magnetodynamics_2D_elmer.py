@@ -43,12 +43,14 @@ def get_information():
         "constraints": ["current density"],
         "solvers": ["elmer"],
         "material": "solid",
-        "equations": ["electromagnetic"]
+        "equations": ["electromagnetic"],
     }
 
 
 def get_explanation(header=""):
-    return header + """
+    return (
+        header
+        + """
 
 To run the example from Python console use:
 from femexamples.equation_magnetodynamics_2D_elmer import setup
@@ -57,6 +59,7 @@ setup()
 Magnetodynamic2D equation - Elmer solver
 
 """
+    )
 
 
 def setup(doc=None, solvertype="elmer"):
@@ -81,6 +84,7 @@ def setup(doc=None, solvertype="elmer"):
     p7 = Vector(25.0, 20.0, 0.0)
     p8 = Vector(0.0, 20.0, 0.0)
     Insulation = Draft.make_wire([p1, p2, p3, p4, p5, p6, p7, p8], closed=True)
+    Insulation.MakeFace = True
     Insulation.Label = "Insulation"
     Insulation.ViewObject.Visibility = False
 
@@ -90,6 +94,7 @@ def setup(doc=None, solvertype="elmer"):
     p3 = Vector(55.0, 110.0, 0.0)
     p4 = Vector(50.0, 110.0, 0.0)
     Coil = Draft.make_wire([p1, p2, p3, p4], closed=True)
+    Coil.MakeFace = True
     Coil.Label = "Coil"
     Coil.ViewObject.Visibility = False
 
@@ -103,6 +108,7 @@ def setup(doc=None, solvertype="elmer"):
     p7 = Vector(20.0, 30.0, 0.0)
     p8 = Vector(0.0, 30.0, 0.0)
     Crucible = Draft.make_wire([p1, p2, p3, p4, p5, p6, p7, p8], closed=True)
+    Crucible.MakeFace = True
     Crucible.Label = "Crucible"
     Crucible.ViewObject.Visibility = False
 
@@ -112,12 +118,12 @@ def setup(doc=None, solvertype="elmer"):
     p3 = Vector(20.0, 40.0, 0.0)
     p4 = Vector(0.0, 40.0, 0.0)
     Powder = Draft.make_wire([p1, p2, p3, p4], closed=True)
+    Powder.MakeFace = True
     Powder.Label = "Powder"
     Powder.ViewObject.Visibility = False
 
     # a half circle defining later the air volume
-    Air_Circle = Part.makeCircle(
-        140.0, Vector(0.0, 60.0, 0.0), Vector(0.0, 0.0, 1.0), -90.0, 90.0)
+    Air_Circle = Part.makeCircle(140.0, Vector(0.0, 60.0, 0.0), Vector(0.0, 0.0, 1.0), -90.0, 90.0)
     Air_Line = Part.makeLine((0.0, -80.0, 0.0), (0.0, 200.0, 0.0))
     Air_Area = doc.addObject("Part::Feature", "Air_Area")
     Air_Area.Shape = Part.Face([Part.Wire([Air_Circle, Air_Line])])
@@ -171,6 +177,7 @@ def setup(doc=None, solvertype="elmer"):
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
     if FreeCAD.GuiUp:
         import FemGui
+
         FemGui.setActiveAnalysis(analysis)
 
     # solver
@@ -208,7 +215,8 @@ def setup(doc=None, solvertype="elmer"):
     material_obj.References = [
         (BooleanFragments, "Face2"),
         (BooleanFragments, "Face5"),
-        (BooleanFragments, "Face6")]
+        (BooleanFragments, "Face6"),
+    ]
     analysis.addObject(material_obj)
 
     # graphite of the crucible
@@ -250,7 +258,7 @@ def setup(doc=None, solvertype="elmer"):
 
     # mesh
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
-    femmesh_obj.Part = BooleanFragments
+    femmesh_obj.Shape = BooleanFragments
     femmesh_obj.CharacteristicLengthMax = "3 mm"
     femmesh_obj.ViewObject.Visibility = False
 
@@ -261,20 +269,19 @@ def setup(doc=None, solvertype="elmer"):
         (BooleanFragments, "Face1"),
         (BooleanFragments, "Face2"),
         (BooleanFragments, "Face3"),
-        (BooleanFragments, "Face4")]
+        (BooleanFragments, "Face4"),
+    ]
     mesh_region.ViewObject.Visibility = False
 
     # generate the mesh
     from femmesh import gmshtools
+
     gmsh_mesh = gmshtools.GmshTools(femmesh_obj, analysis)
     try:
         error = gmsh_mesh.create_mesh()
     except Exception:
         error = sys.exc_info()[1]
-        FreeCAD.Console.PrintError(
-            "Unexpected error when creating mesh: {}\n"
-            .format(error)
-        )
+        FreeCAD.Console.PrintError(f"Unexpected error when creating mesh: {error}\n")
 
     doc.recompute()
     return doc

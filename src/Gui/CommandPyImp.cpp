@@ -27,6 +27,8 @@
 # include <QRegularExpressionMatch>
 #endif
 
+#include <Base/PyWrapParseTupleAndKeywords.h>
+
 #include "Command.h"
 #include "Action.h"
 #include "Application.h"
@@ -44,7 +46,7 @@
 // returns a string which represents the object e.g. when printed in python
 std::string CommandPy::representation() const
 {
-    return std::string("<Command object>");
+    return {"<Command object>"};
 }
 
 PyObject* CommandPy::get(PyObject *args)
@@ -272,10 +274,10 @@ PyObject* CommandPy::getAction(PyObject *args)
         if (group) {
             const auto actions = group->actions();
             for (auto a : actions)
-                list.append(wrap.fromQObject(a));
+                list.append(wrap.fromQAction(a));
         }
         else if (action) {
-            list.append(wrap.fromQObject(action->action()));
+            list.append(wrap.fromQAction(action->action()));
         }
 
         return Py::new_reference_to(list);
@@ -296,10 +298,12 @@ PyObject* CommandPy::createCustomCommand(PyObject* args, PyObject* kw)
     const char* statustipTxt = nullptr;
     const char* pixmapTxt = nullptr;
     const char* shortcutTxt = nullptr;
-    static char* kwlist[] = {"macroFile", "menuText", "toolTip", "whatsThis","statusTip", "pixmap", "shortcut", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kw, "s|zzzzzz", kwlist, &macroFile, &menuTxt,
-            &tooltipTxt, &whatsthisTxt, &statustipTxt, &pixmapTxt, &shortcutTxt))
+    static std::array<const char *, 8> kwlist {"macroFile", "menuText", "toolTip", "whatsThis",
+                                               "statusTip", "pixmap", "shortcut", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kw, "s|zzzzzz", kwlist, &macroFile, &menuTxt,
+            &tooltipTxt, &whatsthisTxt, &statustipTxt, &pixmapTxt, &shortcutTxt)) {
         return nullptr;
+    }
 
     auto name = Application::Instance->commandManager().newMacroName();
     CommandManager& commandManager = Application::Instance->commandManager();

@@ -32,7 +32,7 @@
 namespace Fem
 {
 
-class FemExport ConstraintTemperature : public Fem::Constraint
+class FemExport ConstraintTemperature: public Fem::Constraint
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::ConstraintTemperature);
 
@@ -40,30 +40,26 @@ public:
     /// Constructor
     ConstraintTemperature();
 
-    // Read-only (calculated values). These trigger changes in the ViewProvider
-    App::PropertyVectorList Points;
-    App::PropertyVectorList Normals;
-
-    //Temperature parameters
+    // Temperature parameters
     App::PropertyTemperature Temperature;
     App::PropertyPower CFlux;
     App::PropertyEnumeration ConstraintType;
 
 
     /// recalculate the object
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
 
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override;
 
 protected:
-    void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName,
-                                   App::Property* prop);
+    void handleChangedPropertyType(Base::XMLReader& reader,
+                                   const char* TypeName,
+                                   App::Property* prop) override;
     void onChanged(const App::Property* prop) override;
-
 };
 
-} //namespace Fem
+}  // namespace Fem
 
 
-#endif // FEM_CONSTRAINTTEMPERATURE_H
+#endif  // FEM_CONSTRAINTTEMPERATURE_H

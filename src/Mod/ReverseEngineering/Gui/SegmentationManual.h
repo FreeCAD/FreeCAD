@@ -32,7 +32,8 @@
 #include <Mod/Mesh/Gui/MeshSelection.h>
 
 
-namespace ReverseEngineeringGui {
+namespace ReverseEngineeringGui
+{
 class Ui_SegmentationManual;
 
 /**
@@ -40,7 +41,7 @@ class Ui_SegmentationManual;
  * of a mesh.
  * @author Werner Mayer
  */
-class SegmentationManual : public QWidget
+class SegmentationManual: public QWidget
 {
     Q_OBJECT
 
@@ -65,7 +66,7 @@ public:
     void onSphereDetectClicked();
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
     class Private;
@@ -78,29 +79,31 @@ private:
 /**
  * Embed the panel into a task dialog.
  */
-class TaskSegmentationManual : public Gui::TaskView::TaskDialog
+class TaskSegmentationManual: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
     TaskSegmentationManual();
-    ~TaskSegmentationManual() override;
 
 public:
     bool accept() override;
     void clicked(int) override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Ok | QDialogButtonBox::Close; }
-    bool isAllowedAlterDocument(void) const override
-    { return true; }
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Close;
+    }
+    bool isAllowedAlterDocument() const override
+    {
+        return true;
+    }
     void modifyStandardButtons(QDialogButtonBox*) override;
 
 private:
     SegmentationManual* widget;
-    Gui::TaskView::TaskBox* taskbox;
 };
 
-}
+}  // namespace ReverseEngineeringGui
 
-#endif // REVERSEENGINEERINGGUI_SEGMENTATIONMANUAL_H
+#endif  // REVERSEENGINEERINGGUI_SEGMENTATIONMANUAL_H

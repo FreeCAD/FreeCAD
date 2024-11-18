@@ -52,10 +52,10 @@ class TechDrawGuiExport QGIArrow : public QGIPrimPath
 {
 public:
     explicit QGIArrow();
-    ~QGIArrow() {}
+    ~QGIArrow() override {}
 
     enum {Type = QGraphicsItem::UserType + 109};
-    int type() const { return Type;}
+    int type() const override { return Type;}
 
 public:
     void draw();

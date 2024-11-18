@@ -22,13 +22,13 @@
 
 __title__ = "MeshEnums module"
 __author__ = "Werner Mayer"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Enum types"
 
 from enum import IntEnum
+
 
 class Binding(IntEnum):
     OVERALL = 0
     PER_VERTEX = 1
     PER_FACE = 2
-

@@ -40,7 +40,7 @@ std::stack<FunctionExpression::Function> functions;                /**< Function
      %token ONE
      %token NUM
      %token IDENTIFIER
-     %token UNIT
+     %token UNIT USUNIT
      %token INTEGER
      %token CONSTANT
      %token CELLADDRESS
@@ -49,8 +49,8 @@ std::stack<FunctionExpression::Function> functions;                /**< Function
      %token DOCUMENT OBJECT
      %token EXPONENT
      %type <arguments> args
-     %type <expr> input exp unit_exp cond indexable
-     %type <quantity> UNIT
+     %type <expr> input unit_num us_building_unit other_unit exp unit_exp cond indexable
+     %type <quantity> UNIT USUNIT
      %type <string> id_or_cell STRING IDENTIFIER CELLADDRESS
      %type <ivalue> INTEGER
      %type <string> PROPERTY_REF
@@ -79,28 +79,32 @@ std::stack<FunctionExpression::Function> functions;                /**< Function
 %destructor { std::vector<Expression*>::const_iterator i = $$.begin(); while (i != $$.end()) { delete *i; ++i; } } args
 
 %start input
-
 %%
 
-input:     exp                			{ ScanResult = $1; valueExpression = true;                                        }
-     |     unit_exp                     { ScanResult = $1; unitExpression = true;                                         }
+
+input:     exp                                  { ScanResult = $1; valueExpression = true;                                        }
+     |     unit_exp                             { ScanResult = $1; unitExpression = true;                                         }
      ;
 
-exp:      num                			{ $$ = $1;                                                                        }
-        | num unit_exp %prec NUM_AND_UNIT       { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::UNIT, $2);  }
+unit_num: num unit_exp %prec NUM_AND_UNIT       { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::UNIT, $2);  } 
+        | num us_building_unit num us_building_unit %prec NUM_AND_UNIT   { $$ = new OperatorExpression(DocumentObject, new OperatorExpression(DocumentObject, $1, OperatorExpression::UNIT, $2), OperatorExpression::ADD, new OperatorExpression(DocumentObject, $3, OperatorExpression::UNIT, $4));}
+        ;
+
+exp:      num                                   { $$ = $1;                                                                        }
+        | unit_num                              { $$ = $1;                                                                        }
         | STRING                                { $$ = new StringExpression(DocumentObject, $1);                                  }
         | identifier                            { $$ = new VariableExpression(DocumentObject, $1);                                }
         | MINUSSIGN exp %prec NEG               { $$ = new OperatorExpression(DocumentObject, $2, OperatorExpression::NEG, new NumberExpression(DocumentObject, Quantity(-1))); }
         | '+' exp %prec POS                     { $$ = new OperatorExpression(DocumentObject, $2, OperatorExpression::POS, new NumberExpression(DocumentObject, Quantity(1))); }
-        | exp '+' exp        			{ $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::ADD, $3);   }
+        | exp '+' exp                           { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::ADD, $3);   }
         | exp MINUSSIGN exp                     { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::SUB, $3);   }
-        | exp '*' exp        			{ $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::MUL, $3);   }
-        | exp '/' exp        			{ $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::DIV, $3);   }
-        | exp '%' exp        			{ $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::MOD, $3);   }
+        | exp '*' exp                           { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::MUL, $3);   }
+        | exp '/' exp                           { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::DIV, $3);   }
+        | exp '%' exp                           { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::MOD, $3);   }
         | exp '/' unit_exp                      { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::DIV, $3);   }
         | exp '^' exp                           { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::POW, $3);   }
-        | indexable       			    { $$ = $1;                                                                        }
-        | FUNC  args ')'  		        { $$ = new FunctionExpression(DocumentObject, $1.first, std::move($1.second), $2);        }
+        | indexable                             { $$ = $1;                                                                        }
+        | FUNC  args ')'                        { $$ = new FunctionExpression(DocumentObject, $1.first, std::move($1.second), $2);}
         | cond '?' exp ':' exp                  { $$ = new ConditionalExpression(DocumentObject, $1, $3, $5);                     }
         | '(' exp ')'                           { $$ = $2; }
         ;
@@ -130,7 +134,11 @@ cond: exp EQ exp                                { $$ = new OperatorExpression(Do
     | '(' cond ')'                              { $$ = $2; }
     ;
 
-unit_exp: UNIT                                  { $$ = new UnitExpression(DocumentObject, $1.scaler, $1.unitStr );                }
+us_building_unit: USUNIT                        { $$ = new UnitExpression(DocumentObject, $1.scaler, $1.unitStr );                }
+other_unit: UNIT                                { $$ = new UnitExpression(DocumentObject, $1.scaler, $1.unitStr );                }
+
+unit_exp: other_unit                            { $$ = $1; }
+        | us_building_unit                      { $$ = $1; }
         | unit_exp '/' unit_exp                 { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::DIV, $3);   }
         | unit_exp '*' unit_exp                 { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::MUL, $3);   }
         | unit_exp '^' integer                  { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::POW, new NumberExpression(DocumentObject, Quantity((double)$3)));   }

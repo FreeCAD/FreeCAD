@@ -47,6 +47,7 @@ void QGIViewSection::draw()
 
 void QGIViewSection::drawSectionFace()
 {
+    // Base::Console().Message("QGIVS::drawSectionFace()\n");
     auto section( dynamic_cast<TechDraw::DrawViewSection *>(getViewObject()) );
     if (!section) {
         return;
@@ -56,10 +57,10 @@ void QGIViewSection::drawSectionFace()
         return;
     }
 
-    Gui::ViewProvider* gvp = QGIView::getViewProvider(section);
-    ViewProviderViewSection* sectionVp = dynamic_cast<ViewProviderViewSection*>(gvp);
-    if (!sectionVp || !sectionVp->ShowCutSurface.getValue())
+    ViewProviderViewSection* sectionVp = dynamic_cast<ViewProviderViewSection*>(QGIView::getViewProvider(section));
+    if (!sectionVp) {
         return;
+    }
 
     auto sectionFaces( section->getTDFaceGeometry() );
     if (sectionFaces.empty()) {
@@ -83,18 +84,16 @@ void QGIViewSection::drawSectionFace()
 
         if (section->CutSurfaceDisplay.isValue("Hide")) {
             return;
-        } else if (section->CutSurfaceDisplay.isValue("Color")) {
-            newFace->isHatched(false);
-            newFace->setFillMode(QGIFace::PlainFill);
+        }
+
+        if (section->CutSurfaceDisplay.isValue("Color")) {
+            newFace->isHatched(true);
             QColor faceColor = (sectionVp->CutSurfaceColor.getValue()).asValue<QColor>();
+            faceColor.setAlpha((100 - sectionVp->CutSurfaceTransparency.getValue())*255/100);
             newFace->setFillColor(faceColor);
-            newFace->setFillStyle(Qt::SolidPattern);
+            newFace->setFillMode(faceColor.alpha() ? QGIFace::PlainFill : QGIFace::NoFill);
         } else if (section->CutSurfaceDisplay.isValue("SvgHatch")) {
-            if (getExporting()) {
-                newFace->hideSvg(true);
-            } else {
-                newFace->hideSvg(false);
-            }
+            newFace->isHatched(true);
             newFace->setFillMode(QGIFace::SvgFill);
             newFace->setHatchColor(sectionVp->HatchColor.getValue());
             newFace->setHatchScale(section->HatchScale.getValue());
@@ -107,9 +106,9 @@ void QGIViewSection::drawSectionFace()
             newFace->setFillMode(QGIFace::GeomHatchFill);
             newFace->setHatchColor(sectionVp->GeomHatchColor.getValue());
             newFace->setHatchScale(section->HatchScale.getValue());
-            newFace->setLineWeight(sectionVp->WeightPattern.getValue());
             newFace->setHatchRotation(section->HatchRotation.getValue());
             newFace->setHatchOffset(section->HatchOffset.getValue());
+            newFace->setLineWeight(sectionVp->WeightPattern.getValue());
             std::vector<TechDraw::LineSet> lineSets = section->getDrawableLines(i);
             if (!lineSets.empty()) {
                 newFace->clearLineSets();

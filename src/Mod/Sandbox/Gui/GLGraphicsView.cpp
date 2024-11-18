@@ -48,7 +48,6 @@
 #include <QResizeEvent>
 #include <QTimer>
 #include <QVBoxLayout>
-#include <QGLWidget>
 #include <QGraphicsView>
 #include <QPaintEngine>
 #include <QGraphicsItem>
@@ -57,6 +56,7 @@
 #include <QUrl>
 
 #include "GLGraphicsView.h"
+#include <App/Application.h>
 #include <Gui/Document.h>
 #include <Gui/ViewProvider.h>
 
@@ -239,10 +239,12 @@ SceneEventFilter::eventFilter(QObject *, QEvent * qevent)
         }
     case QEvent::GraphicsSceneWheel:
         {
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
             QGraphicsSceneWheelEvent* ev = static_cast<QGraphicsSceneWheelEvent*>(qevent);
             sceneev.reset(new QWheelEvent(ev->pos().toPoint(), ev->delta(), ev->buttons(),
                 ev->modifiers(), ev->orientation()));
             qevent = sceneev.get();
+#endif
             break;
         }
     case QEvent::GraphicsSceneResize:
@@ -321,11 +323,10 @@ GraphicsScene::GraphicsScene()
     QWidget *controls = createDialog(tr("Controls"));
 
     QCheckBox *wireframe = new QCheckBox(tr("Render as wireframe"));
-    //connect(wireframe, SIGNAL(toggled(bool)), this, SLOT(enableWireframe(bool)));
+
     controls->layout()->addWidget(wireframe);
 
     QCheckBox *normals = new QCheckBox(tr("Display normals vectors"));
-    //connect(normals, SIGNAL(toggled(bool)), this, SLOT(enableNormals(bool)));
     controls->layout()->addWidget(normals);
 
     QPushButton *colorButton = new QPushButton(tr("Choose model color"));
@@ -351,7 +352,9 @@ GraphicsScene::GraphicsScene()
         pos += QPointF(0, 10 + rect.height());
     }
 
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     m_time.start();
+#endif
     sorendermanager = new SoRenderManager;
 
     sorendermanager->setAutoClipping(SoRenderManager::VARIABLE_NEAR_PLANE);
@@ -441,7 +444,6 @@ GraphicsScene::setNavigationModeFile(const QUrl & url)
         return;
     }
     else {
-        //qDebug() << url.scheme() << "is not recognized";
         return;
     }
 
@@ -572,15 +574,10 @@ void GraphicsScene::drawBackground(QPainter *painter, const QRectF &)
         return;
     }
 
-    glViewport(0, 0, width(), height());
-/**/
-    glClearColor(m_backgroundColor.redF(), m_backgroundColor.greenF(), m_backgroundColor.blueF(), 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     const int delta = m_time.elapsed() - m_lastTime;
     m_lastTime += delta;
-
+#endif
 
     sorendermanager->render(true/*PRIVATE(this)->clearwindow*/,
                             false/*PRIVATE(this)->clearzbuffer*/);
@@ -625,7 +622,9 @@ void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
     if (event->isAccepted())
         return;
 
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     m_mouseEventTime = m_time.elapsed();
+#endif
     event->accept();
 }
 
@@ -654,10 +653,6 @@ GraphicsView3D::GraphicsView3D(Gui::Document* doc, QWidget* parent)
   : Gui::MDIView(doc, parent), m_scene(new GraphicsScene()), m_view(new GraphicsView)
 {
     m_view->installEventFilter(m_scene->getEventFilter());
-    QGLFormat f;
-    f.setSampleBuffers(true);
-    f.setSamples(8);
-    m_view->setViewport(new QGLWidget(f));
     m_view->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     m_view->setScene(m_scene);
     m_scene->setNavigationModeFile(QUrl(QString::fromLatin1("coin:///scxml/navigation/examiner.xml")));
@@ -698,5 +693,4 @@ void GraphicsView3D::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         m_scene->setBackgroundColor(QColor::fromRgbF(r1, g1, b1));
     }
 }
-
 #include "moc_GLGraphicsView.cpp"

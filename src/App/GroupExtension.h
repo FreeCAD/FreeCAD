@@ -143,10 +143,11 @@ class GroupExtensionPythonT : public ExtensionT {
 public:
     
     GroupExtensionPythonT() = default;
-    virtual ~GroupExtensionPythonT() = default;
+    ~GroupExtensionPythonT() override = default;
  
     //override the documentobjectextension functions to make them available in python 
     bool allowObject(DocumentObject* obj)  override {
+        Base::PyGILStateLocker locker;
         Py::Object pyobj = Py::asObject(obj->getPyObject());
         EXTENSION_PROXY_ONEARG(allowObject, pyobj);
                 

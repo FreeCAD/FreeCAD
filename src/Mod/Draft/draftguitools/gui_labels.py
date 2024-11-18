@@ -41,12 +41,11 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import Draft_rc
 import DraftVecUtils
-import draftguitools.gui_base_original as gui_base_original
-import draftguitools.gui_tool_utils as gui_tool_utils
-import draftguitools.gui_trackers as trackers
-import draftutils.utils as utils
-
-from draftutils.messages import _msg
+from draftguitools import gui_base_original
+from draftguitools import gui_tool_utils
+from draftguitools import gui_trackers as trackers
+from draftutils import params
+from draftutils.messages import _toolmsg
 from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
@@ -66,9 +65,9 @@ class Label(gui_base_original.Creator):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Label, self).Activated(name="Label")
+        super().Activated(name="Label")
         self.ghost = None
-        self.labeltype = utils.getParam("labeltype", "Custom")
+        self.labeltype = params.get_param("labeltype")
         self.sel = Gui.Selection.getSelectionEx()
         if self.sel:
             self.sel = self.sel[0]
@@ -77,20 +76,21 @@ class Label(gui_base_original.Creator):
         self.ui.xValue.selectAll()
         self.ghost = trackers.lineTracker()
         self.call = self.view.addEventCallback("SoEvent", self.action)
-        _msg(translate("draft", "Pick target point"))
+        _toolmsg(translate("draft", "Pick target point"))
         self.ui.isCopy.hide()
 
     def setmode(self, i):
         """Set the type of label, if it is associated to an object."""
         from draftobjects.label import get_label_types
         self.labeltype = get_label_types()[i]
-        utils.setParam("labeltype", self.labeltype)
+        params.set_param("labeltype", self.labeltype)
 
     def finish(self, cont=False):
         """Finish the command."""
+        self.end_callbacks(self.call)
         if self.ghost:
             self.ghost.finalize()
-        super(Label, self).finish()
+        super().finish()
 
     def create(self):
         """Create the actual object."""
@@ -99,14 +99,9 @@ class Label(gui_base_original.Creator):
             basepoint = self.node[2]
             v = self.node[2].sub(self.node[1])
             dist = v.Length
-            if hasattr(App, "DraftWorkingPlane"):
-                h = App.DraftWorkingPlane.u
-                n = App.DraftWorkingPlane.axis
-                r = App.DraftWorkingPlane.getRotation().Rotation
-            else:
-                h = App.Vector(1, 0, 0)
-                n = App.Vector(0, 0, 1)
-                r = App.Rotation()
+            h = self.wp.u
+            n = self.wp.axis
+            r = self.wp.get_placement().Rotation
 
             if abs(DraftVecUtils.angle(v, h, n)) <= math.pi/4:
                 direction = "Horizontal"
@@ -176,7 +171,7 @@ class Label(gui_base_original.Creator):
             if hasattr(Gui, "Snapper"):
                 Gui.Snapper.affinity = None  # don't keep affinity
             if len(self.node) == 2:
-                gui_tool_utils.setMod(arg, gui_tool_utils.MODCONSTRAIN, True)
+                gui_tool_utils.setMod(arg, gui_tool_utils.get_mod_constrain_key(), True)
             self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg)
             gui_tool_utils.redraw3DView()
         elif arg["Type"] == "SoMouseButtonEvent":
@@ -187,7 +182,7 @@ class Label(gui_base_original.Creator):
                         # first click
                         self.node.append(self.point)
                         self.ui.isRelative.show()
-                        _msg(translate("draft",
+                        _toolmsg(translate("draft",
                                        "Pick endpoint of leader line"))
                         if self.planetrack:
                             self.planetrack.set(self.point)
@@ -198,7 +193,7 @@ class Label(gui_base_original.Creator):
                             self.ghost.p1(self.node[0])
                             self.ghost.p2(self.node[1])
                             self.ghost.on()
-                        _msg(translate("draft", "Pick text position"))
+                        _toolmsg(translate("draft", "Pick text position"))
                     else:
                         # third click
                         self.node.append(self.point)
@@ -215,7 +210,7 @@ class Label(gui_base_original.Creator):
             # first click
             self.node.append(self.point)
             self.ui.isRelative.show()
-            _msg(translate("draft", "Pick endpoint of leader line"))
+            _toolmsg(translate("draft", "Pick endpoint of leader line"))
             if self.planetrack:
                 self.planetrack.set(self.point)
         elif len(self.node) == 1:
@@ -225,7 +220,7 @@ class Label(gui_base_original.Creator):
                 self.ghost.p1(self.node[0])
                 self.ghost.p2(self.node[1])
                 self.ghost.on()
-            _msg(translate("draft", "Pick text position"))
+            _toolmsg(translate("draft", "Pick text position"))
         else:
             # third click
             self.node.append(self.point)

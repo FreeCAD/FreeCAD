@@ -1,9 +1,3 @@
-if(MSVC)
-    add_definitions(-DFCAppSketcher -DHAVE_ACOSH -DHAVE_ASINH -DHAVE_ATANH)
-else(MSVC)
-    add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
-endif(MSVC)
-
 # Uncomment this code if you want to try Eigen's multithread
 #find_package(OpenMP)
 #if (OPENMP_FOUND)
@@ -127,6 +121,8 @@ SET(SketchModule_SRCS
     AppSketcherPy.cpp
     PreCompiled.cpp
     PreCompiled.h
+    Measure.cpp
+    Measure.h
 )
 SOURCE_GROUP("Module" FILES ${SketchModule_SRCS})
 
@@ -149,6 +145,9 @@ SET(Sketcher_PCH_SRCS
 
 add_library(Sketcher SHARED ${Sketcher_SRCS})
 target_link_libraries(Sketcher ${Sketcher_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(Sketcher)
+endif()
 
 if(FREECAD_USE_PCH)
     add_definitions(-D_PreComp_)

@@ -37,14 +37,13 @@ and on their subelements, that is, vertices, edges, and faces.
 
 __title__ = "FreeCAD Draft Workbench - Geometry library"
 __author__ = "Yorik van Havre, Jacques-Antoine Gaudin, Ken Cline"
-__url__ = ["https://www.freecadweb.org"]
+__url__ = ["https://www.freecad.org"]
 
 # Doesn't need requisites
 from draftgeoutils.linear_algebra import (linearFromPoints,
                                           determinant)
 
 # Needs math, Part, and vector tools
-from draftgeoutils.general import PARAMGRP as params
 from draftgeoutils.general import NORM
 
 from draftgeoutils.general import (precision,
@@ -71,13 +70,20 @@ from draftgeoutils.geometry import (findPerpendicular,
                                     get_spline_normal,
                                     getNormal,
                                     get_normal,
+                                    get_shape_normal,
                                     getRotation,
                                     isPlanar,
                                     is_planar,
                                     calculatePlacement,
                                     mirror,
                                     are_coplanar,
-                                    is_straight_line)
+                                    is_straight_line,
+                                    mirror_matrix,
+                                    uv_vectors_from_face,
+                                    placement_from_face,
+                                    placement_from_points,
+                                    distance_to_plane,
+                                    project_point_on_plane)
 
 from draftgeoutils.edges import (findEdge,
                                  orientEdge,

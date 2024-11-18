@@ -120,9 +120,7 @@ CallTipsList::CallTipsList(QPlainTextEdit* parent)
     compKeys.append(Qt::Key_BraceRight);
 }
 
-CallTipsList::~CallTipsList()
-{
-}
+CallTipsList::~CallTipsList() = default;
 
 void CallTipsList::keyboardSearch(const QString& wordPrefix)
 {
@@ -206,7 +204,11 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
         return tips;
 
     try {
+        PyErr_Clear();
         Py::Module module("__main__");
+        if (module.ptr() == nullptr) {
+            return tips;
+        }
         Py::Dict dict = module.getDict();
 
         // this is used to filter out input of the form "1."
@@ -342,24 +344,52 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
     return tips;
 }
 
+bool shibokenMayCrash(void)
+{
+    // Shiboken 6.4.8 to 6.7.3 crash if we try to read their object
+    // attributes without a current stack frame.
+    // FreeCAD issue: https://github.com/FreeCAD/FreeCAD/issues/14101
+    // Qt issue: https://bugreports.qt.io/browse/PYSIDE-2796
+
+    Py::Module shiboken("shiboken6");
+    Py::Tuple version(shiboken.getAttr("__version_info__"));
+    int major = Py::Long(version.getItem(0));
+    int minor = Py::Long(version.getItem(1));
+    int patch = Py::Long(version.getItem(2));
+    bool brokenVersion = (major == 6 && minor >= 4 && minor < 8);
+    bool fixedVersion = (major == 6 && minor == 7 && patch > 2);
+    return brokenVersion && !fixedVersion;
+}
+
+Py::Object CallTipsList::getAttrWorkaround(Py::Object& obj, Py::String& name) const
+{
+    QString typestr(QLatin1String(Py_TYPE(obj.ptr())->tp_name));
+    bool hasWorkingGetAttr =
+        !(typestr == QLatin1String("Shiboken.ObjectType") && shibokenMayCrash());
+
+    if (hasWorkingGetAttr) {
+        return obj.getAttr(name.as_string());
+    }
+
+    Py::Dict globals;
+    Py::Dict locals;
+    locals.setItem("obj", obj);
+    locals.setItem("attr", name);
+
+    Py::Object bouncer(Py_CompileString("getattr(obj, attr)", "<CallTipsList>", Py_eval_input));
+    Py::Object attr(PyEval_EvalCode(bouncer.ptr(), globals.ptr(), locals.ptr()));
+
+    return attr;
+}
+
 void CallTipsList::extractTipsFromObject(Py::Object& obj, Py::List& list, QMap<QString, CallTip>& tips) const
 {
     for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
         try {
             Py::String attrname(*it);
-            std::string name = attrname.as_string();
+            std::string name(attrname.as_string());
 
-            // If 'name' is an invalid attribute then PyCXX raises an exception
-            // for Py2 but silently accepts it for Py3.
-            //
-            // FIXME: Add methods of extension to the current instance and not its type object
-            // https://forum.freecadweb.org/viewtopic.php?f=22&t=18105
-            // https://forum.freecadweb.org/viewtopic.php?f=3&t=20009&p=154447#p154447
-            // https://forum.freecadweb.org/viewtopic.php?f=10&t=12534&p=155290#p155290
-            //
-            // https://forum.freecadweb.org/viewtopic.php?f=39&t=33874&p=286759#p286759
-            // https://forum.freecadweb.org/viewtopic.php?f=39&t=33874&start=30#p286772
-            Py::Object attr = obj.getAttr(name);
+            Py::Object attr = getAttrWorkaround(obj, attrname);
             if (!attr.ptr()) {
                 Base::Console().Log("Python attribute '%s' returns null!\n", name.c_str());
                 continue;
@@ -474,20 +504,7 @@ void CallTipsList::showTips(const QString& line)
     static QPixmap property_icon = BitmapFactory().pixmap("ClassBrowser/property.svg");
 
     // object is in error state
-    static const char * const forbidden_xpm[]={
-            "8 8 3 1",
-            ". c None",
-            "# c #ff0000",
-            "a c #ffffff",
-            "..####..",
-            ".######.",
-            "########",
-            "#aaaaaa#",
-            "#aaaaaa#",
-            "########",
-            ".######.",
-            "..####.."};
-    static QPixmap forbidden_icon(forbidden_xpm);
+    static QPixmap forbidden_icon(Gui::BitmapFactory().pixmapFromSvg("forbidden", property_icon.size() / 4));
     static QPixmap forbidden_type_module_icon = BitmapFactory().merge(type_module_icon,forbidden_icon,BitmapFactoryInst::BottomLeft);
     static QPixmap forbidden_type_class_icon = BitmapFactory().merge(type_class_icon,forbidden_icon,BitmapFactoryInst::BottomLeft);
     static QPixmap forbidden_method_icon = BitmapFactory().merge(method_icon,forbidden_icon,BitmapFactoryInst::BottomLeft);
@@ -688,7 +705,7 @@ void CallTipsList::callTipItemActivated(QListWidgetItem *item)
     if (!sel.isEmpty()) {
         // in case the cursor moved too far on the right side
         const QChar underscore =  QLatin1Char('_');
-        const QChar ch = sel.at(sel.count()-1);
+        const QChar ch = sel.at(sel.size()-1);
         if (!ch.isLetterOrNumber() && ch != underscore)
             cursor.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor);
     }
@@ -707,7 +724,7 @@ void CallTipsList::callTipItemActivated(QListWidgetItem *item)
        * Try to find out if call needs arguments.
        * For this we search the description for appropriate hints ...
        */
-      QRegularExpression argumentMatcher( QRegularExpression::escape( callTip.name ) + QLatin1String("\\s*\\(\\s*\\w+.*\\)") );
+      QRegularExpression argumentMatcher( QRegularExpression::escape( callTip.name ) + QLatin1String(R"(\s*\(\s*\w+.*\))") );
       argumentMatcher.setPatternOptions( QRegularExpression::InvertedGreedinessOption ); //< set regex non-greedy!
       if (argumentMatcher.match( callTip.description ).hasMatch())
       {
@@ -734,16 +751,16 @@ QString CallTipsList::stripWhiteSpace(const QString& str) const
     int minspace=INT_MAX;
     int line=0;
     for (QStringList::iterator it = lines.begin(); it != lines.end(); ++it, ++line) {
-        if (it->count() > 0 && line > 0) {
+        if (it->size() > 0 && line > 0) {
             int space = 0;
-            for (int i=0; i<it->count(); i++) {
+            for (int i=0; i<it->size(); i++) {
                 if ((*it)[i] == QLatin1Char('\t'))
                     space++;
                 else
                     break;
             }
 
-            if (it->count() > space)
+            if (it->size() > space)
                 minspace = std::min<int>(minspace, space);
         }
     }
@@ -756,7 +773,7 @@ QString CallTipsList::stripWhiteSpace(const QString& str) const
             if (line == 0 && !it->isEmpty()) {
                 strippedlines << *it;
             }
-            else if (it->count() > 0 && line > 0) {
+            else if (it->size() > 0 && line > 0) {
                 strippedlines << it->mid(minspace);
             }
         }

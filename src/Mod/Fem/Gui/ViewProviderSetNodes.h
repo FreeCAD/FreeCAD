@@ -29,7 +29,7 @@
 namespace FemGui
 {
 
-class ViewProviderSetNodes : public Gui::ViewProviderGeometryObject
+class ViewProviderSetNodes: public Gui::ViewProviderGeometryObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderSetNodes);
 
@@ -41,7 +41,7 @@ protected:
     void unsetEdit(int ModNum) override;
 };
 
-} //namespace FemGui
+}  // namespace FemGui
 
 
-#endif // FEM_ViewProviderSetNodes_H
+#endif  // FEM_ViewProviderSetNodes_H

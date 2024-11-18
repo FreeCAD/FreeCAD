@@ -46,9 +46,9 @@ namespace Gui
  */
 class NotificationBox
 {
+public:
     NotificationBox() = delete;
 
-public:
     enum class Options
     {
         None = 0x0,

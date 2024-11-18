@@ -35,6 +35,7 @@ to execute the instructions stored in internal lists.
 # \brief Provides the ToDo static class to run commands with a time delay.
 
 import traceback
+import sys
 import PySide.QtCore as QtCore
 
 import FreeCAD as App
@@ -44,7 +45,7 @@ from draftutils.messages import _msg, _wrn, _err, _log
 
 __title__ = "FreeCAD Draft Workbench, Todo class"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
-__url__ = ["http://www.freecadweb.org"]
+__url__ = ["https://www.freecad.org"]
 
 _DEBUG = 0
 _DEBUG_inner = 0
@@ -150,7 +151,9 @@ class ToDo:
         ToDo.itinerary = []
 
         if ToDo.commitlist:
-            for name, func in ToDo.commitlist:
+            commit_list = ToDo.commitlist
+            ToDo.commitlist = []  # Reset immediately to avoid race condition.
+            for name, func in commit_list:
                 if _DEBUG_inner:
                     _msg("Debug: committing.\n"
                          "name: {}\n".format(name))
@@ -173,7 +176,7 @@ class ToDo:
             # Restack Draft screen widgets after creation
             if hasattr(Gui, "Snapper"):
                 Gui.Snapper.restack()
-        ToDo.commitlist = []
+
 
         for f, arg in ToDo.afteritinerary:
             try:

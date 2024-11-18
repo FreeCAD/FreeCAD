@@ -26,9 +26,11 @@
 
 #include "ViewProviderFemConstraintOnBoundary.h"
 
-namespace FemGui {
+namespace FemGui
+{
 
-class FemGuiExport ViewProviderFemConstraintPressure : public FemGui::ViewProviderFemConstraintOnBoundary
+class FemGuiExport ViewProviderFemConstraintPressure
+    : public FemGui::ViewProviderFemConstraintOnBoundary
 {
     PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemConstraintPressure);
 
@@ -39,8 +41,11 @@ public:
 
 protected:
     bool setEdit(int ModNum) override;
+    void transformSymbol(const Base::Vector3d& point,
+                         const Base::Vector3d& normal,
+                         SbMatrix& mat) const override;
 };
 
-}
+}  // namespace FemGui
 
-#endif // GUI_VIEWPROVIDERFEMCONSTRAINTPRESSURE_H
+#endif  // GUI_VIEWPROVIDERFEMCONSTRAINTPRESSURE_H

@@ -85,7 +85,7 @@ class DraftObject(object):
         # Object properties are updated when the document is opened.
         self.props_changed_clear()
 
-    def __getstate__(self):
+    def dumps(self):
         """Return a tuple of all serializable objects or None.
 
         When saving the document this object gets stored
@@ -102,7 +102,7 @@ class DraftObject(object):
         """
         return self.Type
 
-    def __setstate__(self, state):
+    def loads(self, state):
         """Set some internal properties for all restored objects.
 
         When a document is restored this method is used to set some properties
@@ -182,12 +182,28 @@ class DraftObject(object):
         if hasattr(self, "props_changed"):
             delattr(self, "props_changed")
 
-    def props_changed_placement_only(self):
+    def props_changed_placement_only(self, obj=None):
         """Return `True` if the self.props_changed list, after removing `Shape`
         and `_LinkTouched` items, only contains `Placement` items.
+
+        Parameters
+        ----------
+        obj : the scripted object. Need only be supplied if the Shape of obj
+            is, or can be, derived from other objects.
+
         """
         if not hasattr(self, "props_changed"):
             return False
+
+        # For some objects a dummy Placement property change (new and old
+        # Placement are the same) is used in cases where a full recompute is
+        # required. This function should then return `False`. The common
+        # denominator seems to be a non-empty OutList.
+        # https://github.com/FreeCAD/FreeCAD/issues/8771
+        # https://forum.freecad.org/viewtopic.php?t=82436
+        if obj is not None and obj.OutList:
+            return False
+
         props = set(self.props_changed)
         if "Shape" in props:
             props.remove("Shape")

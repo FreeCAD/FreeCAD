@@ -26,10 +26,12 @@
 #include "QtTools.h"
 
 
-#if QT_VERSION < QT_VERSION_CHECK(5,14,0)
-namespace Qt {
-    BaseExport QTextStream& endl(QTextStream& stream) {
-        return stream << QLatin1Char('\n') << flush;
-    }
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
+namespace Qt
+{
+BaseExport QTextStream& endl(QTextStream& stream)
+{
+    return stream << QLatin1Char('\n') << flush;
 }
+}  // namespace Qt
 #endif

@@ -41,16 +41,23 @@ def get_information():
         "name": "Initial Flow - Elmer 2D",
         "meshtype": "solid",
         "meshelement": "Tet10",
-        "constraints": ["initial pressure", "initial temperature", "initial velocity",
-                        "temperature", "velocity"],
+        "constraints": [
+            "initial pressure",
+            "initial temperature",
+            "initial velocity",
+            "temperature",
+            "velocity",
+        ],
         "solvers": ["elmer"],
         "material": "fluid",
-        "equations": ["flow", "heat"]
+        "equations": ["flow", "heat"],
     }
 
 
 def get_explanation(header=""):
-    return header + """
+    return (
+        header
+        + """
 
 To run the example from Python console use:
 from femexamples.equation_flow_initial_elmer_2D import setup
@@ -59,6 +66,7 @@ setup()
 Flow and Heat equation with initial velocity - Elmer solver
 
 """
+    )
 
 
 def setup(doc=None, solvertype="elmer"):
@@ -81,6 +89,7 @@ def setup(doc=None, solvertype="elmer"):
     p5 = Vector(0, 50.000, 0)
     p6 = Vector(0, -50.000, 0)
     wire = Draft.make_wire([p1, p2, p3, p4, p5, p6], closed=True)
+    wire.MakeFace = True
     wire.Label = "Wire"
 
     # the circle defining the heating rod
@@ -88,6 +97,7 @@ def setup(doc=None, solvertype="elmer"):
     axisCirc = Vector(1, 0, 0)
     placementCircle = Placement(pCirc, Rotation(axisCirc, 0))
     circle = Draft.make_circle(10, placement=placementCircle)
+    circle.MakeFace = True
     circle.Label = "HeatingRod"
     circle.ViewObject.Visibility = False
 
@@ -116,6 +126,7 @@ def setup(doc=None, solvertype="elmer"):
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
     if FreeCAD.GuiUp:
         import FemGui
+
         FemGui.setActiveAnalysis(analysis)
 
     # solver
@@ -194,7 +205,8 @@ def setup(doc=None, solvertype="elmer"):
         (BooleanFragments, "Edge2"),
         (BooleanFragments, "Edge3"),
         (BooleanFragments, "Edge4"),
-        (BooleanFragments, "Edge7")]
+        (BooleanFragments, "Edge7"),
+    ]
     FlowVelocity_Wall.VelocityXUnspecified = False
     FlowVelocity_Wall.VelocityYUnspecified = False
     analysis.addObject(FlowVelocity_Wall)
@@ -221,7 +233,8 @@ def setup(doc=None, solvertype="elmer"):
         (BooleanFragments, "Edge2"),
         (BooleanFragments, "Edge3"),
         (BooleanFragments, "Edge4"),
-        (BooleanFragments, "Edge7")]
+        (BooleanFragments, "Edge7"),
+    ]
     analysis.addObject(Temperature_Wall)
 
     # constraint inlet temperature
@@ -247,7 +260,7 @@ def setup(doc=None, solvertype="elmer"):
 
     # mesh
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
-    femmesh_obj.Part = BooleanFragments
+    femmesh_obj.Shape = BooleanFragments
     femmesh_obj.ElementOrder = "1st"
     femmesh_obj.CharacteristicLengthMax = "4 mm"
     femmesh_obj.ViewObject.Visibility = False
@@ -259,20 +272,19 @@ def setup(doc=None, solvertype="elmer"):
         (BooleanFragments, "Edge1"),
         (BooleanFragments, "Vertex2"),
         (BooleanFragments, "Vertex4"),
-        (BooleanFragments, "Vertex6")]
+        (BooleanFragments, "Vertex6"),
+    ]
     mesh_region.ViewObject.Visibility = False
 
     # generate the mesh
     from femmesh import gmshtools
+
     gmsh_mesh = gmshtools.GmshTools(femmesh_obj, analysis)
     try:
         error = gmsh_mesh.create_mesh()
     except Exception:
         error = sys.exc_info()[1]
-        FreeCAD.Console.PrintError(
-            "Unexpected error when creating mesh: {}\n"
-            .format(error)
-        )
+        FreeCAD.Console.PrintError(f"Unexpected error when creating mesh: {error}\n")
 
     doc.recompute()
     return doc

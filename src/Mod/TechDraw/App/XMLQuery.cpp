@@ -24,14 +24,10 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QDomDocument>
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-# include "QDomNodeModel.h"
-# include <QXmlQuery>
-# include <QXmlResultItems>
-#endif
+#include <QDomDocument>
 #endif
 
+#include "DrawUtil.h"
 #include "XMLQuery.h"
 
 
@@ -43,29 +39,6 @@ XMLQuery::XMLQuery(QDomDocument& dom)
 
 }
 
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-bool XMLQuery::processItems(const QString& queryStr, const std::function<bool(QDomElement&)>& process)
-{
-    QXmlQuery query(QXmlQuery::XQuery10);
-    QDomNodeModel model(query.namePool(), domDocument);
-    QDomElement symbolDocElem = domDocument.documentElement();
-    query.setFocus(QXmlItem(model.fromDomNode(symbolDocElem)));
-
-    query.setQuery(queryStr);
-    QXmlResultItems queryResult;
-    query.evaluateTo(&queryResult);
-
-    while (!queryResult.next().isNull()) {
-        QDomElement tspanElement =
-            model.toDomNode(queryResult.current().toNodeModelIndex()).toElement();
-        if (!process(tspanElement)) {
-            return false;
-        }
-    }
-
-    return true;
-}
-#else
 // A helper function that traverses all child elements recursively and check for
 // elements of name "text" with an attribute "freecad:editable"
 // If the query string contains "tspan" the first sub-element is used or the
@@ -79,7 +52,7 @@ static bool processElements(const QDomElement& element, const QString& queryStr,
         for(int i = 0; i < editable.count(); i++) {
             QDomNode node = editable.item(i);
             QDomElement element = node.toElement();
-            if (element.hasAttribute(QString(QLatin1String("freecad:editable")))) {
+            if (element.hasAttribute(QString(QLatin1String(FREECAD_ATTR_EDITABLE)))) {
                 if (find_tspan) {
                     element = element.firstChildElement();
                 }
@@ -115,4 +88,3 @@ bool XMLQuery::processItems(const QString& queryStr, const std::function<bool(QD
 
     return true;
 }
-#endif

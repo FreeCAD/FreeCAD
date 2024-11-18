@@ -25,24 +25,21 @@
 
 #include <Gui/Application.h>
 #include "Mod/Fem/App/FemConstraint.h"
+#include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/Gui/ReferenceHighlighter.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 
-#include "ViewProviderFemConstraintOnBoundary.h"
 #include "TaskFemConstraintOnBoundary.h"
+#include "ViewProviderFemConstraintOnBoundary.h"
 
 
 using namespace FemGui;
 
 PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintOnBoundary, FemGui::ViewProviderFemConstraint)
 
-ViewProviderFemConstraintOnBoundary::ViewProviderFemConstraintOnBoundary()
-{
-}
+ViewProviderFemConstraintOnBoundary::ViewProviderFemConstraintOnBoundary() = default;
 
-ViewProviderFemConstraintOnBoundary::~ViewProviderFemConstraintOnBoundary()
-{
-}
+ViewProviderFemConstraintOnBoundary::~ViewProviderFemConstraintOnBoundary() = default;
 
 void ViewProviderFemConstraintOnBoundary::highlightReferences(const bool on)
 {
@@ -51,10 +48,14 @@ void ViewProviderFemConstraintOnBoundary::highlightReferences(const bool on)
 
     for (auto& subSet : subSets) {
         Part::Feature* base = dynamic_cast<Part::Feature*>(subSet.first);
-        if (!base) continue;
+        if (!base) {
+            continue;
+        }
         PartGui::ViewProviderPart* vp = dynamic_cast<PartGui::ViewProviderPart*>(
             Gui::Application::Instance->getViewProvider(base));
-        if (!vp) continue;
+        if (!vp) {
+            continue;
+        }
 
         // if somehow the subnames are empty, clear any existing colors
         if (on && !subSet.second.empty()) {
@@ -63,42 +64,48 @@ void ViewProviderFemConstraintOnBoundary::highlightReferences(const bool on)
             // It is a requirement but we should keep safeguards.
             if (subSet.second[0].find("Vertex") != std::string::npos) {
                 // make sure original colors are remembered
-                if (originalPointColors[base].empty())
+                if (originalPointColors[base].empty()) {
                     originalPointColors[base] = vp->PointColorArray.getValues();
+                }
                 std::vector<App::Color> colors = originalPointColors[base];
 
                 // go through the subelements with constraint and recolor them
-                // TODO: Replace `ShapeColor` with anything more appropriate
+                // TODO: Replace `ShapeAppearance` with anything more appropriate
                 PartGui::ReferenceHighlighter highlighter(
-                    base->Shape.getValue(), colors.empty() ? ShapeColor.getValue() : colors[0]);
+                    base->Shape.getValue(),
+                    colors.empty() ? ShapeAppearance.getDiffuseColor() : colors[0]);
                 highlighter.getVertexColors(subSet.second, colors);
                 vp->PointColorArray.setValues(colors);
             }
             else if (subSet.second[0].find("Edge") != std::string::npos) {
                 // make sure original colors are remembered
-                if (originalLineColors[base].empty())
+                if (originalLineColors[base].empty()) {
                     originalLineColors[base] = vp->LineColorArray.getValues();
+                }
                 std::vector<App::Color> colors = originalLineColors[base];
 
                 // go through the subelements with constraint and recolor them
-                // TODO: Replace `ShapeColor` with anything more appropriate
+                // TODO: Replace `ShapeAppearance` with anything more appropriate
                 PartGui::ReferenceHighlighter highlighter(
-                    base->Shape.getValue(), colors.empty() ? ShapeColor.getValue() : colors[0]);
+                    base->Shape.getValue(),
+                    colors.empty() ? ShapeAppearance.getDiffuseColor() : colors[0]);
                 highlighter.getEdgeColors(subSet.second, colors);
                 vp->LineColorArray.setValues(colors);
             }
             else if (subSet.second[0].find("Face") != std::string::npos) {
                 // make sure original colors are remembered
-                if (originalFaceColors[base].empty())
-                    originalFaceColors[base] = vp->DiffuseColor.getValues();
+                if (originalFaceColors[base].empty()) {
+                    originalFaceColors[base] = vp->ShapeAppearance.getDiffuseColors();
+                }
                 std::vector<App::Color> colors = originalFaceColors[base];
 
                 // go through the subelements with constraint and recolor them
-                // TODO: Replace `FaceColor` with anything more appropriate
+                // TODO: Replace shape DiffuseColor with anything more appropriate
                 PartGui::ReferenceHighlighter highlighter(
-                    base->Shape.getValue(), colors.empty() ? FaceColor.getValue() : colors[0]);
+                    base->Shape.getValue(),
+                    colors.empty() ? ShapeAppearance.getDiffuseColor() : colors[0]);
                 highlighter.getFaceColors(subSet.second, colors);
-                vp->DiffuseColor.setValues(colors);
+                vp->ShapeAppearance.setDiffuseColors(colors);
             }
         }
         else {
@@ -111,7 +118,7 @@ void ViewProviderFemConstraintOnBoundary::highlightReferences(const bool on)
                 originalLineColors[base].clear();
             }
             else if (!originalFaceColors[base].empty()) {
-                vp->DiffuseColor.setValues(originalFaceColors[base]);
+                vp->ShapeAppearance.setDiffuseColors(originalFaceColors[base]);
                 originalFaceColors[base].clear();
             }
         }
@@ -121,34 +128,45 @@ void ViewProviderFemConstraintOnBoundary::highlightReferences(const bool on)
         // there is nothing selected but previous selection may have highlighting
         // reset that highlighting here
         for (auto& ogPair : originalPointColors) {
-            if (ogPair.second.empty()) continue;
+            if (ogPair.second.empty()) {
+                continue;
+            }
             PartGui::ViewProviderPart* vp = dynamic_cast<PartGui::ViewProviderPart*>(
                 Gui::Application::Instance->getViewProvider(ogPair.first));
-            if (!vp) continue;
+            if (!vp) {
+                continue;
+            }
 
             vp->PointColorArray.setValues(ogPair.second);
             ogPair.second.clear();
         }
 
         for (auto& ogPair : originalLineColors) {
-            if (ogPair.second.empty()) continue;
+            if (ogPair.second.empty()) {
+                continue;
+            }
             PartGui::ViewProviderPart* vp = dynamic_cast<PartGui::ViewProviderPart*>(
                 Gui::Application::Instance->getViewProvider(ogPair.first));
-            if (!vp) continue;
+            if (!vp) {
+                continue;
+            }
 
             vp->LineColorArray.setValues(ogPair.second);
             ogPair.second.clear();
         }
 
         for (auto& ogPair : originalFaceColors) {
-            if (ogPair.second.empty()) continue;
+            if (ogPair.second.empty()) {
+                continue;
+            }
             PartGui::ViewProviderPart* vp = dynamic_cast<PartGui::ViewProviderPart*>(
                 Gui::Application::Instance->getViewProvider(ogPair.first));
-            if (!vp) continue;
+            if (!vp) {
+                continue;
+            }
 
-            vp->DiffuseColor.setValues(ogPair.second);
+            vp->ShapeAppearance.setDiffuseColors(ogPair.second);
             ogPair.second.clear();
         }
     }
 }
-

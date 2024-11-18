@@ -26,6 +26,7 @@
 #include <list>
 #include <map>
 #include <string>
+#include <FCGlobal.h>
 
 
 namespace Gui { namespace Inventor {
@@ -42,7 +43,7 @@ private:
 
 private:
     using Marker = std::pair<std::string, int>;
-    static std::map<Marker, int> markerIndex;
+    static std::map<Marker, int> markerIndex;  // NOLINT
 };
 
 } // namespace Inventor

@@ -332,7 +332,7 @@ public:
     Base::Reference<ParameterGrp>                     GetParameterGroupByPath(const char* sName);
 
     ParameterManager *                                GetParameterSet(const char* sName) const;
-    const std::map<std::string,Base::Reference<ParameterManager>> &  GetParameterSetList(void) const;
+    const std::map<std::string,Base::Reference<ParameterManager>> &  GetParameterSetList() const;
     void AddParameterSet(const char* sName);
     void RemoveParameterSet(const char* sName);
     //@}
@@ -399,6 +399,7 @@ public:
     static std::map<std::string, std::string> &Config(){return mConfig;}
     static int GetARGC(){return _argc;}
     static char** GetARGV(){return _argv;}
+    static int64_t applicationPid();
     //@}
 
     /** @name Application directories */
@@ -513,6 +514,7 @@ private:
     static void setupPythonTypes();
     static void setupPythonException(PyObject*);
 
+    // clang-format off
     // static python wrapper of the exported functions
     static PyObject* sGetParam          (PyObject *self, PyObject *args);
     static PyObject* sSaveParameter     (PyObject *self, PyObject *args);
@@ -563,6 +565,7 @@ private:
     static PyObject *sCloseActiveTransaction(PyObject *self,PyObject *args);
     static PyObject *sCheckAbort(PyObject *self,PyObject *args);
     static PyMethodDef    Methods[];
+    // clang-format on
 
     friend class ApplicationObserver;
 
@@ -607,7 +610,7 @@ private:
     mutable std::map<std::string,Document*> DocFileMap;
     std::map<std::string,Base::Reference<ParameterManager>> mpcPramManager;
     std::map<std::string,std::string> &_mConfig;
-    App::Document* _pActiveDoc;
+    App::Document* _pActiveDoc{nullptr};
 
     std::deque<std::string> _pendingDocs;
     std::deque<std::string> _pendingDocsReopen;
@@ -617,19 +620,19 @@ private:
     // missing object
     std::map<std::string,std::set<std::string> > _docReloadAttempts;
 
-    bool _isRestoring;
-    bool _allowPartial;
-    bool _isClosingAll;
+    bool _isRestoring{false};
+    bool _allowPartial{false};
+    bool _isClosingAll{false};
 
     // for estimate max link depth
-    int _objCount;
+    int _objCount{-1};
 
     friend class AutoTransaction;
 
     std::string _activeTransactionName;
-    int _activeTransactionID;
-    int _activeTransactionGuard;
-    bool _activeTransactionTmpName;
+    int _activeTransactionID{0};
+    int _activeTransactionGuard{0};
+    bool _activeTransactionTmpName{false};
 
     static Base::ConsoleObserverStd  *_pConsoleObserverStd;
     static Base::ConsoleObserverFile *_pConsoleObserverFile;

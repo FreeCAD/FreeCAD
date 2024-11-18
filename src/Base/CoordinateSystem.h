@@ -26,7 +26,8 @@
 
 #include "Axis.h"
 
-namespace Base {
+namespace Base
+{
 /**
  * Describes a right-handed coordinate system in 3D space.
  \author Werner Mayer
@@ -38,12 +39,17 @@ public:
      * with X axis (1,0,0), with Y axis (0,1,0) and Z axis (0,0,1)
      */
     CoordinateSystem();
-    ~CoordinateSystem();
+    CoordinateSystem(const CoordinateSystem&) = default;
+    CoordinateSystem(CoordinateSystem&&) = default;
+    ~CoordinateSystem() = default;
+
+    CoordinateSystem& operator=(const CoordinateSystem&) = default;
+    CoordinateSystem& operator=(CoordinateSystem&&) = default;
 
     /** Sets the main axis. X and Y dir are adjusted accordingly.
      * The main axis \a v must not be parallel to the X axis
      */
-    void setAxis(const Axis& v);
+    void setAxis(const Axis& axis);
     /** Sets the main axis. X and Y dir are adjusted accordingly.
      * The main axis must not be parallel to \a xd
      */
@@ -53,45 +59,57 @@ public:
      */
     void setAxes(const Vector3d& n, const Vector3d& xd);
     inline const Axis& getAxis() const
-    { return axis; }
+    {
+        return axis;
+    }
 
     /** The passed vector must not be parallel to the main axis */
     void setXDirection(const Vector3d&);
     inline const Vector3d& getXDirection() const
-    { return xdir; }
+    {
+        return xdir;
+    }
 
     /** The passed vector must not be parallel to the main axis */
     void setYDirection(const Vector3d&);
     inline const Vector3d& getYDirection() const
-    { return ydir; }
+    {
+        return ydir;
+    }
 
     /** Sets the main axis. X and Y dir are adjusted accordingly.
      * The main axis must not be parallel to the X axis
      */
     void setZDirection(const Vector3d&);
     inline const Vector3d& getZDirection() const
-    { return axis.getDirection(); }
-    inline void setPosition(const Vector3d& p)
-    { axis.setBase(p); }
+    {
+        return axis.getDirection();
+    }
+    inline void setPosition(const Vector3d& pos)
+    {
+        axis.setBase(pos);
+    }
     inline const Vector3d& getPosition() const
-    { return axis.getBase(); }
+    {
+        return axis.getBase();
+    }
 
     /** This computes the displacement from this coordinate system to the
      * given coordinate system \a cs
      */
     Placement displacement(const CoordinateSystem& cs) const;
 
-    /** Transform the point \a p to be in this coordinate system */
-    void transformTo(Vector3d& p);
+    /** Transform the point \a pnt to be in this coordinate system */
+    void transformTo(Vector3d& pnt);
 
-    /** Apply the placement \a p to the coordinate system. */
-    void transform(const Placement& p);
+    /** Apply the placement \a plm to the coordinate system. */
+    void transform(const Placement& plm);
 
-    /** Apply the rotation \a r to the coordinate system. */
-    void transform(const Rotation& r);
+    /** Apply the rotation \a rot to the coordinate system. */
+    void transform(const Rotation& rot);
 
-    /** Set the placement \a p to the coordinate system. */
-    void setPlacement(const Placement& p);
+    /** Set the placement \a plm to the coordinate system. */
+    void setPlacement(const Placement& plm);
 
 private:
     Axis axis;
@@ -99,6 +117,6 @@ private:
     Vector3d ydir;
 };
 
-}
+}  // namespace Base
 
-#endif // BASE_COORDINATESYSTEM_H
+#endif  // BASE_COORDINATESYSTEM_H

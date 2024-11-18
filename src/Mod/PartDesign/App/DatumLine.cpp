@@ -62,12 +62,10 @@ Line::Line()
     myShape.Infinite(Standard_True);
     Shape.setValue(myShape);
 
-    Support.touch();
+    AttachmentSupport.touch();
 }
 
-Line::~Line()
-{
-}
+Line::~Line() = default;
 
 Base::Vector3d Line::getDirection() const
 {

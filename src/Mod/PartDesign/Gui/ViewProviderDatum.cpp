@@ -85,7 +85,7 @@ ViewProviderDatum::ViewProviderDatum()
     unsigned long shcol = hGrp->GetUnsigned ( "DefaultDatumColor", 0xFFD70099 );
 
     App::Color col ( (uint32_t) shcol );
-    ShapeColor.setValue ( col );
+    ShapeAppearance.setDiffuseColor(col);
 
     Transparency.setValue (col.a * 100);
 
@@ -101,26 +101,30 @@ ViewProviderDatum::~ViewProviderDatum()
 
 void ViewProviderDatum::attach(App::DocumentObject *obj)
 {
+    if (auto geo = dynamic_cast<App::GeoFeature*>(obj)) {
+        geo->setMaterialAppearance(ShapeAppearance[0]);
+    }
+
     ViewProviderGeometryObject::attach ( obj );
 
     // TODO remove this field (2015-09-08, Fat-Zer)
     App::DocumentObject* o = getObject();
-    if (o->getTypeId() == PartDesign::Plane::getClassTypeId()) {
+    if (o->is<PartDesign::Plane>()) {
         datumType = QString::fromLatin1("Plane");
         datumText = QObject::tr("Plane");
         datumMenuText = tr("Datum Plane parameters");
     }
-    else if (o->getTypeId() == PartDesign::Line::getClassTypeId()) {
+    else if (o->is<PartDesign::Line>()) {
         datumType = QString::fromLatin1("Line");
         datumText = QObject::tr("Line");
         datumMenuText = tr("Datum Line parameters");
     }
-    else if (o->getTypeId() == PartDesign::Point::getClassTypeId()) {
+    else if (o->is<PartDesign::Point>()) {
         datumType = QString::fromLatin1("Point");
         datumText = QObject::tr("Point");
         datumMenuText = tr("Datum Point parameters");
     }
-    else if (o->getTypeId() == PartDesign::CoordinateSystem::getClassTypeId()) {
+    else if (o->is<PartDesign::CoordinateSystem>()) {
         datumType = QString::fromLatin1("CoordinateSystem");
         datumText = QObject::tr("Coordinate System");
         datumMenuText = tr("Local Coordinate System parameters");
@@ -190,7 +194,7 @@ std::string ViewProviderDatum::getElement(const SoDetail* detail) const
             return datumType.toStdString();
     }
 
-    return std::string("");
+    return {};
 }
 
 SoDetail* ViewProviderDatum::getDetail(const char* subelement) const

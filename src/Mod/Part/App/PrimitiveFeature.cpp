@@ -29,6 +29,7 @@
 # include <BRepBuilderAPI_MakeVertex.hxx>
 # include <BRepBuilderAPI_MakeSolid.hxx>
 # include <BRepBuilderAPI_MakePolygon.hxx>
+# include <BRepGProp.hxx>
 # include <BRepPrim_Cylinder.hxx>
 # include <BRepPrim_Wedge.hxx>
 # include <BRepPrimAPI_MakeCone.hxx>
@@ -51,13 +52,8 @@
 #include "PrimitiveFeature.h"
 #include "PartFeaturePy.h"
 
-#ifndef M_PI
-#define M_PI       3.14159265358979323846
-#endif
-
-
 namespace Part {
-    const App::PropertyQuantityConstraint::Constraints apexRange = {-90.0, 90.0, 0.1};
+    const App::PropertyQuantityConstraint::Constraints apexRange = {-89.9, 89.9, 0.1};
     const App::PropertyQuantityConstraint::Constraints torusRangeV = {-180.0, 180.0, 1.0};
     const App::PropertyQuantityConstraint::Constraints angleRangeU = {0.0, 360.0, 1.0};
     const App::PropertyQuantityConstraint::Constraints angleRangeV = {-90.0, 90.0, 1.0};
@@ -75,9 +71,7 @@ Primitive::Primitive()
     touch();
 }
 
-Primitive::~Primitive()
-{
-}
+Primitive::~Primitive() = default;
 
 short Primitive::mustExecute() const
 {
@@ -117,11 +111,6 @@ void Primitive::Restore(Base::XMLReader &reader)
     Part::Feature::Restore(reader);
 }
 
-void Primitive::handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName)
-{
-    extHandleChangedPropertyName(reader, TypeName, PropName); // AttachExtension
-}
-
 void Primitive::handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop)
 {
     // For #0001652 the property types of many primitive features have changed
@@ -130,7 +119,7 @@ void Primitive::handleChangedPropertyType(Base::XMLReader &reader, const char * 
     // types don't match if both inherit from PropertyFloat because all derived
     // classes do not re-implement the Save/Restore methods.
     Base::Type inputType = Base::Type::fromName(TypeName);
-    if (prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId()) &&
+    if (prop->isDerivedFrom<App::PropertyFloat>() &&
         inputType.isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
         // Do not directly call the property's Restore method in case the implementation
         // has changed. So, create a temporary PropertyFloat object and assign the value.
@@ -170,9 +159,7 @@ Vertex::Vertex()
     ADD_PROPERTY(Z,(0.0f));
 }
 
-Vertex::~Vertex()
-{
-}
+Vertex::~Vertex() = default;
 
 short Vertex::mustExecute() const
 {
@@ -225,9 +212,7 @@ Line::Line()
     ADD_PROPERTY_TYPE(Z2,(1.0),"Vertex 2 - Finish",App::Prop_None,"Z value of the finish vertex");
 }
 
-Line::~Line()
-{
-}
+Line::~Line() = default;
 
 short Line::mustExecute() const
 {
@@ -373,9 +358,9 @@ App::DocumentObjectExecReturn *Sphere::execute()
         return new App::DocumentObjectExecReturn("Radius of sphere too small");
     try {
         BRepPrimAPI_MakeSphere mkSphere(Radius.getValue(),
-                                        Angle1.getValue()/180.0f*M_PI,
-                                        Angle2.getValue()/180.0f*M_PI,
-                                        Angle3.getValue()/180.0f*M_PI);
+                                        Base::toRadians<double>(Angle1.getValue()),
+                                        Base::toRadians<double>(Angle2.getValue()),
+                                        Base::toRadians<double>(Angle3.getValue()));
         TopoDS_Shape ResultShape = mkSphere.Shape();
         this->Shape.setValue(ResultShape);
     }
@@ -436,9 +421,9 @@ App::DocumentObjectExecReturn *Ellipsoid::execute()
         gp_Ax2 ax2(pnt,dir);
         BRepPrimAPI_MakeSphere mkSphere(ax2,
                                         Radius2.getValue(),
-                                        Angle1.getValue()/180.0f*M_PI,
-                                        Angle2.getValue()/180.0f*M_PI,
-                                        Angle3.getValue()/180.0f*M_PI);
+                                        Base::toRadians<double>(Angle1.getValue()),
+                                        Base::toRadians<double>(Angle2.getValue()),
+                                        Base::toRadians<double>(Angle3.getValue()));
         Standard_Real scaleX = 1.0;
         Standard_Real scaleZ = Radius1.getValue()/Radius2.getValue();
         // issue #1798: A third radius has been introduced. To be backward
@@ -663,12 +648,21 @@ App::DocumentObjectExecReturn *Cone::execute()
     if (Height.getValue() < Precision::Confusion())
         return new App::DocumentObjectExecReturn("Height of cone too small");
     try {
-        // Build a cone
-        BRepPrimAPI_MakeCone mkCone(Radius1.getValue(),
-                                    Radius2.getValue(),
-                                    Height.getValue(),
-                                    Angle.getValue()/180.0f*M_PI);
-        TopoDS_Shape ResultShape = mkCone.Shape();
+        TopoDS_Shape ResultShape;
+        if (std::abs(Radius1.getValue() - Radius2.getValue()) < Precision::Confusion()){
+            //Build a cylinder
+            BRepPrimAPI_MakeCylinder mkCylr(Radius1.getValue(),
+                                            Height.getValue(),
+                                            Base::toRadians<double>(Angle.getValue()));
+            ResultShape = mkCylr.Shape();
+        } else {
+            // Build a cone
+            BRepPrimAPI_MakeCone mkCone(Radius1.getValue(),
+                                        Radius2.getValue(),
+                                        Height.getValue(),
+                                        Base::toRadians<double>(Angle.getValue()));
+            ResultShape = mkCone.Shape();
+        }
         this->Shape.setValue(ResultShape);
     }
     catch (Standard_Failure& e) {
@@ -752,6 +746,8 @@ Helix::Helix()
     LocalCoord.setEnums(LocalCSEnums);
     ADD_PROPERTY_TYPE(Style,(long(0)),"Helix style",App::Prop_Hidden,"Old style creates incorrect and new style create correct helices");
     Style.setEnums(StyleEnums);
+    ADD_PROPERTY_TYPE(Length,(1.0),"Helix",App::Prop_None,"The length of the helix");
+    Length.setReadOnly(true);
 }
 
 void Helix::onChanged(const App::Property* prop)
@@ -802,9 +798,15 @@ App::DocumentObjectExecReturn *Helix::execute()
         Standard_Real nbTurns = myHeight / myPitch;
         if (nbTurns > 1e4)
             Standard_Failure::Raise("Number of turns too high (> 1e4)");
-        Standard_Real myRadiusTop = myRadius + myHeight * tan(myAngle/180.0f*M_PI);
+        Standard_Real myRadiusTop = myRadius + myHeight * tan(Base::toRadians<double>(myAngle));
 
         this->Shape.setValue(TopoShape().makeSpiralHelix(myRadius, myRadiusTop, myHeight, nbTurns, mySegLen, myLocalCS));
+        // props.Mass() may seem a strange way to get the Length, but 
+        // https://dev.opencascade.org/doc/refman/html/class_b_rep_g_prop.html#ab1d4bacc290bfaa8df13dd99ae7b8e70
+        // confirms this.
+        GProp_GProps props;
+        BRepGProp::LinearProperties(Shape.getShape().getShape(), props);
+        Length.setValue(props.Mass());
     }
     catch (Standard_Failure& e) {
 
@@ -826,6 +828,8 @@ Spiral::Spiral()
     Rotations.setConstraints(&quantityRange);
     ADD_PROPERTY_TYPE(SegmentLength,(1.0),"Spiral",App::Prop_None,"The number of turns per spiral subdivision");
     SegmentLength.setConstraints(&quantityRange);
+    ADD_PROPERTY_TYPE(Length,(1.0),"Spiral",App::Prop_None,"The length of the spiral");
+    Length.setReadOnly(true);
 }
 
 void Spiral::onChanged(const App::Property* prop)
@@ -868,6 +872,9 @@ App::DocumentObjectExecReturn *Spiral::execute()
             Standard_Failure::Raise("Number of rotations too small");
 
         this->Shape.setValue(TopoShape().makeSpiralHelix(myRadius, myRadiusTop, 0, myNumRot, mySegLen, Standard_False));
+        GProp_GProps props;
+        BRepGProp::LinearProperties(Shape.getShape().getShape(), props);
+        Length.setValue(props.Mass());
         return Primitive::execute();
     }
     catch (Standard_Failure& e) {
@@ -988,9 +995,7 @@ Ellipse::Ellipse()
     Angle2.setConstraints(&angleRange);
 }
 
-Ellipse::~Ellipse()
-{
-}
+Ellipse::~Ellipse() = default;
 
 short Ellipse::mustExecute() const
 {

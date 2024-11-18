@@ -30,26 +30,26 @@
 
 // Suppress warning about 'SkipEmptyParts' not being used
 #if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Wunused-variable"
-#elif defined (__GNUC__)
-# pragma GCC diagnostic push
-# pragma GCC diagnostic ignored "-Wunused-variable"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-variable"
+#elif defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-variable"
 #endif
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
 #include <QTextStream>
 namespace Qt
 {
-    BaseExport QTextStream& endl(QTextStream& stream);
-    static auto SkipEmptyParts = QString::SkipEmptyParts;
-}
+BaseExport QTextStream& endl(QTextStream& stream);
+static auto SkipEmptyParts = QString::SkipEmptyParts;
+}  // namespace Qt
 #endif
 
 #if defined(__clang__)
-# pragma clang diagnostic pop
-#elif defined (__GNUC__)
-# pragma GCC diagnostic pop
+#pragma clang diagnostic pop
+#elif defined(__GNUC__)
+#pragma GCC diagnostic pop
 #endif
 
-#endif // BASE_QTTOOLS_H
+#endif  // BASE_QTTOOLS_H

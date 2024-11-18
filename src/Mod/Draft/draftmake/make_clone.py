@@ -28,13 +28,12 @@
 ## \addtogroup draftmake
 # @{
 import FreeCAD as App
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
-
 from draftobjects.clone import Clone
+from draftutils import params
+from draftutils import utils
+from draftutils import gui_utils
 
 if App.GuiUp:
-    from draftutils.todo import ToDo
     from draftviewproviders.view_clone import ViewProviderClone
 
 
@@ -58,7 +57,7 @@ def make_clone(obj, delta=None, forcedraft=False):
 
     """
 
-    prefix = utils.get_param("ClonePrefix","")
+    prefix = params.get_param("ClonePrefix")
 
     cl = None
 
@@ -73,37 +72,37 @@ def make_clone(obj, delta=None, forcedraft=False):
         cl.Label = prefix + obj[0].Label + " (2D)"
     elif (len(obj) == 1) and (hasattr(obj[0],"CloneOf") or (utils.get_type(obj[0]) == "BuildingPart")) and (not forcedraft):
         # arch objects can be clones
-        import Arch
-        if utils.get_type(obj[0]) == "BuildingPart":
-            cl = Arch.makeComponent()
+        try:
+            import Arch
+        except:
+            # BIM not present
+            pass
         else:
-            try: # new-style make function
-                cl = getattr(Arch, "make_" + obj[0].Proxy.Type.lower())()
-            except Exception:
-                try: # old-style make function
-                    cl = getattr(Arch, "make" + obj[0].Proxy.Type)()
+            if utils.get_type(obj[0]) == "BuildingPart":
+                cl = Arch.makeComponent()
+            else:
+                try: # new-style make function
+                    cl = getattr(Arch, "make_" + obj[0].Proxy.Type.lower())()
                 except Exception:
-                    pass # not a standard Arch object... Fall back to Draft mode
-        if cl:
-            base = utils.get_clone_base(obj[0])
-            cl.Label = prefix + base.Label
-            cl.CloneOf = base
-            if hasattr(cl,"Material") and hasattr(obj[0],"Material"):
-                cl.Material = obj[0].Material
-            if utils.get_type(obj[0]) != "BuildingPart":
-                cl.Placement = obj[0].Placement
-            try:
-                cl.Role = base.Role
-                cl.Description = base.Description
-                cl.Tag = base.Tag
-            except Exception:
-                pass
-            if App.GuiUp:
-                gui_utils.format_object(cl, base)
-                # Workaround to trigger update of DiffuseColor:
-                ToDo.delay(reapply_diffuse_color, cl.ViewObject)
-                gui_utils.select(cl)
-            return cl
+                    try: # old-style make function
+                        cl = getattr(Arch, "make" + obj[0].Proxy.Type)()
+                    except Exception:
+                        pass # not a standard Arch object... Fall back to Draft mode
+            if cl:
+                base = utils.get_clone_base(obj[0])
+                cl.Label = prefix + base.Label
+                cl.CloneOf = base
+                if utils.get_type(obj[0]) != "BuildingPart":
+                    cl.Placement = obj[0].Placement
+                for prop in ("Description", "IfcType", "Material", "Subvolume", "Tag"):
+                    try:
+                        setattr(cl, prop, getattr(base, prop))
+                    except Exception:
+                        pass
+                if App.GuiUp:
+                    gui_utils.format_object(cl, base)
+                    gui_utils.select(cl)
+                return cl
 
     # fall back to Draft clone mode
     if not cl:
@@ -121,17 +120,8 @@ def make_clone(obj, delta=None, forcedraft=False):
     if App.GuiUp:
         ViewProviderClone(cl.ViewObject)
         gui_utils.format_object(cl, obj[0])
-        # Workaround to trigger update of DiffuseColor:
-        ToDo.delay(reapply_diffuse_color, cl.ViewObject)
         gui_utils.select(cl)
     return cl
-
-
-def reapply_diffuse_color(vobj):
-    try:
-        vobj.DiffuseColor = vobj.DiffuseColor
-    except:
-        pass
 
 
 clone = make_clone

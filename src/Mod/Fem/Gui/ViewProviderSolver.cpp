@@ -23,16 +23,16 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QApplication>
-# include <QMessageBox>
-# include <QTextStream>
+#include <QApplication>
+#include <QMessageBox>
+#include <QTextStream>
 #endif
 
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 
-#include "ViewProviderSolver.h"
 #include "ViewProviderAnalysis.h"
+#include "ViewProviderSolver.h"
 
 
 using namespace FemGui;
@@ -44,12 +44,11 @@ ViewProviderSolver::ViewProviderSolver()
     sPixmap = "FEM_SolverStandard";
 }
 
-ViewProviderSolver::~ViewProviderSolver()
-{}
+ViewProviderSolver::~ViewProviderSolver() = default;
 
 std::vector<std::string> ViewProviderSolver::getDisplayModes() const
 {
-    return { "Solver" };
+    return {"Solver"};
 }
 
 bool ViewProviderSolver::onDelete(const std::vector<std::string>&)
@@ -71,11 +70,12 @@ bool ViewProviderSolver::canDelete(App::DocumentObject* obj) const
 
 // Python feature -----------------------------------------------------------------------
 
-namespace Gui {
+namespace Gui
+{
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(FemGui::ViewProviderSolverPython, FemGui::ViewProviderSolver)
 /// @endcond
 
 // explicit template instantiation
-template class FemGuiExport ViewProviderPythonFeatureT<ViewProviderSolver>;
-}
+template class FemGuiExport ViewProviderFeaturePythonT<ViewProviderSolver>;
+}  // namespace Gui

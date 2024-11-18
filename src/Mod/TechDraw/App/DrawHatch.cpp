@@ -41,6 +41,7 @@
 
 
 using namespace TechDraw;
+using DU = DrawUtil;
 
 PROPERTY_SOURCE(TechDraw::DrawHatch, App::DocumentObject)
 
@@ -192,27 +193,20 @@ void DrawHatch::unsetupObject(void)
 bool DrawHatch::isSvgHatch(void) const
 {
     Base::FileInfo fi(HatchPattern.getValue());
-    if (fi.extension() == "svg" ||
-        fi.extension() == "SVG") {
-        return true;
-    }
-    return false;
+    return fi.hasExtension("svg");
 }
 
 bool DrawHatch::isBitmapHatch(void) const
 {
     Base::FileInfo fi(HatchPattern.getValue());
-    if (fi.extension() == "bmp" ||
-        fi.extension() == "BMP" ||
-        fi.extension() == "png" ||
-        fi.extension() == "PNG" ||
-        fi.extension() == "jpg" ||
-        fi.extension() == "JPG" ||
-        fi.extension() == "jpeg" ||
-        fi.extension() == "JPEG" ) {
-        return true;
-    }
-    return false;
+    return fi.hasExtension({"bmp", "png", "jpg", "jpeg"});
+}
+
+//! get a translated label string from the context (ex TaskActiveView), the base name (ex ActiveView) and
+//! the unique name within the document (ex ActiveView001), and use it to update the Label property.
+void DrawHatch::translateLabel(std::string context, std::string baseName, std::string uniqueName)
+{
+    Label.setValue(DU::translateArbitrary(context, baseName, uniqueName));
 }
 
 //standard preference getters

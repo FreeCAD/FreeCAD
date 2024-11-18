@@ -40,6 +40,7 @@
 
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawView.h>
+#include <Mod/TechDraw/App/Preferences.h>
 
 #include "ViewProviderDrawingView.h"
 #include "ViewProviderDrawingViewExtension.h"
@@ -49,7 +50,8 @@
 #include "ViewProviderPage.h"
 
 using namespace TechDrawGui;
-namespace bp = boost::placeholders;
+using namespace TechDraw;
+namespace sp = std::placeholders;
 
 PROPERTY_SOURCE(TechDrawGui::ViewProviderDrawingView, Gui::ViewProviderDocumentObject)
 
@@ -62,7 +64,8 @@ ViewProviderDrawingView::ViewProviderDrawingView() :
     sPixmap = "TechDraw_TreeView";
     static const char *group = "Base";
 
-    ADD_PROPERTY_TYPE(KeepLabel ,(false), group, App::Prop_None, "Keep Label on Page even if toggled off");
+    auto showLabel = Preferences::alwaysShowLabel();
+    ADD_PROPERTY_TYPE(KeepLabel ,(showLabel), group, App::Prop_None, "Keep Label on Page even if toggled off");
     ADD_PROPERTY_TYPE(StackOrder,(0),group,App::Prop_None,"Over or under lap relative to other views");
 
     // Do not show in property editor   why? wf  WF: because DisplayMode applies only to coin and we
@@ -79,15 +82,16 @@ void ViewProviderDrawingView::attach(App::DocumentObject *pcFeat)
 //    Base::Console().Message("VPDV::attach(%s)\n", pcFeat->getNameInDocument());
     ViewProviderDocumentObject::attach(pcFeat);
 
-    auto bnd = boost::bind(&ViewProviderDrawingView::onGuiRepaint, this, bp::_1);
-    auto bndProgressMessage = boost::bind(&ViewProviderDrawingView::onProgressMessage, this, bp::_1, bp::_2, bp::_3);
+    //NOLINTBEGIN
+    auto bnd = std::bind(&ViewProviderDrawingView::onGuiRepaint, this, sp::_1);
+    auto bndProgressMessage = std::bind(&ViewProviderDrawingView::onProgressMessage, this, sp::_1, sp::_2, sp::_3);
+    //NOLINTEND
     auto feature = getViewObject();
     if (feature) {
-        const char* temp = feature->getNameInDocument();
-        if (temp) {
+        if (feature->isAttachedToDocument()) {
             // it could happen that feature is not completely in the document yet and getNameInDocument returns
             // nullptr, so we only update m_myName if we got a valid string.
-            m_myName = temp;
+            m_myName = feature->getNameInDocument();
         }
         connectGuiRepaint = feature->signalGuiPaint.connect(bnd);
         connectProgressMessage = feature->signalProgressMessage.connect(bndProgressMessage);
@@ -133,7 +137,7 @@ void ViewProviderDrawingView::show()
     if (!obj || obj->isRestoring())
         return;
 
-    if (obj->getTypeId().isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+    if (obj->isDerivedFrom<TechDraw::DrawView>()) {
         QGIView* qView = getQView();
         if (qView) {
             qView->draw();
@@ -149,7 +153,7 @@ void ViewProviderDrawingView::hide()
     if (!obj || obj->isRestoring())
         return;
 
-    if (obj->getTypeId().isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+    if (obj->isDerivedFrom<TechDraw::DrawView>()) {
         QGIView* qView = getQView();
         if (qView) {
             //note: hiding an item in the scene clears its selection status
@@ -219,12 +223,45 @@ void ViewProviderDrawingView::finishRestoring()
 
 void ViewProviderDrawingView::updateData(const App::Property* prop)
 {
+    TechDraw::DrawView *obj = getViewObject();
+    App::PropertyLink *ownerProp = obj->getOwnerProperty();
+
     //only move the view on X, Y change
-    if (prop == &(getViewObject()->X)  ||
-        prop == &(getViewObject()->Y) ){
+    if (prop == &obj->X
+        || prop == &obj->Y) {
+        QGIView* qgiv = getQView();
+        if (qgiv && !qgiv->isSnapping()) {
+            qgiv->QGIView::updateView(true);
+
+            // Update also the owner/parent view, if there is any
+            if (ownerProp) {
+                auto owner = dynamic_cast<TechDraw::DrawView *>(ownerProp->getValue());
+                if (owner) {
+                    auto page = dynamic_cast<QGSPage *>(qgiv->scene());
+                    if (page) {
+                        QGIView *ownerView = page->getQGIVByName(owner->getNameInDocument());
+                        if (ownerView) {
+                            ownerView->updateView();
+                        }
+                    }
+                }
+            }
+        }
+    }
+    else if (ownerProp && prop == ownerProp) {
         QGIView* qgiv = getQView();
         if (qgiv) {
-            qgiv->QGIView::updateView(true);
+            QGIView *ownerView = nullptr;
+            auto owner = dynamic_cast<TechDraw::DrawView *>(ownerProp->getValue());
+            if (owner) {
+                auto page = dynamic_cast<QGSPage *>(qgiv->scene());
+                if (page) {
+                    ownerView = page->getQGIVByName(owner->getNameInDocument());
+                }
+            }
+
+            qgiv->switchParentItem(ownerView);
+            qgiv->updateView();
         }
     }
 

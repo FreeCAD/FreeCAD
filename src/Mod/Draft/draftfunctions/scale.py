@@ -29,11 +29,12 @@
 # @{
 import FreeCAD as App
 import DraftVecUtils
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
-import draftfunctions.join as join
-import draftmake.make_copy as make_copy
-import draftmake.make_line as make_line
+from draftfunctions import join
+from draftmake import make_copy
+from draftmake import make_line
+from draftutils import gui_utils
+from draftutils import params
+from draftutils import utils
 
 
 def scale(objectslist, scale=App.Vector(1,1,1),
@@ -129,7 +130,7 @@ def scale(objectslist, scale=App.Vector(1,1,1),
         if copy:
             gui_utils.format_object(newobj,obj)
         newobjlist.append(newobj)
-    if copy and utils.get_param("selectBaseObjects",False):
+    if copy and params.get_param("selectBaseObjects"):
         gui_utils.select(objectslist)
     else:
         gui_utils.select(newobjlist)

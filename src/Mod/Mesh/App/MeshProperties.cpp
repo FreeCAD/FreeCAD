@@ -41,19 +41,11 @@
 using namespace Mesh;
 
 TYPESYSTEM_SOURCE(Mesh::PropertyNormalList, App::PropertyLists)
-TYPESYSTEM_SOURCE(Mesh::PropertyCurvatureList , App::PropertyLists)
-TYPESYSTEM_SOURCE(Mesh::PropertyMaterial , App::Property)
-TYPESYSTEM_SOURCE(Mesh::PropertyMeshKernel , App::PropertyComplexGeoData)
+TYPESYSTEM_SOURCE(Mesh::PropertyCurvatureList, App::PropertyLists)
+TYPESYSTEM_SOURCE(Mesh::PropertyMaterial, App::Property)
+TYPESYSTEM_SOURCE(Mesh::PropertyMeshKernel, App::PropertyComplexGeoData)
 
-PropertyNormalList::PropertyNormalList()
-{
-
-}
-
-PropertyNormalList::~PropertyNormalList()
-{
-
-}
+PropertyNormalList::PropertyNormalList() = default;
 
 void PropertyNormalList::setSize(int newSize)
 {
@@ -69,7 +61,7 @@ void PropertyNormalList::setValue(const Base::Vector3f& lValue)
 {
     aboutToSetValue();
     _lValueList.resize(1);
-    _lValueList[0]=lValue;
+    _lValueList[0] = lValue;
     hasSetValue();
 }
 
@@ -77,7 +69,7 @@ void PropertyNormalList::setValue(float x, float y, float z)
 {
     aboutToSetValue();
     _lValueList.resize(1);
-    _lValueList[0].Set(x,y,z);
+    _lValueList[0].Set(x, y, z);
     hasSetValue();
 }
 
@@ -88,40 +80,41 @@ void PropertyNormalList::setValues(const std::vector<Base::Vector3f>& values)
     hasSetValue();
 }
 
-PyObject *PropertyNormalList::getPyObject()
+PyObject* PropertyNormalList::getPyObject()
 {
     PyObject* list = PyList_New(getSize());
 
-    for (int i = 0;i<getSize(); i++)
+    for (int i = 0; i < getSize(); i++) {
         PyList_SetItem(list, i, new Base::VectorPy(_lValueList[i]));
+    }
 
     return list;
 }
 
-void PropertyNormalList::setPyObject(PyObject *value)
+void PropertyNormalList::setPyObject(PyObject* value)
 {
     if (PyList_Check(value)) {
         Py_ssize_t nSize = PyList_Size(value);
         std::vector<Base::Vector3f> values;
         values.resize(nSize);
 
-        for (Py_ssize_t i=0; i<nSize;++i) {
+        for (Py_ssize_t i = 0; i < nSize; ++i) {
             PyObject* item = PyList_GetItem(value, i);
             App::PropertyVector val;
-            val.setPyObject( item );
+            val.setPyObject(item);
             values[i] = Base::convertTo<Base::Vector3f>(val.getValue());
         }
 
         setValues(values);
     }
     else if (PyObject_TypeCheck(value, &(Base::VectorPy::Type))) {
-        Base::VectorPy  *pcObject = static_cast<Base::VectorPy*>(value);
+        Base::VectorPy* pcObject = static_cast<Base::VectorPy*>(value);
         Base::Vector3d* val = pcObject->getVectorPtr();
         setValue(Base::convertTo<Base::Vector3f>(*val));
     }
     else if (PyTuple_Check(value) && PyTuple_Size(value) == 3) {
         App::PropertyVector val;
-        val.setPyObject( value );
+        val.setPyObject(value);
         setValue(Base::convertTo<Base::Vector3f>(val.getValue()));
     }
     else {
@@ -131,66 +124,67 @@ void PropertyNormalList::setPyObject(PyObject *value)
     }
 }
 
-void PropertyNormalList::Save (Base::Writer &writer) const
+void PropertyNormalList::Save(Base::Writer& writer) const
 {
     if (!writer.isForceXML()) {
-        writer.Stream() << writer.ind() << "<VectorList file=\"" << writer.addFile(getName(), this) << "\"/>" << std::endl;
+        writer.Stream() << writer.ind() << "<VectorList file=\"" << writer.addFile(getName(), this)
+                        << "\"/>" << std::endl;
     }
 }
 
-void PropertyNormalList::Restore(Base::XMLReader &reader)
+void PropertyNormalList::Restore(Base::XMLReader& reader)
 {
     reader.readElement("VectorList");
-    std::string file (reader.getAttribute("file") );
+    std::string file(reader.getAttribute("file"));
 
     if (!file.empty()) {
         // initiate a file read
-        reader.addFile(file.c_str(),this);
+        reader.addFile(file.c_str(), this);
     }
 }
 
-void PropertyNormalList::SaveDocFile (Base::Writer &writer) const
+void PropertyNormalList::SaveDocFile(Base::Writer& writer) const
 {
     Base::OutputStream str(writer.Stream());
     uint32_t uCt = (uint32_t)getSize();
     str << uCt;
-    for (std::vector<Base::Vector3f>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
-        str << it->x << it->y << it->z;
+    for (auto it : _lValueList) {
+        str << it.x << it.y << it.z;
     }
 }
 
-void PropertyNormalList::RestoreDocFile(Base::Reader &reader)
+void PropertyNormalList::RestoreDocFile(Base::Reader& reader)
 {
     Base::InputStream str(reader);
-    uint32_t uCt=0;
+    uint32_t uCt = 0;
     str >> uCt;
     std::vector<Base::Vector3f> values(uCt);
-    for (std::vector<Base::Vector3f>::iterator it = values.begin(); it != values.end(); ++it) {
-        str >> it->x >> it->y >> it->z;
+    for (auto& it : values) {
+        str >> it.x >> it.y >> it.z;
     }
     setValues(values);
 }
 
-App::Property *PropertyNormalList::Copy() const
+App::Property* PropertyNormalList::Copy() const
 {
-    PropertyNormalList *p= new PropertyNormalList();
+    PropertyNormalList* p = new PropertyNormalList();
     p->_lValueList = _lValueList;
     return p;
 }
 
-void PropertyNormalList::Paste(const App::Property &from)
+void PropertyNormalList::Paste(const App::Property& from)
 {
     aboutToSetValue();
     _lValueList = dynamic_cast<const PropertyNormalList&>(from)._lValueList;
     hasSetValue();
 }
 
-unsigned int PropertyNormalList::getMemSize () const
+unsigned int PropertyNormalList::getMemSize() const
 {
     return static_cast<unsigned int>(_lValueList.size() * sizeof(Base::Vector3f));
 }
 
-void PropertyNormalList::transformGeometry(const Base::Matrix4D &mat)
+void PropertyNormalList::transformGeometry(const Base::Matrix4D& mat)
 {
     // A normal vector is only a direction with unit length, so we only need to rotate it
     // (no translations or scaling)
@@ -215,7 +209,7 @@ void PropertyNormalList::transformGeometry(const Base::Matrix4D &mat)
     aboutToSetValue();
 
     // Rotate the normal vectors
-    for (int ii=0; ii<getSize(); ii++) {
+    for (int ii = 0; ii < getSize(); ii++) {
         set1Value(ii, rot * operator[](ii));
     }
 
@@ -224,32 +218,24 @@ void PropertyNormalList::transformGeometry(const Base::Matrix4D &mat)
 
 // ----------------------------------------------------------------------------
 
-PropertyCurvatureList::PropertyCurvatureList()
-{
-
-}
-
-PropertyCurvatureList::~PropertyCurvatureList()
-{
-
-}
+PropertyCurvatureList::PropertyCurvatureList() = default;
 
 void PropertyCurvatureList::setValue(const CurvatureInfo& lValue)
 {
     aboutToSetValue();
     _lValueList.resize(1);
-    _lValueList[0]=lValue;
+    _lValueList[0] = lValue;
     hasSetValue();
 }
 
 void PropertyCurvatureList::setValues(const std::vector<CurvatureInfo>& lValues)
 {
     aboutToSetValue();
-    _lValueList=lValues;
+    _lValueList = lValues;
     hasSetValue();
 }
 
-std::vector<float> PropertyCurvatureList::getCurvature( int mode ) const
+std::vector<float> PropertyCurvatureList::getCurvature(int mode) const
 {
     const std::vector<Mesh::CurvatureInfo>& fCurvInfo = getValues();
     std::vector<float> fValues;
@@ -257,47 +243,44 @@ std::vector<float> PropertyCurvatureList::getCurvature( int mode ) const
 
     // Mean curvature
     if (mode == MeanCurvature) {
-        for ( std::vector<Mesh::CurvatureInfo>::const_iterator it=fCurvInfo.begin();it!=fCurvInfo.end(); ++it )
-        {
-            fValues.push_back( 0.5f*(it->fMaxCurvature+it->fMinCurvature) );
+        for (const auto& it : fCurvInfo) {
+            fValues.push_back(0.5f * (it.fMaxCurvature + it.fMinCurvature));
         }
     }
     // Gaussian curvature
     else if (mode == GaussCurvature) {
-        for ( std::vector<Mesh::CurvatureInfo>::const_iterator it=fCurvInfo.begin();it!=fCurvInfo.end(); ++it )
-        {
-            fValues.push_back( it->fMaxCurvature * it->fMinCurvature );
+        for (const auto& it : fCurvInfo) {
+            fValues.push_back(it.fMaxCurvature * it.fMinCurvature);
         }
     }
     // Maximum curvature
     else if (mode == MaxCurvature) {
-        for ( std::vector<Mesh::CurvatureInfo>::const_iterator it=fCurvInfo.begin();it!=fCurvInfo.end(); ++it )
-        {
-          fValues.push_back( it->fMaxCurvature );
+        for (const auto& it : fCurvInfo) {
+            fValues.push_back(it.fMaxCurvature);
         }
     }
     // Minimum curvature
     else if (mode == MinCurvature) {
-        for ( std::vector<Mesh::CurvatureInfo>::const_iterator it=fCurvInfo.begin();it!=fCurvInfo.end(); ++it )
-        {
-          fValues.push_back( it->fMinCurvature );
+        for (const auto& it : fCurvInfo) {
+            fValues.push_back(it.fMinCurvature);
         }
     }
     // Absolute curvature
     else if (mode == AbsCurvature) {
-        for ( std::vector<Mesh::CurvatureInfo>::const_iterator it=fCurvInfo.begin();it!=fCurvInfo.end(); ++it )
-        {
-            if ( fabs(it->fMaxCurvature) > fabs(it->fMinCurvature) )
-                fValues.push_back( it->fMaxCurvature );
-            else
-                fValues.push_back( it->fMinCurvature );
+        for (const auto& it : fCurvInfo) {
+            if (fabs(it.fMaxCurvature) > fabs(it.fMinCurvature)) {
+                fValues.push_back(it.fMaxCurvature);
+            }
+            else {
+                fValues.push_back(it.fMinCurvature);
+            }
         }
     }
 
     return fValues;
 }
 
-void PropertyCurvatureList::transformGeometry(const Base::Matrix4D &mat)
+void PropertyCurvatureList::transformGeometry(const Base::Matrix4D& mat)
 {
     // The principal direction is only a vector with unit length, so we only need to rotate it
     // (no translations or scaling)
@@ -322,8 +305,7 @@ void PropertyCurvatureList::transformGeometry(const Base::Matrix4D &mat)
     aboutToSetValue();
 
     // Rotate the principal directions
-    for (int ii=0; ii<getSize(); ii++)
-    {
+    for (int ii = 0; ii < getSize(); ii++) {
         CurvatureInfo ci = operator[](ii);
         ci.cMaxCurvDir = rot * ci.cMaxCurvDir;
         ci.cMinCurvDir = rot * ci.cMinCurvDir;
@@ -333,47 +315,47 @@ void PropertyCurvatureList::transformGeometry(const Base::Matrix4D &mat)
     hasSetValue();
 }
 
-void PropertyCurvatureList::Save (Base::Writer &writer) const
+void PropertyCurvatureList::Save(Base::Writer& writer) const
 {
     if (!writer.isForceXML()) {
-        writer.Stream() << writer.ind() << "<CurvatureList file=\"" <<
-        writer.addFile(getName(), this) << "\"/>" << std::endl;
+        writer.Stream() << writer.ind() << "<CurvatureList file=\""
+                        << writer.addFile(getName(), this) << "\"/>" << std::endl;
     }
 }
 
-void PropertyCurvatureList::Restore(Base::XMLReader &reader)
+void PropertyCurvatureList::Restore(Base::XMLReader& reader)
 {
     reader.readElement("CurvatureList");
-    std::string file (reader.getAttribute("file") );
+    std::string file(reader.getAttribute("file"));
 
     if (!file.empty()) {
         // initiate a file read
-        reader.addFile(file.c_str(),this);
+        reader.addFile(file.c_str(), this);
     }
 }
 
-void PropertyCurvatureList::SaveDocFile (Base::Writer &writer) const
+void PropertyCurvatureList::SaveDocFile(Base::Writer& writer) const
 {
     Base::OutputStream str(writer.Stream());
     uint32_t uCt = (uint32_t)getSize();
     str << uCt;
-    for (std::vector<CurvatureInfo>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
-        str << it->fMaxCurvature << it->fMinCurvature;
-        str << it->cMaxCurvDir.x << it->cMaxCurvDir.y << it->cMaxCurvDir.z;
-        str << it->cMinCurvDir.x << it->cMinCurvDir.y << it->cMinCurvDir.z;
+    for (const auto& it : _lValueList) {
+        str << it.fMaxCurvature << it.fMinCurvature;
+        str << it.cMaxCurvDir.x << it.cMaxCurvDir.y << it.cMaxCurvDir.z;
+        str << it.cMinCurvDir.x << it.cMinCurvDir.y << it.cMinCurvDir.z;
     }
 }
 
-void PropertyCurvatureList::RestoreDocFile(Base::Reader &reader)
+void PropertyCurvatureList::RestoreDocFile(Base::Reader& reader)
 {
     Base::InputStream str(reader);
-    uint32_t uCt=0;
+    uint32_t uCt = 0;
     str >> uCt;
     std::vector<CurvatureInfo> values(uCt);
-    for (std::vector<CurvatureInfo>::iterator it = values.begin(); it != values.end(); ++it) {
-        str >> it->fMaxCurvature >> it->fMinCurvature;
-        str >> it->cMaxCurvDir.x >> it->cMaxCurvDir.y >> it->cMaxCurvDir.z;
-        str >> it->cMinCurvDir.x >> it->cMinCurvDir.y >> it->cMinCurvDir.z;
+    for (auto& it : values) {
+        str >> it.fMaxCurvature >> it.fMinCurvature;
+        str >> it.cMaxCurvDir.x >> it.cMaxCurvDir.y >> it.cMaxCurvDir.z;
+        str >> it.cMinCurvDir.x >> it.cMinCurvDir.y >> it.cMinCurvDir.z;
     }
 
     setValues(values);
@@ -382,19 +364,19 @@ void PropertyCurvatureList::RestoreDocFile(Base::Reader &reader)
 PyObject* PropertyCurvatureList::getPyObject()
 {
     Py::List list;
-    for (std::vector<CurvatureInfo>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
+    for (const auto& it : _lValueList) {
         Py::Tuple tuple(4);
-        tuple.setItem(0, Py::Float(it->fMaxCurvature));
-        tuple.setItem(1, Py::Float(it->fMinCurvature));
+        tuple.setItem(0, Py::Float(it.fMaxCurvature));
+        tuple.setItem(1, Py::Float(it.fMinCurvature));
         Py::Tuple maxDir(3);
-        maxDir.setItem(0, Py::Float(it->cMaxCurvDir.x));
-        maxDir.setItem(1, Py::Float(it->cMaxCurvDir.y));
-        maxDir.setItem(2, Py::Float(it->cMaxCurvDir.z));
+        maxDir.setItem(0, Py::Float(it.cMaxCurvDir.x));
+        maxDir.setItem(1, Py::Float(it.cMaxCurvDir.y));
+        maxDir.setItem(2, Py::Float(it.cMaxCurvDir.z));
         tuple.setItem(2, maxDir);
         Py::Tuple minDir(3);
-        minDir.setItem(0, Py::Float(it->cMinCurvDir.x));
-        minDir.setItem(1, Py::Float(it->cMinCurvDir.y));
-        minDir.setItem(2, Py::Float(it->cMinCurvDir.z));
+        minDir.setItem(0, Py::Float(it.cMinCurvDir.x));
+        minDir.setItem(1, Py::Float(it.cMinCurvDir.y));
+        minDir.setItem(2, Py::Float(it.cMinCurvDir.z));
         tuple.setItem(3, minDir);
         list.append(tuple);
     }
@@ -407,14 +389,14 @@ void PropertyCurvatureList::setPyObject(PyObject* /*value*/)
     throw Base::AttributeError(std::string("This attribute is read-only"));
 }
 
-App::Property *PropertyCurvatureList::Copy() const
+App::Property* PropertyCurvatureList::Copy() const
 {
-    PropertyCurvatureList *p= new PropertyCurvatureList();
+    PropertyCurvatureList* p = new PropertyCurvatureList();
     p->_lValueList = _lValueList;
     return p;
 }
 
-void PropertyCurvatureList::Paste(const App::Property &from)
+void PropertyCurvatureList::Paste(const App::Property& from)
 {
     aboutToSetValue();
     _lValueList = dynamic_cast<const PropertyCurvatureList&>(from)._lValueList;
@@ -524,9 +506,7 @@ PyObject* PropertyMaterial::getPyObject()
     auto getColorList = [](const std::vector<App::Color>& color) {
         Py::List list;
         for (const auto& it : color) {
-            list.append(Py::TupleN(Py::Float(it.r),
-                                   Py::Float(it.g),
-                                   Py::Float(it.b)));
+            list.append(Py::TupleN(Py::Float(it.r), Py::Float(it.g), Py::Float(it.b)));
         }
         return list;
     };
@@ -609,8 +589,8 @@ void PropertyMaterial::setPyObject(PyObject* obj)
 void PropertyMaterial::Save(Base::Writer& writer) const
 {
     if (!writer.isForceXML()) {
-        writer.Stream() << writer.ind() << "<Material file=\""
-                        << writer.addFile(getName(), this) << "\"/>" << std::endl;
+        writer.Stream() << writer.ind() << "<Material file=\"" << writer.addFile(getName(), this)
+                        << "\"/>" << std::endl;
     }
 }
 
@@ -627,7 +607,7 @@ void PropertyMaterial::Restore(Base::XMLReader& reader)
     }
 }
 
-void PropertyMaterial::SaveDocFile(Base::Writer &writer) const
+void PropertyMaterial::SaveDocFile(Base::Writer& writer) const
 {
     Base::OutputStream str(writer.Stream());
     auto saveColor = [&str](const std::vector<App::Color>& color) {
@@ -657,7 +637,7 @@ void PropertyMaterial::SaveDocFile(Base::Writer &writer) const
     saveFloat(_material.transparency);
 }
 
-void PropertyMaterial::RestoreDocFile(Base::Reader &reader)
+void PropertyMaterial::RestoreDocFile(Base::Reader& reader)
 {
     Base::InputStream str(reader);
     auto restoreColor = [&str](std::vector<App::Color>& color) {
@@ -665,7 +645,7 @@ void PropertyMaterial::RestoreDocFile(Base::Reader &reader)
         str >> count;
         color.resize(count);
         for (auto& it : color) {
-            uint32_t value; // must be 32 bit long
+            uint32_t value {};  // must be 32 bit long
             str >> value;
             it.setPackedValue(value);
         }
@@ -676,7 +656,7 @@ void PropertyMaterial::RestoreDocFile(Base::Reader &reader)
         str >> count;
         value.resize(count);
         for (auto& it : value) {
-            float valueF;
+            float valueF {};
             str >> valueF;
             it = valueF;
         }
@@ -705,7 +685,7 @@ const char* PropertyMaterial::getEditorName() const
 
 App::Property* PropertyMaterial::Copy() const
 {
-    PropertyMaterial *prop = new PropertyMaterial();
+    PropertyMaterial* prop = new PropertyMaterial();
     prop->_material = _material;
     return prop;
 }
@@ -720,20 +700,19 @@ void PropertyMaterial::Paste(const Property& from)
 
 unsigned int PropertyMaterial::getMemSize() const
 {
-    auto size = (_material.ambientColor.size() +
-                 _material.diffuseColor.size() +
-                 _material.emissiveColor.size() +
-                 _material.specularColor.size()) * sizeof(App::Color) +
-                (_material.shininess.size() +
-                 _material.transparency.size()) * sizeof(float) +
-                 _material.library.size() + sizeof(_material);
+    auto size = (_material.ambientColor.size() + _material.diffuseColor.size()
+                 + _material.emissiveColor.size() + _material.specularColor.size())
+            * sizeof(App::Color)
+        + (_material.shininess.size() + _material.transparency.size()) * sizeof(float)
+        + _material.library.size() + sizeof(_material);
     return static_cast<unsigned int>(size);
 }
 
 bool PropertyMaterial::isSame(const App::Property& other) const
 {
-    if (&other == this)
+    if (&other == this) {
         return true;
+    }
     return getTypeId() == other.getTypeId()
         && getValue() == static_cast<decltype(this)>(&other)->getValue();
 }
@@ -741,7 +720,7 @@ bool PropertyMaterial::isSame(const App::Property& other) const
 // ----------------------------------------------------------------------------
 
 PropertyMeshKernel::PropertyMeshKernel()
-  : _meshObject(new MeshObject()), meshPyObject(nullptr)
+    : _meshObject(new MeshObject())
 {
     // Note: Normally this property is a member of a document object, i.e. the setValue()
     // method gets called in the constructor of a subclass of DocumentObject, e.g. Mesh::Feature.
@@ -797,12 +776,12 @@ void PropertyMeshKernel::swapMesh(MeshCore::MeshKernel& mesh)
     hasSetValue();
 }
 
-const MeshObject& PropertyMeshKernel::getValue()const
+const MeshObject& PropertyMeshKernel::getValue() const
 {
     return *_meshObject;
 }
 
-const MeshObject* PropertyMeshKernel::getValuePtr()const
+const MeshObject* PropertyMeshKernel::getValuePtr() const
 {
     return static_cast<MeshObject*>(_meshObject);
 }
@@ -817,7 +796,7 @@ Base::BoundBox3d PropertyMeshKernel::getBoundingBox() const
     return _meshObject->getBoundBox();
 }
 
-unsigned int PropertyMeshKernel::getMemSize () const
+unsigned int PropertyMeshKernel::getMemSize() const
 {
     unsigned int size = 0;
     size += _meshObject->getMemSize();
@@ -836,19 +815,21 @@ void PropertyMeshKernel::finishEditing()
     hasSetValue();
 }
 
-void PropertyMeshKernel::transformGeometry(const Base::Matrix4D &rclMat)
+void PropertyMeshKernel::transformGeometry(const Base::Matrix4D& rclMat)
 {
     aboutToSetValue();
     _meshObject->transformGeometry(rclMat);
     hasSetValue();
 }
 
-void PropertyMeshKernel::setPointIndices(const std::vector<std::pair<PointIndex, Base::Vector3f> >& inds)
+void PropertyMeshKernel::setPointIndices(
+    const std::vector<std::pair<PointIndex, Base::Vector3f>>& inds)
 {
     aboutToSetValue();
     MeshCore::MeshKernel& kernel = _meshObject->getKernel();
-    for (std::vector<std::pair<PointIndex, Base::Vector3f> >::const_iterator it = inds.begin(); it != inds.end(); ++it)
-        kernel.SetPoint(it->first, it->second);
+    for (const auto& it : inds) {
+        kernel.SetPoint(it.first, it.second);
+    }
     hasSetValue();
 }
 
@@ -862,11 +843,13 @@ Base::Matrix4D PropertyMeshKernel::getTransform() const
     return _meshObject->getTransform();
 }
 
-PyObject *PropertyMeshKernel::getPyObject()
+PyObject* PropertyMeshKernel::getPyObject()
 {
     if (!meshPyObject) {
-        meshPyObject = new MeshPy(&*_meshObject); // Lgtm[cpp/resource-not-released-in-destructor] ** Not destroyed in this class because it is reference-counted and destroyed elsewhere
-        meshPyObject->setConst(); // set immutable
+        meshPyObject = new MeshPy(
+            &*_meshObject);  // Lgtm[cpp/resource-not-released-in-destructor] ** Not destroyed in
+                             // this class because it is reference-counted and destroyed elsewhere
+        meshPyObject->setConst();  // set immutable
         meshPyObject->parentProperty = this;
     }
 
@@ -874,7 +857,7 @@ PyObject *PropertyMeshKernel::getPyObject()
     return meshPyObject;
 }
 
-void PropertyMeshKernel::setPyObject(PyObject *value)
+void PropertyMeshKernel::setPyObject(PyObject* value)
 {
     if (PyObject_TypeCheck(value, &(MeshPy::Type))) {
         MeshPy* mesh = static_cast<MeshPy*>(value);
@@ -897,7 +880,7 @@ void PropertyMeshKernel::setPyObject(PyObject *value)
     }
 }
 
-void PropertyMeshKernel::Save (Base::Writer &writer) const
+void PropertyMeshKernel::Save(Base::Writer& writer) const
 {
     if (writer.isForceXML()) {
         writer.Stream() << writer.ind() << "<Mesh>" << std::endl;
@@ -905,15 +888,15 @@ void PropertyMeshKernel::Save (Base::Writer &writer) const
         saver.SaveXML(writer);
     }
     else {
-        writer.Stream() << writer.ind() << "<Mesh file=\"" <<
-        writer.addFile("MeshKernel.bms", this) << "\"/>" << std::endl;
+        writer.Stream() << writer.ind() << "<Mesh file=\"" << writer.addFile("MeshKernel.bms", this)
+                        << "\"/>" << std::endl;
     }
 }
 
-void PropertyMeshKernel::Restore(Base::XMLReader &reader)
+void PropertyMeshKernel::Restore(Base::XMLReader& reader)
 {
     reader.readElement("Mesh");
-    std::string file (reader.getAttribute("file") );
+    std::string file(reader.getAttribute("file"));
 
     if (file.empty()) {
         // read XML
@@ -932,31 +915,31 @@ void PropertyMeshKernel::Restore(Base::XMLReader &reader)
     }
     else {
         // initiate a file read
-        reader.addFile(file.c_str(),this);
+        reader.addFile(file.c_str(), this);
     }
 }
 
-void PropertyMeshKernel::SaveDocFile (Base::Writer &writer) const
+void PropertyMeshKernel::SaveDocFile(Base::Writer& writer) const
 {
     _meshObject->save(writer.Stream());
 }
 
-void PropertyMeshKernel::RestoreDocFile(Base::Reader &reader)
+void PropertyMeshKernel::RestoreDocFile(Base::Reader& reader)
 {
     aboutToSetValue();
     _meshObject->load(reader);
     hasSetValue();
 }
 
-App::Property *PropertyMeshKernel::Copy() const
+App::Property* PropertyMeshKernel::Copy() const
 {
     // Note: Copy the content, do NOT reference the same mesh object
-    PropertyMeshKernel *prop = new PropertyMeshKernel();
+    PropertyMeshKernel* prop = new PropertyMeshKernel();
     *(prop->_meshObject) = *(this->_meshObject);
     return prop;
 }
 
-void PropertyMeshKernel::Paste(const App::Property &from)
+void PropertyMeshKernel::Paste(const App::Property& from)
 {
     // Note: Copy the content, do NOT reference the same mesh object
     aboutToSetValue();

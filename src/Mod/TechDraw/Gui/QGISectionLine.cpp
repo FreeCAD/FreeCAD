@@ -33,6 +33,8 @@
 #include <Base/Parameter.h>
 #include <Base/Tools.h>
 
+#include <Mod/TechDraw/App/Preferences.h>
+
 #include "QGISectionLine.h"
 #include "PreferencesGui.h"
 #include "QGIArrow.h"
@@ -73,7 +75,6 @@ QGISectionLine::QGISectionLine() :
     addToGroup(m_symbol2);
 
     setWidth(Rez::guiX(0.75));          //a default?
-    setStyle(getSectionStyle());
     setColor(getSectionColor());
 
 }
@@ -81,7 +82,7 @@ QGISectionLine::QGISectionLine() :
 void QGISectionLine::draw()
 {
     prepareGeometryChange();
-    int format = getPrefSectionStandard();
+    int format = Preferences::sectionLineConvention();
     if (format == ANSISTANDARD) {                           //"ASME"/"ANSI"
         extensionEndsTrad();
     } else {
@@ -121,14 +122,16 @@ void QGISectionLine::makeExtensionLine()
 void QGISectionLine::makeSectionLine()
 {
     QPainterPath pp;
-    pp.moveTo(m_start);
-    pp.lineTo(m_end);
+    if (m_showLine) {
+        pp.moveTo(m_start);
+        pp.lineTo(m_end);
+    }
     m_line->setPath(pp);
 }
 
 void QGISectionLine::makeArrows()
 {
-    int format = getPrefSectionStandard();
+    int format = Preferences::sectionLineConvention();
     if (format == ANSISTANDARD) {
         makeArrowsTrad();
     } else {
@@ -193,7 +196,7 @@ void QGISectionLine::makeArrowsTrad()
 
 void QGISectionLine::makeSymbols()
 {
-    int format = getPrefSectionStandard();
+    int format = Preferences::sectionLineConvention();
     if (format == ANSISTANDARD) {
         makeSymbolsTrad();
     } else {
@@ -471,25 +474,6 @@ QColor QGISectionLine::getSectionColor()
     return PreferencesGui::sectionLineQColor();
 }
 
-//SectionLineStyle
-void QGISectionLine::setSectionStyle(int style)
-{
-    Qt::PenStyle sectStyle = static_cast<Qt::PenStyle> (style);
-    setStyle(sectStyle);
-}
-
-Qt::PenStyle QGISectionLine::getSectionStyle()
-{
-    return PreferencesGui::sectionLineStyle();
-}
-
-//ASME("traditional") vs ISO("reference arrow method") arrows
-int QGISectionLine::getPrefSectionStandard()
-{
-    return Preferences::getPreferenceGroup("Standards")->GetInt("SectionLineStandard", ISOSTANDARD);
-}
-
-
 void QGISectionLine::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
@@ -500,32 +484,8 @@ void QGISectionLine::paint ( QPainter * painter, const QStyleOptionGraphicsItem 
 
 void QGISectionLine::setTools()
 {
-    // Use our own style
-    if (m_styleCurrent == Qt::DashDotLine) {
-        QVector<qreal> dashes;
-        // the stroke width is double the one of center lines, but we like to
-        // have the same spacing. thus these values must be half as large
-        qreal space = 2;  // in unit r_width
-        qreal dash = 8;
-        // dot must be really small when using CapStyle RoundCap but > 0
-        // for CapStyle FlatCap you would need to set it to 1
-        qreal dot = 0.000001;
-
-        dashes << dot << space << dash << space;
-
-        // TODO for fanciness: calculate the offset so both arrows start with a
-        // dash!
-
-        m_pen.setDashPattern(dashes);
-
-        m_pen.setDashOffset(2);
-    }
-    else {
-        m_pen.setStyle(m_styleCurrent);
-    }
     m_pen.setWidthF(m_width);
     m_pen.setColor(m_colCurrent);
-    m_pen.setCapStyle(Qt::RoundCap);
     m_brush.setStyle(m_brushCurrent);
     m_brush.setColor(m_colCurrent);
 
@@ -540,4 +500,10 @@ void QGISectionLine::setTools()
 
     m_symbol1->setDefaultTextColor(m_colCurrent);
     m_symbol2->setDefaultTextColor(m_colCurrent);
+}
+
+
+void QGISectionLine::setLinePen(QPen isoPen)
+{
+    m_pen = isoPen;
 }

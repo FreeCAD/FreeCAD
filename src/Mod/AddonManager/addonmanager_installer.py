@@ -24,7 +24,7 @@
 """ Contains the classes to manage Addon installation: intended as a stable API, safe for external
 code to call and to rely upon existing. See classes AddonInstaller and MacroInstaller for details.
 """
-
+import json
 from datetime import datetime, timezone
 from enum import IntEnum, auto
 import os
@@ -40,6 +40,7 @@ from PySide import QtCore
 
 from Addon import Addon
 import addonmanager_utilities as utils
+from addonmanager_metadata import get_branch_from_metadata
 from addonmanager_git import initialize_git, GitFailed
 
 if FreeCAD.GuiUp:
@@ -128,9 +129,7 @@ class AddonInstaller(QtCore.QObject):
         self.git_manager = initialize_git()
 
         if allow_list is not None:
-            AddonInstaller.allowed_packages = set(
-                allow_list if allow_list is not None else []
-            )
+            AddonInstaller.allowed_packages = set(allow_list if allow_list is not None else [])
         elif not AddonInstaller.allowed_packages:
             AddonInstaller._load_local_allowed_packages_list()
             AddonInstaller._update_allowed_packages_list()
@@ -160,6 +159,9 @@ class AddonInstaller(QtCore.QObject):
                 self.addon_to_install.enable_workbench()
         except utils.ProcessInterrupted:
             pass
+        except Exception as e:
+            FreeCAD.Console.PrintLog(e + "\n")
+            success = False
         if success:
             if (
                 hasattr(self.addon_to_install, "contains_workbench")
@@ -175,9 +177,7 @@ class AddonInstaller(QtCore.QObject):
     def _load_local_allowed_packages_list(cls) -> None:
         """Read in the local allow-list, in case the remote one is unavailable."""
         cls.allowed_packages.clear()
-        allow_file = os.path.join(
-            os.path.dirname(__file__), "ALLOWED_PYTHON_PACKAGES.txt"
-        )
+        allow_file = os.path.join(os.path.dirname(__file__), "ALLOWED_PYTHON_PACKAGES.txt")
         if os.path.exists(allow_file):
             with open(allow_file, encoding="utf8") as f:
                 lines = f.readlines()
@@ -271,11 +271,22 @@ class AddonInstaller(QtCore.QObject):
         if addon_url.startswith("file://"):
             addon_url = addon_url[len("file://") :]  # Strip off the file:// part
         name = self.addon_to_install.name
-        shutil.copytree(
-            addon_url, os.path.join(self.installation_path, name), dirs_exist_ok=True
-        )
+        shutil.copytree(addon_url, os.path.join(self.installation_path, name), dirs_exist_ok=True)
         self._finalize_successful_installation()
         return True
+
+    def _can_use_update(self) -> bool:
+        addon = self.addon_to_install
+        install_path = os.path.join(self.installation_path, self.addon_to_install.name)
+        if not os.path.isdir(install_path):
+            return False
+        if addon.metadata is None or addon.installed_metadata is None:
+            return True  # We can't check if the branch name changed, but the install path exists
+        old_branch = get_branch_from_metadata(self.addon_to_install.installed_metadata)
+        new_branch = get_branch_from_metadata(self.addon_to_install.metadata)
+        if old_branch != new_branch:
+            return False  # Branch name changed, we have to re-clone
+        return True  # Checkout exists, same branch as last time, update OK
 
     def _install_by_git(self) -> bool:
         """Installs the specified url by using git to clone from it. The URL can be local or remote,
@@ -283,9 +294,11 @@ class AddonInstaller(QtCore.QObject):
         (git, ssh, rsync, file, or a bare filesystem path)."""
         install_path = os.path.join(self.installation_path, self.addon_to_install.name)
         try:
-            if os.path.isdir(install_path):
+            if self._can_use_update():
                 self.git_manager.update(install_path)
             else:
+                if os.path.isdir(install_path):
+                    utils.rmdir(install_path)
                 self.git_manager.clone(self.addon_to_install.url, install_path)
             self.git_manager.checkout(install_path, self.addon_to_install.branch)
         except GitFailed as e:
@@ -326,9 +339,7 @@ class AddonInstaller(QtCore.QObject):
         GUI thread."""
         NetworkManager.AM_NETWORK_MANAGER.progress_made.connect(self._update_zip_status)
         NetworkManager.AM_NETWORK_MANAGER.progress_complete.connect(self._finish_zip)
-        self.zip_download_index = (
-            NetworkManager.AM_NETWORK_MANAGER.submit_monitored_get(zip_url)
-        )
+        self.zip_download_index = NetworkManager.AM_NETWORK_MANAGER.submit_monitored_get(zip_url)
         while self.zip_download_index is not None:
             if QtCore.QThread.currentThread().isInterruptionRequested():
                 break
@@ -350,9 +361,9 @@ class AddonInstaller(QtCore.QObject):
         if response_code != 200:
             self.failure.emit(
                 self.addon_to_install,
-                translate(
-                    "AddonsInstaller", "Received {} response code from server"
-                ).format(response_code),
+                translate("AddonsInstaller", "Received {} response code from server").format(
+                    response_code
+                ),
             )
             return
         QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents)
@@ -366,6 +377,12 @@ class AddonInstaller(QtCore.QObject):
         subdirectory of the main directory."""
 
         destination = os.path.join(self.installation_path, self.addon_to_install.name)
+        if os.path.exists(destination):
+            remove_succeeded = utils.rmdir(destination)
+            if not remove_succeeded:
+                FreeCAD.Console.PrintError(f"Failed to remove {destination}, aborting update")
+                raise RuntimeError(f"Failed to remove outdated Addon from {destination}")
+
         with zipfile.ZipFile(filename, "r") as zfile:
             zfile.extractall(destination)
 
@@ -373,23 +390,36 @@ class AddonInstaller(QtCore.QObject):
         # after the branch. If that is the setup that we just extracted, move all files out of
         # that subdirectory.
         if self._code_in_branch_subdirectory(destination):
+            actual_path = os.path.join(
+                destination, f"{self.addon_to_install.name}-{self.addon_to_install.branch}"
+            )
+            FreeCAD.Console.PrintLog(
+                f"ZIP installation moving code from {actual_path} to {destination}"
+            )
             self._move_code_out_of_subdirectory(destination)
 
         FreeCAD.Console.PrintLog("ZIP installation complete.\n")
         self._finalize_successful_installation()
 
     def _code_in_branch_subdirectory(self, destination: str) -> bool:
-        subdirectories = os.listdir(destination)
-        if len(subdirectories) == 1:
-            subdir_name = subdirectories[0]
-            if subdir_name.endswith(os.path.sep):
-                subdir_name = subdir_name[:-1]  # Strip trailing slash if present
-            if subdir_name.endswith(self.addon_to_install.branch):
-                return True
+        test_path = os.path.join(destination, self._expected_subdirectory_name())
+        FreeCAD.Console.PrintLog(f"Checking for possible zip sub-path {test_path}...")
+        if os.path.isdir(test_path):
+            FreeCAD.Console.PrintLog(f"path exists.\n")
+            return True
+        FreeCAD.Console.PrintLog(f"path does not exist.\n")
         return False
 
+    def _expected_subdirectory_name(self) -> str:
+        url = self.addon_to_install.url
+        if url.endswith(".git"):
+            url = url[:-4]
+        _, _, name = url.rpartition("/")
+        branch = self.addon_to_install.branch
+        return f"{name}-{branch}"
+
     def _move_code_out_of_subdirectory(self, destination):
-        subdirectory = os.listdir(destination)[0]
+        subdirectory = os.path.join(destination, self._expected_subdirectory_name())
         for extracted_filename in os.listdir(os.path.join(destination, subdirectory)):
             shutil.move(
                 os.path.join(destination, subdirectory, extracted_filename),
@@ -411,9 +441,7 @@ class AddonInstaller(QtCore.QObject):
 
         if hasattr(self.addon_to_install, "metadata") and os.path.isfile(package_xml):
             self.addon_to_install.load_metadata_file(package_xml)
-            self.addon_to_install.installed_version = (
-                self.addon_to_install.metadata.version
-            )
+            self.addon_to_install.installed_version = self.addon_to_install.metadata.version
             self.addon_to_install.updated_timestamp = os.path.getmtime(package_xml)
 
     def _install_macros(self):
@@ -462,11 +490,7 @@ class AddonInstaller(QtCore.QObject):
         """Make sure the object has the necessary attributes (name, url, and branch) to be
         installed."""
 
-        if (
-            not hasattr(addon, "name")
-            or not hasattr(addon, "url")
-            or not hasattr(addon, "branch")
-        ):
+        if not hasattr(addon, "name") or not hasattr(addon, "url") or not hasattr(addon, "branch"):
             raise RuntimeError(
                 "Provided object does not provide a name, url, and/or branch attribute"
             )
@@ -505,9 +529,7 @@ class MacroInstaller(QtCore.QObject):
             temp_install_succeeded, error_list = macro.install(temp_dir)
             if not temp_install_succeeded:
                 FreeCAD.Console.PrintError(
-                    translate("AddonsInstaller", "Failed to install macro {}").format(
-                        macro.name
-                    )
+                    translate("AddonsInstaller", "Failed to install macro {}").format(macro.name)
                     + "\n"
                 )
                 for e in error_list:
@@ -516,15 +538,33 @@ class MacroInstaller(QtCore.QObject):
                 self.finished.emit()
                 return False
 
-            # If it succeeded, move all of the files to the macro install location
+            # If it succeeded, move all the files to the macro install location,
+            # keeping a list of all the files we installed, so they can be removed later
+            # if this macro is uninstalled.
+            manifest = []
             for item in os.listdir(temp_dir):
                 src = os.path.join(temp_dir, item)
                 dst = os.path.join(self.installation_path, item)
                 shutil.move(src, dst)
+                manifest.append(dst)
+            self._write_installation_manifest(manifest)
         self.success.emit(self.addon_to_install)
         self.addon_to_install.set_status(Addon.Status.NO_UPDATE_AVAILABLE)
         self.finished.emit()
         return True
+
+    def _write_installation_manifest(self, manifest):
+        manifest_file = os.path.join(
+            self.installation_path, self.addon_to_install.macro.filename + ".manifest"
+        )
+        try:
+            with open(manifest_file, "w", encoding="utf-8") as f:
+                f.write(json.dumps(manifest, indent="  "))
+        except OSError as e:
+            FreeCAD.Console.PrintWarning(
+                translate("AddonsInstaller", "Failed to create installation manifest " "file:\n")
+            )
+            FreeCAD.Console.PrintWarning(manifest_file)
 
     @classmethod
     def _validate_object(cls, addon: object):
@@ -536,6 +576,4 @@ class MacroInstaller(QtCore.QObject):
             or not hasattr(addon.macro, "install")
             or not callable(addon.macro.install)
         ):
-            raise RuntimeError(
-                "Provided object does not provide a macro with an install method"
-            )
+            raise RuntimeError("Provided object does not provide a macro with an install method")

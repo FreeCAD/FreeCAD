@@ -26,23 +26,25 @@
 
 #include <Gui/TaskView/TaskDialog.h>
 
-namespace Fem {
-    class FemMeshShapeNetgenObject;
+namespace Fem
+{
+class FemMeshShapeNetgenObject;
 }
 
 
-namespace FemGui {
+namespace FemGui
+{
 
 class TaskTetParameter;
 class ViewProviderFemMeshShapeNetgen;
 
 /// simulation dialog for the TaskView
-class TaskDlgMeshShapeNetgen : public Gui::TaskView::TaskDialog
+class TaskDlgMeshShapeNetgen: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgMeshShapeNetgen(FemGui::ViewProviderFemMeshShapeNetgen *);
+    explicit TaskDlgMeshShapeNetgen(FemGui::ViewProviderFemMeshShapeNetgen*);
     ~TaskDlgMeshShapeNetgen() override;
 
 public:
@@ -59,17 +61,18 @@ public:
 
     /// returns for Close and Help button
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel|QDialogButtonBox::Apply; }
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::Apply;
+    }
 
 protected:
-    TaskTetParameter             *param;
+    TaskTetParameter* param;
 
-    Fem::FemMeshShapeNetgenObject           *FemMeshShapeNetgenObject;
-    FemGui::ViewProviderFemMeshShapeNetgen  *ViewProviderFemMeshShapeNetgen;
+    Fem::FemMeshShapeNetgenObject* FemMeshShapeNetgenObject;
+    FemGui::ViewProviderFemMeshShapeNetgen* ViewProviderFemMeshShapeNetgen;
 };
 
 
+}  // namespace FemGui
 
-} //namespace FemGui
-
-#endif // FEMGUI_TaskDlgMeshShapeNetgen_H
+#endif  // FEMGUI_TaskDlgMeshShapeNetgen_H

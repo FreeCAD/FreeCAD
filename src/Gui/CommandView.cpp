@@ -46,9 +46,11 @@
 #include <App/ComplexGeoDataPy.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/DocumentObjectGroup.h>
 #include <App/GeoFeature.h>
 #include <App/GeoFeatureGroupExtension.h>
-#include <App/MeasureDistance.h>
+#include <App/Part.h>
+#include <App/Link.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
@@ -59,7 +61,6 @@
 #include "Control.h"
 #include "Clipping.h"
 #include "DemoMode.h"
-#include "DlgDisplayPropertiesImp.h"
 #include "DlgSettingsImageImp.h"
 #include "Document.h"
 #include "FileDialog.h"
@@ -67,12 +68,13 @@
 #include "Macro.h"
 #include "MainWindow.h"
 #include "NavigationStyle.h"
+#include "OverlayParams.h"
+#include "OverlayManager.h"
 #include "SceneInspector.h"
 #include "Selection.h"
 #include "SelectionObject.h"
 #include "SoAxisCrossKit.h"
 #include "SoFCOffscreenRenderer.h"
-#include "SoFCUnifiedSelection.h"
 #include "TextureMapping.h"
 #include "Tools.h"
 #include "Tree.h"
@@ -81,13 +83,12 @@
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 #include "ViewParams.h"
-#include "ViewProviderMeasureDistance.h"
 #include "ViewProviderGeometryObject.h"
 #include "WaitCursor.h"
 
 using namespace Gui;
 using Gui::Dialog::DlgSettingsImageImp;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 namespace {
 // A helper class to open a transaction when changing properties of view providers.
@@ -288,7 +289,7 @@ class StdCmdFreezeViews : public Gui::Command
 {
 public:
     StdCmdFreezeViews();
-    ~StdCmdFreezeViews() override{}
+    ~StdCmdFreezeViews() override = default;
     const char* className() const override
     { return "StdCmdFreezeViews"; }
 
@@ -298,7 +299,7 @@ public:
 protected:
     void activated(int iMsg) override;
     bool isActive() override;
-    Action * createAction(void) override;
+    Action * createAction() override;
     void languageChange() override;
 
 private:
@@ -306,24 +307,17 @@ private:
     void onRestoreViews();
 
 private:
-    const int maxViews;
-    int savedViews;
-    int offset;
-    QAction* saveView;
-    QAction* freezeView;
-    QAction* clearView;
-    QAction* separator;
+    const int maxViews{50};
+    int savedViews{0};
+    int offset{0};
+    QAction* saveView{nullptr};
+    QAction* freezeView{nullptr};
+    QAction* clearView{nullptr};
+    QAction* separator{nullptr};
 };
 
 StdCmdFreezeViews::StdCmdFreezeViews()
   : Command("Std_FreezeViews")
-  , maxViews(50)
-  , savedViews(0)
-  , offset(0)
-  , saveView(nullptr)
-  , freezeView(nullptr)
-  , clearView(nullptr)
-  , separator(nullptr)
 {
     sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Freeze display");
@@ -637,7 +631,7 @@ class StdCmdDrawStyle : public Gui::Command
 {
 public:
     StdCmdDrawStyle();
-    ~StdCmdDrawStyle() override{}
+    ~StdCmdDrawStyle() override = default;
     void languageChange() override;
     const char* className() const override {return "StdCmdDrawStyle";}
     void updateIcon(const Gui::MDIView* view);
@@ -658,7 +652,9 @@ StdCmdDrawStyle::StdCmdDrawStyle()
     sPixmap       = "DrawStyleAsIs";
     eType         = Alter3DView;
 
-    this->getGuiApplication()->signalActivateView.connect(boost::bind(&StdCmdDrawStyle::updateIcon, this, bp::_1));
+    this->getGuiApplication()->signalActivateView.connect([this](auto view) {
+        this->updateIcon(view);
+    });
 }
 
 Gui::Action * StdCmdDrawStyle::createAction()
@@ -887,6 +883,113 @@ void StdCmdToggleVisibility::activated(int iMsg)
 }
 
 bool StdCmdToggleVisibility::isActive()
+{
+    return (Gui::Selection().size() != 0);
+}
+
+//===========================================================================
+// Std_ToggleTransparency
+//===========================================================================
+DEF_STD_CMD_A(StdCmdToggleTransparency)
+
+StdCmdToggleTransparency::StdCmdToggleTransparency()
+    : Command("Std_ToggleTransparency")
+{
+    sGroup = "Standard-View";
+    sMenuText = QT_TR_NOOP("Toggle transparency");
+    static std::string toolTip = std::string("<p>")
+        + QT_TR_NOOP("Toggles transparency of the selected objects. You can also fine tune transparency "
+            "value in the Appearance taskbox (right click an object in the tree, Appearance).")
+        + "</p>";
+    sToolTipText = toolTip.c_str();
+    sStatusTip = sToolTipText;
+    sWhatsThis = "Std_ToggleTransparency";
+    sPixmap = "Std_ToggleTransparency";
+    sAccel = "V,T";
+    eType = Alter3DView;
+}
+
+void StdCmdToggleTransparency::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    getActiveGuiDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Toggle transparency"));
+
+    std::vector<Gui::SelectionSingleton::SelObj> sels = Gui::Selection().getCompleteSelection();
+
+    std::vector<Gui::ViewProvider*> viewsToToggle = {};
+
+    for (Gui::SelectionSingleton::SelObj& sel : sels) {
+        App::DocumentObject* obj = sel.pObject;
+        if (!obj)
+            continue;
+
+        bool isGroup = dynamic_cast<App::Part*>(obj)
+                || dynamic_cast<App::LinkGroup*>(obj)
+                || dynamic_cast<App::DocumentObjectGroup*>(obj);
+
+        auto addObjects = [](App::DocumentObject* obj, std::vector<Gui::ViewProvider*>& views) {
+            App::Document* doc = obj->getDocument();
+            Gui::ViewProvider* view = Application::Instance->getDocument(doc)->getViewProvider(obj);
+            App::Property* prop = view->getPropertyByName("Transparency");
+            if (prop && prop->getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+                // To prevent toggling the tip of a PD body (see #11353), we check if the parent has a
+                // Tip prop.
+                const std::vector<App::DocumentObject*> parents = obj->getInList();
+                if (!parents.empty()) {
+                    App::Document* parentDoc = parents[0]->getDocument();
+                    Gui::ViewProvider* parentView = Application::Instance->getDocument(parentDoc)->getViewProvider(parents[0]);
+                    App::Property* parentProp = parents[0]->getPropertyByName("Tip");
+                    if (parentProp) {
+                        // Make sure it has a transparency prop too
+                        parentProp = parentView->getPropertyByName("Transparency");
+                        if (parentProp && parentProp->getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+                            view = parentView;
+                        }
+                    }
+                }
+
+                if (std::find(views.begin(), views.end(), view) == views.end()) {
+                    views.push_back(view);
+                }
+            }
+        };
+
+        if (isGroup) {
+            for (App::DocumentObject* subobj : obj->getOutListRecursive()) {
+                addObjects(subobj, viewsToToggle);
+            }
+        }
+        else {
+            addObjects(obj, viewsToToggle);
+        }
+    }
+
+    bool oneTransparent = false;
+    for (auto* view : viewsToToggle) {
+        App::Property* prop = view->getPropertyByName("Transparency");
+        if (prop && prop->getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+            auto* transparencyProp = dynamic_cast<App::PropertyInteger*>(prop);
+            int transparency = transparencyProp->getValue();
+            if (transparency != 0) {
+                oneTransparent = true;
+            }
+        }
+    }
+
+    int transparency = oneTransparent ? 0 : 70;
+
+    for (auto* view : viewsToToggle) {
+        App::Property* prop = view->getPropertyByName("Transparency");
+        if (prop && prop->getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+            auto* transparencyProp = dynamic_cast<App::PropertyInteger*>(prop);
+            transparencyProp->setValue(transparency);
+        }
+    }
+
+    getActiveGuiDocument()->commitCommand();
+}
+
+bool StdCmdToggleTransparency::isActive()
 {
     return (Gui::Selection().size() != 0);
 }
@@ -1157,36 +1260,6 @@ bool StdCmdHideObjects::isActive()
 }
 
 //===========================================================================
-// Std_SetAppearance
-//===========================================================================
-DEF_STD_CMD_A(StdCmdSetAppearance)
-
-StdCmdSetAppearance::StdCmdSetAppearance()
-  : Command("Std_SetAppearance")
-{
-    sGroup        = "Standard-View";
-    sMenuText     = QT_TR_NOOP("Appearance...");
-    sToolTipText  = QT_TR_NOOP("Sets the display properties of the selected object");
-    sWhatsThis    = "Std_SetAppearance";
-    sStatusTip    = QT_TR_NOOP("Sets the display properties of the selected object");
-    sPixmap       = "Std_SetAppearance";
-    sAccel        = "Ctrl+D";
-    eType         = Alter3DView;
-}
-
-void StdCmdSetAppearance::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    Gui::Control().showDialog(new Gui::Dialog::TaskDisplayProperties());
-}
-
-bool StdCmdSetAppearance::isActive()
-{
-    return (Gui::Control().activeDialog() == nullptr) &&
-           (Gui::Selection().size() != 0);
-}
-
-//===========================================================================
 // Std_ViewHome
 //===========================================================================
 DEF_3DV_CMD(StdCmdViewHome)
@@ -1357,6 +1430,7 @@ void StdCmdViewTop::activated(int iMsg)
     Q_UNUSED(iMsg);
     doCommand(Command::Gui,"Gui.activeDocument().activeView().viewTop()");
 }
+
 
 //===========================================================================
 // Std_ViewIsometric
@@ -1537,6 +1611,46 @@ bool StdCmdViewFitSelection::isActive()
 {
   return getGuiApplication()->sendHasMsgToActiveView("ViewSelection");
 }
+
+//===========================================================================
+// Std_ViewCommandGroup
+//===========================================================================
+class StdCmdViewGroup: public Gui::GroupCommand
+{
+public:
+    StdCmdViewGroup()
+        : GroupCommand("Std_ViewGroup")
+    {
+        sGroup = "Standard-View";
+        sMenuText = QT_TR_NOOP("Standard views");
+        sToolTipText = QT_TR_NOOP("Change to a standard view");
+        sStatusTip = QT_TR_NOOP("Change to a standard view");
+        sWhatsThis = "Std_ViewGroup";
+        sPixmap = "view-isometric";
+        eType = Alter3DView;
+
+        setCheckable(false);
+        setRememberLast(true);
+
+        addCommand("Std_ViewIsometric");
+        addCommand("Std_ViewFront");
+        addCommand("Std_ViewTop");
+        addCommand("Std_ViewRight");
+        addCommand("Std_ViewRear");
+        addCommand("Std_ViewBottom");
+        addCommand("Std_ViewLeft");
+    }
+
+    const char* className() const override
+    {
+        return "StdCmdViewGroup";
+    }
+
+    bool isActive() override
+    {
+        return hasActiveDocument();
+    }
+};
 
 //===========================================================================
 // Std_ViewDock
@@ -1813,7 +1927,7 @@ StdViewScreenShot::StdViewScreenShot()
     sToolTipText= QT_TR_NOOP("Creates a screenshot of the active view");
     sWhatsThis  = "Std_ViewScreenShot";
     sStatusTip  = QT_TR_NOOP("Creates a screenshot of the active view");
-    sPixmap     = "camera-photo";
+    sPixmap     = "Std_ViewScreenShot";
     eType       = Alter3DView;
 }
 
@@ -2105,8 +2219,8 @@ StdCmdAxisCross::StdCmdAxisCross()
 {
         sGroup        = "Standard-View";
         sMenuText     = QT_TR_NOOP("Toggle axis cross");
-        sToolTipText  = QT_TR_NOOP("Toggle axis cross");
-        sStatusTip    = QT_TR_NOOP("Toggle axis cross");
+        sToolTipText  = QT_TR_NOOP("Turns on or off the axis cross at the origin");
+        sStatusTip    = QT_TR_NOOP("Turns on or off the axis cross at the origin");
         sWhatsThis    = "Std_AxisCross";
         sPixmap       = "Std_AxisCross";
         sAccel        = "A,C";
@@ -2428,9 +2542,9 @@ StdViewZoomIn::StdViewZoomIn()
 {
     sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Zoom In");
-    sToolTipText  = QT_TR_NOOP("Zoom In");
+    sToolTipText  = QT_TR_NOOP("Increase the zoom factor by a fixed amount");
     sWhatsThis    = "Std_ViewZoomIn";
-    sStatusTip    = QT_TR_NOOP("Zoom In");
+    sStatusTip    = QT_TR_NOOP("Increase the zoom factor by a fixed amount");
     sPixmap       = "zoom-in";
     sAccel        = keySequenceToAccel(QKeySequence::ZoomIn);
     eType         = Alter3DView;
@@ -2457,9 +2571,9 @@ StdViewZoomOut::StdViewZoomOut()
 {
     sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Zoom Out");
-    sToolTipText  = QT_TR_NOOP("Zoom Out");
+    sToolTipText  = QT_TR_NOOP("Decrease the zoom factor by a fixed amount");
     sWhatsThis    = "Std_ViewZoomOut";
-    sStatusTip    = QT_TR_NOOP("Zoom Out");
+    sStatusTip    = QT_TR_NOOP("Decrease the zoom factor by a fixed amount");
     sPixmap       = "zoom-out";
     sAccel        = keySequenceToAccel(QKeySequence::ZoomOut);
     eType         = Alter3DView;
@@ -2488,9 +2602,9 @@ private:
     bool prevSelectionEn;
 
 public:
-    // Creates a selection handler used to implement the common behaviour of BoxZoom, BoxSelection and BoxElementSelection. 
+    // Creates a selection handler used to implement the common behaviour of BoxZoom, BoxSelection and BoxElementSelection.
     // Takes the viewer, a selection mode, a cursor, a function pointer to be called on success and a void pointer for user data to be passed to the given function.
-    // The selection handler class stores all necessary previous states, registers a event callback and starts the selection in the given mode.    
+    // The selection handler class stores all necessary previous states, registers a event callback and starts the selection in the given mode.
     // If there is still a selection handler active, this call will generate a message and returns.
     static void Create(View3DInventorViewer* viewer, View3DInventorViewer::SelectionMode selectionMode,
                        const QCursor& cursor, FnCb doFunction= nullptr, void* ud=nullptr)
@@ -2501,7 +2615,7 @@ public:
             return;
         }
 
-        currentSelectionHandler = std::unique_ptr<SelectionCallbackHandler>(new SelectionCallbackHandler());
+        currentSelectionHandler = std::make_unique<SelectionCallbackHandler>();
         if (viewer)
         {
             currentSelectionHandler->userData = ud;
@@ -2520,8 +2634,8 @@ public:
         return userData;
     }
 
-    // Implements the event handler. In the normal case the provided function is called. 
-    // Also supports aborting the selection mode by pressing (releasing) the Escape key. 
+    // Implements the event handler. In the normal case the provided function is called.
+    // Also supports aborting the selection mode by pressing (releasing) the Escape key.
     static void selectionCallback(void * ud, SoEventCallback * n)
     {
         auto selectionHandler = static_cast<SelectionCallbackHandler*>(ud);
@@ -2570,6 +2684,24 @@ public:
         Application::Instance->commandManager().testActive();
         currentSelectionHandler = nullptr;
     }
+
+    static QCursor makeCursor(QWidget* widget, const QSize& size, const char* svgFile, int hotX, int hotY)
+    {
+        qreal pRatio = widget->devicePixelRatioF();
+        qreal hotXF = hotX;
+        qreal hotYF = hotY;
+#if !defined(Q_OS_WIN32) && !defined(Q_OS_MACOS)
+        if (qApp->platformName() == QLatin1String("xcb")) {
+            hotXF *= pRatio;
+            hotYF *= pRatio;
+        }
+#endif
+        qreal cursorWidth = size.width() * pRatio;
+        qreal cursorHeight = size.height() * pRatio;
+        QPixmap px(Gui::BitmapFactory().pixmapFromSvg(svgFile, QSizeF(cursorWidth, cursorHeight)));
+        px.setDevicePixelRatio(pRatio);
+        return QCursor(px, hotXF, hotYF);
+    }
 };
 }
 
@@ -2577,44 +2709,6 @@ std::unique_ptr<SelectionCallbackHandler> SelectionCallbackHandler::currentSelec
 //===========================================================================
 // Std_ViewBoxZoom
 //===========================================================================
-/* XPM */
-static const char * cursor_box_zoom[] = {
-"32 32 3 1",
-" 	c None",
-".	c #FFFFFF",
-"@	c #FF0000",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"                                ",
-".....   .....                   ",
-"                                ",
-"      .      @@@@@@@            ",
-"      .    @@@@@@@@@@@          ",
-"      .   @@         @@         ",
-"      .  @@. . . . . .@@        ",
-"      .  @             @        ",
-"        @@ .         . @@       ",
-"        @@             @@       ",
-"        @@ .         . @@       ",
-"        @@             @@       ",
-"        @@ .         . @@       ",
-"        @@             @@       ",
-"        @@ .         . @@       ",
-"         @             @        ",
-"         @@. . . . . .@@@       ",
-"          @@          @@@@      ",
-"           @@@@@@@@@@@@  @@     ",
-"             @@@@@@@ @@   @@    ",
-"                      @@   @@   ",
-"                       @@   @@  ",
-"                        @@   @@ ",
-"                         @@  @@ ",
-"                          @@@@  ",
-"                           @@   ",
-"                                " };
 
 DEF_3DV_CMD(StdViewBoxZoom)
 
@@ -2623,9 +2717,9 @@ StdViewBoxZoom::StdViewBoxZoom()
 {
     sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Box zoom");
-    sToolTipText  = QT_TR_NOOP("Box zoom");
+    sToolTipText  = QT_TR_NOOP("Activate the box zoom tool");
     sWhatsThis    = "Std_ViewBoxZoom";
-    sStatusTip    = QT_TR_NOOP("Box zoom");
+    sStatusTip    = QT_TR_NOOP("Activate the box zoom tool");
     sPixmap       = "zoom-border";
     sAccel        = "Ctrl+B";
     eType         = Alter3DView;
@@ -2638,7 +2732,11 @@ void StdViewBoxZoom::activated(int iMsg)
     if ( view ) {
         View3DInventorViewer* viewer = view->getViewer();
         if (!viewer->isSelecting()) {
-            SelectionCallbackHandler::Create(viewer, View3DInventorViewer::BoxZoom, QCursor(QPixmap(cursor_box_zoom), 7, 7));
+            // NOLINTBEGIN
+            QCursor cursor = SelectionCallbackHandler::makeCursor(viewer, QSize(32, 32),
+                                                                  "zoom-border-cross", 6, 6);
+            SelectionCallbackHandler::Create(viewer, View3DInventorViewer::BoxZoom, cursor);
+            // NOLINTEND
         }
     }
 }
@@ -2648,54 +2746,14 @@ void StdViewBoxZoom::activated(int iMsg)
 //===========================================================================
 DEF_3DV_CMD(StdBoxSelection)
 
-/* XPM */
-static const char * cursor_box_select[] = {
-"32 32 4 1",
-" 	c None",
-".	c #FFFFFF",
-"+	c #FF0000",
-"@	c #000000",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"                                ",
-".....   .....                   ",
-"                                ",
-"      .                         ",
-"      .                         ",
-"      .   +    +++   +++    +++ ",
-"      .   +@@                   ",
-"      .   +@.@@@                ",
-"            @...@@@             ",
-"            @......@@           ",
-"            @........@@@      + ",
-"             @..........@@    + ",
-"          +  @............@   + ",
-"          +   @........@@@      ",
-"          +   @.......@         ",
-"              @........@        ",
-"               @........@     + ",
-"               @...@.....@    + ",
-"          +    @..@ @.....@   + ",
-"          +     @.@  @.....@    ",
-"          +     @.@   @.....@   ",
-"                 @     @.....@  ",
-"                        @...@   ",
-"                         @.@  + ",
-"                          @   + ",
-"          +++    +++   +++    + ",
-"                                " };
-
 StdBoxSelection::StdBoxSelection()
   : Command("Std_BoxSelection")
 {
     sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Box selection");
-    sToolTipText  = QT_TR_NOOP("Box selection");
+    sToolTipText  = QT_TR_NOOP("Activate the box selection tool");
     sWhatsThis    = "Std_BoxSelection";
-    sStatusTip    = QT_TR_NOOP("Box selection");
+    sStatusTip    = QT_TR_NOOP("Activate the box selection tool");
     sPixmap       = "edit-select-box";
     sAccel        = "Shift+B";
     eType         = AlterSelection;
@@ -2710,7 +2768,7 @@ static std::vector<std::string> getBoxSelection(
 {
     std::vector<std::string> ret;
     auto obj = vp->getObject();
-    if(!obj || !obj->getNameInDocument())
+    if(!obj || !obj->isAttachedToDocument())
         return ret;
 
     // DO NOT check this view object Visibility, let the caller do this. Because
@@ -2831,8 +2889,7 @@ static void doSelect(void* ud, SoEventCallback * cb)
     bool selectElement = ud ? true : false;
     auto viewer = static_cast<Gui::View3DInventorViewer*>(cb->getUserData());
 
-    SoNode* root = viewer->getSceneGraph();
-    static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
+    viewer->setSelectionEnabled(true);
 
     SelectionMode selectionMode = CENTER;
 
@@ -2868,7 +2925,8 @@ static void doSelect(void* ud, SoEventCallback * cb)
             Gui::Selection().clearSelection(doc->getName());
         }
 
-        for(auto obj : doc->getObjects()) {
+        const std::vector<App::DocumentObject*> objects = doc->getObjects();
+        for(auto obj : objects) {
             if(App::GeoFeatureGroupExtension::getGroupOfObject(obj))
                 continue;
 
@@ -2897,9 +2955,13 @@ void StdBoxSelection::activated(int iMsg)
                 SoKeyboardEvent ev;
                 viewer->navigationStyle()->processEvent(&ev);
             }
-            SelectionCallbackHandler::Create(viewer, View3DInventorViewer::Rubberband, QCursor(QPixmap(cursor_box_select), 7, 7), doSelect, nullptr);
-            SoNode* root = viewer->getSceneGraph();
-            static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(false);
+
+            // NOLINTBEGIN
+            QCursor cursor = SelectionCallbackHandler::makeCursor(viewer, QSize(32, 32),
+                                                                  "edit-select-box-cross", 6, 6);
+            SelectionCallbackHandler::Create(viewer, View3DInventorViewer::Rubberband, cursor, doSelect, nullptr);
+            viewer->setSelectionEnabled(false);
+            // NOLINTEND
         }
     }
 }
@@ -2907,47 +2969,6 @@ void StdBoxSelection::activated(int iMsg)
 //===========================================================================
 // Std_BoxElementSelection
 //===========================================================================
-/* XPM */
-static const char * cursor_box_element_select[] = {
-"32 32 6 1",
-" 	c None",
-".	c #FFFFFF",
-"+	c #00FF1B",
-"@	c #19A428",
-"#	c #FF0000",
-"$	c #000000",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"                                ",
-".....   .....                   ",
-"       ++++++++++++             ",
-"      .+@@@@@@@@@@+             ",
-"      .+@@@@@@@@@@+             ",
-"      .+@@#@@@@###+  ###    ### ",
-"      .+@@#$$@@@@@+             ",
-"      .+@@#$.$$$@@+             ",
-"       +@@@@$...$$$             ",
-"       +@@@@$......$$           ",
-"       +@@@@$........$$$      # ",
-"       +@@@@@$..........$$    # ",
-"       +@@#@@$............$   # ",
-"       +++#+++$........$$$      ",
-"          #   $.......$         ",
-"              $........$        ",
-"               $........$     # ",
-"               $...$.....$    # ",
-"          #    $..$ $.....$   # ",
-"          #     $.$  $.....$    ",
-"          #     $.$   $.....$   ",
-"                 $     $.....$  ",
-"                        $...$   ",
-"                         $.$  # ",
-"                          $   # ",
-"          ###    ###   ###    # ",
-"                                " };
 
 DEF_3DV_CMD(StdBoxElementSelection)
 
@@ -2978,9 +2999,13 @@ void StdBoxElementSelection::activated(int iMsg)
                 SoKeyboardEvent ev;
                 viewer->navigationStyle()->processEvent(&ev);
             }
-            SelectionCallbackHandler::Create(viewer, View3DInventorViewer::Rubberband, QCursor(QPixmap(cursor_box_element_select), 7, 7), doSelect, this);
-            SoNode* root = viewer->getSceneGraph();
-            static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(false);
+
+            // NOLINTBEGIN
+            QCursor cursor = SelectionCallbackHandler::makeCursor(viewer, QSize(32, 32),
+                                                                  "edit-element-select-box-cross", 6, 6);
+            SelectionCallbackHandler::Create(viewer, View3DInventorViewer::Rubberband, cursor, doSelect, this);
+            viewer->setSelectionEnabled(false);
+            // NOLINTEND
         }
     }
 }
@@ -3085,7 +3110,7 @@ bool StdCmdTreeSelectAllInstances::isActive()
     if(sels.empty())
         return false;
     auto obj = sels[0].getObject();
-    if(!obj || !obj->getNameInDocument())
+    if(!obj || !obj->isAttachedToDocument())
         return false;
     return dynamic_cast<ViewProviderDocumentObject*>(
             Application::Instance->getViewProvider(obj)) != nullptr;
@@ -3098,7 +3123,7 @@ void StdCmdTreeSelectAllInstances::activated(int iMsg)
     if(sels.empty())
         return;
     auto obj = sels[0].getObject();
-    if(!obj || !obj->getNameInDocument())
+    if(!obj || !obj->isAttachedToDocument())
         return;
     auto vpd = dynamic_cast<ViewProviderDocumentObject*>(
             Application::Instance->getViewProvider(obj));
@@ -3112,95 +3137,6 @@ void StdCmdTreeSelectAllInstances::activated(int iMsg)
     Selection().selStackPush();
 }
 
-//===========================================================================
-// Std_MeasureDistance
-//===========================================================================
-
-DEF_STD_CMD_A(StdCmdMeasureDistance)
-
-StdCmdMeasureDistance::StdCmdMeasureDistance()
-  : Command("Std_MeasureDistance")
-{
-    sGroup        = "View";
-    sMenuText     = QT_TR_NOOP("Measure distance");
-    sToolTipText  = QT_TR_NOOP("Measure distance");
-    sWhatsThis    = "Std_MeasureDistance";
-    sStatusTip    = QT_TR_NOOP("Measure distance");
-    sPixmap       = "view-measurement";
-    eType         = Alter3DView;
-}
-
-// Yay for cheezy drawings!
-/* XPM */
-static const char * cursor_ruler[] = {
-"32 32 3 1",
-" 	c None",
-".	c #FFFFFF",
-"+	c #FF0000",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"                                ",
-".....   .....                   ",
-"                                ",
-"      .                         ",
-"      .                         ",
-"      .        ++               ",
-"      .       +  +              ",
-"      .      +   ++             ",
-"            +   +  +            ",
-"           +   +    +           ",
-"          +   +     ++          ",
-"          +        +  +         ",
-"           +           +        ",
-"            +         + +       ",
-"             +       +   +      ",
-"              +           +     ",
-"               +         + +    ",
-"                +       +   +   ",
-"                 +           +  ",
-"                  +         + + ",
-"                   +       +  ++",
-"                    +     +   + ",
-"                     +       +  ",
-"                      +     +   ",
-"                       +   +    ",
-"                        + +     ",
-"                         +      "};
-void StdCmdMeasureDistance::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    auto view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
-    if (view) {
-        Gui::View3DInventorViewer* viewer = view->getViewer();
-        viewer->setEditing(true);
-        viewer->setEditingCursor(QCursor(QPixmap(cursor_ruler), 7, 7));
-
-        // Derives from QObject and we have a parent object, so we don't
-        // require a delete.
-        auto marker = new PointMarker(viewer);
-        viewer->addEventCallback(SoEvent::getClassTypeId(),
-            ViewProviderMeasureDistance::measureDistanceCallback, marker);
-     }
-}
-
-bool StdCmdMeasureDistance::isActive()
-{
-    App::Document* doc = App::GetApplication().getActiveDocument();
-    if (!doc || doc->countObjectsOfType(App::GeoFeature::getClassTypeId()) == 0)
-        return false;
-
-    Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
-        Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
-        return !viewer->isEditing();
-    }
-
-    return false;
-}
 
 //===========================================================================
 // Std_SceneInspector
@@ -3291,64 +3227,6 @@ void StdCmdDemoMode::activated(int iMsg)
     dlg->show();
 }
 
-//===========================================================================
-// Part_Measure_Clear_All
-//===========================================================================
-
-DEF_STD_CMD(CmdViewMeasureClearAll)
-
-CmdViewMeasureClearAll::CmdViewMeasureClearAll()
-  : Command("View_Measure_Clear_All")
-{
-    sGroup        = "Measure";
-    sMenuText     = QT_TR_NOOP("Clear measurement");
-    sToolTipText  = QT_TR_NOOP("Clear measurement");
-    sWhatsThis    = "View_Measure_Clear_All";
-    sStatusTip    = sToolTipText;
-    sPixmap       = "Part_Measure_Clear_All";
-}
-
-void CmdViewMeasureClearAll::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    auto view = dynamic_cast<Gui::View3DInventor*>(Gui::Application::Instance->
-        activeDocument()->getActiveView());
-    if (!view)
-        return;
-    Gui::View3DInventorViewer *viewer = view->getViewer();
-    if (!viewer)
-        return;
-    viewer->eraseAllDimensions();
-}
-
-//===========================================================================
-// Part_Measure_Toggle_All
-//===========================================================================
-
-DEF_STD_CMD(CmdViewMeasureToggleAll)
-
-CmdViewMeasureToggleAll::CmdViewMeasureToggleAll()
-  : Command("View_Measure_Toggle_All")
-{
-    sGroup        = "Measure";
-    sMenuText     = QT_TR_NOOP("Toggle measurement");
-    sToolTipText  = QT_TR_NOOP("Toggle measurement");
-    sWhatsThis    = "View_Measure_Toggle_All";
-    sStatusTip    = sToolTipText;
-    sPixmap       = "Part_Measure_Toggle_All";
-}
-
-void CmdViewMeasureToggleAll::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    ParameterGrp::handle group = App::GetApplication().GetUserParameter().
-    GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("View");
-    bool visibility = group->GetBool("DimensionsVisible", true);
-    if (visibility)
-        group->SetBool("DimensionsVisible", false);
-    else
-      group->SetBool("DimensionsVisible", true);
-}
 
 //===========================================================================
 // Std_SelBack
@@ -3360,10 +3238,14 @@ StdCmdSelBack::StdCmdSelBack()
   :Command("Std_SelBack")
 {
   sGroup        = "View";
-  sMenuText     = QT_TR_NOOP("&Back");
-  sToolTipText  = QT_TR_NOOP("Go back to previous selection");
+  sMenuText     = QT_TR_NOOP("Selection back");
+  static std::string toolTip = std::string("<p>")
+      + QT_TR_NOOP("Restore the previous Tree view selection. "
+      "Only works if Tree RecordSelection mode is switched on.")
+      + "</p>";
+  sToolTipText = toolTip.c_str();
   sWhatsThis    = "Std_SelBack";
-  sStatusTip    = QT_TR_NOOP("Go back to previous selection");
+  sStatusTip    = sToolTipText;
   sPixmap       = "sel-back";
   sAccel        = "S, B";
   eType         = AlterSelection;
@@ -3390,10 +3272,14 @@ StdCmdSelForward::StdCmdSelForward()
   :Command("Std_SelForward")
 {
   sGroup        = "View";
-  sMenuText     = QT_TR_NOOP("&Forward");
-  sToolTipText  = QT_TR_NOOP("Repeat the backed selection");
+  sMenuText     = QT_TR_NOOP("Selection forward");
+  static std::string toolTip = std::string("<p>")
+      + QT_TR_NOOP("Restore the next Tree view selection. "
+      "Only works if Tree RecordSelection mode is switched on.")
+      + "</p>";
+  sToolTipText = toolTip.c_str();
   sWhatsThis    = "Std_SelForward";
-  sStatusTip    = QT_TR_NOOP("Repeat the backed selection");
+  sStatusTip    = sToolTipText;
   sPixmap       = "sel-forward";
   sAccel        = "S, F";
   eType         = AlterSelection;
@@ -3568,7 +3454,7 @@ StdTreePreSelection::StdTreePreSelection()
 {
     sGroup       = "TreeView";
     sMenuText    = QT_TR_NOOP("Pre-selection");
-    sToolTipText = QT_TR_NOOP("Preselect the object in 3D view when mouse over the tree item");
+    sToolTipText = QT_TR_NOOP("Preselect the object in 3D view when hovering the cursor over the tree item");
     sStatusTip   = sToolTipText;
     sWhatsThis   = "Std_TreePreSelection";
     sPixmap      = "tree-pre-sel";
@@ -3659,6 +3545,11 @@ public:
 
         addCommand(new StdTreeDrag(),!cmds.empty());
         addCommand(new StdTreeSelection(),!cmds.empty());
+
+        addCommand();
+
+        addCommand(new StdCmdSelBack());
+        addCommand(new StdCmdSelForward());
     }
     const char* className() const override {return "StdCmdTreeViewActions";}
 };
@@ -3707,6 +3598,279 @@ Action * StdCmdSelBoundingBox::createAction()
     pcAction->setCheckable(true);
     return pcAction;
 }
+
+//===========================================================================
+// Std_DockOverlayAll
+//===========================================================================
+
+DEF_STD_CMD(StdCmdDockOverlayAll)
+
+StdCmdDockOverlayAll::StdCmdDockOverlayAll()
+  :Command("Std_DockOverlayAll")
+{
+  sGroup        = "View";
+  sMenuText     = QT_TR_NOOP("Toggle overlay for all");
+  sToolTipText  = QT_TR_NOOP("Toggle overlay mode for all docked windows");
+  sWhatsThis    = "Std_DockOverlayAll";
+  sStatusTip    = sToolTipText;
+  sAccel        = "F4";
+  eType         = 0;
+}
+
+void StdCmdDockOverlayAll::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    OverlayManager::instance()->setOverlayMode(OverlayManager::OverlayMode::ToggleAll);
+}
+
+//===========================================================================
+// Std_DockOverlayTransparentAll
+//===========================================================================
+
+DEF_STD_CMD(StdCmdDockOverlayTransparentAll)
+
+StdCmdDockOverlayTransparentAll::StdCmdDockOverlayTransparentAll()
+  :Command("Std_DockOverlayTransparentAll")
+{
+  sGroup        = "View";
+  sMenuText     = QT_TR_NOOP("Toggle transparent for all");
+  sToolTipText  = QT_TR_NOOP("Toggle transparent mode for all docked overlay windows.\n"
+                             "This makes the docked windows stay transparent at all times.");
+  sWhatsThis    = "Std_DockOverlayTransparentAll";
+  sStatusTip    = sToolTipText;
+  sAccel        = "SHIFT+F4";
+  eType         = 0;
+}
+
+void StdCmdDockOverlayTransparentAll::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    OverlayManager::instance()->setOverlayMode(OverlayManager::OverlayMode::ToggleTransparentAll);
+}
+
+//===========================================================================
+// Std_DockOverlayToggle
+//===========================================================================
+
+DEF_STD_CMD(StdCmdDockOverlayToggle)
+
+StdCmdDockOverlayToggle::StdCmdDockOverlayToggle()
+  :Command("Std_DockOverlayToggle")
+{
+  sGroup        = "View";
+  sMenuText     = QT_TR_NOOP("Toggle overlay");
+  sToolTipText  = QT_TR_NOOP("Toggle overlay mode for the docked window under the cursor");
+  sWhatsThis    = "Std_DockOverlayToggle";
+  sStatusTip    = sToolTipText;
+  sAccel        = "F3";
+  eType         = 0;
+}
+
+void StdCmdDockOverlayToggle::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    OverlayManager::instance()->setOverlayMode(OverlayManager::OverlayMode::ToggleActive);
+}
+
+//===========================================================================
+// Std_DockOverlayToggleTransparent
+//===========================================================================
+
+DEF_STD_CMD(StdCmdDockOverlayToggleTransparent)
+
+StdCmdDockOverlayToggleTransparent::StdCmdDockOverlayToggleTransparent()
+  :Command("Std_DockOverlayToggleTransparent")
+{
+    sGroup        = "Standard-View";
+    sMenuText     = QT_TR_NOOP("Toggle transparent mode");
+    sToolTipText  = QT_TR_NOOP("Toggle transparent mode for the docked window under cursor.\n"
+                               "This makes the docked window stay transparent at all times.");
+    sWhatsThis    = "Std_DockOverlayToggleTransparent";
+    sStatusTip    = sToolTipText;
+    sAccel        = "SHIFT+F3";
+    eType         = 0;
+}
+
+void StdCmdDockOverlayToggleTransparent::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    OverlayManager::instance()->setOverlayMode(OverlayManager::OverlayMode::ToggleTransparent);
+}
+
+//===========================================================================
+// Std_DockOverlayToggleLeft
+//===========================================================================
+
+DEF_STD_CMD(StdCmdDockOverlayToggleLeft)
+
+StdCmdDockOverlayToggleLeft::StdCmdDockOverlayToggleLeft()
+  :Command("Std_DockOverlayToggleLeft")
+{
+    sGroup        = "Standard-View";
+    sMenuText     = QT_TR_NOOP("Toggle left");
+    sToolTipText  = QT_TR_NOOP("Show/hide left overlay panel");
+    sWhatsThis    = "Std_DockOverlayToggleLeft";
+    sStatusTip    = sToolTipText;
+    sAccel        = "Ctrl+Left";
+    sPixmap       = "qss:overlay/icons/close.svg";
+    eType         = 0;
+}
+
+void StdCmdDockOverlayToggleLeft::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    OverlayManager::instance()->setOverlayMode(OverlayManager::OverlayMode::ToggleLeft);
+}
+
+//===========================================================================
+// Std_DockOverlayToggleRight
+//===========================================================================
+
+DEF_STD_CMD(StdCmdDockOverlayToggleRight)
+
+StdCmdDockOverlayToggleRight::StdCmdDockOverlayToggleRight()
+  :Command("Std_DockOverlayToggleRight")
+{
+    sGroup        = "Standard-View";
+    sMenuText     = QT_TR_NOOP("Toggle right");
+    sToolTipText  = QT_TR_NOOP("Show/hide right overlay panel");
+    sWhatsThis    = "Std_DockOverlayToggleRight";
+    sStatusTip    = sToolTipText;
+    sAccel        = "Ctrl+Right";
+    sPixmap       = "qss:overlay/icons/close.svg";
+    eType         = 0;
+}
+
+void StdCmdDockOverlayToggleRight::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    OverlayManager::instance()->setOverlayMode(OverlayManager::OverlayMode::ToggleRight);
+}
+
+//===========================================================================
+// Std_DockOverlayToggleTop
+//===========================================================================
+
+DEF_STD_CMD(StdCmdDockOverlayToggleTop)
+
+StdCmdDockOverlayToggleTop::StdCmdDockOverlayToggleTop()
+  :Command("Std_DockOverlayToggleTop")
+{
+    sGroup        = "Standard-View";
+    sMenuText     = QT_TR_NOOP("Toggle top");
+    sToolTipText  = QT_TR_NOOP("Show/hide top overlay panel");
+    sWhatsThis    = "Std_DockOverlayToggleTop";
+    sStatusTip    = sToolTipText;
+    sAccel        = "Ctrl+Up";
+    sPixmap       = "qss:overlay/icons/close.svg";
+    eType         = 0;
+}
+
+void StdCmdDockOverlayToggleTop::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    OverlayManager::instance()->setOverlayMode(OverlayManager::OverlayMode::ToggleTop);
+}
+
+//===========================================================================
+// Std_DockOverlayToggleBottom
+//===========================================================================
+
+DEF_STD_CMD(StdCmdDockOverlayToggleBottom)
+
+StdCmdDockOverlayToggleBottom::StdCmdDockOverlayToggleBottom()
+  :Command("Std_DockOverlayToggleBottom")
+{
+    sGroup        = "Standard-View";
+    sMenuText     = QT_TR_NOOP("Toggle bottom");
+    sToolTipText  = QT_TR_NOOP("Show/hide bottom overlay panel");
+    sWhatsThis    = "Std_DockOverlayToggleBottom";
+    sStatusTip    = sToolTipText;
+    sAccel        = "Ctrl+Down";
+    sPixmap       = "qss:overlay/icons/close.svg";
+    eType         = 0;
+}
+
+void StdCmdDockOverlayToggleBottom::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    OverlayManager::instance()->setOverlayMode(OverlayManager::OverlayMode::ToggleBottom);
+}
+
+//===========================================================================
+// Std_DockOverlayMouseTransparent
+//===========================================================================
+
+DEF_STD_CMD_AC(StdCmdDockOverlayMouseTransparent)
+
+StdCmdDockOverlayMouseTransparent::StdCmdDockOverlayMouseTransparent()
+  :Command("Std_DockOverlayMouseTransparent")
+{
+  sGroup        = "View";
+  sMenuText     = QT_TR_NOOP("Bypass mouse events in docked overlay windows");
+  sToolTipText  = QT_TR_NOOP("Bypass all mouse events in docked overlay windows");
+  sWhatsThis    = "Std_DockOverlayMouseTransparent";
+  sStatusTip    = sToolTipText;
+  sAccel        = "T, T";
+  eType         = NoTransaction;
+}
+
+void StdCmdDockOverlayMouseTransparent::activated(int iMsg)
+{
+    (void)iMsg;
+    bool checked = !OverlayManager::instance()->isMouseTransparent();
+    OverlayManager::instance()->setMouseTransparent(checked);
+    if(_pcAction)
+        _pcAction->setChecked(checked,true);
+}
+
+Action * StdCmdDockOverlayMouseTransparent::createAction(void) {
+    Action *pcAction = Command::createAction();
+    pcAction->setCheckable(true);
+    pcAction->setIcon(QIcon());
+    _pcAction = pcAction;
+    isActive();
+    return pcAction;
+}
+
+bool StdCmdDockOverlayMouseTransparent::isActive() {
+    bool checked = OverlayManager::instance()->isMouseTransparent();
+    if(_pcAction && _pcAction->isChecked()!=checked)
+        _pcAction->setChecked(checked,true);
+    return true;
+}
+
+// ============================================================================
+
+class StdCmdDockOverlay : public GroupCommand
+{
+public:
+    StdCmdDockOverlay()
+        :GroupCommand("Std_DockOverlay")
+    {
+        sGroup        = "View";
+        sMenuText     = QT_TR_NOOP("Dock window overlay");
+        sToolTipText  = QT_TR_NOOP("Setting docked window overlay mode");
+        sWhatsThis    = "Std_DockOverlay";
+        sStatusTip    = sToolTipText;
+        eType         = 0;
+        bCanLog       = false;
+
+        addCommand(new StdCmdDockOverlayAll());
+        addCommand(new StdCmdDockOverlayTransparentAll());
+        addCommand();
+        addCommand(new StdCmdDockOverlayToggle());
+        addCommand(new StdCmdDockOverlayToggleTransparent());
+        addCommand();
+        addCommand(new StdCmdDockOverlayMouseTransparent());
+        addCommand();
+        addCommand(new StdCmdDockOverlayToggleLeft());
+        addCommand(new StdCmdDockOverlayToggleRight());
+        addCommand(new StdCmdDockOverlayToggleTop());
+        addCommand(new StdCmdDockOverlayToggleBottom());
+    };
+    virtual const char* className() const {return "StdCmdDockOverlay";}
+};
 
 //===========================================================================
 // Std_StoreWorkingView
@@ -3771,6 +3935,33 @@ bool StdRecallWorkingView::isActive()
 }
 
 //===========================================================================
+// Std_AlignToSelection
+//===========================================================================
+DEF_STD_CMD_A(StdCmdAlignToSelection)
+
+StdCmdAlignToSelection::StdCmdAlignToSelection()
+  : Command("Std_AlignToSelection")
+{
+    sGroup        = "View";
+    sMenuText     = QT_TR_NOOP("Align to selection");
+    sToolTipText  = QT_TR_NOOP("Align the view with the selection");
+    sWhatsThis    = "Std_AlignToSelection";
+    sPixmap       = "align-to-selection";
+    eType         = Alter3DView;
+}
+
+void StdCmdAlignToSelection::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    doCommand(Command::Gui,"Gui.SendMsgToActiveView(\"AlignToSelection\")");
+}
+
+bool StdCmdAlignToSelection::isActive()
+{
+    return getGuiApplication()->sendHasMsgToActiveView("AlignToSelection");
+}
+
+//===========================================================================
 // Instantiation
 //===========================================================================
 
@@ -3779,6 +3970,7 @@ namespace Gui {
 
 void CreateViewStdCommands()
 {
+    // NOLINTBEGIN
     CommandManager &rcCmdMgr = Application::Instance->commandManager();
 
     // views
@@ -3799,6 +3991,8 @@ void CreateViewStdCommands()
     rcCmdMgr.addCommand(new StdCmdViewRotateRight());
     rcCmdMgr.addCommand(new StdStoreWorkingView());
     rcCmdMgr.addCommand(new StdRecallWorkingView());
+    rcCmdMgr.addCommand(new StdCmdViewGroup());
+    rcCmdMgr.addCommand(new StdCmdAlignToSelection());
 
     rcCmdMgr.addCommand(new StdCmdViewExample1());
     rcCmdMgr.addCommand(new StdCmdViewExample2());
@@ -3817,8 +4011,8 @@ void CreateViewStdCommands()
     rcCmdMgr.addCommand(new StdViewLoadImage());
     rcCmdMgr.addCommand(new StdMainFullscreen());
     rcCmdMgr.addCommand(new StdViewDockUndockFullscreen());
-    rcCmdMgr.addCommand(new StdCmdSetAppearance());
     rcCmdMgr.addCommand(new StdCmdToggleVisibility());
+    rcCmdMgr.addCommand(new StdCmdToggleTransparency());
     rcCmdMgr.addCommand(new StdCmdToggleSelectability());
     rcCmdMgr.addCommand(new StdCmdShowSelection());
     rcCmdMgr.addCommand(new StdCmdHideSelection());
@@ -3841,24 +4035,21 @@ void CreateViewStdCommands()
     rcCmdMgr.addCommand(new StdCmdTreeExpand());
     rcCmdMgr.addCommand(new StdCmdTreeCollapse());
     rcCmdMgr.addCommand(new StdCmdTreeSelectAllInstances());
-    rcCmdMgr.addCommand(new StdCmdMeasureDistance());
     rcCmdMgr.addCommand(new StdCmdSceneInspector());
     rcCmdMgr.addCommand(new StdCmdTextureMapping());
     rcCmdMgr.addCommand(new StdCmdDemoMode());
     rcCmdMgr.addCommand(new StdCmdToggleNavigation());
     rcCmdMgr.addCommand(new StdCmdAxisCross());
-    rcCmdMgr.addCommand(new CmdViewMeasureClearAll());
-    rcCmdMgr.addCommand(new CmdViewMeasureToggleAll());
     rcCmdMgr.addCommand(new StdCmdSelBoundingBox());
-    rcCmdMgr.addCommand(new StdCmdSelBack());
-    rcCmdMgr.addCommand(new StdCmdSelForward());
     rcCmdMgr.addCommand(new StdCmdTreeViewActions());
+    rcCmdMgr.addCommand(new StdCmdDockOverlay());
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     if(hGrp->GetASCII("GestureRollFwdCommand").empty())
         hGrp->SetASCII("GestureRollFwdCommand","Std_SelForward");
     if(hGrp->GetASCII("GestureRollBackCommand").empty())
         hGrp->SetASCII("GestureRollBackCommand","Std_SelBack");
+    // NOLINTEND
 }
 
 } // namespace Gui

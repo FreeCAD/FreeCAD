@@ -24,33 +24,17 @@
 
 __title__ = "FreeCAD FEM base constraint ViewProvider"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package view_base_femconstraint
 #  \ingroup FEM
 #  \brief view provider for Python base constraint object
 
-from pivy import coin
-
+from FreeCAD import getResourceDir
 from femviewprovider import view_base_femobject
 
 
 class VPBaseFemConstraint(view_base_femobject.VPBaseFemObject):
     """Proxy View Provider for Pythons base constraint."""
 
-    def attach(self, vobj):
-        default = coin.SoGroup()
-        vobj.addDisplayMode(default, "Default")
-        self.Object = vobj.Object  # used on various places, claim childreens, get icon, etc.
-        # self.ViewObject = vobj  # not used ATM
-
-    def getDisplayModes(self, obj):
-        "Return a list of display modes."
-        modes = ["Default"]
-        return modes
-
-    def getDefaultDisplayMode(self):
-        return "Default"
-
-    def setDisplayMode(self, mode):
-        return mode
+    resource_symbol_dir = getResourceDir() + "Mod/Fem/Resources/symbols/"

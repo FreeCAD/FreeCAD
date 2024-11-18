@@ -29,11 +29,14 @@
 #  include <pwd.h>
 #  include <sys/types.h>
 # elif defined(__MINGW32__)
+#  undef WINVER
 #  define WINVER 0x502 // needed for SetDllDirectory
 #  include <Windows.h>
 # endif
 # include <boost/program_options.hpp>
 # include <boost/date_time/posix_time/posix_time.hpp>
+# include <chrono>
+# include <random>
 #endif
 
 #ifdef FC_OS_WIN32
@@ -46,6 +49,7 @@
 #include <sys/sysctl.h>
 #endif
 
+#include <QCoreApplication>
 #include <QDir>
 #include <QFileInfo>
 #include <QProcessEnvironment>
@@ -83,6 +87,7 @@
 
 #include "Annotation.h"
 #include "Application.h"
+#include "CleanupProcess.h"
 #include "ComplexGeoData.h"
 #include "DocumentObjectFileIncluded.h"
 #include "DocumentObjectGroup.h"
@@ -98,14 +103,17 @@
 #include "InventorObject.h"
 #include "Link.h"
 #include "LinkBaseExtensionPy.h"
+#include "VarSet.h"
 #include "MaterialObject.h"
-#include "MeasureDistance.h"
+#include "MeasureManagerPy.h"
 #include "Origin.h"
 #include "OriginFeature.h"
 #include "OriginGroupExtension.h"
 #include "OriginGroupExtensionPy.h"
+#include "SuppressibleExtension.h"
+#include "SuppressibleExtensionPy.h"
 #include "Part.h"
-#include "PartPy.h"
+#include "GeoFeaturePy.h"
 #include "Placement.h"
 #include "ProgramOptionsUtilities.h"
 #include "Property.h"
@@ -114,6 +122,8 @@
 #include "PropertyFile.h"
 #include "PropertyLinks.h"
 #include "PropertyPythonObject.h"
+#include "StringHasherPy.h"
+#include "StringIDPy.h"
 #include "TextDocument.h"
 #include "Transactions.h"
 #include "VRMLObject.h"
@@ -129,6 +139,8 @@
 #include <App/InitScript.h>
 #include <App/TestScript.h>
 #include <App/CMakeScript.h>
+
+#include "SafeMode.h"
 
 #ifdef _MSC_VER // New handler for Microsoft Visual C++ compiler
 # pragma warning( disable : 4535 )
@@ -167,6 +179,7 @@ AppExport std::map<std::string, std::string> Application::mConfig;
 //**************************************************************************
 // Construction and destruction
 
+// clang-format off
 PyDoc_STRVAR(FreeCAD_doc,
      "The functions in the FreeCAD module allow working with documents.\n"
      "The FreeCAD instance provides a list of references of documents which\n"
@@ -229,13 +242,11 @@ init_image_module()
     };
     return PyModule_Create(&ImageModuleDef);
 }
+// clang-format on
 
 Application::Application(std::map<std::string,std::string> &mConfig)
-  : _mConfig(mConfig), _pActiveDoc(nullptr), _isRestoring(false),_allowPartial(false)
-  , _isClosingAll(false), _objCount(-1), _activeTransactionID(0)
-  , _activeTransactionGuard(0), _activeTransactionTmpName(false)
+  : _mConfig(mConfig)
 {
-    //_hApp = new ApplicationOCC;
     mpcPramManager["System parameter"] = _pcSysParamMngr;
     mpcPramManager["User parameter"] = _pcUserParamMngr;
 
@@ -259,6 +270,7 @@ void Application::setupPythonTypes()
     }
     Py::Module(pAppModule).setAttr(std::string("ActiveDocument"),Py::None());
 
+    // clang-format off
     static struct PyModuleDef ConsoleModuleDef = {
         PyModuleDef_HEAD_INIT,
         "__FreeCADConsole__", Console_doc, -1,
@@ -311,6 +323,11 @@ void Application::setupPythonTypes()
     Base::Interpreter().addType(&App::MaterialPy::Type, pAppModule, "Material");
     Base::Interpreter().addType(&App::MetadataPy::Type, pAppModule, "Metadata");
 
+    Base::Interpreter().addType(&App::MeasureManagerPy::Type, pAppModule, "MeasureManager");
+
+    Base::Interpreter().addType(&App::StringHasherPy::Type, pAppModule, "StringHasher");
+    Base::Interpreter().addType(&App::StringIDPy::Type, pAppModule, "StringID");
+
     // Add document types
     Base::Interpreter().addType(&App::PropertyContainerPy::Type, pAppModule, "PropertyContainer");
     Base::Interpreter().addType(&App::ExtensionContainerPy::Type, pAppModule, "ExtensionContainer");
@@ -318,7 +335,6 @@ void Application::setupPythonTypes()
     Base::Interpreter().addType(&App::DocumentObjectPy::Type, pAppModule, "DocumentObject");
     Base::Interpreter().addType(&App::DocumentObjectGroupPy::Type, pAppModule, "DocumentObjectGroup");
     Base::Interpreter().addType(&App::GeoFeaturePy::Type, pAppModule, "GeoFeature");
-    Base::Interpreter().addType(&App::PartPy::Type, pAppModule, "Part");
 
     // Add extension types
     Base::Interpreter().addType(&App::ExtensionPy::Type, pAppModule, "Extension");
@@ -361,8 +377,10 @@ void Application::setupPythonTypes()
     Base::Vector2dPy::init_type();
     Base::Interpreter().addType(Base::Vector2dPy::type_object(),
         pBaseModule,"Vector2d");
+    // clang-format on
 }
 
+// clang-format off
 void Application::setupPythonException(PyObject* module)
 {
     // Define custom Python exception types
@@ -410,7 +428,16 @@ void Application::setupPythonException(PyObject* module)
     Base::PyExc_FC_CADKernelError = PyErr_NewException("Base.CADKernelError", Base::PyExc_FC_GeneralError, nullptr);
     Py_INCREF(Base::PyExc_FC_CADKernelError);
     PyModule_AddObject(module, "CADKernelError", Base::PyExc_FC_CADKernelError);
+
+    Base::PyExc_FC_PropertyError = PyErr_NewException("Base.PropertyError", PyExc_AttributeError, nullptr);
+    Py_INCREF(Base::PyExc_FC_PropertyError);
+    PyModule_AddObject(module, "PropertyError", Base::PyExc_FC_PropertyError);
+
+    Base::PyExc_FC_AbortIOException = PyErr_NewException("Base.PyExc_FC_AbortIOException", PyExc_BaseException, nullptr);
+    Py_INCREF(Base::PyExc_FC_AbortIOException);
+    PyModule_AddObject(module, "AbortIOException", Base::PyExc_FC_AbortIOException);
 }
+// clang-format on
 
 //**************************************************************************
 // Interface
@@ -477,6 +504,8 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
     DocMap[name] = doc;
     _pActiveDoc = doc;
 
+    //NOLINTBEGIN
+    // clang-format off
     // connect the signals to the application for the new document
     _pActiveDoc->signalBeforeChange.connect(std::bind(&App::Application::slotBeforeChangeDocument, this, sp::_1, sp::_2));
     _pActiveDoc->signalChanged.connect(std::bind(&App::Application::slotChangedDocument, this, sp::_1, sp::_2));
@@ -497,6 +526,8 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
     _pActiveDoc->signalStartSave.connect(std::bind(&App::Application::slotStartSaveDocument, this, sp::_1, sp::_2));
     _pActiveDoc->signalFinishSave.connect(std::bind(&App::Application::slotFinishSaveDocument, this, sp::_1, sp::_2));
     _pActiveDoc->signalChangePropertyEditor.connect(std::bind(&App::Application::slotChangePropertyEditor, this, sp::_1, sp::_2));
+    // clang-format on
+    //NOLINTEND
 
     // make sure that the active document is set in case no GUI is up
     {
@@ -566,9 +597,11 @@ App::Document* Application::getDocument(const char *Name) const
 
 const char * Application::getDocumentName(const App::Document* doc) const
 {
-    for (std::map<std::string,Document*>::const_iterator it = DocMap.begin(); it != DocMap.end(); ++it)
-        if (it->second == doc)
-            return it->first.c_str();
+    for (const auto & it : DocMap) {
+        if (it.second == doc) {
+            return it.first.c_str();
+        }
+    }
 
     return nullptr;
 }
@@ -576,15 +609,15 @@ const char * Application::getDocumentName(const App::Document* doc) const
 std::vector<App::Document*> Application::getDocuments() const
 {
     std::vector<App::Document*> docs;
-    for (std::map<std::string,Document*>::const_iterator it = DocMap.begin(); it != DocMap.end(); ++it)
-        docs.push_back(it->second);
+    for (const auto & it : DocMap)
+        docs.push_back(it.second);
     return docs;
 }
 
 std::string Application::getUniqueDocumentName(const char *Name, bool tempDoc) const
 {
     if (!Name || *Name == '\0')
-        return std::string();
+        return {};
     std::string CleanName = Base::Tools::getIdentifier(Name);
 
     // name in use?
@@ -1085,6 +1118,21 @@ Application::TransactionSignaller::~TransactionSignaller() {
     }
 }
 
+int64_t Application::applicationPid()
+{
+    static int64_t randomNumber = []() {
+        auto tp = std::chrono::high_resolution_clock::now();
+        auto dur = tp.time_since_epoch();
+        auto seed = dur.count();
+        std::mt19937 generator(static_cast<unsigned>(seed));
+        constexpr int64_t minValue {1};
+        constexpr int64_t maxValue {1000000};
+        std::uniform_int_distribution<int64_t> distribution(minValue, maxValue);
+        return distribution(generator);
+    }();
+    return randomNumber;
+}
+
 std::string Application::getHomePath()
 {
     return mConfig["AppHomePath"];
@@ -1130,7 +1178,7 @@ std::string Application::getResourceDir()
 #ifdef RESOURCEDIR
     // #6892: Conda may inject null characters => remove them
     std::string path = std::string(RESOURCEDIR).c_str();
-    path.append("/");
+    path += PATHSEP;
     QDir dir(QString::fromStdString(path));
     if (dir.isAbsolute())
         return path;
@@ -1159,7 +1207,7 @@ std::string Application::getHelpDir()
 #ifdef DOCDIR
     // #6892: Conda may inject null characters => remove them
     std::string path = std::string(DOCDIR).c_str();
-    path.append("/");
+    path += PATHSEP;
     QDir dir(QString::fromStdString(path));
     if (dir.isAbsolute())
         return path;
@@ -1208,7 +1256,7 @@ std::set<DocumentObject *> Application::getLinksTo(
     } else {
         std::set<Document*> docs;
         for(auto o : obj->getInList()) {
-            if(o && o->getNameInDocument() && docs.insert(o->getDocument()).second) {
+            if(o && o->isAttachedToDocument() && docs.insert(o->getDocument()).second) {
                 o->getDocument()->getLinksTo(links,obj,options,maxCount);
                 if(maxCount && (int)links.size()>=maxCount)
                     break;
@@ -1242,7 +1290,7 @@ ParameterManager * Application::GetParameterSet(const char* sName) const
 }
 
 const std::map<std::string,Base::Reference<ParameterManager>> &
-Application::GetParameterSetList(void) const
+Application::GetParameterSetList() const
 {
     return mpcPramManager;
 }
@@ -1328,15 +1376,15 @@ void Application::changeImportModule(const char* Type, const char* OldModuleName
 std::vector<std::string> Application::getImportModules(const char* Type) const
 {
     std::vector<std::string> modules;
-    for (std::vector<FileTypeItem>::const_iterator it = _mImportTypes.begin(); it != _mImportTypes.end(); ++it) {
-        const std::vector<std::string>& types = it->types;
-        for (std::vector<std::string>::const_iterator jt = types.begin(); jt != types.end(); ++jt) {
+    for (const auto & it : _mImportTypes) {
+        const std::vector<std::string>& types = it.types;
+        for (const auto & jt : types) {
 #ifdef __GNUC__
-            if (strcasecmp(Type,jt->c_str()) == 0)
+            if (strcasecmp(Type,jt.c_str()) == 0)
 #else
-            if (_stricmp(Type,jt->c_str()) == 0)
+            if (_stricmp(Type,jt.c_str()) == 0)
 #endif
-                modules.push_back(it->module);
+                modules.push_back(it.module);
         }
     }
 
@@ -1346,8 +1394,8 @@ std::vector<std::string> Application::getImportModules(const char* Type) const
 std::vector<std::string> Application::getImportModules() const
 {
     std::vector<std::string> modules;
-    for (std::vector<FileTypeItem>::const_iterator it = _mImportTypes.begin(); it != _mImportTypes.end(); ++it)
-        modules.push_back(it->module);
+    for (const auto & it : _mImportTypes)
+        modules.push_back(it.module);
     std::sort(modules.begin(), modules.end());
     modules.erase(std::unique(modules.begin(), modules.end()), modules.end());
     return modules;
@@ -1356,13 +1404,13 @@ std::vector<std::string> Application::getImportModules() const
 std::vector<std::string> Application::getImportTypes(const char* Module) const
 {
     std::vector<std::string> types;
-    for (std::vector<FileTypeItem>::const_iterator it = _mImportTypes.begin(); it != _mImportTypes.end(); ++it) {
+    for (const auto & it : _mImportTypes) {
 #ifdef __GNUC__
-        if (strcasecmp(Module,it->module.c_str()) == 0)
+        if (strcasecmp(Module,it.module.c_str()) == 0)
 #else
-        if (_stricmp(Module,it->module.c_str()) == 0)
+        if (_stricmp(Module,it.module.c_str()) == 0)
 #endif
-            types.insert(types.end(), it->types.begin(), it->types.end());
+            types.insert(types.end(), it.types.begin(), it.types.end());
     }
 
     return types;
@@ -1371,8 +1419,8 @@ std::vector<std::string> Application::getImportTypes(const char* Module) const
 std::vector<std::string> Application::getImportTypes() const
 {
     std::vector<std::string> types;
-    for (std::vector<FileTypeItem>::const_iterator it = _mImportTypes.begin(); it != _mImportTypes.end(); ++it) {
-        types.insert(types.end(), it->types.begin(), it->types.end());
+    for (const auto & it : _mImportTypes) {
+        types.insert(types.end(), it.types.begin(), it.types.end());
     }
 
     std::sort(types.begin(), types.end());
@@ -1384,15 +1432,15 @@ std::vector<std::string> Application::getImportTypes() const
 std::map<std::string, std::string> Application::getImportFilters(const char* Type) const
 {
     std::map<std::string, std::string> moduleFilter;
-    for (std::vector<FileTypeItem>::const_iterator it = _mImportTypes.begin(); it != _mImportTypes.end(); ++it) {
-        const std::vector<std::string>& types = it->types;
-        for (std::vector<std::string>::const_iterator jt = types.begin(); jt != types.end(); ++jt) {
+    for (const auto & it : _mImportTypes) {
+        const std::vector<std::string>& types = it.types;
+        for (const auto & jt : types) {
 #ifdef __GNUC__
-            if (strcasecmp(Type,jt->c_str()) == 0)
+            if (strcasecmp(Type,jt.c_str()) == 0)
 #else
-            if (_stricmp(Type,jt->c_str()) == 0)
+            if (_stricmp(Type,jt.c_str()) == 0)
 #endif
-                moduleFilter[it->filter] = it->module;
+                moduleFilter[it.filter] = it.module;
         }
     }
 
@@ -1402,8 +1450,8 @@ std::map<std::string, std::string> Application::getImportFilters(const char* Typ
 std::map<std::string, std::string> Application::getImportFilters() const
 {
     std::map<std::string, std::string> filter;
-    for (std::vector<FileTypeItem>::const_iterator it = _mImportTypes.begin(); it != _mImportTypes.end(); ++it) {
-        filter[it->filter] = it->module;
+    for (const auto & it : _mImportTypes) {
+        filter[it.filter] = it.module;
     }
 
     return filter;
@@ -1451,15 +1499,15 @@ void Application::changeExportModule(const char* Type, const char* OldModuleName
 std::vector<std::string> Application::getExportModules(const char* Type) const
 {
     std::vector<std::string> modules;
-    for (std::vector<FileTypeItem>::const_iterator it = _mExportTypes.begin(); it != _mExportTypes.end(); ++it) {
-        const std::vector<std::string>& types = it->types;
-        for (std::vector<std::string>::const_iterator jt = types.begin(); jt != types.end(); ++jt) {
+    for (const auto & it : _mExportTypes) {
+        const std::vector<std::string>& types = it.types;
+        for (const auto & jt : types) {
 #ifdef __GNUC__
-            if (strcasecmp(Type,jt->c_str()) == 0)
+            if (strcasecmp(Type,jt.c_str()) == 0)
 #else
-            if (_stricmp(Type,jt->c_str()) == 0)
+            if (_stricmp(Type,jt.c_str()) == 0)
 #endif
-                modules.push_back(it->module);
+                modules.push_back(it.module);
         }
     }
 
@@ -1469,8 +1517,8 @@ std::vector<std::string> Application::getExportModules(const char* Type) const
 std::vector<std::string> Application::getExportModules() const
 {
     std::vector<std::string> modules;
-    for (std::vector<FileTypeItem>::const_iterator it = _mExportTypes.begin(); it != _mExportTypes.end(); ++it)
-        modules.push_back(it->module);
+    for (const auto & it : _mExportTypes)
+        modules.push_back(it.module);
     std::sort(modules.begin(), modules.end());
     modules.erase(std::unique(modules.begin(), modules.end()), modules.end());
     return modules;
@@ -1479,13 +1527,13 @@ std::vector<std::string> Application::getExportModules() const
 std::vector<std::string> Application::getExportTypes(const char* Module) const
 {
     std::vector<std::string> types;
-    for (std::vector<FileTypeItem>::const_iterator it = _mExportTypes.begin(); it != _mExportTypes.end(); ++it) {
+    for (const auto & it : _mExportTypes) {
 #ifdef __GNUC__
-        if (strcasecmp(Module,it->module.c_str()) == 0)
+        if (strcasecmp(Module,it.module.c_str()) == 0)
 #else
-        if (_stricmp(Module,it->module.c_str()) == 0)
+        if (_stricmp(Module,it.module.c_str()) == 0)
 #endif
-            types.insert(types.end(), it->types.begin(), it->types.end());
+            types.insert(types.end(), it.types.begin(), it.types.end());
     }
 
     return types;
@@ -1494,8 +1542,8 @@ std::vector<std::string> Application::getExportTypes(const char* Module) const
 std::vector<std::string> Application::getExportTypes() const
 {
     std::vector<std::string> types;
-    for (std::vector<FileTypeItem>::const_iterator it = _mExportTypes.begin(); it != _mExportTypes.end(); ++it) {
-        types.insert(types.end(), it->types.begin(), it->types.end());
+    for (const FileTypeItem& it : _mExportTypes) {
+        types.insert(types.end(), it.types.begin(), it.types.end());
     }
 
     std::sort(types.begin(), types.end());
@@ -1507,15 +1555,15 @@ std::vector<std::string> Application::getExportTypes() const
 std::map<std::string, std::string> Application::getExportFilters(const char* Type) const
 {
     std::map<std::string, std::string> moduleFilter;
-    for (std::vector<FileTypeItem>::const_iterator it = _mExportTypes.begin(); it != _mExportTypes.end(); ++it) {
-        const std::vector<std::string>& types = it->types;
-        for (std::vector<std::string>::const_iterator jt = types.begin(); jt != types.end(); ++jt) {
+    for (const auto & it : _mExportTypes) {
+        const std::vector<std::string>& types = it.types;
+        for (const auto & jt : types) {
 #ifdef __GNUC__
-            if (strcasecmp(Type,jt->c_str()) == 0)
+            if (strcasecmp(Type,jt.c_str()) == 0)
 #else
-            if (_stricmp(Type,jt->c_str()) == 0)
+            if (_stricmp(Type,jt.c_str()) == 0)
 #endif
-                moduleFilter[it->filter] = it->module;
+                moduleFilter[it.filter] = it.module;
         }
     }
 
@@ -1525,8 +1573,8 @@ std::map<std::string, std::string> Application::getExportFilters(const char* Typ
 std::map<std::string, std::string> Application::getExportFilters() const
 {
     std::map<std::string, std::string> filter;
-    for (std::vector<FileTypeItem>::const_iterator it = _mExportTypes.begin(); it != _mExportTypes.end(); ++it) {
-        filter[it->filter] = it->module;
+    for (const FileTypeItem& it : _mExportTypes) {
+        filter[it.filter] = it.module;
     }
 
     return filter;
@@ -1661,22 +1709,32 @@ void Application::cleanupUnits()
 void Application::destruct()
 {
     // saving system parameter
-    Base::Console().Log("Saving system parameter...\n");
-    _pcSysParamMngr->SaveDocument();
+    if (_pcSysParamMngr->IgnoreSave()) {
+        Base::Console().Warning("Discard system parameter\n");
+    }
+    else {
+        Base::Console().Log("Saving system parameter...\n");
+        _pcSysParamMngr->SaveDocument();
+        Base::Console().Log("Saving system parameter...done\n");
+    }
     // saving the User parameter
-    Base::Console().Log("Saving system parameter...done\n");
-    Base::Console().Log("Saving user parameter...\n");
-    _pcUserParamMngr->SaveDocument();
-    Base::Console().Log("Saving user parameter...done\n");
+    if (_pcUserParamMngr->IgnoreSave()) {
+        Base::Console().Warning("Discard user parameter\n");
+    }
+    else {
+        Base::Console().Log("Saving user parameter...\n");
+        _pcUserParamMngr->SaveDocument();
+        Base::Console().Log("Saving user parameter...done\n");
+    }
 
     // now save all other parameter files
     auto& paramMgr = _pcSingleton->mpcPramManager;
-    for (auto it = paramMgr.begin(); it != paramMgr.end(); ++it) {
-        if ((it->second != _pcSysParamMngr) && (it->second != _pcUserParamMngr)) {
-            if (it->second->HasSerializer()) {
-                Base::Console().Log("Saving %s...\n", it->first.c_str());
-                it->second->SaveDocument();
-                Base::Console().Log("Saving %s...done\n", it->first.c_str());
+    for (auto it : paramMgr) {
+        if ((it.second != _pcSysParamMngr) && (it.second != _pcUserParamMngr)) {
+            if (it.second->HasSerializer() && !it.second->IgnoreSave()) {
+                Base::Console().Log("Saving %s...\n", it.first.c_str());
+                it.second->SaveDocument();
+                Base::Console().Log("Saving %s...done\n", it.first.c_str());
             }
         }
     }
@@ -1689,6 +1747,8 @@ void Application::destruct()
     // Do this only in debug mode for memory leak checkers
     cleanupUnits();
 #endif
+
+    CleanupProcess::callCleanup();
 
     // not initialized or double destruct!
     assert(_pcSingleton);
@@ -1703,6 +1763,7 @@ void Application::destruct()
     Base::InterpreterSingleton::Destruct();
     Base::Type::destruct();
     ParameterManager::Terminate();
+    SafeMode::Destruct();
 }
 
 void Application::destructObserver()
@@ -1801,7 +1862,7 @@ void segmentation_fault_handler(int sig)
 #if defined(FC_DEBUG)
     abort();
 #else
-    exit(1);
+    _exit(1);
 #endif
 #else
     switch (sig) {
@@ -1850,7 +1911,6 @@ void my_se_translator_filter(unsigned int code, EXCEPTION_POINTERS* pExp)
         throw Base::AccessViolation();
     case EXCEPTION_FLT_DIVIDE_BY_ZERO:
     case EXCEPTION_INT_DIVIDE_BY_ZERO:
-        //throw Base::ZeroDivisionError("Division by zero!");
         Base::Console().Error("SEH exception (%u): Division by zero\n", code);
         return;
     }
@@ -1897,6 +1957,7 @@ void Application::init(int argc, char ** argv)
     }
 }
 
+// clang-format off
 void Application::initTypes()
 {
     // Base types
@@ -1955,6 +2016,7 @@ void Application::initTypes()
     App::PropertyLinkSubListHidden  ::init();
     App::PropertyXLink              ::init();
     App::PropertyXLinkSub           ::init();
+    App::PropertyXLinkSubHidden     ::init();
     App::PropertyXLinkSubList       ::init();
     App::PropertyXLinkList          ::init();
     App::PropertyXLinkContainer     ::init();
@@ -2013,6 +2075,7 @@ void Application::initTypes()
     App::PropertyMagneticFluxDensity        ::init();
     App::PropertyMagnetization              ::init();
     App::PropertyMass                       ::init();
+    App::PropertyMoment                     ::init();
     App::PropertyPressure                   ::init();
     App::PropertyPower                      ::init();
     App::PropertyShearModulus               ::init();
@@ -2020,6 +2083,7 @@ void Application::initTypes()
     App::PropertySpecificHeat               ::init();
     App::PropertySpeed                      ::init();
     App::PropertyStiffness                  ::init();
+    App::PropertyStiffnessDensity           ::init();
     App::PropertyStress                     ::init();
     App::PropertyTemperature                ::init();
     App::PropertyThermalConductivity        ::init();
@@ -2050,6 +2114,8 @@ void Application::initTypes()
     App::LinkBaseExtensionPython       ::init();
     App::LinkExtension                 ::init();
     App::LinkExtensionPython           ::init();
+    App::SuppressibleExtension         ::init();
+    App::SuppressibleExtensionPython   ::init();
 
     // Document classes
     App::TransactionalObject       ::init();
@@ -2077,7 +2143,6 @@ void Application::initTypes()
     App::VRMLObject                ::init();
     App::Annotation                ::init();
     App::AnnotationLabel           ::init();
-    App::MeasureDistance           ::init();
     App::MaterialObject            ::init();
     App::MaterialObjectPython      ::init();
     App::TextDocument              ::init();
@@ -2094,6 +2159,7 @@ void Application::initTypes()
     App::LinkElementPython         ::init();
     App::LinkGroup                 ::init();
     App::LinkGroupPython           ::init();
+    App::VarSet                    ::init();
 
     // Expression classes
     App::Expression                ::init();
@@ -2107,6 +2173,10 @@ void Application::initTypes()
     App::FunctionExpression        ::init();
     App::RangeExpression           ::init();
     App::PyObjectExpression        ::init();
+
+    // Topological naming classes
+    App::StringHasher              ::init();
+    App::StringID                  ::init();
 
     // register transaction type
     new App::TransactionProducer<TransactionDocumentObject>
@@ -2144,6 +2214,7 @@ void Application::initTypes()
     new Base::ExceptionProducer<Base::UnitsMismatchError>;
     new Base::ExceptionProducer<Base::CADKernelError>;
     new Base::ExceptionProducer<Base::RestoreError>;
+    new Base::ExceptionProducer<Base::PropertyError>;
 }
 
 namespace {
@@ -2172,15 +2243,16 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
     descr << "Writes " << exe << ".log to the user directory.";
     boost::program_options::options_description config("Configuration");
     config.add_options()
-    //("write-log,l", value<string>(), "write a log file")
     ("write-log,l", descr.str().c_str())
     ("log-file", value<string>(), "Unlike --write-log this allows logging to an arbitrary file")
     ("user-cfg,u", value<string>(),"User config file to load/save user settings")
     ("system-cfg,s", value<string>(),"System config file to load/save system settings")
     ("run-test,t", value<string>()->implicit_value(""),"Run a given test case (use 0 (zero) to run all tests). If no argument is provided then return list of all available tests.")
+    ("run-open,r", value<string>()->implicit_value(""),"Run a given test case (use 0 (zero) to run all tests). If no argument is provided then return list of all available tests.  Keeps UI open after test(s) complete.")
     ("module-path,M", value< vector<string> >()->composing(),"Additional module paths")
     ("python-path,P", value< vector<string> >()->composing(),"Additional python paths")
     ("single-instance", "Allow to run a single instance of the application")
+    ("safe-mode", "Force enable safe mode")
     ("pass", value< vector<string> >()->multitoken(), "Ignores the following arguments and pass them through to be used by a script")
     ;
 
@@ -2219,11 +2291,7 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
 #endif
     ;
 
-    // Ignored options, will be safely ignored. Mostly used by underlying libs.
-    //boost::program_options::options_description x11("X11 options");
-    //x11.add_options()
-    //    ("display",  boost::program_options::value< string >(), "set the X-Server")
-    //    ;
+   
     //0000723: improper handling of qt specific command line arguments
     std::vector<std::string> args;
     bool merge=false;
@@ -2287,7 +2355,7 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
     if (vm.count("help")) {
         std::stringstream str;
         str << exe << endl << endl;
-        str << "For a detailed description see https://www.freecadweb.org/wiki/Start_up_and_Configuration" << endl<<endl;
+        str << "For a detailed description see https://www.freecad.org/wiki/Start_up_and_Configuration" << endl<<endl;
         str << "Usage: " << exe << " [options] File1 File2 ..." << endl << endl;
         str << visible << endl;
         throw Base::ProgramInformation(str.str());
@@ -2352,29 +2420,26 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
     if (vm.count("module-path")) {
         vector<string> Mods = vm["module-path"].as< vector<string> >();
         string temp;
-        for (vector<string>::const_iterator It = Mods.begin(); It != Mods.end(); ++It)
-            temp += *It + ";";
+        for (const auto & It : Mods)
+            temp += It + ";";
         temp.erase(temp.end()-1);
         mConfig["AdditionalModulePaths"] = temp;
     }
 
     if (vm.count("python-path")) {
         vector<string> Paths = vm["python-path"].as< vector<string> >();
-        for (vector<string>::const_iterator It = Paths.begin(); It != Paths.end(); ++It)
-            Base::Interpreter().addPythonPath(It->c_str());
+        for (const auto & It : Paths)
+            Base::Interpreter().addPythonPath(It.c_str());
     }
 
     if (vm.count("input-file")) {
         vector<string> files(vm["input-file"].as< vector<string> >());
         int OpenFileCount=0;
-        for (vector<string>::const_iterator It = files.begin(); It != files.end(); ++It) {
-
-            //cout << "Input files are: "
-            //     << vm["input-file"].as< vector<string> >() << "\n";
+        for (const auto & It : files) {
 
             std::ostringstream temp;
             temp << "OpenFile" << OpenFileCount;
-            mConfig[temp.str()] = *It;
+            mConfig[temp.str()] = It;
             OpenFileCount++;
         }
         std::ostringstream buffer;
@@ -2393,7 +2458,6 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
 
     if (vm.count("write-log")) {
         mConfig["LoggingFile"] = "1";
-        //mConfig["LoggingFileName"] = vm["write-log"].as<string>();
         mConfig["LoggingFileName"] = mConfig["UserAppData"] + mConfig["ExeName"] + ".log";
     }
 
@@ -2410,8 +2474,9 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
         mConfig["SystemParameter"] = vm["system-cfg"].as<string>();
     }
 
-    if (vm.count("run-test")) {
-        string testCase = vm["run-test"].as<string>();
+    if (vm.count("run-test") || vm.count("run-open")) {
+        string testCase = vm.count("run-open") ? vm["run-open"].as<string>() : vm["run-test"].as<string>();
+
         if ( "0" == testCase) {
             testCase = "TestApp.All";
         }
@@ -2421,7 +2486,7 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
         mConfig["TestCase"] = testCase;
         mConfig["RunMode"] = "Internal";
         mConfig["ScriptFileName"] = "FreeCADTest";
-        //sScriptName = FreeCADTest;
+        mConfig["ExitTests"] = vm.count("run-open") == 0  ? "yes" : "no";
     }
 
     if (vm.count("single-instance")) {
@@ -2430,8 +2495,8 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
 
     if (vm.count("dump-config")) {
         std::stringstream str;
-        for (std::map<std::string,std::string>::iterator it=mConfig.begin(); it != mConfig.end(); ++it) {
-            str << it->first << "=" << it->second << std::endl;
+        for (const auto & it : mConfig) {
+            str << it.first << "=" << it.second << std::endl;
         }
         throw Base::ProgramInformation(str.str());
     }
@@ -2461,6 +2526,7 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
     }
 }
 }
+// clang-format on
 
 void Application::initConfig(int argc, char ** argv)
 {
@@ -2479,6 +2545,7 @@ void Application::initConfig(int argc, char ** argv)
         App::Application::Config()["BuildVersionMajor"  ] = FCVersionMajor;
         App::Application::Config()["BuildVersionMinor"  ] = FCVersionMinor;
         App::Application::Config()["BuildVersionPoint"  ] = FCVersionPoint;
+        App::Application::Config()["BuildVersionSuffix" ] = FCVersionSuffix;
         App::Application::Config()["BuildRevision"      ] = FCRevision;
         App::Application::Config()["BuildRepositoryURL" ] = FCRepositoryURL;
         App::Application::Config()["BuildRevisionDate"  ] = FCRevisionDate;
@@ -2513,6 +2580,10 @@ void Application::initConfig(int argc, char ** argv)
 
     // extract home paths
     ExtractUserPath();
+    
+    if (vm.count("safe-mode")) {
+        SafeMode::StartSafeMode();
+    }
 
 #   ifdef FC_DEBUG
     mConfig["Debug"] = "1";
@@ -2520,9 +2591,34 @@ void Application::initConfig(int argc, char ** argv)
     mConfig["Debug"] = "0";
 #   endif
 
-    // init python
-    PyImport_AppendInittab ("FreeCAD", init_freecad_module);
-    PyImport_AppendInittab ("__FreeCADBase__", init_freecad_base_module);
+    if (!Py_IsInitialized()) {
+        // init python
+        PyImport_AppendInittab ("FreeCAD", init_freecad_module);
+        PyImport_AppendInittab ("__FreeCADBase__", init_freecad_base_module);
+    }
+    else {
+        // "import FreeCAD" in a normal Python 3.12 interpreter would raise
+        //     Fatal Python error: PyImport_AppendInittab:
+        //         PyImport_AppendInittab() may not be called after Py_Initialize()
+        //  because the (external) interpreter is already initialized.
+        //  Therefore we use a workaround as described in https://stackoverflow.com/a/57019607
+
+        PyObject *sysModules = PyImport_GetModuleDict();
+
+        const char *moduleName = "FreeCAD";
+        PyImport_AddModule(moduleName);
+        ApplicationMethods = Application::Methods;
+        PyObject *pyModule = init_freecad_module();
+        PyDict_SetItemString(sysModules, moduleName, pyModule);
+        Py_DECREF(pyModule);
+
+        moduleName = "__FreeCADBase__";
+        PyImport_AddModule(moduleName);
+        pyModule = init_freecad_base_module();
+        PyDict_SetItemString(sysModules, moduleName, pyModule);
+        Py_DECREF(pyModule);
+    }
+
     const char* pythonpath = Base::Interpreter().init(argc,argv);
     if (pythonpath)
         mConfig["PythonSearchPath"] = pythonpath;
@@ -2558,22 +2654,30 @@ void Application::initConfig(int argc, char ** argv)
         // Remove banner if FreeCAD is invoked via the -c command as regular
         // Python interpreter
         if (!(mConfig["Verbose"] == "Strict"))
-            Base::Console().Message("%s %s, Libs: %s.%s.%sR%s\n%s",
+            Base::Console().Message("%s %s, Libs: %s.%s.%s%sR%s\n%s",
                               mConfig["ExeName"].c_str(),
                               mConfig["ExeVersion"].c_str(),
                               mConfig["BuildVersionMajor"].c_str(),
                               mConfig["BuildVersionMinor"].c_str(),
                               mConfig["BuildVersionPoint"].c_str(),
+                              mConfig["BuildVersionSuffix"].c_str(),
                               mConfig["BuildRevision"].c_str(),
                               mConfig["CopyrightInfo"].c_str());
         else
-            Base::Console().Message("%s %s, Libs: %s.%s.%sR%s\n",
+            Base::Console().Message("%s %s, Libs: %s.%s.%s%sR%s\n",
                               mConfig["ExeName"].c_str(),
                               mConfig["ExeVersion"].c_str(),
                               mConfig["BuildVersionMajor"].c_str(),
                               mConfig["BuildVersionMinor"].c_str(),
                               mConfig["BuildVersionPoint"].c_str(),
+                              mConfig["BuildVersionSuffix"].c_str(),
                               mConfig["BuildRevision"].c_str());
+
+        if (SafeMode::SafeModeEnabled()) {
+            Base::Console().Message("FreeCAD is running in _SAFE_MODE_.\n"
+                                    "Safe mode temporarily disables your configurations and "
+                                    "addons. Restart the application to exit safe mode.\n\n");
+        }
     }
     LoadParameters();
 
@@ -2614,7 +2718,7 @@ void Application::initConfig(int argc, char ** argv)
     std::string tmpPath = _pcUserParamMngr->GetGroup("BaseApp/Preferences/General")->GetASCII("TempPath");
     Base::FileInfo di(tmpPath);
     if (di.exists() && di.isDir()) {
-        mConfig["AppTempPath"] = tmpPath + "/";
+        mConfig["AppTempPath"] = tmpPath + PATHSEP;
     }
 
 
@@ -2733,8 +2837,8 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
 {
     std::list<std::string> processed;
     Base::Console().Log("Init: Processing command line files\n");
-    for (std::list<std::string>::const_iterator it = files.begin(); it != files.end(); ++it) {
-        Base::FileInfo file(*it);
+    for (const auto & it : files) {
+        Base::FileInfo file(it);
 
         Base::Console().Log("Init:     Processing file: %s\n",file.filePath().c_str());
 
@@ -2742,22 +2846,22 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
             if (file.hasExtension("fcstd") || file.hasExtension("std")) {
                 // try to open
                 Application::_pcSingleton->openDocument(file.filePath().c_str());
-                processed.push_back(*it);
+                processed.push_back(it);
             }
             else if (file.hasExtension("fcscript") || file.hasExtension("fcmacro")) {
                 Base::Interpreter().runFile(file.filePath().c_str(), true);
-                processed.push_back(*it);
+                processed.push_back(it);
             }
             else if (file.hasExtension("py")) {
                 try {
                     Base::Interpreter().addPythonPath(file.dirPath().c_str());
                     Base::Interpreter().loadModule(file.fileNamePure().c_str());
-                    processed.push_back(*it);
+                    processed.push_back(it);
                 }
                 catch (const Base::PyException&) {
                     // if loading the module does not work, try just running the script (run in __main__)
                     Base::Interpreter().runFile(file.filePath().c_str(),true);
-                    processed.push_back(*it);
+                    processed.push_back(it);
                 }
             }
             else {
@@ -2771,7 +2875,7 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
                     Base::Interpreter().runStringArg("import %s",mods.front().c_str());
                     Base::Interpreter().runStringArg("%s.open(u\"%s\")",mods.front().c_str(),
                             escapedstr.c_str());
-                    processed.push_back(*it);
+                    processed.push_back(it);
                     Base::Console().Log("Command line open: %s.open(u\"%s\")\n",mods.front().c_str(),escapedstr.c_str());
                 }
                 else if (file.exists()) {
@@ -2871,9 +2975,9 @@ void Application::logStatus()
         boost::posix_time::second_clock::local_time());
     Base::Console().Log("Time = %s\n", time_str.c_str());
 
-    for (std::map<std::string, std::string>::iterator It = mConfig.begin(); It != mConfig.end();
-         ++It)
-        Base::Console().Log("%s = %s\n", It->first.c_str(), It->second.c_str());
+    for (const auto & It : mConfig) {
+        Base::Console().Log("%s = %s\n", It.first.c_str(), It.second.c_str());
+    }
 }
 
 void Application::LoadParameters()
@@ -2946,14 +3050,13 @@ void Application::LoadParameters()
     }
 }
 
-
-#if defined(_MSC_VER)
-// fix weird error while linking boost (all versions of VC)
-// VS2010: https://forum.freecadweb.org/viewtopic.php?f=4&t=1886&p=12553&hilit=boost%3A%3Afilesystem%3A%3Aget#p12553
-namespace boost { namespace program_options { std::string arg="arg"; } }
-namespace boost { namespace program_options {
+#if defined(_MSC_VER) && BOOST_VERSION < 108300
+    // fix weird error while linking boost (all versions of VC)
+    // VS2010: https://forum.freecad.org/viewtopic.php?f=4&t=1886&p=12553&hilit=boost%3A%3Afilesystem%3A%3Aget#p12553
+    namespace boost { namespace program_options { std::string arg="arg"; } }
+    namespace boost { namespace program_options {
     const unsigned options_description::m_default_line_length = 80;
-} }
+    } }
 #endif
 
 // A helper function to simplify the main part.
@@ -3145,11 +3248,11 @@ std::tuple<QString, QString, QString> getCustomPaths()
         userTemp = fi.absoluteFilePath();
     }
 
-    return std::tuple<QString, QString, QString>(userHome, userData, userTemp);
+    return {userHome, userData, userTemp};
 }
 
 /*!
- * \brief getCustomPaths
+ * \brief getStandardPaths
  * Returns a tuple of XDG-compliant standard paths names where to store config, data and cached files.
  * The method therefore reads the environment variables:
  * \list
@@ -3257,7 +3360,46 @@ void Application::ExtractUserPath()
     mConfig["UserMacroPath"] = Base::FileInfo::pathToString(macro) + PATHSEP;
 }
 
-#if defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD)
+// TODO: Consider using this for all UNIX-like OSes
+#if defined(__OpenBSD__)
+#include <cstdio>
+#include <cstdlib>
+#include <sys/param.h>
+#include <QCoreApplication>
+
+std::string Application::FindHomePath(const char* sCall)
+{
+    // We have three ways to start this application either use one of the two executables or
+    // import the FreeCAD.so module from a running Python session. In the latter case the
+    // Python interpreter is already initialized.
+    std::string absPath;
+    std::string homePath;
+    if (Py_IsInitialized()) {
+        // Note: realpath is known to cause a buffer overflow because it
+        // expands the given path to an absolute path of unknown length.
+        // Even setting PATH_MAX does not necessarily solve the problem
+        // for sure but the risk of overflow is rather small.
+        char resolved[PATH_MAX];
+        char* path = realpath(sCall, resolved);
+        if (path)
+            absPath = path;
+    }
+    else {
+        int argc = 1;
+        QCoreApplication app(argc, (char**)(&sCall));
+        absPath = QCoreApplication::applicationFilePath().toStdString();
+    }
+
+    // should be an absolute path now
+    std::string::size_type pos = absPath.find_last_of("/");
+    homePath.assign(absPath,0,pos);
+    pos = homePath.find_last_of("/");
+    homePath.assign(homePath,0,pos+1);
+
+    return homePath;
+}
+
+#elif defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD)
 #include <cstdio>
 #include <cstdlib>
 #include <sys/param.h>
@@ -3376,12 +3518,6 @@ std::string Application::FindHomePath(const char* sCall)
     homePath.assign(Call,0,pos);
     pos = homePath.find_last_of(PATHSEP);
     homePath.assign(homePath,0,pos+1);
-
-    // switch to posix style
-    for (std::wstring::iterator it = homePath.begin(); it != homePath.end(); ++it) {
-        if (*it == '\\')
-            *it = '/';
-    }
 
     // fixes #0001638 to avoid to load DLLs from Windows' system directories before FreeCAD's bin folder
     std::wstring binPath = homePath;

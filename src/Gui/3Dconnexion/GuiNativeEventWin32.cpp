@@ -45,9 +45,7 @@ http://www.3dconnexion.com/forum/viewtopic.php?f=19&t=4968&sid=72c018bdcf0e6edc9
 #include <QWidget>
 #include <Base/Console.h>
 #include "GuiApplicationNativeEventAware.h"
-#if QT_VERSION >= 0x050000
-  #include "GuiRawInputEventFilter.h"
-#endif // #if QT_VERSION >= 0x050000
+#include "GuiRawInputEventFilter.h"
 
 Gui::GuiNativeEvent* Gui::GuiNativeEvent::gMouseInput = 0;
 
@@ -277,12 +275,8 @@ void Gui::GuiNativeEvent::initSpaceball(QMainWindow *mainWindow)
 
         if (InitializeRawInput((HWND)mainWindow->winId())) {
             gMouseInput = this;
-#if QT_VERSION >= 0x050000
             qApp->installNativeEventFilter(
                 new Gui::RawInputEventFilter(Gui::GuiNativeEvent::RawInputEventFilter));
-#else
-            qApp->setEventFilter(Gui::GuiNativeEvent::RawInputEventFilter);
-#endif
             Base::Console().Log("3Dconnexion device initialized.\n");
         }
         else {
@@ -324,8 +318,11 @@ unsigned short HidToVirtualKey(unsigned long pid, unsigned short hidKeyCode)
     return virtualkey;
 }
 
-
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
 bool Gui::GuiNativeEvent::RawInputEventFilter(void *msg, long *result)
+#else
+bool Gui::GuiNativeEvent::RawInputEventFilter(void *msg, qintptr *result)
+#endif
 {
     if (gMouseInput == 0)
         return false;
@@ -1077,6 +1074,12 @@ bool Gui::GuiNativeEvent::TranslateSpaceMouseOldGeneric(UINT nInputCode, PRAWINP
     bool processed = false;
     bool bIsForeground = (nInputCode == RIM_INPUT);
 
+    // Initialize with some random bit of data before we look up the real value later on
+    if (fDevice2Data.empty()) {
+        return false;
+    }
+    TInputData &deviceData = fDevice2Data.begin()->second;
+
     PHIDP_PREPARSED_DATA pPreparsedData;
     HIDP_CAPS            Caps;
     PHIDP_BUTTON_CAPS    pButtonCaps;
@@ -1147,7 +1150,7 @@ bool Gui::GuiNativeEvent::TranslateSpaceMouseOldGeneric(UINT nInputCode, PRAWINP
     // Get the state of discrete-valued-controls
     //
 
-    TInputData &deviceData = fDevice2Data[pRawInput->header.hDevice];
+    deviceData = fDevice2Data[pRawInput->header.hDevice];
     deviceData.fTimeToLive = kTimeToLive;
     if (bIsForeground) {
         for (i = 0; i < Caps.NumberInputValueCaps; i++) {

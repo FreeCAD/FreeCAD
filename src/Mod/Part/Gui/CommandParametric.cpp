@@ -66,7 +66,7 @@ CmdPartCylinder::CmdPartCylinder()
     sToolTipText  = QT_TR_NOOP("Create a Cylinder");
     sWhatsThis    = "Part_Cylinder";
     sStatusTip    = sToolTipText;
-    sPixmap       = "Part_Cylinder";
+    sPixmap       = "Part_Cylinder_Parametric";
 }
 
 void CmdPartCylinder::activated(int iMsg)
@@ -86,7 +86,7 @@ void CmdPartCylinder::activated(int iMsg)
     runCommand(Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
 }
 
-bool CmdPartCylinder::isActive(void)
+bool CmdPartCylinder::isActive()
 {
     if (getActiveGuiDocument())
         return true;
@@ -108,7 +108,7 @@ CmdPartBox::CmdPartBox()
     sToolTipText  = QT_TR_NOOP("Create a cube solid");
     sWhatsThis    = "Part_Box";
     sStatusTip    = sToolTipText;
-    sPixmap       = "Part_Box";
+    sPixmap       = "Part_Box_Parametric";
 }
 
 void CmdPartBox::activated(int iMsg)
@@ -128,7 +128,7 @@ void CmdPartBox::activated(int iMsg)
     runCommand(Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
 }
 
-bool CmdPartBox::isActive(void)
+bool CmdPartBox::isActive()
 {
     if (getActiveGuiDocument())
         return true;
@@ -150,7 +150,7 @@ CmdPartSphere::CmdPartSphere()
     sToolTipText  = QT_TR_NOOP("Create a sphere solid");
     sWhatsThis    = "Part_Sphere";
     sStatusTip    = sToolTipText;
-    sPixmap       = "Part_Sphere";
+    sPixmap       = "Part_Sphere_Parametric";
 }
 
 void CmdPartSphere::activated(int iMsg)
@@ -170,7 +170,7 @@ void CmdPartSphere::activated(int iMsg)
     runCommand(Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
 }
 
-bool CmdPartSphere::isActive(void)
+bool CmdPartSphere::isActive()
 {
     if (getActiveGuiDocument())
         return true;
@@ -192,7 +192,7 @@ CmdPartCone::CmdPartCone()
     sToolTipText  = QT_TR_NOOP("Create a cone solid");
     sWhatsThis    = "Part_Cone";
     sStatusTip    = sToolTipText;
-    sPixmap       = "Part_Cone";
+    sPixmap       = "Part_Cone_Parametric";
 }
 
 void CmdPartCone::activated(int iMsg)
@@ -212,7 +212,7 @@ void CmdPartCone::activated(int iMsg)
     runCommand(Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
 }
 
-bool CmdPartCone::isActive(void)
+bool CmdPartCone::isActive()
 {
     if (getActiveGuiDocument())
         return true;
@@ -234,7 +234,7 @@ CmdPartTorus::CmdPartTorus()
     sToolTipText  = QT_TR_NOOP("Create a torus solid");
     sWhatsThis    = "Part_Torus";
     sStatusTip    = sToolTipText;
-    sPixmap       = "Part_Torus";
+    sPixmap       = "Part_Torus_Parametric";
 }
 
 void CmdPartTorus::activated(int iMsg)
@@ -254,7 +254,7 @@ void CmdPartTorus::activated(int iMsg)
     runCommand(Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
 }
 
-bool CmdPartTorus::isActive(void)
+bool CmdPartTorus::isActive()
 {
     if (getActiveGuiDocument())
         return true;
@@ -265,7 +265,7 @@ bool CmdPartTorus::isActive(void)
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-void CreateParamPartCommands(void)
+void CreateParamPartCommands()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
     rcCmdMgr.addCommand(new CmdPartCylinder());

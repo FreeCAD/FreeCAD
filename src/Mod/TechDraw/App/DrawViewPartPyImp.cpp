@@ -52,7 +52,7 @@
 
 
 using namespace TechDraw;
-
+using DU = DrawUtil;
 // returns a string which represents the object e.g. when printed in python
 std::string DrawViewPartPy::representation() const
 {
@@ -98,6 +98,46 @@ PyObject* DrawViewPartPy::getHiddenEdges(PyObject *args)
     return Py::new_reference_to(pEdgeList);
 }
 
+PyObject* DrawViewPartPy::getVisibleVertexes(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    DrawViewPart* dvp = getDrawViewPartPtr();
+    Py::List pVertexList;
+    auto vertsAll = dvp->getVertexGeometry();
+    for (auto& vert: vertsAll) {
+        if (vert->getHlrVisible()) {
+            PyObject* pVertex = new Base::VectorPy(new Base::Vector3d(vert->point()));
+            pVertexList.append(Py::asObject(pVertex));
+        }
+    }
+
+    return Py::new_reference_to(pVertexList);
+}
+
+PyObject* DrawViewPartPy::getHiddenVertexes(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    DrawViewPart* dvp = getDrawViewPartPtr();
+    Py::List pVertexList;
+    auto vertsAll = dvp->getVertexGeometry();
+    for (auto& vert: vertsAll) {
+        if (!vert->getHlrVisible()) {
+            PyObject* pVertex = new Base::VectorPy(new Base::Vector3d(vert->point()));
+            pVertexList.append(Py::asObject(pVertex));
+        }
+    }
+
+    return Py::new_reference_to(pVertexList);
+}
+
+
+
 PyObject* DrawViewPartPy::requestPaint(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, "")) {
@@ -109,6 +149,18 @@ PyObject* DrawViewPartPy::requestPaint(PyObject *args)
 
     Py_Return;
 }
+
+PyObject* DrawViewPartPy::getGeometricCenter(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    DrawViewPart* dvp = getDrawViewPartPtr();
+    Base::Vector3d pointOut = dvp->getCurrentCentroid();
+    return new Base::VectorPy(new Base::Vector3d(pointOut));
+}
+
 
 // remove all cosmetics
 PyObject* DrawViewPartPy::clearCosmeticVertices(PyObject *args)
@@ -168,7 +220,6 @@ PyObject* DrawViewPartPy::makeCosmeticVertex(PyObject *args)
     }
 
     DrawViewPart* dvp = getDrawViewPartPtr();
-    std::string dvpName = dvp->getNameInDocument();
     Base::Vector3d pnt1 = static_cast<Base::VectorPy*>(pPnt1)->value();
     std::string id = dvp->addCosmeticVertex(pnt1);
     //int link =
@@ -178,6 +229,7 @@ PyObject* DrawViewPartPy::makeCosmeticVertex(PyObject *args)
     return PyUnicode_FromString(id.c_str());   //return tag for new CV
 }
 
+//! make a cosmetic vertex from a 3d point
 PyObject* DrawViewPartPy::makeCosmeticVertex3d(PyObject *args)
 {
     PyObject* pPnt1 = nullptr;
@@ -188,9 +240,12 @@ PyObject* DrawViewPartPy::makeCosmeticVertex3d(PyObject *args)
     DrawViewPart* dvp = getDrawViewPartPtr();
     Base::Vector3d pnt1 = static_cast<Base::VectorPy*>(pPnt1)->value();
     Base::Vector3d centroid = dvp->getOriginalCentroid();
+    // center the point
     pnt1 = pnt1 - centroid;
-    Base::Vector3d projected = DrawUtil::invertY(dvp->projectPoint(pnt1));
-
+    // project but do not invert
+    Base::Vector3d projected = dvp->projectPoint(pnt1);
+    // this is a real world point, it is not scaled or rotated, so so it is in canonical form
+    // add and invert the point.
     std::string id = dvp->addCosmeticVertex(projected);
     //int link =
     dvp->add1CVToGV(id);
@@ -263,15 +318,14 @@ PyObject* DrawViewPartPy::removeCosmeticVertex(PyObject *args)
     }
 
     if (PySequence_Check(pDelList))  {
-        Py_ssize_t nSize = PySequence_Size(pDelList);
-        for (Py_ssize_t i=0; i < nSize; i++) {
-            PyObject* item = PySequence_GetItem(pDelList, i);
-            if (!PyObject_TypeCheck(item, &(TechDraw::CosmeticVertexPy::Type)))  {
+        Py::Sequence sequence(pDelList);
+        for (const auto& item : sequence) {
+            if (!PyObject_TypeCheck(item.ptr(), &(TechDraw::CosmeticVertexPy::Type)))  {
                 PyErr_Format(PyExc_TypeError ,"Types in sequence must be 'CosmeticVertex', not %s",
-                    Py_TYPE(item)->tp_name);
+                    Py_TYPE(item.ptr())->tp_name);
                 return nullptr;
             }
-            TechDraw::CosmeticVertexPy* cvPy = static_cast<TechDraw::CosmeticVertexPy*>(item);
+            TechDraw::CosmeticVertexPy* cvPy = static_cast<TechDraw::CosmeticVertexPy*>(item.ptr());
             TechDraw::CosmeticVertex* cv = cvPy->getCosmeticVertexPtr();
             dvp->removeCosmeticVertex(cv->getTagAsString());
         }
@@ -291,6 +345,8 @@ PyObject* DrawViewPartPy::removeCosmeticVertex(PyObject *args)
 
 PyObject* DrawViewPartPy::makeCosmeticLine(PyObject *args)
 {
+    // the input points are expected to use conventional coordinates (Y up) and need to be inverted
+    // before building the line
     PyObject* pPnt1 = nullptr;
     PyObject* pPnt2 = nullptr;
     int style = LineFormat::getDefEdgeStyle();
@@ -308,12 +364,12 @@ PyObject* DrawViewPartPy::makeCosmeticLine(PyObject *args)
     DrawViewPart* dvp = getDrawViewPartPtr();
     Base::Vector3d pnt1 = static_cast<Base::VectorPy*>(pPnt1)->value();
     Base::Vector3d pnt2 = static_cast<Base::VectorPy*>(pPnt2)->value();
-    std::string newTag = dvp->addCosmeticEdge(pnt1, pnt2);
+    std::string newTag = dvp->addCosmeticEdge(DU::invertY(pnt1), DU::invertY(pnt2));
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(newTag);
     if (ce) {
-        ce->m_format.m_style = style;
-        ce->m_format.m_weight = weight;
-        ce->m_format.m_color = pColor ? DrawUtil::pyTupleToColor(pColor) : defCol;
+        ce->m_format.setStyle(style);
+        ce->m_format.setWidth(weight);
+        ce->m_format.setColor(pColor ? DrawUtil::pyTupleToColor(pColor) : defCol);
     }
     else {
         PyErr_SetString(PyExc_RuntimeError, "DVPPI:makeCosmeticLine - line creation failed");
@@ -328,6 +384,7 @@ PyObject* DrawViewPartPy::makeCosmeticLine(PyObject *args)
 
 PyObject* DrawViewPartPy::makeCosmeticLine3D(PyObject *args)
 {
+    // input points are expected to be conventional 3d points
     PyObject* pPnt1 = nullptr;
     PyObject* pPnt2 = nullptr;
     int style = LineFormat::getDefEdgeStyle();
@@ -347,18 +404,18 @@ PyObject* DrawViewPartPy::makeCosmeticLine3D(PyObject *args)
 
     Base::Vector3d pnt1 = static_cast<Base::VectorPy*>(pPnt1)->value();
     pnt1 = pnt1 - centroid;
-    pnt1 = DrawUtil::invertY(dvp->projectPoint(pnt1));
+    pnt1 = dvp->projectPoint(pnt1);
 
     Base::Vector3d pnt2 = static_cast<Base::VectorPy*>(pPnt2)->value();
     pnt2 = pnt2 - centroid;
-    pnt2 = DrawUtil::invertY(dvp->projectPoint(pnt2));
+    pnt2 = dvp->projectPoint(pnt2);
 
     std::string newTag = dvp->addCosmeticEdge(pnt1, pnt2);
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(newTag);
     if (ce) {
-        ce->m_format.m_style = style;
-        ce->m_format.m_weight = weight;
-        ce->m_format.m_color = pColor ? DrawUtil::pyTupleToColor(pColor) : defCol;
+        ce->m_format.setStyle(style);
+        ce->m_format.setWidth(weight);
+        ce->m_format.setColor(pColor ? DrawUtil::pyTupleToColor(pColor) : defCol);
     }
     else {
         PyErr_SetString(PyExc_RuntimeError, "DVPPI:makeCosmeticLine - line creation failed");
@@ -388,15 +445,15 @@ PyObject* DrawViewPartPy::makeCosmeticCircle(PyObject *args)
     }
 
     DrawViewPart* dvp = getDrawViewPartPtr();
-    Base::Vector3d pnt1 = DrawUtil::invertY(static_cast<Base::VectorPy*>(pPnt1)->value());
+    Base::Vector3d pnt1 = static_cast<Base::VectorPy*>(pPnt1)->value();
     TechDraw::BaseGeomPtr bg = std::make_shared<TechDraw::Circle> (pnt1, radius);
-    std::string newTag = dvp->addCosmeticEdge(bg);
+    std::string newTag = dvp->addCosmeticEdge(bg->inverted());
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(newTag);
     if (ce) {
         ce->permaRadius = radius;
-        ce->m_format.m_style = style;
-        ce->m_format.m_weight = weight;
-        ce->m_format.m_color = pColor ? DrawUtil::pyTupleToColor(pColor) : defCol;
+        ce->m_format.setStyle(style);
+        ce->m_format.setWidth(weight);
+        ce->m_format.setColor(pColor ? DrawUtil::pyTupleToColor(pColor) : defCol);
     }
     else {
         PyErr_SetString(PyExc_RuntimeError, "DVPPI:makeCosmeticCircle - circle creation failed");
@@ -428,18 +485,106 @@ PyObject* DrawViewPartPy::makeCosmeticCircleArc(PyObject *args)
 
     //from here on is almost duplicate of makeCosmeticCircle
     DrawViewPart* dvp = getDrawViewPartPtr();
-    Base::Vector3d pnt1 = DrawUtil::invertY(static_cast<Base::VectorPy*>(pPnt1)->value());
+    Base::Vector3d pnt1 = static_cast<Base::VectorPy*>(pPnt1)->value();
     TechDraw::BaseGeomPtr bg = std::make_shared<TechDraw::AOC> (pnt1, radius, angle1, angle2);
-    std::string newTag = dvp->addCosmeticEdge(bg);
+    std::string newTag = dvp->addCosmeticEdge(bg->inverted());
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(newTag);
     if (ce) {
         ce->permaRadius = radius;
-        ce->m_format.m_style = style;
-        ce->m_format.m_weight = weight;
+        ce->m_format.setStyle(style);
+        ce->m_format.setWidth(weight);
         if (!pColor)
-            ce->m_format.m_color = defCol;
+            ce->m_format.setColor(defCol);
         else
-            ce->m_format.m_color = DrawUtil::pyTupleToColor(pColor);
+            ce->m_format.setColor(DrawUtil::pyTupleToColor(pColor));
+    }
+    else {
+        PyErr_SetString(PyExc_RuntimeError, "DVPPI:makeCosmeticCircleArc - arc creation failed");
+        return nullptr;
+    }
+
+    //int link =
+    dvp->add1CEToGE(newTag);
+    dvp->requestPaint();
+
+    return PyUnicode_FromString(newTag.c_str());   //return tag for new CE
+}
+
+PyObject* DrawViewPartPy::makeCosmeticCircle3d(PyObject *args)
+{
+    PyObject* pPnt1 = nullptr;
+    double radius = 5.0;
+    int style = LineFormat::getDefEdgeStyle();
+    double weight = LineFormat::getDefEdgeWidth();
+    App::Color defCol = LineFormat::getDefEdgeColor();
+    PyObject* pColor = nullptr;
+
+    if (!PyArg_ParseTuple(args, "O!d|idO!", &(Base::VectorPy::Type), &pPnt1,
+                                        &radius,
+                                        &style, &weight,
+                                        &PyTuple_Type, &pColor)) {
+        return nullptr;
+    }
+
+    DrawViewPart* dvp = getDrawViewPartPtr();
+    Base::Vector3d pnt1 = static_cast<Base::VectorPy*>(pPnt1)->value();
+    // center, project and invert the 3d point
+    Base::Vector3d centroid = dvp->getOriginalCentroid();
+    pnt1 = DrawUtil::invertY(dvp->projectPoint(pnt1 - centroid));
+    TechDraw::BaseGeomPtr bg = std::make_shared<TechDraw::Circle> (pnt1, radius);
+    std::string newTag = dvp->addCosmeticEdge(bg->inverted());
+    TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(newTag);
+    if (ce) {
+        ce->permaRadius = radius;
+        ce->m_format.setStyle(style);
+        ce->m_format.setWidth(weight);
+        ce->m_format.setColor(pColor ? DrawUtil::pyTupleToColor(pColor) : defCol);
+    }
+    else {
+        PyErr_SetString(PyExc_RuntimeError, "DVPPI:makeCosmeticCircle - circle creation failed");
+        return nullptr;
+    }
+    //int link =
+    dvp->add1CEToGE(newTag);
+    dvp->requestPaint();
+
+    return PyUnicode_FromString(newTag.c_str());   //return tag for new CE
+}
+
+PyObject* DrawViewPartPy::makeCosmeticCircleArc3d(PyObject *args)
+{
+    PyObject* pPnt1 = nullptr;
+    double radius = 5.0;
+    double angle1 = 0.0;
+    double angle2 = 360.0;
+    int style = LineFormat::getDefEdgeStyle();
+    double weight = LineFormat::getDefEdgeWidth();
+    App::Color defCol = LineFormat::getDefEdgeColor();
+    PyObject* pColor = nullptr;
+
+    if (!PyArg_ParseTuple(args, "O!ddd|idO!", &(Base::VectorPy::Type), &pPnt1,
+                                        &radius, &angle1, &angle2,
+                                        &style, &weight, &PyTuple_Type, &pColor)) {
+        return nullptr;
+    }
+
+    //from here on is almost duplicate of makeCosmeticCircle
+    DrawViewPart* dvp = getDrawViewPartPtr();
+    Base::Vector3d pnt1 = static_cast<Base::VectorPy*>(pPnt1)->value();
+    // center, project and invert the 3d point
+    Base::Vector3d centroid = dvp->getOriginalCentroid();
+    pnt1 = DrawUtil::invertY(dvp->projectPoint(pnt1 - centroid));
+    TechDraw::BaseGeomPtr bg = std::make_shared<TechDraw::AOC> (pnt1, radius, angle1, angle2);
+    std::string newTag = dvp->addCosmeticEdge(bg->inverted());
+    TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(newTag);
+    if (ce) {
+        ce->permaRadius = radius;
+        ce->m_format.setStyle(style);
+        ce->m_format.setWidth(weight);
+        if (!pColor)
+            ce->m_format.setColor(defCol);
+        else
+            ce->m_format.setColor(DrawUtil::pyTupleToColor(pColor));
     }
     else {
         PyErr_SetString(PyExc_RuntimeError, "DVPPI:makeCosmeticCircleArc - arc creation failed");
@@ -625,10 +770,10 @@ PyObject* DrawViewPartPy::formatGeometricEdge(PyObject *args)
     DrawViewPart* dvp = getDrawViewPartPtr();
     TechDraw::GeomFormat* gf = dvp->getGeomFormatBySelection(idx);
     if (gf) {
-        gf->m_format.m_style = style;
-        gf->m_format.m_color = color;
-        gf->m_format.m_weight = weight;
-        gf->m_format.m_visible = visible;
+        gf->m_format.setStyle(style);
+        gf->m_format.setColor(color);
+        gf->m_format.setWidth(weight);
+        gf->m_format.setVisible(visible);
     }
     else {
         TechDraw::LineFormat fmt(style, weight, color, visible);
@@ -658,7 +803,7 @@ PyObject* DrawViewPartPy::getEdgeByIndex(PyObject *args)
         return nullptr;
     }
 
-    TopoDS_Shape temp = TechDraw::mirrorShapeVec(geom->getOCCEdge(),
+    TopoDS_Shape temp = ShapeUtils::mirrorShapeVec(geom->getOCCEdge(),
                                       Base::Vector3d(0.0, 0.0, 0.0),
                                       1.0 / dvp->getScale());
 
@@ -712,7 +857,7 @@ PyObject* DrawViewPartPy::getEdgeBySelection(PyObject *args)
         return nullptr;
     }
 
-    TopoDS_Shape temp = TechDraw::mirrorShapeVec(geom->getOCCEdge(),
+    TopoDS_Shape temp = ShapeUtils::mirrorShapeVec(geom->getOCCEdge(),
                                       Base::Vector3d(0.0, 0.0, 0.0),
                                       1.0 / dvp->getScale());
 

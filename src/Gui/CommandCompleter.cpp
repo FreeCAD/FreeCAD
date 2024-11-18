@@ -85,15 +85,15 @@ public:
         endResetModel();
     }
 
-    virtual QModelIndex parent(const QModelIndex &) const
+    QModelIndex parent(const QModelIndex &) const override
     {
-        return QModelIndex();
+        return {};
     }
 
-    virtual QVariant data(const QModelIndex & index, int role) const
+    QVariant data(const QModelIndex & index, int role) const override
     {
         if (index.row() < 0 || index.row() >= (int)_Commands.size())
-            return QVariant();
+            return {};
 
         auto &info = _Commands[index.row()];
 
@@ -125,20 +125,20 @@ public:
         default:
             break;
         }
-        return QVariant();
+        return {};
     }
 
-    virtual QModelIndex index(int row, int, const QModelIndex &) const
+    QModelIndex index(int row, int, const QModelIndex &) const override
     {
         return this->createIndex(row, 0);
     }
 
-    virtual int rowCount(const QModelIndex &) const
+    int rowCount(const QModelIndex &) const override
     {
         return (int)(_Commands.size());
     }
 
-    virtual int columnCount(const QModelIndex &) const
+    int columnCount(const QModelIndex &) const override
     {
         return 1;
     }

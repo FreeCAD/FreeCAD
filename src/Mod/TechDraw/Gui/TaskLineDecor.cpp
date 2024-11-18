@@ -22,7 +22,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <cmath>
 #endif // #ifndef _PreComp_
 
 #include <Base/Console.h>
@@ -35,14 +34,16 @@
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/CenterLine.h>
-#include <Mod/TechDraw/App/Cosmetic.h>
 #include <Mod/TechDraw/App/Geometry.h>
+#include <Mod/TechDraw/App/LineGenerator.h>
+
 
 #include "TaskLineDecor.h"
 #include "ui_TaskLineDecor.h"
 #include "ui_TaskRestoreLines.h"
 #include "QGIView.h"
 #include "ViewProviderViewPart.h"
+#include "DrawGuiUtil.h"
 
 
 using namespace Gui;
@@ -56,19 +57,23 @@ TaskLineDecor::TaskLineDecor(TechDraw::DrawViewPart* partFeat,
     m_edges(edgeNames),
     m_apply(true)
 {
-    getDefaults();
+    initializeRejectArrays();
+    m_lineGenerator = new TechDraw::LineGenerator;
+
     ui->setupUi(this);
+
+    getDefaults();
+    initUi();
 
     connect(ui->cb_Style, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskLineDecor::onStyleChanged);
     connect(ui->cc_Color, &ColorButton::changed, this, &TaskLineDecor::onColorChanged);
     connect(ui->dsb_Weight, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskLineDecor::onWeightChanged);
     connect(ui->cb_Visible, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskLineDecor::onVisibleChanged);
-
-    initUi();
 }
 
 TaskLineDecor::~TaskLineDecor()
 {
+    delete m_lineGenerator;
 }
 
 void TaskLineDecor::initUi()
@@ -87,66 +92,101 @@ void TaskLineDecor::initUi()
     }
     ui->le_Lines->setText(Base::Tools::fromStdString(temp));
 
-    ui->cb_Style->setCurrentIndex(m_style - 1);          //combobox does not have 0:NoLine choice
     ui->cc_Color->setColor(m_color.asValue<QColor>());
     ui->dsb_Weight->setValue(m_weight);
     ui->dsb_Weight->setSingleStep(0.1);
     ui->cb_Visible->setCurrentIndex(m_visible);
+
+    // line numbering starts at 1, not 0
+    DrawGuiUtil::loadLineStyleChoices(ui->cb_Style, m_lineGenerator);
+    if (ui->cb_Style->count() >= m_lineNumber ) {
+        ui->cb_Style->setCurrentIndex(m_lineNumber - 1);
+    }
 }
 
-void TaskLineDecor::getDefaults()
+TechDraw::LineFormat *TaskLineDecor::getFormatAccessPtr(const std::string &edgeName, std::string *newFormatTag)
 {
-//    Base::Console().Message("TLD::getDefaults()\n");
-    m_style = LineFormat::getDefEdgeStyle();
-    m_color = LineFormat::getDefEdgeColor();
-    m_weight = LineFormat::getDefEdgeWidth();
-    m_visible = 1;
+    BaseGeomPtr bg = m_partFeat->getEdge(edgeName);
+    if (bg) {
+        if (bg->getCosmetic()) {
+            if (bg->source() == SourceType::COSEDGE) {
+                TechDraw::CosmeticEdge *ce = m_partFeat->getCosmeticEdgeBySelection(edgeName);
+                if (ce) {
+                    return &ce->m_format;
+                }
+            }
+            else if (bg->source() == SourceType::CENTERLINE) {
+                TechDraw::CenterLine *cl = m_partFeat->getCenterLineBySelection(edgeName);
+                if (cl) {
+                    return &cl->m_format;
+                }
+            }
+        }
+        else {
+            TechDraw::GeomFormat *gf = m_partFeat->getGeomFormatBySelection(edgeName);
+            if (gf) {
+                return &gf->m_format;
+            }
+            else {
+                ViewProviderViewPart *viewPart = dynamic_cast<ViewProviderViewPart *>(QGIView::getViewProvider(m_partFeat));
+                if (viewPart) {
+                    TechDraw::LineFormat lineFormat(Qt::SolidLine, viewPart->LineWidth.getValue(), LineFormat::getDefEdgeColor(), true);
+                    TechDraw::GeomFormat geomFormat(DrawUtil::getIndexFromName(edgeName), lineFormat);
 
-    //set defaults to format of 1st edge
-    if (!m_edges.empty()) {
-        int num = DrawUtil::getIndexFromName(m_edges.front());
-        BaseGeomPtr bg = m_partFeat->getGeomByIndex(num);
-        if (bg) {
-            if (bg->getCosmetic()) {
-                if (bg->source() == 1) {
-                    TechDraw::CosmeticEdge* ce = m_partFeat->getCosmeticEdgeBySelection(m_edges.front());
-                    m_style = ce->m_format.m_style;
-                    m_color = ce->m_format.m_color;
-                    m_weight = ce->m_format.m_weight;
-                    m_visible = ce->m_format.m_visible;
-                } else if (bg->source() == 2) {
-//                    TechDraw::CenterLine* cl = m_partFeat->getCenterLine(bg->getCosmeticTag);
-                    TechDraw::CenterLine* cl = m_partFeat->getCenterLineBySelection(m_edges.front());
-                    m_style = cl->m_format.m_style;
-                    m_color = cl->m_format.m_color;
-                    m_weight = cl->m_format.m_weight;
-                    m_visible = cl->m_format.m_visible;
-                }
-            } else {
-                TechDraw::GeomFormat* gf = m_partFeat->getGeomFormatBySelection(num);
-                if (gf) {
-                    m_style = gf->m_format.m_style;
-                    m_color = gf->m_format.m_color;
-                    m_weight = gf->m_format.m_weight;
-                    m_visible = gf->m_format.m_visible;
-                } else {
-                    Gui::ViewProvider* vp = QGIView::getViewProvider(m_partFeat);
-                    auto partVP = dynamic_cast<ViewProviderViewPart*>(vp);
-                    if (partVP) {
-                        m_weight = partVP->LineWidth.getValue();
-                        m_style = Qt::SolidLine;                  // = 1
-                        m_color = LineFormat::getDefEdgeColor();
-                        m_visible = 1;
+                    std::string formatTag = m_partFeat->addGeomFormat(&geomFormat);
+                    if (newFormatTag) {
+                        *newFormatTag = formatTag;
                     }
+
+                    return &m_partFeat->getGeomFormat(formatTag)->m_format;
                 }
+            }
+        }
+    }
+    return {};
+}
+
+void TaskLineDecor::initializeRejectArrays()
+{
+    m_originalFormats.resize(m_edges.size());
+    m_createdFormatTags.resize(m_edges.size());
+
+    for (size_t i = 0; i < m_edges.size(); ++i) {
+        std::string newTag;
+        TechDraw::LineFormat *accessPtr = getFormatAccessPtr(m_edges[i], &newTag);
+
+        if (accessPtr) {
+            m_originalFormats[i] = *accessPtr;
+            if (!newTag.empty()) {
+                m_createdFormatTags[i] = newTag;
             }
         }
     }
 }
 
+// get the current line tool appearance default
+void TaskLineDecor::getDefaults()
+{
+//    Base::Console().Message("TLD::getDefaults()\n");
+    m_color = LineFormat::getCurrentLineFormat().getColor();
+    m_weight = LineFormat::getCurrentLineFormat().getWidth();
+    m_visible = LineFormat::getCurrentLineFormat().getVisible();
+    m_lineNumber = LineFormat::getCurrentLineFormat().getLineNumber();
+
+    //set defaults to format of 1st edge
+    if (!m_originalFormats.empty()) {
+        LineFormat &lf = m_originalFormats.front();
+        m_style = lf.getStyle();
+        m_color = lf.getColor();
+        m_weight = lf.getWidth();
+        m_visible = lf.getVisible();
+        m_lineNumber = lf.getLineNumber();
+    }
+}
+
 void TaskLineDecor::onStyleChanged()
 {
-    m_style = ui->cb_Style->currentIndex() + 1;
+    m_lineNumber = ui->cb_Style->currentIndex() + 1;
     applyDecorations();
     m_partFeat->requestPaint();
 }
@@ -176,42 +216,13 @@ void TaskLineDecor::applyDecorations()
 {
 //    Base::Console().Message("TLD::applyDecorations()\n");
     for (auto& e: m_edges) {
-        int num = DrawUtil::getIndexFromName(e);
-        BaseGeomPtr bg = m_partFeat->getGeomByIndex(num);
-        if (bg) {
-            if (bg->getCosmetic()) {
-                if (bg->source() == 1) {
-                    TechDraw::CosmeticEdge* ce = m_partFeat->getCosmeticEdgeBySelection(e);
-                    ce->m_format.m_style = m_style;
-                    ce->m_format.m_color = m_color;
-                    ce->m_format.m_weight = m_weight;
-                    ce->m_format.m_visible = m_visible;
-                } else if (bg->source() == 2) {
-//                    TechDraw::CenterLine* cl = m_partFeat->getCenterLine(bg->getCosmeticTag());
-                    TechDraw::CenterLine* cl = m_partFeat->getCenterLineBySelection(e);
-                    cl->m_format.m_style = m_style;
-                    cl->m_format.m_color = m_color;
-                    cl->m_format.m_weight = m_weight;
-                    cl->m_format.m_visible = m_visible;
-                }
-            } else {
-                TechDraw::GeomFormat* gf = m_partFeat->getGeomFormatBySelection(num);
-                if (gf) {
-                    gf->m_format.m_style = m_style;
-                    gf->m_format.m_color = m_color;
-                    gf->m_format.m_weight = m_weight;
-                    gf->m_format.m_visible = m_visible;
-                } else {
-                    TechDraw::LineFormat fmt(m_style,
-                                             m_weight,
-                                             m_color,
-                                             m_visible);
-                    TechDraw::GeomFormat* newGF = new TechDraw::GeomFormat(num,
-                                                                           fmt);
-//                    int idx =
-                    m_partFeat->addGeomFormat(newGF);
-               }
-            }
+        LineFormat *lf = getFormatAccessPtr(e);
+        if (lf) {
+            lf->setStyle(m_style);
+            lf->setColor(m_color);
+            lf->setWidth(m_weight);
+            lf->setVisible(m_visible);
+            lf->setLineNumber(m_lineNumber);
         }
     }
 }
@@ -241,6 +252,21 @@ bool TaskLineDecor::reject()
     Gui::Document* doc = Gui::Application::Instance->getDocument(m_partFeat->getDocument());
     if (!doc)
         return false;
+
+    for (size_t i = 0; i < m_originalFormats.size(); ++i) {
+        std::string &formatTag = m_createdFormatTags[i];
+        if (formatTag.empty()) {
+            LineFormat *lf = getFormatAccessPtr(m_edges[i]);
+            if (lf) {
+                *lf = m_originalFormats[i];
+            }
+        }
+        else {
+            m_partFeat->removeGeomFormat(formatTag);
+        }
+    }
+
+    m_partFeat->requestPaint();
 
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
     return false;
@@ -327,7 +353,7 @@ int TaskRestoreLines::countInvisibleGeoms()
     int iGeoms = 0;
     const std::vector<TechDraw::GeomFormat*> geoms = m_partFeat->GeomFormats.getValues();
     for (auto& g : geoms) {
-        if (!g->m_format.m_visible) {
+        if (!g->m_format.getVisible()) {
             iGeoms++;
         }
     }
@@ -339,7 +365,7 @@ int TaskRestoreLines::countInvisibleCosmetics()
     int iCosmos = 0;
     const std::vector<TechDraw::CosmeticEdge*> cosmos = m_partFeat->CosmeticEdges.getValues();
     for (auto& c : cosmos) {
-        if (!c->m_format.m_visible) {
+        if (!c->m_format.getVisible()) {
             iCosmos++;
         }
     }
@@ -351,7 +377,7 @@ int TaskRestoreLines::countInvisibleCenters()
     int iCenter = 0;
     const std::vector<TechDraw::CenterLine*> centers = m_partFeat->CenterLines.getValues();
     for (auto& c : centers) {
-        if (!c->m_format.m_visible) {
+        if (!c->m_format.getVisible()) {
             iCenter++;
         }
     }
@@ -369,8 +395,8 @@ void TaskRestoreLines::restoreInvisibleGeoms()
 {
     const std::vector<TechDraw::GeomFormat*> geoms = m_partFeat->GeomFormats.getValues();
     for (auto& g : geoms) {
-        if (!g->m_format.m_visible) {
-            g->m_format.m_visible = true;
+        if (!g->m_format.getVisible()) {
+            g->m_format.setVisible(true);
         }
     }
     m_partFeat->GeomFormats.setValues(geoms);
@@ -381,8 +407,8 @@ void TaskRestoreLines::restoreInvisibleCosmetics()
 {
     const std::vector<TechDraw::CosmeticEdge*> cosmos = m_partFeat->CosmeticEdges.getValues();
     for (auto& c : cosmos) {
-        if (!c->m_format.m_visible) {
-            c->m_format.m_visible = true;
+        if (!c->m_format.getVisible()) {
+            c->m_format.setVisible(true);
         }
     }
     m_partFeat->CosmeticEdges.setValues(cosmos);
@@ -393,8 +419,8 @@ void TaskRestoreLines::restoreInvisibleCenters()
 {
     const std::vector<TechDraw::CenterLine*> centers = m_partFeat->CenterLines.getValues();
     for (auto& c : centers) {
-        if (!c->m_format.m_visible) {
-            c->m_format.m_visible = true;
+        if (!c->m_format.getVisible()) {
+            c->m_format.setVisible(true);
         }
     }
     m_partFeat->CenterLines.setValues(centers);

@@ -28,6 +28,7 @@
 # include <QImage>
 # include <QMenu>
 # include <QString>
+# include <QSvgRenderer>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoFaceSet.h>
 # include <Inventor/nodes/SoMaterial.h>
@@ -41,8 +42,7 @@
 #include <Gui/ActionFunction.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
-#include <Gui/TaskView/TaskOrientation.h>
-#include <Gui/TaskView/TaskImageScale.h>
+#include <Gui/TaskView/TaskImage.h>
 #include <App/ImagePlane.h>
 
 #include "ViewProviderImagePlane.h"
@@ -146,7 +146,9 @@ void ViewProviderImagePlane::setupContextMenu(QMenu* menu, QObject* receiver, co
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
     QAction* action = menu->addAction(QObject::tr("Change image..."));
     action->setIcon(QIcon(QLatin1String("images:image-scaling.svg")));
-    func->trigger(action, std::bind(&ViewProviderImagePlane::manipulateImage, this));
+    func->trigger(action, [this](){
+        this->manipulateImage();
+    });
 
     ViewProviderGeometryObject::setupContextMenu(menu, receiver, member);
 }
@@ -159,12 +161,9 @@ bool ViewProviderImagePlane::doubleClicked()
 
 void ViewProviderImagePlane::manipulateImage()
 {
-    auto dialog = new TaskOrientationDialog(
-        dynamic_cast<App::GeoFeature*>(getObject())
-    );
-    dialog->addTaskBox(new TaskImageScale(
+    auto dialog = new TaskImageDialog(
         dynamic_cast<Image::ImagePlane*>(getObject())
-    ));
+    );
 
     Gui::Control().showDialog(dialog);
 }
@@ -183,44 +182,41 @@ void ViewProviderImagePlane::loadImage()
     std::string fileName = imagePlane->ImageFile.getValue();
 
     if (!fileName.empty()) {
-        double xsize = imagePlane->XSize.getValue();
-        double ysize = imagePlane->YSize.getValue();
-
         QImage impQ;
-        if (!loadSvg(fileName.c_str(), xsize, ysize, impQ)) {
-            QSizeF size = loadRaster(fileName.c_str(), impQ);
-            if (!impQ.isNull()) {
-                if (!isRestoring()) {
-                    imagePlane->XSize.setValue(size.width());
-                    imagePlane->YSize.setValue(size.height());
-                }
-
-                imagePlane->XPixelsPerMeter = impQ.dotsPerMeterX();
-                imagePlane->YPixelsPerMeter = impQ.dotsPerMeterY();
-            }
+        if (isSvgFile(fileName.c_str())) {
+            impQ = loadSvg(fileName.c_str());
+        }
+        else {
+            impQ = loadRaster(fileName.c_str());
         }
 
+        QSizeF size = getSizeInMM(impQ);
+        setPlaneSize(size, impQ);
         convertToSFImage(impQ);
     }
 }
 
-QSizeF ViewProviderImagePlane::loadRaster(const char* fileName, QImage& img)
+void ViewProviderImagePlane::setPlaneSize(const QSizeF& size, const QImage& img)
 {
-    QSizeF sizef;
-    if (img.load(QString::fromUtf8(fileName))) {
-        double xPixelsPerM = img.dotsPerMeterX();
-        double width = img.width();
-        width = width * 1000 / xPixelsPerM;
+    if (!img.isNull()) {
+        Image::ImagePlane* imagePlane = static_cast<Image::ImagePlane*>(pcObject);
+        // When restoring the document or importing a ImagePlane by eg. pasting it
+        // preserve the X and Y size.
+        if (!isRestoring() && !pcObject->testStatus(App::ObjectStatus::ObjImporting)) {
+            imagePlane->XSize.setValue(size.width());
+            imagePlane->YSize.setValue(size.height());
+        }
 
-        double yPixelsPerM = img.dotsPerMeterY();
-        double height = img.height();
-        height = height * 1000 / yPixelsPerM;
-
-        sizef.setWidth(width);
-        sizef.setHeight(height);
+        imagePlane->XPixelsPerMeter = img.dotsPerMeterX();
+        imagePlane->YPixelsPerMeter = img.dotsPerMeterY();
     }
+}
 
-    return sizef;
+QImage ViewProviderImagePlane::loadRaster(const char* fileName) const
+{
+    QImage img;
+    img.load(QString::fromUtf8(fileName));
+    return img;
 }
 
 void ViewProviderImagePlane::reloadIfSvg()
@@ -228,32 +224,75 @@ void ViewProviderImagePlane::reloadIfSvg()
     Image::ImagePlane* imagePlane = static_cast<Image::ImagePlane*>(pcObject);
     std::string fileName = imagePlane->ImageFile.getValue();
 
-    double xsize = imagePlane->XSize.getValue();
-    double ysize = imagePlane->YSize.getValue();
+    if (isSvgFile(fileName.c_str())) {
+        double xsize = imagePlane->XSize.getValue();
+        double ysize = imagePlane->YSize.getValue();
 
-    QImage impQ;
-    loadSvg(fileName.c_str(), xsize, ysize, impQ);
-    convertToSFImage(impQ);
+        QImage impQ = loadSvgOfSize(fileName.c_str(), QSizeF(xsize, ysize));
+        convertToSFImage(impQ);
+    }
 }
 
-bool ViewProviderImagePlane::loadSvg(const char* filename, double width, double height, QImage& img)
+QImage ViewProviderImagePlane::loadSvg(const char* filename) const
+{
+    QSizeF defaultSize = defaultSizeOfSvg(filename);
+    QPixmap px = BitmapFactory().pixmapFromSvg(filename, defaultSize);
+    return px.toImage();
+}
+
+QImage ViewProviderImagePlane::loadSvgOfSize(const char* filename, const QSizeF& size) const
+{
+    QSizeF psize = pixelSize(filename, size);
+    QPixmap px = BitmapFactory().pixmapFromSvg(filename, psize);
+    return px.toImage();
+}
+
+bool ViewProviderImagePlane::isSvgFile(const char* filename) const
 {
     QFileInfo fi(QString::fromUtf8(filename));
-    if (fi.suffix().toLower() == QLatin1String("svg")) {
-        QImage tmp;
-        if (tmp.load(QString::fromUtf8(filename))) {
-            double xPixelsPerM = tmp.dotsPerMeterX();
-            double yPixelsPerM = tmp.dotsPerMeterY();
-            width = width * xPixelsPerM / 1000;
-            height = height * yPixelsPerM / 1000;
-        }
+    return (fi.suffix().toLower() == QLatin1String("svg"));
+}
 
-        QPixmap px = BitmapFactory().pixmapFromSvg(filename, QSizeF(width, height));
-        img = px.toImage();
-        return true;
+QSizeF ViewProviderImagePlane::defaultSizeOfSvg(const char* filename) const
+{
+    QSvgRenderer svg;
+    svg.load(QString::fromUtf8(filename));
+    return svg.defaultSize();
+}
+
+QSizeF ViewProviderImagePlane::getSizeInMM(const QImage& img) const
+{
+    double xPixelsPerM = img.dotsPerMeterX();
+    double width = img.width();
+    width = width * 1000 / xPixelsPerM;
+
+    double yPixelsPerM = img.dotsPerMeterY();
+    double height = img.height();
+    height = height * 1000 / yPixelsPerM;
+
+    QSizeF sizef;
+    sizef.setWidth(width);
+    sizef.setHeight(height);
+    return sizef;
+}
+
+QSizeF ViewProviderImagePlane::pixelSize(const char* filename, const QSizeF& size) const
+{
+    QImage tmp;
+    if (tmp.load(QString::fromUtf8(filename))) {
+        double xPixelsPerM = tmp.dotsPerMeterX();
+        double yPixelsPerM = tmp.dotsPerMeterY();
+
+        double width = size.width();
+        double height = size.height();
+
+        width = width * xPixelsPerM / 1000;
+        height = height * yPixelsPerM / 1000;
+
+        return {width, height};
     }
 
-    return false;
+    return size;
 }
 
 void ViewProviderImagePlane::convertToSFImage(const QImage& img)

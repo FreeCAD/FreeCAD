@@ -53,10 +53,6 @@ void App::Extension::init(){
 
 using namespace App;
 
-Extension::Extension()
-{
-}
-
 Extension::~Extension()
 {
     if (!ExtensionPythonObject.is(Py::_None())){
@@ -79,7 +75,6 @@ void Extension::initExtensionType(Base::Type type) {
 }
 
 void Extension::initExtension(ExtensionContainer* obj) {
-
     if (m_extensionType.isBad())
         throw Base::RuntimeError("Extension: Extension type not set");
 
@@ -115,11 +110,8 @@ std::string Extension::name() const {
 
     if (pos != std::string::npos)
         return temp.substr(pos+1);
-    else
-        return std::string();
+    return {};
 }
-
-
 
 Property* Extension::extensionGetPropertyByName(const char* name) const {
 

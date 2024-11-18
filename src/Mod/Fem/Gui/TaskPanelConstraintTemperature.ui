@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Select the vertices, lines and surfaces: </string>
+    <string>Select the vertices, lines and surfaces:</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_2">

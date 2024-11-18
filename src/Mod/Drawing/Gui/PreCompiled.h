@@ -26,7 +26,7 @@
 #include <FCConfig.h>
 
 #ifdef _MSC_VER
-#   pragma warning(disable : 4005)
+#pragma warning(disable : 4005)
 #endif
 
 #ifdef _PreComp_
@@ -46,7 +46,6 @@
 #include <QFile>
 #include <QFileDialog>
 #include <QFileInfo>
-#include <QGLWidget>
 #include <QGraphicsRectItem>
 #include <QGraphicsSvgItem>
 #include <QGridLayout>
@@ -55,15 +54,17 @@
 #include <QListWidget>
 #include <QMenu>
 #include <QMessageBox>
-#include <QPainter>
+#include <QOpenGLWidget>
 #include <QPaintEvent>
-#include <QPrinter>
+#include <QPainter>
+#include <QPaintEngine>
 #include <QPrintDialog>
 #include <QPrintPreviewDialog>
+#include <QPrinter>
 #include <QRegExp>
 #include <QTimer>
 #include <QWheelEvent>
 
-#endif //_PreComp_
+#endif  //_PreComp_
 
-#endif // DRAWINGGUI_PRECOMPILED_H
+#endif  // DRAWINGGUI_PRECOMPILED_H

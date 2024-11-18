@@ -40,7 +40,7 @@ class SpreadsheetGuiCases(unittest.TestCase):
 
     def tearDown(self):
         pass
-        #FreeCAD.closeDocument(self.doc.Name)
+        # FreeCAD.closeDocument(self.doc.Name)
 
     def injectSimpleData(self):
         """A utility function to initialize a blank sheet with some known data"""

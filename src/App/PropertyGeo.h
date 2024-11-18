@@ -44,7 +44,6 @@ class ComplexGeoData;
 
 namespace App
 {
-class Feature;
 class Placement;
 
 
@@ -102,7 +101,7 @@ public:
     bool getPyPathValue(const ObjectIdentifier &path, Py::Object &res) const override;
 
     virtual Base::Unit getUnit() const {
-        return Base::Unit();
+        return {};
     }
 
     bool isSame(const Property &other) const override {
@@ -248,7 +247,7 @@ class AppExport PropertyMatrix: public Property
 public:
     /**
      * A constructor.
-     * Intitialises to an identity matrix
+     * Initialises to an identity matrix
      */
     PropertyMatrix();
 
@@ -541,6 +540,18 @@ public:
     virtual const Data::ComplexGeoData* getComplexData() const = 0;
     Base::BoundBox3d getBoundingBox() const override = 0;
     //@}
+
+    /** Return the element map version
+     *
+     * @param persisted: if true, return the restored element map version. Or
+     * else, return the current element map version
+     */
+    virtual std::string getElementMapVersion(bool restored=false) const;
+
+    /// Return true to signal element map version change
+    virtual bool checkElementMapVersion(const char * ver) const;
+
+    void afterRestore() override;
 };
 
 } // namespace App

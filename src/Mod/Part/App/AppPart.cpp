@@ -66,6 +66,7 @@
 #include "FeatureChamfer.h"
 #include "FeatureCompound.h"
 #include "FeatureExtrusion.h"
+#include "FeatureScale.h"
 #include "FeatureFace.h"
 #include "FeatureFillet.h"
 #include "FeatureGeometrySet.h"
@@ -84,6 +85,7 @@
 #include "FeaturePartPolygon.h"
 #include "FeaturePartSection.h"
 #include "FeaturePartSpline.h"
+#include "FeatureProjectOnSurface.h"
 #include "FeatureRevolution.h"
 #include "Geometry.h"
 #include "Geometry2d.h"
@@ -183,6 +185,8 @@
 #include <ShapeUpgrade/UnifySameDomainPy.h>
 
 #include <OCAF/ImportExportSettings.h>
+#include "MeasureClient.h"
+#include <FuzzyHelper.h>
 
 namespace Part {
 extern PyObject* initModule();
@@ -196,8 +200,17 @@ PyObject* Part::PartExceptionOCCRangeError;
 PyObject* Part::PartExceptionOCCConstructionError;
 PyObject* Part::PartExceptionOCCDimensionError;
 
+// clang-format off
 PyMOD_INIT_FUNC(Part)
 {
+    // load dependent module
+    try {
+        Base::Interpreter().runString("import Materials");
+    }
+    catch(const Base::Exception& e) {
+        PyErr_SetString(PyExc_ImportError, e.what());
+        PyMOD_Return(nullptr);
+    }
     Base::Console().Log("Module: Part\n");
 
     // This is highly experimental and we should keep an eye on it
@@ -397,6 +410,7 @@ PyMOD_INIT_FUNC(Part)
     Part::PropertyGeometryList  ::init();
     Part::PropertyShapeHistory  ::init();
     Part::PropertyFilletEdges   ::init();
+    Part::PropertyShapeCache    ::init();
     Part::PropertyTopoShapeList ::init();
 
     Part::FaceMaker             ::init();
@@ -440,7 +454,9 @@ PyMOD_INIT_FUNC(Part)
     Part::Compound              ::init();
     Part::Compound2             ::init();
     Part::Extrusion             ::init();
+    Part::Scale                 ::init();
     Part::Revolution            ::init();
+    Part::ProjectOnSurface      ::init();
     Part::Mirroring             ::init();
     Part::ImportStep            ::init();
     Part::ImportIges            ::init();
@@ -483,6 +499,7 @@ PyMOD_INIT_FUNC(Part)
     Part::GeometryBoolExtension   	::init();
     Part::GeometryDoubleExtension 	::init();
     Part::GeometryMigrationExtension	::init();
+    Part::GeometryMigrationPersistenceExtension	::init();
     Part::Geometry                	::init();
     Part::GeomPoint               	::init();
     Part::GeomCurve               	::init();
@@ -539,10 +556,18 @@ PyMOD_INIT_FUNC(Part)
     Part::Geom2dOffsetCurve       ::init();
     Part::Geom2dTrimmedCurve      ::init();
 
+
     IGESControl_Controller::Init();
     STEPControl_Controller::Init();
 
     OCAF::ImportExportSettings::initialize();
+    Part::MeasureClient::initialize();
 
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
+    
+    Part::FuzzyHelper::setBooleanFuzzy(hGrp->GetFloat("BooleanFuzzy",10.0));
+    
     PyMOD_Return(partModule);
 }
+// clang-format on

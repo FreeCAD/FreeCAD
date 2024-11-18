@@ -25,9 +25,9 @@
 #define WIZARD_H
 
 
+#include <QDialog>
 #include <QtDesigner/QDesignerContainerExtension>
 #include <QtDesigner/QExtensionFactory>
-#include <QDialog>
 
 class QLabel;
 class QFrame;
@@ -37,30 +37,30 @@ class QHBoxLayout;
 class QVBoxLayout;
 class QExtensionManager;
 
-class Wizard : public QDialog
+class Wizard: public QDialog
 {
     Q_OBJECT
     Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex)
     Q_PROPERTY(QString pageTitle READ pageTitle WRITE setPageTitle STORED false)
 
 public:
-    Wizard(QWidget *parent = 0);
+    Wizard(QWidget* parent = 0);
 
     QSize sizeHint() const;
 
-    void addPage(QWidget *page);
+    void addPage(QWidget* page);
     void removePage(int index);
     int count() const;
     int currentIndex() const;
-    void insertPage(int index, QWidget *page);
+    void insertPage(int index, QWidget* page);
     void setCurrentIndex(int index);
-    QWidget *widget(int index);
+    QWidget* widget(int index);
 
     QPushButton* backButton() const;
     QPushButton* nextButton() const;
 
     QString pageTitle() const;
-    void setPageTitle(QString const &newTitle);
+    void setPageTitle(QString const& newTitle);
 
 public Q_SLOTS:
     void backButtonClicked();
@@ -68,52 +68,52 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void currentIndexChanged(int index);
-    void pageTitleChanged(const QString &title);
+    void pageTitleChanged(const QString& title);
 
 private:
-    QLabel *textLabel;
+    QLabel* textLabel;
     QFrame* topLine;
     QFrame* bottomLine;
-    QStackedWidget *stackWidget;
-    QPushButton *_cancelButton;
-    QPushButton *_backButton;
-    QPushButton *_nextButton;
-    QPushButton *_finishButton;
-    QHBoxLayout *buttonLayout;
-    QVBoxLayout *mainLayout;
+    QStackedWidget* stackWidget;
+    QPushButton* _cancelButton;
+    QPushButton* _backButton;
+    QPushButton* _nextButton;
+    QPushButton* _finishButton;
+    QHBoxLayout* buttonLayout;
+    QVBoxLayout* mainLayout;
 };
 
-class WizardExtension : public QObject, public QDesignerContainerExtension
+class WizardExtension: public QObject, public QDesignerContainerExtension
 {
     Q_OBJECT
     Q_INTERFACES(QDesignerContainerExtension)
 
 public:
-    WizardExtension(Wizard *widget, QObject *parent);
+    WizardExtension(Wizard* widget, QObject* parent);
 
     int count() const;
-    QWidget *widget(int index) const;
+    QWidget* widget(int index) const;
     int currentIndex() const;
     void setCurrentIndex(int index);
-    void addWidget(QWidget *widget);
-    void insertWidget(int index, QWidget *widget);
+    void addWidget(QWidget* widget);
+    void insertWidget(int index, QWidget* widget);
     void remove(int index);
 
 private:
-    Wizard *myWidget;
+    Wizard* myWidget;
 };
 
 class QExtensionManager;
 
-class WizardExtensionFactory : public QExtensionFactory
+class WizardExtensionFactory: public QExtensionFactory
 {
     Q_OBJECT
 
 public:
-    WizardExtensionFactory(QExtensionManager *parent = 0);
+    WizardExtensionFactory(QExtensionManager* parent = 0);
 
 protected:
-    QObject *createExtension(QObject *object, const QString &iid, QObject *parent) const;
+    QObject* createExtension(QObject* object, const QString& iid, QObject* parent) const;
 };
 
 #endif

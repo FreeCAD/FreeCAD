@@ -76,9 +76,7 @@ TaskShapeBinder::TaskShapeBinder(ViewProviderShapeBinder* view, bool newObj, QWi
     updateUI();
 }
 
-TaskShapeBinder::~TaskShapeBinder()
-{
-}
+TaskShapeBinder::~TaskShapeBinder() = default;
 
 void TaskShapeBinder::updateUI()
 {
@@ -130,7 +128,11 @@ void TaskShapeBinder::setupContextMenu()
 {
     // Create context menu
     QAction* remove = new QAction(tr("Remove"), this);
-    remove->setShortcut(QKeySequence::Delete);
+    {
+        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
+        auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
+        remove->setShortcut(QKeySequence(shortcut));
+    }
     remove->setShortcutContext(Qt::WidgetShortcut);
 #if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     // display shortcut behind the context menu entry
@@ -222,8 +224,8 @@ void TaskShapeBinder::removeFromListWidget(QListWidget* widget, QString itemstr)
 {
     QList<QListWidgetItem*> items = widget->findItems(itemstr, Qt::MatchExactly);
     if (!items.empty()) {
-        for (QList<QListWidgetItem*>::const_iterator i = items.cbegin(); i != items.cend(); i++) {
-            QListWidgetItem* it = widget->takeItem(widget->row(*i));
+        for (auto item : items) {
+            QListWidgetItem* it = widget->takeItem(widget->row(item));
             delete it;
         }
     }
@@ -231,7 +233,7 @@ void TaskShapeBinder::removeFromListWidget(QListWidget* widget, QString itemstr)
 
 void TaskShapeBinder::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    auto setObjectLabel = [=](const Gui::SelectionChanges& msg) {
+    auto setObjectLabel = [this](const Gui::SelectionChanges& msg) {
         App::DocumentObject* obj = msg.Object.getObject();
         if (obj) {
             ui->baseEdit->setText(QString::fromStdString(obj->Label.getStrValue()));
@@ -391,10 +393,7 @@ TaskDlgShapeBinder::TaskDlgShapeBinder(ViewProviderShapeBinder* view, bool newOb
     Content.push_back(parameter);
 }
 
-TaskDlgShapeBinder::~TaskDlgShapeBinder()
-{
-
-}
+TaskDlgShapeBinder::~TaskDlgShapeBinder() = default;
 
 bool TaskDlgShapeBinder::accept()
 {
@@ -410,7 +409,7 @@ bool TaskDlgShapeBinder::accept()
         }
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromUtf8(e.what()));
+        QMessageBox::warning(parameter, tr("Input error"), QApplication::translate("Exception", e.what()));
         return false;
     }
 

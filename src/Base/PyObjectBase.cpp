@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
+#include <sstream>
 #endif
 
 #include "PyObjectBase.h"
@@ -36,6 +36,7 @@
 
 using namespace Base;
 
+// clang-format off
 PyObject* Base::PyExc_FC_GeneralError = nullptr;
 PyObject* Base::PyExc_FC_FreeCADAbort = nullptr;
 PyObject* Base::PyExc_FC_XMLBaseException = nullptr;
@@ -47,18 +48,18 @@ PyObject* Base::PyExc_FC_BadGraphError = nullptr;
 PyObject* Base::PyExc_FC_ExpressionError = nullptr;
 PyObject* Base::PyExc_FC_ParserError = nullptr;
 PyObject* Base::PyExc_FC_CADKernelError = nullptr;
+PyObject* Base::PyExc_FC_PropertyError = nullptr;
+PyObject* Base::PyExc_FC_AbortIOException = nullptr;
 
-typedef struct {
+typedef struct {            //NOLINT
     PyObject_HEAD
     PyObject* baseobject;
     PyObject* weakreflist;  /* List of weak references */
 } PyBaseProxy;
 
-// Constructor
-PyObjectBase::PyObjectBase(void* p,PyTypeObject *T)
-  : _pcTwinPointer(p)
-  , baseProxy(nullptr)
-  , attrDict(nullptr)
+// NOLINTNEXTLINE
+PyObjectBase::PyObjectBase(void* voidp, PyTypeObject *T)
+  : _pcTwinPointer(voidp)
 {
 #if PY_VERSION_HEX < 0x030b0000
     Py_TYPE(this) = T;
@@ -80,8 +81,10 @@ PyObjectBase::~PyObjectBase()
 #ifdef FC_LOGPYOBJECTS
     Base::Console().Log("PyO-: %s (%p)\n",Py_TYPE(this)->tp_name, this);
 #endif
-    if (baseProxy && reinterpret_cast<PyBaseProxy*>(baseProxy)->baseobject == this)
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
+    if (baseProxy && reinterpret_cast<PyBaseProxy*>(baseProxy)->baseobject == this) {
         Py_DECREF(baseProxy);
+    }
     Py_XDECREF(attrDict);
 }
 
@@ -107,8 +110,10 @@ static void
 PyBaseProxy_dealloc(PyObject* self)
 {
     /* Clear weakrefs first before calling any destructors */
-    if (reinterpret_cast<PyBaseProxy*>(self)->weakreflist)
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
+    if (reinterpret_cast<PyBaseProxy*>(self)->weakreflist) {
         PyObject_ClearWeakRefs(self);
+    }
     Py_TYPE(self)->tp_free(self);
 }
 
@@ -166,7 +171,10 @@ static PyTypeObject PyBaseProxyType = {
     0,                                                      /*tp_version_tag */
     nullptr                                                 /*tp_finalize */
 #if PY_VERSION_HEX >= 0x03090000
-    ,0                                                      /*tp_vectorcall */
+    ,0                                            //NOLINT  /*tp_vectorcall */
+#if PY_VERSION_HEX >= 0x030c0000
+    ,0                                                      /*tp_watched */
+#endif
 #elif PY_VERSION_HEX >= 0x03080000
     ,0                                                      /*tp_vectorcall */
     /* bpo-37250: kept for backwards compatibility in CPython 3.8 only */
@@ -231,7 +239,10 @@ PyTypeObject PyObjectBase::Type = {
     0,                                                      /*tp_version_tag */
     nullptr                                                 /*tp_finalize */
 #if PY_VERSION_HEX >= 0x03090000
-    ,0                                                      /*tp_vectorcall */
+    ,0                                            //NOLINT  /*tp_vectorcall */
+#if PY_VERSION_HEX >= 0x030c0000
+    ,0                                                      /*tp_watched */
+#endif
 #elif PY_VERSION_HEX >= 0x03080000
     ,0                                                      /*tp_vectorcall */
     /* bpo-37250: kept for backwards compatibility in CPython 3.8 only */
@@ -248,14 +259,16 @@ PyObject* createWeakRef(PyObjectBase* ptr)
     static bool init = false;
     if (!init) {
        init = true;
-       if (PyType_Ready(&PyBaseProxyType) < 0)
+       if (PyType_Ready(&PyBaseProxyType) < 0) {
            return nullptr;
+        }
     }
 
     PyObject* proxy = ptr->baseProxy;
     if (!proxy) {
         proxy = PyType_GenericAlloc(&PyBaseProxyType, 0);
         ptr->baseProxy = proxy;
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
         reinterpret_cast<PyBaseProxy*>(proxy)->baseobject = ptr;
     }
 
@@ -268,6 +281,7 @@ PyObjectBase* getFromWeakRef(PyObject* ref)
     if (ref) {
         PyObject* proxy = PyWeakref_GetObject(ref);
         if (proxy && PyObject_TypeCheck(proxy, &PyBaseProxyType)) {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
             return static_cast<PyObjectBase*>(reinterpret_cast<PyBaseProxy*>(proxy)->baseobject);
         }
     }
@@ -284,7 +298,7 @@ PyMethodDef PyObjectBase::Methods[] = {
 
 PyObject* PyObjectBase::__getattro(PyObject * obj, PyObject *attro)
 {
-    const char *attr;
+    const char *attr{};
     attr = PyUnicode_AsUTF8(attro);
 
     // For the __class__ attribute get it directly as with
@@ -292,8 +306,9 @@ PyObject* PyObjectBase::__getattro(PyObject * obj, PyObject *attro)
     // the wrong type object (#0003311)
     if (streq(attr, "__class__")) {
         PyObject* res = PyObject_GenericGetAttr(obj, attro);
-        if (res)
+        if (res) {
             return res;
+        }
     }
 
     // This should be the entry in Type
@@ -335,6 +350,7 @@ PyObject* PyObjectBase::__getattro(PyObject * obj, PyObject *attro)
         // something is wrong with the Python types. For example, a C++ class
         // that adds an extension uses the same Python type as a wrapper than
         // another C++ class without this extension.
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
         PyCFunctionObject* cfunc = reinterpret_cast<PyCFunctionObject*>(value);
         if (!cfunc->m_self) {
             Py_DECREF(cfunc);
@@ -348,7 +364,7 @@ PyObject* PyObjectBase::__getattro(PyObject * obj, PyObject *attro)
 
 int PyObjectBase::__setattro(PyObject *obj, PyObject *attro, PyObject *value)
 {
-    const char *attr;
+    const char *attr{};
     attr = PyUnicode_AsUTF8(attro);
 
     //Hint: In general we don't allow to delete attributes (i.e. value=0). However, if we want to allow
@@ -357,7 +373,7 @@ int PyObjectBase::__setattro(PyObject *obj, PyObject *attro, PyObject *value)
         PyErr_Format(PyExc_AttributeError, "Cannot delete attribute: '%s'", attr);
         return -1;
     }
-    else if (!static_cast<PyObjectBase*>(obj)->isValid()){
+    if (!static_cast<PyObjectBase*>(obj)->isValid()){
         PyErr_Format(PyExc_ReferenceError, "Cannot access attribute '%s' of deleted object", attr);
         return -1;
     }
@@ -393,44 +409,43 @@ PyObject *PyObjectBase::_getattr(const char *attr)
         // Note: We must return the type object here,
         // so that our own types feel as really Python objects
         Py_INCREF(Py_TYPE(this));
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
         return reinterpret_cast<PyObject *>(Py_TYPE(this));
     }
-    else if (streq(attr, "__members__")) {
+    if (streq(attr, "__members__")) {
         // Use __dict__ instead as __members__ is deprecated
         return nullptr;
     }
-    else if (streq(attr,"__dict__")) {
+    if (streq(attr,"__dict__")) {
         // Return the default dict
         PyTypeObject *tp = Py_TYPE(this);
         Py_XINCREF(tp->tp_dict);
         return tp->tp_dict;
     }
-    else if (streq(attr,"softspace")) {
+    if (streq(attr,"softspace")) {
         // Internal Python stuff
         return nullptr;
     }
-    else {
-        // As fallback solution use Python's default method to get generic attributes
-        PyObject *w, *res;
-        w = PyUnicode_InternFromString(attr);
-        if (w) {
-            res = PyObject_GenericGetAttr(this, w);
-            Py_XDECREF(w);
-            return res;
-        } else {
-            // Throw an exception for unknown attributes
-            PyTypeObject *tp = Py_TYPE(this);
-            PyErr_Format(PyExc_AttributeError, "%.50s instance has no attribute '%.400s'", tp->tp_name, attr);
-            return nullptr;
-        }
+    // As fallback solution use Python's default method to get generic attributes
+    PyObject *w{}, *res{};
+    w = PyUnicode_InternFromString(attr);
+    if (w) {
+        res = PyObject_GenericGetAttr(this, w);
+        Py_XDECREF(w);
+        return res;
     }
+    // Throw an exception for unknown attributes
+    PyTypeObject *tp = Py_TYPE(this);
+    PyErr_Format(PyExc_AttributeError, "%.50s instance has no attribute '%.400s'", tp->tp_name, attr);
+    return nullptr;
 }
 
 int PyObjectBase::_setattr(const char *attr, PyObject *value)
 {
-    if (streq(attr,"softspace"))
+    if (streq(attr,"softspace")) {
         return -1; // filter out softspace
-    PyObject *w;
+    }
+    PyObject *w{};
     // As fallback solution use Python's default method to get generic attributes
     w = PyUnicode_InternFromString(attr); // new reference
     if (w) {
@@ -438,12 +453,11 @@ int PyObjectBase::_setattr(const char *attr, PyObject *value)
         int res = PyObject_GenericSetAttr(this, w, value);
         Py_DECREF(w);
         return res;
-    } else {
-        // Throw an exception for unknown attributes
-        PyTypeObject *tp = Py_TYPE(this);
-        PyErr_Format(PyExc_AttributeError, "%.50s instance has no attribute '%.400s'", tp->tp_name, attr);
-        return -1;
     }
+    // Throw an exception for unknown attributes
+    PyTypeObject *tp = Py_TYPE(this);
+    PyErr_Format(PyExc_AttributeError, "%.50s instance has no attribute '%.400s'", tp->tp_name, attr);
+    return -1;
 }
 
 /*------------------------------
@@ -499,8 +513,9 @@ void PyObjectBase::setAttributeOf(const char* attr, PyObject* par)
 
 void PyObjectBase::startNotify()
 {
-    if (!shouldNotify())
+    if (!shouldNotify()) {
         return;
+    }
 
     if (attrDict) {
         // This is the attribute name to the parent structure
@@ -524,8 +539,9 @@ void PyObjectBase::startNotify()
             Py_DECREF(attr); // might be destroyed now
             Py_DECREF(this); // might be destroyed now
 
-            if (PyErr_Occurred())
+            if (PyErr_Occurred()) {
                 PyErr_Clear();
+            }
         }
         Py_DECREF(key1);
         Py_DECREF(key2);
@@ -567,3 +583,4 @@ void PyObjectBase::clearAttributes()
         PyDict_Clear(attrDict);
     }
 }
+// clang-format on

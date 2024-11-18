@@ -235,7 +235,7 @@ void GeoFeatureGroupExtension::extensionOnChanged(const Property* p) {
 std::vector< DocumentObject* > GeoFeatureGroupExtension::getScopedObjectsFromLinks(const DocumentObject* obj, LinkScope scope) {
 
     if(!obj)
-        return std::vector< DocumentObject* >();
+        return {};
 
     //we get all linked objects. We can't use outList() as this includes the links from expressions
     std::vector< App::DocumentObject* > result;
@@ -256,17 +256,13 @@ std::vector< DocumentObject* > GeoFeatureGroupExtension::getScopedObjectsFromLin
 std::vector< DocumentObject* > GeoFeatureGroupExtension::getScopedObjectsFromLink(App::Property* prop, LinkScope scope) {
 
     if(!prop)
-        return std::vector< DocumentObject* >();
+        return {};
 
     std::vector< App::DocumentObject* > result;
     auto link = Base::freecad_dynamic_cast<PropertyLinkBase>(prop);
     if(link && link->getScope()==scope)
         link->getLinks(result);
 
-    //getLinks() guarantees no nullptrs
-    //
-    //it is important to remove all nullptrs
-    // result.erase(std::remove(result.begin(), result.end(), nullptr), result.end());
     return result;
 }
 
@@ -321,7 +317,7 @@ void GeoFeatureGroupExtension::getCSInList(const DocumentObject* obj,
 std::vector< DocumentObject* > GeoFeatureGroupExtension::getCSRelevantLinks(const DocumentObject* obj) {
 
     if(!obj)
-        return std::vector< DocumentObject* >();
+        return {};
 
     //get all out links
     std::vector<DocumentObject*> vec;
@@ -368,7 +364,7 @@ bool GeoFeatureGroupExtension::extensionGetSubObject(DocumentObject *&ret, const
             *mat *= const_cast<GeoFeatureGroupExtension*>(this)->placement().getValue().toMatrix();
     }else if((dot=strchr(subname,'.'))) {
         if(subname[0]!='$')
-            ret = Group.find(std::string(subname,dot));
+            ret = Group.findUsingMap(std::string(subname,dot));
         else{
             std::string name = std::string(subname+1,dot);
             for(auto child : Group.getValues()) {
@@ -418,13 +414,10 @@ bool GeoFeatureGroupExtension::areLinksValid(const DocumentObject* obj) {
     if(!obj)
         return true;
 
-    //no cross CS link for local links.
-    //Base::Console().Message("Check object links: %s\n", obj->getNameInDocument());
     std::vector<App::Property*> list;
     obj->getPropertyList(list);
     for(App::Property* prop : list) {
         if(!isLinkValid(prop)) {
-            //Base::Console().Message("Invalid link: %s\n", prop->getName());
             return false;
         }
     }
@@ -489,7 +482,7 @@ void GeoFeatureGroupExtension::getInvalidLinkObjects(const DocumentObject* obj, 
 
 bool GeoFeatureGroupExtension::extensionGetSubObjects(std::vector<std::string> &ret, int) const {
     for(auto obj : Group.getValues()) {
-        if(obj && obj->getNameInDocument() && !obj->testStatus(ObjectStatus::GeoExcluded))
+        if(obj && obj->isAttachedToDocument() && !obj->testStatus(ObjectStatus::GeoExcluded))
             ret.push_back(std::string(obj->getNameInDocument())+'.');
     }
     return true;

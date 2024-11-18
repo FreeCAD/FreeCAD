@@ -55,7 +55,7 @@ class TechDrawExport DrawProjGroup : public TechDraw::DrawViewCollection
 public:
     /// Constructor
     DrawProjGroup();
-    ~DrawProjGroup() = default;
+    ~DrawProjGroup() override = default;
 
     App::PropertyLinkList   Source;
     App::PropertyXLinkList  XSource;
@@ -129,6 +129,7 @@ public:
 
     void rotate(const std::string &rotationdirection);
     void spin(const std::string &spindirection);
+    void spin(double angle);
 
     void dumpISO(const char * title);
     std::vector<DrawProjGroupItem*> getViewsAsDPGI();
@@ -152,7 +153,7 @@ protected:
 
     /// Annoying helper - keep in sync with DrawProjGroupItem::TypeEnums
     /*!
-     * \todo {See note regarding App::PropertyEnumeration on my wiki page http://freecadweb.org/wiki/User:Ian.rees}
+     * \todo {See note regarding App::PropertyEnumeration on my wiki page https://freecad.org/wiki/User:Ian.rees}
      * \return true iff 'in' is a valid name for an orthographic/isometric view
      */
     bool checkViewProjType(const char *in);

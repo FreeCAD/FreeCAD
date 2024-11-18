@@ -42,10 +42,7 @@ ViewProviderRuledSurface::ViewProviderRuledSurface()
   sPixmap = "Part_RuledSurface.svg";
 }
 
-ViewProviderRuledSurface::~ViewProviderRuledSurface()
-{
-
-}
+ViewProviderRuledSurface::~ViewProviderRuledSurface() = default;
 
 std::vector<App::DocumentObject*> ViewProviderRuledSurface::claimChildren() const
 {
@@ -62,7 +59,7 @@ std::vector<App::DocumentObject*> ViewProviderRuledSurface::claimChildren() cons
 void ViewProviderRuledSurface::updateData(const App::Property* prop)
 {
     PartGui::ViewProviderPart::updateData(prop);
-    if (prop->getTypeId() == Part::PropertyShapeHistory::getClassTypeId()) {
+    if (prop->is<Part::PropertyShapeHistory>()) {
         //const std::vector<Part::ShapeHistory>& hist = static_cast<const Part::PropertyShapeHistory*>
         //    (prop)->getValues();
     }

@@ -43,31 +43,31 @@ namespace TechDraw
 
 class TechDrawExport DrawParametricTemplate: public TechDraw::DrawTemplate
 {
-    PROPERTY_HEADER(TechDraw::DrawParametricTemplate);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawParametricTemplate);
 
 public:
     DrawParametricTemplate(); /// Constructor
-    ~DrawParametricTemplate();
+    ~DrawParametricTemplate() override;
 
     App::PropertyFile Template;
 
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute();
+    App::DocumentObjectExecReturn *execute() override;
     //@}
 
 
-    short mustExecute() const;
+    short mustExecute() const override;
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderTemplate";
     }
 
     // from base class
-    virtual PyObject *getPyObject();
-    virtual unsigned int getMemSize() const;
+    PyObject *getPyObject() override;
+    unsigned int getMemSize() const override;
 
 public:
     std::vector<TechDraw::BaseGeomPtr> getGeometry() { return geom; }
@@ -76,11 +76,11 @@ public:
     // Template Drawing Methods
     int drawLine(double x1, double y1, double x2, double y2);
 
-    double getHeight() const;
-    double getWidth() const;
+    double getHeight() const override;
+    double getWidth() const override;
 
 protected:
-    void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
 
 protected:
     std::vector<TechDraw::BaseGeomPtr> geom;

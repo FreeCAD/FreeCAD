@@ -38,7 +38,7 @@ Since they are cached they will not be imported twice.
 
 __title__ = "FEM module Gui init script"
 __author__ = "Juergen Riegel, Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 # imports to get flake8 quired
 import sys
@@ -71,13 +71,16 @@ class FemWorkbench(Workbench):
         import Fem
         import FemGui
         import femcommands.commands
+
+        FreeCADGui.addPreferencePage(":/ui/DlgSettingsNetgen.ui", "FEM")
+
         # dummy usage to get flake8 and lgtm quiet
         False if Fem.__name__ else True
         False if FemGui.__name__ else True
         False if femcommands.commands.__name__ else True
 
     def GetClassName(self):
-        # see https://forum.freecadweb.org/viewtopic.php?f=10&t=43300
+        # see https://forum.freecad.org/viewtopic.php?f=10&t=43300
         return "FemGui::Workbench"
 
 

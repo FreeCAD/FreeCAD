@@ -36,23 +36,23 @@ namespace Mesh
  * into the FreeCAD workspace.
  * @author Werner Mayer
  */
-class Import : public Mesh::Feature
+class Import: public Mesh::Feature
 {
-  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::Import);
+    PROPERTY_HEADER_WITH_OVERRIDE(Mesh::Import);
 
 public:
-  Import();
+    Import();
 
-  App::PropertyFile FileName;
+    App::PropertyFile FileName;
 
-  /** @name methods override Feature */
-  //@{
-  /// recalculate the Feature
-  App::DocumentObjectExecReturn *execute() override;
-  short mustExecute() const override;
-  //@}
+    /** @name methods override Feature */
+    //@{
+    /// recalculate the Feature
+    App::DocumentObjectExecReturn* execute() override;
+    short mustExecute() const override;
+    //@}
 };
 
-}
+}  // namespace Mesh
 
-#endif // FEATURE_MESH_IMPORT_H
+#endif  // FEATURE_MESH_IMPORT_H

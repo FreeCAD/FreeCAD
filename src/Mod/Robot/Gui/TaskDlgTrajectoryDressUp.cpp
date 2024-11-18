@@ -35,31 +35,24 @@ using namespace RobotGui;
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgTrajectoryDressUp::TaskDlgTrajectoryDressUp(Robot::TrajectoryDressUpObject *obj)
-    : TaskDialog(),pcObject(obj)
+TaskDlgTrajectoryDressUp::TaskDlgTrajectoryDressUp(Robot::TrajectoryDressUpObject* obj)
+    : TaskDialog()
+    , pcObject(obj)
 {
-    param  = new TaskTrajectoryDressUpParameter(obj);
+    param = new TaskTrajectoryDressUpParameter(obj);
 
     Content.push_back(param);
-}
-
-TaskDlgTrajectoryDressUp::~TaskDlgTrajectoryDressUp()
-{
-
 }
 
 //==== calls from the TaskView ===============================================================
 
 
 void TaskDlgTrajectoryDressUp::open()
-{
-
-}
+{}
 
 void TaskDlgTrajectoryDressUp::clicked(int button)
 {
-    if(QDialogButtonBox::Apply == button)
-    {
+    if (QDialogButtonBox::Apply == button) {
         // transfer the values to the object
         param->writeValues();
         // May throw an exception which we must handle here
@@ -73,24 +66,23 @@ bool TaskDlgTrajectoryDressUp::accept()
     pcObject->recomputeFeature();
 
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    if(doc) 
+    if (doc) {
         doc->resetEdit();
+    }
     return true;
- 
 }
 
 bool TaskDlgTrajectoryDressUp::reject()
 {
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    if(doc) 
+    if (doc) {
         doc->resetEdit();
+    }
     return true;
 }
 
 void TaskDlgTrajectoryDressUp::helpRequested()
-{
-
-}
+{}
 
 
 #include "moc_TaskDlgTrajectoryDressUp.cpp"

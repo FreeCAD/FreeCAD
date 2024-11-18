@@ -28,40 +28,41 @@
 __title__ = "FreeCAD Draft Edit Tool"
 __author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
               "Dmitry Chigrin, Carlo Pavan")
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## \addtogroup draftguitools
 # @{
 import math
 import pivy.coin as coin
 import PySide.QtCore as QtCore
-import PySide.QtGui as QtGui
+import PySide.QtWidgets as QtWidgets
 
 import FreeCAD as App
 import FreeCADGui as Gui
 import DraftVecUtils
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
-import draftguitools.gui_trackers as trackers
-import draftguitools.gui_base_original as gui_base_original
-import draftguitools.gui_tool_utils as gui_tool_utils
-import draftguitools.gui_edit_draft_objects as edit_draft
-import draftguitools.gui_edit_arch_objects as edit_arch
-import draftguitools.gui_edit_part_objects as edit_part
-import draftguitools.gui_edit_sketcher_objects as edit_sketcher
-
+from draftutils import gui_utils
+from draftutils import params
+from draftutils import utils
 from draftutils.translate import translate
+from draftguitools import gui_base_original
+from draftguitools import gui_edit_arch_objects as edit_arch
+from draftguitools import gui_edit_draft_objects as edit_draft
+from draftguitools import gui_edit_part_objects as edit_part
+from draftguitools import gui_edit_sketcher_objects as edit_sketcher
+from draftguitools import gui_tool_utils
+from draftguitools import gui_trackers as trackers
+
 
 COLORS = {
-    "default": Gui.draftToolBar.getDefaultColor("snap"),
-    "black":  (0., 0., 0.),
-    "white":  (1., 1., 1.),
-    "grey":   (.5, .5, .5),
-    "red":    (1., 0., 0.),
-    "green":  (0., 1., 0.),
-    "blue":   (0., 0., 1.),
-    "yellow": (1., 1., 0.),
-    "cyan":   (0., 1., 1.),
+    "default": utils.get_rgba_tuple(params.get_param("snapcolor"))[:3],
+    "black":   (0., 0., 0.),
+    "white":   (1., 1., 1.),
+    "grey":    (.5, .5, .5),
+    "red":     (1., 0., 0.),
+    "green":   (0., 1., 0.),
+    "blue":    (0., 0., 1.),
+    "yellow":  (1., 1., 0.),
+    "cyan":    (0., 1., 1.),
     "magenta": (1., 0., 1.)
 }
 
@@ -128,7 +129,7 @@ class Edit(gui_base_original.Modifier):
 
     Preferences
     -----------
-    maxObjects: Int
+    max_objects: Int
         set by "DraftEditMaxObjects" in user preferences
         The max number of FreeCAD objects the tool is
         allowed to edit at the same time.
@@ -213,10 +214,9 @@ class Edit(gui_base_original.Modifier):
         # only used by Arch Structure
         self.objs_formats = {}
 
-        # settings
-        param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-        self.maxObjects = param.GetInt("DraftEditMaxObjects", 5)
-        self.pick_radius = param.GetInt("DraftEditPickRadius", 20)
+        # settings (get updated in Activated)
+        self.max_objects = 5
+        self.pick_radius = 20
 
         self.alt_edit_mode = 0 # default edit mode for objects
 
@@ -256,7 +256,7 @@ class Edit(gui_base_original.Modifier):
         return {'Pixmap': 'Draft_Edit',
                 'Accel': "D, E",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Edit", "Edit"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Edit", "Edits the active object.\nPress E or ALT+LeftClick to display context menu\non supported nodes and on supported objects.")
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Edit", "Edits the active object.\nPress E or ALT + Left Click to display context menu\non supported nodes and on supported objects.")
                 }
 
 
@@ -278,6 +278,8 @@ class Edit(gui_base_original.Modifier):
 
         self.ui = Gui.draftToolBar
         self.view = gui_utils.get_3d_view()
+        self.max_objects = params.get_param("DraftEditMaxObjects")
+        self.pick_radius = params.get_param("DraftEditPickRadius")
 
         if Gui.Selection.getSelection():
             self.proceed()
@@ -309,10 +311,6 @@ class Edit(gui_base_original.Modifier):
 
         self.register_editing_callbacks()
 
-        # TODO: align working plane when editing starts
-        # App.DraftWorkingPlane.save()
-        # self.alignWorkingPlane()
-
 
     def numericInput(self, numx, numy, numz):
         """Execute callback by the toolbar to activate the update function.
@@ -339,8 +337,6 @@ class Edit(gui_base_original.Modifier):
             self.deformat_objects_after_editing(self.edited_objects)
 
         super(Edit, self).finish()
-        if Gui.Snapper.grid:
-            Gui.Snapper.grid.set()
         self.running = False
         # delay resetting edit mode otherwise it doesn't happen
         from PySide import QtCore
@@ -478,7 +474,6 @@ class Edit(gui_base_original.Modifier):
                                  + str(node_idx) + "\n")
 
         self.ui.lineUi(title=translate("draft", "Edit node"), icon="Draft_Edit")
-        self.ui.isRelative.hide()
         self.ui.continueCmd.hide()
         self.editing = node_idx
         self.trackers[obj.Name][node_idx].off()
@@ -498,7 +493,7 @@ class Edit(gui_base_original.Modifier):
             orthoConstrain = True
         snappedPos = Gui.Snapper.snap((pos[0],pos[1]),self.node[-1], constrain=orthoConstrain)
         self.trackers[self.obj.Name][self.editing].set(snappedPos)
-        self.ui.displayPoint(snappedPos, self.node[-1])
+        self.ui.displayPoint(snappedPos, self.node[-1], mask=Gui.Snapper.affinity)
         if self.ghost:
             self.updateGhost(obj=self.obj, node_idx=self.editing, v=snappedPos)
 
@@ -551,10 +546,13 @@ class Edit(gui_base_original.Modifier):
 
     def resetTrackersBezier(self, obj):
         # in future move tracker definition to DraftTrackers
-        knotmarkers = (coin.SoMarkerSet.DIAMOND_FILLED_9_9,#sharp
-                coin.SoMarkerSet.SQUARE_FILLED_9_9,        #tangent
-                coin.SoMarkerSet.HOURGLASS_FILLED_9_9)     #symmetric
-        polemarker = coin.SoMarkerSet.CIRCLE_FILLED_9_9    #pole
+        size = params.get_param_view("MarkerSize")
+        knotmarkers = (
+            Gui.getMarkerIndex("DIAMOND_FILLED", size),   # sharp
+            Gui.getMarkerIndex("SQUARE_FILLED", size),    # tangent
+            Gui.getMarkerIndex("HOURGLASS_FILLED", size)  # symmetric
+        )
+        polemarker = Gui.getMarkerIndex("CIRCLE_FILLED",  size)  # pole
         self.trackers[obj.Name] = []
         cont = obj.Continuity
         firstknotcont = cont[-1] if (obj.Closed and cont) else 0
@@ -651,7 +649,7 @@ class Edit(gui_base_original.Modifier):
     # ------------------------------------------------------------------------
 
     def display_tracker_menu(self, event):
-        self.tracker_menu = QtGui.QMenu()
+        self.tracker_menu = QtWidgets.QMenu()
         actions = None
 
         if self.overNode:
@@ -784,9 +782,9 @@ class Edit(gui_base_original.Modifier):
         """
         selection = Gui.Selection.getSelection()
         self.edited_objects = []
-        if len(selection) > self.maxObjects:
+        if len(selection) > self.max_objects:
             _err = translate("draft", "Too many objects selected, max number set to:")
-            App.Console.PrintMessage(_err + " " + str(self.maxObjects) + "\n")
+            App.Console.PrintMessage(_err + " " + str(self.max_objects) + "\n")
             return None
 
         for obj in selection:
@@ -813,7 +811,7 @@ class Edit(gui_base_original.Modifier):
         """
         for obj in objs:
             obj_gui_tools = self.get_obj_gui_tools(obj)
-            if obj_gui_tools:
+            if obj_gui_tools and obj.isAttachedToDocument():
                 obj_gui_tools.restore_object_style(obj, self.objs_formats[obj.Name])
 
 

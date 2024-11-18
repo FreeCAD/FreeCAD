@@ -1,10 +1,3 @@
-if(MSVC)
-    add_definitions(-DFCAppImport -DHAVE_ACOSH -DHAVE_ASINH -DHAVE_ATANH)
-else(MSVC)
-    add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
-endif(MSVC)
-
-
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
@@ -29,18 +22,36 @@ SET(Import_SRCS
     AppImportPy.cpp
     ExportOCAF.cpp
     ExportOCAF.h
+    ExportOCAF2.cpp
+    ExportOCAF2.h
     ImportOCAF.cpp
     ImportOCAF.h
     ImportOCAF2.cpp
     ImportOCAF2.h
     #ImportOCAFAssembly.cpp
     #ImportOCAFAssembly.h
+    ReaderGltf.cpp
+    ReaderGltf.h
+    ReaderIges.cpp
+    ReaderIges.h
+    ReaderStep.cpp
+    ReaderStep.h
     StepShapePy.xml
     StepShape.h
     StepShape.cpp
     StepShapePyImp.cpp
     PreCompiled.cpp
     PreCompiled.h
+    Tools.cpp
+    Tools.h
+    WriterGltf.cpp
+    WriterGltf.h
+    WriterIges.cpp
+    WriterIges.h
+    WriterStep.cpp
+    WriterStep.h
+    SketchExportHelper.cpp
+    SketchExportHelper.h
     dxf/ImpExpDxf.cpp
     dxf/ImpExpDxf.h
     dxf/dxf.cpp
@@ -65,9 +76,9 @@ SET(SCL_Resources
     SCL/Aufspannung.stp
     SCL/gasket1.p21
     SCL/Product1.stp
-    automotive_design.py     # AP214e3
-    ifc2x3.py                # IFC
-    ifc4.py                  # IFC 4
+    SCL_output/automotive_design.py     # AP214e3
+    SCL_output/ifc2x3.py                # IFC
+    SCL_output/ifc4.py                  # IFC 4
     PlmXmlParser.py
 )
 SOURCE_GROUP("SCL" FILES ${SCL_Resources})
@@ -76,6 +87,9 @@ generate_from_xml(StepShapePy)
 
 add_library(Import SHARED ${Import_SRCS})
 target_link_libraries(Import ${Import_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(Import)
+endif()
 
 ADD_CUSTOM_TARGET(ImportPy ALL
     SOURCES ${SCL_Resources}

@@ -48,7 +48,7 @@ public:
     static void finish();
     SoFCBackgroundGradient();
 
-    void GLRender (SoGLRenderAction *action);
+    void GLRender (SoGLRenderAction *action) override;
     void setGradient(Gradient grad);
     Gradient getGradient() const;
     void setColorGradient(const SbColor& fromColor,
@@ -61,7 +61,7 @@ private:
     Gradient gradient;
 
 protected:
-    virtual ~SoFCBackgroundGradient();
+    ~SoFCBackgroundGradient() override;
 
     SbColor fCol, tCol, mCol;
 };

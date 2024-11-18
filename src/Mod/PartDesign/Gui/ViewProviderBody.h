@@ -56,10 +56,12 @@ public:
 
     void attach(App::DocumentObject *) override;
 
-    bool doubleClicked(void) override;
+    bool doubleClicked() override;
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
+    bool isActiveBody();
+    void toggleActiveBody();
 
-    std::vector< std::string > getDisplayModes(void) const override;
+    std::vector< std::string > getDisplayModes() const override;
     void setDisplayMode(const char* ModeName) override;
     void setOverrideMode(const std::string& mode) override;
 
@@ -94,9 +96,6 @@ protected:
     void unifyVisualProperty(const App::Property* prop);
     /// Set Feature viewprovider into visual body mode
     void setVisualBodyMode(bool bodymode);
-
-private:
-    void copyColorsfromTip(App::DocumentObject* tip);
 
 private:
     static const char* BodyModeEnum[];

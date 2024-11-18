@@ -27,9 +27,9 @@
 #include <Gui/Application.h>
 #include <Gui/Language/Translator.h>
 
-#include "Workbench.h"
 #include "ViewProviderPage.h"
 #include "ViewProviderView.h"
+#include "Workbench.h"
 
 
 // use a different name to CreateCommand()
@@ -39,10 +39,12 @@ void loadDrawingResource()
 {
     // add resources and reloads the translators
     Q_INIT_RESOURCE(Drawing);
+    Q_INIT_RESOURCE(Drawing_translation);
     Gui::Translator::instance()->refresh();
 }
 
-namespace DrawingGui {
+namespace DrawingGui
+{
 extern PyObject* initModule();
 }
 

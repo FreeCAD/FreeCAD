@@ -46,19 +46,20 @@ void loadRobotResource()
 {
     // add resources and reloads the translators
     Q_INIT_RESOURCE(Robot);
+    Q_INIT_RESOURCE(Robot_translation);
     Gui::Translator::instance()->refresh();
 }
 
-namespace RobotGui {
-class Module : public Py::ExtensionModule<Module>
+namespace RobotGui
+{
+class Module: public Py::ExtensionModule<Module>
 {
 public:
-    Module() : Py::ExtensionModule<Module>("RobotGui")
+    Module()
+        : Py::ExtensionModule<Module>("RobotGui")
     {
-        initialize("This module is the RobotGui module."); // register with Python
+        initialize("This module is the RobotGui module.");  // register with Python
     }
-
-    ~Module() override {}
 
 private:
 };
@@ -68,7 +69,7 @@ PyObject* initModule()
     return Base::Interpreter().addModule(new Module);
 }
 
-} // namespace RobotGui
+}  // namespace RobotGui
 
 
 /* Python entry */
@@ -94,7 +95,7 @@ PyMOD_INIT_FUNC(RobotGui)
         // default displacement while e.g. picking
         Base::Interpreter().runString("_DefDisplacement = FreeCAD.Vector(0,0,0)");
     }
-    catch(const Base::Exception& e) {
+    catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
         PyMOD_Return(nullptr);
     }
@@ -107,6 +108,7 @@ PyMOD_INIT_FUNC(RobotGui)
     CreateRobotCommandsInsertRobots();
     CreateRobotCommandsTrajectory();
 
+    // clang-format off
     // addition objects
     RobotGui::Workbench                      ::init();
     RobotGui::ViewProviderRobotObject        ::init();
@@ -114,8 +116,9 @@ PyMOD_INIT_FUNC(RobotGui)
     RobotGui::ViewProviderEdge2TracObject    ::init();
     RobotGui::ViewProviderTrajectoryCompound ::init();
     RobotGui::ViewProviderTrajectoryDressUp  ::init();
+    // clang-format on
 
-     // add resources and reloads the translators
+    // add resources and reloads the translators
     loadRobotResource();
 
     PyMOD_Return(mod);

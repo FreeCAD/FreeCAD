@@ -25,8 +25,8 @@
 #ifndef _PreComp_
 # include <gp_Dir.hxx>
 # include <BRep_Builder.hxx>
-# include <BRepAlgoAPI_Cut.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
+# include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakeSolid.hxx>
@@ -51,9 +51,13 @@
 #include <Base/Stream.h>
 #include <Base/Tools.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
+#include <Mod/Part/App/TopoShapeMapper.h>
+#include <Mod/Part/App/TopoShapeOpCode.h>
 
 #include "FeatureHole.h"
 #include "json.hpp"
+
+FC_LOG_LEVEL_INIT("PartDesign", true, true);
 
 namespace PartDesign {
 
@@ -954,10 +958,10 @@ double Hole::getThreadClassClearance() const
 
     // Calculate how much clearance to add based on Thread tolerance class and pitch
     if (ThreadClass.getValueAsString()[1] == 'G') {
-        for (unsigned int i = 0; i < ThreadClass_ISOmetric_data_size; i++) {
-            double p = ThreadClass_ISOmetric_data[i][0];
+        for (auto it : ThreadClass_ISOmetric_data) {
+            double p = it[0];
             if (pitch <= p) {
-                return ThreadClass_ISOmetric_data[i][1];
+                return it[1];
             }
         }
     }
@@ -988,10 +992,10 @@ double Hole::getThreadRunout(int mode) const
     default:
         throw Base::ValueError("Unsupported argument");
     }
-    for (unsigned int i = 0; i < ThreadRunout_size; i++) {
-        double p = ThreadRunout[i][0];
+    for (auto it : ThreadRunout) {
+        double p = it[0];
         if (pitch <= p) {
-            return sf * ThreadRunout[i][1];
+            return sf * it[1];
         }
     }
 
@@ -1260,9 +1264,9 @@ void Hole::onChanged(const App::Property* prop)
             CustomThreadClearance.setReadOnly(true);
             ThreadDepth.setReadOnly(true);
             ThreadDepthType.setReadOnly(true);
-            Threaded.setValue(0);
-            ModelThread.setValue(0);
-            UseCustomThreadClearance.setValue(0);
+            Threaded.setValue(false);
+            ModelThread.setValue(false);
+            UseCustomThreadClearance.setValue(false);
         }
         else if (type == "ISOMetricProfile") {
             ThreadSize.setEnums(ThreadSize_ISOmetric_Enums);
@@ -1647,26 +1651,26 @@ void Hole::updateProps()
 
 static gp_Pnt toPnt(gp_Vec dir)
 {
-    return gp_Pnt(dir.X(), dir.Y(), dir.Z());
+    return {dir.X(), dir.Y(), dir.Z()};
 }
 
 App::DocumentObjectExecReturn* Hole::execute()
 {
-     TopoDS_Shape profileshape;
+     TopoShape profileshape;
     try {
-        profileshape = getVerifiedFace();
+        profileshape = getTopoShapeVerifiedFace();
     }
     catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
 
     // Find the base shape
-    TopoDS_Shape base;
+    TopoShape base;
     try {
-        base = getBaseShape();
+        base = getBaseTopoShape();
     }
     catch (const Base::Exception&) {
-        std::string text(QT_TR_NOOP("The requested feature cannot be created. The reason may be that:\n"
+        std::string text(QT_TRANSLATE_NOOP("Exception", "The requested feature cannot be created. The reason may be that:\n"
             "  - the active Body does not contain a base shape, so there is no\n"
             "  material to be removed;\n"
             "  - the selected sketch does not belong to the active Body."));
@@ -1680,12 +1684,12 @@ App::DocumentObjectExecReturn* Hole::execute()
         this->positionByPrevious();
         TopLoc_Location invObjLoc = this->getLocation().Inverted();
 
-        base.Move(invObjLoc);
+        base.move(invObjLoc);
 
-        if (profileshape.IsNull())
+        if (profileshape.isNull())
             return new App::DocumentObjectExecReturn(
-                "Hole error: Creating a face from sketch failed");
-        profileshape.Move(invObjLoc);
+                QT_TRANSLATE_NOOP("Exception", "Hole error: Creating a face from sketch failed"));
+        profileshape.move(invObjLoc);
 
         /* Build the prototype hole */
 
@@ -1709,10 +1713,10 @@ App::DocumentObjectExecReturn* Hole::execute()
         }
         else
             return new App::DocumentObjectExecReturn(
-                "Hole error: Unsupported length specification");
+                QT_TRANSLATE_NOOP("Exception", "Hole error: Unsupported length specification"));
 
         if (length <= 0.0)
-            return new App::DocumentObjectExecReturn("Hole error: Invalid hole depth");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Hole error: Invalid hole depth"));
 
         BRepBuilderAPI_MakeWire mkWire;
         const std::string holeCutType = HoleCutType.getValueAsString();
@@ -1735,7 +1739,7 @@ App::DocumentObjectExecReturn* Hole::execute()
         double zPosCounter = 0.0;
 
         if (TaperedAngleVal <= 0.0 || TaperedAngleVal > Base::toRadians(180.0))
-            return new App::DocumentObjectExecReturn("Hole error: Invalid taper angle");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Hole error: Invalid taper angle"));
 
         if (isCountersink || isCounterbore || isCounterdrill) {
             double holeCutRadius = HoleCutDiameter.getValue() / 2.0;
@@ -1756,15 +1760,15 @@ App::DocumentObjectExecReturn* Hole::execute()
             }
 
             if (holeCutRadius < radius)
-                return new App::DocumentObjectExecReturn("Hole error: Hole cut diameter too small");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Hole error: Hole cut diameter too small"));
 
             if (holeCutDepth > length)
                 return new App::DocumentObjectExecReturn(
-                    "Hole error: Hole cut depth must be less than hole depth");
+                    QT_TRANSLATE_NOOP("Exception", "Hole error: Hole cut depth must be less than hole depth"));
 
             if (holeCutDepth < 0.0)
                 return new App::DocumentObjectExecReturn(
-                    "Hole error: Hole cut depth must be greater or equal to zero");
+                    QT_TRANSLATE_NOOP("Exception", "Hole error: Hole cut depth must be greater or equal to zero"));
 
             // Top point
             gp_Pnt newPoint = toPnt(holeCutRadius * xDir);
@@ -1786,7 +1790,7 @@ App::DocumentObjectExecReturn* Hole::execute()
                                 gp_Pnt(radiusBottom, -length, 0), xPosCounter, zPosCounter);
 
             if (-length > zPosCounter)
-                return new App::DocumentObjectExecReturn("Hole error: Invalid countersink");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Hole error: Invalid countersink"));
 
             lengthCounter = zPosCounter;
             newPoint = toPnt(xPosCounter * xDir + zPosCounter * zDir);
@@ -1819,7 +1823,7 @@ App::DocumentObjectExecReturn* Hole::execute()
 
             // the angle is in any case > 0 and < 90 but nevertheless this safeguard:
             if (drillPointAngle <= 0.0 || drillPointAngle >= Base::toRadians(180.0))
-                return new App::DocumentObjectExecReturn("Hole error: Invalid drill point angle");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Hole error: Invalid drill point angle"));
 
             // if option to take drill point size into account
             // the next wire point is the intersection of the drill edge and the hole edge
@@ -1829,7 +1833,7 @@ App::DocumentObjectExecReturn* Hole::execute()
                     gp_Pnt(radius, 0, 0),
                     gp_Pnt(radiusBottom, -length, 0), xPosDrill, zPosDrill);
                 if (zPosDrill > 0 || zPosDrill >= lengthCounter)
-                    return new App::DocumentObjectExecReturn("Hole error: Invalid drill point");
+                    return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Hole error: Invalid drill point"));
 
                 newPoint = toPnt(xPosDrill * xDir + zPosDrill * zDir);
                 mkWire.Add(BRepBuilderAPI_MakeEdge(lastPoint, newPoint));
@@ -1863,11 +1867,11 @@ App::DocumentObjectExecReturn* Hole::execute()
         double angle = Base::toRadians<double>(360.0);
         BRepPrimAPI_MakeRevol RevolMaker(face, gp_Ax1(firstPoint, zDir), angle);
         if (!RevolMaker.IsDone())
-            return new App::DocumentObjectExecReturn("Hole error: Could not revolve sketch");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Hole error: Could not revolve sketch"));
 
         TopoDS_Shape protoHole = RevolMaker.Shape();
         if (protoHole.IsNull())
-            return new App::DocumentObjectExecReturn("Hole error: Resulting shape is empty");
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Hole error: Resulting shape is empty"));
 
 
         // Make thread
@@ -1875,42 +1879,83 @@ App::DocumentObjectExecReturn* Hole::execute()
             TopoDS_Shape protoThread = makeThread(xDir, zDir, length);
 
             // fuse the thread to the hole
-            BRepAlgoAPI_Fuse mkFuse(protoHole, protoThread);
+            FCBRepAlgoAPI_Fuse mkFuse(protoHole, protoThread);
             if (!mkFuse.IsDone())
-                return new App::DocumentObjectExecReturn("Error: Adding the thread failed");
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Adding the thread failed"));
 
             // we reuse the name protoHole (only now it is threaded)
             protoHole = mkFuse.Shape();
         }
+        std::vector<TopoShape> holes;
+        auto compound = findHoles(holes, profileshape, protoHole);
 
-        TopoDS_Compound holes = findHoles(profileshape, protoHole);
-        this->AddSubShape.setValue(holes);
+        TopoShape result(0);
 
-        // For some reason it is faster to do the cut through a BooleanOperation.
-        BRepAlgoAPI_Cut mkBool(base, holes);
-        if (!mkBool.IsDone()) {
-            std::stringstream error;
-            error << "Boolean operation failed";
-            return new App::DocumentObjectExecReturn(error.str());
+        // set the subtractive shape property for later usage in e.g. pattern
+        this->AddSubShape.setValue(compound);
+
+        if (base.isNull()) {
+            Shape.setValue(compound);
+            return App::DocumentObject::StdReturn;
         }
-        TopoDS_Shape result = mkBool.Shape();
 
+        // First try cutting with compound which will be faster as it is done in
+        // parallel
+        bool retry = true;
+        const char *maker;
+        switch (getAddSubType()) {
+            case Additive:
+                maker = Part::OpCodes::Fuse;
+                break;
+            default:
+                maker = Part::OpCodes::Cut;
+        }
+        try {
+            if (base.isNull())
+                result = compound;
+            else
+                result.makeElementBoolean(maker, {base,compound});
+            result = getSolid(result);
+            retry = false;
+        } catch (Standard_Failure & e) {
+            FC_WARN(getFullName() << ": boolean operation with compound failed ("
+                                  << e.GetMessageString() << "), retry...");
+        } catch (Base::Exception & e)  {
+            FC_WARN(getFullName() << ": boolean operation with compound failed ("
+                                  << e.what() << "), retry...");
+        }
 
-        // We have to get the solids (fuse sometimes creates compounds)
-        base = getSolid(result);
-        if (base.IsNull())
-            return new App::DocumentObjectExecReturn("Hole: Resulting shape is not a solid");
-        base = refineShapeIfActive(base);
+        if (retry) {
+            int i = 0;
+            for (auto & hole : holes) {
+                ++i;
+                try {
+                    result.makeElementBoolean(maker, {base,hole});
+                } catch (Standard_Failure &) {
+                    std::string msg(QT_TRANSLATE_NOOP("Exception", "Boolean operation failed on profile Edge"));
+                    msg += std::to_string(i);
+                    return new App::DocumentObjectExecReturn(msg.c_str());
+                } catch (Base::Exception &e) {
+                    e.ReportException();
+                    std::string msg(QT_TRANSLATE_NOOP("Exception", "Boolean operation failed on profile Edge"));
+                    msg += std::to_string(i);
+                    return new App::DocumentObjectExecReturn(msg.c_str());
+                }
+                base = getSolid(result);
+                if (base.isNull()) {
+                    std::string msg(QT_TRANSLATE_NOOP("Exception", "Boolean operation produced non-solid on profile Edge"));
+                    msg += std::to_string(i);
+                    return new App::DocumentObjectExecReturn(msg.c_str());
+                }
+            }
+            result = base;
+        }
 
-
-
-        int solidCount = countSolids(base);
-        if (solidCount > 1) {
+        if (!isSingleSolidRuleSatisfied(result.getShape())) {
             return new App::DocumentObjectExecReturn(
-                "Hole: Result has multiple solids. This is not supported at this time.");
+                    QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
         }
-
-        this->Shape.setValue(base);
+        this->Shape.setValue(result);
 
         return App::DocumentObject::StdReturn;
     }
@@ -1918,10 +1963,10 @@ App::DocumentObjectExecReturn* Hole::execute()
         if (std::string(e.GetMessageString()) == "TopoDS::Face"
             && (std::string(DepthType.getValueAsString()) == "UpToFirst"
                 || std::string(DepthType.getValueAsString()) == "UpToFace"))
-            return new App::DocumentObjectExecReturn(
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception",
                 "Could not create face from sketch.\n"
                 "Intersecting sketch entities or multiple faces in a sketch are not allowed "
-                "for making a pocket up to a face.");
+                "for making a pocket up to a face."));
         else
             return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
@@ -1984,19 +2029,18 @@ gp_Vec Hole::computePerpendicular(const gp_Vec& zDir) const
     xDir.Normalize();
     return xDir;
 }
-
-TopoDS_Compound Hole::findHoles(const TopoDS_Shape& profileshape,
-                                const TopoDS_Shape& protohole) const
+TopoShape Hole::findHoles(std::vector<TopoShape> &holes,
+                          const TopoShape& profileshape,
+                          const TopoDS_Shape& protoHole) const
 {
-    BRep_Builder builder;
-    TopoDS_Compound holes;
-    builder.MakeCompound(holes);
-    TopTools_IndexedMapOfShape edgeMap;
-    TopExp::MapShapes(profileshape, TopAbs_EDGE, edgeMap);
-    for (int i = 1; i <= edgeMap.Extent(); i++) {
+    TopoShape result(0);
+
+    int i = 0;
+    for(const auto &profileEdge : profileshape.getSubTopoShapes(TopAbs_EDGE)) {
+        ++i;
         Standard_Real c_start;
         Standard_Real c_end;
-        TopoDS_Edge edge = TopoDS::Edge(edgeMap(i));
+        TopoDS_Edge edge = TopoDS::Edge(profileEdge.getShape());
         Handle(Geom_Curve) c = BRep_Tool::Curve(edge, c_start, c_end);
 
         // Circle?
@@ -2008,15 +2052,20 @@ TopoDS_Compound Hole::findHoles(const TopoDS_Shape& profileshape,
 
 
         gp_Trsf localSketchTransformation;
-        localSketchTransformation.SetTranslation(gp_Pnt(0, 0, 0),
-            gp_Pnt(loc.X(), loc.Y(), loc.Z()));
+        localSketchTransformation.SetTranslation( gp_Pnt( 0, 0, 0 ),
+                                                  gp_Pnt(loc.X(), loc.Y(), loc.Z()) );
 
-        TopoDS_Shape copy = protohole;
-        copy.Move(localSketchTransformation);
-        builder.Add(holes, copy);
+        Part::ShapeMapper mapper;
+        mapper.populate(Part::MappingStatus::Modified, profileEdge, TopoShape(protoHole).getSubTopoShapes(TopAbs_FACE));
+
+        TopoShape hole(-getID());
+        hole.makeShapeWithElementMap(protoHole, mapper, {profileEdge});
+
+        // transform and generate element map.
+        hole = hole.makeElementTransform(localSketchTransformation);
+        holes.push_back(hole);
     }
-
-    return holes;
+    return TopoShape().makeElementCompound(holes);
 }
 
 TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double length)
@@ -2024,10 +2073,10 @@ TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double len
     int threadType = ThreadType.getValue();
     int threadSize = ThreadSize.getValue();
     if (threadType < 0) {
-        throw Base::IndexError("Thread type out of range");
+        throw Base::IndexError(QT_TRANSLATE_NOOP("Exception", "Thread type out of range"));
     }
     if (threadSize < 0) {
-        throw Base::IndexError("Thread size out of range");
+        throw Base::IndexError(QT_TRANSLATE_NOOP("Exception", "Thread size out of range"));
     }
 
     bool leftHanded = (bool)ThreadDirection.getValue();
@@ -2048,7 +2097,7 @@ TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double len
 
     // construct the cross section going counter-clockwise
     // for graphical explanation of geometrical construction of p1-p6 see:
-    // https://forum.freecadweb.org/viewtopic.php?f=19&t=54284#p466570
+    // https://forum.freecad.org/viewtopic.php?f=19&t=54284#p466570
     gp_Pnt p1 = toPnt((Diam / 2 - 5 * H / 8 + clearance / 2) * xDir + Pitch / 8 * zDir);
     gp_Pnt p2 = toPnt((Diam / 2 + clearance / 2) * xDir + 7 * Pitch / 16 * zDir);
     gp_Pnt p3 = toPnt((Diam / 2 + clearance / 2) * xDir + 9 * Pitch / 16 * zDir);
@@ -2119,7 +2168,7 @@ TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double len
     mkPS.SetMode(true);  //This is for frenet
     mkPS.Add(threadWire);
     if (!mkPS.IsReady())
-        throw Base::CADKernelError("Error: Thread could not be built");
+        throw Base::CADKernelError(QT_TRANSLATE_NOOP("Exception", "Error: Thread could not be built"));
     TopoDS_Shape shell = mkPS.Shape();
 
     // create faces at the ends of the pipe shell
@@ -2144,7 +2193,7 @@ TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double len
     BRepBuilderAPI_MakeSolid mkSolid;
     mkSolid.Add(TopoDS::Shell(sewer.SewedShape()));
     if (!mkSolid.IsDone())
-        throw Base::CADKernelError("Error: Result is not a solid");
+        throw Base::CADKernelError(QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid"));
     TopoDS_Shape result = mkSolid.Shape();
 
     // check if the algorithm has confused the inside and outside of the solid

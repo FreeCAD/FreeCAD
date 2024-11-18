@@ -22,10 +22,10 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QElapsedTimer>
-# include <QMessageBox>
-# include <QPointer>
-# include <QTextCursor>
+#include <QElapsedTimer>
+#include <QMessageBox>
+#include <QPointer>
+#include <QTextCursor>
 #endif
 
 #include <App/Application.h>
@@ -43,15 +43,17 @@
 
 using namespace MeshGui;
 
-class GmshWidget::Private {
+class GmshWidget::Private
+{
 public:
     explicit Private(QWidget* parent)
-      : gmsh(parent)
+        : gmsh(parent)
     {
         /* coverity[uninit_ctor] Members of ui are set in setupUI() */
     }
 
-    void appendText(const QString& text, bool error) {
+    void appendText(const QString& text, bool error)
+    {
         syntax->setParagraphType(error ? Gui::DockWnd::ReportHighlighter::Error
                                        : Gui::DockWnd::ReportHighlighter::Message);
         QTextCursor cursor(ui.outputWindow->document());
@@ -63,7 +65,7 @@ public:
     }
 
 public:
-    Ui_RemeshGmsh ui;
+    Ui_RemeshGmsh ui {};
     QPointer<Gui::StatusWidget> label;
     QPointer<Gui::DockWnd::ReportHighlighter> syntax;
     QProcess gmsh;
@@ -71,8 +73,8 @@ public:
 };
 
 GmshWidget::GmshWidget(QWidget* parent, Qt::WindowFlags fl)
-  : QWidget(parent, fl)
-  , d(new Private(parent))
+    : QWidget(parent, fl)
+    , d(new Private(parent))
 {
     d->ui.setupUi(this);
     setupConnections();
@@ -82,14 +84,16 @@ GmshWidget::GmshWidget(QWidget* parent, Qt::WindowFlags fl)
 
     // 2D Meshing algorithms
     // https://gmsh.info/doc/texinfo/gmsh.html#index-Mesh_002eAlgorithm
-    enum {
+    enum
+    {
         MeshAdapt = 1,
         Automatic = 2,
         Delaunay = 5,
         FrontalDelaunay = 6,
         BAMG = 7,
         FrontalDelaunayForQuads = 8,
-        PackingOfParallelograms = 9
+        PackingOfParallelograms = 9,
+        QuasiStructuredQuad = 11
     };
 
     d->ui.method->addItem(tr("Automatic"), static_cast<int>(Automatic));
@@ -99,6 +103,7 @@ GmshWidget::GmshWidget(QWidget* parent, Qt::WindowFlags fl)
     d->ui.method->addItem(QString::fromLatin1("BAMG"), static_cast<int>(BAMG));
     d->ui.method->addItem(tr("Frontal Quad"), static_cast<int>(FrontalDelaunayForQuads));
     d->ui.method->addItem(tr("Parallelograms"), static_cast<int>(PackingOfParallelograms));
+    d->ui.method->addItem(tr("Quasi-structured Quad"), static_cast<int>(QuasiStructuredQuad));
 }
 
 GmshWidget::~GmshWidget()
@@ -108,6 +113,7 @@ GmshWidget::~GmshWidget()
 
 void GmshWidget::setupConnections()
 {
+    // clang-format off
     connect(&d->gmsh, &QProcess::started, this, &GmshWidget::started);
     connect(&d->gmsh, qOverload<int, QProcess::ExitStatus>(&QProcess::finished),
             this, &GmshWidget::finished);
@@ -121,9 +127,10 @@ void GmshWidget::setupConnections()
             this, &GmshWidget::onKillButtonClicked);
     connect(d->ui.clearButton, &QPushButton::clicked,
             this, &GmshWidget::onClearButtonClicked);
+    // clang-format on
 }
 
-void GmshWidget::changeEvent(QEvent *e)
+void GmshWidget::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         d->ui.retranslateUi(this);
@@ -171,6 +178,7 @@ void GmshWidget::accept()
         return;
     }
 
+    // clang-format off
     QString inpFile;
     QString outFile;
     if (writeProject(inpFile, outFile)) {
@@ -188,6 +196,7 @@ void GmshWidget::accept()
         d->time.start();
         d->ui.labelTime->setText(tr("Time:"));
     }
+    // clang-format on
 }
 
 void GmshWidget::readyReadStandardError()
@@ -231,7 +240,7 @@ void GmshWidget::started()
     if (!d->label) {
         d->label = new Gui::StatusWidget(this);
         d->label->setAttribute(Qt::WA_DeleteOnClose);
-        d->label->setStatusText(tr("Running gmsh..."));
+        d->label->setStatusText(tr("Running Gmsh..."));
         d->label->show();
     }
 }
@@ -239,10 +248,12 @@ void GmshWidget::started()
 void GmshWidget::finished(int /*exitCode*/, QProcess::ExitStatus exitStatus)
 {
     d->ui.killButton->setDisabled(true);
-    if (d->label)
+    if (d->label) {
         d->label->close();
+    }
 
-    d->ui.labelTime->setText(QString::fromLatin1("%1 %2 ms").arg(tr("Time:")).arg(d->time.elapsed()));
+    d->ui.labelTime->setText(
+        QString::fromLatin1("%1 %2 ms").arg(tr("Time:")).arg(d->time.elapsed()));
     if (exitStatus == QProcess::NormalExit) {
         loadOutput();
     }
@@ -252,11 +263,11 @@ void GmshWidget::errorOccurred(QProcess::ProcessError error)
 {
     QString msg;
     switch (error) {
-    case QProcess::FailedToStart:
-        msg = tr("Failed to start");
-        break;
-    default:
-        break;
+        case QProcess::FailedToStart:
+            msg = tr("Failed to start");
+            break;
+        default:
+            break;
     }
 
     if (!msg.isEmpty()) {
@@ -271,12 +282,12 @@ void GmshWidget::reject()
 
 // -------------------------------------------------
 
-class RemeshGmsh::Private {
+class RemeshGmsh::Private
+{
 public:
     explicit Private(Mesh::Feature* mesh)
-      : mesh(mesh)
-    {
-    }
+        : mesh(mesh)
+    {}
 
 public:
     App::DocumentObjectWeakPtrT mesh;
@@ -286,8 +297,8 @@ public:
 };
 
 RemeshGmsh::RemeshGmsh(Mesh::Feature* mesh, QWidget* parent, Qt::WindowFlags fl)
-  : GmshWidget(parent, fl)
-  , d(new Private(mesh))
+    : GmshWidget(parent, fl)
+    , d(new Private(mesh))
 {
     // Copy mesh that is used each time when applying Gmsh's remeshing function
     d->copy = mesh->Mesh.getValue().getKernel();
@@ -295,12 +306,11 @@ RemeshGmsh::RemeshGmsh(Mesh::Feature* mesh, QWidget* parent, Qt::WindowFlags fl)
     d->geoFile = App::Application::getTempFileName() + "mesh.geo";
 }
 
-RemeshGmsh::~RemeshGmsh()
-{
-}
+RemeshGmsh::~RemeshGmsh() = default;
 
 bool RemeshGmsh::writeProject(QString& inpFile, QString& outFile)
 {
+    // clang-format off
     if (!d->mesh.expired()) {
         Base::FileInfo stl(d->stlFile);
         MeshCore::MeshOutput output(d->copy);
@@ -330,7 +340,7 @@ bool RemeshGmsh::writeProject(QString& inpFile, QString& outFile)
             << "   Exit;\n"
             << "EndIf\n"
             << "Merge \"" << stl.filePath() << "\";\n\n"
-            << "// 2D mesh algorithm (1=MeshAdapt, 2=Automatic, 5=Delaunay, 6=Frontal, 7=BAMG, 8=Frontal Quad, 9=Packing of Parallelograms)\n"
+            << "// 2D mesh algorithm (1=MeshAdapt, 2=Automatic, 5=Delaunay, 6=Frontal, 7=BAMG, 8=Frontal Quad, 9=Packing of Parallelograms, 11=Quasi-structured Quad)\n"
             << "Mesh.Algorithm = " << algorithm << ";\n\n"
             << "// 3D mesh algorithm (1=Delaunay, 2=New Delaunay, 4=Frontal, 7=MMG3D, 9=R-tree, 10=HTX)\n"
             << "// Mesh.Algorithm3D = 1;\n\n"
@@ -360,12 +370,14 @@ bool RemeshGmsh::writeProject(QString& inpFile, QString& outFile)
     }
 
     return false;
+    // clang-format on
 }
 
 bool RemeshGmsh::loadOutput()
 {
-    if (d->mesh.expired())
+    if (d->mesh.expired()) {
         return false;
+    }
 
     // Now read-in modified mesh
     Base::FileInfo stl(d->stlFile);
@@ -396,15 +408,7 @@ bool RemeshGmsh::loadOutput()
 TaskRemeshGmsh::TaskRemeshGmsh(Mesh::Feature* mesh)
 {
     widget = new RemeshGmsh(mesh);
-    taskbox = new Gui::TaskView::TaskBox(
-        QPixmap(), widget->windowTitle(), false, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
-}
-
-TaskRemeshGmsh::~TaskRemeshGmsh()
-{
-    // automatically deleted in the sub-class
+    addTaskBox(widget, false);
 }
 
 void TaskRemeshGmsh::clicked(int id)

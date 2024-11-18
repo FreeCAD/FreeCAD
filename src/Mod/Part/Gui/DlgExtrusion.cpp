@@ -143,6 +143,7 @@ DlgExtrusion::~DlgExtrusion()
 
 void DlgExtrusion::setupConnections()
 {
+    // clang-format off
     connect(ui->rbDirModeCustom, &QRadioButton::toggled,
             this, &DlgExtrusion::onDirModeCustomToggled);
     connect(ui->rbDirModeEdge, &QRadioButton::toggled,
@@ -161,6 +162,7 @@ void DlgExtrusion::setupConnections()
             this, &DlgExtrusion::onCheckSymmetricToggled);
     connect(ui->txtLink, &QLineEdit::textChanged,
             this, &DlgExtrusion::onTextLinkTextChanged);
+    // clang-format on
 }
 
 void DlgExtrusion::changeEvent(QEvent *e)
@@ -382,8 +384,8 @@ void DlgExtrusion::findShapes()
 
     std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType<App::DocumentObject>();
 
-    for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it!=objs.end(); ++it) {
-        Part::TopoShape topoShape = Part::Feature::getTopoShape(*it);
+    for (auto obj : objs) {
+        Part::TopoShape topoShape = Part::Feature::getTopoShape(obj);
         if (topoShape.isNull()) {
             continue;
         }
@@ -391,9 +393,9 @@ void DlgExtrusion::findShapes()
         if (shape.IsNull()) continue;
         if (canExtrude(shape)) {
             QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget);
-            item->setText(0, QString::fromUtf8((*it)->Label.getValue()));
-            item->setData(0, Qt::UserRole, QString::fromLatin1((*it)->getNameInDocument()));
-            Gui::ViewProvider* vp = activeGui->getViewProvider(*it);
+            item->setText(0, QString::fromUtf8(obj->Label.getValue()));
+            item->setData(0, Qt::UserRole, QString::fromLatin1(obj->getNameInDocument()));
+            Gui::ViewProvider* vp = activeGui->getViewProvider(obj);
             if (vp)
                 item->setIcon(0, vp->getIcon());
         }
@@ -481,7 +483,7 @@ void DlgExtrusion::apply()
 
             this->writeParametersToFeature(*newObj, sourceObj);
 
-            Gui::Command::copyVisual(newObj, "ShapeColor", sourceObj);
+            Gui::Command::copyVisual(newObj, "ShapeAppearance", sourceObj);
             Gui::Command::copyVisual(newObj, "LineColor", sourceObj);
             Gui::Command::copyVisual(newObj, "PointColor", sourceObj);
 
@@ -495,8 +497,10 @@ void DlgExtrusion::apply()
         throw;
     }
     catch (Base::Exception &err){
-        QMessageBox::critical(this, windowTitle(),
-            tr("Creating Extrusion failed.\n%1").arg(QString::fromUtf8(err.what())));
+        QMessageBox::critical(this,
+                              windowTitle(),
+                              tr("Creating Extrusion failed.\n%1")
+                                  .arg(QCoreApplication::translate("Exception", err.what())));
         return;
     }
     catch(...) {
@@ -616,8 +620,8 @@ std::vector<App::DocumentObject*> DlgExtrusion::getShapesToExtrude() const
         throw Base::RuntimeError("Document lost");
 
     std::vector<App::DocumentObject*> objects;
-    for (int i = 0; i < items.size(); i++) {
-        App::DocumentObject* obj = doc->getObject(items[i]->data(0, Qt::UserRole).toString().toLatin1());
+    for (auto item : items) {
+        App::DocumentObject* obj = doc->getObject(item->data(0, Qt::UserRole).toString().toLatin1());
         if (!obj)
             throw Base::RuntimeError("Object not found");
         objects.push_back(obj);
@@ -643,11 +647,11 @@ bool DlgExtrusion::validate()
         Base::Vector3d dir, base;
         hasValidAxisLink = Part::Extrusion::fetchAxisLink(lnk, base, dir);
     } catch(Base::Exception &err) {
-        errmsg = QString::fromUtf8(err.what());
+        errmsg = QCoreApplication::translate("Exception", err.what());
     } catch(Standard_Failure &err) {
         errmsg = QString::fromLocal8Bit(err.GetMessageString());
     } catch(...) {
-        errmsg = QString::fromUtf8("Unknown error");
+        errmsg = tr("Unknown error");
     }
     if (this->getDirMode() == Part::Extrusion::dmEdge && !hasValidAxisLink){
         if (errmsg.length() > 0)
@@ -669,7 +673,7 @@ bool DlgExtrusion::validate()
             lnk.setValue(&this->getShapeToExtrude()); //simplified - check only for the first shape.
             Part::Extrusion::calculateShapeNormal(lnk);
         } catch(Base::Exception &err) {
-            errmsg = QString::fromUtf8(err.what());
+            errmsg = QCoreApplication::translate("Exception", err.what());
         } catch(Standard_Failure &err) {
             errmsg = QString::fromLocal8Bit(err.GetMessageString());
         } catch(...) {
@@ -752,16 +756,7 @@ void DlgExtrusion::writeParametersToFeature(App::DocumentObject &feature, App::D
 TaskExtrusion::TaskExtrusion()
 {
     widget = new DlgExtrusion();
-    taskbox = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("Part_Extrude"),
-        widget->windowTitle(), true, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
-}
-
-TaskExtrusion::~TaskExtrusion()
-{
-    // automatically deleted in the sub-class
+    addTaskBox(Gui::BitmapFactory().pixmap("Part_Extrude"), widget);
 }
 
 bool TaskExtrusion::accept()

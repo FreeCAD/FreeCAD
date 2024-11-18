@@ -41,20 +41,23 @@ Export::Export()
 short Export::mustExecute() const
 {
     if (Source.getValue()) {
-        if (Source.isTouched())
+        if (Source.isTouched()) {
             return 1;
-        if (FileName.isTouched())
+        }
+        if (FileName.isTouched()) {
             return 1;
-        if (Format.isTouched())
+        }
+        if (Format.isTouched()) {
             return 1;
+        }
     }
     return 0;
 }
 
-App::DocumentObjectExecReturn *Export::execute()
+App::DocumentObjectExecReturn* Export::execute()
 {
-    Mesh::Feature *pcFeat  = dynamic_cast<Mesh::Feature*>(Source.getValue());
-    if(!pcFeat || pcFeat->isError()) {
+    Mesh::Feature* pcFeat = dynamic_cast<Mesh::Feature*>(Source.getValue());
+    if (!pcFeat || pcFeat->isError()) {
         return new App::DocumentObjectExecReturn("Cannot export invalid mesh feature");
     }
 

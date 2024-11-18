@@ -53,7 +53,8 @@ void QGVNavStyleRevit::handleMousePressEvent(QMouseEvent *event)
 void QGVNavStyleRevit::handleMouseMoveEvent(QMouseEvent *event)
 {
     if (getViewer()->isBalloonPlacing()) {
-        getViewer()->setBalloonCursorPos(event->pos());
+        balloonCursorMovement(event);
+        return;
     }
 
     //if the mouse moves between press and release, then it isn't a click

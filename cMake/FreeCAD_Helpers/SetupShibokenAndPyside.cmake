@@ -1,6 +1,9 @@
 macro(SetupShibokenAndPyside)
 # -------------------------------- Shiboken/PySide ------------------------
 
+    option(FREECAD_USE_SHIBOKEN "Links to the shiboken library at build time. If OFF its Python module is imported at runtime" ON)
+    option(FREECAD_USE_PYSIDE "Links to the PySide libraries at build time." ON)
+
     if(DEFINED MACPORTS_PREFIX)
         find_package(Shiboken REQUIRED HINTS "${PYTHON_LIBRARY_DIR}/cmake")
         find_package(PySide REQUIRED HINTS "${PYTHON_LIBRARY_DIR}/cmake")
@@ -34,6 +37,10 @@ macro(SetupShibokenAndPyside)
             message(STATUS "PYTHON_CONFIG_SUFFIX: ${PYTHON_CONFIG_SUFFIX}")
             find_package(Shiboken${SHIBOKEN_MAJOR_VERSION} QUIET)
         endif()
+
+        if(TARGET Shiboken6::libshiboken AND SHIBOKEN_MAJOR_VERSION EQUAL 6)
+            set_target_properties(Shiboken6::libshiboken PROPERTIES INTERFACE_COMPILE_DEFINITIONS "NDEBUG")
+        endif()
     endif()
 
     # pyside2 changed its cmake files, this is the dance we have
@@ -45,9 +52,8 @@ macro(SetupShibokenAndPyside)
     if(NOT SHIBOKEN_INCLUDE_DIR)
         find_pip_package(Shiboken${SHIBOKEN_MAJOR_VERSION})
         if (Shiboken${SHIBOKEN_MAJOR_VERSION}_FOUND)
-            set(Shiboken_INCLUDE_DIR ${Shiboken${SHIBOKEN_MAJOR_VERSION}_INCLUDE_DIRS})
-            set(Shiboken_LIBRARY ${Shiboken${SHIBOKEN_MAJOR_VERSION}_LIBRARIES})
-            set(Shiboken_FOUND TRUE)
+            set(SHIBOKEN_INCLUDE_DIR ${Shiboken${SHIBOKEN_MAJOR_VERSION}_INCLUDE_DIRS})
+            set(SHIBOKEN_LIBRARY ${Shiboken${SHIBOKEN_MAJOR_VERSION}_LIBRARIES})
         endif()
     endif()
 
@@ -60,9 +66,8 @@ macro(SetupShibokenAndPyside)
     if(NOT PYSIDE_INCLUDE_DIR)
         find_pip_package(PySide${PYSIDE_MAJOR_VERSION})
         if (PySide${PYSIDE_MAJOR_VERSION}_FOUND)
-            set(PySide_INCLUDE_DIR ${PySide${PYSIDE_MAJOR_VERSION}_INCLUDE_DIRS})
-            set(PySide_LIBRARY ${PySide${PYSIDE_MAJOR_VERSION}_LIBRARIES})
-            set(PySide_FOUND TRUE)
+            set(PYSIDE_INCLUDE_DIR ${PySide${PYSIDE_MAJOR_VERSION}_INCLUDE_DIRS})
+            set(PYSIDE_LIBRARY ${PySide${PYSIDE_MAJOR_VERSION}_LIBRARIES})
         endif()
     endif()
 
@@ -89,10 +94,13 @@ macro(SetupShibokenAndPyside)
         file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtUiTools.py  "from PySide${PYSIDE_MAJOR_VERSION}.QtUiTools import *\n")
         file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtWidgets.py  "from PySide${PYSIDE_MAJOR_VERSION}.QtWidgets import *\n")
         if(PYSIDE_MAJOR_VERSION LESS 6)
+            file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtSvgWidgets.py  "from PySide${PYSIDE_MAJOR_VERSION}.QtSvg import QGraphicsSvgItem\n"
+                                                                       "from PySide${PYSIDE_MAJOR_VERSION}.QtSvg import QSvgWidget\n")
             file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtWebEngineWidgets.py  "from PySide${PYSIDE_MAJOR_VERSION}.QtWebEngineWidgets import *\n")
         else()
+            file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtSvgWidgets.py  "from PySide${PYSIDE_MAJOR_VERSION}.QtSvgWidgets import *\n")
             file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtWebEngineWidgets.py  "from PySide${PYSIDE_MAJOR_VERSION}.QtWebEngineWidgets import *\n"
-                                                                             "from PySide${PYSIDE_MAJOR_VERSION}.QtWebEngineCore import QWebEnginePage\n")
+                                                                              "from PySide${PYSIDE_MAJOR_VERSION}.QtWebEngineCore import QWebEnginePage\n")
         endif()
     endif()
 
@@ -113,14 +121,12 @@ macro(SetupShibokenAndPyside)
     endif()
 
     # If shiboken cannot be found the build option will be set to OFF
-    if(SHIBOKEN_INCLUDE_DIR)
-        option(FREECAD_USE_SHIBOKEN "Links to the shiboken library at build time. If OFF its Python module is imported at runtime" ON)
-    else()
+    if(NOT SHIBOKEN_INCLUDE_DIR)
         message(WARNING "Shiboken${PYSIDE_MAJOR_VERSION} include files not found, FREECAD_USE_SHIBOKEN automatically set to OFF")
-        option(FREECAD_USE_SHIBOKEN "Links to the shiboken library at build time. If OFF its Python module is imported at runtime" OFF)
+        set(FREECAD_USE_SHIBOKEN OFF)
     endif()
 
-    # Now try to import the shiboken Python module and print an error if it can't be loaded
+    # Now try to import the shiboken Python module and print a warning if it can't be loaded
     execute_process(
         COMMAND ${PYTHON_EXECUTABLE} -c "import shiboken${SHIBOKEN_MAJOR_VERSION}"
         RESULT_VARIABLE FAILURE
@@ -128,7 +134,7 @@ macro(SetupShibokenAndPyside)
     )
 
     if(FAILURE)
-        message(FATAL_ERROR,
+        message(WARNING
                 "==================================\n"
                 "Shiboken${SHIBOKEN_MAJOR_VERSION} Python module not found.\n"
                 "==================================\n")
@@ -141,21 +147,19 @@ macro(SetupShibokenAndPyside)
     endif()
 
     # If PySide cannot be found the build option will be set to OFF
-    if(PYSIDE_INCLUDE_DIR)
-        option(FREECAD_USE_PYSIDE "Links to the PySide libraries at build time." ON)
-    else()
+    if(NOT PYSIDE_INCLUDE_DIR)
         message(WARNING "PySide${PYSIDE_MAJOR_VERSION} include files not found, FREECAD_USE_PYSIDE automatically set to OFF")
-        option(FREECAD_USE_PYSIDE "Links to the PySide libraries at build time." OFF)
+        set(FREECAD_USE_PYSIDE OFF)
     endif()
 
-    # Independent of the build option PySide modules must be loaded at runtime. Print an error if it fails.
+    # Independent of the build option PySide modules must be loaded at runtime. Print a warning if it fails.
     execute_process(
         COMMAND ${PYTHON_EXECUTABLE} -c "import PySide${PYSIDE_MAJOR_VERSION};import os;print(os.path.dirname(PySide${PYSIDE_MAJOR_VERSION}.__file__), end='')"
         RESULT_VARIABLE FAILURE
         OUTPUT_VARIABLE PRINT_OUTPUT
     )
     if(FAILURE)
-        message(FATAL_ERROR,
+        message(WARNING
                 "================================\n"
                 "PySide${PYSIDE_MAJOR_VERSION} Python module not found.\n"
                 "================================\n")
@@ -169,35 +173,6 @@ macro(SetupShibokenAndPyside)
     endif()
 
 endmacro(SetupShibokenAndPyside)
-
-# Locate the include directory for a pip-installed package -- uses pip show to find the base pip
-# install directory, and then appends the package name and  "/include" to the end
-macro(find_pip_package PACKAGE)
-    execute_process(
-        COMMAND ${PYTHON_EXECUTABLE} -m pip show ${PACKAGE}
-        RESULT_VARIABLE FAILURE
-        OUTPUT_VARIABLE PRINT_OUTPUT
-    )
-    if(NOT FAILURE)
-        # Extract Name: and Location: lines and use them to construct the include directory
-        string(REPLACE "\n" ";" PIP_OUTPUT_LINES ${PRINT_OUTPUT})
-        foreach(LINE IN LISTS PIP_OUTPUT_LINES)
-            STRING(FIND "${LINE}" "Name: " NAME_STRING_LOCATION)
-            STRING(FIND "${LINE}" "Location: " LOCATION_STRING_LOCATION)
-            if(${NAME_STRING_LOCATION} EQUAL 0)
-                STRING(SUBSTRING "${LINE}" 6 -1 PIP_PACKAGE_NAME)
-            elseif(${LOCATION_STRING_LOCATION} EQUAL 0)
-                STRING(SUBSTRING "${LINE}" 9 -1 PIP_PACKAGE_LOCATION)
-            endif()
-        endforeach()
-        file(TO_NATIVE_PATH "${PIP_PACKAGE_LOCATION}/${PIP_PACKAGE_NAME}/include" INCLUDE_DIR)
-        file(TO_NATIVE_PATH "${PIP_PACKAGE_LOCATION}/${PIP_PACKAGE_NAME}/lib" LIBRARY)
-        set(${PACKAGE}_INCLUDE_DIRS ${INCLUDE_DIR} PARENT_SCOPE)
-        set(${PACKAGE}_LIBRARIES ${LIBRARY} PARENT_SCOPE)
-        set(${PACKAGE}_FOUND ${LIBRARY} TRUE)
-        message(STATUS "Found pip-installed ${PACKAGE} in ${PIP_PACKAGE_LOCATION}/${PIP_PACKAGE_NAME}")
-    endif()
-endmacro()
 
 
 # Macros similar to FindQt4.cmake's WRAP_UI and WRAP_RC, for the automatic generation of Python
@@ -254,7 +229,9 @@ MACRO(PYSIDE_WRAP_RC outfiles)
         # we follow the tool command with in-place sed.
         ADD_CUSTOM_COMMAND(OUTPUT "${outfile}"
           COMMAND "${PYSIDE_RCC_EXECUTABLE}" ${RCCOPTIONS} "${infile}" ${PY_ATTRIBUTE} -o "${outfile}"
-          COMMAND sed "/^# /d" "${outfile}" >"${outfile}.tmp" && mv "${outfile}.tmp" "${outfile}"
+          # The line below sometimes catches unwanted lines too - but there is no date in the file
+          # anymore with Qt5 RCC, so commenting it out for now...
+          #COMMAND sed "/^# /d" "${outfile}" >"${outfile}.tmp" && mv "${outfile}.tmp" "${outfile}"
           MAIN_DEPENDENCY "${infile}"
         )
     endif()

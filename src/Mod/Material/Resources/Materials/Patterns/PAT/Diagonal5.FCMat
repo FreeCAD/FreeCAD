@@ -1,0 +1,16 @@
+﻿---
+# File created by FreeCAD 0.22.0 Revision: 35279 +19 (Git)
+General:
+  UUID: "bf7789e6-227d-4859-a75b-18008723fb51"
+  Name: "Diagonal5"
+  Author: "David Carter"
+  License: "All rights reserved"
+AppearanceModels:
+  PAT:
+    UUID: "0326c759-4e3d-46ca-bb7d-146ebebea65e"
+    Hatch Color: "(0,0,0,1)"
+    Hatch Pattern: |2
+      *Diagonal5, 45 diagonal L, Solid, 4.0 mm separation
+      -45,0,0,0,4.0
+    Hatch Scale: "1"
+    Hatch Weight: "1"

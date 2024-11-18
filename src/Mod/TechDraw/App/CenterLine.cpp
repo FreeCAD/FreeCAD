@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+    #include <boost/random.hpp>
     #include <boost/uuid/uuid_io.hpp>
     #include <boost/uuid/uuid_generators.hpp>
     #include <BRepBuilderAPI_MakeEdge.hxx>
@@ -31,18 +32,21 @@
     #include <TopoDS_Shape.hxx>
 #endif
 
+#include <BRepTools.hxx>
 
 #include <Base/Console.h>
-#include <Base/Persistence.h>
+#include <boost/thread/mutex.hpp>
+#include <boost/thread/thread.hpp>
 
 #include "CenterLine.h"
 #include "DrawUtil.h"
 #include "DrawViewPart.h"
 #include "Geometry.h"
-#include "GeometryObject.h"
 #include "CenterLinePy.h"
+#include "ShapeUtils.h"
 
 using namespace TechDraw;
+using DU = DrawUtil;
 
 TYPESYSTEM_SOURCE(TechDraw::CenterLine, Base::Persistence)
 
@@ -63,7 +67,7 @@ CenterLine::CenterLine()
     initialize();
 }
 
-CenterLine::CenterLine(TechDraw::CenterLine* cl)
+CenterLine::CenterLine(const TechDraw::CenterLine* cl)
 {
     m_start = cl->m_start;
     m_end = cl->m_end;
@@ -80,12 +84,12 @@ CenterLine::CenterLine(TechDraw::CenterLine* cl)
     initialize();
 }
 
-CenterLine::CenterLine(TechDraw::BaseGeomPtr bg,
-                       int m,
-                       double h,
-                       double v,
-                       double r,
-                       double x)
+CenterLine::CenterLine(const TechDraw::BaseGeomPtr& bg,
+                       const int m,
+                       const double h,
+                       const double v,
+                       const double r,
+                       const double x)
 {
     m_start = bg->getStartPoint();
     m_end = bg->getEndPoint();
@@ -102,14 +106,28 @@ CenterLine::CenterLine(TechDraw::BaseGeomPtr bg,
     initialize();
 }
 
-CenterLine::CenterLine(Base::Vector3d pt1,
-                       Base::Vector3d pt2,
-                       int m,
-                       double h,
-                       double v,
-                       double r,
-                       double x) : CenterLine(BaseGeomPtrFromVectors(pt1, pt2), m, h, v, r, x)
+CenterLine::CenterLine(const Base::Vector3d& pt1,
+                       const Base::Vector3d& pt2,
+                       const int m,
+                       const double h,
+                       const double v,
+                       const double r,
+                       const double x)
 {
+    m_start = pt1;
+    m_end = pt2;
+    m_mode = m;
+    m_hShift = h;
+    m_vShift = v;
+    m_rotate = r;
+    m_extendBy = x;
+    m_type = CLTYPE::FACE;
+    m_flip2Line = false;
+
+    m_geometry = BaseGeomPtrFromVectors(pt1, pt2);
+
+    initialize();
+
 }
 
 CenterLine::~CenterLine()
@@ -139,12 +157,12 @@ TechDraw::BaseGeomPtr CenterLine::BaseGeomPtrFromVectors(Base::Vector3d pt1, Bas
     return bg;
 }
 
-CenterLine* CenterLine::CenterLineBuilder(DrawViewPart* partFeat,
-                                          std::vector<std::string> subNames,
-                                          int mode,
-                                          bool flip)
+CenterLine* CenterLine::CenterLineBuilder(const DrawViewPart* partFeat,
+                                          const std::vector<std::string>& subNames,
+                                          const int mode,
+                                          const bool flip)
 {
-//    Base::Console().Message("CL::CLBuilder()\n - subNames: %d", subNames.size());
+//    Base::Console().Message("CL::CLBuilder()\n - subNames: %d\n", subNames.size());
     std::pair<Base::Vector3d, Base::Vector3d> ends;
     std::vector<std::string> faces;
     std::vector<std::string> edges;
@@ -183,6 +201,8 @@ CenterLine* CenterLine::CenterLineBuilder(DrawViewPart* partFeat,
         Base::Console().Warning("CenterLineBuilder - check V/H/A and/or Flip parameters\n");
         return nullptr;
     }
+
+
     TechDraw::CenterLine* cl = new TechDraw::CenterLine(ends.first, ends.second);
     if (cl) {
         cl->m_type = type;
@@ -195,10 +215,11 @@ CenterLine* CenterLine::CenterLineBuilder(DrawViewPart* partFeat,
     return cl;
 }
 
-TechDraw::BaseGeomPtr CenterLine::scaledGeometry(TechDraw::DrawViewPart* partFeat)
+TechDraw::BaseGeomPtr CenterLine::scaledGeometry(const TechDraw::DrawViewPart* partFeat)
 {
 //    Base::Console().Message("CL::scaledGeometry() - m_type: %d\n", m_type);
     double scale = partFeat->getScale();
+    double viewAngleDeg = partFeat->Rotation.getValue();
     std::pair<Base::Vector3d, Base::Vector3d> ends;
     try {
         if (m_faces.empty() &&
@@ -207,7 +228,7 @@ TechDraw::BaseGeomPtr CenterLine::scaledGeometry(TechDraw::DrawViewPart* partFea
 //            Base::Console().Message("CL::scaledGeometry - no geometry to scale!\n");
             //CenterLine was created by points without a geometry reference,
             ends = calcEndPointsNoRef(m_start, m_end, scale, m_extendBy,
-                                      m_hShift, m_vShift, m_rotate);
+                                      m_hShift, m_vShift, m_rotate, viewAngleDeg);
         } else if (m_type == CLTYPE::FACE) {
             ends = calcEndPoints(partFeat,
                                  m_faces,
@@ -244,9 +265,87 @@ TechDraw::BaseGeomPtr CenterLine::scaledGeometry(TechDraw::DrawViewPart* partFea
     gp_Pnt gp1(p1.x, p1.y, p1.z);
     gp_Pnt gp2(p2.x, p2.y, p2.z);
     TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp1, gp2);
-    TopoDS_Shape s = TechDraw::scaleShape(e, scale);
+    TopoDS_Shape s = ShapeUtils::scaleShape(e, scale);
     TopoDS_Edge newEdge = TopoDS::Edge(s);
     TechDraw::BaseGeomPtr newGeom = TechDraw::BaseGeom::baseFactory(newEdge);
+    newGeom->setClassOfEdge(ecHARD);
+    newGeom->setHlrVisible( true);
+    newGeom->setCosmetic(true);
+    newGeom->source(CENTERLINE);
+    newGeom->setCosmeticTag(getTagAsString());
+
+    return newGeom;
+}
+
+TechDraw::BaseGeomPtr CenterLine::scaledAndRotatedGeometry(TechDraw::DrawViewPart* partFeat)
+{
+//    Base::Console().Message("CL::scaledGeometry() - m_type: %d\n", m_type);
+    double scale = partFeat->getScale();
+    double viewAngleDeg = partFeat->Rotation.getValue();
+    std::pair<Base::Vector3d, Base::Vector3d> ends;
+    try {
+        if (m_faces.empty() &&
+            m_edges.empty() &&
+            m_verts.empty() ) {
+//            Base::Console().Message("CL::scaledGeometry - no geometry to scale!\n");
+            //CenterLine was created by points without a geometry reference,
+            ends = calcEndPointsNoRef(m_start, m_end, scale, m_extendBy,
+                                      m_hShift, m_vShift, m_rotate, viewAngleDeg);
+        } else if (m_type == CLTYPE::FACE) {
+            ends = calcEndPoints(partFeat,
+                                 m_faces,
+                                 m_mode, m_extendBy,
+                                 m_hShift, m_vShift, m_rotate);
+        } else if (m_type == CLTYPE::EDGE) {
+            ends = calcEndPoints2Lines(partFeat,
+                                       m_edges,
+                                       m_mode,
+                                       m_extendBy,
+                                       m_hShift, m_vShift, m_rotate, m_flip2Line);
+        } else if (m_type == CLTYPE::VERTEX) {
+            ends = calcEndPoints2Points(partFeat,
+                                        m_verts,
+                                        m_mode,
+                                        m_extendBy,
+                                        m_hShift, m_vShift, m_rotate, m_flip2Line);
+        }
+    }
+
+    catch (...) {
+        Base::Console().Error("CL::scaledGeometry - failed to calculate endpoints!\n");
+        return nullptr;
+    }
+
+    // inversion here breaks face cl.
+    Base::Vector3d p1 = ends.first;
+    Base::Vector3d p2 = ends.second;
+    if (p1.IsEqual(p2, 0.00001)) {
+        Base::Console().Warning("Centerline endpoints are equal. Could not draw.\n");
+        //what to do here?  //return current geom?
+        return m_geometry;
+    }
+
+    TopoDS_Edge newEdge;
+    if (getType() == CLTYPE::FACE ) {
+        gp_Pnt gp1(DU::togp_Pnt(p1));
+        gp_Pnt gp2(DU::togp_Pnt(p2));
+        TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp1, gp2);
+        // Mirror shape in Y and scale
+        TopoDS_Shape s = ShapeUtils::mirrorShape(e, gp_Pnt(0.0, 0.0, 0.0), scale);
+        // rotate using OXYZ as the coordinate system
+        s = ShapeUtils::rotateShape(s, gp_Ax2(), - partFeat->Rotation.getValue());
+        newEdge = TopoDS::Edge(s);
+    } else if (getType() == CLTYPE::EDGE  ||
+               getType() == CLTYPE::VERTEX) {
+        gp_Pnt gp1(DU::togp_Pnt(DU::invertY(p1 * scale)));
+        gp_Pnt gp2(DU::togp_Pnt(DU::invertY(p2 * scale)));
+        newEdge = BRepBuilderAPI_MakeEdge(gp1, gp2);
+    }
+
+    TechDraw::BaseGeomPtr newGeom = TechDraw::BaseGeom::baseFactory(newEdge);
+    if (!newGeom) {
+        throw Base::RuntimeError("Failed to create center line");
+    }
     newGeom->setClassOfEdge(ecHARD);
     newGeom->setHlrVisible( true);
     newGeom->setCosmetic(true);
@@ -292,32 +391,35 @@ void CenterLine::dump(const char* title)
     Base::Console().Message("CL::dump - %s \n", toString().c_str());
 }
 
-std::tuple<Base::Vector3d, Base::Vector3d> CenterLine::rotatePointsAroundMid(Base::Vector3d p1, Base::Vector3d p2, Base::Vector3d mid, double rotate) {
-    //rotate p1, p2 about mid
-    double revRotate = -rotate;
-    double cosTheta = cos(revRotate * M_PI / 180.0);
-    double sinTheta = sin(revRotate * M_PI / 180.0);
-    Base::Vector3d toOrg = p1 - mid;
-    double xRot = toOrg.x * cosTheta - toOrg.y * sinTheta;
-    double yRot = toOrg.y * cosTheta + toOrg.x * sinTheta;
-    Base::Vector3d newp1 = Base::Vector3d(xRot, yRot, 0.0) + mid;
-    toOrg = p2 - mid;
-    xRot = toOrg.x * cosTheta - toOrg.y * sinTheta;
-    yRot = toOrg.y * cosTheta + toOrg.x * sinTheta;
-    Base::Vector3d newp2 = Base::Vector3d(xRot, yRot, 0.0) + mid;
+//! rotate a notional 2d vector from p1 to p2 around its midpoint by angleDeg
+std::pair<Base::Vector3d, Base::Vector3d> CenterLine::rotatePointsAroundMid(const Base::Vector3d& p1,
+                                  const Base::Vector3d& p2,
+                                  const Base::Vector3d& mid,
+                                  const double angleDeg)
+{
+    std::pair<Base::Vector3d, Base::Vector3d> result;
+    double angleRad = angleDeg * M_PI / 180.0;
 
-    return std::make_tuple(newp1, newp2);
+    result.first.x = ((p1.x - mid.x) * cos(angleRad)) - ((p1.y - mid.y) * sin(angleRad)) + mid.x;
+    result.first.y = ((p1.x - mid.x) * sin(angleRad)) + ((p1.y - mid.y) * cos(angleRad)) + mid.y;
+    result.first.z = 0.0;
+
+    result.second.x = ((p2.x - mid.x) * cos(angleRad)) - ((p2.y - mid.y) * sin(angleRad)) + mid.x;
+    result.second.y = ((p2.x - mid.x) * sin(angleRad)) + ((p2.y - mid.y) * cos(angleRad)) + mid.y;
+    result.second.z = 0.0;
+
+    return result;
 }
 
 
 //end points for centerline with no geometry reference
-std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPointsNoRef(
-                                                      Base::Vector3d start,
-                                                      Base::Vector3d end,
-                                                      double scale,
-                                                      double ext,
-                                                      double hShift, double vShift,
-                                                      double rotate)
+std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPointsNoRef(const Base::Vector3d& start,
+                                                      const Base::Vector3d& end,
+                                                      const double scale,
+                                                      const double ext,
+                                                      const double hShift,
+                                                      const double vShift,
+                                                      const double rotate, const double viewAngleDeg)
 {
 //    Base::Console().Message("CL::calcEndPointsNoRef()\n");
     Base::Vector3d p1 = start;
@@ -348,18 +450,25 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPointsNoRef(
         p2.y = p2.y + vss;
     }
 
+    // rotate the endpoints so that when the View's Rotation is applied, the
+    // centerline is aligned correctly
     std::pair<Base::Vector3d, Base::Vector3d> result;
     result.first = p1 / scale;
     result.second = p2 / scale;
+    Base::Vector3d midpoint = (result.first + result.second) / 2.0;
+    result = rotatePointsAroundMid(result.first, result.second, midpoint, viewAngleDeg * -1.0);
+
     return result;
 }
 
 //end points for face centerline
-std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(DrawViewPart* partFeat,
-                                                      std::vector<std::string> faceNames,
-                                                      int mode, double ext,
-                                                      double hShift, double vShift,
-                                                      double rotate)
+std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(const DrawViewPart* partFeat,
+                                                      const std::vector<std::string>& faceNames,
+                                                      const int mode,
+                                                      const double ext,
+                                                      const double hShift,
+                                                      const double vShift,
+                                                      const double rotate)
 {
 //    Base::Console().Message("CL::calcEndPoints()\n");
     if (faceNames.empty()) {
@@ -372,25 +481,41 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(DrawViewPart
 
     double scale = partFeat->getScale();
 
+    std::vector<TopoDS_Edge> faceEdgesAll;
     for (auto& fn: faceNames) {
         if (TechDraw::DrawUtil::getGeomTypeFromName(fn) != "Face") {
             continue;
         }
         int idx = TechDraw::DrawUtil::getIndexFromName(fn);
-        std::vector<TechDraw::BaseGeomPtr> faceEdges =
+        std::vector<TechDraw::BaseGeomPtr> faceGeoms =
                                                 partFeat->getFaceEdgesByIndex(idx);
-        if (!faceEdges.empty()) {
-            for (auto& fe: faceEdges) {
+        if (!faceGeoms.empty()) {
+            for (auto& fe: faceGeoms) {
                 if (!fe->getCosmetic()) {
-                    BRepBndLib::AddOptimal(fe->getOCCEdge(), faceBox);
+                    faceEdgesAll.push_back(fe->getOCCEdge());
                 }
             }
         }
     }
+    TopoDS_Shape faceEdgeCompound = DU::vectorToCompound(faceEdgesAll);
+
+    if (partFeat->Rotation.getValue() != 0.0) {
+        // unrotate the input shape to align with the cardinal axes so we can use bbox to
+        // get size measurements
+        faceEdgeCompound = ShapeUtils::rotateShape(faceEdgeCompound,
+                                                   partFeat->getProjectionCS(),
+                                                   partFeat->Rotation.getValue() * -1.0);
+    }
+    // get the center of the unrotated, scaled face
+    Base::Vector3d faceCenter = ShapeUtils::findCentroidVec(faceEdgeCompound, partFeat->getProjectionCS());
+    // we need to move the edges to the origin here to get the right limits from the bounding box
+    faceEdgeCompound = ShapeUtils::moveShape(faceEdgeCompound, faceCenter * -1.0);
+
+    // get the bounding box of the centered and unrotated face
+    BRepBndLib::AddOptimal(faceEdgeCompound, faceBox);
 
     if (faceBox.IsVoid()) {
         Base::Console().Error("CL::calcEndPoints - faceBox is void!\n");
-//        return result;
         throw Base::IndexError("CenterLine wrong number of faces.");
     }
 
@@ -399,24 +524,33 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(DrawViewPart
 
     double Xspan = fabs(Xmax - Xmin);
     Xspan = (Xspan / 2.0);
-    double Xmid = Xmin + Xspan;
-
+    double Xmid = 0.0;
+    Xmax = Xmid + Xspan;
+    Xmin = Xmid - Xspan;
     double Yspan = fabs(Ymax - Ymin);
     Yspan = (Yspan / 2.0);
-    double Ymid = Ymin + Yspan;
+    double Ymid = 0.0;
+    Ymax = Ymid + Yspan;
+    Ymin = Ymid - Yspan;
 
     Base::Vector3d p1, p2;
-    if (mode == 0) {                    //vertical
+    if (mode == CenterLine::VERTICAL) {                    //vertical
         p1 = Base::Vector3d(Xmid, Ymax, 0.0);
         p2 = Base::Vector3d(Xmid, Ymin, 0.0);
-    } else if (mode == 1) {            //horizontal
+    } else if (mode == CenterLine::HORIZONTAL) {            //horizontal
         p1 = Base::Vector3d(Xmin, Ymid, 0.0);
         p2 = Base::Vector3d(Xmax, Ymid, 0.0);
-    } else {      //vert == 2 //aligned, but aligned doesn't make sense for face(s) bbox
+    } else {      //vert == CenterLine::ALIGNED //aligned, but aligned doesn't make sense for face(s) bbox
         Base::Console().Message("CL::calcEndPoints - aligned is not applicable to Face center lines\n");
         p1 = Base::Vector3d(Xmid, Ymax, 0.0);
         p2 = Base::Vector3d(Xmid, Ymin, 0.0);
     }
+
+    // now move the extents back to the face center.  this should give us the scaled,
+    // unrotated ends of the cl (but in 3d coordinates, which will be handled at the time
+    // the cl is added to the view)
+    p1 += faceCenter;
+    p2 += faceCenter;
 
     Base::Vector3d mid = (p1 + p2) / 2.0;
 
@@ -450,11 +584,14 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(DrawViewPart
     return result;
 }
 
-std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(DrawViewPart* partFeat,
-                                                      std::vector<std::string> edgeNames,
-                                                      int mode, double ext,
-                                                      double hShift, double vShift,
-                                                      double rotate, bool flip)
+std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(const DrawViewPart* partFeat,
+                                                      const std::vector<std::string>& edgeNames,
+                                                      const int mode,
+                                                      const double ext,
+                                                      const double hShift,
+                                                      const double vShift,
+                                                      const double rotate,
+                                                      const bool flip)
 
 {
     Q_UNUSED(flip)
@@ -467,7 +604,6 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(DrawVi
     }
 
     double scale = partFeat->getScale();
-    const std::vector<TechDraw::BaseGeomPtr> dbEdges = partFeat->getEdgeGeometry();
 
     std::vector<TechDraw::BaseGeomPtr> edges;
     for (auto& en: edgeNames) {
@@ -484,20 +620,21 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(DrawVi
     }
     if (edges.size() != 2) {
         Base::Console().Message("CL::calcEndPoints2Lines - wrong number of edges: %d!\n", edges.size());
-//        return result;
         throw Base::IndexError("CenterLine wrong number of edges.");
     }
 
-    Base::Vector3d l1p1 = edges.front()->getStartPoint();
-    Base::Vector3d l1p2 = edges.front()->getEndPoint();
-    Base::Vector3d l2p1 = edges.back()->getStartPoint();
-    Base::Vector3d l2p2 = edges.back()->getEndPoint();
+    // these points are centered, rotated, scaled and inverted.
+    // invert the points so the math works correctly
+    Base::Vector3d l1p1 = DU::invertY(edges.front()->getStartPoint());
+    Base::Vector3d l1p2 = DU::invertY(edges.front()->getEndPoint());
+    Base::Vector3d l2p1 = DU::invertY(edges.back()->getStartPoint());
+    Base::Vector3d l2p2 = DU::invertY(edges.back()->getEndPoint());
 
     // The centerline is drawn using the midpoints of the two lines that connect l1p1-l2p1 and l1p2-l2p2.
     // However, we don't know which point should be l1p1 to get a geometrically correct result, see
-    // https://wiki.freecadweb.org/File:TD-CenterLineFlip.png for an illustration of the problem.
+    // https://wiki.freecad.org/File:TD-CenterLineFlip.png for an illustration of the problem.
     // Thus we test this by a circulation test, see this post for a brief explanation:
-    // https://forum.freecadweb.org/viewtopic.php?p=505733#p505615
+    // https://forum.freecad.org/viewtopic.php?p=505733#p505615
     if (DrawUtil::circulation(l1p1, l1p2, l2p1) != DrawUtil::circulation(l1p2, l2p2, l2p1)) {
         Base::Vector3d temp; // reverse line 1
         temp = l1p1;
@@ -509,15 +646,32 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(DrawVi
     Base::Vector3d p2   = (l1p2 + l2p2) / 2.0;
     Base::Vector3d mid = (p1 + p2) / 2.0;
 
+    // if the proposed end points prevent the creation of a vertical or horizontal centerline, we need
+    // to prevent the "orientation" code below from creating identical endpoints.  This would create a
+    // zero length edge and cause problems later.
+    bool inhibitVertical = false;
+    bool inhibitHorizontal = false;
+    if (DU::fpCompare(p1.y, p2.y, EWTOLERANCE)) {
+        // proposed end points are aligned vertically, so we can't draw a vertical line to connect them
+        inhibitVertical = true;
+    }
+    if (DU::fpCompare(p1.x, p2.x, EWTOLERANCE)) {
+        // proposed end points are aligned horizontally, so we can't draw a horizontal line to connect them
+        inhibitHorizontal = true;
+    }
+
     //orientation
-    if (mode == 0) {           //Vertical
+    if (partFeat->Rotation.getValue() == 0.0) {
+        // if the view is rotated, then horizontal and vertical lose their meaning
+        if (mode == 0 && !inhibitVertical) {           //Vertical
             p1.x = mid.x;
             p2.x = mid.x;
-    } else if (mode == 1) {    //Horizontal
+        } else if (mode == 1 && !inhibitHorizontal) {    //Horizontal
             p1.y = mid.y;
             p2.y = mid.y;
-    } else if (mode == 2) {    //Aligned
-        // no op
+        } else if (mode == 2) {    //Aligned
+            // no op
+        }
     }
 
     //extend
@@ -544,19 +698,23 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(DrawVi
         p2.y = p2.y + vss;
     }
 
+    // the cl will be scaled when drawn, so unscale now.
     result.first = p1 / scale;
     result.second = p2 / scale;
     return result;
 }
 
-std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Points(DrawViewPart* partFeat,
-                                                      std::vector<std::string> vertNames,
-                                                      int mode, double ext,
-                                                      double hShift, double vShift,
-                                                      double rotate, bool flip)
+std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Points(const DrawViewPart* partFeat,
+                                                      const std::vector<std::string>& vertNames,
+                                                      const int mode,
+                                                      const double ext,
+                                                      const double hShift,
+                                                      const double vShift,
+                                                      const double rotate,
+                                                      const bool flip)
 
 {
-//    Base::Console().Message("CL::calc2Points()\n");
+//    Base::Console().Message("CL::calc2Points() - mode: %d\n", mode);
     if (vertNames.empty()) {
         Base::Console().Warning("CL::calcEndPoints2Points - no points!\n");
         return std::pair<Base::Vector3d, Base::Vector3d>();
@@ -576,17 +734,45 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Points(DrawV
         }
     }
     if (points.size() != 2) {
-        //this should fail harder.  maybe be in a try/catch.
-//        Base::Console().Message("CL::calcEndPoints2Points - wrong number of points!\n");
-//        return result;
         throw Base::IndexError("CenterLine wrong number of points.");
     }
 
-    Base::Vector3d v1 = points.front()->point();
-    Base::Vector3d v2 = points.back()->point();
-
+    Base::Vector3d v1 = DU::invertY(points.front()->point());
+    Base::Vector3d v2 = DU::invertY(points.back()->point());
     Base::Vector3d mid = (v1 + v2) / 2.0;
     Base::Vector3d dir = v2 - v1;
+
+    // if the proposed end points prevent the creation of a vertical or horizontal centerline, we need
+    // to prevent the "orientation" code below from creating identical endpoints.  This would create a
+    // zero length edge and cause problems later.
+
+    bool inhibitVertical = false;
+    bool inhibitHorizontal = false;
+    if (DU::fpCompare(v1.y, v2.y, EWTOLERANCE)) {
+        // proposed end points are aligned horizontally, can not draw horizontal CL
+        inhibitHorizontal = true;
+    }
+    if (DU::fpCompare(v1.x, v2.x, EWTOLERANCE)) {
+        // proposed end points are aligned vertically, can not draw vertical CL
+        inhibitVertical = true;
+    }
+
+    //orientation
+    if (partFeat->Rotation.getValue() == 0.0) {
+        // if the view is rotated, then horizontal and vertical lose their meaning
+        if (mode == CenterLine::VERTICAL  && !inhibitVertical) {
+            //Vertical
+            v1.x = mid.x;
+            v2.x = mid.x;
+        } else if (mode == CenterLine::HORIZONTAL && !inhibitHorizontal) {
+            //Horizontal
+            v1.y = mid.y;
+            v2.y = mid.y;
+        } else if (mode == CenterLine::ALIGNED) {    //Aligned
+            // no op
+        }
+    }
+
     double length = dir.Length();
     dir.Normalize();
     Base::Vector3d clDir(dir.y, -dir.x, dir.z);
@@ -599,17 +785,6 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Points(DrawV
         p1 = p2;
         p2 = temp;
     }
-
-    if (mode == 0) {           //Vertical
-            p1.x = mid.x;
-            p2.x = mid.x;
-    } else if (mode == 1) {    //Horizontal
-            p1.y = mid.y;
-            p2.y = mid.y;
-    } else if (mode == 2) {    //Aligned
-        // no op
-    }
-
 
     //extend
     p1 = p1 + (clDir * ext);
@@ -636,6 +811,7 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Points(DrawV
     std::pair<Base::Vector3d, Base::Vector3d> result;
     result.first = p1 / scale;
     result.second = p2 / scale;
+
     return result;
 }
 
@@ -710,10 +886,12 @@ void CenterLine::Save(Base::Writer &writer) const
     writer.decInd();
     writer.Stream() << writer.ind() << "</CLPoints>" << std::endl ;
 
-    writer.Stream() << writer.ind() << "<Style value=\"" <<  m_format.m_style << "\"/>" << std::endl;
-    writer.Stream() << writer.ind() << "<Weight value=\"" <<  m_format.m_weight << "\"/>" << std::endl;
-    writer.Stream() << writer.ind() << "<Color value=\"" <<  m_format.m_color.asHexString() << "\"/>" << std::endl;
-    const char v = m_format.m_visible?'1':'0';
+    // style is deprecated in favour of line number, but we still save and restore it
+    // to avoid problems with old documents.
+    writer.Stream() << writer.ind() << "<Style value=\"" <<  m_format.getStyle() << "\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<Weight value=\"" <<  m_format.getWidth() << "\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<Color value=\"" <<  m_format.getColor().asHexString() << "\"/>" << std::endl;
+    const char v = m_format.getVisible() ? '1' : '0';
     writer.Stream() << writer.ind() << "<Visible value=\"" <<  v << "\"/>" << std::endl;
 
 //stored geometry
@@ -734,6 +912,9 @@ void CenterLine::Save(Base::Writer &writer) const
     } else {
         Base::Console().Message("CL::Save - unimplemented geomType: %d\n", static_cast<int>(m_geometry->getGeomType()));
     }
+
+    writer.Stream() << writer.ind() << "<LineNumber value=\"" <<  m_format.getLineNumber() << "\"/>" << std::endl;
+
 }
 
 void CenterLine::Restore(Base::XMLReader &reader)
@@ -803,15 +984,19 @@ void CenterLine::Restore(Base::XMLReader &reader)
     }
     reader.readEndElement("CLPoints");
 
+    // style is deprecated in favour of line number, but we still save and restore it
+    // to avoid problems with old documents.
     reader.readElement("Style");
-    m_format.m_style = reader.getAttributeAsInteger("value");
+    m_format.setStyle(reader.getAttributeAsInteger("value"));
     reader.readElement("Weight");
-    m_format.m_weight = reader.getAttributeAsFloat("value");
+    m_format.setWidth(reader.getAttributeAsFloat("value"));
     reader.readElement("Color");
-    std::string temp = reader.getAttribute("value");
-    m_format.m_color.fromHexString(temp);
+    std::string tempHex = reader.getAttribute("value");
+    App::Color tempColor;
+    tempColor.fromHexString(tempHex);
+    m_format.setColor(tempColor);
     reader.readElement("Visible");
-    m_format.m_visible = (int)reader.getAttributeAsInteger("value")==0?false:true;
+    m_format.setVisible( (int)reader.getAttributeAsInteger("value")==0 ? false : true);
 
 //stored geometry
     reader.readElement("GeometryType");
@@ -833,6 +1018,22 @@ void CenterLine::Restore(Base::XMLReader &reader)
         m_geometry = aoc;
     } else {
         Base::Console().Warning("CL::Restore - unimplemented geomType: %d\n", static_cast<int>(gType));
+    }
+
+    // older documents may not have the LineNumber element, so we need to check the
+    // next entry.  if it is a start element, then we check if it is a start element
+    // for LineNumber.
+    // test for ISOLineNumber can be removed after testing.  It is a left over for the earlier
+    // ISO only line handling.
+    if (reader.readNextElement()) {
+        if(strcmp(reader.localName(),"LineNumber") == 0 ||
+           strcmp(reader.localName(),"ISOLineNumber") == 0 ) {
+            // this centerline has an LineNumber attribute
+            m_format.setLineNumber(reader.getAttributeAsInteger("value"));
+        } else {
+            // LineNumber not found.
+            m_format.setLineNumber(LineFormat::InvalidLine);
+        }
     }
 }
 
@@ -874,8 +1075,13 @@ std::string CenterLine::getTagAsString() const
 void CenterLine::createNewTag()
 {
     // Initialize a random number generator, to avoid Valgrind false positives.
+    // The random number generator is not threadsafe so we guard it.  See
+    // https://www.boost.org/doc/libs/1_62_0/libs/uuid/uuid.html#Design%20notes
     static boost::mt19937 ran;
     static bool seeded = false;
+    static boost::mutex random_number_mutex;
+
+    boost::lock_guard<boost::mutex> guard(random_number_mutex);
 
     if (!seeded) {
         ran.seed(static_cast<unsigned int>(std::time(nullptr)));
@@ -887,7 +1093,7 @@ void CenterLine::createNewTag()
     tag = gen();
 }
 
-void CenterLine::assignTag(const TechDraw::CenterLine * ce)
+void CenterLine::assignTag(const TechDraw::CenterLine* ce)
 {
     if(ce->getTypeId() == this->getTypeId())
         this->tag = ce->tag;
@@ -903,6 +1109,7 @@ CenterLine *CenterLine::clone() const
     return cpy;
 }
 
+// To do: make const
 PyObject* CenterLine::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
@@ -913,48 +1120,49 @@ PyObject* CenterLine::getPyObject()
 }
 
 
-void CenterLine::setShifts(double h, double v)
+void CenterLine::setShifts(const double h, const double v)
 {
     m_hShift = h;
     m_vShift = v;
 }
 
-double CenterLine::getHShift()
+double CenterLine::getHShift() const
 {
     return m_hShift;
 }
 
-double CenterLine::getVShift()
+double CenterLine::getVShift() const
 {
     return m_vShift;
 }
 
-void CenterLine::setRotate(double r)
+void CenterLine::setRotate(const double r)
 {
     m_rotate = r;
 }
 
-double CenterLine::getRotate()
+double CenterLine::getRotate() const
 {
     return m_rotate;
 }
 
-void CenterLine::setExtend(double e)
+void CenterLine::setExtend(const double e)
 {
     m_extendBy = e;
 }
 
-double CenterLine::getExtend()
+double CenterLine::getExtend() const
 {
     return m_extendBy;
 }
 
-void CenterLine::setFlip(bool f)
+void CenterLine::setFlip(const bool f)
 {
     m_flip2Line = f;
 }
 
-bool CenterLine::getFlip()
+bool CenterLine::getFlip() const
 {
     return m_flip2Line;
 }
+

@@ -28,9 +28,11 @@
 
 #include "ViewProviderFemConstraint.h"
 
-namespace FemGui {
+namespace FemGui
+{
 
-class FemGuiExport ViewProviderFemConstraintInitialTemperature : public FemGui::ViewProviderFemConstraint
+class FemGuiExport ViewProviderFemConstraintInitialTemperature
+    : public FemGui::ViewProviderFemConstraint
 {
     PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemConstraintInitialTemperature);
 
@@ -43,6 +45,6 @@ protected:
     bool setEdit(int ModNum) override;
 };
 
-}
+}  // namespace FemGui
 
-#endif // GUI_VIEWPROVIDERFEMCONSTRAINTInitialTemperature_H
+#endif  // GUI_VIEWPROVIDERFEMCONSTRAINTInitialTemperature_H

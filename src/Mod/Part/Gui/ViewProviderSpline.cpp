@@ -64,11 +64,9 @@ ViewProviderSpline::ViewProviderSpline()
     extension.initExtension(this);
 }
 
-ViewProviderSpline::~ViewProviderSpline()
-{
-}
+ViewProviderSpline::~ViewProviderSpline() = default;
 
-QIcon ViewProviderSpline::getIcon(void) const
+QIcon ViewProviderSpline::getIcon() const
 {
     return Gui::BitmapFactory().pixmap(sPixmap);
 }
@@ -79,7 +77,6 @@ EXTENSION_PROPERTY_SOURCE(PartGui::ViewProviderSplineExtension, Gui::ViewProvide
 
 
 ViewProviderSplineExtension::ViewProviderSplineExtension()
-    : pcControlPoints(nullptr)
 {
     initExtensionType(ViewProviderSplineExtension::getExtensionClassTypeId());
     EXTENSION_ADD_PROPERTY(ControlPoints,(false));
@@ -97,13 +94,15 @@ void ViewProviderSplineExtension::extensionSetupContextMenu(QMenu* menu, QObject
     QAction* act = menu->addAction(QObject::tr("Show control points"));
     act->setCheckable(true);
     act->setChecked(ControlPoints.getValue());
-    func->toggle(act, std::bind(&ViewProviderSplineExtension::toggleControlPoints, this, sp::_1));
+    func->toggle(act, [this](bool on) {
+        this->toggleControlPoints(on);
+    });
 }
 
 void ViewProviderSplineExtension::extensionUpdateData(const App::Property* prop)
 {
     Gui::ViewProviderExtension::extensionUpdateData(prop);
-    if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId() && strcmp(prop->getName(), "Shape") == 0) {
+    if (prop->is<Part::PropertyPartShape>() && strcmp(prop->getName(), "Shape") == 0) {
         // update control points if there
         if (pcControlPoints) {
             Gui::coinRemoveAllChildren(pcControlPoints);
@@ -140,7 +139,7 @@ void ViewProviderSplineExtension::showControlPoints(bool show, const App::Proper
         return;
 
     // ask for the property we are interested in
-    if (prop && prop->getTypeId() == Part::PropertyPartShape::getClassTypeId()) {
+    if (prop && prop->is<Part::PropertyPartShape>()) {
         const TopoDS_Shape& shape = static_cast<const Part::PropertyPartShape*>(prop)->getValue();
         if (shape.IsNull())
             return; // empty shape
@@ -218,11 +217,11 @@ void ViewProviderSplineExtension::showControlPointsOfEdge(const TopoDS_Edge& edg
 
     int index=0;
     SbVec3f* verts = controlcoords->point.startEditing();
-    for (std::list<gp_Pnt>::iterator p = poles.begin(); p != poles.end(); ++p) {
-        verts[index++].setValue((float)p->X(), (float)p->Y(), (float)p->Z());
+    for (const auto & pole : poles) {
+        verts[index++].setValue((float)pole.X(), (float)pole.Y(), (float)pole.Z());
     }
-    for (std::list<gp_Pnt>::iterator k = knots.begin(); k != knots.end(); ++k) {
-        verts[index++].setValue((float)k->X(), (float)k->Y(), (float)k->Z());
+    for (const auto & knot : knots) {
+        verts[index++].setValue((float)knot.X(), (float)knot.Y(), (float)knot.Z());
     }
     controlcoords->point.finishEditing();
 
@@ -294,13 +293,13 @@ void ViewProviderSplineExtension::showControlPointsOfFace(const TopoDS_Face& fac
 
     int index=0;
     SbVec3f* verts = coords->point.startEditing();
-    for (std::vector<std::vector<gp_Pnt> >::iterator u = poles.begin(); u != poles.end(); ++u) {
-        for (std::vector<gp_Pnt>::iterator v = u->begin(); v != u->end(); ++v) {
-            verts[index++].setValue((float)v->X(), (float)v->Y(), (float)v->Z());
+    for (const auto & pole : poles) {
+        for (const auto& v : pole) {
+            verts[index++].setValue((float)v.X(), (float)v.Y(), (float)v.Z());
         }
     }
-    for (std::list<gp_Pnt>::iterator k = knots.begin(); k != knots.end(); ++k) {
-        verts[index++].setValue((float)k->X(), (float)k->Y(), (float)k->Z());
+    for (const auto & knot : knots) {
+        verts[index++].setValue((float)knot.X(), (float)knot.Y(), (float)knot.Z());
     }
     coords->point.finishEditing();
 

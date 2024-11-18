@@ -48,7 +48,6 @@ ExtensionContainer::~ExtensionContainer() {
 }
 
 void ExtensionContainer::registerExtension(Base::Type extension, Extension* ext) {
-
     if(ext->getExtendedContainer() != this)
         throw Base::ValueError("ExtensionContainer::registerExtension: Extension has not this as base object");
 
@@ -385,7 +384,7 @@ void ExtensionContainer::restoreExtensions(Base::XMLReader& reader) {
                 if (!ext->isPythonExtension()) {
                     delete ext;
                     std::stringstream str;
-                    str << "Extension is not a python addable version: '" << Type << "'" << std::ends;
+                    str << "Extension is not a python addable version: '" << Type << "'";
                     throw Base::TypeError(str.str());
                 }
 

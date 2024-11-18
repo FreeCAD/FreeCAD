@@ -92,8 +92,8 @@ class OpenSCADWorkbench(Workbench):
             import OpenSCADUtils
 
             openscadfilename = OpenSCADUtils.searchforopenscadexe()
-            if openscadfilename:  # automatic search was succsessful
-                FreeCAD.addImportType("OpenSCAD Format (*.scad)", "importCSG")
+            if openscadfilename:  # automatic search was successful
+                FreeCAD.addImportType("OpenSCAD Format (*.scad *.SCAD)", "importCSG")
                 param.SetString(
                     "openscadexecutable", openscadfilename
                 )  # save the result

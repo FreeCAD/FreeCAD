@@ -107,6 +107,7 @@ public:
     MDIViewPage* getMDIViewPage() const;
     bool showMDIViewPage();
     void removeMDIView();
+    void switchToMdiViewPage();
 
     Gui::MDIView* getMDIView() const override;
 
@@ -125,6 +126,9 @@ public:
     ViewProviderPageExtension* getVPPExtension() const;
 
     const char* whoAmI() const;
+
+    void fixSceneDependencies();
+
 
 protected:
     bool setEdit(int ModNum) override;

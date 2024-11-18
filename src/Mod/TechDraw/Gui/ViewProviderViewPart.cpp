@@ -46,25 +46,32 @@
 #include <Mod/TechDraw/App/DrawViewDetail.h>
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 #include <Mod/TechDraw/App/DrawViewMulti.h>
+#include <Mod/TechDraw/App/DrawBrokenView.h>
 #include <Mod/TechDraw/App/LineGroup.h>
+#include <Mod/TechDraw/App/Cosmetic.h>
+#include <Mod/TechDraw/App/CenterLine.h>
+#include <Mod/TechDraw/App/LineNameEnum.h>
+#include <Mod/TechDraw/App/LineGenerator.h>
+
 
 #include "PreferencesGui.h"
 #include "QGIView.h"
 #include "TaskDetail.h"
+#include "TaskProjGroup.h"
 #include "ViewProviderViewPart.h"
+#include "ViewProviderPage.h"
+#include "QGIViewDimension.h"
+#include "QGIViewBalloon.h"
+#include "QGSPage.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;
+using DU = DrawUtil;
 
 PROPERTY_SOURCE(TechDrawGui::ViewProviderViewPart, TechDrawGui::ViewProviderDrawingView)
 
-const char* ViewProviderViewPart::LineStyleEnums[] = { "NoLine",
-                                                  "Continuous",
-                                                  "Dash",
-                                                  "Dot",
-                                                  "DashDot",
-                                                  "DashDotDot",
-                                                  nullptr };
+
+const App::PropertyIntegerConstraint::Constraints intPercent = { 0, 100, 5 };
 
 //**************************************************************************
 // Construction/Destruction
@@ -77,6 +84,8 @@ ViewProviderViewPart::ViewProviderViewPart()
     static const char *dgroup = "Decoration";
     static const char *hgroup = "Highlight";
     static const char *sgroup = "Section Line";
+    static const char *fgroup = "Faces";
+    static const char *bvgroup = "Broken View";
 
     //default line weights
 
@@ -102,24 +111,55 @@ ViewProviderViewPart::ViewProviderViewPart()
     ADD_PROPERTY_TYPE(CenterScale, (defScale), dgroup, App::Prop_None, "Center mark size adjustment, if enabled");
 
     //properties that affect Section Line
-    ADD_PROPERTY_TYPE(ShowSectionLine ,(true)    ,sgroup, App::Prop_None, "Show/hide section line if applicable");
-    SectionLineStyle.setEnums(LineStyleEnums);
-    ADD_PROPERTY_TYPE(SectionLineStyle, (PreferencesGui::sectionLineStyle()), sgroup, App::Prop_None,
+    ADD_PROPERTY_TYPE(ShowSectionLine ,(Preferences::showSectionLine()), sgroup, App::Prop_None, "Show/hide section line if applicable");
+    ADD_PROPERTY_TYPE(IncludeCutLine ,(Preferences::includeCutLine()), sgroup, App::Prop_None, "Show/hide section cut line if applicable");
+    ADD_PROPERTY_TYPE(SectionLineStyle, (Preferences::SectionLineStyle()), sgroup, App::Prop_None,
                         "Set section line style if applicable");
     ADD_PROPERTY_TYPE(SectionLineColor, (prefSectionColor()), sgroup, App::Prop_None,
                         "Set section line color if applicable");
-    ADD_PROPERTY_TYPE(SectionLineMarks, (PreferencesGui::sectionLineMarks()), sgroup, App::Prop_None,
+
+    // Assumption: ASME does not use change marks and ISO does use change marks
+    bool marksDefault  = Preferences::sectionLineConvention() == 1 ? true : false;
+    ADD_PROPERTY_TYPE(SectionLineMarks, (marksDefault), sgroup, App::Prop_None,
                         "Show marks at direction changes for ComplexSection");
 
     //properties that affect Detail Highlights
-    HighlightLineStyle.setEnums(LineStyleEnums);
     ADD_PROPERTY_TYPE(HighlightLineStyle, (prefHighlightStyle()), hgroup, App::Prop_None,
                         "Set highlight line style if applicable");
     ADD_PROPERTY_TYPE(HighlightLineColor, (prefHighlightColor()), hgroup, App::Prop_None,
                         "Set highlight line color if applicable");
     ADD_PROPERTY_TYPE(HighlightAdjust, (0.0), hgroup, App::Prop_None, "Adjusts the rotation of the Detail highlight");
 
-    ADD_PROPERTY_TYPE(ShowAllEdges ,(false)    ,dgroup, App::Prop_None, "Temporarily show invisible lines");
+    // properties that affect BrokenViews
+    BreakLineType.setEnums(DrawBrokenView::BreakTypeEnums);
+    ADD_PROPERTY_TYPE(BreakLineType, (Preferences::BreakType()), bvgroup, App::Prop_None,
+                        "Adjusts the type of break line depiction on broken views");
+    ADD_PROPERTY_TYPE(BreakLineStyle, (Preferences::BreakLineStyle()), bvgroup, App::Prop_None,
+                        "Set break line style if applicable");
+
+    ADD_PROPERTY_TYPE(ShowAllEdges ,(false),dgroup, App::Prop_None, "Temporarily show invisible lines");
+
+    // Faces related properties
+    ADD_PROPERTY_TYPE(FaceColor, (Preferences::getPreferenceGroup("Colors")->GetUnsigned("FaceColor", 0xFFFFFFFF)),
+                      fgroup, App::Prop_None, "Set color of faces");
+    ADD_PROPERTY_TYPE(FaceTransparency, (Preferences::getPreferenceGroup("Colors")->GetBool("ClearFace", false) ? 100 : 0),
+                      fgroup, App::Prop_None, "Set transparency of faces");
+    FaceTransparency.setConstraints(&intPercent);
+
+    std::string bodyName = LineGenerator::getLineStandardsBody();
+    if (bodyName == "ISO") {
+        SectionLineStyle.setEnums(ISOLineName::ISOLineNameEnums);
+        HighlightLineStyle.setEnums(ISOLineName::ISOLineNameEnums);
+        BreakLineStyle.setEnums(ISOLineName::ISOLineNameEnums);
+    } else if (bodyName == "ANSI") {
+        SectionLineStyle.setEnums(ANSILineName::ANSILineNameEnums);
+        HighlightLineStyle.setEnums(ANSILineName::ANSILineNameEnums);
+        BreakLineStyle.setEnums(ANSILineName::ANSILineNameEnums);
+    } else if (bodyName == "ASME") {
+        SectionLineStyle.setEnums(ASMELineName::ASMELineNameEnums);
+        HighlightLineStyle.setEnums(ASMELineName::ASMELineNameEnums);
+        BreakLineStyle.setEnums(ASMELineName::ASMELineNameEnums);
+    }
 }
 
 ViewProviderViewPart::~ViewProviderViewPart()
@@ -150,10 +190,15 @@ void ViewProviderViewPart::onChanged(const App::Property* prop)
         prop == &(SectionLineStyle) ||
         prop == &(SectionLineColor) ||
         prop == &(SectionLineMarks) ||
+        prop == &(IncludeCutLine)  ||
         prop == &(HighlightLineStyle) ||
         prop == &(HighlightLineColor) ||
-        prop == &(HorizCenterLine)  ||
-        prop == &(VertCenterLine) ) {
+        prop == &(HorizCenterLine) ||
+        prop == &(VertCenterLine)  ||
+        prop == &(FaceColor) ||
+        prop == &(FaceTransparency)  ||
+        prop == &(BreakLineType)   ||
+        prop == &(BreakLineStyle) ) {
         // redraw QGIVP
         QGIView* qgiv = getQView();
         if (qgiv) {
@@ -167,6 +212,7 @@ void ViewProviderViewPart::onChanged(const App::Property* prop)
 
 void ViewProviderViewPart::attach(App::DocumentObject *pcFeat)
 {
+//    Base::Console().Message("VPVP::attach(%s)\n", pcFeat->getNameInDocument());
     TechDraw::DrawViewMulti* dvm = dynamic_cast<TechDraw::DrawViewMulti*>(pcFeat);
     TechDraw::DrawViewDetail* dvd = dynamic_cast<TechDraw::DrawViewDetail*>(pcFeat);
     if (dvm) {
@@ -186,12 +232,18 @@ std::vector<App::DocumentObject*> ViewProviderViewPart::claimChildren() const
     //    - Leaders
     //    - Hatches
     //    - GeomHatches
-    //    - Leaders
+    //    - any drawing views declaring this view as their parent
     std::vector<App::DocumentObject*> temp;
     const std::vector<App::DocumentObject *> &views = getViewPart()->getInList();
     try {
       for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
-          if((*it)->getTypeId().isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
+          auto view = dynamic_cast<TechDraw::DrawView *>(*it);
+          if (view && view->claimParent() == getViewPart()) {
+              temp.push_back(view);
+              continue;
+          }
+
+          if((*it)->isDerivedFrom<TechDraw::DrawViewDimension>()) {
               //TODO: make a list, then prune it.  should be faster?
               bool skip = false;
               std::string dimName = (*it)->getNameInDocument();
@@ -205,15 +257,13 @@ std::vector<App::DocumentObject*> ViewProviderViewPart::claimChildren() const
               if (!skip) {
                   temp.push_back(*it);
               }
-          } else if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawHatch::getClassTypeId())) {
+          } else if ((*it)->isDerivedFrom<TechDraw::DrawHatch>()) {
               temp.push_back((*it));
-          } else if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawGeomHatch::getClassTypeId())) {
+          } else if ((*it)->isDerivedFrom<TechDraw::DrawGeomHatch>()) {
               temp.push_back((*it));
-          } else if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawViewBalloon::getClassTypeId())) {
+          } else if ((*it)->isDerivedFrom<TechDraw::DrawViewBalloon>()) {
               temp.push_back((*it));
-          } else if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawRichAnno::getClassTypeId())) {
-              temp.push_back((*it));
-          } else if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())) {
+          } else if ((*it)->isDerivedFrom<TechDraw::DrawLeaderLine>()) {
               temp.push_back((*it));
           }
       }
@@ -222,6 +272,7 @@ std::vector<App::DocumentObject*> ViewProviderViewPart::claimChildren() const
         return std::vector<App::DocumentObject*>();
     }
 }
+
 bool ViewProviderViewPart::setEdit(int ModNum)
 {
     if (ModNum != ViewProvider::Default ) {
@@ -231,6 +282,10 @@ bool ViewProviderViewPart::setEdit(int ModNum)
     if (Gui::Control().activeDialog())  {         //TaskPanel already open!
         return false;
     }
+
+    // clear the selection (convenience)
+    Gui::Selection().clearSelection();
+
     TechDraw::DrawViewPart* dvp = getViewObject();
     TechDraw::DrawViewDetail* dvd = dynamic_cast<TechDraw::DrawViewDetail*>(dvp);
     if (dvd) {
@@ -238,12 +293,14 @@ bool ViewProviderViewPart::setEdit(int ModNum)
             Base::Console().Error("DrawViewDetail - %s - has no BaseView!\n", dvd->getNameInDocument());
             return false;
         }
-        // clear the selection (convenience)
-        Gui::Selection().clearSelection();
         Gui::Control().showDialog(new TaskDlgDetail(dvd));
         Gui::Selection().clearSelection();
         Gui::Selection().addSelection(dvd->getDocument()->getName(),
                                         dvd->getNameInDocument());
+    }
+    else {
+        auto* view = dynamic_cast<TechDraw::DrawView*>(getObject());
+        Gui::Control().showDialog(new TaskDlgProjGroup(view, false));
     }
 
     return true;
@@ -298,45 +355,27 @@ void ViewProviderViewPart::handleChangedPropertyType(Base::XMLReader &reader, co
     }
 }
 
-bool ViewProviderViewPart::onDelete(const std::vector<std::string> &)
+bool ViewProviderViewPart::onDelete(const std::vector<std::string> & subNames)
 {
+    // Base::Console().Message("VPVP::onDelete(%d subNames)\n", subNames.size());
     // we cannot delete if the view has a section or detail view
-
+    (void) subNames;
     QString bodyMessage;
     QTextStream bodyMessageStream(&bodyMessage);
 
     // get child views
     auto viewSection = getViewObject()->getSectionRefs();
     auto viewDetail = getViewObject()->getDetailRefs();
-    auto viewLeader = getViewObject()->getLeaders();
 
-    if (!viewSection.empty()) {
+    if (!viewSection.empty() || !viewDetail.empty()) {
         bodyMessageStream << qApp->translate("Std_Delete",
-            "You cannot delete this view because it has a section view that would become broken.");
+            "You cannot delete this view because it has one or more dependent views that would become broken.");
         QMessageBox::warning(Gui::getMainWindow(),
             qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
             QMessageBox::Ok);
         return false;
     }
-    else if (!viewDetail.empty()) {
-        bodyMessageStream << qApp->translate("Std_Delete",
-            "You cannot delete this view because it has a detail view that would become broken.");
-        QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
-            QMessageBox::Ok);
-        return false;
-    }
-    else if (!viewLeader.empty()) {
-        bodyMessageStream << qApp->translate("Std_Delete",
-            "You cannot delete this view because it has a leader line that would become broken.");
-        QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
-            QMessageBox::Ok);
-        return false;
-    }
-    else {
-        return true;
-    }
+    return true;
 }
 
 bool ViewProviderViewPart::canDelete(App::DocumentObject *obj) const
@@ -364,4 +403,35 @@ int ViewProviderViewPart::prefHighlightStyle()
     return Preferences::getPreferenceGroup("Decorations")->GetInt("HighlightStyle", 2);
 }
 
+// it can happen that Dimensions/Balloons/etc can lose their parent item if the
+// the parent is deleted, then undo is invoked.  The linkages on the App side are
+// handled by the undo mechanism, but the QGraphicsScene parentage is not reset.
+// TODO: does this need to be implemented for Leaderlines and ???? others?
+void ViewProviderViewPart::fixSceneDependencies()
+{
+    auto page = getViewProviderPage();
+    if (!page) {
+        return;
+    }
 
+    auto scene = page->getQGSPage();
+    auto partQView = getQView();
+
+    auto dimensions =  getViewPart()->getDimensions();
+    for (auto& dim : dimensions) {
+        auto dimQView = dynamic_cast<QGIViewDimension *>(scene->findQViewForDocObj(dim));
+        if (dimQView && dimQView->parentItem() != partQView) {
+            // need to add the dim QView to this QGIViewPart
+            scene->addDimToParent(dimQView, partQView);
+        }
+    }
+
+    auto balloons = getViewPart()->getBalloons();
+    for (auto& bal : balloons) {
+        auto balQView = dynamic_cast<QGIViewBalloon*>(scene->findQViewForDocObj(bal));
+        if (balQView && balQView->parentItem() != partQView) {
+            // need to add the balloon QView to this QGIViewPart
+            scene->addBalloonToParent(balQView, partQView);
+        }
+    }
+}

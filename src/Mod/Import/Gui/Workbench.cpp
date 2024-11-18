@@ -31,13 +31,9 @@ using namespace ImportGui;
 /// @namespace ImportGui @class Workbench
 TYPESYSTEM_SOURCE(ImportGui::Workbench, Gui::StdWorkbench)
 
-Workbench::Workbench()
-{
-}
+Workbench::Workbench() = default;
 
-Workbench::~Workbench()
-{
-}
+Workbench::~Workbench() = default;
 
 Gui::ToolBarItem* Workbench::setupToolBars() const
 {
@@ -50,4 +46,3 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     Gui::ToolBarItem* root = new Gui::ToolBarItem;
     return root;
 }
-

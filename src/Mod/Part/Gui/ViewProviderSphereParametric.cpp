@@ -37,10 +37,7 @@ ViewProviderSphereParametric::ViewProviderSphereParametric()
   sPixmap = "Part_Sphere_Parametric";
 }
 
-ViewProviderSphereParametric::~ViewProviderSphereParametric()
-{
-
-}
+ViewProviderSphereParametric::~ViewProviderSphereParametric() = default;
 
 std::vector<std::string> ViewProviderSphereParametric::getDisplayModes() const
 {
@@ -64,9 +61,7 @@ ViewProviderEllipsoid::ViewProviderEllipsoid()
     sPixmap = "Part_Ellipsoid_Parametric";
 }
 
-ViewProviderEllipsoid::~ViewProviderEllipsoid()
-{
-}
+ViewProviderEllipsoid::~ViewProviderEllipsoid() = default;
 
 std::vector<std::string> ViewProviderEllipsoid::getDisplayModes() const
 {

@@ -20,36 +20,30 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __PRECOMPILED__
-#define __PRECOMPILED__
+#ifndef MEASUREGUI_PRECOMPILED_H
+#define MEASUREGUI_PRECOMPILED_H
 
 #include <FCConfig.h>
 
-#ifdef FC_OS_WIN32
-#define WIN32_LEAN_AND_MEAN
-#ifndef NOMINMAX
-# define NOMINMAX
-#endif
-#endif
+#include <Mod/Measure/MeasureGlobal.h>
 
 #ifdef _PreComp_
 
 // standard
+#include <cfloat>
+#include <cmath>
+
+// STL
+#include <algorithm>
+#include <map>
 #include <sstream>
+#include <string>
+#include <vector>
 
-#include <BRep_Tool.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepExtrema_DistShapeShape.hxx>
-#include <BRepGProp.hxx>
-#include <GCPnts_AbscissaPoint.hxx>
-#include <gp_Circ.hxx>
-#include <gp_Lin.hxx>
-#include <GProp_GProps.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Shape.hxx>
+// OpenCasCade
+#include <Mod/Part/App/OpenCascadeAll.h>
 
-#elif defined(FC_OS_WIN32)
-# include <windows.h>
-#endif // _PreComp_
 
-#endif
+#endif  //_PreComp_
+
+#endif  // MEASUREGUI_PRECOMPILED_H

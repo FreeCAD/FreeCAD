@@ -63,13 +63,12 @@ True if DraftGui.__name__ else False
 __title__ = "FreeCAD Draft Workbench GUI Tools"
 __author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
               "Dmitry Chigrin")
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 if not hasattr(FreeCADGui, "Snapper"):
     FreeCADGui.Snapper = gui_snapper.Snapper()
 
-if not hasattr(FreeCAD, "DraftWorkingPlane"):
-    FreeCAD.DraftWorkingPlane = WorkingPlane.plane()
+WorkingPlane.get_working_plane()
 
 # ---------------------------------------------------------------------------
 # Commands that have been migrated to their own modules
@@ -79,7 +78,6 @@ import draftguitools.gui_selectplane
 import draftguitools.gui_setstyle
 import draftguitools.gui_planeproxy
 from draftguitools.gui_togglemodes import ToggleConstructionMode
-from draftguitools.gui_togglemodes import ToggleContinueMode
 from draftguitools.gui_togglemodes import ToggleDisplayMode
 from draftguitools.gui_groups import AddToGroup
 from draftguitools.gui_groups import SelectGroup
@@ -98,22 +96,6 @@ from draftguitools.gui_layers import Layer
 # ---------------------------------------------------------------------------
 # update the translation engine
 FreeCADGui.updateLocale()
-
-# sets the default working plane
-plane = WorkingPlane.plane()
-FreeCAD.DraftWorkingPlane = plane
-defaultWP = Draft.getParam("defaultWP",0)
-if defaultWP == 1: plane.alignToPointAndAxis(Vector(0,0,0), Vector(0,0,1), 0)
-elif defaultWP == 2: plane.alignToPointAndAxis(Vector(0,0,0), Vector(0,1,0), 0)
-elif defaultWP == 3: plane.alignToPointAndAxis(Vector(0,0,0), Vector(1,0,0), 0)
-
-# last snapped objects, for quick intersection calculation
-lastObj = [0,0]
-
-# Set modifier keys
-from draftguitools.gui_tool_utils import MODCONSTRAIN
-from draftguitools.gui_tool_utils import MODSNAP
-from draftguitools.gui_tool_utils import MODALT
 
 # ---------------------------------------------------------------------------
 # General functions
@@ -187,8 +169,6 @@ from draftguitools.gui_scale import Scale
 from draftguitools.gui_wire2spline import WireToBSpline
 from draftguitools.gui_shape2dview import Shape2DView
 from draftguitools.gui_draft2sketch import Draft2Sketch
-from draftguitools.gui_array_simple import Array
-from draftguitools.gui_array_simple import LinkArray
 from draftguitools.gui_patharray import PathArray
 from draftguitools.gui_patharray import PathLinkArray
 from draftguitools.gui_pointarray import PointArray

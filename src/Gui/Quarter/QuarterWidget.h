@@ -117,7 +117,7 @@ public:
   explicit QuarterWidget(QWidget * parent = nullptr, const QtGLWidget * sharewidget = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
   explicit QuarterWidget(QtGLContext * context, QWidget * parent = nullptr, const QtGLWidget * sharewidget = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
   explicit QuarterWidget(const QtGLFormat & format, QWidget * parent = nullptr, const QtGLWidget * shareWidget = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
-  virtual ~QuarterWidget();
+  ~QuarterWidget() override;
 
   TransparencyType transparencyType() const;
   RenderMode renderMode() const;
@@ -131,6 +131,7 @@ public:
   void resetNavigationModeFile();
   void setNavigationModeFile(const QUrl & url = QUrl(QString::fromLatin1(DEFAULT_NAVIGATIONFILE)));
   const QUrl & navigationModeFile() const;
+  void setupDefaultCursors();
 
   void setContextMenuEnabled(bool yes);
   bool contextMenuEnabled() const;
@@ -172,7 +173,7 @@ public:
   void removeStateMachine(SoScXMLStateMachine * statemachine);
 
   virtual bool processSoEvent(const SoEvent * event);
-  virtual QSize minimumSizeHint() const;
+  QSize minimumSizeHint() const override;
 
   QList<QAction *> transparencyTypeActions() const;
   QList<QAction *> stereoModeActions() const;
@@ -193,12 +194,11 @@ Q_SIGNALS:
 
 private Q_SLOTS:
   void replaceViewport();
-  virtual void aboutToDestroyGLContext();
 
 protected:
-  virtual void paintEvent(QPaintEvent*);
-  virtual void resizeEvent(QResizeEvent*);
-  virtual bool viewportEvent(QEvent* event);
+  void paintEvent(QPaintEvent*) override;
+  void resizeEvent(QResizeEvent*) override;
+  bool viewportEvent(QEvent* event) override;
   virtual void actualRedraw();
   virtual bool updateDevicePixelRatio();
 

@@ -49,9 +49,7 @@ Flag::Flag(QWidget* parent)
     setAutoFillBackground(true);
 }
 
-Flag::~Flag()
-{
-}
+Flag::~Flag() = default;
 
 void Flag::initializeGL()
 {
@@ -183,7 +181,7 @@ QSize Flag::sizeHint() const
     QRect r = metric.boundingRect(text);
     w = std::max<int>(w, r.width()+20);
     h = std::max<int>(h, r.height());
-    return QSize(w, h);
+    return {w, h};
 }
 
 // ------------------------------------------------------------------------
@@ -254,8 +252,7 @@ void FlagLayout::setGeometry(const QRect &rect)
     QLayout::setGeometry(rect);
 
     // left side
-    for (int i = 0; i < list.size(); ++i) {
-        ItemWrapper *wrapper = list.at(i);
+    for (ItemWrapper *wrapper : list) {
         QLayoutItem *item = wrapper->item;
         Position position = wrapper->position;
 
@@ -275,8 +272,7 @@ void FlagLayout::setGeometry(const QRect &rect)
     // right side
     topHeight = 0;
     bottomHeight = 0;
-    for (int i = 0; i < list.size(); ++i) {
-        ItemWrapper *wrapper = list.at(i);
+    for (ItemWrapper *wrapper : list) {
         QLayoutItem *item = wrapper->item;
         Position position = wrapper->position;
 
@@ -318,8 +314,7 @@ QSize FlagLayout::calculateSize(SizeType sizeType) const
 {
     QSize totalSize;
 
-    for (int i = 0; i < list.size(); ++i) {
-        ItemWrapper *wrapper = list.at(i);
+    for (ItemWrapper *wrapper : list) {
         QSize itemSize;
 
         if (sizeType == MinimumSize)

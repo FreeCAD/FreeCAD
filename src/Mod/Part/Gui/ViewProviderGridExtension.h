@@ -79,7 +79,7 @@ protected:
     void setGridLineColor(const App::Color & color);
     void setGridDivLineColor(const App::Color & color);
 
-    virtual bool extensionHandleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
+    bool extensionHandleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
 
 
 private:

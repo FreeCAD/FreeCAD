@@ -36,8 +36,8 @@ namespace PartGui {
 class ViewProviderShapeBuilder : public Gui::ViewProviderBuilder
 {
 public:
-    ViewProviderShapeBuilder(){}
-    ~ViewProviderShapeBuilder() override{}
+    ViewProviderShapeBuilder() = default;
+    ~ViewProviderShapeBuilder() override = default;
     void buildNodes(const App::Property*, std::vector<SoNode*>&) const override;
     void createShape(const App::Property*, SoSeparator*) const;
 };
@@ -51,14 +51,17 @@ public:
     ViewProviderPart();
     /// destructor
     ~ViewProviderPart() override;
-    bool doubleClicked(void) override;
+    bool doubleClicked() override;
 
 protected:
     void applyColor(const Part::ShapeHistory& hist,
                     const std::vector<App::Color>& colBase,
                     std::vector<App::Color>& colBool);
-    void applyTransparency(const float& transparency,
-                    std::vector<App::Color>& colors);
+    void applyMaterial(const Part::ShapeHistory& hist,
+                       const std::vector<App::Material>& colBase,
+                       std::vector<App::Material>& colBool);
+    void applyTransparency(float transparency, std::vector<App::Color>& colors);
+    void applyTransparency(float transparency, std::vector<App::Material>& colors);
 };
 
 } // namespace PartGui

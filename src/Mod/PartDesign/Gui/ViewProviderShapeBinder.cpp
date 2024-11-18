@@ -72,17 +72,14 @@ ViewProviderShapeBinder::ViewProviderShapeBinder()
     unsigned long shcol = hGrp->GetUnsigned("DefaultDatumColor", 0xFFD70099);
     App::Color col((uint32_t)shcol);
 
-    ShapeColor.setValue(col);
+    ShapeAppearance.setDiffuseColor(col);
     LineColor.setValue(col);
     PointColor.setValue(col);
     Transparency.setValue(60);
     LineWidth.setValue(1);
 }
 
-ViewProviderShapeBinder::~ViewProviderShapeBinder()
-{
-
-}
+ViewProviderShapeBinder::~ViewProviderShapeBinder() = default;
 
 bool ViewProviderShapeBinder::setEdit(int ModNum) {
     // TODO Share code with other view providers (2015-09-11, Fat-Zer)
@@ -128,6 +125,14 @@ void ViewProviderShapeBinder::unsetEdit(int ModNum) {
     PartGui::ViewProviderPart::unsetEdit(ModNum);
 }
 
+void ViewProviderShapeBinder::attach(App::DocumentObject *obj)
+{
+    if (auto geo = dynamic_cast<App::GeoFeature*>(obj)) {
+        geo->setMaterialAppearance(ShapeAppearance[0]);
+    }
+    ViewProviderPart::attach(obj);
+}
+
 void ViewProviderShapeBinder::highlightReferences(bool on)
 {
     App::GeoFeature* obj = nullptr;
@@ -139,7 +144,7 @@ void ViewProviderShapeBinder::highlightReferences(bool on)
         return;
 
     // stop if not a Part feature was found
-    if (!obj || !obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
+    if (!obj || !obj->isDerivedFrom<Part::Feature>())
         return;
 
     PartGui::ViewProviderPart* svp = dynamic_cast<PartGui::ViewProviderPart*>(
@@ -156,9 +161,9 @@ void ViewProviderShapeBinder::highlightReferences(bool on)
             lcolors.resize(eMap.Extent(), svp->LineColor.getValue());
 
             TopExp::MapShapes(static_cast<Part::Feature*>(obj)->Shape.getValue(), TopAbs_FACE, eMap);
-            originalFaceColors = svp->DiffuseColor.getValues();
-            std::vector<App::Color> fcolors = originalFaceColors;
-            fcolors.resize(eMap.Extent(), svp->ShapeColor.getValue());
+            originalFaceAppearance = svp->ShapeAppearance.getValues();
+            std::vector<App::Material> fcolors = originalFaceAppearance;
+            fcolors.resize(eMap.Extent(), svp->ShapeAppearance[0]);
 
             for (const std::string& e : subs) {
                 // Note: stoi may throw, but it strictly shouldn't happen
@@ -172,11 +177,11 @@ void ViewProviderShapeBinder::highlightReferences(bool on)
                     int idx = std::stoi(e.substr(4)) - 1;
                     assert(idx >= 0);
                     if (idx < static_cast<int>(fcolors.size()))
-                        fcolors[idx] = App::Color(1.0, 0.0, 1.0); // magenta
+                        fcolors[idx].diffuseColor = App::Color(1.0, 0.0, 1.0); // magenta
                 }
             }
             svp->LineColorArray.setValues(lcolors);
-            svp->DiffuseColor.setValues(fcolors);
+            svp->ShapeAppearance.setValues(fcolors);
         }
     }
     else {
@@ -184,8 +189,8 @@ void ViewProviderShapeBinder::highlightReferences(bool on)
             svp->LineColorArray.setValues(originalLineColors);
             originalLineColors.clear();
 
-            svp->DiffuseColor.setValues(originalFaceColors);
-            originalFaceColors.clear();
+            svp->ShapeAppearance.setValues(originalFaceAppearance);
+            originalFaceAppearance.clear();
         }
     }
 }
@@ -224,6 +229,9 @@ ViewProviderSubShapeBinder::ViewProviderSubShapeBinder() {
 void ViewProviderSubShapeBinder::attach(App::DocumentObject* obj) {
 
     UseBinderStyle.setValue(boost::istarts_with(obj->getNameInDocument(), "binder"));
+    if (auto geo = dynamic_cast<App::GeoFeature*>(obj)) {
+        geo->setMaterialAppearance(ShapeAppearance[0]);
+    }
     ViewProviderPart::attach(obj);
 }
 
@@ -251,7 +259,7 @@ void ViewProviderSubShapeBinder::onChanged(const App::Property* prop) {
             transparency = Gui::ViewParams::instance()->getDefaultShapeTransparency();
             linewidth = Gui::ViewParams::instance()->getDefaultShapeLineWidth();
         }
-        ShapeColor.setValue(shapeColor);
+        ShapeAppearance.setDiffuseColor(shapeColor);
         LineColor.setValue(lineColor);
         PointColor.setValue(pointColor);
         Transparency.setValue(transparency);
@@ -272,7 +280,7 @@ std::string ViewProviderSubShapeBinder::dropObjectEx(App::DocumentObject* obj, A
 {
     auto self = dynamic_cast<PartDesign::SubShapeBinder*>(getObject());
     if (!self)
-        return std::string();
+        return {};
     std::map<App::DocumentObject*, std::vector<std::string> > values;
     if (!subname) subname = "";
     std::string sub(subname);
@@ -293,7 +301,7 @@ std::string ViewProviderSubShapeBinder::dropObjectEx(App::DocumentObject* obj, A
     self->setLinks(std::move(values), QApplication::keyboardModifiers() == Qt::ControlModifier);
     if (self->Relative.getValue())
         updatePlacement(false);
-    return std::string();
+    return {};
 }
 
 
@@ -327,7 +335,7 @@ bool ViewProviderSubShapeBinder::setEdit(int ModNum) {
         Gui::Selection().clearSelection();
         for (auto& link : self->Support.getSubListValues()) {
             auto obj = link.getValue();
-            if (!obj || !obj->getNameInDocument())
+            if (!obj || !obj->isAttachedToDocument())
                 continue;
             const auto& subs = link.getSubValues();
             if (!subs.empty())
@@ -402,7 +410,7 @@ void ViewProviderSubShapeBinder::updatePlacement(bool transaction) {
     App::GetApplication().closeActiveTransaction(true);
 }
 
-std::vector<App::DocumentObject*> ViewProviderSubShapeBinder::claimChildren(void) const {
+std::vector<App::DocumentObject*> ViewProviderSubShapeBinder::claimChildren() const {
     std::vector<App::DocumentObject*> ret;
     auto self = Base::freecad_dynamic_cast<PartDesign::SubShapeBinder>(getObject());
     if (self && self->ClaimChildren.getValue() && self->Support.getValue()) {
@@ -432,5 +440,5 @@ std::vector<App::DocumentObject*> ViewProviderSubShapeBinder::claimChildren(void
 namespace Gui {
 PROPERTY_SOURCE_TEMPLATE(PartDesignGui::ViewProviderSubShapeBinderPython,
                          PartDesignGui::ViewProviderSubShapeBinder)
-template class PartDesignGuiExport ViewProviderPythonFeatureT<ViewProviderSubShapeBinder>;
+template class PartDesignGuiExport ViewProviderFeaturePythonT<ViewProviderSubShapeBinder>;
 }

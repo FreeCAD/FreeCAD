@@ -37,6 +37,11 @@ const std::string & ViewProviderDraft::featureName() const {
     return name;
 }
 
+void ViewProviderDraft::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    addDefaultAction(menu, QObject::tr("Edit draft"));
+    PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
+}
 
 TaskDlgFeatureParameters *ViewProviderDraft::getEditDialog() {
     return new TaskDlgDraftParameters (this);

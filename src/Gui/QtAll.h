@@ -82,6 +82,7 @@
 #include <QImageWriter>
 #include <QKeyEvent>
 #include <QMovie>
+#include <QOffscreenSurface>
 #include <QOpenGLContext>
 #include <QOpenGLDebugMessage>
 #include <QOpenGLFunctions>
@@ -97,6 +98,7 @@
 #include <QSessionManager>
 #include <QShortcut>
 #include <QStandardItemModel>
+#include <QStandardPaths>
 #include <QSurfaceFormat>
 #include <QSyntaxHighlighter>
 #include <QTextDocument>

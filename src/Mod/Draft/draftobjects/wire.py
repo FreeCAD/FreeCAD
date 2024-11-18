@@ -33,9 +33,8 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD as App
 import DraftGeomUtils
 import DraftVecUtils
-
-from draftutils.utils import get_param
 from draftobjects.base import DraftObject
+from draftutils import params
 
 
 class Wire(DraftObject):
@@ -92,11 +91,11 @@ class Wire(DraftObject):
                 "The area of this object")
         obj.addProperty("App::PropertyArea","Area", "Draft",_tip)
 
-        obj.MakeFace = get_param("fillmode",True)
+        obj.MakeFace = params.get_param("fillmode")
         obj.Closed = False
 
     def execute(self, obj):
-        if self.props_changed_placement_only():
+        if self.props_changed_placement_only(obj): # Supplying obj is required because of `Base` and `Tool`.
             obj.positionBySupport()
             self.update_start_end(obj)
             self.props_changed_clear()

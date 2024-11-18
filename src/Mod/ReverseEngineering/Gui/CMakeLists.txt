@@ -1,9 +1,3 @@
-if(MSVC)
-    add_definitions(-DHAVE_ACOSH -DHAVE_ATANH -DHAVE_ASINH)
-else(MSVC)
-    add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
-endif(MSVC)
-
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
@@ -22,9 +16,14 @@ set(ReenGui_LIBS
     MeshGui
 )
 
-qt_add_resources(ReenGui_QRC_SRCS Resources/ReverseEngineering.qrc)
+set (ReverseEngineering_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/ReverseEngineering_translation.qrc)
+qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
+    ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
+qt_create_resource_file(${ReverseEngineering_TR_QRC} ${QM_SRCS})
+qt_add_resources(ReenGui_QRC_SRCS Resources/ReverseEngineering.qrc ${ReverseEngineering_TR_QRC})
 
 set(Dialogs_UIC_SRCS
+    FitBSplineCurve.ui
     FitBSplineSurface.ui
     Poisson.ui
     Segmentation.ui
@@ -34,6 +33,8 @@ set(Dialogs_UIC_SRCS
 SET(Dialogs_SRCS
     ${Dialogs_UIC_HDRS}
     ${Dialogs_UIC_SRCS}
+    FitBSplineCurve.cpp
+    FitBSplineCurve.h
     FitBSplineSurface.cpp
     FitBSplineSurface.h
     Poisson.cpp
@@ -69,6 +70,9 @@ endif(FREECAD_USE_PCH)
 
 add_library(ReverseEngineeringGui SHARED ${ReenGui_SRCS} ${ReverseEngineeringGuiIcon_SVG})
 target_link_libraries(ReverseEngineeringGui ${ReenGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(ReverseEngineeringGui)
+endif()
 
 SET_BIN_DIR(ReverseEngineeringGui ReverseEngineeringGui /Mod/ReverseEngineering)
 SET_PYTHON_PREFIX_SUFFIX(ReverseEngineeringGui)

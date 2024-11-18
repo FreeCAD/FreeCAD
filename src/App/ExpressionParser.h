@@ -271,6 +271,21 @@ public:
         TANH,
         TRUNC,
 
+        // Vector
+        VANGLE,
+        VCROSS,
+        VDOT,
+        VLINEDIST,
+        VLINESEGDIST,
+        VLINEPROJ,
+        VNORMALIZE,
+        VPLANEDIST,
+        VPLANEPROJ,
+        VSCALE,
+        VSCALEX,
+        VSCALEY,
+        VSCALEZ,
+
         // Matrix
         MINVERT, // invert matrix/placement/rotation
         MROTATE, // Rotate matrix/placement/rotation around axis, by rotation object, or by euler angles.
@@ -290,6 +305,7 @@ public:
         ROTATIONY, // Create y-axis rotation object.
         ROTATIONZ, // Create z-axis rotation object.
         STR, // stringify
+        PARSEQUANT, // parse string quantity
         TRANSLATIONM, // Create translation matrix object.
         TUPLE, // Create Python tuple.
         VECTOR, // Create vector object.
@@ -328,6 +344,8 @@ public:
 protected:
     static Py::Object evalAggregate(const Expression *owner, int type, const std::vector<Expression*> &args);
     static Base::Vector3d evaluateSecondVectorArgument(const Expression *expression, const std::vector<Expression*> &arguments);
+    static double extractLengthValueArgument(const Expression *expression, const std::vector<Expression*> &arguments, int argumentIndex);
+    static Base::Vector3d extractVectorArgument(const Expression *expression, const std::vector<Expression*> &arguments, int argumentIndex);
     static void initialiseObject(const Py::Object *object, const std::vector<Expression*> &arguments, const unsigned long offset = 0);
     static Py::Object transformFirstArgument(
         const Expression *expression,
@@ -482,6 +500,7 @@ AppExport Expression * parse(const App::DocumentObject *owner, const char *buffe
 AppExport UnitExpression * parseUnit(const App::DocumentObject *owner, const char *buffer);
 AppExport ObjectIdentifier parsePath(const App::DocumentObject *owner, const char* buffer);
 AppExport bool isTokenAnIndentifier(const std::string & str);
+AppExport bool isTokenAConstant(const std::string & str);
 AppExport bool isTokenAUnit(const std::string & str);
 AppExport std::vector<std::tuple<int, int, std::string> > tokenize(const std::string & str);
 
@@ -505,12 +524,12 @@ public:
     Base::Quantity scaler;
     std::string unitStr;
   } quantity;
-  Expression::Component *component;
-  Expression * expr;
+  Expression::Component *component{nullptr};
+  Expression * expr{nullptr};
   ObjectIdentifier path;
   std::deque<ObjectIdentifier::Component> components;
-  long long int ivalue;
-  double fvalue;
+  long long int ivalue{0};
+  double fvalue{0};
   struct {
     const char *name = "";
     double fvalue = 0;
@@ -520,8 +539,7 @@ public:
   std::string string;
   std::pair<FunctionExpression::Function,std::string> func;
   ObjectIdentifier::String string_or_identifier;
-  semantic_type() : component(nullptr), expr(nullptr), ivalue(0), fvalue(0)
-                  , func({FunctionExpression::NONE, std::string()}) {}
+  semantic_type() : func({FunctionExpression::NONE, std::string()}) {}
 };
 
 #define YYSTYPE semantic_type

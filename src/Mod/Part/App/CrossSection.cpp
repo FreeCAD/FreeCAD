@@ -24,9 +24,9 @@
 #ifndef _PreComp_
 # include <algorithm>
 # include <BRepAdaptor_Surface.hxx>
-# include <BRepAlgoAPI_Common.hxx>
-# include <BRepAlgoAPI_Cut.hxx>
-# include <BRepAlgoAPI_Section.hxx>
+# include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Section.h>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepPrimAPI_MakeHalfSpace.hxx>
@@ -44,6 +44,7 @@
 #endif
 
 #include "CrossSection.h"
+#include "TopoShapeOpCode.h"
 
 
 using namespace Part;
@@ -108,7 +109,7 @@ std::list<TopoDS_Wire> CrossSection::removeDuplicates(const std::list<TopoDS_Wir
 
 void CrossSection::sliceNonSolid(double d, const TopoDS_Shape& shape, std::list<TopoDS_Wire>& wires) const
 {
-    BRepAlgoAPI_Section cs(shape, gp_Pln(a,b,c,-d));
+    FCBRepAlgoAPI_Section cs(shape, gp_Pln(a,b,c,-d));
     if (cs.IsDone()) {
         std::list<TopoDS_Edge> edges;
         TopExp_Explorer xp;
@@ -133,7 +134,7 @@ void CrossSection::sliceSolid(double d, const TopoDS_Shape& shape, std::list<Top
 
     BRepPrimAPI_MakeHalfSpace mkSolid(face, refPoint);
     TopoDS_Solid solid = mkSolid.Solid();
-    BRepAlgoAPI_Cut mkCut(shape, solid);
+    FCBRepAlgoAPI_Cut mkCut(shape, solid);
 
     if (mkCut.IsDone()) {
         TopTools_IndexedMapOfShape mapOfFaces;
@@ -217,4 +218,106 @@ TopoDS_Wire CrossSection::fixWire(const TopoDS_Wire& wire) const
     aFix.FixConnected();
     aFix.FixClosed();
     return aFix.Wire();
+}
+
+TopoCrossSection::TopoCrossSection(double a, double b, double c, const TopoShape& s, const char *op)
+    : a(a), b(b), c(c), shape(s), op(op?op:Part::OpCodes::Slice)
+{
+}
+
+void TopoCrossSection::slice(int idx, double d, std::vector<TopoShape>& wires) const
+{
+    // Fixes: 0001228: Cross section of Torus in Part Workbench fails or give wrong results
+    // Fixes: 0001137: Incomplete slices when using Part.slice on a torus
+    bool found = false;
+    for (auto& s : shape.getSubTopoShapes(TopAbs_SOLID)) {
+        sliceSolid(idx, d, s, wires);
+        found = true;
+    }
+    if (!found) {
+        for (auto& s : shape.getSubTopoShapes(TopAbs_SHELL)) {
+            sliceNonSolid(idx, d, s, wires);
+            found = true;
+        }
+        if (!found) {
+            for (auto& s : shape.getSubTopoShapes(TopAbs_FACE)) {
+                sliceNonSolid(idx, d, s, wires);
+            }
+        }
+    }
+}
+
+TopoShape TopoCrossSection::slice(int idx, double d) const
+{
+    std::vector<TopoShape> wires;
+    slice(idx, d, wires);
+    return TopoShape().makeElementCompound(
+        wires,
+        0,
+        TopoShape::SingleShapeCompoundCreationPolicy::returnShape);
+}
+
+void TopoCrossSection::sliceNonSolid(int idx,
+                                     double d,
+                                     const TopoShape& shape,
+                                     std::vector<TopoShape>& wires) const
+{
+    FCBRepAlgoAPI_Section cs(shape.getShape(), gp_Pln(a, b, c, -d));
+    if (cs.IsDone()) {
+        std::string prefix(op);
+        prefix += Data::indexSuffix(idx);
+        auto res = TopoShape()
+                       .makeElementShape(cs, shape, prefix.c_str())
+                       .makeElementWires()
+                       .getSubTopoShapes(TopAbs_WIRE);
+        wires.insert(wires.end(), res.begin(), res.end());
+    }
+}
+
+void TopoCrossSection::sliceSolid(int idx,
+                                  double d,
+                                  const TopoShape& shape,
+                                  std::vector<TopoShape>& wires) const
+{
+    gp_Pln slicePlane(a, b, c, -d);
+    BRepBuilderAPI_MakeFace mkFace(slicePlane);
+    TopoShape face(idx);
+    face.setShape(mkFace.Face());
+
+    // Make sure to choose a point that does not lie on the plane (fixes #0001228)
+    gp_Vec tempVector(a, b, c);
+    tempVector.Normalize();  // just in case.
+    tempVector *= (d + 1.0);
+    gp_Pnt refPoint(0.0, 0.0, 0.0);
+    refPoint.Translate(tempVector);
+
+    BRepPrimAPI_MakeHalfSpace mkSolid(TopoDS::Face(face.getShape()), refPoint);
+    TopoShape solid(idx);
+    std::string prefix(op);
+    prefix += Data::indexSuffix(idx);
+    solid.makeElementShape(mkSolid, face, prefix.c_str());
+    FCBRepAlgoAPI_Cut mkCut(shape.getShape(), solid.getShape());
+
+    if (mkCut.IsDone()) {
+        TopoShape res(shape.Tag, shape.Hasher);
+        std::vector<TopoShape> shapes;
+        shapes.push_back(shape);
+        shapes.push_back(solid);
+        res.makeElementShape(mkCut, shapes, prefix.c_str());
+        for (auto& face : res.getSubTopoShapes(TopAbs_FACE)) {
+            BRepAdaptor_Surface adapt(TopoDS::Face(face.getShape()));
+            if (adapt.GetType() == GeomAbs_Plane) {
+                gp_Pln plane = adapt.Plane();
+                if (plane.Axis().IsParallel(slicePlane.Axis(), Precision::Confusion())
+                    && plane.Distance(slicePlane.Location()) < Precision::Confusion()) {
+                    auto repaired_wires = TopoShape(face.Tag)
+                                              .makeElementWires(face.getSubTopoShapes(TopAbs_EDGE),
+                                                                prefix.c_str(),
+                                                                true)
+                                              .getSubTopoShapes(TopAbs_WIRE);
+                    wires.insert(wires.end(), repaired_wires.begin(), repaired_wires.end());
+                }
+            }
+        }
+    }
 }

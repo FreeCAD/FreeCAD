@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QUuid>
+#include <QUuid>
 #endif
 
 #include <stdexcept>
@@ -71,8 +71,9 @@ void Uuid::setValue(const char* sString)
 {
     if (sString) {
         QUuid uuid(QString::fromLatin1(sString));
-        if (uuid.isNull())
+        if (uuid.isNull()) {
             throw std::runtime_error("invalid uuid");
+        }
         // remove curly braces
         QString id = uuid.toString();
         id = id.mid(1);
@@ -81,7 +82,7 @@ void Uuid::setValue(const char* sString)
     }
 }
 
-void Uuid::setValue(const std::string &sString)
+void Uuid::setValue(const std::string& sString)
 {
     setValue(sString.c_str());
 }

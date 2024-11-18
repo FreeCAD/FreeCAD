@@ -26,14 +26,15 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <sstream>
-# include <QAction>
-# include <QMessageBox>
+#include <QAction>
+#include <QMessageBox>
+#include <sstream>
 #endif
 
 #include <Gui/Command.h>
 #include <Gui/SelectionObject.h>
 #include <Mod/Fem/App/FemConstraintDisplacement.h>
+#include <Mod/Part/App/PartFeature.h>
 
 #include "TaskFemConstraintDisplacement.h"
 #include "ui_TaskFemConstraintDisplacement.h"
@@ -45,9 +46,10 @@ using namespace Gui;
 /* TRANSLATOR FemGui::TaskFemConstraintDisplacement */
 
 TaskFemConstraintDisplacement::TaskFemConstraintDisplacement(
-    ViewProviderFemConstraintDisplacement* ConstraintView, QWidget* parent)
-    : TaskFemConstraintOnBoundary(ConstraintView, parent, "FEM_ConstraintDisplacement"),
-      ui(new Ui_TaskFemConstraintDisplacement)
+    ViewProviderFemConstraintDisplacement* ConstraintView,
+    QWidget* parent)
+    : TaskFemConstraintOnBoundary(ConstraintView, parent, "FEM_ConstraintDisplacement")
+    , ui(new Ui_TaskFemConstraintDisplacement)
 {
     proxy = new QWidget(this);
     ui->setupUi(proxy);
@@ -55,13 +57,19 @@ TaskFemConstraintDisplacement::TaskFemConstraintDisplacement(
 
     // create a context menu for the listview of the references
     createDeleteAction(ui->lw_references);
-    connect(deleteAction, &QAction::triggered,
-            this, &TaskFemConstraintDisplacement::onReferenceDeleted);
+    connect(deleteAction,
+            &QAction::triggered,
+            this,
+            &TaskFemConstraintDisplacement::onReferenceDeleted);
 
-    connect(ui->lw_references, &QListWidget::currentItemChanged,
-            this, &TaskFemConstraintDisplacement::setSelection);
-    connect(ui->lw_references, &QListWidget::itemClicked,
-            this, &TaskFemConstraintDisplacement::setSelection);
+    connect(ui->lw_references,
+            &QListWidget::currentItemChanged,
+            this,
+            &TaskFemConstraintDisplacement::setSelection);
+    connect(ui->lw_references,
+            &QListWidget::itemClicked,
+            this,
+            &TaskFemConstraintDisplacement::setSelection);
 
     this->groupLayout()->addWidget(proxy);
 
@@ -84,7 +92,7 @@ TaskFemConstraintDisplacement::TaskFemConstraintDisplacement(
         static_cast<Fem::ConstraintDisplacement*>(ConstraintView->getObject());
     Base::Quantity fStates[6] {};
     const char* sStates[3] {};
-    bool bStates[16] {};
+    bool bStates[10] {};
     fStates[0] = pcConstraint->xDisplacement.getQuantityValue();
     fStates[1] = pcConstraint->yDisplacement.getQuantityValue();
     fStates[2] = pcConstraint->zDisplacement.getQuantityValue();
@@ -94,22 +102,16 @@ TaskFemConstraintDisplacement::TaskFemConstraintDisplacement(
     sStates[0] = pcConstraint->xDisplacementFormula.getValue();
     sStates[1] = pcConstraint->yDisplacementFormula.getValue();
     sStates[2] = pcConstraint->zDisplacementFormula.getValue();
-    bStates[0] = pcConstraint->xFix.getValue();
-    bStates[1] = pcConstraint->xFree.getValue();
-    bStates[2] = pcConstraint->yFix.getValue();
-    bStates[3] = pcConstraint->yFree.getValue();
-    bStates[4] = pcConstraint->zFix.getValue();
-    bStates[5] = pcConstraint->zFree.getValue();
-    bStates[6] = pcConstraint->rotxFix.getValue();
-    bStates[7] = pcConstraint->rotxFree.getValue();
-    bStates[8] = pcConstraint->rotyFix.getValue();
-    bStates[9] = pcConstraint->rotyFree.getValue();
-    bStates[10] = pcConstraint->rotzFix.getValue();
-    bStates[11] = pcConstraint->rotzFree.getValue();
-    bStates[12] = pcConstraint->hasXFormula.getValue();
-    bStates[13] = pcConstraint->hasYFormula.getValue();
-    bStates[14] = pcConstraint->hasZFormula.getValue();
-    bStates[15] = pcConstraint->useFlowSurfaceForce.getValue();
+    bStates[0] = pcConstraint->xFree.getValue();
+    bStates[1] = pcConstraint->yFree.getValue();
+    bStates[2] = pcConstraint->zFree.getValue();
+    bStates[3] = pcConstraint->rotxFree.getValue();
+    bStates[4] = pcConstraint->rotyFree.getValue();
+    bStates[5] = pcConstraint->rotzFree.getValue();
+    bStates[6] = pcConstraint->hasXFormula.getValue();
+    bStates[7] = pcConstraint->hasYFormula.getValue();
+    bStates[8] = pcConstraint->hasZFormula.getValue();
+    bStates[9] = pcConstraint->useFlowSurfaceForce.getValue();
 
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
@@ -123,21 +125,20 @@ TaskFemConstraintDisplacement::TaskFemConstraintDisplacement(
     }
 
     // Connect check box values displacements
-    connect(ui->dispxfix, &QCheckBox::toggled, this, &TaskFemConstraintDisplacement::fixx);
-    connect(ui->DisplacementXFormulaCB, &QCheckBox::toggled,
-        this, &TaskFemConstraintDisplacement::formulaX);
-    connect(ui->dispyfix, &QCheckBox::toggled, this, &TaskFemConstraintDisplacement::fixy);
-    connect(ui->DisplacementYFormulaCB, &QCheckBox::toggled,
-        this, &TaskFemConstraintDisplacement::formulaY);
-    connect(ui->dispzfix, &QCheckBox::toggled, this, &TaskFemConstraintDisplacement::fixz);
-    connect(ui->DisplacementZFormulaCB, &QCheckBox::toggled,
-        this, &TaskFemConstraintDisplacement::formulaZ);
-    connect(ui->FlowForceCB, &QCheckBox::toggled,
-        this, &TaskFemConstraintDisplacement::flowForce);
+    connect(ui->DisplacementXFormulaCB,
+            &QCheckBox::toggled,
+            this,
+            &TaskFemConstraintDisplacement::formulaX);
+    connect(ui->DisplacementYFormulaCB,
+            &QCheckBox::toggled,
+            this,
+            &TaskFemConstraintDisplacement::formulaY);
+    connect(ui->DisplacementZFormulaCB,
+            &QCheckBox::toggled,
+            this,
+            &TaskFemConstraintDisplacement::formulaZ);
+    connect(ui->FlowForceCB, &QCheckBox::toggled, this, &TaskFemConstraintDisplacement::flowForce);
     // Connect to check box values for rotations
-    connect(ui->rotxfix, &QCheckBox::toggled, this, &TaskFemConstraintDisplacement::rotfixx);
-    connect(ui->rotyfix, &QCheckBox::toggled, this, &TaskFemConstraintDisplacement::rotfixy);
-    connect(ui->rotzfix, &QCheckBox::toggled, this, &TaskFemConstraintDisplacement::rotfixz);
 
     // Fill data into dialog elements
     ui->spinxDisplacement->setValue(fStates[0]);
@@ -149,26 +150,20 @@ TaskFemConstraintDisplacement::TaskFemConstraintDisplacement(
     ui->DisplacementXFormulaLE->setText(QString::fromUtf8(sStates[0]));
     ui->DisplacementYFormulaLE->setText(QString::fromUtf8(sStates[1]));
     ui->DisplacementZFormulaLE->setText(QString::fromUtf8(sStates[2]));
-    ui->dispxfix->setChecked(bStates[0]);
-    ui->DisplacementXGB->setChecked(!bStates[1]);
-    ui->dispyfix->setChecked(bStates[2]);
-    ui->DisplacementYGB->setChecked(!bStates[3]);
-    ui->dispzfix->setChecked(bStates[4]);
-    ui->DisplacementZGB->setChecked(!bStates[5]);
-    ui->rotxfix->setChecked(bStates[6]);
-    ui->RotationXGB->setChecked(!bStates[7]);
-    ui->rotyfix->setChecked(bStates[8]);
-    ui->RotationYGB->setChecked(!bStates[9]);
-    ui->rotzfix->setChecked(bStates[10]);
-    ui->RotationZGB->setChecked(!bStates[11]);
-    ui->DisplacementXFormulaCB->setChecked(bStates[12]);
-    ui->DisplacementYFormulaCB->setChecked(bStates[13]);
-    ui->DisplacementZFormulaCB->setChecked(bStates[14]);
-    ui->FlowForceCB->setChecked(bStates[15]);
+    ui->DisplacementXGB->setChecked(!bStates[0]);
+    ui->DisplacementYGB->setChecked(!bStates[1]);
+    ui->DisplacementZGB->setChecked(!bStates[2]);
+    ui->RotationXGB->setChecked(!bStates[3]);
+    ui->RotationYGB->setChecked(!bStates[4]);
+    ui->RotationZGB->setChecked(!bStates[5]);
+    ui->DisplacementXFormulaCB->setChecked(bStates[6]);
+    ui->DisplacementYFormulaCB->setChecked(bStates[7]);
+    ui->DisplacementZFormulaCB->setChecked(bStates[8]);
+    ui->FlowForceCB->setChecked(bStates[9]);
 
     // Selection buttons
-    buttonGroup->addButton(ui->btnAdd, (int)SelectionChangeModes::refAdd);
-    buttonGroup->addButton(ui->btnRemove, (int)SelectionChangeModes::refRemove);
+    buttonGroup->addButton(ui->btnAdd, static_cast<int>(SelectionChangeModes::refAdd));
+    buttonGroup->addButton(ui->btnRemove, static_cast<int>(SelectionChangeModes::refRemove));
 
     // Bind input fields to properties
     ui->spinxDisplacement->bind(pcConstraint->xDisplacement);
@@ -181,8 +176,7 @@ TaskFemConstraintDisplacement::TaskFemConstraintDisplacement(
     updateUI();
 }
 
-TaskFemConstraintDisplacement::~TaskFemConstraintDisplacement()
-{}
+TaskFemConstraintDisplacement::~TaskFemConstraintDisplacement() = default;
 
 void TaskFemConstraintDisplacement::updateUI()
 {
@@ -193,54 +187,21 @@ void TaskFemConstraintDisplacement::updateUI()
     }
 }
 
-void TaskFemConstraintDisplacement::fixx(bool state)
-{
-    if (state) {
-        ui->spinxDisplacement->setValue(0);
-        ui->DisplacementXFormulaCB->setChecked(!state);
-    }
-    ui->spinxDisplacement->setEnabled(!state);
-    ui->DisplacementXFormulaCB->setEnabled(!state);
-}
-
 void TaskFemConstraintDisplacement::formulaX(bool state)
 {
     ui->spinxDisplacement->setEnabled(!state);
-    ui->dispxfix->setEnabled(!state);
     ui->DisplacementXFormulaLE->setEnabled(state);
-}
-
-void TaskFemConstraintDisplacement::fixy(bool state)
-{
-    if (state) {
-        ui->spinyDisplacement->setValue(0);
-        ui->DisplacementYFormulaCB->setChecked(!state);
-    }
-    ui->spinyDisplacement->setEnabled(!state);
-    ui->DisplacementYFormulaCB->setEnabled(!state);
 }
 
 void TaskFemConstraintDisplacement::formulaY(bool state)
 {
     ui->spinyDisplacement->setEnabled(!state);
-    ui->dispyfix->setEnabled(!state);
     ui->DisplacementYFormulaLE->setEnabled(state);
-}
-
-void TaskFemConstraintDisplacement::fixz(bool state)
-{
-    if (state) {
-        ui->spinzDisplacement->setValue(0);
-        ui->DisplacementZFormulaCB->setChecked(!state);
-    }
-    ui->spinzDisplacement->setEnabled(!state);
-    ui->DisplacementZFormulaCB->setEnabled(!state);
 }
 
 void TaskFemConstraintDisplacement::formulaZ(bool state)
 {
     ui->spinzDisplacement->setEnabled(!state);
-    ui->dispzfix->setEnabled(!state);
     ui->DisplacementZFormulaLE->setEnabled(state);
 }
 
@@ -256,49 +217,25 @@ void TaskFemConstraintDisplacement::flowForce(bool state)
     }
 }
 
-void TaskFemConstraintDisplacement::rotfixx(bool state)
-{
-    if (state)
-        ui->spinxRotation->setValue(0);
-    ui->spinxRotation->setEnabled(!state);
-}
-
 void TaskFemConstraintDisplacement::formulaRotx(bool state)
 {
     ui->spinxRotation->setEnabled(!state);
-    ui->rotxfix->setEnabled(!state);
-}
-
-void TaskFemConstraintDisplacement::rotfixy(bool state)
-{
-    if (state)
-        ui->spinyRotation->setValue(0);
-    ui->spinyRotation->setEnabled(!state);
 }
 
 void TaskFemConstraintDisplacement::formulaRoty(bool state)
 {
     ui->spinyRotation->setEnabled(!state);
-    ui->rotyfix->setEnabled(!state);
-}
-
-void TaskFemConstraintDisplacement::rotfixz(bool state)
-{
-    if (state)
-        ui->spinzRotation->setValue(0);
-    ui->spinzRotation->setEnabled(!state);
 }
 
 void TaskFemConstraintDisplacement::formulaRotz(bool state)
 {
     ui->spinzRotation->setEnabled(!state);
-    ui->rotzfix->setEnabled(!state);
 }
 
 void TaskFemConstraintDisplacement::addToSelection()
 {
     std::vector<Gui::SelectionObject> selection =
-        Gui::Selection().getSelectionEx();// gets vector of selected objects of active document
+        Gui::Selection().getSelectionEx();  // gets vector of selected objects of active document
     if (selection.empty()) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
@@ -308,45 +245,46 @@ void TaskFemConstraintDisplacement::addToSelection()
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
-    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end();
-         ++it) {// for every selected object
-        if (!it->isObjectTypeOf(Part::Feature::getClassTypeId())) {
+    for (auto& it : selection) {  // for every selected object
+        if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
         }
-        const std::vector<std::string>& subNames = it->getSubNames();
-        App::DocumentObject* obj = it->getObject();
-        for (size_t subIt = 0; subIt < (subNames.size());
-             ++subIt) {// for every selected sub element
+        const std::vector<std::string>& subNames = it.getSubNames();
+        App::DocumentObject* obj = it.getObject();
+        for (const auto& subName : subNames) {  // for every selected sub element
             bool addMe = true;
             for (std::vector<std::string>::iterator itr =
-                     std::find(SubElements.begin(), SubElements.end(), subNames[subIt]);
+                     std::find(SubElements.begin(), SubElements.end(), subName);
                  itr != SubElements.end();
                  itr = std::find(++itr,
                                  SubElements.end(),
-                                 subNames[subIt])) {// for every sub element in selection that
-                                                    // matches one in old list
+                                 subName)) {  // for every sub element in selection that
+                                              // matches one in old list
                 if (obj
                     == Objects[std::distance(
                         SubElements.begin(),
-                        itr)]) {// if selected sub element's object equals the one in old list then
-                                // it was added before so don't add
+                        itr)]) {  // if selected sub element's object equals the one in old list
+                                  // then it was added before so don't add
                     addMe = false;
                 }
             }
             // limit constraint such that only vertexes or faces or edges can be used depending on
             // what was selected first
             std::string searchStr;
-            if (subNames[subIt].find("Vertex") != std::string::npos)
+            if (subName.find("Vertex") != std::string::npos) {
                 searchStr = "Vertex";
-            else if (subNames[subIt].find("Edge") != std::string::npos)
+            }
+            else if (subName.find("Edge") != std::string::npos) {
                 searchStr = "Edge";
-            else
+            }
+            else {
                 searchStr = "Face";
-            for (size_t iStr = 0; iStr < (SubElements.size()); ++iStr) {
-                if (SubElements[iStr].find(searchStr) == std::string::npos) {
-                    QString msg = tr(
-                        "Only one type of selection (vertex,face or edge) per constraint allowed!");
+            }
+            for (const auto& SubElement : SubElements) {
+                if (SubElement.find(searchStr) == std::string::npos) {
+                    QString msg = tr("Only one type of selection (vertex, face or edge) per "
+                                     "analysis feature allowed!");
                     QMessageBox::warning(this, tr("Selection error"), msg);
                     addMe = false;
                     break;
@@ -355,8 +293,8 @@ void TaskFemConstraintDisplacement::addToSelection()
             if (addMe) {
                 QSignalBlocker block(ui->lw_references);
                 Objects.push_back(obj);
-                SubElements.push_back(subNames[subIt]);
-                ui->lw_references->addItem(makeRefText(obj, subNames[subIt]));
+                SubElements.push_back(subName);
+                ui->lw_references->addItem(makeRefText(obj, subName));
             }
         }
     }
@@ -368,7 +306,7 @@ void TaskFemConstraintDisplacement::addToSelection()
 void TaskFemConstraintDisplacement::removeFromSelection()
 {
     std::vector<Gui::SelectionObject> selection =
-        Gui::Selection().getSelectionEx();// gets vector of selected objects of active document
+        Gui::Selection().getSelectionEx();  // gets vector of selected objects of active document
     if (selection.empty()) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
@@ -378,29 +316,27 @@ void TaskFemConstraintDisplacement::removeFromSelection()
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
     std::vector<size_t> itemsToDel;
-    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end();
-         ++it) {// for every selected object
-        if (!it->isObjectTypeOf(Part::Feature::getClassTypeId())) {
+    for (const auto& it : selection) {  // for every selected object
+        if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
         }
-        const std::vector<std::string>& subNames = it->getSubNames();
-        App::DocumentObject* obj = it->getObject();
+        const std::vector<std::string>& subNames = it.getSubNames();
+        const App::DocumentObject* obj = it.getObject();
 
-        for (size_t subIt = 0; subIt < (subNames.size());
-             ++subIt) {// for every selected sub element
+        for (const auto& subName : subNames) {  // for every selected sub element
             for (std::vector<std::string>::iterator itr =
-                     std::find(SubElements.begin(), SubElements.end(), subNames[subIt]);
+                     std::find(SubElements.begin(), SubElements.end(), subName);
                  itr != SubElements.end();
                  itr = std::find(++itr,
                                  SubElements.end(),
-                                 subNames[subIt])) {// for every sub element in selection that
-                                                    // matches one in old list
+                                 subName)) {  // for every sub element in selection that
+                                              // matches one in old list
                 if (obj
                     == Objects[std::distance(
                         SubElements.begin(),
-                        itr)]) {// if selected sub element's object equals the one in old list then
-                                // it was added before so mark for deletion
+                        itr)]) {  // if selected sub element's object equals the one in old list
+                                  // then it was added before so mark for deletion
                     itemsToDel.push_back(std::distance(SubElements.begin(), itr));
                 }
             }
@@ -426,8 +362,8 @@ void TaskFemConstraintDisplacement::removeFromSelection()
 
 void TaskFemConstraintDisplacement::onReferenceDeleted()
 {
-    TaskFemConstraintDisplacement::removeFromSelection();// OvG: On right-click face is
-                                                         // automatically selected, so just remove
+    TaskFemConstraintDisplacement::removeFromSelection();  // OvG: On right-click face is
+                                                           // automatically selected, so just remove
 }
 
 const std::string TaskFemConstraintDisplacement::getReferences() const
@@ -491,11 +427,6 @@ std::string TaskFemConstraintDisplacement::get_zFormula() const
     return zFormula.toStdString();
 }
 
-bool TaskFemConstraintDisplacement::get_dispxfix() const
-{
-    return ui->dispxfix->isChecked();
-}
-
 bool TaskFemConstraintDisplacement::get_dispxfree() const
 {
     return !ui->DisplacementXGB->isChecked();
@@ -504,11 +435,6 @@ bool TaskFemConstraintDisplacement::get_dispxfree() const
 bool TaskFemConstraintDisplacement::get_hasDispXFormula() const
 {
     return ui->DisplacementXFormulaCB->isChecked();
-}
-
-bool TaskFemConstraintDisplacement::get_dispyfix() const
-{
-    return ui->dispyfix->isChecked();
 }
 
 bool TaskFemConstraintDisplacement::get_dispyfree() const
@@ -521,11 +447,6 @@ bool TaskFemConstraintDisplacement::get_hasDispYFormula() const
     return ui->DisplacementYFormulaCB->isChecked();
 }
 
-bool TaskFemConstraintDisplacement::get_dispzfix() const
-{
-    return ui->dispzfix->isChecked();
-}
-
 bool TaskFemConstraintDisplacement::get_dispzfree() const
 {
     return !ui->DisplacementZGB->isChecked();
@@ -536,29 +457,14 @@ bool TaskFemConstraintDisplacement::get_hasDispZFormula() const
     return ui->DisplacementZFormulaCB->isChecked();
 }
 
-bool TaskFemConstraintDisplacement::get_rotxfix() const
-{
-    return ui->rotxfix->isChecked();
-}
-
 bool TaskFemConstraintDisplacement::get_rotxfree() const
 {
     return !ui->RotationXGB->isChecked();
 }
 
-bool TaskFemConstraintDisplacement::get_rotyfix() const
-{
-    return ui->rotyfix->isChecked();
-}
-
 bool TaskFemConstraintDisplacement::get_rotyfree() const
 {
     return !ui->RotationYGB->isChecked();
-}
-
-bool TaskFemConstraintDisplacement::get_rotzfix() const
-{
-    return ui->rotzfix->isChecked();
 }
 
 bool TaskFemConstraintDisplacement::get_rotzfree() const
@@ -569,11 +475,6 @@ bool TaskFemConstraintDisplacement::get_rotzfree() const
 bool TaskFemConstraintDisplacement::get_useFlowSurfaceForce() const
 {
     return ui->FlowForceCB->isChecked();
-}
-
-bool TaskFemConstraintDisplacement::event(QEvent* e)
-{
-    return TaskFemConstraint::KeyEvent(e);
 }
 
 void TaskFemConstraintDisplacement::changeEvent(QEvent*)
@@ -588,10 +489,12 @@ void TaskFemConstraintDisplacement::changeEvent(QEvent*)
 
 void TaskFemConstraintDisplacement::clearButtons(const SelectionChangeModes notThis)
 {
-    if (notThis != SelectionChangeModes::refAdd)
+    if (notThis != SelectionChangeModes::refAdd) {
         ui->btnAdd->setChecked(false);
-    if (notThis != SelectionChangeModes::refRemove)
+    }
+    if (notThis != SelectionChangeModes::refRemove) {
         ui->btnRemove->setChecked(false);
+    }
 }
 
 //**************************************************************************
@@ -610,21 +513,6 @@ TaskDlgFemConstraintDisplacement::TaskDlgFemConstraintDisplacement(
 
 //==== calls from the TaskView ===============================================================
 
-void TaskDlgFemConstraintDisplacement::open()
-{
-    // a transaction is already open at creation time of the panel
-    if (!Gui::Command::hasPendingCommand()) {
-        QString msg = QObject::tr("Constraint displacement");
-        Gui::Command::openCommand((const char*)msg.toUtf8());
-        ConstraintView->setVisible(true);
-        Gui::Command::doCommand(
-            Gui::Command::Doc,
-            ViewProviderFemConstraint::gethideMeshShowPartStr(
-                (static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument())
-                .c_str());// OvG: Hide meshes and show parts
-    }
-}
-
 bool TaskDlgFemConstraintDisplacement::accept()
 {
     std::string name = ConstraintView->getObject()->getNameInDocument();
@@ -632,87 +520,83 @@ bool TaskDlgFemConstraintDisplacement::accept()
         static_cast<const TaskFemConstraintDisplacement*>(parameter);
 
     try {
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.xDisplacement = \"%s\"",
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.xDisplacement = \"%s\"",
                                 name.c_str(),
                                 parameterDisplacement->get_spinxDisplacement().c_str());
         Gui::Command::doCommand(Gui::Command::Doc,
                                 "App.ActiveDocument.%s.xDisplacementFormula = \"%s\"",
-                                name.c_str(), parameterDisplacement->get_xFormula().c_str());
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.yDisplacement = \"%s\"",
+                                name.c_str(),
+                                parameterDisplacement->get_xFormula().c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.yDisplacement = \"%s\"",
                                 name.c_str(),
                                 parameterDisplacement->get_spinyDisplacement().c_str());
         Gui::Command::doCommand(Gui::Command::Doc,
                                 "App.ActiveDocument.%s.yDisplacementFormula = \"%s\"",
-                                name.c_str(), parameterDisplacement->get_yFormula().c_str());
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.zDisplacement = \"%s\"",
+                                name.c_str(),
+                                parameterDisplacement->get_yFormula().c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.zDisplacement = \"%s\"",
                                 name.c_str(),
                                 parameterDisplacement->get_spinzDisplacement().c_str());
         Gui::Command::doCommand(Gui::Command::Doc,
                                 "App.ActiveDocument.%s.zDisplacementFormula = \"%s\"",
-                                name.c_str(), parameterDisplacement->get_zFormula().c_str());
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.xRotation = \"%s\"",
-                                name.c_str(), parameterDisplacement->get_spinxRotation().c_str());
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.yRotation = \"%s\"",
-                                name.c_str(), parameterDisplacement->get_spinyRotation().c_str());
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.zRotation = \"%s\"",
+                                name.c_str(),
+                                parameterDisplacement->get_zFormula().c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.xRotation = \"%s\"",
+                                name.c_str(),
+                                parameterDisplacement->get_spinxRotation().c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.yRotation = \"%s\"",
+                                name.c_str(),
+                                parameterDisplacement->get_spinyRotation().c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.zRotation = \"%s\"",
                                 name.c_str(),
                                 parameterDisplacement->get_spinzRotation().c_str());
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.xFree = %s",
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.xFree = %s",
                                 name.c_str(),
                                 parameterDisplacement->get_dispxfree() ? "True" : "False");
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.xFix = %s",
-                                name.c_str(),
-                                parameterDisplacement->get_dispxfix() ? "True" : "False");
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.hasXFormula = %s",
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.hasXFormula = %s",
                                 name.c_str(),
                                 parameterDisplacement->get_hasDispXFormula() ? "True" : "False");
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.yFree = %s",
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.yFree = %s",
                                 name.c_str(),
                                 parameterDisplacement->get_dispyfree() ? "True" : "False");
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.yFix = %s",
-                                name.c_str(),
-                                parameterDisplacement->get_dispyfix() ? "True" : "False");
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.hasYFormula = %s",
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.hasYFormula = %s",
                                 name.c_str(),
                                 parameterDisplacement->get_hasDispYFormula() ? "True" : "False");
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.zFree = %s",
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.zFree = %s",
                                 name.c_str(),
                                 parameterDisplacement->get_dispzfree() ? "True" : "False");
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.zFix = %s",
-                                name.c_str(),
-                                parameterDisplacement->get_dispzfix() ? "True" : "False");
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.hasZFormula = %s",
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.hasZFormula = %s",
                                 name.c_str(),
                                 parameterDisplacement->get_hasDispZFormula() ? "True" : "False");
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.rotxFree = %s",
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.rotxFree = %s",
                                 name.c_str(),
                                 parameterDisplacement->get_rotxfree() ? "True" : "False");
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.rotxFix = %s",
-                                name.c_str(),
-                                parameterDisplacement->get_rotxfix() ? "True" : "False");
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.rotyFree = %s",
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.rotyFree = %s",
                                 name.c_str(),
                                 parameterDisplacement->get_rotyfree() ? "True" : "False");
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.rotyFix = %s",
-                                name.c_str(),
-                                parameterDisplacement->get_rotyfix() ? "True" : "False");
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.rotzFree = %s",
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.rotzFree = %s",
                                 name.c_str(),
                                 parameterDisplacement->get_rotzfree() ? "True" : "False");
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.rotzFix = %s",
-                                name.c_str(),
-                                parameterDisplacement->get_rotzfix() ? "True" : "False");
         Gui::Command::doCommand(Gui::Command::Doc,
                                 "App.ActiveDocument.%s.useFlowSurfaceForce = %s",
                                 name.c_str(),
                                 parameterDisplacement->get_useFlowSurfaceForce() ? "True"
                                                                                  : "False");
-
-        std::string scale = parameterDisplacement->getScale();// OvG: determine modified scale
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.Scale = %s",
-                                name.c_str(),
-                                scale.c_str());// OvG: implement modified scale
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
@@ -720,15 +604,6 @@ bool TaskDlgFemConstraintDisplacement::accept()
     }
 
     return TaskDlgFemConstraint::accept();
-}
-
-bool TaskDlgFemConstraintDisplacement::reject()
-{
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-    Gui::Command::updateActive();
-
-    return true;
 }
 
 #include "moc_TaskFemConstraintDisplacement.cpp"

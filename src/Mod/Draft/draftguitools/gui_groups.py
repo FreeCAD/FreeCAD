@@ -36,14 +36,15 @@ to the construction group.
 # @{
 import PySide.QtCore as QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
-from PySide import QtGui
+from PySide import QtWidgets
 
 import FreeCAD as App
 import FreeCADGui as Gui
 import Draft_rc
-import draftutils.utils as utils
-import draftutils.groups as groups
-import draftguitools.gui_base as gui_base
+from draftguitools import gui_base
+from draftutils import groups
+from draftutils import params
+from draftutils import utils
 from draftutils.translate import translate
 
 
@@ -122,8 +123,8 @@ class AddToGroup(gui_base.GuiCommandNeedsSelection):
 
             #if new group is selected then launch AddNamedGroup
             if labelname == self.addNewGroupStr:
-               add=AddNamedGroup()
-               add.Activated()
+                add=AddNamedGroup()
+                add.Activated()
             else:
             #else add selection to the selected group
                 if labelname in self.labels :
@@ -206,7 +207,7 @@ class SetAutoGroup(gui_base.GuiCommandSimplest):
         """Set icon, menu and tooltip."""
         return {'Pixmap': 'Draft_AutoGroup',
                 'MenuText': QT_TRANSLATE_NOOP("Draft_AutoGroup", "Autogroup"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_AutoGroup", "Select a group to add all Draft and Arch objects to.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_AutoGroup", "Select a group to add all Draft and BIM objects to.")}
 
     def Activated(self):
         """Execute when the command is called.
@@ -223,12 +224,11 @@ class SetAutoGroup(gui_base.GuiCommandSimplest):
         # and globally initialized in the `Gui` namespace to run
         # some actions.
         # If there is only a group selected, it runs the `AutoGroup` method.
-        params = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
         self.ui = Gui.draftToolBar
         s = Gui.Selection.getSelection()
         if len(s) == 1:
             if (utils.get_type(s[0]) == "Layer"
-                or (params.GetBool("AutogroupAddGroups", False)
+                or (params.get_param("AutogroupAddGroups")
                     and groups.is_group(s[0]))):
                 self.ui.setAutoGroup(s[0].Name)
                 return
@@ -237,7 +237,7 @@ class SetAutoGroup(gui_base.GuiCommandSimplest):
         # including the options "None" and "Add new layer".
         self.groups = [translate("draft", "None")]
         gn = [o.Name for o in self.doc.Objects if utils.get_type(o) == "Layer"]
-        if params.GetBool("AutogroupAddGroups", False):
+        if params.get_param("AutogroupAddGroups"):
             gn.extend(groups.get_group_names())
         self.groups.extend(gn)
         self.labels = [translate("draft", "None")]
@@ -287,7 +287,7 @@ class SetAutoGroup(gui_base.GuiCommandSimplest):
 Gui.addCommand('Draft_AutoGroup', SetAutoGroup())
 
 
-class AddToConstruction(gui_base.GuiCommandSimplest):
+class AddToConstruction(gui_base.GuiCommandNeedsSelection):
     """Gui Command for the AddToConstruction tool.
 
     It adds the selected objects to the construction group
@@ -306,7 +306,7 @@ class AddToConstruction(gui_base.GuiCommandSimplest):
     def GetResources(self):
         """Set icon, menu and tooltip."""
         return {'Pixmap': 'Draft_AddConstruction',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_AddConstruction", "Add to Construction group"),
+                'MenuText': QT_TRANSLATE_NOOP("Draft_AddConstruction", "Add to construction group"),
                 'ToolTip': QT_TRANSLATE_NOOP("Draft_AddConstruction", "Adds the selected objects to the construction group,\nand changes their appearance to the construction style.\nIt creates a construction group if it doesn't exist.")}
 
     def Activated(self):
@@ -316,14 +316,13 @@ class AddToConstruction(gui_base.GuiCommandSimplest):
         if not hasattr(Gui, "draftToolBar"):
             return
 
-        col = Gui.draftToolBar.getDefaultColor("constr")
-        col = (float(col[0]), float(col[1]), float(col[2]), 0.0)
+        col = params.get_param("constructioncolor") & 0xFFFFFF00
 
         # Get the construction group or create it if it doesn't exist
         grp = self.doc.getObject("Draft_Construction")
         if not grp:
             grp = self.doc.addObject("App::DocumentObjectGroup", "Draft_Construction")
-            grp.Label = utils.get_param("constructiongroupname", "Construction")
+            grp.Label = params.get_param("constructiongroupname")
 
         for obj in Gui.Selection.getSelection():
             grp.addObject(obj)
@@ -379,11 +378,11 @@ class Ui_AddNamedGroup():
     simple label and line edit in dialogbox
     """
     def __init__(self):
-        self.form = QtGui.QWidget()
+        self.form = QtWidgets.QWidget()
         self.form.setWindowTitle(translate("draft", "Add group"))
-        row = QtGui.QHBoxLayout(self.form)
-        lbl = QtGui.QLabel(translate("draft", "Group name") + ":")
-        self.name = QtGui.QLineEdit()
+        row = QtWidgets.QHBoxLayout(self.form)
+        lbl = QtWidgets.QLabel(translate("draft", "Group name") + ":")
+        self.name = QtWidgets.QLineEdit()
         row.addWidget(lbl)
         row.addWidget(self.name)
 

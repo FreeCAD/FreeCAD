@@ -50,7 +50,7 @@
 
 
 using namespace Gui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::MDIView,Gui::BaseView)
 
@@ -67,9 +67,11 @@ MDIView::MDIView(Gui::Document* pcDocument,QWidget* parent, Qt::WindowFlags wfla
 
     if (pcDocument)
     {
+      //NOLINTBEGIN
       connectDelObject = pcDocument->signalDeletedObject.connect
-        (boost::bind(&ActiveObjectList::objectDeleted, &ActiveObjects, bp::_1));
+        (std::bind(&ActiveObjectList::objectDeleted, &ActiveObjects, sp::_1));
       assert(connectDelObject.connected());
+      //NOLINTEND
     }
 }
 
@@ -112,7 +114,7 @@ void MDIView::deleteSelf()
     // Use deleteLater() instead of delete operator.
     QWidget* parent = this->parentWidget();
     if (qobject_cast<QMdiSubWindow*>(parent)) {
-        // https://forum.freecadweb.org/viewtopic.php?f=22&t=23070
+        // https://forum.freecad.org/viewtopic.php?f=22&t=23070
         parent->close();
     }
     else {
@@ -149,13 +151,13 @@ void MDIView::onRelabel(Gui::Document *pDoc)
         // Try to separate document name and view number if there is one
         QString cap = windowTitle();
         // Either with dirty flag ...
-        QRegularExpression rx(QLatin1String("(\\s\\:\\s\\d+\\[\\*\\])$"));
+        QRegularExpression rx(QLatin1String(R"((\s\:\s\d+\[\*\])$)"));
         QRegularExpressionMatch match;
         //int pos =
         boost::ignore_unused(cap.lastIndexOf(rx, -1, &match));
         if (!match.hasMatch()) {
             // ... or not
-            rx.setPattern(QLatin1String("(\\s\\:\\s\\d+)$"));
+            rx.setPattern(QLatin1String(R"((\s\:\s\d+)$)"));
             //pos =
             boost::ignore_unused(cap.lastIndexOf(rx, -1, &match));
         }
@@ -207,6 +209,8 @@ void MDIView::closeEvent(QCloseEvent *e)
 {
     if (canClose()) {
         e->accept();
+        Application::Instance->viewClosed(this);
+
         if (!bIsPassive) {
             // must be detached so that the last view can get asked
             Document* doc = this->getGuiDocument();
@@ -224,12 +228,14 @@ void MDIView::closeEvent(QCloseEvent *e)
         // because otherwise other parts don't work as they should.
         QMainWindow::closeEvent(e);
     }
-    else
+    else {
         e->ignore();
+    }
 }
 
-void MDIView::windowStateChanged( MDIView* )
+void MDIView::windowStateChanged(QWidget* view)
 {
+    Q_UNUSED(view)
 }
 
 void MDIView::print(QPrinter* printer)
@@ -254,6 +260,8 @@ void MDIView::printPdf()
         QString::fromLatin1("%1 (*.pdf)").arg(tr("PDF file")));
     if (!filename.isEmpty()) {
         QPrinter printer(QPrinter::ScreenResolution);
+        // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
+        printer.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setOutputFileName(filename);
         print(&printer);
@@ -337,7 +345,7 @@ QStringList MDIView::redoActions() const
 
 QSize MDIView::minimumSizeHint () const
 {
-    return QSize(400, 300);
+    return {400, 300};
 }
 
 void MDIView::changeEvent(QEvent *e)
@@ -440,6 +448,16 @@ void MDIView::setCurrentViewMode(ViewMode mode)
                 update();
             }   break;
     }
+}
+
+QString MDIView::buildWindowTitle() const
+{
+    QString windowTitle;
+    if (auto document = getAppDocument()) {
+        windowTitle.append(QString::fromStdString(document->Label.getStrValue()));
+    }
+
+    return windowTitle;
 }
 
 #include "moc_MDIView.cpp"

@@ -28,6 +28,7 @@
 #include <App/Link.h>
 
 #include "FeatureOffset.h"
+#include <App/Document.h>
 
 
 using namespace Part;
@@ -52,10 +53,7 @@ Offset::Offset()
     Source.setScope(App::LinkScope::Global);
 }
 
-Offset::~Offset()
-{
-
-}
+Offset::~Offset() = default;
 
 short Offset::mustExecute() const
 {
@@ -76,7 +74,7 @@ short Offset::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *Offset::execute(void)
+App::DocumentObjectExecReturn *Offset::execute()
 {
     App::DocumentObject* source = Source.getValue();
     if (!source)
@@ -86,13 +84,13 @@ App::DocumentObjectExecReturn *Offset::execute(void)
     bool inter = Intersection.getValue();
     bool self = SelfIntersection.getValue();
     short mode = (short)Mode.getValue();
-    short join = (short)Join.getValue();
     bool fill = Fill.getValue();
-    const TopoShape& shape = Feature::getShape(source);
-    if (fabs(offset) > 2*tol)
-        this->Shape.setValue(shape.makeOffsetShape(offset, tol, inter, self, mode, join, fill));
-    else
-        this->Shape.setValue(shape);
+    auto shape = Feature::getTopoShape(source);
+    if(shape.isNull())
+        return new App::DocumentObjectExecReturn("Invalid source link");
+    auto join = static_cast<JoinType>(Join.getValue());
+    this->Shape.setValue(TopoShape(0).makeElementOffset(
+        shape,offset,tol,inter,self,mode,join,fill ? FillType::fill : FillType::noFill));
     return App::DocumentObject::StdReturn;
 }
 
@@ -108,10 +106,7 @@ Offset2D::Offset2D()
     this->Mode.setValue(1); //switch to Pipe mode by default, because skin mode does not function properly on closed profiles.
 }
 
-Offset2D::~Offset2D()
-{
-
-}
+Offset2D::~Offset2D() = default;
 
 short Offset2D::mustExecute() const
 {
@@ -130,7 +125,7 @@ short Offset2D::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *Offset2D::execute(void)
+App::DocumentObjectExecReturn *Offset2D::execute()
 {
     App::DocumentObject* source = Source.getValue();
 

@@ -34,7 +34,7 @@
 
 
 using namespace Gui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 namespace Gui {
 
@@ -173,6 +173,10 @@ MDIViewPyWrap::MDIViewPyWrap(const Py::Object& py, Gui::Document* pcDocument,QWi
         QWidget* widget = ptr->widget();
         if (widget) {
             setCentralWidget(widget);
+            QString title = widget->windowTitle();
+            if (!title.isEmpty()) {
+                setWindowTitle(title);
+            }
         }
     }
     catch (Py::Exception&) {

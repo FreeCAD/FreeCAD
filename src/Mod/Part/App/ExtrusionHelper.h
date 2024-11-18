@@ -29,10 +29,29 @@
 #include <TopoDS_Shape.hxx>
 
 #include <Mod/Part/PartGlobal.h>
+#include "TopoShape.h"
 
 
 namespace Part
 {
+
+class TopoShape;
+
+/**
+ * @brief The ExtrusionParameters struct is supposed to be filled with final
+ * extrusion parameters, after resolving links, applying mode logic,
+ * reversing, etc., and be passed to extrudeShape.
+ */
+struct ExtrusionParameters
+{
+    gp_Dir dir;
+    double lengthFwd {0};
+    double lengthRev {0};
+    bool solid {false};
+    double taperAngleFwd {0};  // in radians
+    double taperAngleRev {0};
+    std::string faceMakerClass;
+};
 
 class PartExport ExtrusionHelper
 {
@@ -68,6 +87,12 @@ public:
                                          double offset,
                                          bool isSecond,
                                          TopoDS_Wire& result);
+    /** Same as makeDraft() with support of element mapping
+     */
+    static void makeElementDraft(const ExtrusionParameters& params,
+                                 const TopoShape&,
+                                 std::vector<TopoShape>&,
+                                 App::StringHasherRef hasher);
 };
 
 } //namespace Part

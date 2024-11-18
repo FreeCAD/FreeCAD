@@ -27,13 +27,13 @@
 
 // Exporting of App classes
 #ifdef FC_OS_WIN32
-# define RobotExport __declspec(dllexport)
-# define PartExport  __declspec(dllimport)
-# define MeshExport  __declspec(dllimport)
-#else // for Linux
-# define RobotExport
-# define PartExport 
-# define MeshExport  
+#define RobotExport __declspec(dllexport)
+#define PartExport __declspec(dllimport)
+#define MeshExport __declspec(dllimport)
+#else  // for Linux
+#define RobotExport
+#define PartExport
+#define MeshExport
 #endif
 
 #ifdef _PreComp_
@@ -44,10 +44,10 @@
 
 // kdl_cp
 #include "kdl_cp/chain.hpp"
-#include "kdl_cp/chainiksolverpos_nr.hpp"
-#include "kdl_cp/chainiksolvervel_pinv.hpp"
-#include "kdl_cp/chainiksolverpos_nr_jl.hpp"
 #include "kdl_cp/chainfksolverpos_recursive.hpp"
+#include "kdl_cp/chainiksolverpos_nr.hpp"
+#include "kdl_cp/chainiksolverpos_nr_jl.hpp"
+#include "kdl_cp/chainiksolvervel_pinv.hpp"
 #include "kdl_cp/frames_io.hpp"
 #include "kdl_cp/path_line.hpp"
 #include "kdl_cp/path_roundedcomposite.hpp"
@@ -63,5 +63,5 @@
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
 
-#endif // _PreComp_
+#endif  // _PreComp_
 #endif

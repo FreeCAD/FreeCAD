@@ -74,9 +74,7 @@ CommandIconView::CommandIconView ( QWidget * parent )
 /**
  * Destroys the icon view and deletes all items.
  */
-CommandIconView::~CommandIconView ()
-{
-}
+CommandIconView::~CommandIconView () = default;
 
 /**
  * Stores the name of the selected commands for drag and drop.
@@ -207,9 +205,7 @@ ActionSelector::ActionSelector(QWidget* parent)
     setButtonsEnabled();
 }
 
-ActionSelector::~ActionSelector()
-{
-}
+ActionSelector::~ActionSelector() = default;
 
 void ActionSelector::setSelectedLabel(const QString& label)
 {
@@ -566,10 +562,7 @@ CheckListDialog::CheckListDialog( QWidget* parent, Qt::WindowFlags fl )
 /**
  *  Destroys the object and frees any allocated resources
  */
-CheckListDialog::~CheckListDialog()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+CheckListDialog::~CheckListDialog() = default;
 
 /**
  * Sets the items to the dialog's list view. By default all items are checkable..
@@ -625,23 +618,12 @@ struct ColorButtonP
 {
     QColor old, col;
     QPointer<QColorDialog> cd;
-    bool allowChange;
-    bool autoChange;
-    bool drawFrame;
-    bool allowTransparency;
-    bool modal;
-    bool dirty;
-
-    ColorButtonP()
-        : cd(nullptr)
-        , allowChange(true)
-        , autoChange(false)
-        , drawFrame(true)
-        , allowTransparency(false)
-        , modal(true)
-        , dirty(true)
-    {
-    }
+    bool allowChange{true};
+    bool autoChange{false};
+    bool drawFrame{true};
+    bool allowTransparency{false};
+    bool modal{true};
+    bool dirty{true};
 };
 }
 
@@ -885,9 +867,7 @@ UrlLabel::UrlLabel(QWidget* parent, Qt::WindowFlags f)
         setStyleSheet(QStringLiteral("Gui--UrlLabel {color: #0000FF;text-decoration: underline;}"));
 }
 
-UrlLabel::~UrlLabel()
-{
-}
+UrlLabel::~UrlLabel() = default;
 
 void Gui::UrlLabel::setLaunchExternal(bool l)
 {
@@ -1089,7 +1069,7 @@ LabelButton::LabelButton (QWidget * parent)
     layout->addWidget(label);
 
     button = new QPushButton(QLatin1String("..."), this);
-#if defined (Q_OS_MAC)
+#if defined (Q_OS_MACOS)
     button->setAttribute(Qt::WA_LayoutUsesWidgetRect); // layout size from QMacStyle was not correct
 #endif
     layout->addWidget(button);
@@ -1098,9 +1078,7 @@ LabelButton::LabelButton (QWidget * parent)
     connect(button, &QPushButton::clicked, this, &LabelButton::buttonClicked);
 }
 
-LabelButton::~LabelButton()
-{
-}
+LabelButton::~LabelButton() = default;
 
 void LabelButton::resizeEvent(QResizeEvent* e)
 {
@@ -1154,9 +1132,7 @@ ToolTip::ToolTip() : installed(false), hidden(true)
 {
 }
 
-ToolTip::~ToolTip()
-{
-}
+ToolTip::~ToolTip() = default;
 
 void ToolTip::installEventFilter()
 {
@@ -1188,9 +1164,15 @@ void ToolTip::showText(const QPoint & pos, const QString & text, QWidget * w)
         tip->displayTime.start();
     }
     else {
-        // do immediately
-        QToolTip::showText(pos, text, w);
+        hideText();
     }
+}
+
+void ToolTip::hideText()
+{
+    instance()->tooltipTimer.stop();
+    instance()->hidden = true;
+    QToolTip::hideText();
 }
 
 void ToolTip::timerEvent(QTimerEvent *e)
@@ -1204,25 +1186,45 @@ void ToolTip::timerEvent(QTimerEvent *e)
 
 bool ToolTip::eventFilter(QObject* o, QEvent*e)
 {
-    // This is a trick to circumvent that the tooltip gets hidden immediately
-    // after it gets visible. We just filter out all timer events to keep the
-    // label visible.
-    if (o->inherits("QLabel")) {
-        auto label = qobject_cast<QLabel*>(o);
-        // Ignore the timer events to prevent from being closed
-        if (label->windowFlags() & Qt::ToolTip) {
-            if (e->type() == QEvent::Show) {
-                this->hidden = false;
-            }
-            else if (e->type() == QEvent::Hide) {
-                removeEventFilter();
-                this->hidden = true;
-            }
-            else if (e->type() == QEvent::Timer &&
-                !this->hidden && displayTime.elapsed() < 5000) {
-                return true;
+    if (!o->isWidgetType())
+        return false;
+    switch(e->type()) {
+    case QEvent::MouseButtonPress:
+        hideText();
+        break;
+    case QEvent::KeyPress:
+        if (static_cast<QKeyEvent*>(e)->key() == Qt::Key_Escape)
+            hideText();
+        break;
+    case QEvent::Leave:
+        hideText();
+        break;
+    case QEvent::Timer:
+    case QEvent::Show:
+    case QEvent::Hide:
+        if (auto label = qobject_cast<QLabel*>(o)) {
+            if (label->objectName() == QStringLiteral("qtooltip_label")) {
+                // This is a trick to circumvent that the tooltip gets hidden immediately
+                // after it gets visible. We just filter out all timer events to keep the
+                // label visible.
+
+                // Ignore the timer events to prevent from being closed
+                if (e->type() == QEvent::Show) {
+                    this->hidden = false;
+                }
+                else if (e->type() == QEvent::Hide) {
+                    // removeEventFilter();
+                    this->hidden = true;
+                }
+                else if (e->type() == QEvent::Timer &&
+                    !this->hidden && displayTime.elapsed() < 5000) {
+                    return true;
+                }
             }
         }
+        break;
+    default:
+        break;
     }
     return false;
 }
@@ -1241,9 +1243,7 @@ StatusWidget::StatusWidget(QWidget* parent)
     gridLayout->addWidget(label, 0, 0, 1, 1);
 }
 
-StatusWidget::~StatusWidget()
-{
-}
+StatusWidget::~StatusWidget() = default;
 
 void StatusWidget::setStatusText(const QString& s)
 {
@@ -1263,7 +1263,7 @@ void StatusWidget::showText(int ms)
 
 QSize StatusWidget::sizeHint () const
 {
-    return QSize(250,100);
+    return {250,100};
 }
 
 void StatusWidget::showEvent(QShowEvent* event)
@@ -1285,7 +1285,7 @@ public:
     }
 
     QSize sizeHint() const override {
-        return QSize(codeEditor->lineNumberAreaWidth(), 0);
+        return {codeEditor->lineNumberAreaWidth(), 0};
     }
 
 protected:
@@ -1356,9 +1356,10 @@ void PropertyListEditor::highlightCurrentLine()
     if (!isReadOnly()) {
         QTextEdit::ExtraSelection selection;
 
-        QColor lineColor = QColor(Qt::yellow).lighter(160);
+        QPalette palette = style()->standardPalette();
+        selection.format.setBackground(palette.highlight().color());
+        selection.format.setForeground(palette.highlightedText().color());
 
-        selection.format.setBackground(lineColor);
         selection.format.setProperty(QTextFormat::FullWidthSelection, true);
         selection.cursor = textCursor();
         selection.cursor.clearSelection();
@@ -1456,7 +1457,7 @@ LabelEditor::LabelEditor (QWidget * parent)
             this, &LabelEditor::validateText);
 
     button = new QPushButton(QLatin1String("..."), this);
-#if defined (Q_OS_MAC)
+#if defined (Q_OS_MACOS)
     button->setAttribute(Qt::WA_LayoutUsesWidgetRect); // layout size from QMacStyle was not correct
 #endif
     layout->addWidget(button);
@@ -1466,9 +1467,7 @@ LabelEditor::LabelEditor (QWidget * parent)
     setFocusProxy(lineEdit);
 }
 
-LabelEditor::~LabelEditor()
-{
-}
+LabelEditor::~LabelEditor() = default;
 
 void LabelEditor::resizeEvent(QResizeEvent* e)
 {
@@ -1592,12 +1591,12 @@ void ExpLineEdit::setExpression(std::shared_ptr<Expression> expr)
     try {
         ExpressionBinding::setExpression(expr);
     }
-    catch (const Base::Exception & e) {
+    catch (const Base::Exception&) {
         setReadOnly(true);
         QPalette p(palette());
         p.setColor(QPalette::Active, QPalette::Text, Qt::red);
         setPalette(p);
-        iconLabel->setToolTip(QString::fromLatin1(e.what()));
+        iconLabel->setToolTip(tr("An error occurred -- see Report View for information"));
     }
 }
 
@@ -1635,7 +1634,7 @@ void ExpLineEdit::resizeEvent(QResizeEvent * event)
     int frameWidth = style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
 
     QSize sz = iconLabel->sizeHint();
-    iconLabel->move(rect().right() - frameWidth - sz.width(), 0);
+    iconLabel->move(rect().right() - frameWidth - sz.width(), rect().center().y() - sz.height() / 2);
 
     try {
         if (isBound() && getExpression()) {
@@ -1659,12 +1658,12 @@ void ExpLineEdit::resizeEvent(QResizeEvent * event)
             iconLabel->setExpressionText(QString());
         }
     }
-    catch (const Base::Exception & e) {
+    catch (const Base::Exception&) {
         setReadOnly(true);
         QPalette p(palette());
         p.setColor(QPalette::Active, QPalette::Text, Qt::red);
         setPalette(p);
-        iconLabel->setToolTip(QString::fromLatin1(e.what()));
+        iconLabel->setToolTip(tr("An error occurred -- see Report View for information"));
     }
 }
 
@@ -1716,7 +1715,7 @@ ButtonGroup::ButtonGroup(QObject *parent)
     QButtonGroup::setExclusive(false);
 
     connect(this, qOverload<QAbstractButton *>(&QButtonGroup::buttonClicked),
-            [=](QAbstractButton *button) {
+            [this](QAbstractButton *button) {
         if (exclusive()) {
             const auto btns = buttons();
             for (auto btn : btns) {

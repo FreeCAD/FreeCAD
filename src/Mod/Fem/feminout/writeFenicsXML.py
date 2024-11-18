@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2017 Johannes Hartung <j.hartung@gmx.net>               *
+# *   Copyright (c) 2017-2023 Johannes Hartung <j.hartung@gmx.net>          *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD Fenics XML mesh writer"
 __author__ = "Johannes Hartung"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package exportFenicsXML
 #  \ingroup FEM
@@ -41,9 +41,9 @@ from .importToolsFem import get_MaxDimElementFromList
 
 def write_fenics_mesh_xml(fem_mesh_obj, outputfile):
     """
-        For the export, we only have to use the highest dimensional entities and their
-        vertices to be exported.
-        For second order elements, we have to delete the mid element nodes.
+    For the export, we only have to use the highest dimensional entities and their
+    vertices to be exported.
+    For second order elements, we have to delete the mid element nodes.
     """
 
     # TODO: check for second order elements
@@ -57,9 +57,10 @@ def write_fenics_mesh_xml(fem_mesh_obj, outputfile):
         "Edge": "interval",
         "Node": "point",
         "Quadrangle": "quadrilateral",
-
-        "Polygon": "unknown", "Polyhedron": "unknown",
-        "Prism": "unknown", "Pyramid": "unknown",
+        "Polygon": "unknown",
+        "Polyhedron": "unknown",
+        "Prism": "unknown",
+        "Pyramid": "unknown",
     }
 
     XML_Number_of_Nodes_dict = {
@@ -68,32 +69,37 @@ def write_fenics_mesh_xml(fem_mesh_obj, outputfile):
         "triangle": 3,
         "quadrilateral": 4,
         "tetrahedron": 4,
-        "hexahedron": 8
+        "hexahedron": 8,
     }
 
-    Console.PrintMessage("Converting {} to fenics XML File\n".format(fem_mesh_obj.Label))
-    Console.PrintMessage("Dimension of mesh: %d\n" % (get_FemMeshObjectDimension(fem_mesh_obj),))
+    Console.PrintMessage(f"Converting {fem_mesh_obj.Label} to fenics XML File\n")
+    Console.PrintMessage(f"Dimension of mesh: {get_FemMeshObjectDimension(fem_mesh_obj)}\n")
 
     elements_in_mesh = get_FemMeshObjectElementTypes(fem_mesh_obj)
-    Console.PrintMessage("Elements appearing in mesh: %s" % (str(elements_in_mesh),))
+    Console.PrintMessage(f"Elements appearing in mesh: {str(elements_in_mesh)}\n")
     celltype_in_mesh = get_MaxDimElementFromList(elements_in_mesh)
     (num_cells, cellname_fc, dim_cell) = celltype_in_mesh
     cellname_fenics = FreeCAD_to_Fenics_dict[cellname_fc]
     num_verts_cell = XML_Number_of_Nodes_dict[cellname_fenics]
     Console.PrintMessage(
-        u"Celltype in mesh -> %s and its Fenics name: %s\n"
-        % (str(celltype_in_mesh), cellname_fenics)
+        f"Celltype in mesh -> {str(celltype_in_mesh)} "
+        + f"and its Fenics name: {cellname_fenics}\n"
     )
 
     root = ET.Element("dolfin", dolfin="http://fenicsproject.org")
     meshchild = ET.SubElement(root, "mesh", celltype=cellname_fenics, dim=str(dim_cell))
     vertices = ET.SubElement(meshchild, "vertices", size=str(fem_mesh_obj.FemMesh.NodeCount))
 
-    for (nodeind, fc_vec) in list(fem_mesh_obj.FemMesh.Nodes.items()):
+    for nodeind, fc_vec in list(fem_mesh_obj.FemMesh.Nodes.items()):
         ET.SubElement(
-            vertices, "vertex", index=str(nodeind - 1),
+            vertices,
+            "vertex",
+            index=str(nodeind - 1),
             # FC starts from 1, fenics starts from 0 to size-1
-            x=str(fc_vec[0]), y=str(fc_vec[1]), z=str(fc_vec[2]))
+            x=str(fc_vec[0]),
+            y=str(fc_vec[1]),
+            z=str(fc_vec[2]),
+        )
 
     cells = ET.SubElement(meshchild, "cells", size=str(num_cells))
     if dim_cell == 3:
@@ -105,12 +111,12 @@ def write_fenics_mesh_xml(fem_mesh_obj, outputfile):
     else:
         fc_cells = ()
 
-    for (fen_ind, fc_volume_ind) in enumerate(fc_cells):
+    for fen_ind, fc_volume_ind in enumerate(fc_cells):
         # FC starts after all other entities, fenics start from 0 to size-1
         nodeindices = fem_mesh_obj.FemMesh.getElementNodes(fc_volume_ind)
 
         cell_args = {}
-        for (vi, ni) in enumerate(nodeindices):
+        for vi, ni in enumerate(nodeindices):
             if vi < num_verts_cell:  # XML only supports first order meshs
                 cell_args["v" + str(vi)] = str(ni - 1)
         # generate as many v entries in dict as nodes are listed in cell
@@ -118,7 +124,8 @@ def write_fenics_mesh_xml(fem_mesh_obj, outputfile):
 
         ET.SubElement(cells, cellname_fenics, index=str(fen_ind), **cell_args)
 
-    ET.SubElement(meshchild, "data")
+    # ET.SubElement(meshchild, "data")
+    # removed to eliminate warning from meshio
 
     fp = open(outputfile, "wb")
     fp.write(ET.tostring(root))

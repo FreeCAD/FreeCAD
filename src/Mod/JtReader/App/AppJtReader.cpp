@@ -24,38 +24,31 @@
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
+#include <Base/PyObjectBase.h>
 
-
-extern struct PyMethodDef JtReader_methods[];
-
-
-extern "C" {
-void AppJtReaderExport initJtReader() {
-
-   static struct PyModuleDef JtReaderAPIDef = {
-       PyModuleDef_HEAD_INIT,
-       "JtReader", 0, -1, JtReader_methods,
-       NULL, NULL, NULL, NULL
-   };
-   PyModule_Create(&JtReaderAPIDef);
-
-   // load dependent module
-   Base::Interpreter().loadModule("Mesh");
-
-    // Initialize JtTk
-   //JtkEntityFactory::init();
-
-   // Note, non-evaluation JT Open Toolkit licensees must uncomment the
-   // following line, inserting their "Sold_To_ID". Each licensee has a
-   // unique Sold_To_ID issued by UGS Corp.
-   //
-   //JtkEntityFactory::registerCustomer( 1103193 );
-   //JtkEntityFactory::registerCustomer(1103103);
-
-  Base::Console().Log("Loading JtReader module... done\n");
-
-  return;
+namespace JtReaderNS
+{
+extern PyObject* initModule();
 }
 
+PyMOD_INIT_FUNC(JtReader)
+{
+    PyObject* jtReaderModule = JtReaderNS::initModule();
 
-} // extern "C" {
+    // load dependent module
+    Base::Interpreter().loadModule("Mesh");
+
+    // Initialize JtTk
+    // JtkEntityFactory::init();
+
+    // Note, non-evaluation JT Open Toolkit licensees must uncomment the
+    // following line, inserting their "Sold_To_ID". Each licensee has a
+    // unique Sold_To_ID issued by UGS Corp.
+    //
+    // JtkEntityFactory::registerCustomer( 1103193 );
+    // JtkEntityFactory::registerCustomer(1103103);
+
+    Base::Console().Log("Loading JtReader module... done\n");
+
+    PyMOD_Return(jtReaderModule);
+}

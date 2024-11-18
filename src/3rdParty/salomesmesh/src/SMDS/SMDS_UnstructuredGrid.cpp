@@ -1026,7 +1026,12 @@ void SMDS_UnstructuredGrid::BuildLinks()
   GetLinks()->Allocate(this->GetNumberOfPoints());
   GetLinks()->Register(this);
 //FIXME: vtk9
+  #if VTK_VERSION_NUMBER < VTK_VERSION_CHECK(9,3,0)
   GetLinks()->BuildLinks(this);
+  #else
+  GetLinks()->SetDataSet(this);
+  GetLinks()->BuildLinks();
+  #endif
   GetLinks()->Delete();
 #else
   this->Links = SMDS_CellLinks::New();

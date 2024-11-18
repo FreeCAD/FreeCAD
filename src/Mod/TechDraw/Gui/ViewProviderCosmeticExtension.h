@@ -36,10 +36,10 @@ class TechDrawGuiExport ViewProviderCosmeticExtension : public Gui::ViewProvider
 
 public:
     /// Constructor
-    ViewProviderCosmeticExtension(void);
-    virtual ~ViewProviderCosmeticExtension() = default;
+    ViewProviderCosmeticExtension();
+    ~ViewProviderCosmeticExtension() override = default;
 
-    virtual QIcon extensionMergeGreyableOverlayIcons(const QIcon & orig) const override;
+    QIcon extensionMergeGreyableOverlayIcons(const QIcon & orig) const override;
 };
 
 using ViewProviderCosmeticExtensionPython = Gui::ViewProviderExtensionPythonT<TechDrawGui::ViewProviderCosmeticExtension>;

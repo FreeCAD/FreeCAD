@@ -58,8 +58,6 @@ using namespace Gui;
 PROPERTY_SOURCE(Gui::ViewProviderDocumentObject, Gui::ViewProvider)
 
 ViewProviderDocumentObject::ViewProviderDocumentObject()
-  : pcObject(nullptr)
-  , pcDocument(nullptr)
 {
     static const char *dogroup = "Display Options";
     static const char *sgroup = "Selection";
@@ -272,7 +270,9 @@ void ViewProviderDocumentObject::addDefaultAction(QMenu* menu, const QString& te
     QAction* act = menu->addAction(text);
     act->setData(QVariant((int)ViewProvider::Default));
     auto func = new Gui::ActionFunction(menu);
-    func->trigger(act, std::bind(&ViewProviderDocumentObject::startDefaultEditMode, this));
+    func->trigger(act, [this](){
+        this->startDefaultEditMode();
+    });
 }
 
 void ViewProviderDocumentObject::setModeSwitch() {
@@ -331,7 +331,7 @@ void ViewProviderDocumentObject::attach(App::DocumentObject *pcObj)
     // save Object pointer
     pcObject = pcObj;
 
-    if(pcObj && pcObj->getNameInDocument() &&
+    if(pcObj && pcObj->isAttachedToDocument() &&
        Visibility.getValue()!=pcObj->Visibility.getValue())
         pcObj->Visibility.setValue(Visibility.getValue());
 
@@ -344,8 +344,8 @@ void ViewProviderDocumentObject::attach(App::DocumentObject *pcObj)
     // We must collect the const char* of the strings and give it to PropertyEnumeration,
     // but we are still responsible for them, i.e. the property class must not delete the literals.
     //for (auto it = aDisplayModesArray.begin(); it != aDisplayModesArray.end(); ++it) {
-    for (std::vector<std::string>::iterator it = aDisplayModesArray.begin(); it != aDisplayModesArray.end(); ++it) {
-        aDisplayEnumsArray.push_back( it->c_str() );
+    for (const auto & it : aDisplayModesArray) {
+        aDisplayEnumsArray.push_back( it.c_str() );
     }
     aDisplayEnumsArray.push_back(nullptr); // null termination
     DisplayMode.setEnums(&(aDisplayEnumsArray[0]));
@@ -401,6 +401,18 @@ Gui::MDIView* ViewProviderDocumentObject::getActiveView() const
 {
     if(!pcObject)
         throw Base::RuntimeError("View provider detached");
+
+    if (!pcObject->isAttachedToDocument()) {
+        // Check if view provider is attached to a document as an annotation
+        for (auto doc : App::GetApplication().getDocuments()) {
+            auto guiDoc = Gui::Application::Instance->getDocument(doc);
+            if (guiDoc->isAnnotationViewProvider(this)) {
+                return guiDoc->getActiveView();
+            }
+        }
+        return nullptr;
+    }
+
     App::Document* pAppDoc = pcObject->getDocument();
     Gui::Document* pGuiDoc = Gui::Application::Instance->getDocument(pAppDoc);
     return pGuiDoc->getActiveView();
@@ -519,14 +531,14 @@ bool ViewProviderDocumentObject::canDropObjectEx(App::DocumentObject* obj, App::
 int ViewProviderDocumentObject::replaceObject(
         App::DocumentObject *oldObj, App::DocumentObject *newObj)
 {
-    if(!oldObj || !oldObj->getNameInDocument()
-            || !newObj || !newObj->getNameInDocument())
+    if(!oldObj || !oldObj->isAttachedToDocument()
+            || !newObj || !newObj->isAttachedToDocument())
     {
         FC_THROWM(Base::RuntimeError,"Invalid object");
     }
 
     auto obj = getObject();
-    if(!obj || !obj->getNameInDocument())
+    if(!obj || !obj->isAttachedToDocument())
         FC_THROWM(Base::RuntimeError,"View provider not attached");
 
     int res = ViewProvider::replaceObject(oldObj,newObj);
@@ -606,7 +618,7 @@ bool ViewProviderDocumentObject::getElementPicked(const SoPickedPoint *pp, std::
     if(!vp)
         return false;
     auto obj = vp->getObject();
-    if(!obj || !obj->getNameInDocument())
+    if(!obj || !obj->isAttachedToDocument())
         return false;
     std::ostringstream str;
     str << obj->getNameInDocument() << '.';
@@ -635,7 +647,7 @@ bool ViewProviderDocumentObject::getDetailPath(const char *subname, SoFullPath *
     if(!dot)
         return false;
     auto obj = getObject();
-    if(!obj || !obj->getNameInDocument())
+    if(!obj || !obj->isAttachedToDocument())
         return false;
     auto sobj = obj->getSubObject(std::string(subname,dot-subname+1).c_str());
     if(!sobj)
@@ -676,7 +688,7 @@ ViewProviderDocumentObject *ViewProviderDocumentObject::getLinkedViewProvider(
 {
     (void)subname;
     auto self = const_cast<ViewProviderDocumentObject*>(this);
-    if(!pcObject || !pcObject->getNameInDocument())
+    if(!pcObject || !pcObject->isAttachedToDocument())
         return self;
     auto linked = pcObject->getLinkedObject(recursive);
     if(!linked || linked == pcObject)

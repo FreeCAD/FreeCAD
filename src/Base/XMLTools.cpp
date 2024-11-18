@@ -26,17 +26,27 @@
 #include "XMLTools.h"
 
 using namespace Base;
+#ifndef XERCES_CPP_NAMESPACE_BEGIN
+#define XERCES_CPP_NAMESPACE_QUALIFIER
+using namespace XERCES_CPP_NAMESPACE;
+#else
+XERCES_CPP_NAMESPACE_USE
+#endif
 
-std::unique_ptr<XERCES_CPP_NAMESPACE::XMLTranscoder> XMLTools::transcoder;
+std::unique_ptr<XMLTranscoder> XMLTools::transcoder;  // NOLINT
 
 void XMLTools::initialize()
 {
-    XERCES_CPP_NAMESPACE_USE;
-    if (!transcoder.get()) {
-        XMLTransService::Codes  res;
-        transcoder.reset(XERCES_CPP_NAMESPACE_QUALIFIER XMLPlatformUtils::fgTransService->makeNewTranscoderFor(XERCES_CPP_NAMESPACE_QUALIFIER XMLRecognizer::UTF_8, res, 4096, XERCES_CPP_NAMESPACE_QUALIFIER XMLPlatformUtils::fgMemoryManager));
-        if (res != XMLTransService::Ok)
-            throw Base::UnicodeError("Can\'t create transcoder");
+    if (!transcoder) {
+        XMLTransService::Codes res {};
+        transcoder.reset(XMLPlatformUtils::fgTransService->makeNewTranscoderFor(
+            XMLRecognizer::UTF_8,
+            res,
+            4096,
+            XMLPlatformUtils::fgMemoryManager));
+        if (res != XMLTransService::Ok) {
+            throw Base::UnicodeError("Can't create transcoder");
+        }
     }
 }
 
@@ -44,26 +54,31 @@ std::string XMLTools::toStdString(const XMLCh* const toTranscode)
 {
     std::string str;
 
-    XERCES_CPP_NAMESPACE_USE;
     initialize();
 
-    //char outBuff[128];
+    // char outBuff[128];
     static XMLByte outBuff[128];
-    XMLSize_t outputLength;
+    XMLSize_t outputLength = 0;
     XMLSize_t eaten = 0;
     XMLSize_t offset = 0;
     XMLSize_t inputLength = XMLString::stringLen(toTranscode);
 
-    while (inputLength)
-    {
-        outputLength = transcoder->transcodeTo(toTranscode + offset, inputLength, outBuff, 128, eaten, XMLTranscoder::UnRep_RepChar);
+    while (inputLength) {
+        outputLength = transcoder->transcodeTo(toTranscode + offset,
+                                               inputLength,
+                                               outBuff,
+                                               128,
+                                               eaten,
+                                               XMLTranscoder::UnRep_RepChar);
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
         str.append(reinterpret_cast<const char*>(outBuff), outputLength);
         offset += eaten;
         inputLength -= eaten;
 
         //  Bail out if nothing more was produced
-        if (outputLength == 0)
+        if (outputLength == 0) {
             break;
+        }
     }
 
     return str;
@@ -72,30 +87,36 @@ std::string XMLTools::toStdString(const XMLCh* const toTranscode)
 std::basic_string<XMLCh> XMLTools::toXMLString(const char* const fromTranscode)
 {
     std::basic_string<XMLCh> str;
-    if (!fromTranscode)
+    if (!fromTranscode) {
         return str;
+    }
 
-    XERCES_CPP_NAMESPACE_USE;
     initialize();
 
     static XMLCh outBuff[128];
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
     const XMLByte* xmlBytes = reinterpret_cast<const XMLByte*>(fromTranscode);
-    XMLSize_t outputLength;
+    XMLSize_t outputLength = 0;
     XMLSize_t eaten = 0;
     XMLSize_t offset = 0;
     XMLSize_t inputLength = std::string(fromTranscode).size();
 
     unsigned char* charSizes = new unsigned char[inputLength];
-    while (inputLength)
-    {
-        outputLength = transcoder->transcodeFrom(xmlBytes + offset, inputLength, outBuff, 128, eaten, charSizes);
+    while (inputLength) {
+        outputLength = transcoder->transcodeFrom(xmlBytes + offset,
+                                                 inputLength,
+                                                 outBuff,
+                                                 128,
+                                                 eaten,
+                                                 charSizes);
         str.append(outBuff, outputLength);
         offset += eaten;
         inputLength -= eaten;
 
         //  Bail out if nothing more was produced
-        if (outputLength == 0)
+        if (outputLength == 0) {
             break;
+        }
     }
 
     delete[] charSizes;

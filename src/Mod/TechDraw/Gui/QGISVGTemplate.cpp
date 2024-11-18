@@ -29,11 +29,14 @@
 # include <QGraphicsSvgItem>
 # include <QPen>
 # include <QSvgRenderer>
+# include <QRegularExpression>
+# include <QRegularExpressionMatch>
 #endif// #ifndef _PreComp_
 
 #include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
+#include <Base/Tools.h>
 
 #include <Mod/TechDraw/App/DrawSVGTemplate.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
@@ -165,47 +168,80 @@ void QGISVGTemplate::createClickHandles()
 
     //TODO: Find location of special fields (first/third angle) and make graphics items for them
 
-    double editClickBoxSize = Rez::guiX(Preferences::getPreferenceGroup("General")->GetFloat("TemplateDotSize", 3.0));
+    QColor editClickBoxColor = PreferencesGui::templateClickBoxColor();
 
-    QColor editClickBoxColor = Qt::green;
-    editClickBoxColor.setAlpha(128);//semi-transparent
-
-    double width = editClickBoxSize;
-    double height = editClickBoxSize;
+    auto textMap = svgTemplate->EditableTexts.getValues();
 
     TechDraw::XMLQuery query(templateDocument);
 
     // XPath query to select all <text> nodes with "freecad:editable" attribute
+    // XPath query to select all <tspan> nodes whose <text> parent
+    // has "freecad:editable" attribute
     query.processItems(QString::fromUtf8("declare default element namespace \"" SVG_NS_URI "\"; "
                                          "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
-                                         "//text[@freecad:editable]"),
-                       [&](QDomElement& textElement) -> bool {
-        QString name = textElement.attribute(QString::fromUtf8("freecad:editable"));
+                                         "//text[@" FREECAD_ATTR_EDITABLE "]/tspan"),
+                       [&](QDomElement& tspan) -> bool {
+        QString fontSizeString = tspan.attribute(QString::fromUtf8("font-size"));
+        QDomElement textElement = tspan.parentNode().toElement();
+        QString textAnchorString = textElement.attribute(QString::fromUtf8("text-anchor"));
+        QString name = textElement.attribute(QString::fromUtf8(FREECAD_ATTR_EDITABLE));
+
         double x = Rez::guiX(
             textElement.attribute(QString::fromUtf8("x"), QString::fromUtf8("0.0")).toDouble());
         double y = Rez::guiX(
             textElement.attribute(QString::fromUtf8("y"), QString::fromUtf8("0.0")).toDouble());
-
         if (name.isEmpty()) {
             Base::Console().Warning(
                 "QGISVGTemplate::createClickHandles - no name for editable text at %f, %f\n", x, y);
             return true;
         }
+        std::string editableNameString = textMap[Base::Tools::toStdString(name)];
+
+        // default box size
+        double textHeight{0};
+        QString style = textElement.attribute(QString::fromUtf8("style"));
+        if (!style.isEmpty()) {
+            // get text attributes from style element
+            textHeight = getFontSizeFromStyle(style);
+        }
+
+        if (textHeight == 0) {
+            textHeight = getFontSizeFromElement(fontSizeString);
+        }
+
+        if (textHeight == 0.0) {
+            textHeight =  Preferences::labelFontSizeMM() * 3.78;  // 3.78 = px/mm
+        }
+
+        QGraphicsTextItem textItemForLength;
+        QFont fontForLength(Preferences::labelFontQString());
+        fontForLength.setPixelSize(textHeight);
+        textItemForLength.setFont(fontForLength);
+        textItemForLength.setPlainText(Base::Tools::fromStdString(editableNameString));
+        auto brect = textItemForLength.boundingRect();
+        auto newLength = brect.width();
+
+        double charWidth = newLength / editableNameString.length();
+        if (textAnchorString == QString::fromUtf8("middle")) {
+            x = x - editableNameString.length() * charWidth / 2;
+        }
+
+        double textLength = editableNameString.length() * charWidth;
+        textLength = std::max(charWidth, textLength);
 
         auto item(new TemplateTextField(this, svgTemplate, name.toStdString()));
+        auto autoValue = svgTemplate->getAutofillByEditableName(name);
+        item->setAutofill(autoValue);
 
         double pad = 1.0;
-        item->setRect(x - pad, Rez::guiX(-svgTemplate->getHeight()) + y - height - pad,
-                      width + 2.0 * pad, height + 2.0 * pad);
-
-        QPen myPen;
-        myPen.setStyle(Qt::SolidLine);
-        myPen.setColor(editClickBoxColor);
-        myPen.setWidth(0);// 0 means "cosmetic pen" - always 1px
-        item->setPen(myPen);
-
-        QBrush myBrush(editClickBoxColor, Qt::SolidPattern);
-        item->setBrush(myBrush);
+        double top = Rez::guiX(-svgTemplate->getHeight()) + y - textHeight - pad;
+        double bottom = top + textHeight + 2.0 * pad;
+        double left = x - pad;
+        item->setRectangle(QRectF(left, top,
+                      newLength + 2.0 * pad, textHeight + 2.0 * pad));
+        item->setLine(QPointF( left, bottom),
+                      QPointF(left + newLength + 2.0 * pad, bottom));
+        item->setLineColor(editClickBoxColor);
 
         item->setZValue(ZVALUE::SVGTEMPLATE + 1);
         addToGroup(item);
@@ -214,5 +250,46 @@ void QGISVGTemplate::createClickHandles()
         return true;
     });
 }
+
+//! find the font-size hidden in a style element
+double QGISVGTemplate::getFontSizeFromStyle(QString style)
+{
+    if (style.isEmpty()) {
+        return 0.0;
+    }
+
+    // get text attributes from style element
+    QRegularExpression rxFontSize(QString::fromUtf8("font-size:([0-9]*.?[0-9]*)px;"));
+    QRegularExpressionMatch match;
+
+    int pos{0};
+    pos = style.indexOf(rxFontSize, 0, &match);
+    if (pos != -1) {
+        return Rez::guiX(match.captured(1).toDouble());
+    }
+
+    return 0.0;
+}
+
+//! find the font-size hidden in a style element
+double QGISVGTemplate::getFontSizeFromElement(QString element)
+{
+    if (element.isEmpty()) {
+        return 0.0;
+    }
+
+    //                                               font-size="3.95px"
+    QRegularExpression rxFontSize(QString::fromUtf8("([0-9]*.?[0-9]*)px"));
+    QRegularExpressionMatch match;
+
+    int pos{0};
+    pos = element.indexOf(rxFontSize, 0, &match);
+    if (pos != -1) {
+        return Rez::guiX(match.captured(1).toDouble());
+    }
+
+    return 0.0;
+}
+
 
 #include <Mod/TechDraw/Gui/moc_QGISVGTemplate.cpp>

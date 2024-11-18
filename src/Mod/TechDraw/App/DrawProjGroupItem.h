@@ -55,12 +55,11 @@ class TechDrawExport DrawProjGroupItem : public TechDraw::DrawViewPart
 public:
     /// Constructor
     DrawProjGroupItem();
-    ~DrawProjGroupItem() = default;
+    ~DrawProjGroupItem() override = default;
 
     App::PropertyEnumeration Type;
     App::PropertyVector      RotationVector;    //this is superseded by dvp xdirection
 
-    short mustExecute() const override;
     void onDocumentRestored() override;
     void unsetupObject() override;
 
@@ -81,11 +80,8 @@ public:
     //return PyObject as DrawProjGroupItemPy
     PyObject *getPyObject() override;
 
-    gp_Ax2 getViewAxis(const Base::Vector3d& pt,
-                       const Base::Vector3d& direction,
-                       const bool flip=true) const override;
-
     double getScale() const override;
+    int getScaleType() const override;
     void autoPosition();
     bool isAnchor() const;
 

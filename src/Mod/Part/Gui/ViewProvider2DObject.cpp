@@ -25,7 +25,6 @@
 #ifndef _PreComp_
 # include <cfloat>
 
-# include <Standard_math.hxx>
 
 # include <Inventor/nodes/SoAnnotation.h>
 # include <Inventor/nodes/SoBaseColor.h>
@@ -210,7 +209,7 @@ void ViewProvider2DObjectGrid::updateData(const App::Property* prop)
 {
     ViewProvider2DObject::updateData(prop);
 
-    if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId()) {
+    if (prop->is<Part::PropertyPartShape>()) {
         if (GridAutoSize.getValue()) {
             Base::BoundBox3d bbox = static_cast<const Part::PropertyPartShape*>(prop)->getBoundingBox();
             if (!bbox.IsValid())
@@ -263,7 +262,7 @@ void ViewProvider2DObjectGrid::handleChangedPropertyType(Base::XMLReader &reader
                                                          App::Property * prop)
 {
     Base::Type inputType = Base::Type::fromName(TypeName);
-    if (prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId()) &&
+    if (prop->isDerivedFrom<App::PropertyFloat>() &&
         inputType.isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
         // Do not directly call the property's Restore method in case the implementation
         // has changed. So, create a temporary PropertyFloat object and assign the value.
@@ -318,13 +317,9 @@ void ViewProvider2DObjectGrid::updateGridExtent(float minx, float maxx, float mi
 
 PROPERTY_SOURCE(PartGui::ViewProvider2DObject, PartGui::ViewProviderPart)
 
-ViewProvider2DObject::ViewProvider2DObject()
-{
-}
+ViewProvider2DObject::ViewProvider2DObject() = default;
 
-ViewProvider2DObject::~ViewProvider2DObject()
-{
-}
+ViewProvider2DObject::~ViewProvider2DObject() = default;
 
 std::vector<std::string> ViewProvider2DObject::getDisplayModes() const
 {
@@ -351,5 +346,5 @@ PROPERTY_SOURCE_TEMPLATE(PartGui::ViewProvider2DObjectPython, PartGui::ViewProvi
 /// @endcond
 
 // explicit template instantiation
-template class PartGuiExport ViewProviderPythonFeatureT<PartGui::ViewProvider2DObject>;
+template class PartGuiExport ViewProviderFeaturePythonT<PartGui::ViewProvider2DObject>;
 }

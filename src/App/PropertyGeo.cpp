@@ -36,6 +36,8 @@
 #include <Base/VectorPy.h>
 #include <Base/Writer.h>
 
+#include "ComplexGeoData.h"
+#include "Document.h"
 #include "PropertyGeo.h"
 #include "Placement.h"
 #include "ObjectIdentifier.h"
@@ -137,7 +139,13 @@ void PropertyVector::setPyObject(PyObject *value)
 
 void PropertyVector::Save (Base::Writer &writer) const
 {
-    writer.Stream() << writer.ind() << "<PropertyVector valueX=\"" <<  _cVec.x << "\" valueY=\"" <<  _cVec.y << "\" valueZ=\"" <<  _cVec.z <<"\"/>" << endl;
+    // clang-format off
+    writer.Stream() << writer.ind()
+                    << "<PropertyVector valueX=\"" <<  _cVec.x
+                    << "\" valueY=\"" <<  _cVec.y
+                    << "\" valueZ=\"" <<  _cVec.z
+                    <<"\"/>" << endl;
+    // clang-format on
 }
 
 void PropertyVector::Restore(Base::XMLReader &reader)
@@ -312,15 +320,15 @@ void PropertyVectorList::SaveDocFile (Base::Writer &writer) const
     uint32_t uCt = (uint32_t)getSize();
     str << uCt;
     if (!isSinglePrecision()) {
-        for (std::vector<Base::Vector3d>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
-            str << it->x << it->y << it->z;
+        for (const auto & it : _lValueList) {
+            str << it.x << it.y << it.z;
         }
     }
     else {
-        for (std::vector<Base::Vector3d>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
-            float x = (float)it->x;
-            float y = (float)it->y;
-            float z = (float)it->z;
+        for (const auto & it : _lValueList) {
+            float x = (float)it.x;
+            float y = (float)it.y;
+            float z = (float)it.z;
             str << x << y << z;
         }
     }
@@ -333,15 +341,15 @@ void PropertyVectorList::RestoreDocFile(Base::Reader &reader)
     str >> uCt;
     std::vector<Base::Vector3d> values(uCt);
     if (!isSinglePrecision()) {
-        for (std::vector<Base::Vector3d>::iterator it = values.begin(); it != values.end(); ++it) {
-            str >> it->x >> it->y >> it->z;
+        for (auto & it : values) {
+            str >> it.x >> it.y >> it.z;
         }
     }
     else {
         float x,y,z;
-        for (std::vector<Base::Vector3d>::iterator it = values.begin(); it != values.end(); ++it) {
+        for (auto & it : values) {
             str >> x >> y >> z;
-            it->Set(x, y, z);
+            it.Set(x, y, z);
         }
     }
     setValues(values);
@@ -435,12 +443,14 @@ void PropertyMatrix::setPyObject(PyObject *value)
 
 void PropertyMatrix::Save (Base::Writer &writer) const
 {
+    // clang-format off
     writer.Stream() << writer.ind() << "<PropertyMatrix";
     writer.Stream() << " a11=\"" <<  _cMat[0][0] << "\" a12=\"" <<  _cMat[0][1] << "\" a13=\"" <<  _cMat[0][2] << "\" a14=\"" <<  _cMat[0][3] << "\"";
     writer.Stream() << " a21=\"" <<  _cMat[1][0] << "\" a22=\"" <<  _cMat[1][1] << "\" a23=\"" <<  _cMat[1][2] << "\" a24=\"" <<  _cMat[1][3] << "\"";
     writer.Stream() << " a31=\"" <<  _cMat[2][0] << "\" a32=\"" <<  _cMat[2][1] << "\" a33=\"" <<  _cMat[2][2] << "\" a34=\"" <<  _cMat[2][3] << "\"";
     writer.Stream() << " a41=\"" <<  _cMat[3][0] << "\" a42=\"" <<  _cMat[3][1] << "\" a43=\"" <<  _cMat[3][2] << "\" a44=\"" <<  _cMat[3][3] << "\"";
     writer.Stream() <<"/>" << endl;
+    // clang-format on
 }
 
 void PropertyMatrix::Restore(Base::XMLReader &reader)
@@ -587,7 +597,7 @@ double toDouble(const boost::any &value)
 
 void PropertyPlacement::setPathValue(const ObjectIdentifier &path, const boost::any &value)
 {
-    auto updateAxis = [=](int index, double coord) {
+    auto updateAxis = [this](int index, double coord) {
         Base::Vector3d axis;
         double angle;
         Base::Vector3d base = _cPos.getPosition();
@@ -599,7 +609,7 @@ void PropertyPlacement::setPathValue(const ObjectIdentifier &path, const boost::
         setValue(plm);
     };
 
-    auto updateYawPitchRoll = [=](int index, double angle) {
+    auto updateYawPitchRoll = [this](int index, double angle) {
         Base::Vector3d base = _cPos.getPosition();
         Base::Rotation rot = _cPos.getRotation();
         double yaw, pitch, roll;
@@ -912,20 +922,20 @@ void PropertyPlacementList::SaveDocFile (Base::Writer &writer) const
     uint32_t uCt = (uint32_t)getSize();
     str << uCt;
     if (!isSinglePrecision()) {
-        for (std::vector<Base::Placement>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
-            str << it->getPosition().x << it->getPosition().y << it->getPosition().z
-                << it->getRotation()[0] << it->getRotation()[1] << it->getRotation()[2] << it->getRotation()[3] ;
+        for (const auto & it : _lValueList) {
+            str << it.getPosition().x << it.getPosition().y << it.getPosition().z
+                << it.getRotation()[0] << it.getRotation()[1] << it.getRotation()[2] << it.getRotation()[3] ;
         }
     }
     else {
-        for (std::vector<Base::Placement>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
-            float x = (float)it->getPosition().x;
-            float y = (float)it->getPosition().y;
-            float z = (float)it->getPosition().z;
-            float q0 = (float)it->getRotation()[0];
-            float q1 = (float)it->getRotation()[1];
-            float q2 = (float)it->getRotation()[2];
-            float q3 = (float)it->getRotation()[3];
+        for (const auto & it : _lValueList) {
+            float x = (float)it.getPosition().x;
+            float y = (float)it.getPosition().y;
+            float z = (float)it.getPosition().z;
+            float q0 = (float)it.getRotation()[0];
+            float q1 = (float)it.getRotation()[1];
+            float q2 = (float)it.getRotation()[2];
+            float q3 = (float)it.getRotation()[3];
             str << x << y << z << q0 << q1 << q2 << q3;
         }
     }
@@ -938,23 +948,23 @@ void PropertyPlacementList::RestoreDocFile(Base::Reader &reader)
     str >> uCt;
     std::vector<Base::Placement> values(uCt);
     if (!isSinglePrecision()) {
-        for (std::vector<Base::Placement>::iterator it = values.begin(); it != values.end(); ++it) {
+        for (auto & it : values) {
             Base::Vector3d pos;
             double q0, q1, q2, q3;
             str >> pos.x >> pos.y >> pos.z >> q0 >> q1 >> q2 >> q3;
             Base::Rotation rot(q0,q1,q2,q3);
-            it->setPosition(pos);
-            it->setRotation(rot);
+            it.setPosition(pos);
+            it.setRotation(rot);
         }
     }
     else {
         float x,y,z,q0,q1,q2,q3;
-        for (std::vector<Base::Placement>::iterator it = values.begin(); it != values.end(); ++it) {
+        for (auto & it : values) {
             str >> x >> y >> z >> q0 >> q1 >> q2 >> q3;
             Base::Vector3d pos(x, y, z);
             Base::Rotation rot(q0,q1,q2,q3);
-            it->setPosition(pos);
-            it->setRotation(rot);
+            it.setPosition(pos);
+            it.setRotation(rot);
         }
     }
     setValues(values);
@@ -998,7 +1008,7 @@ PropertyPlacementLink::~PropertyPlacementLink() = default;
 
 App::Placement * PropertyPlacementLink::getPlacementObject() const
 {
-    if (_pcLink->getTypeId().isDerivedFrom(App::Placement::getClassTypeId()))
+    if (_pcLink->isDerivedFrom<App::Placement>())
         return dynamic_cast<App::Placement*>(_pcLink);
     else
         return nullptr;
@@ -1074,7 +1084,7 @@ void PropertyRotation::getPaths(std::vector<ObjectIdentifier> &paths) const
 
 void PropertyRotation::setPathValue(const ObjectIdentifier &path, const boost::any &value)
 {
-    auto updateAxis = [=](int index, double coord) {
+    auto updateAxis = [this](int index, double coord) {
         Base::Vector3d axis;
         double angle;
         _rot.getRawValue(axis, angle);
@@ -1241,3 +1251,52 @@ TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyComplexGeoData , App::PropertyGeometry)
 PropertyComplexGeoData::PropertyComplexGeoData() = default;
 
 PropertyComplexGeoData::~PropertyComplexGeoData() = default;
+
+std::string PropertyComplexGeoData::getElementMapVersion(bool) const {
+    auto data = getComplexData();
+    if(!data)
+        return std::string();
+    auto owner = Base::freecad_dynamic_cast<DocumentObject>(getContainer());
+    std::ostringstream ss;
+    if(owner && owner->getDocument()
+        && owner->getDocument()->getStringHasher()==data->Hasher)
+        ss << "1.";
+    else
+        ss << "0.";
+    ss << data->getElementMapVersion();
+    return ss.str();
+}
+
+bool PropertyComplexGeoData::checkElementMapVersion(const char * ver) const
+{
+    auto data = getComplexData();
+    if(!data)
+        return false;
+    auto owner = Base::freecad_dynamic_cast<DocumentObject>(getContainer());
+    std::ostringstream ss;
+    const char *prefix;
+    if(owner && owner->getDocument()
+        && owner->getDocument()->getStringHasher() == data->Hasher)
+        prefix = "1.";
+    else
+        prefix = "0.";
+    if (!boost::starts_with(ver, prefix))
+        return true;
+    return data->checkElementMapVersion(ver+2);
+}
+
+
+void PropertyComplexGeoData::afterRestore()
+{
+    auto data = getComplexData();
+    if (data && data->isRestoreFailed()) {
+        data->resetRestoreFailure();
+        auto owner = Base::freecad_dynamic_cast<DocumentObject>(getContainer());
+        if (owner &&
+            owner->getDocument() &&
+            !owner->getDocument()->testStatus(App::Document::PartialDoc)) {
+            owner->getDocument()->addRecomputeObject(owner);
+        }
+    }
+    PropertyGeometry::afterRestore();
+}

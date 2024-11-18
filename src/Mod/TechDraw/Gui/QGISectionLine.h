@@ -47,12 +47,12 @@ class TechDrawGuiExport QGISectionLine : public QGIDecoration
 {
 public:
     explicit QGISectionLine();
-    ~QGISectionLine() {}
+    ~QGISectionLine() override = default;
 
     enum {Type = QGraphicsItem::UserType + 172};
-    int type() const { return Type;}
+    int type() const override { return Type;}
 
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr );
+    void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;
 
     void setEnds(Base::Vector3d l1, Base::Vector3d l2);
     void setBounds(double x1, double y1, double x2, double y2);
@@ -62,13 +62,16 @@ public:
     void setDirection(Base::Vector3d dir);
     void setArrowDirections(Base::Vector3d dir1, Base::Vector3d dir2);
     void setFont(QFont f, double fsize);
-    void setSectionStyle(int style);
     void setSectionColor(QColor c);
     void setPathMode(bool mode) { m_pathMode = mode; }
+    void setShowLine(bool state) { m_showLine = state; }
     bool pathMode() { return m_pathMode; }
     void setChangePoints(TechDraw::ChangePointVector changePoints);
     void clearChangePoints();
-    virtual void draw();
+    void draw() override;
+
+    void setLinePen(QPen isoPen);
+
 
 protected:
     QColor getSectionColor();
@@ -83,7 +86,6 @@ protected:
     void makeSymbolsISO();
     void makeChangePointMarks();
     void setTools();
-    int  getPrefSectionStandard();
     void extensionEndsISO();
     void extensionEndsTrad();
     double getArrowRotation(Base::Vector3d arrowDir);
@@ -93,7 +95,7 @@ protected:
     static QPointF normalizeQPointF(QPointF inPoint);
 
 private:
-    char* m_symbol;
+    const char*        m_symbol;
     QGraphicsPathItem* m_line;
     QGraphicsPathItem* m_extend;
     QGIArrow*          m_arrow1;
@@ -122,6 +124,8 @@ private:
     QPointF            m_arrowPos2;
     std::vector<QGraphicsPathItem*> m_changePointMarks;
     TechDraw::ChangePointVector m_changePointData;
+
+    bool m_showLine{true};
 };
 
 }

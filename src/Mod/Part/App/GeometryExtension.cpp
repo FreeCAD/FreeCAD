@@ -33,9 +33,7 @@ using namespace Part;
 
 TYPESYSTEM_SOURCE_ABSTRACT(Part::GeometryExtension,Base::BaseClass)
 
-GeometryExtension::GeometryExtension()
-{
-}
+GeometryExtension::GeometryExtension() = default;
 
 PyObject* GeometryExtension::copyPyObject() const
 {
@@ -80,3 +78,14 @@ void GeometryPersistenceExtension::Restore(Base::XMLReader &reader)
 {
     restoreAttributes(reader);
 }
+
+bool GeometryPersistenceExtension::isSame(const GeometryPersistenceExtension &other) const
+{
+    static Base::StringWriter writer,writer2;
+//    writer.clear();
+    Save(writer);
+//    writer2.clear();
+    other.Save(writer2);
+    return writer.getString() == writer2.getString();
+}
+

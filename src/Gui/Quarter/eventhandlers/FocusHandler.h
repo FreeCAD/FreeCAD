@@ -33,7 +33,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <QtCore/QObject>
+#include <QObject>
 #include <Inventor/SbName.h>
 
 class QEvent;
@@ -46,10 +46,10 @@ class FocusHandler : public QObject {
   Q_OBJECT
 public:
   FocusHandler(QObject * parent);
-  virtual ~FocusHandler();
+  ~FocusHandler() override;
 
 protected:
-  virtual bool eventFilter(QObject *, QEvent * event);
+  bool eventFilter(QObject *, QEvent * event) override;
 
 private:
   void focusEvent(const SbName & focusevent);

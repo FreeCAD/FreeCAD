@@ -40,6 +40,7 @@ to be more similar to OrthoArray and the new tools.
 ## \addtogroup drafttaskpanels
 # @{
 import FreeCADGui as Gui
+from PySide import QtWidgets
 
 
 class SelectPlaneTaskPanel:
@@ -50,6 +51,6 @@ class SelectPlaneTaskPanel:
 
     def getStandardButtons(self):
         """Execute to set the standard buttons."""
-        return 2097152  # int(QtGui.QDialogButtonBox.Close)
+        return QtWidgets.QDialogButtonBox.Close
 
 ## @}

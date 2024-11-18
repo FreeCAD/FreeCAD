@@ -42,7 +42,7 @@ class TechDrawGuiExport QGIGhostHighlight : public QObject, public QGIHighlight
     Q_OBJECT
 public:
     explicit QGIGhostHighlight();
-    ~QGIGhostHighlight();
+    ~QGIGhostHighlight() override;
 
     enum {Type = QGraphicsItem::UserType + 177};
     int type() const override { return Type;}
@@ -54,8 +54,8 @@ Q_SIGNALS:
     void positionChange(QPointF p);
 
 protected:
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
     bool m_dragging;
 

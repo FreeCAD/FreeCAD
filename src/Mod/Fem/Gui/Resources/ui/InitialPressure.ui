@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Constraint Properties</string>
+   <string>Analysis feature properties</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>

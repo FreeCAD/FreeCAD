@@ -26,7 +26,8 @@
 
 #include <Base/Parameter.h>
 
-namespace FemGui {
+namespace FemGui
+{
 
 class FemSettings
 {
@@ -39,6 +40,6 @@ private:
     ParameterGrp::handle pGroup;
 };
 
-} //namespace FemGui
+}  // namespace FemGui
 
-#endif // FEMGUI_SETTINGS_H
+#endif  // FEMGUI_SETTINGS_H

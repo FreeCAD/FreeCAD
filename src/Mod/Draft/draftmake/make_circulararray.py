@@ -31,7 +31,7 @@ import FreeCAD as App
 import draftmake.make_array as make_array
 import draftutils.utils as utils
 
-from draftutils.messages import _msg, _err
+from draftutils.messages import _err
 from draftutils.translate import translate
 
 
@@ -119,22 +119,11 @@ def make_circular_array(base_object,
     make_ortho_array, make_polar_array, make_path_array, make_point_array
     """
     _name = "make_circular_array"
-    utils.print_header(_name, translate("draft","Circular array"))
 
-    if isinstance(base_object, str):
-        base_object_str = base_object
-
-    found, base_object = utils.find_object(base_object,
-                                           doc=App.activeDocument())
+    found, base_object = utils.find_object(base_object, doc=App.activeDocument())
     if not found:
-        _msg("base_object: {}".format(base_object_str))
-        _err(translate("draft","Wrong input: object not in document."))
+        _err(translate("draft","Wrong input: base_object not in document."))
         return None
-
-    _msg("base_object: {}".format(base_object.Label))
-
-    _msg("r_distance: {}".format(r_distance))
-    _msg("tan_distance: {}".format(tan_distance))
 
     try:
         utils.type_check([(r_distance, (int, float, App.Units.Quantity)),
@@ -144,18 +133,12 @@ def make_circular_array(base_object,
         _err(translate("draft","Wrong input: must be a number or quantity."))
         return None
 
-    _msg("number: {}".format(number))
-    _msg("symmetry: {}".format(symmetry))
-
     try:
         utils.type_check([(number, int),
                           (symmetry, int)], name=_name)
     except TypeError:
         _err(translate("draft","Wrong input: must be an integer number."))
         return None
-
-    _msg("axis: {}".format(axis))
-    _msg("center: {}".format(center))
 
     try:
         utils.type_check([(axis, App.Vector),
@@ -165,7 +148,6 @@ def make_circular_array(base_object,
         return None
 
     use_link = bool(use_link)
-    _msg("use_link: {}".format(use_link))
 
     new_obj = make_array.make_array(base_object,
                                     arg1=r_distance, arg2=tan_distance,

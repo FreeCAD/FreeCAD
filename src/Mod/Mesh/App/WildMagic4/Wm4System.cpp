@@ -893,7 +893,7 @@ int System::Sprintf (char* acDst, size_t uiDstSize, const char* acFormat, ...)
 #ifdef WM4_USING_VC80
     int iNumWritten = vsprintf_s(acDst,uiDstSize,acFormat,acArgs);
 #else
-    int iNumWritten = vsprintf(acDst,acFormat,acArgs);
+    int iNumWritten = vsnprintf(acDst,uiDstSize,acFormat,acArgs);
 #endif
 
     va_end(acArgs);
@@ -927,7 +927,7 @@ char* System::Strcpy (char* acDst, size_t uiDstSize, const char* acSrc)
         // copy failed.
         return nullptr;
     }
-    strncpy(acDst,acSrc,uiSrcLen);
+    strncpy(acDst,acSrc,uiSrcLen + 1);
     acDst[uiSrcLen] = 0;
     return acDst;
 #endif
@@ -962,7 +962,7 @@ char* System::Strcat (char* acDst, size_t uiDstSize, const char* acSrc)
         // the concatenation failed.
         return nullptr;
     }
-    strncat(acDst,acSrc,uiSrcLen);
+    strncat(acDst,acSrc,uiSrcLen + 1);
     acDst[uiSumLen] = 0;
     return acDst;
 #endif

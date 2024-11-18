@@ -24,12 +24,13 @@
 #define Fem_FemAnalysis_H
 
 #include <App/DocumentObjectGroup.h>
-#include <App/PropertyStandard.h>
 #include <App/FeaturePython.h>
+#include <App/PropertyStandard.h>
 #include <Mod/Fem/FemGlobal.h>
 
 
-namespace Fem {
+namespace Fem
+{
 
 /**
  * @brief Container of objects relevant to one simulation.
@@ -49,7 +50,8 @@ namespace Fem {
  *  Analysis object. Every document object of FreeCAD can be part of a
  *  Analysis.
  */
-class FemExport FemAnalysis : public App::DocumentObjectGroup {
+class FemExport FemAnalysis: public App::DocumentObjectGroup
+{
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemAnalysis);
 
 public:
@@ -66,9 +68,10 @@ public:
      * directory name for an analysis. Retains its value across save/load
      * cycles.
      */
-    App::PropertyUUID    Uid;
+    App::PropertyUUID Uid;
 
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "FemGui::ViewProviderFemAnalysis";
     }
 
@@ -82,11 +85,12 @@ protected:
      *  property of DocumentObjectGroup. This methods translates old files
      *  still using the "Member" property.
      */
-    void handleChangedPropertyName(
-        Base::XMLReader &reader, const char * TypeName, const char *PropName) override;
+    void handleChangedPropertyName(Base::XMLReader& reader,
+                                   const char* TypeName,
+                                   const char* PropName) override;
 };
 
-class FemExport DocumentObject : public App::DocumentObject
+class FemExport DocumentObject: public App::DocumentObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::DocumentObject);
 };
@@ -95,7 +99,7 @@ using FemAnalysisPython = App::FeaturePythonT<FemAnalysis>;
 using FeaturePython = App::FeaturePythonT<DocumentObject>;
 
 
-} //namespace Fem
+}  // namespace Fem
 
 
-#endif // Fem_FemAnalysis_H
+#endif  // Fem_FemAnalysis_H

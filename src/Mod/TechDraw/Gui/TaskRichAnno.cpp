@@ -280,7 +280,9 @@ App::Color TaskRichAnno::prefLineColor()
 void TaskRichAnno::createAnnoFeature()
 {
 //    Base::Console().Message("TRA::createAnnoFeature()");
-    std::string annoName = m_basePage->getDocument()->getUniqueObjectName("RichTextAnnotation");
+    const std::string objectName{QT_TR_NOOP("RichTextAnnotation")};
+    std::string annoName = m_basePage->getDocument()->getUniqueObjectName(objectName.c_str());
+    std::string generatedSuffix {annoName.substr(objectName.length())};
     std::string annoType = "TechDraw::DrawRichAnno";
 
     std::string PageName = m_basePage->getNameInDocument();
@@ -308,7 +310,7 @@ void TaskRichAnno::createAnnoFeature()
             m_annoFeat->X.setValue(Rez::appX(vTemp.x));
             m_annoFeat->Y.setValue(Rez::appX(vTemp.y));
         } else {
-            //if we don't have a base featrue, we can't calculate start position, so just put it mid-page
+            //if we don't have a base feature, we can't calculate start position, so just put it mid-page
             m_annoFeat->X.setValue(m_basePage->getPageWidth()/2.0);
             m_annoFeat->Y.setValue(m_basePage->getPageHeight()/2.0);
         }
@@ -325,6 +327,9 @@ void TaskRichAnno::createAnnoFeature()
             annoVP->LineStyle.setValue(ui->cFrameStyle->currentIndex());
         }
     }
+
+    std::string translatedObjectName{tr(objectName.c_str()).toStdString()};
+    obj->Label.setValue(translatedObjectName + generatedSuffix);
 
     Gui::Command::commitCommand();
     Gui::Command::updateActive();

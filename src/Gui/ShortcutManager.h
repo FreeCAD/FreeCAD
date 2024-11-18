@@ -48,7 +48,7 @@ class GuiExport ShortcutManager : public QObject, public ParameterGrp::ObserverT
 
 public:
     ShortcutManager();
-    ~ShortcutManager();
+    ~ShortcutManager() override;
 
     static ShortcutManager *instance();
     static void destroy();

@@ -1,11 +1,3 @@
-if(MSVC)
-    add_definitions(-DFCGuiRobot -DHAVE_ACOSH -DHAVE_ASINH -DHAVE_ATANH)
-else(MSVC)
-    add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
-endif(MSVC)
-
-
-
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
@@ -25,7 +17,11 @@ set(RobotGui_LIBS
     FreeCADGui
 )
 
-qt_add_resources(RobotResource_SRCS Resources/Robot.qrc)
+set (Robot_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Robot_translation.qrc)
+qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
+    ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
+qt_create_resource_file(${Robot_TR_QRC} ${QM_SRCS})
+qt_add_resources(RobotResource_SRCS Resources/Robot.qrc ${Robot_TR_QRC})
 SOURCE_GROUP("Resources" FILES ${RobotResource_SRCS})
 
 set(RobotGui_UIC_SRCS
@@ -131,6 +127,9 @@ SET(RobotGuiIcon_SVG
 
 add_library(RobotGui SHARED ${RobotGui_SRCS} ${RobotGuiIcon_SVG})
 target_link_libraries(RobotGui ${RobotGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(RobotGui)
+endif()
 
 unset(_flag_found CACHE)
 check_cxx_compiler_flag("-Wno-deprecated-copy" _flag_found)

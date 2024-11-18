@@ -26,8 +26,8 @@
 #ifndef GUI_TASKVIEW_TaskFemConstraintDisplacement_H
 #define GUI_TASKVIEW_TaskFemConstraintDisplacement_H
 
-#include <memory>
 #include <QObject>
+#include <memory>
 
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskView.h>
@@ -39,8 +39,9 @@
 
 class Ui_TaskFemConstraintDisplacement;
 
-namespace FemGui {
-class TaskFemConstraintDisplacement : public TaskFemConstraintOnBoundary
+namespace FemGui
+{
+class TaskFemConstraintDisplacement: public TaskFemConstraintOnBoundary
 {
     Q_OBJECT
 
@@ -59,45 +60,32 @@ public:
     std::string get_xFormula() const;
     std::string get_yFormula() const;
     std::string get_zFormula() const;
-    bool get_dispxfix() const;
     bool get_dispxfree() const;
     bool get_hasDispXFormula() const;
-    bool get_dispyfix() const;
     bool get_dispyfree() const;
     bool get_hasDispYFormula() const;
-    bool get_dispzfix() const;
     bool get_dispzfree() const;
     bool get_hasDispZFormula() const;
-    bool get_rotxfix() const;
     bool get_rotxfree() const;
-    bool get_rotyfix() const;
     bool get_rotyfree() const;
-    bool get_rotzfix() const;
     bool get_rotzfree() const;
     bool get_useFlowSurfaceForce() const;
 
 private Q_SLOTS:
     void onReferenceDeleted();
-    void fixx(bool);
     void formulaX(bool);
-    void fixy(bool);
     void formulaY(bool);
-    void fixz(bool);
     void formulaZ(bool);
     void flowForce(bool);
-    void rotfixx(bool);
     void formulaRotx(bool);
-    void rotfixy(bool);
     void formulaRoty(bool);
-    void rotfixz(bool);
     void formulaRotz(bool);
 
     void addToSelection() override;
     void removeFromSelection() override;
 
 protected:
-    bool event(QEvent *e) override;
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
     void clearButtons(const SelectionChangeModes notThis) override;
 
 private:
@@ -105,18 +93,16 @@ private:
     std::unique_ptr<Ui_TaskFemConstraintDisplacement> ui;
 };
 
-class TaskDlgFemConstraintDisplacement : public TaskDlgFemConstraint
+class TaskDlgFemConstraintDisplacement: public TaskDlgFemConstraint
 {
     Q_OBJECT
 
 public:
     explicit TaskDlgFemConstraintDisplacement(
         ViewProviderFemConstraintDisplacement* ConstraintView);
-    void open() override;
     bool accept() override;
-    bool reject() override;
 };
 
-} //namespace FemGui
+}  // namespace FemGui
 
-#endif // GUI_TASKVIEW_TaskFemConstraintDisplacement_H
+#endif  // GUI_TASKVIEW_TaskFemConstraintDisplacement_H

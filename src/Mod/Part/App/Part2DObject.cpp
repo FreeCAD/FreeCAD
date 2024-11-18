@@ -39,10 +39,6 @@
 # include <IntRes2d_IntersectionSegment.hxx>
 #endif
 
-#ifndef M_PI
-#define M_PI       3.14159265358979323846
-#endif
-
 #include <App/FeaturePythonPyImp.h>
 #include <App/PropertyLinks.h>
 #include <Base/Reader.h>
@@ -68,14 +64,14 @@ Part2DObject::Part2DObject()
 }
 
 
-App::DocumentObjectExecReturn *Part2DObject::execute(void)
+App::DocumentObjectExecReturn *Part2DObject::execute()
 {
     return Feature::execute();
 }
 
 void Part2DObject::transformPlacement(const Base::Placement &transform)
 {
-    if (!Support.getValues().empty()) {
+    if (!AttachmentSupport.getValues().empty()) {
         //part->transformPlacement(transform);
         positionBySupport();
     } else {
@@ -83,7 +79,7 @@ void Part2DObject::transformPlacement(const Base::Placement &transform)
     }
 }
 
-int Part2DObject::getAxisCount(void) const
+int Part2DObject::getAxisCount() const
 {
     return 0;
 }
@@ -99,7 +95,7 @@ Base::Axis Part2DObject::getAxis(int axId) const
     else if (axId == N_Axis) {
         return Base::Axis(Base::Vector3d(0,0,0), Base::Vector3d(0,0,1));
     }
-    return Base::Axis();
+    return {};
 }
 
 bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,
@@ -155,9 +151,9 @@ bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,
                 // #2463 Check for endpoints of secondarycurve on primary curve
                 // If the OCCT Intersector should detect endpoint tangency when trimming, then
                 // this is just a work-around until that bug is fixed.
-                // https://www.freecadweb.org/tracker/view.php?id=2463
+                // https://www.freecad.org/tracker/view.php?id=2463
                 // https://tracker.dev.opencascade.org/view.php?id=30217
-                if (geomlist[id]->getTypeId().isDerivedFrom(Part::GeomBoundedCurve::getClassTypeId())) {
+                if (geomlist[id]->isDerivedFrom<Part::GeomBoundedCurve>()) {
 
                     Part::GeomBoundedCurve * bcurve = static_cast<Part::GeomBoundedCurve *>(geomlist[id]);
 
@@ -254,42 +250,15 @@ void Part2DObject::Restore(Base::XMLReader &reader)
     Part::Feature::Restore(reader);
 }
 
-void Part2DObject::handleChangedPropertyType(Base::XMLReader &reader,
-                                             const char * TypeName,
-                                             App::Property * prop)
-{
-    //override generic restoration to convert Support property from PropertyLinkSub to PropertyLinkSubList
-    if (prop->isDerivedFrom(App::PropertyLinkSubList::getClassTypeId())) {
-        //reading legacy Support - when the Support could only be a single flat face.
-        App::PropertyLinkSub tmp;
-        if (0 == strcmp(tmp.getTypeId().getName(),TypeName)) {
-            tmp.setContainer(this);
-            tmp.Restore(reader);
-            static_cast<App::PropertyLinkSubList*>(prop)->setValue(tmp.getValue(), tmp.getSubValues());
-        }
-        this->MapMode.setValue(Attacher::mmFlatFace);
-    }
-    else {
-        Part::Feature::handleChangedPropertyType(reader, TypeName, prop);
-    }
-}
-
-void Part2DObject::handleChangedPropertyName(Base::XMLReader &reader,
-                                             const char * TypeName,
-                                             const char *PropName)
-{
-    extHandleChangedPropertyName(reader, TypeName, PropName); // AttachExtension
-}
-
 // Python Drawing feature ---------------------------------------------------------
 
 namespace App {
 /// @cond DOXERR
   PROPERTY_SOURCE_TEMPLATE(Part::Part2DObjectPython, Part::Part2DObject)
-  template<> const char* Part::Part2DObjectPython::getViewProviderName(void) const {
+  template<> const char* Part::Part2DObjectPython::getViewProviderName() const {
     return "PartGui::ViewProvider2DObjectPython";
   }
-  template<> PyObject* Part::Part2DObjectPython::getPyObject(void) {
+  template<> PyObject* Part::Part2DObjectPython::getPyObject() {
         if (PythonObject.is(Py::_None())) {
             // ref counter is set to 1
             PythonObject = Py::Object(new FeaturePythonPyT<Part::Part2DObjectPy>(this),true);

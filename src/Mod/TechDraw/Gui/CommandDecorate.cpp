@@ -45,8 +45,10 @@
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
+#include <Mod/TechDraw/App/Preferences.h>
 
 #include "DrawGuiUtil.h"
+#include "MDIViewPage.h"
 #include "TaskGeomHatch.h"
 #include "TaskHatch.h"
 #include "ViewProviderGeomHatch.h"
@@ -54,6 +56,8 @@
 
 
 using namespace TechDrawGui;
+using namespace TechDraw;
+using DU = DrawUtil;
 
 //internal functions
 bool _checkSelectionHatch(Gui::Command* cmd);
@@ -142,10 +146,8 @@ void CmdTechDrawHatch::activated(int iMsg)
     // dialog to fill in hatch values
     Gui::Control().showDialog(new TaskDlgHatch(partFeat, subNames));
 
-    //Horrible hack to force Tree update  ??still required??
-    //WF: yes. ViewProvider will not claim children without this!
-    double x = partFeat->X.getValue();
-    partFeat->X.setValue(x);
+    // Touch the parent feature so the hatching in tree view appears as a child
+    partFeat->touch();
     getDocument()->recompute();
 }
 
@@ -191,12 +193,16 @@ void CmdTechDrawGeometricHatch::activated(int iMsg)
     std::string PageName = page->getNameInDocument();
 
     std::string FeatName = getUniqueObjectName("GeomHatch");
-    std::stringstream featLabel;
-    featLabel << FeatName << "FX" << TechDraw::DrawUtil::getIndexFromName(subNames.at(0));
+
+    // TODO: the structured label for GeomHatch (and Hatch) should be retired.
+//    std::stringstream featLabel;
+//    featLabel << FeatName << "FX" << TechDraw::DrawUtil::getIndexFromName(subNames.at(0));
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Create GeomHatch"));
     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawGeomHatch', '%s')", FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.Label = '%s'", FeatName.c_str(), featLabel.str().c_str());
+//    doCommand(Doc, "App.activeDocument().%s.Label = '%s'", FeatName.c_str(), featLabel.str().c_str());
+    doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawGeomHatch', 'GeomHatch', '%s')",
+              FeatName.c_str(), FeatName.c_str());
 
     auto geomhatch( static_cast<TechDraw::DrawGeomHatch *>(getDocument()->getObject(FeatName.c_str())) );
     geomhatch->Source.setValue(objFeat, subNames);
@@ -211,9 +217,8 @@ void CmdTechDrawGeometricHatch::activated(int iMsg)
 
     commitCommand();
 
-    //Horrible hack to force Tree update  ??still required??
-    double x = objFeat->X.getValue();
-    objFeat->X.setValue(x);
+    // Touch the parent feature so the hatching in tree view appears as a child
+    objFeat->touch();
     getDocument()->recompute();
 }
 
@@ -254,18 +259,20 @@ void CmdTechDrawImage::activated(int iMsg)
     // Reading an image
     QString fileName = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
         QString::fromUtf8(QT_TR_NOOP("Select an Image File")),
-        QString(),
-        QString::fromUtf8(QT_TR_NOOP("Image (*.png *.jpg *.jpeg)")));
-
+        Preferences::defaultSymbolDir(),
+        QString::fromUtf8(QT_TR_NOOP("Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)")));
     if (fileName.isEmpty()) {
         return;
     }
 
     std::string FeatName = getUniqueObjectName("Image");
     fileName = Base::Tools::escapeEncodeFilename(fileName);
+    auto filespec = DU::cleanFilespecBackslash(Base::Tools::toStdString(fileName));
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Image"));
     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewImage', '%s')", FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.ImageFile = '%s'", FeatName.c_str(), fileName.toUtf8().constData());
+    doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewImage', 'Image', '%s')",
+              FeatName.c_str(), FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.ImageFile = '%s'", FeatName.c_str(), filespec.c_str());
     doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
     updateActive();
     commitCommand();
@@ -280,7 +287,7 @@ bool CmdTechDrawImage::isActive()
 // TechDraw_ToggleFrame
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawToggleFrame)
+DEF_STD_CMD_AC(CmdTechDrawToggleFrame)
 
 CmdTechDrawToggleFrame::CmdTechDrawToggleFrame()
   : Command("TechDraw_ToggleFrame")
@@ -294,34 +301,52 @@ CmdTechDrawToggleFrame::CmdTechDrawToggleFrame()
     sPixmap         = "actions/TechDraw_ToggleFrame";
 }
 
+Gui::Action *CmdTechDrawToggleFrame::createAction()
+{
+    Gui::Action *action = Gui::Command::createAction();
+    action->setCheckable(true);
+
+    return action;
+}
+
 void CmdTechDrawToggleFrame::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
-    if (!page) {
-        return;
-    }
-    std::string PageName = page->getNameInDocument();
 
-    Gui::Document* activeGui = Gui::Application::Instance->getDocument(page->getDocument());
-    Gui::ViewProvider* vp = activeGui->getViewProvider(page);
-    ViewProviderPage* vpp = dynamic_cast<ViewProviderPage*>(vp);
-
-    if (!vpp) {
+    auto mvp = dynamic_cast<MDIViewPage *>(Gui::getMainWindow()->activeWindow());
+    if (!mvp) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No TechDraw Page"),
             QObject::tr("Need a TechDraw Page for this command"));
         return;
     }
+
+    ViewProviderPage* vpp = mvp->getViewProviderPage();
+    if (!vpp) {
+        return;
+    }
     vpp->toggleFrameState();
+
+    Gui::Action *action = this->getAction();
+    if (action) {
+        action->setChecked(!vpp->getFrameState(), true);
+    }
 }
 
 bool CmdTechDrawToggleFrame::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this, false);
-    return (havePage && haveView);
-}
+    auto mvp = dynamic_cast<MDIViewPage *>(Gui::getMainWindow()->activeWindow());
+    if (!mvp) {
+        return false;
+    }
 
+    ViewProviderPage* vpp = mvp->getViewProviderPage();
+    Gui::Action *action = this->getAction();
+    if (action) {
+        action->setChecked(vpp && !vpp->getFrameState(), true);
+    }
+
+    return true;
+}
 
 void CreateTechDrawCommandsDecorate()
 {

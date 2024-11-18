@@ -29,7 +29,7 @@
    <item>
     <widget class="QLabel" name="lbl_info">
      <property name="text">
-      <string>Select multiple face(s), click Add or Remove</string>
+      <string>Click Add or Remove and select geometric element(s)</string>
      </property>
     </widget>
    </item>
@@ -90,12 +90,18 @@
      <item>
       <widget class="QLabel" name="labelForce">
        <property name="text">
-        <string>Load [N]</string>
+        <string>Force</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="Gui::QuantitySpinBox" name="spinForce">
+       <property name="unit" stdset="0">
+        <string>N</string>
+       </property>
+       <property name="minimum">
+        <double>0.000000000000000</double>
+       </property>
        <property name="value">
         <double>500.000000000000000</double>
        </property>

@@ -23,13 +23,14 @@
 #ifndef SketcherGui_VIEWPROVIDERPYTHON_H
 #define SketcherGui_VIEWPROVIDERPYTHON_H
 
-#include <Gui/ViewProviderPythonFeature.h>
+#include <Gui/ViewProviderFeaturePython.h>
 #include <Mod/Sketcher/Gui/ViewProviderSketch.h>
 
 
-namespace SketcherGui {
+namespace SketcherGui
+{
 
-class SketcherGuiExport ViewProviderCustom : public ViewProviderSketch
+class SketcherGuiExport ViewProviderCustom: public ViewProviderSketch
 {
     PROPERTY_HEADER_WITH_OVERRIDE(SketcherGui::ViewProviderCustom);
 
@@ -45,11 +46,10 @@ protected:
     std::map<const App::Property*, Gui::ViewProvider*> propView;
 };
 
-using ViewProviderPython = Gui::ViewProviderPythonFeatureT<ViewProviderSketch>;
-using ViewProviderCustomPython = Gui::ViewProviderPythonFeatureT<ViewProviderCustom>;
+using ViewProviderPython = Gui::ViewProviderFeaturePythonT<ViewProviderSketch>;
+using ViewProviderCustomPython = Gui::ViewProviderFeaturePythonT<ViewProviderCustom>;
 
-} // namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif // SketcherGui_VIEWPROVIDERPYTHON_H
-
+#endif  // SketcherGui_VIEWPROVIDERPYTHON_H

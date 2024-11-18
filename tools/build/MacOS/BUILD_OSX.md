@@ -222,7 +222,7 @@ cmake \
 -DBUILD_FEM=1 \
 -DBUILD_TECHDRAW=0 \
 -DFREECAD_USE_EXTERNAL_KDL=ON \
--DFREECAD_CREATE_MAC_APP=OFF 
+-DFREECAD_CREATE_MAC_APP=OFF \
 -DCMAKE_PREFIX_PATH="/usr/local/opt/qt/lib/cmake;/usr/local/opt/nglib/Contents/Resources;/usr/local/opt/vtk@8.2/lib/cmake;/usr/local;" .
 ```
 
@@ -294,6 +294,6 @@ mv freecadd freecad;
 
 [lnk1]: <http://brew.sh>
 [lnk2]: <https://github.com/FreeCAD/homebrew-freecad>
-[lnk3]: <https://forum.freecadweb.org/viewtopic.php?f=4&t=51981#p446796>
+[lnk3]: <https://forum.freecad.org/viewtopic.php?f=4&t=51981#p446796>
 [lnk4]: <https://gist.github.com/ipatch/6116824ab1f2a99b526cb07e43317b91#gistcomment-3577066>
 [lnk5]: <https://github.com/Homebrew/homebrew-core/pull/67615>

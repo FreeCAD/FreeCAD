@@ -102,34 +102,34 @@
   <context>
     <name>TestGui::UnitTestDialog</name>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="151"/>
+      <location filename="../../UnitTestImp.cpp" line="165"/>
       <source>Help</source>
       <translation>Помоћ</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="151"/>
+      <location filename="../../UnitTestImp.cpp" line="166"/>
       <source>Enter the name of a callable object which, when called, will return a TestCase.
 Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it, including the stack trace.</source>
-      <translation>Упишите назив позовивог објекта који ће, када је позван, дати случај тестирања.
-Кликните на „покрени“, и тест који производи биће покренут.
+      <translation>Унеси име објекта који ће, када се позове, вратити ТестЦасе.
+Кликни на 'старт' и тако произведен тест ц́е бити покренут.
 
-Два пута кликните на грешку у прегледу стаблом да видите више информација о њему, укључујући праћење спремника.</translation>
+Двапут кликни на грешку у стаблу документа да би видео више информација о њој, укључујући праћење стека.</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="163"/>
+      <location filename="../../UnitTestImp.cpp" line="179"/>
       <source>About FreeCAD UnitTest</source>
       <translation>О FreeCAD UnitTest програму</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="163"/>
+      <location filename="../../UnitTestImp.cpp" line="180"/>
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
       <translation>Ауторска права © Werner Mayer
 
-„FreeCAD UnitTest“ је део FreeCAD-а и подржава писање тестирања јединице за њихове личне модуле.</translation>
+FreeCAD UnitTest је део FreeCAD-а и подржава писање тестова за сопствене модуле.</translation>
     </message>
   </context>
 </TS>

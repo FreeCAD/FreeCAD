@@ -58,7 +58,7 @@ class TaskCosVertex : public QWidget
 public:
     TaskCosVertex(TechDraw::DrawViewPart* baseFeat,
                   TechDraw::DrawPage* page);
-    ~TaskCosVertex() = default;
+    ~TaskCosVertex() override = default;
 
     virtual bool accept();
     virtual bool reject();

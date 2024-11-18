@@ -45,7 +45,7 @@
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeHint" stdset="0">
+         <property name="sizeHint">
           <size>
            <width>430</width>
            <height>17</height>
@@ -74,7 +74,7 @@
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
-             <property name="sizeHint" stdset="0">
+             <property name="sizeHint">
               <size>
                <width>31</width>
                <height>20</height>
@@ -97,7 +97,7 @@
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
-             <property name="sizeHint" stdset="0">
+             <property name="sizeHint">
               <size>
                <width>31</width>
                <height>20</height>
@@ -172,14 +172,14 @@
             </widget>
            </item>
            <item row="4" column="0">
-            <widget class="QLabel" name="labelPlatform">
+            <widget class="QLabel" name="labelArchitecture">
              <property name="text">
-              <string>Word size</string>
+              <string>Architecture</string>
              </property>
             </widget>
            </item>
            <item row="4" column="1">
-            <widget class="QLabel" name="labelBuildPlatform">
+            <widget class="QLabel" name="labelBuildRunArchitecture">
              <property name="text">
               <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt;Unknown&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
@@ -231,7 +231,7 @@
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
-           <property name="sizeHint" stdset="0">
+           <property name="sizeHint">
             <size>
              <width>40</width>
              <height>20</height>
@@ -246,7 +246,7 @@
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeHint" stdset="0">
+         <property name="sizeHint">
           <size>
            <width>430</width>
            <height>17</height>
@@ -273,7 +273,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-size:14pt; font-weight:600;"&gt;Third-party libraries licenses&lt;/span&gt;&lt;/p&gt;
 &lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:14pt; font-weight:600;"&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;The different libraries used in FreeCAD and their respective licenses are described on the&lt;a href="https://www.freecadweb.org/wiki/Third_Party_Libraries"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;Third Party Libraries wiki page&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;The different libraries used in FreeCAD and their respective licenses are described on the&lt;a href="https://www.freecad.org/wiki/Third_Party_Libraries"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;Third Party Libraries wiki page&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
 &lt;hr /&gt;
 &lt;hr /&gt;
 &lt;hr /&gt;
@@ -371,7 +371,7 @@ p, li { white-space: pre-wrap; }
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
-       <property name="sizeHint" stdset="0">
+       <property name="sizeHint">
         <size>
          <width>160</width>
          <height>31</height>

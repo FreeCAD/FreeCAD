@@ -47,9 +47,7 @@ class PeopleTable:
             os.path.join(os.path.dirname(__file__), "developer_mode_people_table.ui")
         )
 
-        self.widget.addButton.setIcon(
-            QIcon.fromTheme("add", QIcon(":/icons/list-add.svg"))
-        )
+        self.widget.addButton.setIcon(QIcon.fromTheme("add", QIcon(":/icons/list-add.svg")))
         self.widget.removeButton.setIcon(
             QIcon.fromTheme("remove", QIcon(":/icons/list-remove.svg"))
         )

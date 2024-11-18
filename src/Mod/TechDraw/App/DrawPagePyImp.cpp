@@ -77,6 +77,38 @@ PyObject* DrawPagePy::removeView(PyObject* args)
     return PyLong_FromLong(rc);
 }
 
+PyObject* DrawPagePy::getViews(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    DrawPage* page = getDrawPagePtr();
+    std::vector<App::DocumentObject*> allViews = page->getViews();
+
+    Py::List ret;
+    for (auto v: allViews) {
+        if (v->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
+            TechDraw::DrawProjGroupItem* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(v);
+            ret.append(Py::asObject(new TechDraw::DrawProjGroupItemPy(dpgi)));
+        }
+        else if (v->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+            TechDraw::DrawViewPart* dvp = static_cast<TechDraw::DrawViewPart*>(v);
+            ret.append(Py::asObject(new TechDraw::DrawViewPartPy(dvp)));
+        }
+        else if (v->isDerivedFrom(TechDraw::DrawViewAnnotation::getClassTypeId())) {
+            TechDraw::DrawViewAnnotation* dva = static_cast<TechDraw::DrawViewAnnotation*>(v);
+            ret.append(Py::asObject(new TechDraw::DrawViewAnnotationPy(dva)));
+        }
+        else {
+            TechDraw::DrawView* dv = static_cast<TechDraw::DrawView*>(v);
+            ret.append(Py::asObject(new TechDraw::DrawViewPy(dv)));
+        }
+    }
+
+    return Py::new_reference_to(ret);
+}
+
 PyObject* DrawPagePy::getAllViews(PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
@@ -117,6 +149,49 @@ PyObject* DrawPagePy::requestPaint(PyObject* args)
 
     DrawPage* page = getDrawPagePtr();
     page->requestPaint();
+
+    Py_Return;
+}
+
+//! replace the current Label with a translated version
+PyObject* DrawPagePy::translateLabel(PyObject *args)
+{
+    PyObject* pyContext;
+    PyObject* pyBaseName;
+    PyObject* pyUniqueName;
+    std::string context;
+    std::string baseName;
+    std::string uniqueName;
+
+    if (!PyArg_ParseTuple(args, "OOO", &pyContext, &pyBaseName, &pyUniqueName)) {
+            throw Py::TypeError("Could not translate label - bad parameters.");
+    }
+
+    Py_ssize_t size = 0;
+    const char* cContext = PyUnicode_AsUTF8AndSize(pyContext, &size);
+    if (cContext) {
+        context = std::string(cContext, size);
+    } else {
+        throw Py::TypeError("Could not translate label - context not available.");
+    }
+
+    const char* cBaseName = PyUnicode_AsUTF8AndSize(pyBaseName, &size);
+    if (cBaseName) {
+        baseName = std::string(cBaseName, size);
+    } else {
+        throw Py::TypeError("Could not translate label - base name not available.");
+    }
+
+    const char* cUniqueName = PyUnicode_AsUTF8AndSize(pyUniqueName, &size);
+    if (cUniqueName) {
+        uniqueName = std::string(cUniqueName, size);
+    } else {
+        throw Py::TypeError("Could not translate label - unique name not available.");
+    }
+
+    // we have the 3 parameters we need for DrawPage::translateLabel
+    DrawPage* page = getDrawPagePtr();
+    page->translateLabel(context, baseName, uniqueName);
 
     Py_Return;
 }

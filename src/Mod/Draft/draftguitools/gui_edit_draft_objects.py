@@ -40,7 +40,7 @@ TODO: Abstract the code that handles the preview and move the object specific
 __title__ = "FreeCAD Draft Edit Tool"
 __author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
               "Dmitry Chigrin, Carlo Pavan")
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## \addtogroup draftguitools
 # @{
@@ -51,6 +51,7 @@ import DraftVecUtils
 
 from draftutils.translate import translate
 import draftutils.utils as utils
+from draftutils.messages import _err
 
 import draftguitools.gui_trackers as trackers
 
@@ -93,7 +94,7 @@ class DraftWireGuiTools(GuiTools):
             return
 
         # TODO: Make consistent operation with trackers and open wires
-        # See: https://forum.freecadweb.org/viewtopic.php?f=23&t=56661
+        # See: https://forum.freecad.org/viewtopic.php?f=23&t=56661
         #if obj.Closed:
         #    # DNC: project the new point to the plane of the face if present
         #    if hasattr(obj.Shape, "normalAt"):
@@ -173,8 +174,7 @@ class DraftWireGuiTools(GuiTools):
 
     def delete_point(self, obj, node_idx):
         if len(obj.Points) <= 2:
-            _msg = translate("draft", "Active object must have more than two points/nodes")
-            App.Console.PrintWarning(_msg + "\n")
+            _err(translate("draft", "Active object must have more than two points/nodes"))
             return
 
         pts = obj.Points
@@ -774,7 +774,7 @@ class DraftBezCurveGuiTools(GuiTools):
                 knot = 0
             else:
                 App.Console.PrintWarning(translate("draft",
-                                                        "Endpoint of BezCurve can't be smoothed")
+                                                        "Endpoint of Bézier curve can't be smoothed")
                                                         + "\n")
                 return
         segment = knot // deg  # segment index
@@ -836,8 +836,7 @@ class DraftBezCurveGuiTools(GuiTools):
 
     def delete_point(self, obj, node_idx):
         if len(obj.Points) <= 2:
-            _msg = translate("draft", "Active object must have more than two points/nodes")
-            App.Console.PrintWarning(_msg + "\n")
+            _err(translate("draft", "Active object must have more than two points/nodes"))
             return
 
         pts = obj.Points

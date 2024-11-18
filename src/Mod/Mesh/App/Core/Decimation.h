@@ -33,8 +33,7 @@ class MeshKernel;
 class MeshExport MeshSimplify
 {
 public:
-    MeshSimplify(MeshKernel&);//explicit bombs
-    ~MeshSimplify();
+    MeshSimplify(MeshKernel&);  // explicit bombs
     void simplify(float tolerance, float reduction);
     void simplify(int targetSize);
 
@@ -42,7 +41,7 @@ private:
     MeshKernel& myKernel;
 };
 
-} // namespace MeshCore
+}  // namespace MeshCore
 
 
 #endif  // MESH_DECIMATION_H

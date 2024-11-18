@@ -26,6 +26,7 @@
 
 #include "ViewProviderDocumentObject.h"
 #include <App/PropertyUnits.h>
+#include "SoTextLabel.h"
 
 class SoFont;
 class SoText2;
@@ -106,15 +107,6 @@ public:
     std::vector<std::string> getDisplayModes() const override;
     void setDisplayMode(const char* ModeName) override;
 
-    /** @name Edit methods */
-    //@{
-    bool doubleClicked() override;
-    void setupContextMenu(QMenu*, QObject*, const char*) override;
-protected:
-    bool setEdit(int ModNum) override;
-    void unsetEdit(int ModNum) override;
-    //@}
-
 protected:
     void onChanged(const App::Property* prop) override;
     void drawImage(const std::vector<std::string>&);
@@ -129,7 +121,7 @@ private:
     SoImage          * pImage;
     SoBaseColor      * pColor;
     SoTranslation    * pBaseTranslation;
-    SoTransform      * pTextTranslation;
+    TranslateManip   * pTextTranslation;
 
     static const char* JustificationEnums[];
 };

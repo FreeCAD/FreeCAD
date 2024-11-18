@@ -1,9 +1,3 @@
-if(MSVC)
-    add_definitions(-DHAVE_ACOSH -DHAVE_ATANH -DHAVE_ASINH)
-else(MSVC)
-    add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
-endif(MSVC)
-
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
@@ -78,6 +72,9 @@ endif(FREECAD_USE_PCH)
 link_directories(${OCC_LIBRARY_DIR})
 add_library(SurfaceGui SHARED ${SurfaceGui_SRCS} ${SurfaceGuiIcon_SVG})
 target_link_libraries(SurfaceGui ${SurfaceGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(SurfaceGui)
+endif()
 
 SET_BIN_DIR(SurfaceGui SurfaceGui /Mod/Surface)
 SET_PYTHON_PREFIX_SUFFIX(SurfaceGui)
@@ -86,4 +83,3 @@ fc_copy_sources(SurfaceGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Sur
 
 install(TARGETS SurfaceGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 INSTALL(FILES ${SurfaceGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Surface/Resources/icons")
-

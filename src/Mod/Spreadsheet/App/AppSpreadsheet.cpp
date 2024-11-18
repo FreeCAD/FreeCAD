@@ -30,16 +30,16 @@
 #include "Sheet.h"
 
 
-namespace Spreadsheet {
-class Module : public Py::ExtensionModule<Module>
+namespace Spreadsheet
+{
+class Module: public Py::ExtensionModule<Module>
 {
 public:
-    Module() : Py::ExtensionModule<Module>("Spreadsheet")
+    Module()
+        : Py::ExtensionModule<Module>("Spreadsheet")
     {
-        initialize("This module is the Spreadsheet module."); // register with Python
+        initialize("This module is the Spreadsheet module.");  // register with Python
     }
-
-    ~Module() override {}
 
 private:
 };
@@ -48,7 +48,7 @@ PyObject* initModule()
 {
     return Base::Interpreter().addModule(new Module);
 }
-} // namespace Spreadsheet
+}  // namespace Spreadsheet
 
 /* Python entry */
 PyMOD_INIT_FUNC(Spreadsheet)

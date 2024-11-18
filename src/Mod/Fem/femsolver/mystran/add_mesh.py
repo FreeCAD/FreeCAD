@@ -23,7 +23,7 @@
 
 __title__ = "Mystran add fem mesh"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## \addtogroup FEM
 #  @{
@@ -38,19 +38,14 @@ def add_mesh(f, model, mystran_writer):
     if not mystran_writer.femnodes_mesh:
         mystran_writer.femnodes_mesh = mystran_writer.femmesh.Nodes
     if not mystran_writer.femelement_table:
-        mystran_writer.femelement_table = meshtools.get_femelement_table(
-            mystran_writer.femmesh
-        )
+        mystran_writer.femelement_table = meshtools.get_femelement_table(mystran_writer.femmesh)
     mesh_eletype = exportNastranMesh.get_export_element_type(
-        mystran_writer.femmesh,
-        mystran_writer.femelement_table
+        mystran_writer.femmesh, mystran_writer.femelement_table
     )
 
     # get the pynas code
     mesh_pynas_code = exportNastranMesh.get_pynastran_mesh(
-        mystran_writer.femnodes_mesh,
-        mystran_writer.femelement_table,
-        mesh_eletype
+        mystran_writer.femnodes_mesh, mystran_writer.femelement_table, mesh_eletype
     )
     # print(mesh_pynas_code)
 

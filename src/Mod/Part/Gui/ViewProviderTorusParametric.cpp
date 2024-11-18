@@ -39,16 +39,11 @@ ViewProviderTorusParametric::ViewProviderTorusParametric()
   sPixmap = "Part_Torus_Parametric";
 }
 
-ViewProviderTorusParametric::~ViewProviderTorusParametric()
-{
-
-}
-
-
+ViewProviderTorusParametric::~ViewProviderTorusParametric() = default;
 
 // **********************************************************************************
 
-std::vector<std::string> ViewProviderTorusParametric::getDisplayModes(void) const
+std::vector<std::string> ViewProviderTorusParametric::getDisplayModes() const
 {
   // get the modes of the father
   std::vector<std::string> StrList;

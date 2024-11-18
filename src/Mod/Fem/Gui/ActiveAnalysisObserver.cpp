@@ -36,19 +36,15 @@ ActiveAnalysisObserver* ActiveAnalysisObserver::inst = nullptr;
 
 ActiveAnalysisObserver* ActiveAnalysisObserver::instance()
 {
-    if (!inst)
+    if (!inst) {
         inst = new ActiveAnalysisObserver();
+    }
     return inst;
 }
 
-ActiveAnalysisObserver::ActiveAnalysisObserver()
-    : activeObject(nullptr), activeView(nullptr), activeDocument(nullptr)
-{
-}
+ActiveAnalysisObserver::ActiveAnalysisObserver() = default;
 
-ActiveAnalysisObserver::~ActiveAnalysisObserver()
-{
-}
+ActiveAnalysisObserver::~ActiveAnalysisObserver() = default;
 
 void ActiveAnalysisObserver::setActiveObject(Fem::FemAnalysis* fem)
 {
@@ -56,7 +52,8 @@ void ActiveAnalysisObserver::setActiveObject(Fem::FemAnalysis* fem)
         activeObject = fem;
         App::Document* doc = fem->getDocument();
         activeDocument = Gui::Application::Instance->getDocument(doc);
-        activeView = static_cast<Gui::ViewProviderDocumentObject*>(activeDocument->getViewProvider(activeObject));
+        activeView = static_cast<Gui::ViewProviderDocumentObject*>(
+            activeDocument->getViewProvider(activeObject));
         attachDocument(doc);
     }
     else {
@@ -77,8 +74,9 @@ bool ActiveAnalysisObserver::hasActiveObject() const
 
 void ActiveAnalysisObserver::highlightActiveObject(const Gui::HighlightMode& mode, bool on)
 {
-    if (activeDocument && activeView)
+    if (activeDocument && activeView) {
         activeDocument->signalHighlightObject(*activeView, mode, on, 0, 0);
+    }
 }
 
 void ActiveAnalysisObserver::slotDeletedDocument(const App::Document& Doc)

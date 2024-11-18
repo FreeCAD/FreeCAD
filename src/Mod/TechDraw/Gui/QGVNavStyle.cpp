@@ -109,20 +109,21 @@ void QGVNavStyle::handleFocusOutEvent(QFocusEvent* event)
 
 void QGVNavStyle::handleKeyPressEvent(QKeyEvent* event)
 {
+    // Base::Console().Message("QGNS::handleKeyPressEvent(%d)\n", event->key());
     if (event->modifiers().testFlag(Qt::ControlModifier)) {
         switch (event->key()) {
             case Qt::Key_Plus: {
-                zoom(1.0 + zoomStep);
+                zoomIn();
                 event->accept();
-                break;
+                return;
             }
             case Qt::Key_Minus: {
-                zoom(1.0 - zoomStep);
+                zoomOut();
                 event->accept();
-                break;
+                return;
             }
             default: {
-                break;
+                return;
             }
         }
     }
@@ -132,43 +133,43 @@ void QGVNavStyle::handleKeyPressEvent(QKeyEvent* event)
             case Qt::Key_Left: {
                 getViewer()->kbPanScroll(1, 0);
                 event->accept();
-                break;
+                return;
             }
             case Qt::Key_Up: {
                 getViewer()->kbPanScroll(0, 1);
                 event->accept();
-                break;
+                return;
             }
             case Qt::Key_Right: {
                 getViewer()->kbPanScroll(-1, 0);
                 event->accept();
-                break;
+                return;
             }
             case Qt::Key_Down: {
                 getViewer()->kbPanScroll(0, -1);
                 event->accept();
-                break;
+                return;
             }
             case Qt::Key_Escape: {
                 getViewer()->cancelBalloonPlacing();
                 event->accept();
-                break;
+                return;
             }
             case Qt::Key_Shift: {
                 this->shiftdown = true;
                 event->accept();
-                break;
+                return;
             }
             default: {
-                break;
+                return;
             }
         }
     }
+    event->ignore();
 }
 
 void QGVNavStyle::handleKeyReleaseEvent(QKeyEvent* event)
 {
-    //    Q_UNUSED(event);
     if (event->modifiers().testFlag(Qt::NoModifier)) {
         switch (event->key()) {
             case Qt::Key_Shift: {
@@ -213,7 +214,7 @@ void QGVNavStyle::handleLeaveEvent(QEvent* event)
 
 void QGVNavStyle::handleMousePressEvent(QMouseEvent* event)
 {
-    //    Base::Console().Message("QGVNS::handleMousePressEvent()\n");
+    // Base::Console().Message("QGVNS::handleMousePressEvent()\n");
     if (!panningActive && (event->button() == Qt::MiddleButton)) {
         startPan(event->pos());
         event->accept();
@@ -224,7 +225,8 @@ void QGVNavStyle::handleMouseMoveEvent(QMouseEvent* event)
 {
     //    Base::Console().Message("QGVNS::handleMouseMoveEvent()\n");
     if (getViewer()->isBalloonPlacing()) {
-        getViewer()->setBalloonCursorPos(event->pos());
+        balloonCursorMovement(event);
+        return;
     }
 
     if (panningActive) {
@@ -337,6 +339,16 @@ double QGVNavStyle::mouseZoomFactor(QPoint p)
     return factor;
 }
 
+void QGVNavStyle::zoomIn()
+{
+    zoom(1.0 + zoomStep);
+}
+
+void QGVNavStyle::zoomOut()
+{
+    zoom(1.0 - zoomStep);
+}
+
 void QGVNavStyle::startPan(QPoint p)
 {
     panOrigin = p;
@@ -385,6 +397,13 @@ void QGVNavStyle::placeBalloon(QPoint p)
     getViewer()->getScene()->createBalloon(getViewer()->mapToScene(p),
                                            getViewer()->getBalloonParent());
     getViewer()->setBalloonPlacing(false);
+}
+
+void QGVNavStyle::balloonCursorMovement(QMouseEvent *event)
+{
+    getViewer()->setBalloonCursorPos(event->pos());
+    event->accept();
+    return;
 }
 
 //****************************************

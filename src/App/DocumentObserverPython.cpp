@@ -22,6 +22,9 @@
 
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+#include <functional>
+#endif
 
 #include <CXX/Objects.hxx>
 #include "Application.h"
@@ -32,7 +35,7 @@
 
 
 using namespace App;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 std::vector<DocumentObserverPython*> DocumentObserverPython::_instances;
 
@@ -62,7 +65,7 @@ DocumentObserverPython::DocumentObserverPython(const Py::Object& obj) : inst(obj
         FC_PY_GetCallable(obj.ptr(), "slot" #_name1, py##_name1.py);\
         if (!py##_name1.py.isNone())\
             py##_name1.slot = App::GetApplication().signal##_name2.connect(\
-                    boost::bind(&DocumentObserverPython::slot##_name1, this));\
+                    std::bind(&DocumentObserverPython::slot##_name1, this));\
     }\
     while(0);
 
@@ -71,15 +74,16 @@ DocumentObserverPython::DocumentObserverPython(const Py::Object& obj) : inst(obj
         FC_PY_GetCallable(obj.ptr(), "slot" #_name1, py##_name1.py);\
         if (!py##_name1.py.isNone())\
             py##_name1.slot = App::GetApplication().signal##_name2.connect(\
-                    boost::bind(&DocumentObserverPython::slot##_name1, this, bp::_1));\
+                    std::bind(&DocumentObserverPython::slot##_name1, this, sp::_1));\
     }\
     while(0);
 
+    //NOLINTBEGIN
 #define FC_PY_ELEMENT_ARG2(_name1, _name2) do {\
         FC_PY_GetCallable(obj.ptr(), "slot" #_name1, py##_name1.py);\
         if (!py##_name1.py.isNone())\
             py##_name1.slot = App::GetApplication().signal##_name2.connect(\
-                    boost::bind(&DocumentObserverPython::slot##_name1, this, bp::_1, bp::_2));\
+                    std::bind(&DocumentObserverPython::slot##_name1, this, sp::_1, sp::_2));\
     }\
     while(0);
 
@@ -112,6 +116,7 @@ DocumentObserverPython::DocumentObserverPython(const Py::Object& obj) : inst(obj
     FC_PY_ELEMENT_ARG2(ChangePropertyEditor, ChangePropertyEditor)
     FC_PY_ELEMENT_ARG2(BeforeAddingDynamicExtension, BeforeAddingDynamicExtension)
     FC_PY_ELEMENT_ARG2(AddedDynamicExtension, AddedDynamicExtension)
+    //NOLINTEND
 }
 
 DocumentObserverPython::~DocumentObserverPython() = default;

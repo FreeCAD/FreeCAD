@@ -5,7 +5,7 @@
   <version>1.0.1</version>
   <date>2022-01-07</date>
   <maintainer email="developer@freecad.org">FreeCAD Developer</maintainer>
-  <license file="LICENSE">LGPLv2.1</license>
+  <license file="LICENSE">LGPL-2.1</license>
   <url type="repository" branch="main">https://github.com/chennes/FreeCAD-Package</url>
   <url type="readme">https://github.com/chennes/FreeCAD-Package/blob/main/README.md</url>
   <icon>Resources/icons/PackageIcon.svg</icon>

@@ -1,0 +1,43 @@
+---
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2023 David Carter <dcarter@davidcarter.ca>              *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+
+Model:
+  Name: 'Hardness'
+  UUID: '3d1a6141-d032-4d82-8bb5-a8f339fff8ad'
+  URL: 'https://en.wikipedia.org/wiki/Mohs_scale'
+  Description: >
+    Measure of the hardness of the material. FreeCAD does not define any
+    hardness units so it is up to the module to interpret the units as
+    appropriate.
+  DOI: ''
+  Hardness:
+    Type: 'Float'
+    Units: ''
+    URL: 'https://en.wikipedia.org/wiki/Mohs_scale'
+    Description: "Hardness. FreeCAD does not currently support hardness units"
+  HardnessUnits:
+    DisplayName: "Hardness Units"
+    Type: 'String'
+    Units: ''
+    URL: 'https://en.wikipedia.org/wiki/Mohs_scale'
+    Description: "Hardness units. FreeCAD does not currently support hardness units"

@@ -31,7 +31,7 @@ if FreeCAD.GuiUp:
 
 __title__="PartDesign InvoluteGearObject management"
 __author__ = "Juergen Riegel"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 
 def makeInvoluteGear(name):
@@ -93,22 +93,22 @@ class _InvoluteGear:
                     setattr(obj, name, default)
 
         # for details about the property's docstring translation,
-        # see https://tracker.freecadweb.org/view.php?id=2524
+        # see https://tracker.freecad.org/view.php?id=2524
         ensure_property("App::PropertyInteger", "NumberOfTeeth",
             doc=QtCore.QT_TRANSLATE_NOOP("App::Property", "Number of gear teeth"),
             default=26)
         ensure_property("App::PropertyLength", "Modules",
-            doc=QtCore.QT_TRANSLATE_NOOP("App::Property", "Modules of the gear"),
+            doc=QtCore.QT_TRANSLATE_NOOP("App::Property", "Module of the gear"),
             default="2.5 mm")
         ensure_property("App::PropertyAngle", "PressureAngle",
             doc=QtCore.QT_TRANSLATE_NOOP("App::Property", "Pressure angle of gear teeth"),
             default="20 deg")
         ensure_property("App::PropertyBool", "HighPrecision",
             doc=QtCore.QT_TRANSLATE_NOOP("App::Property",
-                "True=2 curves with each 3 control points False=1 curve with 4 control points."),
+                "True=2 curves with each 3 control points, False=1 curve with 4 control points."),
             default=True)
         ensure_property("App::PropertyBool", "ExternalGear",
-            doc=QtCore.QT_TRANSLATE_NOOP("App::Property", "True=external Gear False=internal Gear"),
+            doc=QtCore.QT_TRANSLATE_NOOP("App::Property", "True=external Gear, False=internal Gear"),
             default=True)
         ensure_property("App::PropertyFloat", "AddendumCoefficient",
             doc=QtCore.QT_TRANSLATE_NOOP("App::Property",
@@ -163,10 +163,10 @@ class _ViewProviderInvoluteGear:
         FreeCADGui.Control.closeDialog()
         return
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
         return None
 
 
@@ -258,7 +258,7 @@ class _InvoluteGearTaskPanel:
         self.form.doubleSpinBox_ProfileShift.setValue(self.obj.ProfileShiftCoefficient)
 
     def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Ok) | int(QtGui.QDialogButtonBox.Cancel)| int(QtGui.QDialogButtonBox.Apply)
+        return QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel | QtGui.QDialogButtonBox.Apply
 
     def clicked(self,button):
         if button == QtGui.QDialogButtonBox.Apply:

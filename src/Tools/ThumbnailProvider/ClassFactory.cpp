@@ -22,8 +22,8 @@
 
 
 #define INITGUID
-#include "Common.h"
 #include "ClassFactory.h"
+#include "Common.h"
 
 STDAPI CThumbnailProvider_CreateInstance(REFIID riid, void** ppvObject);
 
@@ -41,11 +41,9 @@ CClassFactory::~CClassFactory()
 }
 
 
-STDMETHODIMP CClassFactory::QueryInterface(REFIID riid,
-                                           void** ppvObject)
+STDMETHODIMP CClassFactory::QueryInterface(REFIID riid, void** ppvObject)
 {
-    static const QITAB qit[] =
-    {
+    static const QITAB qit[] = {
         QITABENT(CClassFactory, IClassFactory),
         {0},
     };
@@ -63,18 +61,18 @@ STDMETHODIMP_(ULONG) CClassFactory::AddRef()
 STDMETHODIMP_(ULONG) CClassFactory::Release()
 {
     LONG cRef = InterlockedDecrement(&m_cRef);
-    if (0 == cRef)
+    if (0 == cRef) {
         delete this;
+    }
     return (ULONG)cRef;
 }
 
 
-STDMETHODIMP CClassFactory::CreateInstance(IUnknown* punkOuter,
-                                           REFIID riid,
-                                           void** ppvObject)
+STDMETHODIMP CClassFactory::CreateInstance(IUnknown* punkOuter, REFIID riid, void** ppvObject)
 {
-    if (NULL != punkOuter)
+    if (NULL != punkOuter) {
         return CLASS_E_NOAGGREGATION;
+    }
 
     return CThumbnailProvider_CreateInstance(riid, ppvObject);
 }
@@ -86,22 +84,23 @@ STDMETHODIMP CClassFactory::LockServer(BOOL fLock)
 }
 
 
-STDAPI DllGetClassObject(REFCLSID rclsid,
-                         REFIID riid,
-                         void **ppv)
+STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, void** ppv)
 {
-    if (NULL == ppv)
+    if (NULL == ppv) {
         return E_INVALIDARG;
+    }
 
-    if (!IsEqualCLSID(CLSID_SampleThumbnailProvider, rclsid))
+    if (!IsEqualCLSID(CLSID_SampleThumbnailProvider, rclsid)) {
         return CLASS_E_CLASSNOTAVAILABLE;
+    }
 
-    CClassFactory *pcf;
+    CClassFactory* pcf;
     HRESULT hr;
 
     pcf = new CClassFactory();
-    if (NULL == pcf)
+    if (NULL == pcf) {
         return E_OUTOFMEMORY;
+    }
 
     hr = pcf->QueryInterface(riid, ppv);
     pcf->Release();

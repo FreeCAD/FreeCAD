@@ -25,7 +25,7 @@
 
 #include "ViewProviderDragger.h"
 #include "ViewProviderOriginGroup.h"
-#include "ViewProviderPythonFeature.h"
+#include "ViewProviderFeaturePython.h"
 
 
 namespace Gui {
@@ -43,10 +43,15 @@ public:
 
     bool doubleClicked() override;
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
+    bool isActivePart();
+    void toggleActivePart();
 
     /// deliver the icon shown in the tree view
     /// override from ViewProvider.h
     QIcon getIcon() const override;
+
+    /* Check whether the object accept reordering of its children during drop.*/
+    bool acceptReorderingObjects() const override { return true; };
 
 protected:
     /// get called by the container whenever a property has been changed
@@ -56,7 +61,7 @@ protected:
 
 };
 
-using ViewProviderPartPython = ViewProviderPythonFeatureT<ViewProviderPart>;
+using ViewProviderPartPython = ViewProviderFeaturePythonT<ViewProviderPart>;
 
 } // namespace Gui
 

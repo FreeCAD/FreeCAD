@@ -42,14 +42,16 @@ def get_information():
         "meshtype": "solid",
         "meshelement": "Tet10",
         "constraints": ["fixed", "pressure", "contact"],
-        "solvers": ["calculix", "ccxtools"],
+        "solvers": ["ccxtools"],
         "material": "solid",
-        "equations": ["mechanical"]
+        "equations": ["mechanical"],
     }
 
 
 def get_explanation(header=""):
-    return header + """
+    return (
+        header
+        + """
 
 To run the example from Python console use:
 from femexamples.constraint_contact_solid_solid import setup
@@ -57,10 +59,11 @@ setup()
 
 
 See forum topic post:
-https://forum.freecadweb.org/viewtopic.php?f=18&t=20276
+https://forum.freecad.org/viewtopic.php?f=18&t=20276
 constraint contact for solid to solid mesh
 
 """
+    )
 
 
 def setup(doc=None, solvertype="ccxtools"):
@@ -86,12 +89,12 @@ def setup(doc=None, solvertype="ccxtools"):
     )
     doc.recompute()
 
-    # top half cylinder, https://forum.freecadweb.org/viewtopic.php?f=18&t=43001#p366111
+    # top half cylinder, https://forum.freecad.org/viewtopic.php?f=18&t=43001#p366111
     top_halfcyl_obj = doc.addObject("Part::Cylinder", "TopHalfCylinder")
     top_halfcyl_obj.Radius = 30
     top_halfcyl_obj.Height = 500
     top_halfcyl_obj.Angle = 180
-    top_halfcyl_sh = Part.getShape(top_halfcyl_obj, '', needSubElement=False, refine=True)
+    top_halfcyl_sh = Part.getShape(top_halfcyl_obj, "", needSubElement=False, refine=True)
     top_halfcyl_obj.Shape = top_halfcyl_sh
     top_halfcyl_obj.Placement = FreeCAD.Placement(
         Vector(0, -42, 0),
@@ -103,6 +106,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # all geom fusion
     geom_obj = doc.addObject("Part::MultiFuse", "AllGeomFusion")
     geom_obj.Shapes = [bottom_box_obj, top_halfcyl_obj]
+    geom_obj.Refine = True
     if FreeCAD.GuiUp:
         bottom_box_obj.ViewObject.hide()
         top_halfcyl_obj.ViewObject.hide()
@@ -116,17 +120,15 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
 
     # solver
-    if solvertype == "calculix":
-        solver_obj = ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
-    elif solvertype == "ccxtools":
-        solver_obj = ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
-        solver_obj.WorkingDir = u""
+    if solvertype == "ccxtools":
+        solver_obj = ObjectsFem.makeSolverCalculiXCcxTools(doc, "CalculiXCcxTools")
+        solver_obj.WorkingDir = ""
     else:
         FreeCAD.Console.PrintWarning(
             "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
-    if solvertype == "calculix" or solvertype == "ccxtools":
+    if solvertype == "ccxtools":
         solver_obj.AnalysisType = "static"
         solver_obj.GeometricalNonlinearity = "linear"
         solver_obj.ThermoMechSteadyState = False
@@ -167,22 +169,26 @@ def setup(doc=None, solvertype="ccxtools"):
     # constraint pressure
     con_pressure = ObjectsFem.makeConstraintPressure(doc, "ConstraintPressure")
     con_pressure.References = [(geom_obj, "Face10")]
-    con_pressure.Pressure = 100.0  # Pa ? = 100 Mpa ?
+    con_pressure.Pressure = "100.0 MPa"
     con_pressure.Reversed = False
     analysis.addObject(con_pressure)
 
     # constraint contact
     con_contact = ObjectsFem.makeConstraintContact(doc, "ConstraintContact")
     con_contact.References = [
-        (geom_obj, "Face7"),  # first seams slave face, TODO proof in writer code!
-        (geom_obj, "Face3"),  # second seams master face, TODO proof in writer code!
+        (geom_obj, "Face7"),  # first seems slave face, TODO proof in writer code!
+        (geom_obj, "Face3"),  # second seems master face, TODO proof in writer code!
     ]
-    con_contact.Friction = 0.0
-    con_contact.Slope = 1000000.0  # contact stiffness 1000000.0 kg/(mm*s^2)
+    con_contact.Friction = False
+    con_contact.Slope = "1000000.0 GPa/m"
     analysis.addObject(con_contact)
 
     # mesh
-    from .meshes.mesh_contact_box_halfcylinder_tetra10 import create_nodes, create_elements
+    from .meshes.mesh_contact_box_halfcylinder_tetra10 import (
+        create_nodes,
+        create_elements,
+    )
+
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
@@ -192,7 +198,7 @@ def setup(doc=None, solvertype="ccxtools"):
         FreeCAD.Console.PrintError("Error on creating elements.\n")
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.FemMesh = fem_mesh
-    femmesh_obj.Part = geom_obj
+    femmesh_obj.Shape = geom_obj
     femmesh_obj.SecondOrderLinear = False
 
     doc.recompute()

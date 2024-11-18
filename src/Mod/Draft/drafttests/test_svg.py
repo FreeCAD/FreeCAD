@@ -37,6 +37,13 @@ import drafttests.auxiliary as aux
 
 from draftutils.messages import _msg
 
+try:
+    import Arch
+except ModuleNotFoundError:
+    have_arch = False
+else:
+    have_arch = True
+
 
 class DraftSVG(unittest.TestCase):
     """Test reading and writing of SVGs with Draft."""
@@ -87,10 +94,10 @@ class DraftSVG(unittest.TestCase):
         obj = Draft.export_svg(out_file)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
+    @unittest.skipIf(not have_arch, "BIM module is not installed")
     def test_get_svg_from_arch_space_with_zero_vector(self):
         """Try to get a svg string from an Arch Space with a zero-vector as direction."""
         import Part
-        import Arch
         import Draft
 
         sb = Part.makeBox(1,1,1)

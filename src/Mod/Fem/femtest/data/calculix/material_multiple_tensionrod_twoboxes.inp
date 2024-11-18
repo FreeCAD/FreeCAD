@@ -1210,6 +1210,9 @@ Evolumes
 296,
 297,
 
+** Physical constants for SI(mm) unit system with Kelvins
+*PHYSICAL CONSTANTS, ABSOLUTE ZERO=0, STEFAN BOLTZMANN=5.670374419e-11
+
 ***********************************************************
 ** Materials
 ** see information about units at file end
@@ -1231,7 +1234,7 @@ Evolumes
 
 ***********************************************************
 ** At least one step is needed to run an CalculiX analysis of FreeCAD
-*STEP
+*STEP, INC=2000
 *STATIC
 
 
@@ -1249,22 +1252,22 @@ ConstraintFixed,3
 ** ConstraintPressure
 *DLOAD
 ** ConstraintPressure: face load
-61,P3,1000
-74,P3,1000
-75,P3,1000
-80,P2,1000
-96,P3,1000
-99,P3,1000
-100,P4,1000
-102,P3,1000
-117,P3,1000
-118,P3,1000
-121,P3,1000
-124,P4,1000
-127,P2,1000
-131,P4,1000
-132,P4,1000
-134,P2,1000
+61,P3,1000.0
+74,P3,1000.0
+75,P3,1000.0
+80,P2,1000.0
+96,P3,1000.0
+99,P3,1000.0
+100,P4,1000.0
+102,P3,1000.0
+117,P3,1000.0
+118,P3,1000.0
+121,P3,1000.0
+124,P4,1000.0
+127,P2,1000.0
+131,P4,1000.0
+132,P4,1000.0
+134,P2,1000.0
 
 ***********************************************************
 ** Outputs --> frd file
@@ -1277,15 +1280,15 @@ S, E
 *NODE PRINT, NSET=ConstraintFixed, TOTALS=ONLY
 RF
 
-
+*OUTPUT, FREQUENCY=1
 ***********************************************************
-*END STEP 
+*END STEP
 
 ***********************************************************
 ** CalculiX Input file
-**   written by    --> FreeCAD 0.19.19432 (Git)
-**   written on    --> Fri Jan 31 08:06:05 2020
-**   file name     --> 
+**   written by    --> FreeCAD 0.21.0
+**   written on    --> Tue Mar 28 06:48:16 2023
+**   file name     --> material_multiple_tensionrod_twoboxes.FCStd
 **   analysis name --> Analysis
 **
 **

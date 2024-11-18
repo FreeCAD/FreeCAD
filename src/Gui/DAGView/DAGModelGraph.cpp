@@ -34,13 +34,7 @@ VertexProperty::VertexProperty() :
   visibleIcon(new QGraphicsPixmapItem()),
   stateIcon(new QGraphicsPixmapItem()),
   icon(new QGraphicsPixmapItem()),
-  text(new QGraphicsTextItem()),
-  row(0),
-  column(0),
-  topoSortIndex(0),
-  lastVisibleState(VisibilityState::None),
-  lastFeatureState(FeatureState::None),
-  dagVisible(true)
+  text(new QGraphicsTextItem())
 {
   //set z values.
   this->rectangle->setZValue(-1000.0);
@@ -51,16 +45,21 @@ VertexProperty::VertexProperty() :
   this->text->setZValue(0.0);
 }
 
-EdgeProperty::EdgeProperty() : relation(BranchTag::None)
-{
-
-}
+EdgeProperty::EdgeProperty() = default;
 
 bool Gui::DAG::hasRecord(const App::DocumentObject* dObjectIn, const GraphLinkContainer &containerIn)
 {
   using List = GraphLinkContainer::index<GraphLinkRecord::ByDObject>::type;
   const List &list = containerIn.get<GraphLinkRecord::ByDObject>();
   List::const_iterator it = list.find(dObjectIn);
+  return it != list.end();
+}
+
+bool Gui::DAG::hasRecord(const ViewProviderDocumentObject* VPDObjectIn, const GraphLinkContainer &containerIn)
+{
+  using List = GraphLinkContainer::index<GraphLinkRecord::ByVPDObject>::type;
+  const List &list = containerIn.get<GraphLinkRecord::ByVPDObject>();
+  List::const_iterator it = list.find(VPDObjectIn);
   return it != list.end();
 }
 

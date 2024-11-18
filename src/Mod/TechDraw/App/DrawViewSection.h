@@ -102,6 +102,10 @@ public:
 
     App::PropertyBool FuseBeforeCut;
     App::PropertyBool TrimAfterCut;//new v021
+    App::PropertyBool UsePreviousCut;   // new v022
+
+    App::PropertyFloatConstraint SectionLineStretch;  // new v022
+
 
     bool isReallyInBox(const Base::Vector3d v, const Base::BoundBox3d bb) const;
     bool isReallyInBox(const gp_Pnt p, const Bnd_Box& bb) const;
@@ -130,7 +134,6 @@ public:
     virtual TopoDS_Shape getShapeToPrepare() const { return m_cutPieces; }
 
     //CS related methods
-    gp_Ax2 getProjectionCS(Base::Vector3d pt = Base::Vector3d(0.0, 0.0, 0.0)) const override;
     void setCSFromBase(const std::string sectionName);
     void setCSFromBase(Base::Vector3d localUnit);
     void setCSFromLocalUnit(const Base::Vector3d localUnit);
@@ -139,10 +142,8 @@ public:
     Base::Vector3d getXDirection() const override;//don't use XDirection.getValue()
 
     TechDraw::DrawViewPart* getBaseDVP() const;
-    TechDraw::DrawProjGroupItem* getBaseDPGI() const;
 
     //section face related methods
-    TopoDS_Compound getSectionTFaces() { return m_sectionTopoDSFaces; }
     std::vector<TechDraw::FacePtr> getTDFaceGeometry() { return m_tdSectionFaces; }
     TopoDS_Face getSectionTopoDSFace(int i);
     virtual TopoDS_Compound alignSectionFaces(TopoDS_Shape faceIntersections);
@@ -155,6 +156,7 @@ public:
     std::vector<PATLineSpec> getDecodedSpecsFromFile(std::string fileSpec, std::string myPattern);
 
     TopoDS_Shape getCutShape() const { return m_cutShape; }
+    TopoDS_Shape getCutShapeRaw() const { return m_cutShapeRaw; }
 
     TopoDS_Shape getShapeForDetail() const override;
 
@@ -162,11 +164,14 @@ public:
     static const char* CutSurfaceEnums[];
 
     virtual std::pair<Base::Vector3d, Base::Vector3d> sectionLineEnds();
+    Base::Vector3d getSectionDirectionOnBaseView();
     virtual ChangePointVector getChangePointsFromSectionLine();
 
     bool showSectionEdges(void);
 
     TopoDS_Shape makeFaceFromWires(std::vector<TopoDS_Wire> &inWires);
+
+    Base::Vector3d getCutCentroid() const;
 
 public Q_SLOTS:
     virtual void onSectionCutFinished(void);
@@ -184,7 +189,8 @@ protected:
     int prefCutSurface() const;
     bool trimAfterCut() const;
 
-    TopoDS_Shape m_cutShape;
+    TopoDS_Shape m_cutShape;        // centered, scaled, rotated result of cut
+    TopoDS_Shape m_cutShapeRaw;     // raw result of cut w/o center/scale/rotate
 
     void onDocumentRestored() override;
     void setupObject() override;
@@ -201,6 +207,9 @@ protected:
     bool m_waitingForCut;
     TopoDS_Shape m_cuttingTool;
     double m_shapeSize;
+
+    static App::PropertyFloatConstraint::Constraints stretchRange;
+
 };
 
 using DrawViewSectionPython = App::FeaturePythonT<DrawViewSection>;

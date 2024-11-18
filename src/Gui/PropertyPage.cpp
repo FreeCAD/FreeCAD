@@ -28,6 +28,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <App/Application.h>
 
 #include "PropertyPage.h"
 #include "PrefWidgets.h"
@@ -123,19 +124,19 @@ void PreferencePage::requireRestart()
 
 PreferenceUiForm::PreferenceUiForm(const QString& fn, QWidget* parent)
   : PreferencePage(parent)
-  , form(nullptr)
+  , _form(nullptr)
 {
     auto loader = UiLoader::newInstance();
     loader->setWorkingDirectory(QFileInfo(fn).absolutePath());
     QFile file(fn);
     if (file.open(QFile::ReadOnly)) {
-        form = loader->load(&file, this);
+        _form = loader->load(&file, this);
     }
     file.close();
-    if (form) {
-        this->setWindowTitle(form->windowTitle());
+    if (_form) {
+        this->setWindowTitle(_form->windowTitle());
         auto layout = new QVBoxLayout;
-        layout->addWidget(form);
+        layout->addWidget(_form);
         setLayout(layout);
     }
     else {
@@ -144,9 +145,7 @@ PreferenceUiForm::PreferenceUiForm(const QString& fn, QWidget* parent)
     }
 }
 
-PreferenceUiForm::~PreferenceUiForm()
-{
-}
+PreferenceUiForm::~PreferenceUiForm() = default;
 
 void PreferenceUiForm::changeEvent(QEvent *e)
 {
@@ -156,7 +155,7 @@ void PreferenceUiForm::changeEvent(QEvent *e)
 template <typename PW>
 void PreferenceUiForm::loadPrefWidgets()
 {
-    QList<PW> pw = form->findChildren<PW>();
+    QList<PW> pw = _form->findChildren<PW>();
     for (typename QList<PW>::iterator it = pw.begin(); it != pw.end(); ++it)
         (*it)->onRestore();
 }
@@ -164,14 +163,14 @@ void PreferenceUiForm::loadPrefWidgets()
 template <typename PW>
 void PreferenceUiForm::savePrefWidgets()
 {
-    QList<PW> pw = form->findChildren<PW>();
+    QList<PW> pw = _form->findChildren<PW>();
     for (typename QList<PW>::iterator it = pw.begin(); it != pw.end(); ++it)
         (*it)->onSave();
 }
 
 void PreferenceUiForm::loadSettings()
 {
-    if (!form)
+    if (!_form)
         return;
 
     // search for all pref widgets to restore their settings
@@ -192,7 +191,7 @@ void PreferenceUiForm::loadSettings()
 
 void PreferenceUiForm::saveSettings()
 {
-    if (!form)
+    if (!_form)
         return;
 
     // search for all pref widgets to save their settings
@@ -211,6 +210,29 @@ void PreferenceUiForm::saveSettings()
     savePrefWidgets<Gui::PrefQuantitySpinBox*>();
 }
 
+QWidget* Gui::Dialog::PreferenceUiForm::form()
+{
+    return _form;
+}
+
+void PreferencePage::resetSettingsToDefaults()
+{
+    auto prefs = this->findChildren<QObject*>();
+
+    for (const auto& pref : prefs) {
+        if (!pref->property("prefPath").isNull() && !pref->property("prefEntry").isNull()) {
+            std::string path = pref->property("prefPath").toString().toStdString();
+            std::string entry = pref->property("prefEntry").toString().toStdString();
+
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+                std::string("User parameter:BaseApp/Preferences/" + path).c_str());
+
+            for (const auto& pn : hGrp->GetParameterNames(entry.c_str())) {
+                hGrp->RemoveAttribute(pn.first, pn.second.c_str());
+            }
+        }
+    }
+}
 // ----------------------------------------------------------------
 
 /** Construction */
@@ -219,9 +241,7 @@ CustomizeActionPage::CustomizeActionPage(QWidget* parent) : QWidget(parent)
 }
 
 /** Destruction */
-CustomizeActionPage::~CustomizeActionPage()
-{
-}
+CustomizeActionPage::~CustomizeActionPage() = default;
 
 bool CustomizeActionPage::event(QEvent* e)
 {

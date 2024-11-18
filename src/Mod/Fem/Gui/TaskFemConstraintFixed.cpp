@@ -24,15 +24,16 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QAction>
-# include <QMessageBox>
-# include <sstream>
+#include <QAction>
+#include <QMessageBox>
+#include <sstream>
 #endif
 
 #include <App/Document.h>
 #include <Gui/Command.h>
 #include <Gui/SelectionObject.h>
 #include <Mod/Fem/App/FemConstraintFixed.h>
+#include <Mod/Part/App/PartFeature.h>
 
 #include "TaskFemConstraintFixed.h"
 #include "ui_TaskFemConstraintFixed.h"
@@ -45,21 +46,24 @@ using namespace Gui;
 
 TaskFemConstraintFixed::TaskFemConstraintFixed(ViewProviderFemConstraintFixed* ConstraintView,
                                                QWidget* parent)
-    : TaskFemConstraintOnBoundary(ConstraintView, parent, "FEM_ConstraintFixed"),
-      ui(new Ui_TaskFemConstraintFixed)
-{ //Note change "Fixed" in line above to new constraint name
+    : TaskFemConstraintOnBoundary(ConstraintView, parent, "FEM_ConstraintFixed")
+    , ui(new Ui_TaskFemConstraintFixed)
+{  // Note change "Fixed" in line above to new constraint name
     proxy = new QWidget(this);
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
     // create a context menu for the listview of the references
     createDeleteAction(ui->lw_references);
-    connect(deleteAction, &QAction::triggered,
-        this, &TaskFemConstraintFixed::onReferenceDeleted);
-    connect(ui->lw_references, &QListWidget::currentItemChanged,
-        this, &TaskFemConstraintFixed::setSelection);
-    connect(ui->lw_references, &QListWidget::itemClicked,
-        this, &TaskFemConstraintFixed::setSelection);
+    connect(deleteAction, &QAction::triggered, this, &TaskFemConstraintFixed::onReferenceDeleted);
+    connect(ui->lw_references,
+            &QListWidget::currentItemChanged,
+            this,
+            &TaskFemConstraintFixed::setSelection);
+    connect(ui->lw_references,
+            &QListWidget::itemClicked,
+            this,
+            &TaskFemConstraintFixed::setSelection);
 
     this->groupLayout()->addWidget(proxy);
 
@@ -81,15 +85,14 @@ TaskFemConstraintFixed::TaskFemConstraintFixed(ViewProviderFemConstraintFixed* C
         ui->lw_references->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
     }
 
-    //Selection buttons
+    // Selection buttons
     buttonGroup->addButton(ui->btnAdd, (int)SelectionChangeModes::refAdd);
     buttonGroup->addButton(ui->btnRemove, (int)SelectionChangeModes::refRemove);
 
     updateUI();
 }
 
-TaskFemConstraintFixed::~TaskFemConstraintFixed()
-{}
+TaskFemConstraintFixed::~TaskFemConstraintFixed() = default;
 
 void TaskFemConstraintFixed::updateUI()
 {
@@ -113,46 +116,47 @@ void TaskFemConstraintFixed::addToSelection()
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
-    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end();
-         ++it) {// for every selected object
-        if (!it->isObjectTypeOf(Part::Feature::getClassTypeId())) {
+    for (auto& it : selection) {  // for every selected object
+        if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
         }
-        std::vector<std::string> subNames = it->getSubNames();
+        std::vector<std::string> subNames = it.getSubNames();
         App::DocumentObject* obj =
-            ConstraintView->getObject()->getDocument()->getObject(it->getFeatName());
-        for (size_t subIt = 0; subIt < (subNames.size());
-             ++subIt) {// for every selected sub element
+            ConstraintView->getObject()->getDocument()->getObject(it.getFeatName());
+        for (const auto& subName : subNames) {  // for every selected sub element
             bool addMe = true;
             for (std::vector<std::string>::iterator itr =
-                     std::find(SubElements.begin(), SubElements.end(), subNames[subIt]);
+                     std::find(SubElements.begin(), SubElements.end(), subName);
                  itr != SubElements.end();
                  itr = std::find(++itr,
                                  SubElements.end(),
-                                 subNames[subIt])) {// for every sub element in selection that
-                                                    // matches one in old list
+                                 subName)) {  // for every sub element in selection that
+                                              // matches one in old list
                 if (obj
                     == Objects[std::distance(
                         SubElements.begin(),
-                        itr)]) {// if selected sub element's object equals the one in old list then
-                                // it was added before so don't add
+                        itr)]) {  // if selected sub element's object equals the one in old list
+                                  // then it was added before so don't add
                     addMe = false;
                 }
             }
             // limit constraint such that only vertexes or faces or edges can be used depending
             // on what was selected first
             std::string searchStr;
-            if (subNames[subIt].find("Vertex") != std::string::npos)
+            if (subName.find("Vertex") != std::string::npos) {
                 searchStr = "Vertex";
-            else if (subNames[subIt].find("Edge") != std::string::npos)
+            }
+            else if (subName.find("Edge") != std::string::npos) {
                 searchStr = "Edge";
-            else
+            }
+            else {
                 searchStr = "Face";
-            for (size_t iStr = 0; iStr < (SubElements.size()); ++iStr) {
-                if (SubElements[iStr].find(searchStr) == std::string::npos) {
-                    QString msg = tr(
-                        "Only one type of selection (vertex,face or edge) per constraint allowed!");
+            }
+            for (const auto& SubElement : SubElements) {
+                if (SubElement.find(searchStr) == std::string::npos) {
+                    QString msg = tr("Only one type of selection (vertex, face or edge) per "
+                                     "analysis feature allowed!");
                     QMessageBox::warning(this, tr("Selection error"), msg);
                     addMe = false;
                     break;
@@ -161,8 +165,8 @@ void TaskFemConstraintFixed::addToSelection()
             if (addMe) {
                 QSignalBlocker block(ui->lw_references);
                 Objects.push_back(obj);
-                SubElements.push_back(subNames[subIt]);
-                ui->lw_references->addItem(makeRefText(obj, subNames[subIt]));
+                SubElements.push_back(subName);
+                ui->lw_references->addItem(makeRefText(obj, subName));
             }
         }
     }
@@ -184,29 +188,27 @@ void TaskFemConstraintFixed::removeFromSelection()
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
     std::vector<size_t> itemsToDel;
-    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end();
-         ++it) {// for every selected object
-        if (!it->isObjectTypeOf(Part::Feature::getClassTypeId())) {
+    for (const auto& it : selection) {  // for every selected object
+        if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
         }
-        const std::vector<std::string>& subNames = it->getSubNames();
-        App::DocumentObject* obj = it->getObject();
+        const std::vector<std::string>& subNames = it.getSubNames();
+        const App::DocumentObject* obj = it.getObject();
 
-        for (size_t subIt = 0; subIt < (subNames.size());
-             ++subIt) {// for every selected sub element
+        for (const auto& subName : subNames) {  // for every selected sub element
             for (std::vector<std::string>::iterator itr =
-                     std::find(SubElements.begin(), SubElements.end(), subNames[subIt]);
+                     std::find(SubElements.begin(), SubElements.end(), subName);
                  itr != SubElements.end();
                  itr = std::find(++itr,
                                  SubElements.end(),
-                                 subNames[subIt])) {// for every sub element in selection that
-                                                    // matches one in old list
+                                 subName)) {  // for every sub element in selection that
+                                              // matches one in old list
                 if (obj
                     == Objects[std::distance(
                         SubElements.begin(),
-                        itr)]) {// if selected sub element's object equals the one in old list then
-                                // it was added before so mark for deletion
+                        itr)]) {  // if selected sub element's object equals the one in old list
+                                  // then it was added before so mark for deletion
                     itemsToDel.push_back(std::distance(SubElements.begin(), itr));
                 }
             }
@@ -218,7 +220,7 @@ void TaskFemConstraintFixed::removeFromSelection()
         SubElements.erase(SubElements.begin() + itemsToDel.back());
         itemsToDel.pop_back();
     }
-    //Update UI
+    // Update UI
     {
         QSignalBlocker block(ui->lw_references);
         ui->lw_references->clear();
@@ -230,7 +232,8 @@ void TaskFemConstraintFixed::removeFromSelection()
     updateUI();
 }
 
-void TaskFemConstraintFixed::onReferenceDeleted() {
+void TaskFemConstraintFixed::onReferenceDeleted()
+{
     TaskFemConstraintFixed::removeFromSelection();
 }
 
@@ -244,21 +247,17 @@ const std::string TaskFemConstraintFixed::getReferences() const
     return TaskFemConstraint::getReferences(items);
 }
 
-bool TaskFemConstraintFixed::event(QEvent* e)
-{
-    return TaskFemConstraint::KeyEvent(e);
-}
-
 void TaskFemConstraintFixed::changeEvent(QEvent*)
-{
-}
+{}
 
 void TaskFemConstraintFixed::clearButtons(const SelectionChangeModes notThis)
 {
-    if (notThis != SelectionChangeModes::refAdd)
+    if (notThis != SelectionChangeModes::refAdd) {
         ui->btnAdd->setChecked(false);
-    if (notThis != SelectionChangeModes::refRemove)
+    }
+    if (notThis != SelectionChangeModes::refRemove) {
         ui->btnRemove->setChecked(false);
+    }
 }
 
 //**************************************************************************
@@ -276,41 +275,9 @@ TaskDlgFemConstraintFixed::TaskDlgFemConstraintFixed(ViewProviderFemConstraintFi
 
 //==== calls from the TaskView ===============================================================
 
-void TaskDlgFemConstraintFixed::open()
-{
-    // a transaction is already open at creation time of the panel
-    if (!Gui::Command::hasPendingCommand()) {
-        QString msg = QObject::tr("Constraint fixed");
-        Gui::Command::openCommand((const char*)msg.toUtf8());
-        ConstraintView->setVisible(true);
-        Gui::Command::doCommand(
-            Gui::Command::Doc,
-            ViewProviderFemConstraint::gethideMeshShowPartStr(
-                (static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument())
-                .c_str());// OvG: Hide meshes and show parts
-    }
-}
-
 bool TaskDlgFemConstraintFixed::accept()
 {
-    std::string name = ConstraintView->getObject()->getNameInDocument();
-    const TaskFemConstraintFixed* parameters =
-        static_cast<const TaskFemConstraintFixed*>(parameter);
-    std::string scale = parameters->getScale();  //OvG: determine modified scale
-    Gui::Command::doCommand(Gui::Command::Doc,
-                            "App.ActiveDocument.%s.Scale = %s",
-                            name.c_str(),
-                            scale.c_str());// OvG: implement modified scale
     return TaskDlgFemConstraint::accept();
-}
-
-bool TaskDlgFemConstraintFixed::reject()
-{
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-    Gui::Command::updateActive();
-
-    return true;
 }
 
 #include "moc_TaskFemConstraintFixed.cpp"

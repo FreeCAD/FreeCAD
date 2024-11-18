@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="BaseClassPy"
+      Name="ModelManagerPy"
+      Twin="ModelManager"
+      TwinPointer="ModelManager"
+      Include="Mod/Material/App/ModelManager.h"
+      Namespace="Materials"
+      FatherInclude="Base/BaseClassPy.h"
+      FatherNamespace="Base"
+      Constructor="true"
+      Delete="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="DavidCarter" EMail="dcarter@davidcarter.ca" />
+      <UserDocu>Material model descriptions.</UserDocu>
+    </Documentation>
+    <Methode Name="getModel">
+      <Documentation>
+        <UserDocu>Get a model object by specifying its UUID</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getModelByPath">
+      <Documentation>
+        <UserDocu>Get a model object by specifying its path</UserDocu>
+      </Documentation>
+    </Methode>
+    <Attribute Name="ModelLibraries" ReadOnly="true">
+      <Documentation>
+        <UserDocu>List of model libraries.</UserDocu>
+      </Documentation>
+      <Parameter Name="ModelLibraries" Type="List"/>
+    </Attribute>
+    <Attribute Name="Models" ReadOnly="true">
+      <Documentation>
+        <UserDocu>List of model libraries.</UserDocu>
+      </Documentation>
+      <Parameter Name="Models" Type="Dict"/>
+    </Attribute>
+  </PythonExport>
+</GenerateModel>

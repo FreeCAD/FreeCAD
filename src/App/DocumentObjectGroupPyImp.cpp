@@ -34,7 +34,7 @@ using namespace App;
 // returns a string which represent the object e.g. when printed in python
 std::string DocumentObjectGroupPy::representation() const
 {
-    return std::string("<group object>");
+    return {"<group object>"};
 }
 
 PyObject *DocumentObjectGroupPy::getCustomAttributes(const char* /*attr*/) const

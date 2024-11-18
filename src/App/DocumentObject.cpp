@@ -34,12 +34,13 @@
 #include <Base/Writer.h>
 
 #include "Application.h"
-#include "ComplexGeoData.h"
+#include "ElementNamingUtils.h"
 #include "Document.h"
 #include "DocumentObject.h"
 #include "DocumentObjectExtension.h"
 #include "DocumentObjectGroup.h"
 #include "GeoFeatureGroupExtension.h"
+#include "Link.h"
 #include "ObjectIdentifier.h"
 #include "PropertyExpressionEngine.h"
 #include "PropertyLinks.h"
@@ -63,7 +64,7 @@ DocumentObjectExecReturn *DocumentObject::StdReturn = nullptr;
 //===========================================================================
 
 DocumentObject::DocumentObject()
-    : ExpressionEngine(),_pDoc(nullptr),pcNameInDocument(nullptr),_Id(0)
+    : ExpressionEngine()
 {
     // define Label of type 'Output' to avoid being marked as touched after relabeling
     ADD_PROPERTY_TYPE(Label,("Unnamed"),"Base",Prop_Output,"User name of the object (UTF8)");
@@ -214,6 +215,28 @@ void DocumentObject::touch(bool noRecompute)
 }
 
 /**
+ * @brief Set this document object freezed.
+ * A freezed document object does not recompute ever.
+ */
+void DocumentObject::freeze()
+{
+    StatusBits.set(ObjectStatus::Freeze);
+    // use the signalTouchedObject to refresh the Gui
+    if (_pDoc)
+        _pDoc->signalTouchedObject(*this);
+}
+
+/**
+ * @brief Set this document object unfreezed.
+ * A freezed document object does not recompute ever.
+ */
+void DocumentObject::unfreeze(bool noRecompute)
+{
+    StatusBits.set(ObjectStatus::Freeze, false);
+    touch(noRecompute);
+}
+
+/**
  * @brief Check whether the document object is touched or not.
  * @return true if document object is touched, false if not.
  */
@@ -240,6 +263,9 @@ void DocumentObject::enforceRecompute()
  */
 bool DocumentObject::mustRecompute() const
 {
+    if (StatusBits.test(ObjectStatus::Freeze))
+        return false;
+
     if (StatusBits.test(ObjectStatus::Enforce))
         return true;
 
@@ -274,7 +300,7 @@ const char* DocumentObject::getStatusString() const
 }
 
 std::string DocumentObject::getFullName() const {
-    if(!getDocument() || !pcNameInDocument)
+    if(!getDocument() || !isAttachedToDocument())
         return "?";
     std::string name(getDocument()->getName());
     name += '#';
@@ -292,6 +318,15 @@ std::string DocumentObject::getFullLabel() const {
     return name;
 }
 
+const char* DocumentObject::getDagKey() const
+{
+    if(!pcNameInDocument)
+    {
+        return nullptr;
+    }
+    return pcNameInDocument->c_str();
+}
+
 const char *DocumentObject::getNameInDocument() const
 {
     // Note: It can happen that we query the internal name of an object even if it is not
@@ -305,14 +340,14 @@ const char *DocumentObject::getNameInDocument() const
 }
 
 int DocumentObject::isExporting() const {
-    if(!getDocument() || !getNameInDocument())
+    if(!getDocument() || !isAttachedToDocument())
         return 0;
     return getDocument()->isExporting(this);
 }
 
 std::string DocumentObject::getExportName(bool forced) const {
-    if(!pcNameInDocument)
-        return std::string();
+    if(!isAttachedToDocument())
+        return {};
 
     if(!forced && !isExporting())
         return *pcNameInDocument;
@@ -441,7 +476,7 @@ void DocumentObject::getInListEx(std::set<App::DocumentObject*> &inSet,
     // outLists first here.
     for(auto doc : GetApplication().getDocuments()) {
         for(auto obj : doc->getObjects()) {
-            if(!obj || !obj->getNameInDocument() || obj==this)
+            if(!obj || !obj->isAttachedToDocument() || obj==this)
                 continue;
             const auto &outList = obj->getOutList();
             outLists[obj].insert(outList.begin(),outList.end());
@@ -481,7 +516,7 @@ void DocumentObject::getInListEx(std::set<App::DocumentObject*> &inSet,
         auto obj = pendings.top();
         pendings.pop();
         for(auto o : obj->getInList()) {
-            if(o && o->getNameInDocument() && inSet.insert(o).second) {
+            if(o && o->isAttachedToDocument() && inSet.insert(o).second) {
                 pendings.push(o);
                 if(inList)
                     inList->push_back(o);
@@ -714,9 +749,33 @@ void DocumentObject::onBeforeChange(const Property* prop)
     signalBeforeChange(*this,*prop);
 }
 
+void DocumentObject::onEarlyChange(const Property *prop)
+{
+    if(GetApplication().isClosingAll())
+        return;
+
+    if(!GetApplication().isRestoring() &&
+        !prop->testStatus(Property::PartialTrigger) &&
+        getDocument() &&
+        getDocument()->testStatus(Document::PartialDoc))
+    {
+        static App::Document *warnedDoc;
+        if(warnedDoc != getDocument()) {
+            warnedDoc = getDocument();
+            FC_WARN("Changes to partial loaded document will not be saved: "
+                    << getFullName() << '.' << prop->getName());
+        }
+    }
+
+    signalEarlyChanged(*this, *prop);
+}
+
 /// get called by the container when a Property was changed
 void DocumentObject::onChanged(const Property* prop)
 {
+    if (isFreezed())
+        return;
+
     if(GetApplication().isClosingAll())
         return;
 
@@ -808,7 +867,7 @@ DocumentObject *DocumentObject::getSubObject(const char *subname,
         if(outList.size()!=_outListMap.size()) {
             _outListMap.clear();
             for(auto obj : outList)
-                _outListMap[obj->getNameInDocument()] = obj;
+                _outListMap[obj->getDagKey()] = obj;
         }
         auto it = _outListMap.find(name.c_str());
         if(it != _outListMap.end())
@@ -829,20 +888,93 @@ DocumentObject *DocumentObject::getSubObject(const char *subname,
     return ret;
 }
 
-std::vector<DocumentObject*> DocumentObject::getSubObjectList(const char *subname) const {
+namespace
+{
+std::vector<DocumentObject*>
+getSubObjectListFlatten(const std::vector<App::DocumentObject*>& resNotFlatten,
+                        std::vector<int>* const subsizes,
+                        const App::DocumentObject* sobj,
+                        App::DocumentObject** container,
+                        bool& lastChild)
+{
+    auto res {resNotFlatten};
+    auto linked = sobj->getLinkedObject();
+    if (*container) {
+        auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(linked);
+        if (grp != *container) {
+            *container = nullptr;
+        }
+        else {
+            if (lastChild && !res.empty()) {
+                res.pop_back();
+                if (subsizes) {
+                    subsizes->pop_back();
+                }
+            }
+            lastChild = true;
+        }
+    }
+    if (linked->getExtensionByType<App::GeoFeatureGroupExtension>(true)) {
+        *container = linked;
+        lastChild = false;
+    }
+    else if (linked != sobj || sobj->hasChildElement()) {
+        // Check for Link or LinkGroup
+        *container = nullptr;
+    }
+    else if (auto ext = sobj->getExtensionByType<LinkBaseExtension>(true)) {
+        // check for Link array
+        if (ext->getElementCountValue() != 0) {
+            *container = nullptr;
+        }
+    }
+    return res;
+}
+}  // namespace
+
+std::vector<DocumentObject*> DocumentObject::getSubObjectList(const char* subname,
+                                                              std::vector<int>* const subsizes,
+                                                              bool flatten) const
+{
     std::vector<DocumentObject*> res;
     res.push_back(const_cast<DocumentObject*>(this));
-    if(!subname || !subname[0])
+    if (subsizes) {
+        subsizes->push_back(0);
+    }
+    if (!subname || (subname[0] == '\0')) {
         return res;
-    std::string sub(subname);
-    for(auto pos=sub.find('.');pos!=std::string::npos;pos=sub.find('.',pos+1)) {
-        char c = sub[pos+1];
-        sub[pos+1] = 0;
+    }
+    auto element = Data::findElementName(subname);
+    std::string sub(subname, element - subname);
+    App::DocumentObject* container = nullptr;
+
+    bool lastChild = false;
+    if (flatten) {
+        auto linked = getLinkedObject();
+        if (linked->getExtensionByType<App::GeoFeatureGroupExtension>(true)) {
+            container = const_cast<DocumentObject*>(this);
+        }
+        else if (auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(linked)) {
+            container = grp;
+            lastChild = true;
+        }
+    }
+    for (auto pos = sub.find('.'); pos != std::string::npos; pos = sub.find('.', pos + 1)) {
+        char subTail = sub[pos + 1];
+        sub[pos + 1] = '\0';
         auto sobj = getSubObject(sub.c_str());
-        if(!sobj || !sobj->getNameInDocument())
-            break;
+        if (!sobj || !sobj->isAttachedToDocument()) {
+            continue;
+        }
+
+        if (flatten) {
+            res = getSubObjectListFlatten(res, subsizes, sobj, &container, lastChild);
+        }
         res.push_back(sobj);
-        sub[pos+1] = c;
+        if (subsizes) {
+            subsizes->push_back((int)pos + 1);
+        }
+        sub[pos + 1] = subTail;
     }
     return res;
 }
@@ -859,14 +991,14 @@ std::vector<std::string> DocumentObject::getSubObjects(int reason) const {
 
 std::vector<std::pair<App::DocumentObject *,std::string>> DocumentObject::getParents(int depth) const {
     std::vector<std::pair<App::DocumentObject *, std::string>> ret;
-    if (!getNameInDocument() || !GetApplication().checkLinkDepth(depth, MessageOption::Throw)) {
+    if (!isAttachedToDocument() || !GetApplication().checkLinkDepth(depth, MessageOption::Throw)) {
         return ret;
     }
 
     std::string name(getNameInDocument());
     name += ".";
     for (auto parent : getInList()) {
-        if (!parent || !parent->getNameInDocument()) {
+        if (!parent || !parent->isAttachedToDocument()) {
             continue;
         }
 
@@ -897,6 +1029,17 @@ std::vector<std::pair<App::DocumentObject *,std::string>> DocumentObject::getPar
     return ret;
 }
 
+App::DocumentObject* DocumentObject::getFirstParent() const
+{
+    for (auto obj : getInList()) {
+        if (obj->hasExtension(App::GroupExtension::getExtensionClassTypeId(), true)) {
+            return obj;
+        }
+    }
+
+    return nullptr;
+}
+
 DocumentObject *DocumentObject::getLinkedObject(
         bool recursive, Base::Matrix4D *mat, bool transform, int depth) const 
 {
@@ -916,7 +1059,7 @@ DocumentObject *DocumentObject::getLinkedObject(
 
 void DocumentObject::Save (Base::Writer &writer) const
 {
-    if (this->getNameInDocument())
+    if (this->isAttachedToDocument())
         writer.ObjectName = this->getNameInDocument();
     App::ExtensionContainer::Save(writer);
 }
@@ -1083,7 +1226,7 @@ DocumentObject *DocumentObject::resolve(const char *subname,
     // following it. So finding the last dot will give us the end of the last
     // object name.
     const char *dot=nullptr;
-    if(Data::ComplexGeoData::isMappedElement(subname) ||
+    if(Data::isMappedElement(subname) ||
        !(dot=strrchr(subname,'.')) ||
        dot == subname) 
     {
@@ -1106,7 +1249,7 @@ DocumentObject *DocumentObject::resolve(const char *subname,
             if(!elementMapChecked) {
                 elementMapChecked = true;
                 const char *sub = dot==subname?dot:dot+1;
-                if(Data::ComplexGeoData::isMappedElement(sub)) {
+                if(Data::isMappedElement(sub)) {
                     lastDot = dot;
                     if(dot==subname) 
                         break;
@@ -1119,7 +1262,7 @@ DocumentObject *DocumentObject::resolve(const char *subname,
             auto sobj = getSubObject(std::string(subname,dot-subname+1).c_str());
             if(sobj!=obj) {
                 if(parent) {
-                    // Link/LinkGroup has special visiblility handling of plain
+                    // Link/LinkGroup has special visibility handling of plain
                     // group, so keep ascending
                     if(!sobj->hasExtension(GroupExtension::getExtensionClassTypeId(),false)) {
                         *parent = sobj;
@@ -1153,7 +1296,7 @@ DocumentObject *DocumentObject::resolve(const char *subname,
 DocumentObject *DocumentObject::resolveRelativeLink(std::string &subname,
         DocumentObject *&link, std::string &linkSub) const
 {
-    if(!link || !link->getNameInDocument() || !getNameInDocument())
+    if(!link || !link->isAttachedToDocument() || !isAttachedToDocument())
         return nullptr;
     auto ret = const_cast<DocumentObject*>(this);
     if(link != ret) {
@@ -1235,6 +1378,24 @@ bool DocumentObject::adjustRelativeLinks(
     return touched;
 }
 
+std::string DocumentObject::getElementMapVersion(const App::Property* _prop, bool restored) const
+{
+    auto prop = Base::freecad_dynamic_cast<const PropertyComplexGeoData>(_prop);
+    if (!prop) {
+        return std::string();
+    }
+    return prop->getElementMapVersion(restored);
+}
+
+bool DocumentObject::checkElementMapVersion(const App::Property* _prop, const char* ver) const
+{
+    auto prop = Base::freecad_dynamic_cast<const PropertyComplexGeoData>(_prop);
+    if (!prop) {
+        return false;
+    }
+    return prop->checkElementMapVersion(ver);
+}
+
 const std::string &DocumentObject::hiddenMarker() {
     static std::string marker("!hide");
     return marker;
@@ -1257,6 +1418,6 @@ bool DocumentObject::redirectSubName(std::ostringstream &, DocumentObject *, Doc
 
 void DocumentObject::onPropertyStatusChanged(const Property &prop, unsigned long oldStatus) {
     (void)oldStatus;
-    if(!Document::isAnyRestoring() && getNameInDocument() && getDocument())
+    if(!Document::isAnyRestoring() && isAttachedToDocument() && getDocument())
         getDocument()->signalChangePropertyEditor(*getDocument(),prop);
 }

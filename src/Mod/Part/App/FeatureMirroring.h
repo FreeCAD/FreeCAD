@@ -41,6 +41,7 @@ public:
     App::PropertyLink Source;
     App::PropertyPosition Base;
     App::PropertyDirection Normal;
+    App::PropertyLinkSub MirrorPlane;
 
     /** @name methods override feature */
     //@{

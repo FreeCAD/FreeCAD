@@ -1,0 +1,58 @@
+---
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2023 David Carter <dcarter@davidcarter.ca>              *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+
+Model:
+  Name: 'PolynomialN1'
+  UUID: '285a6042-0f0c-4a36-a898-4afadd6408ce'
+  URL: 'http://www.dhondt.de/ccx_2.21.pdf'
+  Description: >
+    The polynomial hyperelastic material model is a phenomenological model
+    of rubber elasticity.
+  PolynomialN1:
+    DisplayName: "Polynomial N=1"
+    Type: '2DArray'
+    Columns:
+      Temperature:
+        Type: 'Quantity'
+        Units: 'C'
+        URL: ''
+        Description: ""
+      C10:
+        Type: 'Quantity'
+        Units: 'Pa'
+        URL: ''
+        Description: ""
+      C01:
+        Type: 'Quantity'
+        Units: 'Pa'
+        URL: ''
+        Description: ""
+      D1:
+        Type: 'Quantity'
+        Units: '1/Pa'
+        URL: ''
+        Description: "D [1/FreeCAD Pressure unit]"
+    URL: ''
+    Description: >
+      2 Dimensional array showing Polynomial N=1 properties as
+      a function of temperature

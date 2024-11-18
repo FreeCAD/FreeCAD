@@ -30,11 +30,13 @@
 # include <ShapeAnalysis_FreeBounds.hxx>
 # include <Standard_Failure.hxx>
 # include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
 # include <TopoDS_Compound.hxx>
 # include <TopTools_HSequenceOfShape.hxx>
 #endif
 
 #include "OCCError.h"
+#include <Base/GeometryPyCXX.h>
 
 // inclusion of the generated files (generated out of TopoShapeCompoundPy.xml)
 #include "TopoShapeCompoundPy.h"
@@ -102,6 +104,9 @@ PyObject*  TopoShapeCompoundPy::add(PyObject *args)
 
     BRep_Builder builder;
     TopoDS_Shape comp = getTopoShapePtr()->getShape();
+    if (comp.IsNull()) {
+        builder.MakeCompound(TopoDS::Compound(comp));
+    }
 
     try {
         const TopoDS_Shape& sh = static_cast<TopoShapePy*>(obj)->
@@ -154,6 +159,66 @@ PyObject* TopoShapeCompoundPy::connectEdgesToWires(PyObject *args)
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return nullptr;
     }
+}
+
+PyObject* TopoShapeCompoundPy::setFaces(PyObject *args)
+{
+    using Facet = Data::ComplexGeoData::Facet;
+    using Point = Base::Vector3d;
+
+    std::vector<Point> points;
+    std::vector<Facet> facets;
+
+    PyObject* data{};
+    double accuracy = 1.0e-06;  // NOLINT
+    if (!PyArg_ParseTuple(args, "O!|d", &PyTuple_Type, &data, &accuracy)) {
+        return nullptr;
+    }
+
+    Py::Tuple tuple(data);
+
+    Py::Sequence pts(tuple.getItem(0));
+    points.reserve(pts.size());
+    for (const auto& pt : pts) {
+        Py::Vector vec(pt);
+        points.push_back(vec.toVector());
+    }
+
+    std::size_t count = points.size();
+    auto checkFace = [count](const Facet& face) {
+        if (face.I1 >= count) {
+            return false;
+        }
+        if (face.I2 >= count) {
+            return false;
+        }
+        if (face.I3 >= count) {
+            return false;
+        }
+
+        return true;
+    };
+
+    Py::Sequence fts(tuple.getItem(1));
+    facets.reserve(fts.size());
+    Facet face;
+    for (const auto& ft : fts) {
+        Py::Tuple index(ft);
+        face.I1 = int32_t(static_cast<int>(Py::Long(index.getItem(0))));
+        face.I2 = int32_t(static_cast<int>(Py::Long(index.getItem(1))));
+        face.I3 = int32_t(static_cast<int>(Py::Long(index.getItem(2))));
+
+        if (!checkFace(face)) {
+            PyErr_SetString(PyExc_ValueError, "Point index out of range");
+            return nullptr;
+        }
+
+        facets.push_back(face);
+    }
+
+    getTopoShapePtr()->setFaces(points, facets, accuracy);
+
+    Py_Return;
 }
 
 PyObject *TopoShapeCompoundPy::getCustomAttributes(const char* /*attr*/) const

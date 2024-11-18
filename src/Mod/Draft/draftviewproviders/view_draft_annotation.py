@@ -48,13 +48,9 @@ import PySide.QtGui as QtGui
 
 import FreeCAD as App
 import FreeCADGui as Gui
-
-import draftutils.utils as utils
-from draftutils.messages import _msg
+from draftutils import params
+from draftutils import utils
 from draftutils.translate import translate
-
-
-param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 
 
 class ViewProviderDraftAnnotation(object):
@@ -90,9 +86,7 @@ class ViewProviderDraftAnnotation(object):
                              "ScaleMultiplier",
                              "Annotation",
                              _tip)
-            annotation_scale = param.GetFloat("DraftAnnotationScale", 1.0)
-            if annotation_scale != 0:
-                vobj.ScaleMultiplier = 1 / annotation_scale
+            vobj.ScaleMultiplier = params.get_param("DefaultAnnoScaleMultiplier")
 
         if "AnnotationStyle" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -124,7 +118,7 @@ class ViewProviderDraftAnnotation(object):
                              "FontName",
                              "Text",
                              _tip)
-            vobj.FontName = utils.get_param("textfont", "sans")
+            vobj.FontName = params.get_param("textfont")
 
         if "FontSize" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -133,7 +127,7 @@ class ViewProviderDraftAnnotation(object):
                              "FontSize",
                              "Text",
                              _tip)
-            vobj.FontSize = utils.get_param("textheight", 1)
+            vobj.FontSize = params.get_param("textheight")
 
         if "TextColor" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -142,6 +136,7 @@ class ViewProviderDraftAnnotation(object):
                              "TextColor",
                              "Text",
                              _tip)
+            vobj.TextColor = params.get_param("DefaultTextColor") & 0xFFFFFF00
 
     def set_units_properties(self, vobj, properties):
         return
@@ -154,6 +149,7 @@ class ViewProviderDraftAnnotation(object):
                              "LineWidth",
                              "Graphics",
                              _tip)
+            vobj.LineWidth = params.get_param("DefaultAnnoLineWidth")
 
         if "LineColor" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Line color")
@@ -161,12 +157,13 @@ class ViewProviderDraftAnnotation(object):
                              "LineColor",
                              "Graphics",
                              _tip)
+            vobj.LineColor = params.get_param("DefaultAnnoLineColor") & 0xFFFFFF00
 
-    def __getstate__(self):
+    def dumps(self):
         """Return a tuple of objects to save or None."""
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         """Set the internal properties from the restored state."""
         return None
 
@@ -184,7 +181,7 @@ class ViewProviderDraftAnnotation(object):
 
     def getDefaultDisplayMode(self):
         """Return the default display mode."""
-        return "World"
+        return ["World", "Screen"][params.get_param("DefaultAnnoDisplayMode")]
 
     def setDisplayMode(self, mode):
         """Return the saved display mode."""
@@ -198,9 +195,7 @@ class ViewProviderDraftAnnotation(object):
         if prop == "AnnotationStyle" and "AnnotationStyle" in properties:
             if not vobj.AnnotationStyle or vobj.AnnotationStyle == "":
                 # unset style
-                _msg(16 * "-")
-                _msg("Unset style")
-                for visprop in utils.ANNOTATION_STYLE.keys():
+                for visprop in utils.get_default_annotation_style().keys():
                     if visprop in properties:
                         # make property writable
                         vobj.setPropertyStatus(visprop, '-ReadOnly')
@@ -212,8 +207,6 @@ class ViewProviderDraftAnnotation(object):
                         styles[key[12:]] = json.loads(value)
 
                 if vobj.AnnotationStyle in styles:
-                    _msg(16 * "-")
-                    _msg("Style: {}".format(vobj.AnnotationStyle))
                     style = styles[vobj.AnnotationStyle]
                     for visprop in style.keys():
                         if visprop in properties:
@@ -224,7 +217,6 @@ class ViewProviderDraftAnnotation(object):
                                 if vobj.getTypeIdOfProperty(visprop) == "App::PropertyColor":
                                     value = value & 0xFFFFFF00
                                 setattr(vobj, visprop, value)
-                                _msg("setattr: '{}', '{}'".format(visprop, value))
                             except:
                                 pass
 

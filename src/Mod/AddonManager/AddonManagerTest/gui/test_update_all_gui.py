@@ -43,9 +43,7 @@ class MockUpdater(QtCore.QObject):
         self.addons = addons
         self.has_run = False
         self.emit_success = True
-        self.work_function = (
-            None  # Set to some kind of callable to make this function take time
-        )
+        self.work_function = None  # Set to some kind of callable to make this function take time
 
     def run(self):
         self.has_run = True
@@ -136,9 +134,7 @@ class TestUpdateAllGui(unittest.TestCase):
         self.test_object.run()
         cancel_timer = QtCore.QTimer()
         cancel_timer.timeout.connect(
-            self.test_object.dialog.buttonBox.button(
-                QtWidgets.QDialogButtonBox.Cancel
-            ).click
+            self.test_object.dialog.buttonBox.button(QtWidgets.QDialogButtonBox.Cancel).click
         )
         cancel_timer.start(90)
         while self.test_object.is_running():

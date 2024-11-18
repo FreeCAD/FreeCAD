@@ -38,7 +38,7 @@ Currently unsupported:
 
 __title__ = "FreeCAD Draft Workbench - SVG importer/exporter"
 __author__ = "Yorik van Havre, Sebastian Hoogen"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 # TODO:
 # ignoring CDATA
@@ -57,11 +57,14 @@ import FreeCAD
 import Draft
 import DraftVecUtils
 from FreeCAD import Vector
+from draftutils import params
+from draftutils import utils
 from draftutils.translate import translate
-from draftutils.messages import _msg, _wrn, _err
+from draftutils.messages import _err, _msg, _wrn
+from builtins import open as pyopen
 
 if FreeCAD.GuiUp:
-    from PySide import QtGui
+    from PySide import QtWidgets
     import FreeCADGui
     gui = True
     try:
@@ -72,9 +75,7 @@ else:
     gui = False
     draftui = None
 
-# Save the native open function to avoid collisions
-if open.__module__ in ['__builtin__', 'io']:
-    pythonopen = open
+
 
 svgcolors = {
     'Pink': (255, 192, 203),
@@ -244,36 +245,46 @@ def getcolor(color):
     (r, g, b, a)
         RGBA float tuple, where each value is between 0.0 and 1.0.
     """
+    if color == "none":
+        FreeCAD.Console.PrintMessage("Color defined as 'none', defaulting to black\n")
+        return (0.0, 0.0, 0.0, 0.0)
     if color[0] == "#":
-        # Color string '#12ab9f'
-        if len(color) == 7:
+        if len(color) == 7 or len(color) == 9: # Color string '#RRGGBB' or '#RRGGBBAA'
             r = float(int(color[1:3], 16) / 255.0)
             g = float(int(color[3:5], 16) / 255.0)
-            b = float(int(color[5:], 16) / 255.0)
-        # Color string '#1af'
-        elif len(color) == 4:
+            b = float(int(color[5:7], 16) / 255.0)
+            a = 1.0
+            if len(color) == 9:
+                a = float(int(color[7:9], 16) / 255.0)
+                FreeCAD.Console.PrintMessage(f"Non standard color format #RRGGBBAA : {color}\n")
+            return (r, g, b, 1-a)
+        if len(color) == 4: # Color string '#RGB'
             # Expand the hex digits
             r = float(int(color[1], 16) * 17 / 255.0)
             g = float(int(color[2], 16) * 17 / 255.0)
             b = float(int(color[3], 16) * 17 / 255.0)
-        return (r, g, b, 0.0)
-    # Color string 'rgb(0.12,0.23,0.3,0.0)'
-    elif color.lower().startswith('rgb('):
-        cvalues = color[3:].lstrip('(').rstrip(')').replace('%', '').split(',')
-        if '%' in color:
-            r, g, b = [int(float(cv)) / 100.0 for cv in cvalues]
-        else:
-            r, g, b = [int(float(cv)) / 255.0 for cv in cvalues]
-        return (r, g, b, 0.0)
-    # Color string 'MediumAquamarine'
-    else:
-        v = svgcolorslower.get(color.lower())
-        if v:
-            r, g, b = [float(vf) / 255.0 for vf in v]
             return (r, g, b, 0.0)
-        # for k, v in svgcolors.items():
-        #    if k.lower() == color.lower():
-        #        pass
+    if color.lower().startswith('rgb(') or color.lower().startswith('rgba('): # Color string 'rgb[a](0.12,0.23,0.3,0.0)'
+        cvalues = color.lstrip('rgba(').rstrip(')').replace('%', '').split(',')
+        if len(cvalues) == 3:
+            a = 1.0
+            if '%' in color:
+                r, g, b = [int(float(cv)) / 100.0 for cv in cvalues]
+            else:
+                r, g, b = [int(float(cv)) / 255.0 for cv in cvalues]
+        if len(cvalues) == 4:
+            if '%' in color:
+                r, g, b, a = [int(float(cv)) / 100.0 for cv in cvalues]
+            else:
+                r, g, b, a = [int(float(cv)) / 255.0 for cv in cvalues]
+        return (r, g, b, 1-a)
+    # Trying named color like 'MediumAquamarine'
+    v = svgcolorslower.get(color.lower())
+    if v:
+        r, g, b = [float(vf) / 255.0 for vf in v]
+        return (r, g, b, 0.0)
+    FreeCAD.Console.PrintWarning(f"Unknown color format : {color} : defaulting to black\n")
+    return (0.0, 0.0, 0.0, 0.0)
 
 
 def transformCopyShape(shape, m):
@@ -403,7 +414,7 @@ def getsize(length, mode='discard', base=1):
         }
 
     # Extract a number from a string like '+56215.14565E+6mm'
-    _num = '([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)'
+    _num = '([-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)'
     _unit = '(px|pt|pc|mm|cm|in|em|ex|%)?'
     _full_num = _num + _unit
     number, exponent, unit = re.findall(_full_num, length)[0]
@@ -645,14 +656,12 @@ class svgHandler(xml.sax.ContentHandler):
     def __init__(self):
         super().__init__()
         """Retrieve Draft parameters and initialize."""
-        _prefs = "User parameter:BaseApp/Preferences/Mod/Draft"
-        params = FreeCAD.ParamGet(_prefs)
-        self.style = params.GetInt("svgstyle")
-        self.disableUnitScaling = params.GetBool("svgDisableUnitScaling",
-                                                 False)
+        self.style = params.get_param("svgstyle")
+        self.disableUnitScaling = params.get_param("svgDisableUnitScaling")
         self.count = 0
         self.transform = None
         self.grouptransform = []
+        self.groupstyles = []
         self.lastdim = None
         self.viewbox = None
         self.symbols = {}
@@ -663,16 +672,13 @@ class svgHandler(xml.sax.ContentHandler):
         import Part
 
         if gui and draftui:
-            r = float(draftui.color.red()/255.0)
-            g = float(draftui.color.green()/255.0)
-            b = float(draftui.color.blue()/255.0)
+            r = float(draftui.color.red() / 255.0)
+            g = float(draftui.color.green() / 255.0)
+            b = float(draftui.color.blue() / 255.0)
             self.lw = float(draftui.linewidth)
         else:
-            self.lw = float(params.GetInt("linewidth"))
-            c = params.GetUnsigned("color")
-            r = float(((c >> 24) & 0xFF)/255)
-            g = float(((c >> 16) & 0xFF)/255)
-            b = float(((c >> 8) & 0xFF)/255)
+            self.lw = float(params.get_param_view("DefaultShapeLineWidth"))
+            r, g, b, _ = utils.get_rgba_tuple(params.get_param_view("DefaultShapeLineColor"))
         self.col = (r, g, b, 0.0)
 
     def format(self, obj):
@@ -700,6 +706,7 @@ class svgHandler(xml.sax.ContentHandler):
         self.count += 1
         _msg('processing element {0}: {1}'.format(self.count, name))
         _msg('existing group transform: {}'.format(self.grouptransform))
+        _msg('existing group style: {}'.format(self.groupstyles))
 
         data = {}
         for (keyword, content) in list(attrs.items()):
@@ -717,7 +724,7 @@ class svgHandler(xml.sax.ContentHandler):
             if 'inkscape:version' in data:
                 inks_doc_name = attrs.getValue('sodipodi:docname')
                 inks_full_ver = attrs.getValue('inkscape:version')
-                inks_ver_pars = re.search("\d+\.\d+", inks_full_ver)
+                inks_ver_pars = re.search("\\d+\\.\\d+", inks_full_ver)
                 if inks_ver_pars is not None:
                     inks_ver_f = float(inks_ver_pars.group(0))
                 else:
@@ -729,32 +736,41 @@ class svgHandler(xml.sax.ContentHandler):
                 else:
                     self.svgdpi = 96.0
             if 'inkscape:version' not in data:
-                _inf = ("This SVG file does not appear to have been produced "
-                        "by Inkscape. If it does not contain absolute units "
-                        "then a DPI setting will be used.")
-                _qst = ("Do you wish to use 96 dpi? Choosing 'No' "
-                        "will use the older standard 90 dpi.")
-                if FreeCAD.GuiUp:
-                    msgBox = QtGui.QMessageBox()
-                    msgBox.setText(translate("ImportSVG", _inf))
-                    msgBox.setInformativeText(translate("ImportSVG", _qst))
-                    msgBox.setStandardButtons(QtGui.QMessageBox.Yes
-                                              | QtGui.QMessageBox.No)
-                    msgBox.setDefaultButton(QtGui.QMessageBox.No)
-                    ret = msgBox.exec_()
-                    if ret == QtGui.QMessageBox.Yes:
-                        self.svgdpi = 96.0
-                    else:
-                        self.svgdpi = 90.0
-                    if ret:
-                        _msg(translate("ImportSVG", _inf))
-                        _msg(translate("ImportSVG", _qst))
-                        _msg("*** User specified {} "
-                             "dpi ***".format(self.svgdpi))
-                else:
+                # exact scaling is calculated later below. Here we just want
+                # to skip the DPI dialog if a unit is specified in the viewbox
+                if "width" in data and "mm" in attrs.getValue('width'):
                     self.svgdpi = 96.0
-                    _msg(_inf)
-                    _msg("*** Assuming {} dpi ***".format(self.svgdpi))
+                elif "width" in data and "in" in attrs.getValue('width'):
+                    self.svgdpi = 96.0
+                elif "width" in data and "cm" in attrs.getValue('width'):
+                    self.svgdpi = 96.0
+                else:
+                    _inf = ("This SVG file does not appear to have been produced "
+                            "by Inkscape. If it does not contain absolute units "
+                            "then a DPI setting will be used.")
+                    _qst = ("Do you wish to use 96 dpi? Choosing 'No' "
+                            "will use the older standard 90 dpi.")
+                    if FreeCAD.GuiUp:
+                        msgBox = QtWidgets.QMessageBox()
+                        msgBox.setText(translate("ImportSVG", _inf))
+                        msgBox.setInformativeText(translate("ImportSVG", _qst))
+                        msgBox.setStandardButtons(QtWidgets.QMessageBox.Yes
+                                                  | QtWidgets.QMessageBox.No)
+                        msgBox.setDefaultButton(QtWidgets.QMessageBox.No)
+                        ret = msgBox.exec_()
+                        if ret == QtWidgets.QMessageBox.Yes:
+                            self.svgdpi = 96.0
+                        else:
+                            self.svgdpi = 90.0
+                        if ret:
+                            _msg(translate("ImportSVG", _inf))
+                            _msg(translate("ImportSVG", _qst))
+                            _msg("*** User specified {} "
+                                 "dpi ***".format(self.svgdpi))
+                    else:
+                        self.svgdpi = 96.0
+                        _msg(_inf)
+                        _msg("*** Assuming {} dpi ***".format(self.svgdpi))
             if self.svgdpi == 1.0:
                 _wrn("This SVG file (" + inks_doc_name + ") "
                      "has an unrecognised format which means "
@@ -799,18 +815,16 @@ class svgHandler(xml.sax.ContentHandler):
                 if 'width' in data \
                         and 'height' in data \
                         and 'viewBox' in data:
-                    vbw = float(data['viewBox'][2])
-                    vbh = float(data['viewBox'][3])
-                    w = attrs.getValue('width')
-                    h = attrs.getValue('height')
-                    self.viewbox = (vbw, vbh)
                     if len(self.grouptransform) == 0:
                         unitmode = 'mm' + str(self.svgdpi)
                     else:
                         # nested svg element
                         unitmode = 'css' + str(self.svgdpi)
-                    abw = getsize(w, unitmode)
-                    abh = getsize(h, unitmode)
+                    vbw = getsize(data['viewBox'][2], 'discard')
+                    vbh = getsize(data['viewBox'][3], 'discard')
+                    abw = getsize(attrs.getValue('width'), unitmode)
+                    abh = getsize(attrs.getValue('height'), unitmode)
+                    self.viewbox = (vbw, vbh)
                     sx = abw / vbw
                     sy = abh / vbh
                     _data = data.get('preserveAspectRatio', [])
@@ -834,10 +848,10 @@ class svgHandler(xml.sax.ContentHandler):
                     m.scale(Vector(25.4/self.svgdpi, 25.4/self.svgdpi, 1))
             self.grouptransform.append(m)
         if 'fill' in data:
-            if data['fill'][0] != 'none':
+            if data['fill'] != 'none':
                 self.fill = getcolor(data['fill'])
         if 'stroke' in data:
-            if data['stroke'][0] != 'none':
+            if data['stroke'] != 'none':
                 self.color = getcolor(data['stroke'])
         if 'stroke-width' in data:
             if data['stroke-width'] != 'none':
@@ -856,6 +870,27 @@ class svgHandler(xml.sax.ContentHandler):
         if self.style == 1:
             self.color = self.col
             self.width = self.lw
+
+        # apply group styles
+        if name == "g":
+            self.groupstyles.append([self.fill, self.color, self.width])
+        if self.fill is None:
+            if "fill" not in data or data['fill'] != 'none':
+                # do not override fill if this item has specifically set a none fill
+                for groupstyle in reversed(self.groupstyles):
+                    if groupstyle[0] is not None:
+                        self.fill = groupstyle[0]
+                        break
+        if self.color is None:
+            for groupstyle in reversed(self.groupstyles):
+                if groupstyle[1] is not None:
+                    self.color = groupstyle[1]
+                    break
+        if self.width is None:
+            for groupstyle in reversed(self.groupstyles):
+                if groupstyle[2] is not None:
+                    self.width = groupstyle[2]
+                    break
 
         pathname = None
         if 'id' in data:
@@ -892,10 +927,10 @@ class svgHandler(xml.sax.ContentHandler):
 
             _op = '([mMlLhHvVaAcCqQsStTzZ])'
             _op2 = '([^mMlLhHvVaAcCqQsStTzZ]*)'
-            _command = '\s*?' + _op + '\s*?' + _op2 + '\s*?'
+            _command = '\\s*?' + _op + '\\s*?' + _op2 + '\\s*?'
             pathcommandsre = re.compile(_command, re.DOTALL)
 
-            _num = '[-+]?[0-9]*\.?[0-9]+'
+            _num = '[-+]?[0-9]*\\.?[0-9]+'
             _exp = '([eE][-+]?[0-9]+)?'
             _point = '(' + _num + _exp + ')'
             pointsre = re.compile(_point, re.DOTALL)
@@ -913,6 +948,8 @@ class svgHandler(xml.sax.ContentHandler):
                         sh = makewire(path)
                         if self.fill and sh.isClosed():
                             sh = Part.Face(sh)
+                            if sh.isValid() is False:
+                                sh.fix(1e-6, 0, 1)
                         sh = self.applyTrans(sh)
                         obj = self.doc.addObject("Part::Feature", pathname)
                         obj.Shape = sh
@@ -1185,6 +1222,8 @@ class svgHandler(xml.sax.ContentHandler):
                                 and len(sh.Wires) == 1 \
                                 and sh.Wires[0].isClosed():
                             sh = Part.Face(sh)
+                            if sh.isValid() is False:
+                                sh.fix(1e-6, 0, 1)
                         sh = self.applyTrans(sh)
                         obj = self.doc.addObject("Part::Feature", pathname)
                         obj.Shape = sh
@@ -1202,6 +1241,8 @@ class svgHandler(xml.sax.ContentHandler):
                 # sh = Part.Wire(path)
                 if self.fill and sh.isClosed():
                     sh = Part.Face(sh)
+                    if sh.isValid() is False:
+                        sh.fix(1e-6, 0, 1)
                 sh = self.applyTrans(sh)
                 obj = self.doc.addObject("Part::Feature", pathname)
                 obj.Shape = sh
@@ -1356,6 +1397,7 @@ class svgHandler(xml.sax.ContentHandler):
                     sh = self.applyTrans(sh)
                     obj = self.doc.addObject("Part::Feature", pathname)
                     obj.Shape = sh
+                    self.format(obj)
                     if self.currentsymbol:
                         self.symbols[self.currentsymbol].append(obj)
 
@@ -1493,6 +1535,8 @@ class svgHandler(xml.sax.ContentHandler):
         if name == "g" or name == "svg":
             _msg("closing group")
             self.grouptransform.pop()
+            if self.groupstyles:
+                self.groupstyles.pop()
         if name == "symbol":
             if self.doc.getObject("svgsymbols"):
                 group = self.doc.getObject("svgsymbols")
@@ -1568,8 +1612,8 @@ class svgHandler(xml.sax.ContentHandler):
             The translated matrix.
         """
         _op = '(matrix|translate|scale|rotate|skewX|skewY)'
-        _val = '\((.*?)\)'
-        _transf = _op + '\s*?' + _val
+        _val = '\\((.*?)\\)'
+        _transf = _op + '\\s*?' + _val
         transformre = re.compile(_transf, re.DOTALL)
         m = FreeCAD.Matrix()
         for transformation, arguments in transformre.findall(tr):
@@ -1656,8 +1700,8 @@ def getContents(filename, tag, stringmode=False):
     if stringmode:
         contents = filename
     else:
-        # Use the native Python open which was saved as `pythonopen`
-        f = pythonopen(filename)
+        # Use the native Python open which was saved as `pyopen`
+        f = pyopen(filename)
         contents = f.read()
         f.close()
 
@@ -1668,7 +1712,7 @@ def getContents(filename, tag, stringmode=False):
     searchpat = '<' + tag + '.*?</' + tag + '>'
     tags = re.findall(searchpat, contents)
     for t in tags:
-        tagid = re.findall('id="(.*?)"', t)
+        tagid = re.findall(r'id="(.*?)"', t)
         if tagid:
             tagid = tagid[0]
         else:
@@ -1701,8 +1745,8 @@ def open(filename):
     parser.setContentHandler(svgHandler())
     parser._cont_handler.doc = doc
 
-    # Use the native Python open which was saved as `pythonopen`
-    f = pythonopen(filename)
+    # Use the native Python open which was saved as `pyopen`
+    f = pyopen(filename)
     parser.parse(f)
     f.close()
     doc.recompute()
@@ -1740,8 +1784,8 @@ def insert(filename, docname):
     parser.setContentHandler(svgHandler())
     parser._cont_handler.doc = doc
 
-    # Use the native Python open which was saved as `pythonopen`
-    parser.parse(pythonopen(filename))
+    # Use the native Python open which was saved as `pyopen`
+    parser.parse(pyopen(filename))
     doc.recompute()
 
 
@@ -1763,8 +1807,7 @@ def export(exportList, filename):
     None
         If `exportList` doesn't have shapes to export.
     """
-    _prefs = "User parameter:BaseApp/Preferences/Mod/Draft"
-    svg_export_style = FreeCAD.ParamGet(_prefs).GetInt("svg_export_style")
+    svg_export_style = params.get_param("svg_export_style")
     if svg_export_style != 0 and svg_export_style != 1:
         _msg(translate("ImportSVG",
                        "Unknown SVG export style, switching to Translated"))
@@ -1810,8 +1853,8 @@ def export(exportList, filename):
     sizey = maxy - miny
     miny += margin
 
-    # Use the native Python open which was saved as `pythonopen`
-    svg = pythonopen(filename, 'w')
+    # Use the native Python open which was saved as `pyopen`
+    svg = pyopen(filename, 'w')
 
     # Write header.
     # We specify the SVG width and height in FreeCAD's physical units (mm),
@@ -1847,7 +1890,7 @@ def export(exportList, filename):
             # raw-style exports do not translate the sketch
             svg.write('<g id="%s" transform="scale(1,-1)">\n' % ob.Name)
 
-        svg.write(Draft.get_svg(ob))
+        svg.write(Draft.get_svg(ob, override=False))
         _label_enc = str(ob.Label.encode('utf8'))
         _label = _label_enc.replace('<', '&lt;').replace('>', '&gt;')
         # replace('"', "&quot;")

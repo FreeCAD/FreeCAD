@@ -54,9 +54,7 @@ ViewProviderBoolean::ViewProviderBoolean()
     Display.setEnums(DisplayEnum);
 }
 
-ViewProviderBoolean::~ViewProviderBoolean()
-{
-}
+ViewProviderBoolean::~ViewProviderBoolean() = default;
 
 
 void ViewProviderBoolean::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
@@ -113,19 +111,23 @@ bool ViewProviderBoolean::onDelete(const std::vector<std::string> &s)
 
     // if abort command deleted the object the bodies are visible again
     std::vector<App::DocumentObject*> bodies = pcBoolean->Group.getValues();
-    for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++) {
-        if (*b && Gui::Application::Instance->getViewProvider(*b))
-        Gui::Application::Instance->getViewProvider(*b)->show();
+    for (auto body : bodies) {
+        if (auto vp = Gui::Application::Instance->getViewProvider(body)) {
+            vp->show();
+        }
     }
 
     return ViewProvider::onDelete(s);
 }
 
-void ViewProviderBoolean::attach(App::DocumentObject* obj) {
+void ViewProviderBoolean::attach(App::DocumentObject* obj)
+{
     PartGui::ViewProviderPartExt::attach(obj);
+}
 
-    //set default display mode to override the "Group" display mode
-    setDisplayMode("Flat Lines");
+const char* ViewProviderBoolean::getDefaultDisplayMode() const
+{
+    return "Flat Lines";
 }
 
 void ViewProviderBoolean::onChanged(const App::Property* prop) {

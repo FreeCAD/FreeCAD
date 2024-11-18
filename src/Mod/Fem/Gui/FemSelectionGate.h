@@ -25,22 +25,24 @@
 
 #include <Gui/SelectionFilter.h>
 
-namespace FemGui {
-
-class FemSelectionGate : public Gui::SelectionFilterGate
+namespace FemGui
 {
- public:
-     enum ElemType {
-        Nothing ,
-        Node    ,
-        Element ,
+
+class FemSelectionGate: public Gui::SelectionFilterGate
+{
+public:
+    enum ElemType
+    {
+        Nothing,
+        Node,
+        Element,
         NodeElement
     };
 
     explicit FemSelectionGate(ElemType type)
-        : Gui::SelectionFilterGate(nullPointer()),Type(type)
-    {
-    }
+        : Gui::SelectionFilterGate(nullPointer())
+        , Type(type)
+    {}
 
     ElemType Type;
 
@@ -48,6 +50,6 @@ class FemSelectionGate : public Gui::SelectionFilterGate
     bool allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName) override;
 };
 
-} //namespace FemGui
+}  // namespace FemGui
 
-#endif // GUI_FemSelectionGate_H
+#endif  // GUI_FemSelectionGate_H

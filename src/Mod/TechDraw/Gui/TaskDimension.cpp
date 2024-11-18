@@ -47,11 +47,10 @@ using namespace TechDraw;
 using namespace TechDrawGui;
 
 TaskDimension::TaskDimension(QGIViewDimension *parent, ViewProviderDimension *dimensionVP) :
-    ui(new Ui_TaskDimension)
+    ui(new Ui_TaskDimension),
+    m_parent(parent),
+    m_dimensionVP(dimensionVP)
 {
-    m_parent = parent;
-    m_dimensionVP = dimensionVP;
-
     ui->setupUi(this);
 
     // Tolerancing
@@ -143,6 +142,11 @@ TaskDimension::~TaskDimension()
 
 bool TaskDimension::accept()
 {
+    if (m_dimensionVP.expired()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Missing Dimension"),
+                                               QObject::tr("Dimension not found.  Was it deleted? Can not continue."));
+        return true;
+    }
     Gui::Document* doc = m_dimensionVP->getDocument();
     m_dimensionVP->getObject()->purgeTouched();
     doc->commitCommand();
@@ -153,6 +157,11 @@ bool TaskDimension::accept()
 
 bool TaskDimension::reject()
 {
+    if (m_dimensionVP.expired()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Missing Dimension"),
+                                               QObject::tr("Dimension not found.  Was it deleted? Can not continue."));
+        return true;
+    }
     Gui::Document* doc = m_dimensionVP->getDocument();
     doc->abortCommand();
     recomputeFeature();
@@ -165,6 +174,10 @@ bool TaskDimension::reject()
 
 void TaskDimension::recomputeFeature()
 {
+    if (m_dimensionVP.expired()) {
+        // guard against deletion while this dialog is running
+        return;
+    }
     App::DocumentObject* objVP = m_dimensionVP->getObject();
     assert(objVP);
     objVP->getDocument()->recomputeFeature(objVP);
@@ -254,8 +267,17 @@ void TaskDimension::onArbitraryChanged()
 
 void TaskDimension::onFormatSpecifierOverToleranceChanged()
 {
+//    Base::Console().Message("TD::onFormatSpecifierOverToleranceChanged()\n");
+    // if (m_blockToleranceLoop) { return; }
     m_parent->getDimFeat()->FormatSpecOverTolerance.setValue(ui->leFormatSpecifierOverTolerance->text().toUtf8().constData());
-    if (!ui->cbArbitraryTolerances->isChecked()) {
+    if (ui->cbArbitraryTolerances->isChecked() ) {
+        // Don't do anything else if tolerance is Arbitrary
+        recomputeFeature();
+        return;
+    }
+
+    if (ui->cbEqualTolerance->isChecked()) {
+        // the under tolerance has to match this one
         ui->leFormatSpecifierUnderTolerance->setText(ui->leFormatSpecifierOverTolerance->text());
         m_parent->getDimFeat()->FormatSpecUnderTolerance.setValue(ui->leFormatSpecifierUnderTolerance->text().toUtf8().constData());
     }
@@ -264,8 +286,16 @@ void TaskDimension::onFormatSpecifierOverToleranceChanged()
 
 void TaskDimension::onFormatSpecifierUnderToleranceChanged()
 {
+//    Base::Console().Message("TD::onFormatSpecifierUnderToleranceChanged()\n");
     m_parent->getDimFeat()->FormatSpecUnderTolerance.setValue(ui->leFormatSpecifierUnderTolerance->text().toUtf8().constData());
-    if (!ui->cbArbitraryTolerances->isChecked()) {
+    if (ui->cbArbitraryTolerances->isChecked() ) {
+        // Don't do anything else if tolerance is Arbitrary
+        recomputeFeature();
+        return;
+    }
+    if (ui->cbEqualTolerance->isChecked()) {
+        // if EqualTolerance is checked, then underTolerance is disabled, so this shouldn't happen!
+        // the over tolerance has to match this one
         ui->leFormatSpecifierOverTolerance->setText(ui->leFormatSpecifierUnderTolerance->text());
         m_parent->getDimFeat()->FormatSpecOverTolerance.setValue(ui->leFormatSpecifierOverTolerance->text().toUtf8().constData());
     }
@@ -280,12 +310,18 @@ void TaskDimension::onArbitraryTolerancesChanged()
 
 void TaskDimension::onFlipArrowheadsChanged()
 {
+    if (m_dimensionVP.expired()) {
+        return;
+    }
     m_dimensionVP->FlipArrowheads.setValue(ui->cbArrowheads->isChecked());
     recomputeFeature();
 }
 
 void TaskDimension::onColorChanged()
 {
+    if (m_dimensionVP.expired()) {
+        return;
+    }
     App::Color ac;
     ac.setValue<QColor>(ui->dimensionColor->color());
     m_dimensionVP->Color.setValue(ac);
@@ -294,12 +330,18 @@ void TaskDimension::onColorChanged()
 
 void TaskDimension::onFontsizeChanged()
 {
+    if (m_dimensionVP.expired()) {
+        return;
+    }
     m_dimensionVP->Fontsize.setValue(ui->qsbFontSize->value().getValue());
     recomputeFeature();
 }
 
 void TaskDimension::onDrawingStyleChanged()
 {
+    if (m_dimensionVP.expired()) {
+        return;
+    }
     m_dimensionVP->StandardAndStyle.setValue(ui->comboDrawingStyle->currentIndex());
     recomputeFeature();
 }

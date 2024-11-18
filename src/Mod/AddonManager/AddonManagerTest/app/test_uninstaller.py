@@ -51,15 +51,9 @@ class TestAddonUninstaller(unittest.TestCase):
         self.signals_caught = []
         self.test_object = AddonUninstaller(self.mock_addon)
 
-        self.test_object.finished.connect(
-            functools.partial(self.catch_signal, "finished")
-        )
-        self.test_object.success.connect(
-            functools.partial(self.catch_signal, "success")
-        )
-        self.test_object.failure.connect(
-            functools.partial(self.catch_signal, "failure")
-        )
+        self.test_object.finished.connect(functools.partial(self.catch_signal, "finished"))
+        self.test_object.success.connect(functools.partial(self.catch_signal, "success"))
+        self.test_object.failure.connect(functools.partial(self.catch_signal, "failure"))
 
     def tearDown(self):
         """Finalize the test."""
@@ -149,9 +143,7 @@ class TestAddonUninstaller(unittest.TestCase):
             self.assertNotIn("failure", self.signals_caught)
             self.assertIn("success", self.signals_caught)
             self.assertIn("finished", self.signals_caught)
-            self.assertFalse(
-                os.path.exists(os.path.join(macro_directory, "FakeMacro.FCMacro"))
-            )
+            self.assertFalse(os.path.exists(os.path.join(macro_directory, "FakeMacro.FCMacro")))
             self.assertTrue(os.path.exists(macro_directory))
 
     def test_uninstall_calls_script(self):
@@ -218,9 +210,7 @@ class TestAddonUninstaller(unittest.TestCase):
                 os.path.join(toplevel_path, "AM_INSTALLATION_DIGEST.txt"),
             )
             self.test_object.remove_extra_files(toplevel_path)  # Shouldn't throw
-            self.assertFalse(
-                os.path.exists(os.path.join(macro_directory, "FakeMacro.FCMacro"))
-            )
+            self.assertFalse(os.path.exists(os.path.join(macro_directory, "FakeMacro.FCMacro")))
 
     def test_remove_extra_files_normal_case(self):
         """Test that a digest that is a "normal" case removes the requested files"""
@@ -244,35 +234,21 @@ class TestAddonUninstaller(unittest.TestCase):
             )
 
             # Make sure the setup worked as expected, otherwise the test is meaningless
-            self.assertTrue(
-                os.path.exists(os.path.join(macro_directory, "FakeMacro1.FCMacro"))
-            )
-            self.assertTrue(
-                os.path.exists(os.path.join(macro_directory, "FakeMacro2.FCMacro"))
-            )
-            self.assertTrue(
-                os.path.exists(os.path.join(macro_directory, "FakeMacro3.FCMacro"))
-            )
+            self.assertTrue(os.path.exists(os.path.join(macro_directory, "FakeMacro1.FCMacro")))
+            self.assertTrue(os.path.exists(os.path.join(macro_directory, "FakeMacro2.FCMacro")))
+            self.assertTrue(os.path.exists(os.path.join(macro_directory, "FakeMacro3.FCMacro")))
 
             self.test_object.remove_extra_files(toplevel_path)  # Shouldn't throw
 
-            self.assertFalse(
-                os.path.exists(os.path.join(macro_directory, "FakeMacro1.FCMacro"))
-            )
-            self.assertFalse(
-                os.path.exists(os.path.join(macro_directory, "FakeMacro2.FCMacro"))
-            )
-            self.assertFalse(
-                os.path.exists(os.path.join(macro_directory, "FakeMacro3.FCMacro"))
-            )
+            self.assertFalse(os.path.exists(os.path.join(macro_directory, "FakeMacro1.FCMacro")))
+            self.assertFalse(os.path.exists(os.path.join(macro_directory, "FakeMacro2.FCMacro")))
+            self.assertFalse(os.path.exists(os.path.join(macro_directory, "FakeMacro3.FCMacro")))
 
     def test_runs_uninstaller_script_successful(self):
         """Tests that the uninstall.py script is called"""
         with tempfile.TemporaryDirectory() as temp_dir:
             toplevel_path = self.setup_dummy_installation(temp_dir)
-            with open(
-                os.path.join(toplevel_path, "uninstall.py"), "w", encoding="utf-8"
-            ) as f:
+            with open(os.path.join(toplevel_path, "uninstall.py"), "w", encoding="utf-8") as f:
                 double_escaped = temp_dir.replace("\\", "\\\\")
                 f.write(
                     f"""# Mock uninstaller script
@@ -282,28 +258,20 @@ with open(os.path.join(path,"RAN_UNINSTALLER.txt"),"w",encoding="utf-8") as f:
     f.write("File created by uninstall.py from unit tests")
 """
                 )
-            self.test_object.run_uninstall_script(
-                toplevel_path
-            )  # The exception does not leak out
-            self.assertTrue(
-                os.path.exists(os.path.join(temp_dir, "RAN_UNINSTALLER.txt"))
-            )
+            self.test_object.run_uninstall_script(toplevel_path)  # The exception does not leak out
+            self.assertTrue(os.path.exists(os.path.join(temp_dir, "RAN_UNINSTALLER.txt")))
 
     def test_runs_uninstaller_script_failure(self):
         """Tests that exceptions in the uninstall.py script do not leak out"""
         with tempfile.TemporaryDirectory() as temp_dir:
             toplevel_path = self.setup_dummy_installation(temp_dir)
-            with open(
-                os.path.join(toplevel_path, "uninstall.py"), "w", encoding="utf-8"
-            ) as f:
+            with open(os.path.join(toplevel_path, "uninstall.py"), "w", encoding="utf-8") as f:
                 f.write(
                     f"""# Mock uninstaller script
 raise RuntimeError("Fake exception for unit testing")
 """
                 )
-            self.test_object.run_uninstall_script(
-                toplevel_path
-            )  # The exception does not leak out
+            self.test_object.run_uninstall_script(toplevel_path)  # The exception does not leak out
 
 
 class TestMacroUninstaller(unittest.TestCase):
@@ -317,15 +285,9 @@ class TestMacroUninstaller(unittest.TestCase):
         self.test_object = MacroUninstaller(self.mock_addon)
         self.signals_caught = []
 
-        self.test_object.finished.connect(
-            functools.partial(self.catch_signal, "finished")
-        )
-        self.test_object.success.connect(
-            functools.partial(self.catch_signal, "success")
-        )
-        self.test_object.failure.connect(
-            functools.partial(self.catch_signal, "failure")
-        )
+        self.test_object.finished.connect(functools.partial(self.catch_signal, "finished"))
+        self.test_object.success.connect(functools.partial(self.catch_signal, "success"))
+        self.test_object.failure.connect(functools.partial(self.catch_signal, "failure"))
 
     def tearDown(self):
         pass
@@ -339,13 +301,9 @@ class TestMacroUninstaller(unittest.TestCase):
             self.test_object.installation_location = temp_dir
             self.mock_addon.macro.install(temp_dir)
             # Make sure the setup worked, otherwise the test is meaningless
-            self.assertTrue(
-                os.path.exists(os.path.join(temp_dir, self.mock_addon.macro.filename))
-            )
+            self.assertTrue(os.path.exists(os.path.join(temp_dir, self.mock_addon.macro.filename)))
             self.test_object.run()
-            self.assertFalse(
-                os.path.exists(os.path.join(temp_dir, self.mock_addon.macro.filename))
-            )
+            self.assertFalse(os.path.exists(os.path.join(temp_dir, self.mock_addon.macro.filename)))
             self.assertNotIn("failure", self.signals_caught)
             self.assertIn("success", self.signals_caught)
             self.assertIn("finished", self.signals_caught)
@@ -356,19 +314,11 @@ class TestMacroUninstaller(unittest.TestCase):
             self.mock_addon.macro.icon = "mock_icon_test.svg"
             self.mock_addon.macro.install(temp_dir)
             # Make sure the setup worked, otherwise the test is meaningless
-            self.assertTrue(
-                os.path.exists(os.path.join(temp_dir, self.mock_addon.macro.filename))
-            )
-            self.assertTrue(
-                os.path.exists(os.path.join(temp_dir, self.mock_addon.macro.icon))
-            )
+            self.assertTrue(os.path.exists(os.path.join(temp_dir, self.mock_addon.macro.filename)))
+            self.assertTrue(os.path.exists(os.path.join(temp_dir, self.mock_addon.macro.icon)))
             self.test_object.run()
-            self.assertFalse(
-                os.path.exists(os.path.join(temp_dir, self.mock_addon.macro.filename))
-            )
-            self.assertFalse(
-                os.path.exists(os.path.join(temp_dir, self.mock_addon.macro.icon))
-            )
+            self.assertFalse(os.path.exists(os.path.join(temp_dir, self.mock_addon.macro.filename)))
+            self.assertFalse(os.path.exists(os.path.join(temp_dir, self.mock_addon.macro.icon)))
             self.assertNotIn("failure", self.signals_caught)
             self.assertIn("success", self.signals_caught)
             self.assertIn("finished", self.signals_caught)
@@ -379,19 +329,11 @@ class TestMacroUninstaller(unittest.TestCase):
             self.mock_addon.macro.xpm = "/*Fake XPM data*/"
             self.mock_addon.macro.install(temp_dir)
             # Make sure the setup worked, otherwise the test is meaningless
-            self.assertTrue(
-                os.path.exists(os.path.join(temp_dir, self.mock_addon.macro.filename))
-            )
-            self.assertTrue(
-                os.path.exists(os.path.join(temp_dir, "MockMacro_icon.xpm"))
-            )
+            self.assertTrue(os.path.exists(os.path.join(temp_dir, self.mock_addon.macro.filename)))
+            self.assertTrue(os.path.exists(os.path.join(temp_dir, "MockMacro_icon.xpm")))
             self.test_object.run()
-            self.assertFalse(
-                os.path.exists(os.path.join(temp_dir, self.mock_addon.macro.filename))
-            )
-            self.assertFalse(
-                os.path.exists(os.path.join(temp_dir, "MockMacro_icon.xpm"))
-            )
+            self.assertFalse(os.path.exists(os.path.join(temp_dir, self.mock_addon.macro.filename)))
+            self.assertFalse(os.path.exists(os.path.join(temp_dir, "MockMacro_icon.xpm")))
             self.assertNotIn("failure", self.signals_caught)
             self.assertIn("success", self.signals_caught)
             self.assertIn("finished", self.signals_caught)
@@ -430,13 +372,9 @@ class TestMacroUninstaller(unittest.TestCase):
             self.test_object.installation_location = temp_dir
             # Don't run the installer:
 
-            self.assertFalse(
-                os.path.exists(os.path.join(temp_dir, self.mock_addon.macro.filename))
-            )
+            self.assertFalse(os.path.exists(os.path.join(temp_dir, self.mock_addon.macro.filename)))
             self.test_object.run()  # Should not raise an exception
-            self.assertFalse(
-                os.path.exists(os.path.join(temp_dir, self.mock_addon.macro.filename))
-            )
+            self.assertFalse(os.path.exists(os.path.join(temp_dir, self.mock_addon.macro.filename)))
             self.assertNotIn("failure", self.signals_caught)
             self.assertIn("success", self.signals_caught)
             self.assertIn("finished", self.signals_caught)
@@ -489,9 +427,7 @@ class TestMacroUninstaller(unittest.TestCase):
                 full_path = os.path.join(temp_dir, directory)
                 os.mkdir(full_path)
                 full_paths.add(full_path)
-                with open(
-                    os.path.join(full_path, "test.txt"), "w", encoding="utf-8"
-                ) as f:
+                with open(os.path.join(full_path, "test.txt"), "w", encoding="utf-8") as f:
                     f.write("Unit test dummy data\n")
 
             for directory in full_paths:

@@ -41,10 +41,12 @@ public:
     explicit DlgPrefsTechDrawDimensionsImp( QWidget* parent = nullptr );
     ~DlgPrefsTechDrawDimensionsImp() override;
 
+    void resetSettingsToDefaults() override;
 protected:
     void saveSettings() override;
     void loadSettings() override;
     void changeEvent(QEvent *e) override;
+    void dimensioningModeChanged(int index);
 
     int prefArrowStyle() const;
 

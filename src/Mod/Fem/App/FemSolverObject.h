@@ -31,7 +31,7 @@
 namespace Fem
 {
 /// Father of all result data in a Fem Analysis
-class FemExport FemSolverObject : public App::DocumentObject
+class FemExport FemSolverObject: public App::DocumentObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemSolverObject);
 
@@ -43,20 +43,21 @@ public:
     // Attributes are implemented in the FemSolverObjectPython
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "FemGui::ViewProviderSolver";
     }
-    App::DocumentObjectExecReturn *execute() override {
+    App::DocumentObjectExecReturn* execute() override
+    {
         return App::DocumentObject::StdReturn;
     }
     short mustExecute() const override;
-    PyObject *getPyObject() override;
-
+    PyObject* getPyObject() override;
 };
 
 using FemSolverObjectPython = App::FeaturePythonT<FemSolverObject>;
 
-} //namespace Fem
+}  // namespace Fem
 
 
-#endif // Fem_FemSolverObject_H
+#endif  // Fem_FemSolverObject_H

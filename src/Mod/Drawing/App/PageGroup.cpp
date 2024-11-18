@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <sstream>
+#include <sstream>
 #endif
 
 #include "PageGroup.h"
@@ -36,12 +36,11 @@ using namespace Drawing;
 
 PROPERTY_SOURCE(Drawing::PageGroup, App::DocumentObjectGroup)
 
-PageGroup::PageGroup(void) 
+PageGroup::PageGroup(void)
 {
-  static const char *group = "Drawings";
-  ADD_PROPERTY_TYPE(Pages,(nullptr),group,App::Prop_None,"List of pages");
+    static const char* group = "Drawings";
+    ADD_PROPERTY_TYPE(Pages, (nullptr), group, App::Prop_None, "List of pages");
 }
 
 PageGroup::~PageGroup()
-{
-}
+{}

@@ -82,7 +82,6 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
     start_point = 1
     end_point = 2
     middle_point = 3
-    deletable = None
 
     if App.GuiUp:
         v_dir = gui_utils.get_3d_view().getViewDirection()
@@ -153,9 +152,6 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
         nobj = addTo
     else:
         nobj = App.ActiveDocument.addObject("Sketcher::SketchObject", name)
-        deletable = nobj
-        if App.GuiUp:
-            nobj.ViewObject.Autoconstraints = False
 
     # Collect constraints and add in one go to improve performance
     constraints = []
@@ -182,7 +178,7 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
         if DraftGeomUtils.geomType(edge) == "BezierCurve":
             return(edge.Curve.toBSpline(edge.FirstParameter,edge.LastParameter).toShape())
         else:
-            return(edge)
+            return edge
 
 
     axis = App.Vector(0, 0, 1).cross(normal)
@@ -191,7 +187,7 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
 
     point = shapes_list[0].Vertexes[0].Point
     base = App.Vector(normal)
-    base.Length = point.dot(base.normalize()) # See https://forum.freecadweb.org/viewtopic.php?f=22&t=69304#p601149
+    base.Length = point.dot(base.normalize()) # See https://forum.freecad.org/viewtopic.php?f=22&t=69304#p601149
 
     nobj.Placement = App.Placement(base, rotation)
 

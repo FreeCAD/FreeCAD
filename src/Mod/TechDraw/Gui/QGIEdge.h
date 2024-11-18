@@ -34,13 +34,13 @@ class TechDrawGuiExport QGIEdge : public QGIPrimPath
 {
 public:
     explicit QGIEdge(int index);
-    ~QGIEdge() {}
+    ~QGIEdge() override = default;
 
     enum {Type = QGraphicsItem::UserType + 103};
 
     int type() const override { return Type;}
-    virtual QRectF boundingRect() const override;
-    virtual QPainterPath shape() const override;
+    QRectF boundingRect() const override;
+    QPainterPath shape() const override;
 
     int getProjIndex() const { return projIndex; }
 
@@ -49,11 +49,23 @@ public:
     bool getHiddenEdge() { return(isHiddenEdge); }
     void setSmoothEdge(bool b) { isSmoothEdge = b; }
     bool getSmoothEdge() { return(isSmoothEdge); }
-    virtual void setPrettyNormal() override;
+    void setPrettyNormal() override;
 
-    double getEdgeFuzz(void) const;
+    double getEdgeFuzz() const;
+
+    void setLinePen(QPen isoPen);
+
+    void setSource(int source) { m_source = source; }
+    int getSource() const { return m_source;}
+
+    void setCurrentPen() override;
 
 protected:
+
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
+
+    bool multiselectEligible() override { return true; }
+
     int projIndex;                                                     //index of edge in Projection. must exist.
 
     bool isCosmetic;
@@ -63,6 +75,7 @@ protected:
     Qt::PenStyle getHiddenStyle();
 
 private:
+    int m_source{0};
 };
 
 }

@@ -13,14 +13,19 @@
         FatherNamespace="Base">
     <Documentation>
         <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
-        <UserDocu>Base.Axis class.\n
-An Axis defines a direction and a position (base) in 3D space.\n
-The following constructors are supported:\n
+        <UserDocu>Base.Axis class.
+
+An Axis defines a direction and a position (base) in 3D space.
+
+The following constructors are supported:
+
 Axis()
-Empty constructor.\n
+Empty constructor.
+
 Axis(axis)
 Copy constructor.
-axis : Base.Axis\n
+axis : Base.Axis
+
 Axis(base, direction)
 Define from a position and a direction.
 base : Base.Vector
@@ -29,27 +34,35 @@ direction : Base.Vector</UserDocu>
     </Documentation>
         <Methode Name="copy">>
             <Documentation>
-                <UserDocu>copy() -> Base.Axis\n
+                <UserDocu>copy() -> Base.Axis
+
 Returns a copy of this Axis.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="move">
             <Documentation>
-                <UserDocu>move(vector) -> None\n
-Move the axis base along the given vector.\n
-vector : Base.Vector\n    Vector by which to move the axis.</UserDocu>
+                <UserDocu>move(vector) -> None
+
+Move the axis base along the given vector.
+
+vector : Base.Vector
+    Vector by which to move the axis.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="multiply">
             <Documentation>
-                <UserDocu>multiply(placement) -> Base.Axis\n
-Multiply this axis by a placement.\n
-placement : Base.Placement\n    Placement by which to multiply the axis.</UserDocu>
+                <UserDocu>multiply(placement) -> Base.Axis
+
+Multiply this axis by a placement.
+
+placement : Base.Placement
+    Placement by which to multiply the axis.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="reversed">
             <Documentation>
-                <UserDocu>reversed() -> Base.Axis\n
+                <UserDocu>reversed() -> Base.Axis
+
 Compute the reversed axis. This returns a new Base.Axis with
 the original direction reversed.</UserDocu>
             </Documentation>

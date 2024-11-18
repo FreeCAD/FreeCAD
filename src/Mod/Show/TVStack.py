@@ -1,4 +1,4 @@
-#/***************************************************************************
+# /***************************************************************************
 # *   Copyright (c) 2019 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
@@ -22,11 +22,12 @@
 
 import weakref
 
-global_stacks = {} # dict of TVStacks. key = document name.
+global_stacks = {}  # dict of TVStacks. key = document name.
+
 
 class TVStack(object):
-    index_LUT = None # Key = id(tempovis_instance). Value = index in the stack.
-    stack = None #list of weakrefs to TV instances. Using weakrefs, so that TempoVis can self-destruct if forgotten.
+    index_LUT = None  # Key = id(tempovis_instance). Value = index in the stack.
+    stack = None  # list of weakrefs to TV instances. Using weakrefs, so that TempoVis can self-destruct if forgotten.
     document = None
 
     _rewind_tv = None
@@ -35,13 +36,13 @@ class TVStack(object):
         self.document = None
         self.index_LUT = {}
         self.stack = []
-        from . import TVObserver #to start the observer
+        from . import TVObserver  # to start the observer
 
-    def insert(self, tv, index = None):
+    def insert(self, tv, index=None):
         if index is None:
             index = len(self.stack)
         idtv = id(tv)
-        ref = weakref.ref(tv, (lambda _, idtv=idtv, self=self : self._destruction(idtv)))
+        ref = weakref.ref(tv, (lambda _, idtv=idtv, self=self: self._destruction(idtv)))
         self.stack.insert(index, ref)
 
         self.rebuild_index(index)
@@ -53,7 +54,7 @@ class TVStack(object):
         try:
             index = self.index_LUT.get(idtv)
         except KeyError:
-            #already withdrawn
+            # already withdrawn
             pass
         else:
             self.stack.pop(index)
@@ -83,19 +84,18 @@ class TVStack(object):
         from . import mTempoVis
 
         index = self.index_LUT[id(tv)] if tv is not None else -1
-        for tvref in self.stack[index + 1 : ]:
+        for tvref in self.stack[index + 1 :]:
             tv = tvref()
             if tv.state == mTempoVis.S_ACTIVE:
                 if tv.has(detail):
                     return (tv, tv.data[detail.full_key])
         return None
 
-    def rebuild_index(self, start = 0):
+    def rebuild_index(self, start=0):
         if start == 0:
             self.index_LUT = {}
         for i in range(start, len(self.stack)):
             self.index_LUT[id(self.stack[i]())] = i
-
 
     def purge_dead(self):
         """removes dead TV instances from the stack"""
@@ -117,9 +117,11 @@ class TVStack(object):
     def unwindForSaving(self):
         from . import mTempoVis
 
-        self.rewindAfterSaving() #just in case there was a failed save before.
+        self.rewindAfterSaving()  # just in case there was a failed save before.
 
-        details = {} #dict of detail original values. Key = detail key; value = detail instance with data representing the original value
+        details = (
+            {}
+        )  # dict of detail original values. Key = detail key; value = detail instance with data representing the original value
         for ref in self.stack:
             tv = ref()
             for key, detail in tv.data.items():
@@ -139,9 +141,11 @@ class TVStack(object):
     def getSplitSequence(self, tv):
         """getSplitSequence(tv): returns (list_before, list_after), neither list includes tv."""
         index = self.index_LUT[id(tv)]
+
         def deref(lst):
             return [ref() for ref in lst]
-        return deref(self.stack[0:index]), deref(self.stack[index+1:])
+
+        return deref(self.stack[0:index]), deref(self.stack[index + 1 :])
 
     def __getitem__(self, index):
         return self.stack[index]()
@@ -165,7 +169,7 @@ class TVStack(object):
         return [ref() for ref in self.stack if ref().tag == tag]
 
 
-def mainStack(document, create_if_missing = True):
+def mainStack(document, create_if_missing=True):
     """mainStack(document, create_if_missing = True):returns the main TVStack instance for provided document"""
     docname = document.Name
 
@@ -175,18 +179,21 @@ def mainStack(document, create_if_missing = True):
 
     return global_stacks.get(docname, None)
 
+
 def _slotDeletedDocument(document):
     docname = document.Name
     stk = global_stacks.pop(docname, None)
     if stk is not None:
         stk.dissolve()
 
+
 def _slotStartSaveDocument(doc):
-    stk = mainStack(doc, create_if_missing= False)
+    stk = mainStack(doc, create_if_missing=False)
     if stk is not None:
         stk.unwindForSaving()
 
+
 def _slotFinishSaveDocument(doc):
-    stk = mainStack(doc, create_if_missing= False)
+    stk = mainStack(doc, create_if_missing=False)
     if stk is not None:
         stk.rewindAfterSaving()

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+    <PythonExport
+        Father="DocumentObjectPy"
+        Name="MeasureBasePy"
+        Twin="MeasureBase"
+        TwinPointer="MeasureBase"
+        Include="Mod/Measure/App/MeasureBase.h"
+        Namespace="Measure"
+        FatherInclude="App/DocumentObjectPy.h"
+        FatherNamespace="App"
+        Constructor="true">
+    <Documentation>
+        <Author Licence="LGPL" Name="David Friedli(hlorus)" EMail="david@friedli-be.ch" />
+        <UserDocu>User documentation here
+        </UserDocu>
+        <DeveloperDocu>Developer documentation here</DeveloperDocu>
+    </Documentation>
+    </PythonExport>
+</GenerateModel>

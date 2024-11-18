@@ -1,8 +1,0 @@
-/** \defgroup START Start
- *  \ingroup CWORKBENCHES
- *  \brief The start page of FreeCAD
-
-See \ref src/Mod/Draft/draft.dox as an example of how to populate this page
-
-*/
-

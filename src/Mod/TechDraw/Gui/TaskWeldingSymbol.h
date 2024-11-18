@@ -97,7 +97,7 @@ class TechDrawGuiExport TaskWeldingSymbol : public QWidget
 public:
     TaskWeldingSymbol(TechDraw::DrawLeaderLine* leadFeat);
     TaskWeldingSymbol(TechDraw::DrawWeldSymbol* weldFeat);
-    ~TaskWeldingSymbol();
+    ~TaskWeldingSymbol() override;
 
     virtual bool accept();
     virtual bool reject();
@@ -123,18 +123,18 @@ public Q_SLOTS:
     void onSymbolSelected(QString symbolPath, QString source);
 
 protected:
-    void changeEvent(QEvent *event);
-    void setUiPrimary(void);
+    void changeEvent(QEvent *event) override;
+    void setUiPrimary();
     void setUiEdit();
 
-    TechDraw::DrawWeldSymbol* createWeldingSymbol(void);
-    void updateWeldingSymbol(void);
+    TechDraw::DrawWeldSymbol* createWeldingSymbol();
+    void updateWeldingSymbol();
 
-    void getTileFeats(void);
-    void updateTiles(void);
+    void getTileFeats();
+    void updateTiles();
 
-    void collectArrowData(void);
-    void collectOtherData(void);
+    void collectArrowData();
+    void collectOtherData();
 
     std::string prefSymbolDir();
 

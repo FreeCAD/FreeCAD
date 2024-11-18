@@ -29,7 +29,26 @@
 namespace Fem
 {
 
-class FemExport FemMeshShapeObject : public FemMeshObject
+class FemExport FemMeshShapeBaseObject: public FemMeshObject
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemMeshShapeBaseObject);
+
+public:
+    /// Constructor
+    FemMeshShapeBaseObject();
+    ~FemMeshShapeBaseObject() override;
+
+    App::PropertyLink Shape;
+
+    /// returns the type name of the ViewProvider
+    const char* getViewProviderName() const override
+    {
+        return "FemGui::ViewProviderFemMeshShapeBase";
+    }
+};
+
+
+class FemExport FemMeshShapeObject: public FemMeshShapeBaseObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemMeshShapeObject);
 
@@ -39,22 +58,23 @@ public:
     ~FemMeshShapeObject() override;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "FemGui::ViewProviderFemMeshShape";
     }
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
 
-    //virtual short mustExecute(void) const;
-    //virtual PyObject *getPyObject(void);
-
-    App::PropertyLink Shape;
+    // virtual short mustExecute(void) const;
+    // virtual PyObject *getPyObject(void);
 
 protected:
     /// get called by the container when a property has changed
-    //virtual void onChanged (const App::Property* prop);
+    // virtual void onChanged (const App::Property* prop);
 };
 
-} //namespace Fem
+using FemMeshShapeBaseObjectPython = App::FeaturePythonT<FemMeshShapeBaseObject>;
+
+}  // namespace Fem
 
 
-#endif // Fem_FemMeshShapeObject_H
+#endif  // Fem_FemMeshShapeObject_H

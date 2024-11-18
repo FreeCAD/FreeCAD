@@ -62,12 +62,8 @@ class TestUninstallerGUI(unittest.TestCase):
             QtWidgets.QDialogButtonBox.Yes,
         )
         answer = self.uninstaller_gui._confirm_uninstallation()
-        self.assertTrue(
-            dialog_watcher.dialog_found, "Failed to find the expected dialog box"
-        )
-        self.assertTrue(
-            dialog_watcher.button_found, "Failed to find the expected button"
-        )
+        self.assertTrue(dialog_watcher.dialog_found, "Failed to find the expected dialog box")
+        self.assertTrue(dialog_watcher.button_found, "Failed to find the expected button")
         self.assertTrue(answer, "Expected a 'Yes' click to return True, but got False")
 
     def test_confirmation_dialog_cancel(self):
@@ -76,15 +72,9 @@ class TestUninstallerGUI(unittest.TestCase):
             QtWidgets.QDialogButtonBox.Cancel,
         )
         answer = self.uninstaller_gui._confirm_uninstallation()
-        self.assertTrue(
-            dialog_watcher.dialog_found, "Failed to find the expected dialog box"
-        )
-        self.assertTrue(
-            dialog_watcher.button_found, "Failed to find the expected button"
-        )
-        self.assertFalse(
-            answer, "Expected a 'Cancel' click to return False, but got True"
-        )
+        self.assertTrue(dialog_watcher.dialog_found, "Failed to find the expected dialog box")
+        self.assertTrue(dialog_watcher.button_found, "Failed to find the expected button")
+        self.assertFalse(answer, "Expected a 'Cancel' click to return False, but got True")
 
     def test_progress_dialog(self):
         dialog_watcher = DialogWatcher(
@@ -95,12 +85,8 @@ class TestUninstallerGUI(unittest.TestCase):
         # That call isn't modal, so spin our own event loop:
         while self.uninstaller_gui.progress_dialog.isVisible():
             QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents, 100)
-        self.assertTrue(
-            dialog_watcher.dialog_found, "Failed to find the expected dialog box"
-        )
-        self.assertTrue(
-            dialog_watcher.button_found, "Failed to find the expected button"
-        )
+        self.assertTrue(dialog_watcher.dialog_found, "Failed to find the expected dialog box")
+        self.assertTrue(dialog_watcher.button_found, "Failed to find the expected button")
 
     def test_timer_launches_progress_dialog(self):
         worker = FakeWorker()
@@ -108,22 +94,14 @@ class TestUninstallerGUI(unittest.TestCase):
             translate("AddonsInstaller", "Removing Addon"),
             QtWidgets.QDialogButtonBox.Cancel,
         )
-        QtCore.QTimer.singleShot(
-            1000, worker.stop
-        )  # If the test fails, this kills the "worker"
+        QtCore.QTimer.singleShot(1000, worker.stop)  # If the test fails, this kills the "worker"
         self.uninstaller_gui._confirm_uninstallation = lambda: True
         self.uninstaller_gui._run_uninstaller = worker.work
         self.uninstaller_gui._finalize = lambda: None
-        self.uninstaller_gui.dialog_timer.setInterval(
-            1
-        )  # To speed up the test, only wait 1ms
+        self.uninstaller_gui.dialog_timer.setInterval(1)  # To speed up the test, only wait 1ms
         self.uninstaller_gui.run()  # Blocks once it hits the fake worker
-        self.assertTrue(
-            dialog_watcher.dialog_found, "Failed to find the expected dialog box"
-        )
-        self.assertTrue(
-            dialog_watcher.button_found, "Failed to find the expected button"
-        )
+        self.assertTrue(dialog_watcher.dialog_found, "Failed to find the expected dialog box")
+        self.assertTrue(dialog_watcher.button_found, "Failed to find the expected button")
         worker.stop()
 
     def test_success_dialog(self):
@@ -132,12 +110,8 @@ class TestUninstallerGUI(unittest.TestCase):
             QtWidgets.QDialogButtonBox.Ok,
         )
         self.uninstaller_gui._succeeded(self.addon_to_remove)
-        self.assertTrue(
-            dialog_watcher.dialog_found, "Failed to find the expected dialog box"
-        )
-        self.assertTrue(
-            dialog_watcher.button_found, "Failed to find the expected button"
-        )
+        self.assertTrue(dialog_watcher.dialog_found, "Failed to find the expected dialog box")
+        self.assertTrue(dialog_watcher.button_found, "Failed to find the expected button")
 
     def test_failure_dialog(self):
         dialog_watcher = DialogWatcher(
@@ -147,17 +121,11 @@ class TestUninstallerGUI(unittest.TestCase):
         self.uninstaller_gui._failed(
             self.addon_to_remove, "Some failure message\nAnother failure message"
         )
-        self.assertTrue(
-            dialog_watcher.dialog_found, "Failed to find the expected dialog box"
-        )
-        self.assertTrue(
-            dialog_watcher.button_found, "Failed to find the expected button"
-        )
+        self.assertTrue(dialog_watcher.dialog_found, "Failed to find the expected dialog box")
+        self.assertTrue(dialog_watcher.button_found, "Failed to find the expected button")
 
     def test_finalize(self):
-        self.uninstaller_gui.finished.connect(
-            functools.partial(self.catch_signal, "finished")
-        )
+        self.uninstaller_gui.finished.connect(functools.partial(self.catch_signal, "finished"))
         self.uninstaller_gui.worker_thread = MockThread()
         self.uninstaller_gui._finalize()
         self.assertIn("finished", self.signals_caught)

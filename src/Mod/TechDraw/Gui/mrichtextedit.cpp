@@ -23,7 +23,7 @@
 
 /********************************
  * includes changes by wandererfan@gmail.com
- * for FreeCAD project https://www.freecadweb.org/
+ * for FreeCAD project https://www.freecad.org/
  ********************************/
 
 #include "PreCompiled.h"
@@ -210,7 +210,7 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
     connect(f_fontsize, qOverload<const QString&>(&QComboBox::currentIndexChanged),
             this, &MRichTextEdit::textSize);
 #else
-    connect(f_fontsize, qOverload<int>(&QComboBox::currentIndexChanged), this, [=](int index) {
+    connect(f_fontsize, qOverload<int>(&QComboBox::currentIndexChanged), this, [this](int index) {
         textSize(f_fontsize->itemText(index));
     });
 #endif

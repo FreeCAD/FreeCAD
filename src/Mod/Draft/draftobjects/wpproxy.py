@@ -70,10 +70,10 @@ class WorkingPlaneProxy:
     def getNormal(self,obj):
         return obj.Shape.Faces[0].normalAt(0,0)
 
-    def __getstate__(self):
+    def dumps(self):
         return self.Type
 
-    def __setstate__(self,state):
+    def loads(self,state):
         if state:
             self.Type = state
 

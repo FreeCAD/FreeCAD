@@ -23,14 +23,14 @@
 #ifndef Fem_FemSetElementsObjec_H
 #define Fem_FemSetElementsObjec_H
 
-#include <App/DocumentObject.h>
 #include "FemSetObject.h"
+#include <App/DocumentObject.h>
 
 
 namespace Fem
 {
 
-class FemExport FemSetElementsObject : public FemSetObject
+class FemExport FemSetElementsObject: public FemSetObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemSetElementsObject);
 
@@ -40,19 +40,19 @@ public:
     ~FemSetElementsObject() override;
 
     // returns the type name of the ViewProvider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "FemGui::ViewProviderSetElements";
     }
-    App::DocumentObjectExecReturn *execute() override {
+    App::DocumentObjectExecReturn* execute() override
+    {
         return App::DocumentObject::StdReturn;
     }
     short mustExecute() const override;
-    PyObject *getPyObject() override;
-
-
+    PyObject* getPyObject() override;
 };
 
-} //namespace Fem
+}  // namespace Fem
 
 
-#endif // Fem_FemSetElementsObjec_H
+#endif  // Fem_FemSetElementsObjec_H

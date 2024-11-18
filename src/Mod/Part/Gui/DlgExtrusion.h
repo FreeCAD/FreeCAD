@@ -106,7 +106,6 @@ class TaskExtrusion : public Gui::TaskView::TaskDialog
 
 public:
     TaskExtrusion();
-    ~TaskExtrusion() override;
 
 public:
     bool accept() override;
@@ -118,7 +117,6 @@ public:
 
 private:
     DlgExtrusion* widget;
-    Gui::TaskView::TaskBox* taskbox;
 };
 
 } // namespace PartGui

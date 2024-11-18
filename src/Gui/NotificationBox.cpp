@@ -392,7 +392,7 @@ QString NotificationBox::text()
 {
     if (NotificationLabel::instance)
         return NotificationLabel::instance->text();
-    return QString();
+    return {};
 }
 
 Q_GLOBAL_STATIC(QPalette, notificationbox_palette)

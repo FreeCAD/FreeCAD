@@ -62,13 +62,13 @@ public:
     const Gui::ViewProviderDocumentObject* getExtendedViewProvider() const;
 
     virtual std::vector<App::DocumentObject*> extensionClaimChildren3D() const {
-        return std::vector<App::DocumentObject*>(); }
+        return {}; }
 
     virtual bool extensionOnDelete(const std::vector<std::string> &){ return true;}
     virtual void extensionBeforeDelete(){}
 
     virtual std::vector<App::DocumentObject*> extensionClaimChildren() const {
-        return std::vector<App::DocumentObject*>(); }
+        return {}; }
 
     virtual bool extensionCanDragObjects() const { return false; }
     virtual bool extensionCanDragObject(App::DocumentObject*) const { return true; }
@@ -82,7 +82,7 @@ public:
         { return false; }
     virtual std::string extensionDropObjectEx(App::DocumentObject *obj, App::DocumentObject *,
             const char *, const std::vector<std::string> &)
-        { extensionDropObject(obj); return std::string(); }
+        { extensionDropObject(obj); return {}; }
 
     virtual int extensionReplaceObject(App::DocumentObject* /*oldValue*/, App::DocumentObject* /*newValue*/)
         { return -1; }
@@ -100,7 +100,7 @@ public:
     virtual void extensionAttach(App::DocumentObject* ) { }
     virtual void extensionReattach(App::DocumentObject* ) { }
     virtual void extensionSetDisplayMode(const char* ) { }
-    virtual std::vector<std::string> extensionGetDisplayModes() const {return std::vector<std::string>();}
+    virtual std::vector<std::string> extensionGetDisplayModes() const {return {};}
     virtual void extensionSetupContextMenu(QMenu*, QObject*, const char*) {}
 
     // update data of extended object

@@ -65,7 +65,8 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewPart* base) :
     m_saved(false),
     m_applyDeferred(0),
     m_directionIsSet(false),
-    m_modelIsDirty(false)
+    m_modelIsDirty(false),
+    m_scaleEdited(false)
 {
     //existence of base is guaranteed by CmdTechDrawSectionView (Command.cpp)
 
@@ -93,7 +94,8 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewSection* section) :
     m_saved(false),
     m_applyDeferred(0),
     m_directionIsSet(true),
-    m_modelIsDirty(false)
+    m_modelIsDirty(false),
+    m_scaleEdited(false)
 {
     //existence of section is guaranteed by ViewProviderViewSection.setEdit
 
@@ -124,11 +126,15 @@ void TaskSectionView::setUiPrimary()
     //    Base::Console().Message("TSV::setUiPrimary()\n");
     setWindowTitle(QObject::tr("Create Section View"));
 
+    // note DPGI will have a custom scale type and scale = 1.0.  In this case,
+    // we need the values from the parent DPG!
     ui->sbScale->setValue(m_base->getScale());
-    ui->cmbScaleType->setCurrentIndex(m_base->ScaleType.getValue());
+
+    ui->cmbScaleType->setCurrentIndex(m_base->getScaleType());
 
     //Allow or prevent scale changing initially
-    if (m_base->ScaleType.isValue("Custom")) {
+    if (m_base->getScaleType() == 2) {
+        // custom scale type
         ui->sbScale->setEnabled(true);
     }
     else {
@@ -144,8 +150,7 @@ void TaskSectionView::setUiPrimary()
     //don't allow updates until a direction is picked
     ui->pbUpdateNow->setEnabled(false);
     ui->cbLiveUpdate->setEnabled(false);
-    QString msgLiteral =
-        QString::fromUtf8(QT_TRANSLATE_NOOP("TaskSectionView", "No direction set"));
+    QString msgLiteral = QObject::tr("No direction set");
     ui->lPendingUpdates->setText(msgLiteral);
 }
 
@@ -158,7 +163,7 @@ void TaskSectionView::setUiEdit()
     ui->leSymbol->setText(qTemp);
 
     ui->sbScale->setValue(m_section->getScale());
-    ui->cmbScaleType->setCurrentIndex(m_section->ScaleType.getValue());
+    ui->cmbScaleType->setCurrentIndex(m_section->getScaleType());
     //Allow or prevent scale changing initially
     if (m_section->ScaleType.isValue("Custom")) {
         ui->sbScale->setEnabled(true);
@@ -202,7 +207,7 @@ void TaskSectionView::setUiCommon(Base::Vector3d origin)
     // will only be triggered when the arrow keys of the spinboxes are used
     //if this is not done, recomputes are triggered on each key press giving
     //unaccceptable UX
-    connect(ui->sbScale, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskSectionView::onScaleChanged);
+    connect(ui->sbScale, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &TaskSectionView::onScaleChanged);
     connect(ui->sbOrgX, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskSectionView::onXChanged);
     connect(ui->sbOrgY, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskSectionView::onYChanged);
     connect(ui->sbOrgZ, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskSectionView::onZChanged);
@@ -238,7 +243,7 @@ void TaskSectionView::saveSectionState()
     if (m_section) {
         m_saveSymbol = m_section->SectionSymbol.getValue();
         m_saveScale = m_section->getScale();
-        m_saveScaleType = m_section->ScaleType.getValue();
+        m_saveScaleType = m_section->getScaleType();
         m_saveNormal = m_section->SectionNormal.getValue();
         m_normal = m_saveNormal;
         m_saveDirection = m_section->Direction.getValue();
@@ -335,8 +340,10 @@ void TaskSectionView::onIdentifierChanged()
 
 void TaskSectionView::onScaleChanged()
 {
+    m_scaleEdited = true;
     checkAll(false);
     apply();
+
 }
 
 //SectionOrigin changed
@@ -419,15 +426,12 @@ void TaskSectionView::updateNowClicked() { apply(true); }
 //******************************************************************************
 bool TaskSectionView::apply(bool forceUpdate)
 {
-    //    Base::Console().Message("TSV::apply() - liveUpdate: %d force: %d deferred: %d\n",
-    //                            ui->cbLiveUpdate->isChecked(), forceUpdate, m_applyDeferred);
+//    Base::Console().Message("TSV::apply() - liveUpdate: %d force: %d deferred: %d\n",
+//                            ui->cbLiveUpdate->isChecked(), forceUpdate, m_applyDeferred);
     if (!ui->cbLiveUpdate->isChecked() && !forceUpdate) {
         //nothing to do
         m_applyDeferred++;
-        QString msgLiteral =
-            QString::fromUtf8(QT_TRANSLATE_NOOP("TaskPojGroup", " updates pending"));
-        QString msgNumber = QString::number(m_applyDeferred);
-        ui->lPendingUpdates->setText(msgNumber + msgLiteral);
+        ui->lPendingUpdates->setText(tr("%n update(s) pending", "", m_applyDeferred));
         return false;
     }
 
@@ -489,22 +493,36 @@ void TaskSectionView::applyAligned()
 
 TechDraw::DrawViewSection* TaskSectionView::createSectionView(void)
 {
-    //    Base::Console().Message("TSV::createSectionView()\n");
+    // Base::Console().Message("TSV::createSectionView()\n");
     if (!isBaseValid()) {
         failNoObject();
         return nullptr;
     }
 
-    std::string sectionName;
     std::string baseName = m_base->getNameInDocument();
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create SectionView"));
     if (!m_section) {
-        m_sectionName = m_base->getDocument()->getUniqueObjectName("SectionView");
-        std::string sectionType = "TechDraw::DrawViewSection";
+        const std::string objectName("SectionView");
+        m_sectionName = m_base->getDocument()->getUniqueObjectName(objectName.c_str());
+        Command::doCommand(Command::Doc, "App.ActiveDocument.addObject('TechDraw::DrawViewSection', '%s')",
+                           m_sectionName.c_str());
 
-        Command::doCommand(Command::Doc, "App.ActiveDocument.addObject('%s', '%s')",
-                           sectionType.c_str(), m_sectionName.c_str());
+        // section labels (Section A-A) are not unique, and are not the same as the object name (SectionView)
+        // we pluck the generated suffix from the object name and append it to "Section" to generate
+        // unique Labels
+        QString qTemp = ui->leSymbol->text();
+        std::string temp = Base::Tools::toStdString(qTemp);
+        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionSymbol = '%s'",
+                           m_sectionName.c_str(), temp.c_str());
+
+        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Label = '%s'",
+                           m_sectionName.c_str(),
+                           makeSectionLabel(qTemp).c_str());
+        Command::doCommand(Command::Doc, "App.activeDocument().%s.translateLabel('DrawViewSection', 'Section', '%s')",
+              m_sectionName.c_str(), makeSectionLabel(qTemp).c_str());
+
+
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.addView(App.ActiveDocument.%s)",
                            m_savePageName.c_str(), m_sectionName.c_str());
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.BaseView = App.ActiveDocument.%s",
@@ -516,8 +534,10 @@ TechDraw::DrawViewSection* TaskSectionView::createSectionView(void)
                            "App.ActiveDocument.%s.SectionOrigin = FreeCAD.Vector(%.6f, %.6f, %.6f)",
                            m_sectionName.c_str(), ui->sbOrgX->value().getValue(),
                            ui->sbOrgY->value().getValue(), ui->sbOrgZ->value().getValue());
-        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Scale = %0.6f",
-                           m_sectionName.c_str(), ui->sbScale->value().getValue());
+
+        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Scale = %0.7f",
+                           m_sectionName.c_str(), ui->sbScale->value());
+
         int scaleType = ui->cmbScaleType->currentIndex();
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.ScaleType = %d",
                            m_sectionName.c_str(), scaleType);
@@ -545,6 +565,7 @@ TechDraw::DrawViewSection* TaskSectionView::createSectionView(void)
         double rotation = requiredRotation(viewDirectionAngle);
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Rotation = %.6f",
                            m_sectionName.c_str(), rotation);
+
     }
     Gui::Command::commitCommand();
     return m_section;
@@ -552,13 +573,16 @@ TechDraw::DrawViewSection* TaskSectionView::createSectionView(void)
 
 void TaskSectionView::updateSectionView()
 {
-    //    Base::Console().Message("TSV::updateSectionView() - m_sectionName: %s\n", m_sectionName.c_str());
+    // Base::Console().Message("TSV::updateSectionView() - m_sectionName: %s\n", m_sectionName.c_str());
     if (!isSectionValid()) {
         failNoObject();
         return;
     }
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit SectionView"));
+    const std::string objectName("SectionView");
+    std::string baseName = m_base->getNameInDocument();
+
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Section View"));
     if (m_section) {
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionDirection = '%s'",
                            m_sectionName.c_str(), m_dirName.c_str());
@@ -566,15 +590,21 @@ void TaskSectionView::updateSectionView()
                            "App.ActiveDocument.%s.SectionOrigin = FreeCAD.Vector(%.3f, %.3f, %.3f)",
                            m_sectionName.c_str(), ui->sbOrgX->value().getValue(),
                            ui->sbOrgY->value().getValue(), ui->sbOrgZ->value().getValue());
+
         QString qTemp = ui->leSymbol->text();
         std::string temp = Base::Tools::toStdString(qTemp);
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionSymbol = '%s'",
                            m_sectionName.c_str(), temp.c_str());
-        std::string lblText = "Section " + temp + " - " + temp;
+
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Label = '%s'",
-                           m_sectionName.c_str(), lblText.c_str());
-        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Scale = %0.6f",
-                           m_sectionName.c_str(), ui->sbScale->value().getValue());
+                           m_sectionName.c_str(),
+                           makeSectionLabel(qTemp).c_str());
+        Command::doCommand(Command::Doc, "App.activeDocument().%s.translateLabel('DrawViewSection', 'Section', '%s')",
+              m_sectionName.c_str(), makeSectionLabel(qTemp).c_str());
+
+        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Scale = %0.7f",
+                           m_sectionName.c_str(), ui->sbScale->value());
+
         int scaleType = ui->cmbScaleType->currentIndex();
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.ScaleType = %d",
                            m_sectionName.c_str(), scaleType);
@@ -598,6 +628,15 @@ void TaskSectionView::updateSectionView()
                            m_sectionName.c_str(), rotation);
     }
     Gui::Command::commitCommand();
+}
+
+std::string TaskSectionView::makeSectionLabel(QString symbol)
+{
+    const std::string objectName("SectionView");
+    std::string uniqueSuffix{m_sectionName.substr(objectName.length(), std::string::npos)};
+    std::string uniqueLabel = "Section" + uniqueSuffix;
+    std::string temp = Base::Tools::toStdString(symbol);
+    return ( uniqueLabel + " " + temp + " - " + temp );
 }
 
 void TaskSectionView::failNoObject(void)

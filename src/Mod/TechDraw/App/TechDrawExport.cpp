@@ -285,7 +285,7 @@ void SVGOutput::printBezier(const BRepAdaptor_Curve& c, int id, std::ostream& ou
         Handle(Geom_BezierCurve) bezier = c.Bezier();
         Standard_Integer poles = bezier->NbPoles();
 
-        // if it's a bezier with degree higher than 3 convert it into a B-spline
+        // if its a bezier with degree higher than 3 convert it into a B-spline
         if (bezier->Degree() > 3 || bezier->IsRational()) {
             TopoDS_Edge edge = asBSpline(c, 3);
             if (!edge.IsNull()) {

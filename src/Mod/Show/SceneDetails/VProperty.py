@@ -1,4 +1,4 @@
-#/***************************************************************************
+# /***************************************************************************
 # *   Copyright (c) 2019 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
@@ -22,22 +22,23 @@
 
 from Show.SceneDetail import SceneDetail
 
+
 class VProperty(SceneDetail):
     """VProperty(object, propname, val = None): plugin for TempoVis to alter ViewProvider properties"""
 
-    class_id = 'SDVProperty'
+    class_id = "SDVProperty"
     affects_persistence = True
-    propname = ''
-    objname = ''
+    propname = ""
+    objname = ""
     mild_restore = True
 
-    def __init__(self, object, propname, val = None):
+    def __init__(self, object, propname, val=None):
         self.objname = object.Name
         self.propname = propname
         self.doc = object.Document
-        self.key = self.objname + '.' + self.propname
+        self.key = self.objname + "." + self.propname
         self.data = val
-        if propname == 'LinkVisibility': #seems to not be a property
+        if propname == "LinkVisibility":  # seems to not be a property
             self.affects_persistence = False
 
     def scene_value(self):

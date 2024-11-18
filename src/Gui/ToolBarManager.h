@@ -25,25 +25,44 @@
 #define GUI_TOOLBARMANAGER_H
 
 #include <string>
+#include <boost_signals2.hpp>
+
 #include <QStringList>
+#include <QPointer>
+#include <QTimer>
+#include <QToolBar>
+#include <QPointer>
+
 #include <FCGlobal.h>
+#include <Base/Parameter.h>
 
 class QAction;
-class QToolBar;
+class QLayout;
+class QMenu;
+class QMouseEvent;
 
 namespace Gui {
+
+class ToolBarAreaWidget;
+enum class ToolBarArea;
 
 class GuiExport ToolBarItem
 {
 public:
-    enum class HideStyle {
-        VISIBLE,
-        HIDDEN, // toolbar hidden by default
-        FORCE_HIDE // Force a toolbar to be hidden. For when all elements are disabled at some point in a workbench.
+    /** Manages the default visibility status of a toolbar item, as well as the default status
+     * of the toggleViewAction usable by the contextual menu to enable and disable its visibility
+    */
+    enum class DefaultVisibility {
+        Visible,     // toolbar is hidden by default, visibility toggle action is enabled
+        Hidden,      // toolbar hidden by default, visibility toggle action is enabled
+        Unavailable, // toolbar visibility is managed independently by client code and defaults to
+                     // hidden, visibility toggle action is disabled by default (it is unavailable
+                     // to the UI). Upon being forced to be available, these toolbars default to
+                     // visible.
     };
 
     ToolBarItem();
-    explicit ToolBarItem(ToolBarItem* item, HideStyle visibility = HideStyle::VISIBLE);
+    explicit ToolBarItem(ToolBarItem* item, DefaultVisibility visibilityPolicy = DefaultVisibility::Visible);
     ~ToolBarItem();
 
     void setCommand(const std::string&);
@@ -63,11 +82,58 @@ public:
     ToolBarItem& operator << (const std::string& command);
     QList<ToolBarItem*> getItems() const;
 
-    HideStyle visibility;
+    DefaultVisibility visibilityPolicy;
 
 private:
     std::string _name;
     QList<ToolBarItem*> _items;
+};
+
+class ToolBarGrip: public QWidget
+{
+    Q_OBJECT
+
+public:
+    explicit ToolBarGrip(QToolBar *);
+
+    void attach();
+    void detach();
+
+    bool isAttached() const;
+
+protected:
+    void paintEvent(QPaintEvent*);
+    void mouseMoveEvent(QMouseEvent *);
+    void mousePressEvent(QMouseEvent *);
+    void mouseReleaseEvent(QMouseEvent *);
+
+    void updateSize();
+
+private:
+    QPointer<QAction> _action = nullptr;
+};
+
+/**
+ * QToolBar from Qt lacks few abilities like ability to float toolbar from code.
+ * This class allows us to provide custom behaviors for toolbars if needed.
+ */
+class GuiExport ToolBar: public QToolBar
+{
+    Q_OBJECT
+
+    friend class ToolBarGrip;
+
+public:
+    ToolBar();
+    explicit ToolBar(QWidget* parent);
+
+    virtual ~ToolBar() = default;
+
+    void undock();
+    void updateCustomGripVisibility();
+
+protected:
+    void setupConnections();
 };
 
 /**
@@ -77,9 +143,18 @@ private:
  * @see MenuManager
  * @author Werner Mayer
  */
-class GuiExport ToolBarManager
+class GuiExport ToolBarManager : public QObject
 {
+    Q_OBJECT
 public:
+
+    enum class State {
+        ForceHidden,    // Forces a toolbar to hide and hides the toggle action
+        ForceAvailable, // Forces a toolbar toggle action to show, visibility depends on user config
+        RestoreDefault, // Restores a toolbar toggle action default, visibility as user config
+        SaveState,      // Saves the state of the toolbars
+    };
+
     /// The one and only instance.
     static ToolBarManager* getInstance();
     static void destruct();
@@ -89,22 +164,76 @@ public:
     void restoreState() const;
     void retranslate() const;
 
-    void setMovable(bool movable) const;
-    void setToolbarVisibility(bool show, const QList<QString>& names);
-    void setToolbarVisibility(bool show, const QString& name);
+    bool areToolBarsLocked() const;
+    void setToolBarsLocked(bool locked) const;
+
+    void setState(const QList<QString>& names, State state);
+    void setState(const QString& name, State state);
+
+    int toolBarIconSize(QWidget *widget = nullptr) const;
+    void setupToolBarIconSize();
+
+    ToolBarArea toolBarArea(QWidget* toolBar) const;
+    ToolBarAreaWidget* toolBarAreaWidget(QWidget* toolBar) const;
 
 protected:
     void setup(ToolBarItem*, QToolBar*) const;
+
+    void setMovable(bool movable) const;
+
+    ToolBarItem::DefaultVisibility getToolbarPolicy(const QToolBar *) const;
+
+    bool addToolBarToArea(QObject *source, QMouseEvent *ev);
+    bool showContextMenu(QObject *source);
+    void onToggleStatusBarWidget(QWidget *widget, bool visible);
+    void setToolBarIconSize(QToolBar *toolbar);
+    void onTimer();
+
+    bool eventFilter(QObject *source, QEvent *ev) override;
+
     /** Returns a list of all currently existing toolbars. */
-    QList<QToolBar*> toolBars() const;
-    QToolBar* findToolBar(const QList<QToolBar*>&, const QString&) const;
+    QList<ToolBar*> toolBars() const;
+    ToolBar* findToolBar(const QList<ToolBar*>&, const QString&) const;
     QAction* findAction(const QList<QAction*>&, const QString&) const;
     ToolBarManager();
-    ~ToolBarManager();
+    ~ToolBarManager() override;
+
+private:
+    void setupParameters();
+    void setupStatusBar();
+    void setupMenuBar();
+    void setupConnection();
+    void setupTimer();
+    void setupSizeTimer();
+    void setupResizeTimer();
+    void setupMenuBarTimer();
+    void setupWidgetProducers();
+
+    void addToMenu(QLayout* layout, QWidget* area, QMenu* menu);
+    QLayout* findLayoutOfObject(QObject* source, QWidget* area) const;
+    ToolBarAreaWidget* findToolBarAreaWidget() const;
 
 private:
     QStringList toolbarNames;
     static ToolBarManager* _instance;
+
+    QTimer timer;
+    QTimer menuBarTimer;
+    QTimer sizeTimer;
+    QTimer resizeTimer;
+    boost::signals2::scoped_connection connParam;
+    ToolBarAreaWidget *statusBarAreaWidget = nullptr;
+    ToolBarAreaWidget *menuBarLeftAreaWidget = nullptr;
+    ToolBarAreaWidget *menuBarRightAreaWidget = nullptr;
+    ParameterGrp::handle hGeneral;
+    ParameterGrp::handle hPref;
+    ParameterGrp::handle hStatusBar;
+    ParameterGrp::handle hMenuBarLeft;
+    ParameterGrp::handle hMenuBarRight;
+    std::map<QToolBar*, QPointer<QToolBar>> resizingToolbars;
+    int _toolBarIconSize = 0;
+    int _statusBarIconSize = 0;
+    int _menuBarIconSize = 0;
 };
 
 } // namespace Gui

@@ -20,6 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
+// clang-format off
 #ifndef APP_FEATUREPYTHONPYIMP_H
 #define APP_FEATUREPYTHONPYIMP_H
 
@@ -45,7 +46,9 @@
         virtual ~_class_(); \
     };
 
-#if PY_VERSION_HEX >= 0x03090000
+#if PY_VERSION_HEX >= 0x030c0000
+#define PYTHON_TYPE_SLOTS 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+#elif PY_VERSION_HEX >= 0x03090000
 #define PYTHON_TYPE_SLOTS 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 #elif PY_VERSION_HEX >= 0x03080000
 #define PYTHON_TYPE_SLOTS 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
@@ -89,14 +92,14 @@ public:
 
 public:
     explicit FeaturePythonPyT(Base::BaseClass *pcObject, PyTypeObject *T = &Type);
-    virtual ~FeaturePythonPyT();
+    ~FeaturePythonPyT() override;
 
     /** @name callbacks and implementers for the python object methods */
     //@{
     static  int __setattro(PyObject *PyObj, PyObject *attro, PyObject *value);
     //@}
-    PyObject *_getattr(const char *attr);              // __getattr__ function
-    int _setattr(const char *attr, PyObject *value);        // __setattr__ function
+    PyObject *_getattr(const char *attr) override;
+    int _setattr(const char *attr, PyObject *value) override;
 
 protected:
     PyObject * dict_methods;
@@ -115,3 +118,4 @@ private:
 #endif
 
 #endif // APP_FEATUREPYTHONPYIMP_H
+// clang-format on

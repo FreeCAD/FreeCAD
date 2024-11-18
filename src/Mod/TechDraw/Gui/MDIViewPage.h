@@ -47,7 +47,7 @@ class DrawView;
 
 namespace TechDrawGui
 {
-
+class PagePrinter;
 class ViewProviderPage;
 class QGVPage;
 class QGSPage;
@@ -64,13 +64,12 @@ public:
 
     void addChildrenToPage();
 
-
     /// Observer message from the Tree Selection mechanism
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void preSelectionChanged(const QPoint &pos);
 
     /// QGraphicsScene selection routines
-    void selectQGIView(App::DocumentObject *obj, bool isSelected);
+    void selectQGIView(App::DocumentObject *obj, bool isSelected, const std::vector<std::string> &subNames);
     void clearSceneSelection();
     void blockSceneSelection(bool isBlocked);
 
@@ -87,35 +86,32 @@ public:
                          App::Document* doc);
     static void printAllPdf(QPrinter* printer,
                             App::Document* doc);
-    static void printBannerPage(QPrinter* printer, QPainter& painter,
-                                QPageLayout& pageLayout,
-                                App::Document* doc,
-                                std::vector<App::DocumentObject*>& docObjs);
-    static void renderPage(ViewProviderPage* vpp,
-                           QPainter& painter,
-                           QRectF& sourceRect,
-                           QRect& targetRect);
-    static void setPageLayout(QPageLayout& pageLayout,
-                              TechDraw::DrawPage* dPage,
-                              double& width, double& height);
 
-    void saveSVG(std::string file);
-    void saveDXF(std::string file);
-    void savePDF(std::string file);
+    void saveSVG(std::string fileName);
+    void saveDXF(std::string fileName);
+    void savePDF(std::string fileName);
+
+    void zoomIn();
+    void zoomOut();
 
     void setDocumentObject(const std::string&);
     void setDocumentName(const std::string&);
 
     PyObject* getPyObject() override;
     TechDraw::DrawPage * getPage() { return m_vpPage->getDrawPage(); }
-
     ViewProviderPage* getViewProviderPage() {return m_vpPage;}
+    void savePageExportState(ViewProviderPage* page);
+    void resetPageExportState(ViewProviderPage* page) const;
 
     void setTabText(std::string tabText);
 
     void contextMenuEvent(QContextMenuEvent *event) override;
 
     void setScene(QGSPage* scene, QGVPage* view);
+    void fixSceneDependencies();
+
+    void setDimensionsSelectability(bool val);
+    void enableContextualMenu(bool val) { isContextualMenuEnabled = val; }
 
 public Q_SLOTS:
     void viewAll() override;
@@ -135,6 +131,9 @@ protected:
     void onDeleteObject(const App::DocumentObject& obj);
 
     bool compareSelections(std::vector<Gui::SelectionObject> treeSel, QList<QGraphicsItem*> sceneSel);
+    void addSceneItemToTreeSel(QGraphicsItem* sceneItem, std::vector<Gui::SelectionObject> treeSel);
+    void removeUnselectedTreeSelection(QList<QGraphicsItem*> sceneSel, Gui::SelectionObject& treeSelection);
+    std::string getSceneSubName(QGraphicsItem* scene);
     void setTreeToSceneSelect();
     void sceneSelectionManager();
 
@@ -152,17 +151,18 @@ private:
     std::string m_objectName;
     std::string m_documentName;
     bool isSelectionBlocked;
+    bool isContextualMenuEnabled;
     QPointer<QGSPage> m_scene;
 
     QString m_currentPath;
     ViewProviderPage* m_vpPage;
 
-    QList<QGraphicsItem*> m_qgSceneSelected;        //items in selection order
+    QList<QGraphicsItem*> m_orderedSceneSelection;        //items in selection order
 
     void getPaperAttributes();
-    QPageLayout::Orientation m_orientation;
-    QPageSize::PageSizeId m_paperSize;
-    double m_pagewidth, m_pageheight;
+    PagePrinter* m_pagePrinter;
+
+    bool m_docModStateBeforePrint{false};
 
 };
 

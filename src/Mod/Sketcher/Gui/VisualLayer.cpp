@@ -31,7 +31,10 @@ using namespace SketcherGui;
 
 //**************** VisualClassConfig **************************************//
 
-VisualLayer::VisualLayer(unsigned int linePattern, float lineWidth, bool visible): linePattern(linePattern), lineWidth(lineWidth), visible(visible)
+VisualLayer::VisualLayer(unsigned int linePattern, float lineWidth, bool visible)
+    : linePattern(linePattern)
+    , lineWidth(lineWidth)
+    , visible(visible)
 {}
 
 unsigned int VisualLayer::getLinePattern() const
@@ -64,23 +67,22 @@ void VisualLayer::setVisible(bool show)
     visible = show;
 }
 
-void VisualLayer::Save(Base::Writer &writer) const
+void VisualLayer::Save(Base::Writer& writer) const
 {
-    writer.Stream() << writer.ind()
-        << "<VisualLayer "    <<
-            "visible=\""            <<  (visible?std::string("true"):std::string("false")).c_str()  <<
-            "\" linePattern=\""     <<  linePattern  <<
-            "\" lineWidth=\""       <<  lineWidth    << "\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<VisualLayer "
+                    << "visible=\""
+                    << (visible ? std::string("true") : std::string("false")).c_str()
+                    << "\" linePattern=\"" << linePattern << "\" lineWidth=\"" << lineWidth
+                    << "\"/>" << std::endl;
 }
 
-void VisualLayer::Restore(Base::XMLReader &reader)
+void VisualLayer::Restore(Base::XMLReader& reader)
 {
     reader.readElement("VisualLayer");
 
     std::string str = reader.getAttribute("visible");
-    visible = ( str == "true");
+    visible = (str == "true");
 
     linePattern = reader.getAttributeAsUnsigned("linePattern");
     lineWidth = reader.getAttributeAsFloat("lineWidth");
 }
-

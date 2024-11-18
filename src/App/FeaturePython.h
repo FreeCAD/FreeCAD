@@ -86,7 +86,7 @@ public:
 
 private:
     App::DocumentObject* object;
-    bool has__object__;
+    bool has__object__{false};
 
 #define FC_PY_FEATURE_PYTHON \
     FC_PY_ELEMENT(execute)\
@@ -175,7 +175,7 @@ public:
         // cannot move this to the initializer list to avoid warning
         imp = new FeaturePythonImp(this);
     }
-    virtual ~FeaturePythonT() {
+    ~FeaturePythonT() override {
         delete imp;
     }
 
@@ -209,7 +209,6 @@ public:
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override {
         return FeatureT::getViewProviderName();
-        //return "Gui::ViewProviderPythonFeature";
     }
 
     App::DocumentObject *getSubObject(const char *subname, PyObject **pyObj,

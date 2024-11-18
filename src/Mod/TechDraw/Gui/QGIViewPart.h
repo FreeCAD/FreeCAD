@@ -26,12 +26,18 @@
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <Mod/TechDraw/App/Geometry.h>
+#include <Mod/TechDraw/App/LineGenerator.h>
 
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 
 #include "QGIView.h"
 
+class QColor;
+
+namespace App {
+class Color;
+}
 
 namespace TechDraw {
 class DrawViewPart;
@@ -40,7 +46,7 @@ class DrawHatch;
 class DrawGeomHatch;
 class DrawViewDetail;
 class DrawView;
-
+class LineGenerator;
 }
 
 namespace TechDrawGui
@@ -48,6 +54,7 @@ namespace TechDrawGui
 class QGIFace;
 class QGIEdge;
 class QGIHighlight;
+class PathBuilder;
 
 class TechDrawGuiExport QGIViewPart : public QGIView
 {
@@ -61,6 +68,7 @@ public:
     void paint( QPainter * painter,
                         const QStyleOptionGraphicsItem * option,
                         QWidget * widget = nullptr ) override;
+    bool sceneEventFilter(QGraphicsItem *watched, QEvent *event) override;
 
 
     void toggleCache(bool state) override;
@@ -69,12 +77,21 @@ public:
     void updateView(bool update = false) override;
     void tidy();
     QRectF boundingRect() const override;
+
+    virtual void drawAllFaces();
+    virtual void drawAllEdges();
+    virtual void drawAllVertexes();
+
+    bool showThisEdge(TechDraw::BaseGeomPtr geom);
+
     virtual void drawAllSectionLines();
     virtual void drawSectionLine(TechDraw::DrawViewSection* s, bool b);
     virtual void drawComplexSectionLine(TechDraw::DrawViewSection* viewSection, bool b);
     virtual void drawCenterLines(bool b);
+    virtual void drawAllHighlights();
     virtual void drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b);
     virtual void drawMatting();
+    virtual void drawBreakLines();
     bool showSection;
 
     void draw() override;
@@ -98,8 +115,14 @@ public:
                                      bool large_arc_flag, bool sweep_flag,
                                      double x, double y,
                                      double curx, double cury);
-    void setExporting(bool b) { m_isExporting = b; }
-    bool getExporting() { return m_isExporting; }
+
+    bool getGroupSelection() override;
+    void setGroupSelection(bool isSelected) override;
+    void setGroupSelection(bool isSelected, const std::vector<std::string> &subNames) override;
+
+    virtual QGraphicsItem *getQGISubItemByName(const std::string &subName) const;
+
+    virtual bool removeSelectedCosmetic() const;
 
 protected:
     QPainterPath drawPainterPath(TechDraw::BaseGeomPtr baseGeom) const;
@@ -115,14 +138,19 @@ protected:
     void removeDecorations();
     bool prefFaceEdges();
     bool prefPrintCenters();
+    App::Color prefBreaklineColor();
 
     bool formatGeomFromCosmetic(std::string cTag, QGIEdge* item);
     bool formatGeomFromCenterLine(std::string cTag, QGIEdge* item);
 
-    bool m_isExporting;
+    bool showCenterMarks();
+    bool showVertices();
 
 private:
     QList<QGraphicsItem*> deleteItems;
+    PathBuilder* m_pathBuilder;
+    TechDraw::LineGenerator* m_dashedLineGenerator;
+
 };
 
 } // namespace

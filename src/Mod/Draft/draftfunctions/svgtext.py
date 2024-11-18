@@ -29,6 +29,7 @@
 import math
 
 import FreeCAD as App
+import DraftVecUtils
 import draftutils.utils as utils
 
 ## \addtogroup draftfunctions
@@ -48,6 +49,9 @@ def _get_text_techdraw(text, tcolor, fontsize, anchor,
     """
     svg = ""
     for i in range(len(text)):
+        delta = App.Vector(0, -i * linespacing, 0)
+        point = base + DraftVecUtils.rotate(delta, angle)
+
         _t = text[i].replace("&", "&amp;")
         _t = _t.replace("<", "&lt;")
         t = _t.replace(">", "&gt;")
@@ -60,10 +64,10 @@ def _get_text_techdraw(text, tcolor, fontsize, anchor,
         svg += 'font-family:{}" '.format(fontname)
         svg += 'transform="'
         svg += 'rotate({},{},{}) '.format(math.degrees(angle),
-                                          base.x,
-                                          base.y - i * linespacing)
-        svg += 'translate({},{}) '.format(base.x,
-                                          base.y - i * linespacing)
+                                          point.x,
+                                          point.y)
+        svg += 'translate({},{}) '.format(point.x,
+                                          point.y)
         svg += 'scale(1,-1)"'
         # svg += 'freecad:skip="1"'
         svg += '>\n'
@@ -129,8 +133,10 @@ def get_text(plane, techdraw,
                 # text is perpendicular to view, so it shouldn't appear
                 return ""
             else:
-                # TODO maybe there is something better to do here?
-                angle = 0
+                # Compute an X vector
+                vec = App.Vector(1,0,0)
+                vec = angle.multVec(App.Vector(1,0,0))
+                angle = DraftVecUtils.angle(vec,plane.u)
 
     # text should be a list of strings separated by a newline
     if not isinstance(text, list):

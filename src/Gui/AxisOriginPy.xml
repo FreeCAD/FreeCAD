@@ -13,23 +13,30 @@
         Delete="true">
         <Documentation>
             <Author Licence="LGPL" Name="Zheng, Lei" EMail="realthunder.dev@gmail.com" />
-            <UserDocu>Gui.AxisOrigin class.\n
+            <UserDocu>Gui.AxisOrigin class.
+
 Class for creating a Coin3D representation of a coordinate system.</UserDocu>
         </Documentation>
         <Methode Name="getElementPicked" Const="true">
             <Documentation>
-                <UserDocu>getElementPicked(pickedPoint) -> str\n
-Returns the picked element name.\n
+                <UserDocu>getElementPicked(pickedPoint) -> str
+
+Returns the picked element name.
+
 pickedPoint : coin.SoPickedPoint</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="getDetailPath" Const="true">
             <Documentation>
-                <UserDocu>getDetailPath(subname, path) -> coin.SoDetail or None\n
+                <UserDocu>getDetailPath(subname, path) -> coin.SoDetail or None
+
 Returns Coin detail of a subelement.
-Note: Not fully implemented. Currently only returns None.\n
-subname : str\n    String reference to the subelement.
-path: coin.SoPath\n    Output Coin path leading to the returned element detail.</UserDocu>
+Note: Not fully implemented. Currently only returns None.
+
+subname : str
+    String reference to the subelement.
+path: coin.SoPath
+    Output Coin path leading to the returned element detail.</UserDocu>
             </Documentation>
         </Methode>
         <Attribute Name="AxisLength">

@@ -80,9 +80,9 @@ not belonging to faces and faces not belonging to volumes.</string>
          <widget class="Gui::PrefCheckBox" name="checkBoxWriteGroups">
           <property name="toolTip">
            <string>Mesh groups are exported too.
-Every constraint and, if there are different materials, material
-consists of two mesh groups, faces and nodes where the
-constraint or material is applied.</string>
+Every analysis feature and, if there are different materials,
+material consists of two mesh groups, faces and nodes where
+the constraint or material is applied.</string>
           </property>
           <property name="text">
            <string/>

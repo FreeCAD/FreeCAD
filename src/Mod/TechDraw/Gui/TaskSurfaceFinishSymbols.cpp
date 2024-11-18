@@ -22,20 +22,26 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <boost/algorithm/string/predicate.hpp>
 # include <QComboBox>
 # include <QGraphicsProxyWidget>
 # include <QLineEdit>
 #endif
 
+#include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Mod/TechDraw/App/DrawPage.h>
+#include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawViewSymbol.h>
 
+#include "QGIView.h"
 #include "ui_TaskSurfaceFinishSymbols.h"
 #include "TaskSurfaceFinishSymbols.h"
+#include "ViewProviderSymbol.h"
+#include "ZVALUE.h"
 
 
 using namespace Gui;
@@ -79,40 +85,98 @@ std::string SvgString::finish()
 // TaskSurfaceFinishSymbols
 //===========================================================================
 
-TaskSurfaceFinishSymbols::TaskSurfaceFinishSymbols(TechDraw::DrawViewPart* view) :
-    selectedView(view),
+TaskSurfaceFinishSymbols::TaskSurfaceFinishSymbols(const std::string &ownerName) :
+    currentIcon(nullptr),
     ui(new Ui_TaskSurfaceFinishSymbols)
 {
-    raValues = {"RA50", "RA25", "RA12, 5", "RA6, 3",
-                "RA3, 2", "RA1, 6", "RA0, 8", "RA0, 4",
-                "RA0, 2", "RA0, 1", "RA0, 05", "RA0, 025"};
+    App::Document *doc = App::GetApplication().getActiveDocument();
+    if (doc) {
+        owner = doc->getObject(ownerName.c_str());
+        std::string subName;
+        if (!owner) {
+            size_t dot = ownerName.rfind('.');
+            if (dot != std::string::npos) {
+                subName = ownerName.substr(dot + 1);
+                owner = doc->getObject(ownerName.substr(0, dot).c_str());
+            }
+        }
+
+        auto page = dynamic_cast<TechDraw::DrawPage *>(owner);
+        if (page) {
+            placement.x = page->getPageWidth()/2.0;
+            placement.y = page->getPageHeight()/2.0;
+        }
+
+        auto viewPart = dynamic_cast<TechDraw::DrawViewPart *>(owner);
+        if (viewPart && !subName.empty()) {
+            std::string subType = DrawUtil::getGeomTypeFromName(subName);
+            if (subType == "Vertex") {
+                TechDraw::VertexPtr vertex = viewPart->getVertex(subName);
+                if (vertex) {
+                    placement = vertex->point();
+                }
+            }
+            else if (subType == "Edge") {
+                TechDraw::BaseGeomPtr edge = viewPart->getEdge(subName);
+                if (edge) {
+                    placement = edge->getMidPoint();
+                }
+            }
+            else if (subType == "Face") {
+                TechDraw::FacePtr face = viewPart->getFace(subName);
+                if (face) {
+                    placement = face->getCenter();
+                }
+            }
+
+            placement = DrawUtil::invertY(placement);
+        }
+    }
+
+    raValues = {"Ra50", "Ra25", "Ra12, 5", "Ra6, 3",
+                "Ra3, 2", "Ra1, 6", "Ra0, 8", "Ra0, 4",
+                "Ra0, 2", "Ra0, 1", "Ra0, 05", "Ra0, 025"};
     laySymbols = {"", "=", "⟂", "X", "M", "C", "R"};
     roughGrades = {"", "N1", "N2", "N3", "N4", "N5",
                    "N6", "N7", "N8", "N9", "N10", "N11"};
+
     ui->setupUi(this);
     setUiEdit();
+}
+
+QColor TaskSurfaceFinishSymbols::getPenColor()
+{
+    // TODO: should be dependent on global API giving pen color - not from hacking stylesheet name
+    const std::string stylesheetName = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/MainWindow")->GetASCII("StyleSheet");
+    if(boost::icontains(stylesheetName, "dark")) {
+        return Qt::white;
+    }
+    return Qt::black;
 }
 
 QPixmap TaskSurfaceFinishSymbols::baseSymbol(symbolType type)
 // return QPixmap showing a base symbol
 {
     QImage img (50, 64, QImage::Format_ARGB32_Premultiplied);
-    img.fill(QColor(240, 240, 240));
+    img.fill(Qt::transparent);
+
+    // TODO: color should depend on theme/background
     QPainter painter;
     painter.begin(&img);
-    painter.setPen(QPen(Qt::black, 2, Qt::SolidLine,
+    painter.setPen(QPen(getPenColor(), 2, Qt::SolidLine,
                         Qt::RoundCap, Qt::RoundJoin));
     painter.setRenderHints(QPainter::Antialiasing |
                            QPainter::SmoothPixmapTransform |
                            QPainter::TextAntialiasing);
-    painter.drawLine(QLine(0, 44, 12, 64));
-    painter.drawLine(QLine(12, 64, 42, 14));
+    painter.drawLine(QLine(0, 40, 12, 60));
+    painter.drawLine(QLine(12, 60, 42, 10));
     if (type == removeProhibit || type == removeProhibitAll)
-        painter.drawEllipse(QPoint(12, 46), 9,9);
+        painter.drawEllipse(QPoint(12, 42), 9,9);
     if (type == removeRequired || type == removeRequiredAll)
-        painter.drawLine(QLine(0, 44, 24, 44));
+        painter.drawLine(QLine(0, 40, 24, 40));
     if (type > removeRequired)
-        painter.drawEllipse(QPoint(42, 14), 6,6);
+        painter.drawEllipse(QPoint(42, 10), 6,6);
     painter.end();
     return QPixmap::fromImage(img);
 }
@@ -187,12 +251,26 @@ void TaskSurfaceFinishSymbols::setUiEdit()
     ui->pbIcon04->setIcon(baseSymbol(anyMethodAll));
     ui->pbIcon05->setIcon(baseSymbol(removeProhibitAll));
     ui->pbIcon06->setIcon(baseSymbol(removeRequiredAll));
+
+    int w = ui->pbIcon01->width();
+    int h = ui->pbIcon01->height();
+    ui->pbIcon01->setIconSize(QSize(w, h));
+    ui->pbIcon02->setIconSize(QSize(w, h));
+    ui->pbIcon03->setIconSize(QSize(w, h));
+    ui->pbIcon04->setIconSize(QSize(w, h));
+    ui->pbIcon05->setIconSize(QSize(w, h));
+    ui->pbIcon06->setIconSize(QSize(w, h));
+
+
     activeIcon = anyMethod ;
     isISO = true;
 
     // Create scene and all items used in the scene
     symbolScene = new(QGraphicsScene);
+    // symbolScene->setBackgroundBrush(Qt::blue);
+    ui->graphicsView->setBackgroundBrush(Qt::NoBrush);
     ui->graphicsView->setScene(symbolScene);
+
     // QLineEdit showing method
     leMethod = new(QLineEdit);
     leMethod->resize(90, 20);
@@ -204,7 +282,7 @@ void TaskSurfaceFinishSymbols::setUiEdit()
     leAddition->resize(25, 20);
     leAddition->setToolTip(QObject::tr("Addition"));
     QGraphicsProxyWidget* proxyAddition = symbolScene->addWidget(leAddition);
-    proxyAddition->setPos(-80, -85);
+    proxyAddition->setPos(-110, -85);
     proxyAddition->setZValue(-2);
     // QComboBox showing RA values
     cbRA = new(QComboBox);
@@ -236,7 +314,7 @@ void TaskSurfaceFinishSymbols::setUiEdit()
         cbMinRought->addItem(QString::fromStdString(nextGrade));
     cbMinRought->setToolTip(QObject::tr("Minimum roughness grade number"));
     proxyMinRough = symbolScene->addWidget(cbMinRought);
-    proxyMinRough->setPos(-80, -118);
+    proxyMinRough->setPos(-100, -118);
     proxyMinRough-> setZValue(1);
     proxyMinRough->hide();
     // QComboBox showing maximal roughness grade
@@ -246,20 +324,13 @@ void TaskSurfaceFinishSymbols::setUiEdit()
         cbMaxRought->addItem(QString::fromStdString(nextGrade));
     cbMaxRought->setToolTip(QObject::tr("Maximum roughness grade number"));
     proxyMaxRough = symbolScene->addWidget(cbMaxRought);
-    proxyMaxRough->setPos(-80, -143);
+    proxyMaxRough->setPos(-100, -143);
     proxyMaxRough->setZValue(1);
     proxyMaxRough->hide();
     // add horizontal line
     symbolScene->addLine(QLine(-8, -116, 90, -116),
-                         QPen(Qt::black, 2,Qt::SolidLine,
+                         QPen(getPenColor(), 2,Qt::SolidLine,
                          Qt::RoundCap, Qt::RoundJoin));
-    // add pixmap of the surface finish symbol
-    QIcon symbolIcon = ui->pbIcon01->icon();
-    QGraphicsPixmapItem* pixmapItem = new(QGraphicsPixmapItem);
-    pixmapItem->setPixmap(symbolIcon.pixmap(50, 64));
-    pixmapItem->setPos(-50, -130);
-    pixmapItem->setZValue(-1);
-    symbolScene->addItem(pixmapItem);
 
     connect(ui->pbIcon01, &QPushButton::clicked, this, &TaskSurfaceFinishSymbols::onIconChanged);
     connect(ui->pbIcon02, &QPushButton::clicked, this, &TaskSurfaceFinishSymbols::onIconChanged);
@@ -269,6 +340,9 @@ void TaskSurfaceFinishSymbols::setUiEdit()
     connect(ui->pbIcon06, &QPushButton::clicked, this, &TaskSurfaceFinishSymbols::onIconChanged);
     connect(ui->rbISO, &QPushButton::clicked, this, &TaskSurfaceFinishSymbols::onISO);
     connect(ui->rbASME, &QPushButton::clicked, this, &TaskSurfaceFinishSymbols::onASME);
+
+    // set initial icon
+    ui->pbIcon01->click();
 }
 
 void TaskSurfaceFinishSymbols::onIconChanged()
@@ -288,11 +362,14 @@ void TaskSurfaceFinishSymbols::onIconChanged()
     if (ui->pbIcon06 == pressedButton) activeIcon = removeRequiredAll;
 
     QIcon symbolIcon = pressedButton->icon();
-    QGraphicsPixmapItem* pixmapItem = new(QGraphicsPixmapItem);
-    pixmapItem->setPixmap(symbolIcon.pixmap(50, 64));
-    pixmapItem->setPos(-50, -130);
-    pixmapItem->setZValue(-1);
-    symbolScene->addItem(pixmapItem);
+    if(currentIcon) {
+        symbolScene->removeItem(currentIcon);
+    }
+    currentIcon = new(QGraphicsPixmapItem);
+    currentIcon->setPixmap(symbolIcon.pixmap(50, 64));
+    currentIcon->setPos(-50, -126);
+    currentIcon->setZValue(-1);
+    symbolScene->addItem(currentIcon);
 }
 
 void TaskSurfaceFinishSymbols::onISO()
@@ -324,8 +401,25 @@ bool TaskSurfaceFinishSymbols::accept()
     TechDraw::DrawViewSymbol *surfaceSymbol = dynamic_cast<TechDraw::DrawViewSymbol*>(docObject);
     surfaceSymbol->Symbol.setValue(completeSymbol());
     surfaceSymbol->Rotation.setValue(ui->leAngle->text().toDouble());
-    TechDraw::DrawPage* page = selectedView->findParentPage();
-    page->addView(surfaceSymbol);
+
+    auto view = dynamic_cast<TechDraw::DrawView *>(owner);
+    surfaceSymbol->Owner.setValue(view);
+    surfaceSymbol->X.setValue(placement.x);
+    surfaceSymbol->Y.setValue(placement.y);
+
+    auto viewProvider = dynamic_cast<ViewProviderSymbol *>(QGIView::getViewProvider(surfaceSymbol));
+    if (viewProvider) {
+        viewProvider->StackOrder.setValue(ZVALUE::DIMENSION);
+    }
+
+    auto page = dynamic_cast<TechDraw::DrawPage *>(owner);
+    if (!page && view) {
+        page = view->findParentPage();
+    }
+    if (page) {
+        page->addView(surfaceSymbol);
+    }
+
     Gui::Command::commitCommand();
     return true;
 }
@@ -339,10 +433,10 @@ bool TaskSurfaceFinishSymbols::reject()
 // TaskDlgSurfaceFinishSymbols//
 //===========================================================================
 
-TaskDlgSurfaceFinishSymbols::TaskDlgSurfaceFinishSymbols(TechDraw::DrawViewPart* view)
+TaskDlgSurfaceFinishSymbols::TaskDlgSurfaceFinishSymbols(const std::string &ownerName)
     : TaskDialog()
 {
-    widget  = new TaskSurfaceFinishSymbols(view);
+    widget  = new TaskSurfaceFinishSymbols(ownerName);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_SurfaceFinishSymbols"),
                                              widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);

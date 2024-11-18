@@ -35,16 +35,16 @@
 DEF_STD_CMD(CmdCloudTest)
 
 CmdCloudTest::CmdCloudTest()
-  :Command("Cloud_Test")
+    : Command("Cloud_Test")
 {
-    sAppModule    = "Cloud";
-    sGroup        = QT_TR_NOOP("Cloud");
-    sMenuText     = QT_TR_NOOP("Hello");
-    sToolTipText  = QT_TR_NOOP("Cloud Test function");
-    sWhatsThis    = "Cloud_Test";
-    sStatusTip    = QT_TR_NOOP("Cloud Test function");
-    sPixmap       = "Test1";
-    sAccel        = "CTRL+H";
+    sAppModule = "Cloud";
+    sGroup = QT_TR_NOOP("Cloud");
+    sMenuText = QT_TR_NOOP("Hello");
+    sToolTipText = QT_TR_NOOP("Cloud Test function");
+    sWhatsThis = "Cloud_Test";
+    sStatusTip = QT_TR_NOOP("Cloud Test function");
+    sPixmap = "Test1";
+    sAccel = "CTRL+H";
 }
 
 void CmdCloudTest::activated(int)
@@ -54,6 +54,6 @@ void CmdCloudTest::activated(int)
 
 void CreateCloudCommands(void)
 {
-    Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
     rcCmdMgr.addCommand(new CmdCloudTest());
 }

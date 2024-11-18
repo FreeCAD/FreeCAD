@@ -109,10 +109,11 @@ class TechDrawExport BaseGeom : public std::enable_shared_from_this<BaseGeom>
         double minDist(Base::Vector3d p);
         Base::Vector3d nearPoint(Base::Vector3d p);
         Base::Vector3d nearPoint(const BaseGeomPtr p);
-        static BaseGeomPtr baseFactory(TopoDS_Edge edge);
+        static BaseGeomPtr baseFactory(TopoDS_Edge edge, bool isCosmetic=false);
         static bool validateEdge(TopoDS_Edge edge);
+        static TopoDS_Edge completeEdge(const TopoDS_Edge &edge);
         bool closed();
-        BaseGeomPtr copy();
+        virtual BaseGeomPtr copy();
         std::string dump();
         virtual std::string toString() const;
         std::vector<Base::Vector3d> intersection(TechDraw::BaseGeomPtr geom2);
@@ -145,20 +146,15 @@ class TechDrawExport BaseGeom : public std::enable_shared_from_this<BaseGeom>
         void sourceIndex(int si) { m_sourceIndex = si; }
         std::string getCosmeticTag() { return cosmeticTag; }
         void setCosmeticTag(std::string t) { cosmeticTag = t; }
-        Part::TopoShape asTopoShape(double scale);
+        Part::TopoShape asTopoShape(double scale = 1.0);
+
+        virtual double getStartAngle() { return 0.0; }
+        virtual double getEndAngle() { return 0.0; }
+        virtual bool clockwiseAngle() { return false; }
+        virtual void clockwiseAngle(bool direction) { (void) direction; }
 
 protected:
         void createNewTag();
-
-        void intersectionLL(TechDraw::BaseGeomPtr geom1,
-                            TechDraw::BaseGeomPtr geom2,
-                            std::vector<Base::Vector3d>& interPoints);
-        void intersectionCL(TechDraw::BaseGeomPtr geom1,
-                            TechDraw::BaseGeomPtr geom2,
-                            std::vector<Base::Vector3d>& interPoints);
-        void intersectionCC(TechDraw::BaseGeomPtr geom1,
-                            TechDraw::BaseGeomPtr geom2,
-                            std::vector<Base::Vector3d>& interPoints);
 
         GeomType geomType;
         ExtractionType extractType;     //obs
@@ -217,6 +213,10 @@ class TechDrawExport AOE: public Ellipse
         ~AOE() override = default;
 
     public:
+        double getStartAngle() override { return startAngle; }
+        double getEndAngle() override { return endAngle; }
+        bool clockwiseAngle() override { return cw; }
+        void clockwiseAngle(bool direction) override  { cw = direction; }
         Base::Vector3d startPnt;  //TODO: The points are used for drawing, the angles for bounding box calcs - seems redundant
         Base::Vector3d endPnt;
         Base::Vector3d midPnt;
@@ -241,6 +241,12 @@ class TechDrawExport AOC: public Circle
         ~AOC() override = default;
 
     public:
+        BaseGeomPtr copy() override;
+        double getStartAngle() override { return startAngle; }
+        double getEndAngle() override { return endAngle; }
+        bool clockwiseAngle() override { return cw; }
+        void clockwiseAngle(bool direction) override  { cw = direction; }
+
         std::string toString() const override;
         void Save(Base::Writer& w) const override;
         void Restore(Base::XMLReader& r) override;
@@ -284,6 +290,9 @@ class TechDrawExport BSpline: public BaseGeom
         ~BSpline() override = default;
 
     public:
+        double getStartAngle() override { return startAngle; }
+        double getEndAngle() override { return endAngle; }
+
         Base::Vector3d startPnt;
         Base::Vector3d endPnt;
         Base::Vector3d midPnt;
@@ -339,6 +348,9 @@ class TechDrawExport Face
         ~Face();
         TopoDS_Face toOccFace() const;
         std::vector<Wire *> wires;
+
+        double getArea() const;
+        Base::Vector3d getCenter() const;
 };
 using FacePtr = std::shared_ptr<Face>;
 
@@ -381,7 +393,7 @@ class TechDrawExport Vertex
         bool isReference() { return m_reference; }
         void isReference(bool state) { m_reference = state; }
 
-        Part::TopoShape asTopoShape(double scale);
+        Part::TopoShape asTopoShape(double scale = 1.0);
 
     protected:
         //Uniqueness
@@ -434,7 +446,13 @@ class TechDrawExport GeometryUtils
 
         static bool isCircle(TopoDS_Edge occEdge);
         static bool getCircleParms(TopoDS_Edge occEdge, double& radius, Base::Vector3d& center, bool& isArc);
-        static TopoDS_Edge asCircle(TopoDS_Edge occEdge, bool& arc);
+        static TopoDS_Edge asCircle(TopoDS_Edge splineEdge, bool& arc);
+        static bool isLine(TopoDS_Edge occEdge);
+        static TopoDS_Edge asLine(TopoDS_Edge occEdge);
+
+        static double edgeLength(TopoDS_Edge occEdge);
+
+
 };
 
 } //end namespace TechDraw

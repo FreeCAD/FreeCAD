@@ -29,16 +29,19 @@
 #include <App/DocumentObserver.h>
 #include <Base/Vector3D.h>
 #include <Gui/TaskView/TaskDialog.h>
-#include <Mod/Sketcher/App/SketchAnalysis.h>
 
 
 class SoGroup;
-namespace Sketcher { class SketchObject; }
+namespace Sketcher
+{
+class SketchObject;
+}
 
-namespace SketcherGui {
+namespace SketcherGui
+{
 
 class Ui_TaskSketcherValidation;
-class SketcherValidation : public QWidget
+class SketcherValidation: public QWidget
 {
     Q_OBJECT
 
@@ -47,7 +50,7 @@ public:
     ~SketcherValidation() override;
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
     void setupConnections();
@@ -71,21 +74,22 @@ private:
 private:
     std::unique_ptr<Ui_TaskSketcherValidation> ui;
     App::WeakPtrT<Sketcher::SketchObject> sketch;
-    Sketcher::SketchAnalysis sketchAnalyser;
     SoGroup* coincidenceRoot;
 };
 
-class TaskSketcherValidation : public Gui::TaskView::TaskDialog
+class TaskSketcherValidation: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
     explicit TaskSketcherValidation(Sketcher::SketchObject* Obj);
     ~TaskSketcherValidation() override;
-    QDialogButtonBox::StandardButtons getStandardButtons(void) const override
-    { return QDialogButtonBox::Close; }
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
+    {
+        return QDialogButtonBox::Close;
+    }
 };
 
-} //namespace SketcherGui
+}  // namespace SketcherGui
 
-#endif // SKETCHERGUI_TASKSKETCHERVALIDATION_H
+#endif  // SKETCHERGUI_TASKSKETCHERVALIDATION_H

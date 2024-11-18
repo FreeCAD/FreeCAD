@@ -26,6 +26,7 @@
 
 #include <memory>
 #include <QDialog>
+#include <FCGlobal.h>
 
 class QSpinBox;
 class QDoubleSpinBox;
@@ -53,7 +54,7 @@ public:
   enum Type { LineEdit, SpinBox, UIntBox, FloatSpinBox, ComboBox };
 
   DlgInputDialogImp( const QString& label, QWidget* parent = nullptr, bool modal = true, Type = LineEdit );
-  ~DlgInputDialogImp();
+  ~DlgInputDialogImp() override;
 
   void setType( Type t );
   Type type() const;

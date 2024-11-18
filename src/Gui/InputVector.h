@@ -118,7 +118,7 @@ public:
         this->setupUi(this);
         this->retranslate();
     }
-    ~LocationDialogUi() override{}
+    ~LocationDialogUi() override = default;
 
     void retranslate()
     {
@@ -247,9 +247,7 @@ public:
         this->setupUi(dlg);
         this->retranslate(dlg);
     }
-    ~LocationUi()
-    {
-    }
+    ~LocationUi() = default;
 
     void retranslate(QDialog *dlg)
     {
@@ -367,10 +365,7 @@ public:
       : LocationDialog(parent, fl), ui(this)
     {
     }
-    ~LocationDialogImp() override
-    {
-        // no need to delete child widgets, Qt does it all for us
-    }
+    ~LocationDialogImp() override = default;
 
     Base::Vector3d getDirection() const override
     {
@@ -428,9 +423,7 @@ public:
     LocationImpUi(Ui* ui) : ui(ui)
     {
     }
-    ~LocationImpUi() override
-    {
-    }
+    ~LocationImpUi() override = default;
 
     boost::any get() override
     {

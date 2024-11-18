@@ -1,4 +1,4 @@
-#/***************************************************************************
+# /***************************************************************************
 # *   Copyright (c) 2016 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
@@ -20,10 +20,11 @@
 # *                                                                         *
 # ***************************************************************************/
 
+
 def getAllDependencies(feat):
-    '''getAllDependencies(feat): gets all features feat depends on, directly or indirectly.
+    """getAllDependencies(feat): gets all features feat depends on, directly or indirectly.
     Returns a list, with deepest dependencies last. feat is not included in the list, except
-    if the feature depends on itself (dependency loop).'''
+    if the feature depends on itself (dependency loop)."""
     list_traversing_now = [feat]
     set_of_deps = set()
     list_of_deps = []
@@ -41,10 +42,11 @@ def getAllDependencies(feat):
 
     return list_of_deps
 
+
 def getAllDependent(feat):
-    '''getAllDependent(feat): gets all features that depend on feat, directly or indirectly.
+    """getAllDependent(feat): gets all features that depend on feat, directly or indirectly.
     Returns a list, with deepest dependencies last. feat is not included in the list, except
-    if the feature depends on itself (dependency loop).'''
+    if the feature depends on itself (dependency loop)."""
     list_traversing_now = [feat]
     set_of_deps = set()
     list_of_deps = []

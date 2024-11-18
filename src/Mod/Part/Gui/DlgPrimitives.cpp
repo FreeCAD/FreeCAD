@@ -125,7 +125,7 @@ void Picker::createPrimitive(QWidget* widget, const QString& descr, Gui::Documen
         Gui::Command::runCommand(Gui::Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(widget, descr, QString::fromLatin1(e.what()));
+        QMessageBox::warning(widget, descr, QCoreApplication::translate("Exception", e.what()));
     }
 }
 
@@ -1153,7 +1153,7 @@ HelixPrimitive::HelixPrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Helix
     ui->helixPitch->setRange(0, INT_MAX);
     ui->helixHeight->setRange(0, INT_MAX);
     ui->helixRadius->setRange(0, INT_MAX);
-    ui->helixAngle->setRange(-90, 90);
+    ui->helixAngle->setRange(-89.9, 89.9);
 
     if (feature) {
         ui->helixPitch->setValue(feature->Pitch.getQuantityValue());
@@ -1805,9 +1805,7 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
 /*
  *  Destroys the object and frees any allocated resources
  */
-DlgPrimitives::~DlgPrimitives()
-{
-}
+DlgPrimitives::~DlgPrimitives() = default;
 
 void DlgPrimitives::activatePage()
 {
@@ -1935,11 +1933,11 @@ void DlgPrimitives::createPrimitive(const QString& placement)
     }
     catch (const std::exception& e) {
         QMessageBox::warning(this, tr("Create %1")
-            .arg(ui->PrimitiveTypeCB->currentText()), QString::fromLatin1(e.what()));
+            .arg(ui->PrimitiveTypeCB->currentText()), QCoreApplication::translate("Exception", e.what()));
     }
     catch (const Base::PyException& e) {
         QMessageBox::warning(this, tr("Create %1")
-            .arg(ui->PrimitiveTypeCB->currentText()), QString::fromLatin1(e.what()));
+            .arg(ui->PrimitiveTypeCB->currentText()), QCoreApplication::translate("Exception", e.what()));
     }
 }
 
@@ -2187,21 +2185,11 @@ QString Location::toPlacement() const
 
 TaskPrimitives::TaskPrimitives()
 {
-    Gui::TaskView::TaskBox* taskbox;
     widget = new DlgPrimitives();
-    taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(), true, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(widget);
 
     location = new Location();
-    taskbox = new Gui::TaskView::TaskBox(QPixmap(), location->windowTitle() ,true, nullptr);
-    taskbox->groupLayout()->addWidget(location);
-    Content.push_back(taskbox);
-}
-
-TaskPrimitives::~TaskPrimitives()
-{
-    // automatically deleted in the sub-class
+    addTaskBox(location);
 }
 
 QDialogButtonBox::StandardButtons TaskPrimitives::getStandardButtons() const
@@ -2234,22 +2222,12 @@ bool TaskPrimitives::reject()
 TaskPrimitivesEdit::TaskPrimitivesEdit(Part::Primitive* feature)
 {
     // create and show dialog for the primitives
-    Gui::TaskView::TaskBox* taskbox;
     widget = new DlgPrimitives(nullptr, feature);
-    taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(), true, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(widget);
 
     // create and show dialog for the location
     location = new Location(nullptr, feature);
-    taskbox = new Gui::TaskView::TaskBox(QPixmap(), location->windowTitle(), true, nullptr);
-    taskbox->groupLayout()->addWidget(location);
-    Content.push_back(taskbox);
-}
-
-TaskPrimitivesEdit::~TaskPrimitivesEdit()
-{
-    // automatically deleted in the sub-class
+    addTaskBox(location);
 }
 
 QDialogButtonBox::StandardButtons TaskPrimitivesEdit::getStandardButtons() const

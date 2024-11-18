@@ -27,6 +27,8 @@ import os
 import subprocess
 from typing import List
 
+from freecad.utils import get_python_exe
+
 import addonmanager_freecad_interface as fci
 from addonmanager_pyside_interface import QObject, Signal, is_interruption_requested
 
@@ -151,9 +153,7 @@ class DependencyInstaller(QObject):
                 fci.Console.PrintMessage(proc.stdout + "\n")
             except subprocess.CalledProcessError as e:
                 fci.Console.PrintError(
-                    translate(
-                        "AddonsInstaller", "Installation of optional package failed"
-                    )
+                    translate("AddonsInstaller", "Installation of optional package failed")
                     + ":\n"
                     + str(e)
                     + "\n"
@@ -172,7 +172,7 @@ class DependencyInstaller(QObject):
 
     def _get_python(self) -> str:
         """Wrap Python access so test code can mock it."""
-        python_exe = utils.get_python_exe()
+        python_exe = get_python_exe()
         if not python_exe:
             self.no_python_exe.emit()
         return python_exe
@@ -182,23 +182,19 @@ class DependencyInstaller(QObject):
             if is_interruption_requested():
                 return
             fci.Console.PrintMessage(
-                translate(
-                    "AddonsInstaller", "Installing required dependency {}"
-                ).format(addon.name)
+                translate("AddonsInstaller", "Installing required dependency {}").format(addon.name)
                 + "\n"
             )
             if addon.macro is None:
                 installer = AddonInstaller(addon)
             else:
                 installer = MacroInstaller(addon)
-            result = (
-                installer.run()
-            )  # Run in this thread, which should be off the GUI thread
+            result = installer.run()  # Run in this thread, which should be off the GUI thread
             if not result:
                 self.failure.emit(
-                    translate(
-                        "AddonsInstaller", "Installation of Addon {} failed"
-                    ).format(addon.name),
+                    translate("AddonsInstaller", "Installation of Addon {} failed").format(
+                        addon.name
+                    ),
                     "",
                 )
                 return

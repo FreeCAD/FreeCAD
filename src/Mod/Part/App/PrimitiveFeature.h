@@ -49,7 +49,6 @@ public:
 protected:
     void Restore(Base::XMLReader &reader) override;
     void onChanged (const App::Property* prop) override;
-    void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName) override;
     void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
 };
 
@@ -314,6 +313,7 @@ public:
     App::PropertyQuantityConstraint SegmentLength;
     App::PropertyEnumeration     LocalCoord;
     App::PropertyEnumeration     Style;
+    App::PropertyLength Length;
 
     /** @name methods override feature */
     //@{
@@ -345,6 +345,7 @@ public:
     App::PropertyQuantityConstraint Rotations;
     App::PropertyLength Radius;
     App::PropertyQuantityConstraint SegmentLength;
+    App::PropertyLength Length;
 
     /** @name methods override feature */
     //@{

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   height="64"
+   width="64"
+   id="svg16"
+   sodipodi:docname="Sketcher_Pointer_Create_BSplineByInterpolation.svg"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="6.607029"
+     inkscape:cx="34.660057"
+     inkscape:cy="39.049322"
+     inkscape:window-width="1368"
+     inkscape:window-height="842"
+     inkscape:window-x="-6"
+     inkscape:window-y="-6"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="symbol" />
+  <defs
+     id="defs20">
+    <linearGradient
+       xlink:href="#linearGradient3836-9-3"
+       id="linearGradient3262"
+       gradientUnits="userSpaceOnUse"
+       x1="-18"
+       y1="18"
+       x2="-22"
+       y2="5" />
+    <linearGradient
+       id="linearGradient3836-9-3">
+      <stop
+         style="stop-color:#a40000;stop-opacity:1"
+         offset="0"
+         id="stop3838-8-5" />
+      <stop
+         style="stop-color:#ef2929;stop-opacity:1"
+         offset="1"
+         id="stop3840-1-6" />
+    </linearGradient>
+  </defs>
+  <g
+     id="symbol"
+     style="fill:none;stroke:#cc0000;stroke-width:2"
+     transform="translate(1.1788527,3.8661511)">
+    <circle
+       cx="23.297354"
+       cy="52.548164"
+       id="circle6"
+       style="stroke-width:2"
+       r="4" />
+    <circle
+       cx="27.699886"
+       cy="26.176493"
+       id="circle8"
+       style="stroke-width:2"
+       r="4" />
+    <circle
+       cx="47.962303"
+       cy="50.087288"
+       id="circle8-8"
+       style="fill:none;stroke:#cc0000;stroke-width:2"
+       r="4" />
+    <circle
+       cx="52.706112"
+       cy="22.099838"
+       id="circle10"
+       style="stroke-width:2"
+       r="4" />
+    <path
+       style="display:inline;fill:none;stroke:#cc0000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 23.297353,52.548163 c 0,0 -8.94258,-11.156591 -3.950431,-19.804497 5.734494,-9.933869 15.252825,-7.090961 18.332494,-2.704579 4.942472,7.03958 -3.04763,12.631195 4.037149,18.543304 4.973569,4.150346 11.983381,-0.119742 13.972494,-4.832016 5.071743,-12.01511 -2.982946,-21.650536 -2.982946,-21.650536"
+       id="path7375-2" />
+  </g>
+  <g
+     id="crosshair"
+     style="stroke:#ffffff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:miter">
+    <path
+       d="m16,3v9m0,8v9m-13-13h9m8,0h9"
+       id="path13" />
+  </g>
+</svg>

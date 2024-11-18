@@ -44,8 +44,8 @@ App::DocumentObjectExecReturn *FeatureGeometrySet::execute()
     const std::vector<Geometry*> &Geoms = GeometrySet.getValues();
 
     bool first = true;
-    for(std::vector<Geometry*>::const_iterator it=Geoms.begin();it!=Geoms.end();++it){
-        TopoDS_Shape sh = (*it)->toShape();
+    for(auto Geom : Geoms) {
+        TopoDS_Shape sh = Geom->toShape();
         if (first) {
             first = false;
             result.setShape(sh);

@@ -21,9 +21,8 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <cassert>
 
+#ifndef _PreComp_
 # include <QPainterPath>
 # include <QPainterPathStroker>
 #endif
@@ -32,10 +31,13 @@
 #include <App/Material.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
+#include <Gui/Control.h>
+#include <Mod/TechDraw/App/DrawUtil.h>
 
 #include "QGIEdge.h"
 #include "PreferencesGui.h"
-
+#include "TaskLineDecor.h"
+#include "QGIView.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -46,12 +48,16 @@ QGIEdge::QGIEdge(int index) :
     isHiddenEdge(false),
     isSmoothEdge(false)
 {
+    setFlag(QGraphicsItem::ItemIsFocusable, true);      // to get key press events
+    setFlag(QGraphicsItem::ItemIsSelectable, true);
+
     m_width = 1.0;
     setCosmetic(isCosmetic);
     setFill(Qt::NoBrush);
 }
 
-//NOTE this refers to Qt cosmetic lines
+// NOTE this refers to Qt cosmetic lines (a line with minimum width),
+// not FreeCAD cosmetic lines
 void QGIEdge::setCosmetic(bool state)
 {
 //    Base::Console().Message("QGIE::setCosmetic(%d)\n", state);
@@ -90,6 +96,7 @@ Qt::PenStyle QGIEdge::getHiddenStyle()
 {
     //Qt::PenStyle - NoPen, Solid, Dashed, ...
     //Preferences::General - Solid, Dashed
+    // Dashed lines should use ISO Line #2 instead of Qt::DashedLine
     Qt::PenStyle hidStyle = static_cast<Qt::PenStyle> (Preferences::getPreferenceGroup("General")->GetInt("HiddenLine", 0) + 1);
     return hidStyle;
 }
@@ -112,4 +119,27 @@ QPainterPath QGIEdge::shape() const
     stroker.setWidth(getEdgeFuzz());
     outline = stroker.createStroke(path());
     return outline;
+}
+
+void QGIEdge::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+{
+    Q_UNUSED(event)
+    QGIView *parent = dynamic_cast<QGIView *>(parentItem());
+    if (parent && parent->getViewObject() && parent->getViewObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+        TechDraw::DrawViewPart *baseFeat = static_cast<TechDraw::DrawViewPart *>(parent->getViewObject());
+        std::vector<std::string> edgeName(1, DrawUtil::makeGeomName("Edge", getProjIndex()));
+
+        Gui::Control().showDialog(new TaskDlgLineDecor(baseFeat, edgeName));
+    }
+}
+
+void QGIEdge::setLinePen(QPen linePen)
+{
+    m_pen = linePen;
+}
+
+void QGIEdge::setCurrentPen()
+{
+    m_pen.setWidthF(m_width);
+    m_pen.setColor(m_colCurrent);
 }

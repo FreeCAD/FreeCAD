@@ -49,9 +49,7 @@ PropertyItemDelegate::PropertyItemDelegate(QObject* parent)
 {
 }
 
-PropertyItemDelegate::~PropertyItemDelegate()
-{
-}
+PropertyItemDelegate::~PropertyItemDelegate() = default;
 
 QSize PropertyItemDelegate::sizeHint(const QStyleOptionViewItem & option, const QModelIndex & index) const
 {
@@ -134,7 +132,7 @@ bool PropertyItemDelegate::eventFilter(QObject *o, QEvent *ev)
             // All the attempts to ignore the focus-out event has been approved to not work
             // reliably because there are still cases that cannot be handled.
             // So, the best for now is to always ignore this event.
-            // See https://forum.freecadweb.org/viewtopic.php?p=579530#p579530 why this is not
+            // See https://forum.freecad.org/viewtopic.php?p=579530#p579530 why this is not
             // possible.
             return false;
         }
@@ -161,19 +159,26 @@ QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOpti
 
     FC_LOG("create editor " << index.row() << "," << index.column());
 
-    QWidget* editor;
+    QWidget* editor = nullptr;
     expressionEditor = nullptr;
     userEditor = nullptr;
     if (parentEditor && parentEditor->isBinding()) {
-        expressionEditor = editor = childItem->createExpressionEditor(parent, this, SLOT(valueChanged()));
+        expressionEditor = editor = childItem->createExpressionEditor(parent, [this]() {
+            const_cast<PropertyItemDelegate*>(this)->valueChanged();  // NOLINT
+        });
+        propertyEditor = editor;
     }
     else {
         const auto &props = childItem->getPropertyData();
         if (!props.empty() && props[0]->testStatus(App::Property::UserEdit)) {
             editor = userEditor = childItem->createPropertyEditorWidget(parent);
+            propertyEditor = editor;
         }
         else {
-            editor = childItem->createEditor(parent, this, SLOT(valueChanged()));
+            editor = childItem->createEditor(parent, [this]() {
+                const_cast<PropertyItemDelegate*>(this)->valueChanged();  // NOLINT
+            });
+            propertyEditor = editor;
         }
     }
     if (editor) {
@@ -210,10 +215,9 @@ QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOpti
 
 void PropertyItemDelegate::valueChanged()
 {
-    QWidget* editor = qobject_cast<QWidget*>(sender());
-    if (editor) {
+    if (propertyEditor) {
         Base::FlagToggler<> flag(changed);
-        Q_EMIT commitData(editor);
+        Q_EMIT commitData(propertyEditor);
     }
 }
 

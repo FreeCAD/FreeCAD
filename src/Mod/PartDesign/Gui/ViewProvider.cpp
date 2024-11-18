@@ -50,14 +50,12 @@ using namespace PartDesignGui;
 PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesignGui::ViewProvider, PartGui::ViewProviderPart)
 
 ViewProvider::ViewProvider()
-: oldTip(nullptr), isSetTipIcon(false)
 {
+    ViewProviderSuppressibleExtension::initExtension(this);
     PartGui::ViewProviderAttachExtension::initExtension(this);
 }
 
-ViewProvider::~ViewProvider()
-{
-}
+ViewProvider::~ViewProvider() = default;
 
 bool ViewProvider::doubleClicked()
 {
@@ -90,7 +88,7 @@ bool ViewProvider::setEdit(int ModNum)
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
         TaskDlgFeatureParameters *featureDlg = qobject_cast<TaskDlgFeatureParameters *>(dlg);
         // NOTE: if the dialog is not partDesigan dialog the featureDlg will be NULL
-        if (featureDlg && featureDlg->viewProvider() != this) {
+        if (featureDlg && featureDlg->getViewObject() != this) {
             featureDlg = nullptr; // another feature left open its task panel
         }
         if (dlg && !featureDlg) {
@@ -164,7 +162,7 @@ void ViewProvider::unsetEdit(int ModNum)
 void ViewProvider::updateData(const App::Property* prop)
 {
     // TODO What's that? (2015-07-24, Fat-Zer)
-    if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId() &&
+    if (prop->is<Part::PropertyPartShape>() &&
         strcmp(prop->getName(),"AddSubShape") == 0) {
         return;
     }
@@ -207,26 +205,8 @@ QIcon ViewProvider::mergeColorfulOverlayIcons (const QIcon & orig) const
     QIcon mergedicon = orig;
 
     if(isSetTipIcon) {
-        QPixmap px;
-
-        static const char * const feature_tip_xpm[]={
-            "9 9 3 1",
-            ". c None",
-            "# c #00cc00",
-            "a c #ffffff",
-            "...###...",
-            ".##aaa##.",
-            ".##aaa##.",
-            "###aaa###",
-            "##aaaaa##",
-            "##aaaaa##",
-            ".##aaa##.",
-            ".##aaa##.",
-            "...###..."};
-        px = QPixmap(feature_tip_xpm);
-
+        static QPixmap px(Gui::BitmapFactory().pixmapFromSvg("PartDesign_Overlay_Tip", QSize(10, 10)));
         mergedicon = Gui::BitmapFactoryInst::mergePixmap(mergedicon, px, Gui::BitmapFactoryInst::BottomRight);
-
     }
 
     return Gui::ViewProvider::mergeColorfulOverlayIcons (mergedicon);
@@ -334,6 +314,6 @@ PROPERTY_SOURCE_TEMPLATE(PartDesignGui::ViewProviderPython, PartDesignGui::ViewP
 /// @endcond
 
 // explicit template instantiation
-template class PartDesignGuiExport ViewProviderPythonFeatureT<PartDesignGui::ViewProvider>;
+template class PartDesignGuiExport ViewProviderFeaturePythonT<PartDesignGui::ViewProvider>;
 }
 

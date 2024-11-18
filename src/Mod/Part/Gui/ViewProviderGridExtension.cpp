@@ -271,7 +271,9 @@ void GridExtensionP::createGrid(bool cameraUpdate)
 
 void GridExtensionP::createGridPart(int numberSubdiv, bool subDivLines, bool divLines, int pattern, SoBaseColor* color, int lineWidth)
 {
-    SoGroup* parent = new Gui::SoSkipBoundingGroup();
+    auto* parent = new Gui::SoSkipBoundingGroup();
+    parent->mode = Gui::SoSkipBoundingGroup::EXCLUDE_BBOX;
+
     GridRoot->addChild(parent);
     SoVertexProperty* vts;
 
@@ -433,8 +435,7 @@ ViewProviderGridExtension::ViewProviderGridExtension()
 
 }
 
-ViewProviderGridExtension::~ViewProviderGridExtension()
-{}
+ViewProviderGridExtension::~ViewProviderGridExtension() = default;
 
 void ViewProviderGridExtension::setGridEnabled(bool enable)
 {
@@ -469,7 +470,7 @@ void ViewProviderGridExtension::getClosestGridPoint(double &x, double &y) const
 void ViewProviderGridExtension::extensionUpdateData(const App::Property* prop)
 {
     if(pImpl->getEnabled()) {
-        if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId()) {
+        if (prop->is<Part::PropertyPartShape>()) {
             pImpl->drawGrid();
         }
     }
@@ -540,7 +541,7 @@ bool ViewProviderGridExtension::extensionHandleChangedPropertyType(Base::XMLRead
 {
     Base::Type inputType = Base::Type::fromName(TypeName);
 
-    if (prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId()) &&
+    if (prop->isDerivedFrom<App::PropertyFloat>() &&
         inputType.isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
         // Do not directly call the property's Restore method in case the implementation
         // has changed. So, create a temporary PropertyFloat object and assign the value.
@@ -550,7 +551,7 @@ bool ViewProviderGridExtension::extensionHandleChangedPropertyType(Base::XMLRead
         return true;
     }
 
-    return false;
+    return Gui::ViewProviderExtension::extensionHandleChangedPropertyType(reader, TypeName, prop);
 }
 
 namespace Gui {

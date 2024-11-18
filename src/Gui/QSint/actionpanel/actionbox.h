@@ -242,7 +242,7 @@ public:
       */
     void addWidget(QWidget * w, QLayout * l = nullptr);
 
-    virtual QSize minimumSizeHint() const;
+    QSize minimumSizeHint() const override;
 
 protected:
     void init();

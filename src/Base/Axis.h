@@ -27,7 +27,8 @@
 #include "Placement.h"
 #include "Vector3D.h"
 
-namespace Base {
+namespace Base
+{
 
 /**
  * The Axis class.
@@ -36,16 +37,29 @@ class BaseExport Axis
 {
 public:
     /// default constructor
-    Axis();
-    Axis(const Axis&);
+    Axis() = default;
+    Axis(const Axis&) = default;
+    Axis(Axis&&) = default;
     Axis(const Vector3d& Orig, const Vector3d& Dir);
     /// Destruction
-    ~Axis () = default;
+    ~Axis() = default;
 
-    const Vector3d& getBase() const {return _base;}
-    const Vector3d& getDirection() const {return _dir;}
-    void setBase(const Vector3d& Orig) {_base=Orig;}
-    void setDirection(const Vector3d& Dir) {_dir=Dir;}
+    const Vector3d& getBase() const
+    {
+        return _base;
+    }
+    const Vector3d& getDirection() const
+    {
+        return _dir;
+    }
+    void setBase(const Vector3d& Orig)
+    {
+        _base = Orig;
+    }
+    void setDirection(const Vector3d& Dir)
+    {
+        _dir = Dir;
+    }
 
     void reverse();
     Axis reversed() const;
@@ -53,18 +67,19 @@ public:
 
     /** Operators. */
     //@{
-    Axis& operator *=(const Placement &p);
-    Axis operator *(const Placement &p) const;
-    bool operator ==(const Axis&) const;
-    bool operator !=(const Axis&) const;
-    Axis& operator =(const Axis&);
+    Axis& operator*=(const Placement& plm);
+    Axis operator*(const Placement& plm) const;
+    bool operator==(const Axis&) const;
+    bool operator!=(const Axis&) const;
+    Axis& operator=(const Axis&) = default;
+    Axis& operator=(Axis&&) = default;
     //@}
 
-protected:
+private:
     Vector3d _base;
     Vector3d _dir;
 };
 
-} // namespace Base
+}  // namespace Base
 
-#endif // BASE_AXIS_H
+#endif  // BASE_AXIS_H

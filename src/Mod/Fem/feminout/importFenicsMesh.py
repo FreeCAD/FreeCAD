@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2017 Johannes Hartung <j.hartung@gmx.net>               *
+# *   Copyright (c) 2017-2023 Johannes Hartung <j.hartung@gmx.net>          *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -23,7 +23,7 @@
 
 __title__ = "Mesh import and export for Fenics mesh file format"
 __author__ = "Johannes Hartung"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package importFenicsMesh
 #  \ingroup FEM
@@ -38,6 +38,7 @@ from . import importToolsFem
 from . import readFenicsXML
 from . import writeFenicsXML
 from . import writeFenicsXDMF
+from builtins import open as pyopen
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -46,19 +47,20 @@ if FreeCAD.GuiUp:
 
 # Template copied from importZ88Mesh.py. Thanks Bernd!
 # ********* generic FreeCAD import and export methods *********
-pyopen = open
+
 
 if FreeCAD.GuiUp:
+
     class WriteXDMFTaskPanel:
         """
         This task panel is used to write mesh groups with user defined values.
         It will called if there are mesh groups detected. Else it will be bypassed.
         """
+
         def __init__(self, fem_mesh_obj, fileString):
-            self.form = FreeCADGui.PySideUic.loadUi(os.path.join(
-                FreeCAD.getHomePath(),
-                "Mod/Fem/Resources/ui/MeshGroupXDMFExport.ui"
-            ))
+            self.form = FreeCADGui.PySideUic.loadUi(
+                os.path.join(FreeCAD.getHomePath(), "Mod/Fem/Resources/ui/MeshGroupXDMFExport.ui")
+            )
             self.result_dict = {}
             self.fem_mesh_obj = fem_mesh_obj
             self.fileString = fileString
@@ -71,34 +73,27 @@ if FreeCAD.GuiUp:
                 item.setFlags(~QtCore.Qt.ItemIsEditable & ~QtCore.Qt.ItemIsEnabled)
                 return item
 
-            gmshgroups = importToolsFem.get_FemMeshObjectMeshGroups(
-                self.fem_mesh_obj
-            )
+            gmshgroups = importToolsFem.get_FemMeshObjectMeshGroups(self.fem_mesh_obj)
             fem_mesh = self.fem_mesh_obj.FemMesh
 
             self.form.tableGroups.setRowCount(0)
             self.form.tableGroups.setRowCount(len(gmshgroups))
 
-            for (ind, gind) in enumerate(gmshgroups):
+            for ind, gind in enumerate(gmshgroups):
                 # group number
-                self.form.tableGroups.setItem(ind, 0,
-                                              ro(QtGui.QTableWidgetItem(
-                                                  str(gind))))
+                self.form.tableGroups.setItem(ind, 0, ro(QtGui.QTableWidgetItem(str(gind))))
                 # group name
-                self.form.tableGroups.setItem(ind, 1,
-                                              ro(QtGui.QTableWidgetItem(
-                                                  fem_mesh.getGroupName(gind))))
+                self.form.tableGroups.setItem(
+                    ind, 1, ro(QtGui.QTableWidgetItem(fem_mesh.getGroupName(gind)))
+                )
                 # group elements
-                self.form.tableGroups.setItem(ind, 2,
-                                              ro(QtGui.QTableWidgetItem(
-                                                  fem_mesh.getGroupElementType(
-                                                      gind))))
+                self.form.tableGroups.setItem(
+                    ind, 2, ro(QtGui.QTableWidgetItem(fem_mesh.getGroupElementType(gind)))
+                )
                 # default value for not marked elements
-                self.form.tableGroups.setItem(ind, 3,
-                                              QtGui.QTableWidgetItem(str(0)))
+                self.form.tableGroups.setItem(ind, 3, QtGui.QTableWidgetItem(str(0)))
                 # default value for marked elements
-                self.form.tableGroups.setItem(ind, 4,
-                                              QtGui.QTableWidgetItem(str(1)))
+                self.form.tableGroups.setItem(ind, 4, QtGui.QTableWidgetItem(str(1)))
 
             header = self.form.tableGroups.horizontalHeader()
             header.setResizeMode(0, QtGui.QHeaderView.ResizeToContents)
@@ -134,8 +129,8 @@ if FreeCAD.GuiUp:
             group_values_dict = self.convert_table_to_group_dict()
 
             writeFenicsXDMF.write_fenics_mesh_xdmf(
-                self.fem_mesh_obj, self.fileString,
-                group_values_dict=group_values_dict)
+                self.fem_mesh_obj, self.fileString, group_values_dict=group_values_dict
+            )
 
             FreeCADGui.Control.closeDialog()
 
@@ -163,8 +158,7 @@ def export(objectslist, fileString, group_values_dict_nogui=None):
     of (marked_value (default=1), default_value (default=0))
     """
     if len(objectslist) != 1:
-        Console.PrintError(
-            "This exporter can only export one object.\n")
+        Console.PrintError("This exporter can only export one object.\n")
         return
     obj = objectslist[0]
     if not obj.isDerivedFrom("Fem::FemMeshObject"):
@@ -174,11 +168,12 @@ def export(objectslist, fileString, group_values_dict_nogui=None):
     if fileString != "":
         fileName, fileExtension = os.path.splitext(fileString)
         if fileExtension.lower() == ".xml":
-            Console.PrintWarning(
-                "XML is not designed to save higher order elements.\n")
-            Console.PrintWarning(
-                "Reducing order for second order mesh.\n")
-            Console.PrintWarning("Tri6 -> Tri3, Tet10 -> Tet4, etc.\n")
+            if obj.ElementOrder != "1st":
+                Console.PrintWarning(
+                    "XML is not designed to save higher order elements.\n"
+                    + "Reducing order for second order mesh.\n"
+                    + "Tri6 -> Tri3, Tet10 -> Tet4, etc.\n"
+                )
             writeFenicsXML.write_fenics_mesh_xml(obj, fileString)
         elif fileExtension.lower() == ".xdmf":
             mesh_groups = importToolsFem.get_FemMeshObjectMeshGroups(obj)
@@ -190,19 +185,17 @@ def export(objectslist, fileString, group_values_dict_nogui=None):
                 else:
                     # create default dict if groupdict_nogui is not None
                     if group_values_dict_nogui is None:
-                        group_values_dict_nogui = dict([(g, (1, 0))
-                                                        for g in mesh_groups])
+                        group_values_dict_nogui = {g: (1, 0) for g in mesh_groups}
                     writeFenicsXDMF.write_fenics_mesh_xdmf(
-                        obj, fileString,
-                        group_values_dict=group_values_dict_nogui)
+                        obj, fileString, group_values_dict=group_values_dict_nogui
+                    )
             else:
                 writeFenicsXDMF.write_fenics_mesh_xdmf(obj, fileString)
 
 
 # ********* module specific methods *********
 def import_fenics_mesh(filename, analysis=None):
-    """insert a FreeCAD FEM Mesh object in the ActiveDocument
-    """
+    """insert a FreeCAD FEM Mesh object in the ActiveDocument"""
     mesh_data = readFenicsXML.read_fenics_mesh_xml(filename)
     # xdmf not operational
 

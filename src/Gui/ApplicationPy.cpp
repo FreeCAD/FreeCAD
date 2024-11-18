@@ -41,6 +41,7 @@
 #include <App/PropertyFile.h>
 #include <Base/Interpreter.h>
 #include <Base/Console.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 #include <CXX/Objects.hxx>
 
 #include "Application.h"
@@ -65,6 +66,7 @@
 #include "WidgetFactory.h"
 #include "Workbench.h"
 #include "WorkbenchManager.h"
+#include "WorkbenchManipulatorPython.h"
 #include "Inventor/MarkerBitmaps.h"
 #include "Language/Translator.h"
 
@@ -314,6 +316,19 @@ PyMethodDef Application::Methods[] = {
    "but doesn't record it in macros.\n"
    "\n"
    "cmd : str"},
+  {"doCommandEval",               (PyCFunction) Application::sDoCommandEval, METH_VARARGS,
+          "doCommandEval(cmd) -> PyObject\n"
+          "\n"
+          "Runs the given string without showing in the python console or recording in\n"
+          "macros, and returns the result.\n"
+          "\n"
+          "cmd : str"},
+  {"doCommandSkip",               (PyCFunction) Application::sDoCommandSkip, METH_VARARGS,
+          "doCommandSkip(cmd) -> None\n"
+          "\n"
+          "Record the given string in the Macro but comment it out in the console\n"
+          "\n"
+          "cmd : str"},
   {"addModule",               (PyCFunction) Application::sAddModule, METH_VARARGS,
    "addModule(mod) -> None\n"
    "\n"
@@ -354,6 +369,18 @@ PyMethodDef Application::Methods[] = {
    "removeDocumentObserver(obj) -> None\n"
    "\n"
    "Remove an added document observer.\n"
+   "\n"
+   "obj : object"},
+  {"addWorkbenchManipulator",  (PyCFunction) Application::sAddWbManipulator, METH_VARARGS,
+   "addWorkbenchManipulator(obj) -> None\n"
+   "\n"
+   "Add a workbench manipulator to modify a workbench when it is activated.\n"
+   "\n"
+   "obj : object"},
+  {"removeWorkbenchManipulator",  (PyCFunction) Application::sRemoveWbManipulator, METH_VARARGS,
+   "removeWorkbenchManipulator(obj) -> None\n"
+   "\n"
+   "Remove an added workbench manipulator.\n"
    "\n"
    "obj : object"},
   {"listUserEditModes", (PyCFunction) Application::sListUserEditModes, METH_VARARGS,
@@ -533,7 +560,7 @@ PyObject* Application::sGetDocument(PyObject * /*self*/, PyObject *args)
         return pcDoc->getPyObject();
     }
 
-    PyErr_SetString(PyExc_TypeError, "Either string or App.Document exprected");
+    PyErr_SetString(PyExc_TypeError, "Either string or App.Document expected");
     return nullptr;
 }
 
@@ -707,6 +734,8 @@ PyObject* Application::sExport(PyObject * /*self*/, PyObject *args)
                     if (view3d)
                         view3d->viewAll();
                     QPrinter printer(QPrinter::ScreenResolution);
+                    // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
+                    printer.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
                     printer.setOutputFormat(QPrinter::PdfFormat);
                     printer.setOutputFileName(fileName);
                     view->print(&printer);
@@ -976,7 +1005,7 @@ PyObject* Application::sAddWorkbenchHandler(PyObject * /*self*/, PyObject *args)
         }
 
         PyDict_SetItemString(Instance->_pcWorkbenchDictionary,item.c_str(),object.ptr());
-        Instance->signalAddWorkbench(item.c_str());
+        Instance->signalRefreshWorkbenches();
     }
     catch (const Py::Exception&) {
         return nullptr;
@@ -997,9 +1026,9 @@ PyObject* Application::sRemoveWorkbenchHandler(PyObject * /*self*/, PyObject *ar
         return nullptr;
     }
 
-    Instance->signalRemoveWorkbench(psKey);
     WorkbenchManager::instance()->removeWorkbench(psKey);
     PyDict_DelItemString(Instance->_pcWorkbenchDictionary,psKey);
+    Instance->signalRefreshWorkbenches();
 
     Py_Return;
 }
@@ -1336,6 +1365,43 @@ PyObject* Application::sDoCommandGui(PyObject * /*self*/, PyObject *args)
     return PyRun_String(sCmd, Py_file_input, dict, dict);
 }
 
+PyObject* Application::sDoCommandEval(PyObject * /*self*/, PyObject *args)
+{
+    char *sCmd = nullptr;
+    if (!PyArg_ParseTuple(args, "s", &sCmd))
+        return nullptr;
+
+    Gui::Command::LogDisabler d1;
+    Gui::SelectionLogDisabler d2;
+
+    PyObject *module, *dict;
+
+    Base::PyGILStateLocker locker;
+    module = PyImport_AddModule("__main__");
+    if (!module)
+        return nullptr;
+
+    dict = PyModule_GetDict(module);
+    if (!dict)
+        return nullptr;
+
+    return PyRun_String(sCmd, Py_eval_input, dict, dict);
+}
+
+PyObject* Application::sDoCommandSkip(PyObject * /*self*/, PyObject *args)
+{
+    char *sCmd = nullptr;
+    if (!PyArg_ParseTuple(args, "s", &sCmd))
+        return nullptr;
+
+    Gui::Command::LogDisabler d1;
+    Gui::SelectionLogDisabler d2;
+
+    Gui::Command::printPyCaller();
+    Gui::Application::Instance->macroManager()->addLine(MacroManager::App, sCmd);
+    return Py::None().ptr();
+}
+
 PyObject* Application::sAddModule(PyObject * /*self*/, PyObject *args)
 {
     char *pstr;
@@ -1411,7 +1477,7 @@ PyObject* Application::sCreateViewer(PyObject * /*self*/, PyObject *args)
 
 PyObject* Application::sGetMarkerIndex(PyObject * /*self*/, PyObject *args)
 {
-    char *pstr;
+    char *pstr {};
     int  defSize = 9;
     if (!PyArg_ParseTuple(args, "s|i", &pstr, &defSize))
         return nullptr;
@@ -1425,6 +1491,7 @@ PyObject* Application::sGetMarkerIndex(PyObject * /*self*/, PyObject *args)
         std::list<std::pair<std::string, std::string> > markerList = {
             {"square", "DIAMOND_FILLED"},
             {"cross", "CROSS"},
+            {"hourglass", "HOURGLASS_FILLED"},
             {"plus", "PLUS"},
             {"empty", "SQUARE_LINE"},
             {"quad", "SQUARE_FILLED"},
@@ -1432,21 +1499,15 @@ PyObject* Application::sGetMarkerIndex(PyObject * /*self*/, PyObject *args)
             {"default", "CIRCLE_FILLED"}
         };
 
-        std::list<std::pair<std::string, std::string>>::iterator markerStyle;
+        auto findIt = std::find_if(markerList.begin(), markerList.end(), [&marker_arg](const auto& it) {
+            return marker_arg == it.first || marker_arg == it.second;
+        });
 
-        for (markerStyle = markerList.begin(); markerStyle != markerList.end(); ++markerStyle)
-        {
-            if (marker_arg == (*markerStyle).first || marker_arg == (*markerStyle).second)
-                break;
-        }
+        marker_arg = (findIt != markerList.end() ? findIt->second : "CIRCLE_FILLED");
 
-        marker_arg = "CIRCLE_FILLED";
-
-        if (markerStyle != markerList.end())
-            marker_arg = (*markerStyle).second;
 
         //get the marker size
-        int sizeList[]={5, 7, 9};
+        auto sizeList = Gui::Inventor::MarkerBitmaps::getSupportedSizes(marker_arg);
 
         if (std::find(std::begin(sizeList), std::end(sizeList), defSize) == std::end(sizeList))
             defSize = 9;
@@ -1473,7 +1534,8 @@ PyObject* Application::sReload(PyObject * /*self*/, PyObject *args)
 
 PyObject* Application::sLoadFile(PyObject * /*self*/, PyObject *args)
 {
-    char *path, *mod = "";
+    const char *path = "";
+    const char *mod = "";
     if (!PyArg_ParseTuple(args, "s|s", &path, &mod))
         return nullptr;
 
@@ -1530,6 +1592,32 @@ PyObject* Application::sRemoveDocObserver(PyObject * /*self*/, PyObject *args)
     PY_CATCH;
 }
 
+PyObject* Application::sAddWbManipulator(PyObject * /*self*/, PyObject *args)
+{
+    PyObject* o;
+    if (!PyArg_ParseTuple(args, "O",&o))
+        return nullptr;
+
+    PY_TRY {
+        WorkbenchManipulatorPython::installManipulator(Py::Object(o));
+        Py_Return;
+    }
+    PY_CATCH;
+}
+
+PyObject* Application::sRemoveWbManipulator(PyObject * /*self*/, PyObject *args)
+{
+    PyObject* o;
+    if (!PyArg_ParseTuple(args, "O",&o))
+        return nullptr;
+
+    PY_TRY {
+        WorkbenchManipulatorPython::removeManipulator(Py::Object(o));
+        Py_Return;
+    }
+    PY_CATCH;
+}
+
 PyObject* Application::sCoinRemoveAllChildren(PyObject * /*self*/, PyObject *args)
 {
     PyObject *pynode;
@@ -1539,6 +1627,11 @@ PyObject* Application::sCoinRemoveAllChildren(PyObject * /*self*/, PyObject *arg
     PY_TRY {
         void* ptr = nullptr;
         Base::Interpreter().convertSWIGPointerObj("pivy.coin","_p_SoGroup", pynode, &ptr, 0);
+        if (!ptr) {
+            PyErr_SetString(PyExc_RuntimeError, "Conversion of coin.SoGroup failed");
+            return nullptr;
+        }
+
         coinRemoveAllChildren(static_cast<SoGroup*>(ptr));
         Py_Return;
     }
@@ -1552,7 +1645,7 @@ PyObject* Application::sListUserEditModes(PyObject * /*self*/, PyObject *args)
         return nullptr;
 
     for (auto const &uem : Instance->listUserEditModes()) {
-        ret.append(Py::String(uem.second));
+        ret.append(Py::String(uem.second.first));
     }
 
     return Py::new_reference_to(ret);
@@ -1563,12 +1656,12 @@ PyObject* Application::sGetUserEditMode(PyObject * /*self*/, PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
 
-    return Py::new_reference_to(Py::String(Instance->getUserEditModeName()));
+    return Py::new_reference_to(Py::String(Instance->getUserEditModeUIStrings().first));
 }
 
 PyObject* Application::sSetUserEditMode(PyObject * /*self*/, PyObject *args)
 {
-    char *mode = "";
+    const char *mode = "";
     if (!PyArg_ParseTuple(args, "s", &mode))
         return nullptr;
 

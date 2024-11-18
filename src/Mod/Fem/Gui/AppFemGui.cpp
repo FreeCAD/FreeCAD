@@ -1,4 +1,5 @@
 /***************************************************************************
+ *   Copyright (c) 2023 Peter McB                                          *
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
@@ -34,7 +35,6 @@
 #include "DlgSettingsFemGeneralImp.h"
 #include "DlgSettingsFemGmshImp.h"
 #include "DlgSettingsFemInOutVtkImp.h"
-#include "DlgSettingsFemMaterialImp.h"
 #include "DlgSettingsFemMystranImp.h"
 #include "DlgSettingsFemZ88Imp.h"
 #include "PropertyFemMeshItem.h"
@@ -43,6 +43,7 @@
 #include "ViewProviderFemMeshShape.h"
 #include "ViewProviderFemMeshShapeNetgen.h"
 #include "ViewProviderSetElements.h"
+#include "ViewProviderSetElementNodes.h"
 #include "ViewProviderSetFaces.h"
 #include "ViewProviderSetGeometry.h"
 #include "ViewProviderSetNodes.h"
@@ -52,6 +53,7 @@
 #include "ViewProviderFemConstraintContact.h"
 #include "ViewProviderFemConstraintDisplacement.h"
 #include "ViewProviderFemConstraintFixed.h"
+#include "ViewProviderFemConstraintRigidBody.h"
 #include "ViewProviderFemConstraintForce.h"
 #include "ViewProviderFemConstraintFluidBoundary.h"
 #include "ViewProviderFemConstraintGear.h"
@@ -75,18 +77,20 @@
 #endif
 
 
- // use a different name to CreateCommand()
+// use a different name to CreateCommand()
 void CreateFemCommands();
 
 void loadFemResource()
 {
     // add resources and reloads the translators
     Q_INIT_RESOURCE(Fem);
+    Q_INIT_RESOURCE(Fem_translation);
     Gui::Translator::instance()->refresh();
 }
 
-namespace FemGui {
-    extern PyObject* initModule();
+namespace FemGui
+{
+extern PyObject* initModule();
 }
 
 
@@ -104,6 +108,7 @@ PyMOD_INIT_FUNC(FemGui)
     // instantiating the commands
     CreateFemCommands();
 
+    // clang-format off
     // addition objects
     FemGui::Workbench                                           ::init();
 
@@ -118,6 +123,7 @@ PyMOD_INIT_FUNC(FemGui)
     FemGui::ViewProviderFemConstraintContact                    ::init();
     FemGui::ViewProviderFemConstraintDisplacement               ::init();
     FemGui::ViewProviderFemConstraintFixed                      ::init();
+    FemGui::ViewProviderFemConstraintRigidBody                  ::init();
     FemGui::ViewProviderFemConstraintFluidBoundary              ::init();
     FemGui::ViewProviderFemConstraintForce                      ::init();
     FemGui::ViewProviderFemConstraintGear                       ::init();
@@ -132,11 +138,14 @@ PyMOD_INIT_FUNC(FemGui)
 
     FemGui::ViewProviderFemMesh                                 ::init();
     FemGui::ViewProviderFemMeshPython                           ::init();
+    FemGui::ViewProviderFemMeshShapeBase                        ::init();
+    FemGui::ViewProviderFemMeshShapeBasePython                  ::init();
     FemGui::ViewProviderFemMeshShape                            ::init();
     FemGui::ViewProviderFemMeshShapeNetgen                      ::init();
     FemGui::PropertyFemMeshItem                                 ::init();
 
     FemGui::ViewProviderSetElements                             ::init();
+    FemGui::ViewProviderSetElementNodes                         ::init();
     FemGui::ViewProviderSetFaces                                ::init();
     FemGui::ViewProviderSetGeometry                             ::init();
     FemGui::ViewProviderSetNodes                                ::init();
@@ -175,7 +184,6 @@ PyMOD_INIT_FUNC(FemGui)
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemElmerImp>(QT_TRANSLATE_NOOP("QObject", "FEM"));
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemMystranImp>(QT_TRANSLATE_NOOP("QObject", "FEM"));
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemZ88Imp>(QT_TRANSLATE_NOOP("QObject", "FEM"));
-    new Gui::PrefPageProducer<FemGui::DlgSettingsFemMaterialImp>(QT_TRANSLATE_NOOP("QObject", "FEM"));
 
     // register preferences pages on Import-Export
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemExportAbaqusImp>(QT_TRANSLATE_NOOP("QObject", "Import-Export"));
@@ -183,6 +191,7 @@ PyMOD_INIT_FUNC(FemGui)
 
     // add resources and reloads the translators
     loadFemResource();
+    // clang-format on
 
     PyMOD_Return(mod);
 }

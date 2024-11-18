@@ -50,7 +50,7 @@ public:
   NativeEvent();
 #endif // !HAVE_SPACENAV_LIB
 
-  virtual ~NativeEvent();
+  ~NativeEvent() override;
 
 private:
   void * rawevent;

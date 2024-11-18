@@ -43,12 +43,14 @@ def get_information():
         "constraints": ["electrostatic potential"],
         "solvers": ["elmer"],
         "material": "fluid",
-        "equations": ["electrostatic"]
+        "equations": ["electrostatic"],
     }
 
 
 def get_explanation(header=""):
-    return header + """
+    return (
+        header
+        + """
 
 To run the example from Python console use:
 from femexamples.equation_electrostatics_capacitance_two_balls import setup
@@ -56,11 +58,12 @@ setup()
 
 
 See forum topic post:
-https://forum.freecadweb.org/viewtopic.php?f=18&t=41488&start=90#p412047
+https://forum.freecad.org/viewtopic.php?f=18&t=41488&start=90#p412047
 
 Electrostatics equation in FreeCAD FEM-Elmer
 
 """
+    )
 
 
 def setup(doc=None, solvertype="elmer"):
@@ -102,6 +105,7 @@ def setup(doc=None, solvertype="elmer"):
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
     if FreeCAD.GuiUp:
         import FemGui
+
         FemGui.setActiveAnalysis(analysis)
 
     # solver
@@ -138,6 +142,7 @@ def setup(doc=None, solvertype="elmer"):
     con_elect_pot1 = ObjectsFem.makeConstraintElectrostaticPotential(doc, name_pot1)
     con_elect_pot1.References = [(geom_obj, "Face1")]
     con_elect_pot1.ElectricInfinity = True
+    con_elect_pot1.PotentialEnabled = False
     analysis.addObject(con_elect_pot1)
 
     # constraint potential 2nd
@@ -146,6 +151,7 @@ def setup(doc=None, solvertype="elmer"):
     con_elect_pot2.References = [(geom_obj, "Face2")]
     con_elect_pot2.CapacitanceBody = 1
     con_elect_pot2.CapacitanceBodyEnabled = True
+    con_elect_pot2.PotentialEnabled = False
     analysis.addObject(con_elect_pot2)
 
     # constraint potential 3rd
@@ -154,11 +160,12 @@ def setup(doc=None, solvertype="elmer"):
     con_elect_pot3.References = [(geom_obj, "Face3")]
     con_elect_pot3.CapacitanceBody = 2
     con_elect_pot3.CapacitanceBodyEnabled = True
+    con_elect_pot3.PotentialEnabled = False
     analysis.addObject(con_elect_pot3)
 
     # mesh
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
-    femmesh_obj.Part = geom_obj
+    femmesh_obj.Shape = geom_obj
     femmesh_obj.SecondOrderLinear = False
     femmesh_obj.CharacteristicLengthMax = "600 mm"
     femmesh_obj.ViewObject.Visibility = False
@@ -171,18 +178,20 @@ def setup(doc=None, solvertype="elmer"):
 
     # generate the mesh
     from femmesh import gmshtools
+
     gmsh_mesh = gmshtools.GmshTools(femmesh_obj, analysis)
     try:
         error = gmsh_mesh.create_mesh()
     except Exception:
         error = sys.exc_info()[1]
-        FreeCAD.Console.PrintError(
-            "Unexpected error when creating mesh: {}\n"
-            .format(error)
-        )
+        FreeCAD.Console.PrintError(f"Unexpected error when creating mesh: {error}\n")
     if error:
         # try to create from existing rough mesh
-        from .meshes.mesh_capacitance_two_balls_tetra10 import create_nodes, create_elements
+        from .meshes.mesh_capacitance_two_balls_tetra10 import (
+            create_nodes,
+            create_elements,
+        )
+
         fem_mesh = Fem.FemMesh()
         control = create_nodes(fem_mesh)
         if not control:

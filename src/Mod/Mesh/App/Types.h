@@ -33,6 +33,6 @@ using ElementIndex = MeshCore::ElementIndex;
 using FacetIndex = MeshCore::FacetIndex;
 using PointIndex = MeshCore::PointIndex;
 
-} // namespace Mesh
+}  // namespace Mesh
 
-#endif // MESH_TYPES_H
+#endif  // MESH_TYPES_H

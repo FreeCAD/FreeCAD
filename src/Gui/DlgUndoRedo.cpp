@@ -50,10 +50,7 @@ UndoDialog::UndoDialog( QWidget* parent )
 /**
  *  Destroys the object and frees any allocated resources.
  */
-UndoDialog::~UndoDialog()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+UndoDialog::~UndoDialog() = default;
 
 /**
  *  This method fetches the undo / redo information from the
@@ -99,10 +96,7 @@ RedoDialog::RedoDialog( QWidget* parent )
 /**
  *  Destroys the object and frees any allocated resources.
  */
-RedoDialog::~RedoDialog()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+RedoDialog::~RedoDialog() = default;
 
 /**
  *  This method fetches the undo / redo information from the

@@ -53,6 +53,7 @@
 #include "GestureNavigationStyle.h"
 #include "NavigationStyle.h"
 #include "SelectionObject.h"
+#include "So3DAnnotation.h"
 #include "SoAxisCrossKit.h"
 #include "SoFCBackgroundGradient.h"
 #include "SoFCBoundingBox.h"
@@ -67,13 +68,14 @@
 #include "SoFCVectorizeSVGAction.h"
 #include "SoFCVectorizeU3DAction.h"
 #include "SoMouseWheelEvent.h"
-#include "SoNavigationDragger.h"
 #include "SoTextLabel.h"
+#include "SoDatumLabel.h"
 #include "Inventor/MarkerBitmaps.h"
 #include "Inventor/SmSwitchboard.h"
 #include "Inventor/SoAutoZoomTranslation.h"
 #include "Inventor/SoDrawingGrid.h"
 #include "propertyeditor/PropertyItem.h"
+#include "ArcEngine.h"
 
 
 using namespace Gui;
@@ -91,7 +93,6 @@ SbBool Gui::SoFCDB::isInitialized()
 void Gui::SoFCDB::init()
 {
     SoInteraction                   ::init();
-    RotTransDragger                 ::initClass();
     SoGLRenderActionElement         ::initClass();
     SoFCInteractiveElement          ::initClass();
     SoGLWidgetElement               ::initClass();
@@ -124,6 +125,7 @@ void Gui::SoFCDB::init()
     SoVRMLAction                    ::initClass();
     SoSkipBoundingGroup             ::initClass();
     SoTextLabel                     ::initClass();
+    SoDatumLabel                    ::initClass();
     SoColorBarLabel                 ::initClass();
     SoStringLabel                   ::initClass();
     SoFrameLabel                    ::initClass();
@@ -140,6 +142,7 @@ void Gui::SoFCDB::init()
     SoFCSelectionRoot               ::initClass();
     SoFCPathAnnotation              ::initClass();
     SoMouseWheelEvent               ::initClass();
+    So3DAnnotation                  ::initClass();
 
     PropertyItem                    ::init();
     PropertySeparatorItem           ::init();
@@ -192,6 +195,8 @@ void Gui::SoFCDB::init()
     GLFlagWindow                    ::init();
 
     SelectionObject                 ::init();
+
+    ArcEngine                       ::initClass();
 
     qRegisterMetaType<Base::Vector3f>("Base::Vector3f");
     qRegisterMetaType<Base::Vector3d>("Base::Vector3d");
@@ -590,7 +595,7 @@ void Gui::SoFCDB::writeX3D(SoVRMLGroup* node, bool exportViewpoints, std::ostrea
                 << "\" centerOfRotation=\"" << cnt[0] << " " << cnt[1] << " " << cnt[2]
                 << "\" position=\"" << pos[0] << " " << pos[1] << " " << pos[2]
                 << "\" orientation=\"" << axis[0] << " " << axis[1] << " " << axis[2] << " " << angle
-                << "\" description=\"camera\" fieldOfView=\"0.9\">"
+                << R"(" description="camera" fieldOfView="0.9">)"
                 << "</Viewpoint>\n";
         };
 
@@ -657,14 +662,14 @@ bool Gui::SoFCDB::writeToFile(SoNode* node, const char* filename, bool binary)
     Base::FileInfo fi(filename);
 
     // Write VRML V2.0
-    if (fi.hasExtension("wrl") || fi.hasExtension("vrml") || fi.hasExtension("wrz")) {
+    if (fi.hasExtension({"wrl", "vrml", "wrz"})) {
         // If 'wrz' is set then force compression
         if (fi.hasExtension("wrz"))
             binary = true;
 
         ret = SoFCDB::writeToVRML(node, filename, binary);
     }
-    else if (fi.hasExtension("x3d") || fi.hasExtension("x3dz")) {
+    else if (fi.hasExtension({"x3d", "x3dz"})) {
         // If 'x3dz' is set then force compression
         if (fi.hasExtension("x3dz"))
             binary = true;

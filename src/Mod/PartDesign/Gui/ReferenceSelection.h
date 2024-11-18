@@ -52,7 +52,7 @@ public:
       * Allow the user to pick only edges or faces (or both) from the defined support
       * Optionally restrict the selection to planar edges/faces
       */
-    bool allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName);
+    bool allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName) override;
 
 private:
     PartDesign::Body* getBody() const;

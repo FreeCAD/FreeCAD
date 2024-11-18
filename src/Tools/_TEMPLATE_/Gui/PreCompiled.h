@@ -28,18 +28,18 @@
 
 // Importing of App classes
 #ifdef FC_OS_WIN32
-# define _TEMPLATE_AppExport __declspec(dllimport)
-# define _TEMPLATE_GuiExport __declspec(dllexport)
-#else // for Linux
-# define _TEMPLATE_AppExport
-# define _TEMPLATE_GuiExport
+#define _TEMPLATE_AppExport __declspec(dllimport)
+#define _TEMPLATE_GuiExport __declspec(dllexport)
+#else  // for Linux
+#define _TEMPLATE_AppExport
+#define _TEMPLATE_GuiExport
 #endif
 
 #ifdef _PreComp_
 
 // standard
-#include <cstdio>
 #include <cassert>
+#include <cstdio>
 
 // STL
 #include <algorithm>
@@ -57,14 +57,14 @@
 #include <xercesc/util/XercesDefs.hpp>
 
 #ifdef FC_OS_WIN32
-# include <windows.h>
+#include <windows.h>
 #endif
 
 // Qt Toolkit
 #ifndef __QtAll__
-# include <Gui/QtAll.h>
+#include <Gui/QtAll.h>
 #endif
 
 #endif  //_PreComp_
 
-#endif // GUI_PRECOMPILED_H 
+#endif  // GUI_PRECOMPILED_H

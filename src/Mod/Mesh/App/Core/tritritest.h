@@ -1,3 +1,4 @@
+// clang-format off
 /* Triangle/triangle intersection test routine,
  * by Tomas Moller, 1997.
  * See article "A Fast Triangle-Triangle Intersection Test",
@@ -40,7 +41,7 @@ OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHE
 OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-
+//NOLINTBEGIN
 #include <cmath>
 
 #define FABS(x) ((float)fabs(x))        /* implement as is fastest on your machine */
@@ -721,4 +722,5 @@ int tri_tri_intersect_with_isectline(float V0[3],float V1[3],float V2[3],
   }
   return 1;
 }
-
+//NOLINTEND
+// clang-format on

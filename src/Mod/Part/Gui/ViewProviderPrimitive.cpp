@@ -45,17 +45,16 @@ ViewProviderPrimitive::ViewProviderPrimitive()
     extension.setIgnoreOverlayIcon(true);
 }
 
-ViewProviderPrimitive::~ViewProviderPrimitive()
-{
-
-}
+ViewProviderPrimitive::~ViewProviderPrimitive() = default;
 
 void ViewProviderPrimitive::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
     QAction* act = menu->addAction(QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue())));
     act->setData(QVariant((int)ViewProvider::Default));
-    func->trigger(act, std::bind(&ViewProviderPrimitive::startDefaultEditMode, this));
+    func->trigger(act, [this](){
+        this->startDefaultEditMode();
+    });
 
     ViewProviderPart::setupContextMenu(menu, receiver, member);
 }

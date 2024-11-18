@@ -33,25 +33,20 @@ using namespace App;
 PROPERTY_SOURCE(Fem::FemSetElementsObject, Fem::FemSetObject)
 
 
-FemSetElementsObject::FemSetElementsObject()
-{
-}
+FemSetElementsObject::FemSetElementsObject() = default;
 
-FemSetElementsObject::~FemSetElementsObject()
-{
-}
+FemSetElementsObject::~FemSetElementsObject() = default;
 
 short FemSetElementsObject::mustExecute() const
 {
     return 0;
 }
 
-PyObject *FemSetElementsObject::getPyObject()
+PyObject* FemSetElementsObject::getPyObject()
 {
-    if (PythonObject.is(Py::_None())){
+    if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new DocumentObjectPy(this),true);
+        PythonObject = Py::Object(new DocumentObjectPy(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }
-

@@ -34,8 +34,10 @@ FIXTURE_PATH = pathlib.Path(__file__).parent / "Fixtures"
 class TestInvoluteGear(unittest.TestCase):
     def setUp(self):
         self.Doc = FreeCAD.newDocument("PartDesignTestInvoluteGear")
+        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
 
     def tearDown(self):
+        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "")
         FreeCAD.closeDocument(self.Doc.Name)
 
     def testDefaultGearProfile(self):
@@ -252,6 +254,7 @@ class TestInvoluteGear(unittest.TestCase):
         profile.HighPrecision = False
         profile.NumberOfTeeth = 8
         body = self.Doc.addObject('PartDesign::Body','GearBody')
+        body.AllowCompound = False
         body.addObject(profile)
         cylinder = body.newObject('PartDesign::AdditiveCylinder','GearCylinder')
         default_dedendum = 1.25
@@ -312,10 +315,10 @@ class TestInvoluteGear(unittest.TestCase):
         self.assertTrue(shape.isClosed(), msg=msg)
 
     def assertIntersection(self, shape1, shape2, msg=None):
-        self.failUnless(self._check_intersection(shape1, shape2), msg or "Given shapes do not intersect.")
+        self.assertTrue(self._check_intersection(shape1, shape2), msg or "Given shapes do not intersect.")
 
     def assertNoIntersection(self, shape1, shape2, msg=None):
-        self.failIf(self._check_intersection(shape1, shape2), msg or "Given shapes intersect.")
+        self.assertFalse(self._check_intersection(shape1, shape2), msg or "Given shapes intersect.")
 
     def _check_intersection(self, shape1, shape2):
         distance, _, _ = shape1.distToShape(shape2)

@@ -45,6 +45,7 @@ public:
 
     App::PropertyFont   Font;
     App::PropertyLength Fontsize;
+    App::PropertyLength Arrowsize;
     App::PropertyLength LineWidth;
     App::PropertyColor  Color;
 
@@ -75,12 +76,15 @@ public:
     void setupContextMenu(QMenu*, QObject*, const char*) override;
     bool setEdit(int ModNum) override;
     bool doubleClicked() override;
+    bool onDelete(const std::vector<std::string> & parms) override;
+
 
     TechDraw::DrawViewDimension* getViewObject() const override;
 
     App::Color prefColor() const;
     std::string prefFont() const;
     double prefFontSize() const;
+    double prefArrowSize() const;
     double prefWeight() const;
     int prefStandardAndStyle() const;
     bool canDelete(App::DocumentObject* obj) const override;

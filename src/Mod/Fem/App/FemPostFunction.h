@@ -39,7 +39,7 @@
 namespace Fem
 {
 
-class FemExport FemPostFunction : public App::DocumentObject
+class FemExport FemPostFunction: public App::DocumentObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostFunction);
 
@@ -48,24 +48,32 @@ public:
     FemPostFunction();
     ~FemPostFunction() override;
 
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "FemGui::ViewProviderFemPostFunction";
     }
 
     App::DocumentObjectExecReturn* execute() override;
 
-    //bound box handling
-    void setBoundingBox(vtkBoundingBox b) {m_boundingBox = b;};
+    // bound box handling
+    void setBoundingBox(vtkBoundingBox b)
+    {
+        m_boundingBox = b;
+    };
 
-    //get the algorithm or the data
-    vtkSmartPointer<vtkImplicitFunction> getImplicitFunction() {return m_implicit;};
+    // get the algorithm or the data
+    vtkSmartPointer<vtkImplicitFunction> getImplicitFunction()
+    {
+        return m_implicit;
+    };
 
 protected:
-    vtkSmartPointer<vtkImplicitFunction>  m_implicit;
-    vtkBoundingBox                        m_boundingBox;
+    vtkSmartPointer<vtkImplicitFunction> m_implicit;
+    vtkBoundingBox m_boundingBox;
 };
 
-class FemExport FemPostFunctionProvider : public App::DocumentObject {
+class FemExport FemPostFunctionProvider: public App::DocumentObject
+{
 
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostFunctionProvider);
 
@@ -73,7 +81,8 @@ public:
     FemPostFunctionProvider();
     ~FemPostFunctionProvider() override;
 
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "FemGui::ViewProviderFemPostFunctionProvider";
     }
 
@@ -85,21 +94,21 @@ protected:
 
 // ---------------------------------------------------------------------------
 
-class FemExport FemPostBoxFunction : public FemPostFunction
+class FemExport FemPostBoxFunction: public FemPostFunction
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostBoxFunction);
 
 public:
-
     FemPostBoxFunction();
     ~FemPostBoxFunction() override;
 
-    App::PropertyVectorDistance   Center;
-    App::PropertyDistance         Length;
-    App::PropertyDistance         Width;
-    App::PropertyDistance         Height;
+    App::PropertyVectorDistance Center;
+    App::PropertyDistance Length;
+    App::PropertyDistance Width;
+    App::PropertyDistance Height;
 
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "FemGui::ViewProviderFemPostBoxFunction";
     }
 
@@ -113,20 +122,20 @@ protected:
 
 // ---------------------------------------------------------------------------
 
-class FemExport FemPostCylinderFunction : public FemPostFunction
+class FemExport FemPostCylinderFunction: public FemPostFunction
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostCylinderFunction);
 
 public:
-
     FemPostCylinderFunction();
     ~FemPostCylinderFunction() override;
 
-    App::PropertyVector           Axis;
-    App::PropertyVectorDistance   Center;
-    App::PropertyDistance         Radius;
+    App::PropertyVector Axis;
+    App::PropertyVectorDistance Center;
+    App::PropertyDistance Radius;
 
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "FemGui::ViewProviderFemPostCylinderFunction";
     }
 
@@ -140,19 +149,19 @@ protected:
 
 // ---------------------------------------------------------------------------
 
-class FemExport FemPostPlaneFunction : public FemPostFunction
+class FemExport FemPostPlaneFunction: public FemPostFunction
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostPlaneFunction);
 
 public:
-
     FemPostPlaneFunction();
     ~FemPostPlaneFunction() override;
 
-    App::PropertyVector           Normal;
-    App::PropertyVectorDistance   Origin;
+    App::PropertyVector Normal;
+    App::PropertyVectorDistance Origin;
 
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "FemGui::ViewProviderFemPostPlaneFunction";
     }
 
@@ -166,19 +175,19 @@ protected:
 
 // ---------------------------------------------------------------------------
 
-class FemExport FemPostSphereFunction : public FemPostFunction
+class FemExport FemPostSphereFunction: public FemPostFunction
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostSphereFunction);
 
 public:
-
     FemPostSphereFunction();
     ~FemPostSphereFunction() override;
 
-    App::PropertyDistance         Radius;
-    App::PropertyVectorDistance   Center;
+    App::PropertyDistance Radius;
+    App::PropertyVectorDistance Center;
 
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "FemGui::ViewProviderFemPostSphereFunction";
     }
 
@@ -188,7 +197,7 @@ protected:
     vtkSmartPointer<vtkSphere> m_sphere;
 };
 
-} //namespace Fem
+}  // namespace Fem
 
 
-#endif // Fem_FemPostFunction_H
+#endif  // Fem_FemPostFunction_H

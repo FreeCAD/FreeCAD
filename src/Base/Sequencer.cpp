@@ -24,53 +24,55 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMutexLocker>
+#include <mutex>
+#include <vector>
+#include <algorithm>
 #endif
 
 #include "Sequencer.h"
-#include "Mutex.h"
-
 
 using namespace Base;
 
-namespace Base {
-    struct SequencerP {
-        // members
-        static std::vector<SequencerBase*> _instances; /**< A vector of all created instances */
-        static SequencerLauncher* _topLauncher; /**< The outermost launcher */
-        static QRecursiveMutex mutex; /**< A mutex-locker for the launcher */
-        /** Sets a global sequencer object.
-         * Access to the last registered object is performed by @see Sequencer().
-         */
-        static void appendInstance (SequencerBase* s)
-        {
-            _instances.push_back(s);
-        }
-        static void removeInstance (SequencerBase* s)
-        {
-            std::vector<SequencerBase*>::iterator it;
-            it = std::find(_instances.begin(), _instances.end(), s);
-            _instances.erase(it);
-        }
-        static SequencerBase& getInstance ()
-        {
-            return *_instances.back();
-        }
-    };
-
-    /**
-     * The _instances member just stores the pointer of the
-     * all instantiated SequencerBase objects.
+namespace Base
+{
+struct SequencerP
+{
+    // members
+    static std::vector<SequencerBase*> _instances; /**< A vector of all created instances */
+    static SequencerLauncher* _topLauncher;        /**< The outermost launcher */
+    static std::recursive_mutex mutex;             /**< A mutex-locker for the launcher */
+    /** Sets a global sequencer object.
+     * Access to the last registered object is performed by @see Sequencer().
      */
-    std::vector<SequencerBase*> SequencerP::_instances;
-    SequencerLauncher* SequencerP::_topLauncher = nullptr;
-    QRecursiveMutex SequencerP::mutex;
-}
+    static void appendInstance(SequencerBase* sb)
+    {
+        _instances.push_back(sb);
+    }
+    static void removeInstance(SequencerBase* sb)
+    {
+        std::vector<SequencerBase*>::iterator it;
+        it = std::find(_instances.begin(), _instances.end(), sb);
+        _instances.erase(it);
+    }
+    static SequencerBase& getInstance()
+    {
+        return *_instances.back();
+    }
+};
 
-SequencerBase& SequencerBase::Instance ()
+/**
+ * The _instances member just stores the pointer of the
+ * all instantiated SequencerBase objects.
+ */
+std::vector<SequencerBase*> SequencerP::_instances;
+SequencerLauncher* SequencerP::_topLauncher = nullptr;
+std::recursive_mutex SequencerP::mutex;
+}  // namespace Base
+
+SequencerBase& SequencerBase::Instance()
 {
     // not initialized?
-    if (SequencerP::_instances.size() == 0) {
+    if (SequencerP::_instances.empty()) {
         new ConsoleSequencer();
     }
 
@@ -78,7 +80,6 @@ SequencerBase& SequencerBase::Instance ()
 }
 
 SequencerBase::SequencerBase()
-  : nProgress(0), nTotalSteps(0), _bLocked(false), _bCanceled(false), _nLastPercentage(-1)
 {
     SequencerP::appendInstance(this);
 }
@@ -100,8 +101,9 @@ bool SequencerBase::start(const char* pszStr, size_t steps)
     setText(pszStr);
 
     // reimplemented in sub-classes
-    if (!this->_bLocked)
+    if (!this->_bLocked) {
         startStep();
+    }
 
     return true;
 }
@@ -112,34 +114,32 @@ size_t SequencerBase::numberOfSteps() const
 }
 
 void SequencerBase::startStep()
-{
-}
+{}
 
 bool SequencerBase::next(bool canAbort)
 {
     this->nProgress++;
-    float fDiv = this->nTotalSteps > 0 ? static_cast<float>(this->nTotalSteps) : 1000.0f;
-    int perc = int((float(this->nProgress) * (100.0f / fDiv)));
+    float fDiv = this->nTotalSteps > 0 ? static_cast<float>(this->nTotalSteps) : 1000.0F;
+    int perc = int((float(this->nProgress) * (100.0F / fDiv)));
 
     // do only an update if we have increased by one percent
     if (perc > this->_nLastPercentage) {
         this->_nLastPercentage = perc;
 
         // if not locked
-        if (!this->_bLocked)
+        if (!this->_bLocked) {
             nextStep(canAbort);
+        }
     }
 
     return this->nProgress < this->nTotalSteps;
 }
 
-void SequencerBase::nextStep( bool )
-{
-}
+void SequencerBase::nextStep(bool /*next*/)
+{}
 
-void SequencerBase::setProgress(size_t)
-{
-}
+void SequencerBase::setProgress(size_t /*value*/)
+{}
 
 bool SequencerBase::stop()
 {
@@ -148,12 +148,10 @@ bool SequencerBase::stop()
 }
 
 void SequencerBase::pause()
-{
-}
+{}
 
 void SequencerBase::resume()
-{
-}
+{}
 
 bool SequencerBase::isBlocking() const
 {
@@ -162,7 +160,7 @@ bool SequencerBase::isBlocking() const
 
 bool SequencerBase::setLocked(bool bLocked)
 {
-    QMutexLocker locker(&SequencerP::mutex);
+    std::lock_guard<std::recursive_mutex> locker(SequencerP::mutex);
     bool old = this->_bLocked;
     this->_bLocked = bLocked;
     return old;
@@ -170,19 +168,19 @@ bool SequencerBase::setLocked(bool bLocked)
 
 bool SequencerBase::isLocked() const
 {
-    QMutexLocker locker(&SequencerP::mutex);
+    std::lock_guard<std::recursive_mutex> locker(SequencerP::mutex);
     return this->_bLocked;
 }
 
 bool SequencerBase::isRunning() const
 {
-    QMutexLocker locker(&SequencerP::mutex);
+    std::lock_guard<std::recursive_mutex> locker(SequencerP::mutex);
     return (SequencerP::_topLauncher != nullptr);
 }
 
 bool SequencerBase::wasCanceled() const
 {
-    QMutexLocker locker(&SequencerP::mutex);
+    std::lock_guard<std::recursive_mutex> locker(SequencerP::mutex);
     return this->_bCanceled;
 }
 
@@ -206,27 +204,26 @@ void SequencerBase::resetData()
     this->_bCanceled = false;
 }
 
-void SequencerBase::setText(const char*)
-{
-}
+void SequencerBase::setText(const char* /*text*/)
+{}
 
 // ---------------------------------------------------------
 
 using Base::ConsoleSequencer;
 
-void ConsoleSequencer::setText (const char* pszTxt)
+void ConsoleSequencer::setText(const char* pszTxt)
 {
     printf("%s...\n", pszTxt);
 }
 
 void ConsoleSequencer::startStep()
-{
-}
+{}
 
-void ConsoleSequencer::nextStep( bool )
+void ConsoleSequencer::nextStep(bool /*canAbort*/)
 {
-    if (this->nTotalSteps != 0)
+    if (this->nTotalSteps != 0) {
         printf("\t\t\t\t\t\t(%d %%)\t\r", progressInPercent());
+    }
 }
 
 void ConsoleSequencer::resetData()
@@ -239,7 +236,7 @@ void ConsoleSequencer::resetData()
 
 SequencerLauncher::SequencerLauncher(const char* pszStr, size_t steps)
 {
-    QMutexLocker locker(&SequencerP::mutex);
+    std::lock_guard<std::recursive_mutex> locker(SequencerP::mutex);
     // Have we already an instance of SequencerLauncher created?
     if (!SequencerP::_topLauncher) {
         SequencerBase::Instance().start(pszStr, steps);
@@ -249,37 +246,37 @@ SequencerLauncher::SequencerLauncher(const char* pszStr, size_t steps)
 
 SequencerLauncher::~SequencerLauncher()
 {
-    QMutexLocker locker(&SequencerP::mutex);
-    if (SequencerP::_topLauncher == this)
-        SequencerBase::Instance().stop();
+    std::lock_guard<std::recursive_mutex> locker(SequencerP::mutex);
     if (SequencerP::_topLauncher == this) {
+        SequencerBase::Instance().stop();
         SequencerP::_topLauncher = nullptr;
     }
 }
 
-void SequencerLauncher::setText (const char* pszTxt)
+void SequencerLauncher::setText(const char* pszTxt)
 {
-    QMutexLocker locker(&SequencerP::mutex);
+    std::lock_guard<std::recursive_mutex> locker(SequencerP::mutex);
     SequencerBase::Instance().setText(pszTxt);
 }
 
 bool SequencerLauncher::next(bool canAbort)
 {
-    QMutexLocker locker(&SequencerP::mutex);
-    if (SequencerP::_topLauncher != this)
-        return true; // ignore
+    std::lock_guard<std::recursive_mutex> locker(SequencerP::mutex);
+    if (SequencerP::_topLauncher != this) {
+        return true;  // ignore
+    }
     return SequencerBase::Instance().next(canAbort);
 }
 
 void SequencerLauncher::setProgress(size_t pos)
 {
-    QMutexLocker locker(&SequencerP::mutex);
+    std::lock_guard<std::recursive_mutex> locker(SequencerP::mutex);
     SequencerBase::Instance().setProgress(pos);
 }
 
 size_t SequencerLauncher::numberOfSteps() const
 {
-    QMutexLocker locker(&SequencerP::mutex);
+    std::lock_guard<std::recursive_mutex> locker(SequencerP::mutex);
     return SequencerBase::Instance().numberOfSteps();
 }
 

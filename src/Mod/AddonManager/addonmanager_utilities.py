@@ -36,10 +36,11 @@ from typing import Optional, Any
 from urllib.parse import urlparse
 
 try:
-    from PySide import QtCore, QtWidgets
+    from PySide import QtCore, QtGui, QtWidgets
 except ImportError:
     QtCore = None
     QtWidgets = None
+    QtGui = None
 
 import addonmanager_freecad_interface as fci
 
@@ -95,9 +96,12 @@ def symlink(source, link_name):
                 raise ctypes.WinError()
 
 
-def rmdir(path: os.PathLike) -> bool:
+def rmdir(path: str) -> bool:
     try:
-        shutil.rmtree(path, onerror=remove_readonly)
+        if os.path.islink(path):
+            os.unlink(path)  # Remove symlink
+        else:
+            shutil.rmtree(path, onerror=remove_readonly)
     except (WindowsError, PermissionError, OSError):
         return False
     return True
@@ -149,9 +153,7 @@ def restart_freecad():
 
     args = QtWidgets.QApplication.arguments()[1:]
     if fci.FreeCADGui.getMainWindow().close():
-        QtCore.QProcess.startDetached(
-            QtWidgets.QApplication.applicationFilePath(), args
-        )
+        QtCore.QProcess.startDetached(QtWidgets.QApplication.applicationFilePath(), args)
 
 
 def get_zip_url(repo):
@@ -162,6 +164,8 @@ def get_zip_url(repo):
         return f"{repo.url}/archive/{repo.branch}.zip"
     if parsed_url.netloc in ["gitlab.com", "framagit.org", "salsa.debian.org"]:
         return f"{repo.url}/-/archive/{repo.branch}/{repo.name}-{repo.branch}.zip"
+    if parsed_url.netloc in ["codeberg.org"]:
+        return f"{repo.url}/archive/{repo.branch}.zip"
     fci.Console.PrintLog(
         "Debug: addonmanager_utilities.get_zip_url: Unknown git host fetching zip URL:"
         + parsed_url.netloc
@@ -180,6 +184,7 @@ def recognized_git_location(repo) -> bool:
         "gitlab.com",
         "framagit.org",
         "salsa.debian.org",
+        "codeberg.org",
     ]
 
 
@@ -191,6 +196,8 @@ def construct_git_url(repo, filename):
         return f"{repo.url}/raw/{repo.branch}/{filename}"
     if parsed_url.netloc in ["gitlab.com", "framagit.org", "salsa.debian.org"]:
         return f"{repo.url}/-/raw/{repo.branch}/{filename}"
+    if parsed_url.netloc in ["codeberg.org"]:
+        return f"{repo.url}/raw/branch/{repo.branch}/{filename}"
     fci.Console.PrintLog(
         "Debug: addonmanager_utilities.construct_git_url: Unknown git host:"
         + parsed_url.netloc
@@ -221,6 +228,8 @@ def get_desc_regex(repo):
         return r'<meta property="og:description" content="(.*?)"'
     if parsed_url.netloc in ["gitlab.com", "salsa.debian.org", "framagit.org"]:
         return r'<meta.*?content="(.*?)".*?og:description.*?>'
+    if parsed_url.netloc in ["codeberg.org"]:
+        return r'<meta property="og:description" content="(.*?)"'
     fci.Console.PrintLog(
         "Debug: addonmanager_utilities.get_desc_regex: Unknown git host:",
         repo.url,
@@ -237,16 +246,16 @@ def get_readme_html_url(repo):
         return f"{repo.url}/blob/{repo.branch}/README.md"
     if parsed_url.netloc in ["gitlab.com", "salsa.debian.org", "framagit.org"]:
         return f"{repo.url}/-/blob/{repo.branch}/README.md"
-    fci.Console.PrintLog(
-        "Unrecognized git repo location '' -- guessing it is a GitLab instance..."
-    )
+    if parsed_url.netloc in ["gitlab.com", "salsa.debian.org", "framagit.org"]:
+        return f"{repo.url}/raw/branch/{repo.branch}/README.md"
+    fci.Console.PrintLog("Unrecognized git repo location '' -- guessing it is a GitLab instance...")
     return f"{repo.url}/-/blob/{repo.branch}/README.md"
 
 
 def is_darkmode() -> bool:
     """Heuristics to determine if we are in a darkmode stylesheet"""
     pl = fci.FreeCADGui.getMainWindow().palette()
-    return pl.color(pl.Background).lightness() < 128
+    return pl.color(QtGui.QPalette.Window).lightness() < 128
 
 
 def warning_color_string() -> str:
@@ -324,9 +333,7 @@ def update_macro_installation_details(repo) -> None:
         fci.Console.PrintLog("Requested macro details for non-macro object\n")
         return
     test_file_one = os.path.join(fci.DataPaths().macro_dir, repo.macro.filename)
-    test_file_two = os.path.join(
-        fci.DataPaths().macro_dir, "Macro_" + repo.macro.filename
-    )
+    test_file_two = os.path.join(fci.DataPaths().macro_dir, "Macro_" + repo.macro.filename)
     if os.path.exists(test_file_one):
         repo.updated_timestamp = os.path.getmtime(test_file_one)
         repo.installed_version = get_macro_version_from_file(test_file_one)
@@ -346,40 +353,6 @@ def is_float(element: Any) -> bool:
         return True
     except ValueError:
         return False
-
-
-def get_python_exe() -> str:
-    """Find Python. In preference order
-    A) The value of the PythonExecutableForPip user preference
-    B) The executable located in the same bin directory as FreeCAD and called "python3"
-    C) The executable located in the same bin directory as FreeCAD and called "python"
-    D) The result of a shutil search for your system's "python3" executable
-    E) The result of a shutil search for your system's "python" executable"""
-    prefs = fci.ParamGet("User parameter:BaseApp/Preferences/Addons")
-    python_exe = prefs.GetString("PythonExecutableForPip", "Not set")
-    fc_dir = fci.DataPaths().home_dir
-    if not python_exe or python_exe == "Not set" or not os.path.exists(python_exe):
-        python_exe = os.path.join(fc_dir, "bin", "python3")
-        if "Windows" in platform.system():
-            python_exe += ".exe"
-
-    if not python_exe or not os.path.exists(python_exe):
-        python_exe = os.path.join(fc_dir, "bin", "python")
-        if "Windows" in platform.system():
-            python_exe += ".exe"
-
-    if not python_exe or not os.path.exists(python_exe):
-        python_exe = shutil.which("python3")
-
-    if not python_exe or not os.path.exists(python_exe):
-        python_exe = shutil.which("python")
-
-    if not python_exe or not os.path.exists(python_exe):
-        return ""
-
-    python_exe = python_exe.replace("/", os.path.sep)
-    prefs.SetString("PythonExecutableForPip", python_exe)
-    return python_exe
 
 
 def get_pip_target_directory():
@@ -407,8 +380,12 @@ def blocking_get(url: str, method=None) -> bytes:
     p = b""
     if fci.FreeCADGui and method is None or method == "networkmanager":
         NetworkManager.InitializeNetworkManager()
-        p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(url)
-        p = p.data()
+        p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(url, 10000)  # 10 second timeout
+        if p:
+            try:
+                p = p.data()
+            except AttributeError:
+                pass
     elif requests and method is None or method == "requests":
         response = requests.get(url)
         if response.status_code == 200:
@@ -442,7 +419,7 @@ def run_interruptable_subprocess(args) -> subprocess.CompletedProcess:
     return_code = None
     while return_code is None:
         try:
-            stdout, stderr = p.communicate(timeout=0.1)
+            stdout, stderr = p.communicate(timeout=10)
             return_code = p.returncode
         except subprocess.TimeoutExpired:
             if QtCore.QThread.currentThread().isInterruptionRequested():

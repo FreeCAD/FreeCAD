@@ -32,7 +32,7 @@ using namespace App;
 // returns a string which represents the object e.g. when printed in python
 std::string OriginGroupExtensionPy::representation() const
 {
-    return std::string("<OriginGroup object>");
+    return {"<OriginGroup object>"};
 }
 
 PyObject *OriginGroupExtensionPy::getCustomAttributes(const char* /*attr*/) const

@@ -22,13 +22,14 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <cmath>
-# include <iostream>
+#include <cmath>
+#include <iostream>
 #endif
 
 #include "MeshFlatteningNurbs.h"
 
 
+// clang-format off
 namespace nurbs{
 
 double divide(double a, double b)
@@ -157,7 +158,6 @@ NurbsBase2D::NurbsBase2D(Eigen::VectorXd u_knots, Eigen::VectorXd v_knots,
                      Eigen::VectorXd weights,
                      int degree_u, int degree_v)
 {
-    // assert(weights.size() == u_knots.size() * v_knots.size());
     this->u_knots = u_knots;
     this->v_knots = v_knots;
     this->weights = weights;
@@ -200,8 +200,9 @@ void add_triplets(Eigen::VectorXd values, double row, std::vector<trip> &triplet
 {
     for (unsigned int i=0; i < values.size(); i++)
     {
-        if (values(i) != 0.)
-            triplets.push_back(trip(row, i, values(i)));
+        if (values(i) != 0.) {
+            triplets.emplace_back(trip(row, i, values(i)));
+        }
     }
 }
 
@@ -246,15 +247,12 @@ Eigen::VectorXd NurbsBase2D::getDuVector(Eigen::Vector2d u)
     n_v.resize(this->v_functions.size());
     for (unsigned int u_i=0; u_i < this->u_functions.size(); u_i++)
     {
-        // std::cout << "u_i: " << u_i << " , n_u: " << n_u.size()
-        //           << " , Dn_u: " << Dn_u.size() << std::endl;
         n_u[u_i] = this->u_functions[u_i](u.x());
         Dn_u[u_i] = this->Du_functions[u_i](u.x());
     }
     for (unsigned int v_i=0; v_i < this->v_functions.size(); v_i++)
     {
         n_v[v_i] = this->v_functions[v_i](u.y());
-        // std::cout << v_i << std::endl;
     }
 
     for (unsigned int u_i=0; u_i < this->u_functions.size(); u_i++)
@@ -515,3 +513,4 @@ Eigen::VectorXd NurbsBase1D::getUMesh(int num_u_points)
 
 
 }
+// clang-format on

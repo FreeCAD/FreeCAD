@@ -22,29 +22,32 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <algorithm>
-# include <QDoubleValidator>
-# include <QLocale>
-# include <QMessageBox>
-# include <Precision.hxx>
+#include <Precision.hxx>
+#include <QDoubleValidator>
+#include <QLocale>
+#include <QMessageBox>
+#include <algorithm>
+#include <array>
 
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoMarkerSet.h>
-# include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoBaseColor.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoMarkerSet.h>
+#include <Inventor/nodes/SoSeparator.h>
 #endif
 
 #include <App/Document.h>
 #include <Gui/Application.h>
+#include <Gui/CommandT.h>
+#include <Gui/Inventor/MarkerBitmaps.h>
+#include <Gui/Notifications.h>
+#include <Gui/TaskView/TaskView.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
-#include <Gui/Inventor/MarkerBitmaps.h>
-#include <Gui/TaskView/TaskView.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
-#include "ui_TaskSketcherValidation.h"
 #include "TaskSketcherValidation.h"
+#include "ui_TaskSketcherValidation.h"
 
 
 using namespace SketcherGui;
@@ -53,7 +56,10 @@ using namespace Gui::TaskView;
 /* TRANSLATOR SketcherGui::SketcherValidation */
 
 SketcherValidation::SketcherValidation(Sketcher::SketchObject* Obj, QWidget* parent)
-: QWidget(parent), ui(new Ui_TaskSketcherValidation()), sketch(Obj), sketchAnalyser(Obj), coincidenceRoot(nullptr)
+    : QWidget(parent)
+    , ui(new Ui_TaskSketcherValidation())
+    , sketch(Obj)
+    , coincidenceRoot(nullptr)
 {
     ui->setupUi(this);
     setupConnections();
@@ -63,25 +69,29 @@ SketcherValidation::SketcherValidation(Sketcher::SketchObject* Obj, QWidget* par
     ui->fixDegenerated->setEnabled(false);
     ui->swapReversed->setEnabled(false);
     ui->checkBoxIgnoreConstruction->setEnabled(true);
-    double tolerances[8] = {
-        Precision::Confusion() / 100,
-        Precision::Confusion() / 10,
+    std::array tolerances = {
+        // NOLINTBEGIN
+        Precision::Confusion() / 100.0,
+        Precision::Confusion() / 10.0,
         Precision::Confusion(),
-        Precision::Confusion() * 10,
-        Precision::Confusion() * 100,
-        Precision::Confusion() * 1000,
-        Precision::Confusion() * 10000,
-        Precision::Confusion() * 100000
+        Precision::Confusion() * 10.0,
+        Precision::Confusion() * 100.0,
+        Precision::Confusion() * 1000.0,
+        Precision::Confusion() * 10000.0,
+        Precision::Confusion() * 100000.0
+        // NOLINTEND
     };
 
     QLocale loc;
-    for (int i=0; i<8; i++) {
-        ui->comboBoxTolerance->addItem(loc.toString(tolerances[i]), QVariant(tolerances[i]));
+    for (double it : tolerances) {
+        ui->comboBoxTolerance->addItem(loc.toString(it), QVariant(it));
     }
     ui->comboBoxTolerance->setCurrentIndex(5);
     ui->comboBoxTolerance->setEditable(true);
-    ui->comboBoxTolerance->setValidator(new QDoubleValidator(0,10,10,this));
-
+    const double bottom = 0.0;
+    const double top = 10.0;
+    const int decimals = 10;
+    ui->comboBoxTolerance->setValidator(new QDoubleValidator(bottom, top, decimals, this));
 }
 
 SketcherValidation::~SketcherValidation()
@@ -91,6 +101,7 @@ SketcherValidation::~SketcherValidation()
 
 void SketcherValidation::setupConnections()
 {
+    // clang-format off
     connect(ui->findButton, &QPushButton::clicked,
             this, &SketcherValidation::onFindButtonClicked);
     connect(ui->fixButton, &QPushButton::clicked,
@@ -115,9 +126,10 @@ void SketcherValidation::setupConnections()
             this, &SketcherValidation::onFindDegeneratedClicked);
     connect(ui->fixDegenerated, &QPushButton::clicked,
             this, &SketcherValidation::onFixDegeneratedClicked);
+    // clang-format on
 }
 
-void SketcherValidation::changeEvent(QEvent *e)
+void SketcherValidation::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -127,16 +139,17 @@ void SketcherValidation::changeEvent(QEvent *e)
 
 void SketcherValidation::onFindButtonClicked()
 {
-    if (sketch.expired())
+    if (sketch.expired()) {
         return;
+    }
 
     double prec = Precision::Confusion();
-    bool ok;
-    double conv;
+    bool ok {};
+    double conv {};
 
-    conv = QLocale::system().toDouble(ui->comboBoxTolerance->currentText(),&ok);
+    conv = QLocale::system().toDouble(ui->comboBoxTolerance->currentText(), &ok);
 
-    if(ok) {
+    if (ok) {
         prec = conv;
     }
     else {
@@ -146,9 +159,11 @@ void SketcherValidation::onFindButtonClicked()
         }
     }
 
-    sketchAnalyser.detectMissingPointOnPointConstraints(prec,!ui->checkBoxIgnoreConstruction->isChecked());
+    sketch->detectMissingPointOnPointConstraints(prec,
+                                                 !ui->checkBoxIgnoreConstruction->isChecked());
 
-    std::vector<Sketcher::ConstraintIds> & vertexConstraints = sketchAnalyser.getMissingPointOnPointConstraints();
+    std::vector<Sketcher::ConstraintIds>& vertexConstraints =
+        sketch->getMissingPointOnPointConstraints();
 
     std::vector<Base::Vector3d> points;
     points.reserve(vertexConstraints.size());
@@ -159,28 +174,34 @@ void SketcherValidation::onFindButtonClicked()
 
     hidePoints();
     if (vertexConstraints.empty()) {
-        QMessageBox::information(this, tr("No missing coincidences"),
-            tr("No missing coincidences found"));
+        Gui::TranslatedNotification(*sketch,
+                                    tr("No missing coincidences"),
+                                    tr("No missing coincidences found"));
+
         ui->fixButton->setEnabled(false);
     }
     else {
         showPoints(points);
-        QMessageBox::warning(this, tr("Missing coincidences"),
+        Gui::TranslatedUserWarning(
+            *sketch,
+            tr("Missing coincidences"),
             tr("%1 missing coincidences found").arg(vertexConstraints.size()));
+
         ui->fixButton->setEnabled(true);
     }
 }
 
 void SketcherValidation::onFixButtonClicked()
 {
-    if (sketch.expired())
+    if (sketch.expired()) {
         return;
+    }
 
     // undo command open
     App::Document* doc = sketch->getDocument();
-    doc->openTransaction("add coincident constraint");
+    doc->openTransaction("Add coincident constraint");
 
-    sketchAnalyser.makeMissingPointOnPointCoincident();
+    Gui::cmdAppObjectArgs(sketch.get(), "makeMissingPointOnPointCoincident()");
 
     ui->fixButton->setEnabled(false);
     hidePoints();
@@ -193,101 +214,123 @@ void SketcherValidation::onFixButtonClicked()
 
 void SketcherValidation::onHighlightButtonClicked()
 {
-    if (sketch.expired())
+    if (sketch.expired()) {
         return;
+    }
 
     std::vector<Base::Vector3d> points;
 
-    points = sketchAnalyser.getOpenVertices();
+    points = sketch->getOpenVertices();
 
     hidePoints();
-    if (!points.empty())
+    if (!points.empty()) {
         showPoints(points);
+    }
 }
 
 void SketcherValidation::onFindConstraintClicked()
 {
-    if (sketch.expired())
+    if (sketch.expired()) {
         return;
+    }
 
     if (sketch->evaluateConstraints()) {
-        QMessageBox::information(this, tr("No invalid constraints"),
-            tr("No invalid constraints found"));
+        Gui::TranslatedNotification(*sketch,
+                                    tr("No invalid constraints"),
+                                    tr("No invalid constraints found"));
+
         ui->fixConstraint->setEnabled(false);
     }
     else {
-        QMessageBox::warning(this, tr("Invalid constraints"),
-            tr("Invalid constraints found"));
+        Gui::TranslatedUserError(*sketch,
+                                 tr("Invalid constraints"),
+                                 tr("Invalid constraints found"));
+
         ui->fixConstraint->setEnabled(true);
     }
 }
 
 void SketcherValidation::onFixConstraintClicked()
 {
-    if (sketch.expired())
+    if (sketch.expired()) {
         return;
+    }
 
-    sketch->validateConstraints();
+    Gui::cmdAppObjectArgs(sketch.get(), "validateConstraints()");
     ui->fixConstraint->setEnabled(false);
 }
 
 void SketcherValidation::onFindReversedClicked()
 {
-    if (sketch.expired())
+    if (sketch.expired()) {
         return;
+    }
 
     std::vector<Base::Vector3d> points;
-    const std::vector<Part::Geometry *>& geom = sketch->getExternalGeometry();
-    for (std::size_t i=0; i<geom.size(); i++) {
-        Part::Geometry* g = geom[i];
-        //only arcs of circles need to be repaired. Arcs of ellipse were so broken there should be nothing to repair from.
-        if (g->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
-            const Part::GeomArcOfCircle *segm = static_cast<const Part::GeomArcOfCircle*>(g);
+    const std::vector<Part::Geometry*>& geom = sketch->getExternalGeometry();
+    for (const auto geo : geom) {
+        // only arcs of circles need to be repaired. Arcs of ellipse were so broken there should be
+        // nothing to repair from.
+        if (const auto segm = dynamic_cast<const Part::GeomArcOfCircle*>(geo)) {
             if (segm->isReversed()) {
-                points.push_back(segm->getStartPoint(/*emulateCCW=*/true));
-                points.push_back(segm->getEndPoint(/*emulateCCW=*/true));
+                points.push_back(segm->getStartPoint(/*emulateCCWXY=*/true));
+                points.push_back(segm->getEndPoint(/*emulateCCWXY=*/true));
             }
         }
     }
     hidePoints();
-    if(!points.empty()){
+    if (!points.empty()) {
         int nc = sketch->port_reversedExternalArcs(/*justAnalyze=*/true);
         showPoints(points);
-        if(nc>0){
-            QMessageBox::warning(this, tr("Reversed external geometry"),
+        if (nc > 0) {
+            Gui::TranslatedUserWarning(
+                *sketch,
+                tr("Reversed external geometry"),
                 tr("%1 reversed external-geometry arcs were found. Their endpoints are"
-                   " encircled in 3d view.\n\n"
+                   " encircled in 3D view.\n\n"
                    "%2 constraints are linking to the endpoints. The constraints have"
                    " been listed in Report view (menu View -> Panels -> Report view).\n\n"
                    "Click \"Swap endpoints in constraints\" button to reassign endpoints."
-                   " Do this only once to sketches created in FreeCAD older than v0.15"
-                   ).arg(points.size()/2).arg(nc)
-                                 );
+                   " Do this only once to sketches created in FreeCAD older than v0.15")
+                    .arg(points.size() / 2)
+                    .arg(nc));
+
             ui->swapReversed->setEnabled(true);
-        } else {
-            QMessageBox::warning(this, tr("Reversed external geometry"),
+        }
+        else {
+            Gui::TranslatedUserWarning(
+                *sketch,
+                tr("Reversed external geometry"),
                 tr("%1 reversed external-geometry arcs were found. Their endpoints are "
-                   "encircled in 3d view.\n\n"
-                   "However, no constraints linking to the endpoints were found.").arg(points.size()/2));
+                   "encircled in 3D view.\n\n"
+                   "However, no constraints linking to the endpoints were found.")
+                    .arg(points.size() / 2));
+
             ui->swapReversed->setEnabled(false);
         }
-    } else {
-        QMessageBox::information(this, tr("Reversed external geometry"),
-            tr("No reversed external-geometry arcs were found."));
+    }
+    else {
+        Gui::TranslatedNotification(*sketch,
+                                    tr("Reversed external geometry"),
+                                    tr("No reversed external-geometry arcs were found."));
     }
 }
 
 void SketcherValidation::onSwapReversedClicked()
 {
-    if (sketch.expired())
+    if (sketch.expired()) {
         return;
+    }
 
     App::Document* doc = sketch->getDocument();
     doc->openTransaction("Sketch porting");
 
     int n = sketch->port_reversedExternalArcs(/*justAnalyze=*/false);
-    QMessageBox::warning(this, tr("Reversed external geometry"),
+    Gui::TranslatedNotification(
+        *sketch,
+        tr("Reversed external geometry"),
         tr("%1 changes were made to constraints linking to endpoints of reversed arcs.").arg(n));
+
     hidePoints();
     ui->swapReversed->setEnabled(false);
 
@@ -296,86 +339,104 @@ void SketcherValidation::onSwapReversedClicked()
 
 void SketcherValidation::onOrientLockEnableClicked()
 {
-    if (sketch.expired())
+    if (sketch.expired()) {
         return;
+    }
 
     App::Document* doc = sketch->getDocument();
     doc->openTransaction("Constraint orientation lock");
 
     int n = sketch->changeConstraintsLocking(/*bLock=*/true);
-    QMessageBox::warning(this, tr("Constraint orientation locking"),
+    Gui::TranslatedNotification(
+        *sketch,
+        tr("Constraint orientation locking"),
         tr("Orientation locking was enabled and recomputed for %1 constraints. The"
            " constraints have been listed in Report view (menu View -> Panels ->"
-           " Report view).").arg(n));
+           " Report view).")
+            .arg(n));
 
     doc->commitTransaction();
 }
 
 void SketcherValidation::onOrientLockDisableClicked()
 {
-    if (sketch.expired())
+    if (sketch.expired()) {
         return;
+    }
 
     App::Document* doc = sketch->getDocument();
     doc->openTransaction("Constraint orientation unlock");
 
     int n = sketch->changeConstraintsLocking(/*bLock=*/false);
-    QMessageBox::warning(this, tr("Constraint orientation locking"),
+    Gui::TranslatedNotification(
+        *sketch,
+        tr("Constraint orientation locking"),
         tr("Orientation locking was disabled for %1 constraints. The"
            " constraints have been listed in Report view (menu View -> Panels ->"
            " Report view). Note that for all future constraints, the locking still"
-           " defaults to ON.").arg(n));
+           " defaults to ON.")
+            .arg(n));
 
     doc->commitTransaction();
 }
 
 void SketcherValidation::onDelConstrExtrClicked()
 {
-    if (sketch.expired())
+    if (sketch.expired()) {
         return;
+    }
 
-    int reply;
-    reply =  QMessageBox::question(this,
-                        tr("Delete constraints to external geom."),
-                        tr("You are about to delete ALL constraints that deal with external geometry. This is useful to rescue a sketch with broken/changed links to external geometry. Are you sure you want to delete the constraints?"),
-                        QMessageBox::No|QMessageBox::Yes,QMessageBox::No);
-    if(reply!=QMessageBox::Yes)
+    int reply = QMessageBox::question(
+        this,
+        tr("Delete constraints to external geom."),
+        tr("You are about to delete ALL constraints that deal with external geometry. This is "
+           "useful to rescue a sketch with broken/changed links to external geometry. Are you sure "
+           "you want to delete the constraints?"),
+        QMessageBox::No | QMessageBox::Yes,
+        QMessageBox::No);
+    if (reply != QMessageBox::Yes) {
         return;
+    }
 
     App::Document* doc = sketch->getDocument();
     doc->openTransaction("Delete constraints");
 
-    sketch->delConstraintsToExternal();
+    Gui::cmdAppObjectArgs(sketch.get(), "delConstraintsToExternal()");
 
     doc->commitTransaction();
 
-    QMessageBox::warning(this, tr("Delete constraints to external geom."),
-                         tr("All constraints that deal with external geometry were deleted."));
+    Gui::TranslatedNotification(
+        *sketch,
+        tr("Delete constraints to external geom."),
+        tr("All constraints that deal with external geometry were deleted."));
 }
 
 void SketcherValidation::showPoints(const std::vector<Base::Vector3d>& pts)
 {
-    SoCoordinate3 * coords = new SoCoordinate3();
-    SoDrawStyle   * drawStyle = new SoDrawStyle();
+    auto coords = new SoCoordinate3();
+    auto drawStyle = new SoDrawStyle();
     drawStyle->pointSize = 6;
-    SoPointSet* pcPoints = new SoPointSet();
+    auto pcPoints = new SoPointSet();
 
     coincidenceRoot = new SoGroup();
 
     coincidenceRoot->addChild(drawStyle);
-    SoSeparator* pointsep = new SoSeparator();
-    SoBaseColor * basecol = new SoBaseColor();
-    basecol->rgb.setValue(1.0f, 0.5f, 0.0f);
+    auto pointsep = new SoSeparator();
+    auto basecol = new SoBaseColor();
+    basecol->rgb.setValue(1.0F, 0.5F, 0.0F);
     pointsep->addChild(basecol);
     pointsep->addChild(coords);
     pointsep->addChild(pcPoints);
     coincidenceRoot->addChild(pointsep);
 
     // Draw markers
-    SoBaseColor * markcol = new SoBaseColor();
-    markcol->rgb.setValue(1.0f, 1.0f, 0.0f);
-    SoMarkerSet* marker = new SoMarkerSet();
-    marker->markerIndex=Gui::Inventor::MarkerBitmaps::getMarkerIndex("PLUS", App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")->GetInt("MarkerSize", 9));
+    auto markcol = new SoBaseColor();
+    markcol->rgb.setValue(1.0F, 1.0F, 0.0F);
+    auto marker = new SoMarkerSet();
+    long markerSize = App::GetApplication()
+                          .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
+                          ->GetInt("MarkerSize", 9);
+    marker->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex("PLUS", int(markerSize));
     pointsep->addChild(markcol);
     pointsep->addChild(marker);
 
@@ -384,7 +445,7 @@ void SketcherValidation::showPoints(const std::vector<Base::Vector3d>& pts)
     SbVec3f* c = coords->point.startEditing();
     for (int i = 0; i < pts_size; i++) {
         const Base::Vector3d& v = pts[i];
-        c[i].setValue((float)v.x,(float)v.y,(float)v.z);
+        c[i].setValue((float)v.x, (float)v.y, (float)v.z);
     }
     coords->point.finishEditing();
 
@@ -407,35 +468,41 @@ void SketcherValidation::hidePoints()
 
 void SketcherValidation::onFindDegeneratedClicked()
 {
-    if (sketch.expired())
+    if (sketch.expired()) {
         return;
+    }
 
     double prec = Precision::Confusion();
-    int count = sketchAnalyser.detectDegeneratedGeometries(prec);
+    int count = sketch->detectDegeneratedGeometries(prec);
 
     if (count == 0) {
-        QMessageBox::information(this, tr("No degenerated geometry"),
-            tr("No degenerated geometry found"));
+        Gui::TranslatedNotification(*sketch,
+                                    tr("No degenerated geometry"),
+                                    tr("No degenerated geometry found"));
+
         ui->fixDegenerated->setEnabled(false);
     }
     else {
-        QMessageBox::warning(this, tr("Degenerated geometry"),
-            tr("%1 degenerated geometry found").arg(count));
+        Gui::TranslatedUserWarning(*sketch,
+                                   tr("Degenerated geometry"),
+                                   tr("%1 degenerated geometry found").arg(count));
+
         ui->fixDegenerated->setEnabled(true);
     }
 }
 
 void SketcherValidation::onFixDegeneratedClicked()
 {
-    if (sketch.expired())
+    if (sketch.expired()) {
         return;
+    }
 
     // undo command open
     App::Document* doc = sketch->getDocument();
     doc->openTransaction("Remove degenerated geometry");
 
     double prec = Precision::Confusion();
-    sketchAnalyser.removeDegeneratedGeometries(prec);
+    Gui::cmdAppObjectArgs(sketch.get(), "removeDegeneratedGeometries(%.12f)", prec);
 
     ui->fixButton->setEnabled(false);
     hidePoints();
@@ -451,14 +518,11 @@ void SketcherValidation::onFixDegeneratedClicked()
 TaskSketcherValidation::TaskSketcherValidation(Sketcher::SketchObject* Obj)
 {
     QWidget* widget = new SketcherValidation(Obj);
-    Gui::TaskView::TaskBox* taskbox = new Gui::TaskView::TaskBox(
-        QPixmap(), widget->windowTitle(), true, nullptr);
+    auto taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }
 
-TaskSketcherValidation::~TaskSketcherValidation()
-{
-}
+TaskSketcherValidation::~TaskSketcherValidation() = default;
 
 #include "moc_TaskSketcherValidation.cpp"

@@ -28,5 +28,5 @@
 # runs when the gui is up
 
 # two options for IDF added by Milos Koutny (12-Feb-2010)
-FreeCAD.addImportType("IDF emn file File Type (*.emn)","Idf")
+FreeCAD.addImportType("IDF emn file File Type (*.emn *.EMN)","Idf")
 #FreeCAD.addImportType("IDF emp File Type (*.emp)","Import_Emp")

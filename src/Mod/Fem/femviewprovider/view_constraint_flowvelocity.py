@@ -24,7 +24,7 @@
 
 __title__ = "FreeCAD FEM constraint flow velocity ViewProvider for the document object"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package view_constraint_flowvelocity
 #  \ingroup FEM
@@ -38,8 +38,5 @@ class VPConstraintFlowVelocity(view_base_femconstraint.VPBaseFemConstraint):
 
     def setEdit(self, vobj, mode=0):
         view_base_femconstraint.VPBaseFemConstraint.setEdit(
-            self,
-            vobj,
-            mode,
-            task_constraint_flowvelocity._TaskPanel
+            self, vobj, mode, task_constraint_flowvelocity._TaskPanel
         )

@@ -129,12 +129,16 @@ public:
     /// include the index.
     ///
     /// \param buffer A (possibly non-empty) string buffer to append the name to.
-    void appendToStringBuffer(std::string & buffer) const
+    /// \return A const char pointer to the name we appended to the buffer.
+    const char * appendToStringBuffer(std::string & buffer) const
     {
+        // Note! buffer is not cleared on purpose.
+        std::size_t offset = buffer.size();
         buffer += this->type;
         if (this->index > 0) {
             buffer += std::to_string(this->index);
         }
+        return buffer.c_str() + offset;
     }
 
     /// Create and return a new std::string with this name in it.

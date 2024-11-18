@@ -23,16 +23,16 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Standard_math.hxx>
 # include <QInputDialog>
 #endif
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/DocumentObserver.h>
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
 #include <Gui/Application.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionObject.h>
@@ -57,7 +57,7 @@ CmdPartSimpleCylinder::CmdPartSimpleCylinder()
     sToolTipText  = QT_TR_NOOP("Create a Cylinder");
     sWhatsThis    = "Part_SimpleCylinder";
     sStatusTip    = sToolTipText;
-    sPixmap       = "Part_Cylinder";
+    sPixmap       = "Part_Cylinder_Parametric";
 }
 
 void CmdPartSimpleCylinder::activated(int iMsg)
@@ -264,7 +264,7 @@ static void _copyShape(const char *cmdName, bool resolve,bool needElement=false,
                         v.second->getNameInDocument(),
                         Gui::Command::getObjectCmd(v.second).c_str());
             auto newObj = App::GetApplication().getActiveDocument()->getActiveObject();
-            Gui::Command::copyVisual(newObj, "ShapeColor", v.second);
+            Gui::Command::copyVisual(newObj, "ShapeAppearance", v.second);
             Gui::Command::copyVisual(newObj, "LineColor", v.second);
             Gui::Command::copyVisual(newObj, "PointColor", v.second);
         }
@@ -369,19 +369,19 @@ void CmdPartRefineShape::activated(int iMsg)
         openCommand(QT_TRANSLATE_NOOP("Command", "Refine shape"));
         std::for_each(objs.begin(), objs.end(), [](App::DocumentObject* obj) {
             try {
-                doCommand(Doc,"App.ActiveDocument.addObject('Part::Refine','%s').Source="
-                              "App.ActiveDocument.%s\n"
-                              "App.ActiveDocument.ActiveObject.Label="
-                              "App.ActiveDocument.%s.Label\n"
-                              "Gui.ActiveDocument.%s.hide()\n",
-                              obj->getNameInDocument(),
-                              obj->getNameInDocument(),
-                              obj->getNameInDocument(),
-                              obj->getNameInDocument());
+                App::DocumentObjectT objT(obj);
+                Gui::cmdAppDocumentArgs(obj->getDocument(), "addObject('Part::Refine','%s')",
+                                        obj->getNameInDocument());
+                Gui::cmdAppDocumentArgs(obj->getDocument(), "ActiveObject.Source = %s",
+                                        objT.getObjectPython());
+                Gui::cmdAppDocumentArgs(obj->getDocument(), "ActiveObject.Label = %s.Label",
+                                        objT.getObjectPython());
+                Gui::cmdAppObjectHide(obj);
 
-                copyVisual("ActiveObject", "ShapeColor", obj->getNameInDocument());
-                copyVisual("ActiveObject", "LineColor", obj->getNameInDocument());
-                copyVisual("ActiveObject", "PointColor", obj->getNameInDocument());
+                auto newObj = App::GetApplication().getActiveDocument()->getActiveObject();
+                Gui::copyVisualT(newObj->getNameInDocument(), "ShapeAppearance", obj->getNameInDocument());
+                Gui::copyVisualT(newObj->getNameInDocument(), "LineColor", obj->getNameInDocument());
+                Gui::copyVisualT(newObj->getNameInDocument(), "PointColor", obj->getNameInDocument());
             }
             catch (const Base::Exception& e) {
                 Base::Console().Warning("%s: %s\n", obj->Label.getValue(), e.what());
@@ -435,9 +435,9 @@ void CmdPartDefeaturing::activated(int iMsg)
 
             std::string faces;
             std::vector<std::string> subnames = it->getSubNames();
-            for (std::vector<std::string>::iterator sub = subnames.begin(); sub != subnames.end(); ++sub) {
+            for (const auto & subname : subnames) {
                 faces.append("sh.");
-                faces.append(*sub);
+                faces.append(subname);
                 faces.append(",");
             }
 
@@ -465,10 +465,10 @@ bool CmdPartDefeaturing::isActive()
 {
     Base::Type partid = Base::Type::fromName("Part::Feature");
     std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx(nullptr, partid);
-    for (std::vector<Gui::SelectionObject>::iterator it = objs.begin(); it != objs.end(); ++it) {
-        std::vector<std::string> subnames = it->getSubNames();
-        for (std::vector<std::string>::iterator sub = subnames.begin(); sub != subnames.end(); ++sub) {
-            if (sub->substr(0,4) == "Face") {
+    for (const auto & obj : objs) {
+        std::vector<std::string> subnames = obj.getSubNames();
+        for (const auto & subname : subnames) {
+            if (subname.substr(0,4) == "Face") {
                 return true;
             }
         }

@@ -4,7 +4,7 @@
 General.NumThreads = X;
 
 // open brep geometry
-Merge "/tmp/tmp0TVZbM.brep";
+Merge "tmp0TVZbM.brep";
 
 // group data
 Physical Surface("Face1") = {1};
@@ -35,16 +35,21 @@ Mesh.Algorithm = 2;
 // 3D mesh algorithm (1=Delaunay, 2=New Delaunay, 4=Frontal, 7=MMG3D, 9=R-tree, 10=HTX)
 Mesh.Algorithm3D = 1;
 
+// subdivision algorithm
+Mesh.SubdivisionAlgorithm = 0;
+
+// incomplete second order elements
+Mesh.SecondOrderIncomplete = 0;
+
 // meshing
 Geometry.Tolerance = 1e-06; // set geometrical tolerance (also used for merging nodes)
 Mesh  3;
 Coherence Mesh; // Remove duplicate vertices
 
 // save
-Mesh.Format = 2;
 // Ignore Physical definitions and save all elements;
 Mesh.SaveAll = 1;
-Save "/tmp/tmpjVhNNb.unv";
+Save "tmpjVhNNb.unv";
 
 
 // **********************************************************************

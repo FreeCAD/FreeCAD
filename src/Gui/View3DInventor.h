@@ -50,8 +50,7 @@ class GuiExport GLOverlayWidget : public QWidget
 public:
     explicit GLOverlayWidget(QWidget* parent=nullptr) : QWidget(parent)
     {}
-    ~GLOverlayWidget() override
-    {}
+    ~GLOverlayWidget() override = default;
     virtual void setImage(const QImage& img)
     { image = img; }
     void paintEvent(QPaintEvent*) override;
@@ -126,7 +125,7 @@ private:
     void applySettings();
 
 protected:
-    void windowStateChanged(MDIView* ) override;
+    void windowStateChanged(QWidget* view) override;
     void dropEvent        (QDropEvent      * e) override;
     void dragEnterEvent   (QDragEnterEvent * e) override;
     void keyPressEvent    (QKeyEvent       * e) override;

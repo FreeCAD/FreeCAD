@@ -22,7 +22,7 @@
 
 __title__="BOPTools.GeneralFuseResult module"
 __author__ = "DeepSOIC"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Implementation of GeneralFuseResult class, which parses return of generalFuse."
 
 import Part
@@ -270,7 +270,7 @@ def myCustomFusionRoutine(list_of_shapes):
         """Splits aggregates inside compound. Returns None if nothing is split, otherwise
         returns compound.
         existing_pieces is a dict. Key is deep hash. Value is tuple (int, shape). It is
-        used to search for if this split piece was already generated, and re-use the old
+        used to search for if this split piece was already generated, and reuse the old
         one."""
 
         changed = False

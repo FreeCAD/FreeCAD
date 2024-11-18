@@ -24,9 +24,9 @@
 #ifndef MESH_IO_READER_OBJ_H
 #define MESH_IO_READER_OBJ_H
 
-#include <iosfwd>
 #include <Mod/Mesh/App/Core/MeshKernel.h>
 #include <Mod/Mesh/MeshGlobal.h>
+#include <iosfwd>
 
 namespace MeshCore
 {
@@ -46,16 +46,17 @@ public:
      * \brief Load the mesh from the input stream
      * \return true on success and false otherwise
      */
-    bool Load(std::istream &str);
+    bool Load(std::istream& str);
     /*!
      * \brief Load the material file to the corresponding OBJ file.
      * This function must be called after \ref Load().
      * \param str
      * \return  true on success and false otherwise
      */
-    bool LoadMaterial(std::istream &str);
+    bool LoadMaterial(std::istream& str);
 
-    const std::vector<std::string>& GetGroupNames() const {
+    const std::vector<std::string>& GetGroupNames() const
+    {
         return _groupNames;
     }
 
@@ -63,10 +64,10 @@ private:
     MeshKernel& _kernel;
     Material* _material;
     std::vector<std::string> _groupNames;
-    std::vector<std::pair<std::string, unsigned long> > _materialNames;
+    std::vector<std::pair<std::string, unsigned long>> _materialNames;
 };
 
-} // namespace MeshCore
+}  // namespace MeshCore
 
 
 #endif  // MESH_IO_READER_OBJ_H

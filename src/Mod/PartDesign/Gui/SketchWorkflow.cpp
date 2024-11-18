@@ -45,6 +45,7 @@
 #include <Mod/Part/App/TopoShape.h>
 
 #include <App/Document.h>
+#include <App/Link.h>
 #include <App/Origin.h>
 #include <App/OriginFeature.h>
 #include <App/Part.h>
@@ -100,7 +101,7 @@ public:
         // Display Mode Body is set to Tip. But the body face is not allowed
         // to be used as support because otherwise it would cause a cyclic
         // dependency. So, instead we use the tip object as reference.
-        // https://forum.freecadweb.org/viewtopic.php?f=3&t=37448
+        // https://forum.freecad.org/viewtopic.php?f=3&t=37448
         if (object == activeBody) {
             App::DocumentObject* tip = activeBody->Tip.getValue();
             if (tip && tip->isDerivedFrom(Part::Feature::getClassTypeId()) && elements.size() == 1) {
@@ -247,7 +248,7 @@ public:
         guidocument->openCommand(QT_TRANSLATE_NOOP("Command", "Create a Sketch on Face"));
         FCMD_OBJ_CMD(activeBody, "newObject('Sketcher::SketchObject','" << FeatName << "')");
         auto Feat = appdocument->getObject(FeatName.c_str());
-        FCMD_OBJ_CMD(Feat, "Support = " << supportString);
+        FCMD_OBJ_CMD(Feat, "AttachmentSupport = " << supportString);
         FCMD_OBJ_CMD(Feat, "MapMode = '" << Attacher::AttachEngine::getModeName(Attacher::mmFlatFace)<<"'");
         Gui::Command::updateActive();
         PartDesignGui::setEdit(Feat, activeBody);
@@ -617,11 +618,16 @@ private:
         std::string FeatName = documentOfBody->getUniqueObjectName("Sketch");
         std::string supportString = Gui::Command::getObjectCmd(plane,"(",",[''])");
 
+        App::Document* doc = partDesignBody->getDocument();
+        if (!doc->hasPendingTransaction()) {
+            doc->openTransaction(QT_TRANSLATE_NOOP("Command", "Create a new Sketch"));
+        }
+
         FCMD_OBJ_CMD(partDesignBody,"newObject('Sketcher::SketchObject','" << FeatName << "')");
-        auto Feat = partDesignBody->getDocument()->getObject(FeatName.c_str());
-        FCMD_OBJ_CMD(Feat,"Support = " << supportString);
+        auto Feat = doc->getObject(FeatName.c_str());
+        FCMD_OBJ_CMD(Feat,"AttachmentSupport = " << supportString);
         FCMD_OBJ_CMD(Feat,"MapMode = '" << Attacher::AttachEngine::getModeName(Attacher::mmFlatFace)<<"'");
-        Gui::Command::updateActive(); // Make sure the Support's Placement property is updated
+        Gui::Command::updateActive(); // Make sure the AttachmentSupport's Placement property is updated
         PartDesignGui::setEdit(Feat, partDesignBody);
     }
 
@@ -634,7 +640,6 @@ private:
 
 SketchWorkflow::SketchWorkflow(Gui::Document* document)
     : guidocument(document)
-    , activeBody(nullptr)
 {
     appdocument = guidocument->getDocument();
 }
@@ -667,12 +672,24 @@ void SketchWorkflow::createSketch()
 
 void SketchWorkflow::tryCreateSketch()
 {
-    if (PartDesignGui::assureModernWorkflow(appdocument)) {
-        createSketchWithModernWorkflow();
+    auto result = shouldCreateBody();
+    auto shouldMakeBody = std::get<0>(result);
+    activeBody = std::get<1>(result);
+    if (shouldAbort(shouldMakeBody)) {
+        return;
     }
-    // No PartDesign feature without Body past FreeCAD 0.13
-    else if (PartDesignGui::isLegacyWorkflow(appdocument)) {
-        createSketchWithLegacyWorkflow();
+
+    auto faceOrPlaneFilter = getFaceAndPlaneFilter();
+    SketchPreselection sketchOnFace{ guidocument, activeBody, faceOrPlaneFilter };
+
+    if (sketchOnFace.matches()) {
+        // create Sketch on Face or Plane
+        sketchOnFace.createSupport();
+        sketchOnFace.createSketchOnSupport(sketchOnFace.getSupport());
+    }
+    else {
+        SketchRequestSelection requestSelection{ guidocument, activeBody };
+        requestSelection.findSupport();
     }
 }
 
@@ -682,7 +699,13 @@ std::tuple<bool, PartDesign::Body*> SketchWorkflow::shouldCreateBody()
 
     // We need either an active Body, or for there to be no Body
     // objects (in which case, just make one) to make a new sketch.
-    PartDesign::Body* pdBody = PartDesignGui::getBody(/* messageIfNot = */ false);
+    // If we are inside a link, we need to use its placement.
+    App::DocumentObject *topParent;
+    PartDesign::Body *pdBody = PartDesignGui::getBody(/* messageIfNot = */ false, true, true, &topParent);
+    if (pdBody && topParent->isLink()) {
+        auto *xLink = dynamic_cast<App::Link *>(topParent);
+        pdBody->Placement.setValue(xLink->Placement.getValue());
+    }
     if (!pdBody) {
         if (appdocument->countObjectsOfType(PartDesign::Body::getClassTypeId()) == 0) {
             shouldMakeBody = true;
@@ -709,7 +732,7 @@ std::tuple<Gui::SelectionFilter, Gui::SelectionFilter> SketchWorkflow::getFaceAn
     // The behaviour of this command has changed with respect to a selected sketch:
     // It doesn't try any more to edit a selected sketch but always tries to create
     // a new sketch.
-    // See https://forum.freecadweb.org/viewtopic.php?f=3&t=44070
+    // See https://forum.freecad.org/viewtopic.php?f=3&t=44070
 
     Gui::SelectionFilter FaceFilter  ("SELECT Part::Feature SUBELEMENT Face COUNT 1");
     Gui::SelectionFilter PlaneFilter ("SELECT App::Plane COUNT 1");
@@ -721,31 +744,4 @@ std::tuple<Gui::SelectionFilter, Gui::SelectionFilter> SketchWorkflow::getFaceAn
     return std::make_tuple(FaceFilter, PlaneFilter);
 }
 
-void SketchWorkflow::createSketchWithModernWorkflow()
-{
-    auto result = shouldCreateBody();
-    auto shouldMakeBody = std::get<0>(result);
-    activeBody = std::get<1>(result);
-    if (shouldAbort(shouldMakeBody)) {
-        return;
-    }
 
-    auto faceOrPlaneFilter = getFaceAndPlaneFilter();
-    SketchPreselection sketchOnFace{guidocument, activeBody, faceOrPlaneFilter};
-
-    if (sketchOnFace.matches()) {
-        // create Sketch on Face or Plane
-        sketchOnFace.createSupport();
-        sketchOnFace.createSketchOnSupport(sketchOnFace.getSupport());
-    }
-    else {
-        SketchRequestSelection requestSelection{guidocument, activeBody};
-        requestSelection.findSupport();
-    }
-}
-
-void SketchWorkflow::createSketchWithLegacyWorkflow()
-{
-    Gui::CommandManager& cmdMgr = Gui::Application::Instance->commandManager();
-    cmdMgr.runCommandByName("Sketcher_NewSketch");
-}

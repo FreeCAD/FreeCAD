@@ -91,7 +91,6 @@ class UpdateAllGUI(QtCore.QObject):
         self.dialog = FreeCADGui.PySideUic.loadUi(
             os.path.join(os.path.dirname(__file__), "update_all.ui")
         )
-        self.dialog.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
         self.row_map = {}
         self.in_process_row = None
         self.active_installer = None
@@ -130,9 +129,7 @@ class UpdateAllGUI(QtCore.QObject):
         new_row = self.dialog.tableWidget.rowCount()
         self.dialog.tableWidget.setColumnCount(2)
         self.dialog.tableWidget.setRowCount(new_row + 1)
-        self.dialog.tableWidget.setItem(
-            new_row, 0, QtWidgets.QTableWidgetItem(addon.display_name)
-        )
+        self.dialog.tableWidget.setItem(new_row, 0, QtWidgets.QTableWidgetItem(addon.display_name))
         self.dialog.tableWidget.setItem(new_row, 1, QtWidgets.QTableWidgetItem(""))
         self.row_map[addon.name] = new_row
 
@@ -144,9 +141,7 @@ class UpdateAllGUI(QtCore.QObject):
         """Grab the next addon in the list and start its updater."""
         if self.addons_with_update:
             addon = self.addons_with_update.pop(0)
-            self.in_process_row = (
-                self.row_map[addon.name] if addon.name in self.row_map else None
-            )
+            self.in_process_row = self.row_map[addon.name] if addon.name in self.row_map else None
             self._update_addon_status(self.in_process_row, AddonStatus.INSTALLING)
             self.dialog.tableWidget.scrollToItem(
                 self.dialog.tableWidget.item(self.in_process_row, 0)

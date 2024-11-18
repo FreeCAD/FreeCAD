@@ -1,3 +1,4 @@
+// clang-format off
 /* A Bison parser, made by GNU Bison 3.0.4.  */
 
 /* Bison implementation for Yacc-like parsers in C
@@ -1745,3 +1746,4 @@ yyreturn:
 }
 #line 77 "QuantityParser.y" /* yacc.c:1906  */
 
+// clang-format on

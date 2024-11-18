@@ -34,7 +34,7 @@ using namespace App;
 // returns a string which represents the object e.g. when printed in python
 std::string GeoFeaturePy::representation() const
 {
-    return std::string("<GeoFeature object>");
+    return {"<GeoFeature object>"};
 }
 
 PyObject* GeoFeaturePy::getPaths(PyObject * /*args*/)
@@ -50,6 +50,27 @@ PyObject* GeoFeaturePy::getGlobalPlacement(PyObject * args) {
 
     try {
         Base::Placement p = static_cast<GeoFeature*>(getDocumentObjectPtr())->globalPlacement();
+        return new Base::PlacementPy(new Base::Placement(p));
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+}
+
+PyObject* GeoFeaturePy::getGlobalPlacementOf(PyObject * args) {
+
+    PyObject* pyTargetObj {nullptr};
+    PyObject* pyRootObj {nullptr};
+    char* pname;
+
+    if (!PyArg_ParseTuple(args, "OOs", &pyTargetObj, &pyRootObj, &pname)) {
+        return nullptr;
+    }
+    auto* targetObj = static_cast<App::DocumentObjectPy*>(pyTargetObj)->getDocumentObjectPtr();
+    auto* rootObj = static_cast<App::DocumentObjectPy*>(pyRootObj)->getDocumentObjectPtr();
+
+    try {
+        Base::Placement p = GeoFeature::getGlobalPlacement(targetObj, rootObj, pname);
         return new Base::PlacementPy(new Base::Placement(p));
     }
     catch (const Base::Exception& e) {
@@ -92,4 +113,9 @@ PyObject *GeoFeaturePy::getCustomAttributes(const char* /*attr*/) const
 int GeoFeaturePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0;
+}
+
+Py::String GeoFeaturePy::getElementMapVersion() const {
+    return Py::String(getGeoFeaturePtr()->getElementMapVersion(
+        getGeoFeaturePtr()->getPropertyOfGeometry()));
 }

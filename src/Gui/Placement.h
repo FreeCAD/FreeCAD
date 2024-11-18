@@ -51,33 +51,62 @@ public:
     PlacementHandler();
     void openTransactionIfNeeded();
     void setPropertyName(const std::string&);
+    void setIgnoreTransactions(bool value);
+    void setSelection(const std::vector<SelectionObject>&);
+    void reselectObjects();
+    const App::DocumentObject* getFirstOfSelection() const;
     const std::string& getPropertyName() const;
     void appendDocument(const std::string&);
     void activatedDocument(const std::string&);
     void revertTransformation();
+    void setRefPlacement(const Base::Placement& plm);
+    const Base::Placement& getRefPlacement() const;
     void applyPlacement(const Base::Placement& p, bool incremental);
     void applyPlacement(const QString& p, bool incremental);
+    Base::Vector3d computeCenterOfMass() const;
+    void setCenterOfMass(const Base::Vector3d& pnt);
+    Base::Vector3d getCenterOfMass() const;
+    std::tuple<Base::Vector3d, std::vector<Base::Vector3d>> getSelectedPoints() const;
 
 private:
-    std::vector<App::DocumentObject*> getObjects(Gui::Document*) const;
-    std::vector<App::DocumentObject*> getSelectedObjects(Gui::Document*) const;
+    std::vector<const App::DocumentObject*> getObjects(const Gui::Document*) const;
+    std::vector<const App::DocumentObject*> getSelectedObjects(const Gui::Document*) const;
     void revertTransformationOfViewProviders(Gui::Document*);
     void tryRecompute(Gui::Document*);
-    void applyPlacement(Gui::Document*, App::DocumentObject*, const Base::Placement& p, bool incremental);
-    void applyPlacement(App::DocumentObject*, const QString& p, bool incremental);
-    QString getIncrementalPlacement(App::DocumentObject*, const QString&) const;
-    QString getSimplePlacement(App::DocumentObject*, const QString&) const;
+    void applyPlacement(const Gui::Document*, const App::DocumentObject*,
+                        const Base::Placement& p, bool incremental);
+    void applyPlacement(const App::DocumentObject*, const QString& p, bool incremental);
+    QString getIncrementalPlacement(const App::DocumentObject*, const QString&) const;
+    QString getSimplePlacement(const App::DocumentObject*, const QString&) const;
+    void setupDocument();
+    void slotActiveDocument(const Gui::Document&);
+    void openCommandIfActive(Gui::Document*);
+    void commitCommandIfActive(Gui::Document*);
+    void abortCommandIfActive(Gui::Document*);
 
 private Q_SLOTS:
     void openTransaction();
 
 private:
+    using Connection = boost::signals2::scoped_connection;
     std::string propertyName; // the name of the placement property
     std::set<std::string> documents;
     /** If false apply the placement directly to the transform nodes,
      * otherwise change the placement property.
      */
     bool changeProperty;
+    /** If true do not open or commit transactions. In this case it's expected
+     *  that it's done by the calling instance.
+     */
+    bool ignoreTransaction;
+    Connection connectAct;
+    /**
+     * store these so we can reselect original object
+     * after user selects points and clicks Selected point(s)
+     */
+    std::vector<SelectionObject> selectionObjects;
+    Base::Placement ref;
+    Base::Vector3d cntOfMass;
 };
 
 class GuiExport Placement : public QDialog
@@ -94,6 +123,9 @@ public:
     void setPropertyName(const std::string&);
     void setSelection(const std::vector<SelectionObject>&);
     void bindObject();
+    void setPlacementAndBindObject(const App::DocumentObject* obj,
+                                   const std::string& propertyName);
+    void setIgnoreTransactions(bool value);
     Base::Vector3d getDirection() const;
     void setPlacement(const Base::Placement&);
     Base::Placement getPlacement() const;
@@ -119,8 +151,8 @@ private:
     void setupConnections();
     void setupUnits();
     void setupSignalMapper();
-    void setupDocument();
     void setupRotationMethod();
+    void bindProperty(const App::DocumentObject* obj, const std::string& propertyName);
 
     bool onApply();
     void setPlacementData(const Base::Placement&);
@@ -129,11 +161,9 @@ private:
     Base::Vector3d getPositionData() const;
     Base::Vector3d getAnglesData() const;
     Base::Vector3d getCenterData() const;
-    Base::Vector3d getCenterOfMass() const;
     QString getPlacementString() const;
     QString getPlacementFromEulerAngles() const;
     QString getPlacementFromAxisWithAngle() const;
-    void slotActiveDocument(const Gui::Document&);
     QWidget* getInvalidInput() const;
     void showErrorMessage();
 
@@ -141,18 +171,9 @@ Q_SIGNALS:
     void placementChanged(const QVariant &, bool, bool);
 
 private:
-    using Connection = boost::signals2::connection;
     Ui_Placement* ui;
     QSignalMapper* signalMapper;
-    Connection connectAct;
     PlacementHandler handler;
-    Base::Placement ref;
-    Base::Vector3d cntOfMass;
-    /**
-     * store these so we can reselect original object
-     * after user selects points and clicks Selected point(s)
-     */
-    std::vector<SelectionObject> selectionObjects;
 };
 
 class GuiExport DockablePlacement : public Placement
@@ -179,7 +200,10 @@ public:
     void setPropertyName(const QString&);
     void setPlacement(const Base::Placement&);
     void setSelection(const std::vector<SelectionObject>&);
+    void clearSelection();
     void bindObject();
+    void setPlacementAndBindObject(const App::DocumentObject* obj,
+                                   const std::string& propertyName);
     bool accept() override;
     bool reject() override;
     void clicked(int id) override;
@@ -201,7 +225,43 @@ Q_SIGNALS:
 
 private:
     Placement* widget;
-    Gui::TaskView::TaskBox* taskbox;
+};
+
+class TaskPlacementPy: public Py::PythonExtension<TaskPlacementPy>
+{
+public:
+    using BaseType = Py::PythonExtension<TaskPlacementPy>;
+    static void init_type();
+
+    TaskPlacementPy();
+    ~TaskPlacementPy() override;
+
+    Py::Object repr() override;
+    Py::Object getattr(const char* name) override;
+    int setattr(const char* name, const Py::Object&) override;
+
+    Py::Object setPropertyName(const Py::Tuple&);
+    Py::Object setPlacement(const Py::Tuple&);
+    Py::Object setSelection(const Py::Tuple&);
+    Py::Object bindObject(const Py::Tuple&);
+    Py::Object setPlacementAndBindObject(const Py::Tuple&);
+    Py::Object setIgnoreTransactions(const Py::Tuple&);
+
+    Py::Object showDefaultButtons(const Py::Tuple&);
+    Py::Object accept(const Py::Tuple&);
+    Py::Object reject(const Py::Tuple&);
+    Py::Object clicked(const Py::Tuple&);
+    Py::Object open(const Py::Tuple&);
+    Py::Object isAllowedAlterDocument(const Py::Tuple&);
+    Py::Object isAllowedAlterView(const Py::Tuple&);
+    Py::Object isAllowedAlterSelection(const Py::Tuple&);
+    Py::Object getStandardButtons(const Py::Tuple&);
+
+private:
+    static PyObject* PyMake(struct _typeobject*, PyObject*, PyObject*);
+
+private:
+    QPointer<Placement> widget;
 };
 
 } // namespace Dialog

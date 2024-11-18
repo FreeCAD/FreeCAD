@@ -26,7 +26,9 @@
 
 #include "DocumentObject.h"
 #include "PropertyGeo.h"
-
+#include "MappedElement.h"
+#include "Material.h"
+#include "ComplexGeoData.h"
 
 namespace App
 {
@@ -75,17 +77,15 @@ public:
         /// For exporting
         Export=2,
     };
+
     /** Return the new and old style sub-element name
      *
      * @param name: input name
      * @param type: desired element name type to return
      *
-     * @return a pair(newName,oldName). New element name may be empty.
-     *
-     * This function currently is does nothing. The new style element name
-     * generation will be added in the next batch of patches.
+     * @return a struct with the newName and oldName. New element name may be empty.
      */
-    virtual std::pair<std::string,std::string> getElementName(
+    virtual ElementNamePair getElementName(  // NOLINT(google-default-arguments)
             const char *name, ElementNameType type=Normal) const;
 
     /** Resolve both the new and old style element name
@@ -103,13 +103,14 @@ public:
      * @return Return the owner object of the element
      */
     static DocumentObject *resolveElement(App::DocumentObject *obj, 
-            const char *subname, std::pair<std::string,std::string> &elementName, 
+            const char *subname, ElementNamePair &elementName,
             bool append=false, ElementNameType type=Normal,
             const DocumentObject *filter=nullptr,const char **element=nullptr, GeoFeature **geo=nullptr);
 
     /**
-     * @brief Calculates the placement in the global reference coordinate system
+     * @brief Deprecated. Calculates the placement in the global reference coordinate system
      * 
+     * Deprecated: This does not handle App::Links correctly. Use getGlobalPlacement() instead.
      * In FreeCAD the GeoFeature placement describes the local placement of the object in its parent
      * coordinate system. This is however not always the same as the global reference system. If the
      * object is in a GeoFeatureGroup, hence in another local coordinate system, the Placement
@@ -120,6 +121,76 @@ public:
      * @return Base::Placement The transformation from the global reference coordinate system
      */
     Base::Placement globalPlacement() const;
+    /**
+     * @brief Virtual function to get an App::Material object describing the appearance
+     *
+     * The appearance properties are described by the underlying features material. This can not
+     * be accessed directly from within the Gui module. This virtual function will return a
+     * App::Material object describing the appearance properties of the material.
+     *
+     * @return App::Material the appearance properties of the object material
+     */
+    virtual App::Material getMaterialAppearance() const;
+
+    /**
+     * @brief Virtual function to set the appearance with an App::Material object
+     *
+     * The appearance properties are described by the underlying features material. This cannot
+     * be accessed directly from within the Gui module. This virtual function will set the
+     * appearance from an App::Material object.
+     */
+    virtual void setMaterialAppearance(const App::Material& material);
+
+    /**
+     * @brief Virtual function to get the camera alignment direction
+     *
+     * Finds a direction to align the camera with.
+     *
+     * @return bool whether or not a direction is found.
+     */
+    virtual bool getCameraAlignmentDirection(Base::Vector3d& direction, const char* subname = nullptr) const;
+    /** Search sub element using internal cached geometry
+     *
+     * @param element: element name
+     * @param options: search options
+     * @param tol: coordinate tolerance
+     * @param atol: angle tolerance
+     *
+     * @return Returns a list of found element reference to the new geometry.
+     * The returned value will be invalidated when the geometry is changed.
+     *
+     * Before changing the property of geometry, GeoFeature will internally
+     * make a snapshot of all referenced element geometry. After change, user
+     * code may call this function to search for the new element name that
+     * reference to the same geometry of the old element.
+     */
+    virtual const std::vector<std::string>& searchElementCache(const std::string &element,
+                                                               Data::SearchOptions options = Data::SearchOption::CheckGeometry,
+                                                               double tol = 1e-7,
+                                                               double atol = 1e-10) const;
+
+    static bool hasMissingElement(const char *subname);
+
+    /// Return the object that owns the shape that contains the give element name
+    virtual DocumentObject *getElementOwner(const Data::MappedName & /*name*/) const
+    {return nullptr;}
+
+    virtual std::vector<const char *> getElementTypes(bool all=true) const;
+
+    /// Return the higher level element names of the given element
+    virtual std::vector<Data::IndexedName> getHigherElements(const char *name, bool silent=false) const;
+
+    static Base::Placement getPlacementFromProp(DocumentObject* obj, const char* propName);
+    static Base::Placement getGlobalPlacement(DocumentObject* targetObj, DocumentObject* rootObj, const std::string& sub);
+    static Base::Placement getGlobalPlacement(DocumentObject* targetObj, PropertyXLinkSub* prop);
+
+protected:
+    void onChanged(const Property* prop) override;
+//    void onDocumentRestored() override;
+    void updateElementReference();
+protected:
+    ElementNamePair _getElementName(const char* name,
+                                    const Data::MappedElement& mapped) const;
 };
 
 } //namespace App

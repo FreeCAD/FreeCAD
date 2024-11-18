@@ -39,10 +39,7 @@ ViewProviderPointParametric::ViewProviderPointParametric()
   sPixmap = "Part_Point_Parametric";
 }
 
-ViewProviderPointParametric::~ViewProviderPointParametric()
-{
-
-}
+ViewProviderPointParametric::~ViewProviderPointParametric() = default;
 
 
 

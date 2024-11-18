@@ -24,15 +24,16 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QAction>
-# include <QMessageBox>
-# include <sstream>
+#include <QAction>
+#include <QMessageBox>
+#include <sstream>
 #endif
 
 #include <Base/Tools.h>
 #include <Gui/Command.h>
 #include <Gui/SelectionObject.h>
 #include <Mod/Fem/App/FemConstraintSpring.h>
+#include <Mod/Part/App/PartFeature.h>
 
 #include "TaskFemConstraintSpring.h"
 #include "ui_TaskFemConstraintSpring.h"
@@ -45,8 +46,8 @@ using namespace Gui;
 
 TaskFemConstraintSpring::TaskFemConstraintSpring(ViewProviderFemConstraintSpring* ConstraintView,
                                                  QWidget* parent)
-    : TaskFemConstraintOnBoundary(ConstraintView, parent, "FEM_ConstraintSpring"),
-      ui(new Ui_TaskFemConstraintSpring)
+    : TaskFemConstraintOnBoundary(ConstraintView, parent, "FEM_ConstraintSpring")
+    , ui(new Ui_TaskFemConstraintSpring)
 {
     proxy = new QWidget(this);
     ui->setupUi(proxy);
@@ -56,10 +57,14 @@ TaskFemConstraintSpring::TaskFemConstraintSpring(ViewProviderFemConstraintSpring
     createDeleteAction(ui->lw_references);
     connect(deleteAction, &QAction::triggered, this, &TaskFemConstraintSpring::onReferenceDeleted);
 
-    connect(ui->lw_references, &QListWidget::currentItemChanged,
-            this, &TaskFemConstraintSpring::setSelection);
-    connect(ui->lw_references, &QListWidget::itemClicked,
-            this, &TaskFemConstraintSpring::setSelection);
+    connect(ui->lw_references,
+            &QListWidget::currentItemChanged,
+            this,
+            &TaskFemConstraintSpring::setSelection);
+    connect(ui->lw_references,
+            &QListWidget::itemClicked,
+            this,
+            &TaskFemConstraintSpring::setSelection);
 
     this->groupLayout()->addWidget(proxy);
 
@@ -72,30 +77,22 @@ TaskFemConstraintSpring::TaskFemConstraintSpring(ViewProviderFemConstraintSpring
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
     // Fill data into dialog elements
-    ui->if_norm->setUnit(pcConstraint->NormalStiffness.getUnit());
-    ui->if_norm->setMinimum(
-        0);// TODO fix this -------------------------------------------------------------------
-    ui->if_norm->setMaximum(FLOAT_MAX);
-    Base::Quantity ns =
-        Base::Quantity((pcConstraint->NormalStiffness.getValue()), Base::Unit::Stiffness);
-    ui->if_norm->setValue(ns);
+    ui->qsb_norm->setUnit(pcConstraint->NormalStiffness.getUnit());
+    ui->qsb_norm->setMaximum(FLOAT_MAX);
+    ui->qsb_norm->setValue(pcConstraint->NormalStiffness.getQuantityValue());
 
-    ui->if_tan->setUnit(pcConstraint->TangentialStiffness.getUnit());
-    ui->if_tan->setMinimum(
-        0);// TODO fix this -------------------------------------------------------------------
-    ui->if_tan->setMaximum(FLOAT_MAX);
-    Base::Quantity ts =
-        Base::Quantity((pcConstraint->TangentialStiffness.getValue()), Base::Unit::Stiffness);
-    ui->if_tan->setValue(ts);
+    ui->qsb_tan->setUnit(pcConstraint->TangentialStiffness.getUnit());
+    ui->qsb_tan->setMaximum(FLOAT_MAX);
+    ui->qsb_tan->setValue(pcConstraint->TangentialStiffness.getQuantityValue());
 
-    ui->ElmerStiffnessCB->clear();
+    ui->cb_elmer_stiffness->clear();
     auto stiffnesses = pcConstraint->ElmerStiffness.getEnumVector();
     QStringList stiffnessesList;
     for (auto item : stiffnesses) {
         stiffnessesList << QLatin1String(item.c_str());
     }
-    ui->ElmerStiffnessCB->addItems(stiffnessesList);
-    ui->ElmerStiffnessCB->setCurrentIndex(pcConstraint->ElmerStiffness.getValue());
+    ui->cb_elmer_stiffness->addItems(stiffnessesList);
+    ui->cb_elmer_stiffness->setCurrentIndex(pcConstraint->ElmerStiffness.getValue());
 
     ui->lw_references->clear();
     for (std::size_t i = 0; i < Objects.size(); i++) {
@@ -109,11 +106,13 @@ TaskFemConstraintSpring::TaskFemConstraintSpring(ViewProviderFemConstraintSpring
     buttonGroup->addButton(ui->btnAdd, (int)SelectionChangeModes::refAdd);
     buttonGroup->addButton(ui->btnRemove, (int)SelectionChangeModes::refRemove);
 
+    ui->qsb_norm->bind(pcConstraint->NormalStiffness);
+    ui->qsb_tan->bind(pcConstraint->TangentialStiffness);
+
     updateUI();
 }
 
-TaskFemConstraintSpring::~TaskFemConstraintSpring()
-{}
+TaskFemConstraintSpring::~TaskFemConstraintSpring() = default;
 
 void TaskFemConstraintSpring::updateUI()
 {
@@ -127,7 +126,7 @@ void TaskFemConstraintSpring::updateUI()
 void TaskFemConstraintSpring::addToSelection()
 {
     std::vector<Gui::SelectionObject> selection =
-        Gui::Selection().getSelectionEx();// gets vector of selected objects of active document
+        Gui::Selection().getSelectionEx();  // gets vector of selected objects of active document
     if (selection.empty()) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
@@ -137,42 +136,40 @@ void TaskFemConstraintSpring::addToSelection()
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
-    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end();
-         ++it) {// for every selected object
-        if (!it->isObjectTypeOf(Part::Feature::getClassTypeId())) {
+    for (auto& it : selection) {  // for every selected object
+        if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
         }
-        const std::vector<std::string>& subNames = it->getSubNames();
-        App::DocumentObject* obj = it->getObject();
+        const std::vector<std::string>& subNames = it.getSubNames();
+        App::DocumentObject* obj = it.getObject();
 
-        for (size_t subIt = 0; subIt < (subNames.size());
-             ++subIt) {// for every selected sub element
+        for (const auto& subName : subNames) {  // for every selected sub element
             bool addMe = true;
-            if (subNames[subIt].substr(0, 4) != "Face") {
+            if (subName.substr(0, 4) != "Face") {
                 QMessageBox::warning(this, tr("Selection error"), tr("Only faces can be picked"));
                 return;
             }
             for (std::vector<std::string>::iterator itr =
-                     std::find(SubElements.begin(), SubElements.end(), subNames[subIt]);
+                     std::find(SubElements.begin(), SubElements.end(), subName);
                  itr != SubElements.end();
                  itr = std::find(++itr,
                                  SubElements.end(),
-                                 subNames[subIt])) {// for every sub element in selection that
-                                                    // matches one in old list
+                                 subName)) {  // for every sub element in selection that
+                                              // matches one in old list
                 if (obj
                     == Objects[std::distance(
                         SubElements.begin(),
-                        itr)]) {// if selected sub element's object equals the one in old list then
-                                // it was added before so don't add
+                        itr)]) {  // if selected sub element's object equals the one in old list
+                                  // then it was added before so don't add
                     addMe = false;
                 }
             }
             if (addMe) {
                 QSignalBlocker block(ui->lw_references);
                 Objects.push_back(obj);
-                SubElements.push_back(subNames[subIt]);
-                ui->lw_references->addItem(makeRefText(obj, subNames[subIt]));
+                SubElements.push_back(subName);
+                ui->lw_references->addItem(makeRefText(obj, subName));
             }
         }
     }
@@ -184,7 +181,7 @@ void TaskFemConstraintSpring::addToSelection()
 void TaskFemConstraintSpring::removeFromSelection()
 {
     std::vector<Gui::SelectionObject> selection =
-        Gui::Selection().getSelectionEx();// gets vector of selected objects of active document
+        Gui::Selection().getSelectionEx();  // gets vector of selected objects of active document
     if (selection.empty()) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
@@ -194,29 +191,27 @@ void TaskFemConstraintSpring::removeFromSelection()
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
     std::vector<size_t> itemsToDel;
-    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end();
-         ++it) {// for every selected object
-        if (!it->isObjectTypeOf(Part::Feature::getClassTypeId())) {
+    for (const auto& it : selection) {  // for every selected object
+        if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
         }
-        const std::vector<std::string>& subNames = it->getSubNames();
-        App::DocumentObject* obj = it->getObject();
+        const std::vector<std::string>& subNames = it.getSubNames();
+        const App::DocumentObject* obj = it.getObject();
 
-        for (size_t subIt = 0; subIt < (subNames.size());
-             ++subIt) {// for every selected sub element
+        for (const auto& subName : subNames) {  // for every selected sub element
             for (std::vector<std::string>::iterator itr =
-                     std::find(SubElements.begin(), SubElements.end(), subNames[subIt]);
+                     std::find(SubElements.begin(), SubElements.end(), subName);
                  itr != SubElements.end();
                  itr = std::find(++itr,
                                  SubElements.end(),
-                                 subNames[subIt])) {// for every sub element in selection that
-                                                    // matches one in old list
+                                 subName)) {  // for every sub element in selection that
+                                              // matches one in old list
                 if (obj
                     == Objects[std::distance(
                         SubElements.begin(),
-                        itr)]) {// if selected sub element's object equals the one in old list then
-                                // it was added before so mark for deletion
+                        itr)]) {  // if selected sub element's object equals the one in old list
+                                  // then it was added before so mark for deletion
                     itemsToDel.push_back(std::distance(SubElements.begin(), itr));
                 }
             }
@@ -240,7 +235,8 @@ void TaskFemConstraintSpring::removeFromSelection()
     updateUI();
 }
 
-void TaskFemConstraintSpring::onReferenceDeleted() {
+void TaskFemConstraintSpring::onReferenceDeleted()
+{
     TaskFemConstraintSpring::removeFromSelection();
 }
 
@@ -254,36 +250,32 @@ const std::string TaskFemConstraintSpring::getReferences() const
     return TaskFemConstraint::getReferences(items);
 }
 
-std::string TaskFemConstraintSpring::get_normalStiffness() const
+std::string TaskFemConstraintSpring::getNormalStiffness() const
 {
-    return ui->if_norm->value().getSafeUserString().toStdString();
+    return ui->qsb_norm->value().getSafeUserString().toStdString();
 }
 
-std::string TaskFemConstraintSpring::get_tangentialStiffness() const
+std::string TaskFemConstraintSpring::getTangentialStiffness() const
 {
-    return ui->if_tan->value().getSafeUserString().toStdString();
+    return ui->qsb_tan->value().getSafeUserString().toStdString();
 }
 
 std::string TaskFemConstraintSpring::getElmerStiffness() const
 {
-    return Base::Tools::toStdString(ui->ElmerStiffnessCB->currentText());
-}
-
-bool TaskFemConstraintSpring::event(QEvent* e)
-{
-    return TaskFemConstraint::KeyEvent(e);
+    return Base::Tools::toStdString(ui->cb_elmer_stiffness->currentText());
 }
 
 void TaskFemConstraintSpring::changeEvent(QEvent*)
-{
-}
+{}
 
 void TaskFemConstraintSpring::clearButtons(const SelectionChangeModes notThis)
 {
-    if (notThis != SelectionChangeModes::refAdd)
+    if (notThis != SelectionChangeModes::refAdd) {
         ui->btnAdd->setChecked(false);
-    if (notThis != SelectionChangeModes::refRemove)
+    }
+    if (notThis != SelectionChangeModes::refRemove) {
         ui->btnRemove->setChecked(false);
+    }
 }
 
 //**************************************************************************
@@ -302,21 +294,6 @@ TaskDlgFemConstraintSpring::TaskDlgFemConstraintSpring(
 
 //==== calls from the TaskView ===============================================================
 
-void TaskDlgFemConstraintSpring::open()
-{
-    // a transaction is already open at creation time of the panel
-    if (!Gui::Command::hasPendingCommand()) {
-        QString msg = QObject::tr("Constraint spring");
-        Gui::Command::openCommand((const char*)msg.toUtf8());
-        ConstraintView->setVisible(true);
-        Gui::Command::doCommand(
-            Gui::Command::Doc,
-            ViewProviderFemConstraint::gethideMeshShowPartStr(
-                (static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument())
-                .c_str());// OvG: Hide meshes and show parts
-    }
-}
-
 bool TaskDlgFemConstraintSpring::accept()
 {
     /* Note: */
@@ -330,20 +307,15 @@ bool TaskDlgFemConstraintSpring::accept()
         Gui::Command::doCommand(Gui::Command::Doc,
                                 "App.ActiveDocument.%s.NormalStiffness = \"%s\"",
                                 name.c_str(),
-                                parameterStiffness->get_normalStiffness().c_str());
+                                parameterStiffness->getNormalStiffness().c_str());
         Gui::Command::doCommand(Gui::Command::Doc,
                                 "App.ActiveDocument.%s.TangentialStiffness = \"%s\"",
                                 name.c_str(),
-                                parameterStiffness->get_tangentialStiffness().c_str());
+                                parameterStiffness->getTangentialStiffness().c_str());
         Gui::Command::doCommand(Gui::Command::Doc,
                                 "App.ActiveDocument.%s.ElmerStiffness = '%s'",
                                 name.c_str(),
                                 parameterStiffness->getElmerStiffness().c_str());
-        std::string scale = parameterStiffness->getScale();// OvG: determine modified scale
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.Scale = %s",
-                                name.c_str(),
-                                scale.c_str());// OvG: implement modified scale
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
@@ -351,15 +323,6 @@ bool TaskDlgFemConstraintSpring::accept()
     }
     /* */
     return TaskDlgFemConstraint::accept();
-}
-
-bool TaskDlgFemConstraintSpring::reject()
-{
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-    Gui::Command::updateActive();
-
-    return true;
 }
 
 #include "moc_TaskFemConstraintSpring.cpp"

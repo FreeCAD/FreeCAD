@@ -1,7 +1,5 @@
 if(MSVC)
-    add_definitions(-DHAVE_ATANH -DHAVE_ASINH -DHAVE_ACOSH)
-else(MSVC)
-    add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
+    add_compile_options(/utf-8)
 endif(MSVC)
 
 # In previous versions this target copied mtextedit.h to the binary directory that causes
@@ -26,12 +24,6 @@ include_directories(
     ${XercesC_INCLUDE_DIRS}
 )
 
-if(FREECAD_QT_MAJOR_VERSION EQUAL 5)
-    include_directories(
-        ${QtXmlPatterns_INCLUDE_DIRS}
-    )
-endif()
-
 # The XML files
 set(TechDrawGui_XML_SRCS
 )
@@ -43,7 +35,11 @@ set(TechDrawGui_LIBS
     FreeCADGui
 )
 
-qt_add_resources(TechDrawGui_SRCS Resources/TechDraw.qrc)
+set (TechDraw_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/TechDraw_translation.qrc)
+qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
+    ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
+qt_create_resource_file(${TechDraw_TR_QRC} ${QM_SRCS})
+qt_add_resources(TechDrawGui_SRCS Resources/TechDraw.qrc ${TechDraw_TR_QRC})
 
 set(TechDrawGui_UIC_SRCS
     DlgStringListEditor.ui
@@ -82,6 +78,7 @@ set(TechDrawGui_UIC_SRCS
     TaskProjection.ui
     TaskComplexSection.ui
     TaskDimRepair.ui
+    TaskCosmeticCircle.ui
 
 )
 
@@ -105,6 +102,7 @@ SET(TechDrawGui_SRCS
     CommandDecorate.cpp
     CommandAnnotate.cpp
     CommandExtensionDims.cpp
+    CommandExtensionDims.h
     CommandExtensionPack.cpp
     CommandStack.cpp
     DimensionValidators.cpp
@@ -223,17 +221,26 @@ SET(TechDrawGui_SRCS
     TaskDimRepair.cpp
     TaskDimRepair.h
     TaskDimRepair.ui
+    TaskCosmeticCircle.cpp
+    TaskCosmeticCircle.h
+    TaskCosmeticCircle.ui
+    TechDrawHandler.cpp
+    TechDrawHandler.h
     Widgets/CompassDialWidget.cpp
     Widgets/CompassDialWidget.h
     Widgets/CompassWidget.cpp
     Widgets/CompassWidget.h
     Widgets/VectorEditWidget.cpp
     Widgets/VectorEditWidget.h
+    PATPathMaker.cpp
+    PATPathMaker.h
 )
 
 SET(TechDrawGuiView_SRCS
     MDIViewPage.cpp
     MDIViewPage.h
+    PagePrinter.cpp
+    PagePrinter.h
     QGVPage.cpp
     QGVPage.h
     QGSPage.cpp
@@ -329,6 +336,10 @@ SET(TechDrawGuiView_SRCS
     ZVALUE.h
     QGIGhostHighlight.cpp
     QGIGhostHighlight.h
+    PathBuilder.cpp
+    PathBuilder.h
+    QGIBreakLine.cpp
+    QGIBreakLine.h
 )
 
 SET(TechDrawGuiNav_SRCS
@@ -468,6 +479,9 @@ endif(FREECAD_USE_PCH)
 add_library(TechDrawGui SHARED ${TechDrawGui_SRCS} ${TechDrawGuiView_SRCS} ${TechDrawGuiViewProvider_SRCS}
                                ${TechDrawGuiNav_SRCS} ${TechDrawGuiIcon_SVG} ${TechDrawGuiFonts} ${MRTE_SRCS})
 target_link_libraries(TechDrawGui ${TechDrawGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(TechDrawGui)
+endif()
 
 fc_copy_sources(TechDrawGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/" ${TechDrawGuiIcon_SVG})
 INSTALL(FILES ${TechDrawGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/Resources/icons")

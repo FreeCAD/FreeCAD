@@ -15,7 +15,7 @@ possible commands are:
  - DistSetup       (DI)   Build a Setup Distr. of the current source tree
  - DistSetup       (DUI)  Build a User Setup Distr. of the current source tree
  - DistAll         (DA)   Run all three above modules
- - NextBuildNumber (NBN)  Increase the Build Number of this Version 
+ - NextBuildNumber (NBN)  Increase the Build Number of this Version
  - CreateModule    (CM)   Insert a new FreeCAD Module in the module directory
  - CreatePyModule  (CP)   Insert a new FreeCAD Python Module in the module directory
 
@@ -24,18 +24,18 @@ For help on the modules type:
 
 """
 
-if(len(sys.argv) < 2):
+if len(sys.argv) < 2:
     sys.stdout.write(help1)
     sys.stdout.write("Insert command: ")
     sys.stdout.flush()
     CmdRaw = sys.stdin.readline()[:-1]
 else:
     CmdRaw = sys.argv[1]
-    
+
 Cmd = CmdRaw.lower()
 
 
-if Cmd == "distsrc" or Cmd == "ds" :
+if Cmd == "distsrc" or Cmd == "ds":
     import fcbt.DistSrc
 elif Cmd == "distbin" or Cmd == "db":
     import fcbt.DistBin
@@ -58,4 +58,3 @@ elif Cmd == "?" or Cmd == "help" or Cmd == "/h" or Cmd == "/?" or Cmd == "-h" or
 else:
     print(CmdRaw + " is an unknown command!\n")
     sys.exit(1)
-

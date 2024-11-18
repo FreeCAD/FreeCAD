@@ -55,12 +55,12 @@ void FaceMakerBullseye::setPlane(const gp_Pln &plane)
 
 std::string FaceMakerBullseye::getUserFriendlyName() const
 {
-    return std::string(QT_TRANSLATE_NOOP("Part_FaceMaker","Bull's-eye facemaker"));
+    return {tr("Bull's-eye facemaker").toStdString()};
 }
 
 std::string FaceMakerBullseye::getBriefExplanation() const
 {
-    return std::string(QT_TRANSLATE_NOOP("Part_FaceMaker","Supports making planar faces with holes with islands."));
+    return {tr("Supports making planar faces with holes with islands.").toStdString()};
 }
 
 void FaceMakerBullseye::Build_Essence()
@@ -71,7 +71,7 @@ void FaceMakerBullseye::Build_Essence()
     //validity check
     for (TopoDS_Wire& w : myWires) {
         if (!BRep_Tool::IsClosed(w))
-            throw Base::ValueError("Wire is not closed.");
+            throw Base::ValueError(QT_TRANSLATE_NOOP("Exception", "Wire is not closed."));
     }
 
 
@@ -121,8 +121,8 @@ void FaceMakerBullseye::Build_Essence()
         }
         else {
             //wire is not on a face. Start a new face.
-            faces.push_back(std::unique_ptr<FaceDriller>(
-                                new FaceDriller(plane, w)
+            faces.push_back(std::make_unique<FaceDriller>(
+                                plane, w
                            ));
         }
     }

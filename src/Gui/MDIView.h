@@ -74,6 +74,9 @@ public:
     void onRelabel(Gui::Document *pDoc) override;
     virtual void viewAll();
 
+    /// build window title
+    QString buildWindowTitle() const;
+
     /// Message handler
     bool onMsg(const char* pMsg,const char** ppReturn) override;
     /// Message handler test
@@ -166,7 +169,7 @@ protected Q_SLOTS:
      * whenever the window state of the active view changes.
      * The default implementation does nothing.
      */
-    virtual void windowStateChanged(Gui::MDIView*);
+    virtual void windowStateChanged(QWidget*);
 
 protected:
     void closeEvent(QCloseEvent *e) override;

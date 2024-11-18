@@ -35,42 +35,42 @@ using namespace App;
 PROPERTY_SOURCE(Fem::FemSolverObject, App::DocumentObject)
 
 
-FemSolverObject::FemSolverObject()
-{
-    // Attributes are implemented in the FemSolverObjectPython
-}
+FemSolverObject::FemSolverObject() = default;
 
-FemSolverObject::~FemSolverObject()
-{
-}
+FemSolverObject::~FemSolverObject() = default;
 
 short FemSolverObject::mustExecute() const
 {
     return 0;
 }
 
-PyObject *FemSolverObject::getPyObject()
+PyObject* FemSolverObject::getPyObject()
 {
-    if (PythonObject.is(Py::_None())){
+    if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new DocumentObjectPy(this),true);
+        PythonObject = Py::Object(new DocumentObjectPy(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }
 
 // Python feature ---------------------------------------------------------
 
-namespace App {
+namespace App
+{
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Fem::FemSolverObjectPython, Fem::FemSolverObject)
-template<> const char* Fem::FemSolverObjectPython::getViewProviderName() const {
+template<>
+const char* Fem::FemSolverObjectPython::getViewProviderName() const
+{
     return "FemGui::ViewProviderSolverPython";
 }
 
-template<> PyObject* Fem::FemSolverObjectPython::getPyObject() {
+template<>
+PyObject* Fem::FemSolverObjectPython::getPyObject()
+{
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new App::FeaturePythonPyT<App::DocumentObjectPy>(this),true);
+        PythonObject = Py::Object(new App::FeaturePythonPyT<App::DocumentObjectPy>(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }
@@ -78,4 +78,4 @@ template<> PyObject* Fem::FemSolverObjectPython::getPyObject() {
 // explicit template instantiation
 template class FemExport FeaturePythonT<Fem::FemSolverObject>;
 
-}
+}  // namespace App

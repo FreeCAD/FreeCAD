@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM constraint current density ViewProvider for the document object"
 __author__ = "Uwe Stöhr"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package view_constraint_currentdensity
 #  \ingroup FEM
@@ -37,8 +37,5 @@ class VPConstraintCurrentDensity(view_base_femconstraint.VPBaseFemConstraint):
 
     def setEdit(self, vobj, mode=0):
         view_base_femconstraint.VPBaseFemConstraint.setEdit(
-            self,
-            vobj,
-            mode,
-            task_constraint_currentdensity._TaskPanel
+            self, vobj, mode, task_constraint_currentdensity._TaskPanel
         )

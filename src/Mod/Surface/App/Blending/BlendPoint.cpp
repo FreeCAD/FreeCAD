@@ -33,9 +33,8 @@
 using namespace Surface;
 
 BlendPoint::BlendPoint(const std::vector<Base::Vector3d>& vectorList)
-  : vectors{vectorList}
-{
-}
+    : vectors {vectorList}
+{}
 
 BlendPoint::BlendPoint()
 {

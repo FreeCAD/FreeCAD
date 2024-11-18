@@ -40,21 +40,22 @@
 
 using namespace TechDraw;
 
-const char *DrawProjGroupItem::TypeEnums[] = {"Front",
-                                              "Left",
-                                              "Right",
-                                              "Rear",
-                                              "Top",
-                                              "Bottom",
-                                              "FrontTopLeft",
-                                              "FrontTopRight",
-                                              "FrontBottomLeft",
-                                              "FrontBottomRight",
-                                              nullptr};
+const char *DrawProjGroupItem::TypeEnums[] = {
+    QT_TRANSLATE_NOOP("DrawProjGroupItem", "Front"),
+    QT_TRANSLATE_NOOP("DrawProjGroupItem", "Left"),
+    QT_TRANSLATE_NOOP("DrawProjGroupItem", "Right"),
+    QT_TRANSLATE_NOOP("DrawProjGroupItem", "Rear"),
+    QT_TRANSLATE_NOOP("DrawProjGroupItem", "Top"),
+    QT_TRANSLATE_NOOP("DrawProjGroupItem", "Bottom"),
+    QT_TRANSLATE_NOOP("DrawProjGroupItem", "FrontTopLeft"),
+    QT_TRANSLATE_NOOP("DrawProjGroupItem", "FrontTopRight"),
+    QT_TRANSLATE_NOOP("DrawProjGroupItem", "FrontBottomLeft"),
+    QT_TRANSLATE_NOOP("DrawProjGroupItem", "FrontBottomRight"),
+    nullptr};
 
 PROPERTY_SOURCE(TechDraw::DrawProjGroupItem, TechDraw::DrawViewPart)
 
-DrawProjGroupItem::DrawProjGroupItem(void)
+DrawProjGroupItem::DrawProjGroupItem()
 {
     Type.setEnums(TypeEnums);
     ADD_PROPERTY(Type, ((long)0));
@@ -64,30 +65,25 @@ DrawProjGroupItem::DrawProjGroupItem(void)
     //projection group controls these
 //    Direction.setStatus(App::Property::ReadOnly, true);
     RotationVector.setStatus(App::Property::ReadOnly, true);   //Use XDirection
-    ScaleType.setValue("Custom");
-    Scale.setStatus(App::Property::Hidden, true);
-    ScaleType.setStatus(App::Property::Hidden, true);
-}
-
-short DrawProjGroupItem::mustExecute() const
-{
-    //there is nothing unique about dpgi vs dvp
-    return TechDraw::DrawViewPart::mustExecute();
+    if (getPGroup()) {
+        ScaleType.setValue("Custom");
+        Scale.setStatus(App::Property::Hidden, true);
+        ScaleType.setStatus(App::Property::Hidden, true);
+    }
 }
 
 void DrawProjGroupItem::onChanged(const App::Property *prop)
 {
-    if ((prop == &X) ||
-        (prop == &Y)) {
-        DrawProjGroup* parent = getPGroup();
-        if (parent) {
-            parent->touch(false);
+    if ((prop == &X) || (prop == &Y)) {
+        DrawProjGroup* pGroup = getPGroup();
+        if (pGroup) {
+            pGroup->touch(false);
         }
     }
     TechDraw::DrawViewPart::onChanged(prop);
 }
 
-bool DrawProjGroupItem::isLocked(void) const
+bool DrawProjGroupItem::isLocked() const
 {
     if (isAnchor()) {                             //Anchor view is always locked to DPG
         return true;
@@ -95,23 +91,22 @@ bool DrawProjGroupItem::isLocked(void) const
     return DrawView::isLocked();
 }
 
-bool DrawProjGroupItem::showLock(void) const
+bool DrawProjGroupItem::showLock() const
 {
     DrawProjGroup* parent = getPGroup();
     bool parentLock = false;
     if (parent) {
         parentLock = parent->LockPosition.getValue();
     }
-
-    if (isAnchor() &&                         //don't show lock for Front if DPG is not locked
-        !parentLock) {
+    //don't show lock for Front if DPG is not locked
+    if (isAnchor() && !parentLock) {
         return false;
     }
 
     return DrawView::showLock();
 }
 
-App::DocumentObjectExecReturn *DrawProjGroupItem::execute(void)
+App::DocumentObjectExecReturn *DrawProjGroupItem::execute()
 {
 //    Base::Console().Message("DPGI::execute() - %s / %s\n", getNameInDocument(), Label.getValue());
     if (!keepUpdated()) {
@@ -131,40 +126,46 @@ App::DocumentObjectExecReturn *DrawProjGroupItem::execute(void)
         //unblock
     }
 
-    if (DrawUtil::checkParallel(Direction.getValue(),
-                                getXDirection())) {
+    if (DrawUtil::checkParallel(Direction.getValue(), getXDirection())) {
         return new App::DocumentObjectExecReturn("DPGI: Direction and XDirection are parallel");
     }
 
     return DrawViewPart::execute();
 }
 
-void DrawProjGroupItem::postHlrTasks(void)
+void DrawProjGroupItem::postHlrTasks()
 {
 //    Base::Console().Message("DPGI::postHlrTasks() - %s\n", getNameInDocument());
     DrawViewPart::postHlrTasks();
 
-    //DPGI has no geometry until HLR has finished, and the DPG can not properly
-    //AutoDistibute until all its items have geometry.
-    autoPosition();
+    DrawProjGroup* pGroup = getPGroup();
+    if (pGroup) {
+        //DPGI has no geometry until HLR has finished, and the DPG can not properly
+        //AutoDistibute until all its items have geometry.
+        autoPosition();
 
-    getPGroup()->reportReady();     //tell the parent DPG we are ready
+        pGroup->reportReady();     //tell the parent DPG we are ready
+    }
 }
 
 void DrawProjGroupItem::autoPosition()
 {
+    DrawProjGroup* pGroup = getPGroup();
+    if (!pGroup) {
+        return;
+    }
 //    Base::Console().Message("DPGI::autoPosition(%s)\n", Label.getValue());
     if (LockPosition.getValue()) {
         return;
     }
     Base::Vector3d newPos;
-    if (getPGroup() && getPGroup()->AutoDistribute.getValue()) {
-        newPos = getPGroup()->getXYPosition(Type.getValueAsString());
+    if (pGroup && pGroup->AutoDistribute.getValue()) {
+        newPos = pGroup->getXYPosition(Type.getValueAsString());
         X.setValue(newPos.x);
         Y.setValue(newPos.y);
         requestPaint();
         purgeTouched();               //prevents "still touched after recompute" message
-        getPGroup()->purgeTouched();  //changing dpgi x, y marks parent dpg as touched
+        pGroup->purgeTouched();  //changing dpgi x, y marks parent dpg as touched
     }
 }
 
@@ -180,59 +181,15 @@ void DrawProjGroupItem::onDocumentRestored()
 
 DrawProjGroup* DrawProjGroupItem::getPGroup() const
 {
-    std::vector<App::DocumentObject*> parent = getInList();
-    for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(DrawProjGroup::getClassTypeId())) {
-            DrawProjGroup* result = dynamic_cast<TechDraw::DrawProjGroup *>(*it);
-            return result;
-        }
-    }
-    return nullptr;
+    return dynamic_cast<DrawProjGroup *>(getCollection());
 }
 
-bool DrawProjGroupItem::isAnchor(void) const
+bool DrawProjGroupItem::isAnchor() const
 {
-    if (getPGroup() && (getPGroup()->getAnchor() == this) ) {
-        return true;
-    }
-    return false;
+    return getPGroup() && (getPGroup()->getAnchor() == this);
 }
 
-/// get a coord system aligned with Direction and Rotation Vector
-gp_Ax2 DrawProjGroupItem::getViewAxis(const Base::Vector3d& pt,
-                                 const Base::Vector3d& axis,
-                                 const bool flip) const
-{
-    Base::Console().Message("DPGI::getViewAxis - deprecated. use getProjectionCS\n");
-    (void) flip;
-    gp_Ax2 viewAxis;
-    Base::Vector3d projDir = Direction.getValue();
-    Base::Vector3d rotVec  = getXDirection();
-
-// mirror projDir through XZ plane
-    Base::Vector3d yNorm(0.0, 1.0, 0.0);
-    projDir = projDir - (yNorm * 2.0) * (projDir.Dot(yNorm));
-    rotVec = rotVec - (yNorm * 2.0) * (rotVec.Dot(yNorm));
-
-    if (DrawUtil::checkParallel(projDir, rotVec)) {
-         Base::Console().Warning("DPGI::getVA - %s - Direction and XDirection parallel. using defaults\n",
-                                 getNameInDocument());
-    }
-    try {
-        viewAxis = gp_Ax2(gp_Pnt(pt.x, pt.y, pt.z),
-                          gp_Dir(projDir.x, projDir.y, projDir.z),
-                          gp_Dir(rotVec.x, rotVec.y, rotVec.z));
-    }
-    catch (Standard_Failure& e4) {
-        Base::Console().Message("PROBLEM - DPGI (%s) failed to create viewAxis: %s **\n",
-                                getNameInDocument(), e4.GetMessageString());
-        return TechDraw::getViewAxis(pt, axis, false);
-    }
-
-    return viewAxis;
-}
-
-Base::Vector3d DrawProjGroupItem::getXDirection(void) const
+Base::Vector3d DrawProjGroupItem::getXDirection() const
 {
 //    Base::Console().Message("DPGI::getXDirection() - %s\n", Label.getValue());
     Base::Vector3d result(1.0, 0.0, 0.0);               //default X
@@ -243,19 +200,23 @@ Base::Vector3d DrawProjGroupItem::getXDirection(void) const
             prop = getPropertyByName("RotationVector");
             if (prop) {
                 result = RotationVector.getValue();         //use RotationVector if we have it
-            } else {
+            }
+            else {
                 result = DrawViewPart::getXDirection();     //over complex.
             }
-        } else {
+        }
+        else {
             result = DrawViewPart::getXDirection();
         }
-    } else {                                     //not sure this branch can actually happen
+    }
+    else {                                     //not sure this branch can actually happen
         Base::Console().Message("DPGI::getXDirection - unexpected branch taken!\n");
         prop = getPropertyByName("RotationVector");
         if (prop) {
             result = RotationVector.getValue();
 
-        } else {
+        }
+        else {
             Base::Console().Message("DPGI::getXDirection - missing RotationVector and XDirection\n");
         }
     }
@@ -315,7 +276,7 @@ double DrawProjGroupItem::getRotateAngle()
     return angle;
 }
 
-double DrawProjGroupItem::getScale(void) const
+double DrawProjGroupItem::getScale() const
 {
     auto pgroup = getPGroup();
     if (pgroup) {
@@ -325,7 +286,17 @@ double DrawProjGroupItem::getScale(void) const
         }
         return result;
     }
-    return 1.0;
+    return Scale.getValue();
+}
+
+int DrawProjGroupItem::getScaleType() const
+{
+    auto pgroup = getPGroup();
+    if (pgroup) {
+        return pgroup->getScaleType();
+    }
+
+    return ScaleType.getValue();
 }
 
 void DrawProjGroupItem::unsetupObject()
@@ -335,13 +306,12 @@ void DrawProjGroupItem::unsetupObject()
         return;
     }
 
-    if (!getPGroup()->hasProjection(Type.getValueAsString()) ) {
+    if (!getPGroup()->hasProjection(Type.getValueAsString())) {
         DrawViewPart::unsetupObject();
         return;
     }
 
-    if ( getPGroup()->getAnchor() == this &&
-         !getPGroup()->isUnsetting() )         {
+    if (getPGroup()->getAnchor() == this && !getPGroup()->isUnsetting()) {
            Base::Console().Warning("Warning - DPG (%s/%s) may be corrupt - Anchor deleted\n",
                                    getPGroup()->getNameInDocument(), getPGroup()->Label.getValue());
            getPGroup()->Anchor.setValue(nullptr);    //this catches situation where DPGI is deleted w/o DPG::removeProjection
@@ -357,7 +327,7 @@ int DrawProjGroupItem::countParentPages() const
     if (dpg) {
         return dpg->countParentPages();
     }
-    return 0;
+    return DrawView::countParentPages();
 }
 
 DrawPage* DrawProjGroupItem::findParentPage() const
@@ -366,7 +336,7 @@ DrawPage* DrawProjGroupItem::findParentPage() const
     if (dpg) {
         return dpg->findParentPage();
     }
-    return nullptr;
+    return DrawView::findParentPage();
 }
 
 std::vector<DrawPage*> DrawProjGroupItem::findAllParentPages() const
@@ -375,10 +345,10 @@ std::vector<DrawPage*> DrawProjGroupItem::findAllParentPages() const
     if (dpg) {
         return dpg->findAllParentPages();
     }
-    return std::vector<DrawPage*>();
+    return DrawView::findAllParentPages();
 }
 
-PyObject *DrawProjGroupItem::getPyObject(void)
+PyObject *DrawProjGroupItem::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1

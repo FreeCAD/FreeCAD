@@ -2310,7 +2310,6 @@ PREDEFINED             = HAVE_SWIG \
                          AppPartDesignExport= \
                          AppPartExport= \
                          AppPartGuiExport= \
-                         AppRaytracingExport= \
                          AppRobotExport= \
                          AppSketcherExport= \
                          AppStartExport= \

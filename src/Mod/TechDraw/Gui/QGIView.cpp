@@ -1,4 +1,4 @@
-/***************************************************************************
+﻿/***************************************************************************
  *   Copyright (c) 2012-2013 Luke Parry <l.parry@warwick.ac.uk>            *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QApplication>
 # include <QGraphicsSceneHoverEvent>
 # include <QGraphicsSceneMouseEvent>
 # include <QPainter>
@@ -32,14 +33,18 @@
 #include <App/Application.h>
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
+#include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/Tools.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
+#include <Mod/TechDraw/App/DrawViewSection.h>
+#include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawView.h>
 
@@ -59,23 +64,21 @@
 #include "ViewProviderDrawingView.h"
 #include "ViewProviderPage.h"
 #include "ZVALUE.h"
+#include "DrawGuiUtil.h"
 
 
 using namespace TechDrawGui;
 using namespace TechDraw;
-
-#define NODRAG 0
-#define DRAGSTARTED 1
-#define DRAGGING 2
+using DU = DrawUtil;
 
 const float labelCaptionFudge = 0.2f;   // temp fiddle for devel
 
 QGIView::QGIView()
     :QGraphicsItemGroup(),
-     viewObj(nullptr),
-     m_locked(false),
-     m_innerView(false),
-     m_dragState(NODRAG)
+    viewObj(nullptr),
+    m_innerView(false),
+    m_multiselectActivated(false),
+    snapping(false)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setHandlesChildEvents(false);
@@ -107,16 +110,6 @@ QGIView::QGIView()
     m_lock->hide();
 }
 
-QGIView::~QGIView()
-{
-    signalSelectPoint.disconnect_all_slots();
-}
-
-void QGIView::onSourceChange(TechDraw::DrawView* newParent)
-{
-    Q_UNUSED(newParent);
-}
-
 void QGIView::isVisible(bool state)
 {
     auto feat = getViewObject();
@@ -139,11 +132,24 @@ bool QGIView::isVisible()
     return vpdo->Visibility.getValue();
 }
 
-//Set selection state for this and it's children
+//Gets selection state for this view and/or eventually its children
+bool QGIView::getGroupSelection()
+{
+    return isSelected();
+}
+
+//Set selection state for this and its children
 //required for items like dimensions & balloons
 void QGIView::setGroupSelection(bool isSelected)
 {
     setSelected(isSelected);
+}
+
+// Set selection state of the feature (empty subName) or its sub items
+void QGIView::setGroupSelection(bool isSelected, const std::vector<std::string> &subNames)
+{
+    Q_UNUSED(subNames);
+    setGroupSelection(isSelected);
 }
 
 void QGIView::alignTo(QGraphicsItem*item, const QString &alignment)
@@ -154,46 +160,48 @@ void QGIView::alignTo(QGraphicsItem*item, const QString &alignment)
 
 QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-    QPointF newPos(0.0, 0.0);
-//    Base::Console().Message("QGIV::itemChange(%d)\n", change);
+    //    Base::Console().Message("QGIV::itemChange(%d)\n", change);
     if(change == ItemPositionChange && scene()) {
-        newPos = value.toPointF();            //position within parent!
-        if(m_locked){
-            newPos.setX(pos().x());
-            newPos.setY(pos().y());
-            return newPos;
-        }
+        QPointF newPos = value.toPointF();            //position within parent!
 
-        // TODO  find a better data structure for this
-        // this is just a pair isn't it?
-        if (getViewObject()->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
-            TechDraw::DrawProjGroupItem* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(getViewObject());
-            TechDraw::DrawProjGroup* dpg = dpgi->getPGroup();
-            if (dpg) {
-                if(alignHash.size() == 1) {   //if aligned.
-                    QGraphicsItem* item = alignHash.begin().value();
-                    QString alignMode   = alignHash.begin().key();
-                    if(alignMode == QString::fromLatin1("Vertical")) {
-                        newPos.setX(item->pos().x());
-                    } else if(alignMode == QString::fromLatin1("Horizontal")) {
-                        newPos.setY(item->pos().y());
-                    }
+        TechDraw::DrawView *viewObj = getViewObject();
+        auto* dpgi = dynamic_cast<TechDraw::DrawProjGroupItem*>(viewObj);
+        if (dpgi && dpgi->getPGroup()) {
+            // restrict movements of secondary views.
+            if(alignHash.size() == 1) {   //if aligned.
+                QGraphicsItem* item = alignHash.begin().value();
+                QString alignMode   = alignHash.begin().key();
+                if(alignMode == QString::fromLatin1("Vertical")) {
+                    newPos.setX(item->pos().x());
+                }
+                else if(alignMode == QString::fromLatin1("Horizontal")) {
+                    newPos.setY(item->pos().y());
                 }
             }
-        } else {
-            //not a dpgi, not locked, but moved.
-            //feat->setPosition(Rez::appX(newPos.x()), -Rez::appX(newPos.y());
         }
+        else {
+            // For general views we check if we need to snap to a position
+            if (!(QApplication::keyboardModifiers() & Qt::AltModifier)) {
+                snapPosition(newPos);
+            }
+        }
+
+                // tell the feature that we have moved
+        Gui::ViewProvider *vp = getViewProvider(viewObj);
+        if (vp && !vp->isRestoring()) {
+            snapping = true; // avoid triggering updateView by the VP updateData
+            viewObj->setPosition(Rez::appX(newPos.x()), Rez::appX(-newPos.y()));
+            snapping = false;
+        }
+
         return newPos;
     }
 
     if (change == ItemSelectedHasChanged && scene()) {
         if(isSelected()) {
             m_colCurrent = getSelectColor();
-//            m_selectState = 2;
         } else {
             m_colCurrent = PreferencesGui::getAccessibleQColor(PreferencesGui::normalQColor());
-//            m_selectState = 0;
         }
         drawBorder();
     }
@@ -201,51 +209,249 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
     return QGraphicsItemGroup::itemChange(change, value);
 }
 
-void QGIView::mousePressEvent(QGraphicsSceneMouseEvent * event)
+//! align this view with others.  newPosition is in this view's parent's coord
+//! system.  if this view is not in a ProjectionGroup, then this is the scene
+//! position, otherwise it is the position within the ProjectionGroup.
+void QGIView::snapPosition(QPointF& newPosition)
 {
-//    Base::Console().Message("QGIV::mousePressEvent() - %s\n", getViewName());
-    signalSelectPoint(this, event->pos());
-    if (m_dragState == NODRAG) {
-        m_dragState = DRAGSTARTED;
+    if (!Preferences::SnapViews()) {
+        return;
     }
 
-    QGraphicsItem::mousePressEvent(event);
+    auto feature = getViewObject();
+    if (!feature) {
+        return;
+    }
+
+    auto dvp = dynamic_cast<DrawViewPart*>(feature);
+    if (dvp  &&
+        !dvp->hasGeometry()) {
+        // too early. wait for updates to finish.
+        return;
+    }
+
+    auto vpPage = getViewProviderPage(feature);
+
+    QGSPage* scenePage = vpPage->getQGSPage();
+    if (!scenePage) {
+        return;
+    }
+
+    auto* sectionView = dynamic_cast<TechDraw::DrawViewSection*>(feature);
+    if (sectionView) {
+        snapSectionView(sectionView, newPosition);
+        return;
+    }
+
+    // For general views we check if the view is close to aligned vertically or horizontally to another view.
+
+    // if we are not a section view, then we could be in a projection group and
+    // need to get the correct scene position.
+    auto newScenePos = newPosition;
+    if (parentItem()) {
+        newScenePos = parentItem()->mapToScene(newPosition);
+    }
+
+    // First get a list of the views of the page.
+    qreal snapPercent = Preferences::SnapLimitFactor();
+    std::vector<QGIView*> views = scenePage->getViews();
+    for (auto* view : views) {
+        if (view == this) {
+            continue;
+        }
+        auto viewFeature = view->getViewObject();
+        auto viewDvp = dynamic_cast<DrawViewPart*>(viewFeature);
+
+        auto viewScenePos = view->scenePos();
+        if (viewDvp &&
+            DrawView::isProjGroupItem(viewDvp)) {
+            viewScenePos = DU::toQPointF(projItemPagePos(viewDvp));
+            viewScenePos = DU::invertY(Rez::guiX(viewScenePos));
+        }
+
+        auto xwindow = view->boundingRect().width() * snapPercent;
+        auto ywindow = view->boundingRect().height() * snapPercent;
+
+        auto xerror = fabs(newScenePos.x() - viewScenePos.x());
+        auto yerror = fabs(newScenePos.y() - viewScenePos.y());
+
+                // if the smaller of vertical and horizontal errors is within the acceptable
+                // window, snap to position.
+        if (xerror <= yerror  &&
+            xerror <= xwindow) {
+            newScenePos.setX(viewScenePos.x());
+            if (parentItem()) {
+                newScenePos = parentItem()->mapFromScene(newScenePos);
+            }
+            newPosition = newScenePos;
+            return;
+        }
+
+        if (yerror < xerror &&
+            yerror <= ywindow) {
+            newScenePos.setY(viewScenePos.y());
+            if (parentItem()) {
+                newScenePos = parentItem()->mapFromScene(newScenePos);
+            }
+            newPosition = newScenePos;
+            return;
+        }
+    }
+}
+
+
+//! snap this section view to its base view.  The section should be positioned on
+//! line from the base view along the section normal direction, ie the same direction
+//! as the arrows on the section line.
+// Note: positions are in Qt inverted Y coordinates. They need to be converted before
+// doing math on them, then converted back on return.
+// Note: section views are never inside a ProjectionGroup, so their position is
+// always in scene coordinates.
+void QGIView::snapSectionView(const TechDraw::DrawViewSection* sectionView,
+                              QPointF& newPosition)
+{
+    auto* baseView = sectionView->getBaseDVP();
+    if (!baseView) {
+        return;
+    }
+    auto* vpdv = dynamic_cast<ViewProviderDrawingView*>(getViewProvider(baseView));
+    if (!vpdv) {
+        return;
+    }
+    auto* qgiv(dynamic_cast<QGIView*>(vpdv->getQView()));
+    if (!qgiv) {
+        return;
+    }
+
+    Base::Vector3d arrowDirection = sectionView->SectionNormal.getValue() * -1;
+    auto arrowDirectionOnBase = baseView->projectPoint(arrowDirection, false);
+    if (arrowDirectionOnBase.Length() < Precision::Confusion()) {
+        return;
+    }
+    arrowDirectionOnBase.Normalize();
+    double baseSize = Rez::guiX(baseView->getSizeAlongVector(arrowDirectionOnBase));
+    double snapDist = baseSize * getScale() * Preferences::SnapLimitFactor();
+
+    // find the scene position of the SO on the base view
+    auto baseX = baseView->X.getValue();
+    auto baseY = baseView->Y.getValue();
+    Base::Vector3d baseScenePos{baseX, baseY, 0};       // paper space position
+    if (DrawView::isProjGroupItem(baseView)) {
+        baseScenePos = projItemPagePos(baseView);
+    }
+    auto sectionOrg3d      = sectionView->SectionOrigin.getValue();
+    auto shapeCenter3d     = baseView->getCurrentCentroid();
+    auto baseShapeCenter   = baseView->projectPoint(shapeCenter3d, false);
+    auto baseSectionOrg    = baseView->projectPoint(sectionOrg3d, false);
+    auto baseSOOffset      = (baseSectionOrg - baseShapeCenter) * baseView->getScale();
+    auto baseSOScenePos    = baseScenePos + baseSOOffset;
+
+    // find the SO offset from origin on the rotated & scaled sectionView
+    auto sectionCutCenter     = sectionView->projectPoint(sectionView->getCutCentroid(), false);
+    auto sectionSectionOrg    = sectionView->projectPoint(sectionOrg3d, false);
+    auto sectionSOOffset      = (sectionSectionOrg - sectionCutCenter) * sectionView->getScale();
+    auto sectionRotationDeg = sectionView->Rotation.getValue();
+    sectionSOOffset.RotateZ(Base::toRadians(sectionRotationDeg));
+
+            // from here on, we work with scene units (1/10 mm)
+    sectionSOOffset = Rez::guiX(sectionSOOffset);
+    baseSOScenePos  = Rez::guiX(baseSOScenePos);
+
+            // check our alignment
+    auto newSOPosition = DU::invertY(DU::toVector3d(newPosition)) + sectionSOOffset;
+
+    Base::Vector3d actualAlignmentVector = newSOPosition - baseSOScenePos;
+    actualAlignmentVector.Normalize();
+
+    // if we are not on the correct side of the section line, we should not try to snap
+    auto dot = arrowDirectionOnBase.Dot(actualAlignmentVector);
+    if (dot <= 0) {
+        return;
+    }
+
+    auto pointOnArrowLine = newSOPosition.Perpendicular(baseSOScenePos, arrowDirectionOnBase);
+    auto errorVector = pointOnArrowLine - newSOPosition;
+    if (errorVector.Length() < snapDist) {
+        // get the position point corresponding to our SO alignment
+        auto netPosition = pointOnArrowLine - sectionSOOffset;
+        netPosition = DU::invertY(netPosition);
+        newPosition = DU::toQPointF(netPosition);
+    }
+
+    return;
+}
+
+Base::Vector3d  QGIView::projItemPagePos(DrawViewPart* item)
+{
+    if (!DrawView::isProjGroupItem(item)) {
+        return Base::Vector3d(0, 0, 0);
+    }
+    auto dpgi = static_cast<DrawProjGroupItem*>(item);
+    auto group = dpgi->getPGroup();
+
+    auto itemX = dpgi->X.getValue();
+    auto itemY = dpgi->Y.getValue();
+    Base::Vector3d itemOffsetPos{itemX, itemY, 0};       // relative to group
+    auto groupX = group->X.getValue();
+    auto groupY = group->Y.getValue();
+    Base::Vector3d groupPagePos{groupX, groupY, 0};    // relative to page
+    return groupPagePos + itemOffsetPos;
+}
+
+
+void QGIView::mousePressEvent(QGraphicsSceneMouseEvent * event)
+{
+    // this is never called for balloons (and dimensions?) because the label objects do not
+    // inherit from QGIView, but directly from QGraphicsItem. - wf
+
+    Qt::KeyboardModifiers originalModifiers = event->modifiers();
+    if (event->button()&Qt::LeftButton) {
+        m_multiselectActivated = false;
+    }
+
+    if (event->button() == Qt::LeftButton && PreferencesGui::multiSelection()) {
+        std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
+        if (!DrawGuiUtil::getSubsForSelectedObject(selection, getViewObject()).empty()) {
+            // we have already selected geometry for this view
+            m_multiselectActivated = true;
+            event->setModifiers(originalModifiers | Qt::ControlModifier);
+        }
+    }
+
+    QGraphicsItemGroup::mousePressEvent(event);
+
+    event->setModifiers(originalModifiers);
 }
 
 void QGIView::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
-    if (m_dragState == DRAGSTARTED) {
-        m_dragState = DRAGGING;
-    }
-    QGraphicsItem::mouseMoveEvent(event);
+    QGraphicsItemGroup::mouseMoveEvent(event);
 }
 
 void QGIView::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
-    //TODO: this should be done in itemChange - item position has changed
-//    Base::Console().Message("QGIV::mouseReleaseEvent() - %s\n", getViewName());
-//    if(scene() && this == scene()->mouseGrabberItem()) {
-    if (m_dragState == DRAGGING && !m_locked) {
-        if (!isInnerView()) {
-            double tempX = x(),
-                   tempY = getY();
-            getViewObject()->setPosition(Rez::appX(tempX), Rez::appX(tempY));
-        } else {
-            getViewObject()->setPosition(Rez::appX(x()), Rez::appX(getYInClip(y())));
+    Qt::KeyboardModifiers originalModifiers = event->modifiers();
+    if ((event->button()&Qt::LeftButton) && m_multiselectActivated) {
+        if (PreferencesGui::multiSelection()) {
+            event->setModifiers(originalModifiers | Qt::ControlModifier);
         }
-    }
-    m_dragState = NODRAG;
 
-    QGraphicsItem::mouseReleaseEvent(event);
+        m_multiselectActivated = false;
+    }
+
+    QGraphicsItemGroup::mouseReleaseEvent(event);
+
+    event->setModifiers(originalModifiers);
 }
 
 void QGIView::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
-//    Base::Console().Message("QGIV::hoverEnterEvent()\n");
+    //    Base::Console().Message("QGIV::hoverEnterEvent()\n");
     Q_UNUSED(event);
     // TODO don't like this but only solution at the minute (MLP)
     if (isSelected()) {
         m_colCurrent = getSelectColor();
+        setFocus();
     } else {
         m_colCurrent = getPreColor();
     }
@@ -266,28 +472,18 @@ void QGIView::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 //sets position in /Gui(graphics), not /App
 void QGIView::setPosition(qreal xPos, qreal yPos)
 {
-//    Base::Console().Message("QGIV::setPosition(%.3f, %.3f) (gui)\n", x, y);
+    //    Base::Console().Message("QGIV::setPosition(%.3f, %.3f) (gui)\n", x, y);
     double newX = xPos;
-    double newY;
+    double newY = -yPos;
     double oldX = pos().x();
     double oldY = pos().y();
-    if (!isInnerView()) {
-        newY = -yPos;
-    } else {
-        newY = getYInClip(yPos);
-    }
+
     if (TechDraw::DrawUtil::fpCompare(newX, oldX) &&
         TechDraw::DrawUtil::fpCompare(newY, oldY)) {
         return;
     } else {
         setPos(newX, newY);
     }
-}
-
-//is this needed anymore???
-double QGIView::getYInClip(double y)
-{
-    return -y;
 }
 
 QGIViewClip* QGIView::getClipGroup()
@@ -305,9 +501,9 @@ QGIViewClip* QGIView::getClipGroup()
 
 void QGIView::updateView(bool forceUpdate)
 {
-//    Base::Console().Message("QGIV::updateView() - %s\n", getViewObject()->getNameInDocument());
+    //    Base::Console().Message("QGIV::updateView() - %s\n", getViewObject()->getNameInDocument());
 
-    //allow/prevent dragging
+            //allow/prevent dragging
     if (getViewObject()->isLocked()) {
         setFlag(QGraphicsItem::ItemIsMovable, false);
     } else {
@@ -331,10 +527,10 @@ void QGIView::updateView(bool forceUpdate)
 //QGIVP derived classes do not need a rotate view method as rotation is handled on App side.
 void QGIView::rotateView()
 {
-//NOTE: QPainterPaths have to be rotated individually. This transform handles Rotation for everything else.
-//Scale is handled in GeometryObject for DVP & descendents
-//Objects not descended from DVP must setScale for themselves
-//note that setTransform(, ,rotation, ,) is not the same as setRotation!!!
+    //NOTE: QPainterPaths have to be rotated individually. This transform handles Rotation for everything else.
+    //Scale is handled in GeometryObject for DVP & descendents
+    //Objects not descended from DVP must setScale for themselves
+    //note that setTransform(, ,rotation, ,) is not the same as setRotation!!!
     double rot = getViewObject()->Rotation.getValue();
     QPointF centre = boundingRect().center();
     setTransform(QTransform().translate(centre.x(), centre.y()).rotate(-rot).translate(-centre.x(), -centre.y()));
@@ -371,7 +567,7 @@ void QGIView::setViewFeature(TechDraw::DrawView *obj)
     viewObj = obj;
     viewName = obj->getNameInDocument();
 
-    //mark the actual QGraphicsItem so we can check what's in the scene later
+            //mark the actual QGraphicsItem so we can check what's in the scene later
     setData(0, QString::fromUtf8("QGIV"));
     setData(1, QString::fromUtf8(obj->getNameInDocument()));
 }
@@ -386,7 +582,7 @@ void QGIView::toggleCache(bool state)
 
 void QGIView::draw()
 {
-//    Base::Console().Message("QGIV::draw()\n");
+    //    Base::Console().Message("QGIV::draw()\n");
     double xFeat, yFeat;
     if (getViewObject()) {
         xFeat = Rez::guiX(getViewObject()->X.getValue());
@@ -405,7 +601,7 @@ void QGIView::draw()
 
 void QGIView::drawCaption()
 {
-//    Base::Console().Message("QGIV::drawCaption()\n");
+    //    Base::Console().Message("QGIV::drawCaption()\n");
     prepareGeometryChange();
     QRectF displayArea = customChildrenBoundingRect();
     m_caption->setDefaultTextColor(m_colCurrent);
@@ -431,7 +627,7 @@ void QGIView::drawCaption()
 
 void QGIView::drawBorder()
 {
-//    Base::Console().Message("QGIV::drawBorder() - %s\n", getViewName());
+    //    Base::Console().Message("QGIV::drawBorder() - %s\n", getViewName());
     auto feat = getViewObject();
     if (!feat)
         return;
@@ -440,9 +636,9 @@ void QGIView::drawBorder()
 
     auto vp = static_cast<ViewProviderDrawingView*>(getViewProvider(getViewObject()));
     if (!getFrameState() && !vp->KeepLabel.getValue()) {
-         m_label->hide();
-         m_border->hide();
-         m_lock->hide();
+        m_label->hide();
+        m_border->hide();
+        m_lock->hide();
         return;
     }
 
@@ -457,7 +653,7 @@ void QGIView::drawBorder()
     m_font.setPixelSize(fontSize);
     m_label->setFont(m_font);
 
-    QString labelStr = QString::fromUtf8(getViewObject()->Label.getValue());
+    QString labelStr = QString::fromStdString( getViewObject()->Label.getValue() );
     m_label->setPlainText(labelStr);
     QRectF labelArea = m_label->boundingRect();                //m_label coords
     double labelWidth = m_label->boundingRect().width();
@@ -512,8 +708,8 @@ void QGIView::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
-//    painter->setPen(Qt::red);
-//    painter->drawRect(boundingRect());          //good for debugging
+    //    painter->setPen(Qt::red);
+    //    painter->drawRect(boundingRect());          //good for debugging
 
     QGraphicsItemGroup::paint(painter, &myOption, widget);
 }
@@ -538,15 +734,15 @@ QRectF QGIView::customChildrenBoundingRect() const
             continue;
         }
         if ( (child->type() != dimItemType) &&
-             (child->type() != leaderItemType) &&
-             (child->type() != textLeaderItemType) &&
-             (child->type() != editablePathItemType) &&
-             (child->type() != movableTextItemType) &&
-             (child->type() != borderItemType) &&
-             (child->type() != labelItemType)  &&
-             (child->type() != weldingSymbolItemType)  &&
-             (child->type() != captionItemType)  &&
-             (child->type() != centerMarkItemType)) {
+            (child->type() != leaderItemType) &&
+            (child->type() != textLeaderItemType) &&
+            (child->type() != editablePathItemType) &&
+            (child->type() != movableTextItemType) &&
+            (child->type() != borderItemType) &&
+            (child->type() != labelItemType)  &&
+            (child->type() != weldingSymbolItemType)  &&
+            (child->type() != captionItemType)  &&
+            (child->type() != centerMarkItemType)) {
             QRectF childRect = mapFromItem(child, child->boundingRect()).boundingRect();
             result = result.united(childRect);
         }
@@ -581,24 +777,6 @@ Gui::ViewProvider* QGIView::getViewProvider(App::DocumentObject* obj)
     if (obj) {
         Gui::Document* guiDoc = Gui::Application::Instance->getDocument(obj->getDocument());
         return guiDoc->getViewProvider(obj);
-    }
-    return nullptr;
-}
-
-QGVPage* QGIView::getQGVPage(TechDraw::DrawView* dView)
-{
-    ViewProviderPage* vpp = getViewProviderPage(dView);
-    if (!vpp) {
-        return vpp->getQGVPage();
-    }
-    return nullptr;
-}
-
-QGSPage* QGIView::getQGSPage(TechDraw::DrawView* dView)
-{
-    ViewProviderPage* vpp = getViewProviderPage(dView);
-    if (vpp) {
-        return vpp->getQGSPage();
     }
     return nullptr;
 }
@@ -644,7 +822,7 @@ void QGIView::removeChild(QGIView* child)
 
 bool QGIView::getFrameState()
 {
-//    Base::Console().Message("QGIV::getFrameState() - %s\n", getViewName());
+    //    Base::Console().Message("QGIV::getFrameState() - %s\n", getViewName());
     TechDraw::DrawView* dv = getViewObject();
     if (!dv) return true;
 
@@ -668,9 +846,30 @@ void QGIView::hideFrame()
 void QGIView::addArbitraryItem(QGraphicsItem* qgi)
 {
     if (qgi) {
-//        m_randomItems.push_back(qgi);
+        //        m_randomItems.push_back(qgi);
         addToGroup(qgi);
         qgi->show();
+    }
+}
+
+void QGIView::switchParentItem(QGIView *targetParent)
+{
+    auto currentParent = dynamic_cast<QGIView *>(this->parentItem());
+    if (currentParent != targetParent) {
+        if (targetParent) {
+            targetParent->addToGroup(this);
+            targetParent->updateView();
+            if (currentParent) {
+                currentParent->updateView();
+            }
+        }
+        else {
+            while (currentParent) {
+                currentParent->removeFromGroup(this);
+                currentParent->updateView();
+                currentParent = dynamic_cast<QGIView *>(this->parentItem());
+            }
+        }
     }
 }
 
@@ -685,7 +884,7 @@ void QGIView::setStackFromVP()
 {
     TechDraw::DrawView* feature = getViewObject();
     ViewProviderDrawingView* vpdv = static_cast<ViewProviderDrawingView*>
-                                    (getViewProvider(feature));
+        (getViewProvider(feature));
     int z = vpdv->getZ();
     setStack(z);
 }
@@ -708,7 +907,7 @@ QColor QGIView::getSelectColor()
 Base::Reference<ParameterGrp> QGIView::getParmGroupCol()
 {
     return App::GetApplication().GetUserParameter()
-           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
 }
 
 //convert input font size in mm to scene units

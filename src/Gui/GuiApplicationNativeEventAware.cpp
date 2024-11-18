@@ -41,7 +41,7 @@
   #endif
 #elif defined(Q_OS_WIN)
   #include "3Dconnexion/GuiNativeEventWin32.h"
-#elif defined(Q_OS_MACX)
+#elif defined(Q_OS_MACOS)
   #include "3Dconnexion/GuiNativeEventMac.h"
 #endif // Platform switch
 #endif // Spacemice
@@ -54,9 +54,7 @@ Gui::GUIApplicationNativeEventAware::GUIApplicationNativeEventAware(int &argc, c
 #endif
 }
 
-Gui::GUIApplicationNativeEventAware::~GUIApplicationNativeEventAware()
-{
-}
+Gui::GUIApplicationNativeEventAware::~GUIApplicationNativeEventAware() = default;
 
 void Gui::GUIApplicationNativeEventAware::initSpaceball(QMainWindow *window)
 {

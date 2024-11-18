@@ -54,7 +54,7 @@ static std::atomic<int64_t> _PropID;
 
 // Here is the implementation! Description should take place in the header file!
 Property::Property()
-  :father(nullptr), myName(nullptr), _id(++_PropID)
+  : _id(++_PropID)
 {
 }
 
@@ -86,6 +86,31 @@ std::string Property::getFullName() const {
     }else
         return "?";
     return name;
+}
+
+std::string Property::getFileName(const char* postfix, const char* prefix) const
+{
+    std::ostringstream ss;
+    if (prefix) {
+        ss << prefix;
+    }
+    if (!myName) {
+        ss << "Property";
+    }
+    else {
+        std::string name = getFullName();
+        auto pos = name.find('#');
+        if (pos == std::string::npos) {
+            ss << name;
+        }
+        else {
+            ss << (name.c_str() + pos + 1);
+        }
+    }
+    if (postfix) {
+        ss << postfix;
+    }
+    return ss.str();
 }
 
 short Property::getType() const
@@ -211,8 +236,10 @@ void Property::destroy(Property *p) {
 void Property::touch()
 {
     PropertyCleaner guard(this);
-    if (father)
+    if (father) {
+        father->onEarlyChange(this);
         father->onChanged(this);
+    }
     StatusBits.set(Touched);
 }
 
@@ -259,8 +286,9 @@ void Property::Paste(const Property& /*from*/)
 }
 
 void Property::setStatusValue(unsigned long status) {
+    // clang-format off
     static const unsigned long mask =
-        (1<<PropDynamic)
+         (1<<PropDynamic)
         |(1<<PropNoRecompute)
         |(1<<PropReadOnly)
         |(1<<PropTransient)
@@ -268,6 +296,7 @@ void Property::setStatusValue(unsigned long status) {
         |(1<<PropHidden)
         |(1<<PropNoPersist)
         |(1<<Busy);
+    // clang-format on
 
     status &= ~mask;
     status |= StatusBits.to_ulong() & mask;

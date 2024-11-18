@@ -22,19 +22,21 @@
 
 #include "PreCompiled.h"
 
+// clang-format off
 // inclusion of the generated files (generated out of StepShapePy.xml)
 #include "StepShapePy.h"
 #include "StepShapePy.cpp"
+// clang-format on
 
 using namespace Import;
 
 // returns a string which represents the object e.g. when printed in python
-std::string StepShapePy::representation(void) const
+std::string StepShapePy::representation() const
 {
-    return std::string("<StepShape object>");
+    return {"<StepShape object>"};
 }
 
-PyObject *StepShapePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* StepShapePy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of StepShapePy and the Twin object
     return new StepShapePy(new StepShape);
@@ -53,13 +55,13 @@ int StepShapePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return -1;
 }
 
-PyObject* StepShapePy::read(PyObject * /*args*/)
+PyObject* StepShapePy::read(PyObject* /*args*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
     return nullptr;
 }
 
-PyObject *StepShapePy::getCustomAttributes(const char* /*attr*/) const
+PyObject* StepShapePy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

@@ -27,6 +27,8 @@
 # include <boost/uuid/uuid_io.hpp>
 #endif
 
+#include <Base/PyWrapParseTupleAndKeywords.h>
+
 #include "CosmeticEdgePy.h"
 #include "CosmeticEdgePy.cpp"
 #include "Cosmetic.h"
@@ -60,59 +62,59 @@ int CosmeticEdgePy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 }
 
 //From Part::GeometryPy.cpp
-PyObject* CosmeticEdgePy::clone(PyObject *args)
-{
-    if (!PyArg_ParseTuple(args, ""))
-        return nullptr;
+// PyObject* CosmeticEdgePy::clone(PyObject *args)
+// {
+//     if (!PyArg_ParseTuple(args, ""))
+//         return nullptr;
 
-    TechDraw::CosmeticEdge* geom = this->getCosmeticEdgePtr();
-    PyTypeObject* type = this->GetType();
-    PyObject* cpy = nullptr;
-    // let the type object decide
-    if (type->tp_new)
-        cpy = type->tp_new(type, this, nullptr);
-    if (!cpy) {
-        PyErr_SetString(PyExc_RuntimeError, "failed to create clone of CosmeticEdge");
-        return nullptr;
-    }
+//     TechDraw::CosmeticEdge* geom = this->getCosmeticEdgePtr();
+//     PyTypeObject* type = this->GetType();
+//     PyObject* cpy = nullptr;
+//     // let the type object decide
+//     if (type->tp_new)
+//         cpy = type->tp_new(type, this, nullptr);
+//     if (!cpy) {
+//         PyErr_SetString(PyExc_RuntimeError, "failed to create clone of CosmeticEdge");
+//         return nullptr;
+//     }
 
-    TechDraw::CosmeticEdgePy* geompy = static_cast<TechDraw::CosmeticEdgePy*>(cpy);
-    // the PyMake function must have created the corresponding instance of the 'CosmeticEdge' subclass
-    // so delete it now to avoid a memory leak
-    if (geompy->_pcTwinPointer) {
-        TechDraw::CosmeticEdge* clone = static_cast<TechDraw::CosmeticEdge*>(geompy->_pcTwinPointer);
-        delete clone;
-    }
-    geompy->_pcTwinPointer = geom->clone();
-    return cpy;
-}
+//     TechDraw::CosmeticEdgePy* geompy = static_cast<TechDraw::CosmeticEdgePy*>(cpy);
+//     // the PyMake function must have created the corresponding instance of the 'CosmeticEdge' subclass
+//     // so delete it now to avoid a memory leak
+//     if (geompy->_pcTwinPointer) {
+//         TechDraw::CosmeticEdge* clone = static_cast<TechDraw::CosmeticEdge*>(geompy->_pcTwinPointer);
+//         delete clone;
+//     }
+//     geompy->_pcTwinPointer = geom->clone();
+//     return cpy;
+// }
 
-PyObject* CosmeticEdgePy::copy(PyObject *args)
-{
-    if (!PyArg_ParseTuple(args, ""))
-        return nullptr;
+// PyObject* CosmeticEdgePy::copy(PyObject *args)
+// {
+//     if (!PyArg_ParseTuple(args, ""))
+//         return nullptr;
 
-    TechDraw::CosmeticEdge* geom = this->getCosmeticEdgePtr();
-    PyTypeObject* type = this->GetType();
-    PyObject* cpy = nullptr;
-    // let the type object decide
-    if (type->tp_new)
-        cpy = type->tp_new(type, this, nullptr);
-    if (!cpy) {
-        PyErr_SetString(PyExc_RuntimeError, "failed to create copy of CosmeticEdge");
-        return nullptr;
-    }
+//     TechDraw::CosmeticEdge* ce = this->getCosmeticEdgePtr();
+//     PyTypeObject* type = this->GetType();
+//     PyObject* cpy = nullptr;
+//     // let the type object decide
+//     if (type->tp_new)
+//         cpy = type->tp_new(type, this, nullptr);
+//     if (!cpy) {
+//         PyErr_SetString(PyExc_RuntimeError, "failed to create copy of CosmeticEdge");
+//         return nullptr;
+//     }
 
-    TechDraw::CosmeticEdgePy* geompy = static_cast<TechDraw::CosmeticEdgePy*>(cpy);
-    // the PyMake function must have created the corresponding instance of the 'CosmeticEdge' subclass
-    // so delete it now to avoid a memory leak
-    if (geompy->_pcTwinPointer) {
-        TechDraw::CosmeticEdge* copy = static_cast<TechDraw::CosmeticEdge*>(geompy->_pcTwinPointer);
-        delete copy;
-    }
-    geompy->_pcTwinPointer = geom->copy();
-    return cpy;
-}
+//     TechDraw::CosmeticEdgePy* geompy = static_cast<TechDraw::CosmeticEdgePy*>(cpy);
+//     // the PyMake function must have created the corresponding instance of the 'CosmeticEdge' subclass
+//     // so delete it now to avoid a memory leak
+//     if (geompy->_pcTwinPointer) {
+//         TechDraw::CosmeticEdge* copy = static_cast<TechDraw::CosmeticEdge*>(geompy->_pcTwinPointer);
+//         delete copy;
+//     }
+//     geompy->_pcTwinPointer = ce->copy();
+//     return cpy;
+// }
 
 void CosmeticEdgePy::setFormat(Py::Dict arg)
 {
@@ -122,17 +124,17 @@ void CosmeticEdgePy::setFormat(Py::Dict arg)
     double weight = 0.5;
     PyObject* pColor = color.ptr();
     PyObject* visible = Py_True;
-    static char* kw[] = {"style", "weight", "color", "visible", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(dummy.ptr(), arg.ptr(), "|idO!O!", kw,
-        &style, &weight, &PyTuple_Type, &pColor, &PyBool_Type, &visible)) {
+    static const std::array<const char *, 5> kw{"style", "weight", "color", "visible", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(dummy.ptr(), arg.ptr(), "|idO!O!", kw,
+                                             &style, &weight, &PyTuple_Type, &pColor, &PyBool_Type, &visible)) {
         throw Py::ValueError("Expected {'style':int, 'weight':float, 'color':tuple, 'visible':bool} dict");
     }
 
     TechDraw::LineFormat* format = &(this->getCosmeticEdgePtr()->m_format);
-    format->m_style = style;
-    format->m_weight = weight;
-    format->m_color = DrawUtil::pyTupleToColor(pColor);
-    format->m_visible = Base::asBoolean(visible);
+    format->setStyle(style);
+    format->setWidth(weight);
+    format->setColor(DrawUtil::pyTupleToColor(pColor));
+    format->setVisible(Base::asBoolean(visible));
 }
 
 Py::Dict CosmeticEdgePy::getFormat() const
@@ -140,10 +142,10 @@ Py::Dict CosmeticEdgePy::getFormat() const
     TechDraw::LineFormat* format= &(this->getCosmeticEdgePtr()->m_format);
     Py::Dict dict;
 
-    dict.setItem("style", Py::Long(format->m_style));
-    dict.setItem("weight", Py::Float(format->m_weight));
-    dict.setItem("color", Py::Tuple(DrawUtil::colorToPyTuple(format->m_color), true));
-    dict.setItem("visible", Py::Boolean(format->m_visible));
+    dict.setItem("style", Py::Long(format->getStyle()));
+    dict.setItem("weight", Py::Float(format->getWidth()));
+    dict.setItem("color", Py::Tuple(DrawUtil::colorToPyTuple(format->getColor()), true));
+    dict.setItem("visible", Py::Boolean(format->getVisible()));
 
     return dict;
 }

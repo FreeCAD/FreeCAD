@@ -43,9 +43,6 @@ DlgPartBoxImp::DlgPartBoxImp(QWidget* parent, Qt::WindowFlags fl)
 /*
  *  Destroys the object and frees any allocated resources
  */
-DlgPartBoxImp::~DlgPartBoxImp()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+DlgPartBoxImp::~DlgPartBoxImp() = default;
 
 #include "moc_DlgPartBoxImp.cpp"

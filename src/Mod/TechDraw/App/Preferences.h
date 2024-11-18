@@ -23,6 +23,7 @@
 #ifndef Preferences_h_
 #define Preferences_h_
 
+#include <Qt>
 #include <string>
 
 #include <Base/Parameter.h>
@@ -51,6 +52,7 @@ public:
     static QString labelFontQString();
     static double labelFontSizeMM();
     static double dimFontSizeMM();
+    static double dimArrowSize();
 
     static App::Color normalColor();
     static App::Color selectColor();
@@ -63,7 +65,9 @@ public:
     static bool keepPagesUpToDate();
 
     static int projectionAngle();
-    static int lineGroup();
+    static bool groupAutoDistribute();
+    static double groupSpaceX();
+    static double groupSpaceY();
 
     static int balloonArrow();
     static double balloonKinkLength();
@@ -71,17 +75,21 @@ public:
 
     static QString defaultTemplate();
     static QString defaultTemplateDir();
-    static std::string lineGroupFile();
 
     static const double DefaultFontSizeInMM;
+    static const double DefaultArrowSize;
 
     static std::string formatSpec();
     static int altDecimals();
 
     static int mattingStyle();
+    static bool showDetailMatting();
+    static bool showDetailHighlight();
 
     static std::string svgFile();
     static std::string patFile();
+
+    static QString defaultSymbolDir();
 
     static std::string bitmapFill();
 
@@ -100,7 +108,50 @@ public:
 
     static bool autoCorrectDimRefs();
     static int scrubCount();
+
+    static double svgHatchFactor();
+    static bool SectionUsePreviousCut();
+
+    static int lineStandard();
+    static void setLineStandard(int index);
+    static std::string lineDefinitionLocation();
+    static std::string lineElementsLocation();
+
+    static std::string lineGroupFile();
+    static int lineGroup();
+    static int SectionLineStyle();
+    static int CenterLineStyle();
+    static int HighlightLineStyle();
+    static int HiddenLineStyle();
+    static int BreakLineStyle();
+    static int LineCapStyle();
+    static int LineCapIndex();
+
+    static int LineSpacingISO();
+
+    static std::string currentLineDefFile();
+    static std::string currentElementDefFile();
+
+    static int sectionLineConvention();
+    static bool showSectionLine();
+    static bool includeCutLine();
+
+    static int BreakType();
+
+    static bool useExactMatchOnDims();
+
+    static bool useCameraDirection();
+    static bool alwaysShowLabel();
+
+    static bool SnapViews();
+    static double SnapLimitFactor();
+
+    static Qt::KeyboardModifiers multiselectModifiers();
+
+    static Qt::KeyboardModifiers balloonDragModifiers();
+    static void setBalloonDragModifiers(Qt::KeyboardModifiers newModifiers);
 };
+
 
 }//end namespace TechDraw
 #endif

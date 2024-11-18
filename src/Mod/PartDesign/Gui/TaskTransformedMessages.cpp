@@ -31,10 +31,10 @@
 
 using namespace PartDesignGui;
 using namespace Gui::TaskView;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 TaskTransformedMessages::TaskTransformedMessages(ViewProviderTransformed *transformedView_)
-    : TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Transformed feature messages"), true, nullptr)
+    : TaskBox(Gui::BitmapFactory().pixmap("Part_Transformed_Copy"), tr("Transformed feature messages"), true, nullptr)
     , transformedView(transformedView_)
     , ui(new Ui_TaskTransformedMessages)
 {
@@ -49,7 +49,11 @@ TaskTransformedMessages::TaskTransformedMessages(ViewProviderTransformed *transf
     this->groupLayout()->addWidget(proxy);
     ui->labelTransformationStatus->setText(transformedView->getMessage());
 
-    connectionDiagnosis = transformedView->signalDiagnosis.connect(boost::bind(&PartDesignGui::TaskTransformedMessages::slotDiagnosis, this, bp::_1));
+    //NOLINTBEGIN
+    connectionDiagnosis = transformedView->signalDiagnosis.connect(
+        std::bind(&PartDesignGui::TaskTransformedMessages::slotDiagnosis, this, sp::_1)
+    );
+    //NOLINTEND
 }
 
 TaskTransformedMessages::~TaskTransformedMessages()

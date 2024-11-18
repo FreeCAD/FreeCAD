@@ -34,9 +34,9 @@ namespace Gui {
  * derived class as Python extension -- simply by subclassing.
  */
 template <class ExtensionT>
-class ViewProviderExtensionPythonT : public ExtensionT
+class ViewProviderExtensionPythonT : public ExtensionT //NOLINT
 {
-    EXTENSION_PROPERTY_HEADER(Gui::ViewProviderExtensionPythonT<ExtensionT>);
+    EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderExtensionPythonT<ExtensionT>);
 
 public:
     using Inherited = ExtensionT;
@@ -45,8 +45,7 @@ public:
         ExtensionT::m_isPythonExtension = true;
         ExtensionT::initExtensionType(ViewProviderExtensionPythonT::getExtensionClassTypeId());
     }
-    virtual ~ViewProviderExtensionPythonT() {
-    }
+    ~ViewProviderExtensionPythonT() override = default;
 
     ViewProviderExtensionPythonT(const ViewProviderExtensionPythonT&) = delete;
     ViewProviderExtensionPythonT(ViewProviderExtensionPythonT&&) = delete;

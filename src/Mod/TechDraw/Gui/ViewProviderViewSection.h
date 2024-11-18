@@ -43,8 +43,9 @@ public:
     /// destructor
     ~ViewProviderViewSection() override;
 
-    App::PropertyBool   ShowCutSurface;        //obsolete - use CutSurfaceDisplay
-    App::PropertyColor  CutSurfaceColor;
+    App::PropertyColor   CutSurfaceColor;
+    App::PropertyPercent CutSurfaceTransparency;
+
     App::PropertyBool   HatchCutSurface;       //obsolete - use CutSurfaceDisplay
     App::PropertyColor  HatchColor;
     App::PropertyColor  GeomHatchColor;

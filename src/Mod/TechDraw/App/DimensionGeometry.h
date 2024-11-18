@@ -38,12 +38,26 @@ class TechDrawExport pointPair
 {
 public:
     pointPair() = default;
-    pointPair(Base::Vector3d point0, Base::Vector3d point1) { m_first = point0; m_second = point1; }
+    pointPair(const Base::Vector3d& point0, const Base::Vector3d& point1)
+        : m_first(point0)
+        , m_second(point1){};
+
+    pointPair(const Base::Vector3d& point0, const Base::Vector3d& point1,
+              const Base::Vector3d& extensionPoint0, const Base::Vector3d& extensionPoint1)
+        : m_first(point0)
+        , m_second(point1)
+        , m_useOverrideFirst(true)
+        , m_overrideFirst(extensionPoint0)
+        , m_useOverrideSecond(true)
+        , m_overrideSecond(extensionPoint1){};
+
     pointPair(const pointPair& pp);
 
-    pointPair& operator= (const pointPair& pp) {
+    pointPair& operator=(const pointPair& pp) {
         m_first = pp.first();
         m_second = pp.second();
+        overrideFirst(pp.extensionLineFirst());
+        overrideSecond(pp.extensionLineSecond());
         return *this;
     }
 
@@ -51,16 +65,32 @@ public:
     void first(Base::Vector3d newFirst) { m_first = newFirst; }
     Base::Vector3d second() const { return m_second; }
     void second(Base::Vector3d newSecond) { m_second = newSecond; }
+    // extension line specific points
+    Base::Vector3d extensionLineFirst() const { return m_useOverrideFirst ? m_overrideFirst : m_first; }
+    void overrideFirst(Base::Vector3d newFirst) { m_useOverrideFirst = true;  m_overrideFirst = newFirst; }
+    Base::Vector3d extensionLineSecond() const { return m_useOverrideSecond ? m_overrideSecond : m_second; }
+    void overrideSecond(Base::Vector3d newSecond) { m_useOverrideSecond = true;  m_overrideSecond = newSecond; }
+    void setExtensionLine(const pointPair& pp);
 
-    void move(Base::Vector3d offset);
-    void project(DrawViewPart* dvp);
-    void mapToPage(DrawViewPart* dvp);
+    void move(const Base::Vector3d& offset);
+    void project(const DrawViewPart* dvp);
+    void mapToPage(const DrawViewPart* dvp);
     void invertY();
-    void dump(std::string text) const;
+    void scale(double factor);
+    void dump(const std::string& text) const;
+
+    pointPair toCanonicalForm(DrawViewPart* dvp) const;
+    pointPair toDisplayForm(DrawViewPart* dvp) const;
+
 
 private:
     Base::Vector3d m_first;
     Base::Vector3d m_second;
+    // extension line specific points
+    bool m_useOverrideFirst = false;
+    Base::Vector3d m_overrideFirst;
+    bool m_useOverrideSecond = false;
+    Base::Vector3d m_overrideSecond;
 };
 
 //a convenient container for angular dimension points
@@ -68,26 +98,30 @@ class TechDrawExport anglePoints
 {
 public:
     anglePoints();
-    anglePoints(Base::Vector3d apex, Base::Vector3d point0, Base::Vector3d point1) {
+    anglePoints(const Base::Vector3d& apex, const Base::Vector3d& point0, Base::Vector3d point1) {
         vertex(apex); first(point0); second(point1); }
     anglePoints(const anglePoints& ap);
 
     anglePoints& operator= (const anglePoints& ap);
 
     pointPair ends() const { return m_ends; }
-    void ends(pointPair newEnds) { m_ends = newEnds; }
+    void ends(const pointPair& newEnds) { m_ends = newEnds; }
     Base::Vector3d first() const { return m_ends.first(); }
-    void first(Base::Vector3d newFirst) { m_ends.first(newFirst); }
+    void first(const Base::Vector3d& newFirst) { m_ends.first(newFirst); }
     Base::Vector3d second() const { return m_ends.second(); }
-    void second(Base::Vector3d newSecond) { m_ends.second(newSecond); }
+    void second(const Base::Vector3d& newSecond) { m_ends.second(newSecond); }
     Base::Vector3d vertex() const { return m_vertex; }
-    void vertex(Base::Vector3d newVertex) { m_vertex = newVertex; }
+    void vertex(const Base::Vector3d& newVertex) { m_vertex = newVertex; }
 
-    void move(Base::Vector3d offset);
-    void project(DrawViewPart* dvp);
-    void mapToPage(DrawViewPart* dvp);
+    void move(const Base::Vector3d& offset);
+    void project(const DrawViewPart* dvp);
+    void mapToPage(const DrawViewPart* dvp);
     void invertY();
-    void dump(std::string text) const;
+    void dump(const std::string& text) const;
+
+    anglePoints toCanonicalForm(DrawViewPart* dvp) const;
+    anglePoints toDisplayForm(DrawViewPart* dvp) const;
+
 
 private:
     pointPair m_ends;
@@ -103,11 +137,14 @@ public:
 
     arcPoints& operator= (const arcPoints& ap);
 
-    void move(Base::Vector3d offset);
-    void project(DrawViewPart* dvp);
-    void mapToPage(DrawViewPart* dvp);
+    void move(const Base::Vector3d& offset);
+    void project(const DrawViewPart* dvp);
+    void mapToPage(const DrawViewPart* dvp);
     void invertY();
-    void dump(std::string text) const;
+    void dump(const std::string& text) const;
+
+    arcPoints toCanonicalForm(DrawViewPart* dvp) const;
+    arcPoints toDisplayForm(DrawViewPart* dvp) const;
 
 //TODO: setters and getters
     bool isArc;
@@ -117,6 +154,24 @@ public:
     pointPair arcEnds;
     Base::Vector3d midArc;
     bool arcCW;
+};
+
+//a convenient container for area dimension
+class TechDrawExport areaPoint
+{
+public:
+    areaPoint();
+    areaPoint(const areaPoint& ap) = default;
+
+    areaPoint& operator= (const areaPoint& ap);
+
+    void move(const Base::Vector3d& offset);
+    void project(const DrawViewPart* dvp);
+    void dump(const std::string& text) const;
+
+//TODO: setters and getters
+    double area;
+    Base::Vector3d center;
 };
 
 }   //end namespace TechDraw

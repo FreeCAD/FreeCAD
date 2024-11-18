@@ -36,13 +36,13 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import Draft_rc
 import DraftVecUtils
-import draftutils.utils as utils
-import draftguitools.gui_base_original as gui_base_original
-import draftguitools.gui_tool_utils as gui_tool_utils
-import draftguitools.gui_trackers as trackers
-
+from draftguitools import gui_base_original
+from draftguitools import gui_tool_utils
+from draftguitools import gui_trackers as trackers
+from draftutils import params
+from draftutils import utils
+from draftutils.messages import _err, _toolmsg
 from draftutils.translate import translate
-from draftutils.messages import _msg, _err
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -61,14 +61,14 @@ class Ellipse(gui_base_original.Creator):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Ellipse, self).Activated(name="Ellipse")
+        super().Activated(name="Ellipse")
         if self.ui:
             self.refpoint = None
-            self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Ellipse")
+            self.ui.pointUi(title=translate("draft", "Ellipse"), icon="Draft_Ellipse")
             self.ui.extUi()
             self.call = self.view.addEventCallback("SoEvent", self.action)
             self.rect = trackers.rectangleTracker()
-            _msg(translate("draft", "Pick first point"))
+            _toolmsg(translate("draft", "Pick first point"))
 
     def finish(self, cont=False):
         """Terminate the operation.
@@ -79,23 +79,23 @@ class Ellipse(gui_base_original.Creator):
             Restart (continue) the command if `True`, or if `None` and
             `ui.continueMode` is `True`.
         """
-        super(Ellipse, self).finish(self)
+        self.end_callbacks(self.call)
         if self.ui:
             self.rect.off()
             self.rect.finalize()
+        super().finish()
         if cont or (cont is None and self.ui and self.ui.continueMode):
             self.Activated()
 
     def createObject(self):
         """Create the actual object in the current document."""
-        plane = App.DraftWorkingPlane
         p1 = self.node[0]
         p3 = self.node[-1]
         diagonal = p3.sub(p1)
         halfdiag = App.Vector(diagonal).multiply(0.5)
         center = p1.add(halfdiag)
-        p2 = p1.add(DraftVecUtils.project(diagonal, plane.v))
-        p4 = p1.add(DraftVecUtils.project(diagonal, plane.u))
+        p2 = p1.add(DraftVecUtils.project(diagonal, self.wp.v))
+        p4 = p1.add(DraftVecUtils.project(diagonal, self.wp.u))
         r1 = (p4.sub(p1).Length)/2
         r2 = (p2.sub(p1).Length)/2
         try:
@@ -112,7 +112,7 @@ class Ellipse(gui_base_original.Creator):
                 rot2 = rot2.Rotation
                 rot = str((rot1.multiply(rot2)).Q)
             Gui.addModule("Draft")
-            if utils.getParam("UsePartPrimitives", False):
+            if params.get_param("UsePartPrimitives"):
                 # Insert a Part::Primitive object
                 _cmd = 'FreeCAD.ActiveDocument.'
                 _cmd += 'addObject("Part::Ellipse", "Ellipse")'
@@ -124,6 +124,7 @@ class Ellipse(gui_base_original.Creator):
                              'pl.Base = ' + DraftVecUtils.toString(center),
                              'ellipse.Placement = pl',
                              'Draft.autogroup(ellipse)',
+                             'Draft.select(ellipse)',
                              'FreeCAD.ActiveDocument.recompute()']
                 self.commit(translate("draft", "Create Ellipse"),
                             _cmd_list)
@@ -163,10 +164,7 @@ class Ellipse(gui_base_original.Creator):
             if arg["Key"] == "ESCAPE":
                 self.finish()
         elif arg["Type"] == "SoLocation2Event":  # mouse movement detection
-            (self.point,
-             ctrlPoint, info) = gui_tool_utils.getPoint(self, arg,
-                                                        mobile=True,
-                                                        noTracker=True)
+            self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg, noTracker=True)
             self.rect.update(self.point)
             gui_tool_utils.redraw3DView()
         elif arg["Type"] == "SoMouseButtonEvent":
@@ -178,10 +176,7 @@ class Ellipse(gui_base_original.Creator):
 
                 if (not self.node) and (not self.support):
                     gui_tool_utils.getSupport(arg)
-                    (self.point,
-                     ctrlPoint, info) = gui_tool_utils.getPoint(self, arg,
-                                                                mobile=True,
-                                                                noTracker=True)
+                    self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg, noTracker=True)
                 if self.point:
                     self.ui.redraw()
                     self.pos = arg["Position"]
@@ -203,7 +198,7 @@ class Ellipse(gui_base_original.Creator):
             self.rect.update(point)
             self.createObject()
         else:
-            _msg(translate("draft", "Pick opposite point"))
+            _toolmsg(translate("draft", "Pick opposite point"))
             self.ui.setRelative()
             self.rect.setorigin(point)
             self.rect.on()

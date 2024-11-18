@@ -31,7 +31,7 @@ from os.path import join
 
 __title__ = "ImportCSG OpenSCAD App unit tests"
 __author__ = "Chris Hennes"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 
 class TestImportCSG(unittest.TestCase):
@@ -121,6 +121,10 @@ class TestImportCSG(unittest.TestCase):
         FreeCAD.closeDocument(doc.Name)
 
     def test_import_text(self):
+        # This uses the DXF importer that may pop-up modal dialogs
+        # if not all 3rd party libraries are installed
+        if FreeCAD.GuiUp:
+            return
         try:
             doc = self.utility_create_scad("text(\"X\");","text") # Keep it short to keep the test fast-ish
             text = doc.getObject("text")
@@ -205,7 +209,7 @@ polyhedron(
         self.assertAlmostEqual (object.Shape.Volume, 2412.7431, 3)
         FreeCAD.closeDocument(doc.Name)
 
-        # Bug #4353 - https://tracker.freecadweb.org/view.php?id=4353
+        # Bug #4353 - https://tracker.freecad.org/view.php?id=4353
         doc = self.utility_create_scad("rotate_extrude($fn=4, angle=180) polygon([[0,0],[3,3],[0,3]]);", "rotate_extrude_low_fn")
         object = doc.ActiveObject
         self.assertTrue (object is not None)
@@ -330,6 +334,13 @@ resize(newsize = [0,0,10], auto = [0,0,0]) {
         FreeCAD.closeDocument(doc.Name)
 
     def test_import_surface(self):
+        preferences = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
+        transfer_mechanism = preferences.GetInt('transfermechanism',0)
+        if transfer_mechanism == 2:
+            print ("Cannot test .dat surface import, communication with OpenSCAD is via pipes")
+            print ("If either OpenSCAD or FreeCAD are installed as sandboxed packages, use of")
+            print ("import is not possible.")
+            return
         # Workaround for absolute vs. relative path issue
         # Inside the OpenSCAD file an absolute path name to Surface.dat is used
         # but by using the OpenSCAD executable to create a CSG file it's converted
@@ -338,40 +349,44 @@ resize(newsize = [0,0,10], auto = [0,0,0]) {
         with tempfile.TemporaryDirectory() as temp_dir:
             cwd = os.getcwd()
             os.chdir(temp_dir)
+            try:
+                testfile = join(self.test_dir, "Surface.dat").replace('\\','/')
+                doc = self.utility_create_scad(f"surface(file = \"{testfile}\", center = true, convexity = 5);", "surface_simple_dat")
+                object = doc.ActiveObject
+                self.assertTrue (object is not None)
+                self.assertAlmostEqual (object.Shape.Volume, 275.000000, 6)
+                self.assertAlmostEqual (object.Shape.BoundBox.XMin, -4.5, 6)
+                self.assertAlmostEqual (object.Shape.BoundBox.XMax, 4.5, 6)
+                self.assertAlmostEqual (object.Shape.BoundBox.YMin, -4.5, 6)
+                self.assertAlmostEqual (object.Shape.BoundBox.YMax, 4.5, 6)
+                FreeCAD.closeDocument(doc.Name)
 
-            testfile = join(self.test_dir, "Surface.dat").replace('\\','/')
-            doc = self.utility_create_scad(f"surface(file = \"{testfile}\", center = true, convexity = 5);", "surface_simple_dat")
-            object = doc.ActiveObject
-            self.assertTrue (object is not None)
-            self.assertAlmostEqual (object.Shape.Volume, 275.000000, 6)
-            self.assertAlmostEqual (object.Shape.BoundBox.XMin, -4.5, 6)
-            self.assertAlmostEqual (object.Shape.BoundBox.XMax, 4.5, 6)
-            self.assertAlmostEqual (object.Shape.BoundBox.YMin, -4.5, 6)
-            self.assertAlmostEqual (object.Shape.BoundBox.YMax, 4.5, 6)
-            FreeCAD.closeDocument(doc.Name)
+                testfile = join(self.test_dir, "Surface.dat").replace('\\','/')
+                doc = self.utility_create_scad(f"surface(file = \"{testfile}\", convexity = 5);", "surface_uncentered_dat")
+                object = doc.ActiveObject
+                self.assertTrue (object is not None)
+                self.assertAlmostEqual (object.Shape.Volume, 275.000000, 6)
+                self.assertAlmostEqual (object.Shape.BoundBox.XMin, 0, 6)
+                self.assertAlmostEqual (object.Shape.BoundBox.XMax, 9, 6)
+                self.assertAlmostEqual (object.Shape.BoundBox.YMin, 0, 6)
+                self.assertAlmostEqual (object.Shape.BoundBox.YMax, 9, 6)
+                FreeCAD.closeDocument(doc.Name)
 
-            testfile = join(self.test_dir, "Surface.dat").replace('\\','/')
-            doc = self.utility_create_scad(f"surface(file = \"{testfile}\", convexity = 5);", "surface_uncentered_dat")
-            object = doc.ActiveObject
-            self.assertTrue (object is not None)
-            self.assertAlmostEqual (object.Shape.Volume, 275.000000, 6)
-            self.assertAlmostEqual (object.Shape.BoundBox.XMin, 0, 6)
-            self.assertAlmostEqual (object.Shape.BoundBox.XMax, 9, 6)
-            self.assertAlmostEqual (object.Shape.BoundBox.YMin, 0, 6)
-            self.assertAlmostEqual (object.Shape.BoundBox.YMax, 9, 6)
-            FreeCAD.closeDocument(doc.Name)
-
-            testfile = join(self.test_dir, "Surface2.dat").replace('\\','/')
-            doc = self.utility_create_scad(f"surface(file = \"{testfile}\", center = true, convexity = 5);", "surface_rectangular_dat")
-            object = doc.ActiveObject
-            self.assertTrue (object is not None)
-            self.assertAlmostEqual (object.Shape.Volume, 24.5500000, 6)
-            self.assertAlmostEqual (object.Shape.BoundBox.XMin, -2, 6)
-            self.assertAlmostEqual (object.Shape.BoundBox.XMax, 2, 6)
-            self.assertAlmostEqual (object.Shape.BoundBox.YMin, -1.5, 6)
-            self.assertAlmostEqual (object.Shape.BoundBox.YMax, 1.5, 6)
-            FreeCAD.closeDocument(doc.Name)
-            os.chdir(cwd)
+                testfile = join(self.test_dir, "Surface2.dat").replace('\\','/')
+                doc = self.utility_create_scad(f"surface(file = \"{testfile}\", center = true, convexity = 5);", "surface_rectangular_dat")
+                object = doc.ActiveObject
+                self.assertTrue (object is not None)
+                self.assertAlmostEqual (object.Shape.Volume, 24.5500000, 6)
+                self.assertAlmostEqual (object.Shape.BoundBox.XMin, -2, 6)
+                self.assertAlmostEqual (object.Shape.BoundBox.XMax, 2, 6)
+                self.assertAlmostEqual (object.Shape.BoundBox.YMin, -1.5, 6)
+                self.assertAlmostEqual (object.Shape.BoundBox.YMax, 1.5, 6)
+                FreeCAD.closeDocument(doc.Name)
+            except:
+                os.chdir(cwd)
+                raise Exception
+            else:
+                os.chdir(cwd)
 
     def test_import_projection(self):
         base_shape = "linear_extrude(height=5,center=true,twist=90,scale=0.5){square([1,1],center=true);}"

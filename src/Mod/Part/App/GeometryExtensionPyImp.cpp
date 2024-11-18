@@ -80,7 +80,7 @@ Py::String GeometryExtensionPy::getName() const
 {
     std::string name = this->getGeometryExtensionPtr()->getName();
 
-    return Py::String(name);
+    return {name};
 }
 
 void GeometryExtensionPy::setName(Py::String arg)

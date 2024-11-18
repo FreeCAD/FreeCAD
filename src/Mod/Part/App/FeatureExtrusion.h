@@ -28,7 +28,7 @@
 
 #include "FaceMakerCheese.h"
 #include "PartFeature.h"
-
+#include "ExtrusionHelper.h"
 
 namespace Part
 {
@@ -52,46 +52,30 @@ public:
     App::PropertyAngle TaperAngle;
     App::PropertyAngle TaperAngleRev;
     App::PropertyString FaceMakerClass;
-
-
-    /**
-     * @brief The ExtrusionParameters struct is supposed to be filled with final
-     * extrusion parameters, after resolving links, applying mode logic,
-     * reversing, etc., and be passed to extrudeShape.
-     */
-    struct ExtrusionParameters {
-        gp_Dir dir;
-        double lengthFwd;
-        double lengthRev;
-        bool solid;
-        double taperAngleFwd; //in radians
-        double taperAngleRev;
-        std::string faceMakerClass;
-        ExtrusionParameters(): lengthFwd(0), lengthRev(0), solid(false), taperAngleFwd(0), taperAngleRev(0) {}// constructor to keep garbage out
-    };
+    App::PropertyEnumeration FaceMakerMode;
 
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void) override;
+    App::DocumentObjectExecReturn *execute() override;
     short mustExecute() const override;
     /// returns the type name of the view provider
-    const char* getViewProviderName(void) const override {
+    const char* getViewProviderName() const override {
         return "PartGui::ViewProviderExtrusion";
     }
     //@}
 
     /**
      * @brief extrudeShape powers the extrusion feature.
+     * @param result: result of extrusion
      * @param source: the shape to be extruded
      * @param params: extrusion parameters
-     * @return result of extrusion
      */
-    static TopoShape extrudeShape(const TopoShape& source, const ExtrusionParameters& params);
+    static void extrudeShape(TopoShape &result, const TopoShape &source, const ExtrusionParameters& params);
 
     /**
      * @brief fetchAxisLink: read AxisLink to obtain the direction and
-     * length. Note: this routine is re-used in Extrude dialog, hence it
+     * length. Note: this routine is reused in Extrude dialog, hence it
      * is static.
      * @param axisLink (input): the link
      * @param basepoint (output): starting point of edge. Not used by extrude as of now.
@@ -111,6 +95,7 @@ public:
     ExtrusionParameters computeFinalParameters();
 
     static Base::Vector3d calculateShapeNormal(const App::PropertyLink& shapeLink);
+    void onDocumentRestored() override;
 
 public: //mode enumerations
     enum eDirMode{
@@ -122,6 +107,7 @@ public: //mode enumerations
 
 protected:
     void setupObject() override;
+    void onChanged(const App::Property* prop) override;
 };
 
 /**

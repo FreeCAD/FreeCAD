@@ -41,7 +41,7 @@ class TechDrawExport DrawWeldSymbol : public TechDraw::DrawView
 
 public:
     DrawWeldSymbol();
-    ~DrawWeldSymbol() = default;
+    ~DrawWeldSymbol() override = default;
 
     App::PropertyLink         Leader;
     App::PropertyBool         AllAround;
@@ -61,6 +61,8 @@ public:
 
     bool isTailRightSide();
     std::vector<DrawTileWeld*> getTiles() const;
+
+    App::PropertyLink *getOwnerProperty() override { return &Leader; }
 
 protected:
     void onChanged(const App::Property* prop) override;

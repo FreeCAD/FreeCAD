@@ -28,9 +28,11 @@
 
 #include "ViewProviderFemConstraintOnBoundary.h"
 
-namespace FemGui {
+namespace FemGui
+{
 
-class FemGuiExport ViewProviderFemConstraintDisplacement : public FemGui::ViewProviderFemConstraintOnBoundary
+class FemGuiExport ViewProviderFemConstraintDisplacement
+    : public FemGui::ViewProviderFemConstraintOnBoundary
 {
     PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemConstraintDisplacement);
 
@@ -43,6 +45,6 @@ protected:
     bool setEdit(int ModNum) override;
 };
 
-}
+}  // namespace FemGui
 
-#endif // GUI_VIEWPROVIDERFEMCONSTRAINTDISPLACEMENT_H
+#endif  // GUI_VIEWPROVIDERFEMCONSTRAINTDISPLACEMENT_H

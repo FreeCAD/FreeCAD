@@ -27,12 +27,14 @@
 # include <QActionEvent>
 # include <QApplication>
 # include <QCursor>
+# include <QDockWidget>
 # include <QLineEdit>
 # include <QPointer>
 # include <QPushButton>
 # include <QTimer>
 #endif
 
+#include <App/Document.h>
 #include <Gui/ActionFunction.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
@@ -41,6 +43,7 @@
 #include "TaskView.h"
 #include "TaskDialog.h"
 #include "TaskEditControl.h"
+#include <Gui/Control.h>
 
 #include <Gui/QSint/actionpanel/taskgroup_p.h>
 #include <Gui/QSint/actionpanel/taskheader_p.h>
@@ -48,7 +51,7 @@
 
 
 using namespace Gui::TaskView;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 
 //**************************************************************************
@@ -62,9 +65,7 @@ TaskWidget::TaskWidget( QWidget *parent)
 
 }
 
-TaskWidget::~TaskWidget()
-{
-}
+TaskWidget::~TaskWidget() = default;
 
 //**************************************************************************
 //**************************************************************************
@@ -86,9 +87,7 @@ TaskGroup::TaskGroup(const QPixmap & icon, const QString & headerText, QWidget *
 {
 }
 
-TaskGroup::~TaskGroup()
-{
-}
+TaskGroup::~TaskGroup() = default;
 
 void TaskGroup::actionEvent (QActionEvent* e)
 {
@@ -154,12 +153,10 @@ QSize TaskBox::minimumSizeHint() const
     // respect the layout's minimum size.
     QSize s1 = QSint::ActionGroup::minimumSizeHint();
     QSize s2 = QWidget::minimumSizeHint();
-    return QSize(qMax(s1.width(), s2.width()), qMax(s1.height(), s2.height()));
+    return {qMax(s1.width(), s2.width()), qMax(s1.height(), s2.height())};
 }
 
-TaskBox::~TaskBox()
-{
-}
+TaskBox::~TaskBox() = default;
 
 void TaskBox::showEvent(QShowEvent*)
 {
@@ -247,9 +244,7 @@ TaskPanel::TaskPanel(QWidget *parent)
 {
 }
 
-TaskPanel::~TaskPanel()
-{
-}
+TaskPanel::~TaskPanel() = default;
 
 QSize TaskPanel::minimumSizeHint() const
 {
@@ -263,7 +258,7 @@ QSize TaskPanel::minimumSizeHint() const
     // respect the layout's minimum size.
     QSize s1 = QSint::ActionPanel::minimumSizeHint();
     QSize s2 = QWidget::minimumSizeHint();
-    return QSize(qMax(s1.width(), s2.width()), qMax(s1.height(), s2.height()));
+    return {qMax(s1.width(), s2.width()), qMax(s1.height(), s2.height())};
 }
 
 
@@ -293,27 +288,49 @@ TaskView::TaskView(QWidget *parent)
 
     Gui::Selection().Attach(this);
 
-    connectApplicationActiveDocument = 
+    //NOLINTBEGIN
+    connectApplicationActiveDocument =
     App::GetApplication().signalActiveDocument.connect
-        (boost::bind(&Gui::TaskView::TaskView::slotActiveDocument, this, bp::_1));
+        (std::bind(&Gui::TaskView::TaskView::slotActiveDocument, this, sp::_1));
     connectApplicationDeleteDocument = 
-    App::GetApplication().signalDeletedDocument.connect
-        (boost::bind(&Gui::TaskView::TaskView::slotDeletedDocument, this));
+    App::GetApplication().signalDeleteDocument.connect
+        (std::bind(&Gui::TaskView::TaskView::slotDeletedDocument, this, sp::_1));
+    connectApplicationClosedView =
+    Gui::Application::Instance->signalCloseView.connect
+        (std::bind(&Gui::TaskView::TaskView::slotViewClosed, this, sp::_1));
     connectApplicationUndoDocument = 
     App::GetApplication().signalUndoDocument.connect
-        (boost::bind(&Gui::TaskView::TaskView::slotUndoDocument, this, bp::_1));
+        (std::bind(&Gui::TaskView::TaskView::slotUndoDocument, this, sp::_1));
     connectApplicationRedoDocument = 
     App::GetApplication().signalRedoDocument.connect
-        (boost::bind(&Gui::TaskView::TaskView::slotRedoDocument, this, bp::_1));
+        (std::bind(&Gui::TaskView::TaskView::slotRedoDocument, this, sp::_1));
+    //NOLINTEND
+
+    updateWatcher();
 }
 
 TaskView::~TaskView()
 {
     connectApplicationActiveDocument.disconnect();
     connectApplicationDeleteDocument.disconnect();
+    connectApplicationClosedView.disconnect();
     connectApplicationUndoDocument.disconnect();
     connectApplicationRedoDocument.disconnect();
     Gui::Selection().Detach(this);
+}
+
+bool TaskView::isEmpty(bool includeWatcher) const
+{
+    if (ActiveCtrl || ActiveDialog)
+        return false;
+
+    if (includeWatcher) {
+        for (auto * watcher : ActiveWatcher) {
+            if (watcher->shouldShow())
+                return false;
+        }
+    }
+    return true;
 }
 
 bool TaskView::event(QEvent* event)
@@ -401,7 +418,9 @@ void TaskView::keyPressEvent(QKeyEvent* ke)
             func->setAutoDelete(true);
             Gui::Document* doc = Gui::Application::Instance->getDocument(ActiveDialog->getDocumentName().c_str());
             if (doc) {
-                func->setFunction(std::bind(&Document::resetEdit, doc));
+                func->setFunction([doc](){
+                    doc->resetEdit();
+                });
                 func->singleShot(0);
             }
         }
@@ -411,6 +430,30 @@ void TaskView::keyPressEvent(QKeyEvent* ke)
     }
 }
 
+void TaskView::triggerMinimumSizeHint()
+{
+    // NOLINTNEXTLINE
+    QTimer::singleShot(100, this, &TaskView::adjustMinimumSizeHint);
+}
+
+void TaskView::adjustMinimumSizeHint()
+{
+    QSize ms = minimumSizeHint();
+    setMinimumWidth(ms.width());
+}
+
+QSize TaskView::minimumSizeHint() const
+{
+    QSize ms = QScrollArea::minimumSizeHint();
+    int spacing = 0;
+    if (QLayout* layout = taskPanel->layout()) {
+        spacing = 2 * layout->spacing();
+    }
+
+    ms.setWidth(taskPanel->minimumSizeHint().width() + spacing);
+    return ms;
+}
+
 void TaskView::slotActiveDocument(const App::Document& doc)
 {
     Q_UNUSED(doc); 
@@ -418,32 +461,81 @@ void TaskView::slotActiveDocument(const App::Document& doc)
         updateWatcher();
 }
 
-void TaskView::slotDeletedDocument()
+void TaskView::slotDeletedDocument(const App::Document& doc)
 {
-    if (!ActiveDialog)
-        updateWatcher();
-}
+    if (ActiveDialog) {
+        if (ActiveDialog->isAutoCloseOnDeletedDocument()) {
+            std::string name = ActiveDialog->getDocumentName();
+            if (name.empty()) {
+                Base::Console().Warning(std::string("TaskView::slotDeletedDocument"),
+                                        "No document name set\n");
+            }
 
-void TaskView::slotUndoDocument(const App::Document&)
-{
-    if (ActiveDialog && ActiveDialog->isAutoCloseOnTransactionChange()) {
-        ActiveDialog->autoClosedOnTransactionChange();
-        removeDialog();
+            if (name == doc.getName()) {
+                ActiveDialog->autoClosedOnDeletedDocument();
+                removeDialog();
+            }
+        }
     }
 
-    if (!ActiveDialog)
+    if (!ActiveDialog) {
         updateWatcher();
+    }
 }
 
-void TaskView::slotRedoDocument(const App::Document&)
+void TaskView::slotViewClosed(const Gui::MDIView* view)
 {
-    if (ActiveDialog && ActiveDialog->isAutoCloseOnTransactionChange()) {
-        ActiveDialog->autoClosedOnTransactionChange();
-        removeDialog();
+    // It can happen that only a view is closed an not the document
+    if (ActiveDialog) {
+        if (ActiveDialog->isAutoCloseOnClosedView()) {
+            const Gui::MDIView* associatedView = ActiveDialog->getAssociatedView();
+            if (!associatedView) {
+                Base::Console().Warning(std::string("TaskView::slotViewClosed"),
+                    "No view associated\n");
+            }
+
+            if (associatedView == view) {
+                ActiveDialog->autoClosedOnClosedView();
+                removeDialog();
+            }
+        }
     }
 
-    if (!ActiveDialog)
+    if (!ActiveDialog) {
         updateWatcher();
+    }
+}
+
+void TaskView::transactionChangeOnDocument(const App::Document& doc)
+{
+    if (ActiveDialog) {
+        if (ActiveDialog->isAutoCloseOnTransactionChange()) {
+            std::string name = ActiveDialog->getDocumentName();
+            if (name.empty()) {
+                Base::Console().Warning(std::string("TaskView::transactionChangeOnDocument"),
+                                        "No document name set\n");
+            }
+
+            if (name == doc.getName()) {
+                ActiveDialog->autoClosedOnTransactionChange();
+                removeDialog();
+            }
+        }
+    }
+
+    if (!ActiveDialog) {
+        updateWatcher();
+    }
+}
+
+void TaskView::slotUndoDocument(const App::Document& doc)
+{
+    transactionChangeOnDocument(doc);
+}
+
+void TaskView::slotRedoDocument(const App::Document& doc)
+{
+    transactionChangeOnDocument(doc);
 }
 
 /// @cond DOXERR
@@ -481,6 +573,7 @@ void TaskView::showDialog(TaskDialog *dlg)
     ActiveCtrl->buttonBox->setStandardButtons(dlg->getStandardButtons());
     TaskDialogAttorney::setButtonBox(dlg, ActiveCtrl->buttonBox);
 
+    // clang-format off
     // make connection to the needed signals
     connect(ActiveCtrl->buttonBox, &QDialogButtonBox::accepted,
             this, &TaskView::accept);
@@ -490,6 +583,7 @@ void TaskView::showDialog(TaskDialog *dlg)
             this, &TaskView::helpRequested);
     connect(ActiveCtrl->buttonBox, &QDialogButtonBox::clicked,
             this, &TaskView::clicked);
+    // clang-format on
 
     const std::vector<QWidget*>& cont = dlg->getDialogContent();
 
@@ -519,7 +613,12 @@ void TaskView::showDialog(TaskDialog *dlg)
 
     ActiveDialog->open();
 
+    saveCurrentWidth();
     getMainWindow()->updateActions();
+
+    triggerMinimumSizeHint();
+
+    Q_EMIT taskUpdate();
 }
 
 void TaskView::removeDialog()
@@ -558,10 +657,19 @@ void TaskView::removeDialog()
         remove->emitDestructionSignal();
         delete remove;
     }
+
+    tryRestoreWidth();
+    triggerMinimumSizeHint();
 }
 
 void TaskView::updateWatcher()
 {
+    if (ActiveWatcher.empty()) {
+        auto panel = Gui::Control().taskPanel();
+        if (panel && panel->ActiveWatcher.size())
+            takeTaskWatcher(panel);
+    }
+
     // In case a child of the TaskView has the focus and get hidden we have
     // to make sure to set the focus on a widget that won't be hidden or
     // deleted because otherwise Qt may forward the focus via focusNextPrevChild()
@@ -595,16 +703,30 @@ void TaskView::updateWatcher()
     // give it the focus back.
     if (fwp && fwp->isVisible())
         fwp->setFocus();
+
+    triggerMinimumSizeHint();
+
+    Q_EMIT taskUpdate();
 }
 
 void TaskView::addTaskWatcher(const std::vector<TaskWatcher*> &Watcher)
 {
     // remove and delete the old set of TaskWatcher
-    for (std::vector<TaskWatcher*>::iterator it=ActiveWatcher.begin();it!=ActiveWatcher.end();++it)
-        delete *it;
+    for (TaskWatcher* tw : ActiveWatcher)
+        delete tw;
 
     ActiveWatcher = Watcher;
-    addTaskWatcher();
+    if (!ActiveCtrl && !ActiveDialog)
+        addTaskWatcher();
+}
+
+void TaskView::takeTaskWatcher(TaskView *other)
+{
+    clearTaskWatcher();
+    ActiveWatcher.swap(other->ActiveWatcher);
+    other->clearTaskWatcher();
+    if (isEmpty(false))
+        addTaskWatcher();
 }
 
 void TaskView::clearTaskWatcher()
@@ -618,10 +740,10 @@ void TaskView::clearTaskWatcher()
 void TaskView::addTaskWatcher()
 {
     // add all widgets for all watcher to the task view
-    for (std::vector<TaskWatcher*>::iterator it=ActiveWatcher.begin();it!=ActiveWatcher.end();++it){
-        std::vector<QWidget*> &cont = (*it)->getWatcherContent();
-        for (std::vector<QWidget*>::iterator it2=cont.begin();it2!=cont.end();++it2){
-            taskPanel->addWidget(*it2);
+    for (TaskWatcher* tw : ActiveWatcher) {
+        std::vector<QWidget*> &cont = tw->getWatcherContent();
+        for (QWidget* w : cont) {
+            taskPanel->addWidget(w);
         }
     }
 
@@ -631,7 +753,7 @@ void TaskView::addTaskWatcher()
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
     // Workaround to avoid a crash in Qt. See also
-    // https://forum.freecadweb.org/viewtopic.php?f=8&t=39187
+    // https://forum.freecad.org/viewtopic.php?f=8&t=39187
     //
     // Notify the button box about a style change so that it can
     // safely delete the style animation of its push buttons.
@@ -643,6 +765,34 @@ void TaskView::addTaskWatcher()
 #endif
 
     taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
+}
+
+void TaskView::saveCurrentWidth()
+{
+    if (shouldRestoreWidth()) {
+        if (auto parent = qobject_cast<QDockWidget*>(parentWidget())) {
+            currentWidth = parent->width();
+        }
+    }
+}
+
+void TaskView::tryRestoreWidth()
+{
+    if (shouldRestoreWidth()) {
+        if (auto parent = qobject_cast<QDockWidget*>(parentWidget())) {
+            Gui::getMainWindow()->resizeDocks({parent}, {currentWidth}, Qt::Horizontal);
+        }
+    }
+}
+
+void TaskView::setRestoreWidth(bool on)
+{
+    restoreWidth = on;
+}
+
+bool TaskView::shouldRestoreWidth() const
+{
+    return restoreWidth;
 }
 
 void TaskView::removeTaskWatcher()
@@ -664,11 +814,11 @@ void TaskView::removeTaskWatcher()
     }
 
     // remove all widgets
-    for (std::vector<TaskWatcher*>::iterator it=ActiveWatcher.begin();it!=ActiveWatcher.end();++it) {
-        std::vector<QWidget*> &cont = (*it)->getWatcherContent();
-        for (std::vector<QWidget*>::iterator it2=cont.begin();it2!=cont.end();++it2) {
-            (*it2)->hide();
-            taskPanel->removeWidget(*it2);
+    for (TaskWatcher* tw : ActiveWatcher) {
+        std::vector<QWidget*> &cont = tw->getWatcherContent();
+        for (QWidget* w : cont) {
+            w->hide();
+            taskPanel->removeWidget(w);
         }
     }
 

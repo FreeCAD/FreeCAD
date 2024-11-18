@@ -26,6 +26,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 
 #include "CenterLinePy.h"
 #include "DrawUtil.h"
@@ -114,10 +115,10 @@ Py::Dict CenterLinePy::getFormat() const
     TechDraw::LineFormat* format= &(this->getCenterLinePtr()->m_format);
     Py::Dict dict;
 
-    dict.setItem("style", Py::Long(format->m_style));
-    dict.setItem("weight", Py::Float(format->m_weight));
-    dict.setItem("color", Py::Tuple(DrawUtil::colorToPyTuple(format->m_color), true));
-    dict.setItem("visible", Py::Boolean(format->m_visible));
+    dict.setItem("style", Py::Long(format->getStyle()));
+    dict.setItem("weight", Py::Float(format->getWidth()));
+    dict.setItem("color", Py::Tuple(DrawUtil::colorToPyTuple(format->getColor()), true));
+    dict.setItem("visible", Py::Boolean(format->getVisible()));
 
     return dict;
 }
@@ -130,17 +131,17 @@ void CenterLinePy::setFormat(Py::Dict arg)
     double weight = 0.5;
     PyObject* pColor = color.ptr();
     PyObject* visible = Py_True;
-    static char* kw[] = {"style", "weight", "color", "visible", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(dummy.ptr(), arg.ptr(), "|idO!O!", kw,
+    static const std::array<const char *, 5> kw{"style", "weight", "color", "visible", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(dummy.ptr(), arg.ptr(), "|idO!O!", kw,
         &style, &weight, &PyTuple_Type, &pColor, &PyBool_Type, &visible)) {
         throw Py::ValueError("Expected {'style':int, 'weight':float, 'color':tuple, 'visible':bool} dict");
     }
 
     TechDraw::LineFormat* format = &(this->getCenterLinePtr()->m_format);
-    format->m_style = style;
-    format->m_weight = weight;
-    format->m_color = DrawUtil::pyTupleToColor(pColor);
-    format->m_visible = Base::asBoolean(visible);
+    format->setStyle(style);
+    format->setWidth(weight);
+    format->setColor(DrawUtil::pyTupleToColor(pColor));
+    format->setVisible(Base::asBoolean(visible));
 }
 
 Py::String CenterLinePy::getTag() const

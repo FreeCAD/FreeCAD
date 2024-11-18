@@ -48,8 +48,6 @@ public:
 
 private:
     void tryCreateSketch();
-    void createSketchWithModernWorkflow();
-    void createSketchWithLegacyWorkflow();
     std::tuple<bool, PartDesign::Body*> shouldCreateBody();
     bool shouldAbort(bool) const;
     std::tuple<Gui::SelectionFilter, Gui::SelectionFilter> getFaceAndPlaneFilter() const;
@@ -57,7 +55,7 @@ private:
 private:
     Gui::Document* guidocument;
     App::Document* appdocument;
-    PartDesign::Body* activeBody;
+    PartDesign::Body* activeBody{nullptr};
 };
 
 } // namespace PartDesignGui

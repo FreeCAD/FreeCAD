@@ -66,7 +66,7 @@ public:
   std::size_t countColors () const { return _currentLegend.hasNumberOfFields(); }
 
   void customize(SoFCColorBarBase*) override { }
-  const char* getColorBarName() const override { return "Color Legend"; }
+  const char* getColorBarName() const override;
 
 //  virtual void handleEvent(SoHandleEventAction * action);
 //  virtual void GLRenderBelowPath(SoGLRenderAction * action);

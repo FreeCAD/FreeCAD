@@ -62,7 +62,11 @@ namespace Gui
 
     private:
         bool InitializeRawInput(HWND hwndTarget);
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         static bool RawInputEventFilter(void* msg, long* result);
+#else
+        static bool RawInputEventFilter(void* msg, qintptr* result);
+#endif
         void OnRawInput(UINT nInputCode, HRAWINPUT hRawInput);
         UINT GetRawInputBuffer(PRAWINPUT pData, PUINT pcbSize, UINT cbSizeHeader);
         bool TranslateRawInputData(UINT nInputCode, PRAWINPUT pRawInput);

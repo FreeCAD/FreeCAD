@@ -67,11 +67,21 @@ TaskCSysDragger::~TaskCSysDragger()
   Gui::Application::Instance->commandManager().getCommandByName("Std_PerspectiveCamera")->setEnabled(true);
 }
 
+void TaskCSysDragger::dragStartCallback(void *, SoDragger *)
+{
+    // This is called when a manipulator is about to manipulating
+  if(firstDrag)
+    {
+       Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Transform"));
+       firstDrag=false;
+    }
+}
+
 void TaskCSysDragger::setupGui()
 {
     auto incrementsBox = new Gui::TaskView::TaskBox(
-      Gui::BitmapFactory().pixmap("button_valid"),
-      tr("Increments"), true, nullptr);
+      Gui::BitmapFactory().pixmap("Std_TransformManip"),
+      tr("Transform"), true, nullptr);
 
     auto gridLayout = new QGridLayout();
   gridLayout->setColumnStretch(1, 1);
@@ -117,6 +127,7 @@ void TaskCSysDragger::onRIncrementSlot(double freshValue)
 
 void TaskCSysDragger::open()
 {
+  dragger->addStartCallback(dragStartCallback, this);
   //we can't have user switching camera types while dragger is shown.
   Gui::Application::Instance->commandManager().getCommandByName("Std_OrthographicCamera")->setEnabled(false);
   Gui::Application::Instance->commandManager().getCommandByName("Std_PerspectiveCamera")->setEnabled(false);
@@ -141,11 +152,26 @@ bool TaskCSysDragger::accept()
   if (dObject) {
     Gui::Document* document = Gui::Application::Instance->getDocument(dObject->getDocument());
     assert(document);
+    firstDrag = true;
     document->commitCommand();
     document->resetEdit();
     document->getDocument()->recompute();
   }
   return Gui::TaskView::TaskDialog::accept();
+}
+
+bool TaskCSysDragger::reject()
+{
+  App::DocumentObject* dObject = vpObject.getObject();
+  if (dObject) {
+    Gui::Document* document = Gui::Application::Instance->getDocument(dObject->getDocument());
+    assert(document);
+    firstDrag = true;
+    document->abortCommand();
+    document->resetEdit();
+    document->getDocument()->recompute();
+  }
+  return Gui::TaskView::TaskDialog::reject();
 }
 
 #include "moc_TaskCSysDragger.cpp"

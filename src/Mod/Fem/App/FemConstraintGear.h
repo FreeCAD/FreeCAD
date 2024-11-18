@@ -30,7 +30,7 @@
 namespace Fem
 {
 
-class FemExport ConstraintGear : public Fem::ConstraintBearing
+class FemExport ConstraintGear: public Fem::ConstraintBearing
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::ConstraintGear);
 
@@ -47,10 +47,11 @@ public:
     App::PropertyVector DirectionVector;
 
     /// recalculate the object
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "FemGui::ViewProviderFemConstraintGear";
     }
 
@@ -61,7 +62,7 @@ private:
     Base::Vector3d naturalDirectionVector;
 };
 
-} //namespace Fem
+}  // namespace Fem
 
 
-#endif // FEM_CONSTRAINTGear_H
+#endif  // FEM_CONSTRAINTGear_H

@@ -23,8 +23,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <cfloat>
-# include <qmessagebox.h>
+#include <cfloat>
+#include <qmessagebox.h>
 #endif
 
 #include <App/Document.h>
@@ -44,9 +44,10 @@ using namespace MeshGui;
 
 /* TRANSLATOR MeshGui::DlgRegularSolidImp */
 
+// clang-format off
 DlgRegularSolidImp::DlgRegularSolidImp(QWidget* parent, Qt::WindowFlags fl)
-  : QDialog( parent, fl )
-  , ui(new Ui_DlgRegularSolid)
+    : QDialog(parent, fl)
+    , ui(new Ui_DlgRegularSolid)
 {
     ui->setupUi(this);
     connect(ui->createSolidButton, &QPushButton::clicked,
@@ -100,10 +101,7 @@ DlgRegularSolidImp::DlgRegularSolidImp(QWidget* parent, Qt::WindowFlags fl)
 /**
  *  Destroys the object and frees any allocated resources
  */
-DlgRegularSolidImp::~DlgRegularSolidImp()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+DlgRegularSolidImp::~DlgRegularSolidImp() = default;
 
 void DlgRegularSolidImp::changeEvent(QEvent *e)
 {
@@ -220,5 +218,6 @@ void DlgRegularSolidImp::onCreateSolidButtonClicked()
             QString::fromLatin1(e.what()));
     }
 }
+// clang-format on
 
 #include "moc_DlgRegularSolidImp.cpp"

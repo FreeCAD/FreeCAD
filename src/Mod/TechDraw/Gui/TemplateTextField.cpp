@@ -30,54 +30,99 @@
 #endif // #ifndef _PreCmp_
 
 #include <Base/Console.h>
+#include <Base/Tools.h>
+
 #include <Mod/TechDraw/App/DrawTemplate.h>
+#include <Mod/TechDraw/App/DrawSVGTemplate.h>
 
 #include "DlgTemplateField.h"
 #include "TemplateTextField.h"
 
 using namespace TechDrawGui;
+using namespace TechDraw;
 
 TemplateTextField::TemplateTextField(QGraphicsItem *parent,
                                      TechDraw::DrawTemplate *myTmplte,
                                      const std::string &myFieldName)
-    : QGraphicsRectItem(parent),
+    : QGraphicsItemGroup(parent),
       tmplte(myTmplte),
       fieldNameStr(myFieldName)
 {
     setToolTip(QObject::tr("Click to update text"));
+    m_rect = new QGraphicsRectItem();
+    addToGroup(m_rect);
+    QPen rectPen(Qt::transparent);
+    QBrush rectBrush(Qt::NoBrush);
+    m_rect->setPen(rectPen);
+    m_rect->setBrush(rectBrush);
+
+    m_line = new QGraphicsPathItem();
+    addToGroup(m_line);
  }
 
 void TemplateTextField::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    if ( tmplte && rect().contains(event->pos()) ) {
+    if ( tmplte && m_rect->rect().contains(event->pos()) ) {
         event->accept();
     } else {
-        QGraphicsRectItem::mousePressEvent(event);
+        QGraphicsItemGroup::mousePressEvent(event);
     }
 }
 
 void TemplateTextField::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    if ( tmplte && rect().contains(event->pos()) ) {
+    if ( tmplte && m_rect->rect().contains(event->pos()) ) {
         event->accept();
 
         DlgTemplateField ui;
 
         ui.setFieldName(fieldNameStr);
         ui.setFieldContent(tmplte->EditableTexts[fieldNameStr]);
+        ui.setAutofillContent(Base::Tools::toStdString(m_autofillString));
 
         if (ui.exec() == QDialog::Accepted) {
-        //WF: why is this escaped?
-        //    "<" is converted elsewhere and no other characters cause problems.
-        //    escaping causes "&" to appear as "&amp;" etc
-//            QString qsClean = ui.getFieldContent().toHtmlEscaped();
             QString qsClean = ui.getFieldContent();
             std::string utf8Content = qsClean.toUtf8().constData();
+            if (ui.getAutofillState()) {
+                auto svgTemplate = dynamic_cast<DrawSVGTemplate*>(tmplte);
+                if (svgTemplate) {
+                    QString fieldName = Base::Tools::fromStdString(fieldNameStr);
+                    QString autofillValue = svgTemplate->getAutofillByEditableName(fieldName);
+                    if (!autofillValue.isEmpty()) {
+                        utf8Content = autofillValue.toUtf8().constData();
+                    }
+                }
+            }
             tmplte->EditableTexts.setValue(fieldNameStr, utf8Content);
         }
 
     } else {
-        QGraphicsRectItem::mouseReleaseEvent(event);
+        QGraphicsItemGroup::mouseReleaseEvent(event);
     }
 }
 
+//void setAutofill(std::string autofillString);
+void TemplateTextField::setAutofill(QString autofillString)
+{
+    m_autofillString = autofillString;
+}
+
+
+void TemplateTextField::setRectangle(QRectF rect)
+{
+    m_rect->setRect(rect);
+}
+
+void TemplateTextField::setLine(QPointF from, QPointF to)
+{
+    QPainterPath path(from);
+    path.lineTo(to);
+    m_line->setPath(path);
+}
+
+void TemplateTextField::setLineColor(QColor color)
+{
+    QPen pen(color);
+    pen.setWidth(5);
+    m_line->setPen(pen);
+}

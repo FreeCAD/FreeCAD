@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="BaseClassPy"
+      Name="ModelPy"
+      Twin="Model"
+      TwinPointer="Model"
+      Include="Mod/Material/App/Model.h"
+      Namespace="Materials"
+      FatherInclude="Base/BaseClassPy.h"
+      FatherNamespace="Base"
+      Constructor="true"
+      Delete="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="DavidCarter" EMail="dcarter@davidcarter.ca" />
+      <UserDocu>Material model descriptions.</UserDocu>
+    </Documentation>
+    <Attribute Name="LibraryName" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Model library name.</UserDocu>
+      </Documentation>
+      <Parameter Name="LibraryName" Type="String"/>
+    </Attribute>
+    <Attribute Name="LibraryRoot" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Model library path.</UserDocu>
+      </Documentation>
+      <Parameter Name="LibraryRoot" Type="String"/>
+    </Attribute>
+    <Attribute Name="LibraryIcon" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Model icon path.</UserDocu>
+      </Documentation>
+      <Parameter Name="LibraryIcon" Type="String"/>
+    </Attribute>
+    <Attribute Name="Name" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Model name.</UserDocu>
+      </Documentation>
+      <Parameter Name="Name" Type="String"/>
+    </Attribute>
+    <Attribute Name="Directory" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Model directory.</UserDocu>
+      </Documentation>
+      <Parameter Name="Directory" Type="String"/>
+    </Attribute>
+    <Attribute Name="UUID" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Unique model identifier.</UserDocu>
+      </Documentation>
+      <Parameter Name="UUID" Type="String"/>
+    </Attribute>
+    <Attribute Name="Description" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Description of the model.</UserDocu>
+      </Documentation>
+      <Parameter Name="Description" Type="String"/>
+    </Attribute>
+    <Attribute Name="URL" ReadOnly="true">
+      <Documentation>
+        <UserDocu>URL to a detailed description of the model.</UserDocu>
+      </Documentation>
+      <Parameter Name="URL" Type="String"/>
+    </Attribute>
+    <Attribute Name="DOI" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Digital Object Identifier (see https://doi.org/)</UserDocu>
+      </Documentation>
+      <Parameter Name="DOI" Type="String"/>
+    </Attribute>
+    <Attribute Name="Inherited" ReadOnly="true">
+      <Documentation>
+        <UserDocu>List of inherited models identified by UUID.</UserDocu>
+      </Documentation>
+      <Parameter Name="Inherited" Type="List"/>
+    </Attribute>
+    <Attribute Name="Properties" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Dictionary of model properties.</UserDocu>
+      </Documentation>
+      <Parameter Name="Properties" Type="Dict"/>
+    </Attribute>
+  </PythonExport>
+</GenerateModel>

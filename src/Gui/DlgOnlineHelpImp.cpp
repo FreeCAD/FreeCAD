@@ -58,9 +58,7 @@ DlgOnlineHelpImp::DlgOnlineHelpImp( QWidget* parent )
 /**
  *  Destroys the object and frees any allocated resources
  */
-DlgOnlineHelpImp::~DlgOnlineHelpImp()
-{
-}
+DlgOnlineHelpImp::~DlgOnlineHelpImp() = default;
 
 /**
  * Returns the start page for the HelpView. If none is defined the default 

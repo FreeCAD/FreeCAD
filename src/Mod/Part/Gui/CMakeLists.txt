@@ -1,9 +1,3 @@
-if(MSVC)
-    add_definitions(-DHAVE_ACOSH -DHAVE_ATANH -DHAVE_ASINH)
-else(MSVC)
-    add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
-endif(MSVC)
-
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
@@ -21,6 +15,7 @@ link_directories(${OCC_LIBRARY_DIR})
 set(PartGui_LIBS
     Part
     FreeCADGui
+    MatGui
 )
 
 if(MSVC)
@@ -36,7 +31,13 @@ list(APPEND PartGui_LIBS
     ${QtConcurrent_LIBRARIES}
 )
 
-qt_add_resources(PartGui_QRC_SRCS Resources/Part.qrc)
+generate_from_xml(ViewProviderPartExtPy)
+
+set (Part_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Part_translation.qrc)
+qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
+    ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
+qt_create_resource_file(${Part_TR_QRC} ${QM_SRCS})
+qt_add_resources(PartGui_QRC_SRCS Resources/Part.qrc ${Part_TR_QRC})
 
 set(PartGui_UIC_SRCS
     CrossSections.ui
@@ -45,6 +46,7 @@ set(PartGui_UIC_SRCS
     DlgExportStep.ui
     DlgExportHeaderStep.ui
     DlgExtrusion.ui
+    DlgScale.ui
     DlgImportStep.ui
     DlgFilletEdges.ui
     DlgImportExportIges.ui
@@ -57,12 +59,11 @@ set(PartGui_UIC_SRCS
     DlgRevolution.ui
     DlgSettings3DViewPart.ui
     DlgSettingsGeneral.ui
-    DlgSettingsMeasure.ui
     DlgSettingsObjectColor.ui
     DlgProjectionOnSurface.ui
     SectionCutting.ui
     ShapeFromMesh.ui
-    TaskFaceColors.ui
+    TaskFaceAppearances.ui
     TaskShapeBuilder.ui
     TaskLoft.ui
     TaskOffset.ui
@@ -70,15 +71,23 @@ set(PartGui_UIC_SRCS
     TaskAttacher.ui
 )
 
+SET(Python_SRCS
+    ViewProviderPartExtPy.xml
+    ViewProviderPartExtPyImp.cpp
+)
+SOURCE_GROUP("Python" FILES ${Python_SRCS})
+
 SET(PartGui_SRCS
     ${PartGui_QRC_SRCS}
     ${PartGui_UIC_HDRS}
+    ${Python_SRCS}
     AppPartGui.cpp
     AttacherTexts.h
     AttacherTexts.cpp
     BoxSelection.cpp
     BoxSelection.h
     Command.cpp
+    CommandFilter.cpp
     CommandSimple.cpp
     CommandParametric.cpp
     CrossSections.cpp
@@ -97,6 +106,9 @@ SET(PartGui_SRCS
     DlgExtrusion.cpp
     DlgExtrusion.h
     DlgExtrusion.ui
+    DlgScale.cpp
+    DlgScale.h
+    DlgScale.ui
     DlgFilletEdges.cpp
     DlgFilletEdges.h
     DlgFilletEdges.ui
@@ -129,15 +141,9 @@ SET(PartGui_SRCS
     DlgSettingsGeneral.cpp
     DlgSettingsGeneral.h
     DlgSettingsGeneral.ui
-    DlgSettingsMeasure.cpp
-    DlgSettingsMeasure.h
-    DlgSettingsMeasure.ui
     DlgSettingsObjectColor.cpp
     DlgSettingsObjectColor.h
     DlgSettingsObjectColor.ui
-    DlgSettingsMeasure.cpp
-    DlgSettingsMeasure.h
-    DlgSettingsMeasure.ui
     DlgProjectionOnSurface.cpp
     DlgProjectionOnSurface.h
     DlgProjectionOnSurface.ui
@@ -200,6 +206,8 @@ SET(PartGui_SRCS
     ViewProviderImport.h
     ViewProviderExtrusion.cpp
     ViewProviderExtrusion.h
+    ViewProviderScale.cpp
+    ViewProviderScale.h
     ViewProvider2DObject.cpp
     ViewProvider2DObject.h
     ViewProviderMirror.cpp
@@ -208,12 +216,16 @@ SET(PartGui_SRCS
     ViewProviderPython.h
     ViewProviderBoolean.cpp
     ViewProviderBoolean.h
+    ViewProviderProjectOnSurface.cpp
+    ViewProviderProjectOnSurface.h
     ViewProviderRuledSurface.cpp
     ViewProviderRuledSurface.h
     ViewProviderPrimitive.cpp
     ViewProviderPrimitive.h
     Workbench.cpp
     Workbench.h
+    WorkbenchManipulator.cpp
+    WorkbenchManipulator.h
     ReferenceHighlighter.cpp
     ReferenceHighlighter.h
     SectionCutting.cpp
@@ -221,9 +233,9 @@ SET(PartGui_SRCS
     SectionCutting.ui
     ShapeFromMesh.cpp
     ShapeFromMesh.h
-    TaskFaceColors.cpp
-    TaskFaceColors.h
-    TaskFaceColors.ui
+    TaskFaceAppearances.cpp
+    TaskFaceAppearances.h
+    TaskFaceAppearances.ui
     TaskShapeBuilder.cpp
     TaskShapeBuilder.h
     TaskShapeBuilder.ui
@@ -238,8 +250,6 @@ SET(PartGui_SRCS
     TaskSweep.ui
     TaskThickness.cpp
     TaskThickness.h
-    TaskDimension.cpp
-    TaskDimension.h
     TaskCheckGeometry.cpp
     TaskCheckGeometry.h
     TaskAttacher.h
@@ -258,6 +268,9 @@ SET(PartGuiIcon_SVG
 
 add_library(PartGui SHARED ${PartGui_SRCS} ${PartGuiIcon_SVG})
 target_link_libraries(PartGui ${PartGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(PartGui)
+endif()
 
 
 SET_BIN_DIR(PartGui PartGui /Mod/Part)

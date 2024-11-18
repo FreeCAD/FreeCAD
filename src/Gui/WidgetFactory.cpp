@@ -210,9 +210,7 @@ PrefPageUiProducer::PrefPageUiProducer (const char* filename, const char* group)
     Gui::Dialog::DlgPreferencesImp::addPage(filename, group);
 }
 
-PrefPageUiProducer::~PrefPageUiProducer()
-{
-}
+PrefPageUiProducer::~PrefPageUiProducer() = default;
 
 void* PrefPageUiProducer::Produce () const
 {
@@ -382,9 +380,7 @@ ContainerDialog::ContainerDialog( QWidget* templChild )
 }
 
 /** Destroys the object and frees any allocated resources */
-ContainerDialog::~ContainerDialog()
-{
-}
+ContainerDialog::~ContainerDialog() = default;
 
 // ----------------------------------------------------
 
@@ -409,8 +405,8 @@ PyResource::PyResource() : myDlg(nullptr)
 PyResource::~PyResource()
 {
     delete myDlg;
-    for (std::vector<SignalConnect*>::iterator it = mySignals.begin(); it != mySignals.end(); ++it) {
-        SignalConnect* sc = *it;
+    for (auto it : mySignals) {
+        SignalConnect* sc = it;
         delete sc;
     }
 }
@@ -582,7 +578,7 @@ Py::Object PyResource::value(const Py::Tuple& args)
         item = Py::Float(v.toDouble());
         break;
     case QMetaType::Bool:
-        item = Py::Boolean(v.toBool() ? 1 : 0);
+        item = Py::Boolean(v.toBool());
         break;
     case QMetaType::UInt:
         item = Py::Long(static_cast<unsigned long>(v.toUInt()));

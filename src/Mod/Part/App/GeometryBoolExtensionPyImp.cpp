@@ -83,7 +83,7 @@ int GeometryBoolExtensionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 Py::Boolean GeometryBoolExtensionPy::getValue() const
 {
-    return Py::Boolean(this->getGeometryBoolExtensionPtr()->getValue());
+    return {this->getGeometryBoolExtensionPtr()->getValue()};
 }
 
 void GeometryBoolExtensionPy::setValue(Py::Boolean value)

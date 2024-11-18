@@ -45,14 +45,8 @@ using namespace PartGui;
 class OffsetWidget::Private
 {
 public:
-    Ui_TaskOffset ui;
-    Part::Offset* offset;
-    Private() : offset(nullptr)
-    {
-    }
-    ~Private()
-    {
-    }
+    Ui_TaskOffset ui{};
+    Part::Offset* offset{nullptr};
 };
 
 /* TRANSLATOR PartGui::OffsetWidget */
@@ -118,6 +112,7 @@ OffsetWidget::~OffsetWidget()
 
 void OffsetWidget::setupConnections()
 {
+    // clang-format off
     connect(d->ui.spinOffset, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
             this, &OffsetWidget::onSpinOffsetValueChanged);
     connect(d->ui.modeType, qOverload<int>(&QComboBox::activated),
@@ -132,6 +127,7 @@ void OffsetWidget::setupConnections()
             this, &OffsetWidget::onFillOffsetToggled);
     connect(d->ui.updateView, &QCheckBox::toggled,
             this, &OffsetWidget::onUpdateViewToggled);
+    // clang-format on
 }
 
 Part::Offset* OffsetWidget::getObject() const
@@ -207,7 +203,7 @@ bool OffsetWidget::accept()
         Gui::Command::commitCommand();
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(this, tr("Input error"), QString::fromLatin1(e.what()));
+        QMessageBox::warning(this, tr("Input error"), QCoreApplication::translate("Exception", e.what()));
         return false;
     }
 
@@ -244,16 +240,10 @@ void OffsetWidget::changeEvent(QEvent *e)
 TaskOffset::TaskOffset(Part::Offset* offset)
 {
     widget = new OffsetWidget(offset);
-    taskbox = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("Part_Offset"),
-        widget->windowTitle(), true, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(Gui::BitmapFactory().pixmap("Part_Offset"), widget);
 }
 
-TaskOffset::~TaskOffset()
-{
-}
+TaskOffset::~TaskOffset() = default;
 
 Part::Offset* TaskOffset::getObject() const
 {

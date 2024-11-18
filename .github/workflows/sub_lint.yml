@@ -77,7 +77,73 @@ on:
         type: boolean
         required: false
       cpplintFilters:
-        default: -build/c++11,-build/header_guard,-build/include,-build/include_alpha,-build/include_order,-build/include_subdir,-build/include_what_you_use,-build/namespaces,-legal/copyright,-readability/braces,-readability-braces-around-statements,-readability/casting,-readability/namespace,-readability/todo,-runtime/indentation_namespace,-runtime/int,-runtime/references,-whitespace/blank_line,-whitespace/braces,-whitespace/comma,-whitespace/comments,-whitespace/end_of_line,-whitespace/indent,-whitespace/line_length,-whitespace/newline,-whitespace/operators,-whitespace/parens,-whitespace/semicolon,-whitespace/tab,-whitespace/todo
+        default: >-
+          '
+          +build/deprecated,
+          -build/endif_comment,
+          +build/explicit_make_pair,
+          -build/forward_decl,
+          +build/header_guard,
+          +build/include,
+          -build/include_subdir,
+          -build/include_alpha,
+          -build/include_order,
+          +build/include_what_you_use,
+          +build/namespaces_headers,
+          +build/namespaces_literals,
+          +build/namespaces,
+          +build/printf_format,
+          +build/storage_class,
+          +readability/alt_tokens,
+          -readability/braces,
+          +readability/casting,
+          +readability/check,
+          +readability/constructors,
+          +readability/fn_size,
+          +readability/inheritance,
+          +readability/multiline_comment,
+          +readability/multiline_string,
+          +readability/namespace,
+          -readability/nolint,
+          +readability/nul,
+          +readability/strings,
+          +readability/todo,
+          +readability/utf8,
+          +runtime/arrays,
+          +runtime/casting,
+          +runtime/explicit,
+          +runtime/int,
+          +runtime/init,
+          +runtime/invalid_increment,
+          +runtime/member_string_references,
+          +runtime/memset,
+          +runtime/operator,
+          +runtime/printf,
+          +runtime/printf_format,
+          +runtime/references,
+          +runtime/string,
+          +runtime/threadsafe_fn,
+          +runtime/vlog,
+          -whitespace/blank_line,
+          -whitespace/braces,
+          -whitespace/comma,
+          -whitespace/comments,
+          -whitespace/empty_conditional_body,
+          -whitespace/empty_if_body,
+          -whitespace/empty_loop_body,
+          -whitespace/end_of_line,
+          -whitespace/ending_newline,
+          -whitespace/forcolon,
+          -whitespace/indent,
+          -whitespace/indent_namespace,
+          -whitespace/line_length,
+          -whitespace/newline,
+          -whitespace/operators,
+          -whitespace/parens,
+          -whitespace/semicolon,
+          -whitespace/tab,
+          -whitespace/todo
+          '
         type: string
         required: false
       cpplintLineLength:
@@ -129,7 +195,7 @@ on:
         type: string
         required: false
       spellingIgnore:
-        default: ./.git,*.po,*.ts,*.svg,./ChangeLog.txt,./src/3rdParty,./src/Mod/Assembly/App/opendcm,./src/CXX,./src/zipios++,./src/Base/swig*,./src/Mod/Robot/App/kdl_cp,./src/Mod/Import/App/SCL,./src/WindowsInstaller,./src/Doc/FreeCAD.uml,./build/
+        default: ./.git,*.po,*.ts,*.svg,./ChangeLog.txt,./src/3rdParty,./src/Mod/Assembly/App/opendcm,./src/CXX,./src/zipios++,./src/Base/swig*,./src/Mod/Robot/App/kdl_cp,./src/Mod/Import/App/SCL*,./src/WindowsInstaller,./src/Doc/FreeCAD.uml,./build/
         type: string
         required: false
       codespellFailSilent:
@@ -140,10 +206,6 @@ on:
         default: true
         type: boolean
         required: false
-      clangTidyChecks:
-        default: # empty to use the .clang-tidy file
-        type: string
-        required: false
       clangTidyFailSilent:
         default: true # warnings or notes will never fail the CI, only errors
         type: boolean
@@ -153,7 +215,7 @@ on:
         type: boolean
         required: false
       clazyChecks:
-        default: level1
+        default: level2,no-non-pod-global-static,no-copyable-polymorphic
         type: string
         required: false
       clazyFailSilent:
@@ -169,7 +231,7 @@ on:
         type: string
         required: false
       QT6Branch: # branch to check for QT6 Porting
-        default: master
+        default: main
         type: string
         required: false
       clazyQT6FailSilent:
@@ -198,7 +260,9 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          submodules: true
       - name: Make needed directories, files and initializations
         id: Init
         run: |
@@ -316,7 +380,7 @@ jobs:
           pylintWarnings=0
           pylintRefactorings=0
           pylintConventions=0
-          pip install pylint
+          pip install --break-system-packages pylint
           # List enabled pylint checks
           pylint --list-msgs-enabled > ${{ env.logdir }}pylint-enabled-checks.log
           # Run pylint on all python files
@@ -376,7 +440,7 @@ jobs:
         run: |
           blackReformats=0
           blackFails=0
-          pip install black
+          pip install --break-system-packages black
           set +e
           black --check ${{ inputs.changedPythonFiles }} &> ${{ env.logdir }}black.log
           exitCode=$?
@@ -440,17 +504,16 @@ jobs:
                             libqt5opengl5-dev                           \
                             libqt5svg5-dev                              \
                             libqt5x11extras5-dev                        \
-                            libqt5xmlpatterns5-dev                      \
                             libshiboken2-dev                            \
                             libspnav-dev                                \
-                            libvtk7-dev                                 \
+                            libvtk9-dev                                 \
                             libx11-dev                                  \
                             libxerces-c-dev                             \
+                            libyaml-cpp-dev                             \
                             libzipios++-dev                             \
                             netgen                                      \
                             netgen-headers                              \
                             occt-draw                                   \
-                            pyqt5-dev-tools                             \
                             pyside2-tools                               \
                             python3-dev                                 \
                             python3-git                                 \
@@ -463,14 +526,9 @@ jobs:
                             python3-pyside2.qtgui                       \
                             python3-pyside2.qtnetwork                   \
                             python3-pyside2.qtsvg                       \
-                            python3-pyside2.qtwebengine                 \
-                            python3-pyside2.qtwebenginecore             \
-                            python3-pyside2.qtwebenginewidgets          \
-                            python3-pyside2.qtwebchannel                \
                             python3-pyside2.qtwidgets                   \
                             qtbase5-dev                                 \
                             qttools5-dev                                \
-                            qtwebengine5-dev                            \
                             shiboken2                                   \
                             swig                                        \
                             ccache                                      \
@@ -519,7 +577,7 @@ jobs:
         continue-on-error: ${{ inputs.cpplintFailSilent }}
         run: |
           cpplintErrors=0
-          pip install cpplint
+          pip install --break-system-packages cpplint
           # Run cpplint
           for file in ${{ inputs.changedCppFiles }}
           do
@@ -584,7 +642,7 @@ jobs:
         if: inputs.checkSpelling && always()
         continue-on-error: ${{ inputs.codespellFailSilent }}
         run: |
-          pip install codespell
+          pip install --break-system-packages codespell
           wget https://raw.githubusercontent.com/codespell-project/codespell/master/codespell_lib/data/dictionary.txt
           #wget https://raw.githubusercontent.com/codespell-project/codespell/master/codespell_lib/data/dictionary_rare.txt
           set +e
@@ -623,10 +681,10 @@ jobs:
           clangTidyNotes=0
           sudo apt-get install -y --no-install-recommends clang-tidy
           #TODO: check where this "clang-tidy.yaml" goes ; shall this be put in the fixes ?
-          clang-tidy --quiet --format-style=${{ inputs.clangStyle }} --export-fixes=clang-tidy.yaml -checks=${{ inputs.clangTidyChecks }} -p build/ --explain-config &>> ${{ env.logdir }}clang-tidy-enabled-checks.log
+          clang-tidy --quiet --format-style=${{ inputs.clangStyle }} --export-fixes=clang-tidy.yaml -p build/ --explain-config &>> ${{ env.logdir }}clang-tidy-enabled-checks.log
           # Run clang-tidy on all cpp files
           set +e
-          clang-tidy --quiet --format-style=${{ inputs.clangStyle }} --export-fixes=clang-tidy.yaml -checks=${{ inputs.clangTidyChecks }} -p build/ ${{ inputs.changedCppFiles }} &>> ${{ env.logdir }}clang-tidy.log
+          clang-tidy --quiet --format-style=${{ inputs.clangStyle }} --export-fixes=clang-tidy.yaml -p build/ ${{ inputs.changedCppFiles }} &>> ${{ env.logdir }}clang-tidy.log
           exitCode=$?
           set -e
           # If clang-tidy has run successfully, write the Log to the console with the Problem Matchers
@@ -758,7 +816,7 @@ jobs:
           [ $clazyQT6Errors -eq 0 ]
       - name: Upload logs and fixes
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ inputs.artifactBasename }}-Logs
           path: |
@@ -766,7 +824,7 @@ jobs:
             ${{ env.fixesdir }}
       - name: Upload report
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.reportfilename }}
           path: |

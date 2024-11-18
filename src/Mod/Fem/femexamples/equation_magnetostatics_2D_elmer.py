@@ -43,12 +43,14 @@ def get_information():
         "constraints": ["magnetization"],
         "solvers": ["elmer"],
         "material": "solid",
-        "equations": ["magnetostatic"]
+        "equations": ["magnetostatic"],
     }
 
 
 def get_explanation(header=""):
-    return header + """
+    return (
+        header
+        + """
 
 To run the example from Python console use:
 from femexamples.equation_magnetostatics_2D_elmer import setup
@@ -57,6 +59,7 @@ setup()
 Magnetodynamic2D equation - Elmer solver
 
 """
+    )
 
 
 def setup(doc=None, solvertype="elmer"):
@@ -77,6 +80,7 @@ def setup(doc=None, solvertype="elmer"):
     p3 = Vector(200.0, -100.0, 0.0)
     p4 = Vector(0.0, -100.0, 0.0)
     Horseshoe_lower = Draft.make_wire([p1, p2, p3, p4], closed=True)
+    Horseshoe_lower.MakeFace = True
     Horseshoe_lower.Label = "Lower_End"
     Horseshoe_lower.ViewObject.Visibility = False
 
@@ -86,30 +90,49 @@ def setup(doc=None, solvertype="elmer"):
     p3 = Vector(200.0, 200.0, 0.0)
     p4 = Vector(0.0, 200.0, 0.0)
     Horseshoe_upper = Draft.make_wire([p1, p2, p3, p4], closed=True)
+    Horseshoe_upper.MakeFace = True
     Horseshoe_upper.Label = "Upper_End"
     Horseshoe_upper.ViewObject.Visibility = False
 
     # the U-part of the horse shoe
     # credits: https://forum.freecad.org/viewtopic.php?p=663051#p663051
-    vpairs = [[Vector(340.0, 200.0, 0.0), Vector(200.0, 200.0, 0.0)],
-              [Vector(200.0, 200.0, 0.0), Vector(200.0, 100.0, 0.0)],
-              [Vector(200.0, 100.0, 0.0), Vector(325.0, 100.0, 0.0)],
-              [Vector(325.0, 100.0, 0.0), Vector(325.0, -100.0, 0.0)],
-              [Vector(325.0, -100.0, 0.0), Vector(200.0, -100.0, 0.0)],
-              [Vector(200.0, -100.0, 0.0), Vector(200.0, -200.0, 0.0)],
-              [Vector(200.0, -200.0, 0.0), Vector(340.0, -200.0, 0.0)],
-              [Vector(340.0, 200.0, 0.0), Vector(340.0, -200.0, 0.0)]]
-    typeId = ['Part::GeomLine', 'Part::GeomLine', 'Part::GeomLine', 'Part::GeomBSplineCurve',
-              'Part::GeomLine', 'Part::GeomLine', 'Part::GeomLine', 'Part::GeomBSplineCurve']
-    e3Poles = [Vector(325.0, 100.0, 0.0), Vector(400.0, 100.0, 0.0),
-               Vector(400.0, 0.0, 0.0), Vector(400.0, -100.0, 0.0),
-               Vector(325.0, -100.0, 0.0)]
+    vpairs = [
+        [Vector(340.0, 200.0, 0.0), Vector(200.0, 200.0, 0.0)],
+        [Vector(200.0, 200.0, 0.0), Vector(200.0, 100.0, 0.0)],
+        [Vector(200.0, 100.0, 0.0), Vector(325.0, 100.0, 0.0)],
+        [Vector(325.0, 100.0, 0.0), Vector(325.0, -100.0, 0.0)],
+        [Vector(325.0, -100.0, 0.0), Vector(200.0, -100.0, 0.0)],
+        [Vector(200.0, -100.0, 0.0), Vector(200.0, -200.0, 0.0)],
+        [Vector(200.0, -200.0, 0.0), Vector(340.0, -200.0, 0.0)],
+        [Vector(340.0, 200.0, 0.0), Vector(340.0, -200.0, 0.0)],
+    ]
+    typeId = [
+        "Part::GeomLine",
+        "Part::GeomLine",
+        "Part::GeomLine",
+        "Part::GeomBSplineCurve",
+        "Part::GeomLine",
+        "Part::GeomLine",
+        "Part::GeomLine",
+        "Part::GeomBSplineCurve",
+    ]
+    e3Poles = [
+        Vector(325.0, 100.0, 0.0),
+        Vector(400.0, 100.0, 0.0),
+        Vector(400.0, 0.0, 0.0),
+        Vector(400.0, -100.0, 0.0),
+        Vector(325.0, -100.0, 0.0),
+    ]
     e3Knots = [0.0, 0.5, 1.0]
     e3Mults = [4, 1, 4]
     e3Degree = 3
-    e7Poles = [Vector(340.0, 200.0, 0.0), Vector(500.0, 200.0, 0.0),
-               Vector(500.0, 0.0, 0.0), Vector(500.0, -200.0, 0.0),
-               Vector(340.0, -200.0, 0.0)]
+    e7Poles = [
+        Vector(340.0, 200.0, 0.0),
+        Vector(500.0, 200.0, 0.0),
+        Vector(500.0, 0.0, 0.0),
+        Vector(500.0, -200.0, 0.0),
+        Vector(340.0, -200.0, 0.0),
+    ]
     e7Knots = [0.0, 0.5, 1.0]
     e7Mults = [4, 1, 4]
     e7Degree = 3
@@ -119,7 +142,7 @@ def setup(doc=None, solvertype="elmer"):
     c7.buildFromPolesMultsKnots(e7Poles, e7Mults, e7Knots, False, e7Degree)
     edges = [c3.toShape(), c7.toShape()]
     for i in range(len(typeId)):
-        if typeId[i] == 'Part::GeomLine':
+        if typeId[i] == "Part::GeomLine":
             edges.append(Part.makeLine(*vpairs[i]))
 
     sedges = Part.__sortEdges__(edges)
@@ -173,6 +196,7 @@ def setup(doc=None, solvertype="elmer"):
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
     if FreeCAD.GuiUp:
         import FemGui
+
         FemGui.setActiveAnalysis(analysis)
 
     # solver
@@ -216,7 +240,8 @@ def setup(doc=None, solvertype="elmer"):
     material_obj.References = [
         (BooleanFragments, "Face1"),
         (BooleanFragments, "Face2"),
-        (BooleanFragments, "Face3")]
+        (BooleanFragments, "Face3"),
+    ]
     analysis.addObject(material_obj)
 
     # magnetization lower
@@ -235,7 +260,7 @@ def setup(doc=None, solvertype="elmer"):
 
     # mesh
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
-    femmesh_obj.Part = BooleanFragments
+    femmesh_obj.Shape = BooleanFragments
     femmesh_obj.CharacteristicLengthMax = "100.0 mm"
     femmesh_obj.ViewObject.Visibility = False
 
@@ -245,20 +270,19 @@ def setup(doc=None, solvertype="elmer"):
     mesh_region.References = [
         (BooleanFragments, "Face1"),
         (BooleanFragments, "Face2"),
-        (BooleanFragments, "Face3")]
+        (BooleanFragments, "Face3"),
+    ]
     mesh_region.ViewObject.Visibility = False
 
     # generate the mesh
     from femmesh import gmshtools
+
     gmsh_mesh = gmshtools.GmshTools(femmesh_obj, analysis)
     try:
         error = gmsh_mesh.create_mesh()
     except Exception:
         error = sys.exc_info()[1]
-        FreeCAD.Console.PrintError(
-            "Unexpected error when creating mesh: {}\n"
-            .format(error)
-        )
+        FreeCAD.Console.PrintError(f"Unexpected error when creating mesh: {error}\n")
 
     doc.recompute()
     return doc

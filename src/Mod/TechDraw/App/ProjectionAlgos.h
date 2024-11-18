@@ -38,6 +38,8 @@ class BRepAdaptor_Curve;
 namespace TechDraw
 {
 
+  const TopoDS_Shape& build3dCurves(const TopoDS_Shape& shape);
+  
 /** Algo class for projecting shapes and creating SVG output of it
  */
 class TechDrawExport ProjectionAlgos

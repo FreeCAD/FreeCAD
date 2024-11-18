@@ -42,13 +42,11 @@
 
 using namespace Gui;
 
-Thumbnail::Thumbnail(int s) : viewer(nullptr), size(s)
+Thumbnail::Thumbnail(int s) : size(s)
 {
 }
 
-Thumbnail::~Thumbnail()
-{
-}
+Thumbnail::~Thumbnail() = default;
 
 void Thumbnail::setViewer(View3DInventorViewer* v)
 {
@@ -88,15 +86,13 @@ void Thumbnail::SaveDocFile (Base::Writer &writer) const
     if (!this->viewer)
         return;
     QImage img;
-    if (this->viewer->isActiveWindow()) {
-        if (this->viewer->thread() != QThread::currentThread()) {
-            qWarning("Cannot create a thumbnail from non-GUI thread");
-            return;
-        }
-
-        QColor invalid;
-        this->viewer->imageFromFramebuffer(this->size, this->size, 4, invalid, img);
+    if (this->viewer->thread() != QThread::currentThread()) {
+        qWarning("Cannot create a thumbnail from non-GUI thread");
+        return;
     }
+
+    QColor invalid;
+    this->viewer->imageFromFramebuffer(this->size, this->size, 4, invalid, img);
 
     // Get app icon and resize to half size to insert in topbottom position over the current view snapshot
     QPixmap appIcon = Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str());
@@ -104,7 +100,7 @@ void Thumbnail::SaveDocFile (Base::Writer &writer) const
     if (!img.isNull()) {
         // Create a small "Fc" Application icon in the bottom right of the thumbnail
         if (App::GetApplication().GetParameterGroupByPath
-            ("User parameter:BaseApp/Preferences/Document")->GetBool("AddThumbnailLogo",true)) {
+            ("User parameter:BaseApp/Preferences/Document")->GetBool("AddThumbnailLogo",false)) {
             // only scale app icon if an offscreen image could be created
             appIcon = appIcon.scaled(this->size / 4, this->size /4, Qt::KeepAspectRatio, Qt::SmoothTransformation);
             px = BitmapFactory().merge(QPixmap::fromImage(img), appIcon, BitmapFactoryInst::BottomRight);

@@ -64,17 +64,17 @@ class DraftLink(DraftObject):
         if obj:
             self.attach(obj)
 
-    def __getstate__(self):
+    def dumps(self):
         """Return a tuple of all serializable objects or None."""
         return self.__dict__
 
-    def __setstate__(self, state):
+    def loads(self, state):
         """Set some internal properties for all restored objects."""
         if isinstance(state, dict):
             self.__dict__ = state
         else:
             self.use_link = False
-            super(DraftLink, self).__setstate__(state)
+            super(DraftLink, self).loads(state)
 
     def attach(self, obj):
         """Set up the properties when the object is attached."""

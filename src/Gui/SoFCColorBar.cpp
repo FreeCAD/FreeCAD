@@ -46,7 +46,7 @@ SO_NODE_ABSTRACT_SOURCE(SoFCColorBarBase)
 /*!
   Constructor.
 */
-SoFCColorBarBase::SoFCColorBarBase() : _boxWidth(-1.0f), _windowSize(0,0)
+SoFCColorBarBase::SoFCColorBarBase() : _windowSize(0,0)
 {
     SO_NODE_CONSTRUCTOR(SoFCColorBarBase);
 }
@@ -54,10 +54,7 @@ SoFCColorBarBase::SoFCColorBarBase() : _boxWidth(-1.0f), _windowSize(0,0)
 /*!
   Destructor.
 */
-SoFCColorBarBase::~SoFCColorBarBase()
-{
-    //delete THIS;
-}
+SoFCColorBarBase::~SoFCColorBarBase() = default;
 
 // doc from parent
 void SoFCColorBarBase::initClass()
@@ -84,6 +81,22 @@ void SoFCColorBarBase::GLRenderBelowPath(SoGLRenderAction *  action)
 void SoFCColorBarBase::setModified()
 {
     _boxWidth = -1.0f;
+}
+
+void SoFCColorBarBase::setFormat(const SoLabelTextFormat& fmt)
+{
+    format = fmt;
+    applyFormat(fmt);
+}
+
+SoLabelTextFormat SoFCColorBarBase::getFormat() const
+{
+    return format;
+}
+
+void SoFCColorBarBase::applyFormat(const SoLabelTextFormat& fmt)
+{
+    boost::ignore_unused(fmt);
 }
 
 float SoFCColorBarBase::getBoundingWidth(const SbVec2s& size)
@@ -126,15 +139,23 @@ float SoFCColorBarBase::getBounds(const SbVec2s& size, float& fMinX, float&fMinY
     // The cam height is set in SoFCColorBarBase::getBoundingWidth to 10.
     // Therefore the normalized coordinates are in the range [-5, +5] x [-5ratio, +5ratio] if ratio > 1
     //  and [-5ratio, +5ratio] x [-5, +5] if ratio < 1.
-    // We don't want the whole height covered by the color bar (to have e.g space to the axis cross)
-    // thus we take as base 4.
-    float baseYValue = 4.0f;
+    // We don't want the whole height covered by the color bar (to have e.g space to the axis cross
+    // and the Navigation Cube) thus we take as base 3 or if the height reduces significantly it is 2.5.
+
+    float baseYValue;
+    if (fRatio > 3.0f) {
+        baseYValue = 2.5f;
+    }
+    else {
+        baseYValue = 3.0f;
+    }
     float barWidth = 0.5f;
 
-    // we want the color bar at the rightmost position, therefore we take 5 as base
-    fMinX = 5.0f * fRatio; // must be scaled with the ratio to assure it stays at the right
+    // we want the color bar at the rightmost position, therefore we take 4.95 as base
+    fMinX = 4.95f * fRatio; // must be scaled with the ratio to assure it stays at the right
+
     fMaxX = fMinX + barWidth;
-    fMinY = -baseYValue;
+    fMinY = -baseYValue - 0.6f; // Extend shortened bar towards axis cross
     fMaxY = baseYValue; // bar has the height of almost whole window height
 
     if (fRatio < 1.0f) {
@@ -157,9 +178,9 @@ namespace Gui {
 class SoFCColorBarProxyObject : public QObject
 {
 public:
-    SoFCColorBarProxyObject(SoFCColorBar* b)
+    explicit SoFCColorBarProxyObject(SoFCColorBar* b)
         : QObject(nullptr), bar(b) {}
-    ~SoFCColorBarProxyObject() override {}
+    ~SoFCColorBarProxyObject() override = default;
     void customEvent(QEvent *) override
     {
         bar->customize(bar->getActiveBar());
@@ -190,18 +211,15 @@ SoFCColorBar::SoFCColorBar()
     _colorBars.push_back( new SoFCColorGradient );
     _colorBars.push_back( new SoFCColorLegend );
 
-    for (std::vector<SoFCColorBarBase*>::const_iterator it = _colorBars.begin(); it != _colorBars.end(); ++it)
-        pColorMode->addChild( *it );
+    for (auto it : _colorBars)
+        pColorMode->addChild(it);
     pColorMode->whichChild = 0;
 }
 
 /*!
   Destructor.
 */
-SoFCColorBar::~SoFCColorBar()
-{
-    //delete THIS;
-}
+SoFCColorBar::~SoFCColorBar() = default;
 
 // doc from parent
 void SoFCColorBar::initClass()
@@ -220,6 +238,12 @@ SoFCColorBarBase* SoFCColorBar::getActiveBar() const
     return _colorBars[child];
 }
 
+void SoFCColorBar::setFormat(const SoLabelTextFormat& fmt)
+{
+    for (auto it : _colorBars)
+        it->setFormat(fmt);
+}
+
 void SoFCColorBar::setViewportSize( const SbVec2s& size )
 {
     boost::ignore_unused(size);
@@ -227,14 +251,14 @@ void SoFCColorBar::setViewportSize( const SbVec2s& size )
 
 void SoFCColorBar::setRange( float fMin, float fMax, int prec )
 {
-    for (std::vector<SoFCColorBarBase*>::const_iterator it = _colorBars.begin(); it != _colorBars.end(); ++it)
-        (*it)->setRange(fMin, fMax, prec);
+    for (auto it : _colorBars)
+        it->setRange(fMin, fMax, prec);
 }
 
 void SoFCColorBar::setOutsideGrayed (bool bVal)
 {
-    for (std::vector<SoFCColorBarBase*>::const_iterator it = _colorBars.begin(); it != _colorBars.end(); ++it)
-        (*it)->setOutsideGrayed(bVal);
+    for (auto it : _colorBars)
+        it->setOutsideGrayed(bVal);
 }
 
 bool SoFCColorBar::isVisible (float fVal) const
@@ -318,10 +342,10 @@ void SoFCColorBar::handleEvent (SoHandleEventAction *action)
                 SoFCColorBarBase* current = getActiveBar();
                 QMenu menu;
                 int i=0;
-                for (std::vector<SoFCColorBarBase*>::const_iterator it = _colorBars.begin(); it != _colorBars.end(); ++it) {
-                    QAction* item = menu.addAction(QLatin1String((*it)->getColorBarName()));
+                for (auto it : _colorBars) {
+                    QAction* item = menu.addAction(QObject::tr(it->getColorBarName()));
                     item->setCheckable(true);
-                    item->setChecked((*it) == current);
+                    item->setChecked(it == current);
                     item->setData(QVariant(i++));
                 }
 

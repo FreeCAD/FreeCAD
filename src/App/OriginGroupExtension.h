@@ -24,6 +24,7 @@
 #define ORIGINGROUP_H_QHTU73IF
 
 #include "GeoFeatureGroupExtension.h"
+#include "QCoreApplication"
 
 namespace App {
 class Origin;
@@ -34,6 +35,7 @@ class Origin;
 class AppExport OriginGroupExtension : public App::GeoFeatureGroupExtension
 {
     EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(App::OriginGroupExtension);
+    Q_DECLARE_TR_FUNCTIONS(App::OriginGroupExtension)
 
 public:
     OriginGroupExtension ();
@@ -78,6 +80,10 @@ protected:
     void onExtendedSetupObject () override;
     /// Removes all planes and axis if they are still linked to the document
     void onExtendedUnsetupObject () override;
+
+private:
+    /// Creates a localized Origin object
+    App::DocumentObject *getLocalizedOrigin(App::Document *doc);
 };
 
 using OriginGroupExtensionPython = ExtensionPythonT<GroupExtensionPythonT<OriginGroupExtension>>;

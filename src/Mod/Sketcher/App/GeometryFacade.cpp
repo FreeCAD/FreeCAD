@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <boost/uuid/uuid_io.hpp>
+#include <boost/uuid/uuid_io.hpp>
 #endif
 
 #include "GeometryFacade.h"
@@ -31,97 +31,112 @@
 
 using namespace Sketcher;
 
-TYPESYSTEM_SOURCE(Sketcher::GeometryFacade,Base::BaseClass)
+TYPESYSTEM_SOURCE(Sketcher::GeometryFacade, Base::BaseClass)
 
-GeometryFacade::GeometryFacade(): Geo(nullptr), OwnerGeo(false), SketchGeoExtension(nullptr)
+GeometryFacade::GeometryFacade()
+    : Geo(nullptr)
+    , OwnerGeo(false)
+    , SketchGeoExtension(nullptr)
+{}
+
+GeometryFacade::GeometryFacade(const Part::Geometry* geometry, bool owner)
+    : Geo(geometry)
+    , OwnerGeo(owner)
 {
-
-}
-
-GeometryFacade::GeometryFacade(const Part::Geometry * geometry, bool owner)
-: Geo(geometry), OwnerGeo(owner)
-{
-    assert(geometry); // This should never be nullptr, as this constructor is protected
+    assert(geometry);  // This should never be nullptr, as this constructor is protected
 
     initExtension();
 }
 
 GeometryFacade::~GeometryFacade()
 {
-    if (OwnerGeo && Geo)
+    if (OwnerGeo && Geo) {
         delete Geo;
+    }
 }
 
-std::unique_ptr<GeometryFacade> GeometryFacade::getFacade(Part::Geometry * geometry, bool owner)
+std::unique_ptr<GeometryFacade> GeometryFacade::getFacade(Part::Geometry* geometry, bool owner)
 {
-    if(geometry)
+    if (geometry) {
         return std::unique_ptr<GeometryFacade>(new GeometryFacade(geometry, owner));
-    else
+    }
+    else {
         return std::unique_ptr<GeometryFacade>(nullptr);
-    //return std::make_unique<GeometryFacade>(geometry); // make_unique has no access to private constructor
+    }
+    // make_unique has no access to private constructor
+    // return std::make_unique<GeometryFacade>(geometry);
 }
 
-std::unique_ptr<const GeometryFacade> GeometryFacade::getFacade(const Part::Geometry * geometry)
+std::unique_ptr<const GeometryFacade> GeometryFacade::getFacade(const Part::Geometry* geometry)
 {
-    if(geometry)
+    if (geometry) {
         return std::unique_ptr<const GeometryFacade>(new GeometryFacade(geometry));
-     else
+    }
+    else {
         return std::unique_ptr<const GeometryFacade>(nullptr);
-    //return std::make_unique<const GeometryFacade>(geometry); // make_unique has no access to private constructor
+    }
+    // make_unique has no access to private constructor
+    // return std::make_unique<const GeometryFacade>(geometry);
 }
 
-void GeometryFacade::setGeometry(Part::Geometry *geometry)
+void GeometryFacade::setGeometry(Part::Geometry* geometry)
 {
     Geo = geometry;
 
-    if(geometry)
+    if (geometry) {
         initExtension();
-    else
+    }
+    else {
         THROWM(Base::ValueError, "GeometryFacade initialized with Geometry null pointer");
+    }
 }
 
 void GeometryFacade::initExtension()
 {
-    if(!Geo->hasExtension(SketchGeometryExtension::getClassTypeId())) {
+    if (!Geo->hasExtension(SketchGeometryExtension::getClassTypeId())) {
 
-        getGeo()->setExtension(std::make_unique<SketchGeometryExtension>()); // Create getExtension
+        getGeo()->setExtension(std::make_unique<SketchGeometryExtension>());  // Create getExtension
 
-        //Base::Console().Warning("%s\nSketcher Geometry without Extension: %s \n", boost::uuids::to_string(Geo->getTag()).c_str());
+        // Base::Console().Warning("%s\nSketcher Geometry without Extension: %s \n",
+        // boost::uuids::to_string(Geo->getTag()).c_str());
     }
 
-    SketchGeoExtension =
-        std::static_pointer_cast<const SketchGeometryExtension>(
-            (Geo->getExtension(SketchGeometryExtension::getClassTypeId())).lock()
-        );
+    SketchGeoExtension = std::static_pointer_cast<const SketchGeometryExtension>(
+        (Geo->getExtension(SketchGeometryExtension::getClassTypeId())).lock());
 }
 
 void GeometryFacade::initExtension() const
 {
     // const Geometry without SketchGeometryExtension cannot initialise a GeometryFacade
-    if(!Geo->hasExtension(SketchGeometryExtension::getClassTypeId()))
-        THROWM(Base::ValueError, "Cannot create a GeometryFacade out of a const Geometry pointer not having a SketchGeometryExtension!");
+    if (!Geo->hasExtension(SketchGeometryExtension::getClassTypeId())) {
+        THROWM(Base::ValueError,
+               "Cannot create a GeometryFacade out of a const Geometry pointer not having a "
+               "SketchGeometryExtension!");
+    }
 
-    auto ext = std::static_pointer_cast<const SketchGeometryExtension>(Geo->getExtension(SketchGeometryExtension::getClassTypeId()).lock());
+    auto ext = std::static_pointer_cast<const SketchGeometryExtension>(
+        Geo->getExtension(SketchGeometryExtension::getClassTypeId()).lock());
 
-    const_cast<GeometryFacade *>(this)->SketchGeoExtension = ext;
+    const_cast<GeometryFacade*>(this)->SketchGeoExtension = ext;
 }
 
-void GeometryFacade::throwOnNullPtr(const Part::Geometry * geo)
+void GeometryFacade::throwOnNullPtr(const Part::Geometry* geo)
 {
-    if(!geo)
+    if (!geo) {
         THROWM(Base::ValueError, "Geometry is nullptr!");
-}
-
-void GeometryFacade::ensureSketchGeometryExtension(Part::Geometry * geometry)
-{
-    throwOnNullPtr(geometry);
-
-    if(!geometry->hasExtension(SketchGeometryExtension::getClassTypeId())) {
-        geometry->setExtension(std::make_unique<SketchGeometryExtension>()); // Create getExtension
     }
 }
 
-void GeometryFacade::copyId(const Part::Geometry * src, Part::Geometry * dst)
+void GeometryFacade::ensureSketchGeometryExtension(Part::Geometry* geometry)
+{
+    throwOnNullPtr(geometry);
+
+    if (!geometry->hasExtension(SketchGeometryExtension::getClassTypeId())) {
+        geometry->setExtension(std::make_unique<SketchGeometryExtension>());  // Create getExtension
+    }
+}
+
+void GeometryFacade::copyId(const Part::Geometry* src, Part::Geometry* dst)
 {
     throwOnNullPtr(src);
     throwOnNullPtr(dst);
@@ -131,7 +146,19 @@ void GeometryFacade::copyId(const Part::Geometry * src, Part::Geometry * dst)
     gfdst->setId(gfsrc->getId());
 }
 
-bool GeometryFacade::getConstruction(const Part::Geometry * geometry)
+int GeometryFacade::getId(const Part::Geometry* geometry)
+{
+    auto gf = GeometryFacade::getFacade(geometry);
+    return gf->getId();
+}
+
+void GeometryFacade::setId(Part::Geometry* geometry, int id)
+{
+    auto gf = GeometryFacade::getFacade(geometry);
+    return gf->setId(id);
+}
+
+bool GeometryFacade::getConstruction(const Part::Geometry* geometry)
 {
     throwOnNullPtr(geometry);
 
@@ -139,7 +166,7 @@ bool GeometryFacade::getConstruction(const Part::Geometry * geometry)
     return gf->getConstruction();
 }
 
-void GeometryFacade::setConstruction(Part::Geometry * geometry, bool construction)
+void GeometryFacade::setConstruction(Part::Geometry* geometry, bool construction)
 {
     throwOnNullPtr(geometry);
 
@@ -147,7 +174,7 @@ void GeometryFacade::setConstruction(Part::Geometry * geometry, bool constructio
     return gf->setConstruction(construction);
 }
 
-bool GeometryFacade::isInternalType(const Part::Geometry * geometry, InternalType::InternalType type)
+bool GeometryFacade::isInternalType(const Part::Geometry* geometry, InternalType::InternalType type)
 {
     throwOnNullPtr(geometry);
 
@@ -155,7 +182,7 @@ bool GeometryFacade::isInternalType(const Part::Geometry * geometry, InternalTyp
     return gf->getInternalType() == type;
 }
 
-bool GeometryFacade::isInternalAligned(const Part::Geometry * geometry)
+bool GeometryFacade::isInternalAligned(const Part::Geometry* geometry)
 {
     throwOnNullPtr(geometry);
 
@@ -163,7 +190,23 @@ bool GeometryFacade::isInternalAligned(const Part::Geometry * geometry)
     return gf->isInternalAligned();
 }
 
-bool GeometryFacade::getBlocked(const Part::Geometry * geometry)
+InternalType::InternalType GeometryFacade::getInternalType(const Part::Geometry* geometry)
+{
+    throwOnNullPtr(geometry);
+
+    auto gf = GeometryFacade::getFacade(geometry);
+    return gf->getInternalType();
+}
+
+void GeometryFacade::setInternalType(Part::Geometry* geometry, InternalType::InternalType type)
+{
+    throwOnNullPtr(geometry);
+
+    auto gf = GeometryFacade::getFacade(geometry);
+    gf->setInternalType(type);
+}
+
+bool GeometryFacade::getBlocked(const Part::Geometry* geometry)
 {
     throwOnNullPtr(geometry);
 
@@ -171,7 +214,7 @@ bool GeometryFacade::getBlocked(const Part::Geometry * geometry)
     return gf->getBlocked();
 }
 
-PyObject * GeometryFacade::getPyObject()
+PyObject* GeometryFacade::getPyObject()
 {
     return new GeometryFacadePy(new GeometryFacade(this->Geo));
 }

@@ -24,7 +24,7 @@
 
 __title__ = "FreeCAD result mechanical ViewProvider for the document object"
 __author__ = "Qingfeng Xia, Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package view_result_mechanical
 #  \ingroup FEM
@@ -78,7 +78,7 @@ class VPResultMechanical(view_base_femconstraint.VPBaseFemConstraint):
                 "Object dependencies",
                 bodyMessage,
                 QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
-                QtGui.QMessageBox.No
+                QtGui.QMessageBox.No,
             )
             if reply == QtGui.QMessageBox.Yes:
                 return True

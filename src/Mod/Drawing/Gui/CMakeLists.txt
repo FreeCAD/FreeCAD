@@ -1,9 +1,3 @@
-if(MSVC)
-    add_definitions(-DHAVE_ATANH -DHAVE_ASINH -DHAVE_ACOSH)
-else(MSVC)
-    add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
-endif(MSVC)
-
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
@@ -26,10 +20,16 @@ set(DrawingGui_UIC_SRCS
     TaskOrthoViews.ui
 )
 
-qt_add_resources(DrawingGui_SRCS Resources/Drawing.qrc)
+set (Drawing_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Drawing_translation.qrc)
+qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
+    ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
+qt_create_resource_file(${Drawing_TR_QRC} ${QM_SRCS})
+qt_add_resources(DrawingGui_SRCS Resources/Drawing.qrc ${Drawing_TR_QRC})
 
 SET(DrawingGui_SRCS
     ${DrawingGui_SRCS}
+    ${QM_SRCS}
+    ${Drawing_TR_QRC}
     AppDrawingGui.cpp
     AppDrawingGuiPy.cpp
     Command.cpp
@@ -83,6 +83,9 @@ SET(DrawingGuiIcon_SVG
 add_library(DrawingGui SHARED ${DrawingGui_SRCS} ${DrawingGuiView_SRCS}
                               ${DrawingGuiViewProvider_SRCS} ${DrawingGuiIcon_SVG})
 target_link_libraries(DrawingGui ${DrawingGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(DrawingGui)
+endif()
 
 
 SET_BIN_DIR(DrawingGui DrawingGui /Mod/Drawing)

@@ -39,13 +39,9 @@ using namespace PartGui;
 
 PROPERTY_SOURCE(PartGui::ViewProviderBoolean,PartGui::ViewProviderPart)
 
-ViewProviderBoolean::ViewProviderBoolean()
-{
-}
+ViewProviderBoolean::ViewProviderBoolean() = default;
 
-ViewProviderBoolean::~ViewProviderBoolean()
-{
-}
+ViewProviderBoolean::~ViewProviderBoolean() = default;
 
 std::vector<App::DocumentObject*> ViewProviderBoolean::claimChildren()const
 {
@@ -77,7 +73,7 @@ QIcon ViewProviderBoolean::getIcon() const
 void ViewProviderBoolean::updateData(const App::Property* prop)
 {
     PartGui::ViewProviderPart::updateData(prop);
-    if (prop->getTypeId() == Part::PropertyShapeHistory::getClassTypeId()) {
+    if (prop->is<Part::PropertyShapeHistory>()) {
         const std::vector<Part::ShapeHistory>& hist = static_cast<const Part::PropertyShapeHistory*>
             (prop)->getValues();
         if (hist.size() != 2)
@@ -104,27 +100,27 @@ void ViewProviderBoolean::updateData(const App::Property* prop)
             auto vpTool = dynamic_cast<PartGui::ViewProviderPart*>(
                     Gui::Application::Instance->getViewProvider(objTool));
             if (vpBase && vpTool) {
-                std::vector<App::Color> colBase = vpBase->DiffuseColor.getValues();
-                std::vector<App::Color> colTool = vpTool->DiffuseColor.getValues();
-                std::vector<App::Color> colBool;
-                colBool.resize(boolMap.Extent(), this->ShapeColor.getValue());
+                std::vector<App::Material> colBase = vpBase->ShapeAppearance.getValues();
+                std::vector<App::Material> colTool = vpTool->ShapeAppearance.getValues();
+                std::vector<App::Material> colBool;
+                colBool.resize(boolMap.Extent(), this->ShapeAppearance[0]);
                 applyTransparency(vpBase->Transparency.getValue(),colBase);
                 applyTransparency(vpTool->Transparency.getValue(),colTool);
 
                 if (static_cast<int>(colBase.size()) == baseMap.Extent()) {
-                    applyColor(hist[0], colBase, colBool);
+                    applyMaterial(hist[0], colBase, colBool);
                 }
-                else if (!colBase.empty() && colBase[0] != this->ShapeColor.getValue()) {
+                else if (!colBase.empty() && colBase[0] != this->ShapeAppearance[0]) {
                     colBase.resize(baseMap.Extent(), colBase[0]);
-                    applyColor(hist[0], colBase, colBool);
+                    applyMaterial(hist[0], colBase, colBool);
                 }
 
                 if (static_cast<int>(colTool.size()) == toolMap.Extent()) {
-                    applyColor(hist[1], colTool, colBool);
+                    applyMaterial(hist[1], colTool, colBool);
                 }
-                else if (!colTool.empty() && colTool[0] != this->ShapeColor.getValue()) {
+                else if (!colTool.empty() && colTool[0] != this->ShapeAppearance[0]) {
                     colTool.resize(toolMap.Extent(), colTool[0]);
-                    applyColor(hist[1], colTool, colBool);
+                    applyMaterial(hist[1], colTool, colBool);
                 }
 
                 // If the view provider has set a transparency then override the values
@@ -133,11 +129,11 @@ void ViewProviderBoolean::updateData(const App::Property* prop)
                     applyTransparency(Transparency.getValue(), colBool);
                 }
 
-                this->DiffuseColor.setValues(colBool);
+                this->ShapeAppearance.setValues(colBool);
             }
         }
     }
-    else if (prop->getTypeId().isDerivedFrom(App::PropertyLink::getClassTypeId())) {
+    else if (prop->isDerivedFrom<App::PropertyLink>()) {
         App::DocumentObject *pBase = static_cast<const App::PropertyLink*>(prop)->getValue();
         if (pBase)
             Gui::Application::Instance->hideViewProvider(pBase);
@@ -161,17 +157,13 @@ bool ViewProviderBoolean::onDelete(const std::vector<std::string> &)
 
 PROPERTY_SOURCE(PartGui::ViewProviderMultiFuse,PartGui::ViewProviderPart)
 
-ViewProviderMultiFuse::ViewProviderMultiFuse()
-{
-}
+ViewProviderMultiFuse::ViewProviderMultiFuse() = default;
 
-ViewProviderMultiFuse::~ViewProviderMultiFuse()
-{
-}
+ViewProviderMultiFuse::~ViewProviderMultiFuse() = default;
 
 std::vector<App::DocumentObject*> ViewProviderMultiFuse::claimChildren()const
 {
-    return std::vector<App::DocumentObject*>(static_cast<Part::MultiFuse*>(getObject())->Shapes.getValues());
+    return static_cast<Part::MultiFuse*>(getObject())->Shapes.getValues();
 }
 
 QIcon ViewProviderMultiFuse::getIcon() const
@@ -182,7 +174,7 @@ QIcon ViewProviderMultiFuse::getIcon() const
 void ViewProviderMultiFuse::updateData(const App::Property* prop)
 {
     PartGui::ViewProviderPart::updateData(prop);
-    if (prop->getTypeId() == Part::PropertyShapeHistory::getClassTypeId()) {
+    if (prop->is<Part::PropertyShapeHistory>()) {
         const std::vector<Part::ShapeHistory>& hist = static_cast<const Part::PropertyShapeHistory*>
             (prop)->getValues();
         Part::MultiFuse* objBool = static_cast<Part::MultiFuse*>(getObject());
@@ -194,8 +186,8 @@ void ViewProviderMultiFuse::updateData(const App::Property* prop)
         TopTools_IndexedMapOfShape boolMap;
         TopExp::MapShapes(boolShape, TopAbs_FACE, boolMap);
 
-        std::vector<App::Color> colBool;
-        colBool.resize(boolMap.Extent(), this->ShapeColor.getValue());
+        std::vector<App::Material> colBool;
+        colBool.resize(boolMap.Extent(), this->ShapeAppearance[0]);
 
         int index=0;
         for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end(); ++it, ++index) {
@@ -209,14 +201,14 @@ void ViewProviderMultiFuse::updateData(const App::Property* prop)
 
             auto vpBase = dynamic_cast<PartGui::ViewProviderPart*>(Gui::Application::Instance->getViewProvider(objBase));
             if (vpBase) {
-                std::vector<App::Color> colBase = vpBase->DiffuseColor.getValues();
+                std::vector<App::Material> colBase = vpBase->ShapeAppearance.getValues();
                 applyTransparency(vpBase->Transparency.getValue(),colBase);
                 if (static_cast<int>(colBase.size()) == baseMap.Extent()) {
-                    applyColor(hist[index], colBase, colBool);
+                    applyMaterial(hist[index], colBase, colBool);
                 }
-                else if (!colBase.empty() && colBase[0] != this->ShapeColor.getValue()) {
+                else if (!colBase.empty() && colBase[0] != this->ShapeAppearance[0]) {
                     colBase.resize(baseMap.Extent(), colBase[0]);
-                    applyColor(hist[index], colBase, colBool);
+                    applyMaterial(hist[index], colBase, colBool);
                 }
             }
         }
@@ -227,13 +219,14 @@ void ViewProviderMultiFuse::updateData(const App::Property* prop)
             applyTransparency(Transparency.getValue(), colBool);
         }
 
-        this->DiffuseColor.setValues(colBool);
+        this->ShapeAppearance.setValues(colBool);
     }
-    else if (prop->getTypeId().isDerivedFrom(App::PropertyLinkList::getClassTypeId())) {
+    else if (prop->isDerivedFrom<App::PropertyLinkList>()) {
         std::vector<App::DocumentObject*> pShapes = static_cast<const App::PropertyLinkList*>(prop)->getValues();
-        for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end(); ++it) {
-            if (*it)
-                Gui::Application::Instance->hideViewProvider(*it);
+        for (auto it : pShapes) {
+            if (it) {
+                Gui::Application::Instance->hideViewProvider(it);
+            }
         }
     }
 }
@@ -243,9 +236,10 @@ bool ViewProviderMultiFuse::onDelete(const std::vector<std::string> &)
     // get the input shapes
     Part::MultiFuse* pBool = static_cast<Part::MultiFuse*>(getObject());
     std::vector<App::DocumentObject*> pShapes = pBool->Shapes.getValues();
-    for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end(); ++it) {
-        if (*it)
-            Gui::Application::Instance->showViewProvider(*it);
+    for (auto it : pShapes) {
+        if (it) {
+            Gui::Application::Instance->showViewProvider(it);
+        }
     }
 
     return true;
@@ -298,17 +292,13 @@ void ViewProviderMultiFuse::dropObject(App::DocumentObject* obj)
 
 PROPERTY_SOURCE(PartGui::ViewProviderMultiCommon,PartGui::ViewProviderPart)
 
-ViewProviderMultiCommon::ViewProviderMultiCommon()
-{
-}
+ViewProviderMultiCommon::ViewProviderMultiCommon() = default;
 
-ViewProviderMultiCommon::~ViewProviderMultiCommon()
-{
-}
+ViewProviderMultiCommon::~ViewProviderMultiCommon() = default;
 
 std::vector<App::DocumentObject*> ViewProviderMultiCommon::claimChildren()const
 {
-    return std::vector<App::DocumentObject*>(static_cast<Part::MultiCommon*>(getObject())->Shapes.getValues());
+    return static_cast<Part::MultiCommon*>(getObject())->Shapes.getValues();
 }
 
 QIcon ViewProviderMultiCommon::getIcon() const
@@ -319,7 +309,7 @@ QIcon ViewProviderMultiCommon::getIcon() const
 void ViewProviderMultiCommon::updateData(const App::Property* prop)
 {
     PartGui::ViewProviderPart::updateData(prop);
-    if (prop->getTypeId() == Part::PropertyShapeHistory::getClassTypeId()) {
+    if (prop->is<Part::PropertyShapeHistory>()) {
         const std::vector<Part::ShapeHistory>& hist = static_cast<const Part::PropertyShapeHistory*>
             (prop)->getValues();
         Part::MultiCommon* objBool = static_cast<Part::MultiCommon*>(getObject());
@@ -331,8 +321,8 @@ void ViewProviderMultiCommon::updateData(const App::Property* prop)
         TopTools_IndexedMapOfShape boolMap;
         TopExp::MapShapes(boolShape, TopAbs_FACE, boolMap);
 
-        std::vector<App::Color> colBool;
-        colBool.resize(boolMap.Extent(), this->ShapeColor.getValue());
+        std::vector<App::Material> colBool;
+        colBool.resize(boolMap.Extent(), this->ShapeAppearance[0]);
 
         int index=0;
         for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end(); ++it, ++index) {
@@ -346,14 +336,14 @@ void ViewProviderMultiCommon::updateData(const App::Property* prop)
 
             auto vpBase = dynamic_cast<PartGui::ViewProviderPart*>(Gui::Application::Instance->getViewProvider(objBase));
             if (vpBase) {
-                std::vector<App::Color> colBase = vpBase->DiffuseColor.getValues();
+                std::vector<App::Material> colBase = vpBase->ShapeAppearance.getValues();
                 applyTransparency(vpBase->Transparency.getValue(),colBase);
                 if (static_cast<int>(colBase.size()) == baseMap.Extent()) {
-                    applyColor(hist[index], colBase, colBool);
+                    applyMaterial(hist[index], colBase, colBool);
                 }
-                else if (!colBase.empty() && colBase[0] != this->ShapeColor.getValue()) {
+                else if (!colBase.empty() && colBase[0] != this->ShapeAppearance[0]) {
                     colBase.resize(baseMap.Extent(), colBase[0]);
-                    applyColor(hist[index], colBase, colBool);
+                    applyMaterial(hist[index], colBase, colBool);
                 }
             }
         }
@@ -364,13 +354,14 @@ void ViewProviderMultiCommon::updateData(const App::Property* prop)
             applyTransparency(Transparency.getValue(), colBool);
         }
 
-        this->DiffuseColor.setValues(colBool);
+        this->ShapeAppearance.setValues(colBool);
     }
-    else if (prop->getTypeId().isDerivedFrom(App::PropertyLinkList::getClassTypeId())) {
+    else if (prop->isDerivedFrom<App::PropertyLinkList>()) {
         std::vector<App::DocumentObject*> pShapes = static_cast<const App::PropertyLinkList*>(prop)->getValues();
-        for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end(); ++it) {
-            if (*it)
-                Gui::Application::Instance->hideViewProvider(*it);
+        for (auto it : pShapes) {
+            if (it) {
+                Gui::Application::Instance->hideViewProvider(it);
+            }
         }
     }
 }
@@ -380,9 +371,10 @@ bool ViewProviderMultiCommon::onDelete(const std::vector<std::string> &)
     // get the input shapes
     Part::MultiCommon* pBool = static_cast<Part::MultiCommon*>(getObject());
     std::vector<App::DocumentObject*> pShapes = pBool->Shapes.getValues();
-    for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end(); ++it) {
-        if (*it)
-            Gui::Application::Instance->showViewProvider(*it);
+    for (auto it : pShapes) {
+        if (it) {
+            Gui::Application::Instance->showViewProvider(it);
+        }
     }
 
     return true;

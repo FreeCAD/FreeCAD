@@ -32,6 +32,7 @@
 #endif
 
 #include <Base/BoundBoxPy.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 
 #include "PythonWrapper.h"
 #include "SoFCDB.h"
@@ -185,10 +186,11 @@ PyObject*  ViewProviderPy::canDropObject(PyObject *args, PyObject *kw)
     PyObject *owner = Py_None;
     PyObject *pyElements = Py_None;
     const char *subname = nullptr;
-    static char* kwlist[] = {"obj","owner","subname","elem",nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kw, "|OOsO", kwlist,
-            &obj, &owner, &subname, &pyElements))
+    static const std::array<const char *, 5> kwlist{"obj", "owner", "subname", "elem", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kw, "|OOsO", kwlist,
+                                            &obj, &owner, &subname, &pyElements)) {
         return nullptr;
+    }
 
     PY_TRY {
         Base::PyTypeCheck(&obj, &App::DocumentObjectPy::Type, "expecting 'obj' to be of type App.DocumentObject or None");
@@ -245,10 +247,11 @@ PyObject*  ViewProviderPy::dropObject(PyObject *args, PyObject *kw)
     PyObject *owner = Py_None;
     PyObject *pyElements = Py_None;
     const char *subname = nullptr;
-    static char* kwlist[] = {"obj","owner","subname","elem",nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kw, "O!|OsO", kwlist,
-            &App::DocumentObjectPy::Type, &obj, &owner, &subname, &pyElements))
+    static const std::array<const char *, 5> kwlist{"obj", "owner", "subname", "elem", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kw, "O!|OsO", kwlist,
+                                             &App::DocumentObjectPy::Type, &obj, &owner, &subname, &pyElements)) {
         return nullptr;
+    }
 
     PY_TRY {
         Base::PyTypeCheck(&owner, &App::DocumentObjectPy::Type, "expecting 'owner' to be of type App.DocumentObject or None");
@@ -316,6 +319,10 @@ PyObject* ViewProviderPy::addDisplayMode(PyObject * args)
     void* ptr = nullptr;
     try {
         Base::Interpreter().convertSWIGPointerObj("pivy.coin","_p_SoNode", obj, &ptr, 0);
+        if (!ptr) {
+            PyErr_SetString(PyExc_RuntimeError, "Conversion of coin.SoNode failed");
+            return nullptr;
+        }
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_RuntimeError, e.what());
@@ -390,7 +397,23 @@ PyObject* ViewProviderPy::claimChildren(PyObject* args)
 
     std::vector<App::DocumentObject*> children = this->getViewProviderPtr()->claimChildren();
     Py::List ret;
-    for(App::DocumentObject* child: children){
+    for(auto* child : children){
+        if (child)
+            ret.append(Py::asObject(child->getPyObject()));
+        else
+            ret.append(Py::None());
+    }
+    return Py::new_reference_to(ret);
+}
+
+PyObject* ViewProviderPy::claimChildrenRecursive(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    std::vector<App::DocumentObject*> children = this->getViewProviderPtr()->claimChildrenRecursive();
+    Py::List ret;
+    for(auto* child : children){
         if (child)
             ret.append(Py::asObject(child->getPyObject()));
         else
@@ -407,28 +430,28 @@ PyObject* ViewProviderPy::partialRender(PyObject* args)
         return nullptr;
 
     std::vector<std::string> values;
-    if(value != Py_None) {
-        PyObject *item = nullptr;
-        Py_ssize_t nSize;
-        if (PyList_Check(value) || PyTuple_Check(value))
-            nSize = PySequence_Size(value);
-        else {
-            item = value;
-            value = nullptr;
-            nSize = 1;
+    if (value != Py_None) {
+        std::vector<Py::Object> pylist;
+        if (PyList_Check(value) || PyTuple_Check(value)) {
+            Py::Sequence seq(value);
+            for (const auto& it : seq) {
+                pylist.emplace_back(it);
+            }
         }
-        values.resize(nSize);
-        for (Py_ssize_t i = 0; i < nSize; ++i) {
-            if(value)
-                item = PySequence_GetItem(value, i);
-            if (PyUnicode_Check(item)) {
-                values[i] = PyUnicode_AsUTF8(item);
+        else {
+            pylist.emplace_back(value);
+        }
+
+        values.reserve(pylist.size());
+        for (const auto& it : pylist) {
+            if (it.isString()) {
+                values.push_back(Py::String(it));
             }
             else {
                 std::string error = std::string("type must be str");
                 error += " not, ";
-                error += item->ob_type->tp_name;
-                throw Base::TypeError(error);
+                error += it.ptr()->ob_type->tp_name;
+                throw Py::TypeError(error);
             }
         }
     }
@@ -642,7 +665,7 @@ void  ViewProviderPy::setSwitchNode(Py::Object)
 Py::String ViewProviderPy::getIV() const
 {
     std::string buf = Gui::SoFCDB::writeNodesToString(getViewProviderPtr()->getRoot());
-    return Py::String(buf);
+    return {buf};
 }
 
 Py::Object ViewProviderPy::getIcon() const
@@ -666,12 +689,12 @@ void ViewProviderPy::setDefaultMode(Py::Int arg)
 
 Py::Boolean ViewProviderPy::getCanRemoveChildrenFromRoot() const
 {
-    return Py::Boolean(getViewProviderPtr()->canRemoveChildrenFromRoot());
+    return {getViewProviderPtr()->canRemoveChildrenFromRoot()};
 }
 
 Py::Boolean ViewProviderPy::getLinkVisibility() const
 {
-    return Py::Boolean(getViewProviderPtr()->isLinkVisible());
+    return {getViewProviderPtr()->isLinkVisible()};
 }
 
 void ViewProviderPy::setLinkVisibility(Py::Boolean arg)
@@ -681,5 +704,5 @@ void ViewProviderPy::setLinkVisibility(Py::Boolean arg)
 
 Py::String ViewProviderPy::getDropPrefix() const
 {
-    return Py::String(getViewProviderPtr()->getDropPrefix());
+    return {getViewProviderPtr()->getDropPrefix()};
 }

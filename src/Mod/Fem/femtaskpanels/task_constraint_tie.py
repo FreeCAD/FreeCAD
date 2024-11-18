@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM constraint tie task panel for the document object"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package task_constraint_tie
 #  \ingroup FEM
@@ -36,53 +36,51 @@ import FreeCAD
 import FreeCADGui
 
 from femguiutils import selection_widgets
+from . import base_femtaskpanel
 
 
-class _TaskPanel:
+class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
     """
     The TaskPanel for editing References property of FemConstraintTie objects
     """
 
     def __init__(self, obj):
-
-        self.obj = obj
+        super().__init__(obj)
 
         # parameter widget
         self.parameterWidget = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/ConstraintTie.ui"
         )
         QtCore.QObject.connect(
-            self.parameterWidget.if_tolerance,
+            self.parameterWidget.spb_tolerance,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
-            self.tolerance_changed
+            self.tolerance_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.ckb_adjust, QtCore.SIGNAL("toggled(bool)"), self.adjust_changed
         )
         self.init_parameter_widget()
 
         # geometry selection widget
         self.selectionWidget = selection_widgets.GeometryElementsSelection(
-            obj.References,
-            ["Face"],
-            False,
-            False
+            obj.References, ["Face"], False, False
         )
 
         # form made from param and selection widget
-        self.form = [self.parameterWidget, self.selectionWidget]
+        self.form = [self.selectionWidget, self.parameterWidget]
 
     def accept(self):
         # check values
         items = len(self.selectionWidget.references)
         FreeCAD.Console.PrintMessage(
-            "Task panel: found references: {}\n{}\n"
-            .format(items, self.selectionWidget.references)
+            f"Task panel: found references: {items}\n{self.selectionWidget.references}\n"
         )
 
         if items != 2:
             msgBox = QtGui.QMessageBox()
             msgBox.setIcon(QtGui.QMessageBox.Question)
             msgBox.setText(
-                "Constraint Tie requires exactly two faces\n\nfound references: {}"
-                .format(items)
+                f"Constraint Tie requires exactly two faces\n\nfound references: {items}"
             )
             msgBox.setWindowTitle("FreeCAD FEM Constraint Tie")
             retryButton = msgBox.addButton(QtGui.QMessageBox.Retry)
@@ -94,25 +92,24 @@ class _TaskPanel:
             elif msgBox.clickedButton() == ignoreButton:
                 pass
         self.obj.Tolerance = self.tolerance
+        self.obj.Adjust = self.adjust
         self.obj.References = self.selectionWidget.references
-        self.recompute_and_set_back_all()
-        return True
+        self.selectionWidget.finish_selection()
+        return super().accept()
 
     def reject(self):
-        self.recompute_and_set_back_all()
-        return True
-
-    def recompute_and_set_back_all(self):
-        doc = FreeCADGui.getDocument(self.obj.Document)
-        doc.Document.recompute()
-        self.selectionWidget.setback_listobj_visibility()
-        if self.selectionWidget.sel_server:
-            FreeCADGui.Selection.removeObserver(self.selectionWidget.sel_server)
-        doc.resetEdit()
+        self.selectionWidget.finish_selection()
+        return super().reject()
 
     def init_parameter_widget(self):
         self.tolerance = self.obj.Tolerance
-        self.parameterWidget.if_tolerance.setText(self.tolerance.UserString)
+        self.adjust = self.obj.Adjust
+        FreeCADGui.ExpressionBinding(self.parameterWidget.spb_tolerance).bind(self.obj, "Tolerance")
+        self.parameterWidget.spb_tolerance.setProperty("value", self.tolerance)
+        self.parameterWidget.ckb_adjust.setChecked(self.adjust)
 
     def tolerance_changed(self, base_quantity_value):
         self.tolerance = base_quantity_value
+
+    def adjust_changed(self, bool_value):
+        self.adjust = bool_value

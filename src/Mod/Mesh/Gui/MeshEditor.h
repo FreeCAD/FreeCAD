@@ -38,16 +38,27 @@ class SoRayPickAction;
 class SbLine;
 class SbVec3f;
 
-namespace Gui { class View3DInventor; class View3DInventorViewer;}
-namespace Mesh { class MeshObject; }
-namespace Mesh { class Feature; }
-namespace MeshGui {
+namespace Gui
+{
+class View3DInventor;
+class View3DInventorViewer;
+}  // namespace Gui
+namespace Mesh
+{
+class MeshObject;
+}
+namespace Mesh
+{
+class Feature;
+}
+namespace MeshGui
+{
 class SoFCMeshPickNode;
 
 /** The ViewProviderFace class is used to display a single face.
  * @author Werner Mayer
  */
-class MeshGuiExport ViewProviderFace : public Gui::ViewProviderDocumentObject
+class MeshGuiExport ViewProviderFace: public Gui::ViewProviderDocumentObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderFace);
 
@@ -60,22 +71,25 @@ public:
     void setDisplayMode(const char* ModeName) override;
     const char* getDefaultDisplayMode() const override;
     std::vector<std::string> getDisplayModes() const override;
-    SoPickedPoint* getPickedPoint(const SbVec2s& pos, const Gui::View3DInventorViewer* viewer) const;
+    SoPickedPoint* getPickedPoint(const SbVec2s& pos,
+                                  const Gui::View3DInventorViewer* viewer) const;
 
-    ViewProviderMesh* mesh;
+    ViewProviderMesh* mesh {nullptr};
     std::vector<int> index;
-    int current_index;
+    int current_index {-1};
 
-    SoCoordinate3   * pcCoords;
-    SoFaceSet       * pcFaces;
+    SoCoordinate3* pcCoords;
+    SoFaceSet* pcFaces;
     SoFCMeshPickNode* pcMeshPick;
+
+    FC_DISABLE_COPY_MOVE(ViewProviderFace)
 };
 
 /**
  * Display data of a mesh kernel.
  * \author Werner Mayer
  */
-class MeshGuiExport MeshFaceAddition : public QObject
+class MeshGuiExport MeshFaceAddition: public QObject
 {
     Q_OBJECT
 
@@ -96,23 +110,27 @@ private Q_SLOTS:
 private:
     bool addMarkerPoint();
     void showMarker(SoPickedPoint*);
-    static void addFacetCallback(void * ud, SoEventCallback * n);
+    static void addFacetCallback(void* ud, SoEventCallback* n);
 
 private:
     ViewProviderFace* faceView;
+
+    Q_DISABLE_COPY_MOVE(MeshFaceAddition)
 };
 
 class MeshGuiExport MeshHoleFiller
 {
 public:
-    MeshHoleFiller()
-    {
-    }
-    virtual ~MeshHoleFiller()
-    {
-    }
-    virtual bool fillHoles(Mesh::MeshObject&, const std::list<std::vector<Mesh::PointIndex> >&,
-                           Mesh::PointIndex, Mesh::PointIndex)
+    MeshHoleFiller() = default;
+    virtual ~MeshHoleFiller() = default;
+    MeshHoleFiller(const MeshHoleFiller&) = delete;
+    MeshHoleFiller(MeshHoleFiller&&) = delete;
+    MeshHoleFiller& operator=(const MeshHoleFiller&) = delete;
+    MeshHoleFiller& operator=(MeshHoleFiller&&) = delete;
+    virtual bool fillHoles(Mesh::MeshObject&,
+                           const std::list<std::vector<Mesh::PointIndex>>&,
+                           Mesh::PointIndex,
+                           Mesh::PointIndex)
     {
         return false;
     }
@@ -122,7 +140,7 @@ public:
  * Display data of a mesh kernel.
  * \author Werner Mayer
  */
-class MeshGuiExport MeshFillHole : public QObject
+class MeshGuiExport MeshFillHole: public QObject
 {
     Q_OBJECT
 
@@ -142,11 +160,13 @@ private:
     using TBoundary = std::vector<Mesh::PointIndex>;
     using Connection = boost::signals2::connection;
 
-    static void fileHoleCallback(void * ud, SoEventCallback * n);
+    static void fileHoleCallback(void* ud, SoEventCallback* n);
     void createPolygons();
     SoNode* getPickedPolygon(const SoRayPickAction& action) const;
-    float findClosestPoint(const SbLine& ray, const TBoundary& polygon,
-                           Mesh::PointIndex&, SbVec3f&) const;
+    float findClosestPoint(const SbLine& ray,
+                           const TBoundary& polygon,
+                           Mesh::PointIndex&,
+                           SbVec3f&) const;
     void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
 
 private:
@@ -156,17 +176,18 @@ private:
     SoSeparator* myBridgeRoot;
     SoCoordinate3* myVertex;
     std::map<SoNode*, TBoundary> myPolygons;
-    Mesh::Feature* myMesh;
-    int myNumPoints;
-    Mesh::PointIndex myVertex1;
-    Mesh::PointIndex myVertex2;
+    Mesh::Feature* myMesh {nullptr};
+    int myNumPoints {0};
+    Mesh::PointIndex myVertex1 {0};
+    Mesh::PointIndex myVertex2 {0};
     TBoundary myPolygon;
     MeshHoleFiller& myHoleFiller;
     Connection myConnection;
+
+    Q_DISABLE_COPY_MOVE(MeshFillHole)
 };
 
-} // namespace MeshGui
+}  // namespace MeshGui
 
 
-#endif // MESHGUI_MESHEDITOR_H
-
+#endif  // MESHGUI_MESHEDITOR_H

@@ -26,10 +26,11 @@
 /***** Creation Mode ************/
 namespace SketcherGui
 {
-    enum GeometryCreationMode {
-        Normal,
-        Construction
-    };
+enum class GeometryCreationMode
+{
+    Normal = 0,
+    Construction = 1
+};
 }
 
-#endif //SKETCHERGUI_GEOMETRYCREATIONMODE_H
+#endif  // SKETCHERGUI_GEOMETRYCREATIONMODE_H

@@ -28,7 +28,8 @@
 #include "UnitsSchema.h"
 
 
-namespace Base {
+namespace Base
+{
 
 
 /*  Metric units schema intended for design of small parts and for CNC
@@ -39,11 +40,12 @@ namespace Base {
 class UnitsSchemaMmMin: public UnitsSchema
 {
 public:
-    QString schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString) override;
+    QString
+    schemaTranslate(const Base::Quantity& quant, double& factor, QString& unitString) override;
 };
 
 
-} // namespace Base
+}  // namespace Base
 
 
-#endif // BASE_UNITSSCHEMAMMMIN_H
+#endif  // BASE_UNITSSCHEMAMMMIN_H

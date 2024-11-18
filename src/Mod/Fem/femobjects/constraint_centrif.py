@@ -23,13 +23,15 @@
 
 __title__ = "FreeCAD FEM constraint centrif document object"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package constraint_centrif
 #  \ingroup FEM
 #  \brief constraint centrif object
 
 from . import base_fempythonobject
+
+_PropHelper = base_fempythonobject._PropHelper
 
 
 class ConstraintCentrif(base_fempythonobject.BaseFemPythonObject):
@@ -40,18 +42,38 @@ class ConstraintCentrif(base_fempythonobject.BaseFemPythonObject):
     Type = "Fem::ConstraintCentrif"
 
     def __init__(self, obj):
-        super(ConstraintCentrif, self).__init__(obj)
+        super().__init__(obj)
 
-        obj.addProperty(
-            "App::PropertyFrequency",
-            "RotationFrequency",
-            "Constraint CENTRIF",
-            "set rotation frequency f<sub>rot"
+        for prop in self._get_properties():
+            prop.add_to_object(obj)
+
+    def _get_properties(self):
+        prop = []
+
+        prop.append(
+            _PropHelper(
+                type="App::PropertyFrequency",
+                name="RotationFrequency",
+                group="Constraint Centrif",
+                doc="Set rotation frequency",
+                value="0 1/s",
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyLinkSubListGlobal",
+                name="RotationAxis",
+                group="Constraint Centrif",
+                doc="Set line as axis of rotation",
+                value=[],
+            )
         )
 
-        obj.addProperty(
-            "App::PropertyLinkSubList",
-            "RotationAxis",
-            "Constraint CENTRIF",
-            "set line as axis of rotation"
-        )
+        return prop
+
+    def onDocumentRestored(self, obj):
+        # update old project with new properties
+        for prop in self._get_properties():
+            if prop.name == "RotationAxis":
+                # change RotationAxis to App::PropertyLinkSubListGlobal
+                prop.handle_change_type(obj, old_type="App::PropertyLinkSubList")

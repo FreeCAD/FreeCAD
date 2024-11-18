@@ -35,9 +35,9 @@ namespace App {
  * class to behave as a Python extension -- simply by subclassing.
  */
 template <class ExtensionT>
-class ExtensionPythonT : public ExtensionT
+class ExtensionPythonT : public ExtensionT //NOLINT
 {
-    EXTENSION_PROPERTY_HEADER(App::ExtensionPythonT<ExtensionT>);
+    EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(App::ExtensionPythonT<ExtensionT>);
 
 public:
     using Inherited = ExtensionT;
@@ -46,7 +46,7 @@ public:
         ExtensionT::m_isPythonExtension = true;
         ExtensionT::initExtensionType(ExtensionPythonT::getExtensionClassTypeId());
     }
-    virtual ~ExtensionPythonT() = default;
+    ~ExtensionPythonT() override = default;
 
     ExtensionPythonT(const ExtensionPythonT&) = delete;
     ExtensionPythonT(ExtensionPythonT&&) = delete;
@@ -62,7 +62,7 @@ using ExtensionPython = ExtensionPythonT<App::Extension>;
     Py::Object result;\
     try {\
         Property* proxy = this->getExtendedContainer()->getPropertyByName("Proxy");\
-        if (proxy && proxy->getTypeId() == PropertyPythonObject::getClassTypeId()) {\
+        if (proxy && proxy->is<PropertyPythonObject>()) {\
             Py::Object feature = static_cast<PropertyPythonObject*>(proxy)->getValue();\
             if (feature.hasAttr(std::string("function"))) {\
                 if (feature.hasAttr("__object__")) {\

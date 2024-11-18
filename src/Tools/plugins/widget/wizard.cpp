@@ -25,11 +25,11 @@
 
 #include "wizard.h"
 
-Wizard::Wizard(QWidget *parent)
+Wizard::Wizard(QWidget* parent)
     : QDialog(parent)
 {
     textLabel = new QLabel();
-    
+
     topLine = new QFrame();
     topLine->setFrameShape(QFrame::HLine);
     topLine->setFrameShadow(QFrame::Sunken);
@@ -45,14 +45,10 @@ Wizard::Wizard(QWidget *parent)
     _finishButton = new QPushButton(tr("&Finish"));
     _finishButton->setDisabled(true);
 
-    connect(_cancelButton, SIGNAL(clicked()),
-            this, SLOT(reject()));
-    connect(_backButton, SIGNAL(clicked()),
-            this, SLOT(backButtonClicked()));
-    connect(_nextButton, SIGNAL(clicked()),
-            this, SLOT(nextButtonClicked()));
-    connect(_finishButton, SIGNAL(clicked()),
-            this, SLOT(accept()));
+    connect(_cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
+    connect(_backButton, SIGNAL(clicked()), this, SLOT(backButtonClicked()));
+    connect(_nextButton, SIGNAL(clicked()), this, SLOT(nextButtonClicked()));
+    connect(_finishButton, SIGNAL(clicked()), this, SLOT(accept()));
 
     buttonLayout = new QHBoxLayout;
     buttonLayout->addStretch(1);
@@ -77,19 +73,19 @@ QSize Wizard::sizeHint() const
     return QSize(200, 150);
 }
 
-void Wizard::addPage(QWidget *page)
+void Wizard::addPage(QWidget* page)
 {
     insertPage(count(), page);
 }
 
 void Wizard::removePage(int index)
 {
-    QWidget *widget = stackWidget->widget(index);
+    QWidget* widget = stackWidget->widget(index);
     stackWidget->removeWidget(widget);
 
     index = currentIndex();
     _backButton->setEnabled(index > 0);
-    _nextButton->setEnabled(index < count()-1);
+    _nextButton->setEnabled(index < count() - 1);
 }
 
 int Wizard::count() const
@@ -102,7 +98,7 @@ int Wizard::currentIndex() const
     return stackWidget->currentIndex();
 }
 
-void Wizard::insertPage(int index, QWidget *page)
+void Wizard::insertPage(int index, QWidget* page)
 {
     page->setParent(stackWidget);
 
@@ -114,26 +110,29 @@ void Wizard::insertPage(int index, QWidget *page)
         page->setWindowTitle(title);
     }
 
-    if (currentIndex() == index)
+    if (currentIndex() == index) {
         textLabel->setText(title);
+    }
 
     int current = currentIndex();
     _backButton->setEnabled(current > 0);
-    _nextButton->setEnabled(current < count()-1);
+    _nextButton->setEnabled(current < count() - 1);
 }
 
 void Wizard::backButtonClicked()
 {
     int index = currentIndex();
-    if (index > 0)
-        setCurrentIndex(index-1);
+    if (index > 0) {
+        setCurrentIndex(index - 1);
+    }
 }
 
 void Wizard::nextButtonClicked()
 {
     int index = currentIndex();
-    if (index < count()-1)
-        setCurrentIndex(index+1);
+    if (index < count() - 1) {
+        setCurrentIndex(index + 1);
+    }
 }
 
 QPushButton* Wizard::backButton() const
@@ -152,7 +151,7 @@ void Wizard::setCurrentIndex(int index)
         stackWidget->setCurrentIndex(index);
         textLabel->setText(stackWidget->currentWidget()->windowTitle());
         _backButton->setEnabled(index > 0);
-        _nextButton->setEnabled(index < count()-1);
+        _nextButton->setEnabled(index < count() - 1);
         Q_EMIT currentIndexChanged(index);
     }
 }
@@ -167,20 +166,20 @@ QString Wizard::pageTitle() const
     return stackWidget->currentWidget()->windowTitle();
 }
 
-void Wizard::setPageTitle(QString const &newTitle)
+void Wizard::setPageTitle(QString const& newTitle)
 {
     stackWidget->currentWidget()->setWindowTitle(newTitle);
     textLabel->setText(newTitle);
     Q_EMIT pageTitleChanged(newTitle);
 }
 
-WizardExtension::WizardExtension(Wizard *widget, QObject *parent)
-    :  QObject(parent)
+WizardExtension::WizardExtension(Wizard* widget, QObject* parent)
+    : QObject(parent)
 {
     myWidget = widget;
 }
 
-void WizardExtension::addWidget(QWidget *widget)
+void WizardExtension::addWidget(QWidget* widget)
 {
     myWidget->addPage(widget);
 }
@@ -195,7 +194,7 @@ int WizardExtension::currentIndex() const
     return myWidget->currentIndex();
 }
 
-void WizardExtension::insertWidget(int index, QWidget *widget)
+void WizardExtension::insertWidget(int index, QWidget* widget)
 {
     myWidget->insertPage(index, widget);
 }
@@ -215,17 +214,19 @@ QWidget* WizardExtension::widget(int index) const
     return myWidget->widget(index);
 }
 
-WizardExtensionFactory::WizardExtensionFactory(QExtensionManager *parent)
+WizardExtensionFactory::WizardExtensionFactory(QExtensionManager* parent)
     : QExtensionFactory(parent)
 {}
 
-QObject *WizardExtensionFactory::createExtension(QObject *object, const QString &iid, QObject *parent) const
+QObject*
+WizardExtensionFactory::createExtension(QObject* object, const QString& iid, QObject* parent) const
 {
-    Wizard *widget = qobject_cast<Wizard*>(object);
+    Wizard* widget = qobject_cast<Wizard*>(object);
 
     if (widget && (iid == Q_TYPEID(QDesignerContainerExtension))) {
         return new WizardExtension(widget, parent);
-    } else {
+    }
+    else {
         return 0;
     }
 }

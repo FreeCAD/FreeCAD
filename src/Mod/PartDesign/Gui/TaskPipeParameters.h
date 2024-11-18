@@ -62,7 +62,7 @@ public:
 
 public:
     StateHandlerTaskPipe() {selectionMode = SelectionModes::none;}
-    ~StateHandlerTaskPipe() {}
+    ~StateHandlerTaskPipe() = default;
 
     // only keeping getter because task boxes shouldn't need to change this
     // and task dialog is already friend
@@ -100,9 +100,6 @@ private:
     void clearButtons();
     void exitSelectionMode();
     void setVisibilityOfSpineAndProfile();
-
-    ViewProviderPipe* getPipeView() const
-    { return static_cast<ViewProviderPipe*>(vp); }
 
     bool spineShow = false;
     bool profileShow = false;

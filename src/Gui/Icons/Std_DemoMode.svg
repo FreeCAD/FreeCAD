@@ -235,7 +235,7 @@
         </dc:creator>
         <dc:title>Part_Shape_from_Mesh</dc:title>
         <dc:date>2020/10/29</dc:date>
-        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:publisher>
           <cc:Agent>
             <dc:title>FreeCAD</dc:title>
@@ -260,7 +260,7 @@
             <rdf:li>disc</rdf:li>
           </rdf:Bag>
         </dc:subject>
-        <dc:description>Shapes spining on a disc</dc:description>
+        <dc:description>Shapes spinning on a disc</dc:description>
       </cc:Work>
     </rdf:RDF>
   </metadata>

@@ -43,6 +43,8 @@ def findDockWidget(name):
 # define the test cases to test the FreeCAD Part module
 #---------------------------------------------------------------------------
 """
+from parttests.ColorPerFaceTest import ColorPerFaceTest
+from parttests.ColorTransparencyTest import ColorTransparencyTest
 
 
 #class PartGuiTestCases(unittest.TestCase):
@@ -94,7 +96,7 @@ class SectionCutTestCases(unittest.TestCase):
         dw = findDockWidget("Section Cutting")
         if dw:
             box = dw.findChild(QtWidgets.QDialogButtonBox)
-            button = box.button(box.Close)
+            button = box.button(QtWidgets.QDialogButtonBox.Close)
             button.click()
         else:
             print ("No Section Cutting panel found")

@@ -24,14 +24,14 @@
 
 __title__ = "FreeCAD FEM base python object"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package base_fempythonobject
 #  \ingroup FEM
 #  \brief base object for FEM Python Features
 
 
-class BaseFemPythonObject(object):
+class BaseFemPythonObject:
 
     BaseType = "Fem::BaseFemPythonObject"
 
@@ -40,10 +40,36 @@ class BaseFemPythonObject(object):
         obj.Proxy = self  # link between App::DocumentObject to this object
 
     # they are needed, see:
-    # https://forum.freecadweb.org/viewtopic.php?f=18&t=44021
-    # https://forum.freecadweb.org/viewtopic.php?f=18&t=44009
-    def __getstate__(self):
+    # https://forum.freecad.org/viewtopic.php?f=18&t=44021
+    # https://forum.freecad.org/viewtopic.php?f=18&t=44009
+    def dumps(self):
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         return None
+
+
+class _PropHelper:
+    """
+    Helper class to manage property data inside proxy objects.
+    Initialization keywords are the same used with PropertyContainer
+    to add dynamics properties plus "value" for the initial value.
+    """
+
+    def __init__(self, **kwds):
+        self.value = kwds.pop("value")
+        self.info = kwds
+        self.name = kwds["name"]
+
+    def add_to_object(self, obj):
+        obj.addProperty(**self.info)
+        obj.setPropertyStatus(self.name, "LockDynamic")
+        setattr(obj, self.name, self.value)
+
+    def handle_change_type(self, obj, old_type, convert_old_value=lambda x: x):
+        if obj.getTypeIdOfProperty(self.name) == old_type:
+            new_value = convert_old_value(obj.getPropertyByName(self.name))
+            obj.setPropertyStatus(self.name, "-LockDynamic")
+            obj.removeProperty(self.name)
+            self.add_to_object(obj)
+            setattr(obj, self.name, new_value)

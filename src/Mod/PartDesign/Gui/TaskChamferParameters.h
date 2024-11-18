@@ -50,8 +50,8 @@ private Q_SLOTS:
     void onSize2Changed(double);
     void onAngleChanged(double);
     void onFlipDirection(bool);
-    void onRefDeleted(void) override;
-    void onAddAllEdges(void);
+    void onRefDeleted() override;
+    void onAddAllEdges();
     void onCheckBoxUseAllEdgesToggled(bool checked);
 
 protected:
@@ -60,11 +60,11 @@ protected:
     void changeEvent(QEvent *e) override;
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
-    int getType(void) const;
-    double getSize(void) const;
-    double getSize2(void) const;
-    double getAngle(void) const;
-    bool getFlipDirection(void) const;
+    int getType() const;
+    double getSize() const;
+    double getSize2() const;
+    double getAngle() const;
+    bool getFlipDirection() const;
 
 private:
     void setUpUI(PartDesign::Chamfer* pcChamfer);

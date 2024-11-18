@@ -88,9 +88,9 @@ deltacpu_( R & dtcpu )
 
 
 void  aptrte( Z   nutysu, R      aretmx,
-              Z   nblf,   Z  *   nudslf,  R2 * uvslf,
-              Z   nbpti,  R2 *   uvpti,
-              Z & nbst,   R2 * & uvst,
+              Z   nblf,   Z  *   nudslf,  R_2 * uvslf,
+              Z   nbpti,  R_2 *   uvpti,
+              Z & nbst,   R_2 * & uvst,
               Z & nbt,    Z  * & nust,
               Z & ierr )
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -142,11 +142,11 @@ void  aptrte( Z   nutysu, R      aretmx,
                  //no st1, st2, st3, 0 (non quadrangle)
 
   R  d, tcpu=0;
-//  R3 direction=R3(0,0,0);  //direction pour areteideale() inactive ici!
+//  R_3 direction=R_3(0,0,0);  //direction pour areteideale() inactive ici!
   Z  nbarfr=nudslf[nblf];  //nombre total d'aretes des lignes fermees
   Z  mxtrou = Max( 1024, nblf );  //nombre maximal de trous dans la surface
 
-  R3 *mnpxyd=NULL;
+  R_3 *mnpxyd=NULL;
   Z  *mnsoar=NULL, mosoar=7, mxsoar, n1soar; //le hachage des aretes
   Z  *mnartr=NULL, moartr=3, mxartr, n1artr; //le no des 3 aretes des triangles
   Z  *mntree=NULL, motree=9, mxtree; //L'arbre 4 de TE et nombre d'entiers par TE
@@ -161,7 +161,7 @@ void  aptrte( Z   nutysu, R      aretmx,
   Z  *mnarst=NULL;
   Z  *mnlftr=NULL;
 
-  R3 comxmi[2];            //coordonnees UV Min et Maximales
+  R_3 comxmi[2];            //coordonnees UV Min et Maximales
   R  aremin, aremax;       //longueur minimale et maximale des aretes
   R  airemx;               //aire maximale souhaitee d'un triangle
   R  quamoy, quamin;
@@ -191,7 +191,7 @@ void  aptrte( Z   nutysu, R      aretmx,
  NEWDEPART:
   //mnpxyd( 3, mxsomm ) les coordonnees UV des sommets et la taille d'arete aux sommets
   if( mnpxyd!=NULL ) delete [] mnpxyd;
-  mnpxyd = new R3[mxsomm];
+  mnpxyd = new R_3[mxsomm];
   if( mnpxyd==NULL ) goto ERREUR;
 
   // le tableau mnsoar des aretes des triangles
@@ -655,7 +655,7 @@ void  aptrte( Z   nutysu, R      aretmx,
   // generation du tableau uvst de la surface triangulee
   // ---------------------------------------------------
   if( uvst != NULL ) delete [] uvst;
-  uvst = new R2[nbst];
+  uvst = new R_2[nbst];
   if( uvst == NULL ) goto ERREUR;
 
   nbst=-1;
@@ -761,7 +761,7 @@ void
               __stdcall
 #endif
 #endif
- qualitetrte( R3 *mnpxyd,
+ qualitetrte( R_3 *mnpxyd,
                    Z & mosoar, Z & mxsoar, Z *mnsoar,
                    Z & moartr, Z & mxartr, Z *mnartr,
                    Z & nbtria, R & quamoy, R & quamin )

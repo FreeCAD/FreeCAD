@@ -41,10 +41,10 @@ class GuiExport DlgParameterFind : public QDialog
 
 public:
     explicit DlgParameterFind(DlgParameterImp* parent);
-    ~DlgParameterFind();
+    ~DlgParameterFind() override;
 
-    void accept();
-    void reject();
+    void accept() override;
+    void reject() override;
 
 private:
     void setupConnections();

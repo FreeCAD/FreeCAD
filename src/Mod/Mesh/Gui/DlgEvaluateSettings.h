@@ -26,14 +26,15 @@
 
 #include <QDialog>
 
-namespace MeshGui {
+namespace MeshGui
+{
 
 class Ui_DlgEvaluateSettings;
 
 /**
  * \author Werner Mayer
  */
-class DlgEvaluateSettings : public QDialog
+class DlgEvaluateSettings: public QDialog
 {
     Q_OBJECT
 
@@ -52,8 +53,10 @@ public:
 
 private:
     Ui_DlgEvaluateSettings* ui;
+
+    Q_DISABLE_COPY_MOVE(DlgEvaluateSettings)
 };
 
-} // namespace MeshGui
+}  // namespace MeshGui
 
-#endif // MESHGUI_DLG_EVALUATE_SETTINGS_H
+#endif  // MESHGUI_DLG_EVALUATE_SETTINGS_H

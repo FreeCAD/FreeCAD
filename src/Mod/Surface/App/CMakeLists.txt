@@ -1,9 +1,3 @@
-if(MSVC)
-  add_definitions(-DHAVE_ACOSH -DHAVE_ASINH -DHAVE_ATANH)
-else(MSVC)
-  add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
-endif(MSVC)
-
 include_directories(
   ${CMAKE_BINARY_DIR}
   ${CMAKE_BINARY_DIR}/src
@@ -77,6 +71,9 @@ endif(FREECAD_USE_PCH)
 link_directories(${OCC_LIBRARY_DIR})
 add_library(Surface SHARED ${Surface_SRCS})
 target_link_libraries(Surface ${Surface_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(Surface)
+endif()
 
 SET_BIN_DIR(Surface Surface /Mod/Surface)
 SET_PYTHON_PREFIX_SUFFIX(Surface)

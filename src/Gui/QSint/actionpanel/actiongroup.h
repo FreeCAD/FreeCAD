@@ -121,7 +121,7 @@ public:
       */
     QString headerText() const;
 
-    QSize minimumSizeHint() const;
+    QSize minimumSizeHint() const override;
 
 public Q_SLOTS:
     /** Expands/collapses the group.
@@ -147,6 +147,7 @@ public Q_SLOTS:
       \sa headerText().
       */
     void setHeaderText(const QString & title);
+    void setHeaderIcon(const QPixmap& icon);
 
 protected Q_SLOTS:
     void processHide();
@@ -155,7 +156,7 @@ protected Q_SLOTS:
 protected:
     void init(bool header);
 
-    virtual void paintEvent ( QPaintEvent * event );
+    void paintEvent ( QPaintEvent * event ) override;
 
     double m_foldStep, m_foldDelta, m_fullHeight, m_tempHeight;
     int m_foldDirection;

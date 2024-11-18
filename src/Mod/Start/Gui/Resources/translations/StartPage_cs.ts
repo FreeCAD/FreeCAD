@@ -2,497 +2,200 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="cs" sourcelanguage="en">
   <context>
-    <name>StartPage</name>
+    <name>StartGui::FirstStartWidget</name>
     <message>
-      <location filename="TranslationTexts.py" line="42"/>
+      <location filename="../../FirstStartWidget.cpp" line="94"/>
+      <source>Done</source>
+      <translation>Hotovo</translation>
+    </message>
+    <message>
+      <location filename="../../FirstStartWidget.cpp" line="96"/>
+      <source>Welcome to %1</source>
+      <translation>Vítejte ve %1</translation>
+    </message>
+    <message>
+      <location filename="../../FirstStartWidget.cpp" line="99"/>
+      <source>To get started, set your basic configuration options below.</source>
+      <translation>Níže začněte s nastavením základních vlastností programu.</translation>
+    </message>
+    <message>
+      <location filename="../../FirstStartWidget.cpp" line="100"/>
+      <source>These options (and many more) can be changed later in Preferences.</source>
+      <translation>Tyto možnosti (a mnoho dalších) lze později změnit v nastavení.</translation>
+    </message>
+  </context>
+  <context>
+    <name>StartGui::GeneralSettingsWidget</name>
+    <message>
+      <location filename="../../GeneralSettingsWidget.cpp" line="212"/>
+      <source>Language</source>
+      <translation>Jazyk</translation>
+    </message>
+    <message>
+      <location filename="../../GeneralSettingsWidget.cpp" line="213"/>
+      <source>Unit System</source>
+      <translation>Jednotky</translation>
+    </message>
+    <message>
+      <location filename="../../GeneralSettingsWidget.cpp" line="226"/>
+      <source>Navigation Style</source>
+      <translation>Styl navigace</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdStart</name>
+    <message>
+      <location filename="../../Manipulator.cpp" line="47"/>
+      <location filename="../../Manipulator.cpp" line="48"/>
       <source>Start</source>
       <translation>Start</translation>
     </message>
     <message>
-      <location filename="TranslationTexts.py" line="43"/>
-      <source>Documents</source>
-      <translation>Dokumenty</translation>
+      <location filename="../../Manipulator.cpp" line="49"/>
+      <source>Displays the Start in an MDI view</source>
+      <translation>Zobrazí start v zobrazení MDI</translation>
+    </message>
+  </context>
+  <context>
+    <name>StartGui::StartView</name>
+    <message>
+      <location filename="../../StartView.cpp" line="289"/>
+      <source>Empty file</source>
+      <translation>Prázdný soubor</translation>
     </message>
     <message>
-      <location filename="TranslationTexts.py" line="44"/>
-      <source>Help</source>
-      <translation>Nápověda</translation>
+      <location filename="../../StartView.cpp" line="290"/>
+      <source>Create a new empty FreeCAD file</source>
+      <translation>Vytvořit prázdný soubor FreeCADu</translation>
     </message>
     <message>
-      <location filename="TranslationTexts.py" line="45"/>
-      <source>Activity</source>
-      <translation>Aktivita</translation>
+      <location filename="../../StartView.cpp" line="293"/>
+      <source>Open File</source>
+      <translation>Otevřít soubor</translation>
     </message>
     <message>
-      <location filename="TranslationTexts.py" line="46"/>
-      <source>Recent files</source>
-      <translation>Nedávné soubory</translation>
+      <location filename="../../StartView.cpp" line="294"/>
+      <source>Open an existing CAD file or 3D model</source>
+      <translation>Otevřít existující CAD soubor nebo 3D model</translation>
     </message>
     <message>
-      <location filename="TranslationTexts.py" line="47"/>
-      <source>Tip</source>
-      <translation>Tip</translation>
+      <location filename="../../StartView.cpp" line="297"/>
+      <source>Parametric Part</source>
+      <translation>Parametrický díl</translation>
     </message>
     <message>
-      <location filename="TranslationTexts.py" line="48"/>
-      <source>Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</source>
-      <translation>Upravte zobrazovaný počet naposledy použitých souborů v menu Upravit -&gt; Nastavení -&gt; Obecné -&gt; velikost seznamu posledních souborů</translation>
+      <location filename="../../StartView.cpp" line="298"/>
+      <source>Create a part with the Part Design workbench</source>
+      <translation>Vytvořit díl v prostředí návrhu dílu</translation>
     </message>
     <message>
-      <location filename="TranslationTexts.py" line="49"/>
+      <location filename="../../StartView.cpp" line="301"/>
+      <source>Assembly</source>
+      <translation>Sestava</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="302"/>
+      <source>Create an assembly project</source>
+      <translation>Vytvořit projekt sestavy</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="305"/>
+      <source>2D Draft</source>
+      <translation>2D návrh</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="306"/>
+      <source>Create a 2D Draft with the Draft workbench</source>
+      <translation>Vytvořit 2D návrh v prostředí návrhu</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="309"/>
+      <source>BIM/Architecture</source>
+      <translation>BIM/Architektura</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="310"/>
+      <source>Create an architectural project</source>
+      <translation>Vytvořit projekt architektury</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="525"/>
+      <source>New File</source>
+      <translation>Nový soubor</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="526"/>
       <source>Examples</source>
       <translation>Příklady</translation>
     </message>
     <message>
-      <location filename="TranslationTexts.py" line="50"/>
-      <source>General documentation</source>
-      <translation>Obecná dokumentace</translation>
+      <location filename="../../StartView.cpp" line="527"/>
+      <source>Recent Files</source>
+      <translation>Nedávné soubory</translation>
     </message>
     <message>
-      <location filename="TranslationTexts.py" line="51"/>
-      <source>User hub</source>
-      <translation>Uživatelské centrum</translation>
+      <location filename="../../StartView.cpp" line="530"/>
+      <source>Open first start setup</source>
+      <translation>Otevřít nastavení prvního spuštění</translation>
     </message>
     <message>
-      <location filename="TranslationTexts.py" line="52"/>
-      <source>This section contains documentation useful for FreeCAD users in general: a list of all the workbenches, detailed instructions on how to install and use the FreeCAD application, tutorials, and all you need to get started.</source>
-      <translation>Tato část obsahuje obecně použitelnou dokumentaci pro uživatele, FreeCADu: seznam všech pracovních ploch, podrobné pokyny k instalaci a používání aplikace FreeCAD, návody a vše, co potřebujete pro zahájení práce.</translation>
-    </message>
-    <message>
-      <location filename="TranslationTexts.py" line="53"/>
-      <source>Power users hub</source>
-      <translation>Centrum pro pokročilé uživatele</translation>
-    </message>
-    <message>
-      <location filename="TranslationTexts.py" line="54"/>
-      <source>This section gathers documentation for advanced users and people interested in writing python scripts. You will also find there a repository of macros, instructions on how to install and use them, and more information about customizing FreeCAD to your specific needs.</source>
-      <translation>Tato sekce shromažďuje dokumentaci pro pokročilé uživatele a zájemce o psaní python skriptů. Najdete zde také úložiště maker, pokyny k jejich instalaci a používání a další informace o přizpůsobení FreeCADu vašim konkrétním potřebám.</translation>
-    </message>
-    <message>
-      <location filename="TranslationTexts.py" line="55"/>
-      <source>Developers hub</source>
-      <translation>Centrum pro vývojáře</translation>
-    </message>
-    <message>
-      <location filename="TranslationTexts.py" line="56"/>
-      <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</source>
-      <translation>Tato část obsahuje dokumentaci pro vývojáře: jak zkompilovat FreeCAD, jak je strukturován zdrojový kód FreeCADu + jak se v něm orientovat, jak vyvíjet nová pracovní prostředí a/nebo zakomponovat FreeCAD do vlastní aplikace.</translation>
-    </message>
-    <message>
-      <location filename="TranslationTexts.py" line="57"/>
-      <source>Manual</source>
-      <translation>Příručka</translation>
-    </message>
-    <message>
-      <location filename="TranslationTexts.py" line="58"/>
-      <source>The FreeCAD manual is another, more linear way to present the information contained in this wiki. It is made to be read like a book, and will gently introduce you to many other pages from the hubs above. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;e-book versions&lt;/a&gt; are also available.</source>
-      <translation>Příručka FreeCAD je další forma prezentace informací z této wiki. Je vytvořena jako kniha a pozvolným a přirozeným způsobem představuje informace obsažené v uživatelských centrech uvedených výše. Je dostupná jako &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;e-kniha&lt;/a&gt; ke stažení.</translation>
-    </message>
-    <message>
-      <location filename="TranslationTexts.py" line="59"/>
-      <source>Workbenches documentation</source>
-      <translation>Dokumentace pracovních ploch</translation>
-    </message>
-    <message>
-      <location filename="TranslationTexts.py" line="60"/>
-      <source>These are the help pages of all the workbenches currently installed on this computer.</source>
-      <translation>Toto jsou stránky nápovědy všech pracovních prostředí, které jsou nainstalované v počítači.</translation>
-    </message>
-    <message>
-      <location filename="TranslationTexts.py" line="61"/>
-      <source>Getting help from the community</source>
-      <translation>Získat pomoc komunity</translation>
-    </message>
-    <message>
-      <location filename="TranslationTexts.py" line="62"/>
-      <source>The &lt;a href="http://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation>&lt;a href="http://forum.freecadweb.org"&gt;FreeCAD fórum&lt;/a&gt; je skvělým místem pro získání pomoci od dalších uživatelů a vývojářů FreeCADu. Fórum má řadu sekcí pro různé druhy problémů a diskuzních témat. V případě pochybností použijte obecnou sekci &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt;.</translation>
-    </message>
-    <message>
-      <location filename="TranslationTexts.py" line="63"/>
-      <source>If it is the first time you are posting on the forum, be sure to &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=2264"&gt;read the guidelines&lt;/a&gt; first!</source>
-      <translation>Pokud píšete na fórum poprvé, určitě si nejprve &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=2264"&gt;přečtěte pokyny&lt;/a&gt;!</translation>
-    </message>
-    <message>
-      <location filename="TranslationTexts.py" line="64"/>
-      <source>FreeCAD also maintains a public &lt;a href="https://www.freecadweb.org/tracker"&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt;bug submission guide&lt;/a&gt; before posting.</source>
-      <translation>FreeCAD provozuje veřejný &lt;a href="https://www.freecadweb.org/tracker"&gt;sledovač chyb&lt;/a&gt;, kde může kdokoliv popsat chybu nebo navrhnout nový prvek. Aby se zabránilo práci navíc a maximalizovala šance na vyřešení vaší chyby, určitě si před odesláním přečtěte &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt;průvodce popisu chyb&lt;/a&gt;.</translation>
-    </message>
-    <message>
-      <location filename="TranslationTexts.py" line="65"/>
-      <source>Available addons</source>
-      <translation>Dostupné doplňky</translation>
-    </message>
-    <message>
-      <location filename="TranslationTexts.py" line="66"/>
-      <source>Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</source>
-      <translation>Dole je seznam dostupných doplňkových pracovních prostředí, které mohou být přidány k instalaci FreeCADu. Pro jejich procházeí a instalaci použijte menu Nástroje -&gt; Manažer doplňků. Více o každém z nich se dozvíte kliknutím na odkaz dole.</translation>
-    </message>
-    <message>
-      <location filename="TranslationTexts.py" line="67"/>
-      <source>If not bundled with your FreeCAD version, install the FreeCAD documentation package to get documentation hubs, workbench help and individual command documentation without an internet connection.</source>
-      <translation>Pokud nebyl balíček dokumentace FreeCADu dodán s vaší verzí, pak pro přístup do centra dokumentace, nápovědy pracovních prostředí a jednotlivých příkazů bez internetového připojení nainstalujte nápovědu FreeCADu.</translation>
-    </message>
-    <message>
-      <location filename="TranslationTexts.py" line="68"/>
-      <source>Cannot fetch information from GitHub. &lt;a href="EnableDownload.py"&gt;Authorize FreeCAD to access the internet&lt;/a&gt; and reload the Start page.</source>
-      <translation>Nelze získat informace z GitHubu. &lt;a href="EnableDownload.py"&gt;Autorizujte FreeCAD pro přístup k internetu&lt;/a&gt; a aktualizujte Úvodní stránku.</translation>
-    </message>
-    <message>
-      <location filename="TranslationTexts.py" line="69"/>
-      <source>Recent commits</source>
-      <translation>Nedávné commity</translation>
-    </message>
-    <message>
-      <location filename="TranslationTexts.py" line="70"/>
-      <source>Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</source>
-      <translation>Níže jsou poslední změny &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;zdrojového kódu FreeCADu&lt;/a&gt;. Tyto změny se ještě nemusely projevit ve verzi FreeCADu, kterou používáte. Zkontrolujte &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;dostupné možnosti&lt;/a&gt;, pokud chcete získat vývojovou verzi.</translation>
-    </message>
-    <message>
-      <location filename="TranslationTexts.py" line="71"/>
-      <source>See all commits on github</source>
-      <translation>Zobrazit všechny commity na GitHubu</translation>
-    </message>
-    <message>
-      <location filename="TranslationTexts.py" line="72"/>
-      <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</source>
-      <translation>Můžete nastavit vlastní složku, která se zobrazí zde v menu Upravit -&gt; Nastavení -&gt; Start -&gt; Zobrazit další složku</translation>
-    </message>
-    <message>
-      <location filename="TranslationTexts.py" line="73"/>
-      <source>version</source>
-      <translation>verze</translation>
-    </message>
-    <message>
-      <location filename="TranslationTexts.py" line="74"/>
-      <source>build</source>
-      <translation>sestavení</translation>
-    </message>
-    <message>
-      <location filename="TranslationTexts.py" line="75"/>
-      <source>Create new...</source>
-      <translation>Vytvořit nový...</translation>
-    </message>
-    <message>
-      <location filename="TranslationTexts.py" line="76"/>
-      <source>Unknown</source>
-      <translation>Neznámý</translation>
-    </message>
-    <message>
-      <location filename="TranslationTexts.py" line="77"/>
-      <source>Forum</source>
-      <translation>Přejít do fóra</translation>
-    </message>
-    <message>
-      <location filename="TranslationTexts.py" line="78"/>
-      <source>The latest posts on the &lt;a href="https://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt;:</source>
-      <translation>Nejnovější příspěvky na &lt;a href="https://forum.freecadweb.org"&gt;FreeCAD fóru&lt;/a&gt;:</translation>
-    </message>
-    <message>
-      <location filename="TranslationTexts.py" line="79"/>
-      <source>To open any of the links above in your desktop browser, Right-click -&gt; Open in external browser</source>
-      <translation>Pro otevření některého odkazu výše ve vašem prohlížeči, klikněte pravým tlačítkem -&gt; Otevřít v externím prohlížeči</translation>
-    </message>
-    <message>
-      <location filename="TranslationTexts.py" line="80"/>
-      <source>Creation date</source>
-      <translation>Datum vytvoření</translation>
-    </message>
-    <message>
-      <location filename="TranslationTexts.py" line="81"/>
-      <source>Last modification</source>
-      <translation>Poslední úprava</translation>
-    </message>
-    <message>
-      <location filename="TranslationTexts.py" line="82"/>
-      <source>Notes</source>
-      <translation>Poznámky</translation>
-    </message>
-    <message>
-      <location filename="TranslationTexts.py" line="83"/>
-      <source>Open start page preferences</source>
-      <translation>Otevřít předvolby úvodní stránky</translation>
+      <location filename="../../StartView.cpp" line="532"/>
+      <source>Don't show this Start page again (start with blank screen)</source>
+      <translation>Nezobrazovat příště tuto úvodní stránku (začít s prázdnou obrazovkou)</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="75"/>
-      <source>Start page</source>
-      <translation>Úvodní stránka</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdStartPage</name>
-    <message>
-      <location filename="../../Command.cpp" line="45"/>
+      <location filename="../../StartView.cpp" line="519"/>
       <source>Start</source>
       <translation>Start</translation>
     </message>
-    <message>
-      <location filename="../../Command.cpp" line="46"/>
-      <source>Start Page</source>
-      <translation>Úvodní stránka</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="47"/>
-      <source>Displays the start page in a browser view</source>
-      <translation>Zobrazí úvodní stránku v prohlížecím zobrazení</translation>
-    </message>
   </context>
   <context>
-    <name>DlgStartPreferences</name>
+    <name>StartGui::ThemeSelectorWidget</name>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="14"/>
-      <source>Start page options</source>
-      <translation>Monžosti úvodní stránky</translation>
+      <location filename="../../ThemeSelectorWidget.cpp" line="113"/>
+      <source>FreeCAD Classic</source>
+      <translation>Klasický FreeCAD</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="20"/>
-      <source>Start page template</source>
-      <translation>Šablona úvodní stránky</translation>
+      <location filename="../../ThemeSelectorWidget.cpp" line="114"/>
+      <source>FreeCAD Dark</source>
+      <translation>Tmavý FreeCAD</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="26"/>
-      <source>An optional HTML template that will be used instead of the default start page.</source>
-      <translation>Volitelná HTML šablona, která bude použita místo výchozí úvodní stránky.</translation>
+      <location filename="../../ThemeSelectorWidget.cpp" line="115"/>
+      <source>FreeCAD Light</source>
+      <translation>Světlý FreeCAD</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="42"/>
-      <source>Contents</source>
-      <translation>Obsah</translation>
+      <location filename="../../ThemeSelectorWidget.cpp" line="238"/>
+      <source>Theme</source>
+      <translation>Motiv</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="48"/>
-      <source>Show forum</source>
-      <translation>Zobrazit fórum</translation>
+      <location filename="../../ThemeSelectorWidget.cpp" line="239"/>
+      <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
+      <translation>Hledáte více motivů? Můžete je získat prostřednictvím &lt;a href="freecad:Std_AddonMgr"&gt;Správce doplňků&lt;/a&gt;.</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="55"/>
-      <source>Show examples folder contents</source>
-      <translation>Zobrazit obsah složky s příklady</translation>
+      <location filename="../../ThemeSelectorWidget.cpp" line="241"/>
+      <source>FreeCAD Dark</source>
+      <comment>Visual theme name</comment>
+      <translation>Tmavý FreeCAD</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="62"/>
-      <source>Show additional folder</source>
-      <translation>Zobrazit další složku</translation>
+      <location filename="../../ThemeSelectorWidget.cpp" line="242"/>
+      <source>FreeCAD Light</source>
+      <comment>Visual theme name</comment>
+      <translation>Světlý FreeCAD</translation>
     </message>
     <message>
-      <location filename="../../DlgStartPreferences.ui" line="69"/>
-      <source>If you want the examples to show on the first page</source>
-      <translation>Chcete-li zobrazit příklady na první stránkce</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="91"/>
-      <source>If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</source>
-      <translation>Je-li zaškrtnuto, poslední příspěvky z FreeCAD fóra se zobrazí v záložce Aktivita</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="110"/>
-      <source>An optional custom folder to be displayed at the bottom of the first page.
-By using ";;" to separate paths, you can add several folders here</source>
-      <translation>Volitelná vlastní složka, která se zobrazí v dolní části první stránky.
-Pomocí ";;" pro oddělení cest, zde můžete přidat více složek</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="127"/>
-      <source>Show notepad</source>
-      <translation>Zobrazit poznámkový blok</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="134"/>
-      <source>Shows a notepad next to the file thumbnails, where you can keep notes across sessions</source>
-      <translation>Vedle náhledů se zobrazí poznámkový blok, kde se zachovají poznámky napříč relacemi</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="153"/>
-      <source>Show tips</source>
-      <translation>Zobrazit tipy</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="163"/>
-      <source>Displays help tips in the Start workbench Documents tab</source>
-      <translation>Zobrazit tipy nápovědy v kartě dokumentů pracovního prostředí Start</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="185"/>
-      <source>Fonts and colors</source>
-      <translation>Písma a barvy</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="197"/>
-      <source>The background of the main start page area</source>
-      <translation>Pozadí plochy hlavní úvodní stránky</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="217"/>
-      <source>Background color</source>
-      <translation>Barva pozadí</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="229"/>
-      <source>in FreeCAD</source>
-      <translation>ve FreeCADu</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="248"/>
-      <source>In external browser</source>
-      <translation>V externím prohlížeči</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="266"/>
-      <source>Background color down gradient</source>
-      <translation>Spodní gradient barvy pozadí</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="279"/>
-      <source>The color of the version text</source>
-      <translation>Barva textu verze</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="299"/>
-      <source>Link color</source>
-      <translation>Barva odkazu</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="306"/>
-      <source>An optional image to display as background</source>
-      <translation>Volitelný obrázek pro zobrazení na pozadí</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="319"/>
-      <source>If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</source>
-      <translation>Je-li zaškrtnuto a styl FreeCADu je specifikovaný v Obecném nastavení, pak bude použit namísto barev níže</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="338"/>
-      <source>Page background color</source>
-      <translation>Barva pozadí stránky</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="351"/>
-      <source>The color of the text on the main pages</source>
-      <translation>Barva textu na hlavních stránkách</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="371"/>
-      <source>Background image</source>
-      <translation>Obrázek na pozadí</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="378"/>
-      <source>Page text color</source>
-      <translation>Barva textu na stránce</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="391"/>
-      <source>The color of the links</source>
-      <translation>Barva odkazů</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="417"/>
-      <source>The background color of the boxes inside the pages</source>
-      <translation>Barva pozadí sekcí na stránce</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="437"/>
-      <source>Box background color</source>
-      <translation>Barva pozadí sekce</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="450"/>
-      <source>The background color behind the panels</source>
-      <translation>Barva pozadí za panely</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="479"/>
-      <source>The down gradient for the background color (currently unsupported)</source>
-      <translation>Spodní gradient pro barvu pozadí (momentálně není podporováno)</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="502"/>
-      <source>Open links</source>
-      <translation>Otevřít odkazy</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="509"/>
-      <source>Background text color</source>
-      <translation>Barva textu na pozadí</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="516"/>
-      <source>Use FreeCAD style sheet</source>
-      <translation>Použít styl FreeCADu</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="523"/>
-      <source>Font family</source>
-      <translation>Rodina fontů</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="532"/>
-      <source>The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</source>
-      <translation>Rodina písma použitá na úvodní stránce. To může být název písma nebo čárkami oddělená řada náhradních písem</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="538"/>
-      <source>Arial,Helvetica,sans</source>
-      <translation>Arial,Helvetica,sans</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="551"/>
-      <source>The base font size to use for all texts of the Start page</source>
-      <translation>Základní velikost písma pro všechen text na Úvodní stránce</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="554"/>
-      <source>px</source>
-      <translation>px</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="572"/>
-      <source>Use gradient for New File icon</source>
-      <translation>Použít gradient pro ikonu nového souboru</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="579"/>
-      <source>If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</source>
-      <translation>Je-li vybráno, ikona 'Nový soubor' zobrazí ikonu gradientu namísto normální ikony</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="601"/>
-      <source>Options</source>
-      <translation>Možnosti</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="607"/>
-      <source>Choose which workbench to switch to after the program launches</source>
-      <translation>Vyberte výchozí pracovní prostředí po spuštění programu</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="614"/>
-      <source>If checked, will automatically close the Start page when FreeCAD launches</source>
-      <translation>Je-li zaškrtnuto, úvodní stránka se při spuštění FreeCADu automaticky zavře</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="633"/>
-      <source>Switch workbench after loading</source>
-      <translation>Po otevření přepnout pracovní prostředí</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="640"/>
-      <source>Close start page after loading</source>
-      <translation>Po otevření zavřít úvodní stránku</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="647"/>
-      <source>Close and switch on opening file</source>
-      <translation>Zavřít a přepnout při otevírání souboru</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStartPreferences.ui" line="654"/>
-      <source>If application is started by opening a file, apply the two settings above</source>
-      <translation>Pokud se aplikace zapne prostřednictvím otevření souboru, použít tato dvě nastavení výše</translation>
+      <location filename="../../ThemeSelectorWidget.cpp" line="243"/>
+      <source>FreeCAD Classic</source>
+      <comment>Visual theme name</comment>
+      <translation>Klasický FreeCAD</translation>
     </message>
   </context>
 </TS>

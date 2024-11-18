@@ -31,13 +31,13 @@ import lazy_loader.lazy_loader as lz
 
 import FreeCAD as App
 import DraftVecUtils
+from draftutils import params
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
 
 ## \addtogroup draftgeoutils
 # @{
-PARAMGRP = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 
 # Default normal direction for all geometry operations
 NORM = App.Vector(0, 0, 1)
@@ -54,9 +54,9 @@ def precision():
     #      15 that the code would never consider 2 points are coincident
     #      as internal float is not that precise)
     precisionMax = 10
-    precisionInt = PARAMGRP.GetInt("precision", 6)
-    precisionInt = (precisionInt if precisionInt <= 10 else precisionMax)
-    return precisionInt  # return PARAMGRP.GetInt("precision", 6)
+    precisionInt = params.get_param("precision")
+    precisionInt = precisionInt if precisionInt <= 10 else precisionMax
+    return precisionInt
 
 
 def vec(edge, use_orientation = False):
@@ -149,7 +149,7 @@ def isAligned(edge, axis="x"):
     The axis can be 'x', 'y' or 'z'.
     """
     def is_same(a, b):
-      return round(a, precision()) == round(b, precision())
+        return round(a, precision()) == round(b, precision())
 
     if axis == "x":
         if isinstance(edge, Part.Edge):

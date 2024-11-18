@@ -48,7 +48,9 @@ public:
 
     App::PropertyString       Symbol;
     App::PropertyStringList   EditableTexts;
+    App::PropertyLink         Owner;
 
+    short mustExecute() const override;
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
@@ -61,6 +63,8 @@ public:
     }
     QRectF getRect() const override;
     bool checkFit(TechDraw::DrawPage* p) const override;
+
+    App::PropertyLink *getOwnerProperty() override { return &Owner; }
 
     //return PyObject as DrawViewSymbolPy
     PyObject *getPyObject() override;

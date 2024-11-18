@@ -41,14 +41,9 @@ PROPERTY_SOURCE(Gui::ViewProviderMaterialObject, Gui::ViewProviderDocumentObject
 /**
  * Creates the view provider for an object group.
  */
-ViewProviderMaterialObject::ViewProviderMaterialObject()
-{
+ViewProviderMaterialObject::ViewProviderMaterialObject() = default;
 
-}
-
-ViewProviderMaterialObject::~ViewProviderMaterialObject()
-{
-}
+ViewProviderMaterialObject::~ViewProviderMaterialObject() = default;
 
 bool ViewProviderMaterialObject::doubleClicked()
 {
@@ -78,5 +73,5 @@ PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderMaterialObjectPython, Gui::ViewProvide
 /// @endcond
 
 // explicit template instantiation
-template class GuiExport ViewProviderPythonFeatureT<ViewProviderMaterialObject>;
+template class GuiExport ViewProviderFeaturePythonT<ViewProviderMaterialObject>;
 }

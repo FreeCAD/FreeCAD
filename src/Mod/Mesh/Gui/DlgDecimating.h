@@ -29,9 +29,10 @@
 #include <Gui/TaskView/TaskView.h>
 #include <memory>
 
-namespace MeshGui {
+namespace MeshGui
+{
 class Ui_DlgDecimating;
-class DlgDecimating : public QWidget
+class DlgDecimating: public QWidget
 {
     Q_OBJECT
 
@@ -48,33 +49,38 @@ private:
     void onCheckAbsoluteNumberToggled(bool);
 
 private:
-    int numberOfTriangles;
+    int numberOfTriangles {0};
     std::unique_ptr<Ui_DlgDecimating> ui;
+
+    Q_DISABLE_COPY_MOVE(DlgDecimating)
 };
 
 /**
  * Embed the panel into a task dialog.
  */
-class TaskDecimating : public Gui::TaskView::TaskDialog
+class TaskDecimating: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
     TaskDecimating();
-    ~TaskDecimating() override;
 
 public:
     bool accept() override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
+    }
     bool isAllowedAlterDocument() const override
-    { return true; }
+    {
+        return true;
+    }
 
 private:
     DlgDecimating* widget;
 };
 
-}
+}  // namespace MeshGui
 
-#endif // MESHGUI_DLGDECIMATING_H
+#endif  // MESHGUI_DLGDECIMATING_H

@@ -50,7 +50,7 @@ import draftutils.todo as todo
 
 from drafttaskpanels.task_shapestring import ShapeStringTaskPanelCmd
 from draftutils.translate import translate
-from draftutils.messages import _msg, _err
+from draftutils.messages import _toolmsg, _err
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -69,13 +69,17 @@ class ShapeString(gui_base_original.Creator):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(ShapeString, self).Activated(name="ShapeString")
+        super().Activated(name="ShapeString")
         if self.ui:
             self.ui.sourceCmd = self
             self.task = ShapeStringTaskPanelCmd(self)
             self.call = self.view.addEventCallback("SoEvent", self.task.action)
-            _msg(translate("draft", "Pick ShapeString location point"))
+            _toolmsg(translate("draft", "Pick ShapeString location point"))
             todo.ToDo.delay(Gui.Control.showDialog, self.task)
+
+    def finish(self):
+        self.end_callbacks(self.call)
+        super().finish()
 
 
 Gui.addCommand('Draft_ShapeString', ShapeString())

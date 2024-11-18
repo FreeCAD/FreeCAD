@@ -30,9 +30,11 @@
 #include <App/PropertyUnits.h>
 #include <Base/Vector3D.h>
 #include <Mod/Fem/FemGlobal.h>
+#include <App/SuppressibleExtension.h>
 
 
-namespace Fem {
+namespace Fem
+{
 
 /**
  * @brief Base class of all Constraint Objects of the Fem module.
@@ -56,7 +58,8 @@ namespace Fem {
  *  and @ref Scale and the protected method @ref getPoints(points&, normals&,
  *  scale&).
  */
-class FemExport Constraint : public App::DocumentObject {
+class FemExport Constraint: public App::DocumentObject, public App::SuppressibleExtension
+{
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::Constraint);
 
 public:
@@ -98,7 +101,11 @@ public:
      *  View Provider but it's always 1. It isn't updated when @ref References
      *  changes.
      */
-    App::PropertyInteger Scale;
+    App::PropertyFloatConstraint Scale;
+
+    // Read-only (calculated values). These trigger changes in the ViewProvider
+    App::PropertyVectorList Points;
+    App::PropertyVectorList Normals;
 
     /**
      * @brief Updates @ref NormalDirection.
@@ -113,53 +120,27 @@ public:
      *  cleared right after the @ref execute call by the recompute mechanism.
      *  See Document::recompute() and DocumentObject::purgeTouched().
      */
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
 
     /**
-     * @brief Calculates scale factor based on length of edge.
+     * @brief Calculates scale factor based on characteristic length of shape.
      *
      * @details
      *  Used to calculate the scale factor returned by @ref getPoints when the
-     *  scale factor is calculated for a face.
-     *
-     * @note
-     *  This method does a really crazy calculation that I didn't dare to try
-     *  to understand.
      */
-    int calcDrawScaleFactor(double lparam) const;
+    double calcSizeFactor(double characLen) const;
 
-    /**
-     * @brief Calculates scale factor based on size of face.
-     *
-     * @details
-     *  Used to calculate the scale factor returned by @ref getPoints when the
-     *  scale factor is calculated for a edge.
-     *
-     * @note
-     *  This method does a really crazy calculation that I didn't dare to try
-     *  to understand.
-     */
-    int calcDrawScaleFactor(double lvparam, double luparam) const;
-
-    /**
-     * @brief Returns default scale factor of 1.
-     *
-     * @details
-     *  This is just used to make code more understandable. Other versions
-     *  (overloads) of this function do useful calculations based on faces or
-     *  edges. Used by @ref getPoints if no useful shape information is
-     *  available.
-     *
-     * @return always the integer 1
-     */
-    int calcDrawScaleFactor() const;
-
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "FemGui::ViewProviderFemConstraint";
     }
 
-protected:
+    /**
+     * @brief Returns Scale * sizeFactor.
+     */
+    float getScaleFactor() const;
 
+protected:
     /**
      * @brief Updates NormalDirection if References change.
      */
@@ -173,6 +154,11 @@ protected:
      *  of FemConstraint.
      */
     void onDocumentRestored() override;
+    void onSettingDocument() override;
+    void unsetupObject() override;
+    void handleChangedPropertyType(Base::XMLReader& reader,
+                                   const char* TypeName,
+                                   App::Property* prop) override;
 
     /**
      * @brief Returns data based on References relevant for rendering widgets.
@@ -208,31 +194,21 @@ protected:
      *  returns true. If an error occurred and the data couldn't be extracted
      *  properly false is returned.
      */
-    bool getPoints(
-            std::vector<Base::Vector3d>& points,
-            std::vector<Base::Vector3d>& normals,
-            int * scale) const;
+    bool getPoints(std::vector<Base::Vector3d>& points,
+                   std::vector<Base::Vector3d>& normals,
+                   double* scale) const;
 
     /**
-     * @brief Extract properties of cylindrical face.
+     * @brief Calculate point of cylindrical face where to render widget.
      *
      * @note
      *  This method is very specific and doesn't require access to member
      *  variables. It should be rewritten at a different place.
      */
-    bool getCylinder(
-            double& radius, double& height,
-            Base::Vector3d& base, Base::Vector3d& axis) const;
-
-    /**
-     * @brief Calculate point of cylidrical face where to render widget.
-     *
-     * @note
-     *  This method is very specific and doesn't require access to member
-     *  variables. It should be rewritten at a different place.
-     */
-    Base::Vector3d getBasePoint(const Base::Vector3d& base, const Base::Vector3d& axis,
-                                const App::PropertyLinkSub &location, const double& dist);
+    Base::Vector3d getBasePoint(const Base::Vector3d& base,
+                                const Base::Vector3d& axis,
+                                const App::PropertyLinkSub& location,
+                                const double& dist);
     /**
      * @brief Get normal vector of point calculated by @ref getBasePoint.
      *
@@ -240,13 +216,22 @@ protected:
      *  This method is very specific and doesn't require access to member
      *  variables. It should be rewritten at a different place.
      */
-    const Base::Vector3d getDirection(const App::PropertyLinkSub &direction);
+    const Base::Vector3d getDirection(const App::PropertyLinkSub& direction);
+
+private:
+    /**
+     * @brief Symbol size factor determined from the size of the shape.
+     */
+    double sizeFactor;
+
+    void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
+    boost::signals2::connection connDocChangedObject;
 };
 
 using ConstraintPython = App::FeaturePythonT<Constraint>;
 
 
-} //namespace Fem
+}  // namespace Fem
 
 
-#endif // FEM_CONSTRAINT_H
+#endif  // FEM_CONSTRAINT_H

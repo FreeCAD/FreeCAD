@@ -53,15 +53,18 @@ public:
     App::PropertyBool   HorizCenterLine;
     App::PropertyBool   VertCenterLine;
     App::PropertyBool   ShowSectionLine;
+    App::PropertyBool   IncludeCutLine;
     App::PropertyEnumeration   SectionLineStyle;
     App::PropertyColor  SectionLineColor;
     App::PropertyBool   SectionLineMarks;
     App::PropertyEnumeration   HighlightLineStyle;
     App::PropertyColor  HighlightLineColor;
     App::PropertyFloat  HighlightAdjust;
+    App::PropertyEnumeration BreakLineType;
+    App::PropertyEnumeration BreakLineStyle;
     App::PropertyBool   ShowAllEdges;
-
-    static const char* LineStyleEnums[];
+    App::PropertyColor   FaceColor;
+    App::PropertyPercent FaceTransparency;
 
     void attach(App::DocumentObject *) override;
     bool useNewSelectionModel(void) const override {return false;}
@@ -69,16 +72,14 @@ public:
     bool canDelete(App::DocumentObject* obj) const override;
     bool setEdit(int ModNum) override;
     bool doubleClicked(void) override;
-
-public:
     void onChanged(const App::Property *prop) override;
     void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;
     App::Color prefSectionColor(void);
     App::Color prefHighlightColor(void);
     int prefHighlightStyle(void);
 
-
     std::vector<App::DocumentObject*> claimChildren(void) const override;
+    void fixSceneDependencies();
 
     TechDraw::DrawViewPart* getViewObject() const override;
     TechDraw::DrawViewPart* getViewPart() const;

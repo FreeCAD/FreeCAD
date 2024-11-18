@@ -47,6 +47,7 @@ private:
     App::Document* getOrCreateDocument();
     App::Document* getOrCreateDocument(const std::string& document);
     bool openInternal();
+    void openInternal(const char* type, const char* prop);
     void openInventor();
     void openVRML();
     void openImage();

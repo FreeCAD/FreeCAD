@@ -66,6 +66,7 @@ protected:
     /** Pops up the context menu with some extensions */
     void contextMenuEvent ( QContextMenuEvent* e ) override;
     void drawMarker(int line, int x, int y, QPainter*) override;
+    void keyPressEvent(QKeyEvent *) override;
 
 private:
     //PythonSyntaxHighlighter* pythonSyntax;
@@ -80,9 +81,9 @@ class GuiExport PythonSyntaxHighlighter : public SyntaxHighlighter
 {
 public:
     explicit PythonSyntaxHighlighter(QObject* parent);
-    virtual ~PythonSyntaxHighlighter();
+    ~PythonSyntaxHighlighter() override;
 
-    void highlightBlock (const QString & text);
+    void highlightBlock (const QString & text) override;
 
 private:
     PythonSyntaxHighlighterP* d;

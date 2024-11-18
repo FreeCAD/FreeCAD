@@ -42,12 +42,12 @@ public:
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
     /// grouping handling
-    std::vector<App::DocumentObject*> claimChildren(void)const override;
+    std::vector<App::DocumentObject*> claimChildren() const override;
 
     bool onDelete(const std::vector<std::string> &) override;
 
 protected:
-    QIcon getIcon(void) const override;
+    QIcon getIcon() const override;
 
     /// Returns a newly created TaskDlgHelixParameters
     TaskDlgFeatureParameters *getEditDialog() override;

@@ -93,8 +93,8 @@ namespace Gui {
 class NS::Event : public sc::event<NS::Event>
 {
 public:
-    Event():inventor_event(nullptr), modifiers{}, flags(new Flags){}
-    virtual ~Event(){}
+    Event() : flags(new Flags){}
+    virtual ~Event() = default;
 
     void log() const {
         if (isPress(1))
@@ -197,8 +197,8 @@ public:
     };
 
 public:
-    const SoEvent* inventor_event;
-    unsigned int modifiers;
+    const SoEvent* inventor_event{nullptr};
+    unsigned int modifiers{0};
     unsigned int mbstate() const {return modifiers & MASKBUTTONS;}
     unsigned int kbdstate() const {return modifiers & MASKMODIFIERS;}
 
@@ -245,7 +245,7 @@ public:
         if (ns.logging)
             Base::Console().Log(" -> IdleState\n");
     }
-    virtual ~IdleState(){}
+    virtual ~IdleState() = default;
 
     sc::result react(const NS::Event& ev){
         auto &ns = this->outermost_context().ns;
@@ -297,7 +297,8 @@ public:
         //MMB click
         if(ev.isPress(3) && ev.mbstate() == 0x010){
             ev.flags->processed = true;
-            ns.onSetRotationCenter(ev.inventor_event->getPosition());
+            ns.setupPanningPlane(ns.viewer->getCamera());
+            ns.lookAtPoint(ev.inventor_event->getPosition());
             return transit<NS::AwaitingReleaseState>();
         }
 
@@ -314,8 +315,10 @@ public:
             bool press = (kbev->getState() == SoKeyboardEvent::DOWN);
             switch (kbev->getKey()) {
                 case SoKeyboardEvent::H:
-                    if (!press)
-                        ns.onSetRotationCenter(kbev->getPosition());
+                    if (!press) {
+                        ns.setupPanningPlane(ns.viewer->getCamera());
+                        ns.lookAtPoint(kbev->getPosition());
+                    }
                 break;
                 case SoKeyboardEvent::PAGE_UP:
                     if(!press){
@@ -489,12 +492,14 @@ public:
     explicit RotateState(my_context ctx):my_base(ctx)
     {
         auto &ns = this->outermost_context().ns;
+        const auto inventorEvent = static_cast<const NS::Event*>(this->triggering_event())->inventor_event;
+        ns.saveCursorPosition(inventorEvent);
         ns.setViewingMode(NavigationStyle::DRAGGING);
-        this->base_pos = static_cast<const NS::Event*>(this->triggering_event())->inventor_event->getPosition();
+        this->base_pos = inventorEvent->getPosition();
         if (ns.logging)
             Base::Console().Log(" -> RotateState\n");
     }
-    virtual ~RotateState(){}
+    virtual ~RotateState() = default;
 
     sc::result react(const NS::Event& ev){
         if(ev.isMouseButtonEvent()){
@@ -537,9 +542,9 @@ public:
         if (ns.logging)
             Base::Console().Log(" -> PanState\n");
         this->ratio = ns.viewer->getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
-        ns.pan(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
+        ns.setupPanningPlane(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
     }
-    virtual ~PanState(){}
+    virtual ~PanState() = default;
 
     sc::result react(const NS::Event& ev){
         if(ev.isMouseButtonEvent()){
@@ -584,7 +589,7 @@ public:
         if (ns.logging)
             Base::Console().Log(" -> StickyPanState\n");
         this->ratio = ns.viewer->getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
-        ns.pan(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
+        ns.setupPanningPlane(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
     }
     virtual ~StickyPanState(){
         auto &ns = this->outermost_context().ns;
@@ -625,13 +630,14 @@ public:
     explicit TiltState(my_context ctx):my_base(ctx)
     {
         auto &ns = this->outermost_context().ns;
+        ns.setRotationCenter(ns.getFocalPoint());
         ns.setViewingMode(NavigationStyle::DRAGGING);
         this->base_pos = static_cast<const NS::Event*>(this->triggering_event())->inventor_event->getPosition();
         if (ns.logging)
             Base::Console().Log(" -> TiltState\n");
-        ns.pan(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
+        ns.setupPanningPlane(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
     }
-    virtual ~TiltState(){}
+    virtual ~TiltState() = default;
 
     sc::result react(const NS::Event& ev){
         if(ev.isMouseButtonEvent()){
@@ -679,7 +685,7 @@ public:
         this->base_pos = static_cast<const NS::Event*>(this->triggering_event())->inventor_event->getPosition();
         if (ns.logging)
             Base::Console().Log(" -> GestureState\n");
-        ns.pan(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
+        ns.setupPanningPlane(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
         this->ratio = ns.viewer->getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
         enableTilt = !(App::GetApplication().GetParameterGroupByPath
                 ("User parameter:BaseApp/Preferences/View")->GetBool("DisableTouchTilt",true));
@@ -759,7 +765,7 @@ public:
         if (ns.logging)
             Base::Console().Log(" -> AwaitingReleaseState\n");
     }
-    virtual ~AwaitingReleaseState(){}
+    virtual ~AwaitingReleaseState() = default;
 
     sc::result react(const NS::Event& ev){
         auto &ns = this->outermost_context().ns;
@@ -810,7 +816,7 @@ public:
         if (ns.logging)
             Base::Console().Log(" -> InteractState\n");
     }
-    virtual ~InteractState(){}
+    virtual ~InteractState() = default;
 
     sc::result react(const NS::Event& ev){
         if(ev.isMouseButtonEvent()){
@@ -842,10 +848,7 @@ GestureNavigationStyle::GestureNavigationStyle()
 
 }
 
-GestureNavigationStyle::~GestureNavigationStyle()
-{
-
-}
+GestureNavigationStyle::~GestureNavigationStyle() = default;
 
 const char* GestureNavigationStyle::mouseButtons(ViewerMode mode)
 {
@@ -855,9 +858,9 @@ const char* GestureNavigationStyle::mouseButtons(ViewerMode mode)
     case NavigationStyle::PANNING:
         return QT_TR_NOOP("Drag screen with two fingers OR press right mouse button.");
     case NavigationStyle::DRAGGING:
-        return QT_TR_NOOP("Drag screen with one finger OR press left mouse button. In Sketcher && other edit modes, hold Alt in addition.");
+        return QT_TR_NOOP("Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.");
     case NavigationStyle::ZOOMING:
-        return QT_TR_NOOP("Pinch (place two fingers on the screen && drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.");
+        return QT_TR_NOOP("Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.");
     default:
         return "No description";
     }
@@ -1005,16 +1008,6 @@ void GestureNavigationStyle::onRollGesture(int direction)
     } catch (...) {
         Base::Console().Error("GestureNavigationStyle::onRollGesture: unknown C++ exception when invoking command %s\n", cmd.c_str());
    }
-
-}
-
-void GestureNavigationStyle::onSetRotationCenter(SbVec2s cursor){
-    SbBool ret = NavigationStyle::lookAtPoint(cursor);
-    if(!ret){
-        this->interactiveCountDec(); //this was in original gesture nav. Not sure what is it needed for --DeepSOIC
-        Base::Console().Log(
-            "No object under cursor! Can't set new center of rotation.\n");
-    }
 
 }
 

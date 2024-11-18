@@ -23,25 +23,20 @@
 
 __title__ = "FreeCAD FEM element geometry 2D ViewProvider for the document object"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package view_element_geometry2D
 #  \ingroup FEM
 #  \brief view provider for element geometry 2D object
 
 from femtaskpanels import task_element_geometry2D
-from . import view_base_femconstraint
+from . import view_base_femelement
 
 
-class VPElementGeometry2D(view_base_femconstraint.VPBaseFemConstraint):
+class VPElementGeometry2D(view_base_femelement.VPBaseFemElement):
     """
     A View Provider for the ElementGeometry2D object
     """
 
     def setEdit(self, vobj, mode=0):
-        view_base_femconstraint.VPBaseFemConstraint.setEdit(
-            self,
-            vobj,
-            mode,
-            task_element_geometry2D._TaskPanel
-        )
+        super().setEdit(vobj, mode, task_element_geometry2D._TaskPanel)

@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2017 Johannes Hartung <j.hartung@gmx.net>               *
+# *   Copyright (c) 2017-2023 Johannes Hartung <j.hartung@gmx.net>          *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD Fenics XDMF mesh reader"
 __author__ = "Johannes Hartung"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package importFenicsXDMF
 #  \ingroup FEM
@@ -48,5 +48,5 @@ def read_fenics_mesh_xdmf(xdmffilename):
         "Tria6Elem": {},
         "Quad4Elem": {},
         "Quad8Elem": {},
-        "Seg2Elem": {}
+        "Seg2Elem": {},
     }

@@ -46,19 +46,16 @@ as they normally require graphical input in the task panel or a selection
 in the 3D view (`Gui.Selection`).
 
 Most of these GUI tools require certain components of Draft to exist
-like the `gui_snapper.Snapper`, the `WorkingPlane.Plane`,
-and the `DraftGui.DraftToolBar` classes.
-These classes are normally installed in the global `App` or `Gui`
-namespaces, so they are accessible at all times.
+like the `gui_snapper.Snapper`and the `DraftGui.DraftToolBar` classes.
+These classes are normally installed in the global `Gui` namespace,
+so they are accessible at all times.
 
 ::
 
     import DraftGui
     import draftguitools.gui_snapper
-    import WorkingPlane
     Gui.draftToolBar = DraftGui.DraftToolBar()
     Gui.Snapper = draftguitools.gui_snapper.Snapper()
-    App.DraftWorkingPlane = WorkingPlane.Plane()
 
 These classes can be imported and initialized individually
 but it is easier to set them up just by importing `DraftTools`.

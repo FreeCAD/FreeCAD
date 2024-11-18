@@ -23,22 +23,25 @@
 # ARE DISCLAIMED.
 # IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY
 # DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
 # LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 # ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+
 class BaseEntityClass(object):
-    """ A class that allows advanced __repr__ features for entity instances
-    """
+    """A class that allows advanced __repr__ features for entity instances"""
+
     def __repr__(self):
-        """ Displays attribute with their values
-        """
-        doc_string = "# %s class description:\n%s\n# Instance attributes:\n"%(self.__class__,self.__doc__)
+        """Displays attribute with their values"""
+        doc_string = "# %s class description:\n%s\n# Instance attributes:\n" % (
+            self.__class__,
+            self.__doc__,
+        )
         # write each argument with its value
         properties = dir(self)
         for elem in properties:
             if not elem.startswith("_"):
-                doc_string += "\t%s:%s\n"%(elem,self.__getattribute__(elem))
+                doc_string += "\t%s:%s\n" % (elem, self.__getattribute__(elem))
         return doc_string

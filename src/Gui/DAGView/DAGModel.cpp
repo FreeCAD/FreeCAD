@@ -55,7 +55,7 @@
 
 using namespace Gui;
 using namespace DAG;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 LineEdit::LineEdit(QWidget* parentIn): QLineEdit(parentIn)
 {
@@ -137,11 +137,13 @@ Model::Model(QObject *parentIn, const Gui::Document &documentIn) : QGraphicsScen
   connect(this->editingFinishedAction, &QAction::triggered,
           this, &Model::editingFinishedSlot);
 
-  connectNewObject = documentIn.signalNewObject.connect(boost::bind(&Model::slotNewObject, this, bp::_1));
-  connectDelObject = documentIn.signalDeletedObject.connect(boost::bind(&Model::slotDeleteObject, this, bp::_1));
-  connectChgObject = documentIn.signalChangedObject.connect(boost::bind(&Model::slotChangeObject, this, bp::_1, bp::_2));
-  connectEdtObject = documentIn.signalInEdit.connect(boost::bind(&Model::slotInEdit, this, bp::_1));
-  connectResObject = documentIn.signalResetEdit.connect(boost::bind(&Model::slotResetEdit, this, bp::_1));
+  //NOLINTBEGIN
+  connectNewObject = documentIn.signalNewObject.connect(std::bind(&Model::slotNewObject, this, sp::_1));
+  connectDelObject = documentIn.signalDeletedObject.connect(std::bind(&Model::slotDeleteObject, this, sp::_1));
+  connectChgObject = documentIn.signalChangedObject.connect(std::bind(&Model::slotChangeObject, this, sp::_1, sp::_2));
+  connectEdtObject = documentIn.signalInEdit.connect(std::bind(&Model::slotInEdit, this, sp::_1));
+  connectResObject = documentIn.signalResetEdit.connect(std::bind(&Model::slotResetEdit, this, sp::_1));
+  //NOLINTEND
 
   for (auto obj : documentIn.getDocument()->getObjects()) {
     auto vpd = Base::freecad_dynamic_cast<Gui::ViewProviderDocumentObject>(documentIn.getViewProvider(obj));
@@ -248,9 +250,11 @@ void Model::slotNewObject(const ViewProviderDocumentObject &VPDObjectIn)
   icon->setPixmap(VPDObjectIn.getIcon().pixmap(iconSize, iconSize));
   (*theGraph)[virginVertex].stateIcon->setPixmap(passPixmap);
   (*theGraph)[virginVertex].text->setFont(this->font());
+  //NOLINTBEGIN
   (*theGraph)[virginVertex].connChangeIcon =
       const_cast<Gui::ViewProviderDocumentObject&>(VPDObjectIn).signalChangeIcon.connect(
-          boost::bind(&Model::slotChangeIcon, this, boost::cref(VPDObjectIn), icon));
+          std::bind(&Model::slotChangeIcon, this, boost::cref(VPDObjectIn), icon));
+  //NOLINTEND
 
   graphDirty = true;
   lastAddedVertex = Graph::null_vertex();
@@ -304,15 +308,21 @@ void Model::slotChangeObject(const ViewProviderDocumentObject &VPDObjectIn, cons
   //renaming of objects.
   if (std::string("Label") == name)
   {
-    const GraphLinkRecord &record = findRecord(&VPDObjectIn, *graphLink);
-    auto text = (*theGraph)[record.vertex].text.get();
-    text->setPlainText(QString::fromUtf8(record.DObject->Label.getValue()));
+    if (hasRecord(&VPDObjectIn, *graphLink))
+    {
+      const GraphLinkRecord &record = findRecord(&VPDObjectIn, *graphLink);
+      auto text = (*theGraph)[record.vertex].text.get();
+      text->setPlainText(QString::fromUtf8(record.DObject->Label.getValue()));
+    }
   }
   else if (propertyIn.isDerivedFrom(App::PropertyLinkBase::getClassTypeId()))
   {
-    const GraphLinkRecord &record = findRecord(&VPDObjectIn, *graphLink);
-    boost::clear_vertex(record.vertex, *theGraph);
-    graphDirty = true;
+    if (hasRecord(&VPDObjectIn, *graphLink))
+    {
+      const GraphLinkRecord &record = findRecord(&VPDObjectIn, *graphLink);
+      boost::clear_vertex(record.vertex, *theGraph);
+      graphDirty = true;
+    }
   }
 }
 
@@ -456,7 +466,7 @@ void Model::updateSlot()
   //for speed. Not doing yet, as I want a simple algorithm until
   //a more complete picture is formed.
 
-  Base::TimeInfo startTime;
+  Base::TimeElapsed startTime;
 
   //here we will cycle through the graph updating edges.
   //we have to do this first and in isolation because everything is dependent on an up to date graph.
@@ -757,7 +767,7 @@ void Model::updateSlot()
 
   //Modeling_Challenge_Casting_ta4 with 59 features: "Initialize DAG View time: 0.007"
   //keeping algo simple with extra loops only added 0.002 to above number.
-//   std::cout << "Initialize DAG View time: " << Base::TimeInfo::diffTimeF(startTime, Base::TimeInfo()) << std::endl;
+//   std::cout << "Initialize DAG View time: " << Base::TimeElapsed::diffTimeF(startTime, Base::TimeElapsed()) << std::endl;
 
 //   outputGraphviz<Graph>(*theGraph, "./graphviz.dot");
   graphDirty = false;
@@ -929,9 +939,9 @@ void Model::mousePressEvent(QGraphicsSceneMouseEvent* event)
     QPointF currentPickPoint = event->scenePos();
     QGraphicsLineItem intersectionLine(QLineF(lastPick, currentPickPoint));
     QList<QGraphicsItem *>selection = collidingItems(&intersectionLine);
-    for (auto currentItem = selection.begin(); currentItem != selection.end(); ++currentItem)
+    for (auto currentItem : selection)
     {
-      auto rect = dynamic_cast<RectItem *>(*currentItem);
+      auto rect = dynamic_cast<RectItem *>(currentItem);
       if (!rect) continue;
       const GraphLinkRecord &selectionRecord = findRecord(rect, *graphLink);
       Gui::Selection().addSelection(selectionRecord.DObject->getDocument()->getName(),

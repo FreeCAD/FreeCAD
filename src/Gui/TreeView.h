@@ -25,6 +25,7 @@
 #define GUI_TREEVIEW_H
 
 #include <QTreeView>
+#include <FCGlobal.h>
 
 namespace Gui {
 
@@ -34,11 +35,11 @@ class GuiExport TreeView : public QTreeView
 
 public:
     TreeView(QWidget* parent=nullptr);
-    virtual ~TreeView();
+    ~TreeView() override;
 
 protected:
-    void mouseDoubleClickEvent (QMouseEvent * );
-    void rowsInserted (const QModelIndex & parent, int start, int end);
+    void mouseDoubleClickEvent (QMouseEvent * ) override;
+    void rowsInserted (const QModelIndex & parent, int start, int end) override;
 };
 
 }

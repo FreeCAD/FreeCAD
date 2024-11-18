@@ -1,9 +1,3 @@
-if(MSVC)
-    add_definitions(-DHAVE_ACOSH -DHAVE_ATANH -DHAVE_ASINH)
-else(MSVC)
-    add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
-endif(MSVC)
-
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
@@ -25,13 +19,18 @@ set(SketcherGui_LIBS
     FreeCADGui
 )
 
-qt_add_resources(SketcherGui_SRCS Resources/Sketcher.qrc)
+set (Sketcher_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Sketcher_translation.qrc)
+qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
+    ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
+qt_create_resource_file(${Sketcher_TR_QRC} ${QM_SRCS})
+qt_add_resources(SketcherGui_SRCS Resources/Sketcher.qrc ${Sketcher_TR_QRC})
 
 generate_from_xml(ViewProviderSketchGeometryExtensionPy)
 
 set(SketcherGui_UIC_SRCS
     TaskSketcherConstraints.ui
     TaskSketcherElements.ui
+    SketcherToolDefaultWidget.ui
     TaskSketcherMessages.ui
     TaskSketcherSolverAdvanced.ui
     TaskSketcherValidation.ui
@@ -40,7 +39,7 @@ set(SketcherGui_UIC_SRCS
     SketchMirrorDialog.ui
     SketcherSettings.ui
     SketcherSettingsGrid.ui
-    SketcherSettingsColors.ui
+    SketcherSettingsAppearance.ui
     SketcherSettingsDisplay.ui
     SketchRectangularArrayDialog.ui
     SketcherRegularPolygonDialog.ui
@@ -55,6 +54,7 @@ SET(SketcherGui_SRCS
     AutoConstraint.h
     Utils.h
     Utils.cpp
+    CircleEllipseConstructionMethod.h
     DrawSketchHandlerLine.h
     DrawSketchHandlerRectangle.h
     DrawSketchHandlerPolygon.h
@@ -65,21 +65,27 @@ SET(SketcherGui_SRCS
     DrawSketchHandlerArcOfEllipse.h
     DrawSketchHandlerArcOfHyperbola.h
     DrawSketchHandlerArcOfParabola.h
+    DrawSketchHandlerArcSlot.h
     DrawSketchHandlerBSpline.h
-    DrawSketchHandlerBSplineByInterpolation.h
     DrawSketchHandlerPoint.h
     DrawSketchHandlerFillet.h
+    DrawSketchHandlerTranslate.h
     DrawSketchHandlerTrimming.h
     DrawSketchHandlerExtend.h
     DrawSketchHandlerSplitting.h
     DrawSketchHandlerExternal.h
     DrawSketchHandlerCarbonCopy.h
     DrawSketchHandlerSlot.h
+    DrawSketchHandlerOffset.h
+    DrawSketchHandlerRotate.h
+    DrawSketchHandlerScale.h
+    DrawSketchHandlerSymmetry.h
     CommandCreateGeo.cpp
     CommandConstraints.h
     CommandConstraints.cpp
     CommandSketcherTools.cpp
     CommandSketcherBSpline.cpp
+    CommandSketcherOverlay.cpp
     CommandSketcherVirtualSpace.cpp
     CommandAlterGeometry.cpp
     Resources/Sketcher.qrc
@@ -87,8 +93,6 @@ SET(SketcherGui_SRCS
     PreCompiled.h
     SoZoomTranslation.cpp
     SoZoomTranslation.h
-    SoDatumLabel.cpp
-    SoDatumLabel.h
     PropertyConstraintListItem.h
     PropertyConstraintListItem.cpp
     TaskSketcherConstraints.ui
@@ -100,6 +104,11 @@ SET(SketcherGui_SRCS
     TaskSketcherElements.h
     TaskSketcherCreateCommands.cpp
     TaskSketcherCreateCommands.h
+    SketcherToolDefaultWidget.ui
+    SketcherToolDefaultWidget.cpp
+    SketcherToolDefaultWidget.h
+    TaskSketcherTool.cpp
+    TaskSketcherTool.h
     TaskSketcherMessages.ui
     TaskSketcherMessages.cpp
     TaskSketcherMessages.h
@@ -129,6 +138,12 @@ SET(SketcherGui_SRCS
     ViewProviderSketch.h
     DrawSketchHandler.cpp
     DrawSketchHandler.h
+    DrawSketchDefaultHandler.h
+    DrawSketchController.h
+    DrawSketchDefaultWidgetController.h
+    DrawSketchControllableHandler.h
+    DrawSketchKeyboardManager.h
+    DrawSketchKeyboardManager.cpp
     Workbench.cpp
     Workbench.h
     EditDatumDialog.cpp
@@ -181,7 +196,9 @@ SET(SketcherGuiIcon_SVG
 
 add_library(SketcherGui SHARED ${SketcherGui_SRCS} ${SketcherGuiIcon_SVG})
 target_link_libraries(SketcherGui ${SketcherGui_LIBS})
-
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(SketcherGui)
+endif()
 
 SET_BIN_DIR(SketcherGui SketcherGui /Mod/Sketcher)
 SET_PYTHON_PREFIX_SUFFIX(SketcherGui)

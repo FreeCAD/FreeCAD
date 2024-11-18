@@ -29,6 +29,7 @@
 #include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
 #include <Base/Parameter.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/Sequencer.h>
 
 #include "Application.h"
@@ -85,7 +86,7 @@ PyMethodDef Application::Methods[] = {
     {"getUserAppDataDir", (PyCFunction) Application::sGetUserAppDataPath, METH_VARARGS,
      "Get the root directory of application data"},
     {"getUserMacroDir", (PyCFunction) Application::sGetUserMacroPath, METH_VARARGS,
-     "getUserMacroDir(bool=False) -> string"
+     "getUserMacroDir(bool=False) -> str\n\n"
      "Get the directory of the user's macro directory\n"
      "If parameter is False (the default) it returns the standard path in the"
      "user's home directory, otherwise it returns the user-defined path."},
@@ -168,11 +169,13 @@ PyMethodDef Application::Methods[] = {
      "active transaction causes any document changes to open a transaction with\n"
      "the given name and ID."},
     {"getActiveTransaction", (PyCFunction) Application::sGetActiveTransaction, METH_VARARGS,
-     "getActiveTransaction() -> (name,id) return the current active transaction name and ID"},
+     "getActiveTransaction() -> (name,id)\n\n"
+     "return the current active transaction name and ID"},
     {"closeActiveTransaction", (PyCFunction) Application::sCloseActiveTransaction, METH_VARARGS,
      "closeActiveTransaction(abort=False) -- commit or abort current active transaction"},
     {"isRestoring", (PyCFunction) Application::sIsRestoring, METH_VARARGS,
-     "isRestoring() -> Bool -- Test if the application is opening some document"},
+     "isRestoring() -> bool\n\n"
+     "Test if the application is opening some document"},
     {"checkAbort", (PyCFunction) Application::sCheckAbort, METH_VARARGS,
      "checkAbort() -- check for user abort in length operation.\n\n"
      "This only works if there is an active sequencer (or ProgressIndicator in Python).\n"
@@ -185,9 +188,9 @@ PyMethodDef Application::Methods[] = {
 
 PyObject* Application::sLoadFile(PyObject * /*self*/, PyObject *args)
 {
-    char *path;
-    char *doc="";
-    char *mod="";
+    const char *path;
+    const char *doc="";
+    const char *mod="";
     if (!PyArg_ParseTuple(args, "s|ss", &path, &doc, &mod))
         return nullptr;
     try {
@@ -210,12 +213,22 @@ PyObject* Application::sLoadFile(PyObject * /*self*/, PyObject *args)
             }
         }
 
+        // path could contain characters that need escaping, such as quote signs
+        // therefore use its representation in the Python code string
+        PyObject *pathObj = PyUnicode_FromString(path);
+        PyObject *pathReprObj = PyObject_Repr(pathObj);
+        const char *pathRepr = PyUnicode_AsUTF8(pathReprObj);
+
         std::stringstream str;
         str << "import " << module << std::endl;
         if (fi.hasExtension("FCStd"))
-            str << module << ".openDocument('" << path << "')" << std::endl;
+            str << module << ".openDocument(" << pathRepr << ")" << std::endl;
         else
-            str << module << ".insert('" << path << "','" << doc << "')" << std::endl;
+            str << module << ".insert(" << pathRepr << ",'" << doc << "')" << std::endl;
+
+        Py_DECREF(pathObj);
+        Py_DECREF(pathReprObj);
+
         Base::Interpreter().runString(str.str().c_str());
         Py_Return;
     }
@@ -240,10 +253,11 @@ PyObject* Application::sOpenDocument(PyObject * /*self*/, PyObject *args, PyObje
 {
     char* Name;
     PyObject *hidden = Py_False;
-    static char *kwlist[] = {"name", "hidden", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kwd, "et|O!", kwlist,
-                "utf-8", &Name, &PyBool_Type, &hidden))
+    static const std::array<const char *, 3> kwlist {"name", "hidden", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwd, "et|O!", kwlist,
+                "utf-8", &Name, &PyBool_Type, &hidden)) {
         return nullptr;
+    }
     std::string EncodedName = std::string(Name);
     PyMem_Free(Name);
     try {
@@ -267,10 +281,11 @@ PyObject* Application::sNewDocument(PyObject * /*self*/, PyObject *args, PyObjec
     char *usrName = nullptr;
     PyObject *hidden = Py_False;
     PyObject *temp = Py_False;
-    static char *kwlist[] = {"name", "label", "hidden", "temp", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kwd, "|etetO!O!", kwlist,
-                "utf-8", &docName, "utf-8", &usrName, &PyBool_Type, &hidden, &PyBool_Type, &temp))
+    static const std::array<const char *, 5> kwlist {"name", "label", "hidden", "temp", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwd, "|etetO!O!", kwlist,
+                "utf-8", &docName, "utf-8", &usrName, &PyBool_Type, &hidden, &PyBool_Type, &temp)) {
         return nullptr;
+    }
 
     PY_TRY {
         App::Document* doc = GetApplication().newDocument(docName, usrName, !Base::asBoolean(hidden), Base::asBoolean(temp));
@@ -385,7 +400,7 @@ PyObject* Application::sGetParam(PyObject * /*self*/, PyObject *args)
 
 PyObject* Application::sSaveParameter(PyObject * /*self*/, PyObject *args)
 {
-    char *pstr = "User parameter";
+    const char *pstr = "User parameter";
     if (!PyArg_ParseTuple(args, "|s", &pstr))
         return nullptr;
 
@@ -435,8 +450,8 @@ PyObject* Application::sDumpConfig(PyObject * /*self*/, PyObject *args)
         return nullptr;
 
     PyObject *dict = PyDict_New();
-    for (auto It= GetApplication()._mConfig.begin(); It != GetApplication()._mConfig.end(); ++It) {
-        PyDict_SetItemString(dict,It->first.c_str(), PyUnicode_FromString(It->second.c_str()));
+    for (const auto & It : GetApplication()._mConfig) {
+        PyDict_SetItemString(dict, It.first.c_str(), PyUnicode_FromString(It.second.c_str()));
     }
     return dict;
 }
@@ -526,8 +541,8 @@ PyObject* Application::sGetImportType(PyObject * /*self*/, PyObject *args)
     if (psKey) {
         Py::List list;
         std::vector<std::string> modules = GetApplication().getImportModules(psKey);
-        for (std::vector<std::string>::iterator it = modules.begin(); it != modules.end(); ++it) {
-            list.append(Py::String(*it));
+        for (const auto & it : modules) {
+            list.append(Py::String(it));
         }
 
         return Py::new_reference_to(list);
@@ -535,20 +550,20 @@ PyObject* Application::sGetImportType(PyObject * /*self*/, PyObject *args)
     else {
         Py::Dict dict;
         std::vector<std::string> types = GetApplication().getImportTypes();
-        for (std::vector<std::string>::iterator it = types.begin(); it != types.end(); ++it) {
-            std::vector<std::string> modules = GetApplication().getImportModules(it->c_str());
+        for (const auto & it : types) {
+            std::vector<std::string> modules = GetApplication().getImportModules(it.c_str());
             if (modules.empty()) {
-                dict.setItem(it->c_str(), Py::None());
+                dict.setItem(it.c_str(), Py::None());
             }
             else if (modules.size() == 1) {
-                dict.setItem(it->c_str(), Py::String(modules.front()));
+                dict.setItem(it.c_str(), Py::String(modules.front()));
             }
             else {
                 Py::List list;
-                for (std::vector<std::string>::iterator jt = modules.begin(); jt != modules.end(); ++jt) {
-                    list.append(Py::String(*jt));
+                for (const auto & jt : modules) {
+                    list.append(Py::String(jt));
                 }
-                dict.setItem(it->c_str(), list);
+                dict.setItem(it.c_str(), list);
             }
         }
 
@@ -590,8 +605,8 @@ PyObject* Application::sGetExportType(PyObject * /*self*/, PyObject *args)
     if (psKey) {
         Py::List list;
         std::vector<std::string> modules = GetApplication().getExportModules(psKey);
-        for (std::vector<std::string>::iterator it = modules.begin(); it != modules.end(); ++it) {
-            list.append(Py::String(*it));
+        for (const auto & it : modules) {
+            list.append(Py::String(it));
         }
 
         return Py::new_reference_to(list);
@@ -599,20 +614,20 @@ PyObject* Application::sGetExportType(PyObject * /*self*/, PyObject *args)
     else {
         Py::Dict dict;
         std::vector<std::string> types = GetApplication().getExportTypes();
-        for (std::vector<std::string>::iterator it = types.begin(); it != types.end(); ++it) {
-            std::vector<std::string> modules = GetApplication().getExportModules(it->c_str());
+        for (const auto & it : types) {
+            std::vector<std::string> modules = GetApplication().getExportModules(it.c_str());
             if (modules.empty()) {
-                dict.setItem(it->c_str(), Py::None());
+                dict.setItem(it.c_str(), Py::None());
             }
             else if (modules.size() == 1) {
-                dict.setItem(it->c_str(), Py::String(modules.front()));
+                dict.setItem(it.c_str(), Py::String(modules.front()));
             }
             else {
                 Py::List list;
-                for (std::vector<std::string>::iterator jt = modules.begin(); jt != modules.end(); ++jt) {
-                    list.append(Py::String(*jt));
+                for (const auto & jt : modules) {
+                    list.append(Py::String(jt));
                 }
-                dict.setItem(it->c_str(), list);
+                dict.setItem(it.c_str(), list);
             }
         }
 
@@ -684,7 +699,8 @@ PyObject* Application::sGetUserMacroPath(PyObject * /*self*/, PyObject *args)
     if (Base::asBoolean(actual)) {
         macroDir = App::GetApplication().
             GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
-            ->GetASCII("MacroPath",macroDir.c_str());
+            ->GetASCII("MacroPath", macroDir.c_str());
+        std::replace(macroDir.begin(), macroDir.end(), '/', PATHSEP);
     }
 
     Py::String user_macro_dir(macroDir,"utf-8");

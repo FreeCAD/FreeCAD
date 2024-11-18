@@ -32,6 +32,7 @@
 #include <string>
 #include <FCGlobal.h>
 
+#include "ElementNamingUtils.h"
 namespace Py {
 class Object;
 }
@@ -261,6 +262,8 @@ public:
      */
     int64_t getID() const {return _id;}
 
+    virtual void beforeSave() const {}
+
     friend class PropertyContainer;
     friend struct PropertyData;
     friend class DynamicProperty;
@@ -286,17 +289,21 @@ protected:
     /// Verify a path for the current property
     virtual void verifyPath(const App::ObjectIdentifier & p) const;
 
-private:
-    // forbidden
-    Property(const Property&);
-    Property& operator = (const Property&);
+    /// Return a file name suitable for saving this property
+    std::string getFileName(const char *postfix=0, const char *prefix=0) const;
 
+public:
+    // forbidden
+    Property(const Property&) = delete;
+    Property& operator = (const Property&) = delete;
+
+private:
     // Sync status with Property_Type
     void syncType(unsigned type);
 
 private:
-    PropertyContainer *father;
-    const char *myName;
+    PropertyContainer *father{nullptr};
+    const char *myName{nullptr};
     int64_t _id;
 
 public:
@@ -333,7 +340,7 @@ public:
  */
 template<class P> class AtomicPropertyChangeInterface {
 protected:
-    AtomicPropertyChangeInterface() : signalCounter(0), hasChanged(false) { }
+    AtomicPropertyChangeInterface() = default;
 
 public:
     class AtomicPropertyChange {
@@ -408,8 +415,8 @@ public:
     };
 
 protected:
-    int signalCounter; /**< Counter for invoking transaction start/stop */
-    bool hasChanged;
+    int signalCounter{0}; /**< Counter for invoking transaction start/stop */
+    bool hasChanged{false};
 };
 
 

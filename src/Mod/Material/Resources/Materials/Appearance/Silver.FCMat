@@ -1,0 +1,17 @@
+---
+# File created by ConvertFCMat.py
+General:
+  UUID: "62839fb0-d854-4b44-92df-b7249213de49"
+  Author: "David Carter"
+  License: "GPL-2.0-or-later"
+  Name: "Silver"
+  Description: "Defines the Silver appearance properties"
+AppearanceModels:
+  BasicRendering:
+    UUID: 'f006c7e4-35b7-43d5-bbf9-c5d572309e6e'
+    AmbientColor: "(0.1922, 0.1922, 0.1922, 1.0)"
+    DiffuseColor: "(0.5075, 0.5075, 0.5075, 1.0)"
+    EmissiveColor: "(0.0000, 0.0000, 0.0000, 1.0)"
+    Shininess: "0.2000"
+    SpecularColor: "(0.5083, 0.5083, 0.5083, 1.0)"
+    Transparency: "0.0"

@@ -32,6 +32,7 @@
 #include <FCGlobal.h>
 
 class QButtonGroup;
+class QDialogButtonBox;
 class QGridLayout;
 class QGroupBox;
 class QHBoxLayout;
@@ -88,6 +89,7 @@ private:
     bool hasSuffix(const QString&) const;
     static QList<QUrl> fetchSidebarUrls();
     static QString workingDirectory;
+    static void getSuffixesDescription(QStringList& suffixes, const QString* suffixDescriptions);
 };
 
 // ----------------------------------------------------------------------
@@ -269,7 +271,7 @@ private Q_SLOTS:
     void onButtonClicked();
 
 private:
-    QPushButton *okButton;
+    QDialogButtonBox *buttonBox;
     QButtonGroup* group;
     QGridLayout *gridLayout;
     QHBoxLayout *hboxLayout;

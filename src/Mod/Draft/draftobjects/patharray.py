@@ -67,7 +67,7 @@ import FreeCAD as App
 import DraftVecUtils
 import lazy_loader.lazy_loader as lz
 
-from draftutils.messages import _msg, _wrn, _err
+from draftutils.messages import _wrn, _err
 from draftutils.translate import translate
 def QT_TRANSLATE_NOOP(ctx,txt): return txt
 from draftobjects.base import DraftObject
@@ -135,7 +135,7 @@ class PathArray(DraftLink):
     """
 
     def __init__(self, obj):
-        super(PathArray, self).__init__(obj, "PathArray")
+        super().__init__(obj, "PathArray")
 
     def attach(self, obj):
         """Set up the properties when the object is attached.
@@ -155,7 +155,7 @@ class PathArray(DraftLink):
         to attach the proxy before creating the C++ view provider.
         """
         self.set_properties(obj)
-        super(PathArray, self).attach(obj)
+        super().attach(obj)
 
     def set_properties(self, obj):
         """Set properties only if they don't exist."""
@@ -202,6 +202,17 @@ class PathArray(DraftLink):
                             "Objects",
                             _tip)
             obj.PathSubelements = []
+
+        if "Fuse" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Specifies if the copies "
+                                     "should be fused together "
+                                     "if they touch each other (slower)")
+            obj.addProperty("App::PropertyBool",
+                            "Fuse",
+                            "Objects",
+                            _tip)
+            obj.Fuse = False
 
         if "Count" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property","Number of copies to create")
@@ -291,12 +302,12 @@ class PathArray(DraftLink):
 
     def linkSetup(self, obj):
         """Set up the object as a link object."""
-        super(PathArray, self).linkSetup(obj)
+        super().linkSetup(obj)
         obj.configLinkProperty(ElementCount='Count')
 
     def execute(self, obj):
         """Execute when the object is created or recomputed."""
-        if self.props_changed_placement_only() \
+        if self.props_changed_placement_only(obj) \
                 or not obj.Base \
                 or not obj.PathObject:
             self.props_changed_clear()
@@ -361,7 +372,7 @@ class PathArray(DraftLink):
 
     def onChanged(self, obj, prop):
         """Execute when a property is changed."""
-        super(PathArray, self).onChanged(obj, prop)
+        super().onChanged(obj, prop)
         self.show_and_hide(obj, prop)
 
     def show_and_hide(self, obj, prop):
@@ -400,34 +411,24 @@ class PathArray(DraftLink):
                     obj.setPropertyStatus(pr, "Hidden")
 
     def onDocumentRestored(self, obj):
-        """Execute code when the document is restored.
-
-        Add properties that don't exist.
-        """
+        super().onDocumentRestored(obj)
+        # Fuse property was added in v1.0, obj should be OK if it is present:
+        if hasattr(obj, "Fuse"):
+            return
         self.set_properties(obj)
-        self.migrate_properties_0v19(obj)
-        super(PathArray, self).onDocumentRestored(obj)
-
-    def migrate_properties_0v19(self, obj):
-        """Migrate properties of this class, not from the parent class."""
-        properties = obj.PropertiesList
-
-        if "PathObj" in properties:
+        if hasattr(obj, "PathObj"):
+            _wrn("v0.19, " + obj.Label + ", " + translate("draft", "migrated 'PathObj' property to 'PathObject'"))
             obj.PathObject = obj.PathObj
             obj.removeProperty("PathObj")
-            _wrn("v0.19, " + obj.Label + ", " + translate("draft","'PathObj' property will be migrated to 'PathObject'"))
-
-        if "PathSubs" in properties:
+        if hasattr(obj, "PathSubs"):
+            _wrn("v0.19, " + obj.Label + ", " + translate("draft", "migrated 'PathSubs' property to 'PathSubelements'"))
             obj.PathSubelements = obj.PathSubs
             obj.removeProperty("PathSubs")
-            _info = "'PathSubs' property will be migrated to 'PathSubelements'"
-            _wrn("v0.19, " + obj.Label + ", " + translate("draft","'PathObj' property will be migrated to 'PathObject'"))
-
-        if "Xlate" in properties:
+        if hasattr(obj, "Xlate"):
+            _wrn("v0.19, " + obj.Label + ", " + translate("draft", "migrated 'Xlate' property to 'ExtraTranslation'"))
             obj.ExtraTranslation = obj.Xlate
             obj.removeProperty("Xlate")
-            _info = "'Xlate' property will be migrated to 'ExtraTranslation'"
-            _wrn("v0.19, " + obj.Label + ", " + translate("draft","'PathObj' property will be migrated to 'PathObject'"))
+        _wrn("v1.0, " + obj.Label + ", " + translate("draft", "added 'Fuse' property"))
 
 
 # Alias for compatibility with v0.18 and earlier
@@ -462,26 +463,41 @@ def placements_on_path(shapeRotation, pathwire, count, xlate, align,
         ends.append(cdist)
 
     if startOffset > (cdist - 1e-6):
-        _wrn(translate("draft", "Start Offset too large for path length. Using zero instead."))
+        if startOffset != 0:
+            _wrn(
+                translate(
+                    "draft",
+                    "Start Offset too large for path length. Using zero instead."
+                )
+            )
         start = 0
     else:
         start = startOffset
 
     if endOffset > (cdist - start - 1e-6):
-        _wrn(translate("draft", "End Offset too large for path length minus Start Offset. Using zero instead."))
+        if endOffset != 0:
+            _wrn(
+                translate(
+                    "draft",
+                    "End Offset too large for path length minus Start Offset. Using zero instead."
+                )
+            )
         end = 0
     else:
         end = endOffset
 
     cdist = cdist - start - end
-    step = cdist / (count if (DraftGeomUtils.isReallyClosed(pathwire) and not (start or end)) else count - 1)
+    count = max(count, 1)
+    n = count if (DraftGeomUtils.isReallyClosed(pathwire) and not (start or end)) else count - 1
+    n = max(n, 1)
+    step = cdist / n
     remains = 0
     travel = start
     placements = []
 
-    for i in range(0, count):
+    for i in range(count):
         # which edge in path should contain this shape?
-        for j in range(0, len(ends)):
+        for j in range(len(ends)):
             if travel <= ends[j]:
                 iend = j
                 remains = ends[iend] - travel
@@ -578,7 +594,7 @@ def calculate_placement(globalRotation,
         newRot = App.Rotation(t, n, nullv, "XYZ") # priority = "XYZ"
 
     else:
-        _msg(translate("draft", "AlignMode {} is not implemented").format(mode))
+        _err(translate("draft", "AlignMode {} is not implemented").format(mode))
         return placement
 
     placement.Rotation = newRot.multiply(globalRotation)

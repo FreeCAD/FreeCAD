@@ -37,6 +37,7 @@ class Property;
 }
 
 namespace Gui {
+class MDIView;
 class ControlSingleton;
 namespace DockWnd{
 class ComboView;
@@ -154,9 +155,21 @@ public:
 
     void addTaskWatcher(const std::vector<TaskWatcher*> &Watcher);
     void clearTaskWatcher();
+    void takeTaskWatcher(TaskView *other);
+
+    bool isEmpty(bool includeWatcher = true) const;
 
     void clearActionStyle();
     void restoreActionStyle();
+
+    QSize minimumSizeHint() const override;
+
+    // Restore width before opening a task panel
+    void setRestoreWidth(bool on);
+    bool shouldRestoreWidth() const;
+
+Q_SIGNALS:
+    void taskUpdate();
 
 protected Q_SLOTS:
     void accept();
@@ -164,9 +177,21 @@ protected Q_SLOTS:
     void helpRequested();
     void clicked (QAbstractButton * button);
 
+private:
+    void triggerMinimumSizeHint();
+    void adjustMinimumSizeHint();
+    void saveCurrentWidth();
+    void tryRestoreWidth();
+    void slotActiveDocument(const App::Document&);
+    void slotDeletedDocument(const App::Document&);
+    void slotViewClosed(const Gui::MDIView*);
+    void slotUndoDocument(const App::Document&);
+    void slotRedoDocument(const App::Document&);
+    void transactionChangeOnDocument(const App::Document&);
+
 protected:
-    void keyPressEvent(QKeyEvent*) override;
-    bool event(QEvent*) override;
+    void keyPressEvent(QKeyEvent* event) override;
+    bool event(QEvent* event) override;
 
     void addTaskWatcher();
     void removeTaskWatcher();
@@ -177,19 +202,17 @@ protected:
     // removes the running dialog after accept() or reject() from the TaskView
     void removeDialog();
 
-    void slotActiveDocument(const App::Document&);
-    void slotDeletedDocument();
-    void slotUndoDocument(const App::Document&);
-    void slotRedoDocument(const App::Document&);
-
     std::vector<TaskWatcher*> ActiveWatcher;
 
     QSint::ActionPanel* taskPanel;
     TaskDialog *ActiveDialog;
     TaskEditControl *ActiveCtrl;
+    bool restoreWidth = false;
+    int currentWidth = 0;
 
     Connection connectApplicationActiveDocument;
     Connection connectApplicationDeleteDocument;
+    Connection connectApplicationClosedView;
     Connection connectApplicationUndoDocument;
     Connection connectApplicationRedoDocument;
 };

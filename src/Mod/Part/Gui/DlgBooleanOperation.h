@@ -73,7 +73,6 @@ class TaskBooleanOperation : public Gui::TaskView::TaskDialog
 
 public:
     TaskBooleanOperation();
-    ~TaskBooleanOperation() override;
 
 public:
     void clicked(int) override;
@@ -87,7 +86,6 @@ public:
 
 private:
     DlgBooleanOperation* widget;
-    Gui::TaskView::TaskBox* taskbox;
 };
 
 } // namespace PartGui

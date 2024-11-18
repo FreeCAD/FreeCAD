@@ -28,6 +28,8 @@
 # include <BRepAdaptor_Surface.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeEdge2d.hxx>
+# include <BRep_Builder.hxx>
+# include <BRep_Tool.hxx>
 # include <BRepLib.hxx>
 # include <GCPnts_UniformAbscissa.hxx>
 # include <GCPnts_UniformDeflection.hxx>
@@ -52,6 +54,7 @@
 #endif
 
 #include <Base/GeometryPyCXX.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 
 #include "Geom2d/Curve2dPy.h"
 #include "Geom2d/Curve2dPy.cpp"
@@ -107,7 +110,7 @@ PyObject* Curve2dPy::reverse(PyObject * args)
 namespace Part {
 extern Py::Object shape2pyshape(const TopoDS_Shape &shape);
 
-TopoDS_Edge create3dCurve(const TopoDS_Edge& edge)
+void create3dCurve(const TopoDS_Edge& edge)
 {
     TopoDS_Edge edge3d;
     BRepAdaptor_Curve adapt_curve(edge);
@@ -159,8 +162,12 @@ TopoDS_Edge create3dCurve(const TopoDS_Edge& edge)
         BRepLib::BuildCurves3d(edge3d, Precision::Confusion(), GeomAbs_Shape::GeomAbs_C1, 14, 10000);
         break;
     }
-
-    return edge3d;
+    Standard_Real aFirst, aLast;
+    Handle(Geom_Curve) curve = BRep_Tool::Curve(edge3d, aFirst, aLast);
+    BRep_Builder builder;
+    builder.UpdateEdge(edge, curve, Precision::Confusion());
+    builder.Range(edge, aFirst, aLast, true);
+    return;
 }
 }
 
@@ -206,7 +213,7 @@ PyObject* Curve2dPy::toShape(PyObject *args)
 
             BRepBuilderAPI_MakeEdge mkBuilder(curv, surf);
             TopoDS_Edge edge =  mkBuilder.Edge();
-            edge = create3dCurve(edge);
+            create3dCurve(edge);
 
             return Py::new_reference_to(shape2pyshape(edge));
         }
@@ -225,7 +232,7 @@ PyObject* Curve2dPy::toShape(PyObject *args)
 
             BRepBuilderAPI_MakeEdge mkBuilder(curv, surf, u1, u2);
             TopoDS_Edge edge =  mkBuilder.Edge();
-            edge = create3dCurve(edge);
+            create3dCurve(edge);
 
             return Py::new_reference_to(shape2pyshape(edge));
         }
@@ -245,7 +252,7 @@ PyObject* Curve2dPy::toShape(PyObject *args)
             BRepAdaptor_Surface adapt(face);
             BRepBuilderAPI_MakeEdge mkBuilder(curv, adapt.Surface().Surface());
             TopoDS_Edge edge =  mkBuilder.Edge();
-            edge = create3dCurve(edge);
+            create3dCurve(edge);
 
             return Py::new_reference_to(shape2pyshape(edge));
         }
@@ -264,7 +271,7 @@ PyObject* Curve2dPy::toShape(PyObject *args)
             BRepAdaptor_Surface adapt(face);
             BRepBuilderAPI_MakeEdge mkBuilder(curv, adapt.Surface().Surface(), u1, u2);
             TopoDS_Edge edge =  mkBuilder.Edge();
-            edge = create3dCurve(edge);
+            create3dCurve(edge);
 
             return Py::new_reference_to(shape2pyshape(edge));
         }
@@ -293,10 +300,10 @@ PyObject* Curve2dPy::discretize(PyObject *args, PyObject *kwds)
         double last = adapt.LastParameter();
 
         // use Number kwds
-        static char* kwds_numPoints[] = {"Number","First","Last",nullptr};
+        static const std::array<const char *, 4> kwds_numPoints {"Number", "First", "Last", nullptr};
         PyErr_Clear();
         int numPoints = -1;
-        if (PyArg_ParseTupleAndKeywords(args, kwds, "i|dd", kwds_numPoints, &numPoints, &first, &last)) {
+        if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "i|dd", kwds_numPoints, &numPoints, &first, &last)) {
             GCPnts_UniformAbscissa discretizer;
             discretizer.Initialize (adapt, numPoints, first, last);
 
@@ -318,10 +325,10 @@ PyObject* Curve2dPy::discretize(PyObject *args, PyObject *kwds)
         }
 
         // use Distance kwds
-        static char* kwds_Distance[] = {"Distance","First","Last",nullptr};
+        static const std::array<const char *, 4> kwds_Distance{"Distance", "First", "Last", nullptr};
         PyErr_Clear();
         double distance = -1;
-        if (PyArg_ParseTupleAndKeywords(args, kwds, "d|dd", kwds_Distance, &distance, &first, &last)) {
+        if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "d|dd", kwds_Distance, &distance, &first, &last)) {
             GCPnts_UniformAbscissa discretizer;
             discretizer.Initialize (adapt, distance, first, last);
 
@@ -343,10 +350,10 @@ PyObject* Curve2dPy::discretize(PyObject *args, PyObject *kwds)
         }
 
         // use Deflection kwds
-        static char* kwds_Deflection[] = {"Deflection","First","Last",nullptr};
+        static const std::array<const char *, 4> kwds_Deflection{"Deflection", "First", "Last", nullptr};
         PyErr_Clear();
         double deflection;
-        if (PyArg_ParseTupleAndKeywords(args, kwds, "d|dd", kwds_Deflection, &deflection, &first, &last)) {
+        if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "d|dd", kwds_Deflection, &deflection, &first, &last)) {
             GCPnts_UniformDeflection discretizer(adapt, deflection, first, last);
             if (discretizer.IsDone () && discretizer.NbPoints () > 0) {
                 Py::List points;
@@ -366,12 +373,14 @@ PyObject* Curve2dPy::discretize(PyObject *args, PyObject *kwds)
         }
 
         // use TangentialDeflection kwds
-        static char* kwds_TangentialDeflection[] = {"Angular","Curvature","First","Last","Minimum",nullptr};
+        static const std::array<const char *, 6> kwds_TangentialDeflection{"Angular", "Curvature", "First", "Last",
+                                                                           "Minimum", nullptr};
         PyErr_Clear();
         double angular;
         double curvature;
         int minimumPoints = 2;
-        if (PyArg_ParseTupleAndKeywords(args, kwds, "dd|ddi", kwds_TangentialDeflection, &angular, &curvature, &first, &last, &minimumPoints)) {
+        if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "dd|ddi", kwds_TangentialDeflection, &angular, &curvature,
+                                                &first, &last, &minimumPoints)) {
             GCPnts_TangentialDeflection discretizer(adapt, first, last, angular, curvature, minimumPoints);
             if (discretizer.NbPoints () > 0) {
                 Py::List points;
@@ -391,10 +400,11 @@ PyObject* Curve2dPy::discretize(PyObject *args, PyObject *kwds)
         }
 
         // use QuasiNumber kwds
-        static char* kwds_QuasiNumPoints[] = {"QuasiNumber","First","Last",nullptr};
+        static const std::array<const char *, 4> kwds_QuasiNumPoints{"QuasiNumber", "First", "Last", nullptr};
         PyErr_Clear();
         int quasiNumPoints;
-        if (PyArg_ParseTupleAndKeywords(args, kwds, "i|dd", kwds_QuasiNumPoints, &quasiNumPoints, &first, &last)) {
+        if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "i|dd", kwds_QuasiNumPoints, &quasiNumPoints, &first,
+                                                &last)) {
             GCPnts_QuasiUniformAbscissa discretizer(adapt, quasiNumPoints, first, last);
             if (discretizer.NbPoints () > 0) {
                 Py::List points;
@@ -414,10 +424,11 @@ PyObject* Curve2dPy::discretize(PyObject *args, PyObject *kwds)
         }
 
         // use QuasiDeflection kwds
-        static char* kwds_QuasiDeflection[] = {"QuasiDeflection","First","Last",nullptr};
+        static const std::array<const char *, 4> kwds_QuasiDeflection {"QuasiDeflection","First","Last",nullptr};
         PyErr_Clear();
         double quasiDeflection;
-        if (PyArg_ParseTupleAndKeywords(args, kwds, "d|dd", kwds_QuasiDeflection, &quasiDeflection, &first, &last)) {
+        if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "d|dd", kwds_QuasiDeflection, &quasiDeflection, &first,
+                                                &last)) {
             GCPnts_QuasiUniformDeflection discretizer(adapt, quasiDeflection, first, last);
             if (discretizer.NbPoints () > 0) {
                 Py::List points;
@@ -673,7 +684,7 @@ PyObject* Curve2dPy::approximateBSpline(PyObject *args)
 {
     double tolerance;
     int maxSegment, maxDegree;
-    char* order = "C2";
+    const char* order = "C2";
     if (!PyArg_ParseTuple(args, "dii|s", &tolerance, &maxSegment, &maxDegree, &order))
         return nullptr;
 

@@ -59,13 +59,9 @@ public:
 
 // ----------------------------------------------------------------------------
 
-TransformStrategy::TransformStrategy()
-{
-}
+TransformStrategy::TransformStrategy() = default;
 
-TransformStrategy::~TransformStrategy()
-{
-}
+TransformStrategy::~TransformStrategy() = default;
 
 Base::Vector3d TransformStrategy::getRotationCenter() const
 {
@@ -76,7 +72,7 @@ Base::Vector3d TransformStrategy::getRotationCenter() const
         Base::BoundBox3d bbox;
         bool first=true;
         for (const auto & object : objects) {
-            if (object->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+            if (object->isDerivedFrom<App::GeoFeature>()) {
                 // search for a data property
                 const App::PropertyGeometry* geo = static_cast<App::GeoFeature*>(object)->getPropertyOfGeometry();
                 if (geo) {
@@ -130,7 +126,7 @@ void TransformStrategy::acceptDataTransform(const Base::Matrix4D& mat, App::Docu
     }
 
     // Apply the transformation
-    if (obj->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+    if (obj->isDerivedFrom<App::GeoFeature>()) {
         // search for a data property
         const App::PropertyGeometry* geo = static_cast<App::GeoFeature*>(obj)->getPropertyOfGeometry();
         if (geo) {
@@ -205,9 +201,7 @@ DefaultTransformStrategy::DefaultTransformStrategy(QWidget* w) : widget(w)
     onSelectionChanged(mod);
 }
 
-DefaultTransformStrategy::~DefaultTransformStrategy()
-{
-}
+DefaultTransformStrategy::~DefaultTransformStrategy() = default;
 
 std::set<App::DocumentObject*> DefaultTransformStrategy::transformObjects() const
 {
@@ -231,7 +225,7 @@ void DefaultTransformStrategy::onSelectionChanged(const Gui::SelectionChanges& m
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType
         (App::DocumentObject::getClassTypeId());
     for (const auto & it : sel) {
-        if (it->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+        if (it->isDerivedFrom<App::GeoFeature>()) {
             // search for a data property
             const App::PropertyGeometry* geo = static_cast<App::GeoFeature*>(it)->getPropertyOfGeometry();
             if (geo) {
@@ -285,13 +279,12 @@ Transform::Transform(QWidget* parent, Qt::WindowFlags fl)
 {
     ui = new Ui_Placement();
     ui->setupUi(this);
-    connect(ui->applyButton, &QPushButton::clicked,
+    QPushButton* applyButton = ui->buttonBox->button(QDialogButtonBox::Apply);
+    connect(applyButton, &QPushButton::clicked,
             this, &Transform::onApplyButtonClicked);
 
     ui->resetButton->hide();
     ui->applyIncrementalPlacement->hide();
-
-    ui->closeButton->setText(tr("Cancel"));
     this->setWindowTitle(tr("Transform"));
 
     // create a signal mapper in order to have one slot to perform the change
@@ -338,9 +331,7 @@ void Transform::setTransformStrategy(TransformStrategy* ts)
 
 void Transform::showStandardButtons(bool b)
 {
-    ui->closeButton->setVisible(b);
-    ui->oKButton->setVisible(b);
-    ui->applyButton->setVisible(b);
+    ui->buttonBox->setVisible(b);
 }
 
 void Transform::onTransformChanged(int)
@@ -419,7 +410,6 @@ void Transform::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
-        ui->closeButton->setText(tr("Cancel"));
         this->setWindowTitle(tr("Transform"));
     }
     else {
@@ -434,15 +424,10 @@ TaskTransform::TaskTransform()
     this->setButtonPosition(TaskTransform::South);
     dialog = new Transform();
     dialog->showStandardButtons(false);
-    taskbox = new Gui::TaskView::TaskBox(QPixmap(), dialog->windowTitle(), true, nullptr);
-    taskbox->groupLayout()->addWidget(dialog);
-    Content.push_back(taskbox);
+    addTaskBox(dialog);
 }
 
-TaskTransform::~TaskTransform()
-{
-    // automatically deleted in the sub-class
-}
+TaskTransform::~TaskTransform() = default;
 
 void TaskTransform::setTransformStrategy(TransformStrategy* ts)
 {

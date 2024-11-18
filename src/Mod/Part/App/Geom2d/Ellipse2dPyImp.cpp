@@ -28,6 +28,7 @@
 #endif
 
 #include <Base/GeometryPyCXX.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 
 #include "Geom2d/Ellipse2dPy.h"
 #include "Geom2d/Ellipse2dPy.cpp"
@@ -53,18 +54,18 @@ PyObject *Ellipse2dPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // 
 // constructor method
 int Ellipse2dPy::PyInit(PyObject* args, PyObject* kwds)
 {
-    char* keywords_n[] = {nullptr};
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "", keywords_n)) {
+    static const std::array<const char *, 1> keywords_n {nullptr};
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "", keywords_n)) {
         Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
         ellipse->SetMajorRadius(2.0);
         ellipse->SetMinorRadius(1.0);
         return 0;
     }
 
-    char* keywords_e[] = {"Ellipse",nullptr};
+    static const std::array<const char *, 2> keywords_e {"Ellipse",nullptr};
     PyErr_Clear();
     PyObject *pElips;
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!",keywords_e, &(Ellipse2dPy::Type), &pElips)) {
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!",keywords_e, &(Ellipse2dPy::Type), &pElips)) {
         Ellipse2dPy* pEllipse = static_cast<Ellipse2dPy*>(pElips);
         Handle(Geom2d_Ellipse) Elips1 = Handle(Geom2d_Ellipse)::DownCast
             (pEllipse->getGeom2dEllipsePtr()->handle());
@@ -74,13 +75,13 @@ int Ellipse2dPy::PyInit(PyObject* args, PyObject* kwds)
         return 0;
     }
 
-    char* keywords_ssc[] = {"S1","S2","Center",nullptr};
+    static const std::array<const char *, 4> keywords_ssc {"S1", "S2", "Center", nullptr};
     PyErr_Clear();
     PyObject *pV1, *pV2, *pV3;
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!O!O!", keywords_ssc,
-                                         Base::Vector2dPy::type_object(), &pV1,
-                                         Base::Vector2dPy::type_object(), &pV2,
-                                         Base::Vector2dPy::type_object(), &pV3)) {
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!O!O!", keywords_ssc,
+                                            Base::Vector2dPy::type_object(), &pV1,
+                                            Base::Vector2dPy::type_object(), &pV2,
+                                            Base::Vector2dPy::type_object(), &pV3)) {
         Base::Vector2d v1 = Py::toVector2d(pV1);
         Base::Vector2d v2 = Py::toVector2d(pV2);
         Base::Vector2d v3 = Py::toVector2d(pV3);
@@ -97,13 +98,13 @@ int Ellipse2dPy::PyInit(PyObject* args, PyObject* kwds)
         return 0;
     }
 
-    char* keywords_cmm[] = {"Center","MajorRadius","MinorRadius",nullptr};
+    static const std::array<const char *, 4> keywords_cmm {"Center","MajorRadius","MinorRadius",nullptr};
     PyErr_Clear();
     PyObject *pV;
     double major, minor;
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!dd", keywords_cmm,
-                                        Base::Vector2dPy::type_object(), &pV,
-                                        &major, &minor)) {
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!dd", keywords_cmm,
+                                            Base::Vector2dPy::type_object(), &pV,
+                                            &major, &minor)) {
         Base::Vector2d c = Py::toVector2d(pV);
         GCE2d_MakeEllipse me(gp_Ax2d(gp_Pnt2d(c.x,c.y), gp_Dir2d(0.0,1.0)),
                           major, minor);

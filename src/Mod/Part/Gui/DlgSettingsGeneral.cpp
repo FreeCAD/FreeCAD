@@ -30,6 +30,7 @@
 #endif
 
 #include <Mod/Part/App/Interface.h>
+#include <Mod/Part/App/FuzzyHelper.h>
 #include <Mod/Part/App/IGES/ImportExportSettings.h>
 #include <Mod/Part/App/OCAF/ImportExportSettings.h>
 #include <Mod/Part/App/STEP/ImportExportSettings.h>
@@ -52,10 +53,7 @@ DlgSettingsGeneral::DlgSettingsGeneral(QWidget* parent)
 /**
  *  Destroys the object and frees any allocated resources
  */
-DlgSettingsGeneral::~DlgSettingsGeneral()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+DlgSettingsGeneral::~DlgSettingsGeneral() = default;
 
 void DlgSettingsGeneral::saveSettings()
 {
@@ -63,6 +61,7 @@ void DlgSettingsGeneral::saveSettings()
     ui->checkBooleanRefine->onSave();
     ui->checkSketchBaseRefine->onSave();
     ui->checkObjectNaming->onSave();
+    ui->checkAllowCompoundBody->onSave();
 }
 
 void DlgSettingsGeneral::loadSettings()
@@ -71,6 +70,7 @@ void DlgSettingsGeneral::loadSettings()
     ui->checkBooleanRefine->onRestore();
     ui->checkSketchBaseRefine->onRestore();
     ui->checkObjectNaming->onRestore();
+    ui->checkAllowCompoundBody->onRestore();
 }
 
 /**
@@ -111,10 +111,7 @@ DlgImportExportIges::DlgImportExportIges(QWidget* parent)
 /**
  *  Destroys the object and frees any allocated resources
  */
-DlgImportExportIges::~DlgImportExportIges()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+DlgImportExportIges::~DlgImportExportIges() = default;
 
 void DlgImportExportIges::saveSettings()
 {
@@ -174,7 +171,7 @@ DlgImportExportStep::DlgImportExportStep(QWidget* parent)
   , importStep(new DlgImportStep(this))
   , headerStep(new DlgExportHeaderStep(this))
 {
-    setWindowTitle(tr("STEP"));
+    setWindowTitle(QLatin1String("STEP"));
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->setSpacing(0);
     layout->setContentsMargins(0, 0, 0, 0);
@@ -191,10 +188,7 @@ DlgImportExportStep::DlgImportExportStep(QWidget* parent)
 /**
  *  Destroys the object and frees any allocated resources
  */
-DlgImportExportStep::~DlgImportExportStep()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+DlgImportExportStep::~DlgImportExportStep() = default;
 
 void DlgImportExportStep::saveSettings()
 {

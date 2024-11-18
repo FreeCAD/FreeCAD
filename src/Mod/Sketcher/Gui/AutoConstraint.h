@@ -24,7 +24,10 @@
 #ifndef SKETCHERGUI_AutoConstraint_H
 #define SKETCHERGUI_AutoConstraint_H
 
-namespace SketcherGui {
+#include <Mod/Sketcher/App/Constraint.h>
+
+namespace SketcherGui
+{
 
 // A Simple data type to hold basic information for suggested constraints
 struct AutoConstraint
@@ -40,8 +43,7 @@ struct AutoConstraint
     Sketcher::PointPos PosId;
 };
 
-} // namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif // SKETCHERGUI_AutoConstraint_H
-
+#endif  // SKETCHERGUI_AutoConstraint_H

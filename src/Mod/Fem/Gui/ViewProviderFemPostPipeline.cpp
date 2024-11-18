@@ -33,10 +33,10 @@
 #include <Mod/Fem/App/FemAnalysis.h>
 #include <Mod/Fem/App/FemPostPipeline.h>
 
-#include "ViewProviderFemPostPipeline.h"
-#include "ViewProviderFemPostPipelinePy.h"
 #include "ViewProviderAnalysis.h"
 #include "ViewProviderFemPostFunction.h"
+#include "ViewProviderFemPostPipeline.h"
+#include "ViewProviderFemPostPipelinePy.h"
 
 
 using namespace FemGui;
@@ -48,44 +48,50 @@ ViewProviderFemPostPipeline::ViewProviderFemPostPipeline()
     sPixmap = "FEM_PostPipelineFromResult";
 }
 
-ViewProviderFemPostPipeline::~ViewProviderFemPostPipeline()
-{
-}
+ViewProviderFemPostPipeline::~ViewProviderFemPostPipeline() = default;
 
-std::vector< App::DocumentObject* > ViewProviderFemPostPipeline::claimChildren() const {
+std::vector<App::DocumentObject*> ViewProviderFemPostPipeline::claimChildren() const
+{
 
     Fem::FemPostPipeline* pipeline = static_cast<Fem::FemPostPipeline*>(getObject());
     std::vector<App::DocumentObject*> children;
 
-    if (pipeline->Functions.getValue())
+    if (pipeline->Functions.getValue()) {
         children.push_back(pipeline->Functions.getValue());
+    }
 
-    children.insert(children.end(), pipeline->Filter.getValues().begin(),
-        pipeline->Filter.getValues().end());
+    children.insert(children.end(),
+                    pipeline->Filter.getValues().begin(),
+                    pipeline->Filter.getValues().end());
     return children;
 }
 
-std::vector< App::DocumentObject* > ViewProviderFemPostPipeline::claimChildren3D() const {
+std::vector<App::DocumentObject*> ViewProviderFemPostPipeline::claimChildren3D() const
+{
 
     return claimChildren();
 }
 
-void ViewProviderFemPostPipeline::updateData(const App::Property* prop) {
+void ViewProviderFemPostPipeline::updateData(const App::Property* prop)
+{
     FemGui::ViewProviderFemPostObject::updateData(prop);
     Fem::FemPostPipeline* pipeline = static_cast<Fem::FemPostPipeline*>(getObject());
-    if (prop == &pipeline->Functions)
+    if (prop == &pipeline->Functions) {
         updateFunctionSize();
+    }
 }
 
-void ViewProviderFemPostPipeline::updateFunctionSize() {
+void ViewProviderFemPostPipeline::updateFunctionSize()
+{
 
     // we need to get the bounding box and set the function provider size
     Fem::FemPostPipeline* obj = static_cast<Fem::FemPostPipeline*>(getObject());
 
     if (!obj->Functions.getValue()
         || !obj->Functions.getValue()->isDerivedFrom(
-            Fem::FemPostFunctionProvider::getClassTypeId()))
+            Fem::FemPostFunctionProvider::getClassTypeId())) {
         return;
+    }
 
     // get the function provider
     FemGui::ViewProviderFemPostFunctionProvider* vp =
@@ -101,27 +107,46 @@ void ViewProviderFemPostPipeline::updateFunctionSize() {
     }
 }
 
-void ViewProviderFemPostPipeline::onSelectionChanged(const Gui::SelectionChanges &sel)
+namespace
 {
-    auto getAnalyzeView = [](App::DocumentObject* obj) {
-        ViewProviderFemAnalysis* analyzeView = nullptr;
-        App::DocumentObject* grp = App::GroupExtension::getGroupOfObject(obj);
-        if (Fem::FemAnalysis* analyze = Base::freecad_dynamic_cast<Fem::FemAnalysis>(grp)) {
-            analyzeView = Base::freecad_dynamic_cast<ViewProviderFemAnalysis>(
-                Gui::Application::Instance->getViewProvider(analyze));
-        }
-        return analyzeView;
-    };
+// Function to get the analysis container related to the object
+ViewProviderFemAnalysis* getAnalyzeView(App::DocumentObject* obj)
+{
+    ViewProviderFemAnalysis* analyzeView = nullptr;
+    App::DocumentObject* grp = App::GroupExtension::getGroupOfObject(obj);
 
+    if (Fem::FemAnalysis* analyze = Base::freecad_dynamic_cast<Fem::FemAnalysis>(grp)) {
+        analyzeView = Base::freecad_dynamic_cast<ViewProviderFemAnalysis>(
+            Gui::Application::Instance->getViewProvider(analyze));
+    }
+
+    return analyzeView;
+};
+}  // namespace
+
+bool ViewProviderFemPostPipeline::onDelete(const std::vector<std::string>& objs)
+{
+    ViewProviderFemAnalysis* analyzeView = getAnalyzeView(this->getObject());
+    if (analyzeView) {
+        analyzeView->removeView(this);
+    }
+
+    return ViewProviderFemPostObject::onDelete(objs);
+}
+
+void ViewProviderFemPostPipeline::onSelectionChanged(const Gui::SelectionChanges& sel)
+{
     // If a FemPostObject is selected in the document tree we must refresh its
     // color bar.
     // But don't do this if the object is invisible because other objects with a
     // color bar might be visible and the color bar is then wrong.
     if (sel.Type == Gui::SelectionChanges::AddSelection) {
-        if (this->getObject()->Visibility.getValue())
+        if (this->getObject()->Visibility.getValue()) {
             updateMaterial();
-        else
-            return; // purposely nothing should be done
+        }
+        else {
+            return;  // purposely nothing should be done
+        }
 
         // Access analysis object
         ViewProviderFemAnalysis* analyzeView = getAnalyzeView(this->getObject());
@@ -137,29 +162,33 @@ void ViewProviderFemPostPipeline::updateColorBars()
     auto children = claimChildren();
     for (auto& child : children) {
         if (child->Visibility.getValue()) {
-            auto vpObject = dynamic_cast<FemGui::ViewProviderFemPostObject *>(
+            auto vpObject = dynamic_cast<FemGui::ViewProviderFemPostObject*>(
                 Gui::Application::Instance->getViewProvider(child));
-            if (vpObject)
+            if (vpObject) {
                 vpObject->updateMaterial();
+            }
         }
     }
 
     // if pipeline is visible, update it
-    if (this->isVisible())
+    if (this->isVisible()) {
         updateMaterial();
+    }
 }
 
-void ViewProviderFemPostPipeline::transformField(char *FieldName, double FieldFactor)
+void ViewProviderFemPostPipeline::transformField(char* FieldName, double FieldFactor)
 {
-    Fem::FemPostPipeline *obj = static_cast<Fem::FemPostPipeline *>(getObject());
+    Fem::FemPostPipeline* obj = static_cast<Fem::FemPostPipeline*>(getObject());
 
     vtkSmartPointer<vtkDataObject> data = obj->Data.getValue();
-    vtkDataSet *dset = vtkDataSet::SafeDownCast(data);
-    if (!dset)
+    vtkDataSet* dset = vtkDataSet::SafeDownCast(data);
+    if (!dset) {
         return;
-    vtkDataArray *pdata = dset->GetPointData()->GetArray(FieldName);
-    if (!pdata)
+    }
+    vtkDataArray* pdata = dset->GetPointData()->GetArray(FieldName);
+    if (!pdata) {
         return;
+    }
 
     auto strFieldName = std::string(FieldName);
 
@@ -178,16 +207,19 @@ void ViewProviderFemPostPipeline::transformField(char *FieldName, double FieldFa
             }
         }
     }
-    else
+    else {
         scaleField(dset, pdata, FieldFactor);
+    }
 }
 
-void ViewProviderFemPostPipeline::scaleField(vtkDataSet* dset, vtkDataArray* pdata,
+void ViewProviderFemPostPipeline::scaleField(vtkDataSet* dset,
+                                             vtkDataArray* pdata,
                                              double FieldFactor)
 {
     // safe guard
-    if (!dset || !pdata)
+    if (!dset || !pdata) {
         return;
+    }
 
     // step through all mesh points and scale them
     for (int i = 0; i < dset->GetNumberOfPoints(); ++i) {
@@ -206,11 +238,11 @@ void ViewProviderFemPostPipeline::scaleField(vtkDataSet* dset, vtkDataArray* pda
     }
 }
 
-PyObject *ViewProviderFemPostPipeline::getPyObject(void)
+PyObject* ViewProviderFemPostPipeline::getPyObject()
 {
-    if (PythonObject.is(Py::_None())) {
-        // ref counter is set to 1
-        PythonObject = Py::Object(new ViewProviderFemPostPipelinePy(this), true);
+    if (!pyViewObject) {
+        pyViewObject = new ViewProviderFemPostPipelinePy(this);
     }
-    return Py::new_reference_to(PythonObject);
+    pyViewObject->IncRef();
+    return pyViewObject;
 }

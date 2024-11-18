@@ -27,6 +27,7 @@ class TopoShapeListTest(unittest.TestCase):
         obj.Shapes = [box, box2, box3]
         doc.saveAs(self.fileName)
         App.closeDocument(doc.Name)
+        del obj, doc, box, box2, box3
         print("TopoShapeListTest: setUp complete")
 
     def tearDown(self):
@@ -58,4 +59,5 @@ class TopoShapeListTest(unittest.TestCase):
         doc.undo()
 
         self.assertEqual(len(obj.Shapes), 3, "TopoShapeList has wrong entry count (2): {0}".format(len(obj.Shapes)))
+        App.closeDocument(doc.Name)
 

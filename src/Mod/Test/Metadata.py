@@ -28,8 +28,8 @@ import os
 import codecs
 import tempfile
 
-class TestMetadata(unittest.TestCase):
 
+class TestMetadata(unittest.TestCase):
     def setUp(self):
         self.test_dir = os.path.join(FreeCAD.getHomePath(), "Mod", "Test", "TestData")
 
@@ -40,15 +40,24 @@ class TestMetadata(unittest.TestCase):
         except Exception:
             self.fail("Metadata construction from XML file failed")
 
-        with self.assertRaises(FreeCAD.Base.XMLBaseException, msg="Metadata construction from XML file with bad root node did not raise an exception"):
+        with self.assertRaises(
+            FreeCAD.Base.XMLBaseException,
+            msg="Metadata construction from XML file with bad root node did not raise an exception",
+        ):
             filename = os.path.join(self.test_dir, "bad_root_node.xml")
             md = FreeCAD.Metadata(filename)
 
-        with self.assertRaises(FreeCAD.Base.XMLBaseException, msg="Metadata construction from invalid XML file did not raise an exception"):
+        with self.assertRaises(
+            FreeCAD.Base.XMLBaseException,
+            msg="Metadata construction from invalid XML file did not raise an exception",
+        ):
             filename = os.path.join(self.test_dir, "bad_xml.xml")
             md = FreeCAD.Metadata(filename)
 
-        with self.assertRaises(FreeCAD.Base.XMLBaseException, msg="Metadata construction from XML file with invalid version did not raise an exception"):
+        with self.assertRaises(
+            FreeCAD.Base.XMLBaseException,
+            msg="Metadata construction from XML file with invalid version did not raise an exception",
+        ):
             filename = os.path.join(self.test_dir, "bad_version.xml")
             md = FreeCAD.Metadata(filename)
 
@@ -66,7 +75,7 @@ class TestMetadata(unittest.TestCase):
         # Tags that are lists of elements:
         maintainers = md.Maintainer
         self.assertEqual(len(maintainers), 2)
-        
+
         authors = md.Author
         self.assertEqual(len(authors), 3)
 
@@ -112,9 +121,10 @@ class TestMetadata(unittest.TestCase):
     def test_file_path(self):
         # Issue 7112
         try:
-            filename = os.path.join(tempfile.gettempdir(), b'H\xc3\xa5vard.xml'.decode("utf-8"))
+            filename = os.path.join(tempfile.gettempdir(), b"H\xc3\xa5vard.xml".decode("utf-8"))
             xmlfile = codecs.open(filename, mode="w", encoding="utf-8")
-            xmlfile.write(r"""<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+            xmlfile.write(
+                r"""<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <package format="1" xmlns="https://wiki.freecad.org/Package_Metadata">
   <name>test</name>
   <description>Text</description>
@@ -125,14 +135,15 @@ class TestMetadata(unittest.TestCase):
       <classname>Workbench</classname>
     </workbench>
   </content>
-</package>""")
+</package>"""
+            )
             xmlfile.close()
             md = FreeCAD.Metadata(filename)
             self.assertEqual(md.Name, "test")
             self.assertEqual(md.Description, "Text")
             self.assertEqual(md.Version, "1.0.0")
         except UnicodeEncodeError as e:
-            print ("Ignore UnicodeEncodeError in test_file_path:\n{}".format(str(e)))
+            print("Ignore UnicodeEncodeError in test_file_path:\n{}".format(str(e)))
 
     def test_content_item_tags(self):
         filename = os.path.join(self.test_dir, "content_items.xml")
@@ -162,11 +173,13 @@ class TestMetadata(unittest.TestCase):
             elif workbench.Classname == "TestWorkbenchD":
                 found[3] = True
                 dependencies = workbench.Depend
-                expected_dependencies = {"DependencyA":{"type":"automatic","found":False},
-                                         "InternalWorkbench":{"type":"internal","found":False},
-                                         "AddonWorkbench":{"type":"addon","found":False},
-                                         "PythonPackage":{"type":"python","found":False},
-                                         "DependencyB":{"type":"automatic","found":False}}
+                expected_dependencies = {
+                    "DependencyA": {"type": "automatic", "found": False},
+                    "InternalWorkbench": {"type": "internal", "found": False},
+                    "AddonWorkbench": {"type": "addon", "found": False},
+                    "PythonPackage": {"type": "python", "found": False},
+                    "DependencyB": {"type": "automatic", "found": False},
+                }
                 for dep in dependencies:
                     self.assertTrue(dep["package"] in expected_dependencies)
                     self.assertEqual(dep["type"], expected_dependencies[dep["package"]]["type"])
@@ -174,8 +187,9 @@ class TestMetadata(unittest.TestCase):
                 for name, expected_dep in expected_dependencies.items():
                     self.assertTrue(expected_dep["found"], f"Failed to load dependency '{name}'")
         for f in found:
-            self.assertTrue(f,f"One of the expected workbenches was not found in the metadata file")
-
+            self.assertTrue(
+                f, f"One of the expected workbenches was not found in the metadata file"
+            )
 
     def test_last_supported_version(self):
         pass

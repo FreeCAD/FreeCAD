@@ -66,7 +66,8 @@ void QGVNavStyleMaya::handleMousePressEvent(QMouseEvent *event)
 void QGVNavStyleMaya::handleMouseMoveEvent(QMouseEvent *event)
 {
     if (getViewer()->isBalloonPlacing()) {
-        getViewer()->setBalloonCursorPos(event->pos());
+        balloonCursorMovement(event);
+        return;
     }
 
     //pan mode alt + MMB + mouse movement

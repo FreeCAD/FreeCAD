@@ -28,7 +28,7 @@
 #include "SoFCUnifiedSelection.h"
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderExtension.h"
-#include "ViewProviderPythonFeature.h"
+#include "ViewProviderFeaturePython.h"
 
 
 class SoBase;
@@ -39,6 +39,12 @@ namespace Gui {
 
 class LinkInfo;
 using LinkInfoPtr = boost::intrusive_ptr<LinkInfo>;
+
+#if defined(_MSC_VER)
+// forward declaration to please VC 2013
+void intrusive_ptr_add_ref(Gui::LinkInfo *px);
+void intrusive_ptr_release(Gui::LinkInfo *px);
+#endif
 
 class GuiExport ViewProviderLinkObserver: public ViewProviderExtension {
     EXTENSION_TYPESYSTEM_HEADER_WITH_OVERRIDE();
@@ -66,7 +72,7 @@ public:
     virtual void onLinkedIconChange(LinkInfoPtr) {}
     virtual void onLinkedUpdateData(LinkInfoPtr,const App::Property *) {}
 protected:
-    virtual ~LinkOwner() {}
+    virtual ~LinkOwner() = default;
 };
 
 class GuiExport LinkView : public Base::BaseClass, public LinkOwner {
@@ -333,14 +339,9 @@ protected:
     mutable qint64 overlayCacheKey;
 };
 
-using ViewProviderLinkPython = ViewProviderPythonFeatureT<ViewProviderLink>;
+using ViewProviderLinkPython = ViewProviderFeaturePythonT<ViewProviderLink>;
 
 } //namespace Gui
 
-#ifdef _MSC_VER
-// forward declaration to please VC 2013
-void intrusive_ptr_add_ref(Gui::LinkInfo *px);
-void intrusive_ptr_release(Gui::LinkInfo *px);
-#endif
 
 #endif // GUI_VIEWPROVIDER_LINK_H

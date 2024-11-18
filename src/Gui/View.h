@@ -105,8 +105,8 @@ public:
 
 protected:
     Gui::Document*  _pcDocument;
-    bool bIsDetached;
-    bool bIsPassive;
+    bool bIsDetached{false};
+    bool bIsPassive{false};
 };
 
 } // namespace Gui

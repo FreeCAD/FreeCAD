@@ -23,21 +23,27 @@
 #ifndef GUI_TASKVIEW_TASKLINEDECOR_H
 #define GUI_TASKVIEW_TASKLINEDECOR_H
 
+#include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
-
+#include <Mod/TechDraw/App/Cosmetic.h>
 
 namespace App
 {
 class DocumentObject;
 }
 
+namespace TechDraw
+{
+class LineGenerator;
+}
+
 namespace TechDrawGui
 {
-
 class Ui_TaskLineDecor;
 class Ui_TaskRestoreLines;
+
 class TaskLineDecor : public QWidget
 {
     Q_OBJECT
@@ -62,6 +68,10 @@ protected Q_SLOTS:
 protected:
     void changeEvent(QEvent *e) override;
     void initUi();
+
+    TechDraw::LineFormat *getFormatAccessPtr(const std::string &edgeName, std::string *newFormatTag = nullptr);
+    void initializeRejectArrays();
+
     void applyDecorations();
     void getDefaults();
 
@@ -69,11 +79,18 @@ private:
     std::unique_ptr<Ui_TaskLineDecor> ui;
     TechDraw::DrawViewPart* m_partFeat;
     std::vector<std::string> m_edges;
+
+    std::vector<TechDraw::LineFormat> m_originalFormats;
+    std::vector<std::string> m_createdFormatTags;
+
     int m_style;
     App::Color m_color;
     double m_weight;
     bool m_visible;
     bool m_apply;
+    int m_lineNumber;
+
+    TechDraw::LineGenerator* m_lineGenerator;
 };
 
 class TaskRestoreLines : public QWidget

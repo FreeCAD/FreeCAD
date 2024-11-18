@@ -82,7 +82,7 @@ std::vector<App::DocumentObject*> ViewProviderWeld::claimChildren() const
     const std::vector<App::DocumentObject *> &tiles = getFeature()->getInList();
     try {
         for(std::vector<App::DocumentObject *>::const_iterator it = tiles.begin(); it != tiles.end(); ++it) {
-            if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawTile::getClassTypeId())) {
+            if ((*it)->isDerivedFrom<TechDraw::DrawTile>()) {
                 temp.push_back((*it));
             }
         }

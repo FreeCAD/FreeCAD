@@ -38,11 +38,9 @@ class PartDesignGuiExport ViewProviderDressUp : public ViewProvider
 
 public:
     /// constructor
-    ViewProviderDressUp()
-        {}
+    ViewProviderDressUp()  = default;
     /// destructor
-    ~ViewProviderDressUp() override
-        {}
+    ~ViewProviderDressUp() override         = default;
 
     /// grouping handling
     void setupContextMenu(QMenu*, QObject*, const char*) override;
@@ -55,15 +53,11 @@ public:
      * Should be reimplemented in the successor.
      */
     virtual const std::string & featureName() const;
+    std::string featureIcon() const;
     QString menuName;
 
 protected:
     bool setEdit(int ModNum) override;
-
-private:
-    std::vector<App::Color> originalFaceColors;
-    std::vector<App::Color> originalLineColors;
-
 };
 
 

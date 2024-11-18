@@ -29,6 +29,8 @@
         <file>icons/actions/TechDraw_Midpoints.svg</file>
         <file>icons/actions/TechDraw_MoveView.svg</file>
         <file>icons/actions/TechDraw_AxoLengthDimension.svg</file>
+        <file>icons/actions/TechDraw_AddOffsetVertex.svg</file>
+        <file>icons/actions/TechDraw_FillTemplateFields.svg</file>
         <file>icons/actions/TechDraw_HoleShaftFit.svg</file>
         <file>icons/actions/TechDraw_Multiview.svg</file>
         <file>icons/actions/TechDraw_PageDefault.svg</file>
@@ -54,6 +56,8 @@
         <file>icons/actions/TechDraw_WeldSymbol.svg</file>
         <file>icons/actions/TechDraw_SurfaceFinishSymbols.svg</file>
         <file>icons/actions/TechDraw_ComplexSection.svg</file>
+        <file>icons/actions/TechDraw_CosmeticCircle.svg</file>
+        <file>icons/actions/TechDraw_BrokenView.svg</file>
         <file>icons/arrow-ccw.svg</file>
         <file>icons/arrow-cw.svg</file>
         <file>icons/arrow-down.svg</file>
@@ -82,11 +86,15 @@
         <file>icons/square.svg</file>
         <file>icons/TechDraw_3PtAngleDimension.svg</file>
         <file>icons/TechDraw_AngleDimension.svg</file>
+        <file>icons/TechDraw_AreaDimension.svg</file>
         <file>icons/TechDraw_Balloon.svg</file>
+        <file>icons/TechDraw_CameraOrientation.svg</file>
         <file>icons/TechDraw_DiameterDimension.svg</file>
         <file>icons/TechDraw_Dimension.svg</file>
+        <file>icons/TechDraw_Dimension_Pointer.svg</file>
         <file>icons/TechDraw_DimensionRepair.svg</file>
         <file>icons/TechDraw_ExtensionAreaAnnotation.svg</file>
+        <file>icons/TechDraw_ExtensionArcLengthAnnotation.svg</file>
         <file>icons/TechDraw_ExtensionCascadeHorizDimension.svg</file>
         <file>icons/TechDraw_ExtensionCascadeObliqueDimension.svg</file>
         <file>icons/TechDraw_ExtensionCascadeVertDimension.svg</file>
@@ -110,6 +118,7 @@
         <file>icons/TechDraw_ExtensionHoleCircle.svg</file>
         <file>icons/TechDraw_ExtensionIncreaseDecimal.svg</file>
         <file>icons/TechDraw_ExtensionInsertDiameter.svg</file>
+        <file>icons/TechDraw_ExtensionInsertRepetition.svg</file>
         <file>icons/TechDraw_ExtensionInsertSquare.svg</file>
         <file>icons/TechDraw_ExtensionLineParallel.svg</file>
         <file>icons/TechDraw_ExtensionLinePerpendicular.svg</file>
@@ -187,48 +196,5 @@
 
         <!-- bitmap images -->
 
-        <!-- translations -->
-        <file>translations/TechDraw_af.qm</file>
-        <file>translations/TechDraw_ar.qm</file>
-        <file>translations/TechDraw_bg.qm</file>
-        <file>translations/TechDraw_ca.qm</file>
-        <file>translations/TechDraw_cs.qm</file>
-        <file>translations/TechDraw_de.qm</file>
-        <file>translations/TechDraw_el.qm</file>
-        <file>translations/TechDraw_es-AR.qm</file>
-        <file>translations/TechDraw_es-ES.qm</file>
-        <file>translations/TechDraw_eu.qm</file>
-        <file>translations/TechDraw_fi.qm</file>
-        <file>translations/TechDraw_fil.qm</file>
-        <file>translations/TechDraw_fr.qm</file>
-        <file>translations/TechDraw_gl.qm</file>
-        <file>translations/TechDraw_hr.qm</file>
-        <file>translations/TechDraw_hu.qm</file>
-        <file>translations/TechDraw_id.qm</file>
-        <file>translations/TechDraw_it.qm</file>
-        <file>translations/TechDraw_ja.qm</file>
-        <file>translations/TechDraw_ka.qm</file>
-        <file>translations/TechDraw_kab.qm</file>
-        <file>translations/TechDraw_ko.qm</file>
-        <file>translations/TechDraw_lt.qm</file>
-        <file>translations/TechDraw_nl.qm</file>
-        <file>translations/TechDraw_no.qm</file>
-        <file>translations/TechDraw_pl.qm</file>
-        <file>translations/TechDraw_pt-BR.qm</file>
-        <file>translations/TechDraw_pt-PT.qm</file>
-        <file>translations/TechDraw_ro.qm</file>
-        <file>translations/TechDraw_ru.qm</file>
-        <file>translations/TechDraw_sk.qm</file>
-        <file>translations/TechDraw_sl.qm</file>
-        <file>translations/TechDraw_sr.qm</file>
-        <file>translations/TechDraw_sv-SE.qm</file>
-        <file>translations/TechDraw_tr.qm</file>
-        <file>translations/TechDraw_uk.qm</file>
-        <file>translations/TechDraw_val-ES.qm</file>
-        <file>translations/TechDraw_vi.qm</file>
-        <file>translations/TechDraw_zh-CN.qm</file>
-        <file>translations/TechDraw_zh-TW.qm</file>
-        <file>translations/TechDraw_sr-CS.qm</file>
-        <file>translations/TechDraw_be.qm</file>
     </qresource>
 </RCC>

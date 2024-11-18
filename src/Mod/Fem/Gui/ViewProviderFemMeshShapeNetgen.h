@@ -28,7 +28,7 @@
 namespace FemGui
 {
 
-class FemGuiExport ViewProviderFemMeshShapeNetgen : public ViewProviderFemMeshShape
+class FemGuiExport ViewProviderFemMeshShapeNetgen: public ViewProviderFemMeshShape
 {
     PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemMeshShapeNetgen);
 
@@ -39,14 +39,14 @@ public:
     /// destructor.
     ~ViewProviderFemMeshShapeNetgen() override;
 
-     void updateData(const App::Property*) override;
+    void updateData(const App::Property*) override;
 
 protected:
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
     bool setEdit(int ModNum) override;
 };
 
-} //namespace FemGui
+}  // namespace FemGui
 
 
-#endif // FEM_ViewProviderFemMeshShapeNetgen_H
+#endif  // FEM_ViewProviderFemMeshShapeNetgen_H

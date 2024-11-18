@@ -30,31 +30,29 @@ using namespace App;
 
 PROPERTY_SOURCE(Fem::FemPostFunctionProvider, App::DocumentObject)
 
-FemPostFunctionProvider::FemPostFunctionProvider() : DocumentObject() {
+FemPostFunctionProvider::FemPostFunctionProvider()
+    : DocumentObject()
+{
 
     ADD_PROPERTY(Functions, (nullptr));
 }
 
-FemPostFunctionProvider::~FemPostFunctionProvider() {
+FemPostFunctionProvider::~FemPostFunctionProvider() = default;
 
-}
-
-void FemPostFunctionProvider::onChanged(const Property* prop) {
+void FemPostFunctionProvider::onChanged(const Property* prop)
+{
     App::DocumentObject::onChanged(prop);
 }
 
 
 PROPERTY_SOURCE(Fem::FemPostFunction, App::DocumentObject)
 
-FemPostFunction::FemPostFunction()
-{
-}
+FemPostFunction::FemPostFunction() = default;
 
-FemPostFunction::~FemPostFunction()
-{
-}
+FemPostFunction::~FemPostFunction() = default;
 
-DocumentObjectExecReturn* FemPostFunction::execute() {
+DocumentObjectExecReturn* FemPostFunction::execute()
+{
 
     return DocumentObject::StdReturn;
 }
@@ -77,9 +75,7 @@ FemPostBoxFunction::FemPostBoxFunction()
     m_box->SetBounds(-5.0, 5.0, -5.0, 5.0, -5.0, 5.0);
 }
 
-FemPostBoxFunction::~FemPostBoxFunction()
-{
-}
+FemPostBoxFunction::~FemPostBoxFunction() = default;
 
 void FemPostBoxFunction::onChanged(const Property* prop)
 {
@@ -88,10 +84,12 @@ void FemPostBoxFunction::onChanged(const Property* prop)
         float l = Length.getValue();
         float w = Width.getValue();
         float h = Height.getValue();
-        m_box->SetBounds(
-            vec[0] - l/2, vec[0] + l/2,
-            vec[1] - w/2, vec[1] + w/2,
-            vec[2] - h/2, vec[2] + h/2);
+        m_box->SetBounds(vec[0] - l / 2,
+                         vec[0] + l / 2,
+                         vec[1] - w / 2,
+                         vec[1] + w / 2,
+                         vec[2] - h / 2,
+                         vec[2] + h / 2);
     }
 
     Fem::FemPostFunction::onChanged(prop);
@@ -123,9 +121,7 @@ FemPostCylinderFunction::FemPostCylinderFunction()
     m_cylinder->SetRadius(5.0);
 }
 
-FemPostCylinderFunction::~FemPostCylinderFunction()
-{
-}
+FemPostCylinderFunction::~FemPostCylinderFunction() = default;
 
 void FemPostCylinderFunction::onChanged(const Property* prop)
 {
@@ -155,7 +151,9 @@ void FemPostCylinderFunction::onDocumentRestored()
 // plane function
 PROPERTY_SOURCE(Fem::FemPostPlaneFunction, Fem::FemPostFunction)
 
-FemPostPlaneFunction::FemPostPlaneFunction() : FemPostFunction() {
+FemPostPlaneFunction::FemPostPlaneFunction()
+    : FemPostFunction()
+{
 
     ADD_PROPERTY(Origin, (Base::Vector3d(0.0, 0.0, 0.0)));
     ADD_PROPERTY(Normal, (Base::Vector3d(0.0, 0.0, 1.0)));
@@ -167,11 +165,10 @@ FemPostPlaneFunction::FemPostPlaneFunction() : FemPostFunction() {
     m_plane->SetNormal(0.0, 0.0, 1.0);
 }
 
-FemPostPlaneFunction::~FemPostPlaneFunction() {
+FemPostPlaneFunction::~FemPostPlaneFunction() = default;
 
-}
-
-void FemPostPlaneFunction::onChanged(const Property* prop) {
+void FemPostPlaneFunction::onChanged(const Property* prop)
+{
 
     if (prop == &Origin) {
         const Base::Vector3d& vec = Origin.getValue();
@@ -185,7 +182,8 @@ void FemPostPlaneFunction::onChanged(const Property* prop) {
     Fem::FemPostFunction::onChanged(prop);
 }
 
-void FemPostPlaneFunction::onDocumentRestored() {
+void FemPostPlaneFunction::onDocumentRestored()
+{
     // This is to notify the view provider that the document has been fully restored
     Normal.touch();
 }
@@ -195,7 +193,9 @@ void FemPostPlaneFunction::onDocumentRestored() {
 // sphere function
 PROPERTY_SOURCE(Fem::FemPostSphereFunction, Fem::FemPostFunction)
 
-FemPostSphereFunction::FemPostSphereFunction() : FemPostFunction() {
+FemPostSphereFunction::FemPostSphereFunction()
+    : FemPostFunction()
+{
 
     ADD_PROPERTY(Radius, (5.0));
     ADD_PROPERTY(Center, (Base::Vector3d(1.0, 0.0, 0.0)));
@@ -207,11 +207,10 @@ FemPostSphereFunction::FemPostSphereFunction() : FemPostFunction() {
     m_sphere->SetRadius(5.0);
 }
 
-FemPostSphereFunction::~FemPostSphereFunction() {
+FemPostSphereFunction::~FemPostSphereFunction() = default;
 
-}
-
-void FemPostSphereFunction::onChanged(const Property* prop) {
+void FemPostSphereFunction::onChanged(const Property* prop)
+{
 
     if (prop == &Center) {
         const Base::Vector3d& vec = Center.getValue();

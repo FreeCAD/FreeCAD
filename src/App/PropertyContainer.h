@@ -42,6 +42,7 @@ class PropertyContainer;
 class DocumentObject;
 class Extension;
 
+// clang-format off
 enum PropertyType
 {
   Prop_None        = 0, /*!< No special property type */
@@ -52,6 +53,7 @@ enum PropertyType
   Prop_NoRecompute = 16,/*!< Modified property doesn't touch its container for recompute */
   Prop_NoPersist   = 32,/*!< Property won't be saved to file at all */
 };
+// clang-format on
 
 struct AppExport PropertyData
 {
@@ -158,7 +160,7 @@ public:
 
   unsigned int getMemSize () const override;
 
-  virtual std::string getFullName() const {return std::string();}
+  virtual std::string getFullName() const {return {};}
 
   /// find a property by its name
   virtual Property *getPropertyByName(const char* name) const;
@@ -220,6 +222,7 @@ public:
 
   void Save (Base::Writer &writer) const override;
   void Restore(Base::XMLReader &reader) override;
+  virtual void beforeSave() const;
 
   virtual void editProperty(const char * /*propName*/) {}
 
@@ -236,6 +239,11 @@ public:
 
 
 protected:
+  /** get called by the container when a property has changed
+   *
+   * This function is called before onChanged()
+   */
+  virtual void onEarlyChange(const Property* /*prop*/){}
   /// get called by the container when a property has changed
   virtual void onChanged(const Property* /*prop*/){}
   /// get called before the value is changed
@@ -248,10 +256,10 @@ protected:
   virtual void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName);
   virtual void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, Property * prop);
 
-private:
+public:
   // forbidden
-  PropertyContainer(const PropertyContainer&);
-  PropertyContainer& operator = (const PropertyContainer&);
+  PropertyContainer(const PropertyContainer&) = delete;
+  PropertyContainer& operator = (const PropertyContainer&) = delete;
 
 protected:
   DynamicProperty dynamicProps;
@@ -296,7 +304,7 @@ private: \
   TYPESYSTEM_HEADER_WITH_OVERRIDE(); \
 protected: \
   static const App::PropertyData * getPropertyDataPtr(void); \
-  virtual const App::PropertyData &getPropertyData(void) const override; \
+  const App::PropertyData &getPropertyData(void) const override; \
 private: \
   static App::PropertyData propertyData
 ///

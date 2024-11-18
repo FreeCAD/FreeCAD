@@ -1,751 +1,468 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   viewBox="0 0 64 63.999997"
-   height="64"
    width="64"
-   xml:space="preserve"
-   id="svg4485"
+   height="64"
+   id="svg2869"
    version="1.1"
-   sodipodi:docname="SMLogo.svg"
-   inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"><sodipodi:namedview
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1"
-     objecttolerance="10"
-     gridtolerance="10"
-     guidetolerance="10"
-     inkscape:pageopacity="0"
-     inkscape:pageshadow="2"
-     inkscape:window-width="2560"
-     inkscape:window-height="1361"
-     id="namedview449"
-     showgrid="false"
-     inkscape:zoom="3.6875"
-     inkscape:cx="32"
-     inkscape:cy="32"
-     inkscape:window-x="-9"
-     inkscape:window-y="-9"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg4485" /><metadata
-     id="metadata4491"><rdf:RDF><cc:Work
-         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
-     id="defs4489"><linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3767"
-       id="linearGradient3267"
-       x1="1.1006857"
-       y1="288.56635"
-       x2="15.528592"
-       y2="288.56635"
-       gradientUnits="userSpaceOnUse" /><linearGradient
-       inkscape:collect="always"
-       id="linearGradient3767"><stop
-         style="stop-color:#edd400;stop-opacity:1"
+   viewBox="0 0 64 64"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs2871">
+    <linearGradient
+       id="linearGradient43">
+      <stop
+         style="stop-color:#729fcf;stop-opacity:1"
          offset="0"
-         id="stop3769" /><stop
-         style="stop-color:#fce94f;stop-opacity:1"
+         id="stop42" />
+      <stop
+         style="stop-color:#3465a4;stop-opacity:1"
          offset="1"
-         id="stop3771" /></linearGradient><linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient4464"
-       id="linearGradient4466"
-       x1="1.1006857"
-       y1="284.95938"
-       x2="16.422548"
-       y2="279.29102"
-       gradientUnits="userSpaceOnUse" /><linearGradient
-       inkscape:collect="always"
-       id="linearGradient4464"><stop
-         style="stop-color:#000000;stop-opacity:1;"
+         id="stop43" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient41">
+      <stop
+         style="stop-color:#729fcf;stop-opacity:1"
          offset="0"
-         id="stop4460" /><stop
-         style="stop-color:#000000;stop-opacity:0;"
+         id="stop41" />
+      <stop
+         style="stop-color:#3465a4;stop-opacity:1"
          offset="1"
-         id="stop4462" /></linearGradient><linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient4464"
-       id="linearGradient4474"
-       x1="1.1006857"
-       y1="288.56635"
-       x2="31.744411"
-       y2="278.87991"
-       gradientUnits="userSpaceOnUse" /></defs><g
-     transform="matrix(3.7795275,0,0,3.7795275,2.7993249e-8,-1058.5196)"
-     id="layer1"><g
-       transform="matrix(0.03152777,0,0,0.03152777,-57.931413,241.34638)"
-       id="g6808"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6810"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,-57.931413,334.98386)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6812"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,-57.931413,334.98386)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6814"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.08898965,0,0,0.08900888,-57.931413,241.34638)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6816"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.08898965,0,0,0.08900888,-57.931413,241.34638)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6818"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.08898965,0,0,0.08900888,-57.931413,241.34638)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6820"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.08898965,0,0,0.08900888,-57.931413,241.34638)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       transform="matrix(0.03152777,0,0,0.03152777,-57.931413,241.34638)"
-       id="g6822"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6824"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.08898965,0,0,0.08900888,-57.931413,241.34638)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6826"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6828"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6830"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.6971692,295.94018)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6832"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.0111293,0,0,0.0111293,8.444947,297.28516)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6834"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.0111293,0,0,0.0111293,8.444947,297.28516)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6836"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.0111293,0,0,0.0111293,8.444947,297.28516)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6838"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.0111293,0,0,0.0111293,8.444947,297.28516)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       transform="matrix(0.03152777,0,0,0.03152777,-57.931413,241.34638)"
-       id="g6840"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6842"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.0111293,0,0,0.0111293,8.444947,297.28516)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6844"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.0111293,0,0,0.0111293,8.444947,297.28516)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6846"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.6971692,295.94018)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6848"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6854"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6856"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6858"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       transform="matrix(0.03152777,0,0,0.03152777,-57.931413,241.34638)"
-       id="g6860"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6862"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6864"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6870"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6872"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6874"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       transform="matrix(0.03152777,0,0,0.03152777,-57.931413,241.34638)"
-       id="g6876"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6878"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6880"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6886"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6888"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6890"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       transform="matrix(0.03152777,0,0,0.03152777,-57.931413,241.34638)"
-       id="g6892"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6894"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6896"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6902"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6904"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6906"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       transform="matrix(0.03152777,0,0,0.03152777,-57.931413,241.34638)"
-       id="g6908"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6910"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6912"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6918"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6920"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6922"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       transform="matrix(0.03152777,0,0,0.03152777,-57.931413,241.34638)"
-       id="g6924"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6926"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6928"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6934"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6936"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6938"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       transform="matrix(0.03152777,0,0,0.03152777,-57.931413,241.34638)"
-       id="g6940"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6942"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6944"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6950"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6952"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6958"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6960"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6966"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6968"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6974"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6976"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6982"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6984"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6990"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6992"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g6998"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7000"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7006"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7008"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7014"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7016"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7022"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7024"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7030"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7032"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7038"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7040"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7046"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7048"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7054"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7056"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7062"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7064"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7070"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7072"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7078"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7080"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7086"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7088"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7094"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7096"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7102"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7104"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7110"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7112"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7118"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7120"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7126"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7128"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7134"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7136"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7142"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7144"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       id="g7150"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       transform="matrix(0.03152777,0,0,0.03152777,8.276904,288.16512)"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><g
-       transform="matrix(0.03152777,0,0,0.03152777,-57.931413,241.34638)"
-       id="g7152"
-       font-style="normal"
-       font-weight="400"
-       font-size="29.1042"
-       style="font-style:normal;font-weight:400;font-size:29.10420036px;font-family:'MS Shell Dlg 2';fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" /><rect
-       y="281.35239"
-       x="1.1006857"
-       height="14.427906"
-       width="14.427906"
-       id="rect7551"
-       style="opacity:1;fill:url(#linearGradient3267);fill-opacity:1;stroke:none;stroke-width:0.2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" /><path
-       id="path7553"
-       d="m 1.1006857,281.35239 h 7.2139531 l -7.2139531,7.21396 z"
-       style="fill:url(#linearGradient4466);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       inkscape:connector-curvature="0" /><path
-       id="path7555"
-       d="M 1.1006857,295.7803 15.528592,281.35239 v 7.21396 l -7.2139532,7.21395 z"
-       style="fill:url(#linearGradient4474);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       inkscape:connector-curvature="0" /></g></svg>
+         id="stop40" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient38">
+      <stop
+         style="stop-color:#3465a4;stop-opacity:1;"
+         offset="0"
+         id="stop38" />
+      <stop
+         style="stop-color:#3465a4;stop-opacity:0;"
+         offset="1"
+         id="stop39" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient37">
+      <stop
+         style="stop-color:#3465a4;stop-opacity:1"
+         offset="0"
+         id="stop37" />
+      <stop
+         style="stop-color:#729fcf;stop-opacity:1"
+         offset="1"
+         id="stop36" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient32">
+      <stop
+         style="stop-color:#729fcf;stop-opacity:1"
+         offset="0"
+         id="stop32" />
+      <stop
+         style="stop-color:#3465a4;stop-opacity:1"
+         offset="1"
+         id="stop31" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient28">
+      <stop
+         style="stop-color:#3465a4;stop-opacity:1"
+         offset="0"
+         id="stop28" />
+      <stop
+         style="stop-color:#204a87;stop-opacity:1"
+         offset="1"
+         id="stop27" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient5">
+      <stop
+         style="stop-color:#ef2929;stop-opacity:1;"
+         offset="0"
+         id="stop19" />
+      <stop
+         style="stop-color:#ef2929;stop-opacity:0;"
+         offset="1"
+         id="stop20" />
+    </linearGradient>
+    <linearGradient
+       id="swatch18">
+      <stop
+         style="stop-color:#ef2929;stop-opacity:1;"
+         offset="0"
+         id="stop18" />
+    </linearGradient>
+    <linearGradient
+       id="swatch15">
+      <stop
+         style="stop-color:#3d0000;stop-opacity:1;"
+         offset="0"
+         id="stop15" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient5-1">
+      <stop
+         style="stop-color:#ef2929;stop-opacity:1;"
+         offset="0"
+         id="stop5" />
+      <stop
+         style="stop-color:#ef2929;stop-opacity:0;"
+         offset="1"
+         id="stop6" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3836-9">
+      <stop
+         style="stop-color:#a40000;stop-opacity:1"
+         offset="0"
+         id="stop3838-8" />
+      <stop
+         style="stop-color:#ef2929;stop-opacity:1"
+         offset="1"
+         id="stop3840-1" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3836-9-3">
+      <stop
+         style="stop-color:#a40000;stop-opacity:1"
+         offset="0"
+         id="stop3838-8-5" />
+      <stop
+         style="stop-color:#ef2929;stop-opacity:1"
+         offset="1"
+         id="stop3840-1-6" />
+    </linearGradient>
+    <linearGradient
+       y2="5"
+       x2="-22"
+       y1="18"
+       x1="-18"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient3082"
+       xlink:href="#linearGradient3836-9-3" />
+    <linearGradient
+       id="linearGradient3836-9-7">
+      <stop
+         style="stop-color:#a40000;stop-opacity:1"
+         offset="0"
+         id="stop3838-8-0" />
+      <stop
+         style="stop-color:#ef2929;stop-opacity:1"
+         offset="1"
+         id="stop3840-1-9" />
+    </linearGradient>
+    <linearGradient
+       y2="5"
+       x2="-22"
+       y1="18"
+       x1="-18"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient3082-3"
+       xlink:href="#linearGradient3836-9-7" />
+    <linearGradient
+       xlink:href="#linearGradient3836-9-3"
+       id="linearGradient3801-1-3"
+       gradientUnits="userSpaceOnUse"
+       x1="-18"
+       y1="18"
+       x2="-22"
+       y2="5"
+       gradientTransform="matrix(0.76342439,0,0,0.75750425,-4.596389,2.7525637)" />
+    <linearGradient
+       xlink:href="#linearGradient3836-9-3"
+       id="linearGradient3801-1-3-2"
+       gradientUnits="userSpaceOnUse"
+       x1="-18"
+       y1="18"
+       x2="-22"
+       y2="5"
+       gradientTransform="matrix(0.84956703,0,0,0.84301394,-2.927337,1.7790378)" />
+    <linearGradient
+       xlink:href="#linearGradient3838"
+       id="linearGradient3844"
+       x1="36"
+       y1="1039.3622"
+       x2="32"
+       y2="1003.3622"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(2.0563921e-6,-988.36218)" />
+    <linearGradient
+       id="linearGradient3838">
+      <stop
+         style="stop-color:#d3d7cf;stop-opacity:1;"
+         offset="0"
+         id="stop3840" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1;"
+         offset="1"
+         id="stop3842" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient3830"
+       id="linearGradient3836"
+       x1="36"
+       y1="1037.3622"
+       x2="32"
+       y2="1005.3622"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(2.0563921e-6,-988.36218)" />
+    <linearGradient
+       id="linearGradient3830">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1;"
+         offset="0"
+         id="stop3832" />
+      <stop
+         style="stop-color:#d3d7cf;stop-opacity:1;"
+         offset="1"
+         id="stop3834" />
+    </linearGradient>
+    <linearGradient
+       x1="10.504496"
+       y1="16.48678"
+       x2="5.9349072"
+       y2="1.6356685"
+       id="linearGradient-1"
+       gradientTransform="scale(0.99999018,1.0000098)"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         stop-color="#A40000"
+         offset="0%"
+         id="stop6-9" />
+      <stop
+         stop-color="#EF2929"
+         offset="100%"
+         id="stop8" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient3815"
+       id="linearGradient3856"
+       gradientUnits="userSpaceOnUse"
+       x1="80"
+       y1="58"
+       x2="79"
+       y2="42" />
+    <linearGradient
+       id="linearGradient3815">
+      <stop
+         style="stop-color:#3465a4;stop-opacity:1"
+         offset="0"
+         id="stop3817" />
+      <stop
+         style="stop-color:#729fcf;stop-opacity:1"
+         offset="1"
+         id="stop3819" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient3841"
+       id="linearGradient3858"
+       gradientUnits="userSpaceOnUse"
+       x1="109"
+       y1="51"
+       x2="105"
+       y2="38" />
+    <linearGradient
+       id="linearGradient3841">
+      <stop
+         style="stop-color:#204a87;stop-opacity:1"
+         offset="0"
+         id="stop3843" />
+      <stop
+         style="stop-color:#3465a4;stop-opacity:1"
+         offset="1"
+         id="stop3845" />
+    </linearGradient>
+    <linearGradient
+       y2="5"
+       x2="-22"
+       y1="18"
+       x1="-18"
+       gradientTransform="matrix(0.77114848,0,0,0.77113937,-4.4090973,2.5859051)"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient3898"
+       xlink:href="#linearGradient3836-9-3" />
+    <linearGradient
+       xlink:href="#linearGradient3815"
+       id="linearGradient3978"
+       gradientUnits="userSpaceOnUse"
+       x1="-15"
+       y1="37"
+       x2="-19"
+       y2="37"
+       gradientTransform="rotate(135.18861,5.7426909,37.969029)" />
+    <linearGradient
+       xlink:href="#linearGradient17"
+       id="linearGradient3898-0"
+       x1="37.429146"
+       y1="41.590584"
+       x2="24.483221"
+       y2="4.9104676"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       id="linearGradient17">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1;"
+         offset="0"
+         id="stop16" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:0"
+         offset="1"
+         id="stop17" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient17"
+       id="linearGradient3856-9"
+       x1="22.84341"
+       y1="4.8241611"
+       x2="30.783579"
+       y2="28.644661"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       id="linearGradient2">
+      <stop
+         style="stop-color:#73d216;stop-opacity:1;"
+         offset="0"
+         id="stop1" />
+      <stop
+         style="stop-color:#8ae234;stop-opacity:1;"
+         offset="1"
+         id="stop2" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient32"
+       id="linearGradient23"
+       x1="33.426186"
+       y1="50.218243"
+       x2="36.702782"
+       y2="28.850761"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       xlink:href="#linearGradient37"
+       id="linearGradient27"
+       x1="42.807632"
+       y1="29.323545"
+       x2="55.347164"
+       y2="21.862804"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       xlink:href="#linearGradient38"
+       id="linearGradient39"
+       x1="31.433483"
+       y1="29.619202"
+       x2="7.1819806"
+       y2="10.643484"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <metadata
+     id="metadata2874">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[maxwxyz]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/Sketcher/Gui/Resources/icons/Sketcher_CreateArc.svg</dc:identifier>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:date>2023-12-19</dc:date>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer3"
+     style="display:inline">
+    <path
+       d="M 30.087891,4.3652344 6.1582031,18.183594 V 40.291016 L 26.304687,28.658203 c 0.726468,-2.384172 2.0819,-4.731424 3.783204,-6.552734 z"
+       style="font-size:31.75px;font-family:'Sans Serif';fill:#729fcf;fill-rule:evenodd;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke:#0c1522;stroke-dasharray:none;stroke-opacity:1"
+       id="path14" />
+    <path
+       d="M 38.65625,28.658203 58.802734,40.291016 V 29.236328 L 34.875,15.419922 v 6.685547 c 1.701303,1.82131 3.054783,4.168562 3.78125,6.552734 z"
+       style="font-size:31.75px;font-family:'Sans Serif';fill:#729fcf;fill-rule:evenodd;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke:#0c1522;stroke-dasharray:none;stroke-opacity:1"
+       id="path18" />
+    <path
+       d="M 28.699219,32.802734 8.5527344,44.435547 32.480469,58.251953 56.410156,44.435547 36.263672,32.802734 c -2.427795,0.56289 -5.136659,0.56289 -7.564453,0 z"
+       style="font-size:31.75px;font-family:'Sans Serif';fill:#729fcf;fill-rule:evenodd;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke:#0c1522;stroke-dasharray:none;stroke-opacity:1"
+       id="path19" />
+    <path
+       d="M 26.304687,28.658203 6.1582031,40.291016 c 0,1.526186 1.0729686,3.381472 2.3945313,4.144531 L 28.699219,32.802734 C 27.707708,32.683832 26.84908,32.1212 26.402344,31.300781 25.965725,30.518016 25.928375,29.539924 26.304687,28.658203 Z"
+       style="font-size:31.75px;font-family:'Sans Serif';fill:#729fcf;fill-rule:evenodd;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke:#0c1522;stroke-dasharray:none;stroke-opacity:1"
+       id="path15" />
+    <path
+       d="m 36.263672,32.802734 20.146484,11.632813 c 1.321564,-0.763059 2.392578,-2.618345 2.392578,-4.144531 L 38.65625,28.658203 c 0.385247,0.899689 0.338242,1.901021 -0.123047,2.691406 -0.453774,0.794727 -1.297851,1.336947 -2.269531,1.453125 z"
+       style="font-size:31.75px;font-family:'Sans Serif';fill:#729fcf;fill-rule:evenodd;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke:#0c1522;stroke-dasharray:none;stroke-opacity:1"
+       id="path17" />
+    <path
+       d="M 27.695312,2.984375 3.765625,16.800781 6.1582031,18.183594 30.087891,4.3652344 Z"
+       style="font-size:31.75px;font-family:'Sans Serif';fill-rule:evenodd;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke:#0c1522;stroke-dasharray:none;fill:#729fcf;stroke-opacity:1"
+       id="path2" />
+    <path
+       d="M 34.875,15.419922 58.802734,29.236328 61.197266,27.855469 37.267578,14.037109 Z"
+       style="font-size:31.75px;font-family:'Sans Serif';fill-rule:evenodd;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke:#0c1522;stroke-dasharray:none;fill:#729fcf;stroke-opacity:1"
+       id="path4" />
+    <path
+       d="M 56.410156,47.199219 V 44.435547 L 32.480469,58.251953 v 2.763672 z"
+       style="font-size:31.75px;font-family:'Sans Serif';fill-rule:evenodd;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke:#0c1522;stroke-dasharray:none;fill:#729fcf;stroke-opacity:1"
+       id="path11" />
+    <path
+       d="M 32.480469,61.015625 V 58.251953 L 8.5527344,44.435547 v 2.763672 z"
+       style="font-size:31.75px;font-family:'Sans Serif';fill-rule:evenodd;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke:#0c1522;stroke-dasharray:none;fill:#3465a4;stroke-opacity:1"
+       id="path12" />
+    <path
+       d="m 3.765625,38.908203 2.3925781,1.382813 V 18.183594 L 3.765625,16.800781 Z"
+       style="font-size:31.75px;font-family:'Sans Serif';fill-rule:evenodd;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke:#0c1522;stroke-dasharray:none;fill:#3465a4;stroke-opacity:1"
+       id="path3" />
+    <path
+       d="m 61.197266,27.855469 -2.394532,1.380859 v 11.054688 l 2.394532,-1.382813 z"
+       style="font-size:31.75px;font-family:'Sans Serif';fill-rule:evenodd;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke:#0c1522;stroke-dasharray:none;fill:#729fcf;stroke-opacity:1"
+       id="path9" />
+    <path
+       d="m 61.197266,38.908203 -2.394532,1.382813 c 0,1.526186 -1.071014,3.381472 -2.392578,4.144531 v 2.763672 c 2.64316,-1.526186 4.78711,-5.238644 4.78711,-8.291016 z"
+       style="font-size:31.75px;font-family:'Sans Serif';fill:#729fcf;fill-rule:evenodd;stroke:#0c1522;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       id="path10" />
+    <path
+       d="M 8.5527344,47.199219 V 44.435547 C 7.2311717,43.672488 6.1582031,41.817202 6.1582031,40.291016 L 3.765625,38.908203 c 0,3.052372 2.1439501,6.76483 4.7871094,8.291016 z"
+       style="font-size:31.75px;font-family:'Sans Serif';fill:#3465a4;fill-rule:evenodd;stroke:#0c1522;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       id="path13" />
+    <path
+       d="m 28.960937,34.384766 c 2.281383,0.44211 4.759633,0.44211 7.041016,0 L 53.410156,44.435547 32.480469,56.519531 11.552734,44.435547 Z"
+       style="font-size:31.75px;font-family:'Sans Serif';fill:url(#linearGradient23);fill-rule:evenodd;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke:#729fcf;stroke-dasharray:none;stroke-opacity:1"
+       id="path16" />
+    <path
+       d="m 36.375,18.017578 20.927734,12.083984 v 7.591797 L 39.896484,27.642578 C 39.138886,25.444999 37.899187,23.296845 36.375,21.541016 Z"
+       style="font-size:31.75px;font-family:'Sans Serif';display:inline;fill:url(#linearGradient27);fill-rule:evenodd;stroke:#729fcf;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       id="path20" />
+    <path
+       d="M 28.587891,6.9628906 V 21.541016 c -1.524188,1.755535 -2.765454,3.903559 -3.523438,6.101562 L 7.6582031,37.693359 V 19.048828 Z"
+       style="font-size:31.75px;font-family:'Sans Serif';fill:url(#linearGradient39);fill-rule:evenodd;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke:#729fcf;stroke-dasharray:none;stroke-opacity:1;fill-opacity:1"
+       id="path21" />
+    <path
+       style="fill:none;fill-opacity:1;stroke:#3465a4;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+       d="M 7.9248048,40.935547 24.614679,31.298621"
+       id="path41" />
+    <path
+       style="fill:#3465a4;fill-opacity:1;stroke:#3465a4;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+       d="M 56.989679,40.935547 40.299805,31.298621"
+       id="path42" />
+  </g>
+</svg>

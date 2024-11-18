@@ -27,16 +27,21 @@
 #include <App/DocumentObserver.h>
 #include <Gui/Tree.h>
 
-namespace Gui {
-    class Document;
-    class ViewProviderDocumentObject;
+namespace Gui
+{
+class Document;
+class ViewProviderDocumentObject;
+}  // namespace Gui
+
+namespace Fem
+{
+class FemAnalysis;
 }
 
-namespace Fem { class FemAnalysis; }
+namespace FemGui
+{
 
-namespace FemGui {
-
-class ActiveAnalysisObserver : public App::DocumentObserver
+class ActiveAnalysisObserver: public App::DocumentObserver
 {
 public:
     static ActiveAnalysisObserver* instance();
@@ -55,11 +60,11 @@ private:
 
 private:
     static ActiveAnalysisObserver* inst;
-    Fem::FemAnalysis* activeObject;
-    Gui::ViewProviderDocumentObject* activeView;
-    Gui::Document* activeDocument;
+    Fem::FemAnalysis* activeObject {nullptr};
+    Gui::ViewProviderDocumentObject* activeView {nullptr};
+    Gui::Document* activeDocument {nullptr};
 };
 
-} //namespace FemGui
+}  // namespace FemGui
 
-#endif // FEMGUI_ACTIVEANALYSISOBSERVER_H
+#endif  // FEMGUI_ACTIVEANALYSISOBSERVER_H

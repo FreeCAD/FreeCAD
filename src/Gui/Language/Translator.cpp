@@ -176,6 +176,7 @@ Translator::Translator()
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Ukrainian"            )] = "uk";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Valencian"            )] = "val-ES";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Vietnamese"           )] = "vi";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Danish")] = "da";
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
     auto entries = hGrp->GetASCII("AdditionalLanguageDomainEntries", "");
@@ -220,7 +221,7 @@ TStringMap Translator::supportedLocales() const
 
     // List all .qm files
     for (const auto& domainMap : d->mapLanguageTopLevelDomain) {
-        for (const auto& directoryName : qAsConst(d->paths)) {
+        for (const auto& directoryName : std::as_const(d->paths)) {
             QDir dir(directoryName);
             QString filter = QString::fromLatin1("*_%1.qm").arg(QString::fromStdString(domainMap.second));
             QStringList fileNames = dir.entryList(QStringList(filter), QDir::Files, QDir::Name);
@@ -345,8 +346,8 @@ void Translator::refresh()
     std::map<std::string, std::string>::iterator tld = d->mapLanguageTopLevelDomain.find(d->activatedLanguage);
     if (tld == d->mapLanguageTopLevelDomain.end())
         return; // no language activated
-    for (QStringList::iterator it = d->paths.begin(); it != d->paths.end(); ++it) {
-        QDir dir(*it);
+    for (const QString& it : d->paths) {
+        QDir dir(it);
         installQMFiles(dir, tld->second.c_str());
     }
 }
@@ -356,9 +357,9 @@ void Translator::refresh()
  */
 void Translator::removeTranslators()
 {
-    for (std::list<QTranslator*>::iterator it = d->translators.begin(); it != d->translators.end(); ++it) {
-        qApp->removeTranslator(*it);
-        delete *it;
+    for (QTranslator* it : d->translators) {
+        qApp->removeTranslator(it);
+        delete it;
     }
 
     d->translators.clear();
@@ -396,6 +397,10 @@ bool Translator::eventFilter(QObject* obj, QEvent* ev)
 
 void Translator::enableDecimalPointConversion(bool on)
 {
+    if (!qApp) {
+        return;
+    }
+
     if (!on) {
         decimalPointConverter.reset();
         return;

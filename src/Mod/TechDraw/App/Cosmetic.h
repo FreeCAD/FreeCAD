@@ -23,42 +23,20 @@
 #ifndef TECHDRAW_COSMETIC_H
 #define TECHDRAW_COSMETIC_H
 
+#include <QColor>
+
 #include <App/FeaturePython.h>
+#include <App/Color.h>
 #include <Base/Persistence.h>
 #include <Base/Vector3D.h>
 
 #include "Geometry.h"
-
+#include "LineFormat.h"
 
 class TopoDS_Edge;
 
 namespace TechDraw {
 class DrawViewPart;
-
-
-//general purpose line format specifier
-class TechDrawExport LineFormat
-{
-public:
-    LineFormat();
-    LineFormat(int style,
-               double weight,
-               App::Color color,
-               bool visible);
-    ~LineFormat() = default;
-
-    int m_style;
-    double m_weight;
-    App::Color m_color;
-    bool m_visible;
-
-    static double getDefEdgeWidth();
-    static App::Color getDefEdgeColor();
-    static int getDefEdgeStyle();
-
-    void dump(const char* title);
-    std::string toString() const;
-};
 
 //********** CosmeticEdge ******************************************************
 
@@ -67,19 +45,26 @@ class TechDrawExport CosmeticEdge : public Base::Persistence, public TechDraw::B
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     CosmeticEdge();
-    CosmeticEdge(TechDraw::BaseGeomPtr* geometry);
-    CosmeticEdge(CosmeticEdge* ce);
-    CosmeticEdge(Base::Vector3d p1, Base::Vector3d p2);
-    CosmeticEdge(TopoDS_Edge e);
-    CosmeticEdge(TechDraw::BaseGeomPtr g);
+    CosmeticEdge(const TechDraw::BaseGeomPtr* geometry);
+    CosmeticEdge(const CosmeticEdge* ce);
+    CosmeticEdge(const Base::Vector3d& p1, const Base::Vector3d& p2);
+    CosmeticEdge(const TopoDS_Edge& e);
+    CosmeticEdge(const TechDraw::BaseGeomPtr g);
     ~CosmeticEdge() override;
 
     void initialize();
-    TopoDS_Edge TopoDS_EdgeFromVectors(Base::Vector3d pt1, Base::Vector3d pt2);
-    TechDraw::BaseGeomPtr scaledGeometry(double scale);
+    TopoDS_Edge TopoDS_EdgeFromVectors(const Base::Vector3d& pt1, const Base::Vector3d& pt2);
+    TechDraw::BaseGeomPtr scaledGeometry(const double scale);
+    TechDraw::BaseGeomPtr scaledAndRotatedGeometry(const double scale, const double rotDegrees);
+
+    static TechDraw::BaseGeomPtr makeCanonicalLine(DrawViewPart* dvp, Base::Vector3d start, Base::Vector3d end);
+    static TechDraw::BaseGeomPtr makeLineFromCanonicalPoints(Base::Vector3d start, Base::Vector3d end);
+
+    LineFormat format() const { return m_format; }
+    void setFormat(LineFormat newFormat) { m_format = newFormat; }
 
     std::string toString() const override;
-    void dump(const char* title);
+    void dump(const char* title) const;
 
     // Persistence implementer ---------------------
     unsigned int getMemSize() const override;
@@ -87,7 +72,6 @@ public:
     void Restore(Base::XMLReader &/*reader*/) override;
 
     PyObject *getPyObject() override;
-    CosmeticEdge* copy() const;
     CosmeticEdge* clone() const;
 
     Base::Vector3d permaStart;         //persistent unscaled start/end points in View coords
@@ -119,9 +103,9 @@ class TechDrawExport GeomFormat: public Base::Persistence
 
 public:
     GeomFormat();
-    explicit GeomFormat(TechDraw::GeomFormat* gf);
-    GeomFormat(int idx,
-               LineFormat fmt);
+    explicit GeomFormat(const TechDraw::GeomFormat* gf);
+    GeomFormat(const int idx,
+               const LineFormat& fmt);
     ~GeomFormat() override;
 
     // Persistence implementer ---------------------

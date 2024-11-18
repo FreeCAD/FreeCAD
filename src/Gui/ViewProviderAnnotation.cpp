@@ -54,7 +54,6 @@
 #include "BitmapFactory.h"
 #include "Document.h"
 #include "SoFCSelection.h"
-#include "SoTextLabel.h"
 #include "Tools.h"
 #include "Window.h"
 
@@ -239,7 +238,7 @@ void ViewProviderAnnotation::attach(App::DocumentObject* f)
 
 void ViewProviderAnnotation::updateData(const App::Property* prop)
 {
-    if (prop->getTypeId() == App::PropertyStringList::getClassTypeId() &&
+    if (prop->is<App::PropertyStringList>() &&
         strcmp(prop->getName(),"LabelText") == 0) {
         const std::vector<std::string> lines = static_cast<const App::PropertyStringList*>(prop)->getValues();
         int index=0;
@@ -261,7 +260,7 @@ void ViewProviderAnnotation::updateData(const App::Property* prop)
             index++;
         }
     }
-    else if (prop->getTypeId() == App::PropertyVector::getClassTypeId() &&
+    else if (prop->is<App::PropertyVector>() &&
         strcmp(prop->getName(),"Position") == 0) {
         Base::Vector3d v = static_cast<const App::PropertyVector*>(prop)->getValue();
         pTranslation->translation.setValue(v.x,v.y,v.z);
@@ -292,7 +291,7 @@ ViewProviderAnnotationLabel::ViewProviderAnnotationLabel()
     pColor->ref();
     pBaseTranslation = new SoTranslation();
     pBaseTranslation->ref();
-    pTextTranslation = new SoTransform();
+    pTextTranslation = new TranslateManip();
     pTextTranslation->ref();
     pCoords = new SoCoordinate3();
     pCoords->ref();
@@ -324,7 +323,7 @@ void ViewProviderAnnotationLabel::onChanged(const App::Property* prop)
         prop == &FontName || prop == &Frame) {
         if (getObject()) {
             App::Property* label = getObject()->getPropertyByName("LabelText");
-            if (label && label->getTypeId() == App::PropertyStringList::getClassTypeId())
+            if (label && label->is<App::PropertyStringList>())
                 drawImage(static_cast<App::PropertyStringList*>(label)->getValues());
         }
     }
@@ -376,20 +375,41 @@ void ViewProviderAnnotationLabel::attach(App::DocumentObject* f)
 
     addDisplayMaskMode(linesep, "Line");
     addDisplayMaskMode(textsep, "Object");
+
+    // Use the image node as the transform handle
+    SoSearchAction sa;
+    sa.setInterest(SoSearchAction::FIRST);
+    sa.setSearchingAll(true);
+    sa.setNode(this->pImage);
+    sa.apply(pcRoot);
+    SoPath * imagePath = sa.getPath();
+    if (imagePath) {
+        SoDragger* dragger = pTextTranslation->getDragger();
+        dragger->addStartCallback(dragStartCallback, this);
+        dragger->addFinishCallback(dragFinishCallback, this);
+        dragger->addMotionCallback(dragMotionCallback, this);
+
+        dragger->setPartAsPath("translator", imagePath);
+
+        // Hide the dragger feedback during translation
+        dragger->setPart("translatorActive", NULL);
+        dragger->setPart("xAxisFeedback", NULL);
+        dragger->setPart("yAxisFeedback", NULL);
+    }
 }
 
 void ViewProviderAnnotationLabel::updateData(const App::Property* prop)
 {
-    if (prop->getTypeId() == App::PropertyStringList::getClassTypeId() &&
+    if (prop->is<App::PropertyStringList>() &&
         strcmp(prop->getName(),"LabelText") == 0) {
         drawImage(static_cast<const App::PropertyStringList*>(prop)->getValues());
     }
-    else if (prop->getTypeId() == App::PropertyVector::getClassTypeId() &&
+    else if (prop->is<App::PropertyVector>() &&
         strcmp(prop->getName(),"BasePosition") == 0) {
         Base::Vector3d v = static_cast<const App::PropertyVector*>(prop)->getValue();
         pBaseTranslation->translation.setValue(v.x,v.y,v.z);
     }
-    else if (prop->getTypeId() == App::PropertyVector::getClassTypeId() &&
+    else if (prop->is<App::PropertyVector>() &&
         strcmp(prop->getName(),"TextPosition") == 0) {
         Base::Vector3d v = static_cast<const App::PropertyVector*>(prop)->getValue();
         pCoords->point.set1Value(1, SbVec3f(v.x,v.y,v.z));
@@ -399,16 +419,6 @@ void ViewProviderAnnotationLabel::updateData(const App::Property* prop)
     ViewProviderDocumentObject::updateData(prop);
 }
 
-bool ViewProviderAnnotationLabel::doubleClicked()
-{
-    Gui::Application::Instance->activeDocument()->setEdit(this);
-    return true;
-}
-
-void ViewProviderAnnotationLabel::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
-{
-    menu->addAction(QObject::tr("Move annotation"), receiver, member);
-}
 
 void ViewProviderAnnotationLabel::dragStartCallback(void *, SoDragger *)
 {
@@ -427,48 +437,9 @@ void ViewProviderAnnotationLabel::dragMotionCallback(void *data, SoDragger *drag
     auto that = static_cast<ViewProviderAnnotationLabel*>(data);
     const SbMatrix& mat = drag->getMotionMatrix();
     App::DocumentObject* obj = that->getObject();
-    if (obj && obj->getTypeId() == App::AnnotationLabel::getClassTypeId()) {
+    if (obj && obj->is<App::AnnotationLabel>()) {
         static_cast<App::AnnotationLabel*>(obj)->TextPosition.setValue(mat[3][0],mat[3][1],mat[3][2]);
     }
-}
-
-bool ViewProviderAnnotationLabel::setEdit(int ModNum)
-{
-    Q_UNUSED(ModNum);
-    SoSearchAction sa;
-    sa.setInterest(SoSearchAction::FIRST);
-    sa.setSearchingAll(false);
-    sa.setNode(this->pTextTranslation);
-    sa.apply(pcRoot);
-    SoPath * path = sa.getPath();
-    if (path) {
-        auto manip = new TranslateManip;
-        SoDragger* dragger = manip->getDragger();
-        dragger->addStartCallback(dragStartCallback, this);
-        dragger->addFinishCallback(dragFinishCallback, this);
-        dragger->addMotionCallback(dragMotionCallback, this);
-        return manip->replaceNode(path);
-    }
-
-    return false;
-}
-
-void ViewProviderAnnotationLabel::unsetEdit(int ModNum)
-{
-    Q_UNUSED(ModNum);
-    SoSearchAction sa;
-    sa.setType(TranslateManip::getClassTypeId());
-    sa.setInterest(SoSearchAction::FIRST);
-    sa.apply(pcRoot);
-    SoPath * path = sa.getPath();
-
-    // No transform manipulator found.
-    if (!path)
-        return;
-
-    auto manip = static_cast<TranslateManip*>(path->getTail());
-    SoTransform* transform = this->pTextTranslation;
-    manip->replaceManip(path, transform);
 }
 
 void ViewProviderAnnotationLabel::drawImage(const std::vector<std::string>& s)

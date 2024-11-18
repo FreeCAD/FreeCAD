@@ -46,9 +46,7 @@ CommandActionPy::CommandActionPy(Py::PythonClassInstance* self, Py::Tuple& args,
     cmd = Application::Instance->commandManager().getCommandByName(name);
 }
 
-CommandActionPy::~CommandActionPy()
-{
-}
+CommandActionPy::~CommandActionPy() = default;
 
 Py::Object CommandActionPy::getAction()
 {
@@ -61,7 +59,7 @@ Py::Object CommandActionPy::getAction()
         PythonWrapper wrap;
         wrap.loadWidgetsModule();
 
-        return wrap.fromQObject(action->action());
+        return wrap.fromQAction(action->action());
     }
     else {
         return Py::None();

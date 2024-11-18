@@ -23,7 +23,7 @@
 
 #pragma once
 
-class CClassFactory : public IClassFactory
+class CClassFactory: public IClassFactory
 {
 private:
     LONG m_cRef;

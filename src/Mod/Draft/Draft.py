@@ -45,7 +45,7 @@ else:
 __title__ = "FreeCAD Draft Workbench"
 __author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
               "Dmitry Chigrin, Daniel Falck")
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 # ---------------------------------------------------------------------------
 # Utility functions
@@ -61,8 +61,7 @@ from draftutils.utils import (type_check,
                               set_param,
                               setParam,
                               precision,
-                              tolerance,
-                              epsilon)
+                              tolerance)
 
 from draftutils.utils import (get_real_name,
                               getRealName,
@@ -93,7 +92,8 @@ from draftutils.utils import (string_encode_coin,
                               get_rgb,
                               getrgb,
                               argb_to_rgba,
-                              rgba_to_argb)
+                              rgba_to_argb,
+                              get_rgba_tuple)
 
 from draftfunctions.svg import (get_svg,
                                 getSVG)
@@ -107,6 +107,7 @@ from draftutils.gui_utils import (get3DView,
                                   removeHidden,
                                   remove_hidden,
                                   get_diffuse_color,
+                                  apply_current_style,
                                   formatObject,
                                   format_object,
                                   getSelection,
@@ -116,7 +117,8 @@ from draftutils.gui_utils import (get3DView,
                                   select,
                                   loadTexture,
                                   load_texture,
-                                  get_bbox)
+                                  get_bbox,
+                                  end_all_events)
 
 from draftutils.gui_utils import (dim_symbol,
                                   dimSymbol,
@@ -378,8 +380,7 @@ if App.GuiUp:
 from draftobjects.layer import (Layer,
                                 _VisGroup)
 
-from draftmake.make_layer import (make_layer,
-                                  makeLayer)
+from draftmake.make_layer import make_layer
 
 if App.GuiUp:
     from draftviewproviders.view_layer import (ViewProviderLayer,

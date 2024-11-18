@@ -41,6 +41,7 @@ class PartDesignExport Body : public Part::BodyBase
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Body);
 
 public:
+    App::PropertyBool AllowCompound;
 
     /// True if this body feature is active or was active when the document was last closed
     //App::PropertyBool IsActive;
@@ -61,7 +62,7 @@ public:
 
     /**
      * Add the feature into the body at the current insert point.
-     * The insertion poin is the before next solid after the Tip feature
+     * The insertion point is the before next solid after the Tip feature
      */
     std::vector<App::DocumentObject*> addObject(App::DocumentObject*) override;
     std::vector< DocumentObject* > addObjects(std::vector< DocumentObject* > obj) override;
@@ -89,9 +90,6 @@ public:
      * (place before next solid after the Tip)
      */
     bool isAfterInsertPoint(App::DocumentObject* feature);
-
-    /// Return true if the given feature is member of a MultiTransform feature
-    static bool isMemberOfMultiTransform(const App::DocumentObject *obj);
 
     /**
       * Return true if the given feature is a solid feature allowed in a Body. Currently this is only valid

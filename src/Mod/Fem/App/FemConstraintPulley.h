@@ -30,7 +30,7 @@
 namespace Fem
 {
 
-class FemExport ConstraintPulley : public Fem::ConstraintGear
+class FemExport ConstraintPulley: public Fem::ConstraintGear
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::ConstraintPulley);
 
@@ -52,19 +52,19 @@ public:
     App::PropertyFloat BeltForce2;
 
     /// recalculate the object
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "FemGui::ViewProviderFemConstraintPulley";
     }
 
 protected:
     void onChanged(const App::Property* prop) override;
-
 };
 
-} //namespace Fem
+}  // namespace Fem
 
 
-#endif // FEM_CONSTRAINTPulley_H
+#endif  // FEM_CONSTRAINTPulley_H

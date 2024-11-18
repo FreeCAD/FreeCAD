@@ -39,7 +39,7 @@ class TechDrawExport DrawRichAnno : public TechDraw::DrawView
 
 public:
     DrawRichAnno();
-    ~DrawRichAnno() = default;
+    ~DrawRichAnno() override = default;
 
     App::PropertyLink         AnnoParent;
     App::PropertyString       AnnoText;
@@ -57,6 +57,7 @@ public:
     DrawView* getBaseView() const;
 
     DrawPage* findParentPage() const override;
+    App::PropertyLink *getOwnerProperty() override { return &AnnoParent; }
 
 protected:
     void onChanged(const App::Property* prop) override;

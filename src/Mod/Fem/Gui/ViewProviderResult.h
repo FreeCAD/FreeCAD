@@ -25,13 +25,13 @@
 #define FEM_ViewProviderResult_H
 
 #include <Gui/ViewProviderDocumentObject.h>
-#include <Gui/ViewProviderPythonFeature.h>
+#include <Gui/ViewProviderFeaturePython.h>
 #include <Mod/Fem/FemGlobal.h>
 
 namespace FemGui
 {
 
-class FemGuiExport ViewProviderResult : public Gui::ViewProviderDocumentObject
+class FemGuiExport ViewProviderResult: public Gui::ViewProviderDocumentObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderResult);
 
@@ -44,12 +44,14 @@ public:
 
     // shows solid in the tree
     bool isShow() const override
-    { return true; }
+    {
+        return true;
+    }
 };
 
-using ViewProviderResultPython = Gui::ViewProviderPythonFeatureT<ViewProviderResult>;
+using ViewProviderResultPython = Gui::ViewProviderFeaturePythonT<ViewProviderResult>;
 
-} //namespace FemGui
+}  // namespace FemGui
 
 
-#endif // FEM_ViewProviderResult_H
+#endif  // FEM_ViewProviderResult_H

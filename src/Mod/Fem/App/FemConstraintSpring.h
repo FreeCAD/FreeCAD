@@ -27,9 +27,10 @@
 
 #include "FemConstraint.h"
 
-namespace Fem {
+namespace Fem
+{
 
-class FemExport ConstraintSpring : public Fem::Constraint
+class FemExport ConstraintSpring: public Fem::Constraint
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::ConstraintSpring);
 
@@ -39,11 +40,9 @@ public:
     App::PropertyStiffness NormalStiffness;
     App::PropertyStiffness TangentialStiffness;
     App::PropertyEnumeration ElmerStiffness;
-    App::PropertyVectorList Points;
-    App::PropertyVectorList Normals;
 
     /// recalculate the object
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
 
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override;
@@ -52,6 +51,6 @@ protected:
     void onChanged(const App::Property* prop) override;
 };
 
-}
+}  // namespace Fem
 
-#endif // FEM_CONSTRAINTPSPRING_H
+#endif  // FEM_CONSTRAINTPSPRING_H

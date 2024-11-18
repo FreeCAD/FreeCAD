@@ -35,13 +35,12 @@ class PartDesignGuiExport ViewProviderTransformed : public ViewProvider
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderTransformed);
 
 public:
-    /// constructor
-    ViewProviderTransformed()
-        : featureName("undefined"), pcRejectedRoot(nullptr) {}
-    /// destructor
-    ~ViewProviderTransformed() override
-        {}
+    ViewProviderTransformed() = default;
+    ~ViewProviderTransformed() override  = default;
 
+    // The feature name of the subclass
+    virtual const std::string & featureName() const;
+    std::string featureIcon() const;
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
     bool onDelete(const std::vector<std::string> &) override;
@@ -49,8 +48,6 @@ public:
     /// signals if the transformation contains errors
     boost::signals2::signal<void (QString msg)> signalDiagnosis;
 
-    // The feature name of the subclass
-    std::string featureName;
     // Name of menu dialog
     QString menuName;
 
@@ -63,7 +60,7 @@ protected:
     bool checkDlgOpen(TaskDlgTransformedParameters* transformedDlg);
 
     // node for the representation of rejected repetitions
-    SoGroup           * pcRejectedRoot;
+    SoGroup           * pcRejectedRoot{nullptr};
 
     QString diagMessage;
 

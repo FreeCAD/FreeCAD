@@ -27,6 +27,13 @@
 # include <QMessageBox>
 #endif
 
+#include <App/Document.h>
+#include <Gui/Application.h>
+#include <Gui/Document.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/ViewProviderDocumentObject.h>
+
+
 #include "TaskDialog.h"
 #include "TaskView.h"
 
@@ -42,26 +49,44 @@ TaskDialog::TaskDialog()
     : QObject(nullptr), pos(North)
     , escapeButton(true)
     , autoCloseTransaction(false)
+    , autoCloseDeletedDocument(false)
+    , autoCloseClosedView(false)
 {
 
 }
 
 TaskDialog::~TaskDialog()
 {
-    for (std::vector<QWidget*>::iterator it=Content.begin();it!=Content.end();++it) {
-        delete *it;
-        *it = 0;
+    for (auto it : Content) {
+        delete it;
+        it = nullptr;
     }
 }
 
 //==== Slots ===============================================================
 
-void TaskDialog::addTaskBox(QWidget* widget)
+QWidget* TaskDialog::addTaskBox(QWidget* widget, bool expandable, QWidget* parent)
 {
-    Gui::TaskView::TaskBox* taskbox = new Gui::TaskView::TaskBox(
-        QPixmap(), widget->windowTitle(), true, nullptr);
+    return addTaskBox(QPixmap(), widget, expandable, parent);
+}
+
+QWidget* TaskDialog::addTaskBox(const QPixmap& icon,
+                                QWidget* widget,
+                                bool expandable,
+                                QWidget* parent)
+{
+    auto taskbox = new Gui::TaskView::TaskBox(icon, widget->windowTitle(), expandable, parent);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
+    return taskbox;
+}
+
+QWidget* TaskDialog::addTaskBoxWithoutHeader(QWidget* widget)
+{
+    auto taskbox = new Gui::TaskView::TaskBox();
+    taskbox->groupLayout()->addWidget(widget);
+    Content.push_back(taskbox);
+    return taskbox;
 }
 
 const std::vector<QWidget*> &TaskDialog::getDialogContent() const
@@ -77,10 +102,26 @@ bool TaskDialog::canClose() const
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     msgBox.setDefaultButton(QMessageBox::Yes);
     int ret = msgBox.exec();
-    if (ret == QMessageBox::Yes)
-        return true;
-    else
-        return false;
+    return (ret == QMessageBox::Yes);
+}
+
+void TaskDialog::associateToObject3dView(App::DocumentObject* obj)
+{
+    if (!obj) {
+        return;
+    }
+
+    Gui::Document* guiDoc = Gui::Application::Instance->getDocument(obj->getDocument());
+    auto* vp = Gui::Application::Instance->getViewProvider(obj);
+    auto* vpdo = static_cast<Gui::ViewProviderDocumentObject*>(vp);
+    auto* view = guiDoc->openEditingView3D(vpdo);
+
+    if (!view) {
+        return;
+    }
+
+    setAssociatedView(view);
+    setAutoCloseOnClosedView(true);
 }
 
 //==== calls from the TaskView ===============================================================
@@ -96,6 +137,16 @@ void TaskDialog::closed()
 }
 
 void TaskDialog::autoClosedOnTransactionChange()
+{
+
+}
+
+void TaskDialog::autoClosedOnDeletedDocument()
+{
+
+}
+
+void TaskDialog::autoClosedOnClosedView()
 {
 
 }

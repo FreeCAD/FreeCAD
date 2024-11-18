@@ -36,31 +36,24 @@ Placement::Placement(const Base::Matrix4D& matrix)
     fromMatrix(matrix);
 }
 
-Placement::Placement(const Placement& that)
-{
-    this->_pos = that._pos;
-    this->_rot = that._rot;
-}
+Placement::Placement(const Vector3d& Pos, const Rotation& Rot)
+    : _pos(Pos)
+    , _rot(Rot)
+{}
 
-Placement::Placement(const Vector3d& Pos, const Rotation &Rot)
-{
-    this->_pos = Pos;
-    this->_rot = Rot;
-}
-
-Placement::Placement(const Vector3d& Pos, const Rotation &Rot, const Vector3d& Cnt)
+Placement::Placement(const Vector3d& Pos, const Rotation& Rot, const Vector3d& Cnt)
+    : _rot(Rot)
 {
     Vector3d RotC = Cnt;
     Rot.multVec(RotC, RotC);
     this->_pos = Pos + Cnt - RotC;
-    this->_rot = Rot;
 }
 
 Placement Placement::fromDualQuaternion(DualQuat qq)
 {
     Rotation rot(qq.x.re, qq.y.re, qq.z.re, qq.w.re);
     DualQuat mvq = 2 * qq.dual() * qq.real().conj();
-    return Placement(Vector3d(mvq.x.re,mvq.y.re, mvq.z.re), rot);
+    return {Vector3d(mvq.x.re, mvq.y.re, mvq.z.re), rot};
 }
 
 Base::Matrix4D Placement::toMatrix() const
@@ -86,13 +79,13 @@ DualQuat Placement::toDualQuaternion() const
     DualQuat posqq(_pos.x, _pos.y, _pos.z, 0.0);
     DualQuat rotqq;
     _rot.getValue(rotqq.x.re, rotqq.y.re, rotqq.z.re, rotqq.w.re);
-    DualQuat ret (rotqq,  0.5 * posqq * rotqq);
+    DualQuat ret(rotqq, 0.5 * posqq * rotqq);
     return ret;
 }
 
 bool Placement::isIdentity() const
 {
-    Base::Vector3d nullvec(0,0,0);
+    Base::Vector3d nullvec(0, 0, 0);
     bool none = (this->_pos == nullvec) && (this->_rot.isIdentity());
     return none;
 }
@@ -104,14 +97,12 @@ bool Placement::isIdentity(double tol) const
 
 bool Placement::isSame(const Placement& p) const
 {
-    return this->_rot.isSame(p._rot) &&
-           this->_pos.IsEqual(p._pos, 0);
+    return this->_rot.isSame(p._rot) && this->_pos.IsEqual(p._pos, 0);
 }
 
 bool Placement::isSame(const Placement& p, double tol) const
 {
-    return this->_rot.isSame(p._rot, tol) &&
-           this->_pos.IsEqual(p._pos, tol);
+    return this->_rot.isSame(p._rot, tol) && this->_pos.IsEqual(p._pos, tol);
 }
 
 void Placement::invert()
@@ -133,12 +124,12 @@ void Placement::move(const Vector3d& MovVec)
     _pos += MovVec;
 }
 
-bool Placement::operator == (const Placement& that) const
+bool Placement::operator==(const Placement& that) const
 {
     return (this->_pos == that._pos) && (this->_rot == that._rot);
 }
 
-bool Placement::operator != (const Placement& that) const
+bool Placement::operator!=(const Placement& that) const
 {
     return !(*this == that);
 }
@@ -149,23 +140,16 @@ bool Placement::operator != (const Placement& that) const
 
   \sa multRight()
 */
-Placement & Placement::operator*=(const Placement & p)
+Placement& Placement::operator*=(const Placement& p)
 {
     return multRight(p);
 }
 
-Placement Placement::operator*(const Placement & p) const
+Placement Placement::operator*(const Placement& p) const
 {
     Placement plm(*this);
     plm *= p;
     return plm;
-}
-
-Placement& Placement::operator = (const Placement& New)
-{
-    this->_pos = New._pos;
-    this->_rot = New._rot;
-    return *this;
 }
 
 Placement Placement::pow(double t, bool shorten) const
@@ -201,23 +185,23 @@ Placement& Placement::multLeft(const Base::Placement& p)
     return *this;
 }
 
-void Placement::multVec(const Vector3d & src, Vector3d & dst) const
+void Placement::multVec(const Vector3d& src, Vector3d& dst) const
 {
     this->_rot.multVec(src, dst);
     dst += this->_pos;
 }
 
-void Placement::multVec(const Vector3f & src, Vector3f & dst) const
+void Placement::multVec(const Vector3f& src, Vector3f& dst) const
 {
     this->_rot.multVec(src, dst);
     dst += Base::toVector<float>(this->_pos);
 }
 
-Placement Placement::slerp(const Placement & p0, const Placement & p1, double t)
+Placement Placement::slerp(const Placement& p0, const Placement& p1, double t)
 {
     Rotation rot = Rotation::slerp(p0.getRotation(), p1.getRotation(), t);
-    Vector3d pos = p0.getPosition() * (1.0-t) + p1.getPosition() * t;
-    return Placement(pos, rot);
+    Vector3d pos = p0.getPosition() * (1.0 - t) + p1.getPosition() * t;
+    return {pos, rot};
 }
 
 Placement Placement::sclerp(const Placement& p0, const Placement& p1, double t, bool shorten)

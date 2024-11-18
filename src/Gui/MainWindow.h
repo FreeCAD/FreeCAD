@@ -58,8 +58,7 @@ public:
     explicit UrlHandler(QObject* parent = nullptr)
         : QObject(parent){
     }
-    ~UrlHandler() override {
-    }
+    ~UrlHandler() override = default;
     virtual void openUrl(App::Document*, const QUrl&) {
     }
 };
@@ -107,6 +106,10 @@ public:
      */
     QList<QWidget*> windows(QMdiArea::WindowOrder order = QMdiArea::CreationOrder) const;
     /**
+     * Returns the internal QMdiArea instance.
+     */
+    QMdiArea *getMdiArea() const;
+    /**
      * Can be called after the caption of an MDIView has changed to update the tab's caption.
      */
     void tabChanged(MDIView* view);
@@ -139,10 +142,6 @@ public:
     void startSplasher();
     /** Stops the splasher after startup. */
     void stopSplasher();
-    /* The image of the About dialog, it might be empty. */
-    QPixmap aboutImage() const;
-    /* The image of the splash screen of the application. */
-    QPixmap splashImage() const;
     /** Shows the online documentation. */
     void showDocumentation(const QString& help);
     //@}
@@ -153,7 +152,7 @@ public:
     /// Loads the main window settings.
     void loadWindowSettings();
     /// Saves the main window settings.
-    void saveWindowSettings();
+    void saveWindowSettings(bool canDelay = false);
     //@}
 
     /** @name Menu
@@ -204,6 +203,10 @@ public:
     enum StatusType {None, Err, Wrn, Pane, Msg, Log, Tmp, Critical};
     void showStatus(int type, const QString & message);
 
+    void initDockWindows(bool show);
+
+    bool isRestoringWindowState() const;
+
 public Q_SLOTS:
     /**
      * Updates the standard actions of a text editor such as Cut, Copy, Paste, Undo and Redo.
@@ -213,6 +216,10 @@ public Q_SLOTS:
      * Sets text to the pane in the status bar.
      */
     void setPaneText(int i, QString text);
+    /**
+     * Sets the userschema in the status bar
+    */
+    void setUserSchema(int userSchema);
     /**
      * Arranges all child windows in a tile pattern.
      */
@@ -254,6 +261,10 @@ public Q_SLOTS:
     void statusMessageChanged();
 
     void showMessage (const QString & message, int timeout = 0);
+    void setRightSideMessage(const QString & message);
+
+    // Set main window title
+    void setWindowTitle(const QString& string);
 
 protected:
     /**
@@ -284,13 +295,20 @@ protected:
 
 private:
     void setupDockWindows();
-    bool setupTreeView(const std::string&);
-    bool setupPropertyView(const std::string&);
-    bool setupSelectionView(const std::string&);
-    bool setupComboView(const std::string&, bool enable);
-    bool setupDAGView(const std::string&);
-    bool setupReportView(const std::string&);
-    bool setupPythonConsole(const std::string&);
+    bool setupTaskView();
+    bool setupSelectionView();
+    bool setupReportView();
+    bool setupPythonConsole();
+    bool updateTreeView(bool show);
+    bool updatePropertyView(bool show);
+    bool updateTaskView(bool show);
+    bool updateComboView(bool show);
+    bool updateDAGView(bool show);
+
+    void populateToolBarMenu(QMenu *);
+    void populateDockWindowMenu(QMenu *);
+
+    static void renderDevBuildWarning(QPainter &painter, const QPoint startPosition, const QSize maxSize, QColor color);
 
 private Q_SLOTS:
     /**
@@ -328,7 +346,7 @@ private Q_SLOTS:
     /**
      * \internal
      */
-    void processMessages(const QList<QByteArray> &);
+    void processMessages(const QList<QString> &);
     /**
      * \internal
      */
@@ -336,7 +354,7 @@ private Q_SLOTS:
 
 Q_SIGNALS:
     void timeEvent();
-    void windowStateChanged(Gui::MDIView*);
+    void windowStateChanged(QWidget*);
     void workbenchActivated(const QString&);
     void mainWindowClosed();
 
@@ -370,7 +388,8 @@ public:
     /** Observes its parameter group. */
     void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;
 
-    void SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level) override;
+    void SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
+                 Base::IntendedRecipient recipient, Base::ContentType content) override;
 
     /// name of the observer
     const char *Name() override {return "StatusBar";}

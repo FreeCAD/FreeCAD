@@ -43,6 +43,7 @@
 using namespace Gui;
 using namespace TechDraw;
 using namespace TechDrawGui;
+using DU = DrawUtil;
 
 //ctor for edit
 TaskCosmeticLine::TaskCosmeticLine(TechDraw::DrawViewPart* partFeat,
@@ -111,33 +112,40 @@ void TaskCosmeticLine::setUiPrimary()
 {
     setWindowTitle(QObject::tr("Create Cosmetic Line"));
 
+    // double rotDeg = m_partFeat->Rotation.getValue();
+    // double rotRad = rotDeg * M_PI / 180.0;
+    Base::Vector3d centroid = m_partFeat->getCurrentCentroid();
+    Base::Vector3d p1, p2;
     if (m_is3d.front()) {
-        ui->rb2d1->setChecked(false);
-        ui->rb3d1->setChecked(true);
+        // center, project and invert the 3d point
+        p1 = m_partFeat->projectPoint(m_points.front() - centroid);
     } else {
-        ui->rb2d1->setChecked(true);
-        ui->rb3d1->setChecked(false);
+        // if the points are selected from 2d, they are already inverted
+        // unscale and unrotate the selected 2d point
+        p1 = CosmeticVertex::makeCanonicalPointInverted(m_partFeat, m_points.front());
     }
+
     if (m_is3d.back()) {
-        ui->rb2d2->setChecked(false);
-        ui->rb3d2->setChecked(true);
+        p2 = m_partFeat->projectPoint(m_points.back() - centroid);
     } else {
-        ui->rb2d2->setChecked(true);
-        ui->rb3d2->setChecked(false);
+        p2 = CosmeticVertex::makeCanonicalPointInverted(m_partFeat, m_points.back());
     }
-    Base::Vector3d p1 = m_points.front();
+
+    // 3d points are projected above, so they are now 2d point and we need to set the radio buttons appropriately
+    ui->rb2d1->setChecked(true);
+    ui->rb3d1->setChecked(false);
+
     ui->qsbx1->setUnit(Base::Unit::Length);
     ui->qsbx1->setValue(p1.x);
     ui->qsby1->setUnit(Base::Unit::Length);
-    ui->qsby1->setValue(p1.y);
+    ui->qsby1->setValue(-p1.y);
     ui->qsby1->setUnit(Base::Unit::Length);
     ui->qsbz1->setValue(p1.z);
 
-    Base::Vector3d p2 = m_points.back();
     ui->qsbx2->setUnit(Base::Unit::Length);
     ui->qsbx2->setValue(p2.x);
     ui->qsby2->setUnit(Base::Unit::Length);
-    ui->qsby2->setValue(p2.y);
+    ui->qsby2->setValue(-p2.y);
     ui->qsbz2->setUnit(Base::Unit::Length);
     ui->qsbz2->setValue(p2.z);
 }
@@ -163,64 +171,72 @@ void TaskCosmeticLine::setUiEdit()
 }
 
 //******************************************************************************
-void TaskCosmeticLine::createCosmeticLine(void)
+void TaskCosmeticLine::createCosmeticLine()
 {
+//    Base::Console().Message("TCL::createCosmeticLine()\n");
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Cosmetic Line"));
 
+    // ui 2d points are interpreted as unscaled, unrotated, uninverted
     double x = ui->qsbx1->value().getValue();
     double y = ui->qsby1->value().getValue();
     double z = ui->qsbz1->value().getValue();
     Base::Vector3d p0(x, y, z);
+    if (ui->rb3d1->isChecked()) {
+        Base::Vector3d centroid = m_partFeat->getCurrentCentroid();
+        p0 = m_partFeat->projectPoint(p0 - centroid);
+    } else {
+        p0 = DU::invertY(p0);
+    }
 
     x = ui->qsbx2->value().getValue();
     y = ui->qsby2->value().getValue();
     z = ui->qsbz2->value().getValue();
     Base::Vector3d p1(x, y, z);
-
-    Base::Vector3d centroid = m_partFeat->getOriginalCentroid();
-
-    if (ui->rb3d1->isChecked()) {
-        p0 = p0 - centroid;
-        p0 = DrawUtil::invertY(m_partFeat->projectPoint(p0));
-    }
-
     if (ui->rb3d2->isChecked()) {
-        p1 = p1 - centroid;
-        p1 = DrawUtil::invertY(m_partFeat->projectPoint(p1));
+        Base::Vector3d centroid = m_partFeat->getCurrentCentroid();
+        p1 = m_partFeat->projectPoint(p1 - centroid);
+    } else {
+        p1 = DU::invertY(p1);
     }
-
     m_tag = m_partFeat->addCosmeticEdge(p0, p1);
     m_ce = m_partFeat->getCosmeticEdge(m_tag);
+    m_ce->setFormat(LineFormat::getCurrentLineFormat());
 
     Gui::Command::commitCommand();
 }
 
-void TaskCosmeticLine::updateCosmeticLine(void)
+void TaskCosmeticLine::updateCosmeticLine()
 {
+//    Base::Console().Message("TCL::updateCosmeticLine()\n");
     double x = ui->qsbx1->value().getValue();
     double y = ui->qsby1->value().getValue();
     double z = ui->qsbz1->value().getValue();
     Base::Vector3d p0(x, y, z);
-    p0 = DrawUtil::invertY(p0);
+    if (ui->rb3d1->isChecked()) {
+        Base::Vector3d centroid = m_partFeat->getCurrentCentroid();
+        p0 = m_partFeat->projectPoint(p0 - centroid);
+    } else {
+        p0 = DU::invertY(p0);
+    }
 
     x = ui->qsbx2->value().getValue();
     y = ui->qsby2->value().getValue();
     z = ui->qsbz2->value().getValue();
     Base::Vector3d p1(x, y, z);
-    p1 = DrawUtil::invertY(p1);
-
+    if (ui->rb3d2->isChecked()) {
+        Base::Vector3d centroid = m_partFeat->getCurrentCentroid();
+        p1 = m_partFeat->projectPoint(p1 - centroid);
+    } else {
+        p1 = DU::invertY(p1);
+    }
     //replace the geometry
     m_ce->permaStart = p0;
     m_ce->permaEnd = p1;
+
     gp_Pnt gp1(p0.x, p0.y, p0.z);
     gp_Pnt gp2(p1.x, p1.y, p1.z);
-    TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp1, gp2);
-//    auto oldGeom = m_ce->m_geometry;
-    m_ce->m_geometry = TechDraw::BaseGeom::baseFactory(e);
-//    delete oldGeom;
-
-//    Gui::Command::updateActive();
-//    Gui::Command::commitCommand();
+    TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(gp1, gp2);
+    m_ce->m_geometry = TechDraw::BaseGeom::baseFactory(edge);
 }
 
 //******************************************************************************

@@ -61,6 +61,9 @@ public:
     App::PropertyFloat  Radius;
     App::PropertyString Reference;
 
+    App::PropertyBool   ShowMatting;
+    App::PropertyBool   ShowHighlight;
+
     short mustExecute() const override;
     App::DocumentObjectExecReturn *execute() override;
     void onChanged(const App::Property* prop) override;
@@ -87,6 +90,9 @@ public:
                                       gp_Dir& projDir);
 
     std::vector<DrawViewDetail*> getDetailRefs() const override;
+    TopoDS_Shape getDetailShape() const { return m_detailShape; }
+
+    Base::Vector3d mapPoint3dToDetail(const Base::Vector3d& inPoint) const;
 
 public Q_SLOTS:
     void onMakeDetailFinished(void);
@@ -106,6 +112,8 @@ protected:
 
     DrawViewPart* m_saveDvp;
     DrawViewSection* m_saveDvs;
+
+    TopoDS_Shape m_detailShape;
 };
 
 using DrawViewDetailPython = App::FeaturePythonT<DrawViewDetail>;

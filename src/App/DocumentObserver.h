@@ -25,6 +25,7 @@
 #define APP_DOCUMENTOBSERVER_H
 
 #include <Base/BaseClass.h>
+#include <Base/Bitmask.h>
 #include <boost_signals2.hpp>
 #include <memory>
 #include <set>
@@ -226,6 +227,12 @@ public:
     /// Return the sub-element (Face, Edge, etc) of the subname path
     const char *getElementName() const;
 
+    /// Check if there is any sub object reference
+    bool hasSubObject() const;
+
+    /// Check if there is any sub element reference
+    bool hasSubElement() const;
+
     /// Return the new style sub-element name
     std::string getNewElementName() const;
 
@@ -243,6 +250,40 @@ public:
     bool operator<(const SubObjectT &other) const;
 
     std::string getSubObjectPython(bool force=true) const;
+
+    /// Options used by normalize()
+    enum class NormalizeOption : uint8_t
+    {
+        /// Do not include sub-element reference in the output path
+        NoElement = 0x01,
+
+        /** Do not flatten the output path. If not specified, the output path
+         * will be flatten to exclude intermediate objects that belong to the
+         * same geo feature group before resolving. For example,
+         *      Part.Fusion.Box. -> Part.Box.
+         */
+        NoFlatten = 0x02,
+
+        /** Do not change the sub-object component inside the path. Each
+         * component of the subname object path can be either the object
+         * internal name, the label of the object if starts with '$', or an
+         * integer index. If this option is not specified, each component will
+         * be converted to object internal name, except for integer index.
+         */
+        KeepSubName = 0x04,
+
+        /** Convert integer index in the path to sub-object internal name */
+        ConvertIndex = 0x08,
+    };
+    using NormalizeOptions = Base::Flags<NormalizeOption>;
+
+    /** Normalize the subname path to use only the object internal name and old style element name
+     * @return Return whether the subname has been changed
+     */
+    bool normalize(NormalizeOptions options = NormalizeOption());
+
+    /// Return a normalize copy of itself
+    SubObjectT normalized(NormalizeOptions options = NormalizeOption()) const;
 
 private:
     std::string subname;
@@ -306,11 +347,11 @@ public:
      */
     App::Document* operator->() const noexcept;
 
-private:
     // disable
-    DocumentWeakPtrT(const DocumentWeakPtrT&);
-    DocumentWeakPtrT& operator=(const DocumentWeakPtrT&);
+    DocumentWeakPtrT(const DocumentWeakPtrT&) = delete;
+    DocumentWeakPtrT& operator=(const DocumentWeakPtrT&) = delete;
 
+private:
     class Private;
     std::unique_ptr<Private> d;
 };
@@ -368,9 +409,11 @@ public:
 
 private:
     App::DocumentObject* _get() const noexcept;
+
+public:
     // disable
-    DocumentObjectWeakPtrT(const DocumentObjectWeakPtrT&);
-    DocumentObjectWeakPtrT& operator=(const DocumentObjectWeakPtrT&);
+    DocumentObjectWeakPtrT(const DocumentObjectWeakPtrT&) = delete;
+    DocumentObjectWeakPtrT& operator=(const DocumentObjectWeakPtrT&) = delete;
 
 private:
     class Private;
@@ -444,17 +487,16 @@ public:
         return ptr.get<T>();
     }
 
-private:
     // disable
-    WeakPtrT(const WeakPtrT&);
-    WeakPtrT& operator=(const WeakPtrT&);
+    WeakPtrT(const WeakPtrT&) = delete;
+    WeakPtrT& operator=(const WeakPtrT&) = delete;
 
 private:
     DocumentObjectWeakPtrT ptr;
 };
 
 /**
- * The DocumentObserver class simplfies the step to write classes that listen
+ * The DocumentObserver class simplifies the step to write classes that listen
  * to what happens inside a document.
  * This is very useful for classes that needs to be notified when an observed
  * object has changed.
@@ -556,5 +598,7 @@ private:
 };
 
 } //namespace App
+
+ENABLE_BITMASK_OPERATORS(App::SubObjectT::NormalizeOption)
 
 #endif // APP_DOCUMENTOBSERVER_H

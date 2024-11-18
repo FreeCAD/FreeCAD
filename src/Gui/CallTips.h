@@ -38,11 +38,10 @@ class CallTip
 {
 public:
     enum Type {Unknown, Module, Class, Method, Member, Property};
-    CallTip():type(Unknown) {}
     QString name;
     QString description;
     QString parameter;
-    Type type;
+    Type type{Unknown};
 };
 
 /**
@@ -76,6 +75,7 @@ private:
     void extractTipsFromObject(Py::Object&, Py::List&, QMap<QString, CallTip>&) const;
     void extractTipsFromProperties(Py::Object&, QMap<QString, CallTip>&) const;
     QString stripWhiteSpace(const QString&) const;
+    Py::Object getAttrWorkaround(Py::Object&, Py::String&) const;
 
 private:
     QPlainTextEdit* textEdit;

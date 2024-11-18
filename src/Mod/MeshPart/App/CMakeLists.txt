@@ -1,11 +1,8 @@
-if(MSVC)
-    add_definitions(-DFCAppMeshPart -DHAVE_ACOSH -DHAVE_ASINH -DHAVE_ATANH)
-else(MSVC)
-    add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
-endif(MSVC)
-
 if (BUILD_SMESH)
-    add_definitions(-DHAVE_SMESH -DHAVE_MEFISTO)
+    add_definitions(-DHAVE_SMESH)
+    if(SMESH_VERSION_MAJOR LESS_EQUAL 9 AND SMESH_VERSION_MINOR LESS 10 )
+      add_definitions(-DHAVE_MEFISTO)
+    endif()
 endif(BUILD_SMESH)
 
 if(BUILD_FEM_NETGEN)
@@ -22,6 +19,7 @@ include_directories(
     ${SMESH_INCLUDE_DIR}
     ${VTK_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIR}
+    ${pybind11_INCLUDE_DIR}
 )
 
 
@@ -78,6 +76,9 @@ endif()
 
 add_library(MeshPart SHARED ${MeshPart_SRCS} ${MeshPart_Scripts})
 target_link_libraries(MeshPart ${MeshPart_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(MeshPart)
+endif()
 
 
 fc_target_copy_resource_flat(MeshPart
@@ -113,9 +114,13 @@ if (BUILD_FLAT_MESH)
         SET_BIN_DIR(flatmesh flatmesh /Mod/MeshPart)
         install(TARGETS flatmesh DESTINATION ${CMAKE_INSTALL_LIBDIR})
     else()
-        if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
+        if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIBPACK_CHECKFILE_VERSION)
             # boost-python >= 1.67 on some platforms has suffix
-            set(BOOST_PY_SUFFIX ${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR})
+            if (FORCE_BOOST_PY_SUFFIX)
+                set(BOOST_PY_SUFFIX ${FORCE_BOOST_PY_SUFFIX})
+            else ()
+                set(BOOST_PY_SUFFIX ${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR})
+            endif ()
 
             find_package( Boost COMPONENTS python${BOOST_PY_SUFFIX} )
             if (NOT Boost_PYTHON${BOOST_PY_SUFFIX}_FOUND)

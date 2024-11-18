@@ -60,7 +60,10 @@ public:
     void getContinuousEdges(Part::TopoShape, std::vector< std::string >&);
     // add argument to return the selected face that edges were derived from
     void getContinuousEdges(Part::TopoShape, std::vector< std::string >&, std::vector< std::string >&);
+    // Todo: Post-TNP the above two versions should be able to be factored out.
+    std::vector<TopoShape> getContinuousEdges(const TopoShape &shape);
 
+    std::vector<TopoShape> getFaces(const TopoShape &shape);
     void getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShape) override;
 
 protected:

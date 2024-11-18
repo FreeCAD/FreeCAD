@@ -23,33 +23,31 @@
 # ARE DISCLAIMED.
 # IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY
 # DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
 # LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 # ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+
 class Model(objet):
-    """ The container for entity instances
-    """
+    """The container for entity instances"""
+
     def __init_(self):
         print("Model initialized")
         self._instances = []
-    
+
     def add_instance(self, entity_instance):
         self._instances.append(entity_instance)
-    
+
     def remove_instance(self, entity_instance):
         self._instances.remove(entity_instance)
-    
+
     def get_instances(self):
         return self._instances
-    
+
     def export_to_p21file(self, filename):
         raise AssertionError("Not implemented")
-    
+
     def export_to_p28file(self, filename):
         raise AssertionError("Not implemented")
-
-
-

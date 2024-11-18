@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="svg2" width="297mm" height="420mm" version="1.1" viewBox="0 0 297 420" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:freecad="https://www.freecad.org/wiki/index.php?title=Svg_Namespace" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <title id="title16258">RU_LeadingText_Portrait_A3</title>
+ <!-- Working space 10 10 287 200 -->
+ <!-- Title block 147 153 287 200 -->
+ <metadata id="metadata849">
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title>RU_LeadingText_Portrait_A3</dc:title>
+    <cc:license rdf:resource="http://creativecommons.org/licenses/by/4.0/"/>
+    <dc:date>09.06.19</dc:date>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Abrosimov Anton</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+   <cc:License rdf:about="http://creativecommons.org/licenses/by/4.0/">
+    <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction"/>
+    <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution"/>
+    <cc:requires rdf:resource="http://creativecommons.org/ns#Notice"/>
+    <cc:requires rdf:resource="http://creativecommons.org/ns#Attribution"/>
+    <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks"/>
+   </cc:License>
+  </rdf:RDF>
+ </metadata>
+ <!-- DrawingContent -->
+ <path id="path7777" d="m20.25 414.75h271.5v-409.5h-271.5z" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".5"/>
+ <path id="path7779" d="m291.75 375.25v39.5h-184.5v-39.5z" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".5"/>
+ <text id="text985" x="256.70023" y="417.9917" fill="#000000" font-family="sans-serif" font-size="3.5278px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5"><tspan id="tspan987" x="256.70023" y="417.9917" font-size="3.5278px" stroke-width=".26458" style="line-height:1.5">Формат А3</tspan></text>
+ <path id="path4360" d="m107.25 379.76h65" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".25"/>
+ <path id="path4362" d="m107.25 384.76h65" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".5"/>
+ <path id="path4364" d="m107.25 394.75h65" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".25"/>
+ <path id="path4368" d="m107.25 404.73h65" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".25"/>
+ <path id="path4370" d="m107.25 409.73h65" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".25"/>
+ <path id="path4358-5" d="m107.25 389.75h65" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".5"/>
+ <path id="path4358-3" d="m107.25 399.74h65" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".25"/>
+ <path id="path4374-5" d="m172.25 375.25v39.5" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".49962px"/>
+ <path id="path4356-9" d="m172.25 389.75h119.5" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".5"/>
+ <path id="path4356-9-0" d="m242.25 399.74h49.5" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".5"/>
+ <path id="path4374-5-8" d="m241.62 390.14v24.286" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".5"/>
+ <path id="path4364-7" d="m242.25 394.74h49.5" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".5"/>
+ <path id="path4358-1-3-9" d="m256.62 390.08v9.2851" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".5"/>
+ <path id="path4358-1-3-9-8" d="m271.62 390.1v9.621" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".5"/>
+ <path id="path4358-1-3-9-87" d="m246.62 395.05v4.9196" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".25"/>
+ <path id="path4358-1-3-9-2" d="m251.62 394.51v5.3328" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".25"/>
+ <path id="path4358-1-3-9-87-5" d="m162.25 375.25v39.5" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".5"/>
+ <path id="path4358-1-3-9-87-5-1" d="m147.25 375.25v39.5" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".5"/>
+ <path id="path4358-1-3-9-87-5-1-7" d="m114.25 375.25v14.501" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".5"/>
+ <path id="path4358-1-3-9-87-5-1-7-6" d="m124.25 375.25v39.5" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".5"/>
+ <text id="text4951" x="191.48268" y="385.23419" fill="#000000" font-family="sans-serif" font-size="7.0556px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5" freecad:editable="Номер"><tspan id="tspan4949" x="191.48268" y="385.23419" font-family="Arial" font-size="7.0556px" stroke-width=".26458" style="line-height:1.5">РИК-35.000000.000СБ</tspan></text>
+ <text id="text4951-2" x="173.62099" y="403.81085" fill="#000000" font-family="sans-serif" font-size="5.6444px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.25" freecad:editable="Название"><tspan id="tspan4949-8" x="173.62099" y="403.81085" font-family="Arial" font-size="5.6444px" stroke-width=".26458" style="line-height:1.5">Название детали</tspan></text>
+ <text id="text1044" x="245.60907" y="393.4881" fill="#000000" font-family="Arial" font-size="3.5278px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5"><tspan id="tspan1042" x="245.60907" y="393.4881" font-size="3.5278px" stroke-width=".26458">Лит.</tspan></text>
+ <text id="text1056" x="260.18292" y="393.4881" fill="#000000" font-family="Arial" font-size="3.5278px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5"><tspan id="tspan1054" x="260.18292" y="393.4881" stroke-width=".26458">Лист</tspan></text>
+ <text id="text1060" x="275.63672" y="393.4881" fill="#000000" font-family="Arial" font-size="3.5278px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5"><tspan id="tspan1058" x="275.63672" y="393.4881" stroke-width=".26458">Листов</tspan></text>
+ <text id="text1064" x="107.46025" y="388.49554" fill="#000000" font-family="Arial" font-size="3.5278px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5"><tspan id="tspan1062" x="107.46025" y="388.49554" stroke-width=".26458">Изм</tspan></text>
+ <text id="text1068" x="115.46844" y="388.49466" fill="#000000" font-family="Arial" font-size="3.5278px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5"><tspan id="tspan1066" x="115.46844" y="388.49466" stroke-width=".26458">Лист</tspan></text>
+ <text id="text1072" x="128.11259" y="388.14499" fill="#000000" font-family="Arial" font-size="3.5278px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5"><tspan id="tspan1070" x="128.11259" y="388.14499" stroke-width=".26458">№ докум.</tspan></text>
+ <text id="text1076" x="150.23856" y="388.25696" fill="#000000" font-family="Arial" font-size="3.5278px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5"><tspan id="tspan1074" x="150.23856" y="388.25696" stroke-width=".26458">Подп.</tspan></text>
+ <text id="text1080" x="163.56094" y="388.22165" fill="#000000" font-family="Arial" font-size="3.5278px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5"><tspan id="tspan1078" x="163.56094" y="388.22165" stroke-width=".26458">Дата</tspan></text>
+ <text id="text1084" x="108.89557" y="393.19159" fill="#000000" font-family="Arial" font-size="3.5278px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5"><tspan id="tspan1082" x="108.89557" y="393.19159" stroke-width=".26458">Разраб.</tspan></text>
+ <text id="text1088" x="108.89212" y="398.15723" fill="#000000" font-family="Arial" font-size="3.5278px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5"><tspan id="tspan1086" x="108.89212" y="398.15723" stroke-width=".26458">Пров.</tspan></text>
+ <text id="text1096" x="108.88524" y="408.1441" fill="#000000" font-family="Arial" font-size="3.5278px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5"><tspan id="tspan1094" x="108.88524" y="408.1441" stroke-width=".26458">Н. контр.</tspan></text>
+ <text id="text1100" x="109.1505" y="413.48486" fill="#000000" font-family="Arial" font-size="3.5278px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5"><tspan id="tspan1098" x="109.1505" y="413.48486" stroke-width=".26458">Утв.</tspan></text>
+ <text id="text1104" x="243.23647" y="408.4624" fill="#000000" font-family="Arial" font-size="3.5278px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5" freecad:editable="Организация2"><tspan id="tspan1102" x="243.23647" y="408.4624" font-size="3.5278px" stroke-width=".26458">ООО «Рога и копыта»</tspan></text>
+ <text id="text7917" x="124.97118" y="393.19159" fill="#000000" font-family="Arial" font-size="2.8222px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5" freecad:editable="Разработал"><tspan id="tspan7915" x="124.97118" y="393.19159" font-size="2.8222px" stroke-width=".26458">Иванов И. И.</tspan></text>
+ <text id="text7917-2" x="124.97118" y="413.18692" fill="#000000" font-family="Arial" font-size="2.8222px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5" freecad:editable="Утвердил"><tspan id="tspan7915-88" x="124.97118" y="413.18692" font-size="2.8222px" stroke-width=".26458">Иванов И. И.</tspan></text>
+ <text id="text7917-2-3" x="124.97121" y="398.18735" fill="#000000" font-family="Arial" font-size="2.8222px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5" freecad:editable="Проверил"><tspan id="tspan7915-88-7" x="124.97121" y="398.18735" font-size="2.8222px" stroke-width=".26458">Иванов И. И.</tspan></text>
+ <text id="text8200" x="262.60031" y="398.50824" fill="#000000" font-family="Arial" font-size="3.5278px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5" freecad:editable="Лист"><tspan id="tspan8198" x="262.60031" y="398.50824" stroke-width=".26458">1</tspan></text>
+ <text id="text8204" x="277.9339" y="398.50824" fill="#000000" font-family="Arial" font-size="3.5278px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5" freecad:editable="Листов"><tspan id="tspan8202" x="277.9339" y="398.50824" stroke-width=".26458">1</tspan></text>
+ <text id="text8234" x="163.27911" y="392.9971" fill="#000000" font-family="Arial" font-size="2.1167px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5" freecad:editable="Дата_разработки"><tspan id="tspan8232" x="163.27911" y="392.9971" font-family="Arial" font-size="2.1167px" stroke-width=".26458">01.01.01</tspan></text>
+ <text id="text8234-0" x="163.27916" y="397.99661" fill="#000000" font-family="Arial" font-size="2.1167px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5" freecad:editable="Дата_проверки"><tspan id="tspan8232-8" x="163.27916" y="397.99661" font-family="Arial" font-size="2.1167px" stroke-width=".26458">01.01.01</tspan></text>
+ <text id="text8234-0-9" x="163.27916" y="412.99615" fill="#000000" font-family="Arial" font-size="2.1167px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5" freecad:editable="Дата_утверждения"><tspan id="tspan8232-8-2" x="163.27916" y="412.99615" font-family="Arial" font-size="2.1167px" stroke-width=".26458">01.01.01</tspan></text>
+ <text id="text1813" x="174.073" y="410.76691" fill="#000000" font-family="Arial" font-size="3.5278px" letter-spacing="0px" stroke-width=".26458px" word-spacing="0px" style="line-height:125%" freecad:editable="Информация"><tspan id="tspan1811" x="174.073" y="410.76691" font-family="Arial" font-size="3.5278px" stroke-width=".26458px"></tspan></text>
+ <text id="text2095" x="243.407" y="404.25589" fill="#000000" font-family="Arial" font-size="3.5278px" letter-spacing="0px" stroke-width=".26458px" word-spacing="0px" style="line-height:125%" freecad:editable="Организация1"><tspan id="tspan2093" x="243.407" y="404.25589" font-family="Arial" font-size="3.5278px" stroke-width=".26458px"></tspan></text>
+ <text id="text2095-2" x="243.407" y="412.87708" fill="#000000" font-family="Arial" font-size="3.5278px" letter-spacing="0px" stroke-width=".26458px" word-spacing="0px" style="line-height:125%" freecad:editable="Организация3"><tspan id="tspan2093-5" x="243.407" y="412.87708" font-family="Arial" font-size="3.5278px" stroke-width=".26458px"></tspan></text>
+ <g id="g1403" transform="rotate(90 214.98 134.75)" fill="none" stroke="#000" stroke-linecap="square">
+  <path id="path1375" d="m153.81 57.987v12.361" stroke-width=".5"/>
+  <path id="path1377" d="m85.48 70.348h68.334" stroke-width=".5"/>
+  <path id="path1375-7" d="m85.48 57.987v12.361" stroke-width=".5"/>
+ </g>
+ <text id="text1407" transform="rotate(-90)" x="-71.438774" y="287.56189" fill="#000000" font-family="Arial" font-size="5.6444px" letter-spacing="0px" stroke-width=".26458px" word-spacing="0px" style="line-height:125%" freecad:editable="Номер"><tspan id="tspan1405" x="-71.438774" y="287.56189" font-family="Arial" font-size="5.6444px" stroke-width=".26458px">РИК-35.000000.000СБ</tspan></text>
+</svg>

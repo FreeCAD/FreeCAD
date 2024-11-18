@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2022-2023 FreeCAD Project Association                   *
+# *   Copyright (c) 2022-2024 The FreeCAD Project Association AISBL         *
 # *                                                                         *
 # *   This file is part of FreeCAD.                                         *
 # *                                                                         *
@@ -43,10 +43,7 @@ def ask_to_install_toolbar_button(repo: Addon) -> None:
         add_toolbar_button_dialog = FreeCADGui.PySideUic.loadUi(
             os.path.join(os.path.dirname(__file__), "add_toolbar_button_dialog.ui")
         )
-        add_toolbar_button_dialog.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
-        add_toolbar_button_dialog.buttonYes.clicked.connect(
-            lambda: install_toolbar_button(repo)
-        )
+        add_toolbar_button_dialog.buttonYes.clicked.connect(lambda: install_toolbar_button(repo))
         add_toolbar_button_dialog.buttonNever.clicked.connect(
             lambda: pref.SetBool("dontShowAddMacroButtonDialog", True)
         )
@@ -58,9 +55,7 @@ def check_for_button(repo: Addon) -> bool:
     command = FreeCADGui.Command.findCustomCommand(repo.macro.filename)
     if not command:
         return False
-    custom_toolbars = FreeCAD.ParamGet(
-        "User parameter:BaseApp/Workbench/Global/Toolbar"
-    )
+    custom_toolbars = FreeCAD.ParamGet("User parameter:BaseApp/Workbench/Global/Toolbar")
     toolbar_groups = custom_toolbars.GetGroups()
     for group in toolbar_groups:
         toolbar = custom_toolbars.GetGroup(group)
@@ -83,14 +78,11 @@ def ask_for_toolbar(repo: Addon, custom_toolbars) -> object:
         select_toolbar_dialog = FreeCADGui.PySideUic.loadUi(
             os.path.join(os.path.dirname(__file__), "select_toolbar_dialog.ui")
         )
-        select_toolbar_dialog.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
 
         select_toolbar_dialog.comboBox.clear()
 
         for group in custom_toolbars:
-            ref = FreeCAD.ParamGet(
-                "User parameter:BaseApp/Workbench/Global/Toolbar/" + group
-            )
+            ref = FreeCAD.ParamGet("User parameter:BaseApp/Workbench/Global/Toolbar/" + group)
             name = ref.GetString("Name", "")
             if name:
                 select_toolbar_dialog.comboBox.addItem(name)
@@ -114,9 +106,7 @@ def ask_for_toolbar(repo: Addon, custom_toolbars) -> object:
         return None
 
     # If none of the above code returned...
-    custom_toolbar_name = pref.GetString(
-        "CustomToolbarName", "Auto-Created Macro Toolbar"
-    )
+    custom_toolbar_name = pref.GetString("CustomToolbarName", "Auto-Created Macro Toolbar")
     toolbar = get_toolbar_with_name(custom_toolbar_name)
     if not toolbar:
         # They told us not to ask, but then the toolbar got deleted... ask anyway!
@@ -131,9 +121,7 @@ def get_toolbar_with_name(name: str) -> object:
     top_group = FreeCAD.ParamGet("User parameter:BaseApp/Workbench/Global/Toolbar")
     custom_toolbars = top_group.GetGroups()
     for toolbar in custom_toolbars:
-        group = FreeCAD.ParamGet(
-            "User parameter:BaseApp/Workbench/Global/Toolbar/" + toolbar
-        )
+        group = FreeCAD.ParamGet("User parameter:BaseApp/Workbench/Global/Toolbar/" + toolbar)
         group_name = group.GetString("Name", "")
         if group_name == name:
             return group
@@ -185,9 +173,7 @@ def install_toolbar_button(repo: Addon) -> None:
     """If the user has requested a toolbar button be installed, this function is called
     to continue the process and request any additional required information."""
     pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
-    custom_toolbar_name = pref.GetString(
-        "CustomToolbarName", "Auto-Created Macro Toolbar"
-    )
+    custom_toolbar_name = pref.GetString("CustomToolbarName", "Auto-Created Macro Toolbar")
 
     # Default to false here: if the variable hasn't been set, we don't assume
     # that we have to ask, because the simplest is to just create a new toolbar
@@ -226,9 +212,29 @@ def install_toolbar_button(repo: Addon) -> None:
     if custom_toolbar:
         install_macro_to_toolbar(repo, custom_toolbar)
     else:
-        FreeCAD.Console.PrintMessage(
-            "In the end, no custom toolbar was set, bailing out\n"
-        )
+        FreeCAD.Console.PrintMessage("In the end, no custom toolbar was set, bailing out\n")
+
+
+def find_installed_icon(repo: Addon) -> str:
+    """The icon the macro specifies is usually not the actual installed icon, but rather a cached
+    copy. This function looks for a file with the same name located in the macro installation
+    path."""
+    macro_repo_dir = FreeCAD.getUserMacroDir(True)
+    if repo.macro.icon:
+        basename = os.path.basename(repo.macro.icon)
+        # Simple case first: the file is just in the macro directory...
+        if os.path.isfile(os.path.join(macro_repo_dir, basename)):
+            return os.path.join(macro_repo_dir, basename)
+        # More complex: search for it
+        for root, dirs, files in os.walk(macro_repo_dir):
+            for name in files:
+                if name == basename:
+                    return os.path.join(root, name)
+        return ""
+    elif repo.macro.xpm:
+        return os.path.normpath(os.path.join(macro_repo_dir, repo.macro.name + "_icon.xpm"))
+    else:
+        return ""
 
 
 def install_macro_to_toolbar(repo: Addon, toolbar: object) -> None:
@@ -247,22 +253,7 @@ def install_macro_to_toolbar(repo: Addon, toolbar: object) -> None:
         + " "
         + repo.display_name
     )
-    if repo.macro.icon:
-        if os.path.isabs(repo.macro.icon):
-            pixmapText = os.path.normpath(repo.macro.icon)
-        else:
-            macro_repo_dir = FreeCAD.getUserMacroDir(True)
-            pixmapText = os.path.normpath(os.path.join(macro_repo_dir, repo.macro.icon))
-    elif repo.macro.xpm:
-        macro_repo_dir = FreeCAD.getUserMacroDir(True)
-        icon_file = os.path.normpath(
-            os.path.join(macro_repo_dir, repo.macro.name + "_icon.xpm")
-        )
-        with open(icon_file, "w", encoding="utf-8") as f:
-            f.write(repo.macro.xpm)
-        pixmapText = icon_file
-    else:
-        pixmapText = None
+    pixmapText = find_installed_icon(repo)
 
     # Add this command to that toolbar
     command_name = FreeCADGui.Command.createCustomCommand(
@@ -288,9 +279,7 @@ def remove_custom_toolbar_button(repo: Addon) -> None:
     command = FreeCADGui.Command.findCustomCommand(repo.macro.filename)
     if not command:
         return
-    custom_toolbars = FreeCAD.ParamGet(
-        "User parameter:BaseApp/Workbench/Global/Toolbar"
-    )
+    custom_toolbars = FreeCAD.ParamGet("User parameter:BaseApp/Workbench/Global/Toolbar")
     toolbar_groups = custom_toolbars.GetGroups()
     for group in toolbar_groups:
         toolbar = custom_toolbars.GetGroup(group)

@@ -34,16 +34,19 @@
 void CreateCloudCommands(void);
 
 
-namespace CloudGui {
-class Module : public Py::ExtensionModule<Module>
+namespace CloudGui
+{
+class Module: public Py::ExtensionModule<Module>
 {
 public:
-    Module() : Py::ExtensionModule<Module>("CloudGui")
+    Module()
+        : Py::ExtensionModule<Module>("CloudGui")
     {
-        initialize("This module is the CloudGui module."); // register with Python
+        initialize("This module is the CloudGui module.");  // register with Python
     }
 
-    virtual ~Module() {}
+    virtual ~Module()
+    {}
 
 private:
 };
@@ -53,7 +56,7 @@ PyObject* initModule()
     return Base::Interpreter().addModule(new Module);
 }
 
-} // namespace CloudGui
+}  // namespace CloudGui
 
 
 /* Python entry */

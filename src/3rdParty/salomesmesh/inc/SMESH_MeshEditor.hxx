@@ -45,6 +45,17 @@
 #include <map>
 #include <set>
 
+#if defined(__MINGW32__)
+#define SMESH_EXPORT_MINGW SMESH_EXPORT
+#define SMESH_EXPORT_MSVC
+#elif defined(_MSC_VER)
+#define SMESH_EXPORT_MINGW
+#define SMESH_EXPORT_MSVC SMESH_EXPORT
+#else
+#define SMESH_EXPORT_MSVC
+#define SMESH_EXPORT_MINGW
+#endif
+
 class SMDS_MeshFace;
 class SMDS_MeshNode;
 class gp_Ax1;
@@ -74,7 +85,7 @@ public:
   SMESH_ComputeErrorPtr &        GetError() { return myError; }
 
   // --------------------------------------------------------------------------------
-  struct ElemFeatures //!< Features of element to create
+  struct SMESH_EXPORT_MINGW ElemFeatures //!< Features of element to create
   {
     SMDSAbs_ElementType myType;
     bool                myIsPoly, myIsQuad;
@@ -82,28 +93,28 @@ public:
     double              myBallDiameter;
     std::vector<int>    myPolyhedQuantities;
 
-    SMESH_EXPORT ElemFeatures( SMDSAbs_ElementType type=SMDSAbs_All, bool isPoly=false, bool isQuad=false )
+    SMESH_EXPORT_MSVC ElemFeatures( SMDSAbs_ElementType type=SMDSAbs_All, bool isPoly=false, bool isQuad=false )
       :myType( type ), myIsPoly(isPoly), myIsQuad(isQuad), myID(-1), myBallDiameter(0) {}
 
-    SMESH_EXPORT ElemFeatures& Init( SMDSAbs_ElementType type, bool isPoly=false, bool isQuad=false )
+    SMESH_EXPORT_MSVC ElemFeatures& Init( SMDSAbs_ElementType type, bool isPoly=false, bool isQuad=false )
     { myType = type; myIsPoly = isPoly; myIsQuad = isQuad; return *this; }
 
-    SMESH_EXPORT ElemFeatures& Init( const SMDS_MeshElement* elem, bool basicOnly=true );
+    SMESH_EXPORT_MSVC ElemFeatures& Init( const SMDS_MeshElement* elem, bool basicOnly=true );
 
-    SMESH_EXPORT ElemFeatures& Init( double diameter )
+    SMESH_EXPORT_MSVC ElemFeatures& Init( double diameter )
     { myType = SMDSAbs_Ball; myBallDiameter = diameter; return *this; }
 
-    SMESH_EXPORT ElemFeatures& Init( std::vector<int>& quanities, bool isQuad=false )
+    SMESH_EXPORT_MSVC ElemFeatures& Init( std::vector<int>& quanities, bool isQuad=false )
     { myType = SMDSAbs_Volume; myIsPoly = 1; myIsQuad = isQuad;
       myPolyhedQuantities.swap( quanities ); return *this; }
 
-    SMESH_EXPORT ElemFeatures& Init( const std::vector<int>& quanities, bool isQuad=false )
+    SMESH_EXPORT_MSVC ElemFeatures& Init( const std::vector<int>& quanities, bool isQuad=false )
     { myType = SMDSAbs_Volume; myIsPoly = 1; myIsQuad = isQuad;
       myPolyhedQuantities = quanities; return *this; }
 
-    SMESH_EXPORT ElemFeatures& SetPoly(bool isPoly) { myIsPoly = isPoly; return *this; }
-    SMESH_EXPORT ElemFeatures& SetQuad(bool isQuad) { myIsQuad = isQuad; return *this; }
-    SMESH_EXPORT ElemFeatures& SetID  (int ID)      { myID = ID; return *this; }
+    SMESH_EXPORT_MSVC ElemFeatures& SetPoly(bool isPoly) { myIsPoly = isPoly; return *this; }
+    SMESH_EXPORT_MSVC ElemFeatures& SetQuad(bool isQuad) { myIsQuad = isQuad; return *this; }
+    SMESH_EXPORT_MSVC ElemFeatures& SetID  (int ID)      { myID = ID; return *this; }
   };
 
   /*!

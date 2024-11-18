@@ -1,11 +1,8 @@
-if(MSVC)
-    add_definitions(-DHAVE_ACOSH -DHAVE_ATANH -DHAVE_ASINH)
-else(MSVC)
-    add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
-endif(MSVC)
-
 if (BUILD_SMESH)
-    add_definitions(-DHAVE_SMESH -DHAVE_MEFISTO)
+    add_definitions(-DHAVE_SMESH)
+    if(SMESH_VERSION_MAJOR LESS_EQUAL 9 AND SMESH_VERSION_MINOR LESS 10 )
+      add_definitions(-DHAVE_MEFISTO)
+    endif()
 endif(BUILD_SMESH)
 
 if(BUILD_FEM_NETGEN)
@@ -39,7 +36,11 @@ set(MeshPartGui_UIC_SRCS
     Tessellation.ui
 )
 
-qt_add_resources(MeshPartGui_QRC_SRCS Resources/MeshPart.qrc)
+set (MeshPart_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/MeshPart_translation.qrc)
+qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
+    ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
+qt_create_resource_file(${MeshPart_TR_QRC} ${QM_SRCS})
+qt_add_resources(MeshPartGui_QRC_SRCS Resources/MeshPart.qrc ${MeshPart_TR_QRC})
 
 SET(MeshPartGui_SRCS
     ${MeshPartGui_QRC_SRCS}
@@ -80,6 +81,9 @@ endif(FREECAD_USE_PCH)
 
 add_library(MeshPartGui SHARED ${MeshPartGui_SRCS} ${MeshPartGui_Scripts} ${FLATMESH_PY_SRCS})
 target_link_libraries(MeshPartGui ${MeshPartGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(MeshPartGui)
+endif()
 
 
 SET_BIN_DIR(MeshPartGui MeshPartGui /Mod/MeshPart)

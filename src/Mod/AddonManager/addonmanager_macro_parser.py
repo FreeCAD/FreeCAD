@@ -22,12 +22,13 @@
 # ***************************************************************************
 
 """Contains the parser class for extracting metadata from a FreeCAD macro"""
+import datetime
 
 # pylint: disable=too-few-public-methods
 
 import io
 import re
-from typing import Any, Tuple
+from typing import Any, Tuple, Optional
 
 try:
     from PySide import QtCore
@@ -36,8 +37,10 @@ except ImportError:
 
 try:
     import FreeCAD
+    from addonmanager_licenses import get_license_manager
 except ImportError:
     FreeCAD = None
+    get_license_manager = None
 
 
 class DummyThread:
@@ -63,14 +66,13 @@ class MacroParser:
             "other_files": [""],
             "author": "",
             "date": "",
+            "license": "",
             "icon": "",
             "xpm": "",
         }
         self.remaining_item_map = {}
         self.console = None if FreeCAD is None else FreeCAD.Console
-        self.current_thread = (
-            DummyThread() if QtCore is None else QtCore.QThread.currentThread()
-        )
+        self.current_thread = DummyThread() if QtCore is None else QtCore.QThread.currentThread()
         if code:
             self.fill_details_from_code(code)
 
@@ -85,6 +87,8 @@ class MacroParser:
             "__files__": "other_files",
             "__author__": "author",
             "__date__": "date",
+            "__license__": "license",
+            "__licence__": "license",  # accept either spelling
             "__icon__": "icon",
             "__xpm__": "xpm",
         }
@@ -177,9 +181,7 @@ class MacroParser:
         stripped_of_quotes = None
         if line.startswith('"""') and line.endswith('"""'):
             stripped_of_quotes = line[3:-3]
-        elif (line[0] == '"' and line[-1] == '"') or (
-            line[0] == "'" and line[-1] == "'"
-        ):
+        elif (line[0] == '"' and line[-1] == '"') or (line[0] == "'" and line[-1] == "'"):
             stripped_of_quotes = line[1:-1]
         return stripped_of_quotes
 
@@ -189,6 +191,8 @@ class MacroParser:
             self.parse_results[value] = match_group
             if value == "comment":
                 self._cleanup_comment()
+            elif value == "license":
+                self._cleanup_license()
         elif isinstance(self.parse_results[value], list):
             self.parse_results[value] = [of.strip() for of in match_group.split(",")]
         else:
@@ -197,11 +201,14 @@ class MacroParser:
     def _cleanup_comment(self):
         """Remove HTML from the comment line, and truncate it at 512 characters."""
 
-        self.parse_results["comment"] = re.sub(
-            "<.*?>", "", self.parse_results["comment"]
-        )
+        self.parse_results["comment"] = re.sub(r"<.*?>", "", self.parse_results["comment"])
         if len(self.parse_results["comment"]) > 512:
             self.parse_results["comment"] = self.parse_results["comment"][:511] + "…"
+
+    def _cleanup_license(self):
+        if get_license_manager is not None:
+            lm = get_license_manager()
+            self.parse_results["license"] = lm.normalize(self.parse_results["license"])
 
     def _apply_special_handling(self, key: str, line: str):
         # Macro authors are supposed to be providing strings here, but in some

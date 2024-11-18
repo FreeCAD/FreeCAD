@@ -36,15 +36,22 @@ class MeshObject;
  * convenient access to the Mesh data structure. This class should not be used
  * for programming algorithms in C++. Use Mesh Core classes instead!
  */
-class MeshExport Facet : public MeshCore::MeshGeomFacet
+class MeshExport Facet: public MeshCore::MeshGeomFacet
 {
 public:
-    explicit Facet(const MeshCore::MeshFacet& face = MeshCore::MeshFacet(), const MeshObject* obj = nullptr, MeshCore::FacetIndex index = MeshCore::FACET_INDEX_MAX);
+    explicit Facet(const MeshCore::MeshFacet& face = MeshCore::MeshFacet(),
+                   const MeshObject* obj = nullptr,
+                   MeshCore::FacetIndex index = MeshCore::FACET_INDEX_MAX);
     Facet(const Facet& f);
+    Facet(Facet&& f);
     ~Facet();
 
-    bool isBound() const {return Index != MeshCore::FACET_INDEX_MAX;}
-    void operator = (const Facet& f);
+    bool isBound() const
+    {
+        return Index != MeshCore::FACET_INDEX_MAX;
+    }
+    Facet& operator=(const Facet& f);
+    Facet& operator=(Facet&& f);
     Edge getEdge(int) const;
 
     MeshCore::FacetIndex Index;
@@ -53,7 +60,7 @@ public:
     Base::Reference<const MeshObject> Mesh;
 };
 
-} // namespace Mesh
+}  // namespace Mesh
 
 
-#endif // MESH_FACET_H
+#endif  // MESH_FACET_H

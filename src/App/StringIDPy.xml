@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+    <PythonExport 
+        Father="BaseClassPy" 
+        Name="StringIDPy" 
+        Twin="StringID" 
+        TwinPointer="StringID" 
+        Include="App/StringHasher.h" 
+        FatherInclude="Base/BaseClassPy.h" 
+        Namespace="App" 
+        FatherNamespace="Base"
+        Reference="true">
+        <Documentation>
+            <Author Licence="LGPL" Name="Zheng, Lei" EMail="realthunder.dev@gmail.com" />
+            <DeveloperDocu>This is the StringID class</DeveloperDocu>
+            <UserDocu>This is the StringID class</UserDocu>
+        </Documentation>
+        <Methode Name="isSame" Const="true">
+            <Documentation>
+                <UserDocu>Check if two StringIDs are the same</UserDocu>
+            </Documentation>
+        </Methode>
+        <Attribute Name="Value" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Return the integer value of this ID</UserDocu>
+            </Documentation>
+            <Parameter Name="Value" Type="Int"/>
+        </Attribute>
+        <Attribute Name="Related" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Return the related string IDs</UserDocu>
+            </Documentation>
+            <Parameter Name="Related" Type="List"/>
+        </Attribute>
+        <Attribute Name="Data" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Return the data associated with this ID</UserDocu>
+            </Documentation>
+            <Parameter Name="Data" Type="String"/>
+        </Attribute>
+        <Attribute Name="IsBinary" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Check if the data is binary, </UserDocu>
+            </Documentation>
+            <Parameter Name="IsBinary" Type="Boolean"/>
+        </Attribute>
+        <Attribute Name="IsHashed" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Check if the data is hash, if so 'Data' returns a base64 encoded string of the raw hash</UserDocu>
+            </Documentation>
+            <Parameter Name="IsHashed" Type="Boolean"/>
+        </Attribute>
+        <Attribute Name="Index" ReadOnly="false">
+            <Documentation>
+                <UserDocu>Geometry index. Only meaningful for geometry element name</UserDocu>
+            </Documentation>
+            <Parameter Name="Index" Type="Int"/>
+        </Attribute>
+		<ClassDeclarations>private:
+    friend class StringID;
+    int _index = 0;
+		</ClassDeclarations>
+    </PythonExport>
+</GenerateModel>
+

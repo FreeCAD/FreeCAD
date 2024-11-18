@@ -9,12 +9,6 @@ elseif(CMAKE_COMPILER_IS_GNUCXX)
     add_compile_options(-Wno-pedantic) # needed for vtk headers
 endif()
 
-if(MSVC)
-    add_definitions(-DFCAppFem -DHAVE_ACOSH -DHAVE_ASINH -DHAVE_ATANH)
-else(MSVC)
-    add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
-endif(MSVC)
-
 
 if(BUILD_FEM_NETGEN)
     add_definitions(-DFCWithNetgen ${NETGEN_DEFINITIONS})
@@ -57,7 +51,6 @@ endif()
 
 
 generate_from_xml(FemMeshPy)
-generate_from_xml(FemPostPipelinePy)
 
 
 SET(Python_SRCS
@@ -71,9 +64,13 @@ SET(Python_SRCS
 if(BUILD_FEM_VTK)
     SET(Python_SRCS
         ${Python_SRCS}
+        FemPostObjectPy.xml
+        FemPostObjectPyImp.cpp
         FemPostPipelinePy.xml
         FemPostPipelinePyImp.cpp
     )
+    generate_from_xml(FemPostObjectPy)
+    generate_from_xml(FemPostPipelinePy)
 endif(BUILD_FEM_VTK)
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
@@ -136,6 +133,8 @@ SET(FemSet_SRCS
     FemSetObject.h
     FemSetNodesObject.cpp
     FemSetNodesObject.h
+    FemSetElementNodesObject.cpp
+    FemSetElementNodesObject.h
     FemSetElementsObject.cpp
     FemSetElementsObject.h
     FemSetFacesObject.cpp
@@ -151,6 +150,8 @@ SET(FemConstraints_SRCS
     FemConstraintBearing.cpp
     FemConstraintFixed.cpp
     FemConstraintFixed.h
+    FemConstraintRigidBody.cpp
+    FemConstraintRigidBody.h
     FemConstraintForce.cpp
     FemConstraintForce.h
     FemConstraintFluidBoundary.cpp
@@ -198,8 +199,11 @@ endif(FREECAD_USE_PCH)
 
 add_library(Fem SHARED ${Fem_SRCS})
 target_link_libraries(Fem ${Fem_LIBS} ${VTK_LIBRARIES})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(Fem)
+endif()
 
-find_package(OpenMP)
+find_package(OpenMP 4.0)
 if(OpenMP_CXX_FOUND)
 	target_link_libraries(Fem OpenMP::OpenMP_CXX)
 endif()

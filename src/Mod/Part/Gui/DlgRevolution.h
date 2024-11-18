@@ -89,7 +89,6 @@ class TaskRevolution : public Gui::TaskView::TaskDialog
 
 public:
     TaskRevolution();
-    ~TaskRevolution() override;
 
 public:
     bool accept() override;
@@ -99,7 +98,6 @@ public:
 
 private:
     DlgRevolution* widget;
-    Gui::TaskView::TaskBox* taskbox;
 };
 
 } // namespace PartGui

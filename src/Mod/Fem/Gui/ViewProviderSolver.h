@@ -23,7 +23,7 @@
 #ifndef FEM_ViewProviderSolver_H
 #define FEM_ViewProviderSolver_H
 
-#include <Gui/ViewProviderPythonFeature.h>
+#include <Gui/ViewProviderFeaturePython.h>
 #include <Mod/Fem/FemGlobal.h>
 
 
@@ -37,7 +37,7 @@ class SoMaterialBinding;
 namespace FemGui
 {
 
-class FemGuiExport ViewProviderSolver : public Gui::ViewProviderDocumentObject
+class FemGuiExport ViewProviderSolver: public Gui::ViewProviderDocumentObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderSolver);
 
@@ -49,7 +49,8 @@ public:
     ~ViewProviderSolver() override;
 
     // shows solid in the tree
-    bool isShow() const override {
+    bool isShow() const override
+    {
         return Visibility.getValue();
     }
     /// A list of all possible display modes
@@ -60,9 +61,9 @@ public:
     bool canDelete(App::DocumentObject* obj) const override;
 };
 
-using ViewProviderSolverPython = Gui::ViewProviderPythonFeatureT<ViewProviderSolver>;
+using ViewProviderSolverPython = Gui::ViewProviderFeaturePythonT<ViewProviderSolver>;
 
-} //namespace FemGui
+}  // namespace FemGui
 
 
-#endif // FEM_ViewProviderSolver_H
+#endif  // FEM_ViewProviderSolver_H

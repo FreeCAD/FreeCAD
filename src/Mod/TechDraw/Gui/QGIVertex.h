@@ -34,11 +34,11 @@ class TechDrawGuiExport QGIVertex : public QGIPrimPath
 {
 public:
     explicit QGIVertex(int index);
-    ~QGIVertex() {}
+    ~QGIVertex() override = default;
 
     enum {Type = QGraphicsItem::UserType + 105};
     int type() const override { return Type;}
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;
+    void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;
 
     int getProjIndex() const { return projIndex; }
 
@@ -46,6 +46,8 @@ public:
     virtual void setRadius(float r);
 
 protected:
+    bool multiselectEligible() override { return true; }
+
     int projIndex;
     float m_radius;
 

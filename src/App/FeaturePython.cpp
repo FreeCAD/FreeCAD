@@ -38,7 +38,7 @@
 using namespace App;
 
 FeaturePythonImp::FeaturePythonImp(App::DocumentObject* o)
-    : object(o), has__object__(false)
+    : object(o)
 {
 }
 
@@ -480,7 +480,7 @@ std::string FeaturePythonImp::getViewProviderName()
         e.ReportException();
     }
 
-    return std::string();
+    return {};
 }
 
 FeaturePythonImp::ValueT
@@ -607,7 +607,7 @@ bool FeaturePythonImp::editProperty(const char *name)
 namespace App {
 PROPERTY_SOURCE_TEMPLATE(App::FeaturePython, App::DocumentObject)
 template<> const char* App::FeaturePython::getViewProviderName() const {
-    return "Gui::ViewProviderPythonFeature";
+    return "Gui::ViewProviderFeaturePython";
 }
 template<> PyObject* App::FeaturePython::getPyObject() {
     if (PythonObject.is(Py::_None())) {
@@ -625,7 +625,7 @@ template class AppExport FeaturePythonT<DocumentObject>;
 namespace App {
 PROPERTY_SOURCE_TEMPLATE(App::GeometryPython, App::GeoFeature)
 template<> const char* App::GeometryPython::getViewProviderName() const {
-    return "Gui::ViewProviderPythonGeometry";
+    return "Gui::ViewProviderGeometryPython";
 }
 // explicit template instantiation
 template class AppExport FeaturePythonT<GeoFeature>;

@@ -1,9 +1,3 @@
-if(MSVC)
-    add_definitions(-DFCAppMeasure -DHAVE_ACOSH -DHAVE_ASINH -DHAVE_ATANH)
-else(MSVC)
-    add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H -DHAVE_ACOSH -DHAVE_ATANH -DHAVE_ASINH)
-endif(MSVC)
-
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_BINARY_DIR}/src
@@ -23,19 +17,43 @@ set(Measure_LIBS
 )
 
 generate_from_xml(MeasurementPy)
+generate_from_xml(MeasureBasePy)
 
 SET(Python_SRCS
     MeasurementPy.xml
     MeasurementPyImp.cpp
+    MeasureBasePy.xml
+    MeasureBasePyImp.cpp
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
 SET(MeasureModule_SRCS
-    AppMeasure.cpp
-    Measurement.cpp
-    Measurement.h
     PreCompiled.cpp
     PreCompiled.h
+    AppMeasure.cpp
+
+# original service routines
+    Measurement.cpp
+    Measurement.h
+
+# umf
+    MeasureBase.cpp
+    MeasureBase.h
+    MeasureAngle.cpp
+    MeasureAngle.h
+    MeasureDistance.cpp
+    MeasureDistance.h
+    MeasurePosition.cpp
+    MeasurePosition.h
+    MeasureLength.cpp
+    MeasureLength.h
+    MeasureArea.cpp
+    MeasureArea.h
+    MeasureRadius.cpp
+    MeasureRadius.h
+
+    Preferences.cpp
+    Preferences.h
 )
 
 SOURCE_GROUP("Module" FILES ${MeasureModule_SRCS})
@@ -51,17 +69,11 @@ if(FREECAD_USE_PCH)
     ADD_MSVC_PRECOMPILED_HEADER(Measure PreCompiled.h PreCompiled.cpp Measure_CPP_SRCS)
 endif(FREECAD_USE_PCH)
 
-SET(Measure_Scripts
-    ../Init.py
-)
-
-add_library(Measure SHARED ${Measure_SRCS} ${Measure_Scripts})
+add_library(Measure SHARED ${Measure_SRCS})
 target_link_libraries(Measure ${Measure_LIBS})
-
-fc_target_copy_resource_flat(Measure
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_BINARY_DIR}/Mod/Measure
-    ${Measure_Scripts})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(Measure)
+endif()
 
 #if(MSVC)
 #    set_target_properties(Measure PROPERTIES SUFFIX ".pyd")

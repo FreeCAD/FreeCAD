@@ -44,15 +44,9 @@ using namespace Gui;
 PROPERTY_SOURCE(Gui::ViewProviderExtern, Gui::ViewProvider)
 
 
-ViewProviderExtern::ViewProviderExtern()
-{
+ViewProviderExtern::ViewProviderExtern() = default;
 
-}
-
-ViewProviderExtern::~ViewProviderExtern()
-{
-
-}
+ViewProviderExtern::~ViewProviderExtern() = default;
 
 void ViewProviderExtern::setModeByString(const char* name, const char* ivFragment)
 {
@@ -64,7 +58,7 @@ void ViewProviderExtern::setModeByString(const char* name, const char* ivFragmen
 void ViewProviderExtern::setModeByFile(const char* name, const char* ivFileName)
 {
     SoInput in;
-    Base::ifstream file(ivFileName, std::ios::in | std::ios::binary);
+    Base::ifstream file(Base::FileInfo(ivFileName), std::ios::in | std::ios::binary);
     if (file){
         std::streamoff size = 0;
         std::streambuf* buf = file.rdbuf();

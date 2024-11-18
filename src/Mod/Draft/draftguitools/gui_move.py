@@ -41,7 +41,7 @@ import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_trackers as trackers
 
-from draftutils.messages import _msg, _err
+from draftutils.messages import _msg, _err, _toolmsg
 from draftutils.translate import translate
 from draftguitools.gui_subelements import SubelementHighlight
 
@@ -51,9 +51,6 @@ True if Draft_rc.__name__ else False
 
 class Move(gui_base_original.Modifier):
     """Gui Command for the Move tool."""
-
-    def __init__(self):
-        super(Move, self).__init__()
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -65,9 +62,9 @@ class Move(gui_base_original.Modifier):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Move, self).Activated(name="Move",
-                                    is_subtool=isinstance(App.activeDraftCommand,
-                                                          SubelementHighlight))
+        super().Activated(name="Move",
+                          is_subtool=isinstance(App.activeDraftCommand,
+                                                SubelementHighlight))
         if not self.ui:
             return
         self.ghosts = []
@@ -100,7 +97,7 @@ class Move(gui_base_original.Modifier):
         self.ui.xValue.setFocus()
         self.ui.xValue.selectAll()
         self.call = self.view.addEventCallback("SoEvent", self.action)
-        _msg(translate("draft", "Pick start point"))
+        _toolmsg(translate("draft", "Pick start point"))
 
     def finish(self, cont=False):
         """Terminate the operation.
@@ -111,11 +108,12 @@ class Move(gui_base_original.Modifier):
             Restart (continue) the command if `True`, or if `None` and
             `ui.continueMode` is `True`.
         """
+        self.end_callbacks(self.call)
         for ghost in self.ghosts:
             ghost.finalize()
+        super().finish()
         if cont or (cont is None and self.ui and self.ui.continueMode):
             todo.ToDo.delayAfter(self.Activated, [])
-        super(Move, self).finish()
 
     def action(self, arg):
         """Handle the 3D scene events.
@@ -144,12 +142,16 @@ class Move(gui_base_original.Modifier):
         self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg)
         if len(self.node) > 0:
             last = self.node[len(self.node) - 1]
-            self.vector = self.point.sub(last)
+            if self.point:
+                self.vector = self.point.sub(last)
+            else:
+                self.vector = None
             for ghost in self.ghosts:
-                ghost.move(self.vector)
+                if self.vector:
+                    ghost.move(self.vector)
                 ghost.on()
         if self.extendedCopy:
-            if not gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT):
+            if not gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()):
                 self.finish()
         gui_tool_utils.redraw3DView()
 
@@ -165,15 +167,15 @@ class Move(gui_base_original.Modifier):
             self.ui.isRelative.show()
             for ghost in self.ghosts:
                 ghost.on()
-            _msg(translate("draft", "Pick end point"))
+            _toolmsg(translate("draft", "Pick end point"))
             if self.planetrack:
                 self.planetrack.set(self.point)
         else:
             last = self.node[0]
             self.vector = self.point.sub(last)
             self.move(self.ui.isCopy.isChecked()
-                      or gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT))
-            if gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT):
+                      or gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()))
+            if gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()):
                 self.extendedCopy = True
             else:
                 self.finish(cont=None)
@@ -312,12 +314,12 @@ class Move(gui_base_original.Modifier):
             self.ui.isCopy.show()
             for ghost in self.ghosts:
                 ghost.on()
-            _msg(translate("draft", "Pick end point"))
+            _toolmsg(translate("draft", "Pick end point"))
         else:
             last = self.node[-1]
             self.vector = self.point.sub(last)
             self.move(self.ui.isCopy.isChecked())
-            self.finish()
+            self.finish(cont=None)
 
 
 Gui.addCommand('Draft_Move', Move())

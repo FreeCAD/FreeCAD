@@ -70,9 +70,8 @@ public:
      */
     PyObject* getPyObject() override;
     /** Sets up the contextmenu for this workbench.
-     * The default implementation does nothing.
      */
-    virtual void setupContextMenu(const char* recipient,MenuItem*) const;
+    void createContextMenu(const char* recipient, MenuItem*) const;
     /** Sets up the contextmenu for the main window for this workbench.
      * The default implementation does nothing.
      */
@@ -121,6 +120,10 @@ protected:
     virtual ToolBarItem* setupCommandBars() const=0;
     /** Returns a DockWindowItems structure of dock windows this workbench. */
     virtual DockWindowItems* setupDockWindows() const=0;
+    /** Sets up the contextmenu for this workbench.
+     * The default implementation does nothing.
+     */
+    virtual void setupContextMenu(const char* recipient,MenuItem*) const;
     /** Add permanent menu items to the structure */
     void addPermanentMenuItems(MenuItem*) const;
 
@@ -289,11 +292,11 @@ protected:
     DockWindowItems* setupDockWindows() const override;
 
 protected:
-    MenuItem* _menuBar;
-    MenuItem* _contextMenu;
-    ToolBarItem* _toolBar;
-    ToolBarItem* _commandBar;
-    Base::PyObjectBase* _workbenchPy;
+    MenuItem* _menuBar{nullptr};
+    MenuItem* _contextMenu{nullptr};
+    ToolBarItem* _toolBar{nullptr};
+    ToolBarItem* _commandBar{nullptr};
+    Base::PyObjectBase* _workbenchPy{nullptr};
 };
 
 class GuiExport PythonBlankWorkbench : public PythonBaseWorkbench

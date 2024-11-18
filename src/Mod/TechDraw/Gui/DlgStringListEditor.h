@@ -40,11 +40,11 @@ class TechDrawGuiExport DlgStringListEditor : public QDialog
 public:
     DlgStringListEditor(const std::vector<std::string> texts,
                    QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~DlgStringListEditor();
+    ~DlgStringListEditor() override;
 
     std::vector<std::string> getTexts() const;
-    void accept();
-    void reject();
+    void accept() override;
+    void reject() override;
 
 public Q_SLOTS:
     void slotItemActivated(QListWidgetItem* item);

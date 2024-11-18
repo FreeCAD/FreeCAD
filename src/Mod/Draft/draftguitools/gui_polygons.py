@@ -37,12 +37,12 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD as App
 import FreeCADGui as Gui
 import DraftVecUtils
-import draftutils.utils as utils
-import draftguitools.gui_base_original as gui_base_original
-import draftguitools.gui_tool_utils as gui_tool_utils
-import draftguitools.gui_trackers as trackers
-
-from draftutils.messages import _msg
+from draftguitools import gui_base_original
+from draftguitools import gui_tool_utils
+from draftguitools import gui_trackers as trackers
+from draftutils import params
+from draftutils import utils
+from draftutils.messages import _toolmsg
 from draftutils.translate import translate
 
 
@@ -59,14 +59,14 @@ class Polygon(gui_base_original.Creator):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Polygon, self).Activated(name="Polygon")
+        super().Activated(name="Polygon")
         if self.ui:
             self.step = 0
             self.center = None
             self.rad = None
             self.tangents = []
             self.tanpoints = []
-            self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Polygon")
+            self.ui.pointUi(title=translate("draft", "Polygon"), icon="Draft_Polygon")
             self.ui.extUi()
             self.ui.isRelative.hide()
             self.ui.numFaces.show()
@@ -75,7 +75,7 @@ class Polygon(gui_base_original.Creator):
             self.ui.sourceCmd = self
             self.arctrack = trackers.arcTracker()
             self.call = self.view.addEventCallback("SoEvent", self.action)
-            _msg(translate("draft", "Pick center point"))
+            _toolmsg(translate("draft", "Pick center point"))
 
     def finish(self, cont=False):
         """Terminate the operation.
@@ -86,10 +86,10 @@ class Polygon(gui_base_original.Creator):
             Restart (continue) the command if `True`, or if `None` and
             `ui.continueMode` is `True`.
         """
-        super(Polygon, self).finish(self)
+        self.end_callbacks(self.call)
         if self.ui:
             self.arctrack.finalize()
-            self.doc.recompute()
+        super().finish()
         if cont or (cont is None and self.ui and self.ui.continueMode):
             self.Activated()
 
@@ -115,11 +115,11 @@ class Polygon(gui_base_original.Creator):
             # this is to make sure radius is what you see on screen
             if self.center and DraftVecUtils.dist(self.point, self.center) > 0:
                 viewdelta = DraftVecUtils.project(self.point.sub(self.center),
-                                                  App.DraftWorkingPlane.axis)
+                                                  self.wp.axis)
                 if not DraftVecUtils.isNull(viewdelta):
                     self.point = self.point.add(viewdelta.negative())
             if self.step == 0:  # choose center
-                if gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT):
+                if gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()):
                     if not self.altdown:
                         self.altdown = True
                         self.ui.switchUi(True)
@@ -142,7 +142,7 @@ class Polygon(gui_base_original.Creator):
                     _c = DraftGeomUtils.findClosestCircle(self.point, cir)
                     self.center = _c.Center
                     self.arctrack.setCenter(self.center)
-                if gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT):
+                if gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()):
                     if not self.altdown:
                         self.altdown = True
                     snapped = self.view.getObjectInfo((arg["Position"][0],
@@ -181,7 +181,7 @@ class Polygon(gui_base_original.Creator):
                         gui_tool_utils.getSupport(arg)
                         (self.point,
                          ctrlPoint, info) = gui_tool_utils.getPoint(self, arg)
-                    if gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT):
+                    if gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()):
                         snapped = self.view.getObjectInfo((arg["Position"][0],
                                                            arg["Position"][1]))
                         if snapped:
@@ -193,7 +193,7 @@ class Polygon(gui_base_original.Creator):
                                 self.arctrack.on()
                                 self.ui.radiusUi()
                                 self.step = 1
-                                _msg(translate("draft", "Pick radius"))
+                                _toolmsg(translate("draft", "Pick radius"))
                     else:
                         if len(self.tangents) == 1:
                             self.tanpoints.append(self.point)
@@ -204,7 +204,7 @@ class Polygon(gui_base_original.Creator):
                         self.arctrack.on()
                         self.ui.radiusUi()
                         self.step = 1
-                        _msg(translate("draft", "Pick radius"))
+                        _toolmsg(translate("draft", "Pick radius"))
                         if self.planetrack:
                             self.planetrack.set(self.point)
                 elif self.step == 1:  # choose radius
@@ -214,7 +214,7 @@ class Polygon(gui_base_original.Creator):
         """Draw the actual object."""
         rot, sup, pts, fil = self.getStrings()
         Gui.addModule("Draft")
-        if utils.getParam("UsePartPrimitives", False):
+        if params.get_param("UsePartPrimitives"):
             # Insert a Part::Primitive object
             Gui.addModule("Part")
             _cmd = 'FreeCAD.ActiveDocument.'
@@ -227,6 +227,7 @@ class Polygon(gui_base_original.Creator):
                          'pol.Circumradius = ' + str(self.rad),
                          'pol.Placement = pl',
                          'Draft.autogroup(pol)',
+                         'Draft.select(pol)',
                          'FreeCAD.ActiveDocument.recompute()']
             self.commit(translate("draft", "Create Polygon (Part)"),
                         _cmd_list)
@@ -264,7 +265,7 @@ class Polygon(gui_base_original.Creator):
         self.ui.radiusUi()
         self.step = 1
         self.ui.radiusValue.setFocus()
-        _msg(translate("draft", "Pick radius"))
+        _toolmsg(translate("draft", "Pick radius"))
 
     def numericRadius(self, rad):
         """Validate the entry radius in the user interface.

@@ -52,14 +52,12 @@ ExpressionSpinBox::ExpressionSpinBox(QAbstractSpinBox* sb)
 {
     lineedit = spinbox->findChild<QLineEdit*>();
     makeLabel(lineedit);
-    QObject::connect(iconLabel, &ExpressionLabel::clicked, [=]() {
+    QObject::connect(iconLabel, &ExpressionLabel::clicked, [this]() {
         this->openFormulaDialog();
     });
 }
 
-ExpressionSpinBox::~ExpressionSpinBox()
-{
-}
+ExpressionSpinBox::~ExpressionSpinBox() = default;
 
 void ExpressionSpinBox::bind(const App::ObjectIdentifier &_path)
 {
@@ -170,7 +168,7 @@ void ExpressionSpinBox::resizeWidget()
     int frameWidth = spinbox->style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
 
     QSize sz = iconLabel->sizeHint();
-    iconLabel->move(lineedit->rect().right() - frameWidth - sz.width(), 0);
+    iconLabel->move(lineedit->rect().right() - frameWidth - sz.width(), lineedit->rect().center().y() - sz.height() / 2);
     updateExpression();
 }
 
@@ -185,7 +183,7 @@ void ExpressionSpinBox::openFormulaDialog()
         unit = qprop->getUnit();
 
     auto box = new Gui::Dialog::DlgExpressionInput(getPath(), getExpression(), unit, spinbox);
-    QObject::connect(box, &Gui::Dialog::DlgExpressionInput::finished, [=]() {
+    QObject::connect(box, &Gui::Dialog::DlgExpressionInput::finished, [this, box]() {
         if (box->result() == QDialog::Accepted)
             setExpression(box->getExpression());
         else if (box->discardedFormula())
@@ -239,10 +237,7 @@ UnsignedValidator::UnsignedValidator( uint minimum, uint maximum, QObject * pare
     t = maximum;
 }
 
-UnsignedValidator::~UnsignedValidator()
-{
-
-}
+UnsignedValidator::~UnsignedValidator() = default;
 
 QValidator::State UnsignedValidator::validate( QString & input, int & ) const
 {
@@ -283,11 +278,9 @@ namespace Gui {
 class UIntSpinBoxPrivate
 {
 public:
-    UnsignedValidator * mValidator;
+    UnsignedValidator * mValidator{nullptr};
 
-    UIntSpinBoxPrivate() : mValidator(nullptr)
-    {
-    }
+    UIntSpinBoxPrivate() = default;
     uint mapToUInt( int v ) const
     {
         uint ui;
@@ -458,10 +451,7 @@ IntSpinBox::IntSpinBox(QWidget* parent)
 {
 }
 
-IntSpinBox::~IntSpinBox()
-{
-
-}
+IntSpinBox::~IntSpinBox() = default;
 
 bool IntSpinBox::apply(const std::string& propName)
 {
@@ -505,10 +495,7 @@ DoubleSpinBox::DoubleSpinBox(QWidget* parent)
 {
 }
 
-DoubleSpinBox::~DoubleSpinBox()
-{
-
-}
+DoubleSpinBox::~DoubleSpinBox() = default;
 
 bool DoubleSpinBox::apply(const std::string& propName)
 {

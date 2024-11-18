@@ -23,25 +23,20 @@
 
 __title__ = "FreeCAD FEM element geometry 1D ViewProvider for the document object"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## @package view_element_geometry1D
 #  \ingroup FEM
 #  \brief view provider for element geometry 1D object
 
 from femtaskpanels import task_element_geometry1D
-from . import view_base_femconstraint
+from . import view_base_femelement
 
 
-class VPElementGeometry1D(view_base_femconstraint.VPBaseFemConstraint):
+class VPElementGeometry1D(view_base_femelement.VPBaseFemElement):
     """
     A View Provider for the ElementGeometry1D object
     """
 
     def setEdit(self, vobj, mode=0):
-        view_base_femconstraint.VPBaseFemConstraint.setEdit(
-            self,
-            vobj,
-            mode,
-            task_element_geometry1D._TaskPanel
-        )
+        super().setEdit(vobj, mode, task_element_geometry1D._TaskPanel)

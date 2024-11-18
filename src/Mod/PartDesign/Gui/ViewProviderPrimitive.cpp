@@ -41,14 +41,9 @@ using namespace PartDesignGui;
 
 PROPERTY_SOURCE(PartDesignGui::ViewProviderPrimitive,PartDesignGui::ViewProvider)
 
-ViewProviderPrimitive::ViewProviderPrimitive()
-{
-}
+ViewProviderPrimitive::ViewProviderPrimitive() = default;
 
-ViewProviderPrimitive::~ViewProviderPrimitive()
-{
-
-}
+ViewProviderPrimitive::~ViewProviderPrimitive() = default;
 
 void ViewProviderPrimitive::attach(App::DocumentObject* obj) {
     ViewProviderAddSub::attach(obj);

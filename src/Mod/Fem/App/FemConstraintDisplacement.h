@@ -32,7 +32,7 @@
 namespace Fem
 {
 
-class FemExport ConstraintDisplacement : public Fem::Constraint
+class FemExport ConstraintDisplacement: public Fem::Constraint
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::ConstraintDisplacement);
 
@@ -40,11 +40,7 @@ public:
     /// Constructor
     ConstraintDisplacement();
 
-    // Read-only (calculated values). These trigger changes in the ViewProvider
-    App::PropertyVectorList Points;
-    App::PropertyVectorList Normals;
-
-    //Displacement parameters
+    // Displacement parameters
     App::PropertyDistance xDisplacement;
     App::PropertyDistance yDisplacement;
     App::PropertyDistance zDisplacement;
@@ -57,34 +53,28 @@ public:
     App::PropertyBool xFree;
     App::PropertyBool yFree;
     App::PropertyBool zFree;
-    App::PropertyBool xFix;
-    App::PropertyBool yFix;
-    App::PropertyBool zFix;
     App::PropertyBool rotxFree;
     App::PropertyBool rotyFree;
     App::PropertyBool rotzFree;
-    App::PropertyBool rotxFix;
-    App::PropertyBool rotyFix;
-    App::PropertyBool rotzFix;
     App::PropertyBool hasXFormula;
     App::PropertyBool hasYFormula;
     App::PropertyBool hasZFormula;
     App::PropertyBool useFlowSurfaceForce;
 
     /// recalculate the object
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
 
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override;
 
 protected:
-    void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName,
+    void handleChangedPropertyType(Base::XMLReader& reader,
+                                   const char* TypeName,
                                    App::Property* prop) override;
     void onChanged(const App::Property* prop) override;
-
 };
 
-} //namespace Fem
+}  // namespace Fem
 
 
-#endif // FEM_CONSTRAINTDISPLACEMENT_H
+#endif  // FEM_CONSTRAINTDISPLACEMENT_H

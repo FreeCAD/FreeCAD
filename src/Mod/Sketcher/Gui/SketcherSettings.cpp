@@ -22,9 +22,9 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QMessageBox>
-# include <QPainter>
-# include <QPixmap>
+#include <QMessageBox>
+#include <QPainter>
+#include <QPixmap>
 #endif
 
 #include <App/Application.h>
@@ -34,18 +34,61 @@
 
 #include "SketcherSettings.h"
 #include "ui_SketcherSettings.h"
+#include "ui_SketcherSettingsAppearance.h"
+#include "ui_SketcherSettingsDisplay.h"
 #include "ui_SketcherSettingsGrid.h"
-#include "ui_SketcherSettingsDisplay.h"
-#include "ui_SketcherSettingsColors.h"
-#include "ui_SketcherSettingsDisplay.h"
 
 
 using namespace SketcherGui;
 
 /* TRANSLATOR SketcherGui::SketcherSettings */
 
+QList<int> getPenStyles()
+{
+    QList<int> styles;
+    styles << 0b1111111111111111   // solid
+           << 0b1110111011101110   // dashed 3:1
+           << 0b1111110011111100   // dashed 6:2
+           << 0b0000111100001111   // dashed 4:4
+           << 0b1010101010101010   // point 1:1
+           << 0b1110010011100100   // dash point
+           << 0b1111111100111100;  // dash long-dash
+    return styles;
+}
+
+const QVector<qreal> binaryPatternToDashPattern(int binaryPattern)
+{
+    QVector<qreal> dashPattern;
+    int count = 0;
+    bool isDash = (binaryPattern & 0x8000) != 0;  // Check the highest bit
+
+    for (int i = 0; i < 16; ++i) {
+        bool currentBit = (binaryPattern & (0x8000 >> i)) != 0;
+        if (currentBit == isDash) {
+            ++count;  // Counting dashes or spaces
+        }
+        else {
+            // Adjust count to be odd for dashes and even for spaces (see qt doc)
+            count = (count % 2 == (isDash ? 0 : 1)) ? count + 1 : count;
+            dashPattern << count;
+            count = 1;  // Reset count for next dash/space
+            isDash = !isDash;
+        }
+    }
+    count = (count % 2 == (isDash ? 0 : 1)) ? count + 1 : count;
+    dashPattern << count;  // Add the last count
+
+    if ((dashPattern.size() % 2) == 1) {
+        // prevent this error : qWarning("QPen::setDashPattern: Pattern not of even length");
+        dashPattern << 1;
+    }
+
+    return dashPattern;
+}
+
 SketcherSettings::SketcherSettings(QWidget* parent)
-    : PreferencePage(parent), ui(new Ui_SketcherSettings)
+    : PreferencePage(parent)
+    , ui(new Ui_SketcherSettings)
 {
     ui->setupUi(this);
 }
@@ -64,8 +107,70 @@ void SketcherSettings::saveSettings()
     ui->checkBoxAdvancedSolverTaskBox->onSave();
     ui->checkBoxRecalculateInitialSolutionWhileDragging->onSave();
     ui->checkBoxEnableEscape->onSave();
+    ui->checkBoxDisableShading->onSave();
     ui->checkBoxNotifyConstraintSubstitutions->onSave();
     ui->checkBoxAutoRemoveRedundants->onSave();
+    ui->checkBoxUnifiedCoincident->onSave();
+    ui->checkBoxHorVerAuto->onSave();
+
+    enum
+    {
+        DimensionSingleTool,
+        DimensionSeparateTools,
+        DimensionBoth
+    };
+
+    // Dimensioning constraints mode
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
+    bool singleTool = true;
+    bool SeparatedTools = false;
+    int index = ui->dimensioningMode->currentIndex();
+    switch (index) {
+        case DimensionSeparateTools:
+            singleTool = false;
+            SeparatedTools = true;
+            break;
+        case DimensionBoth:
+            singleTool = true;
+            SeparatedTools = true;
+            break;
+    }
+    hGrp->SetBool("SingleDimensioningTool", singleTool);
+    hGrp->SetBool("SeparatedDimensioningTools", SeparatedTools);
+
+    ui->radiusDiameterMode->setEnabled(index != 1);
+
+    enum
+    {
+        DimensionAutoRadiusDiam,
+        DimensionDiameter,
+        DimensionRadius
+    };
+
+    bool Diameter = true;
+    bool Radius = true;
+    index = ui->radiusDiameterMode->currentIndex();
+    switch (index) {
+        case DimensionDiameter:
+            Diameter = true;
+            Radius = false;
+            break;
+        case DimensionRadius:
+            Diameter = false;
+            Radius = true;
+            break;
+    }
+    hGrp->SetBool("DimensioningDiameter", Diameter);
+    hGrp->SetBool("DimensioningRadius", Radius);
+
+    hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools");
+
+    index = ui->ovpVisibility->currentIndex();
+    hGrp->SetInt("OnViewParameterVisibility", index);
+
+    checkForRestart();
 }
 
 void SketcherSettings::loadSettings()
@@ -74,14 +179,79 @@ void SketcherSettings::loadSettings()
     ui->checkBoxAdvancedSolverTaskBox->onRestore();
     ui->checkBoxRecalculateInitialSolutionWhileDragging->onRestore();
     ui->checkBoxEnableEscape->onRestore();
+    ui->checkBoxDisableShading->onRestore();
     ui->checkBoxNotifyConstraintSubstitutions->onRestore();
     ui->checkBoxAutoRemoveRedundants->onRestore();
+    ui->checkBoxUnifiedCoincident->onRestore();
+    setProperty("checkBoxUnifiedCoincident", ui->checkBoxUnifiedCoincident->isChecked());
+    ui->checkBoxHorVerAuto->onRestore();
+    setProperty("checkBoxHorVerAuto", ui->checkBoxHorVerAuto->isChecked());
+
+    // Dimensioning constraints mode
+    ui->dimensioningMode->clear();
+    ui->dimensioningMode->addItem(tr("Single tool"));
+    ui->dimensioningMode->addItem(tr("Separated tools"));
+    ui->dimensioningMode->addItem(tr("Both"));
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
+    bool singleTool = hGrp->GetBool("SingleDimensioningTool", true);
+    bool SeparatedTools = hGrp->GetBool("SeparatedDimensioningTools", false);
+    int index = SeparatedTools ? (singleTool ? 2 : 1) : 0;
+    ui->dimensioningMode->setCurrentIndex(index);
+    setProperty("dimensioningMode", index);
+    connect(ui->dimensioningMode,
+            QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this,
+            &SketcherSettings::dimensioningModeChanged);
+
+    ui->radiusDiameterMode->setEnabled(index != 1);
+
+    // Dimensioning constraints mode
+    ui->radiusDiameterMode->clear();
+    ui->radiusDiameterMode->addItem(tr("Auto"));
+    ui->radiusDiameterMode->addItem(tr("Diameter"));
+    ui->radiusDiameterMode->addItem(tr("Radius"));
+
+    bool Diameter = hGrp->GetBool("DimensioningDiameter", true);
+    bool Radius = hGrp->GetBool("DimensioningRadius", true);
+    index = Diameter ? (Radius ? 0 : 1) : 2;
+    ui->radiusDiameterMode->setCurrentIndex(index);
+
+    hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools");
+    ui->ovpVisibility->clear();
+    ui->ovpVisibility->addItem(tr("None"));
+    ui->ovpVisibility->addItem(tr("Dimensions only"));
+    ui->ovpVisibility->addItem(tr("Position and dimensions"));
+
+    index = hGrp->GetInt("OnViewParameterVisibility", 1);
+    ui->ovpVisibility->setCurrentIndex(index);
+}
+
+void SketcherSettings::dimensioningModeChanged(int index)
+{
+    ui->radiusDiameterMode->setEnabled(index != 1);
+}
+
+void SketcherSettings::checkForRestart()
+{
+    if (property("dimensioningMode").toInt() != ui->dimensioningMode->currentIndex()) {
+        SketcherSettings::requireRestart();
+    }
+    if (property("checkBoxUnifiedCoincident").toBool()
+        != ui->checkBoxUnifiedCoincident->isChecked()) {
+        SketcherSettings::requireRestart();
+    }
+    if (property("checkBoxHorVerAuto").toBool() != ui->checkBoxHorVerAuto->isChecked()) {
+        SketcherSettings::requireRestart();
+    }
 }
 
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void SketcherSettings::changeEvent(QEvent *e)
+void SketcherSettings::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -91,25 +261,48 @@ void SketcherSettings::changeEvent(QEvent *e)
     }
 }
 
+void SketcherSettings::resetSettingsToDefaults()
+{
+    ParameterGrp::handle hGrp;
+
+    hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
+    // reset "Dimension tools" parameters
+    hGrp->RemoveBool("SingleDimensioningTool");
+    hGrp->RemoveBool("SeparatedDimensioningTools");
+
+    // reset "radius/diameter mode for dimensioning" parameter
+    hGrp->RemoveBool("DimensioningDiameter");
+    hGrp->RemoveBool("DimensioningRadius");
+
+    hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools");
+    // reset "OVP visibility" parameter
+    hGrp->RemoveInt("OnViewParameterVisibility");
+
+    // finally reset all the parameters associated to Gui::Pref* widgets
+    PreferencePage::resetSettingsToDefaults();
+}
+
 /* TRANSLATOR SketcherGui::SketcherSettingsGrid */
 
 SketcherSettingsGrid::SketcherSettingsGrid(QWidget* parent)
-    : PreferencePage(parent), ui(new Ui_SketcherSettingsGrid)
+    : PreferencePage(parent)
+    , ui(new Ui_SketcherSettingsGrid)
 {
     ui->setupUi(this);
 
-    QList < QPair<Qt::PenStyle, int> > styles;
-    styles << qMakePair(Qt::SolidLine, 0xffff)
-        << qMakePair(Qt::DashLine, 0x0f0f)
-        << qMakePair(Qt::DotLine, 0xaaaa);
+    QList<int> styles = getPenStyles();
 
     ui->gridLinePattern->setIconSize(QSize(80, 12));
     ui->gridDivLinePattern->setIconSize(QSize(80, 12));
-    for (QList < QPair<Qt::PenStyle, int> >::iterator it = styles.begin(); it != styles.end(); ++it) {
+    for (auto& style : styles) {
         QPixmap px(ui->gridLinePattern->iconSize());
         px.fill(Qt::transparent);
         QBrush brush(Qt::black);
-        QPen pen(it->first);
+
+        QPen pen;
+        pen.setDashPattern(binaryPatternToDashPattern(style));
         pen.setBrush(brush);
         pen.setWidth(2);
 
@@ -119,8 +312,8 @@ SketcherSettingsGrid::SketcherSettingsGrid(QWidget* parent)
         painter.drawLine(0, mid, ui->gridLinePattern->iconSize().width(), mid);
         painter.end();
 
-        ui->gridLinePattern->addItem(QIcon(px), QString(), QVariant(it->second));
-        ui->gridDivLinePattern->addItem(QIcon(px), QString(), QVariant(it->second));
+        ui->gridLinePattern->addItem(QIcon(px), QString(), QVariant(style));
+        ui->gridDivLinePattern->addItem(QIcon(px), QString(), QVariant(style));
     }
 }
 
@@ -141,7 +334,8 @@ void SketcherSettingsGrid::saveSettings()
     ui->gridDivLineWidth->onSave();
     ui->gridNumberSubdivision->onSave();
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
     QVariant data = ui->gridLinePattern->itemData(ui->gridLinePattern->currentIndex());
     int pattern = data.toInt();
     hGrp->SetInt("GridLinePattern", pattern);
@@ -163,14 +357,19 @@ void SketcherSettingsGrid::loadSettings()
     ui->gridDivLineWidth->onRestore();
     ui->gridNumberSubdivision->onRestore();
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    int pattern = hGrp->GetInt("GridLinePattern", 0x0f0f);
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    int pattern = hGrp->GetInt("GridLinePattern", 0b0000111100001111);
     int index = ui->gridLinePattern->findData(QVariant(pattern));
-    if (index < 0) index = 1;
+    if (index < 0) {
+        index = 1;
+    }
     ui->gridLinePattern->setCurrentIndex(index);
-    pattern = hGrp->GetInt("GridDivLinePattern", 0xffff);
+    pattern = hGrp->GetInt("GridDivLinePattern", 0b1111111111111111);
     index = ui->gridDivLinePattern->findData(QVariant(pattern));
-    if (index < 0) index = 0;
+    if (index < 0) {
+        index = 0;
+    }
     ui->gridDivLinePattern->setCurrentIndex(index);
 }
 
@@ -190,11 +389,15 @@ void SketcherSettingsGrid::changeEvent(QEvent* e)
 /* TRANSLATOR SketcherGui::SketcherSettingsDisplay */
 
 SketcherSettingsDisplay::SketcherSettingsDisplay(QWidget* parent)
-    : PreferencePage(parent), ui(new Ui_SketcherSettingsDisplay)
+    : PreferencePage(parent)
+    , ui(new Ui_SketcherSettingsDisplay)
 {
     ui->setupUi(this);
 
-    connect(ui->btnTVApply, &QPushButton::clicked, this, &SketcherSettingsDisplay::onBtnTVApplyClicked);
+    connect(ui->btnTVApply,
+            &QPushButton::clicked,
+            this,
+            &SketcherSettingsDisplay::onBtnTVApplyClicked);
 }
 
 /**
@@ -251,7 +454,7 @@ void SketcherSettingsDisplay::loadSettings()
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void SketcherSettingsDisplay::changeEvent(QEvent *e)
+void SketcherSettingsDisplay::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -264,59 +467,87 @@ void SketcherSettingsDisplay::changeEvent(QEvent *e)
 void SketcherSettingsDisplay::onBtnTVApplyClicked(bool)
 {
     QString errMsg;
-    try{
+    try {
         Gui::Command::doCommand(Gui::Command::Gui,
-            "for name,doc in App.listDocuments().items():\n"
-            "    for sketch in doc.findObjects('Sketcher::SketchObject'):\n"
-            "        sketch.ViewObject.HideDependent = %s\n"
-            "        sketch.ViewObject.ShowLinks = %s\n"
-            "        sketch.ViewObject.ShowSupport = %s\n"
-            "        sketch.ViewObject.RestoreCamera = %s\n"
-            "        sketch.ViewObject.ForceOrtho = %s\n"
-            "        sketch.ViewObject.SectionView = %s\n",
-            this->ui->checkBoxTVHideDependent->isChecked() ? "True": "False",
-            this->ui->checkBoxTVShowLinks->isChecked()     ? "True": "False",
-            this->ui->checkBoxTVShowSupport->isChecked()   ? "True": "False",
-            this->ui->checkBoxTVRestoreCamera->isChecked() ? "True": "False",
-            this->ui->checkBoxTVForceOrtho->isChecked()    ? "True": "False",
-            this->ui->checkBoxTVSectionView->isChecked()   ? "True": "False");
-    } catch (Base::PyException &e){
-        Base::Console().Error("SketcherSettings::onBtnTVApplyClicked:\n");
+                                "for name,doc in App.listDocuments().items():\n"
+                                "    for sketch in doc.findObjects('Sketcher::SketchObject'):\n"
+                                "        sketch.ViewObject.HideDependent = %s\n"
+                                "        sketch.ViewObject.ShowLinks = %s\n"
+                                "        sketch.ViewObject.ShowSupport = %s\n"
+                                "        sketch.ViewObject.RestoreCamera = %s\n"
+                                "        sketch.ViewObject.ForceOrtho = %s\n"
+                                "        sketch.ViewObject.SectionView = %s\n",
+                                this->ui->checkBoxTVHideDependent->isChecked() ? "True" : "False",
+                                this->ui->checkBoxTVShowLinks->isChecked() ? "True" : "False",
+                                this->ui->checkBoxTVShowSupport->isChecked() ? "True" : "False",
+                                this->ui->checkBoxTVRestoreCamera->isChecked() ? "True" : "False",
+                                this->ui->checkBoxTVForceOrtho->isChecked() ? "True" : "False",
+                                this->ui->checkBoxTVSectionView->isChecked() ? "True" : "False");
+    }
+    catch (Base::PyException& e) {
+        Base::Console().DeveloperError("SketcherSettings", "error in onBtnTVApplyClicked:\n");
         e.ReportException();
         errMsg = QString::fromLatin1(e.what());
-    } catch (...) {
+    }
+    catch (...) {
         errMsg = tr("Unexpected C++ exception");
     }
-    if(errMsg.length()>0){
-        QMessageBox::warning(this, tr("Sketcher"),errMsg);
+    if (errMsg.length() > 0) {
+        QMessageBox::warning(this, tr("Sketcher"), errMsg);
     }
 }
 
 
+/* TRANSLATOR SketcherGui::SketcherSettingsAppearance */
 
-/* TRANSLATOR SketcherGui::SketcherSettingsColors */
-
-SketcherSettingsColors::SketcherSettingsColors(QWidget* parent)
-    : PreferencePage(parent), ui(new Ui_SketcherSettingsColors)
+SketcherSettingsAppearance::SketcherSettingsAppearance(QWidget* parent)
+    : PreferencePage(parent)
+    , ui(new Ui_SketcherSettingsAppearance)
 {
     ui->setupUi(this);
+
+    QList<int> styles = getPenStyles();
+
+    ui->EdgePattern->setIconSize(QSize(70, 12));
+    ui->ConstructionPattern->setIconSize(QSize(70, 12));
+    ui->InternalPattern->setIconSize(QSize(70, 12));
+    ui->ExternalPattern->setIconSize(QSize(70, 12));
+    for (auto& style : styles) {
+        QPixmap px(ui->EdgePattern->iconSize());
+        px.fill(Qt::transparent);
+        QBrush brush(Qt::black);
+        QPen pen;
+        pen.setDashPattern(binaryPatternToDashPattern(style));
+        pen.setBrush(brush);
+        pen.setWidth(2);
+
+        QPainter painter(&px);
+        painter.setPen(pen);
+        double mid = ui->EdgePattern->iconSize().height() / 2.0;
+        painter.drawLine(0, mid, ui->EdgePattern->iconSize().width(), mid);
+        painter.end();
+
+        ui->EdgePattern->addItem(QIcon(px), QString(), QVariant(style));
+        ui->ConstructionPattern->addItem(QIcon(px), QString(), QVariant(style));
+        ui->InternalPattern->addItem(QIcon(px), QString(), QVariant(style));
+        ui->ExternalPattern->addItem(QIcon(px), QString(), QVariant(style));
+    }
 }
 
 /**
  *  Destroys the object and frees any allocated resources
  */
-SketcherSettingsColors::~SketcherSettingsColors()
+SketcherSettingsAppearance::~SketcherSettingsAppearance()
 {
     // no need to delete child widgets, Qt does it all for us
 }
 
-void SketcherSettingsColors::saveSettings()
+void SketcherSettingsAppearance::saveSettings()
 {
     // Sketcher
     ui->SketchEdgeColor->onSave();
     ui->SketchVertexColor->onSave();
     ui->EditedEdgeColor->onSave();
-    ui->EditedVertexColor->onSave();
     ui->ConstructionColor->onSave();
     ui->ExternalColor->onSave();
     ui->InvalidSketchColor->onSave();
@@ -325,7 +556,6 @@ void SketcherSettingsColors::saveSettings()
     ui->FullyConstraintElementColor->onSave();
     ui->FullyConstraintConstructionElementColor->onSave();
     ui->FullyConstraintInternalAlignmentColor->onSave();
-    ui->FullyConstraintConstructionPointColor->onSave();
 
     ui->ConstrainedColor->onSave();
     ui->NonDrivingConstraintColor->onSave();
@@ -336,15 +566,37 @@ void SketcherSettingsColors::saveSettings()
     ui->CursorTextColor->onSave();
     ui->CursorCrosshairColor->onSave();
     ui->CreateLineColor->onSave();
+
+    ui->EdgeWidth->onSave();
+    ui->ConstructionWidth->onSave();
+    ui->InternalWidth->onSave();
+    ui->ExternalWidth->onSave();
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/View");
+    QVariant data = ui->EdgePattern->itemData(ui->EdgePattern->currentIndex());
+    int pattern = data.toInt();
+    hGrp->SetInt("EdgePattern", pattern);
+
+    data = ui->ConstructionPattern->itemData(ui->ConstructionPattern->currentIndex());
+    pattern = data.toInt();
+    hGrp->SetInt("ConstructionPattern", pattern);
+
+    data = ui->InternalPattern->itemData(ui->InternalPattern->currentIndex());
+    pattern = data.toInt();
+    hGrp->SetInt("InternalPattern", pattern);
+
+    data = ui->ExternalPattern->itemData(ui->ExternalPattern->currentIndex());
+    pattern = data.toInt();
+    hGrp->SetInt("ExternalPattern", pattern);
 }
 
-void SketcherSettingsColors::loadSettings()
+void SketcherSettingsAppearance::loadSettings()
 {
     // Sketcher
     ui->SketchEdgeColor->onRestore();
     ui->SketchVertexColor->onRestore();
     ui->EditedEdgeColor->onRestore();
-    ui->EditedVertexColor->onRestore();
     ui->ConstructionColor->onRestore();
     ui->ExternalColor->onRestore();
     ui->InvalidSketchColor->onRestore();
@@ -353,7 +605,6 @@ void SketcherSettingsColors::loadSettings()
     ui->FullyConstraintElementColor->onRestore();
     ui->FullyConstraintConstructionElementColor->onRestore();
     ui->FullyConstraintInternalAlignmentColor->onRestore();
-    ui->FullyConstraintConstructionPointColor->onRestore();
 
     ui->ConstrainedColor->onRestore();
     ui->NonDrivingConstraintColor->onRestore();
@@ -364,12 +615,47 @@ void SketcherSettingsColors::loadSettings()
     ui->CursorTextColor->onRestore();
     ui->CursorCrosshairColor->onRestore();
     ui->CreateLineColor->onRestore();
+
+    ui->EdgeWidth->onRestore();
+    ui->ConstructionWidth->onRestore();
+    ui->InternalWidth->onRestore();
+    ui->ExternalWidth->onRestore();
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/View");
+    int pattern = hGrp->GetInt("EdgePattern", 0b1111111111111111);
+    int index = ui->EdgePattern->findData(QVariant(pattern));
+    if (index < 0) {
+        index = 0;
+    }
+    ui->EdgePattern->setCurrentIndex(index);
+
+    pattern = hGrp->GetInt("ConstructionPattern", 0b1111110011111100);
+    index = ui->ConstructionPattern->findData(QVariant(pattern));
+    if (index < 0) {
+        index = 0;
+    }
+    ui->ConstructionPattern->setCurrentIndex(index);
+
+    pattern = hGrp->GetInt("InternalPattern", 0b1111110011111100);
+    index = ui->InternalPattern->findData(QVariant(pattern));
+    if (index < 0) {
+        index = 0;
+    }
+    ui->InternalPattern->setCurrentIndex(index);
+
+    pattern = hGrp->GetInt("ExternalPattern", 0b1110010011100100);
+    index = ui->ExternalPattern->findData(QVariant(pattern));
+    if (index < 0) {
+        index = 0;
+    }
+    ui->ExternalPattern->setCurrentIndex(index);
 }
 
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void SketcherSettingsColors::changeEvent(QEvent *e)
+void SketcherSettingsAppearance::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -380,4 +666,3 @@ void SketcherSettingsColors::changeEvent(QEvent *e)
 }
 
 #include "moc_SketcherSettings.cpp"
-

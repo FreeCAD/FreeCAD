@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM solver Elmer equation object Electricforce"
 __author__ = "Wilfried Hortschitz"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 ## \addtogroup FEM
 #  @{
@@ -36,8 +36,7 @@ SOLVER_EXEC_METHODS = ["After Timestep", "Always"]
 
 
 def create(doc, name="Electricforce"):
-    return femutils.createObject(
-        doc, name, Proxy, ViewProxy)
+    return femutils.createObject(doc, name, Proxy, ViewProxy)
 
 
 class Proxy(linear.Proxy, equationbase.ElectricforceProxy):
@@ -45,7 +44,7 @@ class Proxy(linear.Proxy, equationbase.ElectricforceProxy):
     Type = "Fem::EquationElmerElectricforce"
 
     def __init__(self, obj):
-        super(Proxy, self).__init__(obj)
+        super().__init__(obj)
 
         obj.addProperty(
             "App::PropertyEnumeration",
@@ -54,7 +53,7 @@ class Proxy(linear.Proxy, equationbase.ElectricforceProxy):
             (
                 "That solver is only executed after solution converged\n"
                 "To execute always, change to 'Always'"
-            )
+            ),
         )
 
         obj.ExecSolver = SOLVER_EXEC_METHODS
@@ -67,5 +66,6 @@ class Proxy(linear.Proxy, equationbase.ElectricforceProxy):
 
 class ViewProxy(linear.ViewProxy, equationbase.ElectricforceViewProxy):
     pass
+
 
 ##  @}

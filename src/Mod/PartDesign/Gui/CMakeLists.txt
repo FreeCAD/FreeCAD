@@ -1,9 +1,3 @@
-if(MSVC)
-    add_definitions(-DHAVE_ACOSH -DHAVE_ATANH -DHAVE_ASINH)
-else(MSVC)
-    add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
-endif(MSVC)
-
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
@@ -15,6 +9,7 @@ include_directories(
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIR}
+    ${CMAKE_SOURCE_DIR}/src/3rdParty/json/single_include/nlohmann/
 )
 link_directories(${OCC_LIBRARY_DIR})
 
@@ -29,7 +24,11 @@ set(PartDesignGui_LIBS
     FreeCADGui
 )
 
-qt_add_resources(PartDesignGui_SRCS Resources/PartDesign.qrc)
+set (PartDesign_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/PartDesign_translation.qrc)
+qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
+    ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
+qt_create_resource_file(${PartDesign_TR_QRC} ${QM_SRCS})
+qt_add_resources(PartDesignGui_SRCS Resources/PartDesign.qrc ${PartDesign_TR_QRC})
 
 set(PartDesignGui_UIC_SRCS
     TaskFeaturePick.ui
@@ -42,6 +41,7 @@ set(PartDesignGui_UIC_SRCS
     TaskHoleParameters.ui
     TaskRevolutionParameters.ui
     TaskTransformedMessages.ui
+    TaskTransformedParameters.ui
     TaskMirroredParameters.ui
     TaskLinearPatternParameters.ui
     TaskPolarPatternParameters.ui
@@ -65,6 +65,8 @@ SET(PartDesignGuiViewProvider_SRCS
     ViewProviderBody.h
     ViewProviderSketchBased.cpp
     ViewProviderSketchBased.h
+    ViewProviderExtrude.cpp
+    ViewProviderExtrude.h
     ViewProviderPad.cpp
     ViewProviderPad.h
     ViewProviderHole.cpp
@@ -259,6 +261,9 @@ SET(PartDesignGuiIcon_SVG
 
 add_library(PartDesignGui SHARED ${PartDesignGui_SRCS} ${PartDesignGuiIcon_SVG})
 target_link_libraries(PartDesignGui ${PartDesignGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(PartDesignGui)
+endif()
 
 SET_BIN_DIR(PartDesignGui PartDesignGui /Mod/PartDesign)
 SET_PYTHON_PREFIX_SUFFIX(PartDesignGui)

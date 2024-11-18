@@ -26,7 +26,8 @@
 
 #include <Mod/Part/Gui/ViewProvider.h>
 #include "ViewProviderBody.h"
-#include <Gui/ViewProviderPythonFeature.h>
+#include <Gui/ViewProviderFeaturePython.h>
+#include "Gui/ViewProviderSuppressibleExtension.h"
 
 #include <Mod/Part/Gui/ViewProviderAttachExtension.h>
 
@@ -37,7 +38,9 @@ class TaskDlgFeatureParameters;
 /**
  * A common base class for all part design features view providers
  */
-class PartDesignGuiExport ViewProvider : public PartGui::ViewProviderPart, PartGui::ViewProviderAttachExtension
+class PartDesignGuiExport ViewProvider : public PartGui::ViewProviderPart,
+                                         Gui::ViewProviderSuppressibleExtension,
+                                         PartGui::ViewProviderAttachExtension
 {
     using inherited = PartGui::ViewProviderPart;
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProvider);
@@ -48,7 +51,7 @@ public:
     /// destructor
     ~ViewProvider() override;
 
-    bool doubleClicked(void) override;
+    bool doubleClicked() override;
     void updateData(const App::Property*) override;
     void onChanged(const App::Property* prop) override;
 
@@ -68,7 +71,7 @@ public:
     //Returns the ViewProvider of the body the feature belongs to, or NULL, if not in a body
     ViewProviderBody* getBodyViewProvider();
 
-    PyObject* getPyObject(void) override;
+    PyObject* getPyObject() override;
 
     QIcon mergeColorfulOverlayIcons (const QIcon & orig) const override;
 
@@ -86,11 +89,11 @@ protected:
     virtual TaskDlgFeatureParameters *getEditDialog();
 
     std::string oldWb;
-    App::DocumentObject* oldTip;
-    bool isSetTipIcon;
+    App::DocumentObject* oldTip{nullptr};
+    bool isSetTipIcon{false};
 };
 
-using ViewProviderPython = Gui::ViewProviderPythonFeatureT<ViewProvider>;
+using ViewProviderPython = Gui::ViewProviderFeaturePythonT<ViewProvider>;
 
 } // namespace PartDesignGui
 

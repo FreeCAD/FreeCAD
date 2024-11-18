@@ -4,7 +4,9 @@ SET(Test_SRCS
     Init.py
     BaseTests.py
     Document.py
+    GuiDocument.py
     Metadata.py
+    StringHasher.py
     Menu.py
     TestApp.py
     TestGui.py
@@ -14,6 +16,7 @@ SET(Test_SRCS
     unittestgui.py
     testmakeWireString.py
     TestPythonSyntax.py
+    TestPerf.py
 )
 
 SET(TestData_SRCS

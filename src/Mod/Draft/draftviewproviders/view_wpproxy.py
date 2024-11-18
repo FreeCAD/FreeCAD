@@ -34,6 +34,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
+from draftutils import params
 
 
 class ViewProviderWorkingPlaneProxy:
@@ -70,9 +71,9 @@ class ViewProviderWorkingPlaneProxy:
         vobj.Transparency = 70
         vobj.LineWidth = 1
 
-        param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-        c = param.GetUnsigned("ColorHelpers", 674321151)
-        vobj.LineColor = c & 0xFFFFFF00
+        ch = params.get_param_arch("ColorHelpers")
+        if ch:
+            vobj.LineColor = ch & 0xFFFFFF00
 
         vobj.Proxy = self
         vobj.RestoreView = True
@@ -227,10 +228,10 @@ class ViewProviderWorkingPlaneProxy:
             self.drawstyle.lineWidth = vobj.LineWidth
         return
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
         return None
 
 ## @}

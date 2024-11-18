@@ -40,7 +40,7 @@ using namespace Attacher;
 // returns a string which represents the object e.g. when printed in python
 std::string AttachEnginePy::representation() const
 {
-    return std::string("<Attacher::AttachEngine>");
+    return {"<Attacher::AttachEngine>"};
 }
 
 PyObject* AttachEnginePy::PyMake(struct _typeobject *, PyObject *, PyObject *)
@@ -94,7 +94,7 @@ int AttachEnginePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 Py::String AttachEnginePy::getAttacherType() const
 {
-    return  Py::String(std::string(this->getAttachEnginePtr()->getTypeId().getName()));
+    return {std::string(this->getAttachEnginePtr()->getTypeId().getName())};
 }
 
 /**
@@ -114,7 +114,7 @@ Py::String AttachEnginePy::getMode() const
 {
     try {
         AttachEngine &attacher = *(this->getAttachEnginePtr());
-        return Py::String(attacher.getModeName(attacher.mapMode));
+        return {attacher.getModeName(attacher.mapMode)};
     } ATTACHERPY_STDCATCH_ATTR;
 }
 
@@ -131,8 +131,12 @@ Py::Object AttachEnginePy::getReferences() const
 {
     try {
         AttachEngine &attacher = *(this->getAttachEnginePtr());
-        AttachEngine::verifyReferencesAreSafe(attacher.references);
-        return Py::Object(attacher.references.getPyObject(),true);
+        Py::List ret;
+        int i=0;
+        for(auto obj : attacher.getRefObjects())
+            ret.append(Py::TupleN(Py::asObject(obj->getPyObject()),
+                                  Py::String(attacher.subnames[i++])));
+        return ret;
     } ATTACHERPY_STDCATCH_ATTR;
 }
 
@@ -140,7 +144,9 @@ void AttachEnginePy::setReferences(Py::Object arg)
 {
     try {
         AttachEngine &attacher = *(this->getAttachEnginePtr());
-        attacher.references.setPyObject(arg.ptr());
+        App::PropertyLinkSubList references;
+        references.setPyObject(arg.ptr());
+        attacher.setReferences(references);
     } ATTACHERPY_STDCATCH_ATTR;
 }
 
@@ -171,7 +177,7 @@ Py::Boolean AttachEnginePy::getReverse() const
 {
     try {
         AttachEngine &attacher = *(this->getAttachEnginePtr());
-        return Py::Boolean(attacher.mapReverse);
+        return {attacher.mapReverse};
     } ATTACHERPY_STDCATCH_ATTR;
 }
 
@@ -518,7 +524,7 @@ PyObject* AttachEnginePy::readParametersFromFeature(PyObject* args)
         }
         Part::AttachExtension* feat = dobj->getExtensionByType<Part::AttachExtension>();
         AttachEngine &attacher = *(this->getAttachEnginePtr());
-        attacher.setUp(feat->Support,
+        attacher.setUp(feat->AttachmentSupport,
                        eMapMode(feat->MapMode.getValue()),
                        feat->MapReversed.getValue(),
                        feat->MapPathParameter.getValue(),
@@ -542,8 +548,7 @@ PyObject* AttachEnginePy::writeParametersToFeature(PyObject* args)
         }
         Part::AttachExtension* feat = dobj->getExtensionByType<Part::AttachExtension>();
         const AttachEngine &attacher = *(this->getAttachEnginePtr());
-        AttachEngine::verifyReferencesAreSafe(attacher.references);
-        feat->Support.Paste(attacher.references);
+        feat->AttachmentSupport.setValues(attacher.getRefObjects(),attacher.getSubValues());
         feat->MapMode.setValue(attacher.mapMode);
         feat->MapReversed.setValue(attacher.mapReverse);
         feat->MapPathParameter.setValue(attacher.attachParameter);

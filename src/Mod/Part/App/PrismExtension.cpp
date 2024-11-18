@@ -46,9 +46,7 @@ PrismExtension::PrismExtension()
     initExtensionType(PrismExtension::getExtensionClassTypeId());
 }
 
-PrismExtension::~PrismExtension()
-{
-}
+PrismExtension::~PrismExtension() = default;
 
 short int PrismExtension::extensionMustExecute()
 {

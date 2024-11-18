@@ -66,7 +66,6 @@ class TaskThickness : public Gui::TaskView::TaskDialog
 
 public:
     explicit TaskThickness(Part::Thickness*);
-    ~TaskThickness() override;
 
 public:
     void open() override;
@@ -80,7 +79,6 @@ public:
 
 private:
     ThicknessWidget* widget;
-    Gui::TaskView::TaskBox* taskbox;
 };
 
 } //namespace PartGui

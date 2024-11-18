@@ -70,9 +70,7 @@ TextEdit::TextEdit(QWidget* parent)
 }
 
 /** Destroys the object and frees any allocated resources */
-TextEdit::~TextEdit()
-{
-}
+TextEdit::~TextEdit() = default;
 
 /**
  * Set the approproriate item of the completion box or hide it, if needed.
@@ -96,6 +94,17 @@ void TextEdit::keyPressEvent(QKeyEvent* e)
         listBox->keyboardSearch(cursor.selectedText());
         cursor.clearSelection();
     }
+}
+
+void TextEdit::wheelEvent(QWheelEvent* e)
+{
+    // Reimplement from QPlainText::wheelEvent as zoom is only allowed natively if !isReadOnly
+    if (e->modifiers() & Qt::ControlModifier) {
+        float delta = e->angleDelta().y() / 120.f;
+        zoomInF(delta);
+        return;
+    }
+    QPlainTextEdit::wheelEvent(e);
 }
 
 /**
@@ -511,13 +520,11 @@ LineMarker::LineMarker(TextEditor* editor)
 {
 }
 
-LineMarker::~LineMarker()
-{
-}
+LineMarker::~LineMarker() = default;
 
 QSize LineMarker::sizeHint() const
 {
-    return QSize(textEditor->lineNumberAreaWidth(), 0);
+    return {textEditor->lineNumberAreaWidth(), 0};
 }
 
 void LineMarker::paintEvent(QPaintEvent* e)
@@ -540,9 +547,7 @@ CompletionList::CompletionList(QPlainTextEdit* parent)
             this, &CompletionList::completionItem);
 }
 
-CompletionList::~CompletionList()
-{
-}
+CompletionList::~CompletionList() = default;
 
 void CompletionList::findCurrentWord(const QString& wordPrefix)
 {

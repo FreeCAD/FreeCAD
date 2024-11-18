@@ -39,10 +39,7 @@ ViewProviderBox::ViewProviderBox()
   sPixmap = "Part_Box_Parametric";
 }
 
-ViewProviderBox::~ViewProviderBox()
-{
-
-}
+ViewProviderBox::~ViewProviderBox() = default;
 
 
 

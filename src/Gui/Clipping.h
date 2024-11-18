@@ -41,7 +41,7 @@ class GuiExport Clipping : public QDialog
 public:
     static Clipping* makeDockWidget(Gui::View3DInventor*);
     Clipping(Gui::View3DInventor* view, QWidget* parent = nullptr);
-    ~Clipping();
+    ~Clipping() override;
 
 protected:
     void setupConnections();
@@ -63,7 +63,7 @@ protected:
     void onDirZValueChanged(double);
 
 public:
-    void reject();
+    void reject() override;
 
 private:
     class Private;

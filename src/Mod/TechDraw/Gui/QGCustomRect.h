@@ -40,13 +40,13 @@ namespace TechDrawGui
 class TechDrawGuiExport QGCustomRect : public QGraphicsRectItem
 {
 public:
-    explicit QGCustomRect(void);
-    ~QGCustomRect() {}
+    explicit QGCustomRect();
+    ~QGCustomRect() override = default;
 
     enum {Type = QGraphicsItem::UserType + 133};
-    int type() const { return Type;}
+    int type() const override { return Type;}
 
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr );
+    void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;
     virtual void centerAt(QPointF centerPos);
     virtual void centerAt(double cX, double cY);
 

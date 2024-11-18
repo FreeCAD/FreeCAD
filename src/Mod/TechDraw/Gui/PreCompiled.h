@@ -30,7 +30,9 @@
 #endif
 
 #ifdef FC_OS_WIN32
-# define NOMINMAX
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #endif
 
 #ifdef _PreComp_
@@ -57,8 +59,6 @@
 #ifndef _QtAll__
 # include <Gui/QtAll.h>
 #endif
-#include <QXmlQuery>
-#include <QXmlResultItems>
 
 // OpenCasCade
 #include <BRep_Tool.hxx>

@@ -95,10 +95,7 @@ ReportView::ReportView( QWidget* parent )
 /**
  *  Destroys the object and frees any allocated resources
  */
-ReportView::~ReportView()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
+ReportView::~ReportView() = default;
 
 void ReportView::changeEvent(QEvent *e)
 {
@@ -134,9 +131,7 @@ ReportHighlighter::ReportHighlighter(QTextEdit* edit)
     errCol = Qt::red;
 }
 
-ReportHighlighter::~ReportHighlighter()
-{
-}
+ReportHighlighter::~ReportHighlighter() = default;
 
 void ReportHighlighter::highlightBlock (const QString & text)
 {
@@ -288,8 +283,7 @@ public:
     CustomReportEvent(ReportHighlighter::Paragraph p, const QString& s)
     : QEvent(QEvent::Type(QEvent::User))
     { par = p; msg = s;}
-    ~CustomReportEvent() override
-    { }
+    ~CustomReportEvent() override = default;
     const QString& message() const
     { return msg; }
     ReportHighlighter::Paragraph messageType() const
@@ -383,11 +377,13 @@ public:
     ~Data()
     {
         if (replace_stdout) {
+            Base::PyGILStateLocker lock;
             Py_DECREF(replace_stdout);
             replace_stdout = nullptr;
         }
 
         if (replace_stderr) {
+            Base::PyGILStateLocker lock;
             Py_DECREF(replace_stderr);
             replace_stderr = nullptr;
         }
@@ -472,9 +468,13 @@ void ReportOutput::restoreFont()
     setFont(serifFont);
 }
 
-void ReportOutput::SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level)
+void ReportOutput::SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
+                           Base::IntendedRecipient recipient, Base::ContentType content)
 {
-    (void) notifiername;
+    // Do not log translated messages, or messages intended only to the user to the Report View
+    if( recipient == Base::IntendedRecipient::User ||
+        content == Base::ContentType::Translated)
+        return;
 
     ReportHighlighter::Paragraph style = ReportHighlighter::LogText;
     switch (level) {
@@ -497,7 +497,15 @@ void ReportOutput::SendLog(const std::string& notifiername, const std::string& m
             break;
     }
 
-    QString qMsg = QString::fromUtf8(msg.c_str());
+    QString qMsg;
+
+    if(!notifiername.empty()) {
+        qMsg = QStringLiteral("%1: %2").arg(QString::fromUtf8(notifiername.c_str()),
+                                            QString::fromUtf8(msg.c_str()));
+    }
+    else {
+        qMsg = QString::fromUtf8(msg.c_str());
+    }
 
     // This truncates log messages that are too long
     if (style == ReportHighlighter::LogText) {
@@ -647,7 +655,8 @@ void ReportOutput::contextMenuEvent ( QContextMenuEvent * e )
     // Use Qt's internal translation of the Copy & Select All commands
     const char* context = "QWidgetTextControl";
     QString copyStr = QCoreApplication::translate(context, "&Copy");
-    QAction* copy = menu->addAction(copyStr, this, &ReportOutput::copy, QKeySequence(QKeySequence::Copy));
+    QAction* copy = menu->addAction(copyStr, this, &ReportOutput::copy);
+    copy->setShortcut(QKeySequence(QKeySequence::Copy));
     copy->setEnabled(textCursor().hasSelection());
     QIcon icon = QIcon::fromTheme(QString::fromLatin1("edit-copy"));
     if (!icon.isNull())
@@ -655,7 +664,8 @@ void ReportOutput::contextMenuEvent ( QContextMenuEvent * e )
 
     menu->addSeparator();
     QString selectStr = QCoreApplication::translate(context, "Select All");
-    menu->addAction(selectStr, this, &ReportOutput::selectAll, QKeySequence(QKeySequence::SelectAll));
+    QAction* select = menu->addAction(selectStr, this, &ReportOutput::selectAll);
+    select->setShortcut(QKeySequence(QKeySequence::SelectAll));
 
     menu->addAction(tr("Clear"), this, &ReportOutput::clear);
     menu->addSeparator();

@@ -60,7 +60,7 @@ jobs:
       CXX: /usr/bin/g++
       #CC: /usr/bin/clang
       #CXX: /usr/bin/clang++
-      builddir: ${{ github.workspace }}/build/
+      builddir: ${{ github.workspace }}/build/release/
       logdir: /tmp/logs/
       reportdir: /tmp/report/
       reportfilename: ${{ inputs.artifactBasename }}-report.md
@@ -72,11 +72,14 @@ jobs:
 
     steps:
       - name: Checking out source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          submodules: true
       - name: Install FreeCAD dependencies
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends               \
+                            ccache                                      \
                             doxygen                                     \
                             graphviz                                    \
                             imagemagick                                 \
@@ -105,15 +108,16 @@ jobs:
                             libqt5opengl5-dev                           \
                             libqt5svg5-dev                              \
                             libqt5x11extras5-dev                        \
-                            libqt5xmlpatterns5-dev                      \
                             libshiboken2-dev                            \
                             libspnav-dev                                \
                             libvtk7-dev                                 \
                             libx11-dev                                  \
                             libxerces-c-dev                             \
+                            libyaml-cpp-dev                             \
                             libzipios++-dev                             \
                             netgen                                      \
                             netgen-headers                              \
+                            ninja-build                                 \
                             occt-draw                                   \
                             pyqt5-dev-tools                             \
                             pyside2-tools                               \
@@ -128,17 +132,11 @@ jobs:
                             python3-pyside2.qtgui                       \
                             python3-pyside2.qtnetwork                   \
                             python3-pyside2.qtsvg                       \
-                            python3-pyside2.qtwebengine                 \
-                            python3-pyside2.qtwebenginecore             \
-                            python3-pyside2.qtwebenginewidgets          \
-                            python3-pyside2.qtwebchannel                \
                             python3-pyside2.qtwidgets                   \
                             qtbase5-dev                                 \
                             qttools5-dev                                \
-                            qtwebengine5-dev                            \
                             shiboken2                                   \
                             swig                                        \
-                            ccache                                      \
                             xvfb
       - name: Make needed directories, files and initializations
         id: Init
@@ -154,9 +152,11 @@ jobs:
         uses: ./.github/workflows/actions/linux/generateCacheKey
         with:
           compiler: ${{ env.CXX }}
+          qt_major_version: 5
       - name: Restore Compiler Cache
-        uses: pat-s/always-upload-cache@v3
+        uses: actions/cache@v4
         with:
+          save-always: true
           path: ${{ env.CCACHE_DIR }}
           key: FC-${{ steps.genCacheKey.outputs.cacheKey }}-${{ github.ref }}-${{ github.run_id }}
           restore-keys: |
@@ -170,6 +170,7 @@ jobs:
       - name: CMake Configure
         uses: ./.github/workflows/actions/linux/configure
         with:
+          extraParameters: -G Ninja --preset release
           builddir: ${{ env.builddir }}
           logFile: ${{ env.logdir }}Cmake.log
           errorFile: ${{ env.logdir }}CmakeErrors.log
@@ -190,7 +191,7 @@ jobs:
         uses: ./.github/workflows/actions/runPythonTests
         with:
           testDescription: "CLI tests on build dir"
-          testCommand: ${{ env.builddir }}bin/FreeCADCmd -t 0
+          testCommand: ${{ env.builddir }}/bin/FreeCADCmd -t 0
           logFile: ${{ env.logdir }}TestCLIBuild.log
           reportFile: ${{env.reportdir}}${{ env.reportfilename }}
       - name: FreeCAD GUI tests on build dir
@@ -202,13 +203,13 @@ jobs:
           testCommand: xvfb-run ${{ env.builddir }}/bin/FreeCAD -t 0
           logFile: ${{ env.logdir }}TestGUIBuild.log
           reportFile: ${{env.reportdir}}${{ env.reportfilename }}
-      - name: C++ unit tests
+      - name: C++ tests
         timeout-minutes: 1
-        uses: ./.github/workflows/actions/runCPPTests
+        uses: ./.github/workflows/actions/runCPPTests/runAllTests
         with:
-          testCommand: ${{ env.builddir }}/tests/Tests_run --gtest_output=json:${{env.reportdir}}gtest_results.json
-          testLogFile: ${{env.reportdir}}gtest_test_log.txt
-          reportFile: ${{env.reportdir}}${{ env.reportfilename }}
+          reportdir: ${{ env.reportdir }}
+          builddir: ${{ env.builddir }}
+          reportFile: ${{ env.reportdir }}${{ env.reportfilename }}
       - name: CMake Install
         uses: ./.github/workflows/actions/linux/install
         with:
@@ -234,7 +235,7 @@ jobs:
           reportFile: ${{env.reportdir}}${{ env.reportfilename }}
       - name: Upload logs
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ inputs.artifactBasename }}-Logs
           path: |
@@ -242,7 +243,7 @@ jobs:
             /var/crash/*FreeCAD*
       - name: Upload report
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.reportfilename }}
           path: |

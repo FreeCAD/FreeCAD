@@ -32,6 +32,8 @@
 #include <boost/any.hpp>
 #include <FCConfig.h>
 
+#include "ElementNamingUtils.h"
+
 namespace Py {
 class Object;
 }
@@ -448,16 +450,16 @@ protected:
 
         explicit ResolveResults(const ObjectIdentifier & oi);
 
-        int propertyIndex;
-        App::Document * resolvedDocument;
+        int propertyIndex{0};
+        App::Document * resolvedDocument{nullptr};
         String resolvedDocumentName;
-        App::DocumentObject * resolvedDocumentObject;
+        App::DocumentObject * resolvedDocumentObject{nullptr};
         String resolvedDocumentObjectName;
         String subObjectName;
-        App::DocumentObject * resolvedSubObject;
-        App::Property * resolvedProperty;
+        App::DocumentObject * resolvedSubObject{nullptr};
+        App::Property * resolvedProperty{nullptr};
         std::string propertyName;
-        int propertyType;
+        int propertyType{0};
         std::bitset<32> flags;
 
         std::string resolveErrorString() const;
@@ -486,7 +488,7 @@ protected:
     String  documentName;
     String  documentObjectName;
     String  subObjectName;
-    std::pair<std::string,std::string> shadowSub;
+    ElementNamePair shadowSub;
     std::vector<Component> components;
     bool documentNameSet;
     bool documentObjectNameSet;

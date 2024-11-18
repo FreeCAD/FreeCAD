@@ -42,7 +42,7 @@ class View3DInventorViewer;
 
 class PickedPoint {
 public:
-    PickedPoint() {}
+    PickedPoint() = default;
     PickedPoint(const Base::Vector3d& p, const Base::Vector3d& n) : point(p), normal(n) {}
     Base::Vector3d point;
     Base::Vector3d normal;

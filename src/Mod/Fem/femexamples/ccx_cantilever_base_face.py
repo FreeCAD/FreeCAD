@@ -56,11 +56,9 @@ def setup_cantilever_base_face(doc=None, solvertype="ccxtools"):
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
 
     # solver
-    if solvertype == "calculix":
-        solver_obj = ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
-    elif solvertype == "ccxtools":
-        solver_obj = ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
-        solver_obj.WorkingDir = u""
+    if solvertype == "ccxtools":
+        solver_obj = ObjectsFem.makeSolverCalculiXCcxTools(doc, "CalculiXCcxTools")
+        solver_obj.WorkingDir = ""
     elif solvertype == "mystran":
         solver_obj = ObjectsFem.makeSolverMystran(doc, "SolverMystran")
     elif solvertype == "z88":
@@ -70,7 +68,7 @@ def setup_cantilever_base_face(doc=None, solvertype="ccxtools"):
             "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
-    if solvertype == "calculix" or solvertype == "ccxtools":
+    if solvertype == "ccxtools":
         solver_obj.AnalysisType = "static"
         solver_obj.GeometricalNonlinearity = "linear"
         solver_obj.ThermoMechSteadyState = False
@@ -80,7 +78,7 @@ def setup_cantilever_base_face(doc=None, solvertype="ccxtools"):
     analysis.addObject(solver_obj)
 
     # shell thickness
-    thickness_obj = ObjectsFem.makeElementGeometry2D(doc, 1000, 'Thickness')
+    thickness_obj = ObjectsFem.makeElementGeometry2D(doc, 1000, "Thickness")
     analysis.addObject(thickness_obj)
 
     # material
@@ -100,13 +98,14 @@ def setup_cantilever_base_face(doc=None, solvertype="ccxtools"):
     # constraint force
     con_force = ObjectsFem.makeConstraintForce(doc, "ConstraintForce")
     con_force.References = [(geom_obj, "Edge3")]
-    con_force.Force = 9000000.0  # 9'000'000 N = 9 MN
+    con_force.Force = "9000000.0 N"
     con_force.Direction = (geom_obj, ["Edge3"])
     con_force.Reversed = True
     analysis.addObject(con_force)
 
     # mesh
     from .meshes.mesh_canticcx_tria6 import create_nodes, create_elements
+
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
@@ -116,7 +115,7 @@ def setup_cantilever_base_face(doc=None, solvertype="ccxtools"):
         FreeCAD.Console.PrintError("Error on creating elements.\n")
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.FemMesh = fem_mesh
-    femmesh_obj.Part = geom_obj
+    femmesh_obj.Shape = geom_obj
     femmesh_obj.SecondOrderLinear = False
     femmesh_obj.ElementDimension = "2D"
     femmesh_obj.CharacteristicLengthMax = "500.0 mm"

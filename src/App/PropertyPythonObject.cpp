@@ -87,7 +87,18 @@ std::string PropertyPythonObject::toString() const
             throw Py::Exception();
         Py::Callable method(pickle.getAttr(std::string("dumps")));
         Py::Object dump;
-        if (this->object.hasAttr("__getstate__")) {
+        if (this->object.hasAttr("dumps")) {
+            Py::Tuple args;
+            Py::Callable state(this->object.getAttr("dumps"));
+            dump = state.apply(args);
+        }
+        // support add-ons that use the old method names
+        else if (this->object.hasAttr("__getstate__")
+#if PY_VERSION_HEX >= 0x030b0000
+                && this->object.getAttr("__getstate__").hasAttr("__func__")
+#endif
+                )
+        {
             Py::Tuple args;
             Py::Callable state(this->object.getAttr("__getstate__"));
             dump = state.apply(args);
@@ -129,7 +140,19 @@ void PropertyPythonObject::fromString(const std::string& repr)
         args.setItem(0, Py::String(repr));
         Py::Object res = method.apply(args);
 
-        if (this->object.hasAttr("__setstate__")) {
+        if (this->object.hasAttr("loads")) {
+            Py::Tuple args(1);
+            args.setItem(0, res);
+            Py::Callable state(this->object.getAttr("loads"));
+            state.apply(args);
+        }
+        // support add-ons that use the old method names
+        else if (this->object.hasAttr("__setstate__")
+#if PY_VERSION_HEX >= 0x030b0000
+                && this->object.getAttr("__setstate__").hasAttr("__func__")
+#endif
+                )
+        {
             Py::Tuple args(1);
             args.setItem(0, res);
             Py::Callable state(this->object.getAttr("__setstate__"));
@@ -156,7 +179,7 @@ void PropertyPythonObject::loadPickle(const std::string& str)
     Base::PyGILStateLocker lock;
     try {
         std::string buffer = str;
-        boost::regex pickle("S'(\\w+)'.+S'(\\w+)'\\n");
+        boost::regex pickle(R"(S'(\w+)'.+S'(\w+)'\n)");
         boost::match_results<std::string::const_iterator> what;
         std::string::const_iterator start, end;
         start = buffer.begin();
@@ -179,19 +202,19 @@ void PropertyPythonObject::loadPickle(const std::string& str)
 std::string PropertyPythonObject::encodeValue(const std::string& str) const
 {
     std::string tmp;
-    for (std::string::const_iterator it = str.begin(); it != str.end(); ++it) {
-        if (*it == '<')
+    for (char it : str) {
+        if (it == '<')
             tmp += "&lt;";
-        else if (*it == '"')
+        else if (it == '"')
             tmp += "&quot;";
-        else if (*it == '&')
+        else if (it == '&')
             tmp += "&amp;";
-        else if (*it == '>')
+        else if (it == '>')
             tmp += "&gt";
-        else if (*it == '\n')
+        else if (it == '\n')
             tmp += "\\n";
         else
-            tmp += *it;
+            tmp += it;
     }
 
     return tmp;
@@ -271,7 +294,7 @@ void PropertyPythonObject::Save (Base::Writer &writer) const
         repr = Base::base64_encode((const unsigned char*)repr.c_str(), repr.size());
         std::string val = /*encodeValue*/(repr);
         writer.Stream() << writer.ind() << "<Python value=\"" << val
-                        << "\" encoded=\"yes\"";
+                        << R"(" encoded="yes")";
 
         Base::PyGILStateLocker lock;
         try {
@@ -324,7 +347,7 @@ void PropertyPythonObject::Restore(Base::XMLReader &reader)
 
         Base::PyGILStateLocker lock;
         try {
-            boost::regex pickle("^\\(i(\\w+)\\n(\\w+)\\n");
+            boost::regex pickle(R"(^\(i(\w+)\n(\w+)\n)");
             boost::match_results<std::string::const_iterator> what;
             std::string::const_iterator start, end;
             start = buffer.begin();
@@ -384,8 +407,8 @@ void PropertyPythonObject::Restore(Base::XMLReader &reader)
 void PropertyPythonObject::SaveDocFile (Base::Writer &writer) const
 {
     std::string buffer = this->toString();
-    for (std::string::iterator it = buffer.begin(); it != buffer.end(); ++it)
-        writer.Stream().put(*it);
+    for (char it : buffer)
+        writer.Stream().put(it);
 }
 
 void PropertyPythonObject::RestoreDocFile(Base::Reader &reader)
@@ -415,7 +438,7 @@ Property *PropertyPythonObject::Copy() const
 
 void PropertyPythonObject::Paste(const Property &from)
 {
-    if (from.getTypeId() == PropertyPythonObject::getClassTypeId()) {
+    if (from.is<PropertyPythonObject>()) {
         Base::PyGILStateLocker lock;
         aboutToSetValue();
         this->object = static_cast<const PropertyPythonObject&>(from).object;

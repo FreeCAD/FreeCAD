@@ -57,7 +57,7 @@ void ViewProviderLinkPy::setDraggingPlacement(Py::Object arg) {
 }
 
 Py::Boolean ViewProviderLinkPy::getUseCenterballDragger() const {
-    return Py::Boolean(getViewProviderLinkPtr()->isUsingCenterballDragger());
+    return {getViewProviderLinkPtr()->isUsingCenterballDragger()};
 }
 
 void ViewProviderLinkPy::setUseCenterballDragger(Py::Boolean arg) {

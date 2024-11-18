@@ -55,7 +55,7 @@ class AppExport LinkBaseExtension : public App::DocumentObjectExtension
 
 public:
     LinkBaseExtension();
-    ~LinkBaseExtension() override;
+    ~LinkBaseExtension() override = default;
 
     PropertyBool _LinkTouched;
     PropertyInteger _LinkOwner;
@@ -385,12 +385,12 @@ protected:
     long prevLinkedObjectID = 0;
 
     mutable std::unordered_map<std::string,int> myLabelCache; // for label based subname lookup
-    mutable bool enableLabelCache;
-    bool hasOldSubElement;
+    mutable bool enableLabelCache{false};
+    bool hasOldSubElement{false};
 
     std::vector<boost::signals2::scoped_connection> copyOnChangeConns;
     std::vector<boost::signals2::scoped_connection> copyOnChangeSrcConns;
-    bool hasCopyOnChange;
+    bool hasCopyOnChange{true};
 
     mutable bool checkingProperty = false;
     bool pauseCopyOnChange = false;
@@ -411,7 +411,7 @@ class AppExport LinkExtension : public LinkBaseExtension
 
 public:
     LinkExtension();
-    ~LinkExtension() override;
+    ~LinkExtension() override = default;
 
     /** \name Helpers for defining extended parameter
      *
@@ -556,6 +556,10 @@ public:
     }
 
     bool canLinkProperties() const override;
+
+    bool isLink() const override;
+
+    bool isLinkGroup() const override;
 };
 
 using LinkPython = App::FeaturePythonT<Link>;
@@ -599,6 +603,10 @@ public:
     {
         _handleChangedPropertyName(reader,TypeName,PropName);
     }
+
+    bool isLink() const override;
+
+    App::Link* getLinkGroup() const;
 };
 
 using LinkElementPython = App::FeaturePythonT<LinkElement>;

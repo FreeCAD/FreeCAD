@@ -46,9 +46,7 @@ ViewProviderHole::ViewProviderHole()
     sPixmap = "PartDesign_Hole.svg";
 }
 
-ViewProviderHole::~ViewProviderHole()
-{
-}
+ViewProviderHole::~ViewProviderHole() = default;
 
 std::vector<App::DocumentObject*> ViewProviderHole::claimChildren()const
 {
@@ -72,7 +70,7 @@ bool ViewProviderHole::setEdit(int ModNum)
         // the task panel
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
         TaskDlgHoleParameters *holeDlg = qobject_cast<TaskDlgHoleParameters *>(dlg);
-        if (holeDlg && holeDlg->getHoleView() != this)
+        if (holeDlg && holeDlg->getViewObject() != this)
             holeDlg = nullptr; // another hole left open its task panel
         if (dlg && !holeDlg) {
             QMessageBox msgBox;

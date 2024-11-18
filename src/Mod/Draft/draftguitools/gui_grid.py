@@ -31,9 +31,12 @@
 # @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
+import FreeCAD as App
 import FreeCADGui as Gui
-import draftguitools.gui_base as gui_base
+import WorkingPlane
 
+from draftguitools import gui_base
+from draftutils import gui_utils
 from draftutils.translate import translate
 
 
@@ -48,34 +51,45 @@ class ToggleGrid(gui_base.GuiCommandSimplest):
     """
 
     def __init__(self):
-        super(ToggleGrid, self).__init__(name=translate("draft","Toggle grid"))
+        super().__init__(name=translate("draft", "Toggle grid"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
+        return {"Pixmap": "Draft_Grid",
+                "Accel": "G, R",
+                "MenuText": QT_TRANSLATE_NOOP("Draft_ToggleGrid", "Toggle grid"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_ToggleGrid",
+                                             "Toggles the Draft grid on and off."),
+                "CmdType": "ForEdit"}
 
-        d = {'Pixmap': 'Draft_Grid',
-             'Accel': "G,R",
-             'MenuText': QT_TRANSLATE_NOOP("Draft_ToggleGrid","Toggle grid"),
-             'ToolTip': QT_TRANSLATE_NOOP("Draft_ToggleGrid","Toggles the Draft grid on and off."),
-             'CmdType': 'ForEdit'}
-
-        return d
+    def IsActive(self):
+        """Return True when this command should be available."""
+        return bool(gui_utils.get_3d_view())
 
     def Activated(self):
         """Execute when the command is called."""
-        super(ToggleGrid, self).Activated()
+        super().Activated()
 
-        if hasattr(Gui, "Snapper"):
-            Gui.Snapper.setTrackers(tool=True)
-            if Gui.Snapper.grid:
-                if Gui.Snapper.grid.Visible:
-                    Gui.Snapper.grid.off()
-                    Gui.Snapper.forceGridOff = True
-                else:
-                    Gui.Snapper.grid.on()
-                    Gui.Snapper.forceGridOff = False
+        if not hasattr(Gui, "Snapper"):
+            return
+        Gui.Snapper.setTrackers(update_grid=False)
+        grid = Gui.Snapper.grid
+        # This command is never set as App.activeDraftCommand.
+        cmdactive = hasattr(App, "activeDraftCommand") and App.activeDraftCommand
 
+        if grid.Visible:
+            grid.off()
+            grid.show_always = False
+            if cmdactive:
+                grid.show_during_command = False
+        elif cmdactive:
+            grid.set()  # set() required: the grid must be updated to match the current WP
+            grid.show_during_command = True
+        else:
+            grid.set()
+            WorkingPlane.get_working_plane()
+            grid.show_always = True
 
-Gui.addCommand('Draft_ToggleGrid', ToggleGrid())
+Gui.addCommand("Draft_ToggleGrid", ToggleGrid())
 
 ## @}

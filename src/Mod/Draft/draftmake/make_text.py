@@ -33,7 +33,7 @@ import FreeCAD as App
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
 
-from draftutils.messages import _msg, _err
+from draftutils.messages import _err
 from draftutils.translate import translate
 from draftobjects.text import Text
 
@@ -41,7 +41,7 @@ if App.GuiUp:
     from draftviewproviders.view_text import ViewProviderText
 
 
-def make_text(string, placement=None, screen=False):
+def make_text(string, placement=None, screen=False, height=None, line_spacing=1):
     """Create a Text object containing the given list of strings.
 
     The current color and text height and font specified in preferences
@@ -54,17 +54,26 @@ def make_text(string, placement=None, screen=False):
         If it is a list, each element in the list represents a new text line.
 
     placement: Base::Placement, Base::Vector3, or Base::Rotation, optional
-        It defaults to `None`.
+        Defaults to `None`.
         If it is provided, it is the placement of the new text.
         The input could be a full placement, just a vector indicating
         the translation, or just a rotation.
 
-    screen: bool, optional
-        It defaults to `False`, in which case the text is placed in 3D space
-        oriented like any other object, on top of a given plane,
-        by the default the XY plane.
-        If it is `True`, the text will always face perpendicularly
-        to the camera direction, that is, it will be flat on the screen.
+    screen: bool or None, optional
+        Defaults to `False`.
+        If it is `True`, the DisplayMode is set to "Screen".
+        If it is `False`, it is set to "World".
+        If it is `None`, the DisplayMode depends on the current preferences.
+
+    height: float or None, optional
+        Defaults to `None`.
+        A height value for the text, in mm.
+        If it is `None` or zero, the FontSize depends on the current preferences.
+
+    line_spacing: float or None, optional
+        Defaults to 1.
+        The line spacing factor.
+        If it is `None` or zero, the LineSpacing depends on the current preferences.
 
     Returns
     -------
@@ -77,14 +86,12 @@ def make_text(string, placement=None, screen=False):
         If there is a problem it will return `None`.
     """
     _name = "make_text"
-    utils.print_header(_name, "Text")
 
     found, doc = utils.find_doc(App.activeDocument())
     if not found:
         _err(translate("draft","No active document. Aborting."))
         return None
 
-    _msg("string: {}".format(string))
     try:
         utils.type_check([(string, (str, list))], name=_name)
     except TypeError:
@@ -96,7 +103,6 @@ def make_text(string, placement=None, screen=False):
         _err(translate("draft","Wrong input: must be a list of strings or a single string."))
         return None
 
-    _msg("placement: {}".format(placement))
     if not placement:
         placement = App.Placement()
     try:
@@ -113,8 +119,7 @@ def make_text(string, placement=None, screen=False):
     elif isinstance(placement, App.Rotation):
         placement = App.Placement(App.Vector(), placement)
 
-    new_obj = doc.addObject("App::FeaturePython",
-                            "Text")
+    new_obj = doc.addObject("App::FeaturePython", "Text")
     Text(new_obj)
     new_obj.Text = string
     new_obj.Placement = placement
@@ -122,17 +127,19 @@ def make_text(string, placement=None, screen=False):
     if App.GuiUp:
         ViewProviderText(new_obj.ViewObject)
 
-        h = utils.get_param("textheight", 2)
-
-        new_obj.ViewObject.DisplayMode = "World"
-        if screen:
-            _msg("screen: {}".format(screen))
+        if screen is None:
+            # Keep value as set by viewprovider
+            pass
+        elif screen:
             new_obj.ViewObject.DisplayMode = "Screen"
-            h = h * 10
+        else:
+            new_obj.ViewObject.DisplayMode = "World"
 
-        new_obj.ViewObject.FontSize = h
-        new_obj.ViewObject.FontName = utils.get_param("textfont", "")
-        new_obj.ViewObject.LineSpacing = 1
+        if height:  # Keep value as set by viewprovider if zero or None
+            new_obj.ViewObject.FontSize = height
+
+        if line_spacing:  # Keep value as set by viewprovider if zero or None
+            new_obj.ViewObject.LineSpacing = line_spacing
 
         gui_utils.format_object(new_obj)
         gui_utils.select(new_obj)
@@ -165,7 +172,6 @@ def convert_draft_texts(textslist=None):
         If it is `None` it will convert all objects in the current document.
     """
     _name = "convert_draft_texts"
-    utils.print_header(_name, "Convert Draft texts")
 
     found, doc = utils.find_doc(App.activeDocument())
     if not found:

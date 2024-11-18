@@ -37,7 +37,7 @@ using namespace Gui;
 // returns a string which represent the object e.g. when printed in python
 std::string ViewProviderExtensionPy::representation() const
 {
-    return std::string("<view provider extension>");
+    return {"<view provider extension>"};
 }
 
 PyObject* ViewProviderExtensionPy::setIgnoreOverlayIcon(PyObject *args)

@@ -28,6 +28,7 @@ conectedToolbars = []
 timer = QtCore.QTimer()
 mw = Gui.getMainWindow()
 
+
 def pythonToolbars():
     """Manage Python based toolbar in BIM workbench."""
 
@@ -65,7 +66,7 @@ def onRestore(active):
 
         isConnected(i)
 
-        if i.objectName() and not i.isFloating():
+        if i.objectName() and i.parentWidget() == mw and not i.isFloating():
             toolbars[i.objectName()] = i
         else:
             pass
@@ -85,10 +86,12 @@ def onRestore(active):
 
         # Reduce flickering.
         for i in toolbars:
-            if (i not in topRestore and
-                    i not in leftRestore and
-                    i not in rightRestore and
-                    i not in bottomRestore):
+            if (
+                i not in topRestore
+                and i not in leftRestore
+                and i not in rightRestore
+                and i not in bottomRestore
+            ):
 
                 area = mw.toolBarArea(toolbars[i])
 

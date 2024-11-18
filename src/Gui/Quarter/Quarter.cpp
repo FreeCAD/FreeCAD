@@ -121,7 +121,7 @@
   \subpage examples
 */
 
-// The subsequent doxygen referenced page/subpages do not exis in the copy of Quarter used within FreeCad.
+// The subsequent doxygen referenced page/subpages do not exist in the copy of Quarter used within FreeCad.
 // To preserve the history and their origin the doxygen commands have been disabled but left in the file.
 // /*!
 //  \page examples More Examples

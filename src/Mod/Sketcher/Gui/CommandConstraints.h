@@ -24,15 +24,32 @@
 #ifndef SKETCHERGUI_CommandConstraints_H
 #define SKETCHERGUI_CommandConstraints_H
 
-#include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Sketcher/App/Constraint.h>
+#include <Mod/Sketcher/App/SketchObject.h>
 
-namespace SketcherGui {
+namespace Gui
+{
+class Command;
+}
 
-
-
+namespace SketcherGui
+{
 
 // These functions are declared here to promote code reuse from other modules
+
+/// Makes an angle constraint between 2 lines
+void makeAngleBetweenTwoLines(Sketcher::SketchObject* Obj,
+                              Gui::Command* cmd,
+                              int geoId1,
+                              int geoId2);
+
+// Find the angle between two lines. Return false if geoIds are not lines.
+bool calculateAngle(Sketcher::SketchObject* Obj,
+                    int& geoId1,
+                    int& geoId2,
+                    Sketcher::PointPos& PosId1,
+                    Sketcher::PointPos& PosId2,
+                    double& ActAngle);
 
 /// Makes a tangency constraint using external construction line between
 /// ellipse => an ellipse
@@ -43,11 +60,10 @@ namespace SketcherGui {
 /// commits or aborts as appropriate. The reason is for compatibility reasons with
 /// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp
 void makeTangentToEllipseviaNewPoint(Sketcher::SketchObject* Obj,
-                                             const Part::GeomEllipse *ellipse,
-                                             const Part::Geometry *geom2,
-                                             int geoId1,
-                                             int geoId2
-                                            );
+                                     const Part::GeomEllipse* ellipse,
+                                     const Part::Geometry* geom2,
+                                     int geoId1,
+                                     int geoId2);
 /// Makes a tangency constraint using external construction line between
 /// aoe => an arc of ellipse
 /// geom2 => any of an arc of ellipse, a circle, or an arc (of circle)
@@ -57,11 +73,10 @@ void makeTangentToEllipseviaNewPoint(Sketcher::SketchObject* Obj,
 /// commits or aborts as appropriate. The reason is for compatibility reasons with
 /// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp
 void makeTangentToArcOfEllipseviaNewPoint(Sketcher::SketchObject* Obj,
-                                             const Part::GeomArcOfEllipse *aoe,
-                                             const Part::Geometry *geom2,
-                                             int geoId1,
-                                             int geoId2
-                                            );
+                                          const Part::GeomArcOfEllipse* aoe,
+                                          const Part::Geometry* geom2,
+                                          int geoId1,
+                                          int geoId2);
 
 /// Makes a tangency constraint using external construction line between
 /// aoh => an arc of hyperbola
@@ -72,36 +87,43 @@ void makeTangentToArcOfEllipseviaNewPoint(Sketcher::SketchObject* Obj,
 /// commits or aborts as appropriate. The reason is for compatibility reasons with
 /// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp
 void makeTangentToArcOfHyperbolaviaNewPoint(Sketcher::SketchObject* Obj,
-                                            const Part::GeomArcOfHyperbola *aoh,
-                                            const Part::Geometry *geom2,
+                                            const Part::GeomArcOfHyperbola* aoh,
+                                            const Part::Geometry* geom2,
                                             int geoId1,
-                                            int geoId2
-                                            );
+                                            int geoId2);
 
 /// Makes a simple tangency constraint using extra point + tangent via point
 /// aop => an arc of parabola
-/// geom2 => any of an arc of parabola, an arc of hyperbola an arc of ellipse, a circle, or an arc (of circle)
+/// geom2 => any of an arc of parabola, an arc of hyperbola an arc of ellipse, a circle, or an arc
+/// (of circle)
 /// geoId1 => geoid of the arc of parabola
 /// geoId2 => geoid of geom2
-/// NOTE: A command must be opened before calling this function, which this function
-/// commits or aborts as appropriate. The reason is for compatibility reasons with
-/// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp
+/// NOTE: A command must
+/// be opened before calling this function, which this function commits or aborts as appropriate.
+/// The reason is for compatibility reasons with other code e.g. "Autoconstraints" in
+/// DrawSketchHandler.cpp
 void makeTangentToArcOfParabolaviaNewPoint(Sketcher::SketchObject* Obj,
-                                            const Part::GeomArcOfParabola *aop,
-                                            const Part::Geometry *geom2,
-                                            int geoId1,
-                                            int geoId2
-                                            );
+                                           const Part::GeomArcOfParabola* aop,
+                                           const Part::Geometry* geom2,
+                                           int geoId1,
+                                           int geoId2);
 
 /// Does an endpoint-to-endpoint tangency
-void doEndpointTangency(Sketcher::SketchObject* Obj, int GeoId1, int GeoId2, Sketcher::PointPos PosId1, Sketcher::PointPos PosId2);
+void doEndpointTangency(Sketcher::SketchObject* Obj,
+                        int GeoId1,
+                        int GeoId2,
+                        Sketcher::PointPos PosId1,
+                        Sketcher::PointPos PosId2);
 
 /// Does an endpoint-edge tangency
-void doEndpointToEdgeTangency( Sketcher::SketchObject* Obj, int GeoId1, Sketcher::PointPos PosId1, int GeoId2);
+void doEndpointToEdgeTangency(Sketcher::SketchObject* Obj,
+                              int GeoId1,
+                              Sketcher::PointPos PosId1,
+                              int GeoId2);
 
-/// shows constraint substitution information dialog box, enabling the user to forgo further notifications
-void notifyConstraintSubstitutions(const QString & message);
+/// shows constraint substitution information dialog box, enabling the user to forgo further
+/// notifications
+void notifyConstraintSubstitutions(const QString& message);
 
-}
-#endif // SKETCHERGUI_CommandConstraints_H
-
+}  // namespace SketcherGui
+#endif  // SKETCHERGUI_CommandConstraints_H

@@ -57,6 +57,7 @@
 #include "View3DInventor.h"
 #include "View3DSettings.h"
 #include "Application.h"
+#include "BitmapFactory.h"
 #include "Camera.h"
 #include "Document.h"
 #include "FileDialog.h"
@@ -66,7 +67,6 @@
 #include "SoFCDB.h"
 #include "SoFCSelectionAction.h"
 #include "SoFCVectorizeSVGAction.h"
-#include "View3DInventorExamples.h"
 #include "View3DInventorViewer.h"
 #include "View3DPy.h"
 #include "ViewProvider.h"
@@ -121,9 +121,9 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     // create the inventor widget and set the defaults
     _viewer->setDocument(this->_pcDocument);
     stack->addWidget(_viewer->getWidget());
-    // http://forum.freecadweb.org/viewtopic.php?f=3&t=6055&sid=150ed90cbefba50f1e2ad4b4e6684eba
+    // https://forum.freecad.org/viewtopic.php?f=3&t=6055&sid=150ed90cbefba50f1e2ad4b4e6684eba
     // describes a minor error but trying to fix it leads to a major issue
-    // http://forum.freecadweb.org/viewtopic.php?f=3&t=6085&sid=3f4bcab8007b96aaf31928b564190fd7
+    // https://forum.freecad.org/viewtopic.php?f=3&t=6085&sid=3f4bcab8007b96aaf31928b564190fd7
     // so the change is commented out
     // By default, the wheel events are processed by the 3d view AND the mdi area.
     //_viewer->getGLWidget()->setAttribute(Qt::WA_NoMousePropagation);
@@ -134,6 +134,8 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
 
     stopSpinTimer = new QTimer(this);
     connect(stopSpinTimer, &QTimer::timeout, this, &View3DInventor::stopAnimating);
+
+    setWindowIcon(Gui::BitmapFactory().pixmap("Document"));
 }
 
 View3DInventor::~View3DInventor()
@@ -145,7 +147,6 @@ View3DInventor::~View3DInventor()
     }
 
     viewSettings.reset();
-    naviSettings.reset();
 
     //If we destroy this viewer by calling 'delete' directly the focus proxy widget which is defined
     //by a widget in SoQtViewer isn't reset. This widget becomes a dangling pointer and makes
@@ -247,6 +248,8 @@ void View3DInventor::printPdf()
     if (!filename.isEmpty()) {
         Gui::WaitCursor wc;
         QPrinter printer(QPrinter::ScreenResolution);
+        // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
+        printer.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setPageOrientation(QPageLayout::Landscape);
         printer.setOutputFileName(filename);
@@ -328,24 +331,6 @@ bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
         _viewer->setStereoMode(Quarter::SoQTQuarterAdaptor::MONO );
         return true;
     }
-    else if(strcmp("Example1",pMsg) == 0 ) {
-        auto root = new SoSeparator;
-        Texture3D(root);
-        _viewer->setSceneGraph(root);
-        return true;
-    }
-    else if(strcmp("Example2",pMsg) == 0 ) {
-        auto root = new SoSeparator;
-        LightManip(root);
-        _viewer->setSceneGraph(root);
-        return true;
-    }
-    else if(strcmp("Example3",pMsg) == 0 ) {
-        auto root = new SoSeparator;
-        AnimationTexture(root);
-        _viewer->setSceneGraph(root);
-        return true;
-    }
     else if(strcmp("GetCamera",pMsg) == 0 ) {
         SoCamera * Cam = _viewer->getSoRenderManager()->getCamera();
         if (!Cam)
@@ -423,6 +408,10 @@ bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
         getGuiDocument()->saveCopy();
         return true;
     }
+    else if (strcmp("AlignToSelection", pMsg) == 0) {
+        _viewer->alignToSelection();
+        return true;
+    }
     else if (strcmp("ZoomIn", pMsg) == 0) {
         View3DInventorViewer* viewer = getViewer();
         viewer->navigationStyle()->zoomIn();
@@ -439,7 +428,10 @@ bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
 
 bool View3DInventor::onHasMsg(const char* pMsg) const
 {
-    if  (strcmp("Save",pMsg) == 0) {
+    if (strcmp("CanPan", pMsg) == 0) {
+        return true;
+    }
+    else if (strcmp("Save",pMsg) == 0) {
         return true;
     }
     else if (strcmp("SaveAs",pMsg) == 0) {
@@ -478,15 +470,6 @@ bool View3DInventor::onHasMsg(const char* pMsg) const
         return true;
     }
     else if(strcmp("SetStereoOff",pMsg) == 0) {
-        return true;
-    }
-    else if(strcmp("Example1",pMsg) == 0) {
-        return true;
-    }
-    else if(strcmp("Example2",pMsg) == 0) {
-        return true;
-    }
-    else if(strcmp("Example3",pMsg) == 0) {
         return true;
     }
     else if(strcmp("ViewFit",pMsg) == 0) {
@@ -532,10 +515,16 @@ bool View3DInventor::onHasMsg(const char* pMsg) const
     else if(strncmp("Dump",pMsg,4) == 0) {
         return true;
     }
+    else if (strcmp("AlignToSelection", pMsg) == 0) {
+        return true;
+    }
     if (strcmp("ZoomIn", pMsg) == 0) {
         return true;
     }
     if (strcmp("ZoomOut", pMsg) == 0) {
+        return true;
+    }
+    if (strcmp("AllowsOverlayOnHover", pMsg) == 0) {
         return true;
     }
 
@@ -668,7 +657,7 @@ void View3DInventor::dump(const char* filename, bool onlyVisible)
     }
 }
 
-void View3DInventor::windowStateChanged(MDIView* view)
+void View3DInventor::windowStateChanged(QWidget* view)
 {
     bool canStartTimer = false;
     if (this != view) {
@@ -774,8 +763,8 @@ void View3DInventor::setCurrentViewMode(ViewMode newmode)
         _viewer->getGLWidget()->setFocusProxy(nullptr);
         qApp->removeEventFilter(this);
         QList<QAction*> acts = this->actions();
-        for (QList<QAction*>::Iterator it = acts.begin(); it != acts.end(); ++it)
-            this->removeAction(*it);
+        for (QAction* it : acts)
+            this->removeAction(it);
 
         // Step two
         auto mdi = qobject_cast<QMdiSubWindow*>(parentWidget());
