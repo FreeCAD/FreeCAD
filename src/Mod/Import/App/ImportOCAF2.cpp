@@ -241,7 +241,14 @@ bool ImportOCAF2::getColor(const TopoDS_Shape& shape, Info& info, bool check, bo
             ret = true;
         }
     }
-
+    if (!check) {
+        if (!info.hasFaceColor) {
+            info.faceColor = options.defaultFaceColor;
+        }
+        if (!info.hasEdgeColor) {
+            info.edgeColor = options.defaultEdgeColor;
+        }
+    }
     return ret;
 }
 
