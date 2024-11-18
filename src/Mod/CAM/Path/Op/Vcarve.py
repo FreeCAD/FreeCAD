@@ -507,13 +507,10 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
         # add finishing pass if enabled
 
-        #   if obj.FinishingPass:
-        #       geom.offset = obj.FinishingPassZOffset.Value
+            if obj.FinishingPass:
+               geom.offset = obj.FinishingPassZOffset.Value
 
-        #       for w in wires:
-        #           pWire = self._getPartEdges(obj, w, geom)
-        #           if pWire:
-        #               pathlist.extend(cutWire(pWire))
+               cutWires(wires, pathlist, obj.OptimizeMovements)
 
         self.commandlist = pathlist
 
