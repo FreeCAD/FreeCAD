@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#include <qpainter.h>
 #ifndef _PreComp_
 # include <cmath>
 # include <QGraphicsScene>
@@ -546,8 +547,8 @@ void QGIWeldSymbol::paint ( QPainter * painter, const QStyleOptionGraphicsItem *
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
-//    painter->setPen(Qt::red);
-//    painter->drawRect(boundingRect());          //good for debugging
+   painter->setPen(Qt::red);
+   painter->drawRect(boundingRect());          //good for debugging
 
     QGIView::paint (painter, &myOption, widget);
 }

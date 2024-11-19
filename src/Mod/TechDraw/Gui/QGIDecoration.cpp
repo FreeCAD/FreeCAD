@@ -60,6 +60,9 @@ void QGIDecoration::paint ( QPainter * painter, const QStyleOptionGraphicsItem *
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
+    painter->setPen(Qt::green);
+    painter->drawRect(boundingRect());          //good for debugging
+
     QGraphicsItemGroup::paint (painter, &myOption, widget);
 }
 
