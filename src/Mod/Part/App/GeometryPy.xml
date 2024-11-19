@@ -53,6 +53,14 @@ It describes the common behavior of these objects when:
             <UserDocu>Create a clone of this geometry with the same Tag</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="isSame" Const="true">
+        <Documentation>
+            <UserDocu>
+                isSame(geom, tol, angulartol) -> boolean
+
+                Compare this geometry to another one</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="hasExtensionOfType" Const="true">
         <Documentation>
             <UserDocu>Returns a boolean indicating whether a geometry extension of the type indicated as a string exists.</UserDocu>
