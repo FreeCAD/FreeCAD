@@ -64,6 +64,8 @@ void DlgPrefsTechDrawAdvancedImp::saveSettings()
     ui->sbScrubCount->onSave();
 
     saveBalloonOverride();
+
+    ui->cbSwitchWB->onSave();
 }
 
 
@@ -114,6 +116,8 @@ void DlgPrefsTechDrawAdvancedImp::loadSettings()
     ui->sbScrubCount->onRestore();
 
     loadBalloonOverride();
+
+    ui->cbSwitchWB->onRestore();
 }
 
 void DlgPrefsTechDrawAdvancedImp::loadBalloonOverride()
