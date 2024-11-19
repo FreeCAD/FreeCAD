@@ -119,14 +119,11 @@ MDIViewPage::MDIViewPage(ViewProviderPage* pageVp, Gui::Document* doc, QWidget* 
     connectDeletedObject = appDoc->signalDeletedObject.connect(bnd);
     //NOLINTEND
 
-    // m_pagePrinter = new PagePrinter(m_vpPage);
-    // m_pagePrinter->setOwner(this);
 }
 
 MDIViewPage::~MDIViewPage()
 {
     connectDeletedObject.disconnect();
-    // delete m_pagePrinter;
 }
 
 void MDIViewPage::setScene(QGSPage* scene, QGVPage* viewWidget)
@@ -134,9 +131,6 @@ void MDIViewPage::setScene(QGSPage* scene, QGVPage* viewWidget)
     m_scene = scene;
     setCentralWidget(viewWidget);//this makes viewWidget a Qt child of MDIViewPage
     QObject::connect(scene, &QGSPage::selectionChanged, this, &MDIViewPage::sceneSelectionChanged);
-    // if (m_pagePrinter) {
-    //     m_pagePrinter->setScene(m_scene);
-    // }
 }
 
 void MDIViewPage::setDocumentObject(const std::string& name)
@@ -420,7 +414,7 @@ void MDIViewPage::print(QPrinter* printer)
     PagePrinter::print(getViewProviderPage(), printer);
 }
 
-//static routine to print all pages in a document
+// static routine to print all pages in a document.  Used by PrintAll command in Command.cpp
 void MDIViewPage::printAll(QPrinter* printer, App::Document* doc)
 {
     PagePrinter::printAll(printer, doc);
