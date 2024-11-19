@@ -250,9 +250,7 @@ void DlgAddPropertyVarSet::addEditor(PropertyEditor::PropertyItem* propertyItem,
     editor.reset(propertyItem->createEditor(this, [this]() {
         this->valueChanged();
     }));
-    if (type == "App::PropertyFont") {
-        propertyItem->setEditorData(editor.get(), QVariant());
-    }
+    propertyItem->setEditorData(editor.get(), QVariant());
     editor->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     editor->setObjectName(QString::fromUtf8("editor"));
     auto formLayout = qobject_cast<QFormLayout*>(layout());
