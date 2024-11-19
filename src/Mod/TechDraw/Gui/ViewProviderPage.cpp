@@ -43,6 +43,7 @@
 #include <Gui/MainWindow.h>
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
+#include <Mod/TechDraw/App/DrawGeomHatch.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 #include <Mod/TechDraw/App/DrawTemplate.h>
@@ -50,6 +51,7 @@
 #include <Mod/TechDraw/App/DrawViewBalloon.h>
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 #include <Mod/TechDraw/App/DrawWeldSymbol.h>
+#include <Mod/TechDraw/App/Preferences.h>
 
 #include "ViewProviderPage.h"
 #include "MDIViewPage.h"
