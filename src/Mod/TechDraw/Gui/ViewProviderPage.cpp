@@ -263,20 +263,11 @@ void ViewProviderPage::unsetEdit(int ModNum)
 
 bool ViewProviderPage::doubleClicked(void)
 {
-    // assure the TechDraw workbench
-    if (App::GetApplication()
-        .GetUserParameter()
-        .GetGroup("BaseApp")
-        ->GetGroup("Preferences")
-        ->GetGroup("Mod/TechDraw")
-        ->GetBool("SwitchToWB", true)) {
+    if (Preferences::switchOnClick()) {
         Gui::Command::assureWorkbench("TechDrawWorkbench");
+        show();
     }
 
-    show();
-    if (m_mdiView) {
-        switchToMdiViewPage();
-    }
     return true;
 }
 
@@ -289,7 +280,7 @@ void ViewProviderPage::show(void)
 void ViewProviderPage::hide(void)
 {
     if (getMDIView()) {
-        getMDIView()->hide();//this doesn't remove the mdiViewPage from the mainWindow
+        getMDIView()->hide();  // this doesn't remove the mdiViewPage from the mainWindow
         removeMDIView();
     }
     ViewProviderDocumentObject::hide();
@@ -339,12 +330,11 @@ void ViewProviderPage::createMDIViewPage()
     m_mdiView->setWindowTitle(tabTitle + QString::fromLatin1("[*]"));
     m_mdiView->setWindowIcon(Gui::BitmapFactory().pixmap("TechDraw_TreePage"));
     Gui::getMainWindow()->addWindow(m_mdiView);
-    switchToMdiViewPage();
 }
 
 void ViewProviderPage::switchToMdiViewPage()
 {
-    Gui::getMainWindow()->setActiveWindow(m_mdiView);
+    show();
     m_graphicsView->setFocus();
 }
 
@@ -407,8 +397,10 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren(void) const
     // Collect any child views
     // for Page, valid children are any View except: DrawViewDimension
     //                                               DrawViewBalloon
-    //                                               any FeatuerView in a DrawViewClip
+    //                                               any FeatureView in a DrawViewClip
     //                                               DrawHatch
+    //                                               DrawGeomHatch
+    //  ?? leaders?
 
     try {
         for (auto* obj : getDrawPage()->Views.getValues()) {
@@ -422,11 +414,14 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren(void) const
             // Don't collect if dimension, balloon, hatch or member of ClipGroup as these should be grouped elsewhere
             if (obj->isDerivedFrom<TechDraw::DrawViewDimension>()
                 || obj->isDerivedFrom<TechDraw::DrawHatch>()
+                || obj->isDerivedFrom<TechDraw::DrawGeomHatch>()
                 || obj->isDerivedFrom<TechDraw::DrawViewBalloon>()
-                || (featView && featView->isInClip()))
+                || (featView && featView->isInClip())) {
                 continue;
-            else
+            }
+            else {
                 temp.push_back(obj);
+            }
         }
         return temp;
     }
@@ -578,4 +573,13 @@ void ViewProviderPage::fixSceneDependencies()
         vpvp->fixSceneDependencies();
     }
 
+}
+
+//! convenient way to ask feature to redraw everything
+void  ViewProviderPage::redrawPage() const
+{
+    auto feature = getDrawPage();
+    if (feature) {
+        feature->redrawCommand();
+    }
 }
