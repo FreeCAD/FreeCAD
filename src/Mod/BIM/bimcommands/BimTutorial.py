@@ -169,8 +169,12 @@ class BIM_Tutorial:
                     os.makedirs(store)
                 for path in imagepaths:
                     # name = re.findall(r"[\\w.-]+\\.(?i)(?:jpg|png|gif|bmp)",path)
-                    name = re.findall(r"(?i)[\\w.-]+\\.(?:jpg|png|gif|bmp)", path)
-                    if name:
+                    # name = re.findall(r"(?i)[\\w.-]+\\.(?:jpg|png|gif|bmp)", path)
+                    try:
+                        name = os.path.splitext(os.path.basename(path))[0]
+                    except:
+                        print("unparsable image path:", path)
+                    else:
                         name = name[-1]
                         storename = os.path.join(store, name)
                         if not os.path.exists(storename):
@@ -190,8 +194,6 @@ class BIM_Tutorial:
                         descr = descr.replace(
                             path, "file:///" + storename.replace("\\", "/")
                         )
-                    else:
-                        print("unparsable image path:", path)
             nd.append(descr)
         self.descriptions = nd
 

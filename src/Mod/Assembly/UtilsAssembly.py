@@ -1139,7 +1139,7 @@ def getMovingPart(assembly, ref):
 
     if len(names) < 2:
         App.Console.PrintError(
-            "getMovingPart() in UtilsAssembly.py the object name is too short, at minimum it should be something like ['Box','edge16']. It shouldn't be shorter"
+            f"getMovingPart() in UtilsAssembly.py the object name {names} is too short. It should be at least similar to ['Box','edge16'], not shorter.\n"
         )
         return None
 

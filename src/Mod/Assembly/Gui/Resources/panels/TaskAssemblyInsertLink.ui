@@ -71,10 +71,11 @@
    <item row="4" column="0">
     <widget class="Gui::PrefCheckBox" name="CheckBox_RigidSubAsm">
      <property name="toolTip">
-      <string>If checked, the inserted sub-assemblies will not be flexible.
-Rigid means that the sub-assembly will be considered as a solid.
-Flexible means that the sub-assembly joints will be taken into account in the main assembly.
-You can change this property of sub-assemblies at any time by right clicking them.</string>
+      <string>Sets whether the inserted sub-assemblies will be rigid or flexible.
+Rigid means that the added sub-assembly will be considered as a solid unit within the parent assembly.
+Flexible means that the added sub-assembly will allow movement of its individual components' joints within the parent assembly.
+You can change this behavior at any time by either right-clicking the sub-assembly on the document tree and toggling the
+Turn rigid/Turn flexible command there, or by editing its Rigid property in the Property Editor.</string>
      </property>
      <property name="text">
       <string>Rigid sub-assemblies</string>

@@ -42,6 +42,7 @@
 #include "Action.h"
 #include "BitmapFactory.h"
 #include "Command.h"
+#include "DlgAbout.h"
 #include "DlgCustomizeImp.h"
 #include "DlgParameterImp.h"
 #include "DlgPreferencesImp.h"
@@ -50,7 +51,6 @@
 #include "MainWindow.h"
 #include "OnlineDocumentation.h"
 #include "Selection.h"
-#include "Splashscreen.h"
 #include "WhatsThis.h"
 #include "Workbench.h"
 #include "WorkbenchManager.h"
@@ -220,9 +220,9 @@ StdCmdAbout::StdCmdAbout()
 {
     sGroup        = "Help";
     sMenuText     = QT_TR_NOOP("&About %1");
-    sToolTipText  = QT_TR_NOOP("About %1");
+    sToolTipText  = QT_TR_NOOP("Displays important information About %1");
     sWhatsThis    = "Std_About";
-    sStatusTip    = QT_TR_NOOP("About %1");
+    sStatusTip    = sToolTipText;
     eType         = 0;
 }
 
@@ -308,9 +308,9 @@ StdCmdWhatsThis::StdCmdWhatsThis()
 {
     sGroup        = "Help";
     sMenuText     = QT_TR_NOOP("&What's This?");
-    sToolTipText  = QT_TR_NOOP("What's This");
+    sToolTipText  = QT_TR_NOOP("Opens the documentation corresponding to the selection");
     sWhatsThis    = "Std_WhatsThis";
-    sStatusTip    = QT_TR_NOOP("What's This");
+    sStatusTip    = sToolTipText;
     sAccel        = keySequenceToAccel(QKeySequence::WhatsThis);
     sPixmap       = "WhatsThis";
     eType         = 0;
@@ -331,10 +331,10 @@ StdCmdRestartInSafeMode::StdCmdRestartInSafeMode()
   :Command("Std_RestartInSafeMode")
 {
     sGroup        = "Help";
-    sMenuText     = QT_TR_NOOP("Restart in safe mode");
-    sToolTipText  = QT_TR_NOOP("Restart in safe mode");
+    sMenuText     = QT_TR_NOOP("Restart in Safe Mode");
+    sToolTipText  = QT_TR_NOOP("Starts FreeCAD without any modules or plugins loaded");
     sWhatsThis    = "Std_RestartInSafeMode";
-    sStatusTip    = QT_TR_NOOP("Restart in safe mode");
+    sStatusTip    = sToolTipText;
     sPixmap       = "safe-mode-restart";
     eType         = 0;
 }
@@ -409,6 +409,7 @@ StdCmdDlgPreferences::StdCmdDlgPreferences()
     sStatusTip    = QT_TR_NOOP("Opens a Dialog to edit the preferences");
     sPixmap     = "preferences-system";
     eType         = 0;
+    sAccel        = "Ctrl+,";
 }
 
 Action * StdCmdDlgPreferences::createAction()
@@ -522,9 +523,9 @@ StdCmdOnlineHelp::StdCmdOnlineHelp()
 {
     sGroup        = "Help";
     sMenuText     = QT_TR_NOOP("Help");
-    sToolTipText  = QT_TR_NOOP("Show help to the application");
+    sToolTipText  = QT_TR_NOOP("Opens the Help documentation");
     sWhatsThis    = "Std_OnlineHelp";
-    sStatusTip    = QT_TR_NOOP("Help");
+    sStatusTip    = sToolTipText;
     sPixmap       = "help-browser";
     sAccel        = keySequenceToAccel(QKeySequence::HelpContents);
     eType         = 0;
@@ -547,9 +548,9 @@ StdCmdOnlineHelpWebsite::StdCmdOnlineHelpWebsite()
 {
     sGroup        = "Help";
     sMenuText     = QT_TR_NOOP("Help Website");
-    sToolTipText  = QT_TR_NOOP("The website where the help is maintained");
+    sToolTipText  = QT_TR_NOOP("Opens the help documentation");
     sWhatsThis    = "Std_OnlineHelpWebsite";
-    sStatusTip    = QT_TR_NOOP("Help Website");
+    sStatusTip    = sToolTipText;
     eType         = 0;
 }
 
@@ -573,8 +574,8 @@ StdCmdFreeCADDonation::StdCmdFreeCADDonation()
   :Command("Std_FreeCADDonation")
 {
     sGroup        = "Help";
-    sMenuText     = QT_TR_NOOP("Donate");
-    sToolTipText  = QT_TR_NOOP("Donate to FreeCAD development");
+    sMenuText     = QT_TR_NOOP("Support FreeCAD");
+    sToolTipText  = QT_TR_NOOP("Support FreeCAD development");
     sWhatsThis    = "Std_FreeCADDonation";
     sStatusTip    = sToolTipText;
     sPixmap       = "internet-web-browser";
@@ -601,9 +602,9 @@ StdCmdFreeCADWebsite::StdCmdFreeCADWebsite()
 {
     sGroup        = "Help";
     sMenuText     = QT_TR_NOOP("FreeCAD Website");
-    sToolTipText  = QT_TR_NOOP("The FreeCAD website");
+    sToolTipText  = QT_TR_NOOP("Navigates to the official FreeCAD website");
     sWhatsThis    = "Std_FreeCADWebsite";
-    sStatusTip    = QT_TR_NOOP("FreeCAD Website");
+    sStatusTip    = sToolTipText;
     sPixmap       = "internet-web-browser";
     eType         = 0;
 }
@@ -628,10 +629,10 @@ StdCmdFreeCADUserHub::StdCmdFreeCADUserHub()
   :Command("Std_FreeCADUserHub")
 {
     sGroup        = "Help";
-    sMenuText     = QT_TR_NOOP("Users documentation");
-    sToolTipText  = QT_TR_NOOP("Documentation for users on the FreeCAD website");
+    sMenuText     = QT_TR_NOOP("User Documentation");
+    sToolTipText  = QT_TR_NOOP("Opens the documentation for users");
     sWhatsThis    = "Std_FreeCADUserHub";
-    sStatusTip    = QT_TR_NOOP("Users documentation");
+    sStatusTip    = sToolTipText;
     sPixmap       = "internet-web-browser";
     eType         = 0;
 }
@@ -656,11 +657,11 @@ StdCmdFreeCADPowerUserHub::StdCmdFreeCADPowerUserHub()
   :Command("Std_FreeCADPowerUserHub")
 {
     sGroup        = "Help";
-    sMenuText     = QT_TR_NOOP("Python scripting documentation");
-    sToolTipText  = QT_TR_NOOP("Python scripting documentation on the FreeCAD website");
+    sMenuText     = QT_TR_NOOP("Python Scripting Documentation");
+    sToolTipText  = QT_TR_NOOP("Opens the Python Scripting documentation");
     sWhatsThis    = "Std_FreeCADPowerUserHub";
-    sStatusTip    = QT_TR_NOOP("PowerUsers documentation");
-    sPixmap       = "internet-web-browser";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "applications-python";
     eType         = 0;
 }
 
@@ -687,7 +688,7 @@ StdCmdFreeCADForum::StdCmdFreeCADForum()
     sMenuText     = QT_TR_NOOP("FreeCAD Forum");
     sToolTipText  = QT_TR_NOOP("The FreeCAD forum, where you can find help from other users");
     sWhatsThis    = "Std_FreeCADForum";
-    sStatusTip    = QT_TR_NOOP("The FreeCAD Forum");
+    sStatusTip    = sToolTipText;
     sPixmap       = "internet-web-browser";
     eType         = 0;
 }
@@ -713,9 +714,9 @@ StdCmdFreeCADFAQ::StdCmdFreeCADFAQ()
 {
     sGroup        = "Help";
     sMenuText     = QT_TR_NOOP("FreeCAD FAQ");
-    sToolTipText  = QT_TR_NOOP("Frequently Asked Questions on the FreeCAD website");
+    sToolTipText  = QT_TR_NOOP("Opens the Frequently Asked Questions");
     sWhatsThis    = "Std_FreeCADFAQ";
-    sStatusTip    = QT_TR_NOOP("Frequently Asked Questions");
+    sStatusTip    = sToolTipText;
     sPixmap       = "internet-web-browser";
     eType         = 0;
 }
@@ -765,10 +766,10 @@ StdCmdReportBug::StdCmdReportBug()
   :Command("Std_ReportBug")
 {
     sGroup        = "Help";
-    sMenuText     = QT_TR_NOOP("Report a bug");
-    sToolTipText  = QT_TR_NOOP("Report a bug or suggest a feature");
+    sMenuText     = QT_TR_NOOP("Report an Issue");
+    sToolTipText  = QT_TR_NOOP("Report an issue or suggest a new feature");
     sWhatsThis    = "Std_ReportBug";
-    sStatusTip    = QT_TR_NOOP("Report a bug or suggest a feature");
+    sStatusTip    = sToolTipText;
     sPixmap       = "internet-web-browser";
     eType         = 0;
 }

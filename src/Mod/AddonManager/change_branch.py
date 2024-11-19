@@ -34,7 +34,7 @@ translate = FreeCAD.Qt.translate
 
 class ChangeBranchDialog(QtWidgets.QWidget):
 
-    branch_changed = QtCore.Signal(str)
+    branch_changed = QtCore.Signal(str, str)
 
     def __init__(self, path: str, parent=None):
         super().__init__(parent)
@@ -55,10 +55,10 @@ class ChangeBranchDialog(QtWidgets.QWidget):
         # Figure out what row gets selected:
         git_manager = initialize_git()
         row = 0
-        current_ref = git_manager.current_branch(path)
+        self.current_ref = git_manager.current_branch(path)
         selection_model = self.ui.tableView.selectionModel()
         for ref in self.item_model.branches:
-            if ref["ref_name"] == current_ref:
+            if ref["ref_name"] == self.current_ref:
                 index = self.item_filter.mapFromSource(self.item_model.index(row, 0))
                 selection_model.select(index, QtCore.QItemSelectionModel.ClearAndSelect)
                 selection_model.select(index.siblingAtColumn(1), QtCore.QItemSelectionModel.Select)
@@ -118,7 +118,7 @@ class ChangeBranchDialog(QtWidgets.QWidget):
                 gm.checkout(self.item_model.path, remote_name)
             else:
                 gm.checkout(self.item_model.path, remote_name, args=["-b", local_name])
-            self.branch_changed.emit(local_name)
+            self.branch_changed.emit(self.current_ref, local_name)
 
 
 class ChangeBranchDialogModel(QtCore.QAbstractTableModel):
