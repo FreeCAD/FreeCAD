@@ -52,7 +52,6 @@ namespace Gui {
 class BitmapFactoryInstP
 {
 public:
-    QMap<std::string, const char**> xpmMap;
     QMap<std::string, QPixmap> xpmCache;
 
     bool useIconTheme;
@@ -164,11 +163,6 @@ QStringList BitmapFactoryInst::findIconFiles() const
     return files;
 }
 
-void BitmapFactoryInst::addXPM(const char* name, const char** pXPM)
-{
-    d->xpmMap[name] = pXPM;
-}
-
 void BitmapFactoryInst::addPixmapToCache(const char* name, const QPixmap& icon)
 {
     d->xpmCache[name] = icon;
@@ -247,16 +241,11 @@ QPixmap BitmapFactoryInst::pixmap(const char* name) const
     if (it != d->xpmCache.end())
         return it.value();
 
-    // now try to find it in the built-in XPM
     QPixmap icon;
-    QMap<std::string,const char**>::Iterator It = d->xpmMap.find(name);
-    if (It != d->xpmMap.end())
-        icon = QPixmap(It.value());
 
     // Try whether an absolute path is given
     QString fn = QString::fromUtf8(name);
-    if (icon.isNull())
-        loadPixmap(fn, icon);
+    loadPixmap(fn, icon);
 
     // try to find it in the 'icons' search paths
     if (icon.isNull()) {
@@ -364,8 +353,6 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const QByteArray& originalContents, con
 QStringList BitmapFactoryInst::pixmapNames() const
 {
     QStringList names;
-    for (QMap<std::string,const char**>::Iterator It = d->xpmMap.begin(); It != d->xpmMap.end(); ++It)
-        names << QString::fromUtf8(It.key().c_str());
     for (QMap<std::string, QPixmap>::Iterator It = d->xpmCache.begin(); It != d->xpmCache.end(); ++It) {
         QString item = QString::fromUtf8(It.key().c_str());
         if (!names.contains(item))

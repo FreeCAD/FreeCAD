@@ -211,6 +211,7 @@ enum eDXFGroupCode_t
     eUCSXDirection = 111,
     eUCSYDirection = 112,
     eExtrusionDirection = 210,
+    eComment = 999,
 
     // The following apply to points and directions in text DXF files to identify the three
     // coordinates

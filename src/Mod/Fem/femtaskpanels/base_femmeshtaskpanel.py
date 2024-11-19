@@ -29,8 +29,6 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief base task panel for mesh object
 
-import time
-import threading
 from abc import ABC, abstractmethod
 
 from PySide import QtCore
@@ -43,48 +41,19 @@ from femtools.femutils import getOutputWinColor
 from . import base_femtaskpanel
 
 
-class _Process(threading.Thread):
+class _Thread(QtCore.QThread):
     """
     Class for thread and subprocess manipulation
-    'tool' argument must be  an object with a 'compute' method
-    and a 'process' attribute of type Popen object
+    'tool' argument must be  an object with 'compute' and 'prepare' methods
+    and a 'process' attribute of type QProcess object
     """
 
     def __init__(self, tool):
+        super().__init__()
         self.tool = tool
-        self._timer = QtCore.QTimer()
-        self.success = False
-        self.update = False
-        self.error = ""
-        super().__init__(target=self.tool.compute)
-        QtCore.QObject.connect(self._timer, QtCore.SIGNAL("timeout()"), self._check)
-
-    def init(self):
-        self._timer.start(100)
-        self.start()
 
     def run(self):
-        try:
-            self.success = self._target(*self._args, **self._kwargs)
-        except Exception as e:
-            self.error = str(e)
-
-    def finish(self):
-        if self.tool.process:
-            self.tool.process.terminate()
-        self.join()
-
-    def _check(self):
-        if not self.is_alive():
-            self._timer.stop()
-            self.join()
-            if self.success:
-                try:
-                    self.tool.update_properties()
-                    self.update = True
-                except Exception as e:
-                    self.error = str(e)
-                    self.success = False
+        self.tool.prepare()
 
 
 class _BaseMeshTaskPanel(base_femtaskpanel._BaseTaskPanel, ABC):
@@ -92,14 +61,84 @@ class _BaseMeshTaskPanel(base_femtaskpanel._BaseTaskPanel, ABC):
     Abstract base class for FemMesh object TaskPanel
     """
 
-    def __init__(self, obj):
+    def __init__(self, obj, tool):
         super().__init__(obj)
-
-        self.tool = None
-        self.form = None
+        self.tool = tool
         self.timer = QtCore.QTimer()
-        self.process = None
-        self.console_message = ""
+        self._thread = _Thread(self.tool)
+        self.text_log = None
+        self.text_time = None
+
+    def setup_connections(self):
+        QtCore.QObject.connect(self._thread, QtCore.SIGNAL("started()"), self.thread_started)
+        QtCore.QObject.connect(self._thread, QtCore.SIGNAL("finished()"), self.thread_finished)
+        QtCore.QObject.connect(self.tool.process, QtCore.SIGNAL("started()"), self.process_started)
+        QtCore.QObject.connect(
+            self.tool.process,
+            QtCore.SIGNAL("finished(int,QProcess::ExitStatus)"),
+            self.process_finished,
+        )
+        QtCore.QObject.connect(
+            self.tool.process,
+            QtCore.SIGNAL("finished(int,QProcess::ExitStatus)"),
+            self.stop_timer,
+        )
+        QtCore.QObject.connect(
+            self.tool.process,
+            QtCore.SIGNAL("readyReadStandardOutput()"),
+            self.write_output,
+        )
+        QtCore.QObject.connect(
+            self.tool.process,
+            QtCore.SIGNAL("readyReadStandardError()"),
+            self.write_error,
+        )
+        QtCore.QObject.connect(self.timer, QtCore.SIGNAL("timeout()"), self.update_timer_text)
+
+    def thread_started(self):
+        self.text_log.clear()
+        self.write_log("Prepare meshing...\n", QtGui.QColor(getOutputWinColor("Text")))
+        QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
+
+    def thread_finished(self):
+        self.tool.compute()
+
+    def process_finished(self, code, status):
+        if status == QtCore.QProcess.ExitStatus.NormalExit:
+            if code != 0:
+                self.write_log(
+                    "Meshing finished with errors\n", QtGui.QColor(getOutputWinColor("Error"))
+                )
+            self.tool.update_properties()
+            self.write_log("Process finished\n", QtGui.QColor(getOutputWinColor("Text")))
+        else:
+            self.write_log("Process crashed\n", QtGui.QColor(getOutputWinColor("Error")))
+
+    def process_started(self):
+        self.write_log("Start meshing...\n", QtGui.QColor(getOutputWinColor("Text")))
+
+    def write_output(self):
+        self.write_log(
+            self.tool.process.readAllStandardOutput().data().decode("utf-8"),
+            QtGui.QColor(getOutputWinColor("Logging")),
+        )
+
+    def write_error(self):
+        self.write_log(
+            self.tool.process.readAllStandardError().data().decode("utf-8"),
+            QtGui.QColor(getOutputWinColor("Error")),
+        )
+
+    def write_log(self, data, color):
+        cursor = QtGui.QTextCursor(self.text_log.document())
+        cursor.beginEditBlock()
+        cursor.movePosition(QtGui.QTextCursor.End)
+        fmt = QtGui.QTextCharFormat()
+        fmt.setForeground(color)
+        cursor.mergeCharFormat(fmt)
+        cursor.insertText(data)
+        cursor.endEditBlock()
+        self.text_log.ensureCursorVisible()
 
     @abstractmethod
     def set_mesh_params(self):
@@ -116,7 +155,10 @@ class _BaseMeshTaskPanel(base_femtaskpanel._BaseTaskPanel, ABC):
         return button_value
 
     def accept(self):
-        if self.process and self.process.is_alive():
+        if (
+            self._thread.isRunning()
+            or self.tool.process.state() != QtCore.QProcess.ProcessState.NotRunning
+        ):
             FreeCAD.Console.PrintWarning("Process still running\n")
             return None
 
@@ -126,62 +168,43 @@ class _BaseMeshTaskPanel(base_femtaskpanel._BaseTaskPanel, ABC):
         return super().accept()
 
     def reject(self):
+        # self_thread may be blocking
+        if self._thread.isRunning():
+            return None
         self.timer.stop()
         QtGui.QApplication.restoreOverrideCursor()
-        if self.process and self.process.is_alive():
-            self.console_log("Process aborted", "#ff6700")
-            self.process.finish()
+        if self.tool.process.state() != QtCore.QProcess.ProcessState.NotRunning:
+            self.tool.process.kill()
+            FreeCAD.Console.PrintWarning("Process aborted\n")
         else:
             return super().reject()
 
     def clicked(self, button):
         if button == QtGui.QDialogButtonBox.Apply:
-            if self.process and self.process.is_alive():
+            if (
+                self._thread.isRunning()
+                or self.tool.process.state() != QtCore.QProcess.ProcessState.NotRunning
+            ):
                 FreeCAD.Console.PrintWarning("Process already running\n")
                 return None
 
             self.set_mesh_params()
             self.run_mesher()
 
-    def console_log(self, message="", outputwin_color_type=None):
-        self.console_message = self.console_message + (
-            '<font color="{}"><b>{:4.1f}:</b></font> '.format(
-                getOutputWinColor("Logging"), time.time() - self.time_start
-            )
-        )
-        if outputwin_color_type:
-            self.console_message += '<font color="{}">{}</font><br>'.format(
-                outputwin_color_type, message
-            )
-        else:
-            self.console_message += message + "<br>"
-        self.form.te_output.setText(self.console_message)
-        self.form.te_output.moveCursor(QtGui.QTextCursor.End)
-
     def update_timer_text(self):
-        if self.process and self.process.is_alive():
-            self.form.l_time.setText(f"Time: {time.time() - self.time_start:4.1f}: ")
-        else:
-            if self.process:
-                if self.process.success:
-                    if not self.process.update:
-                        return None
-                    self.console_log("Success!", "#00AA00")
-                else:
-                    self.console_log(self.process.error, "#AA0000")
-            self.timer.stop()
-            QtGui.QApplication.restoreOverrideCursor()
+        self.text_time.setText(f"Time: {self.elapsed.elapsed()/1000:4.1f} s")
+
+    def stop_timer(self, code, status):
+        self.timer.stop()
+        QtGui.QApplication.restoreOverrideCursor()
 
     def run_mesher(self):
-        self.process = _Process(self.tool)
+        self.elapsed = QtCore.QElapsedTimer()
+        self.elapsed.start()
+        self.update_timer_text()
         self.timer.start(100)
-        self.time_start = time.time()
-        self.form.l_time.setText(f"Time: {time.time() - self.time_start:4.1f}: ")
-        self.console_message = ""
-        self.console_log("Start process...")
-        QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
 
-        self.process.init()
+        self._thread.start()
 
     def get_version(self):
         full_message = self.tool.version()

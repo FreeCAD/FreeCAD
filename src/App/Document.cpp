@@ -931,18 +931,21 @@ Document::~Document()
 std::string Document::getTransientDirectoryName(const std::string& uuid, const std::string& filename) const
 {
     // Create a directory name of the form: {ExeName}_Doc_{UUID}_{HASH}_{PID}
-    std::stringstream s;
+    std::stringstream out;
     QCryptographicHash hash(QCryptographicHash::Sha1);
 #if QT_VERSION < QT_VERSION_CHECK(6,3,0)
     hash.addData(filename.c_str(), filename.size());
 #else
     hash.addData(QByteArrayView(filename.c_str(), filename.size()));
 #endif
-    s << App::Application::getUserCachePath() << App::Application::getExecutableName()
-      << "_Doc_" << uuid
-      << "_" << hash.result().toHex().left(6).constData()
-      << "_" << QCoreApplication::applicationPid();
-    return s.str();
+    out << App::Application::getUserCachePath() << App::Application::getExecutableName()
+        << "_Doc_"
+        << uuid
+        << "_"
+        << hash.result().toHex().left(6).constData()
+        << "_"
+        << App::Application::applicationPid();
+    return out.str();
 }
 
 //--------------------------------------------------------------------------
@@ -1004,7 +1007,8 @@ void Document::Restore(Base::XMLReader &reader)
 
     if (reader.hasAttribute("StringHasher")) {
         d->Hasher->Restore(reader);
-    } else {
+    }
+    else {
         d->Hasher->clear();
     }
 
@@ -1070,6 +1074,17 @@ void Document::Restore(Base::XMLReader &reader)
     }
 
     reader.readEndElement("Document");
+}
+
+void DocumentP::checkStringHasher(const Base::XMLReader& reader)
+{
+    if (reader.hasReadFailed("StringHasher.Table.txt")) {
+        Base::Console().Error(QT_TRANSLATE_NOOP(
+            "Notifications",
+            "\nIt is recommended that the user right-click the root of "
+            "the document and select Mark to recompute.\n"
+            "The user should then click the Refresh button in the main toolbar.\n"));
+    }
 }
 
 std::pair<bool,int> Document::addStringHasher(const StringHasherRef & hasher) const {
@@ -2114,6 +2129,8 @@ void Document::restore (const char *filename,
     // without GUI. But if available then follow after all data files of the App document.
     signalRestoreDocument(reader);
     reader.readFiles(zipstream);
+
+    DocumentP::checkStringHasher(reader);
 
     if (reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestore)) {
         setStatus(Document::PartialRestore, true);
@@ -3625,8 +3642,9 @@ void Document::_removeObject(DocumentObject* pcObject)
     else {
         // for a rollback delete the object
         signalTransactionRemove(*pcObject, 0);
-        breakDependency(pcObject, true);
     }
+
+    breakDependency(pcObject, true);
 
     // remove from map
     pcObject->setStatus(ObjectStatus::Remove, false); // Unset the bit to be on the safe side

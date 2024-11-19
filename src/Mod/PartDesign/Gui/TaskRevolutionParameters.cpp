@@ -39,6 +39,7 @@
 
 #include "ui_TaskRevolutionParameters.h"
 #include "TaskRevolutionParameters.h"
+#include "ViewProviderGroove.h"
 #include "ReferenceSelection.h"
 
 using namespace PartDesignGui;
@@ -46,8 +47,8 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskRevolutionParameters */
 
-TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* RevolutionView, QWidget *parent)
-    : TaskSketchBasedParameters(RevolutionView, parent, "PartDesign_Revolution", tr("Revolution parameters")),
+TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* RevolutionView, const char* pixname, QString title, QWidget *parent)
+    : TaskSketchBasedParameters(RevolutionView, parent, pixname, title),
       ui(new Ui_TaskRevolutionParameters),
       proxy(new QWidget(this)),
       selectionFace(false),
@@ -318,7 +319,9 @@ void TaskRevolutionParameters::setCheckboxes(PartDesign::Revolution::RevolMethod
 
     ui->checkBoxReversed->setEnabled(isReversedEnabled);
 
+    ui->buttonFace->setVisible(isFaceEditEnabled);
     ui->buttonFace->setEnabled(isFaceEditEnabled);
+    ui->lineFaceName->setVisible(isFaceEditEnabled);
     ui->lineFaceName->setEnabled(isFaceEditEnabled);
     if (!isFaceEditEnabled) {
         ui->buttonFace->setChecked(false);
@@ -691,11 +694,18 @@ void TaskRevolutionParameters::apply()
 //**************************************************************************
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-TaskDlgRevolutionParameters::TaskDlgRevolutionParameters(PartDesignGui::ViewProvider *RevolutionView)
+TaskDlgRevolutionParameters::TaskDlgRevolutionParameters(ViewProviderRevolution *RevolutionView)
     : TaskDlgSketchBasedParameters(RevolutionView)
 {
     assert(RevolutionView);
-    Content.push_back(new TaskRevolutionParameters(RevolutionView));
+    Content.push_back(new TaskRevolutionParameters(RevolutionView, "PartDesign_Revolution", tr("Revolution parameters")));
+}
+
+TaskDlgGrooveParameters::TaskDlgGrooveParameters(ViewProviderGroove *GrooveView)
+    : TaskDlgSketchBasedParameters(GrooveView)
+{
+    assert(GrooveView);
+    Content.push_back(new TaskRevolutionParameters(GrooveView, "PartDesign_Groove", tr("Groove parameters")));
 }
 
 

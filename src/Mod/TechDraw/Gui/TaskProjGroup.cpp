@@ -69,6 +69,7 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawView* featView, bool mode) :
     ui(new Ui_TaskProjGroup),
     view(featView),
     multiView(dynamic_cast<TechDraw::DrawProjGroup*>(view)),
+    m_createMode(mode),
     blockCheckboxes(false)
 {
     ui->setupUi(this);

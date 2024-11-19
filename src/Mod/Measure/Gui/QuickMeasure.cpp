@@ -36,7 +36,7 @@
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
+#include <Gui/Control.h>
 
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/TopoShape.h>
@@ -104,31 +104,41 @@ void QuickMeasure::processSelection()
 
 void QuickMeasure::tryMeasureSelection()
 {
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
     measurement->clear();
-    addSelectionToMeasurement();
+    if (doc && Gui::Control().activeDialog() == nullptr) {
+        // we (still) have a doc and are not in a tool dialog where the user needs to click on stuff
+        addSelectionToMeasurement();
+    }
     printResult();
 }
 
 bool QuickMeasure::shouldMeasure(const Gui::SelectionChanges& msg) const
 {
-    if (msg.Type == Gui::SelectionChanges::SetPreselect
-        || msg.Type == Gui::SelectionChanges::RmvPreselect) {
-        return false;
-    }
 
+    // measure only IF
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    return doc != nullptr;
+    if (doc) {
+        // we have a document
+        if (msg.Type == Gui::SelectionChanges::AddSelection
+            || msg.Type == Gui::SelectionChanges::RmvSelection
+            || msg.Type == Gui::SelectionChanges::SetSelection
+            || msg.Type == Gui::SelectionChanges::ClrSelection) {
+            // the event is about a change in selected objects
+            return true;
+        }
+    }
+    return false;
 }
 
 bool QuickMeasure::isObjAcceptable(App::DocumentObject* obj)
 {
-    if (!obj || !obj->isDerivedFrom(Part::Feature::getClassTypeId())) {
-        return false;
+    // only measure shapes
+    if (obj && obj->isDerivedFrom(Part::Feature::getClassTypeId())) {
+        return true;
     }
 
-    std::string vpType = obj->getViewProviderName();
-    auto* vp = Gui::Application::Instance->getViewProvider(obj);
-    return !(vpType == "SketcherGui::ViewProviderSketch" && vp && vp->isEditing());
+    return false;
 }
 
 void QuickMeasure::addSelectionToMeasurement()

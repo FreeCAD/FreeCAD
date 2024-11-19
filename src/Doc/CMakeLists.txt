@@ -1,13 +1,12 @@
-
-configure_file(ThirdPartyLibraries.html
-    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DOCDIR}/ThirdPartyLibraries.html COPYONLY)
+configure_file(ThirdPartyLibraries.html.cmake
+    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DOCDIR}/ThirdPartyLibraries.html)
 configure_file(LICENSE.html
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DOCDIR}/LICENSE.html COPYONLY)
 
 # The CONTRIBUTORS file is now compiled into the FreeCAD GUI Qt resource file
 
 INSTALL(FILES
-    ThirdPartyLibraries.html
+    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DOCDIR}/ThirdPartyLibraries.html
     LICENSE.html
     DESTINATION ${CMAKE_INSTALL_DOCDIR}
 )

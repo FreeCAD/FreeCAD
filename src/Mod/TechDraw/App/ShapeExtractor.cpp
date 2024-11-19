@@ -25,7 +25,7 @@
 #ifndef _PreComp_
 # include <sstream>
 # include <BRep_Builder.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
+# include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 # include <BRepTools.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Iterator.hxx>
@@ -137,9 +137,10 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
         else {
             auto shape = Part::Feature::getShape(obj);
             // if link obj has a shape, we use that shape.
-            if(!SU::isShapeReallyNull((shape))) {
+            if(!SU::isShapeReallyNull(shape) && !isExplodedView) {
                 sourceShapes.push_back(getLocatedShape(obj));
-            } else {
+            }
+            else {
                 std::vector<TopoDS_Shape> shapeList = getShapesFromObject(obj);
                 sourceShapes.insert(sourceShapes.end(), shapeList.begin(), shapeList.end());
             }
@@ -354,7 +355,7 @@ TopoDS_Shape ShapeExtractor::getShapesFused(const std::vector<App::DocumentObjec
         it.Next();
         for (; it.More(); it.Next()) {
             const TopoDS_Shape& aChild = it.Value();
-            BRepAlgoAPI_Fuse mkFuse(fusedShape, aChild);
+            FCBRepAlgoAPI_Fuse mkFuse(fusedShape, aChild);
             // Let's check if the fusion has been successful
             if (!mkFuse.IsDone()) {
                 Base::Console().Error("SE - Fusion failed\n");
@@ -420,18 +421,17 @@ bool ShapeExtractor::is2dObject(const App::DocumentObject* obj)
 // just these for now
 bool ShapeExtractor::isEdgeType(const App::DocumentObject* obj)
 {
-    bool result = false;
     Base::Type t = obj->getTypeId();
     if (t.isDerivedFrom(Part::Line::getClassTypeId()) ) {
-        result = true;
+        return true;
     } else if (t.isDerivedFrom(Part::Circle::getClassTypeId())) {
-        result = true;
+        return true;
     } else if (t.isDerivedFrom(Part::Ellipse::getClassTypeId())) {
-        result = true;
+        return true;
     } else if (t.isDerivedFrom(Part::RegularPolygon::getClassTypeId())) {
-        result = true;
+        return true;
     }
-    return result;
+    return false;
 }
 
 bool ShapeExtractor::isPointType(const App::DocumentObject* obj)

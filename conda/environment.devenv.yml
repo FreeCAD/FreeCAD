@@ -92,7 +92,6 @@ dependencies:
 - python==3.11.*
 - pyyaml
 - qt-main
-- six
 - smesh
 - swig
 - vtk==9.2.6

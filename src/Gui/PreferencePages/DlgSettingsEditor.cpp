@@ -51,31 +51,10 @@ struct DlgSettingsEditorP
 namespace
 {
 
-/**
- * Get some kind of font that is monospaced, suitable for coding.
- *
- * Based on
- * https://stackoverflow.com/questions/18896933/qt-qfont-selection-of-a-monospace-font-doesnt-work
- */
+/** Get the system-preferred fixed-width font. */
 QFont getMonospaceFont()
 {
-    QFont font(QString::fromLatin1("monospace"));
-    if (font.fixedPitch()) {
-        return font;
-    }
-    font.setStyleHint(QFont::Monospace);
-    if (font.fixedPitch()) {
-        return font;
-    }
-    font.setStyleHint(QFont::TypeWriter);
-    if (font.fixedPitch()) {
-        return font;
-    }
-    font.setFamily(QString::fromLatin1("courier"));
-    if (font.fixedPitch()) {
-        return font;
-    }
-    return font;  // We failed, but return whatever we have anyway
+    return QFontDatabase::systemFont(QFontDatabase::FixedFont);
 }
 }  // namespace
 

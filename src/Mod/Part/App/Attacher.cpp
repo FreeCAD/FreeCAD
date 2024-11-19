@@ -1980,7 +1980,7 @@ TYPESYSTEM_SOURCE(Attacher::AttachEnginePlane, Attacher::AttachEngine)
 
 AttachEnginePlane::AttachEnginePlane()
 {
-    //re-used 3d modes: all of Attacher3d
+    //reused 3d modes: all of Attacher3d
     AttachEngine3D attacher3D;
     this->modeRefTypes = attacher3D.modeRefTypes;
     this->EnableAllSupportedModes();
@@ -2016,7 +2016,7 @@ AttachEngineLine::AttachEngineLine()
     modeRefTypes.resize(mmDummy_NumberOfModes);
     refTypeString s;
 
-    //re-used 3d modes
+    //reused 3d modes
     AttachEngine3D attacher3D;
     modeRefTypes[mm1AxisX] = attacher3D.modeRefTypes[mmObjectYZ];
     modeRefTypes[mm1AxisY] = attacher3D.modeRefTypes[mmObjectXZ];
@@ -2413,7 +2413,7 @@ AttachEnginePoint::AttachEnginePoint()
     modeRefTypes.resize(mmDummy_NumberOfModes);
     refTypeString s;
 
-    //re-used 3d modes
+    //reused 3d modes
     AttachEngine3D attacher3D;
     modeRefTypes[mm0Origin] = attacher3D.modeRefTypes[mmObjectXY];
     modeRefTypes[mm0CenterOfCurvature] = attacher3D.modeRefTypes[mmRevolutionSection];

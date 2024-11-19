@@ -279,7 +279,7 @@ class CreateAddonListWorker(QtCore.QThread):
         if not self.git_manager:
             message = translate(
                 "AddonsInstaller",
-                "Git is disabled, skipping git macros",
+                "Git is disabled, skipping Git macros",
             )
             self.status_message.emit(message)
             FreeCAD.Console.PrintWarning(message + "\n")
@@ -327,7 +327,7 @@ class CreateAddonListWorker(QtCore.QThread):
                     FreeCAD.Console.PrintWarning(
                         translate(
                             "AddonsInstaller",
-                            "Attempting to change non-git Macro setup to use git\n",
+                            "Attempting to change non-Git Macro setup to use Git\n",
                         )
                     )
                     self.git_manager.repair(
@@ -603,7 +603,7 @@ class UpdateChecker:
                         "AddonManager: "
                         + translate(
                             "AddonsInstaller",
-                            "Unable to fetch git updates for workbench {}",
+                            "Unable to fetch Git updates for workbench {}",
                         ).format(wb.name)
                         + "\n"
                     )
@@ -617,7 +617,7 @@ class UpdateChecker:
                             wb.set_status(Addon.Status.NO_UPDATE_AVAILABLE)
                     except GitFailed:
                         FreeCAD.Console.PrintWarning(
-                            translate("AddonsInstaller", "git status failed for {}").format(wb.name)
+                            translate("AddonsInstaller", "Git status failed for {}").format(wb.name)
                             + "\n"
                         )
                         wb.set_status(Addon.Status.CANNOT_CHECK)
@@ -909,7 +909,7 @@ class GetMacroDetailsWorker(QtCore.QThread):
 
         self.status_message.emit(translate("AddonsInstaller", "Retrieving macro description..."))
         if not self.macro.parsed and self.macro.on_git:
-            self.status_message.emit(translate("AddonsInstaller", "Retrieving info from git"))
+            self.status_message.emit(translate("AddonsInstaller", "Retrieving info from Git"))
             self.macro.fill_details_from_file(self.macro.src_filename)
         if not self.macro.parsed and self.macro.on_wiki:
             self.status_message.emit(translate("AddonsInstaller", "Retrieving info from wiki"))

@@ -140,6 +140,11 @@ class DraftTaskPanel:
                 FreeCADGui.ActiveDocument.resetEdit()
             return True
     def reject(self):
+        # https://github.com/FreeCAD/FreeCAD/issues/17027
+        # Function can be called multiple times if Esc is pressed during mouse
+        # move. We need to prevent multiple calls to draftToolBar.escape():
+        if not FreeCADGui.draftToolBar.isTaskOn:
+            return
         FreeCADGui.draftToolBar.isTaskOn = False
         FreeCADGui.draftToolBar.escape()
         if FreeCADGui.ActiveDocument:
@@ -223,11 +228,14 @@ class DraftToolBar:
 
     def _pushbutton(self,name, layout, hide=True, icon=None,
                     width=None, checkable=False, square=False):
-        button = QtWidgets.QPushButton(self.baseWidget)
-        button.setObjectName(name)
         if square:
-            button.setMaximumSize(QtCore.QSize(button.height(), button.height()))
-            button.setFlat(True)
+            button = QtWidgets.QToolButton(self.baseWidget)
+            if width is not None:
+                button.setFixedHeight(width)
+                button.setFixedWidth(width)
+        else:
+            button = QtWidgets.QPushButton(self.baseWidget)
+        button.setObjectName(name)
         if hide:
             button.hide()
         if icon:
@@ -483,7 +491,7 @@ class DraftToolBar:
         self.setStyleButton()
         self.constrButton = self._pushbutton(
             "constrButton", self.toptray, hide=False, icon='Draft_Construction',
-             checkable=True, square=True)
+            width=self.styleButton.sizeHint().height(), checkable=True, square=True)
         self.constrColor = QtGui.QColor(self.paramconstr)
         self.autoGroupButton = self._pushbutton(
             "autoGroup", self.bottomtray,icon=":/icons/button_invalid.svg",

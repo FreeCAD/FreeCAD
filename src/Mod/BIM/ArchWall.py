@@ -157,7 +157,7 @@ class _Wall(ArchComponent.Component):
 
         lp = obj.PropertiesList
         if not "Length" in lp:
-            obj.addProperty("App::PropertyLength","Length","Wall",QT_TRANSLATE_NOOP("App::Property","The length of this wall. Not used if this wall is based on an underlying object"))
+            obj.addProperty("App::PropertyLength","Length","Wall",QT_TRANSLATE_NOOP("App::Property","The length of this wall. Read-only if this wall is not based on an unconstrained sketch with a single edge, or on a Draft Wire with a single edge. Refer to wiki for details how length is deduced."))
         if not "Width" in lp:
             obj.addProperty("App::PropertyLength","Width","Wall",QT_TRANSLATE_NOOP("App::Property","The width of this wall. Not used if this wall is based on a face. Disabled and ignored if Base object (ArchSketch) provides the information."))
 
@@ -210,7 +210,10 @@ class _Wall(ArchComponent.Component):
         if not "ArchSketchData" in lp:
             obj.addProperty("App::PropertyBool","ArchSketchData","Wall",QT_TRANSLATE_NOOP("App::Property","Use Base ArchSketch (if used) data (e.g. widths, aligns, offsets) instead of Wall's properties"))
             obj.ArchSketchData = True
+        if not "ArchSketchEdges" in lp:
+            obj.addProperty("App::PropertyStringList","ArchSketchEdges","Wall",QT_TRANSLATE_NOOP("App::Property","Selected edges (or group of edges) of the base Sketch/ArchSketch, to use in creating the shape of this Arch Wall (instead of using all the Base Sketch/ArchSketch's edges by default).  Input are index numbers of edges or groups.  Disabled and ignored if Base object (ArchSketch) provides selected edges (as Wall Axis) information, with getWallBaseShapeEdgesInfo() method.  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment' Tool is provided in external SketchArch Add-on to let users to (de)select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used."))
 
+        self.connectEdges = []
         self.Type = "Wall"
 
     def onDocumentRestored(self,obj):
@@ -255,6 +258,9 @@ class _Wall(ArchComponent.Component):
                 obj.setEditorMode("OverrideAlign", ["ReadOnly"])
             if hasattr(obj,"OverrideOffset"):
                 obj.setEditorMode("OverrideOffset", ["ReadOnly"])
+            if hasattr(obj,"ArchSketchEdges"):
+                obj.setEditorMode("ArchSketchEdges", ["ReadOnly"])
+
         else:
             if hasattr(obj,"Width"):
                 obj.setEditorMode("Width", 0)
@@ -268,6 +274,8 @@ class _Wall(ArchComponent.Component):
                 obj.setEditorMode("OverrideAlign", 0)
             if hasattr(obj,"OverrideOffset"):
                 obj.setEditorMode("OverrideOffset", 0)
+            if hasattr(obj,"ArchSketchEdges"):
+                obj.setEditorMode("ArchSketchEdges", 0)
 
     def execute(self,obj):
         """Method run when the object is recomputed.
@@ -469,11 +477,13 @@ class _Wall(ArchComponent.Component):
                 if obj.Base.Shape.Edges:
                     if not obj.Base.Shape.Faces:
                         if hasattr(obj.Base.Shape,"Length"):
-                            l = obj.Base.Shape.Length
+                            l = float(0)
+                            for e in self.connectEdges:
+                                l += e.Length
+                            l = l / 2
                             if obj.Length.Value != l:
                                 obj.Length = l
                                 self.oldLength = None # delete the stored value to prevent triggering base change below
-
         # set the Area property
         obj.Area = obj.Length.Value * obj.Height.Value
 
@@ -553,6 +563,9 @@ class _Wall(ArchComponent.Component):
                 obj.setEditorMode("OverrideAlign", ["ReadOnly"])
             if hasattr(obj,"OverrideOffset"):
                 obj.setEditorMode("OverrideOffset", ["ReadOnly"])
+            if hasattr(obj,"ArchSketchEdges"):
+                obj.setEditorMode("ArchSketchEdges", ["ReadOnly"])
+
         else:
             if hasattr(obj,"Width"):
                 obj.setEditorMode("Width", 0)
@@ -566,6 +579,8 @@ class _Wall(ArchComponent.Component):
                 obj.setEditorMode("OverrideAlign", 0)
             if hasattr(obj,"OverrideOffset"):
                 obj.setEditorMode("OverrideOffset", 0)
+            if hasattr(obj,"ArchSketchEdges"):
+                obj.setEditorMode("ArchSketchEdges", 0)
 
         self.hideSubobjects(obj,prop)
         ArchComponent.Component.onChanged(self,obj,prop)
@@ -608,6 +623,7 @@ class _Wall(ArchComponent.Component):
 
         import Part
         import DraftGeomUtils
+        import ArchSketchObject
 
         # If ArchComponent.Component.getExtrusionData() can successfully get
         # extrusion data, just use that.
@@ -643,7 +659,7 @@ class _Wall(ArchComponent.Component):
                     except Exception:
                         print("ArchSketchObject add-on module is not installed yet")
                     try:
-                        widths = ArchSketchObject.sortSketchWidth(obj.Base, obj.OverrideWidth)
+                        widths = ArchSketchObject.sortSketchWidth(obj.Base, obj.OverrideWidth, obj.ArchSketchEdges)
                     except Exception:
                         widths = obj.OverrideWidth
                 else:
@@ -688,7 +704,7 @@ class _Wall(ArchComponent.Component):
                     except Exception:
                         print("ArchSketchObject add-on module is not installed yet")
                     try:
-                        aligns = ArchSketchObject.sortSketchAlign(obj.Base, obj.OverrideAlign)
+                        aligns = ArchSketchObject.sortSketchAlign(obj.Base, obj.OverrideAlign, obj.ArchSketchEdges)
                     except Exception:
                         aligns = obj.OverrideAlign
                 else:
@@ -720,7 +736,7 @@ class _Wall(ArchComponent.Component):
                     # If Base Object is ordinary Sketch (or when ArchSketch.getOffsets() not implemented yet):-
                     # sort the offset list in OverrideOffset to correspond to indexes of sorted edges of Sketch
                     if hasattr(ArchSketchObject, 'sortSketchOffset'):
-                        offsets = ArchSketchObject.sortSketchOffset(obj.Base, obj.OverrideOffset)
+                        offsets = ArchSketchObject.sortSketchOffset(obj.Base, obj.OverrideOffset, obj.ArchSketchEdges)
                     else:
                         offsets = obj.OverrideOffset
                 else:
@@ -824,11 +840,13 @@ class _Wall(ArchComponent.Component):
                         skGeom = obj.Base.GeometryFacadeList
                         skGeomEdges = []
                         skPlacement = obj.Base.Placement  # Get Sketch's placement to restore later
-                        for i in skGeom:
-                            if not i.Construction:
+                        # Get ArchSketch edges to construct ArchWall
+                        # No need to test obj.ArchSketchData ...
+                        for ig, geom  in enumerate(skGeom):
+                            if not geom.Construction and (not obj.ArchSketchEdges or str(ig) in obj.ArchSketchEdges):
                                 # support Line, Arc, Circle, Ellipse for Sketch as Base at the moment
-                                if isinstance(i.Geometry, (Part.LineSegment, Part.Circle, Part.ArcOfCircle, Part.Ellipse)):
-                                    skGeomEdgesI = i.Geometry.toShape()
+                                if isinstance(geom.Geometry, (Part.LineSegment, Part.Circle, Part.ArcOfCircle, Part.Ellipse)):
+                                    skGeomEdgesI = geom.Geometry.toShape()
                                     skGeomEdges.append(skGeomEdgesI)
                         for cluster in Part.getSortedClusters(skGeomEdges):
                             clusterTransformed = []
@@ -886,6 +904,7 @@ class _Wall(ArchComponent.Component):
                         layeroffset = 0
                         baseface = None
 
+                        self.connectEdges = []
                         for i,wire in enumerate(self.basewires):
 
                             # Check number of edges per 'wire' and get the 1st edge
@@ -964,26 +983,27 @@ class _Wall(ArchComponent.Component):
                                 # Get the 'offseted' wire taking into account
                                 # of Width and Align of each edge, and overall
                                 # Offset
-                                w2 = DraftGeomUtils.offsetWire(wire, dvec,
+
+                                wNe2 = DraftGeomUtils.offsetWire(wire, dvec,
                                                                bind=False,
                                                                occ=False,
                                                                widthList=curWidth,
                                                                offsetMode=None,
                                                                alignList=aligns,
                                                                normal=normal,
-                                                               basewireOffset=offsets)
+                                                               basewireOffset=offsets,
+                                                               wireNedge=True)
                                 # Get the 'base' wire taking into account of
                                 # width and align of each edge
-                                w1 = DraftGeomUtils.offsetWire(wire, dvec,
+                                wNe1 = DraftGeomUtils.offsetWire(wire, dvec,
                                                                bind=False,
                                                                occ=False,
                                                                widthList=curWidth,
                                                                offsetMode="BasewireMode",
                                                                alignList=aligns,
                                                                normal=normal,
-                                                               basewireOffset=offsets)
-                                face = DraftGeomUtils.bind(w1, w2, per_segment=True)
-
+                                                               basewireOffset=offsets,
+                                                               wireNedge=True)
                             elif curAligns == "Right":
                                 dvec = dvec.negative()
 
@@ -1004,58 +1024,68 @@ class _Wall(ArchComponent.Component):
                                 #if off:
                                 #    dvec2 = DraftVecUtils.scaleTo(dvec,off)
                                 #    wire = DraftGeomUtils.offsetWire(wire,dvec2)
-
-
-                                w2 = DraftGeomUtils.offsetWire(wire, dvec,
+                                wNe2 = DraftGeomUtils.offsetWire(wire, dvec,
                                                                bind=False,
                                                                occ=False,
                                                                widthList=curWidth,
                                                                offsetMode=None,
                                                                alignList=aligns,
                                                                normal=normal,
-                                                               basewireOffset=offsets)
-                                w1 = DraftGeomUtils.offsetWire(wire, dvec,
+                                                               basewireOffset=offsets,
+                                                               wireNedge=True)
+                                wNe1 = DraftGeomUtils.offsetWire(wire, dvec,
                                                                bind=False,
                                                                occ=False,
                                                                widthList=curWidth,
                                                                offsetMode="BasewireMode",
                                                                alignList=aligns,
                                                                normal=normal,
-                                                               basewireOffset=offsets)
-                                face = DraftGeomUtils.bind(w1, w2, per_segment=True)
-
-                            #elif obj.Align == "Center":
+                                                               basewireOffset=offsets,
+                                                               wireNedge=True)
                             elif curAligns == "Center":
                                 if layers:
                                     totalwidth=sum([abs(l) for l in layers])
                                     curWidth = abs(layers[i])
                                     off = totalwidth/2-layeroffset
                                     d1 = Vector(dvec).multiply(off)
-                                    w1 = DraftGeomUtils.offsetWire(wire, d1)
+                                    wNe1 = DraftGeomUtils.offsetWire(wire, d1,
+                                                                     wireNedge=True)
                                     layeroffset += curWidth
                                     off = totalwidth/2-layeroffset
                                     d1 = Vector(dvec).multiply(off)
-                                    w2 = DraftGeomUtils.offsetWire(wire, d1)
+                                    wNe2 = DraftGeomUtils.offsetWire(wire, d1,
+                                                                     wireNedge=True)
                                 else:
                                     dvec.multiply(width)
-
-                                    w2 = DraftGeomUtils.offsetWire(wire, dvec,
+                                    wNe2 = DraftGeomUtils.offsetWire(wire, dvec,
                                                                    bind=False,
                                                                    occ=False,
                                                                    widthList=widths,
                                                                    offsetMode=None,
                                                                    alignList=aligns,
                                                                    normal=normal,
-                                                                   basewireOffset=offsets)
-                                    w1 = DraftGeomUtils.offsetWire(wire, dvec,
+                                                                   basewireOffset=offsets,
+                                                                   wireNedge=True)
+                                    wNe1 = DraftGeomUtils.offsetWire(wire, dvec,
                                                                    bind=False,
                                                                    occ=False,
                                                                    widthList=widths,
                                                                    offsetMode="BasewireMode",
                                                                    alignList=aligns,
                                                                    normal=normal,
-                                                                   basewireOffset=offsets)
-                                face = DraftGeomUtils.bind(w1, w2, per_segment=True)
+                                                                   basewireOffset=offsets,
+                                                                   wireNedge=True)
+                            w2 = wNe2[0]
+                            w1 = wNe1[0]
+                            face = DraftGeomUtils.bind(w1, w2, per_segment=True)
+                            cEdgesF2 = wNe2[1]
+                            cEdges2 = wNe2[2]
+                            oEdges2 = wNe2[3]
+                            cEdgesF1 = wNe1[1]
+                            cEdges1 = wNe1[2]
+                            oEdges1 = wNe1[3]
+                            self.connectEdges.extend(cEdges2)
+                            self.connectEdges.extend(cEdges1)
 
                             del widths[0:edgeNum]
                             del aligns[0:edgeNum]

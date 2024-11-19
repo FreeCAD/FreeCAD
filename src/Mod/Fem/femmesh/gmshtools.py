@@ -30,6 +30,7 @@ __url__ = "https://www.freecad.org"
 import os
 import re
 import subprocess
+from PySide.QtCore import QProcess
 
 import FreeCAD
 from FreeCAD import Console
@@ -54,12 +55,16 @@ class GmshTools:
         # mesh obj
         self.mesh_obj = gmsh_mesh_obj
 
-        self.process = None
+        self.process = QProcess()
         # analysis
+        self.analysis = None
         if analysis:
             self.analysis = analysis
         else:
-            self.analysis = None
+            for i in self.mesh_obj.InList:
+                if i.isDerivedFrom("Fem::FemAnalysis"):
+                    self.analysis = i
+                    break
 
         self.load_properties()
         self.error = False
@@ -206,23 +211,17 @@ class GmshTools:
         self.write_part_file()
         self.write_geo()
 
-    def compute(self):
+    def prepare(self):
         self.load_properties()
         self.update_mesh_data()
         self.get_tmp_file_paths()
         self.get_gmsh_command()
         self.write_gmsh_input_files()
 
-        command_list = [self.gmsh_bin, "-", self.temp_file_geo]
-        self.process = subprocess.Popen(
-            command_list, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE
-        )
-
-        out, err = self.process.communicate()
-        if self.process.returncode != 0:
-            raise RuntimeError(err.decode("utf-8"))
-
-        return True
+    def compute(self):
+        command_list = ["-v", "4", "-", self.temp_file_geo]
+        self.process.start(self.gmsh_bin, command_list)
+        return self.process
 
     def update_properties(self):
         self.mesh_obj.FemMesh = Fem.read(self.temp_file_mesh)
@@ -445,6 +444,7 @@ class GmshTools:
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 universal_newlines=True,
+                startupinfo=femutils.startProgramInfo("hide"),
             )
         except Exception as e:
             Console.PrintMessage(str(e) + "\n")
@@ -926,7 +926,11 @@ class GmshTools:
         # print(command_list)
         try:
             p = subprocess.Popen(
-                command_list, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+                command_list,
+                shell=False,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                startupinfo=femutils.startProgramInfo("hide"),
             )
             output, error = p.communicate()
             error = error.decode("utf-8")
