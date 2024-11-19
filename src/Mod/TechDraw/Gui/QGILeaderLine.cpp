@@ -143,21 +143,18 @@ QVariant QGILeaderLine::itemChange(GraphicsItemChange change, const QVariant& va
 //QGILL isn't draggable so skip QGIV::mousePress have event
 void QGILeaderLine::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
-    //    Base::Console().Message("QGILL::mousePressEvent() - %s\n", getViewName());
     QGraphicsItem::mousePressEvent(event);
 }
 
-//QGILL isn't draggable so skip QGIV::mouseRelease
+//QGILL isn't draggable so skip QGIV::Release
 void QGILeaderLine::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
-    //    Base::Console().Message("QGILL::mouseReleaseEvent() - %s\n", getViewName());
     QGraphicsItem::mouseReleaseEvent(event);
 }
 
 //! start editor on double click
 void QGILeaderLine::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
 {
-    //    Base::Console().Message("QGILL::mouseDoubleClickEvent() - %s\n", getViewName());
     auto ViewProvider = dynamic_cast<ViewProviderLeader*>(getViewProvider(getLeaderFeature()));
     if (!ViewProvider) {
         qWarning() << "QGILeaderLine::mouseDoubleClickEvent: No valid view provider";
@@ -419,7 +416,6 @@ void QGILeaderLine::draw()
 
 QPainterPath QGILeaderLine::makeLeaderPath(std::vector<QPointF> qPoints)
 {
-    //    Base::Console().Message("QGILeaderLine::makeLeaderPath()\n");
     QPainterPath result;
     DrawLeaderLine* featLeader = getLeaderFeature();
     if (!featLeader) {
@@ -469,7 +465,6 @@ QPainterPath QGILeaderLine::makeLeaderPath(std::vector<QPointF> qPoints)
 //! result is is not inverted (Y grows upwards).
 QPointF QGILeaderLine::getAttachFromFeature()
 {
-    // Base::Console().Message("QGILL::getAttachFromFeature()\n");
     TechDraw::DrawLeaderLine* featLeader = getLeaderFeature();
     if (!featLeader) {
         // Base::Console().Message("QGIL::getAttachFromLeader - no feature\n");
@@ -483,7 +478,6 @@ QPointF QGILeaderLine::getAttachFromFeature()
 
 std::vector<QPointF> QGILeaderLine::getWayPointsFromFeature()
 {
-    // Base::Console().Message("QGILL::getWayPointsFromFeature()\n");
     DrawLeaderLine* featLeader = getLeaderFeature();
     if (!featLeader) {
         // Base::Console().Message("QGILL::getWayPointsFromFeature - featLeader is nullptr\n");
@@ -494,6 +488,9 @@ std::vector<QPointF> QGILeaderLine::getWayPointsFromFeature()
     auto doScale = featLeader->Scalable.getValue();
     auto doRotate = featLeader->RotatesWithParent.getValue();
     auto vPoints =  featLeader->getScaledAndRotatedPoints(doScale, doRotate);
+    if (featLeader->AutoHorizontal.getValue()) {
+        vPoints = DrawLeaderLine::horizLastSegment(vPoints, featLeader->getBaseView()->Rotation.getValue());
+    }
 
     std::vector<QPointF> qPoints;
     qPoints.reserve(vPoints.size());
@@ -504,20 +501,19 @@ std::vector<QPointF> QGILeaderLine::getWayPointsFromFeature()
             qPoints.push_back(DU::toQPointF(entry));
         } else {
             // use points as saved in >= v0.22
-            qPoints.push_back(DU::toQPointF(DGU::toSceneCoords(entry, false)));
+            qPoints.push_back(DU::toQPointF(Rez::guiX(entry)));
         }
     }
 
     if (qPoints.empty()) {
         Base::Console().Warning("QGILeaderLine::getWayPointsFromFeature - no points\n");
     }
-
+    
     return qPoints;
 }
 
 void QGILeaderLine::setArrows(std::vector<QPointF> pathPoints)
 {
-    //    Base::Console().Message("QGILL::setArrows()\n");
     Base::Vector3d stdX(1.0, 0.0, 0.0);
     TechDraw::DrawLeaderLine* featLeader = getLeaderFeature();
 
@@ -628,8 +624,8 @@ void QGILeaderLine::paint(QPainter* painter, const QStyleOptionGraphicsItem* opt
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
-    //    painter->setPen(Qt::blue);
-    //    painter->drawRect(boundingRect());          //good for debugging
+    painter->setPen(Qt::blue);
+    painter->drawRect(boundingRect());          //good for debugging
 
     QGIView::paint(painter, &myOption, widget);
 }
