@@ -58,13 +58,6 @@ public:
     std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
     libraryModels(const QString& libraryName);
 
-    // @abstractmethod
-    // def libraryModels(self, library: str) -> list:
-    //     """Returns a list of models managed by this interface
-
-    //     Each list entry is a tuple containing the UUID, path, and name of the model"""
-    //     pass
-
     std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> getModelLibraries()
     {
         return _libraryList;
