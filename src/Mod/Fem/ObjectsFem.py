@@ -351,7 +351,7 @@ def makeElementFluid1D(doc, name="ElementFluid1D"):
 
 
 def makeElementGeometry1D(
-    doc, sectiontype="Rectangular", width=10.0, height=25.0, name="ElementGeometry1D"
+    doc, sectiontype="Rectangular", width=10.0, height=25.0, thickness=2.0, name="ElementGeometry1D"
 ):
     """makeElementGeometry1D(document, [width], [height], [name]):
     creates a 1D geometry element object to define a cross section"""
@@ -359,17 +359,22 @@ def makeElementGeometry1D(
     from femobjects import element_geometry1D
 
     element_geometry1D.ElementGeometry1D(obj)
-    sec_types = element_geometry1D.ElementGeometry1D.known_beam_types
-    if sectiontype not in sec_types:
-        FreeCAD.Console.PrintError("Section type is unknown. Set to " + sec_types[0] + " \n")
-        obj.SectionType = sec_types[0]
-    else:
-        obj.SectionType = sectiontype
+
+    obj.SectionType = sectiontype
     obj.RectWidth = width
     obj.RectHeight = height
     obj.CircDiameter = height
     obj.PipeDiameter = height
-    obj.PipeThickness = width
+    obj.PipeThickness = thickness
+    obj.Axis1Length = width
+    obj.Axis2Length = height
+    obj.BoxHeight = height
+    obj.BoxWidth = width
+    obj.BoxT1 = thickness
+    obj.BoxT2 = thickness
+    obj.BoxT3 = thickness
+    obj.BoxT4 = thickness
+
     if FreeCAD.GuiUp:
         from femviewprovider import view_element_geometry1D
 
