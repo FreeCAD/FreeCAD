@@ -21,6 +21,12 @@
       </Documentation>
       <Parameter Name="Name" Type="String"/>
     </Attribute>
+    <Attribute Name="DisplayName" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Property display friendly name.</UserDocu>
+      </Documentation>
+      <Parameter Name="DisplayName" Type="String"/>
+    </Attribute>
     <Attribute Name="Type" ReadOnly="true">
       <Documentation>
         <UserDocu>Property type.</UserDocu>
@@ -44,6 +50,12 @@
         <UserDocu>Property description.</UserDocu>
       </Documentation>
       <Parameter Name="Description" Type="String"/>
+    </Attribute>
+    <Attribute Name="Columns" ReadOnly="true">
+      <Documentation>
+        <UserDocu>List of array columns.</UserDocu>
+      </Documentation>
+      <Parameter Name="Columns" Type="List"/>
     </Attribute>
   </PythonExport>
 </GenerateModel>

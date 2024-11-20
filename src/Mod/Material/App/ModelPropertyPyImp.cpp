@@ -65,6 +65,11 @@ Py::String ModelPropertyPy::getName() const
     return Py::String(getModelPropertyPtr()->getName().toStdString());
 }
 
+Py::String ModelPropertyPy::getDisplayName() const
+{
+    return Py::String(getModelPropertyPtr()->getDisplayName().toStdString());
+}
+
 Py::String ModelPropertyPy::getType() const
 {
     return Py::String(getModelPropertyPtr()->getPropertyType().toStdString());
@@ -83,6 +88,19 @@ Py::String ModelPropertyPy::getURL() const
 Py::String ModelPropertyPy::getDescription() const
 {
     return Py::String(getModelPropertyPtr()->getDescription().toStdString());
+}
+
+Py::List ModelPropertyPy::getColumns() const
+{
+    Py::List list;
+
+    auto columns = getModelPropertyPtr()->getColumns();
+    for (auto& column : columns) {
+        PyObject* modelPropertyPy = new ModelPropertyPy(new ModelProperty(column));
+        list.append(Py::Object(modelPropertyPy, true));
+    }
+
+    return list;
 }
 
 PyObject* ModelPropertyPy::getCustomAttributes(const char* /*attr*/) const
