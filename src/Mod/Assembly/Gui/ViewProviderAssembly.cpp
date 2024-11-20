@@ -221,6 +221,9 @@ bool ViewProviderAssembly::canDragObjectToTarget(App::DocumentObject* obj,
 bool ViewProviderAssembly::setEdit(int mode)
 {
     if (mode == ViewProvider::Default) {
+        // Ask that this edit mode be restored. For example if it is quit to edit a sketch.
+        getDocument()->setEditRestore(true);
+
         // Set the part as 'Activated' ie bold in the tree.
         Gui::Command::doCommand(Gui::Command::Gui,
                                 "appDoc = App.getDocument('%s')\n"
