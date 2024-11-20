@@ -2,12 +2,16 @@
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_SOURCE_DIR}/src/3rdParty/OndselSolver
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
     ${OCC_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
 )
+if (NOT FREECAD_USE_EXTERNAL_ONDSELSOLVER)
+include_directories(
+    ${CMAKE_SOURCE_DIR}/src/3rdParty/OndselSolver
+)
+endif ()
 link_directories(${OCC_LIBRARY_DIR})
 
 set(Assembly_LIBS
