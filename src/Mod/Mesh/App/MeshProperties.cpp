@@ -244,7 +244,7 @@ std::vector<float> PropertyCurvatureList::getCurvature(int mode) const
     // Mean curvature
     if (mode == MeanCurvature) {
         for (const auto& it : fCurvInfo) {
-            fValues.push_back(0.5f * (it.fMaxCurvature + it.fMinCurvature));
+            fValues.push_back(0.5F * (it.fMaxCurvature + it.fMinCurvature));
         }
     }
     // Gaussian curvature
