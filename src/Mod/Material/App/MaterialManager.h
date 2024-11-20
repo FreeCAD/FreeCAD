@@ -57,6 +57,20 @@ public:
     ~MaterialManager() override;
 
     static void refresh();
+
+    std::shared_ptr<std::vector<Library>> getLibraries();
+    void createLibrary(const QString& libraryName, const QString& icon, bool readOnly = true);
+    void createLocalLibrary(const QString& libraryName,
+                            const QString& directory,
+                            const QString& icon,
+                            bool readOnly = true);
+    void renameLibrary(const QString& libraryName, const QString& newName);
+    void changeIcon(const QString& libraryName, const QString& icon);
+    void removeLibrary(const QString& libraryName);
+    std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
+    libraryMaterials(const QString& libraryName);
+    bool isLocalLibrary(const QString& libraryName);
+
     static std::shared_ptr<App::Material> defaultAppearance();
     static std::shared_ptr<Material> defaultMaterial();
     static QString defaultMaterialUUID();

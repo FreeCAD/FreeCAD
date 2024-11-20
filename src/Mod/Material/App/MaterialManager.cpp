@@ -88,6 +88,50 @@ void MaterialManager::refresh()
     _localManager->refresh();
 }
 
+std::shared_ptr<std::vector<Library>> MaterialManager::getLibraries()
+{
+    return _localManager->getLibraries();
+}
+
+void MaterialManager::createLibrary(const QString& libraryName, const QString& icon, bool readOnly)
+{
+    throw LibraryCreationError("Local library requires a path");
+}
+
+void MaterialManager::createLocalLibrary(const QString& libraryName,
+                                         const QString& directory,
+                                         const QString& icon,
+                                         bool readOnly)
+{
+    _localManager->createLibrary(libraryName, directory, icon, readOnly);
+}
+
+void MaterialManager::renameLibrary(const QString& libraryName, const QString& newName)
+{
+    _localManager->renameLibrary(libraryName, newName);
+}
+
+void MaterialManager::changeIcon(const QString& libraryName, const QString& icon)
+{
+    _localManager->changeIcon(libraryName, icon);
+}
+
+void MaterialManager::removeLibrary(const QString& libraryName)
+{
+    _localManager->removeLibrary(libraryName);
+}
+
+std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
+MaterialManager::libraryMaterials(const QString& libraryName)
+{
+    return _localManager->libraryMaterials(libraryName);
+}
+
+bool MaterialManager::isLocalLibrary(const QString& libraryName)
+{
+    return true;
+}
+
 void MaterialManager::remove(const QString& uuid) const
 {
     _localManager->remove(uuid);

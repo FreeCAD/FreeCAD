@@ -35,11 +35,6 @@
 
 #include "ModelManagerLocal.h"
 
-#if defined(BUILD_MATERIAL_DATABASE)
-#include "Database.h"
-#endif  // BUILD_MATERIAL_DATABASE
-
-
 using namespace Materials;
 
 std::unique_ptr<ModelManagerLocal> ModelManager::_localManager;
@@ -94,6 +89,50 @@ void ModelManager::cleanup()
 void ModelManager::refresh()
 {
     _localManager->refresh();
+}
+
+std::shared_ptr<std::vector<Library>> ModelManager::getLibraries()
+{
+    return _localManager->getLibraries();
+}
+
+void ModelManager::createLibrary(const QString& libraryName, const QString& icon, bool readOnly)
+{
+    throw LibraryCreationError("Local library requires a path");
+}
+
+void ModelManager::createLocalLibrary(const QString& libraryName,
+                                      const QString& directory,
+                                      const QString& icon,
+                                      bool readOnly)
+{
+    _localManager->createLibrary(libraryName, directory, icon, readOnly);
+}
+
+void ModelManager::renameLibrary(const QString& libraryName, const QString& newName)
+{
+    _localManager->renameLibrary(libraryName, newName);
+}
+
+void ModelManager::changeIcon(const QString& libraryName, const QString& icon)
+{
+    _localManager->changeIcon(libraryName, icon);
+}
+
+void ModelManager::removeLibrary(const QString& libraryName)
+{
+    _localManager->removeLibrary(libraryName);
+}
+
+std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
+ModelManager::libraryModels(const QString& libraryName)
+{
+    return _localManager->libraryModels(libraryName);
+}
+
+bool ModelManager::isLocalLibrary(const QString& libraryName)
+{
+    return true;
 }
 
 std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> ModelManager::getModelLibraries()
