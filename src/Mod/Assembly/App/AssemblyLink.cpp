@@ -45,6 +45,7 @@
 #include <Mod/Part/App/DatumFeature.h>
 
 #include "AssemblyObject.h"
+#include "AssemblyUtils.h"
 #include "JointGroup.h"
 
 #include "AssemblyLink.h"
@@ -468,7 +469,7 @@ void AssemblyLink::handleJointReference(App::DocumentObject* joint,
         }
 
         // Lastly we need to replace the object name by its link name.
-        auto* obj = AssemblyObject::getObjFromRef(prop1);
+        auto* obj = getObjFromRef(prop1);
         auto* link = objLinkMap[obj];
         if (!obj || !link) {
             return;
@@ -496,7 +497,7 @@ void AssemblyLink::handleJointReference(App::DocumentObject* joint,
 void AssemblyLink::ensureNoJointGroup()
 {
     // Make sure there is no joint group
-    JointGroup* jGroup = AssemblyObject::getJointGroup(this);
+    JointGroup* jGroup = getJointGroup(this);
     if (jGroup) {
         // If there is a joint group, we delete it and its content.
         jGroup->removeObjectsFromDocument();
@@ -506,7 +507,7 @@ void AssemblyLink::ensureNoJointGroup()
 JointGroup* AssemblyLink::ensureJointGroup()
 {
     // Make sure there is a jointGroup
-    JointGroup* jGroup = AssemblyObject::getJointGroup(this);
+    JointGroup* jGroup = getJointGroup(this);
     if (!jGroup) {
         jGroup = new JointGroup();
         getDocument()->addObject(jGroup, tr("Joints").toStdString().c_str());
@@ -572,7 +573,7 @@ bool AssemblyLink::isRigid()
 
 std::vector<App::DocumentObject*> AssemblyLink::getJoints()
 {
-    JointGroup* jointGroup = AssemblyObject::getJointGroup(this);
+    JointGroup* jointGroup = getJointGroup(this);
 
     if (!jointGroup) {
         return {};
