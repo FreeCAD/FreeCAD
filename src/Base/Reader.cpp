@@ -38,7 +38,6 @@
 #include "Persistence.h"
 #include "Sequencer.h"
 #include "Stream.h"
-#include "Tools.h"
 #include "XMLTools.h"
 
 #ifdef _MSC_VER
@@ -438,13 +437,7 @@ void Base::XMLReader::readFiles(zipios::ZipInputStream& zipstream) const
                 // failure.
                 Base::Console().Error("Reading failed from embedded file: %s\n",
                                       entry->toString().c_str());
-                if (jt->FileName == "StringHasher.Table.txt") {
-                    Base::Console().Error(QT_TRANSLATE_NOOP(
-                        "Notifications",
-                        "\nIt is recommended that the user right-click the root of "
-                        "the document and select Mark to recompute.\n"
-                        "The user should then click the Refresh button in the main toolbar.\n"));
-                }
+                FailedFiles.push_back(jt->FileName);
             }
             // Go to the next registered file name
             it = jt + 1;
@@ -478,6 +471,12 @@ const char* Base::XMLReader::addFile(const char* Name, Base::Persistence* Object
 const std::vector<std::string>& Base::XMLReader::getFilenames() const
 {
     return FileNames;
+}
+
+bool Base::XMLReader::hasReadFailed(const std::string& filename) const
+{
+    auto it = std::find(FailedFiles.begin(), FailedFiles.end(), filename);
+    return (it != FailedFiles.end());
 }
 
 bool Base::XMLReader::isRegistered(Base::Persistence* Object) const

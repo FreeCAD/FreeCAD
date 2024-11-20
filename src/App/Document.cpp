@@ -1007,7 +1007,8 @@ void Document::Restore(Base::XMLReader &reader)
 
     if (reader.hasAttribute("StringHasher")) {
         d->Hasher->Restore(reader);
-    } else {
+    }
+    else {
         d->Hasher->clear();
     }
 
@@ -1073,6 +1074,17 @@ void Document::Restore(Base::XMLReader &reader)
     }
 
     reader.readEndElement("Document");
+}
+
+void DocumentP::checkStringHasher(const Base::XMLReader& reader)
+{
+    if (reader.hasReadFailed("StringHasher.Table.txt")) {
+        Base::Console().Error(QT_TRANSLATE_NOOP(
+            "Notifications",
+            "\nIt is recommended that the user right-click the root of "
+            "the document and select Mark to recompute.\n"
+            "The user should then click the Refresh button in the main toolbar.\n"));
+    }
 }
 
 std::pair<bool,int> Document::addStringHasher(const StringHasherRef & hasher) const {
@@ -2117,6 +2129,8 @@ void Document::restore (const char *filename,
     // without GUI. But if available then follow after all data files of the App document.
     signalRestoreDocument(reader);
     reader.readFiles(zipstream);
+
+    DocumentP::checkStringHasher(reader);
 
     if (reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestore)) {
         setStatus(Document::PartialRestore, true);

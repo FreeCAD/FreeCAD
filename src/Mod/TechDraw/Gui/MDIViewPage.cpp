@@ -1061,8 +1061,6 @@ void MDIViewPage::removeUnselectedTreeSelection(QList<QGraphicsItem*> sceneSelec
 bool MDIViewPage::compareSelections(std::vector<Gui::SelectionObject> treeSel,
                                     QList<QGraphicsItem*> sceneSel)
 {
-    bool result = true;
-
     if (treeSel.empty() && sceneSel.empty()) {
         return true;
     }
@@ -1141,7 +1139,7 @@ bool MDIViewPage::compareSelections(std::vector<Gui::SelectionObject> treeSel,
         return false;
     }
 
-    return result;
+    return true;
 }
 
 ///////////////////end Selection Routines //////////////////////

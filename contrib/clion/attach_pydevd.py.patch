@@ -1,0 +1,18 @@
+--- attach_pydevd.py.orig	2024-09-26 10:36:47.131066345 -0400
++++ attach_pydevd.py	2024-09-26 10:16:48.687714133 -0400
+@@ -48,6 +48,15 @@
+     import add_code_to_python_process
+     show_debug_info_on_target_process = 0
+ 
++    print("attach_pydevd is trying to relay the port",setup['port'])
++    try:
++        from multiprocessing.connection import Client
++        link = Client(('localhost',39998))
++        link.send(setup['port'])
++        link.close()
++    except ConnectionError as ce:
++        pass
++
+     pydevd_dirname = os.path.dirname(os.path.dirname(__file__))
+ 
+     if sys.platform == 'win32':
