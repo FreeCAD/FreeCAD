@@ -75,7 +75,7 @@ TEST_F(TestMaterial, TestInstallation)
     ASSERT_GT(libraries->size(), 0);
 
     // We should have at least one material
-    auto materials = _materialManager->getMaterials();
+    auto materials = _materialManager->getLocalMaterials();
     ASSERT_GT(materials->size(), 0);
 }
 

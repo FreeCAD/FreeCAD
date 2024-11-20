@@ -156,7 +156,7 @@ Py::Dict MaterialManagerPy::getMaterials() const
 {
     Py::Dict dict;
 
-    auto materials = getMaterialManagerPtr()->getMaterials();
+    auto materials = getMaterialManagerPtr()->getLocalMaterials();
 
     for (auto it = materials->begin(); it != materials->end(); it++) {
         QString key = it->first;

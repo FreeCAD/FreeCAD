@@ -19,14 +19,13 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATERIAL_MATERIALMANAGER_H
-#define MATERIAL_MATERIALMANAGER_H
+#ifndef MATERIAL_MATERIALMANAGERLOCAL_H
+#define MATERIAL_MATERIALMANAGERLOCAL_H
 
 #include <memory>
 
 #include <boost/filesystem.hpp>
 
-#include <Base/Parameter.h>
 #include <Mod/Material/MaterialGlobal.h>
 
 #include "FolderTree.h"
@@ -46,27 +45,25 @@ class Material;
 
 namespace Materials
 {
-class MaterialManagerLocal;
 
-class MaterialsExport MaterialManager: public Base::BaseClass, ParameterGrp::ObserverType
+class MaterialsExport MaterialManagerLocal: public Base::BaseClass
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    MaterialManager();
-    ~MaterialManager() override;
+    MaterialManagerLocal();
+    ~MaterialManagerLocal() override = default;
 
+    static void cleanup();
     static void refresh();
-    static std::shared_ptr<App::Material> defaultAppearance();
-    static std::shared_ptr<Material> defaultMaterial();
-    static QString defaultMaterialUUID();
 
-    std::shared_ptr<std::map<QString, std::shared_ptr<Material>>> getLocalMaterials() const;
+    std::shared_ptr<std::map<QString, std::shared_ptr<Material>>> getLocalMaterials() const
+    {
+        return _materialMap;
+    }
     std::shared_ptr<Material> getMaterial(const QString& uuid) const;
-    static std::shared_ptr<Material> getMaterial(const App::Material& material);
     std::shared_ptr<Material> getMaterialByPath(const QString& path) const;
     std::shared_ptr<Material> getMaterialByPath(const QString& path, const QString& library) const;
-    std::shared_ptr<Material> getParent(const std::shared_ptr<Material>& material) const;
     std::shared_ptr<MaterialLibrary> getLibrary(const QString& name) const;
     bool exists(const QString& uuid) const;
     bool exists(const std::shared_ptr<MaterialLibrary>& library, const QString& uuid) const;
@@ -97,22 +94,10 @@ public:
     }
     std::shared_ptr<std::list<QString>>
     getMaterialFolders(const std::shared_ptr<MaterialLibrary>& library) const;
-    void createFolder(const std::shared_ptr<MaterialLibrary>& library, const QString& path) const
+    void remove(const QString& uuid) const
     {
-        library->createFolder(path);
+        _materialMap->erase(uuid);
     }
-    void renameFolder(const std::shared_ptr<MaterialLibrary>& library,
-                      const QString& oldPath,
-                      const QString& newPath) const
-    {
-        library->renameFolder(oldPath, newPath);
-    }
-    void deleteRecursive(const std::shared_ptr<MaterialLibrary>& library, const QString& path) const
-    {
-        library->deleteRecursive(path);
-        dereference();
-    }
-    void remove(const QString& uuid) const;
 
     void saveMaterial(const std::shared_ptr<MaterialLibrary>& library,
                       const std::shared_ptr<Material>& material,
@@ -131,18 +116,14 @@ public:
     void dereference(std::shared_ptr<Material> material) const;
     void dereference() const;
 
-    /// Observer message from the ParameterGrp
-    void OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason) override;
-
 private:
-    void initManagers();
-
-    static std::unique_ptr<MaterialManagerLocal> _localManager;
+    static std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> _libraryList;
+    static std::shared_ptr<std::map<QString, std::shared_ptr<Material>>> _materialMap;
     static QMutex _mutex;
 
-    ParameterGrp::handle _hGrp;
+    static void initLibraries();
 };
 
 }  // namespace Materials
 
-#endif  // MATERIAL_MATERIALMANAGER_H
+#endif  // MATERIAL_MATERIALMANAGERLOCAL_H

@@ -89,6 +89,8 @@ SET(Materials_SRCS
     MaterialLoader.h
     MaterialManager.cpp
     MaterialManager.h
+    MaterialManagerLocal.cpp
+    MaterialManagerLocal.h
     Materials.cpp
     Materials.h
     MaterialValue.cpp
@@ -101,6 +103,8 @@ SET(Materials_SRCS
     ModelLoader.h
     ModelManager.cpp
     ModelManager.h
+    ModelManagerLocal.cpp
+    ModelManagerLocal.h
     ModelUuids.cpp
     ModelUuids.h
     PreCompiled.cpp
