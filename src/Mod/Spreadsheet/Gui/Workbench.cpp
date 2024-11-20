@@ -92,8 +92,7 @@ void Workbench::activated()
                                  &WorkbenchHelper::setForegroundColor);
             }
             foregroundColor->setToolTip(QObject::tr("Set cell(s) text color"));
-            foregroundColor->setWhatsThis(
-                QObject::tr("Sets the Spreadsheet cell(s) text color"));
+            foregroundColor->setWhatsThis(QObject::tr("Sets the Spreadsheet cell(s) text color"));
             foregroundColor->setStatusTip(QObject::tr("Set cell(s) text color"));
             bar->addWidget(foregroundColor);
 
