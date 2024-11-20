@@ -109,9 +109,19 @@ Py::String ModelPy::getName() const
     return Py::String(getModelPtr()->getName().toStdString());
 }
 
+void ModelPy::setName(Py::String arg)
+{
+    getModelPtr()->setName(QString::fromStdString(arg));
+}
+
 Py::String ModelPy::getDirectory() const
 {
     return Py::String(getModelPtr()->getDirectoryPath().toStdString());
+}
+
+void ModelPy::setDirectory(Py::String arg)
+{
+    getModelPtr()->setDirectory(QString::fromStdString(arg));
 }
 
 Py::String ModelPy::getUUID() const
@@ -124,14 +134,29 @@ Py::String ModelPy::getDescription() const
     return Py::String(getModelPtr()->getDescription().toStdString());
 }
 
+void ModelPy::setDescription(Py::String arg)
+{
+    getModelPtr()->setDescription(QString::fromStdString(arg));
+}
+
 Py::String ModelPy::getURL() const
 {
     return Py::String(getModelPtr()->getURL().toStdString());
 }
 
+void ModelPy::setURL(Py::String arg)
+{
+    getModelPtr()->setURL(QString::fromStdString(arg));
+}
+
 Py::String ModelPy::getDOI() const
 {
     return Py::String(getModelPtr()->getDOI().toStdString());
+}
+
+void ModelPy::setDOI(Py::String arg)
+{
+    getModelPtr()->setDOI(QString::fromStdString(arg));
 }
 
 Py::List ModelPy::getInherited() const
