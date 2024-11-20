@@ -84,8 +84,12 @@ struct DocumentP
     bool       _isModified;
     bool       _isTransacting;
     bool       _changeViewTouchDocument;
+    bool                        _editWantsRestore;
+    bool                        _editWantsRestorePrevious;
     int                         _editMode;
+    int                         _editModePrevious;
     ViewProvider*               _editViewProvider;
+    ViewProvider*               _editViewProviderPrevious;
     App::DocumentObject*        _editingObject;
     ViewProviderDocumentObject* _editViewProviderParent;
     std::string                 _editSubname;
@@ -426,10 +430,14 @@ Document::Document(App::Document* pcDocument,Application * app)
     d->_pcAppWnd = app;
     d->_pcDocument = pcDocument;
     d->_editViewProvider = nullptr;
+    d->_editViewProviderPrevious = nullptr;
     d->_editingObject = nullptr;
     d->_editViewProviderParent = nullptr;
     d->_editingViewer = nullptr;
     d->_editMode = 0;
+    d->_editModePrevious = 0;
+    d->_editWantsRestore = false;
+    d->_editWantsRestorePrevious = false;
 
     //NOLINTBEGIN
     // Setup the connections
@@ -644,7 +652,16 @@ void Document::setEditingTransform(const Base::Matrix4D &mat) {
 }
 
 void Document::resetEdit() {
+    bool vpIsNotNull = d->_editViewProvider != nullptr;
+    int modeToRestore = d->_editModePrevious;
+    Gui::ViewProvider* vpToRestore = d->_editViewProviderPrevious;
+    bool shouldRestorePrevious = d->_editWantsRestorePrevious;
+
     Application::Instance->setEditDocument(nullptr);
+
+    if (vpIsNotNull && shouldRestorePrevious) {
+        setEdit(vpToRestore, modeToRestore);
+    }
 }
 
 void Document::_resetEdit()
@@ -658,6 +675,11 @@ void Document::_resetEdit()
         }
 
         d->_editViewProvider->finishEditing();
+
+        d->_editViewProviderPrevious = d->_editViewProvider;
+        d->_editModePrevious = d->_editMode;
+        d->_editWantsRestorePrevious = d->_editWantsRestore;
+        d->_editWantsRestore = false;
 
         // Have to check d->_editViewProvider below, because there is a chance
         // the editing object gets deleted inside the above call to
@@ -680,8 +702,9 @@ void Document::_resetEdit()
     d->_editingViewer = nullptr;
     d->_editObjs.clear();
     d->_editingObject = nullptr;
-    if(Application::Instance->editDocument() == this)
+    if (Application::Instance->editDocument() == this) {
         Application::Instance->setEditDocument(nullptr);
+    }
 }
 
 ViewProvider *Document::getInEdit(ViewProviderDocumentObject **parentVp,
@@ -727,6 +750,11 @@ void Document::setAnnotationViewProvider(const char* name, ViewProvider *pcProvi
         if (activeView)
             activeView->getViewer()->addViewProvider(pcProvider);
     }
+}
+
+void Document::setEditRestore(bool askRestore)
+{
+    d->_editWantsRestore = askRestore;
 }
 
 ViewProvider * Document::getAnnotationViewProvider(const char* name) const
