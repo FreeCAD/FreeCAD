@@ -37,11 +37,6 @@
 
 #ifdef _PreComp_
 
-// Gts
-#ifdef FC_USE_GTS
-#include <gts.h>
-#endif
-
 // standard
 #include <ios>
 #include <cfloat>
