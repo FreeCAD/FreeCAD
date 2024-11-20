@@ -2081,8 +2081,8 @@ CmdColorPerFace::CmdColorPerFace()
 {
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
-    sMenuText     = QT_TR_NOOP("Color per face");
-    sToolTipText  = QT_TR_NOOP("Set the color of each individual face "
+    sMenuText     = QT_TR_NOOP("Appearance per face");
+    sToolTipText  = QT_TR_NOOP("Set the appearance of each individual face "
                                "of the selected object.");
     sStatusTip    = sToolTipText;
     sWhatsThis    = "Part_ColorPerFace";

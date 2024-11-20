@@ -23,7 +23,7 @@
       </size>
      </property>
      <property name="title">
-      <string>FEM Mesh Parameters</string>
+      <string>Mesh Parameters</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_9">
       <item>
@@ -34,7 +34,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="l_dimension">
           <property name="text">
-           <string>Element dimension:</string>
+           <string>Element Dimension:</string>
           </property>
          </widget>
         </item>
@@ -44,7 +44,7 @@
         <item row="3" column="0">
          <widget class="QLabel" name="l_max">
           <property name="text">
-           <string>Max element size (0.0 = Auto):</string>
+           <string>Maximum Size:</string>
           </property>
          </widget>
         </item>
@@ -52,6 +52,9 @@
          <widget class="Gui::QuantitySpinBox" name="qsb_max_size">
           <property name="enabled">
            <bool>true</bool>
+          </property>
+          <property name="toolTip">
+           <string>Use 0.0 to set size automatically</string>
           </property>
           <property name="unit" stdset="0">
            <string notr="true">mm</string>
@@ -79,7 +82,7 @@
         <item row="4" column="0">
          <widget class="QLabel" name="l_min">
           <property name="text">
-           <string>Min element size (0.0 = Auto):</string>
+           <string>Minimum Size:</string>
           </property>
          </widget>
         </item>
@@ -87,6 +90,9 @@
          <widget class="Gui::QuantitySpinBox" name="qsb_min_size">
           <property name="enabled">
            <bool>true</bool>
+          </property>
+          <property name="toolTip">
+           <string>Use 0.0 to set size automatically</string>
           </property>
           <property name="unit" stdset="0">
            <string notr="true">mm</string>
@@ -117,7 +123,7 @@
         <item row="2" column="0">
          <widget class="QLabel" name="I_order">
           <property name="text">
-           <string>Element order:</string>
+           <string>Element Order:</string>
           </property>
          </widget>
         </item>
@@ -149,6 +155,9 @@
            <widget class="QTextEdit" name="te_output">
             <property name="lineWrapMode">
              <enum>QTextEdit::NoWrap</enum>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
             </property>
            </widget>
           </item>

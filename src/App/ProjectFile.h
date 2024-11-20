@@ -149,6 +149,11 @@ public:
      */
     std::list<PropertyFile> getPropertyFiles(const std::string& name) const;
     /**
+     * If the project file contains the file \a name true is returned and
+     * false otherwise
+     */
+    bool containsFile(const std::string& name) const;
+    /**
      * Retrieves a list of input file names referenced to the given object name.
      * This method does the same as @ref getPropertyFiles() unless that it only
      * returns the file names.

@@ -656,10 +656,10 @@ void SelectionView::onItemContextMenu(const QPoint& point)
     touchAction->setToolTip(tr("Mark this object to be recomputed"));
 
     QAction* toPythonAction =
-        menu.addAction(tr("To python console"), this, &SelectionView::toPython);
+        menu.addAction(tr("To Python console"), this, &SelectionView::toPython);
     toPythonAction->setIcon(QIcon::fromTheme(QString::fromLatin1("applications-python")));
     toPythonAction->setToolTip(
-        tr("Reveals this object and its subelements in the python console."));
+        tr("Reveals this object and its subelements in the Python console."));
 
     QStringList elements = item->data(Qt::UserRole).toStringList();
     if (elements.length() > 2) {

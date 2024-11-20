@@ -89,7 +89,6 @@ void DlgSettingsNotificationArea::adaptUiToAreaEnabledState(bool enabled)
 {
     ui->NonIntrusiveNotificationsEnabled->setEnabled(enabled);
     ui->maxDuration->setEnabled(enabled);
-    ui->maxDuration->setEnabled(enabled);
     ui->minDuration->setEnabled(enabled);
     ui->maxNotifications->setEnabled(enabled);
     ui->maxWidgetMessages->setEnabled(enabled);

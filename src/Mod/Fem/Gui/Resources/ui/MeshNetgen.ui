@@ -44,7 +44,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="l_max">
           <property name="text">
-           <string>Maximal Size:</string>
+           <string>Maximum Size:</string>
           </property>
          </widget>
         </item>
@@ -79,7 +79,7 @@
         <item row="2" column="0">
          <widget class="QLabel" name="l_min">
           <property name="text">
-           <string>Minimal Size:</string>
+           <string>Minimum Size:</string>
           </property>
          </widget>
         </item>
@@ -203,6 +203,9 @@
            <widget class="QTextEdit" name="te_output">
             <property name="lineWrapMode">
              <enum>QTextEdit::NoWrap</enum>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
             </property>
            </widget>
           </item>

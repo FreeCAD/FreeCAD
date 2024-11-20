@@ -549,21 +549,16 @@ std::string Preferences::currentElementDefFile()
 int Preferences::LineCapStyle()
 {
     int currentIndex = LineCapIndex();
-    int result{0x20};
-        switch (currentIndex) {
+    switch (currentIndex) {
         case 0:
-            result = static_cast<Qt::PenCapStyle>(0x20);   //round;
-            break;
+            return static_cast<Qt::PenCapStyle>(0x20);   //round;
         case 1:
-            result = static_cast<Qt::PenCapStyle>(0x10);   //square;
-            break;
+            return static_cast<Qt::PenCapStyle>(0x10);   //square;
         case 2:
-            result = static_cast<Qt::PenCapStyle>(0x00);   //flat
-            break;
+            return static_cast<Qt::PenCapStyle>(0x00);   //flat
         default:
-            result = static_cast<Qt::PenCapStyle>(0x20);
+            return static_cast<Qt::PenCapStyle>(0x20);
     }
-    return result;
 }
 
 //! returns the line cap index without conversion to a Qt::PenCapStyle

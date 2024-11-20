@@ -28,7 +28,10 @@ import xml.etree.ElementTree as ET
 
 import FreeCAD as App
 import Draft_rc
-import Arch_rc
+try:
+    import Arch_rc
+except ModuleNotFoundError:
+    pass
 
 from draftutils import init_draft_statusbar
 from draftutils.translate import translate

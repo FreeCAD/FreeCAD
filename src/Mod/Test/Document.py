@@ -1451,11 +1451,11 @@ class DocumentPlatformCases(unittest.TestCase):
         self.assertTrue(abs(self.Doc.Test.ColourList[0][0] - 1.0) < 0.01)
         self.assertTrue(abs(self.Doc.Test.ColourList[0][1] - 0.5) < 0.01)
         self.assertTrue(abs(self.Doc.Test.ColourList[0][2] - 0.0) < 0.01)
-        self.assertTrue(abs(self.Doc.Test.ColourList[0][3] - 0.0) < 0.01)
+        self.assertTrue(abs(self.Doc.Test.ColourList[0][3] - 1.0) < 0.01)
         self.assertTrue(abs(self.Doc.Test.ColourList[1][0] - 0.0) < 0.01)
         self.assertTrue(abs(self.Doc.Test.ColourList[1][1] - 0.5) < 0.01)
         self.assertTrue(abs(self.Doc.Test.ColourList[1][2] - 1.0) < 0.01)
-        self.assertTrue(abs(self.Doc.Test.ColourList[1][3] - 0.0) < 0.01)
+        self.assertTrue(abs(self.Doc.Test.ColourList[1][3] - 1.0) < 0.01)
 
     def testVectorList(self):
         self.Doc.Test.VectorList = [(-0.05, 2.5, 5.2), (-0.05, 2.5, 5.2)]
