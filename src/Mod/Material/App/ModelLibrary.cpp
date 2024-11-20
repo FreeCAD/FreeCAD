@@ -34,79 +34,13 @@
 
 using namespace Materials;
 
-TYPESYSTEM_SOURCE(Materials::LibraryBase, Base::BaseClass)
+TYPESYSTEM_SOURCE(Materials::ModelLibrary, Materials::LocalLibrary)
 
-LibraryBase::LibraryBase(const QString& libraryName, const QString& dir, const QString& icon)
-    : _name(libraryName)
-    , _directory(QDir::cleanPath(dir))
-    , _iconPath(icon)
-{}
-
-bool LibraryBase::operator==(const LibraryBase& library) const
-{
-    return (_name == library._name) && (_directory == library._directory);
-}
-
-QString LibraryBase::getLocalPath(const QString& path) const
-{
-    QString filePath = getDirectoryPath();
-    if (!(filePath.endsWith(QLatin1String("/")) || filePath.endsWith(QLatin1String("\\")))) {
-        filePath += QLatin1String("/");
-    }
-
-    QString cleanPath = QDir::cleanPath(path);
-    QString prefix = QString::fromStdString("/") + getName();
-    if (cleanPath.startsWith(prefix)) {
-        // Remove the library name from the path
-        filePath += cleanPath.right(cleanPath.length() - prefix.length());
-    }
-    else {
-        filePath += cleanPath;
-    }
-
-    return filePath;
-}
-
-bool LibraryBase::isRoot(const QString& path) const
-{
-    QString localPath = getLocalPath(path);
-    QString cleanPath = getLocalPath(QString::fromStdString(""));
-    std::string pLocal = localPath.toStdString();
-    std::string pclean = cleanPath.toStdString();
-    return (cleanPath == localPath);
-}
-
-QString LibraryBase::getRelativePath(const QString& path) const
-{
-    QString filePath;
-    QString cleanPath = QDir::cleanPath(path);
-    QString prefix = QString::fromStdString("/") + getName();
-    if (cleanPath.startsWith(prefix)) {
-        // Remove the library name from the path
-        filePath = cleanPath.right(cleanPath.length() - prefix.length());
-    }
-    else {
-        filePath = cleanPath;
-    }
-
-    prefix = getDirectoryPath();
-    if (filePath.startsWith(prefix)) {
-        // Remove the library root from the path
-        filePath = filePath.right(filePath.length() - prefix.length());
-    }
-
-    // Remove any leading '/'
-    if (filePath.startsWith(QString::fromStdString("/"))) {
-        filePath.remove(0, 1);
-    }
-
-    return filePath;
-}
-
-TYPESYSTEM_SOURCE(Materials::ModelLibrary, Materials::LibraryBase)
-
-ModelLibrary::ModelLibrary(const QString& libraryName, const QString& dir, const QString& icon)
-    : LibraryBase(libraryName, dir, icon)
+ModelLibrary::ModelLibrary(const QString& libraryName,
+                           const QString& dir,
+                           const QString& icon,
+                           bool readOnly)
+    : LocalLibrary(libraryName, dir, icon, readOnly)
 {
     _modelPathMap = std::make_unique<std::map<QString, std::shared_ptr<Model>>>();
 }

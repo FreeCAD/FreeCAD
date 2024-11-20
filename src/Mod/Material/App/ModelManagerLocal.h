@@ -47,6 +47,24 @@ public:
     static void cleanup();
     void refresh();
 
+    std::shared_ptr<std::vector<Library>> getLibraries();
+    void createLibrary(const QString& libraryName,
+                       const QString& directory,
+                       const QString& icon,
+                       bool readOnly = true);
+    void renameLibrary(const QString& libraryName, const QString& newName);
+    void changeIcon(const QString& libraryName, const QString& icon);
+    void removeLibrary(const QString& libraryName);
+    std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
+    libraryModels(const QString& libraryName);
+
+    // @abstractmethod
+    // def libraryModels(self, library: str) -> list:
+    //     """Returns a list of models managed by this interface
+
+    //     Each list entry is a tuple containing the UUID, path, and name of the model"""
+    //     pass
+
     std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> getModelLibraries()
     {
         return _libraryList;

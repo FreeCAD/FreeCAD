@@ -19,64 +19,94 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATERIAL_MODELLIBRARY_H
-#define MATERIAL_MODELLIBRARY_H
-
-#include <memory>
+#ifndef MATERIAL_LIBRARY_H
+#define MATERIAL_LIBRARY_H
 
 #include <QDir>
 #include <QString>
 
 #include <Base/BaseClass.h>
-#include <Base/Quantity.h>
 
 #include <Mod/Material/MaterialGlobal.h>
 
-#include "Library.h"
-#include "MaterialValue.h"
-#include "Model.h"
 namespace Materials
 {
 
-class MaterialsExport ModelLibrary: public LocalLibrary,
-                                    public std::enable_shared_from_this<ModelLibrary>
+class MaterialsExport Library: public Base::BaseClass
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    ModelLibrary();
-    ModelLibrary(const QString& libraryName,
-                 const QString& dir,
-                 const QString& icon,
-                 bool readOnly = true);
-    ~ModelLibrary() override = default;
+    Library() = default;
+    Library(const QString& libraryName, const QString& icon, bool readOnly = true);
+    ~Library() override = default;
 
-    bool operator==(const ModelLibrary& library) const
+    const QString getName() const
     {
-        return LocalLibrary::operator==(library);
+        return _name;
     }
-    bool operator!=(const ModelLibrary& library) const
+    void setName(const QString& newName)
+    {
+        _name = newName;
+    }
+    const QString getIconPath() const
+    {
+        return _iconPath;
+    }
+    void setIconPath(const QString& icon)
+    {
+        _iconPath = icon;
+    }
+    bool isReadOnly() const
+    {
+        return _readOnly;
+    }
+
+    bool operator==(const Library& library) const;
+    bool operator!=(const Library& library) const
     {
         return !operator==(library);
     }
-    std::shared_ptr<Model> getModelByPath(const QString& path) const;
-
-    std::shared_ptr<Model> addModel(const Model& model, const QString& path);
-
-    // Use this to get a shared_ptr for *this
-    std::shared_ptr<ModelLibrary> getptr()
-    {
-        return shared_from_this();
-    }
-    std::shared_ptr<std::map<QString, std::shared_ptr<ModelTreeNode>>>
-    getModelTree(ModelFilter filter) const;
 
 private:
-    ModelLibrary(const ModelLibrary&);
+    QString _name;
+    QString _iconPath;
+    bool _readOnly;
+};
 
-    std::unique_ptr<std::map<QString, std::shared_ptr<Model>>> _modelPathMap;
+class MaterialsExport LocalLibrary: public Library
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    LocalLibrary() = default;
+    LocalLibrary(const QString& libraryName,
+                 const QString& dir,
+                 const QString& icon,
+                 bool readOnly = true);
+    ~LocalLibrary() override = default;
+
+    const QString getDirectory() const
+    {
+        return _directory;
+    }
+    const QString getDirectoryPath() const
+    {
+        return QDir(_directory).absolutePath();
+    }
+    bool operator==(const LocalLibrary& library) const;
+    bool operator!=(const LocalLibrary& library) const
+    {
+        return !operator==(library);
+    }
+    QString getLocalPath(const QString& path) const;
+    QString getRelativePath(const QString& path) const;
+    bool isRoot(const QString& path) const;
+
+private:
+    QString _directory;
 };
 
 }  // namespace Materials
 
-#endif  // MATERIAL_MODELLIBRARY_H
+#endif  // MATERIAL_LIBRARY_H

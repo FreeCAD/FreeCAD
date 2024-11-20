@@ -166,6 +166,24 @@ public:
     ~LibraryNotFound() noexcept override = default;
 };
 
+class LibraryCreationError: public Base::Exception
+{
+public:
+    LibraryCreationError()
+    {
+        this->setMessage("Unable to create library");
+    }
+    explicit LibraryCreationError(const char* msg)
+    {
+        this->setMessage(msg);
+    }
+    explicit LibraryCreationError(const QString& msg)
+    {
+        this->setMessage(msg.toStdString().c_str());
+    }
+    ~LibraryCreationError() noexcept override = default;
+};
+
 class InvalidModel: public Base::Exception
 {
 public:

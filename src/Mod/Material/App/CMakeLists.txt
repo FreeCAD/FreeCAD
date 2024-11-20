@@ -79,6 +79,8 @@ SET(Materials_SRCS
     ${Python_SRCS}
     AppMaterial.cpp
     FolderTree.h
+    Library.cpp
+    Library.h
     MaterialConfigLoader.cpp
     MaterialConfigLoader.h
     MaterialFilter.cpp

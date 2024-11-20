@@ -31,6 +31,7 @@
 #include <Base/BaseClass.h>
 #include <Mod/Material/MaterialGlobal.h>
 
+#include "Library.h"
 #include "Materials.h"
 #include "Model.h"
 #include "ModelLibrary.h"
@@ -43,7 +44,7 @@ class MaterialManager;
 class MaterialFilter;
 class MaterialFilterOptions;
 
-class MaterialsExport MaterialLibrary: public LibraryBase,
+class MaterialsExport MaterialLibrary: public LocalLibrary,
                                        public std::enable_shared_from_this<MaterialLibrary>
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
@@ -59,7 +60,7 @@ public:
 
     bool operator==(const MaterialLibrary& library) const
     {
-        return LibraryBase::operator==(library);
+        return LocalLibrary::operator==(library);
     }
     bool operator!=(const MaterialLibrary& library) const
     {

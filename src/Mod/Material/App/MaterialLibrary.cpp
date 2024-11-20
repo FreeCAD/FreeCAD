@@ -41,14 +41,13 @@ using namespace Materials;
 
 /* TRANSLATOR Material::Materials */
 
-TYPESYSTEM_SOURCE(Materials::MaterialLibrary, Materials::LibraryBase)
+TYPESYSTEM_SOURCE(Materials::MaterialLibrary, Materials::LocalLibrary)
 
 MaterialLibrary::MaterialLibrary(const QString& libraryName,
                                  const QString& dir,
                                  const QString& icon,
                                  bool readOnly)
-    : LibraryBase(libraryName, dir, icon)
-    , _readOnly(readOnly)
+    : LocalLibrary(libraryName, dir, icon, readOnly)
     , _materialPathMap(std::make_unique<std::map<QString, std::shared_ptr<Material>>>())
 {}
 
