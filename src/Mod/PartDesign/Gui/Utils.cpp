@@ -89,12 +89,14 @@ bool setEdit(App::DocumentObject *obj, PartDesign::Body *body) {
         return false;
     App::DocumentObject *parent = nullptr;
     std::string subname;
-    auto activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+    auto activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY, &parent, &subname);
     if (activeBody != body) {
         parent = obj;
+        subname.clear();
     }
     else {
-        parent = getParent(obj, subname);
+        subname += obj->getNameInDocument();
+        subname += '.';
     }
 
     Gui::cmdGuiDocument(parent, std::ostringstream() << "setEdit("
