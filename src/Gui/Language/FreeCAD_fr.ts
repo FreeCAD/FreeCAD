@@ -686,7 +686,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../AboutApplication.ui" line="225"/>
       <source>Copy to clipboard</source>
-      <translation>Copier dans le Presse-papiers</translation>
+      <translation>Copier dans le presse-papiers</translation>
     </message>
     <message>
       <location filename="../AboutApplication.ui" line="261"/>
@@ -2442,7 +2442,7 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgProjectInformation.ui" line="293"/>
       <source>License URL</source>
-      <translation>URL de la licence</translation>
+      <translation>URL de la licence :</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformation.ui" line="308"/>
@@ -8466,7 +8466,7 @@ Choisissez "Interrompre" pour annuler.</translation>
     <message>
       <location filename="../MainWindow.cpp" line="884"/>
       <source>Apply answer to all</source>
-      <translation>Appliquez la réponse à tout</translation>
+      <translation>Appliquer la réponse à tout</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="974"/>
