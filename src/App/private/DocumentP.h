@@ -154,8 +154,8 @@ struct DocumentP
                                Path tmp);
     std::vector<App::DocumentObject*>
     topologicalSort(const std::vector<App::DocumentObject*>& objects) const;
-    static std::vector<App::DocumentObject*> partialTopologicalSort(
-        const std::vector<App::DocumentObject*>& objects);
+    static std::vector<App::DocumentObject*>
+    partialTopologicalSort(const std::vector<App::DocumentObject*>& objects);
     static void checkStringHasher(const Base::XMLReader& reader);
 };
 
