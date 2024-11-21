@@ -236,21 +236,35 @@ MaterialManager::getMaterialFolders(const std::shared_ptr<MaterialLibrary>& libr
 void MaterialManager::createFolder(const std::shared_ptr<MaterialLibrary>& library,
                                    const QString& path)
 {
-    // library->createFolder(path);
+    if (library->isLocal()) {
+        auto materialLibrary =
+            reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(library);
+
+        _localManager->createFolder(materialLibrary, path);
+    }
 }
 
 void MaterialManager::renameFolder(const std::shared_ptr<MaterialLibrary>& library,
                                    const QString& oldPath,
                                    const QString& newPath)
 {
-    // library->renameFolder(oldPath, newPath);
+    if (library->isLocal()) {
+        auto materialLibrary =
+            reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(library);
+
+        _localManager->renameFolder(materialLibrary, oldPath, newPath);
+    }
 }
 
 void MaterialManager::deleteRecursive(const std::shared_ptr<MaterialLibrary>& library,
                                       const QString& path)
 {
-    // library->deleteRecursive(path);
-    // dereference();
+    if (library->isLocal()) {
+        auto materialLibrary =
+            reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(library);
+
+        _localManager->deleteRecursive(materialLibrary, path);
+    }
 }
 
 //=====

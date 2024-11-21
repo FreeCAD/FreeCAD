@@ -45,7 +45,7 @@
 
 using namespace Materials;
 
-MaterialEntry::MaterialEntry(const std::shared_ptr<MaterialLibrary>& library,
+MaterialEntry::MaterialEntry(const std::shared_ptr<MaterialLibraryLocal>& library,
                              const QString& modelName,
                              const QString& dir,
                              const QString& modelUuid)
@@ -55,7 +55,7 @@ MaterialEntry::MaterialEntry(const std::shared_ptr<MaterialLibrary>& library,
     , _uuid(modelUuid)
 {}
 
-MaterialYamlEntry::MaterialYamlEntry(const std::shared_ptr<MaterialLibrary>& library,
+MaterialYamlEntry::MaterialYamlEntry(const std::shared_ptr<MaterialLibraryLocal>& library,
                                      const QString& modelName,
                                      const QString& dir,
                                      const QString& modelUuid,
@@ -333,7 +333,7 @@ void MaterialYamlEntry::addToTree(
     }
 
     QString path = QDir(directory).absolutePath();
-    // (*materialMap)[uuid] = library->addMaterial(finalModel, path);
+    (*materialMap)[uuid] = library->addMaterial(finalModel, path);
 }
 
 //===
@@ -347,7 +347,7 @@ MaterialLoader::MaterialLoader(
     : _materialMap(materialMap)
     , _libraryList(libraryList)
 {
-    loadLibraries();
+    loadLibraries(libraryList);
 }
 
 void MaterialLoader::addLibrary(const std::shared_ptr<MaterialLibraryLocal>& model)
@@ -356,7 +356,7 @@ void MaterialLoader::addLibrary(const std::shared_ptr<MaterialLibraryLocal>& mod
 }
 
 std::shared_ptr<MaterialEntry>
-MaterialLoader::getMaterialFromYAML(const std::shared_ptr<MaterialLibrary>& library,
+MaterialLoader::getMaterialFromYAML(const std::shared_ptr<MaterialLibraryLocal>& library,
                                     YAML::Node& yamlroot,
                                     const QString& path)
 {
@@ -391,6 +391,8 @@ MaterialLoader::getMaterialFromPath(const std::shared_ptr<MaterialLibrary>& libr
                                     const QString& path) const
 {
     std::shared_ptr<MaterialEntry> model = nullptr;
+    auto materialLibrary =
+        reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(library);
 
     // Used for debugging
     std::string pathName = path.toStdString();
@@ -398,7 +400,7 @@ MaterialLoader::getMaterialFromPath(const std::shared_ptr<MaterialLibrary>& libr
     if (MaterialConfigLoader::isConfigStyle(path)) {
         auto material = MaterialConfigLoader::getMaterialFromPath(library, path);
         if (material) {
-            // (*_materialMap)[material->getUUID()] = library->addMaterial(material, path);
+            (*_materialMap)[material->getUUID()] = materialLibrary->addMaterial(material, path);
         }
 
         // Return the nullptr as there are no intermediate steps to take, such
@@ -417,7 +419,7 @@ MaterialLoader::getMaterialFromPath(const std::shared_ptr<MaterialLibrary>& libr
     try {
         yamlroot = YAML::Load(fin);
 
-        model = getMaterialFromYAML(library, yamlroot, path);
+        model = getMaterialFromYAML(materialLibrary, yamlroot, path);
     }
     catch (YAML::Exception const& e) {
         Base::Console().Error("YAML parsing error: '%s'\n", pathName.c_str());
@@ -541,11 +543,11 @@ void MaterialLoader::loadLibrary(const std::shared_ptr<MaterialLibraryLocal>& li
     }
 }
 
-void MaterialLoader::loadLibraries()
+void MaterialLoader::loadLibraries(
+    const std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>>& libraryList)
 {
-    auto _libraryList = getMaterialLibraries();
-    if (_libraryList) {
-        for (auto& it : *_libraryList) {
+    if (libraryList) {
+        for (auto& it : *libraryList) {
             if (it->isLocal()) {
                 auto materialLibrary =
                     reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(it);
@@ -557,91 +559,6 @@ void MaterialLoader::loadLibraries()
     for (auto& it : *_materialMap) {
         dereference(it.second);
     }
-}
-
-std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>>
-MaterialLoader::getMaterialLibraries()
-{
-    auto param = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Material/Resources");
-    bool useBuiltInMaterials = param->GetBool("UseBuiltInMaterials", true);
-    bool useMatFromModules = param->GetBool("UseMaterialsFromWorkbenches", true);
-    bool useMatFromConfigDir = param->GetBool("UseMaterialsFromConfigDir", true);
-    bool useMatFromCustomDir = param->GetBool("UseMaterialsFromCustomDir", true);
-
-    if (useBuiltInMaterials) {
-        QString resourceDir = QString::fromStdString(App::Application::getResourceDir()
-                                                     + "/Mod/Material/Resources/Materials");
-        auto libData =
-            std::make_shared<MaterialLibraryLocal>(QString::fromStdString("System"),
-                                                   resourceDir,
-                                                   QString::fromStdString(":/icons/freecad.svg"),
-                                                   true);
-        _libraryList->push_back(libData);
-    }
-
-    if (useMatFromModules) {
-        auto moduleParam = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Mod/Material/Resources/Modules");
-        for (auto& group : moduleParam->GetGroups()) {
-            // auto module = moduleParam->GetGroup(group->GetGroupName());
-            auto moduleName = QString::fromStdString(group->GetGroupName());
-            auto materialDir = QString::fromStdString(group->GetASCII("ModuleDir", ""));
-            auto materialIcon = QString::fromStdString(group->GetASCII("ModuleIcon", ""));
-            auto materialReadOnly = group->GetBool("ModuleReadOnly", true);
-
-            if (materialDir.length() > 0) {
-                QDir dir(materialDir);
-                if (dir.exists()) {
-                    auto libData = std::make_shared<MaterialLibraryLocal>(moduleName,
-                                                                          materialDir,
-                                                                          materialIcon,
-                                                                          materialReadOnly);
-                    _libraryList->push_back(libData);
-                }
-            }
-        }
-    }
-
-    if (useMatFromConfigDir) {
-        QString resourceDir =
-            QString::fromStdString(App::Application::getUserAppDataDir() + "/Material");
-        if (!resourceDir.isEmpty()) {
-            QDir materialDir(resourceDir);
-            if (!materialDir.exists()) {
-                // Try creating the user dir if it doesn't exist
-                if (!materialDir.mkpath(resourceDir)) {
-                    Base::Console().Log("Unable to create user library '%s'\n",
-                                        resourceDir.toStdString().c_str());
-                }
-            }
-            if (materialDir.exists()) {
-                auto libData = std::make_shared<MaterialLibraryLocal>(
-                    QString::fromStdString("User"),
-                    resourceDir,
-                    QString::fromStdString(":/icons/preferences-general.svg"),
-                    false);
-                _libraryList->push_back(libData);
-            }
-        }
-    }
-
-    if (useMatFromCustomDir) {
-        QString resourceDir = QString::fromStdString(param->GetASCII("CustomMaterialsDir", ""));
-        if (!resourceDir.isEmpty()) {
-            QDir materialDir(resourceDir);
-            if (materialDir.exists()) {
-                auto libData = std::make_shared<MaterialLibraryLocal>(
-                    QString::fromStdString("Custom"),
-                    resourceDir,
-                    QString::fromStdString(":/icons/user.svg"),
-                    false);
-                _libraryList->push_back(libData);
-            }
-        }
-    }
-
-    return _libraryList;
 }
 
 std::shared_ptr<std::list<QString>>

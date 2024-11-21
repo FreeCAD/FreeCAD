@@ -31,15 +31,15 @@
 #include "FolderTree.h"
 #include "Materials.h"
 
-#include "MaterialFilter.h"
-#include "MaterialLibrary.h"
-
 namespace fs = boost::filesystem;
 
 class QMutex;
 
 namespace App
 {
+class MaterialLibrary;
+class MaterialLibraryLocal;
+
 class Material;
 }
 
@@ -73,11 +73,11 @@ public:
     // Folder management
     std::shared_ptr<std::list<QString>>
     getMaterialFolders(const std::shared_ptr<MaterialLibrary>& library) const;
-    void createFolder(const std::shared_ptr<MaterialLibrary>& library, const QString& path);
-    void renameFolder(const std::shared_ptr<MaterialLibrary>& library,
+    void createFolder(const std::shared_ptr<MaterialLibraryLocal>& library, const QString& path);
+    void renameFolder(const std::shared_ptr<MaterialLibraryLocal>& library,
                       const QString& oldPath,
                       const QString& newPath);
-    void deleteRecursive(const std::shared_ptr<MaterialLibrary>& library, const QString& path);
+    void deleteRecursive(const std::shared_ptr<MaterialLibraryLocal>& library, const QString& path);
 
     // Material management
     std::shared_ptr<std::map<QString, std::shared_ptr<Material>>> getLocalMaterials() const;
@@ -106,7 +106,7 @@ public:
     void dereference() const;
 
 protected:
-    std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> getMaterialLibraries() const;
+    static std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> getConfiguredLibraries();
 
 private:
     static std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> _libraryList;
