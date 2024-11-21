@@ -150,17 +150,17 @@ struct AppExport Dependency
     explicit Dependency(std::string pkg);
     explicit Dependency(const XERCES_CPP_NAMESPACE::DOMElement* elem);
     std::string package;  //< Required: must exactly match the contents of the "name" element in the
-                          //referenced package's package.xml file.
+                          // referenced package's package.xml file.
     std::string version_lt;   //< Optional: The dependency to the package is restricted to versions
-                              //less than the stated version number.
+                              // less than the stated version number.
     std::string version_lte;  //< Optional: The dependency to the package is restricted to versions
-                              //less or equal than the stated version number.
+                              // less or equal than the stated version number.
     std::string version_eq;   //< Optional: The dependency to the package is restricted to a version
-                              //equal than the stated version number.
+                              // equal than the stated version number.
     std::string version_gte;  //< Optional: The dependency to the package is restricted to versions
-                              //greater or equal than the stated version number.
+                              // greater or equal than the stated version number.
     std::string version_gt;   //< Optional: The dependency to the package is restricted to versions
-                              //greater than the stated version number.
+                              // greater than the stated version number.
     std::string condition;    //< Optional: Conditional expression as documented in REP149.
     bool optional;            //< Optional: Whether this dependency is considered "optional"
     DependencyType dependencyType;  //< Optional: defaults to "automatic"
@@ -238,7 +238,7 @@ public:
     std::vector<Meta::License>
     license() const;  //< Must be at least one, and most licenses require including a license file.
     std::vector<Meta::Url> url() const;  //< Any number of URLs may be specified, but at least one
-                                         //repository URL must be included at the package level.
+                                         // repository URL must be included at the package level.
     std::vector<Meta::Contact>
     author() const;  //< Any number of authors may be specified, and email addresses are optional.
     std::vector<Meta::Dependency>
