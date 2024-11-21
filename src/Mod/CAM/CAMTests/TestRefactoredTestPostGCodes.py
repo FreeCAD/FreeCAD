@@ -116,7 +116,8 @@ class TestRefactoredTestPostGCodes(PathTestUtils.PathTestBase):
     #
     #   00000 - 00099  tests that don't fit any other category
     #   00100 - 09999  tests for all of the various arguments/options
-    #   10000 - 19999  tests for the various G codes at 10000 + 10 * g_code_value
+    #   10000 - 18999  tests for the various G codes at 10000 + 10 * g_code_value
+    #   19000 - 19999  tests for the A, B, and C axis outputs
     #   20000 - 29999  tests for the various M codes at 20000 + 10 * m_code_value
     #
     #############################################################################
@@ -125,12 +126,18 @@ class TestRefactoredTestPostGCodes(PathTestUtils.PathTestBase):
         """Test G0 command Generation."""
         self.compare_third_line(
             "G0 X10 Y20 Z30 A40 B50 C60 U70 V80 W90",
-            ("G0 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 " "U70.000 V80.000 W90.000"),
+            (
+                "G0 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 "
+                "U70.000 V80.000 W90.000"
+            ),
             "",
         )
         self.compare_third_line(
             "G00 X10 Y20 Z30 A40 B50 C60 U70 V80 W90",
-            ("G00 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 " "U70.000 V80.000 W90.000"),
+            (
+                "G00 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 "
+                "U70.000 V80.000 W90.000"
+            ),
             "",
         )
 
@@ -166,7 +173,7 @@ class TestRefactoredTestPostGCodes(PathTestUtils.PathTestBase):
         self.compare_third_line(
             "G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456",
             (
-                "G1 X0.3937 Y0.7874 Z1.1811 A1.5748 B1.9685 C2.3622 "
+                "G1 X0.3937 Y0.7874 Z1.1811 A40.0000 B50.0000 C60.0000 "
                 "U2.7559 V3.1496 W3.5433 F2.9163"
             ),
             "--inches",
@@ -273,7 +280,9 @@ class TestRefactoredTestPostGCodes(PathTestUtils.PathTestBase):
             "G10 L2 X1.235 Y2.346 Z3.457 P3",
             "",
         )
-        self.compare_third_line("G10 L2 P0 X0 Y0 Z0", "G10 L2 X0.000 Y0.000 Z0.000 P0", "")
+        self.compare_third_line(
+            "G10 L2 P0 X0 Y0 Z0", "G10 L2 X0.000 Y0.000 Z0.000 P0", ""
+        )
         self.compare_third_line(
             "G10 L10 P1 X1.23456 Y2.34567 Z3.456789",
             "G10 L10 X1.235 Y2.346 Z3.457 P1",
@@ -355,7 +364,10 @@ class TestRefactoredTestPostGCodes(PathTestUtils.PathTestBase):
         self.compare_third_line("G28", "G28", "")
         self.compare_third_line(
             "G28 X10 Y20 Z30 A40 B50 C60 U70 V80 W90",
-            ("G28 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 " "U70.000 V80.000 W90.000"),
+            (
+                "G28 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 "
+                "U70.000 V80.000 W90.000"
+            ),
             "",
         )
 
@@ -372,7 +384,10 @@ class TestRefactoredTestPostGCodes(PathTestUtils.PathTestBase):
         self.compare_third_line("G30", "G30", "")
         self.compare_third_line(
             "G30 X10 Y20 Z30 A40 B50 C60 U70 V80 W90",
-            ("G30 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 " "U70.000 V80.000 W90.000"),
+            (
+                "G30 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 "
+                "U70.000 V80.000 W90.000"
+            ),
             "",
         )
 
@@ -497,7 +512,10 @@ class TestRefactoredTestPostGCodes(PathTestUtils.PathTestBase):
                 "G43.1 X1.234567 Y2.345678 Z3.456789 A4.567891 B5.678912 C6.789123 "
                 "U7.891234 V8.912345 W9.123456"
             ),
-            ("G43.1 X0.0486 Y0.0923 Z0.1361 A0.1798 B0.2236 C0.2673 " "U0.3107 V0.3509 W0.3592"),
+            (
+                "G43.1 X0.0486 Y0.0923 Z0.1361 A4.5679 B5.6789 C6.7891 "
+                "U0.3107 V0.3509 W0.3592"
+            ),
             "--inches",
         )
 
@@ -525,7 +543,9 @@ class TestRefactoredTestPostGCodes(PathTestUtils.PathTestBase):
                         "C6.789123 U7.891234 V8.912345 W9.123456"
                     )
                 ),
-                Path.Command("G52 X0 Y0.0 Z0.00 A0.000 B0.0000 C0.00000 U0.000000 V0 W0"),
+                Path.Command(
+                    "G52 X0 Y0.0 Z0.00 A0.000 B0.0000 C0.00000 U0.000000 V0 W0"
+                ),
             ],
             """G90
 G21
@@ -542,11 +562,13 @@ G52 X0.000 Y0.000 Z0.000 A0.000 B0.000 C0.000 U0.000 V0.000 W0.000
                         "C6.789123 U7.891234 V8.912345 W9.123456"
                     )
                 ),
-                Path.Command("G52 X0 Y0.0 Z0.00 A0.000 B0.0000 C0.00000 U0.000000 V0 W0"),
+                Path.Command(
+                    "G52 X0 Y0.0 Z0.00 A0.000 B0.0000 C0.00000 U0.000000 V0 W0"
+                ),
             ],
             """G90
 G20
-G52 X0.0486 Y0.0923 Z0.1361 A0.1798 B0.2236 C0.2673 U0.3107 V0.3509 W0.3592
+G52 X0.0486 Y0.0923 Z0.1361 A4.5679 B5.6789 C6.7891 U0.3107 V0.3509 W0.3592
 G52 X0.0000 Y0.0000 Z0.0000 A0.0000 B0.0000 C0.0000 U0.0000 V0.0000 W0.0000
 """,
             "--inches",
@@ -705,7 +727,9 @@ G52 X0.0000 Y0.0000 Z0.0000 A0.0000 B0.0000 C0.0000 U0.0000 V0.0000 W0.0000
         self.compare_third_line("G64", "G64", "")
         self.compare_third_line("G64 P3.456789", "G64 P3.457", "")
         self.compare_third_line("G64 P3.456789 Q4.567891", "G64 P3.457 Q4.568", "")
-        self.compare_third_line("G64 P3.456789 Q4.567891", "G64 P0.1361 Q0.1798", "--inches")
+        self.compare_third_line(
+            "G64 P3.456789 Q4.567891", "G64 P0.1361 Q0.1798", "--inches"
+        )
 
     #############################################################################
 
@@ -1357,7 +1381,10 @@ G90
         """Test G92 command Generation."""
         self.compare_third_line(
             "G92 X10 Y20 Z30 A40 B50 C60 U70 V80 W90",
-            ("G92 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 " "U70.000 V80.000 W90.000"),
+            (
+                "G92 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 "
+                "U70.000 V80.000 W90.000"
+            ),
             "",
         )
 
@@ -1408,3 +1435,265 @@ G90
     def test10990(self):
         """Test G99 command Generation."""
         self.compare_third_line("G99", "G99", "")
+
+    #############################################################################
+    #############################################################################
+    #  Testing A, B, & C axes outputs (in a great deal of detail :-)
+    #############################################################################
+    #############################################################################
+
+    def test19100(self):
+        """Test the individual A, B, and C axes output for picked values"""
+        axis_test_values = (
+            # between 0 and 90 degrees
+            ("40", "40.000", "40.0000"),
+            # 89 degrees
+            ("89", "89.000", "89.0000"),
+            # 90 degrees
+            ("90", "90.000", "90.0000"),
+            # 91 degrees
+            ("91", "91.000", "91.0000"),
+            # between 90 and 180 degrees
+            ("100", "100.000", "100.0000"),
+            # between 180 and 360 degrees
+            ("240", "240.000", "240.0000"),
+            # over 360 degrees
+            ("440", "440.000", "440.0000"),
+            # between 0 and -90 degrees
+            ("-40", "-40.000", "-40.0000"),
+            # -89 degrees
+            ("-89", "-89.000", "-89.0000"),
+            # -90 degrees
+            ("-90", "-90.000", "-90.0000"),
+            # -91 degrees
+            ("-91", "-91.000", "-91.0000"),
+            # between -90 and -180 degrees
+            ("-100", "-100.000", "-100.0000"),
+            # between -180 and -360 degrees
+            ("-240", "-240.000", "-240.0000"),
+            # below -360 degrees
+            ("-440", "-440.000", "-440.0000"),
+        )
+        for (
+            input_value,
+            metric_output_expected,
+            inches_output_expected,
+        ) in axis_test_values:
+            for axis_name in ("A", "B", "C"):
+                with self.subTest(
+                    "individual axis test", axis_name=axis_name, input_value=input_value
+                ):
+                    self.compare_third_line(
+                        f"G1 X10 Y20 Z30 {axis_name}{input_value}",
+                        f"G1 X10.000 Y20.000 Z30.000 {axis_name}{metric_output_expected}",
+                        "",
+                    )
+                    self.compare_third_line(
+                        f"G1 X10 Y20 Z30 {axis_name}{input_value}",
+                        f"G1 X0.3937 Y0.7874 Z1.1811 {axis_name}{inches_output_expected}",
+                        "--inches",
+                    )
+
+    #############################################################################
+
+    def test19110(self):
+        """Test the combined A, B, and C axes output for picked values"""
+        axis_test_values = (
+            # between 0 and 90 degrees
+            (
+                "40",
+                "40.000",
+                "40.0000",
+                "50",
+                "50.000",
+                "50.0000",
+                "60",
+                "60.000",
+                "60.0000",
+            ),
+            # 89 degrees
+            (
+                "89",
+                "89.000",
+                "89.0000",
+                "89",
+                "89.000",
+                "89.0000",
+                "89",
+                "89.000",
+                "89.0000",
+            ),
+            # 90 degrees
+            (
+                "90",
+                "90.000",
+                "90.0000",
+                "90",
+                "90.000",
+                "90.0000",
+                "90",
+                "90.000",
+                "90.0000",
+            ),
+            # 91 degrees
+            (
+                "91",
+                "91.000",
+                "91.0000",
+                "91",
+                "91.000",
+                "91.0000",
+                "91",
+                "91.000",
+                "91.0000",
+            ),
+            # between 90 and 180 degrees
+            (
+                "100",
+                "100.000",
+                "100.0000",
+                "110",
+                "110.000",
+                "110.0000",
+                "120",
+                "120.000",
+                "120.0000",
+            ),
+            # between 180 and 360 degrees
+            (
+                "240",
+                "240.000",
+                "240.0000",
+                "250",
+                "250.000",
+                "250.0000",
+                "260",
+                "260.000",
+                "260.0000",
+            ),
+            # over 360 degrees
+            (
+                "440",
+                "440.000",
+                "440.0000",
+                "450",
+                "450.000",
+                "450.0000",
+                "460",
+                "460.000",
+                "460.0000",
+            ),
+            # between 0 and -90 degrees
+            (
+                "-40",
+                "-40.000",
+                "-40.0000",
+                "-50",
+                "-50.000",
+                "-50.0000",
+                "-60",
+                "-60.000",
+                "-60.0000",
+            ),
+            # -89 degrees
+            (
+                "-89",
+                "-89.000",
+                "-89.0000",
+                "-89",
+                "-89.000",
+                "-89.0000",
+                "-89",
+                "-89.000",
+                "-89.0000",
+            ),
+            # -90 degrees
+            (
+                "-90",
+                "-90.000",
+                "-90.0000",
+                "-90",
+                "-90.000",
+                "-90.0000",
+                "-90",
+                "-90.000",
+                "-90.0000",
+            ),
+            # -91 degrees
+            (
+                "-91",
+                "-91.000",
+                "-91.0000",
+                "-91",
+                "-91.000",
+                "-91.0000",
+                "-91",
+                "-91.000",
+                "-91.0000",
+            ),
+            # between -90 and -180 degrees
+            (
+                "-100",
+                "-100.000",
+                "-100.0000",
+                "-110",
+                "-110.000",
+                "-110.0000",
+                "-120",
+                "-120.000",
+                "-120.0000",
+            ),
+            # between -180 and -360 degrees
+            (
+                "-240",
+                "-240.000",
+                "-240.0000",
+                "-250",
+                "-250.000",
+                "-250.0000",
+                "-260",
+                "-260.000",
+                "-260.0000",
+            ),
+            # below -360 degrees
+            (
+                "-440",
+                "-440.000",
+                "-440.0000",
+                "-450",
+                "-450.000",
+                "-450.0000",
+                "-460",
+                "-460.000",
+                "-460.0000",
+            ),
+        )
+        for (
+            a_input_value,
+            a_metric_output_expected,
+            a_inches_output_expected,
+            b_input_value,
+            b_metric_output_expected,
+            b_inches_output_expected,
+            c_input_value,
+            c_metric_output_expected,
+            c_inches_output_expected,
+        ) in axis_test_values:
+            with self.subTest(
+                "combined axes test",
+                a_input_value=a_input_value,
+                b_input_value=b_input_value,
+                c_input_value=c_input_value,
+            ):
+                self.compare_third_line(
+                    f"G1 X10 Y20 Z30 A{a_input_value} B{b_input_value} C{c_input_value}",
+                    f"G1 X10.000 Y20.000 Z30.000 A{a_metric_output_expected} "
+                    f"B{b_metric_output_expected} C{c_metric_output_expected}",
+                    "",
+                )
+                self.compare_third_line(
+                    f"G1 X10 Y20 Z30 A{a_input_value} B{b_input_value} C{c_input_value}",
+                    f"G1 X0.3937 Y0.7874 Z1.1811 A{a_inches_output_expected} "
+                    f"B{b_inches_output_expected} C{c_inches_output_expected}",
+                    "--inches",
+                )
