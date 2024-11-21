@@ -33,6 +33,7 @@
 
 namespace Materials
 {
+class MaterialLibraryLocal;
 
 class MaterialEntry
 {
@@ -115,7 +116,8 @@ public:
     ~MaterialLoader() = default;
 
     std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> getMaterialLibraries();
-    static std::shared_ptr<std::list<QString>> getMaterialFolders(const MaterialLibrary& library);
+    static std::shared_ptr<std::list<QString>>
+    getMaterialFolders(const MaterialLibraryLocal& library);
     static void showYaml(const YAML::Node& yaml);
     static void
     dereference(const std::shared_ptr<std::map<QString, std::shared_ptr<Material>>>& materialMap,
@@ -132,8 +134,8 @@ private:
     void dereference(const std::shared_ptr<Material>& material);
     std::shared_ptr<MaterialEntry>
     getMaterialFromPath(const std::shared_ptr<MaterialLibrary>& library, const QString& path) const;
-    void addLibrary(const std::shared_ptr<MaterialLibrary>& model);
-    void loadLibrary(const std::shared_ptr<MaterialLibrary>& library);
+    void addLibrary(const std::shared_ptr<MaterialLibraryLocal>& model);
+    void loadLibrary(const std::shared_ptr<MaterialLibraryLocal>& library);
     void loadLibraries();
 
     static std::unique_ptr<std::map<QString, std::shared_ptr<MaterialEntry>>> _materialEntryMap;

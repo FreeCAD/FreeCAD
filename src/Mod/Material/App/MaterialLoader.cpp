@@ -350,7 +350,7 @@ MaterialLoader::MaterialLoader(
     loadLibraries();
 }
 
-void MaterialLoader::addLibrary(const std::shared_ptr<MaterialLibrary>& model)
+void MaterialLoader::addLibrary(const std::shared_ptr<MaterialLibraryLocal>& model)
 {
     _libraryList->push_back(model);
 }
@@ -511,7 +511,7 @@ void MaterialLoader::dereference(const std::shared_ptr<Material>& material)
     dereference(_materialMap, material);
 }
 
-void MaterialLoader::loadLibrary(const std::shared_ptr<MaterialLibrary>& library)
+void MaterialLoader::loadLibrary(const std::shared_ptr<MaterialLibraryLocal>& library)
 {
     if (_materialEntryMap == nullptr) {
         _materialEntryMap = std::make_unique<std::map<QString, std::shared_ptr<MaterialEntry>>>();
@@ -546,7 +546,11 @@ void MaterialLoader::loadLibraries()
     auto _libraryList = getMaterialLibraries();
     if (_libraryList) {
         for (auto& it : *_libraryList) {
-            loadLibrary(it);
+            if (it->isLocal()) {
+                auto materialLibrary =
+                    reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(it);
+                loadLibrary(materialLibrary);
+            }
         }
     }
 
@@ -555,7 +559,8 @@ void MaterialLoader::loadLibraries()
     }
 }
 
-std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> MaterialLoader::getMaterialLibraries()
+std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>>
+MaterialLoader::getMaterialLibraries()
 {
     auto param = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Material/Resources");
@@ -568,10 +573,10 @@ std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> MaterialLoader::get
         QString resourceDir = QString::fromStdString(App::Application::getResourceDir()
                                                      + "/Mod/Material/Resources/Materials");
         auto libData =
-            std::make_shared<MaterialLibrary>(QString::fromStdString("System"),
-                                              resourceDir,
-                                              QString::fromStdString(":/icons/freecad.svg"),
-                                              true);
+            std::make_shared<MaterialLibraryLocal>(QString::fromStdString("System"),
+                                                   resourceDir,
+                                                   QString::fromStdString(":/icons/freecad.svg"),
+                                                   true);
         _libraryList->push_back(libData);
     }
 
@@ -588,10 +593,10 @@ std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> MaterialLoader::get
             if (materialDir.length() > 0) {
                 QDir dir(materialDir);
                 if (dir.exists()) {
-                    auto libData = std::make_shared<MaterialLibrary>(moduleName,
-                                                                     materialDir,
-                                                                     materialIcon,
-                                                                     materialReadOnly);
+                    auto libData = std::make_shared<MaterialLibraryLocal>(moduleName,
+                                                                          materialDir,
+                                                                          materialIcon,
+                                                                          materialReadOnly);
                     _libraryList->push_back(libData);
                 }
             }
@@ -611,7 +616,7 @@ std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> MaterialLoader::get
                 }
             }
             if (materialDir.exists()) {
-                auto libData = std::make_shared<MaterialLibrary>(
+                auto libData = std::make_shared<MaterialLibraryLocal>(
                     QString::fromStdString("User"),
                     resourceDir,
                     QString::fromStdString(":/icons/preferences-general.svg"),
@@ -626,11 +631,11 @@ std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> MaterialLoader::get
         if (!resourceDir.isEmpty()) {
             QDir materialDir(resourceDir);
             if (materialDir.exists()) {
-                auto libData =
-                    std::make_shared<MaterialLibrary>(QString::fromStdString("Custom"),
-                                                      resourceDir,
-                                                      QString::fromStdString(":/icons/user.svg"),
-                                                      false);
+                auto libData = std::make_shared<MaterialLibraryLocal>(
+                    QString::fromStdString("Custom"),
+                    resourceDir,
+                    QString::fromStdString(":/icons/user.svg"),
+                    false);
                 _libraryList->push_back(libData);
             }
         }
@@ -640,7 +645,7 @@ std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> MaterialLoader::get
 }
 
 std::shared_ptr<std::list<QString>>
-MaterialLoader::getMaterialFolders(const MaterialLibrary& library)
+MaterialLoader::getMaterialFolders(const MaterialLibraryLocal& library)
 {
     std::shared_ptr<std::list<QString>> pathList = std::make_shared<std::list<QString>>();
     QDirIterator it(library.getDirectory(), QDirIterator::Subdirectories);

@@ -61,6 +61,7 @@ public:
     {
         return _readOnly;
     }
+    virtual bool isLocal() const;
 
     bool operator==(const Library& library) const;
     bool operator!=(const Library& library) const
@@ -90,6 +91,10 @@ public:
     {
         return _directory;
     }
+    void setDirectory(const QString &directory)
+    {
+        _directory = directory;
+    }
     const QString getDirectoryPath() const
     {
         return QDir(_directory).absolutePath();
@@ -99,6 +104,8 @@ public:
     {
         return !operator==(library);
     }
+    bool isLocal() const override;
+
     QString getLocalPath(const QString& path) const;
     QString getRelativePath(const QString& path) const;
     bool isRoot(const QString& path) const;

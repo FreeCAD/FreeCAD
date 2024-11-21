@@ -45,6 +45,11 @@ bool Library::operator==(const Library& library) const
     return (_name == library._name);
 }
 
+bool Library::isLocal() const
+{
+    return false;
+}
+
 TYPESYSTEM_SOURCE(Materials::LocalLibrary, Materials::Library)
 
 LocalLibrary::LocalLibrary(const QString& libraryName,
@@ -58,6 +63,11 @@ LocalLibrary::LocalLibrary(const QString& libraryName,
 bool LocalLibrary::operator==(const LocalLibrary& library) const
 {
     return (getName() == library.getName()) && (_directory == library._directory);
+}
+
+bool LocalLibrary::isLocal() const
+{
+    return true;
 }
 
 QString LocalLibrary::getLocalPath(const QString& path) const

@@ -71,7 +71,7 @@ TEST_F(TestMaterial, TestInstallation)
     ASSERT_NE(_modelManager, nullptr);
 
     // We should have loaded at least the system library
-    auto libraries = _materialManager->getMaterialLibraries();
+    auto libraries = _materialManager->getLibraries();
     ASSERT_GT(libraries->size(), 0);
 
     // We should have at least one material

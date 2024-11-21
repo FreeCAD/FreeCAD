@@ -136,14 +136,22 @@ PyObject* MaterialManagerPy::inheritMaterial(PyObject* args)
 
 Py::List MaterialManagerPy::getMaterialLibraries() const
 {
-    auto libraries = getMaterialManagerPtr()->getMaterialLibraries();
+    auto libraries = getMaterialManagerPtr()->getLibraries();
     Py::List list;
 
     for (auto it = libraries->begin(); it != libraries->end(); it++) {
         auto lib = *it;
         Py::Tuple libTuple(3);
         libTuple.setItem(0, Py::String(lib->getName().toStdString()));
-        libTuple.setItem(1, Py::String(lib->getDirectoryPath().toStdString()));
+        if (lib->isLocal()) {
+            auto materialLibrary =
+                reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(lib);
+            libTuple.setItem(1, Py::String(materialLibrary->getDirectoryPath().toStdString()));
+        }
+        else
+        {
+            libTuple.setItem(1, Py::String());
+        }
         libTuple.setItem(2, Py::String(lib->getIconPath().toStdString()));
 
         list.append(libTuple);
@@ -327,7 +335,7 @@ PyObject* MaterialManagerPy::filterMaterials(PyObject* args, PyObject* kwds)
 
     auto filter = std::make_shared<MaterialFilter>(*(static_cast<MaterialFilterPy*>(filterPy)->getMaterialFilterPtr()));
 
-    auto libraries = getMaterialManagerPtr()->getMaterialLibraries();
+    auto libraries = getMaterialManagerPtr()->getLibraries();
     Py::List list;
 
     for (auto lib : *libraries) {

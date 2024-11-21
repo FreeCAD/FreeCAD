@@ -287,7 +287,7 @@ void MaterialSave::reject()
 
 void MaterialSave::setLibraries()
 {
-    auto libraries = _manager.getMaterialLibraries();
+    auto libraries = _manager.getLibraries();
     for (auto& library : *libraries) {
         if (!library->isReadOnly()) {
             QVariant libraryVariant;
@@ -552,9 +552,9 @@ int MaterialSave::confirmDelete(QWidget* parent)
 {
     auto library = currentLibrary();
 
-    if (library->isRoot(_selectedFull)) {
-        return QMessageBox::Cancel;
-    }
+    // if (library->isRoot(_selectedFull)) {
+    //     return QMessageBox::Cancel;
+    // }
 
     QMessageBox box(parent ? parent : this);
     box.setIcon(QMessageBox::Question);
@@ -600,10 +600,10 @@ void MaterialSave::deleteSelected()
 {
     auto library = currentLibrary();
 
-    if (!library->isRoot(_selectedFull)) {
-        _manager.deleteRecursive(library, _selectedFull);
-        removeSelectedFromTree();
-    }
+    // if (!library->isRoot(_selectedFull)) {
+    //     _manager.deleteRecursive(library, _selectedFull);
+    //     removeSelectedFromTree();
+    // }
 }
 
 void MaterialSave::removeChildren(QStandardItem* item)

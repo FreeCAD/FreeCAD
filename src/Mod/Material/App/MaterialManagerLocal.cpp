@@ -103,16 +103,9 @@ void MaterialManagerLocal::refresh()
     initLibraries();
 }
 
-std::shared_ptr<std::vector<Library>> MaterialManagerLocal::getLibraries()
+std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> MaterialManagerLocal::getLibraries()
 {
-    auto libraries = std::shared_ptr<std::vector<Library>>();
-
-    for (auto& library : *_libraryList) {
-        libraries->push_back(
-            Library(library->getName(), library->getIconPath(), library->isReadOnly()));
-    }
-
-    return libraries;
+    return getMaterialLibraries();
 }
 
 void MaterialManagerLocal::createLibrary(const QString& libraryName,
@@ -127,7 +120,8 @@ void MaterialManagerLocal::createLibrary(const QString& libraryName,
         }
     }
 
-    auto materialLibrary = std::make_shared<MaterialLibrary>(libraryName, directory, icon, readOnly);
+    auto materialLibrary =
+        std::make_shared<MaterialLibraryLocal>(libraryName, directory, icon, readOnly);
     _libraryList->push_back(materialLibrary);
 
     // This needs to be persisted somehow
@@ -238,24 +232,29 @@ std::shared_ptr<Material> MaterialManagerLocal::getMaterialByPath(const QString&
     QString cleanPath = QDir::cleanPath(path);
 
     for (auto& library : *_libraryList) {
-        if (cleanPath.startsWith(library->getDirectory())) {
-            try {
-                return library->getMaterialByPath(cleanPath);
-            }
-            catch (const MaterialNotFound&) {
-            }
+        if (library->isLocal()) {
+            auto materialLibrary =
+                reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(library);
+            if (cleanPath.startsWith(materialLibrary->getDirectory())) {
+                try {
+                    return library->getMaterialByPath(cleanPath);
+                }
+                catch (const MaterialNotFound&) {
+                }
 
-            // See if it's a new file saved by the old editor
-            {
-                QMutexLocker locker(&_mutex);
+                // See if it's a new file saved by the old editor
+                {
+                    QMutexLocker locker(&_mutex);
 
-                if (MaterialConfigLoader::isConfigStyle(path)) {
-                    auto material = MaterialConfigLoader::getMaterialFromPath(library, path);
-                    if (material) {
-                        (*_materialMap)[material->getUUID()] = library->addMaterial(material, path);
+                    if (MaterialConfigLoader::isConfigStyle(path)) {
+                        auto material = MaterialConfigLoader::getMaterialFromPath(library, path);
+                        if (material) {
+                            (*_materialMap)[material->getUUID()] =
+                                materialLibrary->addMaterial(material, path);
+                        }
+
+                        return material;
                     }
-
-                    return material;
                 }
             }
         }
@@ -337,16 +336,12 @@ MaterialManagerLocal::getMaterialLibraries() const
     return _libraryList;
 }
 
-std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>>
-MaterialManagerLocal::getLocalMaterialLibraries() const
-{
-    return getMaterialLibraries();
-}
-
 std::shared_ptr<std::list<QString>>
 MaterialManagerLocal::getMaterialFolders(const std::shared_ptr<MaterialLibrary>& library) const
 {
-    return MaterialLoader::getMaterialFolders(*library);
+    auto materialLibrary =
+        reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(library);
+    return MaterialLoader::getMaterialFolders(*materialLibrary);
 }
 
 std::shared_ptr<std::map<QString, std::shared_ptr<Material>>>

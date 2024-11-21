@@ -57,7 +57,7 @@ public:
     static void cleanup();
     static void refresh();
 
-    std::shared_ptr<std::vector<Library>> getLibraries();
+    std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> getLibraries();
     void createLibrary(const QString& libraryName,
                        const QString& directory,
                        const QString& icon,
@@ -80,8 +80,6 @@ public:
     bool exists(const std::shared_ptr<MaterialLibrary>& library, const QString& uuid) const;
 
     // Library management
-    std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> getMaterialLibraries() const;
-    std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> getLocalMaterialLibraries() const;
     std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
     getMaterialTree(const std::shared_ptr<MaterialLibrary>& library,
                     const std::shared_ptr<Materials::MaterialFilter>& filter) const
@@ -126,6 +124,9 @@ public:
     materialsWithModelComplete(const QString& uuid) const;
     void dereference(std::shared_ptr<Material> material) const;
     void dereference() const;
+
+protected:
+    std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> getMaterialLibraries() const;
 
 private:
     static std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> _libraryList;

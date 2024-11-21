@@ -74,7 +74,12 @@ Py::String MaterialPy::getLibraryName() const
 Py::String MaterialPy::getLibraryRoot() const
 {
     auto library = getMaterialPtr()->getLibrary();
-    return {library ? library->getDirectoryPath().toStdString() : ""};
+    if (library->isLocal()) {
+        auto materialLibrary =
+            reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(library);
+        return {materialLibrary ? materialLibrary->getDirectoryPath().toStdString() : ""};
+    }
+    return "";
 }
 
 Py::String MaterialPy::getLibraryIcon() const

@@ -46,6 +46,7 @@
 #include <Gui/WaitCursor.h>
 
 #include <Mod/Material/App/Exceptions.h>
+#include <Mod/Material/App/MaterialLibrary.h>
 #include <Mod/Material/App/ModelManager.h>
 #include <Mod/Material/App/ModelUuids.h>
 
@@ -665,14 +666,14 @@ void MaterialsEditor::saveMaterialTree(const Base::Reference<ParameterGrp>& para
 void MaterialsEditor::addMaterials(
     QStandardItem& parent,
     const std::shared_ptr<std::map<QString, std::shared_ptr<Materials::MaterialTreeNode>>>
-        modelTree,
+        materialTree,
     const QIcon& folderIcon,
     const QIcon& icon,
     const Base::Reference<ParameterGrp>& param)
 {
     auto childParam = param->GetGroup(parent.text().toStdString().c_str());
     auto tree = ui->treeMaterials;
-    for (auto& mat : *modelTree) {
+    for (auto& mat : *materialTree) {
         std::shared_ptr<Materials::MaterialTreeNode> nodePtr = mat.second;
         if (nodePtr->getType() == Materials::MaterialTreeNode::DataNode) {
             auto material = nodePtr->getData();
@@ -856,12 +857,14 @@ void MaterialsEditor::fillMaterialTree()
         addRecents(lib);
     }
 
-    auto libraries = getMaterialManager().getMaterialLibraries();
+    auto libraries = getMaterialManager().getLibraries();
     for (const auto& library : *libraries) {
-        auto modelTree = getMaterialManager().getMaterialTree(library);
+        auto materialLibrary =
+            reinterpret_cast<const std::shared_ptr<Materials::MaterialLibrary>&>(library);
+        auto materialTree = getMaterialManager().getMaterialTree(materialLibrary);
 
         bool showLibraries = _filterOptions.includeEmptyLibraries();
-        if (!_filterOptions.includeEmptyLibraries() && modelTree->size() > 0) {
+        if (!_filterOptions.includeEmptyLibraries() && materialTree->size() > 0) {
             showLibraries = true;
         }
 
@@ -873,7 +876,7 @@ void MaterialsEditor::fillMaterialTree()
             QIcon icon(library->getIconPath());
             QIcon folderIcon(QString::fromStdString(":/icons/folder.svg"));
 
-            addMaterials(*lib, modelTree, folderIcon, icon, param);
+            addMaterials(*lib, materialTree, folderIcon, icon, param);
         }
     }
 }
@@ -901,7 +904,7 @@ bool MaterialsEditor::updateTexturePreview() const
 {
     bool hasImage = false;
     QImage image;
-    //double scaling = 99.0;
+    // double scaling = 99.0;
     if (_material->hasModel(Materials::ModelUUIDs::ModelUUID_Rendering_Texture)) {
         // First try loading an embedded image
         try {
@@ -942,8 +945,8 @@ bool MaterialsEditor::updateTexturePreview() const
         try {
             auto property = _material->getAppearanceProperty(QLatin1String("TextureScaling"));
             if (!property->isNull()) {
-                //scaling = property->getFloat();
-                // Base::Console().Log("Has 'TextureScaling' = %g\n", scaling);
+                // scaling = property->getFloat();
+                //  Base::Console().Log("Has 'TextureScaling' = %g\n", scaling);
             }
         }
         catch (const Materials::PropertyNotFound&) {

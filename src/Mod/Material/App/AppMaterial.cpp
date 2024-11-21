@@ -96,8 +96,8 @@ PyMOD_INIT_FUNC(Materials)
     Materials::Library                  ::init();
     Materials::LocalLibrary             ::init();
     Materials::MaterialLibrary          ::init();
+    Materials::MaterialLibraryLocal     ::init();
     Materials::ModelLibrary             ::init();
-    Materials::MaterialExternalLibrary  ::init();
 
     Materials::ModelProperty            ::init();
     Materials::MaterialProperty         ::init();

@@ -88,7 +88,12 @@ void MaterialManager::refresh()
     _localManager->refresh();
 }
 
-std::shared_ptr<std::vector<Library>> MaterialManager::getLibraries()
+std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> MaterialManager::getLibraries()
+{
+    return _localManager->getLibraries();
+}
+
+std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> MaterialManager::getLocalLibraries()
 {
     return _localManager->getLibraries();
 }
@@ -287,18 +292,6 @@ bool MaterialManager::exists(const std::shared_ptr<MaterialLibrary>& library,
 std::shared_ptr<MaterialLibrary> MaterialManager::getLibrary(const QString& name) const
 {
     return _localManager->getLibrary(name);
-}
-
-std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>>
-MaterialManager::getMaterialLibraries() const
-{
-    return _localManager->getMaterialLibraries();
-}
-
-std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>>
-MaterialManager::getLocalMaterialLibraries() const
-{
-    return _localManager->getMaterialLibraries();
 }
 
 std::shared_ptr<std::list<QString>>

@@ -44,7 +44,7 @@ class MaterialManager;
 class MaterialFilter;
 class MaterialFilterOptions;
 
-class MaterialsExport MaterialLibrary: public LocalLibrary,
+class MaterialsExport MaterialLibrary: public Library,
                                        public std::enable_shared_from_this<MaterialLibrary>
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
@@ -53,14 +53,13 @@ public:
     MaterialLibrary() = default;
     MaterialLibrary(const MaterialLibrary&) = delete;
     MaterialLibrary(const QString& libraryName,
-                    const QString& dir,
                     const QString& icon,
                     bool readOnly = true);
     ~MaterialLibrary() override = default;
 
     bool operator==(const MaterialLibrary& library) const
     {
-        return LocalLibrary::operator==(library);
+        return Library::operator==(library);
     }
     bool operator!=(const MaterialLibrary& library) const
     {
@@ -109,17 +108,17 @@ protected:
     std::unique_ptr<std::map<QString, std::shared_ptr<Material>>> _materialPathMap;
 };
 
-class MaterialsExport MaterialExternalLibrary: public MaterialLibrary
+class MaterialsExport MaterialLibraryLocal: public MaterialLibrary, public LocalLibrary
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    MaterialExternalLibrary() = default;
-    MaterialExternalLibrary(const QString& libraryName,
-                            const QString& dir,
-                            const QString& icon,
-                            bool readOnly = true);
-    ~MaterialExternalLibrary() override = default;
+    MaterialLibraryLocal() = default;
+    MaterialLibraryLocal(const QString& libraryName,
+                         const QString& dir,
+                         const QString& icon,
+                         bool readOnly = true);
+    ~MaterialLibraryLocal() override = default;
 };
 
 }  // namespace Materials
