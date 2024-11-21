@@ -147,10 +147,9 @@ class _Fence(ArchComponent.Component):
         obj.Shape = compound
 
     def calculateNumberOfSections(self, pathLength, sectionLength, postLength):
-        withoutLastPost = pathLength - postLength
         realSectionLength = sectionLength + postLength
 
-        return math.ceil(withoutLastPost / realSectionLength)
+        return math.ceil(pathLength / realSectionLength)
 
     def calculatePostPlacements(self, obj, pathwire, rotation):
         postWidth = obj.Post.Shape.BoundBox.YMax
