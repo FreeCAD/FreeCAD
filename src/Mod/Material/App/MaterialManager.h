@@ -58,6 +58,7 @@ public:
 
     static void refresh();
 
+    // Defaults
     static std::shared_ptr<App::Material> defaultAppearance();
     static std::shared_ptr<Material> defaultMaterial();
     static QString defaultMaterialUUID();
@@ -65,6 +66,7 @@ public:
     // Library management
     std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> getLibraries();
     std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> getLocalLibraries();
+    std::shared_ptr<MaterialLibrary> getLibrary(const QString& name) const;
     void createLibrary(const QString& libraryName, const QString& icon, bool readOnly = true);
     void createLocalLibrary(const QString& libraryName,
                             const QString& directory,
@@ -77,45 +79,25 @@ public:
     libraryMaterials(const QString& libraryName);
     bool isLocalLibrary(const QString& libraryName);
 
+    // Folder management
+    std::shared_ptr<std::list<QString>>
+    getMaterialFolders(const std::shared_ptr<MaterialLibrary>& library) const;
+    void createFolder(const std::shared_ptr<MaterialLibrary>& library, const QString& path);
+    void renameFolder(const std::shared_ptr<MaterialLibrary>& library,
+                      const QString& oldPath,
+                      const QString& newPath);
+    void deleteRecursive(const std::shared_ptr<MaterialLibrary>& library, const QString& path);
+
+    // Tree management
     std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
     getMaterialTree(const std::shared_ptr<MaterialLibrary>& library,
-                    const std::shared_ptr<Materials::MaterialFilter>& filter) const
-    {
-        MaterialFilterOptions options;
-        return library->getMaterialTree(filter, options);
-    }
+                    const std::shared_ptr<Materials::MaterialFilter>& filter) const;
     std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
     getMaterialTree(const std::shared_ptr<MaterialLibrary>& library,
                     const std::shared_ptr<Materials::MaterialFilter>& filter,
-                    const MaterialFilterOptions& options) const
-    {
-        return library->getMaterialTree(filter, options);
-    }
+                    const MaterialFilterOptions& options) const;
     std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
-    getMaterialTree(const std::shared_ptr<MaterialLibrary>& library) const
-    {
-        std::shared_ptr<Materials::MaterialFilter> filter;
-        MaterialFilterOptions options;
-        return library->getMaterialTree(filter, options);
-    }
-    std::shared_ptr<std::list<QString>>
-    getMaterialFolders(const std::shared_ptr<MaterialLibrary>& library) const;
-    void createFolder(const std::shared_ptr<MaterialLibrary>& library, const QString& path) const
-    {
-        library->createFolder(path);
-    }
-    void renameFolder(const std::shared_ptr<MaterialLibrary>& library,
-                      const QString& oldPath,
-                      const QString& newPath) const
-    {
-        library->renameFolder(oldPath, newPath);
-    }
-    void deleteRecursive(const std::shared_ptr<MaterialLibrary>& library, const QString& path) const
-    {
-        library->deleteRecursive(path);
-        dereference();
-    }
-    std::shared_ptr<MaterialLibrary> getLibrary(const QString& name) const;
+    getMaterialTree(const std::shared_ptr<MaterialLibrary>& library) const;
 
     // Material management
     std::shared_ptr<std::map<QString, std::shared_ptr<Material>>> getLocalMaterials() const;

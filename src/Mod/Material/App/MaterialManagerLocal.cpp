@@ -103,9 +103,26 @@ void MaterialManagerLocal::refresh()
     initLibraries();
 }
 
+//=====
+//
+// Library management
+//
+//=====
+
 std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> MaterialManagerLocal::getLibraries()
 {
     return getMaterialLibraries();
+}
+
+std::shared_ptr<MaterialLibrary> MaterialManagerLocal::getLibrary(const QString& name) const
+{
+    for (auto& library : *_libraryList) {
+        if (library->getName() == name) {
+            return library;
+        }
+    }
+
+    throw LibraryNotFound();
 }
 
 void MaterialManagerLocal::createLibrary(const QString& libraryName,
@@ -182,39 +199,50 @@ MaterialManagerLocal::libraryMaterials(const QString& libraryName)
     return materials;
 }
 
-void MaterialManagerLocal::saveMaterial(const std::shared_ptr<MaterialLibrary>& library,
-                                        const std::shared_ptr<Material>& material,
-                                        const QString& path,
-                                        bool overwrite,
-                                        bool saveAsCopy,
-                                        bool saveInherited) const
+//=====
+//
+// Folder management
+//
+//=====
+
+std::shared_ptr<std::list<QString>>
+MaterialManagerLocal::getMaterialFolders(const std::shared_ptr<MaterialLibrary>& library) const
 {
-    auto newMaterial = library->saveMaterial(material, path, overwrite, saveAsCopy, saveInherited);
-    (*_materialMap)[newMaterial->getUUID()] = newMaterial;
+    auto materialLibrary =
+        reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(library);
+    return MaterialLoader::getMaterialFolders(*materialLibrary);
 }
 
-bool MaterialManagerLocal::isMaterial(const fs::path& p) const
+void MaterialManagerLocal::createFolder(const std::shared_ptr<MaterialLibrary>& library,
+                                        const QString& path)
 {
-    if (!fs::is_regular_file(p)) {
-        return false;
-    }
-    // check file extension
-    if (p.extension() == ".FCMat") {
-        return true;
-    }
-    return false;
+    // library->createFolder(path);
 }
 
-bool MaterialManagerLocal::isMaterial(const QFileInfo& file) const
+void MaterialManagerLocal::renameFolder(const std::shared_ptr<MaterialLibrary>& library,
+                                        const QString& oldPath,
+                                        const QString& newPath)
 {
-    if (!file.isFile()) {
-        return false;
-    }
-    // check file extension
-    if (file.suffix() == QString::fromStdString("FCMat")) {
-        return true;
-    }
-    return false;
+    // library->renameFolder(oldPath, newPath);
+}
+
+void MaterialManagerLocal::deleteRecursive(const std::shared_ptr<MaterialLibrary>& library,
+                                           const QString& path)
+{
+    // library->deleteRecursive(path);
+    // dereference();
+}
+
+//=====
+//
+// Material management
+//
+//=====
+
+std::shared_ptr<std::map<QString, std::shared_ptr<Material>>>
+MaterialManagerLocal::getLocalMaterials() const
+{
+    return _materialMap;
 }
 
 std::shared_ptr<Material> MaterialManagerLocal::getMaterial(const QString& uuid) const
@@ -249,8 +277,8 @@ std::shared_ptr<Material> MaterialManagerLocal::getMaterialByPath(const QString&
                     if (MaterialConfigLoader::isConfigStyle(path)) {
                         auto material = MaterialConfigLoader::getMaterialFromPath(library, path);
                         if (material) {
-                            (*_materialMap)[material->getUUID()] =
-                                materialLibrary->addMaterial(material, path);
+                            // (*_materialMap)[material->getUUID()] =
+                            //     materialLibrary->addMaterial(material, path);
                         }
 
                         return material;
@@ -310,38 +338,44 @@ bool MaterialManagerLocal::exists(const std::shared_ptr<MaterialLibrary>& librar
     return false;
 }
 
-std::shared_ptr<MaterialLibrary> MaterialManagerLocal::getLibrary(const QString& name) const
+void MaterialManagerLocal::remove(const QString& uuid)
 {
-    for (auto& library : *_libraryList) {
-        if (library->getName() == name) {
-            return library;
-        }
-    }
-
-    throw LibraryNotFound();
+    _materialMap->erase(uuid);
 }
 
-std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>>
-MaterialManagerLocal::getMaterialLibraries() const
+void MaterialManagerLocal::saveMaterial(const std::shared_ptr<MaterialLibrary>& library,
+                                        const std::shared_ptr<Material>& material,
+                                        const QString& path,
+                                        bool overwrite,
+                                        bool saveAsCopy,
+                                        bool saveInherited) const
 {
-    if (_libraryList == nullptr) {
-        if (_materialMap == nullptr) {
-            _materialMap = std::make_shared<std::map<QString, std::shared_ptr<Material>>>();
-        }
-        _libraryList = std::make_shared<std::list<std::shared_ptr<MaterialLibrary>>>();
-
-        // Load the libraries
-        MaterialLoader loader(_materialMap, _libraryList);
-    }
-    return _libraryList;
+    // auto newMaterial = library->saveMaterial(material, path, overwrite, saveAsCopy, saveInherited);
+    // (*_materialMap)[newMaterial->getUUID()] = newMaterial;
 }
 
-std::shared_ptr<std::list<QString>>
-MaterialManagerLocal::getMaterialFolders(const std::shared_ptr<MaterialLibrary>& library) const
+bool MaterialManagerLocal::isMaterial(const fs::path& p) const
 {
-    auto materialLibrary =
-        reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(library);
-    return MaterialLoader::getMaterialFolders(*materialLibrary);
+    if (!fs::is_regular_file(p)) {
+        return false;
+    }
+    // check file extension
+    if (p.extension() == ".FCMat") {
+        return true;
+    }
+    return false;
+}
+
+bool MaterialManagerLocal::isMaterial(const QFileInfo& file) const
+{
+    if (!file.isFile()) {
+        return false;
+    }
+    // check file extension
+    if (file.suffix() == QString::fromStdString("FCMat")) {
+        return true;
+    }
+    return false;
 }
 
 std::shared_ptr<std::map<QString, std::shared_ptr<Material>>>
@@ -398,4 +432,19 @@ void MaterialManagerLocal::dereference() const
 void MaterialManagerLocal::dereference(std::shared_ptr<Material> material) const
 {
     MaterialLoader::dereference(_materialMap, material);
+}
+
+std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>>
+MaterialManagerLocal::getMaterialLibraries() const
+{
+    if (_libraryList == nullptr) {
+        if (_materialMap == nullptr) {
+            _materialMap = std::make_shared<std::map<QString, std::shared_ptr<Material>>>();
+        }
+        _libraryList = std::make_shared<std::list<std::shared_ptr<MaterialLibrary>>>();
+
+        // Load the libraries
+        MaterialLoader loader(_materialMap, _libraryList);
+    }
+    return _libraryList;
 }

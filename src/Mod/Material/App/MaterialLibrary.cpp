@@ -50,96 +50,96 @@ MaterialLibrary::MaterialLibrary(const QString& libraryName,
     , _materialPathMap(std::make_unique<std::map<QString, std::shared_ptr<Material>>>())
 {}
 
-void MaterialLibrary::createFolder(const QString& path)
-{
-    // QString filePath = getLocalPath(path);
+// void MaterialLibrary::createFolder(const QString& path)
+// {
+//     // QString filePath = getLocalPath(path);
 
-    // QDir fileDir(filePath);
-    // if (!fileDir.exists()) {
-    //     if (!fileDir.mkpath(filePath)) {
-    //         Base::Console().Error("Unable to create directory path '%s'\n",
-    //                               filePath.toStdString().c_str());
-    //     }
-    // }
-}
-
-// This accepts the filesystem path as returned from getLocalPath
-void MaterialLibrary::deleteDir(MaterialManager& manager, const QString& path)
-{
-    // // Remove the children first
-    // QDirIterator it(path, QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot);
-
-    // // Add paths to a list so there are no iterator errors
-    // QVector<QString> dirList;
-    // QVector<QString> fileList;
-    // while (it.hasNext()) {
-    //     auto pathname = it.next();
-    //     QFileInfo file(pathname);
-    //     if (file.isFile()) {
-    //         fileList.push_back(pathname);
-    //     }
-    //     else if (file.isDir()) {
-    //         dirList.push_back(pathname);
-    //     }
-    // }
-
-    // // Remove the subdirs first
-    // while (!dirList.isEmpty()) {
-    //     QString dirPath = dirList.takeFirst();
-    //     deleteDir(manager, dirPath);
-    // }
-
-    // // Remove the files
-    // while (!fileList.isEmpty()) {
-    //     QString filePath = fileList.takeFirst();
-    //     deleteFile(manager, filePath);
-    // }
-
-    // // Finally, remove ourself
-    // QDir dir;
-    // if (!dir.rmdir(path)) {
-    //     throw DeleteError(path);
-    // }
-}
+//     // QDir fileDir(filePath);
+//     // if (!fileDir.exists()) {
+//     //     if (!fileDir.mkpath(filePath)) {
+//     //         Base::Console().Error("Unable to create directory path '%s'\n",
+//     //                               filePath.toStdString().c_str());
+//     //     }
+//     // }
+// }
 
 // This accepts the filesystem path as returned from getLocalPath
-void MaterialLibrary::deleteFile(MaterialManager& manager, const QString& path)
-{
-    // if (QFile::remove(path)) {
-    //     // Remove from the map
-    //     QString rPath = getRelativePath(path);
-    //     try {
-    //         auto material = getMaterialByPath(rPath);
-    //         manager.remove(material->getUUID());
-    //     }
-    //     catch (const MaterialNotFound&) {
-    //         Base::Console().Log("Unable to remove file from materials list\n");
-    //     }
-    //     _materialPathMap->erase(rPath);
-    // }
-    // else {
-    //     QString error = QString::fromStdString("DeleteError: Unable to delete ") + path;
-    //     throw DeleteError(error);
-    // }
-}
+// void MaterialLibrary::deleteDir(MaterialManager& manager, const QString& path)
+// {
+//     // // Remove the children first
+//     // QDirIterator it(path, QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot);
 
-void MaterialLibrary::deleteRecursive(const QString& path)
-{
-    // if (isRoot(path)) {
-    //     return;
-    // }
+//     // // Add paths to a list so there are no iterator errors
+//     // QVector<QString> dirList;
+//     // QVector<QString> fileList;
+//     // while (it.hasNext()) {
+//     //     auto pathname = it.next();
+//     //     QFileInfo file(pathname);
+//     //     if (file.isFile()) {
+//     //         fileList.push_back(pathname);
+//     //     }
+//     //     else if (file.isDir()) {
+//     //         dirList.push_back(pathname);
+//     //     }
+//     // }
 
-    // QString filePath = getLocalPath(path);
-    // MaterialManager manager;
+//     // // Remove the subdirs first
+//     // while (!dirList.isEmpty()) {
+//     //     QString dirPath = dirList.takeFirst();
+//     //     deleteDir(manager, dirPath);
+//     // }
 
-    // QFileInfo info(filePath);
-    // if (info.isDir()) {
-    //     deleteDir(manager, filePath);
-    // }
-    // else {
-    //     deleteFile(manager, filePath);
-    // }
-}
+//     // // Remove the files
+//     // while (!fileList.isEmpty()) {
+//     //     QString filePath = fileList.takeFirst();
+//     //     deleteFile(manager, filePath);
+//     // }
+
+//     // // Finally, remove ourself
+//     // QDir dir;
+//     // if (!dir.rmdir(path)) {
+//     //     throw DeleteError(path);
+//     // }
+// }
+
+// This accepts the filesystem path as returned from getLocalPath
+// void MaterialLibrary::deleteFile(MaterialManager& manager, const QString& path)
+// {
+//     // if (QFile::remove(path)) {
+//     //     // Remove from the map
+//     //     QString rPath = getRelativePath(path);
+//     //     try {
+//     //         auto material = getMaterialByPath(rPath);
+//     //         manager.remove(material->getUUID());
+//     //     }
+//     //     catch (const MaterialNotFound&) {
+//     //         Base::Console().Log("Unable to remove file from materials list\n");
+//     //     }
+//     //     _materialPathMap->erase(rPath);
+//     // }
+//     // else {
+//     //     QString error = QString::fromStdString("DeleteError: Unable to delete ") + path;
+//     //     throw DeleteError(error);
+//     // }
+// }
+
+// void MaterialLibrary::deleteRecursive(const QString& path)
+// {
+//     // if (isRoot(path)) {
+//     //     return;
+//     // }
+
+//     // QString filePath = getLocalPath(path);
+//     // MaterialManager manager;
+
+//     // QFileInfo info(filePath);
+//     // if (info.isDir()) {
+//     //     deleteDir(manager, filePath);
+//     // }
+//     // else {
+//     //     deleteFile(manager, filePath);
+//     // }
+// }
 
 void MaterialLibrary::updatePaths(const QString& oldPath, const QString& newPath)
 {
@@ -160,85 +160,85 @@ void MaterialLibrary::updatePaths(const QString& oldPath, const QString& newPath
     // _materialPathMap = std::move(pathMap);
 }
 
-void MaterialLibrary::renameFolder(const QString& oldPath, const QString& newPath)
-{
-    // QString filePath = getLocalPath(oldPath);
-    // QString newFilePath = getLocalPath(newPath);
+// void MaterialLibrary::renameFolder(const QString& oldPath, const QString& newPath)
+// {
+//     // QString filePath = getLocalPath(oldPath);
+//     // QString newFilePath = getLocalPath(newPath);
 
-    // QDir fileDir(filePath);
-    // if (fileDir.exists()) {
-    //     if (!fileDir.rename(filePath, newFilePath)) {
-    //         Base::Console().Error("Unable to rename directory path '%s'\n",
-    //                               filePath.toStdString().c_str());
-    //     }
-    // }
+//     // QDir fileDir(filePath);
+//     // if (fileDir.exists()) {
+//     //     if (!fileDir.rename(filePath, newFilePath)) {
+//     //         Base::Console().Error("Unable to rename directory path '%s'\n",
+//     //                               filePath.toStdString().c_str());
+//     //     }
+//     // }
 
-    // updatePaths(oldPath, newPath);
-}
+//     // updatePaths(oldPath, newPath);
+// }
 
-std::shared_ptr<Material> MaterialLibrary::saveMaterial(const std::shared_ptr<Material>& material,
-                                                        const QString& path,
-                                                        bool overwrite,
-                                                        bool saveAsCopy,
-                                                        bool saveInherited)
-{
-//     QString filePath = getLocalPath(path);
-//     QFile file(filePath);
+// std::shared_ptr<Material> MaterialLibrary::saveMaterial(const std::shared_ptr<Material>& material,
+//                                                         const QString& path,
+//                                                         bool overwrite,
+//                                                         bool saveAsCopy,
+//                                                         bool saveInherited)
+// {
+// //     QString filePath = getLocalPath(path);
+// //     QFile file(filePath);
 
-//     QFileInfo info(file);
-//     QDir fileDir(info.path());
-//     if (!fileDir.exists()) {
-//         if (!fileDir.mkpath(info.path())) {
-//             Base::Console().Error("Unable to create directory path '%s'\n",
-//                                   info.path().toStdString().c_str());
-//         }
-//     }
+// //     QFileInfo info(file);
+// //     QDir fileDir(info.path());
+// //     if (!fileDir.exists()) {
+// //         if (!fileDir.mkpath(info.path())) {
+// //             Base::Console().Error("Unable to create directory path '%s'\n",
+// //                                   info.path().toStdString().c_str());
+// //         }
+// //     }
 
-//     if (info.exists()) {
-//         if (!overwrite) {
-//             Base::Console().Error("File already exists '%s'\n", info.path().toStdString().c_str());
-//             throw MaterialExists();
-//         }
-//     }
+// //     if (info.exists()) {
+// //         if (!overwrite) {
+// //             Base::Console().Error("File already exists '%s'\n", info.path().toStdString().c_str());
+// //             throw MaterialExists();
+// //         }
+// //     }
 
-//     if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-//         QTextStream stream(&file);
-// #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-//         stream.setCodec("UTF-8");
-// #endif
-//         stream.setGenerateByteOrderMark(true);
+// //     if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+// //         QTextStream stream(&file);
+// // #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+// //         stream.setCodec("UTF-8");
+// // #endif
+// //         stream.setGenerateByteOrderMark(true);
 
-//         // Write the contents
-//         material->setName(info.baseName());
-//         material->setLibrary(getptr());
-//         material->setDirectory(getRelativePath(path));
-//         material->save(stream, overwrite, saveAsCopy, saveInherited);
-//     }
+// //         // Write the contents
+// //         material->setName(info.baseName());
+// //         material->setLibrary(getptr());
+// //         material->setDirectory(getRelativePath(path));
+// //         material->save(stream, overwrite, saveAsCopy, saveInherited);
+// //     }
 
-    return addMaterial(material, path);
-}
+//     return addMaterial(material, path);
+// }
 
-bool MaterialLibrary::fileExists(const QString& path) const
-{
-    // QString filePath = getLocalPath(path);
-    // QFileInfo info(filePath);
+// bool MaterialLibrary::fileExists(const QString& path) const
+// {
+//     // QString filePath = getLocalPath(path);
+//     // QFileInfo info(filePath);
 
-    // return info.exists();
-    return false;
-}
+//     // return info.exists();
+//     return false;
+// }
 
-std::shared_ptr<Material> MaterialLibrary::addMaterial(const std::shared_ptr<Material>& material,
-                                                       const QString& path)
-{
-    // QString filePath = getRelativePath(path);
-    std::shared_ptr<Material> newMaterial = std::make_shared<Material>(*material);
-    // newMaterial->setLibrary(getptr());
-    // newMaterial->setDirectory(filePath);
+// std::shared_ptr<Material> MaterialLibrary::addMaterial(const std::shared_ptr<Material>& material,
+//                                                        const QString& path)
+// {
+//     // QString filePath = getRelativePath(path);
+//     std::shared_ptr<Material> newMaterial = std::make_shared<Material>(*material);
+//     // newMaterial->setLibrary(getptr());
+//     // newMaterial->setDirectory(filePath);
 
-    // (*_materialPathMap)[filePath] = newMaterial;
+//     // (*_materialPathMap)[filePath] = newMaterial;
 
-    return newMaterial;
-}
+//     return newMaterial;
+// }
 
 std::shared_ptr<Material> MaterialLibrary::getMaterialByPath(const QString& path) const
 {

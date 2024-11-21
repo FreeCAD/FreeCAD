@@ -137,7 +137,7 @@ void MaterialSave::onOk(bool checked)
     QFileInfo filepath(_selectedPath + QString::fromStdString("/") + name
                        + QString::fromStdString(".FCMat"));
 
-    if (library->fileExists(filepath.filePath())) {
+    /*if (library->fileExists(filepath.filePath()))*/ {
         // confirm overwrite
         auto res = confirmOverwrite(_filename);
         if (res == QMessageBox::Cancel) {

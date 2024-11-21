@@ -73,94 +73,16 @@ void MaterialManager::initManagers()
     }
 }
 
-void MaterialManager::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason)
-{
-    // const ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
-    // if (strcmp(Reason, "UseDatabase") == 0) {
-    //     Base::Console().Log("Use database changed\n");
-    //     _useDatabase = rGrp.GetBool("UseDatabase", false);
-    //     _dbManager->refresh();
-    // }
-}
-
 void MaterialManager::refresh()
 {
     _localManager->refresh();
 }
 
-std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> MaterialManager::getLibraries()
-{
-    return _localManager->getLibraries();
-}
-
-std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> MaterialManager::getLocalLibraries()
-{
-    return _localManager->getLibraries();
-}
-
-void MaterialManager::createLibrary(const QString& libraryName, const QString& icon, bool readOnly)
-{
-    throw LibraryCreationError("Local library requires a path");
-}
-
-void MaterialManager::createLocalLibrary(const QString& libraryName,
-                                         const QString& directory,
-                                         const QString& icon,
-                                         bool readOnly)
-{
-    _localManager->createLibrary(libraryName, directory, icon, readOnly);
-}
-
-void MaterialManager::renameLibrary(const QString& libraryName, const QString& newName)
-{
-    _localManager->renameLibrary(libraryName, newName);
-}
-
-void MaterialManager::changeIcon(const QString& libraryName, const QString& icon)
-{
-    _localManager->changeIcon(libraryName, icon);
-}
-
-void MaterialManager::removeLibrary(const QString& libraryName)
-{
-    _localManager->removeLibrary(libraryName);
-}
-
-std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
-MaterialManager::libraryMaterials(const QString& libraryName)
-{
-    return _localManager->libraryMaterials(libraryName);
-}
-
-bool MaterialManager::isLocalLibrary(const QString& libraryName)
-{
-    return true;
-}
-
-void MaterialManager::remove(const QString& uuid) const
-{
-    _localManager->remove(uuid);
-}
-
-void MaterialManager::saveMaterial(const std::shared_ptr<MaterialLibrary>& library,
-                                   const std::shared_ptr<Material>& material,
-                                   const QString& path,
-                                   bool overwrite,
-                                   bool saveAsCopy,
-                                   bool saveInherited) const
-{
-    _localManager->saveMaterial(library, material, path, overwrite, saveAsCopy, saveInherited);
-}
-
-bool MaterialManager::isMaterial(const fs::path& p) const
-{
-    return _localManager->isMaterial(p);
-}
-
-bool MaterialManager::isMaterial(const QFileInfo& file) const
-{
-    return _localManager->isMaterial(file);
-}
+//=====
+//
+// Defaults
+//
+//=====
 
 std::shared_ptr<App::Material> MaterialManager::defaultAppearance()
 {
@@ -239,6 +161,134 @@ QString MaterialManager::defaultMaterialUUID()
     return QString::fromStdString(uuid);
 }
 
+//=====
+//
+// Library management
+//
+//=====
+
+std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> MaterialManager::getLibraries()
+{
+    return _localManager->getLibraries();
+}
+
+std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> MaterialManager::getLocalLibraries()
+{
+    return _localManager->getLibraries();
+}
+
+std::shared_ptr<MaterialLibrary> MaterialManager::getLibrary(const QString& name) const
+{
+    return _localManager->getLibrary(name);
+}
+
+void MaterialManager::createLibrary(const QString& libraryName, const QString& icon, bool readOnly)
+{
+    throw LibraryCreationError("Local library requires a path");
+}
+
+void MaterialManager::createLocalLibrary(const QString& libraryName,
+                                         const QString& directory,
+                                         const QString& icon,
+                                         bool readOnly)
+{
+    _localManager->createLibrary(libraryName, directory, icon, readOnly);
+}
+
+void MaterialManager::renameLibrary(const QString& libraryName, const QString& newName)
+{
+    _localManager->renameLibrary(libraryName, newName);
+}
+
+void MaterialManager::changeIcon(const QString& libraryName, const QString& icon)
+{
+    _localManager->changeIcon(libraryName, icon);
+}
+
+void MaterialManager::removeLibrary(const QString& libraryName)
+{
+    _localManager->removeLibrary(libraryName);
+}
+
+std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
+MaterialManager::libraryMaterials(const QString& libraryName)
+{
+    return _localManager->libraryMaterials(libraryName);
+}
+
+bool MaterialManager::isLocalLibrary(const QString& libraryName)
+{
+    return true;
+}
+
+//=====
+//
+// Folder management
+//
+//=====
+
+std::shared_ptr<std::list<QString>>
+MaterialManager::getMaterialFolders(const std::shared_ptr<MaterialLibrary>& library) const
+{
+    return _localManager->getMaterialFolders(library);
+}
+
+void MaterialManager::createFolder(const std::shared_ptr<MaterialLibrary>& library,
+                                   const QString& path)
+{
+    // library->createFolder(path);
+}
+
+void MaterialManager::renameFolder(const std::shared_ptr<MaterialLibrary>& library,
+                                   const QString& oldPath,
+                                   const QString& newPath)
+{
+    // library->renameFolder(oldPath, newPath);
+}
+
+void MaterialManager::deleteRecursive(const std::shared_ptr<MaterialLibrary>& library,
+                                      const QString& path)
+{
+    // library->deleteRecursive(path);
+    // dereference();
+}
+
+//=====
+//
+// Tree management
+//
+//=====
+
+std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
+MaterialManager::getMaterialTree(const std::shared_ptr<MaterialLibrary>& library,
+                                 const std::shared_ptr<Materials::MaterialFilter>& filter) const
+{
+    MaterialFilterOptions options;
+    return library->getMaterialTree(filter, options);
+}
+
+std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
+MaterialManager::getMaterialTree(const std::shared_ptr<MaterialLibrary>& library,
+                                 const std::shared_ptr<Materials::MaterialFilter>& filter,
+                                 const MaterialFilterOptions& options) const
+{
+    return library->getMaterialTree(filter, options);
+}
+
+std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
+MaterialManager::getMaterialTree(const std::shared_ptr<MaterialLibrary>& library) const
+{
+    std::shared_ptr<Materials::MaterialFilter> filter;
+    MaterialFilterOptions options;
+    return library->getMaterialTree(filter, options);
+}
+
+//=====
+//
+// Material management
+//
+//=====
+
 std::shared_ptr<std::map<QString, std::shared_ptr<Material>>>
 MaterialManager::getLocalMaterials() const
 {
@@ -289,15 +339,29 @@ bool MaterialManager::exists(const std::shared_ptr<MaterialLibrary>& library,
     return _localManager->exists(library, uuid);
 }
 
-std::shared_ptr<MaterialLibrary> MaterialManager::getLibrary(const QString& name) const
+void MaterialManager::remove(const QString& uuid) const
 {
-    return _localManager->getLibrary(name);
+    _localManager->remove(uuid);
 }
 
-std::shared_ptr<std::list<QString>>
-MaterialManager::getMaterialFolders(const std::shared_ptr<MaterialLibrary>& library) const
+void MaterialManager::saveMaterial(const std::shared_ptr<MaterialLibrary>& library,
+                                   const std::shared_ptr<Material>& material,
+                                   const QString& path,
+                                   bool overwrite,
+                                   bool saveAsCopy,
+                                   bool saveInherited) const
 {
-    return _localManager->getMaterialFolders(library);
+    _localManager->saveMaterial(library, material, path, overwrite, saveAsCopy, saveInherited);
+}
+
+bool MaterialManager::isMaterial(const fs::path& p) const
+{
+    return _localManager->isMaterial(p);
+}
+
+bool MaterialManager::isMaterial(const QFileInfo& file) const
+{
+    return _localManager->isMaterial(file);
 }
 
 std::shared_ptr<std::map<QString, std::shared_ptr<Material>>>
@@ -320,4 +384,14 @@ void MaterialManager::dereference() const
 void MaterialManager::dereference(std::shared_ptr<Material> material) const
 {
     _localManager->dereference(material);
+}
+
+void MaterialManager::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason)
+{
+    // const ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
+    // if (strcmp(Reason, "UseDatabase") == 0) {
+    //     Base::Console().Log("Use database changed\n");
+    //     _useDatabase = rGrp.GetBool("UseDatabase", false);
+    //     _dbManager->refresh();
+    // }
 }

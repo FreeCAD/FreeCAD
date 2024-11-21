@@ -333,7 +333,7 @@ void MaterialYamlEntry::addToTree(
     }
 
     QString path = QDir(directory).absolutePath();
-    (*materialMap)[uuid] = library->addMaterial(finalModel, path);
+    // (*materialMap)[uuid] = library->addMaterial(finalModel, path);
 }
 
 //===
@@ -398,7 +398,7 @@ MaterialLoader::getMaterialFromPath(const std::shared_ptr<MaterialLibrary>& libr
     if (MaterialConfigLoader::isConfigStyle(path)) {
         auto material = MaterialConfigLoader::getMaterialFromPath(library, path);
         if (material) {
-            (*_materialMap)[material->getUUID()] = library->addMaterial(material, path);
+            // (*_materialMap)[material->getUUID()] = library->addMaterial(material, path);
         }
 
         // Return the nullptr as there are no intermediate steps to take, such
