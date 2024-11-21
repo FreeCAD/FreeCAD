@@ -122,7 +122,7 @@ void FitBSplineSurfaceWidget::onMakePlacementClicked()
                                });
                 MeshCore::PlaneFit fit;
                 fit.AddPoints(data);
-                if (fit.Fit() < FLOAT_MAX) {
+                if (fit.Fit() < FLT_MAX) {
                     Base::Vector3f base = fit.GetBase();
                     Base::Vector3f dirU = fit.GetDirU();
                     Base::Vector3f norm = fit.GetNormal();

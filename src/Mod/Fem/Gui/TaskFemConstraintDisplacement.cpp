@@ -74,18 +74,18 @@ TaskFemConstraintDisplacement::TaskFemConstraintDisplacement(
     this->groupLayout()->addWidget(proxy);
 
     // setup ranges
-    ui->spinxDisplacement->setMinimum(-FLOAT_MAX);
-    ui->spinxDisplacement->setMaximum(FLOAT_MAX);
-    ui->spinyDisplacement->setMinimum(-FLOAT_MAX);
-    ui->spinyDisplacement->setMaximum(FLOAT_MAX);
-    ui->spinzDisplacement->setMinimum(-FLOAT_MAX);
-    ui->spinzDisplacement->setMaximum(FLOAT_MAX);
-    ui->spinxRotation->setMinimum(-FLOAT_MAX);
-    ui->spinxRotation->setMaximum(FLOAT_MAX);
-    ui->spinyRotation->setMinimum(-FLOAT_MAX);
-    ui->spinyRotation->setMaximum(FLOAT_MAX);
-    ui->spinzRotation->setMinimum(-FLOAT_MAX);
-    ui->spinzRotation->setMaximum(FLOAT_MAX);
+    ui->spinxDisplacement->setMinimum(-FLT_MAX);
+    ui->spinxDisplacement->setMaximum(FLT_MAX);
+    ui->spinyDisplacement->setMinimum(-FLT_MAX);
+    ui->spinyDisplacement->setMaximum(FLT_MAX);
+    ui->spinzDisplacement->setMinimum(-FLT_MAX);
+    ui->spinzDisplacement->setMaximum(FLT_MAX);
+    ui->spinxRotation->setMinimum(-FLT_MAX);
+    ui->spinxRotation->setMaximum(FLT_MAX);
+    ui->spinyRotation->setMinimum(-FLT_MAX);
+    ui->spinyRotation->setMaximum(FLT_MAX);
+    ui->spinzRotation->setMinimum(-FLT_MAX);
+    ui->spinzRotation->setMaximum(FLT_MAX);
 
     // Get the feature data
     Fem::ConstraintDisplacement* pcConstraint =

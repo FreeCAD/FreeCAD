@@ -33,16 +33,17 @@
 
 namespace e57
 {
-   /// Tool class to read buffer efficiently without
-   /// multiplying copy operations.
-   ///
-   /// WARNING: pointer input is handled by user!
+   // Tool class to read buffer efficiently without
+   // multiplying copy operations.
+   //
+   // WARNING: pointer input is handled by user!
    class BufferView;
 
    class CheckedFile
    {
    public:
-      static constexpr size_t physicalPageSizeLog2 = 10; // physical page size is 2 raised to this power
+      // physical page size is 2 raised to this power
+      static constexpr size_t physicalPageSizeLog2 = 10;
       static constexpr size_t physicalPageSize = 1 << physicalPageSizeLog2;
       static constexpr uint64_t physicalPageSizeMask = physicalPageSize - 1;
       static constexpr size_t logicalPageSize = physicalPageSize - 4;
@@ -50,9 +51,8 @@ namespace e57
    public:
       enum Mode
       {
-         ReadOnly,
-         WriteCreate,
-         WriteExisting
+         Read,
+         Write,
       };
 
       enum OffsetMode
@@ -76,10 +76,12 @@ namespace e57
       uint64_t position( OffsetMode omode = Logical );
       uint64_t length( OffsetMode omode = Logical );
       void extend( uint64_t newLength, OffsetMode omode = Logical );
+
       e57::ustring fileName() const
       {
          return fileName_;
       }
+
       void close();
       void unlink();
 
@@ -87,12 +89,12 @@ namespace e57
       static inline uint64_t physicalToLogical( uint64_t physicalOffset );
 
    private:
-      uint32_t checksum( char *buf, size_t size ) const;
-      void verifyChecksum( char *page_buffer, size_t page );
+      void verifyChecksum( char *page_buffer, uint64_t page );
 
       template <class FTYPE> CheckedFile &writeFloatingPoint( FTYPE value, int precision );
 
-      void getCurrentPageAndOffset( uint64_t &page, size_t &pageOffset, OffsetMode omode = Logical );
+      void getCurrentPageAndOffset( uint64_t &page, size_t &pageOffset,
+                                    OffsetMode omode = Logical );
       void readPhysicalPage( char *page_buffer, uint64_t page );
       void writePhysicalPage( char *page_buffer, uint64_t page );
       int open64( const e57::ustring &fileName, int flags, int mode );
@@ -102,7 +104,7 @@ namespace e57
       uint64_t logicalLength_ = 0;
       uint64_t physicalLength_ = 0;
 
-      ReadChecksumPolicy checkSumPolicy_ = CHECKSUM_POLICY_ALL;
+      ReadChecksumPolicy checkSumPolicy_ = ChecksumPolicy::ChecksumAll;
 
       int fd_ = -1;
       BufferView *bufView_ = nullptr;
@@ -120,9 +122,8 @@ namespace e57
    inline uint64_t CheckedFile::physicalToLogical( uint64_t physicalOffset )
    {
       const uint64_t page = physicalOffset >> physicalPageSizeLog2;
-      const size_t remainder = static_cast<size_t>( physicalOffset & physicalPageSizeMask );
+      const auto remainder = static_cast<size_t>( physicalOffset & physicalPageSizeMask );
 
       return page * logicalPageSize + std::min( remainder, logicalPageSize );
    }
-
 }
