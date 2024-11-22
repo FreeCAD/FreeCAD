@@ -371,22 +371,13 @@ MaterialLibraryLocal::addMaterial(const std::shared_ptr<Material>& material, con
 std::shared_ptr<Material> MaterialLibraryLocal::getMaterialByPath(const QString& path) const
 {
     QString filePath = getRelativePath(path);
-    try {
-        auto material = _materialPathMap->at(filePath);
-        return material;
+
+    auto search = _materialPathMap->find(filePath);
+    if (search != _materialPathMap->end()) {
+        return search->second;
     }
-    catch (std::out_of_range&) {
-        Base::Console().Log("getMaterialByPath('%s') -> '%s'\n",
-                            path.toStdString().c_str(),
-                            filePath.toStdString().c_str());
-        for (const auto& entry : *_materialPathMap) {
-            Base::Console().Log("'%s' -> '%s'\n",
-                entry.first.toStdString().c_str(),
-                entry.second->getName().toStdString().c_str()
-            );
-        }
-        throw MaterialNotFound();
-    }
+
+    throw MaterialNotFound();
 }
 
 bool MaterialLibraryLocal::isLocal() const
@@ -397,11 +388,11 @@ bool MaterialLibraryLocal::isLocal() const
 QString MaterialLibraryLocal::getUUIDFromPath(const QString& path) const
 {
     QString filePath = getRelativePath(path);
-    try {
-        auto material = _materialPathMap->at(filePath);
-        return material->getUUID();
+
+    auto search = _materialPathMap->find(filePath);
+    if (search != _materialPathMap->end()) {
+        return search->second->getUUID();
     }
-    catch (std::out_of_range&) {
-        throw MaterialNotFound();
-    }
+
+    throw MaterialNotFound();
 }
