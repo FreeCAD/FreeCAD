@@ -62,7 +62,7 @@ public:
         FreeTurntable
     };
 
-    static constexpr float defaultSphereRadius = 0.8;
+    static constexpr float defaultSphereRadius = 0.8F;
 
     FCSphereSheetProjector(const SbSphere & sph, const SbBool orienttoeye = true)
         : SbSphereSheetProjector(sph, orienttoeye)

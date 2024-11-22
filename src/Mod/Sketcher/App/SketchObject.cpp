@@ -265,7 +265,7 @@ App::DocumentObjectExecReturn* SketchObject::execute()
         rebuildExternalGeometry();
         Constraints.acceptGeometry(getCompleteGeometry());
     }
-    catch (const Base::Exception& e) {
+    catch (const Base::Exception&) {
         // 9/16/24: We used to clear the constraints here, but we no longer want to do that
         // as missing reference geometry is not considered an error while we sort out sketcher UI.
         // Base::Console().Error("%s\nClear constraints to external geometry\n", e.what());
