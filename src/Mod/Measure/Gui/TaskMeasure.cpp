@@ -41,9 +41,10 @@
 #include <Gui/ViewProvider.h>
 
 #include <QFormLayout>
-#include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <QPushButton>
 #include <QSettings>
+#include <QGroupBox>
 
 using namespace Gui;
 
@@ -52,6 +53,11 @@ namespace
 constexpr auto taskMeasureSettingsGroup = "TaskMeasure";
 constexpr auto taskMeasureShowDeltaSettingsName = "ShowDelta";
 constexpr auto taskMeasureAutoSaveSettingsName = "AutoSave";
+constexpr auto taskMeasureGreedySelection = "GreedySelection";
+constexpr auto showOptionsText = "Show Options";
+constexpr auto hideOptionsText = "Hide Options";
+
+using SelectionStyle = Gui::SelectionSingleton::SelectionStyle;
 }  // namespace
 
 TaskMeasure::TaskMeasure()
@@ -66,22 +72,33 @@ TaskMeasure::TaskMeasure()
 
     QSettings settings;
     settings.beginGroup(QLatin1String(taskMeasureSettingsGroup));
-    delta = settings.value(QLatin1String(taskMeasureShowDeltaSettingsName), true).toBool();
-    mAutoSave = settings.value(QLatin1String(taskMeasureAutoSaveSettingsName), false).toBool();
+    delta = settings.value(QLatin1String(taskMeasureShowDeltaSettingsName), delta).toBool();
+    mAutoSave = settings.value(QLatin1String(taskMeasureAutoSaveSettingsName), mAutoSave).toBool();
+    if (settings.value(QLatin1String(taskMeasureGreedySelection), false).toBool()) {
+        Gui::Selection().setSelectionStyle(SelectionStyle::GreedySelection);
+    } else {
+        Gui::Selection().setSelectionStyle(SelectionStyle::NormalSelection);
+    }
 
     showDelta = new QCheckBox();
     showDelta->setChecked(delta);
     showDeltaLabel = new QLabel(tr("Show Delta:"));
     connect(showDelta, &QCheckBox::stateChanged, this, &TaskMeasure::showDeltaChanged);
 
-    const auto autosave_tooltip = tr("Auto saving of the last measurement when starting a new "
-                                     "measurement. Use SHIFT to temporarly invert the behaviour.");
-    autoSaveCheckBox = new QCheckBox();
+    autoSaveCheckBox = new QCheckBox(tr("Auto Save"));
     autoSaveCheckBox->setChecked(mAutoSave);
-    autoSaveCheckBox->setToolTip(autosave_tooltip);
-    autoSaveLabel = new QLabel(tr("Auto Save Measurement:"));
-    autoSaveLabel->setToolTip(autosave_tooltip);
+    autoSaveCheckBox->setToolTip(tr("Auto saving of the last measurement when starting a new "
+                                    "measurement. Use SHIFT to temporarly invert the behaviour."));
     connect(autoSaveCheckBox, &QCheckBox::stateChanged, this, &TaskMeasure::autoSaveChanged);
+
+    mToggleOptionsButton = new QPushButton(tr(showOptionsText));
+    mToggleOptionsButton->setCheckable(true);
+    connect(mToggleOptionsButton, &QPushButton::clicked, this, &TaskMeasure::toggleOptions);
+
+    newMeasurementBehaviourCheckBox = new QCheckBox(tr("CTRL to add object to measurement"));
+    newMeasurementBehaviourCheckBox->setChecked(Gui::Selection().getSelectionStyle() == SelectionStyle::NormalSelection);
+    newMeasurementBehaviourCheckBox->setToolTip(tr("If checked CTRL must be pressed to initiate a new measurement, otherwise CTRL pressed adds a selected object to the current measurement"));
+    connect(newMeasurementBehaviourCheckBox, &QCheckBox::stateChanged, this, &TaskMeasure::newMeasurementBehaviourChanged);
 
     // Create mode dropdown and add all registered measuretypes
     modeSwitch = new QComboBox();
@@ -112,13 +129,17 @@ TaskMeasure::TaskMeasure()
 
     formLayout->addRow(tr("Mode:"), modeSwitch);
     formLayout->addRow(showDeltaLabel, showDelta);
-    formLayout->addRow(autoSaveLabel, autoSaveCheckBox);
     formLayout->addRow(tr("Result:"), valueResult);
+    formLayout->addRow(QStringLiteral(), mToggleOptionsButton);
     layout->addLayout(formLayout);
-    auto* endLayout = new QHBoxLayout();
-    endLayout->addWidget(
-        new QLabel(tr("Use CTRL modifier to add a selection to the current measurement.")));
-    layout->addLayout(endLayout);
+
+    auto* optionsLayout = new QVBoxLayout();
+    optionsLayout->addWidget(autoSaveCheckBox);
+    optionsLayout->addWidget(newMeasurementBehaviourCheckBox);
+    mOptionsGroupBox = new QGroupBox(tr("Options"));
+    mOptionsGroupBox->setLayout(optionsLayout);
+    mOptionsGroupBox->setVisible(false);
+    layout->addWidget(mOptionsGroupBox);
 
     Content.emplace_back(taskbox);
 
@@ -136,6 +157,7 @@ TaskMeasure::TaskMeasure()
 
 TaskMeasure::~TaskMeasure()
 {
+    Gui::Selection().setSelectionStyle(SelectionStyle::NormalSelection);
     detachSelection();
     qApp->removeEventFilter(this);
 }
@@ -439,10 +461,9 @@ void TaskMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
     // shift inverts the current state temporarly
     const auto autosave = (mAutoSave && !shift) || (!mAutoSave && shift);
     if ((!ctrl
-         && Selection().getSelectionStyle() == SelectionSingleton::SelectionStyle::NormalSelection)
-        || ctrl
-            && Selection().getSelectionStyle()
-                == SelectionSingleton::SelectionStyle::GreedySelection) {
+         && Selection().getSelectionStyle() == SelectionStyle::NormalSelection)
+        || (ctrl
+            && Selection().getSelectionStyle() == SelectionStyle::GreedySelection)) {
         if (autosave && this->buttonBox->button(QDialogButtonBox::Apply)->isEnabled()) {
             apply(false);
         }
@@ -503,6 +524,15 @@ void TaskMeasure::showDeltaChanged(int checkState)
     this->update();
 }
 
+void TaskMeasure::toggleOptions(bool checked) {
+    if (checked) {
+        mToggleOptionsButton->setText(tr(hideOptionsText));
+    } else {
+        mToggleOptionsButton->setText(tr(showOptionsText));
+    }
+    mOptionsGroupBox->setVisible(checked);
+}
+
 void TaskMeasure::autoSaveChanged(int checkState)
 {
     mAutoSave = checkState == Qt::CheckState::Checked;
@@ -510,6 +540,18 @@ void TaskMeasure::autoSaveChanged(int checkState)
     QSettings settings;
     settings.beginGroup(QLatin1String(taskMeasureSettingsGroup));
     settings.setValue(QLatin1String(taskMeasureAutoSaveSettingsName), mAutoSave);
+}
+
+void TaskMeasure::newMeasurementBehaviourChanged(int checkState) {
+    QSettings settings;
+    settings.beginGroup(QLatin1String(taskMeasureSettingsGroup));
+    if (checkState == Qt::CheckState::Checked) {
+        Gui::Selection().setSelectionStyle(SelectionStyle::NormalSelection);
+        settings.setValue(QLatin1String(taskMeasureGreedySelection), false);
+    } else {
+        Gui::Selection().setSelectionStyle(SelectionStyle::GreedySelection);
+        settings.setValue(QLatin1String(taskMeasureGreedySelection), true);
+    }
 }
 
 void TaskMeasure::setModeSilent(App::MeasureType* mode)

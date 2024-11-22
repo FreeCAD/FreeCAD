@@ -41,6 +41,8 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
 
+class QGroupBox;
+
 namespace Gui
 {
 
@@ -79,12 +81,15 @@ private:
     QCheckBox* showDelta {nullptr};
     QLabel* showDeltaLabel {nullptr};
     QCheckBox* autoSaveCheckBox {nullptr};
-    QLabel* autoSaveLabel {nullptr};
+    QCheckBox* newMeasurementBehaviourCheckBox {nullptr};
+    QPushButton* mToggleOptionsButton {nullptr};
+    QGroupBox* mOptionsGroupBox {nullptr};
 
     void removeObject();
     void onModeChanged(int index);
     void showDeltaChanged(int checkState);
     void autoSaveChanged(int checkState);
+    void newMeasurementBehaviourChanged(int checkState);
     void setModeSilent(App::MeasureType* mode);
     App::MeasureType* getMeasureType();
     void enableAnnotateButton(bool state);
@@ -92,6 +97,8 @@ private:
     void ensureGroup(Measure::MeasureBase* measurement);
     void setDeltaPossible(bool possible);
     void initViewObject();
+
+    void toggleOptions(bool checked);
 
     // Stores if the mode is explicitly set by the user or implicitly through the selection
     bool explicitMode = false;
