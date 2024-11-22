@@ -148,75 +148,115 @@ def show_psets(obj):
             setattr(obj, pname, value)
 
 
-def edit_pset(obj, prop, value=None):
-    """Edits the corresponding property"""
+def edit_pset(obj, prop, value=None, force=False):
+    """Edits the corresponding property. If force is True,
+    the property is created even if it has no value"""
 
     pset = obj.getGroupOfProperty(prop)
-    ttip = obj.getDocumentationOfProperty(prop)
+    ptype = obj.getDocumentationOfProperty(prop)
     if value is None:
         value = getattr(obj, prop)
     ifcfile = ifc_tools.get_ifcfile(obj)
     element = ifc_tools.get_ifc_element(obj)
     pset_exist = get_psets(element)
-    if ttip.startswith("Ifc") and ":" in ttip:
-        target_prop = ttip.split(":", 1)[-1]
+    target_prop = None
+    value_exist = None
+
+    # build prop name and type
+    if ptype.startswith("Ifc"):
+        if ":" in ptype:
+            target_prop = ptype.split(":", 1)[-1]
+            ptype = ptype.split(":", 1)[0]
     else:
-        # no tooltip set - try to build a name
+        ptype = obj.getTypeIdOfProperty(prop)
+        if ifcprop == "App::PropertyDistance":
+            ptype = "IfcLengthMeasure"
+        elif ifcprop == "App::PropertyLength":
+            ptype = "IfcPositiveLengthMeasure"
+        elif ifcprop == "App::PropertyBool":
+            ptype = "IfcBoolean"
+        elif ifcprop == "App::PropertyInteger":
+            ptype = "IfcInteger"
+        elif ifcprop == "App::PropertyFloat":
+            ptype = "IfcReal"
+        elif ifcprop == "App::PropertyArea":
+            ptype = "IfcAreaMeasure"
+        else:
+            # default
+            ptype = "IfcLabel"
+    if not target_prop:
+        # test if the prop exists under different forms (uncameled, unslashed...)
         prop = prop.rstrip("_")
         prop_uncamel = re.sub(r"(\w)([A-Z])", r"\1 \2", prop)
         prop_unslash = re.sub(r"(\w)([A-Z])", r"\1\/\2", prop)
-        target_prop = None
-    if pset in pset_exist:
-        if not target_prop:
+        if pset in pset_exist:
             if prop in pset_exist[pset]:
                 target_prop = prop
             elif prop_uncamel in pset_exist[pset]:
                 target_prop = prop_uncamel
             elif prop_unslash in pset_exist[pset]:
                 target_prop = prop_unslash
-        if target_prop:
-            value_exist = pset_exist[pset][target_prop].split("(", 1)[1][:-1].strip("'")
-            if value_exist in [".F.", ".U."]:
-                value_exist = False
-            elif value_exist in [".T."]:
-                value_exist = True
-            elif isinstance(value, int):
-                value_exist = int(value_exist.strip("."))
-            elif isinstance(value, float):
-                value_exist = float(value_exist)
-            elif isinstance(value, FreeCAD.Units.Quantity):
-                if value.Unit.Type == "Angle":
-                    value_exist = float(value_exist)
-                    while value_exist > 360:
-                        value_exist = value_exist - 360
-                value_exist = FreeCAD.Units.Quantity(float(value_exist), value.Unit)
-            if value == value_exist:
-                return False
-            else:
-                FreeCAD.Console.PrintLog(
-                    "IFC: property changed for "
-                    + obj.Label
-                    + " ("
-                    + str(obj.StepId)
-                    + ") : "
-                    + str(target_prop)
-                    + " : "
-                    + str(value)
-                    + " ("
-                    + str(type(value))
-                    + ") -> "
-                    + str(value_exist)
-                    + " ("
-                    + str(type(value_exist))
-                    + ")\n"
-                )
-        pset = get_pset(pset, element)
-    else:
-        pset = ifc_tools.api_run("pset.add_pset", ifcfile, product=element, name=pset)
     if not target_prop:
         target_prop = prop
+
+    # create pset if needed
+    if pset in pset_exist:
+        ifcpset = get_pset(pset, element)
+        if target_prop in pset_exist[pset]:
+            value_exist = pset_exist[pset][target_prop].split("(", 1)[1][:-1].strip("'")
+    else:
+        ifcpset = ifc_tools.api_run("pset.add_pset", ifcfile, product=element, name=pset)
+
+    # value conversions
+    if value_exist in [".F.", ".U."]:
+        value_exist = False
+    elif value_exist in [".T."]:
+        value_exist = True
+    elif isinstance(value, int):
+        value_exist = int(value_exist.strip("."))
+    elif isinstance(value, float):
+        value_exist = float(value_exist)
+    elif isinstance(value, FreeCAD.Units.Quantity):
+        if value_exist:
+            value_exist = float(value_exist)
+        if value.Unit.Type == "Angle":
+            if value_exist:
+                while value_exist > 360:
+                    value_exist = value_exist - 360
+            value = value.getValueAs("deg")
+        elif value.Unit.Type == "Length":
+            value = value.getValueAs("mm").Value * ifc_tools.get_scale(ifcfile)
+        else:
+            print("DEBUG: unhandled quantity type:",value, value.Unit.Type)
+            return False
+    if value == value_exist:
+        return False
+    if not force and not value and not value_exist:
+        return False
+    FreeCAD.Console.PrintLog(
+        "IFC: property changed for "
+        + obj.Label
+        + " ("
+        + str(obj.StepId)
+        + "): "
+        + str(target_prop)
+        + ": "
+        + str(value_exist)
+        + " ("
+        + type(value_exist).__name__
+        + ") -> "
+        + str(value)
+        + " ("
+        + type(value).__name__
+        + ")\n"
+    )
+
+    # run the change
+    # TODO the property type is automatically determined by ifcopenhell
+    # https://docs.ifcopenshell.org/autoapi/ifcopenshell/api/pset/edit_pset/index.html
+    # and is therefore wrong for Quantity types. Research a way to overcome that
     ifc_tools.api_run(
-        "pset.edit_pset", ifcfile, pset=pset, properties={target_prop: value}
+        "pset.edit_pset", ifcfile, pset=ifcpset, properties={target_prop: value}
     )
     # TODO manage quantities
     return True
