@@ -343,7 +343,7 @@ std::unique_ptr<std::map<QString, std::shared_ptr<MaterialEntry>>>
 
 MaterialLoader::MaterialLoader(
     const std::shared_ptr<std::map<QString, std::shared_ptr<Material>>>& materialMap,
-    const std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>>& libraryList)
+    const std::shared_ptr<std::list<std::shared_ptr<MaterialLibraryBase>>>& libraryList)
     : _materialMap(materialMap)
     , _libraryList(libraryList)
 {
@@ -387,7 +387,7 @@ MaterialLoader::getMaterialFromYAML(const std::shared_ptr<MaterialLibraryLocal>&
 }
 
 std::shared_ptr<MaterialEntry>
-MaterialLoader::getMaterialFromPath(const std::shared_ptr<MaterialLibrary>& library,
+MaterialLoader::getMaterialFromPath(const std::shared_ptr<MaterialLibraryLocal>& library,
                                     const QString& path) const
 {
     std::shared_ptr<MaterialEntry> model = nullptr;
@@ -398,7 +398,7 @@ MaterialLoader::getMaterialFromPath(const std::shared_ptr<MaterialLibrary>& libr
     std::string pathName = path.toStdString();
 
     if (MaterialConfigLoader::isConfigStyle(path)) {
-        auto material = MaterialConfigLoader::getMaterialFromPath(library, path);
+        auto material = MaterialConfigLoader::getMaterialFromPath(materialLibrary, path);
         if (material) {
             (*_materialMap)[material->getUUID()] = materialLibrary->addMaterial(material, path);
         }
@@ -544,7 +544,7 @@ void MaterialLoader::loadLibrary(const std::shared_ptr<MaterialLibraryLocal>& li
 }
 
 void MaterialLoader::loadLibraries(
-    const std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>>& libraryList)
+    const std::shared_ptr<std::list<std::shared_ptr<MaterialLibraryBase>>>& libraryList)
 {
     if (libraryList) {
         for (auto& it : *libraryList) {

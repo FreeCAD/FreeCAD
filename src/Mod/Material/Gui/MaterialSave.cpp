@@ -289,10 +289,14 @@ void MaterialSave::setLibraries()
 {
     auto libraries = _manager.getLibraries();
     for (auto& library : *libraries) {
-        if (!library->isReadOnly()) {
-            QVariant libraryVariant;
-            libraryVariant.setValue(library);
-            ui->comboLibrary->addItem(library->getName(), libraryVariant);
+        if (library->isLocal()) {
+            auto materialLibrary =
+                reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(library);
+            if (!materialLibrary->isReadOnly()) {
+                QVariant libraryVariant;
+                libraryVariant.setValue(materialLibrary);
+                ui->comboLibrary->addItem(materialLibrary->getName(), libraryVariant);
+            }
         }
     }
 }

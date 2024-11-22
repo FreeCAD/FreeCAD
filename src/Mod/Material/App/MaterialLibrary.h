@@ -44,18 +44,57 @@ class MaterialManager;
 class MaterialFilter;
 class MaterialFilterOptions;
 
-class MaterialsExport MaterialLibrary: public Library,
-                                       public std::enable_shared_from_this<MaterialLibrary>
+class MaterialsExport MaterialLibraryBase: public Base::BaseClass,
+                                           public std::enable_shared_from_this<MaterialLibraryBase>
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    MaterialLibraryBase() = default;
+    MaterialLibraryBase(const MaterialLibraryBase&) = delete;
+    ~MaterialLibraryBase() override = default;
+
+    virtual bool isLocal() const;
+
+    virtual std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
+    getMaterialTree(const std::shared_ptr<Materials::MaterialFilter>& filter,
+                    const Materials::MaterialFilterOptions& options) const;
+
+    // Use this to get a shared_ptr for *this
+    std::shared_ptr<MaterialLibraryBase> getptr()
+    {
+        return shared_from_this();
+    }
+
+protected:
+    bool materialInTree(const std::shared_ptr<Material>& material,
+                        const std::shared_ptr<Materials::MaterialFilter>& filter,
+                        const Materials::MaterialFilterOptions& options) const;
+};
+
+class MaterialsExport MaterialLibrary: public MaterialLibraryBase, public Library
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     MaterialLibrary() = default;
     MaterialLibrary(const MaterialLibrary&) = delete;
-    MaterialLibrary(const QString& libraryName,
-                    const QString& icon,
-                    bool readOnly = true);
+    MaterialLibrary(const QString& libraryName, const QString& icon, bool readOnly = true);
     ~MaterialLibrary() override = default;
+
+    bool isLocal() const override;
+
+    bool operator==(const MaterialLibraryBase& library) const
+    {
+        auto materialLibrary = dynamic_cast<const Materials::MaterialLibrary *>(&library);
+        if (!materialLibrary)
+            return false;
+        return Library::operator==(*materialLibrary);
+    }
+    bool operator!=(const MaterialLibraryBase& library) const
+    {
+        return !operator==(library);
+    }
 
     bool operator==(const MaterialLibrary& library) const
     {
@@ -65,31 +104,9 @@ public:
     {
         return !operator==(library);
     }
-
-    virtual std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
-    getMaterialTree(const std::shared_ptr<Materials::MaterialFilter>& filter,
-                    const Materials::MaterialFilterOptions& options) const;
-
-    bool isReadOnly() const
-    {
-        return _readOnly;
-    }
-
-    // Use this to get a shared_ptr for *this
-    std::shared_ptr<MaterialLibrary> getptr()
-    {
-        return shared_from_this();
-    }
-
-protected:
-    bool materialInTree(const std::shared_ptr<Material>& material,
-                        const std::shared_ptr<Materials::MaterialFilter>& filter,
-                        const Materials::MaterialFilterOptions& options) const;
-
-    bool _readOnly;
 };
 
-class MaterialsExport MaterialLibraryLocal: public MaterialLibrary, public LocalLibrary
+class MaterialsExport MaterialLibraryLocal: public MaterialLibraryBase, public LocalLibrary
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
@@ -120,6 +137,28 @@ public:
     std::shared_ptr<Material> getMaterialByPath(const QString& path) const;
 
     bool isLocal() const override;
+
+    bool operator==(const MaterialLibraryBase& library) const
+    {
+        auto materialLibrary = dynamic_cast<const Materials::MaterialLibraryLocal*>(&library);
+        if (!materialLibrary) {
+            return false;
+        }
+        return LocalLibrary::operator==(*materialLibrary);
+    }
+    bool operator!=(const MaterialLibraryBase& library) const
+    {
+        return !operator==(library);
+    }
+
+    bool operator==(const MaterialLibraryLocal& library) const
+    {
+        return LocalLibrary::operator==(library);
+    }
+    bool operator!=(const MaterialLibraryLocal& library) const
+    {
+        return !operator==(library);
+    }
 
 protected:
     void deleteDir(MaterialManager& manager, const QString& path);

@@ -33,6 +33,7 @@
 
 namespace Materials
 {
+class MaterialLibraryBase;
 class MaterialLibraryLocal;
 
 class MaterialEntry
@@ -112,7 +113,7 @@ class MaterialLoader
 {
 public:
     MaterialLoader(const std::shared_ptr<std::map<QString, std::shared_ptr<Material>>>& materialMap,
-                   const std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>>& libraryList);
+                   const std::shared_ptr<std::list<std::shared_ptr<MaterialLibraryBase>>>& libraryList);
     ~MaterialLoader() = default;
 
     static std::shared_ptr<std::list<QString>>
@@ -132,15 +133,15 @@ private:
     void addToTree(std::shared_ptr<MaterialEntry> model);
     void dereference(const std::shared_ptr<Material>& material);
     std::shared_ptr<MaterialEntry>
-    getMaterialFromPath(const std::shared_ptr<MaterialLibrary>& library, const QString& path) const;
+    getMaterialFromPath(const std::shared_ptr<MaterialLibraryLocal>& library, const QString& path) const;
     void addLibrary(const std::shared_ptr<MaterialLibraryLocal>& model);
     void loadLibrary(const std::shared_ptr<MaterialLibraryLocal>& library);
-    void
-    loadLibraries(const std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>>& libraryList);
+    void loadLibraries(
+        const std::shared_ptr<std::list<std::shared_ptr<MaterialLibraryBase>>>& libraryList);
 
     static std::unique_ptr<std::map<QString, std::shared_ptr<MaterialEntry>>> _materialEntryMap;
     std::shared_ptr<std::map<QString, std::shared_ptr<Material>>> _materialMap;
-    std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> _libraryList;
+    std::shared_ptr<std::list<std::shared_ptr<MaterialLibraryBase>>> _libraryList;
 };
 
 }  // namespace Materials

@@ -70,7 +70,7 @@ protected:
     // void TearDown() override {}
     Materials::ModelManager* _modelManager;
     Materials::MaterialManager* _materialManager;
-    std::shared_ptr<Materials::MaterialLibrary> _library;
+    std::shared_ptr<Materials::MaterialLibraryLocal> _library;
     QString _testMaterialUUID;
 };
 

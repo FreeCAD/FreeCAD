@@ -104,6 +104,10 @@ QString LocalLibrary::getRelativePath(const QString& path) const
     QString filePath;
     QString cleanPath = QDir::cleanPath(path);
     QString prefix = QString::fromStdString("/") + getName();
+    Base::Console().Log("getRelativePath('%s') -> '%s'\n",
+                        path.toStdString().c_str(),
+                        cleanPath.toStdString().c_str());
+    Base::Console().Log("\tPrefix: '%s'\n", prefix.toStdString().c_str());
     if (cleanPath.startsWith(prefix)) {
         // Remove the library name from the path
         filePath = cleanPath.right(cleanPath.length() - prefix.length());

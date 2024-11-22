@@ -58,8 +58,8 @@ public:
     static void refresh();
 
     // Library management
-    std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> getLibraries();
-    std::shared_ptr<MaterialLibrary> getLibrary(const QString& name) const;
+    std::shared_ptr<std::list<std::shared_ptr<MaterialLibraryBase>>> getLibraries();
+    std::shared_ptr<MaterialLibraryBase> getLibrary(const QString& name) const;
     void createLibrary(const QString& libraryName,
                        const QString& directory,
                        const QString& icon,
@@ -85,10 +85,10 @@ public:
     std::shared_ptr<Material> getMaterialByPath(const QString& path) const;
     std::shared_ptr<Material> getMaterialByPath(const QString& path, const QString& library) const;
     bool exists(const QString& uuid) const;
-    bool exists(const std::shared_ptr<MaterialLibrary>& library, const QString& uuid) const;
+    bool exists(const std::shared_ptr<MaterialLibraryBase>& library, const QString& uuid) const;
     void remove(const QString& uuid);
 
-    void saveMaterial(const std::shared_ptr<MaterialLibrary>& library,
+    void saveMaterial(const std::shared_ptr<MaterialLibraryLocal>& library,
                       const std::shared_ptr<Material>& material,
                       const QString& path,
                       bool overwrite,
@@ -106,10 +106,10 @@ public:
     void dereference() const;
 
 protected:
-    static std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> getConfiguredLibraries();
+    static std::shared_ptr<std::list<std::shared_ptr<MaterialLibraryBase>>> getConfiguredLibraries();
 
 private:
-    static std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> _libraryList;
+    static std::shared_ptr<std::list<std::shared_ptr<MaterialLibraryBase>>> _libraryList;
     static std::shared_ptr<std::map<QString, std::shared_ptr<Material>>> _materialMap;
     static QMutex _mutex;
 

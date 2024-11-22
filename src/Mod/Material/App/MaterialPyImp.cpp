@@ -68,7 +68,12 @@ int MaterialPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 Py::String MaterialPy::getLibraryName() const
 {
     auto library = getMaterialPtr()->getLibrary();
-    return {library ? library->getName().toStdString() : ""};
+    if (library->isLocal()) {
+        auto materialLibrary =
+            reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(library);
+        return {materialLibrary ? materialLibrary->getName().toStdString() : ""};
+    }
+    return "";
 }
 
 Py::String MaterialPy::getLibraryRoot() const
@@ -85,7 +90,12 @@ Py::String MaterialPy::getLibraryRoot() const
 Py::String MaterialPy::getLibraryIcon() const
 {
     auto library = getMaterialPtr()->getLibrary();
-    return {library ? library->getIconPath().toStdString() : ""};
+    if (library->isLocal()) {
+        auto materialLibrary =
+            reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(library);
+        return {materialLibrary ? materialLibrary->getIconPath().toStdString() : ""};
+    }
+    return "";
 }
 
 Py::String MaterialPy::getName() const

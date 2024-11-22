@@ -142,17 +142,19 @@ Py::List MaterialManagerPy::getMaterialLibraries() const
     for (auto it = libraries->begin(); it != libraries->end(); it++) {
         auto lib = *it;
         Py::Tuple libTuple(3);
-        libTuple.setItem(0, Py::String(lib->getName().toStdString()));
         if (lib->isLocal()) {
             auto materialLibrary =
                 reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(lib);
+            libTuple.setItem(0, Py::String(materialLibrary->getName().toStdString()));
             libTuple.setItem(1, Py::String(materialLibrary->getDirectoryPath().toStdString()));
+            libTuple.setItem(2, Py::String(materialLibrary->getIconPath().toStdString()));
         }
         else
         {
+            libTuple.setItem(0, Py::String());
             libTuple.setItem(1, Py::String());
+            libTuple.setItem(2, Py::String());
         }
-        libTuple.setItem(2, Py::String(lib->getIconPath().toStdString()));
 
         list.append(libTuple);
     }
@@ -270,7 +272,7 @@ PyObject* MaterialManagerPy::save(PyObject* args, PyObject* kwds)
     }
     auto sharedMaterial = std::make_shared<Material>(*(material->getMaterialPtr()));
 
-    std::shared_ptr<MaterialLibrary> library;
+    std::shared_ptr<MaterialLibraryBase> library;
     try {
         library = getMaterialManagerPtr()->getLibrary(QString::fromUtf8(libraryName));
     }

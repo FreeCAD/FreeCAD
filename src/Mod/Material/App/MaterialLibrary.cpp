@@ -41,13 +41,9 @@ using namespace Materials;
 
 /* TRANSLATOR Material::Materials */
 
-TYPESYSTEM_SOURCE(Materials::MaterialLibrary, Materials::LocalLibrary)
+TYPESYSTEM_SOURCE(Materials::MaterialLibraryBase, Base::BaseClass)
 
-MaterialLibrary::MaterialLibrary(const QString& libraryName, const QString& icon, bool readOnly)
-    : Library(libraryName, icon, readOnly)
-{}
-
-bool MaterialLibrary::materialInTree(const std::shared_ptr<Material>& material,
+bool MaterialLibraryBase::materialInTree(const std::shared_ptr<Material>& material,
                                      const std::shared_ptr<Materials::MaterialFilter>& filter,
                                      const Materials::MaterialFilterOptions& options) const
 {
@@ -65,8 +61,13 @@ bool MaterialLibrary::materialInTree(const std::shared_ptr<Material>& material,
     return filter->modelIncluded(material);
 }
 
+bool MaterialLibraryBase::isLocal() const
+{
+    return false;
+}
+
 std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
-MaterialLibrary::getMaterialTree(const std::shared_ptr<Materials::MaterialFilter>& filter,
+MaterialLibraryBase::getMaterialTree(const std::shared_ptr<Materials::MaterialFilter>& filter,
                                  const Materials::MaterialFilterOptions& options) const
 {
     std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>> materialTree =
@@ -76,17 +77,29 @@ MaterialLibrary::getMaterialTree(const std::shared_ptr<Materials::MaterialFilter
     return materialTree;
 }
 
-TYPESYSTEM_SOURCE(Materials::MaterialLibraryLocal, Materials::MaterialLibrary)
+/* TRANSLATOR Material::Materials */
+
+TYPESYSTEM_SOURCE(Materials::MaterialLibrary, Materials::MaterialLibraryBase)
+
+MaterialLibrary::MaterialLibrary(const QString& libraryName, const QString& icon, bool readOnly)
+    : Library(libraryName, icon, readOnly)
+{}
+
+bool MaterialLibrary::isLocal() const
+{
+    return false;
+}
+
+
+TYPESYSTEM_SOURCE(Materials::MaterialLibraryLocal, Materials::MaterialLibraryBase)
 
 MaterialLibraryLocal::MaterialLibraryLocal(const QString& libraryName,
                                            const QString& dir,
                                            const QString& icon,
                                            bool readOnly)
-    : MaterialLibrary(libraryName, icon, readOnly)
+    : LocalLibrary(libraryName, dir, icon, readOnly)
     , _materialPathMap(std::make_unique<std::map<QString, std::shared_ptr<Material>>>())
-{
-    setDirectory(dir);
-}
+{}
 
 std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
 MaterialLibraryLocal::getMaterialTree(const std::shared_ptr<Materials::MaterialFilter>& filter,
@@ -363,6 +376,15 @@ std::shared_ptr<Material> MaterialLibraryLocal::getMaterialByPath(const QString&
         return material;
     }
     catch (std::out_of_range&) {
+        Base::Console().Log("getMaterialByPath('%s') -> '%s'\n",
+                            path.toStdString().c_str(),
+                            filePath.toStdString().c_str());
+        for (const auto& entry : *_materialPathMap) {
+            Base::Console().Log("'%s' -> '%s'\n",
+                entry.first.toStdString().c_str(),
+                entry.second->getName().toStdString().c_str()
+            );
+        }
         throw MaterialNotFound();
     }
 }
