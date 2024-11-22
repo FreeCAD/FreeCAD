@@ -42,6 +42,7 @@ Section -InstallData
   ${EndIf}
   
   WriteRegStr SHCTX ${APP_UNINST_KEY} "UninstallString" '"$INSTDIR\${SETUP_UNINSTALLER}"'
+  WriteRegStr SHCTX ${APP_UNINST_KEY} "QuietUninstallString" "$\"$INSTDIR\${SETUP_UNINSTALLER}$\" /S"
   WriteRegStr SHCTX ${APP_UNINST_KEY} "DisplayVersion" "${APP_VERSION}"
   WriteRegStr SHCTX ${APP_UNINST_KEY} "DisplayIcon" "$INSTDIR\${APP_RUN}"
   WriteRegStr SHCTX ${APP_UNINST_KEY} "URLUpdateInfo" "${APP_WEBPAGE}"
