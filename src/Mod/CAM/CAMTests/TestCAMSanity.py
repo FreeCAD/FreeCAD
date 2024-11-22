@@ -81,7 +81,7 @@ class TestCAMSanity(PathTestBase):
     # This test fails  A headless image generation routine is needed.
     # def test40(self):
     #     """Test image generation"""
-    #     import imghdr  # fixme: not available in python3.13 
+    #     import imghdr  # fixme: not available in python3.13
     #     path = FreeCAD.getUserMacroDir()
     #     image_builder = ImageBuilder.ImageBuilderFactory.get_image_builder(path)
     #     file_name = image_builder.build_image(self.doc.getObject("Box"), "theBox")
