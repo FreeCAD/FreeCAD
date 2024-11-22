@@ -691,7 +691,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                                             TopoShape::PrismMode::None,
                                             true /*CheckUpToFaceLimits.getValue()*/);
             }
-            catch (Base::Exception& e) {
+            catch (Base::Exception&) {
                 if (method == "UpToShape" && faceCount > 1){
                     return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
                         "Exception",
