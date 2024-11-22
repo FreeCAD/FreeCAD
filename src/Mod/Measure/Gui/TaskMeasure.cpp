@@ -44,7 +44,9 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QSettings>
-#include <QGroupBox>
+#include <QAction>
+#include <QMenu>
+#include <QToolTip>
 
 using namespace Gui;
 
@@ -54,8 +56,6 @@ constexpr auto taskMeasureSettingsGroup = "TaskMeasure";
 constexpr auto taskMeasureShowDeltaSettingsName = "ShowDelta";
 constexpr auto taskMeasureAutoSaveSettingsName = "AutoSave";
 constexpr auto taskMeasureGreedySelection = "GreedySelection";
-constexpr auto showOptionsText = "Show Options";
-constexpr auto hideOptionsText = "Hide Options";
 
 using SelectionStyle = Gui::SelectionSingleton::SelectionStyle;
 }  // namespace
@@ -85,20 +85,29 @@ TaskMeasure::TaskMeasure()
     showDeltaLabel = new QLabel(tr("Show Delta:"));
     connect(showDelta, &QCheckBox::stateChanged, this, &TaskMeasure::showDeltaChanged);
 
-    autoSaveCheckBox = new QCheckBox(tr("Auto Save"));
-    autoSaveCheckBox->setChecked(mAutoSave);
-    autoSaveCheckBox->setToolTip(tr("Auto saving of the last measurement when starting a new "
+    autoSaveAction = new QAction(tr("Auto Save"));
+    autoSaveAction->setCheckable(true);
+    autoSaveAction->setChecked(mAutoSave);
+    autoSaveAction->setToolTip(tr("Auto saving of the last measurement when starting a new "
                                     "measurement. Use SHIFT to temporarly invert the behaviour."));
-    connect(autoSaveCheckBox, &QCheckBox::stateChanged, this, &TaskMeasure::autoSaveChanged);
+    connect(autoSaveAction, &QAction::triggered, this, &TaskMeasure::autoSaveChanged);
 
-    mToggleOptionsButton = new QPushButton(tr(showOptionsText));
-    mToggleOptionsButton->setCheckable(true);
-    connect(mToggleOptionsButton, &QPushButton::clicked, this, &TaskMeasure::toggleOptions);
+    newMeasurementBehaviourAction = new QAction(tr("CTRL to add object to measurement"));
+    newMeasurementBehaviourAction->setCheckable(true);
+    newMeasurementBehaviourAction->setChecked(Gui::Selection().getSelectionStyle() == SelectionStyle::NormalSelection);
+    newMeasurementBehaviourAction->setToolTip(tr("If checked CTRL must be pressed to initiate a new measurement, otherwise CTRL pressed adds a selected object to the current measurement"));
+    connect(newMeasurementBehaviourAction, &QAction::triggered, this, &TaskMeasure::newMeasurementBehaviourChanged);
 
-    newMeasurementBehaviourCheckBox = new QCheckBox(tr("CTRL to add object to measurement"));
-    newMeasurementBehaviourCheckBox->setChecked(Gui::Selection().getSelectionStyle() == SelectionStyle::NormalSelection);
-    newMeasurementBehaviourCheckBox->setToolTip(tr("If checked CTRL must be pressed to initiate a new measurement, otherwise CTRL pressed adds a selected object to the current measurement"));
-    connect(newMeasurementBehaviourCheckBox, &QCheckBox::stateChanged, this, &TaskMeasure::newMeasurementBehaviourChanged);
+    mSettings = new QToolButton();
+    mSettings->setToolTip(tr("Settings"));
+    mSettings->setIcon(QIcon(QStringLiteral(":/icons/dialogs/Sketcher_Settings.svg")));
+    auto* menu = new QMenu(mSettings);
+    menu->setToolTipsVisible(true);
+    mSettings->setMenu(menu);
+
+    menu->addAction(autoSaveAction);
+    menu->addAction(newMeasurementBehaviourAction);
+    connect(mSettings, &QToolButton::clicked, mSettings, &QToolButton::showMenu);
 
     // Create mode dropdown and add all registered measuretypes
     modeSwitch = new QComboBox();
@@ -127,19 +136,14 @@ TaskMeasure::TaskMeasure()
     // formLayout->setFieldGrowthPolicy(QFormLayout::FieldGrowthPolicy::ExpandingFieldsGrow);
     formLayout->setFormAlignment(Qt::AlignCenter);
 
+    QHBoxLayout* l = new QHBoxLayout();
+    l->addItem(new QSpacerItem(0,0, QSizePolicy::Expanding));
+    l->addWidget(mSettings);
+    formLayout->addRow(QStringLiteral(), l);
     formLayout->addRow(tr("Mode:"), modeSwitch);
     formLayout->addRow(showDeltaLabel, showDelta);
     formLayout->addRow(tr("Result:"), valueResult);
-    formLayout->addRow(QStringLiteral(), mToggleOptionsButton);
     layout->addLayout(formLayout);
-
-    auto* optionsLayout = new QVBoxLayout();
-    optionsLayout->addWidget(autoSaveCheckBox);
-    optionsLayout->addWidget(newMeasurementBehaviourCheckBox);
-    mOptionsGroupBox = new QGroupBox(tr("Options"));
-    mOptionsGroupBox->setLayout(optionsLayout);
-    mOptionsGroupBox->setVisible(false);
-    layout->addWidget(mOptionsGroupBox);
 
     Content.emplace_back(taskbox);
 
@@ -522,15 +526,6 @@ void TaskMeasure::showDeltaChanged(int checkState)
     settings.setValue(QLatin1String(taskMeasureShowDeltaSettingsName), delta);
 
     this->update();
-}
-
-void TaskMeasure::toggleOptions(bool checked) {
-    if (checked) {
-        mToggleOptionsButton->setText(tr(hideOptionsText));
-    } else {
-        mToggleOptionsButton->setText(tr(showOptionsText));
-    }
-    mOptionsGroupBox->setVisible(checked);
 }
 
 void TaskMeasure::autoSaveChanged(int checkState)

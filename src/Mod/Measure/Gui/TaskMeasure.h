@@ -80,10 +80,9 @@ private:
     QComboBox* modeSwitch {nullptr};
     QCheckBox* showDelta {nullptr};
     QLabel* showDeltaLabel {nullptr};
-    QCheckBox* autoSaveCheckBox {nullptr};
-    QCheckBox* newMeasurementBehaviourCheckBox {nullptr};
-    QPushButton* mToggleOptionsButton {nullptr};
-    QGroupBox* mOptionsGroupBox {nullptr};
+    QAction* autoSaveAction {nullptr};
+    QAction* newMeasurementBehaviourAction {nullptr};
+    QToolButton* mSettings {nullptr};
 
     void removeObject();
     void onModeChanged(int index);
@@ -97,8 +96,6 @@ private:
     void ensureGroup(Measure::MeasureBase* measurement);
     void setDeltaPossible(bool possible);
     void initViewObject();
-
-    void toggleOptions(bool checked);
 
     // Stores if the mode is explicitly set by the user or implicitly through the selection
     bool explicitMode = false;
