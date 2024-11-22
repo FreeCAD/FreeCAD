@@ -110,6 +110,8 @@ SET(Materials_SRCS
     ModelLoader.h
     ModelManager.cpp
     ModelManager.h
+    ModelManagerExternal.cpp
+    ModelManagerExternal.h
     ModelManagerLocal.cpp
     ModelManagerLocal.h
     ModelUuids.cpp

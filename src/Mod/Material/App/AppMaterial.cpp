@@ -31,8 +31,11 @@
 
 #include "MaterialFilterPy.h"
 #include "MaterialLoader.h"
+#include "MaterialManagerLocal.h"
 #include "MaterialManagerPy.h"
 #include "MaterialPy.h"
+#include "ModelManagerExternal.h"
+#include "ModelManagerLocal.h"
 #include "ModelManagerPy.h"
 #include "ModelPropertyPy.h"
 #include "ModelPy.h"
@@ -89,8 +92,11 @@ PyMOD_INIT_FUNC(Materials)
     Materials::Material                 ::init();
     Materials::MaterialFilter           ::init();
     Materials::MaterialManager          ::init();
+    Materials::MaterialManagerLocal     ::init();
     Materials::Model                    ::init();
     Materials::ModelManager             ::init();
+    Materials::ModelManagerExternal     ::init();
+    Materials::ModelManagerLocal        ::init();
     Materials::ModelUUIDs               ::init();
 
     Materials::Library                  ::init();
