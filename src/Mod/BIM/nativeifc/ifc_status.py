@@ -138,13 +138,10 @@ def on_add_property():
         t = translate("BIM","No Property set provided")
         FreeCAD.Console.PrintError(t+"\n")
     ptype = form.field_type.currentIndex()
-    # convert to FreeCAD property type
-    fctype = ["App::PropertyString", "App::PropertyBool", 
-             "App::PropertyInteger", "App::PropertyFloat",
-             "App::PropertyLength", "App::PropertyArea"][ptype]
     ptype = ["IfcLabel", "IfcBoolean", 
              "IfcInteger", "IfcReal",
              "IfcLengthMeasure", "IfcAreaMeasure"][ptype]
+    fctype = ifc_psets.get_freecad_type(ptype)
     FreeCAD.ActiveDocument.openTransaction(translate("BIM","add property"))
     for obj in sel:
         obj.addProperty(fctype, pname, pset, ptype+":"+pname)

@@ -23,6 +23,7 @@
 """This NativeIFC module deals with properties and property sets"""
 
 
+import os
 import re
 import FreeCAD
 from nativeifc import ifc_tools
@@ -213,9 +214,11 @@ def edit_pset(obj, prop, value=None, force=False):
     elif value_exist in [".T."]:
         value_exist = True
     elif isinstance(value, int):
-        value_exist = int(value_exist.strip("."))
+        if value_exist:
+            value_exist = int(value_exist.strip("."))
     elif isinstance(value, float):
-        value_exist = float(value_exist)
+        if value_exist:
+            value_exist = float(value_exist)
     elif isinstance(value, FreeCAD.Units.Quantity):
         if value_exist:
             value_exist = float(value_exist)
@@ -292,3 +295,39 @@ def add_property(ifcfile, pset, name, value=""):
     To force a certain type, value can also be an IFC element such as IfcLabel"""
 
     ifc_tools.api_run("pset.edit_pset", ifcfile, pset=pset, properties={name: value})
+
+
+def get_freecad_type(ptype):
+    """Returns a FreeCAD property type correspinding to an IFC property type"""
+    
+    conv = read_properties_conversion()
+    for key, values in conv.items():
+        if ptype.lower() in [v.lower() for v in values.split(":")]:
+            return key
+    return "App::PropertyString"
+
+
+def get_ifc_type(fctype):
+    """Returns an IFC property type correspinding to a FreeCAD property type"""
+
+    conv = read_properties_conversion()
+    for key, values in conv.items():
+        if fctype.lower() == key.lower():
+            return values.split(":")[0]
+    return "IfcLabel"
+
+
+def read_properties_conversion():
+    """Reads the properties conversion table"""
+
+    import csv
+    csvfile = os.path.join(
+        FreeCAD.getResourceDir(), "Mod", "BIM", "Presets", "properties_conversion.csv"
+    )
+    result = {}
+    if os.path.exists(csvfile):
+        with open(csvfile, "r") as f:
+            reader = csv.reader(f, delimiter=",")
+            for row in reader:
+                result[row[0]] = row[1]
+    return result
