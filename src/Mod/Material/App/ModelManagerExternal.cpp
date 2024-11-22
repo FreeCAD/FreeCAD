@@ -25,13 +25,11 @@
 
 #include <QDirIterator>
 #include <QMutexLocker>
-#include <Python.h>
-
-#include <Base/Console.h>
 
 #include "Model.h"
 #include "ModelLoader.h"
 #include "ModelManagerExternal.h"
+#include "ExternalManager.h"
 
 using namespace Materials;
 
@@ -49,26 +47,7 @@ ModelManagerExternal::ModelManagerExternal()
 
 void ModelManagerExternal::initLibraries()
 {
-    Base::Console().Log("Loading external manager...");
-    // PyObject* module = PyImport_ImportModule("Help");
-    // if (!module) {
-    //     Base::Console().Log(" failed\n");
-    // }
-    // else {
-    //     // Py_DECREF(module);
-    //     Base::Console().Log(" done\n");
-    // }
-    // QMutexLocker locker(&_mutex);
-
-    // if (_modelMap == nullptr) {
-    //     _modelMap = std::make_shared<std::map<QString, std::shared_ptr<Model>>>();
-    //     if (_libraryList == nullptr) {
-    //         _libraryList = std::make_shared<std::list<std::shared_ptr<ModelLibrary>>>();
-    //     }
-
-    //     // Load the libraries
-    //     ModelLoader loader(_modelMap, _libraryList);
-    // }
+    auto manager = ExternalManager::getManager();
 }
 
 bool ModelManagerExternal::isModel(const QString& file)

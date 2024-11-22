@@ -83,6 +83,8 @@ SOURCE_GROUP("Python" FILES ${Python_SRCS})
 SET(Materials_SRCS
     ${Python_SRCS}
     AppMaterial.cpp
+    ExternalManager.cpp
+    ExternalManager.h
     FolderTree.h
     Library.cpp
     Library.h
