@@ -34,10 +34,12 @@
 #include "ModelManager.h"
 
 #include "ModelManagerLocal.h"
+#include "ModelManagerExternal.h"
 
 using namespace Materials;
 
 std::unique_ptr<ModelManagerLocal> ModelManager::_localManager;
+std::unique_ptr<ModelManagerExternal> ModelManager::_externalManager;
 QMutex ModelManager::_mutex;
 
 TYPESYSTEM_SOURCE(Materials::ModelManager, Base::BaseClass)
@@ -63,6 +65,10 @@ void ModelManager::initManagers()
 
     if (!_localManager) {
         _localManager = std::make_unique<ModelManagerLocal>();
+    }
+
+    if (!_externalManager) {
+        _externalManager = std::make_unique<ModelManagerExternal>();
     }
 }
 
