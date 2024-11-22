@@ -52,6 +52,11 @@ generate_from_xml(ModelPropertyPy)
 generate_from_xml(ModelPy)
 generate_from_xml(UUIDsPy)
 
+SET(MaterialsAPI_Files
+    MaterialAPI/__init__.py
+    MaterialAPI/MaterialManagerExternal.py
+)
+
 SET(Python_SRCS
     Exceptions.h
     Array2DPy.xml
@@ -132,3 +137,14 @@ SET_BIN_DIR(Materials Materials /Mod/Material)
 SET_PYTHON_PREFIX_SUFFIX(Materials)
 
 INSTALL(TARGETS Materials DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+ADD_CUSTOM_TARGET(MaterialsAPILib ALL
+    SOURCES ${MaterialsAPI_Files} ${Material_QRC_SRCS}
+)
+
+fc_target_copy_resource(MaterialsAPILib
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/Mod/Material
+    ${MaterialsAPI_Files})
+
+INSTALL(FILES ${MaterialsAPI_Files} DESTINATION Mod/Material/MaterialAPI)
