@@ -44,7 +44,7 @@ using namespace Materials;
 
 /* TRANSLATOR Material::Materials */
 
-std::shared_ptr<std::list<std::shared_ptr<MaterialLibraryBase>>>
+std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>>
     MaterialManagerLocal::_libraryList = nullptr;
 std::shared_ptr<std::map<QString, std::shared_ptr<Material>>> MaterialManagerLocal::_materialMap =
     nullptr;
@@ -110,7 +110,7 @@ void MaterialManagerLocal::refresh()
 //
 //=====
 
-std::shared_ptr<std::list<std::shared_ptr<MaterialLibraryBase>>> MaterialManagerLocal::getLibraries()
+std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> MaterialManagerLocal::getLibraries()
 {
     if (_libraryList == nullptr) {
         initLibraries();
@@ -118,7 +118,7 @@ std::shared_ptr<std::list<std::shared_ptr<MaterialLibraryBase>>> MaterialManager
     return _libraryList;
 }
 
-std::shared_ptr<MaterialLibraryBase> MaterialManagerLocal::getLibrary(const QString& name) const
+std::shared_ptr<MaterialLibrary> MaterialManagerLocal::getLibrary(const QString& name) const
 {
     for (auto& library : *_libraryList) {
         if (library->isLocal()) {
@@ -229,11 +229,11 @@ MaterialManagerLocal::libraryMaterials(const QString& libraryName)
 //=====
 
 std::shared_ptr<std::list<QString>>
-MaterialManagerLocal::getMaterialFolders(const std::shared_ptr<MaterialLibrary>& library) const
+MaterialManagerLocal::getMaterialFolders(const std::shared_ptr<MaterialLibraryLocal>& library) const
 {
-    auto materialLibrary =
-        reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(library);
-    return MaterialLoader::getMaterialFolders(*materialLibrary);
+    // auto materialLibrary =
+    //     reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(library);
+    return MaterialLoader::getMaterialFolders(*library);
 }
 
 void MaterialManagerLocal::createFolder(const std::shared_ptr<MaterialLibraryLocal>& library,
@@ -353,7 +353,7 @@ bool MaterialManagerLocal::exists(const QString& uuid) const
     return false;
 }
 
-bool MaterialManagerLocal::exists(const std::shared_ptr<MaterialLibraryBase>& library,
+bool MaterialManagerLocal::exists(const std::shared_ptr<MaterialLibrary>& library,
                                   const QString& uuid) const
 {
     try {
@@ -470,10 +470,10 @@ void MaterialManagerLocal::dereference(std::shared_ptr<Material> material) const
     MaterialLoader::dereference(_materialMap, material);
 }
 
-std::shared_ptr<std::list<std::shared_ptr<MaterialLibraryBase>>>
+std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>>
 MaterialManagerLocal::getConfiguredLibraries()
 {
-    auto libraryList = std::make_shared<std::list<std::shared_ptr<MaterialLibraryBase>>>();
+    auto libraryList = std::make_shared<std::list<std::shared_ptr<MaterialLibrary>>>();
 
     auto param = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Material/Resources");

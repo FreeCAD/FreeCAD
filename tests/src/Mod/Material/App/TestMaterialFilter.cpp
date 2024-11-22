@@ -93,7 +93,7 @@ protected:
 
     Materials::ModelManager* _modelManager;
     Materials::MaterialManager* _materialManager;
-    std::shared_ptr<Materials::MaterialLibraryBase> _library;
+    std::shared_ptr<Materials::MaterialLibrary> _library;
     QString _testMaterialUUID;
 
     std::string _customDir;

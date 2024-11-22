@@ -459,7 +459,7 @@ Material::Material()
     newUuid();
 }
 
-Material::Material(const std::shared_ptr<MaterialLibraryBase>& library,
+Material::Material(const std::shared_ptr<MaterialLibrary>& library,
                    const QString& directory,
                    const QString& uuid,
                    const QString& name)

@@ -554,9 +554,7 @@ void MaterialTreeWidget::fillMaterialTree()
 
     auto libraries = _materialManager.getLibraries();
     for (const auto& library : *libraries) {
-        auto materialLibrary =
-            reinterpret_cast<const std::shared_ptr<Materials::MaterialLibrary>&>(library);
-        auto materialTree = _materialManager.getMaterialTree(materialLibrary, _filter, _filterOptions);
+        auto materialTree = _materialManager.getMaterialTree(library, _filter, _filterOptions);
 
         bool showLibraries = _filterOptions.includeEmptyLibraries();
         if (!_filterOptions.includeEmptyLibraries() && materialTree->size() > 0) {
@@ -564,11 +562,11 @@ void MaterialTreeWidget::fillMaterialTree()
         }
 
         if (showLibraries) {
-            auto lib = new QStandardItem(materialLibrary->getName());
+            auto lib = new QStandardItem(library->getName());
             lib->setFlags(Qt::ItemIsEnabled);
             addExpanded(model, lib, param);
 
-            QIcon icon(materialLibrary->getIconPath());
+            QIcon icon(library->getIconPath());
             QIcon folderIcon(QString::fromStdString(":/icons/folder.svg"));
 
             addMaterials(*lib, materialTree, folderIcon, icon, param);

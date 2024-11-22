@@ -343,7 +343,7 @@ std::unique_ptr<std::map<QString, std::shared_ptr<MaterialEntry>>>
 
 MaterialLoader::MaterialLoader(
     const std::shared_ptr<std::map<QString, std::shared_ptr<Material>>>& materialMap,
-    const std::shared_ptr<std::list<std::shared_ptr<MaterialLibraryBase>>>& libraryList)
+    const std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>>& libraryList)
     : _materialMap(materialMap)
     , _libraryList(libraryList)
 {
@@ -544,7 +544,7 @@ void MaterialLoader::loadLibrary(const std::shared_ptr<MaterialLibraryLocal>& li
 }
 
 void MaterialLoader::loadLibraries(
-    const std::shared_ptr<std::list<std::shared_ptr<MaterialLibraryBase>>>& libraryList)
+    const std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>>& libraryList)
 {
     if (libraryList) {
         for (auto& it : *libraryList) {

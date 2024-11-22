@@ -1057,7 +1057,7 @@ MaterialConfigLoader::getMaterialFromPath(const std::shared_ptr<MaterialLibraryL
     QString sourceURL = value(fcmat, "SourceURL", "");
 
     auto baseLibrary =
-        reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryBase>&>(library);
+        reinterpret_cast<const std::shared_ptr<Materials::MaterialLibrary>&>(library);
     std::shared_ptr<Material> finalModel =
         std::make_shared<Material>(baseLibrary, path, uuid, name);
     finalModel->setOldFormat(true);

@@ -43,7 +43,6 @@
 namespace Materials
 {
 
-class MaterialLibraryBase;
 class MaterialLibrary;
 
 class MaterialsExport MaterialProperty: public ModelProperty
@@ -175,14 +174,14 @@ public:
     };
 
     Material();
-    Material(const std::shared_ptr<MaterialLibraryBase>& library,
+    Material(const std::shared_ptr<MaterialLibrary>& library,
              const QString& directory,
              const QString& uuid,
              const QString& name);
     Material(const Material& other);
     ~Material() override = default;
 
-    std::shared_ptr<MaterialLibraryBase> getLibrary() const
+    std::shared_ptr<MaterialLibrary> getLibrary() const
     {
         return _library;
     }
@@ -242,7 +241,7 @@ public:
 
     App::Material getMaterialAppearance() const;
 
-    void setLibrary(const std::shared_ptr<MaterialLibraryBase>& library)
+    void setLibrary(const std::shared_ptr<MaterialLibrary>& library)
     {
         _library = library;
     }
@@ -457,7 +456,7 @@ protected:
     void saveAppearanceModels(QTextStream& stream, bool saveInherited) const;
 
 private:
-    std::shared_ptr<MaterialLibraryBase> _library;
+    std::shared_ptr<MaterialLibrary> _library;
     QString _directory;
     QString _uuid;
     QString _name;

@@ -167,18 +167,18 @@ QString MaterialManager::defaultMaterialUUID()
 //
 //=====
 
-std::shared_ptr<std::list<std::shared_ptr<MaterialLibraryBase>>> MaterialManager::getLibraries()
+std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> MaterialManager::getLibraries()
 {
     return _localManager->getLibraries();
 }
 
-std::shared_ptr<std::list<std::shared_ptr<MaterialLibraryBase>>>
+std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>>
 MaterialManager::getLocalLibraries()
 {
     return _localManager->getLibraries();
 }
 
-std::shared_ptr<MaterialLibraryBase> MaterialManager::getLibrary(const QString& name) const
+std::shared_ptr<MaterialLibrary> MaterialManager::getLibrary(const QString& name) const
 {
     return _localManager->getLibrary(name);
 }
@@ -231,7 +231,14 @@ bool MaterialManager::isLocalLibrary(const QString& libraryName)
 std::shared_ptr<std::list<QString>>
 MaterialManager::getMaterialFolders(const std::shared_ptr<MaterialLibrary>& library) const
 {
-    return _localManager->getMaterialFolders(library);
+    if (library->isLocal()) {
+        auto materialLibrary =
+            reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(library);
+
+        return _localManager->getMaterialFolders(materialLibrary);
+    }
+
+    return std::make_shared<std::list<QString>>();
 }
 
 void MaterialManager::createFolder(const std::shared_ptr<MaterialLibrary>& library,
@@ -275,7 +282,7 @@ void MaterialManager::deleteRecursive(const std::shared_ptr<MaterialLibrary>& li
 //=====
 
 std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
-MaterialManager::getMaterialTree(const std::shared_ptr<MaterialLibraryBase>& library,
+MaterialManager::getMaterialTree(const std::shared_ptr<MaterialLibrary>& library,
                                  const std::shared_ptr<Materials::MaterialFilter>& filter) const
 {
     MaterialFilterOptions options;
@@ -283,7 +290,7 @@ MaterialManager::getMaterialTree(const std::shared_ptr<MaterialLibraryBase>& lib
 }
 
 std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
-MaterialManager::getMaterialTree(const std::shared_ptr<MaterialLibraryBase>& library,
+MaterialManager::getMaterialTree(const std::shared_ptr<MaterialLibrary>& library,
                                  const std::shared_ptr<Materials::MaterialFilter>& filter,
                                  const MaterialFilterOptions& options) const
 {
@@ -291,7 +298,7 @@ MaterialManager::getMaterialTree(const std::shared_ptr<MaterialLibraryBase>& lib
 }
 
 std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
-MaterialManager::getMaterialTree(const std::shared_ptr<MaterialLibraryBase>& library) const
+MaterialManager::getMaterialTree(const std::shared_ptr<MaterialLibrary>& library) const
 {
     std::shared_ptr<Materials::MaterialFilter> filter;
     MaterialFilterOptions options;
@@ -351,7 +358,13 @@ bool MaterialManager::exists(const QString& uuid) const
 bool MaterialManager::exists(const std::shared_ptr<MaterialLibrary>& library,
                              const QString& uuid) const
 {
-    return _localManager->exists(library, uuid);
+    if (library->isLocal()) {
+        auto materialLibrary =
+            reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(library);
+
+        return _localManager->exists(materialLibrary, uuid);
+    }
+    return false;
 }
 
 void MaterialManager::remove(const QString& uuid) const
@@ -359,7 +372,7 @@ void MaterialManager::remove(const QString& uuid) const
     _localManager->remove(uuid);
 }
 
-void MaterialManager::saveMaterial(const std::shared_ptr<MaterialLibraryBase>& library,
+void MaterialManager::saveMaterial(const std::shared_ptr<MaterialLibrary>& library,
                                    const std::shared_ptr<Material>& material,
                                    const QString& path,
                                    bool overwrite,

@@ -33,7 +33,7 @@
 
 namespace Materials
 {
-class MaterialLibraryBase;
+class MaterialLibrary;
 class MaterialLibraryLocal;
 
 class MaterialEntry
@@ -113,7 +113,7 @@ class MaterialLoader
 {
 public:
     MaterialLoader(const std::shared_ptr<std::map<QString, std::shared_ptr<Material>>>& materialMap,
-                   const std::shared_ptr<std::list<std::shared_ptr<MaterialLibraryBase>>>& libraryList);
+                   const std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>>& libraryList);
     ~MaterialLoader() = default;
 
     static std::shared_ptr<std::list<QString>>
@@ -137,11 +137,11 @@ private:
     void addLibrary(const std::shared_ptr<MaterialLibraryLocal>& model);
     void loadLibrary(const std::shared_ptr<MaterialLibraryLocal>& library);
     void loadLibraries(
-        const std::shared_ptr<std::list<std::shared_ptr<MaterialLibraryBase>>>& libraryList);
+        const std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>>& libraryList);
 
     static std::unique_ptr<std::map<QString, std::shared_ptr<MaterialEntry>>> _materialEntryMap;
     std::shared_ptr<std::map<QString, std::shared_ptr<Material>>> _materialMap;
-    std::shared_ptr<std::list<std::shared_ptr<MaterialLibraryBase>>> _libraryList;
+    std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> _libraryList;
 };
 
 }  // namespace Materials

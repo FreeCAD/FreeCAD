@@ -64,9 +64,9 @@ public:
     static QString defaultMaterialUUID();
 
     // Library management
-    std::shared_ptr<std::list<std::shared_ptr<MaterialLibraryBase>>> getLibraries();
-    std::shared_ptr<std::list<std::shared_ptr<MaterialLibraryBase>>> getLocalLibraries();
-    std::shared_ptr<MaterialLibraryBase> getLibrary(const QString& name) const;
+    std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> getLibraries();
+    std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> getLocalLibraries();
+    std::shared_ptr<MaterialLibrary> getLibrary(const QString& name) const;
     void createLibrary(const QString& libraryName, const QString& icon, bool readOnly = true);
     void createLocalLibrary(const QString& libraryName,
                             const QString& directory,
@@ -90,14 +90,14 @@ public:
 
     // Tree management
     std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
-    getMaterialTree(const std::shared_ptr<MaterialLibraryBase>& library,
+    getMaterialTree(const std::shared_ptr<MaterialLibrary>& library,
                     const std::shared_ptr<Materials::MaterialFilter>& filter) const;
     std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
-    getMaterialTree(const std::shared_ptr<MaterialLibraryBase>& library,
+    getMaterialTree(const std::shared_ptr<MaterialLibrary>& library,
                     const std::shared_ptr<Materials::MaterialFilter>& filter,
                     const MaterialFilterOptions& options) const;
     std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
-    getMaterialTree(const std::shared_ptr<MaterialLibraryBase>& library) const;
+    getMaterialTree(const std::shared_ptr<MaterialLibrary>& library) const;
 
     // Material management
     std::shared_ptr<std::map<QString, std::shared_ptr<Material>>> getLocalMaterials() const;
@@ -110,7 +110,7 @@ public:
     bool exists(const std::shared_ptr<MaterialLibrary>& library, const QString& uuid) const;
     void remove(const QString& uuid) const;
 
-    void saveMaterial(const std::shared_ptr<MaterialLibraryBase>& library,
+    void saveMaterial(const std::shared_ptr<MaterialLibrary>& library,
                       const std::shared_ptr<Material>& material,
                       const QString& path,
                       bool overwrite,

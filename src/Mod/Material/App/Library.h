@@ -41,7 +41,7 @@ public:
     Library(const QString& libraryName, const QString& icon, bool readOnly = true);
     ~Library() override = default;
 
-    const QString getName() const
+    QString getName() const
     {
         return _name;
     }
@@ -49,7 +49,7 @@ public:
     {
         _name = newName;
     }
-    const QString getIconPath() const
+    QString getIconPath() const
     {
         return _iconPath;
     }
@@ -87,7 +87,7 @@ public:
                  bool readOnly = true);
     ~LocalLibrary() override = default;
 
-    const QString getDirectory() const
+    QString getDirectory() const
     {
         return _directory;
     }
@@ -95,7 +95,7 @@ public:
     {
         _directory = directory;
     }
-    const QString getDirectoryPath() const
+    QString getDirectoryPath() const
     {
         return QDir(_directory).absolutePath();
     }

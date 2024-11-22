@@ -272,7 +272,7 @@ PyObject* MaterialManagerPy::save(PyObject* args, PyObject* kwds)
     }
     auto sharedMaterial = std::make_shared<Material>(*(material->getMaterialPtr()));
 
-    std::shared_ptr<MaterialLibraryBase> library;
+    std::shared_ptr<MaterialLibrary> library;
     try {
         library = getMaterialManagerPtr()->getLibrary(QString::fromUtf8(libraryName));
     }

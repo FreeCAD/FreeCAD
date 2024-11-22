@@ -869,9 +869,7 @@ void MaterialsEditor::fillMaterialTree()
 
     auto libraries = getMaterialManager().getLibraries();
     for (const auto& library : *libraries) {
-        auto materialLibrary =
-            reinterpret_cast<const std::shared_ptr<Materials::MaterialLibrary>&>(library);
-        auto materialTree = getMaterialManager().getMaterialTree(materialLibrary);
+        auto materialTree = getMaterialManager().getMaterialTree(library);
 
         bool showLibraries = _filterOptions.includeEmptyLibraries();
         if (!_filterOptions.includeEmptyLibraries() && materialTree->size() > 0) {
@@ -879,11 +877,11 @@ void MaterialsEditor::fillMaterialTree()
         }
 
         if (showLibraries) {
-            auto lib = new QStandardItem(materialLibrary->getName());
+            auto lib = new QStandardItem(library->getName());
             lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
             addExpanded(tree, model, lib, param);
 
-            QIcon icon(materialLibrary->getIconPath());
+            QIcon icon(library->getIconPath());
             QIcon folderIcon(QString::fromStdString(":/icons/folder.svg"));
 
             addMaterials(*lib, materialTree, folderIcon, icon, param);

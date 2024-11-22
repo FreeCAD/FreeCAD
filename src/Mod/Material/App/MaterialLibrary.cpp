@@ -41,9 +41,9 @@ using namespace Materials;
 
 /* TRANSLATOR Material::Materials */
 
-TYPESYSTEM_SOURCE(Materials::MaterialLibraryBase, Base::BaseClass)
+TYPESYSTEM_SOURCE(Materials::MaterialLibrary, Base::BaseClass)
 
-bool MaterialLibraryBase::materialInTree(const std::shared_ptr<Material>& material,
+bool MaterialLibrary::materialInTree(const std::shared_ptr<Material>& material,
                                      const std::shared_ptr<Materials::MaterialFilter>& filter,
                                      const Materials::MaterialFilterOptions& options) const
 {
@@ -61,13 +61,13 @@ bool MaterialLibraryBase::materialInTree(const std::shared_ptr<Material>& materi
     return filter->modelIncluded(material);
 }
 
-bool MaterialLibraryBase::isLocal() const
+bool MaterialLibrary::isLocal() const
 {
     return false;
 }
 
 std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
-MaterialLibraryBase::getMaterialTree(const std::shared_ptr<Materials::MaterialFilter>& filter,
+MaterialLibrary::getMaterialTree(const std::shared_ptr<Materials::MaterialFilter>& filter,
                                  const Materials::MaterialFilterOptions& options) const
 {
     std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>> materialTree =
@@ -79,19 +79,19 @@ MaterialLibraryBase::getMaterialTree(const std::shared_ptr<Materials::MaterialFi
 
 /* TRANSLATOR Material::Materials */
 
-TYPESYSTEM_SOURCE(Materials::MaterialLibrary, Materials::MaterialLibraryBase)
+TYPESYSTEM_SOURCE(Materials::MaterialLibraryExternal, Materials::MaterialLibrary)
 
-MaterialLibrary::MaterialLibrary(const QString& libraryName, const QString& icon, bool readOnly)
+MaterialLibraryExternal::MaterialLibraryExternal(const QString& libraryName, const QString& icon, bool readOnly)
     : Library(libraryName, icon, readOnly)
 {}
 
-bool MaterialLibrary::isLocal() const
+bool MaterialLibraryExternal::isLocal() const
 {
     return false;
 }
 
 
-TYPESYSTEM_SOURCE(Materials::MaterialLibraryLocal, Materials::MaterialLibraryBase)
+TYPESYSTEM_SOURCE(Materials::MaterialLibraryLocal, Materials::MaterialLibrary)
 
 MaterialLibraryLocal::MaterialLibraryLocal(const QString& libraryName,
                                            const QString& dir,

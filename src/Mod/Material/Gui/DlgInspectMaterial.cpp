@@ -340,19 +340,8 @@ void DlgInspectMaterial::addMaterialDetails(QTreeView* tree,
 {
     auto uuid = clipItem(tr("UUID: ") + material.getUUID());
     addExpanded(tree, parent, uuid);
-    QStandardItem* library;
-    if (material.getLibrary()->isLocal()) {
-        auto materialLibrary =
-            reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(
-                material.getLibrary());
-        library = clipItem(tr("Library: ") + materialLibrary->getName());
-    }
-    else {
-        auto materialLibrary =
-            reinterpret_cast<const std::shared_ptr<Materials::MaterialLibrary>&>(
-                material.getLibrary());
-        library = clipItem(tr("Library: ") + materialLibrary->getName());
-    }
+    auto library =
+        clipItem(tr("Library: ") + material.getLibrary()->getName());
     addExpanded(tree, parent, library);
     QStandardItem* libraryPath;
     if ( material.getLibrary()->isLocal()) {
@@ -362,8 +351,7 @@ void DlgInspectMaterial::addMaterialDetails(QTreeView* tree,
         libraryPath = clipItem(tr("Library Directory: ") + materialLibrary->getDirectoryPath());
     }
     else {
-        libraryPath =
-            clipItem(tr("Library Directory: "));
+        libraryPath = clipItem(tr("Library Directory: "));
     }
     addExpanded(tree, parent, libraryPath);
     auto directory = clipItem(tr("Sub Directory: ") + material.getDirectory());

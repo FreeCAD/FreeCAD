@@ -35,6 +35,8 @@
 namespace MatGui
 {
 
+class MaterialLibrary;
+
 class Ui_MaterialSave;
 
 class MaterialSave: public QDialog
