@@ -802,11 +802,7 @@ void MaterialsEditor::addRecents(QStandardItem* parent)
         try {
             auto material = getMaterialManager().getMaterial(uuid);
             if (material->getLibrary()->isLocal()) {
-                auto materialLibrary =
-                    reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(
-                        material->getLibrary());
-
-                QIcon icon = QIcon(materialLibrary->getIconPath());
+                QIcon icon = QIcon(material->getLibrary()->getIconPath());
                 auto card = new QStandardItem(icon, libraryPath(material));
                 card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
                                | Qt::ItemIsDropEnabled);
@@ -826,19 +822,13 @@ void MaterialsEditor::addFavorites(QStandardItem* parent)
     for (auto& uuid : _favorites) {
         try {
             auto material = getMaterialManager().getMaterial(uuid);
-            if (material->getLibrary()->isLocal()) {
-                auto materialLibrary =
-                    reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(
-                        material->getLibrary());
+            QIcon icon = QIcon(material->getLibrary()->getIconPath());
+            auto card = new QStandardItem(icon, libraryPath(material));
+            card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
+                            | Qt::ItemIsDropEnabled);
+            card->setData(QVariant(uuid), Qt::UserRole);
 
-                QIcon icon = QIcon(materialLibrary->getIconPath());
-                auto card = new QStandardItem(icon, libraryPath(material));
-                card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
-                               | Qt::ItemIsDropEnabled);
-                card->setData(QVariant(uuid), Qt::UserRole);
-
-                addExpanded(tree, parent, card);
-            }
+            addExpanded(tree, parent, card);
         }
         catch (const Materials::MaterialNotFound&) {
         }
@@ -1188,14 +1178,10 @@ QString MaterialsEditor::libraryPath(const std::shared_ptr<Materials::Material>&
     QString path;
     auto library = material->getLibrary();
     if (library) {
-        if (library->isLocal()) {
-            auto materialLibrary =
-                reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(library);
-            path = QString::fromLatin1("/%1/%2")
-                       .arg(materialLibrary->getName())
-                       .arg(material->getDirectory());
-            return path;
-        }
+        path = QString::fromLatin1("/%1/%2")
+                    .arg(library->getName())
+                    .arg(material->getDirectory());
+        return path;
     }
 
     path = QString::fromLatin1("%1").arg(material->getDirectory());

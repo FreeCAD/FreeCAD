@@ -613,18 +613,12 @@ void MaterialTreeWidget::addRecents(QStandardItem* parent)
     for (auto& uuid : _recents) {
         try {
             auto material = getMaterialManager().getMaterial(uuid);
-            if (material->getLibrary()->isLocal()) {
-                auto materialLibrary =
-                    reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(
-                        material->getLibrary());
+            QIcon icon(material->getLibrary()->getIconPath());
+            auto card = new QStandardItem(icon, material->getName());
+            card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+            card->setData(QVariant(uuid), Qt::UserRole);
 
-                QIcon icon = QIcon(materialLibrary->getIconPath());
-                auto card = new QStandardItem(icon, material->getName());
-                card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
-                card->setData(QVariant(uuid), Qt::UserRole);
-
-                addExpanded(parent, card);
-            }
+            addExpanded(parent, card);
         }
         catch (const Materials::MaterialNotFound&) {
         }
@@ -636,18 +630,12 @@ void MaterialTreeWidget::addFavorites(QStandardItem* parent)
     for (auto& uuid : _favorites) {
         try {
             auto material = getMaterialManager().getMaterial(uuid);
-            if (material->getLibrary()->isLocal()) {
-                auto materialLibrary =
-                    reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(
-                        material->getLibrary());
+            QIcon icon(material->getLibrary()->getIconPath());
+            auto card = new QStandardItem(icon, material->getName());
+            card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+            card->setData(QVariant(uuid), Qt::UserRole);
 
-                QIcon icon = QIcon(materialLibrary->getIconPath());
-                auto card = new QStandardItem(icon, material->getName());
-                card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
-                card->setData(QVariant(uuid), Qt::UserRole);
-
-                addExpanded(parent, card);
-            }
+            addExpanded(parent, card);
         }
         catch (const Materials::MaterialNotFound&) {
         }

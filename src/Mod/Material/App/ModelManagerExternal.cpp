@@ -50,14 +50,14 @@ ModelManagerExternal::ModelManagerExternal()
 void ModelManagerExternal::initLibraries()
 {
     Base::Console().Log("Loading external manager...");
-    PyObject* module = PyImport_ImportModule("Help");
-    if (!module) {
-        Base::Console().Log(" failed\n");
-    }
-    else {
-        Py_DECREF(module);
-        Base::Console().Log(" done\n");
-    }
+    // PyObject* module = PyImport_ImportModule("Help");
+    // if (!module) {
+    //     Base::Console().Log(" failed\n");
+    // }
+    // else {
+    //     // Py_DECREF(module);
+    //     Base::Console().Log(" done\n");
+    // }
     // QMutexLocker locker(&_mutex);
 
     // if (_modelMap == nullptr) {

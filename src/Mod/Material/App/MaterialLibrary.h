@@ -74,6 +74,10 @@ public:
     {
         return QString();
     }
+    virtual QString getDirectoryPath() const
+    {
+        return QString();
+    }
 
 protected:
     bool materialInTree(const std::shared_ptr<Material>& material,
@@ -166,6 +170,10 @@ public:
     {
         return LocalLibrary::getName();
     }
+    QString getDirectoryPath() const override
+    {
+        return LocalLibrary::getDirectoryPath();
+    }
 
     bool operator==(const MaterialLibrary& library) const
     {
@@ -202,5 +210,7 @@ protected:
 }  // namespace Materials
 
 Q_DECLARE_METATYPE(std::shared_ptr<Materials::MaterialLibrary>)
+Q_DECLARE_METATYPE(std::shared_ptr<Materials::MaterialLibraryExternal>)
+Q_DECLARE_METATYPE(std::shared_ptr<Materials::MaterialLibraryLocal>)
 
 #endif  // MATERIAL_MATERIALLIBRARY_H
