@@ -87,8 +87,8 @@ private:
     void removeObject();
     void onModeChanged(int index);
     void showDeltaChanged(int checkState);
-    void autoSaveChanged(int checkState);
-    void newMeasurementBehaviourChanged(int checkState);
+    void autoSaveChanged(bool checked);
+    void newMeasurementBehaviourChanged(bool checked);
     void setModeSilent(App::MeasureType* mode);
     App::MeasureType* getMeasureType();
     void enableAnnotateButton(bool state);

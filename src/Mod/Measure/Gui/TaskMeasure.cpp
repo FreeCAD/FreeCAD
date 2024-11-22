@@ -528,19 +528,19 @@ void TaskMeasure::showDeltaChanged(int checkState)
     this->update();
 }
 
-void TaskMeasure::autoSaveChanged(int checkState)
+void TaskMeasure::autoSaveChanged(bool checked)
 {
-    mAutoSave = checkState == Qt::CheckState::Checked;
+    mAutoSave = checked;
 
     QSettings settings;
     settings.beginGroup(QLatin1String(taskMeasureSettingsGroup));
     settings.setValue(QLatin1String(taskMeasureAutoSaveSettingsName), mAutoSave);
 }
 
-void TaskMeasure::newMeasurementBehaviourChanged(int checkState) {
+void TaskMeasure::newMeasurementBehaviourChanged(bool checked) {
     QSettings settings;
     settings.beginGroup(QLatin1String(taskMeasureSettingsGroup));
-    if (checkState == Qt::CheckState::Checked) {
+    if (checked) {
         Gui::Selection().setSelectionStyle(SelectionStyle::NormalSelection);
         settings.setValue(QLatin1String(taskMeasureGreedySelection), false);
     } else {
