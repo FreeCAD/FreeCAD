@@ -53,6 +53,16 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
 
         prop.append(
             _PropHelper(
+                type="App::PropertyLinkList",
+                name="MeshRegionList",
+                group="Base",
+                doc="Refinements of the mesh",
+                value=[],
+            )
+        )
+        # mesh parameters
+        prop.append(
+            _PropHelper(
                 type="App::PropertyString",
                 name="Optimize3d",
                 group="Mesh Parameters",
@@ -401,6 +411,15 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
                 group="Mesh Parameters",
                 doc="Second order element meshing",
                 value=True,
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyBool",
+                name="SecondOrderLinear",
+                group="Mesh Parameters",
+                doc="Second order nodes are created by linear interpolation",
+                value=False,
             )
         )
         prop.append(
