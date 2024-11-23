@@ -650,4 +650,7 @@ void Preferences::setBalloonDragModifiers(Qt::KeyboardModifiers newModifiers)
     getPreferenceGroup("General")->SetUnsigned("BalloonDragModifier", (uint)newModifiers);
 }
 
-
+bool Preferences::enforceISODate()
+{
+    return getPreferenceGroup("Standards")->GetBool("EnforceISODate", false);
+}
