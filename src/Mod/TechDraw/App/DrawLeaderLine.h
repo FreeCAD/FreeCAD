@@ -89,6 +89,10 @@ public:
 
     void dumpWaypoints(const std::vector<Base::Vector3d>& points, const std::string& label);
 
+    std::vector<Base::Vector3d> getTransformedWayPoints() const;
+
+    Base::Vector3d lastSegmentDirection() const;
+
 private:
 
 

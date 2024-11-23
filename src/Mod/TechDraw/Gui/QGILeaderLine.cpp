@@ -258,8 +258,8 @@ void QGILeaderLine::onLineEditFinished(QPointF tipDisplace, std::vector<QPointF>
     std::vector<Base::Vector3d> pageDeltas;
     for (auto& pt : scenePoints) {
         QPointF distFromP0 = pt - scenePoints.front();
-        // convert deltas to mm and conventional Y axis from scene coords
-        Base::Vector3d deltaInPageCoords = DGU::fromSceneCoords(DU::toVector3d(distFromP0));
+        // convert deltas to mm
+        Base::Vector3d deltaInPageCoords = Rez::appX(DU::toVector3d(distFromP0));
         pageDeltas.push_back(deltaInPageCoords);
     }
     pageDeltas.at(0) = Base::Vector3d(0.0, 0.0, 0.0);
@@ -287,7 +287,14 @@ void QGILeaderLine::startPathEdit()
     m_editPath->setScale(scale);
     m_editPath->inEdit(true);
     m_editPath->show();
-    m_editPath->startPathEdit(getWayPointsFromFeature());
+    // m_editPath->startPathEdit(getWayPointsFromFeature());
+    auto vPoints = featLeader->getTransformedWayPoints();
+    std::vector<QPointF> qPoints;
+    qPoints.reserve(vPoints.size());
+    for (auto& point : vPoints) {
+        qPoints.emplace_back(Rez::guiX(DU::toQPointF(point)));
+    }
+    m_editPath->startPathEdit(qPoints);
 }
 
 void QGILeaderLine::saveState()
@@ -334,7 +341,6 @@ void QGILeaderLine::updateView(bool update)
 
 void QGILeaderLine::draw()
 {
-    // Base::Console().Message("QGILL::draw()- %s\n", getViewObject()->getNameInDocument());
     if (m_blockDraw) {
         return;
     }
@@ -370,21 +376,12 @@ void QGILeaderLine::draw()
 
     // set the leader's Qt position from feature's X,Y and scale.
     // the feature's x,y is unscaled, unrotated and conventional Y
-    // line style is standing in for line number here?
-    m_lineStyle = static_cast<Qt::PenStyle>(vp->LineStyle.getValue());
-    double baseScale = featLeader->getBaseScale();
-    double xPos = Rez::guiX(featLeader->X.getValue());
-    double yPos = Rez::guiX(featLeader->Y.getValue());
-    Base::Vector3d vAttachPoint{xPos, yPos};
-    vAttachPoint = vAttachPoint * baseScale;
-    double rotationRad = parent->Rotation.getValue() * M_PI / DegreesHalfCircle;
-    if (rotationRad != 0.0) {
-        vAttachPoint.RotateZ(rotationRad);
-    }
-    vAttachPoint = DU::invertY(vAttachPoint);
-    QPointF qPoint = DU::toQPointF(vAttachPoint);
+     QPointF qPoint = DU::toQPointF(getAttachPoint());
     // ???? why does the attach point not need Rez applied?
     setPos(qPoint);
+
+    // line style is standing in for line number here?
+    m_lineStyle = static_cast<Qt::PenStyle>(vp->LineStyle.getValue());
 
     m_line->setFillStyle(Qt::NoBrush);
     m_line->setStyle(m_lineStyle);
@@ -570,6 +567,33 @@ void QGILeaderLine::drawBorder()
     //    QGIView::drawBorder();   //good for debugging
 }
 
+
+//! return the position of the tip of the leader's arrow
+Base::Vector3d  QGILeaderLine::getAttachPoint()
+{
+    TechDraw::DrawLeaderLine* featLeader = getLeaderFeature();
+    if (!featLeader) {
+        return Base::Vector3d(0, 0, 0);
+    }
+        TechDraw::DrawView* parent = featLeader->getBaseView();
+
+    if (!parent) {
+        return Base::Vector3d(0, 0, 0);
+    }
+
+    double baseScale = featLeader->getBaseScale();
+    double xPos = Rez::guiX(featLeader->X.getValue());
+    double yPos = Rez::guiX(featLeader->Y.getValue());
+    Base::Vector3d vAttachPoint{xPos, yPos};
+    vAttachPoint = vAttachPoint * baseScale;
+    double rotationRad = parent->Rotation.getValue() * M_PI / DegreesHalfCircle;
+    if (rotationRad != 0.0) {
+        vAttachPoint.RotateZ(rotationRad);
+    }
+    vAttachPoint = DU::invertY(vAttachPoint);
+    return vAttachPoint;
+}
+
 //******************************************************************************
 
 
@@ -624,8 +648,8 @@ void QGILeaderLine::paint(QPainter* painter, const QStyleOptionGraphicsItem* opt
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
-    painter->setPen(Qt::blue);
-    painter->drawRect(boundingRect());          //good for debugging
+    // painter->setPen(Qt::blue);
+    // painter->drawRect(boundingRect());          //good for debugging
 
     QGIView::paint(painter, &myOption, widget);
 }
