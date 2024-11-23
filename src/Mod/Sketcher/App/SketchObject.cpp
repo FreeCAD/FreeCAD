@@ -3502,29 +3502,13 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                                                                     int GeoId1,
                                                                     Base::Vector3d point1,
                                                                     Constraint* constr) {
+        // TODO: Move code currently later in this method (that does as per the following description) here.
         /* It is possible that the trimming entity has both a PointOnObject constraint to the
-         * trimmed entity, and a simple Tangent contstrait to the trimmed entity. In this case we
+         * trimmed entity, and a simple Tangent contstraint to the trimmed entity. In this case we
          * want to change to a single end-to-end tangency, i.e we want to ensure that constrType1 is
          * set to Sketcher::Tangent, that the secondPos1 is captured from the PointOnObject, and
          * also make sure that the PointOnObject constraint is deleted. The below loop ensures this,
          * also in case the ordering of the constraints is first Tangent and then PointOnObject. */
-        // if (!(constr->Type == Sketcher::Tangent
-        //       || constr->Type == Sketcher::Perpendicular)) {
-        //     return;
-        // }
-
-        // if (constr->First == GeoId1 && constr->Second == GeoId) {
-        //     constr->Type = constr->Type;
-        //     if (secondPos == Sketcher::PointPos::none)
-        //         secondPos = constr->FirstPos;
-        //     delete_list.push_back(constrId);
-        // }
-        // else if (constr->First == GeoId && constr->Second == GeoId1) {
-        //     constr->Type = constr->Type;
-        //     if (secondPos == Sketcher::PointPos::none)
-        //         secondPos = constr->SecondPos;
-        //     delete_list.push_back(constrId);
-        // }
     };
 
     // makes an equality constraint between GeoId1 and GeoId2
