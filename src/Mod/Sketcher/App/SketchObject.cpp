@@ -3580,8 +3580,9 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         return 0;
     }
 
-    double firstParam = static_cast<const Part::GeomCurve*>(geo)->getFirstParameter();
-    double lastParam = static_cast<const Part::GeomCurve*>(geo)->getLastParameter();
+    const auto* geoAsCurve = static_cast<const Part::GeomCurve*>(geo);
+    double firstParam = geoAsCurve->getFirstParameter();
+    double lastParam = geoAsCurve->getLastParameter();
     double pointParam, point1Param, point2Param;
     if (!getIntersectionParameters(
             geo, point, pointParam, point1, point1Param, point2, point2Param)) {
@@ -3594,7 +3595,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
     std::vector<int> newIds;
     std::vector<Part::Geometry*> newGeos;
     std::vector<const Part::Geometry*> newGeosAsConsts;
-    bool oldGeoIsConstruction = GeometryFacade::getConstruction(static_cast<const Part::GeomCurve*>(geo));
+    bool oldGeoIsConstruction = GeometryFacade::getConstruction(geoAsCurve);
 
     if (isClosedCurve(geo)) {
         startPointRemains = false;
@@ -3615,7 +3616,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
     }
 
     for (auto& [u1, u2] : paramsOfNewGeos) {
-        auto newGeo = static_cast<const Part::GeomCurve*>(geo)->createArc(u1, u2);
+        auto newGeo = geoAsCurve->createArc(u1, u2);
         assert(newGeo);
         newGeos.push_back(newGeo);
         newGeosAsConsts.push_back(newGeo);
