@@ -111,6 +111,13 @@ int countConstraintsOfType(const Sketcher::SketchObject* obj, const Sketcher::Co
     return result;
 }
 
+// Get point at the parameter after scaling the range to [0, 1].
+Base::Vector3d getPointAtNormalizedParameter(const Part::GeomCurve& curve, double param)
+{
+    return curve.pointAtParameter(curve.getFirstParameter()
+                                  + (curve.getLastParameter() - curve.getFirstParameter()) * param);
+}
+
 // TODO: How to set up B-splines here?
 // It's not straightforward to change everything from a "default" one.
 
@@ -724,12 +731,8 @@ TEST_F(SketchObjectTest, testTrimLineSegmentEnd)
     Part::GeomLineSegment lineSeg;
     setupLineSegment(lineSeg);
     // TODO: create curves intersecting at the right spots
-    Base::Vector3d trimPoint(lineSeg.pointAtParameter(
-        lineSeg.getFirstParameter()
-        + (lineSeg.getLastParameter() - lineSeg.getFirstParameter()) * 0.2));
-    Base::Vector3d p1(lineSeg.pointAtParameter(
-        lineSeg.getFirstParameter()
-        + (lineSeg.getLastParameter() - lineSeg.getFirstParameter()) * 0.5));
+    Base::Vector3d trimPoint(getPointAtNormalizedParameter(lineSeg, 0.2));
+    Base::Vector3d p1(getPointAtNormalizedParameter(lineSeg, 0.5));
     Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
     Part::GeomLineSegment lineSegCut1;
     lineSegCut1.setPoints(p1, p2);
@@ -754,19 +757,13 @@ TEST_F(SketchObjectTest, testTrimLineSegmentMid)
     Part::GeomLineSegment lineSeg;
     setupLineSegment(lineSeg);
     // TODO: create curves intersecting at the right spots
-    Base::Vector3d trimPoint(lineSeg.pointAtParameter(
-        lineSeg.getFirstParameter()
-        + (lineSeg.getLastParameter() - lineSeg.getFirstParameter()) * 0.5));
-    Base::Vector3d p1(lineSeg.pointAtParameter(
-        lineSeg.getFirstParameter()
-        + (lineSeg.getLastParameter() - lineSeg.getFirstParameter()) * 0.3));
+    Base::Vector3d trimPoint(getPointAtNormalizedParameter(lineSeg, 0.5));
+    Base::Vector3d p1(getPointAtNormalizedParameter(lineSeg, 0.3));
     Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
     Part::GeomLineSegment lineSegCut1;
     lineSegCut1.setPoints(p1, p2);
     getObject()->addGeometry(&lineSegCut1);
-    Base::Vector3d p3(lineSeg.pointAtParameter(
-        lineSeg.getFirstParameter()
-        + (lineSeg.getLastParameter() - lineSeg.getFirstParameter()) * 0.7));
+    Base::Vector3d p3(getPointAtNormalizedParameter(lineSeg, 0.7));
     Base::Vector3d p4(p3.x + 0.1, p3.y - 0.1, p3.z);
     // to ensure that this line clearly intersects the curve, not just have a point on object
     // without explicit constraint
@@ -799,12 +796,8 @@ TEST_F(SketchObjectTest, testTrimCircleEnd)
     Part::GeomCircle circle;
     setupCircle(circle);
     // TODO: create curves intersecting at the right spots
-    Base::Vector3d trimPoint(
-        circle.pointAtParameter(circle.getFirstParameter()
-                                + (circle.getLastParameter() - circle.getFirstParameter()) * 0.2));
-    Base::Vector3d p1(
-        circle.pointAtParameter(circle.getFirstParameter()
-                                + (circle.getLastParameter() - circle.getFirstParameter()) * 0.5));
+    Base::Vector3d trimPoint(getPointAtNormalizedParameter(circle, 0.2));
+    Base::Vector3d p1(getPointAtNormalizedParameter(circle, 0.5));
     Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
     Part::GeomLineSegment lineSegCut1;
     lineSegCut1.setPoints(p1, p2);
@@ -826,19 +819,13 @@ TEST_F(SketchObjectTest, testTrimCircleMid)
     Part::GeomCircle circle;
     setupCircle(circle);
     // TODO: create curves intersecting at the right spots
-    Base::Vector3d trimPoint(
-        circle.pointAtParameter(circle.getFirstParameter()
-                                + (circle.getLastParameter() - circle.getFirstParameter()) * 0.5));
-    Base::Vector3d p1(
-        circle.pointAtParameter(circle.getFirstParameter()
-                                + (circle.getLastParameter() - circle.getFirstParameter()) * 0.3));
+    Base::Vector3d trimPoint(getPointAtNormalizedParameter(circle, 0.5));
+    Base::Vector3d p1(getPointAtNormalizedParameter(circle, 0.3));
     Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
     Part::GeomLineSegment lineSegCut1;
     lineSegCut1.setPoints(p1, p2);
     getObject()->addGeometry(&lineSegCut1);
-    Base::Vector3d p3(
-        circle.pointAtParameter(circle.getFirstParameter()
-                                + (circle.getLastParameter() - circle.getFirstParameter()) * 0.7));
+    Base::Vector3d p3(getPointAtNormalizedParameter(circle, 0.7));
     Base::Vector3d p4(p3.x + 0.1, p3.y + 0.1, p3.z);
     // to ensure that this line clearly intersects the curve, not just have a point on object
     // without explicit constraint
@@ -874,12 +861,8 @@ TEST_F(SketchObjectTest, testTrimArcOfCircleEnd)
     Part::GeomArcOfCircle arcOfCircle;
     setupArcOfCircle(arcOfCircle);
     // TODO: create curves intersecting at the right spots
-    Base::Vector3d trimPoint(arcOfCircle.pointAtParameter(
-        arcOfCircle.getFirstParameter()
-        + (arcOfCircle.getLastParameter() - arcOfCircle.getFirstParameter()) * 0.2));
-    Base::Vector3d p1(arcOfCircle.pointAtParameter(
-        arcOfCircle.getFirstParameter()
-        + (arcOfCircle.getLastParameter() - arcOfCircle.getFirstParameter()) * 0.5));
+    Base::Vector3d trimPoint(getPointAtNormalizedParameter(arcOfCircle, 0.2));
+    Base::Vector3d p1(getPointAtNormalizedParameter(arcOfCircle, 0.5));
     Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
     Part::GeomLineSegment lineSegCut1;
     lineSegCut1.setPoints(p1, p2);
@@ -903,19 +886,13 @@ TEST_F(SketchObjectTest, testTrimArcOfCircleMid)
     Part::GeomArcOfCircle arcOfCircle;
     setupArcOfCircle(arcOfCircle);
     // TODO: create curves intersecting at the right spots
-    Base::Vector3d trimPoint(arcOfCircle.pointAtParameter(
-        arcOfCircle.getFirstParameter()
-        + (arcOfCircle.getLastParameter() - arcOfCircle.getFirstParameter()) * 0.5));
-    Base::Vector3d p1(arcOfCircle.pointAtParameter(
-        arcOfCircle.getFirstParameter()
-        + (arcOfCircle.getLastParameter() - arcOfCircle.getFirstParameter()) * 0.3));
+    Base::Vector3d trimPoint(getPointAtNormalizedParameter(arcOfCircle, 0.5));
+    Base::Vector3d p1(getPointAtNormalizedParameter(arcOfCircle, 0.3));
     Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
     Part::GeomLineSegment lineSegCut1;
     lineSegCut1.setPoints(p1, p2);
     getObject()->addGeometry(&lineSegCut1);
-    Base::Vector3d p3(arcOfCircle.pointAtParameter(
-        arcOfCircle.getFirstParameter()
-        + (arcOfCircle.getLastParameter() - arcOfCircle.getFirstParameter()) * 0.7));
+    Base::Vector3d p3(getPointAtNormalizedParameter(arcOfCircle, 0.7));
     Base::Vector3d p4(p3.x + 0.1, p3.y + 0.1, p3.z);
     // to ensure that this line clearly intersects the curve, not just have a point on object
     // without explicit constraint
@@ -949,12 +926,8 @@ TEST_F(SketchObjectTest, testTrimEllipseEnd)
     Part::GeomEllipse ellipse;
     setupEllipse(ellipse);
     // TODO: create curves intersecting at the right spots
-    Base::Vector3d trimPoint(ellipse.pointAtParameter(
-        ellipse.getFirstParameter()
-        + (ellipse.getLastParameter() - ellipse.getFirstParameter()) * 0.2));
-    Base::Vector3d p1(ellipse.pointAtParameter(
-        ellipse.getFirstParameter()
-        + (ellipse.getLastParameter() - ellipse.getFirstParameter()) * 0.5));
+    Base::Vector3d trimPoint(getPointAtNormalizedParameter(ellipse, 0.2));
+    Base::Vector3d p1(getPointAtNormalizedParameter(ellipse, 0.5));
     Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
     Part::GeomLineSegment lineSegCut1;
     lineSegCut1.setPoints(p1, p2);
@@ -981,19 +954,13 @@ TEST_F(SketchObjectTest, testTrimEllipseMid)
     Part::GeomEllipse ellipse;
     setupEllipse(ellipse);
     // TODO: create curves intersecting at the right spots
-    Base::Vector3d trimPoint(ellipse.pointAtParameter(
-        ellipse.getFirstParameter()
-        + (ellipse.getLastParameter() - ellipse.getFirstParameter()) * 0.5));
-    Base::Vector3d p1(ellipse.pointAtParameter(
-        ellipse.getFirstParameter()
-        + (ellipse.getLastParameter() - ellipse.getFirstParameter()) * 0.3));
+    Base::Vector3d trimPoint(getPointAtNormalizedParameter(ellipse, 0.5));
+    Base::Vector3d p1(getPointAtNormalizedParameter(ellipse, 0.3));
     Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
     Part::GeomLineSegment lineSegCut1;
     lineSegCut1.setPoints(p1, p2);
     getObject()->addGeometry(&lineSegCut1);
-    Base::Vector3d p3(ellipse.pointAtParameter(
-        ellipse.getFirstParameter()
-        + (ellipse.getLastParameter() - ellipse.getFirstParameter()) * 0.7));
+    Base::Vector3d p3(getPointAtNormalizedParameter(ellipse, 0.7));
     Base::Vector3d p4(p3.x + 0.1, p3.y + 0.1, p3.z);
     // to ensure that this line clearly intersects the curve, not just have a point on object
     // without explicit constraint
@@ -1035,12 +1002,8 @@ TEST_F(SketchObjectTest, testTrimPeriodicBSplineEnd)
     auto periodicBSpline = createTypicalPeriodicBSpline();
     assert(periodicBSpline);
     // TODO: create curves intersecting at the right spots
-    Base::Vector3d trimPoint(periodicBSpline->pointAtParameter(
-        periodicBSpline->getFirstParameter()
-        + (periodicBSpline->getLastParameter() - periodicBSpline->getFirstParameter()) * 0.2));
-    Base::Vector3d p1(periodicBSpline->pointAtParameter(
-        periodicBSpline->getFirstParameter()
-        + (periodicBSpline->getLastParameter() - periodicBSpline->getFirstParameter()) * 0.5));
+    Base::Vector3d trimPoint(getPointAtNormalizedParameter(*periodicBSpline, 0.2));
+    Base::Vector3d p1(getPointAtNormalizedParameter(*periodicBSpline, 0.5));
     Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
     Part::GeomLineSegment lineSegCut1;
     lineSegCut1.setPoints(p1, p2);
@@ -1065,19 +1028,13 @@ TEST_F(SketchObjectTest, testTrimPeriodicBSplineMid)
     auto periodicBSpline = createTypicalPeriodicBSpline();
     assert(periodicBSpline);
     // TODO: create curves intersecting at the right spots
-    Base::Vector3d trimPoint(periodicBSpline->pointAtParameter(
-        periodicBSpline->getFirstParameter()
-        + (periodicBSpline->getLastParameter() - periodicBSpline->getFirstParameter()) * 0.5));
-    Base::Vector3d p1(periodicBSpline->pointAtParameter(
-        periodicBSpline->getFirstParameter()
-        + (periodicBSpline->getLastParameter() - periodicBSpline->getFirstParameter()) * 0.3));
+    Base::Vector3d trimPoint(getPointAtNormalizedParameter(*periodicBSpline, 0.5));
+    Base::Vector3d p1(getPointAtNormalizedParameter(*periodicBSpline, 0.3));
     Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
     Part::GeomLineSegment lineSegCut1;
     lineSegCut1.setPoints(p1, p2);
     getObject()->addGeometry(&lineSegCut1);
-    Base::Vector3d p3(periodicBSpline->pointAtParameter(
-        periodicBSpline->getFirstParameter()
-        + (periodicBSpline->getLastParameter() - periodicBSpline->getFirstParameter()) * 0.7));
+    Base::Vector3d p3(getPointAtNormalizedParameter(*periodicBSpline, 0.7));
     Base::Vector3d p4(p3.x + 0.1, p3.y + 0.1, p3.z);
     // to ensure that this line clearly intersects the curve, not just have a point on object
     // without explicit constraint
@@ -1117,14 +1074,8 @@ TEST_F(SketchObjectTest, testTrimNonPeriodicBSplineEnd)
     auto nonPeriodicBSpline = createTypicalNonPeriodicBSpline();
     assert(nonPeriodicBSpline);
     // create curves intersecting at the right spots
-    Base::Vector3d trimPoint(nonPeriodicBSpline->pointAtParameter(
-        nonPeriodicBSpline->getFirstParameter()
-        + (nonPeriodicBSpline->getLastParameter() - nonPeriodicBSpline->getFirstParameter())
-            * 0.2));
-    Base::Vector3d p1(nonPeriodicBSpline->pointAtParameter(
-        nonPeriodicBSpline->getFirstParameter()
-        + (nonPeriodicBSpline->getLastParameter() - nonPeriodicBSpline->getFirstParameter())
-            * 0.5));
+    Base::Vector3d trimPoint(getPointAtNormalizedParameter(*nonPeriodicBSpline, 0.2));
+    Base::Vector3d p1(getPointAtNormalizedParameter(*nonPeriodicBSpline, 0.5));
     Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
     Part::GeomLineSegment lineSegCut1;
     lineSegCut1.setPoints(p1, p2);
@@ -1153,22 +1104,13 @@ TEST_F(SketchObjectTest, testTrimNonPeriodicBSplineMid)
     auto nonPeriodicBSpline = createTypicalNonPeriodicBSpline();
     assert(nonPeriodicBSpline);
     // TODO: create curves intersecting at the right spots
-    Base::Vector3d trimPoint(nonPeriodicBSpline->pointAtParameter(
-        nonPeriodicBSpline->getFirstParameter()
-        + (nonPeriodicBSpline->getLastParameter() - nonPeriodicBSpline->getFirstParameter())
-            * 0.5));
-    Base::Vector3d p1(nonPeriodicBSpline->pointAtParameter(
-        nonPeriodicBSpline->getFirstParameter()
-        + (nonPeriodicBSpline->getLastParameter() - nonPeriodicBSpline->getFirstParameter())
-            * 0.3));
+    Base::Vector3d trimPoint(getPointAtNormalizedParameter(*nonPeriodicBSpline, 0.5));
+    Base::Vector3d p1(getPointAtNormalizedParameter(*nonPeriodicBSpline, 0.3));
     Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
     Part::GeomLineSegment lineSegCut1;
     lineSegCut1.setPoints(p1, p2);
     getObject()->addGeometry(&lineSegCut1);
-    Base::Vector3d p3(nonPeriodicBSpline->pointAtParameter(
-        nonPeriodicBSpline->getFirstParameter()
-        + (nonPeriodicBSpline->getLastParameter() - nonPeriodicBSpline->getFirstParameter())
-            * 0.7));
+    Base::Vector3d p3(getPointAtNormalizedParameter(*nonPeriodicBSpline, 0.7));
     Base::Vector3d p4(p3.x + 0.1, p3.y + 0.1, p3.z);
     // to ensure that this line clearly intersects the curve, not just have a point on object
     // without explicit constraint
