@@ -181,6 +181,8 @@ PyMOD_INIT_FUNC(Fem)
     Fem::FemSolverObjectPython                ::init();
 
 #ifdef FC_USE_VTK
+    Fem::FemPostSmoothFilterExtension         ::init();
+
     Fem::FemPostObject                        ::init();
     Fem::FemPostPipeline                      ::init();
     Fem::FemPostFilter                        ::init();
