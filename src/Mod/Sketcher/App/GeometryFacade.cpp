@@ -68,18 +68,6 @@ std::unique_ptr<GeometryFacade> GeometryFacade::getFacade(const Part::Geometry* 
     // return std::make_unique<GeometryFacade>(geometry);
 }
 
-// std::unique_ptr<const GeometryFacade> GeometryFacade::getFacade(const Part::Geometry* geometry)
-// {
-//     if (geometry) {
-//         return std::unique_ptr<const GeometryFacade>(new GeometryFacade(geometry));
-//     }
-//     else {
-//         return std::unique_ptr<const GeometryFacade>(nullptr);
-//     }
-//     // make_unique has no access to private constructor
-//     // return std::make_unique<const GeometryFacade>(geometry);
-// }
-
 void GeometryFacade::setGeometry(Part::Geometry* geometry)
 {
     Geo = geometry;

@@ -120,7 +120,6 @@ protected:
 public:  // Factory methods
     static std::unique_ptr<GeometryFacade> getFacade(const Part::Geometry* geometry,
                                                      bool owner = false);
-    // static std::unique_ptr<const GeometryFacade> getFacade(const Part::Geometry* geometry);
 
 public:  // Utility methods
     static void ensureSketchGeometryExtension(Part::Geometry* geometry);
