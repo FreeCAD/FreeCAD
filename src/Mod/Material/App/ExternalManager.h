@@ -32,21 +32,30 @@ class QMutex;
 namespace Materials
 {
 
-class MaterialsExport ExternalManager //:ParameterGrp::ObserverType
+class MaterialsExport ExternalManager
 {
 public:
 
     static ExternalManager* getManager();
+
+    std::shared_ptr<std::vector<std::tuple<QString, QString, bool>>> libraries();
 
 private:
     ExternalManager();
     ~ExternalManager();
 
     static void initManager();
+    void getConfiguration();
     void instantiate();
 
     static ExternalManager* _manager;
     static QMutex _mutex;
+
+    // COnfiguration
+    ParameterGrp::handle _hGrp;
+    std::string _moduleName;
+    std::string _className;
+    bool _instantiated;
 
     Py::Object _managerObject;
 };

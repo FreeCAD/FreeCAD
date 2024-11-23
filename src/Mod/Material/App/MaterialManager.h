@@ -46,6 +46,7 @@ class Material;
 
 namespace Materials
 {
+class MaterialManagerExternal;
 class MaterialManagerLocal;
 
 class MaterialsExport MaterialManager: public Base::BaseClass, ParameterGrp::ObserverType
@@ -133,6 +134,7 @@ public:
 private:
     void initManagers();
 
+    static std::unique_ptr<MaterialManagerExternal> _externalManager;
     static std::unique_ptr<MaterialManagerLocal> _localManager;
     static QMutex _mutex;
 

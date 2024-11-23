@@ -35,6 +35,7 @@
 #include "MaterialConfigLoader.h"
 #include "MaterialLoader.h"
 #include "MaterialManager.h"
+#include "MaterialManagerExternal.h"
 #include "MaterialManagerLocal.h"
 #include "ModelManager.h"
 #include "ModelUuids.h"
@@ -44,6 +45,7 @@ using namespace Materials;
 
 /* TRANSLATOR Material::Materials */
 
+std::unique_ptr<MaterialManagerExternal> MaterialManager::_externalManager;
 std::unique_ptr<MaterialManagerLocal> MaterialManager::_localManager;
 QMutex MaterialManager::_mutex;
 
@@ -70,6 +72,10 @@ void MaterialManager::initManagers()
 
     if (!_localManager) {
         _localManager = std::make_unique<MaterialManagerLocal>();
+    }
+
+    if (!_externalManager) {
+        _externalManager = std::make_unique<MaterialManagerExternal>();
     }
 }
 
@@ -169,6 +175,7 @@ QString MaterialManager::defaultMaterialUUID()
 
 std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> MaterialManager::getLibraries()
 {
+    // _externalManager->getLibraries();
     return _localManager->getLibraries();
 }
 
