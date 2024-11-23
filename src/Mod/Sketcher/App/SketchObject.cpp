@@ -1401,10 +1401,16 @@ Base::Vector3d SketchObject::getPointForGeometry<>(const Part::GeomPoint *geomPo
 template <>
 Base::Vector3d SketchObject::getPointForGeometry<>(const Part::GeomLineSegment *lineSeg, PointPos PosId)
 {
-    if (PosId == PointPos::start)
+    switch (PosId) {
+    case PointPos::start: {
         return lineSeg->getStartPoint();
-    else if (PosId == PointPos::end)
+    }
+    case PointPos::end: {
         return lineSeg->getEndPoint();
+    }
+    default:
+        break;
+    }
     return Base::Vector3d();
 }
 
@@ -1429,58 +1435,92 @@ Base::Vector3d SketchObject::getPointForGeometry<>(const Part::GeomEllipse *elli
 template <>
 Base::Vector3d SketchObject::getPointForGeometry<>(const Part::GeomArcOfCircle *aoc, PointPos PosId)
 {
-    if (PosId == PointPos::start)
+    switch (PosId) {
+    case PointPos::start: {
         return aoc->getStartPoint(/*emulateCCW=*/true);
-    else if (PosId == PointPos::end)
+    }
+    case PointPos::end: {
         return aoc->getEndPoint(/*emulateCCW=*/true);
-    else if (PosId == PointPos::mid)
+    }
+    case PointPos::mid: {
         return aoc->getCenter();
+    }
+    default:
+        break;
+    }
     return Base::Vector3d();
 }
 
 template <>
 Base::Vector3d SketchObject::getPointForGeometry<>(const Part::GeomArcOfEllipse *aoe, PointPos PosId)
 {
-    if (PosId == PointPos::start)
+    switch (PosId) {
+    case PointPos::start: {
         return aoe->getStartPoint(/*emulateCCW=*/true);
-    else if (PosId == PointPos::end)
+    }
+    case PointPos::end: {
         return aoe->getEndPoint(/*emulateCCW=*/true);
-    else if (PosId == PointPos::mid)
+    }
+    case PointPos::mid: {
         return aoe->getCenter();
+    }
+    default:
+        break;
+    }
     return Base::Vector3d();
 }
 
 template <>
 Base::Vector3d SketchObject::getPointForGeometry<>(const Part::GeomArcOfHyperbola *aoh, PointPos PosId)
 {
-    if (PosId == PointPos::start)
+    switch (PosId) {
+    case PointPos::start: {
         return aoh->getStartPoint();
-    else if (PosId == PointPos::end)
+    }
+    case PointPos::end: {
         return aoh->getEndPoint();
-    else if (PosId == PointPos::mid)
+    }
+    case PointPos::mid: {
         return aoh->getCenter();
+    }
+    default:
+        break;
+    }
     return Base::Vector3d();
 }
 
 template <>
 Base::Vector3d SketchObject::getPointForGeometry<>(const Part::GeomArcOfParabola *aop, PointPos PosId)
 {
-    if (PosId == PointPos::start)
+    switch (PosId) {
+    case PointPos::start: {
         return aop->getStartPoint();
-    else if (PosId == PointPos::end)
+    }
+    case PointPos::end: {
         return aop->getEndPoint();
-    else if (PosId == PointPos::mid)
+    }
+    case PointPos::mid: {
         return aop->getCenter();
+    }
+    default:
+        break;
+    }
     return Base::Vector3d();
 }
 
 template <>
 Base::Vector3d SketchObject::getPointForGeometry<>(const Part::GeomBSplineCurve *bsp, PointPos PosId)
 {
-    if (PosId == PointPos::start)
+    switch (PosId) {
+    case PointPos::start: {
         return bsp->getStartPoint();
-    else if (PosId == PointPos::end)
+    }
+    case PointPos::end: {
         return bsp->getEndPoint();
+    }
+    default:
+        break;
+    }
     return Base::Vector3d();
 }
 
