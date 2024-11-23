@@ -76,7 +76,8 @@ TaskMeasure::TaskMeasure()
     mAutoSave = settings.value(QLatin1String(taskMeasureAutoSaveSettingsName), mAutoSave).toBool();
     if (settings.value(QLatin1String(taskMeasureGreedySelection), false).toBool()) {
         Gui::Selection().setSelectionStyle(SelectionStyle::GreedySelection);
-    } else {
+    }
+    else {
         Gui::Selection().setSelectionStyle(SelectionStyle::NormalSelection);
     }
 
@@ -89,14 +90,20 @@ TaskMeasure::TaskMeasure()
     autoSaveAction->setCheckable(true);
     autoSaveAction->setChecked(mAutoSave);
     autoSaveAction->setToolTip(tr("Auto saving of the last measurement when starting a new "
-                                    "measurement. Use SHIFT to temporarly invert the behaviour."));
+                                  "measurement. Use SHIFT to temporarly invert the behaviour."));
     connect(autoSaveAction, &QAction::triggered, this, &TaskMeasure::autoSaveChanged);
 
     newMeasurementBehaviourAction = new QAction(tr("CTRL to add object to measurement"));
     newMeasurementBehaviourAction->setCheckable(true);
-    newMeasurementBehaviourAction->setChecked(Gui::Selection().getSelectionStyle() == SelectionStyle::NormalSelection);
-    newMeasurementBehaviourAction->setToolTip(tr("If checked CTRL must be pressed to initiate a new measurement, otherwise CTRL pressed adds a selected object to the current measurement"));
-    connect(newMeasurementBehaviourAction, &QAction::triggered, this, &TaskMeasure::newMeasurementBehaviourChanged);
+    newMeasurementBehaviourAction->setChecked(Gui::Selection().getSelectionStyle()
+                                              == SelectionStyle::NormalSelection);
+    newMeasurementBehaviourAction->setToolTip(
+        tr("If checked CTRL must be pressed to initiate a new measurement, otherwise CTRL pressed "
+           "adds a selected object to the current measurement"));
+    connect(newMeasurementBehaviourAction,
+            &QAction::triggered,
+            this,
+            &TaskMeasure::newMeasurementBehaviourChanged);
 
     mSettings = new QToolButton();
     mSettings->setToolTip(tr("Settings"));
@@ -137,7 +144,7 @@ TaskMeasure::TaskMeasure()
     formLayout->setFormAlignment(Qt::AlignCenter);
 
     auto* settingsLayout = new QHBoxLayout();
-    settingsLayout->addItem(new QSpacerItem(0,0, QSizePolicy::Expanding));
+    settingsLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding));
     settingsLayout->addWidget(mSettings);
     formLayout->addRow(QStringLiteral(), settingsLayout);
     formLayout->addRow(tr("Mode:"), modeSwitch);
@@ -464,10 +471,8 @@ void TaskMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
     const bool shift = (modifier & Qt::ShiftModifier) > 0;
     // shift inverts the current state temporarly
     const auto autosave = (mAutoSave && !shift) || (!mAutoSave && shift);
-    if ((!ctrl
-         && Selection().getSelectionStyle() == SelectionStyle::NormalSelection)
-        || (ctrl
-            && Selection().getSelectionStyle() == SelectionStyle::GreedySelection)) {
+    if ((!ctrl && Selection().getSelectionStyle() == SelectionStyle::NormalSelection)
+        || (ctrl && Selection().getSelectionStyle() == SelectionStyle::GreedySelection)) {
         if (autosave && this->buttonBox->button(QDialogButtonBox::Apply)->isEnabled()) {
             apply(false);
         }
@@ -537,13 +542,15 @@ void TaskMeasure::autoSaveChanged(bool checked)
     settings.setValue(QLatin1String(taskMeasureAutoSaveSettingsName), mAutoSave);
 }
 
-void TaskMeasure::newMeasurementBehaviourChanged(bool checked) {
+void TaskMeasure::newMeasurementBehaviourChanged(bool checked)
+{
     QSettings settings;
     settings.beginGroup(QLatin1String(taskMeasureSettingsGroup));
     if (checked) {
         Gui::Selection().setSelectionStyle(SelectionStyle::NormalSelection);
         settings.setValue(QLatin1String(taskMeasureGreedySelection), false);
-    } else {
+    }
+    else {
         Gui::Selection().setSelectionStyle(SelectionStyle::GreedySelection);
         settings.setValue(QLatin1String(taskMeasureGreedySelection), true);
     }
