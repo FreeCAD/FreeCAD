@@ -226,45 +226,71 @@ std::vector<Base::Vector3d> DrawLeaderLine::horizLastSegment(const std::vector<B
 }
 
 
+//! returns the waypoints with scale, rotation and horizontal last applied.
+std::vector<Base::Vector3d> DrawLeaderLine::getTransformedWayPoints() const
+{
+    auto doScale = Scalable.getValue();
+    auto doRotate = RotatesWithParent.getValue();
+    auto vPoints =  getScaledAndRotatedPoints(doScale, doRotate);
+    if (AutoHorizontal.getValue()) {
+        vPoints = DrawLeaderLine::horizLastSegment(vPoints, getBaseView()->Rotation.getValue());
+    }
+
+    return vPoints;
+}
+
 //! returns the mid point of last segment.  used by leader decorators like weld symbol.
 //! the returned point is unscaled and unrotated.
 Base::Vector3d DrawLeaderLine::getTileOrigin() const
 {
-    std::vector<Base::Vector3d> wp = WayPoints.getValues();
+    std::vector<Base::Vector3d> wp = getTransformedWayPoints();
     if (wp.size() > 1) {
         Base::Vector3d last = wp.rbegin()[0];
         Base::Vector3d second = wp.rbegin()[1];
-        return (last + second) / 2.0;
+        return (last + second) / 2;
     }
 
-    Base::Console().Warning("DLL::getTileOrigin - no waypoints\n");
     return Base::Vector3d();
 }
 
 //! returns start of last line segment
 Base::Vector3d DrawLeaderLine::getKinkPoint() const
 {
-    std::vector<Base::Vector3d> wp = WayPoints.getValues();
+    std::vector<Base::Vector3d> wp = getTransformedWayPoints();
     if (wp.size() > 1) {
         return wp.rbegin()[1];  // second point from end
     }
 
-    Base::Console().Warning("DLL::getKinkPoint - no waypoints\n");
     return Base::Vector3d();
 }
 
 //end of last line segment
 Base::Vector3d DrawLeaderLine::getTailPoint() const
 {
-    std::vector<Base::Vector3d> wp = WayPoints.getValues();
+    std::vector<Base::Vector3d> wp = getTransformedWayPoints();
     if (!wp.empty()) {
         return wp.rbegin()[0];  // Last
     }
 
-    Base::Console().Warning("DLL::getTailPoint - no waypoints\n");
     return Base::Vector3d();
 }
 
+//! returns the (transformed) direction of the last segment of the leader line
+Base::Vector3d DrawLeaderLine::lastSegmentDirection() const
+{
+    std::vector<Base::Vector3d> wp = getTransformedWayPoints();
+    if (wp.empty()) {
+        return Base::Vector3d(1,0,0);
+    }
+    // this direction is in conventional coords? Y+ up?
+    // vertical segment will be small negative Y - large negative Y  -> a positive Y but we want a negative Y
+    auto tailPoint = DU::invertY(wp.rbegin()[0]);
+    auto kinkPoint = DU::invertY(wp.rbegin()[1]);
+    auto direction = kinkPoint - tailPoint;  // from kink to tail
+    direction = DU::invertY(direction);
+    direction.Normalize();
+    return direction;
+}
 
 //! create a new leader feature from parameters.  Used by python method makeLeader.
 //! pagePoints are in mm from bottom left of page.
