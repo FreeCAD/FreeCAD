@@ -131,6 +131,8 @@ public:
     Base::Placement getPlacement() const;
     void showDefaultButtons(bool);
 
+    bool eventFilter(QObject *, QEvent *ev);
+
 protected:
     void changeEvent(QEvent *e) override;
     void keyPressEvent(QKeyEvent*) override;
@@ -153,6 +155,7 @@ private:
     void setupSignalMapper();
     void setupRotationMethod();
     void bindProperty(const App::DocumentObject* obj, const std::string& propertyName);
+    void setupEventFilter();
 
     bool onApply();
     void setPlacementData(const Base::Placement&);
