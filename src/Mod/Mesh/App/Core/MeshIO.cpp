@@ -108,6 +108,12 @@ struct QUAD
     int iV[4];
 };
 
+// This is a workaround for the issue described at:
+// https://github.com/Zipios/Zipios/issues/43#issue-1618151314
+//
+// The workaround creates a tmp. ZIP file and uses the Python API
+// to open the file zipios++ isn't able to handle and to copy over
+// the files.
 class ZipFixer
 {
 public:
