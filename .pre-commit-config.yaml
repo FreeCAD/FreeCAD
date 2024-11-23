@@ -54,7 +54,7 @@ exclude: |
     )
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: 2c9f875913ee60ca25ce70243dc24d5b6415598c # frozen: v4.6.0
+    rev: cef0300fd0fc4d2a87a85fa2093c6b283ea36f4b # frozen: v5.0.0
     hooks:
     -   id: trailing-whitespace
     -   id: end-of-file-fixer
@@ -62,7 +62,7 @@ repos:
     -   id: check-added-large-files
     -   id: mixed-line-ending
 -   repo: https://github.com/psf/black
-    rev: b965c2a5026f8ba399283ba3e01898b012853c79 # frozen: 24.8.0
+    rev: 1b2427a2b785cc4aac97c19bb4b9a0de063f9547 # frozen: 24.10.0
     hooks:
         -   id: black
             args: ['--line-length', '100']
