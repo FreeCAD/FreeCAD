@@ -136,10 +136,10 @@ TaskMeasure::TaskMeasure()
     // formLayout->setFieldGrowthPolicy(QFormLayout::FieldGrowthPolicy::ExpandingFieldsGrow);
     formLayout->setFormAlignment(Qt::AlignCenter);
 
-    QHBoxLayout* l = new QHBoxLayout();
-    l->addItem(new QSpacerItem(0,0, QSizePolicy::Expanding));
-    l->addWidget(mSettings);
-    formLayout->addRow(QStringLiteral(), l);
+    auto* settingsLayout = new QHBoxLayout();
+    settingsLayout->addItem(new QSpacerItem(0,0, QSizePolicy::Expanding));
+    settingsLayout->addWidget(mSettings);
+    formLayout->addRow(QStringLiteral(), settingsLayout);
     formLayout->addRow(tr("Mode:"), modeSwitch);
     formLayout->addRow(showDeltaLabel, showDelta);
     formLayout->addRow(tr("Result:"), valueResult);
@@ -460,8 +460,8 @@ void TaskMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
     // the old measurement will be saved otherwise discharded. Shift inverts the autosave behaviour
     // temporarly
     const auto modifier = QGuiApplication::keyboardModifiers();
-    const bool ctrl = modifier & Qt::ControlModifier;
-    const bool shift = modifier & Qt::ShiftModifier;
+    const bool ctrl = (modifier & Qt::ControlModifier) > 0;
+    const bool shift = (modifier & Qt::ShiftModifier) > 0;
     // shift inverts the current state temporarly
     const auto autosave = (mAutoSave && !shift) || (!mAutoSave && shift);
     if ((!ctrl

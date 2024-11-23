@@ -41,8 +41,6 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
 
-class QGroupBox;
-
 namespace Gui
 {
 
