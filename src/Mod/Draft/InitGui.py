@@ -170,7 +170,7 @@ class DraftWorkbench(FreeCADGui.Workbench):
             # Delay required in case the Draft WB is preloaded,
             # else show_draft_statusbar will not yet be done:
             t = QtCore.QTimer()
-            t.singleShot(500, init_draft_statusbar.hide_draft_statusbar)
+            t.singleShot(700, init_draft_statusbar.hide_draft_statusbar)
         import WorkingPlane
         WorkingPlane._view_observer_stop()
         from draftutils import grid_observer
