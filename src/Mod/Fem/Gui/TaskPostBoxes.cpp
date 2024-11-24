@@ -59,6 +59,8 @@
 #include "ui_TaskPostDisplay.h"
 #include "ui_TaskPostScalarClip.h"
 #include "ui_TaskPostWarpVector.h"
+#include "ui_TaskPostFrames.h"
+
 
 #include "FemSettings.h"
 #include "TaskPostBoxes.h"
@@ -471,6 +473,66 @@ void TaskPostFunction::applyPythonCode()
 {
     // we apply the views widgets python code
 }
+
+
+// ***************************************************************************
+// Frames
+TaskPostFrames::TaskPostFrames(ViewProviderFemPostObject* view, QWidget* parent)
+    : TaskPostBox(view,
+                  Gui::BitmapFactory().pixmap("FEM_PostFrames"),
+                  tr("Result Frames"),
+                  parent), ui(new Ui_TaskPostFrames)
+{
+    // we load the views widget
+    proxy = new QWidget(this);
+    ui->setupUi(proxy);
+    this->groupLayout()->addWidget(proxy);
+    setupConnections();
+
+    // populate the data
+    auto pipeline = static_cast<Fem::FemPostPipeline*>(getObject());
+    ui->Type->setText(QString::fromStdString(pipeline->getFrameType()));
+
+    auto unit = pipeline->getFrameUnit();
+    auto steps = pipeline->getFrameValues();
+    for (unsigned long i=0; i<steps.size(); i++) {
+        QTableWidgetItem *idx = new QTableWidgetItem(QString::number(i));
+        QTableWidgetItem *value = new QTableWidgetItem(Base::Quantity(steps[i], unit).getUserString());
+
+        int rowIdx = ui->FrameTable->rowCount();
+        ui->FrameTable->insertRow (rowIdx);
+        ui->FrameTable->setItem(rowIdx, 0, idx);
+        ui->FrameTable->setItem(rowIdx, 1, value);
+    }
+    ui->FrameTable->selectRow(pipeline->Frame.getValue());
+}
+
+TaskPostFrames::~TaskPostFrames() = default;
+
+void TaskPostFrames::setupConnections()
+{
+    connect(ui->FrameTable,
+            qOverload<>(&QTableWidget::itemSelectionChanged),
+            this,
+            &TaskPostFrames::onSelectionChanged);
+}
+
+void TaskPostFrames::onSelectionChanged()
+{
+    auto selection = ui->FrameTable->selectedItems();
+    if (selection.count() > 0) {
+        static_cast<Fem::FemPostPipeline*>(getObject())->Frame.setValue(selection.front()->row());
+        recompute();
+    }
+}
+
+
+
+void TaskPostFrames::applyPythonCode()
+{
+    // we apply the views widgets python code
+}
+
 
 
 // ***************************************************************************

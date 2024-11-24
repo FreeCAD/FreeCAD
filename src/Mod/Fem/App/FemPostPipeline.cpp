@@ -36,9 +36,17 @@
 #include <vtkXMLRectilinearGridReader.h>
 #include <vtkXMLStructuredGridReader.h>
 #include <vtkXMLUnstructuredGridReader.h>
+#include <vtkXMLMultiBlockDataReader.h>
+#include <vtkMultiBlockDataSet.h>
+#include <vtkStreamingDemandDrivenPipeline.h>
+#include <vtkPointData.h>
+#include <vtkFloatArray.h>
+#include <vtkStringArray.h>
 #endif
 
 #include <Base/Console.h>
+#include <cmath>
+#include <QString>
 
 #include "FemMesh.h"
 #include "FemMeshObject.h"
@@ -51,54 +59,201 @@
 using namespace Fem;
 using namespace App;
 
-PROPERTY_SOURCE(Fem::FemPostPipeline, Fem::FemPostObject)
-const char* FemPostPipeline::ModeEnums[] = {"Serial", "Parallel", "Custom", nullptr};
 
-FemPostPipeline::FemPostPipeline()
+vtkStandardNewMacro(FemFrameSourceAlgorithm);
+
+FemFrameSourceAlgorithm::FemFrameSourceAlgorithm::FemFrameSourceAlgorithm()
 {
-    ADD_PROPERTY_TYPE(Filter,
-                      (nullptr),
-                      "Pipeline",
-                      App::Prop_None,
-                      "The filter used in this pipeline");
+    // we are a source
+    SetNumberOfInputPorts(0);
+    SetNumberOfOutputPorts(1);
+}
+
+
+FemFrameSourceAlgorithm::FemFrameSourceAlgorithm::~FemFrameSourceAlgorithm()
+{
+}
+
+void FemFrameSourceAlgorithm::setDataObject(vtkSmartPointer<vtkDataObject> data ) {
+    m_data = data;
+    Update();
+}
+
+
+std::vector<double> FemFrameSourceAlgorithm::getFrameValues()
+{
+
+    // check if we have frame data
+    if (!m_data || !m_data->IsA("vtkMultiBlockDataSet")) {
+        return std::vector<double>();
+    }
+
+    // we have multiple frames! let's check the amount and times
+    vtkSmartPointer<vtkMultiBlockDataSet> multiblock = vtkMultiBlockDataSet::SafeDownCast(m_data);
+
+    unsigned long nblocks = multiblock->GetNumberOfBlocks();
+    std::vector<double> tFrames(nblocks);
+
+    for (unsigned long i=0; i<nblocks; i++) {
+
+        vtkDataObject* block = multiblock->GetBlock(i);
+        // check if the TimeValue field is available
+        if (!block->GetFieldData()->HasArray("TimeValue")) {
+            break;
+        }
+
+        //store the time value!
+        vtkDataArray* TimeValue = block->GetFieldData()->GetArray("TimeValue");
+        if (!TimeValue->IsA("vtkFloatArray") ||
+            TimeValue->GetNumberOfTuples() < 1) {
+            break;
+        }
+
+        tFrames[i] = vtkFloatArray::SafeDownCast(TimeValue)->GetValue(0);
+    }
+
+    if (tFrames.size() != nblocks) {
+        // not every block had time data
+        return std::vector<double>();
+    }
+
+    return tFrames;
+}
+
+int FemFrameSourceAlgorithm::RequestInformation(vtkInformation*reqInfo, vtkInformationVector **inVector, vtkInformationVector* outVector)
+{
+
+    if (!this->Superclass::RequestInformation(reqInfo, inVector, outVector))
+    {
+        return 0;
+    }
+
+
+    std::stringstream strm;
+    outVector->Print(strm);
+
+    std::vector<double> frames = getFrameValues();
+
+    if (frames.empty()) {
+        return 1;
+    }
+
+    double tRange[2] = {frames.front(), frames.back()};
+    double tFrames[frames.size()];
+    std::copy(frames.begin(), frames.end(), tFrames);
+
+    // finally set the time info!
+    vtkInformation* info = outVector->GetInformationObject(0);
+    info->Set(vtkStreamingDemandDrivenPipeline::TIME_RANGE(), tRange, 2);
+    info->Set(vtkStreamingDemandDrivenPipeline::TIME_STEPS(), tFrames, frames.size());
+    info->Set(CAN_HANDLE_PIECE_REQUEST(), 1);
+
+    return 1;
+}
+
+int FemFrameSourceAlgorithm::RequestData(vtkInformation* reqInfo, vtkInformationVector** inVector, vtkInformationVector* outVector)
+{
+
+    std::stringstream strstm;
+    outVector->Print(strstm);
+
+    vtkInformation* outInfo = outVector->GetInformationObject(0);
+    vtkUnstructuredGrid* output = vtkUnstructuredGrid::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
+
+    if (!output || !m_data) {
+        return 0;
+    }
+
+    if (!m_data->IsA("vtkMultiBlockDataSet")) {
+        // no multi frame data, return directly
+        outInfo->Set(vtkDataObject::DATA_OBJECT(), m_data);
+        return 1;
+    }
+
+    vtkSmartPointer<vtkMultiBlockDataSet> multiblock = vtkMultiBlockDataSet::SafeDownCast(m_data);
+    // find the block asked for (lazy implementation)
+    unsigned long idx = 0;
+    if (outInfo->Has(vtkStreamingDemandDrivenPipeline::UPDATE_TIME_STEP()))
+    {
+        auto time = outInfo->Get(vtkStreamingDemandDrivenPipeline::UPDATE_TIME_STEP());
+        auto frames = getFrameValues();
+
+        // we have float values, so be aware of roundign erros. lets subtract the searched time and then use the smalles value
+        for(auto& frame : frames)
+            frame = std::abs(frame-time);
+
+        auto it = std::min_element(std::begin(frames), std::end(frames));
+        idx = std::distance(std::begin(frames), it);
+    }
+
+    auto block = multiblock->GetBlock(idx);
+    output->ShallowCopy(block);
+    return 1;
+}
+
+
+
+PROPERTY_SOURCE(Fem::FemPostPipeline, Fem::FemPostObject)
+const char* FemPostPipeline::ModeEnums[] = {"Serial", "Parallel", nullptr};
+
+FemPostPipeline::FemPostPipeline() : Fem::FemPostObject(), App::GroupExtension()
+{
+    GroupExtension::initExtension(this);
+
     ADD_PROPERTY_TYPE(Functions,
                       (nullptr),
                       "Pipeline",
                       App::Prop_Hidden,
                       "The function provider which groups all pipeline functions");
     ADD_PROPERTY_TYPE(Mode,
-                      (long(2)),
+                      (long(0)),
                       "Pipeline",
                       App::Prop_None,
                       "Selects the pipeline data transition mode.\n"
                       "In serial, every filter gets the output of the previous one as input.\n"
-                      "In parallel, every filter gets the pipeline source as input.\n"
-                      "In custom, every filter keeps its input set by the user.");
+                      "In parallel, every filter gets the pipeline source as input.\n");
+    ADD_PROPERTY_TYPE(Frame,
+                      (long(0)),
+                      "Pipeline",
+                      App::Prop_None,
+                      "The frame used to calculate the data in the pipeline processing (read only, set via pipeline object).");
+
     Mode.setEnums(ModeEnums);
+
+    // create our source algorithm
+    m_source_algorithm = vtkSmartPointer<FemFrameSourceAlgorithm>::New();
 }
 
 FemPostPipeline::~FemPostPipeline() = default;
 
 short FemPostPipeline::mustExecute() const
 {
-    if (Mode.isTouched()) {
+    if (Mode.isTouched() ) {
         return 1;
     }
 
     return FemPostObject::mustExecute();
 }
 
-DocumentObjectExecReturn* FemPostPipeline::execute()
-{
-    return Fem::FemPostObject::execute();
-}
+vtkDataSet* FemPostPipeline::getDataSet() {
 
+    vtkDataObject* data = m_source_algorithm->GetOutputDataObject(0);
+    if (!data) {
+        return nullptr;
+    }
+
+    if (data->IsA("vtkDataSet")) {
+        return vtkDataSet::SafeDownCast(data);
+    }
+
+    return nullptr;
+}
 
 bool FemPostPipeline::canRead(Base::FileInfo File)
 {
 
     // from FemResult only unstructural mesh is supported in femvtktoools.cpp
-    return File.hasExtension({"vtk", "vtp", "vts", "vtr", "vti", "vtu", "pvtu"});
+    return File.hasExtension({"vtk", "vtp", "vts", "vtr", "vti", "vtu", "pvtu", "vtm"});
 }
 
 void FemPostPipeline::read(Base::FileInfo File)
@@ -130,6 +285,9 @@ void FemPostPipeline::read(Base::FileInfo File)
     else if (File.hasExtension("vtk")) {
         readXMLFile<vtkDataSetReader>(File.filePath());
     }
+    else if (File.hasExtension("vtm")) {
+        readXMLFile<vtkXMLMultiBlockDataReader>(File.filePath());
+    }
     else {
         throw Base::FileException("Unknown extension");
     }
@@ -138,85 +296,259 @@ void FemPostPipeline::read(Base::FileInfo File)
 void FemPostPipeline::scale(double s)
 {
     Data.scale(s);
+    onChanged(&Data);
 }
 
 void FemPostPipeline::onChanged(const Property* prop)
 {
-    if (prop == &Filter || prop == &Mode) {
+   /* onChanged handles the Pipeline setup: we connect the inputs and outputs
+     * of our child filters correctly according to the new settings
+     */
 
-        // if we are in custom mode the user is free to set the input
-        // thus nothing needs to be done here
-        if (Mode.getValue() == 2) {  // custom
-            return;
+
+    // use the correct data as source
+    if (prop == &Data) {
+        m_source_algorithm->setDataObject(Data.getValue());
+
+        // change the frame enum to correct values
+        std::string val;
+        if (Frame.hasEnums() && Frame.getValue() >= 0) {
+            val = Frame.getValueAsString();
         }
 
+        std::vector<double> frames = m_source_algorithm->getFrameValues();
+        std::vector<std::string> frame_values;
+        if (frames.empty()) {
+            frame_values.push_back("No frames available");
+        }
+        else {
+            auto unit = getFrameUnit();
+            for (const double& frame : frames) {
+                auto quantity = Base::Quantity(frame, unit);
+                frame_values.push_back(quantity.getUserString().toStdString());
+            }
+        }
+
+        App::Enumeration empty;
+        Frame.setValue(empty);
+        m_frameEnum.setEnums(frame_values);
+        Frame.setValue(m_frameEnum);
+
+        std::vector<std::string>::iterator it = std::find(frame_values.begin(), frame_values.end(), val);
+        if (!val.empty() && it != frame_values.end()) {
+            Frame.setValue(val.c_str());
+        }
+
+        Frame.purgeTouched();
+        recomputeChildren();
+    }
+
+    if (prop == &Frame) {
+
+        // update the algorithm for the visulization
+        auto frames = getFrameValues();
+        if (!frames.empty() &&
+            Frame.getValue() < long(frames.size())) {
+
+            double time = frames[Frame.getValue()];
+            m_source_algorithm->UpdateTimeStep(time);
+        }
+
+        // inform the downstream pipeline
+        recomputeChildren();
+    }
+
+
+    // connect all filters correctly to the source
+    if (prop == &Group || prop == &Mode) {
+
         // we check if all connections are right and add new ones if needed
-        std::vector<App::DocumentObject*> objs = Filter.getValues();
+        std::vector<App::DocumentObject*> objs = Group.getValues();
 
         if (objs.empty()) {
             return;
         }
 
+        FemPostFilter* filter = NULL;
         std::vector<App::DocumentObject*>::iterator it = objs.begin();
-        FemPostFilter* filter = static_cast<FemPostFilter*>(*it);
-
-        // the first filter must always grab the data
-        if (filter->Input.getValue()) {
-            filter->Input.setValue(nullptr);
-        }
-
-        // all the others need to be connected to the previous filter or grab the data,
-        // dependent on mode
-        ++it;
         for (; it != objs.end(); ++it) {
-            auto* nextFilter = static_cast<FemPostFilter*>(*it);
 
-            if (Mode.getValue() == 0) {  // serial mode
-                if (nextFilter->Input.getValue() != filter) {
-                    nextFilter->Input.setValue(filter);
+            // prepare the filter: make all connections new
+            FemPostFilter* nextFilter = static_cast<FemPostFilter*>(*it);
+            nextFilter->getActiveFilterPipeline().source->RemoveAllInputConnections(0);
+
+            // handle input modes
+            if (Mode.getValue() == 0) {
+                // serial: the next filter gets the previous output, the first one gets our input
+                if (filter == NULL) {
+                    nextFilter->getActiveFilterPipeline().source->SetInputConnection(m_source_algorithm->GetOutputPort(0));
+                } else {
+                    nextFilter->getActiveFilterPipeline().source->SetInputConnection(filter->getActiveFilterPipeline().target->GetOutputPort());
                 }
+
             }
-            else {  // Parallel mode
-                if (nextFilter->Input.getValue()) {
-                    nextFilter->Input.setValue(nullptr);
-                }
+            else if (Mode.getValue() == 1) {
+                // parallel: all filters get out input
+                nextFilter->getActiveFilterPipeline().source->SetInputConnection(m_source_algorithm->GetOutputPort(0));
+            }
+            else {
+                throw Base::ValueError("Unknown Mode set for Pipeline");
             }
 
             filter = nextFilter;
         };
     }
 
-    App::GeoFeature::onChanged(prop);
+    FemPostObject::onChanged(prop);
+
+}
+
+void FemPostPipeline::filterChanged(FemPostFilter* filter)
+{
+    //we only need to update the following children if we are in serial mode
+    if (Mode.getValue() == 0) {
+
+        std::vector<App::DocumentObject*> objs = Group.getValues();
+
+        if (objs.empty()) {
+            return;
+        }
+        bool started = false;
+        std::vector<App::DocumentObject*>::iterator it = objs.begin();
+        for (; it != objs.end(); ++it) {
+
+            if (started) {
+                (*it)->touch();
+            }
+
+            if (*it == filter) {
+                started = true;
+            }
+        }
+    }
+}
+
+void FemPostPipeline::pipelineChanged(FemPostFilter* filter) {
+    // one of our filters has changed its active pipeline. We need to reconnect it properly.
+    // As we are cheap we just reconnect everything
+    // TODO: Do more efficiently
+    onChanged(&Group);
 }
 
 void FemPostPipeline::recomputeChildren()
 {
-    for (const auto& obj : Filter.getValues()) {
+    // get the frame we use
+    double frame = 0;
+    auto frames = getFrameValues();
+    if (!frames.empty() &&
+         Frame.getValue() < frames.size()) {
+
+        frame = frames[Frame.getValue()];
+    }
+
+    for (const auto& obj : Group.getValues()) {
         obj->touch();
+
+        if (obj->isDerivedFrom(FemPostFilter::getClassTypeId())) {
+            static_cast<Fem::FemPostFilter*>(obj)->Frame.setValue(frame);
+        }
     }
 }
 
 FemPostObject* FemPostPipeline::getLastPostObject()
 {
 
-    if (Filter.getValues().empty()) {
+    if (Group.getValues().empty()) {
         return this;
     }
 
-    return static_cast<FemPostObject*>(Filter.getValues().back());
+    return static_cast<FemPostObject*>(Group.getValues().back());
 }
 
 bool FemPostPipeline::holdsPostObject(FemPostObject* obj)
 {
 
-    std::vector<App::DocumentObject*>::const_iterator it = Filter.getValues().begin();
-    for (; it != Filter.getValues().end(); ++it) {
+    std::vector<App::DocumentObject*>::const_iterator it = Group.getValues().begin();
+    for (; it != Group.getValues().end(); ++it) {
 
         if (*it == obj) {
             return true;
         }
     }
     return false;
+}
+
+
+
+bool FemPostPipeline::hasFrames()
+{
+    // lazy implementation
+    return !m_source_algorithm->getFrameValues().empty();
+}
+
+std::string FemPostPipeline::getFrameType()
+{
+    vtkSmartPointer<vtkDataObject> data = Data.getValue();
+
+    // check if we have frame data
+    if (!data || !data->IsA("vtkMultiBlockDataSet")) {
+        return std::string("no frames");
+    }
+
+    // we have multiple frames! let's check the amount and times
+    vtkSmartPointer<vtkMultiBlockDataSet> multiblock = vtkMultiBlockDataSet::SafeDownCast(data);
+    if (!multiblock->GetFieldData()->HasArray("TimeInfo")) {
+        return std::string("unknown");
+    }
+
+    vtkAbstractArray* TimeInfo = multiblock->GetFieldData()->GetAbstractArray("TimeInfo");
+    if (!TimeInfo ||
+        !TimeInfo->IsA("vtkStringArray") ||
+         TimeInfo->GetNumberOfTuples() < 2) {
+
+        return std::string("unknown");
+    }
+
+    return vtkStringArray::SafeDownCast(TimeInfo)->GetValue(0);
+}
+
+Base::Unit FemPostPipeline::getFrameUnit()
+{
+    vtkSmartPointer<vtkDataObject> data = Data.getValue();
+
+    // check if we have frame data
+    if (!data || !data->IsA("vtkMultiBlockDataSet")) {
+        // units cannot be undefined, so use time
+        return Base::Unit::TimeSpan;
+    }
+
+    // we have multiple frames! let's check the amount and times
+    vtkSmartPointer<vtkMultiBlockDataSet> multiblock = vtkMultiBlockDataSet::SafeDownCast(data);
+    if (!multiblock->GetFieldData()->HasArray("TimeInfo")) {
+        // units cannot be undefined, so use time
+        return Base::Unit::TimeSpan;
+    }
+
+    vtkAbstractArray* TimeInfo = multiblock->GetFieldData()->GetAbstractArray("TimeInfo");
+    if (!TimeInfo->IsA("vtkStringArray") ||
+         TimeInfo->GetNumberOfTuples() < 2) {
+
+        // units cannot be undefined, so use time
+        return Base::Unit::TimeSpan;
+    }
+
+    return Base::Unit(QString::fromStdString(vtkStringArray::SafeDownCast(TimeInfo)->GetValue(1)));
+}
+
+std::vector<double> FemPostPipeline::getFrameValues()
+{
+    return m_source_algorithm->getFrameValues();
+}
+
+unsigned int FemPostPipeline::getFrameNumber()
+{
+    // lazy implementation
+    return getFrameValues().size();
 }
 
 void FemPostPipeline::load(FemResultObject* res)
@@ -241,6 +573,53 @@ void FemPostPipeline::load(FemResultObject* res)
     FemVTKTools::exportFreeCADResult(res, grid);
 
     Data.setValue(grid);
+}
+
+// set multiple result objects as frames for one pipeline
+// Notes:
+//      1. values vector must contain growing value, smallest first
+void FemPostPipeline::load(std::vector<FemResultObject*> res, std::vector<double> values, Base::Unit unit, std::string frame_type) {
+
+    if (res.size() != values.size() ) {
+        Base::Console().Error("Result values and frame values have different length.\n");
+        return;
+    }
+
+     // setup the time information for the multiblock
+    vtkStringArray* TimeInfo = vtkStringArray::New();
+    TimeInfo->SetName("TimeInfo");
+    TimeInfo->InsertNextValue(frame_type);
+    TimeInfo->InsertNextValue(unit.getString().toStdString());
+
+    auto multiblock = vtkSmartPointer<vtkMultiBlockDataSet>::New();
+    for (ulong i=0; i<res.size(); i++) {
+
+        if (!res[i]->Mesh.getValue()->isDerivedFrom(Fem::FemMeshObject::getClassTypeId())) {
+            Base::Console().Error("Result mesh object is not derived from Fem::FemMeshObject.\n");
+            return;
+        }
+
+        // first copy the mesh over
+        const FemMesh& mesh = static_cast<FemMeshObject*>(res[i]->Mesh.getValue())->FemMesh.getValue();
+        vtkSmartPointer<vtkUnstructuredGrid> grid = vtkSmartPointer<vtkUnstructuredGrid>::New();
+        FemVTKTools::exportVTKMesh(&mesh, grid);
+
+        // Now copy the point data over
+        FemVTKTools::exportFreeCADResult(res[i], grid);
+
+        // add time information
+        vtkFloatArray* TimeValue = vtkFloatArray::New();
+        TimeValue->SetNumberOfComponents(1);
+        TimeValue->SetName("TimeValue");
+        TimeValue->InsertNextValue(values[i]);
+        grid->GetFieldData()->AddArray(TimeValue);
+        grid->GetFieldData()->AddArray(TimeInfo);
+
+        multiblock->SetBlock(i, grid);
+    }
+
+    multiblock->GetFieldData()->AddArray(TimeInfo);
+    Data.setValue(multiblock);
 }
 
 PyObject* FemPostPipeline::getPyObject()

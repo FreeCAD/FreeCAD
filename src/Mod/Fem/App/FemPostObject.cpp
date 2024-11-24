@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 #include <vtkDataSet.h>
 #include <vtkXMLDataSetWriter.h>
+#include <vtkXMLMultiBlockDataWriter.h>
 #endif
 
 #include <Base/Exception.h>
@@ -46,12 +47,26 @@ FemPostObject::FemPostObject()
 
 FemPostObject::~FemPostObject() = default;
 
+vtkDataSet* FemPostObject::getDataSet() {
+
+    if (!Data.getValue()) {
+        return nullptr;
+    }
+
+    if (Data.getValue()->IsA("vtkDataSet")) {
+        return vtkDataSet::SafeDownCast(Data.getValue());
+    }
+
+    // we could be a composite dataset... hope that our subclasses handle this,
+    // as this should only be possible for input data (So FemPostPipeline)
+    return nullptr;
+}
+
 vtkBoundingBox FemPostObject::getBoundingBox()
 {
 
     vtkBoundingBox box;
-
-    vtkDataSet* dset = vtkDataSet::SafeDownCast(Data.getValue());
+    vtkDataSet* dset = getDataSet();
     if (dset) {
         box.AddBounds(dset->GetBounds());
     }
@@ -77,7 +92,7 @@ namespace
 template<typename T>
 void femVTKWriter(const char* filename, const vtkSmartPointer<vtkDataObject>& dataObject)
 {
-    if (vtkDataSet::SafeDownCast(dataObject)->GetNumberOfPoints() <= 0) {
+    if (dataObject->IsA("vtkDataSet") && vtkDataSet::SafeDownCast(dataObject)->GetNumberOfPoints() <= 0) {
         throw Base::ValueError("Empty data object");
     }
 
@@ -107,6 +122,9 @@ std::string vtkWriterExtension(const vtkSmartPointer<vtkDataObject>& dataObject)
         case VTK_UNIFORM_GRID:
             extension = "vti";
             break;
+        case VTK_MULTIBLOCK_DATA_SET:
+            extension = "vtm";
+            break;
         default:
             break;
     }
@@ -135,5 +153,9 @@ void FemPostObject::writeVTK(const char* filename) const
         name = name.append(".").append(extension);
     }
 
-    femVTKWriter<vtkXMLDataSetWriter>(name.c_str(), data);
+    if (extension == "vtm") {
+        femVTKWriter<vtkXMLMultiBlockDataWriter>(name.c_str(), data);
+    } else {
+        femVTKWriter<vtkXMLDataSetWriter>(name.c_str(), data);
+    }
 }
