@@ -652,11 +652,11 @@ TRational<N>::TRational (double dValue)
     // multiply by 2^exponent
     TRational kMultiplier;
     TInteger<N> kPower(2);
-    int i, iDelay = 0;
+    int iDelay = 0;
     if (uiExponent & 0x400)
     {
         kMultiplier = 2;
-        for (i = 0; i <= 9; i++, uiExponent >>= 1, iDelay++)
+        for (int i = 0; i <= 9; i++, uiExponent >>= 1, iDelay++)
         {
             if (uiExponent & 1)
             {
@@ -673,7 +673,7 @@ TRational<N>::TRational (double dValue)
     else
     {
         kMultiplier = 1;
-        for (i = 0; i <= 9; i++, uiExponent >>= 1, iDelay++)
+        for (int i = 0; i <= 9; i++, uiExponent >>= 1, iDelay++)
         {
             if (!(uiExponent & 1))
             {
