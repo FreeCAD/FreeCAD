@@ -26,16 +26,17 @@
 #include <Gui/ViewProviderFeaturePython.h>
 #include <Mod/Fem/FemGlobal.h>
 
+#include "Gui/ViewProviderGroupExtension.h"
 #include "ViewProviderFemPostObject.h"
 
 
 namespace FemGui
 {
 
-class FemGuiExport ViewProviderFemPostPipeline: public ViewProviderFemPostObject
+class FemGuiExport ViewProviderFemPostPipeline: public ViewProviderFemPostObject, public Gui::ViewProviderGroupExtension
 {
 
-    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostPipeline);
+    PROPERTY_HEADER_WITH_EXTENSIONS(FemGui::ViewProviderFemPostPipeline);
 
 public:
     /// constructor.
@@ -52,8 +53,13 @@ public:
     void scaleField(vtkDataSet* dset, vtkDataArray* pdata, double FieldFactor);
     PyObject* getPyObject() override;
 
+    // override, to not show/hide children as the parent is shown/hidden like normal groups
+    void extensionHide() override {};
+    void extensionShow() override {};
+
 protected:
     void updateFunctionSize();
+    virtual void setupTaskDialog(TaskDlgPost* dlg) override;
 };
 
 }  // namespace FemGui

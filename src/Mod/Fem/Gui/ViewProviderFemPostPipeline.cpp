@@ -37,6 +37,7 @@
 #include "ViewProviderFemPostFunction.h"
 #include "ViewProviderFemPostPipeline.h"
 #include "ViewProviderFemPostPipelinePy.h"
+#include "TaskPostBoxes.h"
 
 
 using namespace FemGui;
@@ -45,6 +46,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemPostPipeline, FemGui::ViewProviderFemPost
 
 ViewProviderFemPostPipeline::ViewProviderFemPostPipeline()
 {
+    ViewProviderGroupExtension::initExtension(this);
     sPixmap = "FEM_PostPipelineFromResult";
 }
 
@@ -54,30 +56,36 @@ std::vector<App::DocumentObject*> ViewProviderFemPostPipeline::claimChildren() c
 {
 
     Fem::FemPostPipeline* pipeline = getObject<Fem::FemPostPipeline>();
-    std::vector<App::DocumentObject*> children;
+    std::vector<App::DocumentObject*> children = FemGui::ViewProviderFemPostObject::claimChildren();
 
     if (pipeline->Functions.getValue()) {
-        children.push_back(pipeline->Functions.getValue());
+        children.insert(children.begin(), pipeline->Functions.getValue());
     }
 
-    children.insert(children.end(),
-                    pipeline->Filter.getValues().begin(),
-                    pipeline->Filter.getValues().end());
     return children;
 }
 
 std::vector<App::DocumentObject*> ViewProviderFemPostPipeline::claimChildren3D() const
 {
-
     return claimChildren();
 }
 
 void ViewProviderFemPostPipeline::updateData(const App::Property* prop)
 {
     FemGui::ViewProviderFemPostObject::updateData(prop);
+<<<<<<< HEAD
     Fem::FemPostPipeline* pipeline = getObject<Fem::FemPostPipeline>();
+=======
+    Fem::FemPostPipeline* pipeline = static_cast<Fem::FemPostPipeline*>(getObject());
+
+>>>>>>> 782848c556 (FEM: Make multistep work for eigenmodes)
     if (prop == &pipeline->Functions) {
         updateFunctionSize();
+    }
+
+    if (prop == &pipeline->Frame) {
+        // Frame is pipeline property, not post object, parent updateData does not catch it for update
+        updateVtk();
     }
 }
 
@@ -180,8 +188,7 @@ void ViewProviderFemPostPipeline::transformField(char* FieldName, double FieldFa
 {
     Fem::FemPostPipeline* obj = getObject<Fem::FemPostPipeline>();
 
-    vtkSmartPointer<vtkDataObject> data = obj->Data.getValue();
-    vtkDataSet* dset = vtkDataSet::SafeDownCast(data);
+    vtkDataSet* dset = obj->getDataSet();
     if (!dset) {
         return;
     }
@@ -237,6 +244,15 @@ void ViewProviderFemPostPipeline::scaleField(vtkDataSet* dset,
         }
     }
 }
+
+void ViewProviderFemPostPipeline::setupTaskDialog(TaskDlgPost* dlg)
+{
+    // add the function box
+    assert(dlg->getView() == this);
+    ViewProviderFemPostObject::setupTaskDialog(dlg);
+    dlg->appendBox(new TaskPostFrames(this));
+}
+
 
 PyObject* ViewProviderFemPostPipeline::getPyObject()
 {

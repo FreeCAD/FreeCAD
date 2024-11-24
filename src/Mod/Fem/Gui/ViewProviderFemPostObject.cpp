@@ -850,15 +850,9 @@ bool ViewProviderFemPostObject::setupPipeline()
 
     auto postObject = getObject<Fem::FemPostObject>();
 
-    vtkDataObject* data = postObject->Data.getValue();
-    if (!data) {
-        return false;
-    }
-
     // check all fields if there is a real/imaginary one and if so
     // add a field with an absolute value
-    vtkSmartPointer<vtkDataObject> SPdata = data;
-    vtkDataSet* dset = vtkDataSet::SafeDownCast(SPdata);
+    vtkDataSet* dset = postObject->getDataSet();
     if (!dset) {
         return false;
     }
