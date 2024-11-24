@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
+ *   Copyright (c) 2024 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,14 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef Fem_FemPostPipeline_H
-#define Fem_FemPostPipeline_H
+#ifndef Fem_FemPostBranch_H
+#define Fem_FemPostBranch_H
 
-<<<<<<< HEAD
-
-=======
-#include "Base/Unit.h"
->>>>>>> 782848c556 (FEM: Make multistep work for eigenmodes)
 #include "App/GroupExtension.h"
 
 #include "FemPostFilter.h"
@@ -36,58 +31,32 @@
 #include "FemResultObject.h"
 
 #include <vtkSmartPointer.h>
-#include <vtkUnstructuredGridAlgorithm.h>
-#include <vtkInformation.h>
-#include <vtkInformationVector.h>
+#include <vtkAppendFilter.h>
+#include <vtkPassThrough.h>
 
 
 namespace Fem
 {
 
-// algorithm that allows multi frame handling: if data is stored in MultiBlock dataset
-// this source enables the downstream filters to query the blocks as different time frames
-class FemFrameSourceAlgorithm : public vtkUnstructuredGridAlgorithm
+class FemExport FemPostBranch: public Fem::FemPostFilter, public App::GroupExtension
 {
-public:
-    static FemFrameSourceAlgorithm* New();
-    vtkTypeMacro(FemFrameSourceAlgorithm, vtkUnstructuredGridAlgorithm);
-
-    void setDataObject(vtkSmartPointer<vtkDataObject> data);
-    std::vector<double> getFrameValues();
-
-protected:
-    FemFrameSourceAlgorithm();
-    ~FemFrameSourceAlgorithm() override;
-
-    vtkSmartPointer<vtkDataObject> m_data;
-
-    int RequestInformation(vtkInformation* reqInfo, vtkInformationVector** inVector, vtkInformationVector* outVector) override;
-    int RequestData(vtkInformation* reqInfo, vtkInformationVector** inVector, vtkInformationVector* outVector) override;
-};
-
-
-class FemExport FemPostPipeline: public Fem::FemPostObject, public App::GroupExtension
-{
-    PROPERTY_HEADER_WITH_EXTENSIONS(Fem::FemPostPipeline);
+    PROPERTY_HEADER_WITH_EXTENSIONS(Fem::FemPostBranch);
 
 public:
     /// Constructor
-    FemPostPipeline();
-    ~FemPostPipeline() override;
+    FemPostBranch();
+    ~FemPostBranch() override;
 
-    App::PropertyLink Functions;
     App::PropertyEnumeration Mode;
-    App::PropertyEnumeration Frame;
+    App::PropertyEnumeration Output;
 
-
-    virtual vtkDataSet* getDataSet() override;
 
     short mustExecute() const override;
     PyObject* getPyObject() override;
 
     const char* getViewProviderName() const override
     {
-        return "FemGui::ViewProviderFemPostPipeline";
+        return "FemGui::ViewProviderFemPostBranch";
     }
 
     // load data from files
@@ -97,29 +66,23 @@ public:
 
     // load from results
     void load(FemResultObject* res);
-    void load(std::vector<FemResultObject*> res, std::vector<double> values, Base::Unit unit, std::string frame_type);
 
-    // Pipeline handling
+    // Branch handling
     void filterChanged(FemPostFilter* filter);
     void pipelineChanged(FemPostFilter* filter);
     void recomputeChildren();
     FemPostObject* getLastPostObject();
     bool holdsPostObject(FemPostObject* obj);
 
-    // frame handling
-    bool hasFrames();
-    std::string getFrameType();
-    Base::Unit getFrameUnit();
-    unsigned int getFrameNumber();
-    std::vector<double> getFrameValues();
-
 protected:
     void onChanged(const App::Property* prop) override;
 
 private:
     static const char* ModeEnums[];
-    App::Enumeration  m_frameEnum;
-    vtkSmartPointer<FemFrameSourceAlgorithm> m_source_algorithm;
+    static const char* OutputEnums[];
+
+    vtkSmartPointer<vtkAppendFilter> m_append;
+    vtkSmartPointer<vtkPassThrough>  m_passthrough;
 
     template<class TReader>
     void readXMLFile(std::string file)
@@ -135,4 +98,4 @@ private:
 }  // namespace Fem
 
 
-#endif  // Fem_FemPostPipeline_H
+#endif  // Fem_FemPostBranch_H
