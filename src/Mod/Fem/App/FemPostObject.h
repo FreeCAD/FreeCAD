@@ -27,6 +27,7 @@
 #include "PropertyPostDataObject.h"
 #include <App/GeoFeature.h>
 #include <vtkBoundingBox.h>
+#include <vtkDataSet.h>
 
 
 namespace Fem
@@ -44,6 +45,12 @@ public:
     ~FemPostObject() override;
 
     Fem::PropertyPostDataObject Data;
+
+    // returns the DataSet from the data property. Better use this
+    // instead of casting Data.getValue(), as data does not need to be a dataset,
+    // but could for example also be a composite data structure.
+    // Could return NULL if no dataset is available
+    virtual vtkDataSet* getDataSet();
 
     PyObject* getPyObject() override;
 

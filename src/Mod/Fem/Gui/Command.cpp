@@ -1870,13 +1870,8 @@ void setupFilter(Gui::Command* cmd, std::string Name)
                    FeatName.c_str());
     // add it as subobject to the pipeline
     cmd->doCommand(Gui::Command::Doc,
-                   "__list__ = App.ActiveDocument.%s.Filter",
-                   pipeline->getNameInDocument());
-    cmd->doCommand(Gui::Command::Doc, "__list__.append(App.ActiveDocument.%s)", FeatName.c_str());
-    cmd->doCommand(Gui::Command::Doc,
-                   "App.ActiveDocument.%s.Filter = __list__",
-                   pipeline->getNameInDocument());
-    cmd->doCommand(Gui::Command::Doc, "del __list__");
+                   "App.ActiveDocument.%s.addObject(App.ActiveDocument.%s)",
+                   pipeline->getNameInDocument(), FeatName.c_str());
 
     // set display to assure the user sees the new object
     cmd->doCommand(Gui::Command::Doc,
@@ -1887,23 +1882,20 @@ void setupFilter(Gui::Command* cmd, std::string Name)
     cmd->doCommand(Gui::Command::Doc,
                    "App.activeDocument().ActiveObject.ViewObject.SelectionStyle = \"BoundBox\"");
 
-    // in case selObject is no pipeline we must set it as input object
     auto objFilter = App::GetApplication().getActiveDocument()->getActiveObject();
     auto femFilter = static_cast<Fem::FemPostFilter*>(objFilter);
-    if (!selectionIsPipeline) {
-        femFilter->Input.setValue(selObject);
-    }
 
-    femFilter->Data.setValue(static_cast<Fem::FemPostObject*>(selObject)->Data.getValue());
     auto selObjectView = static_cast<FemGui::ViewProviderFemPostObject*>(
         Gui::Application::Instance->getViewProvider(selObject));
 
-    cmd->doCommand(Gui::Command::Doc,
+    //TODO: FIX
+    /*cmd->doCommand(Gui::Command::Doc,
                    "App.activeDocument().ActiveObject.ViewObject.Field = \"%s\"",
                    selObjectView->Field.getValueAsString());
     cmd->doCommand(Gui::Command::Doc,
                    "App.activeDocument().ActiveObject.ViewObject.VectorMode = \"%s\"",
                    selObjectView->VectorMode.getValueAsString());
+    */
 
     // hide selected filter
     if (!femFilter->isDerivedFrom<Fem::FemPostDataAlongLineFilter>()

@@ -74,9 +74,12 @@ if(BUILD_FEM_VTK)
         FemPostObjectPyImp.cpp
         FemPostPipelinePy.xml
         FemPostPipelinePyImp.cpp
+        FemPostBranchPy.xml
+        FemPostBranchPyImp.cpp
     )
     generate_from_xml(FemPostObjectPy)
     generate_from_xml(FemPostPipelinePy)
+    generate_from_xml(FemPostBranchPy)
 endif(BUILD_FEM_VTK)
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
@@ -89,6 +92,8 @@ if(BUILD_FEM_VTK)
         FemPostObject.cpp
         FemPostPipeline.h
         FemPostPipeline.cpp
+        FemPostBranch.h
+        FemPostBranch.cpp
         FemPostFilter.h
         FemPostFilter.cpp
         FemPostFunction.h

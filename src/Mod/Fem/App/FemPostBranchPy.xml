@@ -2,32 +2,17 @@
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
     <PythonExport
         Father="FemPostObjectPy"
-        Name="FemPostPipelinePy"
-        Twin="FemPostPipeline"
-        TwinPointer="FemPostPipeline"
-        Include="Mod/Fem/App/FemPostPipeline.h"
+        Name="FemPostBranchPy"
+        Twin="FemPostBranch"
+        TwinPointer="FemPostBranch"
+        Include="Mod/Fem/App/FemPostBranch.h"
         Namespace="Fem"
         FatherInclude="Mod/Fem/App/FemPostObjectPy.h"
         FatherNamespace="Fem">
         <Documentation>
             <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
-            <UserDocu>The FemPostPipeline class.</UserDocu>
+            <UserDocu>The FemPostBranch class.</UserDocu>
         </Documentation>
-        <Methode Name="read">
-            <Documentation>
-                <UserDocu>Read in vtk file</UserDocu>
-            </Documentation>
-        </Methode>
-        <Methode Name="scale">
-            <Documentation>
-                <UserDocu>scale the points of a loaded vtk file</UserDocu>
-            </Documentation>
-        </Methode>
-        <Methode Name="load">
-            <Documentation>
-                <UserDocu>Load a single result object or create a multiframe result by loading multiple result frames. If multistep is wanted, 4 argumenhts are needed: 1. List of result object each being one frame, 2. List of values valid for each frame (e.g. [s] if time data), 3. the unit of the value, 4. the Description of the frames</UserDocu>
-            </Documentation>
-        </Methode>
         <Methode Name="recomputeChildren">
             <Documentation>
                 <UserDocu>Recomputes all children of the pipeline</UserDocu>
