@@ -33,183 +33,42 @@
 
 using namespace Materials;
 
-std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> ModelManagerExternal::_libraryList = nullptr;
-std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> ModelManagerExternal::_modelMap = nullptr;
-QMutex ModelManagerExternal::_mutex;
-
-
 TYPESYSTEM_SOURCE(Materials::ModelManagerExternal, Base::BaseClass)
 
 ModelManagerExternal::ModelManagerExternal()
 {
-    initLibraries();
-}
-
-void ModelManagerExternal::initLibraries()
-{
-    auto manager = ExternalManager::getManager();
-}
-
-bool ModelManagerExternal::isModel(const QString& file)
-{
-    // if (!fs::is_regular_file(p))
-    //     return false;
-    // check file extension
-    if (file.endsWith(QString::fromStdString(".yml"))) {
-        return true;
-    }
-    return false;
 }
 
 void ModelManagerExternal::cleanup()
 {
-    if (_libraryList) {
-        _libraryList->clear();
-    }
-
-    if (_modelMap) {
-        for (auto& it : *_modelMap) {
-            // This is needed to resolve cyclic dependencies
-            it.second->setLibrary(nullptr);
-        }
-        _modelMap->clear();
-    }
 }
 
 void ModelManagerExternal::refresh()
 {
-    _modelMap->clear();
-    _libraryList->clear();
-
-    // Load the libraries
-    ModelLoader loader(_modelMap, _libraryList);
 }
 
-std::shared_ptr<std::vector<Library>> ModelManagerExternal::getLibraries()
+std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> ModelManagerExternal::getLibraries()
 {
-    auto libraries = std::shared_ptr<std::vector<Library>>();
-
-    for (auto& library : *_libraryList) {
-        libraries->push_back(
-            Library(library->getName(), library->getIconPath(), library->isReadOnly()));
+    auto libraryList = std::make_shared<std::list<std::shared_ptr<ModelLibrary>>>();
+    auto externalLibraries = ExternalManager::getManager()->libraries();
+    for (auto& entry : *externalLibraries) {
+        auto libName = std::get<0>(entry);
+        auto icon = std::get<1>(entry);
+        auto readOnly = std::get<2>(entry);
+        Base::Console().Log("Library name '%s', Icon '%s', readOnly %s\n",
+                            libName.toStdString().c_str(),
+                            icon.toStdString().c_str(),
+                            readOnly ? "true" : "false");
+        auto library = std::make_shared<ModelLibrary>(libName, QString(), icon, readOnly);
+        libraryList->push_back(library);
     }
 
-    return libraries;
+    return libraryList;
 }
 
 void ModelManagerExternal::createLibrary(const QString& libraryName,
-                                      const QString& directory,
                                       const QString& icon,
                                       bool readOnly)
 {
-    QDir dir;
-    if (!dir.exists(directory)) {
-        if (!dir.mkpath(directory)) {
-            throw LibraryCreationError();
-        }
-    }
-
-    auto modelLibrary = std::make_shared<ModelLibrary>(libraryName, directory, icon, readOnly);
-    _libraryList->push_back(modelLibrary);
-
-    // This needs to be persisted somehow
-}
-
-void ModelManagerExternal::renameLibrary(const QString& libraryName, const QString& newName)
-{
-    for (auto& library : *_libraryList) {
-        if (library->getName() == libraryName) {
-            library->setName(newName);
-            return;
-        }
-    }
-
-    throw LibraryNotFound();
-}
-
-void ModelManagerExternal::changeIcon(const QString& libraryName, const QString& icon)
-{
-    for (auto& library : *_libraryList) {
-        if (library->getName() == libraryName) {
-            library->setIconPath(icon);
-            return;
-        }
-    }
-
-    throw LibraryNotFound();
-}
-
-void ModelManagerExternal::removeLibrary(const QString& libraryName)
-{
-    for (auto& library : *_libraryList) {
-        if (library->getName() == libraryName) {
-            _libraryList->remove(library);
-
-            // At this point we should rebuild the model map
-            return;
-        }
-    }
-
-    throw LibraryNotFound();
-}
-
-std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
-ModelManagerExternal::libraryModels(const QString& libraryName)
-{
-    auto models = std::make_shared<std::vector<std::tuple<QString, QString, QString>>>();
-
-    for (auto& it : *_modelMap) {
-        // This is needed to resolve cyclic dependencies
-        if (it.second->getLibrary()->getName() == libraryName) {
-            models->push_back(
-                std::tuple<QString, QString, QString>(it.first, it.second->getDirectory(), it.second->getName()));
-        }
-    }
-
-    return models;
-}
-
-std::shared_ptr<Model> ModelManagerExternal::getModel(const QString& uuid) const
-{
-    try {
-        if (_modelMap == nullptr) {
-            throw Uninitialized();
-        }
-
-        return _modelMap->at(uuid);
-    }
-    catch (std::out_of_range const&) {
-        throw ModelNotFound();
-    }
-}
-
-std::shared_ptr<Model> ModelManagerExternal::getModelByPath(const QString& path) const
-{
-    QString cleanPath = QDir::cleanPath(path);
-
-    for (auto& library : *_libraryList) {
-        if (cleanPath.startsWith(library->getDirectory())) {
-            return library->getModelByPath(cleanPath);
-        }
-    }
-
-    throw MaterialNotFound();
-}
-
-std::shared_ptr<Model> ModelManagerExternal::getModelByPath(const QString& path,
-                                                         const QString& lib) const
-{
-    auto library = getLibrary(lib);        // May throw LibraryNotFound
-    return library->getModelByPath(path);  // May throw ModelNotFound
-}
-
-std::shared_ptr<ModelLibrary> ModelManagerExternal::getLibrary(const QString& name) const
-{
-    for (auto& library : *_libraryList) {
-        if (library->getName() == name) {
-            return library;
-        }
-    }
-
-    throw LibraryNotFound();
+    ExternalManager::getManager()->createLibrary(libraryName, icon, readOnly);
 }

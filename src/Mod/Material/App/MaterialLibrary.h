@@ -44,17 +44,24 @@ class MaterialManager;
 class MaterialFilter;
 class MaterialFilterOptions;
 
-class MaterialsExport MaterialLibrary: public Base::BaseClass,
-                                           public std::enable_shared_from_this<MaterialLibrary>
+class MaterialsExport MaterialLibrary
+    : public Library,
+      public std::enable_shared_from_this<MaterialLibrary>
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     MaterialLibrary() = default;
+    MaterialLibrary(const QString& libraryName, const QString& icon, bool readOnly = true);
+    MaterialLibrary(const QString& libraryName,
+                    const QString& dir,
+                    const QString& icon,
+                    bool readOnly = true);
     MaterialLibrary(const MaterialLibrary&) = delete;
     ~MaterialLibrary() override = default;
 
-    virtual bool isLocal() const;
+    bool isLocal() const;
+    void setLocal(bool local);
 
     virtual std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
     getMaterialTree(const std::shared_ptr<Materials::MaterialFilter>& filter,
@@ -66,70 +73,15 @@ public:
         return shared_from_this();
     }
 
-    virtual QString getIconPath() const
-    {
-        return QString();
-    }
-    virtual QString getName() const
-    {
-        return QString();
-    }
-    virtual QString getDirectoryPath() const
-    {
-        return QString();
-    }
-
 protected:
     bool materialInTree(const std::shared_ptr<Material>& material,
                         const std::shared_ptr<Materials::MaterialFilter>& filter,
                         const Materials::MaterialFilterOptions& options) const;
+
+    bool _local;
 };
 
-class MaterialsExport MaterialLibraryExternal: public MaterialLibrary, public Library
-{
-    TYPESYSTEM_HEADER_WITH_OVERRIDE();
-
-public:
-    MaterialLibraryExternal() = default;
-    MaterialLibraryExternal(const MaterialLibraryExternal&) = delete;
-    MaterialLibraryExternal(const QString& libraryName, const QString& icon, bool readOnly = true);
-    ~MaterialLibraryExternal() override = default;
-
-    bool isLocal() const override;
-
-    QString getIconPath() const override
-    {
-        return Library::getIconPath();
-    }
-
-    QString getName() const override
-    {
-        return Library::getName();
-    }
-
-    bool operator==(const MaterialLibrary& library) const
-    {
-        auto materialLibrary = dynamic_cast<const Materials::MaterialLibraryExternal *>(&library);
-        if (!materialLibrary)
-            return false;
-        return Library::operator==(*materialLibrary);
-    }
-    bool operator!=(const MaterialLibrary& library) const
-    {
-        return !operator==(library);
-    }
-
-    bool operator==(const MaterialLibraryExternal& library) const
-    {
-        return Library::operator==(library);
-    }
-    bool operator!=(const MaterialLibraryExternal& library) const
-    {
-        return !operator==(library);
-    }
-};
-
-class MaterialsExport MaterialLibraryLocal: public MaterialLibrary, public LocalLibrary
+class MaterialsExport MaterialLibraryLocal: public MaterialLibrary
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
@@ -159,29 +111,13 @@ public:
                                           const QString& path);
     std::shared_ptr<Material> getMaterialByPath(const QString& path) const;
 
-    bool isLocal() const override;
-
-    QString getIconPath() const override
-    {
-        return LocalLibrary::getIconPath();
-    }
-
-    QString getName() const override
-    {
-        return LocalLibrary::getName();
-    }
-    QString getDirectoryPath() const override
-    {
-        return LocalLibrary::getDirectoryPath();
-    }
-
     bool operator==(const MaterialLibrary& library) const
     {
         auto materialLibrary = dynamic_cast<const Materials::MaterialLibraryLocal*>(&library);
         if (!materialLibrary) {
             return false;
         }
-        return LocalLibrary::operator==(*materialLibrary);
+        return Library::operator==(*materialLibrary);
     }
     bool operator!=(const MaterialLibrary& library) const
     {
@@ -190,7 +126,7 @@ public:
 
     bool operator==(const MaterialLibraryLocal& library) const
     {
-        return LocalLibrary::operator==(library);
+        return Library::operator==(library);
     }
     bool operator!=(const MaterialLibraryLocal& library) const
     {
@@ -210,7 +146,6 @@ protected:
 }  // namespace Materials
 
 Q_DECLARE_METATYPE(std::shared_ptr<Materials::MaterialLibrary>)
-Q_DECLARE_METATYPE(std::shared_ptr<Materials::MaterialLibraryExternal>)
 Q_DECLARE_METATYPE(std::shared_ptr<Materials::MaterialLibraryLocal>)
 
 #endif  // MATERIAL_MATERIALLIBRARY_H

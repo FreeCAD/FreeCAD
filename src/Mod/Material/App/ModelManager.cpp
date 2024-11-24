@@ -97,14 +97,19 @@ void ModelManager::refresh()
     _localManager->refresh();
 }
 
-std::shared_ptr<std::vector<Library>> ModelManager::getLibraries()
+std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> ModelManager::getLibraries()
+{
+    return _localManager->getLibraries();
+}
+
+std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> ModelManager::getLocalLibraries()
 {
     return _localManager->getLibraries();
 }
 
 void ModelManager::createLibrary(const QString& libraryName, const QString& icon, bool readOnly)
 {
-    throw LibraryCreationError("Local library requires a path");
+    _externalManager->createLibrary(libraryName, icon, readOnly);
 }
 
 void ModelManager::createLocalLibrary(const QString& libraryName,
@@ -139,16 +144,6 @@ ModelManager::libraryModels(const QString& libraryName)
 bool ModelManager::isLocalLibrary(const QString& libraryName)
 {
     return true;
-}
-
-std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> ModelManager::getModelLibraries()
-{
-    return _localManager->getModelLibraries();
-}
-
-std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> ModelManager::getLocalModelLibraries()
-{
-    return _localManager->getModelLibraries();
 }
 
 std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> ModelManager::getModels()

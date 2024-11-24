@@ -53,7 +53,7 @@ class MaterialManagerExternal(ABC):
         pass
 
     @abstractmethod
-    def createLibrary(self, name: str, icon: str) -> None:
+    def createLibrary(self, name: str, icon: str, readOnly: bool) -> None:
         """Create a new library
 
         Create a new library with the given name"""

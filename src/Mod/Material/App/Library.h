@@ -39,6 +39,10 @@ class MaterialsExport Library: public Base::BaseClass
 public:
     Library() = default;
     Library(const QString& libraryName, const QString& icon, bool readOnly = true);
+    Library(const QString& libraryName,
+            const QString& dir,
+            const QString& icon,
+            bool readOnly = true);
     ~Library() override = default;
 
     QString getName() const
@@ -61,37 +65,16 @@ public:
     {
         return _readOnly;
     }
-    virtual bool isLocal() const;
-
-    bool operator==(const Library& library) const;
-    bool operator!=(const Library& library) const
+    void setReadOnly(bool readOnly)
     {
-        return !operator==(library);
+        _readOnly = readOnly;
     }
-
-private:
-    QString _name;
-    QString _iconPath;
-    bool _readOnly;
-};
-
-class MaterialsExport LocalLibrary: public Library
-{
-    TYPESYSTEM_HEADER_WITH_OVERRIDE();
-
-public:
-    LocalLibrary() = default;
-    LocalLibrary(const QString& libraryName,
-                 const QString& dir,
-                 const QString& icon,
-                 bool readOnly = true);
-    ~LocalLibrary() override = default;
 
     QString getDirectory() const
     {
         return _directory;
     }
-    void setDirectory(const QString &directory)
+    void setDirectory(const QString& directory)
     {
         _directory = directory;
     }
@@ -99,19 +82,22 @@ public:
     {
         return QDir(_directory).absolutePath();
     }
-    bool operator==(const LocalLibrary& library) const;
-    bool operator!=(const LocalLibrary& library) const
+
+    bool operator==(const Library& library) const;
+    bool operator!=(const Library& library) const
     {
         return !operator==(library);
     }
-    bool isLocal() const override;
 
     QString getLocalPath(const QString& path) const;
     QString getRelativePath(const QString& path) const;
     bool isRoot(const QString& path) const;
 
 private:
+    QString _name;
     QString _directory;
+    QString _iconPath;
+    bool _readOnly;
 };
 
 }  // namespace Materials

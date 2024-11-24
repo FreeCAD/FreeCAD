@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="BaseClassPy"
+      Name="MaterialLibraryPy"
+      Twin="MaterialLibrary"
+      TwinPointer="MaterialLibrary"
+      Include="Mod/Material/App/MaterialLibrary.h"
+      Namespace="Materials"
+      FatherInclude="Base/BaseClassPy.h"
+      FatherNamespace="Base"
+      Constructor="true"
+      Delete="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="DavidCarter" EMail="dcarter@davidcarter.ca" />
+      <UserDocu>Material library.</UserDocu>
+    </Documentation>
+    <Attribute Name="Name" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Name of the library</UserDocu>
+      </Documentation>
+      <Parameter Name="Name" Type="String"/>
+    </Attribute>
+    <Attribute Name="Icon" ReadOnly="false">
+      <Documentation>
+        <UserDocu>String value of the icon.</UserDocu>
+      </Documentation>
+      <Parameter Name="Icon" Type="String"/>
+    </Attribute>
+    <Attribute Name="Directory" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Local directory where the library is located. For non-local libraries this will be empty</UserDocu>
+      </Documentation>
+      <Parameter Name="Directory" Type="String"/>
+    </Attribute>
+    <Attribute Name="ReadOnly" ReadOnly="false">
+      <Documentation>
+        <UserDocu>True if the library is local.</UserDocu>
+      </Documentation>
+      <Parameter Name="ReadOnly" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="Local" ReadOnly="false">
+      <Documentation>
+        <UserDocu>True if the library is local.</UserDocu>
+      </Documentation>
+      <Parameter Name="Local" Type="Boolean"/>
+    </Attribute>
+  </PythonExport>
+</GenerateModel>

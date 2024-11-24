@@ -146,12 +146,20 @@ std::shared_ptr<std::vector<std::tuple<QString, QString, bool>>> ExternalManager
                     auto entry = Py::Tuple(library);
 
                     auto pyName = entry.getItem(0);
+                    QString libraryName;
+                    if (!pyName.isNone()) {
+                        libraryName = QString::fromStdString(pyName.as_string());
+                    }
                     auto pyIcon = entry.getItem(1);
+                    QString icon;
+                    if (!pyIcon.isNone()) {
+                        icon = QString::fromStdString(pyIcon.as_string());
+                    }
                     auto pyReadOnly = entry.getItem(2);
-                    libList->push_back(std::tuple<QString, QString, bool>(
-                        QString::fromStdString(Py::Object(pyName).as_string()),
-                        QString::fromStdString(Py::Object(pyIcon).as_string()),
-                        Py::Object(pyReadOnly).as_bool()));
+                    bool readOnly = pyReadOnly.as_bool();
+
+                    libList->push_back(
+                        std::tuple<QString, QString, bool>(libraryName, icon, readOnly));
                 }
             }
             else {
@@ -164,4 +172,30 @@ std::shared_ptr<std::vector<std::tuple<QString, QString, bool>>> ExternalManager
     }
 
     return libList;
+}
+
+void ExternalManager::createLibrary(const QString& libraryName,
+                                    const QString& icon,
+                                    bool readOnly)
+{
+    if (_instantiated) {
+        try {
+            Base::PyGILStateLocker lock;
+            if (_managerObject.hasAttr("createLibrary")) {
+                Base::Console().Log("\tcreateLibrary()\n");
+                Py::Callable libraries(_managerObject.getAttr("createLibrary"));
+                Py::Tuple args(3);
+                args.setItem(0, Py::String(libraryName.toStdString()));
+                args.setItem(0, Py::String(icon.toStdString()));
+                args.setItem(0, Py::Boolean(readOnly));
+                Py::List list(libraries.apply(args));
+            }
+            else {
+                Base::Console().Log("\tcreateLibrary() not found\n");
+            }
+        }
+        catch (Py::Exception& e) {
+            e.clear();
+        }
+    }
 }

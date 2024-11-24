@@ -96,16 +96,9 @@ void ModelManagerLocal::refresh()
     ModelLoader loader(_modelMap, _libraryList);
 }
 
-std::shared_ptr<std::vector<Library>> ModelManagerLocal::getLibraries()
+std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> ModelManagerLocal::getLibraries()
 {
-    auto libraries = std::shared_ptr<std::vector<Library>>();
-
-    for (auto& library : *_libraryList) {
-        libraries->push_back(
-            Library(library->getName(), library->getIconPath(), library->isReadOnly()));
-    }
-
-    return libraries;
+    return _libraryList;
 }
 
 void ModelManagerLocal::createLibrary(const QString& libraryName,

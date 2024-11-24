@@ -175,7 +175,7 @@ QString MaterialManager::defaultMaterialUUID()
 
 std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> MaterialManager::getLibraries()
 {
-    // _externalManager->getLibraries();
+    _externalManager->getLibraries();
     return _localManager->getLibraries();
 }
 

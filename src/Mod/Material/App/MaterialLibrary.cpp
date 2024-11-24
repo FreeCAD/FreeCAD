@@ -43,6 +43,19 @@ using namespace Materials;
 
 TYPESYSTEM_SOURCE(Materials::MaterialLibrary, Base::BaseClass)
 
+MaterialLibrary::MaterialLibrary(const QString& libraryName, const QString& icon, bool readOnly)
+    : Library(libraryName, icon, readOnly)
+    , _local(false)
+{}
+
+MaterialLibrary::MaterialLibrary(const QString& libraryName,
+                                 const QString& dir,
+                                 const QString& icon,
+                                 bool readOnly)
+    : Library(libraryName, dir, icon, readOnly)
+    , _local(false)
+{}
+
 bool MaterialLibrary::materialInTree(const std::shared_ptr<Material>& material,
                                      const std::shared_ptr<Materials::MaterialFilter>& filter,
                                      const Materials::MaterialFilterOptions& options) const
@@ -63,7 +76,12 @@ bool MaterialLibrary::materialInTree(const std::shared_ptr<Material>& material,
 
 bool MaterialLibrary::isLocal() const
 {
-    return false;
+    return _local;
+}
+
+void MaterialLibrary::setLocal(bool local)
+{
+    _local = local;
 }
 
 std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
@@ -79,27 +97,17 @@ MaterialLibrary::getMaterialTree(const std::shared_ptr<Materials::MaterialFilter
 
 /* TRANSLATOR Material::Materials */
 
-TYPESYSTEM_SOURCE(Materials::MaterialLibraryExternal, Materials::MaterialLibrary)
-
-MaterialLibraryExternal::MaterialLibraryExternal(const QString& libraryName, const QString& icon, bool readOnly)
-    : Library(libraryName, icon, readOnly)
-{}
-
-bool MaterialLibraryExternal::isLocal() const
-{
-    return false;
-}
-
-
 TYPESYSTEM_SOURCE(Materials::MaterialLibraryLocal, Materials::MaterialLibrary)
 
 MaterialLibraryLocal::MaterialLibraryLocal(const QString& libraryName,
                                            const QString& dir,
                                            const QString& icon,
                                            bool readOnly)
-    : LocalLibrary(libraryName, dir, icon, readOnly)
+    : MaterialLibrary(libraryName, dir, icon, readOnly)
     , _materialPathMap(std::make_unique<std::map<QString, std::shared_ptr<Material>>>())
-{}
+{
+    setLocal(true);
+}
 
 std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
 MaterialLibraryLocal::getMaterialTree(const std::shared_ptr<Materials::MaterialFilter>& filter,
@@ -378,11 +386,6 @@ std::shared_ptr<Material> MaterialLibraryLocal::getMaterialByPath(const QString&
     }
 
     throw MaterialNotFound();
-}
-
-bool MaterialLibraryLocal::isLocal() const
-{
-    return true;
 }
 
 QString MaterialLibraryLocal::getUUIDFromPath(const QString& path) const

@@ -38,7 +38,7 @@
 namespace Materials
 {
 
-class MaterialsExport ModelLibrary: public LocalLibrary,
+class MaterialsExport ModelLibrary: public Library,
                                     public std::enable_shared_from_this<ModelLibrary>
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
@@ -53,7 +53,7 @@ public:
 
     bool operator==(const ModelLibrary& library) const
     {
-        return LocalLibrary::operator==(library);
+        return Library::operator==(library);
     }
     bool operator!=(const ModelLibrary& library) const
     {

@@ -47,7 +47,7 @@ public:
     static void cleanup();
     void refresh();
 
-    std::shared_ptr<std::vector<Library>> getLibraries();
+    std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> getLibraries();
     void createLibrary(const QString& libraryName,
                        const QString& directory,
                        const QString& icon,
@@ -58,10 +58,6 @@ public:
     std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
     libraryModels(const QString& libraryName);
 
-    std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> getModelLibraries()
-    {
-        return _libraryList;
-    }
     std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> getModels()
     {
         return _modelMap;

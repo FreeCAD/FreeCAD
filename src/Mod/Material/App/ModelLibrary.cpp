@@ -34,13 +34,13 @@
 
 using namespace Materials;
 
-TYPESYSTEM_SOURCE(Materials::ModelLibrary, Materials::LocalLibrary)
+TYPESYSTEM_SOURCE(Materials::ModelLibrary, Materials::Library)
 
 ModelLibrary::ModelLibrary(const QString& libraryName,
                            const QString& dir,
                            const QString& icon,
                            bool readOnly)
-    : LocalLibrary(libraryName, dir, icon, readOnly)
+    : Library(libraryName, dir, icon, readOnly)
 {
     _modelPathMap = std::make_unique<std::map<QString, std::shared_ptr<Model>>>();
 }

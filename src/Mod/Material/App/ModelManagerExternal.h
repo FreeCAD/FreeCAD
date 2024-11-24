@@ -47,43 +47,12 @@ public:
     static void cleanup();
     void refresh();
 
-    std::shared_ptr<std::vector<Library>> getLibraries();
+    std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> getLibraries();
     void createLibrary(const QString& libraryName,
-                       const QString& directory,
                        const QString& icon,
                        bool readOnly = true);
-    void renameLibrary(const QString& libraryName, const QString& newName);
-    void changeIcon(const QString& libraryName, const QString& icon);
-    void removeLibrary(const QString& libraryName);
-    std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
-    libraryModels(const QString& libraryName);
-
-    std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> getModelLibraries()
-    {
-        return _libraryList;
-    }
-    std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> getModels()
-    {
-        return _modelMap;
-    }
-    std::shared_ptr<std::map<QString, std::shared_ptr<ModelTreeNode>>>
-    getModelTree(std::shared_ptr<ModelLibrary> library, ModelFilter filter = ModelFilter_None) const
-    {
-        return library->getModelTree(filter);
-    }
-    std::shared_ptr<Model> getModel(const QString& uuid) const;
-    std::shared_ptr<Model> getModelByPath(const QString& path) const;
-    std::shared_ptr<Model> getModelByPath(const QString& path, const QString& lib) const;
-    std::shared_ptr<ModelLibrary> getLibrary(const QString& name) const;
-
-    static bool isModel(const QString& file);
 
 private:
-    static void initLibraries();
-
-    static std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> _libraryList;
-    static std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> _modelMap;
-    static QMutex _mutex;
 };
 
 }  // namespace Materials

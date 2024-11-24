@@ -50,10 +50,9 @@ public:
     static void cleanup();
     void refresh();
 
-    std::shared_ptr<std::vector<Library>> getLibraries();
-    void createLibrary(const QString& libraryName,
-                       const QString& icon,
-                       bool readOnly = true);
+    std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> getLibraries();
+    std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> getLocalLibraries();
+    void createLibrary(const QString& libraryName, const QString& icon, bool readOnly = true);
     void createLocalLibrary(const QString& libraryName,
                        const QString& directory,
                        const QString& icon,
@@ -65,8 +64,6 @@ public:
     libraryModels(const QString& libraryName);
     bool isLocalLibrary(const QString& libraryName);
 
-    std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> getModelLibraries();
-    std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> getLocalModelLibraries();
     std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> getModels();
     std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> getLocalModels();
     std::shared_ptr<std::map<QString, std::shared_ptr<ModelTreeNode>>>

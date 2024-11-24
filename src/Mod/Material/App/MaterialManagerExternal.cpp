@@ -58,7 +58,6 @@ std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> MaterialManagerExte
     auto libraryList = std::make_shared<std::list<std::shared_ptr<MaterialLibrary>>>();
     auto externalLibraries = ExternalManager::getManager()->libraries();
     for (auto& entry : *externalLibraries) {
-        // Base::Console().Log("Tuple size %d\n", entry.tuple_size());
         auto libName = std::get<0>(entry);
         auto icon = std::get<1>(entry);
         auto readOnly = std::get<2>(entry);
@@ -66,7 +65,7 @@ std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> MaterialManagerExte
                             libName.toStdString().c_str(),
                             icon.toStdString().c_str(),
                             readOnly ? "true" : "false");
-        auto library = std::make_shared<MaterialLibraryExternal>(libName, icon, readOnly);
+        auto library = std::make_shared<MaterialLibrary>(libName, icon, readOnly);
         libraryList->push_back(library);
     }
 

@@ -39,6 +39,9 @@ public:
     static ExternalManager* getManager();
 
     std::shared_ptr<std::vector<std::tuple<QString, QString, bool>>> libraries();
+    void createLibrary(const QString& libraryName,
+                       const QString& icon,
+                       bool readOnly = true);
 
 private:
     ExternalManager();

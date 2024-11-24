@@ -40,37 +40,19 @@ Library::Library(const QString& libraryName, const QString& icon, bool readOnly)
     , _readOnly(readOnly)
 {}
 
-bool Library::operator==(const Library& library) const
-{
-    return (_name == library._name);
-}
-
-bool Library::isLocal() const
-{
-    return false;
-}
-
-TYPESYSTEM_SOURCE(Materials::LocalLibrary, Materials::Library)
-
-LocalLibrary::LocalLibrary(const QString& libraryName,
-                           const QString& dir,
-                           const QString& icon,
-                           bool readOnly)
-    : Library(libraryName, icon, readOnly)
+Library::Library(const QString& libraryName, const QString& dir, const QString& icon, bool readOnly)
+    : _name(libraryName)
+    , _iconPath(icon)
+    , _readOnly(readOnly)
     , _directory(QDir::cleanPath(dir))
 {}
 
-bool LocalLibrary::operator==(const LocalLibrary& library) const
+bool Library::operator==(const Library& library) const
 {
     return (getName() == library.getName()) && (_directory == library._directory);
 }
 
-bool LocalLibrary::isLocal() const
-{
-    return true;
-}
-
-QString LocalLibrary::getLocalPath(const QString& path) const
+QString Library::getLocalPath(const QString& path) const
 {
     QString filePath = getDirectoryPath();
     if (!(filePath.endsWith(QLatin1String("/")) || filePath.endsWith(QLatin1String("\\")))) {
@@ -90,7 +72,7 @@ QString LocalLibrary::getLocalPath(const QString& path) const
     return filePath;
 }
 
-bool LocalLibrary::isRoot(const QString& path) const
+bool Library::isRoot(const QString& path) const
 {
     QString localPath = getLocalPath(path);
     QString cleanPath = getLocalPath(QString::fromStdString(""));
@@ -99,7 +81,7 @@ bool LocalLibrary::isRoot(const QString& path) const
     return (cleanPath == localPath);
 }
 
-QString LocalLibrary::getRelativePath(const QString& path) const
+QString Library::getRelativePath(const QString& path) const
 {
     QString filePath;
     QString cleanPath = QDir::cleanPath(path);
