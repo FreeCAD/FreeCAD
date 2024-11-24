@@ -39,6 +39,12 @@
       </Documentation>
       <Parameter Name="Name" Type="String"/>
     </Attribute>
+    <Attribute Name="Type" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Model type.</UserDocu>
+      </Documentation>
+      <Parameter Name="Type" Type="String"/>
+    </Attribute>
     <Attribute Name="Directory" ReadOnly="false">
       <Documentation>
         <UserDocu>Model directory.</UserDocu>

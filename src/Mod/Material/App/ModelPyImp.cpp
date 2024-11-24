@@ -114,6 +114,25 @@ void ModelPy::setName(Py::String arg)
     getModelPtr()->setName(QString::fromStdString(arg));
 }
 
+Py::String ModelPy::getType() const
+{
+    auto type = (getModelPtr()->getType() == Model::ModelType_Physical)
+        ? "Physical"
+        : "Appearance";
+
+    return Py::String(type);
+}
+
+void ModelPy::setType(Py::String arg)
+{
+    if (arg.as_std_string() == "Appearance") {
+        getModelPtr()->setType(Model::ModelType_Appearance);
+    }
+    else {
+        getModelPtr()->setType(Model::ModelType_Physical);
+    }
+}
+
 Py::String ModelPy::getDirectory() const
 {
     return Py::String(getModelPtr()->getDirectoryPath().toStdString());

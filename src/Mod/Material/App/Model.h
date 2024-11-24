@@ -182,8 +182,8 @@ public:
     }
     const QString getBase() const
     {
-        return (_type == ModelType_Physical) ? QString::fromStdString("Model")
-                                             : QString::fromStdString("AppearanceModel");
+        return (_type == ModelType_Physical) ? QLatin1String("Model")
+                                             : QLatin1String("AppearanceModel");
     }
     const QString getName() const
     {
