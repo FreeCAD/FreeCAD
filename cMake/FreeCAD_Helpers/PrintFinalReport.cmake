@@ -217,6 +217,7 @@ macro(PrintFinalReport)
     conditional(PYCXX PYCXX_FOUND "not found" "${PYCXX_VERSION} Incl: ${PYCXX_INCLUDE_DIR} Src:${PYCXX_SOURCE_DIR}")
     conditional(fmt fmt_FOUND "Sources downloaded to ${fmt_SOURCE_DIR}" "${fmt_VERSION}")
     conditional(yaml-cpp yaml-cpp_FOUND "not found" "${yaml-cpp_VERSION}")
+    conditional(Vtk VTK_FOUND "not found" ${VTK_VERSION})
 
     section_end()
 
