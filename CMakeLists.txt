@@ -3,6 +3,11 @@
 # for further info why
 cmake_minimum_required(VERSION 3.16.3 FATAL_ERROR)
 
+# Suppress 'FindBoost module is removed' warning. Will use BoostConfig.cmake instead
+if(POLICY CMP0167)
+    cmake_policy(SET CMP0167 NEW)
+endif()
+
 # policy CMP0072 was introduced with CMake 3.11
 # relates to FindOpenGL module
 # and cache variables OPENGL_gl_LIBRARY, OPENGL_glu_LIBRARY
