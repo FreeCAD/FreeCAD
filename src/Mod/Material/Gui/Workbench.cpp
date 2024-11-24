@@ -52,6 +52,11 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     material->setCommand("&Materials");
     *material << "Materials_Edit";
 
+    Gui::MenuItem* external = new Gui::MenuItem;
+    root->insertItem(item, external);
+    external->setCommand("&External Manager");
+    *external << "Materials_MigrateToExternal";
+
     return root;
 }
 

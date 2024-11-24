@@ -71,3 +71,23 @@ std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> MaterialManagerExte
 
     return libraryList;
 }
+
+void MaterialManagerExternal::createLibrary(const QString& libraryName,
+                                            const QString& icon,
+                                            bool readOnly)
+{
+    ExternalManager::getManager()->createLibrary(libraryName, icon, readOnly);
+}
+
+//=====
+//
+// Material management
+//
+//=====
+
+void MaterialManagerExternal::addMaterial(const QString& libraryName,
+                                          const QString& path,
+                                          const std::shared_ptr<Material>& material)
+{
+    ExternalManager::getManager()->addMaterial(libraryName, path, material);
+}

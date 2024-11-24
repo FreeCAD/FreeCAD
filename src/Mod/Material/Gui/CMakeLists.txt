@@ -58,6 +58,7 @@ set(MatGui_UIC_SRCS
     MaterialSave.ui
     MaterialsEditor.ui
     ModelSelect.ui
+    TaskMigrateExternal.ui
     TextEdit.ui
 )
 
@@ -124,6 +125,9 @@ SET(MatGui_SRCS
     ModelSelect.ui
     PreCompiled.cpp
     PreCompiled.h
+    TaskMigrateExternal.cpp
+    TaskMigrateExternal.h
+    TaskMigrateExternal.ui
     TextEdit.cpp
     TextEdit.h
     TextEdit.ui

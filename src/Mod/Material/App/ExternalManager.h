@@ -32,16 +32,30 @@ class QMutex;
 namespace Materials
 {
 
+class Material;
+class Model;
+
 class MaterialsExport ExternalManager
 {
 public:
 
     static ExternalManager* getManager();
 
+    // Library management
     std::shared_ptr<std::vector<std::tuple<QString, QString, bool>>> libraries();
     void createLibrary(const QString& libraryName,
                        const QString& icon,
                        bool readOnly = true);
+
+    // Model management
+    void
+    addModel(const QString& libraryName, const QString& path, const std::shared_ptr<Model>& model);
+
+    // Material management
+    void addMaterial(const QString& libraryName,
+                     const QString& path,
+                     const std::shared_ptr<Material>& material);
+
 
 private:
     ExternalManager();

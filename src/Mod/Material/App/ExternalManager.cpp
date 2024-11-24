@@ -33,6 +33,8 @@
 #include <CXX/Objects.hxx>
 
 #include "ExternalManager.h"
+#include "MaterialPy.h"
+#include "ModelPy.h"
 
 
 using namespace Materials;
@@ -89,18 +91,6 @@ void ExternalManager::instantiate()
             _instantiated = true;
         }
 
-        // if (_managerObject.hasAttr("libraries")) {
-        //     Base::Console().Log("\tFound libraries()\n");
-        //     Py::Callable libraries(_managerObject.getAttr("libraries"));
-        //     Py::List list(libraries.apply());
-        //     for (auto library : list) {
-        //         auto file = Py::Object(library).as_string();
-        //         Base::Console().Log("\t'%s'\n", file.c_str());
-        //     }
-        // }
-        // else {
-        //     Base::Console().Log("\tlibraries() not found\n");
-        // }
         if (_instantiated) {
             Base::Console().Log("done\n");
         }
@@ -130,14 +120,19 @@ ExternalManager* ExternalManager::getManager()
     return _manager;
 }
 
+//=====
+//
+// Library management
+//
+//=====
+
 std::shared_ptr<std::vector<std::tuple<QString, QString, bool>>> ExternalManager::libraries()
 {
     auto libList = std::make_shared<std::vector<std::tuple<QString, QString, bool>>>();
 
     if (_instantiated) {
-        try
-        {
-            Base::PyGILStateLocker lock;
+        Base::PyGILStateLocker lock;
+        try {
             if (_managerObject.hasAttr("libraries")) {
                 Base::Console().Log("\tFound libraries()\n");
                 Py::Callable libraries(_managerObject.getAttr("libraries"));
@@ -179,19 +174,86 @@ void ExternalManager::createLibrary(const QString& libraryName,
                                     bool readOnly)
 {
     if (_instantiated) {
+        Base::PyGILStateLocker lock;
         try {
-            Base::PyGILStateLocker lock;
             if (_managerObject.hasAttr("createLibrary")) {
                 Base::Console().Log("\tcreateLibrary()\n");
                 Py::Callable libraries(_managerObject.getAttr("createLibrary"));
                 Py::Tuple args(3);
                 args.setItem(0, Py::String(libraryName.toStdString()));
-                args.setItem(0, Py::String(icon.toStdString()));
-                args.setItem(0, Py::Boolean(readOnly));
-                Py::List list(libraries.apply(args));
+                args.setItem(1, Py::String(icon.toStdString()));
+                args.setItem(2, Py::Boolean(readOnly));
+                libraries.apply(args); // No return expected
             }
             else {
                 Base::Console().Log("\tcreateLibrary() not found\n");
+            }
+        }
+        catch (Py::Exception& e) {
+            // // Base::Console().Log("Python error '%s'\n", e.what().c_str());
+            // Base::PyException e1;  // extract the Python error text
+            // e1.ReportException();
+            e.clear();
+        }
+    }
+}
+
+//=====
+//
+// Model management
+//
+//=====
+
+void ExternalManager::addModel(const QString& libraryName,
+                               const QString& path,
+                               const std::shared_ptr<Model>& model)
+{
+    if (_instantiated) {
+        Base::PyGILStateLocker lock;
+        try {
+            if (_managerObject.hasAttr("addModel")) {
+                Base::Console().Log("\taddModel()\n");
+                Py::Callable libraries(_managerObject.getAttr("addModel"));
+                Py::Tuple args(3);
+                args.setItem(0, Py::String(libraryName.toStdString()));
+                args.setItem(1, Py::String(path.toStdString()));
+                args.setItem(2, Py::Object(new ModelPy(new Model(*model)), true));
+                libraries.apply(args);  // No return expected
+            }
+            else {
+                Base::Console().Log("\taddModel() not found\n");
+            }
+        }
+        catch (Py::Exception& e) {
+            e.clear();
+        }
+    }
+}
+
+//=====
+//
+// Model management
+//
+//=====
+
+void ExternalManager::addMaterial(const QString& libraryName,
+                                  const QString& path,
+                                  const std::shared_ptr<Material>& material)
+{
+    if (_instantiated) {
+        Base::PyGILStateLocker lock;
+        try {
+            if (_managerObject.hasAttr("addMaterial")) {
+                Base::Console().Log("\taddMaterial()\n");
+                Py::Callable libraries(_managerObject.getAttr("addMaterial"));
+                Py::Tuple args(3);
+                args.setItem(0, Py::String(libraryName.toStdString()));
+                args.setItem(1, Py::String(path.toStdString()));
+                args.setItem(2, Py::Object(new MaterialPy(new Material(*material)), true));
+                libraries.apply(args);  // No return expected
+            }
+            else {
+                Base::Console().Log("\taddMaterial() not found\n");
             }
         }
         catch (Py::Exception& e) {

@@ -47,6 +47,12 @@ void ModelManagerExternal::refresh()
 {
 }
 
+//=====
+//
+// Library management
+//
+//=====
+
 std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> ModelManagerExternal::getLibraries()
 {
     auto libraryList = std::make_shared<std::list<std::shared_ptr<ModelLibrary>>>();
@@ -71,4 +77,17 @@ void ModelManagerExternal::createLibrary(const QString& libraryName,
                                       bool readOnly)
 {
     ExternalManager::getManager()->createLibrary(libraryName, icon, readOnly);
+}
+
+//=====
+//
+// Model management
+//
+//=====
+
+void ModelManagerExternal::addModel(const QString& libraryName,
+                                    const QString& path,
+                                    const std::shared_ptr<Model>& model)
+{
+    ExternalManager::getManager()->addModel(libraryName, path, model);
 }

@@ -47,10 +47,15 @@ public:
     static void cleanup();
     void refresh();
 
+    // Library management
     std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> getLibraries();
     void createLibrary(const QString& libraryName,
                        const QString& icon,
                        bool readOnly = true);
+
+    // Model management
+    void
+    addModel(const QString& libraryName, const QString& path, const std::shared_ptr<Model>& model);
 
 private:
 };

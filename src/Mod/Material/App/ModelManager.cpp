@@ -191,3 +191,24 @@ bool ModelManager::passFilter(ModelFilter filter, Model::ModelType modelType)
 
     return false;
 }
+
+void ModelManager::migrateToExternal(const std::shared_ptr<Materials::ModelLibrary>& library)
+{
+    _externalManager->createLibrary(library->getName(),
+                                    library->getIconPath(),
+                                    library->isReadOnly());
+
+    auto models = _localManager->libraryModels(library->getName());
+    for (auto& tuple : *models) {
+        auto uuid = std::get<0>(tuple);
+        auto path = std::get<1>(tuple);
+        auto name = std::get<2>(tuple);
+        Base::Console().Log("\t('%s', '%s', '%s')\n",
+                            uuid.toStdString().c_str(),
+                            path.toStdString().c_str(),
+                            name.toStdString().c_str());
+
+        auto model = _localManager->getModel(uuid);
+        _externalManager->addModel(library->getName(), path, model);
+    }
+}

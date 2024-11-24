@@ -53,6 +53,30 @@ class MaterialManagerExternal(ABC):
         pass
 
     @abstractmethod
+    def modelLibraries(self) -> list:
+        """Returns a list of libraries managed by this interface
+
+        The list contains a series of tuples describing all libraries managed by
+        this module. Each tuple containes the library name, icon, and a boolean to indicate
+        if it is a read only library.
+
+        This differs from the libraries() function in that it only returns libraries
+        containing model objects."""
+        pass
+
+    @abstractmethod
+    def materialLibraries(self) -> list:
+        """Returns a list of libraries managed by this interface
+
+        The list contains a series of tuples describing all libraries managed by
+        this module. Each tuple containes the library name, icon, and a boolean to indicate
+        if it is a read only library.
+
+        This differs from the libraries() function in that it only returns libraries
+        containing material objects."""
+        pass
+
+    @abstractmethod
     def createLibrary(self, name: str, icon: str, readOnly: bool) -> None:
         """Create a new library
 

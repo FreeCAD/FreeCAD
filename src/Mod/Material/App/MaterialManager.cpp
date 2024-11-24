@@ -433,3 +433,24 @@ void MaterialManager::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp:
     //     _dbManager->refresh();
     // }
 }
+
+void MaterialManager::migrateToExternal(const std::shared_ptr<Materials::MaterialLibrary>& library)
+{
+    _externalManager->createLibrary(library->getName(),
+                                    library->getIconPath(),
+                                    library->isReadOnly());
+
+    auto models = _localManager->libraryMaterials(library->getName());
+    for (auto& tuple : *models) {
+        auto uuid = std::get<0>(tuple);
+        auto path = std::get<1>(tuple);
+        auto name = std::get<2>(tuple);
+        Base::Console().Log("\t('%s', '%s', '%s')\n",
+                            uuid.toStdString().c_str(),
+                            path.toStdString().c_str(),
+                            name.toStdString().c_str());
+
+        auto material = _localManager->getMaterial(uuid);
+        _externalManager->addMaterial(library->getName(), path, material);
+    }
+}

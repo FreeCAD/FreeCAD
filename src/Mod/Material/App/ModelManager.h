@@ -82,6 +82,8 @@ public:
     /// Observer message from the ParameterGrp
     void OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason) override;
 
+    void migrateToExternal(const std::shared_ptr<Materials::ModelLibrary>& library);
+
 private:
     void initManagers();
 
