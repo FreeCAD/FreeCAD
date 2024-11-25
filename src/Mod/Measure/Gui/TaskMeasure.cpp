@@ -93,13 +93,13 @@ TaskMeasure::TaskMeasure()
                                   "measurement. Use SHIFT to temporarly invert the behaviour."));
     connect(autoSaveAction, &QAction::triggered, this, &TaskMeasure::autoSaveChanged);
 
-    newMeasurementBehaviourAction = new QAction(tr("CTRL to add object to measurement"));
+    newMeasurementBehaviourAction = new QAction(tr("Additive Selection"));
     newMeasurementBehaviourAction->setCheckable(true);
     newMeasurementBehaviourAction->setChecked(Gui::Selection().getSelectionStyle()
-                                              == SelectionStyle::NormalSelection);
+                                              == SelectionStyle::GreedySelection);
     newMeasurementBehaviourAction->setToolTip(
-        tr("If checked CTRL must be pressed to initiate a new measurement, otherwise CTRL pressed "
-           "adds a selected object to the current measurement"));
+        tr("If checked, new selection will be added to the measurement. If unchecked, CTRL must be pressed to add a "
+           "selection to the current measurement otherwise a new measurement will be started"));
     connect(newMeasurementBehaviourAction,
             &QAction::triggered,
             this,
@@ -546,7 +546,7 @@ void TaskMeasure::newMeasurementBehaviourChanged(bool checked)
 {
     QSettings settings;
     settings.beginGroup(QLatin1String(taskMeasureSettingsGroup));
-    if (checked) {
+    if (!checked) {
         Gui::Selection().setSelectionStyle(SelectionStyle::NormalSelection);
         settings.setValue(QLatin1String(taskMeasureGreedySelection), false);
     }
