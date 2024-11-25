@@ -212,7 +212,7 @@ public:
     */
     virtual GeomBSplineCurve* toNurbs(double first, double last) const;
     /*!
-     * \brief getArc Generates a curve that is an arc of this curve between given parameters
+     * \brief createArc Generates a curve that is an arc of this curve between given parameters
      * \param first Parameter at start of arc
      * \param last Parameter at end of arc. This may be < `first` for periodic curves.
      * \return the new curve
@@ -653,7 +653,8 @@ public:
     GeomHyperbola();
     explicit GeomHyperbola(const Handle(Geom_Hyperbola)&);
     ~GeomHyperbola() override;
-    Geometry *copy() const override;
+    Geometry* copy() const override;
+    GeomCurve* createArc(double first, double last) const override;
 
     double getMajorRadius() const;
     void setMajorRadius(double Radius);
@@ -717,7 +718,8 @@ public:
     GeomParabola();
     explicit GeomParabola(const Handle(Geom_Parabola)&);
     ~GeomParabola() override;
-    Geometry *copy() const override;
+    Geometry* copy() const override;
+    GeomCurve* createArc(double first, double last) const override;
 
     double getFocal() const;
     void setFocal(double length);

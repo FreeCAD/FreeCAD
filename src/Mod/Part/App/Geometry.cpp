@@ -795,7 +795,7 @@ GeomBSplineCurve* GeomCurve::toNurbs(double first, double last) const
 
 GeomCurve* GeomCurve::createArc([[maybe_unused]] double first, [[maybe_unused]] double last) const
 {
-    return nullptr;
+    THROWM(Base::NotImplementedError, "createArc: not implemented for this type of curve");
 }
 
 bool GeomCurve::tangent(double u, gp_Dir& dir) const
@@ -3606,11 +3606,19 @@ void GeomHyperbola::setHandle(const Handle(Geom_Hyperbola)& c)
     myCurve = Handle(Geom_Hyperbola)::DownCast(c->Copy());
 }
 
-Geometry *GeomHyperbola::copy() const
+Geometry* GeomHyperbola::copy() const
 {
     GeomHyperbola *newHyp = new GeomHyperbola(myCurve);
     newHyp->copyNonTag(this);
     return newHyp;
+}
+
+GeomCurve* GeomHyperbola::createArc(double first, double last) const
+{
+    auto newArc = new GeomArcOfHyperbola(Handle(Geom_Hyperbola)::DownCast(this->handle()->Copy()));
+    newArc->setRange(first, last, false);
+
+    return newArc;
 }
 
 GeomBSplineCurve* GeomHyperbola::toNurbs(double first, double last) const
@@ -4056,6 +4064,14 @@ Geometry *GeomParabola::copy() const
     GeomParabola *newPar = new GeomParabola(myCurve);
     newPar->copyNonTag(this);
     return newPar;
+}
+
+GeomCurve* GeomParabola::createArc(double first, double last) const
+{
+    auto newArc = new GeomArcOfParabola(Handle(Geom_Parabola)::DownCast(this->handle()->Copy()));
+    newArc->setRange(first, last, false);
+
+    return newArc;
 }
 
 GeomBSplineCurve* GeomParabola::toNurbs(double first, double last) const
