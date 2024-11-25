@@ -30,7 +30,7 @@
 #include <App/DocumentObject.h>
 #include <App/DocumentObserver.h>
 #include <App/StringHasher.h>
-#include <base/Tools.h>
+#include <Base/Tools.h>
 #include <CXX/Objects.hxx>
 #include <boost/bimap.hpp>
 #include <boost/graph/adjacency_list.hpp>
