@@ -50,6 +50,7 @@ generate_from_xml(MaterialManagerPy)
 generate_from_xml(MaterialPy)
 generate_from_xml(ModelManagerPy)
 generate_from_xml(ModelPropertyPy)
+generate_from_xml(MaterialPropertyPy)
 generate_from_xml(ModelPy)
 generate_from_xml(UUIDsPy)
 
@@ -68,6 +69,8 @@ SET(Python_SRCS
     MaterialLibraryPyImp.cpp
     MaterialManagerPy.xml
     MaterialManagerPyImp.cpp
+    MaterialPropertyPy.xml
+    MaterialPropertyPyImp.cpp
     MaterialPy.xml
     MaterialPyImp.cpp
     MaterialFilterPy.xml

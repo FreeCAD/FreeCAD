@@ -57,5 +57,17 @@
       </Documentation>
       <Parameter Name="Columns" Type="List"/>
     </Attribute>
+    <Attribute Name="Inheritance" ReadOnly="true">
+      <Documentation>
+        <UserDocu>UUID of the model in which the property is defined.</UserDocu>
+      </Documentation>
+      <Parameter Name="Inheritance" Type="String"/>
+    </Attribute>
+    <Attribute Name="Inherited" ReadOnly="true">
+      <Documentation>
+        <UserDocu>True if the property is inherited.</UserDocu>
+      </Documentation>
+      <Parameter Name="Inherited" Type="Boolean"/>
+    </Attribute>
   </PythonExport>
 </GenerateModel>

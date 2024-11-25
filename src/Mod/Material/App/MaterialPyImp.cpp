@@ -36,6 +36,8 @@
 #include "MaterialLibrary.h"
 #include "MaterialPy.h"
 #include "MaterialValue.h"
+#include "ModelPropertyPy.h"
+#include "MaterialPropertyPy.h"
 
 #include "MaterialPy.cpp"
 
@@ -567,4 +569,18 @@ PyObject* MaterialPy::setAppearanceValue(PyObject* args)
                                          QString::fromStdString(value));
     Py_INCREF(Py_None);
     return Py_None;
+}
+
+Py::Dict MaterialPy::getPropertyObjects() const
+{
+    Py::Dict dict;
+
+    auto properties = getMaterialPtr()->getPhysicalProperties();
+    for (auto& it : properties) {
+        QString key = it.first;
+        auto materialProperty = it.second;
+        dict.setItem(Py::String(key.toStdString()), Py::Object(new MaterialPropertyPy(new MaterialProperty(materialProperty)), true));
+    }
+
+    return dict;
 }
