@@ -28,6 +28,8 @@ import re
 import FreeCAD
 from nativeifc import ifc_tools
 
+translate = FreeCAD.Qt.translate
+
 
 def has_psets(obj):
     """Returns True if an object has attached psets"""
@@ -299,7 +301,7 @@ def add_property(ifcfile, pset, name, value=""):
 
 def get_freecad_type(ptype):
     """Returns a FreeCAD property type correspinding to an IFC property type"""
-    
+
     conv = read_properties_conversion()
     for key, values in conv.items():
         if ptype.lower() in [v.lower() for v in values.split(":")]:
@@ -331,3 +333,26 @@ def read_properties_conversion():
             for row in reader:
                 result[row[0]] = row[1]
     return result
+
+
+def remove_property(obj, prop):
+    """Removes a custom property"""
+
+    from nativeifc import ifc_tools
+    ifcfile = ifc_tools.get_ifcfile(obj)
+    if not ifcfile:
+        return
+    element = ifc_tools.get_ifc_element(obj, ifcfile)
+    if not element:
+        return
+    psets = get_psets(element)
+    for psetname, props in psets.items():
+        if prop in props:
+            pset = get_pset(psetname, element)
+            if pset:
+                FreeCAD.Console.PrintMessage(translate("BIM","Removing property")+": "+prop)
+                ifc_tools.api_run("pset.edit_pset", ifcfile, pset=pset, properties={prop: None})
+                if len(props) == 1:
+                    # delete the pset too
+                    FreeCAD.Console.PrintMessage(translate("BIM","Removing property set")+": "+psetname)
+                    ifc_tools.api_run("pset.remove_pset", ifcfile, product=element, pset=pset)
