@@ -304,7 +304,7 @@ Base::Placement GeoFeature::getGlobalPlacement(App::DocumentObject* targetObj,
                                                App::DocumentObject* rootObj,
                                                const std::string& sub)
 {
-    if (!targetObj || !rootObj || sub.empty()) {
+    if (!targetObj || !rootObj) {
         return Base::Placement();
     }
     std::vector<std::string> names = Base::Tools::splitSubName(sub);
