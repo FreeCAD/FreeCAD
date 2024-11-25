@@ -98,7 +98,8 @@ TaskMeasure::TaskMeasure()
     newMeasurementBehaviourAction->setChecked(Gui::Selection().getSelectionStyle()
                                               == SelectionStyle::GreedySelection);
     newMeasurementBehaviourAction->setToolTip(
-        tr("If checked, new selection will be added to the measurement. If unchecked, CTRL must be pressed to add a "
+        tr("If checked, new selection will be added to the measurement. If unchecked, CTRL must be "
+           "pressed to add a "
            "selection to the current measurement otherwise a new measurement will be started"));
     connect(newMeasurementBehaviourAction,
             &QAction::triggered,
