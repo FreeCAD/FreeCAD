@@ -346,7 +346,7 @@ class Stretch(gui_base_original.Modifier):
                         #       " - ", ops[1],
                         #       " - ", self.displacement)
                         done = False
-                        if optype > 0 and optype < 5:
+                        if 0 < optype < 5:
                             v1 = ops[0].Placement.multVec(p2).sub(ops[0].Placement.multVec(p1))
                             a1 = round(self.displacement.getAngle(v1), 4)
                             v2 = ops[0].Placement.multVec(p4).sub(ops[0].Placement.multVec(p1))
@@ -445,7 +445,7 @@ class Stretch(gui_base_original.Modifier):
                                     commitops.append(_cmd)
                                     commitops.append(_pl)
                                     done = True
-                        if optype == 5:
+                        elif optype == 5:
                             _pl = _doc + ops[0].Name
                             _pl += ".Placement.Base=FreeCAD."
                             _pl += str(ops[0].Placement.Base.add(self.displacement))
