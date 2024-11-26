@@ -23,9 +23,11 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <algorithm>
+# include <locale>
 # include <QApplication>
 # include <QDir>
 # include <QKeyEvent>
+# include <QLocale>
 # include <QRegularExpression>
 # include <QStringList>
 # include <QTranslator>
@@ -262,6 +264,13 @@ std::string Translator::locale(const std::string& lang) const
     return loc;
 }
 
+void setStdLocale(const QLocale &loc)
+{
+    auto locName = loc.name().toStdString();
+    locName.append(".UTF-8"); // Strings are internally utf-8 encoded
+    std::locale::global(std::locale(locName));
+}
+
 void Translator::setLocale(const std::string& language) const
 {
     auto loc = QLocale::system(); //Defaulting to OS locale
@@ -274,6 +283,7 @@ void Translator::setLocale(const std::string& language) const
             loc  = QLocale(QString::fromStdString(bcp47));
     }
     QLocale::setDefault(loc);
+    setStdLocale(loc);
     updateLocaleChange();
 
 #ifdef FC_DEBUG
@@ -397,6 +407,14 @@ bool Translator::eventFilter(QObject* obj, QEvent* ev)
     return false;
 }
 
+struct decimalDot : std::numpunct<char>
+{
+    char do_decimal_point() const override
+    {
+        return '.';
+    }
+};
+
 void Translator::enableDecimalPointConversion(bool on)
 {
     if (!qApp) {
@@ -405,6 +423,7 @@ void Translator::enableDecimalPointConversion(bool on)
 
     if (!on) {
         decimalPointConverter.reset();
+        setStdLocale(QLocale());
         return;
     }
 #if FC_DEBUG
@@ -419,6 +438,7 @@ void Translator::enableDecimalPointConversion(bool on)
             }
         );
         qApp->installEventFilter(decimalPointConverter.get());
+        std::locale::global(std::locale(std::locale(), new decimalDot));
     }
 }
 
