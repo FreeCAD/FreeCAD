@@ -30,18 +30,3 @@
 
 using namespace Gui;
 using namespace DAG;
-
-FilterBase::FilterBase() : name(QString::fromLatin1("empty name"))
-{
-
-}
-
-FilterOrigin::FilterOrigin() : FilterBase()
-{
-  name = QObject::tr("Origin");
-}
-
-FilterTyped::FilterTyped(const std::string &typeIn) : FilterBase(), type(typeIn)
-{
-  name = QString::fromStdString(typeIn);
-}

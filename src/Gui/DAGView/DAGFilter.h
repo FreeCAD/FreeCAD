@@ -32,30 +32,6 @@ namespace Gui
   class ViewProviderDocumentObject;
   namespace DAG
   {
-    class FilterBase
-    {
-    public:
-      FilterBase();
-      QString name;
-      bool enabled = true;
-    };
-
-    /*! Hide all children of app::origin that are not
-     * used by subsequent features
-     */
-    class FilterOrigin : public FilterBase
-    {
-    public:
-      FilterOrigin();
-    };
-
-    /*! Hide nodes of type*/
-    class FilterTyped : public FilterBase
-    {
-    public:
-      explicit FilterTyped(const std::string &typeIn);
-      std::string type;
-    };
   }
 }
 
