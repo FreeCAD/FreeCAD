@@ -549,9 +549,11 @@ public:
     {
         QSize size = QLineEdit::sizeHint(); 
         QFontMetrics fm(font());
-        int availableWidth = parentWidget()->width() - geometry().x() - 20; // Calculate available width
-        size.setWidth(std::min(fm.horizontalAdvance(text()) + 30, availableWidth)); // Add some padding and max width
-        Base::Console().Warning("sizeHint %d %d\n", size.width(), size.height());
+        int availableWidth = parentWidget()->width() - geometry().x(); // Calculate available width
+        int margin = 2 * (style()->pixelMetric(QStyle::PM_FocusFrameHMargin) + 1)
+                    + 2 * style()->pixelMetric(QStyle::PM_LayoutHorizontalSpacing)
+                    + TreeParams::getItemBackgroundPadding();
+        size.setWidth(std::min(fm.horizontalAdvance(text()) + margin , availableWidth));
         return size;
     }
 
@@ -561,7 +563,6 @@ public:
         ExpLineEdit::keyPressEvent(event);
         setMinimumWidth(sizeHint().width());
     }
-    
 
 };
 
