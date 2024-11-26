@@ -585,8 +585,21 @@ void StdCmdFreezeViews::languageChange()
 //===========================================================================
 // Std_ToggleClipPlane
 //===========================================================================
+class StdCmdToggleClipPlane : public Gui::Command
+{
+public:
+    StdCmdToggleClipPlane();
+    ~StdCmdToggleClipPlane() override = default;
+    const char* className() const override {return "StdToggleCmdClipPlane";}
+protected:
+    void activated(int iMsg) override;
+    bool isActive() override;
+    Gui::Action * createAction() override;
+private:
+    static QPointer<Gui::Dialog::Clipping> clipping;
+};
 
-DEF_STD_CMD_AC(StdCmdToggleClipPlane)
+QPointer<Gui::Dialog::Clipping> StdCmdToggleClipPlane::clipping;
 
 StdCmdToggleClipPlane::StdCmdToggleClipPlane()
   : Command("Std_ToggleClipPlane")
@@ -598,6 +611,13 @@ StdCmdToggleClipPlane::StdCmdToggleClipPlane()
     sStatusTip    = QT_TR_NOOP("Toggles clipping plane for active view");
     sPixmap       = "Std_ToggleClipPlane";
     eType         = Alter3DView;
+
+    this->getGuiApplication()->signalActivateView.connect([this](auto view) {
+        const auto view3d = dynamic_cast<Gui::View3DInventor const*>(view);
+        if (view3d && clipping) {
+            clipping->switchView(view3d);
+        }
+    });
 }
 
 Action * StdCmdToggleClipPlane::createAction()
@@ -609,11 +629,12 @@ Action * StdCmdToggleClipPlane::createAction()
 void StdCmdToggleClipPlane::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    static QPointer<Gui::Dialog::Clipping> clipping = nullptr;
-    if (!clipping) {
-        auto view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
-        if (view) {
+    auto view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
+    if (view) {
+        if (!clipping) {
             clipping = Gui::Dialog::Clipping::makeDockWidget(view);
+        } else {
+            clipping->switchView(view);
         }
     }
 }
