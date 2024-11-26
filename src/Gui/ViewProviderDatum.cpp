@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Inventor/nodes/SoAsciiText.h>
+# include <Inventor/nodes/SoText2.h>
 # include <Inventor/nodes/SoAnnotation.h>
 # include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoFont.h>
@@ -38,6 +38,7 @@
 #include <App/Origin.h>
 
 #include "ViewProviderDatum.h"
+#include "Inventor/SoAxisCrossKit.h"
 #include "SoFCSelection.h"
 #include "ViewProviderOrigin.h"
 
@@ -47,32 +48,28 @@ using namespace Gui;
 PROPERTY_SOURCE(Gui::ViewProviderDatum, Gui::ViewProviderGeometryObject)
 
 ViewProviderDatum::ViewProviderDatum() {
-    ADD_PROPERTY_TYPE(Size, (ViewProviderOrigin::defaultSize()), 0, App::Prop_ReadOnly,
-        QT_TRANSLATE_NOOP("App::Property", "Visual size of the feature"));
-
-    ShapeAppearance.setDiffuseColor(
-        ViewProviderOrigin::defaultColor);  // Set default color for origin (light-blue)
+    // Set default color for origin (light-blue)
+    ShapeAppearance.setDiffuseColor(ViewProviderOrigin::defaultColor);
     Transparency.setValue(0);
     BoundingBox.setStatus(App::Property::Hidden, true); // Hide Boundingbox from the user due to it doesn't make sense
 
     // Create node for scaling the origin
-    pScale = new SoScale();
-    pScale->ref();
+    soScale = new SoShapeScale();
 
     // Create the separator filled by inherited classes
-    pOriginFeatureRoot = new SoSeparator();
-    pOriginFeatureRoot->ref();
+    pRoot = new SoSeparator();
+    pRoot->ref();
 
     // Create the Label node
-    pLabel = new SoAsciiText();
+    pLabel = new SoText2();
     pLabel->ref();
-    pLabel->width.setValue(-1);
+
+    lineThickness = 2.0;
 }
 
 
 ViewProviderDatum::~ViewProviderDatum() {
-    pScale->unref();
-    pOriginFeatureRoot->unref();
+    pRoot->unref();
     pLabel->unref();
 }
 
@@ -82,7 +79,6 @@ void ViewProviderDatum::attach(App::DocumentObject* pcObject)
     ViewProviderGeometryObject::attach(pcObject);
 
     float defaultSz = ViewProviderOrigin::defaultSize();
-    float sz = Size.getValue() / defaultSz;
 
     // Create an external separator
     auto sep = new SoSeparator();
@@ -95,31 +91,9 @@ void ViewProviderDatum::attach(App::DocumentObject* pcObject)
     matBinding->value = SoMaterialBinding::OVERALL;
     sep->addChild(matBinding);
 
-    // Scale feature to the given size
-    pScale->scaleFactor = SbVec3f(sz, sz, sz);
-    sep->addChild(pScale);
-
     // Setup font size
     auto font = new SoFont();
-    float fontRatio = 10.0f;
-    if (pcObject->is<App::Line>()) {
-        // keep font size on axes equal to font size on planes
-        fontRatio *= ViewProviderOrigin::axesScaling;
-        const char* axisName = pcObject->getNameInDocument();
-        auto axisRoles = App::Origin::AxisRoles;
-        if (strncmp(axisName, axisRoles[0], strlen(axisRoles[0])) == 0) {
-            // X-axis: red
-            ShapeAppearance.setDiffuseColor(0xFF0000FF);
-        }
-        else if (strncmp(axisName, axisRoles[1], strlen(axisRoles[1])) == 0) {
-            // Y-axis: green
-            ShapeAppearance.setDiffuseColor(0x00FF00FF);
-        }
-        else if (strncmp(axisName, axisRoles[2], strlen(axisRoles[2])) == 0) {
-            // Z-axis: blue
-            ShapeAppearance.setDiffuseColor(0x0000FFFF);
-        }
-    }
+    float fontRatio = 4.0f;
     font->size.setValue(defaultSz / fontRatio);
     sep->addChild(font);
 
@@ -135,46 +109,42 @@ void ViewProviderDatum::attach(App::DocumentObject* pcObject)
 
     // Style for normal (visible) lines
     auto style = new SoDrawStyle();
-    style->lineWidth = 2.0f;
+    style->lineWidth = lineThickness;
     highlight->addChild(style);
 
     // Visible lines
-    highlight->addChild(pOriginFeatureRoot);
+    highlight->addChild(pRoot);
 
     // Hidden features
     auto hidden = new SoAnnotation();
 
     // Style for hidden lines
     style = new SoDrawStyle();
-    style->lineWidth = 2.0f;
-    style->linePattern.setValue(0xF000); // (dash-skip-skip-skip)
+    style->lineWidth = lineThickness;
+    style->linePattern.setValue(0xFF00); // (dash-skip)
     hidden->addChild(style);
 
     // Hidden lines
-    hidden->addChild(pOriginFeatureRoot);
+    hidden->addChild(pRoot);
 
     highlight->addChild(hidden);
 
     sep->addChild(highlight);
 
-    // Setup the object label as it's text
-    pLabel->string.setValue(SbString(pcObject->Label.getValue()));
 
-    addDisplayMaskMode(sep, "Base");
+    // Scale feature to the given size
+    float sz = App::GetApplication()
+        .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
+        ->GetFloat("LocalCoordinateSystemSize", 2.0);  // NOLINT
+
+    soScale->setPart("shape", sep);
+    soScale->scaleFactor = sz;
+
+    addDisplayMaskMode(soScale, "Base");
 }
 
-void ViewProviderDatum::updateData(const App::Property* prop) {
-    if (prop == &getObject()->Label) {
-        pLabel->string.setValue(SbString(getObject()->Label.getValue()));
-    }
-    ViewProviderGeometryObject::updateData(prop);
-}
 
 void ViewProviderDatum::onChanged(const App::Property* prop) {
-    if (prop == &Size) {
-        float sz = Size.getValue() / ViewProviderOrigin::defaultSize();
-        pScale->scaleFactor = SbVec3f(sz, sz, sz);
-    }
     ViewProviderGeometryObject::onChanged(prop);
 }
 
@@ -188,19 +158,14 @@ std::vector<std::string> ViewProviderDatum::getDisplayModes() const
 
 void ViewProviderDatum::setDisplayMode(const char* ModeName)
 {
-    if (strcmp(ModeName, "Base") == 0)
+    if (strcmp(ModeName, "Base") == 0) {
         setDisplayMaskMode("Base");
+    }
     ViewProviderGeometryObject::setDisplayMode(ModeName);
 }
 
 bool ViewProviderDatum::onDelete(const std::vector<std::string>&) {
     auto feat = static_cast <App::DatumElement*>(getObject());
     // Forbid deletion if there is an origin this feature belongs to
-
-    if (feat->getOrigin()) {
-        return false;
-    }
-    else {
-        return true;
-    }
+    return !feat->getLCS();
 }

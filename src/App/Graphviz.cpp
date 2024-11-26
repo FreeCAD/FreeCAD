@@ -312,7 +312,10 @@ void Document::exportGraphviz(std::ostream& out) const
                 }
                 if (!sgraph) {
                     if (docObj->isDerivedFrom(DatumElement::getClassTypeId())) {
-                        sgraph = GraphList[static_cast<DatumElement*>(docObj)->getOrigin()];
+                        auto* lcs = static_cast<DatumElement*>(docObj)->getLCS();
+                        if (lcs) {
+                            sgraph = GraphList[lcs];
+                        }
                     }
                 }
             }
