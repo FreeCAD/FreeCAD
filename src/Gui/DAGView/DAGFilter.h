@@ -36,8 +36,6 @@ namespace Gui
     {
     public:
       FilterBase();
-      //! @return is whether we have a match or not.
-      virtual bool goFilter(const Vertex &vertexIn, const Graph &graphIn, const GraphLinkContainer &linkIn) const = 0;
       QString name;
       bool enabled = true;
     };
@@ -49,7 +47,6 @@ namespace Gui
     {
     public:
       FilterOrigin();
-      bool goFilter(const Vertex &vertexIn, const Graph &graphIn, const GraphLinkContainer &linkIn) const override;
     };
 
     /*! Hide nodes of type*/
@@ -58,7 +55,6 @@ namespace Gui
     public:
       explicit FilterTyped(const std::string &typeIn);
       std::string type;
-      bool goFilter(const Vertex &vertexIn, const Graph &graphIn, const GraphLinkContainer &linkIn) const override;
     };
   }
 }
