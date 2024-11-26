@@ -159,11 +159,6 @@ namespace Gui
       QAction *editingFinishedAction;
       QGraphicsProxyWidget *proxy = nullptr;
       void finishRename();
-
-      //filters
-      void setupFilters();
-      using FilterContainer = std::vector<std::shared_ptr<FilterBase> >;
-      FilterContainer filters;
     };
   }
 }

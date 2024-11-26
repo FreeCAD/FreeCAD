@@ -102,7 +102,6 @@ Model::Model(QObject *parentIn, const Gui::Document &documentIn) : QGraphicsScen
   theGraph = std::make_shared<Graph>();
   graphLink = std::make_shared<GraphLinkContainer>();
   setupViewConstants();
-  setupFilters();
 
   graphDirty = false;
   currentPrehighlight = nullptr;
@@ -166,13 +165,6 @@ Model::~Model()
     connectResObject.disconnect();
 
   removeAllItems();
-}
-
-void Model::setupFilters()
-{
-//   filters.push_back(std::shared_ptr<FilterOrigin>(new FilterOrigin()));
-//   filters.push_back(std::shared_ptr<FilterTyped>(new FilterTyped("PartDesign::Body")));
-//   filters.push_back(std::shared_ptr<FilterTyped>(new FilterTyped("App::Part")));
 }
 
 void Model::setupViewConstants()
@@ -487,32 +479,6 @@ void Model::updateSlot()
         (*theGraph)[edge].connector = std::make_shared<QGraphicsPathItem>();
         (*theGraph)[edge].connector->setZValue(0.0);
       }
-    }
-  }
-
-  //apply filters.
-  BGL_FORALL_VERTICES(currentVertex, *theGraph, Graph)
-  {
-    (*theGraph)[currentVertex].dagVisible = true; //default to shown.
-    for (const auto &currentFilter : filters)
-    {
-      if (!currentFilter->enabled || currentFilter->type != FilterBase::Type::Exclusion)
-        continue;
-      if (currentFilter->goFilter(currentVertex, *theGraph, *graphLink))
-        (*theGraph)[currentVertex].dagVisible = false;
-    }
-  }
-  //inclusion takes precedence. Separate loop because filters might probe
-  //children and parents. So we want to ensure all exclusions are done
-  //before inclusions start.
-  BGL_FORALL_VERTICES(currentVertex, *theGraph, Graph)
-  {
-    for (const auto &currentFilter : filters)
-    {
-      if (!currentFilter->enabled || currentFilter->type != FilterBase::Type::Inclusion)
-        continue;
-      if (currentFilter->goFilter(currentVertex, *theGraph, *graphLink))
-        (*theGraph)[currentVertex].dagVisible = true;
     }
   }
 

@@ -35,18 +35,11 @@ namespace Gui
     class FilterBase
     {
     public:
-      enum class Type
-      {
-        None = 0, //!< no type designation. shouldn't be used.
-        Inclusion,
-        Exclusion
-      };
       FilterBase();
       //! @return is whether we have a match or not.
       virtual bool goFilter(const Vertex &vertexIn, const Graph &graphIn, const GraphLinkContainer &linkIn) const = 0;
       QString name;
       bool enabled = true;
-      Type type = Type::Exclusion;
     };
 
     /*! Hide all children of app::origin that are not
