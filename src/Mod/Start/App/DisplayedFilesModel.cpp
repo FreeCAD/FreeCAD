@@ -279,7 +279,7 @@ void DisplayedFilesModel::addFile(const QString& filePath)
         return;
     }
     _fileInfoCache.emplace_back(getFileInfo(filePath.toStdString()));
-    if (qfi.completeSuffix().toLower() == QLatin1String("fcstd")) {
+    if (qfi.suffix().toLower() == QLatin1String("fcstd")) {
         auto thumbnail = loadFCStdThumbnail(filePath.toStdString());
         if (!thumbnail.isEmpty()) {
             _imageCache.insert(filePath, thumbnail);
