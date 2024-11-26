@@ -702,18 +702,18 @@ void AboutDialog::copyToClipboard()
             }
 
             str << "\n";
-
-            QClipboard* cb = QApplication::clipboard();
-            cb->setText(data);
-            auto copytext = ui->copyButton->text();
-            ui->copyButton->setText(tr("Copied!"));
-            QTimer::singleShot(2000, [this,copytext]() { ui->copyButton->setText(copytext); });
-
         }
     }
 
     QClipboard* cb = QApplication::clipboard();
     cb->setText(data);
+
+    auto copytext = ui->copyButton->text();
+    ui->copyButton->setText(tr("Copied!"));
+    const int timeout = 2000;
+    QTimer::singleShot(timeout, this, [this, copytext]() {
+        ui->copyButton->setText(copytext);
+    });
 }
 
 // ----------------------------------------------------------------------------
