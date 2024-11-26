@@ -863,7 +863,7 @@ class _MeshRegion(CommandManager):
         super().__init__()
         self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshRegion", "FEM mesh refinement")
         self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_MeshRegion", "Creates a FEM mesh refinement")
-        self.is_active = "with_gmsh_femmesh"
+        self.is_active = "with_femmesh"
         self.do_activated = "add_obj_on_gui_selobj_set_edit"
 
 

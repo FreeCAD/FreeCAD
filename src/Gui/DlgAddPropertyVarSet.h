@@ -74,6 +74,7 @@ public:
     DlgAddPropertyVarSet(QWidget *parent, ViewProviderVarSet* viewProvider);
     ~DlgAddPropertyVarSet() override;
 
+    void changeEvent(QEvent* e) override;
     void accept() override;
     void reject() override;
 
@@ -85,6 +86,7 @@ private:
     void initializeTypes();
     void initializeWidgets(ViewProviderVarSet* viewProvider);
 
+    void setTitle();
     void setOkEnabled(bool enabled);
     void clearEditors(bool clearName = true);
     void clearCurrentProperty();

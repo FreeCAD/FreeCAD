@@ -1135,6 +1135,9 @@ class _ViewProviderSectionPlane:
         self.edit()
 
     def setupContextMenu(self, vobj, menu):
+        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+            return
+
         actionEdit = QtGui.QAction(translate("Arch", "Edit"),
                                    menu)
         QtCore.QObject.connect(actionEdit,

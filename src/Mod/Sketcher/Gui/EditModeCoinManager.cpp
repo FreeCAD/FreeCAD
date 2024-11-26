@@ -44,7 +44,7 @@
 
 #include <Base/Exception.h>
 #include <Gui/Inventor/MarkerBitmaps.h>
-#include <Gui/SoFCBoundingBox.h>
+#include <Gui/Inventor/SoFCBoundingBox.h>
 #include <Mod/Sketcher/App/Constraint.h>
 #include <Mod/Sketcher/App/GeoList.h>
 
@@ -808,8 +808,6 @@ void EditModeCoinManager::processGeometryConstraintsInformationOverlay(
 
     processGeometryInformationOverlay(geolistfacade);
 
-    updateAxesLength();
-
     pEditModeConstraintCoinManager->processConstraints(geolistfacade);
 }
 
@@ -852,22 +850,18 @@ void EditModeCoinManager::processGeometryInformationOverlay(const GeoListFacade&
     overlayParameters.visibleInformationChanged = false;  // just updated
 }
 
-void EditModeCoinManager::updateAxesLength()
+void EditModeCoinManager::updateAxesLength(const Base::BoundBox2d& bb)
 {
     auto zCrossH = ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider)
         * drawingParameters.zCross;
-    editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(
-        0,
-        SbVec3f(-analysisResults.boundingBoxMagnitudeOrder, 0.0f, zCrossH));
-    editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(
-        1,
-        SbVec3f(analysisResults.boundingBoxMagnitudeOrder, 0.0f, zCrossH));
-    editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(
-        2,
-        SbVec3f(0.0f, -analysisResults.boundingBoxMagnitudeOrder, zCrossH));
-    editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(
-        3,
-        SbVec3f(0.0f, analysisResults.boundingBoxMagnitudeOrder, zCrossH));
+    editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(0,
+                                                                 SbVec3f(bb.MinX, 0.0f, zCrossH));
+    editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(1,
+                                                                 SbVec3f(bb.MaxX, 0.0f, zCrossH));
+    editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(2,
+                                                                 SbVec3f(0.0f, bb.MinY, zCrossH));
+    editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(3,
+                                                                 SbVec3f(0.0f, bb.MaxY, zCrossH));
 }
 
 void EditModeCoinManager::updateColor()

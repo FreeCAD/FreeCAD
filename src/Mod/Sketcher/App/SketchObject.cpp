@@ -265,7 +265,7 @@ App::DocumentObjectExecReturn* SketchObject::execute()
         rebuildExternalGeometry();
         Constraints.acceptGeometry(getCompleteGeometry());
     }
-    catch (const Base::Exception& e) {
+    catch (const Base::Exception&) {
         // 9/16/24: We used to clear the constraints here, but we no longer want to do that
         // as missing reference geometry is not considered an error while we sort out sketcher UI.
         // Base::Console().Error("%s\nClear constraints to external geometry\n", e.what());
@@ -1681,10 +1681,33 @@ int SketchObject::delGeometry(int GeoId, bool deleteinternalgeo)
     return 0;
 }
 
-
 int SketchObject::delGeometries(const std::vector<int>& GeoIds)
 {
-    std::vector<int> sGeoIds(GeoIds);
+    std::vector<int> sGeoIds;
+    std::vector<int> negativeGeoIds;
+
+    // Separate GeoIds into negative (external) and non-negative GeoIds
+    for (int geoId : GeoIds) {
+        if (geoId < 0 && geoId <= GeoEnum::RefExt) {
+            negativeGeoIds.push_back(geoId);
+        }
+        else if (geoId >= 0){
+            sGeoIds.push_back(geoId);
+        }
+    }
+
+    // Handle negative GeoIds by calling delExternal
+    if (!negativeGeoIds.empty()) {
+        int result = delExternal(negativeGeoIds);
+        if (result != 0) {
+            return result; // Return if deletion of external geometries failed
+        }
+    }
+
+    // Proceed with non-negative GeoIds
+    if (sGeoIds.empty()) {
+        return 0; // No positive GeoIds to delete
+    }
 
     // if a GeoId has internal geometry, it must delete internal geometries too
     for (auto c : Constraints.getValues()) {
@@ -7732,7 +7755,7 @@ int SketchObject::delExternal(const std::vector<int>& ExtGeoIds)
 {
     std::set<long> geoIds;
     for (int ExtGeoId : ExtGeoIds) {
-        int GeoId = GeoEnum::RefExt - ExtGeoId;
+        int GeoId = ExtGeoId > 0 ? GeoEnum::RefExt - ExtGeoId : ExtGeoId;
         if (GeoId > GeoEnum::RefExt || -GeoId - 1 >= ExternalGeo.getSize())
             return -1;
 

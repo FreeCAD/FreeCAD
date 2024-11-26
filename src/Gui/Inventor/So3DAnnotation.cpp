@@ -23,11 +23,14 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <QtOpenGL>
+#ifdef FC_OS_MACOSX
+#include <OpenGL/gl.h>
+#else
+#include <GL/gl.h>
+#endif
 #include <Inventor/elements/SoCacheElement.h>
 #endif
 
-#include "SoFCDB.h"
 #include "So3DAnnotation.h"
 
 using namespace Gui;

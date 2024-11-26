@@ -1,6 +1,6 @@
 name: Report a Problem
 description: Have you found something that does not work well, is too hard to do or is missing altogether? Please create a Problem Report.
-labels: ["Status: Needs triage"]
+labels: ["Status: Needs triage","Status: Needs confirmation"]
 body:
   - type: checkboxes
     id: existing_issue
@@ -40,6 +40,8 @@ body:
         - Expressions
         - FEM
         - File formats
+        - Material
+        - Measurement
         - Mesh
         - OpenSCAD
         - Part
