@@ -207,9 +207,9 @@ const std::vector<LocalCoordinateSystem::SetupData>& LocalCoordinateSystem::getS
 {
     static const std::vector<SetupData> setupData = {
         // clang-format off
-        {App::Line::getClassTypeId(),  AxisRoles[0],  tr("X-axis"),   Base::Rotation()},
-        {App::Line::getClassTypeId(),  AxisRoles[1],  tr("Y-axis"),   Base::Rotation(Base::Vector3d(1, 1, 1), M_PI * 2 / 3)},
-        {App::Line::getClassTypeId(),  AxisRoles[2],  tr("Z-axis"),   Base::Rotation(Base::Vector3d(1,-1, 1), M_PI * 2 / 3)},
+        {App::Line::getClassTypeId(),  AxisRoles[0],  tr("X-axis"),   Base::Rotation(Base::Vector3d(1, 1, 1), M_PI * 2 / 3)},
+        {App::Line::getClassTypeId(),  AxisRoles[1],  tr("Y-axis"),   Base::Rotation(Base::Vector3d(-1, 1, 1), M_PI * 2 / 3)},
+        {App::Line::getClassTypeId(),  AxisRoles[2],  tr("Z-axis"),   Base::Rotation()},
         {App::Plane::getClassTypeId(), PlaneRoles[0], tr("XY-plane"), Base::Rotation()},
         {App::Plane::getClassTypeId(), PlaneRoles[1], tr("XZ-plane"), Base::Rotation(1.0, 0.0, 0.0, 1.0)},
         {App::Plane::getClassTypeId(), PlaneRoles[2], tr("YZ-plane"), Base::Rotation(Base::Vector3d(1, 1, 1), M_PI * 2 / 3)},
@@ -274,6 +274,68 @@ void LocalCoordinateSystem::unsetupObject()
                 obj->getDocument()->removeObject(obj->getNameInDocument());
             }
         }
+    }
+}
+
+void LocalCoordinateSystem::onDocumentRestored()
+{
+    GeoFeature::onDocumentRestored();
+
+    // In 0.22 origins did not have point.
+    migrateOriginPoint();
+
+    // In 0.22 the axis placement were wrong. The X axis had identity placement instead of the Z.
+    // This was fixed but we need to migrate old files.
+    migrateXAxisPlacement();
+}
+
+void LocalCoordinateSystem::migrateOriginPoint()
+{
+    auto features = OriginFeatures.getValues();
+
+    auto featIt = std::find_if(features.begin(), features.end(),
+        [](App::DocumentObject* obj) {
+        return obj->isDerivedFrom(App::DatumElement::getClassTypeId()) &&
+            strcmp(static_cast<App::DatumElement*>(obj)->Role.getValue(), PointRoles[0]) == 0;
+    });
+    if (featIt == features.end()) {
+        // origin point not found let's add it
+        auto data = getData(PointRoles[0]);
+        auto* origin = createDatum(data);
+        features.push_back(origin);
+        OriginFeatures.setValues(features);
+    }
+}
+
+void LocalCoordinateSystem::migrateXAxisPlacement()
+{
+    auto features = OriginFeatures.getValues();
+
+    bool migrated = false;
+
+    const auto& setupData = getSetupData();
+    for (auto* obj : features) {
+        auto* feature = dynamic_cast <App::DatumElement*> (obj);
+        if (!feature) { continue; }
+        for (auto data : setupData) {
+            // ensure the rotation is correct for the role
+            if (std::strcmp(feature->Role.getValue(), data.role) == 0) {
+                if (!feature->Placement.getValue().getRotation().isSame(data.rot)) {
+                    feature->Placement.setValue(Base::Placement(Base::Vector3d(), data.rot));
+                    migrated = true;
+                }
+            }
+        }
+    }
+
+    static bool warnedUser = false;
+    if (!warnedUser && migrated) {
+        Base::Console().Warning("This file was created with an older version of FreeCAD."
+            "It had some origin's X axis with incorrect placement, which is being fixed now.\n"
+            "But if you save the file here and open this file back in an "
+            "older version of FreeCAD, you will find the origin objects axis looking incorrect."
+            "And if your file is using the origin axis as references it will likely be broken.\n");
+        warnedUser = true;
     }
 }
 

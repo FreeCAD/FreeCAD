@@ -213,6 +213,7 @@ protected:
     void setupObject() override;
     /// Removes all planes and axis if they are still linked to the document
     void unsetupObject() override;
+    void onDocumentRestored() override;
 
 private:
     struct SetupData;
@@ -245,6 +246,9 @@ private:
 
     DatumElement* createDatum(SetupData& data);
     SetupData getData(const char* role);
+
+    void migrateOriginPoint();
+    void migrateXAxisPlacement();
 };
 
 }  // namespace App
