@@ -87,7 +87,6 @@ namespace Gui
       int topoSortIndex = 0;
       VisibilityState lastVisibleState = VisibilityState::None; //!< visibility test.
       FeatureState lastFeatureState = FeatureState::None; //!< feature state test.
-      bool dagVisible = true; //!< should entry be visible in the DAG view.
     };
     /*! @brief boost data for each vertex.
      *
