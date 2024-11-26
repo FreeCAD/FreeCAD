@@ -33,7 +33,7 @@
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/WaitCursor.h>
-#include <Gui/ViewProviderOrigin.h>
+#include <Gui/ViewProviderCoordinateSystem.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureHelix.h>
 
@@ -171,8 +171,8 @@ void TaskHelixParameters::showCoordinateAxes()
     if (PartDesign::Body* body = PartDesign::Body::findBodyOf(getObject())) {
         try {
             App::Origin* origin = body->getOrigin();
-            ViewProviderOrigin* vpOrigin;
-            vpOrigin = static_cast<ViewProviderOrigin*>(
+            ViewProviderCoordinateSystem* vpOrigin;
+            vpOrigin = static_cast<ViewProviderCoordinateSystem*>(
                 Gui::Application::Instance->getViewProvider(origin));
             vpOrigin->setTemporaryVisibility(true, false);
         }
@@ -582,8 +582,8 @@ TaskHelixParameters::~TaskHelixParameters()
         PartDesign::Body* body = obj ? PartDesign::Body::findBodyOf(obj) : nullptr;
         if (body) {
             App::Origin* origin = body->getOrigin();
-            ViewProviderOrigin* vpOrigin {};
-            vpOrigin = static_cast<ViewProviderOrigin*>(
+            ViewProviderCoordinateSystem* vpOrigin {};
+            vpOrigin = static_cast<ViewProviderCoordinateSystem*>(
                 Gui::Application::Instance->getViewProvider(origin));
             vpOrigin->resetTemporaryVisibility();
         }

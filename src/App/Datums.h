@@ -106,7 +106,7 @@ public:
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override
     {
-        return "Gui::ViewProviderOrigin";
+        return "Gui::ViewProviderCoordinateSystem";
     }
 
     bool getCameraAlignmentDirection(Base::Vector3d& direction, const char* subname) const override;

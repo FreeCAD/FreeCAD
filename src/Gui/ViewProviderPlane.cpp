@@ -41,7 +41,7 @@
 #include <Gui/ViewParams.h>
 
 #include "ViewProviderPlane.h"
-#include "ViewProviderOrigin.h"
+#include "ViewProviderCoordinateSystem.h"
 
 
 using namespace Gui;
@@ -92,7 +92,7 @@ void ViewProviderPlane::attach(App::DocumentObject * obj) {
         noRole = true;
     }
 
-    static const float size = ViewProviderOrigin::defaultSize() * 0.6; //NOLINT
+    static const float size = ViewProviderCoordinateSystem::defaultSize() * 0.6; //NOLINT
     static const float startSize = 0.25 * size; //NOLINT
 
 

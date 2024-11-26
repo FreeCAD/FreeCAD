@@ -115,7 +115,7 @@
 #include "ViewProviderLink.h"
 #include "ViewProviderLinkPy.h"
 #include "ViewProviderMaterialObject.h"
-#include "ViewProviderOrigin.h"
+#include "ViewProviderCoordinateSystem.h"
 #include "ViewProviderDatum.h"
 #include "ViewProviderOriginGroup.h"
 #include "ViewProviderPlacement.h"
@@ -2077,7 +2077,7 @@ void Application::initTypes()
     Gui::ViewProviderGeoFeatureGroupPython      ::init();
     Gui::ViewProviderOriginGroup                ::init();
     Gui::ViewProviderPart                       ::init();
-    Gui::ViewProviderOrigin                     ::init();
+    Gui::ViewProviderCoordinateSystem           ::init();
     Gui::ViewProviderMaterialObject             ::init();
     Gui::ViewProviderMaterialObjectPython       ::init();
     Gui::ViewProviderTextDocument               ::init();
