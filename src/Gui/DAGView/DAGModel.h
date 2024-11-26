@@ -32,7 +32,6 @@
 #include <QGraphicsScene>
 #include <QLineEdit>
 
-#include "DAGFilter.h"
 #include "DAGModelGraph.h"
 #include "DAGRectItem.h"
 
