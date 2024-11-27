@@ -8,6 +8,8 @@
  
 #pragma once
 
+#include <cstdint>
+
 #include "DirectionCosineConstraintIqcJc.h"
 
 namespace MbD {

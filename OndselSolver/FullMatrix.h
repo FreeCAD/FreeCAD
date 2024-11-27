@@ -9,6 +9,7 @@
 #pragma once
 
 #include <cmath>
+#include <cstdint>
 #include <memory>
 
 #include "RowTypeMatrix.h"

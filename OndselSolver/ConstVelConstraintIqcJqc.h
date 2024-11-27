@@ -8,6 +8,8 @@
  
 #pragma once
 
+#include <cstdint>
+
 #include "ConstVelConstraintIqcJc.h"
 
 namespace MbD {

@@ -8,6 +8,8 @@
  
 #pragma once
 
+#include <cstdint>
+
 #include "PosNewtonRaphson.h"
 #include "DiagonalMatrix.h"
 

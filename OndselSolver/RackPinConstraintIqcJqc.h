@@ -8,6 +8,8 @@
  
 #pragma once
 
+#include <cstdint>
+
 #include "RackPinConstraintIqcJc.h"
 
 namespace MbD {

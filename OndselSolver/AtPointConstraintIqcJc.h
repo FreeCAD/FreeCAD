@@ -8,6 +8,8 @@
  
 #pragma once
 
+#include <cstdint>
+
 #include "AtPointConstraintIJ.h"
 
 namespace MbD {

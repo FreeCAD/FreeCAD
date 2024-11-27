@@ -8,6 +8,8 @@
  
 #pragma once
 
+#include <cstdint>
+
 #include "AnyGeneralSpline.h"
 
 namespace MbD {

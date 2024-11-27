@@ -8,6 +8,7 @@
 
 #include <functional>
 #include <chrono>
+#include <cstdint>
 
 #include "Constraint.h"
 #include "FullColumn.h"

@@ -8,6 +8,8 @@
  
 #pragma once
 
+#include <cstdint>
+
 #include "MatrixGaussElimination.h"
 #include "SparseMatrix.h"
 

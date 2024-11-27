@@ -8,6 +8,8 @@
  
 #pragma once
 
+#include <cstdint>
+
 #include "VelSolver.h"
 
 namespace MbD {

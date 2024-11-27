@@ -8,6 +8,8 @@
  
 #pragma once
 
+#include <cstdint>
+
 #include "Constraint.h"
 namespace MbD {
 	class AbsConstraint : public Constraint

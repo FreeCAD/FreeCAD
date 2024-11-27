@@ -9,6 +9,7 @@
 #include <iostream>
 #include <limits>
 #include <cassert>
+#include <cstdint>
 
 #include "NewtonRaphson.h"
 #include "SystemSolver.h"

@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include <cstdint>
+
 #include "AngleZConstraintIqcJc.h"
 
 namespace MbD {

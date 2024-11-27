@@ -8,6 +8,7 @@
  
 #include <algorithm>
 #include <cassert>
+#include <cstdint>
 
 #include "GESpMatFullPvPosIC.h"
 #include "SingularMatrixError.h"

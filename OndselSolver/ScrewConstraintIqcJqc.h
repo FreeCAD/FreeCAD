@@ -8,6 +8,8 @@
  
 #pragma once
 
+#include <cstdint>
+
 #include "ScrewConstraintIqcJc.h"
 
 namespace MbD {
