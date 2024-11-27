@@ -293,11 +293,6 @@ TaskChamferParameters::~TaskChamferParameters()
     }
 }
 
-bool TaskChamferParameters::event(QEvent* e)
-{
-    return TaskDressUpParameters::KeyEvent(e);
-}
-
 void TaskChamferParameters::changeEvent(QEvent* e)
 {
     TaskBox::changeEvent(e);

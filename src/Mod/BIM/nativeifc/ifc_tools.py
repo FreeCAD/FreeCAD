@@ -1044,7 +1044,7 @@ def create_product(obj, parent, ifcfile, ifcclass=None):
     description = getattr(obj, "Description", None)
     if not ifcclass:
         ifcclass = get_ifctype(obj)
-    representation, placement = create_representation(obj, ifcfile)
+    representation, placement, shapetype = create_representation(obj, ifcfile)
     product = api_run("root.create_entity", ifcfile, ifc_class=ifcclass, name=name)
     set_attribute(ifcfile, product, "Description", description)
     set_attribute(ifcfile, product, "ObjectPlacement", placement)
@@ -1052,7 +1052,26 @@ def create_product(obj, parent, ifcfile, ifcclass=None):
     # IfcProductDefinitionShape already and not an IfcShapeRepresentation
     # api_run("geometry.assign_representation", ifcfile, product=product, representation=representation)
     set_attribute(ifcfile, product, "Representation", representation)
-    # TODO treat subtractions/additions
+    # additions
+    if hasattr(obj,"Additions") and shapetype in ["extrusion","no shape"]:
+        for addobj in obj.Additions:
+            r2,p2,c2 = create_representation(addobj, ifcfile)
+            cl2 = get_ifctype(addobj)
+            addprod = api_run("root.create_entity", ifcfile, ifc_class=cl2, name=addobj.Label)
+            set_attribute(ifcfile, addprod, "Description", getattr(addobj, "Description", ""))
+            set_attribute(ifcfile, addprod, "ObjectPlacement", p2)
+            set_attribute(ifcfile, addprod, "Representation", r2)
+            create_relationship(None, addobj, product, addprod, ifcfile)
+    # subtractions
+    if hasattr(obj,"Subtractions") and shapetype in ["extrusion","no shape"]:
+        for subobj in obj.Subtractions:
+            r3,p3,c3 = create_representation(subobj, ifcfile)
+            cl3 = "IfcOpeningElement"
+            subprod = api_run("root.create_entity", ifcfile, ifc_class=cl3, name=subobj.Label)
+            set_attribute(ifcfile, subprod, "Description", getattr(subobj, "Description", ""))
+            set_attribute(ifcfile, subprod, "ObjectPlacement", p3)
+            set_attribute(ifcfile, subprod, "Representation", r3)
+            create_relationship(None, subobj, product, subprod, ifcfile)
     return product
 
 
@@ -1078,7 +1097,7 @@ def create_representation(obj, ifcfile):
     representation, placement, shapetype = exportIFC.getRepresentation(
         ifcfile, context, obj, preferences=prefs
     )
-    return representation, placement
+    return representation, placement, shapetype
 
 
 def get_ifctype(obj):
@@ -1145,18 +1164,22 @@ def get_subvolume(obj):
 def create_relationship(old_obj, obj, parent, element, ifcfile):
     """Creates a relationship between an IFC object and a parent IFC object"""
 
-    parent_element = get_ifc_element(parent)
+    if isinstance(parent, FreeCAD.DocumentObject):
+        parent_element = get_ifc_element(parent)
+    else:
+        parent_element = parent
     # case 1: element inside spatiual structure
     if parent_element.is_a("IfcSpatialStructureElement") and element.is_a("IfcElement"):
         # first remove the FreeCAD object from any parent
-        for old_par in old_obj.InList:
-            if hasattr(old_par, "Group") and old_obj in old_par.Group:
-                old_par.Group = [o for o in old_par.Group if o != old_obj]
-        try:
-            api_run("spatial.unassign_container", ifcfile, products=[element])
-        except:
-            # older version of IfcOpenShell
-            api_run("spatial.unassign_container", ifcfile, product=element)
+        if old_obj:
+            for old_par in old_obj.InList:
+                if hasattr(old_par, "Group") and old_obj in old_par.Group:
+                    old_par.Group = [o for o in old_par.Group if o != old_obj]
+            try:
+                api_run("spatial.unassign_container", ifcfile, products=[element])
+            except:
+                # older version of IfcOpenShell
+                api_run("spatial.unassign_container", ifcfile, product=element)
         if element.is_a("IfcOpeningElement"):
             uprel = api_run(
                 "void.add_opening",
@@ -1180,22 +1203,23 @@ def create_relationship(old_obj, obj, parent, element, ifcfile):
                     product=element,
                     relating_structure=parent_element,
                 )
-    # case 2: dooe/window inside element
+    # case 2: door/window inside element
     # https://standards.buildingsmart.org/IFC/RELEASE/IFC4/ADD2_TC1/HTML/annex/annex-e/wall-with-opening-and-window.htm
     elif parent_element.is_a("IfcElement") and element.is_a() in [
         "IfcDoor",
         "IfcWindow",
     ]:
-        tempface, tempobj = get_subvolume(old_obj)
-        if tempobj:
-            opening = create_product(tempobj, parent, ifcfile, "IfcOpeningElement")
-            old_obj.Document.removeObject(tempobj.Name)
-            if tempface:
-                old_obj.Document.removeObject(tempface.Name)
-            api_run(
-                "void.add_opening", ifcfile, opening=opening, element=parent_element
-            )
-            api_run("void.add_filling", ifcfile, opening=opening, element=element)
+        if old_obj:
+            tempface, tempobj = get_subvolume(old_obj)
+            if tempobj:
+                opening = create_product(tempobj, parent, ifcfile, "IfcOpeningElement")
+                old_obj.Document.removeObject(tempobj.Name)
+                if tempface:
+                    old_obj.Document.removeObject(tempface.Name)
+                api_run(
+                    "void.add_opening", ifcfile, opening=opening, element=parent_element
+                )
+                api_run("void.add_filling", ifcfile, opening=opening, element=element)
         # windows must also be part of a spatial container
         try:
             api_run("spatial.unassign_container", ifcfile, products=[element])
@@ -1236,6 +1260,11 @@ def create_relationship(old_obj, obj, parent, element, ifcfile):
                     product=element,
                     relating_object=container,
                 )
+    # case 4: void element
+    elif parent_element.is_a("IfcElement") and element.is_a("IfcOpeningElement"):
+        uprel = api_run(
+            "void.add_opening", ifcfile, opening=element, element=parent_element
+        )
     # case 3: element aggregated inside other element
     else:
         try:
@@ -1258,7 +1287,7 @@ def create_relationship(old_obj, obj, parent, element, ifcfile):
                 product=element,
                 relating_object=parent_element,
             )
-    if hasattr(parent.Proxy, "addObject"):
+    if hasattr(parent, "Proxy") and hasattr(parent.Proxy, "addObject"):
         parent.Proxy.addObject(parent, obj)
     return uprel
 

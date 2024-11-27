@@ -305,6 +305,8 @@ class _ViewProviderBuilding(ArchFloor._ViewProviderFloor):
     def setupContextMenu(self,vobj,menu):
         from PySide import QtCore,QtGui
         import Arch_rc
+        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+            return
         action1 = QtGui.QAction(QtGui.QIcon(":/icons/Arch_BuildingPart.svg"),"Convert to BuildingPart",menu)
         QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.convertToBuildingPart)
         menu.addAction(action1)

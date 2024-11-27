@@ -717,7 +717,8 @@ protected:
     void unsetEdit(int ModNum) override;
     void setEditViewer(Gui::View3DInventorViewer*, int ModNum) override;
     void unsetEditViewer(Gui::View3DInventorViewer*) override;
-    static void camSensCB(void* data, SoSensor*);  // camera sensor callback
+    static void camSensCB(void* data, SoSensor*);        // camera sensor callback
+    static void camSensDeleteCB(void* data, SoSensor*);  // camera sensor callback
     void onCameraChanged(SoCamera* cam);
     //@}
 

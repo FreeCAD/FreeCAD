@@ -1327,6 +1327,10 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         return ArchComponent.ViewProviderComponent.setDisplayMode(self,mode)
 
     def setupContextMenu(self, vobj, menu):
+
+        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+            return
+
         super().contextMenuAddEdit(menu)
 
         actionFlipDirection = QtGui.QAction(QtGui.QIcon(":/icons/Arch_Wall_Tree.svg"),

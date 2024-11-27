@@ -64,6 +64,8 @@ public:
         return transactionID;
     }
 
+    bool event(QEvent* event) override;
+
 protected Q_SLOTS:
     void onButtonRefSel(const bool checked);
     void doubleClicked(QListWidgetItem* item);
@@ -76,7 +78,7 @@ protected Q_SLOTS:
 protected:
     void referenceSelected(const Gui::SelectionChanges& msg, QListWidget* widget);
     bool wasDoubleClicked = false;
-    bool KeyEvent(QEvent *e);
+    void keyPressEvent(QKeyEvent* ke) override;
     void hideOnError();
     void addAllEdges(QListWidget* listWidget);
     void deleteRef(QListWidget* listWidget);

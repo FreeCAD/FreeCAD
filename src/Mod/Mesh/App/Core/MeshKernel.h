@@ -418,14 +418,14 @@ public:
      * checkNeighbourHood is true.
      */
     void Assign(const MeshPointArray& rPoints,
-                const MeshFacetArray& rFaces,
+                const MeshFacetArray& rFacets,
                 bool checkNeighbourHood = false);
     /** This method does basically the same as Assign() unless that it swaps the content of both
      * arrays. These arrays may be empty after assigning to the kernel. This method is a convenient
      * way to build up the mesh structure from outside and assign to a mesh kernel without copying
      * the data. Especially for huge meshes this saves memory and increases speed.
      */
-    void Adopt(MeshPointArray& rPoints, MeshFacetArray& rFaces, bool checkNeighbourHood = false);
+    void Adopt(MeshPointArray& rPoints, MeshFacetArray& rFacets, bool checkNeighbourHood = false);
     /// Swaps the content of this kernel and \a mesh
     void Swap(MeshKernel& mesh);
     /// Transform the data structure with the given transformation matrix.
@@ -441,7 +441,7 @@ public:
     /** Sets the point at the given index to the new \a rPoint. */
     inline void SetPoint(PointIndex ulPtIndex, float x, float y, float z);
     /** Smoothes the mesh kernel. */
-    void Smooth(int iterations, float d_max);
+    void Smooth(int iterations, float stepsize);
     /**
      * CheckFacets() is invoked within this method and all found facets get deleted from the mesh
      * structure. The facets to be deleted are returned with their geometric representation.
@@ -456,11 +456,11 @@ public:
      * Does basically the same as method above unless that the facets to be deleted are returned
      * with their index number in the facet array of the mesh structure.
      */
-    void CutFacets(const MeshFacetGrid& rclGrid,
-                   const Base::ViewProjMethod* pclP,
-                   const Base::Polygon2d& rclPoly,
-                   bool bCutInner,
-                   std::vector<FacetIndex>& raclCutted);
+    void CutFacets(const MeshFacetGrid& grid,
+                   const Base::ViewProjMethod* proj,
+                   const Base::Polygon2d& poly,
+                   bool bInner,
+                   std::vector<FacetIndex>& cut);
     //@}
 
 protected:
@@ -568,7 +568,7 @@ inline void MeshKernel::AdjustNormal(MeshFacet& rclFacet, const Base::Vector3f& 
     Base::Vector3f clN =
         (_aclPointArray[rclFacet._aulPoints[1]] - _aclPointArray[rclFacet._aulPoints[0]])
         % (_aclPointArray[rclFacet._aulPoints[2]] - _aclPointArray[rclFacet._aulPoints[0]]);
-    if ((clN * rclNormal) < 0.0f) {
+    if ((clN * rclNormal) < 0.0F) {
         rclFacet.FlipNormal();
     }
 }
@@ -587,9 +587,9 @@ inline Base::Vector3f MeshKernel::GetGravityPoint(const MeshFacet& rclFacet) con
     const Base::Vector3f& p0 = _aclPointArray[rclFacet._aulPoints[0]];
     const Base::Vector3f& p1 = _aclPointArray[rclFacet._aulPoints[1]];
     const Base::Vector3f& p2 = _aclPointArray[rclFacet._aulPoints[2]];
-    return Base::Vector3f((p0.x + p1.x + p2.x) / 3.0f,
-                          (p0.y + p1.y + p2.y) / 3.0f,
-                          (p0.z + p1.z + p2.z) / 3.0f);
+    return Base::Vector3f((p0.x + p1.x + p2.x) / 3.0F,
+                          (p0.y + p1.y + p2.y) / 3.0F,
+                          (p0.z + p1.z + p2.z) / 3.0F);
 }
 
 inline void MeshKernel::GetFacetPoints(FacetIndex ulFaIndex,

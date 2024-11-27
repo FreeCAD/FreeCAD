@@ -24,8 +24,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <cstdlib>
-# include <unordered_set>
+#include <cstdlib>
+#include <unordered_set>
 #endif
 
 #include "DocumentObject.h"
@@ -164,9 +164,12 @@ bool ElementNameComparator::operator()(const MappedName& leftName,
     return leftName.size() < rightName.size();
 }
 
-HistoryItem::HistoryItem(App::DocumentObject *obj, const Data::MappedName &name)
-    :obj(obj),tag(0),element(name)
+HistoryItem::HistoryItem(App::DocumentObject* obj, const Data::MappedName& name)
+    : obj(obj)
+    , tag(0)
+    , element(name)
 {
-    if(obj)
+    if (obj) {
         tag = obj->getID();
+    }
 }

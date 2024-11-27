@@ -218,8 +218,9 @@ public:
     std::list<MDIView*> getMDIViews() const;
     /// returns a list of all MDI views of a certain type
     std::list<MDIView*> getMDIViewsOfType(const Base::Type& typeId) const;
-    MDIView *setActiveView(ViewProviderDocumentObject *vp=nullptr, Base::Type typeId = Base::Type());
-    View3DInventor* openEditingView3D(ViewProviderDocumentObject* vp);
+    MDIView *setActiveView(const ViewProviderDocumentObject* vp = nullptr, Base::Type typeId = Base::Type());
+    View3DInventor* openEditingView3D(const ViewProviderDocumentObject* vp);
+    View3DInventor* openEditingView3D(const App::DocumentObject* obj);
     //@}
 
     /** @name View provider handling  */

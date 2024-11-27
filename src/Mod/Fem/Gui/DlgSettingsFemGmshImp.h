@@ -47,6 +47,7 @@ protected:
     void saveSettings() override;
     void loadSettings() override;
     void changeEvent(QEvent* e) override;
+    void populateLogVerbosity();
 
 private:
     std::unique_ptr<Ui_DlgSettingsFemGmshImp> ui;

@@ -52,6 +52,8 @@
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QStandardPaths>
+#include <QUrl>
 
 #endif  // _PreComp_
 #endif  // START_PRECOMPILED_H
