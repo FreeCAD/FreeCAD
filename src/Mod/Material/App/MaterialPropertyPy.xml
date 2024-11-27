@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="ModelPropertyPy"
+      Name="MaterialPropertyPy"
+      Twin="MaterialProperty"
+      TwinPointer="MaterialProperty"
+      Include="Mod/Material/App/Materials.h"
+      Namespace="Materials"
+      FatherInclude="Mod/Material/App/Model.h"
+      FatherNamespace="Materials"
+      Constructor="true"
+      Delete="false">
+    <Documentation>
+      <Author Licence="LGPL" Name="DavidCarter" EMail="dcarter@davidcarter.ca" />
+      <UserDocu>Material property descriptions.</UserDocu>
+    </Documentation>
+  </PythonExport>
+</GenerateModel>

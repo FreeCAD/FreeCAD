@@ -109,6 +109,10 @@ public:
     MaterialValue::ValueType getColumnType(int column) const;
     QString getColumnUnits(int column) const;
     QVariant getColumnNull(int column) const;
+    const std::vector<MaterialProperty>& getColumns() const
+    {
+        return _columns;
+    }
 
     void setModelUUID(const QString& uuid);
     void setPropertyType(const QString& type) override;

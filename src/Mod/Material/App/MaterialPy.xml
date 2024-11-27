@@ -210,5 +210,11 @@
         <UserDocu>Set the value associated with the property</UserDocu>
       </Documentation>
     </Methode>
+    <Attribute Name="PropertyObjects" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Dictionary of MaterialPropert objects.</UserDocu>
+      </Documentation>
+      <Parameter Name="PropertyObjects" Type="Dict"/>
+    </Attribute>
   </PythonExport>
 </GenerateModel>
