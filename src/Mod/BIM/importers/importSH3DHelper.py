@@ -726,7 +726,7 @@ class WallHandler(BaseHandler):
     def _create_wall(self, floor, prev, next, elm):
         """Create an Arch::Structure from an SH3D Element.
 
-        The constructed wall will acn either be a straight wall or a curved
+        The constructed wall will either be a straight wall or a curved
         wall depending on the `elm` attributes.
 
         Args:
