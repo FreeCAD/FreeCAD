@@ -57,10 +57,14 @@ class Fillet(gui_base_original.Creator):
         super().__init__()
         self.featureName = "Fillet"
 
+    def IsActive(self):
+        """Return True when this command should be available."""
+        return bool(Gui.Selection.getSelection())
+
     def GetResources(self):
         """Set icon, menu and tooltip."""
         return {"Pixmap": "Draft_Fillet",
-                "Accel":"F,I",
+                "Accel": "F,I",
                 "MenuText": QT_TRANSLATE_NOOP("Draft_Fillet", "Fillet"),
                 "ToolTip": QT_TRANSLATE_NOOP("Draft_Fillet", "Creates a fillet between two selected wires or edges.")}
 
