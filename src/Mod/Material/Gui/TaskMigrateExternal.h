@@ -26,6 +26,8 @@
 
 #include <memory>
 
+#include <QPushButton>
+
 #include <Gui/TaskView/TaskDialog.h>
 
 #include <Mod/Material/App/ModelManager.h>
@@ -42,7 +44,8 @@ class DlgMigrateExternal: public QWidget
 public:
     explicit DlgMigrateExternal(QWidget* parent = nullptr);
     ~DlgMigrateExternal() override = default;
-    void accept();
+    void migrate();
+    void statusUpdate(const QString& status);
 
 private:
     void showLibraries();
@@ -65,9 +68,12 @@ public:
     bool reject() override;
     QDialogButtonBox::StandardButtons getStandardButtons() const override;
     void modifyStandardButtons(QDialogButtonBox*) override;
+    void onMigrate(bool checked);
 
 private:
     DlgMigrateExternal* _widget;
+    QPushButton* _migrateButton;
+    QPushButton* _closeButton;
 };
 
 } // namespace MatGui

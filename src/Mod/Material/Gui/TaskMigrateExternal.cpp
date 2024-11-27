@@ -24,9 +24,8 @@
 #ifndef _PreComp_
 #endif
 
-#include <QPushButton>
-
 #include <Base/Console.h>
+#include <Gui/WaitCursor.h>
 
 #include "TaskMigrateExternal.h"
 #include "ui_TaskMigrateExternal.h"
@@ -70,37 +69,41 @@ void DlgMigrateExternal::showLibraries()
     }
 }
 
-void DlgMigrateExternal::accept()
+void DlgMigrateExternal::migrate()
 {
-    Base::Console().Log("Migrating Models...\n");
-    ui->textStatus->append(tr("Migrating Models..."));
+    statusUpdate(tr("Migrating Models..."));
     for (int row = 0; row < ui->listModelLibraries->count(); row++) {
         auto item = ui->listModelLibraries->item(row);
         if (item->checkState() == Qt::Checked) {
             auto library = item->data(Qt::UserRole).value<std::shared_ptr<Materials::ModelLibrary>>();
-            Base::Console().Log("\tLibrary: %s...", library->getName().toStdString().c_str());
-            ui->textStatus->append(tr("\tLibrary: ") + library->getName());
+            statusUpdate(tr("  Library: ") + library->getName());
             _modelManager.migrateToExternal(library);
-            Base::Console().Log("done\n");
+            // statusUpdate(tr("  done"));
         }
     }
-    Base::Console().Log("done\n");
-    ui->textStatus->append(tr("done"));
+    statusUpdate(tr("done"));
 
-    Base::Console().Log("Migrating Materials...\n");
-    ui->textStatus->append(tr("Migrating Materials..."));
+    statusUpdate(tr("Migrating Materials..."));
     for (int row = 0; row < ui->listMaterialLibraries->count(); row++) {
         auto item = ui->listMaterialLibraries->item(row);
         if (item->checkState() == Qt::Checked) {
             auto library =
                 item->data(Qt::UserRole).value<std::shared_ptr<Materials::MaterialLibrary>>();
-            Base::Console().Log("\tLibrary: %s...", library->getName().toStdString().c_str());
+            statusUpdate(tr("  Library: ") + library->getName());
             _materialManager.migrateToExternal(library);
-            Base::Console().Log("done\n");
+            // statusUpdate(tr("  done"));
         }
     }
-    Base::Console().Log("done\n");
-    ui->textStatus->append(tr("done"));
+    statusUpdate(tr("done"));
+}
+
+void DlgMigrateExternal::statusUpdate(const QString& status)
+{
+    Base::Console().Log("%s\n", status.toStdString().c_str());
+    ui->textStatus->append(status);
+
+    // This is required to update in real time
+    QCoreApplication::processEvents();
 }
 
 /* TRANSLATOR MatGui::TaskMigrateExternal */
@@ -118,14 +121,33 @@ QDialogButtonBox::StandardButtons TaskMigrateExternal::getStandardButtons() cons
 
 void TaskMigrateExternal::modifyStandardButtons(QDialogButtonBox* box)
 {
-    QPushButton* btn = box->button(QDialogButtonBox::Ok);
-    btn->setText(QApplication::translate("MatGui::TaskMigrateExternal", "&Migrate"));
+    _migrateButton = box->button(QDialogButtonBox::Ok);
+    _closeButton = box->button(QDialogButtonBox::Close);
+    _migrateButton->setText(QApplication::translate("MatGui::TaskMigrateExternal", "&Migrate"));
+    // connect(btn, &QPushButton::clicked, this, &TaskMigrateExternal::onMigrate);
+}
+
+void TaskMigrateExternal::onMigrate(bool checked)
+{
+    Q_UNUSED(checked)
+
+    Gui::WaitCursor wc;
+    QCoreApplication::processEvents();
+
+    // Disable the buttons during migration
+    _migrateButton->setEnabled(false);
+    _closeButton->setEnabled(false);
+
+    _widget->migrate();
+
+    _migrateButton->setEnabled(true);
+    _closeButton->setEnabled(true);
 }
 
 bool TaskMigrateExternal::accept()
 {
-    _widget->accept();
-    return true;
+    _widget->migrate();
+    return false;
 }
 
 bool TaskMigrateExternal::reject()
