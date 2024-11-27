@@ -241,8 +241,6 @@ class ViewProvider:
         self.showOriginAxis(True)
         self.deleteOnReject = False
 
-        
-
     def resetTaskPanel(self):
         self.showOriginAxis(False)
         self.taskPanel = None
