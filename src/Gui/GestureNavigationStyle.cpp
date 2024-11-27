@@ -492,9 +492,10 @@ public:
     explicit RotateState(my_context ctx):my_base(ctx)
     {
         auto &ns = this->outermost_context().ns;
-        ns.setRotationCenter(ns.getFocalPoint());
+        const auto inventorEvent = static_cast<const NS::Event*>(this->triggering_event())->inventor_event;
+        ns.saveCursorPosition(inventorEvent);
         ns.setViewingMode(NavigationStyle::DRAGGING);
-        this->base_pos = static_cast<const NS::Event*>(this->triggering_event())->inventor_event->getPosition();
+        this->base_pos = inventorEvent->getPosition();
         if (ns.logging)
             Base::Console().Log(" -> RotateState\n");
     }
@@ -857,9 +858,9 @@ const char* GestureNavigationStyle::mouseButtons(ViewerMode mode)
     case NavigationStyle::PANNING:
         return QT_TR_NOOP("Drag screen with two fingers OR press right mouse button.");
     case NavigationStyle::DRAGGING:
-        return QT_TR_NOOP("Drag screen with one finger OR press left mouse button. In Sketcher && other edit modes, hold Alt in addition.");
+        return QT_TR_NOOP("Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.");
     case NavigationStyle::ZOOMING:
-        return QT_TR_NOOP("Pinch (place two fingers on the screen && drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.");
+        return QT_TR_NOOP("Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.");
     default:
         return "No description";
     }

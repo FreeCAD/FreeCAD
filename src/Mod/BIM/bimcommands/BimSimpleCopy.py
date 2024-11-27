@@ -42,6 +42,10 @@ class BIM_SimpleCopy:
             ),
         }
 
+    def IsActive(self):
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
+
     def Activated(self):
         import PartGui
         FreeCADGui.runCommand("Part_SimpleCopy")

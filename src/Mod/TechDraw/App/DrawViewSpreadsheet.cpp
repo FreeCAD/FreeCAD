@@ -353,6 +353,18 @@ std::string DrawViewSpreadsheet::getSheetImage()
                            << " font-size=\"" << TextSize.getValue() << "\""
                            << " fill=\"" << fcolor << "\">" << celltext << "</text>" << std::endl;
                 }
+                if (!(alignment & Spreadsheet::Cell::ALIGNMENT_LEFT) &&
+                    !(alignment & Spreadsheet::Cell::ALIGNMENT_RIGHT) &&
+                    !(alignment & Spreadsheet::Cell::ALIGNMENT_HCENTER) ) {
+                    // no horizontal alignment specified, so we will default to
+                    // Spreadsheet::Cell::ALIGNMENT_LEFT
+                    result << "    <text style=\"" << textstyle << "\" x=\""
+                           << coloffset + TextSize.getValue() / 2 << "\" y=\""
+                           << rowoffset + 0.75 * cellheight << "\" font-family=\"";
+                    result << Font.getValue() << "\""
+                           << " font-size=\"" << TextSize.getValue() << "\""
+                           << " fill=\"" << fcolor << "\">" << celltext << "</text>" << std::endl;
+                }
             }
             rowoffset += sheet->getRowHeight(address.row());
         }

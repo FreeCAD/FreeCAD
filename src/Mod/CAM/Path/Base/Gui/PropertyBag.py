@@ -179,9 +179,7 @@ class PropertyCreate(object):
         return self.form.propertyGroup.currentText().strip()
 
     def propertyType(self):
-        return PathPropertyBag.SupportedPropertyType[
-            self.form.propertyType.currentText()
-        ].strip()
+        return PathPropertyBag.SupportedPropertyType[self.form.propertyType.currentText()].strip()
 
     def propertyInfo(self):
         return self.form.propertyInfo.toPlainText().strip()
@@ -200,9 +198,7 @@ class PropertyCreate(object):
             # property exists - this is an edit operation
             self.form.propertyName.setText(name)
             if self.propertyIsEnumeration():
-                self.form.propertyEnum.setText(
-                    ",".join(self.obj.getEnumerationsOfProperty(name))
-                )
+                self.form.propertyEnum.setText(",".join(self.obj.getEnumerationsOfProperty(name)))
             self.form.propertyInfo.setText(self.obj.getDocumentationOfProperty(name))
 
             self.form.labelName.setEnabled(False)
@@ -247,27 +243,15 @@ class TaskPanel(object):
         val = PathUtil.getPropertyValueString(self.obj, name)
         info = self.obj.getDocumentationOfProperty(name)
 
-        self.model.setData(
-            self.model.index(i, self.ColumnName), name, QtCore.Qt.EditRole
-        )
+        self.model.setData(self.model.index(i, self.ColumnName), name, QtCore.Qt.EditRole)
         # self.model.setData(self.model.index(i, self.ColumnType), typ,       QtCore.Qt.EditRole)
-        self.model.setData(
-            self.model.index(i, self.ColumnVal), self.obj, Delegate.RoleObject
-        )
-        self.model.setData(
-            self.model.index(i, self.ColumnVal), name, Delegate.RoleProperty
-        )
-        self.model.setData(
-            self.model.index(i, self.ColumnVal), val, QtCore.Qt.DisplayRole
-        )
+        self.model.setData(self.model.index(i, self.ColumnVal), self.obj, Delegate.RoleObject)
+        self.model.setData(self.model.index(i, self.ColumnVal), name, Delegate.RoleProperty)
+        self.model.setData(self.model.index(i, self.ColumnVal), val, QtCore.Qt.DisplayRole)
 
-        self.model.setData(
-            self.model.index(i, self.ColumnName), typ, QtCore.Qt.ToolTipRole
-        )
+        self.model.setData(self.model.index(i, self.ColumnName), typ, QtCore.Qt.ToolTipRole)
         # self.model.setData(self.model.index(i, self.ColumnType), info,      QtCore.Qt.ToolTipRole)
-        self.model.setData(
-            self.model.index(i, self.ColumnVal), info, QtCore.Qt.ToolTipRole
-        )
+        self.model.setData(self.model.index(i, self.ColumnVal), info, QtCore.Qt.ToolTipRole)
 
         self.model.item(i, self.ColumnName).setEditable(False)
         # self.model.item(i, self.ColumnType).setEditable(False)
@@ -276,9 +260,7 @@ class TaskPanel(object):
         Path.Log.track()
 
         self.delegate = Delegate(self.form)
-        self.model = QtGui.QStandardItemModel(
-            len(self.props), len(self.TableHeaders), self.form
-        )
+        self.model = QtGui.QStandardItemModel(len(self.props), len(self.TableHeaders), self.form)
         self.model.setHorizontalHeaderLabels(self.TableHeaders)
 
         for i, name in enumerate(self.props):
@@ -382,14 +364,10 @@ class TaskPanel(object):
                 # this can happen if the old enumeration value doesn't exist anymore
                 pass
             newVal = PathUtil.getPropertyValueString(obj, prop)
-            self.model.setData(
-                self.model.index(row, self.ColumnVal), newVal, QtCore.Qt.DisplayRole
-            )
+            self.model.setData(self.model.index(row, self.ColumnVal), newVal, QtCore.Qt.DisplayRole)
 
             # self.model.setData(self.model.index(row, self.ColumnType), info, QtCore.Qt.ToolTipRole)
-            self.model.setData(
-                self.model.index(row, self.ColumnVal), info, QtCore.Qt.ToolTipRole
-            )
+            self.model.setData(self.model.index(row, self.ColumnVal), info, QtCore.Qt.ToolTipRole)
 
     def propertyModify(self):
         Path.Log.track()

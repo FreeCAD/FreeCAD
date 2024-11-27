@@ -279,13 +279,12 @@ Transform::Transform(QWidget* parent, Qt::WindowFlags fl)
 {
     ui = new Ui_Placement();
     ui->setupUi(this);
-    connect(ui->applyButton, &QPushButton::clicked,
+    QPushButton* applyButton = ui->buttonBox->button(QDialogButtonBox::Apply);
+    connect(applyButton, &QPushButton::clicked,
             this, &Transform::onApplyButtonClicked);
 
     ui->resetButton->hide();
     ui->applyIncrementalPlacement->hide();
-
-    ui->closeButton->setText(tr("Cancel"));
     this->setWindowTitle(tr("Transform"));
 
     // create a signal mapper in order to have one slot to perform the change
@@ -332,9 +331,7 @@ void Transform::setTransformStrategy(TransformStrategy* ts)
 
 void Transform::showStandardButtons(bool b)
 {
-    ui->closeButton->setVisible(b);
-    ui->oKButton->setVisible(b);
-    ui->applyButton->setVisible(b);
+    ui->buttonBox->setVisible(b);
 }
 
 void Transform::onTransformChanged(int)
@@ -413,7 +410,6 @@ void Transform::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
-        ui->closeButton->setText(tr("Cancel"));
         this->setWindowTitle(tr("Transform"));
     }
     else {

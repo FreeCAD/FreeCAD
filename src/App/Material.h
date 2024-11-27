@@ -131,6 +131,8 @@ public:
     Color emissiveColor; /**< Defines the emissive color. */
     float shininess;
     float transparency;
+    std::string image;
+    std::string imagePath;
     std::string uuid;
     // NOLINTEND
     //@}
@@ -145,6 +147,8 @@ public:
             && diffuseColor == m.diffuseColor
             && specularColor == m.specularColor
             && emissiveColor == m.emissiveColor
+            && image == m.image
+            && image == m.imagePath
             && uuid == m.uuid;
         // clang-format on
     }
@@ -154,6 +158,8 @@ public:
     }
     Material& operator=(const Material& other) = default;
     Material& operator=(Material&& other) = default;
+
+    static Material getDefaultAppearance();
 
 private:
     MaterialType _matType;

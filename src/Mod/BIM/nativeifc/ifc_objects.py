@@ -79,7 +79,7 @@ class ifc_object:
         self.rebuild_classlist(obj)
         if hasattr(obj, "IfcFilePath"):
             # once we have loaded the project, recalculate child coin nodes
-            from PySide2 import QtCore  # lazy loading
+            from PySide import QtCore  # lazy loading
 
             if obj.OutListRecursive:
                 for child in obj.OutListRecursive:
@@ -167,8 +167,8 @@ class ifc_object:
     def edit_geometry(self, obj, prop):
         """Edits a geometry property of an object"""
 
-        from nativeifc import ifc_tools  # lazy import
         from nativeifc import ifc_geometry  # lazy loading
+        from nativeifc import ifc_tools  # lazy import
 
         result = ifc_geometry.set_geom_property(obj, prop)
         if result:

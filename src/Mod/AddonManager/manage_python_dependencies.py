@@ -174,7 +174,6 @@ class PythonPackageManager:
 
         self._add_current_python_version()
         self._create_list_from_pip()
-        self.dlg.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
         self.dlg.tableWidget.setSortingEnabled(False)
         self.dlg.labelInstallationPath.setText(self.vendor_path)
         self.dlg.exec()
@@ -389,8 +388,7 @@ class PythonPackageManager:
             # Nothing to migrate
             return False
 
-        if not os.path.exists(new_directory):
-            os.makedirs(new_directory)
+        os.makedirs(new_directory, mode=0o777, exist_ok=True)
 
         for content_item in os.listdir(old_directory):
             if content_item == new_directory_name:

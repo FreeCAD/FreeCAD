@@ -149,29 +149,34 @@ class TestCore(unittest.TestCase):
         box.Placement = App.Placement(App.Vector(10, 20, 30), App.Rotation(15, 25, 35))
 
         # Step 0 : box with placement. No element selected
-        plc = joint.Proxy.findPlacement(joint, box.Name, box, "", "")
+        ref = [self.assembly, [box.Name + ".", box.Name + "."]]
+        plc = joint.Proxy.findPlacement(joint, ref)
         targetPlc = App.Placement(App.Vector(), App.Rotation())
         self.assertTrue(plc.isSame(targetPlc, 1e-6), "'{}' failed - Step 0".format(operation))
 
         # Step 1 : box with placement. Face + Vertex
-        plc = joint.Proxy.findPlacement(joint, box.Name, box, "Face6", "Vertex7")
+        ref = [self.assembly, [box.Name + ".Face6", box.Name + ".Vertex7"]]
+        plc = joint.Proxy.findPlacement(joint, ref)
         targetPlc = App.Placement(App.Vector(L, W, H), App.Rotation())
         self.assertTrue(plc.isSame(targetPlc, 1e-6), "'{}' failed - Step 1".format(operation))
 
         # Step 2 : box with placement. Edge + Vertex
-        plc = joint.Proxy.findPlacement(joint, box.Name, box, "Edge8", "Vertex8")
+        ref = [self.assembly, [box.Name + ".Edge8", box.Name + ".Vertex8"]]
+        plc = joint.Proxy.findPlacement(joint, ref)
         targetPlc = App.Placement(App.Vector(L, W, 0), App.Rotation(0, -90, 270))
         self.assertTrue(plc.isSame(targetPlc, 1e-6), "'{}' failed - Step 2".format(operation))
 
         # Step 3 : box with placement. Vertex
-        plc = joint.Proxy.findPlacement(joint, box.Name, box, "Vertex3", "Vertex3")
+        ref = [self.assembly, [box.Name + ".Vertex3", box.Name + ".Vertex3"]]
+        plc = joint.Proxy.findPlacement(joint, ref)
         targetPlc = App.Placement(App.Vector(0, W, H), App.Rotation())
         _msg("  plc '{}'".format(plc))
         _msg("  targetPlc '{}'".format(targetPlc))
         self.assertTrue(plc.isSame(targetPlc, 1e-6), "'{}' failed - Step 3".format(operation))
 
         # Step 4 : box with placement. Face
-        plc = joint.Proxy.findPlacement(joint, box.Name, box, "Face2", "Face2")
+        ref = [self.assembly, [box.Name + ".Face2", box.Name + ".Face2"]]
+        plc = joint.Proxy.findPlacement(joint, ref)
         targetPlc = App.Placement(App.Vector(L, W / 2, H / 2), App.Rotation(0, -90, 180))
         _msg("  plc '{}'".format(plc))
         _msg("  targetPlc '{}'".format(targetPlc))
@@ -200,24 +205,11 @@ class TestCore(unittest.TestCase):
         joint = self.jointgroup.newObject("App::FeaturePython", "testJoint")
         JointObject.Joint(joint, 0)
 
-        current_selection = []
-        current_selection.append(
-            {
-                "object": box2,
-                "part": box2,
-                "element_name": "Face6",
-                "vertex_name": "Vertex7",
-            }
-        )
-        current_selection.append(
-            {
-                "object": box,
-                "part": box,
-                "element_name": "Face6",
-                "vertex_name": "Vertex7",
-            }
-        )
+        refs = [
+            [self.assembly, [box2.Name + ".Face6", box2.Name + ".Vertex7"]],
+            [self.assembly, [box.Name + ".Face6", box.Name + ".Vertex7"]],
+        ]
 
-        joint.Proxy.setJointConnectors(joint, current_selection)
+        joint.Proxy.setJointConnectors(joint, refs)
 
         self.assertTrue(box.Placement.isSame(box2.Placement, 1e-6), "'{}'".format(operation))

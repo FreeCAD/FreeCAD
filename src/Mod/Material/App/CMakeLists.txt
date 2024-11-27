@@ -55,23 +55,23 @@ generate_from_xml(UUIDsPy)
 SET(Python_SRCS
     Exceptions.h
     Array2DPy.xml
-    Array2DPyImpl.cpp
+    Array2DPyImp.cpp
     Array3DPy.xml
-    Array3DPyImpl.cpp
+    Array3DPyImp.cpp
     MaterialManagerPy.xml
-    MaterialManagerPyImpl.cpp
+    MaterialManagerPyImp.cpp
     MaterialPy.xml
-    MaterialPyImpl.cpp
+    MaterialPyImp.cpp
     MaterialFilterPy.xml
-    MaterialFilterPyImpl.cpp
+    MaterialFilterPyImp.cpp
     ModelManagerPy.xml
-    ModelManagerPyImpl.cpp
+    ModelManagerPyImp.cpp
     ModelPropertyPy.xml
-    ModelPropertyPyImpl.cpp
+    ModelPropertyPyImp.cpp
     ModelPy.xml
-    ModelPyImpl.cpp
+    ModelPyImp.cpp
     UUIDsPy.xml
-    UUIDsPyImpl.cpp
+    UUIDsPyImp.cpp
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
@@ -118,6 +118,9 @@ endif(FREECAD_USE_PCH)
 
 add_library(Materials SHARED ${Materials_SRCS})
 target_link_libraries(Materials ${Materials_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(Materials)
+endif()
 
 SET_BIN_DIR(Materials Materials /Mod/Material)
 SET_PYTHON_PREFIX_SUFFIX(Materials)

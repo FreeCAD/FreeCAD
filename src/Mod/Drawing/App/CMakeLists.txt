@@ -67,6 +67,9 @@ endif(FREECAD_USE_PCH)
 
 add_library(Drawing SHARED ${Drawing_SRCS} ${Features_SRCS} ${DrawingAlgos_SRCS})
 target_link_libraries(Drawing ${Drawing_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(Drawing)
+endif()
 
 SET_BIN_DIR(Drawing Drawing /Mod/Drawing)
 SET_PYTHON_PREFIX_SUFFIX(Drawing)

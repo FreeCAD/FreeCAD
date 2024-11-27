@@ -191,7 +191,6 @@ void QGIHighlight::setTools()
 {
     m_pen.setWidthF(m_width);
     m_pen.setColor(m_colCurrent);
-    m_pen.setStyle(Qt::CustomDashLine);
 
     m_brush.setStyle(m_brushCurrent);
     m_brush.setColor(m_colCurrent);

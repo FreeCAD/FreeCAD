@@ -152,8 +152,8 @@ void DrawViewCollection::rebuildViewList()
     const std::vector<App::DocumentObject*> currViews = Views.getValues();
     std::vector<App::DocumentObject*> newViews;
     for (auto* child : getOutList()) {
-        if (child->isDerivedFrom<DrawView>() || 
-            (child->isDerivedFrom<App::Link>() 
+        if (child->isDerivedFrom<DrawView>() ||
+            (child->isDerivedFrom<App::Link>()
                 && static_cast<App::Link*>(child)->getLinkedObject()->isDerivedFrom<DrawView>())) {
             bool found = false;
             for (auto& v:currViews) {
@@ -213,9 +213,11 @@ void DrawViewCollection::unsetupObject()
     std::string docName = getDocument()->getName();
 
     for (auto* view : Views.getValues()) {
-        std::string viewName = view->getNameInDocument();
-        Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
-                                          docName.c_str(), viewName.c_str());
+        if (view->isAttachedToDocument()) {
+            std::string viewName = view->getNameInDocument();
+            Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
+                                              docName.c_str(), viewName.c_str());
+        }
     }
 
     std::vector<App::DocumentObject*> emptyViews;

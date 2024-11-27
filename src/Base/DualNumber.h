@@ -31,7 +31,7 @@ namespace Base
 
 
 /**
- * @brief Dual Numbers aer 2-part numbers like complex numbers, but different
+ * @brief Dual Numbers are 2-part numbers like complex numbers, but different
  * algebra. They are denoted as a + b*eps, where eps^2 = 0. eps, the nilpotent,
  * is like imaginary unit of complex numbers. The neat utility of dual numbers
  * is that if you use them instead of normal numbers in a function like sin(),

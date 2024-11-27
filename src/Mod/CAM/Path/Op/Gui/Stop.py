@@ -37,9 +37,7 @@ class Stop:
             "App::PropertyEnumeration",
             "Stop",
             "Path",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Add Optional or Mandatory Stop to the program"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Add Optional or Mandatory Stop to the program"),
         )
         obj.Stop = ["Optional", "Mandatory"]
         obj.Proxy = self
@@ -121,9 +119,7 @@ class CommandPathStop:
         return False
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction(
-            "Add Optional or Mandatory Stop to the program"
-        )
+        FreeCAD.ActiveDocument.openTransaction("Add Optional or Mandatory Stop to the program")
         FreeCADGui.addModule("Path.Op.Gui.Stop")
         snippet = """
 import Path

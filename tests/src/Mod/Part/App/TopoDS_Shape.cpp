@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <Standard_TypeMismatch.hxx>
 #include <TopoDS.hxx>

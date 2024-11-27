@@ -35,31 +35,6 @@
          offset="1"
          id="stop3769" />
     </linearGradient>
-    <linearGradient
-       id="linearGradient12512">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:1.0000000;"
-         offset="0.0000000"
-         id="stop12513" />
-      <stop
-         style="stop-color:#fff520;stop-opacity:0.89108908;"
-         offset="0.50000000"
-         id="stop12517" />
-      <stop
-         style="stop-color:#fff300;stop-opacity:0.0000000;"
-         offset="1.0000000"
-         id="stop12514" />
-    </linearGradient>
-    <radialGradient
-       xlink:href="#linearGradient12512"
-       id="radialGradient278"
-       gradientUnits="userSpaceOnUse"
-       cx="55"
-       cy="125"
-       fx="55"
-       fy="125"
-       r="14.375"
-       gradientTransform="matrix(0.86956519,0,0,0.86956519,0.15426863,-90.195652)" />
   </defs>
   <metadata
      id="metadata2874">
@@ -110,10 +85,18 @@
          id="path2993" />
     </g>
   </g>
-  <circle
-     style="color:#000000;display:block;visibility:visible;fill:url(#radialGradient278);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.08696;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none"
-     id="path12511"
-     cx="47.980354"
-     cy="18.499996"
-     r="12.5" />
+  <g
+     id="g5"
+     style="stroke:#2e3436">
+    <circle
+       style="fill:#eeeeec;stroke:#555753;stroke-width:2.00001;stroke-linecap:round;stroke-linejoin:round"
+       id="path2"
+       cx="45.99572"
+       cy="45.994976"
+       r="15.005042" />
+    <path
+       id="path1"
+       style="fill:#8ae234;stroke:#17230b;stroke-width:1.99998;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       d="m 43.99572,35.994976 h 4 v 8 h 8 v 4 h -8 v 8 h -4 v -8 h -8 v -4 h 8 z" />
+  </g>
 </svg>

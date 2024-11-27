@@ -25,6 +25,8 @@ import FreeCADGui
 import Path
 import Path.Op.Gui.Base as PathOpGui
 import Path.Op.Vcarve as PathVcarve
+import Path.Base.Gui.Util as PathGuiUtil
+
 import PathGui
 import PathScripts.PathUtils as PathUtils
 from PySide import QtCore, QtGui
@@ -35,6 +37,7 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
 __doc__ = "Vcarve operation page controller and command implementation."
 
+# There is a bug in logging library. To enable debugging - set True also in Op/Vcarve.py
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -60,17 +63,12 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
             base = job.Proxy.resourceClone(job, sel.Object)
             if not base:
                 Path.Log.notice(
-                    (
-                        translate("CAM", "%s is not a Base Model object of the job %s")
-                        + "\n"
-                    )
+                    (translate("CAM", "%s is not a Base Model object of the job %s") + "\n")
                     % (sel.Object.Label, job.Label)
                 )
                 continue
             if base in shapes:
-                Path.Log.notice(
-                    "Base shape %s already in the list".format(sel.Object.Label)
-                )
+                Path.Log.notice("Base shape %s already in the list".format(sel.Object.Label))
                 continue
             if base.isDerivedFrom("Part::Part2DObject"):
                 if sel.HasSubObjects:
@@ -114,9 +112,7 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
             sub = item.data(self.super().DataObjectSub)
             if not sub:
                 shapes.append(obj)
-        Path.Log.debug(
-            "Setting new base shapes: %s -> %s" % (self.obj.BaseShapes, shapes)
-        )
+        Path.Log.debug("Setting new base shapes: %s -> %s" % (self.obj.BaseShapes, shapes))
         self.obj.BaseShapes = shapes
         return self.super().updateBase()
 
@@ -124,9 +120,37 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     """Page controller class for the Vcarve operation."""
 
+    def initPage(self, obj):
+        self.finishingPassZOffsetSpinBox = PathGuiUtil.QuantitySpinBox(
+            self.form.finishingPassZOffset, obj, "FinishingPassZOffset"
+        )
+
     def getForm(self):
         """getForm() ... returns UI"""
-        return FreeCADGui.PySideUic.loadUi(":/panels/PageOpVcarveEdit.ui")
+        form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpVcarveEdit.ui")
+        self.updateFormConditionalState(form)
+        return form
+
+    def updateFormConditionalState(self, form):
+        """
+        Update conditional form controls - i.e settings that should be
+        visible only under certain conditions (other settings enabled, etc).
+        """
+
+        if form.finishingPassEnabled.isChecked():
+            form.finishingPassZOffset.setVisible(True)
+            form.finishingPassZOffsetLabel.setVisible(True)
+        else:
+            form.finishingPassZOffset.setVisible(False)
+            form.finishingPassZOffsetLabel.setVisible(False)
+
+    def updateFormCallback(self):
+        return self.updateFormConditionalState(self.form)
+
+    def registerSignalHandlers(self, obj):
+        """Register signal handlers to update conditiona UI states"""
+
+        self.form.finishingPassEnabled.stateChanged.connect(self.updateFormCallback)
 
     def getFields(self, obj):
         """getFields(obj) ... transfers values from UI to obj's properties"""
@@ -134,21 +158,52 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             obj.Discretize = self.form.discretize.value()
         if obj.Colinear != self.form.colinearFilter.value():
             obj.Colinear = self.form.colinearFilter.value()
-        self.updateToolController(obj, self.form.toolController)
+
+        if obj.FinishingPass != self.form.finishingPassEnabled.isChecked():
+            obj.FinishingPass = self.form.finishingPassEnabled.isChecked()
+
+        if obj.OptimizeMovements != self.form.optimizeMovementsEnabled.isChecked():
+            obj.OptimizeMovements = self.form.optimizeMovementsEnabled.isChecked()
+
+        self.finishingPassZOffsetSpinBox.updateProperty()
+
         self.updateCoolant(obj, self.form.coolantController)
+
+        try:
+            self.updateToolController(obj, self.form.toolController)
+        except PathUtils.PathNoTCExistsException:
+            title = translate("CAM", "No valid toolcontroller")
+            message = translate(
+                "CAM",
+                "This operation requires a tool controller with a v-bit tool",
+            )
+
+            self.show_error_message(title, message)
 
     def setFields(self, obj):
         """setFields(obj) ... transfers obj's property values to UI"""
         self.form.discretize.setValue(obj.Discretize)
         self.form.colinearFilter.setValue(obj.Colinear)
+        self.form.finishingPassEnabled.setChecked(obj.FinishingPass)
+        self.form.optimizeMovementsEnabled.setChecked(obj.OptimizeMovements)
+
+        self.finishingPassZOffsetSpinBox.updateSpinBox()
+
         self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
+
+        self.updateFormConditionalState(self.form)
 
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
         signals = []
         signals.append(self.form.discretize.editingFinished)
         signals.append(self.form.colinearFilter.editingFinished)
+        signals.append(self.form.finishingPassEnabled.stateChanged)
+        signals.append(self.form.finishingPassZOffset.editingFinished)
+
+        signals.append(self.form.optimizeMovementsEnabled.stateChanged)
+
         signals.append(self.form.toolController.currentIndexChanged)
         signals.append(self.form.coolantController.currentIndexChanged)
         return signals

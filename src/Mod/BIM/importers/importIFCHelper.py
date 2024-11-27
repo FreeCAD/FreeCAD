@@ -78,8 +78,8 @@ def getPreferences():
     """Retrieve the IFC preferences available in import and export.
 
     MERGE_MODE_ARCH:
-        0 = parametric arch objects
-        1 = non-parametric arch objects
+        0 = parametric BIM objects
+        1 = non-parametric BIM objects
         2 = Part shapes
         3 = One compound per storey
     """

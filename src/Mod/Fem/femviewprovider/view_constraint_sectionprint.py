@@ -46,10 +46,7 @@ class VPConstraintSectionPrint(view_base_femconstraint.VPBaseFemConstraint):
 
     def setEdit(self, vobj, mode=0):
         view_base_femconstraint.VPBaseFemConstraint.setEdit(
-            self,
-            vobj,
-            mode,
-            task_constraint_sectionprint._TaskPanel
+            self, vobj, mode, task_constraint_sectionprint._TaskPanel
         )
 
     def attach(self, vobj):

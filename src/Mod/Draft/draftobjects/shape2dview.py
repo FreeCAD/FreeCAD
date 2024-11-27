@@ -93,15 +93,13 @@ class Shape2DView(DraftObject):
             obj.Tessellation = False
         if not "InPlace" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property",
-                    "For Cutlines and Cutfaces modes, \
-                    this leaves the faces at the cut location")
+                    "For Cutlines and Cutfaces modes, this leaves the faces at the cut location")
             obj.addProperty("App::PropertyBool", "InPlace",
                             "Draft", _tip)
             obj.InPlace = True
         if not "SegmentLength" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property",
-                    "Length of line segments if tessellating Ellipses or B-splines \
-                    into line segments")
+                    "Length of line segments if tessellating Ellipses or B-splines into line segments")
             obj.addProperty("App::PropertyFloat", "SegmentLength",
                             "Draft", _tip)
             obj.SegmentLength = .05
@@ -151,21 +149,19 @@ class Shape2DView(DraftObject):
         edges = []
         _groups = TechDraw.projectEx(shape, direction)
         for g in _groups[0:5]:
-            if g:
+            if not g.isNull():
                 edges.append(g)
-        if hasattr(obj,"HiddenLines"):
-            if obj.HiddenLines:
-                for g in _groups[5:]:
+        if getattr(obj, "HiddenLines", False):
+            for g in _groups[5:]:
+                if not g.isNull():
                     edges.append(g)
         edges = self.cleanExcluded(obj,edges)
-        #return Part.makeCompound(edges)
-        if hasattr(obj,"Tessellation") and obj.Tessellation:
+        if getattr(obj, "Tessellation", False):
             return DraftGeomUtils.cleanProjection(Part.makeCompound(edges),
                                                   obj.Tessellation,
                                                   obj.SegmentLength)
         else:
             return Part.makeCompound(edges)
-            #return DraftGeomUtils.cleanProjection(Part.makeCompound(edges))
 
     def cleanExcluded(self,obj,shapes):
 
@@ -198,9 +194,11 @@ class Shape2DView(DraftObject):
     def _get_shapes(self, shape, onlysolids=False):
         if onlysolids:
             return shape.Solids
+        if shape.isNull():
+            return []
         if shape.ShapeType == "Compound":
             return shape.SubShapes
-        return [shape]
+        return [shape.copy()]
 
     def execute(self, obj):
         if self.props_changed_placement_only(obj) \
@@ -232,7 +230,11 @@ class Shape2DView(DraftObject):
                         onlysolids = obj.Base.OnlySolids
                     if hasattr(obj,"OnlySolids"): # override base object
                         onlysolids = obj.OnlySolids
-                    import Arch
+                    try:
+                        import Arch
+                    except:
+                        print("Shape2DView: BIM not present, unable to recompute")
+                        return
                     objs = groups.get_group_contents(objs, walls=True)
                     if getattr(obj,"VisibleOnly",True):
                         objs = gui_utils.remove_hidden(objs)
@@ -289,15 +291,20 @@ class Shape2DView(DraftObject):
                             for s in shapes:
                                 shapes_to_cut.extend(s.Faces)
                         for sh in shapes_to_cut:
-                            if cutv:
+                            if cutv and (not cutv.isNull()) and (not sh.isNull()):
                                 if sh.Volume < 0:
                                     sh.reverse()
                                 #if cutv.BoundBox.intersect(sh.BoundBox):
                                 #    c = sh.cut(cutv)
                                 #else:
                                 #    c = sh.copy()
-                                c = sh.cut(cutv)
-                                cuts.extend(self._get_shapes(c, onlysolids))
+                                try:
+                                    c = sh.cut(cutv)
+                                except ValueError:
+                                    print("DEBUG: Error subtracting shapes in", obj.Label)
+                                    cuts.extend(self._get_shapes(sh, onlysolids))
+                                else:
+                                    cuts.extend(self._get_shapes(c, onlysolids))
                             else:
                                 cuts.extend(self._get_shapes(sh, onlysolids))
                         comp = Part.makeCompound(cuts)

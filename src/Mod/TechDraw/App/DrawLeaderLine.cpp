@@ -20,19 +20,29 @@
  *                                                                         *
  ***************************************************************************/
 
+//! DrawLeaderLine - a class for storing leader line attributes and providing methods to apply transformations on leader geometry.
+//! Waypoints are to be stored as displacements from the first Waypoint in printed page coordinates (mm, conventional
+//! X and Y axes, (0, 0) at lower left).  The first Waypoint is set to (0,0) after the displacements are calculated.
+//! The leader's X,Y position is relative to the parent's origin.  The X,Y position is unrotated and unscaled.
+
 #include "PreCompiled.h"
 
+#include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
+#include "DrawViewPart.h"
+#include "DrawPage.h"
 #include "DrawLeaderLine.h"
 #include "DrawLeaderLinePy.h"  // generated from DrawLeaderLinePy.xml
 #include "ArrowPropEnum.h"
 #include "DrawView.h"
 #include "Preferences.h"
+#include "DrawUtil.h"
 
 
 using namespace TechDraw;
+using DU = DrawUtil;
 
 //===========================================================================
 // DrawLeaderLine - Base class for drawing leader based features
@@ -66,26 +76,26 @@ DrawLeaderLine::DrawLeaderLine()
 {
     static const char *group = "Leader";
 
+    constexpr long int FilledArrow{0l};
+    constexpr long int NoEnd{7l};
+
     ADD_PROPERTY_TYPE(LeaderParent, (nullptr), group, (App::PropertyType)(App::Prop_None),
                       "View to which this leader is attached");
     LeaderParent.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(WayPoints, (Base::Vector3d()) ,group, App::Prop_None,
                       "Intermediate points for Leader line");
 
-//    EndType.setEnums(ArrowTypeEnums);
-//    ADD_PROPERTY(EndType, (prefEnd()));
-
     StartSymbol.setEnums(ArrowPropEnum::ArrowTypeEnums);
-    ADD_PROPERTY(StartSymbol, (0l));              //filled arrow
+    ADD_PROPERTY(StartSymbol, (FilledArrow));              //filled arrow
 
-//    ADD_PROPERTY_TYPE(StartSymbol, (0), group, App::Prop_None, "Symbol (arrowhead) for start of line");
     EndSymbol.setEnums(ArrowPropEnum::ArrowTypeEnums);
-    ADD_PROPERTY(EndSymbol, (7l));                //no symbol
-//    ADD_PROPERTY_TYPE(EndSymbol, (0), group, App::Prop_None, "Symbol (arrowhead) for end of line");
-
+    ADD_PROPERTY(EndSymbol, (NoEnd));                //no symbol
 
     ADD_PROPERTY_TYPE(Scalable ,(false), group, App::Prop_None, "Scale line with LeaderParent");
     ADD_PROPERTY_TYPE(AutoHorizontal ,(getDefAuto()), group, App::Prop_None, "Forces last line segment to be horizontal");
+    ADD_PROPERTY_TYPE(RotatesWithParent ,(true), group, App::Prop_None,
+                      "If true, leader rotates around parent.  If false, only first segment of leader changes with parent rotation.");
+
 
     //hide the DrawView properties that don't apply to Leader
     ScaleType.setStatus(App::Property::ReadOnly, true);
@@ -108,12 +118,16 @@ void DrawLeaderLine::onChanged(const App::Property* prop)
 short DrawLeaderLine::mustExecute() const
 {
     if (!isRestoring() && LeaderParent.isTouched()) {
-        return true;  // Property changed
+        return 1;  // Property changed
     }
 
     const App::DocumentObject* docObj = getBaseObject();
     if (docObj && docObj->isTouched()) {
-        return true;  // Object property points to is touched
+        return 1;  // Object property points to is touched
+    }
+
+    if (WayPoints.isTouched()) {
+        return 1;
     }
 
     return DrawView::mustExecute();
@@ -121,11 +135,13 @@ short DrawLeaderLine::mustExecute() const
 
 App::DocumentObjectExecReturn *DrawLeaderLine::execute()
 {
-//    Base::Console().Message("DLL::execute()\n");
+     // Base::Console().Message("DLL::execute()\n");
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
-    adjustLastSegment();
+
+    // is horizLastSegment something that should be done only at draw time?
+    horizLastSegment();
     overrideKeepUpdated(false);
     return DrawView::execute();
 }
@@ -137,7 +153,7 @@ DrawView* DrawLeaderLine::getBaseView() const
         return nullptr;
     }
 
-    DrawView* cast = dynamic_cast<DrawView*>(baseObj);
+    auto cast = dynamic_cast<DrawView*>(baseObj);
     return cast;
 }
 
@@ -154,8 +170,6 @@ bool DrawLeaderLine::keepUpdated()
     }
     return view->keepUpdated();
 }
-
-//need separate getParentScale()???
 
 double DrawLeaderLine::getBaseScale() const
 {
@@ -174,11 +188,7 @@ double DrawLeaderLine::getScale() const
         return 1.0;
     }
 
-    DrawView* parent = getBaseView();
-    if (!parent) {
-        return 1.0;
-    }
-    return parent->getScale();
+    return getBaseScale();
 }
 
 Base::Vector3d DrawLeaderLine::getAttachPoint()
@@ -190,23 +200,37 @@ Base::Vector3d DrawLeaderLine::getAttachPoint()
     );
 }
 
-void DrawLeaderLine::adjustLastSegment()
+//! unit agnostic conversion of last segment to horizontal.  need to do this at drawing time otherwise
+//! we just realign the canonical form.
+void DrawLeaderLine::horizLastSegment()
 {
-//    Base::Console().Message("DLL::adjustLastSegment()\n");
-    bool adjust = AutoHorizontal.getValue();
-    std::vector<Base::Vector3d> wp = WayPoints.getValues();
-    if (adjust && wp.size() > 1) {
-        int iLast = wp.size() - 1;
-        int iPen  = wp.size() - 2;
+    // Base::Console().Message("DLL::horizLastSegment() - auto: %d\n", AutoHorizontal.getValue());
+    bool adjust =  AutoHorizontal.getValue();
+    if (!adjust) {
+        return;
+    }
+
+    auto temp = horizLastSegment(WayPoints.getValues());
+    WayPoints.setValues(temp);
+}
+
+std::vector<Base::Vector3d> DrawLeaderLine::horizLastSegment(const std::vector<Base::Vector3d>& inDeltas)
+{
+    // Base::Console().Message("DLL::horizLastSegment(in: %d)\n", inDeltas.size());
+
+    std::vector<Base::Vector3d> wp = inDeltas;
+        if (wp.size() > 1) {
+        size_t iLast = wp.size() - 1;
+        size_t iPen  = wp.size() - 2;
         Base::Vector3d last = wp.at(iLast);
         Base::Vector3d penUlt = wp.at(iPen);
         last.y = penUlt.y;
         wp.at(iLast) = last;
     }
-    WayPoints.setValues(wp);
+    return wp;
 }
 
-//middle of last line segment
+//! returns the mid point of last segment.  used by leader decorators like weld symbol.
 Base::Vector3d DrawLeaderLine::getTileOrigin() const
 {
     std::vector<Base::Vector3d> wp = WayPoints.getValues();
@@ -215,17 +239,17 @@ Base::Vector3d DrawLeaderLine::getTileOrigin() const
         Base::Vector3d second = wp.rbegin()[1];
         return (last + second) / 2.0;
     }
-    
+
     Base::Console().Warning("DLL::getTileOrigin - no waypoints\n");
     return Base::Vector3d();
 }
 
-//start of last line segment
+//! returns start of last line segment
 Base::Vector3d DrawLeaderLine::getKinkPoint() const
 {
     std::vector<Base::Vector3d> wp = WayPoints.getValues();
     if (wp.size() > 1) {
-        return wp.rbegin()[1];  // Second
+        return wp.rbegin()[1];  // second point from end
     }
 
     Base::Console().Warning("DLL::getKinkPoint - no waypoints\n");
@@ -239,11 +263,179 @@ Base::Vector3d DrawLeaderLine::getTailPoint() const
     if (!wp.empty()) {
         return wp.rbegin()[0];  // Last
     }
-    
+
     Base::Console().Warning("DLL::getTailPoint - no waypoints\n");
     return Base::Vector3d();
 }
 
+
+//! create a new leader feature from parameters.  Used by python method makeLeader.
+//! pagePoints are in mm from bottom left of page.
+DrawLeaderLine* DrawLeaderLine::makeLeader(DrawViewPart* parent, std::vector<Base::Vector3d> pagePoints, int iStartSymbol, int iEndSymbol)
+{
+    //    Base::Console().Message("DLL::makeLeader(%s, %d, %d, %d)\n", parent->getNameInDocument(), pagePoints.size(), iStartSymbol, iEndSymbol);
+    if (pagePoints.size() < 2) {
+        Base::Console().Message("DLL::makeLeader - not enough pagePoints\n");
+        return {};
+    }
+
+    // this is +/- the same code as in TaskLeaderLine::createLeaderFeature()
+    const std::string objectName{"LeaderLine"};
+    const std::string leaderType = "TechDraw::DrawLeaderLine";
+    std::string leaderName = parent->getDocument()->getUniqueObjectName(objectName.c_str());
+    std::string pageName = parent->findParentPage()->getNameInDocument();
+    std::string parentName = parent->getNameInDocument();
+
+    Base::Interpreter().runStringArg("App.activeDocument().addObject('%s', '%s')",
+                                     leaderType.c_str(), leaderName.c_str());
+    Base::Interpreter().runStringArg("App.activeDocument().%s.translateLabel('DrawLeaderLine', 'LeaderLine', '%s')",
+                                     leaderName.c_str(), leaderName.c_str());
+    Base::Interpreter().runStringArg("App.activeDocument().%s.addView(App.activeDocument().%s)",
+                                     pageName.c_str(), leaderName.c_str());
+    Base::Interpreter().runStringArg("App.activeDocument().%s.LeaderParent = App.activeDocument().%s",
+                                     leaderName.c_str(), parentName.c_str());
+    // we assume here that the caller will handle AutoHorizontal, Scalable and Rotatable as required
+
+
+    App::DocumentObject* obj = parent->getDocument()->getObject(leaderName.c_str());
+    if (!obj || !obj->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())) {
+        throw Base::RuntimeError("DrawLeaderLine::makeLeader - new object not found");
+    }
+
+    // set leader x,y position
+    auto leaderFeature = static_cast<TechDraw::DrawLeaderLine*>(obj);
+    Base::Vector3d parentPagePos{ parent->X.getValue(), parent->Y.getValue(), 0.0};
+    Base::Vector3d leaderPagePos = pagePoints.front() - parentPagePos;
+    bool force = true;   // update position even though leaders default to locked.
+    leaderFeature->setPosition(leaderPagePos.x, leaderPagePos.y, force);
+
+    // page positions to deltas
+    std::vector<Base::Vector3d> pageDeltas;
+    for (auto& point : pagePoints) {
+        auto temp = point - pagePoints.front();
+        pageDeltas.emplace_back(temp);
+    }
+
+    // deltas to unscaled, unrotated form
+    auto leaderPoints = leaderFeature->makeCanonicalPoints(pageDeltas);
+    // invert the canonical points
+    std::vector<Base::Vector3d> inverted;
+    inverted.reserve(leaderPoints.size());
+    for (auto& point : leaderPoints) {
+        inverted.push_back(DU::invertY(point));
+    }
+    leaderFeature->WayPoints.setValues(inverted);
+
+    leaderFeature->StartSymbol.setValue(iStartSymbol);
+    leaderFeature->EndSymbol.setValue(iEndSymbol);
+
+    parent->touch();
+
+    return leaderFeature;
+}
+
+//! return scaled and rotated copies of the WayPoints (page position deltas from 1st point)
+//! used by QGILL.
+std::vector<Base::Vector3d>  DrawLeaderLine::getScaledAndRotatedPoints(bool doScale, bool doRotate) const
+{
+    // Base::Console().Message("DLL::getScaledAndRotatedPoints(%d, %d)\n", doScale, doRotate);
+    auto dvp = getBaseView();
+    if (!dvp) {
+        // document is restoring?
+        // Base::Console().Message("DLL::getScaledAndRotatedPoints - no DV\n");
+        return {};
+    }
+
+    double scale{1.0};
+    if (Scalable.getValue() && doScale) {
+        scale = dvp->getScale();
+    }
+
+    double rotationRad{0.0};
+    if (doRotate) {
+        rotationRad = dvp->Rotation.getValue() * M_PI / DegreesHalfCircle;
+    }
+
+    std::vector<Base::Vector3d> pointsAll = WayPoints.getValues();
+    std::vector<Base::Vector3d> result;
+    for (auto& point : pointsAll) {
+        Base::Vector3d newPoint = DU::invertY(point * scale);
+        if (rotationRad != 0.0) {
+            // the waypoints use conventional coords
+            newPoint.RotateZ(rotationRad);
+        }
+        result.push_back(DU::invertY(newPoint));
+    }
+
+    return result;
+}
+
+//! return unscaled and unrotated versions of the input points. input is expected to in mm (Rez::appX()),
+//! and conventional Y axis (+ up)
+//! used by QGILL.
+std::vector<Base::Vector3d>
+DrawLeaderLine::makeCanonicalPoints(const std::vector<Base::Vector3d>& inPoints,
+                                    bool doScale,
+                                    bool doRotate) const
+{
+    // Base::Console().Message("DLL::makeCanonicalPoints(%d, %d, %d)\n", inPoints.size(), doScale, doRotate);
+    auto dvp = getBaseView();
+
+    double scale{1.0};
+    if (Scalable.getValue() && doScale) {
+        scale = dvp->getScale();
+    }
+
+    double rotationRad{0.0};
+    if (doRotate) {
+        rotationRad = - dvp->Rotation.getValue() * M_PI / DegreesHalfCircle;
+    }
+
+    std::vector<Base::Vector3d> result;
+    for (auto& point : inPoints) {
+        Base::Vector3d newPoint = point / scale;
+        if (rotationRad != 0.0) {
+            newPoint.RotateZ(rotationRad);
+        }
+        result.push_back(newPoint);
+    }
+
+    return result;
+}
+
+//! as makeCanonicalPoints, but accepts and returns inverted points
+std::vector<Base::Vector3d>
+DrawLeaderLine::makeCanonicalPointsInverted(const std::vector<Base::Vector3d>& inPoints,
+                                    bool doScale,
+                                    bool doRotate) const
+{
+    std::vector<Base::Vector3d> conventionalPoints;
+    conventionalPoints.reserve(inPoints.size());
+    for (auto& point : inPoints) {
+        conventionalPoints.push_back(DU::invertY(point));
+    }
+    auto conventionalCanon = makeCanonicalPoints(inPoints, doScale, doRotate);
+    std::vector<Base::Vector3d> invertedPoints;
+    invertedPoints.reserve(inPoints.size());
+    for (auto& point : conventionalCanon) {
+        invertedPoints.push_back(DU::invertY(point));
+    }
+    return invertedPoints;
+}
+
+//! returns true if parent exists. if parent is a DVP it must have geometry.
+bool DrawLeaderLine::isParentReady() const
+{
+    TechDraw::DrawView* parent = getBaseView();
+    auto dvp = dynamic_cast<TechDraw::DrawViewPart*>(parent);
+    if (!parent || (dvp && !dvp->hasGeometry()))  {
+        // still restoring or
+        // we are attached to a dvp that has no geometry, so don't bother trying to draw yet
+        Base::Console().Message("DLL:: - no parent or geometry\n");
+        return false;
+    }
+    return true;
+}
 
 bool DrawLeaderLine::getDefAuto() const
 {

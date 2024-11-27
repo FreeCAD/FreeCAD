@@ -43,6 +43,7 @@
 #include "MainWindow.h"
 #include "Language/Translator.h"
 #include <App/Application.h>
+#include <Base/Console.h>
 
 
 using namespace Gui;
@@ -106,6 +107,8 @@ void StartupProcess::setupApplication()
     // compression for tablet events here to solve that.
     QCoreApplication::setAttribute(Qt::AA_CompressTabletEvents);
 #endif
+    // https://forum.freecad.org/viewtopic.php?f=3&t=15540
+    QApplication::setAttribute(Qt::AA_DontShowIconsInMenus, false);
 }
 
 void StartupProcess::execute()
@@ -162,23 +165,13 @@ void StartupProcess::registerEventType()
 
 void StartupProcess::setThemePaths()
 {
-    ParameterGrp::handle hTheme = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Bitmaps/Theme");
 #if !defined(Q_OS_LINUX)
     QIcon::setThemeSearchPaths(QIcon::themeSearchPaths()
                             << QString::fromLatin1(":/icons/FreeCAD-default"));
-    QIcon::setThemeName(QLatin1String("FreeCAD-default"));
-#else
-    // Option to opt-out from using a Linux desktop icon theme.
-    // https://forum.freecad.org/viewtopic.php?f=4&t=35624
-    bool themePaths = hTheme->GetBool("ThemeSearchPaths",true);
-    if (!themePaths) {
-        QStringList searchPaths;
-        searchPaths.prepend(QString::fromUtf8(":/icons"));
-        QIcon::setThemeSearchPaths(searchPaths);
-        QIcon::setThemeName(QLatin1String("FreeCAD-default"));
-    }
 #endif
+
+    ParameterGrp::handle hTheme = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Bitmaps/Theme");
 
     std::string searchpath = hTheme->GetASCII("SearchPath");
     if (!searchpath.empty()) {
@@ -228,11 +221,13 @@ void StartupPostProcess::execute()
     setWheelEventFilter();
     setLocale();
     setCursorFlashing();
+    setQtStyle();
     checkOpenGL();
     loadOpenInventor();
     setBranding();
     showMainWindow();
     activateWorkbench();
+    checkParameters();
 }
 
 void StartupPostProcess::setWindowTitle()
@@ -244,8 +239,8 @@ void StartupPostProcess::setWindowTitle()
 void StartupPostProcess::setProcessMessages()
 {
     if (!loadFromPythonModule) {
-        QObject::connect(qtApp, SIGNAL(messageReceived(const QList<QByteArray> &)),
-                         mainWindow, SLOT(processMessages(const QList<QByteArray> &)));
+        QObject::connect(qtApp, SIGNAL(messageReceived(const QList<QString> &)),
+                         mainWindow, SLOT(processMessages(const QList<QString> &)));
     }
 }
 
@@ -294,7 +289,6 @@ void StartupPostProcess::setLocale()
     else if (localeFormat == 2) {
         Translator::instance()->setLocale("C");
     }
-
 }
 
 void StartupPostProcess::setCursorFlashing()
@@ -303,6 +297,13 @@ void StartupPostProcess::setCursorFlashing()
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
     int blinkTime = hGrp->GetBool("EnableCursorBlinking", true) ? -1 : 0;
     QApplication::setCursorFlashTime(blinkTime);
+}
+
+void StartupPostProcess::setQtStyle()
+{
+    ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("MainWindow");
+    auto qtStyle = hGrp->GetASCII("QtStyle");
+    QApplication::setStyle(QString::fromStdString(qtStyle));
 }
 
 void StartupPostProcess::checkOpenGL()
@@ -409,24 +410,10 @@ void StartupPostProcess::setImportImageFormats()
     App::GetApplication().addImportType(filter.c_str(), "FreeCADGui");
 }
 
-bool StartupPostProcess::hiddenMainWindow() const
-{
-    const std::map<std::string,std::string>& cfg = App::Application::Config();
-    bool hidden = false;
-    auto it = cfg.find("StartHidden");
-    if (it != cfg.end()) {
-        hidden = true;
-    }
-
-    return hidden;
-}
-
 void StartupPostProcess::showMainWindow()
 {
-    bool hidden = hiddenMainWindow();
-
     // show splasher while initializing the GUI
-    if (!hidden && !loadFromPythonModule) {
+    if (!Application::hiddenMainWindow() && !loadFromPythonModule) {
         mainWindow->startSplasher();
     }
 
@@ -489,7 +476,7 @@ void StartupPostProcess::activateWorkbench()
     guiApp.activateWorkbench(start.c_str());
 
     // show the main window
-    if (!hiddenMainWindow()) {
+    if (!Application::hiddenMainWindow()) {
         Base::Console().Log("Init: Showing main window\n");
         mainWindow->loadWindowSettings();
     }
@@ -543,5 +530,17 @@ void StartupPostProcess::autoloadModules(const QStringList& wb)
         if (wb.contains(QString::fromLatin1(workbench.c_str()))) {
             guiApp.activateWorkbench(workbench.c_str());
         }
+    }
+}
+
+void StartupPostProcess::checkParameters()
+{
+    if (App::GetApplication().GetSystemParameter().IgnoreSave()) {
+        Base::Console().Warning("System parameter file couldn't be opened.\n"
+                                "Continue with an empty configuration that won't be saved.\n");
+    }
+    if (App::GetApplication().GetUserParameter().IgnoreSave()) {
+        Base::Console().Warning("User parameter file couldn't be opened.\n"
+                                "Continue with an empty configuration that won't be saved.\n");
     }
 }

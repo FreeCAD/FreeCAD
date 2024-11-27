@@ -72,12 +72,9 @@ ViewProviderLeader::ViewProviderLeader()
     LineStyle.setEnums(LineStyleEnums);
     ADD_PROPERTY_TYPE(LineStyle, (1), group, (App::PropertyType)(App::Prop_None), "Line style");
     ADD_PROPERTY_TYPE(Color, (getDefLineColor()), group, App::Prop_None, "Color of the Markup");
+    ADD_PROPERTY_TYPE(UseOldCoords, (false), group, App::Prop_None, "Set to true for older documents ");
 
     StackOrder.setValue(ZVALUE::DIMENSION);
-}
-
-ViewProviderLeader::~ViewProviderLeader()
-{
 }
 
 bool ViewProviderLeader::setEdit(int ModNum)
@@ -88,7 +85,8 @@ bool ViewProviderLeader::setEdit(int ModNum)
     }
 
     if (Gui::Control().activeDialog()) {
-        return false; //TaskPanel already open!
+         // a TaskPanel is already open!
+        return false;
     }
     Gui::Selection().clearSelection();
     Gui::Control().showDialog(new TaskDlgLeaderLine(this));
@@ -106,7 +104,8 @@ void ViewProviderLeader::onChanged(const App::Property* p)
 {
     if ((p == &Color) ||
         (p == &LineWidth) ||
-        (p == &LineStyle)) {
+        (p == &LineStyle) ||
+        (p == &UseOldCoords)) {
         QGIView* qgiv = getQView();
         if (qgiv) {
             qgiv->updateView(true);
@@ -123,21 +122,23 @@ std::vector<App::DocumentObject*> ViewProviderLeader::claimChildren() const
     std::vector<App::DocumentObject*> temp;
     const std::vector<App::DocumentObject *> &views = getFeature()->getInList();
     try {
-        for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
-            auto view = dynamic_cast<TechDraw::DrawView *>(*it);
+        for(auto& docobj : views) {
+            auto view = dynamic_cast<TechDraw::DrawView *>(docobj);
             if (view && view->claimParent() == getViewObject()) {
+                // if we are the item's owner, we should add the item to our child list
                 temp.push_back(view);
                 continue;
             }
 
-            if ((*it)->isDerivedFrom<TechDraw::DrawWeldSymbol>()) {
-                temp.push_back((*it));
+            if (docobj && docobj->isDerivedFrom<TechDraw::DrawWeldSymbol>()) {
+                // add welding symbol even if we are not the owner?
+                temp.push_back(docobj);
             }
         }
         return temp;
     }
     catch (...) {
-        return std::vector<App::DocumentObject*>();
+        return {};
     }
 }
 
@@ -193,8 +194,9 @@ void ViewProviderLeader::handleChangedPropertyType(Base::XMLReader &reader, cons
     }
 }
 
-bool ViewProviderLeader::onDelete(const std::vector<std::string> &)
+bool ViewProviderLeader::onDelete(const std::vector<std::string> & parameters)
 {
+    Q_UNUSED(parameters)
     // a leader line cannot be deleted if it has a child weld symbol
 
     // get childs

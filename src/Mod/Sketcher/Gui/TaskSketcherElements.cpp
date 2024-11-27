@@ -222,9 +222,9 @@ public:
         // limitation of not knowing about padding, border and margin boxes of stylesheets
         // thus being unable to provide proper sizeHint for stylesheets to render correctly
         if (role == Qt::DecorationRole) {
-            int size = listWidget()->style()->pixelMetric(QStyle::PM_ListViewIconSize);
+            auto size = listWidget()->iconSize();
 
-            return QIcon(QPixmap(QSize(size, size)));
+            return QIcon(QPixmap(size));
         }
 
         return QListWidgetItem::data(role);
@@ -241,6 +241,22 @@ public:
                 return isEndPointSelected;
             case Sketcher::PointPos::mid:
                 return isMidPointSelected;
+            default:
+                return false;
+        }
+    }
+
+    bool isGeometryPreselected(Sketcher::PointPos pos) const
+    {
+        switch (pos) {
+            case Sketcher::PointPos::none:
+                return hovered == SubElementType::edge;
+            case Sketcher::PointPos::start:
+                return hovered == SubElementType::start;
+            case Sketcher::PointPos::end:
+                return hovered == SubElementType::end;
+            case Sketcher::PointPos::mid:
+                return hovered == SubElementType::mid;
             default:
                 return false;
         }
@@ -305,7 +321,7 @@ private:
         {QT_TR_NOOP("Arc of ellipse"), 1},
         {QT_TR_NOOP("Arc of hyperbola"), 1},
         {QT_TR_NOOP("Arc of parabola"), 1},
-        {QT_TR_NOOP("B-Spline"), 1}};
+        {QT_TR_NOOP("B-spline"), 1}};
 };
 }// namespace SketcherGui
 
@@ -943,9 +959,16 @@ void ElementItemDelegate::drawSubControl(SubControl element,
 
     auto drawSelectIcon = [&](Sketcher::PointPos pos) {
         auto icon = ElementWidgetIcons::getIcon(item->GeometryType, pos, item->State);
-        auto opacity = 0.4f;
 
-        if (isHovered) {
+        auto isOptionSelected = option.state & QStyle::State_Selected;
+        auto isOptionHovered = option.state & QStyle::State_MouseOver;
+
+        // items that user is not interacting with should be fully opaque
+        // only if item is partially selected (so only one part of geometry)
+        // the rest should be dimmed out
+        auto opacity = isOptionHovered || isOptionSelected ? 0.4 : 1.0;
+
+        if (item->isGeometryPreselected(pos)) {
             opacity = 0.8f;
         }
 
@@ -1159,7 +1182,7 @@ void ElementFilterList::languageChange()
 /* TRANSLATOR SketcherGui::TaskSketcherElements */
 
 TaskSketcherElements::TaskSketcherElements(ViewProviderSketch* sketchView)
-    : TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Elements"), true, nullptr)
+    : TaskBox(Gui::BitmapFactory().pixmap("Sketcher_CreateLine"), tr("Elements"), true, nullptr)
     , sketchView(sketchView)
     , ui(new Ui_TaskSketcherElements())
     , focusItemIndex(-1)
@@ -1301,7 +1324,7 @@ void TaskSketcherElements::onListMultiFilterItemChanged(QListWidgetItem* item)
     for (int i = filterList->count() - 1; i >= 0; i--) {
         bool isChecked = filterList->item(i)->checkState() == Qt::Checked;
         filterState = filterState << 1;// we shift left first, else the list is shifted at the end.
-        filterState = filterState | isChecked;
+        filterState = filterState | (isChecked ? 1 : 0);
     }
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
@@ -1387,6 +1410,7 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
         if (strcmp(msg.pDocName, sketchView->getSketchObject()->getDocument()->getName()) == 0
             && strcmp(msg.pObjectName, sketchView->getSketchObject()->getNameInDocument()) == 0) {
             if (msg.pSubName) {
+                ElementItem* modified_item = NULL;
                 QString expr = QString::fromLatin1(msg.pSubName);
                 std::string shapetype(msg.pSubName);
                 // if-else edge vertex
@@ -1399,11 +1423,36 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
                         int ElementId = match.captured(1).toInt(&ok) - 1;
                         if (ok) {
                             int countItems = ui->listWidgetElements->count();
+                            // TODO: This and the loop below get slow when we have a lot of items.
+                            // Perhaps we should also maintain a map so that we can look up items
+                            // by element number.
                             for (int i = 0; i < countItems; i++) {
                                 ElementItem* item =
                                     static_cast<ElementItem*>(ui->listWidgetElements->item(i));
                                 if (item->ElementNbr == ElementId) {
                                     item->isLineSelected = select;
+                                    modified_item = item;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (shapetype.size() > 12 && shapetype.substr(0, 12) == "ExternalEdge") {
+                    QRegularExpression rx(QString::fromLatin1("^ExternalEdge(\\d+)$"));
+                    QRegularExpressionMatch match;
+                    boost::ignore_unused(expr.indexOf(rx, 0, &match));
+                    if (match.hasMatch()) {
+                        bool ok;
+                        int ElementId = -match.captured(1).toInt(&ok) - 2;
+                        if (ok) {
+                            int countItems = ui->listWidgetElements->count();
+                            for (int i = 0; i < countItems; i++) {
+                                ElementItem* item =
+                                    static_cast<ElementItem*>(ui->listWidgetElements->item(i));
+                                if (item->ElementNbr == ElementId) {
+                                    item->isLineSelected = select;
+                                    modified_item = item;
                                     break;
                                 }
                             }
@@ -1429,6 +1478,7 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
                                 ElementItem* item =
                                     static_cast<ElementItem*>(ui->listWidgetElements->item(i));
                                 if (item->ElementNbr == GeoId) {
+                                    modified_item = item;
                                     switch (PosId) {
                                         case Sketcher::PointPos::start:
                                             item->isStartingPointSelected = select;
@@ -1451,15 +1501,24 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
                 // update the listwidget
                 {
                     QSignalBlocker sigblk(ui->listWidgetElements);
-                    for (int i = 0; i < ui->listWidgetElements->count(); i++) {
-                        ElementItem* item =
-                            static_cast<ElementItem*>(ui->listWidgetElements->item(i));
-                        if (item->isSelected())
-                            item->setSelected(
-                                false);// if already selected, we need to reset setSelected or it
-                                       // won't draw subelements correctly if selecting several.
-                        item->setSelected(item->isLineSelected || item->isStartingPointSelected
-                                          || item->isEndPointSelected || item->isMidPointSelected);
+                    if (modified_item != NULL) {
+                        bool is_selected = modified_item->isSelected();
+                        const bool should_be_selected = modified_item->isLineSelected
+                            || modified_item->isStartingPointSelected || modified_item->isEndPointSelected
+                            || modified_item->isMidPointSelected;
+
+                        // If an element is already selected and a new subelement gets selected
+                        // (eg., if you select the arc of a circle then select the center as well),
+                        // the new subelement won't get highlighted in the list until you mouseover
+                        // the list.  To avoid this, we deselect first to trigger a redraw.
+                        if (should_be_selected && is_selected) {
+                            modified_item->setSelected(false);
+                            is_selected = false;
+                        }
+
+                        if (should_be_selected != is_selected) {
+                          modified_item->setSelected(should_be_selected);
+                        }
                     }
                 }
             }
@@ -1592,7 +1651,12 @@ void TaskSketcherElements::onListWidgetElementsItemPressed(QListWidgetItem* it)
 
 
             if (item->isLineSelected) {
-                ss << "Edge" << item->ElementNbr + 1;
+                if (item->ElementNbr >= 0) {
+                    ss << "Edge" << item->ElementNbr + 1;
+                }
+                else {
+                    ss << "ExternalEdge" << -item->ElementNbr - 2;
+                }
                 elementSubNames.push_back(ss.str());
             }
 
@@ -1613,8 +1677,11 @@ void TaskSketcherElements::onListWidgetElementsItemPressed(QListWidgetItem* it)
             selectVertex(item->isMidPointSelected, item->MidVertex);
         }
 
-        if (!elementSubNames.empty()) {
-            Gui::Selection().addSelections(doc_name.c_str(), obj_name.c_str(), elementSubNames);
+        for (const auto& elementSubName : elementSubNames) {
+            Gui::Selection().addSelection2(
+                doc_name.c_str(),
+                obj_name.c_str(),
+                sketchView->getSketchObject()->convertSubName(elementSubName).c_str());
         }
 
         this->blockSelection(block);
@@ -1693,7 +1760,12 @@ void TaskSketcherElements::onListWidgetElementsMouseMoveOnItem(QListWidgetItem* 
         else if (item->hovered == SubElementType::mid)
             preselectvertex(item->ElementNbr, Sketcher::PointPos::mid);
         else if (item->hovered == SubElementType::edge) {
-            ss << "Edge" << item->ElementNbr + 1;
+            if (item->ElementNbr >= 0) {
+                ss << "Edge" << item->ElementNbr + 1;
+            }
+            else {
+                ss << "ExternalEdge" << -item->ElementNbr - 2;
+            }
             Gui::Selection().setPreselect(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
         }
     }
@@ -1808,12 +1880,12 @@ void TaskSketcherElements::slotElementsChanged()
                                                      : QString::fromLatin1("")))
                                       : (QString::fromLatin1("%1-").arg(i) + tr("Parabolic Arc")))
                 : type == Part::GeomBSplineCurve::getClassTypeId()
-                ? (isNamingBoxChecked ? (tr("BSpline") + IdInformation())
+                ? (isNamingBoxChecked ? (tr("B-spline") + IdInformation())
                            + (construction
                                   ? (QString::fromLatin1("-") + tr("Construction"))
                                   : (internalAligned ? (QString::fromLatin1("-") + tr("Internal"))
                                                      : QString::fromLatin1("")))
-                                      : (QString::fromLatin1("%1-").arg(i) + tr("BSpline")))
+                                      : (QString::fromLatin1("%1-").arg(i) + tr("B-spline")))
                 : (isNamingBoxChecked ? (tr("Other") + IdInformation())
                            + (construction
                                   ? (QString::fromLatin1("-") + tr("Construction"))
@@ -1920,8 +1992,8 @@ void TaskSketcherElements::slotElementsChanged()
                            ? (tr("Parabolic Arc") + linkname)
                            : (QString::fromLatin1("%1-").arg(i - 2) + tr("Parabolic Arc")))
                     : type == Part::GeomBSplineCurve::getClassTypeId()
-                    ? (isNamingBoxChecked ? (tr("BSpline") + linkname)
-                                          : (QString::fromLatin1("%1-").arg(i - 2) + tr("BSpline")))
+                    ? (isNamingBoxChecked ? (tr("B-spline") + linkname)
+                                          : (QString::fromLatin1("%1-").arg(i - 2) + tr("B-spline")))
                     : (isNamingBoxChecked ? (tr("Other") + linkname)
                                           : (QString::fromLatin1("%1-").arg(i - 2) + tr("Other"))),
                 sketchView);

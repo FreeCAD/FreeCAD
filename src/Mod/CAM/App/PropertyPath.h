@@ -32,7 +32,7 @@ namespace Path
 {
 
 /** The path property class.  */
-class PathExport PropertyPath : public App::Property
+class PathExport PropertyPath: public App::Property
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
@@ -45,25 +45,25 @@ public:
     /// set the part shape
     void setValue(const Toolpath&);
     /// get the part shape
-    const Toolpath &getValue() const;
+    const Toolpath& getValue() const;
     //@}
 
     /** @name Python interface */
     //@{
     PyObject* getPyObject() override;
-    void setPyObject(PyObject *value) override;
+    void setPyObject(PyObject* value) override;
     //@}
 
     /** @name Save/restore */
     //@{
-    void Save (Base::Writer &writer) const override;
-    void Restore(Base::XMLReader &reader) override;
-    void SaveDocFile (Base::Writer &writer) const override;
-    void RestoreDocFile(Base::Reader &reader) override;
+    void Save(Base::Writer& writer) const override;
+    void Restore(Base::XMLReader& reader) override;
+    void SaveDocFile(Base::Writer& writer) const override;
+    void RestoreDocFile(Base::Reader& reader) override;
 
-    App::Property *Copy() const override;
-    void Paste(const App::Property &from) override;
-    unsigned int getMemSize () const override;
+    App::Property* Copy() const override;
+    void Paste(const App::Property& from) override;
+    unsigned int getMemSize() const override;
     //@}
 
 private:
@@ -71,7 +71,7 @@ private:
 };
 
 
-} //namespace Path
+}  // namespace Path
 
 
-#endif // PROPERTYPATH_H
+#endif  // PROPERTYPATH_H

@@ -47,5 +47,14 @@ class BIM_Copy(DraftTools.Move):
             "Accel": "C,P",
         }
 
+    def Activated(self):
+        from draftutils import params
+        self.cmode = params.get_param("CopyMode")
+        DraftTools.Move.Activated(self)
+
+    def finish(self, cont=False):
+        from draftutils import params
+        DraftTools.Move.finish(self, cont)
+        params.set_param("CopyMode", self.cmode)
 
 FreeCADGui.addCommand("BIM_Copy", BIM_Copy())

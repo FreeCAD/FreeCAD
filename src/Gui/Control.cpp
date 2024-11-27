@@ -140,6 +140,13 @@ void ControlSingleton::showModelView()
     if (treeView) {
         showDockWidget(treeView);
     }
+    else {
+        auto comboView = qobject_cast<Gui::DockWnd::ComboView*>
+            (Gui::DockWindowManager::instance()->getDockWindow("Model"));
+        if (comboView) {
+            showDockWidget(comboView);
+        }
+    }
 }
 
 void ControlSingleton::showDialog(Gui::TaskView::TaskDialog *dlg)

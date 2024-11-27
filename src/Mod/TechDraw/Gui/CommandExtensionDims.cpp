@@ -49,6 +49,7 @@
 # include <Mod/TechDraw/App/DrawUtil.h>
 # include <Mod/TechDraw/App/DrawViewPart.h>
 # include <Mod/TechDraw/App/Preferences.h>
+# include <Mod/TechDraw/App/LineGroup.h>
 
 #include "DlgTemplateField.h"
 #include "DrawGuiUtil.h"
@@ -1447,14 +1448,13 @@ std::vector<DrawViewDimension*> TechDrawGui::makeObliqueChainDimension(std::vect
         Base::Vector3d delta = DrawUtil::getTrianglePoint(pMaster, dirMaster, origin);
         float dimDistance = activeDimAttributes.getCascadeSpacing();
         delta = delta.Normalize() * dimDistance;
-        double scale = objFeat->getScale();
-        for (dimVertex oldVertex : allVertexes) {
+        for (dimVertex& oldVertex : allVertexes) {
             Base::Vector3d nextPoint = DrawUtil::getTrianglePoint(pMaster, dirMaster, oldVertex.point);
-            nextPoint.y = -nextPoint.y;
-            oldVertex.point.y = -oldVertex.point.y;
+            // nextPoint.y = -nextPoint.y;
+            // oldVertex.point.y = -oldVertex.point.y;
             if ((oldVertex.point - nextPoint).Length() > 0.01) {
-                Base::Vector3d cvPoint = CosmeticVertex::makeCanonicalPoint(objFeat, nextPoint);
-                std::string vertTag = objFeat->addCosmeticVertex(cvPoint);
+                Base::Vector3d cvPoint = CosmeticVertex::makeCanonicalPointInverted(objFeat, nextPoint);
+                std::string vertTag = objFeat->addCosmeticVertex(cvPoint, false);
                 int vertNumber = objFeat->add1CVToGV(vertTag);
                 std::stringstream ss;
                 ss << "Vertex" << vertNumber;
@@ -1462,12 +1462,13 @@ std::vector<DrawViewDimension*> TechDrawGui::makeObliqueChainDimension(std::vect
                 newVertex.name = ss.str();
                 newVertex.point = nextPoint;
                 carrierVertexes.push_back(newVertex);
-                std::string edgeTag = objFeat->addCosmeticEdge(oldVertex.point / scale, nextPoint / scale);
+                Base::Vector3d oldCanon = CosmeticVertex::makeCanonicalPointInverted(objFeat, oldVertex.point);
+                std::string edgeTag = objFeat->addCosmeticEdge(oldCanon, cvPoint);
                 auto edge = objFeat->getCosmeticEdge(edgeTag);
-                edge->m_format.m_style = 1;
-                edge->m_format.m_lineNumber = 1;
-                edge->m_format.m_weight = 0.15;
-                edge->m_format.m_color = App::Color(0.0f, 0.0f, 0.0f);
+                edge->m_format.setStyle(1);
+                edge->m_format.setLineNumber(1);
+                edge->m_format.setWidth(TechDraw::LineGroup::getDefaultWidth("Thin"));
+                edge->m_format.setColor(App::Color(0.0f, 0.0f, 0.0f));
             }
             else
                 carrierVertexes.push_back(oldVertex);
@@ -1786,7 +1787,7 @@ bool CmdTechDrawExtensionCreateVertCoordDimension::isActive()
 void execCreateObliqueCoordDimension(Gui::Command* cmd) {
     //create oblique coordinate dimensions
     std::vector<Gui::SelectionObject> selection;
-    TechDraw::DrawViewPart* objFeat;
+    TechDraw::DrawViewPart* objFeat{nullptr};
     if (!_checkSelObjAndSubs(cmd, selection, objFeat, QT_TRANSLATE_NOOP("QObject","TechDraw Create Oblique Coord Dimension"))) {
         return;
     }
@@ -1832,14 +1833,11 @@ std::vector<DrawViewDimension*> TechDrawGui::makeObliqueCoordDimension(std::vect
         Base::Vector3d delta = DrawUtil::getTrianglePoint(pMaster, dirMaster, origin);
         float dimDistance = activeDimAttributes.getCascadeSpacing();
         delta = delta.Normalize() * dimDistance;
-        double scale = objFeat->getScale();
-        for (dimVertex oldVertex : allVertexes) {
+        for (dimVertex& oldVertex : allVertexes) {
             Base::Vector3d nextPoint = DrawUtil::getTrianglePoint(pMaster, dirMaster, oldVertex.point);
-            nextPoint.y = -nextPoint.y;
-            oldVertex.point.y = -oldVertex.point.y;
             if ((oldVertex.point - nextPoint).Length() > 0.01) {
-                Base::Vector3d cvPoint = CosmeticVertex::makeCanonicalPoint(objFeat, nextPoint);
-                std::string vertTag = objFeat->addCosmeticVertex(cvPoint);
+                Base::Vector3d cvPoint = CosmeticVertex::makeCanonicalPointInverted(objFeat, nextPoint);
+                std::string vertTag = objFeat->addCosmeticVertex(cvPoint, false);
                 int vertNumber = objFeat->add1CVToGV(vertTag);
                 std::stringstream ss;
                 ss << "Vertex" << vertNumber;
@@ -1847,15 +1845,17 @@ std::vector<DrawViewDimension*> TechDrawGui::makeObliqueCoordDimension(std::vect
                 newVertex.name = ss.str();
                 newVertex.point = nextPoint;
                 carrierVertexes.push_back(newVertex);
-                std::string edgeTag = objFeat->addCosmeticEdge(oldVertex.point / scale, nextPoint / scale);
+                Base::Vector3d oldCanon = CosmeticVertex::makeCanonicalPointInverted(objFeat, oldVertex.point);
+                std::string edgeTag = objFeat->addCosmeticEdge(oldCanon, cvPoint);
                 auto edge = objFeat->getCosmeticEdge(edgeTag);
-                edge->m_format.m_style = 1;
-                edge->m_format.m_lineNumber = 1;
-                edge->m_format.m_weight = 0.15;
-                edge->m_format.m_color = App::Color(0.0f, 0.0f, 0.0f);
+                edge->m_format.setStyle(1);
+                edge->m_format.setLineNumber(1);
+                edge->m_format.setWidth(TechDraw::LineGroup::getDefaultWidth("Thin"));
+                edge->m_format.setColor(App::Color(0.0, 0.0, 0.0));
             }
-            else
+            else {
                 carrierVertexes.push_back(oldVertex);
+            }
         }
         dimVertex firstVertex = carrierVertexes[0];
         dimVertex secondVertex = carrierVertexes[1];
@@ -2301,7 +2301,6 @@ void CmdTechDrawExtensionCreateLengthArc::activated(int iMsg) {
     }
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Arc Length Dim"));
-
     ReferenceEntry ref(objFeat, selection[0].getSubNames()[0]);
 
     TechDraw::DrawViewDimension* dim = makeArcLengthDimension(ref);

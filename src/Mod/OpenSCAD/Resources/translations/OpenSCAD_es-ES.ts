@@ -493,7 +493,7 @@
     <message>
       <location filename="../../InitGui.py" line="156"/>
       <source>Frequently-used Part WB tools</source>
-      <translation>Herramientas de uso frecuente del entorno de trabajo Part</translation>
+      <translation>Herramientas de uso frecuente del banco de trabajo Part</translation>
     </message>
   </context>
   <context>

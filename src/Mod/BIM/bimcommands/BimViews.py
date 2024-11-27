@@ -52,75 +52,77 @@ class BIM_Views:
         mw = FreeCADGui.getMainWindow()
         st = mw.statusBar()
         statuswidget = st.findChild(QtGui.QToolBar, "BIMStatusWidget")
-        if statuswidget:
-            if hasattr(statuswidget, "bimviewsbutton"):
-                bimviewsbutton = statuswidget.bimviewsbutton
+        if statuswidget and hasattr(statuswidget, "bimviewsbutton"):
+            bimviewsbutton = statuswidget.bimviewsbutton
         if vm:
             if vm.isVisible():
                 vm.hide()
                 if bimviewsbutton:
                     bimviewsbutton.setChecked(False)
-                    PARAMS.SetBool("RestoreBimViews", False)
+                PARAMS.SetBool("RestoreBimViews", False)
             else:
                 vm.show()
                 if bimviewsbutton:
                     bimviewsbutton.setChecked(True)
-                    PARAMS.SetBool("RestoreBimViews", True)
+                PARAMS.SetBool("RestoreBimViews", True)
                 self.update()
         else:
             vm = QtGui.QDockWidget()
 
             # create the dialog
-            dialog = FreeCADGui.PySideUic.loadUi(":/ui/dialogViews.ui")
-            vm.setWidget(dialog)
-            vm.tree = dialog.tree
+            self.dialog = FreeCADGui.PySideUic.loadUi(":/ui/dialogViews.ui")
+            vm.setWidget(self.dialog)
+            vm.tree = self.dialog.tree
+            vm.closeEvent = self.onClose
 
-            # set button sizes
-            size = FreeCAD.ParamGet(
-                "User parameter:BaseApp/Preferences/General"
-            ).GetInt("ToolbarIconSize", 24)
-            toolbar = QtGui.QToolBar()
-            toolbar.setIconSize(QtCore.QSize(size, size))
-            dialog.horizontalLayout.addWidget(toolbar)
-            for button in ["AddLevel","AddProxy",
-                           "Delete","Toggle",
-                           "Isolate","SaveView",
-                           "Rename",]:
-                action = QtGui.QAction()
-                toolbar.addAction(action)
-                setattr(dialog,"button"+button, action)
+            # set context menu
+            self.dialog.tree.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+
+            # set button
+            self.dialog.menu = QtGui.QMenu()
+            for button in [("AddLevel", translate("BIM","Add level")),
+                            ("AddProxy", translate("BIM","Add proxy")),
+                            ("Delete", translate("BIM","Delete")),
+                            ("Toggle", translate("BIM","Toggle on/off")),
+                            ("Isolate", translate("BIM","Isolate")),
+                            ("SaveView", translate("BIM","Save view position")),
+                            ("Rename", translate("BIM","Rename"))]:
+                action = QtGui.QAction(button[1])
+                self.dialog.menu.addAction(action)
+                setattr(self.dialog,"button"+button[0], action)
 
             # # set button icons
-            dialog.buttonAddLevel.setIcon(QtGui.QIcon(":/icons/Arch_Floor_Tree.svg"))
-            dialog.buttonAddProxy.setIcon(QtGui.QIcon(":/icons/Draft_SelectPlane.svg"))
-            dialog.buttonDelete.setIcon(QtGui.QIcon(":/icons/delete.svg"))
-            dialog.buttonToggle.setIcon(QtGui.QIcon(":/icons/dagViewVisible.svg"))
-            dialog.buttonIsolate.setIcon(QtGui.QIcon(":/icons/view-refresh.svg"))
-            dialog.buttonSaveView.setIcon(QtGui.QIcon(":/icons/view-perspective.svg"))
-            dialog.buttonRename.setIcon(
+            self.dialog.buttonAddLevel.setIcon(QtGui.QIcon(":/icons/Arch_Floor_Tree.svg"))
+            self.dialog.buttonAddProxy.setIcon(QtGui.QIcon(":/icons/Draft_SelectPlane.svg"))
+            self.dialog.buttonDelete.setIcon(QtGui.QIcon(":/icons/delete.svg"))
+            self.dialog.buttonToggle.setIcon(QtGui.QIcon(":/icons/dagViewVisible.svg"))
+            self.dialog.buttonIsolate.setIcon(QtGui.QIcon(":/icons/view-refresh.svg"))
+            self.dialog.buttonSaveView.setIcon(QtGui.QIcon(":/icons/view-perspective.svg"))
+            self.dialog.buttonRename.setIcon(
                 QtGui.QIcon(":/icons/accessories-text-editor.svg")
             )
-            
+
             # set tooltips
-            dialog.buttonAddLevel.setToolTip(translate("BIM","Creates a new level"))
-            dialog.buttonAddProxy.setToolTip(translate("BIM","Creates a new Working Plane Proxy"))
-            dialog.buttonDelete.setToolTip(translate("BIM","Deletes the selected item"))
-            dialog.buttonToggle.setToolTip(translate("BIM","Toggles selected items on/off"))
-            dialog.buttonIsolate.setToolTip(translate("BIM","Turns all items off except the selected ones"))
-            dialog.buttonSaveView.setToolTip(translate("BIM","Saves the current camera position to the selected items"))
-            dialog.buttonRename.setToolTip(translate("BIM","Renames the selected item"))
+            self.dialog.buttonAddLevel.setToolTip(translate("BIM","Creates a new level"))
+            self.dialog.buttonAddProxy.setToolTip(translate("BIM","Creates a new Working Plane Proxy"))
+            self.dialog.buttonDelete.setToolTip(translate("BIM","Deletes the selected item"))
+            self.dialog.buttonToggle.setToolTip(translate("BIM","Toggles selected items on/off"))
+            self.dialog.buttonIsolate.setToolTip(translate("BIM","Turns all items off except the selected ones"))
+            self.dialog.buttonSaveView.setToolTip(translate("BIM","Saves the current camera position to the selected items"))
+            self.dialog.buttonRename.setToolTip(translate("BIM","Renames the selected item"))
 
             # connect signals
-            dialog.buttonAddLevel.triggered.connect(self.addLevel)
-            dialog.buttonAddProxy.triggered.connect(self.addProxy)
-            dialog.buttonDelete.triggered.connect(self.delete)
-            dialog.buttonToggle.triggered.connect(self.toggle)
-            dialog.buttonIsolate.triggered.connect(self.isolate)
-            dialog.buttonSaveView.triggered.connect(self.saveView)
-            dialog.buttonRename.triggered.connect(self.rename)
-            dialog.tree.itemClicked.connect(self.select)
-            dialog.tree.itemDoubleClicked.connect(show)
-            dialog.tree.itemChanged.connect(self.editObject)
+            self.dialog.buttonAddLevel.triggered.connect(self.addLevel)
+            self.dialog.buttonAddProxy.triggered.connect(self.addProxy)
+            self.dialog.buttonDelete.triggered.connect(self.delete)
+            self.dialog.buttonToggle.triggered.connect(self.toggle)
+            self.dialog.buttonIsolate.triggered.connect(self.isolate)
+            self.dialog.buttonSaveView.triggered.connect(self.saveView)
+            self.dialog.buttonRename.triggered.connect(self.rename)
+            self.dialog.tree.itemClicked.connect(self.select)
+            self.dialog.tree.itemDoubleClicked.connect(show)
+            self.dialog.tree.itemChanged.connect(self.editObject)
+            self.dialog.tree.customContextMenuRequested.connect(self.onContextMenu)
             # delay connecting after FreeCAD finishes setting up
             QtCore.QTimer.singleShot(UPDATEINTERVAL, self.connectDock)
 
@@ -155,6 +157,15 @@ class BIM_Views:
 
             self.update()
 
+    def onClose(self, event):
+        from PySide import QtGui
+
+        st = FreeCADGui.getMainWindow().statusBar()
+        statuswidget = st.findChild(QtGui.QToolBar, "BIMStatusWidget")
+        if statuswidget and hasattr(statuswidget, "bimviewsbutton"):
+            statuswidget.bimviewsbutton.setChecked(False)
+        PARAMS.SetBool("RestoreBimViews", False)
+
     def connectDock(self):
         "watch for dock location"
 
@@ -165,11 +176,11 @@ class BIM_Views:
     def update(self, retrigger=True):
         "updates the view manager"
 
-        from PySide import QtCore
+        from PySide import QtCore, QtGui
 
         vm = findWidget()
         if vm and FreeCAD.ActiveDocument:
-            if vm.isVisible() and (vm.tree.state() != vm.tree.EditingState):
+            if vm.isVisible() and (vm.tree.state() != vm.tree.State.EditingState):
                 vm.tree.clear()
                 import Draft
 
@@ -178,13 +189,28 @@ class BIM_Views:
                 soloProxyHold = []
                 for obj in FreeCAD.ActiveDocument.Objects:
                     t = Draft.getType(obj)
-                    if obj and (t in ["Building", "BuildingPart", "IfcBuilding", "IfcBuildingStorey"]):
-                        if t in ["Building", "IfcBuilding"] or getattr(obj, "IfcType", "") == "Building":
+                    if obj and (
+                        t
+                        in [
+                            "Building",
+                            "BuildingPart",
+                            "IfcBuilding",
+                            "IfcBuildingStorey",
+                        ]
+                    ):
+                        if (
+                            t in ["Building", "IfcBuilding"]
+                            or getattr(obj, "IfcType", "") == "Building"
+                        ):
                             building, _ = getTreeViewItem(obj)
                             subObjs = obj.Group
                             # find every levels belongs to the building
                             for subObj in subObjs:
-                                if Draft.getType(subObj) in ["BuildingPart", "Building Storey", "IfcBuildingStorey"]:
+                                if Draft.getType(subObj) in [
+                                    "BuildingPart",
+                                    "Building Storey",
+                                    "IfcBuildingStorey",
+                                ]:
                                     lv, lvH = getTreeViewItem(subObj)
                                     subSubObjs = subObj.Group
                                     # find every working plane proxy belongs to the level
@@ -203,8 +229,15 @@ class BIM_Views:
                             treeViewItems.append(building)
                             lvHold.clear()
 
-                        if t in ["Building Storey", "IfcBuildingStorey"] or getattr(obj, "IfcType", "") == "Building Storey":
-                            if Draft.getType(getParent(obj)) in ["Building", "IfcBuilding"] or getattr(getParent(obj), "IfcType", "") == "Building":
+                        if (
+                            t in ["Building Storey", "IfcBuildingStorey"]
+                            or getattr(obj, "IfcType", "") == "Building Storey"
+                        ):
+                            if (
+                                Draft.getType(getParent(obj))
+                                in ["Building", "IfcBuilding"]
+                                or getattr(getParent(obj), "IfcType", "") == "Building"
+                            ):
                                 continue
                             lv, lvH = getTreeViewItem(obj)
                             subObjs = obj.Group
@@ -226,6 +259,34 @@ class BIM_Views:
                 sortLvItems = [item[0] for item in sortLvHold]
                 treeViewItems = treeViewItems + sortLvItems + soloProxyHold
                 vm.tree.addTopLevelItems(treeViewItems)
+
+                # add views
+                ficon = QtGui.QIcon.fromTheme("folder", QtGui.QIcon(":/icons/folder.svg"))
+                views = self.getViews()
+                if views:
+                    top = QtGui.QTreeWidgetItem([translate("BIM","2D Views"), ""])
+                    top.setIcon(0, ficon)
+                    for v in views:
+                        if hasattr(v, "Label"):
+                            i = QtGui.QTreeWidgetItem([v.Label, ""])
+                            if hasattr(v.ViewObject, "Icon"):
+                                i.setIcon(0, v.ViewObject.Icon)
+                            i.setToolTip(0, v.Name)
+                            top.addChild(i)
+                    vm.tree.addTopLevelItem(top)
+
+                # add pages
+                pages = self.getPages()
+                if pages:
+                    top = QtGui.QTreeWidgetItem([translate("BIM","Sheets"), ""])
+                    top.setIcon(0, ficon)
+                    for p in pages:
+                        i = QtGui.QTreeWidgetItem([p.Label, ""])
+                        if hasattr(p.ViewObject, "Icon"):
+                                i.setIcon(0, p.ViewObject.Icon)
+                        i.setToolTip(0, p.Name)
+                        top.addChild(i)
+                    vm.tree.addTopLevelItem(top)
 
                 # set TreeVinew Item selected if obj is selected
                 objSelected = FreeCADGui.Selection.getSelection()
@@ -251,10 +312,11 @@ class BIM_Views:
 
         item.setSelected(True)
         name = item.toolTip(0)
-        obj = FreeCAD.ActiveDocument.getObject(name)
-        if obj:
-            FreeCADGui.Selection.clearSelection()
-            FreeCADGui.Selection.addSelection(obj)
+        if name:
+            obj = FreeCAD.ActiveDocument.getObject(name)
+            if obj:
+                FreeCADGui.Selection.clearSelection()
+                FreeCADGui.Selection.addSelection(obj)
 
     def addLevel(self):
         "adds a building part"
@@ -377,6 +439,23 @@ class BIM_Views:
         else:
             return QtCore.Qt.RightDockWidgetArea
 
+    def onContextMenu(self, pos):
+        """Fires the context menu"""
+        self.dialog.menu.exec_(self.dialog.tree.mapToGlobal(pos))
+
+    def getViews(self):
+        """Returns a list of 2D views"""
+        views = []
+        for p in self.getPages():
+            for v in p.Views:
+                if getattr(v, "Source", None):
+                    views.append(v.Source)
+        return views
+
+    def getPages(self):
+        """Returns a list of TD pages"""
+        return [o for o in FreeCAD.ActiveDocument.Objects if o.isDerivedFrom('TechDraw::DrawPage')]
+
 
 # These functions need to be localized outside the command class, as they are used outside this module
 
@@ -416,7 +495,34 @@ def show(item, column=None):
     if obj:
         FreeCADGui.Selection.clearSelection()
         FreeCADGui.Selection.addSelection(obj)
-        FreeCADGui.runCommand("Draft_SelectPlane")
+        if obj.isDerivedFrom("TechDraw::DrawPage"):
+
+            # case 1: the object is a TD page. We switch to it simply
+            obj.ViewObject.Visibility=True
+        elif isView(obj):
+
+            # case 2: the object is a 2D view
+            ssel = [obj]+obj.OutListRecursive
+            FreeCADGui.Selection.clearSelection()
+            for o in ssel:
+                o.ViewObject.Visibility = True
+                FreeCADGui.Selection.addSelection(o)
+            if not hasattr(FreeCADGui.ActiveDocument.ActiveView, "getSceneGraph"):
+                # Find first 3d view and switch to it
+                for w in FreeCADGui.getMainWindow().getWindows():
+                    if hasattr(w, "getSceneGraph"):
+                        FreeCADGui.getMainWindow().setActiveWindow(w)
+                        break
+            FreeCADGui.runCommand('Std_OrthographicCamera')
+            FreeCADGui.ActiveDocument.ActiveView.viewTop()
+            FreeCADGui.SendMsgToActiveView("ViewSelection")
+            FreeCADGui.ActiveDocument.ActiveView.viewTop()
+            FreeCADGui.Selection.clearSelection()
+            FreeCADGui.Selection.addSelection(obj)
+        else:
+
+            # case 3: This is maybe a BuildingPart. Place the WP on it
+            FreeCADGui.runCommand("Draft_SelectPlane")
     if vm:
         # store the last double-clicked item for the BIM WPView command
         if isinstance(item, str) or (
@@ -427,6 +533,19 @@ def show(item, column=None):
             vm.lastSelected = item.toolTip(0)
 
 
+def isView(obj):
+    """Returns true if this object is used as Source of a view on a TD page"""
+
+    for p in obj.InList:
+        if p.isDerivedFrom("TechDraw::DrawView"):
+            if hasattr(p, "Source"):
+                if p.Source == obj:
+                    return True
+    if getattr(obj,"DrawingView",False):
+        return True
+    return False
+
+
 def getTreeViewItem(obj):
     """
     from FreeCAD object make the TreeWidgetItem including icon Label and LevelHeight
@@ -434,15 +553,13 @@ def getTreeViewItem(obj):
     """
     from PySide import QtCore, QtGui
 
-    z = FreeCAD.Units.Quantity(obj.Placement.Base.z, FreeCAD.Units.Length)
-    lvHStr = z.UserString
-    if z.Value == 0:
+    z = obj.Placement.Base.z
+    lvHStr = FreeCAD.Units.Quantity(z, FreeCAD.Units.Length).UserString
+    if z == 0:
         # override with Elevation property if available
         if hasattr(obj, "Elevation"):
-            lvHStr = FreeCAD.Units.Quantity(
-                obj.Elevation, FreeCAD.Units.Length
-            ).UserString
-    lvH = round(float(lvHStr.split(" ")[0]), 2)
+            z = obj.Elevation.Value
+            lvHStr = obj.Elevation.UserString
     it = QtGui.QTreeWidgetItem([obj.Label, lvHStr])
     it.setFlags(it.flags() | QtCore.Qt.ItemIsEditable)
     it.setToolTip(0, obj.Name)
@@ -451,7 +568,7 @@ def getTreeViewItem(obj):
             obj.ViewObject.Proxy, "getIcon"
         ):
             it.setIcon(0, QtGui.QIcon(obj.ViewObject.Proxy.getIcon()))
-    return (it, lvH)
+    return (it, z)
 
 
 def getAllItemsInTree(tree_widget):

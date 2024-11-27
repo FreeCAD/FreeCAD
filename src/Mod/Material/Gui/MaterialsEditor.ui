@@ -198,8 +198,11 @@
           </item>
           <item>
            <widget class="QPushButton" name="buttonFavorite">
+            <property name="toolTip">
+             <string>Add to favorites</string>
+            </property>
             <property name="text">
-             <string>*</string>
+             <string notr="true">*</string>
             </property>
            </widget>
           </item>
@@ -209,7 +212,7 @@
       </widget>
       <widget class="QWidget" name="tabProperties">
        <attribute name="title">
-        <string>Properties</string>
+        <string>Physical</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_43">
         <item>
@@ -229,15 +232,21 @@
           </item>
           <item>
            <widget class="QPushButton" name="buttonPhysicalAdd">
+            <property name="toolTip">
+             <string>Add physical model</string>
+            </property>
             <property name="text">
-             <string>+</string>
+             <string notr="true">+</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="buttonPhysicalRemove">
+            <property name="toolTip">
+             <string>Delete physical model</string>
+            </property>
             <property name="text">
-             <string>-</string>
+             <string notr="true">-</string>
             </property>
            </widget>
           </item>
@@ -273,15 +282,21 @@
           </item>
           <item>
            <widget class="QPushButton" name="buttonAppearanceAdd">
+            <property name="toolTip">
+             <string>Add appearance model</string>
+            </property>
             <property name="text">
-             <string>+</string>
+             <string notr="true">+</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="buttonAppearanceRemove">
+            <property name="toolTip">
+             <string>Delete appearance model</string>
+            </property>
             <property name="text">
-             <string>-</string>
+             <string notr="true">-</string>
             </property>
            </widget>
           </item>

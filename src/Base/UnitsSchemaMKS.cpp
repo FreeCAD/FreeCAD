@@ -538,7 +538,7 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity& quant, double& factor, Q
         }
     }
     else if (unit == Unit::DissipationRate) {
-        unitString = QString::fromLatin1("m^2/s^3");
+        unitString = QString::fromLatin1("W/kg");
         factor = 1e6;
     }
     else if (unit == Unit::InverseLength) {

@@ -51,6 +51,8 @@
 #include <Base/Quantity.h>
 
 #include "SoFCCSysDragger.h"
+#include "So3DAnnotation.h"
+
 #include "MainWindow.h"
 #include "SoFCDB.h"
 
@@ -94,7 +96,7 @@ TDragger::TDragger()
 {
     SO_KIT_CONSTRUCTOR(TDragger);
 
-#if defined(Q_OS_MAC)
+#if defined(Q_OS_MACOS) || defined(Q_OS_FREEBSD) || defined(Q_OS_OPENBSD)
     this->ref();
 #endif
 
@@ -398,7 +400,7 @@ void TPlanarDragger::initClass()
 TPlanarDragger::TPlanarDragger()
 {
     SO_KIT_CONSTRUCTOR(TPlanarDragger);
-#if defined(Q_OS_MAC)
+#if defined(Q_OS_MACOS) || defined(Q_OS_FREEBSD) || defined(Q_OS_OPENBSD)
     this->ref();
 #endif
 
@@ -696,7 +698,7 @@ void RDragger::initClass()
 RDragger::RDragger()
 {
     SO_KIT_CONSTRUCTOR(RDragger);
-#if defined(Q_OS_MAC)
+#if defined(Q_OS_MACOS) || defined(Q_OS_FREEBSD) || defined(Q_OS_OPENBSD)
     this->ref();
 #endif
 
@@ -1006,7 +1008,11 @@ SoFCCSysDragger::SoFCCSysDragger()
 {
     SO_KIT_CONSTRUCTOR(SoFCCSysDragger);
 
-    SO_KIT_ADD_CATALOG_ENTRY(annotation, SoAnnotation, TRUE, geomSeparator, "", TRUE);
+#if defined(Q_OS_MACOS) || defined(Q_OS_FREEBSD) || defined(Q_OS_OPENBSD)
+    this->ref();
+#endif
+
+    SO_KIT_ADD_CATALOG_ENTRY(annotation, So3DAnnotation, TRUE, geomSeparator, "", TRUE);
     SO_KIT_ADD_CATALOG_ENTRY(scaleNode, SoScale, TRUE, annotation, "", TRUE);
 
     // Translator

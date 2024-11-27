@@ -323,7 +323,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="35"/>
       <source>&amp;Points</source>
-      <translation>&amp;Tačke</translation>
+      <translation>&amp;Oblaci tačaka</translation>
     </message>
   </context>
 </TS>

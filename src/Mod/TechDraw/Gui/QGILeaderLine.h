@@ -75,7 +75,7 @@ public:
     void drawBorder() override;
     void updateView(bool update = false) override;
 
-    virtual TechDraw::DrawLeaderLine* getFeature();
+    virtual TechDraw::DrawLeaderLine* getLeaderFeature();
 
     void startPathEdit();
     void setArrows(std::vector<QPointF> pathPoints);
@@ -88,6 +88,7 @@ public:
 
     void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) override;
     void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
     void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
 
@@ -96,6 +97,9 @@ public:
     void setPrettySel();
 
     void setLeaderFeature(TechDraw::DrawLeaderLine* feat);
+
+    bool useOldCoords() const;
+
 
 public Q_SLOTS:
     void onLineEditFinished(QPointF tipDisplace,

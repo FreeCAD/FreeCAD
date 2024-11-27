@@ -21,7 +21,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <string>
+#include <string>
 #endif
 
 #include <App/Application.h>
@@ -32,35 +32,41 @@
 #include "Preferences.h"
 
 
-//getters for parameters used in multiple places.
-//ensure this is in sync with parameter names and default values on preference pages
+// getters for parameters used in multiple places.
+// ensure this is in sync with parameter names and default values on preference pages
 
 using namespace Measure;
 
 //! Returns the Measure preference group
 Base::Reference<ParameterGrp> Preferences::getPreferenceGroup(const char* Name)
 {
-    return App::GetApplication().GetUserParameter().GetGroup("BaseApp/Preferences/Mod/Measure")->GetGroup(Name);
+    return App::GetApplication()
+        .GetUserParameter()
+        .GetGroup("BaseApp/Preferences/Mod/Measure")
+        ->GetGroup(Name);
 }
 
 App::Color Preferences::defaultLineColor()
 {
     App::Color fcColor;
-    fcColor.setPackedValue(getPreferenceGroup("Appearance")->GetUnsigned("DefaultLineColor", 0x3CF00000));
+    fcColor.setPackedValue(
+        getPreferenceGroup("Appearance")->GetUnsigned("DefaultLineColor", 0x3CF00000));
     return fcColor;
 }
 
 App::Color Preferences::defaultTextColor()
 {
     App::Color fcColor;
-    fcColor.setPackedValue(getPreferenceGroup("Appearance")->GetUnsigned("DefaultTextColor", 0x00000000));
+    fcColor.setPackedValue(
+        getPreferenceGroup("Appearance")->GetUnsigned("DefaultTextColor", 0x00000000));
     return fcColor;
 }
 
 App::Color Preferences::defaultTextBackgroundColor()
 {
     App::Color fcColor;
-    fcColor.setPackedValue(getPreferenceGroup("Appearance")->GetUnsigned("DefaultTextBackgroundColor", 0x3CF00000));
+    fcColor.setPackedValue(
+        getPreferenceGroup("Appearance")->GetUnsigned("DefaultTextBackgroundColor", 0x3CF00000));
     return fcColor;
 }
 

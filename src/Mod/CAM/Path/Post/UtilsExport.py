@@ -52,11 +52,7 @@ def check_canned_cycles(values: Values) -> None:
 
 def determine_coolant_mode(obj) -> str:
     """Determine the coolant mode."""
-    if (
-        hasattr(obj, "CoolantMode")
-        or hasattr(obj, "Base")
-        and hasattr(obj.Base, "CoolantMode")
-    ):
+    if hasattr(obj, "CoolantMode") or hasattr(obj, "Base") and hasattr(obj.Base, "CoolantMode"):
         if hasattr(obj, "CoolantMode"):
             return obj.CoolantMode
         return obj.Base.CoolantMode
@@ -70,9 +66,7 @@ def output_coolant_off(values: Values, gcode: Gcode, coolant_mode: str) -> None:
 
     if values["ENABLE_COOLANT"] and coolant_mode != "None":
         if values["OUTPUT_COMMENTS"]:
-            comment = PostUtilsParse.create_comment(
-                values, f"Coolant Off: {coolant_mode}"
-            )
+            comment = PostUtilsParse.create_comment(values, f"Coolant Off: {coolant_mode}")
             gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}{nl}")
         gcode.append(f"{PostUtilsParse.linenumber(values)}M9{nl}")
 
@@ -84,9 +78,7 @@ def output_coolant_on(values: Values, gcode: Gcode, coolant_mode: str) -> None:
 
     if values["ENABLE_COOLANT"]:
         if values["OUTPUT_COMMENTS"] and coolant_mode != "None":
-            comment = PostUtilsParse.create_comment(
-                values, f"Coolant On: {coolant_mode}"
-            )
+            comment = PostUtilsParse.create_comment(values, f"Coolant On: {coolant_mode}")
             gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}{nl}")
         if coolant_mode == "Flood":
             gcode.append(f"{PostUtilsParse.linenumber(values)}M8{nl}")
@@ -128,9 +120,7 @@ def output_header(values: Values, gcode: Gcode) -> None:
         cam_file = "<None>"
     comment = PostUtilsParse.create_comment(values, f"Cam File: {cam_file}")
     gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}{nl}")
-    comment = PostUtilsParse.create_comment(
-        values, f"Output Time: {str(datetime.datetime.now())}"
-    )
+    comment = PostUtilsParse.create_comment(values, f"Output Time: {str(datetime.datetime.now())}")
     gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}{nl}")
 
 
@@ -201,9 +191,7 @@ def output_preop(values: Values, gcode: Gcode, obj) -> None:
 
     if values["OUTPUT_COMMENTS"]:
         if values["SHOW_OPERATION_LABELS"]:
-            comment = PostUtilsParse.create_comment(
-                values, f"Begin operation: {obj.Label}"
-            )
+            comment = PostUtilsParse.create_comment(values, f"Begin operation: {obj.Label}")
         else:
             comment = PostUtilsParse.create_comment(values, "Begin operation")
         gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}{nl}")
@@ -270,12 +258,8 @@ def output_tool_list(values: Values, gcode: Gcode, objectslist) -> None:
 
     if values["OUTPUT_COMMENTS"] and values["LIST_TOOLS_IN_PREAMBLE"]:
         for item in objectslist:
-            if hasattr(item, "Proxy") and isinstance(
-                item.Proxy, PathToolController.ToolController
-            ):
-                comment = PostUtilsParse.create_comment(
-                    values, f"T{item.ToolNumber}={item.Name}"
-                )
+            if hasattr(item, "Proxy") and isinstance(item.Proxy, PathToolController.ToolController):
+                comment = PostUtilsParse.create_comment(values, f"T{item.ToolNumber}={item.Name}")
                 gcode.append(f"{PostUtilsParse.linenumber(values)}{comment}{nl}")
 
 

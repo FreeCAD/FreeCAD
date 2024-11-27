@@ -199,16 +199,6 @@ protected:
                    double* scale) const;
 
     /**
-     * @brief Extract properties of cylindrical face.
-     *
-     * @note
-     *  This method is very specific and doesn't require access to member
-     *  variables. It should be rewritten at a different place.
-     */
-    bool
-    getCylinder(double& radius, double& height, Base::Vector3d& base, Base::Vector3d& axis) const;
-
-    /**
      * @brief Calculate point of cylindrical face where to render widget.
      *
      * @note

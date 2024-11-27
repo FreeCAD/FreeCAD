@@ -161,22 +161,23 @@ void ViewProviderSections::highlightReferences(ShapeType type, const References&
                         break;
                     case ViewProviderSections::Face:
                         if (on) {
-                            std::vector<App::Color> colors;
+                            std::vector<App::Material> materials;
                             TopTools_IndexedMapOfShape fMap;
                             TopExp::MapShapes(base->Shape.getValue(), TopAbs_FACE, fMap);
-                            colors.resize(fMap.Extent(), svp->ShapeAppearance.getDiffuseColor());
+                            materials.resize(fMap.Extent(), svp->ShapeAppearance[0]);
 
                             for (const auto& jt : it.second) {
                                 std::size_t idx =
                                     static_cast<std::size_t>(std::stoi(jt.substr(4)) - 1);
                                 // check again that the index is in range because it's possible that
                                 // the sub-names are invalid
-                                if (idx < colors.size()) {
-                                    colors[idx] = App::Color(1.0, 0.0, 1.0);  // magenta
+                                if (idx < materials.size()) {
+                                    // magenta
+                                    materials[idx].diffuseColor = App::Color(1.0, 0.0, 1.0);
                                 }
                             }
 
-                            svp->setHighlightedFaces(colors);
+                            svp->setHighlightedFaces(materials);
                         }
                         else {
                             svp->unsetHighlightedFaces();
@@ -278,7 +279,11 @@ SectionsPanel::SectionsPanel(ViewProviderSections* vp, Surface::Sections* obj)
 
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
-    action->setShortcut(QKeySequence::Delete);
+    {
+        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
+        auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
+        action->setShortcut(QKeySequence(shortcut));
+    }
     ui->listSections->addAction(action);
     connect(action, &QAction::triggered, this, &SectionsPanel::onDeleteEdge);
     ui->listSections->setContextMenuPolicy(Qt::ActionsContextMenu);

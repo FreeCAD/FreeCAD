@@ -30,6 +30,7 @@
 #endif
 
 #include <Mod/Part/App/Interface.h>
+#include <Mod/Part/App/FuzzyHelper.h>
 #include <Mod/Part/App/IGES/ImportExportSettings.h>
 #include <Mod/Part/App/OCAF/ImportExportSettings.h>
 #include <Mod/Part/App/STEP/ImportExportSettings.h>
@@ -170,7 +171,7 @@ DlgImportExportStep::DlgImportExportStep(QWidget* parent)
   , importStep(new DlgImportStep(this))
   , headerStep(new DlgExportHeaderStep(this))
 {
-    setWindowTitle(tr("STEP"));
+    setWindowTitle(QLatin1String("STEP"));
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->setSpacing(0);
     layout->setContentsMargins(0, 0, 0, 0);

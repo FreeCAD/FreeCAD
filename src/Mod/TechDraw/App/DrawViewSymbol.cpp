@@ -188,6 +188,7 @@ bool DrawViewSymbol::loadQDomDocument(QDomDocument& symbolDocument)
     if (qba.isEmpty()) {
         return false;
     }
+#if QT_VERSION < QT_VERSION_CHECK(6,5,0) // New setContent interface added in Qt 6.5
     QString errorMsg;
     int errorLine;
     int errorCol;
@@ -202,6 +203,18 @@ bool DrawViewSymbol::loadQDomDocument(QDomDocument& symbolDocument)
                             errorLine, errorCol);
     }
     return rc;
+#else
+    QDomDocument::ParseResult rc = symbolDocument.setContent(qba); // Use the default ParseOptions
+    if (!rc) {
+        //invalid SVG message
+        Base::Console().Warning("DrawViewSymbol - %s - SVG for Symbol is not valid. See log.\n",
+                                getNameInDocument());
+        Base::Console().Log("DrawViewSymbol - %s - len: %d error: %s line: %d col: %d\n",
+                            getNameInDocument(), strlen(symbol), qPrintable(rc.errorMessage),
+                            rc.errorLine, rc.errorColumn);
+    }
+    return static_cast<bool>(rc);
+#endif
 }
 
 PyObject* DrawViewSymbol::getPyObject()

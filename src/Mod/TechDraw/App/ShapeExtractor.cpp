@@ -25,7 +25,7 @@
 #ifndef _PreComp_
 # include <sstream>
 # include <BRep_Builder.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
+# include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 # include <BRepTools.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Iterator.hxx>
@@ -137,9 +137,10 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
         else {
             auto shape = Part::Feature::getShape(obj);
             // if link obj has a shape, we use that shape.
-            if(!SU::isShapeReallyNull((shape))) {
+            if(!SU::isShapeReallyNull(shape) && !isExplodedView) {
                 sourceShapes.push_back(getLocatedShape(obj));
-            } else {
+            }
+            else {
                 std::vector<TopoDS_Shape> shapeList = getShapesFromObject(obj);
                 sourceShapes.insert(sourceShapes.end(), shapeList.begin(), shapeList.end());
             }
@@ -147,7 +148,7 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
 
         if (isExplodedView) {
             Py::Object explodedViewPy = proxy->getValue();
-            
+
             Py::Object attr = explodedViewPy.getAttr("restoreAssembly");
             if (attr.ptr() && attr.isCallable()) {
                 Py::Tuple args(1);
@@ -225,7 +226,7 @@ std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
                     childNeedsTransform = true;
                 }
             }
-            auto shape = Part::Feature::getShape(l);
+            auto shape = Part::Feature::getShape(l);    // TODO:  getTopoShape() ?
             Part::TopoShape ts(shape);
             if (ts.isInfinite()) {
                 shape = stripInfiniteShapes(shape);
@@ -354,7 +355,7 @@ TopoDS_Shape ShapeExtractor::getShapesFused(const std::vector<App::DocumentObjec
         it.Next();
         for (; it.More(); it.Next()) {
             const TopoDS_Shape& aChild = it.Value();
-            BRepAlgoAPI_Fuse mkFuse(fusedShape, aChild);
+            FCBRepAlgoAPI_Fuse mkFuse(fusedShape, aChild);
             // Let's check if the fusion has been successful
             if (!mkFuse.IsDone()) {
                 Base::Console().Error("SE - Fusion failed\n");
@@ -506,7 +507,7 @@ Base::Vector3d ShapeExtractor::getLocation3dFromFeat(const App::DocumentObject* 
 //! get the located and oriented version of docObj shape
 TopoDS_Shape ShapeExtractor::getLocatedShape(const App::DocumentObject* docObj)
 {
-        Part::TopoShape shape = Part::Feature::getShape(docObj);
+        Part::TopoShape shape = Part::Feature::getTopoShape(docObj);
         const Part::Feature* pf = dynamic_cast<const Part::Feature*>(docObj);
         if (pf) {
             shape.setPlacement(pf->globalPlacement());

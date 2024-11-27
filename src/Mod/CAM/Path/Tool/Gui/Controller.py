@@ -139,9 +139,7 @@ class CommandPathToolController(object):
     def GetResources(self):
         return {
             "Pixmap": "CAM_LengthOffset",
-            "MenuText": QT_TRANSLATE_NOOP(
-                "CAM_ToolController", "Add Tool Controller to the Job"
-            ),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_ToolController", "Add Tool Controller to the Job"),
             "ToolTip": QT_TRANSLATE_NOOP("CAM_ToolController", "Add Tool Controller"),
         }
 
@@ -184,21 +182,13 @@ class ToolControllerEditor(object):
         self.obj = obj
 
         comboToPropertyMap = [("spindleDirection", "SpindleDir")]
-        enumTups = PathToolController.ToolController.propertyEnumerations(
-            dataType="raw"
-        )
+        enumTups = PathToolController.ToolController.propertyEnumerations(dataType="raw")
 
         PathGuiUtil.populateCombobox(self.form, enumTups, comboToPropertyMap)
         self.vertFeed = PathGuiUtil.QuantitySpinBox(self.form.vertFeed, obj, "VertFeed")
-        self.horizFeed = PathGuiUtil.QuantitySpinBox(
-            self.form.horizFeed, obj, "HorizFeed"
-        )
-        self.vertRapid = PathGuiUtil.QuantitySpinBox(
-            self.form.vertRapid, obj, "VertRapid"
-        )
-        self.horizRapid = PathGuiUtil.QuantitySpinBox(
-            self.form.horizRapid, obj, "HorizRapid"
-        )
+        self.horizFeed = PathGuiUtil.QuantitySpinBox(self.form.horizFeed, obj, "HorizFeed")
+        self.vertRapid = PathGuiUtil.QuantitySpinBox(self.form.vertRapid, obj, "VertRapid")
+        self.horizRapid = PathGuiUtil.QuantitySpinBox(self.form.horizRapid, obj, "HorizRapid")
 
         self.editor = None
         self.form.toolBox.widget(1).hide()

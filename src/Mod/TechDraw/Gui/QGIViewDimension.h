@@ -28,6 +28,7 @@
 #include <QColor>
 #include <QFont>
 #include <QGraphicsItem>
+#include <QGraphicsItemGroup>
 #include <QGraphicsObject>
 #include <QStyleOptionGraphicsItem>
 
@@ -76,6 +77,7 @@ public:
     void setPosFromCenter(const double &xCenter, const double &yCenter);
     double X() const { return posX; }
     double Y() const { return posY; }              //minus posY?
+    Base::Vector2d getPosToCenterVec();
 
     void setFont(QFont font);
     QFont getFont() const { return m_dimText->font(); }
@@ -88,6 +90,7 @@ public:
     void setPrettyNormal();
     void setColor(QColor color);
     void setSelectability(bool val);
+    void setFrameColor(QColor color);
 
     QGCustomText* getDimText() { return m_dimText; }
     void setDimText(QGCustomText* newText) { m_dimText = newText; }
@@ -98,11 +101,11 @@ public:
 
     double getTolAdjust();
 
-    bool isFramed() const { return m_isFramed; }
-    void setFramed(bool framed) { m_isFramed = framed; }
+    bool isFramed() const { return m_frame->parentItem(); }  // If empty pointer, then no frame
+    void setFramed(bool framed);
 
-    double getLineWidth() const { return m_lineWidth; }
-    void setLineWidth(double lineWidth) { m_lineWidth = lineWidth; }
+    double getLineWidth() const { return m_frame->pen().widthF(); }
+    void setLineWidth(double lineWidth);
     void setQDim(QGIViewDimension* qDim) { parent = qDim;}
 
 Q_SIGNALS:
@@ -118,8 +121,11 @@ protected:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) override;
+    void updateFrameRect();
 
     int getPrecision();
+
+    void snapPosition(QPointF& position);
 
     bool getVerticalSep() const { return verticalSep; }
     void setVerticalSep(bool sep) { verticalSep = sep; }
@@ -136,14 +142,13 @@ private:
     QGCustomText* m_tolTextOver;
     QGCustomText* m_tolTextUnder;
     QGCustomText* m_unitText;
+    QGraphicsItemGroup* m_textItems;
+    QGraphicsRectItem* m_frame;
     QColor m_colNormal;
     bool m_ctrl;
 
     double posX;
     double posY;
-
-    bool m_isFramed;
-    double m_lineWidth;
 
     int m_dragState;
 
@@ -312,7 +317,8 @@ private:
     QGIArrow* aHead2;
     double m_lineWidth;
 
-    QGCustomSvg* m_refFlag;
+    // needs Phase2 of autocorrect to be useful
+    // QGCustomSvg* m_refFlag;
 
 };
 

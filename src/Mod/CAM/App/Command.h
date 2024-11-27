@@ -33,45 +33,52 @@
 
 namespace Path
 {
-    /** The representation of a cnc command in a path */
-    class PathExport Command : public Base::Persistence
-    {
+/** The representation of a cnc command in a path */
+class PathExport Command: public Base::Persistence
+{
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
-    public:
-        //constructors
-        Command();
-        Command(const char* name,
-                const std::map<std::string,double>& parameters);
-        ~Command() override;
-        // from base class
-        unsigned int getMemSize () const override;
-        void Save (Base::Writer &/*writer*/) const override;
-        void Restore(Base::XMLReader &/*reader*/) override;
+public:
+    // constructors
+    Command();
+    Command(const char* name, const std::map<std::string, double>& parameters);
+    ~Command() override;
+    // from base class
+    unsigned int getMemSize() const override;
+    void Save(Base::Writer& /*writer*/) const override;
+    void Restore(Base::XMLReader& /*reader*/) override;
 
-        // specific methods
-        Base::Placement getPlacement (const Base::Vector3d pos = Base::Vector3d()) const; // returns a placement from the x,y,z,a,b,c parameters
-        Base::Vector3d getCenter () const; // returns a 3d vector from the i,j,k parameters
-        void setCenter(const Base::Vector3d&, bool clockwise=true); // sets the center coordinates and the command name
-        std::string toGCode (int precision=6, bool padzero=true) const; // returns a GCode string representation of the command
-        void setFromGCode (const std::string&); // sets the parameters from the contents of the given GCode string
-        void setFromPlacement (const Base::Placement&); // sets the parameters from the contents of the given placement
-        bool has(const std::string&) const; // returns true if the given string exists in the parameters
-        Command transform(const Base::Placement&); // returns a transformed copy of this command
-        double getValue(const std::string &name) const; // returns the value of a given parameter
-        void scaleBy(double factor); // scales the receiver - use for imperial/metric conversions
+    // specific methods
+    Base::Placement getPlacement(const Base::Vector3d pos = Base::Vector3d())
+        const;                         // returns a placement from the x,y,z,a,b,c parameters
+    Base::Vector3d getCenter() const;  // returns a 3d vector from the i,j,k parameters
+    void setCenter(const Base::Vector3d&,
+                   bool clockwise = true);  // sets the center coordinates and the command name
+    std::string
+    toGCode(int precision = 6,
+            bool padzero = true) const;  // returns a GCode string representation of the command
+    void setFromGCode(
+        const std::string&);  // sets the parameters from the contents of the given GCode string
+    void setFromPlacement(
+        const Base::Placement&);  // sets the parameters from the contents of the given placement
+    bool
+    has(const std::string&) const;  // returns true if the given string exists in the parameters
+    Command transform(const Base::Placement&);       // returns a transformed copy of this command
+    double getValue(const std::string& name) const;  // returns the value of a given parameter
+    void scaleBy(double factor);  // scales the receiver - use for imperial/metric conversions
 
-        // this assumes the name is upper case
-        inline double getParam(const std::string &name, double fallback = 0.0) const {
-            auto it = Parameters.find(name);
-            return it==Parameters.end() ? fallback : it->second;
-        }
+    // this assumes the name is upper case
+    inline double getParam(const std::string& name, double fallback = 0.0) const
+    {
+        auto it = Parameters.find(name);
+        return it == Parameters.end() ? fallback : it->second;
+    }
 
-        // attributes
-        std::string Name;
-        std::map<std::string,double> Parameters;
-    };
+    // attributes
+    std::string Name;
+    std::map<std::string, double> Parameters;
+};
 
-} //namespace Path
+}  // namespace Path
 
-#endif // PATH_COMMAND_H
+#endif  // PATH_COMMAND_H

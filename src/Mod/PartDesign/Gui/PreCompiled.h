@@ -32,9 +32,10 @@
 #ifdef _PreComp_
 
 #ifdef FC_OS_WIN32
-# undef NOMINMAX
-# define NOMINMAX
-# include <windows.h>
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+#include <windows.h>
 #endif
 
 // Boost

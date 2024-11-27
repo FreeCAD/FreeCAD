@@ -72,6 +72,12 @@ class _ArchPipe(ArchComponent.Component):
         pl = obj.PropertiesList
         if not "Diameter" in pl:
             obj.addProperty("App::PropertyLength", "Diameter",     "Pipe", QT_TRANSLATE_NOOP("App::Property","The diameter of this pipe, if not based on a profile"))
+        if not "Width" in pl:
+            obj.addProperty("App::PropertyLength", "Width",        "Pipe", QT_TRANSLATE_NOOP("App::Property","The width of this pipe, if not based on a profile"))
+            obj.setPropertyStatus("Width", "Hidden")
+        if not "Height" in pl:
+            obj.addProperty("App::PropertyLength", "Height",        "Pipe", QT_TRANSLATE_NOOP("App::Property","The height of this pipe, if not based on a profile"))
+            obj.setPropertyStatus("Height", "Hidden")
         if not "Length" in pl:
             obj.addProperty("App::PropertyLength", "Length",       "Pipe", QT_TRANSLATE_NOOP("App::Property","The length of this pipe, if not based on an edge"))
         if not "Profile" in pl:
@@ -82,12 +88,30 @@ class _ArchPipe(ArchComponent.Component):
             obj.addProperty("App::PropertyLength", "OffsetEnd",    "Pipe", QT_TRANSLATE_NOOP("App::Property","Offset from the end point"))
         if not "WallThickness" in pl:
             obj.addProperty("App::PropertyLength", "WallThickness","Pipe", QT_TRANSLATE_NOOP("App::Property","The wall thickness of this pipe, if not based on a profile"))
+        if not "ProfileType" in pl:
+            obj.addProperty("App::PropertyEnumeration", "ProfileType", "Pipe", QT_TRANSLATE_NOOP("App::Property","If not based on a profile, this controls the profile of this pipe"))
+            obj.ProfileType = ["Circle", "Square", "Rectangle"]
         self.Type = "Pipe"
 
     def onDocumentRestored(self,obj):
 
         ArchComponent.Component.onDocumentRestored(self,obj)
         self.setProperties(obj)
+
+    def onChanged(self, obj, prop):
+        if prop == "ProfileType":
+            if obj.ProfileType == "Square":
+                obj.setPropertyStatus("Height", "Hidden")
+                obj.setPropertyStatus("Diameter", "Hidden")
+                obj.setPropertyStatus("Width", "-Hidden")
+            elif obj.ProfileType == "Rectangle":
+                obj.setPropertyStatus("Height", "-Hidden")
+                obj.setPropertyStatus("Diameter", "Hidden")
+                obj.setPropertyStatus("Width", "-Hidden")
+            else:
+                obj.setPropertyStatus("Height", "Hidden")
+                obj.setPropertyStatus("Diameter", "-Hidden")
+                obj.setPropertyStatus("Width", "Hidden")
 
     def execute(self,obj):
 
@@ -128,7 +152,15 @@ class _ArchPipe(ArchComponent.Component):
         else:
             v1 = w.Vertexes[1].Point-w.Vertexes[0].Point
         v2 = DraftGeomUtils.getNormal(p)
-        rot = FreeCAD.Rotation(v2,v1)
+        #rot = FreeCAD.Rotation(v2,v1)
+        # rotate keeping up vector
+        if v1.getAngle(FreeCAD.Vector(0,0,1)) > 0.01:
+            up = FreeCAD.Vector(0,0,1)
+        else:
+            up = FreeCAD.Vector(0,1,0)
+        v1y = up.cross(v1)
+        v1x = v1.cross(v1y)
+        rot = FreeCAD.Rotation(v1x,v1y,v1,"ZYX")
         p.rotate(w.Vertexes[0].Point,rot.Axis,math.degrees(rot.Angle))
         shapes = []
         try:
@@ -191,14 +223,31 @@ class _ArchPipe(ArchComponent.Component):
                 return
             p = obj.Profile.Shape.Wires[0]
         else:
-            if obj.Diameter.Value == 0:
-                return
-            p = Part.Wire([Part.Circle(FreeCAD.Vector(0,0,0),FreeCAD.Vector(0,0,1),obj.Diameter.Value/2).toShape()])
-            if obj.WallThickness.Value and (obj.WallThickness.Value < obj.Diameter.Value/2):
-                p2 = Part.Wire([Part.Circle(FreeCAD.Vector(0,0,0),FreeCAD.Vector(0,0,1),(obj.Diameter.Value/2-obj.WallThickness.Value)).toShape()])
-                p = Part.Face(p)
-                p2 = Part.Face(p2)
-                p = p.cut(p2)
+            if obj.ProfileType == "Square":
+                if obj.Width.Value == 0:
+                    return
+                p = Part.makePlane(obj.Width.Value, obj.Width.Value,FreeCAD.Vector(-obj.Width.Value/2,-obj.Width.Value/2,0))
+                if obj.WallThickness.Value and (obj.WallThickness.Value < obj.Width.Value/2):
+                    p2 = Part.makePlane(obj.Width.Value-obj.WallThickness.Value*2,obj.Width.Value-obj.WallThickness.Value*2,FreeCAD.Vector(obj.WallThickness.Value-obj.Width.Value/2,obj.WallThickness.Value-obj.Width.Value/2,0))
+                    p = p.cut(p2)
+            elif obj.ProfileType == "Rectangle":
+                if obj.Width.Value == 0:
+                    return
+                if obj.Height.Value == 0:
+                    return
+                p = Part.makePlane(obj.Width.Value, obj.Height.Value,FreeCAD.Vector(-obj.Width.Value/2,-obj.Height.Value/2,0))
+                if obj.WallThickness.Value and (obj.WallThickness.Value < obj.Height.Value/2) and (obj.WallThickness.Value < obj.Width.Value/2):
+                    p2 = Part.makePlane(obj.Width.Value-obj.WallThickness.Value*2,obj.Height.Value-obj.WallThickness.Value*2,FreeCAD.Vector(obj.WallThickness.Value-obj.Width.Value/2,obj.WallThickness.Value-obj.Height.Value/2,0))
+                    p = p.cut(p2)
+            else:
+                if obj.Diameter.Value == 0:
+                    return
+                p = Part.Wire([Part.Circle(FreeCAD.Vector(0,0,0),FreeCAD.Vector(0,0,1),obj.Diameter.Value/2).toShape()])
+                if obj.WallThickness.Value and (obj.WallThickness.Value < obj.Diameter.Value/2):
+                    p2 = Part.Wire([Part.Circle(FreeCAD.Vector(0,0,0),FreeCAD.Vector(0,0,1),(obj.Diameter.Value/2-obj.WallThickness.Value)).toShape()])
+                    p = Part.Face(p)
+                    p2 = Part.Face(p2)
+                    p = p.cut(p2)
         return p
 
 
@@ -289,6 +338,8 @@ class _ArchPipeConnector(ArchComponent.Component):
         else:
             v2 = wires[1].Vertexes[-2].Point.sub(wires[1].Vertexes[-1].Point).normalize()
         p = obj.Pipes[0].Proxy.getProfile(obj.Pipes[0])
+        if not p:
+            return
         # If the pipe has a non-zero WallThickness p is a shape instead of a wire:
         if p.ShapeType != "Wire":
             p = p.Wires
@@ -313,9 +364,21 @@ class _ArchPipeConnector(ArchComponent.Component):
             delta = point.add(v1)-p.CenterOfMass
             p.translate(delta)
             vp = DraftGeomUtils.getNormal(p)
-            rot = FreeCAD.Rotation(vp,v1)
+            #rot = FreeCAD.Rotation(vp,v1)
+            # rotate keeping up vector
+            if v1.getAngle(FreeCAD.Vector(0,0,1)) > 0.01:
+                up = FreeCAD.Vector(0,0,1)
+            else:
+                up = FreeCAD.Vector(0,1,0)
+            v1y = up.cross(v1)
+            v1x = v1.cross(v1y)
+            rot = FreeCAD.Rotation(v1x,v1y,v1,"ZYX")
             p.rotate(p.CenterOfMass,rot.Axis,math.degrees(rot.Angle))
-            sh = p.revolve(center,normal,math.degrees(math.pi-v1.getAngle(v2)))
+            try:
+                sh = p.revolve(center,normal,math.degrees(math.pi-v1.getAngle(v2)))
+            except:
+                FreeCAD.Console.PrintError(translate("Arch","Unable to revolve this connector")+"\n")
+                return
             #sh = Part.makeCompound([sh]+[Part.Vertex(point),Part.Vertex(point.add(v1)),Part.Vertex(center),Part.Vertex(point.add(v2))])
         else:
             if obj.ConnectorType != "Tee":

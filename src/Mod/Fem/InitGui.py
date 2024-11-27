@@ -71,6 +71,9 @@ class FemWorkbench(Workbench):
         import Fem
         import FemGui
         import femcommands.commands
+
+        FreeCADGui.addPreferencePage(":/ui/DlgSettingsNetgen.ui", "FEM")
+
         # dummy usage to get flake8 and lgtm quiet
         False if Fem.__name__ else True
         False if FemGui.__name__ else True

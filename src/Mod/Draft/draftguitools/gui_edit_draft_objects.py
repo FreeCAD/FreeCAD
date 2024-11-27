@@ -774,7 +774,7 @@ class DraftBezCurveGuiTools(GuiTools):
                 knot = 0
             else:
                 App.Console.PrintWarning(translate("draft",
-                                                        "Endpoint of BezCurve can't be smoothed")
+                                                        "Endpoint of Bézier curve can't be smoothed")
                                                         + "\n")
                 return
         segment = knot // deg  # segment index

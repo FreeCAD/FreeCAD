@@ -49,10 +49,8 @@ class Arch_Schedule:
         self.taskd = ArchSchedule.ArchScheduleTaskPanel()
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument:
-            return True
-        else:
-            return False
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
 
 
 FreeCADGui.addCommand('Arch_Schedule',Arch_Schedule())

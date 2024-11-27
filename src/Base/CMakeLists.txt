@@ -388,6 +388,9 @@ endif(FREECAD_USE_PCH)
 add_library(FreeCADBase SHARED ${FreeCADBase_SRCS})
 
 target_link_libraries(FreeCADBase ${FreeCADBase_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(FreeCADBase)
+endif()
 
 SET_BIN_DIR(FreeCADBase FreeCADBase)
 

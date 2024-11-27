@@ -165,7 +165,6 @@ SET(Document_CPP_SRCS
     Origin.cpp
     Path.cpp
     InventorObject.cpp
-    MeasureDistance.cpp
     Placement.cpp
     ProjectFile.cpp
     OriginFeature.cpp
@@ -212,7 +211,6 @@ SET(Document_HPP_SRCS
     Origin.h
     Path.h
     InventorObject.h
-    MeasureDistance.h
     Placement.h
     ProjectFile.h
     OriginFeature.h
@@ -290,6 +288,7 @@ SET(FreeCADApp_CPP_SRCS
     Metadata.cpp
     MetadataPyImp.cpp
     ElementNamingUtils.cpp
+    SafeMode.cpp
     StringHasher.cpp
     StringHasherPyImp.cpp
     StringIDPyImp.cpp
@@ -342,6 +341,9 @@ endif(FREECAD_USE_PCH)
 
 add_library(FreeCADApp SHARED ${FreeCADApp_SRCS})
 target_link_libraries(FreeCADApp ${FreeCADApp_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(FreeCADApp)
+endif()
 
 add_dependencies(FreeCADApp fc_version)
 

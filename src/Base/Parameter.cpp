@@ -50,7 +50,7 @@
 #endif
 
 #include <boost/algorithm/string.hpp>
-#include "fmt/printf.h"
+#include <fmt/printf.h>
 
 #include "Parameter.h"
 #include "Parameter.inl"
@@ -60,8 +60,12 @@
 
 FC_LOG_LEVEL_INIT("Parameter", true, true)
 
-
+#ifndef XERCES_CPP_NAMESPACE_BEGIN
+#define XERCES_CPP_NAMESPACE_QUALIFIER
+using namespace XERCES_CPP_NAMESPACE;
+#else
 XERCES_CPP_NAMESPACE_USE
+#endif
 using namespace Base;
 
 
@@ -76,7 +80,6 @@ using namespace Base;
 // - DOMPrintErrorHandler
 // - XStr
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 
 class DOMTreeErrorReporter: public ErrorHandler
 {
@@ -1012,15 +1015,13 @@ void ParameterGrp::SetASCII(const char* Name, const char* sValue)
 {
     if (!_pGroupNode) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-            FC_WARN("Setting attribute "
-                    << "FCText:" << Name << " in an orphan group " << _cName);
+            FC_WARN("Setting attribute " << "FCText:" << Name << " in an orphan group " << _cName);
         }
         return;
     }
     if (_Clearing) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-            FC_WARN("Adding attribute "
-                    << "FCText:" << Name << " while clearing " << GetPath());
+            FC_WARN("Adding attribute " << "FCText:" << Name << " while clearing " << GetPath());
         }
         return;
     }
@@ -1617,6 +1618,7 @@ ParameterManager::ParameterManager()
     // ---------------------------------------------------------------------------
 
     // NOLINTBEGIN
+    gIgnoreSave = false;
     gDoNamespaces = false;
     gDoSchema = false;
     gSchemaFullChecking = false;
@@ -1723,14 +1725,28 @@ void ParameterManager::SaveDocument() const
     }
 }
 
+void ParameterManager::SetIgnoreSave(bool value)
+{
+    gIgnoreSave = value;
+}
+
+bool ParameterManager::IgnoreSave() const
+{
+    return gIgnoreSave;
+}
+
 namespace
 {
-void waitForFileAccess(const Base::FileInfo& file)
+QString getLockFile(const Base::FileInfo& file)
 {
     QFileInfo fi(QDir::tempPath(), QString::fromStdString(file.fileName() + ".lock"));
-    QLockFile lock(fi.absoluteFilePath());
-    const int waitOneSecond = 1000;
-    lock.tryLock(waitOneSecond);
+    return fi.absoluteFilePath();
+}
+
+int getTimeout()
+{
+    const int timeout = 5000;
+    return timeout;
 }
 }  // namespace
 
@@ -1753,7 +1769,14 @@ int ParameterManager::LoadDocument(const char* sFileName)
 {
     try {
         Base::FileInfo file(sFileName);
-        waitForFileAccess(file);
+        QLockFile lock(getLockFile(file));
+        if (!lock.tryLock(getTimeout())) {
+            // Continue with empty config
+            CreateDocument();
+            SetIgnoreSave(true);
+            std::cerr << "Failed to access file for reading: " << sFileName << std::endl;
+            return 1;
+        }
 #if defined(FC_OS_WIN32)
         std::wstring name = file.toStdWString();
         // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
@@ -1845,7 +1868,11 @@ void ParameterManager::SaveDocument(const char* sFileName) const
 {
     try {
         Base::FileInfo file(sFileName);
-        waitForFileAccess(file);
+        QLockFile lock(getLockFile(file));
+        if (!lock.tryLock(getTimeout())) {
+            std::cerr << "Failed to access file for writing: " << sFileName << std::endl;
+            return;
+        }
         //
         // Plug in a format target to receive the resultant
         // XML stream from the serializer.

@@ -877,7 +877,7 @@ Py::Object View3DInventorPy::saveImage(const Py::Tuple& args)
     if (colname.compare(QLatin1String("Current"), Qt::CaseInsensitive) == 0)
         bg = QColor(); // assign an invalid color here
     else
-        bg.setNamedColor(colname);
+        bg = QColor(colname);
 
     QImage img;
     getView3DIventorPtr()->getViewer()->savePicture(w, h, s, bg, img);
@@ -926,7 +926,7 @@ Py::Object View3DInventorPy::saveVectorGraphic(const Py::Tuple& args)
     if (colname.compare(QLatin1String("Current"), Qt::CaseInsensitive) == 0)
         bg = getView3DIventorPtr()->getViewer()->backgroundColor();
     else
-        bg.setNamedColor(colname);
+        bg = QColor(colname);
 
     getView3DIventorPtr()->getViewer()->saveGraphic(ps,bg,vo.get());
     out->closeFile();
@@ -1172,6 +1172,9 @@ Py::Object View3DInventorPy::dumpNode(const Py::Tuple& args)
     void* ptr = nullptr;
     try {
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoNode *", object, &ptr, 0);
+        if (!ptr) {
+            throw Py::RuntimeError("Conversion of SoNode failed");
+        }
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -1328,7 +1331,7 @@ Py::Object View3DInventorPy::getObjectInfo(const Py::Tuple& args)
                     if (!obj)
                         return ret;
                     if (!subname.empty()) {
-                        std::pair<std::string,std::string> elementName;
+                        App::ElementNamePair elementName;
                         auto sobj = App::GeoFeature::resolveElement(obj,subname.c_str(),elementName);
                         if (!sobj)
                             return ret;
@@ -1337,7 +1340,7 @@ Py::Object View3DInventorPy::getObjectInfo(const Py::Tuple& args)
                             dict.setItem("SubName",Py::String(subname));
                             obj = sobj;
                         }
-                        subname = !elementName.second.empty()?elementName.second:elementName.first;
+                        subname = !elementName.oldName.empty()?elementName.oldName:elementName.newName;
                     }
                     dict.setItem("Document",
                         Py::String(obj->getDocument()->getName()));
@@ -1438,7 +1441,7 @@ Py::Object View3DInventorPy::getObjectsInfo(const Py::Tuple& args)
                         if (!obj)
                             continue;
                         if (!subname.empty()) {
-                            std::pair<std::string,std::string> elementName;
+                            App::ElementNamePair elementName;
                             auto sobj = App::GeoFeature::resolveElement(obj,subname.c_str(),elementName);
                             if (!sobj)
                                 continue;
@@ -1447,7 +1450,7 @@ Py::Object View3DInventorPy::getObjectsInfo(const Py::Tuple& args)
                                 dict.setItem("SubName",Py::String(subname));
                                 obj = sobj;
                             }
-                            subname = !elementName.second.empty()?elementName.second:elementName.first;
+                            subname = !elementName.oldName.empty()?elementName.oldName:elementName.newName;
                         }
                         dict.setItem("Document",
                             Py::String(obj->getDocument()->getName()));
@@ -2171,6 +2174,9 @@ Py::Object View3DInventorPy::addEventCallbackPivy(const Py::Tuple& args)
     void* ptr = nullptr;
     try {
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoType *", proxy, &ptr, 0);
+        if (!ptr) {
+            throw Py::RuntimeError("Conversion of SoType failed");
+        }
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -2213,6 +2219,9 @@ Py::Object View3DInventorPy::removeEventCallbackPivy(const Py::Tuple& args)
     void* ptr = nullptr;
     try {
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoType *", proxy, &ptr, 0);
+        if (!ptr) {
+            throw Py::RuntimeError("Conversion of SoType failed");
+        }
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -2303,6 +2312,9 @@ Py::Object View3DInventorPy::addDraggerCallback(const Py::Tuple& args)
     void* ptr = nullptr;
     try {
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoDragger *", dragger, &ptr, 0);
+        if (!ptr) {
+            throw Py::RuntimeError("Conversion of SoDragger failed");
+        }
     }
     catch (const Base::Exception&) {
         throw Py::TypeError("The first argument must be of type SoDragger");
@@ -2355,6 +2367,9 @@ Py::Object View3DInventorPy::removeDraggerCallback(const Py::Tuple& args)
     void* ptr = nullptr;
     try {
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoDragger *", dragger, &ptr, 0);
+        if (!ptr) {
+            throw Py::RuntimeError("Conversion of SoDragger failed");
+        }
     }
     catch (const Base::Exception&) {
         throw Py::TypeError("The first argument must be of type SoDragger");

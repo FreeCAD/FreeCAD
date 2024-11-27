@@ -72,6 +72,7 @@ void TaskPadParameters::translateModeList(int index)
     ui->changeMode->addItem(tr("To first"));
     ui->changeMode->addItem(tr("Up to face"));
     ui->changeMode->addItem(tr("Two dimensions"));
+    ui->changeMode->addItem(tr("Up to shape"));
     ui->changeMode->setCurrentIndex(index);
 }
 
@@ -80,27 +81,27 @@ void TaskPadParameters::updateUI(int index)
     // update direction combobox
     fillDirectionCombo();
     // set and enable checkboxes
-    setCheckboxes(static_cast<Modes>(index), Type::Pad);
+    setCheckboxes(static_cast<Mode>(index), Type::Pad);
 }
 
 void TaskPadParameters::onModeChanged(int index)
 {
-    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
+   auto pcPad = getObject<PartDesign::Pad>();
 
-    switch (static_cast<Modes>(index)) {
-    case Modes::Dimension:
+    switch (static_cast<Mode>(index)) {
+    case Mode::Dimension:
         pcPad->Type.setValue("Length");
         // Avoid error message
         if (ui->lengthEdit->value() < Base::Quantity(Precision::Confusion(), Base::Unit::Length))
             ui->lengthEdit->setValue(5.0);
         break;
-    case Modes::ToLast:
+    case Mode::ToLast:
         pcPad->Type.setValue("UpToLast");
         break;
-    case Modes::ToFirst:
+    case Mode::ToFirst:
         pcPad->Type.setValue("UpToFirst");
         break;
-    case Modes::ToFace:
+    case Mode::ToFace:
         // Note: ui->checkBoxReversed is purposely enabled because the selected face
         // could be a circular one around the sketch
         pcPad->Type.setValue("UpToFace");
@@ -109,8 +110,11 @@ void TaskPadParameters::onModeChanged(int index)
             handleLineFaceNameClick(); // sets placeholder text
         }
         break;
-    case Modes::TwoDimensions:
+    case Mode::TwoDimensions:
         pcPad->Type.setValue("TwoLengths");
+        break;
+    case Mode::ToShape:
+        pcPad->Type.setValue("UpToShape");
         break;
     }
 
@@ -121,7 +125,7 @@ void TaskPadParameters::onModeChanged(int index)
 void TaskPadParameters::apply()
 {
     QString facename = QString::fromLatin1("None");
-    if (static_cast<Modes>(getMode()) == Modes::ToFace) {
+    if (static_cast<Mode>(getMode()) == Mode::ToFace) {
         facename = getFaceName();
     }
     applyParameters(facename);
@@ -133,10 +137,9 @@ void TaskPadParameters::apply()
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskDlgPadParameters::TaskDlgPadParameters(ViewProviderPad *PadView, bool /*newObj*/)
-    : TaskDlgSketchBasedParameters(PadView)
+    : TaskDlgExtrudeParameters(PadView), parameters(new TaskPadParameters(PadView))
 {
-    assert(vp);
-    Content.push_back ( new TaskPadParameters(PadView ) );
+    Content.push_back(parameters);
 }
 
 //==== calls from the TaskView ===============================================================

@@ -62,7 +62,6 @@ private Q_SLOTS:
     void removeFromSelection() override;
 
 protected:
-    bool event(QEvent* e) override;
     void changeEvent(QEvent* e) override;
     void clearButtons(const SelectionChangeModes notThis) override;
 
@@ -77,9 +76,7 @@ class TaskDlgFemConstraintTemperature: public TaskDlgFemConstraint
 
 public:
     explicit TaskDlgFemConstraintTemperature(ViewProviderFemConstraintTemperature* ConstraintView);
-    void open() override;
     bool accept() override;
-    bool reject() override;
 };
 
 }  // namespace FemGui

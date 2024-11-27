@@ -59,11 +59,18 @@ public:
     void setLinePen(QPen isoPen);
     void setBreakColor(QColor c);
 
+    void setBreakType(int style) { m_breakType = style; }
+    int  breakType() const { return m_breakType; }
+
 protected:
 
 private:
+    void drawLargeZigZag();
     QPainterPath makeHorizontalZigZag(Base::Vector3d start) const;
     QPainterPath makeVerticalZigZag(Base::Vector3d start) const;
+    void drawSimpleLines();
+    QPainterPath pathFromPoints(Base::Vector3d start, Base::Vector3d end);
+
     void setTools();
 
     QGraphicsPathItem* m_line0;
@@ -76,6 +83,8 @@ private:
     double             m_bottom;
     double             m_left;
     double             m_right;
+
+    int                m_breakType{0};
 };
 
 }

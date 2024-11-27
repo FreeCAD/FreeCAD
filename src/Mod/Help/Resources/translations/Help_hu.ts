@@ -15,7 +15,7 @@
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="46"/>
-      <location filename="../../dlgPreferencesHelp.ui" line="89"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="86"/>
       <source>Set this to a custom URL or the folder where the help files are located.
 You can easily download the documentation for offline use by using the Addon
 Manager and installing the &quot;offline-documentation&quot; addon. If this
@@ -86,27 +86,28 @@ egyéni stílustáblával alakítható ki, és szebben nézhet ki, mint a wiki o
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="170"/>
-      <source>The documentation will open in a new tab inside the FreeCAD interface.</source>
-      <translation>A dokumentáció egy új lapon nyílik meg a FreeCAD felületén belül.</translation>
+      <source>Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</source>
+      <translation>Megjegyzés: ha a PySide Web komponensek nem találhatók a rendszerben, a súgóoldalak az alapértelmezett böngészőben fognak megnyílni, függetlenül az alábbi beállításoktól</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="173"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="202"/>
       <source>In a FreeCAD tab</source>
       <translation>Egy FreeCAD lapon</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="189"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="180"/>
       <source>The documentation will open in your default web browser.</source>
       <translation>A dokumentáció az alapértelmezett böngészőben fog megnyílni.</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="208"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="221"/>
       <source>The documentation will open in a dockable dialog inside the FreeCAD window,
-which allows you to keep it open whlle working in the 3D view.</source>
-      <translation>A dokumentáció egy dokkolható párbeszédpanelben nyílik meg a FreeCAD ablakon belül, amely lehetővé teszi, hogy a 3D nézetben való munka közben is nyitva maradjon.</translation>
+which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</source>
+      <translation>A dokumentáció egy dokkolható párbeszédpanelben nyílik meg a FreeCAD ablakon belül,
+amely lehetővé teszi, hogy a 3D nézetben történő munka közben is nyitva tartsa. Ehhez a PySide QtWebengineWidgets komponensre van szükség</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="243"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="256"/>
       <source>You can here indicate the path to an alternative CSS file to be used
 to style the Markdown pages. This will only work if you have selected the
 Markdown version above.</source>
@@ -115,22 +116,27 @@ a Markdown oldalak stílusához. Ez csak akkor működik, ha a
 Markdown fenti verziót választotta.</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="192"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="183"/>
       <source>In your default web browser</source>
       <translation>Az alapértelmezett webböngészőben</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="212"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="199"/>
+      <source>The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component</source>
+      <translation>A dokumentáció egy új lapon fog megnyílni a FreeCAD felületén belül. Ehhez a PySide QtWebengineWidgets komponensre van szükség</translation>
+    </message>
+    <message>
+      <location filename="../../dlgPreferencesHelp.ui" line="225"/>
       <source>In a separate, embeddable dialog</source>
       <translation>Egy különálló, beágyazható párbeszédpanelben</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="228"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="241"/>
       <source>Options</source>
       <translation>Beállítások</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="236"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="249"/>
       <source>      Custom stylesheet:</source>
       <translation>      Egyéni stíluslap:</translation>
     </message>
@@ -138,27 +144,27 @@ Markdown fenti verziót választotta.</translation>
   <context>
     <name>Help</name>
     <message>
-      <location filename="../../Help.py" line="70"/>
+      <location filename="../../Help.py" line="75"/>
       <source>Contents for this page could not be retrieved. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
       <translation>Az oldal tartalma nem volt elérhető. Kérjük, ellenőrizze a beállításokat a Szerkesztés -&gt; Beállítások -&gt; Általános -&gt; Súgó menüpontban</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="74"/>
+      <location filename="../../Help.py" line="79"/>
       <source>Help files location could not be determined. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
       <translation>A súgófájlok helyét nem sikerült meghatározni. Kérjük, ellenőrizze a beállításokat a Szerkesztés -&gt; Beállítások -&gt; Általános -&gt; Súgó menüben</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="78"/>
+      <location filename="../../Help.py" line="83"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
       <translation>A PySide QtWebEngineWidgets modul nem elérhető. A súgó megjelenítése a rendszer böngészőjével történik</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="82"/>
-      <source>There is no markdown renderer installed on your system, so this help page is rendered as is. Please install the markdown or pandoc python modules to improve the rendering of this page.</source>
-      <translation>Az Ön rendszerén nincs telepítve markdown renderelő, így ez a súgóoldal úgy jelenik meg, ahogy van. Kérjük, telepítse a markdown vagy pandoc python modulokat, hogy javítsa az oldal megjelenítését.</translation>
+      <location filename="../../Help.py" line="87"/>
+      <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
+      <translation>Nincs telepítve Markdown renderelő az Ön rendszerén, így ez a súgóoldal úgy jelenik meg, ahogy van. Kérjük, telepítse a Markdown vagy Pandoc Python modulokat, hogy javítsa az oldal megjelenítését.</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="111"/>
+      <location filename="../../Help.py" line="119"/>
       <source>Help</source>
       <translation>Súgó</translation>
     </message>
@@ -166,7 +172,7 @@ Markdown fenti verziót választotta.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="393"/>
+      <location filename="../../Help.py" line="432"/>
       <source>General</source>
       <translation>Általános</translation>
     </message>

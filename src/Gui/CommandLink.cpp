@@ -197,7 +197,7 @@ void StdCmdLinkMakeGroup::activated(int option) {
         Command::abortCommand();
         e.ReportException();
     }
-} 
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -892,7 +892,15 @@ public:
         addCommand(new StdCmdLinkImportAll());
     }
 
-    const char* className() const override {return "StdCmdLinkActions";}
+    const char* className() const override
+    {
+        return "StdCmdLinkActions";
+    }
+
+    bool isActive() override
+    {
+        return hasActiveDocument();
+    }
 };
 
 //===========================================================================

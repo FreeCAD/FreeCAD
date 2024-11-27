@@ -64,6 +64,7 @@ import WorkingPlane
 from FreeCAD import Vector
 from FreeCAD import Console as FCC
 from Draft import LinearDimension
+from draftobjects.dimension import _Dimension
 from draftutils import params
 from draftutils import utils
 from builtins import open as pyopen
@@ -103,6 +104,22 @@ def errorDXFLib(gui):
     -----
     Use local variables, not global variables.
     """
+    
+    def show_addon_message(gui):
+        if gui:
+            message = translate("Draft", """Download of dxf libraries failed.
+Please install the dxf Library addon manually
+from menu Tools -> Addon Manager""")
+            QtWidgets.QMessageBox.information(None, "", message)
+        else:
+            FCC.PrintWarning("The DXF import/export libraries needed by FreeCAD to handle the DXF format are not installed.\n")
+            FCC.PrintWarning("Please install the dxf Library addon from Tools -> Addon Manager\n")
+    try:
+        import ArchCommands
+    except:
+        # BIM not present
+        show_addon_message(gui)
+        return
     dxfAllowDownload = params.get_param("dxfAllowDownload")
     if dxfAllowDownload:
         files = ['dxfColorMap.py', 'dxfImportObjects.py',
@@ -110,7 +127,6 @@ def errorDXFLib(gui):
 
         baseurl = 'https://raw.githubusercontent.com/yorikvanhavre/'
         baseurl += 'Draft-dxf-importer/master/'
-        import ArchCommands
         from FreeCAD import Base
         progressbar = Base.ProgressIndicator()
         progressbar.start("Downloading files...", 4)
@@ -119,14 +135,7 @@ def errorDXFLib(gui):
             p = None
             p = ArchCommands.download(baseurl + f, force=True)
             if not p:
-                if gui:
-                    message = translate("Draft", """Download of dxf libraries failed.
-Please install the dxf Library addon manually
-from menu Tools -> Addon Manager""")
-                    QtWidgets.QMessageBox.information(None, "", message)
-                else:
-                    FCC.PrintWarning("The DXF import/export libraries needed by FreeCAD to handle the DXF format are not installed.\n")
-                    FCC.PrintWarning("Please install the dxf Library addon from Tools -> Addon Manager\n")
+                show_addon_message(gui)
                 break
         progressbar.stop()
         sys.path.append(FreeCAD.ConfigGet("UserAppData"))
@@ -134,7 +143,7 @@ from menu Tools -> Addon Manager""")
         if gui:
             message = translate('draft', """The DXF import/export libraries needed by FreeCAD to handle
 the DXF format were not found on this system.
-Please either enable FreeCAD to download these libraries:
+Please either allow FreeCAD to download these libraries:
   1 - Load Draft workbench
   2 - Menu Edit > Preferences > Import-Export > DXF > Enable downloads
 Or download these libraries manually, as explained on
@@ -220,18 +229,18 @@ def deformat(text):
         The deformatted string.
     """
     # remove ACAD string formatation
-    # t = re.sub('{([^!}]([^}]|\n)*)}', '', text)
+    # t = re.sub(r'{([^!}]([^}]|\n)*)}', '', text)
     # print("input text: ",text)
     t = text.strip("{}")
-    t = re.sub("\\\\.*?;", "", t)
+    t = re.sub(r"\\\\.*?;", "", t)
     # replace UTF codes by utf chars
     sts = re.split("\\\\(U\\+....)", t)
     t = u"".join(sts)
     # replace degrees, diameters chars
-    t = re.sub('%%d', u'°', t)
-    t = re.sub('%%c', u'Ø', t)
-    t = re.sub('%%D', u'°', t)
-    t = re.sub('%%C', u'Ø', t)
+    t = re.sub(r'%%d', u'°', t)
+    t = re.sub(r'%%c', u'Ø', t)
+    t = re.sub(r'%%D', u'°', t)
+    t = re.sub(r'%%C', u'Ø', t)
     # print("output text: ", t)
     return t
 
@@ -1926,11 +1935,24 @@ def addObject(shape, name="Shape", layer=None):
     if layer:
         lay = locateLayer(layer)
         # For old style layers, which are just groups
-        if hasattr(lay, "addObject"):
-            lay.addObject(newob)
+        if hasattr(lay, "Group"):
+            pass
         # For new Draft Layers
-        elif hasattr(lay, "Proxy") and hasattr(lay.Proxy, "addObject"):
-            lay.Proxy.addObject(lay, newob)
+        elif hasattr(lay, "Proxy") and hasattr(lay.Proxy, "Group"):
+            lay = lay.Proxy
+        else:
+            lay = None
+
+        if lay != None:
+            if lay not in layerObjects:
+                l = []
+                layerObjects[lay] = l
+            else:
+                l = layerObjects[lay]
+            l.append(newob)
+            
+
+
     formatObject(newob)
     return newob
 
@@ -2226,6 +2248,8 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
     badobjects = []
     global layerBlocks
     layerBlocks = {}
+    global layerObjects
+    layerObjects = {}
     sketch = None
     shapes = []
 
@@ -2596,7 +2620,10 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
                         elif angle in [90, 270]:
                             p2 = vec([x2, y3, z2])
                     newob = doc.addObject("App::FeaturePython", "Dimension")
-                    lay.addObject(newob)
+                    if hasattr(lay, "addObject"):
+                        lay.addObject(newob)
+                    elif hasattr(lay, "Proxy") and hasattr(lay.Proxy, "addObject"):
+                        lay.Proxy.addObject(lay, newob)
                     _Dimension(newob)
                     if gui:
                         from Draft import _ViewProviderDimension
@@ -2720,6 +2747,10 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
                         formatObject(newob, insert)
             num += 1
 
+    # Move layer contents to layers
+    for (l, contents) in layerObjects.items():
+        l.Group += contents
+
     # Make blocks, if any
     if dxfMakeBlocks:
         print("creating layerblocks...")
@@ -2809,10 +2840,11 @@ def open(filename):
         FreeCAD.setActiveDocument(doc.Name)
         try:
             import ImportGui
-            ImportGui.readDXF(filename)
         except Exception:
             import Import
             Import.readDXF(filename)
+        else:
+            ImportGui.readDXF(filename)
         Draft.convert_draft_texts() # convert annotations to Draft texts
         doc.recompute()
 
@@ -2851,10 +2883,11 @@ def insert(filename, docname):
     else:
         try:
             import ImportGui
-            ImportGui.readDXF(filename)
         except Exception:
             import Import
             Import.readDXF(filename)
+        else:
+            ImportGui.readDXF(filename)
         Draft.convert_draft_texts() # convert annotations to Draft texts
         doc.recompute()
 
@@ -3909,7 +3942,7 @@ def exportPage(page, filename):
         f = pyopen(page.Template, "rb")
         svgtemplate = f.read()
         f.close()
-        editables = re.findall("freecad:editable=\"(.*?)\"", svgtemplate)
+        editables = re.findall(r"freecad:editable=\"(.*?)\"", svgtemplate)
         values = page.EditableTexts
         for i in range(len(editables)):
             if len(values) > i:
@@ -3928,7 +3961,7 @@ def exportPage(page, filename):
     blocks = ""
     entities = ""
     r12 = False
-    ver = re.findall("\\$ACADVER\n.*?\n(.*?)\n", template)
+    ver = re.findall(r"\\$ACADVER\n.*?\n(.*?)\n", template)
     if ver:
         # at the moment this is not used.
         # TODO: if r12, do not print ellipses or splines
@@ -3944,7 +3977,7 @@ def exportPage(page, filename):
     if entities:
         template = template.replace("999\n$entities", entities[:-1])
     c = dxfcounter()
-    pat = re.compile("(_handle_)")
+    pat = re.compile(r"(_handle_)")
     template = pat.sub(c.incr, template)
     f = pyopen(filename, "w")
     f.write(template)

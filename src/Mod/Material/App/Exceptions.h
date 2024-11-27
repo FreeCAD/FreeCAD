@@ -50,7 +50,9 @@ class ModelNotFound: public Base::Exception
 {
 public:
     ModelNotFound()
-    {}
+    {
+        this->setMessage("Model not found");
+    }
     explicit ModelNotFound(const char* msg)
     {
         this->setMessage(msg);
@@ -82,7 +84,9 @@ class MaterialNotFound: public Base::Exception
 {
 public:
     MaterialNotFound()
-    {}
+    {
+        this->setMessage("Material not found");
+    }
     explicit MaterialNotFound(const char* msg)
     {
         this->setMessage(msg);
@@ -130,7 +134,9 @@ class PropertyNotFound: public Base::Exception
 {
 public:
     PropertyNotFound()
-    {}
+    {
+        this->setMessage("Property not found");
+    }
     explicit PropertyNotFound(const char* msg)
     {
         this->setMessage(msg);
@@ -146,7 +152,9 @@ class LibraryNotFound: public Base::Exception
 {
 public:
     LibraryNotFound()
-    {}
+    {
+        this->setMessage("Library not found");
+    }
     explicit LibraryNotFound(const char* msg)
     {
         this->setMessage(msg);
@@ -162,7 +170,9 @@ class InvalidModel: public Base::Exception
 {
 public:
     InvalidModel()
-    {}
+    {
+        this->setMessage("Invalid model");
+    }
     explicit InvalidModel(const char* msg)
     {
         this->setMessage(msg);
@@ -178,7 +188,9 @@ class InvalidIndex: public Base::Exception
 {
 public:
     InvalidIndex()
-    {}
+    {
+        this->setMessage("Invalid index");
+    }
     explicit InvalidIndex(char* msg)
     {
         this->setMessage(msg);

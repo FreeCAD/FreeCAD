@@ -164,6 +164,10 @@ SET(TechDraw_SRCS
     LineNameEnum.h
     ArrowPropEnum.cpp
     ArrowPropEnum.h
+    BalloonPropEnum.cpp
+    BalloonPropEnum.h
+    MattingPropEnum.cpp
+    MattingPropEnum.h
     Preferences.cpp
     Preferences.h
     TechDrawExport.cpp
@@ -174,6 +178,8 @@ SET(TechDraw_SRCS
     XMLQuery.h
     LineGenerator.cpp
     LineGenerator.h
+    LineFormat.cpp
+    LineFormat.h
 )
 
 SET(Geometry_SRCS
@@ -275,6 +281,9 @@ endif(FREECAD_USE_PCH)
 add_library(TechDraw SHARED ${TechDraw_SRCS} ${Draw_SRCS} ${TechDrawAlgos_SRCS}
                            ${Geometry_SRCS} ${Python_SRCS})
 target_link_libraries(TechDraw ${TechDrawLIBS} ${TechDraw})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(TechDraw)
+endif()
 
 ADD_CUSTOM_COMMAND(TARGET TechDraw
                    POST_BUILD

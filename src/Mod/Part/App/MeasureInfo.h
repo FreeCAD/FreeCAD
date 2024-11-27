@@ -37,8 +37,7 @@
 #include <App/DocumentObserver.h>
 #include <Base/Vector3D.h>
 #include <Base/Placement.h>
-
-class TopoDS_Shape;
+#include <TopoDS_Shape.hxx>
 
 namespace Part {
 
@@ -93,14 +92,14 @@ public:
 class PartExport MeasureDistanceInfo : public MeasureInfo {
 public:
     MeasureDistanceInfo() = default;
-    explicit MeasureDistanceInfo(bool val, const TopoDS_Shape* shp)  :
+    explicit MeasureDistanceInfo(bool val, const TopoDS_Shape& shp)  :
        MeasureInfo(val), shape(shp) {}
     ~MeasureDistanceInfo() override = default;
 
-    const TopoDS_Shape* getShape() { return shape; }
+    const TopoDS_Shape& getShape() { return shape; }
 
 private:
-    const TopoDS_Shape* shape{nullptr};
+    TopoDS_Shape shape;
 };
 
 class PartExport MeasureLengthInfo : public MeasureInfo {

@@ -89,7 +89,7 @@ wbListItem::wbListItem(const QString& wbName, bool enabled, bool startupWb, bool
     if (startupWb) {
         enableCheckBox->setChecked(true);
         enableCheckBox->setEnabled(false);
-        enableCheckBox->setToolTip(tr("This is the current startup module, and must be enabled. See Preferences/General/Autoload to change."));
+        enableCheckBox->setToolTip(tr("This is the current startup module, and must be enabled."));
     }
     connect(enableCheckBox, &QCheckBox::toggled, this, [this](bool checked) { onWbToggled(checked); });
 
@@ -124,7 +124,7 @@ wbListItem::wbListItem(const QString& wbName, bool enabled, bool startupWb, bool
     subLayout->setContentsMargins(5, 0, 0, 5);
     subWidget->setMinimumSize(250, 0);
     subWidget->setAttribute(Qt::WA_TranslucentBackground);
-   
+
     // 5: Autoloaded checkBox.
     autoloadCheckBox = new QCheckBox(this);
     autoloadCheckBox->setText(tr("Auto-load"));
@@ -134,7 +134,7 @@ wbListItem::wbListItem(const QString& wbName, bool enabled, bool startupWb, bool
     if (startupWb) { // Figure out whether to check and/or disable this checkBox:
         autoloadCheckBox->setChecked(true);
         autoloadCheckBox->setEnabled(false);
-        autoloadCheckBox->setToolTip(tr("This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change."));
+        autoloadCheckBox->setToolTip(tr("This is the current startup module, and must be autoloaded."));
     }
     else if (autoLoad) {
         autoloadCheckBox->setChecked(true);
@@ -487,6 +487,7 @@ void DlgSettingsWorkbenchesImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
+        translateWorkbenchSelector();
     }
     else {
         QWidget::changeEvent(e);
@@ -532,6 +533,16 @@ void DlgSettingsWorkbenchesImp::loadWorkbenchSelector()
     ui->WorkbenchSelectorItem->addItem(tr("Icon"));
     ui->WorkbenchSelectorItem->addItem(tr("Text"));
     ui->WorkbenchSelectorItem->setCurrentIndex(itemStyleIndex);
+}
+
+void DlgSettingsWorkbenchesImp::translateWorkbenchSelector()
+{
+    ui->WorkbenchSelectorType->setItemText(0, tr("ComboBox"));
+    ui->WorkbenchSelectorType->setItemText(1, tr("TabBar"));
+
+    ui->WorkbenchSelectorItem->setItemText(0, tr("Icon & Text"));
+    ui->WorkbenchSelectorItem->setItemText(1, tr("Icon"));
+    ui->WorkbenchSelectorItem->setItemText(2, tr("Text"));
 }
 
 void DlgSettingsWorkbenchesImp::wbToggled(const QString& wbName, bool enabled)

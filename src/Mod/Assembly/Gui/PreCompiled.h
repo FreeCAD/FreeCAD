@@ -21,8 +21,8 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef POINTSGUI_PRECOMPILED_H
-#define POINTSGUI_PRECOMPILED_H
+#ifndef ASSEMBLYGUI_PRECOMPILED_H
+#define ASSEMBLYGUI_PRECOMPILED_H
 
 #include <FCConfig.h>
 
@@ -30,6 +30,7 @@
 
 // STL
 #include <algorithm>
+#include <cmath>
 #include <limits>
 #include <memory>
 
@@ -53,4 +54,4 @@
 
 #endif  //_PreComp_
 
-#endif  // POINTSGUI_PRECOMPILED_H
+#endif  // ASSEMBLYGUI_PRECOMPILED_H

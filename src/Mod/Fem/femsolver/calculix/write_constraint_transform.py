@@ -26,11 +26,13 @@ __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecad.org"
 
 
+import FreeCAD
+
 from femtools import geomtools
 
 
 def get_analysis_types():
-    return "all"    # write for all analysis types
+    return "all"  # write for all analysis types
 
 
 def get_sets_name():
@@ -59,11 +61,11 @@ def get_after_write_constraint():
 
 def write_meshdata_constraint(f, femobj, trans_obj, ccxwriter):
     if trans_obj.TransformType == "Rectangular":
-        f.write("*NSET,NSET=Rect{}\n".format(trans_obj.Name))
+        f.write(f"*NSET,NSET=Rect{trans_obj.Name}\n")
     elif trans_obj.TransformType == "Cylindrical":
-        f.write("*NSET,NSET=Cylin{}\n".format(trans_obj.Name))
+        f.write(f"*NSET,NSET=Cylin{trans_obj.Name}\n")
     for n in femobj["Nodes"]:
-        f.write("{},\n".format(n))
+        f.write(f"{n},\n")
 
 
 def write_constraint(f, femobj, trans_obj, ccxwriter):
@@ -75,21 +77,29 @@ def write_constraint(f, femobj, trans_obj, ccxwriter):
     if trans_obj.TransformType == "Rectangular":
         trans_name = "Rect"
         trans_type = "R"
-        coords = geomtools.get_rectangular_coords(trans_obj)
+        x = trans_obj.Rotation * FreeCAD.Vector(1, 0, 0)
+        y = trans_obj.Rotation * FreeCAD.Vector(0, 1, 0)
+        coords = list(x) + list(y)
     elif trans_obj.TransformType == "Cylindrical":
         trans_name = "Cylin"
         trans_type = "C"
-        coords = geomtools.get_cylindrical_coords(trans_obj)
-    f.write("*TRANSFORM, NSET={}{}, TYPE={}\n".format(
-        trans_name,
-        trans_obj.Name,
-        trans_type,
-    ))
-    f.write("{:.13G},{:.13G},{:.13G},{:.13G},{:.13G},{:.13G}\n".format(
-        coords[0],
-        coords[1],
-        coords[2],
-        coords[3],
-        coords[4],
-        coords[5],
-    ))
+        base = trans_obj.BasePoint
+        axis = trans_obj.Axis
+        coords = list(base) + list(base + axis)
+    f.write(
+        "*TRANSFORM, NSET={}{}, TYPE={}\n".format(
+            trans_name,
+            trans_obj.Name,
+            trans_type,
+        )
+    )
+    f.write(
+        "{:.13G},{:.13G},{:.13G},{:.13G},{:.13G},{:.13G}\n".format(
+            coords[0],
+            coords[1],
+            coords[2],
+            coords[3],
+            coords[4],
+            coords[5],
+        )
+    )

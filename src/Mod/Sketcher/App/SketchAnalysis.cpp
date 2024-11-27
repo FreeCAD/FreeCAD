@@ -49,17 +49,18 @@ SketchAnalysis::SketchAnalysis(Sketcher::SketchObject* Obj)
     : sketch(Obj)
 {}
 
-SketchAnalysis::~SketchAnalysis()
-{}
+SketchAnalysis::~SketchAnalysis() = default;
 
-struct SketchAnalysis::VertexIds
+namespace
+{
+struct VertexIds
 {
     Base::Vector3d v;
-    int GeoId;
-    Sketcher::PointPos PosId;
+    int GeoId {};
+    Sketcher::PointPos PosId {};
 };
 
-struct SketchAnalysis::Vertex_Less
+struct Vertex_Less
 {
     explicit Vertex_Less(double tolerance)
         : tolerance(tolerance)
@@ -82,7 +83,7 @@ private:
     double tolerance;
 };
 
-struct SketchAnalysis::VertexID_Less
+struct VertexID_Less
 {
     bool operator()(const VertexIds& x, const VertexIds& y) const
     {
@@ -90,7 +91,7 @@ struct SketchAnalysis::VertexID_Less
     }
 };
 
-struct SketchAnalysis::Vertex_EqualTo
+struct Vertex_EqualTo
 {
     explicit Vertex_EqualTo(double tolerance)
         : tolerance(tolerance)
@@ -111,13 +112,13 @@ private:
     double tolerance;
 };
 
-struct SketchAnalysis::EdgeIds
+struct EdgeIds
 {
-    double l;
-    int GeoId;
+    double l {};
+    int GeoId {};
 };
 
-struct SketchAnalysis::Edge_Less
+struct Edge_Less
 {
     explicit Edge_Less(double tolerance)
         : tolerance(tolerance)
@@ -134,27 +135,376 @@ private:
     double tolerance;
 };
 
-struct SketchAnalysis::Edge_EqualTo
+struct Edge_EqualTo
 {
     explicit Edge_EqualTo(double tolerance)
         : tolerance(tolerance)
     {}
     bool operator()(const EdgeIds& x, const EdgeIds& y) const
     {
-        if (fabs(x.l - y.l) <= tolerance) {
-            return true;
-        }
-        return false;
+        return (fabs(x.l - y.l) <= tolerance);
     }
 
 private:
     double tolerance;
 };
 
+struct PointConstraints
+{
+    void addGeometry(const Part::Geometry* geo, int index)
+    {
+        if (const auto* segm = dynamic_cast<const Part::GeomLineSegment*>(geo)) {
+            addLineSegment(segm, index);
+        }
+        else if (const auto* segm = dynamic_cast<const Part::GeomArcOfCircle*>(geo)) {
+            addArcOfCircle(segm, index);
+        }
+        else if (const auto* segm = dynamic_cast<const Part::GeomArcOfEllipse*>(geo)) {
+            addArcOfEllipse(segm, index);
+        }
+        else if (const auto* segm = dynamic_cast<const Part::GeomArcOfHyperbola*>(geo)) {
+            addArcOfHyperbola(segm, index);
+        }
+        else if (const auto* segm = dynamic_cast<const Part::GeomArcOfParabola*>(geo)) {
+            addArcOfParabola(segm, index);
+        }
+        else if (const auto* segm = dynamic_cast<const Part::GeomBSplineCurve*>(geo)) {
+            addBSplineCurve(segm, index);
+        }
+    }
+
+    void addLineSegment(const Part::GeomLineSegment* segm, int index)
+    {
+        VertexIds id;
+        id.GeoId = index;
+        id.PosId = Sketcher::PointPos::start;
+        id.v = segm->getStartPoint();
+        vertexIds.push_back(id);
+        id.GeoId = index;
+        id.PosId = Sketcher::PointPos::end;
+        id.v = segm->getEndPoint();
+        vertexIds.push_back(id);
+    }
+
+    void addArcOfCircle(const Part::GeomArcOfCircle* segm, int index)
+    {
+        VertexIds id;
+        id.GeoId = index;
+        id.PosId = Sketcher::PointPos::start;
+        id.v = segm->getStartPoint(/*emulateCCWXY=*/true);
+        vertexIds.push_back(id);
+        id.GeoId = index;
+        id.PosId = Sketcher::PointPos::end;
+        id.v = segm->getEndPoint(/*emulateCCWXY=*/true);
+        vertexIds.push_back(id);
+    }
+
+    void addArcOfEllipse(const Part::GeomArcOfEllipse* segm, int index)
+    {
+        VertexIds id;
+        id.GeoId = index;
+        id.PosId = Sketcher::PointPos::start;
+        id.v = segm->getStartPoint(/*emulateCCWXY=*/true);
+        vertexIds.push_back(id);
+        id.GeoId = index;
+        id.PosId = Sketcher::PointPos::end;
+        id.v = segm->getEndPoint(/*emulateCCWXY=*/true);
+        vertexIds.push_back(id);
+    }
+
+    void addArcOfHyperbola(const Part::GeomArcOfHyperbola* segm, int index)
+    {
+        VertexIds id;
+        id.GeoId = index;
+        id.PosId = Sketcher::PointPos::start;
+        id.v = segm->getStartPoint();
+        vertexIds.push_back(id);
+        id.GeoId = index;
+        id.PosId = Sketcher::PointPos::end;
+        id.v = segm->getEndPoint();
+        vertexIds.push_back(id);
+    }
+
+    void addArcOfParabola(const Part::GeomArcOfParabola* segm, int index)
+    {
+        VertexIds id;
+        id.GeoId = index;
+        id.PosId = Sketcher::PointPos::start;
+        id.v = segm->getStartPoint();
+        vertexIds.push_back(id);
+        id.GeoId = index;
+        id.PosId = Sketcher::PointPos::end;
+        id.v = segm->getEndPoint();
+        vertexIds.push_back(id);
+    }
+
+    void addBSplineCurve(const Part::GeomBSplineCurve* segm, int index)
+    {
+        VertexIds id;
+        id.GeoId = index;
+        id.PosId = Sketcher::PointPos::start;
+        id.v = segm->getStartPoint();
+        vertexIds.push_back(id);
+        id.GeoId = index;
+        id.PosId = Sketcher::PointPos::end;
+        id.v = segm->getEndPoint();
+        vertexIds.push_back(id);
+    }
+
+    std::list<ConstraintIds> getMissingCoincidences(std::vector<Sketcher::Constraint*>& allcoincid,
+                                                    double precision)
+    {
+        std::list<ConstraintIds> missingCoincidences;  // Holds the list of missing coincidences
+
+        // Sort points in geographic order
+        std::sort(vertexIds.begin(), vertexIds.end(), Vertex_Less(precision));
+
+        auto vt = vertexIds.begin();
+        Vertex_EqualTo pred(precision);
+
+        // Comparing existing constraints and find missing ones
+
+        while (vt < vertexIds.end()) {
+            // Seeking for adjacent group of vertices
+            vt = std::adjacent_find(vt, vertexIds.end(), pred);
+            if (vt < vertexIds.end()) {  // If one found
+                std::vector<VertexIds>::iterator vn;
+                // Holds a single group of adjacent vertices
+                std::set<VertexIds, VertexID_Less> vertexGrp;
+                // Extract the group of adjacent vertices
+                vertexGrp.insert(*vt);
+                for (vn = vt + 1; vn < vertexIds.end(); ++vn) {
+                    if (pred(*vt, *vn)) {
+                        vertexGrp.insert(*vn);
+                    }
+                    else {
+                        break;
+                    }
+                }
+
+                // Holds groups of coincident vertices
+                std::vector<std::set<VertexIds, VertexID_Less>> coincVertexGrps;
+
+                // Decompose the group of adjacent vertices into groups of coincident vertices
+                // Going through existent coincidences
+                for (auto& coincidence : allcoincid) {
+                    VertexIds v1;
+                    VertexIds v2;
+                    v1.GeoId = coincidence->First;
+                    v1.PosId = coincidence->FirstPos;
+                    v2.GeoId = coincidence->Second;
+                    v2.PosId = coincidence->SecondPos;
+
+                    // Look if coincident vertices are in the group of adjacent ones we are
+                    // processing
+                    auto nv1 = vertexGrp.extract(v1);
+                    auto nv2 = vertexGrp.extract(v2);
+
+                    // Maybe if both empty, they already have been extracted by other coincidences
+                    // We have to check in existing coincident groups and eventually merge
+                    if (nv1.empty() && nv2.empty()) {
+                        std::set<VertexIds, VertexID_Less>* tempGrp = nullptr;
+                        for (auto it = coincVertexGrps.begin(); it < coincVertexGrps.end(); ++it) {
+                            if ((it->find(v1) != it->end()) || (it->find(v2) != it->end())) {
+                                if (!tempGrp) {
+                                    tempGrp = &*it;
+                                }
+                                else {
+                                    tempGrp->insert(it->begin(), it->end());
+                                    coincVertexGrps.erase(it);
+                                    break;
+                                }
+                            }
+                        }
+                        continue;
+                    }
+
+                    // Look if one of the constrained vertices is already in a group of coincident
+                    // vertices
+                    for (std::set<VertexIds, VertexID_Less>& grp : coincVertexGrps) {
+                        if ((grp.find(v1) != grp.end()) || (grp.find(v2) != grp.end())) {
+                            // If yes add them to the existing group
+                            if (!nv1.empty()) {
+                                grp.insert(nv1.value());
+                            }
+                            if (!nv2.empty()) {
+                                grp.insert(nv2.value());
+                            }
+                            continue;
+                        }
+                    }
+
+                    if (nv1.empty() || nv2.empty()) {
+                        continue;
+                    }
+
+                    // If no, create a new group of coincident vertices
+                    std::set<VertexIds, VertexID_Less> newGrp;
+                    newGrp.insert(nv1.value());
+                    newGrp.insert(nv2.value());
+                    coincVertexGrps.push_back(newGrp);
+                }
+
+                // If there are remaining vertices in the adjacent group (not in any existing
+                // constraint) add them as being each a separate coincident group
+                for (auto& lonept : vertexGrp) {
+                    std::set<VertexIds, VertexID_Less> newGrp;
+                    newGrp.insert(lonept);
+                    coincVertexGrps.push_back(newGrp);
+                }
+
+                // If there is more than 1 coincident group into adjacent group, constraint(s)
+                // is(are) missing Virtually generate the missing constraint(s)
+                if (coincVertexGrps.size() > 1) {
+                    std::vector<std::set<VertexIds, VertexID_Less>>::iterator vn;
+                    // Starting from the 2nd coincident group, generate a constraint between
+                    // this group first vertex, and previous group first vertex
+                    for (vn = coincVertexGrps.begin() + 1; vn < coincVertexGrps.end(); ++vn) {
+                        ConstraintIds id;
+                        id.Type = Coincident;  // default point on point restriction
+                        id.v = (vn - 1)->begin()->v;
+                        id.First = (vn - 1)->begin()->GeoId;
+                        id.FirstPos = (vn - 1)->begin()->PosId;
+                        id.Second = vn->begin()->GeoId;
+                        id.SecondPos = vn->begin()->PosId;
+                        missingCoincidences.push_back(id);
+                    }
+                }
+
+                vt = vn;
+            }
+        }
+
+        return missingCoincidences;
+    }
+
+private:
+    // Holds a list of all vertices in the sketch
+    std::vector<VertexIds> vertexIds;
+};
+
+struct EqualityConstraints
+{
+    void addGeometry(const Part::Geometry* geo, int index)
+    {
+        if (const auto* segm = dynamic_cast<const Part::GeomLineSegment*>(geo)) {
+            addLineSegment(segm, index);
+        }
+        else if (const auto* segm = dynamic_cast<const Part::GeomArcOfCircle*>(geo)) {
+            addArcOfCircle(segm, index);
+        }
+        else if (const auto* segm = dynamic_cast<const Part::GeomCircle*>(geo)) {
+            addCircle(segm, index);
+        }
+    }
+
+    void addLineSegment(const Part::GeomLineSegment* segm, int index)
+    {
+        EdgeIds id;
+        id.GeoId = index;
+        id.l = (segm->getEndPoint() - segm->getStartPoint()).Length();
+        lineedgeIds.push_back(id);
+    }
+
+    void addArcOfCircle(const Part::GeomArcOfCircle* segm, int index)
+    {
+        EdgeIds id;
+        id.GeoId = index;
+        id.l = segm->getRadius();
+        radiusedgeIds.push_back(id);
+    }
+
+    void addCircle(const Part::GeomCircle* segm, int index)
+    {
+        EdgeIds id;
+        id.GeoId = index;
+        id.l = segm->getRadius();
+        radiusedgeIds.push_back(id);
+    }
+
+    std::list<ConstraintIds> getEqualLines(double precision)
+    {
+        std::sort(lineedgeIds.begin(), lineedgeIds.end(), Edge_Less(precision));
+        auto vt = lineedgeIds.begin();
+        Edge_EqualTo pred(precision);
+
+        std::list<ConstraintIds> equallines;
+        // Make a list of constraint we expect for coincident vertexes
+        while (vt < lineedgeIds.end()) {
+            // get first item whose adjacent element has the same vertex coordinates
+            vt = std::adjacent_find(vt, lineedgeIds.end(), pred);
+            if (vt < lineedgeIds.end()) {
+                std::vector<EdgeIds>::iterator vn;
+                for (vn = vt + 1; vn != lineedgeIds.end(); ++vn) {
+                    if (pred(*vt, *vn)) {
+                        ConstraintIds id;
+                        id.Type = Equal;
+                        id.v.x = vt->l;
+                        id.First = vt->GeoId;
+                        id.FirstPos = Sketcher::PointPos::none;
+                        id.Second = vn->GeoId;
+                        id.SecondPos = Sketcher::PointPos::none;
+                        equallines.push_back(id);
+                    }
+                    else {
+                        break;
+                    }
+                }
+
+                vt = vn;
+            }
+        }
+
+        return equallines;
+    }
+
+    std::list<ConstraintIds> getEqualRadius(double precision)
+    {
+        std::sort(radiusedgeIds.begin(), radiusedgeIds.end(), Edge_Less(precision));
+        auto vt = radiusedgeIds.begin();
+        Edge_EqualTo pred(precision);
+
+        std::list<ConstraintIds> equalradius;
+        // Make a list of constraint we expect for coincident vertexes
+        while (vt < radiusedgeIds.end()) {
+            // get first item whose adjacent element has the same vertex coordinates
+            vt = std::adjacent_find(vt, radiusedgeIds.end(), pred);
+            if (vt < radiusedgeIds.end()) {
+                std::vector<EdgeIds>::iterator vn;
+                for (vn = vt + 1; vn != radiusedgeIds.end(); ++vn) {
+                    if (pred(*vt, *vn)) {
+                        ConstraintIds id;
+                        id.Type = Equal;
+                        id.v.x = vt->l;
+                        id.First = vt->GeoId;
+                        id.FirstPos = Sketcher::PointPos::none;
+                        id.Second = vn->GeoId;
+                        id.SecondPos = Sketcher::PointPos::none;
+                        equalradius.push_back(id);
+                    }
+                    else {
+                        break;
+                    }
+                }
+
+                vt = vn;
+            }
+        }
+
+        return equalradius;
+    }
+
+private:
+    std::vector<EdgeIds> lineedgeIds;
+    std::vector<EdgeIds> radiusedgeIds;
+};
+
+}  // namespace
+
 int SketchAnalysis::detectMissingPointOnPointConstraints(double precision,
                                                          bool includeconstruction /*=true*/)
 {
-    std::vector<VertexIds> vertexIds;  // Holds a list of all vertices in the sketch
+    PointConstraints pointConstr;
 
     // Build the list of sketch vertices
     const std::vector<Part::Geometry*>& geom = sketch->getInternalGeometry();
@@ -165,217 +515,27 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision,
             continue;
         }
 
-        if (gf->getGeometry()->is<Part::GeomLineSegment>()) {
-            const Part::GeomLineSegment* segm =
-                static_cast<const Part::GeomLineSegment*>(gf->getGeometry());
-            VertexIds id;
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::PointPos::start;
-            id.v = segm->getStartPoint();
-            vertexIds.push_back(id);
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::PointPos::end;
-            id.v = segm->getEndPoint();
-            vertexIds.push_back(id);
-        }
-        else if (gf->getGeometry()->is<Part::GeomArcOfCircle>()) {
-            const Part::GeomArcOfCircle* segm =
-                static_cast<const Part::GeomArcOfCircle*>(gf->getGeometry());
-            VertexIds id;
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::PointPos::start;
-            id.v = segm->getStartPoint(/*emulateCCW=*/true);
-            vertexIds.push_back(id);
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::PointPos::end;
-            id.v = segm->getEndPoint(/*emulateCCW=*/true);
-            vertexIds.push_back(id);
-        }
-        else if (gf->getGeometry()->is<Part::GeomArcOfEllipse>()) {
-            const Part::GeomArcOfEllipse* segm =
-                static_cast<const Part::GeomArcOfEllipse*>(gf->getGeometry());
-            VertexIds id;
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::PointPos::start;
-            id.v = segm->getStartPoint(/*emulateCCW=*/true);
-            vertexIds.push_back(id);
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::PointPos::end;
-            id.v = segm->getEndPoint(/*emulateCCW=*/true);
-            vertexIds.push_back(id);
-        }
-        else if (gf->getGeometry()->is<Part::GeomArcOfHyperbola>()) {
-            const Part::GeomArcOfHyperbola* segm =
-                static_cast<const Part::GeomArcOfHyperbola*>(gf->getGeometry());
-            VertexIds id;
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::PointPos::start;
-            id.v = segm->getStartPoint();
-            vertexIds.push_back(id);
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::PointPos::end;
-            id.v = segm->getEndPoint();
-            vertexIds.push_back(id);
-        }
-        else if (gf->getGeometry()->is<Part::GeomArcOfParabola>()) {
-            const Part::GeomArcOfParabola* segm =
-                static_cast<const Part::GeomArcOfParabola*>(gf->getGeometry());
-            VertexIds id;
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::PointPos::start;
-            id.v = segm->getStartPoint();
-            vertexIds.push_back(id);
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::PointPos::end;
-            id.v = segm->getEndPoint();
-            vertexIds.push_back(id);
-        }
-        else if (gf->getGeometry()->is<Part::GeomBSplineCurve>()) {
-            const Part::GeomBSplineCurve* segm =
-                static_cast<const Part::GeomBSplineCurve*>(gf->getGeometry());
-            VertexIds id;
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::PointPos::start;
-            id.v = segm->getStartPoint();
-            vertexIds.push_back(id);
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::PointPos::end;
-            id.v = segm->getEndPoint();
-            vertexIds.push_back(id);
-        }
+        pointConstr.addGeometry(gf->getGeometry(), int(i));
         // TODO take into account single vertices ?
     }
 
-    // Sort points in geographic order
-    std::sort(vertexIds.begin(), vertexIds.end(), Vertex_Less(precision));
-
-    // Build a list of all coincidence in the sketch
+    // Build a list of all coincidences in the sketch
 
     std::vector<Sketcher::Constraint*> coincidences = sketch->Constraints.getValues();
-
     for (auto& constraint : sketch->Constraints.getValues()) {
-        if (constraint->Type == Sketcher::Coincident || constraint->Type == Sketcher::Tangent
-            || constraint->Type == Sketcher::Perpendicular) {
+        // clang-format off
+        if (constraint->Type == Sketcher::Coincident ||
+            constraint->Type == Sketcher::Tangent ||
+            constraint->Type == Sketcher::Perpendicular) {
             coincidences.push_back(constraint);
         }
+        // clang-format on
         // TODO optimizing by removing constraints not applying on vertices ?
     }
 
-    std::list<ConstraintIds> missingCoincidences;  // Holds the list of missing coincidences
-
-    std::vector<VertexIds>::iterator vt = vertexIds.begin();
-    Vertex_EqualTo pred(precision);
-
-    // Comparing existing constraints and find missing ones
-
-    while (vt < vertexIds.end()) {
-        // Seeking for adjacent group of vertices
-        vt = std::adjacent_find(vt, vertexIds.end(), pred);
-        if (vt < vertexIds.end()) {  // If one found
-            std::vector<VertexIds>::iterator vn;
-            // Holds a single group of adjacent vertices
-            std::set<VertexIds, VertexID_Less> vertexGrp;
-            // Extract the group of adjacent vertices
-            vertexGrp.insert(*vt);
-            for (vn = vt + 1; vn < vertexIds.end(); ++vn) {
-                if (pred(*vt, *vn)) {
-                    vertexGrp.insert(*vn);
-                }
-                else {
-                    break;
-                }
-            }
-
-            // Holds groups of coincident vertices
-            std::vector<std::set<VertexIds, VertexID_Less>> coincVertexGrps;
-
-            // Decompose the group of adjacent vertices into groups of coincident vertices
-            // Going through existent coincidences
-            for (auto& coincidence : coincidences) {
-                VertexIds v1, v2;
-                v1.GeoId = coincidence->First;
-                v1.PosId = coincidence->FirstPos;
-                v2.GeoId = coincidence->Second;
-                v2.PosId = coincidence->SecondPos;
-
-                // Look if coincident vertices are in the group of adjacent ones we are processing
-                auto nv1 = vertexGrp.extract(v1);
-                auto nv2 = vertexGrp.extract(v2);
-
-                // Maybe if both empty, they already have been extracted by other coincidences
-                // We have to check in existing coincident groups and eventually merge
-                if (nv1.empty() && nv2.empty()) {
-                    std::set<VertexIds, VertexID_Less>* tempGrp = nullptr;
-                    for (auto it = coincVertexGrps.begin(); it < coincVertexGrps.end(); ++it) {
-                        if ((it->find(v1) != it->end()) || (it->find(v2) != it->end())) {
-                            if (!tempGrp) {
-                                tempGrp = &*it;
-                            }
-                            else {
-                                tempGrp->insert(it->begin(), it->end());
-                                coincVertexGrps.erase(it);
-                                break;
-                            }
-                        }
-                    }
-                    continue;
-                }
-
-                // Look if one of the constrained vertices is already in a group of coincident
-                // vertices
-                for (std::set<VertexIds, VertexID_Less>& grp : coincVertexGrps) {
-                    if ((grp.find(v1) != grp.end()) || (grp.find(v2) != grp.end())) {
-                        // If yes add them to the existing group
-                        if (!nv1.empty()) {
-                            grp.insert(nv1.value());
-                        }
-                        if (!nv2.empty()) {
-                            grp.insert(nv2.value());
-                        }
-                        continue;
-                    }
-                }
-
-                if (nv1.empty() || nv2.empty()) {
-                    continue;
-                }
-
-                // If no, create a new group of coincident vertices
-                std::set<VertexIds, VertexID_Less> newGrp;
-                newGrp.insert(nv1.value());
-                newGrp.insert(nv2.value());
-                coincVertexGrps.push_back(newGrp);
-            }
-
-            // If there are remaining vertices in the adjacent group (not in any existing
-            // constraint) add them as being each a separate coincident group
-            for (auto& lonept : vertexGrp) {
-                std::set<VertexIds, VertexID_Less> newGrp;
-                newGrp.insert(lonept);
-                coincVertexGrps.push_back(newGrp);
-            }
-
-            // If there is more than 1 coincident group into adjacent group, constraint(s) is(are)
-            // missing Virtually generate the missing constraint(s)
-            if (coincVertexGrps.size() > 1) {
-                std::vector<std::set<VertexIds, VertexID_Less>>::iterator vn;
-                // Starting from the 2nd coincident group, generate a constraint between
-                // this group first vertex, and previous group first vertex
-                for (vn = coincVertexGrps.begin() + 1; vn < coincVertexGrps.end(); ++vn) {
-                    ConstraintIds id;
-                    id.Type = Coincident;  // default point on point restriction
-                    id.v = (vn - 1)->begin()->v;
-                    id.First = (vn - 1)->begin()->GeoId;
-                    id.FirstPos = (vn - 1)->begin()->PosId;
-                    id.Second = vn->begin()->GeoId;
-                    id.SecondPos = vn->begin()->PosId;
-                    missingCoincidences.push_back(id);
-                }
-            }
-
-            vt = vn;
-        }
-    }
+    // Holds the list of missing coincidences
+    std::list<ConstraintIds> missingCoincidences =
+        pointConstr.getMissingCoincidences(coincidences, precision);
 
     // Update list of missing constraints stored as member variable of sketch
     this->vertexConstraints.clear();
@@ -386,7 +546,7 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision,
     }
 
     // Return number of missing constraints
-    return this->vertexConstraints.size();
+    return int(this->vertexConstraints.size());
 }
 
 void SketchAnalysis::analyseMissingPointOnPointCoincident(double angleprecision)
@@ -397,17 +557,15 @@ void SketchAnalysis::analyseMissingPointOnPointCoincident(double angleprecision)
         auto geo2 = sketch->getGeometry(vc.Second);
 
         // tangency point-on-point
-        const Part::GeomCurve* curve1 = dynamic_cast<const Part::GeomCurve*>(geo1);
-        const Part::GeomCurve* curve2 = dynamic_cast<const Part::GeomCurve*>(geo2);
+        const auto* curve1 = dynamic_cast<const Part::GeomCurve*>(geo1);
+        const auto* curve2 = dynamic_cast<const Part::GeomCurve*>(geo2);
 
         if (curve1 && curve2) {
 
-            if (geo1->is<Part::GeomLineSegment>() && geo2->is<Part::GeomLineSegment>()) {
+            const auto* segm1 = dynamic_cast<const Part::GeomLineSegment*>(geo1);
+            const auto* segm2 = dynamic_cast<const Part::GeomLineSegment*>(geo2);
 
-                const Part::GeomLineSegment* segm1 =
-                    static_cast<const Part::GeomLineSegment*>(geo1);
-                const Part::GeomLineSegment* segm2 =
-                    static_cast<const Part::GeomLineSegment*>(geo2);
+            if (segm1 && segm2) {
 
                 Base::Vector3d dir1 = segm1->getEndPoint() - segm1->getStartPoint();
                 Base::Vector3d dir2 = segm2->getEndPoint() - segm2->getStartPoint();
@@ -421,7 +579,8 @@ void SketchAnalysis::analyseMissingPointOnPointCoincident(double angleprecision)
             }
 
             try {
-                double u1, u2;
+                double u1 {};
+                double u2 {};
 
                 curve1->closestParameter(vc.v, u1);
                 curve2->closestParameter(vc.v, u2);
@@ -445,57 +604,77 @@ void SketchAnalysis::analyseMissingPointOnPointCoincident(double angleprecision)
     }
 }
 
-
-void SketchAnalysis::makeMissingPointOnPointCoincident(bool onebyone)
+Sketcher::Constraint* SketchAnalysis::create(const ConstraintIds& id)
 {
-    int status, dofs;
+    auto c = new Sketcher::Constraint();
+    c->Type = id.Type;
+    c->First = id.First;
+    c->Second = id.Second;
+    c->FirstPos = id.FirstPos;
+    c->SecondPos = id.SecondPos;
+    return c;
+}
+
+void SketchAnalysis::solveSketch(const char* errorText)
+{
+    int status {};
+    int dofs {};
+    solvesketch(status, dofs, true);
+
+    if (status == int(Solver::RedundantConstraints)) {
+        sketch->autoRemoveRedundants(false);
+
+        solvesketch(status, dofs, false);
+    }
+
+    if (status) {
+        THROWMT(Base::RuntimeError, errorText);
+    }
+}
+
+void SketchAnalysis::makeConstraints(std::vector<ConstraintIds>& ids)
+{
     std::vector<Sketcher::Constraint*> constr;
-
-    for (std::vector<Sketcher::ConstraintIds>::iterator it = vertexConstraints.begin();
-         it != vertexConstraints.end();
-         ++it) {
-        Sketcher::Constraint* c = new Sketcher::Constraint();
-        c->Type = it->Type;
-        c->First = it->First;
-        c->Second = it->Second;
-        c->FirstPos = it->FirstPos;
-        c->SecondPos = it->SecondPos;
-
-        if (onebyone) {
-            // addConstraint() creates a clone
-            sketch->addConstraint(c);
-            delete c;
-
-            solvesketch(status, dofs, true);
-
-            if (status == -2) {  // redundant constraints
-                sketch->autoRemoveRedundants(false);
-
-                solvesketch(status, dofs, false);
-            }
-
-            if (status) {
-                THROWMT(Base::RuntimeError,
-                        QT_TRANSLATE_NOOP("Exceptions",
-                                          "Autoconstrain error: Unsolvable sketch while applying "
-                                          "coincident constraints."));
-            }
-        }
-        else {
-            constr.push_back(c);
-        }
+    constr.reserve(ids.size());
+    for (const auto& it : ids) {
+        auto c = create(it);
+        constr.push_back(c);
     }
 
-    if (!onebyone) {
-        sketch->addConstraints(constr);
+    sketch->addConstraints(constr);
+    ids.clear();
+
+    for (auto it : constr) {
+        delete it;
+    }
+}
+
+void SketchAnalysis::makeConstraintsOneByOne(std::vector<ConstraintIds>& ids, const char* errorText)
+{
+    for (const auto& it : ids) {
+        auto c = create(it);
+
+        // addConstraint() creates a clone
+        sketch->addConstraint(c);
+        delete c;
+
+        solveSketch(errorText);
     }
 
-    vertexConstraints.clear();
+    ids.clear();
+}
 
-    for (std::vector<Sketcher::Constraint*>::iterator it = constr.begin(); it != constr.end();
-         ++it) {
-        delete *it;
-    }
+void SketchAnalysis::makeMissingPointOnPointCoincident()
+{
+    makeConstraints(vertexConstraints);
+}
+
+void SketchAnalysis::makeMissingPointOnPointCoincidentOneByOne()
+{
+    makeConstraintsOneByOne(vertexConstraints,
+                            QT_TRANSLATE_NOOP("Exceptions",
+                                              "Autoconstraint error: Unsolvable sketch while "
+                                              "applying coincident constraints."));
 }
 
 int SketchAnalysis::detectMissingVerticalHorizontalConstraints(double angleprecision)
@@ -507,9 +686,7 @@ int SketchAnalysis::detectMissingVerticalHorizontalConstraints(double anglepreci
     for (std::size_t i = 0; i < geom.size(); i++) {
         Part::Geometry* g = geom[i];
 
-        if (g->is<Part::GeomLineSegment>()) {
-            const Part::GeomLineSegment* segm = static_cast<const Part::GeomLineSegment*>(g);
-
+        if (const auto* segm = dynamic_cast<const Part::GeomLineSegment*>(g)) {
             Base::Vector3d dir = segm->getEndPoint() - segm->getStartPoint();
 
             ConstraintIds id;
@@ -531,59 +708,20 @@ int SketchAnalysis::detectMissingVerticalHorizontalConstraints(double anglepreci
         }
     }
 
-    return verthorizConstraints.size();
+    return int(verthorizConstraints.size());
 }
 
-void SketchAnalysis::makeMissingVerticalHorizontal(bool onebyone)
+void SketchAnalysis::makeMissingVerticalHorizontal()
 {
-    int status, dofs;
-    std::vector<Sketcher::Constraint*> constr;
+    makeConstraints(verthorizConstraints);
+}
 
-    for (std::vector<Sketcher::ConstraintIds>::iterator it = verthorizConstraints.begin();
-         it != verthorizConstraints.end();
-         ++it) {
-        Sketcher::Constraint* c = new Sketcher::Constraint();
-        c->Type = it->Type;
-        c->First = it->First;
-        c->Second = it->Second;
-        c->FirstPos = it->FirstPos;
-        c->SecondPos = it->SecondPos;
-
-        if (onebyone) {
-            // addConstraint() creates a clone
-            sketch->addConstraint(c);
-            delete c;
-
-            solvesketch(status, dofs, true);
-
-            if (status == -2) {  // redundant constraints
-                sketch->autoRemoveRedundants(false);
-
-                solvesketch(status, dofs, false);
-            }
-
-            if (status) {
-                THROWMT(Base::RuntimeError,
-                        QT_TRANSLATE_NOOP("Exceptions",
-                                          "Autoconstrain error: Unsolvable sketch while applying "
-                                          "vertical/horizontal constraints."));
-            }
-        }
-        else {
-            constr.push_back(c);
-        }
-    }
-
-    if (!onebyone) {
-        sketch->addConstraints(constr);
-    }
-
-    verthorizConstraints.clear();
-
-    for (std::vector<Sketcher::Constraint*>::iterator it = constr.begin(); it != constr.end();
-         ++it) {
-        delete *it;
-    }
+void SketchAnalysis::makeMissingVerticalHorizontalOneByOne()
+{
+    makeConstraintsOneByOne(verthorizConstraints,
+                            QT_TRANSLATE_NOOP("Exceptions",
+                                              "Autoconstraint error: Unsolvable sketch while "
+                                              "applying vertical/horizontal constraints."));
 }
 
 bool SketchAnalysis::checkVertical(Base::Vector3d dir, double angleprecision)
@@ -598,115 +736,31 @@ bool SketchAnalysis::checkHorizontal(Base::Vector3d dir, double angleprecision)
 
 int SketchAnalysis::detectMissingEqualityConstraints(double precision)
 {
-    std::vector<EdgeIds> lineedgeIds;
-    std::vector<EdgeIds> radiusedgeIds;
+    EqualityConstraints equalConstr;
 
     const std::vector<Part::Geometry*>& geom = sketch->getInternalGeometry();
     for (std::size_t i = 0; i < geom.size(); i++) {
         Part::Geometry* g = geom[i];
-
-        if (g->is<Part::GeomLineSegment>()) {
-            const Part::GeomLineSegment* segm = static_cast<const Part::GeomLineSegment*>(g);
-            EdgeIds id;
-            id.GeoId = (int)i;
-            id.l = (segm->getEndPoint() - segm->getStartPoint()).Length();
-            lineedgeIds.push_back(id);
-        }
-        else if (g->is<Part::GeomArcOfCircle>()) {
-            const Part::GeomArcOfCircle* segm = static_cast<const Part::GeomArcOfCircle*>(g);
-            EdgeIds id;
-            id.GeoId = (int)i;
-            id.l = segm->getRadius();
-            radiusedgeIds.push_back(id);
-        }
-        else if (g->is<Part::GeomCircle>()) {
-            const Part::GeomCircle* segm = static_cast<const Part::GeomCircle*>(g);
-            EdgeIds id;
-            id.GeoId = (int)i;
-            id.l = segm->getRadius();
-            radiusedgeIds.push_back(id);
-        }
+        equalConstr.addGeometry(g, int(i));
     }
 
-    std::sort(lineedgeIds.begin(), lineedgeIds.end(), Edge_Less(precision));
-    std::vector<EdgeIds>::iterator vt = lineedgeIds.begin();
-    Edge_EqualTo pred(precision);
-
-    std::list<ConstraintIds> equallines;
-    // Make a list of constraint we expect for coincident vertexes
-    while (vt < lineedgeIds.end()) {
-        // get first item whose adjacent element has the same vertex coordinates
-        vt = std::adjacent_find(vt, lineedgeIds.end(), pred);
-        if (vt < lineedgeIds.end()) {
-            std::vector<EdgeIds>::iterator vn;
-            for (vn = vt + 1; vn != lineedgeIds.end(); ++vn) {
-                if (pred(*vt, *vn)) {
-                    ConstraintIds id;
-                    id.Type = Equal;
-                    id.v.x = vt->l;
-                    id.First = vt->GeoId;
-                    id.FirstPos = Sketcher::PointPos::none;
-                    id.Second = vn->GeoId;
-                    id.SecondPos = Sketcher::PointPos::none;
-                    equallines.push_back(id);
-                }
-                else {
-                    break;
-                }
-            }
-
-            vt = vn;
-        }
-    }
-
-    std::sort(radiusedgeIds.begin(), radiusedgeIds.end(), Edge_Less(precision));
-    vt = radiusedgeIds.begin();
-
-    std::list<ConstraintIds> equalradius;
-    // Make a list of constraint we expect for coincident vertexes
-    while (vt < radiusedgeIds.end()) {
-        // get first item whose adjacent element has the same vertex coordinates
-        vt = std::adjacent_find(vt, radiusedgeIds.end(), pred);
-        if (vt < radiusedgeIds.end()) {
-            std::vector<EdgeIds>::iterator vn;
-            for (vn = vt + 1; vn != radiusedgeIds.end(); ++vn) {
-                if (pred(*vt, *vn)) {
-                    ConstraintIds id;
-                    id.Type = Equal;
-                    id.v.x = vt->l;
-                    id.First = vt->GeoId;
-                    id.FirstPos = Sketcher::PointPos::none;
-                    id.Second = vn->GeoId;
-                    id.SecondPos = Sketcher::PointPos::none;
-                    equalradius.push_back(id);
-                }
-                else {
-                    break;
-                }
-            }
-
-            vt = vn;
-        }
-    }
-
+    std::list<ConstraintIds> equallines = equalConstr.getEqualLines(precision);
+    std::list<ConstraintIds> equalradius = equalConstr.getEqualRadius(precision);
 
     // Go through the available 'Coincident', 'Tangent' or 'Perpendicular' constraints
     // and check which of them is forcing two vertexes to be coincident.
     // If there is none but two vertexes can be considered equal a coincident constraint is missing.
     std::vector<Sketcher::Constraint*> constraint = sketch->Constraints.getValues();
-    for (std::vector<Sketcher::Constraint*>::iterator it = constraint.begin();
-         it != constraint.end();
-         ++it) {
-        if ((*it)->Type == Sketcher::Equal) {
+    for (auto it : constraint) {
+        if (it->Type == Sketcher::Equal) {
             ConstraintIds id {Base::Vector3d {},
-                              (*it)->First,
-                              (*it)->Second,
-                              (*it)->FirstPos,
-                              (*it)->SecondPos,
-                              (*it)->Type};
+                              it->First,
+                              it->Second,
+                              it->FirstPos,
+                              it->SecondPos,
+                              it->Type};
 
-            std::list<ConstraintIds>::iterator pos =
-                std::find_if(equallines.begin(), equallines.end(), Constraint_Equal(id));
+            auto pos = std::find_if(equallines.begin(), equallines.end(), Constraint_Equal(id));
 
             if (pos != equallines.end()) {
                 equallines.erase(pos);
@@ -723,77 +777,45 @@ int SketchAnalysis::detectMissingEqualityConstraints(double precision)
     this->lineequalityConstraints.clear();
     this->lineequalityConstraints.reserve(equallines.size());
 
-    for (std::list<ConstraintIds>::iterator it = equallines.begin(); it != equallines.end(); ++it) {
-        this->lineequalityConstraints.push_back(*it);
+    for (const auto& it : equallines) {
+        this->lineequalityConstraints.push_back(it);
     }
 
     this->radiusequalityConstraints.clear();
     this->radiusequalityConstraints.reserve(equalradius.size());
 
-    for (std::list<ConstraintIds>::iterator it = equalradius.begin(); it != equalradius.end();
-         ++it) {
-        this->radiusequalityConstraints.push_back(*it);
+    for (const auto& it : equalradius) {
+        this->radiusequalityConstraints.push_back(it);
     }
 
-    return this->lineequalityConstraints.size() + this->radiusequalityConstraints.size();
+    return int(this->lineequalityConstraints.size() + this->radiusequalityConstraints.size());
 }
 
-void SketchAnalysis::makeMissingEquality(bool onebyone)
+void SketchAnalysis::makeMissingEquality()
 {
-    int status, dofs;
-    std::vector<Sketcher::Constraint*> constr;
+    std::vector<Sketcher::ConstraintIds> equalities(lineequalityConstraints);
+    equalities.insert(equalities.end(),
+                      radiusequalityConstraints.begin(),
+                      radiusequalityConstraints.end());
+    makeConstraints(equalities);
 
+    lineequalityConstraints.clear();
+    radiusequalityConstraints.clear();
+}
+
+void SketchAnalysis::makeMissingEqualityOneByOne()
+{
     std::vector<Sketcher::ConstraintIds> equalities(lineequalityConstraints);
     equalities.insert(equalities.end(),
                       radiusequalityConstraints.begin(),
                       radiusequalityConstraints.end());
 
-    for (std::vector<Sketcher::ConstraintIds>::iterator it = equalities.begin();
-         it != equalities.end();
-         ++it) {
-        Sketcher::Constraint* c = new Sketcher::Constraint();
-        c->Type = it->Type;
-        c->First = it->First;
-        c->Second = it->Second;
-        c->FirstPos = it->FirstPos;
-        c->SecondPos = it->SecondPos;
-
-        if (onebyone) {
-            // addConstraint() creates a clone
-            sketch->addConstraint(c);
-            delete c;
-
-            solvesketch(status, dofs, true);
-
-            if (status == -2) {  // redundant constraints
-                sketch->autoRemoveRedundants(false);
-
-                solvesketch(status, dofs, false);
-            }
-
-            if (status) {
-                THROWMT(Base::RuntimeError,
-                        QT_TRANSLATE_NOOP("Exceptions",
-                                          "Autoconstrain error: Unsolvable sketch while applying "
-                                          "equality constraints."));
-            }
-        }
-        else {
-            constr.push_back(c);
-        }
-    }
-
-    if (!onebyone) {
-        sketch->addConstraints(constr);
-    }
-
+    makeConstraintsOneByOne(equalities,
+                            QT_TRANSLATE_NOOP("Exceptions",
+                                              "Autoconstraint error: Unsolvable sketch while "
+                                              "applying equality constraints."));
     lineequalityConstraints.clear();
     radiusequalityConstraints.clear();
-
-    for (std::vector<Sketcher::Constraint*>::iterator it = constr.begin(); it != constr.end();
-         ++it) {
-        delete *it;
-    }
 }
 
 void SketchAnalysis::solvesketch(int& status, int& dofs, bool updategeo)
@@ -807,21 +829,19 @@ void SketchAnalysis::solvesketch(int& status, int& dofs, bool updategeo)
         dofs = sketch->getLastDoF();
     }
 
-    if (sketch->getLastHasRedundancies()) {  // redundant constraints
-        status = -2;
+    if (sketch->getLastHasRedundancies()) {
+        status = int(Solver::RedundantConstraints);
     }
 
-    if (dofs < 0) {  // over-constrained sketch
-        status = -4;
+    if (dofs < 0) {
+        status = int(Solver::OverConstrained);
     }
-    else if (sketch->getLastHasConflicts()) {  // conflicting constraints
-        status = -3;
+    else if (sketch->getLastHasConflicts()) {
+        status = int(Solver::ConflictingConstraints);
     }
 }
 
-int SketchAnalysis::autoconstraint(double precision,
-                                   double angleprecision,
-                                   bool includeconstruction)
+void SketchAnalysis::autoDeleteAllConstraints()
 {
     App::Document* doc = sketch->getDocument();
     doc->openTransaction("delete all constraints");
@@ -830,15 +850,67 @@ int SketchAnalysis::autoconstraint(double precision,
 
     doc->commitTransaction();
 
-    int status, dofs;
+    // a failure should not be possible at this moment as we start from a clean situation
+    solveSketch(QT_TRANSLATE_NOOP("Exceptions",
+                                  "Autoconstraint error: Unsolvable sketch without constraints."));
+}
 
-    solvesketch(status, dofs, true);
+void SketchAnalysis::autoHorizontalVerticalConstraints()
+{
+    App::Document* doc = sketch->getDocument();
+    doc->openTransaction("add vertical/horizontal constraints");
 
-    if (status) {  // it should not be possible at this moment as we start from a clean situation
-        THROWMT(Base::RuntimeError,
-                QT_TRANSLATE_NOOP("Exceptions",
-                                  "Autoconstrain error: Unsolvable sketch without constraints."));
+    makeMissingVerticalHorizontal();
+
+    // finish the transaction and update
+    doc->commitTransaction();
+
+    solveSketch(QT_TRANSLATE_NOOP("Exceptions",
+                                  "Autoconstraint error: Unsolvable sketch after applying "
+                                  "horizontal and vertical constraints."));
+}
+
+void SketchAnalysis::autoPointOnPointCoincident()
+{
+    App::Document* doc = sketch->getDocument();
+    doc->openTransaction("add coincident constraint");
+
+    makeMissingPointOnPointCoincident();
+
+    // finish the transaction and update
+    doc->commitTransaction();
+
+    solveSketch(QT_TRANSLATE_NOOP("Exceptions",
+                                  "Autoconstraint error: Unsolvable sketch after applying "
+                                  "point-on-point constraints."));
+}
+
+void SketchAnalysis::autoMissingEquality()
+{
+    App::Document* doc = sketch->getDocument();
+    doc->openTransaction("add equality constraints");
+
+    try {
+        makeMissingEquality();
     }
+    catch (Base::RuntimeError&) {
+        doc->abortTransaction();
+        throw;
+    }
+
+    // finish the transaction and update
+    doc->commitTransaction();
+
+    solveSketch(QT_TRANSLATE_NOOP("Exceptions",
+                                  "Autoconstraint error: Unsolvable sketch after "
+                                  "applying equality constraints."));
+}
+
+int SketchAnalysis::autoconstraint(double precision,
+                                   double angleprecision,
+                                   bool includeconstruction)
+{
+    autoDeleteAllConstraints();
 
     // STAGE 1: Vertical/Horizontal Line Segments
     int nhv = detectMissingVerticalHorizontalConstraints(angleprecision);
@@ -857,94 +929,26 @@ int SketchAnalysis::autoconstraint(double precision,
     // STAGE 3: Equality constraint detection
     int ne = detectMissingEqualityConstraints(precision);
 
-    Base::Console().Log(
-        "Constraints: Vertical/Horizontal: %d found. Point-on-point: %d. Equality: %d\n",
-        nhv,
-        nc,
-        ne);
+    Base::Console().Log("Constraints: Vertical/Horizontal: %d found. "
+                        "Point-on-point: %d. Equality: %d\n",
+                        nhv,
+                        nc,
+                        ne);
 
     // Applying STAGE 1, if any
     if (nhv > 0) {
-        App::Document* doc = sketch->getDocument();
-        doc->openTransaction("add vertical/horizontal constraints");
-
-        makeMissingVerticalHorizontal();
-
-        // finish the transaction and update
-        doc->commitTransaction();
-
-        solvesketch(status, dofs, true);
-
-        if (status == -2) {  // redundants
-            sketch->autoRemoveRedundants(false);
-            solvesketch(status, dofs, false);
-        }
-
-        if (status) {
-            THROWMT(Base::RuntimeError,
-                    QT_TRANSLATE_NOOP("Exceptions",
-                                      "Autoconstrain error: Unsolvable sketch after applying "
-                                      "horizontal and vertical constraints."));
-        }
+        autoHorizontalVerticalConstraints();
     }
 
     // Applying STAGE 2
     if (nc > 0) {
-        App::Document* doc = sketch->getDocument();
-        doc->openTransaction("add coincident constraint");
-
-        makeMissingPointOnPointCoincident();
-
-        // finish the transaction and update
-        doc->commitTransaction();
-
-        solvesketch(status, dofs, true);
-
-        if (status == -2) {  // redundants
-            sketch->autoRemoveRedundants(false);
-            solvesketch(status, dofs, false);
-        }
-
-        if (status) {
-            THROWMT(Base::RuntimeError,
-                    QT_TRANSLATE_NOOP("Exceptions",
-                                      "Autoconstrain error: Unsolvable sketch after applying "
-                                      "point-on-point constraints."));
-        }
+        autoPointOnPointCoincident();
     }
 
     // Applying STAGE 3
     if (ne > 0) {
-        App::Document* doc = sketch->getDocument();
-        doc->openTransaction("add equality constraints");
-
-        try {
-            makeMissingEquality();
-        }
-        catch (Base::RuntimeError&) {
-            doc->abortTransaction();
-            throw;
-        }
-
-        // finish the transaction and update
-        doc->commitTransaction();
-
-        solvesketch(status, dofs, true);
-
-        if (status == -2) {  // redundants
-            sketch->autoRemoveRedundants(false);
-            solvesketch(status, dofs, false);
-        }
-
-        if (status) {
-            THROWMT(
-                Base::RuntimeError,
-                QT_TRANSLATE_NOOP(
-                    "Exceptions",
-                    "Autoconstrain error: Unsolvable sketch after applying equality constraints."));
-        }
+        autoMissingEquality();
     }
-
 
     return 0;
 }
@@ -976,30 +980,7 @@ std::vector<Base::Vector3d> SketchAnalysis::getOpenVertices() const
     return points;
 }
 
-int SketchAnalysis::detectDegeneratedGeometries(double tolerance)
-{
-    int countDegenerated = 0;
-    const std::vector<Part::Geometry*>& geom = sketch->getInternalGeometry();
-    for (std::size_t i = 0; i < geom.size(); i++) {
-        auto gf = GeometryFacade::getFacade(geom[i]);
-
-        if (gf->getConstruction()) {
-            continue;
-        }
-
-        if (gf->getGeometry()->isDerivedFrom<Part::GeomCurve>()) {
-            Part::GeomCurve* curve = static_cast<Part::GeomCurve*>(gf->getGeometry());
-            double len = curve->length(curve->getFirstParameter(), curve->getLastParameter());
-            if (len < tolerance) {
-                countDegenerated++;
-            }
-        }
-    }
-
-    return countDegenerated;
-}
-
-int SketchAnalysis::removeDegeneratedGeometries(double tolerance)
+std::set<int> SketchAnalysis::getDegeneratedGeometries(double tolerance) const
 {
     std::set<int> delInternalGeometries;
     const std::vector<Part::Geometry*>& geom = sketch->getInternalGeometry();
@@ -1010,8 +991,7 @@ int SketchAnalysis::removeDegeneratedGeometries(double tolerance)
             continue;
         }
 
-        if (gf->getGeometry()->isDerivedFrom<Part::GeomCurve>()) {
-            Part::GeomCurve* curve = static_cast<Part::GeomCurve*>(gf->getGeometry());
+        if (auto curve = dynamic_cast<Part::GeomCurve*>(gf->getGeometry())) {
             double len = curve->length(curve->getFirstParameter(), curve->getLastParameter());
             if (len < tolerance) {
                 delInternalGeometries.insert(static_cast<int>(i));
@@ -1019,9 +999,20 @@ int SketchAnalysis::removeDegeneratedGeometries(double tolerance)
         }
     }
 
+    return delInternalGeometries;
+}
+
+int SketchAnalysis::detectDegeneratedGeometries(double tolerance) const
+{
+    std::set<int> delInternalGeometries = getDegeneratedGeometries(tolerance);
+    return static_cast<int>(delInternalGeometries.size());
+}
+
+int SketchAnalysis::removeDegeneratedGeometries(double tolerance)
+{
+    std::set<int> delInternalGeometries = getDegeneratedGeometries(tolerance);
     for (auto it = delInternalGeometries.rbegin(); it != delInternalGeometries.rend(); ++it) {
         sketch->delGeometry(*it);
     }
-
     return static_cast<int>(delInternalGeometries.size());
 }

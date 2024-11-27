@@ -23,7 +23,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <random>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/actions/SoSearchAction.h>
@@ -56,12 +55,12 @@ using namespace Gui;
 namespace {
 float fromPercent(long value)
 {
-    return static_cast<float>(value) / 100.0F;
+    return std::roundf(value) / 100.0F;
 }
 
 long toPercent(float value)
 {
-    return static_cast<long>(100.0 * value + 0.5);
+    return std::lround(100.0 * value);
 }
 }
 
@@ -71,7 +70,7 @@ const App::PropertyIntegerConstraint::Constraints intPercent = {0, 100, 5};
 
 ViewProviderGeometryObject::ViewProviderGeometryObject()
 {
-    App::Material mat = getUserDefinedMaterial();
+    App::Material mat = App::Material::getDefaultAppearance();
     long initialTransparency = toPercent(mat.transparency);
 
     static const char* dogroup = "Display Options";
@@ -96,7 +95,7 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
     Selectable.setValue(isSelectionEnabled());
 
     pcShapeMaterial = new SoMaterial;
-    setSoMaterial(mat);
+    setCoinAppearance(mat);
     pcShapeMaterial->ref();
 
     pcBoundingBox = new Gui::SoFCBoundingBox;
@@ -113,49 +112,6 @@ ViewProviderGeometryObject::~ViewProviderGeometryObject()
     pcShapeMaterial->unref();
     pcBoundingBox->unref();
     pcBoundColor->unref();
-}
-
-App::Material ViewProviderGeometryObject::getUserDefinedMaterial()
-{
-    ParameterGrp::handle hGrp =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-
-    auto getColor = [hGrp](const char* parameter, App::Color& color) {
-        uint32_t packed = color.getPackedRGB();
-        packed = hGrp->GetUnsigned(parameter, packed);
-        color.setPackedRGB(packed);
-    };
-    auto intRandom = [] (int min, int max) -> int {
-        static std::mt19937 generator;
-        std::uniform_int_distribution<int> distribution(min, max);
-        return distribution(generator);
-    };
-
-    App::Material mat(App::Material::DEFAULT);
-    mat.transparency = fromPercent(hGrp->GetInt("DefaultShapeTransparency", 0));
-    long shininess = toPercent(mat.shininess);
-    mat.shininess = fromPercent(hGrp->GetInt("DefaultShapeShininess", shininess));
-
-    // This is handled in the material code when using the object appearance
-    bool randomColor = hGrp->GetBool("RandomColor", false);
-
-    // diffuse color
-    if (randomColor) {
-        float red = static_cast<float>(intRandom(0, 255)) / 255.0F;
-        float green = static_cast<float>(intRandom(0, 255)) / 255.0F;
-        float blue = static_cast<float>(intRandom(0, 255)) / 255.0F;
-        mat.diffuseColor = App::Color(red, green, blue);
-    }
-    else {
-        // Color = (204, 204, 230) = 3435980543UL
-        getColor("DefaultShapeColor", mat.diffuseColor);
-    }
-
-    getColor("DefaultAmbientColor", mat.ambientColor);
-    getColor("DefaultEmissiveColor", mat.emissiveColor);
-    getColor("DefaultSpecularColor", mat.specularColor);
-
-    return mat;
 }
 
 bool ViewProviderGeometryObject::isSelectionEnabled() const
@@ -177,22 +133,25 @@ void ViewProviderGeometryObject::onChanged(const App::Property* prop)
     }
     else if (prop == &Transparency) {
         long value = toPercent(ShapeAppearance.getTransparency());
+        float trans = fromPercent(Transparency.getValue());
         if (value != Transparency.getValue()) {
-            float trans = fromPercent(Transparency.getValue());
-            pcShapeMaterial->transparency = trans;
             ShapeAppearance.setTransparency(trans);
         }
+
+        pcShapeMaterial->transparency = trans;
     }
     else if (prop == &ShapeAppearance) {
         if (getObject() && getObject()->testStatus(App::ObjectStatus::TouchOnColorChange)) {
             getObject()->touch(true);
         }
-        const App::Material& Mat = ShapeAppearance[0];
         long value = toPercent(ShapeAppearance.getTransparency());
         if (value != Transparency.getValue()) {
             Transparency.setValue(value);
         }
-        setSoMaterial(Mat);
+        if (ShapeAppearance.getSize() == 1) {
+            const App::Material& Mat = ShapeAppearance[0];
+            setCoinAppearance(Mat);
+        }
     }
     else if (prop == &BoundingBox) {
         showBoundingBox(BoundingBox.getValue());
@@ -229,8 +188,19 @@ void ViewProviderGeometryObject::updateData(const App::Property* prop)
         // Set the appearance from the material
         auto geometry = dynamic_cast<App::GeoFeature*>(getObject());
         if (geometry) {
+            /*
+             * Change the appearance only if the appearance hasn't been set explicitly. A cached
+             * material appearance is used to see if the current appearance matches the last
+             * material. It is also compared against an empty material to see if the saved
+             * material value has been initialized.
+             */
+            App::Material defaultMaterial;
             auto material = geometry->getMaterialAppearance();
-            ShapeAppearance.setValue(material);
+            if ((materialAppearance == defaultMaterial)
+                || (ShapeAppearance.getSize() == 1 && ShapeAppearance[0] == materialAppearance)) {
+                ShapeAppearance.setValue(material);
+            }
+            materialAppearance = material;
         }
     }
 
@@ -288,7 +258,7 @@ unsigned long ViewProviderGeometryObject::getBoundColor() const
     return bbcol;
 }
 
-void ViewProviderGeometryObject::setSoMaterial(const App::Material& source)
+void ViewProviderGeometryObject::setCoinAppearance(const App::Material& source)
 {
     pcShapeMaterial->ambientColor.setValue(source.ambientColor.r,
                                            source.ambientColor.g,

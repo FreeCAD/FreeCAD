@@ -49,6 +49,7 @@ SET(Python_SRCS
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
+
 set(FemGui_UIC_SRCS
     DlgSettingsFemCcx.ui
     DlgSettingsFemElmer.ui
@@ -58,6 +59,7 @@ set(FemGui_UIC_SRCS
     DlgSettingsFemInOutVtk.ui
     DlgSettingsFemMystran.ui
     DlgSettingsFemZ88.ui
+    TaskCreateElementSet.ui
     TaskCreateNodeSet.ui
     TaskObjectName.ui
     TaskFemConstraint.ui
@@ -198,6 +200,8 @@ SET(FemGui_SRCS_ViewProvider
     ViewProviderSolver.h
     ViewProviderSetNodes.cpp
     ViewProviderSetNodes.h
+    ViewProviderSetElementNodes.cpp
+    ViewProviderSetElementNodes.h
     ViewProviderSetElements.cpp
     ViewProviderSetElements.h
     ViewProviderSetFaces.cpp
@@ -251,6 +255,9 @@ SET(FemGui_SRCS_TaskBoxes
     TaskObjectName.ui
     TaskObjectName.cpp
     TaskObjectName.h
+    TaskCreateElementSet.ui
+    TaskCreateElementSet.cpp
+    TaskCreateElementSet.h
     TaskCreateNodeSet.ui
     TaskCreateNodeSet.cpp
     TaskCreateNodeSet.h
@@ -288,6 +295,8 @@ endif(BUILD_FEM_VTK)
 SOURCE_GROUP("Task_Boxes" FILES ${FemGui_SRCS_TaskBoxes})
 
 SET(FemGui_SRCS_TaskDlg
+    TaskDlgCreateElementSet.h
+    TaskDlgCreateElementSet.cpp
     TaskDlgCreateNodeSet.h
     TaskDlgCreateNodeSet.cpp
     TaskDlgMeshShapeNetgen.h
@@ -305,6 +314,8 @@ SET(FemGui_SRCS_Module
     ActiveAnalysisObserver.cpp
     ActiveAnalysisObserver.h
     Command.cpp
+    FemGuiTools.cpp
+    FemGuiTools.h
     FemSettings.cpp
     FemSettings.h
     Resources/Fem.qrc
@@ -316,6 +327,7 @@ SET(FemGui_SRCS_Module
     Workbench.h
 )
 SOURCE_GROUP("Module" FILES ${FemGui_SRCS_Module})
+
 
 if(BUILD_FEM_VTK)
     SET(FemGui_SRCS_Post
@@ -364,11 +376,15 @@ SET(FemGuiSymbol_IV
     Resources/symbols/ConstraintSectionPrint.iv
     Resources/symbols/ConstraintSpring.iv
     Resources/symbols/ConstraintTemperature.iv
+    Resources/symbols/ConstraintTransform.iv
     Resources/symbols/ConstraintTie.iv
 )
 
 add_library(FemGui SHARED ${FemGui_SRCS} ${FemGuiIcon_SVG} ${FemGuiSymbol_IV})
 target_link_libraries(FemGui ${FemGui_LIBS} ${VTK_LIBRARIES})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(FemGui)
+endif()
 
 fc_copy_sources(FemGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Fem" ${FemGuiIcon_SVG})
 fc_copy_sources(FemGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Fem" ${FemGuiSymbol_IV})
@@ -384,6 +400,7 @@ SET(FemGuiPythonUI_SRCS
     Resources/ui/ConstraintTie.ui
     Resources/ui/ConstraintSectionPrint.ui
     Resources/ui/CurrentDensity.ui
+    Resources/ui/DlgSettingsNetgen.ui
     Resources/ui/ElectrostaticPotential.ui
     Resources/ui/ElementFluid1D.ui
     Resources/ui/ElementGeometry1D.ui
@@ -399,6 +416,7 @@ SET(FemGuiPythonUI_SRCS
     Resources/ui/MeshGmsh.ui
     Resources/ui/MeshGroup.ui
     Resources/ui/MeshGroupXDMFExport.ui
+    Resources/ui/MeshNetgen.ui
     Resources/ui/MeshRegion.ui
     Resources/ui/ResultHints.ui
     Resources/ui/ResultShow.ui

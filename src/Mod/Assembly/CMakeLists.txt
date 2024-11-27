@@ -7,6 +7,7 @@ endif(BUILD_GUI)
 set(Assembly_Scripts
     Init.py
     CommandCreateAssembly.py
+    CommandCreateBom.py
     CommandInsertLink.py
     CommandSolveAssembly.py
     CommandCreateJoint.py
@@ -16,6 +17,7 @@ set(Assembly_Scripts
     JointObject.py
     Preferences.py
     AssemblyImport.py
+    SoSwitchMarker.py
     UtilsAssembly.py
 )
 

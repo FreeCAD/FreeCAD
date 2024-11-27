@@ -43,7 +43,8 @@ class Arch_CutPlane:
                "ToolTip": QT_TRANSLATE_NOOP("Arch_CutPlane", "Cut an object with a plane")}
 
     def IsActive(self):
-        return len(FreeCADGui.Selection.getSelection()) > 1
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v and len(FreeCADGui.Selection.getSelection()) > 1
 
     def Activated(self):
         import  ArchCutPlane
@@ -64,6 +65,7 @@ class Arch_CutPlane:
 class CutPlaneTaskPanel:
     def __init__(self):
         import ArchCutPlane
+        from PySide import QtCore, QtGui
         _, self.base, self.cutter = ArchCutPlane._getShapes(FreeCADGui.Selection.getSelectionEx("", 0))
 
         self.previewObj = FreeCAD.ActiveDocument.addObject("Part::Feature", "PreviewCutVolume")
@@ -92,9 +94,9 @@ class CutPlaneTaskPanel:
         FreeCAD.ActiveDocument.removeObject(self.previewObj.Name)
         side = self.combobox.currentIndex()
         FreeCAD.ActiveDocument.openTransaction(translate("Arch", "Cutting"))
-        FreeCADGui.addModule("Arch")
+        FreeCADGui.addModule("ArchCutPlane")
         FreeCADGui.doCommand("sels = FreeCADGui.Selection.getSelectionEx('', 0)")
-        FreeCADGui.doCommand("Arch.cutComponentwithPlane(sels, side=" + str(side) + ")")
+        FreeCADGui.doCommand("ArchCutPlane.cutComponentwithPlane(sels, side=" + str(side) + ")")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
         return True

@@ -155,6 +155,21 @@ int Preferences::projectionAngle()
     return getPreferenceGroup("General")->GetInt("ProjectionAngle", 0);  //First Angle
 }
 
+bool Preferences::groupAutoDistribute()
+{
+    return getPreferenceGroup("General")->GetBool("AutoDist", true);
+}
+
+double Preferences::groupSpaceX()
+{
+    return getPreferenceGroup("General")->GetFloat("GroupSpaceX", 15.0);
+}
+
+double Preferences::groupSpaceY()
+{
+    return getPreferenceGroup("General")->GetFloat("GroupSpaceY", 15.0);
+}
+
 int Preferences::lineGroup()
 {
     return getPreferenceGroup("Decorations")->GetInt("LineGroup", 3);  // FC 0.70mm
@@ -502,6 +517,11 @@ int Preferences::HiddenLineStyle()
     return getPreferenceGroup("Decorations")->GetInt("LineStyleHidden", 1) + 1;
 }
 
+int Preferences::BreakLineStyle()
+{
+    return getPreferenceGroup("Decorations")->GetInt("LineStyleBreak", 0) + 1;
+}
+
 int Preferences::LineSpacingISO()
 {
     return getPreferenceGroup("Dimensions")->GetInt("LineSpacingFactorISO", 2);
@@ -578,5 +598,61 @@ bool Preferences::useExactMatchOnDims()
     return getPreferenceGroup("Dimensions")->GetBool("UseMatcher", true);
 }
 
+int Preferences::BreakType()
+{
+    return getPreferenceGroup("Decorations")->GetInt("BreakType", 2);
+}
+
+
+bool Preferences::useCameraDirection()
+{
+    return getPreferenceGroup("General")->GetBool("UseCameraDirection", false);
+}
+
+
+bool Preferences::alwaysShowLabel()
+{
+    return getPreferenceGroup("General")->GetBool("AlwaysShowLabel", false);
+}
+
+bool Preferences::SnapViews()
+{
+    return getPreferenceGroup("General")->GetBool("SnapViews", true);
+}
+
+//! percentage of view size to use in deciding to snap view or not
+double Preferences::SnapLimitFactor()
+{
+    return getPreferenceGroup("General")->GetFloat("SnapLimitFactor", 0.05);
+}
+
+
+//! returns the key combination that simulates multiple selection. Traditionally Ctrl+pick, as that
+//! is how QGraphicsScene implements multiple selection.  This method is likely to only be used by
+//! developers.
+Qt::KeyboardModifiers Preferences::multiselectModifiers()
+{
+    uint iModifiers = getPreferenceGroup("General")->GetUnsigned("MultiselectModifiers", (uint)Qt::ControlModifier);
+    return (Qt::KeyboardModifiers)iModifiers;
+//    Qt::KeyboardModifiers testMods = Qt::ControlModifier;
+//    return testMods;
+}
+
+
+//! returns the key combination that modifies Balloon drag behaviour so that the bubble and leader
+//! are moved together.  Traditionally Ctrl+drag, but that can be in conflict with multi selection.
+Qt::KeyboardModifiers Preferences::balloonDragModifiers()
+{
+    uint iModifiers = getPreferenceGroup("General")->GetUnsigned("BalloonDragModifier", (uint)Qt::ControlModifier);
+    return (Qt::KeyboardModifiers)iModifiers;
+//    Qt::KeyboardModifiers testMods = Qt::ShiftModifier | Qt::ControlModifier;
+//    return testMods;
+}
+
+
+void Preferences::setBalloonDragModifiers(Qt::KeyboardModifiers newModifiers)
+{
+    getPreferenceGroup("General")->SetUnsigned("BalloonDragModifier", (uint)newModifiers);
+}
 
 

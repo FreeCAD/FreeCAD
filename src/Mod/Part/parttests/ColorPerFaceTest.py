@@ -136,6 +136,7 @@ class ColorPerFaceTest(unittest.TestCase):
         bp = BOPFeatures.BOPFeatures(self.doc)
         fuse = bp.make_multi_fuse([box.Name, cyl.Name])
         self.assertEqual(fuse.TypeId, "Part::MultiFuse")
+        fuse.Refine = False
         self.doc.recompute()
 
         sa = coin.SoSearchAction()
@@ -172,6 +173,7 @@ class ColorPerFaceTest(unittest.TestCase):
         bp = BOPFeatures.BOPFeatures(self.doc)
         fuse = bp.make_multi_fuse([box.Name, cyl.Name])
         self.assertEqual(fuse.TypeId, "Part::MultiFuse")
+        fuse.Refine = False
         self.doc.recompute()
 
         fuse.ViewObject.DiffuseColor = [(1.,0.,0.,0.)] * 11

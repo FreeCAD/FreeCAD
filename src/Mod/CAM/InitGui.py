@@ -49,9 +49,7 @@ class CAMWorkbench(Workbench):
     "CAM workbench"
 
     def __init__(self):
-        self.__class__.Icon = (
-            FreeCAD.getResourceDir() + "Mod/CAM/Resources/icons/CAMWorkbench.svg"
-        )
+        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/CAM/Resources/icons/CAMWorkbench.svg"
         self.__class__.MenuText = "CAM"
         self.__class__.ToolTip = "CAM workbench"
 
@@ -85,9 +83,13 @@ class CAMWorkbench(Workbench):
         import subprocess
         from packaging.version import Version, parse
 
-        FreeCADGui.addPreferencePage(PathPreferencesPathJob.JobPreferencesPage, QT_TRANSLATE_NOOP("QObject", "CAM"))
         FreeCADGui.addPreferencePage(
-            PathPreferencesPathDressup.DressupPreferencesPage, QT_TRANSLATE_NOOP("QObject", "CAM")
+            PathPreferencesPathJob.JobPreferencesPage,
+            QT_TRANSLATE_NOOP("QObject", "CAM"),
+        )
+        FreeCADGui.addPreferencePage(
+            PathPreferencesPathDressup.DressupPreferencesPage,
+            QT_TRANSLATE_NOOP("QObject", "CAM"),
         )
 
         Path.GuiInit.Startup()
@@ -97,6 +99,7 @@ class CAMWorkbench(Workbench):
         toolcmdlist = [
             "CAM_Inspect",
             "CAM_Simulator",
+            "CAM_SimulatorGL",
             "CAM_SelectLoop",
             "CAM_OpActiveToggle",
         ]
@@ -161,6 +164,12 @@ class CAMWorkbench(Workbench):
                     toolcmdlist.append("CAM_Camotics")
             except (FileNotFoundError, ModuleNotFoundError):
                 pass
+            except subprocess.CalledProcessError as e:
+                print(f"Failed to execute camotics command: {e}")
+            except ValueError as ve:
+                print(f"Version error: {ve}")
+            except Exception as ex:
+                print(f"An unexpected error occurred: {ex}")
 
             try:
                 try:
@@ -189,13 +198,9 @@ class CAMWorkbench(Workbench):
             QT_TRANSLATE_NOOP("Workbench", "New Operations"),
             twodopcmdlist + engravecmdgroup + threedcmdgroup,
         )
-        self.appendToolbar(
-            QT_TRANSLATE_NOOP("Workbench", "Path Modification"), modcmdlist
-        )
+        self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Path Modification"), modcmdlist)
         if extracmdlist:
-            self.appendToolbar(
-                QT_TRANSLATE_NOOP("Workbench", "Helpful Tools"), extracmdlist
-            )
+            self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Helpful Tools"), extracmdlist)
 
         self.appendMenu(
             [QT_TRANSLATE_NOOP("Workbench", "&CAM")],
@@ -262,7 +267,8 @@ class CAMWorkbench(Workbench):
         from Path.Preferences import preferences
 
         FreeCADGui.addPreferencePage(
-            PathPreferencesAdvanced.AdvancedPreferencesPage, QT_TRANSLATE_NOOP("QObject", "CAM")
+            PathPreferencesAdvanced.AdvancedPreferencesPage,
+            QT_TRANSLATE_NOOP("QObject", "CAM"),
         )
         Log("Loading CAM workbench... done\n")
 
@@ -291,14 +297,10 @@ class CAMWorkbench(Workbench):
                 if "Remote" in selectedName:
                     self.appendContextMenu("", ["Refresh_Path"])
                 if "Job" in selectedName:
-                    self.appendContextMenu(
-                        "", ["CAM_ExportTemplate"] + self.toolbitctxmenu
-                    )
+                    self.appendContextMenu("", ["CAM_ExportTemplate"] + self.toolbitctxmenu)
                 menuAppended = True
             if isinstance(obj.Proxy, Path.Op.Base.ObjectOp):
-                self.appendContextMenu(
-                    "", ["CAM_OperationCopy", "CAM_OpActiveToggle"]
-                )
+                self.appendContextMenu("", ["CAM_OperationCopy", "CAM_OpActiveToggle"])
                 menuAppended = True
             if obj.isDerivedFrom("Path::Feature"):
                 if (
@@ -321,4 +323,7 @@ class CAMWorkbench(Workbench):
 
 Gui.addWorkbench(CAMWorkbench())
 
-FreeCAD.addImportType("GCode (*.nc *.NC *.gc *.GC *.ncc *.NCC *.ngc *.NGC *.cnc *.CNC *.tap *.TAP *.gcode *.GCODE)", "PathGui")
+FreeCAD.addImportType(
+    "GCode (*.nc *.NC *.gc *.GC *.ncc *.NCC *.ngc *.NGC *.cnc *.CNC *.tap *.TAP *.gcode *.GCODE)",
+    "PathGui",
+)

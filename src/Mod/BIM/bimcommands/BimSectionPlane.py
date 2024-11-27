@@ -45,7 +45,8 @@ class Arch_SectionPlane:
 
     def IsActive(self):
 
-        return not FreeCAD.ActiveDocument is None
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
 
     def Activated(self):
 
@@ -61,7 +62,7 @@ class Arch_SectionPlane:
         FreeCADGui.doCommand("section = Arch.makeSectionPlane("+ss+")")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
-        
+
 
 
 FreeCADGui.addCommand('Arch_SectionPlane', Arch_SectionPlane())

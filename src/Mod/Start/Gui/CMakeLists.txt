@@ -76,9 +76,9 @@ SET(StartGuiIcon_SVG
         )
 
 SET(StartGuiThumbnail_PNG
-        Resources/thumbnails/Classic512.png
-        Resources/thumbnails/OpenDark512.png
-        Resources/thumbnails/OpenLight512.png
+        Resources/thumbnails/Theme_thumbnail_classic.png
+        Resources/thumbnails/Theme_thumbnail_dark.png
+        Resources/thumbnails/Theme_thumbnail_light.png
         )
 
 # TODO: Evaluate PCH use with Qt6/QtQuick/Qml
@@ -88,9 +88,22 @@ if (FREECAD_USE_PCH)
     ADD_MSVC_PRECOMPILED_HEADER(StartGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
 endif (FREECAD_USE_PCH)
 
+# Add CoreFoundation to StartGui_LIBS on macOS
+if (APPLE)
+    find_library(COREFOUNDATION_LIBRARY CoreFoundation)
+    if (COREFOUNDATION_LIBRARY)
+        list(APPEND StartGui_LIBS ${COREFOUNDATION_LIBRARY})
+    else()
+        message(SEND_ERROR "CoreFoundation not found. Please ensure you're building on macOS.")
+    endif()
+endif()
+
 add_library(StartGui SHARED ${StartGui_SRCS} ${StartGuiIcon_SVG} ${StartGuiThumbnail_PNG})
 # target_link_libraries(StartGui ${StartGui_LIBS} Qt::Quick Qt::Qml Qt::QuickWidgets)
 target_link_libraries(StartGui ${StartGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(StartGui)
+endif()
 
 SET_BIN_DIR(StartGui StartGui /Mod/Start)
 SET_PYTHON_PREFIX_SUFFIX(StartGui)

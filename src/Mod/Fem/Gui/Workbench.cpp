@@ -1,4 +1,5 @@
 /***************************************************************************
+ *   Copyright (c) 2023 Peter McB                                          *
  *   Copyright (c) 2008 Werner Mayer <werner.wm.mayer@gmx.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
@@ -153,10 +154,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     Gui::ToolBarItem* mesh = new Gui::ToolBarItem(root);
     mesh->setCommand("Mesh");
-#ifdef FCWithNetgen
-    *mesh << "FEM_MeshNetgenFromShape";
-#endif
-    *mesh << "FEM_MeshGmshFromShape"
+    *mesh << "FEM_MeshNetgenFromShape"
+          << "FEM_MeshGmshFromShape"
           << "Separator"
           << "FEM_MeshBoundaryLayer"
           << "FEM_MeshRegion"
@@ -166,7 +165,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     Gui::ToolBarItem* solve = new Gui::ToolBarItem(root);
     solve->setCommand("Solve");
-    if (!Fem::Tools::checkIfBinaryExists("CCX", "ccx", "ccx").empty()) {
+    if (!Fem::Tools::checkIfBinaryExists("Ccx", "ccx", "ccx").empty()) {
         *solve << "FEM_SolverCalculiXCcxTools";
     }
     if (!Fem::Tools::checkIfBinaryExists("Elmer", "elmer", "ElmerSolver").empty()) {
@@ -310,16 +309,15 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* mesh = new Gui::MenuItem;
     root->insertItem(item, mesh);
     mesh->setCommand("M&esh");
-#ifdef FCWithNetgen
-    *mesh << "FEM_MeshNetgenFromShape";
-#endif
-    *mesh << "FEM_MeshGmshFromShape"
+    *mesh << "FEM_MeshNetgenFromShape"
+          << "FEM_MeshGmshFromShape"
           << "Separator"
           << "FEM_MeshBoundaryLayer"
           << "FEM_MeshRegion"
           << "FEM_MeshGroup"
           << "Separator"
-          //          << "FEM_CreateNodesSet"
+          // << "FEM_CreateNodesSet"
+          << "FEM_CreateElementsSet"
           << "FEM_FEMMesh2Mesh";
 
     Gui::MenuItem* solve = new Gui::MenuItem;

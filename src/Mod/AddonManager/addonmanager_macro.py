@@ -183,7 +183,7 @@ class Macro:
             desc = "No description available"
         self.desc = desc
         self.comment, _, _ = desc.partition("<br")  # Up to the first line break
-        self.comment = re.sub("<.*?>", "", self.comment)  # Strip any tags
+        self.comment = re.sub(r"<.*?>", "", self.comment)  # Strip any tags
         self.url = url
         if isinstance(code, list):
             code = "".join(code)
@@ -201,7 +201,7 @@ class Macro:
     def _fetch_raw_code(self, page_data) -> Optional[str]:
         """Fetch code from the raw code URL specified on the wiki page."""
         code = None
-        self.raw_code_url = re.findall('rawcodeurl.*?href="(http.*?)">', page_data)
+        self.raw_code_url = re.findall(r'rawcodeurl.*?href="(http.*?)">', page_data)
         if self.raw_code_url:
             self.raw_code_url = self.raw_code_url[0]
             u2 = Macro.blocking_get(self.raw_code_url)

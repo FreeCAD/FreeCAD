@@ -37,6 +37,10 @@ class BIM_Column(ArchStructure._CommandStructure):
         super().__init__()
         self.beammode = False
 
+    def IsActive(self):
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
+
     def GetResources(self):
         return {
             "Pixmap": "BIM_Column",

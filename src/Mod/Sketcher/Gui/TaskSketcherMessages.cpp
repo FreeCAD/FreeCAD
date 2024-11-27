@@ -41,7 +41,7 @@ using namespace Gui::TaskView;
 namespace sp = std::placeholders;
 
 TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch* sketchView)
-    : TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Solver messages"), true, nullptr)
+    : TaskBox(Gui::BitmapFactory().pixmap("Sketcher_Sketch"), tr("Solver messages"), true, nullptr)
     , sketchView(sketchView)
     , ui(new Ui_TaskSketcherMessages)
 {
@@ -139,18 +139,18 @@ void TaskSketcherMessages::updateToolTip(const QString& link)
 {
     if (link == QString::fromLatin1("#conflicting"))
         ui->labelConstrainStatusLink->setToolTip(
-            tr("Click to select the conflicting constraints."));
+            tr("Click to select these conflicting constraints."));
     else if (link == QString::fromLatin1("#redundant"))
-        ui->labelConstrainStatusLink->setToolTip(tr("Click to select the redundant constraints."));
+        ui->labelConstrainStatusLink->setToolTip(tr("Click to select these redundant constraints."));
     else if (link == QString::fromLatin1("#dofs"))
         ui->labelConstrainStatusLink->setToolTip(
             tr("The sketch has unconstrained elements giving rise to those Degrees Of Freedom. "
-               "Click to select the unconstrained elements."));
+               "Click to select these unconstrained elements."));
     else if (link == QString::fromLatin1("#malformed"))
-        ui->labelConstrainStatusLink->setToolTip(tr("Click to select the malformed constraints."));
+        ui->labelConstrainStatusLink->setToolTip(tr("Click to select these malformed constraints."));
     else if (link == QString::fromLatin1("#partiallyredundant"))
         ui->labelConstrainStatusLink->setToolTip(
-            tr("Some constraints in combination are partially redundant. Click to select the "
+            tr("Some constraints in combination are partially redundant. Click to select these "
                "partially redundant constraints."));
 }
 

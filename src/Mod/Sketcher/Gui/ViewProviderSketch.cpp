@@ -365,6 +365,20 @@ void ViewProviderSketch::ParameterObserver::initParameters()
               Client.viewProviderParameters.stdCountSegments = v;
           },
           nullptr}},
+        {"SketchEdgeColor",
+         {[this](const std::string& string, App::Property* property) {
+              if (Client.AutoColor.getValue()) {
+                  updateColorProperty(string, property, 1.0f, 1.0f, 1.0f);
+              }
+          },
+          &Client.LineColor}},
+        {"SketchVertexColor",
+         {[this](const std::string& string, App::Property* property) {
+              if (Client.AutoColor.getValue()) {
+                  updateColorProperty(string, property, 1.0f, 1.0f, 1.0f);
+              }
+          },
+          &Client.PointColor}},
     };
 
     for (auto& val : parameterMap) {
@@ -377,8 +391,6 @@ void ViewProviderSketch::ParameterObserver::initParameters()
 
     // unsubscribed parameters which update a property on just once upon construction (and before
     // restore if properties are being restored from a file)
-    updateColorProperty("SketchEdgeColor", &Client.LineColor, 1.0f, 1.0f, 1.0f);
-    updateColorProperty("SketchVertexColor", &Client.PointColor, 1.0f, 1.0f, 1.0f);
     updateBoolProperty("ShowGrid", &Client.ShowGrid, false);
     updateBoolProperty("GridAuto", &Client.GridAuto, true);
     updateGridSize("GridSize", &Client.GridSize);
@@ -389,7 +401,13 @@ void ViewProviderSketch::ParameterObserver::OnChange(Base::Subject<const char*>&
 {
     (void)rCaller;
 
-    auto key = parameterMap.find(sReason);
+    updateFromParameter(sReason);
+}
+
+void SketcherGui::ViewProviderSketch::ParameterObserver::updateFromParameter(const char* parameter)
+{
+    auto key = parameterMap.find(parameter);
+
     if (key != parameterMap.end()) {
         auto string = key->first;
         auto update = std::get<0>(key->second);
@@ -539,6 +557,13 @@ ViewProviderSketch::ViewProviderSketch()
                       (App::PropertyType)(App::Prop_ReadOnly),
                       "Information about the Visual Representation of layers");
 
+    ADD_PROPERTY_TYPE(
+        AutoColor,
+        (true),
+        "Object Style",
+        (App::PropertyType)(App::Prop_None),
+        "If true, this sketch will be colored based on user preferences. Turn it off to set color explicitly.");
+
     // TODO: This is part of a naive minimal implementation to substitute rendering order
     // Three equally visual layers to enable/disable layer.
     std::vector<VisualLayer> layers;
@@ -601,20 +626,19 @@ void ViewProviderSketch::forceUpdateData()
 
 /***************************** handler management ************************************/
 
-void ViewProviderSketch::activateHandler(DrawSketchHandler* newHandler)
+void ViewProviderSketch::activateHandler(std::unique_ptr<DrawSketchHandler> newHandler)
 {
     assert(editCoinManager);
     assert(!sketchHandler);
 
-    sketchHandler = std::unique_ptr<DrawSketchHandler>(newHandler);
+    sketchHandler = std::move(newHandler);
     Mode = STATUS_SKETCH_UseHandler;
     sketchHandler->activate(this);
 
     // make sure receiver has focus so immediately pressing Escape will be handled by
     // ViewProviderSketch::keyPressed() and dismiss the active handler, and not the entire
     // sketcher editor
-    Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-    mdi->setFocus();
+    ensureFocus();
 }
 
 void ViewProviderSketch::deactivateHandler()
@@ -641,6 +665,9 @@ void ViewProviderSketch::purgeHandler()
         viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
         viewer->setSelectionEnabled(false);
     }
+
+    // Give back the focus to the MDI to make sure VPSketch receive keyboard events.
+    ensureFocus();
 }
 
 void ViewProviderSketch::setAxisPickStyle(bool on)
@@ -681,9 +708,8 @@ void ViewProviderSketch::moveCursorToSketchPoint(Base::Vector2d point)
 
 void ViewProviderSketch::ensureFocus()
 {
-
     Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-           mdi->setFocus();
+    mdi->setFocus();
 }
 
 void ViewProviderSketch::preselectAtPoint(Base::Vector2d point)
@@ -1177,6 +1203,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     Mode = STATUS_NONE;
                     return true;
                 case STATUS_SKETCH_UseHandler: {
+                    sketchHandler->applyCursor();
                     return sketchHandler->releaseButton(Base::Vector2d(x, y));
                 }
                 case STATUS_NONE:
@@ -2189,6 +2216,16 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
                             sketchHandler->applyCursor();
                         this->updateColor();
                     }
+                    else if (shapetype.size() > 12 && shapetype.substr(0, 12) == "ExternalEdge") {
+                        int GeoId = std::atoi(&shapetype[12]) - 1;
+                        GeoId = -GeoId - 3;
+                        resetPreselectPoint();
+                        preselection.PreselectCurve = GeoId;
+
+                        if (sketchHandler)
+                            sketchHandler->applyCursor();
+                        this->updateColor();
+                    }
                     else if (shapetype.size() > 6 && shapetype.substr(0, 6) == "Vertex") {
                         int PtIndex = std::atoi(&shapetype[6]) - 1;
                         setPreselectPoint(PtIndex);
@@ -2429,7 +2466,12 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
 
     auto selectEdge = [this](int edgeid) {
         std::stringstream ss;
-        ss << "Edge" << edgeid;
+        if (edgeid >= 0) {
+            ss << "Edge" << edgeid;
+        }
+        else {
+            ss << "ExternalEdge" << -edgeid - 1;
+        }
         addSelection2(ss.str());
     };
 
@@ -2586,6 +2628,12 @@ void ViewProviderSketch::updateColor()
     assert(isInEditMode());
 
     editCoinManager->updateColor();
+}
+
+bool ViewProviderSketch::selectAll()
+{
+    // TODO: eventually implement "select all" logic
+    return true;
 }
 
 bool ViewProviderSketch::doubleClicked()
@@ -2842,41 +2890,38 @@ void ViewProviderSketch::drawEditMarkers(const std::vector<Base::Vector2d>& Edit
     editCoinManager->drawEditMarkers(EditMarkers, augmentationlevel);
 }
 
-void ViewProviderSketch::updateData(const App::Property* prop)
-{
+void ViewProviderSketch::updateData(const App::Property* prop) {
     ViewProvider2DObject::updateData(prop);
 
-    // In the case of an undo/redo transaction, updateData is triggered by
-    // SketchObject::onUndoRedoFinished() in the solve() In the case of an internal transaction,
-    // touching the geometry results in a call to updateData.
-    if (isInEditMode() && !getSketchObject()->getDocument()->isPerformingTransaction()
-        && !getSketchObject()->isPerformingInternalTransaction()
-        && (prop == &(getSketchObject()->Geometry) || prop == &(getSketchObject()->Constraints))) {
+    if (prop != &getSketchObject()->Constraints)
+        signalElementsChanged();
+}
 
-        // At this point, we do not need to solve the Sketch
-        // If we are adding geometry an update can be triggered before the sketch is actually
-        // solved. Because a solve is mandatory to any addition (at least to update the DoF of the
-        // solver), only when the solver geometry is the same in number than the sketch geometry an
-        // update should trigger a redraw. This reduces even more the number of redraws per
-        // insertion of geometry
+void ViewProviderSketch::slotSolverUpdate()
+{
+    if (!isInEditMode() )
+        return;
 
-        // solver information is also updated when no matching geometry, so that if a solving fails
-        // this failed solving info is presented to the user
-        UpdateSolverInformation();// just update the solver window with the last SketchObject
-                                  // solving information
+    // At this point, we do not need to solve the Sketch
+    // If we are adding geometry an update can be triggered before the sketch is actually
+    // solved. Because a solve is mandatory to any addition (at least to update the DoF of the
+    // solver), only when the solver geometry is the same in number than the sketch geometry an
+    // update should trigger a redraw. This reduces even more the number of redraws per
+    // insertion of geometry
 
-        if (getSketchObject()->getExternalGeometryCount()
-                + getSketchObject()->getHighestCurveIndex() + 1
-            == getSolvedSketch().getGeometrySize()) {
-            Gui::MDIView* mdi = Gui::Application::Instance->editDocument()->getActiveView();
-            if (mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId()))
-                draw(false, true);
+    // solver information is also updated when no matching geometry, so that if a solving fails
+    // this failed solving info is presented to the user
+    UpdateSolverInformation();// just update the solver window with the last SketchObject
+                              // solving information
 
-            signalConstraintsChanged();
-        }
+    if (getSketchObject()->getExternalGeometryCount()
+            + getSketchObject()->getHighestCurveIndex() + 1
+        == getSolvedSketch().getGeometrySize()) {
+        Gui::MDIView* mdi = Gui::Application::Instance->editDocument()->getActiveView();
+        if (mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId()))
+            draw(false, true);
 
-        if (prop != &getSketchObject()->Constraints)
-            signalElementsChanged();
+        signalConstraintsChanged();
     }
 }
 
@@ -2889,8 +2934,57 @@ void ViewProviderSketch::onChanged(const App::Property* prop)
         }
         return;
     }
+
+    if (prop == &AutoColor) {
+        auto usesAutomaticColors = AutoColor.getValue();
+
+        // when auto color is enabled don't save color information in the document
+        // so it does not cause unnecessary updates if multiple users use different colors
+        LineColor.setStatus(App::Property::Transient, usesAutomaticColors);
+        PointColor.setStatus(App::Property::Transient, usesAutomaticColors);
+
+        // and mark this property as read-only hidden so it's not possible to change manually
+        LineColor.setStatus(App::Property::ReadOnly, usesAutomaticColors);
+        LineColor.setStatus(App::Property::Hidden, usesAutomaticColors);
+        PointColor.setStatus(App::Property::ReadOnly, usesAutomaticColors);
+        PointColor.setStatus(App::Property::Hidden, usesAutomaticColors);
+
+        return;
+    }
+
     // call father
     ViewProviderPart::onChanged(prop);
+}
+
+void SketcherGui::ViewProviderSketch::startRestoring()
+{
+    // small hack: before restoring mark AutoColor property as non-touched
+    // this allows us to test if this property was restored in the finishRestoring method
+    AutoColor.setStatus(App::Property::Touched, false);
+}
+
+void SketcherGui::ViewProviderSketch::finishRestoring()
+{
+    ViewProvider2DObject::finishRestoring();
+
+    // if AutoColor was not touched it means that the document is from older version of FreeCAD
+    // that meaans that we need to run migration strategy and come up with a proper value
+    if (!AutoColor.isTouched()) {
+        // white is the normally provided default for FreeCAD sketch colors
+        auto white = App::Color(1.f, 1.f, 1.f, 1.f);
+
+        auto colorWasNeverChanged =
+            LineColor.getValue() == white &&
+            PointColor.getValue() == white;
+
+        AutoColor.setValue(colorWasNeverChanged);
+    }
+
+    if (AutoColor.getValue()) {
+        // update colors according to current user preferences
+        pObserver->updateFromParameter("SketchEdgeColor");
+        pObserver->updateFromParameter("SketchVertexColor");
+    }
 }
 
 void ViewProviderSketch::attach(App::DocumentObject* pcFeat)
@@ -3034,6 +3128,15 @@ bool ViewProviderSketch::setEdit(int ModNum)
             getSketchObject()->validateExternalLinks();
     }
 
+    //NOLINTBEGIN
+    connectUndoDocument = getDocument()->signalUndoDocument.connect(
+        std::bind(&ViewProviderSketch::slotUndoDocument, this, sp::_1));
+    connectRedoDocument = getDocument()->signalRedoDocument.connect(
+        std::bind(&ViewProviderSketch::slotRedoDocument, this, sp::_1));
+    connectSolverUpdate = getSketchObject()
+            ->signalSolverUpdate.connect(boost::bind(&ViewProviderSketch::slotSolverUpdate, this));
+    //NOLINTEND
+
     // There are geometry extensions introduced by the solver and geometry extensions introduced by
     // the viewprovider.
     // 1. It is important that the solver has geometry with updated extensions.
@@ -3049,13 +3152,6 @@ bool ViewProviderSketch::setEdit(int ModNum)
     // a draw(true) via ViewProvider::UpdateData.
     getSketchObject()->solve(true);
 
-    //NOLINTBEGIN
-    connectUndoDocument = getDocument()->signalUndoDocument.connect(
-        std::bind(&ViewProviderSketch::slotUndoDocument, this, sp::_1));
-    connectRedoDocument = getDocument()->signalRedoDocument.connect(
-        std::bind(&ViewProviderSketch::slotRedoDocument, this, sp::_1));
-    //NOLINTEND
-
     // Enable solver initial solution update while dragging.
     getSketchObject()->setRecalculateInitialSolutionWhileMovingPoint(
         viewProviderParameters.recalculateInitialSolutionWhileDragging);
@@ -3066,6 +3162,10 @@ bool ViewProviderSketch::setEdit(int ModNum)
     Gui::getMainWindow()->installEventFilter(listener);
 
     Workbench::enterEditMode();
+
+    // Give focus to the MDI so that keyboard events are caught after starting edit.
+    // Else pressing ESC right after starting edit will not be caught to exit edit mode.
+    ensureFocus();
 
     return true;
 }
@@ -3190,7 +3290,7 @@ void ViewProviderSketch::UpdateSolverInformation()
     }
     else if (dofs > 0) {
         signalSetUp(QString::fromUtf8("under_constrained"),
-                    tr("Under constrained:") + QLatin1String(" "),
+                    tr("Under-constrained:") + QLatin1String(" "),
                     QString::fromUtf8("#dofs"),
                     tr("%n DoF(s)", "", dofs));
     }
@@ -3219,6 +3319,31 @@ void ViewProviderSketch::unsetEdit(int ModNum)
         if (sketchHandler)
             deactivateHandler();
 
+        Gui::MDIView* mdi = getInventorView();
+
+        // handle the override draw style mode only if there's a 3D view, otherwise SIGSEGV may
+        // occur as described in https://github.com/FreeCAD/FreeCAD/issues/15918
+        if (mdi) {
+
+            // Resets the override draw style mode when leaving the sketch edit mode.
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+            auto disableShadedView = hGrp->GetBool("DisableShadedView", true);
+            if (disableShadedView) {
+                Gui::View3DInventorViewer* viewer =
+                    static_cast<Gui::View3DInventor*>(mdi)->getViewer();
+
+                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+                    "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+                auto OverrideMode = hGrp->GetASCII("OverrideMode", "As Is");
+
+                if (viewer) {
+                    viewer->updateOverrideMode(OverrideMode);
+                    viewer->setOverrideMode(OverrideMode);
+                }
+            }
+        }
+
         editCoinManager = nullptr;
         snapManager = nullptr;
         preselection.reset();
@@ -3241,6 +3366,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
 
     connectUndoDocument.disconnect();
     connectRedoDocument.disconnect();
+    connectSolverUpdate.disconnect();
 
     // when pressing ESC make sure to close the dialog
     Gui::Control().closeDialog();
@@ -3271,6 +3397,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
 void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
 {
     Q_UNUSED(ModNum);
+    Base::PyGILStateLocker lock;
     // visibility automation: save camera
     if (!this->TempoVis.getValue().isNone()) {
         try {
@@ -3294,6 +3421,24 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
                 e.what());
         }
     }
+
+    // Sets the view mode to no shading to prevent visibility issues against parallel surfaces with shininess when entering the sketch mode.
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    auto disableShadedView = hGrp->GetBool("DisableShadedView", true);
+
+    hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    hGrp->SetASCII("OverrideMode", viewer->getOverrideMode());
+
+    if (disableShadedView) {
+
+
+            viewer->updateOverrideMode("No Shading");
+            viewer->setOverrideMode("No Shading");
+
+    }
+
 
     auto editDoc = Gui::Application::Instance->editDocument();
     editDocName.clear();
@@ -3717,25 +3862,30 @@ void ViewProviderSketch::clearSelectPoints()
 bool ViewProviderSketch::isSelected(const std::string& subNameSuffix) const
 {
     return Gui::Selection().isSelected(
-        editDocName.c_str(), editObjName.c_str(), (editSubName + subNameSuffix).c_str());
+        editDocName.c_str(), editObjName.c_str(), (editSubName + getSketchObject()->convertSubName(subNameSuffix)).c_str());
 }
 
 void ViewProviderSketch::rmvSelection(const std::string& subNameSuffix)
 {
     Gui::Selection().rmvSelection(
-        editDocName.c_str(), editObjName.c_str(), (editSubName + subNameSuffix).c_str());
+        editDocName.c_str(), editObjName.c_str(), (editSubName + getSketchObject()->convertSubName(subNameSuffix)).c_str());
 }
 
 bool ViewProviderSketch::addSelection(const std::string& subNameSuffix, float x, float y, float z)
 {
     return Gui::Selection().addSelection(
-        editDocName.c_str(), editObjName.c_str(), (editSubName + subNameSuffix).c_str(), x, y, z);
+        editDocName.c_str(), editObjName.c_str(), (editSubName + getSketchObject()->convertSubName(subNameSuffix)).c_str(), x, y, z);
 }
 
 bool ViewProviderSketch::addSelection2(const std::string& subNameSuffix, float x, float y, float z)
 {
     return Gui::Selection().addSelection2(
-        editDocName.c_str(), editObjName.c_str(), (editSubName + subNameSuffix).c_str(), x, y, z);
+        editDocName.c_str(),
+        editObjName.c_str(),
+        (editSubName + getSketchObject()->convertSubName(subNameSuffix)).c_str(),
+        x,
+        y,
+        z);
 }
 
 bool ViewProviderSketch::setPreselect(const std::string& subNameSuffix, float x, float y, float z)

@@ -141,6 +141,25 @@ Requires to re-enter edit mode to take effect.</string>
        </widget>
       </item>
       <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxDisableShading">
+        <property name="toolTip">
+         <string>Disables the shaded view when entering the sketch edit mode.</string>
+        </property>
+        <property name="text">
+         <string>Disable shading in edit mode</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="1">
+         <cstring>DisableShadedView</cstring>
+        </property>
+        <property name="prefPath" stdset="1">
+         <cstring>Mod/Sketcher/General</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxNotifyConstraintSubstitutions">
         <property name="toolTip">
          <string>Notifies about automatic constraint substitutions</string>

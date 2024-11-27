@@ -67,13 +67,13 @@ def write_mesh(ccxwriter):
             group_param,
             volVariant=vol_variant,
             faceVariant=face_variant,
-            edgeVariant=edge_variant
+            edgeVariant=edge_variant,
         )
 
         inpfile = codecs.open(ccxwriter.file_name, "w", encoding="utf-8")
         inpfile.write("{}\n".format(59 * "*"))
-        inpfile.write("** {}\n".format(write_name))
-        inpfile.write("*INCLUDE,INPUT={}\n".format(file_name_split))
+        inpfile.write(f"** {write_name}\n")
+        inpfile.write(f"*INCLUDE,INPUT={file_name_split}\n")
 
     else:
         ccxwriter.femmesh_file = ccxwriter.file_name
@@ -83,7 +83,7 @@ def write_mesh(ccxwriter):
             group_param,
             volVariant=vol_variant,
             faceVariant=face_variant,
-            edgeVariant=edge_variant
+            edgeVariant=edge_variant,
         )
 
         # reopen file with "append" to add all the rest

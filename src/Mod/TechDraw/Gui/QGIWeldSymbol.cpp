@@ -34,6 +34,7 @@
 #include <Mod/TechDraw/App/DrawTile.h>
 #include <Mod/TechDraw/App/DrawTileWeld.h>
 #include <Mod/TechDraw/App/DrawWeldSymbol.h>
+#include <Mod/TechDraw/App/DrawUtil.h>
 
 #include "QGIWeldSymbol.h"
 #include "PreferencesGui.h"
@@ -42,6 +43,7 @@
 #include "QGIPrimPath.h"
 #include "QGITile.h"
 #include "QGIVertex.h"
+#include "Rez.h"
 
 #include "ViewProviderWeld.h"
 #include "ZVALUE.h"
@@ -49,6 +51,7 @@
 
 using namespace TechDraw;
 using namespace TechDrawGui;
+using DU = DrawUtil;
 
 
 //**************************************************************
@@ -452,21 +455,21 @@ void QGIWeldSymbol::setPrettySel()
 QPointF QGIWeldSymbol::getTileOrigin()
 {
     Base::Vector3d org = getLeader()->getTileOrigin();
-    QPointF result(org.x, org.y);
+    QPointF result = DU::toQPointF(Rez::guiX(org));
     return result;
 }
 
 QPointF QGIWeldSymbol::getKinkPoint()
 {
     Base::Vector3d org = getLeader()->getKinkPoint();
-    QPointF result(org.x, org.y);
+    QPointF result = DU::toQPointF(Rez::guiX(org));
     return result;
 }
 
 QPointF QGIWeldSymbol::getTailPoint()
 {
     Base::Vector3d org = getLeader()->getTailPoint();
-    QPointF result(org.x, org.y);
+    QPointF result = DU::toQPointF(Rez::guiX(org));
     return result;
 }
 

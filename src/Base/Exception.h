@@ -671,6 +671,26 @@ public:
 };
 
 /**
+ * The PropertyError can be used to indicate the usage of a wrong property name or value.
+ * @author Mario Passaglia
+ */
+class BaseExport PropertyError: public AttributeError
+{
+public:
+    /// Construction
+    PropertyError();
+    explicit PropertyError(const char* sMessage);
+    explicit PropertyError(const std::string& sMessage);
+    PropertyError(const PropertyError&) = default;
+    PropertyError(PropertyError&&) = default;
+    /// Destruction
+    ~PropertyError() noexcept override = default;
+    PropertyError& operator=(const PropertyError&) = default;
+    PropertyError& operator=(PropertyError&&) = default;
+    PyObject* getPyExceptionType() const override;
+};
+
+/**
  * The RuntimeError can be used to indicate an unknown exception at runtime.
  * @author Werner Mayer
  */

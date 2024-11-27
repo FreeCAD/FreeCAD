@@ -43,6 +43,9 @@ SET(Start_SRCS
 
 add_library(Start SHARED ${Start_SRCS})
 target_link_libraries(Start ${Start_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(Start)
+endif()
 
 SET_BIN_DIR(Start Start /Mod/Start)
 SET_PYTHON_PREFIX_SUFFIX(Start)

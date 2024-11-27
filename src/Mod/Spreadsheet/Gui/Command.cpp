@@ -39,6 +39,7 @@
 
 #include "PropertiesDialog.h"
 #include "SpreadsheetView.h"
+#include "ViewProviderSpreadsheet.h"
 
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -250,27 +251,10 @@ void CmdSpreadsheetExport::activated(int iMsg)
 
         if (sheetView) {
             Sheet* sheet = sheetView->getSheet();
-            QString selectedFilter;
-            QString formatList = QObject::tr("CSV (*.csv *.CSV);;All (*)");
-            QString fileName = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
-                                                                QObject::tr("Export file"),
-                                                                QString(),
-                                                                formatList,
-                                                                &selectedFilter);
-            if (!fileName.isEmpty()) {
-                if (sheet) {
-                    char delim, quote, escape;
-                    std::string errMsg = "Export";
-                    bool isValid = sheet->getCharsFromPrefs(delim, quote, escape, errMsg);
-
-                    if (isValid) {
-                        sheet->exportToFile(fileName.toStdString(), delim, quote, escape);
-                    }
-                    else {
-                        Base::Console().Error(errMsg.c_str());
-                        return;
-                    }
-                }
+            Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(sheet);
+            auto* vps = dynamic_cast<ViewProviderSheet*>(vp);
+            if (vps) {
+                vps->exportAsFile();
             }
         }
     }
@@ -643,6 +627,7 @@ CmdSpreadsheetStyleBold::CmdSpreadsheetStyleBold()
     sWhatsThis = "Spreadsheet_StyleBold";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetStyleBold";
+    sAccel = "Ctrl+B";
 }
 
 void CmdSpreadsheetStyleBold::activated(int iMsg)
@@ -726,6 +711,7 @@ CmdSpreadsheetStyleItalic::CmdSpreadsheetStyleItalic()
     sWhatsThis = "Spreadsheet_StyleItalic";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetStyleItalic";
+    sAccel = "Ctrl+I";
 }
 
 void CmdSpreadsheetStyleItalic::activated(int iMsg)
@@ -809,6 +795,7 @@ CmdSpreadsheetStyleUnderline::CmdSpreadsheetStyleUnderline()
     sWhatsThis = "Spreadsheet_StyleUnderline";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetStyleUnderline";
+    sAccel = "Ctrl+U";
 }
 
 void CmdSpreadsheetStyleUnderline::activated(int iMsg)

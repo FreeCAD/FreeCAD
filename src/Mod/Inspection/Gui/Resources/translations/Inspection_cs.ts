@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="74"/>
       <source>Inspection</source>
-      <translation>Prohlížení</translation>
+      <translation>Inspekce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="75"/>
@@ -24,18 +24,18 @@
     <message>
       <location filename="../../Command.cpp" line="48"/>
       <source>Inspection</source>
-      <translation>Prohlížení</translation>
+      <translation>Inspekce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="49"/>
       <source>Visual inspection...</source>
-      <translation>Vizuální kontrola...</translation>
+      <translation>Vizuální inspekce...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="50"/>
       <location filename="../../Command.cpp" line="51"/>
       <source>Visual inspection</source>
-      <translation>Vizuální kontrola</translation>
+      <translation>Vizuální inspekce</translation>
     </message>
   </context>
   <context>
@@ -43,7 +43,7 @@
     <message>
       <location filename="../../VisualInspection.cpp" line="237"/>
       <source>Visual Inspection</source>
-      <translation>Vizuální kontrola</translation>
+      <translation>Vizuální inspekce</translation>
     </message>
   </context>
   <context>
@@ -51,7 +51,7 @@
     <message>
       <location filename="../../VisualInspection.ui" line="14"/>
       <source>Visual Inspection</source>
-      <translation>Vizuální kontrola</translation>
+      <translation>Vizuální inspekce</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="23"/>
@@ -94,38 +94,38 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="482"/>
+      <location filename="../../ViewProviderInspection.cpp" line="489"/>
       <source>Remove annotations</source>
       <translation>Odstranit poznámky</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="483"/>
+      <location filename="../../ViewProviderInspection.cpp" line="490"/>
       <source>Do you want to remove all annotations?</source>
       <translation>Chcete odstranit všechny poznámky?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="541"/>
+      <location filename="../../ViewProviderInspection.cpp" line="548"/>
       <source>Annotation</source>
       <translation>Poznámka</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="544"/>
+      <location filename="../../ViewProviderInspection.cpp" line="551"/>
       <source>Leave info mode</source>
       <translation>Opustit info režim</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="675"/>
+      <location filename="../../ViewProviderInspection.cpp" line="682"/>
       <source>Distance: &gt; %1</source>
       <translation>Vzdálenost: &gt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="679"/>
+      <location filename="../../ViewProviderInspection.cpp" line="686"/>
       <source>Distance: &lt; %1</source>
       <translation>Vzdálenost: &lt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="699"/>
-      <location filename="../../ViewProviderInspection.cpp" line="716"/>
+      <location filename="../../ViewProviderInspection.cpp" line="706"/>
+      <location filename="../../ViewProviderInspection.cpp" line="723"/>
       <source>Distance: %1</source>
       <translation>Vzdálenost: %1</translation>
     </message>

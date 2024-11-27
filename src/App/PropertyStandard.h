@@ -38,6 +38,8 @@
 
 
 namespace Base {
+class InputStream;
+class OutputStream;
 class Writer;
 }
 
@@ -1036,19 +1038,19 @@ public:
      */
     void setValue(const Material& mat);
     void setValue(const Color& col);
-    void setValue(float r, float g, float b, float a = 0.0F);
+    void setValue(float r, float g, float b, float a = 1.0F);
     void setValue(uint32_t rgba);
     void setAmbientColor(const Color& col);
-    void setAmbientColor(float r, float g, float b, float a = 0.0F);
+    void setAmbientColor(float r, float g, float b, float a = 1.0F);
     void setAmbientColor(uint32_t rgba);
     void setDiffuseColor(const Color& col);
-    void setDiffuseColor(float r, float g, float b, float a = 0.0F);
+    void setDiffuseColor(float r, float g, float b, float a = 1.0F);
     void setDiffuseColor(uint32_t rgba);
     void setSpecularColor(const Color& col);
-    void setSpecularColor(float r, float g, float b, float a = 0.0F);
+    void setSpecularColor(float r, float g, float b, float a = 1.0F);
     void setSpecularColor(uint32_t rgba);
     void setEmissiveColor(const Color& col);
-    void setEmissiveColor(float r, float g, float b, float a = 0.0F);
+    void setEmissiveColor(float r, float g, float b, float a = 1.0F);
     void setEmissiveColor(uint32_t rgba);
     void setShininess(float);
     void setTransparency(float);
@@ -1116,35 +1118,37 @@ public:
     {
         PropertyListsT<Material>::setValue(materials);
     }
+    void setValues(const std::vector<App::Material>& newValues = std::vector<App::Material>()) override;
     void setValue(const Material& mat);
     void setValue(int index, const Material& mat);
 
     void setAmbientColor(const Color& col);
-    void setAmbientColor(float r, float g, float b, float a = 0.0F);
+    void setAmbientColor(float r, float g, float b, float a = 1.0F);
     void setAmbientColor(uint32_t rgba);
     void setAmbientColor(int index, const Color& col);
-    void setAmbientColor(int index, float r, float g, float b, float a = 0.0F);
+    void setAmbientColor(int index, float r, float g, float b, float a = 1.0F);
     void setAmbientColor(int index, uint32_t rgba);
 
     void setDiffuseColor(const Color& col);
-    void setDiffuseColor(float r, float g, float b, float a = 0.0F);
+    void setDiffuseColor(float r, float g, float b, float a = 1.0F);
     void setDiffuseColor(uint32_t rgba);
     void setDiffuseColor(int index, const Color& col);
-    void setDiffuseColor(int index, float r, float g, float b, float a = 0.0F);
+    void setDiffuseColor(int index, float r, float g, float b, float a = 1.0F);
     void setDiffuseColor(int index, uint32_t rgba);
+    void setDiffuseColors(const std::vector<App::Color>& colors);
 
     void setSpecularColor(const Color& col);
-    void setSpecularColor(float r, float g, float b, float a = 0.0F);
+    void setSpecularColor(float r, float g, float b, float a = 1.0F);
     void setSpecularColor(uint32_t rgba);
     void setSpecularColor(int index, const Color& col);
-    void setSpecularColor(int index, float r, float g, float b, float a = 0.0F);
+    void setSpecularColor(int index, float r, float g, float b, float a = 1.0F);
     void setSpecularColor(int index, uint32_t rgba);
 
     void setEmissiveColor(const Color& col);
-    void setEmissiveColor(float r, float g, float b, float a = 0.0F);
+    void setEmissiveColor(float r, float g, float b, float a = 1.0F);
     void setEmissiveColor(uint32_t rgba);
     void setEmissiveColor(int index, const Color& col);
-    void setEmissiveColor(int index, float r, float g, float b, float a = 0.0F);
+    void setEmissiveColor(int index, float r, float g, float b, float a = 1.0F);
     void setEmissiveColor(int index, uint32_t rgba);
 
     void setShininess(float);
@@ -1152,6 +1156,7 @@ public:
 
     void setTransparency(float);
     void setTransparency(int index, float);
+    void setTransparencies(const std::vector<float>& transparencies);
 
     const Color& getAmbientColor() const;
     const Color& getAmbientColor(int index) const;
@@ -1171,6 +1176,7 @@ public:
 
     float getTransparency() const;
     float getTransparency(int index) const;
+    std::vector<float> getTransparencies() const;
 
     PyObject* getPyObject() override;
 
@@ -1193,14 +1199,18 @@ private:
     enum Format {
         Version_0,
         Version_1,
-        Version_2
+        Version_2,
+        Version_3
     };
 
     void RestoreDocFileV0(uint32_t count, Base::Reader& reader);
-    void RestoreDocFileV1(Base::Reader& reader);
+    void RestoreDocFileV3(Base::Reader& reader);
+
+    void writeString(Base::OutputStream& str, const std::string &value) const;
+    void readString(Base::InputStream& str, std::string& value);
 
     void verifyIndex(int index) const;
-    void setSizeOne();
+    void setMinimumSizeOne();
     int resizeByOneIfNeeded(int index);
 
     Format formatVersion {Version_0};

@@ -61,6 +61,7 @@
 #include <dirent.h>
 #include <unistd.h>
 #include <sys/stat.h>
+#include <limits.h>
 #endif
 
 // STL

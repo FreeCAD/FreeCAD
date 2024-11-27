@@ -40,6 +40,11 @@ public:
         Subtractive
     };
 
+    enum class RefineErrorPolicy {
+        Raise = 0,
+        Warn
+    };
+
     FeatureAddSub();
 
     Type getAddSubType();
@@ -54,9 +59,7 @@ public:
 protected:
     Type addSubType{Additive};
 
-    // TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
-    TopoDS_Shape refineShapeIfActive(const TopoDS_Shape&) const;
-    TopoShape refineShapeIfActive(const TopoShape&) const;
+    TopoShape refineShapeIfActive(const TopoShape& oldShape, const RefineErrorPolicy onError = RefineErrorPolicy::Raise) const;
 };
 
 using FeatureAddSubPython = App::FeaturePythonT<FeatureAddSub>;

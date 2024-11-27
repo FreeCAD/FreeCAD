@@ -26,7 +26,7 @@
 
 
 #include "ViewProviderDocumentObject.h"
-#include "ViewProviderPythonFeature.h"
+#include "ViewProviderFeaturePython.h"
 
 namespace Gui {
 
@@ -49,7 +49,7 @@ public:
 
 };
 
-using ViewProviderMaterialObjectPython = ViewProviderPythonFeatureT<ViewProviderMaterialObject>;
+using ViewProviderMaterialObjectPython = ViewProviderFeaturePythonT<ViewProviderMaterialObject>;
 
 } // namespace Gui
 

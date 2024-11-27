@@ -40,16 +40,22 @@
 #include <Gui/ViewProvider.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawViewImage.h>
+#include <Mod/TechDraw/App/DrawUtil.h>
 
 #include "TaskActiveView.h"
 #include "ui_TaskActiveView.h"
 #include "Grabber3d.h"
 #include "ViewProviderImage.h"
+#include "Rez.h"
 
 
 using namespace Gui;
 using namespace TechDraw;
 using namespace TechDrawGui;
+using DU = DrawUtil;
+
+constexpr int SXGAWidth{1280};
+constexpr int SXGAHeight{1024};
 
 //ctor for creation
 TaskActiveView::TaskActiveView(TechDraw::DrawPage* pageFeat)
@@ -62,6 +68,7 @@ TaskActiveView::TaskActiveView(TechDraw::DrawPage* pageFeat)
     ui->qsbHeight->setUnit(Base::Unit::Length);
 
     setUiPrimary();
+    connect(ui->cbCrop, &QCheckBox::clicked, this, &TaskActiveView::onCropChanged);
 }
 
 TaskActiveView::~TaskActiveView() {}
@@ -84,6 +91,11 @@ void TaskActiveView::setUiPrimary()
 {
     //    Base::Console().Message("TAV::setUiPrimary()\n");
     setWindowTitle(QObject::tr("ActiveView to TD View"));
+    ui->cbCrop->setChecked(false);
+    enableCrop(false);
+    // cropping is in mm, but image size is in pixels/scene units
+    ui->qsbWidth->setValue(Rez::appX(SXGAWidth));
+    ui->qsbHeight->setValue(Rez::appX(SXGAHeight));
 }
 
 void TaskActiveView::blockButtons(bool b) { Q_UNUSED(b); }
@@ -180,9 +192,15 @@ TechDraw::DrawViewImage* TaskActiveView::createActiveView()
         bg = QColor(Qt::transparent);
     }
 
-    QImage image(100, 100,
-                 QImage::Format_RGB32);    //arbitrary initial image size. quickView will use
-                                           //MdiView size in pixels
+    int imageWidth{SXGAWidth};
+    int imageHeight{SXGAHeight};
+    if (ui->cbCrop->isChecked()) {
+        imageWidth = Rez::guiX(ui->qsbWidth->rawValue());
+        imageHeight = Rez::guiX(ui->qsbHeight->rawValue());
+    }
+
+    QImage image(imageWidth, imageHeight,
+                 QImage::Format_RGB32);    //arbitrary initial image size.
     image.fill(QColor(Qt::transparent));
     Grabber3d::quickView(view3d, bg, image);
     bool success = image.save(Base::Tools::fromStdString(tempName));
@@ -191,12 +209,9 @@ TechDraw::DrawViewImage* TaskActiveView::createActiveView()
         Base::Console().Error("ActiveView could not save file: %s\n", fileSpec.c_str());
     }
 
-    //backslashes in windows fileSpec upsets python
-    std::regex rxBackslash("\\\\");    //this rx really means match to a single '\'
-    std::string noBackslash = std::regex_replace(tempName, rxBackslash, "/");
-
+    tempName = DU::cleanFilespecBackslash(tempName);
     Command::doCommand(Command::Doc, "App.getDocument('%s').%s.ImageFile = '%s'",
-                       documentName.c_str(), imageName.c_str(), noBackslash.c_str());
+                       documentName.c_str(), imageName.c_str(), tempName.c_str());
     Command::doCommand(Command::Doc, "App.getDocument('%s').%s.Width = %.5f", documentName.c_str(),
                        imageName.c_str(), ui->qsbWidth->rawValue());
     Command::doCommand(Command::Doc, "App.getDocument('%s').%s.Height = %.5f", documentName.c_str(),
@@ -218,6 +233,17 @@ TechDraw::DrawViewImage* TaskActiveView::createActiveView()
     }
 
     return newImg;
+}
+
+void TaskActiveView::onCropChanged()
+{
+    enableCrop(ui->cbCrop->isChecked());
+}
+
+void TaskActiveView::enableCrop(bool state)
+{
+    ui->qsbHeight->setEnabled(state);
+    ui->qsbWidth->setEnabled(state);
 }
 
 //******************************************************************************

@@ -66,7 +66,7 @@ def linkSubList_convertToOldStyle(references):
                 result.append((tup[0], subname))
             if len(tup[1]) == 0:
                 result.append((tup[0], ''))
-        elif isinstance(tup[1],basestring):
+        elif isinstance(tup[1],str):
             # old style references, no conversion required
             result.append(tup)
     return result

@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <sstream>
+#include <sstream>
 #endif
 
 #include <App/DocumentObject.h>
@@ -39,12 +39,10 @@ using namespace Path;
 TYPESYSTEM_SOURCE(Path::PropertyPath, App::Property)
 
 PropertyPath::PropertyPath()
-{
-}
+{}
 
 PropertyPath::~PropertyPath()
-{
-}
+{}
 
 void PropertyPath::setValue(const Toolpath& pa)
 {
@@ -54,20 +52,20 @@ void PropertyPath::setValue(const Toolpath& pa)
 }
 
 
-const Toolpath &PropertyPath::getValue()const
+const Toolpath& PropertyPath::getValue() const
 {
     return _Path;
 }
 
-PyObject *PropertyPath::getPyObject()
+PyObject* PropertyPath::getPyObject()
 {
     return new PathPy(new Toolpath(_Path));
 }
 
-void PropertyPath::setPyObject(PyObject *value)
+void PropertyPath::setPyObject(PyObject* value)
 {
     if (PyObject_TypeCheck(value, &(PathPy::Type))) {
-        PathPy *pcObject = static_cast<PathPy*>(value);
+        PathPy* pcObject = static_cast<PathPy*>(value);
         setValue(*pcObject->getToolpathPtr());
     }
     else {
@@ -77,39 +75,39 @@ void PropertyPath::setPyObject(PyObject *value)
     }
 }
 
-App::Property *PropertyPath::Copy() const
+App::Property* PropertyPath::Copy() const
 {
-    PropertyPath *prop = new PropertyPath();
+    PropertyPath* prop = new PropertyPath();
     prop->_Path = this->_Path;
 
     return prop;
 }
 
-void PropertyPath::Paste(const App::Property &from)
+void PropertyPath::Paste(const App::Property& from)
 {
     aboutToSetValue();
     _Path = dynamic_cast<const PropertyPath&>(from)._Path;
     hasSetValue();
 }
 
-unsigned int PropertyPath::getMemSize () const
+unsigned int PropertyPath::getMemSize() const
 {
     return _Path.getMemSize();
 }
 
-void PropertyPath::Save (Base::Writer &writer) const
+void PropertyPath::Save(Base::Writer& writer) const
 {
     _Path.Save(writer);
 }
 
-void PropertyPath::Restore(Base::XMLReader &reader)
+void PropertyPath::Restore(Base::XMLReader& reader)
 {
     reader.readElement("Path");
 
-    std::string file (reader.getAttribute("file") );
+    std::string file(reader.getAttribute("file"));
     if (!file.empty()) {
         // initiate a file read
-        reader.addFile(file.c_str(),this);
+        reader.addFile(file.c_str(), this);
     }
 
     if (reader.hasAttribute("version")) {
@@ -125,15 +123,15 @@ void PropertyPath::Restore(Base::XMLReader &reader)
     }
 }
 
-void PropertyPath::SaveDocFile (Base::Writer &) const
+void PropertyPath::SaveDocFile(Base::Writer&) const
 {
     // does nothing
 }
 
-void PropertyPath::RestoreDocFile(Base::Reader &reader)
+void PropertyPath::RestoreDocFile(Base::Reader& reader)
 {
-    App::PropertyContainer *container = getContainer();
-    App::DocumentObject *obj = nullptr;
+    App::PropertyContainer* container = getContainer();
+    App::DocumentObject* obj = nullptr;
     if (container->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
         obj = static_cast<App::DocumentObject*>(container);
     }
@@ -150,6 +148,3 @@ void PropertyPath::RestoreDocFile(Base::Reader &reader)
         obj->setStatus(App::ObjectStatus::Restore, false);
     }
 }
-
-
-

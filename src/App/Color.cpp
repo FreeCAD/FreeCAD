@@ -67,6 +67,16 @@ void Color::set(float red, float green, float blue, float alpha)
     a = alpha;
 }
 
+float Color::transparency() const
+{
+    return 1.0F - a;
+}
+
+void Color::setTransparency(float value)
+{
+    a = 1.0F - value;
+}
+
 // NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 Color& Color::setPackedValue(uint32_t rgba)
 {
@@ -129,12 +139,14 @@ void Color::setPackedARGB(uint32_t argb)
 
 std::string Color::asHexString() const
 {
+    // clang-format off
     std::stringstream ss;
     ss << "#" << std::hex << std::uppercase << std::setfill('0')
        << std::setw(2) << int(std::lround(r * 255.0F))
        << std::setw(2) << int(std::lround(g * 255.0F))
        << std::setw(2) << int(std::lround(b * 255.0F));
     return ss.str();
+    // clang-format on
 }
 
 bool Color::fromHexString(const std::string& hex)

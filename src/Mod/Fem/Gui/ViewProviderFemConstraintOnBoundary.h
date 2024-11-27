@@ -24,9 +24,13 @@
 #ifndef GUI_VIEWPROVIDERFEMCONSTRAINTONBOUNDARY_H
 #define GUI_VIEWPROVIDERFEMCONSTRAINTONBOUNDARY_H
 
-#include <Mod/Part/App/PartFeature.h>
-
 #include "ViewProviderFemConstraint.h"
+
+
+namespace Part
+{
+class Feature;
+}
 
 namespace FemGui
 {
