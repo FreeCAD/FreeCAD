@@ -15,5 +15,11 @@
       <Author Licence="LGPL" Name="DavidCarter" EMail="dcarter@davidcarter.ca" />
       <UserDocu>Material property descriptions.</UserDocu>
     </Documentation>
+    <Attribute Name="Value" ReadOnly="true">
+      <Documentation>
+        <UserDocu>The value of the material property.</UserDocu>
+      </Documentation>
+      <Parameter Name="Value" Type="Object"/>
+    </Attribute>
   </PythonExport>
 </GenerateModel>

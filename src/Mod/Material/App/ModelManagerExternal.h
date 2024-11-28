@@ -56,6 +56,8 @@ public:
     // Model management
     void
     addModel(const QString& libraryName, const QString& path, const std::shared_ptr<Model>& model);
+    void
+    migrateModel(const QString& libraryName, const QString& path, const std::shared_ptr<Model>& model);
 
 private:
 };

@@ -166,22 +166,22 @@ public:
     ~LibraryNotFound() noexcept override = default;
 };
 
-class LibraryCreationError: public Base::Exception
+class CreationError: public Base::Exception
 {
 public:
-    LibraryCreationError()
+    CreationError()
     {
-        this->setMessage("Unable to create library");
+        this->setMessage("Unable to create object");
     }
-    explicit LibraryCreationError(const char* msg)
+    explicit CreationError(const char* msg)
     {
         this->setMessage(msg);
     }
-    explicit LibraryCreationError(const QString& msg)
+    explicit CreationError(const QString& msg)
     {
         this->setMessage(msg.toStdString().c_str());
     }
-    ~LibraryCreationError() noexcept override = default;
+    ~CreationError() noexcept override = default;
 };
 
 class InvalidModel: public Base::Exception
@@ -250,6 +250,24 @@ public:
         this->setMessage(msg.toStdString().c_str());
     }
     ~DeleteError() noexcept override = default;
+};
+
+class ConnectionError: public Base::Exception
+{
+public:
+    ConnectionError()
+    {
+        this->setMessage("Unable to connect");
+    }
+    explicit ConnectionError(const char* msg)
+    {
+        this->setMessage(msg);
+    }
+    explicit ConnectionError(const QString& msg)
+    {
+        this->setMessage(msg.toStdString().c_str());
+    }
+    ~ConnectionError() noexcept override = default;
 };
 
 }  // namespace Materials

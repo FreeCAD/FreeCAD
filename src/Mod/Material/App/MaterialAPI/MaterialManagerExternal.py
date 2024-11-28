@@ -131,6 +131,14 @@ class MaterialManagerExternal(ABC):
         pass
 
     @abstractmethod
+    def migrateModel(self, library: str, path: str, model: Materials.Model) -> None:
+        pass
+
+    @abstractmethod
+    def updateModel(self, library: str, path: str, model: Materials.Model) -> None:
+        pass
+
+    @abstractmethod
     def setModelPath(self, library: str, path: str, model: Materials.Model) -> None:
         pass
 
@@ -161,6 +169,14 @@ class MaterialManagerExternal(ABC):
 
     @abstractmethod
     def addMaterial(self, library: str, path: str, material: Materials.Material) -> None:
+        pass
+
+    @abstractmethod
+    def migrateMaterial(self, library: str, path: str, material: Materials.Material) -> None:
+        pass
+
+    @abstractmethod
+    def updateMaterial(self, library: str, path: str, material: Materials.Material) -> None:
         pass
 
     @abstractmethod

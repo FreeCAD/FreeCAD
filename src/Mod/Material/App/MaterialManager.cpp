@@ -192,7 +192,7 @@ std::shared_ptr<MaterialLibrary> MaterialManager::getLibrary(const QString& name
 
 void MaterialManager::createLibrary(const QString& libraryName, const QString& icon, bool readOnly)
 {
-    throw LibraryCreationError("Local library requires a path");
+    throw CreationError("Local library requires a path");
 }
 
 void MaterialManager::createLocalLibrary(const QString& libraryName,
@@ -451,6 +451,6 @@ void MaterialManager::migrateToExternal(const std::shared_ptr<Materials::Materia
                             name.toStdString().c_str());
 
         auto material = _localManager->getMaterial(uuid);
-        _externalManager->addMaterial(library->getName(), path, material);
+        _externalManager->migrateMaterial(library->getName(), path, material);
     }
 }

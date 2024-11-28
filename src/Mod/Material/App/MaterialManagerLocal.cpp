@@ -141,7 +141,7 @@ void MaterialManagerLocal::createLibrary(const QString& libraryName,
     QDir dir;
     if (!dir.exists(directory)) {
         if (!dir.mkpath(directory)) {
-            throw LibraryCreationError();
+            throw CreationError("Unable to create library path");
         }
     }
 

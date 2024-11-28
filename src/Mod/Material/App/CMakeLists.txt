@@ -130,6 +130,8 @@ SET(Materials_SRCS
     PreCompiled.h
     PropertyMaterial.cpp
     PropertyMaterial.h
+    PyVariants.cpp
+    PyVariants.h
     trim.h
 )
 

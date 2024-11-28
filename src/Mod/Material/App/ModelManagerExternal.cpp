@@ -91,3 +91,10 @@ void ModelManagerExternal::addModel(const QString& libraryName,
 {
     ExternalManager::getManager()->addModel(libraryName, path, model);
 }
+
+void ModelManagerExternal::migrateModel(const QString& libraryName,
+                                    const QString& path,
+                                    const std::shared_ptr<Model>& model)
+{
+    ExternalManager::getManager()->migrateModel(libraryName, path, model);
+}

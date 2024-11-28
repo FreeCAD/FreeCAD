@@ -60,8 +60,12 @@ public:
     // Folder management
 
     // Material management
-    void
-    addMaterial(const QString& libraryName, const QString& path, const std::shared_ptr<Material>& material);
+    void addMaterial(const QString& libraryName,
+                     const QString& path,
+                     const std::shared_ptr<Material>& material);
+    void migrateMaterial(const QString& libraryName,
+                     const QString& path,
+                     const std::shared_ptr<Material>& material);
 
 private:
 };

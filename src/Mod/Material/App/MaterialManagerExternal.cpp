@@ -91,3 +91,10 @@ void MaterialManagerExternal::addMaterial(const QString& libraryName,
 {
     ExternalManager::getManager()->addMaterial(libraryName, path, material);
 }
+
+void MaterialManagerExternal::migrateMaterial(const QString& libraryName,
+                                          const QString& path,
+                                          const std::shared_ptr<Material>& material)
+{
+    ExternalManager::getManager()->migrateMaterial(libraryName, path, material);
+}

@@ -36,16 +36,14 @@
 #include "MaterialLibrary.h"
 #include "MaterialPy.h"
 #include "MaterialValue.h"
+#include "PyVariants.h"
+
 #include "ModelPropertyPy.h"
 #include "MaterialPropertyPy.h"
 
 #include "MaterialPy.cpp"
 
 using namespace Materials;
-
-// Forward declaration
-static PyObject* _pyObjectFromVariant(const QVariant& value);
-static Py::List getList(const QVariant& value);
 
 // returns a string which represents the object e.g. when printed in python
 std::string MaterialPy::representation() const
@@ -453,52 +451,6 @@ Py::Dict MaterialPy::getLegacyProperties() const
     }
 
     return dict;
-}
-
-static Py::List getList(const QVariant& value)
-{
-    auto listValue = value.value<QList<QVariant>>();
-    Py::List list;
-
-    for (auto& it : listValue) {
-        list.append(Py::Object(_pyObjectFromVariant(it)));
-    }
-
-    return list;
-}
-
-static PyObject* _pyObjectFromVariant(const QVariant& value)
-{
-    if (value.isNull()) {
-        Py_RETURN_NONE;
-    }
-
-    if (value.userType() == qMetaTypeId<Base::Quantity>()) {
-        return new Base::QuantityPy(new Base::Quantity(value.value<Base::Quantity>()));
-    }
-    if (value.userType() == QMetaType::Double) {
-        return PyFloat_FromDouble(value.toDouble());
-    }
-    if (value.userType() == QMetaType::Float) {
-        return PyFloat_FromDouble(value.toFloat());
-    }
-    if (value.userType() == QMetaType::Int) {
-        return PyLong_FromLong(value.toInt());
-    }
-    if (value.userType() == QMetaType::Long) {
-        return PyLong_FromLong(value.toInt());
-    }
-    if (value.userType() == QMetaType::Bool) {
-        return Py::new_reference_to(Py::Boolean(value.toBool()));
-    }
-    if (value.userType() == QMetaType::QString) {
-        return PyUnicode_FromString(value.toString().toStdString().c_str());
-    }
-    if (value.userType() == qMetaTypeId<QList<QVariant>>()) {
-        return Py::new_reference_to(getList(value));
-    }
-
-    throw UnknownValueType();
 }
 
 PyObject* MaterialPy::getPhysicalValue(PyObject* args)

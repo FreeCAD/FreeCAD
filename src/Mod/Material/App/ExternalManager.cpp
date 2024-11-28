@@ -32,6 +32,7 @@
 #include <App/Application.h>
 #include <CXX/Objects.hxx>
 
+#include "Exceptions.h"
 #include "ExternalManager.h"
 #include "MaterialPy.h"
 #include "ModelPy.h"
@@ -130,40 +131,48 @@ std::shared_ptr<std::vector<std::tuple<QString, QString, bool>>> ExternalManager
 {
     auto libList = std::make_shared<std::vector<std::tuple<QString, QString, bool>>>();
 
-    if (_instantiated) {
-        Base::PyGILStateLocker lock;
-        try {
-            if (_managerObject.hasAttr("libraries")) {
-                Base::Console().Log("\tFound libraries()\n");
-                Py::Callable libraries(_managerObject.getAttr("libraries"));
-                Py::List list(libraries.apply());
-                for (auto library : list) {
-                    auto entry = Py::Tuple(library);
+    if (!_instantiated) {
+        instantiate();
 
-                    auto pyName = entry.getItem(0);
-                    QString libraryName;
-                    if (!pyName.isNone()) {
-                        libraryName = QString::fromStdString(pyName.as_string());
-                    }
-                    auto pyIcon = entry.getItem(1);
-                    QString icon;
-                    if (!pyIcon.isNone()) {
-                        icon = QString::fromStdString(pyIcon.as_string());
-                    }
-                    auto pyReadOnly = entry.getItem(2);
-                    bool readOnly = pyReadOnly.as_bool();
+        if (!_instantiated) {
+            throw ConnectionError();
+        }
+    }
 
-                    libList->push_back(
-                        std::tuple<QString, QString, bool>(libraryName, icon, readOnly));
+    Base::PyGILStateLocker lock;
+    try {
+        if (_managerObject.hasAttr("libraries")) {
+            Base::Console().Log("\tFound libraries()\n");
+            Py::Callable libraries(_managerObject.getAttr("libraries"));
+            Py::List list(libraries.apply());
+            for (auto library : list) {
+                auto entry = Py::Tuple(library);
+
+                auto pyName = entry.getItem(0);
+                QString libraryName;
+                if (!pyName.isNone()) {
+                    libraryName = QString::fromStdString(pyName.as_string());
                 }
-            }
-            else {
-                Base::Console().Log("\tlibraries() not found\n");
+                auto pyIcon = entry.getItem(1);
+                QString icon;
+                if (!pyIcon.isNone()) {
+                    icon = QString::fromStdString(pyIcon.as_string());
+                }
+                auto pyReadOnly = entry.getItem(2);
+                bool readOnly = pyReadOnly.as_bool();
+
+                libList->push_back(
+                    std::tuple<QString, QString, bool>(libraryName, icon, readOnly));
             }
         }
-        catch (Py::Exception& e) {
-            e.clear();
+        else {
+            Base::Console().Log("\tlibraries() not found\n");
+            throw ConnectionError();
         }
+    }
+    catch (Py::Exception& e) {
+        Base::PyException e1;  // extract the Python error text
+        throw LibraryNotFound(e1.what());
     }
 
     return libList;
@@ -173,28 +182,33 @@ void ExternalManager::createLibrary(const QString& libraryName,
                                     const QString& icon,
                                     bool readOnly)
 {
-    if (_instantiated) {
-        Base::PyGILStateLocker lock;
-        try {
-            if (_managerObject.hasAttr("createLibrary")) {
-                Base::Console().Log("\tcreateLibrary()\n");
-                Py::Callable libraries(_managerObject.getAttr("createLibrary"));
-                Py::Tuple args(3);
-                args.setItem(0, Py::String(libraryName.toStdString()));
-                args.setItem(1, Py::String(icon.toStdString()));
-                args.setItem(2, Py::Boolean(readOnly));
-                libraries.apply(args); // No return expected
-            }
-            else {
-                Base::Console().Log("\tcreateLibrary() not found\n");
-            }
+    if (!_instantiated) {
+        instantiate();
+
+        if (!_instantiated) {
+            throw ConnectionError();
         }
-        catch (Py::Exception& e) {
-            // // Base::Console().Log("Python error '%s'\n", e.what().c_str());
-            // Base::PyException e1;  // extract the Python error text
-            // e1.ReportException();
-            e.clear();
+    }
+
+    Base::PyGILStateLocker lock;
+    try {
+        if (_managerObject.hasAttr("createLibrary")) {
+            Base::Console().Log("\tcreateLibrary()\n");
+            Py::Callable libraries(_managerObject.getAttr("createLibrary"));
+            Py::Tuple args(3);
+            args.setItem(0, Py::String(libraryName.toStdString()));
+            args.setItem(1, Py::String(icon.toStdString()));
+            args.setItem(2, Py::Boolean(readOnly));
+            libraries.apply(args); // No return expected
         }
+        else {
+            Base::Console().Log("\tcreateLibrary() not found\n");
+            throw ConnectionError();
+        }
+    }
+    catch (Py::Exception& e) {
+        Base::PyException e1;  // extract the Python error text
+        throw CreationError(e1.what());
     }
 }
 
@@ -208,25 +222,67 @@ void ExternalManager::addModel(const QString& libraryName,
                                const QString& path,
                                const std::shared_ptr<Model>& model)
 {
-    if (_instantiated) {
-        Base::PyGILStateLocker lock;
-        try {
-            if (_managerObject.hasAttr("addModel")) {
-                Base::Console().Log("\taddModel()\n");
-                Py::Callable libraries(_managerObject.getAttr("addModel"));
-                Py::Tuple args(3);
-                args.setItem(0, Py::String(libraryName.toStdString()));
-                args.setItem(1, Py::String(path.toStdString()));
-                args.setItem(2, Py::Object(new ModelPy(new Model(*model)), true));
-                libraries.apply(args);  // No return expected
-            }
-            else {
-                Base::Console().Log("\taddModel() not found\n");
-            }
+    if (!_instantiated) {
+        instantiate();
+
+        if (!_instantiated) {
+            throw ConnectionError();
         }
-        catch (Py::Exception& e) {
-            e.clear();
+    }
+
+    Base::PyGILStateLocker lock;
+    try {
+        if (_managerObject.hasAttr("addModel")) {
+            Base::Console().Log("\taddModel()\n");
+            Py::Callable libraries(_managerObject.getAttr("addModel"));
+            Py::Tuple args(3);
+            args.setItem(0, Py::String(libraryName.toStdString()));
+            args.setItem(1, Py::String(path.toStdString()));
+            args.setItem(2, Py::Object(new ModelPy(new Model(*model)), true));
+            libraries.apply(args);  // No return expected
         }
+        else {
+            Base::Console().Log("\taddModel() not found\n");
+            throw ConnectionError();
+        }
+    }
+    catch (Py::Exception& e) {
+        Base::PyException e1;  // extract the Python error text
+        throw CreationError(e1.what());
+    }
+}
+
+void ExternalManager::migrateModel(const QString& libraryName,
+                               const QString& path,
+                               const std::shared_ptr<Model>& model)
+{
+    if (!_instantiated) {
+        instantiate();
+
+        if (!_instantiated) {
+            throw ConnectionError();
+        }
+    }
+
+    Base::PyGILStateLocker lock;
+    try {
+        if (_managerObject.hasAttr("migrateModel")) {
+            Base::Console().Log("\tmigrateModel()\n");
+            Py::Callable libraries(_managerObject.getAttr("migrateModel"));
+            Py::Tuple args(3);
+            args.setItem(0, Py::String(libraryName.toStdString()));
+            args.setItem(1, Py::String(path.toStdString()));
+            args.setItem(2, Py::Object(new ModelPy(new Model(*model)), true));
+            libraries.apply(args);  // No return expected
+        }
+        else {
+            Base::Console().Log("\tmigrateModel() not found\n");
+            throw ConnectionError();
+        }
+    }
+    catch (Py::Exception& e) {
+        Base::PyException e1;  // extract the Python error text
+        throw CreationError(e1.what());
     }
 }
 
@@ -240,24 +296,66 @@ void ExternalManager::addMaterial(const QString& libraryName,
                                   const QString& path,
                                   const std::shared_ptr<Material>& material)
 {
-    if (_instantiated) {
-        Base::PyGILStateLocker lock;
-        try {
-            if (_managerObject.hasAttr("addMaterial")) {
-                Base::Console().Log("\taddMaterial()\n");
-                Py::Callable libraries(_managerObject.getAttr("addMaterial"));
-                Py::Tuple args(3);
-                args.setItem(0, Py::String(libraryName.toStdString()));
-                args.setItem(1, Py::String(path.toStdString()));
-                args.setItem(2, Py::Object(new MaterialPy(new Material(*material)), true));
-                libraries.apply(args);  // No return expected
-            }
-            else {
-                Base::Console().Log("\taddMaterial() not found\n");
-            }
+    if (!_instantiated) {
+        instantiate();
+
+        if (!_instantiated) {
+            throw ConnectionError();
         }
-        catch (Py::Exception& e) {
-            e.clear();
+    }
+
+    Base::PyGILStateLocker lock;
+    try {
+        if (_managerObject.hasAttr("addMaterial")) {
+            Base::Console().Log("\taddMaterial()\n");
+            Py::Callable libraries(_managerObject.getAttr("addMaterial"));
+            Py::Tuple args(3);
+            args.setItem(0, Py::String(libraryName.toStdString()));
+            args.setItem(1, Py::String(path.toStdString()));
+            args.setItem(2, Py::Object(new MaterialPy(new Material(*material)), true));
+            libraries.apply(args);  // No return expected
         }
+        else {
+            Base::Console().Log("\taddMaterial() not found\n");
+            throw ConnectionError();
+        }
+    }
+    catch (Py::Exception& e) {
+        Base::PyException e1;  // extract the Python error text
+        throw CreationError(e1.what());
+    }
+}
+
+void ExternalManager::migrateMaterial(const QString& libraryName,
+                                  const QString& path,
+                                  const std::shared_ptr<Material>& material)
+{
+    if (!_instantiated) {
+        instantiate();
+
+        if (!_instantiated) {
+            throw ConnectionError();
+        }
+    }
+
+    Base::PyGILStateLocker lock;
+    try {
+        if (_managerObject.hasAttr("migrateMaterial")) {
+            Base::Console().Log("\tmigrateMaterial()\n");
+            Py::Callable libraries(_managerObject.getAttr("migrateMaterial"));
+            Py::Tuple args(3);
+            args.setItem(0, Py::String(libraryName.toStdString()));
+            args.setItem(1, Py::String(path.toStdString()));
+            args.setItem(2, Py::Object(new MaterialPy(new Material(*material)), true));
+            libraries.apply(args);  // No return expected
+        }
+        else {
+            Base::Console().Log("\tmigrateMaterial() not found\n");
+            throw ConnectionError();
+        }
+    }
+    catch (Py::Exception& e) {
+        Base::PyException e1;  // extract the Python error text
+        throw CreationError(e1.what());
     }
 }
