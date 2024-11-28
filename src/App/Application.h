@@ -78,7 +78,6 @@ class AppExport Application
 {
 
 public:
-
     //---------------------------------------------------------------------
     // exported functions go here +++++++++++++++++++++++++++++++++++++++++
     //---------------------------------------------------------------------
@@ -205,6 +204,8 @@ public:
     void closeActiveTransaction(bool abort=false, int id=0);
     //@}
 
+    // NOLINTBEGIN
+    // clang-format off
     /** @name Signals of the Application */
     //@{
     /// signal on new Document
@@ -311,7 +312,9 @@ public:
     boost::signals2::signal<void (const App::ExtensionContainer&, std::string extension)> signalBeforeAddingDynamicExtension;
     /// signal after the extension was added
     boost::signals2::signal<void (const App::ExtensionContainer&, std::string extension)> signalAddedDynamicExtension;
-     //@}
+    //@}
+    // clang-format off
+    // NOLINTEND
 
 
     /** @name methods for parameter handling */
