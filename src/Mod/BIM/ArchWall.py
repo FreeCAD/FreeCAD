@@ -222,12 +222,22 @@ class _Wall(ArchComponent.Component):
         self.connectEdges = []
         self.Type = "Wall"
 
-    def dumps(self):  # Supercede Arch.Component.dumps()
+    def dumps(self):
+        super().dumps()
         return self.ArchSkPropSetPickedUuid, self.ArchSkPropSetListPrev
 
     def loads(self,state):
-        self.ArchSkPropSetPickedUuid = state[0]
-        self.ArchSkPropSetListPrev = state[1]
+        super().loads(state)  # do nothing as of 2024.11.28
+        if state == None:
+            return
+        elif state[0] == 'W':  # state[1] == 'a', behaviour before 2024.11.28
+            return
+        elif state[0] == 'Wall':
+            self.ArchSkPropSetPickedUuid = state[1]
+            self.ArchSkPropSetListPrev = state[2]
+        elif state[0] != 'Wall':  # model before merging super.dumps/loads()
+            self.ArchSkPropSetPickedUuid = state[0]
+            self.ArchSkPropSetListPrev = state[1]
 
     def onDocumentRestored(self,obj):
         """Method run when the document is restored. Re-adds the Arch component, and Arch wall properties."""
