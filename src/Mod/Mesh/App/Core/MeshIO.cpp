@@ -108,6 +108,37 @@ struct QUAD
     int iV[4];
 };
 
+// This is a workaround for the issue described at:
+// https://github.com/Zipios/Zipios/issues/43#issue-1618151314
+//
+// The workaround creates a tmp. ZIP file and uses the Python API
+// to open the file zipios++ isn't able to handle and to copy over
+// the files.
+class ZipFixer
+{
+public:
+    ZipFixer(const char* filename)
+        : tmp {Base::FileInfo::getTempFileName()}
+    {
+        Base::ZipTools::rewrite(filename, tmp.filePath().c_str());
+        str.open(tmp, std::ios::in | std::ios::binary);
+    }
+
+    ~ZipFixer()
+    {
+        tmp.deleteFile();
+    }
+
+    Base::ifstream& getStream()
+    {
+        return str;
+    }
+
+private:
+    Base::FileInfo tmp;
+    Base::ifstream str;
+};
+
 }  // namespace MeshCore
 
 // --------------------------------------------------------------
@@ -227,7 +258,13 @@ bool MeshInput::LoadAny(const char* FileName)
         ok = LoadSMF(str);
     }
     else if (fi.hasExtension("3mf")) {
-        ok = Load3MF(str);
+        try {
+            ok = Load3MF(str);
+        }
+        catch (const zipios::FCollException&) {
+            ZipFixer zip(FileName);
+            ok = Load3MF(zip.getStream());
+        }
     }
     else if (fi.hasExtension("off")) {
         ok = LoadOFF(str);

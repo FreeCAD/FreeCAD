@@ -191,6 +191,26 @@ namespace Gui {
          */
         void importConfig(const std::string &packName, const boost::filesystem::path &path);
 
+        /**
+         * Get a list of all mod directories.
+         */
+        std::vector<boost::filesystem::path> modPaths() const;
+
+        /**
+         * Get the path to the saved preference packs.
+         */
+        boost::filesystem::path getSavedPreferencePacksPath() const;
+
+        /**
+         * Get the path to the preference packs of the resource directory.
+         */
+        boost::filesystem::path getResourcePreferencePacksPath() const;
+
+        /**
+         * Collect all preference packs of a directory.
+         */
+        std::vector<std::string> getPacksFromDirectory(const boost::filesystem::path& path) const;
+
     private:
 
         void FindPreferencePacksInPackage(const boost::filesystem::path& mod);

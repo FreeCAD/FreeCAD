@@ -30,6 +30,7 @@
 #endif
 
 #include <boost/filesystem.hpp>
+#include <boost/algorithm/string.hpp>
 #include <QDir>
 
 #include "PreferencePackManager.h"
@@ -48,6 +49,18 @@
 using namespace Gui;
 using namespace xercesc;
 namespace fs = boost::filesystem;
+
+static boost::filesystem::path getSavedPrefPacksPath()
+{
+    return fs::path(Base::FileInfo::stringToPath(App::Application::getUserAppDataDir()))
+        / "SavedPreferencePacks";
+}
+
+static boost::filesystem::path getResourcePrefPacksPath()
+{
+    return fs::path(Base::FileInfo::stringToPath(App::Application::getResourceDir())) / "Gui"
+        / "PreferencePacks";
+}
 
 PreferencePack::PreferencePack(const fs::path& path, const App::Metadata& metadata) :
     _path(path), _metadata(metadata)
@@ -89,7 +102,7 @@ bool PreferencePack::apply() const
     }
 
     // Back up the old config file
-    auto savedPreferencePacksDirectory = fs::path(Base::FileInfo::stringToPath(App::Application::getUserAppDataDir())) / "SavedPreferencePacks";
+    auto savedPreferencePacksDirectory = getSavedPrefPacksPath();
     auto backupFile = savedPreferencePacksDirectory / "user.cfg.backup";
     try {
         fs::remove(backupFile);
@@ -134,12 +147,11 @@ void PreferencePack::applyConfigChanges() const
 }
 
 PreferencePackManager::PreferencePackManager()
+    : _preferencePackPaths(modPaths())
 {
-    auto modPath = fs::path(Base::FileInfo::stringToPath(App::Application::getUserAppDataDir())) / "Mod";
-    auto savedPath = fs::path(Base::FileInfo::stringToPath(App::Application::getUserAppDataDir())) / "SavedPreferencePacks";
-    auto resourcePath = fs::path(Base::FileInfo::stringToPath(App::Application::getResourceDir())) / "Gui" / "PreferencePacks";
-    _preferencePackPaths.push_back(resourcePath);
-    _preferencePackPaths.push_back(modPath);
+    auto savedPath = getSavedPreferencePacksPath();
+    auto resourcePath = getResourcePreferencePacksPath();
+    _preferencePackPaths.insert(_preferencePackPaths.begin(), resourcePath);
     _preferencePackPaths.push_back(savedPath);
     rescan();
 
@@ -166,8 +178,7 @@ void PreferencePackManager::rescan()
 void Gui::PreferencePackManager::AddPackToMetadata(const std::string &packName) const
 {
     std::lock_guard<std::mutex> lock(_mutex);
-    auto savedPreferencePacksDirectory =
-        fs::path(Base::FileInfo::stringToPath(App::Application::getUserAppDataDir())) / "SavedPreferencePacks";
+    auto savedPreferencePacksDirectory = getSavedPreferencePacksPath();
     fs::path preferencePackDirectory(savedPreferencePacksDirectory / packName);
     if (fs::exists(preferencePackDirectory) && !fs::is_directory(preferencePackDirectory))
         throw std::runtime_error("Cannot create " + savedPreferencePacksDirectory.string()
@@ -221,8 +232,7 @@ void Gui::PreferencePackManager::importConfig(const std::string& packName,
 {
     AddPackToMetadata(packName);
 
-    auto savedPreferencePacksDirectory =
-        fs::path(Base::FileInfo::stringToPath(App::Application::getUserAppDataDir())) / "SavedPreferencePacks";
+    auto savedPreferencePacksDirectory = getSavedPreferencePacksPath();
     auto cfgFilename = savedPreferencePacksDirectory / packName / (packName + ".cfg");
 #if BOOST_VERSION >= 107400
     fs::copy_file(path, cfgFilename, fs::copy_options::overwrite_existing);
@@ -230,6 +240,58 @@ void Gui::PreferencePackManager::importConfig(const std::string& packName,
     fs::copy_file(path, cfgFilename, fs::copy_option::overwrite_if_exists);
 #endif
     rescan();
+}
+
+// TODO(Shvedov): Is this suitable place for this method? It is more generic,
+// and maybe more suitable place at Application?
+std::vector<boost::filesystem::path> Gui::PreferencePackManager::modPaths() const
+{
+    auto userModPath = fs::path(Base::FileInfo::stringToPath(App::Application::getUserAppDataDir())) / "Mod";
+
+    auto& config = App::Application::Config();
+    auto additionalModules = config.find("AdditionalModulePaths");
+    std::vector<boost::filesystem::path> result;
+
+    if (additionalModules != config.end()) {
+        boost::split(result,
+                     additionalModules->second,
+                     boost::is_any_of(";"),
+                     boost::token_compress_on);
+    }
+    result.emplace_back(userModPath);
+    return result;
+}
+
+boost::filesystem::path Gui::PreferencePackManager::getSavedPreferencePacksPath() const
+{
+    return getSavedPrefPacksPath();
+}
+
+boost::filesystem::path Gui::PreferencePackManager::getResourcePreferencePacksPath() const
+{
+    return getResourcePrefPacksPath();
+}
+
+std::vector<std::string> Gui::PreferencePackManager::getPacksFromDirectory(const fs::path& path) const
+{
+    std::vector<std::string> results;
+    auto packageMetadataFile = path / "package.xml";
+    if (fs::exists(packageMetadataFile) && fs::is_regular_file(packageMetadataFile)) {
+        try {
+            App::Metadata metadata(packageMetadataFile);
+            auto content = metadata.content();
+            for (const auto& item : content) {
+                if (item.first == "preferencepack") {
+                    results.push_back(item.second.name());
+                }
+            }
+        }
+        catch (...) {
+            // Failed to read the metadata, or to create the preferencePack based on it...
+            Base::Console().Error(("Failed to read " + packageMetadataFile.string()).c_str());
+        }
+    }
+    return results;
 }
 
 void Gui::PreferencePackManager::FindPreferencePacksInPackage(const fs::path &mod)
@@ -251,7 +313,7 @@ void PreferencePackManager::TryFindPreferencePacksInPackage(const boost::filesys
 {
     auto packageMetadataFile = mod / "package.xml";
     static const auto modDirectory = fs::path(Base::FileInfo::stringToPath(App::Application::getUserAppDataDir())) / "Mod" / "SavedPreferencePacks";
-    static const auto resourcePath = fs::path(Base::FileInfo::stringToPath(App::Application::getResourceDir())) / "Gui" / "PreferencePacks";
+    static const auto resourcePath = getResourcePreferencePacksPath();
 
     if (fs::exists(packageMetadataFile) && fs::is_regular_file(packageMetadataFile)) {
         App::Metadata metadata(packageMetadataFile);
@@ -310,7 +372,7 @@ bool PreferencePackManager::apply(const std::string& preferencePackName) const
     }
 }
 
-std::string findUnusedName(const std::string &basename, ParameterGrp::handle parent)
+static std::string findUnusedName(const std::string &basename, ParameterGrp::handle parent)
 {
     int i = 1;
     while (true) {
@@ -365,7 +427,7 @@ void Gui::PreferencePackManager::deleteUserPack(const std::string& name)
 {
     if (name.empty())
         return;
-    auto savedPreferencePacksDirectory = fs::path(Base::FileInfo::stringToPath(App::Application::getUserAppDataDir())) / "SavedPreferencePacks";
+    auto savedPreferencePacksDirectory = getSavedPreferencePacksPath();
     auto savedPath = savedPreferencePacksDirectory / name;
     std::unique_ptr<App::Metadata> metadata;
     if (fs::exists(savedPreferencePacksDirectory / "package.xml")) {
@@ -381,7 +443,7 @@ void Gui::PreferencePackManager::deleteUserPack(const std::string& name)
     rescan();
 }
 
-void copyTemplateParameters(Base::Reference<ParameterGrp> templateGroup, const std::string& path, Base::Reference<ParameterGrp> outputGroup)
+static void copyTemplateParameters(Base::Reference<ParameterGrp> templateGroup, const std::string& path, Base::Reference<ParameterGrp> outputGroup)
 {
     auto userParameterHandle = App::GetApplication().GetParameterGroupByPath(path.c_str());
 
@@ -432,7 +494,7 @@ void copyTemplateParameters(Base::Reference<ParameterGrp> templateGroup, const s
     }
 }
 
-void copyTemplateParameters(/*const*/ ParameterManager& templateParameterManager, ParameterManager& outputParameterManager)
+static void copyTemplateParameters(/*const*/ ParameterManager& templateParameterManager, ParameterManager& outputParameterManager)
 {
     auto groups = templateParameterManager.GetGroups();
     for (auto& group : groups) {
@@ -457,19 +519,12 @@ void PreferencePackManager::save(const std::string& name, const std::vector<Temp
         templateParameterManager->LoadDocument(Base::FileInfo::pathToString(t.path).c_str());
         copyTemplateParameters(*templateParameterManager, *outputParameterManager);
     }
-    auto savedPreferencePacksDirectory =
-        fs::path(Base::FileInfo::stringToPath(App::Application::getUserAppDataDir())) / "SavedPreferencePacks";
+    auto savedPreferencePacksDirectory = getSavedPreferencePacksPath();
     auto cfgFilename = savedPreferencePacksDirectory / name / (name + ".cfg");
     outputParameterManager->SaveDocument(Base::FileInfo::pathToString(cfgFilename).c_str());
 }
 
-// Needed until we support only C++20 and above and can use std::string's built-in ends_with()
-bool fc_ends_with(std::string_view str, std::string_view suffix)
-{
-    return str.size() >= suffix.size() && str.compare(str.size() - suffix.size(), suffix.size(), suffix) == 0;
-}
-
-std::vector<fs::path> scanForTemplateFolders(const std::string& groupName, const fs::path& entry)
+static std::vector<fs::path> scanForTemplateFolders(const std::string& groupName, const fs::path& entry)
 {
     // From this location, find the folder(s) called "PreferencePackTemplates"
     std::vector<fs::path> templateFolders;
@@ -491,7 +546,7 @@ std::vector<fs::path> scanForTemplateFolders(const std::string& groupName, const
     return templateFolders;
 }
 
-std::vector<PreferencePackManager::TemplateFile> scanForTemplateFiles(const std::string& groupName, const fs::path& entry)
+static std::vector<PreferencePackManager::TemplateFile> scanForTemplateFiles(const std::string& groupName, const fs::path& entry)
 {
     auto templateFolders = scanForTemplateFolders(groupName, entry);
 
@@ -528,7 +583,6 @@ std::vector<PreferencePackManager::TemplateFile> PreferencePackManager::template
     // (alternate spellings are provided for packages using CamelCase and snake_case, and both major English dialects)
 
     auto resourcePath = fs::path(Base::FileInfo::stringToPath(App::Application::getResourceDir())) / "Gui";
-    auto modPath = fs::path(Base::FileInfo::stringToPath(App::Application::getUserAppDataDir())) / "Mod";
 
     std::string group = "Built-In";
     if (fs::exists(resourcePath) && fs::is_directory(resourcePath)) {
@@ -536,11 +590,13 @@ std::vector<PreferencePackManager::TemplateFile> PreferencePackManager::template
         std::copy(localFiles.begin(), localFiles.end(), std::back_inserter(_templateFiles));
     }
 
-    if (fs::exists(modPath) && fs::is_directory(modPath)) {
-        for (const auto& mod : fs::directory_iterator(modPath)) {
-            group = Base::FileInfo::pathToString(mod.path().filename());
-            const auto localFiles = scanForTemplateFiles(group, mod);
-            std::copy(localFiles.begin(), localFiles.end(), std::back_inserter(_templateFiles));
+    for (const auto& modPath : modPaths()) {
+        if (fs::exists(modPath) && fs::is_directory(modPath)) {
+            for (const auto& mod : fs::directory_iterator(modPath)) {
+                group = Base::FileInfo::pathToString(mod.path().filename());
+                const auto localFiles = scanForTemplateFiles(group, mod);
+                std::copy(localFiles.begin(), localFiles.end(), std::back_inserter(_templateFiles));
+            }
         }
     }
 
@@ -549,7 +605,7 @@ std::vector<PreferencePackManager::TemplateFile> PreferencePackManager::template
 
 void Gui::PreferencePackManager::BackupCurrentConfig() const
 {
-    auto backupDirectory = fs::path(Base::FileInfo::stringToPath(App::Application::getUserAppDataDir())) / "SavedPreferencePacks" / "Backups";
+    auto backupDirectory = getSavedPreferencePacksPath() / "Backups";
     fs::create_directories(backupDirectory);
 
     // Create a timestamped filename:
@@ -566,7 +622,7 @@ void Gui::PreferencePackManager::DeleteOldBackups() const
 {
     constexpr auto oneWeek = 60.0 * 60.0 * 24.0 * 7.0;
     const auto now = std::time(nullptr);
-    auto backupDirectory = fs::path(Base::FileInfo::stringToPath(App::Application::getUserAppDataDir())) / "SavedPreferencePacks" / "Backups";
+    auto backupDirectory = getSavedPreferencePacksPath() / "Backups";
     if (fs::exists(backupDirectory) && fs::is_directory(backupDirectory)) {
         for (const auto& backup : fs::directory_iterator(backupDirectory)) {
             if (std::difftime(now, fs::last_write_time(backup)) > oneWeek) {
@@ -582,7 +638,7 @@ void Gui::PreferencePackManager::DeleteOldBackups() const
 std::vector<boost::filesystem::path> Gui::PreferencePackManager::configBackups() const
 {
     std::vector<boost::filesystem::path> results;
-    auto backupDirectory = fs::path(Base::FileInfo::stringToPath(App::Application::getUserAppDataDir())) / "SavedPreferencePacks" / "Backups";
+    auto backupDirectory = getSavedPreferencePacksPath() / "Backups";
     if (fs::exists(backupDirectory) && fs::is_directory(backupDirectory)) {
         for (const auto& backup : fs::directory_iterator(backupDirectory)) {
             results.push_back(backup);
