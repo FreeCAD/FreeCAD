@@ -56,6 +56,7 @@
 #include "QGSPage.h"
 #include "Rez.h"
 #include "ViewProviderPage.h"
+#include "MDIViewPage.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -143,7 +144,7 @@ void PagePrinter::makePageLayout(TechDraw::DrawPage* dPage, QPageLayout& pageLay
 /// print the Page associated with the parent MDIViewPage as a Pdf file
 void PagePrinter::printPdf(std::string file)
 {
-//    Base::Console().Message("PP::printPdf(%s)\n", file.c_str());
+    // Base::Console().Message("PP::printPdf(%s)\n", file.c_str());
     if (file.empty()) {
         Base::Console().Warning("PagePrinter - no file specified\n");
         return;
@@ -151,7 +152,7 @@ void PagePrinter::printPdf(std::string file)
 
     // set up the pdfwriter
     auto filespec = Base::Tools::escapeEncodeFilename(file);
-    filespec = DU::cleanFilespecBackslash(file);
+    filespec = DU::cleanFilespecBackslash(filespec);
     QString outputFile = Base::Tools::fromStdString(filespec);
     QPdfWriter pdfWriter(outputFile);
     QPageLayout pageLayout = pdfWriter.pageLayout();
@@ -206,7 +207,7 @@ void PagePrinter::print(QPrinter* printer)
 //static routine to print all pages in a document
 void PagePrinter::printAll(QPrinter* printer, App::Document* doc)
 {
-//    Base::Console().Message("PP::printAll()\n");
+    Base::Console().Message("PP::printAll()\n");
 
     QPageLayout pageLayout = printer->pageLayout();
     std::vector<App::DocumentObject*> docObjs =
@@ -230,6 +231,9 @@ void PagePrinter::printAll(QPrinter* printer, App::Document* doc)
         if (!vpp) {
             continue;// can't print this one
         }
+        // is there always a mdi when printAll is called?
+        auto mdi = vpp->getMDIViewPage();
+        mdi->savePageExportState(vpp);
 
         auto dPage = static_cast<TechDraw::DrawPage*>(obj);
         double width = A4Heightmm;//default to A4 Landscape 297 x 210
@@ -245,14 +249,14 @@ void PagePrinter::printAll(QPrinter* printer, App::Document* doc)
         QRect targetRect = printer->pageLayout().fullRectPixels(printer->resolution());
 
         renderPage(vpp, painter, sourceRect, targetRect);
-
+        mdi->resetPageExportState(vpp);
     }
 }
 
 //static routine to print all pages in a document to pdf
 void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
 {
-//    Base::Console().Message("PP::printAllPdf()\n");
+    // Base::Console().Message("PP::printAllPdf()\n");
     double dpmm = printer->resolution() / mmPerInch;
 
     QString outputFile = printer->outputFileName();
@@ -291,6 +295,9 @@ void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
         if (!vpp) {
             continue;// can't print this one
         }
+        // is there always a mdi when printAll is called?
+        auto mdi = vpp->getMDIViewPage();
+        mdi->savePageExportState(vpp);
 
         auto scene = vpp->getQGSPage();
         scene->setExportingPdf(true);
@@ -308,7 +315,8 @@ void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
         QRectF sourceRect(0.0, Rez::guiX(-height), Rez::guiX(width), Rez::guiX(height));
         QRect targetRect(0, 0, width * dpmm, height * dpmm);
         renderPage(vpp, painter, sourceRect, targetRect);
-        scene->setExportingPdf(false);
+        mdi->resetPageExportState(vpp);
+
     }
 }
 

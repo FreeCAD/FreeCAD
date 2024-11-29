@@ -123,8 +123,7 @@ MeshSearchNeighbours::NeighboursFromFacet(FacetIndex ulFacetIdx,
     // copy points in result container
     raclResultPoints.resize(_aclResult.size());
     size_t i = 0;
-    for (std::set<PointIndex>::iterator pI = _aclResult.begin(); pI != _aclResult.end();
-         ++pI, i++) {
+    for (auto pI = _aclResult.begin(); pI != _aclResult.end(); ++pI, i++) {
         raclResultPoints[i] = _rclPAry[*pI];
     }
 
@@ -272,9 +271,8 @@ bool MeshSearchNeighbours::ExpandRadius(unsigned long ulMinPoints)
         _fMaxDistanceP2 *= float(ulMinPoints) / float(_aclResult.size());
         return true;
     }
-    else {
-        return false;
-    }
+
+    return false;
 }
 
 unsigned long
@@ -344,8 +342,7 @@ MeshSearchNeighbours::NeighboursFacetFromFacet(FacetIndex ulFacetIdx,
     // copy points in result container
     raclResultPoints.resize(_aclResult.size());
     size_t i = 0;
-    for (std::set<PointIndex>::iterator pI = _aclResult.begin(); pI != _aclResult.end();
-         ++pI, i++) {
+    for (auto pI = _aclResult.begin(); pI != _aclResult.end(); ++pI, i++) {
         raclResultPoints[i] = _rclPAry[*pI];
     }
 

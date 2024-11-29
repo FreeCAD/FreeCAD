@@ -570,15 +570,39 @@ void CmdSketcherMapSketch::activated(int iMsg)
         // check that selection is valid for at least some mapping mode.
         Attacher::SuggestResult::eSuggestResult msgid = Attacher::SuggestResult::srOK;
         suggMapMode = SuggestAutoMapMode(&msgid, &msg_str, &validModes);
-
+        bool sketchInSelection = false;
+        std::vector<App::DocumentObject*> selectedSketches = Gui::Selection()
+                .getObjectsOfType(Part::Part2DObject::getClassTypeId());
         App::Document* doc = App::GetApplication().getActiveDocument();
         std::vector<App::DocumentObject*> sketches =
             doc->getObjectsOfType(Part::Part2DObject::getClassTypeId());
+
+        /** remove any sketches that are in the current selection to avoid
+         *  the case where the user attaches the sketch to itself issue #17629
+         *  circular dependency check happens later, but a sketch does not appear
+         *  in its own outlist, so we remove it from the dialog list proactively
+         *  rather than wait and generate an error after the fact.
+         */
+        auto newEnd = std::remove_if(sketches.begin(), sketches.end(),
+            [&selectedSketches, &sketchInSelection](App::DocumentObject* obj) {
+                Part::Part2DObject* sketch = dynamic_cast<Part::Part2DObject*>(obj);
+                if (sketch && std::find(selectedSketches.begin(),
+                        selectedSketches.end(), sketch) != selectedSketches.end()) {
+                    sketchInSelection = true;
+                    return true;
+                }
+                return false;
+            });
+        sketches.erase(newEnd, sketches.end());
+
         if (sketches.empty()) {
             Gui::TranslatedUserWarning(
                 doc->Label.getStrValue(),
                 qApp->translate("Sketcher_MapSketch", "No sketch found"),
-                qApp->translate("Sketcher_MapSketch", "The document doesn't have a sketch"));
+                sketchInSelection
+                ? qApp->translate("Sketcher_MapSketch", "Cannot attach sketch to itself!")
+                : qApp->translate("Sketcher_MapSketch", "The document doesn't have a sketch"));
+
             return;
         }
 
@@ -591,7 +615,10 @@ void CmdSketcherMapSketch::activated(int iMsg)
         QString text = QInputDialog::getItem(
             Gui::getMainWindow(),
             qApp->translate("Sketcher_MapSketch", "Select sketch"),
-            qApp->translate("Sketcher_MapSketch", "Select a sketch from the list"),
+            sketchInSelection
+            ? qApp->translate("Sketcher_MapSketch",
+                "Select a sketch (some sketches not shown to prevent a circular dependency)")
+            : qApp->translate("Sketcher_MapSketch", "Select a sketch from the list"),
             items,
             0,
             false,
@@ -733,7 +760,7 @@ void CmdSketcherMapSketch::activated(int iMsg)
 bool CmdSketcherMapSketch::isActive()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
-    Base::Type sketch_type = Base::Type::fromName("Sketcher::SketchObject");
+    Base::Type sketch_type = Base::Type::fromName("Part::Part2DObject");
     std::vector<Gui::SelectionObject> selobjs = Gui::Selection().getSelectionEx();
     if (doc && doc->countObjectsOfType(sketch_type) > 0 && !selobjs.empty())
         return true;

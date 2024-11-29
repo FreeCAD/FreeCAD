@@ -70,6 +70,7 @@ class TestMultiTransform(unittest.TestCase):
         # Arrange
         Doc = self.Doc
         Body = Doc.addObject('PartDesign::Body','Body')
+        Body.AllowCompound = False
         # Make first offset cube Pad
         PadSketch = Doc.addObject('Sketcher::SketchObject', 'SketchPad')
         Body.addObject(PadSketch)

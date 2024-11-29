@@ -5,6 +5,7 @@ include_directories(
     ${OCC_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
 )
+link_directories(${OCC_LIBRARY_DIR})
 
 set(AssemblyGui_LIBS
     Assembly
@@ -40,6 +41,8 @@ SET(AssemblyGui_SRCS_Module
     PreCompiled.h
     ViewProviderAssembly.cpp
     ViewProviderAssembly.h
+    ViewProviderAssemblyLink.cpp
+    ViewProviderAssemblyLink.h
     ViewProviderBom.cpp
     ViewProviderBom.h
     ViewProviderBomGroup.cpp

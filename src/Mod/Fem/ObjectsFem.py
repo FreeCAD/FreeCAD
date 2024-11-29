@@ -537,6 +537,13 @@ def makeMeshNetgen(doc, name="MeshNetgen"):
     return obj
 
 
+def makeMeshNetgenLegacy(doc, name="MeshNetgen"):
+    """makeMeshNetgenLegacy(document, [name]):
+    makes a old implementation Netgen FEM mesh object"""
+    obj = doc.addObject("Fem::FemMeshShapeNetgenObject", name)
+    return obj
+
+
 def makeMeshRegion(doc, base_mesh, element_length=0.0, name="MeshRegion"):
     """makeMeshRegion(document, base_mesh, [element_length], [name]):
     creates a FEM mesh refinement object to define properties for a refinement of a FEM mesh

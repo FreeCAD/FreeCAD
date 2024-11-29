@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRepAlgoAPI_Cut.hxx>
+# include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
 #endif
 
 #include "FeaturePartCut.h"
@@ -43,5 +43,5 @@ const char *Cut::opCode() const
 BRepAlgoAPI_BooleanOperation* Cut::makeOperation(const TopoDS_Shape& base, const TopoDS_Shape& tool) const
 {
     // Let's call algorithm computing a cut operation:
-    return new BRepAlgoAPI_Cut(base, tool);
+    return new FCBRepAlgoAPI_Cut(base, tool);
 }

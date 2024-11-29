@@ -52,7 +52,6 @@ namespace Gui {
 class BitmapFactoryInstP
 {
 public:
-    QMap<std::string, const char**> xpmMap;
     QMap<std::string, QPixmap> xpmCache;
 
     bool useIconTheme;
@@ -164,11 +163,6 @@ QStringList BitmapFactoryInst::findIconFiles() const
     return files;
 }
 
-void BitmapFactoryInst::addXPM(const char* name, const char** pXPM)
-{
-    d->xpmMap[name] = pXPM;
-}
-
 void BitmapFactoryInst::addPixmapToCache(const char* name, const QPixmap& icon)
 {
     d->xpmCache[name] = icon;
@@ -247,16 +241,11 @@ QPixmap BitmapFactoryInst::pixmap(const char* name) const
     if (it != d->xpmCache.end())
         return it.value();
 
-    // now try to find it in the built-in XPM
     QPixmap icon;
-    QMap<std::string,const char**>::Iterator It = d->xpmMap.find(name);
-    if (It != d->xpmMap.end())
-        icon = QPixmap(It.value());
 
     // Try whether an absolute path is given
     QString fn = QString::fromUtf8(name);
-    if (icon.isNull())
-        loadPixmap(fn, icon);
+    loadPixmap(fn, icon);
 
     // try to find it in the 'icons' search paths
     if (icon.isNull()) {
@@ -364,8 +353,6 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const QByteArray& originalContents, con
 QStringList BitmapFactoryInst::pixmapNames() const
 {
     QStringList names;
-    for (QMap<std::string,const char**>::Iterator It = d->xpmMap.begin(); It != d->xpmMap.end(); ++It)
-        names << QString::fromUtf8(It.key().c_str());
     for (QMap<std::string, QPixmap>::Iterator It = d->xpmCache.begin(); It != d->xpmCache.end(); ++It) {
         QString item = QString::fromUtf8(It.key().c_str());
         if (!names.contains(item))
@@ -552,58 +539,82 @@ void BitmapFactoryInst::convert(const QImage& p, SoSFImage& img) const
     QVector<QRgb> table = p.colorTable();
     if (!table.isEmpty()) {
         if (p.hasAlphaChannel()) {
-            if (p.allGray())
+            if (p.allGray()) {
                 numcomponents = 2;
-            else
+            }
+            else {
                 numcomponents = 4;
+            }
         }
         else {
-            if (p.allGray())
+            if (p.allGray()) {
                 numcomponents = 1;
-            else
+            }
+            else {
                 numcomponents = 3;
+            }
         }
     }
     else {
         numcomponents = buffersize / (size[0] * size[1]);
     }
 
+    int depth = numcomponents;
+
+    // Coin3D only supports up to 32-bit images
+    if (numcomponents == 8) {
+        numcomponents = 4;
+    }
+
     // allocate image data
     img.setValue(size, numcomponents, nullptr);
 
-    unsigned char * bytes = img.startEditing(size, numcomponents);
+    unsigned char* bytes = img.startEditing(size, numcomponents);
 
-    int width  = (int)size[0];
+    int width = (int)size[0];
     int height = (int)size[1];
 
-    for (int y = 0; y < height; y++)
-    {
-        unsigned char * line = &bytes[width*numcomponents*(height-(y+1))];
-        for (int x = 0; x < width; x++)
-        {
-            QRgb rgb = p.pixel(x,y);
-            switch (numcomponents)
-            {
-            default:
-                break;
-            case 1:
-                line[0] = qGray( rgb );
-                break;
-            case 2:
-                line[0] = qGray( rgb );
-                line[1] = qAlpha( rgb );
-                break;
-            case 3:
-                line[0] = qRed( rgb );
-                line[1] = qGreen( rgb );
-                line[2] = qBlue( rgb );
-                break;
-            case 4:
-                line[0] = qRed( rgb );
-                line[1] = qGreen( rgb );
-                line[2] = qBlue( rgb );
-                line[3] = qAlpha( rgb );
-                break;
+    for (int y = 0; y < height; y++) {
+        unsigned char* line = &bytes[width * numcomponents * (height - (y + 1))];
+        for (int x = 0; x < width; x++) {
+            QColor col = p.pixelColor(x,y);
+            switch (depth) {
+                default:
+                    break;
+                case 1:
+                {
+                    QRgb rgb = col.rgb();
+                    line[0] = qGray(rgb);
+                }   break;
+                case 2:
+                {
+                    QRgb rgb = col.rgb();
+                    line[0] = qGray(rgb);
+                    line[1] = qAlpha(rgb);
+                }   break;
+                case 3:
+                {
+                    QRgb rgb = col.rgb();
+                    line[0] = qRed(rgb);
+                    line[1] = qGreen(rgb);
+                    line[2] = qBlue(rgb);
+                }   break;
+                case 4:
+                {
+                    QRgb rgb = col.rgb();
+                    line[0] = qRed(rgb);
+                    line[1] = qGreen(rgb);
+                    line[2] = qBlue(rgb);
+                    line[3] = qAlpha(rgb);
+                }   break;
+                case 8:
+                {
+                    QRgba64 rgb = col.rgba64();
+                    line[0] = qRed(rgb);
+                    line[1] = qGreen(rgb);
+                    line[2] = qBlue(rgb);
+                    line[3] = qAlpha(rgb);
+                }   break;
             }
 
             line += numcomponents;

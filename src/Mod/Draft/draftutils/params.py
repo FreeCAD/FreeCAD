@@ -28,7 +28,10 @@ import xml.etree.ElementTree as ET
 
 import FreeCAD as App
 import Draft_rc
-import Arch_rc
+try:
+    import Arch_rc
+except ModuleNotFoundError:
+    pass
 
 from draftutils import init_draft_statusbar
 from draftutils.translate import translate
@@ -90,7 +93,10 @@ def _param_observer_callback_tray():
 
 
 def _param_observer_callback_scalemultiplier(value):
-    value = float(value)  # value is a string
+    # value is a string.
+    if not value:
+        return
+    value = float(value)
     if value <= 0:
         return
     mw = Gui.getMainWindow()

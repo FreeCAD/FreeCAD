@@ -23,15 +23,13 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <cmath>
-# include <boost/random.hpp>
 # include <boost/uuid/uuid_generators.hpp>
 # include <boost/uuid/uuid_io.hpp>
-
+# include <boost/random.hpp>
 # include <Approx_Curve3d.hxx>
 # include <BRep_Tool.hxx>
 # include <BRepAdaptor_Curve.hxx>
-# include <BRepAlgoAPI_Section.hxx>
+# include <Mod/Part/App/FCBRepAlgoAPI_Section.h>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
@@ -53,8 +51,6 @@
 # include <GProp_GProps.hxx>
 # include <Geom_BSplineCurve.hxx>
 # include <Geom_BezierCurve.hxx>
-# include <Geom_Circle.hxx>
-# include <Geom_TrimmedCurve.hxx>
 # include <GeomAPI_PointsToBSpline.hxx>
 # include <GeomAPI_ProjectPointOnCurve.hxx>
 # include <GeomConvert_BSplineCurveToBezierCurve.hxx>
@@ -86,9 +82,11 @@
 #include <boost/thread/mutex.hpp>
 #include <boost/thread/thread.hpp>
 
+#include <Mod/Part/App/FaceMakerCheese.h>
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/TopoShape.h>
 
+#include "DrawViewPart.h"
 #include "Geometry.h"
 #include "ShapeUtils.h"
 #include "DrawUtil.h"
@@ -149,10 +147,14 @@ void Wire::dump(std::string s)
     BRepTools::Write(toOccWire(), s.c_str());            //debug
 }
 
+// note that the face returned is inverted in Y
 TopoDS_Face Face::toOccFace() const
 {
+    if (wires.empty()) {
+        return {};
+    }
+
     TopoDS_Face result;
-    //if (!wires.empty) {
     BRepBuilderAPI_MakeFace mkFace(wires.front()->toOccWire(), true);
     int limit = wires.size();
     int iwire = 1;
@@ -619,7 +621,7 @@ std::vector<Base::Vector3d> BaseGeom::intersection(TechDraw::BaseGeomPtr geom2)
         return interPoints;
     }
 
-    BRepAlgoAPI_Section sectionOp(edge1, edge2);
+    FCBRepAlgoAPI_Section sectionOp(edge1, edge2);
     sectionOp.SetFuzzyValue(FUZZYADJUST*EWTOLERANCE);
     sectionOp.SetNonDestructive(true);
 
@@ -1630,45 +1632,43 @@ bool GeometryUtils::getCircleParms(TopoDS_Edge occEdge, double& radius, Base::Ve
 }
 
 //! make a circle or arc of circle Edge from BSpline Edge
-//! assumes the spline is generally circular but does not check
-// ??? why does this not use getCircleParms to retrieve centre, radius, start/end, isArc
+// Note that the input edge has been inverted by GeometryObject, so +Y points down.
 TopoDS_Edge GeometryUtils::asCircle(TopoDS_Edge splineEdge, bool& arc)
 {
-    BRepAdaptor_Curve curveAdapt(splineEdge);
+    double radius{0};
+    Base::Vector3d center;
+    bool isArc = false;
+    bool canMakeCircle = GeometryUtils::getCircleParms(splineEdge, radius, center, isArc);
+    if (!canMakeCircle) {
+        throw Base::RuntimeError("GU::asCircle received non-circular edge!");
+    }
+
+    gp_Pnt gCenter = DU::togp_Pnt(center);
+    gp_Dir gNormal{0, 0, 1};
+    Handle(Geom_Circle) circleFromParms = GC_MakeCircle(gCenter, gNormal, radius);
 
     // find the ends of the edge from the underlying curve
-    Handle(Geom_Curve) curve = curveAdapt.Curve().Curve();
+    BRepAdaptor_Curve curveAdapt(splineEdge);
     double firstParam = curveAdapt.FirstParameter();
     double lastParam = curveAdapt.LastParameter();
     gp_Pnt startPoint = curveAdapt.Value(firstParam);
     gp_Pnt endPoint = curveAdapt.Value(lastParam);
 
+    if (startPoint.IsEqual(endPoint, EWTOLERANCE)) {    //more reliable than IsClosed flag
+        arc = false;
+        return BRepBuilderAPI_MakeEdge(circleFromParms);
+    }
+
     arc = true;
     double midRange = (lastParam + firstParam) / 2;
     gp_Pnt midPoint = curveAdapt.Value(midRange);
-    if (startPoint.IsEqual(endPoint, 0.001)) {    //more reliable than IsClosed flag
-        arc = false;
-        // can not use the start and end points since they are the same and that will give us only
-        // 2 of the 3 points we need.  Q: why did this work sometimes?
-        // Q: do we need to account for reversed parameter range?  we don't use reversed edges much.
-        auto parmRange = lastParam - firstParam;
-        auto lowParm = parmRange * 0.25;
-        auto lowPoint = curveAdapt.Value(lowParm);
-        auto highParm = parmRange* 0.75;
-        auto highPoint = curveAdapt.Value(highParm);
-        Handle(Geom_Circle) circle3Points = GC_MakeCircle(lowPoint, midPoint, highPoint);
 
-        if (circle3Points.IsNull()) {
-            return {};
-        }
+    GC_MakeArcOfCircle mkArc(startPoint, midPoint, endPoint);
+    auto circleArc = mkArc.Value();
 
-        return BRepBuilderAPI_MakeEdge(circle3Points);
-    }
-
-    Handle(Geom_TrimmedCurve) circleArc =
-                                GC_MakeArcOfCircle (startPoint, midPoint, endPoint);
     return BRepBuilderAPI_MakeEdge(circleArc);
 }
+
 
 bool GeometryUtils::isLine(TopoDS_Edge occEdge)
 {
@@ -1738,5 +1738,107 @@ double GeometryUtils::edgeLength(TopoDS_Edge occEdge)
     catch (Standard_Failure& exc) {
         THROWM(Base::CADKernelError, exc.GetMessageString())
     }
+}
+
+//! return a perforated shape/face (using Part::FaceMakerCheese) formed by creating holes in the input face.
+TopoDS_Face GeometryUtils::makePerforatedFace(FacePtr bigCheese,  const std::vector<FacePtr> &holesAll)
+{
+    std::vector<TopoDS_Wire> cheeseIngredients;
+
+    // v0.0 brute force
+
+    // Note: TD Faces are not perforated and should only ever have 1 wire.  They are capable of
+    // having voids, but for now we will just take the first contour wire in all cases.
+
+    if (bigCheese->wires.empty())  {
+        // run in circles.  scream and shout.
+        return {};
+    }
+
+    auto flippedFace = ShapeUtils::fromQtAsFace(bigCheese->toOccFace());
+
+    if (holesAll.empty()) {
+        return flippedFace;
+    }
+
+    auto outer = ShapeUtils::fromQtAsWire(bigCheese->wires.front()->toOccWire());
+    cheeseIngredients.push_back(outer);
+    for (auto& hole : holesAll) {
+        if (hole->wires.empty()) {
+            continue;
+        }
+        auto holeR3 = ShapeUtils::fromQtAsWire(hole->wires.front()->toOccWire());
+        cheeseIngredients.push_back(holeR3);
+    }
+
+    TopoDS_Shape faceShape;
+    try {
+        faceShape = Part::FaceMakerCheese::makeFace(cheeseIngredients);
+    }
+    catch (const Standard_Failure &e) {
+        Base::Console().Warning("Area - could not make holes in face\n");
+        return flippedFace;
+    }
+
+
+    // v0.0 just grab the first face
+    TopoDS_Face foundFace;
+    TopExp_Explorer expFaces(faceShape, TopAbs_FACE);
+    if (expFaces.More()) {
+        foundFace = TopoDS::Face(expFaces.Current());
+    }
+    // TODO: sort out the compound => shape but !compound => face business in FaceMakerCheese here.
+    //       first guess is it does not affect us?
+
+    return foundFace;
+}
+
+
+//! find faces within the bounds of the input face
+std::vector<FacePtr> GeometryUtils::findHolesInFace(const DrawViewPart* dvp, const std::string& bigCheeseSubRef)
+{
+    if (!dvp || bigCheeseSubRef.empty()) {
+        return {};
+    }
+
+    std::vector<FacePtr> holes;
+    auto bigCheeseIndex = DU::getIndexFromName(bigCheeseSubRef);
+
+    // v0.0 brute force
+    auto facesAll = dvp->getFaceGeometry();
+    if (facesAll.empty()) {
+        // tarfu
+        throw Base::RuntimeError("GU::findHolesInFace - no holes to find!!");
+    }
+
+    auto bigCheeseFace = facesAll.at(bigCheeseIndex);
+    auto bigCheeseOCCFace = bigCheeseFace->toOccFace();
+    auto bigCheeseArea = bigCheeseFace->getArea();
+
+    int iFace{0};
+    for (auto& face : facesAll) {
+        if (iFace == bigCheeseIndex) {
+            iFace++;
+            continue;
+        }
+        if (face->getArea() > bigCheeseArea) {
+            iFace++;
+            continue;
+        }
+        auto faceCenter = DU::togp_Pnt(face->getCenter());
+        auto faceCenterVertex = BRepBuilderAPI_MakeVertex(faceCenter);
+        auto distance = DU::simpleMinDist(faceCenterVertex, bigCheeseOCCFace);
+        if (distance > EWTOLERANCE) {
+            // hole center not within outer contour.  not the best test but cheese maker handles it
+            // for us?
+            // FaceMakerCheese does not support partial overlaps and just ignores them?
+            iFace++;
+            continue;
+        }
+        holes.push_back(face);
+        iFace++;
+    }
+
+    return holes;
 }
 

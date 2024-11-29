@@ -3,6 +3,14 @@ add_subdirectory(Stylesheets)
 add_subdirectory(PreferencePacks)
 add_subdirectory(PreferencePackTemplates)
 
+if(BUILD_WITH_CONDA)
+    add_definitions(-DFC_CONDA)
+endif(BUILD_WITH_CONDA)
+
+if(FC_FLATPAK)
+    add_definitions(-DFC_FLATPAK)
+endif(FC_FLATPAK)
+
 if(WIN32)
 add_definitions(-DFCGui -DQSINT_MAKEDLL -DOVR_OS_WIN32 -DQUARTER_INTERNAL -DQUARTER_MAKE_DLL -DCOIN_DLL)
 endif(WIN32)
@@ -436,6 +444,7 @@ SOURCE_GROUP("Command" FILES ${Command_SRCS})
 SET(Dialog_CPP_SRCS
     Clipping.cpp
     DemoMode.cpp
+    DlgAbout.cpp
     DlgActivateWindowImp.cpp
     DlgCreateNewPreferencePackImp.cpp
     DlgUnitsCalculatorImp.cpp
@@ -476,6 +485,7 @@ SET(Dialog_CPP_SRCS
 SET(Dialog_HPP_SRCS
     Clipping.h
     DemoMode.h
+    DlgAbout.h
     DlgActivateWindowImp.h
     DlgCreateNewPreferencePackImp.h
     DlgUnitsCalculatorImp.h
@@ -1006,12 +1016,16 @@ SOURCE_GROUP("View3D\\Viewprovider" FILES ${Viewprovider_SRCS})
 
 # The Inventor sources
 SET(Inventor_CPP_SRCS
-    Inventor/SoDrawingGrid.cpp
-    Inventor/SoAutoZoomTranslation.cpp
     Inventor/MarkerBitmaps.cpp
     Inventor/SmSwitchboard.cpp
-    SoFCBackgroundGradient.cpp
-    SoFCBoundingBox.cpp
+    Inventor/So3DAnnotation.cpp
+    Inventor/SoAutoZoomTranslation.cpp
+    Inventor/SoAxisCrossKit.cpp
+    Inventor/SoDrawingGrid.cpp
+    Inventor/SoFCBackgroundGradient.cpp
+    Inventor/SoFCBoundingBox.cpp
+    Inventor/SoMouseWheelEvent.cpp
+    Inventor/SoFCTransform.cpp
     SoFCColorBar.cpp
     SoFCColorBarNotifier.cpp
     SoFCColorGradient.cpp
@@ -1026,23 +1040,23 @@ SET(Inventor_CPP_SRCS
     SoFCSelectionAction.cpp
     SoFCVectorizeSVGAction.cpp
     SoFCVectorizeU3DAction.cpp
-    So3DAnnotation.cpp
-    SoAxisCrossKit.cpp
     SoTextLabel.cpp
     SoDatumLabel.cpp
     SoTouchEvents.cpp
-    SoMouseWheelEvent.cpp
     SoFCCSysDragger.cpp
     ArcEngine.cpp
 )
 SET(Inventor_SRCS
     ${Inventor_CPP_SRCS}
-    Inventor/SoDrawingGrid.h
-    Inventor/SoAutoZoomTranslation.h
     Inventor/MarkerBitmaps.h
     Inventor/SmSwitchboard.h
-    SoFCBackgroundGradient.h
-    SoFCBoundingBox.h
+    Inventor/SoAutoZoomTranslation.h
+    Inventor/SoAxisCrossKit.h
+    Inventor/SoDrawingGrid.h
+    Inventor/SoFCBackgroundGradient.h
+    Inventor/SoFCBoundingBox.h
+    Inventor/SoMouseWheelEvent.h
+    Inventor/SoFCTransform.h
     SoFCColorBar.h
     SoFCColorBarNotifier.h
     SoFCColorGradient.h
@@ -1057,11 +1071,9 @@ SET(Inventor_SRCS
     SoFCSelectionAction.h
     SoFCVectorizeSVGAction.h
     SoFCVectorizeU3DAction.h
-    SoAxisCrossKit.h
     SoTextLabel.h
     SoDatumLabel.h
     SoTouchEvents.h
-    SoMouseWheelEvent.h
     SoFCCSysDragger.h
     ArcEngine.h
 )
@@ -1080,7 +1092,7 @@ SET(Widget_CPP_SRCS
     ProgressDialog.cpp
     QuantitySpinBox.cpp
     SpinBox.cpp
-    Splashscreen.cpp
+    SplashScreen.cpp
     PythonWrapper.cpp
     UiLoader.cpp
     WidgetFactory.cpp
@@ -1101,7 +1113,7 @@ SET(Widget_HPP_SRCS
     QuantitySpinBox.h
     QuantitySpinBox_p.h
     SpinBox.h
-    Splashscreen.h
+    SplashScreen.h
     PythonWrapper.h
     UiLoader.h
     WidgetFactory.h
@@ -1231,6 +1243,7 @@ SET(FreeCADGui_CPP_SRCS
     GuiConsole.cpp
     Macro.cpp
     MergeDocuments.cpp
+    ModuleIO.cpp
     Namespace.h
     resource.cpp
     Control.cpp
@@ -1266,6 +1279,7 @@ SET(FreeCADGui_SRCS
     Macro.h
     MergeDocuments.h
     MetaTypes.h
+    ModuleIO.h
     Notifications.h
     PreCompiled.cpp
     PreCompiled.h
@@ -1298,7 +1312,7 @@ SET(FreeCADGui_SRCS
     ${Dock_Windows_SRCS}
     ${Editor_SRCS}
     ${Help_SRCS}
-    ${Inventor_SRCS}
+    ${Inventor_CPP_SRCS}
     ${Language_SRCS}
     ${Propertyeditor_SRCS}
     ${Task_View_SRCS}

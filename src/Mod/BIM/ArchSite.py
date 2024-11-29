@@ -503,6 +503,8 @@ class _Site(ArchIFC.IfcProduct):
         obj.Proxy = self
         self.setProperties(obj)
         obj.IfcType = "Site"
+        obj.CompositionType = "ELEMENT"
+
 
     def setProperties(self,obj):
         """Gives the object properties unique to sites.
@@ -853,6 +855,10 @@ class _ViewProviderSite:
         return True
 
     def setupContextMenu(self, vobj, menu):
+
+        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+            return
+
         actionEdit = QtGui.QAction(translate("Arch", "Edit"),
                                    menu)
         QtCore.QObject.connect(actionEdit,

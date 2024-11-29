@@ -70,8 +70,16 @@ class ifc_vp_object:
                 obj.ViewObject.DiffuseColor = colors
 
     def getIcon(self):
-        if self.Object.IfcClass == "IfcGroup":
-            from PySide import QtGui
+        from PySide import QtCore, QtGui  # lazy import
+        
+        rclass = self.Object.IfcClass.replace("StandardCase","") 
+        ifcicon = ":/icons/IFC/" + rclass + ".svg"
+        if QtCore.QFile.exists(ifcicon):
+            if getattr(self, "ifcclass", "") != rclass:
+                self.ifcclass = rclass
+                self.ifcicon = overlay(ifcicon, ":/icons/IFC.svg")
+            return getattr(self, "ifcicon", overlay(ifcicon, ":/icons/IFC.svg"))
+        elif self.Object.IfcClass == "IfcGroup":
             return QtGui.QIcon.fromTheme("folder", QtGui.QIcon(":/icons/folder.svg"))
         elif self.Object.ShapeMode == "Shape":
             return ":/icons/IFC_object.svg"
@@ -88,6 +96,9 @@ class ifc_vp_object:
         from nativeifc import ifc_psets
         from nativeifc import ifc_materials
         from PySide import QtCore, QtGui  # lazy import
+
+        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+            return
 
         icon = QtGui.QIcon(":/icons/IFC.svg")
         element = ifc_tools.get_ifc_element(vobj.Object)
@@ -396,6 +407,9 @@ class ifc_vp_document(ifc_vp_object):
 
         from PySide import QtCore, QtGui  # lazy import
 
+        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+            return
+
         ifc_menu = super().setupContextMenu(vobj, menu)
         if not ifc_menu:
             ifc_menu = menu
@@ -575,6 +589,9 @@ class ifc_vp_material:
         from nativeifc import ifc_tools  # lazy import
         from nativeifc import ifc_psets
         from PySide import QtCore, QtGui  # lazy import
+
+        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+            return
 
         icon = QtGui.QIcon(":/icons/IFC.svg")
         if ifc_psets.has_psets(self.Object):

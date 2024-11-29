@@ -159,6 +159,20 @@ void GUIApplication::commitData(QSessionManager &manager)
 bool GUIApplication::event(QEvent * ev)
 {
     if (ev->type() == QEvent::FileOpen) {
+        // (macOS workaround when opening FreeCAD by opening a .FCStd file in 1.0)
+        // With the current implementation of the splash screen boot procedure, Qt will
+        // start an event loop before FreeCAD is fully initalized. This event loop will
+        // process the QFileOpenEvent that is sent by macOS before the main window is ready.
+        if (!Gui::getMainWindow()->property("eventLoop").toBool()) {
+            // If we never reach this point when opening FreeCAD by double clicking an
+            // .FCStd file, then the workaround isn't needed anymore and can be removed
+            QEvent* eventCopy = new QFileOpenEvent(static_cast<QFileOpenEvent*>(ev)->file());
+            QTimer::singleShot(0, [eventCopy, this]() {
+                QCoreApplication::postEvent(this, eventCopy);
+            });
+            return true;
+        }
+
         QString file = static_cast<QFileOpenEvent*>(ev)->file();
         QFileInfo fi(file);
         if (fi.suffix().toLower() == QLatin1String("fcstd")) {

@@ -59,6 +59,7 @@ class Rotation;
 namespace Assembly
 {
 
+class AssemblyLink;
 class JointGroup;
 class ViewGroup;
 
@@ -241,7 +242,7 @@ public:
     double getObjMass(App::DocumentObject* obj);
     void setObjMasses(std::vector<std::pair<App::DocumentObject*, double>> objectMasses);
 
-    std::vector<AssemblyObject*> getSubAssemblies();
+    std::vector<AssemblyLink*> getSubAssemblies();
     void updateGroundedJointsPlacements();
 
 private:
@@ -249,7 +250,7 @@ private:
 
     std::unordered_map<App::DocumentObject*, MbDPartData> objectPartMap;
     std::vector<std::pair<App::DocumentObject*, double>> objMasses;
-    std::vector<std::shared_ptr<MbD::ASMTPart>> dragMbdParts;
+    std::vector<App::DocumentObject*> draggedParts;
 
     std::vector<std::pair<App::DocumentObject*, Base::Placement>> previousPositions;
 
