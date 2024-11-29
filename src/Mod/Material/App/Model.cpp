@@ -101,8 +101,9 @@ bool ModelProperty::operator==(const ModelProperty& other) const
         return true;
     }
 
-    return (_name == other._name) && (_displayName == other._displayName) && (_propertyType == other._propertyType)
-        && (_units == other._units) && (_url == other._url) && (_description == other._description)
+    return (_name == other._name) && (_displayName == other._displayName)
+        && (_propertyType == other._propertyType) && (_units == other._units)
+        && (_url == other._url) && (_description == other._description)
         && (_inheritance == other._inheritance);
 }
 
@@ -137,4 +138,48 @@ ModelProperty& Model::operator[](const QString& key)
     catch (std::out_of_range const&) {
         throw PropertyNotFound();
     }
+}
+
+bool Model::validate(const std::shared_ptr<Model>& other) const
+{
+    if (this == &(*other)) {
+        return true;
+    }
+
+    // if (*_library != *(other->_library)) {
+    //     return false;
+    // }
+
+    // std::map<QString, ModelProperty> _properties;
+    if (_type != other->_type) {
+        throw InvalidModel("Model types don't match");
+    }
+    if (_name != other->_name) {
+        throw InvalidModel("Model names don't match");
+    }
+    if (_directory != other->_directory) {
+        Base::Console().Log("Directory:\n\t'%s'\n\t'%s'\n",
+                            _directory.toStdString().c_str(),
+                            other->_directory.toStdString().c_str());
+        // throw InvalidModel("Model directories don't match");
+    }
+    if (_uuid != other->_uuid) {
+        throw InvalidModel("Model UUIDs don't match");
+    }
+    if (_description != other->_description) {
+        throw InvalidModel("Model descriptions don't match");
+    }
+    if (_url != other->_url) {
+        throw InvalidModel("Model URLs don't match");
+    }
+    if (_doi != other->_doi) {
+        throw InvalidModel("Model DOIs don't match");
+    }
+    if (_inheritedUuids != other->_inheritedUuids) {
+        throw InvalidModel("Model inherited UUIDs don't match");
+    }
+
+    // Need to compare properties
+
+    return true;
 }

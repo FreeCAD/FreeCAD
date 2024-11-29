@@ -1692,3 +1692,8 @@ App::Material Material::getMaterialAppearance() const
 
     return material;
 }
+
+bool Material::validate(const std::shared_ptr<Material>& other) const
+{
+    return true;
+}

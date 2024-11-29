@@ -76,9 +76,22 @@ void DlgMigrateExternal::migrate()
         for (int row = 0; row < ui->listModelLibraries->count(); row++) {
             auto item = ui->listModelLibraries->item(row);
             if (item->checkState() == Qt::Checked) {
-                auto library = item->data(Qt::UserRole).value<std::shared_ptr<Materials::ModelLibrary>>();
+                auto library =
+                    item->data(Qt::UserRole).value<std::shared_ptr<Materials::ModelLibrary>>();
                 statusUpdate(tr("  Library: ") + library->getName());
                 _modelManager.migrateToExternal(library);
+            }
+        }
+        statusUpdate(tr("done"));
+
+        statusUpdate(tr("Validating Models..."));
+        for (int row = 0; row < ui->listModelLibraries->count(); row++) {
+            auto item = ui->listModelLibraries->item(row);
+            if (item->checkState() == Qt::Checked) {
+                auto library =
+                    item->data(Qt::UserRole).value<std::shared_ptr<Materials::ModelLibrary>>();
+                statusUpdate(tr("  Library: ") + library->getName());
+                _modelManager.validateMigration(library);
             }
         }
         statusUpdate(tr("done"));
@@ -94,12 +107,32 @@ void DlgMigrateExternal::migrate()
             }
         }
         statusUpdate(tr("done"));
+
+        statusUpdate(tr("Validating Materials..."));
+        for (int row = 0; row < ui->listMaterialLibraries->count(); row++) {
+            auto item = ui->listMaterialLibraries->item(row);
+            if (item->checkState() == Qt::Checked) {
+                auto library =
+                    item->data(Qt::UserRole).value<std::shared_ptr<Materials::MaterialLibrary>>();
+                statusUpdate(tr("  Library: ") + library->getName());
+                _materialManager.validateMigration(library);
+            }
+        }
+        statusUpdate(tr("done"));
     }
     catch (const Materials::ConnectionError& e) {
         statusUpdate(QString::fromStdString(e.what()));
         statusUpdate(tr("Aborted"));
     }
     catch (const Materials::CreationError& e) {
+        statusUpdate(QString::fromStdString(e.what()));
+        statusUpdate(tr("Aborted"));
+    }
+    catch (const Materials::InvalidModel& e) {
+        statusUpdate(QString::fromStdString(e.what()));
+        statusUpdate(tr("Aborted"));
+    }
+    catch (const Materials::InvalidMaterial& e) {
         statusUpdate(QString::fromStdString(e.what()));
         statusUpdate(tr("Aborted"));
     }

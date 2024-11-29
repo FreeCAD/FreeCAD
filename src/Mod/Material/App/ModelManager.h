@@ -83,6 +83,7 @@ public:
     void OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason) override;
 
     void migrateToExternal(const std::shared_ptr<Materials::ModelLibrary>& library);
+    void validateMigration(const std::shared_ptr<Materials::ModelLibrary>& library);
 
 private:
     void initManagers();

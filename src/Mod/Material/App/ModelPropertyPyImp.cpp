@@ -54,9 +54,19 @@ Py::String ModelPropertyPy::getName() const
     return Py::String(getModelPropertyPtr()->getName().toStdString());
 }
 
+void ModelPropertyPy::setName(Py::String arg)
+{
+    getModelPropertyPtr()->setName(QString::fromStdString(arg));
+}
+
 Py::String ModelPropertyPy::getDisplayName() const
 {
     return Py::String(getModelPropertyPtr()->getDisplayName().toStdString());
+}
+
+void ModelPropertyPy::setDisplayName(Py::String arg)
+{
+    getModelPropertyPtr()->setDisplayName(QString::fromStdString(arg));
 }
 
 Py::String ModelPropertyPy::getType() const
@@ -64,9 +74,19 @@ Py::String ModelPropertyPy::getType() const
     return Py::String(getModelPropertyPtr()->getPropertyType().toStdString());
 }
 
+void ModelPropertyPy::setType(Py::String arg)
+{
+    getModelPropertyPtr()->setPropertyType(QString::fromStdString(arg));
+}
+
 Py::String ModelPropertyPy::getUnits() const
 {
     return Py::String(getModelPropertyPtr()->getUnits().toStdString());
+}
+
+void ModelPropertyPy::setUnits(Py::String arg)
+{
+    getModelPropertyPtr()->setUnits(QString::fromStdString(arg));
 }
 
 Py::String ModelPropertyPy::getURL() const
@@ -74,9 +94,19 @@ Py::String ModelPropertyPy::getURL() const
     return Py::String(getModelPropertyPtr()->getURL().toStdString());
 }
 
+void ModelPropertyPy::setURL(Py::String arg)
+{
+    getModelPropertyPtr()->setURL(QString::fromStdString(arg));
+}
+
 Py::String ModelPropertyPy::getDescription() const
 {
     return Py::String(getModelPropertyPtr()->getDescription().toStdString());
+}
+
+void ModelPropertyPy::setDescription(Py::String arg)
+{
+    getModelPropertyPtr()->setDescription(QString::fromStdString(arg));
 }
 
 Py::List ModelPropertyPy::getColumns() const
@@ -100,6 +130,19 @@ Py::String ModelPropertyPy::getInheritance() const
 Py::Boolean ModelPropertyPy::getInherited() const
 {
     return getModelPropertyPtr()->isInherited();
+}
+
+PyObject* ModelPropertyPy::addColumn(PyObject* args)
+{
+    PyObject* object;
+    if (!PyArg_ParseTuple(args, "O!", &ModelPropertyPy::Type, &object)) {
+        return nullptr;
+    }
+    ModelProperty* property = static_cast<ModelPropertyPy*>(object)->getModelPropertyPtr();
+
+    getModelPropertyPtr()->addColumn(*property);
+    Py_INCREF(Py_None);
+    return Py_None;
 }
 
 PyObject* ModelPropertyPy::getCustomAttributes(const char* /*attr*/) const

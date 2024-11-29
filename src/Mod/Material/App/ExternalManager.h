@@ -48,12 +48,14 @@ public:
                        bool readOnly = true);
 
     // Model management
+    std::shared_ptr<Model> getModel(const QString& uuid);
     void
     addModel(const QString& libraryName, const QString& path, const std::shared_ptr<Model>& model);
     void
     migrateModel(const QString& libraryName, const QString& path, const std::shared_ptr<Model>& model);
 
     // Material management
+    std::shared_ptr<Material> getMaterial(const QString& uuid);
     void addMaterial(const QString& libraryName,
                      const QString& path,
                      const std::shared_ptr<Material>& material);
@@ -69,6 +71,7 @@ private:
     static void initManager();
     void getConfiguration();
     void instantiate();
+    void connect();
 
     static ExternalManager* _manager;
     static QMutex _mutex;

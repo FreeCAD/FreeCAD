@@ -192,7 +192,6 @@ Py::List ModelPy::getInherited() const
 
 Py::Dict ModelPy::getProperties() const
 {
-    // std::map<std::string, Model*> *models = getModelPtr()->getModels();
     Py::Dict dict;
 
     for (auto it = getModelPtr()->begin(); it != getModelPtr()->end(); it++) {
@@ -204,6 +203,31 @@ Py::Dict ModelPy::getProperties() const
     }
 
     return dict;
+}
+
+PyObject* ModelPy::addInheritance(PyObject* args)
+{
+    char* uuid;
+    if (!PyArg_ParseTuple(args, "s", &uuid)) {
+        return nullptr;
+    }
+
+    getModelPtr()->addInheritance(QString::fromStdString(uuid));
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+PyObject* ModelPy::addProperty(PyObject* args)
+{
+    PyObject* object;
+    if (!PyArg_ParseTuple(args, "O!", &ModelPropertyPy::Type, &object)) {
+        return nullptr;
+    }
+    ModelProperty* property = static_cast<ModelPropertyPy*>(object)->getModelPropertyPtr();
+
+    getModelPtr()->addProperty(*property);
+    Py_INCREF(Py_None);
+    return Py_None;
 }
 
 PyObject* ModelPy::getCustomAttributes(const char* /*attr*/) const

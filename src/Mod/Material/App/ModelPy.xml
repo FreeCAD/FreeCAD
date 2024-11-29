@@ -87,5 +87,15 @@
       </Documentation>
       <Parameter Name="Properties" Type="Dict"/>
     </Attribute>
+    <Methode Name="addInheritance" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Add an inherited model.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="addProperty" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Add a model property.</UserDocu>
+      </Documentation>
+    </Methode>
   </PythonExport>
 </GenerateModel>

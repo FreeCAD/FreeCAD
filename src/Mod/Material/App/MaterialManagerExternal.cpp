@@ -85,6 +85,11 @@ void MaterialManagerExternal::createLibrary(const QString& libraryName,
 //
 //=====
 
+std::shared_ptr<Material> MaterialManagerExternal::getMaterial(const QString& uuid) const
+{
+    return ExternalManager::getManager()->getMaterial(uuid);
+}
+
 void MaterialManagerExternal::addMaterial(const QString& libraryName,
                                           const QString& path,
                                           const std::shared_ptr<Material>& material)

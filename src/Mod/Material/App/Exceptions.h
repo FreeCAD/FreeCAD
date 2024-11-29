@@ -202,6 +202,24 @@ public:
     ~InvalidModel() noexcept override = default;
 };
 
+class InvalidMaterial: public Base::Exception
+{
+public:
+    InvalidMaterial()
+    {
+        this->setMessage("Invalid material");
+    }
+    explicit InvalidMaterial(const char* msg)
+    {
+        this->setMessage(msg);
+    }
+    explicit InvalidMaterial(const QString& msg)
+    {
+        this->setMessage(msg.toStdString().c_str());
+    }
+    ~InvalidMaterial() noexcept override = default;
+};
+
 class InvalidIndex: public Base::Exception
 {
 public:

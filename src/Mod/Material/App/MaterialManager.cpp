@@ -454,3 +454,23 @@ void MaterialManager::migrateToExternal(const std::shared_ptr<Materials::Materia
         _externalManager->migrateMaterial(library->getName(), path, material);
     }
 }
+
+void MaterialManager::validateMigration(const std::shared_ptr<Materials::MaterialLibrary>& library)
+{
+    auto materials = _localManager->libraryMaterials(library->getName());
+    for (auto& tuple : *materials) {
+        auto uuid = std::get<0>(tuple);
+        auto path = std::get<1>(tuple);
+        auto name = std::get<2>(tuple);
+        Base::Console().Log("\t('%s', '%s', '%s')\n",
+                            uuid.toStdString().c_str(),
+                            path.toStdString().c_str(),
+                            name.toStdString().c_str());
+
+        auto material = _localManager->getMaterial(uuid);
+        auto externalMaterial = _externalManager->getMaterial(uuid);
+        if (!material->validate(externalMaterial)) {
+            throw InvalidMaterial();
+        }
+    }
+}

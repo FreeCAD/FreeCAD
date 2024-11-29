@@ -60,6 +60,7 @@ public:
     // Folder management
 
     // Material management
+    std::shared_ptr<Material> getMaterial(const QString& uuid) const;
     void addMaterial(const QString& libraryName,
                      const QString& path,
                      const std::shared_ptr<Material>& material);

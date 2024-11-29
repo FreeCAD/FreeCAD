@@ -98,7 +98,7 @@ public:
     {
         _name = name;
     }
-    void setColumnHeader(const QString& header)
+    void setDisplayName(const QString& header)
     {
         _displayName = header;
     }
@@ -305,6 +305,8 @@ public:
     {
         return _properties.cend();
     }
+
+    bool validate(const std::shared_ptr<Model>& other) const;
 
 private:
     std::shared_ptr<ModelLibrary> _library;

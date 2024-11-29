@@ -158,6 +158,10 @@ std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> ModelManager::getLoca
 
 std::shared_ptr<Model> ModelManager::getModel(const QString& uuid) const
 {
+    auto model = _externalManager->getModel(uuid);
+    if (model) {
+        // Return the model
+    }
     return _localManager->getModel(uuid);
 }
 
@@ -210,5 +214,25 @@ void ModelManager::migrateToExternal(const std::shared_ptr<Materials::ModelLibra
 
         auto model = _localManager->getModel(uuid);
         _externalManager->migrateModel(library->getName(), path, model);
+    }
+}
+
+void ModelManager::validateMigration(const std::shared_ptr<Materials::ModelLibrary>& library)
+{
+    auto models = _localManager->libraryModels(library->getName());
+    for (auto& tuple : *models) {
+        auto uuid = std::get<0>(tuple);
+        auto path = std::get<1>(tuple);
+        auto name = std::get<2>(tuple);
+        Base::Console().Log("\t('%s', '%s', '%s')\n",
+                            uuid.toStdString().c_str(),
+                            path.toStdString().c_str(),
+                            name.toStdString().c_str());
+
+        auto model = _localManager->getModel(uuid);
+        auto externalModel = _externalManager->getModel(uuid);
+        if (!model->validate(externalModel)) {
+            throw InvalidModel();
+        }
     }
 }

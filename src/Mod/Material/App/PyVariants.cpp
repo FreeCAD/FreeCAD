@@ -21,6 +21,8 @@
 
 #include "PreCompiled.h"
 
+#include <QVariant>
+
 #include "PyVariants.h"
 #include "Exceptions.h"
 

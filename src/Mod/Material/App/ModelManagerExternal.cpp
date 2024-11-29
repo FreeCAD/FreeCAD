@@ -98,3 +98,8 @@ void ModelManagerExternal::migrateModel(const QString& libraryName,
 {
     ExternalManager::getManager()->migrateModel(libraryName, path, model);
 }
+
+std::shared_ptr<Model> ModelManagerExternal::getModel(const QString& uuid)
+{
+    return ExternalManager::getManager()->getModel(uuid);
+}

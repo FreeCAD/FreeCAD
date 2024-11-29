@@ -439,6 +439,8 @@ public:
         return getTypeId() == other.getTypeId() && _uuid == other._uuid;
     }
 
+    bool validate(const std::shared_ptr<Material>& other) const;
+
 protected:
     void addModel(const QString& uuid);
     static void removeUUID(QSet<QString>& uuidList, const QString& uuid);
