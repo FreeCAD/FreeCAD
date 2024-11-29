@@ -38,57 +38,14 @@
 
 using namespace MeshCore;
 
-namespace MeshCore::Ply
-{
-
-enum Number
-{
-    int8,
-    uint8,
-    int16,
-    uint16,
-    int32,
-    uint32,
-    float32,
-    float64
-};
-
-struct Property
-{
-    using first_argument_type = std::pair<std::string, int>;
-    using second_argument_type = std::string;
-    using result_type = bool;
-
-    bool operator()(const std::pair<std::string, int>& x, const std::string& y) const
-    {
-        return x.first == y;
-    }
-};
-
-}  // namespace MeshCore::Ply
-
-using namespace MeshCore::Ply;
-
+// http://local.wasp.uwa.edu.au/~pbourke/dataformats/ply/
 ReaderPLY::ReaderPLY(MeshKernel& kernel, Material* material)
     : _kernel(kernel)
     , _material(material)
 {}
 
-bool ReaderPLY::Load(std::istream& input)
+bool ReaderPLY::CheckHeader(std::istream& input) const
 {
-    // http://local.wasp.uwa.edu.au/~pbourke/dataformats/ply/
-    std::size_t v_count = 0, f_count = 0;
-    MeshPointArray meshPoints;
-    MeshFacetArray meshFacets;
-
-    enum
-    {
-        unknown,
-        ascii,
-        binary_little_endian,
-        binary_big_endian
-    } format = unknown;
-
     if (!input || input.bad()) {
         return false;
     }
@@ -99,21 +56,189 @@ bool ReaderPLY::Load(std::istream& input)
     }
 
     // read in the first three characters
-    char ply[3];
-    input.read(ply, 3);
+    std::array<char, 3> ply {};
+    input.read(ply.data(), ply.size());
     input.ignore(1);
     if (!input) {
         return false;
     }
-    if ((ply[0] != 'p') || (ply[1] != 'l') || (ply[2] != 'y')) {
-        return false;  // wrong header
+
+    return ((ply[0] == 'p') && (ply[1] == 'l') && (ply[2] == 'y'));
+}
+
+bool ReaderPLY::ReadFormat(std::istream& str)
+{
+    std::string format_string;
+    std::string version;
+    char space_format_string {};
+    char space_format_version {};
+    str >> space_format_string >> std::ws >> format_string >> space_format_version >> std::ws
+        >> version;
+    if (!std::isspace(space_format_string) || !std::isspace(space_format_version)) {
+        return false;
+    }
+    if (format_string == "ascii") {
+        format = ascii;
+    }
+    else if (format_string == "binary_big_endian") {
+        format = binary_big_endian;
+    }
+    else if (format_string == "binary_little_endian") {
+        format = binary_little_endian;
+    }
+    else {
+        // wrong format version
+        return false;
     }
 
-    std::vector<std::pair<std::string, Ply::Number>> vertex_props;
-    std::vector<Ply::Number> face_props;
-    std::string line, element;
+    return (version == "1.0");
+}
 
-    MeshIO::Binding rgb_value = MeshIO::OVERALL;
+bool ReaderPLY::ReadElement(std::istream& str, std::string& element)
+{
+    std::string name;
+    std::size_t count {};
+    char space_element_name {};
+    char space_name_count {};
+    str >> space_element_name >> std::ws >> name >> space_name_count >> std::ws >> count;
+    if (!std::isspace(space_element_name) || !std::isspace(space_name_count)) {
+        return false;
+    }
+    if (name == "vertex") {
+        element = name;
+        v_count = count;
+        meshPoints.reserve(count);
+    }
+    else if (name == "face") {
+        element = name;
+        f_count = count;
+        meshFacets.reserve(count);
+    }
+    else {
+        element.clear();
+    }
+
+    return true;
+}
+
+bool ReaderPLY::ReadVertexProperty(std::istream& str)
+{
+    std::string type;
+    std::string name;
+    char space {};
+    str >> space >> std::ws >> type >> space >> std::ws >> name >> std::ws;
+
+    Number number {};
+    if (type == "char" || type == "int8") {
+        number = int8;
+    }
+    else if (type == "uchar" || type == "uint8") {
+        number = uint8;
+    }
+    else if (type == "short" || type == "int16") {
+        number = int16;
+    }
+    else if (type == "ushort" || type == "uint16") {
+        number = uint16;
+    }
+    else if (type == "int" || type == "int32") {
+        number = int32;
+    }
+    else if (type == "uint" || type == "uint32") {
+        number = uint32;
+    }
+    else if (type == "float" || type == "float32") {
+        number = float32;
+    }
+    else if (type == "double" || type == "float64") {
+        number = float64;
+    }
+    else {
+        // no valid number type
+        return false;
+    }
+
+    // store the property name and type
+    vertex_props.emplace_back(name, number);
+
+    return true;
+}
+
+bool ReaderPLY::ReadFaceProperty(std::istream& str)
+{
+    std::string type;
+    std::string name;
+    char space {};
+
+    std::string list;
+    std::string uchr;
+
+    str >> space >> std::ws >> list >> std::ws;
+    if (list == "list") {
+        str >> uchr >> std::ws >> type >> std::ws >> name >> std::ws;
+    }
+    else {
+        // not a 'list'
+        type = list;
+        str >> name;
+    }
+    if (name != "vertex_indices" && name != "vertex_index") {
+        Number number {};
+        if (type == "char" || type == "int8") {
+            number = int8;
+        }
+        else if (type == "uchar" || type == "uint8") {
+            number = uint8;
+        }
+        else if (type == "short" || type == "int16") {
+            number = int16;
+        }
+        else if (type == "ushort" || type == "uint16") {
+            number = uint16;
+        }
+        else if (type == "int" || type == "int32") {
+            number = int32;
+        }
+        else if (type == "uint" || type == "uint32") {
+            number = uint32;
+        }
+        else if (type == "float" || type == "float32") {
+            number = float32;
+        }
+        else if (type == "double" || type == "float64") {
+            number = float64;
+        }
+        else {
+            // no valid number type
+            return false;
+        }
+
+        // store the property name and type
+        face_props.push_back(number);
+    }
+    return true;
+}
+
+bool ReaderPLY::ReadProperty(std::istream& str, const std::string& element)
+{
+    if (element == "vertex") {
+        if (!ReadVertexProperty(str)) {
+            return false;
+        }
+    }
+    else if (element == "face") {
+        if (!ReadFaceProperty(str)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool ReaderPLY::ReadHeader(std::istream& input)
+{
+    std::string line;
+    std::string element;
     while (std::getline(input, line)) {
         std::istringstream str(line);
         str.unsetf(std::ios_base::skipws);
@@ -124,139 +249,18 @@ bool ReaderPLY::Load(std::istream& input)
         std::string kw;
         str >> kw;
         if (kw == "format") {
-            std::string format_string, version;
-            char space_format_string {}, space_format_version {};
-            str >> space_format_string >> std::ws >> format_string >> space_format_version
-                >> std::ws >> version;
-            if (/*!str || !str.eof() ||*/
-                !std::isspace(space_format_string) || !std::isspace(space_format_version)) {
-                return false;
-            }
-            if (format_string == "ascii") {
-                format = ascii;
-            }
-            else if (format_string == "binary_big_endian") {
-                format = binary_big_endian;
-            }
-            else if (format_string == "binary_little_endian") {
-                format = binary_little_endian;
-            }
-            else {
-                // wrong format version
-                return false;
-            }
-            if (version != "1.0") {
-                // wrong version
+            if (!ReadFormat(str)) {
                 return false;
             }
         }
         else if (kw == "element") {
-            std::string name;
-            std::size_t count {};
-            char space_element_name {}, space_name_count {};
-            str >> space_element_name >> std::ws >> name >> space_name_count >> std::ws >> count;
-            if (/*!str || !str.eof() ||*/
-                !std::isspace(space_element_name) || !std::isspace(space_name_count)) {
+            if (!ReadElement(str, element)) {
                 return false;
-            }
-            if (name == "vertex") {
-                element = name;
-                v_count = count;
-                meshPoints.reserve(count);
-            }
-            else if (name == "face") {
-                element = name;
-                f_count = count;
-                meshFacets.reserve(count);
-            }
-            else {
-                element.clear();
             }
         }
         else if (kw == "property") {
-            std::string type, name;
-            char space {};
-            if (element == "vertex") {
-                str >> space >> std::ws >> type >> space >> std::ws >> name >> std::ws;
-
-                Ply::Number number {};
-                if (type == "char" || type == "int8") {
-                    number = int8;
-                }
-                else if (type == "uchar" || type == "uint8") {
-                    number = uint8;
-                }
-                else if (type == "short" || type == "int16") {
-                    number = int16;
-                }
-                else if (type == "ushort" || type == "uint16") {
-                    number = uint16;
-                }
-                else if (type == "int" || type == "int32") {
-                    number = int32;
-                }
-                else if (type == "uint" || type == "uint32") {
-                    number = uint32;
-                }
-                else if (type == "float" || type == "float32") {
-                    number = float32;
-                }
-                else if (type == "double" || type == "float64") {
-                    number = float64;
-                }
-                else {
-                    // no valid number type
-                    return false;
-                }
-
-                // store the property name and type
-                vertex_props.emplace_back(name, number);
-            }
-            else if (element == "face") {
-                std::string list, uchr;
-                str >> space >> std::ws >> list >> std::ws;
-                if (list == "list") {
-                    str >> uchr >> std::ws >> type >> std::ws >> name >> std::ws;
-                }
-                else {
-                    // not a 'list'
-                    type = list;
-                    str >> name;
-                }
-                if (name != "vertex_indices" && name != "vertex_index") {
-                    Number number {};
-                    if (type == "char" || type == "int8") {
-                        number = int8;
-                    }
-                    else if (type == "uchar" || type == "uint8") {
-                        number = uint8;
-                    }
-                    else if (type == "short" || type == "int16") {
-                        number = int16;
-                    }
-                    else if (type == "ushort" || type == "uint16") {
-                        number = uint16;
-                    }
-                    else if (type == "int" || type == "int32") {
-                        number = int32;
-                    }
-                    else if (type == "uint" || type == "uint32") {
-                        number = uint32;
-                    }
-                    else if (type == "float" || type == "float32") {
-                        number = float32;
-                    }
-                    else if (type == "double" || type == "float64") {
-                        number = float64;
-                    }
-                    else {
-                        // no valid number type
-                        return false;
-                    }
-
-                    // store the property name and type
-                    face_props.push_back(number);
-                }
+            if (!ReadProperty(str, element)) {
+                return false;
             }
         }
         else if (kw == "end_header") {
@@ -264,6 +268,11 @@ bool ReaderPLY::Load(std::istream& input)
         }
     }
 
+    return true;
+}
+
+bool ReaderPLY::VerifyVertexProperty()
+{
     // check if valid 3d points
     Property property;
     std::size_t num_x = std::count_if(vertex_props.begin(),
@@ -271,28 +280,24 @@ bool ReaderPLY::Load(std::istream& input)
                                       [&property](const std::pair<std::string, int>& p) {
                                           return property(p, "x");
                                       });
-    if (num_x != 1) {
-        return false;
-    }
 
     std::size_t num_y = std::count_if(vertex_props.begin(),
                                       vertex_props.end(),
                                       [&property](const std::pair<std::string, int>& p) {
                                           return property(p, "y");
                                       });
-    if (num_y != 1) {
-        return false;
-    }
 
     std::size_t num_z = std::count_if(vertex_props.begin(),
                                       vertex_props.end(),
                                       [&property](const std::pair<std::string, int>& p) {
                                           return property(p, "z");
                                       });
-    if (num_z != 1) {
-        return false;
-    }
 
+    return ((num_x == 1) && (num_y == 1) && (num_z == 1));
+}
+
+bool ReaderPLY::VerifyColorProperty()
+{
     for (auto& it : vertex_props) {
         if (it.first == "diffuse_red") {
             it.first = "red";
@@ -306,21 +311,25 @@ bool ReaderPLY::Load(std::istream& input)
     }
 
     // check if valid colors are set
+    Property property;
     std::size_t num_r = std::count_if(vertex_props.begin(),
                                       vertex_props.end(),
                                       [&property](const std::pair<std::string, int>& p) {
                                           return property(p, "red");
                                       });
+
     std::size_t num_g = std::count_if(vertex_props.begin(),
                                       vertex_props.end(),
                                       [&property](const std::pair<std::string, int>& p) {
                                           return property(p, "green");
                                       });
+
     std::size_t num_b = std::count_if(vertex_props.begin(),
                                       vertex_props.end(),
                                       [&property](const std::pair<std::string, int>& p) {
                                           return property(p, "blue");
                                       });
+
     std::size_t rgb_colors = num_r + num_g + num_b;
     if (rgb_colors != 0 && rgb_colors != 3) {
         return false;
@@ -328,223 +337,41 @@ bool ReaderPLY::Load(std::istream& input)
 
     // only if set per vertex
     if (rgb_colors == 3) {
-        rgb_value = MeshIO::PER_VERTEX;
         if (_material) {
             _material->binding = MeshIO::PER_VERTEX;
             _material->diffuseColor.reserve(v_count);
         }
     }
 
-    if (format == ascii) {
-        boost::regex rx_d("(([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?))\\s*");
-        boost::regex rx_s("\\b([-+]?[0-9]+)\\s*");
-        boost::regex rx_u("\\b([0-9]+)\\s*");
-        boost::regex rx_f(R"(^\s*3\s+([0-9]+)\s+([0-9]+)\s+([0-9]+)\s*)");
-        boost::smatch what;
+    return true;
+}
 
-        for (std::size_t i = 0; i < v_count && std::getline(input, line); i++) {
-            // go through the vertex properties
-            std::map<std::string, float> prop_values;
-            for (const auto& it : vertex_props) {
-                switch (it.second) {
-                    case int8:
-                    case int16:
-                    case int32: {
-                        if (boost::regex_search(line, what, rx_s)) {
-                            int v {};
-                            v = boost::lexical_cast<int>(what[1]);
-                            prop_values[it.first] = static_cast<float>(v);
-                            line = line.substr(what[0].length());
-                        }
-                        else {
-                            return false;
-                        }
-                    } break;
-                    case uint8:
-                    case uint16:
-                    case uint32: {
-                        if (boost::regex_search(line, what, rx_u)) {
-                            int v {};
-                            v = boost::lexical_cast<int>(what[1]);
-                            prop_values[it.first] = static_cast<float>(v);
-                            line = line.substr(what[0].length());
-                        }
-                        else {
-                            return false;
-                        }
-                    } break;
-                    case float32:
-                    case float64: {
-                        if (boost::regex_search(line, what, rx_d)) {
-                            double v {};
-                            v = boost::lexical_cast<double>(what[1]);
-                            prop_values[it.first] = static_cast<float>(v);
-                            line = line.substr(what[0].length());
-                        }
-                        else {
-                            return false;
-                        }
-                    } break;
-                    default:
-                        return false;
-                }
-            }
-
-            Base::Vector3f pt;
-            pt.x = (prop_values["x"]);
-            pt.y = (prop_values["y"]);
-            pt.z = (prop_values["z"]);
-            meshPoints.push_back(pt);
-
-            if (_material && (rgb_value == MeshIO::PER_VERTEX)) {
-                float r = (prop_values["red"]) / 255.0F;
-                float g = (prop_values["green"]) / 255.0F;
-                float b = (prop_values["blue"]) / 255.0F;
-                _material->diffuseColor.emplace_back(r, g, b);
-            }
-        }
-
-        int f1 {}, f2 {}, f3 {};
-        for (std::size_t i = 0; i < f_count && std::getline(input, line); i++) {
-            if (boost::regex_search(line, what, rx_f)) {
-                f1 = boost::lexical_cast<int>(what[1]);
-                f2 = boost::lexical_cast<int>(what[2]);
-                f3 = boost::lexical_cast<int>(what[3]);
-                meshFacets.push_back(MeshFacet(f1, f2, f3));
-            }
-        }
-    }
-    // binary
-    else {
-        Base::InputStream is(input);
-        if (format == binary_little_endian) {
-            is.setByteOrder(Base::Stream::LittleEndian);
-        }
-        else {
-            is.setByteOrder(Base::Stream::BigEndian);
-        }
-
-        for (std::size_t i = 0; i < v_count; i++) {
-            // go through the vertex properties
-            std::map<std::string, float> prop_values;
-            for (const auto& it : vertex_props) {
-                switch (it.second) {
-                    case int8: {
-                        int8_t v {};
-                        is >> v;
-                        prop_values[it.first] = static_cast<float>(v);
-                    } break;
-                    case uint8: {
-                        uint8_t v {};
-                        is >> v;
-                        prop_values[it.first] = static_cast<float>(v);
-                    } break;
-                    case int16: {
-                        int16_t v {};
-                        is >> v;
-                        prop_values[it.first] = static_cast<float>(v);
-                    } break;
-                    case uint16: {
-                        uint16_t v {};
-                        is >> v;
-                        prop_values[it.first] = static_cast<float>(v);
-                    } break;
-                    case int32: {
-                        int32_t v {};
-                        is >> v;
-                        prop_values[it.first] = static_cast<float>(v);
-                    } break;
-                    case uint32: {
-                        uint32_t v {};
-                        is >> v;
-                        prop_values[it.first] = static_cast<float>(v);
-                    } break;
-                    case float32: {
-                        float v {};
-                        is >> v;
-                        prop_values[it.first] = v;
-                    } break;
-                    case float64: {
-                        double v {};
-                        is >> v;
-                        prop_values[it.first] = static_cast<float>(v);
-                    } break;
-                    default:
-                        return false;
-                }
-            }
-
-            Base::Vector3f pt;
-            pt.x = (prop_values["x"]);
-            pt.y = (prop_values["y"]);
-            pt.z = (prop_values["z"]);
-            meshPoints.push_back(pt);
-
-            if (_material && (rgb_value == MeshIO::PER_VERTEX)) {
-                float r = (prop_values["red"]) / 255.0F;
-                float g = (prop_values["green"]) / 255.0F;
-                float b = (prop_values["blue"]) / 255.0F;
-                _material->diffuseColor.emplace_back(r, g, b);
-            }
-        }
-
-        unsigned char n {};
-        uint32_t f1 {}, f2 {}, f3 {};
-        for (std::size_t i = 0; i < f_count; i++) {
-            is >> n;
-            if (n == 3) {
-                is >> f1 >> f2 >> f3;
-                if (f1 < v_count && f2 < v_count && f3 < v_count) {
-                    meshFacets.push_back(MeshFacet(f1, f2, f3));
-                }
-                for (auto it : face_props) {
-                    switch (it) {
-                        case int8: {
-                            int8_t v {};
-                            is >> v;
-                        } break;
-                        case uint8: {
-                            uint8_t v {};
-                            is >> v;
-                        } break;
-                        case int16: {
-                            int16_t v {};
-                            is >> v;
-                        } break;
-                        case uint16: {
-                            uint16_t v {};
-                            is >> v;
-                        } break;
-                        case int32: {
-                            int32_t v {};
-                            is >> v;
-                        } break;
-                        case uint32: {
-                            uint32_t v {};
-                            is >> v;
-                        } break;
-                        case float32: {
-                            is >> n;
-                            float v {};
-                            for (unsigned char j = 0; j < n; j++) {
-                                is >> v;
-                            }
-                        } break;
-                        case float64: {
-                            is >> n;
-                            double v {};
-                            for (unsigned char j = 0; j < n; j++) {
-                                is >> v;
-                            }
-                        } break;
-                        default:
-                            return false;
-                    }
-                }
-            }
-        }
+bool ReaderPLY::Load(std::istream& input)
+{
+    if (!CheckHeader(input)) {
+        return false;
     }
 
+    if (!ReadHeader(input)) {
+        return false;
+    }
+
+    if (!VerifyVertexProperty()) {
+        return false;
+    }
+
+    if (!VerifyColorProperty()) {
+        return false;
+    }
+
+    // clang-format off
+    return format == ascii ? LoadAscii(input)
+                           : LoadBinary(input);
+    // clang-format on
+}
+
+void ReaderPLY::CleanupMesh()
+{
     _kernel.Clear();  // remove all data before
 
     MeshCleanup meshCleanup(meshPoints, meshFacets);
@@ -555,6 +382,273 @@ bool ReaderPLY::Load(std::istream& input)
     MeshPointFacetAdjacency meshAdj(meshPoints.size(), meshFacets);
     meshAdj.SetFacetNeighbourhood();
     _kernel.Adopt(meshPoints, meshFacets);
+}
 
+bool ReaderPLY::ReadVertexes(std::istream& input)
+{
+    boost::regex rx_d("(([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?))\\s*");
+    boost::regex rx_s("\\b([-+]?[0-9]+)\\s*");
+    boost::regex rx_u("\\b([0-9]+)\\s*");
+
+    boost::smatch what;
+    std::string line;
+
+    for (std::size_t i = 0; i < v_count && std::getline(input, line); i++) {
+        // go through the vertex properties
+        std::map<std::string, float> prop_values;
+        for (const auto& it : vertex_props) {
+            switch (it.second) {
+                case int8:
+                case int16:
+                case int32: {
+                    if (boost::regex_search(line, what, rx_s)) {
+                        int v {};
+                        v = boost::lexical_cast<int>(what[1]);
+                        prop_values[it.first] = static_cast<float>(v);
+                        line = line.substr(what[0].length());
+                    }
+                    else {
+                        return false;
+                    }
+                } break;
+                case uint8:
+                case uint16:
+                case uint32: {
+                    if (boost::regex_search(line, what, rx_u)) {
+                        int v {};
+                        v = boost::lexical_cast<int>(what[1]);
+                        prop_values[it.first] = static_cast<float>(v);
+                        line = line.substr(what[0].length());
+                    }
+                    else {
+                        return false;
+                    }
+                } break;
+                case float32:
+                case float64: {
+                    if (boost::regex_search(line, what, rx_d)) {
+                        double v {};
+                        v = boost::lexical_cast<double>(what[1]);
+                        prop_values[it.first] = static_cast<float>(v);
+                        line = line.substr(what[0].length());
+                    }
+                    else {
+                        return false;
+                    }
+                } break;
+                default:
+                    return false;
+            }
+        }
+
+        Base::Vector3f pt;
+        pt.x = (prop_values["x"]);
+        pt.y = (prop_values["y"]);
+        pt.z = (prop_values["z"]);
+        meshPoints.push_back(pt);
+
+        if (_material && _material->binding == MeshIO::PER_VERTEX) {
+            float r = (prop_values["red"]) / 255.0F;
+            float g = (prop_values["green"]) / 255.0F;
+            float b = (prop_values["blue"]) / 255.0F;
+            _material->diffuseColor.emplace_back(r, g, b);
+        }
+    }
+
+    return true;
+}
+
+bool ReaderPLY::ReadFaces(std::istream& input)
+{
+    boost::regex rx_f(R"(^\s*3\s+([0-9]+)\s+([0-9]+)\s+([0-9]+)\s*)");
+    boost::smatch what;
+    std::string line;
+
+    for (std::size_t i = 0; i < f_count && std::getline(input, line); i++) {
+        if (boost::regex_search(line, what, rx_f)) {
+            int f1 {};
+            int f2 {};
+            int f3 {};
+            f1 = boost::lexical_cast<int>(what[1]);
+            f2 = boost::lexical_cast<int>(what[2]);
+            f3 = boost::lexical_cast<int>(what[3]);
+            meshFacets.push_back(MeshFacet(f1, f2, f3));
+        }
+    }
+
+    return true;
+}
+
+bool ReaderPLY::LoadAscii(std::istream& input)
+{
+    if (!ReadVertexes(input)) {
+        return false;
+    }
+
+    if (!ReadFaces(input)) {
+        return false;
+    }
+
+    CleanupMesh();
+    return true;
+}
+
+bool ReaderPLY::ReadVertexes(Base::InputStream& is)
+{
+    std::string prop_x = "x";
+    std::string prop_y = "y";
+    std::string prop_z = "z";
+    std::string prop_r = "red";
+    std::string prop_g = "gree";
+    std::string prop_b = "blue";
+    for (std::size_t i = 0; i < v_count; i++) {
+        // go through the vertex properties
+        std::map<std::string, float> prop_values;
+        for (const auto& it : vertex_props) {
+            switch (it.second) {
+                case int8: {
+                    int8_t v {};
+                    is >> v;
+                    prop_values[it.first] = static_cast<float>(v);
+                } break;
+                case uint8: {
+                    uint8_t v {};
+                    is >> v;
+                    prop_values[it.first] = static_cast<float>(v);
+                } break;
+                case int16: {
+                    int16_t v {};
+                    is >> v;
+                    prop_values[it.first] = static_cast<float>(v);
+                } break;
+                case uint16: {
+                    uint16_t v {};
+                    is >> v;
+                    prop_values[it.first] = static_cast<float>(v);
+                } break;
+                case int32: {
+                    int32_t v {};
+                    is >> v;
+                    prop_values[it.first] = static_cast<float>(v);
+                } break;
+                case uint32: {
+                    uint32_t v {};
+                    is >> v;
+                    prop_values[it.first] = static_cast<float>(v);
+                } break;
+                case float32: {
+                    float v {};
+                    is >> v;
+                    prop_values[it.first] = v;
+                } break;
+                case float64: {
+                    double v {};
+                    is >> v;
+                    prop_values[it.first] = static_cast<float>(v);
+                } break;
+                default:
+                    return false;
+            }
+        }
+
+        Base::Vector3f pt;
+        pt.x = (prop_values[prop_x]);
+        pt.y = (prop_values[prop_y]);
+        pt.z = (prop_values[prop_z]);
+        meshPoints.push_back(pt);
+
+        if (_material && _material->binding == MeshIO::PER_VERTEX) {
+            float r = (prop_values[prop_r]) / 255.0F;
+            float g = (prop_values[prop_g]) / 255.0F;
+            float b = (prop_values[prop_b]) / 255.0F;
+            _material->diffuseColor.emplace_back(r, g, b);
+        }
+    }
+
+    return true;
+}
+
+bool ReaderPLY::ReadFaces(Base::InputStream& is)
+{
+    unsigned char n {};
+    uint32_t f1 {};
+    uint32_t f2 {};
+    uint32_t f3 {};
+    for (std::size_t i = 0; i < f_count; i++) {
+        is >> n;
+        if (n == 3) {
+            is >> f1 >> f2 >> f3;
+            if (f1 < v_count && f2 < v_count && f3 < v_count) {
+                meshFacets.push_back(MeshFacet(f1, f2, f3));
+            }
+            for (auto it : face_props) {
+                switch (it) {
+                    case int8: {
+                        int8_t v {};
+                        is >> v;
+                    } break;
+                    case uint8: {
+                        uint8_t v {};
+                        is >> v;
+                    } break;
+                    case int16: {
+                        int16_t v {};
+                        is >> v;
+                    } break;
+                    case uint16: {
+                        uint16_t v {};
+                        is >> v;
+                    } break;
+                    case int32: {
+                        int32_t v {};
+                        is >> v;
+                    } break;
+                    case uint32: {
+                        uint32_t v {};
+                        is >> v;
+                    } break;
+                    case float32: {
+                        is >> n;
+                        float v {};
+                        for (unsigned char j = 0; j < n; j++) {
+                            is >> v;
+                        }
+                    } break;
+                    case float64: {
+                        is >> n;
+                        double v {};
+                        for (unsigned char j = 0; j < n; j++) {
+                            is >> v;
+                        }
+                    } break;
+                    default:
+                        return false;
+                }
+            }
+        }
+    }
+
+    return true;
+}
+
+bool ReaderPLY::LoadBinary(std::istream& input)
+{
+    Base::InputStream is(input);
+    if (format == binary_little_endian) {
+        is.setByteOrder(Base::Stream::LittleEndian);
+    }
+    else {
+        is.setByteOrder(Base::Stream::BigEndian);
+    }
+
+    if (!ReadVertexes(is)) {
+        return false;
+    }
+
+    if (!ReadFaces(is)) {
+        return false;
+    }
+
+    CleanupMesh();
     return true;
 }
