@@ -1633,8 +1633,9 @@ void CmdTechDrawSurfaceFinishSymbols::activated(int iMsg)
     }
     else {
         auto objFeat = dynamic_cast<TechDraw::DrawView *>(selection.front().getObject());
-        if (!objFeat->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())
-            && !objFeat->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())) {
+        if ( !objFeat ||
+             !(objFeat->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()) ||
+               objFeat->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())) ) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("SurfaceFinishSymbols"),
                                  QObject::tr("Selected object is not a part view, nor a leader line"));
             return;

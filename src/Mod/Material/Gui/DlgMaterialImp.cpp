@@ -83,13 +83,11 @@ DlgMaterialImp::DlgMaterialImp(bool floating, QWidget* parent, Qt::WindowFlags f
 
     d->floating = floating;
 
-    // // Create a filter to only include current format materials
-    // // that contain the basic render model.
-    // auto filter = std::make_shared<Materials::MaterialFilter>();
-    // filter->setIncludeEmptyFolders(false);
-    // filter->setIncludeLegacy(false);
-    // filter->addRequiredComplete(Materials::ModelUUIDs::ModelUUID_Rendering_Basic);
-    // d->ui.widgetMaterial->setFilter(filter);
+    // Create a filter to only include current format materials
+    // that contain physical properties.
+    auto filter = std::make_shared<Materials::MaterialFilter>();
+    filter->requirePhysical(true);
+    d->ui.widgetMaterial->setFilter(filter);
 
     std::vector<App::DocumentObject*> objects = getSelectionObjects();
     setMaterial(objects);

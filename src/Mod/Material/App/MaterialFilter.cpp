@@ -62,10 +62,22 @@ TYPESYSTEM_SOURCE(Materials::MaterialFilter, Base::BaseClass)
 MaterialFilter::MaterialFilter()
     : _required()
     , _requiredComplete()
+    , _requirePhysical(false)
+    , _requireAppearance(false)
 {}
 
 bool MaterialFilter::modelIncluded(const std::shared_ptr<Material>& material) const
 {
+    if (_requirePhysical) {
+        if (!material->hasPhysicalProperties()) {
+            return false;
+        }
+    }
+    if (_requireAppearance) {
+        if (!material->hasAppearanceProperties()) {
+            return false;
+        }
+    }
     for (const auto& complete : _requiredComplete) {
         if (!material->isModelComplete(complete)) {
             return false;

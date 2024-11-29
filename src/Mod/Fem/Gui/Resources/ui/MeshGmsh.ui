@@ -23,7 +23,7 @@
       </size>
      </property>
      <property name="title">
-      <string>FEM Mesh Parameters</string>
+      <string>Mesh Parameters</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_9">
       <item>
@@ -34,7 +34,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="l_dimension">
           <property name="text">
-           <string>Element dimension:</string>
+           <string>Element Dimension:</string>
           </property>
          </widget>
         </item>
@@ -44,43 +44,37 @@
         <item row="3" column="0">
          <widget class="QLabel" name="l_max">
           <property name="text">
-           <string>Max element size (0.0 = Auto):</string>
+           <string>Maximum Size:</string>
           </property>
          </widget>
         </item>
         <item row="3" column="1">
-         <widget class="Gui::InputField" name="if_max">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
+         <widget class="Gui::QuantitySpinBox" name="qsb_max_size">
+          <property name="enabled">
+           <bool>true</bool>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>80</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>0 mm</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="singleStep">
-           <double>1.000000000000000</double>
-          </property>
-          <property name="maximum">
-           <double>1000000000.000000000000000</double>
+          <property name="toolTip">
+           <string>Use 0.0 to set size automatically</string>
           </property>
           <property name="unit" stdset="0">
            <string notr="true">mm</string>
           </property>
-          <property name="decimals" stdset="0">
-           <number>2</number>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
-          <property name="value" stdset="0">
+          <property name="keyboardTracking">
+           <bool>true</bool>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>1000000000000000000000.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="value">
            <double>0.000000000000000</double>
           </property>
          </widget>
@@ -88,43 +82,37 @@
         <item row="4" column="0">
          <widget class="QLabel" name="l_min">
           <property name="text">
-           <string>Min element size (0.0 = Auto):</string>
+           <string>Minimum Size:</string>
           </property>
          </widget>
         </item>
         <item row="4" column="1">
-         <widget class="Gui::InputField" name="if_min">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
+         <widget class="Gui::QuantitySpinBox" name="qsb_min_size">
+          <property name="enabled">
+           <bool>true</bool>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>80</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>0 mm</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="singleStep">
-           <double>1.000000000000000</double>
-          </property>
-          <property name="maximum">
-           <double>1000000000.000000000000000</double>
+          <property name="toolTip">
+           <string>Use 0.0 to set size automatically</string>
           </property>
           <property name="unit" stdset="0">
            <string notr="true">mm</string>
           </property>
-          <property name="decimals" stdset="0">
-           <number>2</number>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
-          <property name="value" stdset="0">
+          <property name="keyboardTracking">
+           <bool>true</bool>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>1000000000000000000000.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="value">
            <double>0.000000000000000</double>
           </property>
          </widget>
@@ -135,7 +123,7 @@
         <item row="2" column="0">
          <widget class="QLabel" name="I_order">
           <property name="text">
-           <string>Element order:</string>
+           <string>Element Order:</string>
           </property>
          </widget>
         </item>
@@ -167,6 +155,9 @@
            <widget class="QTextEdit" name="te_output">
             <property name="lineWrapMode">
              <enum>QTextEdit::NoWrap</enum>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -219,9 +210,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Gui::InputField</class>
-   <extends>QLineEdit</extends>
-   <header>Gui/InputField.h</header>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -49,6 +49,7 @@ PyObject* Base::PyExc_FC_ExpressionError = nullptr;
 PyObject* Base::PyExc_FC_ParserError = nullptr;
 PyObject* Base::PyExc_FC_CADKernelError = nullptr;
 PyObject* Base::PyExc_FC_PropertyError = nullptr;
+PyObject* Base::PyExc_FC_AbortIOException = nullptr;
 
 typedef struct {            //NOLINT
     PyObject_HEAD

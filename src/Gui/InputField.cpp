@@ -181,7 +181,7 @@ void InputField::resizeEvent(QResizeEvent *)
     QSize sz = iconLabel->sizeHint();
     int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
     iconLabel->move(rect().right() - frameWidth - sz.width(),
-                    (rect().bottom() + 1 - sz.height())/2);
+                    rect().center().y() - sz.height() / 2);
 }
 
 void InputField::updateIconLabel(const QString& text)

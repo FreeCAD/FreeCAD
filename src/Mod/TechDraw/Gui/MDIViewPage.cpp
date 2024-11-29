@@ -62,19 +62,15 @@
 #include <Mod/TechDraw/App/DrawTemplate.h>
 #include <Mod/TechDraw/App/Preferences.h>
 
-#include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
 #include "QGIEdge.h"
 #include "QGIFace.h"
-#include "QGITemplate.h"
 #include "QGIVertex.h"
 #include "QGIView.h"
-#include "QGIViewBalloon.h"
 #include "QGIViewDimension.h"
 #include "QGMText.h"
 #include "QGSPage.h"
 #include "QGVPage.h"
-#include "Rez.h"
 #include "ViewProviderPage.h"
 #include "PagePrinter.h"
 
@@ -204,6 +200,10 @@ bool MDIViewPage::onMsg(const char* pMsg, const char**)
         doc->saveAs();
         return true;
     }
+    else if (strcmp("SaveCopy", pMsg) == 0) {
+        doc->saveCopy();
+        return true;
+    }
     else if (strcmp("Undo", pMsg) == 0) {
         doc->undo(1);
         Gui::Command::updateActive();
@@ -251,6 +251,9 @@ bool MDIViewPage::onHasMsg(const char* pMsg) const
         return true;
     }
     else if (strcmp("SaveAs", pMsg) == 0) {
+        return true;
+    }
+    else if (strcmp("SaveCopy", pMsg) == 0) {
         return true;
     }
     else if (strcmp("PrintPreview", pMsg) == 0) {
@@ -306,11 +309,40 @@ void MDIViewPage::fixSceneDependencies()
 /// as file name selection and error messages
 /// PagePrinter handles the actual printing mechanics.
 
+/// save the page state so it can be restore after printing
+void MDIViewPage::savePageExportState(ViewProviderPage* page)
+{
+    auto guiDoc = page->getDocument();
+    if (!guiDoc) {
+        return;
+    }
+    m_docModStateBeforePrint = guiDoc->isModified();
+}
+/// ensure that the page reverts to its normal state after any changes made for printing.
+void MDIViewPage::resetPageExportState(ViewProviderPage* page) const
+{
+    auto pageFeature  = page->getDrawPage();
+    if (!pageFeature) {
+        // how did this happen?
+        return;
+    }
+
+    auto guiDoc = page->getDocument();
+    if (!guiDoc) {
+        return;
+    }
+    auto scene = page->getQGSPage();
+    scene->setExportingPdf(false);
+    scene->setExportingSvg(false);
+    guiDoc->setModified(m_docModStateBeforePrint);
+    pageFeature->redrawCommand();
+}
+
+
 /// overrides of MDIView print methods so that they print the QGraphicsScene instead
 /// of the COIN3d scenegraph.
 void MDIViewPage::printPdf()
 {
-//    Base::Console().Message("MDIVP::printPdf()\n");
     QStringList filter;
     filter << QObject::tr("PDF (*.pdf)");
     filter << QObject::tr("All Files (*.*)");
@@ -322,19 +354,35 @@ void MDIViewPage::printPdf()
     }
 
     Gui::WaitCursor wc;
+    auto vpp = getViewProviderPage();
+    if (!vpp) {
+        // how did this happen?
+        return;
+    }
+
+    savePageExportState(vpp);
+
     std::string utf8Content = fn.toUtf8().constData();
     if (m_pagePrinter) {
         m_pagePrinter->printPdf(utf8Content);
+        resetPageExportState(vpp);
     }
 }
 
 void MDIViewPage::print()
 {
-//    Base::Console().Message("MDIVP::print()\n");
-
     if (!m_pagePrinter) {
         return;
     }
+
+    auto vpp = getViewProviderPage();
+    if (!vpp) {
+        // how did this happen?
+        return;
+    }
+
+    savePageExportState(vpp);
+
     m_pagePrinter->getPaperAttributes();
 
     QPrinter printer(QPrinter::HighResolution);
@@ -350,6 +398,7 @@ void MDIViewPage::print()
     QPrintDialog dlg(&printer, this);
     if (dlg.exec() == QDialog::Accepted) {
         print(&printer);
+        resetPageExportState(vpp);
     }
 }
 
@@ -380,10 +429,17 @@ void MDIViewPage::printPreview()
 
 void MDIViewPage::print(QPrinter* printer)
 {
-//    Base::Console().Message("MDIVP::print(printer)\n");
+    // Base::Console().Message("MDIVP::print(printer)\n");
     if (!m_pagePrinter) {
         return;
     }
+    auto vpp = getViewProviderPage();
+    if (!vpp) {
+        // how did this happen?
+        return;
+    }
+    savePageExportState(vpp);
+
     m_pagePrinter->getPaperAttributes();
     // As size of the render area paperRect() should be used. When performing a real
     // print pageRect() may also work but the output is cropped at the bottom part.
@@ -426,21 +482,9 @@ void MDIViewPage::print(QPrinter* printer)
         }
     }
 
-    QPainter p(printer);
-    // why use a QPainter to determine if we can write to a file?
-    if (!p.isActive() && !printer->outputFileName().isEmpty()) {
-        qApp->setOverrideCursor(Qt::ArrowCursor);
-        QMessageBox::critical(
-            this, tr("Opening file failed"),
-            tr("Can not open file %1 for writing.").arg(printer->outputFileName()));
-        qApp->restoreOverrideCursor();
-        return;
-    }
-    // free the printer from the painter
-    p.end();
-
     if (m_pagePrinter) {
         m_pagePrinter->print(printer);
+        resetPageExportState(vpp);
     }
 
 }
@@ -448,7 +492,7 @@ void MDIViewPage::print(QPrinter* printer)
 //static routine to print all pages in a document
 void MDIViewPage::printAll(QPrinter* printer, App::Document* doc)
 {
-//    Base::Console().Message("MDIVP::printAll()\n");
+    // Base::Console().Message("MDIVP::printAll()\n");
     PagePrinter::printAll(printer, doc);
 }
 
@@ -492,10 +536,19 @@ void MDIViewPage::viewAll()
 
 void MDIViewPage::saveSVG(std::string filename)
 {
+    auto vpp = getViewProviderPage();
+    if (!vpp) {
+        // how did this happen?
+        return;
+    }
+    savePageExportState(vpp);
     if (m_pagePrinter) {
         m_pagePrinter->saveSVG(filename);
+        resetPageExportState(vpp);
     }
 }
+
+
 void MDIViewPage::saveSVG()
 {
     QStringList filter;
@@ -535,8 +588,15 @@ void MDIViewPage::saveDXF()
 
 void MDIViewPage::savePDF(std::string filename)
 {
+    auto vpp = getViewProviderPage();
+    if (!vpp) {
+        // how did this happen?
+        return;
+    }
+    savePageExportState(vpp);
     if (m_pagePrinter) {
         m_pagePrinter->savePDF(filename);
+        resetPageExportState(vpp);
     }
 }
 
@@ -1001,8 +1061,6 @@ void MDIViewPage::removeUnselectedTreeSelection(QList<QGraphicsItem*> sceneSelec
 bool MDIViewPage::compareSelections(std::vector<Gui::SelectionObject> treeSel,
                                     QList<QGraphicsItem*> sceneSel)
 {
-    bool result = true;
-
     if (treeSel.empty() && sceneSel.empty()) {
         return true;
     }
@@ -1081,7 +1139,7 @@ bool MDIViewPage::compareSelections(std::vector<Gui::SelectionObject> treeSel,
         return false;
     }
 
-    return result;
+    return true;
 }
 
 ///////////////////end Selection Routines //////////////////////

@@ -42,14 +42,21 @@ namespace Dialog {
 class EditFinishedComboBox : public QComboBox {
     Q_OBJECT
 public:
-    explicit EditFinishedComboBox(QWidget *parent = nullptr) : QComboBox(parent) {}
+    explicit EditFinishedComboBox(QWidget *parent = nullptr) : QComboBox(parent) {
+        setEditable(true);
+        connect(this, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &EditFinishedComboBox::onIndexChanged);
+        connect(this->lineEdit(), &QLineEdit::editingFinished, this, &EditFinishedComboBox::onEditingFinished);
+    }
 
 Q_SIGNALS:
     void editFinished();
 
-protected:
-    void focusOutEvent(QFocusEvent *event) override {
-        QComboBox::focusOutEvent(event);
+private:
+    void onEditingFinished() {
+        Q_EMIT editFinished();
+    }
+
+    void onIndexChanged() {
         Q_EMIT editFinished();
     }
 };
@@ -67,6 +74,7 @@ public:
     DlgAddPropertyVarSet(QWidget *parent, ViewProviderVarSet* viewProvider);
     ~DlgAddPropertyVarSet() override;
 
+    void changeEvent(QEvent* e) override;
     void accept() override;
     void reject() override;
 
@@ -78,6 +86,7 @@ private:
     void initializeTypes();
     void initializeWidgets(ViewProviderVarSet* viewProvider);
 
+    void setTitle();
     void setOkEnabled(bool enabled);
     void clearEditors(bool clearName = true);
     void clearCurrentProperty();
@@ -89,13 +98,21 @@ private:
     void createProperty();
     void changePropertyToAdd();
 
+    void openTransaction();
+    bool hasPendingTransaction();
+    void abortTransaction();
+    void closeTransaction(bool abort);
+
     void checkName();
     void checkGroup();
     void checkType();
     void onEditFinished();
     void onNamePropertyChanged(const QString& text);
+    void critical(const QString& title, const QString& text);
 
     void getSupportedTypes(std::vector<Base::Type>& types);
+    App::Property* getPropertyToAdd();
+    void addDocumentation();
 
 private:
     std::unordered_set<std::string> typesWithoutEditor = {
@@ -117,6 +134,15 @@ private:
     std::string namePropertyToAdd;
     std::unique_ptr<PropertyEditor::PropertyItem> propertyItem;
     std::unique_ptr<App::ObjectIdentifier> objectIdentifier;
+
+    // a transactionID of 0 means that there is no active transaction.
+    int transactionID;
+
+    // connections
+    QMetaObject::Connection connComboBoxGroup;
+    QMetaObject::Connection connComboBoxType;
+    QMetaObject::Connection connLineEditNameEditFinished;
+    QMetaObject::Connection connLineEditNameTextChanged;
 };
 
 } // namespace Dialog

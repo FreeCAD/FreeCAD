@@ -67,6 +67,10 @@ class SoClipPlane;
 
 namespace Quarter = SIM::Coin3D::Quarter;
 
+namespace Base {
+    class BoundBox2d;
+}
+
 namespace Gui {
 
 class ViewProvider;
@@ -309,7 +313,10 @@ public:
     SbVec3f getPointOnLine(const SbVec2s&, const SbVec3f& axisCenter, const SbVec3f& axis) const;
 
     /** Returns the 3d point on the XY plane of a placement to the given 2d point. */
-    SbVec3f getPointOnXYPlaneOfPlacement(const SbVec2s&, Base::Placement&) const;
+    SbVec3f getPointOnXYPlaneOfPlacement(const SbVec2s&, const Base::Placement&) const;
+
+    /** Returns the bounding box on the XY plane of a placement to the given 2d point. */
+    Base::BoundBox2d getViewportOnXYPlaneOfPlacement(Base::Placement plc) const;
 
     /** Returns the 2d coordinates on the viewport to the given 3d point. */
     SbVec2s getPointOnViewport(const SbVec3f&) const;

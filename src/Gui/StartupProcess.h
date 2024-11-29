@@ -72,7 +72,6 @@ private:
     void setStyleSheet();
     void autoloadModules(const QStringList& wb);
     void setImportImageFormats();
-    bool hiddenMainWindow() const;
     void showMainWindow();
     void activateWorkbench();
     void checkParameters();

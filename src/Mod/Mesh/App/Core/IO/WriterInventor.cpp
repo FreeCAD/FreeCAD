@@ -41,7 +41,7 @@ public:
         return !out || out.bad();
     }
 
-    WriterInventorImp(Base::InventorBuilder& builder)
+    explicit WriterInventorImp(Base::InventorBuilder& builder)
         : builder(builder)
     {}
 
@@ -62,7 +62,7 @@ public:
         std::stringstream str;
         str << "Triangle mesh contains " << kernel.CountPoints() << " vertices and "
             << kernel.CountFacets() << " faces";
-        Base::LabelItem label {str.str().c_str()};
+        Base::LabelItem label {str.str()};
         builder.addNode(label);
     }
 

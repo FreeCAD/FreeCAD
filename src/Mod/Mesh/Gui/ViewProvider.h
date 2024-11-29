@@ -75,8 +75,10 @@ struct Material;
 
 namespace Mesh
 {
+class MeshObject;
 class PropertyMaterial;
-}
+class PropertyMeshKernel;
+}  // namespace Mesh
 
 namespace MeshGui
 {
@@ -87,7 +89,7 @@ class MeshGuiExport ViewProviderMeshBuilder: public Gui::ViewProviderBuilder
 {
 public:
     ViewProviderMeshBuilder() = default;
-    void buildNodes(const App::Property*, std::vector<SoNode*>&) const override;
+    void buildNodes(const App::Property* prop, std::vector<SoNode*>& nodes) const override;
     void createMesh(const App::Property*, SoCoordinate3*, SoIndexedFaceSet*) const;
     void createMesh(const MeshCore::MeshKernel&, SoCoordinate3*, SoIndexedFaceSet*) const;
 };
@@ -140,8 +142,8 @@ public:
     App::PropertyColor LineColor;
     // NOLINTEND
 
-    void attach(App::DocumentObject*) override;
-    void updateData(const App::Property*) override;
+    void attach(App::DocumentObject* obj) override;
+    void updateData(const App::Property* prop) override;
     bool useNewSelectionModel() const override
     {
         return false;
@@ -157,7 +159,7 @@ public:
     std::vector<std::string> getDisplayModes() const override;
     bool exportToVrml(const char* filename, const MeshCore::Material&, bool binary = false) const;
     void exportMesh(const char* filename, const char* fmt = nullptr) const;
-    void setupContextMenu(QMenu*, QObject*, const char*) override;
+    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
     /// Get the python wrapper for that ViewProvider
     PyObject* getPyObject() override;
 
@@ -189,9 +191,9 @@ public:
     getVisibleFacetsAfterZoom(const SbBox2s&, const SbViewportRegion&, SoCamera*) const;
     std::vector<Mesh::FacetIndex> getVisibleFacets(const SbViewportRegion&, SoCamera*) const;
     virtual void
-    cutMesh(const std::vector<SbVec2f>& picked, const Base::ViewProjMethod& proj, SbBool inner);
+    cutMesh(const std::vector<SbVec2f>& polygon, const Base::ViewProjMethod& proj, SbBool inner);
     virtual void
-    trimMesh(const std::vector<SbVec2f>& picked, const Base::ViewProjMethod& proj, SbBool inner);
+    trimMesh(const std::vector<SbVec2f>& polygon, const Base::ViewProjMethod& proj, SbBool inner);
     virtual void appendFacets(const std::vector<Mesh::FacetIndex>&);
     virtual void removeFacets(const std::vector<Mesh::FacetIndex>&);
     /*! The size of the array must be equal to the number of facets. */
@@ -235,6 +237,9 @@ protected:
     void tryColorPerVertexOrFace(bool);
     void setColorPerVertex(const App::PropertyColorList*);
     void setColorPerFace(const App::PropertyColorList*);
+    const Mesh::MeshObject& getMeshObject() const;
+    const Mesh::PropertyMeshKernel& getMeshProperty() const;
+    Mesh::PropertyMeshKernel& getMeshProperty();
 
     void setColorField(const std::vector<App::Color>&, SoMFColor&);
     void setAmbientColor(const std::vector<App::Color>&);
@@ -246,14 +251,14 @@ protected:
     virtual SoNode* getCoordNode() const;
 
 public:
-    static void faceInfoCallback(void* ud, SoEventCallback* n);
-    static void fillHoleCallback(void* ud, SoEventCallback* n);
-    static void markPartCallback(void* ud, SoEventCallback* n);
-    static void clipMeshCallback(void* ud, SoEventCallback* n);
-    static void trimMeshCallback(void* ud, SoEventCallback* n);
-    static void partMeshCallback(void* ud, SoEventCallback* n);
-    static void segmMeshCallback(void* ud, SoEventCallback* n);
-    static void selectGLCallback(void* ud, SoEventCallback* n);
+    static void faceInfoCallback(void* ud, SoEventCallback* cb);
+    static void fillHoleCallback(void* ud, SoEventCallback* cb);
+    static void markPartCallback(void* ud, SoEventCallback* cb);
+    static void clipMeshCallback(void* ud, SoEventCallback* cb);
+    static void trimMeshCallback(void* ud, SoEventCallback* cb);
+    static void partMeshCallback(void* ud, SoEventCallback* cb);
+    static void segmMeshCallback(void* ud, SoEventCallback* cb);
+    static void selectGLCallback(void* ud, SoEventCallback* cb);
     /// Creates a tool mesh from the previous picked polygon on the viewer
     static bool createToolMesh(const std::vector<SbVec2f>& rclPoly,
                                const SbViewVolume& vol,
@@ -287,10 +292,10 @@ protected:
     // NOLINTEND
 
 private:
-    static App::PropertyFloatConstraint::Constraints floatRange;
-    static App::PropertyFloatConstraint::Constraints angleRange;
-    static App::PropertyIntegerConstraint::Constraints intPercent;
-    static const char* LightingEnums[];
+    static const App::PropertyFloatConstraint::Constraints floatRange;
+    static const App::PropertyFloatConstraint::Constraints angleRange;
+    static const App::PropertyIntegerConstraint::Constraints intPercent;
+    static std::array<const char*, 3> LightingEnums;
 
     FC_DISABLE_COPY_MOVE(ViewProviderMesh)
 };
@@ -308,12 +313,12 @@ public:
     ViewProviderIndexedFaceSet();
     ~ViewProviderIndexedFaceSet() override;
 
-    void attach(App::DocumentObject*) override;
+    void attach(App::DocumentObject* obj) override;
     /// Update the Mesh representation
-    void updateData(const App::Property*) override;
+    void updateData(const App::Property* prop) override;
 
 protected:
-    void showOpenEdges(bool) override;
+    void showOpenEdges(bool show) override;
     SoShape* getShapeNode() const override;
     SoNode* getCoordNode() const override;
 
@@ -337,13 +342,13 @@ public:
     ViewProviderMeshObject();
     ~ViewProviderMeshObject() override;
 
-    void attach(App::DocumentObject* pcFeat) override;
-    void updateData(const App::Property*) override;
+    void attach(App::DocumentObject* obj) override;
+    void updateData(const App::Property* prop) override;
 
 protected:
     SoShape* getShapeNode() const override;
     SoNode* getCoordNode() const override;
-    void showOpenEdges(bool) override;
+    void showOpenEdges(bool show) override;
 
 private:
     SoFCMeshObjectNode* pcMeshNode;

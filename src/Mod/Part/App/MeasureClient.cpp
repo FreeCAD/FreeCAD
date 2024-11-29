@@ -48,6 +48,7 @@
 #include <App/DocumentObject.h>
 #include <App/MeasureManager.h>
 #include <App/DocumentObserver.h>
+#include <App/GeoFeature.h>
 #include <Base/Console.h>
 #include <Base/Matrix.h>
 #include <Base/Rotation.h>
@@ -59,6 +60,7 @@
 #include "MeasureClient.h"
 
 using namespace Part;
+
 
 // From: https://github.com/Celemation/FreeCAD/blob/joel_selection_summary_demo/src/Gui/SelectionSummary.cpp
 
@@ -102,10 +104,8 @@ TopoDS_Shape getLocatedShape(const App::SubObjectT& subject, Base::Matrix4D* mat
         return {};
     }
 
-    auto gf = dynamic_cast<const App::GeoFeature*>(obj);
-    if (gf) {
-        shape.setPlacement(gf->globalPlacement());
-    }
+    auto placement = App::GeoFeature::getGlobalPlacement(obj, subject.getObject(), subject.getSubName());
+    shape.setPlacement(placement);
 
     // Don't get the subShape from datum elements
     if (obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {

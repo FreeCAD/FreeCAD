@@ -23,6 +23,7 @@
 #ifndef Preferences_h_
 #define Preferences_h_
 
+#include <Qt>
 #include <string>
 
 #include <Base/Parameter.h>
@@ -64,6 +65,9 @@ public:
     static bool keepPagesUpToDate();
 
     static int projectionAngle();
+    static bool groupAutoDistribute();
+    static double groupSpaceX();
+    static double groupSpaceY();
 
     static int balloonArrow();
     static double balloonKinkLength();
@@ -141,6 +145,11 @@ public:
 
     static bool SnapViews();
     static double SnapLimitFactor();
+
+    static Qt::KeyboardModifiers multiselectModifiers();
+
+    static Qt::KeyboardModifiers balloonDragModifiers();
+    static void setBalloonDragModifiers(Qt::KeyboardModifiers newModifiers);
 };
 
 

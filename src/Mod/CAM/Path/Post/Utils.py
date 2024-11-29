@@ -97,7 +97,7 @@ class FilenameGenerator:
             ext = ".nc"
 
         # Check for invalid matches
-        for match in re.findall("%(.)", outputpath):
+        for match in re.findall(r"%(.)", outputpath):
             Path.Log.debug(f"match: {match}")
             if match not in validPathSubstitutions:
                 outputpath = outputpath.replace(f"%{match}", "")
@@ -105,7 +105,7 @@ class FilenameGenerator:
                     "Invalid substitution strings will be ignored in output path: %s\n" % match
                 )
 
-        for match in re.findall("%(.)", filename):
+        for match in re.findall(r"%(.)", filename):
             Path.Log.debug(f"match: {match}")
             if match not in validFilenameSubstitutions:
                 filename = filename.replace(f"%{match}", "")
@@ -156,10 +156,10 @@ class FilenameGenerator:
             temp_filename = self.qualified_filename
             Path.Log.debug(f"temp_filename: {temp_filename}")
             explicit_sequence = False
-            matches = re.findall("%S", temp_filename)
+            matches = re.findall(r"%S", temp_filename)
             if matches:
                 Path.Log.debug(f"matches: {matches}")
-                temp_filename = re.sub("%S", str(self.sequencenumber), temp_filename)
+                temp_filename = re.sub(r"%S", str(self.sequencenumber), temp_filename)
                 explicit_sequence = True
 
             subpart = f"-{self.subpartname}" if self.subpartname else ""

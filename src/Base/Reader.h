@@ -253,6 +253,8 @@ public:
     void readFiles(zipios::ZipInputStream& zipstream) const;
     /// get all registered file names
     const std::vector<std::string>& getFilenames() const;
+    /// returns true if reading the file \a filename has failed
+    bool hasReadFailed(const std::string& filename) const;
     bool isRegistered(Base::Persistence* Object) const;
     virtual void addName(const char*, const char*);
     virtual const char* getName(const char*) const;
@@ -363,6 +365,7 @@ public:
 
 private:
     std::vector<std::string> FileNames;
+    mutable std::vector<std::string> FailedFiles;
 
     std::bitset<32> StatusBits;
 

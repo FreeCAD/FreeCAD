@@ -51,8 +51,8 @@ public:
         return Index != -1;
     }
     void unbound();
-    Edge& operator=(const Edge& f);
-    Edge& operator=(Edge&& f);
+    Edge& operator=(const Edge& e);
+    Edge& operator=(Edge&& e);
 
     int Index {-1};
     MeshCore::PointIndex PIndex[2];

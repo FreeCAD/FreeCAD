@@ -17,6 +17,7 @@ set(Assembly_Scripts
     JointObject.py
     Preferences.py
     AssemblyImport.py
+    SoSwitchMarker.py
     UtilsAssembly.py
 )
 

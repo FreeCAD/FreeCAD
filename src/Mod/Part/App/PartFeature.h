@@ -25,6 +25,7 @@
 
 #include <App/FeaturePython.h>
 #include <App/GeoFeature.h>
+#include <App/PropertyUnits.h>
 #include <Mod/Material/App/PropertyMaterial.h>
 #include <Mod/Part/PartGlobal.h>
 
@@ -59,6 +60,12 @@ public:
 
     PropertyPartShape Shape;
     Materials::PropertyMaterial ShapeMaterial;
+
+    // Convenience properties set when material or shape changes
+    App::PropertyString MaterialName;
+    App::PropertyDensity Density;
+    App::PropertyMass Mass;
+    App::PropertyVolume Volume;
 
     /** @name methods override feature */
     //@{
@@ -169,6 +176,12 @@ protected:
     void onBeforeChange(const App::Property* prop) override;
     void onChanged(const App::Property* prop) override;
 
+    void copyMaterial(Feature* feature);
+    void copyMaterial(App::DocumentObject* link);
+
+    /// Update the mass and volume properties
+    void updatePhysicalProperties();
+
     void registerElementCache(const std::string &prefix, PropertyPartShape *prop);
 
     /** Helper function to obtain mapped and indexed element name from a shape
@@ -184,7 +197,7 @@ protected:
 
     /**
      * Build a history of changes
-     * MakeShape: The operation that created the changes, e.g. BRepAlgoAPI_Common
+     * MakeShape: The operation that created the changes, e.g. FCBRepAlgoAPI_Common
      * type: The type of object we are interested in, e.g. TopAbs_FACE
      * newS: The new shape that was created by the operation
      * oldS: The original shape prior to the operation
@@ -210,7 +223,8 @@ public:
     App::PropertyLinkSub   EdgeLinks;
 
     short mustExecute() const override;
-    void onUpdateElementReference(const App::Property *prop) override;
+    App::DocumentObjectExecReturn* execute() override;
+    void onUpdateElementReference(const App::Property* prop) override;
 
 protected:
     void onDocumentRestored() override;

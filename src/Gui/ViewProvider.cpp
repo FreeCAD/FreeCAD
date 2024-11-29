@@ -41,7 +41,8 @@
 #include <Base/Exception.h>
 #include <Base/Matrix.h>
 
-#include "SoMouseWheelEvent.h"
+#include "Inventor/SoMouseWheelEvent.h"
+#include "Inventor/SoFCTransform.h"
 #include "ViewProvider.h"
 #include "ActionFunction.h"
 #include "Application.h"
@@ -104,7 +105,7 @@ ViewProvider::ViewProvider()
     pcRoot->ref();
     pcModeSwitch = new SoSwitch();
     pcModeSwitch->ref();
-    pcTransform  = new SoTransform();
+    pcTransform  = new SoFCTransform();
     pcTransform->ref();
     pcRoot->addChild(pcTransform);
     pcRoot->addChild(pcModeSwitch);
