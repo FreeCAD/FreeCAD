@@ -188,11 +188,11 @@ public:
 
     /** Sets the property
      */
-    void setValue(const MeshCore::Material& mat);
-    void setAmbientColor(const std::vector<App::Color>& col);
-    void setDiffuseColor(const std::vector<App::Color>& col);
-    void setSpecularColor(const std::vector<App::Color>& col);
-    void setEmissiveColor(const std::vector<App::Color>& col);
+    void setValue(const MeshCore::Material& value);
+    void setAmbientColor(const std::vector<App::Color>& value);
+    void setDiffuseColor(const std::vector<App::Color>& value);
+    void setSpecularColor(const std::vector<App::Color>& value);
+    void setEmissiveColor(const std::vector<App::Color>& value);
     void setShininess(const std::vector<float>&);
     void setTransparency(const std::vector<float>&);
     void setBinding(MeshCore::MeshIO::Binding);

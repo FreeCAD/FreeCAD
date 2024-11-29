@@ -145,7 +145,7 @@ struct DrawingParameters
     unsigned int CurvePattern = 0b1111111111111111;         // pattern of normal edges
     unsigned int ConstructionPattern = 0b1111110011111100;  // pattern of construction edges
     unsigned int InternalPattern = 0b1111110011111100;      // pattern of internal edges
-    unsigned int ExternalPattern = 0b1110010011100100;      // pattern of external edges
+    unsigned int ExternalPattern = 0b1111110011111100;      // pattern of external edges
     //@}
 };
 
@@ -304,17 +304,7 @@ public:
         return SubLayers;
     }
 
-    int inline getSubLayerIndex(const int geoId, const Sketcher::GeometryFacade* geom) const
-    {
-        bool isConstruction = geom->getConstruction();
-        bool isInternal = geom->isInternalAligned();
-        bool isExternal = geoId <= Sketcher::GeoEnum::RefExt;
-
-        return static_cast<int>(isExternal           ? SubLayer::External
-                                    : isInternal     ? SubLayer::Internal
-                                    : isConstruction ? SubLayer::Construction
-                                                     : SubLayer::Normal);
-    }
+    int getSubLayerIndex(const int geoId, const Sketcher::GeometryFacade* geom) const;
 
     bool isNormalSubLayer(int t) const
     {

@@ -184,12 +184,6 @@ macro(InitializeFreeCADBuildOptions)
         set(BUILD_SMESH ON )
     endif()
 
-    # for Windows the minimum required cmake version is 3.4.3 to build the CAM module
-    if(WIN32 AND CMAKE_VERSION VERSION_LESS 3.4.3)
-        message(WARNING "Disable CAM, requires cmake >= 3.4.3 in order to build this module")
-        set(BUILD_CAM OFF )
-    endif()
-
     # force build directory to be different to source directory
     if (BUILD_FORCE_DIRECTORY)
         if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})

@@ -32,18 +32,17 @@
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoFont.h>
 #include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoResetTransform.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
 #endif
-
-#include <Inventor/nodes/SoResetTransform.h>
 
 #include <App/GeoFeature.h>
 #include <App/PropertyGeo.h>
 
 #include "Application.h"
 #include "Document.h"
-#include "SoFCBoundingBox.h"
+#include "Inventor/SoFCBoundingBox.h"
 #include "SoFCSelection.h"
 #include "View3DInventorViewer.h"
 #include "ViewProviderGeometryObject.h"

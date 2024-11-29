@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-    <PythonExport 
-        Father="ExtensionContainerPy" 
-        Name="DocumentObjectPy" 
-        Twin="DocumentObject" 
-        TwinPointer="DocumentObject" 
-        Include="App/DocumentObject.h" 
-        Namespace="App" 
-        FatherInclude="App/ExtensionContainerPy.h" 
+    <PythonExport
+        Father="ExtensionContainerPy"
+        Name="DocumentObjectPy"
+        Twin="DocumentObject"
+        TwinPointer="DocumentObject"
+        Include="App/DocumentObject.h"
+        Namespace="App"
+        FatherInclude="App/ExtensionContainerPy.h"
         FatherNamespace="App">
         <Documentation>
             <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
@@ -95,7 +95,7 @@ referencing subobject.
     PyObject: return a python binding object for the (sub)object referenced in
     each 'subname' The actual type of 'PyObject' is implementation dependent.
     For Part::Feature compatible objects, this will be of type TopoShapePy and
-    pre-transformed by accumulated transformation matrix along the object path.  
+    pre-transformed by accumulated transformation matrix along the object path.
 
     DocObject:  return the document object referenced in subname, if 'matrix' is
     None. Or, return a tuple (object, matrix) for each 'subname' and 'matrix' is
@@ -168,15 +168,15 @@ Return -1 if element visibility is not supported or element not found, 0 if invi
         </Methode>
         <Methode Name="getParentGroup">
             <Documentation>
-                <UserDocu>Returns the group the object is in or None if it is not part of a group. 
-                          Note that an object can only be in a single group, hence only a single return 
+                <UserDocu>Returns the group the object is in or None if it is not part of a group.
+                          Note that an object can only be in a single group, hence only a single return
                           value.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="getParentGeoFeatureGroup">
             <Documentation>
-                <UserDocu>Returns the GeoFeatureGroup, and hence the local coordinate system, the object 
-                          is in or None if it is not part of a group. Note that an object can only be 
+                <UserDocu>Returns the GeoFeatureGroup, and hence the local coordinate system, the object
+                          is in or None if it is not part of a group. Note that an object can only be
                           in a single group, hence only a single return value.</UserDocu>
             </Documentation>
         </Methode>

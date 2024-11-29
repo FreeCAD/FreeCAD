@@ -596,8 +596,7 @@ double QGILeaderLine::getLineWidth()
 
 TechDraw::DrawLeaderLine* QGILeaderLine::getLeaderFeature()
 {
-    TechDraw::DrawLeaderLine* result = static_cast<TechDraw::DrawLeaderLine*>(getViewObject());
-    return result;
+    return static_cast<TechDraw::DrawLeaderLine*>(getViewObject());
 }
 
 double QGILeaderLine::getEdgeFuzz() const
@@ -637,12 +636,11 @@ void QGILeaderLine::paint(QPainter* painter, const QStyleOptionGraphicsItem* opt
 
 bool QGILeaderLine::useOldCoords() const
 {
-    bool result = false;
     auto vp = dynamic_cast<ViewProviderLeader*>(getViewProvider(getViewObject()));
     if (vp) {
-        result = vp->UseOldCoords.getValue();
+        return vp->UseOldCoords.getValue();
     }
-    return result;
+    return false;
 }
 
 

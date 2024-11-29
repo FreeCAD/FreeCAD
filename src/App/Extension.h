@@ -31,6 +31,7 @@ namespace App {
 
 class ExtensionContainer;
 
+// clang-format off
 /// define Extension types
 #define EXTENSION_TYPESYSTEM_HEADER() \
 public: \
@@ -119,6 +120,7 @@ template<> void _class_::init(void){\
   initExtensionSubclass(_class_::classTypeId, #_class_ , #_parentclass_, &(_class_::create) ); \
   _class_::propertyData.parentPropertyData = _parentclass_::extensionGetPropertyDataPtr();\
 }
+// clang-format on
 
 /**
  * @brief Base class for all extension that can be added to a DocumentObject
@@ -302,6 +304,7 @@ private:
     App::ExtensionContainer*      m_base = nullptr;
 };
 
+// clang-format off
 // Property define
 #define _EXTENSION_ADD_PROPERTY(_name, _prop_, _defaultval_) \
   do { \
@@ -321,6 +324,7 @@ private:
 
 #define EXTENSION_ADD_PROPERTY_TYPE(_prop_, _defaultval_, _group_,_type_,_Docu_) \
     _EXTENSION_ADD_PROPERTY_TYPE(#_prop_, _prop_, _defaultval_, _group_,_type_,_Docu_)
+// clang-format on
 
 
 } //App

@@ -228,11 +228,14 @@ class DraftToolBar:
 
     def _pushbutton(self,name, layout, hide=True, icon=None,
                     width=None, checkable=False, square=False):
-        button = QtWidgets.QPushButton(self.baseWidget)
-        button.setObjectName(name)
         if square:
-            button.setMaximumSize(QtCore.QSize(button.height(), button.height()))
-            button.setFlat(True)
+            button = QtWidgets.QToolButton(self.baseWidget)
+            if width is not None:
+                button.setFixedHeight(width)
+                button.setFixedWidth(width)
+        else:
+            button = QtWidgets.QPushButton(self.baseWidget)
+        button.setObjectName(name)
         if hide:
             button.hide()
         if icon:
@@ -488,7 +491,7 @@ class DraftToolBar:
         self.setStyleButton()
         self.constrButton = self._pushbutton(
             "constrButton", self.toptray, hide=False, icon='Draft_Construction',
-             checkable=True, square=True)
+            width=self.styleButton.sizeHint().height(), checkable=True, square=True)
         self.constrColor = QtGui.QColor(self.paramconstr)
         self.autoGroupButton = self._pushbutton(
             "autoGroup", self.bottomtray,icon=":/icons/button_invalid.svg",
@@ -755,8 +758,7 @@ class DraftToolBar:
         self.z = 0
         self.pointButton.show()
         if rel: self.isRelative.show()
-        todo.delay(self.setFocus,None)
-        self.xValue.selectAll()
+        todo.delay(self.setFocus, None)
 
     def labelUi(self,title=translate("draft","Label"),callback=None):
         w = QtWidgets.QWidget()
@@ -784,8 +786,7 @@ class DraftToolBar:
         self.labelRadius.setText(translate("draft","Distance"))
         self.radiusValue.setToolTip(translate("draft", "Offset distance"))
         self.radiusValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
-        todo.delay(self.radiusValue.setFocus,None)
-        self.radiusValue.selectAll()
+        todo.delay(self.setFocus, "radius")
 
     def offUi(self):
         todo.delay(FreeCADGui.Control.closeDialog,None)
@@ -802,8 +803,7 @@ class DraftToolBar:
         self.labelRadius.setText(translate("draft","Distance"))
         self.radiusValue.setToolTip(translate("draft", "Offset distance"))
         self.radiusValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
-        todo.delay(self.radiusValue.setFocus,None)
-        self.radiusValue.selectAll()
+        todo.delay(self.setFocus, "radius")
 
     def radiusUi(self):
         self.hideXYZ()
@@ -812,8 +812,7 @@ class DraftToolBar:
         self.labelRadius.show()
         self.radiusValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         self.radiusValue.show()
-        todo.delay(self.radiusValue.setFocus,None)
-        self.radiusValue.selectAll()
+        todo.delay(self.setFocus, "radius")
 
     def textUi(self):
         self.hideXYZ()
@@ -1463,7 +1462,7 @@ class DraftToolBar:
             print("Error: setRadiusValue called for number without Dimension")
             t = display_external(val,None, None)
         self.radiusValue.setText(t)
-        self.radiusValue.setFocus()
+        self.setFocus("radius")
 
     def runAutoGroup(self):
         FreeCADGui.runCommand("Draft_AutoGroup")

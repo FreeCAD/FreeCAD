@@ -126,15 +126,15 @@ public:
                            Base::Vector3f& rclRes,
                            FacetIndex& rulFacet) const;
     /**
-     * Searches for the first facet of the grid element (\a rclGrid) in that the point \a rclPt lies
+     * Searches for the first facet of the grid element (\a rGrid) in that the point \a rPt lies
      * into which is a distance not higher than \a fMaxDistance. Of no such facet is found \a
-     * rulFacet is undefined and false is returned, otherwise true. \note If the point \a rclPt is
+     * uIndex is undefined and false is returned, otherwise true. \note If the point \a rPt is
      * outside of the grid \a rclGrid nothing is done.
      */
-    bool FirstFacetToVertex(const Base::Vector3f& rclPt,
+    bool FirstFacetToVertex(const Base::Vector3f& rPt,
                             float fMaxDistance,
-                            const MeshFacetGrid& rclGrid,
-                            FacetIndex& rulFacet) const;
+                            const MeshFacetGrid& rGrid,
+                            FacetIndex& uIndex) const;
     /**
      * Checks from the viewpoint \a rcView if the vertex \a rcVertex is visible or it is hidden by a
      * facet. If the vertex is visible true is returned, false otherwise.
@@ -290,14 +290,14 @@ public:
                      const Base::ViewProjMethod* pclProj,
                      const Base::Polygon2d& rclPoly,
                      bool bInner,
-                     std::vector<FacetIndex>& rclRes) const;
+                     std::vector<FacetIndex>& facets) const;
     /**
      * Does the same as the above method unless that it doesn't use a grid.
      */
     void CheckFacets(const Base::ViewProjMethod* pclProj,
                      const Base::Polygon2d& rclPoly,
                      bool bInner,
-                     std::vector<FacetIndex>& rclRes) const;
+                     std::vector<FacetIndex>& facets) const;
     /**
      * Determines all facets of the given array \a raclFacetIndices that lie at the edge or that
      * have at least neighbour facet that is not inside the array. The resulting array \a
@@ -361,7 +361,7 @@ public:
                       const Base::Vector3f& clNormal,
                       const MeshFacetGrid& rclGrid,
                       std::list<std::vector<Base::Vector3f>>& rclResult,
-                      float fMinEps = 1.0e-2f,
+                      float fMinEps = 1.0e-2F,
                       bool bConnectPolygons = false) const;
     /**
      * Gets all facets that cut the plane (N,d) and that lie between the two points left and right.
@@ -595,15 +595,14 @@ private:
             if (e1.first < e2.first) {
                 return true;
             }
-            else if (e1.first > e2.first) {
+            if (e1.first > e2.first) {
                 return false;
             }
-            else if (e1.second < e2.second) {
+            if (e1.second < e2.second) {
                 return true;
             }
-            else {
-                return false;
-            }
+
+            return false;
         }
     };
     using MeshFacetPair = std::pair<FacetIndex, FacetIndex>;

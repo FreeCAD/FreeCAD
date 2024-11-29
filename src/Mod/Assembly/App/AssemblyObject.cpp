@@ -194,12 +194,30 @@ void AssemblyObject::preDrag(std::vector<App::DocumentObject*> dragParts)
     solve();
     bundleFixed = false;
 
-    dragMbdParts.clear();
+    draggedParts.clear();
     for (auto part : dragParts) {
-        auto mbdPart = getMbDPart(part);
-        if (std::find(dragMbdParts.begin(), dragMbdParts.end(), mbdPart) == dragMbdParts.end()) {
-            dragMbdParts.push_back(mbdPart);
+        // make sure no duplicate
+        if (std::find(draggedParts.begin(), draggedParts.end(), part) != draggedParts.end()) {
+            continue;
         }
+
+        // Some objects have been bundled, we don't want to add these to dragged parts
+        Base::Placement plc;
+        for (auto& pair : objectPartMap) {
+            App::DocumentObject* parti = pair.first;
+            if (parti != part) {
+                continue;
+            }
+            plc = pair.second.offsetPlc;
+        }
+        if (!plc.isIdentity()) {
+            // If not identity, then it's a bundled object. Some bundled objects may
+            // have identity placement if they have the same position as the main object of
+            // the bundle. But they're not going to be a problem.
+            continue;
+        }
+
+        draggedParts.push_back(part);
     }
 
     mbdAssembly->runPreDrag();
@@ -208,20 +226,15 @@ void AssemblyObject::preDrag(std::vector<App::DocumentObject*> dragParts)
 void AssemblyObject::doDragStep()
 {
     try {
-        for (auto& mbdPart : dragMbdParts) {
-            App::DocumentObject* part = nullptr;
+        std::vector<std::shared_ptr<MbD::ASMTPart>> dragMbdParts;
 
-            // Find the corresponding DocumentObject for the mbdPart
-            for (auto& pair : objectPartMap) {
-                if (pair.second.part == mbdPart) {
-                    part = pair.first;
-                    break;
-                }
-            }
-
+        for (auto& part : draggedParts) {
             if (!part) {
                 continue;
             }
+
+            auto mbdPart = getMbDPart(part);
+            dragMbdParts.push_back(mbdPart);
 
             // Update the MBD part's position
             Base::Placement plc = getPlacementFromProp(part, "Placement");

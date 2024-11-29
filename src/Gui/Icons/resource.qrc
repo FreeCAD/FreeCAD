@@ -261,6 +261,7 @@
         <file>Group.svg</file>
         <file>Geofeaturegroup.svg</file>
         <file>Geoassembly.svg</file>
+        <file>Std_Point.svg</file>
         <file>Std_Axis.svg</file>
         <file>Std_Plane.svg</file>
         <file>Link.svg</file>
@@ -271,9 +272,6 @@
         <file>LinkArrayOverlay.svg</file>
         <file>LinkSubOverlay.svg</file>
         <file>LinkSubElement.svg</file>
-        <file>LinkArrayOverlay.xpm</file>
-        <file>LinkSubOverlay.xpm</file>
-        <file>LinkSubElement.xpm</file>
         <file>LinkSub.svg</file>
         <file>LinkReplace.svg</file>
         <file>LinkImport.svg</file>

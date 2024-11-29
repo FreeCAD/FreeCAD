@@ -53,7 +53,7 @@
         <Attribute Name="Focus1" ReadOnly="true">
             <Documentation>
                 <UserDocu>The first focus is on the positive side of the major axis of the hyperbola;
-the second focus is on the negative side.</UserDocu>
+                    the second focus is on the negative side.</UserDocu>
             </Documentation>
             <Parameter Name="Focus1" Type="Object"/>
         </Attribute>
@@ -61,7 +61,7 @@ the second focus is on the negative side.</UserDocu>
             <Documentation>
                 <Documentation>
                     <UserDocu>The first focus is on the positive side of the major axis of the hyperbola;
-the second focus is on the negative side.</UserDocu>
+                        the second focus is on the negative side.</UserDocu>
                 </Documentation>
             </Documentation>
             <Parameter Name="Focus2" Type="Object"/>
