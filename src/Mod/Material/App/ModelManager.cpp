@@ -158,10 +158,10 @@ std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> ModelManager::getLoca
 
 std::shared_ptr<Model> ModelManager::getModel(const QString& uuid) const
 {
-    auto model = _externalManager->getModel(uuid);
-    if (model) {
-        // Return the model
-    }
+    // auto model = _externalManager->getModel(uuid);
+    // if (model) {
+    //     // Return the model
+    // }
     return _localManager->getModel(uuid);
 }
 

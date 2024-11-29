@@ -58,6 +58,11 @@ Py::Object MaterialPropertyPy::getValue() const
     return Py::Object(_pyObjectFromVariant(value), true);
 }
 
+Py::Boolean MaterialPropertyPy::getEmpty() const
+{
+    return getMaterialPropertyPtr()->isNull();
+}
+
 PyObject* MaterialPropertyPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;

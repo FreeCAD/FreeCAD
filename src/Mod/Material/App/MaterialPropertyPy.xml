@@ -21,5 +21,11 @@
       </Documentation>
       <Parameter Name="Value" Type="Object"/>
     </Attribute>
+    <Attribute Name="Empty" ReadOnly="true">
+      <Documentation>
+        <UserDocu>The property value is undefined.</UserDocu>
+      </Documentation>
+      <Parameter Name="Empty" Type="Boolean"/>
+    </Attribute>
   </PythonExport>
 </GenerateModel>

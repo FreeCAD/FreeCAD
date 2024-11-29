@@ -113,6 +113,11 @@ Py::String MaterialPy::getDirectory() const
     return {getMaterialPtr()->getDirectory().toStdString()};
 }
 
+void MaterialPy::setDirectory(Py::String arg)
+{
+    getMaterialPtr()->setDirectory(QString::fromStdString(arg));
+}
+
 Py::String MaterialPy::getUUID() const
 {
     return {getMaterialPtr()->getUUID().toStdString()};
@@ -151,6 +156,11 @@ void MaterialPy::setReference(Py::String arg)
 Py::String MaterialPy::getParent() const
 {
     return {getMaterialPtr()->getParentUUID().toStdString()};
+}
+
+void MaterialPy::setParent(Py::String arg)
+{
+    getMaterialPtr()->setParentUUID(QString::fromStdString(arg));
 }
 
 Py::String MaterialPy::getAuthorAndLicense() const
@@ -519,6 +529,20 @@ PyObject* MaterialPy::setAppearanceValue(PyObject* args)
 
     getMaterialPtr()->setAppearanceValue(QString::fromStdString(name),
                                          QString::fromStdString(value));
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+PyObject* MaterialPy::setValue(PyObject* args)
+{
+    char* name;
+    char* value;
+    if (!PyArg_ParseTuple(args, "ss", &name, &value)) {
+        return nullptr;
+    }
+
+    Base::Console().Log("MaterialPy::setValue('%s', '%s')\n", name, value);
+    getMaterialPtr()->setValue(QString::fromStdString(name), QString::fromStdString(value));
     Py_INCREF(Py_None);
     return Py_None;
 }

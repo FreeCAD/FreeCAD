@@ -451,6 +451,10 @@ void MaterialManager::migrateToExternal(const std::shared_ptr<Materials::Materia
                             name.toStdString().c_str());
 
         auto material = _localManager->getMaterial(uuid);
+        Base::Console().Log("Original Physical model count %d\n",
+                            material->getPhysicalModels()->size());
+        Base::Console().Log("Original Appearance model count %d\n",
+                            material->getAppearanceModels()->size());
         _externalManager->migrateMaterial(library->getName(), path, material);
     }
 }

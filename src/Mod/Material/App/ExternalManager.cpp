@@ -355,7 +355,10 @@ void ExternalManager::migrateMaterial(const QString& libraryName,
             Py::Tuple args(3);
             args.setItem(0, Py::String(libraryName.toStdString()));
             args.setItem(1, Py::String(path.toStdString()));
-            args.setItem(2, Py::Object(new MaterialPy(new Material(*material)), true));
+            auto mat = new Material(*material);
+            Base::Console().Log("Physical model count %d\n", mat->getPhysicalModels()->size());
+            Base::Console().Log("Appearance model count %d\n", mat->getAppearanceModels()->size());
+            args.setItem(2, Py::Object(new MaterialPy(mat), true));
             libraries.apply(args);  // No return expected
         }
         else {
