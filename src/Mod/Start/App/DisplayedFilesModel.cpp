@@ -290,7 +290,7 @@ void DisplayedFilesModel::addFile(const QString& filePath)
 
     // Add file information to cache
     _fileInfoCache.emplace_back(getFileInfo(filePath.toStdString()));
-  
+
     // If the file is a FreeCAD file (.FCStd)
     if (qfi.completeSuffix() == QLatin1String("FCStd")) {
         // Load thumbnail from FreeCAD file
