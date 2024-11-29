@@ -448,12 +448,12 @@ double getJointDistance2(const App::DocumentObject* joint)
 JointType getJointType(const App::DocumentObject* joint)
 {
     if (!joint) {
-        return  JointType::Fixed;
+        return JointType::Fixed;
     }
 
     const auto* prop = joint->getPropertyByName<App::PropertyEnumeration>("JointType");
     if (!prop) {
-        return  JointType::Fixed;
+        return JointType::Fixed;
     }
 
     return static_cast<JointType>(prop->getValue());
