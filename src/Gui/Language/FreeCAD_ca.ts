@@ -5721,7 +5721,7 @@ seleccionats abans d'obrir aquest diàleg</translation>
       <source>%1.
 
 This has been modified outside of the source editor. Do you want to reload it?</source>
-      <translation>%1. 
+      <translation>%1.
 
 El fitxer s'ha modificat fora de l'editor de codi font. Voleu tornar-lo a carregar?</translation>
     </message>
@@ -12502,7 +12502,7 @@ dot/period will always be printed.</source>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="263"/>
       <source>Choose your preference for toolbar icon size. You can adjust
 this according to your screen size or personal taste</source>
-      <translation>Trieu la vostra preferència per a la mida de la icona de la barra d’eines. Podeu ajustar 
+      <translation>Trieu la vostra preferència per a la mida de la icona de la barra d’eines. Podeu ajustar
 això segons la mida de la pantalla o el gust personal</translation>
     </message>
     <message>

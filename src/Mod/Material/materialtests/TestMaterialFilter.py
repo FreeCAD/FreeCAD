@@ -124,7 +124,7 @@ class MaterialFilterTestCases(unittest.TestCase):
         self.assertEqual(len(filtered), 3)
 
         # Create an advanced rendering filter
-        filter= Materials.MaterialFilter()
+        filter = Materials.MaterialFilter()
         filter.Name = "Advanced Appearance"
         filter.RequiredCompleteModels = [self.uuids.AdvancedRendering]
 
@@ -135,7 +135,7 @@ class MaterialFilterTestCases(unittest.TestCase):
         self.assertEqual(len(filtered), 0)
 
         # Create a Density filter
-        filter= Materials.MaterialFilter()
+        filter = Materials.MaterialFilter()
         filter.Name = "Density"
         filter.RequiredCompleteModels = [self.uuids.Density]
 
@@ -146,7 +146,7 @@ class MaterialFilterTestCases(unittest.TestCase):
         self.assertEqual(len(filtered), 3)
 
         # Create a Hardness filter
-        filter= Materials.MaterialFilter()
+        filter = Materials.MaterialFilter()
         filter.Name = "Hardness"
         filter.RequiredCompleteModels = [self.uuids.Hardness]
 
@@ -157,7 +157,7 @@ class MaterialFilterTestCases(unittest.TestCase):
         self.assertEqual(len(filtered), 0)
 
         # Create a Density and Basic Rendering filter
-        filter= Materials.MaterialFilter()
+        filter = Materials.MaterialFilter()
         filter.Name = "Density and Basic Rendering"
         filter.RequiredCompleteModels = [self.uuids.Density, self.uuids.BasicRendering]
 
@@ -168,7 +168,7 @@ class MaterialFilterTestCases(unittest.TestCase):
         self.assertEqual(len(filtered), 1)
 
         # Create a Linear Elastic filter
-        filter= Materials.MaterialFilter()
+        filter = Materials.MaterialFilter()
         filter.Name = "Linear Elastic"
         filter.RequiredCompleteModels = [self.uuids.LinearElastic]
 
@@ -178,7 +178,7 @@ class MaterialFilterTestCases(unittest.TestCase):
         filtered = self.MaterialManager.filterMaterials(filter, includeLegacy=True)
         self.assertEqual(len(filtered), 0)
 
-        filter= Materials.MaterialFilter()
+        filter = Materials.MaterialFilter()
         filter.Name = "Linear Elastic - incomplete"
         filter.RequiredModels = [self.uuids.LinearElastic]
 

@@ -87,7 +87,8 @@ SoGroup* ViewProviderTextureExtension::getTextureGroup3D() const
     return pcTextureGroup3D;
 }
 
-void ViewProviderTextureExtension::setCoinAppearance(SoMaterial* pcShapeMaterial, const App::Material& source)
+void ViewProviderTextureExtension::setCoinAppearance(SoMaterial* pcShapeMaterial,
+                                                     const App::Material& source)
 {
 #if 0
     if (!source.image.empty()) {

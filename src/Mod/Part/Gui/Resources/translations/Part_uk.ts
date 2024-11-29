@@ -2328,7 +2328,7 @@ of projection.</source>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="254"/>
       <source>Rotation around the x-axis
 Note: The placement is expressed in local space of object being attached.</source>
-      <translation>Обертання навколо осі X. 
+      <translation>Обертання навколо осі X.
 Примітка: Розміщення відноситься до локальної системи
 координат приєднаного об’єкта.</translation>
     </message>
@@ -2341,7 +2341,7 @@ Note: The placement is expressed in local space of object being attached.</sourc
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="299"/>
       <source>Rotation around the y-axis
 Note: The placement is expressed in local space of object being attached.</source>
-      <translation>Обертання навколо осі Y. 
+      <translation>Обертання навколо осі Y.
 Примітка: Розміщення відноситься до локальної системи
 координат приєднаного об’єкта.</translation>
     </message>
@@ -2354,7 +2354,7 @@ Note: The placement is expressed in local space of object being attached.</sourc
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="344"/>
       <source>Rotation around the z-axis
 Note: The placement is expressed in local space of object being attached.</source>
-      <translation>Обертання навколо осі Z. 
+      <translation>Обертання навколо осі Z.
 Примітка: Розміщення відноситься до локальної системи
 координат приєднаного об’єкта.</translation>
     </message>
@@ -2846,10 +2846,10 @@ If both lengths are zero, magnitude of direction is used.</source>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="683"/>
-      <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
+      <source>Can't determine normal vector of shape to be extruded. Please use other mode.
 
 (%1)</source>
-      <translation type="unfinished">Can't determine normal vector of shape to be extruded. Please use other mode. 
+      <translation type="unfinished">Can't determine normal vector of shape to be extruded. Please use other mode.
 
 (%1)</translation>
     </message>
@@ -5062,9 +5062,9 @@ but more stable.  Default: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1081"/>
-      <source>Expand shape content.  Changes will take effect next time you use 
+      <source>Expand shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
-      <translation type="unfinished">Expand shape content.  Changes will take effect next time you use 
+      <translation type="unfinished">Expand shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</translation>
     </message>
     <message>
@@ -5074,9 +5074,9 @@ the check geometry tool.  Default: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
-      <source>Show advanced shape content.  Changes will take effect next time you use 
+      <source>Show advanced shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
-      <translation type="unfinished">Show advanced shape content.  Changes will take effect next time you use 
+      <translation type="unfinished">Show advanced shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</translation>
     </message>
     <message>

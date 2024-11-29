@@ -2608,8 +2608,8 @@ a single object. Please note that when importing back the STEP file, the
 placement will be encoded into the shape geometry, instead of keeping
 it inside the Placement property.</source>
       <translation>Válassza ezt a beállítást, ha meg szeretné őrizni az elhelyezési adatokat
-egyetlen tárgy exportálásakor. Ne feledje, hogy a STEP-fájl újbóli importálásakor 
-az elhelyezés az alakzatgeometriában van kódolva, de nem az elhelyezés 
+egyetlen tárgy exportálásakor. Ne feledje, hogy a STEP-fájl újbóli importálásakor
+az elhelyezés az alakzatgeometriában van kódolva, de nem az elhelyezés
 tulajdonságon belül található.</translation>
     </message>
     <message>
@@ -2846,7 +2846,7 @@ Ha mindkét hossz nulla, akkor az irány magnitúdóértékét kell használni.<
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="683"/>
-      <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
+      <source>Can't determine normal vector of shape to be extruded. Please use other mode.
 
 (%1)</source>
       <translation>Nem állapítható meg a kihúzandó normál vektoros alakzat. Kérem használjon másik módot.
@@ -4557,7 +4557,7 @@ Works only properly if all objects
 have the same values.</source>
       <translation>Ha be van jelölve, a szín és az átlátszóság
 a kivágott tárgyakból kerülnek átvételre.
-Csak akkor működik megfelelően, ha minden tárgy 
+Csak akkor működik megfelelően, ha minden tárgy
 azonos értékekkel rendelkezik.</translation>
     </message>
     <message>
@@ -4584,7 +4584,7 @@ azonos értékekkel rendelkezik.</translation>
 for the price that all cut objects
 will get the same color</source>
       <translation>Lehetővé teszi az egymást metsző tárgyak vágását
-azon az áron, hogy az összes vágott tárgy 
+azon az áron, hogy az összes vágott tárgy
 ugyanazt a színt kapja</translation>
     </message>
     <message>
@@ -4875,7 +4875,7 @@ rendszerében fejezzük ki.</translation>
       <source>Rotation around the x-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
-      <translation>Forgatás az x tengely körül 
+      <translation>Forgatás az x tengely körül
 Megjegyzés: Az elhelyezést a csatolt tárgy helyi koordináta
 rendszerében fejezzük ki.</translation>
     </message>
@@ -4889,7 +4889,7 @@ rendszerében fejezzük ki.</translation>
       <source>Rotation around the y-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
-      <translation>Forgatás az y tengely körül 
+      <translation>Forgatás az y tengely körül
 Megjegyzés: Az elhelyezést a csatolt tárgy helyi koordináta
 rendszerében fejezzük ki.</translation>
     </message>
@@ -4903,7 +4903,7 @@ rendszerében fejezzük ki.</translation>
       <source>Rotation around the z-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
-      <translation>Forgatás az z tengely körül 
+      <translation>Forgatás az z tengely körül
 Megjegyzés: Az elhelyezést a csatolt tárgy helyi koordináta
 rendszerében fejezzük ki.</translation>
     </message>
@@ -5037,7 +5037,7 @@ mean the checked object is unusable.  Default: false</source>
       <location filename="../../TaskCheckGeometry.cpp" line="1063"/>
       <source>Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</source>
-      <translation>Futtassa a geometria-ellenőrzést egyetlen szálban.  Ez lassabb, 
+      <translation>Futtassa a geometria-ellenőrzést egyetlen szálban.  Ez lassabb,
 de stabilabb.  Alapértelmezett: hamis</translation>
     </message>
     <message>
@@ -5057,9 +5057,9 @@ de stabilabb.  Alapértelmezett: hamis</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1081"/>
-      <source>Expand shape content.  Changes will take effect next time you use 
+      <source>Expand shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
-      <translation>Alakzat tartalom kibontás.  A módosítások legközelebb a geometria ellenőrző eszköz 
+      <translation>Alakzat tartalom kibontás.  A módosítások legközelebb a geometria ellenőrző eszköz
 használata esetén lépnek életbe.  Alapértelmezett: hamis</translation>
     </message>
     <message>
@@ -5069,9 +5069,9 @@ használata esetén lépnek életbe.  Alapértelmezett: hamis</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
-      <source>Show advanced shape content.  Changes will take effect next time you use 
+      <source>Show advanced shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
-      <translation>Speciális alakzat tartalom kibontás.  A módosítások legközelebb a geometria ellenőrző eszköz 
+      <translation>Speciális alakzat tartalom kibontás.  A módosítások legközelebb a geometria ellenőrző eszköz
 használata esetén lépnek életbe.  Alapértelmezett: hamis</translation>
     </message>
     <message>

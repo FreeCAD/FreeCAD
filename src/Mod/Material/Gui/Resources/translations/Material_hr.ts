@@ -531,7 +531,7 @@
       <location filename="../../DlgSettingsMaterial.ui" line="88"/>
       <source>Also material cards also from the specified directory
 will be listed as available.</source>
-      <translation>Takođe kartice materijala iz navedenog direktorija 
+      <translation>Takođe kartice materijala iz navedenog direktorija
 bit će navedene kao dostupne.</translation>
     </message>
     <message>

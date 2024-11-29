@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Precision.hxx>
+#include <Precision.hxx>
 #endif
 
 #include <Mod/PartDesign/App/FeaturePocket.h>
@@ -36,7 +36,9 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskPocketParameters */
 
-TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidget *parent, bool newObj)
+TaskPocketParameters::TaskPocketParameters(ViewProviderPocket* PocketView,
+                                           QWidget* parent,
+                                           bool newObj)
     : TaskExtrudeParameters(PocketView, parent, "PartDesign_Pocket", tr("Pocket parameters"))
     , oldLength(0)
 {
@@ -92,8 +94,9 @@ void TaskPocketParameters::onModeChanged(int index)
     switch (static_cast<Mode>(index)) {
         case Mode::Dimension:
             // Why? See below for "UpToFace"
-            if (oldLength < Precision::Confusion())
+            if (oldLength < Precision::Confusion()) {
                 oldLength = 5.0;
+            }
             pcPocket->Length.setValue(oldLength);
             ui->lengthEdit->setValue(oldLength);
             pcPocket->Type.setValue("Length");
@@ -117,7 +120,7 @@ void TaskPocketParameters::onModeChanged(int index)
             ui->lengthEdit->setValue(0.0);
             if (ui->lineFaceName->text().isEmpty()) {
                 ui->buttonFace->setChecked(true);
-                handleLineFaceNameClick(); // sets placeholder text
+                handleLineFaceNameClick();  // sets placeholder text
             }
             break;
         case Mode::TwoDimensions:
@@ -147,8 +150,9 @@ void TaskPocketParameters::apply()
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgPocketParameters::TaskDlgPocketParameters(ViewProviderPocket *PocketView)
-    : TaskDlgExtrudeParameters(PocketView), parameters(new TaskPocketParameters(PocketView))
+TaskDlgPocketParameters::TaskDlgPocketParameters(ViewProviderPocket* PocketView)
+    : TaskDlgExtrudeParameters(PocketView)
+    , parameters(new TaskPocketParameters(PocketView))
 {
     Content.push_back(parameters);
 }

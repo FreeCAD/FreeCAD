@@ -2846,10 +2846,10 @@ If both lengths are zero, magnitude of direction is used.</source>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="683"/>
-      <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
+      <source>Can't determine normal vector of shape to be extruded. Please use other mode.
 
 (%1)</source>
-      <translation>Normale ali oblike za izrivanje ni mogoče razbrati. Uporabite drugi način. 
+      <translation>Normale ali oblike za izrivanje ni mogoče razbrati. Uporabite drugi način.
 
 (%1)</translation>
     </message>
@@ -5030,7 +5030,7 @@ predmeta, ki se pripenja.</translation>
 the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</source>
       <translation>Dodatno preverjanje opravil z logičnimi vrednostmi, ki lahko včasih odkrije
-napake, ki jih običajni pregled PzO geometrij spregleda. Te napake ne pomenijo 
+napake, ki jih običajni pregled PzO geometrij spregleda. Te napake ne pomenijo
 vedno, da je pregledani predmet neuporaben. Privzeto: napak</translation>
     </message>
     <message>
@@ -5062,9 +5062,9 @@ počasnejše, a stabilnejše. Privzeto: napak</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1081"/>
-      <source>Expand shape content.  Changes will take effect next time you use 
+      <source>Expand shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
-      <translation>Razširi vsebino oblike. Spremembe bodo uveljavljene ob naslednji 
+      <translation>Razširi vsebino oblike. Spremembe bodo uveljavljene ob naslednji
 uporabi orodja za preverjanje geometrije. Privzeto: napak</translation>
     </message>
     <message>
@@ -5074,9 +5074,9 @@ uporabi orodja za preverjanje geometrije. Privzeto: napak</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
-      <source>Show advanced shape content.  Changes will take effect next time you use 
+      <source>Show advanced shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
-      <translation>Prikaži napredno vsebino oblike. Spremembe bodo uveljavljene ob naslednji 
+      <translation>Prikaži napredno vsebino oblike. Spremembe bodo uveljavljene ob naslednji
 uporabi orodja za preverjanje geometrije. Privzeto: napak</translation>
     </message>
     <message>
@@ -5583,7 +5583,7 @@ in the 3D view for the sweep path.</source>
       <location filename="../../Command.cpp" line="476"/>
       <source>The use of non-solids for boolean operations may lead to unexpected results.
 Do you want to continue?</source>
-      <translation>Uporaba netelesnih predmetov za logične operacije lahko privede do nepričakovanih rezultatov. 
+      <translation>Uporaba netelesnih predmetov za logične operacije lahko privede do nepričakovanih rezultatov.
 Ali želite nadaljevati?</translation>
     </message>
     <message>

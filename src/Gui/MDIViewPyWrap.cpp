@@ -22,8 +22,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <unordered_map>
-# include <stdexcept>
+#include <unordered_map>
+#include <stdexcept>
 #endif
 
 #include <Base/Interpreter.h>
@@ -36,16 +36,26 @@
 using namespace Gui;
 namespace sp = std::placeholders;
 
-namespace Gui {
+namespace Gui
+{
 
 class MDIViewPyWrapImp
 {
 public:
     MDIViewPyWrapImp(Py::Object pyobject)
-        : pyobject{pyobject}
+        : pyobject {pyobject}
     {
         Base::PyGILStateLocker lock;
-        std::vector<std::string> methods = {"widget", "onMsg", "onHasMsg", "canClose", "printDocument", "print", "printPdf", "printPreview", "redoActions", "undoActions"};
+        std::vector<std::string> methods = {"widget",
+                                            "onMsg",
+                                            "onHasMsg",
+                                            "canClose",
+                                            "printDocument",
+                                            "print",
+                                            "printPdf",
+                                            "printPreview",
+                                            "redoActions",
+                                            "undoActions"};
 
         for (const auto& it : methods) {
             if (pyobject.hasAttr(it)) {
@@ -160,14 +170,17 @@ private:
     Py::Object pyobject;
 };
 
-}
+}  // namespace Gui
 
 
-TYPESYSTEM_SOURCE_ABSTRACT(Gui::MDIViewPyWrap,Gui::MDIView)
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::MDIViewPyWrap, Gui::MDIView)
 
-MDIViewPyWrap::MDIViewPyWrap(const Py::Object& py, Gui::Document* pcDocument,QWidget* parent, Qt::WindowFlags wflags)
-  : MDIView(pcDocument, parent, wflags)
-  , ptr(std::make_unique<MDIViewPyWrapImp>(py))
+MDIViewPyWrap::MDIViewPyWrap(const Py::Object& py,
+                             Gui::Document* pcDocument,
+                             QWidget* parent,
+                             Qt::WindowFlags wflags)
+    : MDIView(pcDocument, parent, wflags)
+    , ptr(std::make_unique<MDIViewPyWrapImp>(py))
 {
     try {
         QWidget* widget = ptr->widget();
@@ -196,7 +209,7 @@ PyObject* MDIViewPyWrap::getPyObject()
     return MDIView::getPyObject();
 }
 
-bool MDIViewPyWrap::onMsg(const char* pMsg,const char** ppReturn)
+bool MDIViewPyWrap::onMsg(const char* pMsg, const char** ppReturn)
 {
     try {
         if (ptr->onMsg(pMsg)) {

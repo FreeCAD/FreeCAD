@@ -49,16 +49,17 @@ using namespace Gui::Dialog;
 
 bool DlgExpressionInput::varSetsVisible = false;
 
-DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
+DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier& _path,
                                        std::shared_ptr<const Expression> _expression,
-                                       const Base::Unit & _impliedUnit, QWidget *parent)
-  : QDialog(parent)
-  , ui(new Ui::DlgExpressionInput)
-  , expression(_expression ? _expression->copy() : nullptr)
-  , path(_path)
-  , discarded(false)
-  , impliedUnit(_impliedUnit)
-  , minimumWidth(10)
+                                       const Base::Unit& _impliedUnit,
+                                       QWidget* parent)
+    : QDialog(parent)
+    , ui(new Ui::DlgExpressionInput)
+    , expression(_expression ? _expression->copy() : nullptr)
+    , path(_path)
+    , discarded(false)
+    , impliedUnit(_impliedUnit)
+    , minimumWidth(10)
 {
     assert(path.getDocumentObject());
 
@@ -68,10 +69,11 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
     initializeVarSets();
 
     // Connect signal(s)
-    connect(ui->expression, &ExpressionLineEdit::textChanged,
-        this, &DlgExpressionInput::textChanged);
-    connect(ui->discardBtn, &QPushButton::clicked,
-        this, &DlgExpressionInput::setDiscarded);
+    connect(ui->expression,
+            &ExpressionLineEdit::textChanged,
+            this,
+            &DlgExpressionInput::textChanged);
+    connect(ui->discardBtn, &QPushButton::clicked, this, &DlgExpressionInput::setDiscarded);
 
     if (expression) {
         ui->expression->setText(Base::Tools::fromStdString(expression->toString()));
@@ -84,14 +86,16 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
     }
 
     // Set document object on line edit to create auto completer
-    DocumentObject * docObj = path.getDocumentObject();
+    DocumentObject* docObj = path.getDocumentObject();
     ui->expression->setDocumentObject(docObj);
 
     // There are some platforms where setting no system background causes a black
     // rectangle to appear. To avoid this the 'NoSystemBackground' parameter can be
     // set to false. Then a normal non-modal dialog will be shown instead (#0002440).
-    bool noBackground = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Expression")->GetBool("NoSystemBackground", false);
+    bool noBackground =
+        App::GetApplication()
+            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Expression")
+            ->GetBool("NoSystemBackground", false);
 
     if (noBackground) {
 #if defined(Q_OS_MACOS)
@@ -110,27 +114,37 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
         // It is strange that (at least on Linux) DlgExpressionInput will shrink
         // to be narrower than ui->expression after calling adjustSize() above.
         // Why?
-        if(this->width() < ui->expression->width() + 18)
-            this->resize(ui->expression->width()+18,this->height());
+        if (this->width() < ui->expression->width() + 18) {
+            this->resize(ui->expression->width() + 18, this->height());
+        }
     }
     ui->expression->setFocus();
 }
 
 DlgExpressionInput::~DlgExpressionInput()
 {
-    disconnect(ui->checkBoxVarSets, &QCheckBox::stateChanged,
-               this, &DlgExpressionInput::onCheckVarSets);
-    disconnect(ui->comboBoxVarSet, qOverload<int>(&QComboBox::currentIndexChanged),
-               this, &DlgExpressionInput::onVarSetSelected);
-    disconnect(ui->lineEditGroup, &QLineEdit::textChanged,
-               this, &DlgExpressionInput::onTextChangedGroup);
-    disconnect(ui->lineEditPropNew, &QLineEdit::textChanged,
-               this, &DlgExpressionInput::namePropChanged);
+    disconnect(ui->checkBoxVarSets,
+               &QCheckBox::stateChanged,
+               this,
+               &DlgExpressionInput::onCheckVarSets);
+    disconnect(ui->comboBoxVarSet,
+               qOverload<int>(&QComboBox::currentIndexChanged),
+               this,
+               &DlgExpressionInput::onVarSetSelected);
+    disconnect(ui->lineEditGroup,
+               &QLineEdit::textChanged,
+               this,
+               &DlgExpressionInput::onTextChangedGroup);
+    disconnect(ui->lineEditPropNew,
+               &QLineEdit::textChanged,
+               this,
+               &DlgExpressionInput::namePropChanged);
 
     delete ui;
 }
 
-static void getVarSetsDocument(std::vector<App::VarSet*>& varSets, App::Document* doc) {
+static void getVarSetsDocument(std::vector<App::VarSet*>& varSets, App::Document* doc)
+{
     for (auto obj : doc->getObjects()) {
         auto varSet = dynamic_cast<App::VarSet*>(obj);
         if (varSet) {
@@ -162,9 +176,9 @@ Base::Type DlgExpressionInput::determineTypeVarSet()
 
     // The type of the path is leading.  If it is one of the types below, we
     // can create a property in the varset.
-    if (typePath == App::PropertyString::getClassTypeId() ||
-        typePath.isDerivedFrom(App::PropertyFloat::getClassTypeId()) ||
-        typePath.isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+    if (typePath == App::PropertyString::getClassTypeId()
+        || typePath.isDerivedFrom(App::PropertyFloat::getClassTypeId())
+        || typePath.isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
         return typePath;
     }
 
@@ -196,14 +210,22 @@ void DlgExpressionInput::initializeVarSets()
     ui->labelInfoActive->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     ui->labelInfoActive->setWordWrap(true);
 
-    connect(ui->checkBoxVarSets, &QCheckBox::stateChanged,
-            this, &DlgExpressionInput::onCheckVarSets);
-    connect(ui->comboBoxVarSet, qOverload<int>(&QComboBox::currentIndexChanged),
-            this, &DlgExpressionInput::onVarSetSelected);
-    connect(ui->lineEditGroup, &QLineEdit::textChanged,
-            this, &DlgExpressionInput::onTextChangedGroup);
-    connect(ui->lineEditPropNew, &QLineEdit::textChanged,
-            this, &DlgExpressionInput::namePropChanged);
+    connect(ui->checkBoxVarSets,
+            &QCheckBox::stateChanged,
+            this,
+            &DlgExpressionInput::onCheckVarSets);
+    connect(ui->comboBoxVarSet,
+            qOverload<int>(&QComboBox::currentIndexChanged),
+            this,
+            &DlgExpressionInput::onVarSetSelected);
+    connect(ui->lineEditGroup,
+            &QLineEdit::textChanged,
+            this,
+            &DlgExpressionInput::onTextChangedGroup);
+    connect(ui->lineEditPropNew,
+            &QLineEdit::textChanged,
+            this,
+            &DlgExpressionInput::namePropChanged);
 
     std::vector<App::VarSet*> varSets = getAllVarSets();
     if (!varSets.empty() && typeOkForVarSet()) {
@@ -236,8 +258,9 @@ void NumberRange::clearRange()
 
 void NumberRange::throwIfOutOfRange(const Base::Quantity& value) const
 {
-    if (!defined)
+    if (!defined) {
         return;
+    }
 
     if (value.getValue() < minimum || value.getValue() > maximum) {
         Base::Quantity minVal(minimum, value.getUnit());
@@ -245,7 +268,8 @@ void NumberRange::throwIfOutOfRange(const Base::Quantity& value) const
         QString valStr = value.getUserString();
         QString minStr = minVal.getUserString();
         QString maxStr = maxVal.getUserString();
-        QString error = QString::fromLatin1("Value out of range (%1 out of [%2, %3])").arg(valStr, minStr, maxStr);
+        QString error = QString::fromLatin1("Value out of range (%1 out of [%2, %3])")
+                            .arg(valStr, minStr, maxStr);
 
         throw Base::ValueError(error.toStdString());
     }
@@ -268,61 +292,64 @@ QPoint DlgExpressionInput::expressionPosition() const
 
 void DlgExpressionInput::checkExpression(const QString& text)
 {
-        //now handle expression
-        std::shared_ptr<Expression> expr(ExpressionParser::parse(path.getDocumentObject(), text.toUtf8().constData()));
+    // now handle expression
+    std::shared_ptr<Expression> expr(
+        ExpressionParser::parse(path.getDocumentObject(), text.toUtf8().constData()));
 
-        if (expr) {
-            std::string error = path.getDocumentObject()->ExpressionEngine.validateExpression(path, expr);
+    if (expr) {
+        std::string error =
+            path.getDocumentObject()->ExpressionEngine.validateExpression(path, expr);
 
-            if (!error.empty())
-                throw Base::RuntimeError(error.c_str());
-
-            std::unique_ptr<Expression> result(expr->eval());
-
-            expression = expr;
-            ui->okBtn->setEnabled(true);
-            ui->msg->clear();
-
-            //set default palette as we may have read text right now
-            ui->msg->setPalette(ui->okBtn->palette());
-
-            auto * n = Base::freecad_dynamic_cast<NumberExpression>(result.get());
-            if (n) {
-                Base::Quantity value = n->getQuantity();
-                QString msg = value.getUserString();
-
-                if (!value.isValid()) {
-                    throw Base::ValueError("Not a number");
-                }
-                else if (!impliedUnit.isEmpty()) {
-                    if (!value.getUnit().isEmpty() && value.getUnit() != impliedUnit)
-                        throw Base::UnitsMismatchError("Unit mismatch between result and required unit");
-
-                    value.setUnit(impliedUnit);
-
-                }
-                else if (!value.getUnit().isEmpty()) {
-                    msg += QString::fromUtf8(" (Warning: unit discarded)");
-
-                    QPalette p(ui->msg->palette());
-                    p.setColor(QPalette::WindowText, Qt::red);
-                    ui->msg->setPalette(p);
-                }
-
-                numberRange.throwIfOutOfRange(value);
-
-                ui->msg->setText(msg);
-            }
-            else {
-                ui->msg->setText(Base::Tools::fromStdString(result->toString()));
-            }
-
+        if (!error.empty()) {
+            throw Base::RuntimeError(error.c_str());
         }
+
+        std::unique_ptr<Expression> result(expr->eval());
+
+        expression = expr;
+        ui->okBtn->setEnabled(true);
+        ui->msg->clear();
+
+        // set default palette as we may have read text right now
+        ui->msg->setPalette(ui->okBtn->palette());
+
+        auto* n = Base::freecad_dynamic_cast<NumberExpression>(result.get());
+        if (n) {
+            Base::Quantity value = n->getQuantity();
+            QString msg = value.getUserString();
+
+            if (!value.isValid()) {
+                throw Base::ValueError("Not a number");
+            }
+            else if (!impliedUnit.isEmpty()) {
+                if (!value.getUnit().isEmpty() && value.getUnit() != impliedUnit) {
+                    throw Base::UnitsMismatchError(
+                        "Unit mismatch between result and required unit");
+                }
+
+                value.setUnit(impliedUnit);
+            }
+            else if (!value.getUnit().isEmpty()) {
+                msg += QString::fromUtf8(" (Warning: unit discarded)");
+
+                QPalette p(ui->msg->palette());
+                p.setColor(QPalette::WindowText, Qt::red);
+                ui->msg->setPalette(p);
+            }
+
+            numberRange.throwIfOutOfRange(value);
+
+            ui->msg->setText(msg);
+        }
+        else {
+            ui->msg->setText(Base::Tools::fromStdString(result->toString()));
+        }
+    }
 }
 
 static const bool NO_CHECK_EXPR = false;
 
-void DlgExpressionInput::textChanged(const QString &text)
+void DlgExpressionInput::textChanged(const QString& text)
 {
     if (text.isEmpty()) {
         ui->okBtn->setDisabled(true);
@@ -333,16 +360,19 @@ void DlgExpressionInput::textChanged(const QString &text)
     ui->okBtn->setDefault(true);
 
     try {
-        //resize the input field according to text size
+        // resize the input field according to text size
         QFontMetrics fm(ui->expression->font());
         int width = QtTools::horizontalAdvance(fm, text) + 15;
-        if (width < minimumWidth)
+        if (width < minimumWidth) {
             ui->expression->setMinimumWidth(minimumWidth);
-        else
+        }
+        else {
             ui->expression->setMinimumWidth(width);
+        }
 
-        if(this->width() < ui->expression->minimumWidth())
+        if (this->width() < ui->expression->minimumWidth()) {
             setMinimumWidth(ui->expression->minimumWidth());
+        }
 
         checkExpression(text);
         if (varSetsVisible) {
@@ -352,7 +382,7 @@ void DlgExpressionInput::textChanged(const QString &text)
             updateVarSetInfo(NO_CHECK_EXPR);
         }
     }
-    catch (Base::Exception & e) {
+    catch (Base::Exception& e) {
         ui->msg->setText(QString::fromUtf8(e.what()));
         QPalette p(ui->msg->palette());
         p.setColor(QPalette::WindowText, Qt::red);
@@ -369,11 +399,13 @@ void DlgExpressionInput::setDiscarded()
 
 void DlgExpressionInput::setExpressionInputSize(int width, int height)
 {
-    if (ui->expression->minimumHeight() < height)
+    if (ui->expression->minimumHeight() < height) {
         ui->expression->setMinimumHeight(height);
+    }
 
-    if (ui->expression->minimumWidth() < width)
+    if (ui->expression->minimumWidth() < width) {
         ui->expression->setMinimumWidth(width);
+    }
 
     minimumWidth = width;
 }
@@ -389,11 +421,12 @@ void DlgExpressionInput::mousePressEvent(QMouseEvent* ev)
 
     // The 'FramelessWindowHint' is also set when the background is transparent.
     if (windowFlags() & Qt::FramelessWindowHint) {
-        //we need to reject the dialog when clicked on the background. As the background is transparent
-        //this is the expected behaviour for the user
+        // we need to reject the dialog when clicked on the background. As the background is
+        // transparent this is the expected behaviour for the user
         bool on = ui->expression->completerActive();
-        if (!on)
+        if (!on) {
             this->reject();
+        }
     }
 }
 
@@ -404,7 +437,7 @@ void DlgExpressionInput::show()
     ui->expression->selectAll();
 }
 
-class Binding : public Gui::ExpressionBinding
+class Binding: public Gui::ExpressionBinding
 {
     // helper class to compensate for the fact that
     // ExpressionBinding::setExpression is protected.
@@ -417,8 +450,8 @@ public:
     }
 };
 
-static bool isNamePropOk(const QString& nameProp, App::DocumentObject* obj,
-                         std::stringstream& message)
+static bool
+isNamePropOk(const QString& nameProp, App::DocumentObject* obj, std::stringstream& message)
 {
     if (!obj) {
         message << "Unknown object";
@@ -468,7 +501,7 @@ void DlgExpressionInput::acceptWithVarSet()
     // decide to enable the button
 
     // create a property in the VarSet
-    QTreeWidgetItem *selected = treeWidget->currentItem();
+    QTreeWidgetItem* selected = treeWidget->currentItem();
     QString nameVarSet = getValue(selected, ROLE_VARSET_NAME);
     QString nameGroup = ui->lineEditGroup->text();
     QString nameProp = ui->lineEditPropNew->text();
@@ -492,17 +525,21 @@ void DlgExpressionInput::acceptWithVarSet()
     if (ne) {
         // the value is a number: directly assign it to the property instead of
         // making it an expression in the variable set
-        Gui::Command::doCommand(Gui::Command::Doc, "App.getDocument('%s').getObject('%s').%s = %f",
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.getDocument('%s').getObject('%s').%s = %f",
                                 obj->getDocument()->getName(),
                                 obj->getNameInDocument(),
-                                prop->getName(), ne->getValue());
+                                prop->getName(),
+                                ne->getValue());
     }
     else if (se) {
         // the value is a string: directly assign it to the property.
-        Gui::Command::doCommand(Gui::Command::Doc, "App.getDocument('%s').getObject('%s').%s = \"%s\"",
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.getDocument('%s').getObject('%s').%s = \"%s\"",
                                 obj->getDocument()->getName(),
                                 obj->getNameInDocument(),
-                                prop->getName(), se->getText().c_str());
+                                prop->getName(),
+                                se->getText().c_str());
     }
     else {
         // the value is an epxression: make an expression binding in the variable set.
@@ -515,11 +552,12 @@ void DlgExpressionInput::acceptWithVarSet()
 
     // Create a new expression that refers to the property in the variable set
     // for the original property that is the target of this dialog.
-    expression.reset(ExpressionParser::parse(path.getDocumentObject(),
-                                             prop->getFullName().c_str()));
+    expression.reset(
+        ExpressionParser::parse(path.getDocumentObject(), prop->getFullName().c_str()));
 }
 
-void DlgExpressionInput::accept() {
+void DlgExpressionInput::accept()
+{
     if (varSetsVisible) {
         acceptWithVarSet();
     }
@@ -555,7 +593,7 @@ static void addVarSetsVarSetComboBox(std::vector<App::VarSet*>& varSets, QTreeWi
 {
     for (auto varSet : varSets) {
         auto vp = Base::freecad_dynamic_cast<Gui::ViewProviderDocumentObject>(
-                Gui::Application::Instance->getViewProvider(varSet));
+            Gui::Application::Instance->getViewProvider(varSet));
         // the item will be automatically destroyed when the docItem will be destroyed
         auto item = new QTreeWidgetItem(docItem);
         item->setIcon(0, vp->getIcon());
@@ -592,7 +630,7 @@ static QTreeWidget* createVarSetTreeWidget()
     treeWidget->setColumnCount(1);
     treeWidget->setHeaderHidden(true);
     // the rootItem will be destroyed when the treeWidget will be destroyed
-    QTreeWidgetItem *rootItem = treeWidget->invisibleRootItem();
+    QTreeWidgetItem* rootItem = treeWidget->invisibleRootItem();
 
     QPixmap docIcon(Gui::BitmapFactory().pixmap("Document"));
     std::vector<App::Document*> docs = App::GetApplication().getDocuments();
@@ -622,14 +660,15 @@ std::string DlgExpressionInput::getType()
     return determineTypeVarSet().getName();
 }
 
-void DlgExpressionInput::onCheckVarSets(int state) {
+void DlgExpressionInput::onCheckVarSets(int state)
+{
     varSetsVisible = state == Qt::Checked;
     ui->groupBoxVarSets->setVisible(varSetsVisible);
     if (varSetsVisible) {
         setupVarSets();
     }
     else {
-        ui->okBtn->setEnabled(true); // normal expression
+        ui->okBtn->setEnabled(true);  // normal expression
     }
 }
 
@@ -661,8 +700,7 @@ void DlgExpressionInput::namePropChanged(const QString&)
     updateVarSetInfo();
 }
 
-static bool isNameGroupOk(const QString& nameGroup,
-                          std::stringstream& message)
+static bool isNameGroupOk(const QString& nameGroup, std::stringstream& message)
 {
     std::string name = nameGroup.toStdString();
     if (name.empty() || name != Base::Tools::getIdentifier(name)) {

@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMenu>
+#include <QMenu>
 #endif
 
 #include <App/Document.h>

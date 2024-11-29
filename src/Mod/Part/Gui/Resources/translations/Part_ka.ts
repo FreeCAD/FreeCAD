@@ -1840,7 +1840,7 @@
 onto a face of another object.
 The camera view determines the direction
 of projection.</source>
-      <translation>ერთი ობიექტის წიბოების, პოლიხაზების ან 
+      <translation>ერთი ობიექტის წიბოების, პოლიხაზების ან
 ზედაპირების პროექცია სხვა ობიექტის ზედაპირზე.
 კამერის ხედი განსაზღვრავს პროექციის მიმართულებას.</translation>
     </message>
@@ -2606,9 +2606,9 @@ Note: The placement is expressed in local space of object being attached.</sourc
 a single object. Please note that when importing back the STEP file, the
 placement will be encoded into the shape geometry, instead of keeping
 it inside the Placement property.</source>
-      <translation>ჩართეთ ეს პარამეტრი ერთი ობიექტის გატანისას მისი მდებარეობის 
-ინფორმაციის შესანარჩუნებლად. დაიმახსოვრეთ, რომ როცა 
-STEP ფაილის უკან შემოტანას დააპირებთ, მდებარეობის გეომეტრიის 
+      <translation>ჩართეთ ეს პარამეტრი ერთი ობიექტის გატანისას მისი მდებარეობის
+ინფორმაციის შესანარჩუნებლად. დაიმახსოვრეთ, რომ როცა
+STEP ფაილის უკან შემოტანას დააპირებთ, მდებარეობის გეომეტრიის
 მაგიერ მდებარეობა მონახაზის გეომეტრიაში იქნება კოდირებული.</translation>
     </message>
     <message>
@@ -2843,10 +2843,10 @@ If both lengths are zero, magnitude of direction is used.</source>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="683"/>
-      <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
+      <source>Can't determine normal vector of shape to be extruded. Please use other mode.
 
 (%1)</source>
-      <translation>შეუძლებელია გამოსაწნევი მონახაზის ნორმალის ვექტორი დადგენა. აირჩიეთ სხვა რეჟიმი. 
+      <translation>შეუძლებელია გამოსაწნევი მონახაზის ნორმალის ვექტორი დადგენა. აირჩიეთ სხვა რეჟიმი.
 
 (%1)</translation>
     </message>
@@ -4554,8 +4554,8 @@ the sketch plane's normal vector will be used</source>
 will be taken from the cut objects.
 Works only properly if all objects
 have the same values.</source>
-      <translation>თუ ჩართულია, ფერი და გამჭვირვალობა აღებული 
-იქნება ამოჭრილი ობიექტებიდან. თვისება მუშაობს მხოლოდ 
+      <translation>თუ ჩართულია, ფერი და გამჭვირვალობა აღებული
+იქნება ამოჭრილი ობიექტებიდან. თვისება მუშაობს მხოლოდ
 მაშინ, თუ ყველა ობიექტს იგივე მნიშვნელობები აქვს.</translation>
     </message>
     <message>
@@ -4851,7 +4851,7 @@ only created cuts will be visible</source>
       <location filename="../../TaskAttacher.ui" line="227"/>
       <source>Note: The placement is expressed in local coordinate system
 of object being attached.</source>
-      <translation>შენიშვნა: მდებარეობა გამოიხატება მისამაგრებელი 
+      <translation>შენიშვნა: მდებარეობა გამოიხატება მისამაგრებელი
 ობიექტის ლოკალურ კოორდინატების სისტემაში.</translation>
     </message>
     <message>
@@ -5053,9 +5053,9 @@ but more stable.  Default: false</source>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1081"/>
-      <source>Expand shape content.  Changes will take effect next time you use 
+      <source>Expand shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
-      <translation>მოხაზულობის შემცველობის გაფართოება. ცვლილებები ზალაში შევა  
+      <translation>მოხაზულობის შემცველობის გაფართოება. ცვლილებები ზალაში შევა
 შემდეგ ჯერზე, როცა გეომეტრიის შემოწმების ხელსაწყოს გამოიყენებთ. ნაგულისხმევად: არა</translation>
     </message>
     <message>
@@ -5065,9 +5065,9 @@ the check geometry tool.  Default: false</source>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
-      <source>Show advanced shape content.  Changes will take effect next time you use 
+      <source>Show advanced shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
-      <translation>მოხაზულობის დამატებითი შემცველობის ჩვენება. ცვლილებები ზალაში შევა  
+      <translation>მოხაზულობის დამატებითი შემცველობის ჩვენება. ცვლილებები ზალაში შევა
 შემდეგ ჯერზე, როცა გეომეტრიის შემოწმების ხელსაწყოს გამოიყენებთ. ნაგულისხმევად: არა</translation>
     </message>
     <message>
@@ -5459,7 +5459,7 @@ Individual boolean operation checks:</source>
       <location filename="../../TaskSweep.cpp" line="483"/>
       <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
-      <translation>3D ხედში შლილის ტრეაქტორიისთვის აირჩიეთ 
+      <translation>3D ხედში შლილის ტრეაქტორიისთვის აირჩიეთ
 ერთი ან მეტი პროფილი და წიბო ან პოლიზახი.</translation>
     </message>
   </context>
@@ -6480,7 +6480,7 @@ or from the shapes inside a compound.
 This is a boolean union which is then sliced at the intersections
 of the original shapes.
 A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation>'ბულევური ფრაგმენტების' შექმნა ორი ან მეტი მონიშნული ობიექტისგან 
+      <translation>'ბულევური ფრაგმენტების' შექმნა ორი ან მეტი მონიშნული ობიექტისგან
 ან გადაბმის შიგნით არსებული მოხაზულობებისგან.
 წარმოადგენს ბულევურ გაერთიანებას, რომელიც შემდეგ ჩაიჭრება საწყისი მოხაზულობების
 კვეთებზე.
@@ -6797,7 +6797,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
       <location filename="../../TaskFaceAppearances.ui" line="97"/>
       <source>When checked, you can select multiple faces
 by dragging a selection rectangle in the 3D view</source>
-      <translation>როცა ჩართულია, 3D ხედში მონიშვნის ოთხკუთხედის 
+      <translation>როცა ჩართულია, 3D ხედში მონიშვნის ოთხკუთხედის
 გადათრევით შეიძლება მონიშნოთ ერთზე მეტი ზედაპირი</translation>
     </message>
     <message>

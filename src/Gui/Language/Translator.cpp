@@ -22,14 +22,14 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <algorithm>
-# include <QApplication>
-# include <QDir>
-# include <QKeyEvent>
-# include <QRegularExpression>
-# include <QStringList>
-# include <QTranslator>
-# include <QWidget>
+#include <algorithm>
+#include <QApplication>
+#include <QDir>
+#include <QKeyEvent>
+#include <QRegularExpression>
+#include <QStringList>
+#include <QTranslator>
+#include <QWidget>
 #endif
 
 #include <App/Application.h>
@@ -80,8 +80,8 @@ using namespace Gui;
  * concerning missing .qm files.
  *
  * To integrate the .qm file into the executable you have to create a resource file (.qrc), first.
- * This is an XML file where you can append the .qm file. For the .qrc file you have to define the following
- * curstom build step inside the Visual Studio project file:
+ * This is an XML file where you can append the .qm file. For the .qrc file you have to define the
+ * following curstom build step inside the Visual Studio project file:
  *
  * Command Line: rcc.exe -name $(InputName) $(InputPath) -o "$(InputDir)qrc_$(InputName).cpp"
  * Outputs:      $(InputDir)qrc_$(InputName).cpp
@@ -103,7 +103,8 @@ using namespace Gui;
 
 Translator* Translator::_pcSingleton = nullptr;
 
-namespace Gui {
+namespace Gui
+{
 class TranslatorP
 {
 public:
@@ -113,75 +114,79 @@ public:
     std::list<QTranslator*> translators; /**< A list of all created translators */
     QStringList paths;
 };
-}
+}  // namespace Gui
 
 Translator* Translator::instance()
 {
-    if (!_pcSingleton)
+    if (!_pcSingleton) {
         _pcSingleton = new Translator;
+    }
     return _pcSingleton;
 }
 
-void Translator::destruct ()
+void Translator::destruct()
 {
-    if (_pcSingleton)
+    if (_pcSingleton) {
         delete _pcSingleton;
-    _pcSingleton=nullptr;
+    }
+    _pcSingleton = nullptr;
 }
 
 Translator::Translator()
 {
     // This is needed for Qt's lupdate
     d = new TranslatorP;
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Afrikaans"            )] = "af";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Arabic"               )] = "ar";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Basque"               )] = "eu";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Belarusian"           )] = "be";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Bulgarian"            )] = "bg";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Catalan"              )] = "ca";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Chinese Simplified"   )] = "zh-CN";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Chinese Traditional"  )] = "zh-TW";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Croatian"             )] = "hr";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Czech"                )] = "cs";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Dutch"                )] = "nl";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("English"              )] = "en";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Filipino"             )] = "fil";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Finnish"              )] = "fi";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("French"               )] = "fr";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Galician"             )] = "gl";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Georgian"             )] = "ka";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("German"               )] = "de";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Greek"                )] = "el";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Hungarian"            )] = "hu";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Indonesian"           )] = "id";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Italian"              )] = "it";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Japanese"             )] = "ja";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Kabyle"               )] = "kab";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Korean"               )] = "ko";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Lithuanian"           )] = "lt";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Norwegian"            )] = "no";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Polish"               )] = "pl";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Afrikaans")] = "af";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Arabic")] = "ar";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Basque")] = "eu";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Belarusian")] = "be";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Bulgarian")] = "bg";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Catalan")] = "ca";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Chinese Simplified")] = "zh-CN";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Chinese Traditional")] = "zh-TW";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Croatian")] = "hr";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Czech")] = "cs";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Dutch")] = "nl";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("English")] = "en";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Filipino")] = "fil";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Finnish")] = "fi";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("French")] = "fr";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Galician")] = "gl";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Georgian")] = "ka";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("German")] = "de";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Greek")] = "el";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Hungarian")] = "hu";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Indonesian")] = "id";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Italian")] = "it";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Japanese")] = "ja";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Kabyle")] = "kab";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Korean")] = "ko";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Lithuanian")] = "lt";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Norwegian")] = "no";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Polish")] = "pl";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Portuguese, Brazilian")] = "pt-BR";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Portuguese"           )] = "pt-PT";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Romanian"             )] = "ro";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Russian"              )] = "ru";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Serbian"              )] = "sr";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Serbian, Latin"       )] = "sr-CS";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Slovak"               )] = "sk";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Slovenian"            )] = "sl";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Spanish"              )] = "es-ES";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Spanish, Argentina"   )] = "es-AR";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Swedish"              )] = "sv-SE";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Turkish"              )] = "tr";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Ukrainian"            )] = "uk";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Valencian"            )] = "val-ES";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Vietnamese"           )] = "vi";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Portuguese")] = "pt-PT";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Romanian")] = "ro";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Russian")] = "ru";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Serbian")] = "sr";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Serbian, Latin")] = "sr-CS";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Slovak")] = "sk";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Slovenian")] = "sl";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Spanish")] = "es-ES";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Spanish, Argentina")] = "es-AR";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Swedish")] = "sv-SE";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Turkish")] = "tr";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Ukrainian")] = "uk";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Valencian")] = "val-ES";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Vietnamese")] = "vi";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Danish")] = "da";
 
-    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
+    auto hGrp =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
     auto entries = hGrp->GetASCII("AdditionalLanguageDomainEntries", "");
     // The format of the entries is "Language Name 1"="code1";"Language Name 2"="code2";...
-    // Example: <FCText Name="AdditionalLanguageDomainEntries">"Romanian"="ro";"Polish"="pl";</FCText>
+    // Example: <FCText
+    // Name="AdditionalLanguageDomainEntries">"Romanian"="ro";"Polish"="pl";</FCText>
     QRegularExpression matchingRE(QString::fromUtf8("\"(.*[^\\s]+.*)\"\\s*=\\s*\"([^\\s]+)\";?"));
     auto matches = matchingRE.globalMatch(QString::fromStdString(entries));
     while (matches.hasNext()) {
@@ -208,22 +213,25 @@ TStringList Translator::supportedLanguages() const
 {
     TStringList languages;
     TStringMap locales = supportedLocales();
-    for (const auto& it : locales)
+    for (const auto& it : locales) {
         languages.push_back(it.first);
+    }
 
     return languages;
 }
 
 TStringMap Translator::supportedLocales() const
 {
-    if (!d->mapSupportedLocales.empty())
+    if (!d->mapSupportedLocales.empty()) {
         return d->mapSupportedLocales;
+    }
 
     // List all .qm files
     for (const auto& domainMap : d->mapLanguageTopLevelDomain) {
         for (const auto& directoryName : std::as_const(d->paths)) {
             QDir dir(directoryName);
-            QString filter = QString::fromLatin1("*_%1.qm").arg(QString::fromStdString(domainMap.second));
+            QString filter =
+                QString::fromLatin1("*_%1.qm").arg(QString::fromStdString(domainMap.second));
             QStringList fileNames = dir.entryList(QStringList(filter), QDir::Files, QDir::Name);
             if (!fileNames.isEmpty()) {
                 d->mapSupportedLocales[domainMap.first] = domainMap.second;
@@ -235,9 +243,9 @@ TStringMap Translator::supportedLocales() const
     return d->mapSupportedLocales;
 }
 
-void Translator::activateLanguage (const char* lang)
+void Translator::activateLanguage(const char* lang)
 {
-    removeTranslators(); // remove the currently installed translators
+    removeTranslators();  // remove the currently installed translators
     d->activatedLanguage = lang;
     TStringList languages = supportedLanguages();
     if (std::find(languages.begin(), languages.end(), lang) != languages.end()) {
@@ -253,35 +261,40 @@ std::string Translator::activeLanguage() const
 std::string Translator::locale(const std::string& lang) const
 {
     std::string loc;
-    std::map<std::string, std::string>::const_iterator tld = d->mapLanguageTopLevelDomain.find(lang);
-    if (tld != d->mapLanguageTopLevelDomain.end())
+    std::map<std::string, std::string>::const_iterator tld =
+        d->mapLanguageTopLevelDomain.find(lang);
+    if (tld != d->mapLanguageTopLevelDomain.end()) {
         loc = tld->second;
+    }
 
     return loc;
 }
 
 void Translator::setLocale(const std::string& language) const
 {
-    auto loc = QLocale::system(); //Defaulting to OS locale
+    auto loc = QLocale::system();  // Defaulting to OS locale
     if (language == "C" || language == "c") {
         loc = QLocale::c();
     }
     else {
         auto bcp47 = locale(language);
-        if (!bcp47.empty())
-            loc  = QLocale(QString::fromStdString(bcp47));
+        if (!bcp47.empty()) {
+            loc = QLocale(QString::fromStdString(bcp47));
+        }
     }
     QLocale::setDefault(loc);
     updateLocaleChange();
 
 #ifdef FC_DEBUG
-    Base::Console().Log("Locale changed to %s => %s\n", qPrintable(loc.bcp47Name()), qPrintable(loc.name()));
+    Base::Console().Log("Locale changed to %s => %s\n",
+                        qPrintable(loc.bcp47Name()),
+                        qPrintable(loc.name()));
 #endif
 }
 
 void Translator::updateLocaleChange() const
 {
-    for (auto &topLevelWidget : qApp->topLevelWidgets()) {
+    for (auto& topLevelWidget : qApp->topLevelWidgets()) {
         topLevelWidget->setLocale(QLocale());
     }
 }
@@ -289,10 +302,12 @@ void Translator::updateLocaleChange() const
 QStringList Translator::directories() const
 {
     QStringList list;
-    auto dir = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
-        GetASCII("AdditionalTranslationsDirectory", "");
-    if (!dir.empty())
+    auto dir = App::GetApplication()
+                   .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
+                   ->GetASCII("AdditionalTranslationsDirectory", "");
+    if (!dir.empty()) {
         list.push_back(QString::fromStdString(dir));
+    }
     QDir home(QString::fromUtf8(App::Application::getUserAppDataDir().c_str()));
     list.push_back(home.absoluteFilePath(QLatin1String("translations")));
     QDir resc(QString::fromUtf8(App::Application::getResourceDir().c_str()));
@@ -311,12 +326,13 @@ void Translator::installQMFiles(const QDir& dir, const char* locale)
 {
     QString filter = QString::fromLatin1("*_%1.qm").arg(QLatin1String(locale));
     QStringList fileNames = dir.entryList(QStringList(filter), QDir::Files, QDir::Name);
-    for (const auto &it : fileNames){
-        bool ok=false;
+    for (const auto& it : fileNames) {
+        bool ok = false;
         for (std::list<QTranslator*>::const_iterator tt = d->translators.begin();
-            tt != d->translators.end(); ++tt) {
+             tt != d->translators.end();
+             ++tt) {
             if ((*tt)->objectName() == it) {
-                ok = true; // this file is already installed
+                ok = true;  // this file is already installed
                 break;
             }
         }
@@ -337,15 +353,17 @@ void Translator::installQMFiles(const QDir& dir, const char* locale)
 }
 
 /**
- * This method checks for newly added (internal) .qm files which might be added at runtime. This e.g. happens if a plugin
- * gets loaded at runtime. For each newly added files that supports the currently set language a new translator object is created
- * to load the file.
+ * This method checks for newly added (internal) .qm files which might be added at runtime. This
+ * e.g. happens if a plugin gets loaded at runtime. For each newly added files that supports the
+ * currently set language a new translator object is created to load the file.
  */
 void Translator::refresh()
 {
-    std::map<std::string, std::string>::iterator tld = d->mapLanguageTopLevelDomain.find(d->activatedLanguage);
-    if (tld == d->mapLanguageTopLevelDomain.end())
-        return; // no language activated
+    std::map<std::string, std::string>::iterator tld =
+        d->mapLanguageTopLevelDomain.find(d->activatedLanguage);
+    if (tld == d->mapLanguageTopLevelDomain.end()) {
+        return;  // no language activated
+    }
     for (const QString& it : d->paths) {
         QDir dir(it);
         installQMFiles(dir, tld->second.c_str());
@@ -368,25 +386,35 @@ void Translator::removeTranslators()
 bool Translator::eventFilter(QObject* obj, QEvent* ev)
 {
     if (ev->type() == QEvent::KeyPress || ev->type() == QEvent::KeyRelease) {
-        QKeyEvent *kev = static_cast<QKeyEvent *>(ev);
+        QKeyEvent* kev = static_cast<QKeyEvent*>(ev);
         Qt::KeyboardModifiers mod = kev->modifiers();
         int key = kev->key();
         if ((mod & Qt::KeypadModifier) && (key == Qt::Key_Period || key == Qt::Key_Comma)) {
             if (ev->spontaneous()) {
                 auto dp = QString(QLocale().decimalPoint());
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
                 int dpcode = QKeySequence(dp)[0];
 #else
                 int dpcode = QKeySequence(dp)[0].key();
 #endif
                 if (kev->text() != dp) {
-                    QKeyEvent modifiedKeyEvent(kev->type(), dpcode, mod, dp, kev->isAutoRepeat(), kev->count());
+                    QKeyEvent modifiedKeyEvent(kev->type(),
+                                               dpcode,
+                                               mod,
+                                               dp,
+                                               kev->isAutoRepeat(),
+                                               kev->count());
                     qApp->sendEvent(obj, &modifiedKeyEvent);
                     return true;
                 }
             }
             if (dynamic_cast<Gui::TextEdit*>(obj) && key != Qt::Key_Period) {
-                QKeyEvent modifiedKeyEvent(kev->type(), Qt::Key_Period, mod, QChar::fromLatin1('.'), kev->isAutoRepeat(), kev->count());
+                QKeyEvent modifiedKeyEvent(kev->type(),
+                                           Qt::Key_Period,
+                                           mod,
+                                           QChar::fromLatin1('.'),
+                                           kev->isAutoRepeat(),
+                                           kev->count());
                 qApp->sendEvent(obj, &modifiedKeyEvent);
                 return true;
             }
@@ -407,15 +435,16 @@ void Translator::enableDecimalPointConversion(bool on)
     }
 #if FC_DEBUG
     if (on && decimalPointConverter) {
-        Base::Console().Instance().Warning("Translator: decimal point converter is already installed\n");
+        Base::Console().Instance().Warning(
+            "Translator: decimal point converter is already installed\n");
     }
 #endif
     if (on && !decimalPointConverter) {
-        decimalPointConverter = std::unique_ptr<Translator, std::function<void(Translator*)>>(this,
+        decimalPointConverter = std::unique_ptr<Translator, std::function<void(Translator*)>>(
+            this,
             [](Translator* evFilter) {
                 qApp->removeEventFilter(evFilter);
-            }
-        );
+            });
         qApp->installEventFilter(decimalPointConverter.get());
     }
 }

@@ -2846,7 +2846,7 @@ Wenn beide Längen Null sind, wird die Länge der Richtung verwendet.</translati
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="683"/>
-      <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
+      <source>Can't determine normal vector of shape to be extruded. Please use other mode.
 
 (%1)</source>
       <translation>Der Normalenvektor der zu extrudierenden Form konnte nicht bestimmt werden. Bitte anderen Modus verwenden
@@ -5052,7 +5052,7 @@ but more stable.  Default: false</source>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1081"/>
-      <source>Expand shape content.  Changes will take effect next time you use 
+      <source>Expand shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
       <translation>Den Inhalt der Form erweitern. Die Änderungen werden bei der nächsten Verwendung des Werkzeugs wirksam. Standard: falsch</translation>
     </message>
@@ -5063,7 +5063,7 @@ the check geometry tool.  Default: false</source>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
-      <source>Show advanced shape content.  Changes will take effect next time you use 
+      <source>Show advanced shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
       <translation>Erweiterte Formeninhalte anzeigen. Änderungen werden bei der nächsten Verwendung des Werkzeugs wirksam. Standardwert: falsch</translation>
     </message>
@@ -6792,7 +6792,7 @@ Ein 'Verbundfilter' kann verwendet werden, um die restlichen Stücke zu extrahie
       <location filename="../../TaskFaceAppearances.ui" line="97"/>
       <source>When checked, you can select multiple faces
 by dragging a selection rectangle in the 3D view</source>
-      <translation>Wenn aktiviert, können mehrere Flächen durch Aufziehen 
+      <translation>Wenn aktiviert, können mehrere Flächen durch Aufziehen
 eines Auswahlrechtecks in der 3D-Ansicht ausgewählt werden</translation>
     </message>
     <message>

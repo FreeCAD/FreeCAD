@@ -26,10 +26,11 @@
 #include <QDialog>
 #include <memory>
 
-namespace PartGui {
+namespace PartGui
+{
 
 class Ui_ShapeFromMesh;
-class ShapeFromMesh : public QDialog
+class ShapeFromMesh: public QDialog
 {
     Q_OBJECT
 
@@ -44,6 +45,6 @@ private:
     std::unique_ptr<Ui_ShapeFromMesh> ui;
 };
 
-} // namespace PartGui
+}  // namespace PartGui
 
-#endif // PARTGUI_SHAPEFROMMESH_H
+#endif  // PARTGUI_SHAPEFROMMESH_H

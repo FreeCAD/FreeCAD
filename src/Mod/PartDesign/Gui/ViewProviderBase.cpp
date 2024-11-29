@@ -32,7 +32,7 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderBase,PartDesignGui::ViewProvider)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderBase, PartDesignGui::ViewProvider)
 
 ViewProviderBase::ViewProviderBase()
 {
@@ -46,9 +46,9 @@ bool ViewProviderBase::doubleClicked()
     // If the Placement is mutable then open the transform panel.
     // If the Placement can't be modified then just do nothing on double-click.
     PartDesign::FeatureBase* base = static_cast<PartDesign::FeatureBase*>(getObject());
-    if (!base->Placement.testStatus(App::Property::Immutable) &&
-        !base->Placement.testStatus(App::Property::ReadOnly) &&
-        !base->Placement.testStatus(App::Property::Hidden)) {
+    if (!base->Placement.testStatus(App::Property::Immutable)
+        && !base->Placement.testStatus(App::Property::ReadOnly)
+        && !base->Placement.testStatus(App::Property::Hidden)) {
 
         try {
             std::string Msg("Edit ");
@@ -69,9 +69,9 @@ void ViewProviderBase::setupContextMenu(QMenu* menu, QObject* receiver, const ch
 {
     // If the Placement is mutable then show the context-menu of the base class.
     PartDesign::FeatureBase* base = static_cast<PartDesign::FeatureBase*>(getObject());
-    if (!base->Placement.testStatus(App::Property::Immutable) &&
-        !base->Placement.testStatus(App::Property::ReadOnly) &&
-        !base->Placement.testStatus(App::Property::Hidden)) {
+    if (!base->Placement.testStatus(App::Property::Immutable)
+        && !base->Placement.testStatus(App::Property::ReadOnly)
+        && !base->Placement.testStatus(App::Property::Hidden)) {
         PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
     }
 }
@@ -79,10 +79,10 @@ void ViewProviderBase::setupContextMenu(QMenu* menu, QObject* receiver, const ch
 bool ViewProviderBase::setEdit(int ModNum)
 {
     PartDesign::FeatureBase* base = static_cast<PartDesign::FeatureBase*>(getObject());
-    if (!base->Placement.testStatus(App::Property::Immutable) &&
-        !base->Placement.testStatus(App::Property::ReadOnly) &&
-        !base->Placement.testStatus(App::Property::Hidden)) {
-        return PartGui::ViewProviderPart::setEdit(ModNum); // clazy:exclude=skipped-base-method
+    if (!base->Placement.testStatus(App::Property::Immutable)
+        && !base->Placement.testStatus(App::Property::ReadOnly)
+        && !base->Placement.testStatus(App::Property::Hidden)) {
+        return PartGui::ViewProviderPart::setEdit(ModNum);  // clazy:exclude=skipped-base-method
     }
 
     return false;
@@ -90,5 +90,5 @@ bool ViewProviderBase::setEdit(int ModNum)
 
 void ViewProviderBase::unsetEdit(int ModNum)
 {
-    PartGui::ViewProviderPart::unsetEdit(ModNum); // clazy:exclude=skipped-base-method
+    PartGui::ViewProviderPart::unsetEdit(ModNum);  // clazy:exclude=skipped-base-method
 }

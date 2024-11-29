@@ -2513,14 +2513,14 @@ A VBO is an OpenGL feature that provides methods for uploading
 vertex data (position, normal vector, color, etc.) to the graphics card.
 VBOs offer substantial performance gains because the data resides
 in the graphics memory rather than the system memory and so it
-can be rendered directly by GPU. 
+can be rendered directly by GPU.
 
 Note: Sometimes this feature may lead to a host of different
 issues ranging from graphical anomalies to GPU crash bugs. Remember to
 report this setting as enabled when seeking support on the FreeCAD forums</source>
       <translation>Ако е избран, Vertex Buffer Objects (VBO) ще бъде използван.
 VBO е OpenGL свойство, което предоставя начин за зареждане на данни за върхове (позиция, нормален вектор, цвят и др.) в графичния контролер.
-VBO повишава производителността, понеже данните се съхраняват в графичната памет, освен в системната и така могат да бъдат директно рендирани от графичния процесор - GPU. 
+VBO повишава производителността, понеже данните се съхраняват в графичната памет, освен в системната и така могат да бъдат директно рендирани от графичния процесор - GPU.
 
 Забележка: Понякога тази функция може да доведе до множество проблеми вариращи от графични аномалии до зависване на графичния процесор. Запомнете да докладвате тази опция, като разрешена, когато търсите помощ във форумите на FreeCAD</translation>
     </message>
@@ -2534,7 +2534,7 @@ VBO повишава производителността, понеже данн
     </message>
     <message>
       <source>'Render Caching' is another way to say 'Rendering Acceleration'.
-There are 3 options available to achieve this: 
+There are 3 options available to achieve this:
 1) 'Auto' (default), let Coin3D decide where to cache.
 2) 'Distributed', manually turn on cache for all view provider root node.
 3) 'Centralized', manually turn off cache in all nodes of all view provider, and
@@ -3909,9 +3909,9 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
       <translation>Result</translation>
     </message>
     <message>
-      <source>List of last used calculations 
+      <source>List of last used calculations
 To add a calculation press Return in the value input field</source>
-      <translation>List of last used calculations 
+      <translation>List of last used calculations
 To add a calculation press Return in the value input field</translation>
     </message>
     <message>

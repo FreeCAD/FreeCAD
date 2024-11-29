@@ -26,14 +26,16 @@
 
 #include "ViewProviderAddSub.h"
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
-class PartDesignGuiExport ViewProviderLoft : public ViewProviderAddSub
+class PartDesignGuiExport ViewProviderLoft: public ViewProviderAddSub
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderLoft);
 
 public:
-    enum Reference {
+    enum Reference
+    {
         Profile,
         Section,
         Both
@@ -48,7 +50,7 @@ public:
     std::vector<App::DocumentObject*> claimChildren() const override;
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
-    bool onDelete(const std::vector<std::string> &) override;
+    bool onDelete(const std::vector<std::string>&) override;
     void highlightProfile(bool on);
     void highlightSection(bool on);
     void highlightReferences(Reference mode, bool on);
@@ -67,7 +69,7 @@ private:
 };
 
 
-} // namespace PartDesignGui
+}  // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderLoft_H
+#endif  // PARTGUI_ViewProviderLoft_H

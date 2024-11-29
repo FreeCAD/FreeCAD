@@ -128,7 +128,8 @@ void TaskTransformedParameters::setupUI()
     using Mode = PartDesign::Transformed::Mode;
 
     ui->buttonGroupMode->setId(ui->radioTransformBody, static_cast<int>(Mode::TransformBody));
-    ui->buttonGroupMode->setId(ui->radioTransformToolShapes, static_cast<int>(Mode::TransformToolShapes));
+    ui->buttonGroupMode->setId(ui->radioTransformToolShapes,
+                               static_cast<int>(Mode::TransformToolShapes));
 
     connect(ui->buttonGroupMode,
 #if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)

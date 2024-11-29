@@ -173,7 +173,8 @@ void DlgCustomToolbars::onActivateCategoryBox()
 {}
 
 // called from DlgMacroExecuteImp toolbar walkthrough function
-void DlgCustomToolbars::activateWorkbenchBox(int index) {
+void DlgCustomToolbars::activateWorkbenchBox(int index)
+{
     onWorkbenchBoxActivated(index);
 }
 

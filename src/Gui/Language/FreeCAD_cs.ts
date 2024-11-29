@@ -1776,7 +1776,7 @@ současně. Spustí se ten s nejvyšší prioritou.</translation>
       <location filename="../DlgMacroExecuteImp.cpp" line="524"/>
       <source>'%1'.
 This file already exists.</source>
-      <translation>'%1'. 
+      <translation>'%1'.
 Tento soubor již existuje.</translation>
     </message>
     <message>
@@ -2899,7 +2899,7 @@ ale pomalejší odezvu na jakékoli změny scény.</translation>
 The specified value is a factor that will be multiplied with the
 bounding box size of the 3D object that is currently displayed.</source>
       <translation>Vzájemná vzdálenost očí pro stereo projekce.
-Zadaná hodnota je koeficient pro vynásobení velikosti 
+Zadaná hodnota je koeficient pro vynásobení velikosti
 ohraničujícího kvádru 3D objektů, které jsou zobrazeny.</translation>
     </message>
     <message>
@@ -3444,9 +3444,9 @@ when a linked document is auto-opened together with the main document.
 A partially loaded document cannot be edited. Double click the document
 icon in the tree view to fully reload it.</source>
       <translation>Povolit částečné načítání propojených externích dokumentů.
-Pouze když je propojený dokument automaticky otevřen společně s hlavním 
+Pouze když je propojený dokument automaticky otevřen společně s hlavním
 dokumentem, budou odkazované objekty a jejich závislosti načteny.
-Částečně načtený dokument nemůže být upravován. Plně jej načtete 
+Částečně načtený dokument nemůže být upravován. Plně jej načtete
 dvojitým kliknutím na ikonu dokumentu ve stromovém zobrazení.</translation>
     </message>
     <message>
@@ -4693,7 +4693,7 @@ Systém preferencí je systém nastavený v obecných preferencích.</translatio
       <source>Press 'Start Recovery' to start the recovery process of the document listed below.
 
 The 'Status' column shows whether the document could be recovered.</source>
-      <translation>Stiskem tlačítka "Začni obnovení" spustíte obnovení dokumentu uvedeného níže. 
+      <translation>Stiskem tlačítka "Začni obnovení" spustíte obnovení dokumentu uvedeného níže.
 
 Sloupec "Status" ukazuje zda je možné dokument obnovit.</translation>
     </message>
@@ -7940,7 +7940,7 @@ Zkontrolujte zobrazení reportu pro více podrobností.</translation>
       <location filename="../CommandDoc.cpp" line="1924"/>
       <source>Failed to parse some of the expressions.
 Please check the Report View for more details.</source>
-      <translation>Některé výrazy se nepodařilo analyzovat. 
+      <translation>Některé výrazy se nepodařilo analyzovat.
 Další podrobnosti najdete v zobrazení Přehledu.</translation>
     </message>
     <message>
@@ -8708,8 +8708,8 @@ Také automaticky opakovat kopírování, pokud se změní původní propojený 
 creating a new deep copy. Note that any changes made to
 the current copy will be lost.
 </source>
-      <translation>Synchronizovat původní konfigurovatelný zdrojový objekt tím, 
-že se vytvoří nová kopie. Vemte v úvahu, že změny vykonané 
+      <translation>Synchronizovat původní konfigurovatelný zdrojový objekt tím,
+že se vytvoří nová kopie. Vemte v úvahu, že změny vykonané
 na aktuální kopii budou ztraceny.
 </translation>
     </message>
@@ -11294,9 +11294,9 @@ podtržítko a nesmí začínat číslicí.</translation>
 
 Are you sure you want to continue?
 </source>
-      <translation>Následující odkazující se objekty se mohou porušit. 
+      <translation>Následující odkazující se objekty se mohou porušit.
 
-Opravdu chcete pokračovat?  
+Opravdu chcete pokračovat?
 </translation>
     </message>
     <message>
@@ -12573,7 +12573,7 @@ Podrobnosti o obrázku najdete na FreeCAD Wiki.</translation>
 when FreeCAD is launching. If this option is checked, FreeCAD will
 display the splash screen</source>
       <translation>Splash screen je malé načítací okno, které se zobrazí
- při spouštění FreeCADu. Je-li tato volba zaškrtnuta, 
+ při spouštění FreeCADu. Je-li tato volba zaškrtnuta,
 FreeCAD toto okno zobrazí</translation>
     </message>
     <message>

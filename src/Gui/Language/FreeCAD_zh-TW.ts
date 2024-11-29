@@ -12499,7 +12499,7 @@ this according to your screen size or personal taste</source>
 'Independent': split Tree view and Property view into separate panels.</source>
       <translation>自訂面板中樹狀視圖的顯示方式（需要重新啟動）。
 
-「合併」：將樹狀視圖和屬性視圖合併到一個面板中。 
+「合併」：將樹狀視圖和屬性視圖合併到一個面板中。
 「獨立」：將樹狀視圖和屬性視圖分為兩個獨立的面板。</translation>
     </message>
     <message>

@@ -2607,7 +2607,7 @@ Note: The placement is expressed in local space of object being attached.</sourc
 a single object. Please note that when importing back the STEP file, the
 placement will be encoded into the shape geometry, instead of keeping
 it inside the Placement property.</source>
-      <translation>単一オブジェクトのエクスポート時に配置情報を保持するには、このオプションをオンにします。 
+      <translation>単一オブジェクトのエクスポート時に配置情報を保持するには、このオプションをオンにします。
 STEPファイルを再インポートする場合、配置プロパティ内にある配置は維持されず、形状ジオメトリにエンコードされます。</translation>
     </message>
     <message>
@@ -2842,7 +2842,7 @@ If both lengths are zero, magnitude of direction is used.</source>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="683"/>
-      <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
+      <source>Can't determine normal vector of shape to be extruded. Please use other mode.
 
 (%1)</source>
       <translation>押出されるシェイプの法線ベクトルを決定できません。他のモードを使用してください。
@@ -5044,7 +5044,7 @@ but more stable.  Default: false</source>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1081"/>
-      <source>Expand shape content.  Changes will take effect next time you use 
+      <source>Expand shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
       <translation>シェイプコンテンツを展開します。次回ジオメトリチェックツールを使用するときに変更が有効になります。既定：false</translation>
     </message>
@@ -5055,7 +5055,7 @@ the check geometry tool.  Default: false</source>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
-      <source>Show advanced shape content.  Changes will take effect next time you use 
+      <source>Show advanced shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
       <translation>シェイプコンテンツを展開します。次回ジオメトリチェックツールを使用するときに変更が有効になります。既定：false</translation>
     </message>

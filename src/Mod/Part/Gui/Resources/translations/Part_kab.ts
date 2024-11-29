@@ -154,12 +154,12 @@ for collision or distance filtering.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
-      <source>Computing the result failed with an error: 
+      <source>Computing the result failed with an error:
 
 {err}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error: 
+      <translation type="unfinished">Computing the result failed with an error:
 
 {err}
 
@@ -172,12 +172,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="106"/>
-      <source>Computing the result failed with an error: 
+      <source>Computing the result failed with an error:
 
 {errstr}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error: 
+      <translation type="unfinished">Computing the result failed with an error:
 
 {errstr}
 
@@ -300,12 +300,12 @@ A 'Compound Filter' can be used to extract the individual slices.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
-      <source>Computing the result failed with an error: 
+      <source>Computing the result failed with an error:
 
 {err}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error: 
+      <translation type="unfinished">Computing the result failed with an error:
 
 {err}
 
@@ -888,12 +888,12 @@ Voulez-vous continuer ?</translation>
     <name>Part_JoinFeatures</name>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="85"/>
-      <source>Computing the result failed with an error: 
+      <source>Computing the result failed with an error:
 
 {err}
 
  Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error: 
+      <translation type="unfinished">Computing the result failed with an error:
 
 {err}
 
@@ -3488,10 +3488,10 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="650"/>
-      <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
+      <source>Can't determine normal vector of shape to be extruded. Please use other mode.
 
 (%1)</source>
-      <translation type="unfinished">Can't determine normal vector of shape to be extruded. Please use other mode. 
+      <translation type="unfinished">Can't determine normal vector of shape to be extruded. Please use other mode.
 
 (%1)</translation>
     </message>

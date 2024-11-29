@@ -2799,7 +2799,7 @@ There are 3 options available to achieve this:
 only cache at the scene graph root node. This offers the fastest rendering speed
 but slower response to any scene changes.</source>
       <translation>'Errendatze-cachea' da 'errendatze-azelerazioa' esateko beste modu bat.
-Hiru aukera daude hori lortzeko: 
+Hiru aukera daude hori lortzeko:
 1) 'Auto' (lehenetsia), utzi Coin3D liburutegiari erabakitzen zer sartu cachean.
 2) 'Banatua', aktibatu eskuz cachea bista-hornitzaileen erro-nodo guztietan.
 3) 'Zentralizatua', desaktibatu eskuz cachea bista-hornitzaile guztien nodo guztietan
@@ -5486,7 +5486,7 @@ The 'Status' column shows whether the document could be recovered.</source>
       <location filename="../DlgObjectSelection.cpp" line="158"/>
       <source>Ignore dependencies and proceed with objects
 originally selected prior to opening this dialog</source>
-      <translation>Ez ikusiarena egin mendekotasunei eta jarraitu 
+      <translation>Ez ikusiarena egin mendekotasunei eta jarraitu
 elkarrizketa-koadro hau ireki baino lehen jatorriz
 hautatutako objektuekin</translation>
     </message>

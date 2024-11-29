@@ -34,56 +34,53 @@ using namespace Attacher;
 
 namespace
 {
-    std::vector<std::string> EngineEnums = {"Engine 3D",
-                                            "Engine Plane",
-                                            "Engine Line",
-                                            "Engine Point"};
+std::vector<std::string> EngineEnums = {"Engine 3D", "Engine Plane", "Engine Line", "Engine Point"};
 
-    const char* enumToClass(const char* mode)
-    {
-        if (EngineEnums.at(0) == mode) {
-            return "Attacher::AttachEngine3D";
-        }
-        if (EngineEnums.at(1) == mode) {
-            return "Attacher::AttachEnginePlane";
-        }
-        if (EngineEnums.at(2) == mode) {
-            return "Attacher::AttachEngineLine";
-        }
-        if (EngineEnums.at(3) == mode) {
-            return "Attacher::AttachEnginePoint";
-        }
-
+const char* enumToClass(const char* mode)
+{
+    if (EngineEnums.at(0) == mode) {
         return "Attacher::AttachEngine3D";
     }
+    if (EngineEnums.at(1) == mode) {
+        return "Attacher::AttachEnginePlane";
+    }
+    if (EngineEnums.at(2) == mode) {
+        return "Attacher::AttachEngineLine";
+    }
+    if (EngineEnums.at(3) == mode) {
+        return "Attacher::AttachEnginePoint";
+    }
 
-    const char* classToEnum(const char* type)
-    {
-        if (strcmp(type, "Attacher::AttachEngine3D") == 0) {
-            return EngineEnums.at(0).c_str();
-        }
-        if (strcmp(type, "Attacher::AttachEnginePlane") == 0) {
-            return EngineEnums.at(1).c_str();
-        }
-        if (strcmp(type, "Attacher::AttachEngineLine") == 0) {
-            return EngineEnums.at(2).c_str();
-        }
-        if (strcmp(type, "Attacher::AttachEnginePoint") == 0) {
-            return EngineEnums.at(3).c_str();
-        }
+    return "Attacher::AttachEngine3D";
+}
 
+const char* classToEnum(const char* type)
+{
+    if (strcmp(type, "Attacher::AttachEngine3D") == 0) {
         return EngineEnums.at(0).c_str();
     }
+    if (strcmp(type, "Attacher::AttachEnginePlane") == 0) {
+        return EngineEnums.at(1).c_str();
+    }
+    if (strcmp(type, "Attacher::AttachEngineLine") == 0) {
+        return EngineEnums.at(2).c_str();
+    }
+    if (strcmp(type, "Attacher::AttachEnginePoint") == 0) {
+        return EngineEnums.at(3).c_str();
+    }
 
-    void restoreAttacherEngine(AttachExtension* self)
-    {
-        const char* mode = enumToClass(self->AttacherEngine.getValueAsString());
-        const char* type = self->AttacherType.getValue();
-        if (strcmp(mode, type) != 0) {
-            self->AttacherEngine.setValue(classToEnum(type));
-        }
+    return EngineEnums.at(0).c_str();
+}
+
+void restoreAttacherEngine(AttachExtension* self)
+{
+    const char* mode = enumToClass(self->AttacherEngine.getValueAsString());
+    const char* type = self->AttacherType.getValue();
+    if (strcmp(mode, type) != 0) {
+        self->AttacherEngine.setValue(classToEnum(type));
     }
 }
+}  // namespace
 
 EXTENSION_PROPERTY_SOURCE(Part::AttachExtension, App::DocumentObjectExtension)
 
@@ -403,41 +400,43 @@ void AttachExtension::extensionOnChanged(const App::Property* prop)
     if (!getExtendedObject()->isRestoring()) {
         // If we change anything that affects our position, update it immediately so you can see it
         // interactively.
-        if ((prop == &AttachmentSupport
-             || prop == &MapMode
-             || prop == &MapPathParameter
-             || prop == &MapReversed
-             || prop == &AttachmentOffset)){
+        if ((prop == &AttachmentSupport || prop == &MapMode || prop == &MapPathParameter
+             || prop == &MapReversed || prop == &AttachmentOffset)) {
             bool bAttached = false;
-            try{
+            try {
                 bAttached = positionBySupport();
-            } catch (Base::Exception &e) {
+            }
+            catch (Base::Exception& e) {
                 getExtendedObject()->setStatus(App::Error, true);
-                Base::Console().Error("PositionBySupport: %s\n",e.what());
-                //set error message - how?
-            } catch (Standard_Failure &e){
+                Base::Console().Error("PositionBySupport: %s\n", e.what());
+                // set error message - how?
+            }
+            catch (Standard_Failure& e) {
                 getExtendedObject()->setStatus(App::Error, true);
-                Base::Console().Error("PositionBySupport: %s\n",e.GetMessageString());
+                Base::Console().Error("PositionBySupport: %s\n", e.GetMessageString());
             }
             // Hide properties when not applicable to reduce user confusion
 
             eMapMode mmode = eMapMode(this->MapMode.getValue());
 
-            bool modeIsPointOnCurve = mmode == mmNormalToPath ||
-                mmode == mmFrenetNB || mmode == mmFrenetTN || mmode == mmFrenetTB ||
-                mmode == mmRevolutionSection || mmode == mmConcentric;
+            bool modeIsPointOnCurve = mmode == mmNormalToPath || mmode == mmFrenetNB
+                || mmode == mmFrenetTN || mmode == mmFrenetTB || mmode == mmRevolutionSection
+                || mmode == mmConcentric;
 
-            // MapPathParameter is only used if there is a reference to one edge and not edge + vertex
+            // MapPathParameter is only used if there is a reference to one edge and not edge +
+            // vertex
             bool hasOneRef = false;
             if (_props.attacher && _props.attacher->subnames.size() == 1) {
                 hasOneRef = true;
             }
 
-            this->MapPathParameter.setStatus(App::Property::Status::Hidden, !bAttached || !(modeIsPointOnCurve && hasOneRef));
+            this->MapPathParameter.setStatus(App::Property::Status::Hidden,
+                                             !bAttached || !(modeIsPointOnCurve && hasOneRef));
             this->MapReversed.setStatus(App::Property::Status::Hidden, !bAttached);
             this->AttachmentOffset.setStatus(App::Property::Status::Hidden, !bAttached);
-            getPlacement().setReadOnly(bAttached && mmode != mmTranslate); //for mmTranslate, orientation should remain editable even when attached.
-
+            getPlacement().setReadOnly(
+                bAttached && mmode != mmTranslate);  // for mmTranslate, orientation should remain
+                                                     // editable even when attached.
         }
         if (prop == &AttacherEngine) {
             AttacherType.setValue(enumToClass(AttacherEngine.getValueAsString()));
@@ -490,7 +489,9 @@ bool AttachExtension::extensionHandleChangedPropertyName(Base::XMLReader& reader
             return true;
         }
     }
-    return App::DocumentObjectExtension::extensionHandleChangedPropertyName(reader, TypeName, PropName);
+    return App::DocumentObjectExtension::extensionHandleChangedPropertyName(reader,
+                                                                            TypeName,
+                                                                            PropName);
 }
 
 void AttachExtension::onExtendedDocumentRestored()
@@ -512,12 +513,8 @@ void AttachExtension::onExtendedDocumentRestored()
         bool bAttached = positionBySupport();
         eMapMode mmode = eMapMode(this->MapMode.getValue());
         bool modeIsPointOnCurve =
-                (mmode == mmNormalToPath ||
-                 mmode == mmFrenetNB ||
-                 mmode == mmFrenetTN ||
-                 mmode == mmFrenetTB ||
-                 mmode == mmRevolutionSection ||
-                 mmode == mmConcentric);
+            (mmode == mmNormalToPath || mmode == mmFrenetNB || mmode == mmFrenetTN
+             || mmode == mmFrenetTB || mmode == mmRevolutionSection || mmode == mmConcentric);
 
         // MapPathParameter is only used if there is a reference to one edge and not edge + vertex
         bool hasOneRef = false;
@@ -525,10 +522,13 @@ void AttachExtension::onExtendedDocumentRestored()
             hasOneRef = true;
         }
 
-        this->MapPathParameter.setStatus(App::Property::Status::Hidden, !bAttached || !(modeIsPointOnCurve && hasOneRef));
+        this->MapPathParameter.setStatus(App::Property::Status::Hidden,
+                                         !bAttached || !(modeIsPointOnCurve && hasOneRef));
         this->MapReversed.setStatus(App::Property::Status::Hidden, !bAttached);
         this->AttachmentOffset.setStatus(App::Property::Status::Hidden, !bAttached);
-        getPlacement().setReadOnly(bAttached && mmode != mmTranslate); //for mmTranslate, orientation should remain editable even when attached.
+        getPlacement().setReadOnly(bAttached
+                                   && mmode != mmTranslate);  // for mmTranslate, orientation should
+                                                              // remain editable even when attached.
     }
     catch (Base::Exception&) {
     }
@@ -644,12 +644,12 @@ AttachEngineException::AttachEngineException(const std::string& sMessage)
     : Base::Exception(sMessage)
 {}
 
-namespace App {
+namespace App
+{
 /// @cond DOXERR
-  EXTENSION_PROPERTY_SOURCE_TEMPLATE(Part::AttachExtensionPython, Part::AttachExtension)
+EXTENSION_PROPERTY_SOURCE_TEMPLATE(Part::AttachExtensionPython, Part::AttachExtension)
 /// @endcond
 
 // explicit template instantiation
-  template class PartExport ExtensionPythonT<Part::AttachExtension>;
-}
-
+template class PartExport ExtensionPythonT<Part::AttachExtension>;
+}  // namespace App

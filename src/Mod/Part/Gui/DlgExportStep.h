@@ -31,7 +31,8 @@
 class QButtonGroup;
 class QCheckBox;
 
-namespace PartGui {
+namespace PartGui
+{
 
 struct StepSettings
 {
@@ -43,7 +44,7 @@ struct StepSettings
 // ----------------------------------------------------------------------------
 
 class Ui_DlgExportStep;
-class DlgExportStep : public Gui::Dialog::PreferencePage
+class DlgExportStep: public Gui::Dialog::PreferencePage
 {
     Q_OBJECT
 
@@ -57,7 +58,7 @@ public:
     StepSettings getSettings() const;
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
     std::unique_ptr<Ui_DlgExportStep> ui;
@@ -66,7 +67,7 @@ private:
 // ----------------------------------------------------------------------------
 
 class Ui_DlgExportHeaderStep;
-class DlgExportHeaderStep : public Gui::Dialog::PreferencePage
+class DlgExportHeaderStep: public Gui::Dialog::PreferencePage
 {
     Q_OBJECT
 
@@ -78,7 +79,7 @@ public:
     void loadSettings() override;
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
     std::unique_ptr<Ui_DlgExportHeaderStep> ui;
@@ -86,7 +87,7 @@ private:
 
 // ----------------------------------------------------------------------------
 
-class PartGuiExport TaskExportStep : public QDialog
+class PartGuiExport TaskExportStep: public QDialog
 {
     Q_OBJECT
 
@@ -103,6 +104,6 @@ private:
     std::unique_ptr<DlgExportStep> ui;
 };
 
-} // namespace PartGui
+}  // namespace PartGui
 
-#endif // PARTGUI_DLGEXPORTSTEP_H
+#endif  // PARTGUI_DLGEXPORTSTEP_H

@@ -126,7 +126,7 @@ PyObject* MaterialManagerPy::inheritMaterial(PyObject* args)
         // Found the parent. Create a new material with this as parent
         auto material = new Material();
         material->setParentUUID(QString::fromLatin1(uuid));
-        return new MaterialPy(material); // Transfers ownership
+        return new MaterialPy(material);  // Transfers ownership
     }
     catch (const MaterialNotFound&) {
         PyErr_SetString(PyExc_LookupError, "Material not found");
@@ -231,17 +231,23 @@ PyObject* MaterialManagerPy::save(PyObject* args, PyObject* kwds)
     PyObject* overwrite = Py_False;
     PyObject* saveAsCopy = Py_False;
     PyObject* saveInherited = Py_False;
-    static const std::array<const char *, 7> kwlist { "library", "material", "path", "overwrite", "saveAsCopy", "saveInherited", nullptr };
+    static const std::array<const char*, 7>
+        kwlist {"library", "material", "path", "overwrite", "saveAsCopy", "saveInherited", nullptr};
     if (!Base::Wrapped_ParseTupleAndKeywords(args,
-                                     kwds,
-                                     "etOet|O!O!O!",
-                                     kwlist,
-                                     "utf-8", &libraryName,
-                                     &obj,
-                                     "utf-8", &path,
-                                     &PyBool_Type, &overwrite,
-                                     &PyBool_Type, &saveAsCopy,
-                                     &PyBool_Type, &saveInherited)) {
+                                             kwds,
+                                             "etOet|O!O!O!",
+                                             kwlist,
+                                             "utf-8",
+                                             &libraryName,
+                                             &obj,
+                                             "utf-8",
+                                             &path,
+                                             &PyBool_Type,
+                                             &overwrite,
+                                             &PyBool_Type,
+                                             &saveAsCopy,
+                                             &PyBool_Type,
+                                             &saveInherited)) {
         return nullptr;
     }
 
@@ -278,7 +284,7 @@ PyObject* MaterialManagerPy::save(PyObject* args, PyObject* kwds)
                                           PyObject_IsTrue(overwrite),
                                           PyObject_IsTrue(saveAsCopy),
                                           PyObject_IsTrue(saveInherited));
-    material->getMaterialPtr()->setUUID(sharedMaterial->getUUID()); // Make sure they match
+    material->getMaterialPtr()->setUUID(sharedMaterial->getUUID());  // Make sure they match
 
     Py_INCREF(Py_None);
     return Py_None;
@@ -303,9 +309,7 @@ PyObject* MaterialManagerPy::filterMaterials(PyObject* args, PyObject* kwds)
 {
     PyObject* filterPy {};
     PyObject* includeLegacy = Py_False;
-    static const std::array<const char*, 3> kwds_save{ "filter",
-                                                       "includeLegacy",
-                                                       nullptr };
+    static const std::array<const char*, 3> kwds_save {"filter", "includeLegacy", nullptr};
     if (!Base::Wrapped_ParseTupleAndKeywords(args,
                                              kwds,
                                              //  "O|O!",
@@ -325,7 +329,8 @@ PyObject* MaterialManagerPy::filterMaterials(PyObject* args, PyObject* kwds)
     options.setIncludeEmptyLibraries(false);
     options.setIncludeLegacy(PyObject_IsTrue(includeLegacy));
 
-    auto filter = std::make_shared<MaterialFilter>(*(static_cast<MaterialFilterPy*>(filterPy)->getMaterialFilterPtr()));
+    auto filter = std::make_shared<MaterialFilter>(
+        *(static_cast<MaterialFilterPy*>(filterPy)->getMaterialFilterPtr()));
 
     auto libraries = getMaterialManagerPtr()->getMaterialLibraries();
     Py::List list;

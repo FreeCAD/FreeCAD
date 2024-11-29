@@ -527,7 +527,7 @@ zostaną wyświetlone jako dostępne.</translation>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="72"/>
       <source>Use materials from Materials directory in user&apos;s FreeCAD preference directory</source>
-      <translation>Użyj materiałów z katalogu programu FreeCAD - "Materials" 
+      <translation>Użyj materiałów z katalogu programu FreeCAD - "Materials"
 w preferowanej lokalizacji użytkownika</translation>
     </message>
     <message>
@@ -726,7 +726,7 @@ Jeśli opcja ta nie jest zaznaczona, karty będą sortowane według nazwy.</tran
     <message>
       <location filename="../../MaterialSave.cpp" line="193"/>
       <source>Saving over the original file may cause other documents to break. This is not recommended.</source>
-      <translation>Nadpisanie oryginalnego pliku może spowodować uszkodzenie innych dokumentów. 
+      <translation>Nadpisanie oryginalnego pliku może spowodować uszkodzenie innych dokumentów.
 Nie jest to zalecane.</translation>
     </message>
     <message>
@@ -742,7 +742,7 @@ Nie jest to zalecane.</translation>
     <message>
       <location filename="../../MaterialSave.cpp" line="220"/>
       <source>This material already exists in this library. Would you like to save as a new material?</source>
-      <translation>Ten materiał już istnieje w tej bibliotece. 
+      <translation>Ten materiał już istnieje w tej bibliotece.
 Czy chcesz zapisać go jako nowy materiał?</translation>
     </message>
     <message>
@@ -758,7 +758,7 @@ Czy chcesz zapisać go jako nowy materiał?</translation>
     <message>
       <location filename="../../MaterialSave.cpp" line="247"/>
       <source>Saving a copy is not recommended as it can break other documents. We recommend you save as a new material.</source>
-      <translation>Nie zaleca się zapisywania kopii, ponieważ może to spowodować uszkodzenie innych dokumentów. 
+      <translation>Nie zaleca się zapisywania kopii, ponieważ może to spowodować uszkodzenie innych dokumentów.
 Najlepiej dokonać zapisu jako nowy materiał.</translation>
     </message>
     <message>

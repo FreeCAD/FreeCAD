@@ -26,13 +26,14 @@
 #include <CXX/Extensions.hxx>
 
 class QWidget;
-namespace Gui {
+namespace Gui
+{
 class ExpressionBinding;
 
-class ExpressionBindingPy : public Py::PythonClass<ExpressionBindingPy>
+class ExpressionBindingPy: public Py::PythonClass<ExpressionBindingPy>
 {
 public:
-    static void init_type();    // announce properties and methods
+    static void init_type();  // announce properties and methods
 
     ExpressionBindingPy(Py::PythonClassInstance* self, Py::Tuple& args, Py::Dict& kwds);
     ~ExpressionBindingPy() override;
@@ -53,6 +54,6 @@ private:
     ExpressionBinding* expr;
 };
 
-}
+}  // namespace Gui
 
-#endif // EXPRESSIONBINDING_H
+#endif  // EXPRESSIONBINDING_H

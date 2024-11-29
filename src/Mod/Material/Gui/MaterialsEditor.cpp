@@ -901,7 +901,7 @@ bool MaterialsEditor::updateTexturePreview() const
 {
     bool hasImage = false;
     QImage image;
-    //double scaling = 99.0;
+    // double scaling = 99.0;
     if (_material->hasModel(Materials::ModelUUIDs::ModelUUID_Rendering_Texture)) {
         // First try loading an embedded image
         try {
@@ -942,8 +942,8 @@ bool MaterialsEditor::updateTexturePreview() const
         try {
             auto property = _material->getAppearanceProperty(QLatin1String("TextureScaling"));
             if (!property->isNull()) {
-                //scaling = property->getFloat();
-                // Base::Console().Log("Has 'TextureScaling' = %g\n", scaling);
+                // scaling = property->getFloat();
+                //  Base::Console().Log("Has 'TextureScaling' = %g\n", scaling);
             }
         }
         catch (const Materials::PropertyNotFound&) {

@@ -36,7 +36,7 @@ PROPERTY_SOURCE(PartGui::ViewProviderRegularPolygon, PartGui::ViewProviderPrimit
 
 ViewProviderRegularPolygon::ViewProviderRegularPolygon()
 {
-  sPixmap = "Part_Polygon_Parametric";
+    sPixmap = "Part_Polygon_Parametric";
 }
 
 ViewProviderRegularPolygon::~ViewProviderRegularPolygon() = default;

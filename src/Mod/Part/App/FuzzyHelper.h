@@ -31,18 +31,20 @@ namespace Part
 {
 
 /**
- * @brief The FuzzyHelper class provides a static helper function to determine fuzzy value for a boolean operation
+ * @brief The FuzzyHelper class provides a static helper function to determine fuzzy value for a
+ * boolean operation
  */
 class PartExport FuzzyHelper
 {
 public:
     static double getBooleanFuzzy();
     static void setBooleanFuzzy(const double base);
+
 private:
     static double BooleanFuzzy;
 };
 
 
-}
+}  // namespace Part
 
-#endif // PART_FUZZYHELPER_H
+#endif  // PART_FUZZYHELPER_H

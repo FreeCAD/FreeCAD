@@ -29,9 +29,10 @@
 
 class SoCoordinate3;
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
-class PartDesignGuiExport ViewProviderDatumLine : public PartDesignGui::ViewProviderDatum
+class PartDesignGuiExport ViewProviderDatumLine: public PartDesignGui::ViewProviderDatum
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderDatumLine);
 
@@ -40,17 +41,17 @@ public:
     ViewProviderDatumLine();
     ~ViewProviderDatumLine() override;
 
-    void attach ( App::DocumentObject *obj ) override;
+    void attach(App::DocumentObject* obj) override;
     void updateData(const App::Property*) override;
 
-    void setExtents (Base::BoundBox3d bbox) override;
+    void setExtents(Base::BoundBox3d bbox) override;
     void setExtents(double l);
 
 private:
-    SoCoordinate3 *pCoords;
+    SoCoordinate3* pCoords;
 };
 
-} // namespace PartDesignGui
+}  // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderDatumLine_H
+#endif  // PARTGUI_ViewProviderDatumLine_H

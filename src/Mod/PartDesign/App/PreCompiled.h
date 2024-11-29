@@ -29,7 +29,7 @@
 // disable warning triggered by use of Part::FaceMaker
 // see forum thread "Warning C4275 non-dll class used as base for dll class"
 // https://forum.freecad.org/viewtopic.php?f=10&t=17542
-#   pragma warning( disable : 4275)
+#pragma warning(disable : 4275)
 #endif
 
 #ifdef _PreComp_
@@ -37,6 +37,5 @@
 // OpenCasCade
 #include <Mod/Part/App/OpenCascadeAll.h>
 
-#endif // _PreComp_
+#endif  // _PreComp_
 #endif
-

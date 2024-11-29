@@ -723,7 +723,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../MaterialSave.cpp" line="193"/>
       <source>Saving over the original file may cause other documents to break. This is not recommended.</source>
-      <translation>Η αποθήκευση πάνω από το αρχικό αρχείο μπορεί να προκαλέσει τη διακοπή της λειτουργίας άλλων εγγράφων. 
+      <translation>Η αποθήκευση πάνω από το αρχικό αρχείο μπορεί να προκαλέσει τη διακοπή της λειτουργίας άλλων εγγράφων.
 Αυτό δε συνιστάται.</translation>
     </message>
     <message>
@@ -739,7 +739,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../MaterialSave.cpp" line="220"/>
       <source>This material already exists in this library. Would you like to save as a new material?</source>
-      <translation>Αυτό το υλικό υπάρχει ήδη σε αυτή τη βιβλιοθήκη. 
+      <translation>Αυτό το υλικό υπάρχει ήδη σε αυτή τη βιβλιοθήκη.
 Θα θέλατε να το αποθηκεύσετε ως νέο υλικό;</translation>
     </message>
     <message>

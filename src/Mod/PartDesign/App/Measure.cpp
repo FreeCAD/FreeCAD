@@ -28,9 +28,9 @@
 #include "Measure.h"
 
 
-void PartDesign::Measure::initialize() {
+void PartDesign::Measure::initialize()
+{
     const App::MeasureHandler& handler = App::MeasureManager::getMeasureHandler("Part");
 
     App::MeasureManager::addMeasureHandler("PartDesign", handler.typeCb);
 }
-

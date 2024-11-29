@@ -23,14 +23,14 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMessageBox>
-# include <QTextStream>
-# include <QTreeWidget>
-# include <Precision.hxx>
-# include <ShapeAnalysis_FreeBounds.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Iterator.hxx>
-# include <TopTools_HSequenceOfShape.hxx>
+#include <QMessageBox>
+#include <QTextStream>
+#include <QTreeWidget>
+#include <Precision.hxx>
+#include <ShapeAnalysis_FreeBounds.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Iterator.hxx>
+#include <TopTools_HSequenceOfShape.hxx>
 #endif
 
 #include <App/Application.h>
@@ -63,7 +63,7 @@ public:
 /* TRANSLATOR PartGui::LoftWidget */
 
 LoftWidget::LoftWidget(QWidget* parent)
-  : d(new Private())
+    : d(new Private())
 {
     Q_UNUSED(parent);
     Gui::Command::runCommand(Gui::Command::App, "from FreeCAD import Base");
@@ -92,8 +92,9 @@ void LoftWidget::findShapes()
 {
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(activeDoc);
-    if (!activeGui)
+    if (!activeGui) {
         return;
+    }
     d->document = activeDoc->getName();
 
     std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType<App::DocumentObject>();
@@ -104,7 +105,9 @@ void LoftWidget::findShapes()
             continue;
         }
         TopoDS_Shape shape = topoShape.getShape();
-        if (shape.IsNull()) continue;
+        if (shape.IsNull()) {
+            continue;
+        }
 
         // also allow compounds with a single face, wire or vertex or
         // if there are only edges building one wire
@@ -113,7 +116,7 @@ void LoftWidget::findShapes()
             Handle(TopTools_HSequenceOfShape) hWires = new TopTools_HSequenceOfShape();
 
             TopoDS_Iterator it(shape);
-            int numChilds=0;
+            int numChilds = 0;
             TopoDS_Shape child;
             for (; it.More(); it.Next(), numChilds++) {
                 if (!it.Value().IsNull()) {
@@ -131,17 +134,18 @@ void LoftWidget::findShapes()
             // or all children are edges
             else if (hEdges->Length() == numChilds) {
                 ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges,
-                    Precision::Confusion(), Standard_False, hWires);
-                if (hWires->Length() == 1)
+                                                              Precision::Confusion(),
+                                                              Standard_False,
+                                                              hWires);
+                if (hWires->Length() == 1) {
                     shape = hWires->Value(1);
+                }
             }
         }
 
-        if (!shape.Infinite() && 
-            (shape.ShapeType() == TopAbs_FACE ||
-            shape.ShapeType() == TopAbs_WIRE ||
-            shape.ShapeType() == TopAbs_EDGE ||
-            shape.ShapeType() == TopAbs_VERTEX)) {
+        if (!shape.Infinite()
+            && (shape.ShapeType() == TopAbs_FACE || shape.ShapeType() == TopAbs_WIRE
+                || shape.ShapeType() == TopAbs_EDGE || shape.ShapeType() == TopAbs_VERTEX)) {
             QString label = QString::fromUtf8(obj->Label.getValue());
             QString name = QString::fromLatin1(obj->getNameInDocument());
             QTreeWidgetItem* child = new QTreeWidgetItem();
@@ -149,7 +153,9 @@ void LoftWidget::findShapes()
             child->setToolTip(0, label);
             child->setData(0, Qt::UserRole, name);
             Gui::ViewProvider* vp = activeGui->getViewProvider(obj);
-            if (vp) child->setIcon(0, vp->getIcon());
+            if (vp) {
+                child->setIcon(0, vp->getIcon());
+            }
             d->ui.selector->availableTreeWidget()->addTopLevelItem(child);
         }
     }
@@ -158,29 +164,37 @@ void LoftWidget::findShapes()
 bool LoftWidget::accept()
 {
     QString list, solid, ruled, closed;
-    if (d->ui.checkSolid->isChecked())
+    if (d->ui.checkSolid->isChecked()) {
         solid = QString::fromLatin1("True");
-    else
+    }
+    else {
         solid = QString::fromLatin1("False");
+    }
 
-    if (d->ui.checkRuledSurface->isChecked())
+    if (d->ui.checkRuledSurface->isChecked()) {
         ruled = QString::fromLatin1("True");
-    else
+    }
+    else {
         ruled = QString::fromLatin1("False");
+    }
 
-    if (d->ui.checkClosed->isChecked())
+    if (d->ui.checkClosed->isChecked()) {
         closed = QString::fromLatin1("True");
-    else
+    }
+    else {
         closed = QString::fromLatin1("False");
+    }
 
     QTextStream str(&list);
 
     int count = d->ui.selector->selectedTreeWidget()->topLevelItemCount();
     if (count < 2) {
-        QMessageBox::critical(this, tr("Too few elements"), tr("At least two vertices, edges, wires or faces are required."));
+        QMessageBox::critical(this,
+                              tr("Too few elements"),
+                              tr("At least two vertices, edges, wires or faces are required."));
         return false;
     }
-    for (int i=0; i<count; i++) {
+    for (int i = 0; i < count; i++) {
         QTreeWidgetItem* child = d->ui.selector->selectedTreeWidget()->topLevelItem(i);
         QString name = child->data(0, Qt::UserRole).toString();
         str << "App.getDocument('" << d->document.c_str() << "')." << name << ", ";
@@ -188,17 +202,17 @@ bool LoftWidget::accept()
 
     try {
         QString cmd;
-        cmd = QString::fromLatin1(
-            "App.getDocument('%5').addObject('Part::Loft','Loft')\n"
-            "App.getDocument('%5').ActiveObject.Sections=[%1]\n"
-            "App.getDocument('%5').ActiveObject.Solid=%2\n"
-            "App.getDocument('%5').ActiveObject.Ruled=%3\n"
-            "App.getDocument('%5').ActiveObject.Closed=%4\n"
-            ).arg(list, solid, ruled, closed, QString::fromLatin1(d->document.c_str()));
+        cmd = QString::fromLatin1("App.getDocument('%5').addObject('Part::Loft','Loft')\n"
+                                  "App.getDocument('%5').ActiveObject.Sections=[%1]\n"
+                                  "App.getDocument('%5').ActiveObject.Solid=%2\n"
+                                  "App.getDocument('%5').ActiveObject.Ruled=%3\n"
+                                  "App.getDocument('%5').ActiveObject.Closed=%4\n")
+                  .arg(list, solid, ruled, closed, QString::fromLatin1(d->document.c_str()));
 
         Gui::Document* doc = Gui::Application::Instance->getDocument(d->document.c_str());
-        if (!doc)
+        if (!doc) {
             throw Base::RuntimeError("Document doesn't exist anymore");
+        }
         doc->openCommand(QT_TRANSLATE_NOOP("Command", "Loft"));
         Gui::Command::runCommand(Gui::Command::App, cmd.toLatin1());
         doc->getDocument()->recompute();
@@ -211,7 +225,9 @@ bool LoftWidget::accept()
         doc->commitCommand();
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(this, tr("Input error"), QCoreApplication::translate("Exception", e.what()));
+        QMessageBox::warning(this,
+                             tr("Input error"),
+                             QCoreApplication::translate("Exception", e.what()));
         return false;
     }
 
@@ -227,15 +243,15 @@ void LoftWidget::onCurrentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem*
 {
     if (previous) {
         Gui::Selection().rmvSelection(d->document.c_str(),
-            (const char*)previous->data(0,Qt::UserRole).toByteArray());
+                                      (const char*)previous->data(0, Qt::UserRole).toByteArray());
     }
     if (current) {
         Gui::Selection().addSelection(d->document.c_str(),
-            (const char*)current->data(0,Qt::UserRole).toByteArray());
+                                      (const char*)current->data(0, Qt::UserRole).toByteArray());
     }
 }
 
-void LoftWidget::changeEvent(QEvent *e)
+void LoftWidget::changeEvent(QEvent* e)
 {
     QWidget::changeEvent(e);
     if (e->type() == QEvent::LanguageChange) {
@@ -257,12 +273,10 @@ TaskLoft::TaskLoft()
 TaskLoft::~TaskLoft() = default;
 
 void TaskLoft::open()
-{
-}
+{}
 
 void TaskLoft::clicked(int)
-{
-}
+{}
 
 bool TaskLoft::accept()
 {

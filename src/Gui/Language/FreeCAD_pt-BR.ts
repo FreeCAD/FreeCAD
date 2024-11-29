@@ -2712,7 +2712,7 @@ opening or creation</source>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="145"/>
       <source>Time needed for last operation and resulting frame rate
 will be shown at the lower left corner in opened files</source>
-      <translation>O tempo necessário para a última operação e a taxa de quadros 
+      <translation>O tempo necessário para a última operação e a taxa de quadros
 serão mostrados no canto inferior esquerdo nos arquivos abertos</translation>
     </message>
     <message>
@@ -2762,7 +2762,7 @@ Note: Sometimes this feature may lead to a host of different
 issues ranging from graphical anomalies to GPU crash bugs. Remember to
 report this setting as enabled when seeking support on the FreeCAD forums</source>
       <translation>Quando selecionado, serão utilizados Vertex Buffer Objects (VBO).
-Um VBO é um recurso OpenGL que fornece métodos para carregar 
+Um VBO é um recurso OpenGL que fornece métodos para carregar
 dados de um vértice (posição, vetor normal, cor, etc.) para a placa de vídeo.
 VBOs oferecem ganhos substanciais de desempenho porque os dados residem
 na memória gráfica em vez da memória do sistema e eles
@@ -2797,11 +2797,11 @@ There are 3 options available to achieve this:
 only cache at the scene graph root node. This offers the fastest rendering speed
 but slower response to any scene changes.</source>
       <translation>'Render Caching' é uma outra forma de dizer 'Aceleração de Renderização'.
-Existem 3 opções disponíveis para conseguir isso: 
+Existem 3 opções disponíveis para conseguir isso:
 1) 'Auto' (padrão), deixe Coin3D decidir onde fazer o cache;
 2) 'Distribuído', ativa manualmente o cache para todos os nós raiz do provedor de vizualização;
 3) 'Centralizado', desliga manualmente o cache em todos os nós do provedor de visualização e
-apenas realiza o cache no nó raiz gráfico da cena. Isto oferece a maior velocidade de renderização 
+apenas realiza o cache no nó raiz gráfico da cena. Isto oferece a maior velocidade de renderização
 mas mais lenta para qualquer mudança de cena.</translation>
     </message>
     <message>
@@ -5724,7 +5724,7 @@ originalmente selecionados antes de abrir esta caixa de diálogo</translation>
       <source>%1.
 
 This has been modified outside of the source editor. Do you want to reload it?</source>
-      <translation>%1. 
+      <translation>%1.
 Este arquivo foi modificado fora do editor. Deseja recarregá-lo?</translation>
     </message>
     <message>

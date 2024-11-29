@@ -2844,7 +2844,7 @@ If both lengths are zero, magnitude of direction is used.</source>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="683"/>
-      <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
+      <source>Can't determine normal vector of shape to be extruded. Please use other mode.
 
 (%1)</source>
       <translation>Не атрымалася вызначыць вектар нармалі фігуры, якая падлягае выдушванню. Калі ласка, ужывайце іншы рэжым.
@@ -5054,7 +5054,7 @@ but more stable.  Default: false</source>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1081"/>
-      <source>Expand shape content.  Changes will take effect next time you use 
+      <source>Expand shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
       <translation>Разгарнуць змест фігуры. Змены ўступяць у сілу пры наступным ужыванні
 інструмента праверкі геаметрыі. Першапачаткова: false</translation>
@@ -5066,7 +5066,7 @@ the check geometry tool.  Default: false</source>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
-      <source>Show advanced shape content.  Changes will take effect next time you use 
+      <source>Show advanced shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
       <translation>Паказаць пашыраны змест фігуры.
 Змены ўступяць у сілу пры наступным ужыванні інструмента праверкі геаметрыі.

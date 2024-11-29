@@ -1774,7 +1774,7 @@ same time. The one with the highest priority will be triggered.</source>
       <location filename="../DlgMacroExecuteImp.cpp" line="524"/>
       <source>'%1'.
 This file already exists.</source>
-      <translation>'%1'. 
+      <translation>'%1'.
 Ez a fájl már létezik.</translation>
     </message>
     <message>
@@ -2766,7 +2766,7 @@ A VBO egy OpenGL funkció, amely módszereket biztosít a
 csúcspont adatok (pozíció, aktuális vektor, szín stb.) a grafikus kártyára töltését.
 A VBO jelentős teljesítménynövekedést kínál, mivel az adatok
 a grafikus memóriában, nem pedig a rendszermemóriában, és így
-közvetlenül a GPU-val renderelhetők. 
+közvetlenül a GPU-val renderelhetők.
 
 Megjegyzés: Előfordulhat, hogy ez a funkció számos különböző hibát,
 grafikus anomáliáktól a GPU összeomlási hibákig, generál. Ne feledje, hogy
@@ -2797,7 +2797,7 @@ There are 3 options available to achieve this:
 only cache at the scene graph root node. This offers the fastest rendering speed
 but slower response to any scene changes.</source>
       <translation>A 'Leképző gyorsítótár' egy másik módja a 'Leképzési gyorsítótárazás' kimondásának.
-Ennek elérésére 3 lehetőség áll rendelkezésre: 
+Ennek elérésére 3 lehetőség áll rendelkezésre:
 1) 'Auto' (alapértelmezett), hagyja a Coin3D döntse el, hogy hova gyorsítótáraz.
 2) 'Elosztott', manuálisan kapcsolja be a gyorsítótárat az összes nézetszolgáltató gyökércsomópontjához.
 3) 'Központosított', manuálisan kapcsolja ki a gyorsítótárat az összes nézetszolgáltató összes csomópontjában, és csak a helyszínen rajzolt grafikus gyökér csomópontot gyorsítja. Ez a leggyorsabb gyorsító sebesség, de lassabban válaszol minden jelenet változásokra.</translation>
@@ -3444,10 +3444,10 @@ Then only referenced objects and their dependencies will be loaded
 when a linked document is auto-opened together with the main document.
 A partially loaded document cannot be edited. Double click the document
 icon in the tree view to fully reload it.</source>
-      <translation>Külső összekötött dokumentumok részleges betöltését engedélyezi. 
-Csak a hivatkozott dokumentum és annak függőségei lesznek betöltve, 
+      <translation>Külső összekötött dokumentumok részleges betöltését engedélyezi.
+Csak a hivatkozott dokumentum és annak függőségei lesznek betöltve,
 ha az összekötött dokumentum automatikusan a fő dokumentummal együtt nyílik meg.
-Egy részlegesen betöltött dokumentum nem szerkeszthető. Teljes betöltéséhez 
+Egy részlegesen betöltött dokumentum nem szerkeszthető. Teljes betöltéséhez
 kattintson a fa nézetben a dokumentum ikonra.</translation>
     </message>
     <message>
@@ -4599,7 +4599,7 @@ Nagyobb érték megkönnyíti a kiválasztást, de lehetetlenné teheti a kis el
       <location filename="../DlgUnitsCalculator.ui" line="83"/>
       <source>List of last used calculations.
 To add a calculation press Return in the value input field</source>
-      <translation>Az utoljára használt számítások listája 
+      <translation>Az utoljára használt számítások listája
 Számítás hozzáadásához nyomja meg a Return billentyűt az értékbeviteli mezőben</translation>
     </message>
     <message>
@@ -5479,7 +5479,7 @@ Az 'Állapot' oszlop tájékoztatja a visszaállítás sikerességéről.</trans
       <location filename="../DlgObjectSelection.cpp" line="158"/>
       <source>Ignore dependencies and proceed with objects
 originally selected prior to opening this dialog</source>
-      <translation>Függőségek figyelmen kívül hagyása és eredetileg ezen 
+      <translation>Függőségek figyelmen kívül hagyása és eredetileg ezen
 párbeszédpanel megnyitása előtt kiválasztott tárgyak folytatása</translation>
     </message>
   </context>

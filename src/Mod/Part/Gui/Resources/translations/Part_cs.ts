@@ -2845,7 +2845,7 @@ Jsou-li obě délky nula, pak je použita velikost směru.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="683"/>
-      <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
+      <source>Can't determine normal vector of shape to be extruded. Please use other mode.
 
 (%1)</source>
       <translation>Nelze rozeznat normálový vektor útvaru pro vysunutí. Prosím vyberte jiný mód.
@@ -5055,9 +5055,9 @@ ale stabilnější. Výchozí: vypnuto</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1081"/>
-      <source>Expand shape content.  Changes will take effect next time you use 
+      <source>Expand shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
-      <translation>Rozbalí obsah tvaru. Změny se projeví při příštím použití 
+      <translation>Rozbalí obsah tvaru. Změny se projeví při příštím použití
 nástroje pro kontrolu geometrie. Výchozí: vypnuto</translation>
     </message>
     <message>
@@ -5067,9 +5067,9 @@ nástroje pro kontrolu geometrie. Výchozí: vypnuto</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
-      <source>Show advanced shape content.  Changes will take effect next time you use 
+      <source>Show advanced shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
-      <translation>Zobrazit rozšířený obsah tvaru. Změny se projeví při příštím použití 
+      <translation>Zobrazit rozšířený obsah tvaru. Změny se projeví při příštím použití
 nástroje pro kontrolu geometrie. Výchozí: vypnuto</translation>
     </message>
     <message>

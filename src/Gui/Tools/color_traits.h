@@ -107,9 +107,9 @@ struct color_traits<SbColor>
     static color_type makeColor(int red, int green, int blue, int alpha = 255)
     {
         (void)alpha;
-        return color_type{static_cast<float>(red) / 255.0F,
-                          static_cast<float>(green) / 255.0F,
-                          static_cast<float>(blue) / 255.0F};
+        return color_type {static_cast<float>(red) / 255.0F,
+                           static_cast<float>(green) / 255.0F,
+                           static_cast<float>(blue) / 255.0F};
     }
 
 private:
@@ -191,10 +191,10 @@ struct color_traits<SbColor4f>
     }
     static color_type makeColor(int red, int green, int blue, int alpha = 255)
     {
-        return color_type{static_cast<float>(red) / 255.0F,
-                          static_cast<float>(green) / 255.0F,
-                          static_cast<float>(blue) / 255.0F,
-                          static_cast<float>(alpha) / 255.0F};
+        return color_type {static_cast<float>(red) / 255.0F,
+                           static_cast<float>(green) / 255.0F,
+                           static_cast<float>(blue) / 255.0F,
+                           static_cast<float>(alpha) / 255.0F};
     }
 
 private:
@@ -276,10 +276,10 @@ struct color_traits<App::Color>
     }
     static color_type makeColor(int red, int green, int blue, int alpha = 255)
     {
-        return color_type{static_cast<float>(red) / 255.0F,
-                          static_cast<float>(green) / 255.0F,
-                          static_cast<float>(blue) / 255.0F,
-                          static_cast<float>(alpha) / 255.0F};
+        return color_type {static_cast<float>(red) / 255.0F,
+                           static_cast<float>(green) / 255.0F,
+                           static_cast<float>(blue) / 255.0F,
+                           static_cast<float>(alpha) / 255.0F};
     }
 
 private:
@@ -361,7 +361,7 @@ struct color_traits<QColor>
     }
     static color_type makeColor(int red, int green, int blue, int alpha = 255)
     {
-        return color_type{red, green, blue, alpha};
+        return color_type {red, green, blue, alpha};
     }
 
 private:

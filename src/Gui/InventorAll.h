@@ -25,9 +25,9 @@
 
 // Open Inventor
 #ifdef FC_OS_MACOSX
-# include <OpenGL/gl.h>
+#include <OpenGL/gl.h>
 #else
-# include <GL/gl.h>
+#include <GL/gl.h>
 #endif
 
 #include <Inventor/C/basic.h>

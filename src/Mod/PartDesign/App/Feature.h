@@ -41,21 +41,25 @@ using TopoShape = Part::TopoShape;
 
 class Body;
 
- /** PartDesign feature
+/** PartDesign feature
  *   Base class of all PartDesign features.
  *   This kind of features only produce solids or fail.
  */
-class PartDesignExport Feature : public Part::Feature, public App::SuppressibleExtension
+class PartDesignExport Feature: public Part::Feature, public App::SuppressibleExtension
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Feature);
 
 public:
     Feature();
 
-    enum SingleSolidRuleMode { Disabled = 0, Enforced = 1 };
+    enum SingleSolidRuleMode
+    {
+        Disabled = 0,
+        Enforced = 1
+    };
 
     /// Base feature which this feature will be fused into or cut out of
-    App::PropertyLink   BaseFeature;
+    App::PropertyLink BaseFeature;
     App::PropertyLinkHidden _Body;
 
     /// Keep a copy of suppressed shapes so that we can restore them (and maybe display them)
@@ -76,26 +80,29 @@ public:
      *               silently return a nullptr, otherwise throw Base::Exception.
      *               Default is false.
      */
-    virtual Part::Feature* getBaseObject(bool silent=false) const;
+    virtual Part::Feature* getBaseObject(bool silent = false) const;
     /// Returns the BaseFeature property's shape (if any)
     virtual const TopoDS_Shape& getBaseShape() const;
     /// Returns the BaseFeature property's TopoShape (if any)
-    Part::TopoShape getBaseTopoShape(bool silent=false) const;
+    Part::TopoShape getBaseTopoShape(bool silent = false) const;
 
     PyObject* getPyObject() override;
 
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartDesignGui::ViewProvider";
     }
 
     void onChanged(const App::Property* prop) override;
 
-    App::DocumentObject *getSubObject(const char *subname, 
-        PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const override;
+    App::DocumentObject* getSubObject(const char* subname,
+                                      PyObject** pyObj,
+                                      Base::Matrix4D* pmat,
+                                      bool transform,
+                                      int depth) const override;
 
 
 protected:
-
     /**
      * Get a solid of the given shape. If no solid is found an exception is raised.
      */
@@ -126,7 +133,7 @@ protected:
 
 using FeaturePython = App::FeaturePythonT<Feature>;
 
-} //namespace PartDesign
+}  // namespace PartDesign
 
 
-#endif // PARTDESIGN_Feature_H
+#endif  // PARTDESIGN_Feature_H

@@ -611,7 +611,7 @@
       <location filename="../CADNavigationStyle.cpp" line="57"/>
       <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation>Прокрутіть середню кнопку мишки або клікніть і рухайте 
+      <translation>Прокрутіть середню кнопку мишки або клікніть і рухайте
 мишку вверх або вниз утримуючи нажатою середню кнопку</translation>
     </message>
   </context>
@@ -2902,7 +2902,7 @@ but slower response to any scene changes.</source>
 The specified value is a factor that will be multiplied with the
 bounding box size of the 3D object that is currently displayed.</source>
       <translation>Задає відстань між очима, яка використовується для стереопроєкції.
-Вказане значення є коефіцієнтом, який буде помножено на розмір 
+Вказане значення є коефіцієнтом, який буде помножено на розмір
 граничного поля 3D-обʼєкта, який зараз показується.</translation>
     </message>
     <message>
@@ -3412,7 +3412,7 @@ Common sizes are 128, 256 and 512</source>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="511"/>
       <source>Backup files will get extension '.FCbak' and file names
 get date suffix according to the specified format</source>
-      <translation>Файли резервних копій отримають розширення '.FCbak' 
+      <translation>Файли резервних копій отримають розширення '.FCbak'
 і суфікс з датою відповідно до вказаного формату</translation>
     </message>
     <message>
@@ -3447,7 +3447,7 @@ Then only referenced objects and their dependencies will be loaded
 when a linked document is auto-opened together with the main document.
 A partially loaded document cannot be edited. Double click the document
 icon in the tree view to fully reload it.</source>
-      <translation>Вмикає часткове завантаження зовнішніх повʼязаних документів. 
+      <translation>Вмикає часткове завантаження зовнішніх повʼязаних документів.
 При відкритті основного документу автоматично завантажятся обʼєкти повʼязаного документа з посиланнями та їх залежності. Частково завантажений документ не можна редагувати. Двічі клацніть документ у ієрархіїї документа, щоб повністю перезавантажити його.</translation>
     </message>
     <message>
@@ -8663,8 +8663,8 @@ underscore, and must not start with a digit.</source>
       <location filename="../ViewProviderLink.cpp" line="2470"/>
       <source>Apply the setting to all links. Or, uncheck this
 option to apply only to this link.</source>
-      <translation>Застосувати налаштування до всіх посилань. 
-Або зніміть прапорець, щоб застосувати лише 
+      <translation>Застосувати налаштування до всіх посилань.
+Або зніміть прапорець, щоб застосувати лише
 до цього посилання.</translation>
     </message>
     <message>
@@ -8693,7 +8693,7 @@ option to apply only to this link.</source>
 Also auto redo the copy if the original linked object is changed.
 </source>
       <translation>Копіювання повʼязаного обʼєкта за зміни його конфігурації.
-Також виконується автоматичне повторне копіювання під 
+Також виконується автоматичне повторне копіювання під
 час зміни початкового звʼязаного обʼєкта.
 </translation>
     </message>
@@ -8714,7 +8714,7 @@ creating a new deep copy. Note that any changes made to
 the current copy will be lost.
 </source>
       <translation>Синхронізує початковий сконфігурований обʼєкт-джерело,
-створивши нову глибоку копію. Зверніть увагу, що всі зміни, 
+створивши нову глибоку копію. Зверніть увагу, що всі зміни,
 внесені до поточної копії, будуть втрачені.
 </translation>
     </message>
@@ -12576,7 +12576,7 @@ See the FreeCAD Wiki for details about the image.</source>
       <source>A Splash screen is a small loading window that is shown
 when FreeCAD is launching. If this option is checked, FreeCAD will
 display the splash screen</source>
-      <translation>Заставка - це маленьке вікно завантаження, яке показується при запуску FreeCAD. 
+      <translation>Заставка - це маленьке вікно завантаження, яке показується при запуску FreeCAD.
 Якщо ця опція відмічена, то FreeCAD буде показувати заставку</translation>
     </message>
     <message>
@@ -12778,7 +12778,7 @@ on-screen while displaying the error</source>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="131"/>
       <source>When a warning has occurred, the Report View dialog becomes visible
 on-screen while displaying the warning</source>
-      <translation>При виникненні попередження, діалогове вікно Вид Звіту стає 
+      <translation>При виникненні попередження, діалогове вікно Вид Звіту стає
 видимим на екрані для показу попередження</translation>
     </message>
     <message>
@@ -12790,7 +12790,7 @@ on-screen while displaying the warning</source>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="148"/>
       <source>When a normal message has occurred, the Report View dialog becomes visible
 on-screen while displaying the message</source>
-      <translation>При виникненні звичайного повідомлення, діалогове вікно Вид Звіту стає 
+      <translation>При виникненні звичайного повідомлення, діалогове вікно Вид Звіту стає
 видимим на екрані для показу повідомлення</translation>
     </message>
     <message>
@@ -12802,7 +12802,7 @@ on-screen while displaying the message</source>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="168"/>
       <source>When a log message has occurred, the Report View dialog becomes visible
 on-screen while displaying the log message</source>
-      <translation>При виникненні повідомлення журналу, діалогове вікно Вид Звіту стає 
+      <translation>При виникненні повідомлення журналу, діалогове вікно Вид Звіту стає
 видимим на екрані для показу повідомлення журналу</translation>
     </message>
     <message>
@@ -12874,7 +12874,7 @@ on-screen while displaying the log message</source>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="507"/>
       <source>Internal Python output will be redirected
 from Python console to Report view panel</source>
-      <translation>Перенаправляє внутрішні повідомлення Python 
+      <translation>Перенаправляє внутрішні повідомлення Python
 з консолі Python на панель Вид Звіту</translation>
     </message>
     <message>

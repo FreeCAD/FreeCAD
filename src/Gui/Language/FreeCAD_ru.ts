@@ -2761,7 +2761,7 @@ can be rendered directly by GPU.
 Note: Sometimes this feature may lead to a host of different
 issues ranging from graphical anomalies to GPU crash bugs. Remember to
 report this setting as enabled when seeking support on the FreeCAD forums</source>
-      <translation>При выборе этого параметра будут использоваться объекты буфера вершин (VBO). 
+      <translation>При выборе этого параметра будут использоваться объекты буфера вершин (VBO).
 VBO - это технология OpenGL, позволяющая хранить координаты вершин совместно с их атрибутами (положение, нормальный вектор, цвет и т.д.) в памяти видеокарты. VBO обеспечивают существенное повышение производительности, поскольку данные находятся в графической памяти, а не в оперативной и поэтому они могут быть обработаны непосредственно  в GPU.
 
 Примечание. Иногда эта функция может привести к множеству различных
@@ -2794,7 +2794,7 @@ There are 3 options available to achieve this:
 only cache at the scene graph root node. This offers the fastest rendering speed
 but slower response to any scene changes.</source>
       <translation>'Кэширование рендера' - по-другому называется 'Ускорение рендера'.
-Для его достижения доступно 3 опции: 
+Для его достижения доступно 3 опции:
 1) 'Авто' (по умолчанию), пусть Coin3D сам решит, где кэшировать.
 2) 'Распределённый', вручную включает кэш для всех корневых узлов провайдера.
 3) 'Централизованный', вручную выключает кэш во всех узлах провайдера просмотра и
@@ -3342,7 +3342,7 @@ This feature may slightly increase recomputation time.</source>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="255"/>
       <source>If there is a recovery file available the application will
 automatically run a file recovery when it is started.</source>
-      <translation>Если файл восстановления доступен приложение 
+      <translation>Если файл восстановления доступен приложение
 автоматически выполнит восстановление при его запуске.</translation>
     </message>
     <message>
@@ -6810,7 +6810,7 @@ Do you want to exit without saving your data?</source>
       <source>The directory '%1' does not exist.
 
 Do you want to specify an existing directory?</source>
-      <translation>Директория '%1' не существует. 
+      <translation>Директория '%1' не существует.
 
 Хотите указать существующую директорию?</translation>
     </message>
@@ -8708,7 +8708,7 @@ creating a new deep copy. Note that any changes made to
 the current copy will be lost.
 </source>
       <translation>Синхронизировать исходный настраиваемый объект с помощью
-создания новой глубокой копии. Обратите внимание, 
+создания новой глубокой копии. Обратите внимание,
 что любые изменения, внесенные в текущую копию будут потеряны.
 </translation>
     </message>
@@ -12793,7 +12793,7 @@ on-screen while displaying the message</source>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="168"/>
       <source>When a log message has occurred, the Report View dialog becomes visible
 on-screen while displaying the log message</source>
-      <translation>При появлении сообщения журнала, диалоговое окно Report View становится видимым на экране, 
+      <translation>При появлении сообщения журнала, диалоговое окно Report View становится видимым на экране,
 пока отображается сообщение журнала</translation>
     </message>
     <message>

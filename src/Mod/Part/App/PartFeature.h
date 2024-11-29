@@ -49,7 +49,7 @@ class PartFeaturePy;
 
 /** Base class of all shape feature classes in FreeCAD
  */
-class PartExport Feature : public App::GeoFeature
+class PartExport Feature: public App::GeoFeature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Feature);
 
@@ -78,11 +78,13 @@ public:
 
     PyObject* getPyObject() override;
 
-    App::ElementNamePair getElementName(
-            const char *name, ElementNameType type=Normal) const override;
+    App::ElementNamePair getElementName(const char* name,
+                                        ElementNameType type = Normal) const override;
 
-    static std::list<Data::HistoryItem> getElementHistory(App::DocumentObject *obj,
-                                                          const char *name, bool recursive=true, bool sameType=false);
+    static std::list<Data::HistoryItem> getElementHistory(App::DocumentObject* obj,
+                                                          const char* name,
+                                                          bool recursive = true,
+                                                          bool sameType = false);
 
     static QVector<Data::MappedElement>
     getRelatedElements(App::DocumentObject* obj,
@@ -102,17 +104,19 @@ public:
      *
      * @return Return a vector of pair of new style and old style element names.
      */
-    static QVector<Data::MappedElement>
-    getElementFromSource(App::DocumentObject *obj,
-                         const char *subname,
-                         App::DocumentObject *src,
-                         const char *srcSub,
-                         bool single = false);
+    static QVector<Data::MappedElement> getElementFromSource(App::DocumentObject* obj,
+                                                             const char* subname,
+                                                             App::DocumentObject* src,
+                                                             const char* srcSub,
+                                                             bool single = false);
 
     TopLoc_Location getLocation() const;
 
-    DocumentObject *getSubObject(const char *subname, PyObject **pyObj,
-            Base::Matrix4D *mat, bool transform, int depth) const override;
+    DocumentObject* getSubObject(const char* subname,
+                                 PyObject** pyObj,
+                                 Base::Matrix4D* mat,
+                                 bool transform,
+                                 int depth) const override;
 
     App::Material getMaterialAppearance() const override;
     void setMaterialAppearance(const App::Material& material) override;
@@ -137,42 +141,55 @@ public:
      * @param transform: if true, apply obj's transformation. Set to false
      * if pmat already include obj's transformation matrix.
      */
-    static TopoDS_Shape getShape(const App::DocumentObject *obj,
-            const char *subname=nullptr, bool needSubElement=false, Base::Matrix4D *pmat=nullptr,
-            App::DocumentObject **owner=nullptr, bool resolveLink=true, bool transform=true);
+    static TopoDS_Shape getShape(const App::DocumentObject* obj,
+                                 const char* subname = nullptr,
+                                 bool needSubElement = false,
+                                 Base::Matrix4D* pmat = nullptr,
+                                 App::DocumentObject** owner = nullptr,
+                                 bool resolveLink = true,
+                                 bool transform = true);
 
-    static TopoShape getTopoShape(const App::DocumentObject *obj,
-            const char *subname=nullptr, bool needSubElement=false, Base::Matrix4D *pmat=nullptr,
-            App::DocumentObject **owner=nullptr, bool resolveLink=true, bool transform=true,
-            bool noElementMap=false);
+    static TopoShape getTopoShape(const App::DocumentObject* obj,
+                                  const char* subname = nullptr,
+                                  bool needSubElement = false,
+                                  Base::Matrix4D* pmat = nullptr,
+                                  App::DocumentObject** owner = nullptr,
+                                  bool resolveLink = true,
+                                  bool transform = true,
+                                  bool noElementMap = false);
 
     static void clearShapeCache();
 
-    static App::DocumentObject *getShapeOwner(const App::DocumentObject *obj, const char *subname=nullptr);
+    static App::DocumentObject* getShapeOwner(const App::DocumentObject* obj,
+                                              const char* subname = nullptr);
 
-    static bool hasShapeOwner(const App::DocumentObject *obj, const char *subname=nullptr) {
-        auto owner = getShapeOwner(obj,subname);
+    static bool hasShapeOwner(const App::DocumentObject* obj, const char* subname = nullptr)
+    {
+        auto owner = getShapeOwner(obj, subname);
         return owner && owner->isDerivedFrom(getClassTypeId());
     }
 
     static Feature*
     create(const TopoShape& shape, const char* name = nullptr, App::Document* document = nullptr);
 
-    static bool isElementMappingDisabled(App::PropertyContainer *container);
+    static bool isElementMappingDisabled(App::PropertyContainer* container);
 
-    bool getCameraAlignmentDirection(Base::Vector3d &direction, const char *subname) const override;
+    bool getCameraAlignmentDirection(Base::Vector3d& direction, const char* subname) const override;
 
-    static void guessNewLink(std::string &replacementName, DocumentObject *base, const char *oldLink);
+    static void
+    guessNewLink(std::string& replacementName, DocumentObject* base, const char* oldLink);
 
-    const std::vector<std::string>& searchElementCache(const std::string &element,
-                                                       Data::SearchOptions options = Data::SearchOption::CheckGeometry,
-                                                       double tol = 1e-7,
-                                                       double atol = 1e-10) const override;
+    const std::vector<std::string>&
+    searchElementCache(const std::string& element,
+                       Data::SearchOptions options = Data::SearchOption::CheckGeometry,
+                       double tol = 1e-7,
+                       double atol = 1e-10) const override;
+
 protected:
     /// recompute only this object
-    App::DocumentObjectExecReturn *recompute() override;
+    App::DocumentObjectExecReturn* recompute() override;
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
     void onBeforeChange(const App::Property* prop) override;
     void onChanged(const App::Property* prop) override;
 
@@ -182,7 +199,7 @@ protected:
     /// Update the mass and volume properties
     void updatePhysicalProperties();
 
-    void registerElementCache(const std::string &prefix, PropertyPartShape *prop);
+    void registerElementCache(const std::string& prefix, PropertyPartShape* prop);
 
     /** Helper function to obtain mapped and indexed element name from a shape
      * @params shape: source shape
@@ -193,7 +210,7 @@ protected:
      * Vertex/Edge/Face, this function will auto generate a name from primary
      * sub-shapes.
      */
-    App::ElementNamePair getExportElementName(TopoShape shape, const char *name) const;
+    App::ElementNamePair getExportElementName(TopoShape shape, const char* name) const;
 
     /**
      * Build a history of changes
@@ -202,25 +219,28 @@ protected:
      * newS: The new shape that was created by the operation
      * oldS: The original shape prior to the operation
      */
-    ShapeHistory buildHistory(BRepBuilderAPI_MakeShape&, TopAbs_ShapeEnum type,
-        const TopoDS_Shape& newS, const TopoDS_Shape& oldS);
+    ShapeHistory buildHistory(BRepBuilderAPI_MakeShape&,
+                              TopAbs_ShapeEnum type,
+                              const TopoDS_Shape& newS,
+                              const TopoDS_Shape& oldS);
     ShapeHistory joinHistory(const ShapeHistory&, const ShapeHistory&);
+
 private:
     struct ElementCache;
     std::map<std::string, ElementCache> _elementCache;
     std::vector<std::pair<std::string, PropertyPartShape*>> _elementCachePrefixMap;
 };
 
-class FilletBase : public Part::Feature
+class FilletBase: public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::FilletBase);
 
 public:
     FilletBase();
 
-    App::PropertyLink   Base;
+    App::PropertyLink Base;
     PropertyFilletEdges Edges;
-    App::PropertyLinkSub   EdgeLinks;
+    App::PropertyLinkSub EdgeLinks;
 
     short mustExecute() const override;
     App::DocumentObjectExecReturn* execute() override;
@@ -228,7 +248,7 @@ public:
 
 protected:
     void onDocumentRestored() override;
-    void onChanged(const App::Property *) override;
+    void onChanged(const App::Property*) override;
     void syncEdgeLink();
 };
 
@@ -237,12 +257,13 @@ using FeaturePython = App::FeaturePythonT<Feature>;
 
 /** Base class of all shape feature classes in FreeCAD
  */
-class PartExport FeatureExt : public Feature
+class PartExport FeatureExt: public Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::FeatureExt);
 
 public:
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartGui::ViewProviderPartExt";
     }
 };
@@ -253,15 +274,15 @@ public:
  * Useful for the "up to face" options to pocket or pad
  */
 // TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
-struct cutFaces {
+struct cutFaces
+{
     TopoDS_Face face;
     double distsq;
 };
 
 // TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
-PartExport
-std::vector<cutFaces> findAllFacesCutBy(const TopoDS_Shape& shape,
-                                        const TopoDS_Shape& face, const gp_Dir& dir);
+PartExport std::vector<cutFaces>
+findAllFacesCutBy(const TopoDS_Shape& shape, const TopoDS_Shape& face, const gp_Dir& dir);
 struct cutTopoShapeFaces
 {
     TopoShape face;
@@ -272,25 +293,25 @@ PartExport std::vector<cutTopoShapeFaces>
 findAllFacesCutBy(const TopoShape& shape, const TopoShape& face, const gp_Dir& dir);
 
 /**
-  * Check for intersection between the two shapes. Only solids are guaranteed to work properly
-  * There are two modes:
-  * 1. Bounding box check only - quick but inaccurate
-  * 2. Bounding box check plus (if necessary) boolean operation - costly but accurate
-  * Return true if the shapes intersect, false if they don't
-  * The flag touch_is_intersection decides whether shapes touching at distance zero are regarded
-  * as intersecting or not
-  * 1. If set to true, a true check result means that a boolean fuse operation between the two shapes
-  *    will return a single solid
-  * 2. If set to false, a true check result means that a boolean common operation will return a
-  *    valid solid
-  * If there is any error in the boolean operations, the check always returns false
-  */
-PartExport
-bool checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& second,
-                       const bool quick, const bool touch_is_intersection);
+ * Check for intersection between the two shapes. Only solids are guaranteed to work properly
+ * There are two modes:
+ * 1. Bounding box check only - quick but inaccurate
+ * 2. Bounding box check plus (if necessary) boolean operation - costly but accurate
+ * Return true if the shapes intersect, false if they don't
+ * The flag touch_is_intersection decides whether shapes touching at distance zero are regarded
+ * as intersecting or not
+ * 1. If set to true, a true check result means that a boolean fuse operation between the two shapes
+ *    will return a single solid
+ * 2. If set to false, a true check result means that a boolean common operation will return a
+ *    valid solid
+ * If there is any error in the boolean operations, the check always returns false
+ */
+PartExport bool checkIntersection(const TopoDS_Shape& first,
+                                  const TopoDS_Shape& second,
+                                  const bool quick,
+                                  const bool touch_is_intersection);
 
-} //namespace Part
+}  // namespace Part
 
 
-#endif // PART_FEATURE_H
-
+#endif  // PART_FEATURE_H

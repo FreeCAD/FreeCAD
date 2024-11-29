@@ -22,12 +22,12 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
-# include <BRepCheck_Analyzer.hxx>
-# include <Standard_Failure.hxx>
-# include <TopExp.hxx>
-# include <TopoDS_Iterator.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
+#include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
+#include <BRepCheck_Analyzer.hxx>
+#include <Standard_Failure.hxx>
+#include <TopExp.hxx>
+#include <TopoDS_Iterator.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
 #include "FeaturePartCommon.h"
@@ -39,21 +39,22 @@ using namespace Part;
 
 namespace Part
 {
-    extern void throwIfInvalidIfCheckModel(const TopoDS_Shape& shape);
-    extern bool getRefineModelParameter();
-}
+extern void throwIfInvalidIfCheckModel(const TopoDS_Shape& shape);
+extern bool getRefineModelParameter();
+}  // namespace Part
 
 PROPERTY_SOURCE(Part::Common, Part::Boolean)
 
 
 Common::Common() = default;
 
-const char *Common::opCode() const
+const char* Common::opCode() const
 {
     return Part::OpCodes::Common;
 }
 
-BRepAlgoAPI_BooleanOperation* Common::makeOperation(const TopoDS_Shape& base, const TopoDS_Shape& tool) const
+BRepAlgoAPI_BooleanOperation* Common::makeOperation(const TopoDS_Shape& base,
+                                                    const TopoDS_Shape& tool) const
 {
     // Let's call algorithm computing a section operation:
     return new FCBRepAlgoAPI_Common(base, tool);
@@ -66,25 +67,34 @@ PROPERTY_SOURCE(Part::MultiCommon, Part::Feature)
 
 MultiCommon::MultiCommon()
 {
-    ADD_PROPERTY(Shapes,(nullptr));
+    ADD_PROPERTY(Shapes, (nullptr));
     Shapes.setSize(0);
-    ADD_PROPERTY_TYPE(History,(ShapeHistory()), "Boolean", (App::PropertyType)
-        (App::Prop_Output|App::Prop_Transient|App::Prop_Hidden), "Shape history");
+    ADD_PROPERTY_TYPE(
+        History,
+        (ShapeHistory()),
+        "Boolean",
+        (App::PropertyType)(App::Prop_Output | App::Prop_Transient | App::Prop_Hidden),
+        "Shape history");
     History.setSize(0);
 
-    ADD_PROPERTY_TYPE(Refine,(0),"Boolean",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after this boolean operation");
+    ADD_PROPERTY_TYPE(Refine,
+                      (0),
+                      "Boolean",
+                      (App::PropertyType)(App::Prop_None),
+                      "Refine shape (clean up redundant edges) after this boolean operation");
 
     this->Refine.setValue(getRefineModelParameter());
 }
 
 short MultiCommon::mustExecute() const
 {
-    if (Shapes.isTouched())
+    if (Shapes.isTouched()) {
         return 1;
+    }
     return 0;
 }
 
-App::DocumentObjectExecReturn *MultiCommon::execute()
+App::DocumentObjectExecReturn* MultiCommon::execute()
 {
     std::vector<TopoShape> shapes;
     for (auto obj : Shapes.getValues()) {

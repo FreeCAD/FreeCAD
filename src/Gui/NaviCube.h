@@ -29,15 +29,18 @@
 
 class SoEvent;
 
-namespace Gui {
+namespace Gui
+{
 class View3DInventorViewer;
 }
 
 class NaviCubeImplementation;
 
-class GuiExport NaviCube {
+class GuiExport NaviCube
+{
 public:
-    enum Corner {
+    enum Corner
+    {
         TopLeftCorner,
         TopRightCorner,
         BottomLeftCorner,

@@ -71,13 +71,17 @@ public:
                           std::list<TopoDS_Shape>& drafts,
                           bool isPartDesign);
     /**
-     * @brief checkInnerWires: Checks what wires are inner ones by taking a set of prisms created with every wire.
-     * The prisms are cut from each other. If the moment of inertia thereby changes, the prism wire is an inner wire.
-     * Inner wires can have nested inner wires that are then in fact outer wires.
-     * Therefore checkInnerWires is called recursively until all wires are checked.
+     * @brief checkInnerWires: Checks what wires are inner ones by taking a set of prisms created
+     * with every wire. The prisms are cut from each other. If the moment of inertia thereby
+     * changes, the prism wire is an inner wire. Inner wires can have nested inner wires that are
+     * then in fact outer wires. Therefore checkInnerWires is called recursively until all wires are
+     * checked.
      */
-    static void checkInnerWires(std::vector<bool>& isInnerWire, const gp_Dir direction,
-                                std::vector<bool>& checklist, bool forInner, std::vector<TopoDS_Shape> prisms);
+    static void checkInnerWires(std::vector<bool>& isInnerWire,
+                                const gp_Dir direction,
+                                std::vector<bool>& checklist,
+                                bool forInner,
+                                std::vector<TopoDS_Shape> prisms);
     /**
      * @brief createTaperedPrismOffset: creates an offset wire from the sourceWire in the specified
      * translation. isSecond determines if the wire is used for the 2nd extrusion direction.
@@ -95,6 +99,6 @@ public:
                                  App::StringHasherRef hasher);
 };
 
-} //namespace Part
+}  // namespace Part
 
-#endif // PART_EXTRUSIONHELPER_H
+#endif  // PART_EXTRUSIONHELPER_H

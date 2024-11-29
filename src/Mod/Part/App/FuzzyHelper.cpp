@@ -29,10 +29,11 @@ using namespace Part;
 
 double FuzzyHelper::BooleanFuzzy = 1.0;
 
-double FuzzyHelper::getBooleanFuzzy() {
+double FuzzyHelper::getBooleanFuzzy()
+{
     return BooleanFuzzy;
 }
-void FuzzyHelper::setBooleanFuzzy(const double fuzzy) {
+void FuzzyHelper::setBooleanFuzzy(const double fuzzy)
+{
     BooleanFuzzy = fuzzy;
 }
-

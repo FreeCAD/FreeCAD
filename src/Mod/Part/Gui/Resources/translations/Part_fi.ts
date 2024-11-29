@@ -2843,10 +2843,10 @@ If both lengths are zero, magnitude of direction is used.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="683"/>
-      <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
+      <source>Can't determine normal vector of shape to be extruded. Please use other mode.
 
 (%1)</source>
-      <translation>Ei voida määrittää pursotettavan muodon normaalia vektoria. Ole hyvä ja käytä muuta tilaa. 
+      <translation>Ei voida määrittää pursotettavan muodon normaalia vektoria. Ole hyvä ja käytä muuta tilaa.
 
 (%1)</translation>
     </message>
@@ -5059,9 +5059,9 @@ but more stable.  Default: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1081"/>
-      <source>Expand shape content.  Changes will take effect next time you use 
+      <source>Expand shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
-      <translation type="unfinished">Expand shape content.  Changes will take effect next time you use 
+      <translation type="unfinished">Expand shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</translation>
     </message>
     <message>
@@ -5071,9 +5071,9 @@ the check geometry tool.  Default: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
-      <source>Show advanced shape content.  Changes will take effect next time you use 
+      <source>Show advanced shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
-      <translation type="unfinished">Show advanced shape content.  Changes will take effect next time you use 
+      <translation type="unfinished">Show advanced shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</translation>
     </message>
     <message>
@@ -5579,7 +5579,7 @@ reuna tai lanka, jota pitkin reitin pyyhkäisy tehdään.</translation>
       <location filename="../../Command.cpp" line="476"/>
       <source>The use of non-solids for boolean operations may lead to unexpected results.
 Do you want to continue?</source>
-      <translation>Muiden kuin kiintomuotojen käyttö voi aiheuttaa odottamattomia tuloksia Boolen operaatioita käytettäessä. 
+      <translation>Muiden kuin kiintomuotojen käyttö voi aiheuttaa odottamattomia tuloksia Boolen operaatioita käytettäessä.
 Haluatko jatkaa?</translation>
     </message>
     <message>

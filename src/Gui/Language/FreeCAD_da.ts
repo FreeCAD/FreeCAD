@@ -1289,7 +1289,7 @@ Hvis dette ikke er markeret, skal egenskaben være entydigt navngivet og den til
 For example, pressing 'F' twice in less than the time delay setting here will be
 treated as shortcut key sequence 'F, F'.</source>
       <translation>Tiden, i millisekunder, der ventes på næste tastetryk i den aktuelle indtastningssekvens.
-For eksempel vil tryk på 'F' to gange i et tidsrum kortere end tidsperioden her blive 
+For eksempel vil tryk på 'F' to gange i et tidsrum kortere end tidsperioden her blive
 behandlet som genvejssekvensen 'F, F'.</translation>
     </message>
     <message>
@@ -1298,7 +1298,7 @@ behandlet som genvejssekvensen 'F, F'.</translation>
 to low. If more than one command with the same shortcut are active at the
 same time. The one with the highest priority will be triggered.</source>
       <translation>Denne liste viser kommandoer med den samme genvej, prioriteret fra høj
-til lav. Hvis mere end én kommando med den samme genvej er aktiv samtidig, 
+til lav. Hvis mere end én kommando med den samme genvej er aktiv samtidig,
 vil kommandoen med den højeste prioritet blive aktiveret.</translation>
     </message>
     <message>
@@ -2701,7 +2701,7 @@ i hjørnet -- i % af højden/bredden af vinduet</translation>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="128"/>
       <source>Axis cross will be shown by default at file
 opening or creation</source>
-      <translation>Akserne vil blive vist som standard ved 
+      <translation>Akserne vil blive vist som standard ved
 åbning eller oprettelse af filer</translation>
     </message>
     <message>
@@ -2769,7 +2769,7 @@ VBO'er kan give betydelige præstationsforbedringr, fordi data ligger
 i grafikhukommelsen snarere end i systemhukommelsen, og derfor
 kan gengives direkte af GPU.
 
-Bemærk: Somme tider kan denne funktion føre til et væld af 
+Bemærk: Somme tider kan denne funktion føre til et væld af
 problemer, lige fra grafiske anomaliteter til GPU crash. Husk at
 oplyse, at denne indstilling er aktiveret, hvis du søger hjælp på FreeCAD fora</translation>
     </message>
@@ -2802,7 +2802,7 @@ Der er 3 muligheder til rådighed for at opnå dette:
 1) 'Auto' (standard); lad Coin3D beslutte, hvor cache skal anvendes.
 2) 'Distribueret'; slå manuelt cache til for alle visningsudbyderes 'root nodes'.
 3) 'Centraliseret'; slår manuelt cache fra i alle noder for alle visningsudbydere, og
-anvender kun cache på scenens rodknude. Dette giver den hurtigste rendering, 
+anvender kun cache på scenens rodknude. Dette giver den hurtigste rendering,
 men giver langsommere respons på sceneændringer.</translation>
     </message>
     <message>
@@ -3447,7 +3447,7 @@ when a linked document is auto-opened together with the main document.
 A partially loaded document cannot be edited. Double click the document
 icon in the tree view to fully reload it.</source>
       <translation>Aktiver delvis indlæsning af eksterne dokumenter.
-Kun refererede objekter og deres afhængigheder blive indlæst, 
+Kun refererede objekter og deres afhængigheder blive indlæst,
 når et tilknyttet dokument åbnes automatisk sammen med hoveddokumentet.
 Et delvist indlæst dokument kan ikke redigeres. Dobbeltklik på dokuments
 ikon i trævisningen for at genindlæse det.</translation>
@@ -5730,7 +5730,7 @@ som er valgt før åbning af denne dialog</translation>
       <source>%1.
 
 This has been modified outside of the source editor. Do you want to reload it?</source>
-      <translation>%1. 
+      <translation>%1.
 
 Dette er blevet ændret uden for kildeeditoren. Ønsker du at genindlæse den?</translation>
     </message>
@@ -6274,7 +6274,7 @@ Vil du gemme dokumentet nu?</translation>
 On the left view %1 points are picked,
 on the right view %2 points are picked.</source>
       <translation>Forskelligt antal punkter udpeget i venstre og højre visning.
-I venstre visning er %1 punkter udpeget, 
+I venstre visning er %1 punkter udpeget,
 i højre visning er %2 punkter udpeget.</translation>
     </message>
     <message>
@@ -8718,7 +8718,7 @@ creating a new deep copy. Note that any changes made to
 the current copy will be lost.
 </source>
       <translation>Synkroniserer det originale konfigurerbare kildeobjekt ved
-at skabe en ny dyb kopi. Bemærk, at eventuelle ændringer 
+at skabe en ny dyb kopi. Bemærk, at eventuelle ændringer
 i den aktuelle kopi vil gå tabt.
 </translation>
     </message>
@@ -12488,7 +12488,7 @@ in Python Console and Macro Editor where a
 dot/period will always be printed.</source>
       <translation>Hvis aktiv, vil det numeriske tastaturs decimaladskiller
 blive erstattet med det lokale adskillesestegn, undtagen
-i Python-konsollen og Makro-editoren, hvor punktum 
+i Python-konsollen og Makro-editoren, hvor punktum
 altid vil blive anvendt.</translation>
     </message>
     <message>
@@ -13164,7 +13164,7 @@ Hvis deaktiveret, så vis ved museklik.</translation>
       <location filename="../OverlayParams.cpp" line="485"/>
       <source>Delay capturing mouse wheel event for passing through if it is
 previously handled by other widget.</source>
-      <translation>Forsink opfangning data fra musehjulet til videregivelse, hvis det 
+      <translation>Forsink opfangning data fra musehjulet til videregivelse, hvis det
 tidligere er håndteret af en anden widget.</translation>
     </message>
     <message>
@@ -13173,9 +13173,9 @@ tidligere er håndteret af en anden widget.</translation>
 defines a region of alpha test under the mouse cursor.
 Auto click through is only activated if all pixels within
 the region are non-opaque.</source>
-      <translation>Hvis automatisk videregivelse af museklik er aktivt, så 
+      <translation>Hvis automatisk videregivelse af museklik er aktivt, så
 definerer denne radius området for alfatests under musemarkøren.
-Automatisk videregivelse af museklik, er kun aktiveret, 
+Automatisk videregivelse af museklik, er kun aktiveret,
 hvis alle pixels i området er ugennemsigtige.</translation>
     </message>
     <message>

@@ -60,7 +60,7 @@ Non-zero values turn the helix into a conical spiral.</source>
       <location filename="../../../App/FeatureHelix.cpp" line="98"/>
       <source>Sets the turning direction to left handed,
 i.e. counter-clockwise when moving along its axis.</source>
-      <translation>მობრუნების მარცხენა მხარეს დაყენება.ანუ საათის ისრის 
+      <translation>მობრუნების მარცხენა მხარეს დაყენება.ანუ საათის ისრის
 საწინააღმდეგო მიმართულებით, როცა თავისი ღერძის გასწვრივ მოძრაობს.</translation>
     </message>
     <message>
@@ -2368,7 +2368,7 @@ click again to end selection</source>
       <location filename="../../TaskPadPocketParameters.ui" line="259"/>
       <source>Set a direction or select an edge
 from the model as reference</source>
-      <translation>დააყენეთ მიმართულება ან 
+      <translation>დააყენეთ მიმართულება ან
 მოდელიდან მიბმის სახით აირჩიეთ წიბო</translation>
     </message>
     <message>
@@ -2432,7 +2432,7 @@ the sketch plane's normal vector will be used</source>
       <location filename="../../TaskPadPocketParameters.ui" line="403"/>
       <source>If unchecked, the length will be
 measured along the specified direction</source>
-      <translation>თუ ამორთულია, სიგრძე მითითებული 
+      <translation>თუ ამორთულია, სიგრძე მითითებული
 მიმართულებით გაიზომება</translation>
     </message>
     <message>
@@ -4380,7 +4380,7 @@ the screw's top below the surface</source>
       <location filename="../../TaskHoleParameters.ui" line="758"/>
       <source>The size of the drill point will be taken into
 account for the depth of blind holes</source>
-      <translation>ყრუ ნახვრეტების სიღრმისთვის ბურღის 
+      <translation>ყრუ ნახვრეტების სიღრმისთვის ბურღის
 ზომა მხედველობაში იქნება მიღებული</translation>
     </message>
     <message>

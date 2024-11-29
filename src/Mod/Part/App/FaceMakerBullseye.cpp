@@ -22,20 +22,20 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRep_Builder.hxx>
-# include <BRep_Tool.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <BRepBuilderAPI_Copy.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRepClass_FaceClassifier.hxx>
-# include <BRepLib_FindSurface.hxx>
-# include <Geom_Plane.hxx>
-# include <GeomAPI_ProjectPointOnSurf.hxx>
-# include <Precision.hxx>
-# include <Standard_Failure.hxx>
-# include <TopoDS.hxx>
-# include <TopExp_Explorer.hxx>
-# include <QtGlobal>
+#include <BRep_Builder.hxx>
+#include <BRep_Tool.hxx>
+#include <BRepAdaptor_Surface.hxx>
+#include <BRepBuilderAPI_Copy.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRepClass_FaceClassifier.hxx>
+#include <BRepLib_FindSurface.hxx>
+#include <Geom_Plane.hxx>
+#include <GeomAPI_ProjectPointOnSurf.hxx>
+#include <Precision.hxx>
+#include <Standard_Failure.hxx>
+#include <TopoDS.hxx>
+#include <TopExp_Explorer.hxx>
+#include <QtGlobal>
 #endif
 
 #include "FaceMakerBullseye.h"
@@ -47,7 +47,7 @@ using namespace Part;
 
 TYPESYSTEM_SOURCE(Part::FaceMakerBullseye, Part::FaceMakerPublic)
 
-void FaceMakerBullseye::setPlane(const gp_Pln &plane)
+void FaceMakerBullseye::setPlane(const gp_Pln& plane)
 {
     this->myPlane = gp_Pln(plane);
     this->planeSupplied = true;
@@ -65,17 +65,19 @@ std::string FaceMakerBullseye::getBriefExplanation() const
 
 void FaceMakerBullseye::Build_Essence()
 {
-    if (myWires.empty())
+    if (myWires.empty()) {
         return;
+    }
 
-    //validity check
+    // validity check
     for (TopoDS_Wire& w : myWires) {
-        if (!BRep_Tool::IsClosed(w))
+        if (!BRep_Tool::IsClosed(w)) {
             throw Base::ValueError(QT_TRANSLATE_NOOP("Exception", "Wire is not closed."));
+        }
     }
 
 
-    //find plane (at the same time, test that all wires are on the same plane)
+    // find plane (at the same time, test that all wires are on the same plane)
     gp_Pln plane;
     if (this->planeSupplied) {
         plane = this->myPlane;
@@ -88,24 +90,26 @@ void FaceMakerBullseye::Build_Essence()
             builder.Add(comp, BRepBuilderAPI_Copy(w).Shape());
         }
         BRepLib_FindSurface planeFinder(comp, -1, /*OnlyPlane=*/Standard_True);
-        if (!planeFinder.Found())
+        if (!planeFinder.Found()) {
             throw Base::ValueError("Wires are not coplanar.");
+        }
         plane = GeomAdaptor_Surface(planeFinder.Surface()).Plane();
     }
 
-    //sort wires by length of diagonal of bounding box.
+    // sort wires by length of diagonal of bounding box.
     std::vector<TopoDS_Wire> wires = this->myWires;
     std::stable_sort(wires.begin(), wires.end(), FaceMakerCheese::Wire_Compare());
 
-    //add wires one by one to current set of faces.
-    //We go from last to first, to make it so that outer wires come before inner wires.
-    std::vector< std::unique_ptr<FaceDriller> > faces;
+    // add wires one by one to current set of faces.
+    // We go from last to first, to make it so that outer wires come before inner wires.
+    std::vector<std::unique_ptr<FaceDriller>> faces;
     for (int i = static_cast<int>(wires.size()) - 1; i >= 0; --i) {
         TopoDS_Wire& w = wires[i];
 
-        //test if this wire is on any of existing faces (if yes, it's a hole;
-        // if no, it's a beginning of a new face).
-        //Since we are assuming the wires do not intersect, testing if one vertex of wire is in a face is enough.
+        // test if this wire is on any of existing faces (if yes, it's a hole;
+        //  if no, it's a beginning of a new face).
+        // Since we are assuming the wires do not intersect, testing if one vertex of wire is in a
+        // face is enough.
         gp_Pnt p = BRep_Tool::Pnt(TopoDS::Vertex(TopExp_Explorer(w, TopAbs_VERTEX).Current()));
         FaceDriller* foundFace = nullptr;
         for (std::unique_ptr<FaceDriller>& ff : faces) {
@@ -116,18 +120,16 @@ void FaceMakerBullseye::Build_Essence()
         }
 
         if (foundFace) {
-            //wire is on a face.
+            // wire is on a face.
             foundFace->addHole(w);
         }
         else {
-            //wire is not on a face. Start a new face.
-            faces.push_back(std::make_unique<FaceDriller>(
-                                plane, w
-                           ));
+            // wire is not on a face. Start a new face.
+            faces.push_back(std::make_unique<FaceDriller>(plane, w));
         }
     }
 
-    //and we are done!
+    // and we are done!
     for (std::unique_ptr<FaceDriller>& ff : faces) {
         this->myShapesToReturn.push_back(ff->Face());
     }
@@ -139,9 +141,10 @@ FaceMakerBullseye::FaceDriller::FaceDriller(const gp_Pln& plane, TopoDS_Wire out
     this->myPlane = plane;
     this->myFace = TopoDS_Face();
 
-    //Ensure correct orientation of the wire.
-    if (getWireDirection(myPlane, outerWire) < 0)
+    // Ensure correct orientation of the wire.
+    if (getWireDirection(myPlane, outerWire) < 0) {
         outerWire.Reverse();
+    }
 
     myHPlane = new Geom_Plane(this->myPlane);
     BRep_Builder builder;
@@ -156,20 +159,20 @@ bool FaceMakerBullseye::FaceDriller::hitTest(const gp_Pnt& point) const
     BRepClass_FaceClassifier cl(myFace, gp_Pnt2d(u, v), Precision::Confusion());
     TopAbs_State ret = cl.State();
     switch (ret) {
-    case TopAbs_UNKNOWN:
-        throw Base::ValueError("FaceMakerBullseye::FaceDriller::hitTest: result unknown.");
-        break;
-    default:
-        return ret == TopAbs_IN || ret == TopAbs_ON;
+        case TopAbs_UNKNOWN:
+            throw Base::ValueError("FaceMakerBullseye::FaceDriller::hitTest: result unknown.");
+            break;
+        default:
+            return ret == TopAbs_IN || ret == TopAbs_ON;
     }
-
 }
 
 void FaceMakerBullseye::FaceDriller::addHole(TopoDS_Wire w)
 {
-    //Ensure correct orientation of the wire.
-    if (getWireDirection(myPlane, w) > 0) //if wire is CCW..
-        w.Reverse();   //.. we want CW!
+    // Ensure correct orientation of the wire.
+    if (getWireDirection(myPlane, w) > 0) {  // if wire is CCW..
+        w.Reverse();                         //.. we want CW!
+    }
 
     BRep_Builder builder;
     builder.Add(this->myFace, w);
@@ -177,18 +180,19 @@ void FaceMakerBullseye::FaceDriller::addHole(TopoDS_Wire w)
 
 int FaceMakerBullseye::FaceDriller::getWireDirection(const gp_Pln& plane, const TopoDS_Wire& wire)
 {
-    //make a test face
+    // make a test face
     BRepBuilderAPI_MakeFace mkFace(wire, /*onlyplane=*/Standard_True);
     TopoDS_Face tmpFace = mkFace.Face();
     if (tmpFace.IsNull()) {
         throw Standard_Failure("getWireDirection: Failed to create face from wire");
     }
 
-    //compare face surface normal with our plane's one
+    // compare face surface normal with our plane's one
     BRepAdaptor_Surface surf(tmpFace);
     bool normal_co = surf.Plane().Axis().Direction().Dot(plane.Axis().Direction()) > 0;
 
-    //unlikely, but just in case OCC decided to reverse our wire for the face...  take that into account!
+    // unlikely, but just in case OCC decided to reverse our wire for the face...  take that into
+    // account!
     TopoDS_Iterator it(tmpFace, /*CumOri=*/Standard_False);
     normal_co ^= it.Value().Orientation() != wire.Orientation();
 

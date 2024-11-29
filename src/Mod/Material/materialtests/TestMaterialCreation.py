@@ -1,4 +1,4 @@
-#**************************************************************************
+# **************************************************************************
 #   Copyright (c) 2023 David Carter <dcarter@davidcarter.ca>              *
 #                                                                         *
 #   This file is part of the FreeCAD CAx development system.              *
@@ -18,7 +18,7 @@
 #   License along with FreeCAD; if not, write to the Free Software        *
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 #   USA                                                                   *
-#**************************************************************************
+# **************************************************************************
 
 """
 Test module for FreeCAD material cards and APIs
@@ -32,13 +32,14 @@ import os
 
 parseQuantity = FreeCAD.Units.parseQuantity
 
+
 class MaterialCreationTestCases(unittest.TestCase):
     """
     Test class for FreeCAD material creation and APIs
     """
 
     def setUp(self):
-        """ Setup function to initialize test data """
+        """Setup function to initialize test data"""
         self.ModelManager = Materials.ModelManager()
         self.MaterialManager = Materials.MaterialManager()
         self.uuids = Materials.UUIDs()
@@ -56,7 +57,7 @@ class MaterialCreationTestCases(unittest.TestCase):
             pass
 
     def checkNewMaterial(self, material):
-        """ Check the state of a newly created material """
+        """Check the state of a newly created material"""
         self.assertEqual(len(material.UUID), 36)
         self.assertEqual(len(material.Name), 0)
         self.assertEqual(len(material.Author), 0)
@@ -68,7 +69,7 @@ class MaterialCreationTestCases(unittest.TestCase):
         self.assertEqual(len(material.Tags), 0)
 
     def testCreateMaterial(self):
-        """ Create a material with properties """
+        """Create a material with properties"""
         material = Materials.Material()
         self.checkNewMaterial(material)
 
@@ -125,7 +126,10 @@ class MaterialCreationTestCases(unittest.TestCase):
 
         # Quantity properties require units
         material.setPhysicalValue("Density", "99.9 kg/m^3")
-        self.assertEqual(material.getPhysicalValue("Density").UserString, parseQuantity("99.90 kg/m^3").UserString)
+        self.assertEqual(
+            material.getPhysicalValue("Density").UserString,
+            parseQuantity("99.90 kg/m^3").UserString,
+        )
 
         # MaterialManager is unaware of the material until it is saved
         #
@@ -147,5 +151,7 @@ class MaterialCreationTestCases(unittest.TestCase):
         self.assertEqual(len(material.UUID), 36)
         self.assertEqual(material.UUID, uuid)
         self.assertIn(uuid, self.MaterialManager.Materials)
-        self.assertIsNotNone(self.MaterialManager.getMaterialByPath("Example/Frakenstein.FCMat", "User"))
+        self.assertIsNotNone(
+            self.MaterialManager.getMaterialByPath("Example/Frakenstein.FCMat", "User")
+        )
         self.assertIsNotNone(self.MaterialManager.getMaterial(uuid))

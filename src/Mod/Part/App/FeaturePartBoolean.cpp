@@ -22,11 +22,11 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <memory>
+#include <memory>
 
-# include <Mod/Part/App/FCBRepAlgoAPI_BooleanOperation.h>
-# include <BRepCheck_Analyzer.hxx>
-# include <Standard_Failure.hxx>
+#include <Mod/Part/App/FCBRepAlgoAPI_BooleanOperation.h>
+#include <BRepCheck_Analyzer.hxx>
+#include <Standard_Failure.hxx>
 #endif
 
 #include <App/Application.h>
@@ -60,25 +60,36 @@ void throwIfInvalidIfCheckModel(const TopoDS_Shape& shape)
 
 bool getRefineModelParameter()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
+                                             .GetUserParameter()
+                                             .GetGroup("BaseApp")
+                                             ->GetGroup("Preferences")
+                                             ->GetGroup("Mod/Part/Boolean");
     return hGrp->GetBool("RefineModel", false);
 }
 
-}
+}  // namespace Part
 
 PROPERTY_SOURCE_ABSTRACT(Part::Boolean, Part::Feature)
 
 
 Boolean::Boolean()
 {
-    ADD_PROPERTY(Base,(nullptr));
-    ADD_PROPERTY(Tool,(nullptr));
-    ADD_PROPERTY_TYPE(History,(ShapeHistory()), "Boolean", (App::PropertyType)
-        (App::Prop_Output|App::Prop_Transient|App::Prop_Hidden), "Shape history");
+    ADD_PROPERTY(Base, (nullptr));
+    ADD_PROPERTY(Tool, (nullptr));
+    ADD_PROPERTY_TYPE(
+        History,
+        (ShapeHistory()),
+        "Boolean",
+        (App::PropertyType)(App::Prop_Output | App::Prop_Transient | App::Prop_Hidden),
+        "Shape history");
     History.setSize(0);
 
-    ADD_PROPERTY_TYPE(Refine,(0),"Boolean",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after this boolean operation");
+    ADD_PROPERTY_TYPE(Refine,
+                      (0),
+                      "Boolean",
+                      (App::PropertyType)(App::Prop_None),
+                      "Refine shape (clean up redundant edges) after this boolean operation");
 
     this->Refine.setValue(getRefineModelParameter());
 }
@@ -96,7 +107,7 @@ short Boolean::mustExecute() const
     return 0;
 }
 
-const char *Boolean::opCode() const
+const char* Boolean::opCode() const
 {
     return Part::OpCodes::Boolean;
 }

@@ -83,13 +83,13 @@
 #include <Standard_UUID.hxx>
 
 #if OCC_VERSION_HEX < 0x070700
-# include <Standard_TooManyUsers.hxx>
+#include <Standard_TooManyUsers.hxx>
 #endif
 
 // now in alphabetical order
 #if OCC_VERSION_HEX < 0x070600
-# include <Adaptor3d_HCurve.hxx>
-# include <Adaptor3d_HCurveOnSurface.hxx>
+#include <Adaptor3d_HCurve.hxx>
+#include <Adaptor3d_HCurveOnSurface.hxx>
 #endif
 #include <APIHeaderSection_MakeHeader.hxx>
 #include <Approx_Curve3d.hxx>
@@ -108,23 +108,23 @@
 #include <BRepAdaptor_CompCurve.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #if OCC_VERSION_HEX < 0x070600
-# include <BRepAdaptor_HCurve.hxx>
-# include <BRepAdaptor_HCompCurve.hxx>
+#include <BRepAdaptor_HCurve.hxx>
+#include <BRepAdaptor_HCompCurve.hxx>
 #endif
 #include <BRepAdaptor_Surface.hxx>
 
 #include <BRepAlgo.hxx>
 #include <BRepAlgo_NormalProjection.hxx>
-//#include <BRepAlgoAPI_BooleanOperation.hxx>
+// #include <BRepAlgoAPI_BooleanOperation.hxx>
 #include <Mod/Part/App/FCBRepAlgoAPI_BooleanOperation.h>
-//#include <BRepAlgoAPI_Common.hxx>
+// #include <BRepAlgoAPI_Common.hxx>
 #include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
-//#include <BRepAlgoAPI_Cut.hxx>
+// #include <BRepAlgoAPI_Cut.hxx>
 #include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
-# include <BRepAlgoAPI_Defeaturing.hxx>
-//#include <BRepAlgoAPI_Fuse.hxx>
+#include <BRepAlgoAPI_Defeaturing.hxx>
+// #include <BRepAlgoAPI_Fuse.hxx>
 #include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
-//#include <BRepAlgoAPI_Section.hxx>
+// #include <BRepAlgoAPI_Section.hxx>
 #include <Mod/Part/App/FCBRepAlgoAPI_Section.h>
 
 #include <BRepBndLib.hxx>
@@ -175,7 +175,7 @@
 #include <BRepLProp_SurfaceTool.hxx>
 
 #if OCC_VERSION_HEX < 0x070400
-# include <BRepMesh.hxx>
+#include <BRepMesh.hxx>
 #endif
 #include <BRepMesh_Edge.hxx>
 #include <BRepMesh_IncrementalMesh.hxx>
@@ -272,7 +272,7 @@
 #include <Geom_TrimmedCurve.hxx>
 #include <Geom_ToroidalSurface.hxx>
 #if OCC_VERSION_HEX < 0x070600
-# include <Geom2dAdaptor_HCurve.hxx>
+#include <Geom2dAdaptor_HCurve.hxx>
 #endif
 #include <Geom2d_BezierCurve.hxx>
 #include <Geom2d_BSplineCurve.hxx>
@@ -282,7 +282,7 @@
 #include <Geom2d_TrimmedCurve.hxx>
 #include <Geom2dAdaptor_Curve.hxx>
 #if OCC_VERSION_HEX < 0x070600
-# include <GeomAdaptor_HCurve.hxx>
+#include <GeomAdaptor_HCurve.hxx>
 #endif
 #include <Geom2dAPI_ExtremaCurveCurve.hxx>
 #include <Geom2dAPI_InterCurveCurve.hxx>
@@ -517,4 +517,4 @@
 #include <XSControl_TransferWriter.hxx>
 #include <XSControl_WorkSession.hxx>
 
-#endif // __OpenCascadeAll__
+#endif  // __OpenCascadeAll__

@@ -1298,8 +1298,8 @@ treated as shortcut key sequence 'F, F'.</translation>
       <source>This list shows commands having the same shortcut in the priority from high
 to low. If more than one command with the same shortcut are active at the
 same time. The one with the highest priority will be triggered.</source>
-      <translation>Ово је листа приоритета (од високог ка малом) команди које имају исту 
-пречицу. Ако је у истом тренутку активирано више команди са истом пречицом 
+      <translation>Ово је листа приоритета (од високог ка малом) команди које имају исту
+пречицу. Ако је у истом тренутку активирано више команди са истом пречицом
 покренуће се она са највећим приоритетом.</translation>
     </message>
     <message>
@@ -2069,7 +2069,7 @@ Perhaps a file permission error?</source>
       <source>Access denied to '%1'
 
 Specify another directory, please.</source>
-      <translation>Приступ одбијен "%1" 
+      <translation>Приступ одбијен "%1"
 Наведи неку другу фасциклу.</translation>
     </message>
   </context>
@@ -2802,7 +2802,7 @@ but slower response to any scene changes.</source>
 Доступне су 3 опције да се то постигне:
 1) 'Ауто' (подразумевано), нека Coin3D одлучи где ће се кеширати.
 2) 'Расподељен', ручно укључите кеш за све чворове даваоца приказа.
-3) „Централизован“, ручно искључите кеш меморију за све чворове даваоце приказа, 
+3) „Централизован“, ручно искључите кеш меморију за све чворове даваоце приказа,
 кеширај само у коренском чвору графа сцене. Ово нуди највећу брзину рендеровања
 али спорији одговор на било какве промене сцене.</translation>
     </message>
@@ -5483,7 +5483,7 @@ The 'Status' column shows whether the document could be recovered.</source>
       <location filename="../DlgObjectSelection.cpp" line="158"/>
       <source>Ignore dependencies and proceed with objects
 originally selected prior to opening this dialog</source>
-      <translation>Занемари зависности и настави са првобитно 
+      <translation>Занемари зависности и настави са првобитно
 изабраним објектима пре отварања овог дијалога</translation>
     </message>
   </context>
@@ -5743,7 +5743,7 @@ This has been modified outside of the source editor. Do you want to reload it?</
       <location filename="../EditorView.cpp" line="344"/>
       <source>The document has been modified.
 Do you want to save your changes?</source>
-      <translation>Документ је измењен. 
+      <translation>Документ је измењен.
 Да ли желиш да сачуваш промене?</translation>
     </message>
     <message>

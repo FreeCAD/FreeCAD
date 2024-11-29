@@ -23,16 +23,16 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QApplication>
-# include <QVBoxLayout>
+#include <QApplication>
+#include <QVBoxLayout>
 #endif
 
 #ifdef FC_OS_WIN32
 #undef max
 #undef min
 #ifdef _MSC_VER
-#pragma warning( disable : 4099 )
-#pragma warning( disable : 4522 )
+#pragma warning(disable : 4099)
+#pragma warning(disable : 4522)
 #endif
 #endif
 
@@ -53,15 +53,17 @@ Gui::WidgetFactoryInst* Gui::WidgetFactoryInst::_pcSingleton = nullptr;
 
 WidgetFactoryInst& WidgetFactoryInst::instance()
 {
-    if (!_pcSingleton)
+    if (!_pcSingleton) {
         _pcSingleton = new WidgetFactoryInst;
+    }
     return *_pcSingleton;
 }
 
-void WidgetFactoryInst::destruct ()
+void WidgetFactoryInst::destruct()
 {
-    if (_pcSingleton)
+    if (_pcSingleton) {
         delete _pcSingleton;
+    }
     _pcSingleton = nullptr;
 }
 
@@ -70,7 +72,7 @@ void WidgetFactoryInst::destruct ()
  * To create an instance of this widget once it must has been registered.
  * If there is no appropriate widget registered nullptr is returned.
  */
-QWidget* WidgetFactoryInst::createWidget (const char* sName, QWidget* parent) const
+QWidget* WidgetFactoryInst::createWidget(const char* sName, QWidget* parent) const
 {
     auto w = static_cast<QWidget*>(Produce(sName));
 
@@ -101,8 +103,9 @@ QWidget* WidgetFactoryInst::createWidget (const char* sName, QWidget* parent) co
     }
 
     // set the parent to the widget
-    if (parent)
+    if (parent) {
         w->setParent(parent);
+    }
 
     return w;
 }
@@ -112,7 +115,8 @@ QWidget* WidgetFactoryInst::createWidget (const char* sName, QWidget* parent) co
  * To create an instance of this widget once it must has been registered.
  * If there is no appropriate widget registered nullptr is returned.
  */
-Gui::Dialog::PreferencePage* WidgetFactoryInst::createPreferencePage (const char* sName, QWidget* parent) const
+Gui::Dialog::PreferencePage* WidgetFactoryInst::createPreferencePage(const char* sName,
+                                                                     QWidget* parent) const
 {
     auto w = (Gui::Dialog::PreferencePage*)Produce(sName);
 
@@ -128,7 +132,8 @@ Gui::Dialog::PreferencePage* WidgetFactoryInst::createPreferencePage (const char
 
     if (qobject_cast<Gui::Dialog::PreferencePage*>(w)) {
 #ifdef FC_DEBUG
-        Base::Console().Log("Preference page of type '%s' created.\n", w->metaObject()->className());
+        Base::Console().Log("Preference page of type '%s' created.\n",
+                            w->metaObject()->className());
 #endif
     }
     else {
@@ -140,8 +145,9 @@ Gui::Dialog::PreferencePage* WidgetFactoryInst::createPreferencePage (const char
     }
 
     // set the parent to the widget
-    if (parent)
+    if (parent) {
         w->setParent(parent);
+    }
 
     return w;
 }
@@ -157,8 +163,9 @@ QWidget* WidgetFactoryInst::createPrefWidget(const char* sName, QWidget* parent,
 {
     QWidget* w = createWidget(sName);
     // this widget class is not registered
-    if (!w)
-        return nullptr; // no valid QWidget object
+    if (!w) {
+        return nullptr;  // no valid QWidget object
+    }
 
     // set the parent to the widget
     w->setParent(parent);
@@ -172,7 +179,8 @@ QWidget* WidgetFactoryInst::createPrefWidget(const char* sName, QWidget* parent,
     }
     catch (...) {
 #ifdef FC_DEBUG
-        Base::Console().Error("%s does not inherit from \"PrefWidget\"\n", w->metaObject()->className());
+        Base::Console().Error("%s does not inherit from \"PrefWidget\"\n",
+                              w->metaObject()->className());
 #endif
         delete w;
         return nullptr;
@@ -185,11 +193,12 @@ QWidget* WidgetFactoryInst::createPrefWidget(const char* sName, QWidget* parent,
 
 WidgetFactorySupplier* WidgetFactorySupplier::_pcSingleton = nullptr;
 
-WidgetFactorySupplier & WidgetFactorySupplier::instance()
+WidgetFactorySupplier& WidgetFactorySupplier::instance()
 {
     // not initialized?
-    if (!_pcSingleton)
+    if (!_pcSingleton) {
         _pcSingleton = new WidgetFactorySupplier;
+    }
     return *_pcSingleton;
 }
 
@@ -198,13 +207,13 @@ void WidgetFactorySupplier::destruct()
     // delete the widget factory and all its producers first
     WidgetFactoryInst::destruct();
     delete _pcSingleton;
-    _pcSingleton=nullptr;
+    _pcSingleton = nullptr;
 }
 
 // ----------------------------------------------------
 
-PrefPageUiProducer::PrefPageUiProducer (const char* filename, const char* group)
-  : fn(QString::fromUtf8(filename))
+PrefPageUiProducer::PrefPageUiProducer(const char* filename, const char* group)
+    : fn(QString::fromUtf8(filename))
 {
     WidgetFactoryInst::instance().AddProducer(filename, this);
     Gui::Dialog::DlgPreferencesImp::addPage(filename, group);
@@ -212,7 +221,7 @@ PrefPageUiProducer::PrefPageUiProducer (const char* filename, const char* group)
 
 PrefPageUiProducer::~PrefPageUiProducer() = default;
 
-void* PrefPageUiProducer::Produce () const
+void* PrefPageUiProducer::Produce() const
 {
     QWidget* page = new Gui::Dialog::PreferenceUiForm(fn);
     return static_cast<void*>(page);
@@ -220,8 +229,8 @@ void* PrefPageUiProducer::Produce () const
 
 // ----------------------------------------------------
 
-PrefPagePyProducer::PrefPagePyProducer (const Py::Object& p, const char* group)
-  : type(p)
+PrefPagePyProducer::PrefPagePyProducer(const Py::Object& p, const char* group)
+    : type(p)
 {
     std::string str;
     Base::PyGILStateLocker lock;
@@ -233,13 +242,13 @@ PrefPagePyProducer::PrefPagePyProducer (const Py::Object& p, const char* group)
     Gui::Dialog::DlgPreferencesImp::addPage(str, group);
 }
 
-PrefPagePyProducer::~PrefPagePyProducer ()
+PrefPagePyProducer::~PrefPagePyProducer()
 {
     Base::PyGILStateLocker lock;
     type = Py::None();
 }
 
-void* PrefPagePyProducer::Produce () const
+void* PrefPagePyProducer::Produce() const
 {
     Base::PyGILStateLocker lock;
     try {
@@ -264,7 +273,8 @@ void* PrefPagePyProducer::Produce () const
 using namespace Gui::Dialog;
 
 PreferencePagePython::PreferencePagePython(const Py::Object& p, QWidget* parent)
-  : PreferencePage(parent), page(p)
+    : PreferencePage(parent)
+    , page(p)
 {
     Base::PyGILStateLocker lock;
     Gui::PythonWrapper wrap;
@@ -273,10 +283,12 @@ PreferencePagePython::PreferencePagePython(const Py::Object& p, QWidget* parent)
         // old style class must have a form attribute while
         // new style classes can be the widget itself
         Py::Object widget;
-        if (page.hasAttr(std::string("form")))
+        if (page.hasAttr(std::string("form"))) {
             widget = page.getAttr(std::string("form"));
-        else
+        }
+        else {
             widget = page;
+        }
 
         QObject* object = wrap.toQObject(widget);
         if (object) {
@@ -297,7 +309,7 @@ PreferencePagePython::~PreferencePagePython()
     page = Py::None();
 }
 
-void PreferencePagePython::changeEvent(QEvent *e)
+void PreferencePagePython::changeEvent(QEvent* e)
 {
     QWidget::changeEvent(e);
 }
@@ -313,7 +325,7 @@ void PreferencePagePython::loadSettings()
         }
     }
     catch (Py::Exception&) {
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.ReportException();
     }
 }
@@ -329,7 +341,7 @@ void PreferencePagePython::saveSettings()
         }
     }
     catch (Py::Exception&) {
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.ReportException();
     }
 }
@@ -342,41 +354,41 @@ void PreferencePagePython::saveSettings()
  *  Constructs a ContainerDialog which embeds the child \a templChild.
  *  The dialog will be modal.
  */
-ContainerDialog::ContainerDialog( QWidget* templChild )
-  : QDialog( QApplication::activeWindow())
+ContainerDialog::ContainerDialog(QWidget* templChild)
+    : QDialog(QApplication::activeWindow())
 {
     setModal(true);
-    setWindowTitle( templChild->objectName() );
-    setObjectName( templChild->objectName() );
+    setWindowTitle(templChild->objectName());
+    setObjectName(templChild->objectName());
 
-    setSizeGripEnabled( true );
+    setSizeGripEnabled(true);
     MyDialogLayout = new QGridLayout(this);
 
     buttonOk = new QPushButton(this);
     buttonOk->setObjectName(QLatin1String("buttonOK"));
-    buttonOk->setText( tr( "&OK" ) );
-    buttonOk->setAutoDefault( true );
-    buttonOk->setDefault( true );
+    buttonOk->setText(tr("&OK"));
+    buttonOk->setAutoDefault(true);
+    buttonOk->setDefault(true);
 
-    MyDialogLayout->addWidget( buttonOk, 1, 0 );
-    auto spacer = new QSpacerItem( 210, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
-    MyDialogLayout->addItem( spacer, 1, 1 );
+    MyDialogLayout->addWidget(buttonOk, 1, 0);
+    auto spacer = new QSpacerItem(210, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+    MyDialogLayout->addItem(spacer, 1, 1);
 
     buttonCancel = new QPushButton(this);
     buttonCancel->setObjectName(QLatin1String("buttonCancel"));
-    buttonCancel->setText( tr( "&Cancel" ) );
-    buttonCancel->setAutoDefault( true );
+    buttonCancel->setText(tr("&Cancel"));
+    buttonCancel->setAutoDefault(true);
 
-    MyDialogLayout->addWidget( buttonCancel, 1, 2 );
+    MyDialogLayout->addWidget(buttonCancel, 1, 2);
 
     templChild->setParent(this);
 
-    MyDialogLayout->addWidget( templChild, 0, 0, 0, 2 );
-    resize( QSize(307, 197).expandedTo(minimumSizeHint()) );
+    MyDialogLayout->addWidget(templChild, 0, 0, 0, 2);
+    resize(QSize(307, 197).expandedTo(minimumSizeHint()));
 
     // signals and slots connections
-    connect( buttonOk, &QPushButton::clicked, this, &QDialog::accept);
-    connect( buttonCancel, &QPushButton::clicked, this, &QDialog::reject);
+    connect(buttonOk, &QPushButton::clicked, this, &QDialog::accept);
+    connect(buttonCancel, &QPushButton::clicked, this, &QDialog::reject);
 }
 
 /** Destroys the object and frees any allocated resources */
@@ -392,15 +404,15 @@ void PyResource::init_type()
     behaviors().supportRepr();
     behaviors().supportGetattr();
     behaviors().supportSetattr();
-    add_varargs_method("value",&PyResource::value);
-    add_varargs_method("setValue",&PyResource::setValue);
-    add_varargs_method("show",&PyResource::show);
-    add_varargs_method("connect",&PyResource::connect);
+    add_varargs_method("value", &PyResource::value);
+    add_varargs_method("setValue", &PyResource::setValue);
+    add_varargs_method("show", &PyResource::show);
+    add_varargs_method("connect", &PyResource::connect);
 }
 
-PyResource::PyResource() : myDlg(nullptr)
-{
-}
+PyResource::PyResource()
+    : myDlg(nullptr)
+{}
 
 PyResource::~PyResource()
 {
@@ -423,8 +435,8 @@ void PyResource::load(const char* name)
 
     // checks whether it's a relative path
     if (fi.isRelative()) {
-        QString cwd = QDir::currentPath ();
-        QString home= QDir(QString::fromStdString(App::Application::getHomePath())).path();
+        QString cwd = QDir::currentPath();
+        QString home = QDir(QString::fromStdString(App::Application::getHomePath())).path();
 
         // search in cwd and home path for the file
         //
@@ -435,15 +447,15 @@ void PyResource::load(const char* name)
                 throw Base::FileSystemError(what.toUtf8().constData());
             }
             else {
-                fi.setFile( QDir(home), fn );
+                fi.setFile(QDir(home), fn);
 
                 if (!fi.exists()) {
                     QString what = QObject::tr("Cannot find file %1 neither in %2 nor in %3")
-                        .arg(fn, cwd, home);
+                                       .arg(fn, cwd, home);
                     throw Base::FileSystemError(what.toUtf8().constData());
                 }
                 else {
-                    fn = fi.absoluteFilePath(); // file resides in FreeCAD's home directory
+                    fn = fi.absoluteFilePath();  // file resides in FreeCAD's home directory
                 }
             }
         }
@@ -455,20 +467,22 @@ void PyResource::load(const char* name)
         }
     }
 
-    QWidget* w=nullptr;
+    QWidget* w = nullptr;
     try {
         auto loader = UiLoader::newInstance();
         QFile file(fn);
-        if (file.open(QFile::ReadOnly))
+        if (file.open(QFile::ReadOnly)) {
             w = loader->load(&file, QApplication::activeWindow());
+        }
         file.close();
     }
     catch (...) {
         throw Base::RuntimeError("Cannot create resource");
     }
 
-    if (!w)
+    if (!w) {
         throw Base::ValueError("Invalid widget.");
+    }
 
     if (w->inherits("QDialog")) {
         myDlg = static_cast<QDialog*>(w);
@@ -486,16 +500,17 @@ void PyResource::load(const char* name)
  */
 bool PyResource::connect(const char* sender, const char* signal, PyObject* cb)
 {
-    if ( !myDlg )
+    if (!myDlg) {
         return false;
+    }
 
-    QObject* objS=nullptr;
+    QObject* objS = nullptr;
     QList<QWidget*> list = myDlg->findChildren<QWidget*>();
     QList<QWidget*>::const_iterator it = list.cbegin();
-    QObject *obj;
+    QObject* obj;
     QString sigStr = QString::fromLatin1("2%1").arg(QString::fromLatin1(signal));
 
-    while ( it != list.cend() ) {
+    while (it != list.cend()) {
         obj = *it;
         ++it;
         if (obj->objectName() == QLatin1String(sender)) {
@@ -507,10 +522,11 @@ bool PyResource::connect(const char* sender, const char* signal, PyObject* cb)
     if (objS) {
         auto sc = new SignalConnect(this, cb);
         mySignals.push_back(sc);
-        return QObject::connect(objS, sigStr.toLatin1(), sc, SLOT ( onExecute() )  );
+        return QObject::connect(objS, sigStr.toLatin1(), sc, SLOT(onExecute()));
     }
-    else
-        qWarning( "'%s' does not exist.\n", sender );
+    else {
+        qWarning("'%s' does not exist.\n", sender);
+    }
 
     return false;
 }
@@ -530,19 +546,20 @@ Py::Object PyResource::repr()
  */
 Py::Object PyResource::value(const Py::Tuple& args)
 {
-    char *psName;
-    char *psProperty;
-    if (!PyArg_ParseTuple(args.ptr(), "ss", &psName, &psProperty))
+    char* psName;
+    char* psProperty;
+    if (!PyArg_ParseTuple(args.ptr(), "ss", &psName, &psProperty)) {
         throw Py::Exception();
+    }
 
     QVariant v;
     if (myDlg) {
         QList<QWidget*> list = myDlg->findChildren<QWidget*>();
         QList<QWidget*>::const_iterator it = list.cbegin();
-        QObject *obj;
+        QObject* obj;
 
         bool fnd = false;
-        while ( it != list.cend() ) {
+        while (it != list.cend()) {
             obj = *it;
             ++it;
             if (obj->objectName() == QLatin1String(psName)) {
@@ -552,43 +569,42 @@ Py::Object PyResource::value(const Py::Tuple& args)
             }
         }
 
-        if ( !fnd )
-            qWarning( "'%s' not found.\n", psName );
+        if (!fnd) {
+            qWarning("'%s' not found.\n", psName);
+        }
     }
 
     Py::Object item = Py::None();
-    switch (v.userType())
-    {
-    case QMetaType::QStringList:
-        {
+    switch (v.userType()) {
+        case QMetaType::QStringList: {
             QStringList str = v.toStringList();
             int nSize = str.count();
             Py::List slist(nSize);
-            for (int i=0; i<nSize;++i) {
+            for (int i = 0; i < nSize; ++i) {
                 slist.setItem(i, Py::String(str[i].toLatin1()));
             }
             item = slist;
-        }   break;
-    case QMetaType::QByteArray:
-        break;
-    case QMetaType::QString:
-        item = Py::String(v.toString().toLatin1());
-        break;
-    case QMetaType::Double:
-        item = Py::Float(v.toDouble());
-        break;
-    case QMetaType::Bool:
-        item = Py::Boolean(v.toBool());
-        break;
-    case QMetaType::UInt:
-        item = Py::Long(static_cast<unsigned long>(v.toUInt()));
-        break;
-    case QMetaType::Int:
-        item = Py::Int(v.toInt());
-        break;
-    default:
-        item = Py::String("");
-        break;
+        } break;
+        case QMetaType::QByteArray:
+            break;
+        case QMetaType::QString:
+            item = Py::String(v.toString().toLatin1());
+            break;
+        case QMetaType::Double:
+            item = Py::Float(v.toDouble());
+            break;
+        case QMetaType::Bool:
+            item = Py::Boolean(v.toBool());
+            break;
+        case QMetaType::UInt:
+            item = Py::Long(static_cast<unsigned long>(v.toUInt()));
+            break;
+        case QMetaType::Int:
+            item = Py::Int(v.toInt());
+            break;
+        default:
+            item = Py::String("");
+            break;
     }
 
     return item;
@@ -601,16 +617,16 @@ Py::Object PyResource::value(const Py::Tuple& args)
  */
 Py::Object PyResource::setValue(const Py::Tuple& args)
 {
-    char *psName;
-    char *psProperty;
-    PyObject *psValue;
-    if (!PyArg_ParseTuple(args.ptr(), "ssO", &psName, &psProperty, &psValue))
+    char* psName;
+    char* psProperty;
+    PyObject* psValue;
+    if (!PyArg_ParseTuple(args.ptr(), "ssO", &psName, &psProperty, &psValue)) {
         throw Py::Exception();
+    }
 
     QVariant v;
     if (PyUnicode_Check(psValue)) {
         v = QString::fromUtf8(PyUnicode_AsUTF8(psValue));
-
     }
     else if (PyLong_Check(psValue)) {
         unsigned int val = PyLong_AsLong(psValue);
@@ -622,10 +638,11 @@ Py::Object PyResource::setValue(const Py::Tuple& args)
     else if (PyList_Check(psValue)) {
         QStringList str;
         int nSize = PyList_Size(psValue);
-        for (int i=0; i<nSize;++i) {
+        for (int i = 0; i < nSize; ++i) {
             PyObject* item = PyList_GetItem(psValue, i);
-            if (!PyUnicode_Check(item))
+            if (!PyUnicode_Check(item)) {
                 continue;
+            }
             const char* pItem = PyUnicode_AsUTF8(item);
             str.append(QString::fromUtf8(pItem));
         }
@@ -639,10 +656,10 @@ Py::Object PyResource::setValue(const Py::Tuple& args)
     if (myDlg) {
         QList<QWidget*> list = myDlg->findChildren<QWidget*>();
         QList<QWidget*>::const_iterator it = list.cbegin();
-        QObject *obj;
+        QObject* obj;
 
         bool fnd = false;
-        while ( it != list.cend() ) {
+        while (it != list.cend()) {
             obj = *it;
             ++it;
             if (obj->objectName() == QLatin1String(psName)) {
@@ -652,8 +669,9 @@ Py::Object PyResource::setValue(const Py::Tuple& args)
             }
         }
 
-        if (!fnd)
-            qWarning( "'%s' not found.\n", psName );
+        if (!fnd) {
+            qWarning("'%s' not found.\n", psName);
+        }
     }
 
     return Py::None();
@@ -689,10 +707,10 @@ Py::Object PyResource::show(const Py::Tuple&)
  */
 Py::Object PyResource::connect(const Py::Tuple& args)
 {
-    char *psSender;
-    char *psSignal;
+    char* psSender;
+    char* psSignal;
 
-    PyObject *temp;
+    PyObject* temp;
 
     if (PyArg_ParseTuple(args.ptr(), "ssO", &psSender, &psSignal, &temp)) {
         if (!PyCallable_Check(temp)) {
@@ -700,13 +718,13 @@ Py::Object PyResource::connect(const Py::Tuple& args)
             throw Py::Exception();
         }
 
-        Py_XINCREF(temp);         /* Add a reference to new callback */
+        Py_XINCREF(temp); /* Add a reference to new callback */
         std::string sSender = psSender;
         std::string sSignal = psSignal;
 
         if (!connect(psSender, psSignal, temp)) {
             // no signal object found => dispose the callback object
-            Py_XDECREF(temp);  /* Dispose of callback */
+            Py_XDECREF(temp); /* Dispose of callback */
         }
 
         return Py::None();
@@ -719,14 +737,14 @@ Py::Object PyResource::connect(const Py::Tuple& args)
 // ----------------------------------------------------
 
 SignalConnect::SignalConnect(PyObject* res, PyObject* cb)
-  : myResource(res), myCallback(cb)
-{
-}
+    : myResource(res)
+    , myCallback(cb)
+{}
 
 SignalConnect::~SignalConnect()
 {
     Base::PyGILStateLocker lock;
-    Py_XDECREF(myCallback);  /* Dispose of callback */
+    Py_XDECREF(myCallback); /* Dispose of callback */
 }
 
 /**
@@ -734,8 +752,8 @@ SignalConnect::~SignalConnect()
  */
 void SignalConnect::onExecute()
 {
-    PyObject *arglist;
-    PyObject *result;
+    PyObject* arglist;
+    PyObject* result;
 
     /* Time to call the callback */
     arglist = Py_BuildValue("(O)", myResource);

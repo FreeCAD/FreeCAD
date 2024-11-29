@@ -29,14 +29,15 @@
 
 class Ui_TaskFilletParameters;
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
-class TaskFilletParameters : public TaskDressUpParameters
+class TaskFilletParameters: public TaskDressUpParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskFilletParameters(ViewProviderDressUp *DressUpView, QWidget *parent=nullptr);
+    explicit TaskFilletParameters(ViewProviderDressUp* DressUpView, QWidget* parent = nullptr);
     ~TaskFilletParameters() override;
 
     void apply() override;
@@ -58,12 +59,12 @@ private:
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgFilletParameters : public TaskDlgDressUpParameters
+class TaskDlgFilletParameters: public TaskDlgDressUpParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgFilletParameters(ViewProviderFillet *DressUpView);
+    explicit TaskDlgFilletParameters(ViewProviderFillet* DressUpView);
     ~TaskDlgFilletParameters() override;
 
 public:
@@ -71,6 +72,6 @@ public:
     bool accept() override;
 };
 
-} //namespace PartDesignGui
+}  // namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TaskFilletParameters_H
+#endif  // GUI_TASKVIEW_TaskFilletParameters_H

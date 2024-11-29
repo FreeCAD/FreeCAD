@@ -35,7 +35,7 @@ class TopoDS_Shape;
 namespace PartDesign
 {
 
-class PartDesignExport FeatureExtrude : public ProfileBased
+class PartDesignExport FeatureExtrude: public ProfileBased
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::FeatureExtrude);
 
@@ -43,15 +43,15 @@ public:
     FeatureExtrude();
 
     App::PropertyEnumeration Type;
-    App::PropertyLength      Length;
-    App::PropertyLength      Length2;
-    App::PropertyAngle       TaperAngle;
-    App::PropertyAngle       TaperAngle2;
-    App::PropertyBool        UseCustomVector;
-    App::PropertyVector      Direction;
-    App::PropertyBool        AlongSketchNormal;
-    App::PropertyLength      Offset;
-    App::PropertyLinkSub     ReferenceAxis;
+    App::PropertyLength Length;
+    App::PropertyLength Length2;
+    App::PropertyAngle TaperAngle;
+    App::PropertyAngle TaperAngle2;
+    App::PropertyBool UseCustomVector;
+    App::PropertyVector Direction;
+    App::PropertyBool AlongSketchNormal;
+    App::PropertyLength Offset;
+    App::PropertyLinkSub ReferenceAxis;
 
     static App::PropertyQuantityConstraint::Constraints signedLengthConstraint;
     static double maxAngle;
@@ -62,7 +62,8 @@ public:
     short mustExecute() const override;
     void setupObject() override;
 
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartDesignGui::ViewProviderExtrude";
     }
     //@}
@@ -93,8 +94,8 @@ protected:
     TopoShape makeShellFromUpToShape(TopoShape shape, TopoShape sketchshape, gp_Dir dir);
 
     /**
-      * Generates an extrusion of the input sketchshape and stores it in the given \a prism
-      */
+     * Generates an extrusion of the input sketchshape and stores it in the given \a prism
+     */
     void generatePrism(TopoDS_Shape& prism,
                        const TopoDS_Shape& sketchshape,
                        const std::string& method,
@@ -114,16 +115,17 @@ protected:
                        const bool reversed);
 
     // See BRepFeat_MakePrism
-    enum PrismMode {
+    enum PrismMode
+    {
         CutFromBase = 0,
         FuseWithBase = 1,
         None = 2
     };
 
     /**
-      * Generates an extrusion of the input profileshape
-      * It will be a stand-alone solid created with BRepFeat_MakePrism
-      */
+     * Generates an extrusion of the input profileshape
+     * It will be a stand-alone solid created with BRepFeat_MakePrism
+     */
     static void generatePrism(TopoDS_Shape& prism,
                               const std::string& method,
                               const TopoDS_Shape& baseshape,
@@ -135,8 +137,8 @@ protected:
                               Standard_Boolean Modify);
 
     /**
-      * Generates a tapered prism of the input sketchshape and stores it in the given \a prism
-      */
+     * Generates a tapered prism of the input sketchshape and stores it in the given \a prism
+     */
     void generateTaperedPrism(TopoDS_Shape& prism,
                               const TopoDS_Shape& sketchshape,
                               const std::string& method,
@@ -148,13 +150,13 @@ protected:
                               const bool midplane);
 
     /**
-      * Disables settings that are not valid for the current method
-      */
-    void updateProperties(const std::string &method);
+     * Disables settings that are not valid for the current method
+     */
+    void updateProperties(const std::string& method);
 };
 
-} //namespace PartDesign
+}  // namespace PartDesign
 
 ENABLE_BITMASK_OPERATORS(PartDesign::FeatureExtrude::ExtrudeOption)
 
-#endif // PARTDESIGN_FEATURE_EXTRUDE_H
+#endif  // PARTDESIGN_FEATURE_EXTRUDE_H

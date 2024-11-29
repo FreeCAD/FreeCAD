@@ -31,23 +31,27 @@
 
 #include "ViewProvider.h"
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
 /// Convenience class to collect common methods for all SketchBased features
-class TaskFeatureParameters : public Gui::TaskView::TaskBox,
-                              public Gui::DocumentObserver
+class TaskFeatureParameters: public Gui::TaskView::TaskBox, public Gui::DocumentObserver
 {
     Q_OBJECT
 
 public:
-    TaskFeatureParameters(PartDesignGui::ViewProvider* vp, QWidget *parent,
-                              const std::string& pixmapname, const QString& parname);
+    TaskFeatureParameters(PartDesignGui::ViewProvider* vp,
+                          QWidget* parent,
+                          const std::string& pixmapname,
+                          const QString& parname);
     ~TaskFeatureParameters() override = default;
 
     /// save field history
-    virtual void saveHistory() {}
+    virtual void saveHistory()
+    {}
     /// apply changes made in the parameters input to the model via commands
-    virtual void apply() {}
+    virtual void apply()
+    {}
 
     void recomputeFeature();
 
@@ -65,14 +69,16 @@ private:
     void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj) override;
 
 protected:
-    template<typename T = PartDesignGui::ViewProvider> T* getViewObject() const
+    template<typename T = PartDesignGui::ViewProvider>
+    T* getViewObject() const
     {
         static_assert(std::is_base_of<PartDesignGui::ViewProvider, T>::value,
-                "Wrong template argument");
+                      "Wrong template argument");
         return dynamic_cast<T*>(vp);
     }
 
-    template<typename T = App::DocumentObject> T* getObject() const
+    template<typename T = App::DocumentObject>
+    T* getObject() const
     {
         static_assert(std::is_base_of<App::DocumentObject, T>::value, "Wrong template argument");
         if (vp) {
@@ -104,17 +110,17 @@ protected:
     }
 
 private:
-    PartDesignGui::ViewProvider *vp;
+    PartDesignGui::ViewProvider* vp;
     bool blockUpdate;
 };
 
 /// A common base for sketch based, dressup and other solid parameters dialogs
-class TaskDlgFeatureParameters : public Gui::TaskView::TaskDialog
+class TaskDlgFeatureParameters: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgFeatureParameters(PartDesignGui::ViewProvider *vp);
+    explicit TaskDlgFeatureParameters(PartDesignGui::ViewProvider* vp);
     ~TaskDlgFeatureParameters() override;
 
 public:
@@ -123,14 +129,16 @@ public:
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
 
-    template<typename T = PartDesignGui::ViewProvider> T* getViewObject() const
+    template<typename T = PartDesignGui::ViewProvider>
+    T* getViewObject() const
     {
         static_assert(std::is_base_of<PartDesignGui::ViewProvider, T>::value,
-                "Wrong template argument");
+                      "Wrong template argument");
         return dynamic_cast<T*>(vp);
     }
 
-    template<typename T = App::DocumentObject> T* getObject() const
+    template<typename T = App::DocumentObject>
+    T* getObject() const
     {
         static_assert(std::is_base_of<App::DocumentObject, T>::value, "Wrong template argument");
         if (vp) {
@@ -144,7 +152,7 @@ private:
     PartDesignGui::ViewProvider* vp;
 };
 
-} //namespace PartDesignGui
+}  // namespace PartDesignGui
 
 
 #endif /* end of include guard: TASKFEATUREPARAMETERS_H_NAHKE2YZ */

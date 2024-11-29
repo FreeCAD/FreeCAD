@@ -22,21 +22,21 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <sstream>
-# include <QAction>
-# include <QFileInfo>
-# include <QImage>
-# include <QMenu>
-# include <QString>
-# include <QSvgRenderer>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoFaceSet.h>
-# include <Inventor/nodes/SoLightModel.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoShapeHints.h>
-# include <Inventor/nodes/SoTexture2.h>
-# include <Inventor/nodes/SoTextureCoordinate2.h>
+#include <sstream>
+#include <QAction>
+#include <QFileInfo>
+#include <QImage>
+#include <QMenu>
+#include <QString>
+#include <QSvgRenderer>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoFaceSet.h>
+#include <Inventor/nodes/SoLightModel.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoShapeHints.h>
+#include <Inventor/nodes/SoTexture2.h>
+#include <Inventor/nodes/SoTextureCoordinate2.h>
 #endif
 
 #include <App/Document.h>
@@ -53,11 +53,11 @@ using namespace Gui;
 
 
 PROPERTY_SOURCE(Gui::ViewProviderImagePlane, Gui::ViewProviderGeometryObject)
-const char* ViewProviderImagePlane::LightingEnums[]= {"One side", "Two side", nullptr};
+const char* ViewProviderImagePlane::LightingEnums[] = {"One side", "Two side", nullptr};
 
 ViewProviderImagePlane::ViewProviderImagePlane()
 {
-    ADD_PROPERTY_TYPE(Lighting,(1L), "Object Style", App::Prop_None, "Set object lighting.");
+    ADD_PROPERTY_TYPE(Lighting, (1L), "Object Style", App::Prop_None, "Set object lighting.");
     Lighting.setEnums(LightingEnums);
 
     texture = new SoTexture2;
@@ -83,7 +83,7 @@ ViewProviderImagePlane::~ViewProviderImagePlane()
     shapeHints->unref();
 }
 
-void ViewProviderImagePlane::attach(App::DocumentObject *pcObj)
+void ViewProviderImagePlane::attach(App::DocumentObject* pcObj)
 {
     ViewProviderGeometryObject::attach(pcObj);
 
@@ -93,11 +93,11 @@ void ViewProviderImagePlane::attach(App::DocumentObject *pcObj)
     SoSeparator* shading = new SoSeparator;
     shading->addChild(pcCoords);
 
-    SoTextureCoordinate2 *textCoord = new SoTextureCoordinate2;
-    textCoord->point.set1Value(0,0,0);
-    textCoord->point.set1Value(1,1,0);
-    textCoord->point.set1Value(2,1,1);
-    textCoord->point.set1Value(3,0,1);
+    SoTextureCoordinate2* textCoord = new SoTextureCoordinate2;
+    textCoord->point.set1Value(0, 0, 0);
+    textCoord->point.set1Value(1, 1, 0);
+    textCoord->point.set1Value(2, 1, 1);
+    textCoord->point.set1Value(3, 0, 1);
     shading->addChild(textCoord);
 
     // texture
@@ -108,12 +108,12 @@ void ViewProviderImagePlane::attach(App::DocumentObject *pcObj)
     shading->addChild(pcShapeMaterial);
 
     // plane
-    pcCoords->point.set1Value(0,0,0,0);
-    pcCoords->point.set1Value(1,1,0,0);
-    pcCoords->point.set1Value(2,1,1,0);
-    pcCoords->point.set1Value(3,0,1,0);
-    SoFaceSet *faceset = new SoFaceSet;
-    faceset->numVertices.set1Value(0,4);
+    pcCoords->point.set1Value(0, 0, 0, 0);
+    pcCoords->point.set1Value(1, 1, 0, 0);
+    pcCoords->point.set1Value(2, 1, 1, 0);
+    pcCoords->point.set1Value(3, 0, 1, 0);
+    SoFaceSet* faceset = new SoFaceSet;
+    faceset->numVertices.set1Value(0, 4);
     shading->addChild(faceset);
 
     addDisplayMaskMode(shading, "Shading");
@@ -155,10 +155,12 @@ std::vector<std::string> ViewProviderImagePlane::getDisplayModes() const
 void ViewProviderImagePlane::onChanged(const App::Property* prop)
 {
     if (prop == &Lighting) {
-        if (Lighting.getValue() == 0)
+        if (Lighting.getValue() == 0) {
             shapeHints->vertexOrdering = SoShapeHints::UNKNOWN_ORDERING;
-        else
+        }
+        else {
             shapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
+        }
     }
     ViewProviderGeometryObject::onChanged(prop);
 }
@@ -168,7 +170,7 @@ void ViewProviderImagePlane::setupContextMenu(QMenu* menu, QObject* receiver, co
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
     QAction* action = menu->addAction(QObject::tr("Change image..."));
     action->setIcon(QIcon(QLatin1String("images:image-scaling.svg")));
-    func->trigger(action, [this](){
+    func->trigger(action, [this]() {
         this->manipulateImage();
     });
 
@@ -183,19 +185,17 @@ bool ViewProviderImagePlane::doubleClicked()
 
 void ViewProviderImagePlane::manipulateImage()
 {
-    auto dialog = new TaskImageDialog(
-        dynamic_cast<Image::ImagePlane*>(getObject())
-    );
+    auto dialog = new TaskImageDialog(dynamic_cast<Image::ImagePlane*>(getObject()));
 
     Gui::Control().showDialog(dialog);
 }
 
 void ViewProviderImagePlane::resizePlane(float xsize, float ysize)
 {
-    pcCoords->point.set1Value(0,-(xsize/2),-(ysize/2),0.0);
-    pcCoords->point.set1Value(1,+(xsize/2),-(ysize/2),0.0);
-    pcCoords->point.set1Value(2,+(xsize/2),+(ysize/2),0.0);
-    pcCoords->point.set1Value(3,-(xsize/2),+(ysize/2),0.0);
+    pcCoords->point.set1Value(0, -(xsize / 2), -(ysize / 2), 0.0);
+    pcCoords->point.set1Value(1, +(xsize / 2), -(ysize / 2), 0.0);
+    pcCoords->point.set1Value(2, +(xsize / 2), +(ysize / 2), 0.0);
+    pcCoords->point.set1Value(3, -(xsize / 2), +(ysize / 2), 0.0);
 }
 
 void ViewProviderImagePlane::loadImage()

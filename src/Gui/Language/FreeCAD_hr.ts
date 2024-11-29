@@ -2705,7 +2705,7 @@ u kutu -- u % visine/širine okvira za prikaz</translation>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="128"/>
       <source>Axis cross will be shown by default at file
 opening or creation</source>
-      <translation>Križ osi  prema zadanom će biti prikazan kod 
+      <translation>Križ osi  prema zadanom će biti prikazan kod
 otvaranja ili stvaranja datoteke
 
 </translation>
@@ -5765,7 +5765,7 @@ izvorno odabranim prije otvaranja ovog dijaloškog okvira</translation>
       <source>%1.
 
 This has been modified outside of the source editor. Do you want to reload it?</source>
-      <translation>%1. 
+      <translation>%1.
 Ovo je modificirano izvan izvornog editora. Želite li ga ponovno učitati?</translation>
     </message>
     <message>
@@ -12604,7 +12604,7 @@ to prema vašoj veličini zaslona ili vašem osobnom ukusu</translation>
 
 'Combined': combine Tree view and Property view into one panel.
 'Independent': split Tree view and Property view into separate panels.</source>
-      <translation>Prilagodite način prikaza stablastog pregleda na ploči 
+      <translation>Prilagodite način prikaza stablastog pregleda na ploči
 (potrebno je ponovno pokretanje).
 
 'Kombinirano': kombinirajte stablasti pregled i pregled svojstva na jednoj ploči.
@@ -13252,7 +13252,7 @@ prethodno korišteno od drugog dodatka.</translation>
 defines a region of alpha test under the mouse cursor.
 Auto click through is only activated if all pixels within
 the region are non-opaque.</source>
-      <translation>Ako je automatski klik miša kroz omogućeno, onda odredi 
+      <translation>Ako je automatski klik miša kroz omogućeno, onda odredi
 polumjer područja prozirnosti ispod pokazivača miša.
 Automatski klik mišem kroz je samo onda aktivan ako
 svi pikseli područja nisu neprozirni.</translation>

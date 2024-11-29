@@ -23,8 +23,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <TopExp.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
+#include <TopExp.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
 #include <Gui/Application.h>
@@ -35,7 +35,7 @@
 
 using namespace PartGui;
 
-PROPERTY_SOURCE(PartGui::ViewProviderCompound,PartGui::ViewProviderPart)
+PROPERTY_SOURCE(PartGui::ViewProviderCompound, PartGui::ViewProviderPart)
 
 ViewProviderCompound::ViewProviderCompound()
 {
@@ -49,14 +49,15 @@ std::vector<App::DocumentObject*> ViewProviderCompound::claimChildren() const
     return static_cast<Part::Compound*>(getObject())->Links.getValues();
 }
 
-bool ViewProviderCompound::onDelete(const std::vector<std::string> &)
+bool ViewProviderCompound::onDelete(const std::vector<std::string>&)
 {
     // get the input shapes
     Part::Compound* pComp = static_cast<Part::Compound*>(getObject());
     std::vector<App::DocumentObject*> pLinks = pComp->Links.getValues();
     for (auto pLink : pLinks) {
-        if (pLink)
+        if (pLink) {
             Gui::Application::Instance->showViewProvider(pLink);
+        }
     }
 
     return true;
@@ -66,8 +67,8 @@ void ViewProviderCompound::updateData(const App::Property* prop)
 {
     PartGui::ViewProviderPart::updateData(prop);
     if (prop->is<Part::PropertyShapeHistory>()) {
-        const std::vector<Part::ShapeHistory>& hist = static_cast<const Part::PropertyShapeHistory*>
-            (prop)->getValues();
+        const std::vector<Part::ShapeHistory>& hist =
+            static_cast<const Part::PropertyShapeHistory*>(prop)->getValues();
         Part::Compound* objComp = static_cast<Part::Compound*>(getObject());
         std::vector<App::DocumentObject*> sources = objComp->Links.getValues();
 
@@ -88,8 +89,9 @@ void ViewProviderCompound::updateData(const App::Property* prop)
 
             sources = filter;
         }
-        if (hist.size() != sources.size())
+        if (hist.size() != sources.size()) {
             return;
+        }
 
         const TopoDS_Shape& compShape = objComp->Shape.getValue();
         TopTools_IndexedMapOfShape compMap;
@@ -98,18 +100,22 @@ void ViewProviderCompound::updateData(const App::Property* prop)
         std::vector<App::Material> compCol;
         compCol.resize(compMap.Extent(), this->ShapeAppearance[0]);
 
-        int index=0;
-        for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end(); ++it, ++index) {
-            Part::Feature* objBase = dynamic_cast<Part::Feature*>(Part::Feature::getShapeOwner(*it));
-            if (!objBase)
+        int index = 0;
+        for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end();
+             ++it, ++index) {
+            Part::Feature* objBase =
+                dynamic_cast<Part::Feature*>(Part::Feature::getShapeOwner(*it));
+            if (!objBase) {
                 continue;
+            }
 
             const TopoDS_Shape& baseShape = objBase->Shape.getValue();
 
             TopTools_IndexedMapOfShape baseMap;
             TopExp::MapShapes(baseShape, TopAbs_FACE, baseMap);
 
-            auto vpBase = dynamic_cast<PartGui::ViewProviderPart*>(Gui::Application::Instance->getViewProvider(objBase));
+            auto vpBase = dynamic_cast<PartGui::ViewProviderPart*>(
+                Gui::Application::Instance->getViewProvider(objBase));
             if (vpBase) {
                 std::vector<App::Material> baseCol = vpBase->ShapeAppearance.getValues();
                 applyTransparency(vpBase->Transparency.getValue(), baseCol);
@@ -132,9 +138,12 @@ void ViewProviderCompound::updateData(const App::Property* prop)
         this->ShapeAppearance.setValues(compCol);
     }
     else if (prop->isDerivedFrom<App::PropertyLinkList>()) {
-        const std::vector<App::DocumentObject *>& pBases = static_cast<const App::PropertyLinkList*>(prop)->getValues();
+        const std::vector<App::DocumentObject*>& pBases =
+            static_cast<const App::PropertyLinkList*>(prop)->getValues();
         for (auto pBase : pBases) {
-            if (pBase) Gui::Application::Instance->hideViewProvider(pBase);
+            if (pBase) {
+                Gui::Application::Instance->hideViewProvider(pBase);
+            }
         }
     }
 }
@@ -153,7 +162,8 @@ void ViewProviderCompound::dragObject(App::DocumentObject* obj)
 {
     Part::Compound* pComp = static_cast<Part::Compound*>(getObject());
     std::vector<App::DocumentObject*> pShapes = pComp->Links.getValues();
-    for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end(); ++it) {
+    for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end();
+         ++it) {
         if (*it == obj) {
             pShapes.erase(it);
             pComp->Links.setValues(pShapes);
@@ -179,4 +189,3 @@ void ViewProviderCompound::dropObject(App::DocumentObject* obj)
     pShapes.push_back(obj);
     pComp->Links.setValues(pShapes);
 }
-

@@ -41,7 +41,7 @@ namespace MatGui
 {
 class Ui_DlgInspectAppearance;
 
-class ColorWidget : public QWidget
+class ColorWidget: public QWidget
 {
     Q_OBJECT
 
@@ -49,7 +49,10 @@ public:
     explicit ColorWidget(const App::Color& color, QWidget* parent = nullptr);
     ~ColorWidget() override = default;
 
-    QSize sizeHint() const override { return {75,23}; }
+    QSize sizeHint() const override
+    {
+        return {75, 23};
+    }
 
 protected:
     void paintEvent(QPaintEvent* event) override;
@@ -74,7 +77,6 @@ public:
                   Gui::SelectionSingleton::MessageType Reason) override;
 
 protected:
-
 private:
     std::unique_ptr<Ui_DlgInspectAppearance> ui;
 

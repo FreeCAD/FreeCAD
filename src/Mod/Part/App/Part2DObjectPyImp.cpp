@@ -38,7 +38,7 @@ std::string Part2DObjectPy::representation() const
     return {"<Part::Part2DObject>"};
 }
 
-PyObject *Part2DObjectPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* Part2DObjectPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }
@@ -47,5 +47,3 @@ int Part2DObjectPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0;
 }
-
-

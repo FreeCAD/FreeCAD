@@ -25,12 +25,13 @@
 
 #include "ViewProviderAddSub.h"
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
 /**
  * A common base class for Sketch based view providers
  */
-class PartDesignGuiExport ViewProviderSketchBased : public ViewProvider
+class PartDesignGuiExport ViewProviderSketchBased: public ViewProvider
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderSketchBased);
 
@@ -41,12 +42,11 @@ public:
     ~ViewProviderSketchBased() override;
 
     /// grouping handling
-    std::vector<App::DocumentObject*> claimChildren()const override;
+    std::vector<App::DocumentObject*> claimChildren() const override;
 
-    bool onDelete(const std::vector<std::string> &) override;
-
+    bool onDelete(const std::vector<std::string>&) override;
 };
 
-} /* PartDesignGui  */
+}  // namespace PartDesignGui
 
 #endif /* end of include guard: VIEWPROVIDERSKETCHBASED_H_QKP3UG9A */

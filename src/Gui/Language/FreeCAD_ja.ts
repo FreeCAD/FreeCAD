@@ -2785,7 +2785,7 @@ There are 3 options available to achieve this:
 only cache at the scene graph root node. This offers the fastest rendering speed
 but slower response to any scene changes.</source>
       <translation>「レンダリングのキャッシュ」は「レンダリング・アクセラレーション」の別名です。
-これを行うためには3つの選択肢があります: 
+これを行うためには3つの選択肢があります:
 1) '自動' (デフォルト) どこでキャッシュを行うかをCoin3Dに決めさせます。
 2) '分散' 全てのビュープロバイダーのルートノードでのキャッシュを手動で無効にします。
 3) '集中' 全てのビュープロバイダーの全てのノードでのキャッシュを手動で無効にし、シーングラフのルートノードでのみキャッシュさせます。この設定を使うとレンダリング速度は最速になりますが、シーン変更での応答は遅くなります。</translation>
@@ -4039,7 +4039,7 @@ Turntable: the part will be rotated around the z-axis (with constrained axes).
 Free Turntable: the part will be rotated around the z-axis.</source>
       <translation>回転軌道のスタイル
 トラックボール: マウスの水平移動でY軸周りにオブジェクトを回転
-ターンテーブル: Z軸周りにオブジェクトを回転 (軸を拘束) 
+ターンテーブル: Z軸周りにオブジェクトを回転 (軸を拘束)
 フリーターンテーブル: Z軸周りにオブジェクトを回転</translation>
     </message>
     <message>

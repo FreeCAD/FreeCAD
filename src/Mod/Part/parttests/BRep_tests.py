@@ -3,6 +3,7 @@ import Part
 
 import unittest
 
+
 class BRepTests(unittest.TestCase):
 
     def testProject(self):

@@ -33,7 +33,8 @@ class SoGroup;
 class SoSeparator;
 class SbBox3f;
 class SoGetBoundingBoxAction;
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
 /** ViewProvider of the Body feature
  *  This class manages the visual appearance of the features in the
@@ -41,7 +42,8 @@ namespace PartDesignGui {
  *  If the Body is not active it shows only the result shape (tip).
  * \author jriegel
  */
-class PartDesignGuiExport ViewProviderBody : public PartGui::ViewProviderPart, public Gui::ViewProviderOriginGroupExtension
+class PartDesignGuiExport ViewProviderBody: public PartGui::ViewProviderPart,
+                                            public Gui::ViewProviderOriginGroupExtension
 {
     Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderBody)
     PROPERTY_HEADER_WITH_EXTENSIONS(PartDesignGui::ViewProviderBody);
@@ -54,32 +56,32 @@ public:
 
     App::PropertyEnumeration DisplayModeBody;
 
-    void attach(App::DocumentObject *) override;
+    void attach(App::DocumentObject*) override;
 
     bool doubleClicked() override;
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
     bool isActiveBody();
     void toggleActiveBody();
 
-    std::vector< std::string > getDisplayModes() const override;
+    std::vector<std::string> getDisplayModes() const override;
     void setDisplayMode(const char* ModeName) override;
     void setOverrideMode(const std::string& mode) override;
 
-    bool onDelete(const std::vector<std::string> &) override;
+    bool onDelete(const std::vector<std::string>&) override;
 
     /// Update the children's highlighting when triggered
     void updateData(const App::Property* prop) override;
-    ///unify children visuals
+    /// unify children visuals
     void onChanged(const App::Property* prop) override;
 
     /// Update the sizes of origin and datums
-    void updateOriginDatumSize ();
+    void updateOriginDatumSize();
 
     /**
      * Return the bounding box of visible features
      * @note datums are counted as their base point only
      */
-    SbBox3f getBoundBox ();
+    SbBox3f getBoundBox();
 
     /** Check whether objects can be added to the view provider by drag and drop */
     bool canDropObjects() const override;
@@ -89,8 +91,9 @@ public:
     void dropObject(App::DocumentObject*) override;
 
 protected:
-    void slotChangedObjectApp ( const App::DocumentObject& obj, const App::Property& prop );
-    void slotChangedObjectGui ( const Gui::ViewProviderDocumentObject& obj, const App::Property& prop );
+    void slotChangedObjectApp(const App::DocumentObject& obj, const App::Property& prop);
+    void slotChangedObjectGui(const Gui::ViewProviderDocumentObject& obj,
+                              const App::Property& prop);
 
     /// Copy over all visual properties to the child features
     void unifyVisualProperty(const App::Property* prop);
@@ -105,8 +108,7 @@ private:
 };
 
 
+}  // namespace PartDesignGui
 
-} // namespace PartDesignGui
 
-
-#endif // PARTGUI_ViewProviderHole_H
+#endif  // PARTGUI_ViewProviderHole_H

@@ -2694,7 +2694,7 @@ lower right corner within opened files</source>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="73"/>
       <source>Size of main coordinate system representation
 in the corner -- in % of height/width of viewport</source>
-      <translation>구석에 표시되는 주 좌표계의 크기 
+      <translation>구석에 표시되는 주 좌표계의 크기
  - 뷰포트 높이/폭의 % 단위</translation>
     </message>
     <message>

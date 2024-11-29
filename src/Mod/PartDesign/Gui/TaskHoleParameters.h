@@ -29,50 +29,53 @@
 
 class Ui_TaskHoleParameters;
 
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
 }
 
-namespace PartDesign {
+namespace PartDesign
+{
 class Hole;
 }
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
 
-
-class TaskHoleParameters : public TaskSketchBasedParameters
+class TaskHoleParameters: public TaskSketchBasedParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskHoleParameters(ViewProviderHole *HoleView, QWidget *parent = nullptr);
+    explicit TaskHoleParameters(ViewProviderHole* HoleView, QWidget* parent = nullptr);
     ~TaskHoleParameters() override;
 
     void apply() override;
 
-    bool   getThreaded() const;
-    long   getThreadType() const;
-    long   getThreadSize() const;
-    long   getThreadClass() const;
-    long   getThreadFit() const;
+    bool getThreaded() const;
+    long getThreadType() const;
+    long getThreadSize() const;
+    long getThreadClass() const;
+    long getThreadFit() const;
     Base::Quantity getDiameter() const;
-    long   getThreadDirection() const;
-    long   getHoleCutType() const;
-    bool   getHoleCutCustomValues() const;
+    long getThreadDirection() const;
+    long getHoleCutType() const;
+    bool getHoleCutCustomValues() const;
     Base::Quantity getHoleCutDiameter() const;
     Base::Quantity getHoleCutDepth() const;
     Base::Quantity getHoleCutCountersinkAngle() const;
-    long   getDepthType() const;
+    long getDepthType() const;
     Base::Quantity getDepth() const;
-    long   getDrillPoint() const;
+    long getDrillPoint() const;
     Base::Quantity getDrillPointAngle() const;
-    bool   getDrillForDepth() const;
-    bool   getTapered() const;
+    bool getDrillForDepth() const;
+    bool getTapered() const;
     Base::Quantity getTaperedAngle() const;
     bool getUseCustomThreadClearance() const;
     double getCustomThreadClearance() const;
@@ -110,24 +113,25 @@ private Q_SLOTS:
     void threadDepthChanged(double value);
 
 private:
-    class Observer : public App::DocumentObserver {
+    class Observer: public App::DocumentObserver
+    {
     public:
-        Observer(TaskHoleParameters * _owner, PartDesign::Hole * _hole);
+        Observer(TaskHoleParameters* _owner, PartDesign::Hole* _hole);
+
     private:
         void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop) override;
-        TaskHoleParameters * owner;
-        PartDesign::Hole * hole;
+        TaskHoleParameters* owner;
+        PartDesign::Hole* hole;
     };
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
     void changedObject(const App::Document&, const App::Property& Prop);
 
 private:
-    void onSelectionChanged(const Gui::SelectionChanges &msg) override;
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
 private:
-
     using Connection = boost::signals2::scoped_connection;
     Connection connectPropChanged;
 
@@ -138,18 +142,18 @@ private:
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgHoleParameters : public TaskDlgSketchBasedParameters
+class TaskDlgHoleParameters: public TaskDlgSketchBasedParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgHoleParameters(ViewProviderHole *HoleView);
+    explicit TaskDlgHoleParameters(ViewProviderHole* HoleView);
     ~TaskDlgHoleParameters() override;
 
 protected:
-    TaskHoleParameters  *parameter;
+    TaskHoleParameters* parameter;
 };
 
-} //namespace PartDesignGui
+}  // namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

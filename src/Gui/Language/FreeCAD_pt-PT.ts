@@ -6817,7 +6817,7 @@ Deseja sair sem guardar os seus dados?</translation>
       <source>The directory '%1' does not exist.
 
 Do you want to specify an existing directory?</source>
-      <translation>O diretório '%1' não existe.  
+      <translation>O diretório '%1' não existe.
 Quer especificar um diretório existente?</translation>
     </message>
     <message>
@@ -6830,7 +6830,7 @@ Quer especificar um diretório existente?</translation>
       <source>You don't have write permission to '%1'
 
 Do you want to specify another directory?</source>
-      <translation>Você não tem permissão de escrita em '%1' 
+      <translation>Você não tem permissão de escrita em '%1'
 Quer especificar outro diretório?</translation>
     </message>
     <message>

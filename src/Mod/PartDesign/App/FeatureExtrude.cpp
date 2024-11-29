@@ -24,16 +24,16 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
-# include <BRep_Builder.hxx>
-# include <BRepFeat_MakePrism.hxx>
-# include <BRepPrimAPI_MakePrism.hxx>
-# include <gp_Dir.hxx>
-# include <Precision.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS_Compound.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Shape.hxx>
+#include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
+#include <BRep_Builder.hxx>
+#include <BRepFeat_MakePrism.hxx>
+#include <BRepPrimAPI_MakePrism.hxx>
+#include <gp_Dir.hxx>
+#include <Precision.hxx>
+#include <TopExp_Explorer.hxx>
+#include <TopoDS_Compound.hxx>
+#include <TopoDS_Face.hxx>
+#include <TopoDS_Shape.hxx>
 #endif
 
 #include <App/Document.h>
@@ -50,33 +50,28 @@ using namespace PartDesign;
 
 PROPERTY_SOURCE(PartDesign::FeatureExtrude, PartDesign::ProfileBased)
 
-App::PropertyQuantityConstraint::Constraints FeatureExtrude::signedLengthConstraint = { -DBL_MAX, DBL_MAX, 1.0 };
+App::PropertyQuantityConstraint::Constraints FeatureExtrude::signedLengthConstraint = {-DBL_MAX,
+                                                                                       DBL_MAX,
+                                                                                       1.0};
 double FeatureExtrude::maxAngle = 90 - Base::toDegrees<double>(Precision::Angular());
-App::PropertyAngle::Constraints FeatureExtrude::floatAngle = { -maxAngle, maxAngle, 1.0 };
+App::PropertyAngle::Constraints FeatureExtrude::floatAngle = {-maxAngle, maxAngle, 1.0};
 
 FeatureExtrude::FeatureExtrude() = default;
 
 short FeatureExtrude::mustExecute() const
 {
-    if (Placement.isTouched() ||
-        Type.isTouched() ||
-        Length.isTouched() ||
-        Length2.isTouched() ||
-        TaperAngle.isTouched() ||
-        TaperAngle2.isTouched() ||
-        UseCustomVector.isTouched() ||
-        Direction.isTouched() ||
-        ReferenceAxis.isTouched() ||
-        AlongSketchNormal.isTouched() ||
-        Offset.isTouched() ||
-        UpToFace.isTouched())
+    if (Placement.isTouched() || Type.isTouched() || Length.isTouched() || Length2.isTouched()
+        || TaperAngle.isTouched() || TaperAngle2.isTouched() || UseCustomVector.isTouched()
+        || Direction.isTouched() || ReferenceAxis.isTouched() || AlongSketchNormal.isTouched()
+        || Offset.isTouched() || UpToFace.isTouched()) {
         return 1;
+    }
     return ProfileBased::mustExecute();
 }
 
 Base::Vector3d FeatureExtrude::computeDirection(const Base::Vector3d& sketchVector, bool inverse)
 {
-    (void) inverse;
+    (void)inverse;
     Base::Vector3d extrudeDirection;
 
     if (!UseCustomVector.getValue()) {
@@ -91,7 +86,11 @@ Base::Vector3d FeatureExtrude::computeDirection(const Base::Vector3d& sketchVect
             const std::vector<std::string>& subReferenceAxis = ReferenceAxis.getSubValues();
             Base::Vector3d base;
             Base::Vector3d dir;
-            getAxis(pcReferenceAxis, subReferenceAxis, base, dir, ForbiddenAxis::NotPerpendicularWithNormal);
+            getAxis(pcReferenceAxis,
+                    subReferenceAxis,
+                    base,
+                    dir,
+                    ForbiddenAxis::NotPerpendicularWithNormal);
             switch (addSubType) {
                 case Type::Additive:
                     extrudeDirection = dir;
@@ -117,8 +116,9 @@ Base::Vector3d FeatureExtrude::computeDirection(const Base::Vector3d& sketchVect
     Direction.setReadOnly(!UseCustomVector.getValue());
     ReferenceAxis.setReadOnly(UseCustomVector.getValue());
     // UseCustomVector allows AlongSketchNormal but !UseCustomVector does not forbid it
-    if (UseCustomVector.getValue())
+    if (UseCustomVector.getValue()) {
         AlongSketchNormal.setReadOnly(false);
+    }
 
     // explicitly set the Direction so that the dialog shows also the used direction
     // if the sketch's normal vector was used
@@ -128,23 +128,23 @@ Base::Vector3d FeatureExtrude::computeDirection(const Base::Vector3d& sketchVect
 
 bool FeatureExtrude::hasTaperedAngle() const
 {
-    return fabs(TaperAngle.getValue()) > Base::toRadians(Precision::Angular()) ||
-           fabs(TaperAngle2.getValue()) > Base::toRadians(Precision::Angular());
+    return fabs(TaperAngle.getValue()) > Base::toRadians(Precision::Angular())
+        || fabs(TaperAngle2.getValue()) > Base::toRadians(Precision::Angular());
 }
 
-TopoShape FeatureExtrude::makeShellFromUpToShape(TopoShape shape, TopoShape sketchshape, gp_Dir dir){
+TopoShape FeatureExtrude::makeShellFromUpToShape(TopoShape shape, TopoShape sketchshape, gp_Dir dir)
+{
 
     // Find nearest/furthest face
-    std::vector<Part::cutTopoShapeFaces> cfaces =
-        Part::findAllFacesCutBy(shape, sketchshape, dir);
+    std::vector<Part::cutTopoShapeFaces> cfaces = Part::findAllFacesCutBy(shape, sketchshape, dir);
     if (cfaces.empty()) {
         dir = -dir;
         cfaces = Part::findAllFacesCutBy(shape, sketchshape, dir);
     }
-    struct Part::cutTopoShapeFaces *nearFace;
-    struct Part::cutTopoShapeFaces *farFace;
+    struct Part::cutTopoShapeFaces* nearFace;
+    struct Part::cutTopoShapeFaces* farFace;
     nearFace = farFace = &cfaces.front();
-    for (auto &face : cfaces) {
+    for (auto& face : cfaces) {
         if (face.distsq > farFace->distsq) {
             farFace = &face;
         }
@@ -155,8 +155,8 @@ TopoShape FeatureExtrude::makeShellFromUpToShape(TopoShape shape, TopoShape sket
 
     if (nearFace != farFace) {
         std::vector<TopoShape> faceList;
-        for (auto &face : shape.getSubTopoShapes(TopAbs_FACE)) {
-            if (! (face == farFace->face)){
+        for (auto& face : shape.getSubTopoShapes(TopAbs_FACE)) {
+            if (!(face == farFace->face)) {
                 // don't use the last face so the shell is open
                 // and OCC works better
                 faceList.push_back(face);
@@ -180,16 +180,19 @@ void FeatureExtrude::generatePrism(TopoDS_Shape& prism,
     if (method == "Length" || method == "TwoLengths" || method == "ThroughAll") {
         double Ltotal = L;
         double Loffset = 0.;
-        if (method == "ThroughAll")
+        if (method == "ThroughAll") {
             Ltotal = getThroughAllLength();
+        }
 
 
         if (method == "TwoLengths") {
             Ltotal += L2;
-            if (reversed)
+            if (reversed) {
                 Loffset = -L;
-            else
+            }
+            else {
                 Loffset = -L2;
+            }
         }
         else if (midplane) {
             Loffset = -Ltotal / 2;
@@ -207,26 +210,33 @@ void FeatureExtrude::generatePrism(TopoDS_Shape& prism,
         }
 
         if (fabs(Ltotal) < Precision::Confusion()) {
-            if (addSubType == Type::Additive)
+            if (addSubType == Type::Additive) {
                 throw Base::ValueError("Cannot create a pad with a height of zero.");
-            else
+            }
+            else {
                 throw Base::ValueError("Cannot create a pocket with a depth of zero.");
+            }
         }
 
-        // Without taper angle we create a prism because its shells are in every case no B-splines and can therefore
-        // be use as support for further features like Pads, Lofts etc. B-spline shells can break certain features,
-        // see e.g. https://forum.freecad.org/viewtopic.php?p=560785#p560785
-        // It is better not to use BRepFeat_MakePrism here even if we have a support because the
-        // resulting shape creates problems with Pocket
-        BRepPrimAPI_MakePrism PrismMaker(from, Ltotal * gp_Vec(direction), Standard_False, Standard_True); // finite prism
-        if (!PrismMaker.IsDone())
+        // Without taper angle we create a prism because its shells are in every case no B-splines
+        // and can therefore be use as support for further features like Pads, Lofts etc. B-spline
+        // shells can break certain features, see e.g.
+        // https://forum.freecad.org/viewtopic.php?p=560785#p560785 It is better not to use
+        // BRepFeat_MakePrism here even if we have a support because the resulting shape creates
+        // problems with Pocket
+        BRepPrimAPI_MakePrism PrismMaker(from,
+                                         Ltotal * gp_Vec(direction),
+                                         Standard_False,
+                                         Standard_True);  // finite prism
+        if (!PrismMaker.IsDone()) {
             throw Base::RuntimeError("ProfileBased: Length: Could not extrude the sketch!");
+        }
         prism = PrismMaker.Shape();
     }
     else {
         std::stringstream str;
-        str << "ProfileBased: Internal error: Unknown method '"
-            << method << "' for generatePrism()";
+        str << "ProfileBased: Internal error: Unknown method '" << method
+            << "' for generatePrism()";
         throw Base::RuntimeError(str.str());
     }
 }
@@ -247,12 +257,14 @@ void FeatureExtrude::generatePrism(TopoDS_Shape& prism,
         for (TopExp_Explorer xp(profileshape, TopAbs_FACE); xp.More(); xp.Next()) {
             PrismMaker.Init(base, xp.Current(), supportface, direction, Mode, Modify);
             PrismMaker.Perform(uptoface);
-            if (!PrismMaker.IsDone())
+            if (!PrismMaker.IsDone()) {
                 throw Base::RuntimeError("ProfileBased: Up to face: Could not extrude the sketch!");
+            }
 
             base = PrismMaker.Shape();
-            if (Mode == PrismMode::None)
+            if (Mode == PrismMode::None) {
                 Mode = PrismMode::FuseWithBase;
+            }
         }
 
         prism = base;
@@ -261,18 +273,23 @@ void FeatureExtrude::generatePrism(TopoDS_Shape& prism,
         BRepFeat_MakePrism PrismMaker;
         prism = baseshape;
         for (TopExp_Explorer xp(profileshape, TopAbs_FACE); xp.More(); xp.Next()) {
-            PrismMaker.Init(baseshape, xp.Current(), supportface, direction, PrismMode::None, Modify);
+            PrismMaker
+                .Init(baseshape, xp.Current(), supportface, direction, PrismMode::None, Modify);
 
-            //Each face needs 2 prisms because if uptoFace is intersected twice the first one ends too soon
-            for (int i=0; i<2; i++){
-                if (i==0){
+            // Each face needs 2 prisms because if uptoFace is intersected twice the first one ends
+            // too soon
+            for (int i = 0; i < 2; i++) {
+                if (i == 0) {
                     PrismMaker.Perform(uptoface);
-                }else{
+                }
+                else {
                     PrismMaker.Perform(uptoface, uptoface);
                 }
 
-                if (!PrismMaker.IsDone())
-                    throw Base::RuntimeError("ProfileBased: Up to face: Could not extrude the sketch!");
+                if (!PrismMaker.IsDone()) {
+                    throw Base::RuntimeError(
+                        "ProfileBased: Up to face: Could not extrude the sketch!");
+                }
                 auto onePrism = PrismMaker.Shape();
 
                 FCBRepAlgoAPI_Fuse fuse(prism, onePrism);
@@ -282,8 +299,8 @@ void FeatureExtrude::generatePrism(TopoDS_Shape& prism,
     }
     else {
         std::stringstream str;
-        str << "ProfileBased: Internal error: Unknown method '"
-            << method << "' for generatePrism()";
+        str << "ProfileBased: Internal error: Unknown method '" << method
+            << "' for generatePrism()";
         throw Base::RuntimeError(str.str());
     }
 }
@@ -360,24 +377,55 @@ void FeatureExtrude::generateTaperedPrism(TopoDS_Shape& prism,
                                           const bool midplane)
 {
     std::list<TopoDS_Shape> drafts;
-    bool isSolid = true; // in PD we only generate solids, while Part Extrude can also create only shells
-    bool isPartDesign = true; // there is an OCC bug with single-edge wires (circles) we need to treat differently for PD and Part
+    bool isSolid =
+        true;  // in PD we only generate solids, while Part Extrude can also create only shells
+    bool isPartDesign = true;  // there is an OCC bug with single-edge wires (circles) we need to
+                               // treat differently for PD and Part
     if (method == "ThroughAll") {
-        Part::ExtrusionHelper::makeDraft(sketchshape, direction, getThroughAllLength(),
-            0.0, Base::toRadians(angle), 0.0, isSolid, drafts, isPartDesign);
+        Part::ExtrusionHelper::makeDraft(sketchshape,
+                                         direction,
+                                         getThroughAllLength(),
+                                         0.0,
+                                         Base::toRadians(angle),
+                                         0.0,
+                                         isSolid,
+                                         drafts,
+                                         isPartDesign);
     }
     else if (method == "TwoLengths") {
-        Part::ExtrusionHelper::makeDraft(sketchshape, direction, L, L2,
-            Base::toRadians(angle), Base::toRadians(angle2), isSolid, drafts, isPartDesign);
+        Part::ExtrusionHelper::makeDraft(sketchshape,
+                                         direction,
+                                         L,
+                                         L2,
+                                         Base::toRadians(angle),
+                                         Base::toRadians(angle2),
+                                         isSolid,
+                                         drafts,
+                                         isPartDesign);
     }
     else if (method == "Length") {
         if (midplane) {
-            Part::ExtrusionHelper::makeDraft(sketchshape, direction, L / 2, L / 2,
-                Base::toRadians(angle), Base::toRadians(angle), isSolid, drafts, isPartDesign);
+            Part::ExtrusionHelper::makeDraft(sketchshape,
+                                             direction,
+                                             L / 2,
+                                             L / 2,
+                                             Base::toRadians(angle),
+                                             Base::toRadians(angle),
+                                             isSolid,
+                                             drafts,
+                                             isPartDesign);
         }
-        else
-            Part::ExtrusionHelper::makeDraft(sketchshape, direction, L, 0.0,
-                Base::toRadians(angle), 0.0, isSolid, drafts, isPartDesign);
+        else {
+            Part::ExtrusionHelper::makeDraft(sketchshape,
+                                             direction,
+                                             L,
+                                             0.0,
+                                             Base::toRadians(angle),
+                                             0.0,
+                                             isSolid,
+                                             drafts,
+                                             isPartDesign);
+        }
     }
 
     if (drafts.empty()) {
@@ -390,13 +438,14 @@ void FeatureExtrude::generateTaperedPrism(TopoDS_Shape& prism,
         TopoDS_Compound comp;
         BRep_Builder builder;
         builder.MakeCompound(comp);
-        for (const auto & draft : drafts)
+        for (const auto& draft : drafts) {
             builder.Add(comp, draft);
+        }
         prism = comp;
     }
 }
 
-void FeatureExtrude::updateProperties(const std::string &method)
+void FeatureExtrude::updateProperties(const std::string& method)
 {
     // disable settings that are not valid on the current method
     // disable everything unless we are sure we need it
@@ -592,7 +641,8 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
 
         TopoShape prism(0, getDocument()->getStringHasher());
 
-        if (method == "UpToFirst" || method == "UpToLast" || method == "UpToFace" || method == "UpToShape") {
+        if (method == "UpToFirst" || method == "UpToLast" || method == "UpToFace"
+            || method == "UpToShape") {
             // Note: This will return an unlimited planar face if support is a datum plane
             TopoShape supportface = getTopoShapeSupportFace();
             supportface.move(invObjLoc);
@@ -612,7 +662,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             else if (method == "UpToShape") {
                 faceCount = getUpToShapeFromLinkSubList(upToShape, UpToShape);
                 upToShape.move(invObjLoc);
-                if (faceCount == 0){
+                if (faceCount == 0) {
                     // No shape selected, use the base
                     upToShape = base;
                     faceCount = 0;
@@ -623,9 +673,10 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                 getUpToFace(upToShape, base, sketchshape, method, dir);
                 addOffsetToFace(upToShape, dir, Offset.getValue());
             }
-            else{
-                if (fabs(Offset.getValue()) > Precision::Confusion()){
-                    return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Extrude: Can only offset one face"));
+            else {
+                if (fabs(Offset.getValue()) > Precision::Confusion()) {
+                    return new App::DocumentObjectExecReturn(
+                        QT_TRANSLATE_NOOP("Exception", "Extrude: Can only offset one face"));
                 }
                 // open the shell by removing the furthest face
                 upToShape = makeShellFromUpToShape(upToShape, sketchshape, dir);
@@ -680,8 +731,8 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             }
             try {
                 TopoShape _base;
-                if (addSubType!=FeatureAddSub::Subtractive) {
-                    _base=base; // avoid issue #16690
+                if (addSubType != FeatureAddSub::Subtractive) {
+                    _base = base;  // avoid issue #16690
                 }
                 prism.makeElementPrismUntil(_base,
                                             sketchshape,
@@ -692,7 +743,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                                             true /*CheckUpToFaceLimits.getValue()*/);
             }
             catch (Base::Exception&) {
-                if (method == "UpToShape" && faceCount > 1){
+                if (method == "UpToShape" && faceCount > 1) {
                     return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
                         "Exception",
                         "Unable to reach the selected shape, please select faces"));
@@ -728,7 +779,10 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                     params.dir.Reverse();
                 }
                 std::vector<TopoShape> drafts;
-                Part::ExtrusionHelper::makeElementDraft(params, sketchshape, drafts, getDocument()->getStringHasher());
+                Part::ExtrusionHelper::makeElementDraft(params,
+                                                        sketchshape,
+                                                        drafts,
+                                                        getDocument()->getStringHasher());
                 if (drafts.empty()) {
                     return new App::DocumentObjectExecReturn(
                         QT_TRANSLATE_NOOP("Exception", "Padding with draft angle failed"));
@@ -783,7 +837,9 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             }
             solRes = refineShapeIfActive(solRes);
             if (!isSingleSolidRuleSatisfied(solRes.getShape())) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                    "Exception",
+                    "Result has multiple solids: that is not currently supported."));
             }
             this->Shape.setValue(getSolid(solRes));
         }
@@ -794,14 +850,18 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             prism = refineShapeIfActive(prism);
             prism = getSolid(prism);
             if (!isSingleSolidRuleSatisfied(prism.getShape())) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                    "Exception",
+                    "Result has multiple solids: that is not currently supported."));
             }
             this->Shape.setValue(prism);
         }
         else {
             prism = refineShapeIfActive(prism);
             if (!isSingleSolidRuleSatisfied(prism.getShape())) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                    "Exception",
+                    "Result has multiple solids: that is not currently supported."));
             }
             this->Shape.setValue(prism);
         }

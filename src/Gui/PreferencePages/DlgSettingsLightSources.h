@@ -33,9 +33,11 @@ class SoDragger;
 class SoDirectionalLightDragger;
 class SoOrthographicCamera;
 
-namespace Gui {
+namespace Gui
+{
 class View3DInventorViewer;
-namespace Dialog {
+namespace Dialog
+{
 class Ui_DlgSettingsLightSources;
 
 /**
@@ -43,7 +45,7 @@ class Ui_DlgSettingsLightSources;
  * for the light sources of a 3D view.
  * @author Werner Mayer
  */
-class DlgSettingsLightSources : public PreferencePage
+class DlgSettingsLightSources: public PreferencePage
 {
     Q_OBJECT
 
@@ -56,13 +58,13 @@ public:
     void resetSettingsToDefaults() override;
 
 public Q_SLOTS:
-    void updateDraggerQS ();
+    void updateDraggerQS();
     void updateDraggerXYZ();
     void toggleLight(bool on);
     void lightIntensity(int value);
     void lightColor();
 
-    void pushIn (void);
+    void pushIn(void);
     void pullOut(void);
 
 protected:
@@ -73,18 +75,18 @@ private:
     void loadDirection();
     void createViewer();
     SoDirectionalLightDragger* createDragger();
-    static void dragMotionCallback(void *data, SoDragger *drag);
+    static void dragMotionCallback(void* data, SoDragger* drag);
 
 private:
     std::unique_ptr<Ui_DlgSettingsLightSources> ui;
-    QPointer <View3DInventorViewer> view;
+    QPointer<View3DInventorViewer> view;
     SoDirectionalLightDragger* lightDragger = nullptr;
-    SoOrthographicCamera *camera = nullptr;
+    SoOrthographicCamera* camera = nullptr;
 
     float cam_step = 3.0f;
 };
 
-} // namespace Dialog
-} // namespace Gui
+}  // namespace Dialog
+}  // namespace Gui
 
-#endif // GUI_DIALOG_DLGSETTINGSLIGHTSOURCES_H
+#endif  // GUI_DIALOG_DLGSETTINGSLIGHTSOURCES_H

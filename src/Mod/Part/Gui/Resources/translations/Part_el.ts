@@ -2846,10 +2846,10 @@ If both lengths are zero, magnitude of direction is used.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="683"/>
-      <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
+      <source>Can't determine normal vector of shape to be extruded. Please use other mode.
 
 (%1)</source>
-      <translation>Αδυναμία προσδιορισμού του κάθετου διανύσματος επιφάνειας του σχήματος προς επέκταση. Παρακαλώ χρησιμοποιήστε κάποια άλλη λειτουργία. 
+      <translation>Αδυναμία προσδιορισμού του κάθετου διανύσματος επιφάνειας του σχήματος προς επέκταση. Παρακαλώ χρησιμοποιήστε κάποια άλλη λειτουργία.
 
 (%1)</translation>
     </message>
@@ -5062,9 +5062,9 @@ but more stable.  Default: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1081"/>
-      <source>Expand shape content.  Changes will take effect next time you use 
+      <source>Expand shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
-      <translation type="unfinished">Expand shape content.  Changes will take effect next time you use 
+      <translation type="unfinished">Expand shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</translation>
     </message>
     <message>
@@ -5074,7 +5074,7 @@ the check geometry tool.  Default: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
-      <source>Show advanced shape content.  Changes will take effect next time you use 
+      <source>Show advanced shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
       <translation>Εμφάνιση περιεχομένου σχήματος για προχωρημένους. Οι αλλαγές θα τεθούν σε ισχύ την επόμενη φορά που θα χρησιμοποιήσετε το εργαλείο ελέγχου γεωμετρίας. Προεπιλογή: ψευδής (false)</translation>
     </message>
@@ -5580,7 +5580,7 @@ in the 3D view for the sweep path.</source>
       <location filename="../../Command.cpp" line="476"/>
       <source>The use of non-solids for boolean operations may lead to unexpected results.
 Do you want to continue?</source>
-      <translation>Η χρήση μη στερεών για πράξεις άλγεβρας Boole ενδέχεται να οδηγήσει σε απρόσμενα αποτελέσματα. 
+      <translation>Η χρήση μη στερεών για πράξεις άλγεβρας Boole ενδέχεται να οδηγήσει σε απρόσμενα αποτελέσματα.
 
 Θέλετε να συνεχίσετε;</translation>
     </message>

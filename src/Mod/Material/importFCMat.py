@@ -37,9 +37,6 @@ if FreeCAD.GuiUp:
     from PySide import QtGui
 
 
-
-
-
 def open(filename):
     "called when freecad wants to open a file"
     docname = os.path.splitext(os.path.basename(filename))[0]
@@ -69,10 +66,10 @@ def export(exportList, filename):
 def decode(name):
     "decodes encoded strings"
     try:
-        decodedName = (name.decode("utf8"))
+        decodedName = name.decode("utf8")
     except UnicodeDecodeError:
         try:
-            decodedName = (name.decode("latin1"))
+            decodedName = name.decode("latin1")
         except UnicodeDecodeError:
             FreeCAD.Console.PrintError("Error: Couldn't determine character encoding")
             decodedName = name
@@ -97,10 +94,12 @@ def decode(name):
 # as we had and we might will have problems again and again
 # https://github.com/berndhahnebach/FreeCAD_bhb/commits/materialdev
 
+
 def read(filename):
     materialManager = Materials.MaterialManager()
     material = materialManager.getMaterialByPath(filename)
     return material.Properties
+
 
 # Metainformation
 # first two lines HAVE, REALLY HAVE to be the same (no comment) in any card file !!!!!
@@ -146,28 +145,29 @@ def read_old(filename):
         # a wrong user edit could break the file
 
         # comment
-        if line.startswith('#'):
+        if line.startswith("#"):
             # a '#' is assumed to be a comment which is ignored
             continue
         # CardName
-        if line.startswith(';') and ln == 1:
+        if line.startswith(";") and ln == 1:
             # print("Line CardName: {}".format(line))
             v = line.split(";")[1].strip()  # Line 1
             if hasattr(v, "decode"):
-                v = v.decode('utf-8')
+                v = v.decode("utf-8")
             card_name_content = v
             if card_name_content != d["CardName"]:
                 FreeCAD.Console.PrintLog(
-                    "File CardName ( {} ) is not content CardName ( {} )\n"
-                    .format(card_name_file, card_name_content)
+                    "File CardName ( {} ) is not content CardName ( {} )\n".format(
+                        card_name_file, card_name_content
+                    )
                 )
 
         # AuthorAndLicense
-        elif line.startswith(';') and ln == 2:
+        elif line.startswith(";") and ln == 2:
             # print("Line AuthorAndLicense: {}".format(line))
             v = line.split(";")[1].strip()  # Line 2
             if hasattr(v, "decode"):
-                v = v.decode('utf-8')
+                v = v.decode("utf-8")
             d["AuthorAndLicense"] = v
 
         # rest
@@ -181,9 +181,10 @@ def read_old(filename):
                 if len(k) == 2:
                     v = k[1].strip()
                     if hasattr(v, "decode"):
-                        v = v.decode('utf-8')
+                        v = v.decode("utf-8")
                     d[k[0].strip()] = v
     return d
+
 
 def read2(filename):
     "reads a FCMat file and returns a dictionary from it"
@@ -223,7 +224,7 @@ def read2(filename):
     d["Cost"] = {}
     d["UserDefined"] = {}
     d["Meta"]["CardName"] = card_name_file  # CardName is the MatCard file name
-    section = ''
+    section = ""
     for ln, line in enumerate(content):
         # print(line)
         # enumerate starts with 0
@@ -233,35 +234,36 @@ def read2(filename):
         # a wrong user edit could break the file
 
         # comment
-        if line.startswith('#'):
+        if line.startswith("#"):
             # a '#' is assumed to be a comment which is ignored
             continue
         # CardName
-        if line.startswith(';') and ln == 0:
+        if line.startswith(";") and ln == 0:
             # print("Line CardName: {}".format(line))
             v = line.split(";")[1].strip()  # Line 1
             if hasattr(v, "decode"):
-                v = v.decode('utf-8')
+                v = v.decode("utf-8")
             card_name_content = v
             if card_name_content != d["Meta"]["CardName"]:
                 FreeCAD.Console.PrintLog(
-                    "File CardName ( {} ) is not content CardName ( {} )\n"
-                    .format(card_name_file, card_name_content)
+                    "File CardName ( {} ) is not content CardName ( {} )\n".format(
+                        card_name_file, card_name_content
+                    )
                 )
 
         # AuthorAndLicense
-        elif line.startswith(';') and ln == 1:
+        elif line.startswith(";") and ln == 1:
             # print("Line AuthorAndLicense: {}".format(line))
             v = line.split(";")[1].strip()  # Line 2
             if hasattr(v, "decode"):
-                v = v.decode('utf-8')
-            d["General"]["AuthorAndLicense"] = v # Move the field to the general group
+                v = v.decode("utf-8")
+            d["General"]["AuthorAndLicense"] = v  # Move the field to the general group
 
         # rest
         else:
             # ; is a Comment
             # [ is a Section
-            if line[0] == '[':
+            if line[0] == "[":
                 # print("parse section '{0}'".format(line))
                 line = line[1:]
                 # print("\tline '{0}'".format(line))
@@ -269,7 +271,7 @@ def read2(filename):
                 if len(k) >= 2:
                     v = k[0].strip()
                     if hasattr(v, "decode"):
-                        v = v.decode('utf-8')
+                        v = v.decode("utf-8")
                     section = v
                     # print("Section '{0}'".format(section))
             elif line[0] not in ";":
@@ -279,7 +281,7 @@ def read2(filename):
                 if len(k) == 2:
                     v = k[1].strip()
                     if hasattr(v, "decode"):
-                        v = v.decode('utf-8')
+                        v = v.decode("utf-8")
                     # print("key '{0}', value '{1}'".format(k[0].strip(), v))
                     d[section][k[0].strip()] = v
     return d
@@ -297,10 +299,10 @@ def write(filename, dictionary, write_group_section=True):
         contents.append({"keyname": groupName})
         if groupName == "Meta":
             header = contents[-1]
-        elif groupName == 'UserDefined':
+        elif groupName == "UserDefined":
             user = contents[-1]
         for properName in group[groupName]:
-            contents[-1][properName] = ''
+            contents[-1][properName] = ""
     for k, i in dictionary.items():
         found = False
         for group in contents:
@@ -315,14 +317,14 @@ def write(filename, dictionary, write_group_section=True):
         # iterating over a dict and changing it is not allowed
         # thus it is iterated over a list of the keys
         for k in list(group):
-            if group[k] == '':
+            if group[k] == "":
                 del group[k]
 
     # card writer
     rev = "{}.{}.{}".format(
         FreeCAD.ConfigGet("BuildVersionMajor"),
         FreeCAD.ConfigGet("BuildVersionMinor"),
-        FreeCAD.ConfigGet("BuildRevision")
+        FreeCAD.ConfigGet("BuildRevision"),
     )
     # print(filename)
     card_name_file = os.path.splitext(os.path.basename(filename))[0]
@@ -340,8 +342,9 @@ def write(filename, dictionary, write_group_section=True):
     if header["CardName"] != card_name_file:
         # CardName is the MatCard file name
         FreeCAD.Console.PrintWarning(
-            "The file name {} is not equal to the card name {}. The file name is used."
-            .format(card_name_file, header["CardName"])
+            "The file name {} is not equal to the card name {}. The file name is used.".format(
+                card_name_file, header["CardName"]
+            )
         )
     f.write("; " + card_name_file + "\n")
     # f.write("; " + header["AuthorAndLicense"] + "\n")
@@ -361,14 +364,14 @@ def write(filename, dictionary, write_group_section=True):
                 if write_group_section is True:
                     f.write("\n[" + s["keyname"] + "]\n")
                 for k, i in s.items():
-                    if (k != "keyname" and i != '') or k == "Name":
+                    if (k != "keyname" and i != "") or k == "Name":
                         # use only keys which are not empty and the name, even if empty
                         f.write(k + " = " + i + "\n")
     f.close()
 
 
 # ***** some code examples ***********************************************************************
-'''
+"""
 from materialtools.cardutils import get_source_path as getsrc
 from importFCMat import read, write
 readmatfile = getsrc() + '/src/Mod/Material/StandardMaterial/Concrete-Generic.FCMat'
@@ -377,4 +380,4 @@ matdict = read(readmatfile)
 matdict
 write(writematfile, matdict)
 
-'''
+"""

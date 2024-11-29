@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <sstream>
+#include <sstream>
 #endif
 
 #include <Base/GeometryPyCXX.h>
@@ -39,7 +39,7 @@ std::string BoundedCurvePy::representation() const
     return "<Curve object>";
 }
 
-PyObject *BoundedCurvePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* BoundedCurvePy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // never create such objects with the constructor
     PyErr_SetString(PyExc_RuntimeError,
@@ -63,7 +63,7 @@ Py::Object BoundedCurvePy::getEndPoint() const
     return Py::Vector(getGeomBoundedCurvePtr()->getEndPoint());
 }
 
-PyObject *BoundedCurvePy::getCustomAttributes(const char* /*attr*/) const
+PyObject* BoundedCurvePy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

@@ -27,7 +27,8 @@
 #include <QCoreApplication>
 #include <FCGlobal.h>
 
-namespace Gui {
+namespace Gui
+{
 
 class GuiExport ModuleIO
 {
@@ -67,6 +68,6 @@ public:
     static void importFiles(const QStringList& filenames, const char* document);
 };
 
-}
+}  // namespace Gui
 
-#endif // GUI_MODULE_IO_H
+#endif  // GUI_MODULE_IO_H

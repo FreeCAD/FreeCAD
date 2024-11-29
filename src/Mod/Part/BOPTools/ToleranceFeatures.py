@@ -1,4 +1,4 @@
-#/***************************************************************************
+# /***************************************************************************
 # *   Copyright (c) 2024 Eric Price (CorvusCorax)                           *
 # *                      <eric.price[at]tuebingen.mpg.de>                   *
 # *                                                                         *
@@ -30,21 +30,26 @@ import Part
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
-# -------------------------- common stuff -------------------------------------
 
-# -------------------------- translation-related code -------------------------
+    # -------------------------- common stuff -------------------------------------
+
+    # -------------------------- translation-related code -------------------------
 
     try:
         _fromUtf8 = QtCore.QString.fromUtf8
     except Exception:
+
         def _fromUtf8(s):
             return s
+
     translate = FreeCAD.Qt.translate
 # --------------------------/translation-related code -------------------------
 
 
 def getParamRefine():
-    return FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Part/Boolean").GetBool("RefineModel")
+    return FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Part/Boolean").GetBool(
+        "RefineModel"
+    )
 
 
 def cmdCreateToleranceSetFeature(name, minTolerance=1e-7, maxTolerance=0):
@@ -53,12 +58,16 @@ def cmdCreateToleranceSetFeature(name, minTolerance=1e-7, maxTolerance=0):
 
     FreeCAD.ActiveDocument.openTransaction("Create ToleranceSet")
     FreeCADGui.addModule("BOPTools.ToleranceFeatures")
-    FreeCADGui.doCommand("j = BOPTools.ToleranceFeatures.makeToleranceSet(name='{name}')".format(name=name))
+    FreeCADGui.doCommand(
+        "j = BOPTools.ToleranceFeatures.makeToleranceSet(name='{name}')".format(name=name)
+    )
     FreeCADGui.doCommand("j.minTolerance = {minTolerance}".format(minTolerance=minTolerance))
     FreeCADGui.doCommand("j.maxTolerance = {maxTolerance}".format(maxTolerance=maxTolerance))
-    FreeCADGui.doCommand("j.Objects = {sel}".format(
-       sel= "["  +  ", ".join(["App.ActiveDocument."+so.Object.Name for so in sel])  +  "]"
-    ))
+    FreeCADGui.doCommand(
+        "j.Objects = {sel}".format(
+            sel="[" + ", ".join(["App.ActiveDocument." + so.Object.Name for so in sel]) + "]"
+        )
+    )
 
     try:
         FreeCADGui.doCommand("j.Proxy.execute(j)")
@@ -66,13 +75,20 @@ def cmdCreateToleranceSetFeature(name, minTolerance=1e-7, maxTolerance=0):
     except Exception as err:
         mb = QtGui.QMessageBox()
         mb.setIcon(mb.Icon.Warning)
-        error_text1 = translate("Part_ToleranceFeatures", "Computing the result failed with an error:")
-        error_text2 = translate("Part_ToleranceFeatures", "Click 'Continue' to create the feature anyway, or 'Abort' to cancel.")
+        error_text1 = translate(
+            "Part_ToleranceFeatures", "Computing the result failed with an error:"
+        )
+        error_text2 = translate(
+            "Part_ToleranceFeatures",
+            "Click 'Continue' to create the feature anyway, or 'Abort' to cancel.",
+        )
         mb.setText(error_text1 + "\n\n" + str(err) + "\n\n" + error_text2)
-        mb.setWindowTitle(translate("Part_ToleranceFeatures","Bad selection", None))
+        mb.setWindowTitle(translate("Part_ToleranceFeatures", "Bad selection", None))
         btnAbort = mb.addButton(QtGui.QMessageBox.StandardButton.Abort)
-        btnOK = mb.addButton(translate("Part_ToleranceFeatures","Continue",None),
-                             QtGui.QMessageBox.ButtonRole.ActionRole)
+        btnOK = mb.addButton(
+            translate("Part_ToleranceFeatures", "Continue", None),
+            QtGui.QMessageBox.ButtonRole.ActionRole,
+        )
         mb.setDefaultButton(btnOK)
         mb.exec_()
 
@@ -80,8 +96,9 @@ def cmdCreateToleranceSetFeature(name, minTolerance=1e-7, maxTolerance=0):
             FreeCAD.ActiveDocument.abortTransaction()
             return
 
-    FreeCADGui.doCommand("for obj in j.ViewObject.Proxy.claimChildren():\n"
-                         "    obj.ViewObject.hide()")
+    FreeCADGui.doCommand(
+        "for obj in j.ViewObject.Proxy.claimChildren():\n" "    obj.ViewObject.hide()"
+    )
 
     FreeCAD.ActiveDocument.commitTransaction()
 
@@ -89,13 +106,15 @@ def cmdCreateToleranceSetFeature(name, minTolerance=1e-7, maxTolerance=0):
 def getIconPath(icon_dot_svg):
     return icon_dot_svg
 
+
 # -------------------------- /common stuff ------------------------------------
 
 # -------------------------- Connect ------------------------------------------
 
+
 def makeToleranceSet(name):
-    '''makeToleranceSet(name): makes an ToleranceSet object.'''
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    """makeToleranceSet(name): makes an ToleranceSet object."""
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", name)
     FeatureToleranceSet(obj)
     if FreeCAD.GuiUp:
         ViewProviderToleranceSet(obj.ViewObject)
@@ -105,33 +124,42 @@ def makeToleranceSet(name):
 class FeatureToleranceSet:
     """The PartToleranceSetFeature object."""
 
-    def __init__(self,obj):
-        obj.addProperty("App::PropertyLinkList","Objects","ToleranceSet","Objects to have tolerance adjusted.")
-        obj.addProperty("App::PropertyBool","Refine","ToleranceSet",
-                        "True = refine resulting shape. False = output as is.")
-        obj.addProperty("App::PropertyLength","minTolerance","ToleranceSet", "0.1 nm")
-        obj.addProperty("App::PropertyLength","maxTolerance","ToleranceSet", "0")
+    def __init__(self, obj):
+        obj.addProperty(
+            "App::PropertyLinkList",
+            "Objects",
+            "ToleranceSet",
+            "Objects to have tolerance adjusted.",
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "Refine",
+            "ToleranceSet",
+            "True = refine resulting shape. False = output as is.",
+        )
+        obj.addProperty("App::PropertyLength", "minTolerance", "ToleranceSet", "0.1 nm")
+        obj.addProperty("App::PropertyLength", "maxTolerance", "ToleranceSet", "0")
         obj.Refine = getParamRefine()
 
         obj.Proxy = self
         self.Type = "FeatureToleranceSet"
 
     def onDocumentRestored(self, obj):
-        if not hasattr(obj, 'maxTolerance'):
-            obj.addProperty("App::PropertyLength","maxTolerance","ToleranceSet", "0")
+        if not hasattr(obj, "maxTolerance"):
+            obj.addProperty("App::PropertyLength", "maxTolerance", "ToleranceSet", "0")
 
-    def execute(self,selfobj):
+    def execute(self, selfobj):
         shapes = []
         for obj in selfobj.Objects:
-            sh = obj.Shape.copy(True,False)
-            sh.limitTolerance(selfobj.minTolerance,selfobj.maxTolerance)
+            sh = obj.Shape.copy(True, False)
+            sh.limitTolerance(selfobj.minTolerance, selfobj.maxTolerance)
             if selfobj.Refine:
-                sh.fix(selfobj.minTolerance,selfobj.minTolerance,selfobj.maxTolerance)
+                sh.fix(selfobj.minTolerance, selfobj.minTolerance, selfobj.maxTolerance)
                 sh = sh.removeSplitter()
-                sh.fix(selfobj.minTolerance,selfobj.minTolerance,selfobj.maxTolerance)
+                sh.fix(selfobj.minTolerance, selfobj.minTolerance, selfobj.maxTolerance)
             shapes.append(sh)
 
-        if len(shapes)>1:
+        if len(shapes) > 1:
             rst = Part.makeCompound(shapes)
         else:
             rst = shapes[0]
@@ -141,7 +169,7 @@ class FeatureToleranceSet:
 class ViewProviderToleranceSet:
     """A View Provider for the Part ToleranceSet feature."""
 
-    def __init__(self,vobj):
+    def __init__(self, vobj):
         vobj.Proxy = self
 
     def getIcon(self):
@@ -154,7 +182,7 @@ class ViewProviderToleranceSet:
     def dumps(self):
         return None
 
-    def loads(self,state):
+    def loads(self, state):
         return None
 
     def claimChildren(self):
@@ -170,16 +198,21 @@ class ViewProviderToleranceSet:
 
     def canDragObjects(self):
         return True
+
     def canDropObjects(self):
         return True
+
     def canDragObject(self, dragged_object):
         return True
+
     def canDropObject(self, incoming_object):
-        return hasattr(incoming_object, 'Shape')
+        return hasattr(incoming_object, "Shape")
+
     def dragObject(self, selfvp, dragged_object):
         objs = self.Object.Objects
         objs.remove(dragged_object)
         self.Object.Objects = objs
+
     def dropObject(self, selfvp, incoming_object):
         self.Object.Objects = self.Object.Objects + [incoming_object]
 
@@ -188,11 +221,14 @@ class CommandToleranceSet:
     """Command to create ToleranceSet feature."""
 
     def GetResources(self):
-        return {'Pixmap': getIconPath("preferences-part_design.svg"),
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_ToleranceSet","Set Tolerance"),
-                'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_ToleranceSet",
-                                                    "Set Tolerance for selected objects.")}
+        return {
+            "Pixmap": getIconPath("preferences-part_design.svg"),
+            "MenuText": QtCore.QT_TRANSLATE_NOOP("Part_ToleranceSet", "Set Tolerance"),
+            "Accel": "",
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+                "Part_ToleranceSet", "Set Tolerance for selected objects."
+            ),
+        }
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelectionEx()) >= 1:
@@ -200,9 +236,10 @@ class CommandToleranceSet:
         else:
             mb = QtGui.QMessageBox()
             mb.setIcon(mb.Icon.Warning)
-            mb.setText(translate("Part_ToleranceSet",
-                                  "Select at least one object or compounds", None))
-            mb.setWindowTitle(translate("Part_ToleranceSet","Bad selection", None))
+            mb.setText(
+                translate("Part_ToleranceSet", "Select at least one object or compounds", None)
+            )
+            mb.setWindowTitle(translate("Part_ToleranceSet", "Bad selection", None))
             mb.exec_()
 
     def IsActive(self):
@@ -211,8 +248,9 @@ class CommandToleranceSet:
         else:
             return False
 
+
 # -------------------------- /Connect -----------------------------------------
 
 
 def addCommands():
-    FreeCADGui.addCommand('Part_ToleranceSet', CommandToleranceSet())
+    FreeCADGui.addCommand("Part_ToleranceSet", CommandToleranceSet())

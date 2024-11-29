@@ -5468,7 +5468,7 @@ La colonne "État" indique si le document a pu être récupéré.</translation>
       <location filename="../DlgObjectSelection.cpp" line="158"/>
       <source>Ignore dependencies and proceed with objects
 originally selected prior to opening this dialog</source>
-      <translation>Ignorer les dépendances et poursuivre avec les objets qui étaient 
+      <translation>Ignorer les dépendances et poursuivre avec les objets qui étaient
 sélectionnés à l'origine avant l'ouverture de cette fenêtre de dialogue.</translation>
     </message>
   </context>

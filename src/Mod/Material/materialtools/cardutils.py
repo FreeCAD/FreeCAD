@@ -42,7 +42,7 @@ unicode = str
 
 
 # ***** card handling data models ****************************************************************
-'''
+"""
 data model:
 materials = { card_path: mat_dict, ... }
 cards = { card_path: card_name, ... }
@@ -56,14 +56,15 @@ a data model which uses a class and attributes as well as methods to access the 
 would makes sense, like some material library class
 this has been done already by eivind see
 https://forum.freecad.org/viewtopic.php?f=38&t=16714
-'''
+"""
+
 
 def get_material_preferred_directory(category=None):
     """
-        Return the preferred material directory. In priority order they are:
-        1. user specified
-        2. user modules folder
-        3. system folder
+    Return the preferred material directory. In priority order they are:
+    1. user specified
+    2. user modules folder
+    3. system folder
     """
     mat_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material/Resources")
     use_built_in_materials = mat_prefs.GetBool("UseBuiltInMaterials", True)
@@ -73,25 +74,31 @@ def get_material_preferred_directory(category=None):
     preferred = None
 
     if use_built_in_materials:
-        if category == 'Fluid':
+        if category == "Fluid":
             preferred = join(
-                FreeCAD.getResourceDir(), "Mod", "Material", "Resources", "Materials", "FluidMaterial"
+                FreeCAD.getResourceDir(),
+                "Mod",
+                "Material",
+                "Resources",
+                "Materials",
+                "FluidMaterial",
             )
 
-        elif category == 'Solid':
+        elif category == "Solid":
             preferred = join(
-                FreeCAD.getResourceDir(), "Mod", "Material", "Resources", "Materials", "StandardMaterial"
+                FreeCAD.getResourceDir(),
+                "Mod",
+                "Material",
+                "Resources",
+                "Materials",
+                "StandardMaterial",
             )
 
         else:
-            preferred = join(
-                FreeCAD.getResourceDir(), "Mod", "Material"
-            )
+            preferred = join(FreeCAD.getResourceDir(), "Mod", "Material")
 
     if use_mat_from_config_dir:
-        user = join(
-            FreeCAD.ConfigGet("UserAppData"), "Material"
-        )
+        user = join(FreeCAD.ConfigGet("UserAppData"), "Material")
         if os.path.isdir(user):
             preferred = user
 
@@ -102,11 +109,12 @@ def get_material_preferred_directory(category=None):
 
     return preferred
 
+
 def get_material_preferred_save_directory():
     """
-        Return the preferred directory for saving materials. In priority order they are:
-        1. user specified
-        2. user modules folder
+    Return the preferred directory for saving materials. In priority order they are:
+    1. user specified
+    2. user modules folder
     """
     mat_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material/Resources")
     use_mat_from_config_dir = mat_prefs.GetBool("UseMaterialsFromConfigDir", True)
@@ -125,9 +133,7 @@ def get_material_preferred_save_directory():
                 pass
 
     if use_mat_from_config_dir:
-        user = join(
-            FreeCAD.ConfigGet("UserAppData"), "Material"
-        )
+        user = join(FreeCAD.ConfigGet("UserAppData"), "Material")
         try:
             if not os.path.isdir(user):
                 os.makedirs(user)
@@ -136,12 +142,11 @@ def get_material_preferred_save_directory():
             print(ex)
             pass
 
-
     return ""
 
 
 # ***** get resources for cards ******************************************************************
-def get_material_resources(category='Solid'):
+def get_material_resources(category="Solid"):
 
     resources = {}  # { resource_path: icon_path, ... }
 
@@ -152,19 +157,31 @@ def get_material_resources(category='Solid'):
     use_mat_from_custom_dir = mat_prefs.GetBool("UseMaterialsFromCustomDir", True)
 
     if use_built_in_materials:
-        if category == 'Fluid':
+        if category == "Fluid":
             builtin_mat_dir = join(
-                FreeCAD.getResourceDir(), "Mod", "Material", "Resources", "Materials", "FluidMaterial"
+                FreeCAD.getResourceDir(),
+                "Mod",
+                "Material",
+                "Resources",
+                "Materials",
+                "FluidMaterial",
             )
 
         else:
             builtin_mat_dir = join(
-                FreeCAD.getResourceDir(), "Mod", "Material", "Resources", "Materials", "StandardMaterial"
+                FreeCAD.getResourceDir(),
+                "Mod",
+                "Material",
+                "Resources",
+                "Materials",
+                "StandardMaterial",
             )
         resources[builtin_mat_dir] = ":/icons/freecad.svg"
 
     if use_mat_from_modules:
-        module_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material/Resources/Modules")
+        module_prefs = FreeCAD.ParamGet(
+            "User parameter:BaseApp/Preferences/Mod/Material/Resources/Modules"
+        )
         module_groups = module_prefs.GetGroups()
         for group in module_groups:
             module = module_prefs.GetGroup(group)
@@ -174,9 +191,7 @@ def get_material_resources(category='Solid'):
                 resources[module_mat_dir] = module_icon_dir
 
     if use_mat_from_config_dir:
-        config_mat_dir = join(
-            FreeCAD.ConfigGet("UserAppData"), "Material"
-        )
+        config_mat_dir = join(FreeCAD.ConfigGet("UserAppData"), "Material")
         if os.path.exists(config_mat_dir):
             resources[config_mat_dir] = ":/icons/preferences-general.svg"
 
@@ -192,6 +207,7 @@ def get_material_resources(category='Solid'):
         #     )
 
     return resources
+
 
 def get_material_libraries():
 
@@ -210,7 +226,9 @@ def get_material_libraries():
         resources["System"] = (builtin_mat_dir, ":/icons/freecad.svg")
 
     if use_mat_from_modules:
-        module_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material/Resources/Modules")
+        module_prefs = FreeCAD.ParamGet(
+            "User parameter:BaseApp/Preferences/Mod/Material/Resources/Modules"
+        )
         module_groups = module_prefs.GetGroups()
         for group in module_groups:
             print("\tGroup - {0}".format(group))
@@ -221,9 +239,7 @@ def get_material_libraries():
                 resources[group] = (module_mat_dir, module_icon)
 
     if use_mat_from_config_dir:
-        config_mat_dir = join(
-            FreeCAD.ConfigGet("UserAppData"), "Material"
-        )
+        config_mat_dir = join(FreeCAD.ConfigGet("UserAppData"), "Material")
         if os.path.exists(config_mat_dir):
             resources["User"] = (config_mat_dir, ":/icons/preferences-general.svg")
 
@@ -237,7 +253,8 @@ def get_material_libraries():
 
 def list_cards(mat_dir, icon):
     import glob
-    a_path = mat_dir + '/**/*.FCMat'
+
+    a_path = mat_dir + "/**/*.FCMat"
     print("path = '{0}'".format(a_path))
     dir_path_list = glob.glob(a_path, recursive=True)
     # Need to handle duplicates
@@ -250,16 +267,18 @@ def list_cards(mat_dir, icon):
 
     return cards
 
+
 def output_resources(resources):
-    FreeCAD.Console.PrintMessage('Directories in which we will look for material cards:\n')
+    FreeCAD.Console.PrintMessage("Directories in which we will look for material cards:\n")
     for path in resources.keys():
-        FreeCAD.Console.PrintMessage('  {}\n'.format(path))
+        FreeCAD.Console.PrintMessage("  {}\n".format(path))
 
 
 # ***** card handling ****************************************************************************
 # used in material editor and FEM material task panels
 
-def import_materials(category='Solid', template=False):
+
+def import_materials(category="Solid", template=False):
     materialManager = Materials.MaterialManager()
     mats = materialManager.Materials
     materials = {}
@@ -268,8 +287,8 @@ def import_materials(category='Solid', template=False):
     for matUUID in mats:
         mat = materialManager.getMaterial(matUUID)
         physicalModels = mat.PhysicalModels
-        fluid = ('1ae66d8c-1ba1-4211-ad12-b9917573b202' in physicalModels)
-        if (category == 'Solid' and not fluid) or (category != 'Solid' and fluid):
+        fluid = "1ae66d8c-1ba1-4211-ad12-b9917573b202" in physicalModels
+        if (category == "Solid" and not fluid) or (category != "Solid" and fluid):
             path = mat.LibraryRoot + "/" + mat.Directory
 
             materials[path] = mat.Properties
@@ -278,11 +297,13 @@ def import_materials(category='Solid', template=False):
 
     return (materials, cards, icons)
 
+
 def add_cards_from_a_dir(materials, cards, icons, mat_dir, icon, template=False):
     # fill materials and icons
     import glob
     from importFCMat import read
-    dir_path_list = glob.glob(mat_dir + '/*' + ".FCMat")
+
+    dir_path_list = glob.glob(mat_dir + "/*" + ".FCMat")
     mat_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material/Cards")
     delete_duplicates = mat_prefs.GetBool("DeleteDuplicates", True)
     # duplicates are indicated on equality of mat dict
@@ -292,12 +313,13 @@ def add_cards_from_a_dir(materials, cards, icons, mat_dir, icon, template=False)
             mat_dict = read(a_path)
         except Exception:
             FreeCAD.Console.PrintError(
-                'Error on reading card data. The card data will be empty for card:\n{}\n'
-                .format(a_path)
+                "Error on reading card data. The card data will be empty for card:\n{}\n".format(
+                    a_path
+                )
             )
             mat_dict = {}
         card_name = os.path.splitext(os.path.basename(a_path))[0]
-        if (card_name == 'TEMPLATE') and (template is False):
+        if (card_name == "TEMPLATE") and (template is False):
             continue
         if delete_duplicates is False:
             materials[a_path] = mat_dict
@@ -314,45 +336,44 @@ def add_cards_from_a_dir(materials, cards, icons, mat_dir, icon, template=False)
 
 def output_trio(trio):
     materials, cards, icons = trio
-    FreeCAD.Console.PrintMessage('\n\n')
+    FreeCAD.Console.PrintMessage("\n\n")
     for mat_card in materials:
         FreeCAD.Console.PrintMessage(
-            '{} --> {} -->{}\n'
-            .format(cards[mat_card], mat_card, icons[mat_card])
+            "{} --> {} -->{}\n".format(cards[mat_card], mat_card, icons[mat_card])
         )
-    FreeCAD.Console.PrintMessage('\n\n')
+    FreeCAD.Console.PrintMessage("\n\n")
 
 
 def output_cards(cards):
-    FreeCAD.Console.PrintMessage('\n\n')
+    FreeCAD.Console.PrintMessage("\n\n")
     for mat_card in cards:
-        FreeCAD.Console.PrintMessage('{} --> {}\n'.format(mat_card, cards[mat_card]))
-    FreeCAD.Console.PrintMessage('\n\n')
+        FreeCAD.Console.PrintMessage("{} --> {}\n".format(mat_card, cards[mat_card]))
+    FreeCAD.Console.PrintMessage("\n\n")
 
 
 def output_icons(icons):
-    FreeCAD.Console.PrintMessage('\n\n')
+    FreeCAD.Console.PrintMessage("\n\n")
     for mat_card in icons:
-        FreeCAD.Console.PrintMessage('{} --> {}\n'.format(mat_card, icons[mat_card]))
-    FreeCAD.Console.PrintMessage('\n\n')
+        FreeCAD.Console.PrintMessage("{} --> {}\n".format(mat_card, icons[mat_card]))
+    FreeCAD.Console.PrintMessage("\n\n")
 
 
 def output_materials(materials):
-    FreeCAD.Console.PrintMessage('\n\n')
+    FreeCAD.Console.PrintMessage("\n\n")
     for mat_card in materials:
-        FreeCAD.Console.PrintMessage('{}\n'.format(mat_card))
+        FreeCAD.Console.PrintMessage("{}\n".format(mat_card))
         output_material_param(materials[mat_card])
-    FreeCAD.Console.PrintMessage('\n\n')
+    FreeCAD.Console.PrintMessage("\n\n")
 
 
 def output_material_param(mat_dict):
     # thus we check for None
     if not mat_dict:
-        FreeCAD.Console.PrintMessage('  empty matdict\n')
+        FreeCAD.Console.PrintMessage("  empty matdict\n")
     else:
         for p in mat_dict:
-            FreeCAD.Console.PrintMessage('   {} --> {}\n'.format(p, mat_dict[p]))
-    FreeCAD.Console.PrintMessage('\n')
+            FreeCAD.Console.PrintMessage("   {} --> {}\n".format(p, mat_dict[p]))
+    FreeCAD.Console.PrintMessage("\n")
 
 
 # ***** material card template *******************************************************************
@@ -366,13 +387,15 @@ def get_material_template(withSpaces=False):
     print("Call to get_material_template() successful")
 
     import yaml
+
     template_data = yaml.safe_load(
-        open(join(FreeCAD.ConfigGet('AppHomePath'), 'Mod/Material/Templatematerial.yml'))
+        open(join(FreeCAD.ConfigGet("AppHomePath"), "Mod/Material/Templatematerial.yml"))
     )
     if withSpaces:
         # on attributes, add a space before a capital letter
         # will be used for better display in the ui
         import re
+
         new_template = []
         for group in template_data:
             new_group = {}
@@ -391,47 +414,43 @@ def get_material_template(withSpaces=False):
 
 
 def create_mat_tools_header():
-    headers = join(get_source_path(), 'src/Mod/Material/StandardMaterial/Tools/headers')
+    headers = join(get_source_path(), "src/Mod/Material/StandardMaterial/Tools/headers")
     # print(headers)
     if not os.path.isfile(headers):
-        FreeCAD.Console.PrintError(
-            'file not found: {}'.format(headers)
-        )
+        FreeCAD.Console.PrintError("file not found: {}".format(headers))
         return
     template_data = get_material_template()
     f = open(headers, "w")
     for group in template_data:
         gg = list(group)[0]  # group dict has only one key
         # do not write group UserDefined
-        if gg != 'UserDefined':
+        if gg != "UserDefined":
             for prop_name in group[gg]:
-                if prop_name != 'None':
-                    f.write(prop_name + '\n')
+                if prop_name != "None":
+                    f.write(prop_name + "\n")
     f.close
 
 
 def create_mat_template_card(write_group_section=True):
-    template_card = join(get_source_path(), 'src/Mod/Material/StandardMaterial/TEMPLATE.FCMat')
+    template_card = join(get_source_path(), "src/Mod/Material/StandardMaterial/TEMPLATE.FCMat")
     if not os.path.isfile(template_card):
-        FreeCAD.Console.PrintError(
-            'file not found: {}'.format(template_card)
-        )
+        FreeCAD.Console.PrintError("file not found: {}".format(template_card))
         return
     rev = "{}.{}.{}".format(
         FreeCAD.ConfigGet("BuildVersionMajor"),
         FreeCAD.ConfigGet("BuildVersionMinor"),
-        FreeCAD.ConfigGet("BuildRevision")
+        FreeCAD.ConfigGet("BuildRevision"),
     )
     template_data = get_material_template()
     f = open(template_card, "w")
-    f.write('; TEMPLATE\n')
-    f.write('; (c) 2013-2015 Juergen Riegel (CC-BY 3.0)\n')
-    f.write('; information about the content of such cards can be found on the wiki:\n')
-    f.write('; https://www.freecad.org/wiki/Material\n')
-    f.write(': this template card was created by FreeCAD ' + rev + '\n\n')
-    f.write('; localized Name, Description and KindOfMaterial uses 2 letter codes\n')
-    f.write('; defined in ISO-639-1, see https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes\n')
-    f.write('; find unit information in src/App/FreeCADInit.py')
+    f.write("; TEMPLATE\n")
+    f.write("; (c) 2013-2015 Juergen Riegel (CC-BY 3.0)\n")
+    f.write("; information about the content of such cards can be found on the wiki:\n")
+    f.write("; https://www.freecad.org/wiki/Material\n")
+    f.write(": this template card was created by FreeCAD " + rev + "\n\n")
+    f.write("; localized Name, Description and KindOfMaterial uses 2 letter codes\n")
+    f.write("; defined in ISO-639-1, see https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes\n")
+    f.write("; find unit information in src/App/FreeCADInit.py")
     # write sections
     # write standard FCMat section if write group section parameter is set to False
     if write_group_section is False:
@@ -439,21 +458,21 @@ def create_mat_template_card(write_group_section=True):
     for group in template_data:
         gg = list(group)[0]  # group dict has only one key
         # do not write groups Meta and UserDefined
-        if (gg != 'Meta') and (gg != 'UserDefined'):
+        if (gg != "Meta") and (gg != "UserDefined"):
             # only write group section if write group section parameter is set to True
             if write_group_section is True:
                 f.write("\n\n[" + gg + "]")
             for prop_name in group[gg]:
-                f.write('\n')
-                description = group[gg][prop_name]['Description']
+                f.write("\n")
+                description = group[gg][prop_name]["Description"]
                 if not description.strip():
-                    f.write('; Description to be updated\n')
+                    f.write("; Description to be updated\n")
                 else:
-                    f.write('; ' + description + '\n')
-                url = group[gg][prop_name]['URL']
+                    f.write("; " + description + "\n")
+                url = group[gg][prop_name]["URL"]
                 if url.strip():
-                    f.write('; ' + url + '\n')
-                f.write(prop_name + ' =\n')
+                    f.write("; " + url + "\n")
+                f.write(prop_name + " =\n")
     f.close
 
 
@@ -461,14 +480,14 @@ def create_mat_template_card(write_group_section=True):
 # thus the source dir is needed, this might not work on windows
 def get_source_path():
     # in the file 'Makefile' in build directory the cmake variable CMAKE_SOURCE_DIR has the dir
-    source_dir = ''
-    make_file = join(FreeCAD.ConfigGet('AppHomePath'), 'Makefile')
-    f = open(make_file, 'r')
+    source_dir = ""
+    make_file = join(FreeCAD.ConfigGet("AppHomePath"), "Makefile")
+    f = open(make_file, "r")
     lines = f.readlines()
     f.close()
     for line in lines:
-        if line.startswith('CMAKE_SOURCE_DIR'):
-            source_dir = line.lstrip('CMAKE_SOURCE_DIR = ')
+        if line.startswith("CMAKE_SOURCE_DIR"):
+            source_dir = line.lstrip("CMAKE_SOURCE_DIR = ")
             source_dir = source_dir.rstrip()  # get rid on new line and white spaces etc.
             break
     # print(source_dir)
@@ -482,8 +501,8 @@ def get_known_material_quantity_parameter():
     for group in template_data:
         gname = list(group)[0]  # group dict has only one key
         for prop_name in group[gname]:
-            prop_type = group[gname][prop_name]['Type']
-            if prop_type == 'Quantity':
+            prop_type = group[gname][prop_name]["Type"]
+            if prop_type == "Quantity":
                 # print('{} --> {}'.format(prop_name, prop_type))
                 known_quantities.append(prop_name)
     return known_quantities
@@ -491,7 +510,7 @@ def get_known_material_quantity_parameter():
 
 # ***** debug known and unknown material parameter *********************************************
 def get_and_output_all_carddata(cards):
-    print('\n\n\nSTART--get_and_output_all_carddata\n--------------------')
+    print("\n\n\nSTART--get_and_output_all_carddata\n--------------------")
     # get all registered material property keys
     registed_cardkeys = []
     template_data = get_material_template()
@@ -507,15 +526,16 @@ def get_and_output_all_carddata(cards):
     all_cards_and_data = {}  # {cardfilename: ['path', materialdict]}
     for card in cards:
         from importFCMat import read
+
         d = read(cards[card])
         all_cards_and_data[card] = [cards[card], d]
-    '''
+    """
     for card in all_cards_and_data:
         print(card)
         print(all_cards_and_data[card][0])
         print(all_cards_and_data[card][1])
         print('\n')
-    '''
+    """
 
     # find not registered and registered keys in the used data
     used_and_registered_cardkeys = []
@@ -535,22 +555,19 @@ def get_and_output_all_carddata(cards):
     used_and_not_registered_cardkeys = sorted(list(set(used_and_not_registered_cardkeys)))
     registered_and_not_used_cardkeys = sorted(list(set(registered_and_not_used_cardkeys)))
     FreeCAD.Console.PrintMessage(
-        '\nused_and_registered_cardkeys:\n{}\n'
-        .format(used_and_registered_cardkeys)
+        "\nused_and_registered_cardkeys:\n{}\n".format(used_and_registered_cardkeys)
     )
     FreeCAD.Console.PrintMessage(
-        '\nused_and_not_registered_cardkeys:\n{}\n'
-        .format(used_and_not_registered_cardkeys)
+        "\nused_and_not_registered_cardkeys:\n{}\n".format(used_and_not_registered_cardkeys)
     )
     FreeCAD.Console.PrintMessage(
-        '\nregistered_and_not_used_cardkeys:\n{}\n'
-        .format(registered_and_not_used_cardkeys)
+        "\nregistered_and_not_used_cardkeys:\n{}\n".format(registered_and_not_used_cardkeys)
     )
 
     # still there might be lots of properties in the template
     # which are not used in other materials
     # but the tmplate is handled here like a material
-    print('--------------------\nget_and_output_all_carddata--END\n\n\n')
+    print("--------------------\nget_and_output_all_carddata--END\n\n\n")
 
 
 # ***** process multiple material cards **********************************************************
@@ -558,9 +575,10 @@ def read_cards_from_path(cards_path):
     from os import listdir
     from os.path import isfile, join, basename, splitext
     from importFCMat import read
+
     only_files = [f for f in listdir(cards_path) if isfile(join(cards_path, f))]
     # to make sure all file lower and upper and mixed endings are found, use upper and .FCMAT
-    mat_files = [f for f in only_files if basename(splitext(f)[1]).upper() == '.FCMAT']
+    mat_files = [f for f in only_files if basename(splitext(f)[1]).upper() == ".FCMAT"]
     # print(mat_files)
     mat_cards = []
     for f in sorted(mat_files):
@@ -571,11 +589,12 @@ def read_cards_from_path(cards_path):
 def write_cards_to_path(cards_path, cards_data, write_group_section=True, write_template=False):
     from importFCMat import write
     from os.path import join
+
     for card_data in cards_data:
-        if (card_data['CardName'] == 'TEMPLATE') and (write_template is False):
+        if (card_data["CardName"] == "TEMPLATE") and (write_template is False):
             continue
         else:
-            card_path = join(cards_path, (card_data['CardName'] + '.FCMat'))
+            card_path = join(cards_path, (card_data["CardName"] + ".FCMat"))
             # print(card_path)
             if write_group_section is True:
                 write(card_path, card_data, True)
@@ -589,6 +608,7 @@ def check_parm_unit(param):
     # for properties with underscores (vectorial values), we must
     # strip the part after the first underscore to obtain the bound unit
     from FreeCAD import Units
+
     if param.find("_") != -1:
         param = param.split("_")[0]
     if hasattr(Units, param):
@@ -600,6 +620,7 @@ def check_parm_unit(param):
 def check_value_unit(param, value):
     # check unit
     from FreeCAD import Units
+
     # FreeCAD.Console.PrintMessage('{} --> {}\n'.format(param, value))
     if hasattr(Units, param):
         # get unit and other information known by FreeCAD for this parameter
@@ -616,41 +637,32 @@ def check_value_unit(param, value):
                     return True
                 elif user_unit == 0:
                     FreeCAD.Console.PrintMessage(
-                        '{} Value {} = 0 for {}\n'
-                        .format(some_text, value, param)
+                        "{} Value {} = 0 for {}\n".format(some_text, value, param)
                     )
                     return True
                 else:
                     FreeCAD.Console.PrintError(
-                        '{} Unknown problem in unit conversion.\n'
-                        .format(some_text)
+                        "{} Unknown problem in unit conversion.\n".format(some_text)
                     )
             except ValueError:
                 unitproblem = value.split()[-1]
                 FreeCAD.Console.PrintError(
-                    '{} Unit {} is known by FreeCAD, but wrong for parameter {}.\n'
-                    .format(some_text, unitproblem, param)
+                    "{} Unit {} is known by FreeCAD, but wrong for parameter {}.\n".format(
+                        some_text, unitproblem, param
+                    )
                 )
             except Exception:
-                FreeCAD.Console.PrintError(
-                    '{} Unknown problem.\n'
-                    .format(some_text)
-                )
+                FreeCAD.Console.PrintError("{} Unknown problem.\n".format(some_text))
         except ValueError:
             unitproblem = value.split()[-1]
             FreeCAD.Console.PrintError(
-                '{} Unit {} is unknown to FreeCAD.\n'
-                .format(some_text, unitproblem)
+                "{} Unit {} is unknown to FreeCAD.\n".format(some_text, unitproblem)
             )
         except Exception:
-            FreeCAD.Console.PrintError(
-                '{} Unknown problem.\n'
-                .format(some_text)
-            )
+            FreeCAD.Console.PrintError("{} Unknown problem.\n".format(some_text))
     else:
         FreeCAD.Console.PrintError(
-            'Parameter {} is unknown to the FreeCAD unit system.\n'
-            .format(param)
+            "Parameter {} is unknown to the FreeCAD unit system.\n".format(param)
         )
     return False
 
@@ -658,64 +670,46 @@ def check_value_unit(param, value):
 def output_parm_unit_info(param):
     # check unit
     from FreeCAD import Units
-    FreeCAD.Console.PrintMessage('{}\n'.format(param))
+
+    FreeCAD.Console.PrintMessage("{}\n".format(param))
     if hasattr(Units, param):
         FreeCAD.Console.PrintMessage(
-            '\nParameter {} is known to FreeCAD unit system.'
-            .format(param)
+            "\nParameter {} is known to FreeCAD unit system.".format(param)
         )
 
         # get unit and other information known by FreeCAD for this parameter
         unit = getattr(Units, param)
-        FreeCAD.Console.PrintMessage(
-            '{}\n'
-            .format(unit)
-        )
+        FreeCAD.Console.PrintMessage("{}\n".format(unit))
 
         quantity = Units.Quantity(1, unit)
-        FreeCAD.Console.PrintMessage(
-            '{}\n'
-            .format(quantity)
-        )
+        FreeCAD.Console.PrintMessage("{}\n".format(quantity))
 
         user_preferred_unit = quantity.getUserPreferred()[2]
-        FreeCAD.Console.PrintMessage(
-            '{}\n'
-            .format(user_preferred_unit)
-        )
+        FreeCAD.Console.PrintMessage("{}\n".format(user_preferred_unit))
 
     else:
         FreeCAD.Console.PrintMessage(
-            'Parameter {} is Unknown to the FreeCAD unit system.'
-            .format(param)
+            "Parameter {} is Unknown to the FreeCAD unit system.".format(param)
         )
 
 
 def output_value_unit_info(param, value):
     # check unit
     from FreeCAD import Units
+
     some_text = "Parameter: {} --> value: {} -->".format(param, value)
-    FreeCAD.Console.PrintMessage('{} unit information:'.format(some_text))
+    FreeCAD.Console.PrintMessage("{} unit information:".format(some_text))
     if hasattr(Units, param):
 
         # get unit and other information known by FreeCAD for this parameter
         unit = getattr(Units, param)
-        FreeCAD.Console.PrintMessage(
-            '{}\n'
-            .format(unit)
-        )
+        FreeCAD.Console.PrintMessage("{}\n".format(unit))
 
         quantity = Units.Quantity(1, unit)
-        FreeCAD.Console.PrintMessage(
-            '{}\n'
-            .format(quantity)
-        )
+        FreeCAD.Console.PrintMessage("{}\n".format(quantity))
 
         user_preferred_unit = quantity.getUserPreferred()[2]
-        FreeCAD.Console.PrintMessage(
-            '{}\n'
-            .format(user_preferred_unit)
-        )
+        FreeCAD.Console.PrintMessage("{}\n".format(user_preferred_unit))
 
         # test unit from mat dict value
         try:
@@ -723,38 +717,30 @@ def output_value_unit_info(param, value):
             try:
                 user_unit = param_value.getValueAs(user_preferred_unit)
                 FreeCAD.Console.PrintMessage(
-                    '{} Value in preferred unit: {}\n'
-                    .format(some_text, user_unit)
+                    "{} Value in preferred unit: {}\n".format(some_text, user_unit)
                 )
             except ValueError:
                 unitproblem = value.split()[-1]
                 FreeCAD.Console.PrintError(
-                    '{} Unit {} is known by FreeCAD, but wrong for parameter {}.\n'
-                    .format(some_text, unitproblem, param)
+                    "{} Unit {} is known by FreeCAD, but wrong for parameter {}.\n".format(
+                        some_text, unitproblem, param
+                    )
                 )
             except Exception:
-                FreeCAD.Console.PrintError(
-                    '{} Unknown problem.\n'
-                    .format(some_text)
-                )
+                FreeCAD.Console.PrintError("{} Unknown problem.\n".format(some_text))
 
         except ValueError:
             unitproblem = value.split()[-1]
             FreeCAD.Console.PrintError(
-                '{} Unit {} is unknown by FreeCAD.\n'
-                .format(some_text, unitproblem)
+                "{} Unit {} is unknown by FreeCAD.\n".format(some_text, unitproblem)
             )
 
         except Exception:
-            FreeCAD.Console.PrintError(
-                '{} Unknown problem.\n'
-                .format(some_text)
-            )
+            FreeCAD.Console.PrintError("{} Unknown problem.\n".format(some_text))
 
     else:
         FreeCAD.Console.PrintMessage(
-            'Parameter {} is unknown to the FreeCAD unit system.'
-            .format(param)
+            "Parameter {} is unknown to the FreeCAD unit system.".format(param)
         )
 
 
@@ -777,7 +763,7 @@ def check_mat_units(mat):
 
 
 # ***** some code examples ***********************************************************************
-'''
+"""
 # cards, params, icons and resources **********
 from materialtools.cardutils import get_material_resources as getres
 from materialtools.cardutils import output_resources as outres
@@ -958,4 +944,4 @@ Units.LuminousIntensity
 Units.Angle
 
 
-'''
+"""

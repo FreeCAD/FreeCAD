@@ -23,10 +23,10 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Interface_Static.hxx>
-# include <IGESControl_Controller.hxx>
-# include <STEPControl_Controller.hxx>
-# include <Standard_Version.hxx>
+#include <Interface_Static.hxx>
+#include <IGESControl_Controller.hxx>
+#include <STEPControl_Controller.hxx>
+#include <Standard_Version.hxx>
 #endif
 
 #include <App/Application.h>
@@ -188,7 +188,8 @@
 #include "MeasureClient.h"
 #include <FuzzyHelper.h>
 
-namespace Part {
+namespace Part
+{
 extern PyObject* initModule();
 }
 
@@ -565,9 +566,9 @@ PyMOD_INIT_FUNC(Part)
 
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
-    
+
     Part::FuzzyHelper::setBooleanFuzzy(hGrp->GetFloat("BooleanFuzzy",10.0));
-    
+
     PyMOD_Return(partModule);
 }
 // clang-format on

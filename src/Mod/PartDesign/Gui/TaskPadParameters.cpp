@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Precision.hxx>
+#include <Precision.hxx>
 #endif
 
 #include <Mod/PartDesign/App/FeaturePad.h>
@@ -36,7 +36,7 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskPadParameters */
 
-TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, bool newObj)
+TaskPadParameters::TaskPadParameters(ViewProviderPad* PadView, QWidget* parent, bool newObj)
     : TaskExtrudeParameters(PadView, parent, "PartDesign_Pad", tr("Pad parameters"))
 {
     ui->offsetEdit->setToolTip(tr("Offset from face at which pad will end"));
@@ -86,36 +86,38 @@ void TaskPadParameters::updateUI(int index)
 
 void TaskPadParameters::onModeChanged(int index)
 {
-   auto pcPad = getObject<PartDesign::Pad>();
+    auto pcPad = getObject<PartDesign::Pad>();
 
     switch (static_cast<Mode>(index)) {
-    case Mode::Dimension:
-        pcPad->Type.setValue("Length");
-        // Avoid error message
-        if (ui->lengthEdit->value() < Base::Quantity(Precision::Confusion(), Base::Unit::Length))
-            ui->lengthEdit->setValue(5.0);
-        break;
-    case Mode::ToLast:
-        pcPad->Type.setValue("UpToLast");
-        break;
-    case Mode::ToFirst:
-        pcPad->Type.setValue("UpToFirst");
-        break;
-    case Mode::ToFace:
-        // Note: ui->checkBoxReversed is purposely enabled because the selected face
-        // could be a circular one around the sketch
-        pcPad->Type.setValue("UpToFace");
-        if (ui->lineFaceName->text().isEmpty()) {
-            ui->buttonFace->setChecked(true);
-            handleLineFaceNameClick(); // sets placeholder text
-        }
-        break;
-    case Mode::TwoDimensions:
-        pcPad->Type.setValue("TwoLengths");
-        break;
-    case Mode::ToShape:
-        pcPad->Type.setValue("UpToShape");
-        break;
+        case Mode::Dimension:
+            pcPad->Type.setValue("Length");
+            // Avoid error message
+            if (ui->lengthEdit->value()
+                < Base::Quantity(Precision::Confusion(), Base::Unit::Length)) {
+                ui->lengthEdit->setValue(5.0);
+            }
+            break;
+        case Mode::ToLast:
+            pcPad->Type.setValue("UpToLast");
+            break;
+        case Mode::ToFirst:
+            pcPad->Type.setValue("UpToFirst");
+            break;
+        case Mode::ToFace:
+            // Note: ui->checkBoxReversed is purposely enabled because the selected face
+            // could be a circular one around the sketch
+            pcPad->Type.setValue("UpToFace");
+            if (ui->lineFaceName->text().isEmpty()) {
+                ui->buttonFace->setChecked(true);
+                handleLineFaceNameClick();  // sets placeholder text
+            }
+            break;
+        case Mode::TwoDimensions:
+            pcPad->Type.setValue("TwoLengths");
+            break;
+        case Mode::ToShape:
+            pcPad->Type.setValue("UpToShape");
+            break;
     }
 
     updateUI(index);
@@ -136,8 +138,9 @@ void TaskPadParameters::apply()
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgPadParameters::TaskDlgPadParameters(ViewProviderPad *PadView, bool /*newObj*/)
-    : TaskDlgExtrudeParameters(PadView), parameters(new TaskPadParameters(PadView))
+TaskDlgPadParameters::TaskDlgPadParameters(ViewProviderPad* PadView, bool /*newObj*/)
+    : TaskDlgExtrudeParameters(PadView)
+    , parameters(new TaskPadParameters(PadView))
 {
     Content.push_back(parameters);
 }

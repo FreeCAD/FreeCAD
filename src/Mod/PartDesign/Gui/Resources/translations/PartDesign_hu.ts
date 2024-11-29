@@ -2393,7 +2393,7 @@ a modellből referenciaként</translation>
       <location filename="../../TaskPadPocketParameters.ui" line="294"/>
       <source>Use custom vector for pad direction, otherwise
 the sketch plane's normal vector will be used</source>
-      <translation>Saját vektor használata a tömb irányához, különben 
+      <translation>Saját vektor használata a tömb irányához, különben
 a vázlat sík normál vektorát használja</translation>
     </message>
     <message>
@@ -3560,28 +3560,28 @@ click again to end selection</source>
       <location filename="../../CommandBody.cpp" line="157"/>
       <source>The selected shape consists of multiple solids.
 This may lead to unexpected results.</source>
-      <translation>A kijelölt alakzat több szilárd testből áll. 
+      <translation>A kijelölt alakzat több szilárd testből áll.
 Ez nem várt eredményekhez vezethet.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="161"/>
       <source>The selected shape consists of multiple shells.
 This may lead to unexpected results.</source>
-      <translation>A kijelölt alakzat több kéregből áll. 
+      <translation>A kijelölt alakzat több kéregből áll.
 Ez nem várt eredményekhez vezethet.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="165"/>
       <source>The selected shape consists of only a shell.
 This may lead to unexpected results.</source>
-      <translation>A kijelölt alakzat egy kéregből áll. 
+      <translation>A kijelölt alakzat egy kéregből áll.
 Ez nem várt eredményekhez vezethet.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="169"/>
       <source>The selected shape consists of multiple solids or shells.
 This may lead to unexpected results.</source>
-      <translation>A kijelölt alakzat több szilárd testből vagy kéregből áll. 
+      <translation>A kijelölt alakzat több szilárd testből vagy kéregből áll.
 Ez nem várt eredményekhez vezethet.</translation>
     </message>
     <message>
@@ -4200,7 +4200,7 @@ Viszont később is bármikor migrálhat a "Alkatrész Tervezés -&gt; Migrálá
       <location filename="../../TaskHoleParameters.ui" line="466"/>
       <source>Live update of changes to the thread
 Note that the calculation can take some time</source>
-      <translation>A menet változásainak élő frissítése 
+      <translation>A menet változásainak élő frissítése
 Megjegyzés: a számítás eltarthat egy ideig</translation>
     </message>
     <message>

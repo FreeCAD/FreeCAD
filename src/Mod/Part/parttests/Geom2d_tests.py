@@ -1,8 +1,10 @@
 import FreeCAD
+
 vec2 = FreeCAD.Base.Vector2d
 import Part
 
 import unittest
+
 
 class Geom2dTests(unittest.TestCase):
 

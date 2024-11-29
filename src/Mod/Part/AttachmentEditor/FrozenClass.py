@@ -1,4 +1,4 @@
-#/***************************************************************************
+# /***************************************************************************
 # *   Copyright (c) 2016 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
@@ -20,13 +20,18 @@
 # *                                                                         *
 # ***************************************************************************/
 
+
 # adapted from http://stackoverflow.com/a/3603824/6285007
 class FrozenClass(object):
-    '''FrozenClass: prevents adding new attributes to class outside of __init__'''
+    """FrozenClass: prevents adding new attributes to class outside of __init__"""
+
     __isfrozen = False
+
     def __setattr__(self, key, value):
         if self.__isfrozen and not hasattr(self, key):
-            raise TypeError( "{cls} has no attribute {attr}".format(cls= self.__class__.__name__, attr= key) )
+            raise TypeError(
+                "{cls} has no attribute {attr}".format(cls=self.__class__.__name__, attr=key)
+            )
         object.__setattr__(self, key, value)
 
     def _freeze(self):
@@ -34,4 +39,3 @@ class FrozenClass(object):
 
     def _unfreeze(self):
         self.__isfrozen = False
-

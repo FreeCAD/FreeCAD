@@ -759,8 +759,8 @@ Note: your changes will be applied when you next switch workbenches\n"));
      * if not, they need to click New button to create one first
      **/
 
-    QString instructions2 =
-        tr("Walkthrough instructions: Select macro from list, then click right arrow button (->), then Close.");
+    QString instructions2 = tr("Walkthrough instructions: Select macro from list, then click right "
+                               "arrow button (->), then Close.");
     auto workbenchBox =
         setupToolbarPage->findChild<QComboBox*>(QString::fromLatin1("workbenchBox"));
     if (!workbenchBox) {
@@ -786,8 +786,9 @@ Note: your changes will be applied when you next switch workbenches\n"));
             }
             else {
                 newButton->setStyleSheet(QString::fromLatin1("color:red"));
-                instructions2 = tr("Walkthrough instructions: Click New, select macro, then right arrow (->) "
-                                   "button, then Close.");
+                instructions2 =
+                    tr("Walkthrough instructions: Click New, select macro, then right arrow (->) "
+                       "button, then Close.");
             }
         }
     }

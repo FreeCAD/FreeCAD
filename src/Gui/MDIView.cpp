@@ -23,18 +23,18 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <boost_signals2.hpp>
-# include <boost/core/ignore_unused.hpp>
-# include <QApplication>
-# include <QEvent>
-# include <QCloseEvent>
-# include <QMdiSubWindow>
-# include <QPrintDialog>
-# include <QPrintPreviewDialog>
-# include <QPrinter>
-# include <QPrinterInfo>
-# include <QRegularExpression>
-# include <QRegularExpressionMatch>
+#include <boost_signals2.hpp>
+#include <boost/core/ignore_unused.hpp>
+#include <QApplication>
+#include <QEvent>
+#include <QCloseEvent>
+#include <QMdiSubWindow>
+#include <QPrintDialog>
+#include <QPrintPreviewDialog>
+#include <QPrinter>
+#include <QPrinterInfo>
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
 #endif
 
 #include <Base/Interpreter.h>
@@ -52,36 +52,35 @@
 using namespace Gui;
 namespace sp = std::placeholders;
 
-TYPESYSTEM_SOURCE_ABSTRACT(Gui::MDIView,Gui::BaseView)
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::MDIView, Gui::BaseView)
 
 
-MDIView::MDIView(Gui::Document* pcDocument,QWidget* parent, Qt::WindowFlags wflags)
-  : QMainWindow(parent, wflags)
-  , BaseView(pcDocument)
-  , pythonObject(nullptr)
-  , currentMode(Child)
-  , wstate(Qt::WindowNoState)
-  , ActiveObjects(pcDocument)
+MDIView::MDIView(Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags)
+    : QMainWindow(parent, wflags)
+    , BaseView(pcDocument)
+    , pythonObject(nullptr)
+    , currentMode(Child)
+    , wstate(Qt::WindowNoState)
+    , ActiveObjects(pcDocument)
 {
     setAttribute(Qt::WA_DeleteOnClose);
 
-    if (pcDocument)
-    {
-      //NOLINTBEGIN
-      connectDelObject = pcDocument->signalDeletedObject.connect
-        (std::bind(&ActiveObjectList::objectDeleted, &ActiveObjects, sp::_1));
-      assert(connectDelObject.connected());
-      //NOLINTEND
+    if (pcDocument) {
+        // NOLINTBEGIN
+        connectDelObject = pcDocument->signalDeletedObject.connect(
+            std::bind(&ActiveObjectList::objectDeleted, &ActiveObjects, sp::_1));
+        assert(connectDelObject.connected());
+        // NOLINTEND
     }
 }
 
 MDIView::~MDIView()
 {
-    //This view might be the focus widget of the main window. In this case we must
-    //clear the focus and e.g. set the focus directly to the main window, otherwise
-    //the application crashes when accessing this deleted view.
-    //This effect only occurs if this widget is not in Child mode, because otherwise
-    //the focus stuff is done correctly.
+    // This view might be the focus widget of the main window. In this case we must
+    // clear the focus and e.g. set the focus directly to the main window, otherwise
+    // the application crashes when accessing this deleted view.
+    // This effect only occurs if this widget is not in Child mode, because otherwise
+    // the focus stuff is done correctly.
     if (getMainWindow()) {
         QWidget* foc = getMainWindow()->focusWidget();
         if (foc) {
@@ -95,8 +94,9 @@ MDIView::~MDIView()
             }
         }
     }
-    if (connectDelObject.connected())
-      connectDelObject.disconnect();
+    if (connectDelObject.connected()) {
+        connectDelObject.disconnect();
+    }
 
     if (pythonObject) {
         Base::PyGILStateLocker lock;
@@ -122,15 +122,17 @@ void MDIView::deleteSelf()
     }
 
     // detach from document
-    if (_pcDocument)
+    if (_pcDocument) {
         onClose();
+    }
     _pcDocument = nullptr;
 }
 
 PyObject* MDIView::getPyObject()
 {
-    if (!pythonObject)
+    if (!pythonObject) {
         pythonObject = new MDIViewPy(this);
+    }
 
     Py_INCREF(pythonObject);
     return pythonObject;
@@ -141,11 +143,10 @@ void MDIView::setOverrideCursor(const QCursor& c)
     Q_UNUSED(c);
 }
 
-void  MDIView::restoreOverrideCursor()
-{
-}
+void MDIView::restoreOverrideCursor()
+{}
 
-void MDIView::onRelabel(Gui::Document *pDoc)
+void MDIView::onRelabel(Gui::Document* pDoc)
 {
     if (!bIsPassive) {
         // Try to separate document name and view number if there is one
@@ -153,12 +154,12 @@ void MDIView::onRelabel(Gui::Document *pDoc)
         // Either with dirty flag ...
         QRegularExpression rx(QLatin1String(R"((\s\:\s\d+\[\*\])$)"));
         QRegularExpressionMatch match;
-        //int pos =
+        // int pos =
         boost::ignore_unused(cap.lastIndexOf(rx, -1, &match));
         if (!match.hasMatch()) {
             // ... or not
             rx.setPattern(QLatin1String(R"((\s\:\s\d+)$)"));
-            //pos =
+            // pos =
             boost::ignore_unused(cap.lastIndexOf(rx, -1, &match));
         }
         if (match.hasMatch()) {
@@ -175,11 +176,10 @@ void MDIView::onRelabel(Gui::Document *pDoc)
 }
 
 void MDIView::viewAll()
-{
-}
+{}
 
 /// receive a message
-bool MDIView::onMsg(const char* pMsg,const char** ppReturn)
+bool MDIView::onMsg(const char* pMsg, const char** ppReturn)
 {
     Q_UNUSED(pMsg);
     Q_UNUSED(ppReturn);
@@ -194,18 +194,19 @@ bool MDIView::onHasMsg(const char* pMsg) const
 
 bool MDIView::canClose()
 {
-    if (getAppDocument() && getAppDocument()->testStatus(App::Document::TempDoc))
+    if (getAppDocument() && getAppDocument()->testStatus(App::Document::TempDoc)) {
         return true;
+    }
 
     if (!bIsPassive && getGuiDocument() && getGuiDocument()->isLastView()) {
-        this->setFocus(); // raises the view to front
-        return (getGuiDocument()->canClose(true,true));
+        this->setFocus();  // raises the view to front
+        return (getGuiDocument()->canClose(true, true));
     }
 
     return true;
 }
 
-void MDIView::closeEvent(QCloseEvent *e)
+void MDIView::closeEvent(QCloseEvent* e)
 {
     if (canClose()) {
         e->accept();
@@ -214,8 +215,9 @@ void MDIView::closeEvent(QCloseEvent *e)
         if (!bIsPassive) {
             // must be detached so that the last view can get asked
             Document* doc = this->getGuiDocument();
-            if (doc && !doc->isLastView())
+            if (doc && !doc->isLastView()) {
                 doc->detachView(this);
+            }
         }
 
         // Note: When using QMdiArea we must not use removeWindow()
@@ -256,11 +258,15 @@ void MDIView::print()
 
 void MDIView::printPdf()
 {
-    QString filename = FileDialog::getSaveFileName(this, tr("Export PDF"), QString(),
-        QString::fromLatin1("%1 (*.pdf)").arg(tr("PDF file")));
+    QString filename =
+        FileDialog::getSaveFileName(this,
+                                    tr("Export PDF"),
+                                    QString(),
+                                    QString::fromLatin1("%1 (*.pdf)").arg(tr("PDF file")));
     if (!filename.isEmpty()) {
         QPrinter printer(QPrinter::ScreenResolution);
-        // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
+        // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under:
+        // https://www.kdab.com/creating-pdfa-documents-qt/
         printer.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setOutputFileName(filename);
@@ -272,14 +278,17 @@ void MDIView::printPreview()
 {
     QPrinter printer(QPrinter::ScreenResolution);
     QPrintPreviewDialog dlg(&printer, this);
-    connect(&dlg, &QPrintPreviewDialog::paintRequested,
-            this, qOverload<QPrinter*>(&MDIView::print));
+    connect(&dlg,
+            &QPrintPreviewDialog::paintRequested,
+            this,
+            qOverload<QPrinter*>(&MDIView::print));
     dlg.exec();
 }
 
 void MDIView::savePrinterSettings(QPrinter* printer)
 {
-    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Printer");
+    auto hGrp =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Printer");
     QString printerName = printer->printerName();
     if (printerName.isEmpty()) {
         // no printer defined
@@ -295,7 +304,8 @@ void MDIView::savePrinterSettings(QPrinter* printer)
 
 void MDIView::restorePrinterSettings(QPrinter* printer)
 {
-    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Printer");
+    auto hGrp =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Printer");
     QString printerName = printer->printerName();
     if (printerName.isEmpty()) {
         // no printer defined
@@ -321,7 +331,7 @@ QStringList MDIView::undoActions() const
     Gui::Document* doc = getGuiDocument();
     if (doc) {
         std::vector<std::string> vecUndos = doc->getUndoVector();
-        for (const auto & vecUndo : vecUndos) {
+        for (const auto& vecUndo : vecUndos) {
             actions << QCoreApplication::translate("Command", vecUndo.c_str());
         }
     }
@@ -335,7 +345,7 @@ QStringList MDIView::redoActions() const
     Gui::Document* doc = getGuiDocument();
     if (doc) {
         std::vector<std::string> vecRedos = doc->getRedoVector();
-        for (const auto & vecRedo : vecRedos) {
+        for (const auto& vecRedo : vecRedos) {
             actions << QCoreApplication::translate("Command", vecRedo.c_str());
         }
     }
@@ -343,110 +353,113 @@ QStringList MDIView::redoActions() const
     return actions;
 }
 
-QSize MDIView::minimumSizeHint () const
+QSize MDIView::minimumSizeHint() const
 {
     return {400, 300};
 }
 
-void MDIView::changeEvent(QEvent *e)
+void MDIView::changeEvent(QEvent* e)
 {
     switch (e->type()) {
-        case QEvent::ActivationChange:
-            {
-                // Forces this top-level window to be the active view of the main window
-                if (isActiveWindow()) {
-                    if (getMainWindow()->activeWindow() != this)
-                        getMainWindow()->setActiveWindow(this);
+        case QEvent::ActivationChange: {
+            // Forces this top-level window to be the active view of the main window
+            if (isActiveWindow()) {
+                if (getMainWindow()->activeWindow() != this) {
+                    getMainWindow()->setActiveWindow(this);
                 }
-            }   break;
+            }
+        } break;
         case QEvent::WindowTitleChange:
-        case QEvent::ModifiedChange:
-            {
-                // sets the appropriate tab of the tabbar
-                getMainWindow()->tabChanged(this);
-            }   break;
-        default:
-            {
-                QMainWindow::changeEvent(e);
-            }   break;
+        case QEvent::ModifiedChange: {
+            // sets the appropriate tab of the tabbar
+            getMainWindow()->tabChanged(this);
+        } break;
+        default: {
+            QMainWindow::changeEvent(e);
+        } break;
     }
 }
 
 #if defined(Q_WS_X11)
 // To fix bug #0000345 move function declaration to here
-extern void qt_x11_wait_for_window_manager( QWidget* w ); // defined in qwidget_x11.cpp
+extern void qt_x11_wait_for_window_manager(QWidget* w);  // defined in qwidget_x11.cpp
 #endif
 
 void MDIView::setCurrentViewMode(ViewMode mode)
 {
     switch (mode) {
         // go to normal mode
-        case Child:
-            {
-                if (this->currentMode == FullScreen) {
-                    showNormal();
-                    setWindowFlags(windowFlags() & ~Qt::Window);
-                }
-                else if (this->currentMode == TopLevel) {
-                    this->wstate = windowState();
-                    setWindowFlags( windowFlags() & ~Qt::Window );
-                }
+        case Child: {
+            if (this->currentMode == FullScreen) {
+                showNormal();
+                setWindowFlags(windowFlags() & ~Qt::Window);
+            }
+            else if (this->currentMode == TopLevel) {
+                this->wstate = windowState();
+                setWindowFlags(windowFlags() & ~Qt::Window);
+            }
 
-                if (this->currentMode != Child) {
-                    this->currentMode = Child;
-                    getMainWindow()->addWindow(this);
-                    getMainWindow()->activateWindow();
-                    update();
-                }
-            }   break;
+            if (this->currentMode != Child) {
+                this->currentMode = Child;
+                getMainWindow()->addWindow(this);
+                getMainWindow()->activateWindow();
+                update();
+            }
+        } break;
         // go to top-level mode
-        case TopLevel:
-            {
-                if (this->currentMode == Child) {
-                    if (qobject_cast<QMdiSubWindow*>(this->parentWidget()))
-                        getMainWindow()->removeWindow(this,false);
-                    setWindowFlags(windowFlags() | Qt::Window);
-                    setParent(nullptr, Qt::Window | Qt::WindowTitleHint | Qt::WindowSystemMenuHint |
-                                 Qt::WindowMinMaxButtonsHint);
-                    if (this->wstate & Qt::WindowMaximized)
-                        showMaximized();
-                    else
-                        showNormal();
+        case TopLevel: {
+            if (this->currentMode == Child) {
+                if (qobject_cast<QMdiSubWindow*>(this->parentWidget())) {
+                    getMainWindow()->removeWindow(this, false);
+                }
+                setWindowFlags(windowFlags() | Qt::Window);
+                setParent(nullptr,
+                          Qt::Window | Qt::WindowTitleHint | Qt::WindowSystemMenuHint
+                              | Qt::WindowMinMaxButtonsHint);
+                if (this->wstate & Qt::WindowMaximized) {
+                    showMaximized();
+                }
+                else {
+                    showNormal();
+                }
 
 #if defined(Q_WS_X11)
-                    //extern void qt_x11_wait_for_window_manager( QWidget* w ); // defined in qwidget_x11.cpp
-                    qt_x11_wait_for_window_manager(this);
+                // extern void qt_x11_wait_for_window_manager( QWidget* w ); // defined in
+                // qwidget_x11.cpp
+                qt_x11_wait_for_window_manager(this);
 #endif
-                    activateWindow();
+                activateWindow();
+            }
+            else if (this->currentMode == FullScreen) {
+                if (this->wstate & Qt::WindowMaximized) {
+                    showMaximized();
                 }
-                else if (this->currentMode == FullScreen) {
-                    if (this->wstate & Qt::WindowMaximized)
-                        showMaximized();
-                    else
-                        showNormal();
+                else {
+                    showNormal();
                 }
+            }
 
-                this->currentMode = TopLevel;
-                update();
-            }   break;
+            this->currentMode = TopLevel;
+            update();
+        } break;
         // go to fullscreen mode
-        case FullScreen:
-            {
-                if (this->currentMode == Child) {
-                    if (qobject_cast<QMdiSubWindow*>(this->parentWidget()))
-                        getMainWindow()->removeWindow(this,false);
-                    setWindowFlags(windowFlags() | Qt::Window);
-                    setParent(nullptr, Qt::Window);
-                    showFullScreen();
+        case FullScreen: {
+            if (this->currentMode == Child) {
+                if (qobject_cast<QMdiSubWindow*>(this->parentWidget())) {
+                    getMainWindow()->removeWindow(this, false);
                 }
-                else if (this->currentMode == TopLevel) {
-                    this->wstate = windowState();
-                    showFullScreen();
-                }
+                setWindowFlags(windowFlags() | Qt::Window);
+                setParent(nullptr, Qt::Window);
+                showFullScreen();
+            }
+            else if (this->currentMode == TopLevel) {
+                this->wstate = windowState();
+                showFullScreen();
+            }
 
-                this->currentMode = FullScreen;
-                update();
-            }   break;
+            this->currentMode = FullScreen;
+            update();
+        } break;
     }
 }
 

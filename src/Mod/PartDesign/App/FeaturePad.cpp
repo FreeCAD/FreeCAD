@@ -23,11 +23,11 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
-# include <Precision.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Face.hxx>
+#include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
+#include <Precision.hxx>
+#include <TopExp_Explorer.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Face.hxx>
 #endif
 
 #include <App/DocumentObject.h>
@@ -38,7 +38,8 @@
 
 using namespace PartDesign;
 
-const char* Pad::TypeEnums[]= {"Length", "UpToLast", "UpToFirst", "UpToFace", "TwoLengths", "UpToShape", nullptr};
+const char* Pad::TypeEnums[] =
+    {"Length", "UpToLast", "UpToFirst", "UpToFace", "TwoLengths", "UpToShape", nullptr};
 
 PROPERTY_SOURCE(PartDesign::Pad, PartDesign::FeatureExtrude)
 
@@ -50,13 +51,37 @@ Pad::Pad()
     Type.setEnums(TypeEnums);
     ADD_PROPERTY_TYPE(Length, (10.0), "Pad", App::Prop_None, "Pad length");
     ADD_PROPERTY_TYPE(Length2, (10.0), "Pad", App::Prop_None, "Pad length in 2nd direction");
-    ADD_PROPERTY_TYPE(UseCustomVector, (false), "Pad", App::Prop_None, "Use custom vector for pad direction");
-    ADD_PROPERTY_TYPE(Direction, (Base::Vector3d(1.0, 1.0, 1.0)), "Pad", App::Prop_None, "Pad direction vector");
-    ADD_PROPERTY_TYPE(ReferenceAxis, (nullptr), "Pad", App::Prop_None, "Reference axis of direction");
-    ADD_PROPERTY_TYPE(AlongSketchNormal, (true), "Pad", App::Prop_None, "Measure pad length along the sketch normal direction");
+    ADD_PROPERTY_TYPE(UseCustomVector,
+                      (false),
+                      "Pad",
+                      App::Prop_None,
+                      "Use custom vector for pad direction");
+    ADD_PROPERTY_TYPE(Direction,
+                      (Base::Vector3d(1.0, 1.0, 1.0)),
+                      "Pad",
+                      App::Prop_None,
+                      "Pad direction vector");
+    ADD_PROPERTY_TYPE(ReferenceAxis,
+                      (nullptr),
+                      "Pad",
+                      App::Prop_None,
+                      "Reference axis of direction");
+    ADD_PROPERTY_TYPE(AlongSketchNormal,
+                      (true),
+                      "Pad",
+                      App::Prop_None,
+                      "Measure pad length along the sketch normal direction");
     ADD_PROPERTY_TYPE(UpToFace, (nullptr), "Pad", App::Prop_None, "Face where pad will end");
-    ADD_PROPERTY_TYPE(UpToShape, (nullptr), "Pad", App::Prop_None, "Faces or shape(s) where pad will end");
-    ADD_PROPERTY_TYPE(Offset, (0.0), "Pad", App::Prop_None, "Offset from face in which pad will end");
+    ADD_PROPERTY_TYPE(UpToShape,
+                      (nullptr),
+                      "Pad",
+                      App::Prop_None,
+                      "Faces or shape(s) where pad will end");
+    ADD_PROPERTY_TYPE(Offset,
+                      (0.0),
+                      "Pad",
+                      App::Prop_None,
+                      "Offset from face in which pad will end");
     Offset.setConstraints(&signedLengthConstraint);
     ADD_PROPERTY_TYPE(TaperAngle, (0.0), "Pad", App::Prop_None, "Taper angle");
     TaperAngle.setConstraints(&floatAngle);

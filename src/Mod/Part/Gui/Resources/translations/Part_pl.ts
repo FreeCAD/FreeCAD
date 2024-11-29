@@ -148,7 +148,7 @@
       <location filename="../../AttacherTexts.cpp" line="281"/>
       <source>Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Punkt jest umieszczany w miejscu umiejscowienia obiektu. 
+      <translation>Punkt jest umieszczany w miejscu umiejscowienia obiektu.
 Działa na obiektach z rozmieszczeniem i krawędziami elipsy lub paraboli lub hiperboli.</translation>
     </message>
     <message>
@@ -699,11 +699,11 @@ Działa na obiektach z rozmieszczeniem i krawędziami elipsy lub paraboli lub hi
       <location filename="../../AttacherTexts.cpp" line="179"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Tryb specjalny dla składania wielościanów. Wybierz cztery krawędzie w porządku: 
-składana krawędź, 
-zagięcie linii, 
-kolejne zagięcie linii, 
-kolejna składana krawędź. 
+      <translation>Tryb specjalny dla składania wielościanów. Wybierz cztery krawędzie w porządku:
+składana krawędź,
+zagięcie linii,
+kolejne zagięcie linii,
+kolejna składana krawędź.
 Płaszczyzna będzie wyrównana do składania pierwszej krawędzi.</translation>
     </message>
     <message>
@@ -913,11 +913,11 @@ Płaszczyzna będzie wyrównana do składania pierwszej krawędzi.</translation>
       <location filename="../../AttacherTexts.cpp" line="101"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY plane will be aligned to folding the first edge.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Tryb specjalny dla składania wielościanów. Wybierz cztery krawędzie w porządku: 
-składana krawędź, 
-zagięcie linii, 
-kolejne zagięcie linii, 
-kolejne składana krawędź. 
+      <translation>Tryb specjalny dla składania wielościanów. Wybierz cztery krawędzie w porządku:
+składana krawędź,
+zagięcie linii,
+kolejne zagięcie linii,
+kolejne składana krawędź.
 Płaszczyzna XY będzie wyrównana do składania pierwszej krawędzi.</translation>
     </message>
     <message>
@@ -2677,7 +2677,7 @@ rozmiar pliku STEP.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="45"/>
       <source>Set direction to match a direction of straight edge. Hint: to account for length of the edge too, set both lengths to zero.</source>
-      <translation>Ustaw kierunek, aby dopasować kierunek prostej krawędzi. 
+      <translation>Ustaw kierunek, aby dopasować kierunek prostej krawędzi.
 Wskazówka: aby uwzględnić również długość krawędzi, ustaw obie wartości długości na zero.</translation>
     </message>
     <message>
@@ -2857,7 +2857,7 @@ Jeśli obie długości są równe zero, używana jest wartość wielkości kieru
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="683"/>
-      <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
+      <source>Can't determine normal vector of shape to be extruded. Please use other mode.
 
 (%1)</source>
       <translation>Nie można określić normalnego wektora kształtu, aby był wyciągnięty. Użyj innego trybu.
@@ -3044,7 +3044,7 @@ Wymagana wartość musi być różna od zera.</translation>
       <location filename="../../DlgFilletEdges.cpp" line="963"/>
       <source>No valid shape is selected.
 Please select a valid shape in the drop-down box first.</source>
-      <translation>Wybrany kształt jest nieprawidłowy. 
+      <translation>Wybrany kształt jest nieprawidłowy.
 Wybierz najpierw prawidłowy kształt w polu rozwijanym.</translation>
     </message>
     <message>
@@ -3056,7 +3056,7 @@ Wybierz najpierw prawidłowy kształt w polu rozwijanym.</translation>
       <location filename="../../DlgFilletEdges.cpp" line="1015"/>
       <source>No edge entity is checked to fillet.
 Please check one or more edge entities first.</source>
-      <translation>Nie zaznaczono krawędzi do sfazowania. 
+      <translation>Nie zaznaczono krawędzi do sfazowania.
 Zaznacz najpierw jedną lub więcej krawędzi.</translation>
     </message>
   </context>
@@ -3226,7 +3226,7 @@ podczas odczytu pliku (wolniejsze, ale wyższa szczegółowość).</translation>
     <message>
       <location filename="../../DlgImportStep.ui" line="123"/>
       <source>Do not use instance names. Useful for some legacy STEP files with non-meaningful auto-generated instance names.</source>
-      <translation>Nie używaj nazw instancji. 
+      <translation>Nie używaj nazw instancji.
 Opcja przydatna w przypadku niektórych starszych plików STEP, z nieistotnymi automatycznie generowanymi nazwami instancji.</translation>
     </message>
     <message>
@@ -4258,7 +4258,7 @@ If not checked, it depends on the option "Backlight color"
 will be used or black.</source>
       <translation>Dolna strona powierzchni będzie renderowana w taki sam sposób jak górna.
 Jeśli opcja nie jest zaznaczona, jest to zależne od opcji "Kolor podświetlenia"
-(sekcja preferencji Wyświetlanie v→ Widok 3D). 
+(sekcja preferencji Wyświetlanie v→ Widok 3D).
 Użyty zostanie albo kolor podświetlenia albo czarny.</translation>
     </message>
     <message>
@@ -5040,7 +5040,7 @@ dołączanego obiektu.</translation>
       <source>Extra boolean operations check that can sometimes find errors that
 the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</source>
-      <translation>Dodatkowe sprawdzenie operacji logicznych, które może czasami znaleźć błędy pomijane przez standardowe sprawdzenie geometrii BRep. Błędy te nie zawsze 
+      <translation>Dodatkowe sprawdzenie operacji logicznych, które może czasami znaleźć błędy pomijane przez standardowe sprawdzenie geometrii BRep. Błędy te nie zawsze
 oznaczają, że sprawdzany obiekt jest bezużyteczny.  Domyślnie: nie</translation>
     </message>
     <message>
@@ -5072,9 +5072,9 @@ ale bardziej stabilne.  Domyślnie: nie</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1081"/>
-      <source>Expand shape content.  Changes will take effect next time you use 
+      <source>Expand shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
-      <translation>Rozwiń zawartość kształtu. Zmiany zaczną obowiązywać następnym razem, gdy użyjesz 
+      <translation>Rozwiń zawartość kształtu. Zmiany zaczną obowiązywać następnym razem, gdy użyjesz
 narzędzia do sprawdzania geometrii. Domyślnie: nie</translation>
     </message>
     <message>
@@ -5084,9 +5084,9 @@ narzędzia do sprawdzania geometrii. Domyślnie: nie</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
-      <source>Show advanced shape content.  Changes will take effect next time you use 
+      <source>Show advanced shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
-      <translation>Pokaż zaawansowaną zawartość kształtu. Zmiany zaczną obowiązywać następnym razem, gdy używasz 
+      <translation>Pokaż zaawansowaną zawartość kształtu. Zmiany zaczną obowiązywać następnym razem, gdy używasz
 narzędzia sprawdzania geometrii. Domyślnie: nie</translation>
     </message>
     <message>
@@ -5603,7 +5603,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="465"/>
       <source>Please select two shapes or more. Or, select one compound containing two or more shapes to be fused.</source>
-      <translation>Proszę, wybierz dwa lub więcej kształtów. 
+      <translation>Proszę, wybierz dwa lub więcej kształtów.
 Lub, wybierz jedno złożenie zawierające dwa lub więcej kształtów, które mają być połączone.</translation>
     </message>
     <message>
@@ -6176,8 +6176,8 @@ Lub, wybierz jedno złożenie zawierające dwa lub więcej kształtów, które m
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="534"/>
       <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-      <translation>Wybierz co najmniej dwa obiekty bądź jeden lub więcej złożonych kształtów. 
-Jeśli wybrany zostanie tylko jeden kształt złożony, jego części składowe zostaną przecięte między sobą 
+      <translation>Wybierz co najmniej dwa obiekty bądź jeden lub więcej złożonych kształtów.
+Jeśli wybrany zostanie tylko jeden kształt złożony, jego części składowe zostaną przecięte między sobą
 (w przeciwnym razie, kształt złożony z własnymi przecięciami jest nieprawidłowy).</translation>
     </message>
     <message>
@@ -6725,7 +6725,7 @@ Oznacza to, że nakładające się na siebie objętości kształtów zostaną us
     <message>
       <location filename="../../../App/FaceMaker.cpp" line="79"/>
       <source>Shape must be a wire, edge or compound. Something else was supplied.</source>
-      <translation>Kształt musi być polilinią, krawędzią lub złożeniem. 
+      <translation>Kształt musi być polilinią, krawędzią lub złożeniem.
 Wybrano coś innego.</translation>
     </message>
   </context>

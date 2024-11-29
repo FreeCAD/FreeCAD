@@ -38,8 +38,8 @@ using namespace Gui;
 
 /* TRANSLATOR Gui::TaskBoxPosition */
 
-TaskBoxPosition::TaskBoxPosition(QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("Robot_CreateRobot"),tr("Position"),true, parent)
+TaskBoxPosition::TaskBoxPosition(QWidget* parent)
+    : TaskBox(Gui::BitmapFactory().pixmap("Robot_CreateRobot"), tr("Position"), true, parent)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
@@ -63,8 +63,8 @@ TaskBoxPosition::~TaskBoxPosition()
 
 /* TRANSLATOR Gui::TaskBoxAngle */
 
-TaskBoxAngle::TaskBoxAngle(QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("Robot_CreateRobot"),tr("Angle"),true, parent)
+TaskBoxAngle::TaskBoxAngle(QWidget* parent)
+    : TaskBox(Gui::BitmapFactory().pixmap("Robot_CreateRobot"), tr("Angle"), true, parent)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
@@ -90,8 +90,7 @@ TaskBoxAngle::~TaskBoxAngle()
 
 TaskDlgRelocation::TaskDlgRelocation()
     : TaskDialog()
-{
-}
+{}
 
 TaskDlgRelocation::~TaskDlgRelocation() = default;
 
@@ -99,13 +98,10 @@ TaskDlgRelocation::~TaskDlgRelocation() = default;
 
 
 void TaskDlgRelocation::open()
-{
-}
+{}
 
 void TaskDlgRelocation::clicked(int)
-{
-
-}
+{}
 
 bool TaskDlgRelocation::accept()
 {
@@ -118,9 +114,7 @@ bool TaskDlgRelocation::reject()
 }
 
 void TaskDlgRelocation::helpRequested()
-{
-
-}
+{}
 
 
 #include "moc_TaskDlgRelocation.cpp"

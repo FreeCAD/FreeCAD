@@ -30,24 +30,26 @@ class QMainWindow;
 
 namespace Gui
 {
-    class GUIApplicationNativeEventAware;
+class GUIApplicationNativeEventAware;
 
-    class GuiAbstractNativeEvent : public QObject
-    {
+class GuiAbstractNativeEvent: public QObject
+{
     Q_OBJECT
-    public:
-        explicit GuiAbstractNativeEvent(GUIApplicationNativeEventAware *app);
-        ~GuiAbstractNativeEvent() override =0;
-        virtual void initSpaceball(QMainWindow *window)=0;
-    private:
-        GuiAbstractNativeEvent();
-        GuiAbstractNativeEvent(const GuiAbstractNativeEvent&);
-        GuiAbstractNativeEvent& operator=(const GuiAbstractNativeEvent&);
-    protected:
-        static GUIApplicationNativeEventAware *mainApp;
-        static std::vector<int>motionDataArray;
-    };
-}
+public:
+    explicit GuiAbstractNativeEvent(GUIApplicationNativeEventAware* app);
+    ~GuiAbstractNativeEvent() override = 0;
+    virtual void initSpaceball(QMainWindow* window) = 0;
+
+private:
+    GuiAbstractNativeEvent();
+    GuiAbstractNativeEvent(const GuiAbstractNativeEvent&);
+    GuiAbstractNativeEvent& operator=(const GuiAbstractNativeEvent&);
+
+protected:
+    static GUIApplicationNativeEventAware* mainApp;
+    static std::vector<int> motionDataArray;
+};
+}  // namespace Gui
 
 
-#endif //GUIABSTRACTNATIVEEVENT_H
+#endif  // GUIABSTRACTNATIVEEVENT_H

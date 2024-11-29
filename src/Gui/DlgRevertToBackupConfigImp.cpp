@@ -22,8 +22,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QDateTime>
-# include <QPushButton>
+#include <QDateTime>
+#include <QPushButton>
 #endif
 
 #include "DlgRevertToBackupConfigImp.h"
@@ -43,7 +43,10 @@ DlgRevertToBackupConfigImp::DlgRevertToBackupConfigImp(QWidget* parent)
     , ui(new Ui_DlgRevertToBackupConfig)
 {
     ui->setupUi(this);
-    connect(ui->listWidget, &QListWidget::itemSelectionChanged, this, &DlgRevertToBackupConfigImp::onItemSelectionChanged);
+    connect(ui->listWidget,
+            &QListWidget::itemSelectionChanged,
+            this,
+            &DlgRevertToBackupConfigImp::onItemSelectionChanged);
 }
 
 DlgRevertToBackupConfigImp::~DlgRevertToBackupConfigImp() = default;
@@ -51,17 +54,18 @@ DlgRevertToBackupConfigImp::~DlgRevertToBackupConfigImp() = default;
 void Gui::Dialog::DlgRevertToBackupConfigImp::onItemSelectionChanged()
 {
     auto items = ui->listWidget->selectedItems();
-    if (items.count() == 1)
+    if (items.count() == 1) {
         ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setEnabled(true);
-    else
+    }
+    else {
         ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setEnabled(false);
-
+    }
 }
 
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgRevertToBackupConfigImp::changeEvent(QEvent *e)
+void DlgRevertToBackupConfigImp::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -89,7 +93,8 @@ void DlgRevertToBackupConfigImp::accept()
 {
     auto items = ui->listWidget->selectedItems();
     if (items.count() != 1) {
-        Base::Console().Error(tr("No selection in dialog, cannot load backup file").toStdString().c_str());
+        Base::Console().Error(
+            tr("No selection in dialog, cannot load backup file").toStdString().c_str());
         return;
     }
     auto item = items[0];

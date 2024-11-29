@@ -579,8 +579,8 @@ void DlgDisplayPropertiesImp::setShapeAppearance(const std::vector<Gui::ViewProv
     bool material = false;
     App::Material mat = App::Material(App::Material::DEFAULT);
     for (auto view : views) {
-        if (auto* prop =
-                dynamic_cast<App::PropertyMaterialList*>(view->getPropertyByName("ShapeAppearance"))) {
+        if (auto* prop = dynamic_cast<App::PropertyMaterialList*>(
+                view->getPropertyByName("ShapeAppearance"))) {
             material = true;
             mat = prop->getValues()[0];
             d->ui.widgetMaterial->setMaterial(QString::fromStdString(mat.uuid));

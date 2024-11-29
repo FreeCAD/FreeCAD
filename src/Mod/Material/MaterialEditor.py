@@ -31,8 +31,12 @@ from PySide import QtCore, QtGui, QtSvgWidgets
 
 import FreeCAD
 import FreeCADGui
+
 # import Material_rc
-from materialtools.cardutils import get_material_preferred_directory, get_material_preferred_save_directory
+from materialtools.cardutils import (
+    get_material_preferred_directory,
+    get_material_preferred_save_directory,
+)
 
 
 # is this still needed after the move to card utils???
@@ -44,7 +48,6 @@ unicode = str
 class MaterialEditor:
 
     def __init__(self, obj=None, prop=None, material=None, card_path="", category="Solid"):
-
         """Initializes, optionally with an object name and a material property
         name to edit, or directly with a material dictionary."""
 
@@ -66,13 +69,14 @@ class MaterialEditor:
         self.edited = False
         self.card_path = card_path
         filePath = os.path.dirname(__file__) + os.sep
-        self.iconPath = (filePath + "Resources" + os.sep + "icons" + os.sep)
+        self.iconPath = filePath + "Resources" + os.sep + "icons" + os.sep
 
         # load the UI file from the same directory as this script
         self.widget = FreeCADGui.PySideUic.loadUi(":/ui/materials-editor.ui")
         # remove unused Help button
-        self.widget.setWindowFlags(self.widget.windowFlags()
-                                   & ~QtCore.Qt.WindowContextHelpButtonHint)
+        self.widget.setWindowFlags(
+            self.widget.windowFlags() & ~QtCore.Qt.WindowContextHelpButtonHint
+        )
 
         # restore size and position
         param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material")
@@ -150,7 +154,6 @@ class MaterialEditor:
         # In such case ATM material is chosen, give some feedback for all those corner cases.
 
     def implementModel(self):
-
         """implements the model with the material attribute structure."""
 
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material")
@@ -164,6 +167,7 @@ class MaterialEditor:
         treeView.setColumnHidden(2, True)
 
         from materialtools.cardutils import get_material_template
+
         template_data = get_material_template(True)
 
         for group in template_data:
@@ -185,17 +189,16 @@ class MaterialEditor:
                 itType = QtGui.QStandardItem(tt)
 
                 top.appendRow([item, it, itType])
-                treeView.setExpanded(top.index(), p.GetBool("TreeExpand"+gg, True))
+                treeView.setExpanded(top.index(), p.GetBool("TreeExpand" + gg, True))
             # top.sortChildren(0)
 
         # treeView.expandAll()
         self.edited = False
 
     def updateMatParamsInTree(self, data):
-
         """updates the contents of the editor with the given dictionary
-           the material property keys where added to the editor already
-           unknown material property keys will be added to the user defined group"""
+        the material property keys where added to the editor already
+        unknown material property keys will be added to the user defined group"""
 
         # print(data)
         model = self.widget.treeView.model()
@@ -237,7 +240,7 @@ class MaterialEditor:
 
         if self.verifyMaterial():
             """
-                Save any unchanged data
+            Save any unchanged data
             """
             self.edited = False
         else:
@@ -245,11 +248,11 @@ class MaterialEditor:
 
         self.card_path = self.widget.ComboMaterial.itemData(index)
         FreeCAD.Console.PrintMessage(
-            "choose_material in material editor:\n"
-            "    {}\n".format(self.card_path)
+            "choose_material in material editor:\n" "    {}\n".format(self.card_path)
         )
         if os.path.isfile(self.card_path):
             from importFCMat import read
+
             d = read(self.card_path)
             self.updateMatParamsInTree(d)
             # be careful with reading from materials dict
@@ -260,11 +263,13 @@ class MaterialEditor:
 
     def verifyMaterial(self):
         if self.edited:
-            reply = QtGui.QMessageBox.question(self.widget, #FreeCADGui.getMainWindow(),
-                                                translate("Material","The document has been modified."),
-                                                translate("Material","Do you want to save your changes?"),
-                                                QtGui.QMessageBox.Save | QtGui.QMessageBox.Discard | QtGui.QMessageBox.Cancel,
-                                                QtGui.QMessageBox.Save)
+            reply = QtGui.QMessageBox.question(
+                self.widget,  # FreeCADGui.getMainWindow(),
+                translate("Material", "The document has been modified."),
+                translate("Material", "Do you want to save your changes?"),
+                QtGui.QMessageBox.Save | QtGui.QMessageBox.Discard | QtGui.QMessageBox.Cancel,
+                QtGui.QMessageBox.Save,
+            )
 
             if reply == QtGui.QMessageBox.Cancel:
                 return False
@@ -274,7 +279,6 @@ class MaterialEditor:
         return True
 
     def updateCardsInCombo(self):
-
         """updates the contents of the materials combo with existing material cards"""
 
         mat_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material/Cards")
@@ -282,6 +286,7 @@ class MaterialEditor:
 
         # get all available materials (fill self.materials, self.cards and self.icons)
         from materialtools.cardutils import import_materials as getmats
+
         self.materials, self.cards, self.icons = getmats(category=self.category)
 
         card_name_list = []  # [ [card_name, card_path, icon_path], ... ]
@@ -303,12 +308,10 @@ class MaterialEditor:
             self.widget.ComboMaterial.addItem(QtGui.QIcon(mat[2]), mat[0], mat[1])
 
     def openProductURL(self):
-
         """opens the contents of the ProductURL field in an external browser."""
 
         model = self.widget.treeView.model()
-        item = model.findItems(translate("Material", "Product URL"),
-                               QtCore.Qt.MatchRecursive, 0)[0]
+        item = model.findItems(translate("Material", "Product URL"), QtCore.Qt.MatchRecursive, 0)[0]
         group = item.parent()
         it = group.child(item.row(), 1)
         url = it.text()
@@ -317,22 +320,24 @@ class MaterialEditor:
 
     def modelChange(self, item):
         """
-            Called when an item in the tree is modified. This will set edited to True, but this
-            will be reset in the event of mass updates, such as loading a card
+        Called when an item in the tree is modified. This will set edited to True, but this
+        will be reset in the event of mass updates, such as loading a card
         """
         self.edited = True
 
     def verify(self, button):
         """
-            Verify that the user wants to save any changed data before exiting
+        Verify that the user wants to save any changed data before exiting
         """
 
         if self.edited:
-            reply = QtGui.QMessageBox.question(self.widget, #FreeCADGui.getMainWindow(),
-                                                translate("Material","The document has been modified."),
-                                                translate("Material","Do you want to save your changes?"),
-                                                QtGui.QMessageBox.Save | QtGui.QMessageBox.Discard | QtGui.QMessageBox.Cancel,
-                                                QtGui.QMessageBox.Save)
+            reply = QtGui.QMessageBox.question(
+                self.widget,  # FreeCADGui.getMainWindow(),
+                translate("Material", "The document has been modified."),
+                translate("Material", "Do you want to save your changes?"),
+                QtGui.QMessageBox.Save | QtGui.QMessageBox.Discard | QtGui.QMessageBox.Cancel,
+                QtGui.QMessageBox.Save,
+            )
 
             if reply == QtGui.QMessageBox.Cancel:
                 return
@@ -342,13 +347,13 @@ class MaterialEditor:
         self.accept()
 
     def accept(self):
-        ""
+        """"""
 
         self.storeSize()
         QtGui.QDialog.accept(self.widget)
 
     def reject(self):
-        ""
+        """"""
 
         self.storeSize()
         QtGui.QDialog.reject(self.widget)
@@ -362,7 +367,7 @@ class MaterialEditor:
         root = self.widget.treeView.model().invisibleRootItem()
         for gg in range(root.rowCount()):
             group = root.child(gg)
-            p.SetBool("TreeExpand"+group.text(), self.widget.treeView.isExpanded(group.index()))
+            p.SetBool("TreeExpand" + group.text(), self.widget.treeView.isExpanded(group.index()))
 
     def expandKey(self, key):
         "adds spaces before caps in a KeyName"
@@ -395,8 +400,9 @@ class MaterialEditor:
             item = model.findItems(key, QtCore.Qt.MatchRecursive, 0)
             if not item:
 
-                top = model.findItems(translate("Material", "UserDefined"),
-                                      QtCore.Qt.MatchExactly, 0)[0]
+                top = model.findItems(
+                    translate("Material", "UserDefined"), QtCore.Qt.MatchExactly, 0
+                )[0]
                 item = QtGui.QStandardItem(key)
                 it = QtGui.QStandardItem(value)
                 top.appendRow([item, it])
@@ -404,7 +410,6 @@ class MaterialEditor:
                 self.edited = True
 
     def deleteCustomProperty(self, key=None):
-
         """Deletes a custom property from the editor,
         or deletes the value of an internal property."""
 
@@ -443,7 +448,6 @@ class MaterialEditor:
         buttonDeleteProperty.setEnabled(False)
 
     def onClickTree(self, index):
-
         """Checks if the current item is a custom or an internal property,
         and enable the delete property or delete value button."""
 
@@ -565,13 +569,13 @@ class MaterialEditor:
     def getColorHash(self, col, val=255):
         "returns a '#000000' string from a '(0.1,0.2,0.3)' string"
         col = [float(x.strip()) for x in col.strip("()").split(",")]
-        color = QtGui.QColor(int(col[0]*val), int(col[1]*val), int(col[2]*val))
+        color = QtGui.QColor(int(col[0] * val), int(col[1] * val), int(col[2] * val))
         return color.name()
 
     def openfile(self):
         if self.verifyMaterial():
             """
-                Save any unchanged data
+            Save any unchanged data
             """
             self.edited = False
         else:
@@ -588,7 +592,7 @@ class MaterialEditor:
             QtGui.QApplication.activeWindow(),
             "Open FreeCAD Material file",
             self.card_path,
-            "*.FCMat"
+            "*.FCMat",
         )
         if os.path.isfile(filetuple[0]):
             card_path_new = filetuple[0]
@@ -608,27 +612,27 @@ class MaterialEditor:
             path = self.widget.ComboMaterial.itemData(1)
             # at first check if we have a uniform usage
             # (if a character is not present, rsplit delivers the initial string)
-            testBackslash = path.rsplit('\\', 1)[0]
-            testSlash = path.rsplit('/', 1)[0]
+            testBackslash = path.rsplit("\\", 1)[0]
+            testSlash = path.rsplit("/", 1)[0]
             if testBackslash == path:
-                path = testBackslash.rsplit('/', 1)[0] + '/'
+                path = testBackslash.rsplit("/", 1)[0] + "/"
             elif testSlash == path:
-                path = testSlash.rsplit('\\', 1)[0] + '\\'
+                path = testSlash.rsplit("\\", 1)[0] + "\\"
             # since we don't know if we have to deal with slash or backslash, take the
             # longest result as path
             else:
-                pathBackslash = path.rsplit('\\', 1)[0]
-                pathSlash = path.rsplit('/', 1)[0]
+                pathBackslash = path.rsplit("\\", 1)[0]
+                pathSlash = path.rsplit("/", 1)[0]
                 if len(pathBackslash) > len(pathSlash):
-                    path = pathBackslash + '\\'
+                    path = pathBackslash + "\\"
                 else:
-                    path = pathSlash + '/'
+                    path = pathSlash + "/"
             # we know that card_path_new has uniformly either / or \ but not yet what
-            testBackslash = card_path_new.rsplit('\\', 1)[0]
+            testBackslash = card_path_new.rsplit("\\", 1)[0]
             if testBackslash == card_path_new:
-                self.card_path = path + card_path_new.rsplit('/', 1)[1]
+                self.card_path = path + card_path_new.rsplit("/", 1)[1]
             else:
-                self.card_path = path + card_path_new.rsplit('\\', 1)[1]
+                self.card_path = path + card_path_new.rsplit("\\", 1)[1]
         index = self.widget.ComboMaterial.findData(self.card_path)
 
         # check if card_path is in known path, means it is in combo box already
@@ -636,12 +640,12 @@ class MaterialEditor:
         if index == -1:
             FreeCAD.Console.PrintMessage(
                 "Card path: {} not found in known cards.\n"
-                "The material parameter only are loaded.\n"
-                .format(self.card_path)
+                "The material parameter only are loaded.\n".format(self.card_path)
             )
             # a material card was chosen that is unknown, thus use its full path
             self.card_path = card_path_new
             from importFCMat import read
+
             materialDict = read(self.card_path)
             if materialDict:
                 self.updateMatParamsInTree(materialDict)
@@ -655,8 +659,7 @@ class MaterialEditor:
         "Saves a FCMat file."
 
         model = self.widget.treeView.model()
-        item = model.findItems(translate("Material", "Name"),
-                               QtCore.Qt.MatchRecursive, 0)[0]
+        item = model.findItems(translate("Material", "Name"), QtCore.Qt.MatchRecursive, 0)[0]
         group = item.parent()
         it = group.child(item.row(), 1)
         name = it.text()
@@ -666,7 +669,7 @@ class MaterialEditor:
             QtGui.QApplication.activeWindow(),
             "Save FreeCAD Material file",
             self.save_directory + "/" + name + ".FCMat",
-            "*.FCMat"
+            "*.FCMat",
         )
         # a tuple of two empty strings returns True, so use the filename directly
         filename = filetuple[0]
@@ -684,8 +687,10 @@ class MaterialEditor:
                 d["CardName"] = path.stem
 
                 from importFCMat import write
+
                 write(filename, d)
                 import Materials
+
                 # Load the material
                 manager = Materials.MaterialManager()
                 manager.getMaterialByPath(filename)
@@ -705,18 +710,16 @@ class MaterialEditor:
 # ************************************************************************************************
 # ************************************************************************************************
 class MaterialsDelegate(QtGui.QStyledItemDelegate):
-
     """provides display and editing facilities for data items from a model."""
 
     def __init__(self):
-        ""
+        """"""
 
         self.matproperty = ""
         self.Value = ""
         super(MaterialsDelegate, self).__init__()
 
     def createEditor(self, parent, option, index):
-
         """returns the widget used to change data from the model."""
 
         model = index.model()
@@ -756,7 +759,6 @@ class MaterialsDelegate(QtGui.QStyledItemDelegate):
         return editor
 
     def setEditorData(self, editor, index):
-
         """provides the widget with data to manipulate."""
 
         Type = editor.property("Type")
@@ -765,7 +767,7 @@ class MaterialsDelegate(QtGui.QStyledItemDelegate):
 
         if Type == "Color":
             color = editor.property("color")
-            color = tuple([v/255.0 for v in color.getRgb()])
+            color = tuple([v / 255.0 for v in color.getRgb()])
             item.setText(str(color))
 
         elif Type == "File":
@@ -774,14 +776,15 @@ class MaterialsDelegate(QtGui.QStyledItemDelegate):
 
         elif Type == "Float":
             # avoid rounding artifacts
-            inputValue = float('%.6g' % editor.value())
+            inputValue = float("%.6g" % editor.value())
             item.setText(str(inputValue))
 
         elif Type == "Quantity":
             if not hasattr(FreeCAD.Units, self.matproperty):
                 FreeCAD.Console.PrintError(
-                    "Error: property '{}' is a quantity but has no unit defined\n"
-                    .format(self.matproperty)
+                    "Error: property '{}' is a quantity but has no unit defined\n".format(
+                        self.matproperty
+                    )
                 )
                 return
             # we must use the unit of the input value because the
@@ -807,9 +810,16 @@ class MaterialsDelegate(QtGui.QStyledItemDelegate):
 
 # ************************************************************************************************
 # ************************************************************************************************
-def matProperWidget(parent=None, matproperty=None, Type="String", Value=None,
-                    minimum=None, maximum=None, stepsize=None, precision=12):
-
+def matProperWidget(
+    parent=None,
+    matproperty=None,
+    Type="String",
+    Value=None,
+    minimum=None,
+    maximum=None,
+    stepsize=None,
+    precision=12,
+):
     """customs widgets for the material stuff."""
 
     # FIXME
@@ -847,7 +857,7 @@ def matProperWidget(parent=None, matproperty=None, Type="String", Value=None,
         widget = ui.createWidget("Gui::DoubleSpinBox")
 
         if minimum is None:
-            widget.setMinimum(-1*sys.float_info.max)
+            widget.setMinimum(-1 * sys.float_info.max)
         else:
             widget.setMinimum(minimum)
         if maximum is None:
@@ -864,8 +874,9 @@ def matProperWidget(parent=None, matproperty=None, Type="String", Value=None,
         # since in cardutils.py in def get_material_template
         # the underscores were removed, we must check for numbers
         import re
-        if re.search(r'\d', matproperty):
-            matpropertyNum = matproperty.rstrip('0123456789')
+
+        if re.search(r"\d", matproperty):
+            matpropertyNum = matproperty.rstrip("0123456789")
             matproperty = matpropertyNum
 
         if Value:
@@ -931,7 +942,7 @@ def string2tuple(string):
     "provisionally"
     value = string[1:-1]
     value = value.split(",")
-    value = [int(float(v)*255) for v in value]
+    value = [int(float(v) * 255) for v in value]
     value = tuple(value)
     return value
 
@@ -950,7 +961,7 @@ def openEditor(obj=None, prop=None):
     #     editor = MaterialEditor(obj, prop)
     #     editor.exec_()
     # else:
-    FreeCADGui.runCommand('Materials_Edit',0)
+    FreeCADGui.runCommand("Materials_Edit", 0)
 
 
 def editMaterial(material=None, card_path=None, category="Solid"):

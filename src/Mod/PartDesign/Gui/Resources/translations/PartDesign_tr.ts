@@ -2433,7 +2433,7 @@ eskiz düzleminin normal vektörü kullanılacaktır</translation>
       <location filename="../../TaskPadPocketParameters.ui" line="403"/>
       <source>If unchecked, the length will be
 measured along the specified direction</source>
-      <translation>İşaret kaldırılırsa, uzunluk 
+      <translation>İşaret kaldırılırsa, uzunluk
 belirlenen yön boyunca ölçülecek</translation>
     </message>
     <message>

@@ -49,32 +49,32 @@ SoFCTransform::SoFCTransform()
     SO_NODE_CONSTRUCTOR(SoFCTransform);
 }
 
-void SoFCTransform::GLRender(SoGLRenderAction * action)
+void SoFCTransform::GLRender(SoGLRenderAction* action)
 {
     SoFCTransform::doAction(action);
 }
 
-void SoFCTransform::callback(SoCallbackAction * action)
+void SoFCTransform::callback(SoCallbackAction* action)
 {
     SoFCTransform::doAction(action);
 }
 
-void SoFCTransform::pick(SoPickAction * action)
+void SoFCTransform::pick(SoPickAction* action)
 {
     SoFCTransform::doAction(action);
 }
 
-void SoFCTransform::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+void SoFCTransform::getPrimitiveCount(SoGetPrimitiveCountAction* action)
 {
     SoFCTransform::doAction(action);
 }
 
-void SoFCTransform::getBoundingBox(SoGetBoundingBoxAction * action)
+void SoFCTransform::getBoundingBox(SoGetBoundingBoxAction* action)
 {
     SoFCTransform::doAction(action);
 }
 
-void SoFCTransform::doAction(SoAction * action)
+void SoFCTransform::doAction(SoAction* action)
 {
     SbMatrix matrix;
     matrix.setTransform(this->translation.getValue(),

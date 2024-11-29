@@ -27,7 +27,7 @@
 
 using namespace Gui;
 
-std::set<WorkbenchManipulator::Ptr> WorkbenchManipulator::manipulators; // NOLINT
+std::set<WorkbenchManipulator::Ptr> WorkbenchManipulator::manipulators;  // NOLINT
 
 void WorkbenchManipulator::installManipulator(const WorkbenchManipulator::Ptr& ptr)
 {
@@ -81,18 +81,14 @@ void WorkbenchManipulator::changeDockWindows(DockWindowItems* dockWindow)
 }
 
 void WorkbenchManipulator::modifyMenuBar([[maybe_unused]] MenuItem* menuBar)
-{
-}
+{}
 
 void WorkbenchManipulator::modifyContextMenu([[maybe_unused]] const char* recipient,
                                              [[maybe_unused]] MenuItem* menuBar)
-{
-}
+{}
 
 void WorkbenchManipulator::modifyToolBars([[maybe_unused]] ToolBarItem* toolBar)
-{
-}
+{}
 
 void WorkbenchManipulator::modifyDockWindows([[maybe_unused]] DockWindowItems* dockWindow)
-{
-}
+{}

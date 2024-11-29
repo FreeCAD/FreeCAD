@@ -2607,7 +2607,7 @@ Napomena: Položaj je izražen u lokalnom koordinatnom sistemu objekta koji se p
 a single object. Please note that when importing back the STEP file, the
 placement will be encoded into the shape geometry, instead of keeping
 it inside the Placement property.</source>
-      <translation>Čekiraj ovu opciju da bi zadržao informacije o položaju prilikom izvoza objekta. 
+      <translation>Čekiraj ovu opciju da bi zadržao informacije o položaju prilikom izvoza objekta.
 Imaj na umu da kada uvezeš nazad STEP datoteku,
 položaj će biti kodiran u geometriji oblika, a ne unutar osobine Položaj.</translation>
     </message>
@@ -2845,7 +2845,7 @@ Ako su obe dužine nula, koristi se jedinična vrednost.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="683"/>
-      <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
+      <source>Can't determine normal vector of shape to be extruded. Please use other mode.
 
 (%1)</source>
       <translation>Ne može se odrediti vektor normale oblika koji se istiskuje. Koristi drugi režim.
@@ -4242,7 +4242,7 @@ If not checked, it depends on the option "Backlight color"
 will be used or black.</source>
       <translation>Donja strana površine će biti prikazana na isti način kao gornja strana.
 Ako nije označeno, zavisiće od opcije „Omogući boju pozadinskog osvetljenja“
-(Podešavanja -&gt; Prikaz -&gt; 3D prikaz). Ili će se koristiti boja pozadinskog 
+(Podešavanja -&gt; Prikaz -&gt; 3D prikaz). Ili će se koristiti boja pozadinskog
 osvetljenja ili crna boja.</translation>
     </message>
     <message>
@@ -5059,7 +5059,7 @@ ali stabilnije. Podrazumevano: netačno</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1081"/>
-      <source>Expand shape content.  Changes will take effect next time you use 
+      <source>Expand shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
       <translation>Proširi panel Podaci o obliku u rezultatima provere. Promene će stupiti na snagu sledeći put kada budeš koristio
 alat za proveru geometrije. Podrazumevano: netačno</translation>
@@ -5071,7 +5071,7 @@ alat za proveru geometrije. Podrazumevano: netačno</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
-      <source>Show advanced shape content.  Changes will take effect next time you use 
+      <source>Show advanced shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
       <translation>Prikaži napredne informacije u panelu Podaci o obliku. Promene će stupiti na snagu sledeći put kada budeš koristio
 alat za proveru geometrije. Podrazumevano: netačno</translation>

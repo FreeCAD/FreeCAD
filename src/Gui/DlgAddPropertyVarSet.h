@@ -33,37 +33,50 @@
 
 #include "propertyeditor/PropertyItem.h"
 
-namespace Gui {
+namespace Gui
+{
 
 class ViewProviderVarSet;
 
-namespace Dialog {
+namespace Dialog
+{
 
-class EditFinishedComboBox : public QComboBox {
+class EditFinishedComboBox: public QComboBox
+{
     Q_OBJECT
 public:
-    explicit EditFinishedComboBox(QWidget *parent = nullptr) : QComboBox(parent) {
+    explicit EditFinishedComboBox(QWidget* parent = nullptr)
+        : QComboBox(parent)
+    {
         setEditable(true);
-        connect(this, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &EditFinishedComboBox::onIndexChanged);
-        connect(this->lineEdit(), &QLineEdit::editingFinished, this, &EditFinishedComboBox::onEditingFinished);
+        connect(this,
+                QOverload<int>::of(&QComboBox::currentIndexChanged),
+                this,
+                &EditFinishedComboBox::onIndexChanged);
+        connect(this->lineEdit(),
+                &QLineEdit::editingFinished,
+                this,
+                &EditFinishedComboBox::onEditingFinished);
     }
 
 Q_SIGNALS:
     void editFinished();
 
 private:
-    void onEditingFinished() {
+    void onEditingFinished()
+    {
         Q_EMIT editFinished();
     }
 
-    void onIndexChanged() {
+    void onIndexChanged()
+    {
         Q_EMIT editFinished();
     }
 };
 
 class Ui_DlgAddPropertyVarSet;
 
-class GuiExport DlgAddPropertyVarSet : public QDialog
+class GuiExport DlgAddPropertyVarSet: public QDialog
 {
     Q_OBJECT
 
@@ -71,7 +84,7 @@ public:
     static const std::string GROUP_BASE;
 
 public:
-    DlgAddPropertyVarSet(QWidget *parent, ViewProviderVarSet* viewProvider);
+    DlgAddPropertyVarSet(QWidget* parent, ViewProviderVarSet* viewProvider);
     ~DlgAddPropertyVarSet() override;
 
     void changeEvent(QEvent* e) override;
@@ -115,12 +128,18 @@ private:
     void addDocumentation();
 
 private:
-    std::unordered_set<std::string> typesWithoutEditor = {
-        "App::PropertyVector", "App::PropertyVectorDistance", "App::PropertyMatrix",
-        "App::PropertyRotation", "App::PropertyPlacement", "App::PropertyEnumeration",
-        "App::PropertyDirection", "App::PropertyPlacementList", "App::PropertyPosition",
-        "App::PropertyExpressionEngine", "App::PropertyIntegerSet",
-        "Sketcher::PropertyConstraintList"};
+    std::unordered_set<std::string> typesWithoutEditor = {"App::PropertyVector",
+                                                          "App::PropertyVectorDistance",
+                                                          "App::PropertyMatrix",
+                                                          "App::PropertyRotation",
+                                                          "App::PropertyPlacement",
+                                                          "App::PropertyEnumeration",
+                                                          "App::PropertyDirection",
+                                                          "App::PropertyPlacementList",
+                                                          "App::PropertyPosition",
+                                                          "App::PropertyExpressionEngine",
+                                                          "App::PropertyIntegerSet",
+                                                          "Sketcher::PropertyConstraintList"};
 
     App::VarSet* varSet;
     std::unique_ptr<Ui_DlgAddPropertyVarSet> ui;
@@ -145,7 +164,7 @@ private:
     QMetaObject::Connection connLineEditNameTextChanged;
 };
 
-} // namespace Dialog
-} // namespace Gui
+}  // namespace Dialog
+}  // namespace Gui
 
-#endif // GUI_DIALOG_DLG_ADD_PROPERTY_VARSET_H
+#endif  // GUI_DIALOG_DLG_ADD_PROPERTY_VARSET_H

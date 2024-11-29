@@ -31,45 +31,57 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderMultiTransform,PartDesignGui::ViewProviderTransformed)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderMultiTransform, PartDesignGui::ViewProviderTransformed)
 
-TaskDlgFeatureParameters *ViewProviderMultiTransform::getEditDialog() {
-    return new TaskDlgMultiTransformParameters (this);
+TaskDlgFeatureParameters* ViewProviderMultiTransform::getEditDialog()
+{
+    return new TaskDlgMultiTransformParameters(this);
 }
 
-const std::string & ViewProviderMultiTransform::featureName() const
+const std::string& ViewProviderMultiTransform::featureName() const
 {
     static const std::string name = "MultiTransform";
     return name;
 }
 
-void ViewProviderMultiTransform::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+void ViewProviderMultiTransform::setupContextMenu(QMenu* menu,
+                                                  QObject* receiver,
+                                                  const char* member)
 {
     addDefaultAction(menu, QObject::tr("Edit multi-transform"));
-    PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member); // clazy:exclude=skipped-base-method
+    PartDesignGui::ViewProvider::setupContextMenu(menu,
+                                                  receiver,
+                                                  member);  // clazy:exclude=skipped-base-method
 }
 
 std::vector<App::DocumentObject*> ViewProviderMultiTransform::claimChildren() const
 {
-    PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(getObject());
-    if (!pcMultiTransform)
-        return {}; // TODO: Show error?
+    PartDesign::MultiTransform* pcMultiTransform =
+        static_cast<PartDesign::MultiTransform*>(getObject());
+    if (!pcMultiTransform) {
+        return {};  // TODO: Show error?
+    }
 
-    std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
+    std::vector<App::DocumentObject*> transformFeatures =
+        pcMultiTransform->Transformations.getValues();
     return transformFeatures;
 }
 
-bool ViewProviderMultiTransform::onDelete(const std::vector<std::string> &svec) {
+bool ViewProviderMultiTransform::onDelete(const std::vector<std::string>& svec)
+{
     // Delete the transformation features
-    PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(getObject());
-    std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
+    PartDesign::MultiTransform* pcMultiTransform =
+        static_cast<PartDesign::MultiTransform*>(getObject());
+    std::vector<App::DocumentObject*> transformFeatures =
+        pcMultiTransform->Transformations.getValues();
 
     // if the multitransform object was deleted the transformed features must be deleted, too
     for (auto it : transformFeatures) {
         if (it) {
-            Gui::Command::doCommand(
-                Gui::Command::Doc,"App.getDocument('%s').removeObject(\"%s\")", \
-                    it->getDocument()->getName(), it->getNameInDocument());
+            Gui::Command::doCommand(Gui::Command::Doc,
+                                    "App.getDocument('%s').removeObject(\"%s\")",
+                                    it->getDocument()->getName(),
+                                    it->getNameInDocument());
         }
     }
 

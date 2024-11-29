@@ -42,115 +42,120 @@
 #include <BRep_Tool.hxx>
 
 
-namespace Part {
-
-
-VectorAdapter::VectorAdapter() : status(false), vector()
+namespace Part
 {
+
+
+VectorAdapter::VectorAdapter()
+    : status(false)
+    , vector()
+{}
+
+VectorAdapter::VectorAdapter(const TopoDS_Face& faceIn, const gp_Vec& pickedPointIn)
+    : status(false)
+    , vector()
+    , origin(pickedPointIn)
+{
+    Handle(Geom_Surface) surface = BRep_Tool::Surface(faceIn);
+    if (surface->IsKind(STANDARD_TYPE(Geom_ElementarySurface))) {
+        Handle(Geom_ElementarySurface) eSurface = Handle(Geom_ElementarySurface)::DownCast(surface);
+        gp_Dir direction = eSurface->Axis().Direction();
+        vector = direction;
+        vector.Normalize();
+        if (faceIn.Orientation() == TopAbs_REVERSED) {
+            vector.Reverse();
+        }
+        if (surface->IsKind(STANDARD_TYPE(Geom_CylindricalSurface))
+            || surface->IsKind(STANDARD_TYPE(Geom_SphericalSurface))) {
+            origin = eSurface->Axis().Location().XYZ();
+            projectOriginOntoVector(pickedPointIn);
+        }
+        else {
+            origin = pickedPointIn + vector;
+        }
+        status = true;
+    }
 }
 
-VectorAdapter::VectorAdapter(const TopoDS_Face &faceIn, const gp_Vec &pickedPointIn) :
-  status(false), vector(), origin(pickedPointIn)
+VectorAdapter::VectorAdapter(const TopoDS_Edge& edgeIn, const gp_Vec& pickedPointIn)
+    : status(false)
+    , vector()
+    , origin(pickedPointIn)
 {
-  Handle(Geom_Surface) surface = BRep_Tool::Surface(faceIn);
-  if (surface->IsKind(STANDARD_TYPE(Geom_ElementarySurface)))
-  {
-    Handle(Geom_ElementarySurface) eSurface = Handle(Geom_ElementarySurface)::DownCast(surface);
-    gp_Dir direction = eSurface->Axis().Direction();
-    vector = direction;
+    TopoDS_Vertex firstVertex = TopExp::FirstVertex(edgeIn, Standard_True);
+    TopoDS_Vertex lastVertex = TopExp::LastVertex(edgeIn, Standard_True);
+    vector = convert(lastVertex) - convert(firstVertex);
+    if (vector.Magnitude() < Precision::Confusion()) {
+        return;
+    }
     vector.Normalize();
-    if (faceIn.Orientation() == TopAbs_REVERSED) {
-      vector.Reverse();
-    }
-    if (surface->IsKind(STANDARD_TYPE(Geom_CylindricalSurface)) ||
-      surface->IsKind(STANDARD_TYPE(Geom_SphericalSurface))
-    )
-    {
-      origin = eSurface->Axis().Location().XYZ();
-      projectOriginOntoVector(pickedPointIn);
-    }
-    else {
-      origin = pickedPointIn + vector;
-    }
+
     status = true;
-  }
+    projectOriginOntoVector(pickedPointIn);
 }
 
-VectorAdapter::VectorAdapter(const TopoDS_Edge &edgeIn, const gp_Vec &pickedPointIn) :
-  status(false), vector(), origin(pickedPointIn)
+VectorAdapter::VectorAdapter(const TopoDS_Vertex& vertex1In, const TopoDS_Vertex& vertex2In)
+    : status(false)
+    , vector()
+    , origin()
 {
-  TopoDS_Vertex firstVertex = TopExp::FirstVertex(edgeIn, Standard_True);
-  TopoDS_Vertex lastVertex = TopExp::LastVertex(edgeIn, Standard_True);
-  vector = convert(lastVertex) - convert(firstVertex);
-  if (vector.Magnitude() < Precision::Confusion()) {
-    return;
-  }
-  vector.Normalize();
+    vector = convert(vertex2In) - convert(vertex1In);
+    vector.Normalize();
 
-  status = true;
-  projectOriginOntoVector(pickedPointIn);
+    // build origin half way.
+    gp_Vec tempVector = (convert(vertex2In) - convert(vertex1In));
+    double mag = tempVector.Magnitude();
+    tempVector.Normalize();
+    tempVector *= (mag / 2.0);
+    origin = tempVector + convert(vertex1In);
+
+    status = true;
 }
 
-VectorAdapter::VectorAdapter(const TopoDS_Vertex &vertex1In, const TopoDS_Vertex &vertex2In) :
-  status(false), vector(), origin()
+VectorAdapter::VectorAdapter(const gp_Vec& vector1, const gp_Vec& vector2)
+    : status(false)
+    , vector()
+    , origin()
 {
-  vector = convert(vertex2In) - convert(vertex1In);
-  vector.Normalize();
+    vector = vector2 - vector1;
+    vector.Normalize();
 
-  //build origin half way.
-  gp_Vec tempVector = (convert(vertex2In) - convert(vertex1In));
-  double mag = tempVector.Magnitude();
-  tempVector.Normalize();
-  tempVector *= (mag / 2.0);
-  origin = tempVector + convert(vertex1In);
+    // build origin half way.
+    gp_Vec tempVector = vector2 - vector1;
+    double mag = tempVector.Magnitude();
+    tempVector.Normalize();
+    tempVector *= (mag / 2.0);
+    origin = tempVector + vector1;
 
-  status = true;
+    status = true;
 }
 
-VectorAdapter::VectorAdapter(const gp_Vec &vector1, const gp_Vec &vector2) :
-  status(false), vector(), origin()
+void VectorAdapter::projectOriginOntoVector(const gp_Vec& pickedPointIn)
 {
-  vector = vector2- vector1;
-  vector.Normalize();
-
-  //build origin half way.
-  gp_Vec tempVector = vector2 - vector1;
-  double mag = tempVector.Magnitude();
-  tempVector.Normalize();
-  tempVector *= (mag / 2.0);
-  origin = tempVector + vector1;
-
-  status = true;
-}
-
-void VectorAdapter::projectOriginOntoVector(const gp_Vec &pickedPointIn)
-{
-  Handle(Geom_Curve) heapLine = new Geom_Line(origin.XYZ(), vector.XYZ());
-  gp_Pnt tempPoint(pickedPointIn.XYZ());
-  GeomAPI_ProjectPointOnCurve projection(tempPoint, heapLine);
-  if (projection.NbPoints() < 1) {
-    return;
-  }
-  origin.SetXYZ(projection.Point(1).XYZ());
+    Handle(Geom_Curve) heapLine = new Geom_Line(origin.XYZ(), vector.XYZ());
+    gp_Pnt tempPoint(pickedPointIn.XYZ());
+    GeomAPI_ProjectPointOnCurve projection(tempPoint, heapLine);
+    if (projection.NbPoints() < 1) {
+        return;
+    }
+    origin.SetXYZ(projection.Point(1).XYZ());
 }
 
 VectorAdapter::operator gp_Lin() const
 {
-  gp_Pnt tempOrigin;
-  tempOrigin.SetXYZ(origin.XYZ());
-  return gp_Lin(tempOrigin, gp_Dir(vector));
+    gp_Pnt tempOrigin;
+    tempOrigin.SetXYZ(origin.XYZ());
+    return gp_Lin(tempOrigin, gp_Dir(vector));
 }
 
 
 /*convert a vertex to vector*/
-gp_Vec VectorAdapter::convert(const TopoDS_Vertex &vertex)
+gp_Vec VectorAdapter::convert(const TopoDS_Vertex& vertex)
 {
-  gp_Pnt point = BRep_Tool::Pnt(vertex);
-  gp_Vec out(point.X(), point.Y(), point.Z());
-  return out;
+    gp_Pnt point = BRep_Tool::Pnt(vertex);
+    gp_Vec out(point.X(), point.Y(), point.Z());
+    return out;
 }
 
 
-
-}
-
+}  // namespace Part

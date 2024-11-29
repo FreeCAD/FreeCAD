@@ -3734,7 +3734,7 @@ Esto puede conducir a resultados inesperados.</translation>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
-      <translation>Para poder utilizar DiseñoDePieza se necesita un Cuerpo activo en el documento. Por favor active (doble clic) o cree uno. 
+      <translation>Para poder utilizar DiseñoDePieza se necesita un Cuerpo activo en el documento. Por favor active (doble clic) o cree uno.
 
 Si tienes un documento heredado con objetos DiseñoDePieza sin un Cuerpo, utiliza la función de migración en DiseñoDePieza para ponerlos en un Cuerpo.</translation>
     </message>

@@ -12780,7 +12780,7 @@ dot/period will always be printed.</translation>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="248"/>
       <source>Choose your preference for toolbar icon size. You can adjust
 this according to your screen size or personal taste</source>
-      <translation>Escolla a súa preferencia para o tamaño da icona da barra de ferramentas. 
+      <translation>Escolla a súa preferencia para o tamaño da icona da barra de ferramentas.
 Pode axustar isto de acordo ó tamaño da súa pantalla ou gusto persoal</translation>
     </message>
     <message>

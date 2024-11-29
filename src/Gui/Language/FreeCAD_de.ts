@@ -2763,7 +2763,7 @@ report this setting as enabled when seeking support on the FreeCAD forums</sourc
       <translation>Falls gewählt, werden Vertex Buffer Objects (VBO) verwendet.
 Ein VBO ist eine OpenGL-Funktion, die Methoden zum Hochladen von Netzpunkt-Daten (Position, normaler Vektor, Farbe, etc.) auf die Grafikkarte unterstützt.
 VBOs bieten erhebliche Leistungssteigerungen, da die Daten
-im Grafikspeicher und nicht im Systemspeicher liegen und somit direkt durch die GPU gerendert werden können. 
+im Grafikspeicher und nicht im Systemspeicher liegen und somit direkt durch die GPU gerendert werden können.
 
 Hinweis: Manchmal kann diese Funktion zu unerwarteten Problemen führen, die von grafischen Anomalien bis hin zu GPU-Absturzfehlern reichen. Bei Beiträgen in FreeCAD-Foren, sollten darauf hingewiesen werden, dass diese Funktion aktiviert ist</translation>
     </message>
@@ -2792,7 +2792,7 @@ There are 3 options available to achieve this:
 only cache at the scene graph root node. This offers the fastest rendering speed
 but slower response to any scene changes.</source>
       <translation>'Render Caching' ist eine andere Art der ''Rendering-Beschleunigung''.
-Es stehen 3 Optionen zur Verfügung: 
+Es stehen 3 Optionen zur Verfügung:
 1) 'Auto' (Standard), lassen Sie Coin3D entscheiden, wo das Caching stattfinden soll.
 2) 'Verteilt', manuelles Einschalten des Caches für alle View-Provider-Wurzelknoten.
 3) 'Zentralisiert', Ausschalten des Caching in allen Knoten aller View-Provider manuell, und
@@ -5721,7 +5721,7 @@ dieses Dialogs ausgewählt wurden</translation>
       <source>%1.
 
 This has been modified outside of the source editor. Do you want to reload it?</source>
-      <translation>%1. 
+      <translation>%1.
 
 Diese Datei wurde außerhalb des Editors verändert. Soll sie erneut geladen werden?</translation>
     </message>
@@ -5883,7 +5883,7 @@ Sollen die Änderungen gespeichert werden?</translation>
     <message>
       <location filename="../GestureNavigationStyle.cpp" line="863"/>
       <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation>Kneifen (zwei Finger auf den Bildschirm setzen und auseinander ziehen oder zusammenführen) ODER Mausrad drehen 
+      <translation>Kneifen (zwei Finger auf den Bildschirm setzen und auseinander ziehen oder zusammenführen) ODER Mausrad drehen
 ODER ALT-Taste + rechte Maustaste drücken ODER Bild auf/Bild ab auf der Tastatur.</translation>
     </message>
   </context>
@@ -6346,7 +6346,7 @@ How do you want to proceed?</source>
     <message>
       <location filename="../MayaGestureNavigationStyle.cpp" line="100"/>
       <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation>Kneifen (zwei Finger auf den Bildschirm setzen und auseinander ziehen oder zusammenführen) ODER Mausrad drehen 
+      <translation>Kneifen (zwei Finger auf den Bildschirm setzen und auseinander ziehen oder zusammenführen) ODER Mausrad drehen
 ODER ALT-Taste + rechte Maustaste drücken ODER Bild auf/Bild ab auf der Tastatur.</translation>
     </message>
   </context>

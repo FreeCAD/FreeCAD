@@ -22,47 +22,47 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRep_Builder.hxx>
-# include <BRep_Tool.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepBuilderAPI_MakeEdge.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
-# include <BRepGProp.hxx>
-# include <BRepLProp_CLProps.hxx>
-# include <BRepLProp_CurveTool.hxx>
-# include <GProp_GProps.hxx>
-# include <GProp_PrincipalProps.hxx>
-# include <Geom_Circle.hxx>
-# include <Geom_Curve.hxx>
-# include <Geom_Ellipse.hxx>
-# include <Geom_Hyperbola.hxx>
-# include <Geom_Parabola.hxx>
-# include <Geom_Line.hxx>
-# include <Geom_OffsetCurve.hxx>
-# include <Geom_Surface.hxx>
-# include <Geom2d_Curve.hxx>
-# include <TopLoc_Location.hxx>
-# include <Poly_Polygon3D.hxx>
-# include <Poly_Triangulation.hxx>
-# include <Poly_PolygonOnTriangulation.hxx>
-# include <TColStd_Array1OfReal.hxx>
-# include <TopExp.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Edge.hxx>
-# include <TopoDS_Shape.hxx>
-# include <TopoDS_Vertex.hxx>
-# include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-# include <ShapeAnalysis_Edge.hxx>
-# include <Standard_Failure.hxx>
-# include <Standard_Version.hxx>
-# include <GProp_GProps.hxx>
-# include <GCPnts_AbscissaPoint.hxx>
-# include <GCPnts_QuasiUniformAbscissa.hxx>
-# include <GCPnts_QuasiUniformDeflection.hxx>
-# include <GCPnts_TangentialDeflection.hxx>
-# include <GCPnts_UniformAbscissa.hxx>
-# include <GCPnts_UniformDeflection.hxx>
-#endif // _PreComp_
+#include <BRep_Builder.hxx>
+#include <BRep_Tool.hxx>
+#include <BRepAdaptor_Curve.hxx>
+#include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepBuilderAPI_MakeWire.hxx>
+#include <BRepGProp.hxx>
+#include <BRepLProp_CLProps.hxx>
+#include <BRepLProp_CurveTool.hxx>
+#include <GProp_GProps.hxx>
+#include <GProp_PrincipalProps.hxx>
+#include <Geom_Circle.hxx>
+#include <Geom_Curve.hxx>
+#include <Geom_Ellipse.hxx>
+#include <Geom_Hyperbola.hxx>
+#include <Geom_Parabola.hxx>
+#include <Geom_Line.hxx>
+#include <Geom_OffsetCurve.hxx>
+#include <Geom_Surface.hxx>
+#include <Geom2d_Curve.hxx>
+#include <TopLoc_Location.hxx>
+#include <Poly_Polygon3D.hxx>
+#include <Poly_Triangulation.hxx>
+#include <Poly_PolygonOnTriangulation.hxx>
+#include <TColStd_Array1OfReal.hxx>
+#include <TopExp.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Shape.hxx>
+#include <TopoDS_Vertex.hxx>
+#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+#include <ShapeAnalysis_Edge.hxx>
+#include <Standard_Failure.hxx>
+#include <Standard_Version.hxx>
+#include <GProp_GProps.hxx>
+#include <GCPnts_AbscissaPoint.hxx>
+#include <GCPnts_QuasiUniformAbscissa.hxx>
+#include <GCPnts_QuasiUniformDeflection.hxx>
+#include <GCPnts_TangentialDeflection.hxx>
+#include <GCPnts_UniformAbscissa.hxx>
+#include <GCPnts_UniformDeflection.hxx>
+#endif  // _PreComp_
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
@@ -91,14 +91,17 @@
 
 using namespace Part;
 
-namespace {
-const TopoDS_Edge& getTopoDSEdge(const TopoShapeEdgePy* theEdge){
+namespace
+{
+const TopoDS_Edge& getTopoDSEdge(const TopoShapeEdgePy* theEdge)
+{
     const TopoDS_Edge& e = TopoDS::Edge(theEdge->getTopoShapePtr()->getShape());
-    if (e.IsNull())
+    if (e.IsNull()) {
         throw Py::ValueError("Edge is null");
+    }
     return e;
 }
-}
+}  // namespace
 
 // returns a string which represents the object e.g. when printed in python
 std::string TopoShapeEdgePy::representation() const
@@ -109,7 +112,7 @@ std::string TopoShapeEdgePy::representation() const
     return str.str();
 }
 
-PyObject *TopoShapeEdgePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* TopoShapeEdgePy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of TopoShapeEdgePy and the Twin object
     return new TopoShapeEdgePy(new TopoShape);
@@ -126,7 +129,7 @@ int TopoShapeEdgePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
     PyErr_Clear();
     PyObject *pcObj, *pcObj2;
-    double first=DBL_MAX, last=DBL_MAX;
+    double first = DBL_MAX, last = DBL_MAX;
     if (PyArg_ParseTuple(args, "O!|dd", &(Part::GeometryPy::Type), &pcObj, &first, &last)) {
         Geometry* geom = static_cast<GeometryPy*>(pcObj)->getGeometryPtr();
         Handle(Geom_Curve) curve = Handle(Geom_Curve)::DownCast(geom->handle());
@@ -135,10 +138,12 @@ int TopoShapeEdgePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             return -1;
         }
 
-        if (first==DBL_MAX)
+        if (first == DBL_MAX) {
             first = curve->FirstParameter();
-        if (last==DBL_MAX)
+        }
+        if (last == DBL_MAX) {
             last = curve->LastParameter();
+        }
 
         try {
             BRepBuilderAPI_MakeEdge mkEdge(curve, first, last);
@@ -166,8 +171,12 @@ int TopoShapeEdgePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
 
     PyErr_Clear();
-    if (PyArg_ParseTuple(args, "O!O!", &(Part::TopoShapeVertexPy::Type), &pcObj,
-                                       &(Part::TopoShapeVertexPy::Type), &pcObj2)) {
+    if (PyArg_ParseTuple(args,
+                         "O!O!",
+                         &(Part::TopoShapeVertexPy::Type),
+                         &pcObj,
+                         &(Part::TopoShapeVertexPy::Type),
+                         &pcObj2)) {
         TopoShape* shape1 = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr();
         TopoShape* shape2 = static_cast<TopoShapePy*>(pcObj2)->getTopoShapePtr();
         const TopoDS_Vertex& v1 = TopoDS::Vertex(shape1->getShape());
@@ -191,12 +200,13 @@ int TopoShapeEdgePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 // ====== Methods  ======================================================================
 
-PyObject* TopoShapeEdgePy::getParameterByLength(PyObject *args)
+PyObject* TopoShapeEdgePy::getParameterByLength(PyObject* args)
 {
     double u;
-    double t=Precision::Confusion();
-    if (!PyArg_ParseTuple(args, "d|d",&u,&t))
+    double t = Precision::Confusion();
+    if (!PyArg_ParseTuple(args, "d|d", &u, &t)) {
         return nullptr;
+    }
 
     auto e = getTopoDSEdge(this);
     BRepAdaptor_Curve adapt(e);
@@ -205,15 +215,16 @@ PyObject* TopoShapeEdgePy::getParameterByLength(PyObject *args)
     double first = BRepLProp_CurveTool::FirstParameter(adapt);
     double last = BRepLProp_CurveTool::LastParameter(adapt);
     if (!Precision::IsInfinite(first) && !Precision::IsInfinite(last)) {
-        double length = GCPnts_AbscissaPoint::Length(adapt,t);
+        double length = GCPnts_AbscissaPoint::Length(adapt, t);
 
         if (u < -length || u > length) {
             PyErr_SetString(PyExc_ValueError, "value out of range");
             return nullptr;
         }
-        if (u < 0)
-            u = length+u;
-        GCPnts_AbscissaPoint abscissaPoint(t,adapt,u,first);
+        if (u < 0) {
+            u = length + u;
+        }
+        GCPnts_AbscissaPoint abscissaPoint(t, adapt, u, first);
         double parm = abscissaPoint.Parameter();
         return PyFloat_FromDouble(parm);
     }
@@ -221,27 +232,29 @@ PyObject* TopoShapeEdgePy::getParameterByLength(PyObject *args)
     return PyFloat_FromDouble(u);
 }
 
-PyObject* TopoShapeEdgePy::valueAt(PyObject *args)
+PyObject* TopoShapeEdgePy::valueAt(PyObject* args)
 {
     double u;
-    if (!PyArg_ParseTuple(args, "d",&u))
+    if (!PyArg_ParseTuple(args, "d", &u)) {
         return nullptr;
+    }
 
     auto e = getTopoDSEdge(this);
     BRepAdaptor_Curve adapt(e);
 
     // Check now the orientation of the edge to make
     // sure that we get the right wanted point!
-    BRepLProp_CLProps prop(adapt,u,0,Precision::Confusion());
+    BRepLProp_CLProps prop(adapt, u, 0, Precision::Confusion());
     const gp_Pnt& V = prop.Value();
-    return new Base::VectorPy(new Base::Vector3d(V.X(),V.Y(),V.Z()));
+    return new Base::VectorPy(new Base::Vector3d(V.X(), V.Y(), V.Z()));
 }
 
-PyObject* TopoShapeEdgePy::parameters(PyObject *args)
+PyObject* TopoShapeEdgePy::parameters(PyObject* args)
 {
     PyObject* pyface = nullptr;
-    if (!PyArg_ParseTuple(args, "|O!", &(TopoShapeFacePy::Type), &pyface))
+    if (!PyArg_ParseTuple(args, "|O!", &(TopoShapeFacePy::Type), &pyface)) {
         return nullptr;
+    }
 
     auto e = getTopoDSEdge(this);
     TopLoc_Location aLoc;
@@ -253,7 +266,7 @@ PyObject* TopoShapeEdgePy::parameters(PyObject *args)
         }
 
         const TColStd_Array1OfReal& aNodes = aPoly->Parameters();
-        for (int i=aNodes.Lower(); i<=aNodes.Upper(); i++) {
+        for (int i = aNodes.Lower(); i <= aNodes.Upper(); i++) {
             list.append(Py::Float(aNodes(i)));
         }
 
@@ -261,13 +274,16 @@ PyObject* TopoShapeEdgePy::parameters(PyObject *args)
     }
     else if (pyface) {
         // build up map edge->face
-        const TopoDS_Shape& face = static_cast<TopoShapeFacePy*>(pyface)->getTopoShapePtr()->getShape();
+        const TopoDS_Shape& face =
+            static_cast<TopoShapeFacePy*>(pyface)->getTopoShapePtr()->getShape();
         TopTools_IndexedDataMapOfShapeListOfShape edge2Face;
         TopExp::MapShapesAndAncestors(TopoDS::Face(face), TopAbs_EDGE, TopAbs_FACE, edge2Face);
         if (edge2Face.Contains(e)) {
-            Handle(Poly_Triangulation) aPolyTria = BRep_Tool::Triangulation(TopoDS::Face(face),aLoc);
+            Handle(Poly_Triangulation) aPolyTria =
+                BRep_Tool::Triangulation(TopoDS::Face(face), aLoc);
             if (!aPolyTria.IsNull()) {
-                Handle(Poly_PolygonOnTriangulation) aPoly = BRep_Tool::PolygonOnTriangulation(e, aPolyTria, aLoc);
+                Handle(Poly_PolygonOnTriangulation) aPoly =
+                    BRep_Tool::PolygonOnTriangulation(e, aPolyTria, aLoc);
                 if (!aPoly.IsNull()) {
                     if (!aPoly->HasParameters()) {
                         Py::List list;
@@ -277,7 +293,7 @@ PyObject* TopoShapeEdgePy::parameters(PyObject *args)
                     Handle(TColStd_HArray1OfReal) aNodes = aPoly->Parameters();
                     if (!aNodes.IsNull()) {
                         Py::List list;
-                        for (int i=aNodes->Lower(); i<=aNodes->Upper(); i++) {
+                        for (int i = aNodes->Lower(); i <= aNodes->Upper(); i++) {
                             list.append(Py::Float(aNodes->Value(i)));
                         }
 
@@ -296,20 +312,26 @@ PyObject* TopoShapeEdgePy::parameters(PyObject *args)
     return nullptr;
 }
 
-PyObject* TopoShapeEdgePy::parameterAt(PyObject *args)
+PyObject* TopoShapeEdgePy::parameterAt(PyObject* args)
 {
     PyObject* pnt;
-    PyObject* face=nullptr;
-    if (!PyArg_ParseTuple(args, "O!|O!",&TopoShapeVertexPy::Type,&pnt,
-                                        &TopoShapeFacePy::Type,&face))
+    PyObject* face = nullptr;
+    if (!PyArg_ParseTuple(args,
+                          "O!|O!",
+                          &TopoShapeVertexPy::Type,
+                          &pnt,
+                          &TopoShapeFacePy::Type,
+                          &face)) {
         return nullptr;
+    }
 
     try {
         const TopoDS_Shape& v = static_cast<TopoShapePy*>(pnt)->getTopoShapePtr()->getShape();
         auto e = getTopoDSEdge(this);
 
         if (face) {
-            const TopoDS_Shape& f = static_cast<TopoShapeFacePy*>(face)->getTopoShapePtr()->getShape();
+            const TopoDS_Shape& f =
+                static_cast<TopoShapeFacePy*>(face)->getTopoShapePtr()->getShape();
             Standard_Real par = BRep_Tool::Parameter(TopoDS::Vertex(v), e, TopoDS::Face(f));
             return PyFloat_FromDouble(par);
         }
@@ -325,20 +347,21 @@ PyObject* TopoShapeEdgePy::parameterAt(PyObject *args)
     }
 }
 
-PyObject* TopoShapeEdgePy::tangentAt(PyObject *args)
+PyObject* TopoShapeEdgePy::tangentAt(PyObject* args)
 {
     double u;
-    if (!PyArg_ParseTuple(args, "d",&u))
+    if (!PyArg_ParseTuple(args, "d", &u)) {
         return nullptr;
+    }
 
     auto e = getTopoDSEdge(this);
     BRepAdaptor_Curve adapt(e);
 
-    BRepLProp_CLProps prop(adapt,u,2,Precision::Confusion());
+    BRepLProp_CLProps prop(adapt, u, 2, Precision::Confusion());
     if (prop.IsTangentDefined()) {
         gp_Dir dir;
         prop.Tangent(dir);
-        return new Base::VectorPy(new Base::Vector3d(dir.X(),dir.Y(),dir.Z()));
+        return new Base::VectorPy(new Base::Vector3d(dir.X(), dir.Y(), dir.Z()));
     }
     else {
         PyErr_SetString(PyExc_NotImplementedError, "Tangent not defined at this position!");
@@ -346,20 +369,21 @@ PyObject* TopoShapeEdgePy::tangentAt(PyObject *args)
     }
 }
 
-PyObject* TopoShapeEdgePy::normalAt(PyObject *args)
+PyObject* TopoShapeEdgePy::normalAt(PyObject* args)
 {
     double u;
-    if (!PyArg_ParseTuple(args, "d",&u))
+    if (!PyArg_ParseTuple(args, "d", &u)) {
         return nullptr;
+    }
 
     auto e = getTopoDSEdge(this);
     BRepAdaptor_Curve adapt(e);
 
     try {
-        BRepLProp_CLProps prop(adapt,u,2,Precision::Confusion());
-        gp_Dir V ;
+        BRepLProp_CLProps prop(adapt, u, 2, Precision::Confusion());
+        gp_Dir V;
         prop.Normal(V);
-        return new Base::VectorPy(new Base::Vector3d(V.X(),V.Y(),V.Z()));
+        return new Base::VectorPy(new Base::Vector3d(V.X(), V.Y(), V.Z()));
     }
     catch (Standard_Failure& e) {
 
@@ -368,17 +392,18 @@ PyObject* TopoShapeEdgePy::normalAt(PyObject *args)
     }
 }
 
-PyObject* TopoShapeEdgePy::curvatureAt(PyObject *args)
+PyObject* TopoShapeEdgePy::curvatureAt(PyObject* args)
 {
     double u;
-    if (!PyArg_ParseTuple(args, "d",&u))
+    if (!PyArg_ParseTuple(args, "d", &u)) {
         return nullptr;
+    }
 
     auto e = getTopoDSEdge(this);
     BRepAdaptor_Curve adapt(e);
 
     try {
-        BRepLProp_CLProps prop(adapt,u,2,Precision::Confusion());
+        BRepLProp_CLProps prop(adapt, u, 2, Precision::Confusion());
         double C = prop.Curvature();
         return Py::new_reference_to(Py::Float(C));
     }
@@ -389,20 +414,21 @@ PyObject* TopoShapeEdgePy::curvatureAt(PyObject *args)
     }
 }
 
-PyObject* TopoShapeEdgePy::centerOfCurvatureAt(PyObject *args)
+PyObject* TopoShapeEdgePy::centerOfCurvatureAt(PyObject* args)
 {
     double u;
-    if (!PyArg_ParseTuple(args, "d",&u))
+    if (!PyArg_ParseTuple(args, "d", &u)) {
         return nullptr;
+    }
 
     auto e = getTopoDSEdge(this);
     BRepAdaptor_Curve adapt(e);
 
     try {
-        BRepLProp_CLProps prop(adapt,u,2,Precision::Confusion());
-        gp_Pnt V ;
+        BRepLProp_CLProps prop(adapt, u, 2, Precision::Confusion());
+        gp_Pnt V;
         prop.CentreOfCurvature(V);
-        return new Base::VectorPy(new Base::Vector3d(V.X(),V.Y(),V.Z()));
+        return new Base::VectorPy(new Base::Vector3d(V.X(), V.Y(), V.Z()));
     }
     catch (Standard_Failure& e) {
 
@@ -411,19 +437,20 @@ PyObject* TopoShapeEdgePy::centerOfCurvatureAt(PyObject *args)
     }
 }
 
-PyObject* TopoShapeEdgePy::derivative1At(PyObject *args)
+PyObject* TopoShapeEdgePy::derivative1At(PyObject* args)
 {
     double u;
-    if (!PyArg_ParseTuple(args, "d",&u))
+    if (!PyArg_ParseTuple(args, "d", &u)) {
         return nullptr;
+    }
 
     auto e = getTopoDSEdge(this);
     BRepAdaptor_Curve adapt(e);
 
     try {
-        BRepLProp_CLProps prop(adapt,u,1,Precision::Confusion());
+        BRepLProp_CLProps prop(adapt, u, 1, Precision::Confusion());
         const gp_Vec& V = prop.D1();
-        return new Base::VectorPy(new Base::Vector3d(V.X(),V.Y(),V.Z()));
+        return new Base::VectorPy(new Base::Vector3d(V.X(), V.Y(), V.Z()));
     }
     catch (Standard_Failure& e) {
 
@@ -432,19 +459,20 @@ PyObject* TopoShapeEdgePy::derivative1At(PyObject *args)
     }
 }
 
-PyObject* TopoShapeEdgePy::derivative2At(PyObject *args)
+PyObject* TopoShapeEdgePy::derivative2At(PyObject* args)
 {
     double u;
-    if (!PyArg_ParseTuple(args, "d",&u))
+    if (!PyArg_ParseTuple(args, "d", &u)) {
         return nullptr;
+    }
 
     auto e = getTopoDSEdge(this);
     BRepAdaptor_Curve adapt(e);
 
     try {
-        BRepLProp_CLProps prop(adapt,u,2,Precision::Confusion());
+        BRepLProp_CLProps prop(adapt, u, 2, Precision::Confusion());
         const gp_Vec& V = prop.D2();
-        return new Base::VectorPy(new Base::Vector3d(V.X(),V.Y(),V.Z()));
+        return new Base::VectorPy(new Base::Vector3d(V.X(), V.Y(), V.Z()));
     }
     catch (Standard_Failure& e) {
 
@@ -453,19 +481,20 @@ PyObject* TopoShapeEdgePy::derivative2At(PyObject *args)
     }
 }
 
-PyObject* TopoShapeEdgePy::derivative3At(PyObject *args)
+PyObject* TopoShapeEdgePy::derivative3At(PyObject* args)
 {
     double u;
-    if (!PyArg_ParseTuple(args, "d",&u))
+    if (!PyArg_ParseTuple(args, "d", &u)) {
         return nullptr;
+    }
 
     auto e = getTopoDSEdge(this);
     BRepAdaptor_Curve adapt(e);
 
     try {
-        BRepLProp_CLProps prop(adapt,u,3,Precision::Confusion());
+        BRepLProp_CLProps prop(adapt, u, 3, Precision::Confusion());
         const gp_Vec& V = prop.D3();
-        return new Base::VectorPy(new Base::Vector3d(V.X(),V.Y(),V.Z()));
+        return new Base::VectorPy(new Base::Vector3d(V.X(), V.Y(), V.Z()));
     }
     catch (Standard_Failure& e) {
 
@@ -474,7 +503,7 @@ PyObject* TopoShapeEdgePy::derivative3At(PyObject *args)
     }
 }
 
-PyObject* TopoShapeEdgePy::discretize(PyObject *args, PyObject *kwds)
+PyObject* TopoShapeEdgePy::discretize(PyObject* args, PyObject* kwds)
 {
     try {
         BRepAdaptor_Curve adapt(TopoDS::Edge(getTopoShapePtr()->getShape()));
@@ -503,16 +532,34 @@ PyObject* TopoShapeEdgePy::discretize(PyObject *args, PyObject *kwds)
         }
         else {
             // use Number kwds
-            static const std::array<const char *, 4> kwds_numPoints{"Number", "First", "Last", nullptr};
+            static const std::array<const char*, 4> kwds_numPoints {"Number",
+                                                                    "First",
+                                                                    "Last",
+                                                                    nullptr};
             PyErr_Clear();
-            if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "i|dd", kwds_numPoints, &numPoints, &first, &last)) {
+            if (Base::Wrapped_ParseTupleAndKeywords(args,
+                                                    kwds,
+                                                    "i|dd",
+                                                    kwds_numPoints,
+                                                    &numPoints,
+                                                    &first,
+                                                    &last)) {
                 uniformAbscissaPoints = true;
             }
             else {
                 // use Abscissa kwds
-                static const std::array<const char *, 4> kwds_Distance{"Distance", "First", "Last", nullptr};
+                static const std::array<const char*, 4> kwds_Distance {"Distance",
+                                                                       "First",
+                                                                       "Last",
+                                                                       nullptr};
                 PyErr_Clear();
-                if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "d|dd", kwds_Distance, &distance, &first, &last)) {
+                if (Base::Wrapped_ParseTupleAndKeywords(args,
+                                                        kwds,
+                                                        "d|dd",
+                                                        kwds_Distance,
+                                                        &distance,
+                                                        &first,
+                                                        &last)) {
                     uniformAbscissaDistance = true;
                 }
             }
@@ -520,17 +567,19 @@ PyObject* TopoShapeEdgePy::discretize(PyObject *args, PyObject *kwds)
 
         if (uniformAbscissaPoints || uniformAbscissaDistance) {
             GCPnts_UniformAbscissa discretizer;
-            if (uniformAbscissaPoints)
-                discretizer.Initialize (adapt, numPoints, first, last);
-            else
-                discretizer.Initialize (adapt, distance, first, last);
+            if (uniformAbscissaPoints) {
+                discretizer.Initialize(adapt, numPoints, first, last);
+            }
+            else {
+                discretizer.Initialize(adapt, distance, first, last);
+            }
 
-            if (discretizer.IsDone () && discretizer.NbPoints () > 0) {
+            if (discretizer.IsDone() && discretizer.NbPoints() > 0) {
                 Py::List points;
-                int nbPoints = discretizer.NbPoints ();
-                for (int i=1; i<=nbPoints; i++) {
-                    gp_Pnt p = adapt.Value (discretizer.Parameter (i));
-                    points.append(Py::Vector(Base::Vector3d(p.X(),p.Y(),p.Z())));
+                int nbPoints = discretizer.NbPoints();
+                for (int i = 1; i <= nbPoints; i++) {
+                    gp_Pnt p = adapt.Value(discretizer.Parameter(i));
+                    points.append(Py::Vector(Base::Vector3d(p.X(), p.Y(), p.Z())));
                 }
 
                 return Py::new_reference_to(points);
@@ -542,17 +591,26 @@ PyObject* TopoShapeEdgePy::discretize(PyObject *args, PyObject *kwds)
         }
 
         // use Deflection kwds
-        static const std::array<const char *, 4> kwds_Deflection{"Deflection", "First", "Last", nullptr};
+        static const std::array<const char*, 4> kwds_Deflection {"Deflection",
+                                                                 "First",
+                                                                 "Last",
+                                                                 nullptr};
         PyErr_Clear();
         double deflection;
-        if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "d|dd", kwds_Deflection, &deflection, &first, &last)) {
+        if (Base::Wrapped_ParseTupleAndKeywords(args,
+                                                kwds,
+                                                "d|dd",
+                                                kwds_Deflection,
+                                                &deflection,
+                                                &first,
+                                                &last)) {
             GCPnts_UniformDeflection discretizer(adapt, deflection, first, last);
-            if (discretizer.IsDone () && discretizer.NbPoints () > 0) {
+            if (discretizer.IsDone() && discretizer.NbPoints() > 0) {
                 Py::List points;
-                int nbPoints = discretizer.NbPoints ();
-                for (int i=1; i<=nbPoints; i++) {
-                    gp_Pnt p = discretizer.Value (i);
-                    points.append(Py::Vector(Base::Vector3d(p.X(),p.Y(),p.Z())));
+                int nbPoints = discretizer.NbPoints();
+                for (int i = 1; i <= nbPoints; i++) {
+                    gp_Pnt p = discretizer.Value(i);
+                    points.append(Py::Vector(Base::Vector3d(p.X(), p.Y(), p.Z())));
                 }
 
                 return Py::new_reference_to(points);
@@ -564,21 +622,37 @@ PyObject* TopoShapeEdgePy::discretize(PyObject *args, PyObject *kwds)
         }
 
         // use TangentialDeflection kwds
-        static const std::array<const char *, 6> kwds_TangentialDeflection {"Angular", "Curvature", "First", "Last",
-                                                                            "Minimum", nullptr};
+        static const std::array<const char*, 6> kwds_TangentialDeflection {"Angular",
+                                                                           "Curvature",
+                                                                           "First",
+                                                                           "Last",
+                                                                           "Minimum",
+                                                                           nullptr};
         PyErr_Clear();
         double angular;
         double curvature;
         int minimumPoints = 2;
-        if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "dd|ddi", kwds_TangentialDeflection, &angular, &curvature,
-                                                &first, &last, &minimumPoints)) {
-            GCPnts_TangentialDeflection discretizer(adapt, first, last, angular, curvature, minimumPoints);
-            if (discretizer.NbPoints () > 0) {
+        if (Base::Wrapped_ParseTupleAndKeywords(args,
+                                                kwds,
+                                                "dd|ddi",
+                                                kwds_TangentialDeflection,
+                                                &angular,
+                                                &curvature,
+                                                &first,
+                                                &last,
+                                                &minimumPoints)) {
+            GCPnts_TangentialDeflection discretizer(adapt,
+                                                    first,
+                                                    last,
+                                                    angular,
+                                                    curvature,
+                                                    minimumPoints);
+            if (discretizer.NbPoints() > 0) {
                 Py::List points;
-                int nbPoints = discretizer.NbPoints ();
-                for (int i=1; i<=nbPoints; i++) {
-                    gp_Pnt p = discretizer.Value (i);
-                    points.append(Py::Vector(Base::Vector3d(p.X(),p.Y(),p.Z())));
+                int nbPoints = discretizer.NbPoints();
+                for (int i = 1; i <= nbPoints; i++) {
+                    gp_Pnt p = discretizer.Value(i);
+                    points.append(Py::Vector(Base::Vector3d(p.X(), p.Y(), p.Z())));
                 }
 
                 return Py::new_reference_to(points);
@@ -590,18 +664,26 @@ PyObject* TopoShapeEdgePy::discretize(PyObject *args, PyObject *kwds)
         }
 
         // use QuasiNumber kwds
-        static const std::array<const char *, 4> kwds_QuasiNumPoints{"QuasiNumber", "First", "Last", nullptr};
+        static const std::array<const char*, 4> kwds_QuasiNumPoints {"QuasiNumber",
+                                                                     "First",
+                                                                     "Last",
+                                                                     nullptr};
         PyErr_Clear();
         int quasiNumPoints;
-        if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "i|dd", kwds_QuasiNumPoints, &quasiNumPoints, &first,
+        if (Base::Wrapped_ParseTupleAndKeywords(args,
+                                                kwds,
+                                                "i|dd",
+                                                kwds_QuasiNumPoints,
+                                                &quasiNumPoints,
+                                                &first,
                                                 &last)) {
             GCPnts_QuasiUniformAbscissa discretizer(adapt, quasiNumPoints, first, last);
-            if (discretizer.NbPoints () > 0) {
+            if (discretizer.NbPoints() > 0) {
                 Py::List points;
-                int nbPoints = discretizer.NbPoints ();
-                for (int i=1; i<=nbPoints; i++) {
-                    gp_Pnt p = adapt.Value (discretizer.Parameter (i));
-                    points.append(Py::Vector(Base::Vector3d(p.X(),p.Y(),p.Z())));
+                int nbPoints = discretizer.NbPoints();
+                for (int i = 1; i <= nbPoints; i++) {
+                    gp_Pnt p = adapt.Value(discretizer.Parameter(i));
+                    points.append(Py::Vector(Base::Vector3d(p.X(), p.Y(), p.Z())));
                 }
 
                 return Py::new_reference_to(points);
@@ -613,18 +695,26 @@ PyObject* TopoShapeEdgePy::discretize(PyObject *args, PyObject *kwds)
         }
 
         // use QuasiDeflection kwds
-        static const std::array<const char *, 4> kwds_QuasiDeflection{"QuasiDeflection", "First", "Last", nullptr};
+        static const std::array<const char*, 4> kwds_QuasiDeflection {"QuasiDeflection",
+                                                                      "First",
+                                                                      "Last",
+                                                                      nullptr};
         PyErr_Clear();
         double quasiDeflection;
-        if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "d|dd", kwds_QuasiDeflection,
-                                                &quasiDeflection, &first, &last)) {
+        if (Base::Wrapped_ParseTupleAndKeywords(args,
+                                                kwds,
+                                                "d|dd",
+                                                kwds_QuasiDeflection,
+                                                &quasiDeflection,
+                                                &first,
+                                                &last)) {
             GCPnts_QuasiUniformDeflection discretizer(adapt, quasiDeflection, first, last);
-            if (discretizer.NbPoints () > 0) {
+            if (discretizer.NbPoints() > 0) {
                 Py::List points;
-                int nbPoints = discretizer.NbPoints ();
-                for (int i=1; i<=nbPoints; i++) {
-                    gp_Pnt p = discretizer.Value (i);
-                    points.append(Py::Vector(Base::Vector3d(p.X(),p.Y(),p.Z())));
+                int nbPoints = discretizer.NbPoints();
+                for (int i = 1; i <= nbPoints; i++) {
+                    gp_Pnt p = discretizer.Value(i);
+                    points.append(Py::Vector(Base::Vector3d(p.X(), p.Y(), p.Z())));
                 }
 
                 return Py::new_reference_to(points);
@@ -640,14 +730,15 @@ PyObject* TopoShapeEdgePy::discretize(PyObject *args, PyObject *kwds)
         return nullptr;
     }
 
-    PyErr_SetString(PartExceptionOCCError,"Wrong arguments");
+    PyErr_SetString(PartExceptionOCCError, "Wrong arguments");
     return nullptr;
 }
 
-PyObject* TopoShapeEdgePy::countNodes(PyObject *args)
+PyObject* TopoShapeEdgePy::countNodes(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     const TopoDS_Shape& shape = this->getTopoShapePtr()->getShape();
     TopoDS_Edge aEdge = TopoDS::Edge(shape);
@@ -661,11 +752,12 @@ PyObject* TopoShapeEdgePy::countNodes(PyObject *args)
     return Py::new_reference_to(Py::Long(count));
 }
 
-PyObject* TopoShapeEdgePy::split(PyObject *args)
+PyObject* TopoShapeEdgePy::split(PyObject* args)
 {
     PyObject* float_or_list;
-    if (!PyArg_ParseTuple(args, "O", &float_or_list))
+    if (!PyArg_ParseTuple(args, "O", &float_or_list)) {
         return nullptr;
+    }
 
     try {
         BRepAdaptor_Curve adapt(TopoDS::Edge(getTopoShapePtr()->getShape()));
@@ -717,7 +809,7 @@ PyObject* TopoShapeEdgePy::split(PyObject *args)
         std::vector<Standard_Real>::iterator end = par.end() - 1;
         for (std::vector<Standard_Real>::iterator it = par.begin(); it != end; ++it) {
             BRepBuilderAPI_MakeEdge mke(c, it[0], it[1]);
-            e =  mke.Edge();
+            e = mke.Edge();
             builder.Transfert(edge, e);
             builder.Range(e, it[0], it[1], false);
             mkWire.Add(e);
@@ -732,15 +824,17 @@ PyObject* TopoShapeEdgePy::split(PyObject *args)
     }
 }
 
-PyObject* TopoShapeEdgePy::isSeam(PyObject *args)
+PyObject* TopoShapeEdgePy::isSeam(PyObject* args)
 {
     PyObject* face;
-    if (!PyArg_ParseTuple(args, "O!", &TopoShapeFacePy::Type, &face))
+    if (!PyArg_ParseTuple(args, "O!", &TopoShapeFacePy::Type, &face)) {
         return nullptr;
+    }
 
     try {
         const TopoDS_Edge& e = TopoDS::Edge(this->getTopoShapePtr()->getShape());
-        const TopoDS_Face& f = TopoDS::Face(static_cast<TopoShapeFacePy*>(face)->getTopoShapePtr()->getShape());
+        const TopoDS_Face& f =
+            TopoDS::Face(static_cast<TopoShapeFacePy*>(face)->getTopoShapePtr()->getShape());
 
         ShapeAnalysis_Edge sa;
         Standard_Boolean ok = sa.IsSeam(e, f);
@@ -753,21 +847,23 @@ PyObject* TopoShapeEdgePy::isSeam(PyObject *args)
     }
 }
 
-PyObject* TopoShapeEdgePy::firstVertex(PyObject *args)
+PyObject* TopoShapeEdgePy::firstVertex(PyObject* args)
 {
     PyObject* orient = Py_False;
-    if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &orient))
+    if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &orient)) {
         return nullptr;
+    }
     auto e = getTopoDSEdge(this);
     TopoDS_Vertex v = TopExp::FirstVertex(e, Base::asBoolean(orient));
     return new TopoShapeVertexPy(new TopoShape(v));
 }
 
-PyObject* TopoShapeEdgePy::lastVertex(PyObject *args)
+PyObject* TopoShapeEdgePy::lastVertex(PyObject* args)
 {
     PyObject* orient = Py_False;
-    if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &orient))
+    if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &orient)) {
         return nullptr;
+    }
     auto e = getTopoDSEdge(this);
     TopoDS_Vertex v = TopExp::LastVertex(e, Base::asBoolean(orient));
     return new TopoShapeVertexPy(new TopoShape(v));
@@ -780,27 +876,27 @@ Py::String TopoShapeEdgePy::getContinuity() const
     BRepAdaptor_Curve adapt(TopoDS::Edge(getTopoShapePtr()->getShape()));
     std::string cont;
     switch (adapt.Continuity()) {
-    case GeomAbs_C0:
-        cont = "C0";
-        break;
-    case GeomAbs_G1:
-        cont = "G1";
-        break;
-    case GeomAbs_C1:
-        cont = "C1";
-        break;
-    case GeomAbs_G2:
-        cont = "G2";
-        break;
-    case GeomAbs_C2:
-        cont = "C2";
-        break;
-    case GeomAbs_C3:
-        cont = "C3";
-        break;
-    case GeomAbs_CN:
-        cont = "CN";
-        break;
+        case GeomAbs_C0:
+            cont = "C0";
+            break;
+        case GeomAbs_G1:
+            cont = "G1";
+            break;
+        case GeomAbs_C1:
+            cont = "C1";
+            break;
+        case GeomAbs_G2:
+            cont = "G2";
+            break;
+        case GeomAbs_C2:
+            cont = "C2";
+            break;
+        case GeomAbs_C3:
+            cont = "C3";
+            break;
+        case GeomAbs_CN:
+            cont = "CN";
+            break;
     }
 
     return Py::String(cont);
@@ -834,69 +930,55 @@ Py::Object TopoShapeEdgePy::getCurve() const
     auto e = getTopoDSEdge(this);
     BRepAdaptor_Curve adapt(e);
     Base::PyObjectBase* curve = nullptr;
-    switch(adapt.GetType())
-    {
-    case GeomAbs_Line:
-        {
+    switch (adapt.GetType()) {
+        case GeomAbs_Line: {
             GeomLine* line = new GeomLine();
-            Handle(Geom_Line) this_curv = Handle(Geom_Line)::DownCast
-                (line->handle());
+            Handle(Geom_Line) this_curv = Handle(Geom_Line)::DownCast(line->handle());
             this_curv->SetLin(adapt.Line());
             curve = new LinePy(line);
             break;
         }
-    case GeomAbs_Circle:
-        {
+        case GeomAbs_Circle: {
             GeomCircle* circle = new GeomCircle();
-            Handle(Geom_Circle) this_curv = Handle(Geom_Circle)::DownCast
-                (circle->handle());
+            Handle(Geom_Circle) this_curv = Handle(Geom_Circle)::DownCast(circle->handle());
             this_curv->SetCirc(adapt.Circle());
-            //Standard_Real dd = adapt.FirstParameter();
-            //Standard_Real ee = adapt.LastParameter();
+            // Standard_Real dd = adapt.FirstParameter();
+            // Standard_Real ee = adapt.LastParameter();
             curve = new CirclePy(circle);
             break;
         }
-    case GeomAbs_Ellipse:
-        {
+        case GeomAbs_Ellipse: {
             GeomEllipse* elips = new GeomEllipse();
-            Handle(Geom_Ellipse) this_curv = Handle(Geom_Ellipse)::DownCast
-                (elips->handle());
+            Handle(Geom_Ellipse) this_curv = Handle(Geom_Ellipse)::DownCast(elips->handle());
             this_curv->SetElips(adapt.Ellipse());
             curve = new EllipsePy(elips);
             break;
         }
-    case GeomAbs_Hyperbola:
-        {
+        case GeomAbs_Hyperbola: {
             GeomHyperbola* hypr = new GeomHyperbola();
-            Handle(Geom_Hyperbola) this_curv = Handle(Geom_Hyperbola)::DownCast
-                (hypr->handle());
+            Handle(Geom_Hyperbola) this_curv = Handle(Geom_Hyperbola)::DownCast(hypr->handle());
             this_curv->SetHypr(adapt.Hyperbola());
             curve = new HyperbolaPy(hypr);
             break;
         }
-    case GeomAbs_Parabola:
-        {
+        case GeomAbs_Parabola: {
             GeomParabola* parab = new GeomParabola();
-            Handle(Geom_Parabola) this_curv = Handle(Geom_Parabola)::DownCast
-                (parab->handle());
+            Handle(Geom_Parabola) this_curv = Handle(Geom_Parabola)::DownCast(parab->handle());
             this_curv->SetParab(adapt.Parabola());
             curve = new ParabolaPy(parab);
             break;
         }
-    case GeomAbs_BezierCurve:
-        {
+        case GeomAbs_BezierCurve: {
             GeomBezierCurve* bezier = new GeomBezierCurve(adapt.Bezier());
             curve = new BezierCurvePy(bezier);
             break;
         }
-    case GeomAbs_BSplineCurve:
-        {
+        case GeomAbs_BSplineCurve: {
             GeomBSplineCurve* bspline = new GeomBSplineCurve(adapt.BSpline());
             curve = new BSplineCurvePy(bspline);
             break;
         }
-    case GeomAbs_OffsetCurve:
-        {
+        case GeomAbs_OffsetCurve: {
             Standard_Real first, last;
             Handle(Geom_Curve) c = BRep_Tool::Curve(e, first, last);
             Handle(Geom_OffsetCurve) off = Handle(Geom_OffsetCurve)::DownCast(c);
@@ -909,8 +991,8 @@ Py::Object TopoShapeEdgePy::getCurve() const
                 throw Py::RuntimeError("Failed to convert to offset curve");
             }
         }
-    case GeomAbs_OtherCurve:
-        break;
+        case GeomAbs_OtherCurve:
+            break;
     }
 
     if (curve) {
@@ -963,7 +1045,7 @@ Py::Object TopoShapeEdgePy::getCenterOfMass() const
     GProp_GProps props;
     BRepGProp::LinearProperties(getTopoShapePtr()->getShape(), props);
     gp_Pnt c = props.CentreOfMass();
-    return Py::Vector(Base::Vector3d(c.X(),c.Y(),c.Z()));
+    return Py::Vector(Base::Vector3d(c.X(), c.Y(), c.Z()));
 }
 
 Py::Object TopoShapeEdgePy::getMatrixOfInertia() const
@@ -972,9 +1054,9 @@ Py::Object TopoShapeEdgePy::getMatrixOfInertia() const
     BRepGProp::LinearProperties(getTopoShapePtr()->getShape(), props);
     gp_Mat m = props.MatrixOfInertia();
     Base::Matrix4D mat;
-    for (int i=0; i<3; i++) {
-        for (int j=0; j<3; j++) {
-            mat[i][j] = m(i+1,j+1);
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            mat[i][j] = m(i + 1, j + 1);
         }
     }
     return Py::Matrix(mat);
@@ -984,8 +1066,8 @@ Py::Object TopoShapeEdgePy::getStaticMoments() const
 {
     GProp_GProps props;
     BRepGProp::LinearProperties(getTopoShapePtr()->getShape(), props);
-    Standard_Real lx,ly,lz;
-    props.StaticMoments(lx,ly,lz);
+    Standard_Real lx, ly, lz;
+    props.StaticMoments(lx, ly, lz);
     Py::Tuple tuple(3);
     tuple.setItem(0, Py::Float(lx));
     tuple.setItem(1, Py::Float(ly));
@@ -1002,34 +1084,35 @@ Py::Dict TopoShapeEdgePy::getPrincipalProperties() const
     Py::Dict dict;
     dict.setItem("SymmetryAxis", Py::Boolean(pprops.HasSymmetryAxis() ? true : false));
     dict.setItem("SymmetryPoint", Py::Boolean(pprops.HasSymmetryPoint() ? true : false));
-    Standard_Real lx,ly,lz;
-    pprops.Moments(lx,ly,lz);
+    Standard_Real lx, ly, lz;
+    pprops.Moments(lx, ly, lz);
     Py::Tuple tuple(3);
     tuple.setItem(0, Py::Float(lx));
     tuple.setItem(1, Py::Float(ly));
     tuple.setItem(2, Py::Float(lz));
-    dict.setItem("Moments",tuple);
-    dict.setItem("FirstAxisOfInertia",Py::Vector(Base::convertTo
-        <Base::Vector3d>(pprops.FirstAxisOfInertia())));
-    dict.setItem("SecondAxisOfInertia",Py::Vector(Base::convertTo
-        <Base::Vector3d>(pprops.SecondAxisOfInertia())));
-    dict.setItem("ThirdAxisOfInertia",Py::Vector(Base::convertTo
-        <Base::Vector3d>(pprops.ThirdAxisOfInertia())));
+    dict.setItem("Moments", tuple);
+    dict.setItem("FirstAxisOfInertia",
+                 Py::Vector(Base::convertTo<Base::Vector3d>(pprops.FirstAxisOfInertia())));
+    dict.setItem("SecondAxisOfInertia",
+                 Py::Vector(Base::convertTo<Base::Vector3d>(pprops.SecondAxisOfInertia())));
+    dict.setItem("ThirdAxisOfInertia",
+                 Py::Vector(Base::convertTo<Base::Vector3d>(pprops.ThirdAxisOfInertia())));
 
-    Standard_Real Rxx,Ryy,Rzz;
-    pprops.RadiusOfGyration(Rxx,Ryy,Rzz);
+    Standard_Real Rxx, Ryy, Rzz;
+    pprops.RadiusOfGyration(Rxx, Ryy, Rzz);
     Py::Tuple rog(3);
     rog.setItem(0, Py::Float(Rxx));
     rog.setItem(1, Py::Float(Ryy));
     rog.setItem(2, Py::Float(Rzz));
-    dict.setItem("RadiusOfGyration",rog);
+    dict.setItem("RadiusOfGyration", rog);
     return dict;
 }
 
 Py::Boolean TopoShapeEdgePy::getClosed() const
 {
-    if (getTopoShapePtr()->getShape().IsNull())
+    if (getTopoShapePtr()->getShape().IsNull()) {
         throw Py::RuntimeError("Cannot determine the 'Closed'' flag of an empty shape");
+    }
     Standard_Boolean ok = BRep_Tool::IsClosed(getTopoShapePtr()->getShape());
     return Py::Boolean(ok ? true : false);
 }
@@ -1040,11 +1123,12 @@ Py::Boolean TopoShapeEdgePy::getDegenerated() const
     return Py::Boolean(ok ? true : false);
 }
 
-PyObject* TopoShapeEdgePy::curveOnSurface(PyObject *args)
+PyObject* TopoShapeEdgePy::curveOnSurface(PyObject* args)
 {
     int idx;
-    if (!PyArg_ParseTuple(args, "i", &idx))
+    if (!PyArg_ParseTuple(args, "i", &idx)) {
         return nullptr;
+    }
 
     try {
         TopoDS_Edge edge = TopoDS::Edge(getTopoShapePtr()->getShape());
@@ -1053,15 +1137,18 @@ PyObject* TopoShapeEdgePy::curveOnSurface(PyObject *args)
         TopLoc_Location loc;
         Standard_Real first, last;
 
-        BRep_Tool::CurveOnSurface(edge, curve, surf, loc, first, last, idx+1);
-        if (curve.IsNull())
+        BRep_Tool::CurveOnSurface(edge, curve, surf, loc, first, last, idx + 1);
+        if (curve.IsNull()) {
             Py_Return;
+        }
         std::unique_ptr<Part::Geom2dCurve> geo2d(makeFromCurve2d(curve));
-        if (!geo2d)
+        if (!geo2d) {
             Py_Return;
+        }
         std::unique_ptr<Part::GeomSurface> geosurf(makeFromSurface(surf));
-        if (!geosurf)
+        if (!geosurf) {
             Py_Return;
+        }
 
         gp_Trsf trsf = loc.Transformation();
         gp_XYZ pos = trsf.TranslationPart();
@@ -1085,7 +1172,7 @@ PyObject* TopoShapeEdgePy::curveOnSurface(PyObject *args)
     }
 }
 
-PyObject *TopoShapeEdgePy::getCustomAttributes(const char* /*attr*/) const
+PyObject* TopoShapeEdgePy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

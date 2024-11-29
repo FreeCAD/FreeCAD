@@ -23,12 +23,12 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QCheckBox>
-# include <QDialogButtonBox>
-# include <QRegularExpression>
-# include <QRegularExpressionValidator>
-# include <QVBoxLayout>
-# include <Interface_Static.hxx>
+#include <QCheckBox>
+#include <QDialogButtonBox>
+#include <QRegularExpression>
+#include <QRegularExpressionValidator>
+#include <QVBoxLayout>
+#include <Interface_Static.hxx>
 #endif
 
 #include <App/Application.h>
@@ -44,8 +44,8 @@
 using namespace PartGui;
 
 DlgExportStep::DlgExportStep(QWidget* parent)
-  : PreferencePage(parent)
-  , ui(new Ui_DlgExportStep)
+    : PreferencePage(parent)
+    , ui(new Ui_DlgExportStep)
 {
     ui->setupUi(this);
 
@@ -56,8 +56,10 @@ DlgExportStep::DlgExportStep(QWidget* parent)
     ui->comboBoxSchema->setItemData(4, QByteArray("AP242DIS"));
 
     // https://tracker.dev.opencascade.org/view.php?id=25654
-    ui->checkBoxPcurves->setToolTip(tr("This parameter indicates whether parametric curves (curves in parametric space of surface)\n"
-                                       "should be written into the STEP file. This parameter can be set to off in order to minimize\n"
+    ui->checkBoxPcurves->setToolTip(tr("This parameter indicates whether parametric curves (curves "
+                                       "in parametric space of surface)\n"
+                                       "should be written into the STEP file. This parameter can "
+                                       "be set to off in order to minimize\n"
                                        "the size of the resulting STEP file."));
 
     Part::OCAF::ImportExportSettings settings;
@@ -83,7 +85,8 @@ void DlgExportStep::saveSettings()
 
     // scheme
     // possible values: AP203, AP214CD (1996), AP214DIS (1998), AP214IS (2002), AP242DIS
-    QByteArray schema = ui->comboBoxSchema->itemData(ui->comboBoxSchema->currentIndex()).toByteArray();
+    QByteArray schema =
+        ui->comboBoxSchema->itemData(ui->comboBoxSchema->currentIndex()).toByteArray();
     settings.setScheme(schema);
 
     // (h)STEP of Import module
@@ -104,8 +107,9 @@ void DlgExportStep::loadSettings()
     // scheme
     QByteArray ap(settings.getScheme().c_str());
     int index = ui->comboBoxSchema->findData(QVariant(ap));
-    if (index >= 0)
+    if (index >= 0) {
         ui->comboBoxSchema->setCurrentIndex(index);
+    }
 
     // (h)STEP of Import module
     ui->checkBoxExportHiddenObj->onRestore();
@@ -125,7 +129,7 @@ StepSettings DlgExportStep::getSettings() const
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgExportStep::changeEvent(QEvent *e)
+void DlgExportStep::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -138,8 +142,8 @@ void DlgExportStep::changeEvent(QEvent *e)
 // ----------------------------------------------------------------------------
 
 DlgExportHeaderStep::DlgExportHeaderStep(QWidget* parent)
-  : PreferencePage(parent)
-  , ui(new Ui_DlgExportHeaderStep)
+    : PreferencePage(parent)
+    , ui(new Ui_DlgExportHeaderStep)
 {
     ui->setupUi(this);
 
@@ -147,10 +151,12 @@ DlgExportHeaderStep::DlgExportHeaderStep(QWidget* parent)
 
     QRegularExpression rx;
     rx.setPattern(QString::fromLatin1("[\\x00-\\x7F]+"));
-    QRegularExpressionValidator* companyValidator = new QRegularExpressionValidator(ui->lineEditCompany);
+    QRegularExpressionValidator* companyValidator =
+        new QRegularExpressionValidator(ui->lineEditCompany);
     companyValidator->setRegularExpression(rx);
     ui->lineEditCompany->setValidator(companyValidator);
-    QRegularExpressionValidator* authorValidator = new QRegularExpressionValidator(ui->lineEditAuthor);
+    QRegularExpressionValidator* authorValidator =
+        new QRegularExpressionValidator(ui->lineEditAuthor);
     authorValidator->setRegularExpression(rx);
     ui->lineEditAuthor->setValidator(authorValidator);
 }
@@ -179,7 +185,7 @@ void DlgExportHeaderStep::loadSettings()
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgExportHeaderStep::changeEvent(QEvent *e)
+void DlgExportHeaderStep::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -192,8 +198,8 @@ void DlgExportHeaderStep::changeEvent(QEvent *e)
 // ----------------------------------------------------------------------------
 
 TaskExportStep::TaskExportStep(QWidget* parent)
-  : QDialog(parent)
-  , ui(new DlgExportStep(this))
+    : QDialog(parent)
+    , ui(new DlgExportStep(this))
 {
     QApplication::setOverrideCursor(Qt::ArrowCursor);
 

@@ -1298,8 +1298,8 @@ treated as shortcut key sequence 'F, F'.</translation>
       <source>This list shows commands having the same shortcut in the priority from high
 to low. If more than one command with the same shortcut are active at the
 same time. The one with the highest priority will be triggered.</source>
-      <translation>Ovo je lista prioriteta (od visokog ka malom) komandi koje imaju istu 
-prečicu. Ako je u istom trenutku aktivirano više komandi sa istom prečicom 
+      <translation>Ovo je lista prioriteta (od visokog ka malom) komandi koje imaju istu
+prečicu. Ako je u istom trenutku aktivirano više komandi sa istom prečicom
 pokrenuće se ona sa najvećim prioritetom.</translation>
     </message>
     <message>
@@ -2069,7 +2069,7 @@ Možda je greška u nivou pristupu datoteki?</translation>
       <source>Access denied to '%1'
 
 Specify another directory, please.</source>
-      <translation>Pristup odbijen "%1" 
+      <translation>Pristup odbijen "%1"
 Navedi neku drugu fasciklu.</translation>
     </message>
   </context>
@@ -2684,7 +2684,7 @@ Navedi neku drugu fasciklu.</translation>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="31"/>
       <source>Main coordinate system will always be shown in
 lower right corner within opened files</source>
-      <translation>Ortogonalni triedar glavnog koordinatnog sistema će uvek 
+      <translation>Ortogonalni triedar glavnog koordinatnog sistema će uvek
 biti prikazan u donjem desnom uglu otvorenih datoteka</translation>
     </message>
     <message>
@@ -2696,7 +2696,7 @@ biti prikazan u donjem desnom uglu otvorenih datoteka</translation>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="73"/>
       <source>Size of main coordinate system representation
 in the corner -- in % of height/width of viewport</source>
-      <translation>Veličina prikaza ortogonalnog triedra 
+      <translation>Veličina prikaza ortogonalnog triedra
 u uglu -- u % visine/širine prozora prikaza</translation>
     </message>
     <message>
@@ -2802,7 +2802,7 @@ but slower response to any scene changes.</source>
 Dostupne su 3 opcije da se to postigne:
 1) 'Auto' (podrazumevano), neka Coin3D odluči gde će se keširati.
 2) 'Raspodeljen', ručno uključite keš za sve čvorove davaoca prikaza.
-3) „Centralizovan“, ručno isključite keš memoriju za sve čvorove davaoce prikaza, 
+3) „Centralizovan“, ručno isključite keš memoriju za sve čvorove davaoce prikaza,
 keširaj samo u korenskom čvoru grafa scene. Ovo nudi najveću brzinu renderovanja
 ali sporiji odgovor na bilo kakve promene scene.</translation>
     </message>
@@ -5483,7 +5483,7 @@ Kolona „Status“ pokazuje da li se dokument može oporaviti.</translation>
       <location filename="../DlgObjectSelection.cpp" line="158"/>
       <source>Ignore dependencies and proceed with objects
 originally selected prior to opening this dialog</source>
-      <translation>Zanemari zavisnosti i nastavi sa prvobitno 
+      <translation>Zanemari zavisnosti i nastavi sa prvobitno
 izabranim objektima pre otvaranja ovog dijaloga</translation>
     </message>
   </context>
@@ -5743,7 +5743,7 @@ Ovo je izmenjeno izvan uređivača izvornog koda. Da li želiš da ga ponovo uč
       <location filename="../EditorView.cpp" line="344"/>
       <source>The document has been modified.
 Do you want to save your changes?</source>
-      <translation>Dokument je izmenjen. 
+      <translation>Dokument je izmenjen.
 Da li želiš da sačuvaš promene?</translation>
     </message>
     <message>

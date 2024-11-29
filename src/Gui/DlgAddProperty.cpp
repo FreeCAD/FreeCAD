@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QMessageBox>
+#include <QMessageBox>
 #endif
 
 #include <App/Application.h>
@@ -40,40 +40,43 @@
 using namespace Gui;
 using namespace Gui::Dialog;
 
-DlgAddProperty::DlgAddProperty(QWidget* parent,
-        std::unordered_set<App::PropertyContainer *> &&c)
-  : QDialog( parent )
-  , containers(std::move(c))
-  , ui(new Ui_DlgAddProperty)
+DlgAddProperty::DlgAddProperty(QWidget* parent, std::unordered_set<App::PropertyContainer*>&& c)
+    : QDialog(parent)
+    , containers(std::move(c))
+    , ui(new Ui_DlgAddProperty)
 {
     ui->setupUi(this);
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/PropertyView");
-    auto defType = Base::Type::fromName(
-            hGrp->GetASCII("NewPropertyType","App::PropertyString").c_str());
-    if(defType.isBad())
+        "User parameter:BaseApp/Preferences/PropertyView");
+    auto defType =
+        Base::Type::fromName(hGrp->GetASCII("NewPropertyType", "App::PropertyString").c_str());
+    if (defType.isBad()) {
         defType = App::PropertyString::getClassTypeId();
+    }
 
     std::vector<Base::Type> proptypes;
     std::vector<Base::Type> types;
     Base::Type::getAllDerivedFrom(Base::Type::fromName("App::Property"), proptypes);
-    std::copy_if (proptypes.begin(), proptypes.end(), std::back_inserter(types), [](const Base::Type& type) {
-        return type.canInstantiate();
-    });
+    std::copy_if(proptypes.begin(),
+                 proptypes.end(),
+                 std::back_inserter(types),
+                 [](const Base::Type& type) {
+                     return type.canInstantiate();
+                 });
     std::sort(types.begin(), types.end(), [](Base::Type a, Base::Type b) {
         return strcmp(a.getName(), b.getName()) < 0;
     });
 
-    for(const auto& type : types) {
+    for (const auto& type : types) {
         ui->comboType->addItem(QString::fromLatin1(type.getName()));
-        if(type == defType)
-            ui->comboType->setCurrentIndex(ui->comboType->count()-1);
+        if (type == defType) {
+            ui->comboType->setCurrentIndex(ui->comboType->count() - 1);
+        }
     }
 
-    ui->edtGroup->setText(QString::fromLatin1(
-                hGrp->GetASCII("NewPropertyGroup","Base").c_str()));
-    ui->chkAppend->setChecked(hGrp->GetBool("NewPropertyAppend",true));
+    ui->edtGroup->setText(QString::fromLatin1(hGrp->GetASCII("NewPropertyGroup", "Base").c_str()));
+    ui->chkAppend->setChecked(hGrp->GetBool("NewPropertyAppend", true));
 }
 
 /**
@@ -81,16 +84,20 @@ DlgAddProperty::DlgAddProperty(QWidget* parent,
  */
 DlgAddProperty::~DlgAddProperty() = default;
 
-static std::string containerName(const App::PropertyContainer *c) {
+static std::string containerName(const App::PropertyContainer* c)
+{
     auto doc = Base::freecad_dynamic_cast<App::Document>(c);
-    if(doc)
+    if (doc) {
         return doc->getName();
+    }
     auto obj = Base::freecad_dynamic_cast<App::DocumentObject>(c);
-    if(obj)
+    if (obj) {
         return obj->getFullName();
+    }
     auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(c);
-    if(vpd)
+    if (vpd) {
         return vpd->getObject()->getFullName();
+    }
     return "?";
 }
 
@@ -98,67 +105,72 @@ void DlgAddProperty::accept()
 {
     std::string name = ui->edtName->text().toUtf8().constData();
     std::string group = ui->edtGroup->text().toUtf8().constData();
-    if(name.empty() || group.empty()
-            || name != Base::Tools::getIdentifier(name)
-            || group != Base::Tools::getIdentifier(group))
-    {
-        QMessageBox::critical(getMainWindow(),
+    if (name.empty() || group.empty() || name != Base::Tools::getIdentifier(name)
+        || group != Base::Tools::getIdentifier(group)) {
+        QMessageBox::critical(
+            getMainWindow(),
             QObject::tr("Invalid name"),
             QObject::tr("The property name or group name must only contain alpha numericals,\n"
                         "underscore, and must not start with a digit."));
         return;
     }
 
-    if(ui->chkAppend->isChecked())
+    if (ui->chkAppend->isChecked()) {
         name = group + "_" + name;
+    }
 
-    if (App::ExpressionParser::isTokenAUnit(name) || App::ExpressionParser::isTokenAConstant(name)) {
+    if (App::ExpressionParser::isTokenAUnit(name)
+        || App::ExpressionParser::isTokenAConstant(name)) {
         QMessageBox::critical(getMainWindow(),
-            QObject::tr("Invalid name"),
-            QObject::tr("The property name is a reserved word."));
+                              QObject::tr("Invalid name"),
+                              QObject::tr("The property name is a reserved word."));
         return;
     }
 
-    for(auto c : containers) {
+    for (auto c : containers) {
         auto prop = c->getPropertyByName(name.c_str());
-        if(prop && prop->getContainer() == c) {
+        if (prop && prop->getContainer() == c) {
             QMessageBox::critical(getMainWindow(),
-                QObject::tr("Invalid name"),
-                QObject::tr("The property '%1' already exists in '%2'").arg(
-                    QString::fromLatin1(name.c_str()),
-                    QString::fromLatin1(containerName(c).c_str())));
+                                  QObject::tr("Invalid name"),
+                                  QObject::tr("The property '%1' already exists in '%2'")
+                                      .arg(QString::fromLatin1(name.c_str()),
+                                           QString::fromLatin1(containerName(c).c_str())));
             return;
         }
     }
 
     std::string type = ui->comboType->currentText().toLatin1().constData();
 
-    for(auto it=containers.begin();it!=containers.end();++it) {
+    for (auto it = containers.begin(); it != containers.end(); ++it) {
         try {
-            (*it)->addDynamicProperty(type.c_str(),name.c_str(),
-                    group.c_str(),ui->edtDoc->toPlainText().toUtf8().constData());
-        } catch(Base::Exception &e) {
+            (*it)->addDynamicProperty(type.c_str(),
+                                      name.c_str(),
+                                      group.c_str(),
+                                      ui->edtDoc->toPlainText().toUtf8().constData());
+        }
+        catch (Base::Exception& e) {
             e.ReportException();
-            for(auto it2=containers.begin();it2!=it;++it2) {
+            for (auto it2 = containers.begin(); it2 != it; ++it2) {
                 try {
                     (*it2)->removeDynamicProperty(name.c_str());
-                } catch(Base::Exception &e) {
+                }
+                catch (Base::Exception& e) {
                     e.ReportException();
                 }
             }
             QMessageBox::critical(getMainWindow(),
-                QObject::tr("Add property"),
-                QObject::tr("Failed to add property to '%1': %2").arg(
-                    QString::fromLatin1(containerName(*it).c_str()),
-                    QString::fromUtf8(e.what())));
+                                  QObject::tr("Add property"),
+                                  QObject::tr("Failed to add property to '%1': %2")
+                                      .arg(QString::fromLatin1(containerName(*it).c_str()),
+                                           QString::fromUtf8(e.what())));
             return;
         }
     }
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/PropertyView");
-    hGrp->SetASCII("NewPropertyType",type.c_str());
-    hGrp->SetASCII("NewPropertyGroup",group.c_str());
-    hGrp->SetBool("NewPropertyAppend",ui->chkAppend->isChecked());
+        "User parameter:BaseApp/Preferences/PropertyView");
+    hGrp->SetASCII("NewPropertyType", type.c_str());
+    hGrp->SetASCII("NewPropertyGroup", group.c_str());
+    hGrp->SetBool("NewPropertyAppend", ui->chkAppend->isChecked());
     QDialog::accept();
 }
 

@@ -5504,7 +5504,7 @@ Ang haligi ng 'Katayuan' ay nagpapakita kung ang dokumento ay maaaring mabawi.</
     <message>
       <location filename="../DocumentRecovery.ui" line="55"/>
       <source>Status of recovered documents:</source>
-      <translation>	
+      <translation>
 Kalagayan ng mga nakuhang dokumento:</translation>
     </message>
     <message>

@@ -41,7 +41,8 @@ class QLayout;
 class QMenu;
 class QMouseEvent;
 
-namespace Gui {
+namespace Gui
+{
 
 class ToolBarAreaWidget;
 enum class ToolBarArea;
@@ -51,22 +52,24 @@ class GuiExport ToolBarItem
 public:
     /** Manages the default visibility status of a toolbar item, as well as the default status
      * of the toggleViewAction usable by the contextual menu to enable and disable its visibility
-    */
-    enum class DefaultVisibility {
-        Visible,     // toolbar is hidden by default, visibility toggle action is enabled
-        Hidden,      // toolbar hidden by default, visibility toggle action is enabled
-        Unavailable, // toolbar visibility is managed independently by client code and defaults to
-                     // hidden, visibility toggle action is disabled by default (it is unavailable
-                     // to the UI). Upon being forced to be available, these toolbars default to
-                     // visible.
+     */
+    enum class DefaultVisibility
+    {
+        Visible,      // toolbar is hidden by default, visibility toggle action is enabled
+        Hidden,       // toolbar hidden by default, visibility toggle action is enabled
+        Unavailable,  // toolbar visibility is managed independently by client code and defaults to
+                      // hidden, visibility toggle action is disabled by default (it is unavailable
+                      // to the UI). Upon being forced to be available, these toolbars default to
+                      // visible.
     };
 
     ToolBarItem();
-    explicit ToolBarItem(ToolBarItem* item, DefaultVisibility visibilityPolicy = DefaultVisibility::Visible);
+    explicit ToolBarItem(ToolBarItem* item,
+                         DefaultVisibility visibilityPolicy = DefaultVisibility::Visible);
     ~ToolBarItem();
 
     void setCommand(const std::string&);
-    const std::string &command() const;
+    const std::string& command() const;
 
     bool hasItems() const;
     ToolBarItem* findItem(const std::string&);
@@ -78,8 +81,8 @@ public:
     void removeItem(ToolBarItem* item);
     void clear();
 
-    ToolBarItem& operator << (ToolBarItem* item);
-    ToolBarItem& operator << (const std::string& command);
+    ToolBarItem& operator<<(ToolBarItem* item);
+    ToolBarItem& operator<<(const std::string& command);
     QList<ToolBarItem*> getItems() const;
 
     DefaultVisibility visibilityPolicy;
@@ -94,7 +97,7 @@ class ToolBarGrip: public QWidget
     Q_OBJECT
 
 public:
-    explicit ToolBarGrip(QToolBar *);
+    explicit ToolBarGrip(QToolBar*);
 
     void attach();
     void detach();
@@ -103,9 +106,9 @@ public:
 
 protected:
     void paintEvent(QPaintEvent*);
-    void mouseMoveEvent(QMouseEvent *);
-    void mousePressEvent(QMouseEvent *);
-    void mouseReleaseEvent(QMouseEvent *);
+    void mouseMoveEvent(QMouseEvent*);
+    void mousePressEvent(QMouseEvent*);
+    void mouseReleaseEvent(QMouseEvent*);
 
     void updateSize();
 
@@ -143,16 +146,17 @@ protected:
  * @see MenuManager
  * @author Werner Mayer
  */
-class GuiExport ToolBarManager : public QObject
+class GuiExport ToolBarManager: public QObject
 {
     Q_OBJECT
 public:
-
-    enum class State {
-        ForceHidden,    // Forces a toolbar to hide and hides the toggle action
-        ForceAvailable, // Forces a toolbar toggle action to show, visibility depends on user config
-        RestoreDefault, // Restores a toolbar toggle action default, visibility as user config
-        SaveState,      // Saves the state of the toolbars
+    enum class State
+    {
+        ForceHidden,     // Forces a toolbar to hide and hides the toggle action
+        ForceAvailable,  // Forces a toolbar toggle action to show, visibility depends on user
+                         // config
+        RestoreDefault,  // Restores a toolbar toggle action default, visibility as user config
+        SaveState,       // Saves the state of the toolbars
     };
 
     /// The one and only instance.
@@ -170,7 +174,7 @@ public:
     void setState(const QList<QString>& names, State state);
     void setState(const QString& name, State state);
 
-    int toolBarIconSize(QWidget *widget = nullptr) const;
+    int toolBarIconSize(QWidget* widget = nullptr) const;
     void setupToolBarIconSize();
 
     ToolBarArea toolBarArea(QWidget* toolBar) const;
@@ -181,15 +185,15 @@ protected:
 
     void setMovable(bool movable) const;
 
-    ToolBarItem::DefaultVisibility getToolbarPolicy(const QToolBar *) const;
+    ToolBarItem::DefaultVisibility getToolbarPolicy(const QToolBar*) const;
 
-    bool addToolBarToArea(QObject *source, QMouseEvent *ev);
-    bool showContextMenu(QObject *source);
-    void onToggleStatusBarWidget(QWidget *widget, bool visible);
-    void setToolBarIconSize(QToolBar *toolbar);
+    bool addToolBarToArea(QObject* source, QMouseEvent* ev);
+    bool showContextMenu(QObject* source);
+    void onToggleStatusBarWidget(QWidget* widget, bool visible);
+    void setToolBarIconSize(QToolBar* toolbar);
     void onTimer();
 
-    bool eventFilter(QObject *source, QEvent *ev) override;
+    bool eventFilter(QObject* source, QEvent* ev) override;
 
     /** Returns a list of all currently existing toolbars. */
     QList<ToolBar*> toolBars() const;
@@ -222,9 +226,9 @@ private:
     QTimer sizeTimer;
     QTimer resizeTimer;
     boost::signals2::scoped_connection connParam;
-    ToolBarAreaWidget *statusBarAreaWidget = nullptr;
-    ToolBarAreaWidget *menuBarLeftAreaWidget = nullptr;
-    ToolBarAreaWidget *menuBarRightAreaWidget = nullptr;
+    ToolBarAreaWidget* statusBarAreaWidget = nullptr;
+    ToolBarAreaWidget* menuBarLeftAreaWidget = nullptr;
+    ToolBarAreaWidget* menuBarRightAreaWidget = nullptr;
     ParameterGrp::handle hGeneral;
     ParameterGrp::handle hPref;
     ParameterGrp::handle hStatusBar;
@@ -236,7 +240,7 @@ private:
     int _menuBarIconSize = 0;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
 
-#endif // GUI_TOOLBARMANAGER_H
+#endif  // GUI_TOOLBARMANAGER_H

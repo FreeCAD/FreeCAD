@@ -32,24 +32,30 @@
 Q_DECLARE_METATYPE(Base::Quantity)
 #endif
 
-namespace Gui {
+namespace Gui
+{
 
 class QuantitySpinBoxPrivate;
-class GuiExport QuantitySpinBox : public QAbstractSpinBox, public ExpressionSpinBox
+class GuiExport QuantitySpinBox: public QAbstractSpinBox, public ExpressionSpinBox
 {
     Q_OBJECT
 
-    Q_PROPERTY(QString unit READ unitText WRITE setUnitText) // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(double minimum READ minimum WRITE setMinimum) // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(double maximum READ maximum WRITE setMaximum) // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(double singleStep READ singleStep WRITE setSingleStep) // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(
+        QString unit READ unitText WRITE setUnitText)  // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(
+        double minimum READ minimum WRITE setMinimum)  // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(
+        double maximum READ maximum WRITE setMaximum)  // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(double singleStep READ singleStep WRITE
+                   setSingleStep)  // clazy:exclude=qproperty-without-notify
     Q_PROPERTY(double rawValue READ rawValue WRITE setValue NOTIFY valueChanged)
     Q_PROPERTY(Base::Quantity value READ value WRITE setValue NOTIFY valueChanged USER true)
-    Q_PROPERTY(QString binding READ boundToName WRITE setBoundToByName) // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(QString expression READ expressionText) // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(QString binding READ boundToName WRITE
+                   setBoundToByName)                    // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(QString expression READ expressionText)  // clazy:exclude=qproperty-without-notify
 
 public:
-    explicit QuantitySpinBox(QWidget *parent = nullptr);
+    explicit QuantitySpinBox(QWidget* parent = nullptr);
     ~QuantitySpinBox() override;
 
     /// Get the current quantity
@@ -57,8 +63,8 @@ public:
     /// Get the current quantity without unit
     double rawValue() const;
 
-    /// Gives the current state of the user input, gives true if it is a valid input with correct quantity
-    /// or returns false if the input is a unparsable string or has a wrong unit.
+    /// Gives the current state of the user input, gives true if it is a valid input with correct
+    /// quantity or returns false if the input is a unparsable string or has a wrong unit.
     bool hasValidInput() const;
 
     /** Sets the Unit this widget is working with.
@@ -68,7 +74,7 @@ public:
      *  Quantity.
      */
     Base::Unit unit() const;
-    void setUnit(const Base::Unit &unit);
+    void setUnit(const Base::Unit& unit);
     /// Set the unit property
     void setUnitText(const QString&);
     /// Get the unit property
@@ -104,7 +110,7 @@ public:
     /// Gets the path of the bound property
     QString boundToName() const;
     /// Sets the path of the bound property
-    void setBoundToByName(const QString &path);
+    void setBoundToByName(const QString& path);
 
     /// Gets the expression as a string
     QString expressionText() const;
@@ -117,22 +123,23 @@ public:
     void checkRangeInExpression(bool);
     bool isCheckedRangeInExpresion() const;
 
-    Base::Quantity valueFromText(const QString &text) const;
+    Base::Quantity valueFromText(const QString& text) const;
     QString textFromValue(const Base::Quantity& val) const;
     void stepBy(int steps) override;
     void clear() override;
-    QValidator::State validate(QString &input, int &pos) const override;
-    void fixup(QString &str) const override;
+    QValidator::State validate(QString& input, int& pos) const override;
+    void fixup(QString& str) const override;
 
-    /// This is a helper function to determine the size this widget requires to fully display the text
+    /// This is a helper function to determine the size this widget requires to fully display the
+    /// text
     QSize sizeForText(const QString&) const;
     QSize sizeHint() const override;
     QSize minimumSizeHint() const override;
-    bool event(QEvent *event) override;
+    bool event(QEvent* event) override;
 
     void setNumberExpression(App::NumberExpression*) override;
-    void bind(const App::ObjectIdentifier &_path) override;
-    bool apply(const std::string &propName) override;
+    void bind(const App::ObjectIdentifier& _path) override;
+    bool apply(const std::string& propName) override;
     using ExpressionSpinBox::apply;
 
 public Q_SLOTS:
@@ -142,7 +149,7 @@ public Q_SLOTS:
     void setValue(double);
 
 protected Q_SLOTS:
-    void userInput(const QString & text);
+    void userInput(const QString& text);
     void handlePendingEmit(bool updateUnit = true);
 
 protected:
@@ -150,14 +157,14 @@ protected:
     void openFormulaDialog() override;
     void showIcon() override;
     StepEnabled stepEnabled() const override;
-    void showEvent(QShowEvent * event) override;
-    void hideEvent(QHideEvent * event) override;
-    void closeEvent(QCloseEvent * event) override;
-    void focusInEvent(QFocusEvent * event) override;
-    void focusOutEvent(QFocusEvent * event) override;
-    void keyPressEvent(QKeyEvent *event) override;
-    void resizeEvent(QResizeEvent *event) override;
-    void paintEvent(QPaintEvent *event) override;
+    void showEvent(QShowEvent* event) override;
+    void hideEvent(QHideEvent* event) override;
+    void closeEvent(QCloseEvent* event) override;
+    void focusInEvent(QFocusEvent* event) override;
+    void focusOutEvent(QFocusEvent* event) override;
+    void keyPressEvent(QKeyEvent* event) override;
+    void resizeEvent(QResizeEvent* event) override;
+    void paintEvent(QPaintEvent* event) override;
 
 private:
     void validateInput() override;
@@ -173,12 +180,12 @@ Q_SIGNALS:
      *  Valid means the user inputted string obeys all restrictions
      *  like: minimum, maximum and/or the right Unit (if specified).
      */
-    void valueChanged(const Base::Quantity&); // clazy:exclude=overloaded-signal
+    void valueChanged(const Base::Quantity&);  // clazy:exclude=overloaded-signal
     /** Gets emitted if the user has entered a VALID input
      *  Valid means the user inputted string obeys all restrictions
      *  like: minimum, maximum and/or the right Unit (if specified).
      */
-    void valueChanged(double); // clazy:exclude=overloaded-signal
+    void valueChanged(double);  // clazy:exclude=overloaded-signal
     /**
      * The new value is passed in \a text with unit.
      */
@@ -194,6 +201,6 @@ private:
     Q_DECLARE_PRIVATE(QuantitySpinBox)
 };
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif // GUI_QUANTITYSPINBOX_H
+#endif  // GUI_QUANTITYSPINBOX_H

@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QMessageBox>
+#include <QMessageBox>
 #endif
 
 #include <App/Application.h>
@@ -57,11 +57,11 @@ DlgSettings3DViewPart::DlgSettings3DViewPart(QWidget* parent)
             &DlgSettings3DViewPart::onMaxAngularDeflectionValueChanged);
     ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Part");
-    const double minDeviationlowerLimit = hPart->GetFloat(
-        "MinimumDeviation", ui->maxDeviation->minimum());
+    const double minDeviationlowerLimit =
+        hPart->GetFloat("MinimumDeviation", ui->maxDeviation->minimum());
     ui->maxDeviation->setMinimum(minDeviationlowerLimit);
-    const double minAngleDeflectionlowerLimit = hPart->GetFloat(
-        "MinimumDeviation", ui->maxAngularDeflection->minimum());
+    const double minAngleDeflectionlowerLimit =
+        hPart->GetFloat("MinimumDeviation", ui->maxAngularDeflection->minimum());
     ui->maxAngularDeflection->setMinimum(minAngleDeflectionlowerLimit);
 }
 
@@ -132,7 +132,7 @@ void DlgSettings3DViewPart::loadSettings()
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgSettings3DViewPart::changeEvent(QEvent *e)
+void DlgSettings3DViewPart::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);

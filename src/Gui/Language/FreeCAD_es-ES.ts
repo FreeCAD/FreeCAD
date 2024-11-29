@@ -1865,7 +1865,7 @@ Nota: tus cambios se aplicarán cuando cambies de banco de trabajo
       <location filename="../DlgMacroExecuteImp.cpp" line="1078"/>
       <source>'%1'
  already exists.</source>
-      <translation>'%1' 
+      <translation>'%1'
 ya existe.</translation>
     </message>
     <message>
@@ -2768,7 +2768,7 @@ Una VB es una función OpenGL que proporciona métodos para subir datos de vért
 (posición, vector, color, etc.) a la tarjeta gráfica.
 Las VBs ofrecen un rendimiento sustancial porque los datos residen
 en la memoria gráfica en lugar de la memoria del sistema y por lo tanto
-pueden ser renderizados directamente por GPU. 
+pueden ser renderizados directamente por GPU.
 
 Nota: A veces esta característica puede llevar a un gran número de problemas
 que van desde anomías gráficas hasta errores de bloqueo de GPU. Recuerda reportar
@@ -2799,7 +2799,7 @@ There are 3 options available to achieve this:
 only cache at the scene graph root node. This offers the fastest rendering speed
 but slower response to any scene changes.</source>
       <translation>"Renderizar almacenamiento de caché" es otra forma de decir "aceleración de renderizado".
-Hay 3 opciones disponibles para lograr esto: 
+Hay 3 opciones disponibles para lograr esto:
 1) 'Auto' (por defecto), deja que Coin3D decida dónde cachear.
 2) 'Distribuido', activa manualmente la caché para todos los nodos raíz del proveedor de vista.
 3) 'Centralizado', desactiva manualmente la caché en todos los nodos de todos los proveedores de vistas y
@@ -4695,7 +4695,7 @@ El sistema de preferencias es el establecido en las preferencias generales.</tra
       <source>Press 'Start Recovery' to start the recovery process of the document listed below.
 
 The 'Status' column shows whether the document could be recovered.</source>
-      <translation>Pulse 'Empezar Recuperación' para iniciar el proceso de recuperación del documento indicado a continuación. 
+      <translation>Pulse 'Empezar Recuperación' para iniciar el proceso de recuperación del documento indicado a continuación.
 
 La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
     </message>

@@ -2846,7 +2846,7 @@ If both lengths are zero, magnitude of direction is used.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="683"/>
-      <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
+      <source>Can't determine normal vector of shape to be extruded. Please use other mode.
 
 (%1)</source>
       <translation>Não é possível determinar o vetor normal, da forma a ser extrudida. Por favor use outro modo. (%1)</translation>
@@ -5054,9 +5054,9 @@ but more stable.  Default: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1081"/>
-      <source>Expand shape content.  Changes will take effect next time you use 
+      <source>Expand shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
-      <translation type="unfinished">Expand shape content.  Changes will take effect next time you use 
+      <translation type="unfinished">Expand shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</translation>
     </message>
     <message>
@@ -5066,9 +5066,9 @@ the check geometry tool.  Default: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
-      <source>Show advanced shape content.  Changes will take effect next time you use 
+      <source>Show advanced shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
-      <translation type="unfinished">Show advanced shape content.  Changes will take effect next time you use 
+      <translation type="unfinished">Show advanced shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</translation>
     </message>
     <message>

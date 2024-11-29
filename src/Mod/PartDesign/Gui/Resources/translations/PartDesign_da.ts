@@ -60,7 +60,7 @@ Ikke-nul-værdier gør skruelinjen til en konisk spiral.</translation>
       <location filename="../../../App/FeatureHelix.cpp" line="98"/>
       <source>Sets the turning direction to left handed,
 i.e. counter-clockwise when moving along its axis.</source>
-      <translation>Sætter omdrejningsretningen venstre om,dvs. 
+      <translation>Sætter omdrejningsretningen venstre om,dvs.
 mod uret, når helixen bevæger sig langs sin akse.</translation>
     </message>
     <message>
@@ -2396,7 +2396,7 @@ kant fra modellen som reference</translation>
       <location filename="../../TaskPadPocketParameters.ui" line="294"/>
       <source>Use custom vector for pad direction, otherwise
 the sketch plane's normal vector will be used</source>
-      <translation>Brug en brugerudpeget vektor som ekstruderinsretning, 
+      <translation>Brug en brugerudpeget vektor som ekstruderinsretning,
 ellers vil skitseplanets normalvektor blive brugt</translation>
     </message>
     <message>

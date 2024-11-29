@@ -36,12 +36,13 @@ class TopoDS_Wire;
 namespace PartDesign
 {
 
-class PartDesignExport ProfileBased : public PartDesign::FeatureAddSub
+class PartDesignExport ProfileBased: public PartDesign::FeatureAddSub
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::SketchBased);
 
 public:
-    enum class ForbiddenAxis {
+    enum class ForbiddenAxis
+    {
         NoCheck = 0,
         NotPerpendicularWithNormal = 1,
         NotParallelWithNormal = 2
@@ -52,9 +53,9 @@ public:
     /// Profile used to create this feature
     App::PropertyLinkSub Profile;
     /// Reverse extrusion direction
-    App::PropertyBool    Reversed;
+    App::PropertyBool Reversed;
     /// Make extrusion symmetric to sketch plane
-    App::PropertyBool    Midplane;
+    App::PropertyBool Midplane;
     /// Face to extrude up to
     App::PropertyLinkSub UpToFace;
     /// Shape to extrude up to
@@ -74,8 +75,8 @@ public:
 
     /** applies a transform on the Placement of the Sketch or its
      *  support if it has one
-      */
-    void transformPlacement(const Base::Placement &transform) override;
+     */
+    void transformPlacement(const Base::Placement& transform) override;
 
     /**
      * Verifies the linked Profile and returns it if it is a valid 2D object
@@ -83,7 +84,7 @@ public:
      *               silently returns nullptr, otherwise throw a Base::Exception.
      *               Default is false.
      */
-    Part::Part2DObject* getVerifiedSketch(bool silent=false) const;
+    Part::Part2DObject* getVerifiedSketch(bool silent = false) const;
 
     /**
      * Verifies the linked Profile and returns it if it is a valid object
@@ -91,7 +92,7 @@ public:
      *               silently returns nullptr, otherwise throw a Base::Exception.
      *               Default is false.
      */
-    Part::Feature* getVerifiedObject(bool silent=false) const;
+    Part::Feature* getVerifiedObject(bool silent = false) const;
 
     /**
      * Verifies the linked Object and returns the shape used as profile
@@ -136,11 +137,13 @@ public:
     /// retrieves the number of axes in the linked sketch (defined as construction lines)
     int getSketchAxisCount() const;
 
-    Part::Feature* getBaseObject(bool silent=false) const override;
+    Part::Feature* getBaseObject(bool silent = false) const override;
 
-    //backwards compatibility: profile property was renamed and has different type now
+    // backwards compatibility: profile property was renamed and has different type now
     void Restore(Base::XMLReader& reader) override;
-    void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName) override;
+    void handleChangedPropertyName(Base::XMLReader& reader,
+                                   const char* TypeName,
+                                   const char* PropName) override;
 
     // calculate the through all length
     double getThroughAllLength() const;
@@ -168,7 +171,8 @@ protected:
 
     /// Create a shape with shapes and faces from a given LinkSubList
     /// return 0 if almost one full shape is selected else the face count
-    static int getUpToShapeFromLinkSubList(TopoShape& upToShape, const App::PropertyLinkSubList& refShape);
+    static int getUpToShapeFromLinkSubList(TopoShape& upToShape,
+                                           const App::PropertyLinkSubList& refShape);
 
     /// Find a valid face to extrude up to
     static void getUpToFace(TopoShape& upToFace,
@@ -178,33 +182,35 @@ protected:
                             gp_Dir& dir);
 
     /// Add an offset to the face
-    static void addOffsetToFace(TopoShape& upToFace,
-                                const gp_Dir& dir,
-                                double offset);
+    static void addOffsetToFace(TopoShape& upToFace, const gp_Dir& dir, double offset);
 
     /// Check whether the wire after projection on the face is inside the face
-    static bool checkWireInsideFace(const TopoDS_Wire& wire,
-                                    const TopoDS_Face& face,
-                                    const gp_Dir& dir);
+    static bool
+    checkWireInsideFace(const TopoDS_Wire& wire, const TopoDS_Face& face, const gp_Dir& dir);
 
     /// Check whether the line crosses the face (line and face must be on the same plane)
     static bool checkLineCrossesFace(const gp_Lin& line, const TopoDS_Face& face);
 
 
-    /// Used to suggest a value for Reversed flag so that material is always removed (Groove) or added (Revolution) from the support
+    /// Used to suggest a value for Reversed flag so that material is always removed (Groove) or
+    /// added (Revolution) from the support
     double getReversedAngle(const Base::Vector3d& b, const Base::Vector3d& v) const;
     /// get Axis from ReferenceAxis
-    void getAxis(const App::DocumentObject* pcReferenceAxis, const std::vector<std::string>& subReferenceAxis,
-                 Base::Vector3d& base, Base::Vector3d& dir, ForbiddenAxis checkAxis) const;
+    void getAxis(const App::DocumentObject* pcReferenceAxis,
+                 const std::vector<std::string>& subReferenceAxis,
+                 Base::Vector3d& base,
+                 Base::Vector3d& dir,
+                 ForbiddenAxis checkAxis) const;
 
     void onChanged(const App::Property* prop) override;
+
 private:
     bool isParallelPlane(const TopoDS_Shape&, const TopoDS_Shape&) const;
     bool isEqualGeometry(const TopoDS_Shape&, const TopoDS_Shape&) const;
     bool isQuasiEqual(const TopoDS_Shape&, const TopoDS_Shape&) const;
 };
 
-} //namespace PartDesign
+}  // namespace PartDesign
 
 
-#endif // PARTDESIGN_SketchBased_H
+#endif  // PARTDESIGN_SketchBased_H

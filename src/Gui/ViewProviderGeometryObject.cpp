@@ -51,7 +51,8 @@
 using namespace Gui;
 
 // Helper functions to consistently convert between float and long
-namespace {
+namespace
+{
 float fromPercent(long value)
 {
     return std::roundf(value) / 100.0F;
@@ -61,7 +62,7 @@ long toPercent(float value)
 {
     return std::lround(100.0 * value);
 }
-}
+}  // namespace
 
 PROPERTY_SOURCE(Gui::ViewProviderGeometryObject, Gui::ViewProviderDragger)
 

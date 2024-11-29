@@ -2766,10 +2766,10 @@ Note: Sometimes this feature may lead to a host of different
 issues ranging from graphical anomalies to GPU crash bugs. Remember to
 report this setting as enabled when seeking support on the FreeCAD forums</source>
       <translation>Če je izbrano, bodo uporabljeni medpomnilni predmeti oglišč (Vertex Buffer Objects - VBO).
-VBO je zmožnost, ki nudi postopke nalaganja podatkov o ogliščih 
+VBO je zmožnost, ki nudi postopke nalaganja podatkov o ogliščih
 (položaj, vektor normale, barva, itn.) na grafično kartico.
 VBO-ji nudijo občutno izboljšanje učinkovitosti, saj se podatki
-namesto v delovnem pomnilniku nahajajo v grafičnem pomnilniku, zaradi česar 
+namesto v delovnem pomnilniku nahajajo v grafičnem pomnilniku, zaradi česar
 je lahko izrisan neposredno z GPE.
 
 Opomba: Ta zmožnost lahko pripelje do množice različnih težav,
@@ -12809,7 +12809,7 @@ vidno poročevalno pogovorno okno</translation>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="168"/>
       <source>When a log message has occurred, the Report View dialog becomes visible
 on-screen while displaying the log message</source>
-      <translation>Ko pride do dnevniškega sporočila, bo pri prikazovanju zapisa postalo na zaslonu 
+      <translation>Ko pride do dnevniškega sporočila, bo pri prikazovanju zapisa postalo na zaslonu
 vidno poročevalno pogovorno okno</translation>
     </message>
     <message>

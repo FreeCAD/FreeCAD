@@ -2844,10 +2844,10 @@ Bi luzerak zero badira, norabidearen magnitudea erabiliko da.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="683"/>
-      <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
+      <source>Can't determine normal vector of shape to be extruded. Please use other mode.
 
 (%1)</source>
-      <translation>Ezin da estruituko den formaren bektore normala zehaztu. Erabili beste modu bat. 
+      <translation>Ezin da estruituko den formaren bektore normala zehaztu. Erabili beste modu bat.
 
 (%1)</translation>
     </message>
@@ -5058,7 +5058,7 @@ baina egonkorragoa. Lehenetsia: faltsua</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1081"/>
-      <source>Expand shape content.  Changes will take effect next time you use 
+      <source>Expand shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
       <translation>Hedatu formaren edukia. Geometria egiaztatzeko tresna erabiltzen den
 hurrengoan sartuko dira indarrean aldaketak. Lehenetsia: faltsua</translation>
@@ -5070,7 +5070,7 @@ hurrengoan sartuko dira indarrean aldaketak. Lehenetsia: faltsua</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
-      <source>Show advanced shape content.  Changes will take effect next time you use 
+      <source>Show advanced shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
       <translation>Erakutsi formaren eduki aurreratua. Geometria egiaztatzeko tresna erabiltzen den
 hurrengoan sartuko dira indarrean aldaketak. Lehenetsia: faltsua</translation>

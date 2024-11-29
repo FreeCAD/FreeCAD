@@ -22,8 +22,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QContextMenuEvent>
-# include <QMenu>
+#include <QContextMenuEvent>
+#include <QMenu>
 #endif
 
 #include <cstring>
@@ -41,69 +41,67 @@ using namespace Gui;
 /** Constructs a preference widget.
  */
 PrefWidget::PrefWidget()
- : WindowParameter("")
-{
-}
+    : WindowParameter("")
+{}
 
 /**
  * Destroys the widget and detaches it from its parameter group.
  */
 PrefWidget::~PrefWidget()
 {
-  if (getWindowParameter().isValid())
-    getWindowParameter()->Detach(this);
+    if (getWindowParameter().isValid()) {
+        getWindowParameter()->Detach(this);
+    }
 }
 
 /** Sets the preference name to \a name. */
-void PrefWidget::setEntryName( const QByteArray& name )
+void PrefWidget::setEntryName(const QByteArray& name)
 {
-  m_sPrefName = name;
+    m_sPrefName = name;
 }
 
 /** Sets the preference name to \a name. */
 void PrefWidget::setPrefEntry(const QByteArray& name)
 {
-  setEntryName(name);
+    setEntryName(name);
 }
 
 /** Returns the widget's preference name. */
 QByteArray PrefWidget::entryName() const
 {
-  return m_sPrefName;
+    return m_sPrefName;
 }
 
 /** Sets the preference path to \a path. */
-void PrefWidget::setParamGrpPath( const QByteArray& path )
+void PrefWidget::setParamGrpPath(const QByteArray& path)
 {
 #ifdef FC_DEBUG
-  if (getWindowParameter().isValid())
-  {
-    if ( paramGrpPath() != path )
-      Base::Console().Warning("Widget already attached\n");
-  }
+    if (getWindowParameter().isValid()) {
+        if (paramGrpPath() != path) {
+            Base::Console().Warning("Widget already attached\n");
+        }
+    }
 #endif
 
-  if ( paramGrpPath() != path )
-  {
-    if ( setGroupName( path ) )
-    {
-      m_sPrefGrp = path;
-      assert(getWindowParameter().isValid());
-      getWindowParameter()->Attach(this);
+    if (paramGrpPath() != path) {
+        if (setGroupName(path)) {
+            m_sPrefGrp = path;
+            assert(getWindowParameter().isValid());
+            getWindowParameter()->Attach(this);
+        }
     }
-  }
 }
 
 /** Sets the preference path to \a path. */
 void PrefWidget::setPrefPath(const QByteArray& name)
 {
-  setParamGrpPath(name);
+    setParamGrpPath(name);
 }
 
 /** Returns the widget's preferences path. */
 QByteArray PrefWidget::paramGrpPath() const
 {
-  return m_sPrefGrp;
+    return m_sPrefGrp;
 }
 
 /**
@@ -113,11 +111,12 @@ QByteArray PrefWidget::paramGrpPath() const
  * you have to filter out the appropriate parameter with the name \a sReason.
  * \a rCaller calls this method.
  */
-void PrefWidget::OnChange(Base::Subject<const char*> &rCaller, const char * sReason)
+void PrefWidget::OnChange(Base::Subject<const char*>& rCaller, const char* sReason)
 {
     Q_UNUSED(rCaller);
-    if (std::strcmp(sReason,m_sPrefName) == 0)
+    if (std::strcmp(sReason, m_sPrefName) == 0) {
         restorePreferences();
+    }
 }
 
 /**
@@ -126,12 +125,14 @@ void PrefWidget::OnChange(Base::Subject<const char*> &rCaller, const char * sRea
  */
 void PrefWidget::onSave()
 {
-  savePreferences();
-  if (getWindowParameter().isValid())
-    getWindowParameter()->Notify( entryName() );
+    savePreferences();
+    if (getWindowParameter().isValid()) {
+        getWindowParameter()->Notify(entryName());
+    }
 #ifdef FC_DEBUG
-  else
-    qFatal( "No parameter group specified!" );
+    else {
+        qFatal("No parameter group specified!");
+    }
 #endif
 }
 
@@ -141,139 +142,135 @@ void PrefWidget::onSave()
 void PrefWidget::onRestore()
 {
 #ifdef FC_DEBUG
-  if (getWindowParameter().isNull())
-    qWarning( "No parameter group specified!" );
+    if (getWindowParameter().isNull()) {
+        qWarning("No parameter group specified!");
+    }
 #endif
-  restorePreferences();
-  m_Restored = true;
+    restorePreferences();
+    m_Restored = true;
 }
 
 void PrefWidget::failedToSave(const QString& name) const
 {
     QByteArray objname = name.toLatin1();
-    if (objname.isEmpty())
+    if (objname.isEmpty()) {
         objname = "Undefined";
+    }
     Console().Warning("Cannot save %s (%s)\n", typeid(*this).name(), objname.constData());
 }
 
 void PrefWidget::failedToRestore(const QString& name) const
 {
     QByteArray objname = name.toLatin1();
-    if (objname.isEmpty())
+    if (objname.isEmpty()) {
         objname = "Undefined";
+    }
     Console().Warning("Cannot restore %s (%s)\n", typeid(*this).name(), objname.constData());
 }
 
 // --------------------------------------------------------------------
 
-PrefSpinBox::PrefSpinBox ( QWidget * parent )
-  : QSpinBox(parent), PrefWidget()
-{
-}
+PrefSpinBox::PrefSpinBox(QWidget* parent)
+    : QSpinBox(parent)
+    , PrefWidget()
+{}
 
 PrefSpinBox::~PrefSpinBox() = default;
 
 void PrefSpinBox::restorePreferences()
 {
-  if ( getWindowParameter().isNull() )
-  {
-    failedToRestore(objectName());
-    return;
-  }
+    if (getWindowParameter().isNull()) {
+        failedToRestore(objectName());
+        return;
+    }
 
-  int nVal = getWindowParameter()->GetInt( entryName(), QSpinBox::value() );
-  setValue( nVal );
+    int nVal = getWindowParameter()->GetInt(entryName(), QSpinBox::value());
+    setValue(nVal);
 }
 
 void PrefSpinBox::savePreferences()
 {
-  if (getWindowParameter().isNull())
-  {
-    failedToSave(objectName());
-    return;
-  }
+    if (getWindowParameter().isNull()) {
+        failedToSave(objectName());
+        return;
+    }
 
-  getWindowParameter()->SetInt( entryName() , (int)value() );
+    getWindowParameter()->SetInt(entryName(), (int)value());
 }
 
 // --------------------------------------------------------------------
 
-PrefDoubleSpinBox::PrefDoubleSpinBox ( QWidget * parent )
-  : QDoubleSpinBox(parent), PrefWidget()
-{
-}
+PrefDoubleSpinBox::PrefDoubleSpinBox(QWidget* parent)
+    : QDoubleSpinBox(parent)
+    , PrefWidget()
+{}
 
 PrefDoubleSpinBox::~PrefDoubleSpinBox() = default;
 
 void PrefDoubleSpinBox::restorePreferences()
 {
-  if ( getWindowParameter().isNull() )
-  {
-    failedToRestore(objectName());
-    return;
-  }
+    if (getWindowParameter().isNull()) {
+        failedToRestore(objectName());
+        return;
+    }
 
-  double fVal = (double)getWindowParameter()->GetFloat( entryName() , value() );
-  setValue(fVal);
+    double fVal = (double)getWindowParameter()->GetFloat(entryName(), value());
+    setValue(fVal);
 }
 
 void PrefDoubleSpinBox::savePreferences()
 {
-  if (getWindowParameter().isNull())
-  {
-    failedToSave(objectName());
-    return;
-  }
+    if (getWindowParameter().isNull()) {
+        failedToSave(objectName());
+        return;
+    }
 
-  getWindowParameter()->SetFloat( entryName(), value() );
+    getWindowParameter()->SetFloat(entryName(), value());
 }
 
 // --------------------------------------------------------------------
 
-PrefLineEdit::PrefLineEdit ( QWidget * parent )
-  : QLineEdit(parent), PrefWidget()
-{
-}
+PrefLineEdit::PrefLineEdit(QWidget* parent)
+    : QLineEdit(parent)
+    , PrefWidget()
+{}
 
 PrefLineEdit::~PrefLineEdit() = default;
 
 void PrefLineEdit::restorePreferences()
 {
-  if (getWindowParameter().isNull())
-  {
-    failedToRestore(objectName());
-    return;
-  }
+    if (getWindowParameter().isNull()) {
+        failedToRestore(objectName());
+        return;
+    }
 
-  QString text = this->text();
-  text = QString::fromUtf8(getWindowParameter()->GetASCII(entryName(), text.toUtf8()).c_str());
-  setText(text);
+    QString text = this->text();
+    text = QString::fromUtf8(getWindowParameter()->GetASCII(entryName(), text.toUtf8()).c_str());
+    setText(text);
 }
 
 void PrefLineEdit::savePreferences()
 {
-  if (getWindowParameter().isNull())
-  {
-    failedToSave(objectName());
-    return;
-  }
+    if (getWindowParameter().isNull()) {
+        failedToSave(objectName());
+        return;
+    }
 
-  getWindowParameter()->SetASCII(entryName(), text().toUtf8());
+    getWindowParameter()->SetASCII(entryName(), text().toUtf8());
 }
 
 // --------------------------------------------------------------------
 
 PrefTextEdit::PrefTextEdit(QWidget* parent)
-    : QTextEdit(parent), PrefWidget()
-{
-}
+    : QTextEdit(parent)
+    , PrefWidget()
+{}
 
 PrefTextEdit::~PrefTextEdit() = default;
 
 void PrefTextEdit::restorePreferences()
 {
-    if (getWindowParameter().isNull())
-    {
+    if (getWindowParameter().isNull()) {
         failedToRestore(objectName());
         return;
     }
@@ -285,8 +282,7 @@ void PrefTextEdit::restorePreferences()
 
 void PrefTextEdit::savePreferences()
 {
-    if (getWindowParameter().isNull())
-    {
+    if (getWindowParameter().isNull()) {
         failedToSave(objectName());
         return;
     }
@@ -297,276 +293,275 @@ void PrefTextEdit::savePreferences()
 
 // --------------------------------------------------------------------
 
-PrefFileChooser::PrefFileChooser ( QWidget * parent )
-  : FileChooser(parent), PrefWidget()
-{
-}
+PrefFileChooser::PrefFileChooser(QWidget* parent)
+    : FileChooser(parent)
+    , PrefWidget()
+{}
 
 PrefFileChooser::~PrefFileChooser() = default;
 
 void PrefFileChooser::restorePreferences()
 {
-  if (getWindowParameter().isNull())
-  {
-    failedToRestore(objectName());
-    return;
-  }
+    if (getWindowParameter().isNull()) {
+        failedToRestore(objectName());
+        return;
+    }
 
-  QString txt = QString::fromUtf8(getWindowParameter()->GetASCII(entryName(), fileName().toUtf8()).c_str());
-  setFileName(txt);
+    QString txt =
+        QString::fromUtf8(getWindowParameter()->GetASCII(entryName(), fileName().toUtf8()).c_str());
+    setFileName(txt);
 }
 
 void PrefFileChooser::savePreferences()
 {
-  if (getWindowParameter().isNull())
-  {
-    failedToSave(objectName());
-    return;
-  }
+    if (getWindowParameter().isNull()) {
+        failedToSave(objectName());
+        return;
+    }
 
-  getWindowParameter()->SetASCII(entryName(), fileName().toUtf8());
+    getWindowParameter()->SetASCII(entryName(), fileName().toUtf8());
 }
 
 // --------------------------------------------------------------------
 
-PrefComboBox::PrefComboBox ( QWidget * parent )
-  : QComboBox(parent), PrefWidget()
-{
-}
+PrefComboBox::PrefComboBox(QWidget* parent)
+    : QComboBox(parent)
+    , PrefWidget()
+{}
 
 PrefComboBox::~PrefComboBox() = default;
 
 QMetaType::Type PrefComboBox::getParamType() const
 {
-  return static_cast<QMetaType::Type>(property("prefType").userType());
+    return static_cast<QMetaType::Type>(property("prefType").userType());
 }
 
 void PrefComboBox::restorePreferences()
 {
-  if (getWindowParameter().isNull())
-  {
-    failedToRestore(objectName());
-    return;
-  }
-  if (!m_Restored) {
-    m_Default = currentData();
-    m_DefaultText = currentText();
-    m_DefaultIndex = currentIndex();
-  }
-  int index = -1;
-  switch(static_cast<int>(getParamType())) {
-  case QMetaType::Int:
-  case QMetaType::LongLong:
-    index = findData(static_cast<int>(getWindowParameter()->GetInt(entryName(), m_Default.toInt())));
-    break;
-  case QMetaType::UInt:
-  case QMetaType::ULongLong:
-    index = findData(static_cast<uint>(getWindowParameter()->GetUnsigned(entryName(), m_Default.toUInt())));
-    break;
-  case QMetaType::Bool:
-    index = findData(getWindowParameter()->GetBool(entryName(), m_Default.toBool()));
-    break;
-  case QMetaType::Double:
-    index = findData(getWindowParameter()->GetFloat(entryName(), m_Default.toDouble()));
-    break;
-  case QMetaType::QString:
-    index = findText(QString::fromUtf8(
-          getWindowParameter()->GetASCII(entryName(), m_DefaultText.toUtf8().constData()).c_str()));
-    break;
-  case QMetaType::QByteArray:
-    index = findData(QByteArray(getWindowParameter()->GetASCII(entryName(),
-          m_Default.toByteArray().constData()).c_str()));
-    break;
-  default:
-    index = getWindowParameter()->GetInt(entryName(), m_DefaultIndex);
-    break;
-  }
-  if (index >= 0 && index < count())
-    setCurrentIndex(index);
+    if (getWindowParameter().isNull()) {
+        failedToRestore(objectName());
+        return;
+    }
+    if (!m_Restored) {
+        m_Default = currentData();
+        m_DefaultText = currentText();
+        m_DefaultIndex = currentIndex();
+    }
+    int index = -1;
+    switch (static_cast<int>(getParamType())) {
+        case QMetaType::Int:
+        case QMetaType::LongLong:
+            index = findData(
+                static_cast<int>(getWindowParameter()->GetInt(entryName(), m_Default.toInt())));
+            break;
+        case QMetaType::UInt:
+        case QMetaType::ULongLong:
+            index = findData(static_cast<uint>(
+                getWindowParameter()->GetUnsigned(entryName(), m_Default.toUInt())));
+            break;
+        case QMetaType::Bool:
+            index = findData(getWindowParameter()->GetBool(entryName(), m_Default.toBool()));
+            break;
+        case QMetaType::Double:
+            index = findData(getWindowParameter()->GetFloat(entryName(), m_Default.toDouble()));
+            break;
+        case QMetaType::QString:
+            index = findText(
+                QString::fromUtf8(getWindowParameter()
+                                      ->GetASCII(entryName(), m_DefaultText.toUtf8().constData())
+                                      .c_str()));
+            break;
+        case QMetaType::QByteArray:
+            index =
+                findData(QByteArray(getWindowParameter()
+                                        ->GetASCII(entryName(), m_Default.toByteArray().constData())
+                                        .c_str()));
+            break;
+        default:
+            index = getWindowParameter()->GetInt(entryName(), m_DefaultIndex);
+            break;
+    }
+    if (index >= 0 && index < count()) {
+        setCurrentIndex(index);
+    }
 }
 
 void PrefComboBox::savePreferences()
 {
-  if (getWindowParameter().isNull())
-  {
-    failedToSave(objectName());
-    return;
-  }
+    if (getWindowParameter().isNull()) {
+        failedToSave(objectName());
+        return;
+    }
 
-  switch(static_cast<int>(getParamType())) {
-  case QMetaType::Int:
-  case QMetaType::LongLong:
-    getWindowParameter()->SetInt(entryName(), currentData().toInt());
-    break;
-  case QMetaType::UInt:
-  case QMetaType::ULongLong:
-    getWindowParameter()->SetUnsigned(entryName(), currentData().toUInt());
-    break;
-  case QMetaType::Bool:
-    getWindowParameter()->SetBool(entryName(), currentData().toBool());
-    break;
-  case QMetaType::Double:
-    getWindowParameter()->SetFloat(entryName(), currentData().toDouble());
-    break;
-  case QMetaType::QString:
-    getWindowParameter()->SetASCII(entryName(), currentText().toUtf8().constData());
-    break;
-  case QMetaType::QByteArray:
-    getWindowParameter()->SetASCII(entryName(), currentData().toByteArray().constData());
-    break;
-  default:
-    getWindowParameter()->SetInt(entryName(), currentIndex());
-    break;
-  }
+    switch (static_cast<int>(getParamType())) {
+        case QMetaType::Int:
+        case QMetaType::LongLong:
+            getWindowParameter()->SetInt(entryName(), currentData().toInt());
+            break;
+        case QMetaType::UInt:
+        case QMetaType::ULongLong:
+            getWindowParameter()->SetUnsigned(entryName(), currentData().toUInt());
+            break;
+        case QMetaType::Bool:
+            getWindowParameter()->SetBool(entryName(), currentData().toBool());
+            break;
+        case QMetaType::Double:
+            getWindowParameter()->SetFloat(entryName(), currentData().toDouble());
+            break;
+        case QMetaType::QString:
+            getWindowParameter()->SetASCII(entryName(), currentText().toUtf8().constData());
+            break;
+        case QMetaType::QByteArray:
+            getWindowParameter()->SetASCII(entryName(), currentData().toByteArray().constData());
+            break;
+        default:
+            getWindowParameter()->SetInt(entryName(), currentIndex());
+            break;
+    }
 }
 
 // --------------------------------------------------------------------
 
-PrefCheckBox::PrefCheckBox ( QWidget * parent )
-  : QCheckBox(parent), PrefWidget()
-{
-}
+PrefCheckBox::PrefCheckBox(QWidget* parent)
+    : QCheckBox(parent)
+    , PrefWidget()
+{}
 
 PrefCheckBox::~PrefCheckBox() = default;
 
 void PrefCheckBox::restorePreferences()
 {
-  if (getWindowParameter().isNull())
-  {
-    failedToRestore(objectName());
-    return;
-  }
+    if (getWindowParameter().isNull()) {
+        failedToRestore(objectName());
+        return;
+    }
 
-  bool enable = getWindowParameter()->GetBool( entryName(), isChecked() );
-  setChecked(enable);
+    bool enable = getWindowParameter()->GetBool(entryName(), isChecked());
+    setChecked(enable);
 }
 
 void PrefCheckBox::savePreferences()
 {
-  if (getWindowParameter().isNull())
-  {
-    failedToSave(objectName());
-    return;
-  }
+    if (getWindowParameter().isNull()) {
+        failedToSave(objectName());
+        return;
+    }
 
-  getWindowParameter()->SetBool( entryName(), isChecked() );
+    getWindowParameter()->SetBool(entryName(), isChecked());
 }
 
 // --------------------------------------------------------------------
 
-PrefRadioButton::PrefRadioButton ( QWidget * parent )
-  : QRadioButton(parent), PrefWidget()
-{
-}
+PrefRadioButton::PrefRadioButton(QWidget* parent)
+    : QRadioButton(parent)
+    , PrefWidget()
+{}
 
 PrefRadioButton::~PrefRadioButton() = default;
 
 void PrefRadioButton::restorePreferences()
 {
-  if (getWindowParameter().isNull())
-  {
-    failedToRestore(objectName());
-    return;
-  }
+    if (getWindowParameter().isNull()) {
+        failedToRestore(objectName());
+        return;
+    }
 
-  bool enable = getWindowParameter()->GetBool( entryName(), isChecked() );
-  setChecked(enable);
+    bool enable = getWindowParameter()->GetBool(entryName(), isChecked());
+    setChecked(enable);
 }
 
 void PrefRadioButton::savePreferences()
 {
-  if (getWindowParameter().isNull())
-  {
-    failedToSave(objectName());
-    return;
-  }
+    if (getWindowParameter().isNull()) {
+        failedToSave(objectName());
+        return;
+    }
 
-  getWindowParameter()->SetBool( entryName() , isChecked() );
+    getWindowParameter()->SetBool(entryName(), isChecked());
 }
 
 // --------------------------------------------------------------------
 
-PrefSlider::PrefSlider ( QWidget * parent )
-  : QSlider(parent), PrefWidget()
-{
-}
+PrefSlider::PrefSlider(QWidget* parent)
+    : QSlider(parent)
+    , PrefWidget()
+{}
 
 PrefSlider::~PrefSlider() = default;
 
 void PrefSlider::restorePreferences()
 {
-  if ( getWindowParameter().isNull() )
-  {
-    failedToRestore(objectName());
-    return;
-  }
+    if (getWindowParameter().isNull()) {
+        failedToRestore(objectName());
+        return;
+    }
 
-  int nVal = getWindowParameter()->GetInt(entryName(), QSlider::value());
-  setValue(nVal);
+    int nVal = getWindowParameter()->GetInt(entryName(), QSlider::value());
+    setValue(nVal);
 }
 
 void PrefSlider::savePreferences()
 {
-  if (getWindowParameter().isNull())
-  {
-    failedToSave(objectName());
-    return;
-  }
+    if (getWindowParameter().isNull()) {
+        failedToSave(objectName());
+        return;
+    }
 
-  getWindowParameter()->SetInt(entryName() , (int)value());
+    getWindowParameter()->SetInt(entryName(), (int)value());
 }
 
 // --------------------------------------------------------------------
 
-PrefColorButton::PrefColorButton ( QWidget * parent )
-  : ColorButton(parent), PrefWidget()
-{
-}
+PrefColorButton::PrefColorButton(QWidget* parent)
+    : ColorButton(parent)
+    , PrefWidget()
+{}
 
 PrefColorButton::~PrefColorButton() = default;
 
 void PrefColorButton::restorePreferences()
 {
-  if (getWindowParameter().isNull()) {
-    failedToRestore(objectName());
-    return;
-  }
+    if (getWindowParameter().isNull()) {
+        failedToRestore(objectName());
+        return;
+    }
 
-  if (!m_Restored)
-    m_Default = color();
+    if (!m_Restored) {
+        m_Default = color();
+    }
 
-  unsigned int icol = App::Color::asPackedRGBA<QColor>(m_Default);
+    unsigned int icol = App::Color::asPackedRGBA<QColor>(m_Default);
 
-  unsigned long lcol = static_cast<unsigned long>(icol);
-  lcol = getWindowParameter()->GetUnsigned(entryName(), lcol);
-  icol = static_cast<unsigned int>(lcol);
-  QColor value = App::Color::fromPackedRGBA<QColor>(icol);
-  if (!this->allowTransparency())
-    value.setAlpha(0xff);
-  setColor(value);
+    unsigned long lcol = static_cast<unsigned long>(icol);
+    lcol = getWindowParameter()->GetUnsigned(entryName(), lcol);
+    icol = static_cast<unsigned int>(lcol);
+    QColor value = App::Color::fromPackedRGBA<QColor>(icol);
+    if (!this->allowTransparency()) {
+        value.setAlpha(0xff);
+    }
+    setColor(value);
 }
 
 void PrefColorButton::savePreferences()
 {
-  if (getWindowParameter().isNull())
-  {
-    failedToSave(objectName());
-    return;
-  }
+    if (getWindowParameter().isNull()) {
+        failedToSave(objectName());
+        return;
+    }
 
-  QColor col = color();
-  // (r,g,b,a) with a = 255 (opaque)
-  unsigned int icol = App::Color::asPackedRGBA<QColor>(col);
-  unsigned long lcol = static_cast<unsigned long>(icol);
-  getWindowParameter()->SetUnsigned( entryName(), lcol );
+    QColor col = color();
+    // (r,g,b,a) with a = 255 (opaque)
+    unsigned int icol = App::Color::asPackedRGBA<QColor>(col);
+    unsigned long lcol = static_cast<unsigned long>(icol);
+    getWindowParameter()->SetUnsigned(entryName(), lcol);
 }
 
 // --------------------------------------------------------------------
 
-PrefUnitSpinBox::PrefUnitSpinBox ( QWidget * parent )
-  : QuantitySpinBox(parent), PrefWidget()
-{
-}
+PrefUnitSpinBox::PrefUnitSpinBox(QWidget* parent)
+    : QuantitySpinBox(parent)
+    , PrefWidget()
+{}
 
 PrefUnitSpinBox::~PrefUnitSpinBox() = default;
 
@@ -577,7 +572,7 @@ void PrefUnitSpinBox::restorePreferences()
         return;
     }
 
-    double fVal = (double)getWindowParameter()->GetFloat( entryName() ,rawValue() );
+    double fVal = (double)getWindowParameter()->GetFloat(entryName(), rawValue());
     setValue(fVal);
 }
 
@@ -589,38 +584,50 @@ void PrefUnitSpinBox::savePreferences()
     }
 
     double q = rawValue();
-    getWindowParameter()->SetFloat( entryName(), q );
+    getWindowParameter()->SetFloat(entryName(), q);
 }
 
 // --------------------------------------------------------------------
 
-namespace Gui {
-class HistoryList {
+namespace Gui
+{
+class HistoryList
+{
     QStringList list;
     int max_size = 5;
+
 public:
-    const QStringList& asStringList() const {
+    const QStringList& asStringList() const
+    {
         return list;
     }
-    int maximumSize() const {
+    int maximumSize() const
+    {
         return max_size;
     }
-    void setMaximumSize(int num) {
+    void setMaximumSize(int num)
+    {
         max_size = num;
-        while (list.size() > num)
+        while (list.size() > num) {
             list.pop_front();
+        }
     }
-    void clear() {
+    void clear()
+    {
         list.clear();
     }
-    void append(const QString& value) {
-        if (!list.isEmpty() && list.back() == value)
+    void append(const QString& value)
+    {
+        if (!list.isEmpty() && list.back() == value) {
             return;
+        }
         auto it = std::find(list.begin(), list.end(), value);
-        if (it != list.end())
+        if (it != list.end()) {
             list.erase(it);
-        else if (list.size() == max_size)
+        }
+        else if (list.size() == max_size) {
             list.pop_front();
+        }
         list.push_back(value);
     }
 };
@@ -631,21 +638,27 @@ public:
     HistoryList history;
     bool isSaving = false;
 
-    QByteArray getHistoryGroupName(QByteArray name) const {
+    QByteArray getHistoryGroupName(QByteArray name) const
+    {
         return name + "_History";
     }
 
-    void restoreHistory(ParameterGrp::handle hGrp) {
+    void restoreHistory(ParameterGrp::handle hGrp)
+    {
         std::vector<std::string> hist = hGrp->GetASCIIs("Hist");
-        for (const auto& it : hist)
+        for (const auto& it : hist) {
             history.append(QString::fromStdString(it));
+        }
     }
-    void clearHistory(ParameterGrp::handle hGrp) {
+    void clearHistory(ParameterGrp::handle hGrp)
+    {
         std::vector<std::string> hist = hGrp->GetASCIIs("Hist");
-        for (const auto& it : hist)
+        for (const auto& it : hist) {
             hGrp->RemoveASCII(it.c_str());
+        }
     }
-    void saveHistory(ParameterGrp::handle hGrp) {
+    void saveHistory(ParameterGrp::handle hGrp)
+    {
         clearHistory(hGrp);
 
         const QStringList& list = history.asStringList();
@@ -656,21 +669,20 @@ public:
         }
     }
 };
-}
+}  // namespace Gui
 
-PrefQuantitySpinBox::PrefQuantitySpinBox (QWidget * parent)
-  : QuantitySpinBox(parent)
-  , d_ptr(new PrefQuantitySpinBoxPrivate())
-{
-}
+PrefQuantitySpinBox::PrefQuantitySpinBox(QWidget* parent)
+    : QuantitySpinBox(parent)
+    , d_ptr(new PrefQuantitySpinBoxPrivate())
+{}
 
 PrefQuantitySpinBox::~PrefQuantitySpinBox() = default;
 
-void PrefQuantitySpinBox::contextMenuEvent(QContextMenuEvent *event)
+void PrefQuantitySpinBox::contextMenuEvent(QContextMenuEvent* event)
 {
     Q_D(PrefQuantitySpinBox);
 
-    QMenu *editMenu = lineEdit()->createStandardContextMenu();
+    QMenu* editMenu = lineEdit()->createStandardContextMenu();
     editMenu->setTitle(tr("Edit"));
     std::unique_ptr<QMenu> menu(new QMenu(QString::fromLatin1("PrefQuantitySpinBox")));
 
@@ -679,19 +691,19 @@ void PrefQuantitySpinBox::contextMenuEvent(QContextMenuEvent *event)
 
     // data structure to remember actions for values
     QStringList history = d->history.asStringList();
-    for (const auto & it : history) {
+    for (const auto& it : history) {
         QAction* action = menu->addAction(it);
         action->setProperty("history_value", it);
     }
 
     // add the save value portion of the menu
     menu->addSeparator();
-    QAction *saveValueAction = menu->addAction(tr("Save value"));
-    QAction *clearListAction = menu->addAction(tr("Clear list"));
+    QAction* saveValueAction = menu->addAction(tr("Save value"));
+    QAction* clearListAction = menu->addAction(tr("Clear list"));
     clearListAction->setDisabled(history.empty());
 
     // call the menu
-    QAction *userAction = menu->exec(event->globalPos());
+    QAction* userAction = menu->exec(event->globalPos());
 
     // look what the user has chosen
     if (userAction == saveValueAction) {
@@ -713,8 +725,9 @@ void PrefQuantitySpinBox::restorePreferences()
     Q_D(PrefQuantitySpinBox);
 
     // Do not restore values while saving them
-    if (d->isSaving)
+    if (d->isSaving) {
         return;
+    }
 
     if (getWindowParameter().isNull() || entryName().isEmpty()) {
         failedToRestore(objectName());
@@ -738,14 +751,14 @@ void PrefQuantitySpinBox::savePreferences()
         return;
     }
 
-    getWindowParameter()->SetASCII( entryName(), text().toUtf8() );
+    getWindowParameter()->SetASCII(entryName(), text().toUtf8());
 
     // Save history
     auto hGrp = getWindowParameter()->GetGroup(d->getHistoryGroupName(entryName()));
     d->saveHistory(hGrp);
 }
 
-void PrefQuantitySpinBox::pushToHistory(const QString &value)
+void PrefQuantitySpinBox::pushToHistory(const QString& value)
 {
     Q_D(PrefQuantitySpinBox);
     d->history.append(value.isEmpty() ? this->text() : value);
@@ -763,8 +776,9 @@ QStringList PrefQuantitySpinBox::getHistory() const
 void PrefQuantitySpinBox::setToLastUsedValue()
 {
     QStringList hist = getHistory();
-    if (!hist.empty())
+    if (!hist.empty()) {
         lineEdit()->setText(hist.front());
+    }
 }
 
 int PrefQuantitySpinBox::historySize() const
@@ -781,41 +795,40 @@ void PrefQuantitySpinBox::setHistorySize(int i)
 
 // --------------------------------------------------------------------
 
-PrefFontBox::PrefFontBox ( QWidget * parent )
-  : QFontComboBox(parent), PrefWidget()
-{
-}
+PrefFontBox::PrefFontBox(QWidget* parent)
+    : QFontComboBox(parent)
+    , PrefWidget()
+{}
 
 PrefFontBox::~PrefFontBox() = default;
 
 void PrefFontBox::restorePreferences()
 {
-  if ( getWindowParameter().isNull() )
-  {
-    failedToRestore(objectName());
-    return;
-  }
+    if (getWindowParameter().isNull()) {
+        failedToRestore(objectName());
+        return;
+    }
 
-  QFont currFont = currentFont();                         //QFont from selector widget
-  QString currName = currFont.family();
+    QFont currFont = currentFont();  // QFont from selector widget
+    QString currName = currFont.family();
 
-  std::string prefName = getWindowParameter()->GetASCII(entryName(), currName.toUtf8());  //font name from cfg file
+    std::string prefName =
+        getWindowParameter()->GetASCII(entryName(), currName.toUtf8());  // font name from cfg file
 
-  currFont.setFamily(QString::fromStdString(prefName));
-  setCurrentFont(currFont);                               //set selector widget to name from cfg file
+    currFont.setFamily(QString::fromStdString(prefName));
+    setCurrentFont(currFont);  // set selector widget to name from cfg file
 }
 
 void PrefFontBox::savePreferences()
 {
-  if (getWindowParameter().isNull())
-  {
-    failedToSave(objectName());
-    return;
-  }
+    if (getWindowParameter().isNull()) {
+        failedToSave(objectName());
+        return;
+    }
 
-  QFont currFont = currentFont();
-  QString currName = currFont.family();
-  getWindowParameter()->SetASCII(entryName(), currName.toUtf8());
+    QFont currFont = currentFont();
+    QString currName = currFont.family();
+    getWindowParameter()->SetASCII(entryName(), currName.toUtf8());
 }
 
 #include "moc_PrefWidgets.cpp"

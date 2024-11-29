@@ -1,26 +1,26 @@
- // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-License-Identifier: LGPL-2.1-or-later
 
-  /****************************************************************************
-   *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>               *
-   *   Copyright (c) 2023 FreeCAD Project Association                         *
-   *                                                                          *
-   *   This file is part of FreeCAD.                                          *
-   *                                                                          *
-   *   FreeCAD is free software: you can redistribute it and/or modify it     *
-   *   under the terms of the GNU Lesser General Public License as            *
-   *   published by the Free Software Foundation, either version 2.1 of the   *
-   *   License, or (at your option) any later version.                        *
-   *                                                                          *
-   *   FreeCAD is distributed in the hope that it will be useful, but         *
-   *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
-   *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
-   *   Lesser General Public License for more details.                        *
-   *                                                                          *
-   *   You should have received a copy of the GNU Lesser General Public       *
-   *   License along with FreeCAD. If not, see                                *
-   *   <https://www.gnu.org/licenses/>.                                       *
-   *                                                                          *
-   ***************************************************************************/
+/****************************************************************************
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>               *
+ *   Copyright (c) 2023 FreeCAD Project Association                         *
+ *                                                                          *
+ *   This file is part of FreeCAD.                                          *
+ *                                                                          *
+ *   FreeCAD is free software: you can redistribute it and/or modify it     *
+ *   under the terms of the GNU Lesser General Public License as            *
+ *   published by the Free Software Foundation, either version 2.1 of the   *
+ *   License, or (at your option) any later version.                        *
+ *                                                                          *
+ *   FreeCAD is distributed in the hope that it will be useful, but         *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
+ *   Lesser General Public License for more details.                        *
+ *                                                                          *
+ *   You should have received a copy of the GNU Lesser General Public       *
+ *   License along with FreeCAD. If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                       *
+ *                                                                          *
+ ***************************************************************************/
 
 
 #ifndef GUI_DIALOG_DLGPREFERENCESIMP_H
@@ -36,11 +36,12 @@ class QAbstractButton;
 class QListWidgetItem;
 class QTabWidget;
 
-namespace Gui::Dialog {
+namespace Gui::Dialog
+{
 class PreferencePage;
 class Ui_DlgPreferences;
 
-class PreferencesPageItem : public QStandardItem
+class PreferencesPageItem: public QStandardItem
 {
 public:
     QWidget* getWidget() const;
@@ -69,8 +70,8 @@ private:
  * PrefSpinBox, PrefLineEdit, PrefComboBox, PrefListBox, PrefCheckBox, PrefRadioButton and
  * PrefSlider. If you have compiled and installed the library under src/Tools/plugins/widgets
  * to QTDIR/plugins/designer you should see the new category "Preferences".
- * Moreover you have to make sure to have specified the "prefEntry" and "prefPath" properties for each
- * preference widget you have used inside your form in Qt Designer.
+ * Moreover you have to make sure to have specified the "prefEntry" and "prefPath" properties for
+ * each preference widget you have used inside your form in Qt Designer.
  *
  * \li For each widget inside your page - you want to save or load - you have to call
  * \<objectname\>->onSave() or \<objectname\>->onRestore(). The best way to this is either to
@@ -126,12 +127,13 @@ private:
  * \see PrefWidget
  * \author Werner Mayer, Jürgen Riegel
  */
-class GuiExport DlgPreferencesImp : public QDialog
+class GuiExport DlgPreferencesImp: public QDialog
 {
     Q_OBJECT
 
-    static constexpr double maxScreenWidthCoveragePercent = 0.8; // maximum % of screen width taken by the dialog
-    static constexpr int minVerticalEmptySpace = 100;            // px of vertical space to leave
+    static constexpr double maxScreenWidthCoveragePercent =
+        0.8;  // maximum % of screen width taken by the dialog
+    static constexpr int minVerticalEmptySpace = 100;  // px of vertical space to leave
 
 public:
     static void addPage(const std::string& className, const std::string& group);
@@ -140,7 +142,8 @@ public:
     static void getGroupData(const std::string& group, std::string& icon, QString& tip);
     static void reloadSettings();
 
-    static PreferencePage* createPreferencePage(const std::string& pageName, const std::string& groupName);
+    static PreferencePage* createPreferencePage(const std::string& pageName,
+                                                const std::string& groupName);
 
     explicit DlgPreferencesImp(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgPreferencesImp() override;
@@ -152,16 +155,16 @@ public:
     void activeGroupPage(QString& group, int& index) const;
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
     void showEvent(QShowEvent*) override;
 
 protected Q_SLOTS:
     void onButtonBoxClicked(QAbstractButton*);
-    void onPageSelected(const QModelIndex &index);
+    void onPageSelected(const QModelIndex& index);
     void onStackWidgetChange(int index);
 
-    void onGroupExpanded(const QModelIndex &index);
-    void onGroupCollapsed(const QModelIndex &index);
+    void onGroupExpanded(const QModelIndex& index);
+    void onGroupCollapsed(const QModelIndex& index);
 
 private:
     /** @name for internal use only */
@@ -199,7 +202,8 @@ private:
     QStandardItemModel _model;
     QSize _sizeHintOfPages;
 
-    struct Group {
+    struct Group
+    {
         std::string iconName;
         QString tooltip;
     };
@@ -217,9 +221,10 @@ private:
     static constexpr char const* GroupNameProperty = "GroupName";
     static constexpr char const* PageNameProperty = "PageName";
 
-    static DlgPreferencesImp* _activeDialog; /**< Defaults to the nullptr, points to the current instance if there is one */
+    static DlgPreferencesImp* _activeDialog; /**< Defaults to the nullptr, points to the current
+                                                instance if there is one */
 };
 
-} // namespace Gui
+}  // namespace Gui::Dialog
 
-#endif // GUI_DIALOG_DLGPREFERENCESIMP_H
+#endif  // GUI_DIALOG_DLGPREFERENCESIMP_H

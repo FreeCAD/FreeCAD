@@ -23,11 +23,11 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
-# include <gp_Dir.hxx>
-# include <Precision.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS_Face.hxx>
+#include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
+#include <gp_Dir.hxx>
+#include <Precision.hxx>
+#include <TopExp_Explorer.hxx>
+#include <TopoDS_Face.hxx>
 #endif
 
 #include <App/DocumentObject.h>
@@ -39,7 +39,8 @@ using namespace PartDesign;
 
 /* TRANSLATOR PartDesign::Pocket */
 
-const char* Pocket::TypeEnums[]= {"Length", "ThroughAll", "UpToFirst", "UpToFace", "TwoLengths", "UpToShape", nullptr};
+const char* Pocket::TypeEnums[] =
+    {"Length", "ThroughAll", "UpToFirst", "UpToFace", "TwoLengths", "UpToShape", nullptr};
 
 PROPERTY_SOURCE(PartDesign::Pocket, PartDesign::FeatureExtrude)
 
@@ -51,17 +52,45 @@ Pocket::Pocket()
     Type.setEnums(TypeEnums);
     ADD_PROPERTY_TYPE(Length, (5.0), "Pocket", App::Prop_None, "Pocket length");
     ADD_PROPERTY_TYPE(Length2, (5.0), "Pocket", App::Prop_None, "Pocket length in 2nd direction");
-    ADD_PROPERTY_TYPE(UseCustomVector, (false), "Pocket", App::Prop_None, "Use custom vector for pocket direction");
-    ADD_PROPERTY_TYPE(Direction, (Base::Vector3d(1.0, 1.0, 1.0)), "Pocket", App::Prop_None, "Pocket direction vector");
-    ADD_PROPERTY_TYPE(ReferenceAxis, (nullptr), "Pocket", App::Prop_None, "Reference axis of direction");
-    ADD_PROPERTY_TYPE(AlongSketchNormal, (true), "Pocket", App::Prop_None, "Measure pocket length along the sketch normal direction");
+    ADD_PROPERTY_TYPE(UseCustomVector,
+                      (false),
+                      "Pocket",
+                      App::Prop_None,
+                      "Use custom vector for pocket direction");
+    ADD_PROPERTY_TYPE(Direction,
+                      (Base::Vector3d(1.0, 1.0, 1.0)),
+                      "Pocket",
+                      App::Prop_None,
+                      "Pocket direction vector");
+    ADD_PROPERTY_TYPE(ReferenceAxis,
+                      (nullptr),
+                      "Pocket",
+                      App::Prop_None,
+                      "Reference axis of direction");
+    ADD_PROPERTY_TYPE(AlongSketchNormal,
+                      (true),
+                      "Pocket",
+                      App::Prop_None,
+                      "Measure pocket length along the sketch normal direction");
     ADD_PROPERTY_TYPE(UpToFace, (nullptr), "Pocket", App::Prop_None, "Face where pocket will end");
-    ADD_PROPERTY_TYPE(UpToShape, (nullptr), "Pocket", App::Prop_None, "Face(s) or shape(s) where pocket will end");
-    ADD_PROPERTY_TYPE(Offset, (0.0), "Pocket", App::Prop_None, "Offset from face in which pocket will end");
+    ADD_PROPERTY_TYPE(UpToShape,
+                      (nullptr),
+                      "Pocket",
+                      App::Prop_None,
+                      "Face(s) or shape(s) where pocket will end");
+    ADD_PROPERTY_TYPE(Offset,
+                      (0.0),
+                      "Pocket",
+                      App::Prop_None,
+                      "Offset from face in which pocket will end");
     Offset.setConstraints(&signedLengthConstraint);
     ADD_PROPERTY_TYPE(TaperAngle, (0.0), "Pocket", App::Prop_None, "Taper angle");
     TaperAngle.setConstraints(&floatAngle);
-    ADD_PROPERTY_TYPE(TaperAngle2, (0.0), "Pocket", App::Prop_None, "Taper angle for 2nd direction");
+    ADD_PROPERTY_TYPE(TaperAngle2,
+                      (0.0),
+                      "Pocket",
+                      App::Prop_None,
+                      "Taper angle for 2nd direction");
     TaperAngle2.setConstraints(&floatAngle);
 
     // Remove the constraints and keep the type to allow to accept negative values
@@ -69,7 +98,7 @@ Pocket::Pocket()
     Length2.setConstraints(nullptr);
 }
 
-App::DocumentObjectExecReturn *Pocket::execute()
+App::DocumentObjectExecReturn* Pocket::execute()
 {
     // MakeFace|MakeFuse: because we want a solid.
     // InverseDirection: to inverse the auto detected extrusion direction for

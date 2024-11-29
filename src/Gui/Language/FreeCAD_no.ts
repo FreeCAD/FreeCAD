@@ -1906,7 +1906,7 @@ Note: your changes will be applied when you next switch workbenches
       <source>Access denied to '%1'
 
 Specify another directory, please.</source>
-      <translation>Ingen tilgang til '%1' 
+      <translation>Ingen tilgang til '%1'
 Vennligst angi en annen mappe.</translation>
     </message>
     <message>
@@ -2508,7 +2508,7 @@ A VBO is an OpenGL feature that provides methods for uploading
 vertex data (position, normal vector, color, etc.) to the graphics card.
 VBOs offer substantial performance gains because the data resides
 in the graphics memory rather than the system memory and so it
-can be rendered directly by GPU. 
+can be rendered directly by GPU.
 
 Note: Sometimes this feature may lead to a host of different
 issues ranging from graphical anomalies to GPU crash bugs. Remember to
@@ -2518,7 +2518,7 @@ A VBO is an OpenGL feature that provides methods for uploading
 vertex data (position, normal vector, color, etc.) to the graphics card.
 VBOs offer substantial performance gains because the data resides
 in the graphics memory rather than the system memory and so it
-can be rendered directly by GPU. 
+can be rendered directly by GPU.
 
 Note: Sometimes this feature may lead to a host of different
 issues ranging from graphical anomalies to GPU crash bugs. Remember to
@@ -2534,14 +2534,14 @@ report this setting as enabled when seeking support on the FreeCAD forums</trans
     </message>
     <message>
       <source>'Render Caching' is another way to say 'Rendering Acceleration'.
-There are 3 options available to achieve this: 
+There are 3 options available to achieve this:
 1) 'Auto' (default), let Coin3D decide where to cache.
 2) 'Distributed', manually turn on cache for all view provider root node.
 3) 'Centralized', manually turn off cache in all nodes of all view provider, and
 only cache at the scene graph root node. This offers the fastest rendering speed
 but slower response to any scene changes.</source>
       <translation type="unfinished">'Render Caching' is another way to say 'Rendering Acceleration'.
-There are 3 options available to achieve this: 
+There are 3 options available to achieve this:
 1) 'Auto' (default), let Coin3D decide where to cache.
 2) 'Distributed', manually turn on cache for all view provider root node.
 3) 'Centralized', manually turn off cache in all nodes of all view provider, and
@@ -3914,9 +3914,9 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
       <translation type="unfinished">Result</translation>
     </message>
     <message>
-      <source>List of last used calculations 
+      <source>List of last used calculations
 To add a calculation press Return in the value input field</source>
-      <translation type="unfinished">List of last used calculations 
+      <translation type="unfinished">List of last used calculations
 To add a calculation press Return in the value input field</translation>
     </message>
     <message>
@@ -4889,7 +4889,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
       <source>%1.
 
 This has been modified outside of the source editor. Do you want to reload it?</source>
-      <translation>%1. 
+      <translation>%1.
 Dette har blitt endret utenfor kilderedigereren. Vil du laste den på nytt?</translation>
     </message>
     <message>
@@ -4899,7 +4899,7 @@ Dette har blitt endret utenfor kilderedigereren. Vil du laste den på nytt?</tra
     <message>
       <source>The document has been modified.
 Do you want to save your changes?</source>
-      <translation>Dokumentet har blitt endret. 
+      <translation>Dokumentet har blitt endret.
 Vil du lagre endringene?</translation>
     </message>
     <message>
@@ -5673,7 +5673,7 @@ Do you want to exit without saving your data?</source>
       <source>The directory '%1' does not exist.
 
 Do you want to specify an existing directory?</source>
-      <translation>Mappen '%1' eksisterer ikke.  
+      <translation>Mappen '%1' eksisterer ikke.
 
 Vil du angi en eksisterende mappe?</translation>
     </message>
@@ -5685,7 +5685,7 @@ Vil du angi en eksisterende mappe?</translation>
       <source>You don't have write permission to '%1'
 
 Do you want to specify another directory?</source>
-      <translation>Du har ikke skrivetilgang til '%1' 
+      <translation>Du har ikke skrivetilgang til '%1'
 
 Vil du angi en annen mappe?</translation>
     </message>
@@ -6676,13 +6676,13 @@ In order to load it Qt 4.4 or higher is required.</source>
     <message>
       <source>Only one object selected. Please select two objects.
 Be aware the point where you click matters.</source>
-      <translation>Bare ett objekt valgt. Velg to objekter. 
+      <translation>Bare ett objekt valgt. Velg to objekter.
 Vær oppmerksom på at punktet hvor du klikker betyr noe.</translation>
     </message>
     <message>
       <source>Please select two objects.
 Be aware the point where you click matters.</source>
-      <translation>Velg to objekter. 
+      <translation>Velg to objekter.
 Vær oppmerksom på at punktet hvor du klikker betyr noe.</translation>
     </message>
     <message>

@@ -2841,7 +2841,7 @@ If both lengths are zero, magnitude of direction is used.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="683"/>
-      <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
+      <source>Can't determine normal vector of shape to be extruded. Please use other mode.
 
 (%1)</source>
       <translation>Ekstrüzyon yapılacak normal vektör şekli belirlenemiyor. Lütfen diğer modu kullanın</translation>
@@ -4606,7 +4606,7 @@ will get the same color</translation>
       <location filename="../../SectionCutting.ui" line="544"/>
       <source>When the dialog is closed,
 only created cuts will be visible</source>
-      <translation>İletişim kutusu kapatıldığında, 
+      <translation>İletişim kutusu kapatıldığında,
 yalnızca oluşturulan kesimler görünür</translation>
     </message>
     <message>
@@ -5050,7 +5050,7 @@ but more stable.  Default: false</source>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1081"/>
-      <source>Expand shape content.  Changes will take effect next time you use 
+      <source>Expand shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
       <translation>Şekil içeriğini genişletin. Değişiklikler bir sonraki kullanımınızda geçerli olacak
 geometri aracını kontrol edin. Varsayılan: false</translation>
@@ -5062,7 +5062,7 @@ geometri aracını kontrol edin. Varsayılan: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
-      <source>Show advanced shape content.  Changes will take effect next time you use 
+      <source>Show advanced shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
       <translation>Gelişmiş şekil içeriğini göster. Değişiklikler, geometriyi kontrol etme aracını bir sonraki kullanışınızda geçerli olacaktır. Varsayılan: false</translation>
     </message>

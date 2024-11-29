@@ -2755,10 +2755,10 @@ Note: Sometimes this feature may lead to a host of different
 issues ranging from graphical anomalies to GPU crash bugs. Remember to
 report this setting as enabled when seeking support on the FreeCAD forums</source>
       <translation>Jei pasirinkta, bus naudojami viršūnių buferio objektai (VBO).
-VBO yra OpenGL funkcija, įgalinanti viršūnių duomenų (padėties, 
+VBO yra OpenGL funkcija, įgalinanti viršūnių duomenų (padėties,
 paviršiaus statmens vektorių, spalvų ir kt.) įkėlimą į vaizdo plokštę.
-VBO naudojimas leidžia pasiekti didelį našumo padidėjimą, nes 
-duomenys yra saugomi grafinėje atmintyje, o ne sistemos atmintyje 
+VBO naudojimas leidžia pasiekti didelį našumo padidėjimą, nes
+duomenys yra saugomi grafinėje atmintyje, o ne sistemos atmintyje
 ir taip gali būti atvaizduojamas tiesiogiai GPU.
 
 Pastaba: kartais ši funkcija gali sukelti įvairių anomalijų
@@ -5711,7 +5711,7 @@ originally selected prior to opening this dialog</source>
       <source>%1.
 
 This has been modified outside of the source editor. Do you want to reload it?</source>
-      <translation>%1. 
+      <translation>%1.
 
 Buvo keistas išorine rengykle. Ar norite atnaujinti jį?</translation>
     </message>
@@ -6273,7 +6273,7 @@ Kaip norėtumėte tęsti?</translation>
     <message>
       <location filename="../ManualAlignment.cpp" line="1017"/>
       <source>Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</source>
-      <translation>Skirtingas taškų skaičius parinktas dešiniajame ir kairiajame rodiniuose. Kairėje pasirinkta %1 taškų(-ai), 
+      <translation>Skirtingas taškų skaičius parinktas dešiniajame ir kairiajame rodiniuose. Kairėje pasirinkta %1 taškų(-ai),
 dešiniajame pasirinkta %2 taškų(-ai).</translation>
     </message>
     <message>

@@ -32,27 +32,28 @@ Gui::WorkbenchFactoryInst* Gui::WorkbenchFactoryInst::_pcSingleton = nullptr;
 
 WorkbenchFactoryInst& WorkbenchFactoryInst::instance()
 {
-  if (!_pcSingleton)
-    _pcSingleton = new WorkbenchFactoryInst;
-  return *_pcSingleton;
+    if (!_pcSingleton) {
+        _pcSingleton = new WorkbenchFactoryInst;
+    }
+    return *_pcSingleton;
 }
 
-void WorkbenchFactoryInst::destruct ()
+void WorkbenchFactoryInst::destruct()
 {
     delete _pcSingleton;
     _pcSingleton = nullptr;
 }
 
-Workbench* WorkbenchFactoryInst::createWorkbench ( const char* sName ) const
+Workbench* WorkbenchFactoryInst::createWorkbench(const char* sName) const
 {
-    auto obj = (Workbench*)Produce( sName );
+    auto obj = (Workbench*)Produce(sName);
     auto wb = dynamic_cast<Workbench*>(obj);
     if (!wb) {
-        delete obj; // delete the unknown object as no workbench object
+        delete obj;  // delete the unknown object as no workbench object
         return nullptr;
     }
 
-    wb->setName( sName );
+    wb->setName(sName);
     return wb;
 }
 

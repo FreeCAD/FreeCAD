@@ -2845,7 +2845,7 @@ Dacă ambele lungimi sunt zero, magnitudinea direcției este folosită.</transla
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="683"/>
-      <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
+      <source>Can't determine normal vector of shape to be extruded. Please use other mode.
 
 (%1)</source>
       <translation>Nu se poate determina vectorul normal al formei de extrudat. Folosiți un alt mod (%1)</translation>
@@ -5057,9 +5057,9 @@ dar mai stabil. Implicit: fals</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1081"/>
-      <source>Expand shape content.  Changes will take effect next time you use 
+      <source>Expand shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
-      <translation>Extindeți conținutul de formă. Modificările vor intra în vigoare data viitoare când utilizați 
+      <translation>Extindeți conținutul de formă. Modificările vor intra în vigoare data viitoare când utilizați
 unealta de verificare a geometriei. Implicit: false</translation>
     </message>
     <message>
@@ -5069,9 +5069,9 @@ unealta de verificare a geometriei. Implicit: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
-      <source>Show advanced shape content.  Changes will take effect next time you use 
+      <source>Show advanced shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
-      <translation>Afișare conținut avansat de formă. Modificările vor intra în vigoare data viitoare când utilizați 
+      <translation>Afișare conținut avansat de formă. Modificările vor intra în vigoare data viitoare când utilizați
 unealta de verificare a geometriei. Implicit: false</translation>
     </message>
     <message>
@@ -5464,7 +5464,7 @@ Operarea testului boolean individual:</translation>
       <location filename="../../TaskSweep.cpp" line="483"/>
       <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
-      <translation>Selecteaza unul sau mai multe profile apoi 
+      <translation>Selecteaza unul sau mai multe profile apoi
 selecteaza o margine sau polilinie
 in vizualizarea 3D pentru calea maturarii.</translation>
     </message>

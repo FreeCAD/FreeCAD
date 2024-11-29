@@ -77,7 +77,7 @@ odnosno u smeru suprotnom od kazaljke na satu kada se kreće duž svoje ose.</tr
       <location filename="../../../App/FeatureHelix.cpp" line="105"/>
       <source>If false, the tool will propose an initial value for the pitch based on the profile bounding box,
 so that self intersection is avoided.</source>
-      <translation>Ako je netačno, da bi se izbeglo samoukrštanje alatka će predložiti početnu 
+      <translation>Ako je netačno, da bi se izbeglo samoukrštanje alatka će predložiti početnu
 vrednost za korak na osnovu graničnog okvira oko profila.</translation>
     </message>
     <message>
@@ -4354,7 +4354,7 @@ Dostupno samo za rupe bez navoja</translation>
       <location filename="../../TaskHoleParameters.ui" line="607"/>
       <source>For countersinks this is the depth of
 the screw's top below the surface</source>
-      <translation>Za konusno upušten otvor ovo je 
+      <translation>Za konusno upušten otvor ovo je
 dubina kosine upuštanja</translation>
     </message>
     <message>
@@ -4849,7 +4849,7 @@ iznad 90: veći poluprečnik rupe na dnu</translation>
   material to be removed;
   - the selected sketch does not belong to the active Body.</source>
       <translation>Ne može se napraviti traženi tipski oblik. Razlog može biti:
- - aktivno Telo ne sadrži osnovni tipski oblik, tako da nema 
+ - aktivno Telo ne sadrži osnovni tipski oblik, tako da nema
  materijal za uklanjanje;
  - izabrana skica ne pripada aktivnom Telu.</translation>
     </message>

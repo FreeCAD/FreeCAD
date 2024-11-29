@@ -23,11 +23,11 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QApplication>
-# include <QMessageBox>
-# include <QOffscreenSurface>
-# include <QOpenGLContext>
-# include <QSurfaceFormat>
+#include <QApplication>
+#include <QMessageBox>
+#include <QOffscreenSurface>
+#include <QOpenGLContext>
+#include <QSurfaceFormat>
 #endif
 
 #include <App/Application.h>
@@ -45,7 +45,7 @@ using namespace Gui::Dialog;
 /* TRANSLATOR Gui::Dialog::DlgSettings3DViewImp */
 
 DlgSettings3DViewImp::DlgSettings3DViewImp(QWidget* parent)
-    : PreferencePage( parent )
+    : PreferencePage(parent)
     , ui(new Ui_DlgSettings3DView)
 {
     ui->setupUi(this);
@@ -133,14 +133,16 @@ void DlgSettings3DViewImp::loadAntiAliasing()
     }
 
     // connect after setting current item of the combo box
-    connect(ui->comboAliasing, qOverload<int>(&QComboBox::currentIndexChanged),
-            this, &DlgSettings3DViewImp::onAliasingChanged);
+    connect(ui->comboAliasing,
+            qOverload<int>(&QComboBox::currentIndexChanged),
+            this,
+            &DlgSettings3DViewImp::onAliasingChanged);
 }
 
 void DlgSettings3DViewImp::saveRenderCache()
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/View");
+    ParameterGrp::handle hGrp =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
 
     int cache = ui->renderCache->currentIndex();
     hGrp->SetInt("RenderCache", cache);
@@ -148,8 +150,8 @@ void DlgSettings3DViewImp::saveRenderCache()
 
 void DlgSettings3DViewImp::loadRenderCache()
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/View");
+    ParameterGrp::handle hGrp =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
 
     long cache = hGrp->GetInt("RenderCache", 0);
     ui->renderCache->setCurrentIndex(int(cache));
@@ -157,17 +159,17 @@ void DlgSettings3DViewImp::loadRenderCache()
 
 void DlgSettings3DViewImp::saveMarkerSize()
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/View");
+    ParameterGrp::handle hGrp =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
 
-    QVariant const &vBoxMarkerSize = ui->boxMarkerSize->itemData(ui->boxMarkerSize->currentIndex());
+    QVariant const& vBoxMarkerSize = ui->boxMarkerSize->itemData(ui->boxMarkerSize->currentIndex());
     hGrp->SetInt("MarkerSize", vBoxMarkerSize.toInt());
 }
 
 void DlgSettings3DViewImp::loadMarkerSize()
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/View");
+    ParameterGrp::handle hGrp =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
 
     // NOLINTBEGIN
     int marker = hGrp->GetInt("MarkerSize", 9L);
@@ -192,21 +194,21 @@ void DlgSettings3DViewImp::resetSettingsToDefaults()
 {
     ParameterGrp::handle hGrp;
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    //reset "AntiAliasing" parameter
+    // reset "AntiAliasing" parameter
     hGrp->RemoveInt("AntiAliasing");
-    //reset "RenderCache" parameter
+    // reset "RenderCache" parameter
     hGrp->RemoveInt("RenderCache");
-    //reset "MarkerSize" parameter
+    // reset "MarkerSize" parameter
     hGrp->RemoveInt("MarkerSize");
 
-    //finally reset all the parameters associated to Gui::Pref* widgets
+    // finally reset all the parameters associated to Gui::Pref* widgets
     PreferencePage::resetSettingsToDefaults();
 }
 
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgSettings3DViewImp::changeEvent(QEvent *e)
+void DlgSettings3DViewImp::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->comboAliasing->blockSignals(true);
@@ -232,11 +234,12 @@ void DlgSettings3DViewImp::onAliasingChanged(int index)
     static bool showMsg = true;
     if (showMsg) {
         showMsg = false;
-        QMessageBox::information(this, tr("Anti-aliasing"),
+        QMessageBox::information(
+            this,
+            tr("Anti-aliasing"),
             tr("Open a new viewer or restart %1 to apply anti-aliasing changes.")
-            .arg(qApp->applicationName()));
+                .arg(qApp->applicationName()));
     }
 }
 
 #include "moc_DlgSettings3DViewImp.cpp"
-

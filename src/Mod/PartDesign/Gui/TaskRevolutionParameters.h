@@ -30,26 +30,29 @@
 
 class Ui_TaskRevolutionParameters;
 
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
 class ViewProviderOrigin;
-}
+}  // namespace Gui
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 class ViewProviderRevolution;
 class ViewProviderGroove;
 
-class TaskRevolutionParameters : public TaskSketchBasedParameters
+class TaskRevolutionParameters: public TaskSketchBasedParameters
 {
     Q_OBJECT
 
 public:
     TaskRevolutionParameters(ViewProvider* RevolutionView,
-                             const char *pixname,
+                             const char* pixname,
                              const QString& title,
                              QWidget* parent = nullptr);
     ~TaskRevolutionParameters() override;
@@ -64,7 +67,7 @@ public:
      * list (if necessary), and selected. If the list is empty, it will be refilled anyway.
      */
     void fillAxisCombo(bool forceRefill = false);
-    void addAxisToCombo(App::DocumentObject *linkObj,
+    void addAxisToCombo(App::DocumentObject* linkObj,
                         const std::string& linkSubname,
                         const QString& itemText);
 
@@ -80,8 +83,8 @@ private Q_SLOTS:
 
 protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
-    void changeEvent(QEvent *event) override;
-    void getReferenceAxis(App::DocumentObject *&obj, std::vector<std::string> &sub) const;
+    void changeEvent(QEvent* event) override;
+    void getReferenceAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
     bool getMidplane() const;
     bool getReversed() const;
     QString getFaceName() const;
@@ -89,8 +92,8 @@ protected:
     void setCheckboxes(PartDesign::Revolution::RevolMethod mode);
 
 private:
-    //mirrors of revolution's or groove's properties
-    //should have been done by inheriting revolution and groove from common class...
+    // mirrors of revolution's or groove's properties
+    // should have been done by inheriting revolution and groove from common class...
     App::PropertyAngle* propAngle;
     App::PropertyAngle* propAngle2;
     App::PropertyBool* propReversed;
@@ -109,7 +112,7 @@ private:
 
 private:
     std::unique_ptr<Ui_TaskRevolutionParameters> ui;
-    QWidget *proxy;
+    QWidget* proxy;
     bool selectionFace;
     bool isGroove;
 
@@ -124,22 +127,22 @@ private:
     std::vector<std::unique_ptr<App::PropertyLinkSub>> axesInList;
 };
 
-class TaskDlgRevolutionParameters : public TaskDlgSketchBasedParameters
+class TaskDlgRevolutionParameters: public TaskDlgSketchBasedParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgRevolutionParameters(PartDesignGui::ViewProviderRevolution *RevolutionView);
+    explicit TaskDlgRevolutionParameters(PartDesignGui::ViewProviderRevolution* RevolutionView);
 };
 
-class TaskDlgGrooveParameters : public TaskDlgSketchBasedParameters
+class TaskDlgGrooveParameters: public TaskDlgSketchBasedParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgGrooveParameters(PartDesignGui::ViewProviderGroove *GrooveView);
+    explicit TaskDlgGrooveParameters(PartDesignGui::ViewProviderGroove* GrooveView);
 };
 
-} //namespace PartDesignGui
+}  // namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

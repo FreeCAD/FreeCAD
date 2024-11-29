@@ -30,7 +30,8 @@
 
 #include "DynamicProperty.h"
 
-namespace Base {
+namespace Base
+{
 class Writer;
 }
 
@@ -57,39 +58,56 @@ enum PropertyType
 
 struct AppExport PropertyData
 {
-  struct PropertySpec
-  {
-    const char * Name;
-    const char * Group;
-    const char * Docu;
-    short Offset, Type;
+    struct PropertySpec
+    {
+        const char* Name;
+        const char* Group;
+        const char* Docu;
+        short Offset, Type;
 
-    inline PropertySpec(const char *name, const char *group, const char *doc, short offset, short type)
-        :Name(name),Group(group),Docu(doc),Offset(offset),Type(type)
-    {}
-  };
+        inline PropertySpec(const char* name,
+                            const char* group,
+                            const char* doc,
+                            short offset,
+                            short type)
+            : Name(name)
+            , Group(group)
+            , Docu(doc)
+            , Offset(offset)
+            , Type(type)
+        {}
+    };
 
-  //purpose of this struct is to be constructible from all acceptable container types and to
-  //be able to return the offset to a property from the accepted containers. This allows to use
-  //one function implementation for multiple container types without losing all type safety by
-  //accepting void*
-  struct OffsetBase
-  {
-      OffsetBase(const App::PropertyContainer* container) : m_container(container) {}//explicit bombs
-      OffsetBase(const App::Extension* container) : m_container(container) {}//explicit bombs
+    // purpose of this struct is to be constructible from all acceptable container types and to
+    // be able to return the offset to a property from the accepted containers. This allows to use
+    // one function implementation for multiple container types without losing all type safety by
+    // accepting void*
+    struct OffsetBase
+    {
+        OffsetBase(const App::PropertyContainer* container)
+            : m_container(container)
+        {}  // explicit bombs
+        OffsetBase(const App::Extension* container)
+            : m_container(container)
+        {}  // explicit bombs
 
-      short int getOffsetTo(const App::Property* prop) const {
-            auto *pt = (const char*)prop;
-            auto *base = (const char *)m_container;
-            if(pt<base || pt>base+SHRT_MAX)
+        short int getOffsetTo(const App::Property* prop) const
+        {
+            auto* pt = (const char*)prop;
+            auto* base = (const char*)m_container;
+            if (pt < base || pt > base + SHRT_MAX) {
                 return -1;
-            return (short) (pt-base);
-      }
-      char* getOffset() const {return (char*) m_container;}
+            }
+            return (short)(pt - base);
+        }
+        char* getOffset() const
+        {
+            return (char*)m_container;
+        }
 
-  private:
-      const void* m_container;
-  };
+    private:
+        const void* m_container;
+    };
 
     // clang-format off
     // A multi index container for holding the property spec, with the following
@@ -113,30 +131,36 @@ struct AppExport PropertyData
     > propertyData;
     // clang-format on
 
-  mutable bool parentMerged = false;
+    mutable bool parentMerged = false;
 
-  const PropertyData*     parentPropertyData;
+    const PropertyData* parentPropertyData;
 
-  void addProperty(OffsetBase offsetBase,const char* PropName, Property *Prop, const char* PropertyGroup= nullptr, PropertyType = Prop_None, const char* PropertyDocu= nullptr );
+    void addProperty(OffsetBase offsetBase,
+                     const char* PropName,
+                     Property* Prop,
+                     const char* PropertyGroup = nullptr,
+                     PropertyType = Prop_None,
+                     const char* PropertyDocu = nullptr);
 
-  const PropertySpec *findProperty(OffsetBase offsetBase,const char* PropName) const;
-  const PropertySpec *findProperty(OffsetBase offsetBase,const Property* prop) const;
+    const PropertySpec* findProperty(OffsetBase offsetBase, const char* PropName) const;
+    const PropertySpec* findProperty(OffsetBase offsetBase, const Property* prop) const;
 
-  const char* getName         (OffsetBase offsetBase,const Property* prop) const;
-  short       getType         (OffsetBase offsetBase,const Property* prop) const;
-  short       getType         (OffsetBase offsetBase,const char* name)     const;
-  const char* getGroup        (OffsetBase offsetBase,const char* name)     const;
-  const char* getGroup        (OffsetBase offsetBase,const Property* prop) const;
-  const char* getDocumentation(OffsetBase offsetBase,const char* name)     const;
-  const char* getDocumentation(OffsetBase offsetBase,const Property* prop) const;
+    const char* getName(OffsetBase offsetBase, const Property* prop) const;
+    short getType(OffsetBase offsetBase, const Property* prop) const;
+    short getType(OffsetBase offsetBase, const char* name) const;
+    const char* getGroup(OffsetBase offsetBase, const char* name) const;
+    const char* getGroup(OffsetBase offsetBase, const Property* prop) const;
+    const char* getDocumentation(OffsetBase offsetBase, const char* name) const;
+    const char* getDocumentation(OffsetBase offsetBase, const Property* prop) const;
 
-  Property *getPropertyByName(OffsetBase offsetBase,const char* name) const;
-  void getPropertyMap(OffsetBase offsetBase,std::map<std::string,Property*> &Map) const;
-  void getPropertyList(OffsetBase offsetBase,std::vector<Property*> &List) const;
-  void getPropertyNamedList(OffsetBase offsetBase, std::vector<std::pair<const char*,Property*> > &List) const;
+    Property* getPropertyByName(OffsetBase offsetBase, const char* name) const;
+    void getPropertyMap(OffsetBase offsetBase, std::map<std::string, Property*>& Map) const;
+    void getPropertyList(OffsetBase offsetBase, std::vector<Property*>& List) const;
+    void getPropertyNamedList(OffsetBase offsetBase,
+                              std::vector<std::pair<const char*, Property*>>& List) const;
 
-  void merge(PropertyData *other=nullptr) const;
-  void split(PropertyData *other);
+    void merge(PropertyData* other = nullptr) const;
+    void split(PropertyData* other);
 };
 
 
@@ -145,130 +169,149 @@ struct AppExport PropertyData
 class AppExport PropertyContainer: public Base::Persistence
 {
 
-  TYPESYSTEM_HEADER_WITH_OVERRIDE();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-  /**
-   * A constructor.
-   * A more elaborate description of the constructor.
-   */
-  PropertyContainer();
+    /**
+     * A constructor.
+     * A more elaborate description of the constructor.
+     */
+    PropertyContainer();
 
-  /**
-   * A destructor.
-   * A more elaborate description of the destructor.
-   */
-  ~PropertyContainer() override;
+    /**
+     * A destructor.
+     * A more elaborate description of the destructor.
+     */
+    ~PropertyContainer() override;
 
-  unsigned int getMemSize () const override;
+    unsigned int getMemSize() const override;
 
-  virtual std::string getFullName() const {return {};}
+    virtual std::string getFullName() const
+    {
+        return {};
+    }
 
-  /// find a property by its name
-  virtual Property *getPropertyByName(const char* name) const;
-  /// get the name of a property
-  virtual const char* getPropertyName(const Property* prop) const;
-  /// get all properties of the class (including properties of the parent)
-  virtual void getPropertyMap(std::map<std::string,Property*> &Map) const;
-  /// get all properties of the class (including properties of the parent)
-  virtual void getPropertyList(std::vector<Property*> &List) const;
-  /// get all properties with their names, may contain duplicates and aliases
-  virtual void getPropertyNamedList(std::vector<std::pair<const char*,Property*> > &List) const;
-  /// set the Status bit of all properties at once
-  void setPropertyStatus(unsigned char bit,bool value);
+    /// find a property by its name
+    virtual Property* getPropertyByName(const char* name) const;
+    /// get the name of a property
+    virtual const char* getPropertyName(const Property* prop) const;
+    /// get all properties of the class (including properties of the parent)
+    virtual void getPropertyMap(std::map<std::string, Property*>& Map) const;
+    /// get all properties of the class (including properties of the parent)
+    virtual void getPropertyList(std::vector<Property*>& List) const;
+    /// get all properties with their names, may contain duplicates and aliases
+    virtual void getPropertyNamedList(std::vector<std::pair<const char*, Property*>>& List) const;
+    /// set the Status bit of all properties at once
+    void setPropertyStatus(unsigned char bit, bool value);
 
-  /// get the Type of a Property
-  virtual short getPropertyType(const Property* prop) const;
-  /// get the Type of a named Property
-  virtual short getPropertyType(const char *name) const;
-  /// get the Group of a Property
-  virtual const char* getPropertyGroup(const Property* prop) const;
-  /// get the Group of a named Property
-  virtual const char* getPropertyGroup(const char *name) const;
-  /// get the Group of a Property
-  virtual const char* getPropertyDocumentation(const Property* prop) const;
-  /// get the Group of a named Property
-  virtual const char* getPropertyDocumentation(const char *name) const;
-  /// check if the property is read-only
-  bool isReadOnly(const Property* prop) const;
-  /// check if the named property is read-only
-  bool isReadOnly(const char *name) const;
-  /// check if the property is hidden
-  bool isHidden(const Property* prop) const;
-  /// check if the named property is hidden
-  bool isHidden(const char *name) const;
-  virtual App::Property* addDynamicProperty(
-        const char* type, const char* name=nullptr,
-        const char* group=nullptr, const char* doc=nullptr,
-        short attr=0, bool ro=false, bool hidden=false);
+    /// get the Type of a Property
+    virtual short getPropertyType(const Property* prop) const;
+    /// get the Type of a named Property
+    virtual short getPropertyType(const char* name) const;
+    /// get the Group of a Property
+    virtual const char* getPropertyGroup(const Property* prop) const;
+    /// get the Group of a named Property
+    virtual const char* getPropertyGroup(const char* name) const;
+    /// get the Group of a Property
+    virtual const char* getPropertyDocumentation(const Property* prop) const;
+    /// get the Group of a named Property
+    virtual const char* getPropertyDocumentation(const char* name) const;
+    /// check if the property is read-only
+    bool isReadOnly(const Property* prop) const;
+    /// check if the named property is read-only
+    bool isReadOnly(const char* name) const;
+    /// check if the property is hidden
+    bool isHidden(const Property* prop) const;
+    /// check if the named property is hidden
+    bool isHidden(const char* name) const;
+    virtual App::Property* addDynamicProperty(const char* type,
+                                              const char* name = nullptr,
+                                              const char* group = nullptr,
+                                              const char* doc = nullptr,
+                                              short attr = 0,
+                                              bool ro = false,
+                                              bool hidden = false);
 
-  DynamicProperty::PropData getDynamicPropertyData(const Property* prop) const {
-      return dynamicProps.getDynamicPropertyData(prop);
-  }
+    DynamicProperty::PropData getDynamicPropertyData(const Property* prop) const
+    {
+        return dynamicProps.getDynamicPropertyData(prop);
+    }
 
-  bool changeDynamicProperty(const Property *prop, const char *group, const char *doc) {
-      return dynamicProps.changeDynamicProperty(prop,group,doc);
-  }
+    bool changeDynamicProperty(const Property* prop, const char* group, const char* doc)
+    {
+        return dynamicProps.changeDynamicProperty(prop, group, doc);
+    }
 
-  virtual bool removeDynamicProperty(const char* name) {
-      return dynamicProps.removeDynamicProperty(name);
-  }
-  virtual std::vector<std::string> getDynamicPropertyNames() const {
-      return dynamicProps.getDynamicPropertyNames();
-  }
-  virtual App::Property *getDynamicPropertyByName(const char* name) const {
-      return dynamicProps.getDynamicPropertyByName(name);
-  }
+    virtual bool removeDynamicProperty(const char* name)
+    {
+        return dynamicProps.removeDynamicProperty(name);
+    }
+    virtual std::vector<std::string> getDynamicPropertyNames() const
+    {
+        return dynamicProps.getDynamicPropertyNames();
+    }
+    virtual App::Property* getDynamicPropertyByName(const char* name) const
+    {
+        return dynamicProps.getDynamicPropertyByName(name);
+    }
 
-  virtual void onPropertyStatusChanged(const Property &prop, unsigned long oldStatus);
+    virtual void onPropertyStatusChanged(const Property& prop, unsigned long oldStatus);
 
-  void Save (Base::Writer &writer) const override;
-  void Restore(Base::XMLReader &reader) override;
-  virtual void beforeSave() const;
+    void Save(Base::Writer& writer) const override;
+    void Restore(Base::XMLReader& reader) override;
+    virtual void beforeSave() const;
 
-  virtual void editProperty(const char * /*propName*/) {}
+    virtual void editProperty(const char* /*propName*/)
+    {}
 
-  const char *getPropertyPrefix() const {
-      return _propertyPrefix.c_str();
-  }
+    const char* getPropertyPrefix() const
+    {
+        return _propertyPrefix.c_str();
+    }
 
-  void setPropertyPrefix(const char *prefix) {
-      _propertyPrefix = prefix;
-  }
+    void setPropertyPrefix(const char* prefix)
+    {
+        _propertyPrefix = prefix;
+    }
 
-  friend class Property;
-  friend class DynamicProperty;
+    friend class Property;
+    friend class DynamicProperty;
 
 
 protected:
-  /** get called by the container when a property has changed
-   *
-   * This function is called before onChanged()
-   */
-  virtual void onEarlyChange(const Property* /*prop*/){}
-  /// get called by the container when a property has changed
-  virtual void onChanged(const Property* /*prop*/){}
-  /// get called before the value is changed
-  virtual void onBeforeChange(const Property* /*prop*/){}
+    /** get called by the container when a property has changed
+     *
+     * This function is called before onChanged()
+     */
+    virtual void onEarlyChange(const Property* /*prop*/)
+    {}
+    /// get called by the container when a property has changed
+    virtual void onChanged(const Property* /*prop*/)
+    {}
+    /// get called before the value is changed
+    virtual void onBeforeChange(const Property* /*prop*/)
+    {}
 
-  //void hasChanged(Property* prop);
-  static const  PropertyData * getPropertyDataPtr();
-  virtual const PropertyData& getPropertyData() const;
+    // void hasChanged(Property* prop);
+    static const PropertyData* getPropertyDataPtr();
+    virtual const PropertyData& getPropertyData() const;
 
-  virtual void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName);
-  virtual void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, Property * prop);
+    virtual void
+    handleChangedPropertyName(Base::XMLReader& reader, const char* TypeName, const char* PropName);
+    virtual void
+    handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, Property* prop);
 
 public:
-  // forbidden
-  PropertyContainer(const PropertyContainer&) = delete;
-  PropertyContainer& operator = (const PropertyContainer&) = delete;
+    // forbidden
+    PropertyContainer(const PropertyContainer&) = delete;
+    PropertyContainer& operator=(const PropertyContainer&) = delete;
 
 protected:
-  DynamicProperty dynamicProps;
+    DynamicProperty dynamicProps;
 
 private:
-  std::string _propertyPrefix;
-  static PropertyData propertyData;
+    std::string _propertyPrefix;
+    static PropertyData propertyData;
 };
 
 // clang-format off
@@ -350,6 +393,6 @@ template<> void _class_::init(void){\
 }
 // clang-format on
 
-} // namespace App
+}  // namespace App
 
-#endif // APP_PROPERTYCONTAINER_H
+#endif  // APP_PROPERTYCONTAINER_H

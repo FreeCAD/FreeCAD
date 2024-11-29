@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Precision.hxx>
+#include <Precision.hxx>
 #endif
 
 #include "ShapeFix/ShapeFix_RootPy.h"
@@ -37,7 +37,7 @@ std::string ShapeFix_RootPy::representation() const
     return "<ShapeFix_Root object>";
 }
 
-PyObject *ShapeFix_RootPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* ShapeFix_RootPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of ShapeFix_RootPy
     return new ShapeFix_RootPy(nullptr);
@@ -46,18 +46,20 @@ PyObject *ShapeFix_RootPy::PyMake(struct _typeobject *, PyObject *, PyObject *) 
 // constructor method
 int ShapeFix_RootPy::PyInit(PyObject* args, PyObject* /*kwds*/)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return -1;
+    }
 
     setHandle(new ShapeFix_Root);
     return 0;
 }
 
-PyObject* ShapeFix_RootPy::limitTolerance(PyObject *args)
+PyObject* ShapeFix_RootPy::limitTolerance(PyObject* args)
 {
     double tol;
-    if (!PyArg_ParseTuple(args, "d", &tol))
+    if (!PyArg_ParseTuple(args, "d", &tol)) {
         return nullptr;
+    }
 
     tol = getShapeFix_RootPtr()->LimitTolerance(tol);
     return Py::new_reference_to(Py::Float(tol));
@@ -93,7 +95,7 @@ void ShapeFix_RootPy::setMaxTolerance(Py::Float arg)
     getShapeFix_RootPtr()->SetMaxTolerance(arg);
 }
 
-PyObject *ShapeFix_RootPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* ShapeFix_RootPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

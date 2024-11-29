@@ -2685,7 +2685,7 @@ Specify another directory, please.</source>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="31"/>
       <source>Main coordinate system will always be shown in
 lower right corner within opened files</source>
-      <translation>გახსნილ ფაილებში ქვედა მარჯვენა კუთხეში ძირითადი 
+      <translation>გახსნილ ფაილებში ქვედა მარჯვენა კუთხეში ძირითადი
 კოორდინატთა სისტემა ყოველთვის იქნება ნაჩვენები</translation>
     </message>
     <message>
@@ -2697,7 +2697,7 @@ lower right corner within opened files</source>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="73"/>
       <source>Size of main coordinate system representation
 in the corner -- in % of height/width of viewport</source>
-      <translation>კოორდინატების მთავარი სისტემის წარმოდგენა 
+      <translation>კოორდინატების მთავარი სისტემის წარმოდგენა
 კუთხეში -- ხედის სიგრძე/სიგანის %</translation>
     </message>
     <message>
@@ -3173,7 +3173,7 @@ bounding box size of the 3D object that is currently displayed.</source>
       <location filename="../DlgSettingsColorGradient.ui" line="159"/>
       <source>Data outside the specified min-max range
 will be displayed in gray</source>
-      <translation>მითითებული მინ-მაქს დიაპაზონის 
+      <translation>მითითებული მინ-მაქს დიაპაზონის
 გარეთ მონაცემები ნაცრისფრად გამოჩნდება</translation>
     </message>
     <message>
@@ -3190,7 +3190,7 @@ will be displayed in gray</source>
       <location filename="../DlgSettingsColorGradient.ui" line="173"/>
       <source>Data outside the specified min-max range
 will be displayed with transparency</source>
-      <translation>მითითებული მინ-მაქს დიაპაზონის 
+      <translation>მითითებული მინ-მაქს დიაპაზონის
 გარეთ მონაცემები გამჭვირვალედ გამოჩნდება</translation>
     </message>
     <message>
@@ -3343,7 +3343,7 @@ This feature may slightly increase recomputation time.</source>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="255"/>
       <source>If there is a recovery file available the application will
 automatically run a file recovery when it is started.</source>
-      <translation>თუ ხელმისაწვდომია აღდგენის ფაილი, გაშვებისას აპლიკაცია 
+      <translation>თუ ხელმისაწვდომია აღდგენის ფაილი, გაშვებისას აპლიკაცია
 მის აღდგენას ავტომატურად დაიწყებს.</translation>
     </message>
     <message>
@@ -3445,7 +3445,7 @@ icon in the tree view to fully reload it.</source>
       <translation>გარე მიბმული დოკუმენტების ნაწილობრივი ჩატვირთვის ჩართვა.
 ჩაიტვირთება მხოლოდ მითითებული ობიექტები და მათი დამოკიდებულებები
 როდესაც დაკავშირებული დოკუმენტი ავტომატურად იხსნება მთავარ დოკუმენტთან ერთად,
-ნაწილობრივ დატვირთული დოკუმენტის რედაქტირება შეუძლებელი იქნება. 
+ნაწილობრივ დატვირთული დოკუმენტის რედაქტირება შეუძლებელი იქნება.
 მისი სრულად განახლებისთვის ხის ხედში ორჯერ დააწკაპუნეთ დოკუმენტის ხატულაზე.</translation>
     </message>
     <message>
@@ -5478,7 +5478,7 @@ The 'Status' column shows whether the document could be recovered.</source>
       <location filename="../DlgObjectSelection.cpp" line="158"/>
       <source>Ignore dependencies and proceed with objects
 originally selected prior to opening this dialog</source>
-      <translation>დამოკიდებულებების უგულებელყოფა და ამ 
+      <translation>დამოკიდებულებების უგულებელყოფა და ამ
 ფანჯრის გახსნამდე მონიშნული ობიექტებით გაგრძელება</translation>
     </message>
   </context>
@@ -6196,7 +6196,7 @@ Do you want to save your changes?</source>
       <location filename="../MainWindow.cpp" line="2327"/>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
-      <translation>გარე ობიექტებთან დასაკავშირებლად, დოკუმენტი უნდა იყოს შენახული ერთხელ მაინც. 
+      <translation>გარე ობიექტებთან დასაკავშირებლად, დოკუმენტი უნდა იყოს შენახული ერთხელ მაინც.
 გსურთ ახლავე შეინახოთ დოკუმენტი?</translation>
     </message>
     <message>
@@ -6268,8 +6268,8 @@ Do you want to save the document now?</source>
       <source>Different number of points picked in left and right view.
 On the left view %1 points are picked,
 on the right view %2 points are picked.</source>
-      <translation>მარცხენა და მარჯვენა ხედში არჩეულია წერტილების სხვადასხვა რაოდენობა. 
-მარცხნივ არჩეულია %1 წერტილი, 
+      <translation>მარცხენა და მარჯვენა ხედში არჩეულია წერტილების სხვადასხვა რაოდენობა.
+მარცხნივ არჩეულია %1 წერტილი,
 მარჯვნივ არჩეულია %2 წერტილი.</translation>
     </message>
     <message>
@@ -8711,8 +8711,8 @@ Also auto redo the copy if the original linked object is changed.
 creating a new deep copy. Note that any changes made to
 the current copy will be lost.
 </source>
-      <translation>საწყისი მორგებადი წყაროს ობიექტის სინქრონიზაცია 
-მისი ახალი ღრმა ასლის შექმნით. დაიმახსოვრეთ, რომ 
+      <translation>საწყისი მორგებადი წყაროს ობიექტის სინქრონიზაცია
+მისი ახალი ღრმა ასლის შექმნით. დაიმახსოვრეთ, რომ
 მიმდინარე ასლზე მომხდარი ნებისმიერი ცვლილება დაიკარგება.
 </translation>
     </message>
@@ -11400,7 +11400,7 @@ Are you sure you want to continue?
       <location filename="../CommandDoc.cpp" line="1253"/>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
-      <translation>გარე ობიექტებთან დასაკავშირებლად, დოკუმენტი უნდა იყოს შენახული ერთხელ მაინც. 
+      <translation>გარე ობიექტებთან დასაკავშირებლად, დოკუმენტი უნდა იყოს შენახული ერთხელ მაინც.
 გსურთ ახლავე შეინახოთ დოკუმენტი?</translation>
     </message>
   </context>

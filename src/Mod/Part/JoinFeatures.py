@@ -33,9 +33,9 @@ FreeCAD v0.16. Do not use. Use BOPTools.JoinFeatures instead."
 
 
 def getParamRefine():
-    return FreeCAD.ParamGet(
-        "User parameter:BaseApp/Preferences/Mod/Part/Boolean"
-    ).GetBool("RefineModel")
+    return FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Part/Boolean").GetBool(
+        "RefineModel"
+    )
 
 
 def shapeOfMaxVol(compound):

@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Geom_RectangularTrimmedSurface.hxx>
+#include <Geom_RectangularTrimmedSurface.hxx>
 #endif
 
 #include "OCCError.h"
@@ -41,7 +41,7 @@ std::string RectangularTrimmedSurfacePy::representation() const
     return {"<RectangularTrimmedSurface object>"};
 }
 
-PyObject *RectangularTrimmedSurfacePy::PyMake(struct _typeobject *, PyObject *, PyObject *)
+PyObject* RectangularTrimmedSurfacePy::PyMake(struct _typeobject*, PyObject*, PyObject*)
 {
     // create a new instance of RectangularTrimmedSurfacePy and the Twin object
     return new RectangularTrimmedSurfacePy(new GeomTrimmedSurface);
@@ -51,32 +51,54 @@ PyObject *RectangularTrimmedSurfacePy::PyMake(struct _typeobject *, PyObject *, 
 int RectangularTrimmedSurfacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
     PyObject* surf;
-    double u1,u2,v1,v2;
-    PyObject *usense=Py_True, *vsense=Py_True;
-    if (PyArg_ParseTuple(args, "O!dddd|O!O!",&(Part::GeometrySurfacePy::Type),&surf,
-                         &u1,&u2,&v1,&v2,&PyBool_Type,&usense,&PyBool_Type,&vsense)) {
+    double u1, u2, v1, v2;
+    PyObject *usense = Py_True, *vsense = Py_True;
+    if (PyArg_ParseTuple(args,
+                         "O!dddd|O!O!",
+                         &(Part::GeometrySurfacePy::Type),
+                         &surf,
+                         &u1,
+                         &u2,
+                         &v1,
+                         &v2,
+                         &PyBool_Type,
+                         &usense,
+                         &PyBool_Type,
+                         &vsense)) {
         getGeomTrimmedSurfacePtr()->setHandle(new Geom_RectangularTrimmedSurface(
-            Handle(Geom_Surface)::DownCast(static_cast<GeometrySurfacePy*>(surf)->
-                getGeomSurfacePtr()->handle()),
-            u1, u2, v1, v2,
+            Handle(Geom_Surface)::DownCast(
+                static_cast<GeometrySurfacePy*>(surf)->getGeomSurfacePtr()->handle()),
+            u1,
+            u2,
+            v1,
+            v2,
             Base::asBoolean(usense),
-            Base::asBoolean(vsense)
-        ));
+            Base::asBoolean(vsense)));
         return 0;
     }
 
     PyErr_Clear();
-    double param1,param2;
-    PyObject *utrim=Py_False, *sense=Py_True;
-    if (PyArg_ParseTuple(args, "O!ddO!|O!",&(Part::GeometrySurfacePy::Type),&surf,
-                         &param1,&param2,&PyBool_Type,&utrim,&PyBool_Type,&sense)) {
+    double param1, param2;
+    PyObject *utrim = Py_False, *sense = Py_True;
+    if (PyArg_ParseTuple(args,
+                         "O!ddO!|O!",
+                         &(Part::GeometrySurfacePy::Type),
+                         &surf,
+                         &param1,
+                         &param2,
+                         &PyBool_Type,
+                         &utrim,
+                         &PyBool_Type,
+                         &sense)) {
         Standard_Boolean UTrim = Base::asBoolean(utrim);
         Standard_Boolean Sense = Base::asBoolean(sense);
         getGeomTrimmedSurfacePtr()->setHandle(new Geom_RectangularTrimmedSurface(
-            Handle(Geom_Surface)::DownCast(static_cast<GeometrySurfacePy*>(surf)->
-                getGeomSurfacePtr()->handle()),
-            param1, param2, UTrim, Sense
-        ));
+            Handle(Geom_Surface)::DownCast(
+                static_cast<GeometrySurfacePy*>(surf)->getGeomSurfacePtr()->handle()),
+            param1,
+            param2,
+            UTrim,
+            Sense));
         return 0;
     }
 
@@ -84,15 +106,16 @@ int RectangularTrimmedSurfacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return -1;
 }
 
-PyObject* RectangularTrimmedSurfacePy::setTrim(PyObject *args)
+PyObject* RectangularTrimmedSurfacePy::setTrim(PyObject* args)
 {
     double u1, u2, v1, v2;
-    if (!PyArg_ParseTuple(args, "dddd", &u1, &u2, &v1, &v2))
+    if (!PyArg_ParseTuple(args, "dddd", &u1, &u2, &v1, &v2)) {
         return nullptr;
+    }
 
     try {
-        Handle(Geom_RectangularTrimmedSurface) surf = Handle(Geom_RectangularTrimmedSurface)::DownCast
-            (getGeometryPtr()->handle());
+        Handle(Geom_RectangularTrimmedSurface) surf =
+            Handle(Geom_RectangularTrimmedSurface)::DownCast(getGeometryPtr()->handle());
         if (surf.IsNull()) {
             PyErr_SetString(PyExc_TypeError, "geometry is not a surface");
             return nullptr;
@@ -109,8 +132,8 @@ PyObject* RectangularTrimmedSurfacePy::setTrim(PyObject *args)
 
 Py::Object RectangularTrimmedSurfacePy::getBasisSurface() const
 {
-    Handle(Geom_RectangularTrimmedSurface) surf = Handle(Geom_RectangularTrimmedSurface)::DownCast
-        (getGeometryPtr()->handle());
+    Handle(Geom_RectangularTrimmedSurface) surf =
+        Handle(Geom_RectangularTrimmedSurface)::DownCast(getGeometryPtr()->handle());
     if (surf.IsNull()) {
         throw Py::TypeError("geometry is not a surface");
     }
@@ -119,7 +142,7 @@ Py::Object RectangularTrimmedSurfacePy::getBasisSurface() const
     return Py::asObject(geo->getPyObject());
 }
 
-PyObject *RectangularTrimmedSurfacePy::getCustomAttributes(const char* /*attr*/) const
+PyObject* RectangularTrimmedSurfacePy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

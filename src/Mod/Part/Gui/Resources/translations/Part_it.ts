@@ -2848,7 +2848,7 @@ Se entrambe le lunghezze sono zero, viene usata la ampiezza della direzione.</tr
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="683"/>
-      <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
+      <source>Can't determine normal vector of shape to be extruded. Please use other mode.
 
 (%1)</source>
       <translation>Non è possibile determinare il vettore normale della forma da estrudere. Si prega di utilizzare altre modalità. (%1)</translation>
@@ -5057,9 +5057,9 @@ ma più stabile. Predefinito: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1081"/>
-      <source>Expand shape content.  Changes will take effect next time you use 
+      <source>Expand shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
-      <translation>Mostra il contenuto della forma avanzata. Le modifiche avranno effetto la prossima volta che userai 
+      <translation>Mostra il contenuto della forma avanzata. Le modifiche avranno effetto la prossima volta che userai
 lo strumento della geometria di controllo. Predefinito: false</translation>
     </message>
     <message>
@@ -5069,9 +5069,9 @@ lo strumento della geometria di controllo. Predefinito: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
-      <source>Show advanced shape content.  Changes will take effect next time you use 
+      <source>Show advanced shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
-      <translation>Mostra il contenuto della forma avanzata. Le modifiche avranno effetto la prossima volta che userai 
+      <translation>Mostra il contenuto della forma avanzata. Le modifiche avranno effetto la prossima volta che userai
 lo strumento della geometria di controllo. Predefinito: false</translation>
     </message>
     <message>

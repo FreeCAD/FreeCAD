@@ -77,7 +77,7 @@ i.e. counter-clockwise when moving along its axis.</source>
       <location filename="../../../App/FeatureHelix.cpp" line="105"/>
       <source>If false, the tool will propose an initial value for the pitch based on the profile bounding box,
 so that self intersection is avoided.</source>
-      <translation>Ако је нетачно, да би се избегло самоукрштање алатка ће предложити почетну 
+      <translation>Ако је нетачно, да би се избегло самоукрштање алатка ће предложити почетну
 вредност за корак на основу граничног оквира око профила.</translation>
     </message>
     <message>
@@ -4354,7 +4354,7 @@ Only available for holes without thread</source>
       <location filename="../../TaskHoleParameters.ui" line="607"/>
       <source>For countersinks this is the depth of
 the screw's top below the surface</source>
-      <translation>За конусно упуштен отвор ово је 
+      <translation>За конусно упуштен отвор ово је
 дубина косине упуштања</translation>
     </message>
     <message>
@@ -4849,7 +4849,7 @@ over 90: larger hole radius at the bottom</source>
   material to be removed;
   - the selected sketch does not belong to the active Body.</source>
       <translation>Не може се направити тражени типски облик. Разлог може бити:
- - активно Тело не садржи основни типски облик, тако да нема 
+ - активно Тело не садржи основни типски облик, тако да нема
  материјал за уклањање;
  - изабрана скица не припада активном Телу.</translation>
     </message>

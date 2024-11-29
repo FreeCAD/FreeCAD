@@ -645,9 +645,12 @@ void Application::open(const char* FileName, const char* Module)
                 }
             }
             else {
-                std::string code = fmt::format("from freecad import module_io\n"
-                                               "module_io.OpenInsertObject(\"{}\", \"{}\", \"{}\")\n",
-                                               Module, unicodepath, "open");
+                std::string code =
+                    fmt::format("from freecad import module_io\n"
+                                "module_io.OpenInsertObject(\"{}\", \"{}\", \"{}\")\n",
+                                Module,
+                                unicodepath,
+                                "open");
                 Gui::Command::runCommand(Gui::Command::App, code.c_str());
 
                 // ViewFit
@@ -713,9 +716,13 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
                     }
                 }
 
-                std::string code = fmt::format("from freecad import module_io\n"
-                                               "module_io.OpenInsertObject(\"{}\", \"{}\", \"{}\", \"{}\")\n",
-                                               Module, unicodepath, "insert", DocName);
+                std::string code =
+                    fmt::format("from freecad import module_io\n"
+                                "module_io.OpenInsertObject(\"{}\", \"{}\", \"{}\", \"{}\")\n",
+                                Module,
+                                unicodepath,
+                                "insert",
+                                DocName);
                 Gui::Command::runCommand(Gui::Command::App, code.c_str());
 
                 // Commit the transaction
@@ -958,44 +965,53 @@ void Application::slotShowHidden(const App::Document& Doc)
     signalShowHidden(*doc->second);
 }
 
-void Application::checkForRecomputes() {
-    std::vector<App::Document *> docs;
-    for (auto doc: App::GetApplication().getDocuments()) {
+void Application::checkForRecomputes()
+{
+    std::vector<App::Document*> docs;
+    for (auto doc : App::GetApplication().getDocuments()) {
         if (doc->testStatus(App::Document::RecomputeOnRestore)) {
             docs.push_back(doc);
             doc->setStatus(App::Document::RecomputeOnRestore, false);
         }
     }
-    // Certain tests want to use very old .FCStd files.  We should not prompt during those tests, so this
-    // allows them to 'FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")`
+    // Certain tests want to use very old .FCStd files.  We should not prompt during those tests, so
+    // this allows them to 'FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")`
     const std::map<std::string, std::string>& Map = App::Application::Config();
     auto value = Map.find("SuppressRecomputeRequiredDialog");
-    bool skip = value != Map.end() && ! value->second.empty();   // Any non empty string is true.
-    if (docs.empty() || skip )
+    bool skip = value != Map.end() && !value->second.empty();  // Any non empty string is true.
+    if (docs.empty() || skip) {
         return;
+    }
     WaitCursor wc;
     wc.restoreCursor();
-    auto res = QMessageBox::warning(getMainWindow(), QObject::tr("Recomputation required"),
-                                    QObject::tr("Some document(s) require recomputation for migration purposes. "
-                                                "It is highly recommended to perform a recomputation before "
-                                                "any modification to avoid compatibility problems.\n\n"
-                                                "Do you want to recompute now?"),
-                                    QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
-    if (res != QMessageBox::Yes)
+    auto res = QMessageBox::warning(
+        getMainWindow(),
+        QObject::tr("Recomputation required"),
+        QObject::tr("Some document(s) require recomputation for migration purposes. "
+                    "It is highly recommended to perform a recomputation before "
+                    "any modification to avoid compatibility problems.\n\n"
+                    "Do you want to recompute now?"),
+        QMessageBox::Yes | QMessageBox::No,
+        QMessageBox::Yes);
+    if (res != QMessageBox::Yes) {
         return;
+    }
     bool hasError = false;
-    for (auto doc: App::Document::getDependentDocuments(docs, true)) {
+    for (auto doc : App::Document::getDependentDocuments(docs, true)) {
         try {
             doc->recompute({}, false, &hasError);
-        } catch (Base::Exception &e) {
+        }
+        catch (Base::Exception& e) {
             e.ReportException();
             hasError = true;
         }
     }
-    if (hasError)
-        QMessageBox::critical(getMainWindow(), QObject::tr("Recompute error"),
+    if (hasError) {
+        QMessageBox::critical(getMainWindow(),
+                              QObject::tr("Recompute error"),
                               QObject::tr("Failed to recompute some document(s).\n"
                                           "Please check report view for more details."));
+    }
 }
 
 void Application::slotActiveDocument(const App::Document& Doc)
@@ -2173,11 +2189,8 @@ void setAppNameAndIcon()
 void tryRunEventLoop(GUISingleApplication& mainApp)
 {
     std::stringstream out;
-    out << App::Application::getUserCachePath()
-        << App::Application::getExecutableName()
-        << "_"
-        << App::Application::applicationPid()
-        << ".lock";
+    out << App::Application::getUserCachePath() << App::Application::getExecutableName() << "_"
+        << App::Application::applicationPid() << ".lock";
 
     // open a lock file with the PID
     Base::FileInfo fi(out.str());
@@ -2303,7 +2316,7 @@ void Application::runApplication()
 
 bool Application::hiddenMainWindow()
 {
-    const std::map<std::string,std::string>& cfg = App::Application::Config();
+    const std::map<std::string, std::string>& cfg = App::Application::Config();
     auto it = cfg.find("StartHidden");
 
     return it != cfg.end();

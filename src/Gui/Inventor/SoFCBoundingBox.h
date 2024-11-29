@@ -33,19 +33,22 @@
 #include <FCGlobal.h>
 
 
-namespace Gui {
+namespace Gui
+{
 
 /**
  * A subclass of SoShape used to create an axis aligned wire frame box based
  * on the minBounds and maxBounds fields.  The class also has a field which
  * can be toggled on or off for displaying text coordinate labels at the
  * vertices of the box.
- * @note Original source are taken from http://www.wheatchex.com/projects/openinventor/bbox/BoundingBox.h and
+ * @note Original source are taken from
+ * http://www.wheatchex.com/projects/openinventor/bbox/BoundingBox.h and
  * http://www.wheatchex.com/projects/openinventor/bbox/BoundingBox.cpp
  * @date November 12th, 2001
  * @author Josh Grant
  */
-class GuiExport SoFCBoundingBox : public SoShape {
+class GuiExport SoFCBoundingBox: public SoShape
+{
     using inherited = SoShape;
 
     SO_NODE_HEADER(Gui::SoFCBoundingBox);
@@ -56,29 +59,30 @@ public:
 
 public:
     SoFCBoundingBox();
-    SoSFVec3f minBounds; /**< minimum box coordinates */
-    SoSFVec3f maxBounds; /**< maximum box coordinates */
-    SoSFBool coordsOn; /**< If true, the coordinates are displayed at each vertex */
+    SoSFVec3f minBounds;   /**< minimum box coordinates */
+    SoSFVec3f maxBounds;   /**< maximum box coordinates */
+    SoSFBool coordsOn;     /**< If true, the coordinates are displayed at each vertex */
     SoSFBool dimensionsOn; /**< If true, the dimensions are displayed in x,y and z direction */
 
 
 protected:
     ~SoFCBoundingBox() override;
-    void GLRender(SoGLRenderAction *action) override;
-    void generatePrimitives (SoAction *action) override;
-    void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center) override;
+    void GLRender(SoGLRenderAction* action) override;
+    void generatePrimitives(SoAction* action) override;
+    void computeBBox(SoAction* action, SbBox3f& box, SbVec3f& center) override;
 
 private:
-    SoSeparator        *root, *textSep, *dimSep;
-    SoCoordinate3      *bboxCoords;
-    SoIndexedLineSet   *bboxLines;
+    SoSeparator *root, *textSep, *dimSep;
+    SoCoordinate3* bboxCoords;
+    SoIndexedLineSet* bboxLines;
 };
 
 /**
  * This is a special group node which must be defined to ignore bounding box actions.
  * @author Werner Mayer
  */
-class GuiExport SoSkipBoundingGroup : public SoGroup {
+class GuiExport SoSkipBoundingGroup: public SoGroup
+{
     using inherited = SoGroup;
 
     SO_NODE_HEADER(Gui::SoSkipBoundingGroup);
@@ -88,19 +92,21 @@ public:
     static void finish();
     SoSkipBoundingGroup();
 
-    enum Modes {
-        INCLUDE_BBOX, EXCLUDE_BBOX
+    enum Modes
+    {
+        INCLUDE_BBOX,
+        EXCLUDE_BBOX
     };
 
     SoSFEnum mode;
 
-    void getBoundingBox(SoGetBoundingBoxAction *action) override;
+    void getBoundingBox(SoGetBoundingBoxAction* action) override;
 
 protected:
     ~SoSkipBoundingGroup() override;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
 
-#endif //COIN_SOFCBOUNDINGBOX_H
+#endif  // COIN_SOFCBOUNDINGBOX_H

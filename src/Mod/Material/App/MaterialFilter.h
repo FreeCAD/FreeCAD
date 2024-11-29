@@ -174,11 +174,17 @@ public:
 
     /* Require that the materials have physical properties defined.
      */
-    void requirePhysical(bool required) { _requirePhysical = required; }
+    void requirePhysical(bool required)
+    {
+        _requirePhysical = required;
+    }
 
     /* Require that the materials have appearance properties defined.
      */
-    void requireAppearance(bool required) { _requireAppearance = required; }
+    void requireAppearance(bool required)
+    {
+        _requireAppearance = required;
+    }
 
     /* These functions shouldn't normally be called directly. They are
      * for use by conversion methods, such as MaterialFilterPy

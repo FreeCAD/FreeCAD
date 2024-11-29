@@ -30,7 +30,7 @@
 namespace Part
 {
 
-class PartExport FeatureGeometrySet :public Part::Feature
+class PartExport FeatureGeometrySet: public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::FeatureGeometrySet);
 
@@ -42,16 +42,16 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute() override;
-     /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const override {
+    App::DocumentObjectExecReturn* execute() override;
+    /// returns the type name of the ViewProvider
+    const char* getViewProviderName() const override
+    {
         return "PartGui::ViewProviderGeometrySet";
     }
     //@}
-
 };
 
-} //namespace Part
+}  // namespace Part
 
 
-#endif // PART_FeatureGeometrySet_H
+#endif  // PART_FeatureGeometrySet_H

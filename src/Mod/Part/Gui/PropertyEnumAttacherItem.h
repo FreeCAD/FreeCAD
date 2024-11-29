@@ -31,8 +31,8 @@ namespace PartGui
 {
 
 /**
-* Custom editor item for PropertyEnumeration to open Attacher task
-*/
+ * Custom editor item for PropertyEnumeration to open Attacher task
+ */
 class PartGuiExport PropertyEnumAttacherItem: public Gui::PropertyEditor::PropertyEnumItem
 {
     Q_OBJECT
@@ -51,6 +51,6 @@ protected:
     PropertyEnumAttacherItem();
 };
 
-} // namespace PartGui
+}  // namespace PartGui
 
-#endif // PART_PropertyEnumAttacherItem_H
+#endif  // PART_PropertyEnumAttacherItem_H

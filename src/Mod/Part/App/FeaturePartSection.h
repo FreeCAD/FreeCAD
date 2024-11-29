@@ -31,7 +31,7 @@
 namespace Part
 {
 
-class Section : public Boolean
+class Section: public Boolean
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Section);
 
@@ -48,10 +48,10 @@ public:
 protected:
     BRepAlgoAPI_BooleanOperation* makeOperation(const TopoDS_Shape&,
                                                 const TopoDS_Shape&) const override;
-    const char *opCode() const override;
+    const char* opCode() const override;
     //@}
 };
 
-}
+}  // namespace Part
 
-#endif // PART_FEATUREPARTSECTION_H
+#endif  // PART_FEATUREPARTSECTION_H

@@ -4355,7 +4355,7 @@ Dubina rupe</translation>
       <location filename="../../TaskHoleParameters.ui" line="607"/>
       <source>For countersinks this is the depth of
 the screw's top below the surface</source>
-      <translation>Za konusno upušten otvor ovo je 
+      <translation>Za konusno upušten otvor ovo je
 dubina vijka ispod kosine upuštanja</translation>
     </message>
     <message>
@@ -5093,7 +5093,7 @@ Nije dozvoljeno presjecanje elemenata na skici.</translation>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="160"/>
       <source>Boolean operation failed</source>
-      <translation>Booleanska operacija nije uspjela   
+      <translation>Booleanska operacija nije uspjela
 </translation>
     </message>
     <message>

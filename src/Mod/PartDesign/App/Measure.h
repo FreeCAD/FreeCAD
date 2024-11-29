@@ -25,7 +25,6 @@
 #include <Mod/PartDesign/PartDesignGlobal.h>
 
 
-
 namespace PartDesign
 {
 
@@ -33,12 +32,10 @@ namespace PartDesign
 class PartDesignExport Measure
 {
 public:
-
     static void initialize();
-
 };
 
 
-} //namespace PartDesign
+}  // namespace PartDesign
 
 #endif

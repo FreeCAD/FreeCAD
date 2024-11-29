@@ -1020,7 +1020,7 @@ In this case the prefix will be automatically trimmed when shown in the property
 However, the property is still used in a script with the full name, like 'obj.Group_Name'.
 
 If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</source>
-      <translation>Mevcut bir özellikle karışmasını önlemek için 'Grup_Adı' formunda özellik adı kısmına grup adı ile ön ek koyun. 
+      <translation>Mevcut bir özellikle karışmasını önlemek için 'Grup_Adı' formunda özellik adı kısmına grup adı ile ön ek koyun.
 Bu kutudaki ön ek, özellik düzenleyicide gösterildiğinde otomatik kırpılacaktır.
 Bununla birlikte özellik, bir betikte 'obj.Grup_Adı' gibi tam adıyla kullanılır.
 
@@ -1866,7 +1866,7 @@ Not: Değişiklikleriniz, sonraki tezgah geçişinizde uygulanacak
       <location filename="../DlgMacroExecuteImp.cpp" line="1078"/>
       <source>'%1'
  already exists.</source>
-      <translation>'%1' 
+      <translation>'%1'
 zaten mevcut.</translation>
     </message>
     <message>
@@ -1895,7 +1895,7 @@ Belki de bir dosya yetki hatası?</translation>
       <location filename="../DlgMacroExecuteImp.cpp" line="1084"/>
       <source>Failed to duplicate to '%1'.
 Perhaps a file permission error?</source>
-      <translation>'%1'olarak çoğaltılamadı. 
+      <translation>'%1'olarak çoğaltılamadı.
 Belki bir dosya izni hatası vardır?</translation>
     </message>
   </context>
@@ -4293,7 +4293,7 @@ Bu ayarla fareyi eğme devre dışı bırakılmaz.</translation>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="26"/>
       <source>Words will be wrapped when they exceed available
 horizontal space in Python console</source>
-      <translation>Kelimeler, Python uçbirimindeki kullanılabilir yatay 
+      <translation>Kelimeler, Python uçbirimindeki kullanılabilir yatay
 boşluğu aştığında kaydırılacak</translation>
     </message>
     <message>
@@ -5485,7 +5485,7 @@ The 'Status' column shows whether the document could be recovered.</source>
       <location filename="../DlgObjectSelection.cpp" line="158"/>
       <source>Ignore dependencies and proceed with objects
 originally selected prior to opening this dialog</source>
-      <translation>Bağımlılıkları yoksay ve orijinal olarak bu iletişim 
+      <translation>Bağımlılıkları yoksay ve orijinal olarak bu iletişim
 kutusunu açmadan önce seçilen nesnelerle devam et</translation>
     </message>
   </context>
@@ -8611,7 +8611,7 @@ Vazgeçmek için 'Vazgeç' i seçin</translation>
       <location filename="../DlgAddProperty.cpp" line="107"/>
       <source>The property name or group name must only contain alpha numericals,
 underscore, and must not start with a digit.</source>
-      <translation>Özellik veya grup adı sadece alfa sayısallar, alt tire içermeli ve 
+      <translation>Özellik veya grup adı sadece alfa sayısallar, alt tire içermeli ve
 bir rakam ile başlamamalıdır.</translation>
     </message>
     <message>
@@ -12523,7 +12523,7 @@ dot/period will always be printed.</translation>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="263"/>
       <source>Choose your preference for toolbar icon size. You can adjust
 this according to your screen size or personal taste</source>
-      <translation>Araç çubuğu simge boyutu tercihinizi seçin. Bunu, ekran 
+      <translation>Araç çubuğu simge boyutu tercihinizi seçin. Bunu, ekran
 boyutunuza veya kişisel zevkinize göre ayarlayabilirsiniz</translation>
     </message>
     <message>

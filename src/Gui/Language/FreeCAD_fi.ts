@@ -3349,7 +3349,7 @@ Tämä ominaisuus saattaa hieman pidentää uudelleenlaskenta-aikaa.</translatio
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="255"/>
       <source>If there is a recovery file available the application will
 automatically run a file recovery when it is started.</source>
-      <translation>Jos on palautustiedosto olemassa, sovellus suorittaa 
+      <translation>Jos on palautustiedosto olemassa, sovellus suorittaa
 automaattisesti tiedoston palautuksen, kun sovellus käynnistyy.</translation>
     </message>
     <message>
@@ -6275,7 +6275,7 @@ Haluatko tallentaa asiakirjan nyt?</translation>
 On the left view %1 points are picked,
 on the right view %2 points are picked.</source>
       <translation>Eri määrä kohteita valittu vasemmammasta- ja oikeanpuoleisesta näkymästä.
-Vasemmanpuoleisesta näkymästä on valittu %1 kohdetta 
+Vasemmanpuoleisesta näkymästä on valittu %1 kohdetta
 Oikeanpuoleisesta näkymästä on valittu   %2 kohdetta.</translation>
     </message>
     <message>

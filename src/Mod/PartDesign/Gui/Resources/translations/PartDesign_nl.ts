@@ -2390,7 +2390,7 @@ from the model as reference</translation>
       <location filename="../../TaskPadPocketParameters.ui" line="294"/>
       <source>Use custom vector for pad direction, otherwise
 the sketch plane's normal vector will be used</source>
-      <translation>Gebruik een aangepaste vector voor vulrichting, anders 
+      <translation>Gebruik een aangepaste vector voor vulrichting, anders
 wordt de normale vector van de schets gebruikt</translation>
     </message>
     <message>
@@ -3819,7 +3819,7 @@ Als u een ouder document met PartDesign objecten zonder een lichaam hebt, gebrui
       <location filename="../../ViewProviderDressUp.cpp" line="75"/>
       <source>%1 misses a base feature.
 This feature is broken and can't be edited.</source>
-      <translation>%1 mist een basis functie. 
+      <translation>%1 mist een basis functie.
 Deze functie is defect en kan niet worden gewijzigd.</translation>
     </message>
     <message>

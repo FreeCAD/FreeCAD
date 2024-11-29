@@ -26,13 +26,13 @@
 #include "FeatureSolid.h"
 
 
-namespace PartDesign {
+namespace PartDesign
+{
 
 
-PROPERTY_SOURCE(PartDesign::Solid,PartDesign::Feature)
+PROPERTY_SOURCE(PartDesign::Solid, PartDesign::Feature)
 
 Solid::Solid() = default;
 
 
-
-}
+}  // namespace PartDesign

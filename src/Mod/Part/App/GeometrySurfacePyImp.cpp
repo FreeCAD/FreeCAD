@@ -23,23 +23,23 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRepBuilderAPI_MakeShell.hxx>
-# include <Geom_BSplineSurface.hxx>
-# include <Geom_Geometry.hxx>
-# include <Geom_Surface.hxx>
-# include <GeomAPI_IntSS.hxx>
-# include <GeomAPI_ProjectPointOnSurf.hxx>
-# include <GeomConvert_ApproxSurface.hxx>
-# include <GeomLib_IsPlanarSurface.hxx>
-# include <GeomLProp_SLProps.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Quaternion.hxx>
-# include <gp_Vec.hxx>
-# include <Precision.hxx>
-# include <ShapeAnalysis_Surface.hxx>
-# include <Standard_Failure.hxx>
-# include <Standard_Version.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRepBuilderAPI_MakeShell.hxx>
+#include <Geom_BSplineSurface.hxx>
+#include <Geom_Geometry.hxx>
+#include <Geom_Surface.hxx>
+#include <GeomAPI_IntSS.hxx>
+#include <GeomAPI_ProjectPointOnSurf.hxx>
+#include <GeomConvert_ApproxSurface.hxx>
+#include <GeomLib_IsPlanarSurface.hxx>
+#include <GeomLProp_SLProps.hxx>
+#include <gp_Dir.hxx>
+#include <gp_Quaternion.hxx>
+#include <gp_Vec.hxx>
+#include <Precision.hxx>
+#include <ShapeAnalysis_Surface.hxx>
+#include <Standard_Failure.hxx>
+#include <Standard_Version.hxx>
 #endif
 
 #include <Base/GeometryPyCXX.h>
@@ -56,8 +56,9 @@
 #include "TopoShapeShellPy.h"
 
 
-namespace Part {
-const Py::Object makeTrimmedCurvePy(const Handle(Geom_Curve)& c, double f, double l)
+namespace Part
+{
+const Py::Object makeTrimmedCurvePy(const Handle(Geom_Curve) & c, double f, double l)
 {
     try {
         std::unique_ptr<GeomCurve> gc(makeFromTrimmedCurve(c, f, l));
@@ -68,7 +69,7 @@ const Py::Object makeTrimmedCurvePy(const Handle(Geom_Curve)& c, double f, doubl
     }
 }
 
-const Py::Object makeGeometryCurvePy(const Handle(Geom_Curve)& c)
+const Py::Object makeGeometryCurvePy(const Handle(Geom_Curve) & c)
 {
     try {
         std::unique_ptr<GeomCurve> gc(makeFromCurve(c));
@@ -79,7 +80,7 @@ const Py::Object makeGeometryCurvePy(const Handle(Geom_Curve)& c)
     }
 }
 
-} // Part
+}  // namespace Part
 
 // ---------------------------------------
 
@@ -91,11 +92,11 @@ std::string GeometrySurfacePy::representation() const
     return "<Surface object>";
 }
 
-PyObject *GeometrySurfacePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* GeometrySurfacePy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // never create such objects with the constructor
     PyErr_SetString(PyExc_RuntimeError,
-        "You cannot create an instance of the abstract class 'GeometrySurface'.");
+                    "You cannot create an instance of the abstract class 'GeometrySurface'.");
     return nullptr;
 }
 
@@ -105,17 +106,18 @@ int GeometrySurfacePy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     return 0;
 }
 
-PyObject* GeometrySurfacePy::toShape(PyObject *args)
+PyObject* GeometrySurfacePy::toShape(PyObject* args)
 {
     Handle(Geom_Geometry) g = getGeometryPtr()->handle();
     Handle(Geom_Surface) s = Handle(Geom_Surface)::DownCast(g);
     try {
         if (!s.IsNull()) {
-            double u1,u2,v1,v2;
-            s->Bounds(u1,u2,v1,v2);
-            if (!PyArg_ParseTuple(args, "|dddd", &u1,&u2,&v1,&v2))
+            double u1, u2, v1, v2;
+            s->Bounds(u1, u2, v1, v2);
+            if (!PyArg_ParseTuple(args, "|dddd", &u1, &u2, &v1, &v2)) {
                 return nullptr;
-            BRepBuilderAPI_MakeFace mkBuilder(s, u1, u2, v1, v2, Precision::Confusion() );
+            }
+            BRepBuilderAPI_MakeFace mkBuilder(s, u1, u2, v1, v2, Precision::Confusion());
             TopoDS_Shape sh = mkBuilder.Shape();
             return new TopoShapeFacePy(new TopoShape(sh));
         }
@@ -130,13 +132,19 @@ PyObject* GeometrySurfacePy::toShape(PyObject *args)
     return nullptr;
 }
 
-PyObject* GeometrySurfacePy::toShell(PyObject *args, PyObject* kwds)
+PyObject* GeometrySurfacePy::toShell(PyObject* args, PyObject* kwds)
 {
     PyObject* bound = nullptr;
     PyObject* segm = nullptr;
-    static const std::array<const char *, 3> kwlist {"Bounds", "Segment", nullptr};
-    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "|O!O!", kwlist,
-                                             &PyTuple_Type, &bound, &PyBool_Type, &segm)) {
+    static const std::array<const char*, 3> kwlist {"Bounds", "Segment", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args,
+                                             kwds,
+                                             "|O!O!",
+                                             kwlist,
+                                             &PyTuple_Type,
+                                             &bound,
+                                             &PyBool_Type,
+                                             &segm)) {
         return nullptr;
     }
 
@@ -151,8 +159,8 @@ PyObject* GeometrySurfacePy::toShell(PyObject *args, PyObject* kwds)
                 return new TopoShapeShellPy(new TopoShape(sh));
             }
             else {
-                double u1,u2,v1,v2;
-                s->Bounds(u1,u2,v1,v2);
+                double u1, u2, v1, v2;
+                s->Bounds(u1, u2, v1, v2);
 
                 if (bound) {
                     Py::Tuple tuple(bound);
@@ -177,18 +185,19 @@ PyObject* GeometrySurfacePy::toShell(PyObject *args, PyObject* kwds)
     return nullptr;
 }
 
-PyObject* GeometrySurfacePy::getD0(PyObject *args)
+PyObject* GeometrySurfacePy::getD0(PyObject* args)
 {
     Handle(Geom_Geometry) g = getGeometryPtr()->handle();
     Handle(Geom_Surface) s = Handle(Geom_Surface)::DownCast(g);
     try {
         if (!s.IsNull()) {
-            double u,v;
-            if (!PyArg_ParseTuple(args, "dd", &u, &v))
+            double u, v;
+            if (!PyArg_ParseTuple(args, "dd", &u, &v)) {
                 return nullptr;
+            }
             gp_Pnt p;
             s->D0(u, v, p);
-            return new Base::VectorPy(Base::Vector3d(p.X(),p.Y(),p.Z()));
+            return new Base::VectorPy(Base::Vector3d(p.X(), p.Y(), p.Z()));
         }
     }
     catch (Standard_Failure& e) {
@@ -200,15 +209,16 @@ PyObject* GeometrySurfacePy::getD0(PyObject *args)
     return nullptr;
 }
 
-PyObject* GeometrySurfacePy::getDN(PyObject *args)
+PyObject* GeometrySurfacePy::getDN(PyObject* args)
 {
     try {
         int nu, nv;
-        double u,v;
-        if (!PyArg_ParseTuple(args, "ddii", &u, &v, &nu, &nv))
+        double u, v;
+        if (!PyArg_ParseTuple(args, "ddii", &u, &v, &nu, &nv)) {
             return nullptr;
+        }
         gp_Vec v1 = getGeomSurfacePtr()->getDN(u, v, nu, nv);
-        return new Base::VectorPy(Base::Vector3d(v1.X(),v1.Y(),v1.Z()));
+        return new Base::VectorPy(Base::Vector3d(v1.X(), v1.Y(), v1.Z()));
     }
     catch (Standard_Failure& e) {
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
@@ -216,17 +226,18 @@ PyObject* GeometrySurfacePy::getDN(PyObject *args)
     }
 }
 
-PyObject* GeometrySurfacePy::value(PyObject *args)
+PyObject* GeometrySurfacePy::value(PyObject* args)
 {
     Handle(Geom_Geometry) g = getGeometryPtr()->handle();
     Handle(Geom_Surface) s = Handle(Geom_Surface)::DownCast(g);
     try {
         if (!s.IsNull()) {
-            double u,v;
-            if (!PyArg_ParseTuple(args, "dd", &u,&v))
+            double u, v;
+            if (!PyArg_ParseTuple(args, "dd", &u, &v)) {
                 return nullptr;
-            gp_Pnt p = s->Value(u,v);
-            return new Base::VectorPy(Base::Vector3d(p.X(),p.Y(),p.Z()));
+            }
+            gp_Pnt p = s->Value(u, v);
+            return new Base::VectorPy(Base::Vector3d(p.X(), p.Y(), p.Z()));
         }
     }
     catch (Standard_Failure& e) {
@@ -239,25 +250,26 @@ PyObject* GeometrySurfacePy::value(PyObject *args)
     return nullptr;
 }
 
-PyObject* GeometrySurfacePy::tangent(PyObject *args)
+PyObject* GeometrySurfacePy::tangent(PyObject* args)
 {
     Handle(Geom_Geometry) g = getGeometryPtr()->handle();
     Handle(Geom_Surface) s = Handle(Geom_Surface)::DownCast(g);
     try {
         if (!s.IsNull()) {
-            double u,v;
-            if (!PyArg_ParseTuple(args, "dd", &u,&v))
+            double u, v;
+            if (!PyArg_ParseTuple(args, "dd", &u, &v)) {
                 return nullptr;
+            }
             gp_Dir dir;
             Py::Tuple tuple(2);
-            GeomLProp_SLProps prop(s,u,v,2,Precision::Confusion());
+            GeomLProp_SLProps prop(s, u, v, 2, Precision::Confusion());
             if (prop.IsTangentUDefined()) {
                 prop.TangentU(dir);
-                tuple.setItem(0, Py::Vector(Base::Vector3d(dir.X(),dir.Y(),dir.Z())));
+                tuple.setItem(0, Py::Vector(Base::Vector3d(dir.X(), dir.Y(), dir.Z())));
             }
             if (prop.IsTangentVDefined()) {
                 prop.TangentV(dir);
-                tuple.setItem(1, Py::Vector(Base::Vector3d(dir.X(),dir.Y(),dir.Z())));
+                tuple.setItem(1, Py::Vector(Base::Vector3d(dir.X(), dir.Y(), dir.Z())));
             }
 
             return Py::new_reference_to(tuple);
@@ -273,17 +285,18 @@ PyObject* GeometrySurfacePy::tangent(PyObject *args)
     return nullptr;
 }
 
-PyObject* GeometrySurfacePy::normal(PyObject *args)
+PyObject* GeometrySurfacePy::normal(PyObject* args)
 {
     try {
         GeomSurface* s = getGeomSurfacePtr();
         if (s) {
-            double u,v;
-            if (!PyArg_ParseTuple(args, "dd", &u,&v))
+            double u, v;
+            if (!PyArg_ParseTuple(args, "dd", &u, &v)) {
                 return nullptr;
+            }
             gp_Dir d;
-            if (s->normal(u,v,d)) {
-                return new Base::VectorPy(Base::Vector3d(d.X(),d.Y(),d.Z()));
+            if (s->normal(u, v, d)) {
+                return new Base::VectorPy(Base::Vector3d(d.X(), d.Y(), d.Z()));
             }
             else {
                 PyErr_SetString(PyExc_RuntimeError, "normal at this point is not defined");
@@ -300,12 +313,18 @@ PyObject* GeometrySurfacePy::normal(PyObject *args)
     return nullptr;
 }
 
-PyObject* GeometrySurfacePy::projectPoint(PyObject *args, PyObject* kwds)
+PyObject* GeometrySurfacePy::projectPoint(PyObject* args, PyObject* kwds)
 {
     PyObject* v;
     const char* meth = "NearestPoint";
-    static const std::array<const char *, 3> kwlist {"Point", "Method", nullptr};
-    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!|s", kwlist, &Base::VectorPy::Type, &v, &meth)) {
+    static const std::array<const char*, 3> kwlist {"Point", "Method", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args,
+                                             kwds,
+                                             "O!|s",
+                                             kwlist,
+                                             &Base::VectorPy::Type,
+                                             &v,
+                                             &meth)) {
         return nullptr;
     }
 
@@ -338,7 +357,7 @@ PyObject* GeometrySurfacePy::projectPoint(PyObject *args, PyObject* kwds)
         else if (method == "Distance") {
             Standard_Integer num = proj.NbPoints();
             Py::List list;
-            for (Standard_Integer i=1; i <= num; i++) {
+            for (Standard_Integer i = 1; i <= num; i++) {
                 list.append(Py::Float(proj.Distance(i)));
             }
             return Py::new_reference_to(list);
@@ -346,7 +365,7 @@ PyObject* GeometrySurfacePy::projectPoint(PyObject *args, PyObject* kwds)
         else if (method == "Parameters") {
             Standard_Integer num = proj.NbPoints();
             Py::List list;
-            for (Standard_Integer i=1; i <= num; i++) {
+            for (Standard_Integer i = 1; i <= num; i++) {
                 Standard_Real u, v;
                 proj.Parameters(i, u, v);
                 Py::Tuple par(2);
@@ -359,7 +378,7 @@ PyObject* GeometrySurfacePy::projectPoint(PyObject *args, PyObject* kwds)
         else if (method == "Point") {
             Standard_Integer num = proj.NbPoints();
             Py::List list;
-            for (Standard_Integer i=1; i <= num; i++) {
+            for (Standard_Integer i = 1; i <= num; i++) {
                 gp_Pnt pnt = proj.Point(i);
                 Base::Vector3d vec(pnt.X(), pnt.Y(), pnt.Z());
                 list.append(Py::Vector(vec));
@@ -377,16 +396,17 @@ PyObject* GeometrySurfacePy::projectPoint(PyObject *args, PyObject* kwds)
     }
 }
 
-PyObject* GeometrySurfacePy::isUmbillic(PyObject *args)
+PyObject* GeometrySurfacePy::isUmbillic(PyObject* args)
 {
     try {
         GeomSurface* s = getGeomSurfacePtr();
         if (s) {
-            double u,v;
-            if (!PyArg_ParseTuple(args, "dd", &u,&v))
+            double u, v;
+            if (!PyArg_ParseTuple(args, "dd", &u, &v)) {
                 return nullptr;
+            }
 
-            bool val = s->isUmbillic(u,v);
+            bool val = s->isUmbillic(u, v);
             return PyBool_FromLong(val ? 1 : 0);
         }
     }
@@ -400,21 +420,22 @@ PyObject* GeometrySurfacePy::isUmbillic(PyObject *args)
     return nullptr;
 }
 
-PyObject* GeometrySurfacePy::curvatureDirections(PyObject *args)
+PyObject* GeometrySurfacePy::curvatureDirections(PyObject* args)
 {
     try {
         GeomSurface* s = getGeomSurfacePtr();
         if (s) {
-            double u,v;
-            if (!PyArg_ParseTuple(args, "dd", &u,&v))
+            double u, v;
+            if (!PyArg_ParseTuple(args, "dd", &u, &v)) {
                 return nullptr;
+            }
 
             gp_Dir maxd, mind;
-            s->curvatureDirections(u,v,maxd,mind);
+            s->curvatureDirections(u, v, maxd, mind);
 
             Py::Tuple tuple(2);
-            tuple.setItem(0, Py::Vector(Base::Vector3d(maxd.X(),maxd.Y(),maxd.Z())));
-            tuple.setItem(1, Py::Vector(Base::Vector3d(mind.X(),mind.Y(),mind.Z())));
+            tuple.setItem(0, Py::Vector(Base::Vector3d(maxd.X(), maxd.Y(), maxd.Z())));
+            tuple.setItem(1, Py::Vector(Base::Vector3d(mind.X(), mind.Y(), mind.Z())));
             return Py::new_reference_to(tuple);
         }
     }
@@ -428,27 +449,28 @@ PyObject* GeometrySurfacePy::curvatureDirections(PyObject *args)
     return nullptr;
 }
 
-PyObject* GeometrySurfacePy::curvature(PyObject *args)
+PyObject* GeometrySurfacePy::curvature(PyObject* args)
 {
     try {
         GeomSurface* s = getGeomSurfacePtr();
         if (s) {
-            double u,v;
+            double u, v;
             char* type;
-            if (!PyArg_ParseTuple(args, "dds", &u,&v,&type))
+            if (!PyArg_ParseTuple(args, "dds", &u, &v, &type)) {
                 return nullptr;
+            }
 
             GeomSurface::Curvature t;
-            if (strcmp(type,"Max") == 0) {
+            if (strcmp(type, "Max") == 0) {
                 t = GeomSurface::Maximum;
             }
-            else if (strcmp(type,"Min") == 0) {
+            else if (strcmp(type, "Min") == 0) {
                 t = GeomSurface::Minimum;
             }
-            else if (strcmp(type,"Mean") == 0) {
+            else if (strcmp(type, "Mean") == 0) {
                 t = GeomSurface::Mean;
             }
-            else if (strcmp(type,"Gauss") == 0) {
+            else if (strcmp(type, "Gauss") == 0) {
                 t = GeomSurface::Gaussian;
             }
             else {
@@ -456,7 +478,7 @@ PyObject* GeometrySurfacePy::curvature(PyObject *args)
                 return nullptr;
             }
 
-            double c = s->curvature(u,v,t);
+            double c = s->curvature(u, v, t);
             return PyFloat_FromDouble(c);
         }
     }
@@ -470,15 +492,15 @@ PyObject* GeometrySurfacePy::curvature(PyObject *args)
     return nullptr;
 }
 
-PyObject* GeometrySurfacePy::isPlanar(PyObject *args)
+PyObject* GeometrySurfacePy::isPlanar(PyObject* args)
 {
     try {
-        Handle(Geom_Surface) surf = Handle(Geom_Surface)
-            ::DownCast(getGeometryPtr()->handle());
+        Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast(getGeometryPtr()->handle());
         if (!surf.IsNull()) {
             double tol = Precision::Confusion();
-            if (!PyArg_ParseTuple(args, "|d", &tol))
+            if (!PyArg_ParseTuple(args, "|d", &tol)) {
                 return nullptr;
+            }
 
             GeomLib_IsPlanarSurface check(surf, tol);
             Standard_Boolean val = check.IsPlanar();
@@ -494,18 +516,18 @@ PyObject* GeometrySurfacePy::isPlanar(PyObject *args)
     return nullptr;
 }
 
-PyObject* GeometrySurfacePy::parameter(PyObject *args)
+PyObject* GeometrySurfacePy::parameter(PyObject* args)
 {
-    Handle(Geom_Surface) surf = Handle(Geom_Surface)
-        ::DownCast(getGeometryPtr()->handle());
+    Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast(getGeometryPtr()->handle());
     try {
         if (!surf.IsNull()) {
-            PyObject *p;
+            PyObject* p;
             double prec = Precision::Confusion();
-            if (!PyArg_ParseTuple(args, "O!|d", &(Base::VectorPy::Type), &p, &prec))
+            if (!PyArg_ParseTuple(args, "O!|d", &(Base::VectorPy::Type), &p, &prec)) {
                 return nullptr;
+            }
             Base::Vector3d v = Py::Vector(p, false).toVector();
-            gp_Pnt pnt(v.x,v.y,v.z);
+            gp_Pnt pnt(v.x, v.y, v.z);
             ShapeAnalysis_Surface as(surf);
             gp_Pnt2d uv = as.ValueOfUV(pnt, prec);
             Py::Tuple tuple(2);
@@ -524,32 +546,32 @@ PyObject* GeometrySurfacePy::parameter(PyObject *args)
     return nullptr;
 }
 
-PyObject* GeometrySurfacePy::bounds(PyObject * args)
+PyObject* GeometrySurfacePy::bounds(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
-    Handle(Geom_Surface) surf = Handle(Geom_Surface)
-        ::DownCast(getGeometryPtr()->handle());
+    Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast(getGeometryPtr()->handle());
     Py::Tuple bound(4);
-    Standard_Real u1,u2,v1,v2;
-    surf->Bounds(u1,u2,v1,v2);
-    bound.setItem(0,Py::Float(u1));
-    bound.setItem(1,Py::Float(u2));
-    bound.setItem(2,Py::Float(v1));
-    bound.setItem(3,Py::Float(v2));
+    Standard_Real u1, u2, v1, v2;
+    surf->Bounds(u1, u2, v1, v2);
+    bound.setItem(0, Py::Float(u1));
+    bound.setItem(1, Py::Float(u2));
+    bound.setItem(2, Py::Float(v1));
+    bound.setItem(3, Py::Float(v2));
     return Py::new_reference_to(bound);
 }
 
-PyObject* GeometrySurfacePy::uIso(PyObject * args)
+PyObject* GeometrySurfacePy::uIso(PyObject* args)
 {
     double v;
-    if (!PyArg_ParseTuple(args, "d", &v))
+    if (!PyArg_ParseTuple(args, "d", &v)) {
         return nullptr;
+    }
 
     try {
-        Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast
-            (getGeometryPtr()->handle());
+        Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast(getGeometryPtr()->handle());
         Handle(Geom_Curve) c = surf->UIso(v);
         if (c.IsNull()) {
             PyErr_SetString(PyExc_RuntimeError, "failed to create u iso curve");
@@ -559,8 +581,7 @@ PyObject* GeometrySurfacePy::uIso(PyObject * args)
         if (c->IsKind(STANDARD_TYPE(Geom_Line))) {
             Handle(Geom_Line) aLine = Handle(Geom_Line)::DownCast(c);
             GeomLine* line = new GeomLine();
-            Handle(Geom_Line) this_curv = Handle(Geom_Line)::DownCast
-                (line->handle());
+            Handle(Geom_Line) this_curv = Handle(Geom_Line)::DownCast(line->handle());
             this_curv->SetLin(aLine->Lin());
             return new LinePy(line);
         }
@@ -575,15 +596,15 @@ PyObject* GeometrySurfacePy::uIso(PyObject * args)
     }
 }
 
-PyObject* GeometrySurfacePy::vIso(PyObject * args)
+PyObject* GeometrySurfacePy::vIso(PyObject* args)
 {
     double v;
-    if (!PyArg_ParseTuple(args, "d", &v))
+    if (!PyArg_ParseTuple(args, "d", &v)) {
         return nullptr;
+    }
 
     try {
-        Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast
-            (getGeometryPtr()->handle());
+        Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast(getGeometryPtr()->handle());
         Handle(Geom_Curve) c = surf->VIso(v);
         if (c.IsNull()) {
             PyErr_SetString(PyExc_RuntimeError, "failed to create v iso curve");
@@ -593,8 +614,7 @@ PyObject* GeometrySurfacePy::vIso(PyObject * args)
         if (c->IsKind(STANDARD_TYPE(Geom_Line))) {
             Handle(Geom_Line) aLine = Handle(Geom_Line)::DownCast(c);
             GeomLine* line = new GeomLine();
-            Handle(Geom_Line) this_curv = Handle(Geom_Line)::DownCast
-                (line->handle());
+            Handle(Geom_Line) this_curv = Handle(Geom_Line)::DownCast(line->handle());
             this_curv->SetLin(aLine->Lin());
             return new LinePy(line);
         }
@@ -609,58 +629,58 @@ PyObject* GeometrySurfacePy::vIso(PyObject * args)
     }
 }
 
-PyObject* GeometrySurfacePy::isUPeriodic(PyObject * args)
+PyObject* GeometrySurfacePy::isUPeriodic(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
-    Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast
-        (getGeometryPtr()->handle());
+    Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast(getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsUPeriodic();
     return PyBool_FromLong(val ? 1 : 0);
 }
 
-PyObject* GeometrySurfacePy::isVPeriodic(PyObject * args)
+PyObject* GeometrySurfacePy::isVPeriodic(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
-    Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast
-        (getGeometryPtr()->handle());
+    Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast(getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsVPeriodic();
     return PyBool_FromLong(val ? 1 : 0);
 }
 
-PyObject* GeometrySurfacePy::isUClosed(PyObject * args)
+PyObject* GeometrySurfacePy::isUClosed(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
-    Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast
-        (getGeometryPtr()->handle());
+    Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast(getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsUClosed();
     return PyBool_FromLong(val ? 1 : 0);
 }
 
-PyObject* GeometrySurfacePy::isVClosed(PyObject * args)
+PyObject* GeometrySurfacePy::isVClosed(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
-    Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast
-        (getGeometryPtr()->handle());
+    Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast(getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsVClosed();
     return PyBool_FromLong(val ? 1 : 0);
 }
 
-PyObject* GeometrySurfacePy::UPeriod(PyObject * args)
+PyObject* GeometrySurfacePy::UPeriod(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     try {
-        Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast
-            (getGeometryPtr()->handle());
+        Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast(getGeometryPtr()->handle());
         Standard_Real val = surf->UPeriod();
         return PyFloat_FromDouble(val);
     }
@@ -671,14 +691,14 @@ PyObject* GeometrySurfacePy::UPeriod(PyObject * args)
     }
 }
 
-PyObject* GeometrySurfacePy::VPeriod(PyObject * args)
+PyObject* GeometrySurfacePy::VPeriod(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     try {
-        Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast
-            (getGeometryPtr()->handle());
+        Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast(getGeometryPtr()->handle());
         Standard_Real val = surf->VPeriod();
         return PyFloat_FromDouble(val);
     }
@@ -691,95 +711,123 @@ PyObject* GeometrySurfacePy::VPeriod(PyObject * args)
 
 Py::String GeometrySurfacePy::getContinuity() const
 {
-    GeomAbs_Shape c = Handle(Geom_Surface)::DownCast
-        (getGeometryPtr()->handle())->Continuity();
+    GeomAbs_Shape c = Handle(Geom_Surface)::DownCast(getGeometryPtr()->handle())->Continuity();
     std::string str;
     switch (c) {
-    case GeomAbs_C0:
-        str = "C0";
-        break;
-    case GeomAbs_G1:
-        str = "G1";
-        break;
-    case GeomAbs_C1:
-        str = "C1";
-        break;
-    case GeomAbs_G2:
-        str = "G2";
-        break;
-    case GeomAbs_C2:
-        str = "C2";
-        break;
-    case GeomAbs_C3:
-        str = "C3";
-        break;
-    case GeomAbs_CN:
-        str = "CN";
-        break;
-    default:
-        str = "Unknown";
-        break;
+        case GeomAbs_C0:
+            str = "C0";
+            break;
+        case GeomAbs_G1:
+            str = "G1";
+            break;
+        case GeomAbs_C1:
+            str = "C1";
+            break;
+        case GeomAbs_G2:
+            str = "G2";
+            break;
+        case GeomAbs_C2:
+            str = "C2";
+            break;
+        case GeomAbs_C3:
+            str = "C3";
+            break;
+        case GeomAbs_CN:
+            str = "CN";
+            break;
+        default:
+            str = "Unknown";
+            break;
     }
     return Py::String(str);
 }
 
-PyObject* GeometrySurfacePy::toBSpline(PyObject * args, PyObject * kwds)
+PyObject* GeometrySurfacePy::toBSpline(PyObject* args, PyObject* kwds)
 {
-    double tol3d=Precision::Confusion();
-    const char *ucont = "C1";
-    const char *vcont = "C1";
-    int maxDegU=Geom_BSplineSurface::MaxDegree();
-    int maxDegV=Geom_BSplineSurface::MaxDegree();
-    int maxSegm=1000, prec=0;
+    double tol3d = Precision::Confusion();
+    const char* ucont = "C1";
+    const char* vcont = "C1";
+    int maxDegU = Geom_BSplineSurface::MaxDegree();
+    int maxDegV = Geom_BSplineSurface::MaxDegree();
+    int maxSegm = 1000, prec = 0;
 
-    static const std::array<const char *, 8> kwlist{"Tol3d", "UContinuity", "VContinuity", "MaxDegreeU", "MaxDegreeV",
-                                                    "MaxSegments", "PrecisCode", nullptr};
-    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "|dssiiii", kwlist,
-                                             &tol3d, &ucont, &vcont,
-                                             &maxDegU, &maxDegV, &maxSegm, &prec)) {
+    static const std::array<const char*, 8> kwlist {"Tol3d",
+                                                    "UContinuity",
+                                                    "VContinuity",
+                                                    "MaxDegreeU",
+                                                    "MaxDegreeV",
+                                                    "MaxSegments",
+                                                    "PrecisCode",
+                                                    nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args,
+                                             kwds,
+                                             "|dssiiii",
+                                             kwlist,
+                                             &tol3d,
+                                             &ucont,
+                                             &vcont,
+                                             &maxDegU,
+                                             &maxDegV,
+                                             &maxSegm,
+                                             &prec)) {
         return nullptr;
     }
 
     GeomAbs_Shape absU, absV;
     std::string uc = ucont;
-    if (maxDegU <= 1)
+    if (maxDegU <= 1) {
         absU = GeomAbs_C0;
-    else if (uc == "C0")
+    }
+    else if (uc == "C0") {
         absU = GeomAbs_C0;
-    else if (uc == "C1")
+    }
+    else if (uc == "C1") {
         absU = GeomAbs_C1;
-    else if (uc == "C2")
+    }
+    else if (uc == "C2") {
         absU = GeomAbs_C2;
-    else if (uc == "C3")
+    }
+    else if (uc == "C3") {
         absU = GeomAbs_C3;
-    else if (uc == "CN")
+    }
+    else if (uc == "CN") {
         absU = GeomAbs_CN;
-    else if (uc == "G1")
+    }
+    else if (uc == "G1") {
         absU = GeomAbs_G1;
-    else
+    }
+    else {
         absU = GeomAbs_G2;
+    }
 
     std::string vc = vcont;
-    if (maxDegV <= 1)
+    if (maxDegV <= 1) {
         absV = GeomAbs_C0;
-    else if (vc == "C0")
+    }
+    else if (vc == "C0") {
         absV = GeomAbs_C0;
-    else if (vc == "C1")
+    }
+    else if (vc == "C1") {
         absV = GeomAbs_C1;
-    else if (vc == "C2")
+    }
+    else if (vc == "C2") {
         absV = GeomAbs_C2;
-    else if (vc == "C3")
+    }
+    else if (vc == "C3") {
         absV = GeomAbs_C3;
-    else if (vc == "CN")
+    }
+    else if (vc == "CN") {
         absV = GeomAbs_CN;
-    else if (vc == "G1")
+    }
+    else if (vc == "G1") {
         absV = GeomAbs_G1;
-    else
+    }
+    else {
         absV = GeomAbs_G2;
+    }
 
     try {
-        Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast
-            (getGeometryPtr()->handle());
+        Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast(getGeometryPtr()->handle());
         GeomConvert_ApproxSurface cvt(surf, tol3d, absU, absV, maxDegU, maxDegV, maxSegm, prec);
         if (cvt.IsDone() && cvt.HasResult()) {
             return new BSplineSurfacePy(new GeomBSplineSurface(cvt.Surface()));
@@ -796,7 +844,7 @@ PyObject* GeometrySurfacePy::toBSpline(PyObject * args, PyObject * kwds)
     return nullptr;
 }
 
-PyObject *GeometrySurfacePy::getCustomAttributes(const char* /*attr*/) const
+PyObject* GeometrySurfacePy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }
@@ -808,16 +856,18 @@ int GeometrySurfacePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj
 
 // Specialized intersection functions
 
-PyObject* GeometrySurfacePy::intersectSS(PyObject *args)
+PyObject* GeometrySurfacePy::intersectSS(PyObject* args)
 {
     Handle(Geom_Surface) surf1 = Handle(Geom_Surface)::DownCast(getGeometryPtr()->handle());
     try {
         if (!surf1.IsNull()) {
-            PyObject *p;
+            PyObject* p;
             double prec = Precision::Confusion();
-            if (!PyArg_ParseTuple(args, "O!|d", &(Part::GeometrySurfacePy::Type), &p, &prec))
+            if (!PyArg_ParseTuple(args, "O!|d", &(Part::GeometrySurfacePy::Type), &p, &prec)) {
                 return nullptr;
-            Handle(Geom_Surface) surf2 = Handle(Geom_Surface)::DownCast(static_cast<GeometryPy*>(p)->getGeometryPtr()->handle());
+            }
+            Handle(Geom_Surface) surf2 = Handle(Geom_Surface)::DownCast(
+                static_cast<GeometryPy*>(p)->getGeometryPtr()->handle());
             GeomAPI_IntSS intersector(surf1, surf2, prec);
             if (!intersector.IsDone()) {
                 PyErr_SetString(PyExc_RuntimeError, "Intersection of surfaces failed");
@@ -845,18 +895,21 @@ PyObject* GeometrySurfacePy::intersectSS(PyObject *args)
 
 // General intersection function
 
-PyObject* GeometrySurfacePy::intersect(PyObject *args)
+PyObject* GeometrySurfacePy::intersect(PyObject* args)
 {
     Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast(getGeometryPtr()->handle());
     try {
         if (!surf.IsNull()) {
-            PyObject *p;
+            PyObject* p;
             double prec = Precision::Confusion();
 
             try {
-                if (PyArg_ParseTuple(args, "O!|d", &(Part::GeometrySurfacePy::Type), &p, &prec))
+                if (PyArg_ParseTuple(args, "O!|d", &(Part::GeometrySurfacePy::Type), &p, &prec)) {
                     return intersectSS(args);
-            } catch(...) {};
+                }
+            }
+            catch (...) {
+            };
             PyErr_Clear();
 
             if (PyArg_ParseTuple(args, "O!|d", &(Part::GeometryCurvePy::Type), &p, &prec)) {
@@ -866,7 +919,8 @@ PyObject* GeometrySurfacePy::intersect(PyObject *args)
                 PyTuple_SetItem(t, 0, this);
                 PyTuple_SetItem(t, 1, PyFloat_FromDouble(prec));
                 return curve->intersectCS(t);
-            } else {
+            }
+            else {
                 return nullptr;
             }
         }
@@ -883,13 +937,13 @@ PyObject* GeometrySurfacePy::intersect(PyObject *args)
 
 Py::Object GeometrySurfacePy::getRotation() const
 {
-    Handle(Geom_ElementarySurface) s = Handle(Geom_ElementarySurface)::DownCast
-        (getGeometryPtr()->handle());
-    if(!s)
+    Handle(Geom_ElementarySurface) s =
+        Handle(Geom_ElementarySurface)::DownCast(getGeometryPtr()->handle());
+    if (!s) {
         return Py::Object();
+    }
     gp_Trsf trsf;
-    trsf.SetTransformation(s->Position().Ax2(),gp_Ax3());
+    trsf.SetTransformation(s->Position().Ax2(), gp_Ax3());
     auto q = trsf.GetRotation();
-    return Py::Rotation(Base::Rotation(q.X(),q.Y(),q.Z(),q.W()));
+    return Py::Rotation(Base::Rotation(q.X(), q.Y(), q.Z(), q.W()));
 }
-

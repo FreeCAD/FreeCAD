@@ -6272,7 +6272,7 @@ Vill du spara dokumentet nu?</translation>
       <source>Different number of points picked in left and right view.
 On the left view %1 points are picked,
 on the right view %2 points are picked.</source>
-      <translation>Olika antal punkter har markerats i vänster respektive höger vy. 
+      <translation>Olika antal punkter har markerats i vänster respektive höger vy.
 I vänstra vyn har %1 punkter markerats,
 I högra vyn har %2 punkter markerats.</translation>
     </message>

@@ -65,24 +65,25 @@ void StartupProcess::setupApplication()
     bool disableDpiScaling = hDPI->GetBool("DisableDpiScaling", false);
     if (disableDpiScaling) {
 #ifdef FC_OS_WIN32
-        SetProcessDPIAware(); // call before the main event loop
+        SetProcessDPIAware();  // call before the main event loop
 #endif
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         QApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
 #endif
     }
     else {
         // Enable automatic scaling based on pixel density of display (added in Qt 5.6)
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
-#if QT_VERSION >= QT_VERSION_CHECK(5,14,0) && defined(Q_OS_WIN)
-        QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0) && defined(Q_OS_WIN)
+        QGuiApplication::setHighDpiScaleFactorRoundingPolicy(
+            Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
 #endif
     }
 
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-    //Enable support for highres images (added in Qt 5.1, but off by default)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    // Enable support for highres images (added in Qt 5.1, but off by default)
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 #endif
 
@@ -135,15 +136,16 @@ void StartupProcess::setStyleSheetPaths()
     QStringList qssPaths;
     qssPaths << QString::fromUtf8(
         (App::Application::getUserAppDataDir() + "Gui/Stylesheets/").c_str())
-            << QString::fromUtf8((App::Application::getResourceDir() + "Gui/Stylesheets/").c_str())
-            << QLatin1String(":/stylesheets");
+             << QString::fromUtf8((App::Application::getResourceDir() + "Gui/Stylesheets/").c_str())
+             << QLatin1String(":/stylesheets");
     QDir::setSearchPaths(QString::fromLatin1("qss"), qssPaths);
     // setup the search paths for Qt overlay style sheets
     QStringList qssOverlayPaths;
-    qssOverlayPaths << QString::fromUtf8((App::Application::getUserAppDataDir()
-                        + "Gui/Stylesheets/overlay").c_str())
-                    << QString::fromUtf8((App::Application::getResourceDir()
-                        + "Gui/Stylesheets/overlay").c_str());
+    qssOverlayPaths
+        << QString::fromUtf8(
+               (App::Application::getUserAppDataDir() + "Gui/Stylesheets/overlay").c_str())
+        << QString::fromUtf8(
+               (App::Application::getResourceDir() + "Gui/Stylesheets/overlay").c_str());
     QDir::setSearchPaths(QStringLiteral("overlay"), qssOverlayPaths);
 }
 
@@ -152,8 +154,8 @@ void StartupProcess::setImagePaths()
     // set search paths for images
     QStringList imagePaths;
     imagePaths << QString::fromUtf8((App::Application::getUserAppDataDir() + "Gui/images").c_str())
-            << QString::fromUtf8((App::Application::getUserAppDataDir() + "pixmaps").c_str())
-            << QLatin1String(":/icons");
+               << QString::fromUtf8((App::Application::getUserAppDataDir() + "pixmaps").c_str())
+               << QLatin1String(":/icons");
     QDir::setSearchPaths(QString::fromLatin1("images"), imagePaths);
 }
 
@@ -167,7 +169,7 @@ void StartupProcess::setThemePaths()
 {
 #if !defined(Q_OS_LINUX)
     QIcon::setThemeSearchPaths(QIcon::themeSearchPaths()
-                            << QString::fromLatin1(":/icons/FreeCAD-default"));
+                               << QString::fromLatin1(":/icons/FreeCAD-default"));
 #endif
 
     ParameterGrp::handle hTheme = App::GetApplication().GetParameterGroupByPath(
@@ -201,11 +203,10 @@ void StartupProcess::setupFileDialog()
 // ------------------------------------------------------------------------------------------------
 
 StartupPostProcess::StartupPostProcess(MainWindow* mw, Application& guiApp, QApplication* app)
-    : mainWindow{mw}
-    , guiApp{guiApp}
+    : mainWindow {mw}
+    , guiApp {guiApp}
     , qtApp(app)
-{
-}
+{}
 
 void StartupPostProcess::setLoadFromPythonModule(bool value)
 {
@@ -239,15 +240,17 @@ void StartupPostProcess::setWindowTitle()
 void StartupPostProcess::setProcessMessages()
 {
     if (!loadFromPythonModule) {
-        QObject::connect(qtApp, SIGNAL(messageReceived(const QList<QString> &)),
-                         mainWindow, SLOT(processMessages(const QList<QString> &)));
+        QObject::connect(qtApp,
+                         SIGNAL(messageReceived(const QList<QString>&)),
+                         mainWindow,
+                         SLOT(processMessages(const QList<QString>&)));
     }
 }
 
 void StartupPostProcess::setAutoSaving()
 {
     ParameterGrp::handle hDocGrp = WindowParameter::getDefaultParameter()->GetGroup("Document");
-    int timeout = int(hDocGrp->GetInt("AutoSaveTimeout", 15L)); // 15 min
+    int timeout = int(hDocGrp->GetInt("AutoSaveTimeout", 15L));  // 15 min
     if (!hDocGrp->GetBool("AutoSaveEnabled", true)) {
         timeout = 0;
     }
@@ -263,7 +266,7 @@ void StartupPostProcess::setToolBarIconSize()
     int size = int(hGrp->GetInt("ToolbarIconSize", 0));
     // must not be lower than this
     if (size >= 16) {  // NOLINT
-        mainWindow->setIconSize(QSize(size,size));
+        mainWindow->setIconSize(QSize(size, size));
     }
 }
 
@@ -337,10 +340,10 @@ void StartupPostProcess::checkOpenGL()
                     .arg(minor)
                 + QStringLiteral("\n");
             Base::Console().Warning(message.toStdString().c_str());
-            Dialog::DlgCheckableMessageBox::showMessage(
-                QCoreApplication::applicationName() + QStringLiteral(" - ")
-                    + QObject::tr("Invalid OpenGL Version"),
-                message);
+            Dialog::DlgCheckableMessageBox::showMessage(QCoreApplication::applicationName()
+                                                            + QStringLiteral(" - ")
+                                                            + QObject::tr("Invalid OpenGL Version"),
+                                                        message);
         }
 #endif
         const char* glVersion = reinterpret_cast<const char*>(glGetString(GL_VERSION));
@@ -365,8 +368,8 @@ void StartupPostProcess::setBranding()
 {
     QString home = QString::fromStdString(App::Application::getHomePath());
 
-    const std::map<std::string,std::string>& cfg = App::Application::Config();
-    std::map<std::string,std::string>::const_iterator it;
+    const std::map<std::string, std::string>& cfg = App::Application::Config();
+    std::map<std::string, std::string>::const_iterator it;
     it = cfg.find("WindowTitle");
     if (it != cfg.end()) {
         QString title = QString::fromUtf8(it->second.c_str());
@@ -427,7 +430,6 @@ void StartupPostProcess::showMainWindow()
         Base::Console().Error("Error in FreeCADGuiInit.py: %s\n", e.what());
         mainWindow->stopSplasher();
         throw;
-
     }
 
     // stop splash screen and set immediately the active window that may be of interest
@@ -481,7 +483,7 @@ void StartupPostProcess::activateWorkbench()
         mainWindow->loadWindowSettings();
     }
 
-    //initialize spaceball.
+    // initialize spaceball.
     if (auto fcApp = qobject_cast<GUIApplicationNativeEventAware*>(qtApp)) {
         fcApp->initSpaceball(mainWindow);
     }

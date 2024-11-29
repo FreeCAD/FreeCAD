@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <memory>
+#include <memory>
 #endif
 
 #include <App/VarSet.h>

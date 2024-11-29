@@ -1289,7 +1289,7 @@ Jeśli ta opcja nie jest zaznaczona, właściwość musi być jednoznacznie nazw
       <source>Time in milliseconds to wait for the next keystroke of the current key sequence.
 For example, pressing 'F' twice in less than the time delay setting here will be
 treated as shortcut key sequence 'F, F'.</source>
-      <translation>Czas w milisekundach oczekiwania na kolejne naciśnięcie klawisza w bieżącej sekwencji klawiszy. 
+      <translation>Czas w milisekundach oczekiwania na kolejne naciśnięcie klawisza w bieżącej sekwencji klawiszy.
 Na przykład, naciśnięcie klawisza "F" dwukrotnie w krótszym czasie niż ustawienie opóźnienia tutaj
 zostanie traktowane jako sekwencja skrótu klawiszowego "F, F".</translation>
     </message>
@@ -1730,7 +1730,7 @@ wyzwolone zostanie to, które ma najwyższy priorytet.</translation>
     <message>
       <location filename="../DlgMacroExecute.ui" line="307"/>
       <source>Open Addon Manager where macros created by the community and other addons can be downloaded.</source>
-      <translation>Otwórz Menedżera dodatków, gdzie można pobrać 
+      <translation>Otwórz Menedżera dodatków, gdzie można pobrać
 makrodefinicje utworzone przez społeczność oraz inne dodatki.</translation>
     </message>
     <message>
@@ -2267,7 +2267,7 @@ Proszę podać inny katalog.</translation>
     <message>
       <location filename="../DlgPreferencePackManagementImp.cpp" line="144"/>
       <source>Toggle visibility of Addon preference pack '%1' (use Addon Manager to permanently remove)</source>
-      <translation>Przełącz widoczność paczki preferencji dodatków: '%1' 
+      <translation>Przełącz widoczność paczki preferencji dodatków: '%1'
 (użyj Menedżera Dodatków, aby trwale usunąć)</translation>
     </message>
     <message>
@@ -2363,7 +2363,7 @@ Proszę podać inny katalog.</translation>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="732"/>
       <source>You must restart FreeCAD for changes to take effect.</source>
-      <translation>Musisz zrestartować FreeCAD, 
+      <translation>Musisz zrestartować FreeCAD,
 aby zmiany zaczęły obowiązywać.</translation>
     </message>
     <message>
@@ -2772,7 +2772,7 @@ VBO jest funkcją OpenGL, która dostarcza metod do wysyłania
 danych o punktach (pozycja, normalny wektor, kolor, itp.) do karty graficznej.
 Używanie VBO zapewnia znaczny wzrost wydajności, ponieważ dane te znajdują się
 w pamięci graficznej, a nie w pamięci systemowej, dlatego też
-można bezpośrednio renderować używając GPU. 
+można bezpośrednio renderować używając GPU.
 
 Uwaga: Czasami funkcja ta może prowadzić do wielu różnych problemów
 od anomalii graficznych do błędów spowodowanych awarią GPU. Pamiętaj, o
@@ -2803,7 +2803,7 @@ There are 3 options available to achieve this:
 only cache at the scene graph root node. This offers the fastest rendering speed
 but slower response to any scene changes.</source>
       <translation>„Buforowanie renderowania" to inny sposób „przyspieszania renderowania”.
-Dostępne są 3 opcje: 
+Dostępne są 3 opcje:
 1) „Automatycznie" (domyślnie), niech Coin3D zdecyduje gdzie buforować.
 2) „Rozproszone", ręcznie włącz buforowanie dla wszystkich węzłów głównego dostawcy widoku.
 3) „Scentralizowane", ręcznie wyłącz cache we wszystkich węzłach wszystkich dostawców widoków, oraz
@@ -4703,7 +4703,7 @@ System preferencji to ten, który jest ustawiony w preferencjach ogólnych.</tra
       <source>Press 'Start Recovery' to start the recovery process of the document listed below.
 
 The 'Status' column shows whether the document could be recovered.</source>
-      <translation>Naciśnij przycisk "Rozpoczęcie odzyskiwania", aby rozpocząć proces przywracania dokumentu wymienionego poniżej. 
+      <translation>Naciśnij przycisk "Rozpoczęcie odzyskiwania", aby rozpocząć proces przywracania dokumentu wymienionego poniżej.
 
 Kolumna "Aktualny status" pokazuje, czy dokument może być odzyskany.</translation>
     </message>
@@ -5736,7 +5736,7 @@ wstępnie wybranymi przed otwarciem tego okna</translation>
       <source>%1.
 
 This has been modified outside of the source editor. Do you want to reload it?</source>
-      <translation>%1. 
+      <translation>%1.
 
 Został zmodyfikowany poza edytorem. Czy chcesz go ponownie załadować?</translation>
     </message>
@@ -7337,8 +7337,8 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../Tree.cpp" line="1117"/>
       <source>Show a description column for items. An item's description can be set by pressing F2 (or your OS's edit button) or by editing the 'label2' property.</source>
-      <translation>Wyświetla kolumnę opisu dla elementów. 
-Opis elementu można ustawić, naciskając klawisz F2 
+      <translation>Wyświetla kolumnę opisu dla elementów.
+Opis elementu można ustawić, naciskając klawisz F2
 (lub przycisk edycji systemu operacyjnego) lub edytując właściwość "etykieta2".</translation>
     </message>
     <message>
@@ -7817,8 +7817,8 @@ Opis elementu można ustawić, naciskając klawisz F2
       <source>Some document(s) require recomputation for migration purposes. It is highly recommended to perform a recomputation before any modification to avoid compatibility problems.
 
 Do you want to recompute now?</source>
-      <translation>Niektóre dokumenty wymagają ponownego przeliczenia do celów migracji. 
-Zalecane jest ponowne przeliczenie przed modyfikacją, 
+      <translation>Niektóre dokumenty wymagają ponownego przeliczenia do celów migracji.
+Zalecane jest ponowne przeliczenie przed modyfikacją,
 w celu uniknięcia problemów kompatybilności.
 
 Czy chcesz przeliczyć teraz?</translation>
@@ -7848,8 +7848,8 @@ Sprawdź widok raportu, aby uzyskać więcej informacji.</translation>
     <message>
       <location filename="../StartupProcess.cpp" line="331"/>
       <source>This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Please upgrade your graphics driver and/or card as required.</source>
-      <translation>W tym systemie działa OpenGL w wersji %1.%2. 
-FreeCAD wymaga OpenGL 2.0 lub nowszego. 
+      <translation>W tym systemie działa OpenGL w wersji %1.%2.
+FreeCAD wymaga OpenGL 2.0 lub nowszego.
 W razie potrzeby zaktualizuj sterownik i / lub kartę graficzną.</translation>
     </message>
     <message>
@@ -7876,9 +7876,9 @@ W razie potrzeby zaktualizuj sterownik i / lub kartę graficzną.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="166"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
-      <translation>Podczas wczytywania pliku wystąpiły błędy. 
-Niektóre dane mogły zostać zmodyfikowane lub w ogóle nie zostały odtworzone. 
-Zajrzyj do widoku raportu w celu uzyskania bardziej szczegółowych informacji 
+      <translation>Podczas wczytywania pliku wystąpiły błędy.
+Niektóre dane mogły zostać zmodyfikowane lub w ogóle nie zostały odtworzone.
+Zajrzyj do widoku raportu w celu uzyskania bardziej szczegółowych informacji
 na temat obiektów, których to dotyczy.</translation>
     </message>
     <message>
@@ -8211,7 +8211,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../NotificationArea.cpp" line="1159"/>
       <source>Too many opened non-intrusive notifications. Notifications are being omitted!</source>
-      <translation>Zbyt wiele otwartych powiadomień. 
+      <translation>Zbyt wiele otwartych powiadomień.
 Powiadomienia są pomijane!</translation>
     </message>
     <message>
@@ -8678,7 +8678,7 @@ podkreślenie i nie może zaczynać się od cyfry.</translation>
       <location filename="../ViewProviderLink.cpp" line="2470"/>
       <source>Apply the setting to all links. Or, uncheck this
 option to apply only to this link.</source>
-      <translation>Zastosuj to ustawienie do wszystkich łączy. 
+      <translation>Zastosuj to ustawienie do wszystkich łączy.
 Można też usunąć zaznaczenie tej opcji,
 aby zastosować ustawienie tylko do bieżącego łącza.</translation>
     </message>
@@ -9623,8 +9623,8 @@ oraz nie może zaczynać się od cyfry.</translation>
     <message>
       <location filename="../CommandLink.cpp" line="211"/>
       <source>A Link is an object that references or links to another object in the same document, or in another document. Unlike Clones, Links reference the original Shape directly, making them more memory-efficient, which helps with the creation of complex assemblies.</source>
-      <translation>Łącze to obiekt, który odnosi się lub łączy z innym obiektem w tym samym dokumencie 
-lub w innym dokumencie. W przeciwieństwie do klonów Łącza odnoszą się bezpośrednio do oryginalnego kształtu, 
+      <translation>Łącze to obiekt, który odnosi się lub łączy z innym obiektem w tym samym dokumencie
+lub w innym dokumencie. W przeciwieństwie do klonów Łącza odnoszą się bezpośrednio do oryginalnego kształtu,
 co czyni je bardziej efektywnymi pod względem pamięciowym, co pomaga w tworzeniu złożonych złożeń.</translation>
     </message>
   </context>
@@ -9921,9 +9921,9 @@ co czyni je bardziej efektywnymi pod względem pamięciowym, co pomaga w tworzen
     <message>
       <location filename="../CommandStructure.cpp" line="53"/>
       <source>A Part is a general purpose container to keep together a group of objects so that they act as a unit in the 3D view. It is meant to arrange objects that have a Part TopoShape, like Part Primitives, PartDesign Bodies, and other Parts.</source>
-      <translation>Część to kontener ogólnego przeznaczenia służący do przechowywania razem grupy obiektów, 
-tak aby działały one jako jednostka w widoku 3D. 
-Służy do rozmieszczania obiektów, które mają Kształt Topologiczny środowiska Część, 
+      <translation>Część to kontener ogólnego przeznaczenia służący do przechowywania razem grupy obiektów,
+tak aby działały one jako jednostka w widoku 3D.
+Służy do rozmieszczania obiektów, które mają Kształt Topologiczny środowiska Część,
 takich jak Elementy pierwotne środowiska Część, Zawartość środowiska Projekt Części i inne części.</translation>
     </message>
   </context>
@@ -11506,8 +11506,8 @@ Czy nadal chcesz kontynuować?</translation>
     <message>
       <location filename="../TreeParams.cpp" line="1472"/>
       <source>If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled</source>
-      <translation>Jeśli opcja ta jest włączona, przed elementami widoku drzewa wyświetlana jest ikonka oka, 
-pokazująca stan widoczności elementów. 
+      <translation>Jeśli opcja ta jest włączona, przed elementami widoku drzewa wyświetlana jest ikonka oka,
+pokazująca stan widoczności elementów.
 Po kliknięciu widoczność jest przełączana.</translation>
     </message>
   </context>
@@ -12025,7 +12025,7 @@ nie pojawi się na liście dostępnych.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="131"/>
       <source>If checked, %1 will be loaded automatically when FreeCAD starts up</source>
-      <translation>Jeśli ta opcja jest zaznaczona, środowisko pracy%1 
+      <translation>Jeśli ta opcja jest zaznaczona, środowisko pracy%1
 zostanie załadowane automatycznie po uruchomieniu programu FreeCAD</translation>
     </message>
     <message>
@@ -12458,7 +12458,7 @@ zostanie załadowane automatycznie po uruchomieniu programu FreeCAD</translation
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="62"/>
       <source>Unit system for all parts of the application. Can be overridden by specifying a document unit system.</source>
-      <translation>Układ jednostek dla wszystkich środowisk aplikacji. 
+      <translation>Układ jednostek dla wszystkich środowisk aplikacji.
 Może być zastąpiony przez określenie systemu jednostek projektu.</translation>
     </message>
     <message>
@@ -12546,7 +12546,7 @@ gdzie zawsze będzie wpisywana kropka.</translation>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="263"/>
       <source>Choose your preference for toolbar icon size. You can adjust
 this according to your screen size or personal taste</source>
-      <translation>Wybierz preferowany rozmiar ikonek paska narzędzi. Możesz dokonać zmiany 
+      <translation>Wybierz preferowany rozmiar ikonek paska narzędzi. Możesz dokonać zmiany
 w zależności od wielkości ekranu lub swoich upodobań</translation>
     </message>
     <message>
@@ -12805,7 +12805,7 @@ na ekranie podczas wyświetlania błędu</translation>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="131"/>
       <source>When a warning has occurred, the Report View dialog becomes visible
 on-screen while displaying the warning</source>
-      <translation>Gdy pojawi się ostrzeżenie, okno dialogowe Widoku Raportu zostanie 
+      <translation>Gdy pojawi się ostrzeżenie, okno dialogowe Widoku Raportu zostanie
 wyświetlone na ekranie podczas wyświetlania ostrzeżenia</translation>
     </message>
     <message>
@@ -12817,7 +12817,7 @@ wyświetlone na ekranie podczas wyświetlania ostrzeżenia</translation>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="148"/>
       <source>When a normal message has occurred, the Report View dialog becomes visible
 on-screen while displaying the message</source>
-      <translation>Gdy pojawi się zwykły komunikat, okno dialogowe Widoku Raportu zostanie 
+      <translation>Gdy pojawi się zwykły komunikat, okno dialogowe Widoku Raportu zostanie
 wyświetlone na ekranie</translation>
     </message>
     <message>
@@ -12829,7 +12829,7 @@ wyświetlone na ekranie</translation>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="168"/>
       <source>When a log message has occurred, the Report View dialog becomes visible
 on-screen while displaying the log message</source>
-      <translation>Gdy pojawi się komunikat dziennika, okno dialogowe Widoku Raportu zostanie 
+      <translation>Gdy pojawi się komunikat dziennika, okno dialogowe Widoku Raportu zostanie
 wyświetlone na ekranie podczas wyświetlania komunikatu dziennika</translation>
     </message>
     <message>
@@ -12901,7 +12901,7 @@ wyświetlone na ekranie podczas wyświetlania komunikatu dziennika</translation>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="507"/>
       <source>Internal Python output will be redirected
 from Python console to Report view panel</source>
-      <translation>Wewnętrzne dane wyjściowe środowiska Python zostaną przekierowane 
+      <translation>Wewnętrzne dane wyjściowe środowiska Python zostaną przekierowane
 z konsoli Python do panelu Widoku Raportu</translation>
     </message>
     <message>
@@ -13222,13 +13222,13 @@ gdy wszystkie piksele wewnątrz regionu są nieprzezroczyste.</translation>
     <message>
       <location filename="../OverlayParams.cpp" line="657"/>
       <source>Auto hide hint visual display length for right panel. Set to zero to fill the space.</source>
-      <translation>Automatycznie ukrywa widoczną długość podpowiedzi dla prawej strony panelu. 
+      <translation>Automatycznie ukrywa widoczną długość podpowiedzi dla prawej strony panelu.
 Ustaw zero, aby wypełnić miejsce.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="685"/>
       <source>Auto hide hint visual display length for top panel. Set to zero to fill the space.</source>
-      <translation>Automatycznie ukrywa widoczną długość podpowiedzi dla góry panelu. 
+      <translation>Automatycznie ukrywa widoczną długość podpowiedzi dla góry panelu.
 Ustaw zero, aby wypełnić miejsce.</translation>
     </message>
     <message>
@@ -13433,8 +13433,8 @@ Ustaw zero, aby wypełnić miejsce.</translation>
     <message>
       <location filename="../CommandFeat.cpp" line="162"/>
       <source>Toggles freeze state of the selected objects. A frozen object is not recomputed when its parents change.</source>
-      <translation>Przełącza stan zamrożenia wybranych obiektów. 
-Obiekt zamrożony nie jest ponownie przeliczany, 
+      <translation>Przełącza stan zamrożenia wybranych obiektów.
+Obiekt zamrożony nie jest ponownie przeliczany,
 gdy zmieniają się jego obiekty nadrzędne.</translation>
     </message>
   </context>
@@ -13630,14 +13630,14 @@ gdy zmieniają się jego obiekty nadrzędne.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="26"/>
       <source>This section lets you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</source>
-      <translation>Ta sekcja pozwala dostosować swój bieżący motyw. 
+      <translation>Ta sekcja pozwala dostosować swój bieżący motyw.
 Zaoferowane ustawienia są opcjonalne dla programistów motywów, więc mogą lub nie mieć wpływ na bieżący motyw.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="299"/>
       <source>If enabled, show an eye icon before the tree view items, showing their visibility status. When clicked the visibility is toggled.</source>
-      <translation>Jeśli opcja ta jest włączona, przed elementami widoku drzewa wyświetlana jest ikonka oka, 
-pokazująca stan widoczności elementów. 
+      <translation>Jeśli opcja ta jest włączona, przed elementami widoku drzewa wyświetlana jest ikonka oka,
+pokazująca stan widoczności elementów.
 Po kliknięciu widoczność jest przełączana.</translation>
     </message>
     <message>
@@ -13751,7 +13751,7 @@ Po kliknięciu widoczność jest przełączana.</translation>
     <message>
       <location filename="../CommandStructure.cpp" line="140"/>
       <source>A Variable Set is an object that maintains a set of properties to be used as variables.</source>
-      <translation>Zestaw zmiennych to obiekt, 
+      <translation>Zestaw zmiennych to obiekt,
 który przechowuje zestaw właściwości używanych jako zmienne.</translation>
     </message>
   </context>

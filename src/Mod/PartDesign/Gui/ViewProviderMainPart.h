@@ -27,9 +27,10 @@
 #include <Mod/Part/Gui/ViewProvider.h>
 
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
-class PartDesignGuiExport ViewProviderMainPart : public PartGui::ViewProviderPart
+class PartDesignGuiExport ViewProviderMainPart: public PartGui::ViewProviderPart
 {
     PROPERTY_HEADER(PartDesignGui::ViewProviderMainPart);
 
@@ -40,11 +41,11 @@ public:
     virtual ~ViewProviderMainPart();
 
     /// grouping handling
-    std::vector<App::DocumentObject*> claimChildren(void)const;
+    std::vector<App::DocumentObject*> claimChildren(void) const;
 };
 
 
-} // namespace PartDesignGui
+}  // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderMainPart_H
+#endif  // PARTGUI_ViewProviderMainPart_H

@@ -1296,7 +1296,7 @@ Ad esempio, premendo 'F' due volte di seguito più rapidamente dell'impostazione
       <source>This list shows commands having the same shortcut in the priority from high
 to low. If more than one command with the same shortcut are active at the
 same time. The one with the highest priority will be triggered.</source>
-      <translation>Questo elenco mostra i comandi con la stessa scorciatoia ma elencati con priorità dall'alto al basso. Se più comandi 
+      <translation>Questo elenco mostra i comandi con la stessa scorciatoia ma elencati con priorità dall'alto al basso. Se più comandi
 con la stessa scorciatoia sono attivi contemporaneamente sarà usato il comando a priorità maggiore.</translation>
     </message>
     <message>
@@ -1864,7 +1864,7 @@ Nota: le modifiche verranno applicate al successivo cambio di ambiente di lavoro
       <location filename="../DlgMacroExecuteImp.cpp" line="1078"/>
       <source>'%1'
  already exists.</source>
-      <translation>'%1' 
+      <translation>'%1'
 esiste già.</translation>
     </message>
     <message>
@@ -2068,7 +2068,7 @@ Forse un errore di autorizzazione del file?</translation>
 
 Specify another directory, please.</source>
       <translation>Accesso negato a '%1'
-		
+
 Specificare un'altra cartella.</translation>
     </message>
   </context>
@@ -2766,7 +2766,7 @@ Un VBO è una funzione OpenGL che fornisce metodi per caricare i dati dei vertic
 (posizione, vettore normale, colore, ecc.) sulla scheda grafica.
 I VB offrono notevoli guadagni di prestazioni perché i dati risiedono
 nella memoria grafica invece della memoria di sistema e quindi
-possono essere visualizzati direttamente dalla GPU. 
+possono essere visualizzati direttamente dalla GPU.
 
 Nota: a volte questa funzione può causare a una miriade di problemi
 diversi che vanno dalle anomalie grafiche ai bug crash della GPU. Ricordarsi di
@@ -3445,10 +3445,10 @@ Then only referenced objects and their dependencies will be loaded
 when a linked document is auto-opened together with the main document.
 A partially loaded document cannot be edited. Double click the document
 icon in the tree view to fully reload it.</source>
-      <translation>Abilita il caricamento parziale del documento esterno collegato. Se abilitato, quando un documento 
+      <translation>Abilita il caricamento parziale del documento esterno collegato. Se abilitato, quando un documento
 collegato viene aperto automaticamente insieme al documento principale, verranno caricati solo
 gli oggetti referenziati e le loro dipendenze.
-Un documento caricato parzialmente non può essere modificato. Fare doppio clic sull'icona del 
+Un documento caricato parzialmente non può essere modificato. Fare doppio clic sull'icona del
 documento nella vista ad albero per ricaricarlo completamente.</translation>
     </message>
     <message>
@@ -4204,8 +4204,8 @@ Il passo di zoom di '1' significa un fattore di 7.5 per ogni fase di zoom.</tran
       <source>Prevents view tilting when pinch-zooming.
 Affects only gesture navigation style.
 Mouse tilting is not disabled by this setting.</source>
-      <translation>Impedisce l'inclinazione della vista quando si pizzica per zoomare. 
-Interessa solo lo stile gesture. 
+      <translation>Impedisce l'inclinazione della vista quando si pizzica per zoomare.
+Interessa solo lo stile gesture.
 Questa impostazione non disabilitata l'inclinazione tramite mouse.</translation>
     </message>
     <message>
@@ -5728,7 +5728,7 @@ originariamente selezionati prima di aprire questa finestra</translation>
 
 This has been modified outside of the source editor. Do you want to reload it?</source>
       <translation>%1.
-		
+
 Questo è stato modificato al di fuori dell'editor sorgente. Vuoi ricaricarlo?</translation>
     </message>
     <message>
@@ -6271,7 +6271,7 @@ Vuoi salvare il documento ora?</translation>
 On the left view %1 points are picked,
 on the right view %2 points are picked.</source>
       <translation>Diverso numero di punti specificati nella vista di destra e sinistra.
-Nella vista sinistra sono stati specificati %1 punti, 
+Nella vista sinistra sono stati specificati %1 punti,
 nella vista destra sono stati specificati %2 punti.</translation>
     </message>
     <message>
@@ -6817,7 +6817,7 @@ Vuoi uscire senza salvare i tuoi dati?</translation>
 
 Do you want to specify an existing directory?</source>
       <translation>La cartella '%1' non esiste.
-		
+
 Vuoi specificare una cartella esistente?</translation>
     </message>
     <message>
@@ -6831,7 +6831,7 @@ Vuoi specificare una cartella esistente?</translation>
 
 Do you want to specify another directory?</source>
       <translation>Non hai il permesso di scrittura in '%1'
-		
+
 Vuoi specificare un'altra cartella?</translation>
     </message>
     <message>

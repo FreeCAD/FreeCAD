@@ -77,7 +77,7 @@ i.e. counter-clockwise when moving along its axis.</source>
       <location filename="../../../App/FeatureHelix.cpp" line="105"/>
       <source>If false, the tool will propose an initial value for the pitch based on the profile bounding box,
 so that self intersection is avoided.</source>
-      <translation>Якщо не встановлено, інструмент запропонує початкове значення кроку на основі 
+      <translation>Якщо не встановлено, інструмент запропонує початкове значення кроку на основі
 обмежувальної границі профілю, щоб уникнути самоперетину.</translation>
     </message>
     <message>
@@ -2432,7 +2432,7 @@ the sketch plane's normal vector will be used</source>
       <location filename="../../TaskPadPocketParameters.ui" line="403"/>
       <source>If unchecked, the length will be
 measured along the specified direction</source>
-      <translation>Якщо прапорець не встановлений, довжина 
+      <translation>Якщо прапорець не встановлений, довжина
 вимірюватиметься вздовж зазначеного напрямку</translation>
     </message>
     <message>
@@ -4848,7 +4848,7 @@ over 90: larger hole radius at the bottom</source>
   material to be removed;
   - the selected sketch does not belong to the active Body.</source>
       <translation>Неможливо створити запитану функцію. Причиною може бути те, що:
-  - активне тіло не містить базової форми, тому немає матеріалу 
+  - активне тіло не містить базової форми, тому немає матеріалу
 для видалення;
   - виділений ескіз не належить до активного тіла.</translation>
     </message>

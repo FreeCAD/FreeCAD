@@ -1,25 +1,25 @@
- /// SPDX-License-Identifier: LGPL-2.1-or-later
- /****************************************************************************
-  *                                                                          *
-  *   Copyright (c) 2023 Ondsel <development@ondsel.com>                     *
-  *                                                                          *
-  *   This file is part of FreeCAD.                                          *
-  *                                                                          *
-  *   FreeCAD is free software: you can redistribute it and/or modify it     *
-  *   under the terms of the GNU Lesser General Public License as            *
-  *   published by the Free Software Foundation, either version 2.1 of the   *
-  *   License, or (at your option) any later version.                        *
-  *                                                                          *
-  *   FreeCAD is distributed in the hope that it will be useful, but         *
-  *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
-  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
-  *   Lesser General Public License for more details.                        *
-  *                                                                          *
-  *   You should have received a copy of the GNU Lesser General Public       *
-  *   License along with FreeCAD. If not, see                                *
-  *   <https://www.gnu.org/licenses/>.                                       *
-  *                                                                          *
-  ***************************************************************************/
+/// SPDX-License-Identifier: LGPL-2.1-or-later
+/****************************************************************************
+ *                                                                          *
+ *   Copyright (c) 2023 Ondsel <development@ondsel.com>                     *
+ *                                                                          *
+ *   This file is part of FreeCAD.                                          *
+ *                                                                          *
+ *   FreeCAD is free software: you can redistribute it and/or modify it     *
+ *   under the terms of the GNU Lesser General Public License as            *
+ *   published by the Free Software Foundation, either version 2.1 of the   *
+ *   License, or (at your option) any later version.                        *
+ *                                                                          *
+ *   FreeCAD is distributed in the hope that it will be useful, but         *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
+ *   Lesser General Public License for more details.                        *
+ *                                                                          *
+ *   You should have received a copy of the GNU Lesser General Public       *
+ *   License along with FreeCAD. If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                       *
+ *                                                                          *
+ ***************************************************************************/
 
 #ifndef GUI_EDITABLEDATUMLABEL_H
 #define GUI_EDITABLEDATUMLABEL_H
@@ -35,23 +35,29 @@
 class SoNodeSensor;
 class SoTransform;
 
-namespace Gui {
+namespace Gui
+{
 
 class View3DInventorViewer;
 
 
-class GuiExport EditableDatumLabel : public QObject
+class GuiExport EditableDatumLabel: public QObject
 {
     Q_OBJECT
     Q_DISABLE_COPY(EditableDatumLabel)
 
 public:
-    enum class Function {
+    enum class Function
+    {
         Positioning,
         Dimensioning
     };
 
-    EditableDatumLabel(View3DInventorViewer* view, const Base::Placement& plc, SbColor color, bool autoDistance = false, bool avoidMouseCursor = false);
+    EditableDatumLabel(View3DInventorViewer* view,
+                       const Base::Placement& plc,
+                       SbColor color,
+                       bool autoDistance = false,
+                       bool avoidMouseCursor = false);
 
     ~EditableDatumLabel() override;
 
@@ -107,7 +113,7 @@ private:
     Function function;
 };
 
-}
+}  // namespace Gui
 
 
-#endif // GUI_EDITABLEDATUMLABEL_H
+#endif  // GUI_EDITABLEDATUMLABEL_H

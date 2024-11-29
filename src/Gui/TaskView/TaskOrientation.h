@@ -29,10 +29,11 @@
 #include <App/GeoFeature.h>
 #include <memory>
 
-namespace Gui {
+namespace Gui
+{
 
 class Ui_TaskOrientation;
-class TaskOrientation : public QWidget
+class TaskOrientation: public QWidget
 {
     Q_OBJECT
 
@@ -55,7 +56,7 @@ private:
     App::WeakPtrT<App::GeoFeature> feature;
 };
 
-class TaskOrientationDialog : public Gui::TaskView::TaskDialog
+class TaskOrientationDialog: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
@@ -67,7 +68,8 @@ public:
     bool accept() override;
     bool reject() override;
 
-    QDialogButtonBox::StandardButtons getStandardButtons() const override {
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
+    {
         return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
     }
 
@@ -75,6 +77,6 @@ private:
     TaskOrientation* widget;
 };
 
-}
+}  // namespace Gui
 
-#endif // GUI_TASKORIENTATION_H
+#endif  // GUI_TASKORIENTATION_H

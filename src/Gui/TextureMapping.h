@@ -31,11 +31,13 @@ class SoGroup;
 class SoTexture2;
 class SoTextureCoordinateEnvironment;
 
-namespace Gui {
-namespace Dialog {
+namespace Gui
+{
+namespace Dialog
+{
 
 class Ui_TextureMapping;
-class GuiExport TextureMapping : public QDialog
+class GuiExport TextureMapping: public QDialog
 {
     Q_OBJECT
 
@@ -50,8 +52,8 @@ private:
     void onCheckEnvToggled(bool);
 
 protected:
-    void changeEvent(QEvent *e) override;
-    void keyPressEvent(QKeyEvent *e) override;
+    void changeEvent(QEvent* e) override;
+    void keyPressEvent(QKeyEvent* e) override;
 
 private:
     SoGroup* grp;
@@ -61,7 +63,7 @@ private:
     Ui_TextureMapping* ui;
 };
 
-class TaskTextureMapping : public Gui::TaskView::TaskDialog
+class TaskTextureMapping: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
@@ -74,13 +76,15 @@ public:
     bool reject() override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Close; }
+    {
+        return QDialogButtonBox::Close;
+    }
 
 private:
     TextureMapping* dialog;
 };
 
-} // namespace Dialog
-} // namespace Gui
+}  // namespace Dialog
+}  // namespace Gui
 
-#endif // GUI_TEXTUREMAPPING_H
+#endif  // GUI_TEXTUREMAPPING_H

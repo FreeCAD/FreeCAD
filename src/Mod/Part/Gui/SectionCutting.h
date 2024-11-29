@@ -37,17 +37,19 @@ namespace Gui
 class ViewProviderGeometryObject;
 }
 
-namespace Part {
+namespace Part
+{
 class Box;
 class Cut;
 class Compound;
-}
+}  // namespace Part
 
-namespace PartGui {
+namespace PartGui
+{
 
 class Ui_SectionCut;
 
-class SectionCut : public QDialog
+class SectionCut: public QDialog
 {
     Q_OBJECT
 
@@ -127,16 +129,23 @@ private:
     void setObjectsVisible(bool value);
     int getCompoundTransparency() const;
     static SbBox3f getViewBoundingBox();
-    void refreshCutRanges(SbBox3f, bool forXValue, bool forYValue, bool forZValue,
-                          bool forXRange, bool forYRange, bool forZRange);
+    void refreshCutRanges(SbBox3f,
+                          bool forXValue,
+                          bool forYValue,
+                          bool forZValue,
+                          bool forXRange,
+                          bool forYRange,
+                          bool forZRange);
     void adjustYZRanges(SbBox3f);
     void CutValueHelper(double val, QDoubleSpinBox* SpinBox, QSlider* Slider);
     void FlipClickedHelper(const char* BoxName);
     void changeCutBoxColors();
     void createAllObjects(const std::vector<App::DocumentObject*>& ObjectsListCut);
     App::DocumentObject* CreateBooleanFragments(App::Document* doc);
-    App::DocumentObject* createBooleanFragments(const std::vector<App::DocumentObject*>& links, int transparency);
-    Part::Compound* createCompound(const std::vector<App::DocumentObject*>& links, int transparency);
+    App::DocumentObject* createBooleanFragments(const std::vector<App::DocumentObject*>& links,
+                                                int transparency);
+    Part::Compound* createCompound(const std::vector<App::DocumentObject*>& links,
+                                   int transparency);
     void setBooleanFragmentsColor();
     Part::Box* findCutBox(const char* name) const;
     App::DocumentObject* findObject(const char* objName) const;
@@ -149,9 +158,12 @@ private:
     void adjustYRange();
     void adjustZRange();
     void resetHasBoxes();
-    App::DocumentObject* getCutXBase(size_t num, App::DocumentObject* comp, App::DocumentObject* frag) const;
-    App::DocumentObject* getCutYBase(size_t num, App::DocumentObject* comp, App::DocumentObject* frag) const;
-    App::DocumentObject* getCutZBase(size_t num, App::DocumentObject* comp, App::DocumentObject* frag) const;
+    App::DocumentObject*
+    getCutXBase(size_t num, App::DocumentObject* comp, App::DocumentObject* frag) const;
+    App::DocumentObject*
+    getCutYBase(size_t num, App::DocumentObject* comp, App::DocumentObject* frag) const;
+    App::DocumentObject*
+    getCutZBase(size_t num, App::DocumentObject* comp, App::DocumentObject* frag) const;
     Part::Cut* createCut(const char* name);
     Part::Cut* tryCreateCut(const char* name);
     Part::Box* createBox(const char* name, const Base::Vector3f& size);
@@ -175,7 +187,7 @@ private:
 private:
     std::unique_ptr<Ui_SectionCut> ui;
     std::vector<App::DocumentObjectT> ObjectsListVisible;
-    App::Document* doc = nullptr; // pointer to active document
+    App::Document* doc = nullptr;  // pointer to active document
     bool hasBoxX = false;
     bool hasBoxY = false;
     bool hasBoxZ = false;
@@ -189,6 +201,6 @@ private:
     const char* CutZName = "SectionCutZ";
 };
 
-} // namespace PartGui
+}  // namespace PartGui
 
-#endif // PARTGUI_SECTIONCUTTING_H
+#endif  // PARTGUI_SECTIONCUTTING_H

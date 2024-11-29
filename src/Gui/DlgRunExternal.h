@@ -28,8 +28,10 @@
 #include <QProcess>
 #include <FCGlobal.h>
 
-namespace Gui {
-namespace Dialog {
+namespace Gui
+{
+namespace Dialog
+{
 class Ui_DlgRunExternal;
 
 /**
@@ -37,7 +39,7 @@ class Ui_DlgRunExternal;
  * programs to edit FreeCAD controlled content.
  * \author Jürgen Riegel
  */
-class GuiExport DlgRunExternal : public QDialog
+class GuiExport DlgRunExternal: public QDialog
 {
     Q_OBJECT
 
@@ -53,7 +55,7 @@ protected Q_SLOTS:
     void accept() override;
     virtual void abort();
     virtual void advanced();
-    void finished (int exitCode, QProcess::ExitStatus exitStatus);
+    void finished(int exitCode, QProcess::ExitStatus exitStatus);
     void onChooseProgramClicked();
 
 private:
@@ -64,7 +66,7 @@ private:
     std::unique_ptr<Ui_DlgRunExternal> ui;
 };
 
-} // namespace Dialog
-} // namespace Gui
+}  // namespace Dialog
+}  // namespace Gui
 
-#endif // GUI_DIALOG_DlgRunExternal_H
+#endif  // GUI_DIALOG_DlgRunExternal_H

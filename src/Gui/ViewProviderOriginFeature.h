@@ -34,44 +34,54 @@ namespace Gui
 /**
  * View provider associated with an App::OriginFeature.
  */
-class GuiExport ViewProviderOriginFeature: public ViewProviderGeometryObject {
+class GuiExport ViewProviderOriginFeature: public ViewProviderGeometryObject
+{
     PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderOriginFeature);
 
 public:
     /// The display size of the feature
-    App::PropertyFloat  Size;
+    App::PropertyFloat Size;
 
-    ViewProviderOriginFeature ();
-    ~ViewProviderOriginFeature () override;
+    ViewProviderOriginFeature();
+    ~ViewProviderOriginFeature() override;
 
     /// Get point derived classes will add their specific stuff
-    SoSeparator * getOriginFeatureRoot () { return pOriginFeatureRoot; }
+    SoSeparator* getOriginFeatureRoot()
+    {
+        return pOriginFeatureRoot;
+    }
 
     /// Get pointer to the text label associated with the feature
-    SoAsciiText * getLabel () { return pLabel; }
+    SoAsciiText* getLabel()
+    {
+        return pLabel;
+    }
 
-    void attach(App::DocumentObject *) override;
-    void updateData(const App::Property *) override;
-    std::vector<std::string> getDisplayModes () const override;
-    void setDisplayMode (const char* ModeName) override;
+    void attach(App::DocumentObject*) override;
+    void updateData(const App::Property*) override;
+    std::vector<std::string> getDisplayModes() const override;
+    void setDisplayMode(const char* ModeName) override;
 
     /// @name Suppress ViewProviderGeometryObject's behaviour
     ///@{
-    bool setEdit ( int ) override
-        { return false; }
-    void unsetEdit ( int ) override
-        { }
+    bool setEdit(int) override
+    {
+        return false;
+    }
+    void unsetEdit(int) override
+    {}
     ///@}
 
 protected:
-    void onChanged ( const App::Property* prop ) override;
-    bool onDelete ( const std::vector<std::string> & ) override;
+    void onChanged(const App::Property* prop) override;
+    bool onDelete(const std::vector<std::string>&) override;
+
 protected:
-    SoSeparator    * pOriginFeatureRoot;
-    SoScale        * pScale;
-    SoAsciiText    * pLabel;
+    SoSeparator* pOriginFeatureRoot;
+    SoScale* pScale;
+    SoAsciiText* pLabel;
 };
 
-} /* Gui */
+}  // namespace Gui
 
 #endif /* end of include guard: VIEWPROVIDEORIGINFEATURE_H_BYJRZNDL */

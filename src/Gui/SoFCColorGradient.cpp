@@ -23,17 +23,17 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
-# include <QCoreApplication>
-# include <Inventor/fields/SoMFString.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoFont.h>
-# include <Inventor/nodes/SoIndexedFaceSet.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoText2.h>
-# include <Inventor/nodes/SoTransform.h>
-# include <Inventor/nodes/SoTransparencyType.h>
+#include <sstream>
+#include <QCoreApplication>
+#include <Inventor/fields/SoMFString.h>
+#include <Inventor/nodes/SoBaseColor.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoFont.h>
+#include <Inventor/nodes/SoIndexedFaceSet.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoText2.h>
+#include <Inventor/nodes/SoTransform.h>
+#include <Inventor/nodes/SoTransparencyType.h>
 #endif
 
 #include <Base/Parameter.h>
@@ -82,7 +82,7 @@ SoFCColorGradient::SoFCColorGradient()
 */
 SoFCColorGradient::~SoFCColorGradient()
 {
-    //delete THIS;
+    // delete THIS;
     coords->unref();
     labels->unref();
 }
@@ -191,48 +191,50 @@ void SoFCColorGradient::setViewportSize(const SbVec2s& size)
         }
     }
 
-    // gradient bar is shifted to the left by width of the labels to assure that labels are fully visible
+    // gradient bar is shifted to the left by width of the labels to assure that labels are fully
+    // visible
     _bbox.setBounds(fMinX - boxWidth, fMinY, fMaxX - boxWidth, fMaxY);
     modifyPoints(_bbox);
 }
 
 namespace
 {
-    bool isScientific(float fMin, float fMax, int prec, int numColors)
-    {
-        const float base10 = 10.0F;
-        float eps = std::pow(base10, static_cast<float>(-prec));
-        float value_min = std::min<float>(fabs(fMin), fabs(fMax));
-        float value_max = std::max<float>(fabs(fMin), fabs(fMax));
+bool isScientific(float fMin, float fMax, int prec, int numColors)
+{
+    const float base10 = 10.0F;
+    float eps = std::pow(base10, static_cast<float>(-prec));
+    float value_min = std::min<float>(fabs(fMin), fabs(fMax));
+    float value_max = std::max<float>(fabs(fMin), fabs(fMax));
 
-        if (value_min < eps && value_min > 0.0F) {
-            return true;
-        }
-
-        if ((value_max - value_min) < eps * static_cast<float>(numColors -1)) {
-            return true;
-        }
-
-        return value_max > upperLimit;
+    if (value_min < eps && value_min > 0.0F) {
+        return true;
     }
 
-    std::ios::fmtflags getFormatFlags(float fMin, float fMax, int prec, int numColors)
-    {
-        bool scientific = isScientific(fMin, fMax, prec, numColors);
-        std::ios::fmtflags flags = scientific ? (std::ios::scientific | std::ios::showpoint | std::ios::showpos)
-                                              : (std::ios::fixed | std::ios::showpoint | std::ios::showpos);
-        return flags;
+    if ((value_max - value_min) < eps * static_cast<float>(numColors - 1)) {
+        return true;
     }
 
-    std::string getLabelText(float value, int prec,  std::ios::fmtflags flags)
-    {
-        std::stringstream str;
-        str.precision(prec);
-        str.setf(flags);
-        str << value;
-        return str.str();
-    }
+    return value_max > upperLimit;
 }
+
+std::ios::fmtflags getFormatFlags(float fMin, float fMax, int prec, int numColors)
+{
+    bool scientific = isScientific(fMin, fMax, prec, numColors);
+    std::ios::fmtflags flags = scientific
+        ? (std::ios::scientific | std::ios::showpoint | std::ios::showpos)
+        : (std::ios::fixed | std::ios::showpoint | std::ios::showpos);
+    return flags;
+}
+
+std::string getLabelText(float value, int prec, std::ios::fmtflags flags)
+{
+    std::stringstream str;
+    str.precision(prec);
+    str.setf(flags);
+    str << value;
+    return str.str();
+}
+}  // namespace
 
 void SoFCColorGradient::setRange(float fMin, float fMax, int prec)
 {
@@ -279,7 +281,7 @@ std::vector<float> SoFCColorGradient::getMarkerValues(float fMin, float fMax, in
             labels.push_back(fValue);
         }
     }
-    else { // either not zero based or 0 is not in between [fMin,fMax]
+    else {  // either not zero based or 0 is not in between [fMin,fMax]
         for (int j = 0; j < count; j++) {
             float w = (float)j / ((float)count - 1.0F);
             float fValue = (1.0F - w) * fMax + w * fMin;
@@ -302,7 +304,7 @@ void SoFCColorGradient::modifyPoints(const SbBox2f& box)
     for (int i = 0; i < intFields; i++) {
         float w = static_cast<float>(i) / static_cast<float>(intFields - 1);
         float fPosY = (1.0F - w) * fMaxY + w * fMinY;
-        coords->point.set1Value(2 * i,     fMinX, fPosY, 0.0F);
+        coords->point.set1Value(2 * i, fMinX, fPosY, 0.0F);
         coords->point.set1Value(2 * i + 1, fMaxX, fPosY, 0.0F);
     }
 }
@@ -434,8 +436,7 @@ void SoFCColorGradient::customize(SoFCColorBarBase* parentNode)
 
         triggerChange(parentNode);
     };
-    QObject::connect(&dlg, &Gui::Dialog::DlgSettingsColorGradientImp::colorModelChanged,
-                     [&] {
+    QObject::connect(&dlg, &Gui::Dialog::DlgSettingsColorGradientImp::colorModelChanged, [&] {
         try {
             applyProfile(dlg.getProfile(), dlg.numberOfDecimals());
         }

@@ -3577,14 +3577,14 @@ This may lead to unexpected results.</source>
       <location filename="../../CommandBody.cpp" line="165"/>
       <source>The selected shape consists of only a shell.
 This may lead to unexpected results.</source>
-      <translation>La forma seleccionada consta de només una closca. 
+      <translation>La forma seleccionada consta de només una closca.
 Això pot portar a resultats inesperats.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="169"/>
       <source>The selected shape consists of multiple solids or shells.
 This may lead to unexpected results.</source>
-      <translation>La forma seleccionada consisteix en múltiples sòlids o closques. 
+      <translation>La forma seleccionada consisteix en múltiples sòlids o closques.
 Això pot portar a resultats inesperats.</translation>
     </message>
     <message>
@@ -3734,7 +3734,7 @@ Això pot portar a resultats inesperats.</translation>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
-      <translation>Per a utilitzar PartDesign necessiteu un objecte cos actiu en el document. Feu actiu un cos (doble clic) o crear un. 
+      <translation>Per a utilitzar PartDesign necessiteu un objecte cos actiu en el document. Feu actiu un cos (doble clic) o crear un.
 
 Si teniu un document antic amb objectes PartDesign sense cos, utilitzeu la funció de migrar a PartDesign per a posar-los en un cos.</translation>
     </message>

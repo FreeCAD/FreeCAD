@@ -3443,7 +3443,7 @@ A partially loaded document cannot be edited. Double click the document
 icon in the tree view to fully reload it.</source>
       <translation>Ενεργοποίηση μερικής φόρτωσης εξωτερικών συνδεδεμένων εγγράφων.
 Τότε μόνο τα αναφερόμενα αντικείμενα και οι εξαρτήσεις τους θα φορτωθούν όταν ένα συνδεδεμένο έγγραφο ανοίγει αυτόματα μαζί με το κύριο έγγραφο.
-Δεν είναι δυνατή η επεξεργασία ενός εγγράφου που έχει φορτωθεί μερικώς. 
+Δεν είναι δυνατή η επεξεργασία ενός εγγράφου που έχει φορτωθεί μερικώς.
 Κάντε διπλό κλικ στο εικονίδιο του εγγράφου στην προβολή δέντρου για να το φορτώσετε πλήρως.</translation>
     </message>
     <message>
@@ -11145,7 +11145,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3439"/>
       <source>Auto adjust placement on drag and drop objects across coordinate systems</source>
-      <translation>Αυτόματη προσαρμογή της τοποθέτησης σε αντικείμενα μεταφοράς 
+      <translation>Αυτόματη προσαρμογή της τοποθέτησης σε αντικείμενα μεταφοράς
 και απόθεσης στα συστήματα συντεταγμένων</translation>
     </message>
   </context>
@@ -12878,7 +12878,7 @@ from Python console to Report view panel</source>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="527"/>
       <source>Internal Python error messages will be redirected
 from Python console to Report view panel</source>
-      <translation>Τα εσωτερικά μηνύματα σφάλματος Python θα ανακατευθύνονται 
+      <translation>Τα εσωτερικά μηνύματα σφάλματος Python θα ανακατευθύνονται
 από την κονσόλα Python στον πίνακα προβολής Αναφοράς</translation>
     </message>
     <message>

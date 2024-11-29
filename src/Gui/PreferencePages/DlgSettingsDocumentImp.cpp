@@ -38,8 +38,8 @@ using namespace Gui::Dialog;
  *  Constructs a DlgSettingsDocumentImp which is a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'
  */
-DlgSettingsDocumentImp::DlgSettingsDocumentImp( QWidget* parent )
-    : PreferencePage( parent )
+DlgSettingsDocumentImp::DlgSettingsDocumentImp(QWidget* parent)
+    : PreferencePage(parent)
     , ui(new Ui_DlgSettingsDocument)
 {
     ui->setupUi(this);
@@ -48,17 +48,22 @@ DlgSettingsDocumentImp::DlgSettingsDocumentImp( QWidget* parent )
     ui->prefSaveTransaction->hide();
     ui->prefDiscardTransaction->hide();
 
-    QString tip = QString::fromLatin1("<html><head/><body><p>%1</p>"
-                                      "<p>%2: %Y%m%d-%H%M%S</p>"
-                                      "<p>%3: <a href=\"http://www.cplusplus.com/reference/ctime/strftime/\">C++ strftime</a>"
-                                      "</p></body></html>").arg(tr("The format of the date to use."), tr("Default"), tr("Format"));
+    QString tip =
+        QString::fromLatin1(
+            "<html><head/><body><p>%1</p>"
+            "<p>%2: %Y%m%d-%H%M%S</p>"
+            "<p>%3: <a href=\"http://www.cplusplus.com/reference/ctime/strftime/\">C++ strftime</a>"
+            "</p></body></html>")
+            .arg(tr("The format of the date to use."), tr("Default"), tr("Format"));
     ui->prefSaveBackupDateFormat->setToolTip(tip);
 
     ui->prefCountBackupFiles->setMaximum(INT_MAX);
     ui->prefCompression->setMinimum(Z_NO_COMPRESSION);
     ui->prefCompression->setMaximum(Z_BEST_COMPRESSION);
-    connect(ui->prefLicenseType, qOverload<int>(&QComboBox::currentIndexChanged),
-            this, &DlgSettingsDocumentImp::onLicenseTypeChanged);
+    connect(ui->prefLicenseType,
+            qOverload<int>(&QComboBox::currentIndexChanged),
+            this,
+            &DlgSettingsDocumentImp::onLicenseTypeChanged);
 }
 
 /**
@@ -95,8 +100,9 @@ void DlgSettingsDocumentImp::saveSettings()
     ui->prefCanAbortRecompute->onSave();
 
     int timeout = ui->prefAutoSaveTimeout->value();
-    if (!ui->prefAutoSaveEnabled->isChecked())
+    if (!ui->prefAutoSaveEnabled->isChecked()) {
         timeout = 0;
+    }
     AutoSaver::instance()->setTimeout(timeout * 60000);
 }
 
@@ -132,7 +138,7 @@ void DlgSettingsDocumentImp::loadSettings()
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgSettingsDocumentImp::changeEvent(QEvent *e)
+void DlgSettingsDocumentImp::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
