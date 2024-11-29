@@ -1154,8 +1154,6 @@ class Snapper:
         # src/Mod/Mesh/Gui/MeshSelection.cpp
         # src/Mod/Sketcher/Gui/CommandConstraints.cpp
 
-        # The code below follows the Sketcher example.
-
         #   +--------+
         #   |  base  |          vertical offset = 0.5*w
         # w |        +--------+
@@ -1176,14 +1174,8 @@ class Snapper:
             tail_icon = QtGui.QPixmap(tail_icon_name).scaledToWidth(width)
             qp.drawPixmap(width, 0.5 * width, tail_icon)
         qp.end()
-        hot_x = 8
-        hot_y = 8
         new_icon.setDevicePixelRatio(dpr)
-        # Only X11 needs hot point coordinates to be scaled:
-        if QtGui.QGuiApplication.platformName() == "xcb":
-            hot_x *= dpr
-            hot_x *= dpr
-        return QtGui.QCursor(new_icon, hot_x, hot_y)
+        return QtGui.QCursor(new_icon, 8, 8)
 
     def setCursor(self, mode=None):
         """Set or reset the cursor to the given mode or resets."""
