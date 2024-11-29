@@ -1546,7 +1546,7 @@ CmdSketcherIntersection::CmdSketcherIntersection()
 
 CONSTRUCTION_UPDATE_ACTION(CmdSketcherIntersection, "Sketcher_Intersection")
 
-void CmdSketcherIntersection::activated(int iMsg)
+void CmdSketcherIntersection::activated(int)
 {
     ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerExternal>(true));
 }
