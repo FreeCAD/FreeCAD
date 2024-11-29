@@ -73,20 +73,21 @@ private:
     void CleanupMesh();
 
 private:
-    struct Property
+    enum Property
     {
-        using argument_type_1st = std::pair<std::string, int>;
-        using argument_type_2nd = std::string;
-        using result_type = bool;
-
-        // clang-format off
-        bool operator()(const argument_type_1st& x,
-                        const argument_type_2nd& y) const
-        {
-            return x.first == y;
-        }
-        // clang-format on
+        coord_x,
+        coord_y,
+        coord_z,
+        color_r,
+        color_g,
+        color_b,
+        generic,
+        num_props
     };
+
+    static Property propertyOfName(const std::string& name);
+    using PropertyArray = std::array<float, num_props>;
+    void addVertexProperty(const PropertyArray& prop);
 
     enum Number
     {
@@ -100,6 +101,21 @@ private:
         float64
     };
 
+    struct PropertyComp
+    {
+        using argument_type_1st = std::pair<Property, int>;
+        using argument_type_2nd = Property;
+        using result_type = bool;
+
+        // clang-format off
+        bool operator()(const argument_type_1st& x,
+                        const argument_type_2nd& y) const
+        {
+            return x.first == y;
+        }
+        // clang-format on
+    };
+
     enum Format
     {
         unknown,
@@ -108,7 +124,7 @@ private:
         binary_big_endian
     } format = unknown;
 
-    std::vector<std::pair<std::string, Number>> vertex_props;
+    std::vector<std::pair<Property, Number>> vertex_props;
     std::vector<Number> face_props;
 
     std::size_t v_count = 0;

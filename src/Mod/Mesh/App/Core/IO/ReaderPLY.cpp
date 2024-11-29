@@ -121,6 +121,30 @@ bool ReaderPLY::ReadElement(std::istream& str, std::string& element)
     return true;
 }
 
+ReaderPLY::Property ReaderPLY::propertyOfName(const std::string& name)
+{
+    if (name == "x") {
+        return coord_x;
+    }
+    if (name == "y") {
+        return coord_y;
+    }
+    if (name == "z") {
+        return coord_z;
+    }
+    if (name == "red" || name == "diffuse_red") {
+        return color_r;
+    }
+    if (name == "green" || name == "diffuse_green") {
+        return color_g;
+    }
+    if (name == "blue" || name == "diffuse_blue") {
+        return color_b;
+    }
+
+    return generic;
+}
+
 bool ReaderPLY::ReadVertexProperty(std::istream& str)
 {
     std::string type;
@@ -159,7 +183,7 @@ bool ReaderPLY::ReadVertexProperty(std::istream& str)
     }
 
     // store the property name and type
-    vertex_props.emplace_back(name, number);
+    vertex_props.emplace_back(propertyOfName(name), number);
 
     return true;
 }
@@ -274,23 +298,23 @@ bool ReaderPLY::ReadHeader(std::istream& input)
 bool ReaderPLY::VerifyVertexProperty()
 {
     // check if valid 3d points
-    Property property;
+    PropertyComp property;
     std::size_t num_x = std::count_if(vertex_props.begin(),
                                       vertex_props.end(),
-                                      [&property](const std::pair<std::string, int>& p) {
-                                          return property(p, "x");
+                                      [&property](const std::pair<Property, int>& p) {
+                                          return property(p, coord_x);
                                       });
 
     std::size_t num_y = std::count_if(vertex_props.begin(),
                                       vertex_props.end(),
-                                      [&property](const std::pair<std::string, int>& p) {
-                                          return property(p, "y");
+                                      [&property](const std::pair<Property, int>& p) {
+                                          return property(p, coord_y);
                                       });
 
     std::size_t num_z = std::count_if(vertex_props.begin(),
                                       vertex_props.end(),
-                                      [&property](const std::pair<std::string, int>& p) {
-                                          return property(p, "z");
+                                      [&property](const std::pair<Property, int>& p) {
+                                          return property(p, coord_z);
                                       });
 
     return ((num_x == 1) && (num_y == 1) && (num_z == 1));
@@ -298,36 +322,24 @@ bool ReaderPLY::VerifyVertexProperty()
 
 bool ReaderPLY::VerifyColorProperty()
 {
-    for (auto& it : vertex_props) {
-        if (it.first == "diffuse_red") {
-            it.first = "red";
-        }
-        else if (it.first == "diffuse_green") {
-            it.first = "green";
-        }
-        else if (it.first == "diffuse_blue") {
-            it.first = "blue";
-        }
-    }
-
     // check if valid colors are set
-    Property property;
+    PropertyComp property;
     std::size_t num_r = std::count_if(vertex_props.begin(),
                                       vertex_props.end(),
-                                      [&property](const std::pair<std::string, int>& p) {
-                                          return property(p, "red");
+                                      [&property](const std::pair<Property, int>& p) {
+                                          return property(p, color_r);
                                       });
 
     std::size_t num_g = std::count_if(vertex_props.begin(),
                                       vertex_props.end(),
-                                      [&property](const std::pair<std::string, int>& p) {
-                                          return property(p, "green");
+                                      [&property](const std::pair<Property, int>& p) {
+                                          return property(p, color_g);
                                       });
 
     std::size_t num_b = std::count_if(vertex_props.begin(),
                                       vertex_props.end(),
-                                      [&property](const std::pair<std::string, int>& p) {
-                                          return property(p, "blue");
+                                      [&property](const std::pair<Property, int>& p) {
+                                          return property(p, color_b);
                                       });
 
     std::size_t rgb_colors = num_r + num_g + num_b;
@@ -395,7 +407,7 @@ bool ReaderPLY::ReadVertexes(std::istream& input)
 
     for (std::size_t i = 0; i < v_count && std::getline(input, line); i++) {
         // go through the vertex properties
-        std::map<std::string, float> prop_values;
+        PropertyArray prop_values {};
         for (const auto& it : vertex_props) {
             switch (it.second) {
                 case int8:
@@ -441,18 +453,7 @@ bool ReaderPLY::ReadVertexes(std::istream& input)
             }
         }
 
-        Base::Vector3f pt;
-        pt.x = (prop_values["x"]);
-        pt.y = (prop_values["y"]);
-        pt.z = (prop_values["z"]);
-        meshPoints.push_back(pt);
-
-        if (_material && _material->binding == MeshIO::PER_VERTEX) {
-            float r = (prop_values["red"]) / 255.0F;
-            float g = (prop_values["green"]) / 255.0F;
-            float b = (prop_values["blue"]) / 255.0F;
-            _material->diffuseColor.emplace_back(r, g, b);
-        }
+        addVertexProperty(prop_values);
     }
 
     return true;
@@ -493,17 +494,29 @@ bool ReaderPLY::LoadAscii(std::istream& input)
     return true;
 }
 
+void ReaderPLY::addVertexProperty(const PropertyArray& prop)
+{
+    Base::Vector3f pt;
+    pt.x = (prop[coord_x]);
+    pt.y = (prop[coord_y]);
+    pt.z = (prop[coord_z]);
+    meshPoints.push_back(pt);
+
+    if (_material && _material->binding == MeshIO::PER_VERTEX) {
+        // NOLINTBEGIN
+        float r = (prop[color_r]) / 255.0F;
+        float g = (prop[color_g]) / 255.0F;
+        float b = (prop[color_b]) / 255.0F;
+        // NOLINTEND
+        _material->diffuseColor.emplace_back(r, g, b);
+    }
+}
+
 bool ReaderPLY::ReadVertexes(Base::InputStream& is)
 {
-    std::string prop_x = "x";
-    std::string prop_y = "y";
-    std::string prop_z = "z";
-    std::string prop_r = "red";
-    std::string prop_g = "gree";
-    std::string prop_b = "blue";
     for (std::size_t i = 0; i < v_count; i++) {
         // go through the vertex properties
-        std::map<std::string, float> prop_values;
+        PropertyArray prop_values {};
         for (const auto& it : vertex_props) {
             switch (it.second) {
                 case int8: {
@@ -551,18 +564,7 @@ bool ReaderPLY::ReadVertexes(Base::InputStream& is)
             }
         }
 
-        Base::Vector3f pt;
-        pt.x = (prop_values[prop_x]);
-        pt.y = (prop_values[prop_y]);
-        pt.z = (prop_values[prop_z]);
-        meshPoints.push_back(pt);
-
-        if (_material && _material->binding == MeshIO::PER_VERTEX) {
-            float r = (prop_values[prop_r]) / 255.0F;
-            float g = (prop_values[prop_g]) / 255.0F;
-            float b = (prop_values[prop_b]) / 255.0F;
-            _material->diffuseColor.emplace_back(r, g, b);
-        }
+        addVertexProperty(prop_values);
     }
 
     return true;
