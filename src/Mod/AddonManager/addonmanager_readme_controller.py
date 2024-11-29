@@ -64,7 +64,7 @@ class ReadmeController(QtCore.QObject):
         self.widget.load_resource.connect(self.loadResource)
         self.widget.follow_link.connect(self.follow_link)
 
-    def set_addon(self, repo: Addon):
+    def set_addon(self, repo: Addon, document: int):
         """Set which Addon's information is displayed"""
 
         self.addon = repo
@@ -83,7 +83,15 @@ class ReadmeController(QtCore.QObject):
                 )
                 return
         else:
-            self.url = utils.get_readme_url(repo)
+            if document == 0:  # README
+                self.url = utils.get_readme_url(repo)
+            elif document == 1:  # CHANGELOG
+                self.url = utils.get_changelog_url(repo)
+            elif document == 2:  # CONTRIBUTING
+                self.url = utils.get_contrib_url(repo)
+            elif document == 3:  # LICENSE
+                self.url = utils.get_license_url(repo)
+
         self.widget.setUrl(self.url)
 
         self.widget.setText(
