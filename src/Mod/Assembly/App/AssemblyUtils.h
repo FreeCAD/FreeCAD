@@ -65,6 +65,23 @@ enum class JointType
     Belt,
 };
 
+enum class GeometryType
+{
+    Point = 0,
+
+    // Edges
+    Line = 1,
+    Curve = 2,
+    Circle = 3,
+
+    // Faces
+    Place = 4,
+    Cylinder = 5,
+    Sphere = 6,
+    Cone = 7,
+    Torus = 8,
+};
+
 enum class DistanceType
 {
     PointPoint,
@@ -116,41 +133,47 @@ enum class DistanceType
 class AssemblyObject;
 class JointGroup;
 
-AssemblyExport void swapJCS(App::DocumentObject* joint);
+AssemblyExport void swapJCS(const App::DocumentObject* joint);
 
 AssemblyExport bool
-isEdgeType(App::DocumentObject* obj, std::string& elName, GeomAbs_CurveType type);
-AssemblyExport bool
-isFaceType(App::DocumentObject* obj, std::string& elName, GeomAbs_SurfaceType type);
-AssemblyExport double getFaceRadius(App::DocumentObject* obj, std::string& elName);
-AssemblyExport double getEdgeRadius(App::DocumentObject* obj, std::string& elName);
+isEdgeType(const App::DocumentObject* obj, const std::string& elName, const GeomAbs_CurveType type);
+AssemblyExport bool isFaceType(const App::DocumentObject* obj,
+                               const std::string& elName,
+                               const GeomAbs_SurfaceType type);
+AssemblyExport double getFaceRadius(const App::DocumentObject* obj, const std::string& elName);
+AssemblyExport double getEdgeRadius(const App::DocumentObject* obj, const std::string& elName);
 
 AssemblyExport DistanceType getDistanceType(App::DocumentObject* joint);
 AssemblyExport JointGroup* getJointGroup(const App::Part* part);
 
 // getters to get from properties
-AssemblyExport void setJointActivated(App::DocumentObject* joint, bool val);
-AssemblyExport bool getJointActivated(App::DocumentObject* joint);
-AssemblyExport double getJointDistance(App::DocumentObject* joint);
-AssemblyExport double getJointDistance2(App::DocumentObject* joint);
-AssemblyExport JointType getJointType(App::DocumentObject* joint);
-AssemblyExport std::string getElementFromProp(App::DocumentObject* obj, const char* propName);
-AssemblyExport std::string getElementTypeFromProp(App::DocumentObject* obj, const char* propName);
-AssemblyExport App::DocumentObject* getObjFromProp(App::DocumentObject* joint,
+AssemblyExport void setJointActivated(const App::DocumentObject* joint, bool val);
+AssemblyExport bool getJointActivated(const App::DocumentObject* joint);
+AssemblyExport double getJointDistance(const App::DocumentObject* joint);
+AssemblyExport double getJointDistance2(const App::DocumentObject* joint);
+AssemblyExport JointType getJointType(const App::DocumentObject* joint);
+AssemblyExport std::string getElementFromProp(const App::DocumentObject* obj, const char* propName);
+AssemblyExport std::string getElementTypeFromProp(const App::DocumentObject* obj,
+                                                  const char* propName);
+AssemblyExport App::DocumentObject* getObjFromProp(const App::DocumentObject* joint,
                                                    const char* propName);
-AssemblyExport App::DocumentObject* getObjFromRef(App::DocumentObject* obj, std::string& sub);
-AssemblyExport App::DocumentObject* getObjFromRef(App::PropertyXLinkSub* prop);
-AssemblyExport App::DocumentObject* getObjFromRef(App::DocumentObject* joint, const char* propName);
-AssemblyExport App::DocumentObject* getLinkedObjFromRef(App::DocumentObject* joint,
+AssemblyExport App::DocumentObject* getObjFromRef(const App::DocumentObject* obj,
+                                                  const std::string& sub);
+AssemblyExport App::DocumentObject* getObjFromRef(const App::PropertyXLinkSub* prop);
+AssemblyExport App::DocumentObject* getObjFromRef(const App::DocumentObject* joint,
+                                                  const char* propName);
+AssemblyExport App::DocumentObject* getLinkedObjFromRef(const App::DocumentObject* joint,
                                                         const char* propName);
-AssemblyExport App::DocumentObject*
-getMovingPartFromRef(AssemblyObject* assemblyObject, App::DocumentObject* obj, std::string& sub);
-AssemblyExport App::DocumentObject* getMovingPartFromRef(AssemblyObject* assemblyObject,
-                                                         App::PropertyXLinkSub* prop);
-AssemblyExport App::DocumentObject*
-getMovingPartFromRef(AssemblyObject* assemblyObject, App::DocumentObject* joint, const char* pName);
-AssemblyExport std::vector<std::string> getSubAsList(App::PropertyXLinkSub* prop);
-AssemblyExport std::vector<std::string> getSubAsList(App::DocumentObject* joint,
+AssemblyExport App::DocumentObject* getMovingPartFromRef(const AssemblyObject* assemblyObject,
+                                                         App::DocumentObject* obj,
+                                                         const std::string& sub);
+AssemblyExport App::DocumentObject* getMovingPartFromRef(const AssemblyObject* assemblyObject,
+                                                         const App::PropertyXLinkSub* prop);
+AssemblyExport App::DocumentObject* getMovingPartFromRef(const AssemblyObject* assemblyObject,
+                                                         App::DocumentObject* joint,
+                                                         const char* pName);
+AssemblyExport std::vector<std::string> getSubAsList(const App::PropertyXLinkSub* prop);
+AssemblyExport std::vector<std::string> getSubAsList(const App::DocumentObject* joint,
                                                      const char* propName);
 
 }  // namespace Assembly

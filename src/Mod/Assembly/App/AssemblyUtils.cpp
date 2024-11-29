@@ -60,21 +60,21 @@ namespace PartApp = Part;
 namespace Assembly
 {
 
-void swapJCS(App::DocumentObject* joint)
+void swapJCS(const App::DocumentObject* joint)
 {
     if (!joint) {
         return;
     }
 
-    auto pPlc1 = dynamic_cast<App::PropertyPlacement*>(joint->getPropertyByName("Placement1"));
-    auto pPlc2 = dynamic_cast<App::PropertyPlacement*>(joint->getPropertyByName("Placement2"));
+    auto pPlc1 = joint->getPropertyByName<App::PropertyPlacement>("Placement1");
+    auto pPlc2 = joint->getPropertyByName<App::PropertyPlacement>("Placement2");
     if (pPlc1 && pPlc2) {
-        auto temp = pPlc1->getValue();
+        const auto temp = pPlc1->getValue();
         pPlc1->setValue(pPlc2->getValue());
         pPlc2->setValue(temp);
     }
-    auto pRef1 = dynamic_cast<App::PropertyXLinkSub*>(joint->getPropertyByName("Reference1"));
-    auto pRef2 = dynamic_cast<App::PropertyXLinkSub*>(joint->getPropertyByName("Reference2"));
+    auto pRef1 = joint->getPropertyByName<App::PropertyXLinkSub>("Reference1");
+    auto pRef2 = joint->getPropertyByName<App::PropertyXLinkSub>("Reference2");
     if (pRef1 && pRef2) {
         auto temp = pRef1->getValue();
         auto subs1 = pRef1->getSubValues();
@@ -86,49 +86,45 @@ void swapJCS(App::DocumentObject* joint)
     }
 }
 
-bool isEdgeType(App::DocumentObject* obj, std::string& elName, GeomAbs_CurveType type)
+bool isEdgeType(const App::DocumentObject* obj,
+                const std::string& elName,
+                const GeomAbs_CurveType type)
 {
-    auto* base = dynamic_cast<PartApp::Feature*>(obj);
+    auto* base = dynamic_cast<const PartApp::Feature*>(obj);
     if (!base) {
         return false;
     }
 
-    const PartApp::TopoShape& TopShape = base->Shape.getShape();
+    const auto& TopShape = base->Shape.getShape();
 
     // Check for valid face types
-    TopoDS_Edge edge = TopoDS::Edge(TopShape.getSubShape(elName.c_str()));
+    const auto edge = TopoDS::Edge(TopShape.getSubShape(elName.c_str()));
     BRepAdaptor_Curve sf(edge);
 
-    if (sf.GetType() == type) {
-        return true;
-    }
-
-    return false;
+    return sf.GetType() == type;
 }
 
-bool isFaceType(App::DocumentObject* obj, std::string& elName, GeomAbs_SurfaceType type)
+bool isFaceType(const App::DocumentObject* obj,
+                const std::string& elName,
+                const GeomAbs_SurfaceType type)
 {
-    auto* base = dynamic_cast<PartApp::Feature*>(obj);
+    auto* base = dynamic_cast<const PartApp::Feature*>(obj);
     if (!base) {
         return false;
     }
 
-    const PartApp::TopoShape TopShape = base->Shape.getShape();
+    const auto TopShape = base->Shape.getShape();
 
     // Check for valid face types
-    TopoDS_Face face = TopoDS::Face(TopShape.getSubShape(elName.c_str()));
+    const auto face = TopoDS::Face(TopShape.getSubShape(elName.c_str()));
     BRepAdaptor_Surface sf(face);
 
-    if (sf.GetType() == type) {
-        return true;
-    }
-
-    return false;
+    return sf.GetType() == type;
 }
 
-double getFaceRadius(App::DocumentObject* obj, std::string& elt)
+double getFaceRadius(const App::DocumentObject* obj, const std::string& elt)
 {
-    auto* base = dynamic_cast<PartApp::Feature*>(obj);
+    auto* base = dynamic_cast<const PartApp::Feature*>(obj);
     if (!base) {
         return 0.0;
     }
@@ -139,34 +135,26 @@ double getFaceRadius(App::DocumentObject* obj, std::string& elt)
     TopoDS_Face face = TopoDS::Face(TopShape.getSubShape(elt.c_str()));
     BRepAdaptor_Surface sf(face);
 
-    if (sf.GetType() == GeomAbs_Cylinder) {
-        return sf.Cylinder().Radius();
-    }
-    else if (sf.GetType() == GeomAbs_Sphere) {
-        return sf.Sphere().Radius();
-    }
-
-    return 0.0;
+    const auto type = sf.GetType();
+    return type == GeomAbs_Cylinder ? sf.Cylinder().Radius()
+        : type == GeomAbs_Sphere    ? sf.Sphere().Radius()
+                                    : 0.0;
 }
 
-double getEdgeRadius(App::DocumentObject* obj, std::string& elt)
+double getEdgeRadius(const App::DocumentObject* obj, const std::string& elt)
 {
-    auto* base = dynamic_cast<PartApp::Feature*>(obj);
+    auto* base = dynamic_cast<const PartApp::Feature*>(obj);
     if (!base) {
         return 0.0;
     }
 
-    const PartApp::TopoShape& TopShape = base->Shape.getShape();
+    const auto& TopShape = base->Shape.getShape();
 
     // Check for valid face types
-    TopoDS_Edge edge = TopoDS::Edge(TopShape.getSubShape(elt.c_str()));
+    const auto edge = TopoDS::Edge(TopShape.getSubShape(elt.c_str()));
     BRepAdaptor_Curve sf(edge);
 
-    if (sf.GetType() == GeomAbs_Circle) {
-        return sf.Circle().Radius();
-    }
-
-    return 0.0;
+    return sf.GetType() == GeomAbs_Circle ? sf.Circle().Radius() : 0.0;
 }
 
 DistanceType getDistanceType(App::DocumentObject* joint)
@@ -175,10 +163,10 @@ DistanceType getDistanceType(App::DocumentObject* joint)
         return DistanceType::Other;
     }
 
-    std::string type1 = getElementTypeFromProp(joint, "Reference1");
-    std::string type2 = getElementTypeFromProp(joint, "Reference2");
-    std::string elt1 = getElementFromProp(joint, "Reference1");
-    std::string elt2 = getElementFromProp(joint, "Reference2");
+    const auto type1 = getElementTypeFromProp(joint, "Reference1");
+    const auto type2 = getElementTypeFromProp(joint, "Reference2");
+    auto elt1 = getElementFromProp(joint, "Reference1");
+    auto elt2 = getElementFromProp(joint, "Reference2");
     auto* obj1 = getLinkedObjFromRef(joint, "Reference1");
     auto* obj2 = getLinkedObjFromRef(joint, "Reference2");
 
@@ -396,10 +384,9 @@ JointGroup* getJointGroup(const App::Part* part)
         return nullptr;
     }
 
-    App::Document* doc = part->getDocument();
+    const auto* doc = part->getDocument();
 
-    std::vector<App::DocumentObject*> jointGroups =
-        doc->getObjectsOfType(JointGroup::getClassTypeId());
+    const auto jointGroups = doc->getObjectsOfType(JointGroup::getClassTypeId());
     if (jointGroups.empty()) {
         return nullptr;
     }
@@ -411,83 +398,74 @@ JointGroup* getJointGroup(const App::Part* part)
     return nullptr;
 }
 
-void setJointActivated(App::DocumentObject* joint, bool val)
+void setJointActivated(const App::DocumentObject* joint, bool val)
 {
     if (!joint) {
         return;
     }
 
-    auto* propActivated = dynamic_cast<App::PropertyBool*>(joint->getPropertyByName("Activated"));
-    if (propActivated) {
+    if (auto propActivated = joint->getPropertyByName<App::PropertyBool>("Activated")) {
         propActivated->setValue(val);
     }
 }
 
-bool getJointActivated(App::DocumentObject* joint)
+bool getJointActivated(const App::DocumentObject* joint)
 {
     if (!joint) {
         return false;
     }
 
-    auto* propActivated = dynamic_cast<App::PropertyBool*>(joint->getPropertyByName("Activated"));
-    if (propActivated) {
+    if (const auto propActivated = joint->getPropertyByName<App::PropertyBool>("Activated")) {
         return propActivated->getValue();
     }
     return false;
 }
 
-double getJointDistance(App::DocumentObject* joint)
+double getJointDistance(const App::DocumentObject* joint, const char* propertyName)
 {
-    double distance = 0.0;
     if (!joint) {
-        return distance;
+        return 0.0;
     }
 
-    auto* prop = dynamic_cast<App::PropertyFloat*>(joint->getPropertyByName("Distance"));
-    if (prop) {
-        distance = prop->getValue();
+    const auto* prop = joint->getPropertyByName<App::PropertyFloat>(propertyName);
+    if (!prop) {
+        return 0.0;
     }
 
-    return distance;
+    return prop->getValue();
 }
 
-double getJointDistance2(App::DocumentObject* joint)
+double getJointDistance(const App::DocumentObject* joint)
 {
-    double distance = 0.0;
-    if (!joint) {
-        return distance;
-    }
-
-    auto* prop = dynamic_cast<App::PropertyFloat*>(joint->getPropertyByName("Distance2"));
-    if (prop) {
-        distance = prop->getValue();
-    }
-
-    return distance;
+    return getJointDistance(joint, "Distance");
 }
 
-JointType getJointType(App::DocumentObject* joint)
+double getJointDistance2(const App::DocumentObject* joint)
 {
-    JointType jointType = JointType::Fixed;
-    if (!joint) {
-        return jointType;
-    }
-
-    auto* prop = dynamic_cast<App::PropertyEnumeration*>(joint->getPropertyByName("JointType"));
-    if (prop) {
-        jointType = static_cast<JointType>(prop->getValue());
-    }
-
-    return jointType;
+    return getJointDistance(joint, "Distance2");
 }
 
-std::vector<std::string> getSubAsList(App::PropertyXLinkSub* prop)
+JointType getJointType(const App::DocumentObject* joint)
+{
+    if (!joint) {
+        return  JointType::Fixed;
+    }
+
+    const auto* prop = joint->getPropertyByName<App::PropertyEnumeration>("JointType");
+    if (!prop) {
+        return  JointType::Fixed;
+    }
+
+    return static_cast<JointType>(prop->getValue());
+}
+
+std::vector<std::string> getSubAsList(const App::PropertyXLinkSub* prop)
 {
     if (!prop) {
         return {};
     }
 
-    std::vector<std::string> subs = prop->getSubValues();
+    const auto subs = prop->getSubValues();
     if (subs.empty()) {
         return {};
     }
@@ -495,25 +473,21 @@ std::vector<std::string> getSubAsList(App::PropertyXLinkSub* prop)
     return Base::Tools::splitSubName(subs[0]);
 }
 
-std::vector<std::string> getSubAsList(App::DocumentObject* obj, const char* pName)
+std::vector<std::string> getSubAsList(const App::DocumentObject* obj, const char* pName)
 {
     if (!obj) {
         return {};
     }
-
-    auto* prop = dynamic_cast<App::PropertyXLinkSub*>(obj->getPropertyByName(pName));
-
-    return getSubAsList(prop);
+    return getSubAsList(obj->getPropertyByName<App::PropertyXLinkSub>(pName));
 }
 
-std::string getElementFromProp(App::DocumentObject* obj, const char* pName)
+std::string getElementFromProp(const App::DocumentObject* obj, const char* pName)
 {
     if (!obj) {
         return "";
     }
 
-    std::vector<std::string> names = getSubAsList(obj, pName);
-
+    const auto names = getSubAsList(obj, pName);
     if (names.empty()) {
         return "";
     }
@@ -521,11 +495,11 @@ std::string getElementFromProp(App::DocumentObject* obj, const char* pName)
     return names.back();
 }
 
-std::string getElementTypeFromProp(App::DocumentObject* obj, const char* propName)
+std::string getElementTypeFromProp(const App::DocumentObject* obj, const char* propName)
 {
     // The prop is going to be something like 'Edge14' or 'Face7'. We need 'Edge' or 'Face'
     std::string elementType;
-    for (char ch : getElementFromProp(obj, propName)) {
+    for (const char ch : getElementFromProp(obj, propName)) {
         if (std::isalpha(ch)) {
             elementType += ch;
         }
@@ -533,47 +507,47 @@ std::string getElementTypeFromProp(App::DocumentObject* obj, const char* propNam
     return elementType;
 }
 
-App::DocumentObject* getObjFromProp(App::DocumentObject* joint, const char* pName)
+App::DocumentObject* getObjFromProp(const App::DocumentObject* joint, const char* pName)
 {
     if (!joint) {
-        return nullptr;
+        return {};
     }
 
-    auto* propObj = dynamic_cast<App::PropertyLink*>(joint->getPropertyByName(pName));
+    const auto* propObj = joint->getPropertyByName<App::PropertyLink>(pName);
     if (!propObj) {
-        return nullptr;
+        return {};
     }
+
     return propObj->getValue();
 }
 
-App::DocumentObject* getObjFromRef(App::DocumentObject* obj, std::string& sub)
+App::DocumentObject* getObjFromRef(const App::DocumentObject* obj, const std::string& sub)
 {
     if (!obj) {
         return nullptr;
     }
 
-    App::Document* doc = obj->getDocument();
-
-    std::vector<std::string> names = Base::Tools::splitSubName(sub);
+    const auto* doc = obj->getDocument();
+    const auto names = Base::Tools::splitSubName(sub);
 
     // Lambda function to check if the typeId is a BodySubObject
-    auto isBodySubObject = [](App::DocumentObject* obj) -> bool {
+    const auto isBodySubObject = [](App::DocumentObject* obj) -> bool {
         // PartDesign::Point + Line + Plane + CoordinateSystem
         // getViewProviderName instead of isDerivedFrom to avoid dependency on sketcher
-        return (strcmp(obj->getViewProviderName(), "SketcherGui::ViewProviderSketch") == 0
-                || obj->isDerivedFrom<PartApp::Datum>());
+        const auto isDerivedFromVpSketch =
+            strcmp(obj->getViewProviderName(), "SketcherGui::ViewProviderSketch") == 0;
+        return isDerivedFromVpSketch || obj->isDerivedFrom<PartApp::Datum>();
     };
 
     // Helper function to handle PartDesign::Body objects
-    auto handlePartDesignBody = [&](App::DocumentObject* obj,
-                                    std::vector<std::string>::iterator it) -> App::DocumentObject* {
-        auto nextIt = std::next(it);
+    const auto handlePartDesignBody =
+        [&](App::DocumentObject* obj,
+            std::vector<std::string>::const_iterator it) -> App::DocumentObject* {
+        const auto nextIt = std::next(it);
         if (nextIt != names.end()) {
             for (auto* obji : obj->getOutList()) {
-                if (*nextIt == obji->getNameInDocument()) {
-                    if (isBodySubObject(obji)) {
-                        return obji;
-                    }
+                if (*nextIt == obji->getNameInDocument() && isBodySubObject(obji)) {
+                    return obji;
                 }
             }
         }
@@ -625,18 +599,18 @@ App::DocumentObject* getObjFromRef(App::DocumentObject* obj, std::string& sub)
     return nullptr;
 }
 
-App::DocumentObject* getObjFromRef(App::PropertyXLinkSub* prop)
+App::DocumentObject* getObjFromRef(const App::PropertyXLinkSub* prop)
 {
     if (!prop) {
         return nullptr;
     }
 
-    App::DocumentObject* obj = prop->getValue();
+    const App::DocumentObject* obj = prop->getValue();
     if (!obj) {
         return nullptr;
     }
 
-    std::vector<std::string> subs = prop->getSubValues();
+    const std::vector<std::string> subs = prop->getSubValues();
     if (subs.empty()) {
         return nullptr;
     }
@@ -644,40 +618,39 @@ App::DocumentObject* getObjFromRef(App::PropertyXLinkSub* prop)
     return getObjFromRef(obj, subs[0]);
 }
 
-App::DocumentObject* getObjFromRef(App::DocumentObject* joint, const char* pName)
+App::DocumentObject* getObjFromRef(const App::DocumentObject* joint, const char* pName)
 {
     if (!joint) {
         return nullptr;
     }
 
-    auto* prop = dynamic_cast<App::PropertyXLinkSub*>(joint->getPropertyByName(pName));
-
+    const auto* prop = joint->getPropertyByName<App::PropertyXLinkSub>(pName);
     return getObjFromRef(prop);
 }
 
-App::DocumentObject* getLinkedObjFromRef(App::DocumentObject* joint, const char* pObj)
+App::DocumentObject* getLinkedObjFromRef(const App::DocumentObject* joint, const char* pObj)
 {
     if (!joint) {
         return nullptr;
     }
 
-    auto* obj = getObjFromRef(joint, pObj);
-    if (obj) {
+    if (const auto* obj = getObjFromRef(joint, pObj)) {
         return obj->getLinkedObject(true);
     }
     return nullptr;
 }
 
-App::DocumentObject*
-getMovingPartFromRef(AssemblyObject* assemblyObject, App::DocumentObject* obj, std::string& sub)
+App::DocumentObject* getMovingPartFromRef(const AssemblyObject* assemblyObject,
+                                          App::DocumentObject* obj,
+                                          const std::string& sub)
 {
     if (!obj) {
         return nullptr;
     }
 
-    App::Document* doc = obj->getDocument();
+    auto* doc = obj->getDocument();
 
-    std::vector<std::string> names = Base::Tools::splitSubName(sub);
+    auto names = Base::Tools::splitSubName(sub);
     names.insert(names.begin(), obj->getNameInDocument());
 
     bool assemblyPassed = false;
@@ -711,7 +684,7 @@ getMovingPartFromRef(AssemblyObject* assemblyObject, App::DocumentObject* obj, s
 
         // We ignore dynamic sub-assemblies.
         if (obj->isDerivedFrom<Assembly::AssemblyLink>()) {
-            auto* pRigid = dynamic_cast<App::PropertyBool*>(obj->getPropertyByName("Rigid"));
+            const auto* pRigid = obj->getPropertyByName<App::PropertyBool>("Rigid");
             if (pRigid && !pRigid->getValue()) {
                 continue;
             }
@@ -723,7 +696,7 @@ getMovingPartFromRef(AssemblyObject* assemblyObject, App::DocumentObject* obj, s
     return nullptr;
 }
 
-App::DocumentObject* getMovingPartFromRef(AssemblyObject* assemblyObject,
+App::DocumentObject* getMovingPartFromRef(const AssemblyObject* assemblyObject,
                                           App::PropertyXLinkSub* prop)
 {
     if (!prop) {
@@ -735,7 +708,7 @@ App::DocumentObject* getMovingPartFromRef(AssemblyObject* assemblyObject,
         return nullptr;
     }
 
-    std::vector<std::string> subs = prop->getSubValues();
+    const std::vector<std::string> subs = prop->getSubValues();
     if (subs.empty()) {
         return nullptr;
     }
@@ -743,15 +716,15 @@ App::DocumentObject* getMovingPartFromRef(AssemblyObject* assemblyObject,
     return getMovingPartFromRef(assemblyObject, obj, subs[0]);
 }
 
-App::DocumentObject*
-getMovingPartFromRef(AssemblyObject* assemblyObject, App::DocumentObject* joint, const char* pName)
+App::DocumentObject* getMovingPartFromRef(const AssemblyObject* assemblyObject,
+                                          App::DocumentObject* joint,
+                                          const char* pName)
 {
     if (!joint) {
         return nullptr;
     }
 
-    auto* prop = dynamic_cast<App::PropertyXLinkSub*>(joint->getPropertyByName(pName));
-
+    auto* prop = joint->getPropertyByName<App::PropertyXLinkSub>(pName);
     return getMovingPartFromRef(assemblyObject, prop);
 }
 
