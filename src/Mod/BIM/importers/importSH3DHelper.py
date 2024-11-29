@@ -48,27 +48,20 @@ else:
         return text
     # \endcond
 
+# Used to make section edges more visible (https://coolors.co/5bc0eb-fde74c-9bc53d-e55934-fa7921)
+DEBUG_EDGES_COLORS = ["5bc0eb", "fde74c", "9bc53d", "e55934", "fa7921"]
+DEBUG_POINT_COLORS = ["011627", "ff0022", "41ead4", "fdfffc", "b91372"]
+
 try:
-    import Render
     from Render import Camera, PointLight
     from Render.project import Project
     RENDER_IS_AVAILABLE = True
 except :
     RENDER_IS_AVAILABLE = False
 
-
-PREDEFINED_RGB = {"black": (0, 0, 0),
-                  "red": (1.0, 0, 0),
-                  "green": (0, 1.0, 0),
-                  "blue": (0, 0, 1.0),
-                  "yellow": (1.0, 1.0, 0),
-                  "magenta": (1.0, 0, 1.0),
-                  "cyan": (0, 1.0, 1.0),
-                  "white": (1.0, 1.0, 1.0)}
-
 # Sometimes, the Part::Sweep creates a "twisted" sweep that
 #   impeeds the creation of the corresponding wall.
-FIX_INVALID_SWEEP = True
+FIX_INVALID_SWEEP = False
 
 # SweetHome3D is in cm while FreeCAD is in mm
 FACTOR = 10
@@ -80,26 +73,76 @@ X_NORM = App.Vector(1, 0, 0)
 Y_NORM = App.Vector(0, 1, 0)
 Z_NORM = App.Vector(0, 0, 1)
 
-DOOR_MODEL_LOOKUP = {
-    "eTeks#fixedWindow85x123": "Open 2-pane",
-    "eTeks#window85x123": "Open 2-pane",
-    "eTeks#doubleWindow126x123": "Open 2-pane",
-    "eTeks#doubleWindow126x163": "Open 2-pane",
-    "eTeks#doubleFrenchWindow126x200": "Open 2-pane",
-    "eTeks#window85x163": "Open 2-pane",
-    "eTeks#frenchWindow85x200": "Open 2-pane",
-    "eTeks#doubleHungWindow80x122": "Open 2-pane",
-    "eTeks#roundWindow": "Open 2-pane",
-    "eTeks#halfRoundWindow": "Open 2-pane",
-    "Scopia#window_2x1_with_sliders": "Sliding 2-pane",
-    "Scopia#window_2x3_arched": "Sliding 2-pane",
-    "Scopia#window_2x4_arched": "Sliding 2-pane",
-    "eTeks#sliderWindow126x200": "Sliding 2-pane",
+# The Windows lookup map. This is really brittle and a better system should
+# be found. Arch.WindowPresets =  ["Fixed", "Open 1-pane", "Open 2-pane",
+#       "Sash 2-pane", "Sliding 2-pane", "Simple door", "Glass door",
+#       "Sliding 4-pane", "Awning"]
+# unzip -p all-windows.sh3d Home.xml | \
+#   grep 'catalogId=' | \
+#   sed -e 's/.*catalogId=//;s/ name=.*/: ("Open 2-pane","Window"),/' | sort -u
+# unzip -p all-doors.sh3d Home.xml | \
+#   grep 'catalogId=' | \
+#   sed -e 's/.*catalogId=//;s/ name=.*/: ("Simple door","Door")/' | sort -u
+DOOR_MODELS = {
+    'eTeks#doorFrame': ("Opening only", "Opening Element"),
+    'eTeks#door': ("Simple door","Door"),
+    'eTeks#frontDoor': ("Simple door","Door"),
+    'eTeks#garageDoor': ("Simple door","Door"),
+    'eTeks#openDoor': ("Simple door","Door"),
+    'eTeks#roundDoorFrame': ("Opening only", "Opening Element"),
+    'eTeks#roundedDoor': ("Simple door","Door"),
+    'Kator Legaz#exterior-door-01': ("Simple door","Door"),
+    'Kator Legaz#exterior-door-02': ("Simple door","Door"),
+    'Kator Legaz#exterior-door-03': ("Glass door","Door"),
+    'Kator Legaz#exterior-door-05': ("Simple door","Door"),
+    'Kator Legaz#exterior-door-07': ("Glass door","Door"),
+    'Kator Legaz#screen-door': ("Simple door","Door"),
+    'Scopia#door': ("Simple door","Door"),
+    'Scopia#double_door_2': ("Simple door","Door"),
+    'Scopia#double_door': ("Glass door","Door"),
+    'Scopia#double_door_with_little_part': ("Glass door","Door"),
+    'Scopia#elevator-door': ("Simple door","Door"),
+    'Scopia#garage-door2': ("Simple door","Door"),
+    'Scopia#garage-door': ("Simple door","Door"),
+    'Scopia#glassDoor2': ("Glass door","Door"),
+    'Scopia#glass_door': ("Glass door","Door"),
+    'Scopia#puerta': ("Simple door","Door"),
+
+    'eTeks#doubleFrenchWindow126x200': ("Open 2-pane","Window"),
+    'eTeks#doubleHungWindow80x122': ("Open 2-pane","Window"),
+    'eTeks#doubleOutwardOpeningWindow': ("Open 2-pane","Window"),
+    'eTeks#doubleWindow126x123': ("Open 2-pane","Window"),
+    'eTeks#doubleWindow126x163': ("Open 2-pane","Window"),
+    'eTeks#fixedTriangleWindow85x85': ("Open 2-pane","Window"),
+    'eTeks#fixedWindow85x123': ("Open 2-pane","Window"),
+    'eTeks#frenchWindow85x200': ("Open 2-pane","Window"),
+    'eTeks#halfRoundWindow': ("Open 2-pane","Window"),
+    'eTeks#roundWindow': ("Open 2-pane","Window"),
+    'eTeks#sliderWindow126x200': ("Open 2-pane","Window"),
+    'eTeks#window85x123': ("Open 2-pane","Window"),
+    'eTeks#window85x163': ("Open 2-pane","Window"),
+    'Kator Legaz#window-01': ("Open 2-pane","Window"),
+    'Kator Legaz#window-08-02': ("Open 2-pane","Window"),
+    'Kator Legaz#window-08': ("Open 2-pane","Window"),
+    'Scopia#turn-window': ("Open 2-pane","Window"),
+    'Scopia#window_2x1_medium_with_large_pane': ("Open 2-pane","Window"),
+    'Scopia#window_2x1_with_sliders': ("Open 2-pane","Window"),
+    'Scopia#window_2x3_arched': ("Open 2-pane","Window"),
+    'Scopia#window_2x3': ("Open 2-pane","Window"),
+    'Scopia#window_2x3_regular': ("Open 2-pane","Window"),
+    'Scopia#window_2x4_arched': ("Open 2-pane","Window"),
+    'Scopia#window_2x4': ("Open 2-pane","Window"),
+    'Scopia#window_2x6': ("Open 2-pane","Window"),
+    'Scopia#window_3x1': ("Open 2-pane","Window"),
+    'Scopia#window_4x1': ("Open 2-pane","Window"),
+    'Scopia#window_4x3_arched': ("Open 2-pane","Window"),
+    'Scopia#window_4x3': ("Open 2-pane","Window"),
+    'Scopia#window_4x5': ("Open 2-pane","Window"),
+
 }
 
-
 class SH3DImporter:
-    """The main class to import a SH3D file.
+    """The main class to import an SH3D file.
 
     As an implementation detail, note that we do not use an
     xml.sax parser as the XML elements found in the SH3D file
@@ -112,8 +155,6 @@ class SH3DImporter:
         """Create a SH3DImporter instance to import the given SH3D file.
 
         Args:
-            filename (str): the filename of the ZIP file containing the SH3D
-              objects.
             progress_bar (ProgressIndicator,optional): a ProgressIndicator
               called to let the User monitor the import process
         """
@@ -136,6 +177,10 @@ class SH3DImporter:
     def import_sh3d_from_string(self, home:str):
         """Import the SH3D Home from a String.
 
+        Args:
+            home (str): the string containing the XML of the home
+                to be imported.
+
         Raises:
             ValueError: if an invalid SH3D file is detected
         """
@@ -148,6 +193,9 @@ class SH3DImporter:
 
     def import_sh3d_from_filename(self, filename:str):
         """Import the SH3D file.
+
+        Args:
+            filename (str): the filename of the SH3D file to be imported.
 
         Raises:
             ValueError: if an invalid SH3D file is detected
@@ -927,6 +975,8 @@ class WallHandler(BaseHandler):
                 _log(f" sibling: {self._pe(s_lside)},{self._pe(s_rside)}")
                 _log(f"intersec: {self._pv(i_start)},{self._pv(i_end)}")
             section = Draft.makeRectangle([i_start, i_end, i_end_z, i_start_z])
+            if self.importer.preferences["DEBUG"]:
+                _log(f"section: {section}")
         else:
             (start, end, thickness, height_start, height_end, _) = wall_details
             height = height_start if at_start else height_end
@@ -938,6 +988,19 @@ class WallHandler(BaseHandler):
             Draft.rotate([section], 90, ORIGIN, X_NORM)
             Draft.rotate([section], z_rotation, ORIGIN, Z_NORM)
             Draft.move([section], center)
+
+        if self.importer.preferences["DEBUG"]:
+            App.ActiveDocument.recompute()
+            view = section.ViewObject
+            line_colors = [view.LineColor] * len(section.Shape.Edges)
+            for i in range(0, len(line_colors)):
+                line_colors[i] = hex2rgb(DEBUG_EDGES_COLORS[i%len(DEBUG_EDGES_COLORS)])
+            view.LineColorArray = line_colors
+            point_colors = [view.PointColor] * len(section.Shape.Vertexes)
+            for i in range(0, len(point_colors)):
+                point_colors[i] = hex2rgb(DEBUG_POINT_COLORS[i%len(DEBUG_POINT_COLORS)])
+            view.PointColorArray = point_colors
+            view.PointSize = 5
 
         return section
 
@@ -1258,7 +1321,6 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
 
         assert feature != None, f"Missing feature for <doorOrWindow> {door_id} ..."
 
-        feature.IfcType = "Window"
         self._set_properties(feature, elm)
         self.set_furniture_common_properties(feature, elm)
         self.set_piece_of_furniture_common_properties(feature, elm)
@@ -1304,6 +1366,7 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         depth = dim_sh2fc(elm.get('depth'))
         height = dim_sh2fc(elm.get('height'))
         angle = float(elm.get('angle', 0))
+        mirrored = bool(elm.get('modelMirrored', False))
 
         # this is the vector that allow me to go from the center to the corner
         # of the bounding box. Note that the angle of the rotation is negated
@@ -1322,14 +1385,11 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         # NOTE: the windows are not imported as meshes, but we use a simple
         #   correspondence between a catalog ID and a specific window preset from
         #   the parts library.
-        # Arch.WindowPresets =  ["Fixed", "Open 1-pane", "Open 2-pane",
-        # "Sash 2-pane", "Sliding 2-pane", "Simple door", "Glass door",
-        # "Sliding 4-pane", "Awning"]
-
         catalog_id = elm.get('catalogId')
-        if catalog_id not in list(DOOR_MODEL_LOOKUP.keys()):
-            _wrn(f"Unknown catalogId {catalog_id} for door {elm.get('id')}. Defaulting to 'Simple Door'")
-        windowtype = DOOR_MODEL_LOOKUP.get(catalog_id, 'Simple door')
+        (windowtype, ifc_type) = DOOR_MODELS.get(catalog_id, (None, None))
+        if not windowtype:
+            _wrn(f"Unknown catalogId {catalog_id} for element {elm.get('id')}. Defaulting to 'Simple Door'")
+            (windowtype, ifc_type) = ('Simple door', 'Door')
 
         h1 = 10
         h2 = 10
@@ -1339,6 +1399,15 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         o1 = 0
         o2 = w1 / 2
         window = Arch.makeWindowPreset(windowtype, width, height, h1, h2, h3, w1, w2, o1, o2, pl)
+        window.IfcType = ifc_type
+        if ifc_type == 'Door' and mirrored:
+            window.OperationType = "SINGLE_SWING_RIGHT"
+
+        # Adjust symbol plan, Sweet Home has the opening in the opposite side by default
+        window.ViewObject.Proxy.invertOpening()
+        if mirrored:
+            window.ViewObject.Proxy.invertHinge()
+
         if wall:
             window.Hosts = [wall]
         return window
