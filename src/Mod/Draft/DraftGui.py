@@ -758,8 +758,7 @@ class DraftToolBar:
         self.z = 0
         self.pointButton.show()
         if rel: self.isRelative.show()
-        todo.delay(self.setFocus,None)
-        self.xValue.selectAll()
+        todo.delay(self.setFocus, None)
 
     def labelUi(self,title=translate("draft","Label"),callback=None):
         w = QtWidgets.QWidget()
@@ -787,8 +786,7 @@ class DraftToolBar:
         self.labelRadius.setText(translate("draft","Distance"))
         self.radiusValue.setToolTip(translate("draft", "Offset distance"))
         self.radiusValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
-        todo.delay(self.radiusValue.setFocus,None)
-        self.radiusValue.selectAll()
+        todo.delay(self.setFocus, "radius")
 
     def offUi(self):
         todo.delay(FreeCADGui.Control.closeDialog,None)
@@ -805,8 +803,7 @@ class DraftToolBar:
         self.labelRadius.setText(translate("draft","Distance"))
         self.radiusValue.setToolTip(translate("draft", "Offset distance"))
         self.radiusValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
-        todo.delay(self.radiusValue.setFocus,None)
-        self.radiusValue.selectAll()
+        todo.delay(self.setFocus, "radius")
 
     def radiusUi(self):
         self.hideXYZ()
@@ -815,8 +812,7 @@ class DraftToolBar:
         self.labelRadius.show()
         self.radiusValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         self.radiusValue.show()
-        todo.delay(self.radiusValue.setFocus,None)
-        self.radiusValue.selectAll()
+        todo.delay(self.setFocus, "radius")
 
     def textUi(self):
         self.hideXYZ()
@@ -1466,7 +1462,7 @@ class DraftToolBar:
             print("Error: setRadiusValue called for number without Dimension")
             t = display_external(val,None, None)
         self.radiusValue.setText(t)
-        self.radiusValue.setFocus()
+        self.setFocus("radius")
 
     def runAutoGroup(self):
         FreeCADGui.runCommand("Draft_AutoGroup")
