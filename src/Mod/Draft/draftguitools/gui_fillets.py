@@ -54,19 +54,23 @@ class Fillet(gui_base_original.Creator):
     """Gui command for the Fillet tool."""
 
     def __init__(self):
-        super(Fillet, self).__init__()
+        super().__init__()
         self.featureName = "Fillet"
+
+    def IsActive(self):
+        """Return True when this command should be available."""
+        return bool(Gui.Selection.getSelection())
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
         return {"Pixmap": "Draft_Fillet",
-                "Accel":"F,I",
+                "Accel": "F,I",
                 "MenuText": QT_TRANSLATE_NOOP("Draft_Fillet", "Fillet"),
                 "ToolTip": QT_TRANSLATE_NOOP("Draft_Fillet", "Creates a fillet between two selected wires or edges.")}
 
     def Activated(self, name="Fillet"):
         """Execute when the command is called."""
-        super(Fillet, self).Activated(name=name)
+        super().Activated(name=name)
 
         if self.ui:
             self.rad = 100
@@ -140,15 +144,7 @@ class Fillet(gui_base_original.Creator):
     def draw_arc(self, rad, chamfer, delete):
         """Process the selection and draw the actual object."""
         sels = Gui.Selection.getSelectionEx("", 0)
-        objs = []
-        objs_str = []
-        doc = "FreeCAD.ActiveDocument."
-        for sel in sels:
-            for sub in sel.SubElementNames if sel.SubElementNames else [""]:
-                objs.append(sel.Object.getSubObject(sub))
-                objs_str.append(doc + sel.Object.Name + ".getSubObject('" + sub + "')")
-
-        edges = make_fillet._preprocess(objs, rad, chamfer)
+        edges, _ = make_fillet._preprocess(sels, rad, chamfer)
         if edges is None:
             _err(translate("draft", "Fillet cannot be created"))
             self.finish()
@@ -156,20 +152,18 @@ class Fillet(gui_base_original.Creator):
 
         Gui.addModule("Draft")
 
-        _cmd = "Draft.make_fillet"
-        _cmd += "("
-        _cmd += "[" + objs_str[0] + ", " + objs_str[1] + "], "
-        _cmd += "radius=" + str(rad)
+        cmd = "Draft.make_fillet(sels, radius=" + str(rad)
         if chamfer:
-            _cmd += ", chamfer=True"
+            cmd += ", chamfer=True"
         if delete:
-            _cmd += ", delete=True"
-        _cmd += ")"
-        _cmd_list = ["fillet = " + _cmd,
-                     "Draft.autogroup(fillet)",
-                     "FreeCAD.ActiveDocument.recompute()"]
+            cmd += ", delete=True"
+        cmd += ")"
+        cmd_list = ["sels = FreeCADGui.Selection.getSelectionEx('', 0)",
+                    "fillet = " + cmd,
+                    "Draft.autogroup(fillet)",
+                    "FreeCAD.ActiveDocument.recompute()"]
 
-        self.commit(translate("draft", "Create fillet"), _cmd_list)
+        self.commit(translate("draft", "Create fillet"), cmd_list)
         self.finish()
 
 
