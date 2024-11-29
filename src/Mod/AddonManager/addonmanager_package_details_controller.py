@@ -61,6 +61,9 @@ class PackageDetailsController(QtCore.QObject):
         super().__init__()
         self.ui = widget
         self.readme_controller = ReadmeController(self.ui.readme_browser)
+        self.changelog_controller = ReadmeController(self.ui.changelog_browser)
+        self.contrib_controller = ReadmeController(self.ui.contrib_browser)
+        self.license_controller = ReadmeController(self.ui.license_browser)
         self.worker = None
         self.addon = None
         self.update_check_thread = None
@@ -85,7 +88,19 @@ class PackageDetailsController(QtCore.QObject):
         """The main entry point for this class, shows the package details and related buttons
         for the provided repo."""
         self.addon = repo
-        self.readme_controller.set_addon(repo)
+        self.readme_controller.set_addon(repo, 0)
+
+        not_macro = self.addon.repo_type != Addon.Kind.MACRO
+        if not_macro:
+            # TODO: load tabs data if document exists on repo
+            self.changelog_controller.set_addon(repo, 1)
+            self.contrib_controller.set_addon(repo, 2)
+            self.license_controller.set_addon(repo, 3)
+
+        self.ui.tab_widget.setTabVisible(1, not_macro)
+        self.ui.tab_widget.setTabVisible(2, not_macro)
+        self.ui.tab_widget.setTabVisible(3, not_macro)
+
         self.original_disabled_state = self.addon.is_disabled()
         if repo is not None:
             self.ui.button_bar.show()

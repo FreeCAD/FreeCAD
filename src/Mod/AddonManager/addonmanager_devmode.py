@@ -249,6 +249,7 @@ class DeveloperMode:
                 self.dialog.documentationURLLineEdit.setText(url["location"])
             elif url["type"] == "discussion":
                 self.dialog.discussionURLLineEdit.setText(url["location"])
+                # TODO: add changelog and contributing
 
     def _populate_contents_from_metadata(self, metadata):
         """Use the passed metadata object to populate the contents list"""

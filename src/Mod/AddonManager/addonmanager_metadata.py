@@ -26,6 +26,7 @@ https://wiki.FreeCAD.org/Package_metadata"""
 
 from __future__ import annotations
 
+import requests
 from dataclasses import dataclass, field
 from enum import IntEnum, auto
 from typing import Tuple, Dict, List, Optional
@@ -259,6 +260,14 @@ class MetadataReader:
         with open(filename, "rb") as f:
             data = f.read()
             return MetadataReader.from_bytes(data)
+
+    @staticmethod
+    def from_url(url: str) -> Metadata:
+        """A convenience function for loading the Metadata from a raw URL"""
+        response = requests.get(url)
+        response.raise_for_status()
+        data = response.content
+        return MetadataReader.from_bytes(data)
 
     @staticmethod
     def from_bytes(data: bytes) -> Metadata:

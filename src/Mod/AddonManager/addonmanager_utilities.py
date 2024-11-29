@@ -22,7 +22,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Utilities to work across different platforms, providers and python versions """
+"""Utilities to work across different platforms, providers and python versions"""
 
 from datetime import datetime
 from typing import Optional, Any
@@ -51,7 +51,6 @@ except ImportError:
 import addonmanager_freecad_interface as fci
 
 if fci.FreeCADGui:
-
     # If the GUI is up, we can use the NetworkManager to handle our downloads. If there is no event
     # loop running this is not possible, so fall back to requests (if available), or the native
     # Python urllib.request (if requests is not available).
@@ -182,7 +181,7 @@ def get_zip_url(repo):
 
 def recognized_git_location(repo) -> bool:
     """Returns whether this repo is based at a known git repo location: works with github, gitlab,
-    framagit, and salsa.debian.org"""
+    framagit, salsa.debian.org and codeberg.org"""
 
     parsed_url = urlparse(repo.url)
     return parsed_url.netloc in [
@@ -194,36 +193,53 @@ def recognized_git_location(repo) -> bool:
     ]
 
 
-def construct_git_url(repo, filename):
-    """Returns a direct download link to a file in an online Git repo"""
+def construct_git_url(repo, doc: str, raw_file: bool = True):
+    """Returns the URL of a raw/blob md file containing the specified document"""
 
     parsed_url = urlparse(repo.url)
     repo_url = repo.url[:-4] if repo.url.endswith(".git") else repo.url
+    url_type = "raw" if raw_file else "blob"
+
     if parsed_url.netloc == "github.com":
-        return f"{repo_url}/raw/{repo.branch}/{filename}"
+        return f"{repo_url}/{url_type}/{repo.branch}/{doc}"  # it's redirected
     if parsed_url.netloc in ["gitlab.com", "framagit.org", "salsa.debian.org"]:
-        return f"{repo_url}/-/raw/{repo.branch}/{filename}"
-    if parsed_url.netloc in ["codeberg.org"]:
-        return f"{repo_url}/raw/branch/{repo.branch}/{filename}"
-    fci.Console.PrintLog(
-        "Debug: addonmanager_utilities.construct_git_url: Unknown git host:"
-        + parsed_url.netloc
-        + f" for file {filename}\n"
-    )
-    # Assume it's some kind of local GitLab instance...
-    return f"{repo_url}/-/raw/{repo.branch}/{filename}"
+        return f"{repo_url}/-/{url_type}/{repo.branch}/{doc}"
+    if parsed_url.netloc == "codeberg.org":
+        url_type = "raw" if raw_file else "src"
+        return f"{repo_url}/{url_type}/branch/{repo.branch}/{doc}"
+
+    fci.Console.PrintLog("Unrecognized git repo location -- guessing it is a GitLab instance...")
+    return f"{repo_url}/-/{url_type}/{repo.branch}/{doc}"
 
 
 def get_readme_url(repo):
-    """Returns the location of a readme file"""
+    """Returns the location of the readme file"""
 
-    return construct_git_url(repo, "README.md")
+    return construct_git_url(repo, doc="README.md")
+
+
+def get_changelog_url(repo):
+    """Returns the location of the changelog file"""
+
+    return construct_git_url(repo, doc="CHANGELOG.md")
+
+
+def get_contrib_url(repo):
+    """Returns the location of the contributing file"""
+
+    return construct_git_url(repo, doc="CONTRIBUTING.md")
+
+
+def get_license_url(repo):
+    """Returns the location of a license file"""
+
+    return construct_git_url(repo, doc="LICENSE")
 
 
 def get_metadata_url(url):
     """Returns the location of a package.xml metadata file"""
 
-    return construct_git_url(url, "package.xml")
+    return construct_git_url(url, doc="package.xml")
 
 
 def get_desc_regex(repo):
@@ -238,9 +254,7 @@ def get_desc_regex(repo):
     if parsed_url.netloc in ["codeberg.org"]:
         return r'<meta property="og:description" content="(.*?)"'
     fci.Console.PrintLog(
-        "Debug: addonmanager_utilities.get_desc_regex: Unknown git host:",
-        repo.url,
-        "\n",
+        f"Debug: addonmanager_utilities.get_desc_regex: Unknown git host: {repo.url}\n",
     )
     return r'<meta.*?content="(.*?)".*?og:description.*?>'
 
@@ -248,15 +262,7 @@ def get_desc_regex(repo):
 def get_readme_html_url(repo):
     """Returns the location of a html file containing readme"""
 
-    parsed_url = urlparse(repo.url)
-    if parsed_url.netloc == "github.com":
-        return f"{repo.url}/blob/{repo.branch}/README.md"
-    if parsed_url.netloc in ["gitlab.com", "salsa.debian.org", "framagit.org"]:
-        return f"{repo.url}/-/blob/{repo.branch}/README.md"
-    if parsed_url.netloc in ["gitlab.com", "salsa.debian.org", "framagit.org"]:
-        return f"{repo.url}/raw/branch/{repo.branch}/README.md"
-    fci.Console.PrintLog("Unrecognized git repo location '' -- guessing it is a GitLab instance...")
-    return f"{repo.url}/-/blob/{repo.branch}/README.md"
+    construct_git_url(repo, doc="README.md", raw_file=False)
 
 
 def is_darkmode() -> bool:
