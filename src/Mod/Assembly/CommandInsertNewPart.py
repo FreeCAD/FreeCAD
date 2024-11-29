@@ -164,8 +164,7 @@ class TaskAssemblyNewPart(JointObject.TaskAssemblyCreateJoint):
 
         Gui.Selection.addSelection(link)
         for tree in trees:
-            items = tree.selectedItems()
-            for item in items:
+            for item in tree.selectedItems():
                 tree.expandItem(item)
 
     def accept(self):
