@@ -24,7 +24,6 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <boost/lexical_cast.hpp>
-#include <boost/regex.hpp>
 #include <istream>
 #endif
 
@@ -398,58 +397,48 @@ void ReaderPLY::CleanupMesh()
 
 bool ReaderPLY::ReadVertexes(std::istream& input)
 {
-    boost::regex rx_d("(([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?))\\s*");
-    boost::regex rx_s("\\b([-+]?[0-9]+)\\s*");
-    boost::regex rx_u("\\b([0-9]+)\\s*");
-
-    boost::smatch what;
     std::string line;
-
     for (std::size_t i = 0; i < v_count && std::getline(input, line); i++) {
+        std::istringstream str(line);
+        str.unsetf(std::ios_base::skipws);
+        str >> std::ws;
+
         // go through the vertex properties
         PropertyArray prop_values {};
+        std::size_t count_props = vertex_props.size();
         for (const auto& it : vertex_props) {
             switch (it.second) {
                 case int8:
                 case int16:
                 case int32: {
-                    if (boost::regex_search(line, what, rx_s)) {
-                        int v {};
-                        v = boost::lexical_cast<int>(what[1]);
-                        prop_values[it.first] = static_cast<float>(v);
-                        line = line.substr(what[0].length());
-                    }
-                    else {
-                        return false;
-                    }
+                    int v {};
+                    str >> v >> std::ws;
+                    prop_values[it.first] = static_cast<float>(v);
                 } break;
                 case uint8:
                 case uint16:
                 case uint32: {
-                    if (boost::regex_search(line, what, rx_u)) {
-                        int v {};
-                        v = boost::lexical_cast<int>(what[1]);
-                        prop_values[it.first] = static_cast<float>(v);
-                        line = line.substr(what[0].length());
-                    }
-                    else {
-                        return false;
-                    }
+                    unsigned int v {};
+                    str >> v >> std::ws;
+                    prop_values[it.first] = static_cast<float>(v);
                 } break;
-                case float32:
+                case float32: {
+                    float v {};
+                    str >> v >> std::ws;
+                    prop_values[it.first] = v;
+                } break;
                 case float64: {
-                    if (boost::regex_search(line, what, rx_d)) {
-                        double v {};
-                        v = boost::lexical_cast<double>(what[1]);
-                        prop_values[it.first] = static_cast<float>(v);
-                        line = line.substr(what[0].length());
-                    }
-                    else {
-                        return false;
-                    }
+                    double v {};
+                    str >> v >> std::ws;
+                    prop_values[it.first] = static_cast<float>(v);
                 } break;
                 default:
                     return false;
+            }
+
+            // does line contain all properties
+            if (--count_props > 0 && str.eof()) {
+                return false;
             }
         }
 
@@ -461,20 +450,27 @@ bool ReaderPLY::ReadVertexes(std::istream& input)
 
 bool ReaderPLY::ReadFaces(std::istream& input)
 {
-    boost::regex rx_f(R"(^\s*3\s+([0-9]+)\s+([0-9]+)\s+([0-9]+)\s*)");
-    boost::smatch what;
+    constexpr const std::size_t count_props = 4;
     std::string line;
-
     for (std::size_t i = 0; i < f_count && std::getline(input, line); i++) {
-        if (boost::regex_search(line, what, rx_f)) {
-            int f1 {};
-            int f2 {};
-            int f3 {};
-            f1 = boost::lexical_cast<int>(what[1]);
-            f2 = boost::lexical_cast<int>(what[2]);
-            f3 = boost::lexical_cast<int>(what[3]);
-            meshFacets.push_back(MeshFacet(f1, f2, f3));
+        std::istringstream str(line);
+        str.unsetf(std::ios_base::skipws);
+        str >> std::ws;
+
+        std::array<int, count_props> v_indices {};
+        std::size_t index = count_props;
+        for (int& v : v_indices) {
+            str >> v >> std::ws;
+            if (--index > 0 && str.eof()) {
+                return false;
+            }
         }
+
+        if (v_indices[0] != 3) {
+            return false;
+        }
+
+        meshFacets.push_back(MeshFacet(v_indices[1], v_indices[2], v_indices[3]));
     }
 
     return true;
