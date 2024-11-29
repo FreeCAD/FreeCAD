@@ -37,6 +37,7 @@
 #include "DrawTemplatePy.h"
 #include "DrawPage.h"
 #include "DrawUtil.h"
+#include "Preferences.h"
 
 
 using namespace TechDraw;
@@ -129,6 +130,7 @@ std::pair<int, int> DrawTemplate::getPageNumbers() const
 //! get replacement values from document
 QString DrawTemplate::getAutofillValue(const QString &id) const
 {
+    constexpr int ISODATELENGTH {10};
     auto doc = getDocument();
     if (!doc) {
         return QString();
@@ -142,8 +144,14 @@ QString DrawTemplate::getAutofillValue(const QString &id) const
     }
     // date
     else if (id.compare(QString::fromUtf8(Autofill::Date)) == 0) {
+        auto timeLocale = std::setlocale(LC_TIME, nullptr);
         QDateTime date = QDateTime::currentDateTime();
-        return date.toString(QLocale().dateFormat(QLocale::ShortFormat));
+        if (Preferences::enforceISODate()) {
+            auto rawDate = date.toString(Qt::ISODate);
+            return rawDate.left(ISODATELENGTH);
+        }
+        auto qTimeLocale = QString::fromUtf8(timeLocale);
+        return date.toString(QLocale(qTimeLocale).dateFormat(QLocale::ShortFormat));
     }
     // organization ( also organisation/owner/company )
     else if (id.compare(QString::fromUtf8(Autofill::Organization)) == 0 ||
