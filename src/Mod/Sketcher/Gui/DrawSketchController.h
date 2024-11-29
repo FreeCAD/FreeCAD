@@ -585,7 +585,7 @@ protected:
         Gui::View3DInventorViewer* viewer = handler->getViewer();
 
         auto doc = Gui::Application::Instance->editDocument();
-        Base::Placement placement = Base::Placement(doc->getEditingTransform());
+        auto placement = Base::Placement(doc->getEditingTransform());
 
         onViewParameters.clear();
 
