@@ -89,10 +89,10 @@ void DlgSettingsExternal::loadSettings()
     ui->spinMaterialCacheSize->setValue(cacheSize);
 
     // Cache stats
-    // auto hitRate = Materials::ModelManager::modelHitRate();
-    // ui->inputModelCacheHitRate->setText(toPerCent(hitRate));
-    // hitRate = Materials::MaterialManager::materialHitRate();
-    // ui->inputMaterialCacheHitRate->setText(toPerCent(hitRate));
+    auto hitRate = Materials::ModelManager::modelHitRate();
+    ui->inputModelCacheHitRate->setText(toPerCent(hitRate));
+    hitRate = Materials::MaterialManager::materialHitRate();
+    ui->inputMaterialCacheHitRate->setText(toPerCent(hitRate));
 }
 
 /**

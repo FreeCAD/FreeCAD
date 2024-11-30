@@ -41,6 +41,7 @@ using namespace Materials;
 std::unique_ptr<ModelManagerLocal> ModelManager::_localManager;
 std::unique_ptr<ModelManagerExternal> ModelManager::_externalManager;
 QMutex ModelManager::_mutex;
+bool ModelManager::_useExternal = false;
 
 TYPESYSTEM_SOURCE(Materials::ModelManager, Base::BaseClass)
 
@@ -48,15 +49,15 @@ ModelManager::ModelManager()
 {
     initManagers();
 
-    // _hGrp = App::GetApplication().GetParameterGroupByPath(
-    //     "User parameter:BaseApp/Preferences/Mod/Material/Database");
-    // _useDatabase = _hGrp->GetBool("UseDatabase", false);
-    // _hGrp->Attach(this);
+    _hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Material/ExternalInterface");
+    _useExternal = _hGrp->GetBool("UseExternal", false);
+    _hGrp->Attach(this);
 }
 
 ModelManager::~ModelManager()
 {
-    // _hGrp->Detach(this);
+    _hGrp->Detach(this);
 }
 
 void ModelManager::initManagers()
@@ -74,12 +75,12 @@ void ModelManager::initManagers()
 
 void ModelManager::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason)
 {
-    // const ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
-    // if (strcmp(Reason, "UseDatabase") == 0) {
-    //     Base::Console().Log("Use database changed\n");
-    //     _useDatabase = rGrp.GetBool("UseDatabase", false);
-    //     _dbManager->refresh();
-    // }
+    const ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
+    if (strcmp(Reason, "UseExternal") == 0) {
+        Base::Console().Log("Use external changed\n");
+        _useExternal = rGrp.GetBool("UseExternal", false);
+        // _dbManager->refresh();
+    }
 }
 
 bool ModelManager::isModel(const QString& file)
@@ -158,10 +159,13 @@ std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> ModelManager::getLoca
 
 std::shared_ptr<Model> ModelManager::getModel(const QString& uuid) const
 {
-    // auto model = _externalManager->getModel(uuid);
-    // if (model) {
-    //     // Return the model
-    // }
+    if (_useExternal) {
+        auto model = _externalManager->getModel(uuid);
+        // if (model) {
+        //     return model;
+        // }
+    }
+    // We really want to return the local model if not found, such as for User folder models
     return _localManager->getModel(uuid);
 }
 
@@ -235,4 +239,11 @@ void ModelManager::validateMigration(const std::shared_ptr<Materials::ModelLibra
             throw InvalidModel();
         }
     }
+}
+
+// Cache stats
+double ModelManager::modelHitRate()
+{
+    initManagers();
+    return _externalManager->modelHitRate();
 }

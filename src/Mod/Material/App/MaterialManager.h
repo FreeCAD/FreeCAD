@@ -134,12 +134,16 @@ public:
     void migrateToExternal(const std::shared_ptr<Materials::MaterialLibrary>& library);
     void validateMigration(const std::shared_ptr<Materials::MaterialLibrary>& library);
 
+    // Cache functions
+    static double materialHitRate();
+
 private:
-    void initManagers();
+    static void initManagers();
 
     static std::unique_ptr<MaterialManagerExternal> _externalManager;
     static std::unique_ptr<MaterialManagerLocal> _localManager;
     static QMutex _mutex;
+    static bool _useExternal;
 
     ParameterGrp::handle _hGrp;
 };

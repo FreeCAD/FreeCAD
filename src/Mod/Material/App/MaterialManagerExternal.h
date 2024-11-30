@@ -54,7 +54,9 @@ public:
     ~MaterialManagerExternal() override = default;
 
     static void cleanup();
-    static void refresh();
+    void refresh();
+
+    static const int DEFAULT_CACHE_SIZE = 100;
 
     // Library management
     std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> getLibraries();
@@ -70,6 +72,10 @@ public:
     void migrateMaterial(const QString& libraryName,
                      const QString& path,
                      const std::shared_ptr<Material>& material);
+
+    // Cache functions
+    void resetCache();
+    double materialHitRate();
 
 private:
     static void initCache();

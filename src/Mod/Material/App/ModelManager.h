@@ -85,12 +85,16 @@ public:
     void migrateToExternal(const std::shared_ptr<Materials::ModelLibrary>& library);
     void validateMigration(const std::shared_ptr<Materials::ModelLibrary>& library);
 
+    // Cache functions
+    static double modelHitRate();
+
 private:
-    void initManagers();
+    static void initManagers();
 
     static std::unique_ptr<ModelManagerLocal> _localManager;
     static std::unique_ptr<ModelManagerExternal> _externalManager;
     static QMutex _mutex;
+    static bool _useExternal;
 
     ParameterGrp::handle _hGrp;
 };

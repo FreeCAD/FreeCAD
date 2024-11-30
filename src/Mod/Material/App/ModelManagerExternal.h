@@ -48,6 +48,8 @@ public:
     static void cleanup();
     void refresh();
 
+    static const int DEFAULT_CACHE_SIZE = 100;
+
     // Library management
     std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> getLibraries();
     void createLibrary(const QString& libraryName,
@@ -60,6 +62,10 @@ public:
     addModel(const QString& libraryName, const QString& path, const std::shared_ptr<Model>& model);
     void
     migrateModel(const QString& libraryName, const QString& path, const std::shared_ptr<Model>& model);
+
+    // Cache functions
+    void resetCache();
+    double modelHitRate();
 
 private:
     static void initCache();

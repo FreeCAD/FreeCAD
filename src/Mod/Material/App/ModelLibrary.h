@@ -79,4 +79,6 @@ private:
 
 }  // namespace Materials
 
+Q_DECLARE_METATYPE(std::shared_ptr<Materials::ModelLibrary>)
+
 #endif  // MATERIAL_MODELLIBRARY_H

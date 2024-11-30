@@ -35,7 +35,7 @@
 using namespace Materials;
 
 QMutex ModelManagerExternal::_mutex;
-LRU::Cache<QString, std::shared_ptr<Model>> ModelManagerExternal::_cache(100);
+LRU::Cache<QString, std::shared_ptr<Model>> ModelManagerExternal::_cache(DEFAULT_CACHE_SIZE);
 
 TYPESYSTEM_SOURCE(Materials::ModelManagerExternal, Base::BaseClass)
 
@@ -50,7 +50,7 @@ void ModelManagerExternal::initCache()
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Material/ExternalInterface");
-    auto cacheSize = hGrp->GetInt("ModelCacheSize", 100);
+    auto cacheSize = hGrp->GetInt("ModelCacheSize", DEFAULT_CACHE_SIZE);
     _cache.capacity(cacheSize);
 
     _cache.monitor();
@@ -62,6 +62,7 @@ void ModelManagerExternal::cleanup()
 
 void ModelManagerExternal::refresh()
 {
+    resetCache();
 }
 
 //=====
@@ -133,4 +134,20 @@ void ModelManagerExternal::migrateModel(const QString& libraryName,
 {
     _cache.erase(model->getUUID());
     ExternalManager::getManager()->migrateModel(libraryName, path, model);
+}
+
+//=====
+//
+// Cache management
+//
+//=====
+
+void ModelManagerExternal::resetCache()
+{
+    _cache.clear();
+}
+
+double ModelManagerExternal::modelHitRate()
+{
+    return _cache.stats().hit_rate();
 }

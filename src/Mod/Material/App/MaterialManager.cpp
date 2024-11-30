@@ -48,6 +48,7 @@ using namespace Materials;
 std::unique_ptr<MaterialManagerExternal> MaterialManager::_externalManager;
 std::unique_ptr<MaterialManagerLocal> MaterialManager::_localManager;
 QMutex MaterialManager::_mutex;
+bool MaterialManager::_useExternal = false;
 
 TYPESYSTEM_SOURCE(Materials::MaterialManager, Base::BaseClass)
 
@@ -55,15 +56,15 @@ MaterialManager::MaterialManager()
 {
     initManagers();
 
-    // _hGrp = App::GetApplication().GetParameterGroupByPath(
-    //     "User parameter:BaseApp/Preferences/Mod/Material/Database");
-    // _useDatabase = _hGrp->GetBool("UseDatabase", false);
-    // _hGrp->Attach(this);
+    _hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Material/ExternalInterface");
+    _useExternal = _hGrp->GetBool("UseExternal", false);
+    _hGrp->Attach(this);
 }
 
 MaterialManager::~MaterialManager()
 {
-    // _hGrp->Detach(this);
+    _hGrp->Detach(this);
 }
 
 void MaterialManager::initManagers()
@@ -76,6 +77,16 @@ void MaterialManager::initManagers()
 
     if (!_externalManager) {
         _externalManager = std::make_unique<MaterialManagerExternal>();
+    }
+}
+
+void MaterialManager::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason)
+{
+    const ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
+    if (strcmp(Reason, "UseExternal") == 0) {
+        Base::Console().Log("Use external changed\n");
+        _useExternal = rGrp.GetBool("UseExternal", false);
+        // _dbManager->refresh();
     }
 }
 
@@ -424,16 +435,6 @@ void MaterialManager::dereference(std::shared_ptr<Material> material) const
     _localManager->dereference(material);
 }
 
-void MaterialManager::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason)
-{
-    // const ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
-    // if (strcmp(Reason, "UseDatabase") == 0) {
-    //     Base::Console().Log("Use database changed\n");
-    //     _useDatabase = rGrp.GetBool("UseDatabase", false);
-    //     _dbManager->refresh();
-    // }
-}
-
 void MaterialManager::migrateToExternal(const std::shared_ptr<Materials::MaterialLibrary>& library)
 {
     _externalManager->createLibrary(library->getName(),
@@ -477,4 +478,11 @@ void MaterialManager::validateMigration(const std::shared_ptr<Materials::Materia
             throw InvalidMaterial();
         }
     }
+}
+
+// Cache stats
+double MaterialManager::materialHitRate()
+{
+    initManagers();
+    return _externalManager->materialHitRate();
 }
