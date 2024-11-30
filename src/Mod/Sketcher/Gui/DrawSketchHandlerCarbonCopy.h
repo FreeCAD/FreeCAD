@@ -163,7 +163,7 @@ public:
             std::string sketchArchType("Sketcher::SketchObjectPython");
 
             if (obj->is<Sketcher::SketchObject>()
-                || sketchArchType.compare(obj->getTypeId().getName()) == 0) {
+                || sketchArchType == obj->getTypeId().getName()) {
 
                 try {
                     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create a carbon copy"));
