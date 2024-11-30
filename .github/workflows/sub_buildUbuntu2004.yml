@@ -95,8 +95,6 @@ jobs:
                             libboost-thread-dev                         \
                             libcoin-dev                                 \
                             libeigen3-dev                               \
-                            libgts-bin                                  \
-                            libgts-dev                                  \
                             libkdtree++-dev                             \
                             libmedc-dev                                 \
                             libocct-data-exchange-dev                   \
