@@ -314,7 +314,7 @@ class _ViewProviderBuilding(ArchFloor._ViewProviderFloor):
     def convertToBuildingPart(self):
         if hasattr(self,"Object"):
             import ArchBuildingPart
-            from draftutils.todo import todo
+            from draftutils import todo
             todo.ToDo.delay(ArchBuildingPart.convertFloors,self.Object)
 
 

@@ -444,7 +444,7 @@ class BIM_Material:
             p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
             p.SetInt("BimMaterialDialogWidth", self.dlg.width())
             p.SetInt("BimMaterialDialogHeight", self.dlg.height())
-            from draftutils.todo import todo
+            from draftutils import todo
 
             todo.ToDo.delay(self.dlg.hide, None)
 

@@ -584,7 +584,7 @@ class BIM_Library_TaskPanel:
             self.place(path)
         elif ext == ".fcstd":
             FreeCADGui.ActiveDocument.mergeProject(path)
-            from draftutils.todo import todo
+            from draftutils import todo
 
             todo.ToDo.delay(self.reject, None)
         elif ext == ".ifc":
@@ -592,7 +592,7 @@ class BIM_Library_TaskPanel:
 
             importIFC.ZOOMOUT = False
             importIFC.insert(path, FreeCAD.ActiveDocument.Name)
-            from draftutils.todo import todo
+            from draftutils import todo
 
             todo.ToDo.delay(self.reject, None)
         elif ext in [".sat", ".sab"]:

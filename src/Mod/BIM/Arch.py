@@ -187,7 +187,7 @@ def convertFloors(floor=None):
             obj.Label = obj.Label+" to delete"
             nobj.Label = label
     for n in todel:
-        from draftutils.todo import todo
+        from draftutils import todo
         todo.ToDo.delay(FreeCAD.ActiveDocument.removeObject,n)
 
 
@@ -1090,7 +1090,7 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name=None):
 
     import ArchWindow
     import Draft
-    from draftutils.todo import todo
+    from draftutils import todo
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return

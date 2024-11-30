@@ -294,7 +294,7 @@ class BIM_Preflight_TaskPanel:
         "runs all tests"
 
         from PySide import QtCore, QtGui
-        from draftutils.todo import todo
+        from draftutils import todo
 
         for test in tests:
             if test != "testAll":

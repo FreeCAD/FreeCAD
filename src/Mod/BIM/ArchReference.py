@@ -564,7 +564,7 @@ class ViewProviderArchReference:
                     colors = obj.Proxy.getColors(obj)
                     if colors:
                         obj.ViewObject.DiffuseColor = colors
-                    from draftutils.todo import todo
+                    from draftutils import todo
                     todo.ToDo.delay(self.recolorize,obj.ViewObject)
 
 
@@ -642,7 +642,7 @@ class ViewProviderArchReference:
             return None
 
         FreeCADGui.Control.closeDialog()
-        from draftutils.todo import todo
+        from draftutils import todo
         todo.ToDo.delay(vobj.Proxy.recolorize,vobj)
         return True
 
